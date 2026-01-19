@@ -92,7 +92,7 @@ Senior Engineer based in Thu Duc City, HCM, Vietnam.
 
 ## 💻 My Project
 
-### 🛍️ E-Commerce Microservices Platform (2025 - Present)
+### [🛍️ E-Commerce Microservices Platform (2025 - Present)](https://github.com/vesviet/Composable-Commerce-Service-Architecture)
 A comprehensive, production-grade e-commerce ecosystem designed for scale and high availability.
 - **Architecture**: Microservices (21+ services), Event-Driven, Clean Architecture.
 - **Tech Stack**:
