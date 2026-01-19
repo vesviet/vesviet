@@ -22,7 +22,7 @@ Senior Engineer based in Thu Duc City, HCM, Vietnam.
 ### Senior Engineer @ Lotte Innovate (Dec 2025 - Present)
 - **Technicality**:
     - Frameworks: Magento 2, PHP, Laravel, RESTful API
-    - Infrastructure: AWS (EC2, RDS, S3, EKS), Kubernetes, Docker
+    - Infrastructure: AWS (EC2, RDS, S3, Docker)
     - DB & Cache: MySQL, Redis
     - CI/CD: Git, GitLab CI/CD
 - **Key Highlights**:
