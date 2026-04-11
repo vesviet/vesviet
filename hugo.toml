@@ -2,7 +2,13 @@ baseURL = "https://tanhdev.com/"
 languageCode = "en-us"
 title = "TanhDev | Senior Developer"
 theme = "PaperMod"
-paginate = 10
+[pagination]
+  pagerSize = 10
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true
+
 
 [permalinks]
   posts = "/:year/:month/:day/:slug/"
