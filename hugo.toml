@@ -26,7 +26,7 @@ theme = "PaperMod"
   enabled = true
   title = "Le Tuan Anh"
   subtitle = """<span style="font-size: 1.1em;">**Senior Software Engineer · Backend Architecture & Platform Specialist**</span><br><br>17+ years of building resilient systems, migrating legacy monoliths to **Golang microservices**, and architecting high-traffic platforms.<br><br>Currently crafting a 21+ service e-commerce ecosystem using Go, Kubernetes, and Dapr. Passionate about Clean Architecture and Event-Driven Design."""
-  imageUrl = "https://github.com/fluidicon.png"
+  imageUrl = "https://github.com/vesviet.png"
   imageWidth = 120
   imageHeight = 120
   
