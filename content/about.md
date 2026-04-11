@@ -1,139 +1,131 @@
 ---
-title: "About"
+title: "About Me"
 date: "2021-10-14 18:48:02"
 ---
 
-<!-- Start About Area  -->
-<img width="543" height="669" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/about-1.png" alt="about-1" loading="lazy" srcset="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/about-1.png 543w, http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/about-1-243x300.png 243w" sizes="(max-width: 543px) 100vw, 543px" />                            
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>                                            
-<h2>Refreshingly Unique Company About.</h2>                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. <br><br> A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences</p>
-<a href="#">PURCHASE IMROZ</a>                                    
-<!-- Start About Area  -->
-Experts growts
-<h2>Our Company Growth</h2>                            <p>We have grown strength over the past 20 years.</p>
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>                            
-<h2>200</h2>
-<p>Staticfied Customers</p>
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>                            
-<h2>1000</h2>
-<p>Days Of Operation</p>
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>                            
-<h2>50</h2>
-<p>Complete Project</p>
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>                            
-<h2>10</h2>
-<p>Win Awards</p>
-<h4>Find Your Work Now</h4>                            <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that.</p>
-<a href="#">Get Started</a>            
-Our Experts
-<h2>Managing Team</h2>                            <p>There are many variations of passages of Lorem Ipsum available,
-but the majority have suffered alteration.</p>
-<!-- Start Single Team Area  -->
-<img width="390" height="520" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/09/team-01.jpg" alt="team-01" loading="lazy" srcset="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/09/team-01.jpg 390w, http://rainbowit.net/themes/imroz/wp-content/uploads/2021/09/team-01-225x300.jpg 225w" sizes="(max-width: 390px) 100vw, 390px" />                        
-<h4>Benjamin</h4>
-<p>Sr. Web Developer</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://facebook.com/"></a></li><li><a target="_blank" rel="noopener" href="https://linkedin.com/"></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/"></a></li>                        </ul>
-<!-- End Single Team Area  -->
-<!-- Start Single Team Area  -->
-<img width="390" height="520" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/09/team-02.jpg" alt="team-02" loading="lazy" srcset="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/09/team-02.jpg 390w, http://rainbowit.net/themes/imroz/wp-content/uploads/2021/09/team-02-225x300.jpg 225w" sizes="(max-width: 390px) 100vw, 390px" />                        
-<h4>Theodore Sefa</h4>
-<p>Front-end Engineer</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://facebook.com/"></a></li><li><a target="_blank" rel="noopener" href="https://linkedin.com/"></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/"></a></li>                        </ul>
-<!-- End Single Team Area  -->
-<!-- Start Single Team Area  -->
-<img width="390" height="520" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/09/team-03.jpg" alt="team-03" loading="lazy" srcset="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/09/team-03.jpg 390w, http://rainbowit.net/themes/imroz/wp-content/uploads/2021/09/team-03-225x300.jpg 225w" sizes="(max-width: 390px) 100vw, 390px" />                        
-<h4>Christopher</h4>
-<p>Sr. Graphic Designer</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://facebook.com/"></a></li><li><a target="_blank" rel="noopener" href="https://linkedin.com/"></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/"></a></li>                        </ul>
-<!-- End Single Team Area  -->
-<!-- Start Testimonial Area  -->
-<!-- Start Tab Content  -->
-<p>Fatima Asrafy the standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections Bonorum et Malorum original.</p>
-<h6>FATIMA ASRAFY  - COO, AMERIMAR ENTERPRISES, INC.</h6>
-<p>John The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections Bonorum et Malorum original.</p>
-<h6>JOHN NIRA  - COO, AMERIMAR ENTERPRISES, INC.</h6>
-<p>Jone The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections Bonorum et Malorum original.</p>
-<h6>JONE JANE  - COO, AMERIMAR ENTERPRISES, INC.</h6>
-<p>Fatima The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections Bonorum et Malorum original.</p>
-<h6>JANEN ASRAFY  - COO, AMERIMAR ENTERPRISES, INC.</h6>
-<p>Afrin The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections Bonorum et Malorum original.</p>
-<h6>FATIMA ASRAFY  - COO, AMERIMAR ENTERPRISES, INC.</h6>
-<p>Irin The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections Bonorum et Malorum original.</p>
-<h6>IRIN ASRAFY  - COO, AMERIMAR ENTERPRISES, INC.</h6>
-<p>Shipa  the standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections Bonorum et Malorum original.</p>
-<h6>SHIPA  - COO, AMERIMAR ENTERPRISES, INC.</h6>
-<p>Awesome client the standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections Bonorum et Malorum original.</p>
-<h6>Runa Afrin  - COO, AMERIMAR ENTERPRISES, INC.</h6>
-<!-- End Tab Content  -->
-<!-- Start Tab Nav  -->
-<ul id="myTab-3a43be8" role="tablist">
-<li>
-<a id="tab-3a43be8-0-tab" data-toggle="tab" href="#tab-3a43be8-0" role="tab" aria-controls="tab-3a43be8-0" aria-selected="true">
-<img width="150" height="150" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-1-150x150.jpg" alt="testimonial-1" loading="lazy" srcset="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-1-150x150.jpg 150w, http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-1.jpg 160w" sizes="(max-width: 150px) 100vw, 150px" />                                                                                            
-</a>
-</li>
-<li>
-<a id="tab-3a43be8-1-tab" data-toggle="tab" href="#tab-3a43be8-1" role="tab" aria-controls="tab-3a43be8-1" aria-selected="true">
-<img width="150" height="150" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-2-150x150.jpg" alt="testimonial-2" loading="lazy" srcset="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-2-150x150.jpg 150w, http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-2.jpg 160w" sizes="(max-width: 150px) 100vw, 150px" />                                                                                            
-</a>
-</li>
-<li>
-<a id="tab-3a43be8-2-tab" data-toggle="tab" href="#tab-3a43be8-2" role="tab" aria-controls="tab-3a43be8-2" aria-selected="true">
-<img width="150" height="150" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-3-150x150.jpg" alt="testimonial-3" loading="lazy" srcset="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-3-150x150.jpg 150w, http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-3.jpg 160w" sizes="(max-width: 150px) 100vw, 150px" />                                                                                            
-</a>
-</li>
-<li>
-<a id="tab-3a43be8-3-tab" data-toggle="tab" href="#tab-3a43be8-3" role="tab" aria-controls="tab-3a43be8-3" aria-selected="true">
-<img width="150" height="150" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-4-150x150.jpg" alt="testimonial-4" loading="lazy" srcset="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-4-150x150.jpg 150w, http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-4.jpg 160w" sizes="(max-width: 150px) 100vw, 150px" />                                                                                            
-</a>
-</li>
-<li>
-<a id="tab-3a43be8-4-tab" data-toggle="tab" href="#tab-3a43be8-4" role="tab" aria-controls="tab-3a43be8-4" aria-selected="true">
-<img width="150" height="150" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-5-150x150.jpg" alt="testimonial-5" loading="lazy" srcset="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-5-150x150.jpg 150w, http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-5.jpg 160w" sizes="(max-width: 150px) 100vw, 150px" />                                                                                            
-</a>
-</li>
-<li>
-<a id="tab-3a43be8-5-tab" data-toggle="tab" href="#tab-3a43be8-5" role="tab" aria-controls="tab-3a43be8-5" aria-selected="true">
-<img width="150" height="150" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-7-150x150.jpg" alt="testimonial-7" loading="lazy" srcset="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-7-150x150.jpg 150w, http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-7.jpg 160w" sizes="(max-width: 150px) 100vw, 150px" />                                                                                            
-</a>
-</li>
-<li>
-<a id="tab-3a43be8-6-tab" data-toggle="tab" href="#tab-3a43be8-6" role="tab" aria-controls="tab-3a43be8-6" aria-selected="true">
-<img width="150" height="150" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-8-150x150.jpg" alt="testimonial-8" loading="lazy" srcset="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-8-150x150.jpg 150w, http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-8.jpg 160w" sizes="(max-width: 150px) 100vw, 150px" />                                                                                            
-</a>
-</li>
-<li>
-<a id="tab-3a43be8-7-tab" data-toggle="tab" href="#tab-3a43be8-7" role="tab" aria-controls="tab-3a43be8-7" aria-selected="true">
-<img width="150" height="150" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-9-150x150.jpg" alt="testimonial-9" loading="lazy" srcset="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-9-150x150.jpg 150w, http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/testimonial-9.jpg 160w" sizes="(max-width: 150px) 100vw, 150px" />                                                                                            
-</a>
-</li>
-</ul>
-<!-- End Tab Content  -->
-<!-- Start Testimonial Area  -->
-<!-- Start Brand Area -->
-Top clients
-<h2>We worked with brands.</h2>                                                
-<ul>
-<li>
-<a href="#" >                                                                                     <img width="262" height="173" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/brand-01.png" alt="brand-01" loading="lazy" />                                                                             </a>                                 </li>
-<li>
-<a href="#" >                                                                                     <img width="182" height="181" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/brand-02.png" alt="brand-02" loading="lazy" srcset="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/brand-02.png 182w, http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/brand-02-150x150.png 150w" sizes="(max-width: 182px) 100vw, 182px" />                                                                             </a>                                 </li>
-<li>
-<a href="#" >                                                                                     <img width="222" height="194" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/brand-03.png" alt="brand-03" loading="lazy" />                                                                             </a>                                 </li>
-<li>
-<a href="#" >                                                                                     <img width="302" height="170" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/brand-05.png" alt="brand-05" loading="lazy" srcset="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/brand-05.png 302w, http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/brand-05-300x169.png 300w" sizes="(max-width: 302px) 100vw, 302px" />                                                                             </a>                                 </li>
-<li>
-<a href="#" >                                                                                     <img width="193" height="184" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/brand-04.png" alt="brand-04" loading="lazy" />                                                                             </a>                                 </li>
-<li>
-<a href="#" >                                                                                     <img width="230" height="170" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/brand-09.png" alt="" loading="lazy" />                                                                             </a>                                 </li>
-<li>
-<a href="#" >                                                                                     <img width="231" height="173" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/brand-06.png" alt="brand-06" loading="lazy" />                                                                             </a>                                 </li>
-<li>
-<a href="#" >                                                                                     <img width="269" height="123" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/brand-08.png" alt="brand-08" loading="lazy" />                                                                             </a>                                 </li>
-<li>
-<a href="#" >                                                                                     <img width="269" height="192" src="http://rainbowit.net/themes/imroz/wp-content/uploads/2021/05/brand-07.png" alt="brand-07" loading="lazy" />                                                                             </a>                                 </li>
-</ul>
-<!-- End Brand Area -->
+# LE TUAN ANH
+
+**Senior Software Engineer · Backend & Platform Specialist**
+
+Ho Chi Minh City, Vietnam · [vesviet@gmail.com](mailto:vesviet@gmail.com) · [LinkedIn](https://www.linkedin.com/in/vesviet) · [GitHub](https://github.com/vesviet)
+
+---
+
+## 👤 About
+
+Senior Software Engineer with **17+ years** of hands-on experience building scalable web platforms and distributed systems. Specialized in **backend architecture**, **e-commerce platforms (Magento 2)**, and **Golang microservices**. Proven track record of migrating monolithic systems to microservices, optimizing high-traffic applications, and leading technical initiatives across cross-functional teams. Currently architecting a **21+ service e-commerce platform** using Go, Kubernetes, and event-driven architecture.
+
+---
+
+## 🚀 Technical Skills
+
+| Category | Technologies |
+|---|---|
+| **Languages** | Go, PHP, JavaScript (Node.js), TypeScript, HTML/CSS, C/C++ |
+| **Backend Frameworks** | Kratos (Go), Laravel, Magento 1 & 2, Yii2, CodeIgniter |
+| **Frontend** | Next.js, React, jQuery, Bootstrap, Flutter (Mobile UI) |
+| **Databases** | PostgreSQL, MySQL, MongoDB, Redis, Elasticsearch, MS SQL |
+| **Infrastructure** | Kubernetes (EKS/K3s), Docker, AWS (EC2, RDS, S3, EKS), Linux |
+| **Architecture** | Microservices, Event-Driven (Dapr), Clean Architecture, DDD, gRPC, REST |
+| **DevOps & Tools** | ArgoCD (GitOps), GitLab CI/CD, GitHub Actions, Prometheus, Grafana, Jaeger |
+
+---
+
+## 💼 Work Experience
+
+### Senior Engineer — Lotte Innovate
+`Dec 2025 – Present` · Ho Chi Minh City
+
+- Optimized Magento 2 data processing pipelines for high-traffic e-commerce operations, reducing page load times and improving system throughput.
+- Improved database query performance and implemented caching strategies, contributing to lower latency and higher system stability across production environments.
+- **Tech**: Magento 2, PHP, Laravel, MySQL, Redis, AWS (EC2, RDS, S3), Docker, GitLab CI/CD.
+
+---
+
+### Senior Engineer — Vigo Retail
+`Sep 2021 – Oct 2025` · Ho Chi Minh City
+
+- Designed and developed scalable RESTful APIs handling **millions of requests per month** for B2B and B2C e-commerce platforms.
+- Led migration of monolithic PHP applications to **Golang-based microservices**, reducing average API latency by **35%**.
+- Architected and implemented CI/CD pipelines (GitLab CI + GitHub Actions), achieving **zero-downtime deployments** across EKS clusters.
+- Optimized SQL queries and Redis caching layers, improving overall system performance by **40%**.
+- Mentored a team of 3 junior developers, conducting code reviews and establishing coding standards.
+- **Tech**: Go, PHP, Magento 2, Laravel, Kubernetes (EKS), Docker, PostgreSQL, MySQL, Redis, GitLab CI/CD.
+
+---
+
+### Magento 2 Backend Developer — SnapMart Inc.
+`Apr 2020 – Sep 2021`
+
+- Developed custom Magento 2 extensions for [landers.ph](https://landers.ph), serving the Philippine grocery e-commerce market.
+- Implemented unit testing practices and improved code coverage, reducing production bug rate.
+- Debugged and resolved complex platform issues across payment, catalog, and checkout modules.
+- **Tech**: Magento 2, PHP, AWS (EC2, RDS, S3, K8s), Docker, Git.
+
+---
+
+### Magento 2 Developer (Contract) — ICM Factory Direct
+`Apr 2019 – Present` · Part-time / Maintenance
+
+- Designed and maintained the full-stack Magento 2 platform for [Regna.com](https://regna.com).
+- Built RESTful APIs powering mobile applications (Rb39, Elite) with Flutter-based UI.
+- **Tech**: Magento 2, Flutter, PHP, AWS (EC2, RDS, S3), Docker.
+
+---
+
+### Earlier Career (2008 – 2019)
+
+| Period | Role | Company | Focus |
+|---|---|---|---|
+| Apr 2017 – Apr 2019 | PHP Developer | JV-IT Company | Weather forecast map system for Japanese clients (Yii2, Node.js, PostgreSQL, AWS) |
+| May 2015 – Apr 2017 | Magento Developer | Skyfronts | Multi-site Magento 1 & 2 e-commerce development, Linux server administration |
+| Apr 2011 – May 2015 | PHP Developer | ToanCau Company | Corporate websites, online advertising apps, mobile payment system |
+| Dec 2008 – Sep 2010 | PHP Developer | VEC E-commerce Solution | Web services, web applications, open-source project development |
+
+---
+
+## 💻 Featured Project
+
+### [🛍️ E-Commerce Microservices Platform](https://github.com/vesviet/Composable-Commerce-Service-Architecture)
+`2025 – Present` · Personal / Portfolio
+
+A production-grade, composable e-commerce ecosystem with **21+ independently deployable microservices**, designed for high availability and horizontal scalability.
+
+**Architecture & Stack:**
+- **Backend**: Go 1.25+ (Kratos Framework), gRPC + REST dual protocol, Wire (DI).
+- **Frontend**: Next.js, React, TypeScript.
+- **Infrastructure**: Kubernetes (K3s), Dapr (Service Mesh & Pub/Sub), ArgoCD (GitOps), Docker.
+- **Data**: PostgreSQL, Redis, Elasticsearch.
+- **Observability**: Prometheus, Grafana, Jaeger (distributed tracing).
+
+**Key Service Domains:**
+| Domain | Services |
+|---|---|
+| **Core** | Auth (OAuth2/JWT), User (RBAC), Customer (GDPR), Catalog (25k+ SKUs, EAV pattern) |
+| **Commerce** | Cart, Checkout (Saga orchestration), Order lifecycle, Payment (multi-gateway) |
+| **Operations** | Multi-warehouse Inventory, Fulfillment (pick/pack/ship), Shipping (multi-carrier) |
+| **Engagement** | Dynamic Pricing, Promotions & Coupons, Loyalty Rewards, Reviews, AI-powered Search |
+| **Platform** | API Gateway, Notification (Email/SMS/Push), Analytics, Admin Dashboard |
+
+**Engineering Highlights:**
+- Clean Architecture with strict layer separation (API → Service → Biz → Data).
+- Event-driven communication via Dapr Pub/Sub with Outbox pattern for guaranteed delivery.
+- Transactional Saga orchestration for checkout and payment flows.
+- Full GitOps deployment pipeline with ArgoCD and Kustomize overlays.
+
+---
+
+## 🎓 Education
+
+**Diploma in Information Technology**
+Industrial Economic and Technical College 2 · Sep 2005 – Aug 2008
+
+Coursework: Database Management (MS SQL, MySQL), Networking & Server Administration, PHP, C/C++.
+
+---
+
+## 📫 Contact
+
+- **Email**: [vesviet@gmail.com](mailto:vesviet@gmail.com)
+- **LinkedIn**: [linkedin.com/in/vesviet](https://www.linkedin.com/in/vesviet)
+- **GitHub**: [github.com/vesviet](https://github.com/vesviet)
