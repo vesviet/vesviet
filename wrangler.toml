@@ -3,3 +3,13 @@ compatibility_date = "2024-04-11"
 
 [assets]
 directory = "public"
+
+workers_dev = true
+
+[[routes]]
+pattern = "tanhdev.com"
+custom_domain = true
+
+[[routes]]
+pattern = "www.tanhdev.com"
+custom_domain = true
