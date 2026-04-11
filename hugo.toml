@@ -1,0 +1,44 @@
+baseURL = "https://tanhdev.com/"
+languageCode = "en-us"
+title = "TanhDev | Senior Developer"
+theme = "PaperMod"
+paginate = 10
+
+[permalinks]
+  posts = "/:year/:month/:day/:slug/"
+
+[params]
+  env = "production"
+  description = "A Senior Go & Microservices Developer Portfolio and Blog"
+  author = "TanhDev"
+  defaultTheme = "auto"
+  ShowReadingTime = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  
+[params.profileMode]
+  enabled = true
+  title = "Hi, I'm TanhDev 👋"
+  subtitle = "Senior Backend Engineer | Golang & Microservices | Kratos Framework"
+  imageUrl = "https://github.com/fluidicon.png"
+  imageWidth = 120
+  imageHeight = 120
+  
+  [[params.profileMode.buttons]]
+    name = "My Blog"
+    url = "/posts"
+  [[params.profileMode.buttons]]
+    name = "GitHub"
+    url = "https://github.com/"
+
+[menu]
+  [[menu.main]]
+    identifier = "posts"
+    name = "Blog"
+    url = "/posts/"
+    weight = 10
+  [[menu.main]]
+    identifier = "about"
+    name = "About Me"
+    url = "/about/"
+    weight = 20
