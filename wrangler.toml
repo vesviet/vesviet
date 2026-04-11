@@ -1,15 +1,16 @@
 name = "vesviet"
 compatibility_date = "2024-04-11"
-
-[assets]
-directory = "public"
-
 workers_dev = true
 
 [[routes]]
 pattern = "tanhdev.com"
 custom_domain = true
+override_existing_dns_record = true
 
 [[routes]]
 pattern = "www.tanhdev.com"
 custom_domain = true
+override_existing_dns_record = true
+
+[assets]
+directory = "public"
