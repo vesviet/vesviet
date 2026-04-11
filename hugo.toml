@@ -48,3 +48,13 @@ theme = "PaperMod"
     name = "About Me"
     url = "/about/"
     weight = 20
+  [[menu.main]]
+    identifier = "tools"
+    name = "Dev Tools"
+    url = "https://it-tools.tanhdev.com/"
+    weight = 30
+  [[menu.main]]
+    identifier = "wiki"
+    name = "Wiki"
+    url = "https://wiki.tanhdev.com/"
+    weight = 40
