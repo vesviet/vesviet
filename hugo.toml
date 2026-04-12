@@ -32,7 +32,7 @@ theme = "PaperMod"
   
   [[params.profileMode.buttons]]
     name = "My Resume"
-    url = "/about"
+    url = "/Le-Tuan-Anh-Resume.pdf"
   [[params.profileMode.buttons]]
     name = "LinkedIn"
     url = "https://www.linkedin.com/in/vesviet"
