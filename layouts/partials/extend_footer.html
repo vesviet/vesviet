@@ -1,3 +1,70 @@
+<style>
+.mermaid-wrapper {
+    cursor: zoom-in;
+    position: relative;
+    text-align: center;
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    transition: background 0.2s;
+}
+.mermaid-wrapper:hover {
+    background: var(--entry);
+}
+.mermaid-wrapper::after {
+    content: "🔍 Click diagram to zoom";
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 12px;
+    background: var(--theme);
+    color: var(--primary);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    opacity: 0.9;
+}
+.mermaid-fullscreen {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: none !important;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 999999;
+    overflow: auto;
+    padding: 40px;
+    margin: 0 !important;
+    cursor: zoom-out;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    border: none;
+}
+.mermaid-fullscreen::after {
+    content: "✖ Close";
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background: #e74c3c;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+}
+.mermaid-fullscreen svg {
+    background: var(--theme); /* Add solid background so dark/light theme is preserved inside the lightbox */
+    padding: 20px;
+    border-radius: 8px;
+    min-width: 1000px !important;
+    height: auto !important;
+    transform: scale(1);
+}
+</style>
+
 <script type="module">
   document.addEventListener('DOMContentLoaded', () => {
     const blocks = document.querySelectorAll('pre code.language-mermaid, pre code[data-lang="mermaid"]');
@@ -6,17 +73,26 @@
             const mermaid = mermaidModule.default;
             mermaid.initialize({ 
                 startOnLoad: false,
-                theme: document.body.className.includes('dark') ? 'dark' : 'default',
-                flowchart: { useMaxWidth: false } // Prevents diagram from squishing into tiny text
+                theme: document.body.className.includes('dark') ? 'dark' : 'default'
+                // useMaxWidth is kept default (true) so it doesn't break the layout natively
             });
             
             blocks.forEach((block) => {
                 const mermaidDiv = document.createElement('div');
                 mermaidDiv.classList.add('mermaid');
-                mermaidDiv.style.overflowX = 'auto'; // Allows horizontal scrolling for large graphs
-                mermaidDiv.style.maxWidth = '100%';
-                mermaidDiv.style.textAlign = 'center';
+                mermaidDiv.classList.add('mermaid-wrapper');
                 mermaidDiv.textContent = block.textContent;
+                
+                // Click-to-zoom Lightbox Feature
+                mermaidDiv.addEventListener('click', function() {
+                    this.classList.toggle('mermaid-fullscreen');
+                    if(this.classList.contains('mermaid-fullscreen')){
+                        document.body.style.overflow = 'hidden'; // Prevent page scrolling
+                    } else {
+                        document.body.style.overflow = '';
+                    }
+                });
+                
                 block.parentElement.replaceWith(mermaidDiv);
             });
             
