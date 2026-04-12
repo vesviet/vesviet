@@ -95,9 +95,12 @@
             
             blocks.forEach((block) => {
                 const wrapper = document.createElement('div');
-                wrapper.classList.add('mermaid');
                 wrapper.classList.add('mermaid-wrapper');
-                wrapper.textContent = block.textContent;
+                
+                const mermaidDiv = document.createElement('div');
+                mermaidDiv.classList.add('mermaid');
+                mermaidDiv.textContent = block.textContent;
+                wrapper.appendChild(mermaidDiv);
                 
                 // Construct the Close Button dynamically
                 const closeBtn = document.createElement('button');
@@ -113,7 +116,7 @@
               querySelector: '.mermaid',
             }).then(() => {
                 document.querySelectorAll('.mermaid-wrapper').forEach((wrapper) => {
-                    const svg = wrapper.querySelector('svg');
+                    const svg = wrapper.querySelector('.mermaid svg');
                     const closeBtn = wrapper.querySelector('.mermaid-close-btn');
                     
                     // Initialize svg-pan-zoom logic directly onto the Mermaid SVG output
