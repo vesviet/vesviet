@@ -17,7 +17,7 @@ In this post, I want to share the visual blueprint of the E-commerce ecosystem I
 Before diving into the narrative, let's look at the holistic system design. The traffic cascades from external clients down through a tightly secured API Gateway, into bounded domain clusters, and ultimately resolves via asynchronous Dapr PubSub event streams.
 
 ```mermaid
-flowchart LR
+graph TD
     subgraph "🌐 External Clients"
         FE["Customer Website (Next.js)"]
         ADMIN["Admin Dashboard (React)"]
