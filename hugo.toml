@@ -31,11 +31,17 @@ theme = "PaperMod"
   imageHeight = 120
   
   [[params.profileMode.buttons]]
-    name = "My Blog"
-    url = "/posts"
+    name = "My Resume"
+    url = "/about"
+  [[params.profileMode.buttons]]
+    name = "LinkedIn"
+    url = "https://www.linkedin.com/in/vesviet"
   [[params.profileMode.buttons]]
     name = "GitHub"
     url = "https://github.com/vesviet"
+  [[params.profileMode.buttons]]
+    name = "Tech Blog"
+    url = "/posts"
 
 [menu]
   [[menu.main]]
