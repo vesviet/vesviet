@@ -6,12 +6,16 @@
             const mermaid = mermaidModule.default;
             mermaid.initialize({ 
                 startOnLoad: false,
-                theme: document.body.className.includes('dark') ? 'dark' : 'default'
+                theme: document.body.className.includes('dark') ? 'dark' : 'default',
+                flowchart: { useMaxWidth: false } // Prevents diagram from squishing into tiny text
             });
             
             blocks.forEach((block) => {
                 const mermaidDiv = document.createElement('div');
                 mermaidDiv.classList.add('mermaid');
+                mermaidDiv.style.overflowX = 'auto'; // Allows horizontal scrolling for large graphs
+                mermaidDiv.style.maxWidth = '100%';
+                mermaidDiv.style.textAlign = 'center';
                 mermaidDiv.textContent = block.textContent;
                 block.parentElement.replaceWith(mermaidDiv);
             });
