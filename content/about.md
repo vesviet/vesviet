@@ -26,7 +26,7 @@ I am a Senior Software Engineer with over **17 years of hands-on experience** en
 ### 💼 Career Highlights
 
 #### Senior Engineer @ Lotte Innovate & Vigo Retail *(2021 – Present)*
-* **Scope:** Tech Lead & Lead Architect | Team of 8 Engineers | B2B/B2C Commerce & Logistics
+* **Scope:** Senior Backend Engineer & System Architect | Team of 8 Engineers | B2B/B2C Commerce & Logistics
 * **Responsibilities:** Owning backend architecture for core commerce domains, on-call for critical Tier-1 services.
 * **Impact:**
   - Led the migration of monolithic e-commerce cores to a **21-service Golang ecosystem**, orchestrating bidirectional data sync and achieving zero-downtime over a 3-month transition.
@@ -34,7 +34,7 @@ I am a Senior Software Engineer with over **17 years of hands-on experience** en
   - Optimized database querying workflows and implemented aggressive Redis caching, reducing **p95 latency from 1.2s down to 120ms** and boosting checkout network throughput by 40%.
 
 #### E-commerce Platform Specialist @ SnapMart & ICM *(2019 – 2021)*
-* **Scope:** Tech Lead | Team of 5 Engineers | Grocery & Retail e-commerce
+* **Scope:** Senior Backend Engineer | Team of 5 Engineers | Grocery & Retail e-commerce
 * **Responsibilities:** Full lifecycle ownership of Magento 2 backend ecosystems and native mobile integrations.
 * **Impact:**
   - Engineered critical core modules handling automated Payment Gateways, complex Promotional Catalogs, and localized Fulfillment routing.
