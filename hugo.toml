@@ -2,6 +2,11 @@ baseURL = "https://tanhdev.com/"
 languageCode = "en-us"
 title = "Tuấn Anh - Senior Software Engineer"
 theme = "PaperMod"
+enableRobotsTXT = true
+
+[params.assets]
+favicon = "/favicon.ico"
+apple_touch_icon = "/apple-touch-icon.png"
 [pagination]
   pagerSize = 10
 
@@ -25,11 +30,19 @@ theme = "PaperMod"
 [params.profileMode]
   enabled = true
   title = "Le Tuan Anh"
-  subtitle = """<span style="font-size: 1.1em;">**Senior Software Engineer · Backend Architecture & Platform Specialist**</span><br><br>17+ years of building resilient systems, migrating legacy monoliths to **Golang microservices**, and architecting high-traffic platforms.<br><br>Currently crafting a 21+ service e-commerce ecosystem using Go, Kubernetes, and Dapr. Passionate about Clean Architecture and Event-Driven Design."""
+  subtitle = """<span style="font-size: 1.1em;">**Senior Software Engineer · Backend Architecture & Platform Specialist**</span><br><br>17+ years of building resilient systems and architecting high-traffic platforms.<br>
+
+- 🚀 **Led Monolith-to-Microservices Migration** (21 Go services, Zero Downtime)
+- ⚡ **Architected Event-Driven Systems** (Dapr Pub/Sub, Sagas)
+- ⚙️ **Operated GitOps Deployments** (Kubernetes, ArgoCD, High-Traffic)
+"""
   imageUrl = "https://github.com/vesviet.png"
   imageWidth = 120
   imageHeight = 120
   
+  [[params.profileMode.buttons]]
+    name = "📧 Contact Me"
+    url = "mailto:hello@tanhdev.com"
   [[params.profileMode.buttons]]
     name = "My Resume"
     url = "/Le-Tuan-Anh-Resume.pdf"
