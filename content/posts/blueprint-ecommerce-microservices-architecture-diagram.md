@@ -2,6 +2,7 @@
 title: "Blueprint of a 21-Service E-commerce Edge: Architecture & Traffic Flow"
 date: 2026-04-12T08:30:00+07:00
 draft: false
+mermaid: true
 tags: ["System Architecture", "Microservices", "Mermaid", "Golang", "API Gateway"]
 description: "A deep dive into the high-level system architecture and traffic flow of a Go-based 21+ service e-commerce platform using API Gateways and Event-Driven PubSub."
 categories: ["Architecture", "System Design"]
