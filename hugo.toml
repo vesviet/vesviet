@@ -42,7 +42,7 @@ apple_touch_icon = "/apple-touch-icon.png"
   
   [[params.profileMode.buttons]]
     name = "📧 Contact Me"
-    url = "mailto:hello@tanhdev.com"
+    url = "mailto:vesviet@gmail.com"
   [[params.profileMode.buttons]]
     name = "My Resume"
     url = "/Le-Tuan-Anh-Resume.pdf"
