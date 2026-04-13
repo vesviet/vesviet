@@ -58,6 +58,11 @@ apple_touch_icon = "/apple-touch-icon.png"
     url = "/posts/"
     weight = 10
   [[menu.main]]
+    identifier = "radar"
+    name = "Tech Radar 🤖"
+    url = "/radar/"
+    weight = 15
+  [[menu.main]]
     identifier = "about"
     name = "About Me"
     url = "/about/"
