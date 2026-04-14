@@ -20,11 +20,8 @@ Magento's architecture is fundamentally a single application with a single share
 ```mermaid
 graph TB
     subgraph "Magento Monolith"
-        APP["Single PHP Application
-        Catalog · Orders · Payment
-        Inventory · Customers · CMS"]
-        APP --> DB[("Single MySQL DB
-        300+ tables")]
+        APP["Single PHP Application<br>Catalog · Orders · Payment<br>Inventory · Customers · CMS"]
+        APP --> DB[("Single MySQL DB<br>300+ tables")]
         APP --> CACHE["Varnish / Redis Cache"]
     end
 
@@ -158,6 +155,7 @@ Based on a production 21-service Go ecosystem handling 10,000+ orders per day, h
 | Payment resilience | ❌ Sync, no retry logic | ✅ Saga + DLQ + compensation |
 | Search performance | ⚠️ EAV joins at query time | ✅ Pre-indexed Elasticsearch |
 | Event reliability | ❌ Sync observers | ✅ Transactional outbox, at-least-once |
+| Zero-downtime deploy | ⚠️ Maintenance mode | ✅ Rolling updates per service |
 
 The difference between these two event models is worth unpacking. In Magento, events are synchronous PHP observers — if the observer is slow or throws an exception, it blocks the entire request:
 
@@ -196,7 +194,6 @@ func (uc *OrderUsecase) CreateOrder(ctx context.Context, o *Order) error {
 ```
 
 The outbox guarantees delivery even if the Dapr broker is temporarily unavailable. The Magento observer has no such guarantee — a failed observer silently drops the event.
-| Zero-downtime deploy | ⚠️ Maintenance mode | ✅ Rolling updates per service |
 
 ## The Real Cost of Migration
 
