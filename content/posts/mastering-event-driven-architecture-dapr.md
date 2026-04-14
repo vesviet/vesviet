@@ -31,6 +31,28 @@ This enforces traceability. The prefix declares the absolute root owner of the e
 
 You can no longer execute a simple `BEGIN ... COMMIT` SQL block to save an order, reserve inventory, and capture a payment. If a customer checks out, we launch a **Saga**. 
 
+```mermaid
+sequenceDiagram
+    participant C as Checkout Service
+    participant D as Dapr Pub/Sub
+    participant W as Warehouse Service
+    participant P as Payment Service
+    
+    C->>D: Publish checkout.order.created
+    D-->>W: Receive event
+    W->>W: Reserve Stock
+    W->>D: Publish warehouse.inventory.reserved
+    
+    D-->>P: Receive event
+    P->>P: Charge Credit Card
+    
+    alt Card Declined
+        P->>D: Publish payments.payment.failed
+        D-->>W: Receive event
+        W->>W: Compensation (Rollback Stock)
+    end
+```
+
 A Saga is an orchestrated sequence of local transactions. The Checkout service publishes `checkout.order.created`. The Warehouse service catches this event, reserves stock, and reacts based on success. If a subsequent step fails (e.g., the Payment service declines the card via a `payments.payment.failed` event), the Saga triggers **Compensating Transactions**—broadcasting reverse events to un-reserve the stock and fail the order.
 
 ### Designing Immortal Consumers (Idempotency & DLQs)
