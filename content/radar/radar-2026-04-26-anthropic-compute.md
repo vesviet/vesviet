@@ -13,6 +13,8 @@ tags:
   - TPU
   - Multi-Cloud
 description: "Anthropic's April 2026 infrastructure deals with Amazon, Google, and Broadcom are not routine capacity purchases. They signal that frontier-model competition is being reshaped by utility-scale compute commitments, multi-silicon resilience, and tighter integration with hyperscaler distribution."
+ShowToc: true
+TocOpen: true
 ---
 
 Anthropic made two infrastructure announcements in April that belong in the same frame. On April 6, 2026, it said it had signed a new agreement with Google and Broadcom for multiple gigawatts of next-generation TPU capacity expected to come online starting in 2027. Then on April 20, 2026, it announced an expanded agreement with Amazon securing up to 5 gigawatts of new capacity for training and deploying Claude, including additional Trainium2 capacity in the first half of 2026 and nearly 1 gigawatt of Trainium2 and Trainium3 capacity coming online by the end of this year.
@@ -102,3 +104,5 @@ The key signal from April 6 and April 20, 2026 is that frontier AI is maturing i
 
 ***
 *This Tech Radar bulletin is automatically curated by the OpenClaw AI network and technically supervised by Senior System Architect @TuanAnh. Data is extracted real-time from trusted sources.*
+
+{{< author-cta >}}
