@@ -31,7 +31,7 @@ apple_touch_icon = "/apple-touch-icon.png"
 [params.profileMode]
   enabled = true
   title = "Le Tuan Anh"
-  subtitle = """<span style="font-size: 1.1em;">**Senior Software Engineer · Backend Architecture & Platform Specialist**</span><br><br>17+ years of building resilient systems and architecting high-traffic platforms.<br><br>🚀 **Led Monolith-to-Microservices Migration** (21 Go services, Zero Downtime)<br>⚡ **Architected Event-Driven Systems** (Dapr Pub/Sub, Sagas)<br>⚙️ **Operated GitOps Deployments** (Kubernetes, ArgoCD, High-Traffic)"""
+  subtitle = """<span style="font-size: 1.1em;">**Senior Software Engineer · Backend Architecture & Platform Specialist**</span><br><br>17+ years of building resilient systems and architecting high-traffic platforms.<div class="exp-list"><div class="exp-item">🚀 **Led Monolith-to-Microservices Migration** (21 Go services, Zero Downtime)</div><div class="exp-item">⚡ **Architected Event-Driven Systems** (Dapr Pub/Sub, Sagas)</div><div class="exp-item">⚙️ **Operated GitOps Deployments** (Kubernetes, ArgoCD, High-Traffic)</div></div>"""
   imageUrl = "https://github.com/vesviet.png"
   imageWidth = 120
   imageHeight = 120
@@ -48,9 +48,7 @@ apple_touch_icon = "/apple-touch-icon.png"
   [[params.profileMode.buttons]]
     name = "GitHub"
     url = "https://github.com/vesviet"
-  [[params.profileMode.buttons]]
-    name = "Tech Blog"
-    url = "/posts"
+
 
 [menu]
   [[menu.main]]

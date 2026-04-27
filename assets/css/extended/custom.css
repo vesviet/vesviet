@@ -1,0 +1,71 @@
+/* 
+  Master UI/UX Adjustments for tanhdev.com 
+*/
+
+/* 1. Button Hierarchy (Phân cấp nút bấm) */
+.profile .buttons .button {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Primary Buttons: Contact Me & My Resume */
+.profile .buttons .button:nth-child(1),
+.profile .buttons .button:nth-child(2) {
+    background-color: var(--primary);
+    color: var(--theme);
+    font-weight: 600;
+    border: 1px solid var(--primary);
+}
+.profile .buttons .button:nth-child(1):hover,
+.profile .buttons .button:nth-child(2):hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+/* Secondary Buttons: LinkedIn & GitHub */
+.profile .buttons .button:nth-child(3),
+.profile .buttons .button:nth-child(4) {
+    background: transparent;
+    border: 1px solid var(--tertiary);
+}
+.profile .buttons .button:nth-child(3):hover,
+.profile .buttons .button:nth-child(4):hover {
+    border-color: var(--primary);
+    background-color: var(--tertiary);
+    transform: translateY(-2px);
+}
+
+/* 2. Whitespace for Experience List */
+.exp-list {
+    margin-top: 15px;
+}
+.exp-item {
+    margin-bottom: 12px;
+    line-height: 1.6;
+}
+.exp-item:last-child {
+    margin-bottom: 0;
+}
+
+/* 3. Micro-interactions (Hiệu ứng hover) */
+
+/* Post cards float on hover */
+.post-entry {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid transparent; /* Keep layout stable */
+}
+.post-entry:hover {
+    transform: translateY(-4px);
+    border-color: var(--tertiary);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Smooth link underline in content */
+.post-content a {
+    text-decoration: none;
+    box-shadow: inset 0 -2px 0 var(--primary);
+    transition: box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+.post-content a:hover {
+    box-shadow: inset 0 -1.5em 0 var(--primary);
+    color: var(--theme);
+}
