@@ -6,6 +6,8 @@ mermaid: true
 tags: ["GitOps", "Kubernetes", "ArgoCD", "DevOps", "Microservices"]
 description: "Why running kubectl apply is a dangerous anti-pattern. How we automated the deployment lifecycle of a 21-service Go platform using strict GitOps principles and ArgoCD."
 categories: ["DevOps", "Engineering"]
+ShowToc: true
+TocOpen: true
 ---
 
 Building 21 incredibly optimized Go microservices is only 50% of the battle. If your deployment process relies on an engineer typing `kubectl apply` from their local laptop on a Friday afternoon, you haven't built an Enterprise platform—you've built a ticking time bomb.
@@ -55,3 +57,5 @@ If the `Checkout` service crashes production, an engineer simply reverts the com
 
 ### Conclusion
 By treating our Kubernetes configuration as code and letting ArgoCD act as the uncompromising bouncer to our cluster, we ripped out human error completely. Developers focus entirely on writing Go Business Logic, knowing that if the code makes it into the Git Main branch, ArgoCD will elegantly hand-deliver it to the servers without dropping a single packet.
+
+{{< author-cta >}}

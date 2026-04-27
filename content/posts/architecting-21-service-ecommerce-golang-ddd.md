@@ -5,6 +5,8 @@ draft: false
 tags: ["Golang", "Microservices", "System Design", "Domain-Driven Design", "Kratos", "Dapr", "Saga Pattern"]
 description: "A deep dive into migrating a monolithic e-commerce stack to 21+ distributed microservices. Exploring real-world Kratos codebase structure, Saga patterns for distributed transactions, and handling inventory race conditions at scale."
 categories: ["Architecture", "Engineering"]
+ShowToc: true
+TocOpen: true
 ---
 
 Scaling an e-commerce platform past 10,000+ orders per day containing multiple SKUs across dynamic warehouses is where naive architecture breaks down. Hardware scaling ceases to be a magic bullet when distributed transactions, race conditions, and eventual consistency are involved.
@@ -134,3 +136,5 @@ Before processing an incoming Dapr message, the service opens a database transac
 Migrating an e-commerce Monolith to a 21-service ecosystem is not about setting up an API Gateway and calling it a day. The real engineering begins when you hit the edges: gracefully rolling back partial checkouts, preventing database locks under high concurrent loads, and forcing strict domain boundaries so codebases remain readable.
 
 By mapping contexts meticulously, enforcing strict separation via Kratos, and utilizing Idempotent Saga patterns over Dapr, we engineered a system that can absorb massive Black Friday traffic spikes without dropping a single order. The initial complexities of distributed state are painful, but the resulting scalability and developer isolation are profoundly worth the investment.
+
+{{< author-cta >}}

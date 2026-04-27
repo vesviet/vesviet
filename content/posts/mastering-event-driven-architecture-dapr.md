@@ -5,6 +5,8 @@ draft: false
 tags: ["Event-Driven", "Dapr", "Message Queue", "Architecture", "Microservices"]
 description: "How to decouple a 21+ microservice ecosystem using Event-Driven Architecture, ensuring absolute data consistency through Sagas, Dead Letter Queues, and Idempotent handlers."
 categories: ["Architecture", "Engineering"]
+ShowToc: true
+TocOpen: true
 ---
 
 In my previous post, we explored how abandoning monolithic architecture in favor of strict **Domain-Driven Design (DDD)** bounded contexts allowed an e-commerce platform to scale beyond 10,000+ orders per day. However, splitting one big database into 20+ isolated Postgres databases introduces a terrifying new problem: **How do we maintain data consistency across disconnected services?**
@@ -66,3 +68,5 @@ What if a message consistently crashes the processor because of a logical defect
 ### Conclusion
 
 Event-Driven Architecture is not just about writing async code; it is a defensive engineering mindset. By enforcing iron-clad naming conventions, embracing the Saga pattern for cross-boundary consistency, and heavily leveraging Idempotency and DLQs, we transformed a fragile distributed system into a practically bulletproof e-commerce nervous system.
+
+{{< author-cta >}}

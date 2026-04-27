@@ -5,6 +5,8 @@ draft: false
 tags: ["Magento", "Microservices", "Migration", "System Design", "Debezium", "Dapr"]
 description: "A complete, battlefield-tested guide on dismantling a monolithic Magento e-commerce platform and migrating to 10+ distributed microservices without losing a single order or second of downtime."
 categories: ["Architecture", "Engineering"]
+ShowToc: true
+TocOpen: true
 ---
 
 "Let's rewrite everything to Microservices." 
@@ -64,3 +66,5 @@ Once the 30-day quarantine period cleanly expired, we finally terminated Magento
 Rewrite projects don't fail because Microservices are inherently bad; they fail because developers neglect data-consistency during the transition. 
 
 By utilizing CDC/Debezium for Phase 1, bidirectional Event-Driven outboxes over Dapr for Phase 2, and maintaining a prolonged Hot Standby in Phase 3, we secured the absolute safety of our data. Legacy migrations can represent terrifying risk, but with the right architectural constraints, they become boring, predictable, and 100% safe.
+
+{{< author-cta >}}

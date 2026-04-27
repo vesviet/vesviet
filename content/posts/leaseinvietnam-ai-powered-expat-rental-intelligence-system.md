@@ -4,8 +4,13 @@ date: "2026-04-24T10:00:00+07:00"
 draft: false
 mermaid: true
 categories:
+  - "AI/ML"
+  - "Product Development"
   - Engineering
 tags:
+  - "Automation"
+  - "LLM"
+  - "System Design"
   - AI
   - System Design
   - Local LLMs
@@ -15,6 +20,8 @@ tags:
   - PostgreSQL
   - Anti-Hallucination
 description: "How I built a fully autonomous AI pipeline that scrapes, verifies, and publishes expat rental intelligence for Southern Vietnam — and turns every article into a B2B lead funnel for moving, cleaning, furniture, and legal services."
+ShowToc: true
+TocOpen: true
 ---
 
 Most AI content projects are built around one question: how do I publish more? LeaseInVietnam is built around a different question: how do I make every published piece convert?
@@ -276,3 +283,5 @@ The geo-fence is enforced at both the system prompt level and the verifier level
 ---
 
 *The full architecture documentation, agent identities, pipeline scripts, selector profile bundle, and Go implementation are available in the [leaseinvietnam-model](https://gitlab.com/data-agent/leaseinvietnam) repository.*
+
+{{< author-cta >}}

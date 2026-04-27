@@ -6,6 +6,8 @@ mermaid: true
 tags: ["System Architecture", "Microservices", "Mermaid", "Golang", "API Gateway"]
 description: "A deep dive into the high-level system architecture and traffic flow of a Go-based 21+ service e-commerce platform using API Gateways and Event-Driven PubSub."
 categories: ["Architecture", "System Design"]
+ShowToc: true
+TocOpen: true
 ---
 
 When transitioning off a monolithic platform (like Magento) to a distributed microservice setup, the hardest question isn't "How do we write the code?", but rather "How do these moving parts talk to each other safely?"
@@ -97,3 +99,5 @@ Parallel consumer workers in `Warehouse`, `Fulfillment`, and `Analytics` ingest 
 By isolating traffic into distinct synchronous reads and asynchronous distributed writes, we've achieved a platform that theoretically cannot suffer from a single-point-of-failure domino effect.
 
 *In my next post, I'll break down exactly what each of these Bounded Contexts does, and why we segregated the databases.*
+
+{{< author-cta >}}

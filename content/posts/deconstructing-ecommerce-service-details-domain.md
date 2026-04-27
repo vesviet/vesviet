@@ -5,6 +5,8 @@ draft: false
 tags: ["Domain-Driven Design", "Microservices", "System Design", "Architecture"]
 description: "A detailed technical breakdown of how a monolithic e-commerce application is segregated into 6 logical Business Domains with 21 isolated microservices."
 categories: ["Architecture", "Engineering"]
+ShowToc: true
+TocOpen: true
 ---
 
 "Why 21 services? Isn't that overkill?" 
@@ -52,3 +54,5 @@ Shared infrastructure utilities that the other domains lean heavily on.
 ### The Value of Separation
 
 By looking at the ecosystem through the lens of these 6 domains, 21 services don't seem like chaos—they look like an organized factory line. A bug in the **Review** system can't bring down the **Payment** system. A localized spike during a Flash Sale means we can simply spin up 10 extra pods for the **Order** and **Checkout** services without wasting money scaling the stationary **Catalog** or **Platform** services. This is the true enterprise value of Domain-Driven Design!
+
+{{< author-cta >}}

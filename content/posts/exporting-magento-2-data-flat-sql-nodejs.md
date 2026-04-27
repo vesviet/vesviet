@@ -5,6 +5,8 @@ draft: false
 tags: ["Magento", "SQL", "Node.js", "Data Migration"]
 description: "A quick technical snippet for flattening Magento 2's complex EAV order database into a clean CSV utilizing robust SQL joins and Node.js parsing."
 categories: ["Engineering"]
+ShowToc: true
+TocOpen: true
 ---
 
 When migrating away from Magento 2 to a microservices architecture, one of the biggest hurdles is extracting data from its heavily fragmented Entity-Attribute-Value (EAV) database model. 
@@ -77,3 +79,5 @@ fs.createReadStream(__dirname + '/orders.csv').pipe(parser);
 ```
 
 By maintaining total control over the SQL queries and managing the ingestion stream programmatically, you can confidently scrub, normalize, and shape legacy Magento data exactly to your new Domain Driven boundaries.
+
+{{< author-cta >}}

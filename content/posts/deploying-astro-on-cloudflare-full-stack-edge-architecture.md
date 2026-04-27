@@ -4,8 +4,15 @@ date: "2026-04-24T14:00:00+07:00"
 draft: false
 mermaid: true
 categories:
+  - "Architecture"
+  - "Engineering"
+  - "Cloudflare"
   - Engineering
 tags:
+  - "Astro"
+  - "Cloudflare"
+  - "Edge Computing"
+  - "WordPress"
   - Cloudflare
   - Astro
   - WordPress
@@ -14,6 +21,8 @@ tags:
   - DevOps
   - Performance
 description: "Two paths to Cloudflare: building a full-stack edge site with Astro, Workers, R2, D1, and Pagefind — and putting an existing WordPress site behind Cloudflare's CDN for near-zero TTFB on cached pages. Real config, cost breakdown, and the gotchas that matter."
+ShowToc: true
+TocOpen: true
 ---
 
 Running a content site on a traditional VPS or a managed Node.js host is fine until it isn't. You pay for compute that sits idle 95% of the time, you manage SSL renewals, you worry about cold starts, and you watch your Lighthouse score suffer because your origin is in Singapore while your readers are in Frankfurt.
@@ -549,3 +558,5 @@ For a content site where performance, cost, and operational simplicity matter mo
 ---
 
 *The full configuration for LeaseInVietnam's Cloudflare deployment — including the wrangler config, GitHub Actions workflow, and D1 schema migrations — is available in the [leaseinvietnam](https://github.com/vesviet/leaseinvietnam) repository.*
+
+{{< author-cta >}}

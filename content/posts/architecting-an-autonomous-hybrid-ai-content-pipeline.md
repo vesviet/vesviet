@@ -3,14 +3,21 @@ title: "Architecting an Autonomous Hybrid-AI Pipeline: From Hobby Cron to Produc
 date: "2026-03-14T21:10:00+07:00"
 draft: false
 categories:
+  - "AI/ML"
+  - "Engineering"
   - Engineering
 tags:
+  - "LLM"
+  - "Automation"
+  - "Architecture"
   - AI
   - System Design
   - Local LLMs
   - Automation
   - Architecture
 description: "How I built a completely autonomous, energy-optimized OpenClaw pipeline using a multi-agent Hybrid AI architecture, blending Local Edge LLMs for massive ingestion with Cloud LLMs for intelligent synthesis, dropping daily costs from $3.50 to $0.05."
+ShowToc: true
+TocOpen: true
 ---
 
 It’s easy to write a cron job that pings an API, hands a URL to OpenAI, and publishes a markdown file. It’s significantly harder to orchestrate a distributed swarm of AI agents that can read deeply from diverse sources, deduplicate state, evaluate article quality, safely publish via GitOps, and optimize its own power footprint along the way.
@@ -167,3 +174,5 @@ Building V3 proved that chaining AI agents natively in Bash is not only viable, 
 
 ### What's next in V4?
 The immediate next step (V4) is embedding a localized **Vector Database RAG** layer. Currently, the Cloud LLM writes blindly about the new data. By integrating RAG, the Worker Node will query historical pipeline data, allowing the Writer to synthesize how a new architectural trend correlates with signals fetched 6 months ago. Let's make the pipeline not just independent, but historically intelligent.
+
+{{< author-cta >}}
