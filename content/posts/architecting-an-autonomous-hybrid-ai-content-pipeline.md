@@ -5,7 +5,6 @@ draft: false
 categories:
   - "AI/ML"
   - "Engineering"
-  - Engineering
 tags:
   - "LLM"
   - "Automation"
@@ -13,8 +12,6 @@ tags:
   - AI
   - System Design
   - Local LLMs
-  - Automation
-  - Architecture
 description: "How I built a completely autonomous, energy-optimized OpenClaw pipeline using a multi-agent Hybrid AI architecture, blending Local Edge LLMs for massive ingestion with Cloud LLMs for intelligent synthesis, dropping daily costs from $3.50 to $0.05."
 ShowToc: true
 TocOpen: true

@@ -7,16 +7,11 @@ categories:
   - "Architecture"
   - "Engineering"
   - "Cloudflare"
-  - Engineering
 tags:
   - "Astro"
   - "Cloudflare"
   - "Edge Computing"
   - "WordPress"
-  - Cloudflare
-  - Astro
-  - WordPress
-  - Edge Computing
   - Architecture
   - DevOps
   - Performance

@@ -6,15 +6,13 @@ mermaid: true
 categories:
   - "AI/ML"
   - "Product Development"
-  - Engineering
+  - "Engineering"
 tags:
   - "Automation"
   - "LLM"
   - "System Design"
   - AI
-  - System Design
   - Local LLMs
-  - Automation
   - Architecture
   - Go
   - PostgreSQL
