@@ -67,4 +67,6 @@ Rewrite projects don't fail because Microservices are inherently bad; they fail 
 
 By utilizing CDC/Debezium for Phase 1, bidirectional Event-Driven outboxes over Dapr for Phase 2, and maintaining a prolonged Hot Standby in Phase 3, we secured the absolute safety of our data. Legacy migrations can represent terrifying risk, but with the right architectural constraints, they become boring, predictable, and 100% safe.
 
+If you are assessing vendor capability before a migration, [Magento Developers in Vietnam: What to Look For Beyond Theme Work](/posts/magento-developers-in-vietnam/) breaks down the difference between extension shops and teams that can actually own architecture, integrations, and production reliability.
+
 {{< author-cta >}}

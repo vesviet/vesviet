@@ -235,4 +235,6 @@ That crossover point is real, and when you hit it, the architectural investment 
 
 For the exact playbook on how to execute this migration safely — including the 3-phase Strangler Fig pattern, Debezium CDC pipelines, and bidirectional sync — read [The Zero-Downtime Blueprint: Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/).
 
+If you are still evaluating team capability before a migration, read [Magento Developers in Vietnam: What to Look For Beyond Theme Work](/posts/magento-developers-in-vietnam/) and [Magento Development in Vietnam: Cost, Capability, and When It Actually Fits](/posts/magento-development-in-vietnam/).
+
 {{< author-cta >}}
