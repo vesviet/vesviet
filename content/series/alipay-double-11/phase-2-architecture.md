@@ -1,365 +1,102 @@
-﻿---
+---
 title: "Phase 2: Core Architecture (LDC, Unitization, Multi-Active)"
 date: 2026-05-02T18:10:00+07:00
 draft: false
-description: "Deep architecture study: LDC/unitization, OceanBase, messaging, and distributed systems patterns."
+description: "Core architecture concepts behind Alipay Double 11 scalability: LDC/unitization, multi-active design, the database layer (OceanBase), messaging, and reliability patterns."
 ShowToc: true
 TocOpen: true
 ---
 [← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/phase-1-timeline/) • [Next →](/series/alipay-double-11/phase-3-operations/)
-## 2.1 Logical Data Center (LDC) & Unitization Architecture
 
-### Core Concept: "Unit"
+This phase focuses on the *architecture* that enables peak scale while preserving correctness and operational control.
 
-**Định nghĩa**: Unit là một tập hợp **self-contained** có thể hoàn thành toàn bộ business operations. Đây là phiên bản thu nhỏ của toàn bộ hệ thống:
-- **Có đầy đủ**: Tất cả services và applications
-- **Không đầy đủ**: Chỉ chứa một phần dữ liệu (data sharding)
+## 2.1 LDC and Unitization (Cell Architecture)
 
-### Ba Loại Zone trong LDC
+### The core idea: a “unit”
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    LDC Architecture                          │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│   ┌─────────────┐   ┌─────────────┐   ┌─────────────┐       │
-│   │   RZone 1   │   │   RZone 2   │   │   RZone N   │       │
-│   │  (Region)   │   │  (Region)   │   │  (Region)   │       │
-│   ├─────────────┤   ├─────────────┤   ├─────────────┤       │
-│   │ • App Layer │   │ • App Layer │   │ • App Layer │       │
-│   │ • Data Shard│   │ • Data Shard│   │ • Data Shard│       │
-│   │ • Full Svcs │   │ • Full Svcs │   │ • Full Svcs │       │
-│   └──────┬──────┘   └──────┬──────┘   └──────┬──────┘       │
-│          │                 │                 │              │
-│          └─────────────────┼─────────────────┘              │
-│                            │                                │
-│                   ┌──────────┴──────────┐                     │
-│                   │                     │                     │
-│            ┌──────┴──────┐      ┌──────┴──────┐              │
-│            │   GZone     │      │   CZone     │              │
-│            │  (Global)   │      │  (City)     │              │
-│            ├─────────────┤      ├─────────────┤              │
-│            │ • Config    │      │ • User Info │              │
-│            │ • CIF       │      │ • Login     │              │
-│            │ • Shared    │      │ • Frequent  │              │
-│            └─────────────┘      └─────────────┘              │
-└─────────────────────────────────────────────────────────────┘
-```
+A **unit** is a self-contained slice of the system that can handle end-to-end business flows for a subset of users/traffic.
 
-#### RZone (Region Zone)
-- **Tự chủ hoàn toàn**: Có đủ data và services để xử lý business
-- **Data sharding**: Mỗi RZone chỉ chứa một phần dữ liệu (ví dụ: user ID 1-1M ở RZone 1, 1M-2M ở RZone 2)
-- **Horizontal scaling**: Thêm RZone = thêm capacity
-- **Multi-active**: Nhiều RZone active đồng thời ở các region khác nhau
+- **Complete in services**: the unit has the full set of required services.
+- **Partial in data**: data is sharded so each unit owns a subset (e.g., by user-id range).
 
-#### GZone (Global Zone)
-- **Chỉ 1 instance toàn cục**
-- Chứa dữ liệu **không thể chia nhỏ** (inseparable):
-  - Config center
-  - CIF (Customer Information File)
-  - Shared global data
-- **Read/Write**: Được tất cả RZones truy cập (tần suất thấp)
+The key goal is **horizontal scaling with isolation**: add units to add capacity, and contain failures within a unit when possible.
 
-#### CZone (City Zone)
-- **Giải quyết latency giữa các cities**
-- Chứa dữ liệu/services được **RZone truy cập thường xuyên**
-- Mỗi business access ít nhất một lần
-- Khác GZone: CZone được truy cập **liên tục** bởi RZone
+### LDC zones (conceptual model)
 
-### Lợi Ích LDC Architecture
+Many descriptions of LDC are easiest to understand as three “zones”:
 
-| Vấn đề | Giải pháp LDC |
-|--------|---------------|
-| Single point bottleneck | Chia thành nhiều units |
-| Traffic allocation | Request routing đến đúng RZone |
-| Data splitting | Sharding theo unit |
-| Latency xuyên city | CZone cache frequent data |
-| Remote disaster recovery | Multi-active RZones |
+- **RZone (Regional / Unit Zone)**: the main workhorse units (multiple active).
+- **GZone (Global)**: truly global, low-frequency shared data/control (minimize scope).
+- **CZone (City / Common hot data)**: shared hot data needed frequently across units (optimize latency).
 
-**Kết quả**:
-- **99.99% availability** (financial-grade)
-- **Theoretical unlimited capacity** (thêm RZone = scale out)
-- **Hundreds of thousands TPS** trong promotion
-
----
-
-## 2.2 Database Layer - OceanBase
-
-### Lịch Sử Evolution
+Conceptual sketch:
 
 ```
-Oracle (commercial) → MySQL (open source) → OceanBase (distributed)
-        ↓                     ↓                      ↓
-    2010-2012             2012-2014               2014+
-   Limits hit        Still bottlenecks       Auto-scaling
+RZone 1 (Unit)     RZone 2 (Unit)     ...     RZone N (Unit)
+ - services         - services                 - services
+ - data shard       - data shard               - data shard
+ - cache            - cache                    - cache
+
+GZone: global coordination / config / truly shared data
+CZone: shared hot data used frequently across units
 ```
 
-### Kiến Trúc OceanBase
+### Why this matters
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│                    OceanBase Cluster                          │
-├──────────────────────────────────────────────────────────────┤
-│                                                               │
-│   Zone 1          Zone 2          Zone 3         (Regions)   │
-│   ┌────────┐     ┌────────┐     ┌────────┐                  │
-│   │ OBS 1  │     │ OBS 2  │     │ OBS 3  │                  │
-│   │ (Leader)│◄──►│(Follower)│◄──►│(Follower)│   Paxos Sync  │
-│   └────────┘     └────────┘     └────────┘                  │
-│      │               │               │                       │
-│      └───────────────┼───────────────┘                       │
-│                      │                                        │
-│   ┌──────────────────┴──────────────────┐                    │
-│   │         Table Partitions              │                    │
-│   │  ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐    │                    │
-│   │  │ P1  │ │ P2  │ │ P3  │ │ P4  │    │  Paxos per partition│
-│   │  └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘    │                    │
-│   │     └───────┴───────┴───────┘       │                    │
-│   └─────────────────────────────────────┘                    │
-└──────────────────────────────────────────────────────────────┘
-```
+| Problem | Unitization/LDC response |
+|--------|---------------------------|
+| One shared core becomes a bottleneck | Split state and traffic into multiple units |
+| One failure can cascade globally | Localize blast radius to a unit when possible |
+| Scaling requires risky “bigger DB” moves | Scale by adding units + partitions |
+| Cross-region latency and DR are hard | Multi-active by design, not an afterthought |
 
-### Key Components
+## 2.2 Database Layer: OceanBase (Why the DB became a pillar)
 
-#### 1. Paxos Protocol cho Consistency
-- **RPO = 0** (Recovery Point Objective): Zero data loss
-- **RTO < 8 seconds** (Recovery Time Objective)
-- **Multi-replica strong synchronization**: Majority consensus
-- **Automatic failover**: Server, rack, AZ, hoặc entire region failure
+At peak scale, the database is not a component; it is a **platform**. The architectural thesis is:
 
-#### 2. Partitioning Strategy
-- Tables được **partitioned explicitly** bởi user
-- Partition = đơn vị cơ bản cho:
-  - Data distribution
-  - Load balancing
-  - Paxos synchronization
-- Thường **1 Paxos group per partition**
+- If the database cannot scale horizontally with strong correctness, the rest of the architecture becomes fragile.
+- Financial systems require durable correctness under concurrency, not just throughput benchmarks.
 
-#### 3. Transaction Processing
+OceanBase is often described as a distributed SQL system that:
+- Partitions data into **table partitions / shards**.
+- Replicates partitions across zones for high availability.
+- Uses consensus to maintain correctness under failures.
 
-**Local Transaction**:
-```
-SQL → Compile → Execution Plan → Local Execution
-```
+The architectural implication: “scale out” becomes normal for the database, not a once-a-year emergency.
 
-**Distributed Transaction (2PC + Paxos)**:
-```
-SQL → Compile → Distributed Plan → 2PC Coordinator
-                                  ↓
-                    ┌─────────────┼─────────────┐
-                    ↓             ↓             ↓
-                  Paxos 1       Paxos 2       Paxos N
-                    │             │             │
-                    └─────────────┴─────────────┘
-                           Commit OK
-```
+## 2.3 Messaging and Asynchronous Boundaries
 
-**OceanBase 2PC vs Traditional 2PC**:
-- Traditional: Coordinator single point of failure
-- OceanBase: Paxos-based 2PC - coordinator replicated
+Large peak systems rely on message-driven decoupling:
+- **Soften coupling** between services during spikes.
+- **Buffer** bursty workloads.
+- Enable **degrade** strategies: keep the core payment path clean while deferring non-critical work.
 
-#### 4. Storage Engine
-- **LSM-tree** (Log-Structured Merge Tree) architecture
-- **Compaction**: Offload đến FPGA (custom hardware) để xử lý nhanh hơn
-- **Row caches + Block caches**: Multi-level caching
-- **Replica types**:
-  - Full replica (data + log)
-  - Data replica (data only)
-  - Log replica (log only)
+At this scale, messaging is typically treated as a reliability layer:
+- Clear topic/event naming and contracts.
+- Back-pressure and throttling strategies.
+- Retries, DLQs, and idempotency by design.
 
-### OceanBase Scale Numbers
+## 2.4 Reliability Patterns (What keeps peaks boring)
 
-| Metric | Value |
-|--------|-------|
-| tpmC (TPC-C benchmark) | **707 million** |
-| Servers trong benchmark | 2,360 ECS servers |
-| Users emulated | 559,440,000 |
-| Warehouses | 55,944,000 |
-| Deployment tại Alipay | **Tens of thousands servers** |
-| Double 11 2019 TPS | **544,000 TPS** |
-| Double 11 2019 QPS | **61 million QPS** |
+Regardless of the exact implementation, the patterns are recognizable in most peak systems:
 
-### Lessons Learned từ OceanBase Paper
+- **Multi-active**: multiple active regions/cells; avoid single-region dependency.
+- **Traffic routing**: route requests to the correct unit; enforce locality.
+- **Circuit breakers / throttling / degradation**: preserve the payment core by shedding optional load.
+- **Isolation by design**: separate critical paths from non-critical paths.
+- **Operational determinism**: everything above is validated via full-link testing (Phase 3).
 
-1. **Application layer**: Không dùng database như key-value store → dùng advanced features
-2. **Stored procedures**: Vẫn có giá trị lớn cho OLTP
-3. **Timeouts**: Mọi transaction và SQL phải có timeout (distributed systems có failure rate cao hơn)
+## 2.5 Cloud-native evolution (architecture → efficiency)
 
----
+Once the architecture supports horizontal scaling and isolation, cloud-native adoption can improve:
+- Elastic capacity (shorter provisioning windows).
+- Operational automation (repeatable environments and deploys).
+- Cost per transaction (efficiency becomes measurable and improvable).
 
-## 2.3 Distributed Systems Patterns
+## Key Takeaways
 
-### Remote Multi-Active Architecture (2013+)
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│              Multi-Active Deployment                         │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│   Hangzhou          Shanghai         Beijing               │
-│   ┌────────┐        ┌────────┐       ┌────────┐            │
-│   │Unit A  │◄──────►│Unit B  │◄─────►│Unit C  │            │
-│   │(Active)│        │(Active)│       │(Active)│            │
-│   └────────┘        └────────┘       └────────┘            │
-│      │                  │                │                   │
-│      └──────────────────┼────────────────┘                   │
-│                         │                                   │
-│                    ┌────┴────┐                              │
-│                    │  GZone  │                              │
-│                    │ (Shared)│                              │
-│                    └─────────┘                              │
-└─────────────────────────────────────────────────────────────┘
-```
-
-**Đặc điểm**:
-- Mỗi city có **complete transaction unit**
-- Regional scaling: Thêm city = thêm capacity
-- Disaster recovery: Một city down → traffic chuyển sang city khác
-
-### Service Mesh & Inter-Service Communication
-
-### Message Queue (RocketMQ)
-- **Async processing** cho non-critical path
-- **Peak shaving**: Buffer traffic bursts
-- **Decoupling** giữa các services
-
-### Circuit Breaker, Throttling, Degrade
-
-#### Throttling (Rate Limiting)
-- **AHAS** (Application High Availability Service)
-- Giới hạn request rate để bảo vệ downstream services
-
-#### Degrade
-- **Graceful degradation**: Tắt non-essential features khi quá tải
-- **Prioritization**: Quan trọng nhất được bảo vệ đầu tiên
-
-#### Circuit Breaker
-- **Fail fast**: Không đợi timeout
-- **Auto-recovery**: Tự động thử lại sau cooldown
-
----
-
-## 2.4 Cloud-Native Evolution (2020+)
-
-### Containerization với PouchContainer
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Cloud-Native Stack                        │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│   Application Layer                                          │
-│   ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐         │
-│   │  App 1  │ │  App 2  │ │  App 3  │ │ App N   │         │
-│   └────┬────┘ └────┬────┘ └────┬────┘ └────┬────┘         │
-│        │           │           │           │              │
-│   ┌────┴───────────┴───────────┴───────────┴────┐         │
-│   │           Kubernetes (ACK)                   │         │
-│   │    Scheduling, Auto-scaling, Recovery      │         │
-│   └────────────────┬──────────────────────────────┘         │
-│                    │                                        │
-│   ┌────────────────┴──────────────────────┐                │
-│   │      PouchContainer Runtime            │                │
-│   │  • OCI compatible                      │                │
-│   │  • Kubernetes CRI                      │                │
-│   │  • Enterprise features                 │                │
-│   └────────────────────────────────────────┘                │
-│                                                              │
-│   ┌──────────────────────────────────────────┐               │
-│   │        Alibaba Cloud Infrastructure      │               │
-│   │  • ECS, Bare Metal, GPU, FPGA           │               │
-│   └──────────────────────────────────────────┘               │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### PouchContainer
-- **OCI compatible**: Tuân thủ Open Container Initiative
-- **Kubernetes CRI**: Native Kubernetes integration
-- **Enterprise features**: Bảo mật, isolation cao
-
-### Elastic Architecture
-
-```
-Normal State                     Peak State (Double 11)
-┌──────────────┐                ┌──────────────┬──────────────┐
-│  RZone 1     │                │  RZone 1     │ Elastic Unit │
-│  (Daily)     │                │  (Daily)     │  (Cloud)     │
-├──────────────┤      ─────►    ├──────────────┼──────────────┤
-│  RZone 2     │                │  RZone 2     │ Elastic Unit │
-│  (Daily)     │                │  (Daily)     │  (Cloud)     │
-└──────────────┘                └──────────────┴──────────────┘
-```
-
-**Elastic Units**:
-- Một số RZones biến thành **elastic units**
-- Peak period: **Pop up lên cloud** để scale nhanh
-- Post-peak: **Bounce back** về daily data center
-- **Insensible elasticity**: Business layer không biết đang chạy ở đâu
-
-### Co-location: Online + Big Data
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Co-location Cluster                       │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│   ┌──────────────────────────────────────────────────────┐  │
-│   │                 Shared Resources                    │  │
-│   │  ┌─────────────┐              ┌─────────────────┐   │  │
-│   │  │ Online Svc  │   Idle time  │  Big Data Task  │   │  │
-│   │  │ (Real-time) │◄────────────►│  (Batch)        │   │  │
-│   │  └─────────────┘              └─────────────────┘   │  │
-│   └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│   Resource Pool: Online peak sử dụng, idle dùng cho Big Data │
-│   Cost saving: ~50% giảm chi phí                             │
-└─────────────────────────────────────────────────────────────┘
-```
-
-**Sigma + Fuxi Scheduling**:
-- **Sigma**: Online service scheduling
-- **Fuxi**: Big data task scheduling
-- **Unified**: Một cluster cho cả hai loại workload
-
-### Cost Efficiency 2020
-
-| Metric | Improvement |
-|--------|-------------|
-| Cost per transaction | Giảm **>50%** |
-| IT costs (STO Express) | Giảm **30%** |
-| Elastic resource cost | Giảm **>40%** |
-| R&D efficiency | Tăng **>30%** |
-
----
-
-## Key Architectural Insights
-
-### 1. Evolution Path
-```
-2008: Distributed architecture (break monolithic)
-  ↓
-2013: LDC + Multi-active (horizontal scale)
-  ↓
-2014: Automated testing (predictable reliability)
-  ↓
-2016: Elastic architecture (cloud integration)
-  ↓
-2020: Cloud-native (efficiency & cost)
-```
-
-### 2. Design Principles
-- **Unitization**: Chia nhỏ để scale
-- **Self-containment**: Mỗi unit độc lập
-- **Automation**: Không manual intervention
-- **Testing**: Verify trước production
-
-### 3. Trade-offs
-- **Consistency**: Paxos = strong consistency nhưng latency
-- **Sharding**: Scale tốt nhưng cross-shard query phức tạp
-- **Elasticity**: Cost tốt nhưng architecture phức tạp
-
----
-
-*Next: Phase 3 - Quy Trình Vận Hành & Stress Testing*
-
+1. **Unitization is the scaling unlock**: it turns vertical ceilings into horizontal growth.
+2. **The database must be designed for peak correctness**: correctness and durability are part of the product.
+3. **Messaging is a reliability primitive**: it’s not only “async,” it’s peak control.
+4. **Architecture only works when operations are deterministic**: that’s Phase 3.
