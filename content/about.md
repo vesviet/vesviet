@@ -7,6 +7,9 @@ date: "2021-10-14 18:48:02"
 
 I am a Senior Software Engineer with over **17 years of hands-on experience** engineering scalable web platforms and distributed systems. My deepest expertise lies in backend architecture, handling high-traffic e-commerce ecosystems, and safely migrating legacy data into modernized **Golang microservices**. 
 
+### Start Here
+- [Reading Map](/reading-map/) — curated clusters of my long-form guides (Tech Radar stays at [/radar/](/radar/)).
+
 ### ⚡ What I'm Known For
 - **Strangler Fig Migrations:** Safely carving up massive 10-year-old monolithic applications (Magento/PHP) and routing them to Golang Microservices with zero-downtime data sync strategies.
 - **Platform Reliability Engineering:** Designing resilient event-driven systems using Dapr PubSub, Saga patterns, and Transactional Outboxes that do not drop records under heavy loads.
