@@ -1,0 +1,885 @@
+﻿---
+title: "Phase 4: Deep Dive (Technology Internals)"
+date: 2026-05-02T18:10:00+07:00
+draft: false
+description: "Deep technical dives: SOFAStack/RPC, RocketMQ, OceanBase internals, transactions, and risk control."
+ShowToc: true
+TocOpen: true
+---
+[← Series hub](/series/alipay-double-11/)
+[← Prev](/series/alipay-double-11/phase-4-technology/) • [Next →](/series/alipay-double-11/modern-tech-comparison/)
+## 4.1 Middle Platform Architecture (中台架构) - Chi Tiết Kỹ Thuật
+
+### Data Middle Platform - Technical Implementation
+
+#### MaxCompute Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    MaxCompute Distributed System                  │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   Control Layer                                                 │
+│   ┌─────────────────────────────────────────────────────────┐  │
+│   │  • Job Scheduler       • Resource Manager             │  │
+│   │  • Metadata Service    • Security Manager             │  │
+│   │  • Query Optimizer     • Data Catalog                 │  │
+│   └──────────────────────┬──────────────────────────────────┘  │
+│                          │                                       │
+│   Compute Layer          │                                       │
+│   ┌──────────────────────▼──────────────────────────────────┐  │
+│   │                                                         │  │
+│   │   ┌──────────┐  ┌──────────┐  ┌──────────┐            │  │
+│   │   │ Worker 1 │  │ Worker 2 │  │ Worker N │            │  │
+│   │   │(10K svrs)│  │(10K svrs)│  │(100K svr)│            │  │
+│   │   ├──────────┤  ├──────────┤  ├──────────┤            │  │
+│   │   │ SQL Eng  │  │ SQL Eng  │  │ SQL Eng  │            │  │
+│   │   │ MR Eng   │  │ MR Eng   │  │ MR Eng   │            │  │
+│   │   │ Graph Eng│  │ Graph Eng│  │ Graph Eng│            │  │
+│   │   └──────────┘  └──────────┘  └──────────┘            │  │
+│   │                                                         │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│   Storage Layer                                                 │
+│   ┌─────────────────────────────────────────────────────────┐  │
+│   │  Columnar Storage + Compression + Tiered Storage      │  │
+│   │  Hot (SSD) ──► Warm (SATA) ──► Cold (OSS)               │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+Scale: 100,000+ servers | 200,000+ daily users | 12 PB+ tables
+```
+
+**Key Technical Features**:
+- **Shared-nothing architecture**: Massive parallelism
+- **Columnar storage**: Optimized for analytical queries
+- **Tiered storage**: Automatic hot/warm/cold data migration
+- **SQL compatibility**: Standard SQL with extensions
+- **Multi-tenancy**: Resource isolation giữa departments
+
+#### DataWorks - DataOps Platform
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    DataWorks Capabilities                       │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   Data Integration              Data Development               │
+│   ┌──────────────────┐         ┌──────────────────┐              │
+│   │ • Batch Sync     │         │ • Visual ETL     │              │
+│   │ • Real-time Sync │         │ • Code Editor    │              │
+│   │ • Data Migration │         │ • Version Control│              │
+│   │ • CDC Capture    │         │ • Scheduling     │              │
+│   └──────────────────┘         └──────────────────┘              │
+│                                                                 │
+│   Data Governance               Data Service                   │
+│   ┌──────────────────┐         ┌──────────────────┐              │
+│   │ • Metadata Mgmt  │         │ • API Gateway  │              │
+│   │ • Data Quality   │         │ • Data Sharing │              │
+│   │ • Lineage Track  │         │ • Security     │              │
+│   │ • Lifecycle Mgmt │         │ • Catalog      │              │
+│   └──────────────────┘         └──────────────────┘              │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Data Governance Solutions**:
+
+| Challenge | Technical Solution | Implementation |
+|-----------|-------------------|----------------|
+| Core table 12 PB | Partition pruning + Compression | 95% storage savings |
+| 100+ departments | Namespace isolation + RBAC | Multi-tenant security |
+| Which data to delete | Automated lifecycle policies | Time-based + access-based |
+| Data ownership | Metadata tagging + Lineage | Auto-discover dependencies |
+
+---
+
+## 4.2 SOFAStack - Deep Technical Architecture
+
+### SOFARPC - 5 Generations of Evolution
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│              SOFARPC 5-Generation Evolution                     │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  Gen 1 (2010)    Gen 2 (2012)    Gen 3 (2014)                  │
+│  ┌─────────┐    ┌─────────┐    ┌─────────┐                   │
+│  │ Simple  │───►│ Protocol│───►│ Service │                    │
+│  │ RPC     │    │ Support │    │ Registry│                    │
+│  └─────────┘    └─────────┘    └─────────┘                   │
+│                                        │                        │
+│  Gen 4 (2016)    Gen 5 (2018+)        │                        │
+│  ┌─────────┐    ┌─────────┐◄─────────┘                        │
+│  │   Mesh  │───►│Cloud-Nat│                                   │
+│  │ Support │    │ ive     │                                   │
+│  └─────────┘    └─────────┘                                   │
+│                                                                 │
+│  Current: Production-level, 10+ years at Ant Financial           │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### SOFARPC Technical Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    SOFARPC Internal Architecture                │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   ┌─────────────────────────────────────────────────────────┐  │
+│   │                    API Layer                              │  │
+│   │  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐   │  │
+│   │  │  sync   │  │ oneway  │  │ callback│  │generalized│  │  │
+│   │  └─────────┘  └─────────┘  └─────────┘  └─────────┘   │  │
+│   └────────────────────────┬────────────────────────────────┘  │
+│                            │                                    │
+│   ┌────────────────────────▼────────────────────────────────┐  │
+│   │                  Core Engine                              │  │
+│   │  ┌─────────────────────────────────────────────────────┐ │  │
+│   │  │ • Codec (Serialization)                           │ │  │
+│   │  │ • Filter Chain (Tracing, Metrics, Auth)           │ │  │
+│   │  │ • Router (Load Balancing, Fault Tolerance)        │ │  │
+│   │  │ • Cluster (Failover, Forking, Broadcast)          │ │  │
+│   │  └─────────────────────────────────────────────────────┘ │  │
+│   └────────────────────────┬────────────────────────────────┘  │
+│                            │                                    │
+│   ┌────────────────────────▼────────────────────────────────┐  │
+│   │                 Protocol Layer                            │  │
+│   │  ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ │  │
+│   │  │ Bolt   │ │  H2    │ │ REST   │ │  gRPC  │ │Dubbo   │ │  │
+│   │  │(default│ │(http/2)│ │(http)  │ │(proto) │ │(compat)│ │  │
+│   │  └────────┘ └────────┘ └────────┘ └────────┘ └────────┘ │  │
+│   └────────────────────────┬────────────────────────────────┘  │
+│                            │                                    │
+│   ┌────────────────────────▼────────────────────────────────┐  │
+│   │              Transport Layer                              │  │
+│   │  ┌─────────┐  ┌─────────┐  ┌─────────┐                 │  │
+│   │  │ Netty   │  │ HTTP    │  │ H2      │                 │  │
+│   │  │(NIO)    │  │ Client  │  │ Stream  │                 │  │
+│   │  └─────────┘  └─────────┘  └─────────┘                 │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+Performance: 200K+ TPS per node | Latency: < 1ms P99
+```
+
+### SOFARPC Features Deep Dive
+
+#### 1. Protocol Support
+
+| Protocol | Use Case | Performance |
+|----------|----------|-------------|
+| **Bolt** (default) | Internal microservices | 200K+ TPS, <1ms |
+| **HTTP/2** | Web facing, streaming | Standard HTTP/2 |
+| **REST** | External APIs | RESTful compatibility |
+| **gRPC** | Cross-platform | ProtoBuf efficiency |
+| **Dubbo** | Legacy compatibility | Migration support |
+
+#### 2. Load Balancing Strategies
+
+```java
+// Available load balancing strategies
+- Random          // Random selection
+- RoundRobin      // Sequential
+- ConsistentHash  // Same params → same provider
+- LocalPref       // Prioritize local JVM calls
+- WeightedRR      // Based on configured weights
+```
+
+#### 3. Fault Tolerance Mechanisms
+
+```
+Failover Mode:
+┌─────────┐     ┌─────────┐     ┌─────────┐
+│ Provider│     │ Provider│     │ Provider│
+│  1 (fail)│ ──► │  2      │ ──► │  3      │
+│         │     │ (retry) │     │ (final) │
+└─────────┘     └─────────┘     └─────────┘
+
+Broadcast Mode:
+     ┌────────► Provider 1
+     │
+Caller ───────► Provider 2 (all receive)
+     │
+     └────────► Provider 3
+
+Forking Mode: (parallel calls, first wins)
+Caller ──┬──► Provider 1 ──┐
+         ├──► Provider 2 ──┼──► Return fastest
+         └──► Provider 3 ──┘
+```
+
+### SOFAMesh - Service Mesh Implementation
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    SOFAMesh Architecture                        │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   Control Plane                    Data Plane                   │
+│   ┌──────────────────┐             ┌──────────────────┐        │
+│   │ • MOSN (Go)      │◄───────────►│ • MOSN Sidecar   │        │
+│   │ • Pilot          │   xDS API   │ • Envoy (opt)    │        │
+│   │ • Mixer          │             │ • mTLS enabled   │        │
+│   │ • Citadel        │             │ • Traffic mgmt    │        │
+│   └──────────────────┘             └──────────────────┘        │
+│                                                                 │
+│   Sidecar Injection:                                            │
+│   ┌──────────────────────┐      ┌──────────────────────┐        │
+│   │   App Container      │      │   App Container      │        │
+│   │   ┌──────────┐       │      │   ┌──────────┐       │        │
+│   │   │ Business │       │      │   │ Business │       │        │
+│   │   │   Logic   │       │      │   │   Logic   │       │        │
+│   │   └──────────┘       │      │   └──────────┘       │        │
+│   │        │            │      │        │            │        │
+│   │   ┌────▼────┐       │      │   ┌────▼────┐       │        │
+│   │   │  MOSN   │       │      │   │  MOSN   │       │        │
+│   │   │ Sidecar │◄──────┼──────┼──►│ Sidecar │       │        │
+│   │   └────┬────┘       │      │   └────┬────┘       │        │
+│   │        │            │      │        │            │        │
+│   └────────┼────────────┘      └────────┼────────────┘        │
+│            │                            │                     │
+│            └────────────┬───────────────┘                     │
+│                         │                                     │
+│                    Network (mTLS)                               │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**MOSN (Modular Observable Smart Network)**:
+- Written in **Go** (thay vì C++ Envoy)
+- Designed for **financial-grade** requirements
+- Support **X-protocol** (multi-protocol in single port)
+- **Hot upgrade** without dropping connections
+
+---
+
+## 4.3 RocketMQ - Message Queue at Scale
+
+### Double 11 Message Volume
+
+```
+2016 Double 11 Message Statistics:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Total Messages:   ████████████████████████████████████  Trillion level
+Daily Messages:   ████████████████████████████████████  Billions
+Peak TPS:         ████████████████████  10,000,000+ messages/sec
+Accumulation:     ████████████████████████████████████  Hundreds of millions
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+### RocketMQ Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    RocketMQ Cluster Architecture                  │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   Producer Group                    Consumer Group               │
+│   ┌─────────────┐                  ┌─────────────┐             │
+│   │  Producer 1 │                  │ Consumer 1  │             │
+│   │  Producer 2 │                  │ Consumer 2  │             │
+│   │  Producer N │                  │ Consumer N  │             │
+│   └──────┬──────┘                  └──────┬──────┘             │
+│          │                               │                     │
+│          │         ┌──────────┐         │                     │
+│          └────────►│ NameServer │◄────────┘                     │
+│                    │ (Cluster)  │                                 │
+│                    └─────┬──────┘                                 │
+│                          │                                       │
+│          ┌───────────────┼───────────────┐                     │
+│          │               │               │                     │
+│   ┌──────▼──────┐ ┌──────▼──────┐ ┌──────▼──────┐             │
+│   │  Broker 1   │ │  Broker 2   │ │  Broker N   │             │
+│   │ ┌─────────┐ │ │ ┌─────────┐ │ │ ┌─────────┐ │             │
+│   │ │Master   │ │ │ │Master   │ │ │ │Master   │ │             │
+│   │ │(Write)  │ │ │ │(Write)  │ │ │ │(Write)  │ │             │
+│   │ ├─────────┤ │ │ ├─────────┤ │ │ ├─────────┤ │             │
+│   │ │Slave    │ │ │ │Slave    │ │ │ │Slave    │ │             │
+│   │ │(Read)   │ │ │ │(Read)   │ │ │ │(Read)   │ │             │
+│   │ └─────────┘ │ │ └─────────┘ │ │ └─────────┘ │             │
+│   └─────────────┘ └─────────────┘ └─────────────┘             │
+│                                                                 │
+│   Topic Partitioning:                                           │
+│   Topic A: Queue 0 ──► Broker 1                                 │
+│           Queue 1 ──► Broker 2                                 │
+│           Queue 2 ──► Broker 3                                 │
+│           Queue N ──► Broker N (round-robin)                   │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Key Technical Features
+
+#### 1. Storage Mechanism
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│              RocketMQ Storage Architecture                        │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   Commit Log (Sequential Write)                                │
+│   ┌─────────────────────────────────────────────────────────┐  │
+│   │  Message 1 │ Message 2 │ Message 3 │ ... │ Message N     │  │
+│   │ [Header]   │ [Header]   │ [Header]   │     │ [Header]   │  │
+│   │ [Body]     │ [Body]     │ [Body]     │     │ [Body]     │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                           │                                     │
+│                           ▼                                     │
+│   Consume Queue (Index)      │  Index File (Time/Key)          │
+│   ┌────────────────────┐   │  ┌────────────────────┐          │
+│   │ Offset 0: Pos 0    │   │  │ Key → Offset       │          │
+│   │ Offset 1: Pos 512  │◄──┘  │ Time → Offset      │          │
+│   │ Offset 2: Pos 1024 │      └────────────────────┘          │
+│   │ ...                │                                        │
+│   └────────────────────┘                                        │
+│                                                                 │
+│   Benefits:                                                     │
+│   • Sequential write = High throughput (10M+ TPS)            │
+│   • Separate read/write paths                                   │
+│   • Multiple consume queues per topic                           │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+#### 2. Message Types
+
+| Type | Use Case | Guarantees |
+|------|----------|------------|
+| **Normal** | Fire-and-forget | At-least-once |
+| **Ordered** | Sequential processing | Ordered per queue |
+| **Scheduled** | Delayed execution | Precise timing |
+| **Transactional** | Distributed transactions | Exactly-once |
+
+#### 3. High Availability
+
+```
+Sync Replication (Financial Grade):
+┌─────────┐         ┌─────────┐         ┌─────────┐
+│  Master │◄───────►│  Slave  │◄───────►│  Slave  │
+│ (Write) │  Sync   │ (Read)  │  Sync   │ (Read)  │
+└────┬────┘         └─────────┘         └─────────┘
+     │
+     │ Wait for ACK from majority before success
+     ▼
+   Client
+
+Async Replication (Higher Throughput):
+┌─────────┐         ┌─────────┐
+│  Master │ ───────►│  Slave  │
+│ (Write) │  Async  │ (Read)  │
+└────┬────┘         └─────────┘
+     │
+     │ Immediate ACK
+     ▼
+   Client
+```
+
+#### 4. Double 11 Optimizations
+
+**Resource Isolation** (Lesson from 2016 incident):
+```
+Before 2016:
+┌────────────────────────────────────┐
+│  Thread Pool (Shared)              │
+│  ┌─────────┬─────────┐             │
+│  │ Critical│ Non-Crit│             │
+│  │ Module  │ Module  │             │
+│  │ (starved)│ (hogged)│             │
+│  └─────────┴─────────┘             │
+└────────────────────────────────────┘
+
+After 2016:
+┌────────────────────────────────────┐
+│  Critical Thread Pool              │
+│  ┌─────────────────┐               │
+│  │ Critical Module │ (Protected)  │
+│  └─────────────────┘               │
+├────────────────────────────────────┤
+│  Non-Critical Thread Pool          │
+│  ┌─────────────────┐               │
+│  │ Non-Crit Module │ (Isolated)   │
+│  └─────────────────┘               │
+└────────────────────────────────────┘
+```
+
+---
+
+## 4.4 OceanBase Storage Engine - Deep Dive
+
+### LSM-Tree Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│              OceanBase LSM-Tree Storage Engine                    │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   Write Path                                                    │
+│   ┌─────────┐     ┌─────────┐     ┌─────────┐                  │
+│   │  Write  │────►│ MemTable│────►│  Redo   │                  │
+│   │ Request │     │(In-Mem) │     │  Log    │                  │
+│   └─────────┘     └────┬────┘     └─────────┘                  │
+│                        │                                        │
+│                        ▼ (Frozen MemTable)                      │
+│                   ┌─────────┐                                   │
+│                   │  Minor  │                                   │
+│                   │Freeze   │                                   │
+│                   └────┬────┘                                   │
+│                        │                                        │
+│                        ▼ (Compaction)                         │
+│   Storage Layers  ┌─────────────────────────┐                  │
+│                   │   L0: Mini SSTables     │  (Recent data)    │
+│                   ├─────────────────────────┤                  │
+│                   │   L1: Minor SSTables    │  (Hourly merge)   │
+│                   ├─────────────────────────┤                  │
+│                   │   L2: Major SSTable     │  (Daily merge)    │
+│                   │      (Baseline)         │                  │
+│                   └─────────────────────────┘                  │
+│                                                                 │
+│   Read Path                                                     │
+│   ┌─────────┐     ┌─────────┐     ┌─────────┐               │
+│   │  Read   │────►│MemTable │────►│  L0-L2  │               │
+│   │ Request │     │(Latest) │     │(History)│               │
+│   └─────────┘     └─────────┘     └─────────┘               │
+│        │                                              │
+│        └──────────────────┬─────────────────────────────┘
+│                           ▼
+│                    Merge Results (MVCC)
+│                           │
+│                           ▼
+│                      Return Data
+│
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Compaction Strategy
+
+**Three Types of Compaction**:
+
+| Type | Trigger | Scope | Resource |
+|------|---------|-------|----------|
+| **Mini** | MemTable full | Single partition | Low |
+| **Minor** | L0 threshold | Multiple L0 files | Medium |
+| **Major** | Scheduled (off-peak) | Full baseline | High (FPGA accelerated) |
+
+**FPGA Acceleration for Major Compaction**:
+```
+Before FPGA:
+┌────────────────────────────────────────┐
+│ CPU Compaction (RocksDB-style)           │
+│ • High CPU usage (30-40%)               │
+│ • Slow merge process                     │
+│ • Impact online traffic                  │
+└────────────────────────────────────────┘
+
+With FPGA:
+┌────────────────────────────────────────┐
+│ FPGA Offload                             │
+│ • CPU usage: 30% → 5%                   │
+│ • 5-10x faster compaction               │
+│ • Zero impact on OLTP                   │
+│ • Custom hardware at Alipay             │
+└────────────────────────────────────────┘
+```
+
+### MVCC Implementation
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│              OceanBase MVCC (Multi-Version CC)                    │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   Transaction Timeline                                          │
+│   Txn 100:  BEGIN ──► UPDATE row A ──► COMMIT (TS=100)         │
+│   Txn 200:  BEGIN ──► UPDATE row A ──► COMMIT (TS=200)         │
+│   Txn 150:  BEGIN ─────────────────────► READ row A?            │
+│                                          (Sees TS=100 version) │
+│                                                                 │
+│   Storage with Versions:                                        │
+│   ┌─────────────────────────────────────────────────────────┐  │
+│   │ Row A:                                                  │  │
+│   │ [TS=200, data="new_value", next=TS=100]                │  │
+│   │ [TS=100, data="old_value", next=null]                  │  │
+│   │                                                         │  │
+│   │ Row B:                                                  │  │
+│   │ [TS=150, data="value", next=null]                      │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│   Read Algorithm:                                               │
+│   1. Get current timestamp (TS=150 for Txn 150)                 │
+│   2. Find version with largest TS ≤ read TS                    │
+│   3. Return that version                                        │
+│                                                                 │
+│   Garbage Collection:                                           │
+│   • Clean up versions older than min_active_txn               │
+│   • Safe to remove: TS < (min_active_txn - 1)                 │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 4.5 CTU Risk Control - AI/ML Architecture
+
+### Real-time Feature Computation
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│              CTU Real-time Risk Scoring Pipeline                  │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   Event Stream (Kafka)                                          │
+│   ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐              │
+│   │Payment 1│ │Payment 2│ │Payment 3│ │Payment N│              │
+│   └────┬────┘ └────┬────┘ └────┬────┘ └────┬────┘              │
+│        │           │           │           │                   │
+│        └───────────┴─────┬─────┴───────────┘                   │
+│                          │                                      │
+│   ┌──────────────────────▼──────────────────────────────────┐  │
+│   │              Flink Stream Processing                      │  │
+│   │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐    │  │
+│   │  │ Feature 1   │  │ Feature 2   │  │ Feature N   │    │  │
+│   │  │ (Window agg)│  │ (Graph)     │  │ (Sequence)  │    │  │
+│   │  └─────────────┘  └─────────────┘  └─────────────┘    │  │
+│   └────────────────────────┬────────────────────────────────┘  │
+│                            │                                    │
+│   ┌────────────────────────▼────────────────────────────────┐  │
+│   │              Feature Store (Tair)                         │  │
+│   │  • User historical behavior                              │  │
+│   │  • Device fingerprints                                   │  │
+│   │  • Relationship graph                                    │  │
+│   │  • Real-time counters                                    │  │
+│   └────────────────────────┬────────────────────────────────┘  │
+│                            │                                    │
+│   ┌────────────────────────▼────────────────────────────────┐  │
+│   │              Model Inference                                │  │
+│   │  ┌─────────────────────────────────────────────────────┐ │  │
+│   │  │  Ensemble Models:                                     │ │  │
+│   │  │  • XGBoost (gradient boosting)                      │ │  │
+│   │  │  • Deep Learning (neural networks)                  │ │  │
+│   │  │  • Graph Neural Networks (relationships)            │ │  │
+│   │  │  • Rules Engine (expert systems)                    │ │  │
+│   │  └─────────────────────────────────────────────────────┘ │  │
+│   └────────────────────────┬────────────────────────────────┘  │
+│                            │                                    │
+│                            ▼                                    │
+│                      Risk Score (0-100)                         │
+│                            │                                    │
+│              ┌─────────────┼─────────────┐                     │
+│              │             │             │                       │
+│              ▼             ▼             ▼                       │
+│          [0-30]       [30-70]       [70-100]                   │
+│         Low Risk    Medium Risk    High Risk                   │
+│         Approve     Challenge      Block                       │
+│                                                                 │
+│   Latency: < 100ms (P99) | Throughput: 500K+ TPS              │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Graph Neural Network for Relationship Analysis
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│              GNN for Fraud Detection                              │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   User Relationship Graph                                       │
+│                                                                 │
+│        ┌─────────┐                                              │
+│        │ Scammer │◄──► Blacklisted                              │
+│        │  Node   │                                              │
+│        └────┬────┘                                              │
+│             │ transfers                                         │
+│             ▼                                                   │
+│   ┌─────────┐     ┌─────────┐     ┌─────────┐                  │
+│   │  Mule   │◄───►│  Mule   │◄───►│  Mule   │                  │
+│   │ Account │     │ Account │     │ Account │                  │
+│   └────┬────┘     └────┬────┘     └────┬────┘                  │
+│        │                 │                 │                    │
+│        └─────────────────┼─────────────────┘                    │
+│                          │                                      │
+│                          ▼                                      │
+│                   ┌─────────┐                                   │
+│                   │ Victim  │  (Ms. Li case)                    │
+│                   │ Account │                                   │
+│                   └─────────┘                                   │
+│                                                                 │
+│   GNN Embeddings:                                               │
+│   • Node embeddings: User risk profile                          │
+│   • Edge embeddings: Transaction patterns                       │
+│   • Graph structure: Fraud ring detection                     │
+│                                                                 │
+│   Algorithm: GraphSAGE / GAT (Graph Attention)                  │
+│   • Aggregates neighbor information                             │
+│   • Learns representation from local graph structure              │
+│   • Identifies anomalous subgraph patterns                      │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Model Training Pipeline
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│              CTU Model Training & Deployment                      │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   Data Preparation                                              │
+│   ┌─────────────────────────────────────────────────────────┐  │
+│   │  Historical Transactions (Billions)                      │  │
+│   │  ├── Labeled fraud cases (confirmed)                     │  │
+│   │  ├── Normal transactions (sampled)                     │  │
+│   │  └── Synthetic data (augmentation)                     │  │
+│   └────────────────────────┬────────────────────────────────┘  │
+│                            │                                    │
+│   Feature Engineering         │                                    │
+│   ┌────────────────────────▼────────────────────────────────┐  │
+│   │  • Raw features (1000+)                                  │  │
+│   │  • Domain-specific aggregations                          │  │
+│   │  • Cross features (combinations)                         │  │
+│   │  • Graph features (centrality, clustering)               │  │
+│   └────────────────────────┬────────────────────────────────┘  │
+│                            │                                    │
+│   Training                  │                                    │
+│   ┌────────────────────────▼────────────────────────────────┐  │
+│   │  Platform: PAI (Alibaba AI Platform)                     │  │
+│   │  • Distributed training (100s of GPUs)                   │  │
+│   │  • AutoML for hyperparameter tuning                      │  │
+│   │  • Ensemble methods (XGBoost + DL)                       │  │
+│   │  • A/B testing framework                                 │  │
+│   └────────────────────────┬────────────────────────────────┘  │
+│                            │                                    │
+│   Evaluation                │                                    │
+│   ┌────────────────────────▼────────────────────────────────┐  │
+│   │  Metrics:                                                │  │
+│   │  • Precision/Recall @ different thresholds               │  │
+│   │  • ROC-AUC                                               │  │
+│   │  • False positive rate (< 0.1%)                          │  │
+│   │  • Catch rate (> 99% of known fraud patterns)             │  │
+│   └────────────────────────┬────────────────────────────────┘  │
+│                            │                                    │
+│   Deployment                │                                    │
+│   ┌────────────────────────▼────────────────────────────────┐  │
+│   │  • Model versioning (rollback capability)                │  │
+│   │  • Canary deployment (gradual rollout)                   │  │
+│   │  • Shadow mode (validate before production)              │  │
+│   │  • Real-time monitoring (drift detection)                │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│   Update Cycle: Daily (for some models), Weekly (for others)   │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 4.6 Distributed Transaction Deep Dive
+
+### Seata - Distributed Transaction Framework
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│              Seata AT Mode (Auto-transaction)                   │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   Transaction Coordinator (TC)                                   │
+│   ┌─────────────────────────────────────────────────────────┐  │
+│   │  • Maintain global transaction state                       │  │
+│   │  • Drive global commit/rollback                          │  │
+│   │  • Coordinate RM decisions                               │  │
+│   └────────────────────────┬────────────────────────────────┘  │
+│                            │                                    │
+│           ┌────────────────┼────────────────┐                 │
+│           │                │                │                   │
+│           ▼                ▼                ▼                   │
+│   ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
+│   │   Service A  │  │   Service B  │  │   Service C  │       │
+│   │    (RM)      │  │    (RM)      │  │    (RM)      │       │
+│   │              │  │              │  │              │       │
+│   │ ┌──────────┐ │  │ ┌──────────┐ │  │ ┌──────────┐ │       │
+│   │ │Business │ │  │ │Business │ │  │ │Business │ │       │
+│   │ │  SQL     │ │  │ │  SQL     │ │  │ │  SQL     │ │       │
+│   │ └────┬─────┘ │  │ └────┬─────┘ │  │ └────┬─────┘ │       │
+│   │      │       │  │      │       │  │      │       │       │
+│   │ ┌────▼─────┐ │  │ ┌────▼─────┐ │  │ ┌────▼─────┐ │       │
+│   │ │ Undo Log │ │  │ │ Undo Log │ │  │ │ Undo Log │ │       │
+│   │ │ Generator│ │  │ │ Generator│ │  │ │ Generator│ │       │
+│   │ └────┬─────┘ │  │ └────┬─────┘ │  │ └────┬─────┘ │       │
+│   │      │       │  │      │       │  │      │       │       │
+│   │ ┌────▼─────┐ │  │ ┌────▼─────┐ │  │ ┌────▼─────┐ │       │
+│   │ │  DB 1    │ │  │ │  DB 2    │ │  │ │  DB 3    │ │       │
+│   │ │(OceanBas)│ │  │ │(OceanBas)│ │  │ │(OceanBas)│ │       │
+│   │ └──────────┘ │  │ └──────────┘ │  │ └──────────┘ │       │
+│   └──────────────┘  └──────────────┘  └──────────────┘       │
+│                                                                 │
+│   AT Mode Flow:                                                 │
+│   1. Parse SQL → Extract table/row info                          │
+│   2. Query before image → Keep for rollback                     │
+│   3. Execute business SQL                                       │
+│   4. Query after image → Verify changes                         │
+│   5. Register branch transaction with TC                        │
+│   6. Report local result to TC                                  │
+│   7. If global commit → Delete undo log                         │
+│   8. If global rollback → Execute undo log                      │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Saga Pattern for Long Transactions
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│              Saga State Machine                                  │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   Order Saga Example:                                            │
+│                                                                 │
+│   ┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐    │
+│   │ Create  │───►│ Reserve │───►│ Process │───►│ Confirm │    │
+│   │ Order   │    │ Payment │    │Inventory│    │ Shipment│    │
+│   │   T1    │    │   T2    │    │   T3    │    │   T4    │    │
+│   └─────────┘    └─────────┘    └─────────┘    └─────────┘    │
+│        │              │              │              │        │
+│        │              │              │              │        │
+│        ▼              ▼              ▼              ▼        │
+│   ┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐    │
+│   │Compensate│◄───│ Refund  │◄───│ Release │◄───│ Cancel  │    │
+│   │  Order  │    │ Payment │    │Inventory│    │Shipment │    │
+│   │   C1    │    │   C2    │    │   C3    │    │   C4    │    │
+│   └─────────┘    └─────────┘    └─────────┘    └─────────┘    │
+│                                                                 │
+│   Execution:                                                     │
+│   Success: T1 → T2 → T3 → T4 (all forward steps)                │
+│   Failure at T3: T1 → T2 → T3(fail) → C2 → C1 (compensate)      │
+│                                                                 │
+│   Guarantees:                                                   │
+│   • Eventually consistent                                       │
+│   • Compensating transactions must be idempotent                │
+│   • No global locks (better performance)                        │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 4.7 Performance Numbers Summary
+
+### Double 11 2020 Benchmarks
+
+| Component | Metric | Value |
+|-----------|--------|-------|
+| **Alipay TPS** | Peak | 583,000 |
+| **Alipay QPS** | Peak | 70,000,000 |
+| **POLARDB TPS** | Peak | 87,000,000 |
+| **RocketMQ** | Message TPS | 10,000,000+ |
+| **SOFARPC** | Per node | 200,000+ |
+| **OceanBase** | Distributed TPS | 544,000 |
+| **CTU** | Risk scoring | 500,000+ TPS |
+| **CTU Latency** | P99 | < 100ms |
+| **Payment Latency** | End-to-end | < 1 second |
+
+### Infrastructure Scale
+
+| Resource | Scale |
+|----------|-------|
+| Servers | 1,000,000+ (Alibaba Cloud) |
+| Containers | 1,000,000+ |
+| Kubernetes Clusters | 100+ |
+| Databases | 100,000+ instances |
+| Network Bandwidth | 100+ Tbps |
+| Storage | 100+ EB |
+
+---
+
+## 4.8 Code Examples
+
+### SOFARPC Service Definition
+
+```java
+// Service Interface
+public interface PaymentService {
+    @SofaReference(binding = @SofaBindingBindingType = "bolt"))
+    PaymentResult processPayment(PaymentRequest request);
+}
+
+// Service Implementation
+@SofaService(bindings = {@SofaBinding(bindingType = "bolt")})
+public class PaymentServiceImpl implements PaymentService {
+    
+    @Autowired
+    private PaymentDAO paymentDAO;
+    
+    @Override
+    public PaymentResult processPayment(PaymentRequest request) {
+        // 1. CTU Risk Check
+        RiskScore score = ctuService.evaluate(request);
+        if (score.getValue() > 70) {
+            throw new RiskException("High risk transaction");
+        }
+        
+        // 2. Process Payment
+        return paymentDAO.process(request);
+    }
+}
+```
+
+### RocketMQ Producer
+
+```java
+// Transactional Message
+TransactionMQProducer producer = new TransactionMQProducer("payment_group");
+producer.setNamesrvAddr("localhost:9876");
+producer.start();
+
+// Send transactional message
+Message msg = new Message("payment_topic", 
+    "order_create", 
+    orderId.getBytes());
+
+// Local transaction executor
+LocalTransactionExecutor executor = new LocalTransactionExecutor() {
+    @Override
+    public LocalTransactionState executeLocalTransactionBranch(Message msg, Object arg) {
+        try {
+            // Execute local DB transaction
+            boolean success = orderService.createOrder(order);
+            return success ? 
+                LocalTransactionState.COMMIT_MESSAGE : 
+                LocalTransactionState.ROLLBACK_MESSAGE;
+        } catch (Exception e) {
+            return LocalTransactionState.UNKNOW;
+        }
+    }
+};
+
+producer.sendMessageInTransaction(msg, executor, null);
+```
+
+### Seata Distributed Transaction
+
+```java
+@GlobalTransactional(name = "payment-tx", rollbackFor = Exception.class)
+public void processOrder(OrderRequest request) {
+    // 1. Deduct balance (Service A - Account Service)
+    accountService.debit(request.getUserId(), request.getAmount());
+    
+    // 2. Create order (Service B - Order Service)
+    orderService.createOrder(request);
+    
+    // 3. Reserve inventory (Service C - Inventory Service)
+    inventoryService.reserve(request.getProductId(), request.getQuantity());
+    
+    // If any step fails, all previous steps auto-rollback via undo_log
+}
+```
+
+---
+
+**End of Phase 4 Deep Dive**
+
+*Next: Phase 5 - Synthesis & Lessons Learned*
+
