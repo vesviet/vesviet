@@ -107,18 +107,20 @@
     box-sizing: border-box;
 }
 
-.dropdown-content li {
-    margin: 0;
-    padding: 0;
+/* Override PaperMod's #menu li margins that cause the 2nd item to shift right */
+#menu .dropdown-content li,
+#menu .dropdown-content li + li {
+    margin: 0 !important;
+    padding: 0 !important;
     display: block;
-    width: 100%; /* Force full width */
+    width: 100%;
 }
 
 /* Override PaperMod's #menu a margins/padding */
 #menu .dropdown-content li a {
     color: var(--primary);
     padding: 8px 12px;
-    margin: 0;
+    margin: 0 !important;
     text-decoration: none;
     display: flex;
     align-items: center;
