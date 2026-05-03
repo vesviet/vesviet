@@ -70,7 +70,7 @@
     color: var(--theme);
 }
 
-/* 4. Dropdown Menu */
+/* 4. Dropdown Menu (Modern UI) */
 #menu {
     overflow: visible !important;
 }
@@ -94,37 +94,37 @@
     display: none;
     position: absolute;
     background-color: var(--theme);
-    min-width: 180px;
-    box-shadow: 0px 10px 30px rgba(0,0,0,0.1);
+    min-width: 160px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     z-index: 100;
     list-style: none;
-    padding: 8px 0;
+    padding: 6px; /* Inner padding to contain hover states */
     margin: 0;
-    border-radius: 12px;
+    border-radius: 10px;
     top: calc(100% + 5px);
-    right: 0; /* Align right to prevent overflow off-screen */
-    left: auto;
+    right: 0; 
     border: 1px solid var(--tertiary);
 }
 
 .dropdown-content li {
     margin: 0;
     padding: 0;
+    display: block;
 }
 
 /* Override PaperMod's #menu a margins/padding */
 #menu .dropdown-content li a {
     color: var(--primary);
-    padding: 10px 20px;
+    padding: 8px 12px;
     margin: 0;
     text-decoration: none;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 15px;
-    border-radius: 0;
+    font-size: 14px;
+    border-radius: 6px; /* Rounded hover highlight */
     font-weight: 500;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 #menu .dropdown-content li a:hover {
@@ -142,13 +142,13 @@
 
 .dropdown:hover .dropdown-content {
     display: block;
-    animation: fadeUp 0.2s ease forwards;
+    animation: fadeUp 0.15s ease-out forwards;
 }
 
 @keyframes fadeUp {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(6px);
     }
     to {
         opacity: 1;
@@ -161,14 +161,14 @@
         position: static;
         box-shadow: none;
         border: none;
-        padding: 5px 0 5px 20px;
+        padding: 4px 0 4px 16px;
         background-color: transparent;
         animation: none;
         min-width: auto;
     }
     #menu .dropdown-content li a {
-        padding: 8px 16px;
+        padding: 8px 12px;
         justify-content: flex-start;
-        gap: 10px;
+        gap: 8px;
     }
 }
