@@ -110,6 +110,7 @@
     margin: 0;
     padding: 0;
     display: block;
+    width: 100%; /* Force full width */
 }
 
 /* Override PaperMod's #menu a margins/padding */
@@ -125,11 +126,23 @@
     border-radius: 6px; /* Rounded hover highlight */
     font-weight: 500;
     transition: background-color 0.15s ease, color 0.15s ease;
+    width: 100%; /* Force full width to prevent shrink-wrapping */
+    box-sizing: border-box;
 }
 
 #menu .dropdown-content li a:hover {
     background-color: var(--tertiary);
     color: var(--primary);
+}
+
+/* Polish the external link SVG */
+#menu .dropdown-content li a svg {
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+}
+
+#menu .dropdown-content li a:hover svg {
+    opacity: 1;
 }
 
 .dropdown-icon {
