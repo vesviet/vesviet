@@ -104,6 +104,7 @@
     top: calc(100% + 5px);
     right: 0; 
     border: 1px solid var(--tertiary);
+    box-sizing: border-box;
 }
 
 .dropdown-content li {
@@ -123,6 +124,7 @@
     align-items: center;
     justify-content: space-between;
     font-size: 14px;
+    line-height: 20px; /* Force line-height as requested */
     border-radius: 6px; /* Rounded hover highlight */
     font-weight: 500;
     transition: background-color 0.15s ease, color 0.15s ease;
