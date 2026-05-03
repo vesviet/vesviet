@@ -81,6 +81,7 @@
             </div>
         </div>
         {{- $currentPage := . }}
+        {{- $page_url := $currentPage.Permalink | absLangURL }}
         <ul id="menu">
             {{- range site.Menus.main }}
             {{- if .HasChildren }}
@@ -119,7 +120,6 @@
             </li>
             {{- else }}
             {{- $menu_item_url := (cond (strings.HasSuffix .URL "/") .URL (printf "%s/" .URL) ) | absLangURL }}
-            {{- $page_url:= $currentPage.Permalink | absLangURL }}
             {{- $is_search := eq (site.GetPage .KeyName).Layout `search` }}
             <li>
                 <a href="{{ .URL | absLangURL }}" title="{{ .Title | default .Name }} {{- cond $is_search (" (Alt + /)" | safeHTMLAttr) ("" | safeHTMLAttr ) }}"
