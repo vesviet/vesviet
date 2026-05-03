@@ -71,6 +71,10 @@
 }
 
 /* 4. Dropdown Menu */
+#menu {
+    overflow: visible !important;
+}
+
 .dropdown {
     position: relative;
     display: inline-block;
