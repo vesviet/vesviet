@@ -32,14 +32,33 @@ Many descriptions of LDC are easiest to understand as three “zones”:
 
 Conceptual sketch:
 
-```
-RZone 1 (Unit)     RZone 2 (Unit)     ...     RZone N (Unit)
- - services         - services                 - services
- - data shard       - data shard               - data shard
- - cache            - cache                    - cache
-
-GZone: global coordination / config / truly shared data
-CZone: shared hot data used frequently across units
+```text
+┌─────────────────────────────────────────────────────────────┐
+│                    LDC Architecture                          │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│   ┌─────────────┐   ┌─────────────┐   ┌─────────────┐       │
+│   │   RZone 1   │   │   RZone 2   │   │   RZone N   │       │
+│   │  (Region)   │   │  (Region)   │   │  (Region)   │       │
+│   ├─────────────┤   ├─────────────┤   ├─────────────┤       │
+│   │ • App Layer │   │ • App Layer │   │ • App Layer │       │
+│   │ • Data Shard│   │ • Data Shard│   │ • Data Shard│       │
+│   │ • Full Svcs │   │ • Full Svcs │   │ • Full Svcs │       │
+│   └──────┬──────┘   └──────┬──────┘   └──────┬──────┘       │
+│          │                 │                 │              │
+│          └─────────────────┼─────────────────┘              │
+│                            │                                │
+│                   ┌──────────┴──────────┐                     │
+│                   │                     │                     │
+│            ┌──────┴──────┐      ┌──────┴──────┐              │
+│            │   GZone     │      │   CZone     │              │
+│            │  (Global)   │      │  (City)     │              │
+│            ├─────────────┤      ├─────────────┤              │
+│            │ • Config    │      │ • User Info │              │
+│            │ • CIF       │      │ • Login     │              │
+│            │ • Shared    │      │ • Frequent  │              │
+│            └─────────────┘      └─────────────┘              │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ### Why this matters
