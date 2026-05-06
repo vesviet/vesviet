@@ -104,6 +104,25 @@ Output:
     estimated_delivery: 15:30
 ```
 
+#### Pricing-Driven Allocation Architecture
+
+The decision of *when* to run the allocation algorithm depends entirely on the Board of Directors' (BOD) pricing strategy for **Multi-Depot** fulfillment. When an item has different costs or retail prices at different warehouses, the system architecture branches into 3 main models:
+
+1. **Pre-Checkout Allocation (Hyperlocal Model):**
+   - *Examples:* Instacart, GrabMart, local grocery delivery.
+   - *How it works:* The system forces the user to enter a delivery address immediately upon opening the app. Using geo-fencing, the system "locks" the user's session to the nearest specific warehouse. The prices and inventory shown belong exclusively to that warehouse.
+   - *Characteristics:* Warehouse allocation happens **before** checkout. The system cannot dynamically change the warehouse after the order is placed.
+
+2. **User-Driven Allocation (Buy Box Marketplace Model):**
+   - *Examples:* Amazon Buy Box, Shopee.
+   - *How it works:* The system acknowledges multiple warehouses/sellers. The algorithm calculates the real-time `(Item Price + Estimated Shipping)` for each warehouse. The warehouse offering the lowest total cost to the customer "wins" the default "Add to Cart" button. The customer ultimately decides who to buy from.
+   - *Characteristics:* Shifts the allocation decision power to the customer.
+
+3. **Post-Checkout Cost Absorption (Omnichannel Model):**
+   - *Examples:* Multi-channel retail chains.
+   - *How it works:* Customers see a single standard price on the website. After checkout, an Allocation Engine (like OR-Tools) runs in the background to calculate: *Is it more profitable to ship from a further warehouse (higher shipping cost) with very low item cost, or a closer warehouse (low shipping) with high item cost?*
+   - *Characteristics:* The platform automatically absorbs the shipping loss or pockets the cost difference to optimize the overall Profit Margin. The customer experience remains seamless and uniform.
+
 ### Stage 5: Pick & Pack
 
 At the warehouse, the **Warehouse Management System (WMS)** coordinates the physical labor:
