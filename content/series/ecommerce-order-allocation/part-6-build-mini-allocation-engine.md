@@ -283,6 +283,52 @@ WHERE o.priority = 'EXPRESS' AND a.id IS NULL;
 
 ---
 
+## Step 5: Cost-based Optimization (Multi-Store Price Variations)
+
+In a real-world **Multi-Depot** environment, the same SKU might have **different Cost of Goods Sold (COGS)** or retail prices across different stores/warehouses. 
+
+If the engine only minimizes Distance, it will always pick the nearest store. However, if Store A is closer (saving $2 in shipping) but the item cost at Store A is $5 higher than at Store B, dispatching from Store B is actually more profitable.
+
+To solve this, instead of solely minimizing **Distance_Cost**, we change the objective to minimize **Total_Cost = (Distance_Cost * Rate) + Item_Cost**.
+
+### Integrating into OR-Tools
+
+You first convert the problem to a Multi-Depot Vehicle Routing Problem (MDVRP). Each vehicle is bound to a specific starting store.
+
+```python
+    # Example for 2 Stores:
+    # Vehicle 0 starts at Store 0. Vehicle 1 starts at Store 1.
+    # data['starts'] = [Store_0_Index, Store_1_Index]
+    
+    # Cost matrix: data['item_costs'][store_index][order_node_index]
+    DISTANCE_TO_USD = 1.5  # E.g., 1 unit of distance = $1.50
+
+    def total_cost_callback(from_index, to_index, vehicle_id):
+        from_node = manager.IndexToNode(from_index)
+        to_node = manager.IndexToNode(to_index)
+        
+        # 1. Shipping Cost
+        distance = data['distance_matrix'][from_node][to_node]
+        shipping_cost = distance * DISTANCE_TO_USD
+        
+        # 2. Cost of Goods (Item Cost)
+        goods_cost = 0
+        if to_node not in data['starts'] and to_node not in data['ends']:
+            # to_node is an order. Get the item cost at the vehicle's base store.
+            store_idx = data['starts'][vehicle_id]
+            goods_cost = data['item_costs'][store_idx][to_node]
+            
+        return shipping_cost + goods_cost
+
+    # In practice with OR-Tools, you would register individual transit callbacks 
+    # for each vehicle and use routing.SetArcCostEvaluatorOfVehicle() 
+    # because the cost depends on the specific store the vehicle originates from.
+```
+
+**Result:** The engine now intelligently weighs the trade-offs: *Store B is further away, increasing shipping costs, but the item cost is significantly lower.* → The algorithm will automatically assign the order to a driver from Store B to maximize overall profit margins.
+
+---
+
 ## Conclusion: Why Use OR-Tools?
 
 Transitioning from a custom heuristic to Google OR-Tools provides immense value:
