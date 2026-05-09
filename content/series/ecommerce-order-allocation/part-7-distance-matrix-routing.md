@@ -216,3 +216,12 @@ Instead of waiting for a customer to order, the system can run a batch job at ni
 When the OR-Tools system runs the next day, it reads purely from Redis RAM at the speed of light without needing to traverse any graphs. Because road networks rarely change (only when there's long-term construction), the Cache Hit ratio can exceed **95%**, giving you the speed of Haversine but the accuracy of a Routing Engine!
 
 > *Summary of the Series: Order Fulfillment is not just a CRUD application tracking statuses. It is a symphony of event-driven microservices, real-time inventory algorithms, OR-Tools optimization, and ultra-fast Routing Engines processing spatial data.*
+
+---
+
+## References & Further Reading
+
+- [Uber Engineering: H3 Hexagonal Hierarchical Spatial Index](https://www.uber.com/en-VN/blog/h3/)
+- [Google Maps Platform Pricing: Distance Matrix API](https://mapsplatform.google.com/pricing/)
+- [Open Source Routing Machine (OSRM)](http://project-osrm.org/)
+- [GraphHopper Routing Engine](https://www.graphhopper.com/)

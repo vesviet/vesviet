@@ -245,4 +245,11 @@ Neighboring cells (a K-Ring) might reside on different nodes
 → A K-Ring query = a scatter-gather operation across multiple nodes
 ```
 
+---
+
+## References & Further Reading
+
+- [Uber Engineering: H3 Hexagonal Hierarchical Spatial Index](https://eng.uber.com/h3/)
+- [Google S2 Geometry Library](https://s2geometry.io/)
+
 > *Next, we will delve into the backbone of the entire system — Apache Kafka — where every GPS event, ride request, and acceptance flows. Continue reading [Part 3 — Event Streaming: The Apache Kafka & Flink Backbone](/series/ride-hailing-realtime-architecture/part-3-event-streaming-kafka/).*

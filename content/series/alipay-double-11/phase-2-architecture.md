@@ -119,3 +119,10 @@ Once the architecture supports horizontal scaling and isolation, cloud-native ad
 2. **The database must be designed for peak correctness**: correctness and durability are part of the product.
 3. **Messaging is a reliability primitive**: it’s not only “async,” it’s peak control.
 4. **Architecture only works when operations are deterministic**: that’s Phase 3.
+
+---
+
+## References & Further Reading
+
+- [Alipay Logical Data Center (LDC) Architecture](https://www.alibabacloud.com/blog/how-alipay-supports-double-11-with-logical-data-center-architecture_594892)
+- [OceanBase: Handling Double 11 Peak Traffic](https://en.oceanbase.com/)

@@ -71,3 +71,10 @@ At a high level, a Double 11-scale system tends to look like:
 1. **Platform layers are how organizations scale engineering**: not just how systems scale CPU.
 2. **Risk control is a first-class architecture pillar** in finance-grade peak events.
 3. **Payments require strict correctness** even when the rest of the system is degraded.
+
+---
+
+## References & Further Reading
+
+- [SOFAStack (Scalable Open Financial Architecture)](https://www.sofastack.tech/)
+- [Alibaba Cloud: The Technology behind Double 11](https://www.alibabacloud.com/campaign/singles-day-11-11)

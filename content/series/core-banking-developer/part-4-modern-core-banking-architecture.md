@@ -207,4 +207,13 @@ Never design a transfer API as a **synchronous block** because processing throug
 | **Service Mesh** | Istio, Dapr | mTLS, circuit breaking |
 | **Orchestration** | Kubernetes | Auto-scaling, self-healing |
 
+---
+
+## References & Further Reading
+
+- [Microservices Patterns: Saga and Transactional Outbox (Chris Richardson)](https://microservices.io/)
+- [Mambu: Composable Banking Architecture](https://mambu.com/composable-banking)
+- [Thought Machine: Vault Core Architecture](https://thoughtmachine.net/vault-core)
+- [Martin Fowler: Event Sourcing & CQRS](https://martinfowler.com/cqrs.html)
+
 > *Next, we will understand how Core Banking communicates with the outside world — the international standards that all financial systems must speak. Continue reading [Part 5 — International Integration Standards: ISO 8583 & ISO 20022](/series/core-banking-developer/part-5-iso-standards-integration/).*

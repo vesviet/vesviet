@@ -185,3 +185,11 @@ You don't need to build CONDOR to apply its principles:
 4. **Partitioning:** Break massive NP-hard routing problems into smaller regional chunks to make them solvable.
 
 > *Next, we explore split shipments, consolidation, and the last-mile delivery problem—which accounts for 53% of all logistics costs. Read [Part 5 — Split Shipment, Consolidation & Last-Mile Delivery](/series/ecommerce-order-allocation/part-5-split-consolidation-lastmile/).*
+
+---
+
+## References & Further Reading
+
+- [US Patent 8,615,473: Method and system for anticipatory package shipping](https://patents.google.com/patent/US8615473B1/en)
+- [Amazon CONDOR routing optimization](https://www.supplychaindive.com/news/amazon-delivery-speed-routing-condor-automation/648753/)
+- [Amazon CEO Andy Jassy's 2022 Letter to Shareholders: 8-region network](https://www.aboutamazon.com/news/company-news/amazon-ceo-andy-jassy-2022-letter-to-shareholders)

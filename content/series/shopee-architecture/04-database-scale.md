@@ -58,4 +58,11 @@ This allows Shopee's operation teams to run massive `SELECT ... GROUP BY` analyt
 
 **Developer Takeaway:** Do not try to "reinvent the wheel" by writing manual database sharding code at the application level unless you have an army of DBAs. NewSQL solutions like TiDB or CockroachDB are the future for transparently handling Big Data at an extreme scale.
 
+---
+
+## References & Further Reading
+
+- [PingCAP Case Study: How Shopee scales its Database with TiDB](https://www.pingcap.com/case-studies/shopee-scales-its-database-with-tidb/)
+- [TiDB HTAP Architecture and TiFlash](https://www.pingcap.com/blog/htap-database-what-is-it-and-why-you-need-it/)
+
 {{< author-cta >}}

@@ -65,4 +65,12 @@ sequenceDiagram
 
 **Developer Takeaway:** RAM and caching are your strongest weapons against heavy traffic. However, do not blindly rely on a Distributed Cache. Combine it with Local Caches on the App Server to save network bandwidth, and always use Lua Scripts to guarantee data consistency when handling sensitive numbers like inventory or wallet balances.
 
+---
+
+## References & Further Reading
+
+- [Handling Flash Sales with Redis and Lua (Medium)](https://medium.com/@kiki.syah/inventory-system-design-to-handle-flash-sales-37fc2e8dcffb)
+- [Solving the Hot Key Problem with Inventory Sharding](https://medium.com/@soesah/how-to-handle-flash-sales-using-redis-c02058e0a811)
+- [Shopee Engineering Blog](https://careers.shopee.sg/blog/)
+
 {{< author-cta >}}

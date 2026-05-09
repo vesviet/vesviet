@@ -96,4 +96,11 @@ When a customer deposits 10 million into a savings account, the system must reco
 2. **Every transaction is an atomic unit** — all entries must succeed or fail together (Database Transaction).
 3. **The Ledger is immutable** — never UPDATE or DELETE an entry once recorded. To fix a mistake, you must post a reversal entry.
 
+---
+
+## References & Further Reading
+
+- [Double-entry bookkeeping (Wikipedia)](https://en.wikipedia.org/wiki/Double-entry_bookkeeping)
+- [Martin Fowler: Accounting Patterns](https://martinfowler.com/eaaDev/AccountingPattern.html)
+
 > *Next, we will apply the double-entry bookkeeping mindset to the most specific banking operations. Continue reading [Part 2 — Core Banking Domain: CIF, CASA & Lending](/series/core-banking-developer/part-2-banking-domain-casa-lending/).*
