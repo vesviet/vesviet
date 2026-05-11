@@ -28,8 +28,8 @@ From these numbers, it's clear: The 10x productivity boost does not come from ty
 
 ```mermaid
 graph LR
-    A["✍️ Write Prompt"] -->|Faster +55%| B["🚀 Boilerplate Generated"]
-    B -->|Slower 15-20%| C["👁️ AI Review Fatigue"]
+    A["✍️ Write Prompt"] -->|Faster +55pct| B["🚀 Boilerplate Generated"]
+    B -->|Slower 15-20pct| C["👁️ AI Review Fatigue"]
     C -->|Skip review| D["⚠️ Technical Debt"]
     C -->|Review carefully| E["✅ PR Approved"]
     E --> F["📦 Deploy Successfully"]
