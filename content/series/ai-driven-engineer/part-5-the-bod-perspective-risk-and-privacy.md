@@ -42,6 +42,57 @@ To solve the dilemma: *Banning AI loses productivity, but using public AI carrie
 
 Instead of buying Cloud OPEX (monthly subscriptions), companies spend massive CAPEX to buy expensive GPU server clusters (NVIDIA H100). Then, they run **Local LLMs** (open-source coding models like DeepSeek Coder, Qwen-Coder, Llama 3) directly on the company's internal network (VPC).
 
+### Architecture Diagram: Private AI Infrastructure
+
+Here is how a business protects its source code using On-Premise AI architecture:
+
+```mermaid
+graph TD
+    Dev[Developer Laptop] -->|Code Completion & Chat| LocalAPI[Local AI Gateway]
+    LocalAPI -->|Route| VectorDB[(Internal Vector DB / RAG)]
+    LocalAPI -->|Route| GPU[On-Premise GPU Cluster]
+    
+    subgraph "Internal Network (VPC - No Internet)"
+        GPU --> Model[Llama 3 / DeepSeek-Coder]
+        VectorDB -.->|Context (Gitlab/Jira)| Model
+    end
+    
+    style Dev fill:#d5f5e3,stroke:#2ecc71
+    style GPU fill:#f9e79f,stroke:#f1c40f
+```
+
+### Technical Example: AI Operating Model Template
+
+To deploy this model, Dev/DevOps teams often use Docker and Ollama to run local language models without sending data externally:
+
+```yaml
+# docker-compose.yml for Private AI
+version: '3.8'
+services:
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./ollama_data:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+              
+  # Internal WebUI for employees
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+    ports:
+      - "3000:8080"
+```
+*Thanks to this configuration, hundreds of devs in the company can call the `localhost:11434` API to generate code while data absolutely never leaves the internal servers.*
+
 *   **100% Secure:** Devs use their IDE (VS Code) with plugins (like Continue.dev) pointing to the internal AI server. Not a single line of code leaves the LAN.
 *   **Internal RAG Superpower:** ChatGPT only knows code on public Github. But a Local LLM is connected to the company's Gitlab via RAG technology. This AI will "memorize" 10 years of the company's coding history. It generates code that perfectly matches internal Conventions, using internal libraries that no outsider knows about.
 
@@ -64,4 +115,20 @@ The BOD has bought servers, installed Local LLMs, and issued a directive: *"From
 The pressure shifts back to the Programmer's shoulders. You have no retreat. You cannot reject AI. You are forced to learn how to "Ride the Beast". But how do you transition from a pure Coder to a true AI Orchestrator, knowing how to "inject context" so the computer works for you? The secret will be revealed in **[Part 6: Role Shift: From Coder to AI Orchestrator](/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/)**.
 
 ---
+### 🛠 Practical Exercise: Audit an AI Prompt
+1. **Challenge:** You are a Security Auditor.
+2. **Action:** Take a piece of real code containing database connection logic from your current project. Paste it into ChatGPT.
+3. **Analysis:** Review that code. Did you accidentally leak a secret key, password, or sensitive table structure in the prompt? Learn from this and make it a habit to sanitize sensitive data before using Public AI.
+
+### 📚 External Resources & Related Links
+- **Private AI Tools:** [Ollama](https://ollama.com/) (Run AI locally), [LM Studio](https://lmstudio.ai/).
+- **Further Reading:** [OWASP Top 10 for LLMs](https://owasp.org/www-project-top-10-for-large-language-model-applications/) - Mandatory reading on AI security.
+- **Related in series:** Detailed architectural solutions to avoid being locked into a single AI provider are presented in [Part 9: Building AI-Native Architecture](/series/ai-driven-engineer/part-9-building-ai-native-architecture/).
+
+---
 💬 **Discussion Corner:** From a business perspective, what is your boss's (CTO/BOD) biggest fear regarding AI right now? High account costs, source code leak risks, or employee resistance?
+
+<div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+  <div><a href="/series/ai-driven-engineer/part-4-blurring-sdlc-lines-and-qc-revolution/">← Previous: Part 4</a></div>
+  <div><a href="/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/">Next Article: Part 6 →</a></div>
+</div>

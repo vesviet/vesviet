@@ -82,4 +82,19 @@ How will young Freshers/Juniors entering the profession learn these macro skills
 This is a new generational talent crisis named: **[Part 8: The Junior Paradox - Building Foundations When AI Does the Basics](/series/ai-driven-engineer/part-8-the-junior-paradox/)**.
 
 ---
+### 🛠 Practical Exercise: Practice Architectural Design
+1. **Challenge:** Choose an application you use daily (like a Food Delivery app).
+2. **Action:** Without using AI or Google, try to sketch out 3 core microservices needed to make that app work (e.g., Order Service, Payment Service, Driver Tracking Service). Then write down what happens if the Payment Service crashes while an order is placed.
+3. **Analysis:** Now ask ChatGPT/Claude to evaluate your design and suggest how a Message Queue could save that crash scenario.
+
+### 📚 External Resources & Related Links
+- **Architecture Knowledge:** Check out the [ByteByteGo](https://bytebytego.com/) newsletter by Alex Xu for excellent system design breakdowns.
+- **Related in series:** To understand how AI impacts the people building these architectures, read [Part 1: The Death of 'Code Typists'](/series/ai-driven-engineer/part-1-the-death-of-code-typists/).
+
+---
 💬 **Discussion Corner:** Facing Legacy Code (5-10 year old projects tangled in technical debt), does the AI Agent you use (Cursor/Copilot) get "shut down"? How do you handle it to avoid crashing the old system?
+
+<div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+  <div><a href="/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/">← Previous: Part 6</a></div>
+  <div><a href="/series/ai-driven-engineer/part-8-the-junior-paradox/">Next Article: Part 8 →</a></div>
+</div>

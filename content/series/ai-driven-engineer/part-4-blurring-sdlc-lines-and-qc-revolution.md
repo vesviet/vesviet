@@ -22,6 +22,42 @@ The emergence of AI Agents has forced Developers to step out of their "just code
 2. **Interface Phase (UI/UX):** With the arrival of v0.dev (by Vercel) or Figma AI, a design can be translated directly into a complete React Component with Tailwind CSS. The act of "slicing HTML/CSS" is going extinct. **Dev's Mission:** Front-end Devs no longer sit tweaking margins/padding, but focus on hooking up APIs, managing complex State, and optimizing Performance.
 3. **Operations Phase (DevOps):** AI generates highly accurate Dockerfiles, Kubernetes yaml files, or Terraform scripts. Today's Devs are forced to become "Full-Cycle Developers" — self-coding, self-setting up CI/CD, and self-deploying without waiting for the DevOps team to be free.
 
+### Technical Example: Full-Cycle Automation (CI/CD)
+
+This is a typical example when a Developer asks AI to set up a CI/CD Pipeline (Github Actions) with just one prompt: *"Create a yaml file to deploy Next.js to Vercel, mandatory to run tests first."*
+
+```yaml
+# AI-Generated CI/CD Pipeline (.github/workflows/deploy.yml)
+name: Deploy Next.js to Vercel
+on:
+  push:
+    branches: [ "main" ]
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      # 1. Automated Testing (Shift-Left)
+      - run: npm ci
+      - run: npm run test:unit
+      
+      # 2. Automated Deployment (No DevOps needed)
+      - name: Deploy to Vercel
+        if: success() # Only deploy when QA (tests) are green
+        uses: amondnet/vercel-action@v20
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.ORG_ID }}
+          vercel-project-id: ${{ secrets.PROJECT_ID }}
+          vercel-args: '--prod'
+```
+*Devs don't need to rely on a DevOps engineer. The entire testing and deployment phase is neatly automated.*
+
 ## The QC Revolution (Quality Engineering)
 
 If Developers are shocked a little, the Tester/QA community is shocked tenfold. The QC Revolution is happening at breakneck speed, completely redefining how we ensure software quality.
@@ -60,4 +96,19 @@ Just as Programmers are intoxicatedly using AI to auto-generate Tests, write Ter
 Those are the **Legal & Security Landmines** keeping C-Level/BOD awake at night. They view AI not just as speed, but as an existential risk. How will they manage this risk? The shocking answer regarding the trend of "Banning Public AI" will be in **[Part 5: The BOD Perspective: Expectations, Costs, Legal Risks & Internal AI](/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/)**.
 
 ---
+### 🛠 Practical Exercise: Build an AI Test Bot
+1. **Challenge:** You are a QE. Try applying the "Extreme Shift-Left" strategy.
+2. **Action:** Use Cursor or Github Copilot Chat, open a Javascript function in your project, and request: *"Generate 5 edge-case Unit Tests (Jest) for this function, including security risks (like SQL Injection payloads)".*
+3. **Analysis:** Run it and see if AI covers cases that a Manual QA tester might miss.
+
+### 📚 External Resources & Related Links
+- **Self-Healing Tools:** Explore [QA Wolf](https://www.qawolf.com/) or [Playwright](https://playwright.dev/) combined with AI.
+- **Related in series:** Rapid automated test writing skills are detailed in the *Prompt Library* of [Part 6: From Coder to Orchestrator](/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/).
+
+---
 💬 **Discussion Corner:** Have the role boundaries in your current team "blurred" yet? Has your QA team started using AI to write automated test scripts, or have Devs started taking over UI component design?
+
+<div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+  <div><a href="/series/ai-driven-engineer/part-3-the-10x-productivity-reality/">← Previous: Part 3</a></div>
+  <div><a href="/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/">Next Article: Part 5 →</a></div>
+</div>

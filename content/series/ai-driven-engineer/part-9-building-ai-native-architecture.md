@@ -10,7 +10,7 @@ categories: ["Series", "Software Engineering"]
 tags: ["AI", "System Design", "Career"]
 ---
 
-In the previous 8 parts, we dissected using AI as a **Tool** to assist programmers (boosting productivity, testing code, handling legacy). But in this final part, we will flip the script.
+In the previous 8 parts, we dissected using AI as a **Tool** to assist programmers. We explored the [death of syntax memorization](/series/ai-driven-engineer/part-1-the-death-of-code-typists/), the [boundaries of responsibility](/series/ai-driven-engineer/part-2-man-vs-machine-boundaries/), navigated [AI review fatigue](/series/ai-driven-engineer/part-3-the-10x-productivity-reality/) and [legal landmines](/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/), and established the need for [Orchestration](/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/) and [System Design](/series/ai-driven-engineer/part-7-system-design-survival/). But in this final part, we will flip the script entirely.
 
 The ultimate mission of a System Architect (AI-Driven Architect) is not just coding faster, but **putting AI as the "heart" of the very product they are building**. We call this **AI-Native Application** architecture.
 
@@ -72,4 +72,19 @@ If you know how to inject context, master System Design, firmly validate archite
 Thank you for joining this Roadmap. It's time to close the reading tab, open your IDE, and start "orchestrating" your own swarm of AI!
 
 ---
+### 🛠 Practical Exercise: Experience an AI Gateway
+1. **Challenge:** Avoid Vendor Lock-in for your next side project.
+2. **Action:** Instead of calling the `openai` SDK directly in Node.js/Python, install an AI Gateway like [LiteLLM](https://docs.litellm.ai/). Configure it so that when you pass the model name `"gpt-4o"`, it routes to OpenAI, and `"claude-3-5"` routes to Anthropic, all using the exact same API format.
+3. **Analysis:** You have just successfully implemented the Abstraction Layer pattern!
+
+### 📚 External Resources & Tooling
+- **AI Gateway Libraries:** [LiteLLM](https://github.com/BerriAI/litellm) (Standardize API formats), [LangChain](https://www.langchain.com/) / [LlamaIndex](https://www.llamaindex.ai/) (For RAG frameworks).
+- **Architecture Trends:** [a16z: Emerging Architectures for LLM Applications](https://a16z.com/emerging-architectures-for-llm-applications/).
+
+---
 💬 **Discussion Corner:** The mindset shift from "Code Typist" to "System Architect" does not happen overnight. What is the biggest barrier preventing you from deeply integrating AI into your current product's core (becoming AI-Native)? Technical difficulties (Vector DB/RAG) or management barriers? Leave a comment!
+
+<div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+  <div><a href="/series/ai-driven-engineer/part-8-the-junior-paradox/">← Previous: Part 8</a></div>
+  <div><a href="/series/ai-driven-playbook/">Explore the Playbook Series →</a></div>
+</div>

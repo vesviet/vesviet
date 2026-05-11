@@ -25,6 +25,27 @@ AI is like a "Super Junior" intern — possessing unmatched typing speed and rem
 
 *In this territory, humans provide the Input (Prompt), and Machines are the Executors.*
 
+### Technical Example: Regex and Initialization Boundary
+
+Instead of writing complex Regex manually, the Programmer asks AI to generate the code, but they themselves must establish the "Boundary" (Business context):
+
+```javascript
+// [AI EXECUTES] - AI automatically writes Regex based on prompt
+// Prompt: Write Regex to validate VN company tax code (10 or 13 digits)
+const taxCodeRegex = /^(\d{10}|\d{10}-\d{3})$/;
+
+// [HUMAN DECIDES] - Programmer decides the business flow
+function validateCompanyInfo(taxCode) {
+  if (!taxCodeRegex.test(taxCode)) {
+    // Human decision: Don't throw an error and crash the app,
+    // instead return an HTTP 400 code and log it to DataDog for tracking.
+    logger.warn(`Invalid Tax Code Attempt: ${taxCode}`);
+    return res.status(400).json({ error: "Invalid tax code" });
+  }
+  // Continue logic processing...
+}
+```
+
 ## The Human's Territory (The Architect & The Brain)
 
 A programmer's true power doesn't lie in their fingers, but in their brain and contextual empathy. These are things AI cannot "learn" from GitHub:
@@ -33,6 +54,26 @@ A programmer's true power doesn't lie in their fingers, but in their brain and c
 2. **Trade-off Decisions:** Choose Consistency or Availability? Use SQL or NoSQL for this case? AI can list pros and cons, but **Humans** are the final decision-makers based on budgets, team capabilities, and the BOD's business strategy.
 3. **Security Context:** AI is prone to stepping on "Security Landmines" (as analyzed in Part 5). Programmers must maintain perimeter control: What data is public? Which Environment variables (Env) must not appear in the code?
 4. **Review & Validation:** This is the most crucial skill. When AI finishes writing 500 lines of code, the Human must act as a strict Reviewer: *Does this code actually solve the problem? Is there Technical Debt? Can it be maintained for the next 3 years?*
+
+### Flowchart: Human and Machine Interaction Workflow
+
+```mermaid
+sequenceDiagram
+    participant User as 👤 Developer (Brain)
+    participant AI as 🤖 AI Agent (Muscle)
+    participant System as ⚙️ System
+    
+    User->>AI: 1. Provide Context & Business Requirements
+    AI-->>User: 2. Generate Code & Unit Tests (Boilerplate)
+    User->>User: 3. Evaluate Trade-offs & Security (Review)
+    
+    alt If Code poses risks
+        User->>AI: 4a. Request structural/security fixes
+        AI-->>User: Update code
+    else If Code is safe
+        User->>System: 4b. Approve & Deploy
+    end
+```
 
 ## Visual Case Study: Role Division in Authentication Systems
 
@@ -57,4 +98,19 @@ That is why the programmer profession will never die. Society and businesses pay
 However, a dangerous illusion is spreading in the Tech world: "Just use AI and coding speed increases 10x". The truth is, a highly powerful engine (AI) can help you reach the finish line early, but it can also drive the project straight off a cliff into Technical Debt if you don't know how to brake. Ultimately, does AI really bring breakthrough productivity, or is it just a media hoax? The naked truth will be exposed in **[Part 3: The 10x Productivity Reality: Where We Speed Up, Where We Slow Down](/series/ai-driven-engineer/part-3-the-10x-productivity-reality/)**.
 
 ---
+### 🛠 Practical Exercise: Practice Redrawing the Boundary
+1. **Challenge:** Open a payment processing logic file (or similar module) in your project.
+2. **Action:** Highlight in green the code segments that AI can write well on its own (Data Fetching, Mapping, Formatting). Highlight in red the "Life-or-Death" code lines (Summing totals, Deducting funds, Authorization).
+3. **Analysis:** You will realize 80% of your typing time is spent on the green parts, but 80% of the project's risk lies in the red parts. Let AI do the green, and you focus on protecting the red.
+
+### 📚 External Resources & Related Links
+- **Review Tools:** Use [SonarQube](https://www.sonarqube.org/) combined with AI to automatically detect technical debt.
+- **Related in series:** See how to turn red work (architecture) into a strength in [Part 7: System Design Survival](/series/ai-driven-engineer/part-7-system-design-survival/).
+
+---
 💬 **Discussion Corner:** In your current project, where does the "Human territory" (decisions you don't dare hand over to AI) lie? (Payments, authorization, or database architecture?)
+
+<div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+  <div><a href="/series/ai-driven-engineer/part-1-the-death-of-code-typists/">← Previous: Part 1</a></div>
+  <div><a href="/series/ai-driven-engineer/part-3-the-10x-productivity-reality/">Next Article: Part 3 →</a></div>
+</div>
