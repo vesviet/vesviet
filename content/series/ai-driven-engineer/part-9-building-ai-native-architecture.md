@@ -61,6 +61,8 @@ graph TD
 
 We have reached the end of **The AI-Driven Engineer: From Code Typist to Next-Generation System Architect** Roadmap.
 
+> 🚀 **Ready for the next step?** Now that you've mastered the mindset, it's time to build the actual infrastructure. Continue your journey in Phase 2: **[The AI-Driven Engineer: Enterprise Playbook](/series/ai-driven-playbook/)**, where we get hands-on with AI Gateways, Enterprise RAG, and Agentic CI/CD pipelines.
+
 Software industry history has witnessed many massive transformations: From writing Assembly code to C++, from physical servers to Cloud Computing. And now, we are in the midst of the greatest transition of all: The rise of Artificial Intelligence.
 
 In this battle, AI will sweep away mechanical "Code Typists", those who are lazy to think, and those who refuse to change. But simultaneously, AI places into your hands **the power of an entire miniature engineering team**.
