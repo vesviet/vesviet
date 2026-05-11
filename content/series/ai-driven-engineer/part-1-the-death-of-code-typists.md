@@ -57,19 +57,19 @@ This is the core difference. In the same amount of time, the "Architect" will us
 
 ```mermaid
 flowchart TD
-    A["📋 Receive Jira Ticket"] --> B{First question?}
+    A[Receive Jira Ticket] --> B{First question?}
 
-    B -->|Code Typist| C["\"Which syntax is the fastest to write?\""]
-    B -->|AI Architect| D["\"What are the architectural & business risks?\""]
+    B -->|Code Typist| C[Which syntax is the fastest to write?]
+    B -->|AI Architect| D[What are the architectural and business risks?]
 
-    C --> E["Open IDE → Type code → PR"]
-    D --> F[Analyze Requirements & Constraints]
+    C --> E[Open IDE - Type code - Create PR]
+    D --> F[Analyze Requirements]
 
     F --> G[Prompt AI to generate boilerplate]
-    G --> H[Review code & evaluate risks]
+    G --> H[Review code and evaluate risks]
     H --> I{Architectural issues?}
     I -->|Yes| G
-    I -->|No| J["Merge → Deploy"]
+    I -->|No| J[Merge and Deploy]
 
     style C fill:#ffcccc,stroke:#cc0000
     style D fill:#ccffcc,stroke:#009900

@@ -35,20 +35,20 @@ This creates a **"Valley of Death"** in the career path:
 
 ```mermaid
 graph TD
-    A["🎓 Fresher / New Graduate"] --> B[Build an app with AI in 1 minute]
-    B --> C["Entry Barrier = 0 ✓"]
+    A[Fresher - New Graduate] --> B[Build an app with AI in 1 minute]
+    B --> C[Entry Barrier is very low]
     C --> D{Which path do you take?}
 
-    D -->|"❌ Common Mistake"| E["🤖 AI-First: Prompt everything"]
-    D -->|"✅ The Right Way"| F["📚 Learn-First: Master the fundamentals"]
+    D -->|Common Mistake| E[AI-First - Prompt everything]
+    D -->|The Right Way| F[Learn-First - Master the fundamentals]
 
-    E --> G["Fast delivery ✔️"]
-    E --> H["Hollow knowledge base ✖️"]
-    H --> I["😵 Terminal Mid-level — stuck, can't reach Senior"]
+    E --> G[Fast delivery]
+    E --> H[Hollow knowledge base]
+    H --> I[Terminal Mid-level - stuck, cannot reach Senior]
 
-    F --> J["Slow at first ✖️"]
-    F --> K["Deep 'under the hood' understanding ✔️"]
-    K --> L["⬆️ Senior → Staff Engineer → Architect"]
+    F --> J[Slow at first]
+    F --> K[Deep understanding of how things work]
+    K --> L[Senior - Staff Engineer - Architect]
 
     style E fill:#fef3cd,stroke:#ffc107
     style H fill:#fdecea,stroke:#e74c3c
