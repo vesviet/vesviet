@@ -78,6 +78,108 @@ The new Operating Model must clearly establish: **The person who crafts the Prom
 
 ---
 
+## 5. Operating Model Templates: From Scrum to "Spec Sprint"
+
+Traditional Scrum templates break down in the AI era. Below is a practical drop-in template to transform your team's workflow immediately.
+
+### The "Spec Sprint" Framework
+
+Replace the classic 2-week Sprint with a **Spec Sprint**, optimized for AI-assisted output:
+
+| Phase | Duration | Human Activity | AI Activity |
+| :--- | :--- | :--- | :--- |
+| **Discovery** | Day 1–2 | Write detailed Markdown Spec (Interfaces, DB schema, edge cases) | Review Spec for ambiguities via prompt |
+| **AI Build** | Day 3–4 | Review Spec output, enforce DDD boundaries | Generate code, unit tests, documentation |
+| **Agentic Review** | Day 5 | Approve/reject AI Guardrails findings | Run CI/CD checks, boundary condition enforcement |
+| **Architecture Gate** | Day 6 | Principal Engineer reviews Red Zone changes only | N/A — Human-mandatory |
+| **Deploy & Monitor** | Day 7 | Merge, release, watch Observability dashboards | N/A |
+
+### PR Template (Mandatory Fields for AI-Generated Code)
+
+```markdown
+## PR Summary
+- **Feature:** [Brief description]
+- **AI-Generated:** ✅ Yes / ❌ No
+
+## AI Provenance (Required if AI-Generated)
+- **Model Used:** claude-3.5-sonnet / gpt-4o / local-llama3
+- **Prompt Summary:** "Write a Factory Pattern function to calculate shipping fees based on weight tiers"
+- **Context Files Loaded:** @ShippingService.ts, @PricingRule.ts
+
+## Checklist
+- [ ] Prompt Traceability recorded above
+- [ ] Boundary Conditions covered (Null, Negative, Max)
+- [ ] No Red Zone changes — or Principal Engineer approved
+- [ ] Deterministic guardrail checks passed
+```
+
+---
+
+## 6. Measuring What Matters: DORA Metrics for the AI Era
+
+Traditional DORA metrics (Deployment Frequency, Lead Time for Changes, Change Failure Rate, MTTR) remain valid, but the AI era demands three **additional AI-specific signals**:
+
+| Metric | What it measures | Target |
+| :--- | :--- | :--- |
+| **AI Accept Rate** | % of AI-generated code suggestions accepted without major edits | > 60% (low = context quality issue) |
+| **Prompt Iteration Count** | Avg number of prompt re-runs before acceptable output | < 3 (high = ambiguous Specs) |
+| **Red Zone Violation Rate** | % of PRs touching Red Zone without Principal review | 0% (any violation = process failure) |
+| **AI-Introduced Bug Rate** | Bugs traced back to AI-generated code vs hand-written code | Track weekly; should trend toward parity |
+
+> 💡 **Pro Tip:** Feed these metrics into your Langfuse/LangSmith dashboard (Part 6). This creates a closed feedback loop: bad Prompt quality → high Iteration Count → triggers `.cursorrules` review.
+
+---
+
+## 7. Real-World Migration Guide: Transitioning a Traditional Team
+
+Adopting this Operating Model without a phased migration plan causes culture shock. Here is the proven 3-phase rollout:
+
+**Phase 1 (Weeks 1–4) — Observe & Instrument:**
+- Audit all current PRs: tag which lines were AI-generated vs hand-written.
+- Install Langfuse (Part 6) to begin baselining token costs and latency.
+- Introduce the PR Template above without making it mandatory yet.
+
+**Phase 2 (Weeks 5–8) — Enforce Green Zone Only:**
+- Mandate Spec-First for all new features in the Green Zone.
+- Enable the Deterministic Guardrail CI/CD layer (Part 4) on a subset of repos.
+- Run a "Red Zone Identification Workshop" so every team member can classify code correctly.
+
+**Phase 3 (Weeks 9–12) — Full Escalation Boundary + New DoD:**
+- Enforce the full new Definition of Done on all Jira tickets.
+- Lock Red Zone PRs: system automatically labels and requires Principal approval.
+- Review DORA + AI Metrics in the weekly Engineering All-Hands.
+
+---
+
+## 8. AI Quality Ownership
+
+> **[Anti-pattern]: Blaming the AI**
+> When a Production bug occurs, the Dev explains: *"Claude 3.5 generated the wrong code, I didn't know."*
+
+This is the most toxic mindset in an AI-Native Team. Machines have no legal accountability—humans do.
+
+The new Operating Model must clearly establish: **The person who crafts the Prompt owns the outcome of that code.** Developers now act as Orchestrators. If your soldier (AI) fires at the wrong target because you gave incorrect coordinates, the fault is yours.
+
+---
+
+## 🛠 Practical Exercise: Run Your First Spec-First Sprint
+
+1. **Pick a real upcoming feature** from your backlog (ideally a CRUD API or data transformation task).
+2. **Write the Spec first** (< 2 pages Markdown): Define the TypeScript interface, DB schema change, and list 5 boundary conditions.
+3. **Feed the Spec to Cursor/Windsurf** as a single `@file` context reference. Ask it to generate the implementation without any other guidance.
+4. **Measure:** How many lines were usable on the first pass? How does that compare to your usual trial-and-error approach?
+
+---
+
+## 📚 External Resources & Tooling
+
+- **Framework:** [DORA State of DevOps Report](https://dora.dev/) — Benchmark your team's delivery performance baseline before AI adoption.
+- **PR Templates:** [GitHub Docs: PR Templates](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests) — Set up the AI Provenance template for your entire org in minutes.
+- **Further Reading:** [Thoughtworks Technology Radar: AI-Augmented Development](https://www.thoughtworks.com/radar) — Industry consensus on which AI development patterns are "Adopt" vs "Hold."
+- **Community:** [r/MachineLearning](https://www.reddit.com/r/MachineLearning/) & [Latent Space Podcast](https://www.latent.space/) — Practitioner discussions on real-world AI engineering operations.
+
+---
+
 ## Conclusion
 
 An **AI-Native Engineering Team** is not a collection of the fastest tool users—it is an organization that possesses the most **disciplined SDLC**. Establishing Escalation Boundaries and enforcing Spec-First thinking is the antidote to runaway technical debt.

@@ -96,6 +96,107 @@ Measure **Precision** (Did the RAG fetch the correct documents?) and **Recall** 
 
 ---
 
+## 5. Advanced Observability: OpenTelemetry GenAI Semantic Conventions
+
+Most teams stop at custom logging. In 2024, **OpenTelemetry (OTel)** introduced the `gen_ai` semantic conventions—the industry standard for vendor-neutral LLM telemetry. Adopting OTel means your traces work identically whether you switch from Langfuse to Datadog or Grafana tomorrow.
+
+**Key `gen_ai` attributes every trace should capture:**
+
+| Attribute | Example Value | Why it matters |
+| :--- | :--- | :--- |
+| `gen_ai.operation.name` | `chat` | Distinguishes chat vs embedding calls |
+| `gen_ai.provider.name` | `anthropic` | Cost breakdown by provider |
+| `gen_ai.request.model` | `claude-3-5-sonnet-20241022` | Exact version for drift detection |
+| `gen_ai.request.temperature` | `0.2` | Tracks output variability |
+| `gen_ai.usage.input_tokens` | `14200` | Cost attribution per team |
+| `gen_ai.usage.output_tokens` | `820` | Billing accuracy |
+
+**Auto-instrumentation snippet (Python + OpenLIT):**
+```python
+import openlit
+
+# One-line setup — automatically captures all LLM calls via OTel
+openlit.init(
+    otlp_endpoint="http://langfuse-internal:4318",  # Routes to your Observability backend
+    application_name="billing-ai-agent",
+    environment="production",
+)
+
+# From this point, all OpenAI / Anthropic / LiteLLM calls are traced automatically
+# with gen_ai.* attributes attached — no further code changes required.
+```
+
+### 5.1. Agentic Workflow Observability: Tracing "Thought Chains"
+
+Single LLM calls are easy to trace. **Agentic loops are not.** When Agent A calls Tool B which triggers Agent C, the trace must stitch across service boundaries.
+
+```mermaid
+graph LR
+    U[User Query] -->|Span 1: intent_parse| Router[Router Agent]
+    Router -->|Span 2: tool_call| Jira[Jira MCP Tool]
+    Jira -->|Span 3: rag_retrieve| RAG[Vector DB Lookup]
+    RAG -->|Span 4: llm_generate| LLM[Claude 3.5]
+    LLM -->|Span 5: output_validate| Guard[Dual LLM Validator]
+    Guard -->|Span 6: response| U
+
+    style RAG fill:#d4efdf,stroke:#27ae60
+    style Guard fill:#f9e79f,stroke:#f1c40f
+```
+
+Each numbered span is a child span in a single **trace tree**. When production breaks at Step 4, you click directly into Span 4 to see exactly which RAG chunks were injected and what the model received—not a wall of unstructured logs.
+
+---
+
+## 6. End-to-End Integration Scenario: The "Shipping Cost Agent" System
+
+To make these concepts concrete, here is a complete observability integration scenario for a multi-service AI Agent system.
+
+**Scenario:** An internal agent answers customer queries about shipping costs, using RAG (internal price tables) + a Calculation Tool.
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Gateway as LiteLLM Gateway
+    participant Agent as Orchestrator Agent
+    participant RAG as Vector DB (Pricing Tables)
+    participant Tool as Shipping Calc Tool
+    participant OTel as Langfuse / OTel Backend
+
+    User->>Gateway: "What's the express shipping cost for 5kg to HCMC?"
+    Gateway->>OTel: [Span Start] gen_ai.operation = chat
+    Gateway->>Agent: Route query to Orchestrator
+    Agent->>RAG: Retrieve: pricing_zone=HCMC, type=express
+    RAG-->>Agent: Returns rate_card chunk (score: 0.97)
+    Agent->>Tool: calculate_shipping(weight=5, zone="HCMC", type="express")
+    Tool-->>Agent: Returns $4.20
+    Agent->>Gateway: Final answer composed
+    Gateway->>OTel: [Span End] tokens=1240, latency=2.1s, cost=$0.003
+    Gateway-->>User: "Express shipping for 5kg to HCMC costs $4.20."
+    OTel->>OTel: Evals check: Score=0.99 ✅ No drift detected
+```
+
+**Monitoring outcome:** Any deviation in the rate_card retrieval score (RAG Precision) or calculation Tool latency immediately surfaces as an anomaly on the dashboard—before any customer is given a wrong price.
+
+---
+
+## 🛠 Practical Exercise: Instrument Your First LLM Call with OTel
+
+1. **Install OpenLIT** in your Python project: `pip install openlit`.
+2. **Add 2 lines** at the top of your main application file (see snippet above), pointing to a local Langfuse or Jaeger instance.
+3. **Make 10 diverse LLM calls** (mix of chat, RAG, and tool calls).
+4. **Open Langfuse UI** and inspect the trace tree. Can you identify: (a) which call had the highest token cost? (b) which RAG retrieval returned the lowest relevance score?
+
+---
+
+## 📚 External Resources & Tooling
+
+- **Standard:** [OpenTelemetry GenAI Semantic Conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/) — The official specification; bookmark this before any instrumentation work.
+- **Auto-instrumentation:** [OpenLIT](https://github.com/openlit/openlit) — 1-line OTel setup for all major LLM providers.
+- **Observability Platforms:** [Langfuse](https://langfuse.com/) (OSS, self-hostable), [LangSmith](https://www.langchain.com/langsmith) (LangChain ecosystem), [Arize Phoenix](https://phoenix.arize.com/) (strong on Evals).
+- **Further Reading:** [a16z: Emerging Architectures for LLM Applications](https://a16z.com/emerging-architectures-for-llm-applications/) — Where Observability fits in the modern AI stack.
+
+---
+
 ## Conclusion
 
 Running AI in production is a sustained battle. **AI Observability** gives you eyes (Dashboards), while the **Evals Pipeline** gives you a scale (Metrics) to measure quality. Without both, your organization will forever be running Proof-of-Concepts, never graduating to production-grade systems.
