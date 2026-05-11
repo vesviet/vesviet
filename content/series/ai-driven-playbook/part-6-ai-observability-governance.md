@@ -172,7 +172,7 @@ sequenceDiagram
     Agent->>Gateway: Final answer composed
     Gateway->>OTel: [Span End] tokens=1240, latency=2.1s, cost=$0.003
     Gateway-->>User: "Express shipping for 5kg to HCMC costs $4.20."
-    OTel->>OTel: Evals check: Score=0.99 ✅ No drift detected
+    OTel->>OTel: Evals check: Score=0.99 [PASS] No drift detected
 ```
 
 **Monitoring outcome:** Any deviation in the rate_card retrieval score (RAG Precision) or calculation Tool latency immediately surfaces as an anomaly on the dashboard—before any customer is given a wrong price.

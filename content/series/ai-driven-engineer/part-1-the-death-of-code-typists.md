@@ -53,6 +53,76 @@ This is the core difference. In the same amount of time, the "Architect" will us
 - *"How do we validate a fake .jpg file that contains malware?"*
 - *"How to configure IAM Policy so we don't expose bucket admin privileges?"*
 
+### Mindset Diagram: Receiving a Jira Ticket — What's Your First Thought?
+
+```mermaid
+flowchart TD
+    A["📋 Receive Jira Ticket"] --> B{First question?}
+
+    B -->|Code Typist| C["\"Which syntax is the fastest to write?\""]
+    B -->|AI Architect| D["\"What are the architectural & business risks?\""]
+
+    C --> E["Open IDE → Type code → PR"]
+    D --> F[Analyze Requirements & Constraints]
+
+    F --> G[Prompt AI to generate boilerplate]
+    G --> H[Review code & evaluate risks]
+    H --> I{Architectural issues?}
+    I -->|Yes| G
+    I -->|No| J["Merge → Deploy"]
+
+    style C fill:#ffcccc,stroke:#cc0000
+    style D fill:#ccffcc,stroke:#009900
+    style E fill:#fff0f0
+    style J fill:#f0fff0
+```
+
+## Technical Implementation: AI Code Example
+
+To illustrate, here is how an "Architect" interacts with an AI IDE (like Cursor) to solve the above problem without memorizing syntax.
+
+**Prompt (Input Requirement):**
+```text
+Create a function to upload files to AWS S3 using Node.js (AWS SDK v3). 
+Mandatory requirements:
+1. Use stream buffers to handle large files and prevent RAM overflow.
+2. Return a Presigned URL that expires in 15 minutes.
+3. Validate: Only allow .jpg, .png and size < 5MB.
+```
+
+**AI Generated Code:**
+```javascript
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { PassThrough } from "stream";
+
+const s3Client = new S3Client({ region: "ap-southeast-1" });
+
+export const uploadToS3 = async (fileStream, fileName, mimeType) => {
+  // 1. Validation logic
+  const allowedTypes = ['image/jpeg', 'image/png'];
+  if (!allowedTypes.includes(mimeType)) throw new Error("Invalid file type");
+  
+  // 2. Stream Buffer Optimization
+  const pass = new PassThrough();
+  fileStream.pipe(pass);
+
+  const command = new PutObjectCommand({
+    Bucket: process.env.S3_BUCKET_NAME,
+    Key: `uploads/${Date.now()}-${fileName}`,
+    Body: pass,
+    ContentType: mimeType,
+  });
+
+  await s3Client.send(command);
+
+  // 3. Presigned URL (15 minutes expiry)
+  const presignedCommand = new PutObjectCommand({ /*...*/ });
+  return getSignedUrl(s3Client, presignedCommand, { expiresIn: 900 });
+};
+```
+*The programmer doesn't type this code. They read it, evaluate risks (is the validation sufficient?), and approve it.*
+
 ## Shifting Focus: Returning to the Essence of Software Engineering
 
 The fall of the "Code Typist" does not mean the programmer profession disappears. On the contrary, it brings the profession back to its true essence: **A software engineer is someone who uses technology to solve business problems, not a typist.**
@@ -62,4 +132,20 @@ But the burning question arises: If AI can generate code, test code, and even wr
 The truth about this life-or-death boundary will be revealed in detail in **[Part 2: Man vs. Machine Boundaries: What to Delegate and What to Keep](/series/ai-driven-engineer/part-2-man-vs-machine-boundaries/)**.
 
 ---
+### 🛠 Practical Exercise: Experience the "AI Shock"
+1. **Challenge:** Open an old project of yours. Find a complex function you once spent a whole day writing.
+2. **Action:** Delete that function. Use a tool like [Cursor](https://cursor.sh) or GitHub Copilot, write exactly 3 lines of comments describing the function's logic, and hit `Tab`.
+3. **Analysis:** Measure the time it takes AI to generate the result compared to the time you spent hand-coding. Observe if AI handles the edge cases as well as you did.
+
+### 📚 External Resources & Tooling
+- **Recommended Tools:** [Cursor IDE](https://cursor.sh/) (For AI-first coding), [Windsurf](https://codeium.com/windsurf) (AI Agent IDE).
+- **Further Reading:** [The End of Programming](https://cacm.acm.org/magazines/2023/1/267976-the-end-of-programming/fulltext) (ACM Magazine) - Discussing the decline of pure "code typing".
+- **Related Documentation:** Refer to our [AI-Driven Playbook](/series/ai-driven-playbook/) to see how to deploy AI into Agile processes.
+
+---
 💬 **Discussion Corner:** Have you ever witnessed a colleague (or yourself) spend hours typing a piece of code that modern AI can do in 5 seconds? Share that "enlightenment" feeling in the comments below!
+
+<div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+  <div></div>
+  <div><a href="/series/ai-driven-engineer/part-2-man-vs-machine-boundaries/">Next Article: Part 2 →</a></div>
+</div>
