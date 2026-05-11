@@ -27,3 +27,4 @@ This roadmap will dissect the illusions about AI, face the paradoxes of the curr
 - [Part 7 — System Design: The Priceless Survival Territory for Developers](/series/ai-driven-engineer/part-7-system-design-survival/)
 - [Part 8 — The Junior Paradox: Building Foundations When AI Does the Basics](/series/ai-driven-engineer/part-8-the-junior-paradox/)
 - [Part 9 — LLM Integration: The Mindset of Building AI-Native Applications](/series/ai-driven-engineer/part-9-building-ai-native-architecture/)
+- [Bonus — The 30-60-90 Day Roadmap: From Code Typist to AI-Driven Engineer](/series/ai-driven-engineer/bonus-transition-path/)
