@@ -5,7 +5,7 @@ draft: false
 description: "Why is Observability for AI Agents different? Building Tracing systems, monitoring costs, and safely testing in production with Signadot."
 ShowToc: true
 TocOpen: true
-weight: 4
+weight: 5
 categories: ["Series", "Agent Architecture"]
 tags: ["AI", "Multi-Agent", "AgentOps", "Observability", "Signadot"]
 ---

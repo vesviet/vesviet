@@ -5,7 +5,7 @@ draft: false
 description: "Analyzing the risks of Prompt Injection when Agents call APIs and designing Sandboxing/Guardrails to prevent system destruction."
 ShowToc: true
 TocOpen: true
-weight: 3
+weight: 4
 categories: ["Series", "Agent Architecture"]
 tags: ["AI", "Multi-Agent", "Security", "Tool-Calling", "Prompt Injection"]
 ---

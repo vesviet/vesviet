@@ -5,7 +5,7 @@ draft: false
 description: "A high-level overview of why the industry is moving from massive, single-prompt LLM calls to coordinated, Multi-Agent systems, and what it takes to run them in production."
 ShowToc: true
 TocOpen: true
-weight: 0
+weight: 1
 categories: ["Series", "Agent Architecture"]
 tags: ["AI", "Multi-Agent", "System Design", "CTO", "Architect"]
 ---

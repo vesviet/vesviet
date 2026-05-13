@@ -5,7 +5,7 @@ draft: false
 description: "Explore Multi-Agent design patterns (Supervisor, P2P) and how to build a simple Python Orchestrator for task coordination."
 ShowToc: true
 TocOpen: true
-weight: 1
+weight: 2
 categories: ["Series", "Agent Architecture"]
 tags: ["AI", "Multi-Agent", "Orchestration", "System Design"]
 ---

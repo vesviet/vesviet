@@ -5,7 +5,7 @@ draft: false
 description: "Solving the Context Window limitation, differentiating In-session vs Cross-session memory, and RAG integration strategies to ensure Agents never 'forget'."
 ShowToc: true
 TocOpen: true
-weight: 2
+weight: 3
 categories: ["Series", "Agent Architecture"]
 tags: ["AI", "Multi-Agent", "Memory", "RAG", "Vector Database"]
 ---
