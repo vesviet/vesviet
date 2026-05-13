@@ -1,7 +1,7 @@
 ---
 title: "Part 3 — Secure Tool Calling & Guardrails"
 date: 2026-05-20T08:00:00+07:00
-draft: true
+draft: false
 description: "Analyzing the risks of Prompt Injection when Agents call APIs and designing Sandboxing/Guardrails to prevent system destruction."
 ShowToc: true
 TocOpen: true

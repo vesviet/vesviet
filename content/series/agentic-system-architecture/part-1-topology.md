@@ -1,7 +1,7 @@
 ---
 title: "Part 1 — Agent Topology & Orchestration"
 date: 2026-05-15T08:00:00+07:00
-draft: true
+draft: false
 description: "Explore Multi-Agent design patterns (Supervisor, P2P) and how to build a simple Python Orchestrator for task coordination."
 ShowToc: true
 TocOpen: true

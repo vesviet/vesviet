@@ -16,6 +16,7 @@ In this series, we will shift from "Using AI to write code" to **"Designing syst
 
 ## Series Table of Contents
 
+- **Executive Summary:** [The Shift to Agentic Architectures](/series/agentic-system-architecture/executive-summary/)
 - **Part 1:** [Agent Topology & Orchestration](/series/agentic-system-architecture/part-1-topology/) — Communication models, Router logic, and building a simple Orchestrator.
 - **Part 2:** [State, Memory & Context Management](/series/agentic-system-architecture/part-2-memory/) — Solving the Context Window problem, In-session/Cross-session memory, and RAG integration.
 - **Part 3:** [Secure Tool Calling & Guardrails](/series/agentic-system-architecture/part-3-tool-calling/) — Protecting systems from Prompt Injection, access control, and sandboxing.

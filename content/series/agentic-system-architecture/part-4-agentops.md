@@ -1,7 +1,7 @@
 ---
 title: "Part 4 — AgentOps & Production Observability"
 date: 2026-05-22T08:00:00+07:00
-draft: true
+draft: false
 description: "Why is Observability for AI Agents different? Building Tracing systems, monitoring costs, and safely testing in production with Signadot."
 ShowToc: true
 TocOpen: true
