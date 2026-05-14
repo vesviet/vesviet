@@ -56,4 +56,6 @@ Shared infrastructure utilities that the other domains lean heavily on.
 
 By looking at the ecosystem through the lens of these 6 domains, 21 services don't seem like chaos—they look like an organized factory line. A bug in the **Review** system can't bring down the **Payment** system. A localized spike during a Flash Sale means we can simply spin up 10 extra pods for the **Order** and **Checkout** services without wasting money scaling the stationary **Catalog** or **Platform** services. This is the true enterprise value of Domain-Driven Design!
 
+This post is part of the composable commerce series. For the full system diagram, traffic flow architecture, and design decision rationale, start at the [Blueprint of a 21-Service E-commerce Edge](/posts/blueprint-ecommerce-microservices-architecture-diagram/).
+
 {{< author-cta >}}

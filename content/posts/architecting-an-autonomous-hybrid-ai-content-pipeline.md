@@ -2,6 +2,7 @@
 title: "Architecting an Autonomous Hybrid-AI Pipeline: From Hobby Cron to Production State-Machine"
 date: "2026-03-14T21:10:00+07:00"
 draft: false
+mermaid: true
 categories:
   - "AI/ML"
   - "Engineering"
@@ -171,5 +172,7 @@ Building V3 proved that chaining AI agents natively in Bash is not only viable, 
 
 ### What's next in V4?
 The immediate next step (V4) is embedding a localized **Vector Database RAG** layer. Currently, the Cloud LLM writes blindly about the new data. By integrating RAG, the Worker Node will query historical pipeline data, allowing the Writer to synthesize how a new architectural trend correlates with signals fetched 6 months ago. Let's make the pipeline not just independent, but historically intelligent.
+
+This pipeline architecture is deployed in production for a real product. For the full case study — including the anti-hallucination verification layers, B2B lead routing, and the 10-agent scraper swarm — see [LeaseInVietnam: Building an AI-Powered Expat Relocation Hub](/posts/leaseinvietnam-ai-powered-expat-rental-intelligence-system/).
 
 {{< author-cta >}}

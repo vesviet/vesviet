@@ -139,8 +139,8 @@ In those cases, Shopify (or another managed platform) is often the better busine
 
 If you are evaluating team capability for this kind of ownership, these two posts are designed as a filter:
 
-- [Magento Developers in Vietnam: What to Look For Beyond Theme Work](/posts/magento-developers-in-vietnam/)
-- [Magento Development in Vietnam: Cost, Capability, and When It Actually Fits](/posts/magento-development-in-vietnam/)
+- [Magento Developers in Vietnam: A Technical Hiring and Vetting Guide](/posts/magento-developers-in-vietnam/)
+- [Magento Development in Vietnam: How to Scope, Estimate, and Evaluate a Project](/posts/magento-development-in-vietnam/)
 
 ## Bottom Line
 

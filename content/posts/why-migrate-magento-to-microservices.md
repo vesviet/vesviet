@@ -2,6 +2,7 @@
 title: "Why You Should Migrate from Magento to Microservices (And When You Shouldn't)"
 date: 2026-04-14T22:00:00+07:00
 draft: false
+mermaid: true
 tags: ["Magento", "Microservices", "System Design", "Migration", "Architecture", "Golang"]
 description: "A brutally honest breakdown of why Magento's monolithic architecture becomes a liability at scale — and the exact technical and business reasons to migrate to a distributed microservice ecosystem."
 categories: ["Architecture", "Engineering"]
@@ -235,6 +236,6 @@ That crossover point is real, and when you hit it, the architectural investment 
 
 For the exact playbook on how to execute this migration safely — including the 3-phase Strangler Fig pattern, Debezium CDC pipelines, and bidirectional sync — read [The Zero-Downtime Blueprint: Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/).
 
-If you are still evaluating team capability before a migration, read [Magento Developers in Vietnam: What to Look For Beyond Theme Work](/posts/magento-developers-in-vietnam/) and [Magento Development in Vietnam: Cost, Capability, and When It Actually Fits](/posts/magento-development-in-vietnam/).
+If you are still evaluating team capability before a migration, read [Magento Developers in Vietnam: A Technical Hiring and Vetting Guide](/posts/magento-developers-in-vietnam/) and [Magento Development in Vietnam: How to Scope, Estimate, and Evaluate a Project](/posts/magento-development-in-vietnam/).
 
 {{< author-cta >}}

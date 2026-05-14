@@ -2,6 +2,7 @@
 title: "Mastering Event-Driven Architecture with Dapr Pub/Sub"
 date: 2026-04-12T09:05:00+07:00
 draft: false
+mermaid: true
 tags: ["Event-Driven", "Dapr", "Message Queue", "Architecture", "Microservices"]
 description: "How to decouple a 21+ microservice ecosystem using Event-Driven Architecture, ensuring absolute data consistency through Sagas, Dead Letter Queues, and Idempotent handlers."
 categories: ["Architecture", "Engineering"]
@@ -15,7 +16,7 @@ The answer is **Event-Driven Architecture (EDA)**. Rather than chaining blocking
 
 ### Enter Dapr Pub/Sub
 
-To abstract the complex messaging layer, we integrated **Dapr (Distributed Application Runtime)**. Dapr allowed our Go (Kratos) microservices to publish and subscribe to topics using a standard gRPC/HTTP interface, effectively shielding the application code from the underlying message broker nuances (Kafka/RabbitMQ).
+To abstract the complex messaging layer, we integrated **[Dapr v1.14](https://docs.dapr.io/getting-started/) (Distributed Application Runtime)**. Dapr allowed our Go (Kratos) microservices to publish and subscribe to topics using a standard gRPC/HTTP interface, effectively shielding the application code from the underlying message broker nuances (Kafka/RabbitMQ).
 
 ### The Golden Rule: Event Naming Conventions
 
@@ -68,5 +69,7 @@ What if a message consistently crashes the processor because of a logical defect
 ### Conclusion
 
 Event-Driven Architecture is not just about writing async code; it is a defensive engineering mindset. By enforcing iron-clad naming conventions, embracing the Saga pattern for cross-boundary consistency, and heavily leveraging Idempotency and DLQs, we transformed a fragile distributed system into a practically bulletproof e-commerce nervous system.
+
+For the Saga implementation details — including the Go code for Optimistic Concurrency Control and the idempotency key schema — see [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/).
 
 {{< author-cta >}}
