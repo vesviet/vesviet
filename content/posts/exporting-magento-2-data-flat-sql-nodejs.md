@@ -1,5 +1,6 @@
 ---
 title: "Exporting Magento 2 Orders: Bypassing the EAV Model with Clean SQL & Node.js"
+slug: "exporting-magento-2-data-flat-sql-nodejs"
 date: "2024-03-09T03:38:22+00:00"
 draft: false
 tags: ["Magento", "SQL", "Node.js", "Data Migration"]

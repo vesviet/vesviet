@@ -1,5 +1,6 @@
 ---
 title: "The Zero-Downtime Blueprint: Moving from Magento to Microservices"
+slug: "moving-from-magento-to-microservices"
 date: "2026-04-14T21:20:00+07:00"
 draft: false
 tags: ["Magento", "Microservices", "Migration", "System Design", "Debezium", "Dapr"]
