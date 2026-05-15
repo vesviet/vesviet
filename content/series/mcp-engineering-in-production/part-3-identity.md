@@ -31,7 +31,7 @@ When an Agent wants to connect to an MCP Server, it must attach an `Authorizatio
 Historically, to get a token, the Agent had to register itself with the Identity Provider (IdP - like Keycloak, Okta) using the RFC 7591 (DCR) standard. However, DCR opens up a huge attack surface: anyone can spam register thousands of rogue clients into the IdP.
 
 ### The Rise of CIMD (Client ID Metadata Documents)
-By late 2025 (via SEP-991), the MCP ecosystem shifted to **CIMD**.
+By late 2025 (via SEP-991), the MCP ecosystem shifted to **[CIMD](https://spec.modelcontextprotocol.io/specification/auth/)**.
 Instead of pushing registration data to the IdP, the Agent simply hosts a static JSON file on its domain (e.g., `https://agent.example.com/.well-known/oauth-client.json`).
 
 When the Agent requests a token, the IdP pulls this JSON file to verify the Agent's identity. This flips the trust model: the IdP only trusts Agents hosted on domains previously whitelisted by the Admin.
@@ -61,6 +61,7 @@ sequenceDiagram
     MCP->>IdP: 6. Validate Token (Introspection)
     MCP-->>A: 7. Return result (If valid)
 ```
+<p align="center"><em>Figure 2: SPIFFE-Backed OAuth flow for Workload Identity</em></p>
 
 1. **SPIFFE-Backed OAuth/OIDC (Most Common):**
    The Agent calls the local SPIRE Agent to get an SVID. It exchanges this SVID for an OAuth Token (JWT) from the Identity Provider, then uses that token to call the MCP Server.

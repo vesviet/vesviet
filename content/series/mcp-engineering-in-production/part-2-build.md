@@ -31,7 +31,7 @@ Before typing the first line of code, Tech Leads must agree on 3 vital principle
 In the Go ecosystem for MCP, historical development has created a notable split. Engineers need to clearly distinguish between the two main libraries:
 
 - **Community SDK (`github.com/mark3labs/mcp-go`):** Before the official project released its own SDK, this was the most popular community library. It is extremely flexible and pioneered support for various Transport Layers (including HTTP and SSE). However, in the long term, it relies on community maintenance efforts.
-- **Official SDK (`github.com/modelcontextprotocol/go-sdk`):** Starting in 2025-2026, the MCP project, in collaboration with Google, released the official SDK. It strictly adheres to every change in the Protocol Specification, perfectly optimizes automatic JSON Schema generation from Go struct tags, and offers enterprise-grade stability.
+- **Official SDK ([`github.com/modelcontextprotocol/go-sdk`](https://github.com/modelcontextprotocol/go-sdk)):** Starting in 2025-2026, the MCP project, in collaboration with Google, released the official SDK. It strictly adheres to every change in the Protocol Specification, perfectly optimizes automatic JSON Schema generation from Go struct tags, and offers enterprise-grade stability.
 
 In a Production Enterprise environment, **we strongly recommend/require using the Official SDK** to ensure long-term compatibility and receive the fastest security patches.
 

@@ -57,6 +57,7 @@ sequenceDiagram
     S2-->>Gateway: 5. Return PR diff
     Note over Gateway,S2: All logs across the system are tagged with Trace_ID XYZ-123
 ```
+<p align="center"><em>Figure 5: Gateway injecting Trace_ID for Distributed Tracing across multiple MCP Servers</em></p>
 
 ## 2. SIEM Integration and Audit Trail
 

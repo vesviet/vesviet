@@ -12,7 +12,7 @@ Welcome to the **MCP Engineering In Production: From Protocol To Enterprise Infr
 
 As of mid-2026, the Model Context Protocol (MCP) has moved beyond being just a support tool for code editors (like Cursor or Claude Code) to become the "USB-C for AI"—a mandatory communication standard for Agentic Workflows. However, bringing MCP from a local environment (`stdio`) to an Enterprise-scale production system is an entirely different challenge, full of hidden risks regarding security, identity, and governance.
 
-This series is designed to fill that gap. We will not stop at creating simple "tools". We will build MCP Servers using Go (`github.com/modelcontextprotocol/go-sdk`), deploy gateway architecture, apply the OAuth 2.1 identity standard with CIMD, and establish security guardrails against Tool Poisoning or Prompt Injection based on the OWASP MCP Top 10 (Beta).
+This series is designed to fill that gap. We will not stop at creating simple "tools". We will build MCP Servers using Go ([`github.com/modelcontextprotocol/go-sdk`](https://github.com/modelcontextprotocol/go-sdk)), deploy gateway architecture, apply the OAuth 2.1 identity standard with CIMD, and establish security guardrails against Tool Poisoning or Prompt Injection based on the [OWASP MCP Top 10 (Beta)](https://owasp.org/www-project-mcp-top-10/).
 
 ## Series Table of Contents
 

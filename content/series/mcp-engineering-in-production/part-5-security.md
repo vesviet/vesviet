@@ -21,7 +21,7 @@ As the Defense in Depth principles emphasized in the [AI Driven Playbook](/serie
 
 Unlike the OWASP LLM Top 10 (which focuses mainly on the AI model core itself), this new list is squarely aimed at **vulnerabilities in the MCP protocol** and how Agents carelessly interact with external Servers.
 
-*(Note: As of mid-2026, this list is still in Beta (Phase 3) hosted at `owasp.org/www-project-mcp-top-10`. The ordering may fluctuate, but the structural risks remain the same).*
+*(Note: As of mid-2026, this list is still in Beta (Phase 3) hosted at [`owasp.org/www-project-mcp-top-10`](https://owasp.org/www-project-mcp-top-10/). The ordering may fluctuate, but the structural risks remain the same).*
 
 ## The OWASP MCP Top 10 (Beta 2025/2026)
 
@@ -74,6 +74,7 @@ sequenceDiagram
     Note over Agent: LLM reads the description<br/>and mistakes it for a System Prompt
     Agent->>MCP: 4. Unconsciously executes malicious action (Data Exfiltration)
 ```
+<p align="center"><em>Figure 4: Data Exfiltration workflow triggered via Tool Poisoning</em></p>
 
 **Defense:**
 - **Gateway Sanitization:** The Gateway (see [Part 4](/series/mcp-engineering-in-production/part-4-gateway/)) must scan and sanitize all descriptions returned from the MCP Server before forwarding them to the Agent.

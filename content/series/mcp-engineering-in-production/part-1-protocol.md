@@ -15,7 +15,7 @@ aliases:
   - /series/mcp-engineering-in-production/part-1-protocol/
 ---
 
-To master a protocol, you must understand its DNA. Before we write Go code in the upcoming parts, we need to dismantle the architecture of the Model Context Protocol (MCP). Underneath the complex AI workflows, MCP is surprisingly simple and elegant. It is built on top of the **JSON-RPC 2.0** specification.
+To master a protocol, you must understand its DNA. Before we write Go code in the upcoming parts, we need to dismantle the architecture of the Model Context Protocol (MCP). Underneath the complex AI workflows, MCP is surprisingly simple and elegant. It is built on top of the **[JSON-RPC 2.0](https://www.jsonrpc.org/specification)** specification.
 
 ## 1. The 5 Core Primitives of MCP
 
@@ -59,6 +59,7 @@ graph TD
     C --> G[(Database / API)]
     D --> H[Local Files]
 ```
+<p align="center"><em>Figure 1: The 5 Core Primitives connecting an AI Agent to a Server via JSON-RPC 2.0</em></p>
 
 ## 2. Transport Evolution: From Local to Enterprise
 

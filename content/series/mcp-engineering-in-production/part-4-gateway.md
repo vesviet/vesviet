@@ -35,6 +35,7 @@ graph LR
         G -.->|Audit Logs| SIEM[(SIEM System)]
     end
 ```
+<p align="center"><em>Figure 3: N×M Connectivity chaos compared to centralized MCP Gateway governance</em></p>
 
 ## 1. The Role of the MCP Gateway
 
