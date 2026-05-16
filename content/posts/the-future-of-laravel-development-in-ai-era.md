@@ -28,10 +28,10 @@ Right now, we still rely on `php artisan make:model -a` and then manually fill i
 **The Workflow Shift:**
 ```mermaid
 flowchart LR
-    H[Human Intent\n"Create Invoice API"] --> A[AI Agent]
+    H["Human Intent<br>Create Invoice API"] --> A[AI Agent]
     A -->|Executes| M[Artisan Commands]
-    A -->|Writes| C[Controller, Model,\nRequest, Resource]
-    C --> H_Review[Human Review\n& Edge Cases]
+    A -->|Writes| C["Controller, Model,<br>Request, Resource"]
+    C --> H_Review["Human Review<br>& Edge Cases"]
 ```
 
 ---
@@ -44,12 +44,12 @@ In a Laravel + React (Inertia) stack, the AI has to mentally jump between PHP co
 
 ```mermaid
 flowchart TD
-    subgraph Inertia / React
+    subgraph Inertia_React [Inertia / React]
         A1[PHP Controller] -->|JSON Props| B1[React Component]
         B1 -->|State Mismatch Risk| C1[React State]
     end
 
-    subgraph TALL / Livewire
+    subgraph TALL_Livewire [TALL / Livewire]
         A2[Livewire PHP Class] <-->|Automatic Sync| B2[Blade View]
         style A2 fill:#e2ffe6,stroke:#2e7d32
         style B2 fill:#e2ffe6,stroke:#2e7d32
@@ -129,7 +129,7 @@ flowchart LR
     E[OrderPlaced Event] --> L[Listener]
     L --> Q1[ProcessPayment Job]
     Q1 -->|Success| Q2[AllocateInventory Job]
-    Q1 -->|Fail| F[Dead Letter Queue\nHuman Intervention]
+    Q1 -->|Fail| F["Dead Letter Queue<br>Human Intervention"]
     
     style Q1 fill:#fff3e0,stroke:#e65100
     style Q2 fill:#fff3e0,stroke:#e65100
@@ -173,10 +173,10 @@ Laravel has always been the indie-hacker's weapon of choice (thanks to Forge, Va
 
 ```mermaid
 flowchart TD
-    subgraph The Solo-Founder AI Stack
-        A[Claude/Cursor\nWrites Code] --> B[TALL Stack\nUI & Logic]
-        B --> C[Laravel Forge\nZero-Ops Deploy]
-        C --> D[Stripe Cashier\nBilling]
+    subgraph Solo_Stack [The Solo-Founder AI Stack]
+        A["Claude/Cursor<br>Writes Code"] --> B["TALL Stack<br>UI & Logic"]
+        B --> C["Laravel Forge<br>Zero-Ops Deploy"]
+        C --> D["Stripe Cashier<br>Billing"]
     end
 ```
 
