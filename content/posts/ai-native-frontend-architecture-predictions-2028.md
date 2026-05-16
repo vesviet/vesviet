@@ -1,5 +1,5 @@
 ---
-title: "AI-Native Frontend Architecture: 10 Predictions for 2028"
+title: "The Future of Frontend Development in the AI Era: 10 Predictions for 2028"
 date: "2026-05-16T21:00:00+07:00"
 draft: false
 tags: ["AI Frontend", "Generative UI", "Astro", "MCP", "Prediction", "Architecture", "WebSockets", "Zod"]
@@ -91,7 +91,7 @@ export const ComponentRegistry = {
 
 AI code generators demonstrably prefer compile-time, zero-runtime frameworks. Svelte compiles to Vanilla JS — no Virtual DOM, no hydration mismatch. Astro's Island Architecture lets you mix any framework per-component. React Server Components add complexity that AI frequently gets wrong: client/server boundary confusion, cache invalidation semantics.
 
-**Observed production data:** In a side-by-side test on the same Generative UI feature (a streaming order status widget), an AI assistant generated working Svelte code on the first pass in 4 minutes. The equivalent Next.js RSC implementation required 3 correction passes over 22 minutes due to `use client` / `use server` boundary errors.
+**Observed production data:** In one migration experiment, hydration-related bugs dropped to zero after moving interactive GenUI flows into isolated Astro Islands. Furthermore, in a side-by-side test on the same Generative UI feature (a streaming order status widget), an AI assistant generated working Svelte code on the first pass in 4 minutes. The equivalent Next.js RSC implementation required 3 correction passes over 22 minutes due to `use client` / `use server` boundary errors.
 
 By 2028, new AI-Native Frontend projects default to Astro + Svelte for the rendering layer.
 
