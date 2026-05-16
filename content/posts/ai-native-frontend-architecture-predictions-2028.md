@@ -204,6 +204,28 @@ Millions of `create-react-app` and Angular 12 single-page applications are runni
 
 By 2028, the industry will collectively realize that migrating these systems is as painful as migrating Magento 1 was in 2020. The antidote is the **Strangler Fig Pattern**: incrementally replacing SPA routes with Astro-powered AI-Native modules, proxied behind Nginx or Cloudflare.
 
+```mermaid
+flowchart TD
+    subgraph Edge [Cloudflare / Nginx]
+        R{Route\nMatcher}
+    end
+
+    subgraph Legacy [Legacy React SPA]
+        L1[Static Dashboard]
+        L2[Legacy Forms]
+    end
+
+    subgraph GenUI [Astro + Svelte]
+        G1[AI-Native\nInteractive Island]
+    end
+
+    R -->|/dashboard| L1
+    R -->|/settings| L2
+    R -->|/ai-assistant| G1
+    
+    style G1 fill:#e2ffe6,stroke:#2e7d32,stroke-width:2px
+```
+
 | Sprint | Deliverable | Risk | Rollback |
 |---|---|---|---|
 | Sprint 1 | Astro boilerplate + empty Registry + CI | 🟢 Low | Delete folder, zero prod impact |
