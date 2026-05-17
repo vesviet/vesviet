@@ -1,5 +1,6 @@
 ---
 title: "LeaseInVietnam: Building an AI-Powered Expat Relocation Hub with a B2B Lead Engine"
+slug: "leaseinvietnam-ai-powered-expat-rental-intelligence-system"
 date: "2026-04-24T10:00:00+07:00"
 draft: false
 mermaid: true
@@ -17,7 +18,7 @@ tags:
   - Go
   - PostgreSQL
   - Anti-Hallucination
-description: "How I built a fully autonomous AI pipeline that scrapes, verifies, and publishes expat rental intelligence for Southern Vietnam — and turns every article into a B2B lead funnel for moving, cleaning, furniture, and legal services."
+description: "Build an autonomous AI pipeline that scrapes and publishes expat rental intelligence for Vietnam, turning articles into a B2B lead funnel."
 ShowToc: true
 TocOpen: true
 ---

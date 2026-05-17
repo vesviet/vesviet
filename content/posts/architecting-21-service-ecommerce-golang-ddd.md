@@ -1,10 +1,11 @@
 ---
 title: "Architecting a 21-Service E-commerce Ecosystem with Golang & DDD"
+slug: "architecting-21-service-ecommerce-golang-ddd"
 date: 2026-04-12T10:00:00+07:00
 draft: false
 mermaid: true
 tags: ["Golang", "Microservices", "System Design", "Domain-Driven Design", "Kratos", "Dapr", "Saga Pattern"]
-description: "A deep dive into migrating a monolithic e-commerce stack to 21+ distributed microservices. Exploring real-world Kratos codebase structure, Saga patterns for distributed transactions, and handling inventory race conditions at scale."
+description: "Migrating an e-commerce monolith to 21+ distributed microservices using Golang & DDD. Explore Kratos architecture, Saga patterns, and race conditions."
 categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true

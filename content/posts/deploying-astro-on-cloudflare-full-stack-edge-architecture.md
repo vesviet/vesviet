@@ -1,5 +1,6 @@
 ---
 title: "Deploying on Cloudflare: Astro Full-Stack Edge Architecture and WordPress Behind the CDN"
+slug: "deploying-astro-on-cloudflare-full-stack-edge-architecture"
 date: "2026-04-24T14:00:00+07:00"
 draft: false
 mermaid: true
@@ -15,7 +16,7 @@ tags:
   - Architecture
   - DevOps
   - Performance
-description: "Two paths to Cloudflare: building a full-stack edge site with Astro, Workers, R2, D1, and Pagefind — and putting an existing WordPress site behind Cloudflare's CDN for near-zero TTFB on cached pages. Real config, cost breakdown, and the gotchas that matter."
+description: "Two paths to Cloudflare: building a full-stack edge site with Astro and putting WordPress behind Cloudflare CDN. Real config, costs, and gotchas."
 ShowToc: true
 TocOpen: true
 ---

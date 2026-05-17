@@ -4,7 +4,7 @@ slug: "exporting-magento-2-data-flat-sql-nodejs"
 date: "2024-03-09T03:38:22+00:00"
 draft: false
 tags: ["Magento", "SQL", "Node.js", "Data Migration", "EAV", "ETL"]
-description: "A production-grade guide to extracting order and product catalog data from Magento 2's EAV model — with direct SQL queries covering store-scope fallback, and a resilient Node.js streaming pipeline with backpressure, retry logic, and idempotency."
+description: "Production-grade guide to extracting data from Magento 2's EAV model. Includes direct SQL queries and a resilient Node.js streaming pipeline."
 categories: ["Engineering"]
 ShowToc: true
 TocOpen: true

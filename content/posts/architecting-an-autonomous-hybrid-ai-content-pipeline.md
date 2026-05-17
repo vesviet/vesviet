@@ -1,5 +1,6 @@
 ---
 title: "Architecting an Autonomous Hybrid-AI Pipeline: From Hobby Cron to Production State-Machine"
+slug: "architecting-an-autonomous-hybrid-ai-content-pipeline"
 date: "2026-03-14T21:10:00+07:00"
 draft: false
 mermaid: true
@@ -13,7 +14,7 @@ tags:
   - AI
   - System Design
   - Local LLMs
-description: "How I built a completely autonomous, energy-optimized OpenClaw pipeline using a multi-agent Hybrid AI architecture, blending Local Edge LLMs for massive ingestion with Cloud LLMs for intelligent synthesis, dropping daily costs from $3.50 to $0.05."
+description: "Build an autonomous OpenClaw pipeline using Hybrid AI architecture. Blend Local Edge LLMs with Cloud LLMs to optimize energy and drop daily costs to $0.05."
 ShowToc: true
 TocOpen: true
 ---

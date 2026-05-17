@@ -1,9 +1,10 @@
 ---
 title: "The Future of Laravel Development in the AI Era: 10 Predictions for 2028"
+slug: "the-future-of-laravel-development-in-ai-era"
 date: "2026-05-16T21:35:00+07:00"
 draft: false
 tags: ["Laravel", "PHP", "AI Coding", "Architecture", "Livewire", "DDD", "Prediction"]
-description: "A pragmatic field report on how AI coding agents are reshaping Laravel development. From zero-time CRUD to the rise of Modular Monoliths and Queue Orchestration."
+description: "Field report on how AI coding agents are reshaping Laravel development. From zero-time CRUD to the rise of Modular Monoliths and Queue Orchestration."
 categories: ["Engineering", "Strategy"]
 ShowToc: true
 TocOpen: true

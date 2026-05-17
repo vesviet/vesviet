@@ -1,10 +1,11 @@
 ---
 title: "GitOps at Scale: Orchestrating 21 Microservices with Kubernetes & ArgoCD"
+slug: "gitops-at-scale-kubernetes-argocd-microservices"
 date: 2026-04-12T07:00:00+07:00
 draft: false
 mermaid: true
 tags: ["GitOps", "Kubernetes", "ArgoCD", "Kustomize", "DevOps", "Microservices"]
-description: "Why running kubectl apply is a dangerous anti-pattern. How we automated the full deployment lifecycle of a 21-service Go platform using ArgoCD App-of-Apps, Kustomize overlays, and a production rollback strategy based on git revert."
+description: "Why kubectl apply is dangerous. Learn how to automate a 21-service Go platform using ArgoCD App-of-Apps, Kustomize, and git revert rollbacks."
 categories: ["DevOps", "Engineering"]
 ShowToc: true
 TocOpen: true

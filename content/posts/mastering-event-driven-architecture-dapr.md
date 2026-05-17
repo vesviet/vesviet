@@ -1,10 +1,11 @@
 ---
 title: "Mastering Event-Driven Architecture with Dapr Pub/Sub"
+slug: "mastering-event-driven-architecture-dapr"
 date: 2026-04-12T09:05:00+07:00
 draft: false
 mermaid: true
 tags: ["Event-Driven", "Dapr", "Message Queue", "Architecture", "Microservices"]
-description: "How to decouple a 21+ microservice ecosystem using Event-Driven Architecture, ensuring absolute data consistency through Sagas, Dead Letter Queues, and Idempotent handlers."
+description: "Decouple a 21+ microservice ecosystem using Event-Driven Architecture. Ensure data consistency via Sagas, Dead Letter Queues, and Idempotent handlers."
 categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true

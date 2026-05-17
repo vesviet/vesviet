@@ -1,10 +1,11 @@
 ---
 title: "Blueprint of a 21-Service E-commerce Edge: Architecture & Traffic Flow"
+slug: "blueprint-ecommerce-microservices-architecture-diagram"
 date: 2026-04-12T08:30:00+07:00
 draft: false
 mermaid: true
 tags: ["System Architecture", "Microservices", "Mermaid", "Golang", "API Gateway", "DDD", "Dapr", "Kubernetes"]
-description: "The complete architectural blueprint of a Go-based 21-service e-commerce platform — covering domain boundaries, traffic flow, event-driven patterns, and the exact design decisions behind every structural choice. The series anchor for the composable commerce posts."
+description: "Complete architectural blueprint of a Go 21-service e-commerce platform. Covers domain boundaries, traffic flow, and event-driven patterns."
 categories: ["Architecture", "System Design"]
 ShowToc: true
 TocOpen: true
