@@ -2,6 +2,7 @@
 title: "Prompt Standard for Product, Engineering, and Operations Teams"
 date: 2026-05-09T10:30:00+07:00
 draft: false
+weight: 30
 description: "A practical series helping both technical and non-technical team members understand what Prompt Standard is and how to apply it — from foundations to Context Engineering and PromptOps."
 categories:
   - Engineering

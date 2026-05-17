@@ -5,7 +5,7 @@ draft: false
 description: "A hands-on guide to deploying Model Context Protocol (MCP) servers in production enterprise environments using Go—from protocol fundamentals to security hardening and gateway architecture."
 ShowToc: true
 TocOpen: true
-weight: 15
+weight: 60
 ---
 
 Welcome to the **MCP Engineering In Production: From Protocol To Enterprise Infrastructure** series—an in-depth technical resource designed for Senior Backend Engineers, System Architects, and Security Engineers.

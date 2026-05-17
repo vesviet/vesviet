@@ -5,7 +5,7 @@ draft: false
 description: "In-depth knowledge on designing, building, and operating Multi-Agent systems in real-world production environments."
 ShowToc: true
 TocOpen: true
-weight: 10
+weight: 50
 ---
 
 Welcome to the **Agentic System Architecture** series - an in-depth technical resource for Senior Backend Engineers, System Architects, and AI Engineers.

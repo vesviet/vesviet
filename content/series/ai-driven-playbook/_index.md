@@ -2,6 +2,7 @@
 title: "The AI-Driven Engineer: Enterprise Playbook"
 date: 2026-05-12T08:00:00+07:00
 draft: false
+weight: 20
 description: "A deep-dive, hands-on technical series helping developers apply AI to real-world workflows: from IDE setup and internal RAG configuration to AI Gateway architectures and Observability."
 ShowToc: true
 TocOpen: true

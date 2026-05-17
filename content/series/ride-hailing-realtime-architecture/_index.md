@@ -2,6 +2,7 @@
 title: "The Real-time Architecture of Ride-Hailing Apps (Uber, Grab)"
 date: 2026-05-06T20:00:00+07:00
 draft: false
+weight: 120
 description: "An in-depth research series on how Uber, Grab, and Lyft build systems to process millions of GPS coordinates per second, match rides in real-time, calculate dynamic pricing, and push instant notifications to drivers."
 ShowToc: true
 TocOpen: true

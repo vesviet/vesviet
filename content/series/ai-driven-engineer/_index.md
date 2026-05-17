@@ -2,6 +2,7 @@
 title: "Roadmap: The AI-Driven Engineer - From Code Typist to Architect"
 date: 2026-05-10T14:00:00+07:00
 draft: false
+weight: 10
 description: "A series analyzing the core shift in the software engineering profession in the era of AI Agents, and the roadmap to upgrade from a code writer to a system architect."
 ShowToc: true
 TocOpen: true

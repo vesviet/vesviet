@@ -2,6 +2,7 @@
 title: "PayPay Architecture: Scaling for Planet-Scale Campaigns"
 date: 2026-05-05T21:00:00+07:00
 draft: false
+weight: 150
 description: "A structured research series on how PayPay scales its backend for massive campaigns using Microservices, Kafka, TiDB, and GitOps."
 ShowToc: true
 TocOpen: true

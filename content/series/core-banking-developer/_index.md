@@ -2,6 +2,7 @@
 title: "Learning Path to Become a Core Banking Developer"
 date: 2026-05-06T18:00:00+07:00
 draft: false
+weight: 100
 description: "A comprehensive learning series on Core Banking — from banking domain knowledge and transaction processing system design to microservices architecture and ISO standards integration."
 ShowToc: true
 TocOpen: true

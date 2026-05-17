@@ -5,7 +5,7 @@ draft: false
 description: "A 7-part series on building Generative UI with Astro + Svelte. A secure, framework-agnostic AI-Native Frontend architecture for Agentic systems."
 ShowToc: true
 TocOpen: true
-weight: 11
+weight: 70
 tags: ["Generative UI", "AI Frontend", "Astro", "MCP Frontend", "AI-Native"]
 ---
 
