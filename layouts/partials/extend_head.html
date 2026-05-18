@@ -10,3 +10,24 @@
   gtag('config', 'G-E87WX5RPQ4');
 </script>
 {{ end }}
+
+<style>
+  /* ── Cover image: constrain to banner height (PaperMod: figure.entry-cover) ── */
+  figure.entry-cover,
+  figure.entry-cover img {
+    max-height: 480px;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  /* Tighter on mobile */
+  @media (max-width: 768px) {
+    figure.entry-cover,
+    figure.entry-cover img {
+      max-height: 240px;
+    }
+  }
+</style>
+

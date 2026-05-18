@@ -27,6 +27,12 @@ apple_touch_icon = "/apple-touch-icon.png"
   ShowReadingTime = true
   ShowPostNavLinks = true
   ShowBreadCrumbs = true
+
+[params.cover]
+  hidden = false           # show cover images
+  hiddenInList = true      # hide on homepage / list pages — keep list clean
+  hiddenInSingle = false   # show on individual post pages
+  responsiveImages = true  # generate srcset for performance
   
 [params.profileMode]
   enabled = true
