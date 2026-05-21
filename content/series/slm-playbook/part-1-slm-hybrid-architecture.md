@@ -69,7 +69,7 @@ Inference memory consumption is simpler, as gradients and optimizer states are n
 $$\text{VRAM}_{\text{Inference}} = \text{Model Weights} + \text{KV Cache Memory} + \text{Overhead Buffer}$$
 
 *   For Llama 3 8B (running at FP16), static weights occupy **16 GB**.
-*   The remaining VRAM is allocated to the **KV Cache pool** in vLLM to store conversation contexts for concurrent user sessions.
+*   The remaining VRAM is allocated to the **KV Cache pool** in vLLM to store conversation contexts for concurrent user sessions (For a deeper look into memory management via PagedAttention to optimize KV Cache on vLLM, refer to [Part 8: Inference Optimization & vLLM Deployment on Production](/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/)).
 
 ---
 
@@ -118,7 +118,7 @@ lineChart
 
 ## 4. Designing a Hybrid Routing Architecture
 
-To capture the economics of local SLMs while retaining the reasoning depth of frontier models for edge-case queries, we deploy a **Hybrid Router Gateway**.
+To capture the economics of local SLMs while retaining the reasoning depth of frontier models for edge-case queries, we deploy a **Hybrid Router Gateway**. This routing gateway shares concepts with Multi-Agent Router topologies. To understand Agent Topology design patterns, refer to [Part 1: Agent Topology & Orchestration](/series/agentic-system-architecture/part-1-topology/) and [Part 4: MCP Gateway Architecture](/series/mcp-engineering-in-production/part-4-gateway/).
 
 ### System Architecture
 

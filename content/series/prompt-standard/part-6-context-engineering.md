@@ -55,13 +55,13 @@ Instead of cramming knowledge into the prompt, you:
 - at query time, retrieve only the relevant chunks
 - inject those chunks into the context window alongside the user's question
 
-This keeps the model grounded in real data and dramatically reduces hallucination.
+This keeps the model grounded in real data and dramatically reduces hallucination (See details on enterprise RAG pipelines in [Series: Enterprise AI Data Pipeline & GraphRAG Architecture](/series/ai-data-engineering-pipeline/)).
 
 ### 2. MCP (Model Context Protocol)
 
 MCP is an open protocol (originally introduced by Anthropic) that standardizes how AI agents connect to external tools, databases, and enterprise systems.
 
-Think of it as **USB-C for AI agents**: one protocol, any tool.
+Think of it as **USB-C for AI agents**: one protocol, any tool (See details on building MCP servers in [Series: MCP Engineering In Production](/series/mcp-engineering-in-production/)).
 
 Before MCP, every agent-tool integration was custom-built. MCP provides:
 - a standard discovery mechanism (the agent can ask "what tools are available?")

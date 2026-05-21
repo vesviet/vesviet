@@ -16,7 +16,7 @@ The answer lies in the **Component Registry** — the interface resolution brain
 
 ## 3.1. The Convergence of MCP (Model Context Protocol) and Frontend
 
-To understand the Component Registry, we need to go upstream to the Backend. On the Backend, modern Agentic systems are standardizing communication with peripheral systems (like Databases, APIs) via the **MCP (Model Context Protocol)** standard.
+To understand the Component Registry, we need to go upstream to the Backend. On the Backend, modern Agentic systems are standardizing communication with peripheral systems (like Databases, APIs) via the **MCP (Model Context Protocol)** standard (See details in [Series: MCP Engineering In Production](/series/mcp-engineering-in-production/)).
 
 When an Agent wants to fetch weather data, it doesn't call the API itself. It issues a **Tool Call**:
 ```json
