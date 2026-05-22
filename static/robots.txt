@@ -1,5 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /*.xml$
+Allow: /sitemap.xml
+Allow: /index.xml
 
 Sitemap: https://tanhdev.com/sitemap.xml
 

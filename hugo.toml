@@ -93,3 +93,10 @@ apple_touch_icon = "/apple-touch-icon.png"
     name = "Wiki"
     url = "https://wiki.tanhdev.com/"
     weight = 20
+
+[outputs]
+  home = ["HTML", "RSS"]
+  page = ["HTML"]
+  section = ["HTML"]
+  taxonomy = ["HTML"]
+  term = ["HTML"]
