@@ -86,7 +86,7 @@
             {{- range site.Menus.main }}
             {{- if .HasChildren }}
             <li class="dropdown">
-                <a href="javascript:void(0)" class="dropbtn" title="{{ .Title | default .Name }}">
+                <a href="#" class="dropbtn" title="{{ .Title | default .Name }}" onclick="event.preventDefault();">
                     <span>
                         {{- .Pre }}
                         {{- .Name -}}

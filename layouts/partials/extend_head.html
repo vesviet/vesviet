@@ -31,3 +31,26 @@
   }
 </style>
 
+<!-- Preload LCP Images for Core Web Vitals -->
+{{- if .IsHome }}
+  {{- with site.Params.profileMode }}
+    {{- if .imageUrl }}
+      <link rel="preload" as="image" href="{{ .imageUrl | absURL }}">
+    {{- end }}
+  {{- end }}
+{{- else if .IsPage }}
+  {{- if .Params.cover.image }}
+    {{- $img := "" }}
+    {{- if not (urls.Parse .Params.cover.image).IsAbs }}
+      {{- $img = resources.Get .Params.cover.image }}
+    {{- end }}
+    {{- if $img }}
+      {{- $processableFormats := (slice "jpg" "jpeg" "png" "tif" "bmp" "gif" "webp") -}}
+      {{- if in $processableFormats $img.MediaType.SubType }}
+        <link rel="preload" as="image" href="{{ $img.Permalink }}">
+      {{- end }}
+    {{- else }}
+      <link rel="preload" as="image" href="{{ .Params.cover.image | absURL }}">
+    {{- end }}
+  {{- end }}
+{{- end }}
