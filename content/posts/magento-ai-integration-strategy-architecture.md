@@ -35,18 +35,15 @@ The most common point of failure when adding AI to Magento is installing market-
 
 Consider a standard transaction flow: a customer updates their cart, or an administrator saves a product catalog change. In a standard Magento installation, these write operations are wrapped in MySQL database transactions. 
 
-```
-[User Action] ➔ [Magento Controller] ➔ [Begin DB Transaction]
-                                                 │
-                                                 ▼
-                                     [Sync LLM API Call (OpenAI)]
-                                     (PHP Thread Blocks for 2s)
-                                                 │
-                                                 ▼
-[Rollback / Timeout] 🖚 [MySQL Table/Row Locks Held]
-                                                 │
-                                                 ▼
-[PHP-FPM Exhaustion] 🖚 [Deadlocks & 500 Errors]
+```mermaid
+graph TD
+    A[User Action] --> B[Magento Controller]
+    B --> C[Begin DB Transaction]
+    C --> D[Sync LLM API Call]
+    D -->|PHP Thread Blocks 1-3s| E[MySQL Table/Row Locks Held]
+    E --> F[Lock Contention / Deadlocks]
+    F --> G[Rollback / Timeout]
+    F --> H[PHP-FPM Exhaustion & 500 Errors]
 ```
 
 If an AI plugin is wired to trigger during these events (for instance, to auto-tag a product during save or fetch custom up-sell options during checkout) and makes a synchronous external API call (e.g., to OpenAI or Claude), the following chain reaction occurs:
@@ -67,11 +64,23 @@ For a deeper dive on applying this pattern to legacy stacks, see the [Magento to
 
 The decoupled architecture consists of three components:
 
-```
-[Magento MySQL] ➔ [Debezium CDC] ➔ [Kafka / Event Broker] ➔ [AI Sync Service] ➔ [Vector DB]
-                                                                                      │
-                                                                                      ▼
-[Headless Frontend / API Gateway] ◄───────────────────────────────────────────── [LLM / Search]
+```mermaid
+graph LR
+    subgraph Transactional Core
+        A[(Magento MySQL)]
+    end
+    
+    subgraph Async Pipeline
+        A -->|Debezium CDC| B[Kafka Broker]
+        B --> C[AI Sync Service]
+        C -->|Embeddings| D[(Vector DB)]
+    end
+    
+    subgraph Storefront
+        E[Headless Frontend] -->|Search Intent| F[API Gateway]
+        F --> G[LLM / AI Agent]
+        G -.->|Query| D
+    end
 ```
 
 ### Step 1: Change Data Capture (CDC)
