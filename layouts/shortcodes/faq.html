@@ -4,4 +4,4 @@
   <strong class="faq-question">{{ $question }}</strong>
   <div class="faq-answer" style="margin-top: 0.5rem;">{{ $answer }}</div>
 </div>
-{{- .Page.Store.Add "faqs" (dict "question" $question "answer" ($answer | plainify)) -}}
+{{- .Page.Store.Add "faqs" (slice (dict "question" $question "answer" ($answer | plainify))) -}}
