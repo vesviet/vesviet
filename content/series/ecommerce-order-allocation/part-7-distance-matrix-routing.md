@@ -79,7 +79,7 @@ Therefore, modern Routing Engines use "pre-processing" techniques:
 1. **Contraction Hierarchies (CH):** Spends a few hours pre-analyzing the map to create "shortcuts" (virtual highways) between areas. At query time, the algorithm jumps across these shortcuts rather than traversing every alley → Query time drops to **microseconds**. The downside is that if a road closes, you must rebuild the entire map.
 2. **Multi-Level Dijkstra (MLD) / Customizable Route Planning (CRP):** Divides the map into small cells. Updating the cost of a road only requires updating that specific cell (taking seconds) rather than the whole map. Great for real-time traffic injection.
 
-### The Open-Source Giants: OSRM vs GraphHopper
+### The Open-Source Giants: OSRM and GraphHopper Distance Matrix
 
 In custom logistics systems, the two most famous open-source engines are **OSRM** (C++) and **GraphHopper** (Java).
 

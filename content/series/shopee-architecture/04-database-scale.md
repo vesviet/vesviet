@@ -1,9 +1,9 @@
 ---
-title: "Chapter 4: Database Scale - From MySQL Sharding to the TiDB Dragon"
+title: "Chapter 4: How to Scale MySQL with TiDB NewSQL"
 date: 2026-05-05T08:40:00+07:00
 draft: false
 mermaid: true
-description: "How Shopee scales its data layer using TiDB and NewSQL to replace complex MySQL sharding."
+description: "Learn how to scale MySQL for E-commerce and how Shopee migrated from complex MySQL sharding to TiDB NewSQL architecture."
 ShowToc: true
 TocOpen: true
 ---
@@ -14,7 +14,7 @@ TocOpen: true
 
 No matter how many layers of Cache or Message Queues you have, the final destination of all transactional data is the Database (the Source of Truth). With tens of millions of daily orders and billions of records, traditional RDBMS like standalone MySQL quickly hit dangerous bottlenecks. The B+Tree index grows too deep, and Disk IOPS reach their physical ceiling.
 
-## 1. The Nightmare of MySQL Sharding
+## 1. How to Scale MySQL? The Nightmare of Sharding
 Historically, to scale out MySQL, Shopee (and other tech giants) utilized **Database Sharding**.
 - An enormous `Orders` table would be chopped into hundreds of physical databases. For example, using a hashing algorithm on `user_id` (`user_id % 100`) to route orders into Shard 0 through 99.
 - **The Core Issues:**
@@ -52,7 +52,7 @@ graph TD
 
 ## 3. HTAP (Hybrid Transactional and Analytical Processing)
 A massive advantage of the TiDB ecosystem is **TiFlash**.
-Normally, you would need complex overnight ETL pipelines to extract data from an OLTP database (MySQL) into a Data Warehouse (like Hadoop or Snowflake) for business reporting. Instead, TiFlash automatically replicates data from TiKV (Row-based format) into a Column-based format in real-time.
+Normally, you would need complex overnight ETL pipelines to extract data from an OLTP database (MySQL) into a Data Warehouse (like Hadoop or Snowflake) for business reporting. Instead, TiFlash automatically replicates data from TiKV (Row-based format) into a Column-based format in real-time. This is highly beneficial for use cases like [real-time inventory synchronization](/series/ecommerce-order-allocation/part-2-inventory-realtime/) across distributed systems.
 
 This allows Shopee's operation teams to run massive `SELECT ... GROUP BY` analytics queries across billions of Flash Sale records instantly, without causing any lag to the live transactional checkout flow of users.
 

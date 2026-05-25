@@ -177,3 +177,26 @@
     }
   });
 </script>
+
+{{- $faqs := .Store.Get "faqs" -}}
+{{- if $faqs -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {{- range $i, $faq := $faqs -}}
+    {{- if $i -}},{{- end -}}
+    {
+      "@type": "Question",
+      "name": {{ $faq.question | jsonify }},
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": {{ $faq.answer | jsonify | safeJS }}
+      }
+    }
+    {{- end -}}
+  ]
+}
+</script>
+{{- end -}}

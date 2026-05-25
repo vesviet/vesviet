@@ -6,6 +6,16 @@ description: "Decoding Surge Pricing — a system that continuously monitors sup
 weight: 6
 ---
 
+## What is Surge Pricing? (FAQ)
+
+{{< faq q="What is surge pricing?" >}}
+Surge pricing (or dynamic pricing) is an economic strategy where companies temporarily increase prices during periods of high demand and low supply.
+{{< /faq >}}
+
+{{< faq q="How is surge rate calculated?" >}}
+It is calculated by a pricing engine that evaluates the ratio of incoming requests (demand) versus available resources (supply) in a specific geographical zone.
+{{< /faq >}}
+
 ## Why is Surge Pricing Necessary?
 
 On New Year's Eve, during heavy rain, or at rush hour — the demand for rides skyrockets, but the number of available drivers remains unchanged. If prices were kept fixed:
@@ -82,7 +92,9 @@ Cell D (District 9 - Outskirts): Supply=12, Demand=3   → Surge 1.0x
 
 ## Step 2: Calculating the Surge Multiplier
 
-### The Basic Model: Supply-Demand Ratio
+### The Basic Model: Supply-Demand Ratio and Allocation Algorithms
+
+Just like in e-commerce [allocation algorithms](/series/ecommerce-order-allocation/part-3-allocation-algorithms/) that decide which warehouse fulfills an order, the surge engine evaluates resources dynamically.
 
 ```
 surge_multiplier = f(demand / supply)
