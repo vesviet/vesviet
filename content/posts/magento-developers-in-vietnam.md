@@ -10,7 +10,9 @@ ShowToc: true
 TocOpen: true
 ---
 
-If you are searching for **Magento developers in Vietnam**, you are not searching for a job listing — you are trying to answer a harder question: how do you distinguish a developer who can safely own a revenue-critical commerce system from one who can install plugins and edit themes?
+If you are searching for individual **Magento developers in Vietnam** to hire as in-house engineers or freelancers, you are not searching for a job listing — you are trying to answer a harder question: how do you distinguish a developer who can safely own a revenue-critical commerce system from one who can install plugins and edit themes?
+
+> **Note:** If you are instead looking to hire a full development team or evaluate project proposals, please read our guide on [Magento Agency & Development in Vietnam: Scoping Guide](/posts/magento-development-in-vietnam/).
 
 Vietnam's Magento talent market is large, but the label "Magento developer" covers an enormous range of capability. This guide is about how to tell the difference before you hire, not after you've shipped a broken checkout to production.
 

@@ -1,5 +1,5 @@
 ---
-title: "Magento Development in Vietnam: How to Scope, Estimate, and Evaluate a Project"
+title: "Magento Agency & Development in Vietnam: Scoping Guide"
 slug: "magento-development-in-vietnam"
 date: 2026-04-30T09:10:00+07:00
 draft: false
@@ -12,7 +12,9 @@ TocOpen: true
 
 **Magento development in Vietnam** can look very different depending on what you are actually buying — and many failed projects come down to a mismatch between what was scoped and what was built.
 
-This guide is for the person managing or commissioning a Magento project: the PM, the CTO, or the e-commerce director who needs to evaluate a proposal, structure an engagement, and track delivery without being misled by vague timelines or unspecified complexity.
+This guide is for the person managing or commissioning a project with a **Magento agency**: the PM, the CTO, or the e-commerce director who needs to evaluate a proposal, structure an engagement, and track delivery without being misled by vague timelines or unspecified complexity.
+
+> **Note:** If you are not looking for an agency or project scoping guide, but rather looking to hire individual in-house or freelance engineers, please see our guide on [Magento Developers in Vietnam: A Technical Hiring and Vetting Guide](/posts/magento-developers-in-vietnam/).
 
 ## The Four Effort Layers (and Why Proposals Often Undercount Them)
 
@@ -124,6 +126,16 @@ The answer should include specific tools (k6, Locust, or similar) and specific m
 
 **On post-launch:**
 > "What does your post-launch hypercare look like, and what's the SLA for production incidents in the first 30 days?"
+
+---
+
+## How to Choose a Magento Agency in Vietnam?
+
+When selecting a **Magento agency in Vietnam**, look beyond their portfolio of launched sites. A portfolio proves they can design a theme; it does not prove they can build a stable backend.
+
+- **Ask about their testing culture**: Do they use staging environments? Do they have a QA team? 
+- **Check their integration depth**: Ask how they handled a specific ERP or payment integration failure in the past. 
+- **Verify their hypercare period**: A reliable agency will include a post-launch support phase (hypercare) to handle the inevitable edge cases that surface when real traffic hits the store.
 
 ---
 
