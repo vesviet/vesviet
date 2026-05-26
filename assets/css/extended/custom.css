@@ -2,6 +2,12 @@
   Master UI/UX Adjustments for tanhdev.com 
 */
 
+:root {
+    --main-width: 840px;
+    --nav-width: 1200px;
+}
+
+
 /* 1. Button Hierarchy (Phân cấp nút bấm) */
 .profile .buttons .button {
     transition: all 0.2s ease-in-out;
@@ -153,11 +159,15 @@
     transition: transform 0.2s ease;
 }
 
-.dropdown:hover .dropdown-icon {
+.dropdown:hover .dropdown-icon,
+.dropdown:focus-within .dropdown-icon,
+.dropdown.open .dropdown-icon {
     transform: rotate(180deg);
 }
 
-.dropdown:hover .dropdown-content {
+.dropdown:hover .dropdown-content,
+.dropdown:focus-within .dropdown-content,
+.dropdown.open .dropdown-content {
     display: block;
     animation: fadeUp 0.15s ease-out forwards;
 }
@@ -188,4 +198,11 @@
         justify-content: flex-start;
         gap: 8px;
     }
+}
+
+/* Accessibility Focus States */
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
 }

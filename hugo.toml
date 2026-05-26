@@ -38,7 +38,7 @@ apple_touch_icon = "/apple-touch-icon.png"
   enabled = true
   title = "Le Tuan Anh - Senior Software Engineer"
   subtitle = """<span style="font-size: 1.1em;">**Backend Architecture & Platform Specialist**</span><br><br>17+ years of building resilient systems and architecting high-traffic platforms.<div class="exp-list"><div class="exp-item">🚀 **Led Monolith-to-Microservices Migration** (21 Go services, Zero Downtime)</div><div class="exp-item">⚡ **Architected Event-Driven Systems** (Dapr Pub/Sub, Sagas)</div><div class="exp-item">⚙️ **Operated GitOps Deployments** (Kubernetes, ArgoCD, High-Traffic)</div></div>"""
-  imageUrl = "https://github.com/vesviet.png"
+  imageUrl = "https://github.com/vesviet.png?size=240"
   imageTitle = "Le Tuan Anh - Senior Software Engineer and Backend Architecture Specialist"
   imageWidth = 120
   imageHeight = 120

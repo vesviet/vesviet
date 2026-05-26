@@ -145,3 +145,34 @@
         </ul>
     </nav>
 </header>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const dropdowns = document.querySelectorAll('#menu .dropdown');
+    dropdowns.forEach(dropdown => {
+      const btn = dropdown.querySelector('.dropbtn');
+      if (btn) {
+        btn.addEventListener('click', (e) => {
+          if (window.innerWidth <= 768) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Close other dropdowns
+            dropdowns.forEach(other => {
+              if (other !== dropdown) {
+                other.classList.remove('open');
+              }
+            });
+            
+            dropdown.classList.toggle('open');
+          }
+        });
+      }
+    });
+
+    // Close when tapping outside
+    document.addEventListener('click', () => {
+      dropdowns.forEach(el => el.classList.remove('open'));
+    });
+  });
+</script>
