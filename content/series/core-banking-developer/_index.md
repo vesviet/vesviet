@@ -22,3 +22,5 @@ The learning path is divided into knowledge layers, from business mindset to dis
 - [Part 5 — International Integration Standards: ISO 8583 & ISO 20022](/series/core-banking-developer/part-5-iso-standards-integration/)
 - [Part 6 — Security, Compliance & Audit](/series/core-banking-developer/part-6-security-compliance-audit/)
 - [Part 7 — Practice: Build a Mini Core Banking System from Scratch](/series/core-banking-developer/part-7-build-mini-core-banking/)
+- [Part 8 — Product Management: How to Structure a Core Banking PRD](/series/core-banking-developer/part-8-core-banking-prd/)
+
