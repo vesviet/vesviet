@@ -65,4 +65,6 @@ This allows Shopee's operation teams to run massive `SELECT ... GROUP BY` analyt
 - [PingCAP Case Study: How Shopee scales its Database with TiDB](https://www.pingcap.com/case-studies/shopee-scales-its-database-with-tidb/)
 - [TiDB HTAP Architecture and TiFlash](https://www.pingcap.com/blog/htap-database-what-is-it-and-why-you-need-it/)
 
+🔗 **Deep Dive:** For a comprehensive engineering analysis of the complete spectrum from MySQL replication to sharding to TiDB, including distributed ACID transactions and MVCC internals, read our standalone guide: [Scalable Database Architecture: How to Scale MySQL from Replication to Sharding and TiDB](/posts/mysql-scaling-sharding-tidb-architecture/).
+
 {{< author-cta >}}

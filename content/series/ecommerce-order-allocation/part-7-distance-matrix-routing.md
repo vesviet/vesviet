@@ -1,8 +1,8 @@
 ---
-title: "Part 7 — Distance Matrix: Routing Distance Calculation Algorithms"
+title: "Part 7 — Distance Matrix Routing: Haversine, OSRM, and GraphHopper Distance Matrix"
 date: 2026-05-06T20:30:00+07:00
 draft: false
-description: "The final puzzle piece of routing: How to quickly and accurately calculate a distance matrix for thousands of coordinates using Haversine, OSRM, or GraphHopper."
+description: "How to calculate a GraphHopper distance matrix at scale: compare Haversine, OSRM Table API, and GraphHopper Matrix API for ecommerce routing optimization."
 weight: 8
 ---
 
@@ -68,6 +68,8 @@ def build_haversine_matrix(locations):
 
 If your problem **only requires delivering from a fixed warehouse to customers**, **without caring about real-time traffic** or **rush hour histories**, and solely needs distance based on the **actual existing road network** — then this is the perfect, most cost-effective solution.
 
+> **Prerequisite:** This section assumes familiarity with [Order Allocation Algorithms](/series/ecommerce-order-allocation/part-3-allocation-algorithms/) and how a VRP solver consumes a pre-built distance matrix.
+
 You need a **Routing Engine** to load road network graph data. This data is usually downloaded for free from **OpenStreetMap (OSM)** — which the community constantly updates whenever a new road is built, an alley is removed, or weight restrictions change. When the roads change, you simply re-download the map file (`.osm.pbf`) and restart the engine.
 
 ### Why not standard Dijkstra or A*?
@@ -121,6 +123,110 @@ curl "http://localhost:5000/table/v1/driving/106.70,10.77;106.71,10.78;106.72,10
 
 **Pros of self-hosting:** Free, insanely fast, zero rate limits.
 **Cons:** RAM heavy (especially if loading an entire country's map).
+
+---
+
+## How to Calculate a Distance Matrix with GraphHopper
+
+**GraphHopper** is the most developer-friendly open-source routing engine for building a distance matrix in Java or via a self-hosted HTTP API. Unlike OSRM, GraphHopper supports runtime routing rule changes via **Custom Models** — making it the preferred choice when your delivery fleet has vehicle-specific constraints (weight limits, road class restrictions).
+
+### Option A: GraphHopper Matrix API (Self-hosted)
+
+Self-host the GraphHopper server with Docker and call the `/matrix` endpoint:
+
+```bash
+# Start GraphHopper server with a local OSM map file
+docker run -d -p 8989:8989 \
+  -v $(pwd)/data:/data \
+  israelhikingmap/graphhopper \
+  --url https://download.geofabrik.de/asia/vietnam-latest.osm.pbf \
+  --host 0.0.0.0
+```
+
+```python
+import requests
+import json
+
+def build_graphhopper_distance_matrix(locations: list[dict]) -> dict:
+    """
+    Calculate a full GraphHopper distance matrix for a list of lat/lng points.
+    Returns duration (seconds) and distance (meters) for every pair.
+    Args:
+        locations: List of dicts with 'lat' and 'lng' keys.
+    Returns:
+        dict with 'durations' and 'distances' 2D arrays.
+    """
+    url = "http://localhost:8989/matrix"
+
+    # GraphHopper Matrix API requires [lng, lat] order (GeoJSON convention)
+    points = [[loc["lng"], loc["lat"]] for loc in locations]
+
+    payload = {
+        "points": points,
+        "profile": "car",                     # Routing profile: car, bike, foot
+        "out_arrays": ["times", "distances"],  # Request both duration and distance
+        "fail_fast": False                     # Return partial results if a pair is unreachable
+    }
+
+    response = requests.post(url, json=payload, timeout=30)
+    response.raise_for_status()
+    data = response.json()
+
+    return {
+        "durations": data["times"],       # N×N matrix in seconds
+        "distances": data["distances"]    # N×N matrix in meters
+    }
+
+# Example: 3 warehouses / delivery points in Ho Chi Minh City
+locations = [
+    {"lat": 10.7712, "lng": 106.7011},  # Warehouse
+    {"lat": 10.7780, "lng": 106.7100},  # Customer A
+    {"lat": 10.7650, "lng": 106.6980},  # Customer B
+]
+
+matrix = build_graphhopper_distance_matrix(locations)
+print(f"Duration matrix (seconds): {matrix['durations']}")
+print(f"Distance matrix (meters):  {matrix['distances']}")
+# Output:
+# Duration matrix (seconds): [[0, 320, 185], [315, 0, 410], [180, 405, 0]]
+# Distance matrix (meters):  [[0, 2100, 1350], [2050, 0, 2900], [1300, 2880, 0]]
+```
+
+### Option B: GraphHopper Java SDK (Embedded)
+
+For Java-based logistics backends, embed GraphHopper directly without a network hop:
+
+```java
+// Embedded GraphHopper distance matrix calculation
+// Purpose: Build an NxN distance matrix without requiring a running HTTP server
+import com.graphhopper.GraphHopper;
+import com.graphhopper.config.CHProfile;
+import com.graphhopper.config.Profile;
+import com.graphhopper.routing.util.EncodingManager;
+
+GraphHopper hopper = new GraphHopper();
+hopper.setOSMFile("/data/vietnam-latest.osm.pbf");
+hopper.setGraphHopperLocation("/data/graph-cache");
+hopper.setProfiles(new Profile("car").setVehicle("car").setWeighting("fastest"));
+hopper.getCHPreparationHandler().setCHProfiles(new CHProfile("car"));
+hopper.importOrLoad();
+
+// Use GHMatrixAPI to compute full NxN matrix
+// See: https://github.com/graphhopper/graphhopper/tree/master/web-api
+```
+
+### GraphHopper vs. OSRM: Which to Choose for Distance Matrix?
+
+| Criterion | GraphHopper Distance Matrix | OSRM Table API |
+|---|---|---|
+| **Speed (large matrices)** | Fast (CH/MLD) | Slightly faster (C++ optimized) |
+| **Custom vehicle rules** | ✅ Runtime Custom Models | ❌ Requires recompile + Lua |
+| **Java ecosystem** | ✅ Native SDK | ❌ HTTP only |
+| **Docker ease** | ✅ Official image | ✅ Official image |
+| **OSM data format** | `.osm.pbf` | `.osm.pbf` |
+| **Best for** | Flexible profiles, Java backends | Max throughput, static profiles |
+
+**Rule of thumb:** Use **OSRM** if you have a fixed vehicle type and need maximum raw speed. Use **GraphHopper** if you need to change routing rules at runtime (truck weight limits, toll avoidance, time-dependent costs).
 
 ---
 
@@ -224,4 +330,8 @@ When the OR-Tools system runs the next day, it reads purely from Redis RAM at th
 - [Uber Engineering: H3 Hexagonal Hierarchical Spatial Index](https://www.uber.com/en-VN/blog/h3/)
 - [Google Maps Platform Pricing: Distance Matrix API](https://mapsplatform.google.com/pricing/)
 - [Open Source Routing Machine (OSRM)](http://project-osrm.org/)
-- [GraphHopper Routing Engine](https://www.graphhopper.com/)
+- [GraphHopper Routing Engine Documentation](https://www.graphhopper.com/)
+- [GraphHopper Matrix API Reference](https://docs.graphhopper.com/#tag/Matrix-API)
+- [OpenStreetMap Vietnam Data (Geofabrik)](https://download.geofabrik.de/asia/vietnam.html)
+
+🔗 **Next Step:** Now that you understand how to build an accurate distance matrix with GraphHopper, see how this feeds into [Part 6 — Building a Mini Allocation Engine](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/) and the complete [Series Executive Summary](/series/ecommerce-order-allocation/executive-summary/).

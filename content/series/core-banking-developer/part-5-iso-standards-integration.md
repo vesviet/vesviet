@@ -6,6 +6,8 @@ description: "The two most important financial communication standards in the wo
 weight: 6
 ---
 
+> **Prerequisite:** This article covers the external communication layer of Core Banking. Before diving in, ensure you understand how the internal services are structured — see [Part 4 — Banking Microservices Architecture](/series/core-banking-developer/part-4-modern-core-banking-architecture/) for the foundational service topology and event-driven patterns.
+
 ## Why are international standards important?
 
 Core Banking does not operate in isolation. It must communicate with:

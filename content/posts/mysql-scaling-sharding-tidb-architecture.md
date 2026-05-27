@@ -1,5 +1,5 @@
 ---
-title: "How to scale MySQL: from replication to sharding and TiDB"
+title: "Scalable Database Architecture: How to Scale MySQL from Replication to Sharding and TiDB"
 slug: "mysql-scaling-sharding-tidb-architecture"
 date: "2026-05-26T14:00:00+07:00"
 draft: false
@@ -14,7 +14,7 @@ tags:
   - "TiDB"
   - "Sharding"
   - "NewSQL"
-description: "Learn how to scale MySQL horizontally, from read replicas to sharding. Discover the operational pains of database partitioning and how TiDB replaces sharding."
+description: "Scalable database architecture deep-dive: scale MySQL from read replicas to sharding (Vitess) and migrate to distributed NewSQL with TiDB."
 ShowToc: true
 TocOpen: true
 ---

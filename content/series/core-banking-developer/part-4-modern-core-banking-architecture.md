@@ -1,20 +1,22 @@
 ---
-title: "Part 4 — Modern Core Banking Architecture (Microservices & Event-Driven)"
+title: "Part 4 — Modern Core Banking Architecture: Microservices in Banking (Event-Driven)"
 date: 2026-05-06T18:00:00+07:00
 draft: false
-description: "How next-generation digital banks escape monolithic legacy architectures and build Core Banking using Microservices, Event Sourcing, CQRS, and the Saga Pattern."
+description: "How digital banks escape monolithic legacy systems and build Core Banking with banking microservices architecture: Event Sourcing, CQRS, and Saga."
 weight: 5
 ---
 
-## From Monolith to Modern Core Banking
+> **Prerequisite:** This article assumes familiarity with [ACID transactions and database concurrency](/series/core-banking-developer/part-3-database-transactions-acid/) at the database layer. Understanding why consistency guarantees are hard is essential context before we introduce the distributed patterns here.
 
-Traditional Core Banking systems (like T24 or Flexcube) are built with a **Monolithic** architecture — the entire business logic (CIF, CASA, Lending, GL, Payments...) runs in one massive application. This leads to:
+## Why Microservices in Banking?
 
-- **High-risk deployments:** Modifying a small module requires redeploying the entire system.
-- **Inefficient scaling:** You cannot scale just the Payments module during peak loads without scaling everything else.
-- **Technology lock-in:** Bound to a single programming language and database.
+Microservices in banking is not a trend — it is a structural response to the operational failures of monolithic Core Banking systems (like T24 or Flexcube). In a monolith, the entire business logic (CIF, CASA, Lending, GL, Payments...) runs in one massive application. This creates three compounding problems:
 
-The current trend is transitioning to **Headless Core Banking** — decoupling the domain logic from the delivery channels (Mobile App, Internet Banking, ATM).
+- **High-risk deployments:** Modifying a small module requires redeploying the entire system. A patch to the Payments module can take down CIF.
+- **Inefficient scaling:** You cannot scale just the Payments module during peak loads without scaling everything else — including parts that don't need more capacity.
+- **Technology lock-in:** Bound to a single programming language and database. Adding a modern ML risk engine becomes an 18-month integration project.
+
+**The current trend is transitioning to Headless Core Banking** — decoupling the domain logic from the delivery channels (Mobile App, Internet Banking, ATM) using a banking microservices architecture.
 
 ---
 
@@ -216,4 +218,6 @@ Never design a transfer API as a **synchronous block** because processing throug
 - [Thought Machine: Vault Core Architecture](https://thoughtmachine.net/vault-core)
 - [Martin Fowler: Event Sourcing & CQRS](https://martinfowler.com/cqrs.html)
 
-> *Next, we will understand how Core Banking communicates with the outside world — the international standards that all financial systems must speak. Continue reading [Part 5 — International Integration Standards: ISO 8583 & ISO 20022](/series/core-banking-developer/part-5-iso-standards-integration/).*
+🔗 **Previous Step:** Explore the foundational database layer in [Part 3 — Database Design for Financial Transactions (ACID & Concurrency)](/series/core-banking-developer/part-3-database-transactions-acid/).
+
+🔗 **Next Step:** Now that you understand banking microservices architecture and its event-driven patterns, see how these services communicate with the outside world through international financial standards. Continue reading [Part 5 — International Integration Standards: ISO 8583 & ISO 20022](/series/core-banking-developer/part-5-iso-standards-integration/).

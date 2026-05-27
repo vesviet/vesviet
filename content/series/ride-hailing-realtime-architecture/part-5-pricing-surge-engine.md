@@ -1,19 +1,19 @@
 ---
-title: "Part 5 — Surge Pricing: Dynamic Pricing Based on Real-time Supply and Demand"
+title: "Part 5 — Surge Pricing: How Surge Rate Is Calculated in Real-Time Ride-Hailing Systems"
 date: 2026-05-06T20:00:00+07:00
 draft: false
-description: "Decoding Surge Pricing — a system that continuously monitors supply and demand in every H3 hexagon and automatically adjusts prices to balance the market within seconds."
+description: "What is surge rate and how is it calculated? Deep-dive into the real-time pricing engine that balances ride-hailing supply and demand per H3 cell."
 weight: 6
 ---
 
-## What is Surge Pricing? (FAQ)
+## What Is Surge Rate? (And How Is It Calculated?)
 
-{{< faq q="What is surge pricing?" >}}
-Surge pricing (or dynamic pricing) is an economic strategy where companies temporarily increase prices during periods of high demand and low supply.
+{{< faq q="What is surge rate?" >}}
+Surge rate (also called surge pricing or surge multiplier) is the real-time price multiplier that ride-hailing platforms like Uber and Grab apply when demand for rides exceeds the available supply of drivers in a geographic zone. A surge rate of 2.0x means the rider pays twice the base fare.
 {{< /faq >}}
 
 {{< faq q="How is surge rate calculated?" >}}
-It is calculated by a pricing engine that evaluates the ratio of incoming requests (demand) versus available resources (supply) in a specific geographical zone.
+The surge rate is calculated by a pricing engine that evaluates the ratio of incoming ride requests (demand) versus available drivers (supply) in a specific H3 hexagon cell over a rolling time window (typically 5 minutes). The ratio is fed into a lookup table or ML model that outputs the surge multiplier.
 {{< /faq >}}
 
 ## Why is Surge Pricing Necessary?
@@ -257,5 +257,24 @@ GET surge:7:872a100d6ffffff → "3.2"
 | Drivers only accepting high surge rides, rejecting normal rides | Low acceptance rate → lower priority in matching algorithm |
 | Extremely high surges causing massive backlash | Maximum cap (e.g., 5.0x), soft caps based on conversion rates |
 | "Flickering" surge (rapidly fluctuating prices) | Smoothing: surge can only increase/decrease by a max of 0.5x every 30 seconds |
+
+---
+
+## Frequently Asked Questions About Surge Rate
+
+**What is surge rate in ride-hailing?**
+Surge rate is the multiplier applied to a ride's base price during peak demand periods. A surge rate of 1.5x on a $10 base fare means the rider pays $15. The surge rate is calculated per geographic zone (H3 cell) and updated every 30–60 seconds.
+
+**Why does surge rate exist?**
+Surge rate is a market-clearing mechanism, not just a revenue tool. When demand outpaces supply, a higher surge rate simultaneously attracts more drivers to the area (supply increase) and filters out lower-urgency ride requests (demand decrease), restoring equilibrium and reducing wait times for riders who genuinely need a car.
+
+**What is a normal surge rate vs. a high surge rate?**
+A surge rate of 1.0x is the baseline (no surge). Rates between 1.2x–1.8x are considered moderate surge. Rates above 2.0x indicate heavy demand imbalance. Most platforms enforce a hard cap (e.g., 5.0x) to prevent extreme price spikes that damage user trust.
+
+**How long does a surge rate last?**
+Surge rates are recalculated every 30–60 seconds using a sliding window over the last 5 minutes of supply-demand data. In most cases, a surge event lasts 15–45 minutes before drivers repositioning to the zone restore equilibrium.
+
+**How does the surge pricing engine work technically?**
+The engine ingests driver location events and ride request events from a message broker (Kafka). A stream processor (Apache Flink) aggregates supply and demand counts per H3 cell on a 5-minute tumbling window. The output is a demand/supply ratio that maps to a surge multiplier via a lookup table or an ML model. The resulting multiplier is cached in Redis with a 60-second TTL and read by the API gateway at price-calculation time.
 
 > *In the final part, we will explore RAMEN — Uber's real-time communication infrastructure, which solves the problem of pushing instant notifications to millions of devices simultaneously. Continue reading [Part 6 — RAMEN & Real-time Communication](/series/ride-hailing-realtime-architecture/part-6-realtime-push-ramen/).*

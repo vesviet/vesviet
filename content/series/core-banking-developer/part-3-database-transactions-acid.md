@@ -173,4 +173,4 @@ func transfer(fromID, toID string) {
 - [ ] Ensure Ledger entries are immutable (INSERT only, never UPDATE/DELETE)
 - [ ] Run periodic invariant checks: `SUM(DEBIT) = SUM(CREDIT)`
 
-> *Next, we will look at how modern digital banks solve this problem at the scale of hundreds of millions of transactions per day using Microservices architecture. Continue reading [Part 4 — Modern Core Banking Architecture (Microservices & Event-Driven)](/series/core-banking-developer/part-4-modern-core-banking-architecture/).*
+> *Next, we will look at how modern digital banks solve this problem at the scale of hundreds of millions of transactions per day using Microservices architecture. Continue reading [Part 4 — Banking Microservices Architecture (Modern Core Banking)](/series/core-banking-developer/part-4-modern-core-banking-architecture/).*
