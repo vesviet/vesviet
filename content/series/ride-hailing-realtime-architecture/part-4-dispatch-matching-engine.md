@@ -1,8 +1,8 @@
 ---
-title: "Part 4 — DISCO & Matching Engine: The Ride Dispatch Algorithm"
+title: "Dispatch Matching Engine: How Ride-Hailing Algorithms Work"
 date: 2026-05-06T20:00:00+07:00
 draft: false
-description: "DISCO — Uber's dispatch brain — doesn't just find the closest driver. Learn about Batched Matching, Ringpop, and how the system solves the global optimal assignment problem."
+description: "Discover how a modern dispatch matching engine works. We break down Uber DISCO, batched matching, and the global optimal assignment algorithms used in ride-hailing."
 weight: 5
 ---
 

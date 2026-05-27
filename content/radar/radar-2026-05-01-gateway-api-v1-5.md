@@ -1,5 +1,5 @@
 ---
-title: "Tech Radar, May 1, 2026: Gateway API v1.5 and Ingress2Gateway 1.0 — Kubernetes Networking Leaves Annotation Hell Behind"
+title: "Gateway API v1.5 & Ingress2Gateway: The Future of K8s Networking"
 date: "2026-05-01T07:30:00+07:00"
 draft: false
 mermaid: true
@@ -12,7 +12,7 @@ tags:
   - Networking
   - Security
   - AI Gateway
-description: "Gateway API v1.5, announced on April 21, 2026 after its March 14 release, is more than a feature bump. Combined with Ingress2Gateway 1.0 and the March 9 AI Gateway Working Group, it marks a deeper shift: Kubernetes networking is moving from annotation-heavy controller behavior to a modular, policy-driven traffic platform."
+description: "Gateway API v1.5 is here. Learn why Kubernetes networking is moving away from Ingress annotations to a modular, policy-driven traffic platform with Ingress2Gateway 1.0."
 ShowToc: true
 TocOpen: true
 ---

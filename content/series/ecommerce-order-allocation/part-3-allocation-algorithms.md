@@ -1,8 +1,8 @@
 ---
-title: "Part 3 — Allocation Algorithms: Assignment, Bin Packing & VRP"
+title: "Order Allocation Algorithms: Bin Packing, VRP & Assignment Problem"
 date: 2026-05-06T20:30:00+07:00
 draft: false
-description: "The three core algorithm families for order allocation: Assignment Problem (optimal matching), Bin Packing (fitting orders into vehicles), and Vehicle Routing Problem (VRP)."
+description: "Explore the core order allocation algorithms used in e-commerce and logistics: Assignment Problem, Bin Packing, and Vehicle Routing Problem (VRP). Learn how to optimize matching."
 weight: 4
 ---
 
