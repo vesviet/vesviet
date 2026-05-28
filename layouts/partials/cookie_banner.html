@@ -1,0 +1,86 @@
+<style>
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--theme);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    padding: 1rem;
+    z-index: 1000;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    display: none;
+}
+.cookie-banner p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--primary);
+    flex: 1 1 300px;
+}
+.cookie-banner a {
+    text-decoration: underline;
+    font-weight: bold;
+}
+.cookie-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+.cookie-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+.cookie-btn.accept {
+    background-color: var(--primary);
+    color: var(--theme);
+    border: none;
+}
+.cookie-btn.decline {
+    background-color: var(--entry);
+    color: var(--primary);
+}
+</style>
+
+<div id="cookie-banner" class="cookie-banner">
+    <p>
+        Chúng tôi sử dụng cookie để phân tích lưu lượng truy cập và cải thiện trải nghiệm trực tuyến. Bằng cách nhấn "Đồng ý", bạn cho phép chúng tôi sử dụng cookie theo chuẩn Consent Mode. <a href="/privacy/">Chính sách bảo mật</a>.
+    </p>
+    <div class="cookie-buttons">
+        <button id="cookie-decline" class="cookie-btn decline">Từ chối</button>
+        <button id="cookie-accept" class="cookie-btn accept">Đồng ý</button>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('cookie-banner');
+    const acceptBtn = document.getElementById('cookie-accept');
+    const declineBtn = document.getElementById('cookie-decline');
+
+    if (!localStorage.getItem('cookie-consent')) {
+        banner.style.display = 'flex';
+    }
+
+    const setConsent = (value) => {
+        localStorage.setItem('cookie-consent', value);
+        banner.style.display = 'none';
+        
+        if (value === 'accepted' && typeof window.gtag === 'function') {
+            window.gtag('consent', 'update', {
+                'analytics_storage': 'granted'
+            });
+        }
+    };
+
+    if (acceptBtn) acceptBtn.addEventListener('click', () => setConsent('accepted'));
+    if (declineBtn) declineBtn.addEventListener('click', () => setConsent('declined'));
+});
+</script>
