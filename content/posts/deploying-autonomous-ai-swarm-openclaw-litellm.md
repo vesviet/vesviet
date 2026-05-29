@@ -1,5 +1,5 @@
 ---
-title: "Building a Production-Ready Agentic AI Swarm: OpenClaw, LiteLLM, and Docker"
+title: "Production Agentic AI Swarm: OpenClaw & LiteLLM"
 slug: "deploying-autonomous-ai-swarm-openclaw-litellm"
 date: 2026-05-17T21:45:00+07:00
 draft: false

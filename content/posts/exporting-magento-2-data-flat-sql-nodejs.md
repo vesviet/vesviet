@@ -1,5 +1,5 @@
 ---
-title: "Exporting Magento 2 Data: Flattening the EAV Model with SQL and Node.js"
+title: "Exporting Magento 2 Data: Flatten EAV with SQL & Node"
 slug: "exporting-magento-2-data-flat-sql-nodejs"
 date: "2024-03-09T03:38:22+00:00"
 draft: false

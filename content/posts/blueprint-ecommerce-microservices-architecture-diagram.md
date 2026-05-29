@@ -1,5 +1,5 @@
 ---
-title: "Blueprint of a 21-Service E-commerce Edge: Architecture & Traffic Flow"
+title: "21-Service E-commerce Blueprint: Architecture & Traffic"
 slug: "blueprint-ecommerce-microservices-architecture-diagram"
 date: 2026-04-12T08:30:00+07:00
 draft: false

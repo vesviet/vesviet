@@ -79,104 +79,116 @@
 }
 </style>
 
-<!-- Load the industrial-grade SVG Pan Zoom library -->
-<script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
-
 <script type="module">
   document.addEventListener('DOMContentLoaded', () => {
     const blocks = document.querySelectorAll('pre code.language-mermaid, pre code[data-lang="mermaid"]');
-    if (blocks.length > 0) {
-        import('https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs').then((mermaidModule) => {
-            const mermaid = mermaidModule.default;
-            mermaid.initialize({ 
-                startOnLoad: false,
-                theme: document.body.className.includes('dark') ? 'dark' : 'default'
-            });
-            
-            blocks.forEach((block) => {
-                const wrapper = document.createElement('div');
-                wrapper.classList.add('mermaid-wrapper');
-                
-                const mermaidDiv = document.createElement('div');
-                mermaidDiv.classList.add('mermaid');
-                mermaidDiv.textContent = block.textContent;
-                wrapper.appendChild(mermaidDiv);
-                
-                // Construct the Close Button dynamically
-                const closeBtn = document.createElement('button');
-                closeBtn.className = 'mermaid-close-btn';
-                closeBtn.textContent = '✖ Exit Presentation';
-                wrapper.appendChild(closeBtn);
-                
-                block.parentElement.replaceWith(wrapper);
-            });
-            
-            // Render Mermaid into SVGs natively
-            mermaid.run({
-              querySelector: '.mermaid',
-            }).then(() => {
-                document.querySelectorAll('.mermaid-wrapper').forEach((wrapper) => {
-                    const svg = wrapper.querySelector('.mermaid svg');
-                    const closeBtn = wrapper.querySelector('.mermaid-close-btn');
-                    
-                    // Initialize svg-pan-zoom logic directly onto the Mermaid SVG output
-                    const pz = svgPanZoom(svg, {
-                        zoomEnabled: true,
-                        controlIconsEnabled: true,
-                        fit: true,
-                        center: true,
-                        minZoom: 0.1,
-                        maxZoom: 20,
-                        mouseWheelZoomEnabled: true
-                    });
-                    
-                    wrapper.pz = pz; // cache the instance
+    if (blocks.length === 0) return; // Skip on pages with no diagrams
 
-                    // 1. By default, lock the graph so it acts like a normal image.
+    // Dynamically load svg-pan-zoom (UMD global) only when diagrams exist
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    }
+
+    Promise.all([
+      loadScript('https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js'),
+      import('https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs')
+    ]).then(([_, mermaidModule]) => {
+        const mermaid = mermaidModule.default;
+        mermaid.initialize({ 
+            startOnLoad: false,
+            theme: document.body.className.includes('dark') ? 'dark' : 'default'
+        });
+        
+        blocks.forEach((block) => {
+            const wrapper = document.createElement('div');
+            wrapper.classList.add('mermaid-wrapper');
+            
+            const mermaidDiv = document.createElement('div');
+            mermaidDiv.classList.add('mermaid');
+            mermaidDiv.textContent = block.textContent;
+            wrapper.appendChild(mermaidDiv);
+            
+            // Construct the Close Button dynamically
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'mermaid-close-btn';
+            closeBtn.textContent = '✖ Exit Presentation';
+            wrapper.appendChild(closeBtn);
+            
+            block.parentElement.replaceWith(wrapper);
+        });
+        
+        // Render Mermaid into SVGs natively
+        mermaid.run({
+          querySelector: '.mermaid',
+        }).then(() => {
+            document.querySelectorAll('.mermaid-wrapper').forEach((wrapper) => {
+                const svg = wrapper.querySelector('.mermaid svg');
+                const closeBtn = wrapper.querySelector('.mermaid-close-btn');
+                
+                // Initialize svg-pan-zoom logic directly onto the Mermaid SVG output
+                const pz = svgPanZoom(svg, {
+                    zoomEnabled: true,
+                    controlIconsEnabled: true,
+                    fit: true,
+                    center: true,
+                    minZoom: 0.1,
+                    maxZoom: 20,
+                    mouseWheelZoomEnabled: true
+                });
+                
+                wrapper.pz = pz; // cache the instance
+
+                // 1. By default, lock the graph so it acts like a normal image.
+                pz.disablePan();
+                pz.disableZoom();
+                pz.disableControlIcons();
+                
+                // 2. Intercept Exit click
+                closeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // prevent wrapper re-trigger
+                    wrapper.classList.remove('mermaid-fullscreen');
+                    document.body.style.overflow = '';
+                    closeBtn.style.display = 'none';
                     pz.disablePan();
                     pz.disableZoom();
                     pz.disableControlIcons();
-                    
-                    // 2. Intercept Exit click
-                    closeBtn.addEventListener('click', (e) => {
-                        e.stopPropagation(); // prevent wrapper re-trigger
-                        wrapper.classList.remove('mermaid-fullscreen');
-                        document.body.style.overflow = '';
-                        closeBtn.style.display = 'none';
-                        pz.disablePan();
-                        pz.disableZoom();
-                        pz.disableControlIcons();
-                        pz.resize(); pz.fit(); pz.center();
-                    });
+                    pz.resize(); pz.fit(); pz.center();
+                });
 
-                    // 3. Intercept Click to enter Presentation Mode
-                    wrapper.addEventListener('click', function(e) {
-                        const isFullscreen = this.classList.contains('mermaid-fullscreen');
-                        // Prevent triggering if they are already in fullscreen (avoids interrupting panning)
-                        if (!isFullscreen) {
-                            this.classList.add('mermaid-fullscreen');
-                            document.body.style.overflow = 'hidden'; // Stop background website scroll
-                            closeBtn.style.display = 'block'; // Show bright red EXIT button
-                            
-                            // Unleash Mouse Wheel Zooming and Click-Dragging
-                            this.pz.enablePan();
-                            this.pz.enableZoom();
-                            this.pz.enableControlIcons();
-                            
-                            // Instantly recalculate bounds for the huge screen overlay
-                            setTimeout(() => {
-                                this.pz.resize();
-                                this.pz.fit();
-                                this.pz.center();
-                            }, 50);
-                        }
-                    });
+                // 3. Intercept Click to enter Presentation Mode
+                wrapper.addEventListener('click', function(e) {
+                    const isFullscreen = this.classList.contains('mermaid-fullscreen');
+                    // Prevent triggering if they are already in fullscreen (avoids interrupting panning)
+                    if (!isFullscreen) {
+                        this.classList.add('mermaid-fullscreen');
+                        document.body.style.overflow = 'hidden'; // Stop background website scroll
+                        closeBtn.style.display = 'block'; // Show bright red EXIT button
+                        
+                        // Unleash Mouse Wheel Zooming and Click-Dragging
+                        this.pz.enablePan();
+                        this.pz.enableZoom();
+                        this.pz.enableControlIcons();
+                        
+                        // Instantly recalculate bounds for the huge screen overlay
+                        setTimeout(() => {
+                            this.pz.resize();
+                            this.pz.fit();
+                            this.pz.center();
+                        }, 50);
+                    }
                 });
             });
         });
-    }
+    });
   });
 </script>
+
 
 {{- $faqs := .Store.Get "faqs" -}}
 {{- if $faqs -}}

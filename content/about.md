@@ -1,6 +1,7 @@
 ---
-title: "About Me"
+title: "Lê Tuấn Anh — Senior Software Engineer & Go Backend Architect"
 date: "2021-10-14 18:48:02"
+description: "Lê Tuấn Anh (vesviet) — Senior Go & Microservices Engineer, 17+ years building high-traffic e-commerce platforms in Vietnam. Specializes in backend architecture, Magento migrations, and event-driven systems."
 ---
 
 > *"Architecting scalable systems and leading teams to build resilient, high-performance platforms."*

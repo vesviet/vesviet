@@ -1,8 +1,8 @@
 ---
-title: "Series: MCP Engineering In Production"
+title: "MCP Engineering in Production: Go SDK to Enterprise"
 date: 2026-05-15T14:00:00+07:00
 draft: false
-description: "A hands-on guide to deploying Model Context Protocol (MCP) servers in production enterprise environments using Go—from protocol fundamentals to security hardening and gateway architecture."
+description: "Deploy MCP servers in production with Go: protocol fundamentals, OAuth 2.1 identity, gateway architecture, OWASP security, and enterprise observability."
 ShowToc: true
 TocOpen: true
 weight: 60

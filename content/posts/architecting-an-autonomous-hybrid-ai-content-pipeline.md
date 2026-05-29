@@ -1,5 +1,5 @@
 ---
-title: "Architecting an Autonomous Hybrid-AI Pipeline: From Hobby Cron to Production State-Machine"
+title: "Autonomous Hybrid-AI Pipeline: Cron to State-Machine"
 slug: "architecting-an-autonomous-hybrid-ai-content-pipeline"
 date: "2026-05-18T09:00:00+07:00"
 draft: false

@@ -1,8 +1,8 @@
 ---
-title: "Series: Agentic System Architecture"
+title: "Agentic System Architecture: Multi-Agent in Production"
 date: 2026-05-14T08:00:00+07:00
 draft: false
-description: "In-depth knowledge on designing, building, and operating Multi-Agent systems in real-world production environments."
+description: "Design and operate multi-agent systems in production: topology, memory management, secure tool calling, guardrails, and AgentOps observability with Go."
 ShowToc: true
 TocOpen: true
 weight: 50

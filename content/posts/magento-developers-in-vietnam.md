@@ -1,5 +1,5 @@
 ---
-title: "Magento Developers in Vietnam: A Technical Hiring and Vetting Guide"
+title: "Magento Developers in Vietnam: Hiring & Vetting Guide"
 slug: "magento-developers-in-vietnam"
 date: 2026-04-30T08:30:00+07:00
 draft: false

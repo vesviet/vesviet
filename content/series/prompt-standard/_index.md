@@ -1,9 +1,9 @@
 ---
-title: "Prompt Standard for Product, Engineering, and Operations Teams"
+title: "Prompt Standard: Product, Engineering & Ops Guide"
 date: 2026-05-09T10:30:00+07:00
 draft: false
 weight: 30
-description: "A practical series helping both technical and non-technical team members understand what Prompt Standard is and how to apply it — from foundations to Context Engineering and PromptOps."
+description: "Master Prompt Standard for your whole team: foundations, versioning, Context Engineering, DSPy declarative prompting, and Production PromptOps pipelines."
 categories:
   - Engineering
   - AI

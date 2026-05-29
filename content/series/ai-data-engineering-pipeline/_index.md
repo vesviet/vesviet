@@ -5,7 +5,7 @@ date: "2026-05-17T12:00:00+07:00"
 draft: false
 weight: 40
 tags: ["Data Engineering", "GraphRAG", "Vector Database", "RAG", "LLM", "Architecture"]
-description: "A comprehensive guide to building Data Pipelines for AI (2026 Edition). From processing unstructured data and building Knowledge Graphs to Security, Lineage, and Evals."
+description: "Build enterprise AI data pipelines: GraphRAG, multimodal ingestion, semantic caching, streaming CDC, security guardrails, vLLM inference, and production Evals."
 categories: ["Data Engineering", "AI/ML"]
 ShowToc: true
 TocOpen: true

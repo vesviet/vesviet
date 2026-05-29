@@ -1,5 +1,5 @@
 ---
-title: "Architecting a 21-Service E-commerce Ecosystem with Golang & DDD"
+title: "Architecting 21-Service E-commerce with Golang & DDD"
 slug: "architecting-21-service-ecommerce-golang-ddd"
 date: 2026-04-12T10:00:00+07:00
 draft: false

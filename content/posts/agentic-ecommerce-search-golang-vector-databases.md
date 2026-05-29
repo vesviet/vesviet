@@ -15,7 +15,7 @@ The search system is the beating heart of every e-commerce platform. If customer
 
 This marks the tipping point where we must transition from **Semantic Search** to **Agentic Search**—transforming the search bar from a passive "Librarian" into an active "Shopping Assistant."
 
-In this article, we will deconstruct an architectural blueprint for building Agentic Search using **Golang**, **Vector Databases (Qdrant)**, and **LLM Tool-calling**, integrating it seamlessly into a [21-service E-commerce](/posts/architecting-21-service-ecommerce-golang-ddd/) microservices ecosystem.
+> **📚 Want the full implementation?** This article is the architectural overview. For a 6-part hands-on build guide (Golang + Qdrant + critique loop + production ops), read the complete **[Agentic E-commerce Search series](/series/agentic-ecommerce-search/)**.
 
 ---
 
@@ -151,3 +151,7 @@ Qdrant is currently the preferred choice because it is written in Rust (offering
 They will be if you use heavy reasoning models for every operation. The secret lies in using ultra-fast/cheap models (like Gemini 3.5 Flash) combined with aggressive Semantic Caching. This reduces costs by 90%, which is easily offset by the resulting surge in Conversion Rates.
 
 {{< author-cta >}}
+
+---
+
+> **📚 Full Implementation Series:** This post covers the architecture overview. To build this end-to-end — from Golang orchestration and Qdrant ingestion to critique loops and production cost optimization — follow the **[Agentic E-commerce Search series](/series/agentic-ecommerce-search/)** (6 in-depth parts).

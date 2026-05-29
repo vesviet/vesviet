@@ -1,5 +1,5 @@
 ---
-title: "Scalable Database Architecture: How to Scale MySQL from Replication to Sharding and TiDB"
+title: "MySQL Scaling: Replication, Sharding & TiDB"
 slug: "mysql-scaling-sharding-tidb-architecture"
 date: "2026-05-26T14:00:00+07:00"
 draft: false

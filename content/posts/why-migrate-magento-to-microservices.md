@@ -1,5 +1,5 @@
 ---
-title: "Why You Should Migrate from Magento to Microservices (And When You Shouldn't)"
+title: "Migrating Magento to Microservices: When & Why"
 slug: "why-migrate-magento-to-microservices"
 date: 2026-04-14T22:00:00+07:00
 draft: false

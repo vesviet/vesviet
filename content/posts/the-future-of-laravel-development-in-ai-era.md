@@ -1,5 +1,5 @@
 ---
-title: "The Future of Laravel Development in the AI Era: 10 Predictions for 2028"
+title: "Laravel in the AI Era: 10 Predictions for 2028"
 slug: "the-future-of-laravel-development-in-ai-era"
 date: "2026-05-16T21:35:00+07:00"
 draft: false

@@ -3,7 +3,7 @@ title: "Alipay Double 11 Architecture"
 date: 2026-05-02T18:00:00+07:00
 draft: false
 weight: 130
-description: "A structured research series on how Alipay evolved Double 11 scale and reliability: unitization (LDC), automated stress testing, OceanBase, RocketMQ, SOFAStack, operations, and a modern cloud-native comparison."
+description: "How Alipay scaled Double 11 to 61M QPS: LDC unitization, OceanBase, RocketMQ, SOFAStack, and annual stress testing for planet-scale payment reliability."
 ShowToc: true
 TocOpen: true
 ---

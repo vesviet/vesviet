@@ -1,5 +1,5 @@
 ---
-title: "Magento AI Integration: Modernize Your E-commerce Stack Without Rebuilding"
+title: "Magento AI Integration: Modernize Without Rebuilding"
 slug: "magento-ai-integration-strategy-architecture"
 date: "2026-05-24T09:18:00+07:00"
 draft: false

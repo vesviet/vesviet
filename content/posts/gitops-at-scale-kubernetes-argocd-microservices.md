@@ -1,5 +1,5 @@
 ---
-title: "GitOps at Scale: Orchestrating 21 Microservices with Kubernetes & ArgoCD"
+title: "GitOps at Scale: Kubernetes & ArgoCD for Microservices"
 slug: "gitops-at-scale-kubernetes-argocd-microservices"
 date: 2026-04-12T07:00:00+07:00
 draft: false

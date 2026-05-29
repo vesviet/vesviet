@@ -20,7 +20,7 @@
   gtag('config', 'G-E87WX5RPQ4');
 </script>
 
-<!-- Schema.org -->
+<!-- Schema.org — Site-wide graph (Person + WebSite) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -35,12 +35,69 @@
     {
       "@type": "Person",
       "@id": "{{ .Site.BaseURL }}#person",
-      "name": "{{ .Site.Params.author | default "Tuấn Anh" }}",
-      "url": "{{ .Site.BaseURL }}"
+      "name": "Lê Tuấn Anh",
+      "alternateName": "vesviet",
+      "url": "{{ .Site.BaseURL }}",
+      "jobTitle": "Senior Software Engineer",
+      "description": "Senior Go & Microservices Engineer with 17+ years experience. Specializes in backend architecture, Magento-to-microservices migrations, and event-driven distributed systems.",
+      "sameAs": [
+        "https://www.linkedin.com/in/vesviet",
+        "https://github.com/vesviet"
+      ]
     }
   ]
 }
 </script>
+{{- if and .IsPage (or (eq .Section "posts") (eq .Section "series")) }}
+<!-- Schema.org — BlogPosting for individual post/series part pages -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ .Title | jsonify }},
+  "description": {{ .Description | jsonify }},
+  "url": "{{ .Permalink }}",
+  "datePublished": "{{ .Date.Format `2006-01-02T15:04:05Z07:00` }}",
+  "dateModified": "{{ .Lastmod.Format `2006-01-02T15:04:05Z07:00` }}",
+  "author": {
+    "@type": "Person",
+    "@id": "{{ .Site.BaseURL }}#person"
+  },
+  "publisher": {
+    "@type": "WebSite",
+    "@id": "{{ .Site.BaseURL }}#website"
+  }{{- with .Params.cover.image }},
+  "image": "{{ . | absURL }}"{{- end }}
+}
+</script>
+{{- end }}
+{{- if and .IsSection (eq .Section "series") }}
+<!-- Schema.org — ItemList for series hub pages (_index.md) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": {{ .Title | jsonify }},
+  "description": {{ .Description | jsonify }},
+  "url": "{{ .Permalink }}",
+  "author": {
+    "@type": "Person",
+    "@id": "{{ .Site.BaseURL }}#person"
+  },
+  "itemListElement": [
+    {{- range $i, $page := .Pages.ByWeight }}
+    {{- if $i }},{{ end }}
+    {
+      "@type": "ListItem",
+      "position": {{ add $i 1 }},
+      "name": {{ $page.Title | jsonify }},
+      "url": "{{ $page.Permalink }}"
+    }
+    {{- end }}
+  ]
+}
+</script>
+{{- end }}
 {{ end }}
 
 <style>

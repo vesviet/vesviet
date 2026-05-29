@@ -1,5 +1,5 @@
 ---
-title: "The Future of Frontend Development in the AI Era: 10 Predictions for 2028"
+title: "AI-Native Frontend in 2028: 10 Architecture Predictions"
 slug: "ai-native-frontend-architecture-predictions-2028"
 date: "2026-05-16T21:00:00+07:00"
 draft: false
