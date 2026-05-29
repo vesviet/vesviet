@@ -144,3 +144,5 @@ PayPay operates a **post-campaign review cycle** inspired by Toyota's KAIZEN (co
 4. **Improvement backlog:** Every identified improvement is documented, prioritized, and shipped before the next major campaign.
 
 Over multiple campaign cycles, this feedback loop has refined PayPay's pre-scaling formulas, improved chaos test coverage, and sharpened the consumer lag alerting thresholds. The 2018 platform that crashed under its first campaign and the 2025 platform that handles 7.8 billion transactions per year are the same system — rebuilt iteratively through continuous operational learning.
+
+The GitOps and deployment infrastructure that supports this campaign pre-scaling is detailed in [Part 1](/series/paypay-architecture/part-1-microservices-gitops/). For a broader look at event-driven scaling patterns at scale, the [GitOps at Scale](/posts/gitops-at-scale-kubernetes-argocd-microservices/) post covers the Argo CD and Kubernetes deployment patterns PayPay uses as its operational foundation.

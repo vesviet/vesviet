@@ -133,3 +133,5 @@ The test procedure:
 4. **Validate chaos fallbacks:** During the load test, inject failures (kill pods, add latency) to confirm that circuit breakers and fallbacks behave exactly as designed.
 
 This gate has prevented multiple would-be incidents. It embodies the engineering culture shift that the 2018 campaign crash initiated: from reactive firefighting to proactive resilience engineering.
+
+For engineers building high-reliability Go services, the [goroutine leak detection](/posts/goroutine-leak-detection-production-golang/) post covers production-grade observability techniques that complement the SRE patterns described in this part. The campaign-specific infrastructure decisions that tie this SRE posture together are covered in [Part 5](/series/paypay-architecture/part-5-campaign-architecture/).
