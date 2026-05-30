@@ -1,7 +1,10 @@
 ---
-title: "Tech Radar, May 28, 2026: OpenAI DeployCo ($4B), Apple's $1B Gemini Siri Deal, and Multi-Agent Orchestration"
+title: "Tech Radar, May 28, 2026: Apple Gemini & OpenAI DeployCo"
 date: "2026-05-28T20:30:00+07:00"
 draft: false
+description: "Tech Radar May 28, 2026: OpenAI launches DeployCo to dominate B2B, Apple licenses Gemini 3 for Siri, and industry shifts to Multi-Agent Orchestration."
+ShowToc: true
+TocOpen: true
 mermaid: true
 categories:
   - Tech Radar
@@ -13,12 +16,9 @@ tags:
   - Anthropic
   - Multi-Agent Orchestration
   - MCP
-description: "Tech Radar May 28, 2026: OpenAI launches DeployCo to dominate B2B, Apple licenses Gemini 3 for Siri, and the industry shifts to Multi-Agent Orchestration."
-ShowToc: true
-TocOpen: true
 ---
 
-Today is **May 28, 2026**. Following the [May 26 radar on AI Ethics and Anthropic's $30B funding](/radar/radar-2026-05-26/), the landscape of Enterprise AI has experienced a seismic shift. We are officially seeing the end of the "Model-as-a-Service" era, giving way to massive B2B integration plays and autonomous "Agent-as-a-Service" workflows.
+In this edition of our [tech radar](/radar/), we break down the developments of **May 28, 2026**. Following the [May 26 radar on AI Ethics and Anthropic's $30B funding](/radar/radar-2026-05-26/), the landscape of Enterprise AI has experienced a seismic shift. We are officially seeing the end of the "Model-as-a-Service" era, giving way to massive B2B integration plays and autonomous "Agent-as-a-Service" workflows.
 
 Here are the critical technical and strategic breakdowns of today's signals.
 
