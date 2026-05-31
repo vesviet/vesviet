@@ -3,13 +3,13 @@ title: "Software Architecture & System Design Series"
 description: "Deep dive into real-world software architecture, microservices, system design, and AI engineering. Technical case studies and tutorials."
 ---
 
-Welcome to the definitive hub for software architecture case studies and system design deep dives. Drawing from over 17 years of experience in backend engineering and building resilient platforms, these series break down complex distributed systems into digestible, actionable lessons.
+Welcome to the definitive hub for system design case studies and software architecture deep dives. Drawing from over 17 years of experience in backend engineering and building resilient platforms, these series break down complex [distributed systems](/posts/mastering-event-driven-architecture-dapr/) into digestible, actionable lessons.
 
-## Exploring Real-World Software Architecture
+## Exploring Real-World Software Architecture & Microservices
 
 System design is more than just drawing boxes on a whiteboard. It’s about understanding trade-offs, handling millions of requests per second, and designing for failure. In these series, we tear down the architecture of global tech giants to understand how they scale their databases, route their traffic, and process events in real time. 
 
-Whether you are preparing for a system design interview or actively architecting microservices for your organization, these resources will bridge the gap between theory and production reality.
+Whether you are preparing for a system design interview or actively architecting [microservices](/posts/architecting-21-service-ecommerce-golang-ddd/) for your organization, these resources will bridge the gap between theory and production reality.
 
 ## E-Commerce & High-Scale Systems
 
@@ -27,7 +27,9 @@ When milliseconds matter, asynchronous event streaming becomes the backbone of t
 
 ## AI Engineering & Modern Development
 
-The landscape of software development is shifting rapidly with the introduction of LLMs and autonomous agents. My latest series focus on AI-driven workflows, Generative UI, and implementing Model Context Protocol (MCP) in production environments to supercharge developer productivity.
+The landscape of software development is shifting rapidly with the introduction of LLMs and autonomous agents. My latest series cover the full spectrum — from the mindset shift every engineer must make, to the hands-on playbooks for building AI-native organizations, to the emerging discipline of reviewing, securing, and shipping AI-generated code responsibly.
+
+- The [AI Code Review & Vibe Coding](/series/ai-code-review-vibe-coding/) series tackles the most urgent question of 2025–2026: how do engineers audit, secure, and ship AI-generated code to production — and how far can non-technical builders (CEOs, PMs, BAs) go with vibe coding before they need to hand off to an engineer?
 
 ## Where Should You Start?
 
