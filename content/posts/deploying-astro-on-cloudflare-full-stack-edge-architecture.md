@@ -556,4 +556,11 @@ For a content site where performance, cost, and operational simplicity matter mo
 
 *The full configuration for LeaseInVietnam's Cloudflare deployment — including the wrangler config, GitHub Actions workflow, and D1 schema migrations — is available in the [leaseinvietnam](https://github.com/vesviet/leaseinvietnam) repository.*
 
+---
+
+**Continue Reading:**
+- [Serverless E-Commerce: Cloudflare Workers & D1 Architecture](/posts/serverless-ecommerce-cloudflare-d1/) — a deeper look at building a complete e-commerce backend on the Cloudflare edge stack.
+- [LeaseInVietnam: AI-Powered Expat Rental Intelligence System](/posts/leaseinvietnam-ai-powered-expat-rental-intelligence-system/) — the real production site built on this exact Cloudflare + Astro architecture.
+- [GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/) — when your stack grows beyond Cloudflare Workers, this is the deployment pipeline to graduate to.
+
 {{< author-cta >}}

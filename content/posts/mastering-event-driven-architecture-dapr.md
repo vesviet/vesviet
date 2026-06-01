@@ -263,6 +263,8 @@ func RunStreamingConsumer(ctx context.Context) error {
 
 **When to prefer streaming:** Background workers, batch processors, or Kubernetes jobs where you do not want to open an HTTP server or expose inbound ports. The persistent gRPC connection also provides better flow control and backpressure than push-based delivery.
 
+> **⚠️ Preview API Notice:** The streaming subscription API (`client.Subscribe`) was introduced as a **preview feature in Dapr v1.14**. The struct name `dapr.SubscriptionOptions` and the exact method signatures may have evolved in subsequent releases. Always verify the exact API against the official [Dapr Go SDK releases page](https://github.com/dapr/go-sdk/releases) before using this pattern in production. Do not use preview APIs without pinning to a specific SDK version in your `go.mod`.
+
 ---
 
 ## Surviving Failure: The Saga Pattern

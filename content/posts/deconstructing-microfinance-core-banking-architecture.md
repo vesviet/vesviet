@@ -148,4 +148,6 @@ Because modern CBS architectures manage millions of loans, they rely on distribu
 
 *This article is part of our `core-banking-developer` series exploring scalable fintech architecture.*
 
+**Continue Reading:** The [Core Banking Developer Learning Path](/series/core-banking-developer/) series goes deeper on ACID transactions, ISO 8583/20022 standards, and building a complete mini banking system from scratch.
+
 {{< author-cta >}}

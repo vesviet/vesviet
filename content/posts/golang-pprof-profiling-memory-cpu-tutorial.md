@@ -210,6 +210,6 @@ First, enable it in your application code via `runtime.SetMutexProfileFraction(1
 
 ---
 
-🔗 **Next Step:** Profiling tells you *why* a function is slow, but how do you track a slow request across 20 different microservices? Continue reading to learn how to implement [Distributed Tracing in Go Microservices with OpenTelemetry](/posts/opentelemetry-golang-distributed-tracing-microservices/) (Future Cluster B1). Alternatively, learn how to prevent cascading failures using [Circuit Breakers and Retries in Go](/posts/circuit-breaker-retry-golang-resilience/).
+🔗 **Related Reading:** Profiling tells you *why* a function is slow, but detecting goroutine growth early is the first line of defence. Read the companion guide [Goroutine Leak Detection and Fix in Production Go Services](/posts/goroutine-leak-detection-production-golang/) for a deep-dive into goroutine lifecycle management. For distributing observability across your entire microservices fleet, see [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr/) which covers tracing, retry, and DLQ patterns end-to-end.
 
 {{< author-cta >}}

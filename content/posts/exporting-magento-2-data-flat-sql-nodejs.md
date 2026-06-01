@@ -331,4 +331,6 @@ node migrate.js ./failed-rows.jsonl
 
 For the full architectural context of where this extracted data lands in a microservice ecosystem, see [Why You Should Migrate from Magento to Microservices](/posts/why-migrate-magento-to-microservices/) and the [Zero-Downtime Migration Blueprint](/posts/moving-from-magento-to-microservices/).
 
+**Go deeper:** [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/) — the distributed microservices architecture that this data pipeline feeds into.
+
 {{< author-cta >}}

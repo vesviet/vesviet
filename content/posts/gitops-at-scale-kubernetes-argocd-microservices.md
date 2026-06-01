@@ -319,4 +319,11 @@ For critical services (Checkout, Payment), we additionally use **Argo Rollouts**
 
 The investment pays off the first time you hit a bad production deploy at 2am. Instead of a frantic kubectl session, you open a terminal, type three git commands, and watch ArgoCD fix the cluster by itself.
 
+---
+
+**Continue Reading:**
+- [What's New in Argo CD 3.4 & 3.3: Cluster Pause & Upgrades](/posts/argo-cd-updates-2026/) — the latest features and breaking changes before you upgrade your GitOps platform.
+- [Mastering Event-Driven Architecture with Dapr Pub/Sub](/posts/mastering-event-driven-architecture-dapr/) — how the 21 microservices deployed here communicate asynchronously.
+- [MySQL Scaling: Replication, Sharding & TiDB](/posts/mysql-scaling-sharding-tidb-architecture/) — scaling the databases that these Kubernetes-managed services depend on.
+
 {{< author-cta >}}

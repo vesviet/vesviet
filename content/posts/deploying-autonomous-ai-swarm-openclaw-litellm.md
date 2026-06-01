@@ -6,7 +6,7 @@ lastmod: 2026-05-17T21:45:00+07:00
 draft: false
 mermaid: true
 tags: ["AI", "LLM", "Docker", "DevOps", "Agentic AI", "Architecture"]
-description: "Chatbots are dead; autonomous agents are the future. Learn how to deploy a resilient, production-ready AI swarm using OpenClaw, LiteLLM, and Docker with zero downtime."
+description: "Deploy a resilient, production-ready AI swarm using OpenClaw, LiteLLM, and Docker. Covers routing, security, and zero-downtime agent orchestration."
 categories: ["AI/ML", "Engineering"]
 author: "Vesviet"
 ShowToc: true
@@ -155,5 +155,9 @@ By leveraging **LiteLLM** as an intelligent routing layer and **Docker** for pri
 **Next Steps for V2:** While this architecture solves routing and security, the next evolution involves giving the swarm long-term memory. Integrating a local vector database (like DuckDB VSS or Chroma) directly into the internal Docker network will allow these agents to query historical context, turning a highly available swarm into a truly intelligent one.
 
 *Looking to see how an autonomous pipeline operates in the real world? Check out our case study on [Architecting an Autonomous Hybrid-AI Pipeline](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/) to see how we dropped AI token costs to $0.05 a day.*
+
+**Continue Reading:**
+- [Prompt Engineering Standards for Production AI Systems](/series/prompt-standard/) — the prompt design patterns and versioning conventions this swarm uses internally.
+- [What is Vibe Coding? AI Code Review & the Future of Software](/posts/vibe-coding-and-ai-code-review-future/) — how AI agents are reshaping code generation and review workflows.
 
 {{< author-cta >}}

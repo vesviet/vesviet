@@ -18,7 +18,7 @@ tags:
   - "State Machine"
   - "GitOps"
   - "Agentic AI"
-description: "A complete engineering deep-dive into the V3 Autonomous Content Pipeline: from a $3.50/day naive cron job to a $0.05/day production state machine using Hybrid AI, Wake-On-LAN hardware orchestration, MinHash deduplication, and a 4-layer quality gate."
+description: "Replacing a $3.50/day cron job with a $0.05/day autonomous AI pipeline: Hybrid AI, Wake-On-LAN orchestration, MinHash dedup, and a 4-layer quality gate."
 ShowToc: true
 TocOpen: true
 ---

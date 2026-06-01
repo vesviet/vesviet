@@ -5,7 +5,7 @@ date: 2026-04-30T08:30:00+07:00
 lastmod: 2026-04-30T08:30:00+07:00
 draft: false
 tags: ["Magento", "Vietnam", "E-commerce", "Hiring", "Engineering", "Interview"]
-description: "How to technically vet Magento developers in Vietnam. Covers hiring models, interview questions to identify real engineers, and red flags to avoid technical debt."
+description: "How to technically vet Magento developers in Vietnam: hiring models, interview questions to identify real engineers, and red flags to avoid tech debt."
 categories: ["Engineering", "Strategy"]
 ShowToc: true
 TocOpen: true
@@ -129,5 +129,7 @@ The best hiring question is not "Do you know Magento?" It is this:
 If the answer is yes based on their technical answers, their failure stories, and their diagnostic thinking — you are not hiring theme work. You are hiring operational reliability.
 
 For the full decision on when to keep building inside Magento vs when to migrate to microservices, see [Why You Should Migrate from Magento to Microservices (And When You Shouldn't)](/posts/why-migrate-magento-to-microservices/).
+
+**Go deeper:** [Exporting Magento 2 Data: Flat SQL Tables with Node.js](/posts/exporting-magento-2-data-flat-sql-nodejs/) — a hands-on guide to migrating your Magento catalog data into a modern microservices data layer.
 
 {{< author-cta >}}

@@ -71,4 +71,8 @@ By utilizing CDC/Debezium for Phase 1, bidirectional Event-Driven outboxes over 
 
 If you are assessing vendor capability before a migration, [Magento Developers in Vietnam: A Technical Hiring and Vetting Guide](/posts/magento-developers-in-vietnam/) breaks down the difference between extension shops and teams that can actually own architecture, integrations, and production reliability.
 
+**Continue Reading:**
+- [Architecting a 21-Service E-Commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/) — the destination architecture after the migration: a full 21-service distributed system.
+- [Mastering Event-Driven Architecture with Dapr Pub/Sub](/posts/mastering-event-driven-architecture-dapr/) — the event-driven backbone (Saga, DLQ, Outbox) that replaces the Magento monolith's synchronous coupling.
+
 {{< author-cta >}}

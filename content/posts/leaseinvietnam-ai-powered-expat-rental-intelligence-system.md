@@ -284,4 +284,11 @@ The geo-fence is enforced at both the system prompt level and the verifier level
 
 *The full architecture documentation, agent identities, pipeline scripts, selector profile bundle, and Go implementation are available in the [leaseinvietnam-model](https://gitlab.com/data-agent/leaseinvietnam) repository.*
 
+---
+
+**Continue Reading:**
+- [Astro on Cloudflare: Full-Stack Edge Architecture](/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/) — the Cloudflare + Astro stack powering the LeaseInVietnam frontend.
+- [Production Agentic AI Swarm: OpenClaw & LiteLLM](/posts/deploying-autonomous-ai-swarm-openclaw-litellm/) — deploying the autonomous agent infrastructure that drives this pipeline.
+- [Architecting an Autonomous Hybrid AI Content Pipeline](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/) — a broader look at the AI content generation architecture this system is part of.
+
 {{< author-cta >}}

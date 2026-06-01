@@ -140,4 +140,11 @@ Migrating an e-commerce Monolith to a 21-service ecosystem is not about setting 
 
 By mapping contexts meticulously, enforcing strict separation via Kratos, and utilizing Idempotent Saga patterns over Dapr, we engineered a system that can absorb massive Black Friday traffic spikes without dropping a single order. The initial complexities of distributed state are painful, but the resulting scalability and developer isolation are profoundly worth the investment.
 
+---
+
+**Continue Reading:**
+- [Deconstructing the Ecosystem: Service Details by Domain](/posts/deconstructing-ecommerce-service-details-domain/) — a full breakdown of all 21 services across 6 business domains.
+- [Mastering Event-Driven Architecture with Dapr Pub/Sub](/posts/mastering-event-driven-architecture-dapr/) — deep dive into the Saga, DLQ, and idempotency patterns powering this ecosystem.
+- [GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/) — how we deploy all 21 services with zero manual `kubectl` commands.
+
 {{< author-cta >}}

@@ -109,3 +109,7 @@ Always verify that a package exists and has a reputable download history on npm/
 
 ### Should we block AI-generated code in production?
 Not necessarily, but you should treat AI-generated code as untrusted user input. It must pass the same linting, static analysis, unit testing, and human code review gates as human-written code.
+
+---
+
+**Continue Reading:** For the practical AI-in-production side: [OAuth 2.1 & Prompt Versioning for Production AI Agents](/posts/production-ai-apis-oauth-versioning-meta-predictions/) covers the identity and versioning patterns you need when deploying LLM-powered features to real users.

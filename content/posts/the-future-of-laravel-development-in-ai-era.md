@@ -206,4 +206,11 @@ The shift is inevitable. If you write Laravel code for a living, here is how you
 
 The future belongs to Laravel developers who stop competing with AI on typing speed, and start managing AI as their junior execution layer.
 
+---
+
+**Continue Reading:**
+- [What is Vibe Coding? Why AI Code Review is the Future](/posts/vibe-coding-and-ai-code-review-future/) — how AI is reshaping the code review workflow alongside development.
+- [OAuth 2.1 & Prompt Versioning for Production AI Agents](/posts/production-ai-apis-oauth-versioning-meta-predictions/) — field-tested patterns for deploying AI agents safely in production.
+- [Mastering Event-Driven Architecture with Dapr Pub/Sub](/posts/mastering-event-driven-architecture-dapr/) — for when your Laravel Queues outgrow a single server and need a distributed event mesh.
+
 {{< author-cta >}}

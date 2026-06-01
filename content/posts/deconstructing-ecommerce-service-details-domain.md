@@ -59,4 +59,8 @@ By looking at the ecosystem through the lens of these 6 domains, 21 services don
 
 This post is part of the composable commerce series. For the full system diagram, traffic flow architecture, and design decision rationale, start at the [Blueprint of a 21-Service E-commerce Edge](/posts/blueprint-ecommerce-microservices-architecture-diagram/).
 
+**Continue Reading:**
+- [Architecting the 21-Service Ecosystem: Saga, Race Conditions & Kratos](/posts/architecting-21-service-ecommerce-golang-ddd/) — the Checkout Saga and distributed transaction patterns used across these 21 services.
+- [E-Commerce Order Allocation Architecture](/series/ecommerce-order-allocation/) — the complete series on how the Order and Warehouse services coordinate to fulfill orders from the right warehouse.
+
 {{< author-cta >}}
