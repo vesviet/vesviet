@@ -1,6 +1,7 @@
 ---
 title: "Beyond Chatbots: What is Generative UI? — AI Frontend (P1)"
 date: 2026-05-16T12:00:00+07:00
+lastmod: 2026-05-16T12:00:00+07:00
 draft: false
 description: "Why do chatbots decrease productivity? Defining Generative UI, Zero UI, and the Multi-Agent Dashboard model that replaces conversational interfaces."
 ShowToc: true

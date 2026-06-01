@@ -1,6 +1,7 @@
 ---
 title: "Agentic System Architecture: Multi-Agent in Production"
 date: 2026-05-14T08:00:00+07:00
+lastmod: 2026-05-14T08:00:00+07:00
 draft: false
 description: "Design and operate multi-agent systems in production: topology, memory management, secure tool calling, guardrails, and AgentOps observability with Go."
 ShowToc: true

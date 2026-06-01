@@ -1,6 +1,7 @@
 ---
 title: "Executive Summary — The SLM Playbook"
 date: 2026-05-20T21:05:00+07:00
+lastmod: 2026-05-20T21:05:00+07:00
 draft: false
 description: "A high-level overview of why enterprises are shifting to self-hosted Small Language Models (SLMs) to optimize cost, privacy, and domain-specific performance."
 ShowToc: true

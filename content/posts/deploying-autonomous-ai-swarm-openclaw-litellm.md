@@ -2,6 +2,7 @@
 title: "Production Agentic AI Swarm: OpenClaw & LiteLLM"
 slug: "deploying-autonomous-ai-swarm-openclaw-litellm"
 date: 2026-05-17T21:45:00+07:00
+lastmod: 2026-05-17T21:45:00+07:00
 draft: false
 mermaid: true
 tags: ["AI", "LLM", "Docker", "DevOps", "Agentic AI", "Architecture"]

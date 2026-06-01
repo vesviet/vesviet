@@ -2,6 +2,7 @@
 title: "Magento Developers in Vietnam: Hiring & Vetting Guide"
 slug: "magento-developers-in-vietnam"
 date: 2026-04-30T08:30:00+07:00
+lastmod: 2026-04-30T08:30:00+07:00
 draft: false
 tags: ["Magento", "Vietnam", "E-commerce", "Hiring", "Engineering", "Interview"]
 description: "How to technically vet Magento developers in Vietnam. Covers hiring models, interview questions to identify real engineers, and red flags to avoid technical debt."

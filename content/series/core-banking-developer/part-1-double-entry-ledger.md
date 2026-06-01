@@ -1,6 +1,7 @@
 ---
 title: "Part 1 — The Double-Entry Ledger Foundation"
 date: 2026-05-06T18:00:00+07:00
+lastmod: 2026-05-06T18:00:00+07:00
 draft: false
 description: "Before writing any code for Core Banking, you must understand double-entry bookkeeping — a 700-year-old principle that remains the bedrock of all modern financial systems."
 weight: 2

@@ -2,6 +2,7 @@
 title: "Part 7: Agentic Memory - Solving the 'Goldfish' Curse"
 slug: "part-7-agentic-memory-long-term"
 date: "2026-05-17T12:00:00+07:00"
+lastmod: "2026-05-17T12:00:00+07:00"
 draft: false
 weight: 70
 tags: ["Agentic Memory", "Mem0", "Zep", "Graphiti", "LangGraph", "Self-Correction"]

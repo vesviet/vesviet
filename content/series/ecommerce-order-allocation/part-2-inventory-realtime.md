@@ -1,6 +1,7 @@
 ---
 title: "Part 2 — Inventory Management: Real-time Stock Sync"
 date: 2026-05-06T20:30:00+07:00
+lastmod: 2026-05-06T20:30:00+07:00
 draft: false
 description: "A real-time inventory system is the foundation of all allocation decisions. Learn how to handle overselling, stock reservation, and eventual consistency in distributed inventory."
 weight: 3

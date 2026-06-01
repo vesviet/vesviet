@@ -1,6 +1,7 @@
 ---
 title: "Research Index"
 date: 2026-05-02T18:10:00+07:00
+lastmod: 2026-05-02T18:10:00+07:00
 draft: false
 description: "Reading guide and index for the Alipay Double 11 Architecture research series: what each phase covers and how to consume it by time and role."
 ShowToc: true

@@ -1,6 +1,7 @@
 ---
 title: "Part 1 — The Death of 'Code Typists': When Syntax is No Longer an Advantage"
 date: 2026-05-10T15:00:00+07:00
+lastmod: 2026-05-10T15:00:00+07:00
 draft: false
 description: "Why memorizing syntax and writing repetitive code is no longer valuable in the AI era. The shift from 'writing code' to 'solving problems'."
 ShowToc: true

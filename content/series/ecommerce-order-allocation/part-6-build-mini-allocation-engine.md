@@ -1,6 +1,7 @@
 ---
 title: "Part 6 — Hands-on: Building a Mini Allocation Engine with Google OR-Tools"
 date: 2026-05-06T20:30:00+07:00
+lastmod: 2026-05-06T20:30:00+07:00
 draft: false
 description: "A comprehensive hands-on project — building a professional order allocation system using Python and Google OR-Tools to solve Min/Max Capacity and Priority constraints."
 weight: 7

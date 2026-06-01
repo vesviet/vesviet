@@ -1,6 +1,7 @@
 ---
 title: "Part 4 — Modern Core Banking Architecture: Microservices in Banking (Event-Driven)"
 date: 2026-05-06T18:00:00+07:00
+lastmod: 2026-05-06T18:00:00+07:00
 draft: false
 description: "How digital banks escape monolithic legacy systems and build Core Banking with banking microservices architecture: Event Sourcing, CQRS, and Saga."
 weight: 5

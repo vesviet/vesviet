@@ -1,6 +1,7 @@
 ---
 title: "Part 4 — Amazon CONDOR & Anticipatory Shipping"
 date: 2026-05-06T20:30:00+07:00
+lastmod: 2026-05-06T20:30:00+07:00
 draft: false
 description: "A deep dive into Amazon's legendary fulfillment systems: CONDOR (continuous 6-hour re-optimization) and Anticipatory Shipping (shipping before you click buy)."
 weight: 5

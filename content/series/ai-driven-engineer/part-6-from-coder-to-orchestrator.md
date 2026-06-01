@@ -1,6 +1,7 @@
 ---
 title: "Part 6 — Role Shift: From Coder to AI Orchestrator"
 date: 2026-05-10T15:50:00+07:00
+lastmod: 2026-05-10T15:50:00+07:00
 draft: false
 description: "Secrets to becoming an 'AI Orchestrator'. The art of Context Engineering and the mindset of problem decomposition."
 ShowToc: true

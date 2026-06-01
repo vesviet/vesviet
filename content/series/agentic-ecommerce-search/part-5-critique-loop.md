@@ -1,6 +1,7 @@
 ---
 title: "Critique Loop: Preventing LLM Hallucination"
 date: 2026-05-22T22:40:00+07:00
+lastmod: 2026-05-22T22:40:00+07:00
 draft: false
 author: "Vesviet Team"
 weight: 6

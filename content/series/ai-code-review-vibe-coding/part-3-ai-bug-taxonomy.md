@@ -1,6 +1,7 @@
 ---
 title: "AI Code Bug Taxonomy: Silent Failures to Slopsquatting (2025)"
 date: 2026-05-31T17:30:00+07:00
+lastmod: 2026-05-31T17:30:00+07:00
 draft: false
 weight: 4
 categories:

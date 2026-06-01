@@ -1,6 +1,7 @@
 ---
 title: "GenUI Boilerplate & Strangler Fig Migration — Frontend (P7)"
 date: 2026-05-16T12:30:00+07:00
+lastmod: 2026-05-16T12:30:00+07:00
 draft: false
 description: "Astro + Svelte Boilerplate structure for GenUI. Phased Rollout strategy using the Strangler Fig Pattern to bring AI into Legacy systems without Rewrites."
 ShowToc: true

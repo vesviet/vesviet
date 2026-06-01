@@ -2,6 +2,7 @@
 title: "Architecting 21-Service E-commerce with Golang & DDD"
 slug: "architecting-21-service-ecommerce-golang-ddd"
 date: 2026-04-12T10:00:00+07:00
+lastmod: 2026-04-12T10:00:00+07:00
 draft: false
 mermaid: true
 tags: ["Golang", "Microservices", "System Design", "Domain-Driven Design", "Kratos", "Dapr", "Saga Pattern"]

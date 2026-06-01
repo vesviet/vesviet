@@ -1,6 +1,7 @@
 ---
 title: "Executive Summary — Software Engineers in the AI Era: Who Stays, Who Leaves?"
 date: 2026-05-10T14:10:00+07:00
+lastmod: 2026-05-10T14:10:00+07:00
 draft: false
 description: "A comprehensive overview of the purge in the software industry as AI participates in the Software Development Life Cycle (SDLC)."
 ShowToc: true

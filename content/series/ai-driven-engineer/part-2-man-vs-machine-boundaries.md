@@ -1,6 +1,7 @@
 ---
 title: "Part 2 — Man vs. Machine Boundaries: What to Delegate and What to Keep"
 date: 2026-05-10T15:10:00+07:00
+lastmod: 2026-05-10T15:10:00+07:00
 draft: false
 description: "AI can write code, but it cannot take responsibility. Clearly identifying what should be delegated to AI and what programmers must absolutely retain."
 ShowToc: true

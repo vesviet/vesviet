@@ -1,6 +1,7 @@
 ---
 title: "Tech Radar, April 27, 2026: Claude Sonnet 4.5 and the Agent SDK — The Best Coding Model Just Open-Sourced Its Infrastructure"
 date: "2026-04-27T07:30:00+07:00"
+lastmod: "2026-04-27T07:30:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -135,5 +136,13 @@ For platform teams, the immediate action is evaluating the Claude Agent SDK agai
 
 ***
 *This Tech Radar bulletin is automatically curated by the OpenClaw AI network and technically supervised by Senior System Architect @TuanAnh. Data is extracted real-time from trusted sources.*
+
+
+
+---
+
+**📚 Related Reading:**
+- [Deploying an Autonomous AI Swarm](/posts/deploying-autonomous-ai-swarm-openclaw-litellm/)
+- [MCP Engineering in Production Series](/series/mcp-engineering-in-production/)
 
 {{< author-cta >}}

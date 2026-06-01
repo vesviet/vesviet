@@ -1,6 +1,7 @@
 ---
 title: "Part 6 — PayPay Goes AI-Native: LLM Hub & RAG (2025)"
 date: 2026-05-05T21:00:00+07:00
+lastmod: 2026-05-05T21:00:00+07:00
 draft: false
 description: "How PayPay built its 2025 AI platform: multi-model LLM Hub, internal RAG pipeline, delinquency chatbot, and autonomous AI agents for payment operations."
 weight: 7

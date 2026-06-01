@@ -1,6 +1,7 @@
 ---
 title: "Part 9 — LLM Integration: The Mindset of Building AI-Native Applications"
 date: 2026-05-10T16:20:00+07:00
+lastmod: 2026-05-10T16:20:00+07:00
 draft: false
 description: "Transitioning from using AI to write code to putting AI at the heart of the product. LLM-Agnostic architecture and RAG in practice."
 ShowToc: true

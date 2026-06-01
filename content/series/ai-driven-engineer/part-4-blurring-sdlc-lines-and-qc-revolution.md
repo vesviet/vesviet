@@ -1,6 +1,7 @@
 ---
 title: "Part 4 — Blurring SDLC Lines & The QC Revolution"
 date: 2026-05-10T15:30:00+07:00
+lastmod: 2026-05-10T15:30:00+07:00
 draft: false
 description: "AI is breaking down the walls between BAs, Designers, Devs, and QA. The Software Development Life Cycle (SDLC) is witnessing the rise of Quality Engineers (QE) and Full-Cycle Developers."
 ShowToc: true

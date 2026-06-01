@@ -1,6 +1,7 @@
 ---
 title: "Preference Alignment: DPO, KTO, & GRPO Algorithms | SLM Playbook"
 date: 2026-05-25T08:00:00+07:00
+lastmod: 2026-05-25T08:00:00+07:00
 draft: false
 description: "Understand reinforcement learning for aligning language models. Compare DPO, KTO, and dissect DeepSeek's GRPO to save 50% GPU VRAM by removing the Critic Model."
 ShowToc: true

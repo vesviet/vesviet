@@ -2,6 +2,7 @@
 title: "Part 8: Inference Optimization & vLLM Deployment on Production"
 slug: "part-8-inference-optimization-vllm"
 date: "2026-05-17T12:00:00+07:00"
+lastmod: "2026-05-17T12:00:00+07:00"
 draft: false
 weight: 80
 tags: ["Inference", "vLLM", "PagedAttention", "Quantization", "FP8", "DevOps"]

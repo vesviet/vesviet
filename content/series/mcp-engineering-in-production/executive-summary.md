@@ -1,6 +1,7 @@
 ---
 title: "Executive Summary: MCP - The Control Plane of the AI Ecosystem"
 date: 2026-05-15T14:00:00+07:00
+lastmod: 2026-05-15T14:00:00+07:00
 draft: false
 weight: 1
 categories:

@@ -1,6 +1,7 @@
 ---
 title: "Phase 2: Core Architecture (LDC, Unitization, Multi-Active)"
 date: 2026-05-02T18:10:00+07:00
+lastmod: 2026-05-02T18:10:00+07:00
 draft: false
 description: "Core architecture concepts behind Alipay Double 11 scalability: LDC/unitization, multi-active design, the database layer (OceanBase), messaging, and reliability patterns."
 ShowToc: true

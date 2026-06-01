@@ -1,6 +1,7 @@
 ---
 title: "Phase 4: Deep Dive (Technology Internals)"
 date: 2026-05-02T18:10:00+07:00
+lastmod: 2026-05-02T18:10:00+07:00
 draft: false
 description: "Deep dive notes on the internals behind Double 11-scale systems: RPC evolution, messaging at peak scale, storage engines and compaction, distributed transactions, and real-time risk control."
 ShowToc: true

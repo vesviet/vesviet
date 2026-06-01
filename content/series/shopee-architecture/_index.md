@@ -1,6 +1,7 @@
 ---
 title: "Shopee Architecture: Scaling for Flash Sales"
 date: 2026-05-05T08:00:00+07:00
+lastmod: 2026-05-05T08:00:00+07:00
 draft: false
 weight: 140
 description: "A structured series on how Shopee evolved its architecture to handle extreme high concurrency during 11.11 and Flash Sales."

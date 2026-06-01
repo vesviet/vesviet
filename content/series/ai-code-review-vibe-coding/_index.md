@@ -1,6 +1,7 @@
 ---
 title: "Vibe Coding & AI Code Review: Prototype to Production"
 date: 2026-05-31T16:00:00+07:00
+lastmod: 2026-05-31T16:00:00+07:00
 draft: false
 weight: 25
 categories:

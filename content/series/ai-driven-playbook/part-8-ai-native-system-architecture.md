@@ -1,6 +1,7 @@
 ---
 title: "Part 8 — Grand Finale: Comprehensive AI-Native System Architecture"
 date: 2026-05-21T08:00:00+07:00
+lastmod: 2026-05-21T08:00:00+07:00
 draft: false
 description: "The complete picture: Restructuring the entire software platform, shifting from traditional Microservices to Event-driven AI Workflows and Multi-Agent Collaboration."
 ShowToc: true

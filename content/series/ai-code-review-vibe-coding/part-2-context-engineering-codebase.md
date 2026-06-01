@@ -1,6 +1,7 @@
 ---
 title: "Context Engineering for AI Coding: AGENTS.md, Cursor Rules & RAG"
 date: 2026-05-31T17:00:00+07:00
+lastmod: 2026-05-31T17:00:00+07:00
 draft: false
 weight: 3
 categories:

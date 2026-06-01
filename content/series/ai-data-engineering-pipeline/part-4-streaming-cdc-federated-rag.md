@@ -2,6 +2,7 @@
 title: "Part 4: Streaming CDC & Federated RAG - Real-Time Knowledge"
 slug: "part-4-streaming-cdc-federated-rag"
 date: "2026-05-17T12:00:00+07:00"
+lastmod: "2026-05-17T12:00:00+07:00"
 draft: false
 weight: 40
 tags: ["CDC", "Kafka", "RisingWave", "Federated RAG", "Data Sovereignty"]

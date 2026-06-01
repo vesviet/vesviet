@@ -1,7 +1,7 @@
 {{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   {{- range .Site.Pages.ByLastmod.Reverse }}
-    {{- if and .Permalink (not (in (slice "taxonomy" "term") .Kind)) }}
+    {{- if and .Permalink (not (in (slice "taxonomy" "term") .Kind)) (not .Params.noindex) }}
   <url>
     <loc>{{ .Permalink }}</loc>
     {{- if not .Lastmod.IsZero }}

@@ -1,6 +1,7 @@
 ---
 title: "Chapter 4: How to Scale MySQL with TiDB NewSQL"
 date: 2026-05-05T08:40:00+07:00
+lastmod: 2026-05-05T08:40:00+07:00
 draft: false
 mermaid: true
 description: "Learn how to scale MySQL for E-commerce and how Shopee migrated from complex MySQL sharding to TiDB NewSQL architecture."

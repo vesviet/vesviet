@@ -1,6 +1,7 @@
 ---
 title: "Phase 3: Operations Playbook"
 date: 2026-05-02T18:10:00+07:00
+lastmod: 2026-05-02T18:10:00+07:00
 draft: false
 description: "Operational readiness for Double 11: capacity planning, full-link stress testing, incident command, dashboards, downgrade strategies, and checklists."
 ShowToc: true

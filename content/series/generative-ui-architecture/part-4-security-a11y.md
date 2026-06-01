@@ -1,6 +1,7 @@
 ---
 title: "GenUI Security: XSS, Prompt Injection & WCAG — Frontend (P4)"
 date: 2026-05-16T12:15:00+07:00
+lastmod: 2026-05-16T12:15:00+07:00
 draft: false
 description: "Securing GenUI: Prevent Prompt Injection via Component Registry Allowlist. Validate JSON with Zod. Ensure WCAG and aria-live for dynamic UIs."
 ShowToc: true

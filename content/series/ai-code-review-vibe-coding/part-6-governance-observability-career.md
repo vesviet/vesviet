@@ -1,6 +1,7 @@
 ---
 title: "AI Governance, Observability & the Vibe Engineer Career (2026)"
 date: 2026-05-31T19:00:00+07:00
+lastmod: 2026-05-31T19:00:00+07:00
 draft: false
 weight: 7
 categories:

@@ -1,6 +1,7 @@
 ---
 title: "Part 2 — AI Platform Layer: Building a Private AI Ecosystem & Architectural Freedom"
 date: 2026-05-14T08:00:00+07:00
+lastmod: 2026-05-14T08:00:00+07:00
 draft: false
 description: "Escape the Pay-per-seat and Vendor Lock-in traps by building an internal AI Gateway, enforcing Cost Governance, and leveraging the power of Local LLMs."
 ShowToc: true

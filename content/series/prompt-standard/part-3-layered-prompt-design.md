@@ -1,6 +1,7 @@
 ---
 title: "Part 3 — Separating Role, Rules, Workflow, and Skill to Reduce Prompt Chaos"
 date: 2026-05-09T10:45:00+07:00
+lastmod: 2026-05-09T10:45:00+07:00
 draft: false
 description: "How to split prompts into small, maintainable layers — making them easier to reuse, debug, and scale across teams."
 categories:

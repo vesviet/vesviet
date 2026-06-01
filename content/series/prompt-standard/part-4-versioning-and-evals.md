@@ -1,6 +1,7 @@
 ---
 title: "Part 4 — From Gut-Feel Prompts to Testable, Versionable Prompts"
 date: 2026-05-09T10:50:00+07:00
+lastmod: 2026-05-09T10:50:00+07:00
 draft: false
 description: "Prompts only mature when teams can version, compare, and measure output quality instead of judging by gut feeling."
 categories:

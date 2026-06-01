@@ -1,6 +1,7 @@
 ---
 title: "Part 2: Build a Production Server with Go"
 date: 2026-05-15T14:00:00+07:00
+lastmod: 2026-05-15T14:00:00+07:00
 draft: false
 weight: 3
 categories:

@@ -1,6 +1,7 @@
 ---
 title: "Part 1 — Location Ingestion: Collecting Millions of GPS Coordinates Per Second"
 date: 2026-05-06T20:00:00+07:00
+lastmod: 2026-05-06T20:00:00+07:00
 draft: false
 description: "Why HTTP REST isn't good enough for continuous GPS tracking, and how Uber/Grab use MQTT, gRPC Streams, and Kalman Filters to collect driver locations without draining batteries."
 weight: 2

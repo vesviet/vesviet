@@ -1,6 +1,7 @@
 ---
 title: "Tech Radar, April 26, 2026: Anthropic's Compute Strategy Signals That Frontier AI Is Becoming a Utility-Scale Infrastructure Business"
 date: "2026-04-26T08:00:00+07:00"
+lastmod: "2026-04-26T08:00:00+07:00"
 draft: false
 categories:
   - Tech Radar

@@ -1,6 +1,7 @@
 ---
 title: "Part 8 — The Junior Paradox: Building Foundations When AI Does the Basics"
 date: 2026-05-10T16:10:00+07:00
+lastmod: 2026-05-10T16:10:00+07:00
 draft: false
 description: "Dissecting the crisis in training young programmers. When machines solve the surface-level problems, how must newcomers train to avoid having 'hollow knowledge'?"
 ShowToc: true

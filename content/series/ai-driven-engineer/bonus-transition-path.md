@@ -1,6 +1,7 @@
 ---
 title: "[Bonus] The 30-60-90 Day Roadmap: From Code Typist to AI-Driven Engineer"
 date: 2026-05-10T17:00:00+07:00
+lastmod: 2026-05-10T17:00:00+07:00
 draft: false
 description: "A detailed action map to help programmers transform in 3 months: Tool setup, mindset training, and building real-world projects."
 ShowToc: true

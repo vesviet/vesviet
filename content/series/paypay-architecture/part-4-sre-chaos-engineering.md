@@ -1,6 +1,7 @@
 ---
 title: "Part 4 — Operations: SRE & Resilience"
 date: 2026-05-05T21:00:00+07:00
+lastmod: 2026-05-05T21:00:00+07:00
 draft: false
 description: "How PayPay SRE maintains 99.99% uptime: Datadog, OpenTelemetry, chaos engineering, circuit breakers, and a security posture forged by the 2018 incident."
 weight: 5

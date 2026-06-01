@@ -1,6 +1,7 @@
 ---
 title: "Part 3 — The Data Layer: From Aurora to TiDB"
 date: 2026-05-05T21:00:00+07:00
+lastmod: 2026-05-05T21:00:00+07:00
 draft: false
 description: "Why PayPay migrated from AWS Aurora to self-hosted TiDB: the Aurora bottleneck, TiDB's distributed architecture, the phased migration strategy, and the results."
 weight: 4

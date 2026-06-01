@@ -1,6 +1,7 @@
 ---
 title: "Part 6 — Security, Compliance & Audit (Security, Compliance & Audit)"
 date: 2026-05-06T18:00:00+07:00
+lastmod: 2026-05-06T18:00:00+07:00
 draft: false
 description: "Core Banking is the ultimate target for hackers. Understand mandatory security standards (PCI-DSS, AML), how to design tamper-proof audit trails, and process sensitive data."
 weight: 7

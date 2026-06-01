@@ -2,6 +2,7 @@
 title: "What is Vibe Coding? Why AI Code Review is the Future"
 slug: "vibe-coding-and-ai-code-review-future"
 date: "2026-05-31T18:30:00+07:00"
+lastmod: "2026-05-31T18:30:00+07:00"
 draft: false
 categories:
   - "AI Engineering"

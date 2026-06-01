@@ -2,6 +2,7 @@
 title: "Executive Summary: The Disruption of Naive RAG and the GraphRAG Era"
 slug: "executive-summary-graphrag-data-pipeline"
 date: "2026-05-17T12:05:00+07:00"
+lastmod: "2026-05-17T12:05:00+07:00"
 draft: false
 tags: ["Data Engineering", "GraphRAG", "LLM", "Architecture", "Executive Summary"]
 description: "An overview of the collapse of Naive RAG in Enterprise environments and why GraphRAG alongside a standardized Data Pipeline is the vital key to AI systems."

@@ -1,6 +1,7 @@
 ---
 title: "Part 5 — Split Shipment, Consolidation & Last-Mile Delivery"
 date: 2026-05-06T20:30:00+07:00
+lastmod: 2026-05-06T20:30:00+07:00
 draft: false
 description: "The core trade-off: Should you split an order or consolidate it? Plus, optimizing the last-mile delivery, which accounts for 53% of total logistics costs."
 weight: 6

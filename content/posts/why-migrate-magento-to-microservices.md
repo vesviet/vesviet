@@ -2,6 +2,7 @@
 title: "Migrating Magento to Microservices: When & Why"
 slug: "why-migrate-magento-to-microservices"
 date: 2026-04-14T22:00:00+07:00
+lastmod: 2026-04-14T22:00:00+07:00
 draft: false
 mermaid: true
 tags: ["Magento", "Microservices", "System Design", "Migration", "Architecture", "Golang"]

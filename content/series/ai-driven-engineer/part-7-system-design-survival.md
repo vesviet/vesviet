@@ -1,6 +1,7 @@
 ---
 title: "Part 7 — System Design: The Priceless Survival Territory for Developers"
 date: 2026-05-10T16:00:00+07:00
+lastmod: 2026-05-10T16:00:00+07:00
 draft: false
 description: "AI can write excellent code, but it cannot design macro-systems. Discover why System Design and handling Legacy Code are the 'holy grail' of the programming profession."
 ShowToc: true

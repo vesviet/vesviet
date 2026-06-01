@@ -2,6 +2,7 @@
 title: "GitOps at Scale: Kubernetes & ArgoCD for Microservices"
 slug: "gitops-at-scale-kubernetes-argocd-microservices"
 date: 2026-04-12T07:00:00+07:00
+lastmod: 2026-04-12T07:00:00+07:00
 draft: false
 mermaid: true
 tags: ["GitOps", "Kubernetes", "ArgoCD", "Kustomize", "DevOps", "Microservices"]

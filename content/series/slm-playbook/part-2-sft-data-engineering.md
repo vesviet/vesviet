@@ -1,6 +1,7 @@
 ---
 title: "Data Engineering SFT: NEFTune & SemDeDup | SLM Playbook"
 date: 2026-05-22T08:00:00+07:00
+lastmod: 2026-05-22T08:00:00+07:00
 draft: false
 description: "Data engineering guide for Supervised Fine-Tuning (SFT). Learn NEFTune noise injection math and build a SemDeDup pipeline in Python."
 ShowToc: true

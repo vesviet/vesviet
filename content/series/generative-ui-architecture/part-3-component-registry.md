@@ -1,6 +1,7 @@
 ---
 title: "Component Registry & MCP to Frontend — GenUI Architecture (P3)"
 date: 2026-05-16T12:10:00+07:00
+lastmod: 2026-05-16T12:10:00+07:00
 draft: false
 description: "Building the Component Registry: the bridge from Backend MCP Agents to Frontend Svelte. The Controlled Generative UI pattern ensuring AI doesn't write HTML."
 ShowToc: true

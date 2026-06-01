@@ -1,6 +1,7 @@
 ---
 title: "PayPay Architecture: Scaling for Planet-Scale Campaigns"
 date: 2026-05-05T21:00:00+07:00
+lastmod: 2026-05-05T21:00:00+07:00
 draft: false
 weight: 150
 description: "How PayPay scales for 70M users: microservices, Kafka idempotency, TiDB migration, SRE chaos engineering, campaign pre-scaling, and AI-native architecture."

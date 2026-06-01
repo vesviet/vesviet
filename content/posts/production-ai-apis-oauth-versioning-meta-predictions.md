@@ -2,6 +2,7 @@
 title: "OAuth 2.1 & Prompt Versioning for Production AI Agents"
 slug: "production-ai-apis-oauth-versioning-meta-predictions"
 date: "2026-05-18T20:00:00+07:00"
+lastmod: "2026-05-18T20:00:00+07:00"
 draft: false
 description: "Field-tested patterns for AI APIs in production: OAuth 2.1 agent identity, prompt versioning with CI gates, and an honest 2025 AI predictions scorecard."
 ShowToc: true

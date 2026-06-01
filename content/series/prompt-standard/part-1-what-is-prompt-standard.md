@@ -1,6 +1,7 @@
 ---
 title: "Part 1 — What Is Prompt Standard and Why Should Your Team Care?"
 date: 2026-05-09T10:35:00+07:00
+lastmod: 2026-05-09T10:35:00+07:00
 draft: false
 description: "Understanding the concept of Prompt Standard through practical examples accessible to both engineers and non-technical roles."
 categories:

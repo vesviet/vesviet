@@ -2,6 +2,7 @@
 title: "Part 2: Agentic Ingestion & Multimodal Knowledge Graphs"
 slug: "part-2-agentic-ingestion-multimodal"
 date: "2026-05-17T12:00:00+07:00"
+lastmod: "2026-05-17T12:00:00+07:00"
 draft: false
 weight: 20
 tags: ["Agentic Ingestion", "LlamaParse", "Multimodal", "Knowledge Graph", "ColPali"]

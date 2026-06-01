@@ -2,6 +2,7 @@
 title: "Microfinance Core Banking Architecture: PRDs & QA"
 slug: "deconstructing-microfinance-core-banking-architecture"
 date: 2026-05-27T10:00:00+07:00
+lastmod: 2026-05-27T10:00:00+07:00
 draft: false
 tags: ["Core Banking", "Microfinance", "Architecture", "System Design", "QA"]
 description: "A senior developer's guide to architecting a Microfinance Core Banking System. Explore 5 must-have modules, user stories, and QA state machine scenarios."

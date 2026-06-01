@@ -1,6 +1,7 @@
 ---
 title: "What is Generative UI? Why Chatbots Fail — Exec Summary"
 date: 2026-05-16T12:00:00+07:00
+lastmod: 2026-05-16T12:00:00+07:00
 draft: false
 description: "An overview for Tech Leads & Architects: Why chatbots are failing and how Generative UI (GenUI) solves the Enterprise Frontend puzzle."
 ShowToc: true

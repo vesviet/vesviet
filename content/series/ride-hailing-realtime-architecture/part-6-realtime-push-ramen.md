@@ -1,6 +1,7 @@
 ---
 title: "Part 6 — RAMEN & Real-time Communication: Pushing Instant Notifications to Millions of Devices"
 date: 2026-05-06T20:00:00+07:00
+lastmod: 2026-05-06T20:00:00+07:00
 draft: false
 description: "RAMEN (Real-time Asynchronous Messaging Network) — Uber's push notification system maintains millions of live connections, ensuring ride offers are delivered to drivers in milliseconds."
 weight: 7

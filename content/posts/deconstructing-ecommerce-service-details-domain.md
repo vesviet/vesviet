@@ -2,6 +2,7 @@
 title: "Deconstructing the Ecosystem: Service Details by Domain"
 slug: "deconstructing-ecommerce-service-details-domain"
 date: 2026-04-12T08:00:00+07:00
+lastmod: 2026-04-12T08:00:00+07:00
 draft: false
 tags: ["Domain-Driven Design", "Microservices", "System Design", "Architecture"]
 description: "A detailed technical breakdown of how a monolithic e-commerce application is segregated into 6 logical Business Domains with 21 isolated microservices."

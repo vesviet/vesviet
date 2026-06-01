@@ -1,6 +1,7 @@
 ---
 title: "Modern Tech Comparison"
 date: 2026-05-02T18:10:00+07:00
+lastmod: 2026-05-02T18:10:00+07:00
 draft: false
 description: "Mapping Alipay Double 11 architectural concepts to modern cloud-native technologies: Kubernetes multi-cluster, distributed databases, Kafka/Pulsar, gRPC, and service mesh."
 ShowToc: true

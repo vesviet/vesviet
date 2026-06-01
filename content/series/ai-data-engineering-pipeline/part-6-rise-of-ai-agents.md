@@ -2,6 +2,7 @@
 title: "Part 6: The Rise of AI Agents - From Reading to Autonomy"
 slug: "part-6-rise-of-ai-agents"
 date: "2026-05-17T12:00:00+07:00"
+lastmod: "2026-05-17T12:00:00+07:00"
 draft: false
 weight: 60
 tags: ["AI Agents", "LangGraph", "MCP", "Agentic Memory", "ReAct", "HITL"]

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Learning Path to Become a Core Banking Developer on Tuấn Anh - Senior Software Engineer</title>
+		<link>https://tanhdev.com/series/core-banking-developer/</link>
+		<description>Recent content in Learning Path to Become a Core Banking Developer on Tuấn Anh - Senior Software Engineer</description>
+		<generator>Hugo</generator>
+		<language>en-us</language>
+		
+		
+		
+		
+			<lastBuildDate>Wed, 27 May 2026 07:10:00 +0700</lastBuildDate>
+		
+			<atom:link href="https://tanhdev.com/series/core-banking-developer/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>The Landscape of Core Banking Developers</title>
+				<link>https://tanhdev.com/series/core-banking-developer/executive-summary/</link>
+				<pubDate>Wed, 06 May 2026 18:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/core-banking-developer/executive-summary/</guid>
+				<description>&lt;h2 id=&#34;who-is-a-core-banking-developer&#34;&gt;Who is a Core Banking Developer?&lt;/h2&gt;&#xA;&lt;p&gt;A &lt;strong&gt;Core Banking Developer&lt;/strong&gt; is a software engineer responsible for building, operating, and extending the system that processes all of a bank&amp;rsquo;s core financial operations — from managing accounts, processing money transfers, and calculating interest rates, to ensuring every single penny is recorded with absolute accuracy.&lt;/p&gt;&#xA;&lt;p&gt;Unlike a typical developer, a mistake for a Core Banking Developer doesn&amp;rsquo;t just mean a 404 error page — it means &lt;strong&gt;customers&amp;rsquo; money being lost, duplicated, or the general ledger becoming unbalanced&lt;/strong&gt;. This intense pressure defines their entire approach to writing code and designing systems.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 1 — The Double-Entry Ledger Foundation</title>
+				<link>https://tanhdev.com/series/core-banking-developer/part-1-double-entry-ledger/</link>
+				<pubDate>Wed, 06 May 2026 18:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/core-banking-developer/part-1-double-entry-ledger/</guid>
+				<description>&lt;h2 id=&#34;why-does-a-developer-need-to-learn-accounting&#34;&gt;Why does a developer need to learn accounting?&lt;/h2&gt;&#xA;&lt;p&gt;Most developers hear &amp;ldquo;accounting&amp;rdquo; and assume it&amp;rsquo;s a job for the finance department. But in Core Banking, &lt;strong&gt;double-entry bookkeeping is the most critical business logic&lt;/strong&gt; your code must execute. If your code is wrong and the ledger is unbalanced, the bank cannot report to the Central Bank, leading to severe legal consequences.&lt;/p&gt;&#xA;&lt;h2 id=&#34;the-principle-of-double-entry-bookkeeping&#34;&gt;The Principle of Double-Entry Bookkeeping&lt;/h2&gt;&#xA;&lt;p&gt;Invented in the 15th century by Italian mathematician Luca Pacioli, this principle has &lt;strong&gt;only one rule&lt;/strong&gt;:&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 2 — Core Banking Domain: CIF, CASA &amp; Lending</title>
+				<link>https://tanhdev.com/series/core-banking-developer/part-2-banking-domain-casa-lending/</link>
+				<pubDate>Wed, 06 May 2026 18:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/core-banking-developer/part-2-banking-domain-casa-lending/</guid>
+				<description>&lt;h2 id=&#34;overview-of-the-three-core-modules&#34;&gt;Overview of the Three Core Modules&lt;/h2&gt;&#xA;&lt;p&gt;Most Core Banking systems are organized around these three business domains. Understanding them helps you read customer (bank) specifications and translate them into accurate system designs.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;module-1-cif--customer-information-file&#34;&gt;Module 1: CIF — Customer Information File&lt;/h2&gt;&#xA;&lt;p&gt;The &lt;strong&gt;CIF&lt;/strong&gt; is the foundation of customer identity across the entire system. Every customer — whether individual or corporate — has a unique CIF number. All other products (accounts, loans, cards) are linked to this CIF.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 3 — Database Design for Financial Transactions (ACID &amp; Concurrency)</title>
+				<link>https://tanhdev.com/series/core-banking-developer/part-3-database-transactions-acid/</link>
+				<pubDate>Wed, 06 May 2026 18:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/core-banking-developer/part-3-database-transactions-acid/</guid>
+				<description>&lt;h2 id=&#34;the-core-problem-concurrency&#34;&gt;The Core Problem: Concurrency&lt;/h2&gt;&#xA;&lt;p&gt;Imagine Customer A&amp;rsquo;s account has &lt;strong&gt;1,000,000 VND&lt;/strong&gt;. Two events happen at exactly the same time:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Event 1:&lt;/strong&gt; The customer withdraws 800,000 VND at an ATM.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Event 2:&lt;/strong&gt; An Auto-Debit system deducts a 500,000 VND service fee.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;If both transactions read the balance as &lt;code&gt;1,000,000&lt;/code&gt; simultaneously and then overwrite each other&amp;rsquo;s result, one of them will be lost — the customer might effectively withdraw &lt;strong&gt;1,300,000 VND&lt;/strong&gt; from an account that only had &lt;strong&gt;1,000,000 VND&lt;/strong&gt;. This is a &lt;strong&gt;Lost Update&lt;/strong&gt; error — a catastrophic failure in any financial system.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 4 — Modern Core Banking Architecture: Microservices in Banking (Event-Driven)</title>
+				<link>https://tanhdev.com/series/core-banking-developer/part-4-modern-core-banking-architecture/</link>
+				<pubDate>Wed, 06 May 2026 18:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/core-banking-developer/part-4-modern-core-banking-architecture/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;Prerequisite:&lt;/strong&gt; This article assumes familiarity with &lt;a href=&#34;https://tanhdev.com/series/core-banking-developer/part-3-database-transactions-acid/&#34;&gt;ACID transactions and database concurrency&lt;/a&gt; at the database layer. Understanding why consistency guarantees are hard is essential context before we introduce the distributed patterns here.&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;why-microservices-in-banking&#34;&gt;Why Microservices in Banking?&lt;/h2&gt;&#xA;&lt;p&gt;Microservices in banking is not a trend — it is a structural response to the operational failures of monolithic Core Banking systems (like T24 or Flexcube). In a monolith, the entire business logic (CIF, CASA, Lending, GL, Payments&amp;hellip;) runs in one massive application. This creates three compounding problems:&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 5 — International Integration Standards: ISO 8583 &amp; ISO 20022</title>
+				<link>https://tanhdev.com/series/core-banking-developer/part-5-iso-standards-integration/</link>
+				<pubDate>Wed, 06 May 2026 18:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/core-banking-developer/part-5-iso-standards-integration/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;Prerequisite:&lt;/strong&gt; This article covers the external communication layer of Core Banking. Before diving in, ensure you understand how the internal services are structured — see &lt;a href=&#34;https://tanhdev.com/series/core-banking-developer/part-4-modern-core-banking-architecture/&#34;&gt;Part 4 — Banking Microservices Architecture&lt;/a&gt; for the foundational service topology and event-driven patterns.&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;why-are-international-standards-important&#34;&gt;Why are international standards important?&lt;/h2&gt;&#xA;&lt;p&gt;Core Banking does not operate in isolation. It must communicate with:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Card Networks:&lt;/strong&gt; Visa, Mastercard, AMEX — to process ATM/POS transactions.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Domestic Clearing Houses:&lt;/strong&gt; National interbank settlement systems.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Cross-Border Payments:&lt;/strong&gt; SWIFT — connecting over 11,000 financial institutions globally.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;All these systems &amp;ldquo;talk&amp;rdquo; to each other using two primary message standards: &lt;strong&gt;ISO 8583&lt;/strong&gt; and &lt;strong&gt;ISO 20022&lt;/strong&gt;.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 6 — Security, Compliance &amp; Audit (Security, Compliance &amp; Audit)</title>
+				<link>https://tanhdev.com/series/core-banking-developer/part-6-security-compliance-audit/</link>
+				<pubDate>Wed, 06 May 2026 18:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/core-banking-developer/part-6-security-compliance-audit/</guid>
+				<description>&lt;h2 id=&#34;why-is-core-banking-security-different&#34;&gt;Why is Core Banking Security Different?&lt;/h2&gt;&#xA;&lt;p&gt;In a typical application, a security vulnerability might lead to a data breach. In Core Banking, a vulnerability leads directly to &lt;strong&gt;lost money&lt;/strong&gt; — the money of millions of customers. This is why the banking sector has the strictest security standards in the world.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;pci-dss--payment-card-industry-data-security-standard&#34;&gt;PCI-DSS — Payment Card Industry Data Security Standard&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;PCI-DSS&lt;/strong&gt; is a mandatory set of standards for any organization that stores, processes, or transmits payment card data (Visa, Mastercard, JCB&amp;hellip;). Violating PCI-DSS can result in millions of dollars in fines and being banned from processing card payments.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 7 — Practice: Build a Mini Core Banking System from Scratch</title>
+				<link>https://tanhdev.com/series/core-banking-developer/part-7-build-mini-core-banking/</link>
+				<pubDate>Wed, 06 May 2026 18:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/core-banking-developer/part-7-build-mini-core-banking/</guid>
+				<description>&lt;h2 id=&#34;project-objectives&#34;&gt;Project Objectives&lt;/h2&gt;&#xA;&lt;p&gt;This is the final capstone project. You will build a complete &lt;strong&gt;Mini Core Banking&lt;/strong&gt; system, simultaneously applying all the principles we&amp;rsquo;ve covered:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;✅ &lt;strong&gt;Part 1:&lt;/strong&gt; Double-entry bookkeeping with an immutable Ledger&lt;/li&gt;&#xA;&lt;li&gt;✅ &lt;strong&gt;Part 2:&lt;/strong&gt; CIF, CASA, and Lending domain models&lt;/li&gt;&#xA;&lt;li&gt;✅ &lt;strong&gt;Part 3:&lt;/strong&gt; ACID transactions, Pessimistic Locking, and Idempotency&lt;/li&gt;&#xA;&lt;li&gt;✅ &lt;strong&gt;Part 4:&lt;/strong&gt; Event-driven design with the Outbox Pattern&lt;/li&gt;&#xA;&lt;li&gt;✅ &lt;strong&gt;Part 5:&lt;/strong&gt; Standardized message structures (ISO-inspired)&lt;/li&gt;&#xA;&lt;li&gt;✅ &lt;strong&gt;Part 6:&lt;/strong&gt; Audit trails and data classification&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;You can use any language: Go, Java, Python, Node.js, .NET — the architectural principles remain the same.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 8 — Product Management: How to Structure a Core Banking PRD</title>
+				<link>https://tanhdev.com/series/core-banking-developer/part-8-core-banking-prd/</link>
+				<pubDate>Wed, 27 May 2026 07:10:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/core-banking-developer/part-8-core-banking-prd/</guid>
+				<description>&lt;p&gt;In core banking system (CBS) development, the Product Requirements Document (PRD) is vastly different from a standard SaaS or mobile app PRD. While a SaaS PRD focuses heavily on user interfaces, user growth metrics, and customer delight, a Core Banking PRD must prioritize &lt;strong&gt;financial integrity, transactional consistency, auditability, and regulatory compliance&lt;/strong&gt;.&lt;/p&gt;&#xA;&lt;p&gt;A poorly designed core banking requirement doesn&amp;rsquo;t just lead to bad user reviews; it can result in regulatory fines, unbalanced ledgers, and millions of dollars in financial discrepancies.&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

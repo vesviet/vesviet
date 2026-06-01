@@ -1,6 +1,7 @@
 ---
 title: "Agentic E-commerce Search Engine Architecture"
 date: 2026-05-22T22:00:00+07:00
+lastmod: 2026-05-22T22:00:00+07:00
 draft: false
 author: "Vesviet Team"
 weight: 36

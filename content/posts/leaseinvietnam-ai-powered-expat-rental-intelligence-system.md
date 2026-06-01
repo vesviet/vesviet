@@ -2,6 +2,7 @@
 title: "LeaseInVietnam: AI-Powered Expat Rental & B2B Lead Engine"
 slug: "leaseinvietnam-ai-powered-expat-rental-intelligence-system"
 date: "2026-04-24T10:00:00+07:00"
+lastmod: "2026-04-24T10:00:00+07:00"
 draft: false
 mermaid: true
 categories:

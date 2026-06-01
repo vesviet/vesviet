@@ -98,6 +98,6 @@ apple_touch_icon = "/apple-touch-icon.png"
 [outputs]
   home = ["HTML", "RSS"]
   page = ["HTML"]
-  section = ["HTML"]
+  section = ["HTML", "RSS"]
   taxonomy = ["HTML"]
   term = ["HTML"]

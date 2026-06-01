@@ -2,6 +2,7 @@
 title: "Part 9: Agentic Observability - Monitoring & Debugging the AI's Train of Thought"
 slug: "part-9-agentic-observability-monitoring"
 date: "2026-05-17T12:00:00+07:00"
+lastmod: "2026-05-17T12:00:00+07:00"
 draft: false
 weight: 90
 tags: ["Observability", "LangSmith", "Langfuse", "LLMOps", "OpenTelemetry", "Debugging"]

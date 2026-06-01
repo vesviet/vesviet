@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>The AI-Driven Engineer: Enterprise Playbook on Tuấn Anh - Senior Software Engineer</title>
+		<link>https://tanhdev.com/series/ai-driven-playbook/</link>
+		<description>Recent content in The AI-Driven Engineer: Enterprise Playbook on Tuấn Anh - Senior Software Engineer</description>
+		<generator>Hugo</generator>
+		<language>en-us</language>
+		
+		
+		
+		
+			<lastBuildDate>Thu, 21 May 2026 08:00:00 +0700</lastBuildDate>
+		
+			<atom:link href="https://tanhdev.com/series/ai-driven-playbook/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Executive Summary — Building an AI-Native Engineering Organization</title>
+				<link>https://tanhdev.com/series/ai-driven-playbook/executive-summary/</link>
+				<pubDate>Wed, 13 May 2026 07:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-playbook/executive-summary/</guid>
+				<description>&lt;p&gt;If the &lt;a href=&#34;https://tanhdev.com/series/ai-driven-engineer/&#34;&gt;first series&lt;/a&gt; helped you shift your mindset from &amp;ldquo;Code Typist&amp;rdquo; to &amp;ldquo;Architect,&amp;rdquo; then this Playbook answers the next foundational question at the enterprise scale: &lt;strong&gt;&amp;ldquo;How do you scale a single individual&amp;rsquo;s 10x productivity into the productivity of an entire organization?&amp;rdquo;&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;The brutal truth is: Buying Cursor or Copilot licenses for the entire team does &lt;strong&gt;not&lt;/strong&gt; transform your company into an &amp;ldquo;AI-Native Company.&amp;rdquo; It simply turns your team into a group of people sharing an expensive tool.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 1 — Context Engineering: Domain-Driven Design for AI</title>
+				<link>https://tanhdev.com/series/ai-driven-playbook/part-1-context-engineering-ddd/</link>
+				<pubDate>Wed, 13 May 2026 08:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-playbook/part-1-context-engineering-ddd/</guid>
+				<description>&lt;p&gt;One of the most disastrous mistakes engineers make when transitioning to AI IDEs (like Cursor or Copilot) is the mindset: &lt;strong&gt;&amp;ldquo;Just throw the entire source code at it, the AI will figure it out.&amp;rdquo;&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;In small student projects (monoliths), this might work. But in an Enterprise environment, where systems are split into dozens of Microservices with millions of lines of code, recklessly &amp;ldquo;stuffing&amp;rdquo; Context leads to 3 fatal consequences:&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;Hallucination Paths:&lt;/strong&gt; The AI invents a &lt;code&gt;config.yaml&lt;/code&gt; file or reports a missing &lt;code&gt;Dockerfile&lt;/code&gt; even though it clearly exists in the root directory.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Context Contamination:&lt;/strong&gt; A developer is coding in the &lt;code&gt;Inventory&lt;/code&gt; service, but the AI automatically imports the &lt;code&gt;PaymentValidator&lt;/code&gt; class from the &lt;code&gt;Billing&lt;/code&gt; service.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Token Bankruptcy:&lt;/strong&gt; Pumping 200,000 tokens (equivalent to the entire codebase) for a simple CSS fix costs about $0.60 per request. A 10-person team can burn thousands of API dollars a month simply due to wasted context.&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;This article redefines how you communicate with AI through &lt;strong&gt;Context Engineering&lt;/strong&gt;, built upon the architectural foundation of Domain-Driven Design (DDD).&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 2 — AI Platform Layer: Building a Private AI Ecosystem &amp; Architectural Freedom</title>
+				<link>https://tanhdev.com/series/ai-driven-playbook/part-2-ai-platform-layer/</link>
+				<pubDate>Thu, 14 May 2026 08:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-playbook/part-2-ai-platform-layer/</guid>
+				<description>&lt;p&gt;In &lt;a href=&#34;https://tanhdev.com/series/ai-driven-playbook/part-1-context-engineering-ddd/&#34;&gt;Part 1&lt;/a&gt;, we solved the code quality problem using &lt;em&gt;Context Engineering&lt;/em&gt;. But when you start scaling AI across the entire organization, Chief Technology Officers (CTOs) immediately hit another wall: &lt;strong&gt;Cost and Security&lt;/strong&gt;.&lt;/p&gt;&#xA;&lt;h2 id=&#34;1-the-pay-per-seat-trap-and-data-blind-spots&#34;&gt;1. The &amp;ldquo;Pay-per-seat&amp;rdquo; Trap and Data &amp;ldquo;Blind Spots&amp;rdquo;&lt;/h2&gt;&#xA;&lt;p&gt;Consider this analogy: Buying GitHub Copilot or ChatGPT Enterprise licenses for 100 engineers is like buying traditional &amp;ldquo;Pay-per-seat&amp;rdquo; SaaS software. As your team balloons, costs multiply exponentially. Worse, if OpenAI decides to double their prices tomorrow, you have absolutely &lt;strong&gt;no way out (Vendor Lock-in)&lt;/strong&gt;.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 3A — Enterprise RAG Architecture: Building the Internal &#39;Brain&#39;</title>
+				<link>https://tanhdev.com/series/ai-driven-playbook/part-3a-enterprise-rag-architecture/</link>
+				<pubDate>Fri, 15 May 2026 08:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-playbook/part-3a-enterprise-rag-architecture/</guid>
+				<description>&lt;p&gt;90% of RAG (Retrieval-Augmented Generation) tutorials online are &amp;ldquo;toy examples&amp;rdquo;: Write 10 lines of Python, read a PDF file, perform naive chunking, stuff it into a Vector Database, and then run a Q&amp;amp;A.&lt;/p&gt;&#xA;&lt;p&gt;But when you apply that system in an Enterprise reality, it collapses immediately. In an Enterprise environment, RAG is not an AI Problem; inherently, it is a &lt;strong&gt;Data Architecture Problem&lt;/strong&gt;.&lt;/p&gt;&#xA;&lt;h2 id=&#34;1-the-plug-and-play-illusion--garbage-in-garbage-out&#34;&gt;1. The &amp;ldquo;Plug-and-Play&amp;rdquo; Illusion &amp;amp; Garbage-In, Garbage-Out&lt;/h2&gt;&#xA;&lt;p&gt;The biggest pain point of Enterprise RAG is &amp;ldquo;Data Noise&amp;rdquo; generated from mindless Naive Chunking.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 3B — AI Automation for Internal Operations: Proving ROI</title>
+				<link>https://tanhdev.com/series/ai-driven-playbook/part-3b-ai-automation-internal-ops/</link>
+				<pubDate>Sat, 16 May 2026 08:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-playbook/part-3b-ai-automation-internal-ops/</guid>
+				<description>&lt;p&gt;The powerful RAG system we built in &lt;a href=&#34;https://tanhdev.com/series/ai-driven-playbook/part-3a-enterprise-rag-architecture/&#34;&gt;Part 3A&lt;/a&gt; would be nothing more than an expensive &amp;ldquo;tech toy&amp;rdquo; if it only answers questions like: &lt;em&gt;&amp;ldquo;What does this function in the project do?&amp;rdquo;&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;The Board of Directors (BOD) and CFOs do not care that Devs saved 15 minutes of typing. What they care about is &lt;strong&gt;ROI (Return on Investment)&lt;/strong&gt;. To sustain the budget for the AI Platform, Tech Leads must prove the system can cut Operational Costs across other departments like Finance, Logistics, and HR.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 4 — Policy-as-Code: Agentic CI/CD Guardrails for AI-Generated Code</title>
+				<link>https://tanhdev.com/series/ai-driven-playbook/part-4-policy-as-code-agentic-cicd/</link>
+				<pubDate>Sun, 17 May 2026 08:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-playbook/part-4-policy-as-code-agentic-cicd/</guid>
+				<description>&lt;p&gt;The 10x productivity of an AI-Native Developer is a &amp;ldquo;curse&amp;rdquo; if your CI/CD pipeline still runs at 1x speed.&lt;/p&gt;&#xA;&lt;p&gt;When a Dev uses Cursor to generate 1,500 lines of code in 10 minutes, no Tech Lead can manually review that flood of Pull Requests. The result: either PRs sit untouched for days (process bottleneck), or reviewers click &lt;code&gt;Approve&lt;/code&gt; with their eyes closed (accumulating technical debt).&lt;/p&gt;&#xA;&lt;p&gt;However, simply installing a bot named &amp;ldquo;AI Reviewer&amp;rdquo; in GitHub Actions and making it read code is also a fatal mistake.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 5 — Operating Model: Evolving Your Team for the AI Era</title>
+				<link>https://tanhdev.com/series/ai-driven-playbook/part-5-operating-model/</link>
+				<pubDate>Mon, 18 May 2026 08:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-playbook/part-5-operating-model/</guid>
+				<description>&lt;p&gt;Scroll through LinkedIn or Twitter and you will find countless posts making sensational claims: &lt;em&gt;&amp;ldquo;AI will replace QA&amp;rdquo;&lt;/em&gt;, &lt;em&gt;&amp;ldquo;Product Managers will now write their own code&amp;rdquo;&lt;/em&gt;, or &lt;em&gt;&amp;ldquo;1 Dev today equals 10 Devs from the past&amp;rdquo;&lt;/em&gt;.&lt;/p&gt;&#xA;&lt;p&gt;From the perspective of an Engineering Manager or System Architect, these claims are as data-free as they are credibility-destroying. In the Enterprise environment, adopting AI does not eliminate roles—it &lt;strong&gt;Shifts the Bottleneck&lt;/strong&gt;.&lt;/p&gt;&#xA;&lt;p&gt;When code-writing speed increases 10x, the bottleneck immediately shifts to: &lt;strong&gt;Requirements Clarification (Specs)&lt;/strong&gt; and &lt;strong&gt;Architecture Validation (Architecture Review)&lt;/strong&gt;.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 6 — AI Observability &amp; Evals: Eliminating Operational Blind Spots</title>
+				<link>https://tanhdev.com/series/ai-driven-playbook/part-6-ai-observability-governance/</link>
+				<pubDate>Tue, 19 May 2026 08:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-playbook/part-6-ai-observability-governance/</guid>
+				<description>&lt;p&gt;Many engineers in the current market can build an AI App in a weekend. But those who know how to &lt;strong&gt;operate an AI system in production (AI Platform Operations)&lt;/strong&gt; can be counted on one hand.&lt;/p&gt;&#xA;&lt;p&gt;The biggest difference between a &amp;ldquo;Demo&amp;rdquo; and an &amp;ldquo;Enterprise Platform&amp;rdquo; lives in one word: &lt;strong&gt;Observability&lt;/strong&gt;.&lt;/p&gt;&#xA;&lt;h2 id=&#34;1-the-blind-spots-of-ai-in-production&#34;&gt;1. The Blind Spots of AI in Production&lt;/h2&gt;&#xA;&lt;p&gt;When a traditional web app crashes (e.g., lost database connection), the system throws a 500 error code. An SRE (Site Reliability Engineer) looks at the logs and knows exactly how to fix it.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 7 — AI Security Engineering: Ironclad Armor for New Attack Surfaces</title>
+				<link>https://tanhdev.com/series/ai-driven-playbook/part-7-ai-security-engineering/</link>
+				<pubDate>Wed, 20 May 2026 08:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-playbook/part-7-ai-security-engineering/</guid>
+				<description>&lt;p&gt;For years, Security Engineers have fought against deterministic vulnerabilities like SQL Injection, XSS, or buffer overflows. The rise of Generative AI has opened an entirely &lt;strong&gt;new Attack Surface&lt;/strong&gt; of a probabilistic nature.&lt;/p&gt;&#xA;&lt;p&gt;Many companies naively believe: &lt;em&gt;&amp;ldquo;AI security just means not pasting API Keys carelessly and not sending confidential info to ChatGPT.&amp;rdquo;&lt;/em&gt; That is an end-user mindset, not a System Architect&amp;rsquo;s. When you grant an LLM the ability to call Functions and access internal Databases, you are rolling out a welcome mat for disaster.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 8 — Grand Finale: Comprehensive AI-Native System Architecture</title>
+				<link>https://tanhdev.com/series/ai-driven-playbook/part-8-ai-native-system-architecture/</link>
+				<pubDate>Thu, 21 May 2026 08:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-playbook/part-8-ai-native-system-architecture/</guid>
+				<description>&lt;p&gt;From &lt;a href=&#34;https://tanhdev.com/series/ai-driven-playbook/part-1-context-engineering-ddd/&#34;&gt;Part 1&lt;/a&gt; through &lt;a href=&#34;https://tanhdev.com/series/ai-driven-playbook/part-7-ai-security-engineering/&#34;&gt;Part 7&lt;/a&gt;, we have systematically assembled all the puzzle pieces: &lt;em&gt;Context, Gateway, Data, CI/CD, Process, Monitoring, and Security&lt;/em&gt;.&lt;/p&gt;&#xA;&lt;p&gt;But stopping there means your organization is still merely &amp;ldquo;bolting on&amp;rdquo; AI to an aging software system. The ultimate &lt;strong&gt;End-game&lt;/strong&gt; of this transformation is: &lt;strong&gt;Rebuilding the entire company (and Backend system) with AI machines at its center.&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;This is where we discuss &lt;strong&gt;AI-Native System Architecture&lt;/strong&gt;.&lt;/p&gt;&#xA;&lt;h2 id=&#34;1-the-end-of-synchronous-architecture-the-synchronous-anti-pattern&#34;&gt;1. The End of Synchronous Architecture (The Synchronous Anti-pattern)&lt;/h2&gt;&#xA;&lt;p&gt;In traditional Web architecture, a user clicks a button and the system calls a REST API (Synchronous), waiting a few dozen milliseconds for a result.&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

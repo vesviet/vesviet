@@ -1,6 +1,7 @@
 ---
 title: "Knowledge Distillation: Distilling DeepSeek-R1 | SLM Playbook"
 date: 2026-05-24T08:00:00+07:00
+lastmod: 2026-05-24T08:00:00+07:00
 draft: false
 description: "Learn how to distill reasoning capabilities (Chain of Thought) from DeepSeek-R1 to Qwen Coder. Build an automated synthetic data pipeline in Python."
 ShowToc: true

@@ -1,6 +1,7 @@
 ---
 title: "Qdrant Hybrid Search: Solving Semantic and Hard Filters"
 date: 2026-05-22T22:30:00+07:00
+lastmod: 2026-05-22T22:30:00+07:00
 draft: false
 author: "Vesviet Team"
 weight: 4

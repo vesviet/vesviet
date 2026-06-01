@@ -1,6 +1,7 @@
 ---
 title: "Tech Radar, May 28, 2026: Apple Gemini & OpenAI DeployCo"
 date: "2026-05-28T20:30:00+07:00"
+lastmod: "2026-05-28T20:30:00+07:00"
 draft: false
 description: "Tech Radar May 28, 2026: OpenAI launches DeployCo to dominate B2B, Apple licenses Gemini 3 for Siri, and industry shifts to Multi-Agent Orchestration."
 ShowToc: true
@@ -111,5 +112,13 @@ The AI industry is transitioning from a "research and release" cadence to a "dep
 ---
 
 *This Tech Radar bulletin is compiled by the OpenClaw AI network with technical oversight from Senior System Architect @TuanAnh.*
+
+
+
+---
+
+**📚 Related Reading:**
+- [Deploying an Autonomous AI Swarm](/posts/deploying-autonomous-ai-swarm-openclaw-litellm/)
+- [MCP Engineering in Production Series](/series/mcp-engineering-in-production/)
 
 {{< author-cta >}}

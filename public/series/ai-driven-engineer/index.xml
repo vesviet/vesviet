@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>AI-Driven Engineer: From Code Typist to Architect on Tuấn Anh - Senior Software Engineer</title>
+		<link>https://tanhdev.com/series/ai-driven-engineer/</link>
+		<description>Recent content in AI-Driven Engineer: From Code Typist to Architect on Tuấn Anh - Senior Software Engineer</description>
+		<generator>Hugo</generator>
+		<language>en-us</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 10 May 2026 17:00:00 +0700</lastBuildDate>
+		
+			<atom:link href="https://tanhdev.com/series/ai-driven-engineer/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Executive Summary — Software Engineers in the AI Era: Who Stays, Who Leaves?</title>
+				<link>https://tanhdev.com/series/ai-driven-engineer/executive-summary/</link>
+				<pubDate>Sun, 10 May 2026 14:10:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-engineer/executive-summary/</guid>
+				<description>&lt;p&gt;The software industry is witnessing a historic transfer of power. Power is gradually leaving the hands of those who &amp;ldquo;only know how to type code&amp;rdquo; to those who &amp;ldquo;know how to solve problems using systems and AI.&amp;rdquo;&lt;/p&gt;&#xA;&lt;h2 id=&#34;context-when-writing-code-is-no-longer-an-exclusive-skill&#34;&gt;Context: When &amp;ldquo;Writing Code&amp;rdquo; is No Longer an Exclusive Skill&lt;/h2&gt;&#xA;&lt;p&gt;For over two decades, the value of a programmer was largely measured by their understanding of language syntax, mastery of frameworks (React, Angular, Spring Boot, etc.), and ability to memorize APIs.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 1 — The Death of &#39;Code Typists&#39;: When Syntax is No Longer an Advantage</title>
+				<link>https://tanhdev.com/series/ai-driven-engineer/part-1-the-death-of-code-typists/</link>
+				<pubDate>Sun, 10 May 2026 15:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-engineer/part-1-the-death-of-code-typists/</guid>
+				<description>&lt;p&gt;For years, the image of a talented programmer was often associated with blazing fast typing speeds, the ability to memorize dozens of API libraries, and writing code without a single syntax error. We called them pure &amp;ldquo;Coders&amp;rdquo;. But as AI enters the playing field, a harsh reality has emerged: &lt;strong&gt;Writing code is only the easiest part of building software.&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;who-are-code-typists&#34;&gt;Who are &amp;ldquo;Code Typists&amp;rdquo;?&lt;/h2&gt;&#xA;&lt;p&gt;&amp;ldquo;Code Typists&amp;rdquo; is not a derogatory term, but a way to describe a common working state. You are in this state if:&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 2 — Man vs. Machine Boundaries: What to Delegate and What to Keep</title>
+				<link>https://tanhdev.com/series/ai-driven-engineer/part-2-man-vs-machine-boundaries/</link>
+				<pubDate>Sun, 10 May 2026 15:10:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-engineer/part-2-man-vs-machine-boundaries/</guid>
+				<description>&lt;p&gt;Upon realizing that typing speed has been defeated by AI (as discussed in Part 1), an invisible fear engulfs programmers: &lt;em&gt;&amp;ldquo;So what will I do if AI does everything?&amp;rdquo;&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;The answer lies in clearly defining the boundary: AI doesn&amp;rsquo;t do &amp;ldquo;everything&amp;rdquo;. AI only handles the &lt;strong&gt;technical muscle work&lt;/strong&gt;, while humans retain the &lt;strong&gt;brains and responsibility&lt;/strong&gt;. To optimize the software development process without losing control, we need to draw a red line between the &amp;ldquo;Machine&amp;rsquo;s Territory&amp;rdquo; and the &amp;ldquo;Human&amp;rsquo;s Territory&amp;rdquo;.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 3 — The 10x Productivity Reality: Where We Speed Up, Where We Slow Down</title>
+				<link>https://tanhdev.com/series/ai-driven-engineer/part-3-the-10x-productivity-reality/</link>
+				<pubDate>Sun, 10 May 2026 15:20:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-engineer/part-3-the-10x-productivity-reality/</guid>
+				<description>&lt;p&gt;Social media and tech marketing campaigns constantly inject a concept into our heads: &lt;strong&gt;&amp;ldquo;10x Developer thanks to AI&amp;rdquo;&lt;/strong&gt;. The image of a programmer sipping coffee, typing a few prompts, and finishing a week&amp;rsquo;s worth of work in one morning is incredibly appealing.&lt;/p&gt;&#xA;&lt;p&gt;But the truth in the trenches of real-world projects is much harsher. AI provides immense power, but it follows the law of conservation of energy: The time you save when &amp;ldquo;typing code&amp;rdquo; will be partially (or entirely) reclaimed during the reading and maintenance phases if you don&amp;rsquo;t know what you&amp;rsquo;re doing.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 4 — Blurring SDLC Lines &amp; The QC Revolution</title>
+				<link>https://tanhdev.com/series/ai-driven-engineer/part-4-blurring-sdlc-lines-and-qc-revolution/</link>
+				<pubDate>Sun, 10 May 2026 15:30:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-engineer/part-4-blurring-sdlc-lines-and-qc-revolution/</guid>
+				<description>&lt;p&gt;The traditional Software Development Life Cycle (SDLC) is often described as a factory assembly line. Business Analysts (BA) write requirements $\rightarrow$ Designers draw UI $\rightarrow$ Developers (Dev) write code $\rightarrow$ Quality Assurance (QA) finds bugs $\rightarrow$ DevOps pushes to the server. Everyone sits in their own &amp;ldquo;silo&amp;rdquo; and communicates via Jira tickets.&lt;/p&gt;&#xA;&lt;p&gt;But AI has swung a sledgehammer, smashing these walls. When a BA can ask AI to generate a runnable Proof of Concept, and a Developer can ask AI to write automated test scripts, the boundaries between roles become incredibly blurred.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 5 — The BOD Perspective: Expectations, Costs, Legal Risks &amp; Internal AI</title>
+				<link>https://tanhdev.com/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/</link>
+				<pubDate>Sun, 10 May 2026 15:40:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/</guid>
+				<description>&lt;p&gt;So far, we have discussed AI extensively from the perspective of Programmers and Testers. But if you step into the boardroom of the Board of Directors (BOD) or Chief Technology Officers (CTO), you&amp;rsquo;ll see a completely different lens.&lt;/p&gt;&#xA;&lt;p&gt;Executives (BOD) don&amp;rsquo;t care how fancy your AI is, or how long your prompts are. Their lens consists of 3 vital variables: &lt;strong&gt;Cost, Time-to-Market, and Risk Management.&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;The misalignment between BOD expectations and the working reality of Programmers is creating a zone of extreme pressure.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 6 — Role Shift: From Coder to AI Orchestrator</title>
+				<link>https://tanhdev.com/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/</link>
+				<pubDate>Sun, 10 May 2026 15:50:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/</guid>
+				<description>&lt;p&gt;In Part 5, we saw the Board of Directors (BOD) frantically equipping internal AI systems to push productivity KPIs. At this point, if you stubbornly sit and type every line of code from start to finish, you will be left behind. To survive, programmers must shed the &amp;ldquo;Coder&amp;rdquo; jacket and put on the &lt;strong&gt;&amp;ldquo;AI Orchestrator&amp;rdquo;&lt;/strong&gt; mantle.&lt;/p&gt;&#xA;&lt;h2 id=&#34;what-is-an-ai-orchestrator&#34;&gt;What is an AI Orchestrator?&lt;/h2&gt;&#xA;&lt;p&gt;Imagine you&amp;rsquo;ve just been promoted to Tech Lead, and under your command is a swarm of extremely agile but&amp;hellip; brainless (lacking contextual thinking) AI &amp;ldquo;interns&amp;rdquo;.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 7 — System Design: The Priceless Survival Territory for Developers</title>
+				<link>https://tanhdev.com/series/ai-driven-engineer/part-7-system-design-survival/</link>
+				<pubDate>Sun, 10 May 2026 16:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-engineer/part-7-system-design-survival/</guid>
+				<description>&lt;p&gt;No matter how top-tier your Prompt Engineering skills are, sooner or later you will hit a reality wall: &lt;strong&gt;Writing code to create a feature is easy, but designing a system that can handle millions of users is incredibly difficult.&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;In an era where AI is taking over &amp;ldquo;typing&amp;rdquo; tasks, System Design is the life preserver, the &amp;ldquo;inviolable territory&amp;rdquo; that keeps you from being phased out.&lt;/p&gt;&#xA;&lt;h2 id=&#34;ai-is-good-at-building-rooms-not-building-houses&#34;&gt;AI is Good at &amp;ldquo;Building Rooms&amp;rdquo;, Not &amp;ldquo;Building Houses&amp;rdquo;&lt;/h2&gt;&#xA;&lt;p&gt;Imagine software development as building an apartment complex.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 8 — The Junior Paradox: Building Foundations When AI Does the Basics</title>
+				<link>https://tanhdev.com/series/ai-driven-engineer/part-8-the-junior-paradox/</link>
+				<pubDate>Sun, 10 May 2026 16:10:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-engineer/part-8-the-junior-paradox/</guid>
+				<description>&lt;p&gt;At this point, we have painted a relatively bright prospect: Programmers escaping the drudgery of boring typing, becoming System Architects, and orchestrating AI.&lt;/p&gt;&#xA;&lt;p&gt;But this prospect is only true for &lt;strong&gt;Senior Developers&lt;/strong&gt; — those who already have a solid professional foundation to assess the right/wrong of source code. For newcomers (Freshers/Juniors), the advent of AI has inadvertently created the worst training crisis in history: &lt;strong&gt;The Junior Paradox.&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;how-does-this-paradox-work&#34;&gt;How Does This Paradox Work?&lt;/h2&gt;&#xA;&lt;p&gt;For the last 20 years, the evolutionary path from Junior to Senior was a path full of &amp;ldquo;suffering&amp;rdquo; but necessary.&#xA;You learned CSS hacks, you cried over a missing semicolon (;), you struggled to config Webpack, and you repeatedly wrote hundreds of CRUD functions from project to project. It was those hours of &amp;ldquo;struggling&amp;rdquo; with basic problems that formed what is called &lt;strong&gt;Technical Intuition&lt;/strong&gt; or &amp;ldquo;Programming Muscle&amp;rdquo;.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Part 9 — LLM Integration: The Mindset of Building AI-Native Applications</title>
+				<link>https://tanhdev.com/series/ai-driven-engineer/part-9-building-ai-native-architecture/</link>
+				<pubDate>Sun, 10 May 2026 16:20:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-engineer/part-9-building-ai-native-architecture/</guid>
+				<description>&lt;p&gt;In the previous 8 parts, we dissected using AI as a &lt;strong&gt;Tool&lt;/strong&gt; to assist programmers. We explored the &lt;a href=&#34;https://tanhdev.com/series/ai-driven-engineer/part-1-the-death-of-code-typists/&#34;&gt;death of syntax memorization&lt;/a&gt;, the &lt;a href=&#34;https://tanhdev.com/series/ai-driven-engineer/part-2-man-vs-machine-boundaries/&#34;&gt;boundaries of responsibility&lt;/a&gt;, navigated &lt;a href=&#34;https://tanhdev.com/series/ai-driven-engineer/part-3-the-10x-productivity-reality/&#34;&gt;AI review fatigue&lt;/a&gt; and &lt;a href=&#34;https://tanhdev.com/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/&#34;&gt;legal landmines&lt;/a&gt;, and established the need for &lt;a href=&#34;https://tanhdev.com/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/&#34;&gt;Orchestration&lt;/a&gt; and &lt;a href=&#34;https://tanhdev.com/series/ai-driven-engineer/part-7-system-design-survival/&#34;&gt;System Design&lt;/a&gt;. But in this final part, we will flip the script entirely.&lt;/p&gt;&#xA;&lt;p&gt;The ultimate mission of a System Architect (AI-Driven Architect) is not just coding faster, but &lt;strong&gt;putting AI as the &amp;ldquo;heart&amp;rdquo; of the very product they are building&lt;/strong&gt;. We call this &lt;strong&gt;AI-Native Application&lt;/strong&gt; architecture.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>[Bonus] The 30-60-90 Day Roadmap: From Code Typist to AI-Driven Engineer</title>
+				<link>https://tanhdev.com/series/ai-driven-engineer/bonus-transition-path/</link>
+				<pubDate>Sun, 10 May 2026 17:00:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/ai-driven-engineer/bonus-transition-path/</guid>
+				<description>&lt;h2 id=&#34;foreword-the-transformation-journey&#34;&gt;Foreword: The Transformation Journey&lt;/h2&gt;&#xA;&lt;p&gt;After reading the 9 articles in this series, you might be feeling &amp;ldquo;overwhelmed&amp;rdquo; or confused. That&amp;rsquo;s a normal feeling when an old mindset (coding for a living) is shattered. To transform from a &amp;ldquo;Code Typist&amp;rdquo; to a true &amp;ldquo;AI-Driven Engineer,&amp;rdquo; you cannot do it overnight.&lt;/p&gt;&#xA;&lt;p&gt;Below is the &lt;strong&gt;30-60-90 Day Roadmap&lt;/strong&gt; designed as a practical training framework. No empty theories, just Action Items.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;phase-1-days-1---30-mastering-tools--optimizing-productivity-the-operator&#34;&gt;Phase 1 (Days 1 - 30): Mastering Tools &amp;amp; Optimizing Productivity (The Operator)&lt;/h2&gt;&#xA;&lt;p&gt;In the first month, your goal isn&amp;rsquo;t to learn complex architecture. The goal is to &lt;strong&gt;change your typing habits&lt;/strong&gt;. You must learn to be smartly lazy: let machines write the boring boilerplate.&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

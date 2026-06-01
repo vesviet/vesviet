@@ -1,6 +1,7 @@
 ---
 title: "Part 8 — Product Management: How to Structure a Core Banking PRD"
 date: 2026-05-27T07:10:00+07:00
+lastmod: 2026-05-27T07:10:00+07:00
 draft: false
 description: "A comprehensive guide on how to structure a Product Requirements Document (PRD) for Core Banking Systems, bridging the gap between business rules, accounting principles, and distributed systems architecture."
 weight: 9

@@ -1,6 +1,7 @@
 ---
 title: "Part 7 — AI Security Engineering: Ironclad Armor for New Attack Surfaces"
 date: 2026-05-20T08:00:00+07:00
+lastmod: 2026-05-20T08:00:00+07:00
 draft: false
 description: "AI creates entirely new attack surfaces. A practical guide to designing defenses against Prompt Injection, RAG Poisoning, Data Exfiltration, and establishing Agent Sandboxing."
 ShowToc: true

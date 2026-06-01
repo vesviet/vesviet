@@ -1,6 +1,7 @@
 ---
 title: "Phase 1: Timeline and Scale Evolution"
 date: 2026-05-02T18:10:00+07:00
+lastmod: 2026-05-02T18:10:00+07:00
 draft: false
 description: "A timeline of Alipay Double 11 scaling evolution from 2009 to the cloud-native era: crises, architectural resets, and operational maturity."
 ShowToc: true

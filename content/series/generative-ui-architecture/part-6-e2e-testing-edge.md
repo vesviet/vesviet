@@ -1,6 +1,7 @@
 ---
 title: "Testing GenUI & Semantic Edge Caching — AI Frontend (Part 6)"
 date: 2026-05-16T12:25:00+07:00
+lastmod: 2026-05-16T12:25:00+07:00
 draft: false
 description: "Testing non-deterministic GenUI with Property-Based Testing (Playwright). Semantic Caching with Cloudflare Workers to cut LLM API costs by 90%."
 ShowToc: true

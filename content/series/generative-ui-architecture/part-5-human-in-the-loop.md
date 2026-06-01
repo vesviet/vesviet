@@ -1,6 +1,7 @@
 ---
 title: "GenUI Human-In-The-Loop: Optimistic UI & Fallback (Part 5)"
 date: 2026-05-16T12:20:00+07:00
+lastmod: 2026-05-16T12:20:00+07:00
 draft: false
 description: "Handling LLM latency with Skeleton Streaming & Optimistic UI. Designing Approve/Reject mechanisms for AI Agents. Graceful Degradation during network loss."
 ShowToc: true

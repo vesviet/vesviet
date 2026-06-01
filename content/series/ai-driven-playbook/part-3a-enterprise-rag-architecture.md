@@ -1,6 +1,7 @@
 ---
 title: "Part 3A — Enterprise RAG Architecture: Building the Internal 'Brain'"
 date: 2026-05-15T08:00:00+07:00
+lastmod: 2026-05-15T08:00:00+07:00
 draft: false
 description: "Building RAG in an Enterprise isn't just dumping PDFs into a VectorDB. It is a massive Data Architecture problem involving Data Cleaning, Hybrid Search, and Knowledge Freshness."
 ShowToc: true

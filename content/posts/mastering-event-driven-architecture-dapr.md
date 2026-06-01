@@ -2,6 +2,7 @@
 title: "Mastering Event-Driven Architecture with Dapr Pub/Sub"
 slug: "mastering-event-driven-architecture-dapr"
 date: 2026-04-12T09:05:00+07:00
+lastmod: 2026-04-12T09:05:00+07:00
 draft: false
 mermaid: true
 tags: ["Event-Driven", "Dapr", "Golang", "Go", "Message Queue", "Architecture", "Microservices", "Kafka", "Saga"]

@@ -1,5 +1,7 @@
+---
 title: "AI-Driven Engineer: From Code Typist to Architect"
 date: 2026-05-10T14:00:00+07:00
+lastmod: 2026-05-10T14:00:00+07:00
 draft: false
 weight: 10
 description: "Roadmap for software engineers in the AI era: mindset shift from code typist to system architect, AI tool mastery, system design, and AI-native applications."

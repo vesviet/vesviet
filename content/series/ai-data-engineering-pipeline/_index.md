@@ -2,6 +2,7 @@
 title: "Enterprise AI Data Pipeline & GraphRAG Architecture"
 slug: "ai-data-engineering-pipeline"
 date: "2026-05-17T12:00:00+07:00"
+lastmod: "2026-05-17T12:00:00+07:00"
 draft: false
 weight: 40
 tags: ["Data Engineering", "GraphRAG", "Vector Database", "RAG", "LLM", "Architecture"]

@@ -2,6 +2,7 @@
 title: "Architecting Agentic E-commerce Search with Golang"
 slug: "agentic-ecommerce-search-golang-vector-databases"
 date: "2026-05-22T10:00:00+07:00"
+lastmod: "2026-05-22T10:00:00+07:00"
 draft: false
 tags: ["Golang", "Architecture", "AI Agents", "E-commerce", "Vector Database", "Qdrant", "Microservices"]
 description: "Architectural blueprint for building an Agentic E-commerce Search Engine using Golang and Vector Databases. Optimizing semantic search for 2026 commerce."

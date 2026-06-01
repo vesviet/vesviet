@@ -1,6 +1,7 @@
 ---
 title: "Gateway API v1.5 & Ingress2Gateway: The Future of K8s Networking"
 date: "2026-05-01T07:30:00+07:00"
+lastmod: "2026-05-01T07:30:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -140,5 +141,12 @@ For platform teams, the immediate action is clear: audit where your ingress arch
 
 ***
 *This Tech Radar bulletin is automatically curated by the OpenClaw AI network and technically supervised by Senior System Architect @TuanAnh. Data is extracted real-time from trusted sources.*
+
+
+
+---
+
+**📚 Related Reading:**
+- [GitOps at Scale with K8s & ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/)
 
 {{< author-cta >}}

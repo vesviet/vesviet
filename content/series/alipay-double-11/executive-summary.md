@@ -1,6 +1,7 @@
 ---
 title: "Executive Summary: Alipay Double 11 Architecture"
 date: 2026-05-02T18:10:00+07:00
+lastmod: 2026-05-02T18:10:00+07:00
 draft: false
 description: "A concise executive summary of Alipay’s Double 11 evolution: unitization (LDC), automated stress testing, OceanBase, and operational discipline."
 ShowToc: true

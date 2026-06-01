@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Agentic E-commerce Search Engine Architecture on Tuấn Anh - Senior Software Engineer</title>
+		<link>https://tanhdev.com/series/agentic-ecommerce-search/</link>
+		<description>Recent content in Agentic E-commerce Search Engine Architecture on Tuấn Anh - Senior Software Engineer</description>
+		<generator>Hugo</generator>
+		<language>en-us</language>
+		
+		
+		
+		
+			<lastBuildDate>Fri, 22 May 2026 22:45:00 +0700</lastBuildDate>
+		
+			<atom:link href="https://tanhdev.com/series/agentic-ecommerce-search/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Why E-commerce Needs Agentic Search?</title>
+				<link>https://tanhdev.com/series/agentic-ecommerce-search/executive-summary/</link>
+				<pubDate>Fri, 22 May 2026 22:05:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/agentic-ecommerce-search/executive-summary/</guid>
+				<description>&lt;p&gt;The search engine is the heart of every e-commerce platform. If customers cannot find a product, they will not buy it.&lt;/p&gt;&#xA;&lt;p&gt;Over the past decade, when referring to Search, we defaulted to &lt;strong&gt;Elasticsearch&lt;/strong&gt; (with the BM25 algorithm). However, as user search behavior evolves—from typing abrupt keywords (&lt;em&gt;&amp;ldquo;men&amp;rsquo;s running shoes&amp;rdquo;&lt;/em&gt;) to long queries full of complex intent (&lt;em&gt;&amp;ldquo;find me waterproof trail running shoes, size 42, under $100, that can be delivered today&amp;rdquo;&lt;/em&gt;), traditional search engines begin to reveal their fatal flaws.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Agentic Architecture &amp; Golang Orchestration Power</title>
+				<link>https://tanhdev.com/series/agentic-ecommerce-search/part-1-golang-orchestration/</link>
+				<pubDate>Fri, 22 May 2026 22:20:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/agentic-ecommerce-search/part-1-golang-orchestration/</guid>
+				<description>&lt;p&gt;If you have ever tried to push a RAG or Multi-Agent system written in Python (using LangChain or AutoGen) into a Production environment with thousands of concurrent requests, you have likely tasted the pain. Servers run out of RAM, CPUs become bottlenecked, and latency skyrockets uncontrollably.&lt;/p&gt;&#xA;&lt;p&gt;The root cause does not lie in the LLMs. The root cause lies in the &lt;strong&gt;Orchestration Architecture&lt;/strong&gt; you are using.&lt;/p&gt;&#xA;&lt;p&gt;In Part 1 of this series, we will dissect why Python falls short in the Agentic era, and why &lt;strong&gt;Golang&lt;/strong&gt;, combined with the &lt;strong&gt;Eino (CloudWeGo)&lt;/strong&gt; framework, is the &amp;ldquo;ultimate weapon&amp;rdquo; for building the brain of next-generation e-commerce search systems.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Data Ingestion &amp; Atomic Chunking Product Data</title>
+				<link>https://tanhdev.com/series/agentic-ecommerce-search/part-2-ingestion-chunking/</link>
+				<pubDate>Fri, 22 May 2026 22:25:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/agentic-ecommerce-search/part-2-ingestion-chunking/</guid>
+				<description>&lt;p&gt;In &lt;a href=&#34;https://tanhdev.com/series/agentic-ecommerce-search/part-1-golang-orchestration/&#34;&gt;Part 1: The Paradigm Shift - Agentic Architecture &amp;amp; Golang Orchestration Power&lt;/a&gt;, we established the Orchestration Engine using Golang and Eino. However, no matter how smart a brain is, it becomes useless if fed with misleading, unstructured, or fragmented information.&lt;/p&gt;&#xA;&lt;p&gt;In the e-commerce domain, product catalog data changes continuously every second: prices fluctuate, inventory is updated, new products are added. Meanwhile, chunking product data to feed into a Vector Database (Qdrant) is entirely different from chunking a PDF document or a news article.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Qdrant Hybrid Search: Solving Semantic and Hard Filters</title>
+				<link>https://tanhdev.com/series/agentic-ecommerce-search/part-3-qdrant-hybrid-search/</link>
+				<pubDate>Fri, 22 May 2026 22:30:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/agentic-ecommerce-search/part-3-qdrant-hybrid-search/</guid>
+				<description>&lt;p&gt;In &lt;a href=&#34;https://tanhdev.com/series/agentic-ecommerce-search/part-2-ingestion-chunking/&#34;&gt;Part 2: Data Ingestion &amp;amp; Atomic Chunking - Bringing Product Data into the AI Environment&lt;/a&gt;, we established a clean data synchronization pipeline from PostgreSQL to Qdrant via Kafka CDC. But the journey of building a standard e-commerce search engine has just begun.&lt;/p&gt;&#xA;&lt;p&gt;When a user enters: &lt;em&gt;&amp;ldquo;Asus ROG Zephyrus G14 laptop under $1500 in stock&amp;rdquo;&lt;/em&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;If using purely &lt;strong&gt;Dense Vector Search&lt;/strong&gt;: The system might return other Asus ROG Zephyrus laptops priced at $2000, or even older out-of-stock models, because the Embedding model only understands general semantic similarity and cannot process strict mathematical comparisons (Hard Filters like &lt;code&gt;price &amp;lt; 1500&lt;/code&gt; and &lt;code&gt;in_stock = true&lt;/code&gt;).&lt;/li&gt;&#xA;&lt;li&gt;If using purely &lt;strong&gt;Lexical Search (BM25)&lt;/strong&gt;: The system fails when the user searches by intent, such as &lt;em&gt;&amp;ldquo;thin and light high-performance gaming laptop&amp;rdquo;&lt;/em&gt;, because these keywords do not appear directly in the product description text.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;The optimal solution for e-commerce is &lt;strong&gt;Hybrid Search&lt;/strong&gt; — combining Dense Search (semantic understanding), Sparse Search/BM25 (exact keyword and SKU matching), and &lt;strong&gt;Filterable HNSW&lt;/strong&gt; (high-performance hard attribute filtering).&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Active RAG &amp; Strict Tool Calling With Real-time APIs</title>
+				<link>https://tanhdev.com/series/agentic-ecommerce-search/part-4-active-rag-tool-calling/</link>
+				<pubDate>Fri, 22 May 2026 22:35:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/agentic-ecommerce-search/part-4-active-rag-tool-calling/</guid>
+				<description>&lt;p&gt;In &lt;a href=&#34;https://tanhdev.com/series/agentic-ecommerce-search/part-3-qdrant-hybrid-search/&#34;&gt;Part 3: Qdrant Hybrid Search - Solving Semantic and Hard Filters&lt;/a&gt;, we successfully built a powerful Hybrid search engine combining Dense Semantic and Sparse Lexical Search. However, a practical e-commerce search system goes far beyond merely retrieving static documents from a vector database.&lt;/p&gt;&#xA;&lt;p&gt;For example, a user asks: &lt;em&gt;&amp;ldquo;I want to buy a 400L Samsung Inverter refrigerator available at the District 1 branch that has an active promotion.&amp;rdquo;&lt;/em&gt;&#xA;If we rely solely on a Vector Database, we face two critical errors:&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Critique Loop: Preventing LLM Hallucination</title>
+				<link>https://tanhdev.com/series/agentic-ecommerce-search/part-5-critique-loop/</link>
+				<pubDate>Fri, 22 May 2026 22:40:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/agentic-ecommerce-search/part-5-critique-loop/</guid>
+				<description>&lt;p&gt;In &lt;a href=&#34;https://tanhdev.com/series/agentic-ecommerce-search/part-4-active-rag-tool-calling/&#34;&gt;Part 4: Active RAG &amp;amp; Strict Tool Calling - Connecting LLMs to Real-time APIs&lt;/a&gt;, we successfully built a cyclic ReAct graph allowing the LLM to call APIs to check inventory and promotions in real-time. However, in a real-world production environment, giving an LLM access to Tools is not enough to guarantee absolute accuracy.&lt;/p&gt;&#xA;&lt;p&gt;A very common phenomenon is &lt;strong&gt;Hallucination&lt;/strong&gt; or &lt;strong&gt;constraint omission&lt;/strong&gt;: The LLM receives data indicating zero inventory from a Tool, yet in its final synthesized answer, it still recommends that product to the customer; or it ignores the maximum price filter explicitly requested by the user in the initial query.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Production Agentic Search Optimization in Go</title>
+				<link>https://tanhdev.com/series/agentic-ecommerce-search/part-6-production-operations/</link>
+				<pubDate>Fri, 22 May 2026 22:45:00 +0700</pubDate>
+				<guid>https://tanhdev.com/series/agentic-ecommerce-search/part-6-production-operations/</guid>
+				<description>&lt;p&gt;In &lt;a href=&#34;https://tanhdev.com/series/agentic-ecommerce-search/part-5-critique-loop/&#34;&gt;Part 5: Critique Loop - Preventing LLM Hallucination&lt;/a&gt;, we successfully built an automated response auditing module to ensure logical accuracy. However, when deploying this Agentic Search system to a large-scale production environment serving millions of users, you will immediately face practical operational challenges:&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;Unit Economics&lt;/strong&gt;: Every user search going through multiple LLM calls (from generating answers, calling tools, to self-critiquing) will skyrocket API bills.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Latency&lt;/strong&gt;: Customers won&amp;rsquo;t patiently wait 5-10 seconds to receive the complete final answer.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Observability&lt;/strong&gt;: How do you trace which nodes a request went through, how many tokens it consumed, and where it encountered errors?&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;The final article in this series will guide you on thoroughly solving these problems by integrating &lt;strong&gt;Semantic Caching (Redis)&lt;/strong&gt;, &lt;strong&gt;Deterministic Model Routing&lt;/strong&gt;, &lt;strong&gt;Server-Sent Events (SSE) Streaming&lt;/strong&gt;, and &lt;strong&gt;OpenTelemetry Tracing&lt;/strong&gt; into the &lt;strong&gt;Eino (CloudWeGo)&lt;/strong&gt; framework.&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

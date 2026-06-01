@@ -1,6 +1,7 @@
 ---
 title: "Executive Summary — Building an AI-Native Engineering Organization"
 date: 2026-05-13T07:00:00+07:00
+lastmod: 2026-05-13T07:00:00+07:00
 draft: false
 description: "The complete panoramic view of how to architect, operate, and govern a software development organization built around AI platforms (Enterprise AI Platform Lifecycle)."
 ShowToc: true

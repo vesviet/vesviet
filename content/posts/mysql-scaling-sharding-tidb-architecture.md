@@ -2,6 +2,7 @@
 title: "MySQL Scaling: Replication, Sharding & TiDB"
 slug: "mysql-scaling-sharding-tidb-architecture"
 date: "2026-05-26T14:00:00+07:00"
+lastmod: "2026-05-26T14:00:00+07:00"
 draft: false
 mermaid: true
 categories:

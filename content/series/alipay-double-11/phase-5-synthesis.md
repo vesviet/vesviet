@@ -1,6 +1,7 @@
 ---
 title: "Phase 5: Synthesis and Lessons Learned"
 date: 2026-05-02T18:10:00+07:00
+lastmod: 2026-05-02T18:10:00+07:00
 draft: false
 description: "Synthesis of the Double 11 scaling story: key decisions, patterns and anti-patterns, KPI evolution, and a decision framework you can apply."
 ShowToc: true

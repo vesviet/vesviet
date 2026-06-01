@@ -2,6 +2,7 @@
 title: "Part 10: Production Evals & CI/CD for AI - The Final Checkpoint"
 slug: "part-10-production-evals-cicd"
 date: "2026-05-17T12:00:00+07:00"
+lastmod: "2026-05-17T12:00:00+07:00"
 draft: false
 weight: 100
 tags: ["Evals", "CI/CD", "LLMOps", "Ragas", "TruLens", "Golden Dataset"]

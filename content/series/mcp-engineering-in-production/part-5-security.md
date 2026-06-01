@@ -1,6 +1,7 @@
 ---
 title: "Part 5: Production Security & OWASP MCP Top 10"
 date: 2026-05-15T14:00:00+07:00
+lastmod: 2026-05-15T14:00:00+07:00
 draft: false
 weight: 6
 categories:

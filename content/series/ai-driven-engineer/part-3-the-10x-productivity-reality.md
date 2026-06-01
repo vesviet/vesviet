@@ -1,6 +1,7 @@
 ---
 title: "Part 3 — The 10x Productivity Reality: Where We Speed Up, Where We Slow Down"
 date: 2026-05-10T15:20:00+07:00
+lastmod: 2026-05-10T15:20:00+07:00
 draft: false
 description: "Exposing the '10x Developer' illusion. Where does AI actually speed up the process, and what traps slow it down?"
 ShowToc: true

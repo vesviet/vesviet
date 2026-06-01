@@ -1,6 +1,7 @@
 ---
 title: "Real-Time Ride-Hailing Architecture: Uber & Grab"
 date: 2026-05-06T20:00:00+07:00
+lastmod: 2026-05-06T20:00:00+07:00
 draft: false
 weight: 120
 description: "How Uber and Grab handle millions of GPS updates/sec: H3 geospatial indexing, Kafka event streaming, DISCO matching, surge pricing, and RAMEN notifications."

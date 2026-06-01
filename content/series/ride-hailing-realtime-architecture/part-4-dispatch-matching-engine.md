@@ -1,6 +1,7 @@
 ---
 title: "Dispatch Matching Engine: How Ride-Hailing Algorithms Work"
 date: 2026-05-06T20:00:00+07:00
+lastmod: 2026-05-06T20:00:00+07:00
 draft: false
 description: "Discover how a modern dispatch matching engine works. We break down Uber DISCO, batched matching, and the global optimal assignment algorithms used in ride-hailing."
 weight: 5

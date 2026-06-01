@@ -1,6 +1,7 @@
 ---
 title: "Optimizing vLLM Serving: AWQ, GPTQ, & GGUF | SLM Playbook"
 date: 2026-05-26T08:00:00+07:00
+lastmod: 2026-05-26T08:00:00+07:00
 draft: false
 description: "SLM production serving guide on vLLM. Compare AWQ, GPTQ, and GGUF quantization formats and set up memory-efficient Dynamic LoRA serving configurations."
 ShowToc: true

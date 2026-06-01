@@ -1,6 +1,7 @@
 ---
 title: "Chapter 2: Flash Sale Engine - Solving Overselling and Hot Keys"
 date: 2026-05-05T08:20:00+07:00
+lastmod: 2026-05-05T08:20:00+07:00
 draft: false
 mermaid: true
 description: "Solving the overselling problem and handling hot keys using Redis and Lua Scripts."

@@ -1,4 +1,7 @@
 <!-- Custom head extensions -->
+{{- if .Params.noindex }}
+<meta name="robots" content="noindex, nofollow">
+{{- end }}
 {{ if eq hugo.Environment "production" }}
 <!-- Google Consent Mode v2 -->
 <script>
@@ -48,7 +51,7 @@
   ]
 }
 </script>
-{{- if and .IsPage (or (eq .Section "posts") (eq .Section "series")) }}
+{{- if and .IsPage (or (eq .Section "posts") (eq .Section "series") (eq .Section "radar")) }}
 <!-- Schema.org — BlogPosting for individual post/series part pages -->
 <script type="application/ld+json">
 {

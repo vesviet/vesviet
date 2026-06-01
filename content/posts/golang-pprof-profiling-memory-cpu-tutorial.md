@@ -2,6 +2,7 @@
 title: "Go pprof Tutorial: CPU & Memory Profiling in Production"
 slug: "golang-pprof-profiling-memory-cpu-tutorial"
 date: "2026-06-02T08:00:00+07:00"
+lastmod: "2026-06-02T08:00:00+07:00"
 draft: false
 description: "Ultimate Go pprof tutorial for production. Learn to safely profile CPU, memory, block contention, and detect leaks with Go 1.26 experimental features."
 ShowToc: true

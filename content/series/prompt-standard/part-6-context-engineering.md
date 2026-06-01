@@ -1,6 +1,7 @@
 ---
 title: "Part 6 — From Prompting to Context Engineering"
 date: 2026-05-09T11:00:00+07:00
+lastmod: 2026-05-09T11:00:00+07:00
 draft: false
 description: "In 2026, the industry moved from prompt engineering to context engineering. Learn what changed, why RAG and MCP matter, and how to design dynamic context assembly systems."
 categories:

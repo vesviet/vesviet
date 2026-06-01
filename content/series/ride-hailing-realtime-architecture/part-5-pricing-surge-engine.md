@@ -1,6 +1,7 @@
 ---
 title: "Part 5 — Surge Pricing: How Surge Rate Is Calculated in Real-Time Ride-Hailing Systems"
 date: 2026-05-06T20:00:00+07:00
+lastmod: 2026-05-06T20:00:00+07:00
 draft: false
 description: "What is surge rate and how is it calculated? Deep-dive into the real-time pricing engine that balances ride-hailing supply and demand per H3 cell."
 weight: 6

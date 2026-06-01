@@ -1,6 +1,7 @@
 ---
 title: "Executive Summary — The Big Picture of Real-time Ride-Hailing Systems"
 date: 2026-05-06T20:00:00+07:00
+lastmod: 2026-05-06T20:00:00+07:00
 draft: false
 description: "An architectural overview of ride-hailing super apps — from GPS ingestion, spatial indexing, event streaming, matching, and pricing, to real-time communication."
 weight: 1

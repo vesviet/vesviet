@@ -1,6 +1,7 @@
 ---
 title: "GenUI State Management: Astro vs Next.js RSC — Frontend (P2)"
 date: 2026-05-16T12:05:00+07:00
+lastmod: 2026-05-16T12:05:00+07:00
 draft: false
 description: "Comparing AIState and UIState. Framework-Agnostic architecture with Astro/Svelte. When to use SSE, and when WebSockets are mandatory in Generative UI."
 ShowToc: true

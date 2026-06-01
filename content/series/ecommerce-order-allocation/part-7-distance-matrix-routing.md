@@ -1,6 +1,7 @@
 ---
 title: "Part 7 — Distance Matrix Routing: Haversine, OSRM, and GraphHopper Distance Matrix"
 date: 2026-05-06T20:30:00+07:00
+lastmod: 2026-05-06T20:30:00+07:00
 draft: false
 description: "How to calculate a GraphHopper distance matrix at scale: compare Haversine, OSRM Table API, and GraphHopper Matrix API for ecommerce routing optimization."
 weight: 8

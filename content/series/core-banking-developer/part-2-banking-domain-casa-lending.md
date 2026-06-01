@@ -1,6 +1,7 @@
 ---
 title: "Part 2 — Core Banking Domain: CIF, CASA & Lending"
 date: 2026-05-06T18:00:00+07:00
+lastmod: 2026-05-06T18:00:00+07:00
 draft: false
 description: "Understand the three most fundamental business modules of any Core Banking system: Customer Information File (CIF), Current and Savings Accounts (CASA), and Lending."
 weight: 3

@@ -1,6 +1,7 @@
 ---
 title: "Part 3 — Database Design for Financial Transactions (ACID & Concurrency)"
 date: 2026-05-06T18:00:00+07:00
+lastmod: 2026-05-06T18:00:00+07:00
 draft: false
 description: "Fundamental techniques every Core Banking Developer must master: ACID transactions, Isolation Levels, Optimistic vs Pessimistic Locking, and preventing race conditions when millions of concurrent transactions happen."
 weight: 4

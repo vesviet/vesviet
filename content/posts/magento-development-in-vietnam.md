@@ -2,6 +2,7 @@
 title: "Magento Agency & Development in Vietnam: Scoping Guide"
 slug: "magento-development-in-vietnam"
 date: 2026-04-30T09:10:00+07:00
+lastmod: 2026-04-30T09:10:00+07:00
 draft: false
 tags: ["Magento", "Vietnam", "E-commerce", "Outsourcing", "Project Management", "Architecture"]
 description: "Project scoping guide for Magento development in Vietnam. Covers effort layers, evaluating proposals, surfacing hidden complexity, and delivery phases."

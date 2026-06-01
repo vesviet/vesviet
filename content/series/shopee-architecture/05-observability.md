@@ -1,6 +1,7 @@
 ---
 title: "Chapter 5: Observability - Finding Bugs in the Microservices Jungle"
 date: 2026-05-05T08:50:00+07:00
+lastmod: 2026-05-05T08:50:00+07:00
 draft: false
 mermaid: true
 description: "How Shopee uses ClickHouse and Distributed Tracing to debug millions of requests."

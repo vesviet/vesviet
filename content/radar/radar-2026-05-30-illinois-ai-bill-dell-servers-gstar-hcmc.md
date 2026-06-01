@@ -1,6 +1,7 @@
 ---
 title: "Tech Radar May 30: Illinois AI Bill & Dell Server Surge"
 date: "2026-05-30T10:30:00+07:00"
+lastmod: "2026-05-30T10:30:00+07:00"
 draft: false
 description: "Tech Radar May 30, 2026: Illinois passes historic AI Safety Bill SB 315, Dell shares surge 30% on AI server demand, and GStar Summit starts in HCMC."
 ShowToc: true

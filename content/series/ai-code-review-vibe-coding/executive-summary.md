@@ -1,6 +1,7 @@
 ---
 title: "What Is Vibe Coding — And Why Every Engineer Must Care (2025)"
 date: 2026-05-31T16:00:00+07:00
+lastmod: 2026-05-31T16:00:00+07:00
 draft: false
 weight: 1
 categories:

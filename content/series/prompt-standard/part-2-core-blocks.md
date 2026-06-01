@@ -1,6 +1,7 @@
 ---
 title: "Part 2 — The 8 Core Blocks of an Agent Prompt"
 date: 2026-05-09T10:40:00+07:00
+lastmod: 2026-05-09T10:40:00+07:00
 draft: false
 description: "A simple 8-block framework that any team can use to start standardizing prompts for AI agents."
 categories:

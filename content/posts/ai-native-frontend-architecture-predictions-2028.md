@@ -2,6 +2,7 @@
 title: "AI-Native Frontend in 2028: 10 Architecture Predictions"
 slug: "ai-native-frontend-architecture-predictions-2028"
 date: "2026-05-16T21:00:00+07:00"
+lastmod: "2026-05-16T21:00:00+07:00"
 draft: false
 tags: ["AI Frontend", "Generative UI", "Astro", "MCP", "Prediction", "Architecture", "WebSockets", "Zod"]
 description: "10 honest predictions for AI-Native Frontend Architecture by 2028: Component Registries, MCP contracts, streaming transports, and career impacts."

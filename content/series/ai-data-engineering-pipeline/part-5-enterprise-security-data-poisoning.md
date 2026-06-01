@@ -2,6 +2,7 @@
 title: "Part 5: Enterprise Security & Data Poisoning - The Silent Assassin"
 slug: "part-5-enterprise-security-data-poisoning"
 date: "2026-05-17T12:00:00+07:00"
+lastmod: "2026-05-17T12:00:00+07:00"
 draft: false
 weight: 50
 tags: ["Security", "Data Poisoning", "Prompt Injection", "NVIDIA NeMo", "RBAC"]

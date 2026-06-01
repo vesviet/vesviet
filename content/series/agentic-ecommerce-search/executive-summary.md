@@ -1,6 +1,7 @@
 ---
 title: "Why E-commerce Needs Agentic Search?"
 date: 2026-05-22T22:05:00+07:00
+lastmod: 2026-05-22T22:05:00+07:00
 draft: false
 author: "Vesviet Team"
 weight: 1

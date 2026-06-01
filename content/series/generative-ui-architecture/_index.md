@@ -1,6 +1,7 @@
 ---
 title: "Roadmap: Generative UI & AI-Native Frontend Architecture"
 date: 2026-05-16T12:00:00+07:00
+lastmod: 2026-05-16T12:00:00+07:00
 draft: false
 description: "A 7-part series on building Generative UI with Astro + Svelte. A secure, framework-agnostic AI-Native Frontend architecture for Agentic systems."
 ShowToc: true

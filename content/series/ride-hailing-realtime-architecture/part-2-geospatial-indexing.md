@@ -1,6 +1,7 @@
 ---
 title: "Part 2 — Geospatial Indexing: H3, S2 Geometry & Redis GEO"
 date: 2026-05-06T20:00:00+07:00
+lastmod: 2026-05-06T20:00:00+07:00
 draft: false
 description: "Uber divides the Earth's map into billions of hexagons using the H3 algorithm. Discover how the system finds the nearest driver in the blink of an eye among millions of moving drivers."
 weight: 3

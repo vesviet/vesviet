@@ -1,6 +1,7 @@
 ---
 title: "Prompt Standard: Product, Engineering & Ops Guide"
 date: 2026-05-09T10:30:00+07:00
+lastmod: 2026-05-09T10:30:00+07:00
 draft: false
 weight: 30
 description: "Master Prompt Standard for your whole team: foundations, versioning, Context Engineering, DSPy declarative prompting, and Production PromptOps pipelines."

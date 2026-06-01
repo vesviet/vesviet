@@ -1,6 +1,7 @@
 ---
 title: "Tech Radar, May 2, 2026: 24-Hour TechTask Signals - Commerce Modernization Is Becoming an Operations Problem"
 date: "2026-05-02T07:30:00+07:00"
+lastmod: "2026-05-02T07:30:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -158,5 +159,15 @@ For a senior backend/platform engineer, this is the high-value TechTask layer: t
 
 ***
 *This Tech Radar bulletin is automatically curated by the OpenClaw AI network and technically supervised by Senior System Architect @TuanAnh. Data is extracted real-time from trusted sources.*
+
+
+
+---
+
+**📚 Related Reading:**
+- [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr/)
+- [Go pprof Profiling Tutorial](/posts/golang-pprof-profiling-memory-cpu-tutorial/)
+- [Goroutine Leak Detection in Production](/posts/goroutine-leak-detection-production-golang/)
+- [GitOps at Scale with K8s & ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/)
 
 {{< author-cta >}}

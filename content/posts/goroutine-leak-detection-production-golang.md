@@ -2,6 +2,7 @@
 title: "Goroutine Leak Detection and Fix in Production Go Services"
 slug: "goroutine-leak-detection-production-golang"
 date: "2026-05-26T20:30:00+07:00"
+lastmod: "2026-05-26T20:30:00+07:00"
 draft: false
 mermaid: true
 categories:

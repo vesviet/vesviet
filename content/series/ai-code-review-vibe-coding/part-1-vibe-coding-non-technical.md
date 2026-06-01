@@ -1,6 +1,7 @@
 ---
 title: "Vibe Coding for CEOs, PMs, and BAs: Tools & The Production Wall"
 date: 2026-05-31T16:30:00+07:00
+lastmod: 2026-05-31T16:30:00+07:00
 draft: false
 weight: 2
 categories:

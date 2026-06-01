@@ -1,6 +1,7 @@
 ---
 title: "Part 1 — Context Engineering: Domain-Driven Design for AI"
 date: 2026-05-13T08:00:00+07:00
+lastmod: 2026-05-13T08:00:00+07:00
 draft: false
 description: "Cure AI hallucination paths permanently with Context Loading Hierarchy and by decoupling .cursorrules into Bounded Contexts."
 ShowToc: true

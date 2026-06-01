@@ -2,6 +2,7 @@
 title: "Part 3: The Art of Chunking & Semantic Caching"
 slug: "part-3-late-chunking-semantic-caching"
 date: "2026-05-17T12:00:00+07:00"
+lastmod: "2026-05-17T12:00:00+07:00"
 draft: false
 weight: 30
 tags: ["Late Chunking", "Semantic Caching", "Reranking", "Contextual Retrieval", "ColBERT"]

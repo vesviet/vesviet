@@ -1,6 +1,7 @@
 ---
 title: "Chapter 3: Traffic Shield - Peak Shaving with Kafka and Graceful Degradation"
 date: 2026-05-05T08:30:00+07:00
+lastmod: 2026-05-05T08:30:00+07:00
 draft: false
 mermaid: true
 description: "How Shopee uses Apache Kafka for peak shaving and implements graceful degradation during 11.11."

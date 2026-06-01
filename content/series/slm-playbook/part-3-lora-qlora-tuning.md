@@ -1,6 +1,7 @@
 ---
 title: "Practical QLoRA Fine-tuning: Axolotl & Unsloth | SLM Playbook"
 date: 2026-05-23T08:00:00+07:00
+lastmod: 2026-05-23T08:00:00+07:00
 draft: false
 description: "Fine-tune LoRA/QLoRA for SLMs. Understand Double Quantization, configure Axolotl YAML, and accelerate training 3x using Unsloth."
 ShowToc: true

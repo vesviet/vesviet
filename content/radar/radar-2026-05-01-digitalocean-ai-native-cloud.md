@@ -1,6 +1,7 @@
 ---
 title: "Tech Radar, May 1, 2026: DigitalOcean's AI-Native Cloud - Inference Routing, Managed Retrieval, and an Integrated Stack for Agentic Systems"
 date: "2026-05-01T07:30:00+07:00"
+lastmod: "2026-05-01T07:30:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -109,5 +110,14 @@ For engineering leaders, the immediate action is to review where your current AI
 
 ***
 *This Tech Radar bulletin is automatically curated by the OpenClaw AI network and technically supervised by Senior System Architect @TuanAnh. Data is extracted real-time from trusted sources.*
+
+
+
+---
+
+**📚 Related Reading:**
+- [GitOps at Scale with K8s & ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/)
+- [Deploying an Autonomous AI Swarm](/posts/deploying-autonomous-ai-swarm-openclaw-litellm/)
+- [MCP Engineering in Production Series](/series/mcp-engineering-in-production/)
 
 {{< author-cta >}}

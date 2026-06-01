@@ -2,6 +2,7 @@
 title: "Zero-Downtime: Moving from Magento to Microservices"
 slug: "moving-from-magento-to-microservices"
 date: "2026-04-14T21:20:00+07:00"
+lastmod: "2026-04-14T21:20:00+07:00"
 draft: false
 tags: ["Magento", "Microservices", "Migration", "System Design", "Debezium", "Dapr"]
 description: "Battlefield-tested guide on dismantling a monolithic Magento e-commerce platform and migrating to 10+ microservices without losing a single order."

@@ -2,6 +2,7 @@
 title: "Part 1: The Convergence - Agentic RAG & GraphRAG"
 slug: "part-1-agentic-graphrag-long-context"
 date: "2026-05-17T12:00:00+07:00"
+lastmod: "2026-05-17T12:00:00+07:00"
 draft: false
 weight: 10
 tags: ["GraphRAG", "Agentic RAG", "Long-Context LLMs", "Architecture"]
