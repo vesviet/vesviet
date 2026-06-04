@@ -58,6 +58,10 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ .Permalink }}"
+  },
   "headline": {{ .Title | jsonify }},
   "description": {{ .Description | jsonify }},
   "url": "{{ .Permalink }}",
