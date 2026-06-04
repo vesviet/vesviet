@@ -1,4 +1,5 @@
 <!-- Custom head extensions -->
+<meta name="theme-color" content="#1d1e20">
 {{- if .Params.noindex }}
 <meta name="robots" content="noindex, nofollow">
 {{- end }}
@@ -97,6 +98,39 @@
       "url": "{{ $page.Permalink }}"
     }
     {{- end }}
+  ]
+}
+</script>
+{{- end }}
+{{- if not .IsHome }}
+<!-- Schema.org — BreadcrumbList -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ .Site.BaseURL }}"
+    }
+    {{- $position := 2 }}
+    {{- range .Ancestors.Reverse }}
+    ,{
+      "@type": "ListItem",
+      "position": {{ $position }},
+      "name": {{ .Title | jsonify }},
+      "item": "{{ .Permalink }}"
+    }
+    {{- $position = add $position 1 }}
+    {{- end }}
+    ,{
+      "@type": "ListItem",
+      "position": {{ $position }},
+      "name": {{ .Title | jsonify }},
+      "item": "{{ .Permalink }}"
+    }
   ]
 }
 </script>
