@@ -1,13 +1,17 @@
 ---
-title: "Dispatch Matching Engine: How Ride-Hailing Algorithms Work"
+title: "Dispatch Algorithm & Matching Engine in Ride-Hailing"
 date: 2026-05-06T20:00:00+07:00
-lastmod: 2026-05-06T20:00:00+07:00
+lastmod: 2026-06-04T20:00:00+07:00
 draft: false
-description: "Discover how a modern dispatch matching engine works. We break down Uber DISCO, batched matching, and the global optimal assignment algorithms used in ride-hailing."
+description: "Deep dive into ride-hailing dispatch algorithms. Learn how Uber DISCO, Grab DispatchGym, and Gojek Jaeger use RL and bipartite matching for global optimization."
 weight: 5
 ---
 
-## The Problem: Why Not Just Pick the Closest Driver?
+Every time you tap "Book Ride," a system makes dozens of decisions in under two seconds: Which driver? What route? What's the real ETA? This article breaks down exactly how the **dispatch algorithm** works — from the greedy approach that fails at scale, to the bipartite graphs, batched matching, and [surge pricing](/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/) mechanics that power Uber, Lyft, Grab, and Gojek today.
+
+---
+
+## Why a Greedy Dispatch Algorithm Fails (Closest Driver Problem)
 
 The first instinct when designing a matching system is to pair every customer with their nearest driver. However, this **Greedy** approach causes massive losses at a system-wide scale:
 
@@ -33,7 +37,53 @@ Uber refers to this problem as **Global Optimization** — finding an assignment
 
 ---
 
-## DISCO — Dispatch Optimization
+## Bipartite Graph Matching: The Mathematical Foundation (Lyft)
+
+Before diving into the systems, it helps to understand the **mathematical model** that all ride-hailing matching engines share at their core.
+
+Lyft formalizes dispatch as a **bipartite graph matching problem**:
+
+```
+Bipartite Graph:
+  Set A (Riders):  { R1, R2, R3, R4 }
+  Set B (Drivers): { D1, D2, D3, D4, D5 }
+
+  Edges: every possible Rider ↔ Driver pair
+  Edge Weight: cost of that match (e.g., ETA, driver rating, distance)
+
+  Goal: Find a set of edges (a "matching") where:
+    - No rider is matched to more than one driver
+    - No driver is matched to more than one rider
+    - The total cost of all selected edges is minimized
+```
+
+This is known as the **Minimum Weight Bipartite Matching** problem. The classical algorithm for solving it is the **Hungarian Algorithm** (also called the Kuhn-Munkres algorithm), which runs in **O(n³)** time.
+
+### Why Batching Matters for Bipartite Matching
+
+The key insight is that you can only find a globally optimal bipartite matching if you have **multiple riders and drivers available simultaneously**. If you match greedily (one-by-one as requests arrive), you lose the ability to find the global optimum.
+
+This is why all major ride-hailing platforms introduce a **batching window**:
+
+```
+Batching Strategy:
+  1. Collect all ride requests in a 2-5 second window
+  2. Build a complete Rider × Driver cost matrix
+  3. Run the Hungarian Algorithm on the full batch
+  4. Dispatch all assignments simultaneously
+
+Result: System-wide optimal — not just locally optimal for each individual request
+```
+
+| Approach | Latency | Global Optimality | Scalability |
+|---|---|---|---|
+| **Pure Greedy** | Near-zero | Poor | High |
+| **Batched Matching** | 2-5 seconds | Excellent | Medium |
+| **RL-Adaptive Batching** | Dynamic | Excellent | High |
+
+---
+
+## Uber DISCO: The Core Dispatch Algorithm Architecture
 
 **DISCO** (Dispatch Optimization) is Uber's matching system, responsible for pairing millions of ride requests with drivers every day.
 
@@ -57,7 +107,7 @@ Uber refers to this problem as **Global Optimization** — finding an assignment
          │    DISCO Engine      │
          │                     │
          │  1. Candidate Filter │ ← S2/H3 Geospatial Query
-         │  2. ETA Calculator   │ ← Routing Service
+         │  2. ETA Calculator   │ ← Routing Service + DeepETA
          │  3. Batch Optimizer  │ ← Hungarian Algorithm
          │  4. Dispatch         │ ← RAMEN Push
          └─────────────────────┘
@@ -65,7 +115,7 @@ Uber refers to this problem as **Global Optimization** — finding an assignment
 
 ### Step 1: Candidate Filtering
 
-When a ride request arrives, DISCO doesn't check every driver. It uses the rider's **S2 Cell ID** (or H3) to rapidly narrow down the list:
+When a ride request arrives, DISCO doesn't check every driver. It uses the rider's **[S2 Cell ID](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/)** (or H3) to rapidly narrow down the list:
 
 ```
 Input:  Rider location → S2 Cell Level 12
@@ -81,7 +131,18 @@ Filters:
 Output: ~10-30 candidate drivers
 ```
 
-### Step 2: ETA Calculation
+### S2 vs H3: Choosing the Right Spatial Index
+
+Uber originally used **S2 geometry** (quad-tree squares) for spatial sharding but later developed **H3** (hexagons). The difference matters for how the engine finds candidate drivers:
+
+| | S2 Geometry (Google) | H3 (Uber) |
+|---|---|---|
+| **Cell shape** | Square | Hexagon |
+| **Neighbor equidistance** | No (diagonal cells are further) | Yes (all 6 neighbors equidistant) |
+| **Best for** | Precise geofencing, hierarchical sharding | Proximity search, surge heatmaps |
+| **Used by** | Lyft, early Uber DISCO | Modern Uber, Grab |
+
+### Step 2: ETA Calculation with DeepETA
 
 Straight-line (crow-fly) distance is meaningless in the real world — 500m straight-line might be a 3km drive (due to bridges, intersections, or one-way streets).
 
@@ -101,7 +162,24 @@ Results:
   D3: 600m crow-fly → 3.8km road → ETA 7 mins (must U-turn)
 ```
 
-Uber developed **DeepETA** — a deep learning model that predicts ETA much more accurately than traditional routing engines by learning from billions of historical trips.
+Uber developed **DeepETA** — a hybrid deep learning approach that sits **on top of** the traditional routing engine:
+
+```
+DeepETA Architecture:
+  1. Traditional Router → "Naive ETA" (e.g., 4 mins based on road graph)
+  2. Deep Neural Network → "Residual Prediction" (e.g., +1.5 min due to
+     traffic signal, weather, specific intersection complexity)
+  3. Final ETA = Naive ETA + Residual
+
+Input features to the DNN:
+  - GPS coordinates (cleaned by Kalman Filter)
+  - Time of day, day of week
+  - Historical traffic at this location
+  - Driver/vehicle attributes
+  - Trip type (airport, downtown, etc.)
+```
+
+> **Kalman Filter role:** Raw GPS signals are noisy in urban environments (tall buildings, tunnels). A Kalman Filter smooths the GPS stream before it feeds into DeepETA, ensuring the model learns from accurate positional data rather than jittery raw coordinates.
 
 ### Step 3: Batched Matching
 
@@ -193,25 +271,180 @@ When a data center crashes:
 
 ---
 
-## Grab's Approach: Fulfilment Platform + DispatchGym
+## From Heuristics to Machine Learning: Gojek Jaeger
 
-Grab doesn't use DISCO, but they have an equivalent system:
+Gojek's evolution from a simple dispatch heuristic to a production ML system is a masterclass in how marketplace complexity forces you to rethink single-objective optimization.
 
-### Fulfilment Platform
-Initially, every vertical (ride-hailing, food delivery, express) had its own matching engine. Grab consolidated them into a unified **Fulfilment Platform** that manages dispatching for all verticals.
+### The Problem with a Single ML Model
 
-### DispatchGym — Reinforcement Learning
-Grab developed **DispatchGym** — a framework allowing data scientists to train Reinforcement Learning (RL) models. It optimizes dispatch algorithm hyperparameters (e.g., optimal search radius, batch wait times, weight of ETA vs. driver ratings) in a simulated environment before deploying them to production.
+Gojek's initial approach used a single machine learning model to rank and select drivers. It worked — until it didn't. The model optimized aggressively for its primary metric (say, acceptance rate) and created **feedback loops**:
 
 ```
-DispatchGym Loop:
-
-1. Simulated Environment (replaying historical data)
-2. RL Agent chooses actions (tuning hyperparameters)
-3. Environment returns rewards (e.g., total ETA drops, acceptance rate rises)
-4. Agent learns and improves
-5. Once reward stabilizes → Deploy to production (A/B testing)
+Feedback Loop Problem:
+  1. Model learns: "Drivers in Zone A accept 90% of the time"
+  2. Model always sends orders to Zone A drivers
+  3. Zone A drivers get overwhelmed, acceptance rate drops
+  4. Zone B drivers are idle, marketplace liquidity drops
+  5. Riders in Zone B wait longer → lower satisfaction
 ```
+
+A single-objective model cannot balance competing goals without explicit guardrails.
+
+### Jaeger: Multi-Objective Allocation
+
+Gojek built **Jaeger** — a multi-objective allocation framework that simultaneously optimizes for:
+
+```
+Jaeger Optimization Objectives:
+  ↓ Minimize pickup ETA          (rider experience)
+  ↑ Maximize driver utilization  (driver earnings)
+  ↑ Maximize acceptance rate     (marketplace flow)
+  ↑ Ensure fairness              (prevent driver starvation)
+
+Architecture:
+  [Real-time Features]  ←── GPS, traffic, demand heatmaps
+        │
+        ▼
+  [ML Models]           ←── Acceptance probability, ETA model
+        │
+        ▼
+  [Manual Configs]      ←── Business rules, fairness floors
+        │
+        ▼
+  [Jaeger Aggregator]   ←── Weights & combines all signals
+        │
+        ▼
+  [Driver Score]        ←── Final ranking for dispatch
+```
+
+The **Manual Configs layer** is intentional: it gives business teams control to override ML decisions in edge cases (market launches, weather events, regulatory requirements) without retraining the entire model.
+
+---
+
+## The Future: Reinforcement Learning & MDP in Dispatching (Grab DispatchGym)
+
+The Hungarian algorithm solves the immediate assignment optimally. But it has a fundamental limitation: **it only optimizes for the current batch**. It cannot answer questions like:
+
+- *Should I assign a driver now, or wait 30 seconds for a better match?*
+- *If I send this driver 5km across town, will that leave a coverage gap for the next surge?*
+
+This is where **Reinforcement Learning (RL)** and the **Markov Decision Process (MDP)** formulation come in.
+
+### Dispatch as a Markov Decision Process
+
+An MDP models dispatch as a sequence of decisions where **each action affects future states**:
+
+```
+MDP Formulation for Dispatch:
+
+State (S):
+  - Current positions of all idle drivers
+  - Pending ride requests and their locations
+  - Time of day, predicted demand heatmap
+  - Traffic conditions across all zones
+
+Action (A):
+  - Assign Driver D to Rider R
+  - Hold Driver D idle (wait for a better request)
+  - Reposition Driver D to Zone X (proactive repositioning)
+
+Transition (T):
+  - Probability that action A in state S leads to state S'
+  - e.g., P(driver ends up in Zone B | assigned to trip starting in Zone A)
+
+Reward (R):
+  - Positive: completed trip, short pickup ETA, high acceptance
+  - Negative: long idle time, deadhead mileage, rider cancellation
+```
+
+The key difference from greedy matching: the RL agent learns to make decisions that **maximize cumulative long-term reward** — not just the immediate reward for a single trip.
+
+### Grab DispatchGym
+
+Grab built **DispatchGym** to make RL research accessible for dispatching problems. Its design solves a core challenge: training RL agents in production is dangerous (bad policies lose money and drivers). DispatchGym provides a **safe, simulated environment**:
+
+```
+DispatchGym Architecture:
+
+┌───────────────────────────────────┐
+│         Simulation Layer           │
+│  - Replays historical trip data    │
+│  - Injects synthetic demand spikes │
+│  - Models driver behavior          │
+└────────────────┬──────────────────┘
+                 │  State observation
+                 ▼
+┌───────────────────────────────────┐
+│         RL Agent (Policy)          │
+│  - Gymnasium API compatible        │
+│  - Trainable with any RL algo      │
+│    (PPO, SAC, DQN...)              │
+└────────────────┬──────────────────┘
+                 │  Action (dispatch decision)
+                 ▼
+┌───────────────────────────────────┐
+│        Reward Computation          │
+│  - Total completed trips           │
+│  - Average pickup ETA              │
+│  - Driver earnings equity          │
+│  - Acceptance rate                 │
+└───────────────────────────────────┘
+
+Deployment:
+  Reward stabilizes → A/B test in production → Gradual rollout
+```
+
+### Multi-Agent RL: When One Agent Isn't Enough
+
+A single RL agent controlling an entire city's fleet hits the **curse of dimensionality** — the state-action space is too large. The solution is **Multi-Agent Reinforcement Learning (MARL)**:
+
+```
+MARL for Dispatch:
+  - Each geographic zone (or each driver) is an independent agent
+  - Agents observe their local state (nearby riders, driver density)
+  - Agents take local actions (match, hold, reposition)
+  - Coordination mechanism ensures global objectives are met
+
+Paradigm: Centralized Training, Decentralized Execution (CTDE)
+  - During training: agents share global information to learn cooperation
+  - During execution: each agent acts on local observations only
+  - Result: Scales to city-wide fleets without centralized bottleneck
+```
+
+Academic research on MARL-based dispatch suggests wait time reductions of **25–40% compared to greedy baselines**, with significant improvements in driver idle mileage — though real-world results vary by city density and fleet size.
+
+---
+
+## Grab's Fulfilment Platform Architecture
+
+Grab doesn't just run ride-hailing — it runs food, groceries, express delivery, and financial services on the same driver network. Early on, each vertical had its own dispatch engine, causing massive inefficiency.
+
+Grab solved this with the **Fulfilment Platform** — a unified three-layer architecture:
+
+```
+┌────────────────────────────────────────┐
+│         Business Verticals             │
+│  GrabCar | GrabFood | GrabMart | ...   │
+└───────────────┬────────────────────────┘
+                │ Demand signals
+                ▼
+┌────────────────────────────────────────┐
+│         Fulfilment Platform            │
+│  - Unified dispatch engine             │
+│  - Supply shaping & driver incentives  │
+│  - Global optimization across verticals│
+└───────────────┬────────────────────────┘
+                │ Infrastructure
+                ▼
+┌────────────────────────────────────────┐
+│         Technology Infrastructure      │
+│  - DynamoDB (OLTP: live orders)        │
+│  - MySQL partitioned (OLAP: analytics) │
+│  - 1,000+ microservices on AWS/GCP     │
+└────────────────────────────────────────┘
+```
+
+The critical innovation: a driver finishing a GrabFood delivery can be **immediately available for a GrabCar ride** — the same Fulfilment Platform sees the full picture and can optimize across verticals. This eliminated "dead time" between trips and significantly improved driver earnings.
 
 ---
 
@@ -224,5 +457,23 @@ DispatchGym Loop:
 | **ETA Accuracy** | Error margin between predicted and actual ETA | < 20% |
 | **Match Rate** | % of requests successfully matched | > 95% |
 | **Total Wait Time** | Total time a rider waits (rider + driver travel time) | Minimize |
+| **Driver Idle Mileage** | Distance driven without a passenger | Minimize |
+| **Marketplace Liquidity** | Balance of supply/demand across zones | Maintain |
+
+---
+
+## FAQ: Dispatch Algorithms
+
+**What is a dispatch algorithm?**
+A dispatch algorithm is a system used by ride-hailing platforms like Uber and Grab to optimally match riders with available drivers. It goes beyond finding the closest driver by using batched matching and global optimization to minimize the total wait time (ETA) for all users.
+
+**How does Uber match riders and drivers?**
+Uber uses a system called DISCO that batches ride requests every 2-5 seconds and applies the Hungarian algorithm for global optimization across the entire batch. This ensures system-wide efficiency, not just locally optimal matches for each individual request.
+
+**Why is reinforcement learning used in ride-hailing?**
+RL models treat dispatching as a Markov Decision Process (MDP), allowing the system to optimize for long-term marketplace liquidity and driver earnings, rather than just immediate wait times. Platforms like Grab use RL via DispatchGym to learn when to hold a driver for a better future match, rather than always assigning immediately.
+
+**What is the difference between S2 and H3 in dispatch systems?**
+S2 (Google) uses square cells and is excellent for precise geofencing and hierarchical sharding. H3 (Uber) uses hexagonal cells, which offer uniform adjacency — all 6 neighbors are equidistant — making proximity searches and surge pricing heatmaps more accurate for real-time matching.
 
 > *Next, we will look into Surge Pricing — the dynamic pricing system based on real-time supply and demand ratios. Continue reading [Part 5 — Surge Pricing: Dynamic Pricing Based on Real-time Supply and Demand](/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/).*
