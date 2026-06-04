@@ -1,0 +1,17 @@
+<!-- Global Author Box for E-E-A-T (Injected at the end of every post via comments partial) -->
+<hr>
+<div class="author-box" style="margin-top: 2rem; padding: 1.5rem; background-color: var(--tertiary); border-radius: 8px; border-left: 4px solid var(--primary); display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+    {{- with site.Params.profileMode.imageUrl }}
+    <img src="{{ . }}" alt="Le Tuan Anh" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
+    {{- end }}
+    <div style="flex: 1; min-width: 250px;">
+        <h4 style="margin-top: 0; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary)"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><polyline points="16 11 18 13 22 9"></polyline></svg>
+            About the Author
+        </h4>
+        <p style="margin: 0; line-height: 1.5; font-size: 0.95rem;">
+            <strong>Lê Tuấn Anh</strong> is a Senior Software Engineer with 17+ years of experience specializing in backend architecture, microservices, and event-driven systems. Are you facing similar challenges with system scaling or migration? 
+            Connect on <a href="https://www.linkedin.com/in/vesviet" target="_blank" style="font-weight: 600; color: var(--primary);">LinkedIn</a>, check out <a href="https://github.com/vesviet" target="_blank" style="font-weight: 600; color: var(--primary);">GitHub</a>, or drop an <a href="mailto:vesviet@gmail.com" style="font-weight: 600; color: var(--primary);">email</a>.
+        </p>
+    </div>
+</div>

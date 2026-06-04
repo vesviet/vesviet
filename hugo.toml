@@ -28,6 +28,8 @@ apple_touch_icon = "/apple-touch-icon.png"
   ShowReadingTime = true
   ShowPostNavLinks = true
   ShowBreadCrumbs = true
+  ShowToc = true
+  TocOpen = true
 
 [params.cover]
   hidden = false           # show cover images
