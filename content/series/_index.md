@@ -70,6 +70,8 @@ Modern AI-era platforms require new standards for tool integration, prompt manag
 
 - **[Prompt Standard: Product, Engineering & Ops Guide](/series/prompt-standard/)** — Master Prompt Standard for your whole team: foundations, versioning, Context Engineering, DSPy declarative prompting, and Production PromptOps pipelines — designed for developers, PMs, BAs, and anyone working with AI agents.
 
+- **[Modular Monolith Architecture Playbook](/series/modular-monolith-architecture/)** — Why are 42% of enterprises (and GitHub, Shopify) abandoning Microservices to return to the Monolith? Discover the architectural decision framework, FinOps strategies to cut 90% of costs, DDD boundaries (Packwerk/Modulith), and a zero-downtime consolidation playbook.
+
 ---
 
 ## 🖥️ Frontend Architecture & Edge AI
