@@ -1,12 +1,15 @@
 ---
 title: "Lê Tuấn Anh — Senior Software Engineer & Go Backend Architect"
 date: "2021-10-14 18:48:02"
+lastmod: "2026-06-06"
 description: "Lê Tuấn Anh (vesviet) — Senior Go & Microservices Engineer, 17+ years building high-traffic e-commerce platforms in Vietnam. Specializes in backend architecture, Magento migrations, and event-driven systems."
 ---
 
 > *"Architecting scalable systems and leading teams to build resilient, high-performance platforms."*
 
-I am a Senior Software Engineer with over **17 years of hands-on experience** engineering scalable web platforms and distributed systems. My deepest expertise lies in backend architecture, handling high-traffic e-commerce ecosystems, and safely migrating legacy data into modernized **Golang microservices**. 
+**Lê Tuấn Anh** (vesviet) is a Senior Go Backend Architect and Distributed Systems Engineer based in Vietnam with over **17 years** of production experience. He specializes in migrating high-traffic e-commerce monoliths (Magento/PHP) into **Golang microservices ecosystems**, designing event-driven platforms at scale, and operating GitOps deployments on Kubernetes. Currently Senior Backend Engineer & System Architect at **Lotte Innovate / Vigo Retail**.
+
+> 💼 Available for consulting and advisory work. [See engagement options →](/hire/)
 
 ### Start Here
 - [Reading Map](/reading-map/) — curated clusters of my long-form guides (Tech Radar stays at [/radar/](/radar/)).

@@ -1,3 +1,6 @@
+# ──────────────────────────────────────────────
+# Default: allow all crawlers (including Googlebot, Bingbot, etc.)
+# ──────────────────────────────────────────────
 User-agent: *
 Allow: /
 Disallow: /*.xml$
@@ -6,24 +9,41 @@ Allow: /index.xml
 
 Sitemap: https://tanhdev.com/sitemap.xml
 
-# Block AI Scrapers and Crawlers
+# ──────────────────────────────────────────────
+# AI Search & Answer Engine Crawlers — Explicitly Allowed
+# Enabling AI citation in ChatGPT, Perplexity, Claude, Google AI Overviews
+# ──────────────────────────────────────────────
+
 User-agent: GPTBot
-Disallow: /
+Allow: /
 
 User-agent: ChatGPT-User
-Disallow: /
+Allow: /
 
-User-agent: CCBot
-Disallow: /
+User-agent: OAI-SearchBot
+Allow: /
 
 User-agent: anthropic-ai
-Disallow: /
+Allow: /
 
 User-agent: Claude-Web
-Disallow: /
+Allow: /
 
 User-agent: ClaudeBot
-Disallow: /
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Googlebot-Extended
+Allow: /
+
+# ──────────────────────────────────────────────
+# Block known bad scrapers (no SEO or AI search value)
+# ──────────────────────────────────────────────
 
 User-agent: Bytespider
 Disallow: /
@@ -34,14 +54,11 @@ Disallow: /
 User-agent: Omgili
 Disallow: /
 
-User-agent: FacebookBot
-Disallow: /
-
 User-agent: Diffbot
 Disallow: /
 
-User-agent: PerplexityBot
+User-agent: FacebookBot
 Disallow: /
 
-User-agent: Google-Extended
+User-agent: CCBot
 Disallow: /

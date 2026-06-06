@@ -24,7 +24,7 @@
   gtag('config', 'G-E87WX5RPQ4');
 </script>
 
-<!-- Schema.org — Site-wide graph (Person + WebSite) -->
+<!-- Schema.org — Site-wide graph (Person + WebSite + SearchAction) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -34,16 +34,59 @@
       "@id": "{{ .Site.BaseURL }}#website",
       "url": "{{ .Site.BaseURL }}",
       "name": "{{ .Site.Title }}",
-      "description": "{{ .Site.Params.description }}"
+      "description": "{{ .Site.Params.description }}",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://tanhdev.com/posts/?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
     },
     {
       "@type": "Person",
       "@id": "{{ .Site.BaseURL }}#person",
       "name": "Lê Tuấn Anh",
-      "alternateName": "vesviet",
+      "alternateName": ["vesviet", "Le Tuan Anh", "Tuan Anh Le"],
       "url": "{{ .Site.BaseURL }}",
-      "jobTitle": "Senior Software Engineer",
-      "description": "Senior Go & Microservices Engineer with 17+ years experience. Specializes in backend architecture, Magento-to-microservices migrations, and event-driven distributed systems.",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://github.com/vesviet.png?size=240",
+        "width": 240,
+        "height": 240
+      },
+      "jobTitle": "Senior Go Backend Architect & Distributed Systems Engineer",
+      "description": "Senior Go & Microservices Engineer with 17+ years experience building high-traffic e-commerce platforms in Vietnam. Specializes in backend architecture, Magento-to-microservices migrations, event-driven distributed systems, and GitOps at scale.",
+      "knowsAbout": [
+        "Go (Golang)",
+        "Microservices Architecture",
+        "Distributed Systems",
+        "Kubernetes",
+        "ArgoCD",
+        "GitOps",
+        "Dapr",
+        "Event-Driven Architecture",
+        "Saga Pattern",
+        "Domain-Driven Design",
+        "Magento",
+        "E-commerce Platform Engineering",
+        "Backend Architecture",
+        "gRPC",
+        "PostgreSQL",
+        "Redis",
+        "AI Engineering"
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Lotte Innovate",
+        "url": "https://www.lotte.vn"
+      },
+      "homeLocation": {
+        "@type": "Place",
+        "name": "Vietnam"
+      },
+      "email": "mailto:vesviet@gmail.com",
       "sameAs": [
         "https://www.linkedin.com/in/vesviet",
         "https://github.com/vesviet"
@@ -103,6 +146,29 @@
     }
     {{- end }}
   ]
+}
+</script>
+{{- end }}
+{{- if and .IsPage .File (eq .File.ContentBaseName "about") }}
+<!-- Schema.org — ProfilePage for /about/ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "@id": "{{ .Permalink }}",
+  "url": "{{ .Permalink }}",
+  "name": {{ .Title | jsonify }},
+  "description": {{ .Description | jsonify }},
+  "datePublished": "{{ .Date.Format `2006-01-02T15:04:05Z07:00` }}",
+  "dateModified": "{{ .Lastmod.Format `2006-01-02T15:04:05Z07:00` }}",
+  "mainEntity": {
+    "@type": "Person",
+    "@id": "{{ .Site.BaseURL }}#person"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "@id": "{{ .Site.BaseURL }}#website"
+  }
 }
 </script>
 {{- end }}

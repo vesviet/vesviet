@@ -1,8 +1,8 @@
 baseURL = "https://tanhdev.com/"
 languageCode = "en-us"
-title = "Tuấn Anh - Senior Software Engineer"
+title = "Lê Tuấn Anh — Go Backend Architect & Microservices Engineer"
 theme = "PaperMod"
-enableRobotsTXT = true
+enableRobotsTXT = false  # static/robots.txt in /static takes precedence; explicit AI bot rules defined there
 buildFuture = true
 
 [params.assets]
@@ -22,8 +22,8 @@ apple_touch_icon = "/apple-touch-icon.png"
 
 [params]
   env = "production"
-  description = "A Senior Go & Microservices Developer Portfolio and Blog"
-  author = "Tuấn Anh"
+  description = "Senior Go & Microservices Engineer with 17+ years building high-traffic e-commerce platforms. Deep dives on distributed systems, GitOps, Kubernetes, and AI engineering."
+  author = "Lê Tuấn Anh"
   defaultTheme = "auto"
   ShowReadingTime = true
   ShowPostNavLinks = true
@@ -39,13 +39,16 @@ apple_touch_icon = "/apple-touch-icon.png"
   
 [params.profileMode]
   enabled = true
-  title = "Le Tuan Anh - Senior Software Engineer"
-  subtitle = """<span style="font-size: 1.1em;">**Backend Architecture & Platform Specialist**</span><br><br>17+ years of building resilient systems and architecting high-traffic platforms.<div class="exp-list"><div class="exp-item">🚀 **Led Monolith-to-Microservices Migration** (21 Go services, Zero Downtime)</div><div class="exp-item">⚡ **Architected Event-Driven Systems** (Dapr Pub/Sub, Sagas)</div><div class="exp-item">⚙️ **Operated GitOps Deployments** (Kubernetes, ArgoCD, High-Traffic)</div></div>"""
+  title = "Lê Tuấn Anh — Go Backend Architect & Distributed Systems Engineer"
+  subtitle = """<span style="font-size: 1.1em;">**Backend Architecture & Platform Specialist**</span><br><br>17+ years building resilient, high-traffic platforms in Vietnam and beyond.<div class="exp-list"><div class="exp-item">🚀 **Monolith → 21 Go Microservices** (Zero Downtime Migration, Lotte Innovate)</div><div class="exp-item">⚡ **25M+ requests/month** at peak 8,000 RPS — p95 latency reduced from 1.2s → 120ms</div><div class="exp-item">⚙️ **GitOps at Scale** (Kubernetes EKS/K3s, ArgoCD, Dapr Pub/Sub, Saga Patterns)</div></div>"""
   imageUrl = "https://github.com/vesviet.png?size=240"
   imageTitle = "Le Tuan Anh - Senior Software Engineer and Backend Architecture Specialist"
   imageWidth = 120
   imageHeight = 120
   
+  [[params.profileMode.buttons]]
+    name = "🤝 Hire Me / Consulting"
+    url = "/hire/"
   [[params.profileMode.buttons]]
     name = "📧 Contact Me"
     url = "mailto:vesviet@gmail.com"
@@ -81,6 +84,11 @@ apple_touch_icon = "/apple-touch-icon.png"
     name = "About Me"
     url = "/about/"
     weight = 20
+  [[menu.main]]
+    identifier = "hire"
+    name = "🤝 Hire Me"
+    url = "/hire/"
+    weight = 25
   [[menu.main]]
     identifier = "external"
     name = "Resources"
