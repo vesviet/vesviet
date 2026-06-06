@@ -1,0 +1,29 @@
+/* Premium CTA Button for Main Menu */
+.menu a[href="/hire/"] {
+    background-color: var(--primary); /* Use primary text color as background */
+    color: var(--theme) !important; /* Use theme background color as text */
+    padding: 4px 14px;
+    border-radius: 20px; /* Pill shape */
+    font-weight: 600;
+    transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+    display: inline-block;
+    line-height: 1.5;
+    margin-left: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.menu a[href="/hire/"]:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Ensure mobile menu doesn't break */
+@media (max-width: 768px) {
+    .menu a[href="/hire/"] {
+        margin-left: 0;
+        margin-top: 8px;
+        display: inline-block;
+        text-align: center;
+    }
+}

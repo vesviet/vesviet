@@ -31,6 +31,10 @@ apple_touch_icon = "/apple-touch-icon.png"
   ShowToc = true
   TocOpen = true
 
+[params.label]
+  text = "Lê Tuấn Anh"
+
+
 [params.cover]
   hidden = false           # show cover images
   hiddenInList = true      # hide on homepage / list pages — keep list clean
@@ -76,7 +80,7 @@ apple_touch_icon = "/apple-touch-icon.png"
     weight = 12
   [[menu.main]]
     identifier = "radar"
-    name = "Tech Radar 🤖"
+    name = "Tech Radar"
     url = "/radar/"
     weight = 15
   [[menu.main]]
@@ -86,7 +90,7 @@ apple_touch_icon = "/apple-touch-icon.png"
     weight = 20
   [[menu.main]]
     identifier = "hire"
-    name = "🤝 Hire Me"
+    name = "Hire Me"
     url = "/hire/"
     weight = 25
   [[menu.main]]
