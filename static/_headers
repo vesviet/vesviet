@@ -4,3 +4,6 @@
 
 /.well-known/api-catalog
   Content-Type: application/linkset+json
+
+/.well-known/oauth-authorization-server
+  Content-Type: application/json

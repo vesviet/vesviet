@@ -1,0 +1,8 @@
+{
+  "issuer": "https://tanhdev.com",
+  "authorization_endpoint": "https://tanhdev.com/oauth2/auth",
+  "token_endpoint": "https://tanhdev.com/oauth2/token",
+  "jwks_uri": "https://tanhdev.com/oauth2/jwks",
+  "response_types_supported": ["code", "token"],
+  "grant_types_supported": ["authorization_code", "client_credentials"]
+}
