@@ -1,0 +1,10 @@
+{
+  "resource": "https://tanhdev.com",
+  "authorization_servers": [
+    "https://tanhdev.com"
+  ],
+  "scopes_supported": [
+    "read",
+    "write"
+  ]
+}
