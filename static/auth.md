@@ -1,4 +1,4 @@
-# API Authentication Guide for Agents
+# Auth.md
 
 This document outlines the authentication procedures for AI agents connecting to TanhDev APIs.
 
