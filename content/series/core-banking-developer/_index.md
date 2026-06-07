@@ -1,10 +1,10 @@
 ---
-title: "Learning Path to Become a Core Banking Developer"
+title: "Core Banking Developer Roadmap"
 date: 2026-05-06T18:00:00+07:00
 lastmod: 2026-05-06T18:00:00+07:00
 draft: false
 weight: 100
-description: "Learn core banking development: double-entry ledger, transaction processing, microservices architecture, ISO 8583/20022, and building a mini banking system."
+description: "Learn core banking architecture: double-entry ledger, transaction processing, microservices, ISO 8583/20022, and building a mini banking system."
 ShowToc: true
 TocOpen: true
 ---
