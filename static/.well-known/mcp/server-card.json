@@ -1,0 +1,13 @@
+{
+  "serverInfo": {
+    "name": "TanhDev MCP",
+    "version": "1.0.0"
+  },
+  "transport": {
+    "type": "sse",
+    "endpoint": "https://tanhdev.com/mcp/sse"
+  },
+  "capabilities": {
+    "tools": {}
+  }
+}

@@ -214,3 +214,24 @@
 {{- end -}}
 
 {{ partial "cookie_banner.html" . }}
+
+<script>
+  if ('modelContext' in navigator) {
+    navigator.modelContext.provideContext({
+      tools: [
+        {
+          name: "searchSite",
+          description: "Search the site content",
+          inputSchema: {
+            type: "object",
+            properties: { query: { type: "string" } },
+            required: ["query"]
+          },
+          execute: async ({ query }) => {
+            return { content: [{ type: "text", text: `Search results for ${query} are not available yet.` }] };
+          }
+        }
+      ]
+    });
+  }
+</script>

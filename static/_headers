@@ -13,3 +13,9 @@
 
 /auth.md
   Content-Type: text/markdown
+
+/.well-known/agent-skills/index.json
+  Content-Type: application/json
+
+/.well-known/mcp/server-card.json
+  Content-Type: application/json
