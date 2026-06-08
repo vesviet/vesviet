@@ -205,6 +205,51 @@
 }
 </script>
 {{- end }}
+{{- $faqs := .Page.Store.Get "faqs" }}
+{{- if $faqs }}
+<!-- Schema.org — FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {{- range $i, $faq := $faqs }}
+    {{- if $i }},{{ end }}
+    {
+      "@type": "Question",
+      "name": {{ $faq.question | jsonify }},
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": {{ $faq.answer | jsonify }}
+      }
+    }
+    {{- end }}
+  ]
+}
+</script>
+{{- end }}
+{{- $howtoSteps := .Page.Store.Get "howto_steps" }}
+{{- if $howtoSteps }}
+<!-- Schema.org — HowTo -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": {{ .Title | jsonify }},
+  "description": {{ .Description | jsonify }},
+  "step": [
+    {{- range $i, $step := $howtoSteps }}
+    {{- if $i }},{{ end }}
+    {
+      "@type": "HowToStep",
+      "name": {{ $step.name | jsonify }},
+      "text": {{ $step.text | jsonify }}
+    }
+    {{- end }}
+  ]
+}
+</script>
+{{- end }}
 {{ end }}
 
 <style>

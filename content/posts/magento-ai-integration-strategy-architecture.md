@@ -19,6 +19,8 @@ This guide details why that approach fails, provides an architectural blueprint 
 
 ## 1. The Magento AI Dilemma: Legacy EAV vs. High-Performance AI
 
+**Answer-first:** Integrating AI into Magento requires decoupling AI workloads via event-driven architecture to prevent MySQL lock contention, PHP-FPM exhaustion, and performance degradation in production environments.
+
 Magento was architected in a different era. At its core lies the **Entity-Attribute-Value (EAV)** database schema. While EAV provides unmatched flexibility for managing complex, multi-attribute product catalogs, it does so at a massive performance cost. Ranging across tables like `catalog_product_entity_varchar`, `_int`, and `_decimal`, rendering a single product grid requires joining five or more tables at query time. 
 
 AI workloads—specifically vector searches, LLM-based product recommendations, and agentic workflows—are fundamentally different from traditional SQL transactions:
@@ -165,6 +167,28 @@ However, if your business relies on complex B2B workflows, ERP reconciliations, 
 To assess if Magento remains a viable foundation for your business architecture, refer to our analysis: [Is Magento still worth investing in 2026?](/posts/magento-still-worth-investing-2026/).
 
 ---
+
+## FAQ
+
+{{< faq q="What causes MySQL locks in Magento AI integration?" >}}
+Synchronous AI plugins cause locks by keeping the database transaction open while waiting for high-latency external AI API responses (1-3 seconds). This blocks other write operations, leading to lock contention and deadlocks under high traffic.
+{{< /faq >}}
+
+{{< faq q="How does event-driven architecture solve the lock problem?" >}}
+It uses Change Data Capture (CDC) like Debezium to asynchronously read database changes from the MySQL binlog and stream them to a separate AI microservice. This completely removes the external API call from Magento's execution thread and database transactions.
+{{< /faq >}}
+
+{{< faq q="What are the ROI benchmarks for Magento AI integration?" >}}
+Vector search implementations have shown 10-25% increases in search-to-conversion rates and 10-50% AOV growth. Autonomous support agents can automate 60-70% of routine inquiries, reducing support costs by up to 30%.
+{{< /faq >}}
+
+{{< faq q="How do you handle data privacy with AI in e-commerce?" >}}
+To comply with GDPR and CCPA, merchants must ensure AI models don't use customer PII for third-party training, provide clear opt-out mechanisms for automated decision-making, and maintain transparency logs for Explainable AI (XAI).
+{{< /faq >}}
+
+{{< faq q="When should you replatform vs. augment existing Magento?" >}}
+Replatforming to SaaS (like Shopify Plus) is ideal if your commerce logic is standard and speed-to-market is the primary goal. Augmenting Magento with decoupled AI is more cost-effective if your business relies on complex B2B workflows, ERP reconciliations, or highly custom configurations.
+{{< /faq >}}
 
 ## Bottom Line
 

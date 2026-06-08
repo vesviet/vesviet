@@ -1,0 +1,7 @@
+{{- $stepName := .Get "name" | default (.Get 0) -}}
+{{- $stepText := .Inner | markdownify -}}
+<div class="howto-step" style="margin-bottom: 1.5rem; padding-left: 1rem; border-left: 3px solid var(--primary);">
+  <h4 class="howto-step-title" style="margin-top: 0;">{{ $stepName }}</h4>
+  <div class="howto-step-content">{{ $stepText }}</div>
+</div>
+{{- .Page.Store.Add "howto_steps" (slice (dict "name" $stepName "text" ($stepText | plainify))) -}}

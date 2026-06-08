@@ -32,6 +32,8 @@ It is completely powerless against real-time Business Logic, such as: *"Filter o
 
 ## What is Agentic Search? Semantic Search vs. Agentic AI
 
+**Answer-first:** Agentic E-commerce Search transforms traditional search from passive keyword matching to active shopping assistance using AI agents that understand complex queries, apply business logic filters, and provide personalized results in real-time.
+
 **Agentic Search** solves this by introducing a "Brain" (Orchestration Layer) in front of the databases. Instead of querying the database directly, the system employs an Autonomous AI Agent.
 
 Agentic Search breaks down a complex query into a multi-step reasoning process:
@@ -142,14 +144,25 @@ E-commerce systems in 2026 will abandon dry, rigid search bars in favor of perso
 
 ## FAQ
 
-**Will Agentic Search completely replace Elasticsearch?**  
+{{< faq q="Will Agentic Search completely replace Elasticsearch?" >}}
 Not entirely. For aggregation tasks (summing, counting products by brand) or exact SKU matching, Elasticsearch is still unparalleled. However, if you are building a greenfield architecture, Qdrant paired with an RDBMS (PostgreSQL) can replace Elasticsearch in 90% of e-commerce search use cases.
+{{< /faq >}}
 
-**Which Vector Database is best suited for a Golang Backend?**  
+{{< faq q="Which Vector Database is best suited for a Golang Backend?" >}}
 Qdrant is currently the preferred choice because it is written in Rust (offering extreme performance) and provides an excellent official Golang gRPC client SDK. If your data reaches the billion-scale mark, consider Milvus.
+{{< /faq >}}
 
-**Are LLM API costs prohibitive for Agentic Search?**  
+{{< faq q="Are LLM API costs prohibitive for Agentic Search?" >}}
 They will be if you use heavy reasoning models for every operation. The secret lies in using ultra-fast/cheap models (like Gemini 3.5 Flash) combined with aggressive Semantic Caching. This reduces costs by 90%, which is easily offset by the resulting surge in Conversion Rates.
+{{< /faq >}}
+
+{{< faq q="What are the main performance bottlenecks in agentic search?" >}}
+The primary bottlenecks are LLM reasoning latency (1-3 seconds) and vector similarity search across billions of dimensions. These are mitigated by using lightweight routing models, semantic caching, and server-sent events (SSE) for streaming responses.
+{{< /faq >}}
+
+{{< faq q="How do you handle real-time business logic in vector search?" >}}
+Vector databases cannot efficiently handle highly volatile data like real-time inventory. Real-time business logic must be handled by the Orchestration layer (Golang) making separate tool calls to the transactional database (PostgreSQL) after retrieving semantic matches.
+{{< /faq >}}
 
 {{< author-cta >}}
 

@@ -34,6 +34,8 @@ This tutorial is a deep-dive into production-ready Go profiling. We will explore
 
 ## Safely Exposing pprof Endpoints in Production
 
+**Answer-first:** Go pprof is the standard library profiling tool for diagnosing CPU usage, memory allocation, and goroutine leaks in production Go services, with safe exposure via internal HTTP endpoints and minimal performance overhead when configured correctly.
+
 The most common way to enable profiling is to import the `net/http/pprof` package. As a side effect of the import, this package automatically registers its HTTP handlers to the default `http.DefaultServeMux`.
 
 ```go
@@ -206,6 +208,14 @@ Use `pprof` to find functions actively burning CPU or allocating memory. Use `go
 
 {{< faq q="How do I profile mutex contention in Go?" >}}
 First, enable it in your application code via `runtime.SetMutexProfileFraction(100)` (which samples 1% of contention events). Then, access the data via `go tool pprof http://localhost:6060/debug/pprof/mutex`. Look for functions waiting the longest for a `sync.Mutex` to unlock.
+{{< /faq >}}
+
+{{< faq q="What's the difference between alloc_space and inuse_space?" >}}
+`inuse_space` measures the memory currently held by the application (useful for finding memory leaks), whereas `alloc_space` measures the total memory allocated over the program's lifetime (useful for finding high garbage collection pressure).
+{{< /faq >}}
+
+{{< faq q="How do you enable the Go 1.26 goroutine leak profiler?" >}}
+You must compile your service with the experiment flag: `GOEXPERIMENT=goroutineleakprofile go build -o myapp main.go`. After that, you can fetch the profile via `/debug/pprof/goroutineleak`.
 {{< /faq >}}
 
 ---
