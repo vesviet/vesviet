@@ -4,7 +4,7 @@ description: "Deep dive into real-world software architecture, microservices, sy
 lastmod: 2026-06-01T10:00:00+07:00
 ---
 
-Welcome to the definitive hub for system design case studies and software architecture deep dives. Drawing from over 17 years of experience in backend engineering and building resilient platforms, these **16 in-depth series** break down complex [distributed systems](/posts/mastering-event-driven-architecture-dapr/) into digestible, actionable lessons — from e-commerce flash sales to core banking, from ride-hailing real-time systems to production AI agents.
+Welcome to the definitive hub for system design case studies and software architecture deep dives. Drawing from over 17 years of experience in backend engineering and building resilient platforms, these **17 in-depth series** break down complex [distributed systems](/posts/mastering-event-driven-architecture-dapr/) into digestible, actionable lessons — from e-commerce flash sales to core banking, from ride-hailing real-time systems to production AI agents.
 
 ## Exploring Real-World Software Architecture & Microservices
 
@@ -17,6 +17,8 @@ Whether you are preparing for a system design interview or actively architecting
 ## 🏗️ E-Commerce & High-Scale Systems
 
 Scaling an e-commerce platform during flash sales is one of the toughest challenges in backend engineering. These series dissect how billion-dollar platforms survive extreme traffic spikes while maintaining data consistency.
+
+- **[Mastering High-Concurrency Systems](/series/high-concurrency-systems/)** — The definitive guide to building ultra-scalable Golang architectures. Learn how to solve the C10M problem, neutralize Thundering Herds with `singleflight`, implement Transactional Outbox, and utilize Distributed Locks and Sharding.
 
 - **[Shopee Architecture: Scaling for Flash Sales](/series/shopee-architecture/)** — A structured series on how Shopee evolved its architecture to handle extreme high concurrency during 11.11 and Flash Sales, covering microservices foundations, flash sale engines, traffic shielding, and [database scaling patterns](/posts/mysql-scaling-sharding-tidb-architecture/).
 
@@ -91,7 +93,7 @@ Choosing the right starting point depends on your background and goals:
 | Your Profile | Recommended Starting Series | Why |
 |---|---|---|
 | **New to distributed systems** | [Shopee Architecture](/series/shopee-architecture/) or [Ride-Hailing Architecture](/series/ride-hailing-realtime-architecture/) | Foundational patterns: caching, [message queues (Kafka)](/posts/mastering-event-driven-architecture-dapr/), geofencing, and database sharding |
-| **Senior backend engineer** | [Core Banking Developer](/series/core-banking-developer/) or [E-Commerce Order Allocation](/series/ecommerce-order-allocation/) | Domain-specific complexity: OSRM routing matrices, Saga patterns, idempotent financial transactions |
+| **Senior backend engineer** | [High-Concurrency Systems](/series/high-concurrency-systems/) or [Core Banking Developer](/series/core-banking-developer/) | Deep technical patterns: C10M, Thundering Herd, Distributed Locks, and Idempotency |
 | **Engineer adapting to AI** | [AI-Driven Engineer](/series/ai-driven-engineer/) → [AI-Driven Playbook](/series/ai-driven-playbook/) | Mindset shift first, then hands-on execution with IDE setup, RAG, and CI/CD |
 | **Building AI products** | [Agentic System Architecture](/series/agentic-system-architecture/) → [MCP Engineering](/series/mcp-engineering-in-production/) | Multi-agent topology, tool calling, and production MCP infrastructure |
 | **Non-technical builder (CEO/PM/BA)** | [Vibe Coding & AI Code Review](/series/ai-code-review-vibe-coding/) | Understand your limits with AI-generated code and when to hand off to engineers |
@@ -114,6 +116,6 @@ Senior engineers should explore the [E-Commerce Order Allocation](/series/ecomme
 The AI series follow a deliberate learning path: start with [AI-Driven Engineer](/series/ai-driven-engineer/) (mindset), then [AI-Driven Playbook](/series/ai-driven-playbook/) (execution), [Vibe Coding & AI Code Review](/series/ai-code-review-vibe-coding/) (shipping AI code safely), [AI Data Engineering Pipeline](/series/ai-data-engineering-pipeline/) (data layer), [Agentic System Architecture](/series/agentic-system-architecture/) (multi-agent design), and finally [MCP Engineering](/series/mcp-engineering-in-production/) (production infrastructure). The [SLM Playbook](/series/slm-playbook/) and [Generative UI](/series/generative-ui-architecture/) series complement this path with model deployment and frontend architecture.
 {{< /faq >}}
 
-{{< faq q="Do I need to read all 16 series?" >}}
+{{< faq q="Do I need to read all 17 series?" >}}
 No. Each series is self-contained and can be read independently. Use the **Where Should You Start?** table above to find the best entry point for your profile. However, series within the same category often cross-reference each other, so exploring related series will deepen your understanding.
 {{< /faq >}}
