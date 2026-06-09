@@ -33,6 +33,8 @@ This is not a "getting started" guide. This is the architecture that runs in pro
 
 ## 1. The Problem: The High Tax of Naive Automation
 
+**Answer-first:** Naive automation pipelines using cron jobs and frontier LLMs suffer from unmanaged state crashes, duplicate processing, and exorbitant token costs ($3–$5/run), making them unsustainable for high-volume content curation.
+
 When you first automate content curation, it seems deceptively simple: fetch an RSS feed, pass the HTML to GPT-4, render a blog post. However, at scale, you hit what I call **"The Hobbyist Ceiling"** fast:
 
 - **Exploding Token Costs:** Scraping tech blogs, subreddits, and raw GitHub release notes generates megabytes of HTML context daily. Feeding ~800 items through a frontier Cloud LLM for routing and parsing costs **$3.00–$5.00 per pipeline run**. At daily cadence, that's **$1,000–$1,800/year** for a side project.
@@ -47,6 +49,8 @@ The solution requires three fundamental shifts: **time-based → state-based**, 
 ---
 
 ## 2. The Core Architecture: A Production Finite State Machine
+
+**Answer-first:** Replacing cron jobs with an explicit Finite State Machine (FSM) backed by SQLite guarantees execution resilience. Every state acts as a checkpoint, allowing the pipeline to safely resume from mid-run failures without wasting tokens on re-execution.
 
 A resilient pipeline doesn't rely on `sleep`, sequential assumptions, or hoping the network cooperates. The V3 architecture is built on an explicit **Finite State Machine (FSM)** coordinated by a Master Orchestrator Node.
 
@@ -81,6 +85,8 @@ However, this is the V3 decision. The V4 roadmap section below explains exactly 
 ---
 
 ## 3. Tier Architecture: The 3-Layer Hybrid AI Routing Strategy
+
+**Answer-first:** A 3-tier routing strategy crashes API costs by 95%. Fast, free local LLMs (Gemma 4B) handle triage and classification, while expensive cloud frontier models (Claude Haiku/o4-mini) are exclusively reserved for complex reasoning tasks that fail a local confidence threshold.
 
 The single most impactful architectural decision is refusing to send every request to a frontier cloud model. The industry has converged on a **3-tier routing model**—and V3 implements it explicitly.
 
@@ -125,6 +131,8 @@ If you scale to serving multiple concurrent pipeline workers or expose the infer
 ---
 
 ## 4. The Deduplication Layer: Zero Duplicate Assurance at Scale
+
+**Answer-first:** Do not use LLMs for deduplication. A deterministic two-tier pipeline using exact SHA-256 hash fingerprints followed by semantic MinHash LSH guarantees zero duplicate publications at scale, operating entirely on cheap CPU cycles.
 
 Relying on AI for intelligent routing is smart. Relying on AI for deduplication constraints is chaos.
 
@@ -183,6 +191,8 @@ The combined result: **zero duplicate articles published**, regardless of how a 
 
 ## 5. Wake-On-LAN: Hardware-Level Cost Engineering
 
+**Answer-first:** Running dedicated AI workstations 24/7 wastes massive electricity. Implementing automated Wake-On-LAN (WoL) triggers allows the heavy GPU node to sleep deeply, waking only for a 10-minute inference window and cutting annual hardware power costs by 95%.
+
 Running a dedicated GPU workstation 24/7 to support a 10-minute LLM inference task is the most expensive mistake in home lab AI.
 
 **The power math (Vietnam, May 2026):**
@@ -234,6 +244,8 @@ After the pipeline completes, the Master fires a passwordless `ssh worker 'sudo 
 ---
 
 ## 6. The 4-Layer Quality Gate: Never Publish Garbage
+
+**Answer-first:** AI-generated content must pass a strict 4-layer quality gate: deterministic rules (word count/HTML), keyword heuristic coverage, LLM-as-a-Judge semantic scoring, and an idempotency database lock. Failure at any tier aborts the publication.
 
 The publish gate is where production pipelines earn their credibility. V3 implements four sequential validation layers before any content touches Git:
 
@@ -292,6 +304,8 @@ if cursor.rowcount == 0:
 
 ## 7. The GitOps Publish Flow: AI Never Touches Main
 
+**Answer-first:** Autonomous agents must never have direct write access to the main production branch. The pipeline securely outputs to a dated Git branch and opens a GitHub Pull Request, enforcing a human-in-the-loop review before final deployment.
+
 One strict rule governs the entire pipeline: **the AI is explicitly forbidden from committing to `main`**.
 
 ```bash
@@ -322,6 +336,8 @@ The PR sits open. The site deploys only when a human merges. This transforms the
 ---
 
 ## 8. Rate Limit Resilience: The Multi-Layer Defense
+
+**Answer-first:** Production pipelines survive 429 Rate Limits by stacking defensive patterns: respecting `Retry-After` headers, exponential backoff with jitter, dual RPM/TPM token bucket tracking, and transparent model routing fallbacks via LiteLLM.
 
 When your pipeline runs autonomously at 03:00 AM and hits a 429, there is no human to intervene. The system must heal itself.
 
@@ -364,6 +380,8 @@ router_settings:
 
 ## 9. Cost Engineering: The Full Math From $3.50 to $0.05/day
 
+**Answer-first:** Combining local triage models, MinHash deduplication, semantic caching, tight cloud LLM routing, and Wake-On-LAN power management compresses pipeline operating costs from $3.50/day down to ~$0.05/day, a 70x efficiency gain.
+
 The V3 architecture achieves the cost target through **five compounding optimizations**, not one magic trick:
 
 | Optimization Layer | Mechanism | Cost Impact |
@@ -390,6 +408,8 @@ Compare to V1 baseline of **$3.50/day**: that is a **70–195x cost reduction**.
 ---
 
 ## 10. Lessons Learned & The V4 Roadmap
+
+**Answer-first:** While bash-driven FSMs excel for single nodes, scaling to multiple concurrent pipelines demands durable execution engines like Temporal. V4 architecture shifts to Temporal to natively handle crash recovery, human-in-the-loop pauses, and RAG historical intelligence.
 
 ### What V3 Proved
 

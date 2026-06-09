@@ -1,6 +1,8 @@
 ---
 title: "Magento Agency & Development in Vietnam: Scoping Guide"
 slug: "magento-development-in-vietnam"
+aliases:
+  - /posts/magento-development-in-vietnam-cost-capability-and-when-it-actually-fits/
 date: 2026-04-30T09:10:00+07:00
 lastmod: 2026-04-30T09:10:00+07:00
 draft: false

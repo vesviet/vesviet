@@ -4,6 +4,10 @@ date: "2026-06-06"
 lastmod: "2026-06-06"
 description: "Hire Lê Tuấn Anh (vesviet) — Senior Go Backend Architect for consulting engagements. Specializes in microservices migrations, high-traffic platform reliability, and Kubernetes/GitOps at scale in Vietnam and remotely."
 slug: "hire"
+aliases:
+  - /professional-services/
+  - /contact/
+  - /portfolio/seo-marketing/
 showToc: true
 TocOpen: true
 ---

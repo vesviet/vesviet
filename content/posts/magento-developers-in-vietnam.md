@@ -1,6 +1,8 @@
 ---
 title: "Magento Developers in Vietnam: Hiring & Vetting Guide"
 slug: "magento-developers-in-vietnam"
+aliases:
+  - /posts/magento-developers-in-vietnam-what-to-look-for-beyond-theme-work/
 date: 2026-04-30T08:30:00+07:00
 lastmod: 2026-04-30T08:30:00+07:00
 draft: false

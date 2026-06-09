@@ -1,6 +1,9 @@
 ---
 title: "Go Microservices Distributed Tracing Architecture (Observability 2026)"
 slug: "go-microservices-distributed-tracing-architecture"
+aliases:
+  - /posts/opentelemetry-golang-distributed-tracing-microservices/
+  - /posts/circuit-breaker-retry-golang-resilience/
 date: "2026-06-08T14:30:00+07:00"
 lastmod: "2026-06-08T14:30:00+07:00"
 draft: false

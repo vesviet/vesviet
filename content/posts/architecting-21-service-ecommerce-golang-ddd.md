@@ -1,6 +1,8 @@
 ---
 title: "Architecting 21-Service E-commerce with Golang & DDD"
 slug: "architecting-21-service-ecommerce-golang-ddd"
+aliases:
+  - /posts/architecting-a-21-service-e-commerce-ecosystem-with-golang-ddd/
 date: 2026-04-12T10:00:00+07:00
 lastmod: 2026-04-12T10:00:00+07:00
 draft: false
