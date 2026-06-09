@@ -1,5 +1,5 @@
 ---
-title: "Go Microservices Distributed Tracing Architecture (Observability 2026)"
+title: "Go Microservices Distributed Tracing Architecture (2026)"
 slug: "go-microservices-distributed-tracing-architecture"
 aliases:
   - /posts/opentelemetry-golang-distributed-tracing-microservices/
@@ -7,7 +7,7 @@ aliases:
 date: "2026-06-08T14:30:00+07:00"
 lastmod: "2026-06-08T14:30:00+07:00"
 draft: false
-description: "Master Go microservices distributed tracing. Learn W3C context propagation across Kafka, OpenTelemetry Collector configurations, and tail-based sampling for 2026."
+description: "Master Go microservices distributed tracing. Learn W3C context propagation, OpenTelemetry Collector configurations, and tail-based sampling for 2026."
 ShowToc: true
 TocOpen: true
 categories:

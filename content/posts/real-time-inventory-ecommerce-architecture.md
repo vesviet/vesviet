@@ -1,5 +1,5 @@
 ---
-title: "Real-time Inventory E-commerce Architecture (Speed & Truth Model)"
+title: "Real-time Inventory E-commerce Architecture (Speed & Truth)"
 slug: "real-time-inventory-ecommerce-architecture"
 date: "2026-06-08T14:35:00+07:00"
 lastmod: "2026-06-08T14:35:00+07:00"

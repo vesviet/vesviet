@@ -1,5 +1,5 @@
 ---
-title: "MySQL Database Scaling: Vitess & GORM Sharding"
+title: "MySQL Horizontal Scaling: Vitess & GORM Sharding"
 slug: "mysql-horizontal-scaling"
 date: "2026-06-01T15:10:00+07:00"
 lastmod: "2026-06-01T15:10:00+07:00"
