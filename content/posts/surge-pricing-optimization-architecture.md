@@ -2,7 +2,7 @@
 title: "Surge Pricing Algorithm & Spatial Indexing Architecture"
 slug: "surge-pricing-optimization-architecture"
 date: "2026-06-01T15:20:00+07:00"
-lastmod: "2026-06-01T15:20:00+07:00"
+lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -115,3 +115,5 @@ What happens if the Kafka cluster crashes, or Flink suffers an OOM (Out Of Memor
 If the Backend API queries Redis and finds no Surge configuration (due to TTL - Time To Live expiration), it **must absolutely never throw an HTTP 500 error**. Instead, the API must implement a **Fail-Safe** mechanism: automatically gracefully falling back to a default multiplier of **1.0x (Normal Fare)**. 
 
 It is infinitely better for a business to absorb the loss of 15 minutes of surge revenue than to lock hundreds of thousands of customers out from requesting a ride home, causing irreversible damage to the brand's reputation.
+
+For the complete engineering deep-dive on how ride-hailing platforms build this surge pricing engine — including the full Flink state machine, driver multiplier coefficients, and demand forecasting integration — see [Part 5: Surge Pricing Engine (Ride-Hailing Architecture Series)](/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/).

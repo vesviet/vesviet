@@ -4,7 +4,7 @@ slug: "real-time-inventory-ecommerce-architecture"
 date: "2026-06-08T14:35:00+07:00"
 lastmod: "2026-06-10T13:30:00+07:00"
 draft: false
-description: "How to architect real-time inventory synchronization in e-commerce: Kafka event streaming, Debezium CDC, and idempotent Redis Lua scripts to prevent overselling."
+description: "Real-time inventory synchronization for e-commerce: Kafka event streaming, Debezium CDC, and idempotent Redis Lua scripts to prevent overselling."
 ShowToc: true
 TocOpen: true
 categories:
@@ -154,3 +154,5 @@ A single viral product (Hot SKU) will route all traffic to a single Redis slot. 
 {{< faq q="What happens if the Kafka consumer encounters a corrupted payload?" >}}
 Implement a Dead Letter Queue (DLQ). If an inventory event fails validation, route the message to an `inventory.dlq` topic and commit the offset. Do not allow the consumer to block or crash loop, as this halts all inventory processing for that partition.
 {{< /faq >}}
+
+For the allocation layer built on top of real-time inventory sync — warehouse selection algorithms, split shipment logic, and Amazon CONDOR-style anticipatory inventory — see [Part 2: Real-Time Inventory Allocation Architecture](/series/ecommerce-order-allocation/part-2-inventory-realtime/).

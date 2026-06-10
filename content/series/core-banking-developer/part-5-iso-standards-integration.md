@@ -1,9 +1,9 @@
 ---
-title: "Part 5 — International Integration Standards: ISO 8583 & ISO 20022"
+title: "Part 5: ISO 8583 & ISO 20022 Core Banking Standards"
 date: 2026-05-06T18:00:00+07:00
-lastmod: 2026-05-06T18:00:00+07:00
+lastmod: 2026-06-10T16:00:00+07:00
 draft: false
-description: "The two most important financial communication standards in the world — ISO 8583 for ATM/POS card transactions and ISO 20022 for SWIFT cross-border payments — and how to integrate them into Core Banking."
+description: "ISO 8583 for ATM/POS card transactions and ISO 20022 for SWIFT cross-border payments: what Core Banking Developers need to implement both standards."
 weight: 6
 ---
 

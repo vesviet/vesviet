@@ -2,9 +2,9 @@
 title: "Go pprof in Kubernetes: Remote CPU & Memory Profiling Without Restarting Pods"
 slug: "golang-pprof-profiling-memory-cpu-tutorial"
 date: "2026-06-02T08:00:00+07:00"
-lastmod: "2026-06-10T13:30:00+07:00"
+lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
-description: "Profile Go services in Kubernetes without restarting pods: kubectl port-forward, pprof heap and CPU capture, goroutine leak detection, and safe production exposure."
+description: "Profile Go services in Kubernetes without restarting pods: kubectl port-forward, pprof heap and CPU capture, and goroutine leak detection."
 ShowToc: true
 TocOpen: true
 categories:

@@ -2,7 +2,7 @@
 title: "What is Vibe Coding? Why AI Code Review is the Future"
 slug: "vibe-coding-and-ai-code-review-future"
 date: "2026-05-31T18:30:00+07:00"
-lastmod: "2026-05-31T18:30:00+07:00"
+lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
 categories:
   - "AI Engineering"
@@ -112,4 +112,4 @@ Not necessarily, but you should treat AI-generated code as untrusted user input.
 
 ---
 
-**Continue Reading:** For the practical AI-in-production side: [OAuth 2.1 & Prompt Versioning for Production AI Agents](/posts/production-ai-apis-oauth-versioning-meta-predictions/) covers the identity and versioning patterns you need when deploying LLM-powered features to real users.
+**Continue Reading:** For the practical AI-in-production side: [OAuth 2.1 & Prompt Versioning for Production AI Agents](/posts/production-ai-apis-oauth-versioning-meta-predictions/) covers the identity and versioning patterns you need when deploying LLM-powered features to real users. For where AI-native frontend is heading by 2028 — generative components, MCP-driven UI, and server-driven layouts — see [AI-Native Frontend in 2028: 10 Architecture Predictions](/posts/ai-native-frontend-architecture-predictions-2028) and [Generative UI with MCP: Architecting AI-Native Frontends](/posts/generative-ui-with-mcp-ai-native-frontend).

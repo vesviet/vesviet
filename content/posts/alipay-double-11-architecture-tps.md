@@ -2,7 +2,7 @@
 title: "Alipay Double 11: 583,000 TPS Architecture Explained"
 slug: "alipay-double-11-architecture-tps"
 date: "2026-06-01T10:00:00+07:00"
-lastmod: "2026-06-01T10:00:00+07:00"
+lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -239,5 +239,7 @@ All three are distributed relational databases using consensus protocols (Paxos 
 
 ### How many transactions did Alipay process during Double 11 2023?
 The verified peak was **583,000 payment transactions per second (TPS)** sustained during the midnight spike. The total transaction volume for the 24-hour event exceeded several hundred billion RMB in payment value. The infrastructure handled this without reported SLA violations due to LDC unit isolation and OceanBase's horizontal scaling.
+
+For a comparison with how a different payment platform solved similar concurrency challenges — how PayPay handles 7.8 billion transactions/year using Kafka idempotency, TiDB, and campaign-era Redis counters — see [PayPay Architecture: Scaling to Billions of Transactions](/posts/paypay-architecture-scaling).
 
 {{< author-cta >}}

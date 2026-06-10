@@ -68,4 +68,6 @@ This allows Shopee's operation teams to run massive `SELECT ... GROUP BY` analyt
 
 🔗 **Deep Dive:** For a comprehensive engineering analysis of the complete spectrum from MySQL replication to sharding to TiDB, including distributed ACID transactions and MVCC internals, read our standalone guide: [Scalable Database Architecture: How to Scale MySQL from Replication to Sharding and TiDB](/posts/mysql-scaling-sharding-tidb-architecture/).
 
+🔗 **Scalability Decision Framework:** If you are evaluating whether replicas, GORM Sharding, Vitess, or TiDB is the right choice for your current stage, the [MySQL Scalability Guide](/posts/mysql-scalability-guide/) covers the complete decision ladder with Go-specific implementation patterns.
+
 {{< author-cta >}}

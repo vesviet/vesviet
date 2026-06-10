@@ -1,9 +1,9 @@
 ---
-title: "Microservices in Banking: Modern Core Banking Architecture (Event-Driven)"
+title: "Core Banking Microservices: Event-Driven Architecture Guide"
 date: 2026-05-06T18:00:00+07:00
-lastmod: 2026-06-10T13:00:00+07:00
+lastmod: 2026-06-10T16:00:00+07:00
 draft: false
-description: "Microservices in banking: how digital banks replace monolithic core systems with event-driven architecture using Event Sourcing, CQRS, and Saga patterns."
+description: "How digital banks replace monolithic core systems (T24, Flexcube) with microservices: Event Sourcing, CQRS, and Saga patterns for Core Banking."
 weight: 5
 ---
 
@@ -222,3 +222,5 @@ Never design a transfer API as a **synchronous block** because processing throug
 🔗 **Previous Step:** Explore the foundational database layer in [Part 3 — Database Design for Financial Transactions (ACID & Concurrency)](/series/core-banking-developer/part-3-database-transactions-acid/).
 
 🔗 **Next Step:** Now that you understand banking microservices architecture and its event-driven patterns, see how these services communicate with the outside world through international financial standards. Continue reading [Part 5 — International Integration Standards: ISO 8583 & ISO 20022](/series/core-banking-developer/part-5-iso-standards-integration/).
+
+🔗 **Deep Dive:** For a complete engineering guide to the full composable banking stack — ledger concurrency patterns, Strangler Fig migrations, RFC 8705 mTLS, and the next-gen vendor landscape — see [Composable Banking Architecture: From Monolith to Modular Core](/posts/composable-banking-architecture).

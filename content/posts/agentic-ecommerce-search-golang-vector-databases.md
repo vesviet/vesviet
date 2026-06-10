@@ -2,7 +2,7 @@
 title: "Architecting Agentic E-commerce Search with Golang"
 slug: "agentic-ecommerce-search-golang-vector-databases"
 date: "2026-05-22T10:00:00+07:00"
-lastmod: "2026-05-22T10:00:00+07:00"
+lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
 tags: ["Golang", "Architecture", "AI Agents", "E-commerce", "Vector Database", "Qdrant", "Microservices"]
 description: "Architectural blueprint for building an Agentic E-commerce Search Engine using Golang and Vector Databases. Optimizing semantic search for 2026 commerce."
@@ -139,6 +139,8 @@ Deploying Agentic Search introduces two major challenges:
 The transition from Elasticsearch BM25 to an **Agentic E-commerce Search** architecture is not merely swapping one database for another. It is a fundamental architectural paradigm shift: separating the *Static Data Storage* capability (Vector DB/RDBMS) from the *Reasoning* capability (LLM Agent), and using **Golang** as the robust, high-speed orchestrator bridging the two.
 
 E-commerce systems in 2026 will abandon dry, rigid search bars in favor of personalized, interactive Conversational Commerce for every individual shopper.
+
+For a deeper evaluation of retrieval strategies at enterprise scale — when naive vector RAG fails, how GraphRAG builds knowledge graphs over product catalogs, and the cost-accuracy tradeoffs at different corpus sizes — see [GraphRAG vs Naive RAG: Enterprise Architecture Guide](/posts/graphrag-vs-naive-rag-enterprise-guide).
 
 ---
 

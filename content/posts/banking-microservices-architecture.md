@@ -122,3 +122,5 @@ All APIs handling financial transactions must be **Idempotent**. This is achieve
 - If the ID does not exist, the server deducts the money and writes the ID to the table. Both of these actions must happen in a single DB Transaction, which implies having a robust [MySQL database scaling](/posts/mysql-horizontal-scaling) strategy if your transaction volume is massive.
 
 Designing a payment system architecture leaves no room for guesswork. The combination of **Saga Orchestration, an Immutable Ledger, the Outbox Pattern, and Idempotent APIs** forms the strongest armor to protect millions of dollars in daily transactions on your platform.
+
+For how these microservices patterns apply in the microfinance vertical — group-based JLG lending, compulsory savings CASA logic, and EOD batch state machines — see [Microfinance Core Banking System: Architecture & Engineering Guide](/posts/deconstructing-microfinance-core-banking-architecture).

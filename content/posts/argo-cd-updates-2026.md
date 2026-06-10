@@ -13,7 +13,7 @@ tags:
   - "Argo CD"
   - "CI/CD"
   - "Platform Engineering"
-description: "Argo CD v3.4 & v3.3 updates (2026): Cluster Pause, PreDelete Hooks, breaking SemVer change, and the June 2026 RC features — annotation filtering, Teams Workflow, and ApplicationSet UI."
+description: "Argo CD v3.4 & v3.3 (2026): Cluster Pause, PreDelete Hooks, SemVer breaking change 2014 plus RC: annotation filtering, Teams Workflow, ApplicationSet UI."
 ShowToc: true
 TocOpen: true
 ---

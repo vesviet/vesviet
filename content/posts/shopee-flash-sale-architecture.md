@@ -2,7 +2,7 @@
 title: "Shopee Flash Sale Architecture: Rate Limiting & Redis"
 slug: "shopee-flash-sale-architecture"
 date: "2026-06-01T10:00:00+07:00"
-lastmod: "2026-06-01T10:00:00+07:00"
+lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -241,5 +241,7 @@ Flash sale inventory reservation happens in Redis (in-memory, sub-millisecond). 
 
 ### How does rate limiting work in a flash sale system?
 Shopee uses a layered approach: CDN-level connection throttling, API gateway per-user token bucket rate limiting (in Redis), and IP-level challenge flows for high-velocity requesters. Accepted requests that pass all rate limiting gates are placed in a virtual queue consumed at a rate the backend can sustain, decoupling acceptance rate from processing rate.
+
+For the full engineering blueprint — including Debezium CDC, Kafka partition keying by SKU, and the idempotent Redis Lua script that prevents overselling under Kafka rebalances — see [Real-Time Inventory Synchronization: Kafka, CDC & Redis](/posts/real-time-inventory-ecommerce-architecture). For how inventory allocation decisions are made once inventory is synchronized — warehouse selection, split shipments, and anticipatory shipping — see [Part 2: Real-Time Inventory Allocation Architecture](/series/ecommerce-order-allocation/part-2-inventory-realtime/).
 
 {{< author-cta >}}

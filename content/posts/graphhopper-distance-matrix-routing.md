@@ -2,7 +2,7 @@
 title: "GraphHopper vs CARTO: Order Fulfillment Routing Engine"
 slug: "graphhopper-distance-matrix-routing"
 date: "2026-06-01T15:05:00+07:00"
-lastmod: "2026-06-01T15:05:00+07:00"
+lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -24,7 +24,7 @@ TocOpen: true
 
 In last-mile delivery and logistics, calculating a route is not just about finding the shortest path from point A to point B. When a system needs to coordinate thousands of drivers and orders simultaneously, computational costs can explode exponentially. 
 
-This article will compare two popular approaches: utilizing **GraphHopper** for lightning-fast **GraphHopper distance matrix calculation**, and leveraging the **CARTO Spatial Platform** (focused on spatial analysis in Cloud Data Warehouses). We will also explore how to integrate this routing data into [Real-time Surge Pricing Calculation](/posts/surge-pricing-optimization-architecture) to optimize operational costs.
+This article will compare two popular approaches: utilizing **GraphHopper** for lightning-fast **GraphHopper distance matrix calculation**, and leveraging the **CARTO Spatial Platform** (focused on spatial analysis in Cloud Data Warehouses). We will also explore how to integrate this routing data into [Real-time Surge Pricing Calculation](/posts/surge-pricing-optimization-architecture) to optimize operational costs. For routing within geospatial indexing systems (H3 hexagons, Redis GEO), see [Part 2 — Geospatial Indexing: H3, S2 & Redis GEO](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/).
 
 ---
 
@@ -103,3 +103,5 @@ You should divide the map (Bounding Box) according to your business operation ar
 ## Conclusion
 
 The choice between GraphHopper and CARTO depends entirely on the use case. If your system needs macro spatial analysis, CARTO is the perfect choice. But for Dispatch and Fulfillment systems that require **real-time Distance Matrices at minimal cost**, self-hosting GraphHopper on Kubernetes is the most optimal architectural strategy.
+
+For a step-by-step operational guide — including OSM data loading, Kubernetes StatefulSet configuration, and the blue-green graph update pattern — see [Self-Hosting GraphHopper on Kubernetes with OSM Data](/posts/graphhopper-kubernetes-self-hosting-osm).

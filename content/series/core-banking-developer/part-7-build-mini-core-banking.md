@@ -1,9 +1,9 @@
 ---
-title: "Part 7 — Practice: Build a Mini Core Banking System from Scratch"
+title: "Part 7: Build a Mini Core Banking System in Go"
 date: 2026-05-06T18:00:00+07:00
-lastmod: 2026-05-06T18:00:00+07:00
+lastmod: 2026-06-10T16:00:00+07:00
 draft: false
-description: "A comprehensive hands-on project — build a miniature Core Banking system integrating a Double-Entry Ledger, ACID Transactions, CASA, Lending, and REST APIs, applying all the knowledge from the series."
+description: "Build a complete mini Core Banking system in Go: double-entry ledger, ACID transactions, CASA accounts, loan management, and REST APIs — end-to-end."
 weight: 8
 ---
 

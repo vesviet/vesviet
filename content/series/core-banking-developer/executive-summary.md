@@ -1,9 +1,9 @@
 ---
 title: "The Landscape of Core Banking Developers"
 date: 2026-05-06T18:00:00+07:00
-lastmod: 2026-05-06T18:00:00+07:00
+lastmod: 2026-06-10T16:00:00+07:00
 draft: false
-description: "A comprehensive overview of the Core Banking Developer role — what they do, what they need, and why they are among the highest-paid engineers in the financial sector."
+description: "Overview of the Core Banking Developer role: responsibilities, required skills, and why it is one of the highest-paid engineering specializations."
 weight: 1
 ---
 

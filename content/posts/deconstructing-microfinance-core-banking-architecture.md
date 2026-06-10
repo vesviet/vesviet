@@ -1,11 +1,11 @@
 ---
-title: "Microfinance Core Banking Architecture: PRDs & QA"
+title: "Microfinance Core Banking System: Architecture & Engineering Guide"
 slug: "deconstructing-microfinance-core-banking-architecture"
 date: 2026-05-27T10:00:00+07:00
-lastmod: 2026-05-27T10:00:00+07:00
+lastmod: 2026-06-10T15:13:00+07:00
 draft: false
-tags: ["Core Banking", "Microfinance", "Architecture", "System Design", "QA"]
-description: "A senior developer's guide to architecting a Microfinance Core Banking System. Explore 5 must-have modules, user stories, and QA state machine scenarios."
+tags: ["Core Banking", "Microfinance", "Architecture", "System Design", "Fintech"]
+description: "Engineer's guide to microfinance CBS architecture: 5 modules, double-entry ledger, JLG loan engine, amortization formulas, and EOD batch state machines."
 series: ["core-banking-developer"]
 categories: ["Architecture", "Engineering"]
 ShowToc: true
@@ -149,5 +149,7 @@ Because modern CBS architectures manage millions of loans, they rely on distribu
 *This article is part of our `core-banking-developer` series exploring scalable fintech architecture.*
 
 **Continue Reading:** The [Core Banking Developer Learning Path](/series/core-banking-developer/) series goes deeper on ACID transactions, ISO 8583/20022 standards, and building a complete mini banking system from scratch.
+
+For the broader strategic picture — how banks replace monolithic cores like Temenos T24 with full composable architectures using Go microservices, Saga orchestration, and Strangler Fig migrations — see [Composable Banking Architecture: From Monolith to Modular Core](/posts/composable-banking-architecture).
 
 {{< author-cta >}}

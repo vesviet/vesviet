@@ -2,7 +2,7 @@
 title: "Mastering Event-Driven Architecture with Dapr Pub/Sub"
 slug: "mastering-event-driven-architecture-dapr"
 date: 2026-04-12T09:05:00+07:00
-lastmod: 2026-04-12T09:05:00+07:00
+lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
 mermaid: true
 tags: ["Event-Driven", "Dapr", "Golang", "Go", "Message Queue", "Architecture", "Microservices", "Kafka", "Saga"]
@@ -472,5 +472,6 @@ The patterns in this post — the Transactional Outbox, idempotent consumers, DL
 - For the full DDD architecture that this EDA layer builds on, see [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/).
 - For how PayPay implements Kafka-native idempotency at 7.8 billion transactions/year (without Dapr's abstraction layer), see [Part 2 — Handling the Surge: Event-Driven & Kafka](/series/paypay-architecture/part-2-event-driven-kafka/).
 - For deploying these Go microservices on Kubernetes with GitOps, see [GitOps at Scale with Argo CD](/posts/gitops-at-scale-kubernetes-argocd-microservices/).
+- For the observability layer — how to propagate W3C trace context across Kafka topics, configure tail-based sampling in OTel Collector, and trace gRPC calls between Dapr sidecars — see [Go Microservices Distributed Tracing Architecture](/posts/go-microservices-distributed-tracing-architecture).
 
 {{< author-cta >}}

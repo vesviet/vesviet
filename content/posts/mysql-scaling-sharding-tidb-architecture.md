@@ -15,7 +15,7 @@ tags:
   - "TiDB"
   - "Sharding"
   - "NewSQL"
-description: "How to replace MySQL manual sharding with TiDB: architecture deep-dive (TiKV, Raft, Percolator ACID, TiFlash HTAP) and step-by-step DM shard merge migration guide."
+description: "Replace MySQL manual sharding with TiDB: TiKV, Raft consensus, Percolator ACID, TiFlash HTAP, and a step-by-step DM shard merge guide."
 ShowToc: true
 TocOpen: true
 ---
@@ -268,5 +268,7 @@ TiDB offers the horizontal write scalability of sharding without the application
 🔗 **Next Step:** To see how database scaling and high-availability topologies fit into broader cloud infrastructure designs, read our guide on [architecting large-scale systems](/series/agentic-system-architecture) and contrast traditional regional database systems with modern [edge computing databases](/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture).
 
 **Continue Reading:** [Financial Microservices Architecture: Saga & Double-Entry Ledger](/posts/banking-microservices-architecture/) — how the database layer covered here supports ACID-compliant financial transaction processing in a distributed system.
+
+🔗 **Real-World Case Study:** See how Shopee scaled their database architecture to handle flash sales at 10M+ concurrent users, including their MySQL sharding evolution and TiDB adoption: [Shopee Architecture: Database Scaling at Scale](/series/shopee-architecture/04-database-scale/).
 
 {{< author-cta >}}
