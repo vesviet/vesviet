@@ -1,20 +1,17 @@
 ---
-title: "Part 7 — Distance Matrix Routing: Haversine, OSRM, and GraphHopper Distance Matrix"
+title: "GraphHopper Distance Matrix vs OSRM vs Haversine: Open-Source Route Optimization"
 date: 2026-05-06T20:30:00+07:00
-lastmod: 2026-05-06T20:30:00+07:00
+lastmod: 2026-06-10T13:00:00+07:00
 draft: false
-description: "How to calculate a GraphHopper distance matrix at scale: compare Haversine, OSRM Table API, and GraphHopper Matrix API for ecommerce routing optimization."
+description: "Compare GraphHopper distance matrix, OSRM Table API, and Haversine for e-commerce routing. When to self-host vs use a cloud API — with working Python code."
 weight: 8
 ---
 
-## The Invisible yet Most Expensive Bottleneck
+> **Series context:** This is Part 7 of the [E-commerce Order Allocation](/series/ecommerce-order-allocation/) series. The distance matrix built here feeds directly into the OR-Tools VRP solver in [Part 6](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/).
 
-In the previous part, when running Google OR-Tools, we passed a variable called `distance_matrix`. It sounds simple, but for OR-Tools to find the optimal route, it must know the distance between **every single pair of points**.
+## The Invisible yet Most Expensive Bottleneck in E-commerce Routing
 
-If you have 1 warehouse and 100 orders, there are 101 total points.
-The number of distance pairs required is `101 × 101 = 10,201` calculations.
-
-Calculating the `distance_matrix` is usually the **slowest and most expensive** step in the entire pipeline. Below are the algorithms and tools to solve this, from easiest to most advanced.
+For any VRP (Vehicle Routing Problem) solver to find the optimal delivery route, it needs to know the exact cost between every pair of stops — this is the **distance matrix**. For 1 warehouse + 100 orders (101 points), that is `101 × 101 = 10,201` pairs. Choosing the wrong tool for this step can cost **$510/day** in API fees or cause multi-second latency spikes under load.
 
 ---
 

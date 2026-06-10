@@ -1,17 +1,17 @@
 ---
-title: "Part 4 — Modern Core Banking Architecture: Microservices in Banking (Event-Driven)"
+title: "Microservices in Banking: Modern Core Banking Architecture (Event-Driven)"
 date: 2026-05-06T18:00:00+07:00
-lastmod: 2026-05-06T18:00:00+07:00
+lastmod: 2026-06-10T13:00:00+07:00
 draft: false
-description: "How digital banks escape monolithic legacy systems and build Core Banking with banking microservices architecture: Event Sourcing, CQRS, and Saga."
+description: "Microservices in banking: how digital banks replace monolithic core systems with event-driven architecture using Event Sourcing, CQRS, and Saga patterns."
 weight: 5
 ---
 
-> **Prerequisite:** This article assumes familiarity with [ACID transactions and database concurrency](/series/core-banking-developer/part-3-database-transactions-acid/) at the database layer. Understanding why consistency guarantees are hard is essential context before we introduce the distributed patterns here.
+> **Series context (Part 4 of 8):** This article assumes familiarity with [ACID transactions and database concurrency](/series/core-banking-developer/part-3-database-transactions-acid/). Understanding why consistency guarantees are hard at the database layer is essential context before introducing distributed patterns here.
 
 ## Why Microservices in Banking?
 
-Microservices in banking is not a trend — it is a structural response to the operational failures of monolithic Core Banking systems (like T24 or Flexcube). In a monolith, the entire business logic (CIF, CASA, Lending, GL, Payments...) runs in one massive application. This creates three compounding problems:
+**Microservices in banking** is the architectural pattern where a core banking system is broken into independently deployable, domain-owned services (CIF, Payments, Lending, Notifications) connected by an event bus instead of direct database calls. This replaces monolithic systems like T24 or Flexcube — where a single change to the Payments module requires redeploying the entire application and risks taking down unrelated services.
 
 - **High-risk deployments:** Modifying a small module requires redeploying the entire system. A patch to the Payments module can take down CIF.
 - **Inefficient scaling:** You cannot scale just the Payments module during peak loads without scaling everything else — including parts that don't need more capacity.

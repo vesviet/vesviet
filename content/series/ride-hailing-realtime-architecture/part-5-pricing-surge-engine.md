@@ -1,13 +1,17 @@
 ---
-title: "Part 5 — Surge Pricing: How Surge Rate Is Calculated in Real-Time Ride-Hailing Systems"
+title: "Surge Rate Explained: How Ride-Hailing Pricing Engines Calculate Surge Pricing"
 date: 2026-05-06T20:00:00+07:00
-lastmod: 2026-05-06T20:00:00+07:00
+lastmod: 2026-06-10T13:00:00+07:00
 draft: false
-description: "What is surge rate and how is it calculated? Deep-dive into the real-time pricing engine that balances ride-hailing supply and demand per H3 cell."
+description: "What is surge rate and how is it calculated? Deep-dive into the real-time surge pricing engine that balances ride-hailing supply and demand per H3 cell."
 weight: 6
 ---
 
+> **Series context:** This is Part 5 of the [Real-Time Ride-Hailing Architecture](/series/ride-hailing-realtime-architecture/) series. For location ingestion and geospatial indexing, start at [Part 1](/series/ride-hailing-realtime-architecture/part-1-location-ingestion/).
+
 ## What Is Surge Rate? (And How Is It Calculated?)
+
+**Surge rate** is the real-time price multiplier (e.g., 2.0×) applied by ride-hailing platforms when ride demand in a geographic zone exceeds available driver supply. It is recalculated every 30–60 seconds per H3 hexagon cell using a demand/supply ratio fed into a lookup table or ML model.
 
 {{< faq q="What is surge rate?" >}}
 Surge rate (also called surge pricing or surge multiplier) is the real-time price multiplier that ride-hailing platforms like Uber and Grab apply when demand for rides exceeds the available supply of drivers in a geographic zone. A surge rate of 2.0x means the rider pays twice the base fare.
@@ -261,7 +265,7 @@ GET surge:7:872a100d6ffffff → "3.2"
 
 ---
 
-## Frequently Asked Questions About Surge Rate
+## Surge Rate FAQ: Common Questions Answered
 
 **What is surge rate in ride-hailing?**
 Surge rate is the multiplier applied to a ride's base price during peak demand periods. A surge rate of 1.5x on a $10 base fare means the rider pays $15. The surge rate is calculated per geographic zone (H3 cell) and updated every 30–60 seconds.

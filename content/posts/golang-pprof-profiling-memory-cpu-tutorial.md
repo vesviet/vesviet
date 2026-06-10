@@ -1,10 +1,10 @@
 ---
-title: "Go pprof Tutorial: CPU & Memory Profiling in Production"
+title: "Go pprof in Kubernetes: Remote CPU & Memory Profiling Without Restarting Pods"
 slug: "golang-pprof-profiling-memory-cpu-tutorial"
 date: "2026-06-02T08:00:00+07:00"
-lastmod: "2026-06-02T08:00:00+07:00"
+lastmod: "2026-06-10T13:30:00+07:00"
 draft: false
-description: "Ultimate Go pprof tutorial for production. Learn to safely profile CPU, memory, block contention, and detect leaks with Go 1.26 experimental features."
+description: "Profile Go services in Kubernetes without restarting pods: kubectl port-forward, pprof heap and CPU capture, goroutine leak detection, and safe production exposure."
 ShowToc: true
 TocOpen: true
 categories:
@@ -81,6 +81,74 @@ Once exposed, you can capture a profile using the `go tool pprof` command from y
 # Capture a 30-second CPU profile and open the interactive web UI
 go tool pprof -http=:8080 http://localhost:6060/debug/pprof/profile?seconds=30
 ```
+
+---
+
+## Profiling Go Applications in Kubernetes (Without Restarting Pods)
+
+**The core challenge:** pprof endpoints run inside a Kubernetes pod on `localhost:6060`. To reach them from your machine, you cannot connect directly — you need `kubectl port-forward` to bridge the network. No pod restart required.
+
+### Step 1 — Find the Pod Name
+
+```bash
+# List pods and find the one you want to profile
+kubectl get pods -n production -l app=orders-service
+
+# Example output:
+# orders-service-7d9f4b8c6-xk9pz   1/1   Running   0   3h
+```
+
+### Step 2 — Open a Port-Forward Tunnel
+
+```bash
+# Forward pod port 6060 to your local machine
+# This does NOT restart the pod or affect production traffic
+kubectl port-forward pod/orders-service-7d9f4b8c6-xk9pz 6060:6060 -n production
+
+# Keep this terminal open. In a second terminal:
+go tool pprof -http=:8080 http://localhost:6060/debug/pprof/profile?seconds=30
+```
+
+> **Security note:** `port-forward` uses an authenticated Kubernetes API server tunnel. No inbound rule change is needed. Never add a `NodePort` or `LoadBalancer` service just to expose pprof — that is a critical security mistake.
+
+### Step 3 — Lock Down the pprof Port with a NetworkPolicy
+
+Even on `localhost:6060`, other pods in the same namespace can reach the pprof port via pod-to-pod networking. Add a Kubernetes `NetworkPolicy` to restrict access:
+
+```yaml
+# Allow pprof access only from pods with the "monitoring" label
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: restrict-pprof-access
+  namespace: production
+spec:
+  podSelector:
+    matchLabels:
+      app: orders-service
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          role: monitoring       # only observability pods may reach pprof
+    ports:
+    - protocol: TCP
+      port: 6060
+```
+
+### Step 4 — Automate Profile Capture on OOM or High CPU
+
+For recurring issues (OOM kills, CPU spikes at 03:00), manually running `kubectl port-forward` is too slow. The open-source **pprof-operator** watches for threshold-based alerts and automatically captures profiles:
+
+```bash
+# Install pprof-operator (Kubernetes Operator)
+kubectl apply -f https://github.com/josepdcs/kubectl-prof/releases/latest/download/install.yaml
+
+# Trigger a CPU profile remotely without port-forward:
+kubectl prof orders-service-7d9f4b8c6-xk9pz --lang go --type cpu
+```
+
+This is the production pattern used by teams running Go at scale on Kubernetes — profile on-demand, no pod disruption, no always-on overhead.
 
 ---
 

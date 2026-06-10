@@ -1,11 +1,11 @@
 ---
-title: "MySQL Horizontal Scaling: Vitess & GORM Sharding"
+title: "Vitess vs GORM Sharding: MySQL Write Scaling with Go"
 slug: "mysql-horizontal-scaling"
 date: "2026-06-01T15:10:00+07:00"
-lastmod: "2026-06-01T15:10:00+07:00"
+lastmod: "2026-06-10T14:00:00+07:00"
 draft: false
 mermaid: true
-canonical: "https://vesviet.com/posts/mysql-scaling-sharding-tidb-architecture/"
+canonical: "https://tanhdev.com/posts/mysql-horizontal-scaling/"
 categories:
   - "Database"
   - "Architecture"
@@ -17,7 +17,7 @@ tags:
   - "Sharding"
   - "Database Scaling"
   - "Golang"
-description: "A detailed guide on horizontal scaling solutions for MySQL. An in-depth analysis of Vitess architecture and how to implement GORM Sharding in Go applications."
+description: "Vitess vs GORM Sharding for MySQL write scaling in Go: middleware sharding with VReplication zero-downtime cutover vs. application-level sharding with ErrMissingShardingKey risks."
 ShowToc: true
 TocOpen: true
 ---

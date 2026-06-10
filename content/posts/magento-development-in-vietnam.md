@@ -4,10 +4,10 @@ slug: "magento-development-in-vietnam"
 aliases:
   - /posts/magento-development-in-vietnam-cost-capability-and-when-it-actually-fits/
 date: 2026-04-30T09:10:00+07:00
-lastmod: 2026-04-30T09:10:00+07:00
+lastmod: 2026-06-10T14:00:00+07:00
 draft: false
 tags: ["Magento", "Vietnam", "E-commerce", "Outsourcing", "Project Management", "Architecture"]
-description: "Project scoping guide for Magento development in Vietnam. Covers effort layers, evaluating proposals, surfacing hidden complexity, and delivery phases."
+description: "How to find and evaluate a Magento agency in Vietnam: effort layers for each project type, proposal red flags, hidden complexity, and delivery phase checklist."
 categories: ["Engineering", "Business"]
 ShowToc: true
 TocOpen: true

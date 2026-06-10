@@ -2,7 +2,7 @@
 title: "What's New in Argo CD 3.4 & 3.3: Cluster Pause & Upgrades"
 slug: "argo-cd-updates-2026"
 date: "2026-06-01T15:00:00+07:00"
-lastmod: "2026-06-01T15:00:00+07:00"
+lastmod: "2026-06-10T14:00:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -13,7 +13,7 @@ tags:
   - "Argo CD"
   - "CI/CD"
   - "Platform Engineering"
-description: "Discover the latest features in Argo CD v3.4 and v3.3 (2026). Analyze Cluster Pause Reconciliation, PreDelete Hooks, and critical breaking changes."
+description: "Argo CD v3.4 & v3.3 updates (2026): Cluster Pause, PreDelete Hooks, breaking SemVer change, and the June 2026 RC features — annotation filtering, Teams Workflow, and ApplicationSet UI."
 ShowToc: true
 TocOpen: true
 ---
@@ -120,8 +120,54 @@ Starting from version 3.4, the process of parsing Kubernetes version labels stri
 
 ---
 
+## ArgoCD v3.4 RC — June 2026 Latest Features
+
+Beyond the breaking SemVer change documented above, the **Argo CD v3.4 Release Candidate** (shipped June 2026) introduces three new improvements platform teams should know before upgrading.
+
+### 1. Annotation-Based Application Filtering
+
+The Application list view now supports **filtering by custom annotations**. Previously, teams managing hundreds of Applications in a single Argo CD instance could only filter by name, namespace, or label. Annotation-based filtering unlocks richer organizational schemes — for example, filtering by `owner=payments-team` or `environment=staging` without having to encode those values into labels.
+
+This is especially useful in large-scale multi-tenant GitOps setups where Application ownership is tracked separately from Kubernetes metadata.
+
+### 2. Microsoft Teams Workflow Notifications
+
+The Argo CD notification engine now supports **Microsoft Teams Workflows** as a notification channel. The previous Teams integration used the legacy "Incoming Webhook" connector, which Microsoft deprecated. Teams Workflows use Power Automate flows and are the recommended replacement.
+
+For teams already using Argo CD notifications with Slack or PagerDuty, no changes are required. Teams users must migrate their notifier configuration from the legacy webhook format to the new Workflows schema before the legacy connector is decommissioned.
+
+### 3. ApplicationSet UI (Beta)
+
+Active development is underway on a **dedicated UI for ApplicationSets**. Currently, ApplicationSet management requires direct YAML editing in Git or via `kubectl`. The forthcoming UI will allow teams to inspect, debug, and understand ApplicationSet generator outputs directly from the Argo CD web console — while Git remains the authoritative source of truth.
+
+This is targeted for stable release in Argo CD v3.5 (roadmap: late summer 2026).
+
+---
+
+## Beyond GitOps: Kargo and Event-Driven Delivery (2026 Trend)
+
+While Argo CD continues to dominate the GitOps landscape, a new tool called **Kargo** is gaining traction for teams that need sub-second deployment triggers without relying on polling intervals.
+
+**Standard GitOps (Argo CD) model:** Poll Git every 3 minutes → detect diff → sync cluster.
+
+**Event-driven model (Kargo):** Listen for image registry push events or CI system webhooks → trigger delivery pipeline instantly → apply to cluster.
+
+| Aspect | Argo CD | Kargo |
+|--------|---------|-------|
+| **Trigger model** | Pull/poll (Git) | Event-driven (push) |
+| **Source of truth** | Git repo | Promotion policies |
+| **Multi-stage rollouts** | Via ApplicationSets | Native (Warehouse → Stage → Prod) |
+| **Rollback** | Manual or auto-sync revert | Policy-defined |
+| **Best for** | Config management, large fleet | High-velocity feature delivery |
+
+Kargo is not a replacement for Argo CD — in practice, teams run both. Argo CD manages the cluster state (infrastructure, platform tooling), while Kargo handles the fast-moving application delivery pipeline.
+
+---
+
 ## Conclusion
 
 Argo CD 3.3 and 3.4 in 2026 mark a significant leap in maturity for this GitOps platform. From **Cluster Pause Reconciliation** to **PreDelete Hooks**, these features empower DevOps engineers to operate systems more safely and flexibly.
+
+The v3.4 RC additions — annotation filtering, Teams Workflow support, and the upcoming ApplicationSet UI — continue the trend toward enterprise-grade usability without sacrificing the Git-first philosophy.
 
 If you are preparing to upgrade, remember to double-check the SemVer conditions in your ApplicationSets to ensure a smooth transition.

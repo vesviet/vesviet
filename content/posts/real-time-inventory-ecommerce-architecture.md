@@ -1,10 +1,10 @@
 ---
-title: "Real-time Inventory E-commerce Architecture (Speed & Truth)"
+title: "Real-Time Inventory Synchronization: Kafka, CDC & Redis for E-commerce"
 slug: "real-time-inventory-ecommerce-architecture"
 date: "2026-06-08T14:35:00+07:00"
-lastmod: "2026-06-08T14:35:00+07:00"
+lastmod: "2026-06-10T13:30:00+07:00"
 draft: false
-description: "Architect a flash-sale resilient real-time e-commerce inventory system using Kafka, Debezium CDC, and idempotent Redis Cluster Lua scripts."
+description: "How to architect real-time inventory synchronization in e-commerce: Kafka event streaming, Debezium CDC, and idempotent Redis Lua scripts to prevent overselling."
 ShowToc: true
 TocOpen: true
 categories:
@@ -20,7 +20,11 @@ tags:
 mermaid: true
 ---
 
-Handling e-commerce inventory during a flash sale—where thousands of users attempt to purchase a highly contested SKU simultaneously—is a pinnacle architectural challenge. Traditional synchronous database updates collapse under lock contention.
+## What Is Real-Time Inventory Synchronization?
+
+**Real-time inventory synchronization** is the process of propagating stock count changes from the system of record (database) to all sales channels — web storefront, mobile app, WMS, ERP — in sub-second time. Instead of batch ETL jobs that run every hour, a CDC + Kafka pipeline streams every committed stock change as an event, eliminating overselling and stale stock displays.
+
+Handling this during a flash sale — where thousands of users attempt to purchase a highly contested SKU simultaneously — is a pinnacle architectural challenge. Traditional synchronous database updates collapse under lock contention.
 
 To guarantee accuracy without sacrificing sub-millisecond response times, modern 2026 architectures adopt the **Speed & Truth Model** using PostgreSQL, Apache Kafka, and Redis.
 
@@ -126,6 +130,18 @@ Avoid growing infinite Redis sets. By saving the `idempotent` key with a TTL (`E
 If Redis completely fails and restarts empty, a bootstrap script reads the initial ledger quantities from Postgres minus pending orders, reconstructing the real-time cache before traffic resumes.
 
 ## FAQ
+
+{{< faq q="How do you synchronize inventory in real-time?" >}}
+Real-time inventory synchronization uses Change Data Capture (CDC) to read committed database transactions directly from the WAL (Write-Ahead Log) and stream them as events to a message broker like Apache Kafka. A downstream consumer (Go microservice) consumes these events and updates the read cache (Redis) atomically. This pipeline achieves sub-100ms propagation from database write to cache update without any polling or batch jobs.
+{{< /faq >}}
+
+{{< faq q="What is the difference between batch inventory sync and real-time inventory synchronization?" >}}
+Batch sync runs on a schedule (hourly, nightly) and reads the full inventory table or a delta snapshot. It introduces lag of minutes to hours — during which overselling can occur. Real-time synchronization using CDC streams each individual change as it is committed, reducing propagation lag to milliseconds and eliminating the overselling window during high-demand events like flash sales.
+{{< /faq >}}
+
+{{< faq q="How do you prevent overselling with real-time inventory synchronization?" >}}
+Overselling prevention requires two layers: (1) atomic stock deduction in Redis using Lua scripts that check and decrement in a single operation with an idempotency token to handle Kafka at-least-once delivery; (2) a final guard in PostgreSQL using optimistic locking or a `CHECK (stock >= 0)` constraint to reject any write that would push stock below zero. Redis provides the fast path; PostgreSQL provides the truth.
+{{< /faq >}}
 
 {{< faq q="Why not use a Transactional Outbox pattern instead of Debezium CDC?" >}}
 The Transactional Outbox pattern is excellent and easier to implement, but it adds application-level overhead as developers must explicitly write to an `outbox` table within the same transaction. Debezium CDC is zero-code at the application layer and reads database log buffers directly, offering superior performance at scale.
