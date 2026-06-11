@@ -97,7 +97,7 @@
 
     Promise.all([
       loadScript('https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js'),
-      import('https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs')
+      import('https://cdn.jsdelivr.net/npm/mermaid@10.9.3/dist/mermaid.esm.min.mjs')
     ]).then(([_, mermaidModule]) => {
         const mermaid = mermaidModule.default;
         mermaid.initialize({ 
@@ -189,29 +189,7 @@
   });
 </script>
 
-
-{{- $faqs := .Store.Get "faqs" -}}
-{{- if $faqs -}}
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {{- range $i, $faq := $faqs -}}
-    {{- if $i -}},{{- end -}}
-    {
-      "@type": "Question",
-      "name": {{ $faq.question | jsonify }},
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": {{ $faq.answer | jsonify | safeJS }}
-      }
-    }
-    {{- end -}}
-  ]
-}
-</script>
-{{- end -}}
+{{- /* FAQPage JSON-LD is emitted once by extend_head.html — do not duplicate here. */}}
 
 {{ partial "cookie_banner.html" . }}
 

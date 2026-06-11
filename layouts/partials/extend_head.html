@@ -276,7 +276,7 @@
 {{- if .IsHome }}
   {{- with site.Params.profileMode }}
     {{- if .imageUrl }}
-      <link rel="preload" as="image" href="{{ .imageUrl | absURL }}">
+      <link rel="preload" as="image" href="{{ .imageUrl | absURL }}" fetchpriority="high">
     {{- end }}
   {{- end }}
 {{- else if .IsPage }}
@@ -288,10 +288,10 @@
     {{- if $img }}
       {{- $processableFormats := (slice "jpg" "jpeg" "png" "tif" "bmp" "gif" "webp") -}}
       {{- if in $processableFormats $img.MediaType.SubType }}
-        <link rel="preload" as="image" href="{{ $img.Permalink }}">
+        <link rel="preload" as="image" href="{{ $img.Permalink }}" fetchpriority="high">
       {{- end }}
     {{- else }}
-      <link rel="preload" as="image" href="{{ .Params.cover.image | absURL }}">
+      <link rel="preload" as="image" href="{{ .Params.cover.image | absURL }}" fetchpriority="high">
     {{- end }}
   {{- end }}
 {{- end }}

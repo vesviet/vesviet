@@ -1,6 +1,8 @@
 ---
 title: "Mastering High-Concurrency Systems in Production"
 description: "A comprehensive guide to building highly scalable, distributed systems using Golang. Learn about C10M, Caching, Rate Limiting, Sharding, and Distributed Locking."
+date: 2026-06-09T10:00:00+07:00
+lastmod: 2026-06-11T10:00:00+07:00
 draft: false
 weight: 140
 slug: "high-concurrency-systems"

@@ -1,9 +1,10 @@
 ---
-title: "Surge Rate Explained: How Ride-Hailing Pricing Engines Calculate Surge Pricing"
+title: "Surge Pricing Algorithm: How Ride-Hailing Engines Calculate Surge Rate in Real Time"
+slug: "part-5-pricing-surge-engine"
 date: 2026-05-06T20:00:00+07:00
-lastmod: 2026-06-10T13:00:00+07:00
+lastmod: 2026-06-11T20:00:00+07:00
 draft: false
-description: "What is surge rate and how is it calculated? Deep-dive into the real-time surge pricing engine that balances ride-hailing supply and demand per H3 cell."
+description: "How does surge pricing work? A technical deep-dive into the surge pricing algorithm used by Uber and Grab: H3 geofencing, Kafka + Flink supply-demand aggregation, Redis TTL, and ML-based multiplier calculation — with production Go code."
 weight: 6
 ---
 

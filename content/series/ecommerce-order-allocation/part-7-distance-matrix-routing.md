@@ -1,15 +1,18 @@
 ---
-title: "GraphHopper Distance Matrix vs OSRM vs Haversine: Open-Source Route Optimization"
+title: "GraphHopper Distance Matrix: Self-Host OSRM vs Haversine for Route Optimization"
+slug: "part-7-distance-matrix-routing"
 date: 2026-05-06T20:30:00+07:00
-lastmod: 2026-06-10T13:00:00+07:00
+lastmod: 2026-06-11T20:00:00+07:00
 draft: false
-description: "Compare GraphHopper distance matrix, OSRM Table API, and Haversine for e-commerce routing. When to self-host vs use a cloud API — with working Python code."
+description: "GraphHopper distance matrix vs OSRM Table API vs Haversine: which open-source routing engine to self-host for e-commerce delivery optimization? Includes Docker setup, Python code, H3 caching strategy, and $510/day Google Maps cost breakdown."
 weight: 8
 ---
 
 > **Series context:** This is Part 7 of the [E-commerce Order Allocation](/series/ecommerce-order-allocation/) series. The distance matrix built here feeds directly into the OR-Tools VRP solver in [Part 6](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/).
 
 ## The Invisible yet Most Expensive Bottleneck in E-commerce Routing
+
+**Answer-first:** For 1 warehouse + 100 delivery stops, you need 10,201 pairwise distances. Self-hosting **GraphHopper** or **OSRM** on a $20/month VPS delivers this in under 50ms per batch — completely free. Using Google Maps Distance Matrix API for the same workload costs **$510/day**. This guide shows you exactly when to use which tool, with Docker setup and production Python code.
 
 For any VRP (Vehicle Routing Problem) solver to find the optimal delivery route, it needs to know the exact cost between every pair of stops — this is the **distance matrix**. For 1 warehouse + 100 orders (101 points), that is `101 × 101 = 10,201` pairs. Choosing the wrong tool for this step can cost **$510/day** in API fees or cause multi-second latency spikes under load.
 

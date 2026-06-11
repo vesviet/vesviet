@@ -170,9 +170,11 @@
       }
     });
 
-    // Close when tapping outside
-    document.addEventListener('click', () => {
-      dropdowns.forEach(el => el.classList.remove('open'));
+    // Close when tapping outside — but not when tapping inside an open dropdown
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#menu .dropdown')) {
+        dropdowns.forEach(el => el.classList.remove('open'));
+      }
     });
   });
 </script>

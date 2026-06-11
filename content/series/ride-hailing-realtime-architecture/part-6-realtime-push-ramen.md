@@ -1,13 +1,16 @@
 ---
-title: "Part 6 — RAMEN & Real-time Communication: Pushing Instant Notifications to Millions of Devices"
+title: "Uber RAMEN: How Ride-Hailing Apps Push Real-Time Notifications to Millions of Devices"
+slug: "part-6-realtime-push-ramen"
 date: 2026-05-06T20:00:00+07:00
-lastmod: 2026-05-06T20:00:00+07:00
+lastmod: 2026-06-11T20:00:00+07:00
 draft: false
-description: "RAMEN (Real-time Asynchronous Messaging Network) — Uber's push notification system maintains millions of live connections, ensuring ride offers are delivered to drivers in milliseconds."
+description: "How does Uber push ride offers to millions of driver phones in under 100ms? Inside RAMEN (Real-time Asynchronous Messaging Network): gRPC over QUIC, Apache Helix sharding, Cassandra+Redis at-least-once delivery, and connection draining for zero-downtime deploys."
 weight: 7
 ---
 
 ## The Problem: Pushing Instant Notifications to Millions of Devices
+
+**Answer-first:** Uber's RAMEN system maintains persistent gRPC bidirectional streams to every active driver app. When a match is made, the ride offer travels from the matching engine to the driver's phone in under 100ms — without polling. This is how millions of connections are held open simultaneously without crashing the backend.
 
 When DISCO decides to match you with Driver John Doe, the system must:
 1. Send the ride offer to **exactly** John Doe's phone (out of millions of connected phones).

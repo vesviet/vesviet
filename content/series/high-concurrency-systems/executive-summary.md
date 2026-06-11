@@ -3,6 +3,7 @@ title: "The Reality of C10M: Surviving Extreme Traffic — Exec Summary"
 date: 2026-06-09T10:00:00+07:00
 lastmod: 2026-06-09T10:00:00+07:00
 draft: false
+slug: "executive-summary"
 description: "An overview for Tech Leads & Architects: Why traditional scaling fails at millions of requests and how to build high-concurrency systems using Golang."
 ShowToc: true
 TocOpen: true

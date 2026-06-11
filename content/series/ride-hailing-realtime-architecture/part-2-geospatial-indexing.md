@@ -1,13 +1,16 @@
 ---
-title: "Part 2 — Geospatial Indexing: H3, S2 Geometry & Redis GEO"
+title: "H3 Geospatial Indexing: How Uber Finds Nearby Drivers with Hexagonal Spatial Index"
+slug: "part-2-geospatial-indexing"
 date: 2026-05-06T20:00:00+07:00
-lastmod: 2026-05-06T20:00:00+07:00
+lastmod: 2026-06-11T20:00:00+07:00
 draft: false
-description: "Uber divides the Earth's map into billions of hexagons using the H3 algorithm. Discover how the system finds the nearest driver in the blink of an eye among millions of moving drivers."
+description: "How does Uber find the nearest driver in milliseconds among millions? A deep-dive into H3 hexagonal geospatial indexing, S2 Geometry, Redis GEO vs. Redis SET+H3, and Go implementation — including K-Ring search, Consistent Hashing, and why hexagons beat squares."
 weight: 3
 ---
 
 ## The Problem: Finding a Needle in a Haystack
+
+**Answer-first:** Uber and Grab find the nearest available driver in under 100ms by dividing the Earth's surface into hexagonal cells (H3 index at Resolution 8, each ~0.74 km²). Instead of calculating distance to every driver, they look up only the 7 cells nearest to the rider — reducing millions of comparisons to dozens.
 
 When you tap "Book" on Grab, the system must find the most suitable driver within a radius of a few kilometers. But the system is tracking millions of drivers simultaneously. The naive approach — calculating the distance from you to **every** driver — is impossible:
 

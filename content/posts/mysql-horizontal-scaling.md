@@ -1,8 +1,8 @@
 ---
-title: "Vitess vs GORM Sharding: MySQL Write Scaling with Go"
+title: "Vitess vs GORM Sharding: MySQL Write Scaling in Go (ErrMissingShardingKey Deep-Dive)"
 slug: "mysql-horizontal-scaling"
 date: "2026-06-01T15:10:00+07:00"
-lastmod: "2026-06-10T16:00:00+07:00"
+lastmod: "2026-06-11T20:00:00+07:00"
 draft: false
 mermaid: true
 canonical: "https://tanhdev.com/posts/mysql-horizontal-scaling/"
@@ -17,7 +17,7 @@ tags:
   - "Sharding"
   - "Database Scaling"
   - "Golang"
-description: "Vitess vs GORM Sharding for MySQL write scaling: VReplication zero-downtime vs. application-level sharding — ErrMissingShardingKey tradeoffs in Go."
+description: "Vitess vs GORM Sharding for MySQL write scaling in Go: how VTGate routes queries, how GORM Sharding parses SQL AST, the ErrMissingShardingKey pitfall, and when to choose middleware vs application-level sharding."
 ShowToc: true
 TocOpen: true
 ---
@@ -134,11 +134,11 @@ If your project is written exclusively in Go and only has one or two historical 
 
 ## FAQ
 
-{{< faq q="What is mysql horizontal scaling?" >}}
-**mysql horizontal scaling** is a critical architectural pattern or system discussed in this guide. Vitess vs GORM Sharding for MySQL write scaling: VReplication zero-downtime vs. application-level sharding — ErrMissingShardingKey tradeoffs in Go.
+{{< faq q="What is MySQL horizontal scaling?" >}}
+**MySQL horizontal scaling** means distributing data across multiple physical MySQL servers (sharding) to handle write throughput that exceeds a single machine's capacity. Unlike read replicas (which duplicate data for read throughput), sharding splits rows across servers based on a shard key. There are two Go-friendly approaches: **Vitess** (middleware layer — transparent to application) and **GORM Sharding** (application-level — requires explicit shard key in every query).
 {{< /faq >}}
 
-{{< faq q="How does mysql horizontal scaling compare to traditional alternatives?" >}}
-Unlike legacy systems, **mysql horizontal scaling** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< faq q="When should I use Vitess vs GORM Sharding?" >}}
+Use **GORM Sharding** when: your team is Go-only, you have 1-2 tables to shard, and budget is tight (zero infrastructure overhead). Use **Vitess** when: you need zero-downtime resharding (VReplication), have a polyglot stack, or need the shard routing fully transparent to the application. Vitess is the right long-term choice for platform teams; GORM Sharding is the right starting point for Go product teams.
 {{< /faq >}}
 
