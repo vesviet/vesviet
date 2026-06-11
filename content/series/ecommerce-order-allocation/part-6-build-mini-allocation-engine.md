@@ -1,13 +1,16 @@
 ---
-title: "Part 6 — Hands-on: Building a Mini Allocation Engine with Google OR-Tools"
+title: "Google OR-Tools Vehicle Routing: Build a Delivery Allocation Engine in Python"
+slug: "part-6-build-mini-allocation-engine"
 date: 2026-05-06T20:30:00+07:00
-lastmod: 2026-05-06T20:30:00+07:00
+lastmod: 2026-06-11T20:00:00+07:00
 draft: false
-description: "A comprehensive hands-on project — building a professional order allocation system using Python and Google OR-Tools to solve Min/Max Capacity and Priority constraints."
+description: "Build a production delivery allocation engine with Google OR-Tools in Python: Vehicle Routing Problem (VRP) with capacity constraints, EXPRESS order priority via penalties, Min-Capacity enforcement, and FastAPI microservice packaging — complete code walkthrough."
 weight: 7
 ---
 
 ## Problem Statement
+
+**Answer-first:** This guide builds a complete Vehicle Routing Problem (VRP) allocation engine using Google OR-Tools in Python. The engine assigns delivery orders to drivers respecting min/max capacity constraints, guarantees EXPRESS orders are delivered first (1,000,000× penalty), and minimizes total fleet distance — wrapped in a FastAPI microservice.
 
 You are a software engineer at a logistics company. Every day, the warehouse dispatches hundreds of orders. You need to allocate these orders to a fleet of drivers such that:
 

@@ -1,9 +1,10 @@
 ---
-title: "Part 3 — Event Streaming: The Apache Kafka & Flink Backbone"
+title: "Apache Kafka & Flink in Ride-Hailing: Event Streaming Architecture at Uber Scale"
+slug: "part-3-event-streaming-kafka"
 date: 2026-05-06T20:00:00+07:00
-lastmod: 2026-05-06T20:00:00+07:00
+lastmod: 2026-06-11T20:00:00+07:00
 draft: false
-description: "Apache Kafka is the backbone that processes millions of events per second at Uber and Grab. Learn how to design topics, partitioning, and stream processing with Flink for real-time data."
+description: "How Uber and Grab process millions of GPS and ride events per second with Apache Kafka: topic design, partition strategy, consumer groups, Apache Flink stream processing for surge pricing, and exactly-once semantics in Go."
 weight: 4
 ---
 

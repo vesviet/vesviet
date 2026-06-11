@@ -1,13 +1,16 @@
 ---
-title: "Part 1 — Location Ingestion: Collecting Millions of GPS Coordinates Per Second"
+title: "GPS Location Ingestion at Scale: gRPC Streaming, MQTT & Kalman Filter in Ride-Hailing"
+slug: "part-1-location-ingestion"
 date: 2026-05-06T20:00:00+07:00
-lastmod: 2026-05-06T20:00:00+07:00
+lastmod: 2026-06-11T20:00:00+07:00
 draft: false
-description: "Why HTTP REST isn't good enough for continuous GPS tracking, and how Uber/Grab use MQTT, gRPC Streams, and Kalman Filters to collect driver locations without draining batteries."
+description: "How Uber and Grab ingest 1.25 million GPS coordinates per second from 5 million drivers: gRPC bidirectional streaming vs MQTT, Kalman Filter noise reduction, GPS batching, adaptive frequency, and Kafka pipeline architecture — with Protobuf schema."
 weight: 2
 ---
 
 ## The Challenge: Millions of Drivers, Every 4 Seconds
+
+**Answer-first:** Uber and Grab handle 1.25 million GPS write operations per second from ~5 million active drivers. HTTP REST fails at this scale due to per-request TCP+TLS handshake overhead. The solution is persistent connections (gRPC streams or MQTT) with Protobuf serialization, Kalman Filter noise reduction, and batched coordinate uploads — cutting network calls by 67% while maintaining sub-200ms end-to-end latency.
 
 Grab has approximately **5 million drivers** operating in Southeast Asia. Uber has over **5 million drivers** globally. If every driver sends a GPS coordinate every 4 seconds, the system must receive:
 

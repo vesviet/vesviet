@@ -1,9 +1,10 @@
 ---
-title: "Part 1 — The Double-Entry Ledger Foundation"
+title: "Double-Entry Bookkeeping in Software: Core Banking Ledger Foundation for Developers"
+slug: "part-1-double-entry-ledger"
 date: 2026-05-06T18:00:00+07:00
-lastmod: 2026-06-10T16:00:00+07:00
+lastmod: 2026-06-11T20:00:00+07:00
 draft: false
-description: "Master the double-entry ledger before writing Core Banking code: debit/credit rules, T-accounts, and the balance constraint all financial systems require."
+description: "Double-entry bookkeeping for software engineers: debit/credit rules, T-accounts, chart of accounts, the balance constraint, and how financial core banking systems enforce ACID consistency at the ledger layer — with Go code examples."
 weight: 2
 ---
 
