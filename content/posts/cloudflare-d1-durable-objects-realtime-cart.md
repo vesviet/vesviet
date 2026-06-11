@@ -22,6 +22,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** Build a real-time shopping cart using Cloudflare D1, Durable Objects, and Workers. Full schema, TypeScript code, and conflict-free concurrent updates.
+
 The traditional shopping cart architecture is a familiar set of tradeoffs: Redis for session storage, PostgreSQL for order data, and a backend API tier that coordinates between them. It works, but it introduces latency proportional to the distance between the user and your datacenter, requires operational overhead for Redis cluster management, and struggles with globally concurrent cart edits from the same user across multiple devices.
 
 Cloudflare Workers + D1 + Durable Objects offer a fundamentally different model: edge-native computation that runs in 300+ locations worldwide, a serverless SQLite database replicated globally (D1), and Durable Objects that provide strongly consistent real-time state for each cart — without a single coordinating server.

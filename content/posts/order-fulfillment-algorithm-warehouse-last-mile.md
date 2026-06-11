@@ -22,6 +22,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** How e-commerce giants decide which warehouse fulfills your order. Covers Amazon CONDOR, VRP solvers, split shipment logic, and last-mile routing.
+
 When you place an order on Amazon at 11:47 PM and it arrives at your door the next morning, every step of that delivery was orchestrated by a set of algorithms making real-time decisions across a network of hundreds of warehouses, thousands of drivers, and millions of items in inventory. None of it happens by chance, and none of it is primarily a human decision.
 
 This post covers the six-step algorithmic decision chain that transforms a confirmed order into a physical package at your door: from inventory availability checks and warehouse selection, through Amazon's CONDOR constraint optimizer and split shipment logic, to the vehicle routing problem solvers that plan the last mile.

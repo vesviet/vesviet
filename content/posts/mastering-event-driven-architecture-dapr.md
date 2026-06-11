@@ -12,6 +12,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** Decouple a 21+ microservice ecosystem using Event-Driven Architecture. Ensure data consistency via Sagas, Dead Letter Queues, and Idempotent handlers.
+
 In my previous post, we explored how abandoning monolithic architecture in favor of strict **Domain-Driven Design (DDD)** bounded contexts allowed an e-commerce platform to scale beyond 10,000+ orders per day. However, splitting one big database into 20+ isolated Postgres databases introduces a terrifying new problem: **How do we maintain data consistency across disconnected services?**
 
 The answer is **Event-Driven Architecture (EDA)**. Rather than chaining blocking synchronous HTTP calls across the network — which guarantees a cascading failure if a single service is down — each microservice independently broadcasts out-of-band "Events" through a centralized broker. Services are decoupled from each other's availability. A brief outage in the Notification service does not cause a checkout failure.
@@ -475,3 +478,14 @@ The patterns in this post — the Transactional Outbox, idempotent consumers, DL
 - For the observability layer — how to propagate W3C trace context across Kafka topics, configure tail-based sampling in OTel Collector, and trace gRPC calls between Dapr sidecars — see [Go Microservices Distributed Tracing Architecture](/posts/go-microservices-distributed-tracing-architecture).
 
 {{< author-cta >}}
+
+## FAQ
+
+{{< faq q="What is Event-Driven?" >}}
+**Event-Driven** is a critical architectural pattern or system discussed in this guide. Decouple a 21+ microservice ecosystem using Event-Driven Architecture. Ensure data consistency via Sagas, Dead Letter Queues, and Idempotent handlers.
+{{< /faq >}}
+
+{{< faq q="How does Event-Driven compare to traditional alternatives?" >}}
+Unlike legacy systems, **Event-Driven** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< /faq >}}
+

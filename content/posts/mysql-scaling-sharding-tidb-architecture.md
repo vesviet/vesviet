@@ -20,6 +20,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** Replace MySQL manual sharding with TiDB: TiKV, Raft consensus, Percolator ACID, TiFlash HTAP, and a step-by-step DM shard merge guide.
+
 Scaling a relational database is one of the most demanding challenges in system design. As applications grow from thousands to millions of active users, the database ceases to be a simple storage engine and becomes the primary bottleneck of the entire system architecture. 
 
 In this deep dive, we will explore the architectural progression of scaling MySQL—beginning with replication topologies, stepping through the complexities and operational hazards of manual database sharding (including proxy middleware like Vitess), and evaluating NewSQL alternatives, specifically the distributed architecture of TiDB.
@@ -30,7 +33,7 @@ In this deep dive, we will explore the architectural progression of scaling MySQ
 
 **Replacing MySQL sharding** means migrating from a setup where the application manually routes queries to multiple MySQL instances (based on a shard key like `user_id % 4`) to a single TiDB cluster that auto-partitions data internally using Raft Regions — and exposes one standard MySQL connection string to the application.
 
-Most scaling journeys start with a single primary instance handling both read and write operations. When read volume saturates the CPU or disk bandwidth, the standard mitigation is to implement a Primary-Replica replication topology.
+Most scaling journeys start with a single primary instance handling both read and write operations. Before jumping to Sharding, it is highly recommended to review the basic strategies in our [MySQL Scalability Guide](/posts/mysql-scalability-guide). When read volume saturates the CPU or disk bandwidth, the standard mitigation is to implement a Primary-Replica replication topology.
 
 ```mermaid
 flowchart TD

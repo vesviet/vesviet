@@ -23,6 +23,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** How banks replace monolithic cores (Temenos, Finacle) with composable banking using Go microservices, Saga orchestration, NewSQL ledgers, and Strangler Fig.
+
 Legacy core banking systems were designed in a different era. Temenos T24, Finacle, and Flexcube shared one defining assumption: the bank's entire product catalogue — deposits, lending, payments, trade finance — would live inside a single, tightly coupled application and a single, shared database. That assumption held when banking moved at human speed. It breaks completely when product releases need to go from months to days, when a single fraud engine update must not risk a payments outage, and when engineers on a COBOL codebase are retiring faster than they can be replaced.
 
 Composable banking replaces that monolith with a network of independent, purpose-built service components. This post is a deep engineering guide to what that actually means in Go microservices terms: ledger concurrency patterns, event-driven Saga orchestration, BaaS API idempotency, ISO 20022 message flows, and a step-by-step Strangler Fig migration strategy.

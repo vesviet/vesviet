@@ -22,6 +22,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** Two paths to Cloudflare: building a full-stack edge site with Astro and putting WordPress behind Cloudflare CDN. Real config, costs, and gotchas.
+
 Running a content site on a traditional VPS or a managed Node.js host is fine until it isn't. You pay for compute that sits idle 95% of the time, you manage SSL renewals, you worry about cold starts, and you watch your Lighthouse score suffer because your origin is in Singapore while your readers are in Frankfurt.
 
 Cloudflare's edge stack solves all of this. This post covers two paths: building a greenfield site with Astro on Cloudflare's full edge stack — Workers, R2, D1, Pagefind — and putting an existing WordPress site behind Cloudflare's CDN without migrating anything. Both approaches, real config, and the tradeoffs that matter.
@@ -564,3 +567,14 @@ For a content site where performance, cost, and operational simplicity matter mo
 - [GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/) — when your stack grows beyond Cloudflare Workers, this is the deployment pipeline to graduate to.
 
 {{< author-cta >}}
+
+## FAQ
+
+{{< faq q="What is deploying astro on cloudflare full stack edge architecture?" >}}
+**deploying astro on cloudflare full stack edge architecture** is a critical architectural pattern or system discussed in this guide. Two paths to Cloudflare: building a full-stack edge site with Astro and putting WordPress behind Cloudflare CDN. Real config, costs, and gotchas.
+{{< /faq >}}
+
+{{< faq q="How does deploying astro on cloudflare full stack edge architecture compare to traditional alternatives?" >}}
+Unlike legacy systems, **deploying astro on cloudflare full stack edge architecture** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< /faq >}}
+

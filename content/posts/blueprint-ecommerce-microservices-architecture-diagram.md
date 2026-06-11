@@ -12,6 +12,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** Complete architectural blueprint of a Go 21-service e-commerce platform. Covers domain boundaries, traffic flow, and event-driven patterns.
+
 When transitioning from a monolithic platform to a distributed microservice setup, the hardest question isn't "How do we write the code?" — it's "How do these moving parts talk to each other safely, and why is each boundary drawn exactly where it is?"
 
 This post is the architectural anchor for the full composable commerce series. It presents the complete system blueprint and explains the reasoning behind each domain boundary. For deep-dives into specific layers, each section links to the dedicated post in the series.
@@ -215,3 +218,14 @@ For the full argument on when this complexity is justified — and when it isn't
 | [Magento to Microservices: How](/posts/moving-from-magento-to-microservices/) | 3-phase Strangler Fig, Debezium CDC, bidirectional sync |
 
 {{< author-cta >}}
+
+## FAQ
+
+{{< faq q="What is System Architecture?" >}}
+**System Architecture** is a critical architectural pattern or system discussed in this guide. Complete architectural blueprint of a Go 21-service e-commerce platform. Covers domain boundaries, traffic flow, and event-driven patterns.
+{{< /faq >}}
+
+{{< faq q="How does System Architecture compare to traditional alternatives?" >}}
+Unlike legacy systems, **System Architecture** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< /faq >}}
+

@@ -23,6 +23,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** How to safely profile CPU, memory, and goroutines in Go services running in Kubernetes using kubectl port-forward, pprof, and Pyroscope.
+
 You've instrumented your Go service with `net/http/pprof`, run `go tool pprof` locally against the development binary, and spotted the hot path in your flame graph. Then you deploy to Kubernetes and the bottleneck disappears — because the workload profile in Kubernetes differs from local testing (different request mix, connection pool pressure, GC behavior under actual memory pressure, scheduler interference from co-located pods).
 
 The production performance profile is the one that matters. **Go pprof Kubernetes remote profiling** is the practice of capturing real profiles from live pods — but `localhost:6060/debug/pprof` doesn't work against a pod running inside a Kubernetes cluster. You need a set of practical techniques for safely reaching the pprof HTTP endpoint of a specific pod, capturing profiles under real production load, and integrating continuous profiling without the operational overhead of manual profiling sessions.

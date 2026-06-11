@@ -22,6 +22,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** Learn how to detect, diagnose, and fix goroutine leaks in production Go microservices using pprof, goleak, and the new Go 1.26 goroutineleak profile.
+
 A Kubernetes pod abruptly restarts with exit code 137. The memory metrics dashboard shows a slow, perfectly linear staircase pattern stretching over three days. There are no panic logs in stdout, no database errors, and no abnormal CPU spikes. Just a slow, silent OOM (Out Of Memory) death.
 
 When Kubernetes terminates a pod due to memory exhaustion (OOM exit code 137), GitOps deployment tools like ArgoCD can trigger rollbacks or infinite restart loops, causing cascading cluster instability. Read our guide on [GitOps at scale with Kubernetes and ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/) to see how infrastructure triggers these events. More often than not, the culprit behind this behavior in Go services is a **goroutine leak**.

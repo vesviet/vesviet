@@ -22,6 +22,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** Step-by-step Go code for Orchestrated Saga using Dapr Workflow: durable state, compensating transactions, and banking-grade consistency.
+
 Most Go developers building microservices know the Choreography Saga pattern: service A emits an event, service B reacts, service C reacts to B, and so on. If step C fails, services emit "compensation" events in reverse order. The pattern works elegantly for simple flows, but breaks down as the number of steps grows: debugging a failed saga requires tracing events across five message broker topics, and implementing compensation logic requires every service to understand the full saga's state.
 
 Dapr Workflow offers a different model: **Orchestrated Saga**. A single orchestrator function owns the entire transaction lifecycle, calls each step explicitly, and manages compensation in a single, readable Go function. The orchestrator is **durable** — it survives process restarts without losing its position in the flow.

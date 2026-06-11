@@ -23,6 +23,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** A clear decision framework for AI engineers: when to fine-tune (LoRA/QLoRA), when to prompt-engineer, and when RAG is the right answer instead.
+
 Three engineers on the same team are trying to build the same thing: a customer support assistant that answers questions in the company's specific support style, using terminology from their product documentation. One engineer says "just write a better system prompt." Another says "we need to fine-tune a model." The third says "this is clearly a RAG problem."
 
 All three are partially right, and all three will be partially wrong depending on the specific requirement. The gap between "prompt engineering," "RAG," and "fine-tuning" is not just technical — it is a gap in understanding what each approach *actually changes* in the model.

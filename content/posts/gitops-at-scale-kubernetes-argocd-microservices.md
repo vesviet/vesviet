@@ -12,6 +12,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** Why kubectl apply is dangerous. Learn how to automate a 21-service Go platform using ArgoCD App-of-Apps, Kustomize, and git revert rollbacks.
+
 Building 21 well-architected Go microservices is only half the battle. If your deployment process relies on an engineer running `kubectl apply` from their laptop on a Friday afternoon, you haven't built an enterprise platform — you've built a ticking time bomb.
 
 When designing this composable e-commerce ecosystem, we made one hard architectural rule from day one: **no human touches the production cluster directly.** Everything flows through Git. ArgoCD enforces it.
@@ -327,3 +330,14 @@ The investment pays off the first time you hit a bad production deploy at 2am. I
 - [MySQL Scaling: Replication, Sharding & TiDB](/posts/mysql-scaling-sharding-tidb-architecture/) — scaling the databases that these Kubernetes-managed services depend on.
 
 {{< author-cta >}}
+
+## FAQ
+
+{{< faq q="What is GitOps?" >}}
+**GitOps** is a critical architectural pattern or system discussed in this guide. Why kubectl apply is dangerous. Learn how to automate a 21-service Go platform using ArgoCD App-of-Apps, Kustomize, and git revert rollbacks.
+{{< /faq >}}
+
+{{< faq q="How does GitOps compare to traditional alternatives?" >}}
+Unlike legacy systems, **GitOps** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< /faq >}}
+

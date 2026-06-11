@@ -18,6 +18,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** Discover what vibe coding is, why AI prototypes hit a Production Wall, and why AI code review is a critical skill for modern software engineers.
+
 In February 2025, Andrej Karpathy, former Tesla AI Lead and OpenAI co-founder, tweeted a phrase that would define a new paradigm in software development: 
 
 > *"There's a new kind of coding I call 'vibe coding', where you fully give in to the vibes, embrace exponentials, and forget that the code even exists."*

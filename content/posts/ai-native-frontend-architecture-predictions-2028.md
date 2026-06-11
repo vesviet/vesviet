@@ -11,7 +11,10 @@ ShowToc: true
 TocOpen: true
 ---
 
-I've been designing AI-Native Frontend systems for the past year — specifically around Generative UI, the Model Context Protocol, and Astro's Island Architecture. That's a short window, but long enough to observe structural shifts that are not yet visible in mainstream discourse.
+
+**Answer-first:** 10 honest predictions for AI-Native Frontend Architecture by 2028: Component Registries, MCP contracts, streaming transports, and career impacts.
+
+I've been designing AI-Native Frontend systems for the past year — specifically around [Generative UI](/posts/generative-ui-with-mcp-ai-native-frontend), the Model Context Protocol, and Astro's Island Architecture. That's a short window, but long enough to observe structural shifts that are not yet visible in mainstream discourse.
 
 This is not a hype piece. Each prediction includes the strongest counterargument I can make against myself. And where I have real production numbers, I use them.
 
@@ -108,7 +111,7 @@ By 2028, new AI-Native Frontend projects default to Astro + Svelte for the rende
 
 By 2027, hiring for "Frontend Developer" without specifying which role is like hiring for "Engineer" without specifying backend or frontend.
 
-**The counterargument:** Most companies are too small to split the role. The hybrid "full-stack frontend engineer" survives in smaller orgs — but the skill emphasis shifts permanently toward the Orchestrator layer, even in hybrid roles.
+**The counterargument:** Most companies are too small to split the role. The hybrid "full-stack frontend engineer" survives in smaller orgs (similar to [the evolution of full-stack Laravel](/posts/the-future-of-laravel-development-in-ai-era)) — but the skill emphasis shifts permanently toward the Orchestrator layer, even in hybrid roles.
 
 ---
 
@@ -255,3 +258,14 @@ flowchart TD
 *Further reading: [Generative UI Architecture Series](/series/generative-ui-architecture/) · [The AI-Driven Engineer](/series/ai-driven-engineer/) · [MCP Engineering in Production](/series/mcp-engineering-in-production/)*
 
 {{< author-cta >}}
+
+## FAQ
+
+{{< faq q="What is AI Frontend?" >}}
+**AI Frontend** is a critical architectural pattern or system discussed in this guide. 10 honest predictions for AI-Native Frontend Architecture by 2028: Component Registries, MCP contracts, streaming transports, and career impacts.
+{{< /faq >}}
+
+{{< faq q="How does AI Frontend compare to traditional alternatives?" >}}
+Unlike legacy systems, **AI Frontend** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< /faq >}}
+

@@ -22,6 +22,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** An in-depth look at PayPay's engineering stack: handling 70M users and 7.8B transactions/year using TiDB, Kafka event sourcing, GitOps, and chaos engineering.
+
 PayPay launched in October 2018 and grew to 10 million users in just 3 months — a growth rate that no Japanese fintech had ever seen. By 2025, the platform had crossed 70 million registered users and processed 7.8 billion payments per year. Behind this growth is an engineering team that has had to scale not just their infrastructure, but their entire engineering culture: from service standardization and GitOps-driven deployments to chaos engineering and AI-powered fraud detection.
 
 This post is an engineering analysis of PayPay's platform based on their publicly shared engineering blog posts and conference talks. It covers their Kubernetes-first microservices architecture, Kafka-driven event sourcing, TiDB's role in replacing the relational ledger bottleneck, their SRE practices, and how they prepare for high-concurrency marketing campaigns like the famous "10 Billion Yen Giveaway."

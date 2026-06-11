@@ -22,6 +22,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** Explore the architecture of a real-time Surge Pricing algorithm. Discover how Uber utilizes the H3 spatial index, Kafka, and Flink to calculate dynamic pricing.
+
 Why is it that every time it rains, ride-hailing fares double, or even triple? It's not a human operator manually adjusting the prices behind a desk. Rather, it's the result of an incredibly sophisticated Stream Processing engine running in the background executing the **surge pricing algorithm**.
 
 In this article, we will "dissect" the architecture of a real-time dynamic pricing system. We will explore everything from dividing geographical space using Uber's H3 library to the data processing architecture built on Kafka and Flink. Furthermore, we will examine why [Scaling your Database to handle Surge traffic](/posts/mysql-horizontal-scaling) is a strict prerequisite to prevent your system from crashing during massive traffic spikes.
@@ -117,3 +120,14 @@ If the Backend API queries Redis and finds no Surge configuration (due to TTL - 
 It is infinitely better for a business to absorb the loss of 15 minutes of surge revenue than to lock hundreds of thousands of customers out from requesting a ride home, causing irreversible damage to the brand's reputation.
 
 For the complete engineering deep-dive on how ride-hailing platforms build this surge pricing engine — including the full Flink state machine, driver multiplier coefficients, and demand forecasting integration — see [Part 5: Surge Pricing Engine (Ride-Hailing Architecture Series)](/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/).
+
+## FAQ
+
+{{< faq q="What is surge pricing optimization architecture?" >}}
+**surge pricing optimization architecture** is a critical architectural pattern or system discussed in this guide. Explore the architecture of a real-time Surge Pricing algorithm. Discover how Uber utilizes the H3 spatial index, Kafka, and Flink to calculate dynamic pricing.
+{{< /faq >}}
+
+{{< faq q="How does surge pricing optimization architecture compare to traditional alternatives?" >}}
+Unlike legacy systems, **surge pricing optimization architecture** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< /faq >}}
+

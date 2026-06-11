@@ -11,6 +11,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** A detailed technical breakdown of how a monolithic e-commerce application is segregated into 6 logical Business Domains with 21 isolated microservices.
+
 "Why 21 services? Isn't that overkill?" 
 
 This is the most common question I get when discussing the Golang microservice architecture we built to handle massive scale. The short answer is: **No, because Conway's Law is real.** 
@@ -64,3 +67,14 @@ This post is part of the composable commerce series. For the full system diagram
 - [E-Commerce Order Allocation Architecture](/series/ecommerce-order-allocation/) — the complete series on how the Order and Warehouse services coordinate to fulfill orders from the right warehouse.
 
 {{< author-cta >}}
+
+## FAQ
+
+{{< faq q="What is Domain-Driven Design?" >}}
+**Domain-Driven Design** is a critical architectural pattern or system discussed in this guide. A detailed technical breakdown of how a monolithic e-commerce application is segregated into 6 logical Business Domains with 21 isolated microservices.
+{{< /faq >}}
+
+{{< faq q="How does Domain-Driven Design compare to traditional alternatives?" >}}
+Unlike legacy systems, **Domain-Driven Design** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< /faq >}}
+

@@ -9,3 +9,5 @@ resources/_gen/
 # IDEs
 .idea/
 .vscode/
+
+contracts/

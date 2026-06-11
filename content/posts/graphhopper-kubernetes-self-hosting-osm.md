@@ -22,6 +22,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** Step-by-step guide to deploying GraphHopper on Kubernetes with OpenStreetMap data: Docker image, PVC for OSM PBF files, RAM tuning, and health probes.
+
 GraphHopper is arguably the most capable open-source routing engine available — it supports Contraction Hierarchies (CH) for sub-millisecond route queries, custom vehicle profiles, turn restrictions, and the full OpenStreetMap road network. The problem most teams encounter is not the algorithm; it is the operational challenge of running it in Kubernetes: loading a large OSM PBF file, sizing JVM memory correctly, handling the long CH pre-processing startup time, and updating map data without downtime.
 
 This post is a production-grade Kubernetes deployment guide for GraphHopper using real OpenStreetMap data. By the end, you will have a StatefulSet deployment with persistent OSM graph files, correctly sized JVM resources, liveness and readiness probes that account for CH pre-processing time, and a zero-downtime map update strategy.

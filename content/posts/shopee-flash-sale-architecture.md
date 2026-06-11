@@ -22,6 +22,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** How Shopee engineers prevent crashes during 11.11 flash sales: rate limiting, Redis inventory locks, traffic shields, and microservices resilience.
+
 At exactly midnight on 11.11, Shopee users across Southeast Asia and Taiwan simultaneously tap the same button. In the first 10 seconds of a flash sale, a single product page can receive requests from millions of concurrent sessions — all competing to purchase the same 1,000 units of inventory. One oversell, one server crash, or one database deadlock during that window results in a cascade of chargebacks, angry users, and front-page news headlines.
 
 This post breaks down the engineering systems Shopee built to survive flash sale traffic spikes: how they pre-heat inventory into Redis, how they use layered rate limiting at the API gateway, how they scale MySQL and TiDB for high-concurrency write loads, and what their real-time observability stack looks like during the 11.11 event window.

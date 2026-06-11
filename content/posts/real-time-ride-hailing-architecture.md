@@ -23,6 +23,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** How Uber and Grab handle millions of GPS pings/sec: H3 geospatial indexing, Kafka, DISCO matching engine, surge pricing, and RAMEN push notifications.
+
 The moment you open the Uber or Grab app, a cascade of real-time systems activates simultaneously: your phone begins transmitting GPS coordinates, a geospatial index updates your location, a matching engine re-evaluates nearby driver availability, a pricing model recalculates the fare based on supply-demand ratios, and a push notification pipeline prepares to deliver your match confirmation in under 3 seconds.
 
 What makes this hard is not any single component — it is the combination of all of them, processing millions of concurrent users, each with sub-second latency requirements, continuously. This post walks through all six layers of the real-time ride-hailing architecture stack, from GPS ingestion to driver notification, using Uber and Grab's engineering practices as the reference model.

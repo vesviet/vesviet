@@ -12,6 +12,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** Engineer's guide to microfinance CBS architecture: 5 modules, double-entry ledger, JLG loan engine, amortization formulas, and EOD batch state machines.
+
 Building a Core Banking System (CBS) for a Microfinance Institution (MFI) presents a radically different set of engineering challenges compared to traditional retail banking. While commercial banks focus heavily on individual credit scores and card networks, microfinance operates on high-frequency, low-value transactions, group-based lending, and offline field collections. 
 
 If you are an engineer or Business Analyst transitioning into fintech, understanding the architectural nuances of platforms like Apache Fineract (Mifos X) or Musoni is critical. In this guide, we will break down the 5 must-have modules of a Microfinance CBS, providing the database schemas, mathematical formulas, double-entry mappings, and the actual Product Requirements Document (PRD) snippets you need to build them.
@@ -153,3 +156,14 @@ Because modern CBS architectures manage millions of loans, they rely on distribu
 For the broader strategic picture — how banks replace monolithic cores like Temenos T24 with full composable architectures using Go microservices, Saga orchestration, and Strangler Fig migrations — see [Composable Banking Architecture: From Monolith to Modular Core](/posts/composable-banking-architecture).
 
 {{< author-cta >}}
+
+## FAQ
+
+{{< faq q="What is Core Banking?" >}}
+**Core Banking** is a critical architectural pattern or system discussed in this guide. Engineer's guide to microfinance CBS architecture: 5 modules, double-entry ledger, JLG loan engine, amortization formulas, and EOD batch state machines.
+{{< /faq >}}
+
+{{< faq q="How does Core Banking compare to traditional alternatives?" >}}
+Unlike legacy systems, **Core Banking** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< /faq >}}
+

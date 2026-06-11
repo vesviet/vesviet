@@ -14,6 +14,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** Migrating an e-commerce monolith to 21+ distributed microservices using Golang & DDD. Explore Kratos architecture, Saga patterns, and race conditions.
+
 Scaling an e-commerce platform past 10,000+ orders per day containing multiple SKUs across dynamic warehouses is where naive architecture breaks down. Hardware scaling ceases to be a magic bullet when distributed transactions, race conditions, and eventual consistency are involved.
 
 In this deep tech dive, we will tear apart the "Hello World" abstraction of Microservices. We will look at exactly how our **21-service distributed ecosystem** interacts under the hood. I will share the exact Golang architectural patterns (Kratos), the Saga orchestration for distributed checkout, and how we handle race conditions under severe load.
@@ -44,7 +47,7 @@ The diagram above encapsulates the most volatile flow: **The Checkout Saga**. Wh
 
 ## 2. Enforcing Clean Architecture with Kratos
 
-To manage 21 separate codebases, consistency among the engineering team is mandatory. We utilized **Kratos (v2)** to strictly enforce Clean Architecture in Golang. By physically separating boundaries, we prevent database logic from bleeding into HTTP or gRPC handlers.
+To manage 21 separate codebases, consistency among the engineering team is mandatory. We utilized **Kratos (v2)** to strictly enforce Clean Architecture in Golang. (You can explore the full stack we use in our [Microservices Tech Radar](/radar/)). By physically separating boundaries, we prevent database logic from bleeding into HTTP or gRPC handlers.
 
 Here is what a standard Kratos blueprint looks like in our ecosystem:
 
@@ -150,3 +153,14 @@ By mapping contexts meticulously, enforcing strict separation via Kratos, and ut
 - [GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/) — how we deploy all 21 services with zero manual `kubectl` commands.
 
 {{< author-cta >}}
+
+## FAQ
+
+{{< faq q="What is Golang?" >}}
+**Golang** is a critical architectural pattern or system discussed in this guide. Migrating an e-commerce monolith to 21+ distributed microservices using Golang & DDD. Explore Kratos architecture, Saga patterns, and race conditions.
+{{< /faq >}}
+
+{{< faq q="How does Golang compare to traditional alternatives?" >}}
+Unlike legacy systems, **Golang** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< /faq >}}
+

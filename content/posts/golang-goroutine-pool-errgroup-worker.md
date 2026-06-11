@@ -22,6 +22,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** Production Go concurrency patterns: errgroup worker pools, semaphore-based rate limiting, bounded queues, and graceful backpressure for microservices.
+
 Every Go engineer eventually writes the same mistake: a loop that launches goroutines unconditionally. In a demo with 10 items, this works beautifully. In production with 50,000 incoming webhook events, it spawns 50,000 goroutines simultaneously, exhausts memory, and triggers the OOM killer. Kubernetes restarts the pod. The on-call engineer gets paged at 3 AM.
 
 The solution is not to avoid goroutines — Go's concurrency model is one of its greatest strengths. The solution is to use the correct pattern for the workload: worker pools, bounded semaphores, and backpressure mechanisms that keep concurrency within sustainable bounds regardless of input volume.

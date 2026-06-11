@@ -22,6 +22,9 @@ ShowToc: true
 TocOpen: true
 ---
 
+
+**Answer-first:** How Alipay's engineering team scaled Double 11 to 583,000 TPS using LDC unitization, OceanBase, RocketMQ, and SOFAStack. A 2026 deep-dive.
+
 At midnight on November 11th, approximately 1.5 billion people across Asia collectively open a single app and start tapping "Buy Now." In the first 60 seconds, Alipay processes more transactions than a major Western bank handles in an entire day. The 2023 Singles' Day peak — **583,000 payment transactions per second (TPS)** — is not just a headline. It is the product of fourteen years of architectural evolution that has redefined what "production-ready" means for a financial platform.
 
 This post distills the key architectural decisions behind that number. If you want to go deeper into each layer, our [Full Alipay Double 11 Architecture Series](/series/alipay-double-11/) covers every component in detail across nine chapters.
