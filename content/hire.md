@@ -2,7 +2,8 @@
 title: "Hire Lê Tuấn Anh — Go Backend Architect & Consulting"
 date: "2026-06-06"
 lastmod: "2026-06-06"
-description: "Hire Lê Tuấn Anh (vesviet) — Senior Go Backend Architect for consulting engagements. Specializes in microservices migrations, high-traffic platform reliability, and Kubernetes/GitOps at scale in Vietnam and remotely."
+description: "Hire a Senior Go Backend Architect in Vietnam. 17+ years in microservices, high-traffic e-commerce, and Magento-to-Go migrations. Available for consulting retainers, architecture reviews, and hands-on projects."
+keywords: ["hire go backend architect vietnam", "golang consultant vietnam", "microservices consultant", "magento to microservices migration", "backend architecture review", "go engineer vietnam consulting"]
 slug: "hire"
 aliases:
   - /professional-services/
@@ -10,6 +11,10 @@ aliases:
   - /portfolio/seo-marketing/
 showToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/hire-cover.png"
+  alt: "Hire Lê Tuấn Anh — Senior Go Backend Architect & Microservices Consultant, Vietnam"
+  relative: false
 ---
 
 > *"Let's solve hard backend problems together — the kind that keep your engineers up at night."*
@@ -87,8 +92,28 @@ I work with teams that need:
 
 The best starting point is a short conversation about your problem. No long forms.
 
-- **Email:** [vesviet@gmail.com](mailto:vesviet@gmail.com)
+- **Email:** <a href="mailto:vesviet@gmail.com" onclick="if(typeof gtag_report_conversion === 'function') gtag_report_conversion('mailto:vesviet@gmail.com'); else if(typeof zaraz !== 'undefined') zaraz.track('hire_contact');">vesviet@gmail.com</a>
 - **LinkedIn:** [linkedin.com/in/vesviet](https://www.linkedin.com/in/vesviet)
 - **GitHub:** [github.com/vesviet](https://github.com/vesviet)
 
 I read every message and respond within 48 hours on business days.
+
+---
+
+## FAQ
+
+{{< faq q="What does a Go backend architecture consulting engagement look like?" >}}
+A typical engagement starts with a **1-week discovery phase** (paid): I review your current architecture, codebase, and infrastructure configuration, then produce a written Technical Assessment document covering bottlenecks, risk areas, and a prioritized roadmap. From there, engagements take one of three forms: a **2-week Architecture Review** (detailed ADR + migration plan for one specific problem), an **ongoing Advisory Retainer** (monthly fixed hours for architectural guidance, code review, and escalation support), or **hands-on consulting** (direct implementation on a specific migration or scaling problem). All engagements start with a 30-minute scoping call — no forms, no decks.
+{{< /faq >}}
+
+{{< faq q="Can you help migrate a Magento monolith to Go microservices?" >}}
+Yes — this is one of my primary specializations. I led the zero-downtime migration of a decade-old Magento 2 platform into a **21-service Go microservices ecosystem** at Lotte Innovate / Vigo Retail (2021–present), using a 3-Phase Strangler Fig pattern with Debezium CDC, bidirectional Dapr Pub/Sub sync, and a hot standby period before final cutover. The approach produces zero data loss and maintains rollback capability throughout. Before engaging, I recommend reading [The Zero-Downtime Blueprint: Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/) to understand the specific methodology and whether your platform's complexity profile matches the approach.
+{{< /faq >}}
+
+{{< faq q="Do you work remotely with international clients?" >}}
+Yes. I am based in Vietnam (UTC+7) and work with clients in North America, Europe, and Southeast Asia remotely. My working hours can flex to overlap with UTC-4 to UTC+1 for regular meeting cadences. For clients in the same timezone (Singapore, Thailand, Japan, South Korea), overlap is immediate. Async communication (written specs, recorded architecture walkthroughs, Loom videos) is a first-class part of how I work — most clients find this more efficient than synchronous meetings for technical communication.
+{{< /faq >}}
+
+{{< faq q="What is the minimum engagement size you take on?" >}}
+The minimum effective engagement is an **Architecture Review** (1–2 weeks) because shorter engagements do not allow enough time to produce actionable technical output. I do not do hourly 1-hour sessions — they are too shallow to be useful for backend architecture problems. If you are unsure whether a full engagement is warranted, start with the 30-minute scoping call (free) where we scope the problem. If it is solvable with a written answer or a reference to an existing post, I will tell you directly rather than recommend an engagement.
+{{< /faq >}}

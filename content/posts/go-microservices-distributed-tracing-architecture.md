@@ -145,7 +145,7 @@ processors:
 
 This triad of correlation allows engineers to observe a latency metric, click the Exemplar, view the exact distributed trace in Tempo, and read the correlated logs in Loki.
 
-> **Architecture Context:** For understanding how decoupled observability integrates with complex deployments, review our [Magento AI Integration Strategy & Architecture](/posts/magento-ai-integration-strategy-architecture/) guide. To troubleshoot core application concurrency faults before they hit the trace pipeline, see [Goroutine Leak Detection in Production](/posts/goroutine-leak-detection-production-golang/).
+> **Architecture Context:** For understanding how decoupled observability integrates with complex deployments, review our core [Go Microservices Architecture: Production Guide](/posts/go-microservices/). To troubleshoot core application concurrency faults before they hit the trace pipeline, see [Goroutine Leak Detection in Production](/posts/goroutine-leak-detection-production-golang/).
 
 ## FAQ
 

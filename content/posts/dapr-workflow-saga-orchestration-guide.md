@@ -509,6 +509,6 @@ Dapr Workflow supports per-activity retry policies with configurable max attempt
 ### Is Dapr Workflow production-ready?
 Dapr Workflow (based on the Durable Task Framework) reached stable status in Dapr v1.12 (mid-2024). The Go SDK has stable workflow APIs from v1.11. Production considerations: choose a reliable backend (Redis Cluster or PostgreSQL via the dapr-workflow-backend component) for workflow state storage, and monitor the Dapr sidecar resource consumption under high workflow throughput.
 
-For the observability layer on top of these workflows — how to propagate W3C trace context through Kafka headers, configure tail-based sampling, and redact PII at the OTel Collector — see [Go Microservices Distributed Tracing Architecture](/posts/go-microservices-distributed-tracing-architecture).
+For the observability layer on top of these workflows — how to propagate W3C trace context through Kafka headers, configure tail-based sampling, and redact PII at the OTel Collector — see [Go Microservices Distributed Tracing Architecture](/posts/go-microservices-distributed-tracing-architecture). For a comprehensive look at the entire production stack, see the [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
 
 {{< author-cta >}}

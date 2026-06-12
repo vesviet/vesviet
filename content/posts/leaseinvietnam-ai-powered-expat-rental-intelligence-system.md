@@ -298,11 +298,15 @@ The geo-fence is enforced at both the system prompt level and the verifier level
 
 ## FAQ
 
-{{< faq q="What is leaseinvietnam ai powered expat rental intelligence system?" >}}
-**leaseinvietnam ai powered expat rental intelligence system** is a critical architectural pattern or system discussed in this guide. Build an autonomous AI pipeline that scrapes and publishes expat rental intelligence for Vietnam, turning articles into a B2B lead funnel.
+{{< faq q="How does the LeaseInVietnam system prevent AI hallucinations in published content?" >}}
+The system enforces a **four-layer anti-hallucination pipeline**: (1) Deterministic extraction with confidence scoring — data is extracted from JSON-LD, DOM selectors, or regex with an attached confidence score; if no evidence chain exists, the field is dropped, not guessed; (2) Verifier with hard-reject rules — any field sourced via `llm_guess` is immediately rejected; (3) Gemma4:e4b running locally receives only `verified_fields` and `evidence[]` — it cannot see raw HTML and therefore cannot hallucinate from it; (4) GPT-5.2 receives a typed JSONL payload, not a creative brief — it acts as a layout engineer outputting structured MDX, not a writer inventing facts. Records below 0.80 composite confidence go to quarantine, not to the website.
 {{< /faq >}}
 
-{{< faq q="How does leaseinvietnam ai powered expat rental intelligence system compare to traditional alternatives?" >}}
-Unlike legacy systems, **leaseinvietnam ai powered expat rental intelligence system** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< faq q="How does the LeaseInVietnam B2B lead funnel work?" >}}
+Every reader interaction routes to a B2B commission partner via an n8n webhook on Node 114. When an expat fills out a CTA form, the webhook fires and routes to the relevant partner via Telegram — moving services (10–15% commission), cleaning services (bTaskee / JupViec), furniture rentals, or legal/visa consultants. The CTA component is not manually inserted: GPT-5.2 reads the article's data tags and injects the contextually correct CTA automatically. An article about deposit scams gets a legal consultation CTA. An article about moving to Thao Dien gets a moving service CTA. Commission reconciliation is logged per referral for end-of-month settlement.
+{{< /faq >}}
+
+{{< faq q="What is the difference between Auto mode and Manual mode in this AI content pipeline?" >}}
+**Auto mode** runs on a daily cron against a list of core keywords (e.g., "Thao Dien apartment price," "District 7 expat living") and autonomously crawls, extracts, verifies, writes, and publishes market updates and area guides without human intervention. **Manual mode via Telegram** handles breaking trends: an admin sends a single keyword to the Telegram bot, which triggers the full 8-stage pipeline (search → extract → verify → write → review → publish) and produces a live article within minutes. Manual mode handles time-sensitive events: viral Reddit threads about scams, sudden visa regulation changes, or new expat communities forming in a new district.
 {{< /faq >}}
 

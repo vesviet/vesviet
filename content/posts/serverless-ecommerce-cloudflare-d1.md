@@ -166,11 +166,15 @@ It is the perfect stack for developer-led B2B SaaS platforms or digital product 
 
 ## FAQ
 
-{{< faq q="What is serverless ecommerce cloudflare d1?" >}}
-**serverless ecommerce cloudflare d1** is a critical architectural pattern or system discussed in this guide. How to architect a zero-ops serverless e-commerce backend using Cloudflare Workers, D1 (SQLite), and Durable Objects. Real schemas and hard trade-offs.
+{{< faq q="What is the Cloudflare D1 database limit and how do you work around it?" >}}
+Cloudflare D1 has a **10GB limit per database** (General Availability as of 2026). For multi-tenant e-commerce or B2B SaaS applications that need more storage, the accepted pattern is **Database-per-Tenant**: each tenant gets their own D1 instance, and Cloudflare allows up to 50,000 databases per account. Drizzle ORM enables dynamic binding to the correct tenant database at runtime based on the request context. Schema migrations across thousands of D1 instances require a custom DevOps pipeline — this is a real operational cost and a meaningful reason to evaluate whether D1 is appropriate for high-scale multi-tenant workloads.
 {{< /faq >}}
 
-{{< faq q="How does serverless ecommerce cloudflare d1 compare to traditional alternatives?" >}}
-Unlike legacy systems, **serverless ecommerce cloudflare d1** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< faq q="How do Durable Objects prevent inventory overselling without Redis?" >}}
+**Durable Objects** solve the inventory race condition through a **single-threaded execution model**: each product's inventory is mapped to a specific Durable Object instance, and all checkout requests for that product queue up and execute sequentially within that object. This provides strong consistency without distributed lock management (no Redlock, no Redis SETNX patterns). When two users try to buy the last item simultaneously, the second request waits for the first to complete, then checks the updated inventory count and returns a 409 Out of Stock response. The architecture itself provides the mutex — no explicit locking code required.
+{{< /faq >}}
+
+{{< faq q="When should you NOT use Cloudflare Workers for e-commerce?" >}}
+Cloudflare Workers are the wrong choice for e-commerce when you need: a **rich plugin ecosystem** (shipping integrations like FedEx/UPS, complex tax calculation engines, PDF invoice generation) that would require rebuilding from scratch; a **managed admin panel** for product and order management (Workers have no equivalent of WooCommerce admin); or when you are running **complex transactional operations** against large datasets where D1's SQLite-based architecture and single primary write node introduce unacceptable latency. For a developer-led digital product storefront or B2B SaaS backend, the edge stack is compelling. For a traditional retail store with 10+ third-party integrations, a managed platform (WooCommerce, Magento) is usually the better business decision.
 {{< /faq >}}
 

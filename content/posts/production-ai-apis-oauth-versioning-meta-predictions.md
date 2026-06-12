@@ -242,11 +242,15 @@ The token count is different. The engineering discipline is the same.
 
 ## FAQ
 
-{{< faq q="What is production ai apis oauth versioning meta predictions?" >}}
-**production ai apis oauth versioning meta predictions** is a critical architectural pattern or system discussed in this guide. Field-tested patterns for AI APIs in production: OAuth 2.1 agent identity, prompt versioning with CI gates, and an honest 2025 AI predictions scorecard.
+{{< faq q="Why use OAuth 2.1 instead of API keys for AI agents?" >}}
+API keys have **unbounded lifetime** — a stolen key remains valid until manually rotated. For autonomous AI agents that operate without human supervision, this creates an unacceptable risk surface: a key exfiltrated via Prompt Injection continues working for weeks or months. OAuth 2.1 with JWT Bearer Token Grant (RFC 7523) changes the risk profile because tokens expire in 5–15 minutes. An attacker who captures a token has a narrow window before it becomes useless. The agent automatically fetches a new token before each tool call batch using a private key that never leaves the agent process — no stored client secret, no long-lived credential.
 {{< /faq >}}
 
-{{< faq q="How does production ai apis oauth versioning meta predictions compare to traditional alternatives?" >}}
-Unlike legacy systems, **production ai apis oauth versioning meta predictions** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< faq q="How do you version prompts in production without breaking running agents?" >}}
+The pattern that works: (1) **Hard-pin prompt versions in agent config** — never use "latest" aliases in production, always specify `prompt_version: "2.3.0"`; (2) **Deploy a prompt registry** that returns a deprecation warning header (not an error) when an agent requests a deprecated version — errors break mid-session, warnings allow graceful migration; (3) **Gate every prompt change behind an evaluation suite** — the new prompt must pass regression tests on golden input/output pairs before it can be promoted to production. The most common mistake is treating a prompt change as "just config" and skipping evals. The failure mode is silent: the code produces no exceptions, the agent produces wrong answers.
+{{< /faq >}}
+
+{{< faq q="Why do teams migrate away from LangChain and LlamaIndex for production AI?" >}}
+The pattern is consistent: **framework for prototyping, custom implementation for production**. AI frameworks like LangChain and LlamaIndex abstract the simple case ("connect LLM to tool") well. They abstract the wrong layer for production: error recovery across multi-step agent runs, state management for long-running tasks, cost attribution per agent step, and circuit breakers when a tool consistently fails. At prototype scale, the abstraction saves time. At production scale, the abstraction gets in the way of the exact knobs you need to tune — and the framework's opinion about how things should work conflicts with what your incident postmortem says needs to change. Teams who stay on frameworks in production usually have not yet hit the edge cases.
 {{< /faq >}}
 

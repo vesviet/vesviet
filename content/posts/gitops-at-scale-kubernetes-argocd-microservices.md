@@ -325,6 +325,7 @@ The investment pays off the first time you hit a bad production deploy at 2am. I
 ---
 
 **Continue Reading:**
+- [Go Microservices Architecture: Production Guide](/posts/go-microservices/) — the comprehensive architecture manual for the Go services deployed in this cluster.
 - [What's New in Argo CD 3.4 & 3.3: Cluster Pause & Upgrades](/posts/argo-cd-updates-2026/) — the latest features and breaking changes before you upgrade your GitOps platform.
 - [Mastering Event-Driven Architecture with Dapr Pub/Sub](/posts/mastering-event-driven-architecture-dapr/) — how the 21 microservices deployed here communicate asynchronously.
 - [MySQL Scaling: Replication, Sharding & TiDB](/posts/mysql-scaling-sharding-tidb-architecture/) — scaling the databases that these Kubernetes-managed services depend on.

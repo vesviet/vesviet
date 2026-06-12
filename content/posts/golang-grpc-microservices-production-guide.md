@@ -776,6 +776,7 @@ Use `google.golang.org/grpc/test/bufconn` for in-process testing without real ne
 
 ## Internal Links
 
+- **Full Microservices Architecture:** To see how gRPC fits into a complete event-driven 21-service ecosystem, read the [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
 - **Real-time gRPC streaming in production:** The location ingestion system in [Part 1 — GPS Location Ingestion](/series/ride-hailing-realtime-architecture/part-1-location-ingestion/) uses the exact `gRPC Bidirectional Streaming` pattern shown here.
 - **High-concurrency patterns:** For rate limiting and circuit breaker patterns in Go microservices, see [High-Concurrency Systems](/series/high-concurrency-systems/).
 - **Service mesh for gRPC:** For mTLS at scale without per-service certificate management, see the [Gateway API v1.5 & Kubernetes Networking](/radar/2026-05/radar-2026-05-01-gateway-api-v1-5/) guide.

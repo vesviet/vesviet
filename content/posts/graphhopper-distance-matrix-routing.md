@@ -111,11 +111,15 @@ For a step-by-step operational guide — including OSM data loading, Kubernetes 
 
 ## FAQ
 
-{{< faq q="What is graphhopper distance matrix routing?" >}}
-**graphhopper distance matrix routing** is a critical architectural pattern or system discussed in this guide. A comparison between the GraphHopper Distance Matrix API and CARTO Spatial Analytics. A guide to building an order fulfillment routing engine (VRP).
+{{< faq q="What is Contraction Hierarchies and why does GraphHopper use it?" >}}
+**Contraction Hierarchies (CH)** is a graph preprocessing algorithm that dramatically accelerates route queries by pre-computing shortcuts between important road network nodes (highways, major junctions). After preprocessing, GraphHopper can answer a 500-pair distance matrix query in milliseconds rather than seconds because the query traverses a condensed hierarchy of shortcuts rather than the full road graph. The tradeoff: CH precomputes weights at startup, so routing weights (speed limits, road restrictions) are fixed until the next server restart. For time-dependent routing where current traffic must be reflected in real-time, GraphHopper's **Landmark (LM)** algorithm allows dynamic weight recalculation per request at some speed cost.
 {{< /faq >}}
 
-{{< faq q="How does graphhopper distance matrix routing compare to traditional alternatives?" >}}
-Unlike legacy systems, **graphhopper distance matrix routing** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< faq q="How much RAM does self-hosted GraphHopper require for Vietnam?" >}}
+GraphHopper loads the full road network graph into RAM for Contraction Hierarchies to work. For **Vietnam**, expect **4–8 GB of RAM** depending on the detail level of the OSM extract. For Southeast Asia, 16–32 GB. For a global map, servers with tens of GB are required. The practical optimization: define a geographic Bounding Box for your business's actual service area (e.g., only HCMC + Hanoi) and load only that OSM extract. For a Kubernetes deployment, this means configuring a StatefulSet with appropriate memory limits and using persistent volumes for the preprocessed graph files to avoid re-running the CH preprocessing on every pod restart.
+{{< /faq >}}
+
+{{< faq q="When should you use GraphHopper vs CARTO for logistics routing?" >}}
+Use **GraphHopper self-hosted** when your system generates tens of thousands of distance matrix requests per minute continuously (e.g., dispatch optimization for a delivery fleet), requires custom vehicle profiles (motorcycles, heavy trucks with road restrictions), and needs fixed infrastructure cost rather than pay-per-API-call pricing. Use **CARTO** when you need macro spatial analysis in a cloud data warehouse (BigQuery, Snowflake) for strategic planning (where to open a new warehouse, which districts have the highest order density), and when request volume is low enough that per-API-call pricing from TomTom/Mapbox via CARTO is cost-effective. CARTO with commercial routing APIs at high request volume can cost tens of thousands of dollars per month — GraphHopper self-hosted on a fixed server eliminates this cost entirely.
 {{< /faq >}}
 

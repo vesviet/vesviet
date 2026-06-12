@@ -220,11 +220,15 @@ The future belongs to Laravel developers who stop competing with AI on typing sp
 
 ## FAQ
 
-{{< faq q="What is Laravel?" >}}
-**Laravel** is a critical architectural pattern or system discussed in this guide. Field report on how AI coding agents are reshaping Laravel development. From zero-time CRUD to the rise of Modular Monoliths and Queue Orchestration.
+{{< faq q="Will AI replace Laravel developers?" >}}
+No — AI will not replace Laravel developers, but it will eliminate roles that primarily consist of boilerplate generation. Tasks like scaffolding CRUD endpoints, writing validation rules, and generating basic Blade templates are already reduced to under 3 minutes with agentic AI tools (Claude, Cursor). What AI cannot replace is **architectural judgment**: identifying N+1 query problems in generated code before they hit a 2-million-row table in production, designing queue orchestration patterns with correct DLQ and retry strategies, structuring bounded contexts that prevent AI agents from crossing domain boundaries and breaking business logic. The engineering floor for "Laravel developer" is moving up, not disappearing.
 {{< /faq >}}
 
-{{< faq q="How does Laravel compare to traditional alternatives?" >}}
-Unlike legacy systems, **Laravel** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< faq q="What is the TALL Stack and why is it good for AI coding?" >}}
+The **TALL Stack** is Tailwind CSS + Alpine.js + Laravel + Livewire. It is particularly effective for AI-assisted development because it keeps almost all application logic in PHP and Blade — eliminating the context boundary jump between server-side PHP and client-side JavaScript that occurs with React/Vue/Inertia stacks. AI models generate Livewire components with high accuracy because server-side state maps directly to the UI structure. For solo founders or small teams using AI as an execution layer, the TALL Stack reduces the surface area that AI can incorrectly reason about by keeping the entire application in a single language and paradigm.
+{{< /faq >}}
+
+{{< faq q="What is a Modular Monolith in Laravel and when should you use it?" >}}
+A **Modular Monolith** (also called a Bounded Monolith or DDD Monolith) is a Laravel application structured into isolated domain modules (e.g., `app/Domains/Invoicing/`, `app/Domains/Inventory/`) rather than a flat `Models/Controllers/` directory. Each domain owns its models, actions, events, and tests. In 2026–2028, this structure is becoming a practical necessity for AI-assisted development: LLMs have finite context windows and hallucinate relationships when given 200 undifferentiated files. A Modular Monolith chunks the codebase into context-sized units that an AI agent can reason about correctly. Use it when your application has 3+ distinct business domains and a team larger than 2 engineers.
 {{< /faq >}}
 

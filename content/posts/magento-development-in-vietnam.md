@@ -20,7 +20,7 @@ TocOpen: true
 
 This guide is for the person managing or commissioning a project with a **Magento agency**: the PM, the CTO, or the e-commerce director who needs to evaluate a proposal, structure an engagement, and track delivery without being misled by vague timelines or unspecified complexity.
 
-> **Note:** If you are not looking for an agency or project scoping guide, but rather looking to hire individual in-house or freelance engineers, please see our guide on [Magento Developers in Vietnam: A Technical Hiring and Vetting Guide](/posts/magento-developers-in-vietnam/).
+> **Note:** For a complete overview of the market landscape, cost tiers, and 2.4.9 upgrade readiness, see our core pillar: [Magento Development in Vietnam: 2026 Hiring Guide](/posts/magento-vietnam/). For individual hiring advice, see [Magento Developers in Vietnam: A Technical Hiring and Vetting Guide](/posts/magento-developers-in-vietnam/).
 
 ## The Four Effort Layers (and Why Proposals Often Undercount Them)
 
@@ -192,11 +192,19 @@ For context on where the technical boundaries of Magento are and when it makes s
 
 ## FAQ
 
-{{< faq q="What is Magento?" >}}
-**Magento** is a critical architectural pattern or system discussed in this guide. How to find and evaluate a Magento agency in Vietnam: effort layers for each project type, proposal red flags, hidden complexity, and delivery phase checklist.
+{{< faq q="What should a Magento development proposal from a Vietnam agency include?" >}}
+A credible Magento proposal must include: (1) a **paid discovery phase** (2–4 weeks) that produces a requirements document, integration complexity matrix, and technical risk register — not a price based on assumptions; (2) **explicit integration assumptions** for each connected system (ERP, WMS, payment gateway) with documented failure recovery models; (3) **phase-by-phase deliverables** with specific test reports and acceptance criteria, not just a total timeline; (4) a **TCO section** covering ongoing costs: monthly security patches, quarterly extension compatibility work, hosting, and support retainer. If any of these are absent from the proposal, ask why before signing.
 {{< /faq >}}
 
-{{< faq q="How does Magento compare to traditional alternatives?" >}}
-Unlike legacy systems, **Magento** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< faq q="What are red flags in a Magento agency proposal?" >}}
+The most common red flags: skipping directly to 'Core Development' without a discovery phase (meaning the estimate is based on template assumptions, not your system); quoting integrations without explicit failure recovery models ('we'll connect the API' is not a plan); round-number estimates with no documented assumptions or three-point ranges; no TCO section (hiding ongoing costs until after launch when you negotiate from a weak position); no reference from a client who ran a high-traffic sale event on their Magento store. The most expensive Magento projects start as the cheapest proposals.
+{{< /faq >}}
+
+{{< faq q="How long does a Magento development project take in Vietnam?" >}}
+Timelines depend heavily on integration count and legacy complexity. A greenfield Magento 2 store with 2 integrations typically completes in **16–20 weeks** across Discovery (2–4w), Design & UX (3–5w), Core Development (8–10w), QA & Performance (2–3w), and Launch & Hypercare (1–2w). A migration project with 6+ integrations, custom checkout flows, and a legacy ERP can run **28–36 weeks**. The largest single variable is integration complexity — specifically the failure recovery model for each integration point (retry logic, idempotency, reconciliation, monitoring). Projects that skip the discovery phase routinely underestimate this by 40–60%.
+{{< /faq >}}
+
+{{< faq q="What does a Magento ERP integration actually cost?" >}}
+A **Magento ERP integration** typically costs **80–200 hours** of engineering effort, depending on whether the ERP exposes a documented REST API (lower end) or requires flat-file batch sync, custom middleware, or real-time event bridging (upper end). The hours are not primarily spent connecting the API — they are spent on retry logic (what happens when the ERP times out at order creation?), idempotency (does a duplicate order event create two pick lists?), reconciliation (how do you detect silent sync failures?), and monitoring (when does the integration alert, not when do customers call?). Any proposal below 80 hours for a real ERP integration is not accounting for these failure modes.
 {{< /faq >}}
 

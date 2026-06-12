@@ -4,7 +4,7 @@ slug: "golang-pprof-profiling-memory-cpu-tutorial"
 date: "2026-06-02T08:00:00+07:00"
 lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
-description: "Profile Go services in Kubernetes without restarting pods: kubectl port-forward, pprof heap and CPU capture, and goroutine leak detection."
+description: "Profile Go services in Kubernetes without restarting pods: kubectl port-forward, heap vs alloc_space, and cpu flame graphs."
 ShowToc: true
 TocOpen: true
 categories:
@@ -17,7 +17,6 @@ tags:
   - "Production"
   - "Profiling"
   - "Performance"
-  - "Memory Leak"
 ---
 
 > **Prerequisite:** This guide covers how to profile and diagnose complex performance issues in production. If you are specifically dealing with unbounded goroutine growth, ensure you first understand the foundational concepts in [Goroutine Leak Detection and Fix in Production Go Services](/posts/goroutine-leak-detection-production-golang/).

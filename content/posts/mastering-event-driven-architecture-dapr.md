@@ -481,11 +481,15 @@ The patterns in this post — the Transactional Outbox, idempotent consumers, DL
 
 ## FAQ
 
-{{< faq q="What is Event-Driven?" >}}
-**Event-Driven** is a critical architectural pattern or system discussed in this guide. Decouple a 21+ microservice ecosystem using Event-Driven Architecture. Ensure data consistency via Sagas, Dead Letter Queues, and Idempotent handlers.
+{{< faq q="What is the Transactional Outbox pattern and why is it needed with Dapr?" >}}
+The **Transactional Outbox pattern** solves the double-write problem in event-driven systems. Without it, your service writes state to Postgres, then calls `dapr.PublishEvent` — if it crashes between those two lines, the state is saved but the event is never published, leaving downstream services in an inconsistent state permanently. The fix: write the event record into an `outbox` table in the *same database transaction* as the state change, then use a CDC process (Debezium or TiCDC) to read the outbox and publish to Dapr/Kafka. Either both the state change and event emission happen (database commits), or neither does (database rolls back). No dual-write risk.
 {{< /faq >}}
 
-{{< faq q="How does Event-Driven compare to traditional alternatives?" >}}
-Unlike legacy systems, **Event-Driven** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< faq q="When should you use Saga Choreography vs Dapr Workflow Orchestration?" >}}
+Use **Choreography** (each service reacts to events independently with no central coordinator) for sagas with 2–4 steps where any developer can reason about the entire flow at a glance. Use **Dapr Workflow Orchestration** (a single durable orchestrator function that defines all saga steps, state persistence, retries, and compensation) when the compensating transaction logic becomes complex enough that you cannot trace a failure without reading 4+ service codebases simultaneously. The tradeoff: choreography has lower coupling but harder observability at scale; orchestration is easier to debug but creates a single point of change that all participants couple to.
+{{< /faq >}}
+
+{{< faq q="Should I use Dapr Pub/Sub or direct Kafka for Go microservices?" >}}
+They are not mutually exclusive — Dapr can use Kafka as its backend. The decision is about the abstraction layer. Use **Dapr Pub/Sub** when you have polyglot services (Go + Python + Node.js), may need to swap brokers in the future (Redis locally, Kafka in production), or want retries, DLQ routing, and circuit breaking configured via YAML without coding them into every service. Use **Kafka directly** when you need Kafka Streams or ksqlDB for stream processing, need granular partition management and offset control, have a team with deep Kafka expertise, or your latency budget is extremely tight (Dapr adds ~1ms sidecar overhead per hop via localhost loopback).
 {{< /faq >}}
 

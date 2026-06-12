@@ -467,7 +467,7 @@ var (
 
 Alert on `worker_pool_jobs_dropped_total` rate > 0 as an indicator that the pool is consistently at capacity and needs scaling.
 
-For event-driven microservices architectures where this worker pool pattern integrates with Dapr Pub/Sub consumers, see [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr) for the full Dapr integration pattern.
+For event-driven microservices architectures where this worker pool pattern integrates with Dapr Pub/Sub consumers, see [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr) for the full Dapr integration pattern. For the definitive guide on the complete architecture, read the [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
 
 ---
 

@@ -20,6 +20,10 @@ tags:
 description: "Learn how to detect, diagnose, and fix goroutine leaks in production Go microservices using pprof, goleak, and the new Go 1.26 goroutineleak profile."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/goroutine-leak-cover.png"
+  alt: "Goroutine Leak Detection and Fix in Production Go Services — pprof, goleak, synctest"
+  relative: false
 ---
 
 
@@ -551,7 +555,7 @@ Ensure these safeguards are met before deploying your Go service to production:
 - [ ] **Prometheus Alerting:** A `go_goroutines` PromQL alert is configured to monitor linear growth over 1-hour windows.
 - [ ] **CI goleak verification:** `goleak` is configured in `TestMain` or integration wrappers with custom `IgnoreTopFunction` settings for driver libraries.
 
-When building modern [agentic architectures](/series/agentic-system-architecture) where background tasks fetch live data or run autonomous LLM tool execution loops, managing goroutine lifecycles is critical to prevent background worker threads from leaking across agent runs. By monitoring runtime statistics and catching concurrency issues early in testing, you can keep your production services stable and free of exit code 137 OOM crashes.
+When building modern [agentic architectures](/series/agentic-system-architecture) where background tasks fetch live data or run autonomous LLM tool execution loops, managing goroutine lifecycles is critical to prevent background worker threads from leaking across agent runs. By monitoring runtime statistics and catching concurrency issues early in testing, you can keep your production services stable and free of exit code 137 OOM crashes. For a comprehensive look at the entire Go production architecture that relies on these patterns, see the [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
 
 ---
 

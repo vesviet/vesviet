@@ -10,6 +10,10 @@ description: "Honest breakdown of why Magento's monolithic architecture becomes 
 categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/golang-microservices-cover.png"
+  alt: "Migrating Magento to Microservices: When & Why — Architecture Decision Guide"
+  relative: false
 ---
 
 
@@ -241,17 +245,25 @@ That crossover point is real, and when you hit it, the architectural investment 
 
 For the exact playbook on how to execute this migration safely — including the 3-phase Strangler Fig pattern, Debezium CDC pipelines, and bidirectional sync — read [The Zero-Downtime Blueprint: Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/).
 
-If you are still evaluating team capability before a migration, read [Magento Developers in Vietnam: A Technical Hiring and Vetting Guide](/posts/magento-developers-in-vietnam/) and [Magento Development in Vietnam: How to Scope, Estimate, and Evaluate a Project](/posts/magento-development-in-vietnam/).
+If you are still evaluating team capability before a migration, read our core guide on [Magento Development in Vietnam: 2026 Hiring Guide](/posts/magento-vietnam/). For the destination stack, explore the complete [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
 
 {{< author-cta >}}
 
 ## FAQ
 
-{{< faq q="What is Magento?" >}}
-**Magento** is a critical architectural pattern or system discussed in this guide. Honest breakdown of why Magento's monolithic architecture becomes a liability at scale and the exact reasons to migrate to a microservice ecosystem.
+{{< faq q="When should you migrate from Magento to microservices?" >}}
+Migrate from Magento to microservices when you have **5+ engineers with dedicated DevOps capacity**, you are hitting Magento's scaling ceiling (slow deploys, shared database contention, module conflicts blocking independent team deployments), and you require fine-grained fault isolation — where a failure in one domain (e.g., reviews, loyalty) should never bring down the entire checkout flow. Do **not** migrate if your team is under 5 engineers, your traffic is manageable on a well-tuned Magento stack, or you do not have the operational maturity to run Kubernetes in production. The operational overhead of 21+ services is real.
 {{< /faq >}}
 
-{{< faq q="How does Magento compare to traditional alternatives?" >}}
-Unlike legacy systems, **Magento** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< faq q="What is the Strangler Fig pattern for Magento migration?" >}}
+The **Strangler Fig pattern** is an incremental migration strategy where new microservices gradually wrap around the legacy Magento monolith, intercepting traffic domain by domain until the monolith becomes a hollow shell. In practice: Phase 1 routes reads to new services while writes still hit Magento; Phase 2 migrates write APIs incrementally (Customer first, then Catalog, then Order) with bidirectional sync keeping Magento in sync; Phase 3 cuts over all traffic and keeps Magento as a hot standby for 30 days before terminating. No big-bang rewrite. Each phase is independently reversible with a feature flag toggle.
+{{< /faq >}}
+
+{{< faq q="What is the EAV schema problem in Magento?" >}}
+Magento's **Entity-Attribute-Value (EAV)** model stores product attributes across multiple tables (`catalog_product_entity_varchar`, `catalog_product_entity_int`, `catalog_product_entity_decimal`, etc.) instead of flat rows. Fetching a single product with 30 attributes requires joining 5+ tables. At 25,000+ SKUs under load, this becomes a measurable latency problem — especially for search and listing pages. During migration, this means you cannot do a naive `SELECT *` export; you need an ETL pipeline to flatten EAV data into the normalized schemas your new microservices expect. Debezium CDC handles ongoing delta sync after the initial ETL.
+{{< /faq >}}
+
+{{< faq q="How does the Saga pattern replace Magento's database transactions in microservices?" >}}
+Magento handles checkout as a **synchronous database transaction**: reserve stock, create order, capture payment — all in one `BEGIN ... COMMIT`. This works for a single database but breaks in a distributed system because a slow payment gateway response holds a database transaction open, consuming connection pool slots and cascading into connection exhaustion under load. The **Saga pattern** replaces this with local transactions per service and explicit compensating transactions on failure: if payment authorization fails after stock was reserved, a compensation message triggers `release_reservation` on the Warehouse service. No long-lived database locks, no connection pool exhaustion, and each failure case is explicitly handled rather than silently dropped.
 {{< /faq >}}
 

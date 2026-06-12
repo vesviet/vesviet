@@ -123,11 +123,15 @@ For the complete engineering deep-dive on how ride-hailing platforms build this 
 
 ## FAQ
 
-{{< faq q="What is surge pricing optimization architecture?" >}}
-**surge pricing optimization architecture** is a critical architectural pattern or system discussed in this guide. Explore the architecture of a real-time Surge Pricing algorithm. Discover how Uber utilizes the H3 spatial index, Kafka, and Flink to calculate dynamic pricing.
+{{< faq q="Why does Uber use hexagonal H3 grids instead of square grids for surge pricing?" >}}
+Uber uses **H3 hexagonal grids** because hexagons have a critical geometric property that squares lack: the distance from the center of a hexagon to the center of all 6 of its neighbors is exactly equal. In a square grid, the distance to orthogonal neighbors is 1, but the distance to diagonal neighbors is √2 — a 41% difference that distorts radius search algorithms when looking for drivers in adjacent cells. At H3 Resolution 9 (roughly 0.10 km², about the size of a city block), the system can apply a surge multiplier to one specific intersection while leaving a location 500 meters away at the normal fare.
 {{< /faq >}}
 
-{{< faq q="How does surge pricing optimization architecture compare to traditional alternatives?" >}}
-Unlike legacy systems, **surge pricing optimization architecture** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< faq q="Why use Apache Flink for surge pricing instead of Spark?" >}}
+**Apache Flink** is preferred over Spark Streaming for surge pricing because Flink is a true **stream-first** system: it processes each event the moment it arrives with sub-second latency. Spark Streaming (Structured Streaming) uses micro-batching — it still processes events in small time-window batches, introducing 1–2 second minimum latency. For surge pricing, where a Demand/Supply ratio must be recalculated every 30 seconds based on a sliding 5-minute window, Flink's native event-time processing and stateful stream operators (e.g., `SlidingEventTimeWindows`) are a direct fit without the micro-batch overhead.
+{{< /faq >}}
+
+{{< faq q="What happens to surge pricing if the Kafka cluster or Flink job crashes?" >}}
+The system must implement a **fail-safe default**: when the Backend API queries Redis for a Surge multiplier and finds no value (due to TTL expiration after a Flink/Kafka outage), it must return a default multiplier of **1.0x (Normal Fare)** and never throw an HTTP 500 error. This is the golden rule of distributed pricing systems: absorb 15 minutes of lost surge revenue rather than lock hundreds of thousands of users out from requesting rides. In practice, each Redis Surge key is written with a TTL slightly longer than the Flink window interval — so a Flink restart during a 30-second lag window does not immediately expire all keys. Alerting on Redis TTL miss rate is the canary signal that the stream processor is down.
 {{< /faq >}}
 

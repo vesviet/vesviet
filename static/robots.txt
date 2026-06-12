@@ -4,9 +4,9 @@
 User-agent: *
 Allow: /
 Content-Signal: ai-train=no, search=yes, ai-input=no
-Disallow: /*.xml$
 Allow: /sitemap.xml
 Allow: /index.xml
+Disallow: /*.xml$
 
 # ──────────────────────────────────────────────
 # Allowed AI Bots

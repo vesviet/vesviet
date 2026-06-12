@@ -167,11 +167,15 @@ By leveraging **LiteLLM** as an intelligent routing layer and **Docker** for pri
 
 ## FAQ
 
-{{< faq q="What is AI?" >}}
-**AI** is a critical architectural pattern or system discussed in this guide. Deploy a resilient, production-ready AI swarm using OpenClaw, LiteLLM, and Docker. Covers routing, security, and zero-downtime agent orchestration.
+{{< faq q="How does LiteLLM key pooling enable zero-downtime for AI agent swarms?" >}}
+**LiteLLM key pooling** works by registering multiple API keys for the same model under a single model name in `litellm_config.yaml`, using `routing_strategy: simple-shuffle` to distribute load across all keys. When one key hits a rate limit (HTTP 429), LiteLLM automatically retries the request on the next key in the pool without the agent being aware of the failure. The `fallbacks` configuration adds a second tier: if all pooled Gemini keys are rate-limited simultaneously, LiteLLM transparently reroutes the exact same prompt to a fallback model (e.g., Groq Llama-3.3-70b). The agent receives a valid JSON response and continues its workflow without interruption.
 {{< /faq >}}
 
-{{< faq q="How does AI compare to traditional alternatives?" >}}
-Unlike legacy systems, **AI** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< faq q="Why use Docker cap_drop: ALL for AI agent security?" >}}
+`cap_drop: ALL` removes all Linux kernel capabilities from a container — the Reporter Bot in this architecture cannot bind privileged ports, cannot modify file ownership, cannot load kernel modules, and cannot perform raw network socket operations. This enforces the **principle of least privilege**: if the reporter agent is compromised via a Prompt Injection attack that tricks it into executing malicious shell commands, the attacker's blast radius is contained entirely within the container's isolated `/app/data` volume. They cannot escalate to the host OS, cannot access the Docker socket, and cannot reach other containers. Privilege separation across containers (high-privilege Ops Bot vs. low-privilege Reporter Bot) ensures that a compromise of one agent does not cascade into a full-swarm takeover.
+{{< /faq >}}
+
+{{< faq q="What is the difference between an AI agent and an AI swarm?" >}}
+An **AI agent** is a single autonomous loop: perceive context → plan next action → execute tool calls → observe result → repeat until goal is achieved. An **AI swarm** is multiple specialized agents operating concurrently — one for system operations (Ops Bot), one for reporting (Reporter Bot), one for coding tasks — each with dedicated infrastructure (separate containers, separate privilege levels, separate model routes). The swarm pattern enables concurrent task execution across domains without one agent's failure or privilege level affecting another's. The coordination mechanism is the shared LiteLLM Gateway — all agents route through it, but none have direct access to external API keys or each other's container filesystems.
 {{< /faq >}}
 
