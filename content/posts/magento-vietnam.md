@@ -9,7 +9,7 @@ author: "Lê Tuấn Anh"
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/posts/magento-developers-vietnam-cover.png"
+  image: "/images/posts/magento-developers-vietnam-cover.png"
   alt: "Magento development Vietnam hiring guide 2026"
 ---
 
