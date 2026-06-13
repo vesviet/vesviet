@@ -101,6 +101,7 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
+  "name": {{ .Title | jsonify }},
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "{{ .Permalink }}"
@@ -178,6 +179,7 @@
 {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
+  "name": "Breadcrumbs",
   "itemListElement": [
     {
       "@type": "ListItem",
