@@ -190,5 +190,7 @@
 {{- partial "google_analytics.html" . }}
 {{- partial "templates/opengraph.html" . }}
 {{- partial "templates/twitter_cards.html" . }}
+{{- if not (and .IsPage .File (eq .File.ContentBaseName "about")) }}
 {{- partial "templates/schema_json.html" . }}
+{{- end }}
 {{- end -}}
