@@ -164,7 +164,11 @@
   "dateModified": "{{ .Lastmod.Format `2006-01-02T15:04:05Z07:00` }}",
   "mainEntity": {
     "@type": "Person",
-    "@id": "{{ .Site.BaseURL }}#person"
+    "name": "Lê Tuấn Anh",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://github.com/vesviet.png?size=240"
+    }
   },
   "isPartOf": {
     "@type": "WebSite",
