@@ -20,3 +20,28 @@
     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
     <strong>Editorial Transparency:</strong> Content is rigorously architected, researched, and vetted by Le Tuan Anh. AI tools may be utilized for drafting efficiency, but all technical assertions and system designs are 100% human-verified.
 </div>
+
+{{- if eq .Section "radar" }}
+<!-- AdSense Radar Bottom Ad -->
+<style>
+.radar-bottom-ad { 
+    display: inline-block; 
+    width: 320px; 
+    height: 100px; 
+}
+@media(min-width: 800px) { 
+    .radar-bottom-ad { width: 728px; height: 90px; } 
+}
+</style>
+<div style="display: flex; justify-content: center; margin-top: 2rem; margin-bottom: 2rem; width: 100%;">
+    <!-- Skeleton div to prevent CLS -->
+    <div style="min-height: 100px; display: flex; justify-content: center;">
+        <ins class="adsbygoogle radar-bottom-ad"
+             data-ad-client="ca-pub-4144107863554199"
+             data-ad-slot="7273987371"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+</div>
+{{- end }}
