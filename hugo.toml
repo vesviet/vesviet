@@ -109,6 +109,12 @@ apple_touch_icon = "/apple-touch-icon.png"
     name = "Wiki"
     url = "https://wiki.tanhdev.com/"
     weight = 20
+  [[menu.main]]
+    parent = "external"
+    identifier = "privacy"
+    name = "Privacy Policy"
+    url = "/privacy-policy/"
+    weight = 40
 
 [outputs]
   home = ["HTML", "RSS"]
