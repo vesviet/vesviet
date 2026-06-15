@@ -3,3 +3,28 @@
     <h4 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary);">🤝 Let's Connect</h4>
     <p style="margin: 0; line-height: 1.6; color: var(--primary);">Are you facing similar challenges with system architecture, scaling, or migration? I'd love to hear about it. Connect with me on <a href="https://www.linkedin.com/in/vesviet" target="_blank" rel="noopener noreferrer" style="font-weight: 600;">LinkedIn</a>, check out my <a href="https://github.com/vesviet" target="_blank" rel="noopener noreferrer" style="font-weight: 600;">GitHub</a>, or drop me an <a href="mailto:vesviet@gmail.com" style="font-weight: 600;" onclick="if(typeof gtag_report_conversion === 'function') gtag_report_conversion('mailto:vesviet@gmail.com'); else if(typeof zaraz !== 'undefined') zaraz.track('hire_contact');">email</a>.</p>
 </aside>
+
+{{- if eq .Page.Section "radar" }}
+<!-- AdSense Radar Bottom Ad -->
+<style>
+.radar-bottom-ad { 
+    display: inline-block; 
+    width: 320px; 
+    height: 100px; 
+}
+@media(min-width: 800px) { 
+    .radar-bottom-ad { width: 728px; height: 90px; } 
+}
+</style>
+<div style="display: flex; justify-content: center; margin-top: 2rem; margin-bottom: 2rem; width: 100%;">
+    <!-- Skeleton div to prevent CLS -->
+    <div style="min-height: 100px; display: flex; justify-content: center;">
+        <ins class="adsbygoogle radar-bottom-ad"
+             data-ad-client="ca-pub-4144107863554199"
+             data-ad-slot="7273987371"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+</div>
+{{- end }}
