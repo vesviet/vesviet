@@ -17,6 +17,7 @@ tags:
 description: "Anthropic's April 28 creative-work launch is bigger than a feature roundup. It extends MCP from developer tooling into design, 3D, media, and production software, turning creative applications into connected agent surfaces."
 ShowToc: true
 TocOpen: true
+aliases: ["/radar/radar-2026-04-29-creative-mcp/"]
 ---
 
 Anthropic's April 28, 2026 announcement about "Claude for Creative Work" looks, on the surface, like a partnership bundle for designers and media teams. Look more closely and the bigger signal becomes clear: Model Context Protocol is moving beyond developer workflows and into the software stack used for design, 3D modeling, audio production, and media operations.

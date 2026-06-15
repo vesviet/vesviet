@@ -16,6 +16,7 @@ tags:
 description: "Gateway API v1.5 is here. Learn why Kubernetes networking is moving away from Ingress annotations to a modular, policy-driven traffic platform with Ingress2Gateway 1.0."
 ShowToc: true
 TocOpen: true
+aliases: ["/radar/radar-2026-05-01-gateway-api-v1-5/"]
 ---
 
 If your ingress layer still depends on a 400-line manifest full of controller-specific annotations, you do not have a clean networking platform. You have institutional memory encoded as YAML archaeology.

@@ -15,6 +15,7 @@ tags:
   - GStar Summit
   - Vietnam
   - Hardware
+aliases: ["/radar/radar-2026-05-30-illinois-ai-bill-dell-servers-gstar-hcmc/"]
 ---
 
 Welcome to today's [tech radar](/radar/). Today is **May 30, 2026**. Following our [May 28 radar on Apple's Gemini deal and OpenAI's DeployCo](/radar/radar-2026-05-28-openai-deployco-apple-gemini/), the AI sector has hit a dual peak: high-level regulatory action in the US and unprecedented hardware scaling expectations driven by corporate demand.

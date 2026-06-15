@@ -17,6 +17,7 @@ tags:
 description: "DigitalOcean's April 28, 2026 AI-Native Cloud launch is a useful market signal for engineering teams: inference routing is becoming a control plane, retrieval is moving into managed platform primitives, and agent infrastructure is being packaged as one integrated stack rather than stitched together from separate vendors."
 ShowToc: true
 TocOpen: true
+aliases: ["/radar/radar-2026-05-01-digitalocean-ai-native-cloud/"]
 ---
 
 DigitalOcean's April 28, 2026 launch of its AI-Native Cloud is not the largest AI infrastructure announcement of the week, but it may be one of the clearest. Instead of treating AI as a feature added onto a legacy cloud, DigitalOcean is explicitly reorganizing its platform around what production AI systems now look like: multi-model inference, retrieval, routing, state, and long-running agent workflows.
