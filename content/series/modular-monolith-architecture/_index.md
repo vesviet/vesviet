@@ -53,7 +53,7 @@ Amazon Prime Video saved 90% on operational costs by returning to a monolith. 42
    *Optimizing OpenTelemetry in-process tracing and slashing log cardinality costs.*
 
 7. **[Part 6: Migration Playbook](/series/modular-monolith-architecture/part-6-migration-playbook/)**  
-   *Reverse Strangler Fig: How to merge split databases (Dual-write) without downtime.*
+   *Reverse Strangler Fig: How to merge split databases (Dual-write) without downtime. When dealing with database locking during this phase, transactional outbox patterns become critical—see our [High Concurrency Systems](/series/high-concurrency-systems/) guide.*
 
 8. **[Part 7: Extraction Pattern](/series/modular-monolith-architecture/part-7-extraction-pattern/)**  
    *When does a module finally "qualify" to be extracted into an independent Microservice?*

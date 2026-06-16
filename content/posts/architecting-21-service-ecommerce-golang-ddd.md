@@ -23,7 +23,7 @@ In this deep tech dive, we will tear apart the "Hello World" abstraction of Micr
 
 ## 1. The Distributed Landscape 
 
-Microservices without bounded contexts degenerate into a latency-heavy "Distributed Monolith". We bounded our ecosystem loosely around five core domains, prioritizing strict database-per-service isolation:
+Microservices without bounded contexts degenerate into a latency-heavy "Distributed Monolith". We bounded our ecosystem loosely around five core domains, prioritizing strict database-per-service isolation (If you are just starting out, this is exactly why you might want to start with a [Modular Monolith Architecture](/series/modular-monolith-architecture/) before jumping to distributed extraction):
 
 ```mermaid
 graph TD

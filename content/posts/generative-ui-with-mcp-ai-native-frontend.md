@@ -27,7 +27,7 @@ TocOpen: true
 
 The first generation of AI-powered chat interfaces followed a simple pattern: the user types a message, the LLM generates text, the UI renders text. The second generation added tool calls — the LLM could invoke functions and render the results as text. The third generation — **Generative UI** — goes further: the LLM generates not just text responses but *interactive UI components* that are rendered directly in the browser, enabling experiences that feel less like chatting with a text box and more like using a responsive, intelligent application.
 
-Generative UI represents a genuine architectural shift. It requires a new contract between the AI model and the frontend: the **Model Context Protocol (MCP)**, developed by Anthropic. MCP defines how AI models discover available tools and UI components, how they invoke those components with typed parameters, and how the frontend renders and sandboxes dynamically generated interfaces.
+Generative UI represents a genuine architectural shift. It requires a new contract between the AI model and the frontend: the **Model Context Protocol (MCP)**, developed by Anthropic. (For a complete guide on operating MCP securely in production, see our [MCP Engineering in Production](/series/mcp-engineering-in-production/) masterclass). MCP defines how AI models discover available tools and UI components, how they invoke those components with typed parameters, and how the frontend renders and sandboxes dynamically generated interfaces.
 
 This post covers the architectural design of a Generative UI system using MCP: the evolution from text to interactive UI, the MCP contract layer, client-agent state synchronization, the component registry, security controls, and a Next.js reference implementation.
 

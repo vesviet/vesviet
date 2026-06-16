@@ -43,7 +43,7 @@ Forget generic, theoretical scaling advice. This curriculum tackles the exact co
    *How to absorb sudden traffic spikes (Flash Sales) by decoupling ingestion from processing using native Go concurrency patterns.*
 
 4. **[Part 4: Dapr PubSub & Event-Driven Architecture](/series/high-concurrency-systems/part-4-dapr-pubsub/)**  
-   *Scaling horizontally across microservices. Ensuring guaranteed event delivery and handling idempotency.*
+   *Scaling horizontally across microservices. Ensuring guaranteed event delivery and handling idempotency.* *(Note: Before scaling horizontally, ensure your module boundaries are clean. Consider the Reverse Strangler pattern in our [Modular Monolith Architecture](/series/modular-monolith-architecture/) masterclass.)*
 
 5. **[Part 5: Transactional Outbox Pattern](/series/high-concurrency-systems/part-5-transactional-outbox/)**  
    *Solving the dual-write problem. How to safely update your database and publish a Kafka event without distributed transactions.*

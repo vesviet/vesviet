@@ -29,7 +29,7 @@ At exactly midnight on 11.11, Shopee users across Southeast Asia and Taiwan simu
 
 This post breaks down the engineering systems Shopee built to survive flash sale traffic spikes: how they pre-heat inventory into Redis, how they use layered rate limiting at the API gateway, how they scale MySQL and TiDB for high-concurrency write loads, and what their real-time observability stack looks like during the 11.11 event window.
 
-For the complete architecture deep-dive across all five layers, see the [Shopee Architecture Series](/series/shopee-architecture/). The Flash Sale Engine chapter is covered in depth at [Chapter 2: Flash Sale Engine](/series/shopee-architecture/02-flash-sale-engine/).
+For the complete architecture deep-dive across all five layers, see the [Shopee Architecture Series](/series/shopee-architecture/). The Flash Sale Engine chapter is covered in depth at [Chapter 2: Flash Sale Engine](/series/shopee-architecture/02-flash-sale-engine/). If you want to explore the underlying Go patterns for absorbing this kind of traffic, explore deeper in our [High Concurrency Systems](/series/high-concurrency-systems/) masterclass.
 
 ---
 

@@ -50,7 +50,7 @@ The solution requires three fundamental shifts: **time-based → state-based**, 
 
 ## 2. The Core Architecture: A Production Finite State Machine
 
-**Answer-first:** Replacing cron jobs with an explicit Finite State Machine (FSM) backed by SQLite guarantees execution resilience. Every state acts as a checkpoint, allowing the pipeline to safely resume from mid-run failures without wasting tokens on re-execution.
+**Answer-first:** Replacing cron jobs with an explicit Finite State Machine (FSM) backed by SQLite guarantees execution resilience. Every state acts as a checkpoint, allowing the pipeline to safely resume from mid-run failures without wasting tokens on re-execution. (For a broader look at multi-agent orchestration, see our [Agentic System Architecture](/series/agentic-system-architecture/) masterclass).
 
 A resilient pipeline doesn't rely on `sleep`, sequential assumptions, or hoping the network cooperates. The V3 architecture is built on an explicit **Finite State Machine (FSM)** coordinated by a Master Orchestrator Node.
 

@@ -407,7 +407,7 @@ UPDATE job_queue SET status = 'processing' WHERE id = ?;
 COMMIT;
 ```
 
-`SKIP LOCKED` is non-deterministic — each worker gets a different available row. Requires an index on `(status, created_at)`.
+`SKIP LOCKED` is non-deterministic — each worker gets a different available row. Requires an index on `(status, created_at)`. *(For a broader discussion on handling database locks under high load without deadlocks, explore our [High Concurrency Systems](/series/high-concurrency-systems/) masterclass).*
 
 ### Go Deadlock Retry Pattern
 

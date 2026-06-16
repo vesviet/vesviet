@@ -237,7 +237,7 @@ This is where most migration posts stop being honest. Microservices are not free
 
 ## The Bottom Line
 
-Magento's monolithic architecture is not a flaw — it is a deliberate design choice that optimizes for simplicity and ecosystem richness. For the majority of e-commerce businesses, it is the correct choice.
+Magento's monolithic architecture is not a flaw — it is a deliberate design choice that optimizes for simplicity and ecosystem richness. For the majority of e-commerce businesses, it is the correct choice. (If you are evaluating alternatives to Magento but aren't ready for full microservices, evaluating the [Modular Monolith Architecture](/series/modular-monolith-architecture/) alternative is highly recommended).
 
 The migration to microservices makes sense when the cost of that simplicity — shared database contention, inability to scale selectively, coupled deployments, cascading failures — exceeds the cost of distributed systems complexity.
 

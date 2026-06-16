@@ -16,7 +16,7 @@ TocOpen: true
 
 **Answer-first:** Deploy a resilient, production-ready AI swarm using OpenClaw, LiteLLM, and Docker. Covers routing, security, and zero-downtime agent orchestration.
 
-The era of simple, conversational AI chatbots is over. In 2026, the industry has aggressively shifted toward **Agentic AI**—autonomous systems capable of planning, executing, and iterating on multi-step workflows without constant human supervision. 
+The era of simple, conversational AI chatbots is over. In 2026, the industry has aggressively shifted toward **Agentic AI**—autonomous systems capable of planning, executing, and iterating on multi-step workflows without constant human supervision. (For a deeper dive into these Agentic System Architecture principles, see our [Agentic System Architecture](/series/agentic-system-architecture/) masterclass).
 
 However, building an agent is the easy part. The real engineering challenge lies in the infrastructure required to keep a swarm of agents running 24/7. When your autonomous system relies on third-party LLM APIs, a single rate limit (HTTP 429) or a model deprecation (HTTP 404) can instantly crash your entire operational pipeline.
 
