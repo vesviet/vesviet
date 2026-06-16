@@ -154,8 +154,8 @@
 }
 </script>
 {{- end }}
-{{- if and .IsPage .File (eq .File.ContentBaseName "about") }}
-<!-- Schema.org — ProfilePage for /about/ -->
+{{- if and .IsPage .File (or (eq .File.ContentBaseName "about") (eq .File.ContentBaseName "hire")) }}
+<!-- Schema.org — ProfilePage for /about/ and /hire/ -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -169,10 +169,28 @@
   "mainEntity": {
     "@type": "Person",
     "name": "Lê Tuấn Anh",
+    "alternateName": ["vesviet", "Le Tuan Anh"],
     "image": {
       "@type": "ImageObject",
       "url": "https://github.com/vesviet.png?size=240"
-    }
+    },
+    "jobTitle": "Senior Go Backend Architect & Distributed Systems Engineer",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Lotte Innovate"
+    },
+    "knowsAbout": [
+      "Go (Golang)",
+      "Microservices Architecture",
+      "Distributed Systems",
+      "Kubernetes",
+      "GitOps",
+      "System Design"
+    ],
+    "sameAs": [
+      "https://www.linkedin.com/in/vesviet",
+      "https://github.com/vesviet"
+    ]
   },
   "isPartOf": {
     "@type": "WebSite",
