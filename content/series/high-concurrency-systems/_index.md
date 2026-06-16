@@ -1,66 +1,56 @@
 ---
-title: "Mastering High-Concurrency Systems in Production"
-description: "A comprehensive guide to building highly scalable, distributed systems using Golang. Learn about C10M, Caching, Rate Limiting, Sharding, and Distributed Locking."
-date: 2026-06-09T10:00:00+07:00
-lastmod: 2026-06-16T10:00:00+07:00
+title: "Masterclass: High Concurrency Systems & B2B Commerce"
+description: "How to scale backend systems from 1,000 to 25 million requests per month without database bottlenecks or locking issues."
+date: 2026-06-16T12:00:00+07:00
 draft: false
-weight: 140
+weight: 100
 slug: "high-concurrency-systems"
-categories: ["Series", "High Concurrency", "Backend Architecture"]
-tags: ["Golang", "System Design", "Microservices"]
+categories: ["Series", "Backend Architecture", "System Design"]
+tags: ["High Concurrency", "Go", "PostgreSQL", "System Design", "Microservices"]
 ---
 
-# Mastering High-Concurrency Systems in Production
+# Masterclass: High Concurrency Systems & B2B Commerce
 
-Hệ thống của bạn đang gặp giới hạn khi Scale? DB liên tục nghẽn cổ chai, Cache Avalanche đánh sập hệ thống, hay rắc rối với Dual-Write khi chia tách Microservices?
+Have you ever experienced a system crash precisely during the most critical moment of a Mega Sale event? Are your PostgreSQL databases buckling under the weight of locking issues when too many users attempt to place orders simultaneously? 
 
-Chào mừng bạn đến với Masterclass chuyên sâu về **Thiết kế Kiến trúc Hệ thống Phân tán (Distributed Systems)** và xử lý High Concurrency bằng **Golang**. 
+Welcome to the **High Concurrency Systems** Masterclass.
 
-> **Về khoá Masterclass này**
+> **About this Masterclass**
 > 
-> Lộ trình học thuật này được đúc kết từ **hơn 17 năm kinh nghiệm** xây dựng các hệ thống Core, xử lý trực tiếp **25 triệu requests/tháng** và tối ưu độ trễ (latency) từ 1.2s xuống 120ms tại các nền tảng thương mại điện tử lớn (Lotte Innovate, Vigo Retail) bởi Kiến trúc sư Lê Tuấn Anh.
+> This series distills **17+ years of production experience**, drawing directly from the battlefield of building resilient, high-traffic e-commerce systems at Lotte Innovate. It provides practical, battle-tested blueprints for managing 25 million requests per month with Go and Microservices architecture.
 
 ---
 
-## 🎯 Tư Vấn Kiến Trúc 1:1 (Consulting)
+## 🎯 Architecture Review & Consulting (Hire Me)
 
-Nếu doanh nghiệp của bạn đang cần giải quyết bài toán sập hệ thống trong các đợt Flash Sale, hoặc di chuyển từ Monolith sang Microservices mà không bị downtime:
+If your enterprise e-commerce or B2B platform is struggling with slow database queries, checkout timeouts, or scaling bottlenecks, don't let it jeopardize your business revenue.
 
-👉 **[Đặt lịch tư vấn Kiến trúc 1:1 ngay trong tuần này](/hire/)** để tháo gỡ nghẽn cổ chai cho hệ thống của bạn.
-
----
-
-## 📚 Lộ Trình Học Thuật (Core Curriculum)
-
-Dưới đây là các bài toán thực chiến (Case Study) đúc kết từ Shopee, Alipay và những nền tảng chịu tải hàng đầu:
-
-1. **[Chapter 1: How Systems Handle Millions of Requests/s (C10M)?](/series/high-concurrency-systems/how-systems-handle-c10m/)**
-   *Phân tích bài toán C10K đến C10M và cách Golang giải quyết concurrency bottleneck.*
-   
-2. **[Chapter 2: The 3 Caching Vulnerabilities & Go Singleflight](/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/)**
-   *Tuyệt chiêu phòng chống Cache Penetration, Breakdown và Avalanche.*
-   
-3. **[Chapter 3: Distributed Rate Limiting with Redis & GCRA](/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/)**
-   *Ngăn chặn DDoS và Abuse API bằng thuật toán GCRA trên Redis.*
-   
-4. **[Chapter 4: Solving the Dual-Write Problem with Transactional Outbox Pattern](/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/)**
-   *Đảm bảo tính nhất quán dữ liệu (Data Consistency) khi vừa ghi DB vừa gửi message sang Kafka.*
-   
-5. **[Chapter 5: Optimizing Golang Database Connection Pools](/series/high-concurrency-systems/golang-database-connection-pool-optimization/)**
-   *Cách cấu hình Pool DB để không làm chết MySQL dưới tải cao.*
-   
-6. **[Chapter 6: API Gateway vs Service Mesh](/series/high-concurrency-systems/api-gateway-vs-service-mesh/)**
-   *Lựa chọn kiến trúc mạng phù hợp cho cụm Microservices.*
-   
-7. **[Chapter 7: Designing Idempotency APIs for Payment Systems](/series/high-concurrency-systems/idempotency-api-design-payments/)**
-   *Bí quyết thiết kế API thanh toán "an toàn tuyệt đối" dù client có gửi trùng request hàng ngàn lần.*
-   
-8. **[Chapter 8: Distributed Locking: Redlock vs ZooKeeper](/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/)**
-   *Khoá phân tán: Khi nào dùng Redis, khi nào dùng ZooKeeper/Etcd.*
-   
-9. **[Chapter 9: Database Sharding & Read/Write Splitting](/series/high-concurrency-systems/database-sharding-read-write-splitting/)**
-   *Kỹ thuật phân mảnh DB và tách luồng Đọc/Ghi an toàn.*
+👉 **[Book a 1:1 Architecture Consultation this week](/hire/)** with Lê Tuấn Anh (Vesviet) to identify bottlenecks and implement proven scaling strategies.
 
 ---
 
-Bạn đã sẵn sàng nâng cấp hệ thống của mình lên tầm cao mới? Đừng quên **[liên hệ tôi (Hire Me)](/hire/)** nếu bạn cần một chuyên gia đồng hành cùng team engineering của bạn!
+## 📚 Core Curriculum
+
+Forget generic, theoretical scaling advice. This curriculum tackles the exact concurrency challenges faced in production:
+
+1. **[Part 1: The Concurrency Problem & Pessimistic Locks](/series/high-concurrency-systems/part-1-pessimistic-locks/)**  
+   *Why relying on `SELECT FOR UPDATE` will eventually bring your database to a halt under high load, and how to detect it before it's too late.*
+
+2. **[Part 2: Optimistic Locking & Redis Redlock](/series/high-concurrency-systems/part-2-optimistic-locks/)**  
+   *Transitioning to versioned updates and distributed locks. Understanding when Redlock is necessary and when it introduces unnecessary complexity.*
+
+3. **[Part 3: Go Channels & Worker Pools for Order Ingestion](/series/high-concurrency-systems/part-3-worker-pools/)**  
+   *How to absorb sudden traffic spikes (Flash Sales) by decoupling ingestion from processing using native Go concurrency patterns.*
+
+4. **[Part 4: Dapr PubSub & Event-Driven Architecture](/series/high-concurrency-systems/part-4-dapr-pubsub/)**  
+   *Scaling horizontally across microservices. Ensuring guaranteed event delivery and handling idempotency.*
+
+5. **[Part 5: Transactional Outbox Pattern](/series/high-concurrency-systems/part-5-transactional-outbox/)**  
+   *Solving the dual-write problem. How to safely update your database and publish a Kafka event without distributed transactions.*
+
+6. **[Part 6: Saga Orchestration in Go](/series/high-concurrency-systems/part-6-saga-orchestration/)**  
+   *Managing complex, multi-service workflows (Inventory Reservation -> Payment -> Shipping) with reliable compensation logic.*
+
+---
+
+Stop guessing why your system is failing under load. **[Contact me today](/hire/)** for a comprehensive Technical Audit and start scaling with confidence.

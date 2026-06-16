@@ -233,6 +233,7 @@
 }
 </script>
 {{- end }}
+{{- $dummy := .Content -}}
 {{- $faqs := .Page.Store.Get "faqs" }}
 {{- if $faqs }}
 <!-- Schema.org — FAQPage -->

@@ -12,55 +12,55 @@ tags: ["Modular Monolith", "Microservices", "System Design"]
 
 # Masterclass: Modular Monolith Architecture & Microservices Reversal
 
-Doanh nghiệp của bạn đang "đốt" hàng ngàn đô la mỗi tháng cho Egress AWS? Đội ngũ Engineering dành 50% thời gian để config Kubernetes thay vì làm Product? Bạn đang phải bảo trì 50 Microservices cho một dự án chỉ có 10 Dev?
+Is your enterprise burning thousands of dollars every month on AWS network egress? Are your engineering teams spending 50% of their time configuring Kubernetes instead of shipping product features? Are you maintaining 50 microservices with a team of only 10 developers?
 
-Chào mừng bạn đến với Masterclass về **Modular Monolith & Reverse Strangler Fig** - xu hướng cứu rỗi kiến trúc phần mềm năm 2026.
+Welcome to the Masterclass on **Modular Monoliths & Reverse Strangler Fig**—the architectural course-correction trend saving tech companies millions in 2026.
 
-> **Về khoá Masterclass này**
+> **About this Masterclass**
 > 
-> Nội dung được chắt lọc từ **17+ năm kinh nghiệm** đập bỏ các khối Monolith Legacy (Magento/PHP) và thiết kế hệ thống Microservices khổng lồ (Lotte Innovate). Quan trọng hơn, nó chứa đựng những bài học "đau thương" về việc tại sao **Modular Monolith** lại là lựa chọn duy nhất đúng cho 80% doanh nghiệp hiện nay.
+> This content is distilled from **17+ years of experience** tearing down legacy PHP monoliths and designing massive microservice ecosystems. More importantly, it contains the hard-learned lessons of why the **Modular Monolith** is the absolute right choice for 80% of businesses today.
 
 ---
 
-## 🎯 Tư Vấn Tái Cấu Trúc Hệ Thống (Consulting)
+## 🎯 Architecture Restructuring (Consulting)
 
-Bạn đang cần "Gỡ rối" (Deconstruct) hệ thống Microservices đồ sộ hiện tại để giảm chi phí hạ tầng (Cloud Bill), hoặc muốn xây mới dự án với kiến trúc Modular Monolith chuẩn Domain-Driven Design ngay từ đầu?
+Do you need to "deconstruct" a bloated microservices architecture to reduce your Cloud Bill, or are you planning a new project and want to build a clean Domain-Driven Design Modular Monolith from day one?
 
-👉 **[Đặt lịch tư vấn Kiến trúc 1:1 ngay trong tuần này](/hire/)** cùng chuyên gia (Lê Tuấn Anh).
+👉 **[Book a 1:1 Architecture Consultation this week](/hire/)** with Senior Architect Lê Tuấn Anh.
 
 ---
 
-## 📚 Lộ Trình Học Thuật (Core Curriculum)
+## 📚 Core Curriculum
 
-Amazon Prime Video đã tiết kiệm 90% chi phí khi quay về Monolith. 42% doanh nghiệp CNCF đang làm điều tương tự. Hãy cùng tìm hiểu:
+Amazon Prime Video saved 90% on operational costs by returning to a monolith. 42% of CNCF enterprises are actively doing the same. Let's explore how:
 
 1. **[Part 0: Executive Summary](/series/modular-monolith-architecture/part-0-executive-summary/)**  
-   *Tại sao Microservices không phải là "Chén thánh"? Câu chuyện 90% chi phí của Prime Video.*
+   *Why Microservices aren't the "Holy Grail". The Prime Video 90% cost-saving case study.*
 
 2. **[Part 1: Decision Framework](/series/modular-monolith-architecture/part-1-decision-framework/)**  
-   *Checklist định lượng: Khi nào dùng Microservices, khi nào nên chọn Modular Monolith?*
+   *Quantitative checklist: When do you actually need Microservices, and when should you stick to the Modular Monolith?*
 
 3. **[Part 2: FinOps Cost Reality](/series/modular-monolith-architecture/part-2-finops-cost-reality/)**  
-   *Giải phẫu AWS Bill: Chi phí ngầm khổng lồ của Service Mesh và Network Egress.*
+   *Dissecting the AWS Bill: The massive hidden costs of Service Meshes and Network Egress.*
 
 4. **[Part 3: Domain-Driven Design (DDD) Boundaries](/series/modular-monolith-architecture/part-3-ddd-module-boundaries/)**  
-   *Thiết kế Anti-corruption layers, ứng dụng Spring Modulith và Packwerk để chống Monolith biến thành "Bãi rác".*
+   *Designing Anti-corruption layers, and using tools like Packwerk to prevent your Monolith from turning into a "Big Ball of Mud".*
 
 5. **[Part 4: CI/CD Simplified](/series/modular-monolith-architecture/part-4-cicd-simplified/)**  
-   *Triển khai Atomic Deployments - Bài học tối ưu Buildkite từ Shopify.*
+   *Implementing Atomic Deployments—Optimization lessons from Shopify's massive monolith.*
 
 6. **[Part 5: Observability in the Monolith](/series/modular-monolith-architecture/part-5-observability/)**  
-   *Tối ưu OpenTelemetry In-process tracing và cắt giảm chi phí log cardinality.*
+   *Optimizing OpenTelemetry in-process tracing and slashing log cardinality costs.*
 
 7. **[Part 6: Migration Playbook](/series/modular-monolith-architecture/part-6-migration-playbook/)**  
-   *Reverse Strangler Fig: Hợp nhất Databases (Dual-write) mà không bị downtime.*
+   *Reverse Strangler Fig: How to merge split databases (Dual-write) without downtime.*
 
 8. **[Part 7: Extraction Pattern](/series/modular-monolith-architecture/part-7-extraction-pattern/)**  
-   *Khi nào một module "đủ tư cách" để tách ra thành Microservice độc lập?*
+   *When does a module finally "qualify" to be extracted into an independent Microservice?*
 
 9. **[Part 8: Case Study Matrix](/series/modular-monolith-architecture/part-8-case-study-matrix/)**  
-   *Phân tích kiến trúc của Notion, Stack Overflow, Target, và Lyft.*
+   *Architectural breakdown of Notion, Stack Overflow, Target, and Lyft.*
 
 ---
 
-Nếu hệ thống của bạn quá phức tạp để đội ngũ hiện tại có thể bảo trì, đừng chần chừ **[liên hệ tôi (Hire Me)](/hire/)** để nhận báo cáo Audit Kiến trúc toàn diện!
+If your system has become too complex for your current team to maintain, don't hesitate to **[contact me (Hire Me)](/hire/)** for a comprehensive Architecture Audit!
