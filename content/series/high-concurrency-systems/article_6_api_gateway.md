@@ -11,6 +11,8 @@ slug: "api-gateway-vs-service-mesh"
 description: "Understand the clear boundaries between North-South traffic (API Gateway) and East-West traffic (Service Mesh) in large Go architectures."
 ShowToc: true
 TocOpen: true
+aliases:
+  - "/series/high-concurrency-systems/part-4-dapr-pubsub/"
 ---
 [← Previous](/series/high-concurrency-systems/golang-database-connection-pool-optimization/) | [Series hub](/series/high-concurrency-systems/) | [Next →](/series/high-concurrency-systems/idempotency-api-design-payments/)
 

@@ -11,6 +11,9 @@ slug: "transactional-outbox-pattern-dual-write"
 description: "Master the Transactional Outbox Pattern using GORM and CDC to eliminate Dual-Write data inconsistencies in event-driven systems."
 ShowToc: true
 TocOpen: true
+aliases:
+  - "/series/high-concurrency-systems/part-5-transactional-outbox/"
+  - "/series/high-concurrency-systems/part-6-saga-orchestration/"
 ---
 [← Previous](/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/) | [Series hub](/series/high-concurrency-systems/) | [Next →](/series/high-concurrency-systems/golang-database-connection-pool-optimization/)
 

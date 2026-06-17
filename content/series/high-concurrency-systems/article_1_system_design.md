@@ -11,6 +11,8 @@ slug: "how-systems-handle-c10m"
 description: "A deep dive into how modern distributed systems break the C10M barrier using stateless APIs, multi-level caching, and Go."
 ShowToc: true
 TocOpen: true
+aliases:
+  - "/series/high-concurrency-systems/part-3-worker-pools/"
 ---
 [← Series hub](/series/high-concurrency-systems/)
 [Next →](/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/)
