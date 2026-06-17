@@ -1,4 +1,4 @@
-/about-me/ /about/ 301
+﻿/about-me/ /about/ 301
 /our-services/ / 301
 /portfolio/seo-marketing/ / 301
 /contact/ /about/ 301
@@ -15,6 +15,3 @@
 /posts/is-magento-still-worth-investing-in-2026-a-practical-take-on-2.4.9-beta1-vs-2.4.8/ /posts/magento-still-worth-investing-2026/ 301
 /tags/microservices/index.xml /tags/microservices/ 301
 /posts/magento-developers-in-vietnam-what-to-look-for-beyond-theme-work/ /posts/magento-developers-in-vietnam/ 301
-# Catch-all redirects for missing content (Soft 404 to category page)
-/posts/* /posts/ 302
-/series/* /series/ 302
