@@ -1,12 +1,15 @@
 ---
-title: "GraphHopper Distance Matrix: Self-Host OSRM vs Haversine for Route Optimization"
+title: "Graphhopper vs OSRM: Building a Distance Matrix to Replace distance.to"
 slug: "part-7-distance-matrix-routing"
 date: 2026-05-06T20:30:00+07:00
-lastmod: 2026-06-11T20:00:00+07:00
+lastmod: 2026-06-17T16:00:00+07:00
 draft: false
-description: "GraphHopper distance matrix vs OSRM Table API vs Haversine: which open-source routing engine to self-host for e-commerce delivery optimization? Includes Docker setup, Python code, H3 caching strategy, and $510/day Google Maps cost breakdown."
+description: "A detailed comparison of Graphhopper vs OSRM for routing. Learn how to build an open-source Distance Matrix to replace paid APIs like distance.to or Google Maps."
 weight: 8
+keywords: ["ecommerce order allocation", "matrix", "distance", "routing", "graphhopper", "osrm", "distance.to"]
 ---
+
+> **Answer-first:** If you are looking for an open-source alternative to the **distance.to** API or Google Maps, **Graphhopper** and **OSRM** are the best choices for building a **Distance Matrix**. OSRM is heavily optimized for large matrices using C++, while Graphhopper offers more flexibility for custom routing models using Java. Both can be self-hosted for free using OpenStreetMap.
 
 > **Series context:** This is Part 7 of the [E-commerce Order Allocation](/series/ecommerce-order-allocation/) series. The distance matrix built here feeds directly into the OR-Tools VRP solver in [Part 6](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/).
 
