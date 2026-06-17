@@ -10,6 +10,8 @@ description: "Exploring the convergence of Agentic RAG (The Brain), GraphRAG (Th
 categories: ["Data Engineering", "AI/ML"]
 ShowToc: true
 TocOpen: true
+aliases:
+  - "/series/ai-data-engineering-pipeline/executive-summary-graphrag-data-pipeline/part-1-agentic-graphrag-long-context"
 ---
 
 ## 1. Introduction: Ending the "Meaningless" War
@@ -68,4 +70,5 @@ The Convergence Architecture has proven that RAG is not dead. On the contrary, c
 However, your graph "Memory" will be useless if you feed it garbage.
 
 In **[Part 2: Agentic Ingestion & Multimodal Knowledge Graphs]({{< ref "part-2-agentic-ingestion-multimodal.md" >}})**, we will tackle every Data Engineer's biggest nightmare: How to use AI to accurately read and understand tens of thousands of PDF pages, financial tables, and technical diagrams before ingesting them into GraphRAG.
+
 

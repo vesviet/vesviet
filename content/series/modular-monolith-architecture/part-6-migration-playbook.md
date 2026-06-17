@@ -3,6 +3,9 @@ title: "Part 6: Migration Playbook â€“ Consolidating Microservices"
 description: "A practical guide to safely transitioning from Microservices back to a Modular Monolith using the Reverse Strangler Fig pattern, Dual-write databases, and Conway's Law."
 slug: "migration-playbook-microservices-to-modular-monolith"
 tags: ["Migration", "Strangler Fig", "Modular Monolith", "Database", "Conway's Law"]
+aliases:
+  - "/series/modular-monolith-architecture/part-6-migration-playbook/"
+  - "/series/modular-monolith-architecture/observability-in-process-modular-monolith-opentelemetry/part-6-migration-playbook.md"
 ---
 
 # Part 6: Migration Playbook â€“ Consolidating Microservices into a Monolith
@@ -62,4 +65,5 @@ Moving code won't kill a system, but making a mistake when moving data will dest
 Consolidating Microservices into a Modular Monolith is a project requiring meticulous care. It reduces long-term costs (FinOps) but will require short-term effort from the engineering team.
 
 So, is there ever a time when we **SHOULD NOT** merge a service into a Monolith, or even have to **EXTRACT** it from the Monolith? Absolutely. Blindly pursuing a Monolith is equally dangerous. Let's explore the correct separation philosophy in **[Part 7: Extraction Pattern]({{< ref "part-7-extraction-pattern.md" >}})**.
+
 

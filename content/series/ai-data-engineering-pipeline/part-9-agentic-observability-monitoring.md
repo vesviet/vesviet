@@ -10,6 +10,8 @@ description: "Breaking the 'black box' of AI Agents with OpenTelemetry, hierarch
 categories: ["Data Engineering", "AI/ML", "DevOps"]
 ShowToc: true
 TocOpen: true
+aliases:
+  - "/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/part-9-agentic-observability-monitoring"
 ---
 
 ## 1. The "Black Box" Problem & The Incompetence of Traditional APM
@@ -99,4 +101,5 @@ The Agent will Fork and continue running from step 4 with the new variable. Debu
 Optimized Inference (Part 8) makes the Agent run fast. Observability (Part 9) makes the Agent run correctly. By setting up Langfuse/LangSmith and applying OpenTelemetry, you have transformed the magical "black box" of AI into a transparent, measurable, and fixable engineering system.
 
 But your system is only truly perfect if it can **Automatically evaluate itself** (CI/CD for AI). Welcome to the final leg of the Series: **[Part 10: Production Evals & CI/CD for AI]({{< ref "part-10-production-evals-cicd.md" >}})**.
+
 

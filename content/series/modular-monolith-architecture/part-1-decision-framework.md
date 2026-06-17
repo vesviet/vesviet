@@ -3,6 +3,9 @@ title: "Part 1: Architectural Decision Framework"
 description: "Use real-world latency, performance data, and lessons from Stack Overflow to decide when to use a Modular Monolith instead of Microservices."
 slug: "decision-framework-modular-monolith-vs-microservices"
 tags: ["Architecture", "Modular Monolith", "Microservices", "System Design", "Stack Overflow"]
+aliases:
+  - "/series/modular-monolith-architecture/part-1-decision-framework/"
+  - "/series/modular-monolith-architecture/executive-summary-amazon-prime-video-monolith/part-1-decision-framework.md"
 ---
 
 # Part 1: Architectural Decision Framework
@@ -66,4 +69,5 @@ Before splitting your system, ask yourself the following questions:
 The decision to use a distributed architecture should solely stem from **organizational scaling needs** (when teams can no longer work together on a single codebase due to process conflicts) or **distinct language/environment requirements** (e.g., an AI module requires Python, the Core module requires Java). For 90% of projects, a **Modular Monolith** combined with Vertical Scaling and caching is sufficient to handle global-scale traffic.
 
 In **[Part 2: FinOps Cost Reality]({{< ref "part-2-finops-cost-reality.md" >}})**, we will open the "Cloud Bill" to analyze in detail how sidecars, service meshes, and cross-AZ traffic fees are eroding the budgets of Microservices systems.
+
 

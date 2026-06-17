@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 10: Production Evals & CI/CD for AI - The Final Checkpoint"
 slug: "part-10-production-evals-cicd"
 date: "2026-05-17T12:00:00+07:00"
@@ -10,6 +10,8 @@ description: "Ending the era of vibe-based testing. Building automated AI evalua
 categories: ["Data Engineering", "AI/ML", "DevOps"]
 ShowToc: true
 TocOpen: true
+aliases:
+  - "/series/ai-data-engineering-pipeline/part-9-agentic-observability-monitoring/part-10-production-evals-cicd"
 ---
 
 ## 1. The End of the "Vibe Check" Era
@@ -46,7 +48,7 @@ To automatically score AI, the industry has standardized around 3 core metrics (
 Human effort cannot manually read and score 500 answers every time a Dev modifies code. The 2026 solution is **LLM-as-a-judge**.
 We hire a "Master" model (e.g., GPT-4o or Claude 3.5 Sonnet) acting as the Judge to score a "Junior" model (Llama-3 8B) on a scale from 1-5 based on the 3 RAG Triad criteria.
 
-**⚠️ Bias Warning:**
+**âš ï¸ Bias Warning:**
 AI Judges are highly susceptible to *Verbosity Bias* (giving high scores to lengthy answers even if they are empty platitudes) or *Self-Preference Bias* (favoring its "home" model).
 To mitigate this, you must force the Judge to print out its **Chain-of-Thought** (Reasoning for the score) before giving the final number, and periodically have humans (Human-in-the-loop) re-score 10% of the data to "recalibrate" the Judge.
 
@@ -81,7 +83,7 @@ jobs:
 
 *   **Scenario:** Developer A just modified `system_prompt.txt` and created a Pull Request.
 *   **Action:** GitHub Action automatically fetches the new Prompt and runs it through 500 questions in the Golden Dataset. The LLM Judge scores it.
-*   **Result:** The *Faithfulness* score drops from 92% to 81% (below the safe threshold of 85%). GitHub Action marks it ❌ **FAILED** and locks the Merge button. The error is intercepted before reaching the User.
+*   **Result:** The *Faithfulness* score drops from 92% to 81% (below the safe threshold of 85%). GitHub Action marks it âŒ **FAILED** and locks the Merge button. The error is intercepted before reaching the User.
 
 ### **Checkpoint 2: Online Evals (Production Guard)**
 Passing CI/CD doesn't mean it's safe forever, because company data (in the Vector DB) changes daily.
@@ -96,3 +98,4 @@ Congratulations! Over the course of 10 articles, we have traversed from the naiv
 You have officially mastered the **Data Pipeline & Agentic AI Architecture** to the 2026 Enterprise SOTA standard. Instead of just being an "LLM API caller", you are now a true AI Systems Architect.
 
 Thank you for accompanying us through this series!
+

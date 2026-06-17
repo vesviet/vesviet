@@ -10,6 +10,8 @@ description: "Why a 1-million-token Context Window is not a memory. Anatomy of t
 categories: ["Data Engineering", "AI/ML", "Architecture"]
 ShowToc: true
 TocOpen: true
+aliases:
+  - "/series/ai-data-engineering-pipeline/part-6-rise-of-ai-agents/part-7-agentic-memory-long-term"
 ---
 
 ## 1. The Context Window Deception & The "Goldfish" Curse
@@ -85,4 +87,5 @@ Without memory, an AI Agent is just an "Intern" who wakes up every morning needi
 At this point, we have perfected the Brain (RAG), the Hands (Tool/MCP), and the Memory of the Agent. But how do we deploy this complex machine to a Server? How do we make it respond in the blink of an eye instead of spinning for 10 seconds?
 
 Welcome to **[Part 8: Inference Optimization & vLLM Deployment]({{< ref "part-8-inference-optimization-vllm.md" >}})**, where we will learn how to overclock AI models to run in real-world Production Cloud environments.
+
 

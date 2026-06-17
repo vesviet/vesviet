@@ -10,6 +10,8 @@ description: "Real-time RAG architecture using Streaming CDC (Debezium/Kafka) an
 categories: ["Data Engineering", "AI/ML"]
 ShowToc: true
 TocOpen: true
+aliases:
+  - "/series/ai-data-engineering-pipeline/part-3-late-chunking-semantic-caching/part-4-streaming-cdc-federated-rag"
 ---
 
 ## 1. "Yesterday's Data" is a Disaster
@@ -86,4 +88,5 @@ Modern RAG is no longer a Python Script running locally. It is the intersection 
 However, no matter how clean, real-time, and well-governed your data is, if your LLM is "tricked" by the user themselves, the entire system will collapse.
 
 In **[Part 5: Enterprise Security & Data Poisoning]({{< ref "part-5-enterprise-security-data-poisoning.md" >}})**, we will step into the underworld of AI Security, where Hackers use "Indirect Prompt Injections" to manipulate your RAG, and explore how to build a Defense-in-Depth system.
+
 

@@ -10,6 +10,8 @@ description: "Analyzing the Indirect Prompt Injection vulnerability in RAG and h
 categories: ["Data Engineering", "AI/ML", "Security"]
 ShowToc: true
 TocOpen: true
+aliases:
+  - "/series/ai-data-engineering-pipeline/part-4-streaming-cdc-federated-rag/part-5-enterprise-security-data-poisoning"
 ---
 
 ## 1. The Silent Assassin: Indirect Prompt Injection
@@ -63,4 +65,5 @@ RAG security is not about writing a really long System Prompt. It is a multi-lay
 Having solved the core problems of Ingestion, Chunking, Streaming, and Security, we now have a complete Data Pipeline. But RAG is still merely an "Answerer".
 
 In **[Part 6: The Rise of AI Agents]({{< ref "part-6-rise-of-ai-agents.md" >}})**, we will step beyond the boundaries of Chatbots to give AI "Hands" â€“ The ability to automatically call APIs, send Emails, and execute business operations on behalf of humans (Tool Calling & Action Execution).
+
 

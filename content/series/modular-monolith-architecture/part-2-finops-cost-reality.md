@@ -3,6 +3,9 @@ title: "Part 2: FinOps Cost Reality - The Hidden Tax of Microservices"
 description: "Analyzing the AWS bill of distributed architectures: Hidden costs from Service Mesh (Istio), data transfer fees (Cross-AZ Egress), and Observability waste. Lessons from Segment."
 slug: "finops-cost-reality-microservices-tax"
 tags: ["FinOps", "AWS", "Istio", "Cloud Cost", "Segment", "Modular Monolith"]
+aliases:
+  - "/series/modular-monolith-architecture/part-2-finops-cost-reality/"
+  - "/series/modular-monolith-architecture/decision-framework-modular-monolith-vs-microservices/part-2-finops-cost-reality.md"
 ---
 
 # Part 2: FinOps Cost Reality - The "Hidden Tax" of Microservices
@@ -59,4 +62,5 @@ This fragmentation created a nightmare for costs and management:
 > **FinOps Tip:** "The diversity of Microservices is directly proportional to the cloud bill." By consolidating into a Modular Monolith, you automatically eliminate proxy layers, cross-mTLS, internal bandwidth, and effectively optimize database connection pools.
 
 After realizing the hefty price of a distributed system, how do we merge code into a single block (Monolith) without turning it into a chaotic "Spaghetti Code" mess? The answer lies in establishing virtual "boundaries." Discover how in **[Part 3: Domain-Driven Design (DDD) Boundaries]({{< ref "part-3-ddd-module-boundaries.md" >}})**.
+
 

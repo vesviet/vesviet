@@ -1,15 +1,18 @@
----
-title: "Part 8: Case Study Matrix – The Monuments of the Modular Monolith"
+﻿---
+title: "Part 8: Case Study Matrix â€“ The Monuments of the Modular Monolith"
 description: "A compilation of the greatest Modular Monolith case studies from Shopify, Stack Overflow, Notion, WhatsApp, Target, and Basecamp. How they scale to billions of views."
 slug: "case-study-matrix-modular-monolith-success-stories"
 tags: ["Case Study", "Modular Monolith", "Shopify", "Stack Overflow", "Notion", "WhatsApp"]
+aliases:
+  - "/series/modular-monolith-architecture/part-8-case-study-matrix/"
+  - "/series/modular-monolith-architecture/extraction-pattern-when-to-extract-microservices/part-8-case-study-matrix.md"
 ---
 
-# Part 8: Case Study Matrix – The Monuments of the Modular Monolith
+# Part 8: Case Study Matrix â€“ The Monuments of the Modular Monolith
 
 Numerous debates about architectural design often lead to dead ends due to a lack of quantitative, real-world numbers. There is a common misconception that: "Only Microservices can withstand web-scale loads."
 
-To conclude this Playbook series, we will look at the **Case Study Matrix** – a compilation of the greatest Modular Monolith systems, ranging from massive e-commerce platforms to billion-user chat applications.
+To conclude this Playbook series, we will look at the **Case Study Matrix** â€“ a compilation of the greatest Modular Monolith systems, ranging from massive e-commerce platforms to billion-user chat applications.
 
 ## 1. Shopify: 284 Million Requests/Minute with Ruby On Rails
 
@@ -48,7 +51,7 @@ The company belonging to the creator of the Ruby on Rails framework (DHH) holds 
 The retail giant Target once applied Microservices extensively for its mobile backend.
 - **The Problem:** To load a checkout screen, the Mobile App had to call back and forth across dozens of Micro-APIs. The latency generated from HTTP handshakes severely degraded the user experience.
 - **How they executed:** Target decided to **Consolidate** these Micro-APIs back into a larger Monolithic API Backend.
-- **The Result:** Completely eradicated internal network hops, reducing the average latency of requests by over **120ms** – a critical timeframe for E-commerce conversion rates.
+- **The Result:** Completely eradicated internal network hops, reducing the average latency of requests by over **120ms** â€“ a critical timeframe for E-commerce conversion rates.
 
 ## 6. Stack Overflow: The Art of In-Memory Caching
 
@@ -65,3 +68,4 @@ By rigorously designing hard Domain boundaries using tools (Packwerk, ArchUnit),
 > "Start with a Monolith. If the boundaries are good enough, you can always split it into Microservices someday... but 90% of projects will never need that day."
 
 Thank you for joining the **Modular Monolith Architecture Playbook**. Apply this framework to your organization's next system design to gain the maximum advantage in speed and cost!
+

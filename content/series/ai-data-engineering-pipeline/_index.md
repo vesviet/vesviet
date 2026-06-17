@@ -10,6 +10,8 @@ description: "Build enterprise AI data pipelines: GraphRAG, multimodal ingestion
 categories: ["Data Engineering", "AI/ML"]
 ShowToc: true
 TocOpen: true
+aliases:
+  - "/series/ai-data-engineering-pipeline/executive-summary"
 ---
 
 ## Series Overview
@@ -33,4 +35,5 @@ This series is the complete "Data" puzzle piece for your AI-Native Engineering e
 - **[Part 8: Inference Optimization & vLLM Deployment]({{< ref "part-8-inference-optimization-vllm.md" >}}):** Overclocking model speed in Production using vLLM, PagedAttention, and Quantization (FP8/AWQ).
 - **[Part 9: Agentic Observability & Monitoring]({{< ref "part-9-agentic-observability-monitoring.md" >}}):** Tracing and debugging Agent thought processes using LangSmith, Langfuse, and Data Lineage.
 - **[Part 10: Production Evals & CI/CD for AI]({{< ref "part-10-production-evals-cicd.md" >}}):** Building automated accuracy measurement systems (Ragas, TruLens) and deploying AI following MLOps standards.
+
 

@@ -10,6 +10,8 @@ description: "Solving the unstructured data nightmare (PDFs, tables, images, aud
 categories: ["Data Engineering", "AI/ML"]
 ShowToc: true
 TocOpen: true
+aliases:
+  - "/series/ai-data-engineering-pipeline/part-1-agentic-graphrag-long-context/part-2-agentic-ingestion-multimodal"
 ---
 
 ## 1. The Fall of Traditional OCR: The "Garbage In, Garbage Out" Pain
@@ -78,4 +80,5 @@ If **Part 1** provided you with a Brain Architecture (Agentic GraphRAG), then **
 However, no matter how clean your data is, if your Embedding and Retrieval strategy is flawed, the system will still crawl at a snail's pace and cost thousands of dollars in API fees.
 
 In **[Part 3: The Art of Chunking & Semantic Caching]({{< ref "part-3-late-chunking-semantic-caching.md" >}})**, we will dive deep into the ultimate technique of 2026: **Late Chunking** (Preserving context before slicing) and how to use Redis as **Semantic Caching** to reduce LLM API costs by 70%.
+
 

@@ -10,6 +10,8 @@ description: "Overcoming VRAM limits and optimizing Server costs when deploying 
 categories: ["Data Engineering", "AI/ML", "Architecture", "DevOps"]
 ShowToc: true
 TocOpen: true
+aliases:
+  - "/series/ai-data-engineering-pipeline/part-7-agentic-memory-long-term/part-8-inference-optimization-vllm"
 ---
 
 ## 1. The LLM Bottleneck: Why Are GPUs Still Idle?
@@ -92,4 +94,5 @@ Bringing AI to Production is not throwing a Python file onto a Server. It is an 
 
 When the system runs smoothly, the next question is: *"How do I know what my Agent is thinking? If it makes a mistake, at which step did it fail?"*
 Let's move on to **[Part 9: Agentic Observability & Monitoring]({{< ref "part-9-agentic-observability-monitoring.md" >}})** to establish a surveillance camera system over the AI's thought process using LangSmith and Langfuse.
+
 

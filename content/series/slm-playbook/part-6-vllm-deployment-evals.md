@@ -1,4 +1,4 @@
----
+﻿---
 title: "Optimizing vLLM Serving: AWQ, GPTQ, & GGUF | SLM Playbook"
 date: 2026-05-26T08:00:00+07:00
 lastmod: 2026-05-26T08:00:00+07:00
@@ -9,13 +9,15 @@ TocOpen: true
 weight: 7
 categories: ["Series", "SLM Playbook"]
 tags: ["AI Engineering", "vLLM", "Quantization", "Model Serving", "AWQ"]
+aliases:
+  - "/series/slm-playbook/part-2-vllm-serving/"
 ---
-[← Series hub](/series/slm-playbook/)
-[← Previous](/series/slm-playbook/part-5-preference-alignment/)
+[â† Series hub](/series/slm-playbook/)
+[â† Previous](/series/slm-playbook/part-5-preference-alignment/)
 
 Successfully training and aligning a Small Language Model (SLM) is only half the battle. In enterprise environments, deploying a model to production serving requires solving three major challenges: **high request concurrency**, **low response latency**, and **minimized compute cost**.
 
-To achieve this, we must master model compression (**Quantization**) and high-performance serving configurations using **vLLM**—the state-of-the-art serving engine for LLMs.
+To achieve this, we must master model compression (**Quantization**) and high-performance serving configurations using **vLLM**â€”the state-of-the-art serving engine for LLMs.
 
 This final article in **The SLM Playbook** series compares the technical attributes of AWQ, GPTQ, and GGUF quantization formats, details how to set up **Dynamic LoRA serving** to conserve VRAM, and outlines a resilient enterprise-grade serving architecture.
 
@@ -26,23 +28,23 @@ This final article in **The SLM Playbook** series compares the technical attribu
 Quantization is the process of compressing model weights from 16-bit floating-point (FP16/BF16) to lower-bit integer representations (such as INT8 or INT4). This drastically reduces VRAM requirements and accelerates hardware compute operations.
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│                Quantization Format Comparison                │
-├──────────────────┬──────────────────┬────────────────────────┤
-│ Format           │ Primary Target   │ Technical Attributes   │
-├──────────────────┼──────────────────┼────────────────────────┤
-│ AWQ (Recommended)│ GPU Serving      │ Preserves the top 1%   │
-│                  │                  │ salient weights in     │
-│                  │                  │ FP16. Retains accuracy.│
-├──────────────────┼──────────────────┼────────────────────────┤
-│ GPTQ             │ GPU Serving      │ Calibration-based      │
-│                  │                  │ linear quantization.   │
-│                  │                  │ Minor accuracy loss.   │
-├──────────────────┼──────────────────┼────────────────────────┤
-│ GGUF             │ CPU / Edge       │ Supports dynamic layer │
-│                  │                  │ offloading to host CPU │
-│                  │                  │ RAM (via llama.cpp).   │
-└──────────────────┴──────────────────┴────────────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚                Quantization Format Comparison                â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ Format           â”‚ Primary Target   â”‚ Technical Attributes   â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ AWQ (Recommended)â”‚ GPU Serving      â”‚ Preserves the top 1%   â”‚
+â”‚                  â”‚                  â”‚ salient weights in     â”‚
+â”‚                  â”‚                  â”‚ FP16. Retains accuracy.â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ GPTQ             â”‚ GPU Serving      â”‚ Calibration-based      â”‚
+â”‚                  â”‚                  â”‚ linear quantization.   â”‚
+â”‚                  â”‚                  â”‚ Minor accuracy loss.   â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ GGUF             â”‚ CPU / Edge       â”‚ Supports dynamic layer â”‚
+â”‚                  â”‚                  â”‚ offloading to host CPU â”‚
+â”‚                  â”‚                  â”‚ RAM (via llama.cpp).   â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 ### 1.1. AWQ (Activation-aware Weight Quantization)
@@ -67,28 +69,28 @@ In enterprise deployments, different teams require distinct fine-tuned behaviors
 Hosting separate model instances on individual GPUs drives up infrastructure budgets exponentially. vLLM's **Dynamic LoRA Serving** resolves this issue.
 
 ```
-                   ┌────────────────┐
-                   │  User Request  │
-                   └───────┬────────┘
-                           │
+                   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+                   â”‚  User Request  â”‚
+                   â””â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                           â”‚
              [Determine Target Adapter via Headers]
              [e.g., 'X-Lora-Adapter: accounting']
-                           │
-                           ▼
-         ┌──────────────────────────────────────┐
-         │        vLLM Server Container         │
-         │                                      │
-         │        ┌───────────────────┐         │
-         │        │   Base Model 8B   │         │ (Shared in VRAM)
-         │        │   (FP16 or AWQ)   │         │
-         │        └─────────┬─────────┘         │
-         │                  │                   │
-         │     ┌────────────┼────────────┐      │
-         │     ▼            ▼            ▼      │ (Loaded dynamically
-         │ ┌───────┐    ┌───────┐    ┌───────┐  │  on-demand)
-         │ │Lora A │    │Lora B │    │Lora C │  │
-         │ └───────┘    └───────┘    └───────┘  │
-         └──────────────────────────────────────┘
+                           â”‚
+                           â–¼
+         â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+         â”‚        vLLM Server Container         â”‚
+         â”‚                                      â”‚
+         â”‚        â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”         â”‚
+         â”‚        â”‚   Base Model 8B   â”‚         â”‚ (Shared in VRAM)
+         â”‚        â”‚   (FP16 or AWQ)   â”‚         â”‚
+         â”‚        â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜         â”‚
+         â”‚                  â”‚                   â”‚
+         â”‚     â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”      â”‚
+         â”‚     â–¼            â–¼            â–¼      â”‚ (Loaded dynamically
+         â”‚ â”Œâ”€â”€â”€â”€â”€â”€â”€â”    â”Œâ”€â”€â”€â”€â”€â”€â”€â”    â”Œâ”€â”€â”€â”€â”€â”€â”€â”  â”‚  on-demand)
+         â”‚ â”‚Lora A â”‚    â”‚Lora B â”‚    â”‚Lora C â”‚  â”‚
+         â”‚ â””â”€â”€â”€â”€â”€â”€â”€â”˜    â””â”€â”€â”€â”€â”€â”€â”€â”˜    â””â”€â”€â”€â”€â”€â”€â”€â”˜  â”‚
+         â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 ### 2.1. How Dynamic LoRA Operates
@@ -123,20 +125,20 @@ When invoking the API, clients simply specify their target adapter in the reques
 The following benchmarks demonstrate the memory and throughput gains achieved on a single NVIDIA A10G (24GB VRAM) running **Llama 3 8B**:
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│                     Serving Benchmark Results                │
-├──────────────────┬──────────────────┬────────────────────────┤
-│ Format           │ Throughput (tps) │ Peak VRAM Usage        │
-├──────────────────┼──────────────────┼────────────────────────┤
-│ FP16 (Baseline)  │ 32 tokens/sec    │ 16.2 GB (Low batch     │
-│                  │                  │ limits, prone to OOM)  │
-├──────────────────┼──────────────────┼────────────────────────┤
-│ GPTQ 4-bit       │ 74 tokens/sec    │ 6.4 GB (Supports high  │
-│                  │                  │ concurrency batches)   │
-├──────────────────┼──────────────────┼────────────────────────┤
-│ AWQ 4-bit        │ 78 tokens/sec    │ 6.1 GB (15% faster     │
-│                  │                  │ TTFT than GPTQ)        │
-└──────────────────┴──────────────────┴────────────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚                     Serving Benchmark Results                â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ Format           â”‚ Throughput (tps) â”‚ Peak VRAM Usage        â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ FP16 (Baseline)  â”‚ 32 tokens/sec    â”‚ 16.2 GB (Low batch     â”‚
+â”‚                  â”‚                  â”‚ limits, prone to OOM)  â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ GPTQ 4-bit       â”‚ 74 tokens/sec    â”‚ 6.4 GB (Supports high  â”‚
+â”‚                  â”‚                  â”‚ concurrency batches)   â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ AWQ 4-bit        â”‚ 78 tokens/sec    â”‚ 6.1 GB (15% faster     â”‚
+â”‚                  â”‚                  â”‚ TTFT than GPTQ)        â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 *   **Takeaway:** Compressing your model to **AWQ 4-bit** saves over **60% of GPU VRAM**, increasing sustained serving throughput by **2.4x** compared to FP16. This provides a resilient foundation for serving high-concurrency enterprise workloads.
@@ -159,3 +161,4 @@ By combining hardware optimization with targeted alignment, your team can deploy
 *Access the complete source code and configs on the [**SLM Playbook Home Page**](/series/slm-playbook/).*
 
 {{< author-cta >}}
+

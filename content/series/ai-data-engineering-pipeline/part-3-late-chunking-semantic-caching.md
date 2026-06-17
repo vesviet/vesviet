@@ -10,6 +10,8 @@ description: "Explore Late Chunking, Contextual Retrieval, and how to reduce LLM
 categories: ["Data Engineering", "AI/ML"]
 ShowToc: true
 TocOpen: true
+aliases:
+  - "/series/ai-data-engineering-pipeline/part-2-agentic-ingestion-multimodal/part-3-late-chunking-semantic-caching"
 ---
 
 ## 1. Introduction: The Failure of Mechanical Chunking
@@ -70,4 +72,5 @@ When a RAG system goes into Production, you will realize a painful truth: 70% of
 Chunking is no longer about using a cleaver to chop meat; it is the art of context preservation. With the combination of Late Chunking, Contextual Retrieval, and Reranking filters, your RAG will answer with the precision of an expert. Meanwhile, Semantic Caching will protect your budget from unnecessary depletion.
 
 However, no matter how good RAG is, it is still a passive (Reactive) answering system. In **[Part 4: Streaming CDC & Federated RAG]({{< ref "part-4-streaming-cdc-federated-rag.md" >}})**, we will take this system to a new level: Data Pipelines that automatically update knowledge in real-time (Real-time CDC) directly from the enterprise's core Database systems.
+
 

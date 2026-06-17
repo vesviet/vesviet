@@ -3,6 +3,9 @@ title: "Part 5: Observability in Memory â€“ When Everything Shares a Single
 description: "Comparing Distributed Tracing in Microservices with In-process Profiling in a Modular Monolith. Why is OpenTelemetry on a Monolith faster and cheaper?"
 slug: "observability-in-process-modular-monolith-opentelemetry"
 tags: ["Observability", "OpenTelemetry", "Distributed Tracing", "Modular Monolith", "Profiling"]
+aliases:
+  - "/series/modular-monolith-architecture/part-5-observability/"
+  - "/series/modular-monolith-architecture/cicd-simplified-atomic-deployments-monolith/part-5-observability.md"
 ---
 
 # Part 5: Observability in Memory â€“ When Everything Shares a Single Call Stack
@@ -53,4 +56,5 @@ To set up an optimal Observability system for a Modular Monolith:
 3. **Apply Structured Logging (JSON Logs):** Ensure logs are appended with a static `module_name` to easily filter errors by the responsible team on systems like ELK or Datadog.
 
 Observability in a Monolith is clear, cheap, and effective. But if your system is *currently* Microservices (or a terrible Spaghetti Monolith) and you want to consolidate them into a Modular Monolith, where should you start? **[Part 6: Migration Playbook]({{< ref "part-6-migration-playbook.md" >}})** provides a detailed roadmap.
+
 
