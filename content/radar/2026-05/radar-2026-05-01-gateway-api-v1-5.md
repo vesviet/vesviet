@@ -5,6 +5,8 @@ date: "2026-05-01T07:30:00+07:00"
 lastmod: "2026-05-01T07:30:00+07:00"
 draft: false
 mermaid: true
+aliases:
+  - "/radar/2026-05/radar-2026-05-01-gateway-api-v1-5/"
 categories:
   - Tech Radar
 tags:
