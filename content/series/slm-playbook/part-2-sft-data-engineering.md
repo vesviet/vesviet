@@ -9,6 +9,8 @@ TocOpen: true
 weight: 3
 categories: ["Series", "SLM Playbook"]
 tags: ["AI Engineering", "Fine-Tuning", "Data Engineering", "Axolotl"]
+aliases:
+  - "/series/slm-playbook/part-2-vllm-serving/"
 ---
 [← Series hub](/series/slm-playbook/)
 [← Previous](/series/slm-playbook/part-1-slm-hybrid-architecture/) | [Next →](/series/slm-playbook/part-3-lora-qlora-tuning/)

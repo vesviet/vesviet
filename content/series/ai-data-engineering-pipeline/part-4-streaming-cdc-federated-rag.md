@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Part 4: Streaming CDC & Federated RAG - Real-Time Knowledge"
 slug: "part-4-streaming-cdc-federated-rag"
 date: "2026-05-17T12:00:00+07:00"
@@ -11,6 +11,7 @@ categories: ["Data Engineering", "AI/ML"]
 ShowToc: true
 TocOpen: true
 aliases:
+  - "/series/ai-data-engineering-pipeline/part-4-streaming-cdc-federated-rag/part-5-enterprise-security-data-poisoning"
   - "/series/ai-data-engineering-pipeline/part-3-late-chunking-semantic-caching/part-4-streaming-cdc-federated-rag"
 ---
 

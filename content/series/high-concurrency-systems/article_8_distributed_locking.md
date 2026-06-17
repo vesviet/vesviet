@@ -11,6 +11,9 @@ slug: "distributed-locking-redlock-zookeeper"
 description: "Master distributed synchronization by comparing Redis Redlock algorithms against strongly consistent Apache ZooKeeper locks."
 ShowToc: true
 TocOpen: true
+aliases:
+  - "/series/high-concurrency-systems/part-1-pessimistic-locks/"
+  - "/series/high-concurrency-systems/part-2-optimistic-locks/"
 ---
 [← Previous](/series/high-concurrency-systems/idempotency-api-design-payments/) | [Series hub](/series/high-concurrency-systems/) | [Next →](/series/high-concurrency-systems/database-sharding-read-write-splitting/)
 

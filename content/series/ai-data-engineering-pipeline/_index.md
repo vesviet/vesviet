@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Enterprise AI Data Pipeline & GraphRAG Architecture"
 slug: "ai-data-engineering-pipeline"
 date: "2026-05-17T12:00:00+07:00"
@@ -24,9 +24,9 @@ This series is the complete "Data" puzzle piece for your AI-Native Engineering e
 
 ## Master Outline (2026 SOTA Edition)
 
-- **[Executive Summary: The Disruption of Naive RAG and the Knowledge Runtime Architecture](./executive-summary)**
+- **[Executive Summary: The Disruption of Naive RAG and the Knowledge Runtime Architecture](/series/ai-data-engineering-pipeline/executive-summary-graphrag-data-pipeline/)**
 - **[Part 1: The Convergence]({{< ref "part-1-agentic-graphrag-long-context.md" >}}):** Combining Agentic RAG (The Brain), GraphRAG (The Memory), and Long-Context LLMs (2M+ Tokens).
-- **[Part 2: Agentic Ingestion & Multimodal Knowledge Graphs]({{< ref "part-2-agentic-ingestion-multimodal.md" >}}):** Solving the nightmare of PDFs, tables, images, and audio using LlamaParse and MÂ³KG-RAG.
+- **[Part 2: Agentic Ingestion & Multimodal Knowledge Graphs]({{< ref "part-2-agentic-ingestion-multimodal.md" >}}):** Solving the nightmare of PDFs, tables, images, and audio using LlamaParse and M³KG-RAG.
 - **[Part 3: The Art of Chunking & Semantic Caching]({{< ref "part-3-late-chunking-semantic-caching.md" >}}):** Moving away from mechanical text splitting towards Late Chunking (Context preservation) and cost optimization with Redis/GPTCache.
 - **[Part 4: Streaming RAG & Data Federation]({{< ref "part-4-streaming-cdc-federated-rag.md" >}}):** Abandoning Batch processing. Updating Vector DBs in milliseconds using CDC and querying in-place with Federated RAG.
 - **[Part 5: Enterprise Security & Data Poisoning]({{< ref "part-5-enterprise-security-data-poisoning.md" >}}):** Preventing Indirect Prompt Injections and establishing Llama Guard and NVIDIA NeMo Guardrails.

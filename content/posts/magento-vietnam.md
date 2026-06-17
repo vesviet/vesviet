@@ -1,5 +1,6 @@
 ---
 title: "Magento Development in Vietnam: 2026 Hiring Guide"
+slug: "magento-vietnam"
 date: 2026-06-12T00:00:00Z
 draft: false
 summary: "Vietnam's Magento talent pool runs deep — but finding engineers who can handle production architecture is harder. Cost tiers, vetting signals, and when to migrate."

@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Executive Summary: The Disruption of Naive RAG and the GraphRAG Era"
 slug: "executive-summary-graphrag-data-pipeline"
 date: "2026-05-17T12:05:00+07:00"
@@ -9,7 +9,11 @@ description: "An overview of the collapse of Naive RAG in Enterprise environment
 categories: ["Data Engineering", "AI/ML"]
 ShowToc: true
 TocOpen: true
+aliases:
+  - "/series/ai-data-engineering-pipeline/executive-summary"
+  - "/series/ai-data-engineering-pipeline/executive-summary-graphrag-data-pipeline/part-1-agentic-graphrag-long-context"
 ---
+
 
 If you have ever built an internal chatbot for your company by chunking documents, creating embeddings, and stuffing them into Pinecone or Milvus... you have undoubtedly encountered this scenario:
 

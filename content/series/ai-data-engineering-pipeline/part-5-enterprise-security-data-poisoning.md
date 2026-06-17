@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Part 5: Enterprise Security & Data Poisoning - The Silent Assassin"
 slug: "part-5-enterprise-security-data-poisoning"
 date: "2026-05-17T12:00:00+07:00"
@@ -11,12 +11,13 @@ categories: ["Data Engineering", "AI/ML", "Security"]
 ShowToc: true
 TocOpen: true
 aliases:
+  - "/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/part-6-rise-of-ai-agents"
   - "/series/ai-data-engineering-pipeline/part-4-streaming-cdc-federated-rag/part-5-enterprise-security-data-poisoning"
 ---
 
 ## 1. The Silent Assassin: Indirect Prompt Injection
 
-In the era of RAG and Agentic AI, Hackers no longer need to directly type attack commands (Jailbreaks) into your chat interface. They attack your very **data source**. This is known as **Indirect Prompt Injection** â€“ Vulnerability #1 on the OWASP Top 10 for LLMs list in 2026.
+In the era of RAG and Agentic AI, Hackers no longer need to directly type attack commands (Jailbreaks) into your chat interface. They attack your very **data source**. This is known as **Indirect Prompt Injection** – Vulnerability #1 on the OWASP Top 10 for LLMs list in 2026.
 
 **Attack Mechanism:**
 A Hacker embeds a malicious command line into a PDF file, Word document, or on a public website. This command could be printed in **white text on a white background**, with a 1px font size, or hidden deep within CSS/Metadata structures. The human eye cannot see it, but Data Ingestion tools (like Unstructured.io or LlamaParse) read it crystal clear.
@@ -64,6 +65,6 @@ RAG security is not about writing a really long System Prompt. It is a multi-lay
 
 Having solved the core problems of Ingestion, Chunking, Streaming, and Security, we now have a complete Data Pipeline. But RAG is still merely an "Answerer".
 
-In **[Part 6: The Rise of AI Agents]({{< ref "part-6-rise-of-ai-agents.md" >}})**, we will step beyond the boundaries of Chatbots to give AI "Hands" â€“ The ability to automatically call APIs, send Emails, and execute business operations on behalf of humans (Tool Calling & Action Execution).
+In **[Part 6: The Rise of AI Agents]({{< ref "part-6-rise-of-ai-agents.md" >}})**, we will step beyond the boundaries of Chatbots to give AI "Hands" – The ability to automatically call APIs, send Emails, and execute business operations on behalf of humans (Tool Calling & Action Execution).
 
 

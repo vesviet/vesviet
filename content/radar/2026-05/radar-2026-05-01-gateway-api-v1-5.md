@@ -1,5 +1,6 @@
 ---
 title: "Gateway API v1.5 & Ingress2Gateway: The Future of K8s Networking"
+slug: "radar-2026-05-01-gateway-api-v1-5"
 date: "2026-05-01T07:30:00+07:00"
 lastmod: "2026-05-01T07:30:00+07:00"
 draft: false

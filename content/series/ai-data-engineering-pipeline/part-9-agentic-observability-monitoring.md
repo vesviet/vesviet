@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Part 9: Agentic Observability - Monitoring & Debugging the AI's Train of Thought"
 slug: "part-9-agentic-observability-monitoring"
 date: "2026-05-17T12:00:00+07:00"
@@ -11,6 +11,7 @@ categories: ["Data Engineering", "AI/ML", "DevOps"]
 ShowToc: true
 TocOpen: true
 aliases:
+  - "/series/ai-data-engineering-pipeline/part-9-agentic-observability-monitoring/part-10-production-evals-cicd"
   - "/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/part-9-agentic-observability-monitoring"
 ---
 
@@ -34,7 +35,7 @@ Instead of creating unstructured text log files, the system generates **Traces**
 *   `gen_ai.usage.input_tokens`: The fee charged for prompt length.
 *   `gen_ai.usage.output_tokens`: The fee charged for answer length.
 
-Using OTel makes your system entirely **Agnostic**. Today you might use Datadog, tomorrow switch to Grafana Tempo, and the day after move to Langfuse â€“ your monitoring data remains 100% compatible without modifying a single line of code.
+Using OTel makes your system entirely **Agnostic**. Today you might use Datadog, tomorrow switch to Grafana Tempo, and the day after move to Langfuse – your monitoring data remains 100% compatible without modifying a single line of code.
 
 ---
 
@@ -50,19 +51,19 @@ graph TD
     A --> E(Span 4: LLM Generation<br/>0.8s)
     
     C --> C1(Child Span 2.1: Call Embedding API<br/>0.3s)
-    C --> C2(Child Span 2.2: Vector DB Search<br/>0.9s âš ï¸ Bottleneck error)
+    C --> C2(Child Span 2.2: Vector DB Search<br/>0.9s ⚠️ Bottleneck error)
     
     style A fill:#e1f5fe,stroke:#03a9f4,stroke-width:2px
     style C2 fill:#ffebee,stroke:#f44336,stroke-width:2px
 ```
 
-*   ðŸ”µ **Trace (The entire session):** Total time 4.5 seconds, cost $0.02.
-    *   ðŸŸ¢ **Span 1: Planning** (0.5s): The LLM splits the question into 2 sub-tasks.
-    *   ðŸŸ¢ **Span 2: RAG Retrieval** (1.2s):
-        *   ðŸŸ¡ *Child Span 2.1: Call Embedding API* (0.3s).
-        *   ðŸŸ¡ *Child Span 2.2: Vector DB Search* (0.9s) -> *Error here! Search time is too long.*
-    *   ðŸŸ¢ **Span 3: Tool Call** (2.0s): The Agent calls a financial calculation API.
-    *   ðŸŸ¢ **Span 4: Generation** (0.8s): Outputs the final answer.
+*   🔵 **Trace (The entire session):** Total time 4.5 seconds, cost $0.02.
+    *   🟢 **Span 1: Planning** (0.5s): The LLM splits the question into 2 sub-tasks.
+    *   🟢 **Span 2: RAG Retrieval** (1.2s):
+        *   🟡 *Child Span 2.1: Call Embedding API* (0.3s).
+        *   🟡 *Child Span 2.2: Vector DB Search* (0.9s) -> *Error here! Search time is too long.*
+    *   🟢 **Span 3: Tool Call** (2.0s): The Agent calls a financial calculation API.
+    *   🟢 **Span 4: Generation** (0.8s): Outputs the final answer.
 
 Thanks to this structure, when a User complains "The system is too slow" (High TTFT - Time To First Token), you just need to look at the Waterfall chart to instantly identify the "culprit" is the Vector DB, not a slow AI model.
 
@@ -79,7 +80,7 @@ In today's market, there are 2 major forces dominating the Agentic Observability
 
 ### **Langfuse (The Open-Source King)**
 *   Open-source platform (MIT License), OTel-native.
-*   **Pros:** Framework-agnostic (Plays well with any SDK: OpenAI, LlamaIndex, Vercel AI...). Allows **Self-hosting** â€“ A mandatory feature for the Banking / Healthcare sectors to prevent data leakage.
+*   **Pros:** Framework-agnostic (Plays well with any SDK: OpenAI, LlamaIndex, Vercel AI...). Allows **Self-hosting** – A mandatory feature for the Banking / Healthcare sectors to prevent data leakage.
 *   **Cons:** Requires initial setup effort (configuring Postgres/ClickHouse) if self-hosted.
 
 ---

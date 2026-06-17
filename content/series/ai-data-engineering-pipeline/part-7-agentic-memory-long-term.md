@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Part 7: Agentic Memory - Solving the 'Goldfish' Curse"
 slug: "part-7-agentic-memory-long-term"
 date: "2026-05-17T12:00:00+07:00"
@@ -11,6 +11,7 @@ categories: ["Data Engineering", "AI/ML", "Architecture"]
 ShowToc: true
 TocOpen: true
 aliases:
+  - "/series/ai-data-engineering-pipeline/part-7-agentic-memory-long-term/part-8-inference-optimization-vllm"
   - "/series/ai-data-engineering-pipeline/part-6-rise-of-ai-agents/part-7-agentic-memory-long-term"
 ---
 

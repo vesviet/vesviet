@@ -1,5 +1,6 @@
 ---
 title: "Go Microservices Architecture: Production Guide"
+slug: "go-microservices"
 date: 2026-06-12T00:00:00Z
 draft: false
 summary: "Go microservices from domain design to Kubernetes deployment — gRPC, Dapr, OpenTelemetry, and GitOps patterns from a real 21-service production migration."

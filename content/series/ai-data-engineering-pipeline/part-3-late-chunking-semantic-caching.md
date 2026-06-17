@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Part 3: The Art of Chunking & Semantic Caching"
 slug: "part-3-late-chunking-semantic-caching"
 date: "2026-05-17T12:00:00+07:00"
@@ -11,6 +11,7 @@ categories: ["Data Engineering", "AI/ML"]
 ShowToc: true
 TocOpen: true
 aliases:
+  - "/series/ai-data-engineering-pipeline/part-3-late-chunking-semantic-caching/part-4-streaming-cdc-federated-rag"
   - "/series/ai-data-engineering-pipeline/part-2-agentic-ingestion-multimodal/part-3-late-chunking-semantic-caching"
 ---
 
