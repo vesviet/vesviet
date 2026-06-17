@@ -20,3 +20,9 @@ This is a deep-dive research series exploring the backend architecture of PayPay
 - [Part 4 — Operations: SRE & Resilience](/series/paypay-architecture/part-4-sre-chaos-engineering/)
 - [Part 5 — Surviving the Billion-Yen Campaign: Scaling for Extreme Traffic](/series/paypay-architecture/part-5-campaign-architecture/)
 - [Part 6 — PayPay Goes AI-Native: LLM Hub, RAG & Agentic Finance (2025)](/series/paypay-architecture/part-6-ai-integration-2025/)
+
+## Related Analysis
+
+Companion research that extends specific topics from this series:
+
+- **[PayPay Architecture: Scaling Payments to 70M Users](/posts/paypay-architecture-scaling/)** — Standalone engineering analysis of PayPay's scaling decisions: why they migrated from Aurora to TiDB, how they pre-scale for campaign spikes, and the tradeoffs in their Kafka idempotency model.

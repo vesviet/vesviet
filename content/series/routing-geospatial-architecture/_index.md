@@ -39,3 +39,10 @@ Golang provides excellent concurrency and a small footprint, making it ideal as 
 {{< faq q="Will the source code of the Demo Repo be shared?" >}}
 Yes. The entire source code, Docker Compose configuration, sample OpenStreetMap data files, and K6/JMeter test scripts will be publicly available on a companion GitHub repository.
 {{< /faq >}}
+
+## Related Posts: GraphHopper in Production
+
+Practical deployment guides that extend the series into real production environments:
+
+- **[Self-Hosting GraphHopper on Kubernetes with OpenStreetMap Data](/posts/graphhopper-kubernetes-self-hosting-osm/)** — Complete Helm chart walkthrough, OSM data pipeline, PVC sizing, and JVM tuning for a production GraphHopper cluster on K8s.
+- **[GraphHopper vs CARTO: Order Fulfillment Routing Engine](/posts/graphhopper-distance-matrix-routing/)** — Benchmark comparison of self-hosted GraphHopper against managed CARTO across 10K–1M route matrix requests. When self-hosting wins and when it doesn't.

@@ -24,3 +24,9 @@ All content is synthesized from the official engineering blogs of Uber, Grab, an
 - [Part 4 — DISCO & Matching Engine: The Ride Dispatch Algorithm](/series/ride-hailing-realtime-architecture/part-4-dispatch-matching-engine/)
 - [Part 5 — Surge Pricing: Dynamic Pricing Based on Real-time Supply and Demand](/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/)
 - [Part 6 — RAMEN & Real-time Communication: Pushing Instant Notifications to Millions of Devices](/series/ride-hailing-realtime-architecture/part-6-realtime-push-ramen/)
+
+## Implementation Deep Dive
+
+Building on Part 5's theory with a full architectural implementation:
+
+- **[Surge Pricing Algorithm & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture/)** — End-to-end implementation of a surge pricing engine: H3 hex grid demand/supply aggregation, Kafka real-time event pipeline, Redis geospatial caching, and multiplier computation at sub-50ms latency.

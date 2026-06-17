@@ -36,4 +36,8 @@ This series is the complete "Data" puzzle piece for your AI-Native Engineering e
 - **[Part 9: Agentic Observability & Monitoring]({{< ref "part-9-agentic-observability-monitoring.md" >}}):** Tracing and debugging Agent thought processes using LangSmith, Langfuse, and Data Lineage.
 - **[Part 10: Production Evals & CI/CD for AI]({{< ref "part-10-production-evals-cicd.md" >}}):** Building automated accuracy measurement systems (Ragas, TruLens) and deploying AI following MLOps standards.
 
+## Related Deep Dives
 
+Standalone technical articles that go deeper on specific concepts from this series:
+
+- **[GraphRAG vs Naive RAG: Enterprise Architecture Guide](/posts/graphrag-vs-naive-rag-enterprise-guide/)** — Side-by-side comparison of Vector-only vs Knowledge Graph RAG on 6 enterprise failure modes: relational blindness, multi-hop reasoning, RBAC, unstructured data, evals, and latency tradeoffs.

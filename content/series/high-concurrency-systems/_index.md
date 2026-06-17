@@ -54,3 +54,10 @@ Forget generic, theoretical scaling advice. This curriculum tackles the exact co
 ---
 
 Stop guessing why your system is failing under load. **[Contact me today](/hire/)** for a comprehensive Technical Audit and start scaling with confidence.
+
+## Tools & Production Profiling
+
+Essential tooling for diagnosing and validating high-concurrency systems in production:
+
+- **[Go pprof in Kubernetes: Remote Profiling & Flame Graphs](/posts/go-pprof-kubernetes-remote-profiling/)** — Step-by-step guide to running `go tool pprof` on a live Kubernetes pod, reading Goroutine flame graphs, and identifying CPU/memory hotspots without downtime.
+- **[What's New in Argo CD 3.4 & 3.3: Cluster Pause & Upgrades](/posts/argo-cd-updates-2026/)** — Release notes analysis for the GitOps platform used to deploy high-concurrency Go microservices: Cluster Pause for maintenance windows, App-of-Apps updates, and migration path from v3.3 to v3.4.

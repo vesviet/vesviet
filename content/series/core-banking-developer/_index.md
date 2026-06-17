@@ -25,3 +25,9 @@ The learning path is divided into knowledge layers, from business mindset to dis
 - [Part 7 — Practice: Build a Mini Core Banking System from Scratch](/series/core-banking-developer/part-7-build-mini-core-banking/)
 - [Part 8 — Product Management: How to Structure a Core Banking PRD](/series/core-banking-developer/part-8-core-banking-prd/)
 
+## Real-World Case Studies
+
+Apply the theory from this series to real production systems:
+
+- **[Microfinance Core Banking: Architecture & Engineering Guide](/posts/deconstructing-microfinance-core-banking-architecture/)** — Dissects a production-grade microfinance system: transaction ledger design, KYC/AML integration, interest accrual engine, and the engineering trade-offs unique to emerging-market fintech.
+

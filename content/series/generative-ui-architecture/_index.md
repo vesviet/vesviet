@@ -24,3 +24,7 @@ This series addresses the biggest gap in modern AI application development: the 
 - **Part 5:** [Building the "Human-In-The-Loop" Experience](/series/generative-ui-architecture/part-5-human-in-the-loop/)
 - **Part 6:** [E2E Testing & Performance Optimization at the Edge](/series/generative-ui-architecture/part-6-e2e-testing-edge/)
 - **Part 7:** [Reference Repository & Migration Strategy (Phased Rollout)](/series/generative-ui-architecture/part-7-reference-repo-migration/)
+
+## Companion Article: MCP in Practice
+
+- **[Generative UI with MCP: Architecting AI-Native Frontends](/posts/generative-ui-with-mcp-ai-native-frontend/)** — A standalone architecture walkthrough on integrating Model Context Protocol (MCP) into a real frontend: tool schema design, streaming response rendering, fallback UI states, and securing agent-to-frontend communication.

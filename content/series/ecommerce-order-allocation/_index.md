@@ -23,3 +23,9 @@ This series bridges theory and practice, covering the real-world architecture of
 - [Part 5 — Split Shipment, Consolidation & Last-Mile Delivery](/series/ecommerce-order-allocation/part-5-split-consolidation-lastmile/)
 - [Part 6 — Hands-on: Building a Mini Allocation Engine with Google OR-Tools](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/)
 - [Part 7 — Distance Matrix: Routing Distance Calculation Algorithms](/series/ecommerce-order-allocation/part-7-distance-matrix-routing/)
+
+## Production Case Study
+
+See the full warehouse-to-last-mile pipeline in a live production context:
+
+- **[Order Fulfillment Algorithm: Warehouse to Last-Mile](/posts/order-fulfillment-algorithm-warehouse-last-mile/)** — How a Southeast Asian e-commerce operator runs a real-time order allocation engine: WMS integration, slot commitment windows, driver scoring, re-allocation triggers, and SLA breach mitigation.
