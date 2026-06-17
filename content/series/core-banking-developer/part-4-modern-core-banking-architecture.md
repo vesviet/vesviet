@@ -2,10 +2,12 @@
 title: "Banking Microservices Architecture: Event Sourcing, CQRS & Saga Patterns for Core Banking"
 slug: "part-4-modern-core-banking-architecture"
 date: 2026-05-06T18:00:00+07:00
-lastmod: 2026-06-11T20:00:00+07:00
+lastmod: 2026-06-17T16:00:00+07:00
 draft: false
 description: "How do digital banks replace T24 and Flexcube with microservices? A technical guide to banking microservices architecture: Event Sourcing for the ledger, CQRS for reporting, Saga patterns for distributed transfers, and Outbox Pattern for guaranteed event delivery."
 weight: 5
+keywords: ["series", "core banking developer", "core", "modern", "microservices architecture"]
+schema: ["Article", "FAQPage"]
 ---
 
 > **Series context (Part 4 of 8):** This article assumes familiarity with [ACID transactions and database concurrency](/series/core-banking-developer/part-3-database-transactions-acid/). Understanding why consistency guarantees are hard at the database layer is essential context before introducing distributed patterns here.
@@ -24,34 +26,44 @@ weight: 5
 
 ## Overall Architecture
 
-```
-                    ┌─────────────────────────────────────┐
-  CHANNELS          │  Mobile App  │  Internet Banking  │  ATM/POS  │
-                    └──────────────────────┬──────────────────────────┘
-                                           │ REST/gRPC
-                    ┌──────────────────────▼──────────────────────────┐
-  API GATEWAY       │         API Gateway (Auth, Rate Limit, Routing)  │
-                    └──────────────────────┬──────────────────────────┘
-                                           │
-         ┌─────────────────────────────────┼──────────────────────────┐
-         │                                 │                          │
-  ┌──────▼──────┐               ┌──────────▼─────────┐    ┌──────────▼──────────┐
-  │ CIF Service │               │  Account Service   │    │ Payment Service     │
-  │ (Customer)  │               │  (CASA, GL)        │    │ (Transfers, Fees)   │
-  └─────────────┘               └────────────────────┘    └─────────────────────┘
-         │                                 │                          │
-         └─────────────────────────────────┼──────────────────────────┘
-                                           │ Events (Kafka/Dapr)
-                    ┌──────────────────────▼──────────────────────────┐
-  EVENT BUS         │              Message Broker (Kafka / Redis)      │
-                    └──────────────────────┬──────────────────────────┘
-                                           │
-         ┌─────────────────────────────────┼──────────────────────────┐
-         │                                 │                          │
-  ┌──────▼──────┐               ┌──────────▼─────────┐    ┌──────────▼──────────┐
-  │ Loan Service│               │ Notification Svc   │    │ Reporting Service   │
-  │ (Lending)   │               │ (SMS, Push, Email) │    │ (CQRS Read Side)    │
-  └─────────────┘               └────────────────────┘    └─────────────────────┘
+```mermaid
+graph TD
+    subgraph CHANNELS
+        MA[Mobile App]
+        IB[Internet Banking]
+        ATM[ATM / POS]
+    end
+    
+    API[API Gateway: Auth, Rate Limit, Routing]
+    MA --> API
+    IB --> API
+    ATM --> API
+    
+    subgraph CoreServices[Core Services]
+        CIF[CIF Service: Customer]
+        ACC[Account Service: CASA, GL]
+        PAY[Payment Service: Transfers, Fees]
+    end
+    
+    API --> CIF
+    API --> ACC
+    API --> PAY
+    
+    BUS[Message Broker: Kafka / Redis / Dapr]
+    
+    CIF --> BUS
+    ACC --> BUS
+    PAY --> BUS
+    
+    subgraph AsyncServices[Asynchronous Services]
+        LOAN[Loan Service: Lending]
+        NOTIF[Notification Service: SMS, Push, Email]
+        REP[Reporting Service: CQRS Read Side]
+    end
+    
+    BUS --> LOAN
+    BUS --> NOTIF
+    BUS --> REP
 ```
 
 ---
@@ -210,6 +222,22 @@ Never design a transfer API as a **synchronous block** because processing throug
 | **Event Bus** | Apache Kafka, Dapr PubSub | Durable, ordered, replayable |
 | **Service Mesh** | Istio, Dapr | mTLS, circuit breaking |
 | **Orchestration** | Kubernetes | Auto-scaling, self-healing |
+
+---
+
+## Frequently Asked Questions (FAQ) about Core Banking Microservices
+
+{{< faq q="How do banking microservices differ from standard e-commerce microservices?" >}}
+Data Integrity and ACID transactions are critical. In e-commerce, losing a click event is acceptable, but in banking, losing a money transfer event is catastrophic. Therefore, banks use the Outbox Pattern, Event Sourcing, and Choreography Sagas instead of standard orchestrations to ensure absolute consistency.
+{{< /faq >}}
+
+{{< faq q="How do you handle data joins across services?" >}}
+In a Microservices architecture, each service has its own database (Database per service). Direct SQL JOINs are not possible. Instead, Core Banking applies CQRS (Command Query Responsibility Segregation) to build a Read Database (like Elasticsearch) that aggregates data from Message Broker events for high-speed queries and reporting.
+{{< /faq >}}
+
+{{< faq q="Does an Event-Driven Architecture make the system slower?" >}}
+No, it actually massively increases throughput. Cross-bank transfers are not processed synchronously blocking the main thread. Instead, they are pushed to a Message Broker (Asynchronous). The initial response is "PROCESSING", and the final "COMPLETED" status is updated once the process is done, ensuring the API Gateway never bottlenecks even with thousands of TPS.
+{{< /faq >}}
 
 ---
 

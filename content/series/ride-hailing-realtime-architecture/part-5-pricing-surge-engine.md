@@ -10,9 +10,9 @@ weight: 6
 
 > **Series context:** This is Part 5 of the [Real-Time Ride-Hailing Architecture](/series/ride-hailing-realtime-architecture/) series. For location ingestion and geospatial indexing, start at [Part 1](/series/ride-hailing-realtime-architecture/part-1-location-ingestion/).
 
-## What Is Surge Rate? (And How Is It Calculated?)
+## What is Surge Multiplier (Surge Rate)?
 
-**Surge rate** is the real-time price multiplier (e.g., 2.0×) applied by ride-hailing platforms when ride demand in a geographic zone exceeds available driver supply. It is recalculated every 30–60 seconds per H3 hexagon cell using a demand/supply ratio fed into a lookup table or ML model.
+> **Surge Multiplier Meaning:** A **surge multiplier** (or surge rate) is a dynamic price multiplier (e.g., 2.0×) automatically applied by ride-hailing platforms in real-time when the demand for rides in a specific geographic zone exceeds the available supply of drivers. For example, if the base fare is $10 and the surge multiplier is 2.0x, the rider pays $20. This multiplier is recalculated every 30–60 seconds for each localized zone (H3 hexagon cell) using Machine Learning models.
 
 {{< faq q="What is surge rate?" >}}
 Surge rate (also called surge pricing or surge multiplier) is the real-time price multiplier that ride-hailing platforms like Uber and Grab apply when demand for rides exceeds the available supply of drivers in a geographic zone. A surge rate of 2.0x means the rider pays twice the base fare.
