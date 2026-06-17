@@ -1,4 +1,4 @@
----
+﻿---
 title: "Executive Summary: The Disruption of Naive RAG and the GraphRAG Era"
 slug: "executive-summary-graphrag-data-pipeline"
 date: "2026-05-17T12:05:00+07:00"
@@ -37,4 +37,5 @@ To resolve this issue permanently, the AI Data Pipeline in 2026 has shifted to a
 
 In this Series, we will dive deep into each architectural layer, from extracting the first line of a PDF to building a robust Knowledge Graph, and finally establishing an automated evaluation system for the RAG Pipeline.
 
-Next, let's step into **[Part 1: The Convergence - Agentic RAG & GraphRAG](./part-1-agentic-graphrag-long-context)**.
+Next, let's step into **[Part 1: The Convergence - Agentic RAG & GraphRAG]({{< ref "part-1-agentic-graphrag-long-context.md" >}})**.
+

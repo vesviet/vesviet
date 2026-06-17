@@ -1,11 +1,11 @@
----
-title: "Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure"
+﻿---
+title: "Part 0: Executive Summary â€” How Amazon Prime Video Saved 90% on Infrastructure"
 description: "Discover why Amazon Prime Video cut infrastructure costs by 90% after moving from Serverless/Microservices back to a Monolith, alongside case studies from Segment and 37signals."
 slug: "executive-summary-amazon-prime-video-monolith"
 tags: ["Modular Monolith", "AWS", "Serverless", "FinOps", "Amazon Prime"]
 ---
 
-# Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure Costs
+# Part 0: Executive Summary â€” How Amazon Prime Video Saved 90% on Infrastructure Costs
 
 In the tech industry, Serverless architecture and Microservices are often hailed as the ultimate solutions for infinite scalability. However, this infinite scalability comes with massive hidden FinOps risks when traffic crosses a critical tipping point.
 
@@ -53,4 +53,5 @@ Amazon Prime Video is not alone; a massive wave of returning to centralized arch
 
 Software optimization isn't about how many services you split your system into; it's about how you physically arrange the communication of the system. **In-memory execution is always cheaper and faster than network communication.**
 
-In **[Part 1: Decision Framework](part-1-decision-framework.md)**, we will dive deep into technical numbers (Latency Benchmarks) and Martin Fowler's "Microservice Premium" model, equipping you with precise quantitative criteria to choose the right architecture for your project.
+In **[Part 1: Decision Framework]({{< ref "part-1-decision-framework.md" >}})**, we will dive deep into technical numbers (Latency Benchmarks) and Martin Fowler's "Microservice Premium" model, equipping you with precise quantitative criteria to choose the right architecture for your project.
+

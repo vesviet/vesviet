@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 3: Domain-Driven Design (DDD) Boundaries in a Modular Monolith"
 description: "How to keep a Monolith from becoming a 'Big Ball of Mud'? A guide to establishing Module boundaries using Bounded Contexts, Spring Modulith, and Packwerk."
 slug: "ddd-module-boundaries-modular-monolith"
@@ -7,7 +7,7 @@ tags: ["Domain-Driven Design", "DDD", "Modular Monolith", "Spring Modulith", "Pa
 
 # Part 3: Domain-Driven Design (DDD) Boundaries in a Modular Monolith
 
-The biggest reason engineering teams fear the Monolith architecture is due to terrible past experiences with "Spaghetti Monoliths" or the "Big Ball of Mud" — where the code for the Billing function calls directly into the database of the Cart function, creating an inextricable web of cross-dependencies.
+The biggest reason engineering teams fear the Monolith architecture is due to terrible past experiences with "Spaghetti Monoliths" or the "Big Ball of Mud" â€” where the code for the Billing function calls directly into the database of the Cart function, creating an inextricable web of cross-dependencies.
 
 To leverage the performance advantages of a Monolith while still achieving independent development velocity like Microservices, we must build a **Modular Monolith**. The key to this architecture is strictly applying **Domain-Driven Design (DDD)** principles and establishing hard "borders" right within the code.
 
@@ -55,6 +55,7 @@ This proves that the Modular Monolith is not a conservative "all-in-one" mindset
 
 > [!FAQ]
 > **Question: Does prohibiting SQL JOINs degrade the Monolith's performance?**
-> **Answer:** For complex display tasks (Dashboards), calling multiple Internal APIs instead of 1 JOIN query might create a small overhead. To handle this, Modular Monolith systems often apply the **CQRS** (Command Query Responsibility Segregation) model – separating the write database (containing strict module boundaries) and creating specialized materialized views (aggregated display tables) for reading (automatically updated via events).
+> **Answer:** For complex display tasks (Dashboards), calling multiple Internal APIs instead of 1 JOIN query might create a small overhead. To handle this, Modular Monolith systems often apply the **CQRS** (Command Query Responsibility Segregation) model â€“ separating the write database (containing strict module boundaries) and creating specialized materialized views (aggregated display tables) for reading (automatically updated via events).
 
-Maintaining strict code borders helps you turn a Monolith into a collection of independent modules. But how do you ensure the Build and Test process for a massive CodeBase doesn't become overloaded? See Shopify's solution in **[Part 4: CI/CD Simplified](part-4-cicd-simplified.md)**.
+Maintaining strict code borders helps you turn a Monolith into a collection of independent modules. But how do you ensure the Build and Test process for a massive CodeBase doesn't become overloaded? See Shopify's solution in **[Part 4: CI/CD Simplified]({{< ref "part-4-cicd-simplified.md" >}})**.
+

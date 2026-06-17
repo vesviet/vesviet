@@ -1,15 +1,15 @@
----
-title: "Part 7: Extraction Pattern – When Should You Extract Microservices?"
+﻿---
+title: "Part 7: Extraction Pattern â€“ When Should You Extract Microservices?"
 description: "Not everything belongs in a Monolith. Learn how to determine when a module should be extracted into a Microservice through lessons from Sentry, GitLab, and Shopify."
 slug: "extraction-pattern-when-to-extract-microservices"
 tags: ["Microservices", "Extraction", "Sentry", "GitLab", "Modular Monolith", "Architecture"]
 ---
 
-# Part 7: Extraction Pattern – When Should You Extract Microservices?
+# Part 7: Extraction Pattern â€“ When Should You Extract Microservices?
 
 Advocating for a **Modular Monolith** architecture does not equate to a conservative "put absolutely everything in one place" mentality. In reality, even the greatest Monolith systems like Shopify, Sentry, or GitLab possess a few "satellites" (Microservices) orbiting their central core.
 
-The core issue is: **We only extract a feature into a Microservice when it truly deserves it**, not out of preference. Expert Sam Newman – author of *Monolith to Microservices* – emphasizes that: If you cannot successfully separate the Database Schema inside a Monolith, you will undoubtedly create a disastrous Microservice.
+The core issue is: **We only extract a feature into a Microservice when it truly deserves it**, not out of preference. Expert Sam Newman â€“ author of *Monolith to Microservices* â€“ emphasizes that: If you cannot successfully separate the Database Schema inside a Monolith, you will undoubtedly create a disastrous Microservice.
 
 Below are **4 signals** indicating a Module has "graduated" and is ready to be extracted from the Modular Monolith.
 
@@ -55,4 +55,5 @@ Extract the Database Schema before you extract the Code. If the DB cannot be dec
 
 ---
 
-Thus, we have gone through all the theory and design processes. In **[Part 8: Case Study Matrix](part-8-case-study-matrix.md)** (the final article of this Playbook series), we will validate all our reasoning with a comprehensive table of speaking numbers from Shopify, Stack Overflow, Target, Zulip, Notion, and Basecamp.
+Thus, we have gone through all the theory and design processes. In **[Part 8: Case Study Matrix]({{< ref "part-8-case-study-matrix.md" >}})** (the final article of this Playbook series), we will validate all our reasoning with a comprehensive table of speaking numbers from Shopify, Stack Overflow, Target, Zulip, Notion, and Basecamp.
+

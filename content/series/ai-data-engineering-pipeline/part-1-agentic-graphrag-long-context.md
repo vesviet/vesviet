@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 1: The Convergence - Agentic RAG & GraphRAG"
 slug: "part-1-agentic-graphrag-long-context"
 date: "2026-05-17T12:00:00+07:00"
@@ -67,4 +67,5 @@ The Convergence Architecture has proven that RAG is not dead. On the contrary, c
 
 However, your graph "Memory" will be useless if you feed it garbage.
 
-In **[Part 2: Agentic Ingestion & Multimodal Knowledge Graphs](./part-2-agentic-ingestion-multimodal)**, we will tackle every Data Engineer's biggest nightmare: How to use AI to accurately read and understand tens of thousands of PDF pages, financial tables, and technical diagrams before ingesting them into GraphRAG.
+In **[Part 2: Agentic Ingestion & Multimodal Knowledge Graphs]({{< ref "part-2-agentic-ingestion-multimodal.md" >}})**, we will tackle every Data Engineer's biggest nightmare: How to use AI to accurately read and understand tens of thousands of PDF pages, financial tables, and technical diagrams before ingesting them into GraphRAG.
+

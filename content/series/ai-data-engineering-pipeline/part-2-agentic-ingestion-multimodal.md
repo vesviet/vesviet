@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 2: Agentic Ingestion & Multimodal Knowledge Graphs"
 slug: "part-2-agentic-ingestion-multimodal"
 date: "2026-05-17T12:00:00+07:00"
@@ -18,7 +18,7 @@ In Enterprise RAG architecture, the most ruthless formula is: **Garbage In = Gar
 
 Before 2025, data engineers often used traditional OCR tools (like Tesseract, PyMuPDF) to extract text from PDF documents. The result was a disaster: Financial report table structures were shattered, data columns were merged together, and technical diagrams were completely ignored. When a Vector Database contains a messy, contextless heap of text (Context loss), no matter how powerful the LLM is, the answer you receive will only be a Hallucination.
 
-2026 marks the overthrow of mechanical OCR to enter the era of **Multimodal Document Understanding** — where AI doesn't just "read" text; it "sees" the entire document page.
+2026 marks the overthrow of mechanical OCR to enter the era of **Multimodal Document Understanding** â€” where AI doesn't just "read" text; it "sees" the entire document page.
 
 ---
 
@@ -49,11 +49,11 @@ Instead of trying to extract text, tables, and images separately (a highly error
 
 ---
 
-## 4. M³KG-RAG: Building Multimodal Knowledge Graphs (Audio & Video)
+## 4. MÂ³KG-RAG: Building Multimodal Knowledge Graphs (Audio & Video)
 
 RAG in the Enterprise environment is not just about text. The most massive treasure trove of knowledge often lies in meeting recordings (Zoom/Teams), training videos, or product demos.
 
-The **M³KG-RAG (Multi-hop Multimodal Knowledge Graph-enhanced RAG)** architecture solves this problem through a multi-stream pipeline:
+The **MÂ³KG-RAG (Multi-hop Multimodal Knowledge Graph-enhanced RAG)** architecture solves this problem through a multi-stream pipeline:
 
 1. **Multi-Stream Processing:** Audio is transcribed perfectly by ASR models (like Whisper), while the video image stream is cut into frames for the Vision LLM to continuously generate captions for ongoing actions.
 2. **Triplet Extraction:** Agents automatically extract entities (People, Events, Actions) from Text, Images, and Audio, then connect them into a Knowledge Graph Network.
@@ -77,4 +77,5 @@ If **Part 1** provided you with a Brain Architecture (Agentic GraphRAG), then **
 
 However, no matter how clean your data is, if your Embedding and Retrieval strategy is flawed, the system will still crawl at a snail's pace and cost thousands of dollars in API fees.
 
-In **[Part 3: The Art of Chunking & Semantic Caching](./part-3-late-chunking-semantic-caching)**, we will dive deep into the ultimate technique of 2026: **Late Chunking** (Preserving context before slicing) and how to use Redis as **Semantic Caching** to reduce LLM API costs by 70%.
+In **[Part 3: The Art of Chunking & Semantic Caching]({{< ref "part-3-late-chunking-semantic-caching.md" >}})**, we will dive deep into the ultimate technique of 2026: **Late Chunking** (Preserving context before slicing) and how to use Redis as **Semantic Caching** to reduce LLM API costs by 70%.
+

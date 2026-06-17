@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 3: The Art of Chunking & Semantic Caching"
 slug: "part-3-late-chunking-semantic-caching"
 date: "2026-05-17T12:00:00+07:00"
@@ -69,4 +69,5 @@ When a RAG system goes into Production, you will realize a painful truth: 70% of
 
 Chunking is no longer about using a cleaver to chop meat; it is the art of context preservation. With the combination of Late Chunking, Contextual Retrieval, and Reranking filters, your RAG will answer with the precision of an expert. Meanwhile, Semantic Caching will protect your budget from unnecessary depletion.
 
-However, no matter how good RAG is, it is still a passive (Reactive) answering system. In **[Part 4: Streaming CDC & Federated RAG](./part-4-streaming-cdc-federated-rag)**, we will take this system to a new level: Data Pipelines that automatically update knowledge in real-time (Real-time CDC) directly from the enterprise's core Database systems.
+However, no matter how good RAG is, it is still a passive (Reactive) answering system. In **[Part 4: Streaming CDC & Federated RAG]({{< ref "part-4-streaming-cdc-federated-rag.md" >}})**, we will take this system to a new level: Data Pipelines that automatically update knowledge in real-time (Real-time CDC) directly from the enterprise's core Database systems.
+

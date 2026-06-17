@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 7: Agentic Memory - Solving the 'Goldfish' Curse"
 slug: "part-7-agentic-memory-long-term"
 date: "2026-05-17T12:00:00+07:00"
@@ -84,4 +84,5 @@ Without memory, an AI Agent is just an "Intern" who wakes up every morning needi
 
 At this point, we have perfected the Brain (RAG), the Hands (Tool/MCP), and the Memory of the Agent. But how do we deploy this complex machine to a Server? How do we make it respond in the blink of an eye instead of spinning for 10 seconds?
 
-Welcome to **[Part 8: Inference Optimization & vLLM Deployment](./part-8-inference-optimization-vllm)**, where we will learn how to overclock AI models to run in real-world Production Cloud environments.
+Welcome to **[Part 8: Inference Optimization & vLLM Deployment]({{< ref "part-8-inference-optimization-vllm.md" >}})**, where we will learn how to overclock AI models to run in real-world Production Cloud environments.
+

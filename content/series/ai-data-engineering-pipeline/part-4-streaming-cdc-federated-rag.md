@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 4: Streaming CDC & Federated RAG - Real-Time Knowledge"
 slug: "part-4-streaming-cdc-federated-rag"
 date: "2026-05-17T12:00:00+07:00"
@@ -85,4 +85,5 @@ Modern RAG is no longer a Python Script running locally. It is the intersection 
 
 However, no matter how clean, real-time, and well-governed your data is, if your LLM is "tricked" by the user themselves, the entire system will collapse.
 
-In **[Part 5: Enterprise Security & Data Poisoning](./part-5-enterprise-security-data-poisoning)**, we will step into the underworld of AI Security, where Hackers use "Indirect Prompt Injections" to manipulate your RAG, and explore how to build a Defense-in-Depth system.
+In **[Part 5: Enterprise Security & Data Poisoning]({{< ref "part-5-enterprise-security-data-poisoning.md" >}})**, we will step into the underworld of AI Security, where Hackers use "Indirect Prompt Injections" to manipulate your RAG, and explore how to build a Defense-in-Depth system.
+

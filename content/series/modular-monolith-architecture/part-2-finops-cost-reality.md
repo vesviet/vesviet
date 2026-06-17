@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 2: FinOps Cost Reality - The Hidden Tax of Microservices"
 description: "Analyzing the AWS bill of distributed architectures: Hidden costs from Service Mesh (Istio), data transfer fees (Cross-AZ Egress), and Observability waste. Lessons from Segment."
 slug: "finops-cost-reality-microservices-tax"
@@ -9,7 +9,7 @@ tags: ["FinOps", "AWS", "Istio", "Cloud Cost", "Segment", "Modular Monolith"]
 
 One of the most appealing promises of Microservices is lean Auto-scaling capability: "Only spin up servers for the service under load." Theoretically, this saves cloud costs. However, when contrasted with the reality of cloud cost management (FinOps), companies discover the exact opposite: **Microservices architectures are often many times more expensive than Monoliths**.
 
-This discrepancy doesn't stem from actual Compute capacity, but from the **"Distributed Tax"** — hidden costs incurred merely to maintain communication and monitoring between isolated components.
+This discrepancy doesn't stem from actual Compute capacity, but from the **"Distributed Tax"** â€” hidden costs incurred merely to maintain communication and monitoring between isolated components.
 
 ## 1. Resource Costs from Service Mesh (Istio / Linkerd)
 
@@ -58,4 +58,5 @@ This fragmentation created a nightmare for costs and management:
 > [!TIP]
 > **FinOps Tip:** "The diversity of Microservices is directly proportional to the cloud bill." By consolidating into a Modular Monolith, you automatically eliminate proxy layers, cross-mTLS, internal bandwidth, and effectively optimize database connection pools.
 
-After realizing the hefty price of a distributed system, how do we merge code into a single block (Monolith) without turning it into a chaotic "Spaghetti Code" mess? The answer lies in establishing virtual "boundaries." Discover how in **[Part 3: Domain-Driven Design (DDD) Boundaries](part-3-ddd-module-boundaries.md)**.
+After realizing the hefty price of a distributed system, how do we merge code into a single block (Monolith) without turning it into a chaotic "Spaghetti Code" mess? The answer lies in establishing virtual "boundaries." Discover how in **[Part 3: Domain-Driven Design (DDD) Boundaries]({{< ref "part-3-ddd-module-boundaries.md" >}})**.
+

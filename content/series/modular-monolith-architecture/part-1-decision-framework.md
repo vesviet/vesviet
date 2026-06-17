@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 1: Architectural Decision Framework"
 description: "Use real-world latency, performance data, and lessons from Stack Overflow to decide when to use a Modular Monolith instead of Microservices."
 slug: "decision-framework-modular-monolith-vs-microservices"
@@ -29,7 +29,7 @@ The biggest mistake when transitioning to Microservices is underestimating **Net
 | Call Type | Estimated Latency | Difference vs In-process |
 |-----------|-------------------|--------------------------|
 | In-process (Direct Memory) | 1 - 100 ns | Base |
-| gRPC (Local Loopback/LAN) | 100 - 500 µs | ~10,000x Slower |
+| gRPC (Local Loopback/LAN) | 100 - 500 Âµs | ~10,000x Slower |
 | HTTP/JSON REST (Network) | 1 - 50+ ms | ~100,000x Slower |
 
 In a **Modular Monolith** architecture, modules communicate with each other via *in-process method calls* (function calls in RAM). This happens in a few nanoseconds. When you split a module into a Microservice, *serializing* data (like JSON), sending packets over TCP/IP, processing routing, security, and *deserializing* at the other end consumes milliseconds.
@@ -65,4 +65,5 @@ Before splitting your system, ask yourself the following questions:
 
 The decision to use a distributed architecture should solely stem from **organizational scaling needs** (when teams can no longer work together on a single codebase due to process conflicts) or **distinct language/environment requirements** (e.g., an AI module requires Python, the Core module requires Java). For 90% of projects, a **Modular Monolith** combined with Vertical Scaling and caching is sufficient to handle global-scale traffic.
 
-In **[Part 2: FinOps Cost Reality](part-2-finops-cost-reality.md)**, we will open the "Cloud Bill" to analyze in detail how sidecars, service meshes, and cross-AZ traffic fees are eroding the budgets of Microservices systems.
+In **[Part 2: FinOps Cost Reality]({{< ref "part-2-finops-cost-reality.md" >}})**, we will open the "Cloud Bill" to analyze in detail how sidecars, service meshes, and cross-AZ traffic fees are eroding the budgets of Microservices systems.
+

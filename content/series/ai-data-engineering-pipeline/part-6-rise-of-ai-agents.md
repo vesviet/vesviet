@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 6: The Rise of AI Agents - From Reading to Autonomy"
 slug: "part-6-rise-of-ai-agents"
 date: "2026-05-17T12:00:00+07:00"
@@ -47,7 +47,7 @@ The emergence of the **Model Context Protocol (MCP)** managed by the Linux Found
 
 When shifting to Multi-Agent systems, programmers debated fiercely between AutoGen and LangGraph.
 
-**AutoGen** designs Agents like a group of people chatting with each other (Group Chat) – very creative but chaotic. You never know where the conversation will lead.
+**AutoGen** designs Agents like a group of people chatting with each other (Group Chat) â€“ very creative but chaotic. You never know where the conversation will lead.
 
 Conversely, **LangGraph** wins absolutely in the Enterprise environment. It forces the Agent's thought flow into a Directed Acyclic Graph (DAG) with Cyclic capabilities.
 *   **Stateful Management:** All memory and work progress are saved as Checkpoints. If the server crashes at Step 4, LangGraph will auto-recover and resume from Step 4, instead of grinding again from Step 1. Enterprises need stability and predictability, and LangGraph was born to deliver that.
@@ -71,4 +71,5 @@ The combination of AI automation and human accountability is the key to bringing
 
 Agentic AI transforms your system from an encyclopedia into a true workforce. By combining reasoning capabilities (Plan-and-Solve), a transcendent connection standard (MCP), and the absolute control of LangGraph (HITL), 2026 enterprises are automating processes that seemed only humans could do.
 
-However, an AI Agent only performs well if it can "remember" what it has done. In **[Part 7: Agentic Memory - Long-Term Personalized Storage](./part-7-agentic-memory-long-term)**, we will dissect **Mem0** and **Zep** to see how engineers grant AI a "hippocampus" – the ability to remember events across time.
+However, an AI Agent only performs well if it can "remember" what it has done. In **[Part 7: Agentic Memory - Long-Term Personalized Storage]({{< ref "part-7-agentic-memory-long-term.md" >}})**, we will dissect **Mem0** and **Zep** to see how engineers grant AI a "hippocampus" â€“ the ability to remember events across time.
+

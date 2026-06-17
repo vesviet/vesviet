@@ -1,11 +1,11 @@
----
-title: "Part 5: Observability in Memory – When Everything Shares a Single Call Stack"
+﻿---
+title: "Part 5: Observability in Memory â€“ When Everything Shares a Single Call Stack"
 description: "Comparing Distributed Tracing in Microservices with In-process Profiling in a Modular Monolith. Why is OpenTelemetry on a Monolith faster and cheaper?"
 slug: "observability-in-process-modular-monolith-opentelemetry"
 tags: ["Observability", "OpenTelemetry", "Distributed Tracing", "Modular Monolith", "Profiling"]
 ---
 
-# Part 5: Observability in Memory – When Everything Shares a Single Call Stack
+# Part 5: Observability in Memory â€“ When Everything Shares a Single Call Stack
 
 When it comes to operating a production system, Observability is the line between fixing an issue in 10 minutes and staying up all night searching for the root cause. Microservices architecture has made Observability extremely expensive and complex with the advent of **Distributed Tracing**.
 
@@ -39,7 +39,7 @@ Although **OpenTelemetry** is known as the gold standard for Distributed Tracing
 ### B. Single Call Stack and the Absolute Stack Trace
 The biggest advantage of running in a single process is **Stack Trace Integrity**.
 When an Exception occurs in the Database layer of the *Inventory* module (deep within a processing flow originating from the *Checkout* module), the Monolith system will print a single Stack Trace displaying the exact path from the outermost Controller, through the Internal APIs, down to the exact line of code that threw the error.
-Everything is perfectly linked, synchronous, and 100% reliable – something Distributed Tracing can never guarantee.
+Everything is perfectly linked, synchronous, and 100% reliable â€“ something Distributed Tracing can never guarantee.
 
 ### C. Deep In-process Profiling
 A "secret weapon" of the Monolith is the ability to run **Continuous Profiling** (e.g., using `pprof` in Go, JFR in Java, or Datadog Profiler).
@@ -52,4 +52,5 @@ To set up an optimal Observability system for a Modular Monolith:
 2. **Monitor the Global Connection Pool:** Closely monitor the Database Connection Pool. In a Monolith, a slow-running module can hold a database connection for a long time and exhaust the pool for the entire application (A weakness to note).
 3. **Apply Structured Logging (JSON Logs):** Ensure logs are appended with a static `module_name` to easily filter errors by the responsible team on systems like ELK or Datadog.
 
-Observability in a Monolith is clear, cheap, and effective. But if your system is *currently* Microservices (or a terrible Spaghetti Monolith) and you want to consolidate them into a Modular Monolith, where should you start? **[Part 6: Migration Playbook](part-6-migration-playbook.md)** provides a detailed roadmap.
+Observability in a Monolith is clear, cheap, and effective. But if your system is *currently* Microservices (or a terrible Spaghetti Monolith) and you want to consolidate them into a Modular Monolith, where should you start? **[Part 6: Migration Playbook]({{< ref "part-6-migration-playbook.md" >}})** provides a detailed roadmap.
+

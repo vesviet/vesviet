@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 8: Inference Optimization & vLLM Deployment on Production"
 slug: "part-8-inference-optimization-vllm"
 date: "2026-05-17T12:00:00+07:00"
@@ -91,4 +91,5 @@ docker run --runtime nvidia --gpus all \
 Bringing AI to Production is not throwing a Python file onto a Server. It is an architectural war, where you must use vLLM for memory management (PagedAttention), model quantization (FP8/AWQ), and generation speed hacking (Speculative Decoding).
 
 When the system runs smoothly, the next question is: *"How do I know what my Agent is thinking? If it makes a mistake, at which step did it fail?"*
-Let's move on to **[Part 9: Agentic Observability & Monitoring](./part-9-agentic-observability-monitoring)** to establish a surveillance camera system over the AI's thought process using LangSmith and Langfuse.
+Let's move on to **[Part 9: Agentic Observability & Monitoring]({{< ref "part-9-agentic-observability-monitoring.md" >}})** to establish a surveillance camera system over the AI's thought process using LangSmith and Langfuse.
+

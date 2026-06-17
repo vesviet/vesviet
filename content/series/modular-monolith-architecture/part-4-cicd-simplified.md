@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 4: CI/CD Simplified & Atomic Deployments"
 description: "Why is CI/CD management for Microservices so complex? Discover the power of Atomic Deployments and how Shopify runs hundreds of thousands of tests in under 10 minutes on a Monolith."
 slug: "cicd-simplified-atomic-deployments-monolith"
@@ -52,4 +52,5 @@ With a Modular Monolith, the Platform Engineering team's efforts are restructure
 - There is only **one deployment process** to maintain (maintain 1 excellent CI/CD script instead of 100 terrible ones).
 - The Kubernetes/DevOps infrastructure budget is reallocated toward renting extremely powerful servers to **parallelize CI tests**, delivering direct value to developer Velocity.
 
-Simplifying CI/CD alone can save an organization countless work hours. However, when the system goes into Production, how do we track errors? In a distributed architecture, we need highly expensive Distributed Tracing. In a Monolith, this problem is much simpler and more effective. Discover how in **[Part 5: Observability in Memory](part-5-observability.md)**.
+Simplifying CI/CD alone can save an organization countless work hours. However, when the system goes into Production, how do we track errors? In a distributed architecture, we need highly expensive Distributed Tracing. In a Monolith, this problem is much simpler and more effective. Discover how in **[Part 5: Observability in Memory]({{< ref "part-5-observability.md" >}})**.
+
