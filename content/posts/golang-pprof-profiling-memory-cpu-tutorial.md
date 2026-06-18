@@ -289,4 +289,4 @@ You must compile your service with the experiment flag: `GOEXPERIMENT=goroutinel
 
 🔗 **Related Reading:** Profiling tells you *why* a function is slow, but detecting goroutine growth early is the first line of defence. Read the companion guide [Goroutine Leak Detection and Fix in Production Go Services](/posts/goroutine-leak-detection-production-golang/) for a deep-dive into goroutine lifecycle management. For distributing observability across your entire microservices fleet, see [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr/) which covers tracing, retry, and DLQ patterns end-to-end.
 
-{{< author-cta />}}
+{{< author-cta >}}

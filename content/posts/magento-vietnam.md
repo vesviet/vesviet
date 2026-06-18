@@ -249,7 +249,7 @@ When all the variables are on the table — cost, technical depth, hiring model,
 - Delivery risk: Agency (absorbs PM/QA, carries SLA accountability).
 - Knowledge retention risk: ODC (team accumulates institutional knowledge over years).
 
-{{< author-cta />}}
+{{< author-cta >}}
 
 ---
 

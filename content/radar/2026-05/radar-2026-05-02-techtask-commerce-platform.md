@@ -171,4 +171,4 @@ For a senior backend/platform engineer, this is the high-value TechTask layer: t
 - [Goroutine Leak Detection in Production](/posts/goroutine-leak-detection-production-golang/)
 - [GitOps at Scale with K8s & ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/)
 
-{{< author-cta />}}
+{{< author-cta >}}

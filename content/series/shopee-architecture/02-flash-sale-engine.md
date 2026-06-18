@@ -74,4 +74,4 @@ sequenceDiagram
 - [Solving the Hot Key Problem with Inventory Sharding](https://medium.com/@soesah/how-to-handle-flash-sales-using-redis-c02058e0a811)
 - [Shopee Engineering Blog](https://careers.shopee.sg/blog/)
 
-{{< author-cta />}}
+{{< author-cta >}}

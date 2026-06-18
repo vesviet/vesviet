@@ -143,4 +143,4 @@ A good standard should be:
 > *If you have mastered the foundations, continue to the advanced sections:*
 > *Read [Part 6 — From Prompting to Context Engineering](/series/prompt-standard/part-6-context-engineering/).*
 
-{{< author-cta />}}
+{{< author-cta >}}

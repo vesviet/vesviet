@@ -139,7 +139,7 @@ For the full decision on when to keep building inside Magento vs when to migrate
 
 **Go deeper:** [Exporting Magento 2 Data: Flat SQL Tables with Node.js](/posts/exporting-magento-2-data-flat-sql-nodejs/) — a hands-on guide to migrating your Magento catalog data into a modern microservices data layer.
 
-{{< author-cta />}}
+{{< author-cta >}}
 
 ## FAQ
 

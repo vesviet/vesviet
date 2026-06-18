@@ -109,4 +109,4 @@ A strong prompt is not just a well-written prompt. It is a prompt that is **meas
 > *In the final foundations part, we assemble everything into a minimum viable Prompt Standard kit for immediate team deployment.*
 > *Continue to [Part 5 — A Minimum Viable Prompt Standard Kit](/series/prompt-standard/part-5-team-template/).*
 
-{{< author-cta />}}
+{{< author-cta >}}

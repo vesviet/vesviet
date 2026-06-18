@@ -163,7 +163,7 @@ By leveraging **LiteLLM** as an intelligent routing layer and **Docker** for pri
 - [Prompt Engineering Standards for Production AI Systems](/series/prompt-standard/) — the prompt design patterns and versioning conventions this swarm uses internally.
 - [What is Vibe Coding? AI Code Review & the Future of Software](/posts/vibe-coding-and-ai-code-review-future/) — how AI agents are reshaping code generation and review workflows.
 
-{{< author-cta />}}
+{{< author-cta >}}
 
 ## FAQ
 

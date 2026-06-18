@@ -238,7 +238,7 @@ The token count is different. The engineering discipline is the same.
 
 **Continue Reading:** The [SLM Playbook Series](/series/slm-playbook/) goes deeper on the model layer — covering LoRA fine-tuning, DPO alignment, and vLLM deployment for teams that want to own their AI models rather than depend on third-party APIs.
 
-{{< author-cta />}}
+{{< author-cta >}}
 
 ## FAQ
 

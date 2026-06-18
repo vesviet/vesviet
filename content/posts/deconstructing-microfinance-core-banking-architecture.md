@@ -157,7 +157,7 @@ For the broader strategic picture — how banks replace monolithic cores like Te
 
 **Related Reading:** For the broader landscape of engineers working on core banking systems and the skills they need, see [The Landscape of Core Banking Developers](/series/core-banking-developer/executive-summary/). For a contrast at global scale — how PayPay applies similar transaction ledger and idempotency patterns for 70M users — see [PayPay Architecture: Scaling Payments to 70M Users](/posts/paypay-architecture-scaling/). For the architectural framework and ISO standards behind modern core banking, see the [Core Banking Architecture series](/series/core-banking-architecture/).
 
-{{< author-cta />}}
+{{< author-cta >}}
 
 ## FAQ
 

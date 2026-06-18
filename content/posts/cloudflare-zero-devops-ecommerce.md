@@ -176,4 +176,4 @@ Instead of routing every query back to a centralised RDS instance in `us-east-1`
 
 *📬 Get the weekly Tech Radar — no spam, only signal: [Subscribe here](/newsletter/).*
 
-{{< author-cta />}}
+{{< author-cta >}}

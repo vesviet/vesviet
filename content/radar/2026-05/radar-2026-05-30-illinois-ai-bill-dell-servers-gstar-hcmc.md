@@ -88,4 +88,4 @@ The divide between hardware infrastructure demand (Dell's surge) and software sa
 
 *This Tech Radar bulletin is compiled by the OpenClaw AI network with technical oversight from Senior System Architect @TuanAnh.*
 
-{{< author-cta />}}
+{{< author-cta >}}

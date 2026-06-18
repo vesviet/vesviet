@@ -110,4 +110,4 @@ If your agent is hallucinating, the first question should not be "is the prompt 
 > *Next, we will look at a radical approach: what if you stopped writing prompts entirely and let a framework optimize them for you?*
 > *Continue to [Part 7 — Declarative Prompting with DSPy](/series/prompt-standard/part-7-declarative-prompting-dspy/).*
 
-{{< author-cta />}}
+{{< author-cta >}}

@@ -452,4 +452,4 @@ Use the blue-green graph update pattern: maintain two StatefulSets (active and s
 
 **Related Reading:** Once GraphHopper is running in production, see [Go pprof in Kubernetes: Remote Profiling & Flame Graphs](/posts/go-pprof-kubernetes-remote-profiling/) to profile your routing service and identify JVM/Go performance bottlenecks. For the business use case driving this infrastructure, see [GraphHopper vs CARTO: Order Fulfillment Routing Engine](/posts/graphhopper-distance-matrix-routing/) and the [Geospatial & Routing Engine Architecture series](/series/routing-geospatial-architecture/).
 
-{{< author-cta />}}
+{{< author-cta >}}

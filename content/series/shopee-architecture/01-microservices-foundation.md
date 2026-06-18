@@ -51,4 +51,4 @@ graph TD
 
 **Developer Takeaway:** A skyscraper needs a solid foundation. The combination of **Microservices + Go + gRPC + API Gateway** forms the perfect skeleton for building distributed, ultra-high traffic, and low-latency systems.
 
-{{< author-cta />}}
+{{< author-cta >}}

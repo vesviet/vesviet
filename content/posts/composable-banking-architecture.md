@@ -573,4 +573,4 @@ RFC 8705 defines Mutual-TLS Client Certificate-Bound Access Tokens for OAuth 2.0
 
 DORA (Digital Operational Resilience Act, enforceable January 2025) requires significant EU financial institutions to conduct Threat-Led Penetration Testing (TLPT) at least every three years. TLPT follows the TIBER-EU framework, mimicking real adversary TTPs against all critical ICT functions — including the API Gateway, event bus, orchestration layer, and third-party SaaS core banking platforms. A single TLPT exercise typically spans 6-12 months.
 
-{{< author-cta />}}
+{{< author-cta >}}

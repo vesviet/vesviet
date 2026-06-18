@@ -153,7 +153,7 @@ By mapping contexts meticulously, enforcing strict separation via Kratos, and ut
 - [Mastering Event-Driven Architecture with Dapr Pub/Sub](/posts/mastering-event-driven-architecture-dapr/) — deep dive into the Saga, DLQ, and idempotency patterns powering this ecosystem.
 - [GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/) — how we deploy all 21 services with zero manual `kubectl` commands.
 
-{{< author-cta />}}
+{{< author-cta >}}
 
 ## FAQ
 

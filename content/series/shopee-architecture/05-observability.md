@@ -57,4 +57,4 @@ Shopee utilizes **Apache Flink**—a Stream Processing framework—to analyze co
 
 **Developer Takeaway:** The more complex your Microservices become, the blinder you are without proper Observability. Injecting TraceIDs via Headers, centralizing logs in a system like ClickHouse, and visualizing them in Grafana is the best insurance investment you can make for any large-scale project.
 
-{{< author-cta />}}
+{{< author-cta >}}

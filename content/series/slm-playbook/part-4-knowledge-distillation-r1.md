@@ -193,4 +193,4 @@ While fine-tuning on reasoning data teaches the student model the *appearance* o
 
 In [**Part 5: Preference Alignment (DPO, KTO, GRPO)**](/series/slm-playbook/part-5-preference-alignment/), we explore reinforcement learning algorithms (**DPO**, **KTO**, and **GRPO**) that align and enforce correct logical steps on our models.
 
-{{< author-cta />}}
+{{< author-cta >}}

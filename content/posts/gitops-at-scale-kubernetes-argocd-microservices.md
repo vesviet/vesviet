@@ -330,7 +330,7 @@ The investment pays off the first time you hit a bad production deploy at 2am. I
 - [Mastering Event-Driven Architecture with Dapr Pub/Sub](/posts/mastering-event-driven-architecture-dapr/) — how the 21 microservices deployed here communicate asynchronously.
 - [MySQL Scaling: Replication, Sharding & TiDB](/posts/mysql-scaling-sharding-tidb-architecture/) — scaling the databases that these Kubernetes-managed services depend on.
 
-{{< author-cta />}}
+{{< author-cta >}}
 
 ## FAQ
 

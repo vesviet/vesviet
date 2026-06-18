@@ -461,7 +461,7 @@ The cron job got us started. The state machine keeps us running.
 
 *This article is part of the [Autonomous AI Engineering](/series/) series on tanhdev.com.*
 
-{{< author-cta />}}
+{{< author-cta >}}
 
 ## FAQ
 

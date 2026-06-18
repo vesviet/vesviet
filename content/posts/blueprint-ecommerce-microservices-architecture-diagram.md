@@ -217,7 +217,7 @@ For the full argument on when this complexity is justified — and when it isn't
 | [Magento to Microservices: Why](/posts/why-migrate-magento-to-microservices/) | Decision framework: when to migrate, when not to |
 | [Magento to Microservices: How](/posts/moving-from-magento-to-microservices/) | 3-phase Strangler Fig, Debezium CDC, bidirectional sync |
 
-{{< author-cta />}}
+{{< author-cta >}}
 
 ## FAQ
 

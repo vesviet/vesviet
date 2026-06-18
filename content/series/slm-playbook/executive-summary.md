@@ -46,4 +46,4 @@ This playbook is written for CTOs, AI Architects, and Senior Backend Engineers. 
 
 Let's dive into the core architecture: **[Part 1 — Hybrid AI & Self-Hosted vLLM](/series/slm-playbook/part-1-slm-hybrid-architecture/)**.
 
-{{< author-cta />}}
+{{< author-cta >}}

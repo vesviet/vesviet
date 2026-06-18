@@ -62,4 +62,4 @@ This expansion required a fifth architectural initiative: an **AI Platform layer
 
 The remaining parts of this series deconstruct each pillar in depth: how PayPay designs its microservices boundaries (Part 1), how it guarantees payment integrity through Kafka (Part 2), how TiDB replaced Aurora (Part 3), how SRE and chaos engineering keep 99.99% uptime during campaigns (Part 4), how pre-scaling strategy is architected for billion-yen events (Part 5), and how AI is becoming the platform's invisible foundation (Part 6).
 
-{{< author-cta />}}
+{{< author-cta >}}

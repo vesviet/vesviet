@@ -282,4 +282,4 @@ Establishing your gateway and hosting vLLM only solves the deployment side. To m
 
 In [**Part 2: Data Engineering for SFT**](/series/slm-playbook/part-2-sft-data-engineering/), we step into the data pipeline: studying **NEFTune** noise injection and semantic deduplication using **SemDeDup** to curate high-quality training inputs.
 
-{{< author-cta />}}
+{{< author-cta >}}

@@ -360,4 +360,4 @@ Use a streaming CDC pipeline (Kafka Connect reading file system or S3 change eve
 
 **Related Reading:** For the complete enterprise AI data pipeline — beyond GraphRAG to multimodal ingestion, semantic caching, streaming CDC, and production Evals — see the [Enterprise AI Data Pipeline & GraphRAG Architecture series](/series/ai-data-engineering-pipeline/). For the frontend architecture that consumes these pipelines, see [Generative UI with MCP: Architecting AI-Native Frontends](/posts/generative-ui-with-mcp-ai-native-frontend/). And for the engineering context of AI-generated code that relies on RAG systems, see [What is Vibe Coding?](/posts/vibe-coding-and-ai-code-review-future/).
 
-{{< author-cta />}}
+{{< author-cta >}}

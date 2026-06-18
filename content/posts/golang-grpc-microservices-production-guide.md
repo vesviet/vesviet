@@ -781,4 +781,4 @@ Use `google.golang.org/grpc/test/bufconn` for in-process testing without real ne
 - **High-concurrency patterns:** For rate limiting and circuit breaker patterns in Go microservices, see [High-Concurrency Systems](/series/high-concurrency-systems/).
 - **Service mesh for gRPC:** For mTLS at scale without per-service certificate management, see the [Gateway API v1.5 & Kubernetes Networking](/radar/2026-05/radar-2026-05-01-gateway-api-v1-5/) guide.
 
-{{< author-cta />}}
+{{< author-cta >}}

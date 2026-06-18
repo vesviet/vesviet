@@ -188,7 +188,7 @@ If not, the build cost is the smallest number you'll spend. Budget for the opera
 
 For context on where the technical boundaries of Magento are and when it makes sense to evolve beyond it, see [Why You Should Migrate from Magento to Microservices (And When You Shouldn't)](/posts/why-migrate-magento-to-microservices/) and [Is Magento Still Worth Investing In (2026)?](/posts/magento-still-worth-investing-2026/).
 
-{{< author-cta />}}
+{{< author-cta >}}
 
 ## FAQ
 

@@ -574,7 +574,7 @@ Start when you have concrete, observable pain points — not because microservic
 
 The Strangler Fig pattern is the right migration path from a working monolith: identify one bounded context, extract it as a standalone service, route traffic to it via API Gateway, and verify in production before extracting the next domain. Do not attempt a big-bang rewrite.
 
-{{< author-cta />}}
+{{< author-cta >}}
 
 ---
 

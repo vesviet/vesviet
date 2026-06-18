@@ -122,4 +122,4 @@ The mental model shift: **stop writing prompts, start defining contracts and met
 > *In the final part, we bring everything together into a production-grade PromptOps pipeline: CI/CD for prompts, LLM-as-a-Judge, and drift detection.*
 > *Continue to [Part 8 — Production PromptOps Pipeline](/series/prompt-standard/part-8-production-promptops/).*
 
-{{< author-cta />}}
+{{< author-cta >}}

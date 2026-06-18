@@ -153,4 +153,4 @@ For platform teams, the immediate action is clear: audit where your ingress arch
 **📚 Related Reading:**
 - [GitOps at Scale with K8s & ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/)
 
-{{< author-cta />}}
+{{< author-cta >}}

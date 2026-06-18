@@ -166,7 +166,7 @@ The platform is not the decision. **Your team's ability to own upgrades, securit
 
 *If you are feeling the friction of monolithic upgrades and considering an alternative path, read my guide on [Why You Should Migrate from Magento to Microservices](/posts/why-migrate-magento-to-microservices/).*
 
-{{< author-cta />}}
+{{< author-cta >}}
 
 ## FAQ
 
