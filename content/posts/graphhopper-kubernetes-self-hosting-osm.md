@@ -448,4 +448,8 @@ Yes, but with constraints. `ReadWriteOnce` PVCs (standard SSD storage) only supp
 ### How do I update the OSM map data without downtime?
 Use the blue-green graph update pattern: maintain two StatefulSets (active and standby), update the OSM file and regenerate the graph on the standby, then switch the Kubernetes Service selector to the newly ready standby. This eliminates downtime at the cost of double the storage and compute during the update window.
 
+---
+
+**Related Reading:** Once GraphHopper is running in production, see [Go pprof in Kubernetes: Remote Profiling & Flame Graphs](/posts/go-pprof-kubernetes-remote-profiling/) to profile your routing service and identify JVM/Go performance bottlenecks. For the business use case driving this infrastructure, see [GraphHopper vs CARTO: Order Fulfillment Routing Engine](/posts/graphhopper-distance-matrix-routing/) and the [Geospatial & Routing Engine Architecture series](/series/routing-geospatial-architecture/).
+
 {{< author-cta >}}

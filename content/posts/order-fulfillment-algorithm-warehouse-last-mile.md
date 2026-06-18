@@ -183,7 +183,7 @@ VRP solvers require a distance (or travel time) matrix between all delivery poin
 
 Amazon uses a combination of GraphHopper (self-hosted on the road network data from OpenStreetMap) and proprietary HERE Maps APIs to pre-compute realistic road-network travel times between all pairs of delivery locations in a zone. This distance matrix computation happens the night before, so routes are planned by morning.
 
-For a detailed breakdown of GraphHopper's distance matrix API and how it is deployed in production, see [GraphHopper vs CARTO: Order Fulfillment Routing Engine](/posts/graphhopper-distance-matrix-routing).
+For a detailed breakdown of GraphHopper's distance matrix API and how it is deployed in production, see [GraphHopper vs CARTO: Order Fulfillment Routing Engine](/posts/graphhopper-distance-matrix-routing/) and the full [Geospatial & Routing Engine Architecture series](/series/routing-geospatial-architecture/).
 
 ### The "A-to-Z" Driver App and Sequence Optimization
 
@@ -262,5 +262,9 @@ The VRP is a combinatorial optimization problem: given a fleet of vehicles, a de
 
 ### What is Amazon Anticipatory Shipping and how does it work?
 Anticipatory shipping (patented as "predictive shipping") ships products to regional distribution centers before a customer places an order, based on ML-predicted demand. The model considers browsing behavior, regional seasonal patterns, and scheduled repeat orders. If the prediction is correct, the item is already in the customer's metro area, enabling same-day or next-morning delivery at standard shipping cost.
+
+---
+
+**Related Reading:** For the demand-side of logistics platforms — how real-time driver supply and demand signals are used to dynamically adjust pricing — see [Surge Pricing Algorithm & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture/). For the full routing engine deep-dive, the [Geospatial & Routing Engine Architecture series](/series/routing-geospatial-architecture/) covers GraphHopper deployment, H3 indexing, and production Distance Matrix APIs end-to-end.
 
 {{< author-cta >}}

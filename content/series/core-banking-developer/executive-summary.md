@@ -73,3 +73,7 @@ Step 7 → Practice: Building a Mini Core Banking System
 ```
 
 > *Let's start from [Part 1 — The Double-Entry Ledger Foundation](/series/core-banking-developer/part-1-double-entry-ledger/). This is the mental foundation that every Core Banking Developer must master before writing a single line of code.*
+
+---
+
+**Related Reading:** To see these concepts applied at scale in a real production system, see [Microfinance Core Banking System: Architecture & Engineering Guide](/posts/deconstructing-microfinance-core-banking-architecture/) — a practical walkthrough of the 5-module CBS architecture. For the system-level architecture and ISO standards, see the [Core Banking Architecture series](/series/core-banking-architecture/). For real-world fintech scale patterns, [PayPay Architecture: Scaling Payments to 70M Users](/posts/paypay-architecture-scaling/) shows how global payment platforms apply these same ledger and idempotency fundamentals under extreme load.

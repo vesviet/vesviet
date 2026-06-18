@@ -4,7 +4,7 @@ description: "Deep dive into real-world software architecture, microservices, sy
 lastmod: 2026-06-01T10:00:00+07:00
 ---
 
-Welcome to the definitive hub for system design case studies and software architecture deep dives. Drawing from over 17 years of experience in backend engineering and building resilient platforms, these **17 in-depth series** break down complex [distributed systems](/posts/mastering-event-driven-architecture-dapr/) into digestible, actionable lessons — from e-commerce flash sales to core banking, from ride-hailing real-time systems to production AI agents.
+Welcome to the definitive hub for system design case studies and software architecture deep dives. Drawing from over 17 years of experience in backend engineering and building resilient platforms, these **20 in-depth series** break down complex [distributed systems](/posts/mastering-event-driven-architecture-dapr/) into digestible, actionable lessons — from e-commerce flash sales to core banking, from ride-hailing real-time systems to production AI agents.
 
 ## Exploring Real-World Software Architecture & Microservices
 
@@ -36,7 +36,9 @@ Financial systems demand the highest levels of data integrity, ACID compliance, 
 
 - **[Learning Path to Become a Core Banking Developer](/series/core-banking-developer/)** — Learn core banking development from the ground up: double-entry ledger, transaction processing, microservices architecture, ISO 8583/20022 standards, and building a mini banking system from scratch.
 
-- **[PayPay Architecture: Scaling for Planet-Scale Campaigns](/series/paypay-architecture/)** — How PayPay scales for 70M users and 7.8B annual transactions: microservices, Kafka idempotency, TiDB migration, SRE chaos engineering, campaign pre-scaling, and AI-native architecture.
+- **[PayPay Architecture: Scaling for Planet-Scale Campaigns](/series/paypay-architecture/)** — How PayPay scales for 70M users and 7.8B annual transactions: microservices, Kafka idempotency, TiDB migration, SRE chaos engineering, campaign pre-scaling, and AI-native architecture. See also: [PayPay architecture deep-dive post](/posts/paypay-architecture-scaling/).
+
+- **[Core Banking Architecture](/series/core-banking-architecture/)** — Kiến trúc Core Banking hiện đại: từ nguyên lý Double-Entry Ledger, ACID transactions, và tích hợp ISO 20022 đến triển khai Microservices-based Core Banking trên cloud. Đọc thêm về [microfinance core banking architecture](/posts/deconstructing-microfinance-core-banking-architecture/).
 
 ---
 
@@ -45,6 +47,8 @@ Financial systems demand the highest levels of data integrity, ACID compliance, 
 When milliseconds matter, asynchronous event streaming becomes the backbone of the system. This series covers the engineering behind location-aware, latency-critical platforms.
 
 - **[Real-Time Ride-Hailing Architecture: Uber & Grab](/series/ride-hailing-realtime-architecture/)** — How Uber and Grab handle millions of GPS updates per second: H3 geospatial indexing, Kafka event streaming, DISCO matching engine, surge pricing algorithms, and RAMEN real-time push notifications.
+
+- **[Geospatial & Routing Engine Architecture](/series/routing-geospatial-architecture/)** — A definitive masterclass on building a high-scale Distance Matrix API and Routing Engine from scratch: algorithms, Golang implementation, GraphHopper self-hosting on Kubernetes, Mapbox visualization, Redis caching, and H3 Geospatial Indexing for [order fulfillment](/posts/order-fulfillment-algorithm-warehouse-last-mile/) and [surge pricing systems](/posts/surge-pricing-optimization-architecture/).
 
 ---
 
@@ -83,6 +87,14 @@ The frontend is no longer just a rendering layer — it's becoming an AI-native 
 - **[Roadmap: Generative UI & AI-Native Frontend Architecture](/series/generative-ui-architecture/)** — A 7-part series on building Generative UI with Astro + Svelte: replacing chatbot interfaces with dynamic AI-driven UI components, MCP integration, WebSocket streaming, and semantic caching at the edge.
 
 - **[The SLM Playbook: Fine-Tuning & Model Distillation](/series/slm-playbook/)** — A practical guide to selecting, fine-tuning (LoRA/QLoRA), aligning (DPO/KTO/GRPO), and deploying Small Language Models on self-hosted vLLM infrastructure — optimizing TCO while retaining full technology control.
+
+---
+
+## 🗂️ System Design Fundamentals
+
+For engineers who want to build a rock-solid foundation in system design patterns before diving into domain-specific series.
+
+- **[System Design Masterclass](/series/system-design/)** — Deep-dive into system design patterns, distributed systems, and scalable architecture — from fundamentals to production-grade implementations. The essential foundation before tackling advanced series like [High-Concurrency Systems](/series/high-concurrency-systems/) or [Core Banking Architecture](/series/core-banking-architecture/).
 
 ---
 

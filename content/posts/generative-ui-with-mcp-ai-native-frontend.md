@@ -549,4 +549,8 @@ MCP provides a standardized contract for how AI models discover available tools 
 ### Is Generative UI secure against malicious LLM outputs?
 With proper defenses, yes. The three key controls are: (1) **Schema validation** — every component's props are validated against a Zod schema before rendering, rejecting any malformed or injected props the LLM might generate; (2) **Sandboxed iframes** — components that render user-provided content run in an iframe with restricted sandbox permissions, preventing XSS escalation; (3) **Content Security Policy** — CSP headers prevent dynamically rendered components from loading external resources or executing scripts from untrusted origins. No Generative UI system should render components without prop validation — this is the minimum viable security control.
 
+---
+
+**Related Reading:** For the full 7-part series on building Generative UI and AI-Native Frontend Architecture with Astro + Svelte, see the [Generative UI & AI-Native Frontend Architecture series](/series/generative-ui-architecture/). For the production MCP infrastructure that powers the tool-calling layer behind these interfaces, see [MCP Engineering in Production: Go SDK to Enterprise](/series/mcp-engineering-in-production/). For the data and retrieval backbone — GraphRAG vs Naive RAG for AI applications — see [GraphRAG vs Naive RAG: Enterprise Architecture Guide](/posts/graphrag-vs-naive-rag-enterprise-guide/).
+
 {{< author-cta >}}

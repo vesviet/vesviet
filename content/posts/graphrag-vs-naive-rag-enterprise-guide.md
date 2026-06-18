@@ -358,4 +358,6 @@ Choose GraphRAG when: (1) answering questions requires connecting information fr
 ### How do you update a GraphRAG knowledge graph in real-time?
 Use a streaming CDC pipeline (Kafka Connect reading file system or S3 change events) to detect document changes. A stream processor (Apache Flink) routes change events to an entity extraction service, which upserts modified entities and relationships into the graph database (Neo4j) and re-embeds affected chunks in the vector store. Full community recomputation runs as a scheduled batch job (nightly or weekly). Incremental community updates can be applied for small, localized graph changes.
 
+**Related Reading:** For the complete enterprise AI data pipeline — beyond GraphRAG to multimodal ingestion, semantic caching, streaming CDC, and production Evals — see the [Enterprise AI Data Pipeline & GraphRAG Architecture series](/series/ai-data-engineering-pipeline/). For the frontend architecture that consumes these pipelines, see [Generative UI with MCP: Architecting AI-Native Frontends](/posts/generative-ui-with-mcp-ai-native-frontend/). And for the engineering context of AI-generated code that relies on RAG systems, see [What is Vibe Coding?](/posts/vibe-coding-and-ai-code-review-future/).
+
 {{< author-cta >}}

@@ -135,3 +135,7 @@ Uber uses **H3 hexagonal grids** because hexagons have a critical geometric prop
 The system must implement a **fail-safe default**: when the Backend API queries Redis for a Surge multiplier and finds no value (due to TTL expiration after a Flink/Kafka outage), it must return a default multiplier of **1.0x (Normal Fare)** and never throw an HTTP 500 error. This is the golden rule of distributed pricing systems: absorb 15 minutes of lost surge revenue rather than lock hundreds of thousands of users out from requesting rides. In practice, each Redis Surge key is written with a TTL slightly longer than the Flink window interval — so a Flink restart during a 30-second lag window does not immediately expire all keys. Alerting on Redis TTL miss rate is the canary signal that the stream processor is down.
 {{< /faq >}}
 
+---
+
+**Related Reading:** Surge pricing is one component of a larger real-time logistics platform. See [Real-Time Ride-Hailing Architecture: Uber & Grab](/series/ride-hailing-realtime-architecture/) for the complete system — from GPS event streaming and H3 geospatial matching to RAMEN notifications and driver dispatch. For the delivery-side application of spatial indexing and routing optimization, see [Order Fulfillment Algorithm: Warehouse to Last-Mile](/posts/order-fulfillment-algorithm-warehouse-last-mile/).
+

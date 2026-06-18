@@ -335,3 +335,7 @@ Part 3 covers what those high-value review tasks are: the full taxonomy of AI-ge
 ---
 
 *Next: [Part 3 — AI Bug Taxonomy: From Silent Logic Failures to Slopsquatting](/series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy/)*
+
+---
+
+**Related Reading:** New to this series? Start with [What is Vibe Coding? Why AI Code Review is the Future](/posts/vibe-coding-and-ai-code-review-future/) for the foundational context. For teams building an enterprise-grade RAG pipeline to power the retrieval side of Context Engineering, see [GraphRAG vs Naive RAG: Enterprise Architecture Guide](/posts/graphrag-vs-naive-rag-enterprise-guide/) — the patterns translate directly to building internal codebase knowledge graphs for AI agents.

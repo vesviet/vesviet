@@ -493,5 +493,10 @@ Pyroscope is a continuous profiling platform that automates the collection, stor
 
 ### Is continuous profiling safe in production?
 Yes, with appropriate configuration. The pprof CPU profiling endpoint uses sampling (every 10ms by default), not instrumentation — it adds no code to the hot path. Memory and goroutine profile endpoints cause a brief Stop-The-World pause (< 1ms for most services). Pyroscope's continuous profiling at a 15-second collection interval with CPU sampling produces approximately 1–3% CPU overhead — acceptable for most production services. The key risk is data sensitivity: pprof heap dumps can contain in-memory application data. Use network policies and access logging to control who can download profiles.
+{{< /faq >}}
+
+---
+
+**Related Reading:** For deploying Go services and routing engines on Kubernetes — a common target for pprof profiling — see [Self-Hosting GraphHopper on Kubernetes with OSM Data](/posts/graphhopper-kubernetes-self-hosting-osm/) for StatefulSet configuration patterns. For the GitOps deployment pipeline managing your Kubernetes workloads, see [What's New in Argo CD 3.4 & 3.3](/posts/argo-cd-updates-2026/) and [GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/).
 
 {{< author-cta >}}
