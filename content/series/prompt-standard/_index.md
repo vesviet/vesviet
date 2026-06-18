@@ -41,4 +41,4 @@ The series is written in plain language, progressing from fundamentals to real-w
 - [Part 7 — Declarative Prompting with DSPy](/series/prompt-standard/part-7-declarative-prompting-dspy/)
 - [Part 8 — Production PromptOps Pipeline](/series/prompt-standard/part-8-production-promptops/)
 
-{{< author-cta >}}
+{{< author-cta />}}

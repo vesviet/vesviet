@@ -247,4 +247,4 @@ Shopee uses a layered approach: CDN-level connection throttling, API gateway per
 
 For the full engineering blueprint — including Debezium CDC, Kafka partition keying by SKU, and the idempotent Redis Lua script that prevents overselling under Kafka rebalances — see [Real-Time Inventory Synchronization: Kafka, CDC & Redis](/posts/real-time-inventory-ecommerce-architecture). For how inventory allocation decisions are made once inventory is synchronized — warehouse selection, split shipments, and anticipatory shipping — see [Part 2: Real-Time Inventory Allocation Architecture](/series/ecommerce-order-allocation/part-2-inventory-realtime/).
 
-{{< author-cta >}}
+{{< author-cta />}}

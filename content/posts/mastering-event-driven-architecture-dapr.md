@@ -478,7 +478,7 @@ The patterns in this post — the Transactional Outbox, idempotent consumers, DL
 - For deploying these Go microservices on Kubernetes with GitOps, see [GitOps at Scale with Argo CD](/posts/gitops-at-scale-kubernetes-argocd-microservices/).
 - For the observability layer — how to propagate W3C trace context across Kafka topics, configure tail-based sampling in OTel Collector, and trace gRPC calls between Dapr sidecars — see [Go Microservices Distributed Tracing Architecture](/posts/go-microservices-distributed-tracing-architecture).
 
-{{< author-cta >}}
+{{< author-cta />}}
 
 ## FAQ
 

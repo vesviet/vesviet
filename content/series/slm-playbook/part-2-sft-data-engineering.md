@@ -276,4 +276,4 @@ Now that we have pristine, deduplicated data, we are ready to execute the traini
 
 In [**Part 3: Practical LoRA & QLoRA Fine-Tuning**](/series/slm-playbook/part-3-lora-qlora-tuning/), we configure training pipelines using **Axolotl** and **Unsloth**, dissect **Double Quantization** and **NormalFloat4 (NF4)** math, and manage the final weights merge step.
 
-{{< author-cta >}}
+{{< author-cta />}}

@@ -292,4 +292,4 @@ Supervised Fine-Tuning instructs your model on formatting styles and conversatio
 
 In [**Part 4: Task & Knowledge Distillation**](/series/slm-playbook/part-4-knowledge-distillation-r1/), we explore how to extract reasoning traces (Chain of Thought - CoT) from larger teacher models like **DeepSeek-R1** into small student models.
 
-{{< author-cta >}}
+{{< author-cta />}}

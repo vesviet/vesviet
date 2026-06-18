@@ -56,4 +56,4 @@ During the midnight rush of 11.11, Shopee enforces a strict policy: **Protect th
 
 **Developer Takeaway:** Message Queues (Kafka/RabbitMQ) are the key to decoupling monolithic processes into independent pipelines. In high-concurrency design, you must embrace trade-offs: Be willing to sacrifice auxiliary features to keep the primary money-making flow alive.
 
-{{< author-cta >}}
+{{< author-cta />}}

@@ -160,5 +160,5 @@ By combining hardware optimization with targeted alignment, your team can deploy
 
 *Access the complete source code and configs on the [**SLM Playbook Home Page**](/series/slm-playbook/).*
 
-{{< author-cta >}}
+{{< author-cta />}}
 

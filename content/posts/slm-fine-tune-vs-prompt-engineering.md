@@ -244,4 +244,4 @@ LoRA (Low-Rank Adaptation) adds small trainable adapter matrices (rank 4–64) t
 ### Can I fine-tune GPT-4 or Claude?
 OpenAI offers fine-tuning for GPT-4o and GPT-3.5 Turbo via their API. Anthropic currently does not offer fine-tuning for Claude models. Fine-tuning commercial API models is more expensive per run than self-hosting (OpenAI charges per-token for training data), and you are dependent on the provider's update schedule for base model versions. For maximum control over the model update cadence and adapter management, self-hosting with open-weights models (Llama, Mistral, Phi) and vLLM is the more operationally flexible approach.
 
-{{< author-cta >}}
+{{< author-cta />}}

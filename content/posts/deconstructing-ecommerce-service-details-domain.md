@@ -66,7 +66,7 @@ This post is part of the composable commerce series. For the full system diagram
 - [Architecting the 21-Service Ecosystem: Saga, Race Conditions & Kratos](/posts/architecting-21-service-ecommerce-golang-ddd/) — the Checkout Saga and distributed transaction patterns used across these 21 services.
 - [E-Commerce Order Allocation Architecture](/series/ecommerce-order-allocation/) — the complete series on how the Order and Warehouse services coordinate to fulfill orders from the right warehouse.
 
-{{< author-cta >}}
+{{< author-cta />}}
 
 ## FAQ
 

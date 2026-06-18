@@ -198,4 +198,4 @@ By utilizing event-driven, asynchronous data streaming, you can isolate your sta
 
 For the broader PHP ecosystem perspective — how AI agents, serverless functions, and Model Context Protocol are reshaping Laravel development toward 2028 — see [Laravel in the AI Era: 10 Predictions for 2028](/posts/the-future-of-laravel-development-in-ai-era).
 
-{{< author-cta >}}
+{{< author-cta />}}

@@ -146,4 +146,4 @@ For platform teams, the immediate action is evaluating the Claude Agent SDK agai
 - [Deploying an Autonomous AI Swarm](/posts/deploying-autonomous-ai-swarm-openclaw-litellm/)
 - [MCP Engineering in Production Series](/series/mcp-engineering-in-production/)
 
-{{< author-cta >}}
+{{< author-cta />}}

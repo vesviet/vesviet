@@ -83,7 +83,7 @@ If you are assessing vendor capability before a migration, our [Magento Developm
 - [Architecting a 21-Service E-Commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/) — the destination architecture after the migration: a full 21-service distributed system.
 - [Mastering Event-Driven Architecture with Dapr Pub/Sub](/posts/mastering-event-driven-architecture-dapr/) — the event-driven backbone (Saga, DLQ, Outbox) that replaces the Magento monolith's synchronous coupling.
 
-{{< author-cta >}}
+{{< author-cta />}}
 
 ## FAQ
 

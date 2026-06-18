@@ -144,4 +144,4 @@ A good prompt does not have to be complex. It just needs to be **clear enough, o
 > *In the next part, we discuss a very practical technique: splitting prompts into layers to reduce chaos and improve maintainability.*
 > *Continue to [Part 3 — Separating Role, Rules, Workflow, and Skill](/series/prompt-standard/part-3-layered-prompt-design/).*
 
-{{< author-cta >}}
+{{< author-cta />}}

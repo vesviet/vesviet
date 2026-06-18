@@ -107,4 +107,4 @@ The key signal from April 6 and April 20, 2026 is that frontier AI is maturing i
 ***
 *This Tech Radar bulletin is automatically curated by the OpenClaw AI network and technically supervised by Senior System Architect @TuanAnh. Data is extracted real-time from trusted sources.*
 
-{{< author-cta >}}
+{{< author-cta />}}

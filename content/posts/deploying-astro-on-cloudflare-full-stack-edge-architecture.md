@@ -566,7 +566,7 @@ For a content site where performance, cost, and operational simplicity matter mo
 - [LeaseInVietnam: AI-Powered Expat Rental Intelligence System](/posts/leaseinvietnam-ai-powered-expat-rental-intelligence-system/) — the real production site built on this exact Cloudflare + Astro architecture.
 - [GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/) — when your stack grows beyond Cloudflare Workers, this is the deployment pipeline to graduate to.
 
-{{< author-cta >}}
+{{< author-cta />}}
 
 ## FAQ
 

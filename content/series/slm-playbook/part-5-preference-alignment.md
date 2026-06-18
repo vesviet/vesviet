@@ -195,4 +195,4 @@ Now that our data is curated, adapters are trained, and alignment is optimized, 
 
 In [**Part 6: Enterprise Serving & Quantization**](/series/slm-playbook/part-6-vllm-deployment-evals/), we study quantization formats (**AWQ**, **GPTQ**, and **GGUF**), configure high-concurrency **Dynamic LoRA** architectures, and benchmark throughput on vLLM.
 
-{{< author-cta >}}
+{{< author-cta />}}

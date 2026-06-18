@@ -117,4 +117,4 @@ If a team wants to use AI agents seriously, prompts should be organized like cod
 > *In the next part, we move from prompt architecture to operations: how to version and test prompts to know which version actually performs better.*
 > *Continue to [Part 4 — From Gut-Feel Prompts to Testable, Versionable Prompts](/series/prompt-standard/part-4-versioning-and-evals/).*
 
-{{< author-cta >}}
+{{< author-cta />}}

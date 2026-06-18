@@ -546,4 +546,4 @@ Yes, as of 2025. D1 exited beta in late 2024 and is the recommended persistent s
 ### How does D1 compare to PlanetScale or Neon for edge databases?
 D1 (SQLite at the edge) is purpose-built for Cloudflare Workers and has the lowest latency from Worker code. PlanetScale (MySQL) and Neon (PostgreSQL) require a TCP connection from the Worker to their servers — adding 10–50ms for the connection overhead. However, PlanetScale and Neon support larger datasets, more complex queries, and full PostgreSQL/MySQL feature sets. For standard e-commerce schemas that fit within 10 GB, D1 is the optimal choice for a Cloudflare-native stack.
 
-{{< author-cta >}}
+{{< author-cta />}}

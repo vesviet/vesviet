@@ -245,4 +245,4 @@ The verified peak was **583,000 payment transactions per second (TPS)** sustaine
 
 For a comparison with how a different payment platform solved similar concurrency challenges — how PayPay handles 7.8 billion transactions/year using Kafka idempotency, TiDB, and campaign-era Redis counters — see [PayPay Architecture: Scaling to Billions of Transactions](/posts/paypay-architecture-scaling).
 
-{{< author-cta >}}
+{{< author-cta />}}

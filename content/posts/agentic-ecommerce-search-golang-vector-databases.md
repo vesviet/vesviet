@@ -166,7 +166,7 @@ The primary bottlenecks are LLM reasoning latency (1-3 seconds) and vector simil
 Vector databases cannot efficiently handle highly volatile data like real-time inventory. Real-time business logic must be handled by the Orchestration layer (Golang) making separate tool calls to the transactional database (PostgreSQL) after retrieving semantic matches.
 {{< /faq >}}
 
-{{< author-cta >}}
+{{< author-cta />}}
 
 ---
 

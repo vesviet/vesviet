@@ -89,4 +89,4 @@ A strong team does not only have code standards. Over time, it should also have:
 
 > *If you are new to this topic, continue to [Part 1 — What Is Prompt Standard and Why Should Your Team Care?](/series/prompt-standard/part-1-what-is-prompt-standard/).*
 
-{{< author-cta >}}
+{{< author-cta />}}

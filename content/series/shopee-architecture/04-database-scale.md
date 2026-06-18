@@ -71,4 +71,4 @@ This allows Shopee's operation teams to run massive `SELECT ... GROUP BY` analyt
 
 🔗 **Scalability Decision Framework:** If you are evaluating whether replicas, GORM Sharding, Vitess, or TiDB is the right choice for your current stage, the [MySQL Scalability Guide](/posts/mysql-scalability-guide/) covers the complete decision ladder with Go-specific implementation patterns.
 
-{{< author-cta >}}
+{{< author-cta />}}

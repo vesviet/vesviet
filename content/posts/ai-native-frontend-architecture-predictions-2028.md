@@ -257,7 +257,7 @@ flowchart TD
 
 *Further reading: [Generative UI Architecture Series](/series/generative-ui-architecture/) · [The AI-Driven Engineer](/series/ai-driven-engineer/) · [MCP Engineering in Production](/series/mcp-engineering-in-production/)*
 
-{{< author-cta >}}
+{{< author-cta />}}
 
 ## FAQ
 

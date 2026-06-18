@@ -274,4 +274,4 @@ TiDB offers the horizontal write scalability of sharding without the application
 
 🔗 **Real-World Case Study:** See how Shopee scaled their database architecture to handle flash sales at 10M+ concurrent users, including their MySQL sharding evolution and TiDB adoption: [Shopee Architecture: Database Scaling at Scale](/series/shopee-architecture/04-database-scale/).
 
-{{< author-cta >}}
+{{< author-cta />}}

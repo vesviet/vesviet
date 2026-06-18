@@ -512,4 +512,4 @@ GraphHopper loads the road graph into memory for fast queries. Vietnam (~880MB O
 - **Ride-hailing:** The same H3 spatial indexing used for caching is also how Uber finds nearby drivers — see [H3 Geospatial Indexing for Ride-Hailing Architecture](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/).
 - **High-concurrency systems:** For serving matrix results under high request volume, see [Rate Limiting and Singleflight Patterns](/series/high-concurrency-systems/).
 
-{{< author-cta >}}
+{{< author-cta />}}

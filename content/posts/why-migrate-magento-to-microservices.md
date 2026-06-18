@@ -247,7 +247,7 @@ For the exact playbook on how to execute this migration safely — including the
 
 If you are still evaluating team capability before a migration, read our core guide on [Magento Development in Vietnam: 2026 Hiring Guide](/posts/magento-vietnam/). For the destination stack, explore the complete [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
 
-{{< author-cta >}}
+{{< author-cta />}}
 
 ## FAQ
 

@@ -216,7 +216,7 @@ The future belongs to Laravel developers who stop competing with AI on typing sp
 - [OAuth 2.1 & Prompt Versioning for Production AI Agents](/posts/production-ai-apis-oauth-versioning-meta-predictions/) — field-tested patterns for deploying AI agents safely in production.
 - [Mastering Event-Driven Architecture with Dapr Pub/Sub](/posts/mastering-event-driven-architecture-dapr/) — for when your Laravel Queues outgrow a single server and need a distributed event mesh.
 
-{{< author-cta >}}
+{{< author-cta />}}
 
 ## FAQ
 

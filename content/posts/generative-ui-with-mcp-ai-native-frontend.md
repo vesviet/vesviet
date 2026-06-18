@@ -553,4 +553,4 @@ With proper defenses, yes. The three key controls are: (1) **Schema validation**
 
 **Related Reading:** For the full 7-part series on building Generative UI and AI-Native Frontend Architecture with Astro + Svelte, see the [Generative UI & AI-Native Frontend Architecture series](/series/generative-ui-architecture/). For the production MCP infrastructure that powers the tool-calling layer behind these interfaces, see [MCP Engineering in Production: Go SDK to Enterprise](/series/mcp-engineering-in-production/). For the data and retrieval backbone — GraphRAG vs Naive RAG for AI applications — see [GraphRAG vs Naive RAG: Enterprise Architecture Guide](/posts/graphrag-vs-naive-rag-enterprise-guide/).
 
-{{< author-cta >}}
+{{< author-cta />}}

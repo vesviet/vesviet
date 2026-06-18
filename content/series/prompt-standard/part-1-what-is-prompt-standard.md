@@ -107,4 +107,4 @@ Prompt Standard does not make AI "magically smarter." It makes AI **guess less, 
 > *In the next part, we introduce the simplest framework: the 8 core blocks of an agent prompt.*
 > *Continue to [Part 2 — The 8 Core Blocks of an Agent Prompt](/series/prompt-standard/part-2-core-blocks/).*
 
-{{< author-cta >}}
+{{< author-cta />}}

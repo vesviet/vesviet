@@ -336,7 +336,7 @@ For the full architectural context of where this extracted data lands in a micro
 
 **Go deeper:** [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/) — the distributed microservices architecture that this data pipeline feeds into.
 
-{{< author-cta >}}
+{{< author-cta />}}
 
 ## FAQ
 

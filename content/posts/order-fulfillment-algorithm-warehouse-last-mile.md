@@ -267,4 +267,4 @@ Anticipatory shipping (patented as "predictive shipping") ships products to regi
 
 **Related Reading:** For the demand-side of logistics platforms — how real-time driver supply and demand signals are used to dynamically adjust pricing — see [Surge Pricing Algorithm & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture/). For the full routing engine deep-dive, the [Geospatial & Routing Engine Architecture series](/series/routing-geospatial-architecture/) covers GraphHopper deployment, H3 indexing, and production Distance Matrix APIs end-to-end.
 
-{{< author-cta >}}
+{{< author-cta />}}

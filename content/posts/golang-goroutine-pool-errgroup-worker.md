@@ -482,4 +482,4 @@ Three approaches: (1) `errgroup.Group.SetLimit(n)` — simplest, blocks the prod
 ### What is backpressure in Go concurrency?
 Backpressure is the mechanism by which a saturated worker pool signals its upstream producers to slow down or stop submitting work. In Go, backpressure is expressed through: blocking `Submit` calls (the producer waits until a slot opens), `SubmitOrDrop` with a Prometheus counter (drop the work and measure the drop rate), or HTTP 429 / gRPC ResourceExhausted responses (propagate the load signal to external callers). Proper backpressure prevents queue buildup from growing unboundedly and triggering OOM failures.
 
-{{< author-cta >}}
+{{< author-cta />}}

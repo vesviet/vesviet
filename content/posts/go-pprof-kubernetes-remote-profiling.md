@@ -499,4 +499,4 @@ Yes, with appropriate configuration. The pprof CPU profiling endpoint uses sampl
 
 **Related Reading:** For deploying Go services and routing engines on Kubernetes — a common target for pprof profiling — see [Self-Hosting GraphHopper on Kubernetes with OSM Data](/posts/graphhopper-kubernetes-self-hosting-osm/) for StatefulSet configuration patterns. For the GitOps deployment pipeline managing your Kubernetes workloads, see [What's New in Argo CD 3.4 & 3.3](/posts/argo-cd-updates-2026/) and [GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/).
 
-{{< author-cta >}}
+{{< author-cta />}}

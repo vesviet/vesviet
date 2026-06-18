@@ -124,4 +124,4 @@ The teams that win with AI in 2026 are not the ones with the cleverest prompts. 
 
 > *You can return to the [Series Hub](/series/prompt-standard/) to review the full learning path, or use this series as onboarding material for your team.*
 
-{{< author-cta >}}
+{{< author-cta />}}
