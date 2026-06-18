@@ -26,7 +26,7 @@
 
 <!-- Google AdSense Validation -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4144107863554199" crossorigin="anonymous"></script>
-
+{{ end }}
 
 <!-- Schema.org — Site-wide graph (Person + WebSite + SearchAction) -->
 <script type="application/ld+json">
@@ -99,34 +99,7 @@
   ]
 }
 </script>
-{{- if and .IsPage (or (eq .Section "posts") (eq .Section "series") (eq .Section "radar")) }}
-<!-- Schema.org — BlogPosting for individual post/series part pages -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "name": {{ .Title | jsonify }},
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "{{ .Permalink }}"
-  },
-  "headline": {{ .Title | jsonify }},
-  "description": {{ .Description | jsonify }},
-  "url": "{{ .Permalink }}",
-  "datePublished": "{{ .Date.Format `2006-01-02T15:04:05Z07:00` }}",
-  "dateModified": "{{ .Lastmod.Format `2006-01-02T15:04:05Z07:00` }}",
-  "author": {
-    "@type": "Person",
-    "@id": "{{ .Site.BaseURL }}#person"
-  },
-  "publisher": {
-    "@type": "WebSite",
-    "@id": "{{ .Site.BaseURL }}#website"
-  }{{- with .Params.cover.image }},
-  "image": "{{ . | absURL }}"{{- end }}
-}
-</script>
-{{- end }}
+
 {{- if and .IsSection (eq .Section "series") }}
 <!-- Schema.org — ItemList for series hub pages (_index.md) -->
 <script type="application/ld+json">
@@ -199,42 +172,28 @@
 }
 </script>
 {{- end }}
-{{- if not .IsHome }}
-<!-- Schema.org — BreadcrumbList -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "name": "Breadcrumbs",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "{{ .Site.BaseURL }}"
-    }
-    {{- $position := 2 }}
-    {{- range .Ancestors.Reverse }}
-    ,{
-      "@type": "ListItem",
-      "position": {{ $position }},
-      "name": {{ .Title | jsonify }},
-      "item": "{{ .Permalink }}"
-    }
-    {{- $position = add $position 1 }}
-    {{- end }}
-    ,{
-      "@type": "ListItem",
-      "position": {{ $position }},
-      "name": {{ .Title | jsonify }},
-      "item": "{{ .Permalink }}"
-    }
-  ]
-}
-</script>
-{{- end }}
+
 {{- $dummy := .Content -}}
 {{- $faqs := .Page.Store.Get "faqs" }}
+{{- if not $faqs }}
+  {{- $raw := .RawContent -}}
+  {{- $faqMatches := findRESubmatch `(?ms)^## FAQ\s*$(.*?)(?:^## |\z)` $raw 1 -}}
+  {{- if gt (len $faqMatches) 0 -}}
+    {{- $faqSection := index $faqMatches 0 -}}
+    {{- $faqContent := index $faqSection 1 -}}
+    {{- $matches := findRESubmatch `(?ms)^### ([^\n]+)\s*^([^#].*?)(?:^### |\z)` $faqContent -}}
+    {{- $parsedFaqs := slice -}}
+    {{- range $matches -}}
+      {{- $q := trim (index . 1) " \n\r" -}}
+      {{- $a := trim (index . 2) " \n\r" -}}
+      {{- $a = replaceRE `\*\*|\*|__|` "" $a -}}
+      {{- $a = replaceRE `\[([^\]]+)\]\([^\)]+\)` "$1" $a -}}
+      {{- $a = replaceRE `\n+` " " $a -}}
+      {{- $parsedFaqs = $parsedFaqs | append (dict "question" $q "answer" $a) -}}
+    {{- end -}}
+    {{- $faqs = $parsedFaqs -}}
+  {{- end -}}
+{{- end }}
 {{- if $faqs }}
 <!-- Schema.org — FAQPage -->
 <script type="application/ld+json">
@@ -279,7 +238,6 @@
 }
 </script>
 {{- end }}
-{{ end }}
 
 <style>
   /* ── Cover image: constrain to banner height (PaperMod: figure.entry-cover) ── */

@@ -1,0 +1,18 @@
+{{- /* FAQ Parser */ -}}
+{{- $faqs := slice -}}
+{{- $raw := .RawContent -}}
+{{- $faqSection := index (findRESubmatch `(?ms)^## FAQ\s*$(.*?)(?:^## |\z)` $raw 1) 0 -}}
+{{- if $faqSection -}}
+  {{- $faqContent := index $faqSection 1 -}}
+  {{- $matches := findRESubmatch `(?ms)^### ([^\n]+)\s*^([^#].*?)(?:^### |\z)` $faqContent -}}
+  {{- range $matches -}}
+    {{- $q := trim (index . 1) " \n\r" -}}
+    {{- $a := trim (index . 2) " \n\r" -}}
+    {{- /* Simple markdown stripping for the answer (to be safe in JSON-LD) */ -}}
+    {{- $a = replaceRE `\*\*|\*|__|` "" $a -}}
+    {{- $a = replaceRE `\[([^\]]+)\]\([^\)]+\)` "$1" $a -}}
+    {{- $a = replaceRE `\n+` " " $a -}}
+    {{- $faqs = $faqs | append (dict "question" $q "answer" $a) -}}
+  {{- end -}}
+  {{- .Page.Store.Set "faqs" $faqs -}}
+{{- end -}}
