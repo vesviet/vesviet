@@ -1,15 +1,14 @@
 ---
-title: "Graphhopper vs OSRM: Building a Distance Matrix to Replace distance.to"
+title: "[System Design] GraphHopper Distance Matrix: Self-Host OSRM vs Haversine for Route Optimization"
 slug: "part-7-distance-matrix-routing"
 date: 2026-05-06T20:30:00+07:00
-lastmod: 2026-06-17T16:00:00+07:00
+lastmod: 2026-06-20T16:00:00+07:00
 draft: false
-description: "A detailed comparison of Graphhopper vs OSRM for routing. Learn how to build an open-source Distance Matrix to replace paid APIs like distance.to or Google Maps."
+description: "A detailed system design comparison of GraphHopper vs OSRM for routing. Learn how to build an open-source Distance Matrix to replace paid APIs like distance.to or Google Maps."
 weight: 8
-keywords: ["ecommerce order allocation", "matrix", "distance", "routing", "graphhopper", "osrm", "distance.to"]
+keywords: ["ecommerce order allocation", "matrix", "distance", "routing", "graphhopper", "osrm", "distance.to", "system design"]
+mermaid: true
 ---
-
-> **Answer-first:** If you are looking for an open-source alternative to the **distance.to** API or Google Maps, **Graphhopper** and **OSRM** are the best choices for building a **Distance Matrix**. OSRM is heavily optimized for large matrices using C++, while Graphhopper offers more flexibility for custom routing models using Java. Both can be self-hosted for free using OpenStreetMap.
 
 > **Series context:** This is Part 7 of the [E-commerce Order Allocation](/series/ecommerce-order-allocation/) series. The distance matrix built here feeds directly into the OR-Tools VRP solver in [Part 6](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/).
 
@@ -317,13 +316,53 @@ else:
     return result
 ```
 
+#### System Design: Caching Distance Matrix with H3 & Redis
+
+To visualize the workflow, here is the architecture of how the allocation engine leverages the cache to save compute resources:
+
+```mermaid
+sequenceDiagram
+    participant VRP as VRP Solver
+    participant App as Allocation Engine
+    participant Cache as Redis (H3 Cache)
+    participant OSRM as Routing Engine (OSRM)
+
+    VRP->>App: Request distance between A & B
+    App->>App: Convert A & B to H3 Res 9 IDs
+    App->>Cache: GET route_cost:{H3_A}:{H3_B}
+    alt Cache Hit
+        Cache-->>App: Return distance_m & duration_s
+    else Cache Miss
+        App->>OSRM: HTTP /table API Call
+        OSRM-->>App: Return precise network distance
+        App->>Cache: SET route_cost:{H3_A}:{H3_B} (TTL: 30 days)
+    end
+    App-->>VRP: Return Final Matrix Cost
+```
+
 #### Pre-warming the Cache
 Instead of waiting for a customer to order, the system can run a batch job at night:
 1. Fetch all H3 cells that contain residential areas in the city.
 2. Use OSRM (since it's free and local) to pre-calculate the distance between all H3 pairs (within 10km of each other).
 3. Pump this data into Redis.
 
-When the OR-Tools system runs the next day, it reads purely from Redis RAM at the speed of light without needing to traverse any graphs. Because road networks rarely change (only when there's long-term construction), the Cache Hit ratio can exceed **95%**, giving you the speed of Haversine but the accuracy of a Routing Engine!
+Because road networks rarely change (only when there's long-term construction), the Cache Hit ratio can exceed **95%**, giving you the speed of Haversine but the accuracy of a Routing Engine!
+
+---
+
+## FAQ
+
+{{< faq q="Why use H3 Hexagons instead of Geohash for distance caching?" >}}
+In a square grid (Geohash), the distance from the center to the 4 straight edges differs from the distance to the 4 corners. In an H3 hexagon grid, the distance from the center to all neighboring cells is **exactly equal**. This property is critical in routing because distance error margins are uniformly controlled in all directions, making your cached distance matrix much more reliable.
+{{< /faq >}}
+
+{{< faq q="How much RAM does self-hosted GraphHopper or OSRM require?" >}}
+Routing engines load the full road network graph into RAM for Contraction Hierarchies to work at millisecond speeds. A small city map might only consume a few hundred MB of RAM. A nationwide map (e.g., Vietnam) can consume **4-8 GB of RAM**. A global map requires servers with tens or hundreds of GB. The practical optimization is to extract a geographic Bounding Box for your business's actual service area.
+{{< /faq >}}
+
+{{< faq q="When should I use Haversine vs a true Routing Engine?" >}}
+Use **Haversine** as a lightweight "Candidate Filter" to eliminate points that are obviously too far away (e.g., > 15km) before calling expensive algorithms. Use a true **Routing Engine (OSRM/GraphHopper)** for the final distance matrix, as actual driving distance in urban areas is usually 1.2x to 1.5x the Haversine distance due to one-way streets, rivers, and road layouts.
+{{< /faq >}}
 
 > *Summary of the Series: Order Fulfillment is not just a CRUD application tracking statuses. It is a symphony of event-driven microservices, real-time inventory algorithms, OR-Tools optimization, and ultra-fast Routing Engines processing spatial data.*
 
