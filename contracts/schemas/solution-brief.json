@@ -1,0 +1,427 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "solution-brief",
+  "title": "Solution Brief",
+  "description": "Structured output from Solution Architect. Consumed by Technical Architect (for adr-spec.json), Business Analyst (for feature-ticket.json), and Product Manager (for go/no-go decisions). Produced before requirements are locked or architecture decisions are made.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "solution-brief",
+      "description": "Machine-readable contract discriminator."
+    },
+    "brief_id": {
+      "type": "string",
+      "description": "Unique identifier. Convention: YYYY-MM-DD-short-slug."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "title": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "in-review",
+        "approved",
+        "superseded"
+      ]
+    },
+    "feature_ticket_ref": {
+      "type": "string"
+    },
+    "research_report_ref": {
+      "type": "string"
+    },
+    "adr_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "problem_statement": {
+      "type": "object",
+      "properties": {
+        "business_problem": {
+          "type": "string"
+        },
+        "stakeholder_goals": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "success_criteria": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "out_of_scope": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "business_problem",
+        "success_criteria"
+      ],
+      "additionalProperties": false
+    },
+    "capability_map": {
+      "type": "object",
+      "properties": {
+        "available": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "partial": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "capability": {
+                "type": "string"
+              },
+              "constraint": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "capability",
+              "constraint"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "gaps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reuse_candidates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rebuild_candidates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "retirement_candidates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "options_considered": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "properties": {
+          "option_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "approach": {
+            "type": "string",
+            "enum": [
+              "build",
+              "buy",
+              "partner",
+              "hybrid"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "business_value": {
+            "type": "string"
+          },
+          "integration_complexity": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "unknown"
+            ]
+          },
+          "time_to_value": {
+            "type": "string"
+          },
+          "operational_cost": {
+            "type": "string"
+          },
+          "vendor_risk": {
+            "type": "string"
+          },
+          "reversibility": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "team_capability_fit": {
+            "type": "string",
+            "enum": [
+              "strong",
+              "adequate",
+              "gap-requires-hiring-or-training",
+              "unknown"
+            ]
+          },
+          "pros": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "cons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "option_id",
+          "name",
+          "approach",
+          "description",
+          "pros",
+          "cons"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "build_vs_buy_record": {
+      "type": "object",
+      "properties": {
+        "decision": {
+          "type": "string",
+          "enum": [
+            "build",
+            "buy",
+            "partner",
+            "hybrid",
+            "deferred"
+          ]
+        },
+        "rationale": {
+          "type": "string"
+        },
+        "vendor_lock_in_assessment": {
+          "type": "string"
+        },
+        "exit_cost": {
+          "type": "string"
+        },
+        "data_boundary": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "decision",
+        "rationale"
+      ],
+      "additionalProperties": false
+    },
+    "recommendation": {
+      "type": "object",
+      "properties": {
+        "recommended_option_id": {
+          "type": "string"
+        },
+        "rationale": {
+          "type": "string"
+        },
+        "key_risks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "conditions_that_change_recommendation": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "recommended_option_id",
+        "rationale"
+      ],
+      "additionalProperties": false
+    },
+    "ai_solution_assessment": {
+      "type": "object",
+      "properties": {
+        "business_value_justification": {
+          "type": "string"
+        },
+        "conventional_alternative_evaluated": {
+          "type": "boolean"
+        },
+        "confidence_threshold_required": {
+          "type": "string"
+        },
+        "hitl_requirement": {
+          "type": "string"
+        },
+        "explainability_requirement": {
+          "type": "string"
+        },
+        "fallback_behavior": {
+          "type": "string"
+        },
+        "eu_ai_act_risk_tier": {
+          "type": "string",
+          "enum": [
+            "high-risk",
+            "limited-risk",
+            "minimal-risk",
+            "not-applicable"
+          ]
+        },
+        "ai_vs_conventional_tradeoff": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "business_value_justification",
+        "conventional_alternative_evaluated",
+        "hitl_requirement",
+        "explainability_requirement",
+        "fallback_behavior",
+        "eu_ai_act_risk_tier"
+      ],
+      "additionalProperties": false
+    },
+    "compliance_constraints": {
+      "type": "object",
+      "properties": {
+        "regulations_in_scope": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "solution_constraints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "regulation": {
+                "type": "string"
+              },
+              "constraint": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "regulation",
+              "constraint"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "requires_architectural_enforcement": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "requires_operational_process": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "compliance_blocker": {
+          "type": "boolean"
+        },
+        "compliance_blocker_detail": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "stakeholder_summary": {
+      "type": "string"
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string"
+          },
+          "owner": {
+            "type": "string"
+          },
+          "blocks": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "question",
+          "owner"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "handoff_notes": {
+      "type": "object",
+      "properties": {
+        "to_technical_architect": {
+          "type": "string"
+        },
+        "to_business_analyst": {
+          "type": "string"
+        },
+        "to_product_manager": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "contract_type",
+    "title",
+    "status",
+    "problem_statement",
+    "options_considered",
+    "build_vs_buy_record",
+    "recommendation"
+  ],
+  "additionalProperties": false
+}

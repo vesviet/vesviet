@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "coordination-plan",
+  "title": "Coordination Plan",
+  "description": "Structured multi-agent execution plan produced by Agent Coordinator. Defines phases, dependencies, gate conditions, and circuit breakers for complex multi-role workflows. Consumed by all execution roles to understand their phase, sequencing, and reporting obligations. Pairs with a2a-task.json for per-phase task dispatch.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "coordination-plan",
+      "description": "Machine-readable contract discriminator."
+    },
+    "plan_id": {
+      "type": "string",
+      "description": "Unique coordination plan identifier."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "feature_ticket_ref": {
+      "type": "string",
+      "description": "feature-ticket.json ticket_id that triggered this coordination."
+    },
+    "delivery_plan_ref": {
+      "type": "string",
+      "description": "technical-delivery-plan.json plan_id being coordinated."
+    },
+    "goal": {
+      "type": "object",
+      "description": "Top-level coordination objective.",
+      "properties": {
+        "outcome": { "type": "string", "description": "What success looks like when all phases complete." },
+        "scope": { "type": "string", "description": "What files, services, or systems are in scope." },
+        "work_type": {
+          "type": "string",
+          "enum": ["feature", "bug_fix", "refactor", "migration", "content", "deployment", "audit"]
+        },
+        "risk_tier": {
+          "type": "string",
+          "enum": ["routine", "elevated", "agentic", "critical"],
+          "description": "Risk level determining circuit breaker sensitivity."
+        },
+        "trace_id": {
+          "type": "string",
+          "description": "Distributed trace ID for A2A observability."
+        }
+      },
+      "required": ["outcome", "scope", "work_type"],
+      "additionalProperties": false
+    },
+    "action_classification": {
+      "type": "object",
+      "description": "Pre-classified list of actions by reversibility (from Minimal Footprint Principle in role-standard.md).",
+      "properties": {
+        "routine": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Read-only or trivially reversible actions."
+        },
+        "risky": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Consequential but reversible actions requiring gate evidence."
+        },
+        "irreversible": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Actions with permanent effects — require explicit approval before execution."
+        }
+      },
+      "required": ["routine", "risky", "irreversible"],
+      "additionalProperties": false
+    },
+    "phases": {
+      "type": "array",
+      "description": "Ordered execution phases. Each phase produces a gate artifact before the next phase starts.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "phase_id": { "type": "string" },
+          "owner": { "type": "string", "description": "Role responsible for this phase." },
+          "objective": { "type": "string", "description": "What this phase accomplishes." },
+          "depends_on": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "phase_ids that must complete before this phase starts."
+          },
+          "gate_artifact": {
+            "type": "string",
+            "description": "Contract schema the phase owner must emit on completion (e.g. implementation-result.json)."
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "in_progress", "completed", "blocked", "failed"]
+          },
+          "a2a_task_id": {
+            "type": "string",
+            "description": "a2a-task.json id dispatched for this phase."
+          }
+        },
+        "required": ["phase_id", "owner", "objective", "status"],
+        "additionalProperties": false
+      }
+    },
+    "execution_state": {
+      "type": "object",
+      "description": "Current runtime state of the coordination plan.",
+      "properties": {
+        "current_phase": { "type": "string" },
+        "completed_phases": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "circuit_breakers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "condition": { "type": "string", "description": "Condition that would trigger a halt." },
+              "triggered": { "type": "boolean" },
+              "reason": { "type": "string" }
+            },
+            "required": ["condition", "triggered"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["current_phase"],
+      "additionalProperties": false
+    },
+    "escalation_contacts": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Roles to notify on circuit breaker trigger or blocking issue."
+    }
+  },
+  "required": [
+    "contract_type",
+    "goal",
+    "phases",
+    "execution_state"
+  ],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "contract_type": "coordination-plan",
+      "plan_id": "2026-06-12-cod-store-order",
+      "created_at": "2026-06-12T09:00:00+07:00",
+      "feature_ticket_ref": "2026-06-12-change-store-order-cod",
+      "delivery_plan_ref": "2026-06-12-change-store-order-cod",
+      "goal": {
+        "outcome": "COD orders with store_id route to store courier; non-COD orders unchanged; fallback with warning log; QA sign-off complete.",
+        "scope": "orders-service/app/Console/Commands/NewLogicAutoAssign.php",
+        "work_type": "feature",
+        "risk_tier": "elevated",
+        "trace_id": "a3f8c2d1-b4e7-9012-cd45-ef678ab90123"
+      },
+      "action_classification": {
+        "routine": ["Read existing command code", "Read test files"],
+        "risky": ["Modify NewLogicAutoAssign.php to add COD routing branch"],
+        "irreversible": []
+      },
+      "phases": [
+        {
+          "phase_id": "phase-1-implement",
+          "owner": "backend-developer",
+          "objective": "Implement COD store routing branch and unit tests per slice-01 and slice-02",
+          "depends_on": [],
+          "gate_artifact": "implementation-result.json",
+          "status": "completed",
+          "a2a_task_id": "task-cod-store-routing-slice-01"
+        },
+        {
+          "phase_id": "phase-2-review",
+          "owner": "reviewer",
+          "objective": "Code review — verify reliability, compatibility, blast radius",
+          "depends_on": ["phase-1-implement"],
+          "gate_artifact": "code-review-finding.json",
+          "status": "completed",
+          "a2a_task_id": "task-cod-review-pr142"
+        },
+        {
+          "phase_id": "phase-3-qa",
+          "owner": "qa-engineer",
+          "objective": "QA validation against all AC scenarios; fix F-01 finding and retest",
+          "depends_on": ["phase-2-review"],
+          "gate_artifact": "test-report.json",
+          "status": "completed",
+          "a2a_task_id": "task-cod-qa-validate"
+        }
+      ],
+      "execution_state": {
+        "current_phase": "done",
+        "completed_phases": ["phase-1-implement", "phase-2-review", "phase-3-qa"],
+        "circuit_breakers": [
+          {
+            "condition": "Any blocking code-review finding not resolved before QA",
+            "triggered": false,
+            "reason": null
+          }
+        ]
+      },
+      "escalation_contacts": ["technical-lead", "project-manager"]
+    }
+  ]
+}

@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "adr-spec",
+  "title": "Architecture Decision Record",
+  "description": "Structured output from Technical Architect documenting an Architecture Decision Record (ADR). Consumed by Backend Developer, Frontend Developer, Mobile Engineer, Cloudflare Engineer, Technical Lead, and Reviewer as a binding technical constraint. Supersedes earlier ADRs when architecture evolves.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "adr-spec",
+      "description": "Machine-readable contract discriminator."
+    },
+    "adr_id": {
+      "type": "string",
+      "description": "Unique ADR identifier. Convention: adr-NNN-short-slug or YYYY-MM-DD-slug."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "title": {
+      "type": "string",
+      "description": "Short, declarative title of the architectural decision."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["proposed", "accepted", "rejected", "superseded", "deprecated"],
+      "description": "Current decision status."
+    },
+    "feature_ticket_ref": {
+      "type": "string",
+      "description": "feature-ticket.json ticket_id that triggered this ADR."
+    },
+    "architecture_options_ref": {
+      "type": "string",
+      "description": "Path or ID of architecture-options.json when options analysis preceded this ADR."
+    },
+    "supersedes_adr": {
+      "type": "string",
+      "description": "adr_id of the ADR this record replaces (if status=superseded)."
+    },
+    "context": {
+      "type": "string",
+      "description": "What problem or situation prompted this decision. Include business and technical constraints."
+    },
+    "affected_services": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Services, repositories, or systems affected by this decision."
+    },
+    "api_contract_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Paths or IDs of api-contract-spec.json artifacts impacted or created by this ADR."
+    },
+    "options_considered": {
+      "type": "array",
+      "description": "At least 2 options considered. Decision must reference one of these.",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "properties": {
+          "option": { "type": "string", "description": "Option name or brief description." },
+          "pros": { "type": "array", "items": { "type": "string" } },
+          "cons": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": ["option", "pros", "cons"],
+        "additionalProperties": false
+      }
+    },
+    "decision": {
+      "type": "string",
+      "description": "The chosen option and the rationale for choosing it."
+    },
+    "consequences": {
+      "type": "object",
+      "description": "Expected outcomes, positive and negative, of adopting this decision.",
+      "properties": {
+        "positive": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "negative": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "neutral": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Changes or trade-offs that are neither clearly positive nor negative."
+        }
+      },
+      "required": ["positive", "negative"],
+      "additionalProperties": false
+    },
+    "boundary_rules": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Explicit constraints that all implementing roles must respect (e.g. 'all LLM calls must route through the centralized service layer')."
+    },
+    "migration_plan": {
+      "type": "string",
+      "description": "Steps required to migrate from the previous approach. Leave null if greenfield."
+    },
+    "rollback_plan": {
+      "type": "string",
+      "description": "How to reverse this decision if it proves incorrect."
+    },
+    "review_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date by which this ADR should be reviewed for continued validity."
+    }
+  },
+  "required": [
+    "contract_type",
+    "title",
+    "status",
+    "context",
+    "options_considered",
+    "decision",
+    "consequences"
+  ],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "contract_type": "adr-spec",
+      "adr_id": "adr-005-order-state-machine",
+      "created_at": "2026-06-12T09:45:00+07:00",
+      "title": "COD Store Order Routing via Dedicated Assignment Branch",
+      "status": "accepted",
+      "feature_ticket_ref": "2026-06-12-change-store-order-cod",
+      "architecture_options_ref": null,
+      "supersedes_adr": null,
+      "context": "The existing NewLogicAutoAssign command routes all orders to the warehouse courier pool. COD orders with a store_id need to be assigned to store-specific couriers to reduce delivery failure rates. Modifying the single existing branch risks breaking non-COD order assignment.",
+      "affected_services": ["DMS orders-service", "DMS store-service (read-only lookup)"],
+      "api_contract_refs": [],
+      "options_considered": [
+        {
+          "option": "Add conditional branch inside existing NewLogicAutoAssign.php",
+          "pros": ["Minimal code surface change", "No new entry points"],
+          "cons": ["Increases cyclomatic complexity of existing command", "Harder to isolate and test independently"]
+        },
+        {
+          "option": "Extract COD store routing into dedicated service class, called from command",
+          "pros": ["Single Responsibility; testable in isolation", "Future extensions (e.g. store priority rules) can be added without touching command"],
+          "cons": ["More files to create; slightly higher initial cost"]
+        }
+      ],
+      "decision": "Option A (conditional branch) for v1 given scope and timeline constraints. Extract to service class in v2 if routing logic grows beyond 3 conditions.",
+      "consequences": {
+        "positive": ["Fast to implement; low migration cost; no API contract changes"],
+        "negative": ["Cyclomatic complexity of command increases by 1; test surface slightly wider"],
+        "neutral": ["No persistent side effects; rollback is a clean revert"]
+      },
+      "boundary_rules": [
+        "Non-COD order path must not be modified in this implementation.",
+        "Store courier lookup must read from existing store-service; no direct DB query from orders-service.",
+        "Fallback to warehouse must log a warning with order_id and store_id."
+      ],
+      "migration_plan": null,
+      "rollback_plan": "Revert the commit. No migration required. Existing COD orders in-flight will continue with warehouse assignment until reassigned manually.",
+      "review_date": "2026-09-12"
+    }
+  ]
+}
