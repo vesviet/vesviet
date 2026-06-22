@@ -1,8 +1,0 @@
-{
-  "url_path": "/radar/tech-radar-june-22-2026-dapr-workflow-kratos-clean-architecture",
-  "title_tag": "Dapr Workflow in Go: Kratos Clean Architecture & Actors (Tech Radar)",
-  "meta_description": "Master stateful orchestration in Go. Learn to integrate Dapr Workflows, the Actor model, and Saga patterns into Kratos Clean Architecture. Plus, Dapr v1.18 news.",
-  "slug": "tech-radar-june-22-2026-dapr-workflow-kratos-clean-architecture",
-  "primary_keyword": "dapr workflow go",
-  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
-}
