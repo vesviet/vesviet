@@ -18,3 +18,7 @@ This series explores the core architectural patterns and technologies Shopee use
 - [Chapter 3: Traffic Shield](/series/shopee-architecture/03-traffic-shield/)
 - [Chapter 4: Database Scale](/series/shopee-architecture/04-database-scale/)
 - [Chapter 5: Observability](/series/shopee-architecture/05-observability/)
+
+---
+
+*Looking for a practical guide to migrating a legacy e-commerce platform to a microservices architecture similar to Shopee's? See our **[Composable Commerce Migration Series](/series/composable-commerce-migration/)** for a step-by-step production case study.*

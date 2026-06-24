@@ -306,3 +306,9 @@ No. Rush only manages packages with a `package.json`. Go services live in `servi
 ### What happens if `buf generate` is not run after a proto change?
 
 The TypeScript SDK in `packages/api-client/generated/` goes stale. CI enforces freshness: if generated files differ from committed files, the pipeline fails with `buf lint` + `buf generate --check`. This prevents the frontend from shipping with a TypeScript type that no longer matches the backend's proto contract.
+
+---
+
+*This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
+
+*Need help assessing the risks of your own platform migration? â†’ [Book a 1:1 Architecture Consultation](/hire/)*

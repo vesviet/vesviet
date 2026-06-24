@@ -148,7 +148,7 @@ Four explicit DDD principles from [ADR-002](/series/composable-commerce-migratio
 
 **1. Single Responsibility**: Each service owns exactly one business domain. Order Service = order lifecycle only. Payment Service = payment transactions only. No service is a general-purpose utility.
 
-**2. Database Per Service** ([ADR-004](https://d.go/adr-004)): No direct database access between services. Enforced at the infrastructure level — each service has its own PostgreSQL instance. Cross-service data access is exclusively via gRPC (synchronous) or Dapr PubSub events (asynchronous).
+**2. Database Per Service** ([ADR-004](/series/composable-commerce-migration/part-10-adr-walkthrough/#adr-004-database-per-service)): No direct database access between services. Enforced at the infrastructure level — each service has its own PostgreSQL instance. Cross-service data access is exclusively via gRPC (synchronous) or Dapr PubSub events (asynchronous).
 
 **3. Ubiquitous Language**: Each domain uses consistent terminology. Warehouse Service uses *"stock allocation"* and *"bin location"*. Order Service uses *"reservation"* and *"fulfillment request"*. These terms don't bleed across service boundaries.
 
@@ -228,3 +228,9 @@ Apply the transaction test: *"Can this business rule be enforced within a single
 *This series documents a real production platform. Every service port, every ADR reference, and every domain boundary in this article reflects the actual implementation — not a theoretical exercise.*
 
 *For a comparison of how a regional super-app decomposed similar domains at 100× the order volume, see the [Shopee Architecture Series](/series/shopee-architecture/) — particularly useful when deciding whether your service count should scale with transaction volume or team topology.*
+
+---
+
+*This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
+
+*Need help assessing the risks of your own platform migration? â†’ [Book a 1:1 Architecture Consultation](/hire/)*

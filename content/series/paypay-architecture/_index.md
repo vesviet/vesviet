@@ -26,3 +26,7 @@ This is a deep-dive research series exploring the backend architecture of PayPay
 Companion research that extends specific topics from this series:
 
 - **[PayPay Architecture: Scaling Payments to 70M Users](/posts/paypay-architecture-scaling/)** — Standalone engineering analysis of PayPay's scaling decisions: why they migrated from Aurora to TiDB, how they pre-scale for campaign spikes, and the tradeoffs in their Kafka idempotency model.
+
+---
+
+*Looking for a practical guide to migrating a legacy monolith to a distributed architecture? See our **[Composable Commerce Migration Series](/series/composable-commerce-migration/)** for a step-by-step production case study.*
