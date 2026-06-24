@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 0: Executive Summary — Why the $200K/Year Magento Trap Is Now Avoidable"
 description: "The real cost of Magento 2 Enterprise — $125K–200K/year in licensing, scaling limits during flash sales, and PHP module coupling that kills developer velocity. And how a Composable Commerce Platform built on 21 Go microservices replaced it entirely."
 date: 2026-04-01T10:00:00+07:00
@@ -10,6 +10,7 @@ ShowToc: true
 TocOpen: true
 categories: ["Series", "Software Engineering", "Backend Architecture"]
 tags: ["Magento", "Microservices", "Golang", "Composable Commerce", "Architecture", "CTO"]
+author: "Lê Tuấn Anh"
 ---
 
 Every engineering team that's built seriously on Magento eventually hits the same three walls: the **licensing wall**, the **scaling wall**, and the **developer velocity wall**. The question is whether you hit them before or after they cost you real money and real customers.

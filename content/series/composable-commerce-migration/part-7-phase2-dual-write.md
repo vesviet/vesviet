@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 7: Phase 2 — Dual-Write: Dapr PubSub + Conflict Resolution"
 description: "Enable write APIs on Go microservices while Magento stays live: event-driven dual-write via Dapr PubSub, a 5-policy conflict resolution matrix, magento-sync-adapter, and per-service migration sequence."
 date: 2026-05-20T10:00:00+07:00
@@ -12,6 +12,7 @@ categories: ["Series", "Software Engineering", "Backend Architecture", "Migratio
 tags: ["Dual Write", "Dapr", "PubSub", "Conflict Resolution", "Feature Flags", "Magento Migration", "Event-Driven"]
 series: ["Composable Commerce Migration"]
 series_order: 7
+ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
 ---
 

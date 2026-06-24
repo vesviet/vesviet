@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 6: Phase 1 — Strangler Fig: Read-Only Migration + CDC"
 description: "Phase 1 of the 3-phase Magento migration: deploy read-only Go microservices behind the API Gateway, implement Debezium CDC for real-time sync from Magento MySQL (without Kafka), use feature flags for zero-risk traffic routing, and automatic fallback on failure."
 date: 2026-05-13T10:00:00+07:00
@@ -12,6 +12,7 @@ categories: ["Series", "Software Engineering", "Backend Architecture", "Migratio
 tags: ["Strangler Fig", "CDC", "Debezium", "Dapr", "Feature Flags", "Magento Migration", "Zero Downtime"]
 series: ["Composable Commerce Migration"]
 series_order: 6
+ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
 ---
 

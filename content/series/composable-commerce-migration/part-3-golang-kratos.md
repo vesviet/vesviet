@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 3: Golang + Kratos v2 — Microservice Framework Internals"
 description: "How Kratos v2 structures a production Go microservice: the 5-layer directory layout, Wire compile-time dependency injection, dual HTTP+gRPC transport, and the common library that eliminates 4,150 lines of boilerplate across 21 services."
 date: 2026-04-22T10:00:00+07:00
@@ -12,6 +12,7 @@ categories: ["Series", "Software Engineering", "Backend Architecture"]
 tags: ["Golang", "Kratos", "Microservices", "gRPC", "Wire", "Dependency Injection", "Go Framework"]
 series: ["Composable Commerce Migration"]
 series_order: 3
+ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
 ---
 

@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 2: Rush Monorepo — Managing 21 Go Services + 2 Frontends in One Repo"
 description: "Why Rush beats Nx and Turborepo for a mixed Go + Next.js monorepo: strict dependency governance, PNPM workspaces, incremental CI builds, and TypeScript SDK auto-generated from Go proto definitions."
 date: 2026-04-15T10:00:00+07:00
@@ -12,6 +12,7 @@ categories: ["Series", "Software Engineering", "Frontend Architecture"]
 tags: ["Rush", "Monorepo", "PNPM", "Next.js", "TypeScript", "Golang", "Frontend", "CI/CD"]
 series: ["Composable Commerce Migration"]
 series_order: 2
+ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
 ---
 

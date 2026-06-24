@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 1: DDD Bounded Contexts — Decomposing Magento Modules into 21 Microservices"
 description: "How to map Magento 2's 240+ modules to 21 bounded contexts using Domain-Driven Design — including the counter-intuitive splits: Checkout ≠ Order, Pricing ≠ Promotion, and why 21 services is the right number for this scale."
 date: 2026-04-08T10:00:00+07:00
@@ -12,6 +12,7 @@ categories: ["Series", "Software Engineering", "Backend Architecture"]
 tags: ["DDD", "Bounded Contexts", "Magento", "Microservices", "Domain-Driven Design", "Golang", "Architecture"]
 series: ["Composable Commerce Migration"]
 series_order: 1
+ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
 ---
 

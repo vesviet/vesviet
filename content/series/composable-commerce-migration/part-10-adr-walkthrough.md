@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 10: ADR Walkthrough — 24 Architecture Decisions Explained"
 description: "Every major technical decision behind the Composable Commerce Platform: why Dapr over Kafka, why Kustomize over Helm, why go-kratos over Gin, why Goose over golang-migrate, and why the founding event-driven decision came 3 months before everything else."
 date: 2026-06-10T10:00:00+07:00
@@ -12,6 +12,7 @@ categories: ["Series", "Software Engineering", "Architecture"]
 tags: ["ADR", "Architecture Decision Records", "Dapr", "ArgoCD", "Kratos", "Golang", "Kustomize", "Microservices Architecture"]
 series: ["Composable Commerce Migration"]
 series_order: 10
+ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
 ---
 
@@ -20,6 +21,8 @@ author: "Lê Tuấn Anh"
 An ADR (Architecture Decision Record) is a short document that answers the question: "Why did we choose X when Y and Z were also options?" Without ADRs, architectural knowledge lives in engineers' heads. When they leave, the knowledge leaves too — and the next team rewrites the same component in the way that was already tried and rejected.
 
 This article walks through all 24 ADRs of the Composable Commerce Platform, grouped by category, with the counter-intuitive choices highlighted. Most ADRs are one-paragraph summaries; the ones that are genuinely surprising get deeper treatment.
+
+**Answer-first:** The 24 ADRs cluster around three recurring themes: (1) **resilience over simplicity** — Dapr over raw Redis, Kustomize over Helm, outbox over in-process event dispatch; (2) **standardization over flexibility** — every service uses the same 5-layer Kratos v2 layout, the same `common` library, the same Goose migrations; (3) **explicit over implicit** — ADR-001 (event-driven) was decided 3 months before any code, ensuring every service was designed with events as a first-class constraint from day one.
 
 ## The Decision Timeline: What It Reveals
 

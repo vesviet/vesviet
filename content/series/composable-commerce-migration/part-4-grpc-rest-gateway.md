@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 4: gRPC Internal + REST Gateway — API Contract Lifecycle"
 description: "Service-to-service gRPC communication, proto naming conventions, the Money type that prevents floating-point pricing bugs, cursor pagination, and how the Gateway Service bridges REST clients to internal gRPC services."
 date: 2026-04-29T10:00:00+07:00
@@ -12,6 +12,7 @@ categories: ["Series", "Software Engineering", "Backend Architecture"]
 tags: ["gRPC", "REST", "API Gateway", "Protobuf", "Golang", "Microservices", "API Design"]
 series: ["Composable Commerce Migration"]
 series_order: 4
+ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
 ---
 
