@@ -26,6 +26,8 @@ Scaling an e-commerce platform during flash sales is one of the toughest challen
 
 - **[Agentic E-commerce Search Engine Architecture](/series/agentic-ecommerce-search/)** — A hands-on series guiding you through building an Agentic Search system for e-commerce using Golang, Qdrant Hybrid Search, Redis Caching, and the Eino (CloudWeGo) Multi-Agent orchestration framework.
 
+- **[Composable Commerce Migration: Magento 2 → Microservices Golang](/series/composable-commerce-migration/)** — The definitive playbook for escaping Magento Enterprise ($125K–200K/year): DDD bounded contexts, 3-phase Strangler Fig migration (CDC → Dual-write → Cutover), EAV schema extraction, Dapr PubSub + Transactional Outbox, Rush monorepo for 21 Go services, and GitOps with ArgoCD — drawn from a real production platform.
+
 - **[Alipay Double 11 Architecture](/series/alipay-double-11/)** — How Alipay scaled Double 11 to 61M QPS: LDC unitization, OceanBase, RocketMQ, SOFAStack, and annual stress testing for planet-scale payment reliability.
 
 ---
@@ -106,6 +108,7 @@ Choosing the right starting point depends on your background and goals:
 |---|---|---|
 | **New to distributed systems** | [Shopee Architecture](/series/shopee-architecture/) or [Ride-Hailing Architecture](/series/ride-hailing-realtime-architecture/) | Foundational patterns: caching, [message queues (Kafka)](/posts/mastering-event-driven-architecture-dapr/), geofencing, and database sharding |
 | **Senior backend engineer** | [High-Concurrency Systems](/series/high-concurrency-systems/) or [Core Banking Developer](/series/core-banking-developer/) | Deep technical patterns: C10M, Thundering Herd, Distributed Locks, and Idempotency |
+| **Magento / e-commerce engineer** | [Composable Commerce Migration](/series/composable-commerce-migration/) | Full migration playbook: DDD decomposition, EAV schema extraction, Strangler Fig, Dapr PubSub, zero-downtime cutover |
 | **Engineer adapting to AI** | [AI-Driven Engineer](/series/ai-driven-engineer/) → [AI-Driven Playbook](/series/ai-driven-playbook/) | Mindset shift first, then hands-on execution with IDE setup, RAG, and CI/CD |
 | **Building AI products** | [Agentic System Architecture](/series/agentic-system-architecture/) → [MCP Engineering](/series/mcp-engineering-in-production/) | Multi-agent topology, tool calling, and production MCP infrastructure |
 | **Non-technical builder (CEO/PM/BA)** | [Vibe Coding & AI Code Review](/series/ai-code-review-vibe-coding/) | Understand your limits with AI-generated code and when to hand off to engineers |
