@@ -2,9 +2,6 @@
   "linkset": [
     {
       "anchor": "https://tanhdev.com",
-      "service-desc": [
-        {"href": "https://tanhdev.com/openapi.json", "type": "application/vnd.oai.openapi+json"}
-      ],
       "service-doc": [
         {"href": "https://tanhdev.com/"}
       ],

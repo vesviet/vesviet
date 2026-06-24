@@ -1,4 +1,8 @@
 <!-- Custom head extensions -->
+<!-- Preconnect for LCP: GitHub avatar CDN (avatars.githubusercontent.com) -->
+<link rel="preconnect" href="https://avatars.githubusercontent.com" crossorigin>
+<link rel="preconnect" href="https://github.com" crossorigin>
+<link rel="dns-prefetch" href="https://avatars.githubusercontent.com">
 <meta name="theme-color" content="#1d1e20">
 {{- if .Params.noindex }}
 <meta name="robots" content="noindex, nofollow">
@@ -173,8 +177,80 @@
 </script>
 {{- end }}
 
+{{- if and .IsPage .File (eq .Section "posts") }}
+<!-- Schema.org — Article for /posts/* pages (E-E-A-T + Rich Results) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": "{{ .Permalink }}#article",
+  "headline": {{ .Title | jsonify }},
+  "description": {{ with .Description }}{{ . | jsonify }}{{ else }}{{ .Summary | jsonify }}{{ end }},
+  "url": "{{ .Permalink }}",
+  "datePublished": "{{ .Date.Format `2006-01-02T15:04:05Z07:00` }}",
+  "dateModified": "{{ .Lastmod.Format `2006-01-02T15:04:05Z07:00` }}",
+  "author": {
+    "@type": "Person",
+    "@id": "{{ .Site.BaseURL }}#person",
+    "name": "Lê Tuấn Anh",
+    "url": "{{ .Site.BaseURL }}"
+  },
+  "publisher": {
+    "@type": "Person",
+    "@id": "{{ .Site.BaseURL }}#person",
+    "name": "Lê Tuấn Anh"
+  },
+  "image": {
+    "@type": "ImageObject",
+    "url": {{ with .Params.cover.image }}{{ if (urls.Parse .).IsAbs }}{{ . | jsonify }}{{ else }}{{ . | absURL | jsonify }}{{ end }}{{ else }}"https://github.com/vesviet.png?size=240"{{ end }},
+    "width": 1200,
+    "height": 630
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "@id": "{{ .Site.BaseURL }}#website"
+  },
+  "inLanguage": "en-US",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ .Permalink }}"
+  }
+}
+</script>
+
+<!-- Schema.org — BreadcrumbList for /posts/* pages -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ .Site.BaseURL }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "{{ .Site.BaseURL }}posts/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": {{ .Title | jsonify }},
+      "item": "{{ .Permalink }}"
+    }
+  ]
+}
+</script>
+{{- end }}
+
+
 {{- $dummy := .Content -}}
 {{- $faqs := .Page.Store.Get "faqs" }}
+
 {{- if not $faqs }}
   {{- $raw := .RawContent -}}
   {{- $faqMatches := findRESubmatch `(?ms)^## FAQ\s*$(.*?)(?:^## |\z)` $raw 1 -}}
@@ -263,7 +339,12 @@
 {{- if .IsHome }}
   {{- with site.Params.profileMode }}
     {{- if .imageUrl }}
+      {{- if (urls.Parse .imageUrl).IsAbs }}
+      <!-- crossorigin required for cross-origin preload to be effective (LCP fix) -->
+      <link rel="preload" as="image" href="{{ .imageUrl }}" fetchpriority="high" crossorigin="anonymous">
+      {{- else }}
       <link rel="preload" as="image" href="{{ .imageUrl | absURL }}" fetchpriority="high">
+      {{- end }}
     {{- end }}
   {{- end }}
 {{- else if .IsPage }}

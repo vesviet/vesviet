@@ -2,8 +2,10 @@
 title: "Go Microservices Architecture: Production Guide"
 slug: "go-microservices"
 date: 2026-06-12T00:00:00Z
+lastmod: 2026-06-24T00:00:00Z
 draft: false
 summary: "Go microservices from domain design to Kubernetes deployment — gRPC, Dapr, OpenTelemetry, and GitOps patterns from a real 21-service production migration."
+description: "Production guide to Go microservices: domain design, gRPC, Dapr, OpenTelemetry tracing, and GitOps on Kubernetes — from a real 21-service migration."
 tags: ["Golang", "Microservices", "Architecture", "Dapr", "Kubernetes"]
 categories: ["Architecture", "Engineering"]
 author: "Lê Tuấn Anh"
@@ -611,3 +613,19 @@ Use the OpenTelemetry Go SDK (`go.opentelemetry.io/otel`). Add `otelgrpc` interc
 {{< faq q="When should I NOT use microservices?" >}}
 Avoid microservices when your team is under 8 engineers, when you lack automated per-service CI/CD, when you have no distributed tracing in place, or when your operational team cannot manage Kubernetes. In these conditions, the operational overhead of microservices will consume more time than the architectural benefits return. Build a well-structured modular monolith first — extract services only when specific, evidence-based scaling or deployment requirements make decomposition necessary.
 {{< /faq >}}
+
+---
+
+## Need Go Microservices Architecture Help?
+
+If you're planning a migration from a Magento monolith (or any legacy system) to Go microservices, I offer architecture reviews, consulting retainers, and hands-on advisory. I led this exact migration at Lotte Innovate — 21 services, 25M+ requests/month. **[Get in touch →](/hire/)**
+
+---
+
+## Related Deep Dives
+
+- **[Go gRPC Microservices Production Guide](/posts/golang-grpc-microservices-production-guide/)** — Production-grade gRPC patterns, interceptors, and health checking in Go.
+- **[Go Microservices Distributed Tracing Architecture](/posts/go-microservices-distributed-tracing-architecture/)** — OpenTelemetry + Grafana Tempo tracing from service mesh to Kafka boundaries.
+- **[GitOps at Scale: Kubernetes, ArgoCD & Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/)** — End-to-end GitOps pipeline for a 21-service Kubernetes deployment.
+- **[Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr/)** — Dapr pub/sub, saga orchestration, and transactional outbox patterns.
+- **[Goroutine Leak Detection in Production](/posts/goroutine-leak-detection-production-golang/)** — Detecting and fixing goroutine leaks in production Go services with pprof.

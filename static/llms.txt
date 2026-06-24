@@ -1,0 +1,103 @@
+# tanhdev.com — Le Tuan Anh (vesviet)
+
+> Le Tuan Anh is a Senior Go Backend Architect and Distributed Systems Engineer with 17+ years building high-traffic e-commerce platforms in Vietnam. He led the migration of a decade-old Magento monolith into a 21-service Go microservices ecosystem at Lotte Innovate, handling 25M+ requests/month at peak 8,000 RPS.
+
+## About
+
+- Homepage: https://tanhdev.com/
+- About: https://tanhdev.com/about/
+- Hire/Consulting: https://tanhdev.com/hire/
+- Blog: https://tanhdev.com/posts/
+- Tech Radar: https://tanhdev.com/radar/
+- Author: Le Tuan Anh (vesviet)
+- GitHub: https://github.com/vesviet
+- LinkedIn: https://www.linkedin.com/in/vesviet
+
+## Go & Microservices
+
+> Deep-dive technical guides on Go microservices, distributed systems, and production architecture.
+
+- [Go Microservices Architecture: Production Guide](https://tanhdev.com/posts/go-microservices/) — gRPC, Dapr, OpenTelemetry, GitOps. Real 21-service production migration at Lotte Innovate.
+- [Go gRPC Microservices Production Guide](https://tanhdev.com/posts/golang-grpc-microservices-production-guide/) — Production-grade gRPC service patterns in Go.
+- [Go Microservices Distributed Tracing](https://tanhdev.com/posts/go-microservices-distributed-tracing-architecture/) — OpenTelemetry + Jaeger tracing architecture.
+- [Goroutine Leak Detection in Production](https://tanhdev.com/posts/goroutine-leak-detection-production-golang/) — Detecting and fixing goroutine leaks in production Go services.
+- [Goroutine Pool & ErrGroup Worker Patterns](https://tanhdev.com/posts/golang-goroutine-pool-errgroup-worker/) — Concurrency patterns using errgroup and worker pools.
+- [Go pprof Kubernetes Remote Profiling](https://tanhdev.com/posts/go-pprof-kubernetes-remote-profiling/) — Profiling Go services running in Kubernetes clusters.
+- [Go pprof Profiling: Memory & CPU Tutorial](https://tanhdev.com/posts/golang-pprof-profiling-memory-cpu-tutorial/) — Step-by-step CPU and memory profiling with pprof.
+- [Go 1.26 Green Tea GC & CGO Performance](https://tanhdev.com/posts/go-126-green-tea-gc-cgo-performance-guide/) — Deep dive into Go 1.26 garbage collector improvements.
+- [Architecting 21-Service E-Commerce with Go & DDD](https://tanhdev.com/posts/architecting-21-service-ecommerce-golang-ddd/) — Domain-driven design applied to a large Go microservices system.
+
+## Event-Driven Architecture & Dapr
+
+- [Mastering Event-Driven Architecture with Dapr](https://tanhdev.com/posts/mastering-event-driven-architecture-dapr/) — Dapr pub/sub, saga patterns, and transactional outbox in Go.
+- [Dapr Workflow Saga Orchestration Guide](https://tanhdev.com/posts/dapr-workflow-saga-orchestration-guide/) — Saga orchestration patterns using Dapr Workflow.
+- [Deploying Autonomous AI Swarm with OpenClaw & LiteLLM](https://tanhdev.com/posts/deploying-autonomous-ai-swarm-openclaw-litellm/) — Agentic AI swarm architecture with LiteLLM.
+
+## GitOps & Kubernetes
+
+- [GitOps at Scale: Kubernetes, ArgoCD & Microservices](https://tanhdev.com/posts/gitops-at-scale-kubernetes-argocd-microservices/) — Production GitOps with ArgoCD across 21 microservices.
+- [Kubernetes In-Place Pod Resizing Guide](https://tanhdev.com/posts/kubernetes-in-place-pod-resizing-guide/) — Using Kubernetes 1.27+ in-place pod vertical scaling.
+- [ArgoCD Updates 2026](https://tanhdev.com/posts/argo-cd-updates-2026/) — New features and best practices in ArgoCD 2026.
+
+## Database Architecture
+
+- [MySQL Scalability Guide](https://tanhdev.com/posts/mysql-scalability-guide/) — Horizontal scaling, read replicas, and connection pooling.
+- [MySQL Horizontal Scaling](https://tanhdev.com/posts/mysql-horizontal-scaling/) — Sharding strategies for high-traffic MySQL deployments.
+- [MySQL Scaling, Sharding & TiDB Architecture](https://tanhdev.com/posts/mysql-scaling-sharding-tidb-architecture/) — Comparing MySQL sharding vs TiDB for e-commerce.
+- [GraphHopper Distance Matrix Production Guide](https://tanhdev.com/posts/graphhopper-distance-matrix-production-guide/) — Self-hosting GraphHopper for logistics distance matrix.
+- [GraphHopper Kubernetes Self-Hosting with OSM](https://tanhdev.com/posts/graphhopper-kubernetes-self-hosting-osm/) — Deploying GraphHopper on Kubernetes with OpenStreetMap data.
+
+## E-Commerce Architecture
+
+- [Blueprint: E-Commerce Microservices Architecture](https://tanhdev.com/posts/blueprint-ecommerce-microservices-architecture-diagram/) — Visual architecture diagram for 21-service commerce platform.
+- [Shopee Flash Sale Architecture](https://tanhdev.com/posts/shopee-flash-sale-architecture/) — How Shopee handles 10M+ concurrent users during flash sales.
+- [Alipay Double 11 Architecture & TPS](https://tanhdev.com/posts/alipay-double-11-architecture-tps/) — Architecture behind Alipay's highest-traffic day.
+- [Real-Time Inventory E-Commerce Architecture](https://tanhdev.com/posts/real-time-inventory-ecommerce-architecture/) — Event-sourcing for real-time stock management.
+- [Real-Time Ride-Hailing Architecture](https://tanhdev.com/posts/real-time-ride-hailing-architecture/) — Location tracking and matching at ride-hailing scale.
+- [Surge Pricing Optimization Architecture](https://tanhdev.com/posts/surge-pricing-optimization-architecture/) — Dynamic pricing algorithms and system design.
+- [Order Fulfillment Algorithm: Warehouse & Last Mile](https://tanhdev.com/posts/order-fulfillment-algorithm-warehouse-last-mile/) — Optimizing fulfillment routing from warehouse to delivery.
+- [Composable Banking Architecture](https://tanhdev.com/posts/composable-banking-architecture/) — Modular banking platform design patterns.
+- [Banking Microservices Architecture](https://tanhdev.com/posts/banking-microservices-architecture/) — Designing fault-tolerant banking microservices.
+- [Deconstructing Microfinance Core Banking](https://tanhdev.com/posts/deconstructing-microfinance-core-banking-architecture/) — Core banking system architecture for microfinance.
+- [PayPay Architecture & Scaling](https://tanhdev.com/posts/paypay-architecture-scaling/) — How PayPay scaled to handle Japan's payment volume.
+- [Agentic E-Commerce Search with Golang & Vector Databases](https://tanhdev.com/posts/agentic-ecommerce-search-golang-vector-databases/) — AI-powered product search using vector embeddings.
+- [Cloudflare D1 & Durable Objects: Real-Time Cart](https://tanhdev.com/posts/cloudflare-d1-durable-objects-realtime-cart/) — Edge-first cart implementation using Cloudflare primitives.
+- [Serverless E-Commerce on Cloudflare D1](https://tanhdev.com/posts/serverless-ecommerce-cloudflare-d1/) — Full serverless commerce stack on Cloudflare.
+- [Cloudflare Zero DevOps E-Commerce](https://tanhdev.com/posts/cloudflare-zero-devops-ecommerce/) — Zero-ops e-commerce deployment on Cloudflare Pages.
+
+## Magento & Migration
+
+- [Magento Development in Vietnam: 2026 Hiring Guide](https://tanhdev.com/posts/magento-vietnam/) — Vietnam Magento market overview, cost tiers, and hiring models.
+- [Magento Agency & Development in Vietnam: Scoping Guide](https://tanhdev.com/posts/magento-development-in-vietnam/) — How to evaluate Magento agencies in Vietnam.
+- [Magento Developers in Vietnam: Hiring & Vetting Guide](https://tanhdev.com/posts/magento-developers-in-vietnam/) — Technical vetting for Magento engineers in Vietnam.
+- [Is Magento Worth It in 2026? The 2.4.9 Reality](https://tanhdev.com/posts/magento-still-worth-investing-2026/) — Honest assessment of Magento investment in 2026.
+- [Why Migrate Magento to Microservices](https://tanhdev.com/posts/why-migrate-magento-to-microservices/) — Business and technical case for Magento-to-Go migration.
+- [Moving from Magento to Microservices](https://tanhdev.com/posts/moving-from-magento-to-microservices/) — Practical migration playbook.
+- [Exporting Magento 2 Data: Flat SQL & Node.js](https://tanhdev.com/posts/exporting-magento-2-data-flat-sql-nodejs/) — Data migration tooling for Magento exports.
+- [Magento AI Integration Strategy & Architecture](https://tanhdev.com/posts/magento-ai-integration-strategy-architecture/) — Adding AI capabilities to Magento 2 stores.
+- [The Future of Laravel Development in the AI Era](https://tanhdev.com/posts/the-future-of-laravel-development-in-ai-era/) — Laravel development trends and AI tooling.
+- [Deconstructing E-Commerce Service Details Domain](https://tanhdev.com/posts/deconstructing-ecommerce-service-details-domain/) — Modelling the product details domain in microservices.
+
+## AI & Generative Engineering
+
+- [Architecting an Autonomous Hybrid AI Content Pipeline](https://tanhdev.com/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/) — Multi-agent AI pipeline architecture.
+- [Generative UI with MCP: AI-Native Frontend](https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-frontend/) — Building AI-native UIs using Model Context Protocol.
+- [GraphRAG vs Naive RAG: Enterprise Guide](https://tanhdev.com/posts/graphrag-vs-naive-rag-enterprise-guide/) — Comparison of GraphRAG and naive RAG for enterprise use.
+- [SLM Fine-Tune vs Prompt Engineering](https://tanhdev.com/posts/slm-fine-tune-vs-prompt-engineering/) — When to fine-tune small language models vs prompt engineering.
+- [Production AI APIs: OAuth, Versioning & Meta Predictions](https://tanhdev.com/posts/production-ai-apis-oauth-versioning-meta-predictions/) — AI API design patterns for production.
+- [AI-Native Frontend Architecture Predictions 2028](https://tanhdev.com/posts/ai-native-frontend-architecture-predictions-2028/) — Frontend architecture forecast for AI-driven interfaces.
+- [Vibe Coding and AI Code Review Future](https://tanhdev.com/posts/vibe-coding-and-ai-code-review-future/) — The future of AI-assisted software development.
+- [Leaseinvietnam AI-Powered Expat Rental Intelligence](https://tanhdev.com/posts/leaseinvietnam-ai-powered-expat-rental-intelligence-system/) — Case study: AI rental intelligence system for expats in Vietnam.
+
+## Cloudflare & Edge Architecture
+
+- [Deploying Astro on Cloudflare: Full-Stack Edge Architecture](https://tanhdev.com/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/) — Astro + Cloudflare Pages + Workers deployment guide.
+
+## Hire / Consulting
+
+> Le Tuan Anh is available for consulting, architecture reviews, and advisory work.
+
+- [Hire Le Tuan Anh — Go Backend Architect & Consulting](https://tanhdev.com/hire/)
+- Specialties: Go microservices architecture, Magento-to-Go migration, GitOps/Kubernetes, high-traffic e-commerce systems
+- Contact: vesviet@gmail.com
+- LinkedIn: https://www.linkedin.com/in/vesviet

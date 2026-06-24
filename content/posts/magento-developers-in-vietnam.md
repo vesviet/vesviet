@@ -159,3 +159,11 @@ Magento developers in Vietnam typically operate in the **$25–$49/hour range** 
 Use **staff augmentation** (individual developers who join under your leadership) when you already have senior Magento technical leadership in-house who can direct day-to-day tasks, and you need to fill a specific skill gap. Use a **dedicated team** (self-managed unit with devs + QA + PM) when you need long-term product ownership but do not have internal technical management capacity. Use project-based engagement only when requirements are fully specified with a clear end state — for Magento, this is rarely the case because requirements invariably evolve once real integration complexity surfaces.
 {{< /faq >}}
 
+---
+
+## Related Guides
+
+- **[Magento Development in Vietnam: 2026 Market Guide](/posts/magento-vietnam/)** — Full market overview: cost tiers, agency vs freelance models, and when to consider migrating off Magento entirely.
+- **[Magento Agency & Development in Vietnam: Scoping Guide](/posts/magento-development-in-vietnam/)** — How to scope and evaluate Magento agencies in Vietnam: proposal red flags, hidden complexity, and delivery phase checklist.
+- **[Is Magento Worth It in 2026? The 2.4.9 Reality](/posts/magento-still-worth-investing-2026/)** — Decision framework for the Magento 2.4.9 upgrade vs platform migration question.
+- **[Hire a Go Backend Architect for Magento Migration](/hire/)** — If you need senior technical leadership for a Magento-to-Go migration, I'm available for architecture reviews and consulting.

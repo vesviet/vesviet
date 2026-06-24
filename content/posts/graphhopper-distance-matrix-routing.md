@@ -126,3 +126,5 @@ Use **GraphHopper self-hosted** when your system generates tens of thousands of 
 ---
 
 **Related Reading:** Ready to deploy GraphHopper on Kubernetes? See [Self-Hosting GraphHopper on Kubernetes with OSM Data](/posts/graphhopper-kubernetes-self-hosting-osm/) for the production StatefulSet configuration, persistent volume setup, and OSM data pipeline. For the full context of how distance matrix APIs fit into a logistics system, see [Order Fulfillment Algorithm: Warehouse to Last-Mile](/posts/order-fulfillment-algorithm-warehouse-last-mile/) and the [Geospatial & Routing Engine Architecture series](/series/routing-geospatial-architecture/).
+
+For complete self-hosting instructions — Docker setup, matrix API configuration, Custom Models, H3 caching, and Python/Java code — see the companion guide: [GraphHopper Distance Matrix: Self-Host for Production](/posts/graphhopper-distance-matrix-production-guide/).

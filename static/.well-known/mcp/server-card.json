@@ -1,13 +1,13 @@
 {
   "serverInfo": {
     "name": "TanhDev MCP",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "description": "MCP endpoint for tanhdev.com — Le Tuan Anh's Go backend architecture and microservices engineering blog.",
+    "homepage": "https://tanhdev.com",
+    "contact": "vesviet@gmail.com"
   },
   "transport": {
     "type": "sse",
     "endpoint": "https://tanhdev.com/mcp/sse"
-  },
-  "capabilities": {
-    "tools": {}
   }
 }
