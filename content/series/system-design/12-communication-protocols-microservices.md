@@ -1,5 +1,5 @@
 ---
-title: "Communication Protocols — gRPC vs REST vs GraphQL in Go Microservices"
+title: "gRPC vs REST vs GraphQL: Communication Protocols in Go"
 slug: "12-communication-protocols-microservices"
 date: "2026-06-18T14:30:00+07:00"
 lastmod: "2026-06-18T14:30:00+07:00"

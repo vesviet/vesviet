@@ -1,7 +1,7 @@
 ---
 title: "System Design Masterclass (Golang)"
 slug: "system-design"
-description: "Production-grade System Design with Go for Senior Engineers & Architects: deep dives into Load Balancing, Caching, DB Sharding, Distributed Locks, Saga Pattern, and Observability."
+description: "System Design with Go for Senior Engineers: Load Balancing, Caching, DB Sharding, Distributed Locks, Saga Pattern, and Observability — in production."
 author: "Tanh"
 date: 2026-06-18T14:50:00+07:00
 lastmod: 2026-06-18T16:22:00+07:00

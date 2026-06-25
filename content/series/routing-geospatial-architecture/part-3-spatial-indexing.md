@@ -1,6 +1,6 @@
 ---
 title: "Part 3: Spatial Indexing (Uber H3, PostGIS & Redis GEO)"
-description: "Why pumping 10,000 raw coordinates into a routing engine will crash your servers, and how Spatial Indexing acts as the critical 'pre-filter' for driver dispatching."
+description: "How Spatial Indexing acts as the critical pre-filter for driver dispatching: Uber H3, PostGIS, and Redis GEO — avoid crashing your routing engine."
 date: 2026-06-14T22:50:00+07:00
 lastmod: 2026-06-14T22:50:00+07:00
 draft: false
