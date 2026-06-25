@@ -1,5 +1,5 @@
 ---
-title: "Chapter 5: Optimizing Golang Database Connection Pools to Prevent Bottlenecks"
+title: "Chapter 5: Optimizing Golang Database Connection Pools"
 date: 2026-06-09T10:20:00+07:00
 lastmod: 2026-06-09T10:20:00+07:00
 draft: false

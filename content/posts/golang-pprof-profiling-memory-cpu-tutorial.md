@@ -1,5 +1,5 @@
 ---
-title: "Go pprof in Kubernetes: Remote CPU & Memory Profiling Without Restarting Pods"
+title: "Go pprof in Kubernetes: CPU & Memory Profiling"
 slug: "golang-pprof-profiling-memory-cpu-tutorial"
 date: "2026-06-02T08:00:00+07:00"
 lastmod: "2026-06-10T16:00:00+07:00"

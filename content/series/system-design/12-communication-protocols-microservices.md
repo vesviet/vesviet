@@ -5,7 +5,7 @@ date: "2026-06-18T14:30:00+07:00"
 lastmod: "2026-06-18T14:30:00+07:00"
 draft: false
 author: "Tanh"
-description: "Microservices communication protocols in Go: serialization benchmarks, Protobuf wire format, HTTP/2 multiplexing vs HTTP/3 QUIC, GraphQL complexity engines, and ConnectRPC."
+description: "gRPC vs REST vs GraphQL in Go: serialization benchmarks, Protobuf wire format, HTTP/2 multiplexing vs QUIC, GraphQL complexity engines, and ConnectRPC."
 tags: ["grpc", "rest", "graphql", "http2", "quic", "serialization", "golang", "system design"]
 categories: ["System Design", "Backend Engineering"]
 ShowToc: true

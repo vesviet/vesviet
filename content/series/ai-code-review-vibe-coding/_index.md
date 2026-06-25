@@ -48,3 +48,7 @@ This series answers the question that both sides are now asking:
 > This series is designed for two parallel audiences. If you are a non-technical builder (CEO, PM, BA), start with the Executive Summary and Part 1. If you are an engineer, read the Executive Summary then jump directly to Part 2. Both paths converge at the same critical boundary: understanding exactly where AI ends and where engineering judgment must begin.
 >
 > For a deeper foundation in AI engineering principles, see [The AI-Driven Engineer](/series/ai-driven-engineer/) and [The AI-Driven Playbook](/series/ai-driven-playbook/).
+
+## Related
+
+- [What is Vibe Coding? Why AI Code Review is the Future](/posts/vibe-coding-and-ai-code-review-future/) — A concise introduction to vibe coding and why AI code review is the most critical skill for engineers in 2025–2026.

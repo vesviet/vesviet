@@ -1,5 +1,5 @@
 ---
-title: "Executive Summary — The Big Picture of Geospatial & Routing Architecture"
+title: "Executive Summary: Geospatial & Routing Architecture"
 description: "A high-level architectural overview of a scalable Routing Engine and Distance Matrix API using Golang, Graphhopper, Redis, and Uber H3."
 date: 2026-06-14T22:35:00+07:00
 lastmod: 2026-06-14T22:35:00+07:00

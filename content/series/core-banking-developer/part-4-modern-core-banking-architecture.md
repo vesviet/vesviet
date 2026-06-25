@@ -1,10 +1,10 @@
 ---
-title: "Banking Microservices Architecture: Event Sourcing, CQRS & Saga Patterns for Core Banking"
+title: "Banking Microservices: Event Sourcing, CQRS & Saga Patterns"
 slug: "part-4-modern-core-banking-architecture"
 date: 2026-05-06T18:00:00+07:00
 lastmod: 2026-06-17T16:00:00+07:00
 draft: false
-description: "How do digital banks replace T24 and Flexcube with microservices? A technical guide to banking microservices architecture: Event Sourcing for the ledger, CQRS for reporting, Saga patterns for distributed transfers, and Outbox Pattern for guaranteed event delivery."
+description: "How digital banks replace T24/Flexcube with microservices: Event Sourcing for the ledger, CQRS for reporting, Saga patterns, and Outbox for event delivery."
 weight: 5
 keywords: ["series", "core banking developer", "core", "modern", "microservices architecture"]
 schema: ["Article", "FAQPage"]

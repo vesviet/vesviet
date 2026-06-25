@@ -1,6 +1,6 @@
-﻿---
-title: "Part 9: Transactional Outbox + Saga — Guaranteed Event Delivery Across Services"
-description: "How the Checkout→Order→Payment→Warehouse saga runs with guaranteed-once delivery: the custom PostgreSQL outbox pattern (not Dapr native), choreography-based saga, idempotency keys, compensation transactions, and the circuit breaker resilience layer."
+---
+title: "Part 9: Transactional Outbox & Saga for Guaranteed Delivery"
+description: "How the Checkout→Order→Payment→Warehouse saga runs with guaranteed delivery: PostgreSQL outbox, choreography saga, idempotency keys, and circuit breaker."
 date: 2026-06-03T10:00:00+07:00
 lastmod: 2026-06-24T10:00:00+07:00
 draft: false

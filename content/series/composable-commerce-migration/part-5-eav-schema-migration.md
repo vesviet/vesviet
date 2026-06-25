@@ -1,6 +1,6 @@
-﻿---
+---
 title: "Part 5: EAV Schema Migration — Magento's Biggest Trap"
-description: "How to extract Magento's Entity-Attribute-Value schema: the integer→UUID identity mapping problem, why you cannot hardcode attribute IDs, the dynamic SQL pivot pattern, and the exact SQL queries that work in production."
+description: "Extract Magento's EAV schema: integer→UUID identity mapping, avoiding hardcoded attribute IDs, dynamic SQL pivot pattern, and production-tested SQL queries."
 date: 2026-05-06T10:00:00+07:00
 lastmod: 2026-06-24T10:00:00+07:00
 draft: false

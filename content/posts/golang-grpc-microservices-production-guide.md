@@ -1,10 +1,10 @@
 ---
-title: "Golang gRPC Microservices: Production Guide with Protobuf, TLS & Middleware"
+title: "Golang gRPC Microservices: Protobuf, TLS & Middleware"
 slug: "golang-grpc-microservices-production-guide"
 date: "2026-06-11T21:00:00+07:00"
 lastmod: "2026-06-11T21:00:00+07:00"
 draft: false
-description: "Complete production guide to Golang gRPC microservices: Protobuf service design, TLS mutual authentication, unary vs streaming, interceptor middleware (logging, auth, rate-limit), graceful shutdown, health checks, and Docker deployment — with full code."
+description: "Production guide to Golang gRPC microservices: Protobuf service design, TLS mTLS, interceptor middleware, graceful shutdown, health checks, and Docker deployment."
 categories:
   - "Architecture"
   - "Golang"

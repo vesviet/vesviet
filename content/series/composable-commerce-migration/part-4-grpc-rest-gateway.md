@@ -1,6 +1,6 @@
-﻿---
+---
 title: "Part 4: gRPC Internal + REST Gateway — API Contract Lifecycle"
-description: "Service-to-service gRPC communication, proto naming conventions, the Money type that prevents floating-point pricing bugs, cursor pagination, and how the Gateway Service bridges REST clients to internal gRPC services."
+description: "gRPC to REST gateway for 21 Go services: proto naming conventions, Money type for pricing, cursor pagination, and bridging REST clients to gRPC services."
 date: 2026-04-29T10:00:00+07:00
 lastmod: 2026-06-24T10:00:00+07:00
 draft: false

@@ -1,6 +1,6 @@
 ---
 title: "Composable Commerce Migration: Magento 2 → Microservices Golang"
-description: "The definitive playbook for escaping Magento: DDD bounded contexts, 3-phase Strangler Fig migration, EAV schema extraction, Dapr PubSub, Transactional Outbox, Rush monorepo, and GitOps with ArgoCD — drawn from a real production platform with 21 Go microservices."
+description: "Escape Magento with 21 Go microservices: DDD bounded contexts, Strangler Fig migration, EAV schema extraction, Dapr PubSub, and GitOps with ArgoCD."
 date: 2026-04-01T10:00:00+07:00
 lastmod: 2026-06-24T10:00:00+07:00
 draft: false

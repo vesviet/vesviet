@@ -1,6 +1,6 @@
-﻿---
-title: "Part 2: Rush Monorepo — Managing 21 Go Services + 2 Frontends in One Repo"
-description: "Why Rush beats Nx and Turborepo for a mixed Go + Next.js monorepo: strict dependency governance, PNPM workspaces, incremental CI builds, and TypeScript SDK auto-generated from Go proto definitions."
+---
+title: "Part 2: Rush Monorepo — 21 Go Services & 2 Frontends"
+description: "Why Rush beats Nx and Turborepo for a mixed Go + Next.js monorepo: strict dependency governance, PNPM workspaces, and incremental CI builds."
 date: 2026-04-15T10:00:00+07:00
 lastmod: 2026-06-24T10:00:00+07:00
 draft: false

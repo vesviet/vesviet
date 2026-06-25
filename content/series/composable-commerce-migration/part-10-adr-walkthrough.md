@@ -1,6 +1,6 @@
-﻿---
+---
 title: "Part 10: ADR Walkthrough — 24 Architecture Decisions Explained"
-description: "Every major technical decision behind the Composable Commerce Platform: why Dapr over Kafka, why Kustomize over Helm, why go-kratos over Gin, why Goose over golang-migrate, and why the founding event-driven decision came 3 months before everything else."
+description: "24 architecture decisions for Composable Commerce: why Dapr over Kafka, Kustomize over Helm, go-kratos over Gin, and the event-driven founding decision."
 date: 2026-06-10T10:00:00+07:00
 lastmod: 2026-06-24T10:00:00+07:00
 draft: false

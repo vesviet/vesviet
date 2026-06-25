@@ -1,6 +1,6 @@
-﻿---
+---
 title: "Part 8: Phase 3 — Full Cutover: Zero Downtime + ArgoCD GitOps"
-description: "Completing the Magento migration: gradual 25%→100% traffic cutover for Order Service, Magento on hot standby for 30-day rollback window, archive service for one-way sync, and ArgoCD+Kustomize GitOps for all ongoing deployments."
+description: "Full Magento cutover: 25%→100% traffic migration for Order Service, 30-day rollback window, archive service, and ArgoCD+Kustomize GitOps deployment."
 date: 2026-05-27T10:00:00+07:00
 lastmod: 2026-06-24T10:00:00+07:00
 draft: false

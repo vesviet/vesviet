@@ -1,6 +1,6 @@
-﻿---
-title: "Part 0: Executive Summary — Why the $200K/Year Magento Trap Is Now Avoidable"
-description: "The real cost of Magento 2 Enterprise — $125K–200K/year in licensing, scaling limits during flash sales, and PHP module coupling that kills developer velocity. And how a Composable Commerce Platform built on 21 Go microservices replaced it entirely."
+---
+title: "Part 0: Why the $200K/Year Magento Trap Is Avoidable"
+description: "The real cost of Magento 2 Enterprise: $125K–200K/year in licensing, scaling limits, and PHP coupling. How 21 Go microservices replaced it entirely."
 date: 2026-04-01T10:00:00+07:00
 lastmod: 2026-06-24T10:00:00+07:00
 draft: false

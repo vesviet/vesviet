@@ -4,7 +4,7 @@ slug: "kubernetes-in-place-pod-resizing-guide"
 date: "2026-06-12T14:00:00+07:00"
 lastmod: "2026-06-12T14:00:00+07:00"
 draft: false
-description: "Production guide to Kubernetes In-Place Pod Resizing (GA in v1.35): modify CPU/memory on running containers without restart. YAML examples, VPA, and cost optimization."
+description: "Kubernetes In-Place Pod Resizing GA in v1.35: modify CPU/memory on running containers without restart. YAML examples, VPA integration, and cost optimization."
 ShowToc: true
 TocOpen: true
 mermaid: true

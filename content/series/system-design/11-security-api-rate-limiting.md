@@ -1,11 +1,11 @@
 ---
-title: "Go Security & API Rate Limiting — Token Bucket, Leaky Bucket & Redis Lua"
+title: "Go API Rate Limiting: Token Bucket & Redis Lua"
 slug: "11-security-api-rate-limiting"
 date: "2026-06-18T14:00:00+07:00"
 lastmod: "2026-06-18T14:00:00+07:00"
 draft: false
 author: "Tanh"
-description: "Advanced API rate limiting in Go: Token Bucket vs Leaky Bucket, distributed sliding window using Redis Lua, client IP spoofing prevention, and lock contention mitigation."
+description: "Advanced API rate limiting in Go: Token Bucket vs Leaky Bucket, distributed sliding window with Redis Lua, IP spoofing prevention."
 tags: ["rate limiting", "security", "golang", "redis", "lua", "envoy", "system design"]
 categories: ["System Design", "Backend Engineering"]
 ShowToc: true

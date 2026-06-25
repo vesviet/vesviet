@@ -1,10 +1,10 @@
 ---
-title: "Surge Pricing Algorithm: How Ride-Hailing Engines Calculate Surge Rate in Real Time"
+title: "Surge Pricing Algorithm: Real-Time Surge Rate Calculation"
 slug: "part-5-pricing-surge-engine"
 date: 2026-05-06T20:00:00+07:00
 lastmod: 2026-06-11T20:00:00+07:00
 draft: false
-description: "How does surge pricing work? A technical deep-dive into the surge pricing algorithm used by Uber and Grab: H3 geofencing, Kafka + Flink supply-demand aggregation, Redis TTL, and ML-based multiplier calculation — with production Go code."
+description: "How surge pricing works: H3 geofencing, Kafka + Flink supply-demand aggregation, Redis TTL, and ML-based multiplier calculation — with production Go code."
 weight: 6
 ---
 
@@ -284,3 +284,5 @@ Surge rates are recalculated every 30–60 seconds using a sliding window over t
 The engine ingests driver location events and ride request events from a message broker (Kafka). A stream processor (Apache Flink) aggregates supply and demand counts per H3 cell on a 5-minute tumbling window. The output is a demand/supply ratio that maps to a surge multiplier via a lookup table or an ML model. The resulting multiplier is cached in Redis with a 60-second TTL and read by the API gateway at price-calculation time.
 
 > *In the final part, we will explore RAMEN — Uber's real-time communication infrastructure, which solves the problem of pushing instant notifications to millions of devices simultaneously. Continue reading [Part 6 — RAMEN & Real-time Communication](/series/ride-hailing-realtime-architecture/part-6-realtime-push-ramen/).*
+
+> *For a deeper standalone breakdown of the surge pricing architecture and spatial indexing patterns, see: [Surge Pricing Algorithm & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture/).*

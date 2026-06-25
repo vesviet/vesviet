@@ -1,10 +1,10 @@
 ---
-title: "[System Design] GraphHopper Distance Matrix: Self-Host OSRM vs Haversine for Route Optimization"
+title: "GraphHopper vs OSRM: Distance Matrix Routing Guide"
 slug: "part-7-distance-matrix-routing"
 date: 2026-05-06T20:30:00+07:00
 lastmod: 2026-06-20T16:00:00+07:00
 draft: false
-description: "A detailed system design comparison of GraphHopper vs OSRM for routing. Learn how to build an open-source Distance Matrix to replace paid APIs like distance.to or Google Maps."
+description: "Compare GraphHopper vs OSRM for routing. Build an open-source Distance Matrix to replace paid APIs like distance.to or Google Maps."
 weight: 8
 keywords: ["ecommerce order allocation", "matrix", "distance", "routing", "graphhopper", "osrm", "distance.to", "system design"]
 mermaid: true

@@ -1,10 +1,10 @@
 ---
-title: "GraphHopper Distance Matrix: Self-Host an Open-Source Routing Engine for Production"
+title: "GraphHopper Distance Matrix: Self-Host Routing Engine"
 slug: "graphhopper-distance-matrix-production-guide"
 date: "2026-06-11T20:00:00+07:00"
 lastmod: "2026-06-11T20:00:00+07:00"
 draft: false
-description: "Complete production guide to GraphHopper distance matrix: Docker self-hosting, matrix API, vehicle profiles, Custom Models for runtime rule changes, H3-based caching, performance benchmarks vs OSRM and Google Maps — with Python and Java code."
+description: "GraphHopper distance matrix production guide: Docker self-hosting, matrix API, Custom Models, H3 caching, and benchmarks vs OSRM and Google Maps."
 categories:
   - "Architecture"
   - "Engineering"

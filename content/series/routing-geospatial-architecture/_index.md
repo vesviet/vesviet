@@ -1,6 +1,6 @@
 ---
 title: "Geospatial & Routing Engine Architecture: Go & Graphhopper"
-description: "A definitive 8-part masterclass on building a high-scale Distance Matrix API and Routing Engine from scratch. Covers algorithms, Golang implementation, Mapbox visualization, Redis Caching, and H3 Geospatial Indexing."
+description: "8-part masterclass: build a Distance Matrix API and Routing Engine from scratch with Golang, GraphHopper, Redis, H3 Geospatial Indexing, and Mapbox."
 slug: "routing-geospatial-architecture"
 date: 2026-06-14T22:25:00+07:00
 lastmod: 2026-06-14T22:25:00+07:00

@@ -1,5 +1,5 @@
 ---
-title: "Chapter 8: Distributed Locking for Race Conditions: Redlock vs ZooKeeper"
+title: "Chapter 8: Distributed Locking — Redlock vs ZooKeeper"
 date: 2026-06-09T10:35:00+07:00
 lastmod: 2026-06-09T10:35:00+07:00
 draft: false

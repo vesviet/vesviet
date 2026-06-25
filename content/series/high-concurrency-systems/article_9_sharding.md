@@ -1,5 +1,5 @@
 ---
-title: "Chapter 9: Database Sharding & Read/Write Splitting for Billion-Record Tables"
+title: "Chapter 9: Database Sharding & Read/Write Splitting"
 date: 2026-06-09T10:40:00+07:00
 lastmod: 2026-06-09T10:40:00+07:00
 draft: false

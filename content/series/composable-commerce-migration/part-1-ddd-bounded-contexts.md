@@ -1,6 +1,6 @@
-﻿---
-title: "Part 1: DDD Bounded Contexts — Decomposing Magento Modules into 21 Microservices"
-description: "How to map Magento 2's 240+ modules to 21 bounded contexts using Domain-Driven Design — including the counter-intuitive splits: Checkout ≠ Order, Pricing ≠ Promotion, and why 21 services is the right number for this scale."
+---
+title: "Part 1: DDD Bounded Contexts — Magento to 21 Services"
+description: "Map Magento 2's 240+ modules to 21 bounded contexts using DDD: Checkout ≠ Order, Pricing ≠ Promotion, and why 21 services is the right number."
 date: 2026-04-08T10:00:00+07:00
 lastmod: 2026-06-24T10:00:00+07:00
 draft: false

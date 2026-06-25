@@ -1,10 +1,10 @@
 ---
-title: "ACID Transactions & Isolation Levels in Core Banking: Race Conditions, Locking & Concurrency"
+title: "ACID Transactions & Isolation Levels in Core Banking"
 slug: "part-3-database-transactions-acid"
 date: 2026-05-06T18:00:00+07:00
 lastmod: 2026-06-11T20:00:00+07:00
 draft: false
-description: "ACID transactions in core banking: PostgreSQL isolation levels (Read Committed, Repeatable Read, Serializable), row-level locking vs optimistic concurrency, SELECT FOR UPDATE patterns, and how to prevent dirty reads and lost updates in financial systems — with Go code."
+description: "ACID transactions in core banking: PostgreSQL isolation levels, row-level locking vs optimistic concurrency, and how to prevent dirty reads in financial systems."
 weight: 4
 ---
 

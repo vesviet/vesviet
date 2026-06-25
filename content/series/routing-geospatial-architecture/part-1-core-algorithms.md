@@ -1,5 +1,5 @@
 ---
-title: "Part 1: Core Algorithms (A*, Dijkstra) Visualized - Routing Architecture Masterclass"
+title: "Part 1: Core Routing Algorithms — A* & Dijkstra Visualized"
 description: "A deep dive into the core algorithms powering modern logistics. Learn why Dijkstra beats A* for Distance Matrices and how Contraction Hierarchies work."
 date: 2026-06-14T22:35:00+07:00
 lastmod: 2026-06-14T22:35:00+07:00

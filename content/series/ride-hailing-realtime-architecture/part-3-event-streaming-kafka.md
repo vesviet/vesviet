@@ -1,10 +1,10 @@
 ---
-title: "Apache Kafka & Flink in Ride-Hailing: Event Streaming Architecture at Uber Scale"
+title: "Kafka & Flink in Ride-Hailing: Event Streaming at Scale"
 slug: "part-3-event-streaming-kafka"
 date: 2026-05-06T20:00:00+07:00
 lastmod: 2026-06-11T20:00:00+07:00
 draft: false
-description: "How Uber and Grab process millions of GPS and ride events per second with Apache Kafka: topic design, partition strategy, consumer groups, Apache Flink stream processing for surge pricing, and exactly-once semantics in Go."
+description: "How Uber and Grab process millions of GPS events/s with Kafka: topic design, partition strategy, Flink for surge pricing, and exactly-once semantics in Go."
 weight: 4
 ---
 

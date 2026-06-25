@@ -1,10 +1,10 @@
 ---
-title: "Ride-Hailing Dispatch Algorithm: How Uber DISCO & Grab DispatchGym Match Drivers"
+title: "Ride-Hailing Dispatch: Uber DISCO & Grab DispatchGym"
 slug: "part-4-dispatch-matching-engine"
 date: 2026-05-06T20:00:00+07:00
 lastmod: 2026-06-11T20:00:00+07:00
 draft: false
-description: "Deep dive into ride-hailing dispatch algorithms: how Uber DISCO, Grab DispatchGym, and Gojek Jaeger use bipartite matching and Reinforcement Learning for global driver-rider optimization — from greedy failures to batched Hungarian Algorithm."
+description: "Ride-hailing dispatch algorithms: Uber DISCO, Grab DispatchGym, and Gojek Jaeger using bipartite matching and Reinforcement Learning for driver-rider optimization."
 weight: 5
 ---
 

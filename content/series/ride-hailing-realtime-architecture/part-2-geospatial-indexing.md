@@ -1,10 +1,10 @@
 ---
-title: "H3 Geospatial Indexing: How Uber Finds Nearby Drivers with Hexagonal Spatial Index"
+title: "H3 Geospatial Indexing: How Uber Finds Nearby Drivers"
 slug: "part-2-geospatial-indexing"
 date: 2026-05-06T20:00:00+07:00
 lastmod: 2026-06-11T20:00:00+07:00
 draft: false
-description: "How does Uber find the nearest driver in milliseconds among millions? A deep-dive into H3 hexagonal geospatial indexing, S2 Geometry, Redis GEO vs. Redis SET+H3, and Go implementation — including K-Ring search, Consistent Hashing, and why hexagons beat squares."
+description: "How Uber finds the nearest driver in milliseconds: H3 hexagonal geospatial indexing, S2 Geometry, Redis GEO vs Redis SET+H3, K-Ring search, and Go implementation."
 weight: 3
 ---
 

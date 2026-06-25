@@ -1,11 +1,11 @@
 ---
-title: "Shopee Database Architecture: MySQL Sharding to TiDB NewSQL Migration at Scale"
+title: "Shopee DB: MySQL Sharding to TiDB NewSQL Migration"
 slug: "04-database-scale"
 date: 2026-05-05T08:40:00+07:00
 lastmod: 2026-06-11T20:00:00+07:00
 draft: false
 mermaid: true
-description: "How Shopee scaled from MySQL sharding to TiDB NewSQL: ProxySQL connection pooling, read replica architecture, the Maintenance Event Horizon problem, and TiDB migration for 100M+ users — with SQL code and architecture diagrams."
+description: "How Shopee scaled from MySQL sharding to TiDB NewSQL: ProxySQL connection pooling, read replica architecture, and TiDB migration for 100M+ users."
 ShowToc: true
 TocOpen: true
 ---
