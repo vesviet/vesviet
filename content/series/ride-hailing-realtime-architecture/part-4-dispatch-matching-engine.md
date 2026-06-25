@@ -4,7 +4,7 @@ slug: "part-4-dispatch-matching-engine"
 date: 2026-05-06T20:00:00+07:00
 lastmod: 2026-06-11T20:00:00+07:00
 draft: false
-description: "Ride-hailing dispatch algorithms: Uber DISCO, Grab DispatchGym, and Gojek Jaeger using bipartite matching and Reinforcement Learning for driver-rider optimization."
+description: "Ride-hailing dispatch: Uber DISCO, Grab DispatchGym, and Gojek Jaeger using bipartite matching and Reinforcement Learning for driver-rider optimization."
 weight: 5
 ---
 

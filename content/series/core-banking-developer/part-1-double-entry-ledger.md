@@ -4,7 +4,7 @@ slug: "part-1-double-entry-ledger"
 date: 2026-05-06T18:00:00+07:00
 lastmod: 2026-06-11T20:00:00+07:00
 draft: false
-description: "Double-entry bookkeeping for software engineers: debit/credit rules, T-accounts, the balance constraint, and how core banking systems enforce ACID at the ledger layer."
+description: "Double-entry bookkeeping for engineers: debit/credit rules, T-accounts, the balance constraint, and how core banking systems enforce ACID at the ledger layer."
 weight: 2
 ---
 
