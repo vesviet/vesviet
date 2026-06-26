@@ -38,6 +38,7 @@
 - [GitOps at Scale: Kubernetes, ArgoCD & Microservices](https://tanhdev.com/posts/gitops-at-scale-kubernetes-argocd-microservices/) — Production GitOps with ArgoCD across 21 microservices.
 - [Kubernetes In-Place Pod Resizing Guide](https://tanhdev.com/posts/kubernetes-in-place-pod-resizing-guide/) — Using Kubernetes 1.27+ in-place pod vertical scaling.
 - [ArgoCD Updates 2026](https://tanhdev.com/posts/argo-cd-updates-2026/) — New features and best practices in ArgoCD 2026.
+- [AWS EKS vs ECS: Architecture, Cost & Real-World Use Cases (2026)](https://tanhdev.com/posts/aws-eks-vs-ecs-comparison/) — Practitioner's pillar guide comparing EKS and ECS: control plane costs ($0 vs $73/month), Fargate trade-offs, EKS Auto Mode, KEDA, ArgoCD, and real production lessons from a 21-service Go platform at 8,000 RPS.
 
 ## Database Architecture
 
