@@ -1,8 +1,8 @@
 ---
-title: "Fine-Tune vs Prompt-Engineer an LLM: Decision Guide"
+title: "Prompt Engineering vs Fine-Tuning: When to Use Each (GPT-5 Era Decision Guide)"
 slug: "slm-fine-tune-vs-prompt-engineering"
 date: "2026-06-01T10:00:00+07:00"
-lastmod: "2026-06-01T10:00:00+07:00"
+lastmod: "2026-06-26T21:00:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -18,7 +18,7 @@ tags:
   - "RAG"
   - "SLM"
   - "vLLM"
-description: "A clear decision framework for AI engineers: when to fine-tune (LoRA/QLoRA), when to prompt-engineer, and when RAG is the right answer instead."
+description: "Prompt engineering vs fine-tuning vs RAG: a clear 2026 decision framework. Fine-tune (LoRA/QLoRA) when you need style/format control. Prompt-engineer when iteration speed matters. RAG when facts change. With cost benchmarks."
 ShowToc: true
 TocOpen: true
 ---

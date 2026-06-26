@@ -1,10 +1,10 @@
 ---
-title: "H3 Geospatial Indexing: How Uber Finds Nearby Drivers"
+title: "Uber H3 Geospatial Indexing: Find Nearest Driver in <100ms with Redis (Production Guide)"
 slug: "part-2-geospatial-indexing"
 date: 2026-05-06T20:00:00+07:00
-lastmod: 2026-06-11T20:00:00+07:00
+lastmod: 2026-06-26T21:00:00+07:00
 draft: false
-description: "How Uber finds the nearest driver in milliseconds: H3 geospatial indexing, S2 Geometry, Redis GEO vs SET+H3, K-Ring search, and Go implementation."
+description: "How Uber and Grab find the nearest driver in <100ms: H3 hexagonal grid at Resolution 8, Redis GEO vs SET+H3, K-Ring search, S2 Geometry, and a complete Go implementation for production ride-hailing systems."
 weight: 3
 ---
 
