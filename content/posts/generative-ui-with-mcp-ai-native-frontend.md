@@ -551,6 +551,8 @@ With proper defenses, yes. The three key controls are: (1) **Schema validation**
 
 ---
 
-**Related Reading:** For the full 7-part series on building Generative UI and AI-Native Frontend Architecture with Astro + Svelte, see the [Generative UI & AI-Native Frontend Architecture series](/series/generative-ui-architecture/). For the production MCP infrastructure that powers the tool-calling layer behind these interfaces, see [MCP Engineering in Production: Go SDK to Enterprise](/series/mcp-engineering-in-production/). For the data and retrieval backbone — GraphRAG vs Naive RAG for AI applications — see [GraphRAG vs Naive RAG: Enterprise Architecture Guide](/posts/graphrag-vs-naive-rag-enterprise-guide/).
+**Related Reading:** For the full 7-part series on building Generative UI and AI-Native Frontend Architecture with Astro + Svelte, see the [Generative UI & AI-Native Frontend Architecture series](/series/generative-ui-architecture/). For the production MCP infrastructure that powers the tool-calling layer behind these interfaces, see [MCP Engineering in Production: Go SDK to Enterprise](/series/mcp-engineering-in-production/). For the data and retrieval backbone — GraphRAG vs Naive RAG for AI applications — see [GraphRAG vs Naive RAG: Enterprise Architecture Guide](/posts/graphrag-vs-naive-rag-enterprise-guide/). For 10 honest architectural predictions on where AI-native frontend is heading by 2028 — including generative component registries, MCP-native layouts, and the death of the SPA — see [AI-Native Frontend in 2028: 10 Architecture Predictions](/posts/ai-native-frontend-architecture-predictions-2028/). From the Tech Radar: the [April 29, 2026 Tech Radar](/radar/radar-2026-04-29-creative-mcp/) covered Anthropic's push of MCP into the creative stack — turning Adobe, Blender, and Autodesk into connected agent surfaces, a direct extension of what Generative UI enables on the frontend.
 
 {{< author-cta >}}
+
+

@@ -291,6 +291,10 @@ Go 1.26 introduces an experimental `goroutineleak` pprof profile (enabled via `G
 **Yes, for most teams.** The Green Tea GC and faster cgo calls deliver free performance improvements with zero code changes. Run `go fix ./...` to adopt new idioms, validate benchmarks, and roll out via canary. The only caution is if you depend on exact `image/jpeg` output or parse malformed URLs with unbracketed IPv6 addresses — test those paths first.
 {{< /faq >}}
 
-{{< faq q="Can I disable the Green Tea GC if it causes issues?" >}}
+{{% faq q="Can I disable the Green Tea GC if it causes issues?" %}}
 Yes: build with `GOEXPERIMENT=nogreenteagc`. However, this opt-out will be removed in Go 1.27. If you observe regressions, file an issue at [go.dev/issue/new](https://go.dev/issue/new) — the Go team specifically wants production feedback before removing the escape hatch.
-{{< /faq >}}
+{{% /faq %}}
+
+---
+
+**From the Tech Radar:** When Go 1.26 shipped, the [May 10, 2026 Tech Radar](/radar/radar-2026-05-10/) covered the operational impact of the Green Tea GC in the context of Kubernetes-as-AI-OS and the shift toward Agentic Engineering — including how reduced GC pause times are directly relevant for Go-based AI inference sidecars.

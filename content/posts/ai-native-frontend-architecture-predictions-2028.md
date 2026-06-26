@@ -269,3 +269,8 @@ flowchart TD
 Unlike legacy systems, **AI Frontend** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
 {{< /faq >}}
 
+---
+
+**Related Reading:** For the architecture behind building Generative UI systems today — the MCP contracts, component sandboxing, and streaming transports that underpin these 2028 predictions — see [Generative UI with MCP: Architecting AI-Native Frontends](/posts/generative-ui-with-mcp-ai-native-frontend/). For the practical AI coding workflow and code review discipline that engineering teams need to build AI-native systems safely, see [What is Vibe Coding? Why AI Code Review is the Future](/posts/vibe-coding-and-ai-code-review-future/). From the Tech Radar: the [May 14, 2026 Tech Radar](/radar/radar-2026-05-14/) covered the market inflection point — Anthropic overtaking OpenAI in enterprise adoption — that is directly accelerating the AI-Native Frontend shift described in these predictions.
+
+

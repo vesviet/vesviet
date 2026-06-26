@@ -562,3 +562,8 @@ At Lotte Innovate, EKS was the right call. The CNCF ecosystem — ArgoCD + Dapr 
 ---
 
 *[Lê Tuấn Anh](/about/) is a Go Backend Architect with 17+ years of experience. He led the EKS architecture for a 21-service Go microservices platform at Lotte Innovate handling 8,000 RPS peak. He also writes about [GitOps at Scale with ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/), [Kubernetes In-Place Pod Resizing](/posts/kubernetes-in-place-pod-resizing-guide/), and [Dapr Workflow Saga Orchestration](/posts/dapr-workflow-saga-orchestration-guide/).*
+
+---
+
+**From the Tech Radar:** The [May 13, 2026 Tech Radar](/radar/radar-2026-05-13/) covered AgentOps meeting Kubernetes — Signadot's initiative to run AI agent testing inside live Kubernetes sandboxes. For teams choosing EKS specifically to run agentic workloads, this is the most relevant recent signal on where the K8s + AI convergence is heading operationally.
+

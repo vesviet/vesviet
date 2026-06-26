@@ -342,3 +342,8 @@ The investment pays off the first time you hit a bad production deploy at 2am. I
 Unlike legacy systems, **GitOps** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
 {{< /faq >}}
 
+---
+
+**From the Tech Radar:** The [May 13, 2026 Tech Radar](/radar/radar-2026-05-13/) covered a directly relevant signal — Signadot's AgentOps meets Kubernetes initiative, which bridges AI agent testing with Kubernetes sandbox environments. Relevant for any team running GitOps pipelines with agentic CI/CD workflows.
+
+
