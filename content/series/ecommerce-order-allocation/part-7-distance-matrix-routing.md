@@ -1,12 +1,12 @@
 ---
-title: "GraphHopper vs OSRM: Distance Matrix Routing Guide"
+title: "GraphHopper vs OSRM for Distance Matrix: Replace Google Maps API at $0 (Production Guide)"
 slug: "part-7-distance-matrix-routing"
 date: 2026-05-06T20:30:00+07:00
-lastmod: 2026-06-20T16:00:00+07:00
+lastmod: 2026-06-26T21:00:00+07:00
 draft: false
-description: "Compare GraphHopper vs OSRM for routing. Build an open-source Distance Matrix to replace paid APIs like distance.to or Google Maps."
+description: "Self-host GraphHopper or OSRM to compute 10,201 distance pairs in <50ms — free. Google Maps Distance Matrix API costs $510/day for the same workload. Includes Docker setup, Python code, H3 caching, and OR-Tools integration."
 weight: 8
-keywords: ["ecommerce order allocation", "matrix", "distance", "routing", "graphhopper", "osrm", "distance.to", "system design"]
+keywords: ["graphhopper vs osrm", "distance matrix routing", "osrm distance matrix", "graphhopper distance matrix", "distance.to alternative", "google maps distance matrix alternative", "ecommerce order allocation", "or-tools vrp", "open source routing engine"]
 mermaid: true
 ---
 
@@ -14,7 +14,7 @@ mermaid: true
 
 ## The Invisible yet Most Expensive Bottleneck in E-commerce Routing
 
-**Answer-first:** For 1 warehouse + 100 delivery stops, you need 10,201 pairwise distances. Self-hosting **GraphHopper** or **OSRM** on a $20/month VPS delivers this in under 50ms per batch — completely free. Using Google Maps Distance Matrix API for the same workload costs **$510/day**. This guide shows you exactly when to use which tool, with Docker setup and production Python code.
+**Answer-first:** For 1 warehouse + 100 delivery stops, you need 10,201 pairwise distances. Self-hosting **GraphHopper** or **OSRM** on a $20/month VPS delivers this in **under 50ms per batch — completely free**. Using Google Maps Distance Matrix API for the same workload costs **$510/day** ($186,150/year). OSRM wins on raw throughput (C++, millisecond-range matrix API). GraphHopper wins on flexibility (custom truck profiles, runtime rule changes). This guide covers Docker setup, Python integration, H3-based Redis caching, and feeding the matrix into Google OR-Tools — with code you can run today.
 
 For any VRP (Vehicle Routing Problem) solver to find the optimal delivery route, it needs to know the exact cost between every pair of stops — this is the **distance matrix**. For 1 warehouse + 100 orders (101 points), that is `101 × 101 = 10,201` pairs. Choosing the wrong tool for this step can cost **$510/day** in API fees or cause multi-second latency spikes under load.
 
