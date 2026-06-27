@@ -9,7 +9,7 @@ buildFuture = true
 favicon = "/favicon.ico"
 apple_touch_icon = "/apple-touch-icon.png"
 [pagination]
-  pagerSize = 10
+  pagerSize = 30
 
 [markup]
   [markup.goldmark.renderer]
