@@ -1,7 +1,7 @@
 ---
-title: "AI Governance, Observability & the Vibe Engineer Career (2026)"
+title: "Vibe Coding Governance: AGENTS.md, Cursor Rules & AI Observability for Engineering Teams (2026)"
 date: 2026-05-31T19:00:00+07:00
-lastmod: 2026-05-31T19:00:00+07:00
+lastmod: 2026-06-27T07:00:00+07:00
 draft: false
 weight: 7
 categories:
@@ -10,6 +10,10 @@ categories:
   - Career
 tags:
   - AI governance
+  - vibe coding
+  - vibe coding governance
+  - AGENTS.md
+  - Cursor Rules
   - observability
   - ContextOps
   - spec-first development
@@ -19,9 +23,10 @@ tags:
   - productivity paradox
   - OpenTelemetry
   - EU AI Act
+keywords: ["vibe coding governance", "ai coding governance", "AGENTS.md", "cursor rules governance", "ai code review governance", "contextops", "vibe engineer"]
 aliases:
   - /series/ai-code-review-vibe-coding/part-6-governance-observability-career/
-description: "AI coding governance, OpenTelemetry for AI observability, spec-first development, ContextOps, and career skills for the AI orchestrator engineer in 2026."
+description: "Vibe coding governance for engineering teams: AGENTS.md + Cursor Rules setup, AI tool classification policy, ContextOps at scale, OpenTelemetry for AI observability, and the 2026 career stack for AI orchestrator engineers."
 ---
 
 > **Series Orientation:** This article is Part 6 of the **AI Code Review & Vibe Coding** series, looking at team governance and developer career paths. For the preceding security chapters, see [Part 5 — AI Code Security](/series/ai-code-review-vibe-coding/part-5-ai-code-security/).
@@ -72,6 +77,37 @@ Teams that measure productivity by lines of code or PR count will appear highly 
 Organizations that have attempted AI coding adoption without governance have consistently encountered the same failure modes: shadow AI (unapproved tools exposing sensitive data), inconsistent code quality (different teams operating with different standards), and security incidents from AI-generated vulnerabilities that bypassed an informal review process.
 
 The governance framework that works is structured but not bureaucratic. Its components:
+
+### Vibe Coding Governance Checklist: Getting Started
+
+Before deploying AI coding tools across a team, these are the minimum governance controls that prevent the most common failure modes:
+
+**1. Context Infrastructure (AGENTS.md + Cursor Rules)**
+- [ ] Create `/AGENTS.md` at the repo root — defines architecture boundaries, tech stack, testing requirements, and which code patterns are forbidden for AI to generate
+- [ ] Create `.cursor/rules` (or equivalent) for tool-specific constraints: "never generate database migrations directly", "always add error wrapping with context", "use our internal logger, not fmt.Println"
+- [ ] Gate pull requests: AGENTS.md must be updated before any architectural changes are AI-assisted
+- [ ] Review AGENTS.md quarterly as the codebase evolves
+
+**2. Tool Classification (Approved / Restricted / Prohibited)**
+- [ ] Maintain a living document of approved AI tools with data classification scope per tool
+- [ ] Prohibited by default: free-tier tools that train on input data, tools without SOC 2 compliance for Confidential/Restricted data
+- [ ] Require enterprise-licensed accounts for any AI tool touching customer PII or financial data
+
+**3. Review Gates**
+- [ ] All AI-generated code passes the same review checklist as human code (linting, security scan, unit test coverage)
+- [ ] High-risk paths (auth, payments, data deletion) require explicit human sign-off even with AI assistance
+- [ ] Track AI-generated code provenance in commit messages (e.g., `[AI-assisted]` tag) for audit trail
+
+**4. Observability**
+- [ ] Log all AI tool invocations in regulated environments (EU AI Act, HIPAA, PCI-DSS contexts)
+- [ ] Set up behavioral drift alerts: monitor output quality metrics weekly, not just system metrics
+- [ ] Designate a Model Owner for every production AI system — a named engineer, not a team
+
+**5. Onboarding**
+- [ ] New team members complete 30-minute AI governance orientation before first commit with AI tools
+- [ ] Publish AI tool policy in the same place as coding standards — not in a separate HR portal
+
+> **For the practical AGENTS.md setup and Cursor Rules configuration**, see [Part 2 — Context Engineering: AGENTS.md & Cursor Rules](/series/ai-code-review-vibe-coding/part-2-context-engineering-codebase/) and [What is Vibe Coding? Why AI Code Review is the Future](/posts/vibe-coding-and-ai-code-review-future/).
 
 ### AI Tool Classification: Approved, Restricted, Prohibited
 

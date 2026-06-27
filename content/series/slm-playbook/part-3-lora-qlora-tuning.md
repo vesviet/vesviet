@@ -292,4 +292,6 @@ Supervised Fine-Tuning instructs your model on formatting styles and conversatio
 
 In [**Part 4: Task & Knowledge Distillation**](/series/slm-playbook/part-4-knowledge-distillation-r1/), we explore how to extract reasoning traces (Chain of Thought - CoT) from larger teacher models like **DeepSeek-R1** into small student models.
 
+> **Not sure if fine-tuning is the right approach?** Before investing in LoRA/QLoRA training, see the decision framework: [Prompt Engineering vs Fine-Tuning: When to Use Each (GPT-5 Era)](/posts/slm-fine-tune-vs-prompt-engineering/) — covers the full tradeoff matrix including RAG and MCP tool-use as alternatives for the 2026 AI stack.
+
 {{< author-cta >}}
