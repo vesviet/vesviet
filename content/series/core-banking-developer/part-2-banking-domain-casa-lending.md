@@ -164,10 +164,12 @@ This is a legal requirement — the Core Banking system must automatically class
 ## Summary of Module Relationships
 
 ```
-Customer (CIF) ──── 1:N ──── Accounts (CASA)
-Customer (CIF) ──── 1:N ──── Loans (Lending)
-Accounts       ──── 1:N ──── Ledger Entries
-Loans          ──── 1:N ──── Ledger Entries
+Customer (CIF) ├───┬─── 1:N ───┬───┤ Accounts (CASA)
+Customer (CIF) ├───┬─── 1:N ───┬───┤ Loans (Lending)
+Accounts       ├───┬─── 1:N ───┬───┤ Ledger Entries
+Loans          ├───┬─── 1:N ───┬───┤ Ledger Entries
 ```
 
 > *Now you understand the business domains. Next, we will dive deep into the technical implementation to ensure data accuracy in extremely high-concurrency environments. Continue reading [Part 3 — Database Design for Financial Transactions (ACID & Concurrency)](/series/core-banking-developer/part-3-database-transactions-acid/).*
+
+> **Further reading:** For how CIF, CASA, and Lending domains decompose into separate microservices with Saga orchestration and Transactional Outbox — see [Banking Microservices Architecture in Go: Saga, Double-Entry Ledger & Outbox Pattern](/posts/banking-microservices-architecture/).

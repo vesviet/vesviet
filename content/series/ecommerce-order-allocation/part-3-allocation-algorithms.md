@@ -249,3 +249,5 @@ def solve_vrp(distance_matrix, demands, vehicle_capacities, depot=0):
 ```
 
 > *Next, we look at how Amazon solves this at a massive global scale using CONDOR and Anticipatory Shipping. Read [Part 4 — Amazon CONDOR & Anticipatory Shipping](/series/ecommerce-order-allocation/part-4-amazon-condor-anticipatory/).*
+
+> **Note on the distance matrix:** The OR-Tools VRP solver in this article requires a pre-built cost matrix between every stop pair. In production, you build this with a self-hosted routing engine — see [Part 7 — Distance Matrix Routing: GraphHopper vs OSRM](/series/ecommerce-order-allocation/part-7-distance-matrix-routing/) for the complete implementation replacing Google Maps API ($510/day → $0).

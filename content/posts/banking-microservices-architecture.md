@@ -1,8 +1,8 @@
 ---
-title: "Financial Microservices Architecture: Saga & Ledger"
+title: "Banking Microservices Architecture in Go: Saga, Double-Entry Ledger & Outbox Pattern (2026)"
 slug: "banking-microservices-architecture"
 date: "2026-06-01T15:15:00+07:00"
-lastmod: "2026-06-01T15:15:00+07:00"
+lastmod: "2026-06-27T07:00:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -14,7 +14,10 @@ tags:
   - "Dapr"
   - "Transactional Outbox"
   - "Banking"
-description: "Designing a secure financial microservices architecture: Utilizing Orchestrated Saga (Dapr), Double-Entry Bookkeeping, and Transactional Outbox."
+  - "banking microservices"
+  - "core banking"
+keywords: ["banking microservices architecture", "financial microservices", "saga pattern banking", "transactional outbox", "double entry ledger go", "core banking go microservices"]
+description: "Build a production banking microservices architecture in Go: Orchestrated Saga with Dapr, double-entry bookkeeping ledger, Transactional Outbox for guaranteed event delivery, and idempotent payment APIs."
 ShowToc: true
 TocOpen: true
 ---

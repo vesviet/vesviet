@@ -166,5 +166,6 @@ From 2022 to 2025, **SWIFT is migrating its entire network** to ISO 20022, manda
 - **Official ISO 20022:** [iso20022.org](https://www.iso20022.org) — Download free message schemas.
 - **The jPOS Book:** [jpos.org](https://jpos.org) — Free book on ISO 8583 and building a payment switch.
 - **Swift Standards:** [swift.com/standards/iso-20022](https://www.swift.com/standards/iso-20022)
+- **Architecture:** For how ISO 20022 and ISO 8583 message flows integrate into Saga-orchestrated microservices with idempotent payment APIs — see [Banking Microservices Architecture in Go: Saga, Double-Entry Ledger & Outbox Pattern](/posts/banking-microservices-architecture/).
 
 > *Next, we will explore one of the hardest and most important aspects of Core Banking: security, auditing, and compliance. Continue reading [Part 6 — Security, Compliance & Audit](/series/core-banking-developer/part-6-security-compliance-audit/).*
