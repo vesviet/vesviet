@@ -48,6 +48,44 @@ The three main choices for open-source route distance matrix computation are **H
 
 ---
 
+## OSRM vs GraphHopper: Which Should You Choose?
+
+Both engines are free, self-hostable, and use OpenStreetMap data. The decision comes down to **speed vs. flexibility** — and the actual performance delta is smaller than most engineers expect.
+
+### Benchmark: 100×100 Distance Matrix (10,000 pairs)
+
+| Engine | 10×10 | 50×50 | 100×100 | Key tradeoff |
+|--------|:---:|:---:|:---:|------|
+| **OSRM** | 4ms | 14ms | **21ms** | Fastest, but rigid profiles (Lua only) |
+| **GraphHopper** | 8ms | 28ms | **52ms** | 2.5× slower, but Custom Models at runtime |
+| **Google Maps** | 300ms | 1,200ms | **2,500ms+** | **$510/day** — 50× slower and 50× more expensive |
+
+*Tested on DigitalOcean 4-vCPU/8GB droplet, Vietnam OSM data.*
+
+> **The 2.5× gap largely disappears with H3 Redis caching** (see the caching section below). After warm-up, cached GraphHopper responses return in 1–3ms — indistinguishable from OSRM.
+
+### Choose OSRM when:
+
+- ✅ You have **one vehicle type** (only cars, or only trucks) with a static routing profile
+- ✅ You need **maximum raw throughput** — millions of pairs per hour, no caching
+- ✅ Your team is comfortable with **Docker + Lua** for profile changes
+- ✅ You will never need to change routing rules without a full graph rebuild
+- ✅ You are optimizing a **ride-hailing dispatch** system where every millisecond counts (see [Uber DISCO dispatch architecture](/series/ride-hailing-realtime-architecture/part-4-dispatch-matching-engine/))
+
+### Choose GraphHopper when:
+
+- ✅ You have a **multi-vehicle fleet** — motorcycles filtering lanes, trucks avoiding weight-restricted roads, cyclists on bike paths — all needing different rules
+- ✅ You need **runtime Custom Models** — change toll preferences, road restrictions, or vehicle weights without restarting and rebuilding the graph
+- ✅ Your backend is **Java-based** and you want embedded mode (no HTTP overhead)
+- ✅ You are building an **e-commerce order allocation** system where flexibility across SKU types and vehicle classes matters more than the 2.5× raw speed delta (see [Distance Matrix for Order Allocation](/series/ecommerce-order-allocation/part-7-distance-matrix-routing/))
+- ✅ You want a **single engine** that can also handle H3 geospatial caching, Valhalla-style turn restrictions, and matrix + route in one deployment
+
+### Verdict for most production systems
+
+If you are replacing Google Maps Distance Matrix API for a logistics or e-commerce routing use case with mixed vehicle types: **start with GraphHopper**. Add H3 Redis caching (documented below) and you will match OSRM's effective latency while keeping full routing flexibility. Switch to OSRM only if profiling shows the matrix API is your actual bottleneck — which is rare below 500 requests/second.
+
+---
+
 ## Quick Start: GraphHopper Distance Matrix with Docker
 
 ### Step 1: Start the GraphHopper Server
@@ -440,7 +478,7 @@ class CachedDistanceMatrix:
 
 ---
 
-## GraphHopper vs. OSRM vs. Google Maps: Production Benchmark
+## OSRM vs GraphHopper vs Google Maps: Full Production Benchmark
 
 Based on a 100-point (100×100 = 10,000 pairs) test on a DigitalOcean 4-vCPU/8GB droplet with Vietnam OSM data:
 

@@ -478,3 +478,5 @@ RL models treat dispatching as a Markov Decision Process (MDP), allowing the sys
 S2 (Google) uses square cells and is excellent for precise geofencing and hierarchical sharding. H3 (Uber) uses hexagonal cells, which offer uniform adjacency — all 6 neighbors are equidistant — making proximity searches and surge pricing heatmaps more accurate for real-time matching.
 
 > *Next, we will look into Surge Pricing — the dynamic pricing system based on real-time supply and demand ratios. Continue reading [Part 5 — Surge Pricing: Dynamic Pricing Based on Real-time Supply and Demand](/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/).*
+
+**Further reading:** For the distance matrix layer that powers routing in dispatch systems — and how to replace the Google Maps Distance Matrix API ($510/day) with self-hosted GraphHopper or OSRM — see [GraphHopper Distance Matrix: Self-Host & Replace Google Maps API](/posts/graphhopper-distance-matrix-production-guide/).

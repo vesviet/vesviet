@@ -255,5 +255,6 @@ Neighboring cells (a K-Ring) might reside on different nodes
 
 - [Uber Engineering: H3 Hexagonal Hierarchical Spatial Index](https://eng.uber.com/h3/)
 - [Google S2 Geometry Library](https://s2geometry.io/)
+- **Self-hosted routing:** The same H3 hexagonal indexing used here for driver proximity is also the caching layer for [GraphHopper Distance Matrix in production](/posts/graphhopper-distance-matrix-production-guide/) — replacing Google Maps API at $510/day.
 
 > *Next, we will delve into the backbone of the entire system — Apache Kafka — where every GPS event, ride request, and acceptance flows. Continue reading [Part 3 — Event Streaming: The Apache Kafka & Flink Backbone](/series/ride-hailing-realtime-architecture/part-3-event-streaming-kafka/).*
