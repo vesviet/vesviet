@@ -1,5 +1,5 @@
 baseURL = "https://tanhdev.com/"
-languageCode = "en-us"
+locale = "en-us"
 title = "Lê Tuấn Anh — Go Backend Architect & Microservices Engineer"
 theme = "PaperMod"
 enableRobotsTXT = false  # static/robots.txt in /static takes precedence; explicit AI bot rules defined there
