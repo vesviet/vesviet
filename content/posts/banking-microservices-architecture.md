@@ -1,5 +1,5 @@
 ---
-title: "Banking Microservices Architecture in Go: Saga, Double-Entry Ledger & Outbox Pattern (2026)"
+title: "Banking Microservices Architecture: Go, Saga & Event Sourcing"
 slug: "banking-microservices-architecture"
 date: "2026-06-01T15:15:00+07:00"
 lastmod: "2026-06-27T07:00:00+07:00"
@@ -12,132 +12,335 @@ categories:
 tags:
   - "Saga Pattern"
   - "Dapr"
+  - "Temporal"
   - "Transactional Outbox"
   - "Banking"
-  - "banking microservices"
-  - "core banking"
-keywords: ["banking microservices architecture", "financial microservices", "saga pattern banking", "transactional outbox", "double entry ledger go", "core banking go microservices"]
-description: "Build a production banking microservices architecture in Go: Orchestrated Saga with Dapr, double-entry bookkeeping ledger, Transactional Outbox for guaranteed event delivery, and idempotent payment APIs."
+  - "Go"
+keywords: ["banking microservices architecture", "go event sourcing ledger", "saga pattern banking", "transactional outbox go kafka", "idempotent payment api design"]
+description: "Build a resilient banking microservices architecture in Go. Production blueprints for double-entry ledgers, Transactional Outbox, and Temporal Saga workflows."
 ShowToc: true
 TocOpen: true
+author: "Lê Tuấn Anh"
 ---
 
+## 1. Introduction: Deconstructing the Legacy Core
 
-**Answer-first:** Designing a secure financial microservices architecture: Utilizing Orchestrated Saga (Dapr), Double-Entry Bookkeeping, and Transactional Outbox.
+**Answer-first:** A modern banking microservices architecture replaces legacy monolithic ledgers (like T24 or Flexcube) using Go for high-throughput transaction routing. The system achieves distributed consistency without two-phase commit (2PC) by combining Event Sourcing (immutable ledger streams), Saga Orchestration (using Temporal or Dapr), the Transactional Outbox pattern, and PostgreSQL unique constraints for API idempotency.
 
-In software engineering, UI glitches might annoy users, but financial discrepancies will kill a business and invite lawsuits. Building a robust **financial microservices architecture** for Fintech or Core Banking is one of the toughest architectural challenges you will ever face.
+For decades, banks relied on monolithic core systems like Temenos T24 or Oracle FLEXCUBE. While robust, these systems present severe bottlenecks for modern digital banking. They were designed for overnight batch processing, not real-time, API-first global transactions.
 
-Whether you are managing a state-of-the-art [GitOps deployment system](/posts/argo-cd-updates-2026) or a complex [order routing engine](/posts/graphhopper-distance-matrix-routing), designing for financial systems demands a completely different level of rigor. This article analyzes the mandatory Design Patterns required when building Banking Microservices.
+Migrating to a microservices architecture in 2026 requires dismantling these bottlenecks:
+- **Scaling limitations:** Monoliths scale vertically (costly hardware), while microservices scale horizontally.
+- **Release cycles:** Legacy cores require massive, risky quarterly releases. Microservices enable independent deployments.
+- **Data locking:** Central databases in monoliths create severe lock contention during high-velocity events (like payday processing).
 
----
+By leveraging Go's highly concurrent runtime and a distributed event-driven architecture, we optimize the system for <10ms database writes at 10,000 TPS, ensuring scalability and fault tolerance.
 
-## The Challenge of Distributed Transactions in Core Banking
+## 2. Domain Decomposition: Mapping Core Banking Contexts
 
-In a Monolith architecture, transferring money from Account A to Account B is trivial: you wrap both `UPDATE` SQL statements inside a single Database Transaction (ACID). If the system crashes midway, the database automatically rolls back everything.
+**Answer-first:** Decomposing a core banking system requires identifying bounded contexts that operate independently. The primary domains are Accounts (CASA), Payments, Ledgers, and Notifications, allowing isolated scaling and distinct data ownership.
 
-However, in Microservices, Account A might reside in the `User Service` (using PostgreSQL), while Account B is in the `Wallet Service` (using MySQL). There is no single database to wrap the transaction for both. This is known as the **Distributed Transaction** problem.
+To successfully migrate using the Strangler Fig pattern, you must establish an Anti-Corruption Layer (ACL) that translates legacy models into modern bounded contexts.
 
-If you successfully deduct money from Account A but fail to add it to Account B due to a network timeout, the customer's money vanishes into thin air!
+Here is how the core domains interact:
 
----
-
-## Solving Consistency with the Saga Pattern
-
-To solve this problem without relying on Two-Phase Commit (2PC)—which is notoriously slow and causes database locking—architects employ the **Saga Pattern**.
-
-A Saga is a sequence of Local Transactions. Each Microservice executes its own local transaction and emits an Event/Message to trigger the next step in the sequence.
-
-### Orchestrated Saga (Based on Dapr Workflows) vs. Choreographed Saga
-
-There are two ways to design a Saga:
-1. **Choreography:** Services listen to each other's events without a central director. For example, `Service A` deducts money and emits a `MoneyDeducted` event; `Service B` catches that event and adds the money. This works for short flows, but when a transfer spans 5-7 services, you create a tangled web of events that is impossible to debug.
-2. **Orchestration:** A central Coordinator directs the flow. For instance, using **Dapr Workflows**, the Coordinator commands: "Service A, deduct the money." Once A confirms success, the Coordinator says: "Service B, add the money." 
-
-In banking systems, an **Orchestrated Saga** is mandatory because it provides clear transaction state tracking (Pending, Failed, Success) required for auditing.
-
-### Designing Compensating Transactions for Failures
-
-The ultimate rule of a Saga is: If step $N$ fails, the system must automatically invoke the **Compensating Transactions** of steps $N-1, N-2, \dots$ to restore the previous state.
-
-If adding money to Wallet B fails, the Coordinator must send a `Refund` command back to Service A to return the customer's money, ensuring Eventual Consistency.
-
----
-
-## Implementing Double-Entry Bookkeeping as an Immutable Ledger
-
-### Why You Must Never Overwrite a Balance Field
-
-A common anti-pattern among junior developers is storing a user's balance in a `balance` column inside a `users` table and continuously executing `UPDATE users SET balance = balance + 100`.
-
-This is a **deadly Anti-pattern** in Fintech. If a balance discrepancy occurs, you will never know where the money went because the history of additions and subtractions isn't reliably preserved.
-
-### Designing the Journal and Account Table Structure
-
-The gold standard solution is applying **Double-Entry Bookkeeping**. Every financial transaction must be recorded as a journal entry and must be **Immutable**—you are never allowed to `UPDATE` or `DELETE` a committed record.
-
-```sql
-CREATE TABLE accounts (
-    id UUID PRIMARY KEY,
-    type VARCHAR(50) -- Customer, Revenue, Suspense
-);
-
-CREATE TABLE ledger_entries (
-    id UUID PRIMARY KEY,
-    transaction_id UUID NOT NULL,
-    account_id UUID NOT NULL,
-    amount DECIMAL(18,4) NOT NULL, -- Positive (Debit), Negative (Credit)
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
--- Production-critical: without this index, SUM(amount) for a balance
--- calculation requires a full table scan across all ledger_entries.
-CREATE INDEX idx_ledger_account_time ON ledger_entries (account_id, created_at DESC);
+```mermaid
+graph TD
+    API[API Gateway] --> Accounts[Accounts Service - CASA]
+    API --> Payments[Payments Routing Service]
+    Payments --> Ledger[Ledger Service]
+    Accounts --> Ledger
+    Ledger --> Notifications[Notification Service]
+    
+    subgraph Legacy Core
+        ACL[Anti-Corruption Layer]
+        T24[Temenos T24]
+        ACL --> T24
+    end
+    
+    Ledger -.Sync.-> ACL
 ```
 
-Every transaction inserts at least two rows into `ledger_entries` such that the sum of the `amount` always equals 0. A customer's Balance is not a hardcoded column; it is calculated by executing a `SUM(amount) WHERE account_id = ?` across their ledger history.
+Each service owns its database. The Ledger Service never queries the Accounts database directly; instead, it subscribes to immutable state change events.
 
-> **Distributed Systems Note:** In a microservices architecture, services on different nodes experience clock skew. Using `created_at TIMESTAMPTZ` alone for strict event ordering is unreliable. For guaranteed monotonic ordering across distributed services, pair `created_at` with a **Snowflake ID** or similar monotonic sequence generator as the `transaction_id`.
+## 3. Event Sourcing: Designing the Immutable Double-Entry Ledger
+
+**Answer-first:** An immutable double-entry ledger ensures audit compliance by recording financial events rather than mutating balance fields. By using PostgreSQL with Optimistic Concurrency Control (OCC) and a unique index on `(stream_id, version)`, the system guarantees exact sequential consistency.
+
+The core constraint of any financial system is to never store balances as the primary record. Storing a mutable `balance` column leads to lost updates and irreversible data corruption. Instead, you must store the transactions (Event Sourcing).
+
+### PostgreSQL Write Model DDL
+
+This schema enforces Optimistic Concurrency Control (OCC) for the event stream:
+
+```sql
+CREATE TABLE ledger_streams (
+    stream_id UUID PRIMARY KEY,
+    version BIGINT NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE ledger_events (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    stream_id UUID NOT NULL REFERENCES ledger_streams(stream_id),
+    version BIGINT NOT NULL,
+    event_type VARCHAR(100) NOT NULL,
+    payload JSONB NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uq_stream_version UNIQUE (stream_id, version)
+);
+```
+
+### The OCC Append Transaction in Go
+
+When appending an event, the system checks the `expected_version` to prevent race conditions.
+
+```go
+// Go repository query using pgx/v5
+tx, err := pool.Begin(ctx)
+if err != nil {
+    return err
+}
+defer tx.Rollback(ctx)
+
+// 1. Verify and update version
+res, err := tx.Exec(ctx, `
+    UPDATE ledger_streams 
+    SET version = $1, updated_at = NOW() 
+    WHERE stream_id = $2 AND version = $3`, 
+    expectedVersion+1, streamID, expectedVersion)
+if err != nil {
+    return err
+}
+if res.RowsAffected() == 0 {
+    return ErrConcurrencyConflict // Version has changed since read
+}
+
+// 2. Insert Event
+_, err = tx.Exec(ctx, `
+    INSERT INTO ledger_events (stream_id, version, event_type, payload) 
+    VALUES ($1, $2, $3, $4)`, 
+    streamID, expectedVersion+1, eventType, payloadJson)
+if err != nil {
+    return err
+}
+
+return tx.Commit(ctx)
+```
+
+To optimize the Go runtime for <10ms database writes at 10,000 TPS, we utilize a transaction-mode PgBouncer pool, NVMe storage, and `synchronous_commit = off` (when business rules tolerate minimal crash delta). For deeper implementation details, read our guide on [double-entry ledger design](/series/core-banking-developer/part-1-double-entry-ledger/).
+
+## 4. The Transactional Outbox Pattern: Preventing Dual-Write Failures
+
+**Answer-first:** The Transactional Outbox pattern resolves the dual-write problem by inserting business data and event messages into the database within the same local transaction. Go workers or CDC tools then poll the outbox table to guarantee at-least-once message delivery to Kafka.
+
+If a service deducts money in the database but fails to publish the `MoneyDeducted` event to Kafka due to a network timeout, the system becomes permanently inconsistent. 
+
+### Implementation Architecture
+
+```mermaid
+sequenceDiagram
+    participant App as Go Service
+    participant DB as PostgreSQL
+    participant Worker as Outbox Relay
+    participant Broker as Kafka
+    
+    App->>DB: BEGIN TX
+    App->>DB: INSERT ledger_events
+    App->>DB: INSERT outbox_events
+    App->>DB: COMMIT TX
+    Worker->>DB: Poll/CDC outbox_events
+    Worker->>Broker: Publish Message
+    Worker->>DB: Mark as processed
+```
+
+### Go Polling Relay with FOR UPDATE SKIP LOCKED
+
+To safely poll outbox events across multiple parallel Go worker instances without deadlocks, we use PostgreSQL's `FOR UPDATE SKIP LOCKED`.
+
+```go
+func PollOutbox(ctx context.Context, db *pgxpool.Pool, producer sarama.SyncProducer) error {
+    tx, err := db.Begin(ctx)
+    if err != nil {
+        return err
+    }
+    defer tx.Rollback(ctx)
+
+    // Lock only returned rows, skip already locked rows by other workers
+    rows, err := tx.Query(ctx, `
+        SELECT id, aggregate_type, event_type, payload 
+        FROM outbox_events 
+        WHERE processed_at IS NULL 
+        ORDER BY created_at ASC 
+        LIMIT 50 
+        FOR UPDATE SKIP LOCKED`)
+    if err != nil {
+        return err
+    }
+    defer rows.Close()
+
+    var eventIDs []uuid.UUID
+    for rows.Next() {
+        var id uuid.UUID
+        var aggType, eventType string
+        var payload []byte
+        
+        if err := rows.Scan(&id, &aggType, &eventType, &payload); err != nil {
+            return err
+        }
+        
+        // Publish to Kafka
+        _, _, err = producer.SendMessage(&sarama.ProducerMessage{
+            Topic: aggType,
+            Key:   sarama.StringEncoder(id.String()),
+            Value: sarama.ByteEncoder(payload),
+        })
+        if err != nil {
+            return fmt.Errorf("failed to publish: %w", err)
+        }
+        eventIDs = append(eventIDs, id)
+    }
+
+    if len(eventIDs) > 0 {
+        _, err = tx.Exec(ctx, `
+            UPDATE outbox_events SET processed_at = NOW() WHERE id = ANY($1)`, eventIDs)
+        if err != nil {
+            return err
+        }
+    }
+    return tx.Commit(ctx)
+}
+```
+
+## 5. Saga Orchestration: Temporal vs. Dapr for Distributed Transactions
+
+**Answer-first:** Saga Orchestration coordinates distributed financial transactions with compensations for failure states. Temporal offers a dedicated, durable execution engine ideal for long-running workflows, while Dapr Workflows embed the Durable Task Framework as a lightweight sidecar.
+
+Two-Phase Commit (2PC) locks databases and crushes throughput. We must use Sagas to ensure Eventual Consistency.
+
+### Orchestrator Comparison
+
+| Feature | Temporal | Dapr Workflows |
+|---------|----------|----------------|
+| **Core Architecture** | Dedicated Server/Worker Cluster | Sidecar (Embedded Durable Task Framework) |
+| **State Storage** | Dedicated DB (Postgres/Cassandra) | Any Dapr State Store (Redis, CosmosDB) |
+| **Operational Overhead**| High (Needs dedicated cluster management) | Low (Reuses existing Dapr infrastructure) |
+| **Compliance/Audit** | Native Archival & History Export (S3) | Requires custom audit logging integration |
+| **Long-Running Fix** | `Continue-As-New` to avoid event limits | Native Actor state lifecycle |
+| **Best Fit** | Complex, multi-day, mission-critical Sagas | Lightweight, integrated Saga compensations |
+
+**Architecture Decision (2026 Core Banking Standard):**
+- **Temporal** is required if you need long-term PCI-DSS audit trails, history archival to S3, and process complex multi-day workflows (e.g. mortgage origination). Note that Temporal has a hard event history limit (51,200 events), necessitating the `Continue-As-New` strategy for infinite financial ledgers.
+- **Dapr Workflows** are optimal for short-lived Sagas (e.g. cross-service payment transfers) if you already use Dapr for sidecar routing and pub/sub.
+
+### Go Temporal Workflow Code Structure
+
+Temporal executes compensations natively. In Go, you build a slice of compensation functions and trigger them via `defer` if the workflow fails.
+
+```go
+func FinancialTransferSaga(ctx workflow.Context, req TransferRequest) (err error) {
+    options := workflow.ActivityOptions{
+        StartToCloseTimeout: time.Minute,
+        RetryPolicy: &temporal.RetryPolicy{MaximumAttempts: 3},
+    }
+    ctx = workflow.WithActivityOptions(ctx, options)
+
+    var compensations []func()
+    
+    // Defer compensation execution
+    defer func() {
+        if err != nil {
+            for _, comp := range compensations {
+                comp()
+            }
+        }
+    }()
+
+    // Step 1: Deduct
+    err = workflow.ExecuteActivity(ctx, DeductFundsActivity, req).Get(ctx, nil)
+    if err != nil {
+        return err
+    }
+    compensations = append(compensations, func() {
+        workflow.ExecuteActivity(ctx, RefundFundsActivity, req).Get(ctx, nil)
+    })
+
+    // Step 2: Credit
+    err = workflow.ExecuteActivity(ctx, CreditTargetActivity, req).Get(ctx, nil)
+    if err != nil {
+        return err
+    }
+
+    return nil
+}
+```
+
+## 6. Designing Idempotent Payment APIs in Go
+
+**Answer-first:** An idempotent payment API guarantees that identical requests process only once, preventing double-charging. This is implemented via a Key-Check-Execute pattern using Redis for TTL-based locking and PostgreSQL unique indexes for permanent deduplication.
+
+When Kafka redelivers a message, or a client retries a timeout, the API must be safe to call repeatedly.
+
+1. **Check:** The client sends an `Idempotency-Key` header.
+2. **Lock:** The Go API attempts to acquire a lock in Redis using a Lua script (`SET NX`).
+3. **Database Constraint:** For permanent safety, the idempotency key is inserted into a PostgreSQL `processed_transactions` table with a `UNIQUE` constraint. If another request attempts to insert the same key, PostgreSQL rejects it.
+
+This robust mechanism is fundamentally similar to [H3 geospatial indexing](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/) collisions or [Redis caching](/posts/graphhopper-distance-matrix-production-guide/) optimizations—you must assume distributed networks will duplicate data.
+
+## 7. Observability: OpenTelemetry in Distributed Ledgers
+
+**Answer-first:** To trace financial transactions across microservices, OpenTelemetry (OTel) context propagation must be injected into HTTP headers, Kafka messages, and Temporal workflows, ensuring end-to-end auditability and latency tracking.
+
+In Go, when using `segmentio/kafka-go`, native OTel wrappers do not exist. We must construct a custom `TextMapCarrier` to map OTel context fields into `kafka.Header`.
+
+```go
+type KafkaHeaderCarrier struct {
+    Headers *[]kafka.Header
+}
+
+func (c *KafkaHeaderCarrier) Get(key string) string {
+    for _, h := range *c.Headers {
+        if h.Key == key {
+            return string(h.Value)
+        }
+    }
+    return ""
+}
+
+func (c *KafkaHeaderCarrier) Set(key, value string) {
+    *c.Headers = append(*c.Headers, kafka.Header{
+        Key:   key,
+        Value: []byte(value),
+    })
+}
+
+func (c *KafkaHeaderCarrier) Keys() []string {
+    keys := make([]string, len(*c.Headers))
+    for i, h := range *c.Headers {
+        keys[i] = h.Key
+    }
+    return keys
+}
+```
+
+By explicitly passing this carrier during message publishing and consumption, the transaction ID flows continuously through the entire architecture, providing crucial data for incident resolution.
 
 ---
-
-## Preventing Event Loss with the Transactional Outbox Pattern
-
-### Solving the Dual-Write Problem (Writing to DB vs. Sending an Event)
-
-In a Saga, after deducting money (writing to the DB), a service must send a notification to Kafka/RabbitMQ. What happens if the DB write succeeds, but Kafka is down and the message fails to send? The Saga breaks mid-flight. This is the **Dual-Write Problem**.
-
-The **Transactional Outbox** completely resolves this. When deducting money, the service simultaneously saves the Event payload into an `outbox_events` table **within the exact same Database Transaction** as the deduction. Thanks to local ACID properties, either both succeed, or both fail together.
-
-### Leveraging CDC (Debezium) to Poll the Outbox Table
-
-Instead of writing a continuous `SELECT` loop to poll the `outbox_events` table (which wastes DB CPU), modern systems use **Change Data Capture (CDC)** tools like **Debezium**.
-
-Debezium reads directly from the MySQL Binlog / PostgreSQL WAL. Whenever a new row is inserted into the Outbox table, Debezium instantly captures the data and fires it straight into Kafka without impacting the primary database's performance.
-
----
-
-## Ensuring Idempotency for Banking Endpoints
-
-Due to the nature of distributed networks, messages (Events) can be delivered multiple times (At-Least-Once Delivery). 
-
-Imagine the `DeductMoney($100)` event being sent by Kafka 3 times due to network retries. If your API isn't designed carefully, the customer gets charged $300!
-
-All APIs handling financial transactions must be **Idempotent**. This is achieved by:
-- The client sending a unique `Idempotency-Key` (or Transaction ID) with every request.
-- The server checking a `processed_transactions` table: If this ID has already been successfully processed, the server immediately returns the cached success result (without deducting money again).
-- If the ID does not exist, the server deducts the money and writes the ID to the table. Both of these actions must happen in a single DB Transaction, which implies having a robust [MySQL database scaling](/posts/mysql-horizontal-scaling) strategy if your transaction volume is massive.
-
-Designing a payment system architecture leaves no room for guesswork. The combination of **Saga Orchestration, an Immutable Ledger, the Outbox Pattern, and Idempotent APIs** forms the strongest armor to protect millions of dollars in daily transactions on your platform.
-
-For how these microservices patterns apply in the microfinance vertical — group-based JLG lending, compulsory savings CASA logic, and EOD batch state machines — see [Microfinance Core Banking System: Architecture & Engineering Guide](/posts/deconstructing-microfinance-core-banking-architecture).
 
 ## FAQ
 
-{{< faq q="What is banking microservices architecture?" >}}
-**banking microservices architecture** is a critical architectural pattern or system discussed in this guide. Designing a secure financial microservices architecture: Utilizing Orchestrated Saga (Dapr), Double-Entry Bookkeeping, and Transactional Outbox.
+{{< faq q="How does Event Sourcing ensure double-entry audit compliance in banking microservices?" >}}
+Event Sourcing stores every financial operation as an immutable sequence of events (credits and debits) in a ledger stream, rather than updating a mutable balance column. This provides a cryptographically verifiable and irreversible audit trail required by financial regulators.
 {{< /faq >}}
 
-{{< faq q="How does banking microservices architecture compare to traditional alternatives?" >}}
-Unlike legacy systems, **banking microservices architecture** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< faq q="Why is the Transactional Outbox pattern required instead of direct Kafka publishes?" >}}
+If a service updates the database and then directly publishes to Kafka, a network failure during the publish creates a dual-write inconsistency (database updated, downstream services unaware). The Outbox pattern writes the event to the same database in the same transaction, guaranteeing at-least-once delivery.
 {{< /faq >}}
 
+{{< faq q="How do you design an idempotent payment API in Go to prevent double-charging?" >}}
+By implementing a Key-Check-Execute pattern. Clients provide an Idempotency-Key. Go checks a Redis cache (via `SET NX` locks) and enforces uniqueness through a PostgreSQL `UNIQUE` index constraint on a `processed_transactions` table to reject duplicate requests.
+{{< /faq >}}
+
+{{< faq q="What is the performance difference between Dapr and Temporal for banking Saga orchestration?" >}}
+Temporal requires a dedicated server cluster and provides immense throughput for long-running workflows, but has high operational overhead and history limits. Dapr Workflows embed a Durable Task Framework directly into the application sidecar, reducing gRPC overhead and cluster management, making it faster for simple, short-lived Sagas.
+{{< /faq >}}
