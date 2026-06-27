@@ -17,7 +17,7 @@ cover:
 
 **TL;DR:** EKS gives you full Kubernetes power with portability and the CNCF ecosystem. ECS gives you AWS-native simplicity with zero control plane cost. Choose EKS if you need GitOps, ArgoCD, Dapr, or multi-cloud portability. Choose ECS if you want faster setup, lower ops overhead, and a pure AWS-native stack.
 
-I've run both in production. At Lotte Innovate, I architected a 21-service Go microservices platform on EKS handling **8,000 RPS peak and 25M+ requests/month**. I've also managed ECS clusters for smaller AWS-native projects. This guide is what I wish existed before I made those decisions.
+I've run both in production. At Vigo Retail, I architected a 21-service Go microservices platform on EKS handling **8,000 RPS peak and 25M+ requests/month**. I've also managed ECS clusters for smaller AWS-native projects. This guide is what I wish existed before I made those decisions.
 
 ---
 
@@ -193,7 +193,7 @@ This is where EKS (with Karpenter) beats ECS significantly for bursty workloads:
 | ECS Fargate | ~30–90 seconds | Task-level cold start |
 | Cluster Autoscaler (EKS) | ~3–5 minutes | ASG-based — legacy |
 
-**Why this matters at 8,000 RPS:** At Lotte Innovate, traffic spikes during promotions hit 8,000 RPS within minutes. A 3-minute node provisioning delay translates directly to queued requests, degraded p99 latency, and potential 5xx errors. Karpenter's 45-second provisioning kept us within SLA during every burst event.
+**Why this matters at 8,000 RPS:** At Vigo Retail, traffic spikes during promotions hit 8,000 RPS within minutes. A 3-minute node provisioning delay translates directly to queued requests, degraded p99 latency, and potential 5xx errors. Karpenter's 45-second provisioning kept us within SLA during every burst event.
 
 **Pod-level autoscaling:**
 
@@ -255,7 +255,7 @@ According to the [CNCF 2024 Annual Survey](https://www.cncf.io/reports/cncf-annu
 
 ### 5.3 Go Microservices on EKS — Firsthand Production Experience
 
-At Lotte Innovate, I led the architecture for a **21-service Go microservices platform** on EKS in `ap-southeast-1`. The system handled an e-commerce backend for a Korean conglomerate's Vietnam operations, peaking at **8,000 RPS and 25M+ requests/month**.
+At Vigo Retail, I led the architecture for a **21-service Go microservices platform** on EKS in `ap-southeast-1`. The system handled an e-commerce backend for a Korean conglomerate's Vietnam operations, peaking at **8,000 RPS and 25M+ requests/month**.
 
 **Stack:**
 - 21 Go services (order management, inventory, loyalty, payment, notifications, and more)
@@ -376,7 +376,7 @@ If you're starting a new EKS cluster today, enable Auto Mode from day one. Don't
 | RBAC, NetworkPolicy, namespace structure | Your team | Your team |
 | Cost optimization (Karpenter tuning) | Your team | AWS ✅ (managed Karpenter) |
 
-**The K8s version upgrade treadmill:** EKS versions have a ~14-month window before Extended Support pricing applies. At Lotte Innovate, we ran quarterly upgrade sprints — staging cluster upgrade first, then production with blue/green cluster swap. Budget **2–3 engineer-days per cluster per upgrade cycle**.
+**The K8s version upgrade treadmill:** EKS versions have a ~14-month window before Extended Support pricing applies. At Vigo Retail, we ran quarterly upgrade sprints — staging cluster upgrade first, then production with blue/green cluster swap. Budget **2–3 engineer-days per cluster per upgrade cycle**.
 
 ### 7.3 GitOps on EKS with ArgoCD
 
@@ -555,13 +555,13 @@ If you don't need ArgoCD, Dapr, KEDA, or Kubernetes Network Policies — and you
 
 If you're building a platform that needs GitOps, event-driven autoscaling, pod-level network isolation, or multi-cloud portability — EKS is the right foundation. EKS Auto Mode has significantly lowered the operational bar in 2025. But Kubernetes expertise remains the non-negotiable entry ticket.
 
-At Lotte Innovate, EKS was the right call. The CNCF ecosystem — ArgoCD + Dapr + Karpenter — gave us capabilities that ECS cannot match. But I've watched teams choose EKS because "everyone's doing Kubernetes" and then spend 3 months fighting the platform instead of shipping features.
+At Vigo Retail, EKS was the right call. The CNCF ecosystem — ArgoCD + Dapr + Karpenter — gave us capabilities that ECS cannot match. But I've watched teams choose EKS because "everyone's doing Kubernetes" and then spend 3 months fighting the platform instead of shipping features.
 
 **Pick the tool that matches your team, not the trend.**
 
 ---
 
-*[Lê Tuấn Anh](/about/) is a Go Backend Architect with 17+ years of experience. He led the EKS architecture for a 21-service Go microservices platform at Lotte Innovate handling 8,000 RPS peak. He also writes about [GitOps at Scale with ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/), [Kubernetes In-Place Pod Resizing](/posts/kubernetes-in-place-pod-resizing-guide/), and [Dapr Workflow Saga Orchestration](/posts/dapr-workflow-saga-orchestration-guide/).*
+*[Lê Tuấn Anh](/about/) is a Go Backend Architect with 17+ years of experience. He led the EKS architecture for a 21-service Go microservices platform at Vigo Retail handling 8,000 RPS peak. He also writes about [GitOps at Scale with ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/), [Kubernetes In-Place Pod Resizing](/posts/kubernetes-in-place-pod-resizing-guide/), and [Dapr Workflow Saga Orchestration](/posts/dapr-workflow-saga-orchestration-guide/).*
 
 ---
 
