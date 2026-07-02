@@ -192,8 +192,8 @@
 </script>
 {{- end }}
 
-{{- if and .IsPage .File (eq .Section "posts") }}
-<!-- Schema.org — Article for /posts/* pages (E-E-A-T + Rich Results) -->
+{{- if and .IsPage .File (or (eq .Section "posts") (eq .Section "series") (eq .Section "radar")) }}
+<!-- Schema.org — Article for /posts/*, /series/*/part-*, /radar/* (E-E-A-T + Rich Results) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -233,6 +233,7 @@
 }
 </script>
 
+{{- if eq .Section "posts" }}
 <!-- Schema.org — BreadcrumbList for /posts/* pages -->
 <script type="application/ld+json">
 {
@@ -260,6 +261,71 @@
   ]
 }
 </script>
+{{- else if eq .Section "series" }}
+<!-- Schema.org — BreadcrumbList for /series/*/* pages (Home → Series Hub → Part) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ .Site.BaseURL }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Series",
+      "item": "{{ .Site.BaseURL }}series/"
+    },
+    {{- with .Parent }}
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": {{ .Title | jsonify }},
+      "item": "{{ .Permalink }}"
+    },
+    {{- end }}
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": {{ .Title | jsonify }},
+      "item": "{{ .Permalink }}"
+    }
+  ]
+}
+</script>
+{{- else if eq .Section "radar" }}
+<!-- Schema.org — BreadcrumbList for /radar/* pages -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ .Site.BaseURL }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tech Radar",
+      "item": "{{ .Site.BaseURL }}radar/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": {{ .Title | jsonify }},
+      "item": "{{ .Permalink }}"
+    }
+  ]
+}
+</script>
+{{- end }}
 {{- end }}
 
 
