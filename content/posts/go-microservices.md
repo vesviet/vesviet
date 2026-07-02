@@ -18,7 +18,7 @@ cover:
 
 Choosing Go for microservices is an architecture decision, not a language preference. The goroutine model, binary size, and serialization speed change what the deployment unit looks like at the infrastructure level.
 
-Go's goroutine model and near-zero serialization overhead make it one of the strongest languages for microservices at scale. This guide covers the architecture decisions, technology stack, and production patterns — from domain decomposition through Dapr Pub/Sub, gRPC contracts, distributed tracing, and GitOps deployment — based on a real 21-service e-commerce migration at Lotte Innovate Vietnam.
+Go's goroutine model and near-zero serialization overhead make it one of the strongest languages for microservices at scale. This guide covers the architecture decisions, technology stack, and production patterns — from domain decomposition through Dapr Pub/Sub, gRPC contracts, distributed tracing, and GitOps deployment — based on a real 21-service e-commerce migration running 25M+ requests/month.
 
 **What you will get from this guide:** Concrete architecture decisions with production rationale, not generic tutorial content. Every pattern here was stress-tested on a system handling 150K RPM during peak flash sale traffic.
 
@@ -618,7 +618,7 @@ Avoid microservices when your team is under 8 engineers, when you lack automated
 
 ## Need Go Microservices Architecture Help?
 
-If you're planning a migration from a Magento monolith (or any legacy system) to Go microservices, I offer architecture reviews, consulting retainers, and hands-on advisory. I led this exact migration at Lotte Innovate — 21 services, 25M+ requests/month. **[Get in touch →](/hire/)**
+If you're planning a migration from a Magento monolith (or any legacy system) to Go microservices, I offer architecture reviews, consulting retainers, and hands-on advisory. I've led this exact migration — 21 services, 25M+ requests/month, 8K RPS peak. **[Get in touch →](/hire/)**
 
 ---
 

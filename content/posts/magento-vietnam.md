@@ -42,7 +42,7 @@ The local market is sharply segmented by platform tier:
 
 - **SMBs in Vietnam:** Over 90% use Magento Open Source (Community Edition), typically hosted on DigitalOcean droplets or VPS.
 - **Retailers and brands:** Mid-size operations use CE with Hyvä frontend, reducing infrastructure overhead while staying on a familiar backend.
-- **Enterprise:** Major retail arms — Lotte Innovate, Vincom Retail, and several domestic FMCG brands — run Adobe Commerce on-premise or via Adobe Commerce Cloud, often with Akeneo PIM integration.
+- **Enterprise:** Major retail arms — including several large Vietnamese retail and FMCG groups — run Adobe Commerce on-premise or via Adobe Commerce Cloud, often with Akeneo PIM integration.
 
 A critical inflection point for 2026 is the **EOL cycle**. Magento 2.4.6 enters end-of-life in August 2025. Organizations still on 2.4.6 or below are now in a race to upgrade, and that creates a spike in demand for engineers who actually understand the 2.4.9 architecture changes — not just engineers who know how to install Magento.
 
@@ -105,7 +105,7 @@ Read more: [Magento Agency & Development in Vietnam: Scoping Guide](/posts/magen
 
 **Answer-first:** The fastest filter is a single architecture question: "Walk me through how you would build a custom discount rule using real-time inventory from an external WMS." Theme developers will pause. Engineers will immediately discuss Observers, Plugins, MessageQueue consumers, and API integration patterns.
 
-I have conducted over 60 technical interviews with Magento candidates in Vietnam since 2019, across projects for Lotte Innovate and Vigo Retail. The three-tier skill hierarchy below reflects what I actually encountered — not what agency marketing claims.
+I have conducted over 60 technical interviews with Magento candidates in Vietnam since 2019, across enterprise e-commerce and retail projects. The three-tier skill hierarchy below reflects what I actually encountered — not what agency marketing claims.
 
 ### The 3-Tier Skill Hierarchy
 
