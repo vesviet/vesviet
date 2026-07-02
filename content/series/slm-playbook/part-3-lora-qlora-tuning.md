@@ -1,7 +1,7 @@
 ---
 title: "Practical QLoRA Fine-tuning: Axolotl & Unsloth | SLM Playbook"
 date: 2026-05-23T08:00:00+07:00
-lastmod: 2026-05-23T08:00:00+07:00
+lastmod: 2026-07-02T00:00:00+07:00
 draft: false
 description: "Fine-tune LoRA/QLoRA for SLMs. Understand Double Quantization, configure Axolotl YAML, and accelerate training 3x using Unsloth."
 ShowToc: true
@@ -10,18 +10,16 @@ weight: 4
 categories: ["Series", "SLM Playbook"]
 tags: ["AI Engineering", "Fine-Tuning", "LoRA", "Axolotl", "Unsloth"]
 ---
+**QLoRA fine-tuning lets you adapt a multi-billion parameter model on a single consumer GPU — like an RTX 3090 or A10G — by combining LoRA adapter training with 4-bit NF4 quantization.** This article covers the math, a production Axolotl YAML config, and Unsloth integration for 3x training speedup.
+
 [← Series hub](/series/slm-playbook/)
 [← Previous](/series/slm-playbook/part-2-sft-data-engineering/) | [Next →](/series/slm-playbook/part-4-knowledge-distillation-r1/)
-
-Full-parameter fine-tuning of a large language model is a luxury. For even an 8B model like Llama 3, updating all weights in 16-bit precision requires massive clusters far beyond the reach of mid-sized teams or startups.
-
-To resolve these hardware barriers, **Parameter-Efficient Fine-Tuning (PEFT)** methods were developed, with **LoRA** and **QLoRA** emerging as the dominant paradigms. They allow developers to train multi-billion parameter models on a single consumer GPU (like an RTX 3090, 4090, or A10G) while maintaining near-zero performance degradation compared to full tuning.
-
-This article dissects the mathematics behind low-rank adaptation, details how to build production-grade **Axolotl** configurations, and uses **Unsloth** to accelerate training loops.
 
 ---
 
 ## 1. LoRA: Low-Rank Adaptation Matrix Decomposition
+
+**LoRA reduces fine-tuning cost by freezing all original model weights and training only two small adapter matrices (A and B) of rank r — typically 8–64. This cuts trainable parameters by over 99% versus full fine-tuning with near-zero performance loss.**
 
 During domain-specific fine-tuning (e.g., text-to-SQL or medical terminology), parameter weight updates do not occupy the full parameter space; they exhibit a very low **intrinsic rank**. Instead of updating the massive original weight matrix $W_0 \in \mathbb{R}^{d \times k}$, LoRA freezes $W_0$ and models the weight updates $\Delta W$ as the product of two extremely low-rank matrices $B$ and $A$ of rank $r$ ($r \ll \min(d, k)$):
 
@@ -67,6 +65,8 @@ Where:
 
 ## 2. QLoRA: Maximizing VRAM Efficiency via Double Quantization
 
+**QLoRA quantizes the frozen base model weights to 4-bit NF4 precision while keeping LoRA adapter weights in 16-bit — saving ~3 GB VRAM on an 8B model versus standard 4-bit quantization. It enables fine-tuning a 70B model on a single A100 80GB.**
+
 Introduced by Tim Dettmers in 2023, **QLoRA (Quantized Low-Rank Adaptation)** takes memory efficiency a step further by quantizing the base model weights $W_0$ to a highly compressed **4-bit** representation, while keeping the active LoRA adapter weights in 16-bit precision.
 
 QLoRA relies on three key mathematical and systems innovations:
@@ -93,6 +93,8 @@ Paged Optimizers leverage CUDA Unified Memory to automatically swap (page) optim
 ---
 
 ## 3. Hands-On: Configuring Axolotl for QLoRA
+
+**Axolotl uses a single YAML file to define the entire fine-tuning pipeline — base model, dataset, LoRA config, and hardware settings. Set `load_in_4bit: true` and `adapter: qlora` to activate QLoRA mode. The config below is production-tested on a single NVIDIA A10G (24 GB VRAM).**
 
 **Axolotl** is a robust framework for LLM fine-tuning, offering native integration with FlashAttention-2, DeepSpeed, and PyTorch FSDP.
 
@@ -162,6 +164,8 @@ logging_steps: 10
 ---
 
 ## 4. Accelerating Loops: 3x Speedup with Unsloth
+
+**Unsloth replaces PyTorch's standard attention and MLP backward kernels with hand-written OpenAI Triton kernels, delivering a 3x training speedup and 60% memory reduction on the same GPU — with no accuracy loss. It works out-of-the-box as a drop-in replacement for Hugging Face model loading.**
 
 While Axolotl is highly configurable, standard PyTorch backward passes for attention layers leave performance on the table. **Unsloth** rewrites the attention and MLP backward steps in raw **OpenAI Triton**, achieving a **3x speedup** while reducing memory consumption by **60%**.
 
@@ -259,6 +263,8 @@ print("Training complete! Model saved.")
 ---
 
 ## 5. Merging LoRA Weights for Serving
+
+**After training, merge your LoRA adapter weights (typically 50–500 MB) back into the base model at fp16 to create a self-contained checkpoint. This removes the adapter dependency and enables direct loading by vLLM, TGI, or any inference engine without LoRA support.**
 
 Fine-tuning via LoRA outputs a directory of adapter weights (typically 50MB - 500MB). To run high-performance inference serving with engines like vLLM, you should merge these adapter matrices back into the 16-bit base model weights.
 
