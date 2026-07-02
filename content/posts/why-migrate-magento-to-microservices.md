@@ -267,3 +267,13 @@ Magento's **Entity-Attribute-Value (EAV)** model stores product attributes acros
 Magento handles checkout as a **synchronous database transaction**: reserve stock, create order, capture payment — all in one `BEGIN ... COMMIT`. This works for a single database but breaks in a distributed system because a slow payment gateway response holds a database transaction open, consuming connection pool slots and cascading into connection exhaustion under load. The **Saga pattern** replaces this with local transactions per service and explicit compensating transactions on failure: if payment authorization fails after stock was reserved, a compensation message triggers `release_reservation` on the Warehouse service. No long-lived database locks, no connection pool exhaustion, and each failure case is explicitly handled rather than silently dropped.
 {{< /faq >}}
 
+---
+
+## Ready to Execute the Migration?
+
+If you have decided to migrate — or are building the business case to get executive sign-off — the next step is the technical execution plan.
+
+**[Zero-Downtime: Moving from Magento to Microservices →](/posts/moving-from-magento-to-microservices/)**
+
+That guide covers the three-phase Strangler Fig execution: the Read-Only Gateway, the Dual-Write sync layer, and the Full Cutover with hot standby — all without dropping a single order.
+

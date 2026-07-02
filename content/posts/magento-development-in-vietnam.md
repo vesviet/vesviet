@@ -11,6 +11,7 @@ description: "How to find and evaluate a Magento agency in Vietnam: effort layer
 categories: ["Engineering", "Business"]
 ShowToc: true
 TocOpen: true
+canonicalURL: "https://tanhdev.com/posts/magento-vietnam/"
 ---
 
 

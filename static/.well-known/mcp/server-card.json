@@ -1,15 +1,78 @@
 {
-  "name": "TanhDev MCP",
-  "description": "MCP endpoint for tanhdev.com — Le Tuan Anh's Go backend architecture and microservices engineering blog.",
-  "mcp_version": "2025-03-26",
-  "version": "1.0.0",
-  "homepage": "https://tanhdev.com",
-  "contact": "vesviet@gmail.com",
-  "transport": {
-    "type": "sse",
-    "url": "https://tanhdev.com/mcp/sse"
+  "schema_version": "1.0",
+  "name": "tanhdev.com",
+  "description": "Technical blog by Lê Tuấn Anh — Go backend architecture, microservices, distributed systems, AI engineering, and Magento platform migration. 17+ years production experience. Real case studies from Lotte Innovate Vietnam (25M+ req/month, 8K RPS).",
+  "author": {
+    "name": "Lê Tuấn Anh",
+    "alternate_name": ["vesviet", "Le Tuan Anh"],
+    "url": "https://tanhdev.com",
+    "contact": "vesviet@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/vesviet",
+    "github": "https://github.com/vesviet"
   },
-  "capabilities": {
-    "tools": {}
-  }
+  "tools": [
+    {
+      "name": "search_posts",
+      "description": "Search blog posts by topic keyword. Returns matching posts on Go, microservices, Magento, Kubernetes, AI engineering.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Search keyword (e.g. 'goroutine leak', 'magento migration', 'dapr pub/sub')"
+          }
+        },
+        "required": ["query"]
+      },
+      "endpoint": "https://tanhdev.com/posts/?q={query}"
+    },
+    {
+      "name": "get_series",
+      "description": "Browse long-form technical deep-dive series. Available series include Shopee Architecture, Alipay Double-11, Core Banking, Ride-Hailing, MCP Engineering, AI-Driven Engineer, and more.",
+      "endpoint": "https://tanhdev.com/series/"
+    },
+    {
+      "name": "get_tech_radar",
+      "description": "Get the latest Tech Radar entries — weekly curated signals on Go ecosystem, Kubernetes, AI tooling, and distributed systems.",
+      "endpoint": "https://tanhdev.com/radar/"
+    },
+    {
+      "name": "get_hire_info",
+      "description": "Architecture consulting and advisory services — Go microservices, Magento migration, distributed systems design.",
+      "endpoint": "https://tanhdev.com/hire/"
+    }
+  ],
+  "content_clusters": [
+    {
+      "name": "Go Microservices Architecture",
+      "description": "Production patterns: gRPC, Dapr, OpenTelemetry, goroutine leak detection, GitOps on Kubernetes",
+      "entry_url": "https://tanhdev.com/posts/go-microservices/"
+    },
+    {
+      "name": "Magento to Microservices Migration",
+      "description": "Vietnam Magento market, hiring guides, migration strategy, EAV schema, Strangler Fig pattern",
+      "entry_url": "https://tanhdev.com/posts/magento-vietnam/"
+    },
+    {
+      "name": "Distributed Systems — Real Case Studies",
+      "description": "Shopee flash sale engine, Alipay Double-11, PayPay architecture, Ride-Hailing real-time systems",
+      "entry_url": "https://tanhdev.com/series/"
+    },
+    {
+      "name": "AI Engineering & Agentic Systems",
+      "description": "MCP engineering in production, agentic e-commerce search, AI-driven engineer playbook, SLM playbook",
+      "entry_url": "https://tanhdev.com/series/mcp-engineering-in-production/"
+    },
+    {
+      "name": "GitOps & Kubernetes",
+      "description": "ArgoCD at scale, Helm chart management, Kubernetes observability, multi-cluster GitOps",
+      "entry_url": "https://tanhdev.com/posts/gitops-at-scale-kubernetes-argocd-microservices/"
+    }
+  ],
+  "llms_txt": "https://tanhdev.com/llms.txt",
+  "sitemap": "https://tanhdev.com/sitemap.xml",
+  "rss": "https://tanhdev.com/posts/index.xml",
+  "content_language": "en",
+  "update_frequency": "weekly",
+  "last_updated": "2026-07-02"
 }

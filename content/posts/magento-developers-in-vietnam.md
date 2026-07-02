@@ -9,6 +9,7 @@ description: "How to technically vet Magento developers in Vietnam: hiring model
 categories: ["Engineering", "Strategy"]
 ShowToc: true
 TocOpen: true
+canonicalURL: "https://tanhdev.com/posts/magento-vietnam/"
 cover:
   image: "/images/posts/magento-developers-vietnam-cover.png"
   alt: "Magento Developers in Vietnam: Technical Hiring and Vetting Guide"
