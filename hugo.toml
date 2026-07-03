@@ -46,7 +46,7 @@ apple_touch_icon = "/apple-touch-icon.png"
 [params.profileMode]
   enabled = true
   title = "Lê Tuấn Anh — Go Backend Architect & Distributed Systems Engineer"
-  subtitle = """<span style="font-size: 1.1em;">**Backend Architecture & Platform Specialist**</span><br><br>17+ years building resilient, high-traffic platforms in Vietnam and beyond.<div class="exp-list"><div class="exp-item">🚀 **Monolith → 21 Go Microservices** (Zero Downtime Migration, Lotte Innovate)</div><div class="exp-item">⚡ **25M+ requests/month** at peak 8,000 RPS — p95 latency reduced from 1.2s → 120ms</div><div class="exp-item">⚙️ **GitOps at Scale** (Kubernetes EKS/K3s, ArgoCD, Dapr Pub/Sub, Saga Patterns)</div></div>"""
+  subtitle = """<span style="font-size: 1.1em;">**Backend Architecture & Platform Specialist**</span><br><br>17+ years building resilient, high-traffic platforms in Vietnam and beyond.<div class="exp-list"><div class="exp-item">🚀 **Monolith → 21 Go Microservices** (Zero Downtime Migration, Independent Consultant)</div><div class="exp-item">⚡ **25M+ requests/month** at peak 8,000 RPS — p95 latency reduced from 1.2s → 120ms</div><div class="exp-item">⚙️ **GitOps at Scale** (Kubernetes EKS/K3s, ArgoCD, Dapr Pub/Sub, Saga Patterns)</div></div>"""
   imageUrl = "/vesviet.png"
   imageTitle = "Le Tuan Anh - Senior Software Engineer and Backend Architecture Specialist"
   imageWidth = 120

@@ -1,0 +1,206 @@
+{{- /* Search Modal — powered by Pagefind */}}
+
+<div id="search-modal" class="search-modal" role="dialog" aria-modal="true" aria-label="Search site" hidden>
+  <div class="search-modal-backdrop" id="search-modal-backdrop"></div>
+  <div class="search-modal-container">
+    <div class="search-modal-header">
+      <div class="search-input-wrap">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input
+          id="search-input"
+          type="search"
+          class="search-input"
+          placeholder="Search posts, series, radar…"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          aria-label="Search"
+        />
+        <kbd class="search-esc-hint">ESC</kbd>
+      </div>
+    </div>
+    <div id="search-results" class="search-results" role="region" aria-live="polite" aria-label="Search results">
+      <p class="search-empty-hint">Start typing to search 100+ posts and series…</p>
+    </div>
+  </div>
+</div>
+
+<style>
+/* ── Search Modal ────────────────────────────────── */
+.search-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 8vh;
+}
+.search-modal[hidden] { display: none !important; }
+
+.search-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.search-modal-container {
+  position: relative;
+  z-index: 1;
+  width: min(680px, 94vw);
+  background: var(--theme, #fff);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 12px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+  overflow: hidden;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-modal-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border, #e5e7eb);
+  flex-shrink: 0;
+}
+
+.search-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-icon {
+  flex-shrink: 0;
+  color: var(--secondary, #888);
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  color: var(--primary, #1a1a1a);
+  outline: none;
+  padding: 6px 0;
+  font-family: inherit;
+}
+.search-input::placeholder { color: var(--secondary, #aaa); }
+
+.search-esc-hint {
+  font-size: 11px;
+  padding: 2px 6px;
+  border: 1px solid var(--border, #ddd);
+  border-radius: 4px;
+  color: var(--secondary, #888);
+  background: var(--code-bg, #f5f5f5);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.search-results {
+  overflow-y: auto;
+  flex: 1;
+  padding: 8px 0;
+  min-height: 80px;
+}
+
+.search-empty-hint {
+  text-align: center;
+  color: var(--secondary, #888);
+  padding: 32px 16px;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.search-result-item {
+  display: block;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: inherit;
+  border-bottom: 1px solid var(--border, #f0f0f0);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+.search-result-item:last-child { border-bottom: none; }
+.search-result-item:hover,
+.search-result-item:focus {
+  background: var(--entry, rgba(0,0,0,0.04));
+  outline: none;
+}
+
+.search-result-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--primary, #1a1a1a);
+  margin: 0 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-result-excerpt {
+  font-size: 0.82rem;
+  color: var(--secondary, #555);
+  margin: 0 0 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.5;
+}
+
+.search-result-meta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.search-result-tag {
+  font-size: 0.72rem;
+  padding: 2px 7px;
+  border-radius: 20px;
+  background: var(--code-bg, #f0f4ff);
+  color: var(--secondary, #555);
+  border: 1px solid var(--border, #e0e7ff);
+}
+
+.search-no-results {
+  text-align: center;
+  color: var(--secondary, #888);
+  padding: 32px 16px;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* Search trigger button in header */
+.search-trigger-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  color: var(--primary, #1a1a1a);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 6px;
+  transition: background 0.15s;
+  font-size: 0.85rem;
+}
+.search-trigger-btn:hover { background: var(--entry, rgba(0,0,0,0.06)); }
+
+/* Keyboard shortcut hint in trigger */
+.search-trigger-kbd {
+  font-size: 10px;
+  padding: 1px 5px;
+  border: 1px solid var(--border, #ddd);
+  border-radius: 3px;
+  color: var(--secondary, #888);
+  background: var(--code-bg, #f5f5f5);
+}
+</style>
