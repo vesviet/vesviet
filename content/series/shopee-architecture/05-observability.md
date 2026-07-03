@@ -8,10 +8,11 @@ description: "How Shopee uses ClickHouse and Distributed Tracing to debug millio
 ShowToc: true
 TocOpen: true
 ---
-[← Series hub](/series/shopee-architecture/)
-[← Prev](/series/shopee-architecture/04-database-scale/)
-
 # Chapter 5: Observability - Finding Bugs in the Microservices Jungle
+
+**Debugging a 30-hop microservice failure requires three pillars of observability: Distributed Tracing via OpenTelemetry, columnar log storage via ClickHouse, and real-time stream processing via Apache Flink. Together, they isolate latency bottlenecks across tens of thousands of pods in seconds.**
+
+[← Series hub](/series/shopee-architecture/) | [← Prev](/series/shopee-architecture/04-database-scale/)
 
 Imagine you are an on-call engineer during the 11.11 mega-sale. Suddenly, alerts go off: Checkout success rates are plummeting, and users are facing continuous Timeouts. In an old Monolithic system, you would simply open `error.log` and find the exact broken line in the `pay()` function.
 However, at Shopee, the lifecycle of a single "Checkout" button press jumps across 30 different services:
@@ -20,6 +21,9 @@ However, at Shopee, the lifecycle of a single "Checkout" button press jumps acro
 If a bottleneck (latency spike) occurs at service #25, how do you find it among tens of thousands of running Pods? The answer lies in the **3 Pillars of Observability**: Metrics, Logs, and Distributed Tracing.
 
 ## 1. Distributed Tracing
+
+**By injecting a globally unique TraceID into the headers of every gRPC call, Shopee reconstructs the entire request journey as a waterfall chart. This instantly isolates which specific service among 30 hops caused a timeout.**
+
 The ultimate tool to map the journey of a request is **Distributed Tracing** (Shopee uses platforms based on OpenTelemetry and Jaeger).
 
 - **Trace ID:** The exact millisecond a user request hits the API Gateway, it generates a globally unique identifier (e.g., `TraceID: a8f9x0`).
@@ -43,6 +47,9 @@ graph TD
 ```
 
 ## 2. Extreme Log Storage with ClickHouse
+
+**To store tens of terabytes of daily logs without exhausting RAM on inverted indexes, Shopee uses ClickHouse. Its columnar architecture and ZSTD compression reduce storage overhead massively while executing vectorized queries across billions of lines in 1-2 seconds.**
+
 With millions of requests per second, the volume of Logs and Spans generated is astronomical (tens of Terabytes daily). Using a traditional Elasticsearch (ELK Stack) cluster would consume massive amounts of RAM and disk space just to maintain Inverted Indexes.
 
 Shopee pivoted to using **ClickHouse**—an incredibly fast, columnar OLAP database.
@@ -50,6 +57,9 @@ Shopee pivoted to using **ClickHouse**—an incredibly fast, columnar OLAP datab
 - **Vectorized Query Execution:** Even when scanning across billions of log lines, an engineer can run `SELECT ... WHERE TraceID = 'a8f9x0'` and receive results in just 1-2 seconds, thanks to ClickHouse's vectorized processing and multi-core parallel architecture.
 
 ## 3. Real-Time Ecosystem with Apache Flink
+
+**Apache Flink processes event streams in real-time to automate incident response. It can detect an HTTP 500 spike and trigger a PagerDuty alert, or identify a bot creating 1,000 carts and block the IP instantly—before humans intervene.**
+
 Logs and Traces are not just for humans to read; machines read them too.
 Shopee utilizes **Apache Flink**—a Stream Processing framework—to analyze continuous event streams in real-time.
 - **Automated Alerts:** Flink monitors the stream of HTTP 500 errors. If it exceeds 100 errors per second within a tumbling time window, it fires an immediate Slack or PagerDuty alert to wake up the engineers.

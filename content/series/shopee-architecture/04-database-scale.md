@@ -9,14 +9,18 @@ description: "How Shopee scaled from MySQL sharding to TiDB NewSQL: ProxySQL con
 ShowToc: true
 TocOpen: true
 ---
-[← Series hub](/series/shopee-architecture/)
-[← Prev](/series/shopee-architecture/03-traffic-shield/) • [Next →](/series/shopee-architecture/05-observability/)
-
 # Chapter 4: Database Scale - The Rise of TiDB and NewSQL
+
+**To scale beyond MySQL sharding limitations, Shopee migrated to TiDB—a NewSQL database that provides infinite horizontal scalability by decoupling compute from storage, eliminating the need for manual sharding and distributed transaction logic.**
+
+[← Series hub](/series/shopee-architecture/) | [← Prev](/series/shopee-architecture/03-traffic-shield/) | [Next →](/series/shopee-architecture/05-observability/)
 
 No matter how many layers of Cache or Message Queues you have, the final destination of all transactional data is the Database (the Source of Truth). With tens of millions of daily orders and billions of records, traditional RDBMS like standalone MySQL quickly hit dangerous bottlenecks. The B+Tree index grows too deep, and Disk IOPS reach their physical ceiling.
 
 ## 1. How to Scale MySQL? The Nightmare of Sharding
+
+**Manual database sharding solves write scaling but creates severe engineering nightmares: scatter-gather query latency for non-shard keys (e.g., Seller views) and highly complex distributed transactions (2PC) across physical databases.**
+
 Historically, to scale out MySQL, Shopee (and other tech giants) utilized **Database Sharding**.
 - An enormous `Orders` table would be chopped into hundreds of physical databases. For example, using a hashing algorithm on `user_id` (`user_id % 100`) to route orders into Shard 0 through 99.
 - **The Core Issues:**
@@ -25,6 +29,9 @@ Historically, to scale out MySQL, Shopee (and other tech giants) utilized **Data
   - Resharding and data migration when capacity is full takes months of coding and reconciliation.
 
 ## 2. The NewSQL Solution: TiDB
+
+**TiDB acts as a drop-in MySQL replacement that scales infinitely. It separates stateless SQL compute nodes from distributed TiKV storage nodes, utilizing the Raft consensus algorithm to auto-shard and rebalance data without manual intervention.**
+
 To eliminate the massive engineering overhead of manual sharding, Shopee heavily migrated its core systems to **TiDB**—an open-source NewSQL database. It offers the infinite horizontal scalability of NoSQL while maintaining the strict ACID guarantees and SQL compatibility of Relational databases.
 
 TiDB's unique architecture completely decouples the Compute layer from the Storage layer:
@@ -53,6 +60,9 @@ graph TD
 ```
 
 ## 3. HTAP (Hybrid Transactional and Analytical Processing)
+
+**TiFlash enables real-time analytics on live transactional data. It automatically replicates row-based TiKV data into columnar storage using Raft, allowing Shopee to run heavy analytical queries during a flash sale without degrading checkout performance.**
+
 A massive advantage of the TiDB ecosystem is **TiFlash**.
 Normally, you would need complex overnight ETL pipelines to extract data from an OLTP database (MySQL) into a Data Warehouse (like Hadoop or Snowflake) for business reporting. Instead, TiFlash automatically replicates data from TiKV (Row-based format) into a Column-based format in real-time. This is highly beneficial for use cases like [real-time inventory synchronization](/series/ecommerce-order-allocation/part-2-inventory-realtime/) across distributed systems.
 

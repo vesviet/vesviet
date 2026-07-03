@@ -8,16 +8,20 @@ description: "How Shopee uses Apache Kafka for peak shaving and implements grace
 ShowToc: true
 TocOpen: true
 ---
-[← Series hub](/series/shopee-architecture/)
-[← Prev](/series/shopee-architecture/02-flash-sale-engine/) • [Next →](/series/shopee-architecture/04-database-scale/)
-
 # Chapter 3: Peak Shaving - The Power of Apache Kafka and Graceful Degradation
+
+**To survive 11.11 traffic spikes without database collapse, Shopee shifts heavy processing to asynchronous Kafka queues. The system guarantees checkout survival by enforcing graceful degradation and circuit breakers that disable non-essential features under extreme load.**
+
+[← Series hub](/series/shopee-architecture/) | [← Prev](/series/shopee-architecture/02-flash-sale-engine/) | [Next →](/series/shopee-architecture/04-database-scale/)
 
 In Chapter 2, we utilized Redis to deduct inventory in a fraction of a millisecond. However, the purchase journey isn't over. The system still needs to: Create the order record in MySQL, generate an invoice, deduct money from ShopeePay, calculate shipping, and award Shopee Coins.
 
 If we attempt to perform all these steps **Synchronously** while the user waits, the system will collapse due to database lock timeouts or slow third-party API responses. The secret is: **Asynchronous Processing**.
 
 ## 1. Peak Shaving with Apache Kafka
+
+**Instead of processing orders synchronously, Shopee pushes 1 million requests/second into Kafka and returns an instant success response to the user. Backend workers then pull from Kafka at a safe rate of 10,000 orders/second, shaving the traffic peak into a manageable horizontal line.**
+
 The core philosophy of Flash Sale design is: **Accept requests blazingly fast, process them slowly**. Shopee uses **Apache Kafka**—a massive, high-throughput message broker—as a massive buffer funnel.
 
 - Once Redis successfully deducts inventory, a lightweight message stating "User A ordered an iPhone" is pushed into a Kafka Topic.
@@ -42,9 +46,15 @@ graph LR
 ```
 
 ## 2. Eventual Consistency
+
+**Shopee abandons strong consistency in favor of eventual consistency to preserve high availability. A slight delay between tapping "Buy" and seeing the invoice in "To Ship" is an acceptable trade-off to prevent distributed transaction deadlocks during massive sales.**
+
 Shopee embraces the philosophy of **Eventual Consistency** for distributed systems. Do not attempt to force 100% Strong Consistency across all microservices instantly. There will be a slight delay from the moment you tap "Buy" to the moment the invoice fully appears in your "To Ship" tab. This minor time trade-off is the key to preserving the high availability of the entire e-commerce platform.
 
 ## 3. Graceful Degradation
+
+**During mega-campaigns, Shopee protects the core checkout flow by automatically turning off heavy auxiliary features (like analytics and recommendations) and tripping circuit breakers when downstream services slow down.**
+
 During the midnight rush of 11.11, Shopee enforces a strict policy: **Protect the Core Flow at all costs** (Search -> Add to Cart -> Checkout). Everything else can die, but the checkout system must survive!
 
 - **Circuit Breakers:** When an internal system (e.g., the Promotions Service) becomes overloaded and slow, a Circuit Breaker (like Hystrix or Sentinel) automatically trips. It severs the connection to the failing service for a set duration, instantly returning a default fallback response. This prevents slow services from creating cascading timeouts.
