@@ -2,7 +2,7 @@
 title: "Goroutine Pool Patterns in Go: errgroup & Backpressure"
 slug: "golang-goroutine-pool-errgroup-worker"
 date: "2026-06-01T10:00:00+07:00"
-lastmod: "2026-06-01T10:00:00+07:00"
+lastmod: "2026-07-03T00:00:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -34,6 +34,8 @@ This post covers four production-grade **golang goroutine pool** patterns with c
 ---
 
 ## Why Unbounded Goroutines Will Destroy Your Production Service
+
+**At 50,000 simultaneous goroutines, baseline stack memory is 100MB — but stacks are the least problem. Each goroutine pins heap references the GC cannot collect, triggering a death spiral: GC runs more frequently, consuming CPU that should be doing useful work, slowing goroutine completion, increasing peak goroutine count. Kubernetes terminates with exit code 137.**
 
 A goroutine starts with a 2KB stack that grows dynamically. At 50,000 simultaneous goroutines, the baseline stack memory alone is 100MB. But stacks are the least of the problem — each goroutine may hold references to heap-allocated data (request bodies, database rows, response buffers), all of which the GC cannot collect while the goroutine is alive.
 
@@ -133,6 +135,8 @@ func processJobsBounded(ctx context.Context, jobs []Job, concurrency int) error 
 
 ## Pattern 2: Semaphore-Based Concurrency Limiting with `golang.org/x/sync`
 
+**A `semaphore.Weighted` from `golang.org/x/sync` separates concurrency control from goroutine lifecycle: `Acquire(ctx, 1)` blocks until a slot is available (respecting context cancellation), then you launch the goroutine; `Release(1)` in defer returns the slot. Unlike `errgroup.SetLimit`, semaphores support weighted acquisition — a heavy job acquires weight 5, a light job acquires 1.**
+
 A **semaphore** is a counting mutex: `Acquire` blocks until a slot is available, `Release` returns a slot. Unlike `errgroup.SetLimit`, a semaphore separates the concurrency control from the goroutine lifecycle management, giving you more flexibility.
 
 ```go
@@ -184,6 +188,8 @@ func (p *Processor) WaitAll(ctx context.Context) error {
 ---
 
 ## Pattern 3: Bounded Channel Worker Pool — Full Control of Queue Depth
+
+**Pre-start N goroutines consuming from a buffered channel: `numWorkers` controls parallelism, `queueDepth` controls how much work queues before the producer blocks. Crucially, these are separate knobs — 20 workers with a 1,000-deep queue drains a Kafka burst without spawning 1,000 goroutines. Use `close(jobs)` + `wg.Wait()` for clean SIGTERM drain.**
 
 For streaming workloads (Kafka consumers, background processing queues), the most robust pattern is a pre-started worker pool consuming from a bounded channel:
 
@@ -312,6 +318,8 @@ func main() {
 
 ## Backpressure: How to Reject Work Gracefully When the Pool Is Full
 
+**Three backpressure strategies for Go worker pools: (1) block the producer — `Submit` waits until a slot opens, natural for batch jobs; (2) drop and log — `SubmitOrDrop` returns false and increments a `worker_pool_jobs_dropped_total` Prometheus counter; (3) reject at the API layer — HTTP 429 or gRPC `ResourceExhausted` when queue depth exceeds 80% capacity threshold.**
+
 **Backpressure** is the mechanism by which a saturated consumer signals its producers to slow down or stop. In Go microservices, proper backpressure prevents queue buildup from propagating OOM errors downstream.
 
 ### The Three Backpressure Strategies
@@ -346,6 +354,8 @@ func BackpressureMiddleware(pool *workerpool.WorkerPool[Job], threshold float64)
 ---
 
 ## Graceful Shutdown: Draining the Worker Pool on SIGTERM
+
+**On SIGTERM, drain in three steps: (1) `srv.Shutdown(shutCtx)` stops accepting new HTTP requests; (2) `close(jobs)` signals workers to drain the queue and exit; (3) `pool.Drain()` — which calls `wg.Wait()` — blocks until all in-flight jobs complete. Set Kubernetes `terminationGracePeriodSeconds` to at least your worst-case job processing time.**
 
 Kubernetes sends SIGTERM before terminating a pod. Your worker pool must stop accepting new work and drain all in-flight jobs before the process exits.
 
@@ -396,6 +406,8 @@ spec:
 
 ## Tracing Goroutine Pools with pprof Labels
 
+**When a service runs multiple worker pools, pprof flame graphs show all goroutines merged. Use `pprof.Do(ctx, pprof.Labels("pool", p.name, "worker_id", id), ...)` to attach key-value metadata to every pprof sample from that goroutine. In the flame graph, samples become `pool=order-processor worker_id=3` — instantly disambiguating which pool is consuming CPU.**
+
 When profiling a service with multiple goroutine pools, pprof flame graphs are difficult to read without context on *which pool* each goroutine belongs to. Use `pprof.Labels` to attach custom metadata:
 
 ```go
@@ -427,6 +439,8 @@ For the complete pprof workflow in Kubernetes, see [Go pprof in Kubernetes: Remo
 ---
 
 ## Real-World Example: A Parallel Order Processing Pipeline in Go
+
+**The production pattern: Kafka consumer submits jobs to a `WorkerPool` (20 workers, 1,000-deep queue). An HTTP `/health` endpoint checks `pool.QueueDepth()` against capacity and returns 503 when >80% full. On SIGTERM, the Kafka consumer loop breaks on `ctx.Done()`, then `pool.Drain()` waits for in-flight orders. Total shutdown time: <5 seconds for typical order volumes.**
 
 Combining all patterns: a Kafka-driven order processing pipeline with bounded concurrency, backpressure, and graceful shutdown.
 

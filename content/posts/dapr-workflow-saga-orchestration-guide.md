@@ -2,7 +2,7 @@
 title: "Dapr Workflow Go Tutorial: Orchestrated Saga Pattern"
 slug: "dapr-workflow-saga-orchestration-guide"
 date: "2026-06-01T10:00:00+07:00"
-lastmod: "2026-06-01T10:00:00+07:00"
+lastmod: "2026-07-03T00:00:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -37,6 +37,8 @@ For the broader financial microservices context, see [Financial Microservices Ar
 
 ## Choreography vs. Orchestration: When Dapr Workflow Becomes the Better Choice
 
+**Choose Dapr Workflow Orchestration when your Saga has 4+ ordered steps with complex, order-dependent compensation — a single orchestrator function owns the entire transaction, calls each step explicitly, and retries failed steps with configurable policies. Choreography (Pub/Sub) is better when services are truly independent and can react to events concurrently without knowing the full flow.**
+
 Both patterns implement the Saga distributed transaction model. The choice between them is architectural:
 
 | Dimension | Choreography (Pub/Sub events) | Orchestration (Dapr Workflow) |
@@ -62,6 +64,8 @@ Both patterns implement the Saga distributed transaction model. The choice betwe
 ---
 
 ## Dapr Workflow Internals: How Durable Execution Works Under the Hood
+
+**Dapr Workflow uses replay-based durable execution: on restart, the orchestrator replays its full history from the state store — completed activities return their recorded results instantly without re-executing. This means the orchestrator function MUST be deterministic: never call `time.Now()` directly; use `ctx.CurrentUTCDateTime()` instead, which returns the deterministic time from the first execution.**
 
 Dapr Workflow is built on the Durable Task Framework. Understanding its execution model is critical to writing correct orchestrators.
 
@@ -90,6 +94,8 @@ This means your orchestrator Go code must never call `time.Now()` directly. Use 
 ---
 
 ## Setting Up Dapr Workflow in a Go Microservices Project
+
+**Initialize Dapr Workflow with `workflow.NewWorker()`, then register your orchestrator and all activity functions before calling `w.Start()`. Every function used in `ctx.CallActivity(...)` must be registered — unregistered activities cause a runtime panic. Add `defer w.Shutdown()` to drain in-flight workflows on SIGTERM.**
 
 First, add the Dapr Go SDK:
 
@@ -147,6 +153,8 @@ func main() {
 ---
 
 ## Step 1: Defining the Workflow Orchestrator Function
+
+**The orchestrator is the Saga controller: it calls each activity with `ctx.CallActivity(Activity, workflow.ActivityInput(input)).Await(&result)`, handles errors, and triggers compensation by calling compensating activities in sequence. Any error from a compensating activity that itself fails should be escalated as CRITICAL — money may have moved without a corresponding reversal.**
 
 The orchestrator function is the heart of the Saga. It defines the execution order, handles errors, and triggers compensation.
 
@@ -225,6 +233,8 @@ func FundTransferWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 
 ## Step 2: Implementing Activity Functions (the Individual Saga Steps)
 
+**Every activity must be idempotent: before executing, check if a ledger entry with the same `TransactionID` (external idempotency key) already exists — if so, return the cached result without repeating the operation. Dapr Workflow retries activities on transient failures; without idempotency, a retry produces a double-debit.**
+
 Each activity is an isolated, idempotent function that performs a single step. Activities can have side effects (database writes, API calls) — unlike the orchestrator, they do not need to be deterministic.
 
 ```go
@@ -297,6 +307,8 @@ This idempotency pattern, combined with the Go transaction handling demonstrated
 
 ## Step 3: Designing and Triggering Compensating Transactions on Failure
 
+**Compensating transactions must be idempotent and recorded as explicit ledger entries — not deletions. Use a composite idempotency key (`TransactionID + ":compensate"`) to prevent double-compensation on retry. Record `LinkedExternalID` pointing to the original transaction for audit trail traceability during reconciliation.**
+
 The compensation for a debit is a credit back to the source account — but it must be recorded as a **reversal**, not simply deleted, to maintain audit trail integrity.
 
 ```go
@@ -360,6 +372,8 @@ func CompensateDebitSourceAccount(ctx context.Context, input CompensateInput) (C
 
 ## Step 4: Observing Saga State — Querying Workflow Status and History
 
+**Query any workflow instance status using `client.GetWorkflowBeta1(ctx, &dapr.GetWorkflowRequest{InstanceID: transactionID})`. The response includes `RuntimeStatus` (RUNNING/COMPLETED/FAILED), timestamps, and `FailureDetails`. Use this to power a real-time transaction status API — mobile apps and ops dashboards poll it without needing access to internal message queues.**
+
 One of Dapr Workflow's strongest features is built-in state visibility. Every workflow instance stores its full execution history in the configured backend (Redis or a SQL database).
 
 ```go
@@ -394,6 +408,8 @@ This endpoint can power a real-time transaction status API for your banking appl
 ---
 
 ## Production Patterns: Idempotency, Timeouts, and DLQ for Dapr Workflows
+
+**Three production-grade patterns for Dapr Workflow reliability: (1) per-activity timeouts via `workflow.ActivityOptions{StartToCloseTimeout: 30s}` with retry policy (3 attempts, exponential backoff, max 10s interval); (2) workflow-level timeout via `options["workflow-timeout"] = "300s"`; (3) reconciliation worker that polls for FAILED instances every minute and routes to DLQ or ops alert.**
 
 ### Activity Timeouts
 
@@ -463,6 +479,8 @@ func ReconcilationWorker(ctx context.Context, client dapr.Client) {
 ---
 
 ## Real-World Example: A Fund Transfer Saga Across 3 Financial Microservices
+
+**Complete flow: API calls `StartWorkflowBeta1`, Dapr orchestrates DebitSource → CreditTarget → RecordLedger in sequence. On CreditTarget failure, the orchestrator immediately calls CompensateDebitSource to reverse the charge. Every step is persisted in the state store — if the Dapr sidecar restarts mid-transfer, replay resumes from the last completed checkpoint without re-executing completed activities.**
 
 Putting it all together, the complete fund transfer saga flow:
 

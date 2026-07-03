@@ -2,7 +2,7 @@
 title: "Goroutine Leak Detection and Fix in Production Go Services"
 slug: "goroutine-leak-detection-production-golang"
 date: "2026-05-26T20:30:00+07:00"
-lastmod: "2026-05-26T20:30:00+07:00"
+lastmod: "2026-07-03T00:00:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -317,6 +317,8 @@ Before Go 1.23, these timers remained registered in the runtime scheduler until 
 
 ## Diagnosing in Production: pprof & Metrics
 
+**When goroutine count drifts linearly in Prometheus (`go_goroutines` gauge), run a pprof diff: capture a baseline profile, wait for accumulation, then compare with `go tool pprof -base baseline.pb.gz leak.pb.gz`. The `debug=1` endpoint on `/debug/pprof/goroutine` aggregates identical stacks — 4,200 goroutines on `net/http.(*persistConn).readLoop` points directly to the leak source.**
+
 When a goroutine leak occurs in production, you need structured diagnostics to pinpoint the leaky stack trace.
 
 ### Metrics Monitoring
@@ -400,6 +402,8 @@ This endpoint filters out healthy, running, or reachable background workers, sho
 
 ## CI Prevention: goleak & synctest
 
+**Catch goroutine leaks in CI before they reach production: add `goleak.VerifyTestMain(m)` to your `TestMain` function. It snapshots active goroutines before and after the test suite and fails the build on any net increase. Use `goleak.IgnoreTopFunction` to suppress known background goroutines from pgx or gRPC connection pools.**
+
 Catching leaks in tests during CI/CD prevents them from ever reaching production.
 
 ### Using go.uber.org/goleak
@@ -466,6 +470,8 @@ func TestConcurrentTimeoutSafe(t *testing.T) {
 ---
 
 ## Production-Ready Concurrency Patterns
+
+**Two patterns every Go production service needs: (1) a biased select that checks `ctx.Done()` before reading from the job channel — preventing context cancellation from being starved when the channel is flooded; (2) a graceful SIGTERM shutdown that closes the job channel and calls `wg.Wait()` before process exit, giving Kubernetes 10+ seconds to drain in-flight work.**
 
 Below are clean, production-ready implementation patterns for managing goroutine lifecycles.
 
@@ -545,6 +551,8 @@ func main() {
 ---
 
 ## Concurrency and Telemetry Checklist
+
+**Six non-negotiable checklist items before deploying a Go service: context-aware DB calls (`QueryContext`, `ExecContext`), biased selects in consumer loops, singleton HTTP/gRPC transports, `defer resp.Body.Close()` with `io.Discard` drain, a `go_goroutines` Prometheus alert for >20% growth over 1 hour, and `goleak` in `TestMain`.**
 
 Ensure these safeguards are met before deploying your Go service to production:
 
