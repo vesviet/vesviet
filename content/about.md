@@ -10,7 +10,7 @@ description: "Lê Tuấn Anh — Senior Go & Microservices Engineer, 17+ years b
 
 > *"Architecting scalable systems and leading teams to build resilient, high-performance platforms."*
 
-**Lê Tuấn Anh** (vesviet) is a Senior Go Backend Architect and Distributed Systems Engineer based in Vietnam with over **17 years** of production experience. He specializes in migrating high-traffic e-commerce monoliths (Magento/PHP) into **Golang microservices ecosystems**, designing event-driven platforms at scale, and operating GitOps deployments on Kubernetes. Currently Senior Backend Engineer & System Architect at **Lotte Innovate / Vigo Retail**.
+**Lê Tuấn Anh** (vesviet) is a Senior Go Backend Architect and Distributed Systems Engineer based in Vietnam with over **17 years** of production experience. He specializes in migrating high-traffic e-commerce monoliths (Magento/PHP) into **Golang microservices ecosystems**, designing event-driven platforms at scale, and operating GitOps deployments on Kubernetes. Currently working as an **Independent Consultant** on Go architecture and distributed systems.
 
 > 💼 Available for consulting and advisory work. [See engagement options →](/hire/)
 
@@ -35,9 +35,9 @@ description: "Lê Tuấn Anh — Senior Go & Microservices Engineer, 17+ years b
 
 ### 💼 Career Highlights
 
-#### Senior Engineer @ Lotte Innovate & Vigo Retail *(2021 – Present)*
-* **Scope:** Senior Backend Engineer & System Architect | Team of 8 Engineers | B2B/B2C Commerce & Logistics
-* **Responsibilities:** Owning backend architecture for core commerce domains, on-call for critical Tier-1 services.
+#### Senior Go Backend Architect & System Architect *(2021 – Present)*
+* **Scope:** Independent Consultant | Go Microservices Architecture, Platform Migration, Distributed Systems
+* **Responsibilities:** Owning backend architecture for core commerce domains, leading production migrations at scale.
 * **Impact:**
   - Led the migration of monolithic e-commerce cores to a **21-service Golang ecosystem**, orchestrating bidirectional data sync and achieving zero-downtime over a 3-month transition.
   - Designed high-throughput RESTful and gRPC edge APIs handling **~25M+ requests/month** (Peak ~8,000 RPS) during major sale events.

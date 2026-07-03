@@ -17,7 +17,7 @@ Welcome to the **High Concurrency Systems** Masterclass.
 
 > **About this Masterclass**
 >
-> This series distills **17+ years of production experience**, drawing directly from the battlefield of building resilient, high-traffic e-commerce systems at Lotte Innovate. It provides practical, battle-tested blueprints for managing 25 million requests per month with Go and Microservices architecture.
+> This series distills **17+ years of production experience**, drawing directly from the battlefield of building resilient, high-traffic e-commerce systems as an Independent Consultant. It provides practical, battle-tested blueprints for managing 25 million requests per month with Go and Microservices architecture.
 
 ---
 

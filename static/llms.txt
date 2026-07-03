@@ -1,6 +1,6 @@
 # tanhdev.com — Le Tuan Anh (vesviet)
 
-> Le Tuan Anh is a Senior Go Backend Architect and Distributed Systems Engineer with 17+ years building high-traffic e-commerce platforms in Vietnam. He led the migration of a decade-old Magento monolith into a 21-service Go microservices ecosystem at Lotte Innovate, handling 25M+ requests/month at peak 8,000 RPS.
+> Le Tuan Anh is a Senior Go Backend Architect and Distributed Systems Engineer with 17+ years building high-traffic e-commerce platforms in Vietnam. As an Independent Consultant, he has led large-scale migrations of Magento monoliths into Go microservices ecosystems, handling 25M+ requests/month at peak 8,000 RPS.
 
 ## About
 
@@ -17,7 +17,7 @@
 
 > Deep-dive technical guides on Go microservices, distributed systems, and production architecture.
 
-- [Go Microservices Architecture: Production Guide](https://tanhdev.com/posts/go-microservices/) — gRPC, Dapr, OpenTelemetry, GitOps. Real 21-service production migration at Lotte Innovate.
+- [Go Microservices Architecture: Production Guide](https://tanhdev.com/posts/go-microservices/) — gRPC, Dapr, OpenTelemetry, GitOps. Real 21-service production migration from Magento monolith to Go microservices.
 - [Go gRPC Microservices Production Guide](https://tanhdev.com/posts/golang-grpc-microservices-production-guide/) — Production-grade gRPC service patterns in Go.
 - [Go Microservices Distributed Tracing](https://tanhdev.com/posts/go-microservices-distributed-tracing-architecture/) — OpenTelemetry + Jaeger tracing architecture.
 - [Goroutine Leak Detection in Production](https://tanhdev.com/posts/goroutine-leak-detection-production-golang/) — Detecting and fixing goroutine leaks in production Go services.
@@ -68,9 +68,9 @@
 
 ## Magento & Migration
 
-- [Magento Development in Vietnam: 2026 Hiring Guide](https://tanhdev.com/posts/magento-vietnam/) — Vietnam Magento market overview, cost tiers, and hiring models.
-- [Magento Agency & Development in Vietnam: Scoping Guide](https://tanhdev.com/posts/magento-development-in-vietnam/) — How to evaluate Magento agencies in Vietnam.
-- [Magento Developers in Vietnam: Hiring & Vetting Guide](https://tanhdev.com/posts/magento-developers-in-vietnam/) — Technical vetting for Magento engineers in Vietnam.
+- [Magento Development in Vietnam: 2026 Guide — Cost, Hiring & Upgrade](https://tanhdev.com/posts/magento-vietnam/) — Vietnam Magento market overview, cost tiers ($15–$80/hr), hiring models, and upgrade roadmap.
+- [Magento Agency & Development in Vietnam: Scoping Guide](https://tanhdev.com/posts/magento-development-in-vietnam/) — How to evaluate Magento agencies in Vietnam: effort layers, proposals, hidden complexity.
+- [How to Technically Vet Magento Developers in Vietnam: Interview Playbook 2026](https://tanhdev.com/posts/magento-developers-in-vietnam/) — Five production-level interview questions that separate Magento architects from theme editors.
 - [Is Magento Worth It in 2026? The 2.4.9 Reality](https://tanhdev.com/posts/magento-still-worth-investing-2026/) — Honest assessment of Magento investment in 2026.
 - [Why Migrate Magento to Microservices](https://tanhdev.com/posts/why-migrate-magento-to-microservices/) — Business and technical case for Magento-to-Go migration.
 - [Moving from Magento to Microservices](https://tanhdev.com/posts/moving-from-magento-to-microservices/) — Practical migration playbook.

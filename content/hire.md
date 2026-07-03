@@ -60,7 +60,7 @@ I work with teams that need:
 
 | Project | Scope | Outcome |
 |---------|-------|---------|
-| Lotte Innovate / Vigo Retail (2021–Present) | Monolith → 21 Go services, B2B/B2C Commerce | Zero-downtime migration, 40% checkout throughput improvement |
+| Independent Consultant (2021–Present) | Monolith → 21 Go services, B2B/B2C Commerce | Zero-downtime migration, 40% checkout throughput improvement |
 | SnapMart & ICM (2019–2021) | Magento 2 backend, Flutter mobile APIs | Payment gateway, fulfillment routing, warehouse scanner integrations |
 | Composable Commerce Architecture | Open-source 21-service Go ecosystem | Dapr Pub/Sub + Outbox + Saga in production-grade Go |
 
@@ -107,7 +107,7 @@ A typical engagement starts with a **1-week discovery phase** (paid): I review y
 {{< /faq >}}
 
 {{< faq q="Can you help migrate a Magento monolith to Go microservices?" >}}
-Yes — this is one of my primary specializations. I led the zero-downtime migration of a decade-old Magento 2 platform into a **21-service Go microservices ecosystem** at Lotte Innovate / Vigo Retail (2021–present), using a 3-Phase Strangler Fig pattern with Debezium CDC, bidirectional Dapr Pub/Sub sync, and a hot standby period before final cutover. The approach produces zero data loss and maintains rollback capability throughout. Before engaging, I recommend reading [The Zero-Downtime Blueprint: Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/) to understand the specific methodology and whether your platform's complexity profile matches the approach.
+Yes — this is one of my primary specializations. I led the zero-downtime migration of a decade-old Magento 2 platform into a **21-service Go microservices ecosystem** (2021–present) as an Independent Consultant, using a 3-Phase Strangler Fig pattern with Debezium CDC, bidirectional Dapr Pub/Sub sync, and a hot standby period before final cutover. The approach produces zero data loss and maintains rollback capability throughout. Before engaging, I recommend reading [The Zero-Downtime Blueprint: Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/) to understand the specific methodology and whether your platform's complexity profile matches the approach.
 {{< /faq >}}
 
 {{< faq q="Do you work remotely with international clients?" >}}

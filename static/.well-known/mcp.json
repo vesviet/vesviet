@@ -92,7 +92,8 @@
     "llms_txt": "https://tanhdev.com/llms.txt",
     "sitemap": "https://tanhdev.com/sitemap.xml",
     "rss": "https://tanhdev.com/posts/index.xml",
-    "agent_skills": "https://tanhdev.com/.well-known/agent-skills/index.json"
+    "agent_skills": "https://tanhdev.com/.well-known/agent-skills/index.json",
+    "server_card_legacy": "https://tanhdev.com/.well-known/mcp/server-card.json"
   },
   "content_language": "en",
   "update_frequency": "weekly",
