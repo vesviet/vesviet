@@ -61,3 +61,23 @@ Essential tooling for diagnosing and validating high-concurrency systems in prod
 
 - **[Go pprof in Kubernetes: Remote Profiling & Flame Graphs](/posts/go-pprof-kubernetes-remote-profiling/)** — Step-by-step guide to running `go tool pprof` on a live Kubernetes pod, reading Goroutine flame graphs, and identifying CPU/memory hotspots without downtime.
 - **[What's New in Argo CD 3.4 & 3.3: Cluster Pause & Upgrades](/posts/argo-cd-updates-2026/)** — Release notes analysis for the GitOps platform used to deploy high-concurrency Go microservices: Cluster Pause for maintenance windows, App-of-Apps updates, and migration path from v3.3 to v3.4.
+
+---
+
+## FAQ
+
+### How do you handle inventory race conditions in a high-concurrency Go system?
+
+Use Optimistic Concurrency Control (OCC) at the database layer instead of pessimistic locks. The pattern: `UPDATE inventory SET reserved_stock = reserved_stock + $qty, version = version + 1 WHERE sku_id = $id AND (total_stock - reserved_stock) >= $qty AND version = $current_version`. If `RowsAffected == 0`, another goroutine won the race — retry or return stock-unavailable. This eliminates `SELECT FOR UPDATE` contention that serializes all concurrent orders on the same row.
+
+### What is the Transactional Outbox Pattern and why is it needed?
+
+The Transactional Outbox Pattern solves the dual-write problem: if your service writes to PostgreSQL and then publishes to Kafka, a crash between those two steps loses the event permanently. The fix: write both the business state change and an outbox event record in the **same database transaction**. A CDC process (Debezium or TiCDC) reads the `event_outbox` table and publishes to Kafka. Either both succeed (transaction commits) or neither does (transaction rolls back). Zero dual-write risk.
+
+### How do Go goroutine pools prevent OOM in high-traffic systems?
+
+Unbounded goroutine creation is the primary OOM cause in Go microservices. A bounded worker pool limits concurrency using a semaphore channel: `sem := make(chan struct{}, maxWorkers)`. Each goroutine acquires a slot (`sem <- struct{}{}`), processes one item, then releases it (`<-sem`). If all `maxWorkers` slots are taken, new goroutines block at the send rather than spawning unconstrained. At 50,000 messages/burst, this prevents 50,000 concurrent database connections from exhausting the PostgreSQL pool.
+
+### When should I use Dapr Workflow vs Dapr Pub/Sub Saga choreography?
+
+Use Pub/Sub choreography (each service reacts to events independently) for linear 2–4 step Sagas where any developer can reason about the full flow at a glance. Switch to Dapr Workflow Orchestration (a single durable orchestrator function) when your Saga has 5+ steps, complex conditional branching (approval gates, multi-warehouse allocation), or compensation logic that requires reading 4+ service codebases to trace. Dapr Workflow persists state after each step — a crash mid-saga replays from the last checkpoint, not from the beginning.

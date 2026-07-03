@@ -1,7 +1,7 @@
 ---
 title: "Hire Lê Tuấn Anh — Go Backend Architect & Consulting"
 date: "2026-06-06"
-lastmod: "2026-06-06"
+lastmod: "2026-07-03"
 description: "Senior Go Backend Architect in Vietnam. 17+ years in microservices & high-traffic e-commerce. Magento-to-Go migrations. Consulting & architecture reviews."
 keywords: ["hire go backend architect vietnam", "golang consultant vietnam", "microservices consultant", "magento to microservices migration", "backend architecture review", "go engineer vietnam consulting"]
 slug: "hire"
@@ -18,6 +18,8 @@ cover:
 ---
 
 > *"Let's solve hard backend problems together — the kind that keep your engineers up at night."*
+
+**Senior Go Backend Architect with 17+ years production experience, based in Vietnam (UTC+7). Led the zero-downtime migration of a decade-old Magento monolith to 21 Go microservices handling 25M+ requests/month at 8,000 RPS peak. Available for architecture reviews (1–2 weeks), advisory retainers (monthly), and hands-on consulting (project-based). Contact: vesviet@gmail.com.**
 
 ## 👋 Who I Am
 

@@ -30,3 +30,19 @@ Companion research that extends specific topics from this series:
 ---
 
 *Looking for a practical guide to migrating a legacy monolith to a distributed architecture? See our **[Composable Commerce Migration Series](/series/composable-commerce-migration/)** for a step-by-step production case study.*
+
+---
+
+## FAQ
+
+### How does PayPay handle 7.8 billion transactions per year without downtime?
+
+PayPay uses three layers of reliability: (1) microservices with circuit breakers isolate failures to individual services without cascading; (2) Kafka-backed event sourcing with idempotency keys prevents double-processing on retry; (3) campaign pre-scaling — before major promotions, PayPay pre-warms the compute fleet based on historical traffic models, avoiding cold-start latency during traffic spikes. Source: PayPay Engineering Blog (2023–2024).
+
+### Why did PayPay migrate from Amazon Aurora to TiDB?
+
+PayPay migrated from Aurora to TiDB to eliminate the read/write replica lag that caused stale reads during high-concurrency campaigns. TiDB's Raft-based distributed SQL provides multi-master writes with linearizable consistency — every replica is always up-to-date. The migration also removed the Aurora storage limit per cluster (128TB) and enabled horizontal scaling of the storage tier without application changes.
+
+### What is PayPay's approach to campaign pre-scaling?
+
+Before a major promotion (e.g., ¥10 billion cashback campaign), PayPay's SRE team runs a capacity planning model against historical campaign data: projected peak RPS, p99 latency budget per service, and expected cache miss rate. 48 hours before the campaign, they scale the compute fleet to 150–200% of projected peak and run chaos engineering drills (Chaos Monkey-style fault injection) to validate that circuit breakers and fallback paths work under synthetic load.

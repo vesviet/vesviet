@@ -149,6 +149,51 @@
 }
 </script>
 {{- end }}
+{{- if and .IsSection (eq .Section "series") }}
+<!-- Schema.org — FAQPage for series _index.md that have FAQ sections -->
+{{- $dummy2 := .Content -}}
+{{- $seriesFaqs := .Page.Store.Get "faqs" }}
+{{- if not $seriesFaqs }}
+  {{- $raw2 := .RawContent -}}
+  {{- $faqM := findRESubmatch `(?ms)^## FAQ\s*$(.*?)(?:^## |\z)` $raw2 1 -}}
+  {{- if gt (len $faqM) 0 -}}
+    {{- $faqSec := index $faqM 0 -}}
+    {{- $faqCon := index $faqSec 1 -}}
+    {{- $m := findRESubmatch `(?ms)^### ([^\n]+)\s*^([^#].*?)(?:^### |\z)` $faqCon -}}
+    {{- $pFaqs := slice -}}
+    {{- range $m -}}
+      {{- $q2 := trim (index . 1) " \n\r" -}}
+      {{- $a2 := trim (index . 2) " \n\r" -}}
+      {{- $a2 = replaceRE `\*\*|\*|__|` "" $a2 -}}
+      {{- $a2 = replaceRE `\[([^\]]+)\]\([^\)]+\)` "$1" $a2 -}}
+      {{- $a2 = replaceRE `\n+` " " $a2 -}}
+      {{- $pFaqs = $pFaqs | append (dict "question" $q2 "answer" $a2) -}}
+    {{- end -}}
+    {{- $seriesFaqs = $pFaqs -}}
+  {{- end -}}
+{{- end }}
+{{- if $seriesFaqs }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {{- range $i, $faq := $seriesFaqs }}
+    {{- if $i }},{{ end }}
+    {
+      "@type": "Question",
+      "name": {{ $faq.question | jsonify }},
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": {{ $faq.answer | jsonify }}
+      }
+    }
+    {{- end }}
+  ]
+}
+</script>
+{{- end }}
+{{- end }}
 {{- if and .IsPage .File (or (eq .File.ContentBaseName "about") (eq .File.ContentBaseName "hire")) }}
 <!-- Schema.org — ProfilePage for /about/ and /hire/ -->
 <script type="application/ld+json">
@@ -190,6 +235,64 @@
   "isPartOf": {
     "@type": "WebSite",
     "@id": "{{ .Site.BaseURL }}#website"
+  }
+}
+</script>
+{{- end }}
+
+{{- if and .IsPage .File (eq .File.ContentBaseName "hire") }}
+<!-- Schema.org — ProfessionalService for /hire/ (rich result for consulting services) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": "{{ .Permalink }}#service",
+  "name": "Lê Tuấn Anh — Go Backend Architecture Consulting",
+  "url": "{{ .Permalink }}",
+  "description": "Senior Go Backend Architect offering architecture reviews, advisory retainers, and hands-on consulting for microservices migrations and high-traffic platform scaling.",
+  "provider": {
+    "@type": "Person",
+    "@id": "{{ .Site.BaseURL }}#person",
+    "name": "Lê Tuấn Anh"
+  },
+  "areaServed": "Worldwide",
+  "priceRange": "$$",
+  "availableChannel": {
+    "@type": "ServiceChannel",
+    "serviceUrl": "{{ .Permalink }}",
+    "servicePhone": "+84",
+    "availableLanguage": ["English", "Vietnamese"]
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Consulting Engagements",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "name": "Architecture Review",
+        "description": "Deep review of current system, migration plan, or scaling strategy. Produces a written Technical Assessment with prioritized roadmap.",
+        "eligibleDuration": {
+          "@type": "QuantitativeValue",
+          "value": "1-2",
+          "unitCode": "WEE"
+        }
+      },
+      {
+        "@type": "Offer",
+        "name": "Advisory Retainer",
+        "description": "Ongoing monthly technical guidance, code review, and escalation support for your engineering team.",
+        "eligibleDuration": {
+          "@type": "QuantitativeValue",
+          "value": "1",
+          "unitCode": "MON"
+        }
+      },
+      {
+        "@type": "Offer",
+        "name": "Hands-On Consulting",
+        "description": "Direct implementation or lead engineering on microservices migration, scaling, or performance problems."
+      }
+    ]
   }
 }
 </script>

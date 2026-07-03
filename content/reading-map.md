@@ -1,6 +1,7 @@
 ---
 title: "Reading Map"
 date: 2026-05-02T12:00:00+07:00
+lastmod: 2026-07-03T00:00:00+07:00
 draft: false
 description: "A curated reading map that groups my essays into focused clusters: commerce modernization, microservices architecture, event-driven reliability, GitOps operations, AI systems, and scale case studies."
 ShowToc: true
