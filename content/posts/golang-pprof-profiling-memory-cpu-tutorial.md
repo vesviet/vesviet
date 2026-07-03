@@ -2,7 +2,7 @@
 title: "Go pprof in Kubernetes: CPU & Memory Profiling"
 slug: "golang-pprof-profiling-memory-cpu-tutorial"
 date: "2026-06-02T08:00:00+07:00"
-lastmod: "2026-06-10T16:00:00+07:00"
+lastmod: "2026-07-03T00:00:00+07:00"
 draft: false
 description: "Profile Go services in Kubernetes without restarting pods: kubectl port-forward, heap vs alloc_space, and cpu flame graphs."
 ShowToc: true
@@ -153,6 +153,8 @@ This is the production pattern used by teams running Go at scale on Kubernetes �
 
 ## CPU Profiling vs. Execution Tracer (trace)
 
+**Use `pprof` CPU profile when CPU utilization is high — it shows the functions burning clock cycles ("hot paths"). Use `go tool trace` when CPU utilization is LOW but requests are slow — the tracer records every goroutine scheduling decision, syscall, and GC pause, revealing blocking bottlenecks invisible to CPU profiling. Execution Tracer overhead: 10–20%, use only for 1–5 second windows. CPU profiling overhead: <2%.**
+
 When a service is slow, the first instinct is to pull a CPU profile. But CPU profiles only tell you what the CPU is *actively doing*. If your service is slow because it is *waiting* (e.g., waiting for a database lock, blocked on channel I/O, or paused by the Garbage Collector), the CPU profile will look surprisingly empty.
 
 ### When to use `pprof` (CPU Profile)
@@ -175,6 +177,8 @@ go tool trace trace.out
 ---
 
 ## Memory Profiling: alloc_space vs inuse_space
+
+**Two fundamentally different heap metrics: `inuse_space` = memory currently held, not yet GC'd — growing infinitely means a **memory leak**, diagnose with `go tool pprof -inuse_space /debug/pprof/heap`. `alloc_space` = total memory ever allocated (including collected) — very high means **GC pressure**, diagnose with `go tool pprof -alloc_space /debug/pprof/allocs`. Fix alloc churn by pre-allocating slices with `make([]T, 0, expectedCapacity)` or pooling buffers with `sync.Pool`.**
 
 Understanding the difference between allocation and retention is the biggest hurdle for engineers learning `pprof`. The `heap` profile tracks two fundamentally different metrics:
 
@@ -207,6 +211,8 @@ To fix this, you optimize by reducing allocations:
 
 ## Finding Goroutine Leaks (and Go 1.26 Features)
 
+**Detect goroutine leaks by comparing baseline count: `curl -s http://localhost:6060/debug/pprof/goroutine?debug=1 | grep "goroutine profile: total"` — steadily growing from 100 to 10,000 without traffic increase is a leak. Go 1.26 experimental `goroutineleak` profile (enabled via `GOEXPERIMENT=goroutineleakprofile`) uses GC reachability analysis to mathematically prove which blocked goroutines can never wake up — no manual stack trace inspection needed.**
+
 A standard way to check for goroutine leaks is to compare the baseline number of goroutines against the current number. If it steadily grows from 100 to 10,000 without traffic increasing, you have a leak.
 
 ```bash
@@ -230,6 +236,8 @@ go tool pprof http://localhost:6060/debug/pprof/goroutineleak
 ---
 
 ## Advanced: Custom Profiling Labels with pprof.Do
+
+**In multi-tenant services, generic CPU profiles show `json.Unmarshal` at 40% CPU but not which route or tenant triggers it. Solution: wrap execution with `pprof.Do(ctx, pprof.Labels("tenant", tenantID, "route", route), func(ctx) {...})`. All CPU samples and allocations inside the closure are tagged. In the web UI, use the Focus filter to isolate a specific tenant's flame graph instantly.**
 
 In a massive multi-tenant microservice, looking at a generic CPU profile is often unhelpful. You might see `json.Unmarshal` taking 40% of the CPU, but you don't know *which* API route or *which* tenant is triggering it.
 

@@ -4,7 +4,7 @@ slug: "architecting-21-service-ecommerce-golang-ddd"
 aliases:
   - /posts/architecting-a-21-service-e-commerce-ecosystem-with-golang-ddd/
 date: 2026-04-12T10:00:00+07:00
-lastmod: 2026-04-12T10:00:00+07:00
+lastmod: 2026-07-03T00:00:00+07:00
 draft: false
 mermaid: true
 tags: ["Golang", "Microservices", "System Design", "Domain-Driven Design", "Kratos", "Dapr", "Saga Pattern"]
@@ -21,7 +21,9 @@ Scaling an e-commerce platform past 10,000+ orders per day containing multiple S
 
 In this deep tech dive, we will tear apart the "Hello World" abstraction of Microservices. We will look at exactly how our **21-service distributed ecosystem** interacts under the hood. I will share the exact Golang architectural patterns (Kratos), the Saga orchestration for distributed checkout, and how we handle race conditions under severe load.
 
-## 1. The Distributed Landscape 
+## 1. The Distributed Landscape
+
+**21-service decomposition around 5 core domains, each with strict database-per-service isolation. The most volatile flow is the Checkout Saga: `Checkout` cannot use a 4-table SQL transaction across service boundaries — instead it publishes `checkout.requested` to Dapr (backed by Redis), and `Order`, `Warehouse`, and `Pricing` react independently in parallel. This is Event-Choreography, not Orchestration.**
 
 Microservices without bounded contexts degenerate into a latency-heavy "Distributed Monolith". We bounded our ecosystem loosely around five core domains, prioritizing strict database-per-service isolation (If you are just starting out, this is exactly why you might want to start with a [Modular Monolith Architecture](/series/modular-monolith-architecture/) before jumping to distributed extraction):
 
@@ -46,6 +48,8 @@ graph TD
 The diagram above encapsulates the most volatile flow: **The Checkout Saga**. When a user checks out, we cannot just open a 4-table SQL transaction anymore. `Checkout` must synchronize asynchronously with `Pricing` (to validate totals), `Warehouse` (to lock inventory), and `Order` (to generate the final aggregate). 
 
 ## 2. Enforcing Clean Architecture with Kratos
+
+**Kratos v2 physically separates Go code into layers: `internal/biz/` (business logic, knows nothing about PostgreSQL), `internal/data/` (implements biz repository interface with GORM), `internal/service/` (gRPC/HTTP transport). Google Wire provides compile-time dependency injection — unit tests use mocked repositories that implement the same biz interface, with zero real database required.**
 
 To manage 21 separate codebases, consistency among the engineering team is mandatory. We utilized **Kratos (v2)** to strictly enforce Clean Architecture in Golang. (You can explore the full stack we use in our [Microservices Tech Radar](/radar/)). By physically separating boundaries, we prevent database logic from bleeding into HTTP or gRPC handlers.
 
@@ -82,6 +86,8 @@ func (r *orderRepo) Save(ctx context.Context, o *biz.Order) error {
 We tie these layers together dynamically using **Google Wire** for compile-time Dependency Injection. This allows developers to write unit tests with mocked repositories effortlessly, entirely insulating the business core from transport protocols.
 
 ## 3. The Real Beast: Distributed Transactions (Saga Pattern)
+
+**Checkout Saga via Event-Choreography: `Checkout` publishes `checkout.requested` → `Warehouse` and `Pricing` act independently. Warehouse uses Optimistic Concurrency Control (`UPDATE inventory SET reserved_stock = reserved_stock + ? WHERE version = ?`) — if `RowsAffected == 0`, another request won the race; publish `inventory.reservation.failed`. `Order Service` acts as saga sink: on any failure event, it publishes `checkout.failed` to trigger compensation in all affected services.**
 
 The most generic advice in microservices is "Use Pub/Sub". But how do you handle failure when Service A succeeds but Service B fails?
 
@@ -127,6 +133,8 @@ func (w *WarehouseWorker) HandleCheckoutFailed(ctx context.Context, event Checko
 
 ## 4. Taming Eventual Consistency with Idempotency
 
+**Dapr guarantees At-Least-Once delivery — the same event can arrive twice on retry. Prevention: before processing any Dapr message, attempt `INSERT INTO processed_events (event_id) VALUES (?)` in the same DB transaction as the state change. If constraint violation → duplicate, ack and drop. This `processed_events` table is the universal idempotency key store across all 21 services.**
+
 When you rely on network events, network retries will happen. Dapr guarantees "At-Least-Once" delivery, meaning `Warehouse Service` might receive the same `checkout.requested` event twice if a timeout occurs.
 
 To prevent reserving stock twice, every single Database in our ecosystem involved in transactions employs an `Idempotency Key`. 
@@ -140,6 +148,8 @@ CREATE TABLE processed_events (
 Before processing an incoming Dapr message, the service opens a database transaction and attempts to insert the `event_id`. If it throws a constraint violation, the event was already processed, and the system safely acks and drops the duplicate message.
 
 ## Conclusion
+
+**Three architectural decisions that make the 21-service system absorb Black Friday traffic without dropping orders: (1) Kratos enforces clean architecture boundaries — no business logic in handlers, no database logic in biz layer; (2) Optimistic Concurrency Control prevents inventory overselling without distributed locks; (3) Idempotency table in every service's database eliminates duplicate-processing from Dapr At-Least-Once delivery.**
 
 Migrating an e-commerce Monolith to a 21-service ecosystem is not about setting up an API Gateway and calling it a day. The real engineering begins when you hit the edges: gracefully rolling back partial checkouts, preventing database locks under high concurrent loads, and forcing strict domain boundaries so codebases remain readable.
 

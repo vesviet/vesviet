@@ -5,7 +5,7 @@ aliases:
   - /posts/opentelemetry-golang-distributed-tracing-microservices/
   - /posts/circuit-breaker-retry-golang-resilience/
 date: "2026-06-08T14:30:00+07:00"
-lastmod: "2026-06-08T14:30:00+07:00"
+lastmod: "2026-07-03T00:00:00+07:00"
 draft: false
 description: "Master Go microservices distributed tracing. Learn W3C context propagation, OpenTelemetry Collector configurations, and tail-based sampling for 2026."
 ShowToc: true

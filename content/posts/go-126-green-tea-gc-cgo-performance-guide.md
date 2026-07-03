@@ -2,7 +2,7 @@
 title: "Go 1.26: Green Tea GC, Faster CGO & Goroutine Leak Detection"
 slug: "go-126-green-tea-gc-cgo-performance-guide"
 date: "2026-06-12T10:00:00+07:00"
-lastmod: "2026-06-12T10:00:00+07:00"
+lastmod: "2026-07-03T00:00:00+07:00"
 draft: false
 description: "Go 1.26: Green Tea GC cuts overhead 10–40%, ~30% faster cgo for AI inference, and experimental goroutine leak detection — complete migration guide."
 ShowToc: true
@@ -105,9 +105,7 @@ If you observe regressions, [file an issue](https://go.dev/issue/new). The Go te
 
 ## 2. 30% Faster CGO Calls: Why AI Engineers Should Care
 
-**Answer-first:** Go 1.26 reduces the baseline runtime overhead of cgo calls by approximately 30%, making Go significantly more viable as the orchestration layer around C/C++ AI inference engines like llama.cpp, ONNX Runtime, and TensorRT.
-
-### The CGO Bottleneck for AI Workloads
+**Go 1.26 reduces per-cgo-call overhead by ~30% by cutting redundant signal mask operations in the goroutine-to-OS-thread handoff. At 10,000 cgo calls/sec (typical for token generation via llama.cpp), overhead drops from 8.5ms/sec to 5.95ms/sec — zero code changes required. This makes Go the strongest orchestration layer for C/C++ inference engines (llama.cpp, ONNX Runtime, TensorRT) where thousands of small cgo calls per second previously created measurable tail latency.**
 
 Running local LLMs in Go typically requires calling into C++ inference engines via cgo. Each cgo call incurs overhead from:
 
@@ -141,7 +139,7 @@ This cements Go as the optimal language for building API orchestration layers ar
 
 ## 3. Experimental Goroutine Leak Detection
 
-**Answer-first:** Go 1.26 introduces a new `goroutineleak` pprof profile that uses GC reachability analysis to detect permanently blocked goroutines — goroutines waiting on channels, mutexes, or sync primitives that can never be unblocked.
+**The new `goroutineleak` pprof profile (enabled via `GOEXPERIMENT=goroutineleakprofile`) uses GC reachability analysis: if a goroutine is blocked on a channel/mutex that has become unreachable from all runnable goroutines, it can never wake up and is reported as leaked. Access via `/debug/pprof/goroutineleak` or `pprof.Lookup("goroutineleak").Count()` for Prometheus alerting. Zero overhead when not actively profiling. Expected default in Go 1.27.**
 
 ### How It Works
 
@@ -213,6 +211,7 @@ Set alerts when the count exceeds a threshold — catching leaks before they tri
 
 ## 4. Other Notable Features in Go 1.26
 
+**Other 1.26 highlights: `io.ReadAll` is 2× faster with ~50% less memory (every Go program benefits); `crypto/hpke` adds RFC 9180 Hybrid Public Key Encryption for post-quantum hybrid KEMs; `errors.AsType[T]` enables generic type-safe error unwrapping; compiler stack-allocates more slice literals — fewer heap allocations in hot paths; heap base address randomization hardens cgo binaries.**
 | Feature | What It Does | Impact |
 |---------|--------------|--------|
 | **`new(expr)` syntax** | `new` accepts an expression as initial value | Cleaner optional field initialization (protobuf, JSON) |
@@ -229,6 +228,8 @@ Set alerts when the count exceeds a threshold — catching leaks before they tri
 ---
 
 ## 5. Migration Guide: Upgrading from Go 1.25
+
+**4-step Go 1.26 upgrade: (1) `go get go@1.26`; (2) `go fix ./...` to apply all modernizers; (3) run benchmarks before/after with `benchstat` to verify GC improvements; (4) roll out via canary in Kubernetes, monitoring `/sched/pauses/total/gc:seconds`. Watch for: `image/jpeg` encoder bit-exact output change, `net/url.Parse` now rejecting unbracketed IPv6 hosts, requires Go 1.24.6+ bootstrap.**
 
 ### Pre-Upgrade Checklist
 
