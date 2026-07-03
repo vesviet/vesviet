@@ -2,7 +2,7 @@
 title: "Go API Rate Limiting: Token Bucket & Redis Lua"
 slug: "11-security-api-rate-limiting"
 date: "2026-06-18T14:00:00+07:00"
-lastmod: "2026-06-18T14:00:00+07:00"
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 author: "Tanh"
 description: "Advanced API rate limiting in Go: Token Bucket vs Leaky Bucket, distributed sliding window with Redis Lua, IP spoofing prevention."
@@ -335,19 +335,20 @@ func (rl *RedisRateLimiter) Middleware(next http.Handler) http.Handler {
 
 ## FAQ
 
-### How do you prevent IP spoofing in a rate limiter?
 
+{{< faq q="How do you prevent IP spoofing in a rate limiter?" >}}
 Do not read `X-Forwarded-For` without validating proxies. Clean client headers at the edge reverse proxy, or rely on the PROXY protocol at the transport layer to propagate validated TCP connection source IP metadata.
+{{< /faq >}}
 
-### When should you use local in-memory limiting vs. Redis?
-
+{{< faq q="When should you use local in-memory limiting vs. Redis?" >}}
 * **In-Memory (`x/time/rate`):** High throughput, minimal latency overhead. Use for process-specific limits or when horizontal node isolation is acceptable.
 * **Redis:** Coordinates limits across multiple nodes, ensuring global quotas. Necessary for pricing/tier-based user thresholds.
+{{< /faq >}}
 
-### What is Envoy's external rate limiting architecture?
-
+{{< faq q="What is Envoy's external rate limiting architecture?" >}}
 Envoy delegates rate limit decisions to an external service using a gRPC filter (`envoy.filters.http.ratelimit`). The gRPC server implements Lyft's `RateLimitService`, running configurations against a central Redis cluster to decide whether a request should be rate-limited.
 
 ---
 
 🔗 **Next:** [Part 12: Communication Protocols — gRPC vs REST vs GraphQL in Go Microservices](/series/system-design/12-communication-protocols-microservices/)
+{{< /faq >}}

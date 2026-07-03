@@ -1,7 +1,7 @@
 ---
 title: "Double-Entry Ledger: Immutable Schema & Concurrency"
 date: 2026-06-18T11:00:00+07:00
-lastmod: 2026-06-18T11:00:00+07:00
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 description: "Real-world double-entry ledger schema: TigerBeetle Zig 128-byte struct, PostgreSQL NUMERIC(18,4), invariant enforcement triggers, and locking strategies for 1M TPS."
 weight: 1
@@ -351,19 +351,20 @@ func reconcileAllTransactions(db *sql.DB) ([]UnbalancedTx, error) {
 
 ## FAQ
 
-### Is TigerBeetle suitable for every Fintech application?
 
+{{< faq q="Is TigerBeetle suitable for every Fintech application?" >}}
 Not necessarily. TigerBeetle is optimized for **high-throughput financial ledgers** (>100,000 TPS), but lacks SQL query flexibility. If you need complex reporting queries, joins, or integration with traditional ORMs, PostgreSQL + a double-entry schema remains an excellent choice.
+{{< /faq >}}
 
-### Why not use FLOAT to store money?
-
+{{< faq q="Why not use FLOAT to store money?" >}}
 Floating-point numbers (IEEE 754) cannot represent many decimal fractions precisely. For example: `0.1 + 0.2 = 0.30000000000000004` in most programming languages. Over millions of calculations, these precision errors accumulate and unbalance the ledger. Use `NUMERIC(18,4)` or `BIGINT` (storing values as cents/pennies).
+{{< /faq >}}
 
-### What is the difference between a Reversal Entry and a Void Entry?
-
+{{< faq q="What is the difference between a Reversal Entry and a Void Entry?" >}}
 - **Reversal Entry**: Creating a new, opposite entry pointing back to the original entry via `reversalentrykey`. Used to correct errors after a transaction has already settled.
 - **Void Pending**: Canceling a transfer that is currently in a `pending` state (unsettled). This only modifies `debits_pending`/`credits_pending` without affecting `posted` fields.
 
 ---
 
 *Up Next: [Part 2 — Distributed SQL & ACID Latency: TiDB vs CockroachDB vs Spanner](/series/core-banking-architecture/part-2-distributed-sql-acid-latency/) — Detailed analysis of 2PC overhead, TrueTime math, and Percolator lock recovery.*
+{{< /faq >}}

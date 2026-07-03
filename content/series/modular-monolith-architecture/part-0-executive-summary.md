@@ -1,6 +1,6 @@
 ---
 title: "Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure"
-lastmod: "2026-07-03T14:59:00+07:00"
+lastmod: 2026-07-03T15:41:55+07:00
 description: "Discover why Amazon Prime Video cut infrastructure costs by 90% after moving from Serverless/Microservices back to a Monolith, alongside case studies from Segment and 37signals."
 slug: "executive-summary-amazon-prime-video-monolith"
 aliases: ["/series/modular-monolith-architecture/part-0-executive-summary/"]
@@ -61,11 +61,15 @@ In **[Part 1: Decision Framework]({{< ref "part-1-decision-framework.md" >}})**,
 
 ## FAQ
 
-### Why did Amazon Prime Video move away from serverless?
+
+{{< faq q="Why did Amazon Prime Video move away from serverless?" >}}
 Amazon Prime Video abandoned their serverless architecture because AWS Step Functions orchestration fees and Amazon S3 read/write costs became too expensive when processing thousands of high-frequency video streams.
+{{< /faq >}}
 
-### What is the tipping point of microservices?
+{{< faq q="What is the tipping point of microservices?" >}}
 The tipping point occurs when a system handles large data and high-frequency inter-service messaging. At this scale, network I/O and data serialization/deserialization costs exceed the actual compute cost, making a Monolith (in-memory execution) significantly cheaper.
+{{< /faq >}}
 
-### How much did Segment save by migrating to a monolith?
+{{< faq q="How much did Segment save by migrating to a monolith?" >}}
 By consolidating 140 microservices into a single Monolithic Worker, Segment saved over $250,000 in cloud infrastructure costs in just their first year while significantly reducing engineering operational overhead.
+{{< /faq >}}

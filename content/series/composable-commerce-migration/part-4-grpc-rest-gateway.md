@@ -2,7 +2,7 @@
 title: "Part 4: gRPC Internal + REST Gateway — API Contract Lifecycle"
 description: "gRPC to REST gateway for 21 Go services: proto naming conventions, Money type for pricing, cursor pagination, and bridging REST clients to gRPC services."
 date: 2026-04-29T10:00:00+07:00
-lastmod: 2026-06-24T10:00:00+07:00
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 weight: 5
 slug: "part-4-grpc-rest-gateway"
@@ -336,16 +336,16 @@ With the API contract layer established, we're ready for the migration itself. [
 
 ## FAQ
 
-### How much faster is gRPC than REST+JSON for internal service calls?
 
+{{< faq q="How much faster is gRPC than REST+JSON for internal service calls?" >}}
 In production microservices, gRPC is typically **3–7× faster** than REST+JSON for equivalent payloads. The gains come from two sources: binary Protobuf serialization (vs JSON text parsing) and HTTP/2 multiplexing (vs HTTP/1.1 per-request connection overhead). For the Checkout → Order → Warehouse call chain, this means ~15ms gRPC latency vs ~60–90ms REST+JSON latency for the same service logic — compounded across 3–4 service hops per checkout flow.
+{{< /faq >}}
 
-### Why use protobuf `google.api.http` annotations instead of a standalone grpc-gateway binary?
-
+{{< faq q="Why use protobuf `google.api.http` annotations instead of a standalone grpc-gateway binary?" >}}
 A standalone `grpc-gateway` binary adds a network hop: `Client → grpc-gateway → gRPC service`. The `google.api.http` annotation approach generates HTTP handlers that run inside the same Kratos process as the gRPC server — zero additional network hop. The Gateway Service (Gin-based, port 8000) handles auth and routing; once inside the cluster, the HTTP-to-gRPC translation happens in-process within each service. This eliminates a failure point and reduces latency by ~5–10ms per service call.
+{{< /faq >}}
 
-### What is the difference between cursor pagination and offset pagination for order history?
-
+{{< faq q="What is the difference between cursor pagination and offset pagination for order history?" >}}
 **Offset pagination:** `SELECT * FROM orders OFFSET 10000 LIMIT 20` — scans 10,000 rows to return 20. Slow at scale, and if orders are inserted between requests, you get duplicate or skipped rows.  
 **Cursor pagination:** `SELECT * FROM orders WHERE id > $cursor ORDER BY id LIMIT 20` — index seek directly to the cursor position. Consistent (no duplicates/skips) and O(1) regardless of page number. For a merchant with 500,000 orders, cursor pagination is mandatory; offset pagination at page 500 is a full-table scan.
 
@@ -354,3 +354,4 @@ A standalone `grpc-gateway` binary adds a network hop: `Client → grpc-gateway 
 *This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
 
 *Need help assessing the risks of your own platform migration? â†’ [Book a 1:1 Architecture Consultation](/hire/)*
+{{< /faq >}}

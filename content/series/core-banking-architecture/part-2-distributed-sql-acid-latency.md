@@ -1,7 +1,7 @@
 ---
 title: "Distributed SQL ACID Latency: TiDB, CockroachDB & Spanner"
 date: 2026-06-18T11:10:00+07:00
-lastmod: 2026-06-18T11:10:00+07:00
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 description: "Distributed SQL ACID latency: Spanner TrueTime commit-wait 2-14ms, TiDB Percolator TSO 1-3ms, CockroachDB HLC. When should you migrate away from a PostgreSQL monolith?"
 weight: 2
@@ -271,16 +271,16 @@ func BenchmarkTiDBTransactionLatency(b *testing.B) {
 
 ## FAQ
 
-### Is TiDB or CockroachDB more suitable for Vietnam Fintech?
 
+{{< faq q="Is TiDB or CockroachDB more suitable for Vietnam Fintech?" >}}
 TiDB has more abundant Chinese documentation and is adopted by many Asian fintechs (WeBank, Shopee Pay, ZaloPay). CockroachDB is stronger for multi-region deployments if you require active-active cross-datacenter topologies.
+{{< /faq >}}
 
-### Should I start with Spanner?
-
+{{< faq q="Should I start with Spanner?" >}}
 Only choose Spanner if you are already on GCP and require global scale from day one. Spanner costs are significantly higher than self-managed TiDB/CockroachDB.
+{{< /faq >}}
 
-### How do I reduce TSO overhead in TiDB?
-
+{{< faq q="How do I reduce TSO overhead in TiDB?" >}}
 1. Enable **Async Commit** (default in TiDB 5.0+).
 2. Place PD (Placement Driver) nodes close to TiKV nodes in terms of networking.
 3. Use **1PC** (one-phase commit) for single-region transactions when possible.
@@ -288,3 +288,4 @@ Only choose Spanner if you are already on GCP and require global scale from day 
 ---
 
 *Up Next: [Part 3 — Event Sourcing & CQRS](/series/core-banking-architecture/part-3-event-sourcing-cqrs/) — Designing an immutable ledger with event store schemas, CQRS read models, and the Transactional Outbox pattern to avoid dual-writes.*
+{{< /faq >}}

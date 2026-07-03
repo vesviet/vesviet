@@ -2,7 +2,7 @@
 title: "Part 7: Phase 2 — Dual-Write: Dapr PubSub + Conflict Resolution"
 description: "Dual-write while Magento stays live: Dapr PubSub event-driven sync, 5-policy conflict resolution matrix, and per-service migration sequencing."
 date: 2026-05-20T10:00:00+07:00
-lastmod: 2026-06-24T10:00:00+07:00
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 weight: 8
 slug: "part-7-phase2-dual-write"
@@ -315,16 +315,16 @@ With Phase 2 complete, all writes go to microservices first, then sync back to M
 
 ## FAQ
 
-### What is the main risk of dual-write and how does this approach mitigate it?
 
+{{< faq q="What is the main risk of dual-write and how does this approach mitigate it?" >}}
 The main risk is **partial failure**: microservice writes succeed but the Magento sync fails, leaving data inconsistent between systems. The event-driven pattern mitigates this with the Transactional Outbox: the outbox event is written in the same database transaction as the business change. If either fails, both fail — atomically. The `magento-sync-adapter` then retries the sync asynchronously with exponential backoff, and failed events land in the DLQ for investigation rather than being silently lost.
+{{< /faq >}}
 
-### Why is the conflict resolution policy different for customer data vs order data?
-
+{{< faq q="Why is the conflict resolution policy different for customer data vs order data?" >}}
 Customer data can legitimately be updated by both systems concurrently — a customer might update their address on the Magento storefront while a microservice API updates their phone number. Timestamp-based resolution handles this safely: whichever update is more recent wins. Order data is different: once an order is created in the microservice, Magento should never override its status because the microservice's state machine is the authoritative source of order lifecycle events. That's why Order status uses microservices-wins policy regardless of timestamps.
+{{< /faq >}}
 
-### How long does Phase 2 typically take?
-
+{{< faq q="How long does Phase 2 typically take?" >}}
 The minimum safe timeline is **3–4 weeks** when each service gets proper monitoring time: Customer Service (1 week stabilization), Catalog Service (1 week), and Order Service (10 days graduated ramp). Teams that try to compress Phase 2 into days tend to miss edge cases in the conflict resolver — particularly for coupon usage counts and inventory levels during concurrent updates. The extended timeline is not bureaucracy; it is the minimum observation window needed to catch anomalies before they compound.
 
 ---
@@ -332,3 +332,4 @@ The minimum safe timeline is **3–4 weeks** when each service gets proper monit
 *This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
 
 *Need help assessing the risks of your own platform migration? â†’ [Book a 1:1 Architecture Consultation](/hire/)*
+{{< /faq >}}

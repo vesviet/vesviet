@@ -2,7 +2,7 @@
 title: "Go Observability & pprof — Memory Leaks, CPU Profiling & GODEBUG"
 slug: "10-observability-pprof-golang"
 date: "2026-06-18T13:30:00+07:00"
-lastmod: "2026-06-18T13:30:00+07:00"
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 author: "Tanh"
 description: "Go pprof: heap diff memory leak diagnosis, goroutine leak detection, CPU flame graphs, GODEBUG gctrace parsing, and Four Golden Signals."
@@ -380,13 +380,14 @@ You've completed 10 parts of the masterclass. Here's the knowledge map you've bu
 
 ## FAQ
 
-### How do you detect memory leaks in Go?
 
+{{< faq q="How do you detect memory leaks in Go?" >}}
 Five steps: (1) capture baseline heap with `curl .../heap -o baseline.pprof`, (2) run load test for 10–30 minutes, (3) capture peak heap, (4) `go tool pprof -base baseline.pprof peak.pprof`, (5) `top 20` to identify functions with the largest allocation increase. Goroutine leak: `curl .../goroutine?debug=2` and grep for `chan receive` in the output.
+{{< /faq >}}
 
-### How do you use go tool pprof?
-
+{{< faq q="How do you use go tool pprof?" >}}
 ```bash
+{{< /faq >}}
 # CPU (5–10% overhead during capture):
 go tool pprof http://localhost:6060/debug/pprof/profile?seconds=30
 

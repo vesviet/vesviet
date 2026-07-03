@@ -2,7 +2,7 @@
 title: "Consistent Hashing in Go — Virtual Nodes & CRC32 Ring"
 slug: "09-consistent-hashing-sharding"
 date: "2026-06-18T13:00:00+07:00"
-lastmod: "2026-06-18T13:00:00+07:00"
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 author: "Tanh"
 description: "Why modulo hashing fails at scale, virtual node variance analysis, CRC32 consistent hash ring in Go with GetN replication support."
@@ -317,18 +317,19 @@ key2 := "{user:1001}:cart"    // CRC16("user:1001") % 16384 — same slot!
 
 ## FAQ
 
-### How does Consistent Hashing work?
 
+{{< faq q="How does Consistent Hashing work?" >}}
 A hash ring maps both nodes and keys to the range [0, 2^32). A key is assigned to the first node clockwise from its hash position. When a node is added: only keys in the arc between the new node and its predecessor must remap. When removed: those keys remap to the successor. Mathematically optimal — only $K/N$ keys remap.
+{{< /faq >}}
 
-### Why does modulo hashing fail when scaling?
-
+{{< faq q="Why does modulo hashing fail when scaling?" >}}
 `hash(key) % N` changes entirely when N changes. Going from N=3 to N=4 remaps approximately 75% of all keys, because `hash % 3` and `hash % 4` rarely agree. This causes a massive cache miss storm — all those keys must be reloaded from the database simultaneously, often overwhelming it.
+{{< /faq >}}
 
-### What are the benefits of virtual nodes?
-
+{{< faq q="What are the benefits of virtual nodes?" >}}
 Virtual nodes improve load distribution by giving each physical node multiple positions on the ring. With V=200, load standard deviation drops from ~55% (V=1) to ~4% — near-uniform distribution. They also enable weighted assignment: a node with 2× capacity receives 2× virtual nodes, naturally attracting 2× traffic without any special routing logic.
 
 ---
 
 🔗 **Next:** [Part 10: Observability & pprof in Go — Memory Leak Diagnosis & CPU Profiling](/series/system-design/10-observability-pprof-golang/) — The final part: how to diagnose and fix production performance issues.
+{{< /faq >}}

@@ -2,7 +2,7 @@
 title: "Part 8: Phase 3 — Full Cutover: Zero Downtime + ArgoCD GitOps"
 description: "Full Magento cutover: 25%→100% traffic migration for Order Service, 30-day rollback window, archive service, and ArgoCD+Kustomize GitOps deployment."
 date: 2026-05-27T10:00:00+07:00
-lastmod: 2026-06-24T10:00:00+07:00
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 weight: 9
 slug: "part-8-phase3-full-cutover"
@@ -363,16 +363,16 @@ After Phase 3, the platform is:
 
 ## FAQ
 
-### Why use ArgoCD GitOps instead of deploying directly with kubectl or Helm?
 
+{{< faq q="Why use ArgoCD GitOps instead of deploying directly with kubectl or Helm?" >}}
 Direct kubectl applies are manual, error-prone, and leave no audit trail. Helm works for templating but doesn't enforce the target state continuously. ArgoCD enforces **desired state = actual state** at every reconciliation cycle (default: 3 minutes). If a pod crashes and restarts with a different image tag (e.g., from a hotfix applied manually), ArgoCD detects the drift and restores the committed state. During a high-stakes cutover, this continuous enforcement is the difference between a reproducible rollback and a "it was working but now it's different" incident.
+{{< /faq >}}
 
-### What does "zero-downtime cutover" actually guarantee?
-
+{{< faq q="What does \"zero-downtime cutover\" actually guarantee?" >}}
 Zero-downtime means: **no HTTP 5xx errors during the traffic shift, no queued or dropped user requests, no maintenance page**. It does not mean "no latency increase" — the first requests after a traffic shift typically see 10–20% higher p99 latency as new pods warm up their connection pools. The warm-up period is why the platform pre-warms instances 5 minutes before each traffic increment. After the warm-up period (typically 2–5 minutes), latency returns to baseline.
+{{< /faq >}}
 
-### How long should Magento run as a hot standby after cutover?
-
+{{< faq q="How long should Magento run as a hot standby after cutover?" >}}
 A minimum of **30 days** in read-only archive mode. This covers: (1) billing cycles that reference Magento order IDs, (2) customer service escalations about historical orders, (3) the window to detect any edge-case data missing from the migration. After 30 days, shut down Magento's application tier but keep the database snapshot for an additional 90 days in cold storage before permanent deletion.
 
 ---
@@ -380,3 +380,4 @@ A minimum of **30 days** in read-only archive mode. This covers: (1) billing cyc
 *This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
 
 *Need help assessing the risks of your own platform migration? â†’ [Book a 1:1 Architecture Consultation](/hire/)*
+{{< /faq >}}

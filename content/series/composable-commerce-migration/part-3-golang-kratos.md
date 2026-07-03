@@ -2,7 +2,7 @@
 title: "Part 3: Golang + Kratos v2 — Microservice Framework Internals"
 description: "Kratos v2 for production Go microservices: 5-layer directory layout, Wire compile-time DI, dual HTTP+gRPC transport, and 21-service common library."
 date: 2026-04-22T10:00:00+07:00
-lastmod: 2026-06-24T10:00:00+07:00
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 weight: 4
 slug: "part-3-golang-kratos"
@@ -413,16 +413,16 @@ With the service internals understood, we can look at the API layer: how service
 
 ## FAQ
 
-### go-kratos vs Gin — which is faster?
 
+{{< faq q="go-kratos vs Gin — which is faster?" >}}
 Gin is marginally faster for pure HTTP throughput in benchmarks (~15–20% lower latency in synthetic tests). For real-world microservices, the difference is negligible — the database and network dominate latency, not the framework overhead. The decisive advantage of go-kratos over Gin is dual transport: Kratos handles HTTP and gRPC from the same proto definition. Gin requires you to write separate HTTP handlers and gRPC server code — effectively doubling the boilerplate for each endpoint.
+{{< /faq >}}
 
-### How does Wire dependency injection compare to runtime DI in Spring or Magento?
-
+{{< faq q="How does Wire dependency injection compare to runtime DI in Spring or Magento?" >}}
 Wire generates Go code at compile time — there is no reflection, no XML configuration, and no runtime DI container. If a dependency is missing (e.g., you add a new constructor parameter but forget to update the provider set), `go build` fails. In Spring or Magento, the same mistake produces a runtime exception — often in production. Wire's compile-time guarantee is the primary reason go-kratos chose it over alternatives like dig (runtime DI).
+{{< /faq >}}
 
-### Can I use a single kratos service for both REST and gRPC without running two separate server processes?
-
+{{< faq q="Can I use a single kratos service for both REST and gRPC without running two separate server processes?" >}}
 Yes — that is exactly what `kratos.Server(gs, hs)` does. Both the gRPC server (`:9001`) and HTTP server (`:8001`) run as goroutines within the same process. They share the same `biz` layer and the same database connection pool. The proto annotations (`google.api.http`) handle HTTP↔gRPC routing automatically so you write the handler logic once.
 
 ---
@@ -430,3 +430,4 @@ Yes — that is exactly what `kratos.Server(gs, hs)` does. Both the gRPC server 
 *This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
 
 *Need help assessing the risks of your own platform migration? â†’ [Book a 1:1 Architecture Consultation](/hire/)*
+{{< /faq >}}

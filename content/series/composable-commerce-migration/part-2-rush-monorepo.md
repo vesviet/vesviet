@@ -2,7 +2,7 @@
 title: "Part 2: Rush Monorepo — 21 Go Services & 2 Frontends"
 description: "Why Rush beats Nx and Turborepo for a mixed Go + Next.js monorepo: strict dependency governance, PNPM workspaces, and incremental CI builds."
 date: 2026-04-15T10:00:00+07:00
-lastmod: 2026-06-24T10:00:00+07:00
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 weight: 3
 slug: "part-2-rush-monorepo"
@@ -296,16 +296,16 @@ With the repository structure established, we can go deep on what a single Go mi
 
 ## FAQ
 
-### When does Rush make sense vs plain pnpm workspaces?
 
+{{< faq q="When does Rush make sense vs plain pnpm workspaces?" >}}
 Use plain pnpm workspaces if you have ≤4 packages and no strict version governance requirements. Rush becomes worthwhile at 5+ packages when you need `common-versions.json` enforcement (preventing one package from upgrading React while another stays behind), `rush publish` lifecycle, and project-level build caching. For this platform — 2 apps, 3 shared packages, 21 Go services — Rush's governance features pay off.
+{{< /faq >}}
 
-### Do the Go services live inside Rush's project graph?
-
+{{< faq q="Do the Go services live inside Rush's project graph?" >}}
 No. Rush only manages packages with a `package.json`. Go services live in `services/` and are orchestrated via custom `rush.json` bulk commands that shell out to `go build ./...`. Rush tracks Go build artifacts in its cache but does not parse `go.mod` or `go.sum`. Go dependency management remains entirely within the standard Go toolchain.
+{{< /faq >}}
 
-### What happens if `buf generate` is not run after a proto change?
-
+{{< faq q="What happens if `buf generate` is not run after a proto change?" >}}
 The TypeScript SDK in `packages/api-client/generated/` goes stale. CI enforces freshness: if generated files differ from committed files, the pipeline fails with `buf lint` + `buf generate --check`. This prevents the frontend from shipping with a TypeScript type that no longer matches the backend's proto contract.
 
 ---
@@ -313,3 +313,4 @@ The TypeScript SDK in `packages/api-client/generated/` goes stale. CI enforces f
 *This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
 
 *Need help assessing the risks of your own platform migration? â†’ [Book a 1:1 Architecture Consultation](/hire/)*
+{{< /faq >}}

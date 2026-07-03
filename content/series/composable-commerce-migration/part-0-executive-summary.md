@@ -2,7 +2,7 @@
 title: "Part 0: Why the $200K/Year Magento Trap Is Avoidable"
 description: "The real cost of Magento 2 Enterprise: $125K–200K/year in licensing, scaling limits, and PHP coupling. How 21 Go microservices replaced it entirely."
 date: 2026-04-01T10:00:00+07:00
-lastmod: 2026-06-24T10:00:00+07:00
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 weight: 1
 slug: "part-0-executive-summary"
@@ -193,16 +193,20 @@ Let's begin with the domain decomposition: **[Part 1 — DDD Bounded Contexts: D
 
 ## FAQ
 
-### How long does the full migration take?
+
+{{< faq q="How long does the full migration take?" >}}
 End-to-end: **14–19 weeks** for a production Magento 2 store. Phase 1 (read-only) takes 2–3 weeks. Phase 2 (dual-write, domain by domain) takes 4–6 weeks. Phase 3 (full cutover, per-service traffic shifting) takes 8–10 weeks. Your rollback window stays open throughout.
+{{< /faq >}}
 
-### Do I need to rewrite the Magento frontend too?
+{{< faq q="Do I need to rewrite the Magento frontend too?" >}}
 No. The migration strategy targets the backend API layer first. Your Magento Luma/PWA Studio frontend can continue pointing at the API Gateway, which proxies to the appropriate backend (Magento or microservices) depending on the feature flag state. Frontend migration is a separate workstream.
+{{< /faq >}}
 
-### What's the minimum team size for this migration?
+{{< faq q="What's the minimum team size for this migration?" >}}
 We recommend: 2–3 Go backend engineers, 1 DevOps/SRE engineer (for CDC, Kubernetes, ArgoCD), 1 DBA or data engineer (for EAV extraction and identity mapping), and 1 QA engineer. The migration can be executed with a team of 4–5 if the engineers are cross-functional.
+{{< /faq >}}
 
-### Is Kratos v2 production-ready?
+{{< faq q="Is Kratos v2 production-ready?" >}}
 Yes. Kratos v2 (go-kratos.dev) is maintained by Bilibili's engineering team and used in production by multiple large-scale Go services in China and Southeast Asia. It provides a clean abstraction over gRPC + HTTP transport, Wire-based dependency injection, and a pluggable middleware chain — making it a natural fit for a 21-service platform where consistency of patterns matters more than framework flexibility.
 
 ---
@@ -210,3 +214,4 @@ Yes. Kratos v2 (go-kratos.dev) is maintained by Bilibili's engineering team and 
 *This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
 
 *Need help assessing the risks of your own platform migration? â†’ [Book a 1:1 Architecture Consultation](/hire/)*
+{{< /faq >}}

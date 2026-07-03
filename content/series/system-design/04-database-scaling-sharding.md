@@ -2,7 +2,7 @@
 title: "Database Sharding in Go — TiDB, PostgreSQL & Connection Pools"
 slug: "04-database-scaling-sharding"
 date: "2026-06-18T10:30:00+07:00"
-lastmod: "2026-06-18T10:30:00+07:00"
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 author: "Tanh"
 description: "Horizontal database scaling in Go: Range/Hash sharding, B-Tree vs LSM-Tree internals, TiDB Percolator 2PC, and database/sql connection pool tuning."
@@ -305,18 +305,19 @@ func GetOrders(db *sql.DB, userID int64) ([]Order, error) {
 
 ## FAQ
 
-### What is the difference between vertical and horizontal scaling?
 
+{{< faq q="What is the difference between vertical and horizontal scaling?" >}}
 **Vertical scaling** adds CPU/RAM to one server. Fast to implement, zero code changes, but has a hard physical ceiling and costs grow non-linearly (a 2× RAM instance typically costs more than 2× the price). **Horizontal scaling** adds more servers — linear cost growth, no ceiling, but requires data partitioning, distributed coordination, and significantly more operational complexity.
+{{< /faq >}}
 
-### How do you choose the optimal shard key?
-
+{{< faq q="How do you choose the optimal shard key?" >}}
 A shard key must satisfy three conditions: (1) **High cardinality** — many unique values for even data distribution; (2) **No write hot spot** — avoid keys where one value receives all writes (e.g., `created_at` in active tables); (3) **Query locality** — the most common queries should hit only one shard. `user_id` usually outperforms `created_at` for e-commerce because it avoids the time-based write hot spot.
+{{< /faq >}}
 
-### When should you use TiDB instead of MySQL sharding?
-
+{{< faq q="When should you use TiDB instead of MySQL sharding?" >}}
 Use TiDB when: dataset > 1 TB needs complex SQL queries, you need horizontal scaling without manual re-sharding, or you need distributed ACID transactions between multiple tables without application-level 2PC. Don't use TiDB when: latency < 2ms is critical (TiDB commit ~3ms), or the team lacks TiDB operational expertise.
 
 ---
 
 🔗 **Next:** [Part 5: Event-Driven Architecture & Kafka in Go](/series/system-design/05-async-message-queues-kafka-go/) — Worker Pool pattern, backpressure via buffered channels, and Exactly-Once Semantics.
+{{< /faq >}}

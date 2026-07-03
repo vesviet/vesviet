@@ -1,7 +1,7 @@
 ---
 title: "QA & SDET Handbook: Testing Distributed Core Banking"
 date: 2026-06-18T12:10:00+07:00
-lastmod: 2026-06-18T12:10:00+07:00
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 description: "SDET handbook for Core Banking: double-spend, split-brain, clock skew, saga DLQ, DPoP replay, Flink TestHarness — 6 test categories for distributed fintech systems."
 weight: 8
@@ -419,29 +419,29 @@ echo "All load testing gates PASSED — safe to deploy to production"
 
 ## FAQ
 
-### How much coverage is enough for a Core Banking system?
 
+{{< faq q="How much coverage is enough for a Core Banking system?" >}}
 There is no absolute number, but follow the **3-layer rule**:
 - **Unit tests**: ≥90% coverage for business logic (balance calculations, state machines).
 - **Integration tests**: Entire happy path + top 5 failure scenarios for each API.
 - **Chaos engineering**: At least once per sprint involving network partitions and clock skew.
 
 More important than coverage % is **coverage of failure modes** — specifically concurrent scenarios that cannot be tested with sequential unit tests.
+{{< /faq >}}
 
-### Can Flink TestHarness test the entire pipeline?
-
+{{< faq q="Can Flink TestHarness test the entire pipeline?" >}}
 TestHarness is good for **operator-level unit tests** (testing a single operator in isolation with mock inputs). But to test the entire pipeline (Kafka source → CEP → ML inference → Kafka sink), you need to use a **MiniCluster** or a staging environment with a real Kafka/Flink cluster.
+{{< /faq >}}
 
-### Should I mock or integration-test the database in ledger tests?
-
+{{< faq q="Should I mock or integration-test the database in ledger tests?" >}}
 **Do not mock the database** for ledger invariant tests. Use **testcontainers-go** to spin up a real PostgreSQL/TiDB instance in Docker — this actually tests race conditions, deadlocks, and ACID properties that a mock cannot reproduce. Mocks are only appropriate for external services (Kafka, SWIFT/NAPAS gateway, notification service).
+{{< /faq >}}
 
-### How do I detect silent data corruption in production?
-
+{{< faq q="How do I detect silent data corruption in production?" >}}
 Run **continuous reconciliation** — a background job that reads from the event store and recomputes the balance, comparing it against the CQRS read model. Any difference → P1 alert. The interval depends on transaction volume: 5 minutes for large systems, 1 hour for smaller systems. This acts as the "immune system" of Core Banking.
 
 ---
-
+{{< /faq >}}
 ## Series Conclusion: Core Banking Architecture
 
 Throughout the 8 parts of this series, we have traversed the entire stack of a production-grade Core Banking system:

@@ -1,7 +1,7 @@
 ---
 title: "Saga Pattern: Distributed Transactions Without 2PC"
 date: 2026-06-18T11:30:00+07:00
-lastmod: 2026-06-18T11:30:00+07:00
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 description: "Saga Pattern in Fintech: Choreography (5ms) vs Orchestration (50ms), Temporal Go workflows, failure transition matrices, and DLQ strategies for compensation failures."
 weight: 4
@@ -377,18 +377,19 @@ func TestDoubleFaultCompensationDLQ(t *testing.T) {
 
 ## FAQ
 
-### Temporal vs Apache Airflow for Sagas — what's the difference?
 
+{{< faq q="Temporal vs Apache Airflow for Sagas — what's the difference?" >}}
 Airflow is a workflow orchestrator for data pipelines (batch, not real-time). Temporal is designed for **durable, real-time business processes** with millisecond latency, fault-tolerance, and built-in retry/compensation semantics suitable for financial transactions.
+{{< /faq >}}
 
-### Does a Saga guarantee ACID?
-
+{{< faq q="Does a Saga guarantee ACID?" >}}
 No. A Saga guarantees **eventual consistency** — there is no isolation between steps. Another transaction reading an "intermediate" state (after step 1 but before step 2) is entirely possible. This is the trade-off compared to 2PC. In Core Banking, systems typically use **Read Committed** isolation and accept a small window of inconsistency (~seconds).
+{{< /faq >}}
 
-### Will a compensation always succeed?
-
+{{< faq q="Will a compensation always succeed?" >}}
 No. That is exactly why a **DLQ + manual intervention process** must exist. For example, if an account gets frozen after it was debited but before the refund occurs → the compensation cannot complete automatically. The ops team must handle it manually with a full audit trail.
 
 ---
 
 *Up Next: [Part 5 — ISO 20022 & Payment Gateways](/series/core-banking-architecture/part-5-iso-20022-payment-gateways/) — Efficiently parsing pacs.008 XML, mapping XPath to SQL columns, and webhook idempotency strategies.*
+{{< /faq >}}

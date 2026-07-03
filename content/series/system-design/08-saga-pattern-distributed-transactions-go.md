@@ -2,7 +2,7 @@
 title: "Saga Pattern in Go — Temporal, Outbox Pattern & Debezium"
 slug: "08-saga-pattern-distributed-transactions-go"
 date: "2026-06-18T12:30:00+07:00"
-lastmod: "2026-06-18T12:30:00+07:00"
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 author: "Tanh"
 description: "Replace 2PC with Saga in Go: Temporal SDK LIFO compensation, Transactional Outbox, and Debezium CDC EventRouter config."
@@ -319,20 +319,21 @@ func (s *OrderService) CreateOrder(ctx context.Context, userID string, amount fl
 
 ## FAQ
 
-### What is the difference between Saga Orchestration and Choreography?
 
+{{< faq q="What is the difference between Saga Orchestration and Choreography?" >}}
 **Orchestration** (Temporal): Central coordinator knows the entire flow. All state is stored in the workflow history. Easy to debug — Temporal UI shows every step's state. Full compensation visibility. Best for complex business-critical flows (order fulfillment, financial transfers).
 
 **Choreography**: Each service emits events; others react to them. No central coordinator or SPOF. More decoupled but debugging failures requires tracing events across multiple Kafka topics. Best for simple fan-out with no compensation needed.
+{{< /faq >}}
 
-### How do you design compensating transactions?
-
+{{< faq q="How do you design compensating transactions?" >}}
 Compensations must be: (1) **Idempotent** — running multiple times produces the same result. Use `ON CONFLICT DO NOTHING` or status checks before updating. (2) **Semantically correct** — not a SQL ROLLBACK but a business-level reversal (cancel order, release inventory, refund payment). (3) **Eventually complete** — Temporal's retry policy ensures compensations will eventually succeed despite transient failures.
+{{< /faq >}}
 
-### When should you use the Outbox Pattern?
-
+{{< faq q="When should you use the Outbox Pattern?" >}}
 Use Outbox when you need the guarantee: "if the DB transaction commits, the Kafka event WILL be published." Don't use it if: best-effort event publishing is acceptable, or if the CDC pipeline latency (typically 100–500ms) is too high for your use case (use synchronous event publishing instead, accepting the risk of message loss on crash).
 
 ---
 
 🔗 **Next:** [Part 9: Consistent Hashing — Virtual Nodes & CRC32 Ring in Go](/series/system-design/09-consistent-hashing-sharding/) — Why modulo hashing fails, virtual node variance math, and a thread-safe GetN implementation.
+{{< /faq >}}

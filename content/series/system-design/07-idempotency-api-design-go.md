@@ -2,7 +2,7 @@
 title: "Idempotent API Design in Go — Idempotency Key & Redis SetNX"
 slug: "07-idempotency-api-design-go"
 date: "2026-06-18T12:00:00+07:00"
-lastmod: "2026-06-18T12:00:00+07:00"
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 author: "Tanh"
 description: "Idempotent API in Go: Redis SetNX middleware, response recorder, payload hash, DB fallback schema, and the Stripe idempotency pattern."
@@ -391,18 +391,19 @@ func RetryWithIdempotency(
 
 ## FAQ
 
-### What is an Idempotency Key?
 
+{{< faq q="What is an Idempotency Key?" >}}
 A client-generated UUID (or similar unique token) sent as the `Idempotency-Key` HTTP header. The server uses it to identify duplicate requests. If a key has been processed: return the cached response. If new: process and cache. TTL is typically 24 hours.
+{{< /faq >}}
 
-### How does Stripe implement idempotency?
-
+{{< faq q="How does Stripe implement idempotency?" >}}
 Stripe stores key metadata (status, response code, headers, body, payload hash) in Redis with 24-hour TTL. `status: in-progress` blocks concurrent duplicates. `payload_hash` detects key reuse with a different request body (returns HTTP 422). PostgreSQL unique constraint provides durability if Redis is unavailable.
+{{< /faq >}}
 
-### How do you handle the microsecond race condition?
-
+{{< faq q="How do you handle the microsecond race condition?" >}}
 Redis `SetNX` is atomic at the command level — Redis serializes all commands in its single-threaded event loop. Only one caller wins the SetNX race and receives `true`; all others receive `false` and return HTTP 409 Conflict. After the winner completes and writes `status: completed`, all future retries receive the cached response.
 
 ---
 
 🔗 **Next:** [Part 8: Saga Pattern & Distributed Transactions in Go](/series/system-design/08-saga-pattern-distributed-transactions-go/) — Temporal SDK orchestration, Transactional Outbox, and Debezium CDC event routing.
+{{< /faq >}}

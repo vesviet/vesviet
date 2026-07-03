@@ -2,7 +2,7 @@
 title: "Go System Design: CAP, PACELC & Clean Architecture Primer"
 slug: "01-introduction-system-design-golang"
 date: "2026-06-18T09:00:00+07:00"
-lastmod: "2026-06-18T09:00:00+07:00"
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 author: "Tanh"
 description: "System design trade-off thinking in Go: CAP theorem proof, PACELC matrix, composite availability math, and Clean Architecture with DI."
@@ -285,22 +285,22 @@ Alipay Double 11 is the benchmark for applying CAP Theorem in practice at massiv
 
 ## FAQ
 
-### What is the difference between SLA, SLO, and SLI?
 
+{{< faq q="What is the difference between SLA, SLO, and SLI?" >}}
 - **SLI** is the measured metric from the system (e.g., request success rate = 99.95%).
 - **SLO** is the internal target (e.g., success rate must be ≥ 99.9% over 30 days).
 - **SLA** is the customer contract, typically below the SLO to provide a buffer (e.g., guarantees 99.5% or refunds apply).
 
 **Rule of thumb:** SLO must be at least 0.1–0.5% higher than the SLA so the team has an "error budget" to handle incidents without breaching the contract.
+{{< /faq >}}
 
-### Why is PACELC more accurate than CAP for production systems?
-
+{{< faq q="Why is PACELC more accurate than CAP for production systems?" >}}
 CAP only models partition scenarios — but partitions occur less than 0.1% of the time in most well-operated systems. PACELC adds the "Else" dimension — when the network is healthy, the system **still** chooses between Latency and Consistency on every single request.
 
 Example: Google Spanner chooses **PC/EC** — always prioritizes consistency even without a partition. This causes ~7ms commit wait latency, making it unsuitable for sub-millisecond real-time applications.
+{{< /faq >}}
 
-### When should you use a monolith vs microservices?
-
+{{< faq q="When should you use a monolith vs microservices?" >}}
 Use **monolith** when: team size < 10 engineers, domain boundaries are not yet clear, or iteration speed is critical.
 
 Use **microservices** when: 3+ squads are working in the same codebase causing deployment conflicts, different modules need drastically different scaling characteristics, or release cadence needs to be decoupled between modules.
@@ -308,3 +308,4 @@ Use **microservices** when: 3+ squads are working in the same codebase causing d
 ---
 
 🔗 **Next:** [Part 2: Load Balancing L4/L7 & Rate Limiting in Go](/series/system-design/02-load-balancing-api-gateway-go/) — DSR routing deep-dive, Token Bucket algorithm, and API Gateway patterns.
+{{< /faq >}}

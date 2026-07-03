@@ -2,7 +2,7 @@
 title: "AWS EKS vs ECS: Architecture, Cost & Real-World Use Cases (2026)"
 slug: "aws-eks-vs-ecs-comparison"
 date: 2026-06-26T21:00:00+07:00
-lastmod: 2026-06-26T21:00:00+07:00
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 mermaid: true
 tags: ["AWS", "EKS", "ECS", "Kubernetes", "Container Orchestration", "DevOps", "Go", "Microservices", "Fargate"]
@@ -513,40 +513,40 @@ flowchart TD
 
 ## FAQ
 
-### Is EKS better than ECS?
 
+{{< faq q="Is EKS better than ECS?" >}}
 Neither is universally better. EKS gives you the Kubernetes ecosystem (ArgoCD, Dapr, KEDA, Helm) at the cost of higher operational complexity and $73/month per cluster. ECS gives you AWS-native simplicity with zero control plane cost. Choose based on your team's expertise and what ecosystem tools you actually need — not industry hype.
+{{< /faq >}}
 
-### What does EKS Auto Mode actually do?
-
+{{< faq q="What does EKS Auto Mode actually do?" >}}
 EKS Auto Mode (GA since re:Invent 2024) automates node provisioning via managed Karpenter, OS patching via Bottlerocket, and core add-ons (VPC CNI, Load Balancer Controller, EBS CSI). You still write Kubernetes manifests and manage RBAC, namespaces, and application-level tools like ArgoCD and Dapr.
+{{< /faq >}}
 
-### What's the difference between ECS Fargate and EKS Fargate?
-
+{{< faq q="What's the difference between ECS Fargate and EKS Fargate?" >}}
 The compute layer is identical: same Fargate pricing ($0.04048/vCPU-hr, $0.004445/GB-hr in US-East-1). The difference is the orchestration layer: ECS Fargate has no control plane fee and no Kubernetes API. EKS Fargate costs $73/month for the control plane but gives you full Kubernetes APIs, Helm, and CNCF tooling.
+{{< /faq >}}
 
-### How much does EKS actually cost?
-
+{{< faq q="How much does EKS actually cost?" >}}
 Minimum: $73/month (control plane) + compute. If you fall behind on Kubernetes version upgrades, Extended Support kicks in at $438/month per cluster (~6× more). At 3 clusters in Extended Support, that's **$15,768/year in control plane fees** — before a single container runs. Extended Support has been active since April 2024.
+{{< /faq >}}
 
-### Can you use ArgoCD with ECS?
-
+{{< faq q="Can you use ArgoCD with ECS?" >}}
 No. ArgoCD is Kubernetes-only — it reconciles Kubernetes resources to Git state. ECS has no Kubernetes resources. Teams deploying ECS via GitOps-style workflows typically use GitHub Actions + [ecspresso](https://github.com/kayac/ecspresso) or AWS CodePipeline + CodeDeploy.
+{{< /faq >}}
 
-### Should a startup choose ECS or EKS?
-
+{{< faq q="Should a startup choose ECS or EKS?" >}}
 ECS Fargate for the first 12–18 months. Zero control plane cost, ships fast, minimal ops overhead. When you need ArgoCD, Dapr, or KEDA — or when you hire a platform engineer — evaluate EKS. The ECS→EKS migration is significant (Task Definition → K8s manifest conversion, IAM restructure, pipeline rebuild) but manageable with phased traffic switching via ALB weighted target groups.
+{{< /faq >}}
 
-### How long does ECS to EKS migration take?
-
+{{< faq q="How long does ECS to EKS migration take?" >}}
 For a 10-service platform: plan **4–8 engineer-weeks**. Key work: Task Definition → K8s Deployment/Service manifest conversion (no automated tool), IAM Task Roles → EKS Pod Identity, ECS service discovery → K8s Services + Ingress, CloudWatch → Prometheus/ADOT, CI/CD pipeline rebuild. There is no AWS-provided automated migration path.
+{{< /faq >}}
 
-### What's EKS Extended Support and when does it apply?
-
+{{< faq q="What's EKS Extended Support and when does it apply?" >}}
 EKS Extended Support costs **$0.60/hour per cluster** (~$438/month). It applies when your cluster runs a Kubernetes version that has exceeded the 14-month standard support window. This took effect in April 2024. Teams running stale K8s versions pay 6× the normal control plane fee — often without realizing it until they get the AWS bill.
 
 ---
-
+{{< /faq >}}
 ## Closing Thoughts
 
 The EKS vs ECS decision comes down to two questions: **What ecosystem tools does your team need?** and **How much Kubernetes complexity can your team absorb?**

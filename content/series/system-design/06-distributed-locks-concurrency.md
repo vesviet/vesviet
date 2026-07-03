@@ -2,7 +2,7 @@
 title: "Distributed Locks in Go — Redlock Math, etcd & Split-Brain"
 slug: "06-distributed-locks-concurrency"
 date: "2026-06-18T11:30:00+07:00"
-lastmod: "2026-06-18T11:30:00+07:00"
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 author: "Tanh"
 description: "Redlock MIN_VALIDITY math, clock drift analysis, redsync implementation in Go, etcd lease locks, and Redis vs etcd decision matrix."
@@ -258,16 +258,16 @@ func (e *EtcdLockManager) ExecuteWithLock(
 
 ## FAQ
 
-### When should you use Redlock vs etcd?
 
+{{< faq q="When should you use Redlock vs etcd?" >}}
 Use **Redlock** when: you already have a Redis cluster, locks are short-lived (<30s), and you can tolerate the clock drift edge case with compensating mechanisms (idempotency key, fencing token). Use **etcd** when: lock correctness is paramount (financial settlement, database migration coordination), locks may be long-lived, or you need automatic lease renewal if the holder is slow.
+{{< /faq >}}
 
-### What is split-brain and how do you prevent it?
-
+{{< faq q="What is split-brain and how do you prevent it?" >}}
 Split-brain occurs when two server groups simultaneously believe they hold the same distributed lock — typically caused by network partition. With Redis: enforce majority quorum and use fencing tokens. With etcd: Raft protocol prevents it by design — only one leader can commit, and a partitioned leader steps down automatically.
+{{< /faq >}}
 
-### What is the safe unlock pattern for Redlock?
-
+{{< faq q="What is the safe unlock pattern for Redlock?" >}}
 The Lua script pattern:
 ```lua
 if redis.call("get", KEYS[1]) == ARGV[1] then
@@ -284,3 +284,4 @@ This atomically checks if the lock value matches your client's unique token befo
 > **Locks vs Idempotency — when to use which:** Distributed locks prevent concurrent execution of a critical section. Idempotency keys prevent duplicate side effects from retried requests. For payment flows, you need **both**: a lock ensures only one payment process runs at a time, while an idempotency key ensures that a client retry after a timeout doesn't double-charge. See [Part 7: Idempotent API Design](/series/system-design/07-idempotency-api-design-go/).
 
 🔗 **Next:** [Part 7: Idempotent API Design in Go](/series/system-design/07-idempotency-api-design-go/) — Idempotency Key, Redis SetNX middleware, HTTP response recorder, and the Stripe API pattern.
+{{< /faq >}}

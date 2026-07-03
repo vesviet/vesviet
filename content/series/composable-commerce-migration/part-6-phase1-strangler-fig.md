@@ -2,7 +2,7 @@
 title: "Part 6: Phase 1 — Strangler Fig: Read-Only Migration + CDC"
 description: "Phase 1 Magento migration: read-only Go microservices behind API Gateway, Debezium CDC from MySQL without Kafka, and feature flags for zero-risk routing."
 date: 2026-05-13T10:00:00+07:00
-lastmod: 2026-06-24T10:00:00+07:00
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 weight: 7
 slug: "part-6-phase1-strangler-fig"
@@ -374,16 +374,16 @@ Phase 1 is running. Reads are served by microservices. Magento still owns all wr
 
 ## FAQ
 
-### What is the difference between Debezium and Kafka Connect?
 
+{{< faq q="What is the difference between Debezium and Kafka Connect?" >}}
 Debezium is a **CDC connector library** — it reads database change logs (MySQL binlog, PostgreSQL WAL, etc.) and produces change events. Kafka Connect is a **framework for running connectors**, typically used to deploy Debezium at scale with full fault-tolerance, distributed workers, and REST management API. This platform runs Debezium in **embedded engine mode** — the connector runs inside the sync-consumer Go service process, eliminating the need to operate a Kafka Connect cluster. The trade-off: embedded mode has lower fault tolerance (single process), but is significantly simpler to operate for a team that doesn't already run Kafka infrastructure.
+{{< /faq >}}
 
-### How does the Strangler Fig pattern avoid downtime during migration?
-
+{{< faq q="How does the Strangler Fig pattern avoid downtime during migration?" >}}
 The Strangler Fig works by routing traffic at the proxy/gateway layer — not by switching systems. During Phase 1, the same domain name responds to all traffic. The CDN or API Gateway inspects each request: if the feature flag is enabled and the target service is healthy, the request goes to microservices; otherwise it falls through to Magento. There is no DNS switch, no maintenance window, and no user-visible disruption. The migration happens behind the routing layer over weeks, not hours.
+{{< /faq >}}
 
-### How do you handle the initial Debezium snapshot without blocking production MySQL?
-
+{{< faq q="How do you handle the initial Debezium snapshot without blocking production MySQL?" >}}
 Debezium's `snapshot.mode: initial` reads all rows using a consistent snapshot — it uses MySQL's `REPEATABLE READ` isolation level, which means it doesn't lock the table. However, it does consume significant I/O bandwidth during the snapshot phase (reading millions of rows sequentially). Best practice: run the initial snapshot during off-peak hours, monitor MySQL I/O metrics, and configure Debezium's `max.batch.size` to throttle the read rate if needed.
 
 ---
@@ -391,3 +391,4 @@ Debezium's `snapshot.mode: initial` reads all rows using a consistent snapshot �
 *This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
 
 *Need help assessing the risks of your own platform migration? â†’ [Book a 1:1 Architecture Consultation](/hire/)*
+{{< /faq >}}

@@ -2,7 +2,7 @@
 title: "Kafka Worker Pool in Go — Backpressure & Exactly-Once"
 slug: "05-async-message-queues-kafka-go"
 date: "2026-06-18T11:00:00+07:00"
-lastmod: "2026-06-18T11:00:00+07:00"
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 author: "Tanh"
 description: "Kafka zero-copy internals, bounded Worker Pool with Go channel backpressure, partition-aware ordering, and Exactly-Once via DB transaction."
@@ -334,18 +334,19 @@ func (c *OrderEventConsumer) ProcessOrderEvent(
 
 ## FAQ
 
-### What is the difference between Kafka and RabbitMQ?
 
+{{< faq q="What is the difference between Kafka and RabbitMQ?" >}}
 Kafka is a **distributed log** — messages persist indefinitely, consumers manage offsets, replay is possible, throughput is in millions/s. RabbitMQ is a **message broker** — messages deleted after ACK, broker handles complex routing, push-based. Choose Kafka for event sourcing, audit trails, and fan-out to multiple consumers. Choose RabbitMQ for task queues, request-reply, and complex routing patterns.
+{{< /faq >}}
 
-### How do you implement backpressure in Go?
-
+{{< faq q="How do you implement backpressure in Go?" >}}
 Use a **bounded buffered channel**. When the channel is full, the sender blocks — this is natural backpressure. Combine with `select { case jobChan <- msg: default: // backpressure handling }` for non-blocking sends with explicit backpressure logic (e.g., pause Kafka consumption, increment a metrics counter).
+{{< /faq >}}
 
-### How do you guarantee Exactly-Once in Kafka?
-
+{{< faq q="How do you guarantee Exactly-Once in Kafka?" >}}
 True end-to-end exactly-once for external side effects (DB writes, API calls) requires an **idempotent consumer**: store the Kafka offset and business data in the same DB transaction. If the consumer crashes and restarts, the duplicate message is detected via the offset check and safely skipped.
 
 ---
 
 🔗 **Next:** [Part 6: Distributed Locks — Redlock, etcd & Race Condition Prevention in Go](/series/system-design/06-distributed-locks-concurrency/) — Redlock clock drift math, redsync implementation, and when to use Redis vs etcd.
+{{< /faq >}}

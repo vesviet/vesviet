@@ -2,7 +2,7 @@
 title: "Part 5: EAV Schema Migration — Magento's Biggest Trap"
 description: "Extract Magento's EAV schema: integer→UUID identity mapping, avoiding hardcoded attribute IDs, dynamic SQL pivot pattern, and production-tested SQL queries."
 date: 2026-05-06T10:00:00+07:00
-lastmod: 2026-06-24T10:00:00+07:00
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 weight: 6
 slug: "part-5-eav-schema-migration"
@@ -352,16 +352,16 @@ The EAV extraction is the most labor-intensive part of the migration. Once `mage
 
 ## FAQ
 
-### Why can't I just use Magento's built-in import/export CSV instead of direct SQL extraction?
 
+{{< faq q="Why can't I just use Magento's built-in import/export CSV instead of direct SQL extraction?" >}}
 Magento's CSV import/export doesn't export attribute relationships or the `magento_id_map` cross-reference you need. CSV export gives you a flat row per product — losing the EAV structure — and has a 5,000-product limit on vanilla Magento without extension. For 10,000+ SKUs, direct SQL extraction against MySQL is the only approach that works at scale without modification.
+{{< /faq >}}
 
-### Do I need to keep magento_id_map permanently?
-
+{{< faq q="Do I need to keep magento_id_map permanently?" >}}
 Yes — until Phase 3 cutover is complete. The CDC sync pipeline (Part 6), the dual-write adapter (Part 7), and the conflict resolver (Part 7) all use `magento_id_map` to translate Magento integer IDs to UUIDs when processing events. Once Phase 3 is done and Magento is decommissioned, the table can be archived (not deleted — keep it for audit trail).
+{{< /faq >}}
 
-### What if two Magento instances have the same `attribute_code` but different semantics?
-
+{{< faq q="What if two Magento instances have the same `attribute_code` but different semantics?" >}}
 This happens with custom attributes created by third-party extensions that use generic codes like `custom_attribute_1`. In this case, also check `eav_attribute.frontend_label` and `eav_attribute.source_model` to disambiguate. Document any ambiguous attributes in your `magento_id_map` as a comment field before starting the extraction — resolving this post-extraction is significantly more expensive.
 
 ---
@@ -369,3 +369,4 @@ This happens with custom attributes created by third-party extensions that use g
 *This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
 
 *Need help assessing the risks of your own platform migration? â†’ [Book a 1:1 Architecture Consultation](/hire/)*
+{{< /faq >}}

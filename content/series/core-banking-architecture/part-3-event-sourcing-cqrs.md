@@ -1,7 +1,7 @@
 ---
 title: "Event Sourcing & CQRS: Immutable Ledger for Microservices"
 date: 2026-06-18T11:20:00+07:00
-lastmod: 2026-06-18T11:20:00+07:00
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 description: "Event Sourcing in Core Banking: PostgreSQL event store schema, CQRS balance <1ms vs O(N) SUM, Transactional Outbox with Debezium CDC — Monzo architecture."
 weight: 3
@@ -391,18 +391,19 @@ func TestOutboxAtomicityUnderFailure(t *testing.T) {
 
 ## FAQ
 
-### Does Event Sourcing make queries more complex?
 
+{{< faq q="Does Event Sourcing make queries more complex?" >}}
 Yes — Event Sourcing optimizes for writes and auditing, but complicates reads. This is exactly why CQRS exists. The write side stores events; the read side builds materialized views optimized for queries. You should not use pure Event Sourcing without CQRS read models.
+{{< /faq >}}
 
-### Can Debezium handle large PostgreSQL WAL volumes?
-
+{{< faq q="Can Debezium handle large PostgreSQL WAL volumes?" >}}
 Yes, but you need to monitor LAG (Debezium lag behind the WAL position). For volumes >10,000 TPS, it's recommended to dedicate a PostgreSQL replica purely for Debezium to avoid impacting the primary.
+{{< /faq >}}
 
-### How often should a snapshot be taken?
-
+{{< faq q="How often should a snapshot be taken?" >}}
 It depends on average event size and acceptable replay time. Rule of thumb: snapshot every **500 events**. With an average event size of 1KB → snapshot file ~500KB. Replaying from a snapshot (0 events) up to the max (500 events) will never exceed a few dozen milliseconds.
 
 ---
 
 *Up Next: [Part 4 — Saga Pattern](/series/core-banking-architecture/part-4-saga-pattern/) — Choreography vs Orchestration Saga, failure transition matrices, and implementation with Temporal workflow engine.*
+{{< /faq >}}

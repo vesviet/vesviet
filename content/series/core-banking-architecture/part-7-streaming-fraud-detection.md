@@ -1,7 +1,7 @@
 ---
 title: "Streaming Fraud Detection: Flink CEP, RocksDB & ML"
 date: 2026-06-18T12:00:00+07:00
-lastmod: 2026-06-18T12:00:00+07:00
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 description: "Flink CEP fraud detection: 3 failed logins + high-value TX, RocksDB state, async ML inference 50-100ms SLA, 80% fewer false positives."
 weight: 7
@@ -453,17 +453,17 @@ func TestFraudScoringLatencySLA(t *testing.T) {
 
 ## FAQ
 
-### RocksDB vs HashMapStateBackend — when to use which?
 
+{{< faq q="RocksDB vs HashMapStateBackend — when to use which?" >}}
 - **HashMapStateBackend**: State is in the JVM heap. Faster (~2-5x), but limited by JVM heap size. Suitable when state size is <10GB.
 - **RocksDB**: State is on local SSD. Slower but scales to **terabytes**. Suitable for fraud profiles of millions of users.
+{{< /faq >}}
 
-### Are Exactly-Once semantics important for fraud detection?
-
+{{< faq q="Are Exactly-Once semantics important for fraud detection?" >}}
 Yes. With a Kafka → Flink → Kafka pipeline and `EXACTLY_ONCE` mode, each fraud alert is emitted exactly once, even in the event of checkpoint failures and task restarts. Lacking exactly-once semantics can lead to duplicate alerts → duplicate account freezes → customer complaints.
+{{< /faq >}}
 
-### How do I tune Flink to achieve <100ms P99?
-
+{{< faq q="How do I tune Flink to achieve <100ms P99?" >}}
 1. Increase `state.backend.rocksdb.block.cache-size` to keep hot data in memory.
 2. Use **unordered** async I/O (`unorderedWait`) — do not wait for ML responses sequentially.
 3. Place Flink TaskManagers network-close to the ML serving nodes.
@@ -473,3 +473,4 @@ Yes. With a Kafka → Flink → Kafka pipeline and `EXACTLY_ONCE` mode, each fra
 ---
 
 *Up Next: [Part 8 — QA & SDET Handbook](/series/core-banking-architecture/part-8-qa-sdet-handbook/) — A comprehensive testing strategy for distributed financial systems: split-brain, clock skew, double-submit, and chaos engineering.*
+{{< /faq >}}

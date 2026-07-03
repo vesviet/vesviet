@@ -2,7 +2,7 @@
 title: "Load Balancing L4/L7 in Go — DSR, Rate Limiting & API Gateway"
 slug: "02-load-balancing-api-gateway-go"
 date: "2026-06-18T09:30:00+07:00"
-lastmod: "2026-06-18T09:30:00+07:00"
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 author: "Tanh"
 description: "L4 vs L7 load balancing internals, Direct Server Return with HAProxy sysctl config, Token Bucket rate limiting middleware in Go, and API Gateway patterns."
@@ -335,18 +335,18 @@ graph LR
 
 ## FAQ
 
-### What is the difference between L4 and L7 load balancing?
 
+{{< faq q="What is the difference between L4 and L7 load balancing?" >}}
 **L4** routes at TCP level by IP+port — no HTTP parsing. ~0.1ms overhead, millions of connections/second. Limited to connection-level decisions (IP hash, least-connections by TCP connection count). Cannot route based on URL path or HTTP headers.
 
 **L7** routes at HTTP level — inspects headers, URL paths, cookies. ~0.5–2ms overhead but enables URL-based routing, header-based canary releases, and HTTP-aware health checks. Required for microservices where different routes map to different backend services.
+{{< /faq >}}
 
-### How does Direct Server Return (DSR) improve throughput?
-
+{{< faq q="How does Direct Server Return (DSR) improve throughput?" >}}
 In standard proxy mode, both request AND response pass through the load balancer. In DSR, only the request passes through; the backend responds directly to the client using the VIP as the source IP. For large responses (images, file downloads), this can reduce load balancer traffic by 90%+ since responses typically dwarf request sizes.
+{{< /faq >}}
 
-### When should you use IP Hash vs Consistent Hashing?
-
+{{< faq q="When should you use IP Hash vs Consistent Hashing?" >}}
 **IP Hash:** Simple, O(1), good for sticky sessions. Problem: all users from one office NAT appear as the same IP → overload one server.
 
 **Consistent Hash:** Use for routing to stateful backends (Redis shards, gRPC streams) where the same client must always reach the same backend regardless of cluster size changes. Minimizes remapping when nodes are added/removed. Covered in depth at [Part 9: Consistent Hashing](/series/system-design/09-consistent-hashing-sharding/).
@@ -354,3 +354,4 @@ In standard proxy mode, both request AND response pass through the load balancer
 ---
 
 🔗 **Next:** [Part 3: Caching Strategies & Cache Stampede in Go](/series/system-design/03-caching-strategies-redis-golang/) — XFetch algorithm, Redis LRU/LFU internals, singleflight deduplication.
+{{< /faq >}}

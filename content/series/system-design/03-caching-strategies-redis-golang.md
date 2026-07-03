@@ -2,7 +2,7 @@
 title: "Caching Strategies in Go — Cache Stampede, XFetch & Redis LFU"
 slug: "03-caching-strategies-redis-golang"
 date: "2026-06-18T10:00:00+07:00"
-lastmod: "2026-06-18T10:00:00+07:00"
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 author: "Tanh"
 description: "Solve Cache Stampede with singleflight and XFetch. Compare Write-Through vs Write-Behind. Redis LRU/LFU internals for Go."
@@ -373,20 +373,21 @@ func (t *TieredCache) Set(key, value string) {
 
 ## FAQ
 
-### What is Cache Stampede and how do you fix it?
 
+{{< faq q="What is Cache Stampede and how do you fix it?" >}}
 Cache Stampede occurs when a popular key expires and many concurrent goroutines all detect the miss simultaneously — then all query the DB at once. Three layers of defense: (1) **Singleflight** — in-process deduplication, O(1) cost, handles 95% of cases; (2) **XFetch** — probabilistic early refresh, no locks needed; (3) **Redis SETNX lock** — cross-process mutual exclusion.
+{{< /faq >}}
 
-### Write-Through vs Write-Behind — which to use?
-
+{{< faq q="Write-Through vs Write-Behind — which to use?" >}}
 **Write-Through:** Synchronous write to cache + DB. No data loss, write latency = DB latency. Use for: payment records, order creation, any data where losing a write is unacceptable.
 
 **Write-Behind:** Write to cache, flush to DB asynchronously. Write latency is very low but data loss possible if the cache node crashes before flushing. Use for: view counters, analytics events, non-critical aggregations.
+{{< /faq >}}
 
-### Redis LRU vs LFU — which to configure?
-
+{{< faq q="Redis LRU vs LFU — which to configure?" >}}
 Use **LFU** (`allkeys-lfu`) when your workload has clearly identifiable hot keys (e.g., flash sale items, viral content) that need protection from eviction. Use **LRU** (`allkeys-lru`) for general-purpose caches with more uniform access patterns. With Redis 4.0+, LFU is generally better for production e-commerce.
 
 ---
 
 🔗 **Next:** [Part 4: Database Scaling & Connection Pool Tuning in Go](/series/system-design/04-database-scaling-sharding/) — PostgreSQL Range Partitioning, TiDB Percolator 2PC, and `database/sql` pool tuning.
+{{< /faq >}}

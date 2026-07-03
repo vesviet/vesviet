@@ -2,7 +2,7 @@
 title: "gRPC vs REST vs GraphQL: Communication Protocols in Go"
 slug: "12-communication-protocols-microservices"
 date: "2026-06-18T14:30:00+07:00"
-lastmod: "2026-06-18T14:30:00+07:00"
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 author: "Tanh"
 description: "gRPC vs REST vs GraphQL in Go: serialization benchmarks, Protobuf wire format, HTTP/2 multiplexing vs QUIC, GraphQL complexity engines, and ConnectRPC."
@@ -358,20 +358,20 @@ func TestgRPCKeepaliveIdleTimeout(t *testing.T) {
 
 ## FAQ
 
-### What is the N+1 query problem in GraphQL and how do you resolve it in Go?
 
+{{< faq q="What is the N+1 query problem in GraphQL and how do you resolve it in Go?" >}}
 The N+1 problem occurs when a resolver queries child fields sequentially for each parent item (resulting in 1 query for parents, and N queries for children). Fix this in Go using the **DataLoader** pattern to batch child IDs into a single database fetch (`SELECT IN`) and cache the results for the request duration.
+{{< /faq >}}
 
-### What is gRPC connection pinning and how does L7 load balancing solve it?
-
+{{< faq q="What is gRPC connection pinning and how does L7 load balancing solve it?" >}}
 gRPC uses persistent HTTP/2 TCP connections. Standard L4 load balancers route the connection to a single backend container once, meaning all subsequent multiplexed requests over that connection stay pinned to that container. Deploy an L7 proxy (e.g. Envoy) to terminate the HTTP/2 connection and balance requests individually using latency-aware routing (e.g. peak EWMA).
+{{< /faq >}}
 
-### How does ConnectRPC differ from standard gRPC?
-
+{{< faq q="How does ConnectRPC differ from standard gRPC?" >}}
 ConnectRPC runs directly on standard Go `net/http` handlers and does not require HTTP/2 trailers or specialized reverse proxies like Envoy. It supports standard gRPC, base64-encoded gRPC-Web, and a simple POST JSON Connect protocol concurrently on a single handler port.
 
 ---
-
+{{< /faq >}}
 ## Series Summary — System Design Masterclass (Golang)
 
 You've completed all 12 parts of the masterclass. Here's the complete knowledge map you've built:

@@ -2,7 +2,7 @@
 title: "Part 1: DDD Bounded Contexts — Magento to 21 Services"
 description: "Map Magento 2's 240+ modules to 21 bounded contexts using DDD: Checkout ≠ Order, Pricing ≠ Promotion, and why 21 services is the right number."
 date: 2026-04-08T10:00:00+07:00
-lastmod: 2026-06-24T10:00:00+07:00
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 weight: 2
 slug: "part-1-ddd-bounded-contexts"
@@ -208,20 +208,20 @@ Or, if you want to go straight to the implementation layer: [Part 3: Kratos v2 I
 
 ## FAQ
 
-### Do I need exactly 21 services for a Magento-to-microservices migration?
 
+{{< faq q="Do I need exactly 21 services for a Magento-to-microservices migration?" >}}
 No. 21 services is the right number for a platform processing 10,000+ orders/day with multiple independent engineering teams. For a shop with fewer than 2,000 orders/day and a team under 10 engineers, 5–7 services is more appropriate. The principle is: service count ≈ team count × 2–3, bounded by your actual scaling invariants.
+{{< /faq >}}
 
-### Why must Checkout and Order be separate services?
-
+{{< faq q="Why must Checkout and Order be separate services?" >}}
 Checkout manages temporary, expendable state (shopping cart). Order manages permanent, audited financial state. They have opposite failure tolerance: an abandoned cart is acceptable; a lost order is a revenue loss. Separating them also enables independent scaling — during flash sales, Order pods scale 10× while Checkout pods stay constant.
+{{< /faq >}}
 
-### What happens if I don't separate Pricing from Promotion?
-
+{{< faq q="What happens if I don't separate Pricing from Promotion?" >}}
 Merging them creates a single service with two incompatible scaling profiles: Pricing reads happen on every catalog page (extremely high read rate, cache-friendly), while Promotion applies discount rules with transactional coupon deduplication (event-driven, write-heavy). A combined service forces you to over-provision resources for the lower-traffic workload and creates a tighter blast radius when either component fails.
+{{< /faq >}}
 
-### How do I validate my bounded context boundaries before writing code?
-
+{{< faq q="How do I validate my bounded context boundaries before writing code?" >}}
 Apply the transaction test: *"Can this business rule be enforced within a single service's database transaction?"* If yes, the boundary is correct. If the rule requires coordinating two services, you need a Saga or a read query — and that coordination cost is the price you pay for keeping those services separate.
 
 ---
@@ -235,3 +235,4 @@ Apply the transaction test: *"Can this business rule be enforced within a single
 *This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
 
 *Need help assessing the risks of your own platform migration? â†’ [Book a 1:1 Architecture Consultation](/hire/)*
+{{< /faq >}}

@@ -1,7 +1,7 @@
 ---
 title: "FAPI 2.0: DPoP, mTLS & Sender-Constrained Tokens"
 date: 2026-06-18T11:50:00+07:00
-lastmod: 2026-06-18T11:50:00+07:00
+lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 description: "FAPI 2.0 DPoP: Node.js ES256 JWT generation, Go verification, mTLS Kubernetes 1-3ms vs <0.1ms pooled, PAR flow, and token replay protection."
 weight: 6
@@ -453,22 +453,23 @@ curl --cert expired.crt --key expired.key \
 
 ## FAQ
 
-### DPoP or mTLS — which should I choose?
 
+{{< faq q="DPoP or mTLS — which should I choose?" >}}
 It depends on the client type:
 - **DPoP**: Better for browser-based clients and mobile apps — no certificate management required.
 - **mTLS**: Better for server-to-server (B2B APIs) and payment gateways — cert rotation can be automated.
 
 FAPI 2.0 allows both. Many implementations support both to let clients choose.
+{{< /faq >}}
 
-### Does mTLS affect Kubernetes auto-scaling?
-
+{{< faq q="Does mTLS affect Kubernetes auto-scaling?" >}}
 Yes, but a service mesh like Linkerd or Istio handles cert rotation automatically. When a new pod spins up, the sidecar automatically negotiates an mTLS cert from the control plane — this is completely transparent to the application code.
+{{< /faq >}}
 
-### Where should the DPoP private key be stored in a mobile app?
-
+{{< faq q="Where should the DPoP private key be stored in a mobile app?" >}}
 iOS: Secure Enclave (hardware-backed key storage). Android: StrongBox or Android Keystore (hardware-backed when supported by the device). The private key must never be exported out of the secure enclave.
 
 ---
 
 *Up Next: [Part 7 — Streaming Fraud Detection](/series/core-banking-architecture/part-7-streaming-fraud-detection/) — Apache Flink CEP patterns, RocksDB memory tuning, async ML inference, and achieving <100ms fraud scoring SLAs.*
+{{< /faq >}}
