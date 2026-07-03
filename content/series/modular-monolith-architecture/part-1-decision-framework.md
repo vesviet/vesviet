@@ -1,5 +1,6 @@
 ﻿---
 title: "Part 1: Architectural Decision Framework"
+lastmod: "2026-07-03T14:59:00+07:00"
 description: "Use real-world latency, performance data, and lessons from Stack Overflow to decide when to use a Modular Monolith instead of Microservices."
 slug: "decision-framework-modular-monolith-vs-microservices"
 tags: ["Architecture", "Modular Monolith", "Microservices", "System Design", "Stack Overflow"]

@@ -1,5 +1,6 @@
 ---
 title: "Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure"
+lastmod: "2026-07-03T14:59:00+07:00"
 description: "Discover why Amazon Prime Video cut infrastructure costs by 90% after moving from Serverless/Microservices back to a Monolith, alongside case studies from Segment and 37signals."
 slug: "executive-summary-amazon-prime-video-monolith"
 aliases: ["/series/modular-monolith-architecture/part-0-executive-summary/"]

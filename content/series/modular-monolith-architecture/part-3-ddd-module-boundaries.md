@@ -1,5 +1,6 @@
 ﻿---
 title: "Part 3: Domain-Driven Design (DDD) Boundaries in a Modular Monolith"
+lastmod: "2026-07-03T14:59:00+07:00"
 description: "How to keep a Monolith from becoming a 'Big Ball of Mud'? A guide to establishing Module boundaries using Bounded Contexts, Spring Modulith, and Packwerk."
 slug: "ddd-module-boundaries-modular-monolith"
 tags: ["Domain-Driven Design", "DDD", "Modular Monolith", "Spring Modulith", "Packwerk", "Architecture"]

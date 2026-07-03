@@ -1,5 +1,6 @@
 ﻿---
 title: "Part 8: Case Study Matrix â€“ The Monuments of the Modular Monolith"
+lastmod: "2026-07-03T14:59:00+07:00"
 description: "A compilation of the greatest Modular Monolith case studies from Shopify, Stack Overflow, Notion, WhatsApp, Target, and Basecamp. How they scale to billions of views."
 slug: "case-study-matrix-modular-monolith-success-stories"
 tags: ["Case Study", "Modular Monolith", "Shopify", "Stack Overflow", "Notion", "WhatsApp"]

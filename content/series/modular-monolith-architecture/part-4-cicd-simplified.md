@@ -1,5 +1,6 @@
 ﻿---
 title: "Part 4: CI/CD Simplified & Atomic Deployments"
+lastmod: "2026-07-03T14:59:00+07:00"
 description: "Why is CI/CD management for Microservices so complex? Discover the power of Atomic Deployments and how Shopify runs hundreds of thousands of tests in under 10 minutes on a Monolith."
 slug: "cicd-simplified-atomic-deployments-monolith"
 tags: ["CI/CD", "Deployments", "Shopify", "Buildkite", "Modular Monolith", "Testing"]
