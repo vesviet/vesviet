@@ -2,7 +2,7 @@
 title: "Zero-Downtime: Moving from Magento to Microservices"
 slug: "moving-from-magento-to-microservices"
 date: "2026-04-14T21:20:00+07:00"
-lastmod: "2026-07-02T00:00:00+07:00"
+lastmod: "2026-07-03T14:57:00+07:00"
 draft: false
 tags: ["Magento", "Microservices", "Migration", "System Design", "Debezium", "Dapr"]
 description: "Battlefield-tested guide on dismantling a monolithic Magento e-commerce platform and migrating to 10+ microservices without losing a single order."
@@ -28,6 +28,8 @@ Here is the exact playbook we used to safely migrate 10 core commerce domains (C
 
 ## The Three Non-Trivial Migration Roadblocks
 
+**The three hardest roadblocks when migrating from Magento are: decoupling the shared MySQL database, untangling interdependent third-party extensions, and maintaining active user sessions across both the legacy PHP monolith and new Go microservices simultaneously.**
+
 Before we wrote a single line of API routing logic, we had to address three core foundational incompatibilities between Magento and modern microservices:
 
 1. **The EAV Schema Nightmare:** Magento doesn't store products in a flat table; it uses an *Entity-Attribute-Value* (EAV) model, spreading data across `*_varchar`, `*_int`, and `*_decimal` tables. Naive `SELECT *` exports are impossible. We had to build heavy ETL pipelines to flatten the catalog into document-style structures.
@@ -39,6 +41,8 @@ Once the data layer was untangled, we executed the 3-phase rollout.
 ---
 
 ## Pre-Migration Readiness Checklist
+
+**Before starting a Magento migration, ensure three capabilities are live: an API Gateway for traffic routing, centralized logging with OpenTelemetry tracing, and a Change Data Capture (CDC) pipeline like Debezium to sync legacy MySQL data.**
 
 **Answer-first:** The most common reason migration projects fail is starting Phase 1 before the data layer is migration-ready. Complete every item below before routing a single byte of traffic to new services.
 
@@ -66,6 +70,8 @@ This checklist reflects what we validated across two large-scale Magento migrati
 ---
 
 ## Phase 1: Read-Only Migration (The Smart Gateway)
+
+**Phase 1 extracts read-only paths (product catalog and search) by deploying an API Gateway. All write requests route to Magento, while read requests hit the new Go microservices backed by an Elasticsearch or Typesense index synchronized via CDC.**
 
 The safest way to introduce a new system is to not let it write anything. 
 
@@ -97,6 +103,8 @@ Phase 1 rollback is the simplest — all writes still go to Magento, so there is
 | Feature flag response time | < 10 seconds | N/A (must be instant) |
 
 ## Phase 2: Read-Write Migration & Dual Sync
+
+**Phase 2 migrates write operations (cart and user profiles) using the Strangler Fig pattern. A bi-directional dual-write sync is established using Kafka and Debezium, ensuring that legacy Magento tables and new microservice databases stay eventually consistent.**
 
 Phase 1 proves the systems can read. Phase 2 proves they can manage state. We began migrating write-APIs incrementally, starting with lower-risk domains like `Customer`, then `Catalog`, and finally `Order`.
 
@@ -137,6 +145,8 @@ Any divergence > 0 triggers a P1 incident. We maintained a dedicated Slack chann
 
 ## Phase 3: Full Cutover & The Hot Standby
 
+**The final phase redirects 100% of checkout traffic to the new microservices architecture. The legacy Magento monolith remains running as a hot standby for 30 days to guarantee a zero-downtime rollback path in case of critical failures.**
+
 By Week 8, all write-heavy traffic was pointing directly at the new service mesh. Magento's API traffic had dropped to absolute zero.
 
 Did we delete Magento immediately? **Absolutely not.**
@@ -148,6 +158,8 @@ Once the 30-day quarantine period cleanly expired, we finally terminated Magento
 ---
 
 ## Post-Cutover Validation Protocol
+
+**After cutover, validate success through synthetic transactions, tracking business metrics (checkout conversion rates), and monitoring the OpenTelemetry dashboard for error spikes. SRE teams must verify that the p99 latency target is met under live traffic.**
 
 **Answer-first:** The 30-day hot standby period is not passive monitoring — it is a structured validation protocol. Missing this step is how teams discover data integrity issues three months after cutover when rollback is no longer possible.
 

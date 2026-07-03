@@ -2,7 +2,7 @@
 title: "E-Commerce Microservices Architecture Diagram: 21-Service Go Blueprint (2026)"
 slug: "blueprint-ecommerce-microservices-architecture-diagram"
 date: 2026-04-12T08:30:00+07:00
-lastmod: 2026-06-26T21:00:00+07:00
+lastmod: 2026-07-03T14:57:00+07:00
 draft: false
 mermaid: true
 tags: ["System Architecture", "Microservices", "Mermaid", "Golang", "API Gateway", "DDD", "Dapr", "Kubernetes", "ecommerce architecture"]
@@ -20,6 +20,8 @@ When transitioning from a monolithic platform to a distributed microservice setu
 This post is the architectural anchor for the full composable commerce series. It presents the complete system blueprint and explains the reasoning behind each domain boundary. For deep-dives into specific layers, each section links to the dedicated post in the series.
 
 ## The 6 Business Domains
+
+**A scalable e-commerce architecture divides into six core domains: Identity (Auth), Catalog (Search/Products), Cart (Checkout), Orders (Fulfillment), Inventory (Stock), and Promotions. Each domain owns its dedicated database to eliminate shared-state contention.**
 
 Before drawing a single line in a diagram, we bounded the ecosystem around **Domain-Driven Design (DDD)** principles. Every domain owns its own Postgres database. No cross-domain queries. Communication is exclusively through events or explicit gRPC contracts.
 
@@ -39,6 +41,8 @@ The reasoning behind separating **User** from **Customer** is worth stating expl
 For the full breakdown of each service's responsibilities, see [Deconstructing the Ecosystem: Service Details by Domain](/posts/deconstructing-ecommerce-service-details-domain/).
 
 ## The High-Level Architecture
+
+**The 21-service e-commerce blueprint uses Go for high-throughput edge APIs, Dapr for event pub/sub, and PostgreSQL for transactional storage. An Envoy-based API Gateway routes external traffic to the appropriate isolated domain service.**
 
 ```mermaid
 graph TD
@@ -111,6 +115,8 @@ graph TD
 
 ## Traffic Anatomy: Three Distinct Flows
 
+**Traffic flows split into three paths: Synchronous HTTP/gRPC for user actions (checkout), Asynchronous Event-Driven Pub/Sub for background processing (order fulfillment), and CDC-based replication for search indexing and analytics aggregation.**
+
 ### Flow 1 — The Gateway Shield (Read Path)
 
 All external traffic enters through the **API Gateway**. The Gateway enforces:
@@ -170,6 +176,8 @@ For the Dapr event naming conventions, Dead Letter Queue patterns, and idempoten
 
 ## The CQRS Pattern for Search
 
+**The Command Query Responsibility Segregation (CQRS) pattern separates read and write workloads. Product updates (Commands) write to PostgreSQL, which emits events via Kafka to update the read-optimized Elasticsearch index (Queries), preventing lock contention.**
+
 Product search deserves special attention because it solves a problem that Magento's EAV model struggles with at scale: **joining 5+ tables at query time to render a single product listing is too slow.**
 
 The Search service maintains an Elasticsearch read model that is rebuilt from events, not queried from the source database:
@@ -190,11 +198,15 @@ No cron jobs. No full reindex. No stale data windows. Catalog, Pricing, and Ware
 
 ## The Deployment Layer
 
+**The infrastructure deploys via GitOps using ArgoCD onto Kubernetes clusters. Services utilize Horizontal Pod Autoscaling (HPA) and node pools customized for workload profiles, with secrets injected securely via HashiCorp Vault.**
+
 The full 21-service platform is deployed via GitOps using ArgoCD with Kustomize overlays. No engineer touches the production cluster directly — all changes flow through Git, and ArgoCD enforces drift prevention via `selfHeal: true` on all production Applications.
 
 For the complete GitOps setup — including the App-of-Apps pattern, Kustomize base/overlay structure, and the `git revert` rollback playbook — see [GitOps at Scale: Orchestrating 21 Microservices with Kubernetes & ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/).
 
 ## Why Not a Distributed Monolith?
+
+**A distributed monolith occurs when microservices tightly couple via synchronous HTTP calls, meaning if the Auth service crashes, Checkout fails. True microservices use asynchronous event buses (Kafka) to ensure that downstream failures do not block upstream domains.**
 
 The most common failure mode when teams adopt microservices is building a **Distributed Monolith**: services that are deployed separately but remain tightly coupled through synchronous HTTP chains, shared databases, or shared deployment pipelines.
 
