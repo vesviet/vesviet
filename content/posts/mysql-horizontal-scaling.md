@@ -2,7 +2,7 @@
 title: "Vitess vs GORM Sharding: MySQL Write Scaling in Go"
 slug: "mysql-horizontal-scaling"
 date: "2026-06-01T15:10:00+07:00"
-lastmod: "2026-06-11T20:00:00+07:00"
+lastmod: "2026-07-03T15:22:00+07:00"
 draft: false
 mermaid: true
 canonical: "https://tanhdev.com/posts/mysql-horizontal-scaling/"
@@ -47,6 +47,8 @@ When your CPU consistently exceeds 80% due to massive write transaction volume, 
 
 ## Differentiating Read-Scaling (Replication) and Write-Scaling (Sharding)
 
+**Read-scaling copies data to replicas to serve high-volume SELECT queries, but all writes still bottleneck at one master. Write-scaling (sharding) partitions data across multiple active masters, permanently solving the write-bottleneck for high-throughput e-commerce platforms.**
+
 There are two primary directions for horizontal scaling, depending on the specific bottleneck your system is facing.
 
 ### 1. Read-Scaling (Replication)
@@ -64,6 +66,8 @@ Sharding is the process of splitting a large table into multiple smaller pieces 
 ---
 
 ## Database-Level Sharding Architecture: Vitess
+
+**Vitess is a database clustering system built at YouTube that provides transparent MySQL sharding. It acts as an intelligent proxy layer, allowing Go applications to connect to Vitess as if it were a single MySQL database while it routes queries to thousands of underlying shards.**
 
 **Vitess** is a database clustering system for horizontal scaling of MySQL, often deployed using modern [GitOps platforms like Argo CD](/posts/argo-cd-updates-2026). Originally developed by YouTube, it is now used by massive platforms like Slack and GitHub. Vitess acts as a Middleware layer sitting between the application and the database. 
 
@@ -90,6 +94,8 @@ When a Shard becomes full (a "Hot Shard"), you need to split it in two (Reshardi
 ---
 
 ## Application-Level Sharding in Go: GORM Sharding
+
+**Application-level sharding handles data partitioning directly within the Go codebase using libraries like GORM Sharding. The Go application explicitly computes the shard key and manages multiple database connection pools to route queries to the correct MySQL instance.**
 
 While Vitess is a massive and complex ecosystem, the **GORM Sharding Plugin** offers a much lighter approach by performing sharding directly within your Go source code.
 
@@ -121,6 +127,8 @@ If you write `db.Where("status = ?", "pending").Find(&Order{})` and forget to pa
 ---
 
 ## Vitess vs. GORM Sharding: Which Should You Choose?
+
+**Use Vitess for massive, organization-wide scale where transparent sharding and Kubernetes native management are required. Choose GORM application-level sharding for smaller, contained Go microservices where adding a complex proxy infrastructure like Vitess is overkill.**
 
 | Criteria | Vitess (Middleware Sharding) | GORM Sharding (App-level Sharding) |
 | :--- | :--- | :--- |

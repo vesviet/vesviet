@@ -2,7 +2,7 @@
 title: "Replace MySQL Sharding with TiDB: Distributed SQL Migration Guide"
 slug: "mysql-scaling-sharding-tidb-architecture"
 date: "2026-05-26T14:00:00+07:00"
-lastmod: "2026-06-10T14:00:00+07:00"
+lastmod: "2026-07-03T15:22:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -30,6 +30,8 @@ In this deep dive, we will explore the architectural progression of scaling MySQ
 ---
 
 ## The Limits of Traditional MySQL Scaling
+
+**Traditional MySQL scaling relies on vertical scaling (larger servers) and read replicas. This approach hits a hard limit when write-throughput exceeds a single server's disk I/O capacity or when a table exceeds 500GB, making schema changes operationally dangerous.**
 
 **Replacing MySQL sharding** means migrating from a setup where the application manually routes queries to multiple MySQL instances (based on a shard key like `user_id % 4`) to a single TiDB cluster that auto-partitions data internally using Raft Regions — and exposes one standard MySQL connection string to the application.
 
@@ -80,6 +82,8 @@ The database tracks which transactions modify non-overlapping rows (writesets) a
 
 ## MySQL Horizontal Scaling vs. Vertical Scaling
 
+**Vertical scaling upgrades a single MySQL server's CPU and RAM, providing quick relief but hitting hardware limits. Horizontal scaling distributes the database across multiple servers via sharding or a NewSQL engine, offering theoretically infinite scale at the cost of complex distributed transactions.**
+
 When vertical scaling (scaling up) reaches its limit, you must transition to horizontal scaling (scaling out).
 
 | Dimension | Vertical Scaling (Scale-Up) | Horizontal Scaling (Scale-Out) |
@@ -93,6 +97,8 @@ When vertical scaling (scaling up) reaches its limit, you must transition to hor
 ---
 
 ## The Pain Points of MySQL Sharding
+
+**MySQL sharding introduces severe architectural complexity. Developers must abandon cross-shard JOIN operations, implement distributed transaction coordinators (like Saga or 2PC), and build custom application logic to route queries to the correct physical database shard.**
 
 Database sharding is the process of partitioning a single database across multiple physical machines. It splits data horizontally based on a chosen **shard key** (e.g., partitioning users with `user_id % 4` across four database instances). 
 
@@ -150,6 +156,8 @@ While Vitess preserves your existing investment in MySQL storage engines (InnoDB
 ---
 
 ## Enter NewSQL: TiDB as a Sharding Alternative
+
+**TiDB acts as a drop-in MySQL replacement that scales horizontally without manual sharding. It processes distributed queries seamlessly, allowing e-commerce platforms to scale writes across dozens of nodes while maintaining standard SQL syntax and ACID transaction guarantees.**
 
 NewSQL databases represent a class of modern relational databases that provide the horizontal scalability of NoSQL systems while preserving ACID transaction guarantees and standard SQL syntax. **TiDB** (developed by PingCAP) is an open-source, distributed NewSQL database designed to serve as a drop-in replacement for scaled-out MySQL databases.
 

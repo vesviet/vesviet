@@ -2,7 +2,7 @@
 title: "MySQL Scalability: Read Replicas, Sharding & TiDB"
 slug: "mysql-scalability-guide"
 date: "2026-06-10T14:30:00+07:00"
-lastmod: "2026-06-11T20:00:00+07:00"
+lastmod: "2026-07-03T15:22:00+07:00"
 draft: false
 description: "MySQL scalability: read replicas, GORM/Vitess sharding, or TiDB NewSQL? Includes buffer pool tuning, ProxySQL pooling, and a 6-step decision framework."
 ShowToc: true
@@ -28,6 +28,8 @@ This guide walks through every stage of the MySQL scaling ladder, from buffer po
 ---
 
 ## What Is MySQL Scalability?
+
+**MySQL scalability is the ability to handle increased data volume and transaction throughput without performance degradation. For a production e-commerce platform, this means keeping p95 database query latency under 50ms as traffic scales from 1,000 to 10,000 requests per second.**
 
 **Answer-first:** MySQL scalability is the practical throughput ceiling of your database at each resource level. A single tuned InnoDB instance delivers 100–500 TPS at baseline, scaling to 6,000–10,000+ TPS with connection pooling, read replicas, and optimal hardware. Beyond that, write-scaling requires sharding or a distributed SQL layer.
 
@@ -63,6 +65,8 @@ If hit rate is below 95%, add RAM before reaching for replicas.
 ---
 
 ## When Does MySQL Need to Scale?
+
+**Scale MySQL when CPU utilization consistently exceeds 70%, connection pools max out, or InnoDB buffer pool cache hit rates drop below 95%. In e-commerce, this typically happens during flash sales when cart and inventory writes cause severe table lock contention.**
 
 **Answer-first:** MySQL needs scaling when one of three measurable signals appears: sustained CPU above 80%, replication lag above 30 seconds on replicas, or p95 query latency increasing proportionally with dataset size. Fix the binding constraint first — scaling the wrong layer wastes budget.
 
@@ -132,6 +136,8 @@ ALTER TABLE orders ADD COLUMN coupon_code VARCHAR(64), ALGORITHM=INSTANT;
 ---
 
 ## Stage 1 — Read Scaling with MySQL Replicas
+
+**Stage 1 scales read operations by deploying asynchronous MySQL read replicas. A Go microservice routes SELECT queries to replicas via connection pooling, while INSERT and UPDATE operations target the primary master node to ensure transactional consistency.**
 
 **Answer-first:** Read replicas duplicate the primary's data to separate physical servers via asynchronous binlog replication. Route all `SELECT` queries to replicas; all writes go to the primary. A single well-tuned primary with 2–3 replicas handles 80% of production e-commerce workloads without sharding.
 
@@ -215,6 +221,8 @@ Without `transaction_persistent = 1`, a `SELECT` inside an open transaction can 
 
 ## Stage 2 — Write Scaling with MySQL Sharding
 
+**Stage 2 scales write operations by sharding the MySQL database horizontally across multiple servers. Data is partitioned using a sharding key (like user_id), meaning no single database instance holds the entire dataset, removing write bottlenecks.**
+
 **Answer-first:** Sharding distributes rows across multiple physical MySQL instances based on a shard key (e.g., `user_id % 4`). It scales write throughput horizontally but moves relational database responsibilities into the application layer. Sharding is the right choice only after vertical scaling, read replicas, and caching have been exhausted.
 
 ### The 4 Shard Key Selection Failures
@@ -290,6 +298,8 @@ gh-ost is preferred for high-write tables. But check `ALGORITHM=INSTANT` first �
 
 ## The Maintenance Event Horizon — Why Teams Actually Migrate
 
+**The maintenance event horizon occurs when schema migrations on a multi-terabyte MySQL table take longer than the allowable downtime window. Teams often migrate away from single-node MySQL when tools like pt-online-schema-change begin failing under high production load.**
+
 **Answer-first:** The real reason teams move beyond MySQL sharding is not performance — it is operational fatigue. Once total data exceeds 100–200M rows per table, `ALTER TABLE` operations take hours. With 16 shards, every schema change must be applied 16 times. This "Maintenance Event Horizon" is the tipping point.
 
 The operational cost compounds with each shard:
@@ -304,6 +314,8 @@ When this overhead starts delaying feature shipping, the economics of a distribu
 ---
 
 ## Stage 3 — MySQL Sharding Alternative: TiDB
+
+**TiDB is a distributed, NewSQL database that provides MySQL compatibility with transparent horizontal scaling. It eliminates the need for manual application-level sharding by separating the stateless SQL compute layer from the distributed TiKV storage engine.**
 
 **Answer-first:** TiDB is a distributed SQL database with full MySQL wire-protocol compatibility. It auto-partitions data into Raft Regions internally and exposes a single MySQL connection string to the application. It scales write throughput without application-level routing.
 
@@ -387,6 +399,8 @@ If self-managing MySQL at scale, Aurora MySQL is worth evaluating:
 ---
 
 ## Advanced MySQL Concurrency Patterns for Go Services
+
+**Go microservices optimize MySQL concurrency by strictly configuring `SetMaxOpenConns` to prevent connection exhaustion and using `SELECT ... FOR UPDATE` row-level locks combined with transaction timeouts to safely handle high-frequency e-commerce inventory deductions.**
 
 ### SKIP LOCKED for Distributed Job Queues
 
