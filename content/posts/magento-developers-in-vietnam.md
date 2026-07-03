@@ -5,7 +5,7 @@ date: "2026-05-30T11:30:00+07:00"
 lastmod: "2026-07-03T00:00:00Z"
 draft: false
 tags: ["Magento", "Vietnam", "Hiring", "Engineering", "Architecture", "Team Building"]
-description: "5 technical interview questions that separate Magento architects from theme editors in Vietnam: Plugin vs Preference, Declarative Schema, reindex diagnostics, integration failure recovery, and platform boundary judgment."
+description: "How to vet Magento developers in Vietnam: 5 production-level interview questions covering Plugin/Preference, Schema, reindex, integrations, and boundaries."
 categories: ["Engineering", "Strategy"]
 ShowToc: true
 TocOpen: true
