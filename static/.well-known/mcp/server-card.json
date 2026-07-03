@@ -10,7 +10,8 @@
   "capabilities": {
     "tools": {},
     "resources": {
-      "subscribe": false
+      "subscribe": false,
+      "llms_txt": "https://tanhdev.com/llms.txt"
     },
     "prompts": {}
   },

@@ -149,51 +149,6 @@
 }
 </script>
 {{- end }}
-{{- if and .IsSection (eq .Section "series") }}
-<!-- Schema.org — FAQPage for series _index.md that have FAQ sections -->
-{{- $dummy2 := .Content -}}
-{{- $seriesFaqs := .Page.Store.Get "faqs" }}
-{{- if not $seriesFaqs }}
-  {{- $raw2 := .RawContent -}}
-  {{- $faqM := findRESubmatch `(?ms)^## FAQ\s*$(.*?)(?:^## |\z)` $raw2 1 -}}
-  {{- if gt (len $faqM) 0 -}}
-    {{- $faqSec := index $faqM 0 -}}
-    {{- $faqCon := index $faqSec 1 -}}
-    {{- $m := findRESubmatch `(?ms)^### ([^\n]+)\s*^([^#].*?)(?:^### |\z)` $faqCon -}}
-    {{- $pFaqs := slice -}}
-    {{- range $m -}}
-      {{- $q2 := trim (index . 1) " \n\r" -}}
-      {{- $a2 := trim (index . 2) " \n\r" -}}
-      {{- $a2 = replaceRE `\*\*|\*|__|` "" $a2 -}}
-      {{- $a2 = replaceRE `\[([^\]]+)\]\([^\)]+\)` "$1" $a2 -}}
-      {{- $a2 = replaceRE `\n+` " " $a2 -}}
-      {{- $pFaqs = $pFaqs | append (dict "question" $q2 "answer" $a2) -}}
-    {{- end -}}
-    {{- $seriesFaqs = $pFaqs -}}
-  {{- end -}}
-{{- end }}
-{{- if $seriesFaqs }}
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {{- range $i, $faq := $seriesFaqs }}
-    {{- if $i }},{{ end }}
-    {
-      "@type": "Question",
-      "name": {{ $faq.question | jsonify }},
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": {{ $faq.answer | jsonify }}
-      }
-    }
-    {{- end }}
-  ]
-}
-</script>
-{{- end }}
-{{- end }}
 {{- if and .IsPage .File (or (eq .File.ContentBaseName "about") (eq .File.ContentBaseName "hire")) }}
 <!-- Schema.org — ProfilePage for /about/ and /hire/ -->
 <script type="application/ld+json">

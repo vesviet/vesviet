@@ -24,7 +24,7 @@ apple_touch_icon = "/apple-touch-icon.png"
 [params]
   env = "production"
   images = ["/vesviet.png"]
-  description = "Senior Go & Microservices Engineer with 17+ years building high-traffic e-commerce platforms. Deep dives on distributed systems, GitOps, Kubernetes, and AI."
+  description = "Senior Go Backend Architect & Distributed Systems Engineer in Vietnam. 17+ years, 21-service microservices migration, 25M req/month. Technical blog + consulting."
   author = "Lê Tuấn Anh"
   defaultTheme = "auto"
   ShowReadingTime = true
