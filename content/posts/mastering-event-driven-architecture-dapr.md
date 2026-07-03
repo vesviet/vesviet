@@ -2,7 +2,7 @@
 title: "Mastering Event-Driven Architecture with Dapr Pub/Sub"
 slug: "mastering-event-driven-architecture-dapr"
 date: 2026-04-12T09:05:00+07:00
-lastmod: "2026-06-10T16:00:00+07:00"
+lastmod: "2026-07-03T00:00:00+07:00"
 draft: false
 mermaid: true
 tags: ["Event-Driven", "Dapr", "Golang", "Go", "Message Queue", "Architecture", "Microservices", "Kafka", "Saga"]
@@ -24,6 +24,8 @@ This post walks through how we implemented EDA in a production Go microservices 
 ---
 
 ## What Is Dapr and Why Use It for Go Microservices?
+
+**Dapr is NOT a message broker — it's a sidecar abstraction layer running as a separate process next to every service. Your Go code calls `dapr.PublishEvent(ctx, "pubsub", "orders", payload)` where `"pubsub"` is a component name in YAML — not hardcoded Kafka config. Swap from Redis (local dev) to Kafka (production) by changing one YAML field, zero Go code changes. The sidecar adds ~1ms localhost latency per hop.**
 
 Before writing a single `PublishEvent` call, you need to understand what Dapr actually is — because most tutorials misrepresent it.
 
@@ -63,6 +65,8 @@ The Dapr sidecar adds approximately **sub-millisecond to ~1ms latency per hop** 
 ---
 
 ## Setting Up Dapr Pub/Sub in Go
+
+**Four-step Dapr setup in Go: (1) define a `Component` YAML with `type: pubsub.kafka` and broker address; (2) publish with a single `client.PublishEvent(ctx, "pubsub", "checkout.order.created", event)` call; (3) subscribe by registering an HTTP route handler via `s.AddTopicEventHandler`; (4) for background workers without HTTP servers, use the v1.14 streaming subscription (`client.Subscribe`) with `msg.Success()` / `msg.Fail()` acks.**
 
 ### Step 1: Define the Pub/Sub Component
 
@@ -272,6 +276,8 @@ func RunStreamingConsumer(ctx context.Context) error {
 
 ## Surviving Failure: The Saga Pattern
 
+**Dapr choreography Saga: Checkout publishes `checkout.order.created` → Warehouse reserves stock and publishes `warehouse.inventory.reserved` → Payment charges and publishes result. On payment failure, a `payments.payment.failed` event triggers Warehouse to compensate (rollback stock). No central coordinator — each service knows its role. Use this pattern for 2–4 step Sagas; switch to Dapr Workflow Orchestration for 4+ steps with complex branching.**
+
 You can no longer execute a simple `BEGIN ... COMMIT` SQL block to save an order, reserve inventory, and capture a payment. If a customer checks out, we launch a **Saga**.
 
 ```mermaid
@@ -309,6 +315,8 @@ For complex sagas with many conditional branches, consider **Dapr Workflow** (or
 ---
 
 ## Designing Immortal Consumers (Idempotency & DLQs)
+
+**Every event payload must include a unique `EventID`. Before processing, check `alreadyProcessed(ctx, event.EventID)` — if true, acknowledge and skip (don't re-process). For poison messages, configure `deadLetterTopic: "dlq.checkout.order.created"` in `resiliency.yaml` with `maxRetries: 5` and exponential backoff — after 5 failures, the event routes to the DLQ instead of looping forever and blocking the partition.**
 
 The network is notoriously unreliable. Dapr guarantees *At-Least-Once* delivery, meaning your service **will** receive duplicate events occasionally during retry storms.
 
@@ -383,6 +391,8 @@ The DLQ pattern converts permanent failures from silent data loss into **observa
 ---
 
 ## Production Pitfalls to Avoid
+
+**Five pitfalls that only production reveals: (1) Double-write — crash between `db.Update` and `PublishEvent` creates a permanently stuck Saga; fix with the Transactional Outbox Pattern (write event to `outbox` table in the same DB transaction, CDC publishes it). (2) Schema evolution — renaming an event field silently breaks all consumers; use Protobuf or a Schema Registry. (3) Ordering — use `partitionKey: order.ID` so all events for the same order route to the same Kafka partition. (4) SIGTERM mid-message — finish current message before stopping. (5) Dapr + Istio double mTLS — disable one.**
 
 These are the failure modes that production experience reveals — and that tutorials skip.
 

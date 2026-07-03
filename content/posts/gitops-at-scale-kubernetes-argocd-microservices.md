@@ -2,7 +2,7 @@
 title: "GitOps at Scale: Kubernetes & ArgoCD for Microservices"
 slug: "gitops-at-scale-kubernetes-argocd-microservices"
 date: 2026-04-12T07:00:00+07:00
-lastmod: 2026-04-12T07:00:00+07:00
+lastmod: 2026-07-03T00:00:00+07:00
 draft: false
 mermaid: true
 tags: ["GitOps", "Kubernetes", "ArgoCD", "Kustomize", "DevOps", "Microservices"]
@@ -49,6 +49,8 @@ No human touches `kubectl`. No one needs cluster credentials in CI. The cluster 
 
 ## Repository Structure
 
+**Split your codebase into two repos: one for application code (Go services), one for Kubernetes manifests. The manifest repo contains `apps/<service>/base/` (shared YAML) and `apps/<service>/overlays/{dev,staging,prod}/` (environment patches). Every deploy is a Git commit with timestamp, author, and image tag — rolling back is a `git revert`, not a frantic `kubectl rollout undo`.**
+
 We use two separate repositories — a pattern known as **split-repo GitOps**:
 
 ```
@@ -78,6 +80,8 @@ manifest-repo/
 Keeping manifests in a separate repo from application code provides a clean audit trail: every deploy is a Git commit with a timestamp, author, and image tag. Rolling back is a `git revert`.
 
 ## The ArgoCD Application CRD
+
+**Each service gets an ArgoCD `Application` CRD pointing to its manifest path. The two critical production settings: `selfHeal: true` (ArgoCD reverts any manual `kubectl` change within 3 minutes, enforcing Git as the only source of truth) and `prune: true` (resources deleted from Git are deleted from the cluster automatically on next sync).**
 
 Every service gets an `Application` CRD that tells ArgoCD exactly which path in the manifest repo to watch, and where to deploy it:
 
@@ -129,7 +133,9 @@ spec:
 
 ## Taming YAML Chaos with Kustomize
 
-Managing manifests for 21 services across 3 environments (`dev`, `staging`, `prod`) produces 60+ YAML files. Copy-pasting creates configuration drift. Kustomize solves this with a base + overlay model.
+**Kustomize base + overlay model: define environment-agnostic YAML once in `base/` (deployment, service, probes), then patch only the deltas in `overlays/{dev,staging,prod}/` — image tag, replica count, resource limits, secrets. The overlay never duplicates the base; it only declares what changes. 21 services × 3 environments = 63 overlays with zero configuration drift.**
+
+Managing manifests for 21 services across 3 environments produces 60+ YAML files. Kustomize solves this with a base + overlay model.
 
 ### Base Manifest (Environment-Agnostic)
 
@@ -256,6 +262,8 @@ The `dev` overlay uses `newTag: "latest"`, `replicas: 1`, lower resource limits,
 
 ## The App-of-Apps Root
 
+**The App-of-Apps pattern: one root ArgoCD `Application` watches the `argocd/` directory and manages all other `Application` objects. Adding a new microservice requires only one step — merge a new `Application` YAML into `argocd/` — and ArgoCD provisions it automatically with zero manual intervention or cluster access.**
+
 For 21 services, creating ArgoCD `Application` objects one-by-one is impractical. We use the **App-of-Apps pattern**: a single root `Application` that manages all other `Application` objects:
 
 ```yaml
@@ -288,9 +296,9 @@ When a new microservice is added to the platform, the process is:
 
 ## The Rollback Story: `git revert` is Enough
 
-Before GitOps, rolling back a broken deployment meant frantically digging through CI logs to find an old Docker tag, then running manual `kubectl rollout undo` commands while customers hit 500 errors.
+**With ArgoCD, production rollback is 4 steps: `git log` to find the bad commit, `git revert <hash>`, `git push`, then wait 3 minutes for ArgoCD to auto-sync. No `kubectl` required, no cluster credentials, no frantic image tag hunting. For high-traffic services like Checkout and Payment, Argo Rollouts adds Prometheus-based canary health gates that abort and auto-rollback if p99 latency or error rate exceeds thresholds.**
 
-With ArgoCD, disaster recovery is a four-step process:
+Before GitOps, rolling back a broken deployment meant frantically digging through CI logs. With ArgoCD, disaster recovery is a four-step process:
 
 ```bash
 # 1. Identify the bad commit
@@ -312,6 +320,7 @@ For critical services (Checkout, Payment), we additionally use **Argo Rollouts**
 
 ## Summary: The Principles That Make This Work
 
+**Five principles that make GitOps production-grade: (1) `selfHeal: true` — Git wins over every manual change; (2) Kustomize overlays — no YAML duplication across environments; (3) rollback = `git revert` — auditable, cluster-credential-free; (4) App-of-Apps — new services self-register from a single directory; (5) no human needs `kubectl` access or cluster credentials in CI.**
 | Principle | Implementation |
 | :--- | :--- |
 | **Git is the only source of truth** | `selfHeal: true` on all prod Applications |
