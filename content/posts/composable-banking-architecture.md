@@ -1,8 +1,12 @@
 ---
 title: "Composable Banking Architecture: From Monolith to Modular Core"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Composable Banking Architecture"
 slug: "composable-banking-architecture"
-date: "2026-06-10T14:55:00+07:00"
-lastmod: "2026-06-10T14:55:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-06-10T14:55:00+07:00
+lastmod: 2026-06-10T14:55:00+07:00
 draft: false
 mermaid: true
 categories:

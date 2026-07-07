@@ -1,8 +1,12 @@
 ---
 title: "Go pprof in Kubernetes: CPU & Memory Profiling"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Golang Pprof Profiling Memory Cpu Tutorial"
 slug: "golang-pprof-profiling-memory-cpu-tutorial"
-date: "2026-06-02T08:00:00+07:00"
-lastmod: "2026-07-03T00:00:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-06-02T08:00:00+07:00
+lastmod: 2026-07-03T00:00:00+07:00
 draft: false
 description: "Profile Go services in Kubernetes without restarting pods: kubectl port-forward, heap vs alloc_space, and cpu flame graphs."
 ShowToc: true

@@ -1,8 +1,12 @@
 ---
 title: "Surge Pricing Algorithm & Spatial Indexing Architecture"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Surge Pricing Optimization Architecture"
 slug: "surge-pricing-optimization-architecture"
-date: "2026-06-01T15:20:00+07:00"
-lastmod: "2026-06-10T16:00:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-06-01T15:20:00+07:00
+lastmod: 2026-06-10T16:00:00+07:00
 draft: false
 mermaid: true
 categories:

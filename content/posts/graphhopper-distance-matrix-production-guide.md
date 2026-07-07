@@ -1,10 +1,14 @@
 ---
 title: "GraphHopper Distance Matrix: Self-Host & Replace Google Maps API ($510/day → $0)"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Graphhopper Distance Matrix Production Guide"
 slug: "graphhopper-distance-matrix-production-guide"
-date: "2026-06-11T20:00:00+07:00"
-lastmod: "2026-06-26T21:00:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-06-11T20:00:00+07:00
+lastmod: 2026-06-26T21:00:00+07:00
 draft: false
-description: "Run GraphHopper distance matrix in production: Docker self-hosting, /matrix API, Custom Models for trucks, H3 Redis caching, and honest benchmarks vs OSRM and Google Maps — tested at 10,000 pairs in <50ms."
+description: "Run GraphHopper distance matrix in production: Docker self-hosting, /matrix API, custom truck models, and H3 Redis caching."
 categories:
   - "Architecture"
   - "Engineering"

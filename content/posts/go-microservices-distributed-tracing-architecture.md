@@ -1,11 +1,15 @@
 ---
 title: "Go Microservices Distributed Tracing Architecture (2026)"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Go Microservices Distributed Tracing Architecture"
 slug: "go-microservices-distributed-tracing-architecture"
+author: "Lê Tuấn Anh"
 aliases:
   - /posts/opentelemetry-golang-distributed-tracing-microservices/
   - /posts/circuit-breaker-retry-golang-resilience/
-date: "2026-06-08T14:30:00+07:00"
-lastmod: "2026-07-03T00:00:00+07:00"
+date: 2026-06-08T14:30:00+07:00
+lastmod: 2026-07-03T00:00:00+07:00
 draft: false
 description: "Master Go microservices distributed tracing. Learn W3C context propagation, OpenTelemetry Collector configurations, and tail-based sampling for 2026."
 ShowToc: true
@@ -22,6 +26,8 @@ tags:
   - "Microservices"
 mermaid: true
 ---
+
+> **Answer-first:** Solve observability blind spots across distributed Go microservices by implementing an OpenTelemetry pipeline. Propagate W3C trace context across HTTP/gRPC boundaries and Kafka streams, batch metrics at the local agent level, and use tail-based sampling at the collector gateway to filter noise before ingestion.
 
 Monitoring complex Go microservices requires more than isolated logs. When a request traverses HTTP APIs, Kafka event streams, and asynchronous worker pools, you need absolute visibility to pinpoint latency bottlenecks and failures.
 

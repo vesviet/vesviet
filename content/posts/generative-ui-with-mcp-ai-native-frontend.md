@@ -1,8 +1,12 @@
 ---
 title: "Generative UI with MCP: Architecting AI-Native Frontends"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Generative Ui With Mcp Ai Native Frontend"
 slug: "generative-ui-with-mcp-ai-native-frontend"
-date: "2026-06-01T10:00:00+07:00"
-lastmod: "2026-06-01T10:00:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-06-01T10:00:00+07:00
+lastmod: 2026-06-01T10:00:00+07:00
 draft: false
 mermaid: true
 categories:

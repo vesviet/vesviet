@@ -1,8 +1,12 @@
 ---
 title: "MySQL Scalability: Read Replicas, Sharding & TiDB"
+cover:
+  image: "/images/posts/mysql-scalability-cover.png"
+  alt: "Mysql Scalability Guide"
 slug: "mysql-scalability-guide"
-date: "2026-06-10T14:30:00+07:00"
-lastmod: "2026-07-03T15:22:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-06-10T14:30:00+07:00
+lastmod: 2026-07-03T15:22:00+07:00
 draft: false
 description: "MySQL scalability: read replicas, GORM/Vitess sharding, or TiDB NewSQL? Includes buffer pool tuning, ProxySQL pooling, and a 6-step decision framework."
 ShowToc: true

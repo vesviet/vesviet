@@ -1,8 +1,12 @@
 ---
 title: "Kubernetes In-Place Pod Resizing: Scale CPU & Memory Without Restart"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Kubernetes In Place Pod Resizing Guide"
 slug: "kubernetes-in-place-pod-resizing-guide"
-date: "2026-06-12T14:00:00+07:00"
-lastmod: "2026-06-12T14:00:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-06-12T14:00:00+07:00
+lastmod: 2026-06-12T14:00:00+07:00
 draft: false
 description: "Kubernetes In-Place Pod Resizing GA in v1.35: modify CPU/memory on running containers without restart. YAML examples, VPA integration, and cost optimization."
 ShowToc: true

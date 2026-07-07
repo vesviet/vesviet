@@ -1,8 +1,12 @@
 ---
 title: "Shopee Flash Sale Architecture: Rate Limiting & Redis"
+cover:
+  image: "/images/posts/shopee-flash-sale-cover.png"
+  alt: "Shopee Flash Sale Architecture"
 slug: "shopee-flash-sale-architecture"
-date: "2026-06-01T10:00:00+07:00"
-lastmod: "2026-06-10T16:00:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-06-01T10:00:00+07:00
+lastmod: 2026-06-10T16:00:00+07:00
 draft: false
 mermaid: true
 categories:

@@ -1,6 +1,7 @@
 ---
 title: "Migrating Magento to Microservices: When & Why"
 slug: "why-migrate-magento-to-microservices"
+author: "Lê Tuấn Anh"
 date: 2026-04-14T22:00:00+07:00
 lastmod: 2026-07-03T14:57:00+07:00
 draft: false

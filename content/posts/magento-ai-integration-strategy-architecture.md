@@ -1,8 +1,12 @@
 ---
 title: "Magento AI Integration: Modernize Without Rebuilding"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Magento Ai Integration Strategy Architecture"
 slug: "magento-ai-integration-strategy-architecture"
-date: "2026-05-24T09:18:00+07:00"
-lastmod: "2026-06-10T16:00:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-05-24T09:18:00+07:00
+lastmod: 2026-06-10T16:00:00+07:00
 draft: false
 tags: ["Magento", "AI", "E-commerce", "Architecture", "Strategy", "Microservices"]
 description: "A CTO's guide to Magento AI integration: avoid database locks, leverage vector search and agentic commerce, and calculate TCO without replatforming."

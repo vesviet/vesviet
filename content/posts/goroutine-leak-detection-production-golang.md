@@ -1,8 +1,9 @@
 ---
 title: "Goroutine Leak Detection and Fix in Production Go Services"
 slug: "goroutine-leak-detection-production-golang"
-date: "2026-05-26T20:30:00+07:00"
-lastmod: "2026-07-03T00:00:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-05-26T20:30:00+07:00
+lastmod: 2026-07-03T00:00:00+07:00
 draft: false
 mermaid: true
 categories:
@@ -27,7 +28,7 @@ cover:
 ---
 
 
-**Answer-first:** Learn how to detect, diagnose, and fix goroutine leaks in production Go microservices using pprof, goleak, and the new Go 1.26 goroutineleak profile.
+> **Answer-first:** Goroutine leaks block indefinitely and hold GC roots, leading to slow, silent memory exhaustion and pod restarts. Pinpoint leaks by comparing pprof profile snapshots (specifically `goroutineleak` in Go 1.26), write deterministic tests with Go 1.24’s `synctest`, and set automated telemetry alerts on active goroutine counts.
 
 A Kubernetes pod abruptly restarts with exit code 137. The memory metrics dashboard shows a slow, perfectly linear staircase pattern stretching over three days. There are no panic logs in stdout, no database errors, and no abnormal CPU spikes. Just a slow, silent OOM (Out Of Memory) death.
 

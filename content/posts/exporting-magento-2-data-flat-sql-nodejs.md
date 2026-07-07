@@ -1,8 +1,12 @@
 ---
 title: "Exporting Magento 2 Data: Flatten EAV with SQL & Node"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Exporting Magento 2 Data Flat Sql Nodejs"
 slug: "exporting-magento-2-data-flat-sql-nodejs"
-date: "2024-03-09T03:38:22+00:00"
-lastmod: "2026-07-03T15:22:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2024-03-09T03:38:22+00:00
+lastmod: 2026-07-03T15:22:00+07:00
 draft: false
 tags: ["Magento", "SQL", "Node.js", "Data Migration", "EAV", "ETL"]
 description: "Production-grade guide to extracting data from Magento 2's EAV model. Includes direct SQL queries and a resilient Node.js streaming pipeline."

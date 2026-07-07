@@ -1,11 +1,15 @@
 ---
 title: "Vitess vs GORM Sharding: MySQL Write Scaling in Go"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Mysql Horizontal Scaling"
 slug: "mysql-horizontal-scaling"
-date: "2026-06-01T15:10:00+07:00"
-lastmod: "2026-07-03T15:22:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-06-01T15:10:00+07:00
+lastmod: 2026-07-03T15:22:00+07:00
 draft: false
 mermaid: true
-canonical: "https://tanhdev.com/posts/mysql-horizontal-scaling/"
+canonicalURL: "https://tanhdev.com/posts/mysql-horizontal-scaling/"
 categories:
   - "Database"
   - "Architecture"

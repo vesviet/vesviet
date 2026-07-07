@@ -1,8 +1,12 @@
 ---
 title: "Autonomous Hybrid-AI Pipeline: Cron to State-Machine"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Architecting An Autonomous Hybrid Ai Content Pipeline"
 slug: "architecting-an-autonomous-hybrid-ai-content-pipeline"
-date: "2026-05-18T09:00:00+07:00"
-lastmod: "2026-05-18T09:00:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-05-18T09:00:00+07:00
+lastmod: 2026-05-18T09:00:00+07:00
 draft: false
 mermaid: true
 categories:
@@ -22,6 +26,8 @@ description: "Replacing a $3.50/day cron job with a $0.05/day autonomous AI pipe
 ShowToc: true
 TocOpen: true
 ---
+
+> **Answer-first:** Transition from fragile, expensive cron jobs to a resilient, state-based Finite State Machine (FSM) for autonomous content pipelines. Dramatically reduce LLM API fees by employing a tiered hybrid routing strategy—using local models for routing and frontier models only for editing—and implement Wake-on-LAN to control GPU server utility costs.
 
 It's easy to write a cron job that pings an API, hands a URL to OpenAI, and publishes a markdown file. It's significantly harder to orchestrate a distributed swarm of AI agents that can read deeply from diverse sources, deduplicate state across time, evaluate article quality through a multi-layer gate, safely publish via GitOps, and optimize its own power footprint—all without human intervention.
 

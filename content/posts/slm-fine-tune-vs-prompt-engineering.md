@@ -1,8 +1,12 @@
 ---
 title: "Prompt Engineering vs Fine-Tuning: When to Use Each (GPT-5 Era Decision Guide)"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Slm Fine Tune Vs Prompt Engineering"
 slug: "slm-fine-tune-vs-prompt-engineering"
-date: "2026-06-01T10:00:00+07:00"
-lastmod: "2026-06-26T21:00:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-06-01T10:00:00+07:00
+lastmod: 2026-06-26T21:00:00+07:00
 draft: false
 mermaid: true
 categories:
@@ -18,13 +22,13 @@ tags:
   - "RAG"
   - "SLM"
   - "vLLM"
-description: "Prompt engineering vs fine-tuning vs RAG: a clear 2026 decision framework. Fine-tune (LoRA/QLoRA) when you need style/format control. Prompt-engineer when iteration speed matters. RAG when facts change. With cost benchmarks."
+description: "Prompt engineering vs fine-tuning vs RAG: a clear 2026 decision framework for style, cost, and latency trade-offs."
 ShowToc: true
 TocOpen: true
 ---
 
 
-**Answer-first:** A clear decision framework for AI engineers: when to fine-tune (LoRA/QLoRA), when to prompt-engineer, and when RAG is the right answer instead.
+> **Answer-first:** Choose prompt engineering for rapid prototyping and general domains. Deploy RAG when your application requires real-time retrieval from a frequently updated knowledge base. Commit to QLoRA fine-tuning only when you need strict output formatting, persistent style compliance under adversarial input, or significant prompt token compression.
 
 Three engineers on the same team are trying to build the same thing: a customer support assistant that answers questions in the company's specific support style, using terminology from their product documentation. One engineer says "just write a better system prompt." Another says "we need to fine-tune a model." The third says "this is clearly a RAG problem."
 
@@ -171,6 +175,8 @@ For most production fine-tuning tasks (format compliance, style alignment, domai
 | **Format adherence** | Fragile under edge cases | Not applicable | Robust |
 | **Style consistency** | Fragile under adversarial input | Not applicable | Robust |
 | **Maintenance burden** | Low (prompt edits) | Medium (embedding pipeline ops) | Medium (re-fine-tune on model updates) |
+
+For concrete data on cost tipping points and latency tradeoffs, read our [Production Cost & Latency Benchmarks](/posts/prompt-engineering-vs-fine-tuning-benchmark/).
 
 **The maintenance trap in fine-tuning**: When the base model provider releases a new version (GPT-4o Turbo, Llama 3.2, Mistral Nemo), your fine-tuned adapters are trained on the old model's weights. They cannot be directly transferred to the new model — you must re-run the fine-tuning job. For teams using commercial APIs, this creates a coupling between your production behavior and the provider's update schedule.
 

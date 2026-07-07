@@ -1,8 +1,12 @@
 ---
 title: "Replace MySQL Sharding with TiDB: Distributed SQL Migration Guide"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Mysql Scaling Sharding Tidb Architecture"
 slug: "mysql-scaling-sharding-tidb-architecture"
-date: "2026-05-26T14:00:00+07:00"
-lastmod: "2026-07-03T15:22:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-05-26T14:00:00+07:00
+lastmod: 2026-07-03T15:22:00+07:00
 draft: false
 mermaid: true
 categories:

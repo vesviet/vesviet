@@ -1,5 +1,8 @@
 ---
 title: "Production Agentic AI Swarm: OpenClaw & LiteLLM"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Deploying Autonomous Ai Swarm Openclaw Litellm"
 slug: "deploying-autonomous-ai-swarm-openclaw-litellm"
 date: 2026-05-17T21:45:00+07:00
 lastmod: 2026-07-03T15:22:00+07:00
@@ -14,7 +17,7 @@ TocOpen: true
 ---
 
 
-**Answer-first:** Deploy a resilient, production-ready AI swarm using OpenClaw, LiteLLM, and Docker. Covers routing, security, and zero-downtime agent orchestration.
+> **Answer-first:** Orchestrate a resilient, 24/7 autonomous AI swarm by decoupling agent execution from LLM providers using LiteLLM as an API gateway. Handle rate limits via key-pooling and automatic fallbacks, manage agent tasks with OpenClaw, and isolate container permissions using Docker `cap_drop` to mitigate SSRF and prompt injection risks.
 
 The era of simple, conversational AI chatbots is over. In 2026, the industry has aggressively shifted toward **Agentic AI**—autonomous systems capable of planning, executing, and iterating on multi-step workflows without constant human supervision. (For a deeper dive into these Agentic System Architecture principles, see our [Agentic System Architecture](/series/agentic-system-architecture/) masterclass).
 

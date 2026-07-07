@@ -1,8 +1,12 @@
 ---
 title: "Go 1.26: Green Tea GC, Faster CGO & Goroutine Leak Detection"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Go 126 Green Tea Gc Cgo Performance Guide"
 slug: "go-126-green-tea-gc-cgo-performance-guide"
-date: "2026-06-12T10:00:00+07:00"
-lastmod: "2026-07-03T00:00:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-06-12T10:00:00+07:00
+lastmod: 2026-07-03T00:00:00+07:00
 draft: false
 description: "Go 1.26: Green Tea GC cuts overhead 10–40%, ~30% faster cgo for AI inference, and experimental goroutine leak detection — complete migration guide."
 ShowToc: true

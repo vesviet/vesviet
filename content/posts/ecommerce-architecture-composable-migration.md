@@ -1,11 +1,29 @@
 ---
 title: "Ecommerce Architecture 2026: Overcoming Tech Debt in Composable Commerce Migration"
 slug: ecommerce-architecture-composable-migration
-author: "Technical Architect Team"
-date: "2026-07-06"
+author: "Lê Tuấn Anh"
+date: 2026-07-06T10:00:00+07:00
+lastmod: 2026-07-06T10:00:00+07:00
+draft: false
+categories:
+  - "Architecture"
+  - "E-Commerce"
+  - "Engineering"
+tags:
+  - "Monolith"
+  - "Microservices"
+  - "Eventual Consistency"
+  - "CDC"
+  - "Kafka"
+description: "Overcome tech debt and data consistency issues in composable commerce migration. Learn redis-based BFF locking, Debezium CDC, and OpenTelemetry tracing."
+ShowToc: true
+TocOpen: true
+cover:
+  image: "/images/posts/ecommerce-architecture-composable-migration-cover.png"
+  alt: "Ecommerce Composable Commerce Migration Architecture — tanhdev.com"
 ---
 
-# Ecommerce Architecture 2026: Overcoming Tech Debt in Composable Commerce Migration
+> **Answer-first:** Monolith decoupling succeeds only when solving eventual consistency and distributed tracing overhead early. Mitigate inventory overselling via Redis-based BFF locking, stream database sync in real-time via Debezium CDC and Kafka, and build distributed tracing via OpenTelemetry from day one to avoid system blindness.
 
 In theory, MACH (Microservices, API-first, Cloud-native, Headless) and Composable Commerce are the "holy grail" of the ecommerce industry. However, when systems scale to process millions of transactions, issues regarding data consistency and Observability costs truly surface. This article outlines the hard-learned lessons from our Chief Architects when migrating a monolithic system to a Composable architecture.
 

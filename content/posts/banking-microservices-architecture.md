@@ -1,8 +1,11 @@
 ---
 title: "Banking Microservices Architecture: Go, Saga & Event Sourcing"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Banking Microservices Architecture"
 slug: "banking-microservices-architecture"
-date: "2026-06-01T15:15:00+07:00"
-lastmod: "2026-06-27T07:00:00+07:00"
+date: 2026-06-01T15:15:00+07:00
+lastmod: 2026-06-27T07:00:00+07:00
 draft: false
 mermaid: true
 categories:

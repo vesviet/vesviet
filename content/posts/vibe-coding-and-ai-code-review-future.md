@@ -1,8 +1,12 @@
 ---
 title: "What is Vibe Coding? Why AI Code Review is the Future"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Vibe Coding And Ai Code Review Future"
 slug: "vibe-coding-and-ai-code-review-future"
-date: "2026-05-31T18:30:00+07:00"
-lastmod: "2026-06-10T16:00:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-05-31T18:30:00+07:00
+lastmod: 2026-06-10T16:00:00+07:00
 draft: false
 categories:
   - "AI Engineering"

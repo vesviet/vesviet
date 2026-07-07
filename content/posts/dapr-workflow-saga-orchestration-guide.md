@@ -1,8 +1,12 @@
 ---
 title: "Dapr Workflow Go Tutorial: Orchestrated Saga Pattern"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Dapr Workflow Saga Orchestration Guide"
 slug: "dapr-workflow-saga-orchestration-guide"
-date: "2026-06-01T10:00:00+07:00"
-lastmod: "2026-07-03T00:00:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-06-01T10:00:00+07:00
+lastmod: 2026-07-03T00:00:00+07:00
 draft: false
 mermaid: true
 categories:

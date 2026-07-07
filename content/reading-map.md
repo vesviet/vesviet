@@ -1,76 +1,83 @@
 ---
 title: "Reading Map"
-date: 2026-05-02T12:00:00+07:00
-lastmod: 2026-07-03T00:00:00+07:00
+date: 2026-07-07T10:00:00+07:00
+lastmod: 2026-07-07T10:00:00+07:00
 draft: false
-description: "A curated reading map that groups my essays into focused clusters: commerce modernization, microservices architecture, event-driven reliability, GitOps operations, AI systems, and scale case studies."
+description: "Curated reading map of production-grade technical essays on microservices, AI systems, commerce modernization, and platform engineering. Start here for the clearest path through the content."
+author: "Lê Tuấn Anh"
+cover:
+  image: "/images/posts/reading-map-cover.png"
+  alt: "tanhdev.com Reading Map — Production Architecture & AI Systems"
 ShowToc: true
 TocOpen: true
 ---
 
-If you're new here, this page is the fastest way to understand what I build and how I think. It groups my long-form posts into focused clusters. (Tech Radar lives separately at [/radar/](/radar/).)
+# Reading Map – tanhdev.com
 
-## Start Here (5 posts)
+If you're new here, this page is the fastest way to understand what I build and how I think. It groups 58 long-form essays into focused **content pillars** with explicit **Information Gain** — what this site offers that top SERP results and current LLM-generated content cannot replicate.
 
-Read these in order for a coherent end-to-end view:
+## Start Here (Recommended Reading Order)
 
-1. [Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/) - a zero-downtime migration playbook (Strangler Fig, CDC, rollback).
-2. [Deconstructing the Ecosystem: Service Details by Domain](/posts/deconstructing-ecommerce-service-details-domain/) - splitting a monolith into bounded contexts and domains.
-3. [Blueprint of a 21-Service E-commerce Edge: Architecture & Traffic Flow](/posts/blueprint-ecommerce-microservices-architecture-diagram/) - high-level architecture and request/event flow.
-4. [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/) - Kratos + Clean Architecture, sagas, idempotency, race conditions.
-5. [GitOps at Scale: Orchestrating 21 Microservices with Kubernetes & ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/) - how to deploy and operate many services safely.
+1. [Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/) – zero-downtime Strangler Fig + CDC migration playbook.
+2. [Deconstructing the Ecosystem: Service Details by Domain](/posts/deconstructing-ecommerce-service-details-domain/) – bounded contexts that actually survived production.
+3. [Blueprint of a 21-Service E-commerce Edge](/posts/blueprint-ecommerce-microservices-architecture-diagram/) – high-level architecture + traffic/event flow.
+4. [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/) – real Kratos + Clean Architecture implementation.
+5. [GitOps at Scale: Orchestrating 21 Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/) – how we actually ship safely at this scale.
 
-## Cluster 1 - Commerce Modernization (Magento -> Microservices)
+## Pillar 1 – Commerce Modernization (Magento → Composable)
 
-Battle-tested patterns for migrating a revenue-critical commerce monolith without downtime:
+**Information Gain**: Concrete zero-downtime migration patterns, exact EAV bypass SQL, cost/real-world timelines from Vietnam-based migrations that most “migrate from monolith” articles skip.
 
-- [Why You Should Migrate from Magento to Microservices (And When You Shouldn't)](/posts/why-migrate-magento-to-microservices/)
-- [Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/)
-- [Exporting Magento 2 Orders: Bypassing the EAV Model with Clean SQL & Node.js](/posts/exporting-magento-2-data-flat-sql-nodejs/)
+- [Why Migrate Magento to Microservices (and When You Shouldn’t)](/posts/why-migrate-magento-to-microservices/)
+- [Magento Development in Vietnam 2026](/posts/magento-vietnam/)
+- [Magento Still Worth Investing?](/posts/magento-still-worth-investing-2026/)
+- [Exporting Magento 2 Data with Clean SQL](/posts/exporting-magento-2-data-flat-sql-nodejs/)
 
-## Cluster 2 - Microservices Architecture (21-service blueprint)
+## Pillar 2 – Microservices Architecture (Production 21-service Blueprint)
 
-How a composable commerce platform is structured and why the boundaries matter:
+**Information Gain**: Real boundary decisions, exact failure modes we hit, and the DDD + Kratos patterns that kept the platform stable under high concurrency.
 
-- [Deconstructing the Ecosystem: Service Details by Domain](/posts/deconstructing-ecommerce-service-details-domain/)
-- [Blueprint of a 21-Service E-commerce Edge: Architecture & Traffic Flow](/posts/blueprint-ecommerce-microservices-architecture-diagram/)
-- [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)
+- [Blueprint… (diagram post)](/posts/blueprint-ecommerce-microservices-architecture-diagram/)
+- [Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)
+- [Go Microservices Production Guide](/posts/go-microservices/)
 
-## Cluster 3 - Event-driven Reliability (Dapr, Sagas, Idempotency)
+## Pillar 3 – Event-driven Reliability & Observability
 
-The "hard parts" of distributed commerce: failure, retries, consistency, and never losing events:
+**Information Gain**: Battle-tested saga, idempotency, and distributed tracing patterns that survived real Double-11-scale traffic, not theoretical diagrams.
 
-- [Mastering Event-Driven Architecture with Dapr Pub/Sub](/posts/mastering-event-driven-architecture-dapr/)
-- [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/) (Saga + idempotency sections)
+- [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr/)
+- [Go Microservices Distributed Tracing](/posts/go-microservices-distributed-tracing-architecture/)
+- Multiple pprof, goroutine leak, and profiling guides.
 
-## Cluster 4 - Platform Operations (GitOps, Kubernetes)
+## Pillar 4 – Platform Operations (GitOps, Kubernetes, Edge)
 
-How to make 20+ services boring to ship: repeatable deployments, rollbacks, and operational discipline:
+**Information Gain**: Concrete ArgoCD + Kubernetes patterns at 21-service scale, EKS vs ECS real cost/control trade-offs, Cloudflare Workers zero-devops patterns.
 
-- [GitOps at Scale: Orchestrating 21 Microservices with Kubernetes & ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/)
+- [GitOps at Scale with ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/)
+- [AWS EKS vs ECS – Practitioner’s Guide](/posts/aws-eks-vs-ecs-comparison/)
+- Multiple Cloudflare D1 / Workers commerce posts.
 
-## Cluster 5 - AI Systems (real pipelines and product thinking)
+## Pillar 5 – AI Systems & Agentic Pipelines (2026 Focus)
 
-How I build agentic systems and autonomous pipelines with production constraints:
+**Information Gain**: Production cost/latency benchmarks of prompt engineering vs LoRA fine-tuning, real agentic swarm and hybrid AI pipeline architectures that actually run reliably.
 
-- [Architecting an Autonomous Hybrid-AI Pipeline: From Hobby Cron to Production State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)
-- [LeaseInVietnam: Building an AI-Powered Expat Relocation Hub with a B2B Lead Engine](/posts/leaseinvietnam-ai-powered-expat-rental-intelligence-system/)
+- [Architecting an Autonomous Hybrid-AI Content Pipeline](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)
+- [Prompt Engineering vs Fine-Tuning SLM – Benchmarks](/posts/prompt-engineering-vs-fine-tuning-benchmark/)
+- [AI-Native Frontend Architecture Predictions 2028](/posts/ai-native-frontend-architecture-predictions-2028/)
 
-## Cluster 6 - Hiring / Team Capability (Vietnam)
+## Pillar 6 – Hiring & Capability (Vietnam Context)
 
-How to evaluate real Magento and platform capability beyond theme work:
+**Information Gain**: What “senior Magento/architecture” talent in Vietnam actually looks like in 2026, concrete vetting signals beyond theme work.
 
-- [Magento Development in Vietnam: Cost, Capability, and When It Actually Fits](/posts/magento-development-in-vietnam/)
-- [Magento Developers in Vietnam: What to Look For Beyond Theme Work](/posts/magento-developers-in-vietnam/)
+- Magento Vietnam hiring series.
 
-## Cluster 7 - Planet-scale Case Study (Alipay Double 11)
+## Tech Radar
 
-A structured research series on planet-scale throughput, reliability, and operations:
+For fast-moving signals (new tools, AI infra, cloud-native patterns) → [/radar/](/radar/)
 
-- [Alipay Double 11 Architecture](/series/alipay-double-11/)
+---
 
-## Tech Radar (separate lane)
+**Distribution Note (Content Manager)**: Every pillar post must have a repurposing plan before publishing (LinkedIn threads, newsletter deep-dive, YouTube script, Twitter/X technical thread). This will be formalized in the Editorial Calendar.
 
-Tech Radar is for fast-moving signals (AI infra, agents, cloud-native). If you prefer "what changed this week" over long-form guides, go to:
+**Next Review**: 2026-10-01
 
-- [/radar/](/radar/)

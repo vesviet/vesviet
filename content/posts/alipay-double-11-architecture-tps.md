@@ -1,8 +1,12 @@
 ---
 title: "Alipay Double 11: 583,000 TPS Architecture Explained"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Alipay Double 11 Architecture Tps"
 slug: "alipay-double-11-architecture-tps"
-date: "2026-06-01T10:00:00+07:00"
-lastmod: "2026-06-10T16:00:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-06-01T10:00:00+07:00
+lastmod: 2026-06-10T16:00:00+07:00
 draft: false
 mermaid: true
 categories:

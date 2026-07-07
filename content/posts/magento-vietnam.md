@@ -1,8 +1,8 @@
 ---
 title: "Magento Development in Vietnam: 2026 Guide — Cost, Hiring & Upgrade"
 slug: "magento-vietnam"
-date: 2026-06-12T00:00:00Z
-lastmod: 2026-07-03T00:00:00Z
+date: 2026-06-12T00:00:00+07:00
+lastmod: 2026-07-03T00:00:00+07:00
 draft: false
 summary: "Vietnam's Magento talent pool runs deep — but finding engineers who can handle production architecture is harder. Cost tiers, vetting signals, hiring models, and when to migrate."
 description: "Vietnam Magento 2026: cost tiers ($15–$80/hr), agency/freelance/ODC models, vetting signals, 2.4.9 upgrade readiness, and migration triggers."

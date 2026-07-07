@@ -1,8 +1,12 @@
 ---
 title: "GraphHopper vs CARTO: Order Fulfillment Routing Engine"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Graphhopper Distance Matrix Routing"
 slug: "graphhopper-distance-matrix-routing"
-date: "2026-06-01T15:05:00+07:00"
-lastmod: "2026-06-10T16:00:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-06-01T15:05:00+07:00
+lastmod: 2026-06-10T16:00:00+07:00
 draft: false
 mermaid: true
 categories:

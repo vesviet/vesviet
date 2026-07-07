@@ -1,8 +1,12 @@
 ---
 title: "Golang gRPC Microservices: Protobuf, TLS & Middleware"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Golang Grpc Microservices Production Guide"
 slug: "golang-grpc-microservices-production-guide"
-date: "2026-06-11T21:00:00+07:00"
-lastmod: "2026-07-03T00:00:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-06-11T21:00:00+07:00
+lastmod: 2026-07-03T00:00:00+07:00
 draft: false
 description: "Production guide to Golang gRPC microservices: Protobuf service design, mTLS, interceptor middleware, graceful shutdown, health checks, and Docker deployment."
 categories:
@@ -22,7 +26,7 @@ TocOpen: true
 
 ## Why gRPC for Go Microservices?
 
-**Answer-first:** gRPC is the right choice for Go microservices when you need: binary-efficient serialization (Protobuf is 3–10× smaller than JSON), bidirectional streaming for real-time data, strongly-typed contracts across services, and sub-millisecond inter-service latency. Google, Uber, Netflix, and Square use gRPC as the primary inter-service communication protocol. This guide shows you how to build production-grade Go gRPC services from scratch.
+> **Answer-first:** Optimize inter-service communication in Go microservices using gRPC and Protobuf, delivering 3-10× smaller payloads and sub-millisecond latencies compared to REST. Secure communication channels with mutual TLS (mTLS), handle cross-cutting concerns using custom interceptor middleware, and implement native gRPC health checking for container readiness probes.
 
 The key advantages over REST:
 

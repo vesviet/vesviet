@@ -1,6 +1,10 @@
 ---
 title: "Microfinance Core Banking System: Architecture & Engineering Guide"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Deconstructing Microfinance Core Banking Architecture"
 slug: "deconstructing-microfinance-core-banking-architecture"
+author: "Lê Tuấn Anh"
 date: 2026-05-27T10:00:00+07:00
 lastmod: 2026-06-10T15:13:00+07:00
 draft: false

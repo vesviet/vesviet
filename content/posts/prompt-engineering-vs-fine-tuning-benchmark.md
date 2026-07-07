@@ -1,11 +1,30 @@
 ---
 title: "Prompt Engineering vs Fine-Tuning SLM: Production Cost & Latency Benchmarks"
 slug: prompt-engineering-vs-fine-tuning-benchmark
-author: "AI/ML Engineering Team"
-date: "2026-07-06"
+author: "Lê Tuấn Anh"
+date: 2026-07-06T10:00:00+07:00
+lastmod: 2026-07-06T10:00:00+07:00
+draft: false
+categories:
+  - "AI"
+  - "Engineering"
+  - "Machine Learning"
+tags:
+  - "LLM"
+  - "Fine-Tuning"
+  - "LoRA"
+  - "Prompt Engineering"
+  - "SLM"
+  - "Cost Optimization"
+description: "Prompt engineering vs fine-tuning SLM in production: cost, latency, and TTFT benchmarks. When to transition from cloud APIs to local fine-tuned models."
+ShowToc: true
+TocOpen: true
+cover:
+  image: "/images/posts/prompt-engineering-vs-fine-tuning-cover.png"
+  alt: "Prompt Engineering vs Fine-Tuning SLM cost and latency benchmarks — tanhdev.com"
 ---
 
-# Prompt Engineering vs Fine-Tuning SLM: Production Cost & Latency Benchmarks
+> **Answer-first:** Transition from prompt engineering to fine-tuned Small Language Models (SLMs) when daily request volume exceeds 50,000 requests or prompts exceed 8,000 tokens. Fine-tuning with LoRA converts high variable API costs into fixed host compute costs while reducing Time-to-First-Token (TTFT) below 250ms and ensuring structure compliance.
 
 When moving LLMs/SLMs into a production environment, the debate between Prompt Engineering and Fine-Tuning is not just about intelligence—it is a critical battle over **Cost** and **Latency**. Based on real-world data from our AI Engineering team, this article identifies the tipping point when you must transition from Prompt Engineering to Fine-Tuning.
 

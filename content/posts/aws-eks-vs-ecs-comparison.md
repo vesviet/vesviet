@@ -1,12 +1,13 @@
 ---
 title: "AWS EKS vs ECS: Architecture, Cost & Real-World Use Cases (2026)"
 slug: "aws-eks-vs-ecs-comparison"
+author: "Lê Tuấn Anh"
 date: 2026-06-26T21:00:00+07:00
 lastmod: 2026-07-03T15:41:55+07:00
 draft: false
 mermaid: true
 tags: ["AWS", "EKS", "ECS", "Kubernetes", "Container Orchestration", "DevOps", "Go", "Microservices", "Fargate"]
-description: "A practitioner's guide to EKS vs ECS: control plane costs, Fargate trade-offs, EKS Auto Mode, and when to choose — from a Go architect who ran both in production."
+description: "A practitioner's guide to EKS vs ECS: control plane costs, Fargate trade-offs, EKS Auto Mode, and when to choose each."
 categories: ["DevOps", "Engineering", "AWS"]
 ShowToc: true
 TocOpen: true
@@ -15,7 +16,7 @@ cover:
   alt: "AWS EKS vs ECS architecture comparison — tanhdev.com"
 ---
 
-**TL;DR:** EKS gives you full Kubernetes power with portability and the CNCF ecosystem. ECS gives you AWS-native simplicity with zero control plane cost. Choose EKS if you need GitOps, ArgoCD, Dapr, or multi-cloud portability. Choose ECS if you want faster setup, lower ops overhead, and a pure AWS-native stack.
+> **Answer-first:** Choose AWS EKS for Kubernetes-native GitOps (ArgoCD, Dapr) and cloud-portable architectures. Choose ECS for zero-cost control planes, rapid deployment, and pure AWS-native simplicity. Go stateless containers on Graviton Spot to cut compute costs by 35%, and use Network Load Balancers for high-performance internal gRPC routing.
 
 I've run both in production. At Vigo Retail, I architected a 21-service Go microservices platform on EKS handling **8,000 RPS peak and 25M+ requests/month**. I've also managed ECS clusters for smaller AWS-native projects. This guide is what I wish existed before I made those decisions.
 

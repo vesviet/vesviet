@@ -1,8 +1,12 @@
 ---
 title: "AI-Native Frontend in 2028: 10 Architecture Predictions"
+cover:
+  image: "/images/posts/generative-ui-with-mcp-ai-native-frontend.png"
+  alt: "Ai Native Frontend Architecture Predictions 2028"
 slug: "ai-native-frontend-architecture-predictions-2028"
-date: "2026-05-16T21:00:00+07:00"
-lastmod: "2026-05-16T21:00:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-05-16T21:00:00+07:00
+lastmod: 2026-05-16T21:00:00+07:00
 draft: false
 tags: ["AI Frontend", "Generative UI", "Astro", "MCP", "Prediction", "Architecture", "WebSockets", "Zod"]
 description: "10 honest predictions for AI-Native Frontend Architecture by 2028: Component Registries, MCP contracts, streaming transports, and career impacts."
@@ -157,7 +161,7 @@ function handleAgentPayload(payload: unknown) {
 }
 ```
 
-Without runtime schema validation at the Component Registry boundary, every Generative UI system is a potential XSS surface. By 2026, `.safeParse()` at the Registry is the industry standard. By 2028, security audits flag its absence the same way they flag missing CSRF tokens today.
+Without runtime schema validation at the Component Registry boundary, every Generative UI system is a potential XSS surface. By 2026, `.safeParse()` at the Registry is the industry standard. By 2028, security audits flag its absence the same way they flag missing CSRF tokens today. To secure these Agent-to-UI boundaries, organizations must pair schema validation with robust machine-to-machine identity, as discussed in [OAuth 2.1 & Prompt Versioning for Production AI Agents](/posts/production-ai-apis-oauth-versioning-meta-predictions/).
 
 **The counterargument:** Validation at the Backend — before the payload reaches the Frontend — is architecturally more sound. Frontend validation is defense-in-depth. Teams with strong Backend contracts and a trusted internal Agent might reasonably defer Frontend validation. But "trusted internal Agent" is a strong assumption that breaks the moment you integrate a third-party LLM provider.
 
@@ -197,7 +201,7 @@ flowchart LR
     S --> C
 ```
 
-Vector similarity at the Edge (Cloudflare Workers + Vectorize) enables Cache HITs for semantically equivalent prompts. For high-volume consumer products (FAQs, product recommendations, support flows), **40-70% of LLM calls are semantically redundant** based on query clustering analysis from a production support chatbot migration. Semantic Edge Caching eliminates those calls at < 50ms latency vs. 1-3 seconds for a full LLM round-trip.
+Vector similarity at the Edge (Cloudflare Workers + Vectorize) enables Cache HITs for semantically equivalent prompts. For high-volume consumer products (FAQs, product recommendations, support flows), **40-70% of LLM calls are semantically redundant** based on query clustering analysis from a production support chatbot migration. Semantic Edge Caching eliminates those calls at < 50ms latency vs. 1-3 seconds for a full LLM round-trip. For more concrete measurements on how input size and request volume affect performance, see our [Production Cost & Latency Benchmarks](/posts/prompt-engineering-vs-fine-tuning-benchmark/).
 
 **The counterargument:** Semantic similarity is probabilistic. A cache HIT on a query that scores 0.94 similarity (not 1.00) might return a subtly wrong answer for a slightly different intent. In high-stakes contexts (medical, legal, financial), the similarity threshold must be tuned very conservatively — potentially eroding the cost savings to 20-30% rather than 60-80%.
 

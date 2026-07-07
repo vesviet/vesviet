@@ -1,6 +1,10 @@
 ---
 title: "Deconstructing the Ecosystem: Service Details by Domain"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Deconstructing Ecommerce Service Details Domain"
 slug: "deconstructing-ecommerce-service-details-domain"
+author: "Lê Tuấn Anh"
 date: 2026-04-12T08:00:00+07:00
 lastmod: 2026-04-12T08:00:00+07:00
 draft: false

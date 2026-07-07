@@ -1,8 +1,12 @@
 ---
 title: "PayPay Architecture: Scaling Payments to 70M Users"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Paypay Architecture Scaling"
 slug: "paypay-architecture-scaling"
-date: "2026-06-01T10:00:00+07:00"
-lastmod: "2026-06-01T10:00:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-06-01T10:00:00+07:00
+lastmod: 2026-06-01T10:00:00+07:00
 draft: false
 mermaid: true
 categories:

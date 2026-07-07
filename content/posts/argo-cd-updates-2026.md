@@ -1,8 +1,12 @@
 ---
 title: "What's New in Argo CD 3.4 & 3.3: Cluster Pause & Upgrades"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Argo Cd Updates 2026"
 slug: "argo-cd-updates-2026"
-date: "2026-06-01T15:00:00+07:00"
-lastmod: "2026-06-10T14:00:00+07:00"
+author: "Lê Tuấn Anh"
+date: 2026-06-01T15:00:00+07:00
+lastmod: 2026-06-10T14:00:00+07:00
 draft: false
 mermaid: true
 categories:
