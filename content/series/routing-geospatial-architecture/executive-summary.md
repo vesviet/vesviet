@@ -1,4 +1,4 @@
----
+﻿---
 title: "Executive Summary: Geospatial & Routing Architecture"
 description: "A high-level architectural overview of a scalable Routing Engine and Distance Matrix API using Golang, Graphhopper, Redis, and Uber H3."
 date: 2026-06-14T22:35:00+07:00
@@ -7,6 +7,10 @@ draft: false
 weight: 1
 tags: ["architecture", "golang", "graphhopper", "system-design"]
 series: ["Routing & Geospatial Architecture"]
+cover:
+  image: "/images/posts/graphhopper-cover.png"
+  alt: "Geospatial and Routing Engine Architecture series: Go and GraphHopper for production routing"
+  relative: false
 ---
 
 ## The Engineering Challenge

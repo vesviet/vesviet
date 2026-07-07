@@ -1,4 +1,4 @@
----
+﻿---
 title: "Active RAG & Strict Tool Calling With Real-time APIs"
 date: 2026-05-22T22:35:00+07:00
 lastmod: 2026-05-22T22:35:00+07:00
@@ -12,6 +12,10 @@ description: "Orchestrate AI Agents using Eino (CloudWeGo) to connect LLMs with 
 categories: ["Engineering"]
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/agentic-ecommerce-search-cover.png"
+  alt: "Agentic E-commerce Search Engine Architecture series: vector databases, ranking, and Go"
+  relative: false
 ---
 
 In [Part 3: Qdrant Hybrid Search - Solving Semantic and Hard Filters](/series/agentic-ecommerce-search/part-3-qdrant-hybrid-search/), we successfully built a powerful Hybrid search engine combining Dense Semantic and Sparse Lexical Search. However, a practical e-commerce search system goes far beyond merely retrieving static documents from a vector database.

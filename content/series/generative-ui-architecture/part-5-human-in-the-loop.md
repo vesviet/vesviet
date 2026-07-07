@@ -1,4 +1,4 @@
----
+﻿---
 title: "GenUI Human-In-The-Loop: Optimistic UI & Fallback (Part 5)"
 date: 2026-05-16T12:20:00+07:00
 lastmod: 2026-05-16T12:20:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 5
 categories: ["Series", "Generative UI", "Frontend Architecture"]
 tags: ["Generative UI", "Human-in-the-loop", "Optimistic UI", "AI Frontend", "Latency", "Fallback UI"]
+cover:
+  image: "/images/posts/generative-ui-mcp-cover.png"
+  alt: "Generative UI and AI-Native Frontend Architecture series: MCP, LLM-driven UIs, and roadmap"
+  relative: false
 ---
 
 Unlike traditional software (where feedback happens in tens of milliseconds), AI systems always come with a haunting ghost: **Latency**. 

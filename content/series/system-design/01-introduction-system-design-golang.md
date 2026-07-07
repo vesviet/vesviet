@@ -1,4 +1,4 @@
----
+﻿---
 title: "Go System Design: CAP, PACELC & Clean Architecture Primer"
 slug: "01-introduction-system-design-golang"
 date: "2026-06-18T09:00:00+07:00"
@@ -12,6 +12,10 @@ ShowToc: true
 TocOpen: true
 series: ["system-design"]
 mermaid: true
+cover:
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
+  relative: false
 ---
 
 > **Prerequisite:** This is Part 1 of the [System Design Masterclass](/series/system-design/) series. Familiarity with basic distributed systems concepts and Go syntax is assumed.

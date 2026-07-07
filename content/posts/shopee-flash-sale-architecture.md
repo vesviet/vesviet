@@ -1,4 +1,4 @@
----
+﻿---
 title: "Shopee Flash Sale Architecture: Rate Limiting & Redis"
 slug: "shopee-flash-sale-architecture"
 date: "2026-06-01T10:00:00+07:00"
@@ -20,6 +20,10 @@ tags:
 description: "How Shopee engineers prevent crashes during 11.11 flash sales: rate limiting, Redis inventory locks, traffic shields, and microservices resilience."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/shopee-flash-sale-cover.png"
+  alt: "Shopee Flash Sale Architecture: rate limiting, Redis token bucket, and distributed queue design"
+  relative: false
 ---
 
 

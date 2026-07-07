@@ -1,4 +1,4 @@
----
+﻿---
 title: "Modern Tech Comparison"
 date: 2026-05-02T18:10:00+07:00
 lastmod: 2026-05-02T18:10:00+07:00
@@ -6,6 +6,10 @@ draft: false
 description: "Mapping Alipay Double 11 architectural concepts to modern cloud-native technologies: Kubernetes multi-cluster, distributed databases, Kafka/Pulsar, gRPC, and service mesh."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/alipay-double11-cover.png"
+  alt: "Alipay Double 11 Architecture series: 583,000 TPS payment processing at extreme scale"
+  relative: false
 ---
 [← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/phase-4-deep-dive/) • [Next →](/series/alipay-double-11/phase-5-synthesis/)

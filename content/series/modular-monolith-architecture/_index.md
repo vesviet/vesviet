@@ -1,4 +1,4 @@
----
+﻿---
 title: "Masterclass: Modular Monolith Architecture & Microservices Reversal"
 description: "Why are 42% of enterprises abandoning Microservices to return to the Modular Monolith? Learn how to optimize millions of dollars in cloud costs."
 date: 2026-06-09T10:00:00+07:00
@@ -8,6 +8,10 @@ weight: 150
 slug: "modular-monolith-architecture"
 categories: ["Series", "Software Engineering", "Backend Architecture"]
 tags: ["Modular Monolith", "Microservices", "System Design"]
+cover:
+  image: "/images/posts/golang-microservices-cover.png"
+  alt: "Modular Monolith Architecture Masterclass and Microservices Reversal — Go, DDD, and bounded contexts"
+  relative: false
 ---
 
 # Masterclass: Modular Monolith Architecture & Microservices Reversal

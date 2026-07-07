@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 3: Identity & AuthN For Agentic Workflows"
 date: 2026-05-15T14:00:00+07:00
 lastmod: 2026-05-15T14:00:00+07:00
@@ -14,6 +14,10 @@ tags:
 description: "Solving the problem of AI Agent identity. Deep dive into the OAuth 2.1 + PKCE standard, CIMD, and integrating Workload Identity (SPIFFE/SPIRE) for the MCP Server."
 aliases:
   - /series/mcp-engineering-in-production/part-3-identity/
+cover:
+  image: "/images/posts/generative-ui-mcp-cover.png"
+  alt: "MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment"
+  relative: false
 ---
 
 If Part 2 helped you build a robust Server, Part 3 addresses the most headache-inducing question in Security: **"How does the MCP Server know WHICH Agent is calling it, and does that Agent have the PERMISSION to do so?"**

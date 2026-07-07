@@ -1,4 +1,4 @@
----
+﻿---
 title: "Database Sharding in Go — TiDB, PostgreSQL & Connection Pools"
 slug: "04-database-scaling-sharding"
 date: "2026-06-18T10:30:00+07:00"
@@ -12,6 +12,10 @@ ShowToc: true
 TocOpen: true
 series: ["system-design"]
 mermaid: true
+cover:
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
+  relative: false
 ---
 
 > **Prerequisite:** Part 4 of the [System Design Masterclass](/series/system-design/). Read [Part 3: Caching Strategies](/series/system-design/03-caching-strategies-redis-golang/) to understand the cache layer before examining storage.

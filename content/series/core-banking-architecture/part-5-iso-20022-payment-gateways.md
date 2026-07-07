@@ -1,4 +1,4 @@
----
+﻿---
 title: "ISO 20022 pacs.008: Parse, Idempotency & Gateway Latency"
 date: 2026-06-18T11:40:00+07:00
 lastmod: 2026-07-03T15:41:55+07:00
@@ -9,6 +9,10 @@ series: ["core-banking-architecture"]
 keywords: ["ISO 20022 XML parsing performance", "pacs.008 message size vs JSON", "API gateway translation latency", "webhook idempotency fintech"]
 author: "Tuan Anh"
 schema: ["Article", "TechArticle", "FAQPage"]
+cover:
+  image: "/images/posts/banking-microservices-cover.png"
+  alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
+  relative: false
 ---
 
 > **Series (Part 5 of 8):** After designing Saga patterns in [Part 4](/series/core-banking-architecture/part-4-saga-pattern/), this article dives into the international integration layer — where the Core Banking system communicates with the external financial world via the ISO 20022 standard.

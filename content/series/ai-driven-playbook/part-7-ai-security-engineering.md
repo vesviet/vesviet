@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 7 — AI Security Engineering: Ironclad Armor for New Attack Surfaces"
 date: 2026-05-20T08:00:00+07:00
 lastmod: 2026-05-20T08:00:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 9
 categories: ["Series", "Enterprise Playbook"]
 tags: ["AI", "Enterprise Architecture", "CTO", "Tech Lead"]
+cover:
+  image: "/images/posts/hybrid-ai-pipeline-cover.png"
+  alt: "AI-Driven Engineer Enterprise Playbook series: workflows, autonomous pipelines, and tooling"
+  relative: false
 ---
 
 For years, Security Engineers have fought against deterministic vulnerabilities like SQL Injection, XSS, or buffer overflows. The rise of Generative AI has opened an entirely **new Attack Surface** of a probabilistic nature.

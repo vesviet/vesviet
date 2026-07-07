@@ -1,4 +1,4 @@
----
+﻿---
 title: "AI Code Review Pipeline: Zero-Trust, Multi-Agent & Mutation Testing"
 date: 2026-05-31T18:00:00+07:00
 lastmod: 2026-05-31T18:00:00+07:00
@@ -21,6 +21,10 @@ tags:
 description: "Build an AI code review pipeline: Generator-Critic architecture, P0/P1/P2 quality gates, 40-60 rule for human vs automated review, and mutation testing in CI."
 aliases:
   - /series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent/
+cover:
+  image: "/images/posts/vibe-coding-cover.png"
+  alt: "Vibe Coding and AI Code Review series: from prototype to production AI-assisted engineering"
+  relative: false
 ---
 
 > **Series Orientation:** This article is Part 4 of the **AI Code Review & Vibe Coding** series, focusing on building an automated multi-agent quality gate pipeline. For the bug taxonomy that informs these gates, see [Part 3 — AI Code Bug Taxonomy](/series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy/).

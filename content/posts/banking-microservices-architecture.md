@@ -1,4 +1,4 @@
----
+﻿---
 title: "Banking Microservices Architecture: Go, Saga & Event Sourcing"
 slug: "banking-microservices-architecture"
 date: "2026-06-01T15:15:00+07:00"
@@ -21,6 +21,10 @@ description: "Build a resilient banking microservices architecture in Go. Produc
 ShowToc: true
 TocOpen: true
 author: "Lê Tuấn Anh"
+cover:
+  image: "/images/posts/banking-microservices-cover.png"
+  alt: "Banking Microservices Architecture with Go: Saga pattern, event sourcing, and distributed ledger"
+  relative: false
 ---
 
 ## 1. Introduction: Deconstructing the Legacy Core

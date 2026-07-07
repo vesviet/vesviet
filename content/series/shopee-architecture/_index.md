@@ -1,4 +1,4 @@
----
+﻿---
 title: "Shopee Architecture: Scaling for Flash Sales"
 date: 2026-05-05T08:00:00+07:00
 lastmod: 2026-05-05T08:00:00+07:00
@@ -7,6 +7,10 @@ weight: 140
 description: "A structured series on how Shopee evolved its architecture to handle extreme high concurrency during 11.11 and Flash Sales."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/shopee-flash-sale-cover.png"
+  alt: "Shopee Architecture series: scaling for flash sales — rate limiting, Redis, and distributed systems"
+  relative: false
 ---
 
 This series explores the core architectural patterns and technologies Shopee uses to handle millions of concurrent users, specifically focusing on extreme traffic spikes during Flash Sales and mega-campaigns like 11.11.

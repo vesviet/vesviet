@@ -1,4 +1,4 @@
----
+﻿---
 title: "GPS Ingestion at Scale: gRPC Streaming, MQTT & Kalman Filter"
 slug: "part-1-location-ingestion"
 date: 2026-05-06T20:00:00+07:00
@@ -6,6 +6,10 @@ lastmod: 2026-06-11T20:00:00+07:00
 draft: false
 description: "How Uber and Grab ingest 1.25M GPS/s from 5M drivers: gRPC streaming vs MQTT, Kalman Filter noise reduction, GPS batching, and Kafka pipeline."
 weight: 2
+cover:
+  image: "/images/posts/real-time-ride-hailing-cover.png"
+  alt: "Real-Time Ride-Hailing Architecture series: Uber and Grab — matching, GPS, WebSocket at scale"
+  relative: false
 ---
 
 ## The Challenge: Millions of Drivers, Every 4 Seconds

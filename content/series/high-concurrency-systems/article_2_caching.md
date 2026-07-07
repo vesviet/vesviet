@@ -1,4 +1,4 @@
----
+﻿---
 title: "Chapter 2: The 3 Caching Vulnerabilities (Penetration, Breakdown, Avalanche) & Go Singleflight"
 date: 2026-06-09T10:05:00+07:00
 lastmod: 2026-06-09T10:05:00+07:00
@@ -11,6 +11,10 @@ slug: "caching-vulnerabilities-penetration-breakdown-avalanche"
 description: "Learn how to defend against Cache Penetration, Avalanche, and Breakdown using Bloom Filters, TTL jittering, and Golang singleflight."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/realtime-inventory-cover.png"
+  alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
+  relative: false
 ---
 [← Previous](/series/high-concurrency-systems/how-systems-handle-c10m/) | [Series hub](/series/high-concurrency-systems/) | [Next →](/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/)
 

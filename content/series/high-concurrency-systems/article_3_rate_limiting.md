@@ -1,4 +1,4 @@
----
+﻿---
 title: "Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm"
 date: 2026-06-09T10:10:00+07:00
 lastmod: 2026-06-09T10:10:00+07:00
@@ -11,6 +11,10 @@ slug: "distributed-rate-limiting-redis-gcra"
 description: "Discover why local rate limiters fail in Microservices and how Redis Lua scripts powering the GCRA algorithm solve distributed throttling."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/realtime-inventory-cover.png"
+  alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
+  relative: false
 ---
 [← Previous](/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/) | [Series hub](/series/high-concurrency-systems/) | [Next →](/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/)
 

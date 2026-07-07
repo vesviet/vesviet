@@ -1,4 +1,4 @@
----
+﻿---
 title: "Component Registry & MCP to Frontend — GenUI Architecture (P3)"
 date: 2026-05-16T12:10:00+07:00
 lastmod: 2026-05-16T12:10:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 3
 categories: ["Series", "Generative UI", "Frontend Architecture"]
 tags: ["Generative UI", "Component Registry", "MCP Frontend", "Astro", "Svelte", "AI Frontend"]
+cover:
+  image: "/images/posts/generative-ui-mcp-cover.png"
+  alt: "Generative UI and AI-Native Frontend Architecture series: MCP, LLM-driven UIs, and roadmap"
+  relative: false
 ---
 
 In the previous part, we understood that a Framework-Agnostic Frontend (like Astro) doesn't receive HTML code from AI, but JSON data. But how does the Frontend know it needs to render that JSON block into a `<Card>`, a `<Chart>`, or a `<Form>`? 

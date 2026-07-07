@@ -1,4 +1,4 @@
----
+﻿---
 title: "QA & SDET Handbook: Testing Distributed Core Banking"
 date: 2026-06-18T12:10:00+07:00
 lastmod: 2026-07-03T15:41:55+07:00
@@ -9,6 +9,10 @@ series: ["core-banking-architecture"]
 keywords: ["core banking testing strategy", "distributed systems SDET", "split-brain simulation testing", "clock skew injection libfaketime", "fintech QA testing"]
 author: "Tuan Anh"
 schema: ["Article", "TechArticle", "HowTo", "FAQPage"]
+cover:
+  image: "/images/posts/banking-microservices-cover.png"
+  alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
+  relative: false
 ---
 
 > **Series (Part 8 of 8):** This concluding article compiles a comprehensive testing strategy specifically tailored for each layer of the Core Banking Architecture covered in previous parts — from ledger consistency to distributed SQL, Sagas, ISO 20022, API Security, and Streaming Fraud Detection.

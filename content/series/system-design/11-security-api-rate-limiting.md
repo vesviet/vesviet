@@ -1,4 +1,4 @@
----
+﻿---
 title: "Go API Rate Limiting: Token Bucket & Redis Lua"
 slug: "11-security-api-rate-limiting"
 date: "2026-06-18T14:00:00+07:00"
@@ -12,6 +12,10 @@ ShowToc: true
 TocOpen: true
 series: ["system-design"]
 mermaid: true
+cover:
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
+  relative: false
 ---
 
 > **Prerequisite:** This is Part 11 of the [System Design Masterclass](/series/system-design/). Previous parts built the core components — this part covers securing APIs and managing client traffic spikes at scale.

@@ -1,8 +1,12 @@
----
+﻿---
 title: "Ecommerce Architecture 2026: Overcoming Tech Debt in Composable Commerce Migration"
 slug: ecommerce-architecture-composable-migration
 author: "Technical Architect Team"
 date: "2026-07-06"
+cover:
+  image: "/images/posts/ecommerce-composable-cover.png"
+  alt: "E-commerce composable architecture migration: from Magento monolith to MACH modular services"
+  relative: false
 ---
 
 # Ecommerce Architecture 2026: Overcoming Tech Debt in Composable Commerce Migration

@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 3: Golang + Kratos v2 — Microservice Framework Internals"
 description: "Kratos v2 for production Go microservices: 5-layer directory layout, Wire compile-time DI, dual HTTP+gRPC transport, and 21-service common library."
 date: 2026-04-22T10:00:00+07:00
@@ -14,6 +14,10 @@ series: ["Composable Commerce Migration"]
 series_order: 3
 ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
+cover:
+  image: "/images/posts/ecommerce-composable-cover.png"
+  alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
+  relative: false
 ---
 
 For engineers coming from Magento PHP, the shift to Go microservices isn't just a language change — it's a fundamentally different way of organizing code. Magento has controllers, models, blocks, helpers, and plugins. Go with Kratos v2 has exactly five layers, each with a precisely defined responsibility.

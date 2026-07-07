@@ -1,4 +1,4 @@
----
+﻿---
 title: "Astro on Cloudflare: Full-Stack Edge Architecture"
 slug: "deploying-astro-on-cloudflare-full-stack-edge-architecture"
 date: "2026-04-24T14:00:00+07:00"
@@ -20,6 +20,10 @@ tags:
 description: "Two paths to Cloudflare: building a full-stack edge site with Astro and putting WordPress behind Cloudflare CDN. Real config, costs, and gotchas."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/cloudflare-edge-cover.png"
+  alt: "Deploying Astro on Cloudflare: full-stack edge architecture with Workers, D1, and KV"
+  relative: false
 ---
 
 

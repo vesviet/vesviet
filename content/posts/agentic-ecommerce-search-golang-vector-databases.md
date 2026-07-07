@@ -1,4 +1,4 @@
----
+﻿---
 title: "Architecting Agentic E-commerce Search with Golang"
 slug: "agentic-ecommerce-search-golang-vector-databases"
 date: "2026-05-22T10:00:00+07:00"
@@ -10,6 +10,10 @@ categories: ["Engineering", "Architecture", "AI"]
 ShowToc: true
 TocOpen: true
 mermaid: true
+cover:
+  image: "/images/posts/agentic-ecommerce-search-cover.png"
+  alt: "Architecting Agentic E-commerce Search with Golang and vector databases — pgvector, re-ranking, query expansion"
+  relative: false
 ---
 
 The search system is the beating heart of every e-commerce platform. If customers cannot find a product, they cannot buy it. However, as we move through 2026, user search behavior has evolved drastically from typing short, abrupt keywords (e.g., *"men's running shoes"*) to submitting complex, goal-oriented queries (e.g., *"find me a pair of men's waterproof trail running shoes, size 42, under $100, that can be delivered by tomorrow"*). Against these multifaceted intents, traditional search engines begin to show their limitations.

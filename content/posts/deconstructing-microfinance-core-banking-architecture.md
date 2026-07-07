@@ -1,4 +1,4 @@
----
+﻿---
 title: "Microfinance Core Banking System: Architecture & Engineering Guide"
 slug: "deconstructing-microfinance-core-banking-architecture"
 date: 2026-05-27T10:00:00+07:00
@@ -10,6 +10,10 @@ series: ["core-banking-developer"]
 categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/banking-microservices-cover.png"
+  alt: "Microfinance Core Banking System: architecture and engineering guide for distributed financial services"
+  relative: false
 ---
 
 

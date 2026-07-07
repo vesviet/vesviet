@@ -1,4 +1,4 @@
----
+﻿---
 title: "Exporting Magento 2 Data: Flatten EAV with SQL & Node"
 slug: "exporting-magento-2-data-flat-sql-nodejs"
 date: "2024-03-09T03:38:22+00:00"
@@ -9,6 +9,10 @@ description: "Production-grade guide to extracting data from Magento 2's EAV mod
 categories: ["Engineering"]
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/magento-ai-cover.png"
+  alt: "Exporting Magento 2 data: flatten EAV schema with SQL and Node.js for data warehouse pipelines"
+  relative: false
 ---
 
 

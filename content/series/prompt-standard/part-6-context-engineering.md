@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 6 — From Prompting to Context Engineering"
 date: 2026-05-09T11:00:00+07:00
 lastmod: 2026-05-09T11:00:00+07:00
@@ -14,6 +14,10 @@ tags:
 weight: 7
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/prompt-engineering-benchmark-cover.png"
+  alt: "Prompt Standard series: product, engineering, and ops guide for production LLM prompting"
+  relative: false
 ---
 
 ## The Biggest Shift in 2026: Context Over Phrasing

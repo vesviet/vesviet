@@ -1,4 +1,4 @@
----
+﻿---
 title: "Caching Strategies in Go — Cache Stampede, XFetch & Redis LFU"
 slug: "03-caching-strategies-redis-golang"
 date: "2026-06-18T10:00:00+07:00"
@@ -12,6 +12,10 @@ ShowToc: true
 TocOpen: true
 series: ["system-design"]
 mermaid: true
+cover:
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
+  relative: false
 ---
 
 > **Prerequisite:** Part 3 of the [System Design Masterclass](/series/system-design/). Read [Part 2: Load Balancing L4/L7](/series/system-design/02-load-balancing-api-gateway-go/) to understand the traffic layer before diving into the caching tier.

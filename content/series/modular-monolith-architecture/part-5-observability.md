@@ -7,6 +7,10 @@ tags: ["Observability", "OpenTelemetry", "Distributed Tracing", "Modular Monolit
 aliases:
   - "/series/modular-monolith-architecture/part-5-observability/"
   - "/series/modular-monolith-architecture/cicd-simplified-atomic-deployments-monolith/part-5-observability.md"
+cover:
+  image: "/images/posts/golang-microservices-cover.png"
+  alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
+  relative: false
 ---
 
 # Part 5: Observability in Memory â€“ When Everything Shares a Single Call Stack

@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 5: EAV Schema Migration — Magento's Biggest Trap"
 description: "Extract Magento's EAV schema: integer→UUID identity mapping, avoiding hardcoded attribute IDs, dynamic SQL pivot pattern, and production-tested SQL queries."
 date: 2026-05-06T10:00:00+07:00
@@ -14,6 +14,10 @@ series: ["Composable Commerce Migration"]
 series_order: 5
 ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
+cover:
+  image: "/images/posts/ecommerce-composable-cover.png"
+  alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
+  relative: false
 ---
 
 The EAV schema is why most Magento migrations fail.

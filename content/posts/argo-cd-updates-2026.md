@@ -1,4 +1,4 @@
----
+﻿---
 title: "What's New in Argo CD 3.4 & 3.3: Cluster Pause & Upgrades"
 slug: "argo-cd-updates-2026"
 date: "2026-06-01T15:00:00+07:00"
@@ -16,6 +16,10 @@ tags:
 description: "Argo CD v3.4 & v3.3 (2026): Cluster Pause, PreDelete Hooks, SemVer breaking change 2014 plus RC: annotation filtering, Teams Workflow, ApplicationSet UI."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/argocd-2026-cover.png"
+  alt: "What's new in Argo CD 3.4 and 3.3: cluster pause, GitOps improvements, and upgrade guide"
+  relative: false
 ---
 
 

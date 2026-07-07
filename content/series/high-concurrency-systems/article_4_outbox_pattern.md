@@ -1,4 +1,4 @@
----
+﻿---
 title: "Chapter 4: Solving the Dual-Write Problem with Transactional Outbox Pattern"
 date: 2026-06-09T10:15:00+07:00
 lastmod: 2026-06-09T10:15:00+07:00
@@ -14,6 +14,10 @@ TocOpen: true
 aliases:
   - "/series/high-concurrency-systems/part-5-transactional-outbox/"
   - "/series/high-concurrency-systems/part-6-saga-orchestration/"
+cover:
+  image: "/images/posts/realtime-inventory-cover.png"
+  alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
+  relative: false
 ---
 [← Previous](/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/) | [Series hub](/series/high-concurrency-systems/) | [Next →](/series/high-concurrency-systems/golang-database-connection-pool-optimization/)
 

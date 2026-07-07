@@ -1,4 +1,4 @@
----
+﻿---
 title: "Magento Development in Vietnam: 2026 Guide — Cost, Hiring & Upgrade"
 slug: "magento-vietnam"
 date: 2026-06-12T00:00:00Z
@@ -15,6 +15,7 @@ canonicalURL: "https://tanhdev.com/posts/magento-vietnam/"
 cover:
   image: "/images/posts/magento-developers-vietnam-cover.png"
   alt: "Magento development Vietnam hiring guide 2026"
+  relative: false
 ---
 
 **Vietnam's Magento market runs from $15/hr theme editors to $80/hr production architects. This guide maps the full landscape — cost tiers, hiring models (agency vs freelance vs ODC), technical vetting signals, 2.4.9 upgrade readiness, and migration triggers — so you choose correctly before signing a contract.**

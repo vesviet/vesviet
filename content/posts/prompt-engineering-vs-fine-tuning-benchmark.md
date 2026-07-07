@@ -1,8 +1,12 @@
----
+﻿---
 title: "Prompt Engineering vs Fine-Tuning SLM: Production Cost & Latency Benchmarks"
 slug: prompt-engineering-vs-fine-tuning-benchmark
 author: "AI/ML Engineering Team"
 date: "2026-07-06"
+cover:
+  image: "/images/posts/prompt-engineering-benchmark-cover.png"
+  alt: "Prompt Engineering vs Fine-Tuning SLM: production cost and latency benchmarks — decision guide for AI engineers"
+  relative: false
 ---
 
 # Prompt Engineering vs Fine-Tuning SLM: Production Cost & Latency Benchmarks

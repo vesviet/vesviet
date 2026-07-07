@@ -1,4 +1,4 @@
----
+﻿---
 title: "Composable Banking Architecture: From Monolith to Modular Core"
 slug: "composable-banking-architecture"
 date: "2026-06-10T14:55:00+07:00"
@@ -21,6 +21,10 @@ tags:
 description: "How banks replace monolithic cores (Temenos, Finacle) with composable banking using Go microservices, Saga orchestration, NewSQL ledgers, and Strangler Fig."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/banking-microservices-cover.png"
+  alt: "Composable Banking Architecture: from monolith to modular core banking services"
+  relative: false
 ---
 
 

@@ -1,4 +1,4 @@
----
+﻿---
 title: "Magento Agency & Development in Vietnam: Scoping Guide"
 slug: "magento-development-in-vietnam"
 aliases:
@@ -12,6 +12,10 @@ categories: ["Engineering", "Business"]
 ShowToc: true
 TocOpen: true
 canonicalURL: "https://tanhdev.com/posts/magento-vietnam/"
+cover:
+  image: "/images/posts/magento-developers-vietnam-cover.png"
+  alt: "Magento agency and development in Vietnam: scoping guide for enterprise e-commerce projects"
+  relative: false
 ---
 
 

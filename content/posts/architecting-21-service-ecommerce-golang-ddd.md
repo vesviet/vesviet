@@ -1,4 +1,4 @@
----
+﻿---
 title: "Architecting 21-Service E-commerce with Golang & DDD"
 slug: "architecting-21-service-ecommerce-golang-ddd"
 aliases:
@@ -12,6 +12,10 @@ description: "Migrating an e-commerce monolith to 21+ distributed microservices 
 categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  alt: "Architecting a 21-service e-commerce platform with Golang and Domain-Driven Design"
+  relative: false
 ---
 
 

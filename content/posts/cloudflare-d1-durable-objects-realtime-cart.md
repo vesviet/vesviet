@@ -1,4 +1,4 @@
----
+﻿---
 title: "Cloudflare D1 + Durable Objects: Build a Real-Time Cart"
 slug: "cloudflare-d1-durable-objects-realtime-cart"
 date: "2026-06-01T10:00:00+07:00"
@@ -20,6 +20,10 @@ tags:
 description: "Build a real-time shopping cart using Cloudflare D1, Durable Objects, and Workers. Full schema, TypeScript code, and conflict-free concurrent updates."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/cloudflare-edge-cover.png"
+  alt: "Cloudflare D1 and Durable Objects: build a real-time cart with edge-native state and SQLite"
+  relative: false
 ---
 
 

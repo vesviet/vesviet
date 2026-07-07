@@ -1,4 +1,4 @@
----
+﻿---
 title: "MCP Engineering in Production: Go SDK to Enterprise"
 date: 2026-05-15T14:00:00+07:00
 lastmod: 2026-06-16T14:00:00+07:00
@@ -7,6 +7,10 @@ description: "Deploy MCP servers in production with Go: protocol fundamentals, O
 ShowToc: true
 TocOpen: true
 weight: 60
+cover:
+  image: "/images/posts/generative-ui-mcp-cover.png"
+  alt: "MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment"
+  relative: false
 ---
 
 # MCP Engineering in Production: Go SDK to Enterprise

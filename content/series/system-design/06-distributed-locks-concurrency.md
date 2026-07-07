@@ -1,4 +1,4 @@
----
+﻿---
 title: "Distributed Locks in Go — Redlock Math, etcd & Split-Brain"
 slug: "06-distributed-locks-concurrency"
 date: "2026-06-18T11:30:00+07:00"
@@ -12,6 +12,10 @@ ShowToc: true
 TocOpen: true
 series: ["system-design"]
 mermaid: true
+cover:
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
+  relative: false
 ---
 
 > **Prerequisite:** Part 6 of the [System Design Masterclass](/series/system-design/). Read [Part 5: Kafka & Event-Driven](/series/system-design/05-async-message-queues-kafka-go/) to understand event sourcing patterns before tackling lock coordination.

@@ -1,4 +1,4 @@
----
+﻿---
 title: "GraphHopper vs CARTO: Order Fulfillment Routing Engine"
 slug: "graphhopper-distance-matrix-routing"
 date: "2026-06-01T15:05:00+07:00"
@@ -20,6 +20,10 @@ tags:
 description: "A comparison between the GraphHopper Distance Matrix API and CARTO Spatial Analytics. A guide to building an order fulfillment routing engine (VRP)."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/graphhopper-cover.png"
+  alt: "GraphHopper distance matrix and routing: production configuration, matrix API, and isochrone calculation"
+  relative: false
 ---
 
 

@@ -1,4 +1,4 @@
----
+﻿---
 title: "Kafka Worker Pool in Go — Backpressure & Exactly-Once"
 slug: "05-async-message-queues-kafka-go"
 date: "2026-06-18T11:00:00+07:00"
@@ -12,6 +12,10 @@ ShowToc: true
 TocOpen: true
 series: ["system-design"]
 mermaid: true
+cover:
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
+  relative: false
 ---
 
 > **Prerequisite:** Part 5 of the [System Design Masterclass](/series/system-design/). Read [Part 4: Database Scaling](/series/system-design/04-database-scaling-sharding/) to understand the storage tier that persisted events are written to.

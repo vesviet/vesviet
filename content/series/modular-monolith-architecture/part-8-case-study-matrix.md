@@ -7,6 +7,10 @@ tags: ["Case Study", "Modular Monolith", "Shopify", "Stack Overflow", "Notion", 
 aliases:
   - "/series/modular-monolith-architecture/part-8-case-study-matrix/"
   - "/series/modular-monolith-architecture/extraction-pattern-when-to-extract-microservices/part-8-case-study-matrix.md"
+cover:
+  image: "/images/posts/golang-microservices-cover.png"
+  alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
+  relative: false
 ---
 
 # Part 8: Case Study Matrix â€“ The Monuments of the Modular Monolith

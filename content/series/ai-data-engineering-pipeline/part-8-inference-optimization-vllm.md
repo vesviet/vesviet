@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 8: Inference Optimization & vLLM Deployment on Production"
 slug: "part-8-inference-optimization-vllm"
 date: "2026-05-17T12:00:00+07:00"
@@ -13,6 +13,10 @@ TocOpen: true
 aliases:
   - "/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/part-9-agentic-observability-monitoring"
   - "/series/ai-data-engineering-pipeline/part-7-agentic-memory-long-term/part-8-inference-optimization-vllm"
+cover:
+  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
+  alt: "Enterprise AI Data Pipeline and GraphRAG Architecture series: graph-based retrieval at scale"
+  relative: false
 ---
 
 ## 1. The LLM Bottleneck: Why Are GPUs Still Idle?

@@ -1,4 +1,4 @@
----
+﻿---
 title: "Executive Summary — A Quick Look at Prompt Standard"
 date: 2026-05-09T10:30:00+07:00
 lastmod: 2026-05-09T10:30:00+07:00
@@ -11,6 +11,10 @@ tags:
 weight: 1
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/prompt-engineering-benchmark-cover.png"
+  alt: "Prompt Standard series: product, engineering, and ops guide for production LLM prompting"
+  relative: false
 ---
 
 ## What Is Prompt Standard?

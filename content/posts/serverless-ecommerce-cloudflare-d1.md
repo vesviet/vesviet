@@ -1,4 +1,4 @@
----
+﻿---
 title: "Serverless E-Commerce: Cloudflare Workers & D1 Architecture"
 slug: "serverless-ecommerce-cloudflare-d1"
 date: "2026-05-25T17:00:00+07:00"
@@ -18,6 +18,10 @@ tags:
 description: "How to architect a zero-ops serverless e-commerce backend using Cloudflare Workers, D1 (SQLite), and Durable Objects. Real schemas and hard trade-offs."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/cloudflare-edge-cover.png"
+  alt: "Serverless e-commerce with Cloudflare D1: SQLite at the edge for high-performance storefronts"
+  relative: false
 ---
 
 

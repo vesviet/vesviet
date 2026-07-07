@@ -1,4 +1,4 @@
----
+﻿---
 title: "Practical QLoRA Fine-tuning: Axolotl & Unsloth | SLM Playbook"
 date: 2026-05-23T08:00:00+07:00
 lastmod: 2026-07-02T00:00:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 4
 categories: ["Series", "SLM Playbook"]
 tags: ["AI Engineering", "Fine-Tuning", "LoRA", "Axolotl", "Unsloth"]
+cover:
+  image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
+  alt: "SLM Playbook series: fine-tuning, LoRA, QLoRA, and production deployment of Small Language Models"
+  relative: false
 ---
 **QLoRA fine-tuning lets you adapt a multi-billion parameter model on a single consumer GPU — like an RTX 3090 or A10G — by combining LoRA adapter training with 4-bit NF4 quantization.** This article covers the math, a production Axolotl YAML config, and Unsloth integration for 3x training speedup.
 

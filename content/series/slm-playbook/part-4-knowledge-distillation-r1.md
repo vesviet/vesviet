@@ -1,4 +1,4 @@
----
+﻿---
 title: "Knowledge Distillation: Distilling DeepSeek-R1 | SLM Playbook"
 date: 2026-05-24T08:00:00+07:00
 lastmod: 2026-05-24T08:00:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 5
 categories: ["Series", "SLM Playbook"]
 tags: ["AI Engineering", "Knowledge Distillation", "DeepSeek-R1", "Qwen Coder", "Reasoning"]
+cover:
+  image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
+  alt: "SLM Playbook series: fine-tuning, LoRA, QLoRA, and production deployment of Small Language Models"
+  relative: false
 ---
 [← Series hub](/series/slm-playbook/)
 [← Previous](/series/slm-playbook/part-3-lora-qlora-tuning/) | [Next →](/series/slm-playbook/part-5-preference-alignment/)

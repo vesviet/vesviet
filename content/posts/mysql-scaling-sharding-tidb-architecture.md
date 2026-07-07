@@ -1,4 +1,4 @@
----
+﻿---
 title: "Replace MySQL Sharding with TiDB: Distributed SQL Migration Guide"
 slug: "mysql-scaling-sharding-tidb-architecture"
 date: "2026-05-26T14:00:00+07:00"
@@ -18,6 +18,10 @@ tags:
 description: "Replace MySQL manual sharding with TiDB: TiKV, Raft consensus, Percolator ACID, TiFlash HTAP, and a step-by-step DM shard merge guide."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/mysql-scalability-cover.png"
+  alt: "Replace MySQL Sharding with TiDB: distributed SQL migration guide for Go engineers"
+  relative: false
 ---
 
 

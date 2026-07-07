@@ -21,6 +21,10 @@ tags:
 description: "Prompt engineering vs fine-tuning vs RAG: a clear 2026 decision framework. Fine-tune (LoRA/QLoRA) when you need style/format control. Prompt-engineer when iteration speed matters. RAG when facts change. With cost benchmarks."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
+  alt: "Prompt Engineering vs Fine-Tuning vs RAG — 2026 decision framework for LLM engineers"
+  relative: false
 ---
 
 

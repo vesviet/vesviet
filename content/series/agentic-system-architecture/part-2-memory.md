@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 2 — State, Memory & Context Management"
 date: 2026-05-17T08:00:00+07:00
 lastmod: 2026-05-17T08:00:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 3
 categories: ["Series", "Agent Architecture"]
 tags: ["AI", "Multi-Agent", "Memory", "RAG", "Vector Database"]
+cover:
+  image: "/images/posts/agentic-ai-swarm-cover.png"
+  alt: "Agentic System Architecture series: multi-agent production systems with Go and LiteLLM"
+  relative: false
 ---
 
 > **Prerequisite:** To firmly grasp the foundational concepts of Memory Architecture in AI systems, please review [Comprehensive AI-Native System Architecture](/series/ai-driven-playbook/part-8-ai-native-system-architecture/).

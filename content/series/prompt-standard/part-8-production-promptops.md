@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 8 — Production PromptOps Pipeline"
 date: 2026-05-09T11:10:00+07:00
 lastmod: 2026-05-09T11:10:00+07:00
@@ -14,6 +14,10 @@ tags:
 weight: 9
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/prompt-engineering-benchmark-cover.png"
+  alt: "Prompt Standard series: product, engineering, and ops guide for production LLM prompting"
+  relative: false
 ---
 
 ## Prompts in Production Are Not "Set and Forget"

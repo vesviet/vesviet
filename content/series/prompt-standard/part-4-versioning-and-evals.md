@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 4 — From Gut-Feel Prompts to Testable, Versionable Prompts"
 date: 2026-05-09T10:50:00+07:00
 lastmod: 2026-05-09T10:50:00+07:00
@@ -11,6 +11,10 @@ tags:
 weight: 5
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/prompt-engineering-benchmark-cover.png"
+  alt: "Prompt Standard series: product, engineering, and ops guide for production LLM prompting"
+  relative: false
 ---
 
 ## Prompts Deserve the Same Discipline as Code

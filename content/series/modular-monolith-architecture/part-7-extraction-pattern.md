@@ -7,6 +7,10 @@ tags: ["Microservices", "Extraction", "Sentry", "GitLab", "Modular Monolith", "A
 aliases:
   - "/series/modular-monolith-architecture/part-7-extraction-pattern/"
   - "/series/modular-monolith-architecture/migration-playbook-microservices-to-modular-monolith/part-7-extraction-pattern.md"
+cover:
+  image: "/images/posts/golang-microservices-cover.png"
+  alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
+  relative: false
 ---
 
 # Part 7: Extraction Pattern â€“ When Should You Extract Microservices?

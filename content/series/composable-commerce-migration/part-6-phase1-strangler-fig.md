@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 6: Phase 1 — Strangler Fig: Read-Only Migration + CDC"
 description: "Phase 1 Magento migration: read-only Go microservices behind API Gateway, Debezium CDC from MySQL without Kafka, and feature flags for zero-risk routing."
 date: 2026-05-13T10:00:00+07:00
@@ -14,6 +14,10 @@ series: ["Composable Commerce Migration"]
 series_order: 6
 ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
+cover:
+  image: "/images/posts/ecommerce-composable-cover.png"
+  alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
+  relative: false
 ---
 
 Phase 1 is the safest phase of the migration — by design. No write operation touches the new microservices. Magento remains the source of truth for all data modifications. The only thing Phase 1 does is prove that your microservices can serve *reads* faster and more reliably than Magento.

@@ -12,6 +12,10 @@ ShowToc: true
 TocOpen: true
 aliases:
   - "/series/ai-data-engineering-pipeline/executive-summary-graphrag-data-pipeline/part-1-agentic-graphrag-long-context"
+cover:
+  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
+  alt: "Enterprise AI Data Pipeline and GraphRAG Architecture series: graph-based retrieval at scale"
+  relative: false
 ---
 
 ## 1. Introduction: Ending the "Meaningless" War

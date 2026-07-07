@@ -1,4 +1,4 @@
----
+﻿---
 title: "Real-Time Inventory Synchronization: Kafka, CDC & Redis for E-commerce"
 slug: "real-time-inventory-ecommerce-architecture"
 date: "2026-06-08T14:35:00+07:00"
@@ -18,6 +18,10 @@ tags:
   - "Debezium"
   - "System Design"
 mermaid: true
+cover:
+  image: "/images/posts/realtime-inventory-cover.png"
+  alt: "Real-time inventory architecture for e-commerce: event-driven sync, Kafka, and oversell prevention"
+  relative: false
 ---
 
 ## What Is Real-Time Inventory Synchronization?

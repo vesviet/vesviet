@@ -1,4 +1,4 @@
----
+﻿---
 title: "Go Observability & pprof — Memory Leaks, CPU Profiling & GODEBUG"
 slug: "10-observability-pprof-golang"
 date: "2026-06-18T13:30:00+07:00"
@@ -12,6 +12,10 @@ ShowToc: true
 TocOpen: true
 series: ["system-design"]
 mermaid: true
+cover:
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
+  relative: false
 ---
 
 > **Prerequisite:** This is Part 10 of the [System Design Masterclass](/series/system-design/). Previous parts built the architecture — this part teaches you how to *see inside* a running system and diagnose production performance issues.

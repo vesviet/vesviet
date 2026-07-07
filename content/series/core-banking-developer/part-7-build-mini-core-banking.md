@@ -1,10 +1,14 @@
----
+﻿---
 title: "Part 7: Build a Mini Core Banking System in Go"
 date: 2026-05-06T18:00:00+07:00
 lastmod: 2026-06-10T16:00:00+07:00
 draft: false
 description: "Build a complete mini Core Banking system in Go: double-entry ledger, ACID transactions, CASA accounts, loan management, and REST APIs — end-to-end."
 weight: 8
+cover:
+  image: "/images/posts/banking-microservices-cover.png"
+  alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
+  relative: false
 ---
 
 ## Project Objectives

@@ -19,6 +19,10 @@ tags:
   - "ProxySQL"
   - "GORM"
   - "Golang"
+cover:
+  image: "/images/posts/mysql-scalability-cover.png"
+  alt: "MySQL Scalability: read replicas, sharding, and TiDB NewSQL — performance architecture guide"
+  relative: false
 ---
 
 MySQL scalability is the ability to increase database throughput — reads per second, writes per second, or data volume — without rewriting your application. The critical distinction: **read scaling** (adding replicas) and **write scaling** (sharding or distributed SQL) require completely different architectural approaches. Choosing the wrong path creates technical debt that takes months to unwind.

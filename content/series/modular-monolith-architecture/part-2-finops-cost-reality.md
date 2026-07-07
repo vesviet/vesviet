@@ -7,6 +7,10 @@ tags: ["FinOps", "AWS", "Istio", "Cloud Cost", "Segment", "Modular Monolith"]
 aliases:
   - "/series/modular-monolith-architecture/part-2-finops-cost-reality/"
   - "/series/modular-monolith-architecture/decision-framework-modular-monolith-vs-microservices/part-2-finops-cost-reality.md"
+cover:
+  image: "/images/posts/golang-microservices-cover.png"
+  alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
+  relative: false
 ---
 
 # Part 2: FinOps Cost Reality - The "Hidden Tax" of Microservices

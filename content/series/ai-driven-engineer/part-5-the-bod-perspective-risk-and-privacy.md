@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 5 — The BOD Perspective: Expectations, Costs, Legal Risks & Internal AI"
 date: 2026-05-10T15:40:00+07:00
 lastmod: 2026-05-10T15:40:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 6
 categories: ["Series", "Software Engineering"]
 tags: ["AI", "System Design", "Career"]
+cover:
+  image: "/images/posts/ai-native-frontend-cover.png"
+  alt: "AI-Driven Engineer series: evolving from code typist to AI-native software architect"
+  relative: false
 ---
 
 So far, we have discussed AI extensively from the perspective of Programmers and Testers. But if you step into the boardroom of the Board of Directors (BOD) or Chief Technology Officers (CTO), you'll see a completely different lens.

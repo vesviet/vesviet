@@ -1,4 +1,4 @@
----
+﻿---
 title: "What Is Vibe Coding — And Why Every Engineer Must Care (2025)"
 date: 2026-05-31T16:00:00+07:00
 lastmod: 2026-05-31T16:00:00+07:00
@@ -18,6 +18,10 @@ tags:
 description: "What is vibe coding? Why CEOs, PMs, and BAs ship apps with AI prompts — and what every engineer must know: Production Wall, security risks, $400M cleanup."
 aliases:
   - /series/ai-code-review-vibe-coding/executive-summary/
+cover:
+  image: "/images/posts/vibe-coding-cover.png"
+  alt: "Vibe Coding and AI Code Review series: from prototype to production AI-assisted engineering"
+  relative: false
 ---
 
 In February 2025, Andrej Karpathy posted a tweet that most engineers scrolled past:

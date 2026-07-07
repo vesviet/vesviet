@@ -1,4 +1,4 @@
----
+﻿---
 title: "Streaming Fraud Detection: Flink CEP, RocksDB & ML"
 date: 2026-06-18T12:00:00+07:00
 lastmod: 2026-07-03T15:41:55+07:00
@@ -9,6 +9,10 @@ series: ["core-banking-architecture"]
 keywords: ["flink fraud detection architecture", "flink rocksdb state size performance", "credit card fraud detection SLA", "streaming CEP patterns fintech"]
 author: "Tuan Anh"
 schema: ["Article", "TechArticle", "FAQPage"]
+cover:
+  image: "/images/posts/banking-microservices-cover.png"
+  alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
+  relative: false
 ---
 
 > **Series (Part 7 of 8):** The final technical article before the QA handbook. We will build a real-time fraud detection pipeline with an SLA of <100ms per score — where your latency budget is shared between CEP pattern matching, state lookups, and ML model inference.

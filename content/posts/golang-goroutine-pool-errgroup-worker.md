@@ -1,4 +1,4 @@
----
+﻿---
 title: "Goroutine Pool Patterns in Go: errgroup & Backpressure"
 slug: "golang-goroutine-pool-errgroup-worker"
 date: "2026-06-01T10:00:00+07:00"
@@ -20,6 +20,10 @@ tags:
 description: "Production Go concurrency patterns: errgroup worker pools, semaphore-based rate limiting, bounded queues, and graceful backpressure for microservices."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/golang-concurrency-cover.png"
+  alt: "Golang Goroutine Pool and Errgroup Worker: concurrent task processing patterns in production Go"
+  relative: false
 ---
 
 

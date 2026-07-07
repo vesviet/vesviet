@@ -1,4 +1,4 @@
----
+﻿---
 title: "Data Engineering SFT: NEFTune & SemDeDup | SLM Playbook"
 date: 2026-05-22T08:00:00+07:00
 lastmod: 2026-05-22T08:00:00+07:00
@@ -11,6 +11,10 @@ categories: ["Series", "SLM Playbook"]
 tags: ["AI Engineering", "Fine-Tuning", "Data Engineering", "Axolotl"]
 aliases:
   - "/series/slm-playbook/part-2-vllm-serving/"
+cover:
+  image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
+  alt: "SLM Playbook series: fine-tuning, LoRA, QLoRA, and production deployment of Small Language Models"
+  relative: false
 ---
 [← Series hub](/series/slm-playbook/)
 [← Previous](/series/slm-playbook/part-1-slm-hybrid-architecture/) | [Next →](/series/slm-playbook/part-3-lora-qlora-tuning/)

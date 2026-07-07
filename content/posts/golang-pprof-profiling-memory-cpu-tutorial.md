@@ -17,6 +17,10 @@ tags:
   - "Production"
   - "Profiling"
   - "Performance"
+cover:
+  image: "/images/posts/goroutine-leak-cover.png"
+  alt: "Go pprof profiling in Kubernetes: CPU flame graphs, heap profiling, and memory leak detection"
+  relative: false
 ---
 
 > **Prerequisite:** This guide covers how to profile and diagnose complex performance issues in production. If you are specifically dealing with unbounded goroutine growth, ensure you first understand the foundational concepts in [Goroutine Leak Detection and Fix in Production Go Services](/posts/goroutine-leak-detection-production-golang/).

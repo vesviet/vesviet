@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 8: Zero-Downtime Map Updates & Multi-Region Kubernetes"
 description: "The Grand Finale. How to deploy a Stateful Routing Engine to Kubernetes with Argo Rollouts, Geo DNS, and survive OOMKilled and 502 Bad Gateway errors."
 date: 2026-06-15T19:30:00+07:00
@@ -7,6 +7,10 @@ draft: false
 tags: ["kubernetes", "devops", "sre", "graphhopper", "argo-rollouts", "system design"]
 series: ["Routing & Geospatial Architecture"]
 series_order: 8
+cover:
+  image: "/images/posts/graphhopper-cover.png"
+  alt: "Geospatial and Routing Engine Architecture series: Go and GraphHopper for production routing"
+  relative: false
 ---
 
 Writing a fast algorithm is only half the battle. The true test of a Principal Engineer is deploying a massive, stateful Routing Engine to the Cloud without causing a single second of downtime during map updates or infrastructure failures. 

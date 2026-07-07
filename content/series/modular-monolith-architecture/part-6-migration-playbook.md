@@ -7,6 +7,10 @@ tags: ["Migration", "Strangler Fig", "Modular Monolith", "Database", "Conway's L
 aliases:
   - "/series/modular-monolith-architecture/part-6-migration-playbook/"
   - "/series/modular-monolith-architecture/observability-in-process-modular-monolith-opentelemetry/part-6-migration-playbook.md"
+cover:
+  image: "/images/posts/golang-microservices-cover.png"
+  alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
+  relative: false
 ---
 
 # Part 6: Migration Playbook â€“ Consolidating Microservices into a Monolith

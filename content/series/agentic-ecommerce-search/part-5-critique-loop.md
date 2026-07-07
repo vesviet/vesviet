@@ -1,4 +1,4 @@
----
+﻿---
 title: "Critique Loop: Preventing LLM Hallucination"
 date: 2026-05-22T22:40:00+07:00
 lastmod: 2026-05-22T22:40:00+07:00
@@ -12,6 +12,10 @@ description: "A guide to setting up a self-reflection (Critique Loop) in Eino to
 categories: ["Engineering"]
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/agentic-ecommerce-search-cover.png"
+  alt: "Agentic E-commerce Search Engine Architecture series: vector databases, ranking, and Go"
+  relative: false
 ---
 
 In [Part 4: Active RAG & Strict Tool Calling - Connecting LLMs to Real-time APIs](/series/agentic-ecommerce-search/part-4-active-rag-tool-calling/), we successfully built a cyclic ReAct graph allowing the LLM to call APIs to check inventory and promotions in real-time. However, in a real-world production environment, giving an LLM access to Tools is not enough to guarantee absolute accuracy.

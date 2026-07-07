@@ -1,4 +1,4 @@
----
+﻿---
 title: "Autonomous Hybrid-AI Pipeline: Cron to State-Machine"
 slug: "architecting-an-autonomous-hybrid-ai-content-pipeline"
 date: "2026-05-18T09:00:00+07:00"
@@ -21,6 +21,10 @@ tags:
 description: "Replacing a $3.50/day cron job with a $0.05/day autonomous AI pipeline: Hybrid AI, Wake-On-LAN orchestration, MinHash dedup, and a 4-layer quality gate."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/hybrid-ai-pipeline-cover.png"
+  alt: "Autonomous Hybrid-AI Content Pipeline: from cron trigger to state machine with human-in-the-loop"
+  relative: false
 ---
 
 It's easy to write a cron job that pings an API, hands a URL to OpenAI, and publishes a markdown file. It's significantly harder to orchestrate a distributed swarm of AI agents that can read deeply from diverse sources, deduplicate state across time, evaluate article quality through a multi-layer gate, safely publish via GitOps, and optimize its own power footprint—all without human intervention.

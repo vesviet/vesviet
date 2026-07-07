@@ -1,4 +1,4 @@
----
+﻿---
 title: "GitOps at Scale: Kubernetes & ArgoCD for Microservices"
 slug: "gitops-at-scale-kubernetes-argocd-microservices"
 date: 2026-04-12T07:00:00+07:00
@@ -10,6 +10,10 @@ description: "Why kubectl apply is dangerous. Learn how to automate a 21-service
 categories: ["DevOps", "Engineering"]
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/argocd-2026-cover.png"
+  alt: "GitOps at scale with Kubernetes and Argo CD: multi-cluster microservices deployment architecture"
+  relative: false
 ---
 
 

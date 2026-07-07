@@ -1,4 +1,4 @@
----
+﻿---
 title: "[Bonus] The 30-60-90 Day Roadmap: From Code Typist to AI-Driven Engineer"
 date: 2026-05-10T17:00:00+07:00
 lastmod: 2026-05-10T17:00:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 11
 categories: ["Series", "Software Engineering", "Learning Path"]
 tags: ["AI", "Career", "Roadmap"]
+cover:
+  image: "/images/posts/ai-native-frontend-cover.png"
+  alt: "AI-Driven Engineer series: evolving from code typist to AI-native software architect"
+  relative: false
 ---
 
 ## Foreword: The Transformation Journey

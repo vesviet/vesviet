@@ -1,4 +1,4 @@
----
+﻿---
 title: "Order Fulfillment Algorithm: Warehouse to Last-Mile"
 slug: "order-fulfillment-algorithm-warehouse-last-mile"
 date: "2026-06-01T10:00:00+07:00"
@@ -20,6 +20,10 @@ tags:
 description: "How e-commerce giants decide which warehouse fulfills your order. Covers Amazon CONDOR, VRP solvers, split shipment logic, and last-mile routing."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/order-fulfillment-cover.png"
+  alt: "Order fulfillment algorithm: warehouse selection and last-mile optimization for e-commerce"
+  relative: false
 ---
 
 

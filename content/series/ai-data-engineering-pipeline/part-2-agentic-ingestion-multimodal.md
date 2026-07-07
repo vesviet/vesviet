@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 2: Agentic Ingestion & Multimodal Knowledge Graphs"
 slug: "part-2-agentic-ingestion-multimodal"
 date: "2026-05-17T12:00:00+07:00"
@@ -13,6 +13,10 @@ TocOpen: true
 aliases:
   - "/series/ai-data-engineering-pipeline/part-2-agentic-ingestion-multimodal/part-3-late-chunking-semantic-caching"
   - "/series/ai-data-engineering-pipeline/part-1-agentic-graphrag-long-context/part-2-agentic-ingestion-multimodal"
+cover:
+  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
+  alt: "Enterprise AI Data Pipeline and GraphRAG Architecture series: graph-based retrieval at scale"
+  relative: false
 ---
 
 ## 1. The Fall of Traditional OCR: The "Garbage In, Garbage Out" Pain

@@ -1,4 +1,4 @@
----
+﻿---
 title: "Mastering Event-Driven Architecture with Dapr Pub/Sub"
 slug: "mastering-event-driven-architecture-dapr"
 date: 2026-04-12T09:05:00+07:00
@@ -10,6 +10,10 @@ description: "Decouple a 21+ microservice ecosystem using Event-Driven Architect
 categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/dapr-saga-cover.png"
+  alt: "Mastering event-driven architecture with Dapr: pub/sub, bindings, and actor model in Go microservices"
+  relative: false
 ---
 
 

@@ -1,4 +1,4 @@
----
+﻿---
 title: "PayPay Architecture: Scaling for Planet-Scale Campaigns"
 date: 2026-05-05T21:00:00+07:00
 lastmod: 2026-07-03T15:41:55+07:00
@@ -7,6 +7,10 @@ weight: 150
 description: "How PayPay scales for 70M users: microservices, Kafka idempotency, TiDB migration, SRE chaos engineering, campaign pre-scaling, and AI-native architecture."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/paypay-scaling-cover.png"
+  alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
+  relative: false
 ---
 
 This is a deep-dive research series exploring the backend architecture of PayPay, Japan's leading mobile payment platform with over 70 million users and 7.8 billion annual transactions. We analyze how they handle massive spike traffic during promotional campaigns, ensure strict ACID data consistency, operate a reliable GitOps platform at 100+ microservices scale, and — as of 2025 — how they are becoming AI-native.

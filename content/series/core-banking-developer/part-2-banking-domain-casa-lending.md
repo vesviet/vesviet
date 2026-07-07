@@ -1,10 +1,14 @@
----
+﻿---
 title: "Part 2 — Core Banking Domain: CIF, CASA & Lending"
 date: 2026-05-06T18:00:00+07:00
 lastmod: 2026-06-10T16:00:00+07:00
 draft: false
 description: "Core Banking's three foundational modules: Customer Information File (CIF), Current and Savings Accounts (CASA), and Lending — and how each is implemented."
 weight: 3
+cover:
+  image: "/images/posts/banking-microservices-cover.png"
+  alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
+  relative: false
 ---
 
 ## Overview of the Three Core Modules

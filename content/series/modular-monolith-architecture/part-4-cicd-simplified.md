@@ -7,6 +7,10 @@ tags: ["CI/CD", "Deployments", "Shopify", "Buildkite", "Modular Monolith", "Test
 aliases:
   - "/series/modular-monolith-architecture/part-4-cicd-simplified/"
   - "/series/modular-monolith-architecture/ddd-module-boundaries-modular-monolith/part-4-cicd-simplified.md"
+cover:
+  image: "/images/posts/golang-microservices-cover.png"
+  alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
+  relative: false
 ---
 
 # Part 4: CI/CD Simplified & The Power of Atomic Deployments

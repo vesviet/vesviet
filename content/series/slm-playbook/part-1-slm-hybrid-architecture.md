@@ -1,4 +1,4 @@
----
+﻿---
 title: "Hybrid AI Architecture & Self-Hosted vLLM | SLM Playbook"
 date: 2026-05-21T08:00:00+07:00
 lastmod: 2026-05-21T08:00:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 2
 categories: ["Series", "SLM Playbook"]
 tags: ["AI Engineering", "vLLM", "System Architecture", "FinOps"]
+cover:
+  image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
+  alt: "SLM Playbook series: fine-tuning, LoRA, QLoRA, and production deployment of Small Language Models"
+  relative: false
 ---
 [← Series hub](/series/slm-playbook/)
 [← Previous](/series/slm-playbook/executive-summary/) | [Next →](/series/slm-playbook/part-2-sft-data-engineering/)

@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 9: Agentic Observability - Monitoring & Debugging the AI's Train of Thought"
 slug: "part-9-agentic-observability-monitoring"
 date: "2026-05-17T12:00:00+07:00"
@@ -13,6 +13,10 @@ TocOpen: true
 aliases:
   - "/series/ai-data-engineering-pipeline/part-9-agentic-observability-monitoring/part-10-production-evals-cicd"
   - "/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/part-9-agentic-observability-monitoring"
+cover:
+  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
+  alt: "Enterprise AI Data Pipeline and GraphRAG Architecture series: graph-based retrieval at scale"
+  relative: false
 ---
 
 ## 1. The "Black Box" Problem & The Incompetence of Traditional APM

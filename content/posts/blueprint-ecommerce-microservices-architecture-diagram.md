@@ -1,4 +1,4 @@
----
+﻿---
 title: "E-Commerce Microservices Architecture Diagram: 21-Service Go Blueprint (2026)"
 slug: "blueprint-ecommerce-microservices-architecture-diagram"
 date: 2026-04-12T08:30:00+07:00
@@ -10,6 +10,10 @@ description: "21 Mermaid architecture diagrams for a production Go e-commerce pl
 categories: ["Architecture", "System Design"]
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  alt: "E-Commerce Microservices Architecture Diagram: 21-service Golang DDD blueprint for 2026"
+  relative: false
 ---
 
 

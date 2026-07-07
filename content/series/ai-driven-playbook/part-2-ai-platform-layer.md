@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 2 — AI Platform Layer: Building a Private AI Ecosystem & Architectural Freedom"
 date: 2026-05-14T08:00:00+07:00
 lastmod: 2026-05-14T08:00:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 3
 categories: ["Series", "Enterprise Playbook"]
 tags: ["AI", "Enterprise Architecture", "CTO", "Tech Lead"]
+cover:
+  image: "/images/posts/hybrid-ai-pipeline-cover.png"
+  alt: "AI-Driven Engineer Enterprise Playbook series: workflows, autonomous pipelines, and tooling"
+  relative: false
 ---
 
 In [Part 1](/series/ai-driven-playbook/part-1-context-engineering-ddd/), we solved the code quality problem using *Context Engineering*. But when you start scaling AI across the entire organization, Chief Technology Officers (CTOs) immediately hit another wall: **Cost and Security**.

@@ -1,4 +1,4 @@
----
+﻿---
 title: "Agentic Architecture & Golang Orchestration Power"
 date: 2026-05-22T22:20:00+07:00
 lastmod: 2026-05-22T22:20:00+07:00
@@ -12,6 +12,10 @@ description: "Analyzing Python GIL limitations in AI architectures and how to us
 categories: ["Engineering"]
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/agentic-ecommerce-search-cover.png"
+  alt: "Agentic E-commerce Search Engine Architecture series: vector databases, ranking, and Go"
+  relative: false
 ---
 
 If you have ever tried to push a RAG or Multi-Agent system written in Python (using LangChain or AutoGen) into a Production environment with thousands of concurrent requests, you have likely tasted the pain. Servers run out of RAM, CPUs become bottlenecked, and latency skyrockets uncontrollably.

@@ -1,4 +1,4 @@
----
+﻿---
 title: "AI-Native Frontend in 2028: 10 Architecture Predictions"
 slug: "ai-native-frontend-architecture-predictions-2028"
 date: "2026-05-16T21:00:00+07:00"
@@ -9,6 +9,10 @@ description: "10 honest predictions for AI-Native Frontend Architecture by 2028:
 categories: ["Engineering", "Strategy"]
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/ai-native-frontend-cover.png"
+  alt: "AI-Native Frontend Architecture in 2028: 10 bold predictions for the next generation of UI engineering"
+  relative: false
 ---
 
 

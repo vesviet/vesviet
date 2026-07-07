@@ -1,4 +1,4 @@
----
+﻿---
 title: "Production Agentic AI Swarm: OpenClaw & LiteLLM"
 slug: "deploying-autonomous-ai-swarm-openclaw-litellm"
 date: 2026-05-17T21:45:00+07:00
@@ -11,6 +11,10 @@ categories: ["AI/ML", "Engineering"]
 author: "Vesviet"
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/agentic-ai-swarm-cover.png"
+  alt: "Production Agentic AI Swarm with OpenClaw and LiteLLM — multi-agent orchestration architecture"
+  relative: false
 ---
 
 

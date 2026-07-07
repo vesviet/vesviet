@@ -1,10 +1,14 @@
----
+﻿---
 title: "Part 1 — The Foundation: Microservices & GitOps"
 date: 2026-05-05T21:00:00+07:00
 lastmod: 2026-05-05T21:00:00+07:00
 draft: false
 description: "How PayPay organizes 100+ microservices using Domain-Driven Design, gRPC/Protobuf, GitOps with Argo CD, and canary deployments with Argo Rollouts."
 weight: 2
+cover:
+  image: "/images/posts/paypay-scaling-cover.png"
+  alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
+  relative: false
 ---
 
 ## Bounded Contexts & Microservices

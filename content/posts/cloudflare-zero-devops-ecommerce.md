@@ -1,4 +1,4 @@
----
+﻿---
 title: "Zero DevOps E-commerce with Cloudflare Workers & Turborepo"
 description: "Serverless Edge e-commerce with Cloudflare Workers, D1, and Turborepo: eliminate DevOps overhead and auto-generate Mobile SDKs on every API change."
 date: 2026-06-17T21:00:00+07:00
@@ -13,6 +13,10 @@ tags:
   - Microservices
   - DevOps
   - E-commerce
+cover:
+  image: "/images/posts/cloudflare-edge-cover.png"
+  alt: "Zero DevOps e-commerce with Cloudflare Workers and Turborepo: edge-first architecture guide"
+  relative: false
 ---
 
 Tired of maintaining expensive Kubernetes clusters, fine-tuning Auto-scaling groups on AWS, or wiring together complex CI/CD pipelines just to keep an e-commerce store alive? Welcome to the **Zero DevOps** era.

@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 3 — The 10x Productivity Reality: Where We Speed Up, Where We Slow Down"
 date: 2026-05-10T15:20:00+07:00
 lastmod: 2026-05-10T15:20:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 4
 categories: ["Series", "Software Engineering"]
 tags: ["AI", "System Design", "Career"]
+cover:
+  image: "/images/posts/ai-native-frontend-cover.png"
+  alt: "AI-Driven Engineer series: evolving from code typist to AI-native software architect"
+  relative: false
 ---
 
 Social media and tech marketing campaigns constantly inject a concept into our heads: **"10x Developer thanks to AI"**. The image of a programmer sipping coffee, typing a few prompts, and finishing a week's worth of work in one morning is incredibly appealing.

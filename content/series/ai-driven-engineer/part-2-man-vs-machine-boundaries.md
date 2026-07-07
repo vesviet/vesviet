@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 2 — Man vs. Machine Boundaries: What to Delegate and What to Keep"
 date: 2026-05-10T15:10:00+07:00
 lastmod: 2026-05-10T15:10:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 3
 categories: ["Series", "Software Engineering"]
 tags: ["AI", "System Design", "Career"]
+cover:
+  image: "/images/posts/ai-native-frontend-cover.png"
+  alt: "AI-Driven Engineer series: evolving from code typist to AI-native software architect"
+  relative: false
 ---
 
 Upon realizing that typing speed has been defeated by AI (as discussed in Part 1), an invisible fear engulfs programmers: *"So what will I do if AI does everything?"*

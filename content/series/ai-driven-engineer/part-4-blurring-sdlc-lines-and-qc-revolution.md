@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 4 — Blurring SDLC Lines & The QC Revolution"
 date: 2026-05-10T15:30:00+07:00
 lastmod: 2026-05-10T15:30:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 5
 categories: ["Series", "Software Engineering"]
 tags: ["AI", "System Design", "Career"]
+cover:
+  image: "/images/posts/ai-native-frontend-cover.png"
+  alt: "AI-Driven Engineer series: evolving from code typist to AI-native software architect"
+  relative: false
 ---
 
 The traditional Software Development Life Cycle (SDLC) is often described as a factory assembly line. Business Analysts (BA) write requirements $\rightarrow$ Designers draw UI $\rightarrow$ Developers (Dev) write code $\rightarrow$ Quality Assurance (QA) finds bugs $\rightarrow$ DevOps pushes to the server. Everyone sits in their own "silo" and communicates via Jira tickets.

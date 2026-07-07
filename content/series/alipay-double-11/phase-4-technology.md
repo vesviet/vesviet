@@ -1,4 +1,4 @@
----
+﻿---
 title: "Phase 4: Technology Overview"
 date: 2026-05-02T18:10:00+07:00
 lastmod: 2026-05-02T18:10:00+07:00
@@ -6,6 +6,10 @@ draft: false
 description: "Technology overview behind Double 11: the middle platform approach, security/risk control, payment flow, and the SOFAStack ecosystem."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/alipay-double11-cover.png"
+  alt: "Alipay Double 11 Architecture series: 583,000 TPS payment processing at extreme scale"
+  relative: false
 ---
 [← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/phase-3-operations/) • [Next →](/series/alipay-double-11/phase-4-deep-dive/)

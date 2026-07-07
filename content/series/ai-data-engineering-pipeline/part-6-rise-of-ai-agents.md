@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 6: The Rise of AI Agents - From Reading to Autonomy"
 slug: "part-6-rise-of-ai-agents"
 aliases:
@@ -13,6 +13,10 @@ description: "The architectural shift from static RAG to autonomous AI Agents. U
 categories: ["Data Engineering", "AI/ML", "Architecture"]
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
+  alt: "Enterprise AI Data Pipeline and GraphRAG Architecture series: graph-based retrieval at scale"
+  relative: false
 ---
 
 ## 1. The Decline of Static RAG

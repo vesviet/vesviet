@@ -1,4 +1,4 @@
----
+﻿---
 title: "Executive Summary: The Disruption of Naive RAG and the GraphRAG Era"
 slug: "executive-summary-graphrag-data-pipeline"
 date: "2026-05-17T12:05:00+07:00"
@@ -12,6 +12,10 @@ TocOpen: true
 aliases:
   - "/series/ai-data-engineering-pipeline/executive-summary"
   - "/series/ai-data-engineering-pipeline/executive-summary-graphrag-data-pipeline/part-1-agentic-graphrag-long-context"
+cover:
+  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
+  alt: "Enterprise AI Data Pipeline and GraphRAG Architecture series: graph-based retrieval at scale"
+  relative: false
 ---
 
 

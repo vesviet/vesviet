@@ -1,4 +1,4 @@
----
+﻿---
 title: "GraphRAG vs Naive RAG: Enterprise Architecture Guide"
 slug: "graphrag-vs-naive-rag-enterprise-guide"
 date: "2026-06-01T10:00:00+07:00"
@@ -20,6 +20,10 @@ tags:
 description: "Compare Naive RAG with GraphRAG for enterprise AI pipelines: knowledge graphs, LlamaIndex, chunking, streaming CDC, and security controls for dynamic data."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
+  alt: "GraphRAG vs Naive RAG: enterprise architecture guide — entity relationships vs flat chunk retrieval"
+  relative: false
 ---
 
 

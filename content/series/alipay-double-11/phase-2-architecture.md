@@ -1,4 +1,4 @@
----
+﻿---
 title: "Phase 2: Core Architecture (LDC, Unitization, Multi-Active)"
 date: 2026-05-02T18:10:00+07:00
 lastmod: 2026-05-02T18:10:00+07:00
@@ -6,6 +6,10 @@ draft: false
 description: "Core architecture concepts behind Alipay Double 11 scalability: LDC/unitization, multi-active design, the database layer (OceanBase), messaging, and reliability patterns."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/alipay-double11-cover.png"
+  alt: "Alipay Double 11 Architecture series: 583,000 TPS payment processing at extreme scale"
+  relative: false
 ---
 [← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/phase-1-timeline/) • [Next →](/series/alipay-double-11/phase-3-operations/)

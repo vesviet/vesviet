@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 4: Golang API & Microservices Integration (Kratos & Dapr)"
 description: "How to build a bulletproof Golang API Gateway that talks to Graphhopper. We cover Circuit Breakers, Protobuf GC optimization, and Dapr asynchronous routing."
 date: 2026-06-14T23:00:00+07:00
@@ -7,6 +7,10 @@ draft: false
 tags: ["golang", "kratos", "dapr", "grpc", "graphhopper", "system design"]
 series: ["Routing & Geospatial Architecture"]
 series_order: 4
+cover:
+  image: "/images/posts/graphhopper-cover.png"
+  alt: "Geospatial and Routing Engine Architecture series: Go and GraphHopper for production routing"
+  relative: false
 ---
 
 Building a simple API that calls Graphhopper via `http.Get` is easy. Building a **Principal-level API Gateway** that survives 10,000 concurrent riders requesting routes without crashing is a masterclass in Distributed Systems.

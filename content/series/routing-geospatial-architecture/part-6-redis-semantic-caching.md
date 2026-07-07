@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 6: Location Clustering with Uber H3 & Redis Semantic Caching"
 description: "How to achieve an 80% Cache Hit Rate on a Distance Matrix API. We cover Semantic Caching, Cache Stampedes (XFetch), Hot Keys, and Redis Pipelining."
 date: 2026-06-15T07:15:00+07:00
@@ -7,6 +7,10 @@ draft: false
 tags: ["redis", "h3", "caching", "golang", "architecture", "system design"]
 series: ["Routing & Geospatial Architecture"]
 series_order: 6
+cover:
+  image: "/images/posts/graphhopper-cover.png"
+  alt: "Geospatial and Routing Engine Architecture series: Go and GraphHopper for production routing"
+  relative: false
 ---
 
 Caching an exact GPS coordinate is impossible. Because floating-point numbers are infinitely precise, two users standing 1 meter apart will have completely different coordinates (`106.0001` vs `106.0002`). If your Redis key is simply `lat1,lng1:lat2,lng2`, your Cache Hit Rate will forever remain at 0%.

@@ -1,4 +1,4 @@
----
+﻿---
 title: "Testing GenUI & Semantic Edge Caching — AI Frontend (Part 6)"
 date: 2026-05-16T12:25:00+07:00
 lastmod: 2026-05-16T12:25:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 6
 categories: ["Series", "Generative UI", "Frontend Architecture"]
 tags: ["Generative UI", "E2E Testing", "Semantic Caching", "Cloudflare", "AI Frontend", "Playwright"]
+cover:
+  image: "/images/posts/generative-ui-mcp-cover.png"
+  alt: "Generative UI and AI-Native Frontend Architecture series: MCP, LLM-driven UIs, and roadmap"
+  relative: false
 ---
 
 Generative UI architecture brings a new horizon for user experience, but it is the worst nightmare for QA and DevOps teams. 

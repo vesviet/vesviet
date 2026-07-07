@@ -1,4 +1,4 @@
----
+﻿---
 title: "Self-Hosting GraphHopper on Kubernetes with OSM Data"
 slug: "graphhopper-kubernetes-self-hosting-osm"
 date: "2026-06-01T10:00:00+07:00"
@@ -20,6 +20,10 @@ tags:
 description: "Step-by-step guide to deploying GraphHopper on Kubernetes with OpenStreetMap data: Docker image, PVC for OSM PBF files, RAM tuning, and health probes."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/graphhopper-cover.png"
+  alt: "GraphHopper Kubernetes self-hosting with OpenStreetMap: deployment, data import, and scaling guide"
+  relative: false
 ---
 
 

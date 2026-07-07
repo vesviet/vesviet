@@ -1,4 +1,4 @@
----
+﻿---
 title: "Dapr Workflow Go Tutorial: Orchestrated Saga Pattern"
 slug: "dapr-workflow-saga-orchestration-guide"
 date: "2026-06-01T10:00:00+07:00"
@@ -20,6 +20,10 @@ tags:
 description: "Step-by-step Go code for Orchestrated Saga using Dapr Workflow: durable state, compensating transactions, and banking-grade consistency."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/dapr-saga-cover.png"
+  alt: "Dapr Workflow Go tutorial: orchestrated Saga pattern with compensation and distributed transaction"
+  relative: false
 ---
 
 

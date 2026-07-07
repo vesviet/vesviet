@@ -1,4 +1,4 @@
----
+﻿---
 title: "What is Generative UI? Why Chatbots Fail — Exec Summary"
 date: 2026-05-16T12:00:00+07:00
 lastmod: 2026-05-16T12:00:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 0
 categories: ["Series", "Generative UI", "Frontend Architecture"]
 tags: ["Generative UI", "AI Frontend", "Chatbot", "Executive Summary", "AI-Native"]
+cover:
+  image: "/images/posts/generative-ui-mcp-cover.png"
+  alt: "Generative UI and AI-Native Frontend Architecture series: MCP, LLM-driven UIs, and roadmap"
+  relative: false
 ---
 
 Despite the LLM hype, enterprise software applications integrating AI are facing a major issue: low Retention Rates. The root cause lies not in the intelligence of the Model, but in the **User Interface**. We are trying to cram complex business workflows into a narrow Chatbot frame, forcing users to communicate in natural language rather than through intuitive graphical operations.

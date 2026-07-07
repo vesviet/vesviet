@@ -1,4 +1,4 @@
----
+﻿---
 title: "What is Vibe Coding? Why AI Code Review is the Future"
 slug: "vibe-coding-and-ai-code-review-future"
 date: "2026-05-31T18:30:00+07:00"
@@ -16,6 +16,10 @@ tags:
 description: "Discover what vibe coding is, why AI prototypes hit a Production Wall, and why AI code review is a critical skill for modern software engineers."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/vibe-coding-cover.png"
+  alt: "What is Vibe Coding? Why AI code review is the future of software engineering workflows"
+  relative: false
 ---
 
 

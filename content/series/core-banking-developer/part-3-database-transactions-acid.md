@@ -1,4 +1,4 @@
----
+﻿---
 title: "ACID Transactions & Isolation Levels in Core Banking"
 slug: "part-3-database-transactions-acid"
 date: 2026-05-06T18:00:00+07:00
@@ -6,6 +6,10 @@ lastmod: 2026-06-11T20:00:00+07:00
 draft: false
 description: "ACID transactions in core banking: PostgreSQL isolation levels, row-level locking vs optimistic concurrency, preventing dirty reads in financial systems."
 weight: 4
+cover:
+  image: "/images/posts/banking-microservices-cover.png"
+  alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
+  relative: false
 ---
 
 ## The Core Problem: Concurrency

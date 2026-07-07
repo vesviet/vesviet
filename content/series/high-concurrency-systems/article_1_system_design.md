@@ -1,4 +1,4 @@
----
+﻿---
 title: "Chapter 1: How Systems Handle Millions of Requests/s (C10M)? Lessons from Shopee & Alipay"
 date: 2026-06-09T10:00:00+07:00
 lastmod: 2026-06-09T10:00:00+07:00
@@ -13,6 +13,10 @@ ShowToc: true
 TocOpen: true
 aliases:
   - "/series/high-concurrency-systems/part-3-worker-pools/"
+cover:
+  image: "/images/posts/realtime-inventory-cover.png"
+  alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
+  relative: false
 ---
 [← Series hub](/series/high-concurrency-systems/)
 [Next →](/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/)

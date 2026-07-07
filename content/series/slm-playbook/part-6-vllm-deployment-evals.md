@@ -11,6 +11,10 @@ categories: ["Series", "SLM Playbook"]
 tags: ["AI Engineering", "vLLM", "Quantization", "Model Serving", "AWQ"]
 aliases:
   - "/series/slm-playbook/part-2-vllm-serving/"
+cover:
+  image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
+  alt: "SLM Playbook series: fine-tuning, LoRA, QLoRA, and production deployment of Small Language Models"
+  relative: false
 ---
 [â† Series hub](/series/slm-playbook/)
 [â† Previous](/series/slm-playbook/part-5-preference-alignment/)

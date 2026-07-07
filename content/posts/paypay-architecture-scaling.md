@@ -1,4 +1,4 @@
----
+﻿---
 title: "PayPay Architecture: Scaling Payments to 70M Users"
 slug: "paypay-architecture-scaling"
 date: "2026-06-01T10:00:00+07:00"
@@ -20,6 +20,10 @@ tags:
 description: "An in-depth look at PayPay's engineering stack: handling 70M users and 7.8B transactions/year using TiDB, Kafka event sourcing, GitOps, and chaos engineering."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/paypay-scaling-cover.png"
+  alt: "PayPay architecture and scaling: distributed payment system engineering in Japan"
+  relative: false
 ---
 
 

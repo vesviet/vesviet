@@ -1,4 +1,4 @@
----
+﻿---
 title: "Generative UI with MCP: Architecting AI-Native Frontends"
 slug: "generative-ui-with-mcp-ai-native-frontend"
 date: "2026-06-01T10:00:00+07:00"
@@ -20,6 +20,10 @@ tags:
 description: "Architecting dynamic generative UI applications with Model Context Protocol (MCP): dynamic registries, client-agent state synchronization, security, and a11y."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/generative-ui-mcp-cover.png"
+  alt: "Generative UI with MCP: AI-native frontend architecture using Model Context Protocol tool calls"
+  relative: false
 ---
 
 

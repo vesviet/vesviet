@@ -1,4 +1,4 @@
----
+﻿---
 title: "Chapter 9: Database Sharding & Read/Write Splitting"
 date: 2026-06-09T10:40:00+07:00
 lastmod: 2026-06-09T10:40:00+07:00
@@ -11,6 +11,10 @@ slug: "database-sharding-read-write-splitting"
 description: "Scale your relational database infinitely using GORM dbresolver for Read/Write splitting and Consistent Hashing for massive Sharding."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/realtime-inventory-cover.png"
+  alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
+  relative: false
 ---
 [← Previous](/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/) | [Series hub](/series/high-concurrency-systems/)
 

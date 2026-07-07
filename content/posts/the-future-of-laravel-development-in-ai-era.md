@@ -1,4 +1,4 @@
----
+﻿---
 title: "Laravel in the AI Era: 10 Predictions for 2028"
 slug: "the-future-of-laravel-development-in-ai-era"
 date: "2026-05-16T21:35:00+07:00"
@@ -9,6 +9,10 @@ description: "Field report on how AI coding agents are reshaping Laravel develop
 categories: ["Engineering", "Strategy"]
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/laravel-ai-era-cover.png"
+  alt: "Laravel in the AI era: 10 predictions for 2028 — from LLM integration to AI-assisted development"
+  relative: false
 ---
 
 

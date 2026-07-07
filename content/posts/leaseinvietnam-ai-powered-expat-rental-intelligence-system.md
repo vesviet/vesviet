@@ -1,4 +1,4 @@
----
+﻿---
 title: "LeaseInVietnam: AI-Powered Expat Rental & B2B Lead Engine"
 slug: "leaseinvietnam-ai-powered-expat-rental-intelligence-system"
 date: "2026-04-24T10:00:00+07:00"
@@ -22,6 +22,10 @@ tags:
 description: "Build an autonomous AI pipeline that scrapes and publishes expat rental intelligence for Vietnam, turning articles into a B2B lead funnel."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/leaseinvietnam-cover.png"
+  alt: "LeaseInVietnam: AI-powered expat rental platform and B2B lead intelligence system architecture"
+  relative: false
 ---
 
 

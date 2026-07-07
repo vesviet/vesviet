@@ -1,4 +1,4 @@
----
+﻿---
 title: "Qdrant Hybrid Search: Solving Semantic and Hard Filters"
 date: 2026-05-22T22:30:00+07:00
 lastmod: 2026-05-22T22:30:00+07:00
@@ -12,6 +12,10 @@ description: "Configure Qdrant Hybrid Search (Dense + BM25) using Reciprocal Ran
 categories: ["Engineering"]
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/agentic-ecommerce-search-cover.png"
+  alt: "Agentic E-commerce Search Engine Architecture series: vector databases, ranking, and Go"
+  relative: false
 ---
 
 In [Part 2: Data Ingestion & Atomic Chunking - Bringing Product Data into the AI Environment](/series/agentic-ecommerce-search/part-2-ingestion-chunking/), we established a clean data synchronization pipeline from PostgreSQL to Qdrant via Kafka CDC. But the journey of building a standard e-commerce search engine has just begun.

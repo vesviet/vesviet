@@ -1,4 +1,4 @@
----
+﻿---
 title: "Deconstructing the Ecosystem: Service Details by Domain"
 slug: "deconstructing-ecommerce-service-details-domain"
 date: 2026-04-12T08:00:00+07:00
@@ -9,6 +9,10 @@ description: "A detailed technical breakdown of how a monolithic e-commerce appl
 categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  alt: "Deconstructing E-commerce by Domain: service responsibilities, data ownership, and API contracts"
+  relative: false
 ---
 
 

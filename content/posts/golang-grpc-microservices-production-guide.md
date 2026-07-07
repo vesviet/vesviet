@@ -1,4 +1,4 @@
----
+﻿---
 title: "Golang gRPC Microservices: Protobuf, TLS & Middleware"
 slug: "golang-grpc-microservices-production-guide"
 date: "2026-06-11T21:00:00+07:00"
@@ -18,6 +18,10 @@ tags:
   - "gRPC Streaming"
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/golang-microservices-cover.png"
+  alt: "Golang gRPC Microservices production guide: Protobuf, mTLS, middleware, and graceful shutdown"
+  relative: false
 ---
 
 ## Why gRPC for Go Microservices?

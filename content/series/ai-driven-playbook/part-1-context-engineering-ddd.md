@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 1 — Context Engineering: Domain-Driven Design for AI"
 date: 2026-05-13T08:00:00+07:00
 lastmod: 2026-05-13T08:00:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 2
 categories: ["Series", "Enterprise Playbook"]
 tags: ["AI", "Enterprise Architecture", "CTO", "Tech Lead"]
+cover:
+  image: "/images/posts/hybrid-ai-pipeline-cover.png"
+  alt: "AI-Driven Engineer Enterprise Playbook series: workflows, autonomous pipelines, and tooling"
+  relative: false
 ---
 
 One of the most disastrous mistakes engineers make when transitioning to AI IDEs (like Cursor or Copilot) is the mindset: **"Just throw the entire source code at it, the AI will figure it out."**

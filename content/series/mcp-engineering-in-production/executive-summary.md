@@ -1,4 +1,4 @@
----
+﻿---
 title: "Executive Summary: MCP - The Control Plane of the AI Ecosystem"
 date: 2026-05-15T14:00:00+07:00
 lastmod: 2026-05-15T14:00:00+07:00
@@ -13,6 +13,10 @@ tags:
 description: "What is the Model Context Protocol? Why has MCP become the Control Plane of the AI ecosystem? Evaluating the tradeoffs between MCP and REST, and identifying production pitfalls."
 aliases:
   - /series/mcp-engineering-in-production/executive-summary/
+cover:
+  image: "/images/posts/generative-ui-mcp-cover.png"
+  alt: "MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment"
+  relative: false
 ---
 
 In less than two years since its launch, the **Model Context Protocol (MCP)** has transformed from an internal Anthropic initiative into an open industry standard. Now managed by the Agentic AI Foundation under the [Linux Foundation](https://www.linuxfoundation.org/), MCP is redefining how we design software systems. If TCP/IP connects computers, and REST connects microservices, then the MCP protocol was born to directly connect LLMs (Large Language Models) and AI Agents with real-world data and tools.

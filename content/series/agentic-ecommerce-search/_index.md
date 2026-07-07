@@ -1,4 +1,4 @@
----
+﻿---
 title: "Agentic E-commerce Search Engine Architecture"
 date: 2026-05-22T22:00:00+07:00
 lastmod: 2026-06-16T22:00:00+07:00
@@ -10,6 +10,10 @@ keywords: ["Agentic E-commerce Search Engine"]
 description: "A hands-on series guiding you through building an Agentic Search system for E-commerce using Golang, Qdrant Hybrid Search, and Redis Caching."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/agentic-ecommerce-search-cover.png"
+  alt: "Agentic E-commerce Search Engine Architecture series — vector databases, ranking, and Go"
+  relative: false
 ---
 
 # Agentic E-commerce Search Engine Architecture

@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 6 — AI Observability & Evals: Eliminating Operational Blind Spots"
 date: 2026-05-19T08:00:00+07:00
 lastmod: 2026-05-19T08:00:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 8
 categories: ["Series", "Enterprise Playbook"]
 tags: ["AI", "Enterprise Architecture", "CTO", "Tech Lead"]
+cover:
+  image: "/images/posts/hybrid-ai-pipeline-cover.png"
+  alt: "AI-Driven Engineer Enterprise Playbook series: workflows, autonomous pipelines, and tooling"
+  relative: false
 ---
 
 Many engineers in the current market can build an AI App in a weekend. But those who know how to **operate an AI system in production (AI Platform Operations)** can be counted on one hand.

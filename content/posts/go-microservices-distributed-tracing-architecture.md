@@ -1,4 +1,4 @@
----
+﻿---
 title: "Go Microservices Distributed Tracing Architecture (2026)"
 slug: "go-microservices-distributed-tracing-architecture"
 aliases:
@@ -21,6 +21,10 @@ tags:
   - "Kafka"
   - "Microservices"
 mermaid: true
+cover:
+  image: "/images/posts/golang-microservices-cover.png"
+  alt: "Go Microservices Distributed Tracing Architecture 2026: OpenTelemetry, W3C propagation, tail-based sampling"
+  relative: false
 ---
 
 Monitoring complex Go microservices requires more than isolated logs. When a request traverses HTTP APIs, Kafka event streams, and asynchronous worker pools, you need absolute visibility to pinpoint latency bottlenecks and failures.

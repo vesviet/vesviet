@@ -1,4 +1,4 @@
----
+﻿---
 title: "Enterprise AI Data Pipeline & GraphRAG Architecture"
 slug: "ai-data-engineering-pipeline"
 date: "2026-05-17T12:00:00+07:00"
@@ -12,6 +12,10 @@ ShowToc: true
 TocOpen: true
 aliases:
   - "/series/ai-data-engineering-pipeline/executive-summary"
+cover:
+  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
+  alt: "Enterprise AI Data Pipeline and GraphRAG Architecture series — graph-based retrieval at scale"
+  relative: false
 ---
 
 ## Series Overview

@@ -1,4 +1,4 @@
----
+﻿---
 title: "Surge Pricing Algorithm & Spatial Indexing Architecture"
 slug: "surge-pricing-optimization-architecture"
 date: "2026-06-01T15:20:00+07:00"
@@ -20,6 +20,10 @@ tags:
 description: "Explore the architecture of a real-time Surge Pricing algorithm. Discover how Uber utilizes the H3 spatial index, Kafka, and Flink to calculate dynamic pricing."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/surge-pricing-cover.png"
+  alt: "Surge pricing optimization architecture: real-time demand-supply ML model for marketplace platforms"
+  relative: false
 ---
 
 

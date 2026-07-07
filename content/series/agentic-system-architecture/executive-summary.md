@@ -1,4 +1,4 @@
----
+﻿---
 title: "Executive Summary — The Shift to Agentic Architectures"
 date: 2026-05-14T08:00:00+07:00
 lastmod: 2026-05-14T08:00:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 1
 categories: ["Series", "Agent Architecture"]
 tags: ["AI", "Multi-Agent", "System Design", "CTO", "Architect"]
+cover:
+  image: "/images/posts/agentic-ai-swarm-cover.png"
+  alt: "Agentic System Architecture series: multi-agent production systems with Go and LiteLLM"
+  relative: false
 ---
 
 While using an AI to write code or answer support tickets is becoming commonplace, the true transformation in enterprise software lies in **Agentic Systems**. We are moving away from monolithic, single-prompt architectures toward distributed networks of AI Agents that can plan, coordinate, and execute complex workflows autonomously.

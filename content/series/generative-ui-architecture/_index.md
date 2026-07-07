@@ -1,4 +1,4 @@
----
+﻿---
 title: "Roadmap: Generative UI & AI-Native Frontend Architecture"
 date: 2026-05-16T12:00:00+07:00
 lastmod: 2026-05-16T12:00:00+07:00
@@ -8,6 +8,10 @@ ShowToc: true
 TocOpen: true
 weight: 70
 tags: ["Generative UI", "AI Frontend", "Astro", "MCP Frontend", "AI-Native"]
+cover:
+  image: "/images/posts/generative-ui-mcp-cover.png"
+  alt: "Generative UI and AI-Native Frontend Architecture roadmap series — MCP and LLM-driven UIs"
+  relative: false
 ---
 
 Welcome to the **Generative UI & AI-Native Frontend Architecture** series - a practical guide for Frontend Engineers, System Architects, and UI/UX Designers.

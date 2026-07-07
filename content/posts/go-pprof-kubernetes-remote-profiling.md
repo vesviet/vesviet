@@ -1,4 +1,4 @@
----
+﻿---
 title: "Go pprof in Kubernetes: Remote Profiling & Flame Graphs"
 slug: "go-pprof-kubernetes-remote-profiling"
 date: "2026-06-01T10:00:00+07:00"
@@ -21,6 +21,10 @@ tags:
 description: "How to safely profile CPU, memory, and goroutines in Go services running in Kubernetes using kubectl port-forward, pprof, and Pyroscope."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/goroutine-leak-cover.png"
+  alt: "Go pprof Kubernetes remote profiling: kubectl port-forward, flame graphs, and production profiling"
+  relative: false
 ---
 
 

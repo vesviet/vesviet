@@ -1,4 +1,4 @@
----
+﻿---
 title: "Chapter 6: API Gateway vs Service Mesh in Microservices Architecture"
 date: 2026-06-09T10:25:00+07:00
 lastmod: 2026-06-09T10:25:00+07:00
@@ -13,6 +13,10 @@ ShowToc: true
 TocOpen: true
 aliases:
   - "/series/high-concurrency-systems/part-4-dapr-pubsub/"
+cover:
+  image: "/images/posts/realtime-inventory-cover.png"
+  alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
+  relative: false
 ---
 [← Previous](/series/high-concurrency-systems/golang-database-connection-pool-optimization/) | [Series hub](/series/high-concurrency-systems/) | [Next →](/series/high-concurrency-systems/idempotency-api-design-payments/)
 

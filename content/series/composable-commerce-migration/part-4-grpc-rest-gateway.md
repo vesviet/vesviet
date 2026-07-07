@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 4: gRPC Internal + REST Gateway — API Contract Lifecycle"
 description: "gRPC to REST gateway for 21 Go services: proto naming conventions, Money type for pricing, cursor pagination, and bridging REST clients to gRPC services."
 date: 2026-04-29T10:00:00+07:00
@@ -14,6 +14,10 @@ series: ["Composable Commerce Migration"]
 series_order: 4
 ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
+cover:
+  image: "/images/posts/ecommerce-composable-cover.png"
+  alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
+  relative: false
 ---
 
 Every public-facing API in the Composable Commerce Platform starts as a `.proto` file. The code — Go gRPC handlers, TypeScript SDK, HTTP routes, request validation, error codes — is generated from that contract. This article documents the conventions that make that system work.

@@ -7,6 +7,10 @@ tags: ["Domain-Driven Design", "DDD", "Modular Monolith", "Spring Modulith", "Pa
 aliases:
   - "/series/modular-monolith-architecture/part-3-ddd-module-boundaries/"
   - "/series/modular-monolith-architecture/finops-cost-reality-microservices-tax/part-3-ddd-module-boundaries.md"
+cover:
+  image: "/images/posts/golang-microservices-cover.png"
+  alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
+  relative: false
 ---
 
 # Part 3: Domain-Driven Design (DDD) Boundaries in a Modular Monolith

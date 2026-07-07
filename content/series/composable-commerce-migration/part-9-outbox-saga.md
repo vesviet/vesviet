@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 9: Transactional Outbox & Saga for Guaranteed Delivery"
 description: "How the Checkout→Order→Payment→Warehouse saga runs with guaranteed delivery: PostgreSQL outbox, choreography saga, idempotency keys, and circuit breaker."
 date: 2026-06-03T10:00:00+07:00
@@ -14,6 +14,10 @@ series: ["Composable Commerce Migration"]
 series_order: 9
 ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
+cover:
+  image: "/images/posts/ecommerce-composable-cover.png"
+  alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
+  relative: false
 ---
 
 When a customer places an order on the Composable Commerce Platform, seven events need to happen in sequence across four independent services: Order created → Payment authorized → Stock reserved → Fulfillment triggered → Notification sent → Loyalty points awarded → Shipping label generated. Any of these can fail. The network can fail. The database can fail. A third-party payment gateway can time out.

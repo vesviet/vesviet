@@ -1,4 +1,4 @@
----
+﻿---
 title: "Uber RAMEN: Real-Time Push to Millions of Devices"
 slug: "part-6-realtime-push-ramen"
 date: 2026-05-06T20:00:00+07:00
@@ -6,6 +6,10 @@ lastmod: 2026-06-11T20:00:00+07:00
 draft: false
 description: "How Uber pushes ride offers to millions of drivers in <100ms via RAMEN: gRPC over QUIC, Apache Helix sharding, and Cassandra+Redis at-least-once delivery."
 weight: 7
+cover:
+  image: "/images/posts/real-time-ride-hailing-cover.png"
+  alt: "Real-Time Ride-Hailing Architecture series: Uber and Grab — matching, GPS, WebSocket at scale"
+  relative: false
 ---
 
 ## The Problem: Pushing Instant Notifications to Millions of Devices

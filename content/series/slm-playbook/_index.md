@@ -1,4 +1,4 @@
----
+﻿---
 title: "The SLM Playbook: Fine-Tuning & Model Distillation"
 date: 2026-05-20T21:05:00+07:00
 lastmod: 2026-05-20T21:05:00+07:00
@@ -7,6 +7,10 @@ weight: 35
 description: "A practical guide to selecting, fine-tuning (PEFT), aligning (DPO/KTO/GRPO), and deploying Small Language Models (SLMs) on self-hosted vLLM infrastructure."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
+  alt: "The SLM Playbook: fine-tuning and model distillation series for production AI engineers"
+  relative: false
 ---
 
 Welcome to **Phase 2.5** of our AI-Native architecture journey.

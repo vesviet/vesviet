@@ -1,4 +1,4 @@
----
+﻿---
 title: "Beyond Chatbots: What is Generative UI? — AI Frontend (P1)"
 date: 2026-05-16T12:00:00+07:00
 lastmod: 2026-05-16T12:00:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 1
 categories: ["Series", "Generative UI", "Frontend Architecture"]
 tags: ["Generative UI", "AI Frontend", "Zero UI", "Chatbot", "Multi-Agent", "UX"]
+cover:
+  image: "/images/posts/generative-ui-mcp-cover.png"
+  alt: "Generative UI and AI-Native Frontend Architecture series: MCP, LLM-driven UIs, and roadmap"
+  relative: false
 ---
 
 Over the past two years, the software industry has been swept up in the "Chat-in-a-box" storm. A multitude of companies have embedded a chat window (usually in the right corner of the screen) into every application—from core banking systems and ERPs to HR management software—with the hope that AI will automate all user actions.

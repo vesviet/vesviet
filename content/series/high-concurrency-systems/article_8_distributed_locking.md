@@ -1,4 +1,4 @@
----
+﻿---
 title: "Chapter 8: Distributed Locking — Redlock vs ZooKeeper"
 date: 2026-06-09T10:35:00+07:00
 lastmod: 2026-06-09T10:35:00+07:00
@@ -14,6 +14,10 @@ TocOpen: true
 aliases:
   - "/series/high-concurrency-systems/part-1-pessimistic-locks/"
   - "/series/high-concurrency-systems/part-2-optimistic-locks/"
+cover:
+  image: "/images/posts/realtime-inventory-cover.png"
+  alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
+  relative: false
 ---
 [← Previous](/series/high-concurrency-systems/idempotency-api-design-payments/) | [Series hub](/series/high-concurrency-systems/) | [Next →](/series/high-concurrency-systems/database-sharding-read-write-splitting/)
 

@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 7: Phase 2 — Dual-Write: Dapr PubSub + Conflict Resolution"
 description: "Dual-write while Magento stays live: Dapr PubSub event-driven sync, 5-policy conflict resolution matrix, and per-service migration sequencing."
 date: 2026-05-20T10:00:00+07:00
@@ -14,6 +14,10 @@ series: ["Composable Commerce Migration"]
 series_order: 7
 ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
+cover:
+  image: "/images/posts/ecommerce-composable-cover.png"
+  alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
+  relative: false
 ---
 
 In Phase 1, both systems existed but only one wrote data: Magento. In Phase 2, both systems write data simultaneously. This is the most technically complex phase — and the one where most migrations introduce data corruption if they don't have an explicit conflict resolution strategy.

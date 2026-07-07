@@ -1,4 +1,4 @@
----
+﻿---
 title: "Double-Entry Ledger: Immutable Schema & Concurrency"
 date: 2026-06-18T11:00:00+07:00
 lastmod: 2026-07-03T15:41:55+07:00
@@ -9,6 +9,10 @@ series: ["core-banking-architecture"]
 keywords: ["double entry ledger database schema", "TigerBeetle architecture", "pessimistic vs optimistic locking ledger", "Mambu GL schema"]
 author: "Tuan Anh"
 schema: ["Article", "TechArticle", "FAQPage"]
+cover:
+  image: "/images/posts/banking-microservices-cover.png"
+  alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
+  relative: false
 ---
 
 > **Series (Part 1 of 8):** This series dives deep into production-grade Core Banking architecture. This article focuses on the most critical foundation: schema design for a Double-Entry Ledger and concurrency locking strategies. If you are new to Core Banking, please read the [Core Banking Developer Series](/series/core-banking-developer/) first.

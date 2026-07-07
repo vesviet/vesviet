@@ -1,4 +1,4 @@
----
+﻿---
 title: "Agentic System Architecture: Multi-Agent in Production"
 date: 2026-05-14T08:00:00+07:00
 lastmod: 2026-06-16T08:00:00+07:00
@@ -7,6 +7,10 @@ description: "Design and operate multi-agent systems in production: topology, me
 ShowToc: true
 TocOpen: true
 weight: 50
+cover:
+  image: "/images/posts/agentic-ai-swarm-cover.png"
+  alt: "Agentic System Architecture: multi-agent in production — orchestration, tools, and deployment"
+  relative: false
 ---
 
 # Agentic System Architecture: Multi-Agent in Production

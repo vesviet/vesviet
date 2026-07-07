@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 2 — The 8 Core Blocks of an Agent Prompt"
 date: 2026-05-09T10:40:00+07:00
 lastmod: 2026-05-09T10:40:00+07:00
@@ -11,6 +11,10 @@ tags:
 weight: 3
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/prompt-engineering-benchmark-cover.png"
+  alt: "Prompt Standard series: product, engineering, and ops guide for production LLM prompting"
+  relative: false
 ---
 
 ## Start with a Framework, Not a Long Prompt

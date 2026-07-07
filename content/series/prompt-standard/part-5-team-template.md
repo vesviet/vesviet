@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 5 — A Minimum Viable Prompt Standard Kit for Immediate Deployment"
 date: 2026-05-09T10:55:00+07:00
 lastmod: 2026-05-09T10:55:00+07:00
@@ -11,6 +11,10 @@ tags:
 weight: 6
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/prompt-engineering-benchmark-cover.png"
+  alt: "Prompt Standard series: product, engineering, and ops guide for production LLM prompting"
+  relative: false
 ---
 
 ## The Goal Is Not Perfection — It Is Getting Started

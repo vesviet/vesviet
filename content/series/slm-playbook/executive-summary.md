@@ -1,4 +1,4 @@
----
+﻿---
 title: "Executive Summary — The SLM Playbook"
 date: 2026-05-20T21:05:00+07:00
 lastmod: 2026-05-20T21:05:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 1
 categories: ["Series", "SLM Playbook"]
 tags: ["AI", "vLLM", "System Design", "CTO", "Architect"]
+cover:
+  image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
+  alt: "SLM Playbook series: fine-tuning, LoRA, QLoRA, and production deployment of Small Language Models"
+  relative: false
 ---
 
 [← Series hub](/series/slm-playbook/)

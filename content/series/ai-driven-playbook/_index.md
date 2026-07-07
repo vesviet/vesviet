@@ -1,4 +1,4 @@
----
+﻿---
 title: "The AI-Driven Engineer: Enterprise Playbook"
 date: 2026-05-12T08:00:00+07:00
 lastmod: 2026-05-12T08:00:00+07:00
@@ -7,6 +7,10 @@ weight: 20
 description: "Hands-on playbook for applying AI to real engineering workflows: IDE setup, internal RAG, AI Platform layer, Policy-as-Code CI/CD, and AI observability."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/hybrid-ai-pipeline-cover.png"
+  alt: "The AI-Driven Engineer Enterprise Playbook: workflows, tooling, and autonomous pipelines"
+  relative: false
 ---
 
 Welcome to **Phase 2** of your journey to evolve into a next-generation Software Engineer. 

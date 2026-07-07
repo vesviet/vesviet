@@ -1,4 +1,4 @@
----
+﻿---
 title: "Why E-commerce Needs Agentic Search?"
 date: 2026-05-22T22:05:00+07:00
 lastmod: 2026-05-22T22:05:00+07:00
@@ -12,6 +12,10 @@ description: "Why Agentic Search is the mandatory architectural evolution replac
 categories: ["Engineering", "Strategy"]
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/agentic-ecommerce-search-cover.png"
+  alt: "Agentic E-commerce Search Engine Architecture series: vector databases, ranking, and Go"
+  relative: false
 ---
 
 The search engine is the heart of every e-commerce platform. If customers cannot find a product, they will not buy it.

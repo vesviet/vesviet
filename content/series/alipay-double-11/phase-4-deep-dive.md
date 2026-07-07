@@ -1,4 +1,4 @@
----
+﻿---
 title: "Phase 4: Deep Dive (Technology Internals)"
 date: 2026-05-02T18:10:00+07:00
 lastmod: 2026-05-02T18:10:00+07:00
@@ -6,6 +6,10 @@ draft: false
 description: "Deep dive notes on the internals behind Double 11-scale systems: RPC evolution, messaging at peak scale, storage engines and compaction, distributed transactions, and real-time risk control."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/alipay-double11-cover.png"
+  alt: "Alipay Double 11 Architecture series: 583,000 TPS payment processing at extreme scale"
+  relative: false
 ---
 [← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/phase-4-technology/) • [Next →](/series/alipay-double-11/modern-tech-comparison/)

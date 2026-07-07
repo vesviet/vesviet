@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 6 — Role Shift: From Coder to AI Orchestrator"
 date: 2026-05-10T15:50:00+07:00
 lastmod: 2026-05-10T15:50:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 7
 categories: ["Series", "Software Engineering"]
 tags: ["AI", "System Design", "Career"]
+cover:
+  image: "/images/posts/ai-native-frontend-cover.png"
+  alt: "AI-Driven Engineer series: evolving from code typist to AI-native software architect"
+  relative: false
 ---
 
 In Part 5, we saw the Board of Directors (BOD) frantically equipping internal AI systems to push productivity KPIs. At this point, if you stubbornly sit and type every line of code from start to finish, you will be left behind. To survive, programmers must shed the "Coder" jacket and put on the **"AI Orchestrator"** mantle.

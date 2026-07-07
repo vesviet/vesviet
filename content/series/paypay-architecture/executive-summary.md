@@ -1,10 +1,14 @@
----
+﻿---
 title: "Executive Summary: PayPay's Engineering Evolution"
 date: 2026-05-05T21:00:00+07:00
 lastmod: 2026-05-05T21:00:00+07:00
 draft: false
 description: "How PayPay scaled from zero to 70M users and 1,250 TPS: the engineering decisions behind Japan's leading payment platform and its Financial OS strategy."
 weight: 1
+cover:
+  image: "/images/posts/paypay-scaling-cover.png"
+  alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
+  relative: false
 ---
 
 ## Context: From Zero to Japan's Payment Infrastructure

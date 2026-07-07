@@ -1,4 +1,4 @@
----
+﻿---
 title: "AWS EKS vs ECS: Architecture, Cost & Real-World Use Cases (2026)"
 slug: "aws-eks-vs-ecs-comparison"
 date: 2026-06-26T21:00:00+07:00
@@ -13,6 +13,7 @@ TocOpen: true
 cover:
   image: "/images/posts/aws-eks-vs-ecs-cover.png"
   alt: "AWS EKS vs ECS architecture comparison — tanhdev.com"
+  relative: false
 ---
 
 **TL;DR:** EKS gives you full Kubernetes power with portability and the CNCF ecosystem. ECS gives you AWS-native simplicity with zero control plane cost. Choose EKS if you need GitOps, ArgoCD, Dapr, or multi-cloud portability. Choose ECS if you want faster setup, lower ops overhead, and a pure AWS-native stack.

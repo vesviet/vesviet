@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 2: Rush Monorepo — 21 Go Services & 2 Frontends"
 description: "Why Rush beats Nx and Turborepo for a mixed Go + Next.js monorepo: strict dependency governance, PNPM workspaces, and incremental CI builds."
 date: 2026-04-15T10:00:00+07:00
@@ -14,6 +14,10 @@ series: ["Composable Commerce Migration"]
 series_order: 2
 ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
+cover:
+  image: "/images/posts/ecommerce-composable-cover.png"
+  alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
+  relative: false
 ---
 
 When you have 21 Go microservices and 2 frontend applications, the first infrastructure question isn't Kubernetes or CI/CD — it's **how do you manage the code itself?**

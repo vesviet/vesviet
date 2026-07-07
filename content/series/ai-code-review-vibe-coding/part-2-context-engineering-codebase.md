@@ -1,4 +1,4 @@
----
+﻿---
 title: "Context Engineering for AI Coding: AGENTS.md, Cursor Rules & RAG"
 date: 2026-05-31T17:00:00+07:00
 lastmod: 2026-05-31T17:00:00+07:00
@@ -21,6 +21,10 @@ tags:
 description: "Make AI coding agents reliable on real codebases: AGENTS.md, Cursor Rules, memory banks, RAG pipelines, ContextOps, and MCP servers. Go examples included."
 aliases:
   - /series/ai-code-review-vibe-coding/part-2-context-engineering-codebase/
+cover:
+  image: "/images/posts/vibe-coding-cover.png"
+  alt: "Vibe Coding and AI Code Review series: from prototype to production AI-assisted engineering"
+  relative: false
 ---
 
 In 2025, METR — an AI safety and capability research organization — ran a rigorous randomized controlled trial. Sixteen experienced open-source developers worked on 246 real-world tasks, each randomly assigned to either use AI coding tools freely or not at all.

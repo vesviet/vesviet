@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 6: Observability & Audit Trail"
 date: 2026-05-15T14:00:00+07:00
 lastmod: 2026-05-15T14:00:00+07:00
@@ -14,6 +14,10 @@ tags:
 description: "Eliminating operational 'blind spots' in AI systems. A guide to setting up OpenTelemetry, Distributed Tracing, and SIEM integration for MCP Servers."
 aliases:
   - /series/mcp-engineering-in-production/part-6-observability/
+cover:
+  image: "/images/posts/generative-ui-mcp-cover.png"
+  alt: "MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment"
+  relative: false
 ---
 
 As mentioned in [Part 5](/series/mcp-engineering-in-production/part-5-security/), the **MCP08 (Lack of Audit & Telemetry)** vulnerability is one of the biggest risks in Agentic systems. In the [AI Driven Playbook](/series/ai-driven-playbook/), we agreed that: When AI automates tasks on behalf of humans, the requirements for Observability and Auditing become stricter than ever, especially under the pressure of regulations like the EU AI Act.

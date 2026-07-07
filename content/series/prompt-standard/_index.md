@@ -1,4 +1,4 @@
----
+﻿---
 title: "Prompt Standard: Product, Engineering & Ops Guide"
 date: 2026-05-09T10:30:00+07:00
 lastmod: 2026-05-09T10:30:00+07:00
@@ -15,6 +15,10 @@ tags:
   - context-engineering
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/prompt-engineering-benchmark-cover.png"
+  alt: "Prompt Standard series: product, engineering, and ops guide for production LLM prompting"
+  relative: false
 ---
 
 This series is designed for **developers, BAs, PMs, QAs, content creators, accountants, operations staff, and anyone working with AI agents** who wants to move beyond "writing prompts by feel."

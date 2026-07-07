@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 5 — Operating Model: Evolving Your Team for the AI Era"
 date: 2026-05-18T08:00:00+07:00
 lastmod: 2026-05-18T08:00:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 7
 categories: ["Series", "Enterprise Playbook"]
 tags: ["AI", "Enterprise Architecture", "CTO", "Tech Lead"]
+cover:
+  image: "/images/posts/hybrid-ai-pipeline-cover.png"
+  alt: "AI-Driven Engineer Enterprise Playbook series: workflows, autonomous pipelines, and tooling"
+  relative: false
 ---
 
 Scroll through LinkedIn or Twitter and you will find countless posts making sensational claims: *"AI will replace QA"*, *"Product Managers will now write their own code"*, or *"1 Dev today equals 10 Devs from the past"*.

@@ -1,4 +1,4 @@
----
+﻿---
 title: "Chapter 5: Optimizing Golang Database Connection Pools"
 date: 2026-06-09T10:20:00+07:00
 lastmod: 2026-06-09T10:20:00+07:00
@@ -11,6 +11,10 @@ slug: "golang-database-connection-pool-optimization"
 description: "Tune your *sql.DB connection pool parameters (MaxOpenConns, MaxIdleConns) and implement PgBouncer to maximize Go database performance."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/realtime-inventory-cover.png"
+  alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
+  relative: false
 ---
 [← Previous](/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/) | [Series hub](/series/high-concurrency-systems/) | [Next →](/series/high-concurrency-systems/api-gateway-vs-service-mesh/)
 

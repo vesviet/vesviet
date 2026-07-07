@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 8: Phase 3 — Full Cutover: Zero Downtime + ArgoCD GitOps"
 description: "Full Magento cutover: 25%→100% traffic migration for Order Service, 30-day rollback window, archive service, and ArgoCD+Kustomize GitOps deployment."
 date: 2026-05-27T10:00:00+07:00
@@ -14,6 +14,10 @@ series: ["Composable Commerce Migration"]
 series_order: 8
 ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
+cover:
+  image: "/images/posts/ecommerce-composable-cover.png"
+  alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
+  relative: false
 ---
 
 Phase 3 is the final act: 100% of traffic moves to microservices, Magento becomes a passive archive, and the platform runs entirely on Go microservices via GitOps. No PHP in the critical path. No Magento license renewal needed.

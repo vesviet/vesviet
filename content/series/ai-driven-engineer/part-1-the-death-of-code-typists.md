@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 1 — The Death of 'Code Typists': When Syntax is No Longer an Advantage"
 date: 2026-05-10T15:00:00+07:00
 lastmod: 2026-05-10T15:00:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 2
 categories: ["Series", "Software Engineering"]
 tags: ["AI", "System Design", "Career"]
+cover:
+  image: "/images/posts/ai-native-frontend-cover.png"
+  alt: "AI-Driven Engineer series: evolving from code typist to AI-native software architect"
+  relative: false
 ---
 
 For years, the image of a talented programmer was often associated with blazing fast typing speeds, the ability to memorize dozens of API libraries, and writing code without a single syntax error. We called them pure "Coders". But as AI enters the playing field, a harsh reality has emerged: **Writing code is only the easiest part of building software.**

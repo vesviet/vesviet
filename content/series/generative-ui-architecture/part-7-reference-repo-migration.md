@@ -1,4 +1,4 @@
----
+﻿---
 title: "GenUI Boilerplate & Strangler Fig Migration — Frontend (P7)"
 date: 2026-05-16T12:30:00+07:00
 lastmod: 2026-05-16T12:30:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 7
 categories: ["Series", "Generative UI", "Frontend Architecture"]
 tags: ["Generative UI", "Astro", "Svelte", "Strangler Fig", "Migration", "AI Frontend", "Boilerplate"]
+cover:
+  image: "/images/posts/generative-ui-mcp-cover.png"
+  alt: "Generative UI and AI-Native Frontend Architecture series: MCP, LLM-driven UIs, and roadmap"
+  relative: false
 ---
 
 This is the conclusion of the series. The best architectural theories remain merely on paper if we lack a clear execution path.

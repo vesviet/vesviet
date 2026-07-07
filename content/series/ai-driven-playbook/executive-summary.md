@@ -1,4 +1,4 @@
----
+﻿---
 title: "Executive Summary — Building an AI-Native Engineering Organization"
 date: 2026-05-13T07:00:00+07:00
 lastmod: 2026-05-13T07:00:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 1
 categories: ["Series", "Enterprise Playbook"]
 tags: ["AI", "Enterprise Architecture", "CTO", "Tech Lead"]
+cover:
+  image: "/images/posts/hybrid-ai-pipeline-cover.png"
+  alt: "AI-Driven Engineer Enterprise Playbook series: workflows, autonomous pipelines, and tooling"
+  relative: false
 ---
 
 If the [first series](/series/ai-driven-engineer/) helped you shift your mindset from "Code Typist" to "Architect," then this Playbook answers the next foundational question at the enterprise scale: **"How do you scale a single individual's 10x productivity into the productivity of an entire organization?"**

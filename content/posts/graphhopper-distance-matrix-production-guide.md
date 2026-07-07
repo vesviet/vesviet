@@ -1,4 +1,4 @@
----
+﻿---
 title: "GraphHopper Distance Matrix: Self-Host & Replace Google Maps API ($510/day → $0)"
 slug: "graphhopper-distance-matrix-production-guide"
 date: "2026-06-11T20:00:00+07:00"
@@ -20,6 +20,10 @@ tags:
   - "Logistics"
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/graphhopper-cover.png"
+  alt: "GraphHopper distance matrix production guide: self-hosted routing with OSM data and Kubernetes"
+  relative: false
 ---
 
 ## What Is the GraphHopper Distance Matrix?

@@ -1,4 +1,4 @@
----
+﻿---
 title: "Go Microservices Architecture: Production Guide"
 slug: "go-microservices"
 date: 2026-06-12T00:00:00Z
@@ -14,6 +14,7 @@ TocOpen: true
 cover:
   image: "/images/posts/golang-microservices-cover.png"
   alt: "Go microservices architecture production guide 2026"
+  relative: false
 ---
 
 Choosing Go for microservices is an architecture decision, not a language preference. The goroutine model, binary size, and serialization speed change what the deployment unit looks like at the infrastructure level.

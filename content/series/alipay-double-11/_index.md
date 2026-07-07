@@ -1,4 +1,4 @@
----
+﻿---
 title: "Alipay Double 11 Architecture"
 date: 2026-05-02T18:00:00+07:00
 lastmod: 2026-05-02T18:00:00+07:00
@@ -7,6 +7,10 @@ weight: 130
 description: "How Alipay scaled Double 11 to 61M QPS: LDC unitization, OceanBase, RocketMQ, SOFAStack, and annual stress testing for planet-scale payment reliability."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/alipay-double11-cover.png"
+  alt: "Alipay Double 11 Architecture series: 583,000 TPS payment processing at extreme scale"
+  relative: false
 ---
 
 This is a structured research series on how Alipay scaled Double 11 from early constraints to planet-scale reliability and throughput. It is organized as a hub + phases, so you can read it like a short book.

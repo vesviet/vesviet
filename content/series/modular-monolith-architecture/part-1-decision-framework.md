@@ -7,6 +7,10 @@ tags: ["Architecture", "Modular Monolith", "Microservices", "System Design", "St
 aliases:
   - "/series/modular-monolith-architecture/part-1-decision-framework/"
   - "/series/modular-monolith-architecture/executive-summary-amazon-prime-video-monolith/part-1-decision-framework.md"
+cover:
+  image: "/images/posts/golang-microservices-cover.png"
+  alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
+  relative: false
 ---
 
 # Part 1: Architectural Decision Framework

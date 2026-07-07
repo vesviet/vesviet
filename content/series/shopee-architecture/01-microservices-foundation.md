@@ -1,4 +1,4 @@
----
+﻿---
 title: "Chapter 1: Microservices Foundation - The Power of Go, gRPC, and API Gateway"
 date: 2026-05-05T08:10:00+07:00
 lastmod: 2026-05-05T08:10:00+07:00
@@ -7,6 +7,10 @@ mermaid: true
 description: "How Shopee builds its backend with Golang, gRPC, and Microservices to handle massive scale."
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/shopee-flash-sale-cover.png"
+  alt: "Shopee Architecture series: scaling for flash sales — rate limiting, Redis, and distributed systems"
+  relative: false
 ---
 # Chapter 1: Building a Massive Foundation with Microservices, Golang, and gRPC
 

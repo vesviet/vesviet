@@ -1,4 +1,4 @@
----
+﻿---
 title: "Part 1 — Agent Topology & Orchestration"
 date: 2026-05-15T08:00:00+07:00
 lastmod: 2026-05-15T08:00:00+07:00
@@ -9,6 +9,10 @@ TocOpen: true
 weight: 2
 categories: ["Series", "Agent Architecture"]
 tags: ["AI", "Multi-Agent", "Orchestration", "System Design"]
+cover:
+  image: "/images/posts/agentic-ai-swarm-cover.png"
+  alt: "Agentic System Architecture series: multi-agent production systems with Go and LiteLLM"
+  relative: false
 ---
 
 > **Prerequisite:** To understand the context and why we need Multi-Agent systems instead of traditional Microservices, please refer to [Comprehensive AI-Native System Architecture](/series/ai-driven-playbook/part-8-ai-native-system-architecture/).

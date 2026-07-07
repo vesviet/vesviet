@@ -1,10 +1,14 @@
----
+﻿---
 title: "Executive Summary — The Big Picture of Order Allocation"
 date: 2026-05-06T20:30:00+07:00
 lastmod: 2026-05-06T20:30:00+07:00
 draft: false
 description: "An overview of the e-commerce order allocation problem — from inventory management and warehouse selection to driver allocation, cost optimization, and delivery speed."
 weight: 1
+cover:
+  image: "/images/posts/order-fulfillment-cover.png"
+  alt: "E-commerce Order Allocation Architecture series: Amazon and eBay warehouse and last-mile design"
+  relative: false
 ---
 
 ## The Core Problem

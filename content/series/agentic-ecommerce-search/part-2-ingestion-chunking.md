@@ -1,4 +1,4 @@
----
+﻿---
 title: "Data Ingestion & Atomic Chunking Product Data"
 date: 2026-05-22T22:25:00+07:00
 lastmod: 2026-05-22T22:25:00+07:00
@@ -12,6 +12,10 @@ description: "Setup CDC Kafka & Go to sync data to Qdrant. Learn the Atomic Chun
 categories: ["Engineering"]
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/agentic-ecommerce-search-cover.png"
+  alt: "Agentic E-commerce Search Engine Architecture series: vector databases, ranking, and Go"
+  relative: false
 ---
 
 In [Part 1: The Paradigm Shift - Agentic Architecture & Golang Orchestration Power](/series/agentic-ecommerce-search/part-1-golang-orchestration/), we established the Orchestration Engine using Golang and Eino. However, no matter how smart a brain is, it becomes useless if fed with misleading, unstructured, or fragmented information.
