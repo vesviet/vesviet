@@ -11,3 +11,5 @@ resources/_gen/
 .vscode/
 
 contracts/
+# Internal working docs (not public site content)
+_internal/
