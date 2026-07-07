@@ -5,8 +5,8 @@ cover:
   alt: "Dapr Workflow Saga Orchestration Guide"
 slug: "dapr-workflow-saga-orchestration-guide"
 author: "Lê Tuấn Anh"
-date: 2026-06-01T10:00:00+07:00
-lastmod: 2026-07-03T00:00:00+07:00
+date: "2026-06-01T10:00:00+07:00"
+lastmod: "2026-07-03T00:00:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -24,10 +24,15 @@ tags:
 description: "Step-by-step Go code for Orchestrated Saga using Dapr Workflow: durable state, compensating transactions, and banking-grade consistency."
 ShowToc: true
 TocOpen: true
+canonicalURL: "https://tanhdev.com/posts/dapr-workflow-saga-orchestration-guide/"
 ---
 
+**Answer-first:** Dapr Workflows implement the Saga pattern in Go by coordinating distributed transactions through stateful, durable orchestration. If a step fails, the orchestrator executes compensating transactions in reverse order, ensuring eventual consistency without requiring complex manual state management or two-phase commit overhead.
 
-**Answer-first:** Step-by-step Go code for Orchestrated Saga using Dapr Workflow: durable state, compensating transactions, and banking-grade consistency.
+### What You'll Learn That AI Won't Tell You
+- Compensation handlers configuration in Dapr to guarantee atomic rollback.
+- How to handle transient workflows when the orchestrator instance restarts mid-transaction.
+
 
 Most Go developers building microservices know the Choreography Saga pattern: service A emits an event, service B reacts, service C reacts to B, and so on. If step C fails, services emit "compensation" events in reverse order. The pattern works elegantly for simple flows, but breaks down as the number of steps grows: debugging a failed saga requires tracing events across five message broker topics, and implementing compensation logic requires every service to understand the full saga's state.
 

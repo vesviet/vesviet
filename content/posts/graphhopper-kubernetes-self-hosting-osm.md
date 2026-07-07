@@ -5,8 +5,8 @@ cover:
   alt: "Graphhopper Kubernetes Self Hosting Osm"
 slug: "graphhopper-kubernetes-self-hosting-osm"
 author: "Lê Tuấn Anh"
-date: 2026-06-01T10:00:00+07:00
-lastmod: 2026-06-01T10:00:00+07:00
+date: "2026-06-01T10:00:00+07:00"
+lastmod: "2026-06-01T10:00:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -24,10 +24,15 @@ tags:
 description: "Step-by-step guide to deploying GraphHopper on Kubernetes with OpenStreetMap data: Docker image, PVC for OSM PBF files, RAM tuning, and health probes."
 ShowToc: true
 TocOpen: true
+canonicalURL: "https://tanhdev.com/posts/graphhopper-kubernetes-self-hosting-osm/"
 ---
 
+**Answer-first:** Self-hosting GraphHopper on Kubernetes requires mounting OpenStreetMap (OSM) data via Persistent Volume Claims (PVC), tuning JVM memory parameters to cache routing graphs, and configuring liveness/readiness probes to handle the long startup index pre-loading times.
 
-**Answer-first:** Step-by-step guide to deploying GraphHopper on Kubernetes with OpenStreetMap data: Docker image, PVC for OSM PBF files, RAM tuning, and health probes.
+### What You'll Learn That AI Won't Tell You
+- PVC provisioning configurations for OSM PBF files in multi-region clusters.
+- Tuning health probe timeouts to accommodate long graph pre-computation periods.
+
 
 GraphHopper is arguably the most capable open-source routing engine available — it supports Contraction Hierarchies (CH) for sub-millisecond route queries, custom vehicle profiles, turn restrictions, and the full OpenStreetMap road network. The problem most teams encounter is not the algorithm; it is the operational challenge of running it in Kubernetes: loading a large OSM PBF file, sizing JVM memory correctly, handling the long CH pre-processing startup time, and updating map data without downtime.
 

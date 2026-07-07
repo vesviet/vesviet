@@ -5,8 +5,8 @@ cover:
   alt: "Golang Goroutine Pool Errgroup Worker"
 slug: "golang-goroutine-pool-errgroup-worker"
 author: "Lê Tuấn Anh"
-date: 2026-06-01T10:00:00+07:00
-lastmod: 2026-07-03T00:00:00+07:00
+date: "2026-06-01T10:00:00+07:00"
+lastmod: "2026-07-03T00:00:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -24,10 +24,17 @@ tags:
 description: "Production Go concurrency patterns: errgroup worker pools, semaphore-based rate limiting, bounded queues, and graceful backpressure for microservices."
 ShowToc: true
 TocOpen: true
+canonicalURL: "https://tanhdev.com/posts/golang-goroutine-pool-errgroup-worker/"
 ---
 
+**Answer-first:** Unbounded goroutines in production trigger OOM crashes and garbage collection spirals. Prevent failures by enforcing concurrency limits using `errgroup.WithContext` for group error handling, channel-based worker pools for continuous jobs, and buffered semaphores for rate-limiting, transforming variable runtime resource usage into predictable, fixed bounds.
 
-> **Answer-first:** Unbounded goroutines in production trigger OOM crashes and garbage collection spirals. Prevent failures by enforcing concurrency limits using `errgroup.WithContext` for group error handling, channel-based worker pools for continuous jobs, and buffered semaphores for rate-limiting, transforming variable runtime resource usage into predictable, fixed bounds.
+### What You'll Learn That AI Won't Tell You
+- Preventing goroutine leaks in high-concurrency worker pools using errgroup.
+- Writing robust worker pools that propagate context cancellation to all active goroutines.
+
+
+> 
 
 Every Go engineer eventually writes the same mistake: a loop that launches goroutines unconditionally. In a demo with 10 items, this works beautifully. In production with 50,000 incoming webhook events, it spawns 50,000 goroutines simultaneously, exhausts memory, and triggers the OOM killer. Kubernetes restarts the pod. The on-call engineer gets paged at 3 AM.
 

@@ -5,8 +5,8 @@ cover:
   alt: "Surge Pricing Optimization Architecture"
 slug: "surge-pricing-optimization-architecture"
 author: "Lê Tuấn Anh"
-date: 2026-06-01T15:20:00+07:00
-lastmod: 2026-06-10T16:00:00+07:00
+date: "2026-06-01T15:20:00+07:00"
+lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -24,10 +24,15 @@ tags:
 description: "Explore the architecture of a real-time Surge Pricing algorithm. Discover how Uber utilizes the H3 spatial index, Kafka, and Flink to calculate dynamic pricing."
 ShowToc: true
 TocOpen: true
+canonicalURL: "https://tanhdev.com/posts/surge-pricing-optimization-architecture/"
 ---
 
+**Answer-first:** Surge pricing calculates dynamic multipliers by matching supply and demand in real-time. The architecture indexes locations via H3 hexagons, streams GPS updates through Kafka, and aggregates demand density using Apache Flink to calculate price updates dynamically.
 
-**Answer-first:** Explore the architecture of a real-time Surge Pricing algorithm. Discover how Uber utilizes the H3 spatial index, Kafka, and Flink to calculate dynamic pricing.
+### What You'll Learn That AI Won't Tell You
+- Implementing spatial aggregators in Apache Flink for surge multipliers.
+- Preventing pricing oscillations using smooth sliding-window time series models.
+
 
 Why is it that every time it rains, ride-hailing fares double, or even triple? It's not a human operator manually adjusting the prices behind a desk. Rather, it's the result of an incredibly sophisticated Stream Processing engine running in the background executing the **surge pricing algorithm**.
 
@@ -142,4 +147,3 @@ The system must implement a **fail-safe default**: when the Backend API queries 
 ---
 
 **Related Reading:** Surge pricing is one component of a larger real-time logistics platform. See [Real-Time Ride-Hailing Architecture: Uber & Grab](/series/ride-hailing-realtime-architecture/) for the complete system — from GPS event streaming and H3 geospatial matching to RAMEN notifications and driver dispatch. For the delivery-side application of spatial indexing and routing optimization, see [Order Fulfillment Algorithm: Warehouse to Last-Mile](/posts/order-fulfillment-algorithm-warehouse-last-mile/).
-

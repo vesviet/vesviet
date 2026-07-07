@@ -5,18 +5,23 @@ cover:
   alt: "Exporting Magento 2 Data Flat Sql Nodejs"
 slug: "exporting-magento-2-data-flat-sql-nodejs"
 author: "Lê Tuấn Anh"
-date: 2024-03-09T03:38:22+00:00
-lastmod: 2026-07-03T15:22:00+07:00
+date: "2024-03-09T10:38:22+07:00"
+lastmod: "2026-07-03T15:22:00+07:00"
 draft: false
 tags: ["Magento", "SQL", "Node.js", "Data Migration", "EAV", "ETL"]
 description: "Production-grade guide to extracting data from Magento 2's EAV model. Includes direct SQL queries and a resilient Node.js streaming pipeline."
 categories: ["Engineering"]
 ShowToc: true
 TocOpen: true
+canonicalURL: "https://tanhdev.com/posts/exporting-magento-2-data-flat-sql-nodejs/"
 ---
 
+**Answer-first:** Extracting Magento 2 EAV data efficiently requires direct SQL joins that flatten entity tables, avoiding expensive ORM overhead. By piping the database cursor into Node.js transform streams, we handle backpressure natively, exporting millions of product records with a memory footprint under 100MB.
 
-**Answer-first:** Production-grade guide to extracting data from Magento 2's EAV model. Includes direct SQL queries and a resilient Node.js streaming pipeline.
+### What You'll Learn That AI Won't Tell You
+- How to optimize complex EAV joins in MySQL using index hints to prevent full table scans on catalogs exceeding 1 million SKUs.
+- Complete Node.js stream backpressure implementations that keep memory usage under 100MB while processing millions of records.
+
 
 When migrating off Magento 2, the first obstacle is always the database schema. Magento does not store data in clean flat rows — it uses an **Entity-Attribute-Value (EAV)** model that spreads data across dozens of tables with store-scope inheritance. Understanding this before writing SQL will save you days.
 
@@ -344,11 +349,10 @@ For the full architectural context of where this extracted data lands in a micro
 
 ## FAQ
 
-{{< faq q="What is Magento?" >}}
-**Magento** is a critical architectural pattern or system discussed in this guide. Production-grade guide to extracting data from Magento 2's EAV model. Includes direct SQL queries and a resilient Node.js streaming pipeline.
+{{< faq q="Why does Magento 2's EAV (Entity-Attribute-Value) database design make direct SQL extraction challenging?" >}}
+EAV distributes a single entity's attributes across multiple tables (e.g., `catalog_product_entity_varchar`, `_int`, `_decimal`) to support dynamic schema changes. Reconstructing a single product flat record requires joining several attribute tables, which causes major performance bottlenecks on large catalogs if queries are not heavily optimized with index hints and partitioned subqueries.
 {{< /faq >}}
 
-{{< faq q="How does Magento compare to traditional alternatives?" >}}
-Unlike legacy systems, **Magento** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< faq q="How does Node.js streams prevent memory overflow during large Magento catalog exports?" >}}
+Instead of loading millions of database rows into memory at once, we use cursor-based SQL queries and pipe them into Node.js transform streams. Backpressure handles memory management: if the destination write stream (like a CSV writer or Elasticsearch API) is slow, it signals the source database read stream to pause reading, keeping memory usage stable below 100MB.
 {{< /faq >}}
-

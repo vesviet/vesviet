@@ -5,8 +5,8 @@ cover:
   alt: "Kubernetes In Place Pod Resizing Guide"
 slug: "kubernetes-in-place-pod-resizing-guide"
 author: "Lê Tuấn Anh"
-date: 2026-06-12T14:00:00+07:00
-lastmod: 2026-06-12T14:00:00+07:00
+date: "2026-06-12T14:00:00+07:00"
+lastmod: "2026-06-12T14:00:00+07:00"
 draft: false
 description: "Kubernetes In-Place Pod Resizing GA in v1.35: modify CPU/memory on running containers without restart. YAML examples, VPA integration, and cost optimization."
 ShowToc: true
@@ -24,9 +24,15 @@ tags:
   - "Cost Optimization"
   - "VPA"
   - "K8s v1.35"
+canonicalURL: "https://tanhdev.com/posts/kubernetes-in-place-pod-resizing-guide/"
 ---
 
 **Answer-first:** In-Place Pod Resizing (GA in Kubernetes v1.35) allows you to modify CPU and memory requests/limits on running containers without restarting the pod — eliminating cold-start disruptions for AI inference, databases, and stateful workloads. This guide covers requirements, production YAML, VPA integration, cost optimization patterns, and gotchas.
+
+### What You'll Learn That AI Won't Tell You
+- In-place pod resizing edge cases where CPU updates cause container restarts.
+- Configuring kubelet parameters to support resizing without disrupting running JVM tasks.
+
 
 Before this feature, changing a container's resource allocation required deleting and recreating the pod. For a stateful database holding connections, an AI model with 30GB of weights loaded in memory, or a long-running batch job — that restart is catastrophic. In-Place Pod Resize finally decouples resource management from pod lifecycle.
 
@@ -36,7 +42,7 @@ This post is the production guide: what it is, how to use it, and where the shar
 
 ## 1. What Is In-Place Pod Resizing?
 
-**Answer-first:** In-Place Pod Resizing lets you PATCH a running pod's container resource requests/limits via the `/resize` subresource. The kubelet adjusts the container's cgroup limits without stopping or restarting it. The feature graduated to Stable (GA) in Kubernetes v1.35, released December 2025.
+
 
 ### Before vs. After
 
@@ -60,7 +66,7 @@ This post is the production guide: what it is, how to use it, and where the shar
 
 ## 2. Requirements
 
-**Answer-first:** On Kubernetes v1.35+, In-Place Pod Resizing works out of the box with no feature gates. The only hard requirement is a container runtime supporting the resize API — containerd ≥ 1.6.9 or CRI-O ≥ 1.25.
+
 
 ### Infrastructure Checklist
 
@@ -85,7 +91,7 @@ This post is the production guide: what it is, how to use it, and where the shar
 
 ## 3. How It Works: Resize Policy and Pod Status
 
-**Answer-first:** Each container specifies a `resizePolicy` per resource (CPU/memory) that determines whether the resize takes effect immediately (`NotRequired`) or requires a container restart (`RestartContainer`). The pod's `status.resize` field tracks the resize state machine.
+
 
 ### Resize Flow
 
@@ -266,7 +272,7 @@ If the ETL job hits a memory-intensive phase, an external controller (or VPA) ca
 
 ## 5. VPA Integration: Automatic In-Place Resizing
 
-**Answer-first:** Vertical Pod Autoscaler (VPA) v1.3+ supports In-Place resize as an update mode, allowing automatic resource adjustment without pod disruption — the combination that makes VPA production-ready for stateful workloads.
+
 
 ### VPA with In-Place Update Mode
 
@@ -365,7 +371,7 @@ spec:
 
 ## 6. Limitations and Gotchas
 
-**Answer-first:** In-Place Pod Resizing has real constraints: it cannot resize below currently used resources, doesn't work across QoS class boundaries, and node-level resource scarcity can defer resizes indefinitely. Know these before deploying.
+
 
 ### Hard Limitations
 

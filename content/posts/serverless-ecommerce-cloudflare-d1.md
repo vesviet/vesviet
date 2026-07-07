@@ -5,8 +5,8 @@ cover:
   alt: "Serverless Ecommerce Cloudflare D1"
 slug: "serverless-ecommerce-cloudflare-d1"
 author: "Lê Tuấn Anh"
-date: 2026-05-25T17:00:00+07:00
-lastmod: 2026-05-25T17:00:00+07:00
+date: "2026-05-25T17:00:00+07:00"
+lastmod: "2026-05-25T17:00:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -22,10 +22,15 @@ tags:
 description: "How to architect a zero-ops serverless e-commerce backend using Cloudflare Workers, D1 (SQLite), and Durable Objects. Real schemas and hard trade-offs."
 ShowToc: true
 TocOpen: true
+canonicalURL: "https://tanhdev.com/posts/serverless-ecommerce-cloudflare-d1/"
 ---
 
+**Answer-first:** Serverless e-commerce on Cloudflare Workers utilizes edge-native compute for sub-millisecond routing. D1 database tables hold persistent relational state, while Durable Objects manage transactional operations like cart locking, balancing global low-latency with strict data consistency.
 
-**Answer-first:** How to architect a zero-ops serverless e-commerce backend using Cloudflare Workers, D1 (SQLite), and Durable Objects. Real schemas and hard trade-offs.
+### What You'll Learn That AI Won't Tell You
+- Edge-native schema migrations and connection tuning for SQLite-based D1.
+- Managing distributed lock states in Durable Objects without causing bottleneck stalls.
+
 
 Running a traditional PHP/MySQL stack for e-commerce works until a flash sale hits. Then you're scaling servers, tuning Redis, and hoping your monolithic database doesn't lock up. If you are exploring [moving away from Magento](/posts/moving-from-magento-to-microservices) or simply evaluating the edge, there is a radically different approach: building a transactional e-commerce engine entirely on Cloudflare's edge network.
 
@@ -181,4 +186,3 @@ Cloudflare D1 has a **10GB limit per database** (General Availability as of 2026
 {{< faq q="When should you NOT use Cloudflare Workers for e-commerce?" >}}
 Cloudflare Workers are the wrong choice for e-commerce when you need: a **rich plugin ecosystem** (shipping integrations like FedEx/UPS, complex tax calculation engines, PDF invoice generation) that would require rebuilding from scratch; a **managed admin panel** for product and order management (Workers have no equivalent of WooCommerce admin); or when you are running **complex transactional operations** against large datasets where D1's SQLite-based architecture and single primary write node introduce unacceptable latency. For a developer-led digital product storefront or B2B SaaS backend, the edge stack is compelling. For a traditional retail store with 10+ third-party integrations, a managed platform (WooCommerce, Magento) is usually the better business decision.
 {{< /faq >}}
-

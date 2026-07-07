@@ -5,8 +5,8 @@ cover:
   alt: "Golang Pprof Profiling Memory Cpu Tutorial"
 slug: "golang-pprof-profiling-memory-cpu-tutorial"
 author: "Lê Tuấn Anh"
-date: 2026-06-02T08:00:00+07:00
-lastmod: 2026-07-03T00:00:00+07:00
+date: "2026-06-02T08:00:00+07:00"
+lastmod: "2026-07-03T00:00:00+07:00"
 draft: false
 description: "Profile Go services in Kubernetes without restarting pods: kubectl port-forward, heap vs alloc_space, and cpu flame graphs."
 ShowToc: true
@@ -21,7 +21,15 @@ tags:
   - "Production"
   - "Profiling"
   - "Performance"
+canonicalURL: "https://tanhdev.com/posts/golang-pprof-profiling-memory-cpu-tutorial/"
 ---
+
+**Answer-first:** Go pprof is the standard library profiling tool for diagnosing CPU usage, memory allocation, and goroutine leaks in production Go services, with safe exposure via internal HTTP endpoints and minimal performance overhead when configured correctly.
+
+### What You'll Learn That AI Won't Tell You
+- Reading memory profiles to identify slow allocations in performance hot paths.
+- Analyzing flame graphs to detect lock contention on global mutexes.
+
 
 > **Prerequisite:** This guide covers how to profile and diagnose complex performance issues in production. If you are specifically dealing with unbounded goroutine growth, ensure you first understand the foundational concepts in [Goroutine Leak Detection and Fix in Production Go Services](/posts/goroutine-leak-detection-production-golang/).
 
@@ -37,7 +45,7 @@ This tutorial is a deep-dive into production-ready Go profiling. We will explore
 
 ## Safely Exposing pprof Endpoints in Production
 
-**Answer-first:** Go pprof is the standard library profiling tool for diagnosing CPU usage, memory allocation, and goroutine leaks in production Go services, with safe exposure via internal HTTP endpoints and minimal performance overhead when configured correctly.
+
 
 The most common way to enable profiling is to import the `net/http/pprof` package. As a side effect of the import, this package automatically registers its HTTP handlers to the default `http.DefaultServeMux`.
 

@@ -4,20 +4,27 @@ cover:
   image: "/images/posts/default-post.png"
   alt: "Deploying Autonomous Ai Swarm Openclaw Litellm"
 slug: "deploying-autonomous-ai-swarm-openclaw-litellm"
-date: 2026-05-17T21:45:00+07:00
-lastmod: 2026-07-03T15:22:00+07:00
+date: "2026-05-17T21:45:00+07:00"
+lastmod: "2026-07-03T15:22:00+07:00"
 draft: false
 mermaid: true
 tags: ["AI", "LLM", "Docker", "DevOps", "Agentic AI", "Architecture"]
 description: "Deploy a resilient, production-ready AI swarm using OpenClaw, LiteLLM, and Docker. Covers routing, security, and zero-downtime agent orchestration."
 categories: ["AI/ML", "Engineering"]
-author: "Vesviet"
+author: "Lê Tuấn Anh"
 ShowToc: true
 TocOpen: true
+canonicalURL: "https://tanhdev.com/posts/deploying-autonomous-ai-swarm-openclaw-litellm/"
 ---
 
+**Answer-first:** Orchestrate a resilient, 24/7 autonomous AI swarm by decoupling agent execution from LLM providers using LiteLLM as an API gateway. Handle rate limits via key-pooling and automatic fallbacks, manage agent tasks with OpenClaw, and isolate container permissions using Docker `cap_drop` to mitigate SSRF and prompt injection risks.
 
-> **Answer-first:** Orchestrate a resilient, 24/7 autonomous AI swarm by decoupling agent execution from LLM providers using LiteLLM as an API gateway. Handle rate limits via key-pooling and automatic fallbacks, manage agent tasks with OpenClaw, and isolate container permissions using Docker `cap_drop` to mitigate SSRF and prompt injection risks.
+### What You'll Learn That AI Won't Tell You
+- Docker cap-drop security patterns that protect local credentials from AI agents.
+- Setting up model fallbacks and pool-key routing in LiteLLM to bypass API rate limits.
+
+
+> 
 
 The era of simple, conversational AI chatbots is over. In 2026, the industry has aggressively shifted toward **Agentic AI**—autonomous systems capable of planning, executing, and iterating on multi-step workflows without constant human supervision. (For a deeper dive into these Agentic System Architecture principles, see our [Agentic System Architecture](/series/agentic-system-architecture/) masterclass).
 
@@ -189,4 +196,3 @@ By leveraging **LiteLLM** as an intelligent routing layer and **Docker** for pri
 {{< faq q="What is the difference between an AI agent and an AI swarm?" >}}
 An **AI agent** is a single autonomous loop: perceive context → plan next action → execute tool calls → observe result → repeat until goal is achieved. An **AI swarm** is multiple specialized agents operating concurrently — one for system operations (Ops Bot), one for reporting (Reporter Bot), one for coding tasks — each with dedicated infrastructure (separate containers, separate privilege levels, separate model routes). The swarm pattern enables concurrent task execution across domains without one agent's failure or privilege level affecting another's. The coordination mechanism is the shared LiteLLM Gateway — all agents route through it, but none have direct access to external API keys or each other's container filesystems.
 {{< /faq >}}
-

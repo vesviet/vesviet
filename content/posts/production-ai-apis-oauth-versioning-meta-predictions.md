@@ -2,8 +2,8 @@
 title: "OAuth 2.1 & Prompt Versioning for Production AI Agents"
 slug: "production-ai-apis-oauth-versioning-meta-predictions"
 author: "Lê Tuấn Anh"
-date: 2026-05-18T20:00:00+07:00
-lastmod: 2026-05-18T20:00:00+07:00
+date: "2026-05-18T20:00:00+07:00"
+lastmod: "2026-05-18T20:00:00+07:00"
 draft: false
 description: "Field-tested patterns for AI APIs in production: OAuth 2.1 agent identity, prompt versioning with CI gates, and an honest 2025 AI predictions scorecard."
 ShowToc: true
@@ -25,10 +25,15 @@ tags:
   - "Architecture"
   - "Agentic AI"
   - "API Design"
+canonicalURL: "https://tanhdev.com/posts/production-ai-apis-oauth-versioning-meta-predictions/"
 ---
 
+**Answer-first:** Production AI API design requires securing agent identities using OAuth 2.1 client credentials, versioning prompts inside CI/CD gates to prevent quality regression, and tracking runtime costs. Monitoring token usage and accuracy ensures robust operational predictability.
 
-**Answer-first:** Field-tested patterns for AI APIs in production: OAuth 2.1 agent identity, prompt versioning with CI gates, and an honest 2025 AI predictions scorecard.
+### What You'll Learn That AI Won't Tell You
+- Secure prompt versioning practices using git commits and CI checks.
+- Rate-limiting AI agents at the API Gateway using token-bucket configurations.
+
 
 Running AI APIs in production for the past 18 months has produced three lessons that I did not find in any "getting started with LLMs" tutorial. They emerged from incidents, postmortems, and that specific kind of 2 AM Slack message where a word you never wanted to see — "silent," as in "silent failure" — appears in a production context.
 
@@ -256,4 +261,3 @@ The pattern that works: (1) **Hard-pin prompt versions in agent config** — nev
 {{< faq q="Why do teams migrate away from LangChain and LlamaIndex for production AI?" >}}
 The pattern is consistent: **framework for prototyping, custom implementation for production**. AI frameworks like LangChain and LlamaIndex abstract the simple case ("connect LLM to tool") well. They abstract the wrong layer for production: error recovery across multi-step agent runs, state management for long-running tasks, cost attribution per agent step, and circuit breakers when a tool consistently fails. At prototype scale, the abstraction saves time. At production scale, the abstraction gets in the way of the exact knobs you need to tune — and the framework's opinion about how things should work conflicts with what your incident postmortem says needs to change. Teams who stay on frameworks in production usually have not yet hit the edge cases.
 {{< /faq >}}
-

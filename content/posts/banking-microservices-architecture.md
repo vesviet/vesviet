@@ -4,8 +4,8 @@ cover:
   image: "/images/posts/default-post.png"
   alt: "Banking Microservices Architecture"
 slug: "banking-microservices-architecture"
-date: 2026-06-01T15:15:00+07:00
-lastmod: 2026-06-27T07:00:00+07:00
+date: "2026-06-01T15:15:00+07:00"
+lastmod: "2026-06-27T07:00:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -24,11 +24,19 @@ description: "Build a resilient banking microservices architecture in Go. Produc
 ShowToc: true
 TocOpen: true
 author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/posts/banking-microservices-architecture/"
 ---
+
+**Answer-first:** A modern banking microservices architecture replaces legacy monolithic ledgers (like T24 or Flexcube) using Go for high-throughput transaction routing. The system achieves distributed consistency without two-phase commit (2PC) by combining Event Sourcing (immutable ledger streams), Saga Orchestration (using Temporal or Dapr), the Transactional Outbox pattern, and PostgreSQL unique constraints for API idempotency.
+
+### What You'll Learn That AI Won't Tell You
+- How to implement transactional outbox pattern to guarantee eventual consistency.
+- Saga Orchestration patterns that handle transient payment gateway timeouts gracefully.
+
 
 ## 1. Introduction: Deconstructing the Legacy Core
 
-**Answer-first:** A modern banking microservices architecture replaces legacy monolithic ledgers (like T24 or Flexcube) using Go for high-throughput transaction routing. The system achieves distributed consistency without two-phase commit (2PC) by combining Event Sourcing (immutable ledger streams), Saga Orchestration (using Temporal or Dapr), the Transactional Outbox pattern, and PostgreSQL unique constraints for API idempotency.
+
 
 For decades, banks relied on monolithic core systems like Temenos T24 or Oracle FLEXCUBE. While robust, these systems present severe bottlenecks for modern digital banking. They were designed for overnight batch processing, not real-time, API-first global transactions.
 
@@ -41,7 +49,7 @@ By leveraging Go's highly concurrent runtime and a distributed event-driven arch
 
 ## 2. Domain Decomposition: Mapping Core Banking Contexts
 
-**Answer-first:** Decomposing a core banking system requires identifying bounded contexts that operate independently. The primary domains are Accounts (CASA), Payments, Ledgers, and Notifications, allowing isolated scaling and distinct data ownership.
+
 
 To successfully migrate using the Strangler Fig pattern, you must establish an Anti-Corruption Layer (ACL) that translates legacy models into modern bounded contexts.
 
@@ -68,7 +76,7 @@ Each service owns its database. The Ledger Service never queries the Accounts da
 
 ## 3. Event Sourcing: Designing the Immutable Double-Entry Ledger
 
-**Answer-first:** An immutable double-entry ledger ensures audit compliance by recording financial events rather than mutating balance fields. By using PostgreSQL with Optimistic Concurrency Control (OCC) and a unique index on `(stream_id, version)`, the system guarantees exact sequential consistency.
+
 
 The core constraint of any financial system is to never store balances as the primary record. Storing a mutable `balance` column leads to lost updates and irreversible data corruption. Instead, you must store the transactions (Event Sourcing).
 
@@ -135,7 +143,7 @@ To optimize the Go runtime for <10ms database writes at 10,000 TPS, we utilize a
 
 ## 4. The Transactional Outbox Pattern: Preventing Dual-Write Failures
 
-**Answer-first:** The Transactional Outbox pattern resolves the dual-write problem by inserting business data and event messages into the database within the same local transaction. Go workers or CDC tools then poll the outbox table to guarantee at-least-once message delivery to Kafka.
+
 
 If a service deducts money in the database but fails to publish the `MoneyDeducted` event to Kafka due to a network timeout, the system becomes permanently inconsistent. 
 
@@ -217,7 +225,7 @@ func PollOutbox(ctx context.Context, db *pgxpool.Pool, producer sarama.SyncProdu
 
 ## 5. Saga Orchestration: Temporal vs. Dapr for Distributed Transactions
 
-**Answer-first:** Saga Orchestration coordinates distributed financial transactions with compensations for failure states. Temporal offers a dedicated, durable execution engine ideal for long-running workflows, while Dapr Workflows embed the Durable Task Framework as a lightweight sidecar.
+
 
 Two-Phase Commit (2PC) locks databases and crushes throughput. We must use Sagas to ensure Eventual Consistency.
 
@@ -280,7 +288,7 @@ func FinancialTransferSaga(ctx workflow.Context, req TransferRequest) (err error
 
 ## 6. Designing Idempotent Payment APIs in Go
 
-**Answer-first:** An idempotent payment API guarantees that identical requests process only once, preventing double-charging. This is implemented via a Key-Check-Execute pattern using Redis for TTL-based locking and PostgreSQL unique indexes for permanent deduplication.
+
 
 When Kafka redelivers a message, or a client retries a timeout, the API must be safe to call repeatedly.
 
@@ -292,7 +300,7 @@ This robust mechanism is fundamentally similar to [H3 geospatial indexing](/seri
 
 ## 7. Observability: OpenTelemetry in Distributed Ledgers
 
-**Answer-first:** To trace financial transactions across microservices, OpenTelemetry (OTel) context propagation must be injected into HTTP headers, Kafka messages, and Temporal workflows, ensuring end-to-end auditability and latency tracking.
+
 
 In Go, when using `segmentio/kafka-go`, native OTel wrappers do not exist. We must construct a custom `TextMapCarrier` to map OTel context fields into `kafka.Header`.
 
