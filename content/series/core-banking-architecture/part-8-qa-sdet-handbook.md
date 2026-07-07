@@ -3,7 +3,7 @@ title: "QA & SDET Handbook: Testing Distributed Core Banking"
 date: 2026-06-18T12:10:00+07:00
 lastmod: 2026-07-03T15:41:55+07:00
 draft: false
-description: "SDET handbook for Core Banking: double-spend, split-brain, clock skew, saga DLQ, DPoP replay, Flink TestHarness — 6 test categories for distributed fintech systems."
+description: "SDET handbook for Core Banking: double-spend, split-brain, clock skew, saga DLQ, DPoP replay, Flink TestHarness — 6 test categories for distributed fintech"
 weight: 8
 series: ["core-banking-architecture"]
 keywords: ["core banking testing strategy", "distributed systems SDET", "split-brain simulation testing", "clock skew injection libfaketime", "fintech QA testing"]

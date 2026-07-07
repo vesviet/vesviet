@@ -4,7 +4,7 @@ slug: "part-2-geospatial-indexing"
 date: 2026-05-06T20:00:00+07:00
 lastmod: 2026-06-26T21:00:00+07:00
 draft: false
-description: "How Uber and Grab find the nearest driver in <100ms: H3 hexagonal grid at Resolution 8, Redis GEO vs SET+H3, K-Ring search, S2 Geometry, and a complete Go implementation for production ride-hailing systems."
+description: "How Uber and Grab find the nearest driver in <100ms: H3 hexagonal grid at Resolution 8, Redis GEO vs SET+H3, K-Ring search, S2 Geometry, and a complete Go"
 weight: 3
 ---
 

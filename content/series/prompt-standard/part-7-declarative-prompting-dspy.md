@@ -3,7 +3,7 @@ title: "Part 7 — Declarative Prompting with DSPy"
 date: 2026-05-09T11:05:00+07:00
 lastmod: 2026-05-09T11:05:00+07:00
 draft: false
-description: "What if you stopped hand-writing prompts and let a framework optimize them automatically? DSPy introduces declarative signatures, automatic few-shot selection, and model-portable prompt compilation."
+description: "What if you stopped hand-writing prompts and let a framework optimize them automatically?"
 categories:
   - Engineering
 tags:

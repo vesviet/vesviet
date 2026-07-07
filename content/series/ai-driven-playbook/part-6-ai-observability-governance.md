@@ -3,7 +3,7 @@ title: "Part 6 — AI Observability & Evals: Eliminating Operational Blind Spots
 date: 2026-05-19T08:00:00+07:00
 lastmod: 2026-05-19T08:00:00+07:00
 draft: false
-description: "Running AI in production without Observability and Evals is a fatal mistake. A practical SRE guide to monitoring, tracing, and continuously evaluating your Enterprise AI Platform."
+description: "Running AI in production without Observability and Evals is a fatal mistake."
 ShowToc: true
 TocOpen: true
 weight: 8

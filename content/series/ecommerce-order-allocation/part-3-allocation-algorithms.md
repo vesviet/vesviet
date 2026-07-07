@@ -3,7 +3,7 @@ title: "Order Allocation Algorithms: Bin Packing, VRP & Assignment Problem"
 date: 2026-05-06T20:30:00+07:00
 lastmod: 2026-05-06T20:30:00+07:00
 draft: false
-description: "Explore the core order allocation algorithms used in e-commerce and logistics: Assignment Problem, Bin Packing, and Vehicle Routing Problem (VRP). Learn how to optimize matching."
+description: "Explore the core order allocation algorithms used in e-commerce and logistics: Assignment Problem, Bin Packing, and Vehicle Routing Problem (VRP)."
 weight: 4
 ---
 

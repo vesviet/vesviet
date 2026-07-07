@@ -26,7 +26,7 @@ tags:
 keywords: ["vibe coding governance", "ai coding governance", "AGENTS.md", "cursor rules governance", "ai code review governance", "contextops", "vibe engineer"]
 aliases:
   - /series/ai-code-review-vibe-coding/part-6-governance-observability-career/
-description: "Vibe coding governance for engineering teams: AGENTS.md + Cursor Rules setup, AI tool classification policy, ContextOps at scale, OpenTelemetry for AI observability, and the 2026 career stack for AI orchestrator engineers."
+description: "Vibe coding governance for engineering teams: AGENTS.md + Cursor Rules setup, AI tool classification policy, ContextOps at scale, OpenTelemetry for AI"
 ---
 
 > **Series Orientation:** This article is Part 6 of the **AI Code Review & Vibe Coding** series, looking at team governance and developer career paths. For the preceding security chapters, see [Part 5 — AI Code Security](/series/ai-code-review-vibe-coding/part-5-ai-code-security/).

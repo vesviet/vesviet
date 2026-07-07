@@ -85,3 +85,13 @@ When revenue hits the $5 million/year mark, or when the current monolithic platf
 
 ### Why do we need a BFF (Backend-For-Frontend)?
 The BFF aggregates data from multiple microservices into a single API response for the Frontend, minimizing network calls and acting as a Circuit Breaker when backend services experience high latency.
+
+## Related Reading
+
+If you're planning a composable migration, these deep-dives cover the adjacent decisions:
+
+- [Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/)
+- [Blueprint of a 21-Service E-commerce Edge](/posts/blueprint-ecommerce-microservices-architecture-diagram/)
+- [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)
+- [Deconstructing the Ecosystem: Service Details by Domain](/posts/deconstructing-ecommerce-service-details-domain/)
+- [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr/)

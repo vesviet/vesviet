@@ -3,7 +3,7 @@ title: "Reading Map"
 date: 2026-07-07T10:00:00+07:00
 lastmod: 2026-07-07T10:00:00+07:00
 draft: false
-description: "Curated reading map of production-grade technical essays on microservices, AI systems, commerce modernization, and platform engineering. Start here for the clearest path through the content."
+description: "Curated reading map of production-grade technical essays on microservices, AI systems, commerce modernization, and platform engineering."
 author: "Lê Tuấn Anh"
 cover:
   image: "/images/posts/reading-map-cover.png"
@@ -77,7 +77,7 @@ For fast-moving signals (new tools, AI infra, cloud-native patterns) → [/radar
 
 ---
 
-**Distribution Note (Content Manager)**: Every pillar post must have a repurposing plan before publishing (LinkedIn threads, newsletter deep-dive, YouTube script, Twitter/X technical thread). This will be formalized in the Editorial Calendar.
+**Distribution Note**: Every pillar post should have a repurposing plan before publishing (LinkedIn thread, newsletter deep-dive, YouTube script, or Twitter/X technical thread).
 
 **Next Review**: 2026-10-01
 

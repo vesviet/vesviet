@@ -3,7 +3,7 @@ title: "Part 3B — AI Automation for Internal Operations: Proving ROI"
 date: 2026-05-16T08:00:00+07:00
 lastmod: 2026-05-16T08:00:00+07:00
 draft: false
-description: "Win executive buy-in for the AI Platform by solving 'money-making' operational problems: Automated Reconciliation, Excel processing, and Lightweight Automation for every team."
+description: "Win executive buy-in for the AI Platform by solving 'money-making' operational problems: Automated Reconciliation, Excel processing, and Lightweight"
 ShowToc: true
 TocOpen: true
 weight: 5

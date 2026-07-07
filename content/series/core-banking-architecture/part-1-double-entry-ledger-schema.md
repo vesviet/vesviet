@@ -3,7 +3,7 @@ title: "Double-Entry Ledger: Immutable Schema & Concurrency"
 date: 2026-06-18T11:00:00+07:00
 lastmod: 2026-07-03T15:41:55+07:00
 draft: false
-description: "Real-world double-entry ledger schema: TigerBeetle Zig 128-byte struct, PostgreSQL NUMERIC(18,4), invariant enforcement triggers, and locking strategies for 1M TPS."
+description: "Real-world double-entry ledger schema: TigerBeetle Zig 128-byte struct, PostgreSQL NUMERIC(18,4), invariant enforcement triggers, and locking strategies for"
 weight: 1
 series: ["core-banking-architecture"]
 keywords: ["double entry ledger database schema", "TigerBeetle architecture", "pessimistic vs optimistic locking ledger", "Mambu GL schema"]

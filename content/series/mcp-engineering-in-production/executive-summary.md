@@ -10,7 +10,7 @@ tags:
   - MCP
   - System Design
   - Enterprise Architecture
-description: "What is the Model Context Protocol? Why has MCP become the Control Plane of the AI ecosystem? Evaluating the tradeoffs between MCP and REST, and identifying production pitfalls."
+description: "What is the Model Context Protocol? Why has MCP become the Control Plane of the AI ecosystem?"
 aliases:
   - /series/mcp-engineering-in-production/executive-summary/
 ---

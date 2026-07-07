@@ -3,7 +3,7 @@ title: "Part 5 — The BOD Perspective: Expectations, Costs, Legal Risks & Inter
 date: 2026-05-10T15:40:00+07:00
 lastmod: 2026-05-10T15:40:00+07:00
 draft: false
-description: "Analyzing AI through the lens of the Board of Directors (BOD). The balance between cost optimization, speed, and the legal/security landmines that could bring down a company."
+description: "Analyzing AI through the lens of the Board of Directors (BOD)."
 ShowToc: true
 TocOpen: true
 weight: 6

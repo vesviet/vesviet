@@ -11,7 +11,7 @@ tags:
   - Vulnerabilities
   - Prompt Injection
   - Tool Poisoning
-description: "Analyzing the top 10 security vulnerabilities of the Model Context Protocol according to the OWASP MCP Top 10 (Beta), including Token Mismanagement, Tool Poisoning, and Prompt Injection."
+description: "Analyzing the top 10 security vulnerabilities of the Model Context Protocol according to the OWASP MCP Top 10 (Beta), including Token Mismanagement, Tool"
 aliases:
   - /series/mcp-engineering-in-production/part-5-security/
 ---

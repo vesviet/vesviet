@@ -4,7 +4,7 @@ slug: "part-4-modern-core-banking-architecture"
 date: 2026-05-06T18:00:00+07:00
 lastmod: 2026-06-26T21:00:00+07:00
 draft: false
-description: "How digital banks replace T24/Flexcube with Go microservices: Event Sourcing for the double-entry ledger, CQRS for reporting, Saga patterns for distributed transactions, and Outbox for guaranteed event delivery."
+description: "How digital banks replace T24/Flexcube with Go microservices: Event Sourcing for the double-entry ledger, CQRS for reporting, Saga patterns for distributed"
 weight: 5
 keywords: ["banking microservices architecture", "core banking microservices", "event sourcing banking", "cqrs banking", "saga pattern banking", "core banking developer"]
 schema: ["Article", "FAQPage"]

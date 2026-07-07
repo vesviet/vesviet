@@ -11,7 +11,7 @@ tags:
   - Governance
   - Versioning
   - Multi-tenant
-description: "Bringing MCP to enterprise scale: Multi-tenancy management, Versioning strategies to prevent 'silent failures', and building an Internal Registry to control the ecosystem."
+description: "Bringing MCP to enterprise scale: Multi-tenancy management, Versioning strategies to prevent 'silent failures', and building an Internal Registry to control"
 aliases:
   - /series/mcp-engineering-in-production/part-7-enterprise/
 ---

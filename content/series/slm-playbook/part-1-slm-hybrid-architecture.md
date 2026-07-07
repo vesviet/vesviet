@@ -3,7 +3,7 @@ title: "Hybrid AI Architecture & Self-Hosted vLLM | SLM Playbook"
 date: 2026-05-21T08:00:00+07:00
 lastmod: 2026-05-21T08:00:00+07:00
 draft: false
-description: "Economic analysis of self-hosting Small Language Models (SLMs) with vLLM, VRAM formula calculation, and establishing a Hybrid Routing Gateway to combine SLM and Frontier LLM."
+description: "Economic analysis of self-hosting Small Language Models (SLMs) with vLLM, VRAM formula calculation, and establishing a Hybrid Routing Gateway to combine SLM"
 ShowToc: true
 TocOpen: true
 weight: 2

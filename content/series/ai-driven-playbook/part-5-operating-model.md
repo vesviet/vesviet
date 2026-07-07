@@ -3,7 +3,7 @@ title: "Part 5 — Operating Model: Evolving Your Team for the AI Era"
 date: 2026-05-18T08:00:00+07:00
 lastmod: 2026-05-18T08:00:00+07:00
 draft: false
-description: "Cut through the LinkedIn hype. Redefine the SDLC, the Definition of Done, and establish a clear AI Escalation Boundary that keeps Enterprise systems from collapsing."
+description: "Cut through the LinkedIn hype. Redefine the SDLC, the Definition of Done, and establish a clear AI Escalation Boundary that keeps Enterprise systems from"
 ShowToc: true
 TocOpen: true
 weight: 7

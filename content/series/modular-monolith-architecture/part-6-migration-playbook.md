@@ -1,7 +1,7 @@
 ﻿---
 title: "Part 6: Migration Playbook â€“ Consolidating Microservices"
 lastmod: "2026-07-03T14:59:00+07:00"
-description: "A practical guide to safely transitioning from Microservices back to a Modular Monolith using the Reverse Strangler Fig pattern, Dual-write databases, and Conway's Law."
+description: "A practical guide to safely transitioning from Microservices back to a Modular Monolith using the Reverse Strangler Fig pattern, Dual-write databases, and"
 slug: "migration-playbook-microservices-to-modular-monolith"
 tags: ["Migration", "Strangler Fig", "Modular Monolith", "Database", "Conway's Law"]
 aliases:

@@ -13,7 +13,7 @@ tags:
   - Trainium
   - TPU
   - Multi-Cloud
-description: "Anthropic's April 2026 infrastructure deals with Amazon, Google, and Broadcom are not routine capacity purchases. They signal that frontier-model competition is being reshaped by utility-scale compute commitments, multi-silicon resilience, and tighter integration with hyperscaler distribution."
+description: "Anthropic's April 2026 infrastructure deals with Amazon, Google, and Broadcom are not routine capacity purchases."
 ShowToc: true
 TocOpen: true
 aliases: ["/radar/radar-2026-04-26-anthropic-compute/"]

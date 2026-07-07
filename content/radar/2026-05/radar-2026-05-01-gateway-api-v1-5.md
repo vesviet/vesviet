@@ -16,7 +16,7 @@ tags:
   - Networking
   - Security
   - AI Gateway
-description: "Gateway API v1.5 is here. Learn why Kubernetes networking is moving away from Ingress annotations to a modular, policy-driven traffic platform with Ingress2Gateway 1.0."
+description: "Gateway API v1.5 is here. Learn why Kubernetes networking is moving away from Ingress annotations to a modular, policy-driven traffic platform with"
 ShowToc: true
 TocOpen: true
 

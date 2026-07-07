@@ -3,7 +3,7 @@ title: "Executive Summary — The Shift to Agentic Architectures"
 date: 2026-05-14T08:00:00+07:00
 lastmod: 2026-05-14T08:00:00+07:00
 draft: false
-description: "A high-level overview of why the industry is moving from massive, single-prompt LLM calls to coordinated, Multi-Agent systems, and what it takes to run them in production."
+description: "A high-level overview of why the industry is moving from massive, single-prompt LLM calls to coordinated, Multi-Agent systems, and what it takes to run them"
 ShowToc: true
 TocOpen: true
 weight: 1

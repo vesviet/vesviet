@@ -66,3 +66,12 @@ LoRA (Low-Rank Adaptation) is a fine-tuning technique that updates only a tiny f
 
 ### What is Structured Output and why does it cost so many tokens?
 Structured Output forces an LLM to return data in a strict format (like a JSON Schema) so downstream systems can parse it automatically. Doing this via Prompt Engineering requires describing the schema and providing multiple examples (few-shot), which massively increases the input token count.
+
+## Related Reading
+
+Continue with related production AI-systems posts:
+
+- [SLM Fine-Tune vs Prompt Engineering](/posts/slm-fine-tune-vs-prompt-engineering/)
+- [Architecting an Autonomous Hybrid-AI Content Pipeline](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)
+- [Production Agentic AI Swarm: OpenClaw & LiteLLM](/posts/deploying-autonomous-ai-swarm-openclaw-litellm/)
+- [Go Microservices Architecture: Production Guide](/posts/go-microservices/)
