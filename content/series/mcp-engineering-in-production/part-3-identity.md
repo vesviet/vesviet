@@ -11,7 +11,7 @@ tags:
   - SPIFFE
   - OAuth
   - Zero Trust
-description: "Solving the problem of AI Agent identity. Deep dive into the OAuth 2.1 + PKCE standard, CIMD, and integrating Workload Identity (SPIFFE/SPIRE) for the MCP Server."
+description: "Solving the problem of AI Agent identity. Deep dive into the OAuth 2.1 + PKCE standard, CIMD, and integrating Workload Identity (SPIFFE/SPIRE) for the MCP"
 aliases:
   - /series/mcp-engineering-in-production/part-3-identity/
 cover:

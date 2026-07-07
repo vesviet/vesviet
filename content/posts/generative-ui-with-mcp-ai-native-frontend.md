@@ -1,6 +1,10 @@
 ﻿---
 title: "Generative UI with MCP: Architecting AI-Native Frontends"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Generative Ui With Mcp Ai Native Frontend"
 slug: "generative-ui-with-mcp-ai-native-frontend"
+author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
 lastmod: "2026-06-01T10:00:00+07:00"
 draft: false
@@ -26,8 +30,12 @@ cover:
   relative: false
 ---
 
+**Answer-first:** Generative UI architectures use Model Context Protocol (MCP) to stream UI component declarations from LLMs. Security requires compiling prop schemas via Zod at the gateway, matching them against versioned local primitive registries rather than executing raw client-side code.
 
-**Answer-first:** Architecting dynamic generative UI applications with Model Context Protocol (MCP): dynamic registries, client-agent state synchronization, security, and a11y.
+### What You'll Learn That AI Won't Tell You
+- Security controls for dynamic TSX execution in edge isolates.
+- State reconciliation techniques between AI reasoners and client-side DOM states.
+
 
 The first generation of AI-powered chat interfaces followed a simple pattern: the user types a message, the LLM generates text, the UI renders text. The second generation added tool calls — the LLM could invoke functions and render the results as text. The third generation — **Generative UI** — goes further: the LLM generates not just text responses but *interactive UI components* that are rendered directly in the browser, enabling experiences that feel less like chatting with a text box and more like using a responsive, intelligent application.
 
@@ -558,5 +566,3 @@ With proper defenses, yes. The three key controls are: (1) **Schema validation**
 **Related Reading:** For the full 7-part series on building Generative UI and AI-Native Frontend Architecture with Astro + Svelte, see the [Generative UI & AI-Native Frontend Architecture series](/series/generative-ui-architecture/). For the production MCP infrastructure that powers the tool-calling layer behind these interfaces, see [MCP Engineering in Production: Go SDK to Enterprise](/series/mcp-engineering-in-production/). For the data and retrieval backbone — GraphRAG vs Naive RAG for AI applications — see [GraphRAG vs Naive RAG: Enterprise Architecture Guide](/posts/graphrag-vs-naive-rag-enterprise-guide/). For 10 honest architectural predictions on where AI-native frontend is heading by 2028 — including generative component registries, MCP-native layouts, and the death of the SPA — see [AI-Native Frontend in 2028: 10 Architecture Predictions](/posts/ai-native-frontend-architecture-predictions-2028/). From the Tech Radar: the [April 29, 2026 Tech Radar](/radar/radar-2026-04-29-creative-mcp/) covered Anthropic's push of MCP into the creative stack — turning Adobe, Blender, and Autodesk into connected agent surfaces, a direct extension of what Generative UI enables on the frontend.
 
 {{< author-cta >}}
-
-

@@ -1,10 +1,13 @@
 ﻿---
 title: "Order Fulfillment Algorithm: Warehouse to Last-Mile"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Order Fulfillment Algorithm Warehouse Last Mile"
 slug: "order-fulfillment-algorithm-warehouse-last-mile"
+author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
 lastmod: "2026-06-01T10:00:00+07:00"
 draft: false
-mermaid: true
 categories:
   - "Engineering"
   - "Architecture"
@@ -26,8 +29,12 @@ cover:
   relative: false
 ---
 
+**Answer-first:** High-throughput e-commerce requires routing order fulfillment using a multi-criteria optimization model. By calculating stock availability, warehouse proximity, and split-shipment constraints via a Vehicle Routing Problem (VRP) solver, we minimize shipping costs and shipping times.
 
-**Answer-first:** How e-commerce giants decide which warehouse fulfills your order. Covers Amazon CONDOR, VRP solvers, split shipment logic, and last-mile routing.
+### What You'll Learn That AI Won't Tell You
+- VRP solver performance tuning for dynamic split-shipment constraints.
+- Calculating optimal warehouse dispatch routes using Amazon CONDOR principles.
+
 
 When you place an order on Amazon at 11:47 PM and it arrives at your door the next morning, every step of that delivery was orchestrated by a set of algorithms making real-time decisions across a network of hundreds of warehouses, thousands of drivers, and millions of items in inventory. None of it happens by chance, and none of it is primarily a human decision.
 

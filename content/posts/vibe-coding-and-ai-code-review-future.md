@@ -1,6 +1,10 @@
 ﻿---
 title: "What is Vibe Coding? Why AI Code Review is the Future"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Vibe Coding And Ai Code Review Future"
 slug: "vibe-coding-and-ai-code-review-future"
+author: "Lê Tuấn Anh"
 date: "2026-05-31T18:30:00+07:00"
 lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
@@ -22,8 +26,12 @@ cover:
   relative: false
 ---
 
+**Answer-first:** "Vibe coding"—relying on AI to write code without understanding it—creates complex, hard-to-maintain codebases that fail in production. Resolving this requires automated AI code reviews in the CI/CD pipeline to enforce design conventions and detect security vulnerabilities.
 
-**Answer-first:** Discover what vibe coding is, why AI prototypes hit a Production Wall, and why AI code review is a critical skill for modern software engineers.
+### What You'll Learn That AI Won't Tell You
+- Setting up automated AI reviewer tools in GitHub Actions.
+- How to enforce design guidelines and coding standards in LLM-assisted pipelines.
+
 
 In February 2025, Andrej Karpathy, former Tesla AI Lead and OpenAI co-founder, tweeted a phrase that would define a new paradigm in software development: 
 
@@ -120,4 +128,3 @@ Not necessarily, but you should treat AI-generated code as untrusted user input.
 ---
 
 **Continue Reading:** For the practical, structured approach to shipping AI-generated code safely, the full [Vibe Coding & AI Code Review series](/series/ai-code-review-vibe-coding/) covers Context Engineering with AGENTS.md and Cursor Rules, AI bug taxonomy, multi-agent review pipelines, and governance. For the governance chapter specifically — AGENTS.md setup, Cursor Rules policy, AI tool classification, and the production observability stack — see [Vibe Coding Governance: AGENTS.md, Cursor Rules & AI Observability for Engineering Teams](/series/ai-code-review-vibe-coding/part-6-governance-observability-career/). For the data layer powering AI-native applications — why enterprises are moving beyond Naive RAG — see [GraphRAG vs Naive RAG: Enterprise Architecture Guide](/posts/graphrag-vs-naive-rag-enterprise-guide/). For where AI-native frontend is heading by 2028 — generative components, MCP-driven UI, and server-driven layouts — see [AI-Native Frontend in 2028: 10 Architecture Predictions](/posts/ai-native-frontend-architecture-predictions-2028/) and [Generative UI with MCP: Architecting AI-Native Frontends](/posts/generative-ui-with-mcp-ai-native-frontend/). For engineers moving beyond vibe coding into production-grade Multi-Agent system design, see [Agentic System Architecture: Multi-Agent in Production](/series/agentic-system-architecture/). From the Tech Radar: the [May 14, 2026 Tech Radar](/radar/radar-2026-05-14/) covered the moment Anthropic overtook OpenAI in enterprise adoption — a structural shift directly relevant to which AI coding tools teams should be standardizing on.
-

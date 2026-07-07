@@ -1,6 +1,10 @@
 ﻿---
 title: "Architecting Agentic E-commerce Search with Golang"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Agentic Ecommerce Search Golang Vector Databases"
 slug: "agentic-ecommerce-search-golang-vector-databases"
+author: "Lê Tuấn Anh"
 date: "2026-05-22T10:00:00+07:00"
 lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
@@ -15,6 +19,13 @@ cover:
   alt: "Architecting Agentic E-commerce Search with Golang and vector databases — pgvector, re-ranking, query expansion"
   relative: false
 ---
+
+**Answer-first:** Agentic E-commerce Search transforms traditional search from passive keyword matching to active shopping assistance using AI agents that understand complex queries, apply business logic filters, and provide personalized results in real-time.
+
+### What You'll Learn That AI Won't Tell You
+- Practical strategies for tuning vector search precision without bloating RAM.
+- How to coordinate multiple AI search agents to prevent search query latency spikes.
+
 
 The search system is the beating heart of every e-commerce platform. If customers cannot find a product, they cannot buy it. However, as we move through 2026, user search behavior has evolved drastically from typing short, abrupt keywords (e.g., *"men's running shoes"*) to submitting complex, goal-oriented queries (e.g., *"find me a pair of men's waterproof trail running shoes, size 42, under $100, that can be delivered by tomorrow"*). Against these multifaceted intents, traditional search engines begin to show their limitations.
 
@@ -36,7 +47,7 @@ It is completely powerless against real-time Business Logic, such as: *"Filter o
 
 ## What is Agentic Search? Semantic Search vs. Agentic AI
 
-**Answer-first:** Agentic E-commerce Search transforms traditional search from passive keyword matching to active shopping assistance using AI agents that understand complex queries, apply business logic filters, and provide personalized results in real-time.
+
 
 **Agentic Search** solves this by introducing a "Brain" (Orchestration Layer) in front of the databases. Instead of querying the database directly, the system employs an Autonomous AI Agent.
 

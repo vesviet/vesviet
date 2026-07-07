@@ -1,6 +1,10 @@
 ﻿---
 title: "LeaseInVietnam: AI-Powered Expat Rental & B2B Lead Engine"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Leaseinvietnam Ai Powered Expat Rental Intelligence System"
 slug: "leaseinvietnam-ai-powered-expat-rental-intelligence-system"
+author: "Lê Tuấn Anh"
 date: "2026-04-24T10:00:00+07:00"
 lastmod: "2026-04-24T10:00:00+07:00"
 draft: false
@@ -28,8 +32,12 @@ cover:
   relative: false
 ---
 
+**Answer-first:** LeaseInVietnam runs an autonomous AI pipeline that ingests, cleans, and translates rental listings. By extracting structured property attributes using LLM-based schemas, it converts raw data into high-value expat guides and property listings, serving as a high-converting B2B lead generation engine.
 
-**Answer-first:** Build an autonomous AI pipeline that scrapes and publishes expat rental intelligence for Vietnam, turning articles into a B2B lead funnel.
+### What You'll Learn That AI Won't Tell You
+- Structuring scrapers to bypass IP blocks while parsing rental data.
+- Using LLMs to standardize unstructured rental locations into precise lat-long values.
+
 
 Most AI content projects are built around one question: how do I publish more? LeaseInVietnam is built around a different question: how do I make every published piece convert?
 
@@ -313,4 +321,3 @@ Every reader interaction routes to a B2B commission partner via an n8n webhook o
 {{< faq q="What is the difference between Auto mode and Manual mode in this AI content pipeline?" >}}
 **Auto mode** runs on a daily cron against a list of core keywords (e.g., "Thao Dien apartment price," "District 7 expat living") and autonomously crawls, extracts, verifies, writes, and publishes market updates and area guides without human intervention. **Manual mode via Telegram** handles breaking trends: an admin sends a single keyword to the Telegram bot, which triggers the full 8-stage pipeline (search → extract → verify → write → review → publish) and produces a live article within minutes. Manual mode handles time-sensitive events: viral Reddit threads about scams, sudden visa regulation changes, or new expat communities forming in a new district.
 {{< /faq >}}
-

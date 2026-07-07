@@ -1,7 +1,7 @@
 ﻿---
 title: "Part 2: FinOps Cost Reality - The Hidden Tax of Microservices"
 lastmod: "2026-07-03T14:59:00+07:00"
-description: "Analyzing the AWS bill of distributed architectures: Hidden costs from Service Mesh (Istio), data transfer fees (Cross-AZ Egress), and Observability waste. Lessons from Segment."
+description: "Analyzing the AWS bill of distributed architectures: Hidden costs from Service Mesh (Istio), data transfer fees (Cross-AZ Egress), and Observability waste."
 slug: "finops-cost-reality-microservices-tax"
 tags: ["FinOps", "AWS", "Istio", "Cloud Cost", "Segment", "Modular Monolith"]
 aliases:

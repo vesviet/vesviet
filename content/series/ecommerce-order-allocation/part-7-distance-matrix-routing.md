@@ -4,7 +4,7 @@ slug: "part-7-distance-matrix-routing"
 date: 2026-05-06T20:30:00+07:00
 lastmod: 2026-06-26T21:00:00+07:00
 draft: false
-description: "Self-host GraphHopper or OSRM to compute 10,201 distance pairs in <50ms — free. Google Maps Distance Matrix API costs $510/day for the same workload. Includes Docker setup, Python code, H3 caching, and OR-Tools integration."
+description: "Self-host GraphHopper or OSRM for distance matrix routing. Compute 10k pairs in <50ms for free instead of paying $510/day for Google Maps. Code included."
 weight: 8
 keywords: ["graphhopper vs osrm", "distance matrix routing", "osrm distance matrix", "graphhopper distance matrix", "distance.to alternative", "google maps distance matrix alternative", "ecommerce order allocation", "or-tools vrp", "open source routing engine"]
 mermaid: true

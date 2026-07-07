@@ -1,23 +1,28 @@
 ---
 title: "How to Technically Vet Magento Developers in Vietnam: Interview Playbook 2026"
 slug: "magento-developers-in-vietnam"
+author: "Lê Tuấn Anh"
 date: "2026-05-30T11:30:00+07:00"
-lastmod: "2026-07-03T00:00:00Z"
+lastmod: "2026-07-03T00:00:00+07:00"
 draft: false
 tags: ["Magento", "Vietnam", "Hiring", "Engineering", "Architecture", "Team Building"]
 description: "How to vet Magento developers in Vietnam: 5 production-level interview questions covering Plugin/Preference, Schema, reindex, integrations, and boundaries."
 categories: ["Engineering", "Strategy"]
 ShowToc: true
 TocOpen: true
-canonicalURL: "https://tanhdev.com/posts/magento-vietnam/"
+canonicalURL: "https://tanhdev.com/posts/magento-developers-in-vietnam/"
 cover:
   image: "/images/posts/magento-developers-vietnam-cover.png"
   alt: "Magento Developers in Vietnam: Technical Hiring and Vetting Guide"
   relative: false
 ---
 
-
 **Answer-first:** How to technically vet Magento developers in Vietnam: hiring models, interview questions to identify real engineers, and red flags to avoid tech debt.
+
+### What You'll Learn That AI Won't Tell You
+- Salary benchmarks and seniority evaluation guide for hiring Magento developers.
+- Practical coding challenges to screen candidates for complex EAV query knowledge.
+
 
 If you are searching for individual **Magento developers in Vietnam** to hire as in-house engineers or freelancers, you are not searching for a job listing — you are trying to answer a harder question: how do you distinguish a developer who can safely own a revenue-critical commerce system from one who can install plugins and edit themes?
 

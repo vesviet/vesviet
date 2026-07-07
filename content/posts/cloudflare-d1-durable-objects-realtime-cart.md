@@ -1,6 +1,10 @@
 ﻿---
 title: "Cloudflare D1 + Durable Objects: Build a Real-Time Cart"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Cloudflare D1 Durable Objects Realtime Cart"
 slug: "cloudflare-d1-durable-objects-realtime-cart"
+author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
 lastmod: "2026-06-01T10:00:00+07:00"
 draft: false
@@ -26,8 +30,14 @@ cover:
   relative: false
 ---
 
+**Answer-first:** Eliminate database latency and Redis caching overhead for global e-commerce by pairing Cloudflare Workers at the edge with Durable Objects for strongly consistent, real-time in-memory state. Use D1 for serverless SQLite persistence, routing concurrent device updates through a transactional, conflict-free architecture.
 
-**Answer-first:** Build a real-time shopping cart using Cloudflare D1, Durable Objects, and Workers. Full schema, TypeScript code, and conflict-free concurrent updates.
+### What You'll Learn That AI Won't Tell You
+- How to design cart locking mechanisms in Durable Objects without deadlocks.
+- Tuning sub-request allocations to stay within Cloudflare's free-tier runtime boundaries.
+
+
+> 
 
 The traditional shopping cart architecture is a familiar set of tradeoffs: Redis for session storage, PostgreSQL for order data, and a backend API tier that coordinates between them. It works, but it introduces latency proportional to the distance between the user and your datacenter, requires operational overhead for Redis cluster management, and struggles with globally concurrent cart edits from the same user across multiple devices.
 

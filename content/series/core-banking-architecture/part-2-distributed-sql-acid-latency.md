@@ -3,7 +3,7 @@ title: "Distributed SQL ACID Latency: TiDB, CockroachDB & Spanner"
 date: 2026-06-18T11:10:00+07:00
 lastmod: 2026-07-03T15:41:55+07:00
 draft: false
-description: "Distributed SQL ACID latency: Spanner TrueTime commit-wait 2-14ms, TiDB Percolator TSO 1-3ms, CockroachDB HLC. When should you migrate away from a PostgreSQL monolith?"
+description: "Distributed SQL ACID latency: Spanner TrueTime commit-wait 2-14ms, TiDB Percolator TSO 1-3ms, CockroachDB HLC."
 weight: 2
 series: ["core-banking-architecture"]
 keywords: ["distributed sql transaction latency", "TiDB percolator overhead", "Spanner TrueTime vs CockroachDB HLC", "2PC network latency fintech"]

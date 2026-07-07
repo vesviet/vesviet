@@ -1,10 +1,11 @@
 ﻿---
 title: "Zero DevOps E-commerce with Cloudflare Workers & Turborepo"
 description: "Serverless Edge e-commerce with Cloudflare Workers, D1, and Turborepo: eliminate DevOps overhead and auto-generate Mobile SDKs on every API change."
-date: 2026-06-17T21:00:00+07:00
-lastmod: 2026-06-24T00:00:00Z
+date: "2026-06-17T21:00:00+07:00"
+lastmod: "2026-06-24T00:00:00+07:00"
 draft: false
 slug: "cloudflare-zero-devops-ecommerce-architecture"
+author: "Lê Tuấn Anh"
 images: ["/images/default-post.png"]
 categories:
   - System Design
@@ -27,66 +28,205 @@ In this post, we dissect **Aura Store** — a production-grade Cloudflare Worker
 
 ## 1. Turborepo Monorepo Architecture in Practice
 
-**Answer-first:** Turborepo splits the e-commerce system into four independent apps — `storefront-ui`, `admin-ui`, `public-api`, and `admin-api` — and two shared packages: `database` and `contract`. This separation maximises build speed via Turborepo's task graph cache and enforces a hard security boundary between the public-facing layer and internal tooling.
-
 Merging an Admin API and a Public API into a single backend is an invitation for privilege escalation bugs. Aura Store keeps them strictly apart:
 
-- **`apps/storefront-ui`**: Customer-facing storefront (Next.js 15+) — deployed to Cloudflare Pages for Edge rendering.
-- **`apps/public-api`**: Cloudflare Worker that serves the storefront and third-party integrations.
-- **`apps/admin-api`**: A separate Cloudflare Worker with strict RBAC middleware. Unreachable from the public internet path.
-- **`packages/contract`**: Zod schemas and OpenAPI specs — the single source of truth for all API payloads.
-- **`packages/database`**: Drizzle ORM schema and migrations for Cloudflare D1.
+* **`apps/storefront-ui`**: Customer-facing storefront (Next.js 15+) — deployed to Cloudflare Pages for Edge rendering.
+* **`apps/admin-ui`**: The back-office control panel (Vite/React) — deployed to Pages, strictly protected behind corporate SSO.
+* **`apps/public-api`**: Cloudflare Worker that serves product listings, user carts, and handles checkout.
+* **`apps/admin-api`**: A separate Cloudflare Worker with strict RBAC middleware. Unreachable from the public internet path.
+* **`packages/contract`**: Zod schemas and OpenAPI specs — the single source of truth for all API payloads.
+* **`packages/database`**: Drizzle ORM schema and migrations for Cloudflare D1.
 
 Because both apps and packages share the same Turborepo workspace, a schema change in `packages/contract` or `packages/database` propagates to all consumers at build time — no manual version bumping required.
 
 ---
 
-## 2. Cloudflare D1 & Drizzle ORM: Relational Data at the Edge
+## 2. Multi-Environment Wrangler Configuration
 
-**Answer-first:** Cloudflare D1 (SQLite Edge) paired with Drizzle ORM delivers globally distributed, type-safe relational queries with no connection pools to manage. D1 reads data from the edge node closest to the user — eliminating the round-trip to a centralised origin database.
+Handling relational data, key-value storage, and queue processing at the edge requires careful binding definitions in the Worker configuration. The `wrangler.toml` file must define boundaries for development, staging, and production environments. 
 
-Handling relational data at the Edge was the biggest unsolved problem of Serverless architecture. Cloudflare D1 changes that. The `wrangler.toml` configuration for `public-api` illustrates just how little setup is required:
+Here is the complete production-grade `wrangler.toml` config for `public-api`:
 
 ```toml
 name = "public-api-worker"
-compatibility_date = "2024-06-05"
+main = "src/index.ts"
+compatibility_date = "2026-06-01"
 compatibility_flags = ["nodejs_compat"]
 
+# Global Environment Variables
+[vars]
+ENVIRONMENT = "production"
+API_VERSION = "v1"
+
+# Cloudflare D1 Database Bindings
 [[d1_databases]]
 binding = "DB"
-database_name = "ecommerce-db"
-database_id = "YOUR_D1_DATABASE_ID"      # from: wrangler d1 create <db-name>
-  preview_database_id = "local"        # local SQLite when running wrangler dev
-  migrations_dir = "../../packages/database/migrations"
-```
+database_name = "ecommerce-db-prod"
+database_id = "f052e46d-34e8-4217-b715-e21544f808db"
+migrations_dir = "../../packages/database/migrations"
 
-There is no connection string to protect, no connection pool to tune, and no idle timeout to worry about. The Worker receives the `DB` binding at runtime, and Drizzle ORM provides full type-safety from the database schema in `packages/database` all the way up through the API response.
-
-Beyond D1, the same `wrangler.toml` wires up the rest of the Cloudflare ecosystem in a few additional lines:
-
-```toml
+# Cloudflare KV Namespaces (Product Cache & Session Stores)
 [[kv_namespaces]]
 binding = "CACHE_KV"
-  id     = "YOUR_KV_NAMESPACE_ID"   # from: wrangler kv namespace create CACHE_KV
+id = "77c8e9b4122d4f3b8956e18dbcfb219e"
 
+# Cloudflare R2 Buckets (Product Images & Attachments)
 [[r2_buckets]]
-binding     = "PRODUCTS_R2"
-bucket_name = "e-commerce"
+binding = "PRODUCTS_R2"
+bucket_name = "aura-storefront-assets-prod"
 
-[[queues.consumers]]
-queue             = "ecommerce-events-prod"
-max_batch_size    = 10
-max_retries       = 3
-dead_letter_queue = "ecommerce-events-dlq"
+# Cloudflare Queue Bindings (Async Event Broker)
+[[queues.producers]]
+queue = "ecommerce-events-prod"
+binding = "EVENT_QUEUE"
+
+# -------------------------------------------------------------
+# Staging Environment Override
+# -------------------------------------------------------------
+[env.staging]
+name = "public-api-worker-staging"
+
+[env.staging.vars]
+ENVIRONMENT = "staging"
+
+[[env.staging.d1_databases]]
+binding = "DB"
+database_name = "ecommerce-db-staging"
+database_id = "d182e46d-55c8-4721-a115-e21544f999cc"
+migrations_dir = "../../packages/database/migrations"
+
+[[env.staging.kv_namespaces]]
+binding = "CACHE_KV"
+id = "22c8e9b4122d4f3b8956e18dbcfb319f"
+
+[[env.staging.r2_buckets]]
+binding = "PRODUCTS_R2"
+bucket_name = "aura-storefront-assets-staging"
+
+[[env.staging.queues.producers]]
+queue = "ecommerce-events-staging"
+binding = "EVENT_QUEUE"
 ```
 
-KV for caching, R2 for object storage, and Queues for async event processing — all bound to the Worker with zero extra infrastructure provisioned.
+Using this configuration, running a deployment is completely hands-off:
+* For local development, Wrangler uses local SQLite: `wrangler dev`
+* For staging deploy: `wrangler deploy --env staging`
+* For production deploy: `wrangler deploy`
 
 ---
 
-## 3. The Architecture Highlight: Automated Mobile SDK Generation
+## 3. Circumventing D1 Concurrency & SQLite Lock Timeouts
 
-**Answer-first:** Instead of manually maintaining HTTP clients for Flutter and iOS, the system auto-generates Dart and Swift SDKs from Zod schemas on every merge to `main`. Any change to `packages/contract` triggers a GitHub Actions pipeline that compiles OpenAPI JSON and pushes fresh SDK code — no human handoff required.
+Cloudflare D1 is built on SQLite, which means it inherits SQLite's core database locking behavior: **a single writer model**. 
+
+When thousands of users attempt to write to the database simultaneously during a product drop or flash sale, concurrent transactional writes will trigger `SQLITE_BUSY: database is locked` errors. This is because SQLite locks the entire database file during write transactions, causing queue congestion.
+
+### The Solution: Transaction Batching via the D1 Batch API
+To prevent lock timeouts, we must minimize database write roundtrips. Instead of opening multiple transactions sequentially, we combine queries into a single batch using the native `db.batch()` API. This locks the database exactly once, executes all operations in memory, and writes them in a single file-system operation.
+
+Below is the TypeScript implementation showing how to execute an edge checkout transaction batch with Drizzle ORM and D1.
+
+```typescript
+import { drizzle } from "drizzle-orm/d1";
+import { eq, sql } from "drizzle-orm";
+import { orders, orderItems, inventoryStocks } from "../../packages/database/schema";
+
+export interface Env {
+  DB: D1Database;
+  EVENT_QUEUE: Queue;
+}
+
+interface CheckoutPayload {
+  userId: string;
+  items: { sku: string; quantity: number; price: number }[];
+}
+
+export async function processEdgeCheckout(
+  env: Env,
+  payload: CheckoutPayload
+): Promise<{ success: boolean; orderId?: string; error?: string }> {
+  const db = drizzle(env.DB);
+  const orderId = crypto.randomUUID();
+  const totalAmount = payload.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  try {
+    // 1. Prepare batch statements
+    // SQLite locking is mitigated by grouping verification, update, and logging
+    const statements: any[] = [];
+
+    // Statement A: Create the core order record
+    statements.push(
+      db.insert(orders).values({
+        id: orderId,
+        userId: payload.userId,
+        totalAmount: totalAmount,
+        status: "PROCESSING",
+        createdAt: new Date(),
+      })
+    );
+
+    // Statements B: Insert order items and deduct stock
+    for (const item of payload.items) {
+      // Record order line item
+      statements.push(
+        db.insert(orderItems).values({
+          orderId: orderId,
+          sku: item.sku,
+          quantity: item.quantity,
+          unitPrice: item.price,
+        })
+      );
+
+      // Deduct stock immediately. The WHERE clause prevents stock going negative
+      statements.push(
+        db
+          .update(inventoryStocks)
+          .set({
+            availableQty: sql`${inventoryStocks.availableQty} - ${item.quantity}`,
+            updatedAt: new Date(),
+          })
+          .where(
+            sql`${inventoryStocks.sku} = ${item.sku} AND ${inventoryStocks.availableQty} >= ${item.quantity}`
+          )
+      );
+    }
+
+    // 2. Execute statements in a single batch transaction block
+    // D1 guarantees all statements run atomically inside a single BEGIN IMMEDIATE/COMMIT block
+    const results = await env.DB.batch(statements);
+
+    // 3. Post-batch validation: Check if stock update succeeded
+    // Since SQL UPDATE returns success even if 0 rows matched the WHERE clause,
+    // we must verify that rows were actually updated.
+    // The index offset matches our batch array order.
+    let itemOffset = 2; // Order insert (0) + First Item insert (1) -> Stock update starts at index 2
+    for (let i = 0; i < payload.items.length; i++) {
+      const updateResult = results[itemOffset];
+      if (updateResult.meta.rows_written === 0) {
+        // If a row wasn't written, it means availableQty >= item.quantity failed
+        throw new Error(`Stock allocation failed for SKU: ${payload.items[i].sku}. Insufficient stock.`);
+      }
+      itemOffset += 3; // Step past: Item Insert (1) + Next Stock Update (1) + Next Item Insert (1)...
+    }
+
+    // 4. Publish background order completion event
+    await env.EVENT_QUEUE.send({
+      type: "ORDER_CREATED",
+      orderId: orderId,
+      timestamp: Date.now(),
+    });
+
+    return { success: true, orderId: orderId };
+  } catch (error: any) {
+    console.error("Checkout batch failed:", error.message);
+    return { success: false, error: error.message || "Unknown error during checkout." };
+  }
+}
+```
+
+---
+
+## 4. Automated Mobile SDK Generation
 
 This is the sharpest edge of Aura Store's architecture, and one that almost no Cloudflare tutorial covers. API contracts are defined **once** as Zod schemas in `packages/contract`. When a PR merges, the pipeline runs:
 
@@ -122,9 +262,7 @@ The pipeline opens a PR with the regenerated SDKs. Mobile teams merge it and shi
 
 ---
 
-## 4. Zero DevOps Deployment: No CI/CD Pipelines to Maintain
-
-**Answer-first:** Zero DevOps means pushing to `main` and walking away. Cloudflare's native GitHub integration detects the push, runs the build for each app in the workspace, and deploys globally across 300+ cities. No Kubernetes manifests, no Helm charts, no Jenkins job to babysit.
+## 5. Zero DevOps Deployment: No CI/CD Pipelines to Maintain
 
 Each app in the Turborepo maps to a separate Cloudflare project:
 
@@ -152,7 +290,7 @@ The Stripe CLI prints a `STRIPE_WEBHOOK_SECRET` value; paste it into `apps/publi
 
 ---
 
-## 5. FAQ: Cloudflare E-commerce Architecture
+## 6. FAQ: Cloudflare E-commerce Architecture
 
 ### What is a Zero DevOps architecture?
 
@@ -163,7 +301,7 @@ Zero DevOps is a model where engineers spend 100% of their time writing product 
 The fundamental difference is the runtime model. AWS Lambda runs inside a lightweight container that must cold-start — a virtualisation layer that adds 100ms–500ms on the first request. Cloudflare Workers run on **V8 isolates**: the same engine that powers Chrome, with near-zero cold start overhead. On a globally distributed network of **300+ cities**, most users receive a sub-millisecond response from an edge node physically close to them — without any geo-routing configuration.
 
 | | AWS Lambda | Cloudflare Workers |
-|--|--|--|
+|---|---|---|
 | Runtime | Container (cold start possible) | V8 isolates (cold start eliminated) |
 | Global latency | Origin-dependent | Sub-millisecond at 300+ PoPs |
 | Infrastructure config | VPC, subnets, IAM | None — deploy via `wrangler` |
@@ -172,13 +310,3 @@ The fundamental difference is the runtime model. AWS Lambda runs inside a lightw
 ### How do you handle relational data at the Edge?
 
 Instead of routing every query back to a centralised RDS instance in `us-east-1`, use **Cloudflare D1**. D1 is a globally distributed SQL database built on SQLite. Drizzle ORM wraps D1 with a fully type-safe query builder, so your schema and queries are validated at compile time — not at runtime in production.
-
----
-
-> **Further reading:** [Cloudflare D1 official docs](https://developers.cloudflare.com/d1/) · [Turborepo documentation](https://turbo.build/repo/docs) · [Dapr Pub/Sub for event-driven microservices](/radar/tech-radar-june-17-2026-kratos-clean-architecture-dapr-pubsub/)
-
-*Serverless Edge Architecture is not the future. It is the present. Explore more modern architecture patterns in the [System Design Series](/series/system-design/) and browse all [Cloudflare](/tags/cloudflare/) and [DevOps](/tags/devops/) posts on the blog.*
-
-*📬 Get the weekly Tech Radar — no spam, only signal: [Subscribe here](/newsletter/).*
-
-{{< author-cta >}}

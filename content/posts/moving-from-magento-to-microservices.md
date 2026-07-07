@@ -1,6 +1,7 @@
 ---
 title: "Zero-Downtime: Moving from Magento to Microservices"
 slug: "moving-from-magento-to-microservices"
+author: "Lê Tuấn Anh"
 date: "2026-04-14T21:20:00+07:00"
 lastmod: "2026-07-03T14:57:00+07:00"
 draft: false
@@ -13,16 +14,23 @@ cover:
   image: "/images/posts/moving-from-magento-to-microservices-cover.png"
   alt: "Zero-Downtime Blueprint: Moving from Magento to Microservices — Strangler Fig Pattern"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/moving-from-magento-to-microservices/"
 ---
 
+**Answer-first:** Migrate a complex Magento monolith to microservices without downtime by utilizing a 3-Phase Strangler Fig pattern. Stream legacy updates to Go microservices in real time using Debezium CDC, manage bidirectional synchronizations using Dapr Pub/Sub to maintain eventual consistency, and keep Magento as a 30-day hot standby for instant rollback capability.
 
-**Answer-first:** Battlefield-tested guide on dismantling a monolithic Magento e-commerce platform and migrating to 10+ microservices without losing a single order.
+### What You'll Learn That AI Won't Tell You
+- Decoupling cart and checkout tables from Magento core databases.
+- Data synchronization pipelines that prevent order loss during checkout transitions.
+
+
+> 
 
 "Let's rewrite everything to Microservices." 
 
 This sentence usually precedes multimillion-dollar engineering failures. When a legacy application like a massive Magento e-commerce store is holding up the financial weight of a company, executing a "Big Bang" cutover is practically suicidal. 
 
-Instead of burning the old house down before the new one is built, we employed a meticulous **3-Phase Strangler Fig Pattern**. We allowed our new distributed microservice ecosystem to gradually wrap around the old Magento monolith, intercepting its traffic piece by piece until the legacy server became a hollow shell.
+Instead of burning the old house down before the new one is built, we employed a meticulous **3-Phase Strangler Fig Pattern**. We allowed our new distributed microservice ecosystem to gradually wrap around the old Magento monolith, intercepting its traffic piece by piece until the legacy server became a hollow shell. For a detailed breakdown of overcoming tech debt and managing eventual consistency during such transitions, see our guide on [Composable Commerce Migration](/posts/ecommerce-architecture-composable-migration/).
 
 Here is the exact playbook we used to safely migrate 10 core commerce domains (Catalog, Order, Customer, Payment, Fulfillment, etc.) from Magento to a modern stack, achieving 99.9% uptime and a <5 minute rollback capability.
 
@@ -44,7 +52,7 @@ Once the data layer was untangled, we executed the 3-phase rollout.
 
 **Before starting a Magento migration, ensure three capabilities are live: an API Gateway for traffic routing, centralized logging with OpenTelemetry tracing, and a Change Data Capture (CDC) pipeline like Debezium to sync legacy MySQL data.**
 
-**Answer-first:** The most common reason migration projects fail is starting Phase 1 before the data layer is migration-ready. Complete every item below before routing a single byte of traffic to new services.
+
 
 This checklist reflects what we validated across two large-scale Magento migrations. Skip an item and you will discover why it matters at 2am during Phase 2.
 
@@ -161,7 +169,7 @@ Once the 30-day quarantine period cleanly expired, we finally terminated Magento
 
 **After cutover, validate success through synthetic transactions, tracking business metrics (checkout conversion rates), and monitoring the OpenTelemetry dashboard for error spikes. SRE teams must verify that the p99 latency target is met under live traffic.**
 
-**Answer-first:** The 30-day hot standby period is not passive monitoring — it is a structured validation protocol. Missing this step is how teams discover data integrity issues three months after cutover when rollback is no longer possible.
+
 
 ### Week 1 — Intensive Validation (Daily)
 
@@ -200,6 +208,7 @@ By utilizing CDC/Debezium for Phase 1, bidirectional Event-Driven outboxes over 
 If you are assessing vendor capability before a migration, our [Magento Development in Vietnam: 2026 Hiring Guide](/posts/magento-vietnam/) breaks down the difference between extension shops and teams that can actually own architecture, integrations, and production reliability.
 
 **Continue Reading:**
+- [Composable Commerce Migration](/posts/ecommerce-architecture-composable-migration/) — our strategic framework on managing eventual consistency and observability costs when moving to a fully composable commerce stack.
 - [Go Microservices Architecture: Production Guide](/posts/go-microservices/) — the complete architectural manual for the destination stack.
 - [Architecting a 21-Service E-Commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/) — the destination architecture after the migration: a full 21-service distributed system.
 - [Mastering Event-Driven Architecture with Dapr Pub/Sub](/posts/mastering-event-driven-architecture-dapr/) — the event-driven backbone (Saga, DLQ, Outbox) that replaces the Magento monolith's synchronous coupling.
@@ -223,4 +232,3 @@ Magento uses sequential integer `entity_id` values as primary keys across all ta
 {{< faq q="What is bidirectional sync in a microservices migration?" >}}
 **Bidirectional sync** is the dual-write pattern used during Phase 2 of the migration when both Magento and the new microservices are simultaneously handling writes. When a microservice (e.g., Order Service) processes a transaction, it writes an `order.created` event to its outbox table in the same database transaction. A **Legacy Sync Worker** consumes this event from the Dapr Event Mesh and writes it backward into Magento's database, translating modern payloads back into Magento's EAV schema format. Conflict resolution uses timestamp precedence — the newest write wins. This bidirectional sync allows legacy modules still running inside Magento (e.g., Fulfillment) to remain functional while the migration completes.
 {{< /faq >}}
-

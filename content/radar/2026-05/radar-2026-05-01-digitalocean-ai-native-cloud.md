@@ -14,7 +14,7 @@ tags:
   - MCP
   - Platform Engineering
   - AI Agents
-description: "DigitalOcean's April 28, 2026 AI-Native Cloud launch is a useful market signal for engineering teams: inference routing is becoming a control plane, retrieval is moving into managed platform primitives, and agent infrastructure is being packaged as one integrated stack rather than stitched together from separate vendors."
+description: "DigitalOcean's April 28, 2026 AI-Native Cloud launch is a useful market signal for engineering teams: inference routing is becoming a control plane"
 ShowToc: true
 TocOpen: true
 aliases: ["/radar/radar-2026-05-01-digitalocean-ai-native-cloud/"]

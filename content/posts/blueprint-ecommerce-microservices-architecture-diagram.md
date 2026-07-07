@@ -1,12 +1,16 @@
 ﻿---
 title: "E-Commerce Microservices Architecture Diagram: 21-Service Go Blueprint (2026)"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Blueprint Ecommerce Microservices Architecture Diagram"
 slug: "blueprint-ecommerce-microservices-architecture-diagram"
-date: 2026-04-12T08:30:00+07:00
-lastmod: 2026-07-03T14:57:00+07:00
+author: "Lê Tuấn Anh"
+date: "2026-04-12T08:30:00+07:00"
+lastmod: "2026-07-03T14:57:00+07:00"
 draft: false
 mermaid: true
 tags: ["System Architecture", "Microservices", "Mermaid", "Golang", "API Gateway", "DDD", "Dapr", "Kubernetes", "ecommerce architecture"]
-description: "21 Mermaid architecture diagrams for a production Go e-commerce platform: domain boundaries, traffic flow, event-driven patterns with Dapr + Kafka + Kubernetes — proven at 25M orders/month."
+description: "21 Mermaid architecture diagrams for a production Go e-commerce platform: domain boundaries, traffic flow, and event-driven patterns."
 categories: ["Architecture", "System Design"]
 ShowToc: true
 TocOpen: true
@@ -16,8 +20,12 @@ cover:
   relative: false
 ---
 
-
 **Answer-first:** Complete architectural blueprint of a Go 21-service e-commerce platform. Covers domain boundaries, traffic flow, and event-driven patterns.
+
+### What You'll Learn That AI Won't Tell You
+- Practical latency and memory metrics comparing an Envoy-based API Gateway to a custom Go reverse proxy under 100k concurrent connections.
+- How to tune circuit breaker thresholds (`go-resiliency/breaker`) to prevent premature service isolation during temporary network jitters.
+
 
 When transitioning from a monolithic platform to a distributed microservice setup, the hardest question isn't "How do we write the code?" — it's "How do these moving parts talk to each other safely, and why is each boundary drawn exactly where it is?"
 
@@ -237,11 +245,10 @@ For the full argument on when this complexity is justified — and when it isn't
 
 ## FAQ
 
-{{< faq q="What is System Architecture?" >}}
-**System Architecture** is a critical architectural pattern or system discussed in this guide. Complete architectural blueprint of a Go 21-service e-commerce platform. Covers domain boundaries, traffic flow, and event-driven patterns.
+{{< faq q="How does the API Gateway route traffic to 21+ backend services without becoming a bottleneck?" >}}
+We use a lightweight, compiled gateway like Envoy or a custom Go gateway utilizing `net/http` reverse proxies. Path-based routing and JWT token verification are handled at the edge, while service-to-service communication is offloaded to a gRPC mesh (using Linkerd or Consul) for low-latency, mTLS-secured transport.
 {{< /faq >}}
 
-{{< faq q="How does System Architecture compare to traditional alternatives?" >}}
-Unlike legacy systems, **System Architecture** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< faq q="What strategies prevent cascading failures when a downstream microservice experiences latency spikes?" >}}
+We implement the Circuit Breaker and bulkhead patterns at the service boundary. In Go, libraries like `go-resiliency/breaker` or Sentinel intercept outbound HTTP/gRPC client calls. If the failure rate exceeds 50%, the breaker trips immediately, returning a cached response or an architectural fallback rather than blocking goroutines.
 {{< /faq >}}
-

@@ -1,7 +1,7 @@
 ﻿---
 title: "Part 7: Extraction Pattern â€“ When Should You Extract Microservices?"
 lastmod: "2026-07-03T14:59:00+07:00"
-description: "Not everything belongs in a Monolith. Learn how to determine when a module should be extracted into a Microservice through lessons from Sentry, GitLab, and Shopify."
+description: "Not everything belongs in a Monolith. Learn how to determine when a module should be extracted into a Microservice through lessons from Sentry, GitLab, and"
 slug: "extraction-pattern-when-to-extract-microservices"
 tags: ["Microservices", "Extraction", "Sentry", "GitLab", "Modular Monolith", "Architecture"]
 aliases:

@@ -1,6 +1,10 @@
 ﻿---
 title: "Alipay Double 11: 583,000 TPS Architecture Explained"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Alipay Double 11 Architecture Tps"
 slug: "alipay-double-11-architecture-tps"
+author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
 lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
@@ -26,8 +30,12 @@ cover:
   relative: false
 ---
 
+**Answer-first:** Alipay scaled to 583,000 TPS using Logical Data Center (LDC) unitization for multi-site active-active disaster recovery, OceanBase for distributed relational storage with Raft consensus, RocketMQ for transactional messaging, and SOFAStack middleware. This architecture guarantees horizontal scalability and financial-grade consistency under peak load.
 
-**Answer-first:** How Alipay's engineering team scaled Double 11 to 583,000 TPS using LDC unitization, OceanBase, RocketMQ, and SOFAStack. A 2026 deep-dive.
+### What You'll Learn That AI Won't Tell You
+- Real-world database performance metrics of OceanBase under peak transactions.
+- LDC unitization routing rules that prevent cross-region network roundtrips.
+
 
 At midnight on November 11th, approximately 1.5 billion people across Asia collectively open a single app and start tapping "Buy Now." In the first 60 seconds, Alipay processes more transactions than a major Western bank handles in an entire day. The 2023 Singles' Day peak — **583,000 payment transactions per second (TPS)** — is not just a headline. It is the product of fourteen years of architectural evolution that has redefined what "production-ready" means for a financial platform.
 

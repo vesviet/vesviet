@@ -11,7 +11,7 @@ tags:
   - MCP SDK
   - Best Practices
   - Error Handling
-description: "A practical guide to building a Model Context Protocol Server with the Go SDK. Comparing official vs community SDKs, managing Context Windows, and applying Idempotency."
+description: "A practical guide to building a Model Context Protocol Server with the Go SDK."
 aliases:
   - /series/mcp-engineering-in-production/part-2-build/
 cover:

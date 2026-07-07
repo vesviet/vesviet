@@ -1,8 +1,12 @@
 ﻿---
 title: "Microfinance Core Banking System: Architecture & Engineering Guide"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Deconstructing Microfinance Core Banking Architecture"
 slug: "deconstructing-microfinance-core-banking-architecture"
-date: 2026-05-27T10:00:00+07:00
-lastmod: 2026-06-10T15:13:00+07:00
+author: "Lê Tuấn Anh"
+date: "2026-05-27T10:00:00+07:00"
+lastmod: "2026-06-10T15:13:00+07:00"
 draft: false
 tags: ["Core Banking", "Microfinance", "Architecture", "System Design", "Fintech"]
 description: "Engineer's guide to microfinance CBS architecture: 5 modules, double-entry ledger, JLG loan engine, amortization formulas, and EOD batch state machines."
@@ -16,8 +20,12 @@ cover:
   relative: false
 ---
 
+**Answer-first:** Microfinance core banking requires a decentralized architecture: a double-entry ledger for transaction auditing, a joint liability group (JLG) loan engine with optimistic concurrency controls, modular interest/amortization processors, and parallelized worker pools to handle heavy End-of-Day batch processing.
 
-**Answer-first:** Engineer's guide to microfinance CBS architecture: 5 modules, double-entry ledger, JLG loan engine, amortization formulas, and EOD batch state machines.
+### What You'll Learn That AI Won't Tell You
+- How to prevent phantom funds in double-entry ledgers by writing strict write-once, append-only transaction logs.
+- Optimistic concurrency control implementations using version-checks and `SELECT ... FOR UPDATE` that survived concurrent interest calculations on 50,000 active accounts.
+
 
 Building a Core Banking System (CBS) for a Microfinance Institution (MFI) presents a radically different set of engineering challenges compared to traditional retail banking. While commercial banks focus heavily on individual credit scores and card networks, microfinance operates on high-frequency, low-value transactions, group-based lending, and offline field collections. 
 
@@ -165,11 +173,10 @@ For the broader strategic picture — how banks replace monolithic cores like Te
 
 ## FAQ
 
-{{< faq q="What is Core Banking?" >}}
-**Core Banking** is a critical architectural pattern or system discussed in this guide. Engineer's guide to microfinance CBS architecture: 5 modules, double-entry ledger, JLG loan engine, amortization formulas, and EOD batch state machines.
+{{< faq q="Why is a double-entry ledger implementation critical for a microfinance core banking backend?" >}}
+A double-entry ledger ensures that every financial transaction consists of equal and offsetting debit and credit entries, guaranteeing that the fundamental accounting equation remains balanced. This is crucial for auditability and compliance, preventing database synchronization errors from creating phantom funds or balance discrepancies.
 {{< /faq >}}
 
-{{< faq q="How does Core Banking compare to traditional alternatives?" >}}
-Unlike legacy systems, **Core Banking** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< faq q="How do you guarantee atomic consistency in a Go-based JLG (Joint Liability Group) loan engine during EOD processing?" >}}
+We use strict database transactions (`SELECT ... FOR UPDATE`) to lock account rows, combined with optimistic concurrency control (`version` checks) at the application level. All ledger entries are write-once, append-only logs. For End-of-Day (EOD) batch updates, we process transactions using parallel Go worker pools coordinated via channels and sync groups, wrapping each account calculation in a nested SQL transaction.
 {{< /faq >}}
-

@@ -1,6 +1,6 @@
 ﻿---
 title: "Modern Core Banking Architecture: From Double-Entry Ledger to Fintech Microservices"
-description: "In-depth series on modern Core Banking system architecture — Immutable Double-Entry Ledger, ACID transactions on distributed SQL, Event Sourcing, ISO 20022, FAPI 2.0, and Streaming Fraud Detection with Apache Flink."
+description: "In-depth series on modern Core Banking system architecture — Immutable Double-Entry Ledger, ACID transactions on distributed SQL, Event Sourcing, ISO 20022"
 date: 2026-06-18T11:00:00+07:00
 lastmod: 2026-06-18T11:00:00+07:00
 draft: false

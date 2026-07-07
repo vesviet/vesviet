@@ -4,7 +4,7 @@ slug: "part-4-dispatch-matching-engine"
 date: 2026-05-06T20:00:00+07:00
 lastmod: 2026-06-26T21:00:00+07:00
 draft: false
-description: "How ride-hailing dispatch works at scale: bipartite matching in <2 seconds, Uber DISCO, Grab DispatchGym, Gojek Jaeger, batched optimization, and Reinforcement Learning for driver-rider assignment."
+description: "How ride-hailing dispatch works at scale: bipartite matching in <2 seconds, Uber DISCO, Grab DispatchGym, Gojek Jaeger, batched optimization, and"
 weight: 5
 cover:
   image: "/images/posts/real-time-ride-hailing-cover.png"

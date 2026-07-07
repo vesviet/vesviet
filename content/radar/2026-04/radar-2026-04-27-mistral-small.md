@@ -13,7 +13,7 @@ tags:
   - AI Agents
   - Multimodal
   - Apache 2.0
-description: "Mistral released Small 4 under Apache 2.0, unifying fast instructing, deep reasoning, and multimodal capabilities in a single 119B parameter model. A deep-dive into configurable reasoning effort, the unified architecture, and what this means for the open-source vs. proprietary model landscape."
+description: "Mistral released Small 4 under Apache 2.0, unifying fast instructing, deep reasoning, and multimodal capabilities in a single 119B parameter model."
 ShowToc: true
 TocOpen: true
 aliases: ["/radar/radar-2026-04-27-mistral-small/"]

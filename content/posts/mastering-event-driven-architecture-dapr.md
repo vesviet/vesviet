@@ -1,7 +1,11 @@
 ﻿---
 title: "Mastering Event-Driven Architecture with Dapr Pub/Sub"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Mastering Event Driven Architecture Dapr"
 slug: "mastering-event-driven-architecture-dapr"
-date: 2026-04-12T09:05:00+07:00
+author: "Lê Tuấn Anh"
+date: "2026-04-12T09:05:00+07:00"
 lastmod: "2026-07-03T00:00:00+07:00"
 draft: false
 mermaid: true
@@ -16,8 +20,12 @@ cover:
   relative: false
 ---
 
+**Answer-first:** Build resilient event-driven microservices by using Dapr's Pub/Sub APIs to decouple message transport. Ensuring eventual consistency requires implementing the Transactional Outbox pattern on writes, utilizing dead-letter queues (DLQs) for failed runs, and designing idempotent message handlers.
 
-**Answer-first:** Decouple a 21+ microservice ecosystem using Event-Driven Architecture. Ensure data consistency via Sagas, Dead Letter Queues, and Idempotent handlers.
+### What You'll Learn That AI Won't Tell You
+- How to configure dead-letter queues in Dapr to handle poison messages.
+- Designing idempotent message handlers that process duplicate events safely.
+
 
 In my previous post, we explored how abandoning monolithic architecture in favor of strict **Domain-Driven Design (DDD)** bounded contexts allowed an e-commerce platform to scale beyond 10,000+ orders per day. However, splitting one big database into 20+ isolated Postgres databases introduces a terrifying new problem: **How do we maintain data consistency across disconnected services?**
 
@@ -507,4 +515,3 @@ Use **Choreography** (each service reacts to events independently with no centra
 {{< faq q="Should I use Dapr Pub/Sub or direct Kafka for Go microservices?" >}}
 They are not mutually exclusive — Dapr can use Kafka as its backend. The decision is about the abstraction layer. Use **Dapr Pub/Sub** when you have polyglot services (Go + Python + Node.js), may need to swap brokers in the future (Redis locally, Kafka in production), or want retries, DLQ routing, and circuit breaking configured via YAML without coding them into every service. Use **Kafka directly** when you need Kafka Streams or ksqlDB for stream processing, need granular partition management and offset control, have a team with deep Kafka expertise, or your latency budget is extremely tight (Dapr adds ~1ms sidecar overhead per hop via localhost loopback).
 {{< /faq >}}
-

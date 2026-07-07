@@ -3,7 +3,7 @@ title: "Part 4 — Policy-as-Code: Agentic CI/CD Guardrails for AI-Generated Cod
 date: 2026-05-17T08:00:00+07:00
 lastmod: 2026-05-17T08:00:00+07:00
 draft: false
-description: "Go far beyond 'AI reviews code.' Build Deterministic Guardrails, enforce Unit Tests for Boundary Conditions, and enforce architectural risk controls on every PR."
+description: "Go far beyond 'AI reviews code.' Build Deterministic Guardrails, enforce Unit Tests for Boundary Conditions, and enforce architectural risk controls on"
 ShowToc: true
 TocOpen: true
 weight: 6

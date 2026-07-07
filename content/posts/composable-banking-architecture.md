@@ -1,6 +1,10 @@
 ﻿---
 title: "Composable Banking Architecture: From Monolith to Modular Core"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Composable Banking Architecture"
 slug: "composable-banking-architecture"
+author: "Lê Tuấn Anh"
 date: "2026-06-10T14:55:00+07:00"
 lastmod: "2026-06-10T14:55:00+07:00"
 draft: false
@@ -27,8 +31,12 @@ cover:
   relative: false
 ---
 
+**Answer-first:** Composable banking replaces rigid legacy cores with modular Go microservices. The transition uses the Strangler Fig pattern to decouple domains, while distributed Sagas manage eventual consistency across transaction engines, and NewSQL databases provide horizontal scaling without sacrificing ACID compliance.
 
-**Answer-first:** How banks replace monolithic cores (Temenos, Finacle) with composable banking using Go microservices, Saga orchestration, NewSQL ledgers, and Strangler Fig.
+### What You'll Learn That AI Won't Tell You
+- Strangler fig patterns for core banking systems that prevent data corruption.
+- How to bridge legacy COBOL records into dynamic JSON streams using Go middleware.
+
 
 Legacy core banking systems were designed in a different era. Temenos T24, Finacle, and Flexcube shared one defining assumption: the bank's entire product catalogue — deposits, lending, payments, trade finance — would live inside a single, tightly coupled application and a single, shared database. That assumption held when banking moved at human speed. It breaks completely when product releases need to go from months to days, when a single fraud engine update must not risk a payments outage, and when engineers on a COBOL codebase are retiring faster than they can be replaced.
 

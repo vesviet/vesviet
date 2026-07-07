@@ -1,10 +1,14 @@
 ﻿---
 title: "Architecting 21-Service E-commerce with Golang & DDD"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Architecting 21 Service Ecommerce Golang Ddd"
 slug: "architecting-21-service-ecommerce-golang-ddd"
+author: "Lê Tuấn Anh"
 aliases:
   - /posts/architecting-a-21-service-e-commerce-ecosystem-with-golang-ddd/
-date: 2026-04-12T10:00:00+07:00
-lastmod: 2026-07-03T00:00:00+07:00
+date: "2026-04-12T10:00:00+07:00"
+lastmod: "2026-07-03T00:00:00+07:00"
 draft: false
 mermaid: true
 tags: ["Golang", "Microservices", "System Design", "Domain-Driven Design", "Kratos", "Dapr", "Saga Pattern"]
@@ -18,8 +22,12 @@ cover:
   relative: false
 ---
 
+**Answer-first:** We decompose the monolith into 21 microservices using Domain-Driven Design (DDD) to isolate business boundaries. Implementing the Kratos framework in Go enables strong structural subtyping for clean layer segregation, while Dapr Workflows handle distributed transactions asynchronously via the Saga pattern to avoid race conditions.
 
-**Answer-first:** Migrating an e-commerce monolith to 21+ distributed microservices using Golang & DDD. Explore Kratos architecture, Saga patterns, and race conditions.
+### What You'll Learn That AI Won't Tell You
+- The exact performance overhead of using Go's structural subtyping versus manual dependency injection in high-throughput microservices.
+- Why scoping database transactions to a single Aggregate root is critical, and how we resolved out-of-order event delivery using Kafka partition keys.
+
 
 Scaling an e-commerce platform past 10,000+ orders per day containing multiple SKUs across dynamic warehouses is where naive architecture breaks down. Hardware scaling ceases to be a magic bullet when distributed transactions, race conditions, and eventual consistency are involved.
 
@@ -171,11 +179,10 @@ By mapping contexts meticulously, enforcing strict separation via Kratos, and ut
 
 ## FAQ
 
-{{< faq q="What is Golang?" >}}
-**Golang** is a critical architectural pattern or system discussed in this guide. Migrating an e-commerce monolith to 21+ distributed microservices using Golang & DDD. Explore Kratos architecture, Saga patterns, and race conditions.
+{{< faq q="Why is Go's structural subtyping particularly suited for Domain-Driven Design (DDD) boundaries?" >}}
+Go's implicit interface implementation decoupling allows domain layers to define their own dependencies without referencing infrastructure packages. Domain services declare the interfaces they consume, keeping the domain completely isolated from database drivers or transport layers (like gRPC/HTTP) and making unit testing trivial via mocking.
 {{< /faq >}}
 
-{{< faq q="How does Golang compare to traditional alternatives?" >}}
-Unlike legacy systems, **Golang** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< faq q="How do you handle transactional boundaries across multiple aggregates in a Go microservices architecture?" >}}
+Each transaction must be scoped to a single Aggregate root. For operations spanning multiple microservices, we avoid distributed 2PC transactions due to latency and lock overhead. Instead, we implement the Saga pattern using Dapr Workflows or temporal orchestrators, with asynchronous compensation events ensuring eventual consistency.
 {{< /faq >}}
-

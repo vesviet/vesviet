@@ -3,7 +3,7 @@ title: "Executive Summary — A Quick Look at Prompt Standard"
 date: 2026-05-09T10:30:00+07:00
 lastmod: 2026-05-09T10:30:00+07:00
 draft: false
-description: "A concise but substantive overview for both technical and non-technical team members on what Prompt Standard is and why standardizing prompts for agents matters."
+description: "A concise but substantive overview for both technical and non-technical team members on what Prompt Standard is and why standardizing prompts for agents"
 categories:
   - Engineering
 tags:

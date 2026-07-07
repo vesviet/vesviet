@@ -1,10 +1,14 @@
 ﻿---
 title: "GraphHopper Distance Matrix: Self-Host & Replace Google Maps API ($510/day → $0)"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Graphhopper Distance Matrix Production Guide"
 slug: "graphhopper-distance-matrix-production-guide"
+author: "Lê Tuấn Anh"
 date: "2026-06-11T20:00:00+07:00"
 lastmod: "2026-06-26T21:00:00+07:00"
 draft: false
-description: "Run GraphHopper distance matrix in production: Docker self-hosting, /matrix API, Custom Models for trucks, H3 Redis caching, and honest benchmarks vs OSRM and Google Maps — tested at 10,000 pairs in <50ms."
+description: "Run GraphHopper distance matrix in production: Docker self-hosting, /matrix API, custom truck models, and H3 Redis caching."
 categories:
   - "Architecture"
   - "Engineering"
@@ -26,9 +30,16 @@ cover:
   relative: false
 ---
 
+**Answer-first:** GraphHopper distance matrix is the `/matrix` API of the open-source GraphHopper routing engine. It accepts N points and returns an N×N matrix of travel durations (seconds) and distances (meters) based on real road networks from OpenStreetMap — completely free when self-hosted. For 100 delivery stops, it computes 10,000 pairs in under 50ms on a standard VPS.
+
+### What You'll Learn That AI Won't Tell You
+- Setting up GraphHopper self-hosting routing engine with custom profile caches.
+- Configuring RAM allocations to hold entire continental OpenStreetMap networks.
+
+
 ## What Is the GraphHopper Distance Matrix?
 
-**Answer-first:** GraphHopper distance matrix is the `/matrix` API of the open-source GraphHopper routing engine. It accepts N points and returns an N×N matrix of travel durations (seconds) and distances (meters) based on real road networks from OpenStreetMap — completely free when self-hosted. For 100 delivery stops, it computes 10,000 pairs in under 50ms on a standard VPS.
+
 
 This guide covers everything you need to run GraphHopper distance matrix in production: Docker setup, the `/matrix` API, Custom Models for truck/motorcycle routing, H3-based Redis caching, and an honest comparison with OSRM, Valhalla, and Google Maps.
 

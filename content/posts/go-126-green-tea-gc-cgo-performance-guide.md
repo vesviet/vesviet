@@ -1,6 +1,10 @@
 ﻿---
 title: "Go 1.26: Green Tea GC, Faster CGO & Goroutine Leak Detection"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Go 126 Green Tea Gc Cgo Performance Guide"
 slug: "go-126-green-tea-gc-cgo-performance-guide"
+author: "Lê Tuấn Anh"
 date: "2026-06-12T10:00:00+07:00"
 lastmod: "2026-07-03T00:00:00+07:00"
 draft: false
@@ -28,6 +32,11 @@ cover:
 
 **Answer-first:** Go 1.26 ships three landmark runtime features: the Green Tea garbage collector (10–40% GC overhead reduction), ~30% faster cgo calls for AI inference bindings, and an experimental goroutine leak profile that detects permanently blocked goroutines via GC reachability analysis.
 
+### What You'll Learn That AI Won't Tell You
+- Performance metrics of garbage collection optimization in Go 1.26.
+- Memory overhead trade-offs when calling CGO functions in high-throughput network threads.
+
+
 Released in February 2026, Go 1.26 is not a routine patch release. It fundamentally changes how the Go runtime manages memory, interacts with C code, and surfaces concurrency bugs. For teams running [Golang microservices at scale](/posts/architecting-21-service-ecommerce-golang-ddd/), these improvements compound across a fleet — zero code changes required.
 
 This post covers what changed, why it matters for production systems, how to adopt it, and what to watch out for during migration.
@@ -36,7 +45,7 @@ This post covers what changed, why it matters for production systems, how to ado
 
 ## 1. The Green Tea Garbage Collector: Page-Oriented Marking
 
-**Answer-first:** Green Tea replaces Go's traditional object-by-object graph flood with a page-oriented scanning strategy that improves CPU cache locality, reduces work list contention, and enables AVX-512 vector acceleration — delivering 10–40% less GC CPU overhead in real workloads.
+
 
 ### Why the Old GC Was Hitting a Wall
 

@@ -14,7 +14,7 @@ tags:
   - Blender
   - Autodesk
   - AI Workflows
-description: "Anthropic's April 28 creative-work launch is bigger than a feature roundup. It extends MCP from developer tooling into design, 3D, media, and production software, turning creative applications into connected agent surfaces."
+description: "Anthropic's April 28 creative-work launch is bigger than a feature roundup."
 ShowToc: true
 TocOpen: true
 aliases: ["/radar/radar-2026-04-29-creative-mcp/"]

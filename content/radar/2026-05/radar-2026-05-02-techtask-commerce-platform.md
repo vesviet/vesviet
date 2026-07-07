@@ -14,7 +14,7 @@ tags:
   - Dapr
   - GitOps
   - E-commerce
-description: "A 24-hour TechTask radar connecting fresh platform signals to real commerce engineering work: Magento migration pressure, MySQL 8.0 EOL, Kubernetes recovery and scaling, Dapr event reliability, and GitOps operations."
+description: "A 24-hour TechTask radar connecting fresh platform signals to real commerce engineering work: Magento migration pressure, MySQL 8.0 EOL, Kubernetes recovery"
 ShowToc: true
 TocOpen: true
 aliases: ["/radar/radar-2026-05-02-techtask-commerce-platform/"]

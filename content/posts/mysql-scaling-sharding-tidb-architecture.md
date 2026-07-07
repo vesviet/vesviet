@@ -1,6 +1,10 @@
 ﻿---
 title: "Replace MySQL Sharding with TiDB: Distributed SQL Migration Guide"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Mysql Scaling Sharding Tidb Architecture"
 slug: "mysql-scaling-sharding-tidb-architecture"
+author: "Lê Tuấn Anh"
 date: "2026-05-26T14:00:00+07:00"
 lastmod: "2026-07-03T15:22:00+07:00"
 draft: false
@@ -24,8 +28,12 @@ cover:
   relative: false
 ---
 
+**Answer-first:** Migrate from manual MySQL sharding to TiDB to eliminate application-level routing complexity. TiDB handles distributed SQL queries natively using TiKV storage nodes and Raft consensus. Use the TiDB Data Migration (DM) tool to merge source shards online with minimal downtime.
 
-**Answer-first:** Replace MySQL manual sharding with TiDB: TiKV, Raft consensus, Percolator ACID, TiFlash HTAP, and a step-by-step DM shard merge guide.
+### What You'll Learn That AI Won't Tell You
+- Migrating schemas to TiDB with zero downtime using DM-portal.
+- How TiKV nodes scale independently of TiDB SQL computation nodes.
+
 
 Scaling a relational database is one of the most demanding challenges in system design. As applications grow from thousands to millions of active users, the database ceases to be a simple storage engine and becomes the primary bottleneck of the entire system architecture. 
 

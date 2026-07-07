@@ -13,7 +13,7 @@ tags:
   - Software Engineering
   - Open Source
   - SDK
-description: "Anthropic released Claude Sonnet 4.5 — now the best coding model in the world — alongside the open-source Claude Agent SDK. A deep-dive into what the alignment improvements, checkpoint system, and SDK release mean for engineering teams building agentic systems."
+description: "Anthropic released Claude Sonnet 4.5 — now the best coding model in the world — alongside the open-source Claude Agent SDK."
 ShowToc: true
 TocOpen: true
 aliases: ["/radar/radar-2026-04-27-claude-sonnet/"]

@@ -1,6 +1,10 @@
 ﻿---
 title: "Real-Time Inventory Synchronization: Kafka, CDC & Redis for E-commerce"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Real Time Inventory Ecommerce Architecture"
 slug: "real-time-inventory-ecommerce-architecture"
+author: "Lê Tuấn Anh"
 date: "2026-06-08T14:35:00+07:00"
 lastmod: "2026-06-10T13:30:00+07:00"
 draft: false
@@ -24,6 +28,13 @@ cover:
   relative: false
 ---
 
+**Answer-first:** Attempting to simultaneously write inventory updates to a fast cache (Redis) and a relational database (PostgreSQL) creates the dual-write problem. If one system fails, data diverges. Furthermore, synchronous `SELECT FOR UPDATE` queries in SQL cause massive lock queues and API timeouts.
+
+### What You'll Learn That AI Won't Tell You
+- Write-through caches configuration in Redis to prevent inventory drift.
+- Lua scripting implementations in Redis that prevent double-reservations under peak load.
+
+
 ## What Is Real-Time Inventory Synchronization?
 
 **Real-time inventory synchronization** is the process of propagating stock count changes from the system of record (database) to all sales channels — web storefront, mobile app, WMS, ERP — in sub-second time. Instead of batch ETL jobs that run every hour, a CDC + Kafka pipeline streams every committed stock change as an event, eliminating overselling and stale stock displays.
@@ -34,7 +45,7 @@ To guarantee accuracy without sacrificing sub-millisecond response times, modern
 
 ## The Dual-Write Dilemma and Lock Contention
 
-**Answer-first:** Attempting to simultaneously write inventory updates to a fast cache (Redis) and a relational database (PostgreSQL) creates the dual-write problem. If one system fails, data diverges. Furthermore, synchronous `SELECT FOR UPDATE` queries in SQL cause massive lock queues and API timeouts.
+
 
 When thousands of concurrent requests attempt to decrement stock for the exact same database row, row-level locks force sequential processing. This completely overwhelms connection pools.
 
@@ -42,7 +53,7 @@ When thousands of concurrent requests attempt to decrement stock for the exact s
 
 ## The Speed & Truth Architecture Pattern
 
-**Answer-first:** The Speed & Truth pattern decouples reads and writes. PostgreSQL serves as the absolute "Truth" layer. Debezium streams database changes (CDC) into Apache Kafka, acting as the durable event backbone. Redis acts as the "Speed" layer for sub-millisecond inventory reads and atomic deductions.
+
 
 ```mermaid
 flowchart TD
@@ -82,7 +93,7 @@ By connecting Debezium (using the native `pgoutput` plugin), every committed tra
 
 ### 2. Kafka Partitioning by SKU ID
 
-**Answer-first:** To eliminate multi-node consumer race conditions, partition the `order.created` Kafka topic by `sku_id`. This guarantees all orders for a specific item route to the same partition, processed sequentially by a single Go consumer goroutine.
+
 
 If orders for a single SKU are scattered randomly across partitions, multiple consumers will attempt to decrement the Redis stock concurrently. SKU-based partitioning converts concurrent chaos into an orderly, single-threaded queue.
 
@@ -90,7 +101,7 @@ If orders for a single SKU are scattered randomly across partitions, multiple co
 
 ## Idempotent Inventory Deductions in Redis Cluster
 
-**Answer-first:** Redis Lua scripts guarantee atomic execution for stock checks and deductions. However, because Kafka provides at-least-once delivery, the Lua script must enforce idempotency by checking a unique transaction token before decrementing stock.
+
 
 If a Kafka consumer group rebalances, a partition might be reassigned before offsets are committed, causing duplicate events.
 
@@ -129,7 +140,7 @@ Avoid growing infinite Redis sets. By saving the `idempotent` key with a TTL (`E
 
 ## State Drift and Disaster Recovery
 
-**Answer-first:** Network partitions or Redis node crashes can cause the Speed layer to drift from the Truth layer. Implement an asynchronous reconciliation cron job that recalculates absolute stock from PostgreSQL and atomically synchronizes the Redis cache.
+
 
 If Redis completely fails and restarts empty, a bootstrap script reads the initial ledger quantities from Postgres minus pending orders, reconstructing the real-time cache before traffic resumes.
 

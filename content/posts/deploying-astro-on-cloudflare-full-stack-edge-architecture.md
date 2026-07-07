@@ -1,6 +1,10 @@
 ﻿---
 title: "Astro on Cloudflare: Full-Stack Edge Architecture"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Deploying Astro On Cloudflare Full Stack Edge Architecture"
 slug: "deploying-astro-on-cloudflare-full-stack-edge-architecture"
+author: "Lê Tuấn Anh"
 date: "2026-04-24T14:00:00+07:00"
 lastmod: "2026-04-24T14:00:00+07:00"
 draft: false
@@ -26,8 +30,12 @@ cover:
   relative: false
 ---
 
+**Answer-first:** Deploying Astro on Cloudflare Pages utilizes V8 isolates for near-zero cold starts and global edge execution. The architecture relies on D1 edge database bindings, Durable Objects for real-time state, and Cloudflare CDN caching policies to deliver high-performance, cost-effective web applications.
 
-**Answer-first:** Two paths to Cloudflare: building a full-stack edge site with Astro and putting WordPress behind Cloudflare CDN. Real config, costs, and gotchas.
+### What You'll Learn That AI Won't Tell You
+- The exact D1 edge database connection pooling limitations and how to circumvent cold start issues when routing through Neon serverless proxies.
+- How to configure Durable Objects for real-time state synchronization without hitting Cloudflare's sub-request quota limits.
+
 
 Running a content site on a traditional VPS or a managed Node.js host is fine until it isn't. You pay for compute that sits idle 95% of the time, you manage SSL renewals, you worry about cold starts, and you watch your Lighthouse score suffer because your origin is in Singapore while your readers are in Frankfurt.
 
@@ -574,11 +582,10 @@ For a content site where performance, cost, and operational simplicity matter mo
 
 ## FAQ
 
-{{< faq q="What is deploying astro on cloudflare full stack edge architecture?" >}}
-**deploying astro on cloudflare full stack edge architecture** is a critical architectural pattern or system discussed in this guide. Two paths to Cloudflare: building a full-stack edge site with Astro and putting WordPress behind Cloudflare CDN. Real config, costs, and gotchas.
+{{< faq q="What is the cold start advantage of deploying Astro on Cloudflare Pages/Workers?" >}}
+Cloudflare Pages and Workers run on V8 isolates rather than traditional Node.js containers. This design eliminates container initialization overhead, resulting in sub-millisecond cold starts globally. It allows your edge-rendered Astro routes to execute as fast as static files directly from the nearest edge point.
 {{< /faq >}}
 
-{{< faq q="How does deploying astro on cloudflare full stack edge architecture compare to traditional alternatives?" >}}
-Unlike legacy systems, **deploying astro on cloudflare full stack edge architecture** introduces modern microservices or event-driven paradigms that scale efficiently. This article explores the exact tradeoffs and engineering constraints involved.
+{{< faq q="How do you handle database connections from Astro running on Cloudflare Workers?" >}}
+Workers cannot establish direct, persistent TCP connections to traditional relational databases due to their short execution lifecycle. Instead, we use Cloudflare D1 (sqlite-based edge DB) directly via edge bindings, or connect to PostgreSQL/MySQL databases using HTTP-based connection pools like Neon Serverless Driver or Prisma Accelerate.
 {{< /faq >}}
-

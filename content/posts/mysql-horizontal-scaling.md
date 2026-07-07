@@ -1,11 +1,15 @@
 ﻿---
 title: "Vitess vs GORM Sharding: MySQL Write Scaling in Go"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Mysql Horizontal Scaling"
 slug: "mysql-horizontal-scaling"
+author: "Lê Tuấn Anh"
 date: "2026-06-01T15:10:00+07:00"
 lastmod: "2026-07-03T15:22:00+07:00"
 draft: false
 mermaid: true
-canonical: "https://tanhdev.com/posts/mysql-horizontal-scaling/"
+canonicalURL: "https://tanhdev.com/posts/mysql-horizontal-scaling/"
 categories:
   - "Database"
   - "Architecture"
@@ -26,9 +30,12 @@ cover:
   relative: false
 ---
 
-
-
 **Answer-first:** Vitess vs GORM Sharding for MySQL write scaling: VReplication zero-downtime vs. application-level sharding — ErrMissingShardingKey tradeoffs in Go.
+
+### What You'll Learn That AI Won't Tell You
+- Designing database sharding keys that prevent cross-shard joins.
+- Configuring proxy routing layers like Vitess to scale MySQL queries horizontally.
+
 
 When your application reaches millions of users, a single database instance will inevitably become the biggest bottleneck in your entire architecture. To solve this, **MySQL database scaling** becomes mandatory. You must [Scale DB for Microservices](/posts/banking-microservices-architecture) using Horizontal Scaling techniques.
 
@@ -153,4 +160,3 @@ If your project is written exclusively in Go and only has one or two historical 
 {{< faq q="When should I use Vitess vs GORM Sharding?" >}}
 Use **GORM Sharding** when: your team is Go-only, you have 1-2 tables to shard, and budget is tight (zero infrastructure overhead). Use **Vitess** when: you need zero-downtime resharding (VReplication), have a polyglot stack, or need the shard routing fully transparent to the application. Vitess is the right long-term choice for platform teams; GORM Sharding is the right starting point for Go product teams.
 {{< /faq >}}
-

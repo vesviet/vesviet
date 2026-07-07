@@ -1,6 +1,10 @@
 ﻿---
 title: "Shopee Flash Sale Architecture: Rate Limiting & Redis"
+cover:
+  image: "/images/posts/shopee-flash-sale-cover.png"
+  alt: "Shopee Flash Sale Architecture"
 slug: "shopee-flash-sale-architecture"
+author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
 lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
@@ -26,8 +30,12 @@ cover:
   relative: false
 ---
 
+**Answer-first:** Architecting flash sale systems requires preventing database overload using multi-stage rate limiting and Redis-based inventory pre-decisions. Traffic shields block duplicate requests, and asynchronous checkout queues decouple order submission from payment processing.
 
-**Answer-first:** How Shopee engineers prevent crashes during 11.11 flash sales: rate limiting, Redis inventory locks, traffic shields, and microservices resilience.
+### What You'll Learn That AI Won't Tell You
+- Multi-stage cache invalidation strategies that keep checkout fast.
+- Handling concurrent Redis connections during million-user flash sales.
+
 
 At exactly midnight on 11.11, Shopee users across Southeast Asia and Taiwan simultaneously tap the same button. In the first 10 seconds of a flash sale, a single product page can receive requests from millions of concurrent sessions — all competing to purchase the same 1,000 units of inventory. One oversell, one server crash, or one database deadlock during that window results in a cascade of chargebacks, angry users, and front-page news headlines.
 

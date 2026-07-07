@@ -3,7 +3,7 @@ title: "Saga Pattern: Distributed Transactions Without 2PC"
 date: 2026-06-18T11:30:00+07:00
 lastmod: 2026-07-03T15:41:55+07:00
 draft: false
-description: "Saga Pattern in Fintech: Choreography (5ms) vs Orchestration (50ms), Temporal Go workflows, failure transition matrices, and DLQ strategies for compensation failures."
+description: "Saga Pattern in Fintech: Choreography (5ms) vs Orchestration (50ms), Temporal Go workflows, failure transition matrices, and DLQ strategies for compensation"
 weight: 4
 series: ["core-banking-architecture"]
 keywords: ["saga pattern fintech microservices", "orchestration vs choreography saga", "temporal workflow golang banking", "distributed transaction compensation"]
