@@ -1,9 +1,9 @@
 ---
-title: "Real-Time Inventory Synchronization: Kafka, CDC & Redis for E-commerce"
+title: "Real-Time Inventory: Kafka, CDC & Redis for E-Commerce"
 slug: "real-time-inventory-ecommerce-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-06-08T14:35:00+07:00"
-lastmod: "2026-06-10T13:30:00+07:00"
+lastmod: "2026-07-08T18:21:00+07:00"
 draft: false
 description: "Real-time inventory synchronization for e-commerce: Kafka event streaming, Debezium CDC, and idempotent Redis Lua scripts to prevent overselling."
 ShowToc: true

@@ -1,8 +1,26 @@
 ---
-title: "Ecommerce Architecture 2026: Overcoming Tech Debt in Composable Commerce Migration"
-slug: ecommerce-architecture-composable-migration
+title: "Composable E-Commerce Migration: Overcoming Tech Debt"
+slug: "ecommerce-architecture-composable-migration"
 author: "Lê Tuấn Anh"
 date: "2026-07-06T00:00:00+07:00"
+lastmod: "2026-07-08T18:21:00+07:00"
+draft: false
+mermaid: true
+description: "MACH migration hard lessons: Strangler Fig via Envoy, Debezium CDC double-write, Redis BFF locking, and OpenTelemetry from day one to avoid system blindness."
+categories:
+  - "Architecture"
+  - "E-Commerce"
+  - "Engineering"
+tags:
+  - "Composable Commerce"
+  - "MACH"
+  - "Magento"
+  - "Microservices"
+  - "Debezium"
+  - "Kafka"
+  - "Migration"
+ShowToc: true
+TocOpen: true
 cover:
   image: "images/posts/ecommerce-composable-cover.png"
   alt: "E-commerce composable architecture migration: from Magento monolith to MACH modular services"

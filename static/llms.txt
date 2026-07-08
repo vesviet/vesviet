@@ -38,14 +38,15 @@
 - [GitOps at Scale: Kubernetes, ArgoCD & Microservices](https://tanhdev.com/posts/gitops-at-scale-kubernetes-argocd-microservices/) — Production GitOps with ArgoCD across 21 microservices.
 - [Kubernetes In-Place Pod Resizing Guide](https://tanhdev.com/posts/kubernetes-in-place-pod-resizing-guide/) — Using Kubernetes 1.27+ in-place pod vertical scaling.
 - [ArgoCD Updates 2026](https://tanhdev.com/posts/argo-cd-updates-2026/) — New features and best practices in ArgoCD 2026.
-- [AWS EKS vs ECS: Architecture, Cost & Real-World Use Cases (2026)](https://tanhdev.com/posts/aws-eks-vs-ecs-comparison/) — Practitioner's pillar guide comparing EKS and ECS: control plane costs ($0 vs $73/month), Fargate trade-offs, EKS Auto Mode, KEDA, ArgoCD, and real production lessons from a 21-service Go platform at 8,000 RPS.
+- [AWS EKS vs ECS: Architecture, Cost & Use Cases (2026)](https://tanhdev.com/posts/aws-eks-vs-ecs-comparison/) — Practitioner's pillar guide comparing EKS and ECS: control plane costs ($0 vs $73/month), Fargate trade-offs, EKS Auto Mode, KEDA, ArgoCD, and real production lessons from a 21-service Go platform at 8,000 RPS.
 
 ## Database Architecture
 
 - [MySQL Scalability Guide](https://tanhdev.com/posts/mysql-scalability-guide/) — Horizontal scaling, read replicas, and connection pooling.
 - [MySQL Horizontal Scaling](https://tanhdev.com/posts/mysql-horizontal-scaling/) — Sharding strategies for high-traffic MySQL deployments.
 - [MySQL Scaling, Sharding & TiDB Architecture](https://tanhdev.com/posts/mysql-scaling-sharding-tidb-architecture/) — Comparing MySQL sharding vs TiDB for e-commerce.
-- [GraphHopper Distance Matrix Production Guide](https://tanhdev.com/posts/graphhopper-distance-matrix-production-guide/) — Self-hosting GraphHopper for logistics distance matrix.
+- [GraphHopper Distance Matrix: Self-Host & Save $510/day](https://tanhdev.com/posts/graphhopper-distance-matrix-production-guide/) — Self-hosting GraphHopper for logistics distance matrix.
+- [GraphHopper vs CARTO: Order Fulfillment Routing Engine](https://tanhdev.com/posts/graphhopper-distance-matrix-routing/) — Comparing GraphHopper vs CARTO for order fulfillment routing: OSM, self-hosted distance matrix, and logistics cost reduction.
 - [GraphHopper Kubernetes Self-Hosting with OSM](https://tanhdev.com/posts/graphhopper-kubernetes-self-hosting-osm/) — Deploying GraphHopper on Kubernetes with OpenStreetMap data.
 
 ## E-Commerce Architecture
@@ -68,9 +69,10 @@
 
 ## Magento & Migration
 
-- [Magento Development in Vietnam: 2026 Guide — Cost, Hiring & Upgrade](https://tanhdev.com/posts/magento-vietnam/) — Vietnam Magento market overview, cost tiers ($15–$80/hr), hiring models, and upgrade roadmap.
+- [Magento Development in Vietnam: Cost, Hiring & Upgrade](https://tanhdev.com/posts/magento-vietnam/) — Vietnam Magento market overview, cost tiers ($15–$80/hr), hiring models, and upgrade roadmap.
 - [Magento Agency & Development in Vietnam: Scoping Guide](https://tanhdev.com/posts/magento-development-in-vietnam/) — How to evaluate Magento agencies in Vietnam: effort layers, proposals, hidden complexity.
-- [How to Technically Vet Magento Developers in Vietnam: Interview Playbook 2026](https://tanhdev.com/posts/magento-developers-in-vietnam/) — Five production-level interview questions that separate Magento architects from theme editors.
+- [Vetting Magento Developers in Vietnam: Interview Playbook](https://tanhdev.com/posts/magento-developers-in-vietnam/) — Five production-level interview questions that separate Magento architects from theme editors.
+- [Composable E-Commerce Migration: Overcoming Tech Debt](https://tanhdev.com/posts/ecommerce-architecture-composable-migration/) — MACH migration hard lessons: Strangler Fig via Envoy, Debezium CDC double-write, Redis BFF locking, and OpenTelemetry from day one.
 - [Is Magento Worth It in 2026? The 2.4.9 Reality](https://tanhdev.com/posts/magento-still-worth-investing-2026/) — Honest assessment of Magento investment in 2026.
 - [Why Migrate Magento to Microservices](https://tanhdev.com/posts/why-migrate-magento-to-microservices/) — Business and technical case for Magento-to-Go migration.
 - [Moving from Magento to Microservices](https://tanhdev.com/posts/moving-from-magento-to-microservices/) — Practical migration playbook.

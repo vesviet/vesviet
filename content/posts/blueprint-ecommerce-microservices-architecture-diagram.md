@@ -1,9 +1,9 @@
 ---
-title: "E-Commerce Microservices Architecture Diagram: 21-Service Go Blueprint (2026)"
+title: "E-Commerce Microservices Architecture: 21-Service Blueprint"
 slug: "blueprint-ecommerce-microservices-architecture-diagram"
 author: "Lê Tuấn Anh"
 date: "2026-04-12T08:30:00+07:00"
-lastmod: "2026-07-03T14:57:00+07:00"
+lastmod: "2026-07-08T18:21:00+07:00"
 draft: false
 mermaid: true
 tags: ["System Architecture", "Microservices", "Mermaid", "Golang", "API Gateway", "DDD", "Dapr", "Kubernetes", "ecommerce architecture"]

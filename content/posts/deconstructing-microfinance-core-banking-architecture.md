@@ -1,9 +1,9 @@
 ---
-title: "Microfinance Core Banking System: Architecture & Engineering Guide"
+title: "Microfinance Core Banking: Architecture & Engineering Guide"
 slug: "deconstructing-microfinance-core-banking-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-05-27T10:00:00+07:00"
-lastmod: "2026-06-10T15:13:00+07:00"
+lastmod: "2026-07-08T18:21:00+07:00"
 draft: false
 tags: ["Core Banking", "Microfinance", "Architecture", "System Design", "Fintech"]
 description: "Engineer's guide to microfinance CBS architecture: 5 modules, double-entry ledger, JLG loan engine, amortization formulas, and EOD batch state machines."

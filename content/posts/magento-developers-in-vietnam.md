@@ -1,9 +1,9 @@
 ---
-title: "How to Technically Vet Magento Developers in Vietnam: Interview Playbook 2026"
+title: "Vetting Magento Developers in Vietnam: Interview Playbook"
 slug: "magento-developers-in-vietnam"
 author: "Lê Tuấn Anh"
 date: "2026-05-30T11:30:00+07:00"
-lastmod: "2026-07-03T00:00:00+07:00"
+lastmod: "2026-07-08T18:21:00+07:00"
 draft: false
 tags: ["Magento", "Vietnam", "Hiring", "Engineering", "Architecture", "Team Building"]
 description: "How to vet Magento developers in Vietnam: 5 production-level interview questions covering Plugin/Preference, Schema, reindex, integrations, and boundaries."

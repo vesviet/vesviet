@@ -1,9 +1,9 @@
 ---
-title: "Prompt Engineering vs Fine-Tuning: When to Use Each (GPT-5 Era Decision Guide)"
+title: "Prompt Engineering vs Fine-Tuning: 2026 Decision Guide"
 slug: "slm-fine-tune-vs-prompt-engineering"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
-lastmod: "2026-06-26T21:00:00+07:00"
+lastmod: "2026-07-08T18:21:00+07:00"
 draft: false
 aliases:
   - /posts/prompt-engineering-vs-fine-tuning-benchmark/

@@ -6,7 +6,7 @@ date: "2026-04-14T21:20:00+07:00"
 lastmod: "2026-07-03T14:57:00+07:00"
 draft: false
 tags: ["Magento", "Microservices", "Migration", "System Design", "Debezium", "Dapr"]
-description: "Battlefield-tested guide on dismantling a monolithic Magento e-commerce platform and migrating to 10+ microservices without losing a single order."
+description: "Execution playbook: 3-Phase Strangler Fig, Debezium CDC, bidirectional Dapr sync, and a 30-day hot standby for safe rollback until Magento is terminated."
 categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
@@ -31,6 +31,8 @@ canonicalURL: "https://tanhdev.com/posts/moving-from-magento-to-microservices/"
 This sentence usually precedes multimillion-dollar engineering failures. When a legacy application like a massive Magento e-commerce store is holding up the financial weight of a company, executing a "Big Bang" cutover is practically suicidal. 
 
 Instead of burning the old house down before the new one is built, we employed a meticulous **3-Phase Strangler Fig Pattern**. We allowed our new distributed microservice ecosystem to gradually wrap around the old Magento monolith, intercepting its traffic piece by piece until the legacy server became a hollow shell. For a detailed breakdown of overcoming tech debt and managing eventual consistency during such transitions, see our guide on [Composable Commerce Migration](/posts/ecommerce-architecture-composable-migration/).
+
+> **Decision checkpoint:** This article covers *how* to execute the migration. If you are still evaluating *whether* the migration makes sense for your business — team size thresholds, EAV performance limits, migrate/don't-migrate checklist — read [Migrating Magento to Microservices: When & Why →](/posts/why-migrate-magento-to-microservices/) first.
 
 Here is the exact playbook we used to safely migrate 10 core commerce domains (Catalog, Order, Customer, Payment, Fulfillment, etc.) from Magento to a modern stack, achieving 99.9% uptime and a <5 minute rollback capability.
 
@@ -208,7 +210,8 @@ By utilizing CDC/Debezium for Phase 1, bidirectional Event-Driven outboxes over 
 If you are assessing vendor capability before a migration, our [Magento Development in Vietnam: 2026 Hiring Guide](/posts/magento-vietnam/) breaks down the difference between extension shops and teams that can actually own architecture, integrations, and production reliability.
 
 **Continue Reading:**
-- [Composable Commerce Migration](/posts/ecommerce-architecture-composable-migration/) — our strategic framework on managing eventual consistency and observability costs when moving to a fully composable commerce stack.
+- [Migrating Magento to Microservices: When & Why](/posts/why-migrate-magento-to-microservices/) — the decision guide: scaling limits, team size requirements, and the frank migrate/don't-migrate checklist to read before starting Phase 1.
+- [Composable Commerce Migration](/posts/ecommerce-architecture-composable-migration/) — managing eventual consistency and observability costs when moving to a fully composable commerce stack.
 - [Go Microservices Architecture: Production Guide](/posts/go-microservices/) — the complete architectural manual for the destination stack.
 - [Architecting a 21-Service E-Commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/) — the destination architecture after the migration: a full 21-service distributed system.
 - [Mastering Event-Driven Architecture with Dapr Pub/Sub](/posts/mastering-event-driven-architecture-dapr/) — the event-driven backbone (Saga, DLQ, Outbox) that replaces the Magento monolith's synchronous coupling.

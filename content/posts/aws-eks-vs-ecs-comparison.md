@@ -1,9 +1,9 @@
 ---
-title: "AWS EKS vs ECS: Architecture, Cost & Real-World Use Cases (2026)"
+title: "AWS EKS vs ECS: Architecture, Cost & Use Cases (2026)"
 slug: "aws-eks-vs-ecs-comparison"
 author: "Lê Tuấn Anh"
 date: "2026-06-26T21:00:00+07:00"
-lastmod: "2026-07-03T15:41:55+07:00"
+lastmod: "2026-07-08T18:21:00+07:00"
 draft: false
 mermaid: true
 tags: ["AWS", "EKS", "ECS", "Kubernetes", "Container Orchestration", "DevOps", "Go", "Microservices", "Fargate"]

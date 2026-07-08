@@ -7,7 +7,7 @@ lastmod: "2026-07-03T14:57:00+07:00"
 draft: false
 mermaid: true
 tags: ["Magento", "Microservices", "System Design", "Migration", "Architecture", "Golang"]
-description: "Honest breakdown of why Magento's monolithic architecture becomes a liability at scale and the exact reasons to migrate to a microservice ecosystem."
+description: "When to migrate from Magento: EAV performance limits, shared-DB contention, Saga pattern benefits, and a frank migrate/don't-migrate checklist with team size and traffic thresholds."
 categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
