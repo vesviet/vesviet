@@ -1,8 +1,5 @@
-﻿---
+---
 title: "AI-Native Frontend in 2028: 10 Architecture Predictions"
-cover:
-  image: "/images/posts/generative-ui-with-mcp-ai-native-frontend.png"
-  alt: "Ai Native Frontend Architecture Predictions 2028"
 slug: "ai-native-frontend-architecture-predictions-2028"
 author: "Lê Tuấn Anh"
 date: "2026-05-16T21:00:00+07:00"
@@ -13,10 +10,12 @@ description: "10 honest predictions for AI-Native Frontend Architecture by 2028:
 categories: ["Engineering", "Strategy"]
 ShowToc: true
 TocOpen: true
+mermaid: true
 cover:
-  image: "/images/posts/ai-native-frontend-cover.png"
+  image: "images/posts/ai-native-frontend-cover.png"
   alt: "AI-Native Frontend Architecture in 2028: 10 bold predictions for the next generation of UI engineering"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/ai-native-frontend-architecture-predictions-2028/"
 ---
 
 **Answer-first:** By 2028, AI-native frontends will shift from static components to dynamic, real-time interfaces generated via Model Context Protocol (MCP) contracts. Standardized component registries and streaming state synchronization will replace manual UI development, making schema validation at the edge a critical security requirement.
@@ -209,7 +208,7 @@ flowchart LR
     S --> C
 ```
 
-Vector similarity at the Edge (Cloudflare Workers + Vectorize) enables Cache HITs for semantically equivalent prompts. For high-volume consumer products (FAQs, product recommendations, support flows), **40-70% of LLM calls are semantically redundant** based on query clustering analysis from a production support chatbot migration. Semantic Edge Caching eliminates those calls at < 50ms latency vs. 1-3 seconds for a full LLM round-trip. For more concrete measurements on how input size and request volume affect performance, see our [Production Cost & Latency Benchmarks](/posts/prompt-engineering-vs-fine-tuning-benchmark/).
+Vector similarity at the Edge (Cloudflare Workers + Vectorize) enables Cache HITs for semantically equivalent prompts. For high-volume consumer products (FAQs, product recommendations, support flows), **40-70% of LLM calls are semantically redundant** based on query clustering analysis from a production support chatbot migration. Semantic Edge Caching eliminates those calls at < 50ms latency vs. 1-3 seconds for a full LLM round-trip. For more concrete measurements on how input size and request volume affect performance, see our [Prompt Engineering vs Fine-Tuning Guide](/posts/slm-fine-tune-vs-prompt-engineering/).
 
 **The counterargument:** Semantic similarity is probabilistic. A cache HIT on a query that scores 0.94 similarity (not 1.00) might return a subtly wrong answer for a slightly different intent. In high-stakes contexts (medical, legal, financial), the similarity threshold must be tuned very conservatively — potentially eroding the cost savings to 20-30% rather than 60-80%.
 

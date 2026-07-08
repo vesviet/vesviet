@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 8 — The Junior Paradox: Building Foundations When AI Does the Basics"
-date: 2026-05-10T16:10:00+07:00
-lastmod: 2026-05-10T16:10:00+07:00
+date: "2026-05-10T16:10:00+07:00"
+lastmod: "2026-05-10T16:10:00+07:00"
 draft: false
 description: "Dissecting the crisis in training young programmers. When machines solve the surface-level problems, how must newcomers train to avoid having 'hollow"
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 9
 categories: ["Series", "Software Engineering"]
 tags: ["AI", "System Design", "Career"]
 cover:
-  image: "/images/posts/ai-native-frontend-cover.png"
+  image: "images/posts/ai-native-frontend-cover.png"
   alt: "AI-Driven Engineer series: evolving from code typist to AI-native software architect"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-8-the-junior-paradox/"
 ---
 
 At this point, we have painted a relatively bright prospect: Programmers escaping the drudgery of boring typing, becoming System Architects, and orchestrating AI.

@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Vibe Coding Governance: AGENTS.md, Cursor Rules & AI Observability for Engineering Teams (2026)"
-date: 2026-05-31T19:00:00+07:00
-lastmod: 2026-06-27T07:00:00+07:00
+date: "2026-05-31T19:00:00+07:00"
+lastmod: "2026-06-27T07:00:00+07:00"
 draft: false
 weight: 7
 categories:
@@ -28,9 +28,11 @@ aliases:
   - /series/ai-code-review-vibe-coding/part-6-governance-observability-career/
 description: "Vibe coding governance for engineering teams: AGENTS.md + Cursor Rules setup, AI tool classification policy, ContextOps at scale, OpenTelemetry for AI observability, and the 2026 career stack for AI orchestrator engineers."
 cover:
-  image: "/images/posts/vibe-coding-cover.png"
+  image: "images/posts/vibe-coding-cover.png"
   alt: "Vibe Coding and AI Code Review series: from prototype to production AI-assisted engineering"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-code-review-vibe-coding/part-6-governance-observability-career/"
 ---
 
 > **Series Orientation:** This article is Part 6 of the **AI Code Review & Vibe Coding** series, looking at team governance and developer career paths. For the preceding security chapters, see [Part 5 — AI Code Security](/series/ai-code-review-vibe-coding/part-5-ai-code-security/).

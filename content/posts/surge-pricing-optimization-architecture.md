@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Surge Pricing Algorithm & Spatial Indexing Architecture"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Surge Pricing Optimization Architecture"
 slug: "surge-pricing-optimization-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T15:20:00+07:00"
@@ -25,9 +22,10 @@ description: "Explore the architecture of a real-time Surge Pricing algorithm. D
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/surge-pricing-cover.png"
+  image: "images/posts/surge-pricing-cover.png"
   alt: "Surge pricing optimization architecture: real-time demand-supply ML model for marketplace platforms"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/surge-pricing-optimization-architecture/"
 ---
 
 **Answer-first:** Surge pricing calculates dynamic multipliers by matching supply and demand in real-time. The architecture indexes locations via H3 hexagons, streams GPS updates through Kafka, and aggregates demand density using Apache Flink to calculate price updates dynamically.

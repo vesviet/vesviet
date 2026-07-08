@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Exporting Magento 2 Data: Flatten EAV with SQL & Node"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Exporting Magento 2 Data Flat Sql Nodejs"
 slug: "exporting-magento-2-data-flat-sql-nodejs"
 author: "Lê Tuấn Anh"
 date: "2024-03-09T10:38:22+07:00"
@@ -14,9 +11,10 @@ categories: ["Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/magento-ai-cover.png"
+  image: "images/posts/magento-ai-cover.png"
   alt: "Exporting Magento 2 data: flatten EAV schema with SQL and Node.js for data warehouse pipelines"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/exporting-magento-2-data-flat-sql-nodejs/"
 ---
 
 **Answer-first:** Extracting Magento 2 EAV data efficiently requires direct SQL joins that flatten entity tables, avoiding expensive ORM overhead. By piping the database cursor into Node.js transform streams, we handle backpressure natively, exporting millions of product records with a memory footprint under 100MB.

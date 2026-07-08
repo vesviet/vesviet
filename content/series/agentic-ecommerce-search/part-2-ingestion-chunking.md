@@ -1,9 +1,9 @@
-﻿---
+---
 title: "Data Ingestion & Atomic Chunking Product Data"
-date: 2026-05-22T22:25:00+07:00
-lastmod: 2026-05-22T22:25:00+07:00
+date: "2026-05-22T22:25:00+07:00"
+lastmod: "2026-05-22T22:25:00+07:00"
 draft: false
-author: "Vesviet Team"
+author: "Lê Tuấn Anh"
 weight: 3
 slug: "part-2-ingestion-chunking"
 keywords: ["E-commerce RAG Chunking Strategy"]
@@ -13,9 +13,10 @@ categories: ["Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/agentic-ecommerce-search-cover.png"
+  image: "images/posts/agentic-ecommerce-search-cover.png"
   alt: "Agentic E-commerce Search Engine Architecture series: vector databases, ranking, and Go"
   relative: false
+canonicalURL: "https://tanhdev.com/series/agentic-ecommerce-search/part-2-ingestion-chunking/"
 ---
 
 In [Part 1: The Paradigm Shift - Agentic Architecture & Golang Orchestration Power](/series/agentic-ecommerce-search/part-1-golang-orchestration/), we established the Orchestration Engine using Golang and Eino. However, no matter how smart a brain is, it becomes useless if fed with misleading, unstructured, or fragmented information.

@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 3 — Secure Tool Calling & Guardrails"
-date: 2026-05-20T08:00:00+07:00
-lastmod: 2026-05-20T08:00:00+07:00
+date: "2026-05-20T08:00:00+07:00"
+lastmod: "2026-05-20T08:00:00+07:00"
 draft: false
 description: "Analyzing the risks of Prompt Injection when Agents call APIs and designing Sandboxing/Guardrails to prevent system destruction."
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 4
 categories: ["Series", "Agent Architecture"]
 tags: ["AI", "Multi-Agent", "Security", "Tool-Calling", "Prompt Injection"]
 cover:
-  image: "/images/posts/agentic-ai-swarm-cover.png"
+  image: "images/posts/agentic-ai-swarm-cover.png"
   alt: "Agentic System Architecture series: multi-agent production systems with Go and LiteLLM"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/agentic-system-architecture/part-3-tool-calling/"
 ---
 
 > **Prerequisite:** AI Security requires a different mindset compared to traditional Web Security. Please refer to [Comprehensive AI-Native System Architecture](/series/ai-driven-playbook/part-8-ai-native-system-architecture/) to understand the system context before diving into Tool Calling.

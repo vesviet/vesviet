@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 1 — What Is Prompt Standard and Why Should Your Team Care?"
-date: 2026-05-09T10:35:00+07:00
-lastmod: 2026-05-09T10:35:00+07:00
+date: "2026-05-09T10:35:00+07:00"
+lastmod: "2026-05-09T10:35:00+07:00"
 draft: false
 description: "Understanding the concept of Prompt Standard through practical examples accessible to both engineers and non-technical roles."
 categories:
@@ -12,9 +12,11 @@ weight: 2
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/prompt-engineering-benchmark-cover.png"
+  image: "images/posts/prompt-engineering-benchmark-cover.png"
   alt: "Prompt Standard series: product, engineering, and ops guide for production LLM prompting"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/prompt-standard/part-1-what-is-prompt-standard/"
 ---
 
 ## The Real Problem Is Not Clever Wording

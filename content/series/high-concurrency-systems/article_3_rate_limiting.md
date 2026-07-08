@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm"
-date: 2026-06-09T10:10:00+07:00
-lastmod: 2026-06-09T10:10:00+07:00
+date: "2026-06-09T10:10:00+07:00"
+lastmod: "2026-06-09T10:10:00+07:00"
 draft: false
 series: ["Mastering High-Concurrency Systems in Production"]
 series_order: 3
@@ -12,9 +12,11 @@ description: "Discover why local rate limiters fail in Microservices and how Red
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/realtime-inventory-cover.png"
+  image: "images/posts/realtime-inventory-cover.png"
   alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/"
 ---
 [← Previous](/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/) | [Series hub](/series/high-concurrency-systems/) | [Next →](/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/)
 

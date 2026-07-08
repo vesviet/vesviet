@@ -1,16 +1,18 @@
-﻿---
+---
 title: "Chapter 3: Traffic Shield - Peak Shaving with Kafka and Graceful Degradation"
-date: 2026-05-05T08:30:00+07:00
-lastmod: 2026-05-05T08:30:00+07:00
+date: "2026-05-05T08:30:00+07:00"
+lastmod: "2026-05-05T08:30:00+07:00"
 draft: false
 mermaid: true
 description: "How Shopee uses Apache Kafka for peak shaving and implements graceful degradation during 11.11."
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/shopee-flash-sale-cover.png"
+  image: "images/posts/shopee-flash-sale-cover.png"
   alt: "Shopee Architecture series: scaling for flash sales — rate limiting, Redis, and distributed systems"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/shopee-architecture/03-traffic-shield/"
 ---
 # Chapter 3: Peak Shaving - The Power of Apache Kafka and Graceful Degradation
 

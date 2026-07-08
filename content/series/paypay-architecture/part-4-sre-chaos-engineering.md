@@ -1,14 +1,16 @@
-﻿---
+---
 title: "Part 4 — Operations: SRE & Resilience"
-date: 2026-05-05T21:00:00+07:00
-lastmod: 2026-05-05T21:00:00+07:00
+date: "2026-05-05T21:00:00+07:00"
+lastmod: "2026-05-05T21:00:00+07:00"
 draft: false
 description: "How PayPay SRE maintains 99.99% uptime: Datadog, OpenTelemetry, chaos engineering, circuit breakers, and a security posture forged by the 2018 incident."
 weight: 5
 cover:
-  image: "/images/posts/paypay-scaling-cover.png"
+  image: "images/posts/paypay-scaling-cover.png"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-4-sre-chaos-engineering/"
 ---
 
 ## Designing for Failure

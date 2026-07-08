@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Chapter 9: Database Sharding & Read/Write Splitting"
-date: 2026-06-09T10:40:00+07:00
-lastmod: 2026-06-09T10:40:00+07:00
+date: "2026-06-09T10:40:00+07:00"
+lastmod: "2026-06-09T10:40:00+07:00"
 draft: false
 series: ["Mastering High-Concurrency Systems in Production"]
 series_order: 9
@@ -12,9 +12,11 @@ description: "Scale your relational database infinitely using GORM dbresolver fo
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/realtime-inventory-cover.png"
+  image: "images/posts/realtime-inventory-cover.png"
   alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/database-sharding-read-write-splitting/"
 ---
 [← Previous](/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/) | [Series hub](/series/high-concurrency-systems/)
 

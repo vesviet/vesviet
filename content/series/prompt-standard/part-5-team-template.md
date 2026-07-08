@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 5 — A Minimum Viable Prompt Standard Kit for Immediate Deployment"
-date: 2026-05-09T10:55:00+07:00
-lastmod: 2026-05-09T10:55:00+07:00
+date: "2026-05-09T10:55:00+07:00"
+lastmod: "2026-05-09T10:55:00+07:00"
 draft: false
 description: "A simple, practical Prompt Standard kit that any team — product, engineering, or operations — can deploy today."
 categories:
@@ -12,9 +12,11 @@ weight: 6
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/prompt-engineering-benchmark-cover.png"
+  image: "images/posts/prompt-engineering-benchmark-cover.png"
   alt: "Prompt Standard series: product, engineering, and ops guide for production LLM prompting"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/prompt-standard/part-5-team-template/"
 ---
 
 ## The Goal Is Not Perfection — It Is Getting Started

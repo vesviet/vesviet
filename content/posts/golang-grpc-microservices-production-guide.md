@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Golang gRPC Microservices: Protobuf, TLS & Middleware"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Golang Grpc Microservices Production Guide"
 slug: "golang-grpc-microservices-production-guide"
 author: "Lê Tuấn Anh"
 date: "2026-06-11T21:00:00+07:00"
@@ -23,9 +20,10 @@ tags:
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/golang-microservices-cover.png"
+  image: "images/posts/golang-microservices-cover.png"
   alt: "Golang gRPC Microservices production guide: Protobuf, mTLS, middleware, and graceful shutdown"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/golang-grpc-microservices-production-guide/"
 ---
 
 **Answer-first:** Optimize inter-service communication in Go microservices using gRPC and Protobuf, delivering 3-10× smaller payloads and sub-millisecond latencies compared to REST. Secure communication channels with mutual TLS (mTLS), handle cross-cutting concerns using custom interceptor middleware, and implement native gRPC health checking for container readiness probes.

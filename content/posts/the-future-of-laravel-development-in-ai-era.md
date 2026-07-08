@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Laravel in the AI Era: 10 Predictions for 2028"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "The Future Of Laravel Development In Ai Era"
 slug: "the-future-of-laravel-development-in-ai-era"
 author: "Lê Tuấn Anh"
 date: "2026-05-16T21:35:00+07:00"
@@ -14,9 +11,10 @@ categories: ["Engineering", "Strategy"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/laravel-ai-era-cover.png"
+  image: "images/posts/laravel-ai-era-cover.png"
   alt: "Laravel in the AI era: 10 predictions for 2028 — from LLM integration to AI-assisted development"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/the-future-of-laravel-development-in-ai-era/"
 ---
 
 **Answer-first:** By 2028, AI-assisted Laravel development will automate CRUD and tests, shifting developer focus toward modular monolith architecture, strict API design, and asynchronous queue orchestration. Standardized conventions will enable AI agents to maintain clean, scalable codebases.

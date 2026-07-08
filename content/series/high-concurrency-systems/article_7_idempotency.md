@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Chapter 7: Designing Idempotency APIs for Payment Systems"
-date: 2026-06-09T10:30:00+07:00
-lastmod: 2026-06-09T10:30:00+07:00
+date: "2026-06-09T10:30:00+07:00"
+lastmod: "2026-06-09T10:30:00+07:00"
 draft: false
 series: ["Mastering High-Concurrency Systems in Production"]
 series_order: 7
@@ -12,9 +12,11 @@ description: "Prevent double-charging customers by implementing robust Idempoten
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/realtime-inventory-cover.png"
+  image: "images/posts/realtime-inventory-cover.png"
   alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/idempotency-api-design-payments/"
 ---
 [← Previous](/series/high-concurrency-systems/api-gateway-vs-service-mesh/) | [Series hub](/series/high-concurrency-systems/) | [Next →](/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/)
 

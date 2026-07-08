@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Go 1.26: Green Tea GC, Faster CGO & Goroutine Leak Detection"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Go 126 Green Tea Gc Cgo Performance Guide"
 slug: "go-126-green-tea-gc-cgo-performance-guide"
 author: "Lê Tuấn Anh"
 date: "2026-06-12T10:00:00+07:00"
@@ -25,9 +22,10 @@ tags:
   - "Goroutine Leak"
   - "AI Inference"
 cover:
-  image: "/images/posts/go-green-tea-gc-cover.png"
+  image: "images/posts/go-green-tea-gc-cover.png"
   alt: "Go 1.26 Green Tea GC and CGO performance: garbage collection improvements and latency reduction"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/go-126-green-tea-gc-cgo-performance-guide/"
 ---
 
 **Answer-first:** Go 1.26 ships three landmark runtime features: the Green Tea garbage collector (10–40% GC overhead reduction), ~30% faster cgo calls for AI inference bindings, and an experimental goroutine leak profile that detects permanently blocked goroutines via GC reachability analysis.

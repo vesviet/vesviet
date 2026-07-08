@@ -86,7 +86,7 @@
             {{- range site.Menus.main }}
             {{- if .HasChildren }}
             <li class="dropdown">
-                <a href="#" class="dropbtn" title="{{ .Title | default .Name }}" onclick="event.preventDefault();">
+                <a href="{{ .URL | default "/reading-map/" | absLangURL }}" class="dropbtn" title="{{ .Title | default .Name }}" role="button" aria-haspopup="menu" aria-expanded="false">
                     <span>
                         {{- .Pre }}
                         {{- .Name -}}
@@ -94,11 +94,11 @@
                         <svg class="dropdown-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" height="14" width="14" style="margin-left: 4px; vertical-align: middle; padding-bottom: 2px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </span>
                 </a>
-                <ul class="dropdown-content">
+                <ul class="dropdown-content" role="menu">
                     {{- range .Children }}
                     {{- $child_url := (cond (strings.HasSuffix .URL "/") .URL (printf "%s/" .URL) ) | absLangURL }}
-                    <li>
-                        <a href="{{ .URL | absLangURL }}" title="{{ .Title | default .Name }}"
+                    <li role="none">
+                        <a href="{{ .URL | absLangURL }}" title="{{ .Title | default .Name }}" role="menuitem"
                         {{- if (findRE "://" .URL) }} target="_blank" rel="noopener noreferrer" {{- end }}>
                             <span {{- if eq $child_url $page_url }} class="active" {{- end }}>
                                 {{- .Pre }}
@@ -149,31 +149,96 @@
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const dropdowns = document.querySelectorAll('#menu .dropdown');
+    
     dropdowns.forEach(dropdown => {
       const btn = dropdown.querySelector('.dropbtn');
-      if (btn) {
-        btn.addEventListener('click', (e) => {
-          if (window.innerWidth <= 768) {
-            e.preventDefault();
-            e.stopPropagation();
+      const content = dropdown.querySelector('.dropdown-content');
+      if (!btn || !content) return;
+
+      // Toggle dropdown on click
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Close other dropdowns
+        dropdowns.forEach(other => {
+          if (other !== dropdown) {
+            other.classList.remove('open');
+            const otherBtn = other.querySelector('.dropbtn');
+            if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
+            const otherContent = other.querySelector('.dropdown-content');
+            if (otherContent) otherContent.style.display = '';
+          }
+        });
+
+        // Reset inline display style before toggling
+        content.style.display = '';
+        const isOpen = dropdown.classList.toggle('open');
+        btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+
+      // Update ARIA expanded state on mouse hover
+      dropdown.addEventListener('mouseenter', () => {
+        content.style.display = '';
+        btn.setAttribute('aria-expanded', 'true');
+      });
+
+      dropdown.addEventListener('mouseleave', () => {
+        if (!dropdown.contains(document.activeElement)) {
+          btn.setAttribute('aria-expanded', 'false');
+        }
+        content.style.display = '';
+      });
+
+      // Update ARIA expanded state on keyboard focus
+      dropdown.addEventListener('focusin', (e) => {
+        if (!e.relatedTarget || !dropdown.contains(e.relatedTarget)) {
+          content.style.display = '';
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+
+      dropdown.addEventListener('focusout', (e) => {
+        // Safe check for relatedTarget to handle outside focus navigation
+        if (!e.relatedTarget || !dropdown.contains(e.relatedTarget)) {
+          btn.setAttribute('aria-expanded', 'false');
+          dropdown.classList.remove('open');
+          content.style.display = '';
+        }
+      });
+    });
+
+    // Global keyboard listener for Escape key to close open dropdown
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' || e.key === 'Esc') {
+        dropdowns.forEach(dropdown => {
+          if (dropdown.contains(document.activeElement)) {
+            const btn = dropdown.querySelector('.dropbtn');
+            const content = dropdown.querySelector('.dropdown-content');
             
-            // Close other dropdowns
-            dropdowns.forEach(other => {
-              if (other !== dropdown) {
-                other.classList.remove('open');
-              }
-            });
-            
-            dropdown.classList.toggle('open');
+            dropdown.classList.remove('open');
+            if (content) {
+              content.style.display = 'none'; // Instantly hide and skip tabbing
+            }
+            if (btn) {
+              btn.setAttribute('aria-expanded', 'false');
+              btn.focus(); // Restore focus to parent trigger
+            }
           }
         });
       }
     });
 
-    // Close when tapping outside — but not when tapping inside an open dropdown
+    // Global click listener to close dropdowns when clicking outside
     document.addEventListener('click', (e) => {
       if (!e.target.closest('#menu .dropdown')) {
-        dropdowns.forEach(el => el.classList.remove('open'));
+        dropdowns.forEach(dropdown => {
+          dropdown.classList.remove('open');
+          const btn = dropdown.querySelector('.dropbtn');
+          if (btn) btn.setAttribute('aria-expanded', 'false');
+          const content = dropdown.querySelector('.dropdown-content');
+          if (content) content.style.display = '';
+        });
       }
     });
   });

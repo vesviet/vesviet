@@ -1,10 +1,10 @@
-﻿---
+---
 title: "System Design Masterclass (Golang)"
 slug: "system-design"
 description: "System Design with Go for Senior Engineers: Load Balancing, Caching, DB Sharding, Distributed Locks, Saga Pattern, and Observability — in production."
-author: "Tanh"
-date: 2026-06-18T14:50:00+07:00
-lastmod: 2026-06-18T16:22:00+07:00
+author: "Lê Tuấn Anh"
+date: "2026-06-18T14:50:00+07:00"
+lastmod: "2026-06-18T16:22:00+07:00"
 draft: false
 weight: 200
 categories: ["Series", "System Design", "Backend Architecture"]
@@ -12,9 +12,10 @@ tags: ["System Design", "Distributed Systems", "Scalability", "Golang", "Archite
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
+canonicalURL: "https://tanhdev.com/series/system-design/"
 ---
 
 # System Design Masterclass (Golang)

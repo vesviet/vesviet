@@ -1,9 +1,9 @@
-﻿---
+---
 title: "Agentic E-commerce Search Engine Architecture"
-date: 2026-05-22T22:00:00+07:00
-lastmod: 2026-06-16T22:00:00+07:00
+date: "2026-05-22T22:00:00+07:00"
+lastmod: "2026-06-16T22:00:00+07:00"
 draft: false
-author: "Vesviet Team"
+author: "Lê Tuấn Anh"
 weight: 36
 slug: "agentic-ecommerce-search"
 keywords: ["Agentic E-commerce Search Engine"]
@@ -11,9 +11,10 @@ description: "A hands-on series guiding you through building an Agentic Search s
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/agentic-ecommerce-search-cover.png"
+  image: "images/posts/agentic-ecommerce-search-cover.png"
   alt: "Agentic E-commerce Search Engine Architecture series — vector databases, ranking, and Go"
   relative: false
+canonicalURL: "https://tanhdev.com/series/agentic-ecommerce-search/"
 ---
 
 # Agentic E-commerce Search Engine Architecture

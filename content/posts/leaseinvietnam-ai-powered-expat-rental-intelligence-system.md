@@ -1,8 +1,5 @@
-﻿---
+---
 title: "LeaseInVietnam: AI-Powered Expat Rental & B2B Lead Engine"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Leaseinvietnam Ai Powered Expat Rental Intelligence System"
 slug: "leaseinvietnam-ai-powered-expat-rental-intelligence-system"
 author: "Lê Tuấn Anh"
 date: "2026-04-24T10:00:00+07:00"
@@ -27,9 +24,10 @@ description: "Build an autonomous AI pipeline that scrapes and publishes expat r
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/leaseinvietnam-cover.png"
+  image: "images/posts/leaseinvietnam-cover.png"
   alt: "LeaseInVietnam: AI-powered expat rental platform and B2B lead intelligence system architecture"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/leaseinvietnam-ai-powered-expat-rental-intelligence-system/"
 ---
 
 **Answer-first:** LeaseInVietnam runs an autonomous AI pipeline that ingests, cleans, and translates rental listings. By extracting structured property attributes using LLM-based schemas, it converts raw data into high-value expat guides and property listings, serving as a high-converting B2B lead generation engine.

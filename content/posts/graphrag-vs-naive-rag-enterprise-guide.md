@@ -1,8 +1,5 @@
-﻿---
+---
 title: "GraphRAG vs Naive RAG: Enterprise Architecture Guide"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Graphrag Vs Naive Rag Enterprise Guide"
 slug: "graphrag-vs-naive-rag-enterprise-guide"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
@@ -25,9 +22,10 @@ description: "Compare Naive RAG with GraphRAG for enterprise AI pipelines: knowl
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "images/posts/graphrag-vs-naive-rag-cover.png"
   alt: "GraphRAG vs Naive RAG: enterprise architecture guide — entity relationships vs flat chunk retrieval"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/graphrag-vs-naive-rag-enterprise-guide/"
 ---
 
 **Answer-first:** Naive RAG works well for simple keyword queries on isolated documents. For complex, global questions spanning multiple entities, GraphRAG is superior as it builds a knowledge graph using LLMs. Enterprise implementations require combining change data capture (CDC) with vector search to keep graphs synchronized.

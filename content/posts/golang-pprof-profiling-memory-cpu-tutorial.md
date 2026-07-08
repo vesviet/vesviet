@@ -1,8 +1,5 @@
 ---
 title: "Go pprof in Kubernetes: CPU & Memory Profiling"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Golang Pprof Profiling Memory Cpu Tutorial"
 slug: "golang-pprof-profiling-memory-cpu-tutorial"
 author: "Lê Tuấn Anh"
 date: "2026-06-02T08:00:00+07:00"
@@ -22,9 +19,10 @@ tags:
   - "Profiling"
   - "Performance"
 cover:
-  image: "/images/posts/goroutine-leak-cover.png"
+  image: "images/posts/goroutine-leak-cover.png"
   alt: "Go pprof profiling in Kubernetes: CPU flame graphs, heap profiling, and memory leak detection"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/golang-pprof-profiling-memory-cpu-tutorial/"
 ---
 
 **Answer-first:** Go pprof is the standard library profiling tool for diagnosing CPU usage, memory allocation, and goroutine leaks in production Go services, with safe exposure via internal HTTP endpoints and minimal performance overhead when configured correctly.

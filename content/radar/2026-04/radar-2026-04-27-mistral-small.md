@@ -17,6 +17,9 @@ description: "Mistral released Small 4 under Apache 2.0, unifying fast instructi
 ShowToc: true
 TocOpen: true
 aliases: ["/radar/radar-2026-04-27-mistral-small/"]
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/radar/radar-2026-04-27-mistral-small/"
+slug: "radar-2026-04-27-mistral-small"
 ---
 
 Mistral released Small 4 this week — a 119B parameter model that consolidates what previously required three separate models. Under the Apache 2.0 license and optimized for both latency and throughput, Small 4 represents a strategic inflection point in the open-source model ecosystem.

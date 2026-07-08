@@ -12,7 +12,7 @@ ShowToc: true
 TocOpen: true
 canonicalURL: "https://tanhdev.com/posts/magento-developers-in-vietnam/"
 cover:
-  image: "/images/posts/magento-developers-vietnam-cover.png"
+  image: "images/posts/magento-developers-vietnam-cover.png"
   alt: "Magento Developers in Vietnam: Technical Hiring and Vetting Guide"
   relative: false
 ---

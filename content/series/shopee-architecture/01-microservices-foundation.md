@@ -1,16 +1,18 @@
-﻿---
+---
 title: "Chapter 1: Microservices Foundation - The Power of Go, gRPC, and API Gateway"
-date: 2026-05-05T08:10:00+07:00
-lastmod: 2026-05-05T08:10:00+07:00
+date: "2026-05-05T08:10:00+07:00"
+lastmod: "2026-05-05T08:10:00+07:00"
 draft: false
 mermaid: true
 description: "How Shopee builds its backend with Golang, gRPC, and Microservices to handle massive scale."
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/shopee-flash-sale-cover.png"
+  image: "images/posts/shopee-flash-sale-cover.png"
   alt: "Shopee Architecture series: scaling for flash sales — rate limiting, Redis, and distributed systems"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/shopee-architecture/01-microservices-foundation/"
 ---
 # Chapter 1: Building a Massive Foundation with Microservices, Golang, and gRPC
 

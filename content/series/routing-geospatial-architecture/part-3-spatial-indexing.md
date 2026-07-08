@@ -1,16 +1,18 @@
-﻿---
+---
 title: "Part 3: Spatial Indexing (Uber H3, PostGIS & Redis GEO)"
 description: "How Spatial Indexing acts as the critical pre-filter for driver dispatching: Uber H3, PostGIS, and Redis GEO — avoid crashing your routing engine."
-date: 2026-06-14T22:50:00+07:00
-lastmod: 2026-06-14T22:50:00+07:00
+date: "2026-06-14T22:50:00+07:00"
+lastmod: "2026-06-14T22:50:00+07:00"
 draft: false
 tags: ["uber h3", "postgis", "redis", "geospatial", "system design"]
 series: ["Routing & Geospatial Architecture"]
 series_order: 3
 cover:
-  image: "/images/posts/graphhopper-cover.png"
+  image: "images/posts/graphhopper-cover.png"
   alt: "Geospatial and Routing Engine Architecture series: Go and GraphHopper for production routing"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-3-spatial-indexing/"
 ---
 
 A fatal mistake made by junior engineers building ride-hailing apps is connecting their API Gateway directly to the Routing Engine. 

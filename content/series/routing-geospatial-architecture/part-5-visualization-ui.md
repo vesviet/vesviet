@@ -1,16 +1,18 @@
-﻿---
+---
 title: "Part 5: Route Visualization UI with Mapbox & Deck.gl"
 description: "Visualizing 100,000 vehicle paths without freezing the browser. Unlocking WebGL GPU rendering with Deck.gl and Mapbox."
-date: 2026-06-14T23:05:00+07:00
-lastmod: 2026-06-14T23:05:00+07:00
+date: "2026-06-14T23:05:00+07:00"
+lastmod: "2026-06-14T23:05:00+07:00"
 draft: false
 tags: ["mapbox", "deck.gl", "webgl", "frontend", "geospatial", "ui"]
 series: ["Routing & Geospatial Architecture"]
 series_order: 5
 cover:
-  image: "/images/posts/graphhopper-cover.png"
+  image: "images/posts/graphhopper-cover.png"
   alt: "Geospatial and Routing Engine Architecture series: Go and GraphHopper for production routing"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-5-visualization-ui/"
 ---
 
 Rendering a single route on Google Maps is trivial. Rendering 100,000 historical vehicle routes, Origin-Destination matrices, and dynamic H3 geofences simultaneously? That requires offloading computation from the browser's CPU to the GPU using WebGL.

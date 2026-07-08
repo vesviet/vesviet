@@ -1,8 +1,5 @@
-﻿---
+---
 title: "GraphHopper Distance Matrix: Self-Host & Replace Google Maps API ($510/day → $0)"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Graphhopper Distance Matrix Production Guide"
 slug: "graphhopper-distance-matrix-production-guide"
 author: "Lê Tuấn Anh"
 date: "2026-06-11T20:00:00+07:00"
@@ -25,9 +22,10 @@ tags:
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/graphhopper-cover.png"
+  image: "images/posts/graphhopper-cover.png"
   alt: "GraphHopper distance matrix production guide: self-hosted routing with OSM data and Kubernetes"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/graphhopper-distance-matrix-production-guide/"
 ---
 
 **Answer-first:** GraphHopper distance matrix is the `/matrix` API of the open-source GraphHopper routing engine. It accepts N points and returns an N×N matrix of travel durations (seconds) and distances (meters) based on real road networks from OpenStreetMap — completely free when self-hosted. For 100 delivery stops, it computes 10,000 pairs in under 50ms on a standard VPS.

@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Go pprof in Kubernetes: Remote Profiling & Flame Graphs"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Go Pprof Kubernetes Remote Profiling"
 slug: "go-pprof-kubernetes-remote-profiling"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
@@ -25,9 +22,10 @@ description: "How to safely profile CPU, memory, and goroutines in Go services r
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/goroutine-leak-cover.png"
+  image: "images/posts/goroutine-leak-cover.png"
   alt: "Go pprof Kubernetes remote profiling: kubectl port-forward, flame graphs, and production profiling"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/go-pprof-kubernetes-remote-profiling/"
 ---
 
 **Answer-first:** Safely profile production Go services in Kubernetes by establishing a secure `kubectl port-forward` to the runtime's pprof endpoint. Collecting CPU, memory, and goroutine profiles in real-time allows generating flame graphs or streaming data to Pyroscope without introducing high overhead.

@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 1: Protocol Fundamentals & Transport Evolution"
-date: 2026-05-15T14:00:00+07:00
-lastmod: 2026-05-15T14:00:00+07:00
+date: "2026-05-15T14:00:00+07:00"
+lastmod: "2026-05-15T14:00:00+07:00"
 draft: false
 weight: 2
 categories:
@@ -15,9 +15,11 @@ description: "Deep dive into the 5 Core Primitives of MCP and the evolution of t
 aliases:
   - /series/mcp-engineering-in-production/part-1-protocol/
 cover:
-  image: "/images/posts/generative-ui-mcp-cover.png"
+  image: "images/posts/generative-ui-mcp-cover.png"
   alt: "MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-1-protocol/"
 ---
 
 To master a protocol, you must understand its DNA. Before we write Go code in the upcoming parts, we need to dismantle the architecture of the Model Context Protocol (MCP). Underneath the complex AI workflows, MCP is surprisingly simple and elegant. It is built on top of the **[JSON-RPC 2.0](https://www.jsonrpc.org/specification)** specification, a stateless, lightweight remote procedure call protocol.

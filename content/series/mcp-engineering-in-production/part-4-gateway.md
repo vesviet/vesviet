@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 4: MCP Gateway Architecture"
-date: 2026-05-15T14:00:00+07:00
-lastmod: 2026-05-15T14:00:00+07:00
+date: "2026-05-15T14:00:00+07:00"
+lastmod: "2026-05-15T14:00:00+07:00"
 draft: false
 weight: 5
 categories:
@@ -15,9 +15,11 @@ description: "Solving the N×M connectivity problem in Agentic systems. Analyzin
 aliases:
   - /series/mcp-engineering-in-production/part-4-gateway/
 cover:
-  image: "/images/posts/generative-ui-mcp-cover.png"
+  image: "images/posts/generative-ui-mcp-cover.png"
   alt: "MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-4-gateway/"
 ---
 
 When deploying Model Context Protocol (MCP) in a large Enterprise, you will quickly hit an architectural wall. If 50 distinct AI Agents (Coding Agents, HR Bots, Financial Analysts) need to talk to 100 different internal systems (Jira, Confluence, GitHub, internal DBs), letting them connect directly creates a chaotic matrix of 5,000 P2P connections. 

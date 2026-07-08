@@ -1,8 +1,8 @@
-﻿---
+---
 title: "Part 0: Why the $200K/Year Magento Trap Is Avoidable"
 description: "The real cost of Magento 2 Enterprise: $125K–200K/year in licensing, scaling limits, and PHP coupling. How 21 Go microservices replaced it entirely."
-date: 2026-04-01T10:00:00+07:00
-lastmod: 2026-07-03T15:41:55+07:00
+date: "2026-04-01T10:00:00+07:00"
+lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 weight: 1
 slug: "part-0-executive-summary"
@@ -12,9 +12,10 @@ categories: ["Series", "Software Engineering", "Backend Architecture"]
 tags: ["Magento", "Microservices", "Golang", "Composable Commerce", "Architecture", "CTO"]
 author: "Lê Tuấn Anh"
 cover:
-  image: "/images/posts/ecommerce-composable-cover.png"
+  image: "images/posts/ecommerce-composable-cover.png"
   alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
   relative: false
+canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-0-executive-summary/"
 ---
 
 Every engineering team that's built seriously on Magento eventually hits the same three walls: the **licensing wall**, the **scaling wall**, and the **developer velocity wall**. The question is whether you hit them before or after they cost you real money and real customers.

@@ -1,14 +1,16 @@
-﻿---
+---
 title: "Part 3 — The Data Layer: From Aurora to TiDB"
-date: 2026-05-05T21:00:00+07:00
-lastmod: 2026-05-05T21:00:00+07:00
+date: "2026-05-05T21:00:00+07:00"
+lastmod: "2026-05-05T21:00:00+07:00"
 draft: false
 description: "Why PayPay migrated from AWS Aurora to self-hosted TiDB: the Aurora bottleneck, TiDB's distributed architecture, the phased migration strategy, and the results."
 weight: 4
 cover:
-  image: "/images/posts/paypay-scaling-cover.png"
+  image: "images/posts/paypay-scaling-cover.png"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-3-data-layer-tidb/"
 ---
 
 ## The Relational Database Bottleneck

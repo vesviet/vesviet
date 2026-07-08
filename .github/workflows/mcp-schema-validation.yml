@@ -1,0 +1,41 @@
+name: MCP Schema Validation
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'static/.well-known/mcp.json'
+      - 'static/.well-known/mcp/server-card.json'
+      - '.github/workflows/mcp-schema-validation.yml'
+      - 'tests/validate_mcp_sync.py'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'static/.well-known/mcp.json'
+      - 'static/.well-known/mcp/server-card.json'
+      - '.github/workflows/mcp-schema-validation.yml'
+      - 'tests/validate_mcp_sync.py'
+
+jobs:
+  validate-mcp:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install AJV CLI
+        run: npm install -g ajv-cli
+
+      - name: Validate mcp.json against standard schema
+        run: ajv validate -s https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json -d static/.well-known/mcp.json
+
+      - name: Validate server-card.json against standard schema
+        run: ajv validate -s https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json -d static/.well-known/mcp/server-card.json
+
+      - name: Validate MCP Synchronization
+        run: python tests/validate_mcp_sync.py

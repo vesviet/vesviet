@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Part 3: The Art of Chunking & Semantic Caching"
 slug: "part-3-late-chunking-semantic-caching"
 date: "2026-05-17T12:00:00+07:00"
@@ -14,9 +14,11 @@ aliases:
   - "/series/ai-data-engineering-pipeline/part-3-late-chunking-semantic-caching/part-4-streaming-cdc-federated-rag"
   - "/series/ai-data-engineering-pipeline/part-2-agentic-ingestion-multimodal/part-3-late-chunking-semantic-caching"
 cover:
-  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "images/posts/graphrag-vs-naive-rag-cover.png"
   alt: "Enterprise AI Data Pipeline and GraphRAG Architecture series: graph-based retrieval at scale"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-3-late-chunking-semantic-caching/"
 ---
 
 ## 1. Introduction: The Failure of Mechanical Chunking

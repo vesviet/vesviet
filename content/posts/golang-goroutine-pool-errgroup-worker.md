@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Goroutine Pool Patterns in Go: errgroup & Backpressure"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Golang Goroutine Pool Errgroup Worker"
 slug: "golang-goroutine-pool-errgroup-worker"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
@@ -25,9 +22,10 @@ description: "Production Go concurrency patterns: errgroup worker pools, semapho
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/golang-concurrency-cover.png"
+  image: "images/posts/golang-concurrency-cover.png"
   alt: "Golang Goroutine Pool and Errgroup Worker: concurrent task processing patterns in production Go"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/golang-goroutine-pool-errgroup-worker/"
 ---
 
 **Answer-first:** Unbounded goroutines in production trigger OOM crashes and garbage collection spirals. Prevent failures by enforcing concurrency limits using `errgroup.WithContext` for group error handling, channel-based worker pools for continuous jobs, and buffered semaphores for rate-limiting, transforming variable runtime resource usage into predictable, fixed bounds.

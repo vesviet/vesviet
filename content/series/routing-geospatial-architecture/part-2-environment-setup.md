@@ -1,16 +1,18 @@
-﻿---
+---
 title: "Part 2: Zero to Hero Environment Setup (Docker, OSM, Golang)"
 description: "A complete, production-ready guide to setting up a local Graphhopper routing engine with OpenStreetMap data and a high-performance Golang API client."
-date: 2026-06-14T22:45:00+07:00
-lastmod: 2026-06-14T22:45:00+07:00
+date: "2026-06-14T22:45:00+07:00"
+lastmod: "2026-06-14T22:45:00+07:00"
 draft: false
 tags: ["golang", "docker", "graphhopper", "osm"]
 series: ["Routing & Geospatial Architecture"]
 series_order: 2
 cover:
-  image: "/images/posts/graphhopper-cover.png"
+  image: "images/posts/graphhopper-cover.png"
   alt: "Geospatial and Routing Engine Architecture series: Go and GraphHopper for production routing"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-2-environment-setup/"
 ---
 
 Setting up a local routing engine is notoriously difficult. Most generic tutorials offer a basic Docker command that crashes silently, leaving developers confused. 

@@ -1,15 +1,17 @@
-﻿---
+---
 title: "Surge Pricing Algorithm: Real-Time Surge Rate Calculation"
 slug: "part-5-pricing-surge-engine"
-date: 2026-05-06T20:00:00+07:00
-lastmod: 2026-06-11T20:00:00+07:00
+date: "2026-05-06T20:00:00+07:00"
+lastmod: "2026-06-11T20:00:00+07:00"
 draft: false
 description: "How surge pricing works: H3 geofencing, Kafka + Flink supply-demand aggregation, Redis TTL, and ML-based multiplier calculation — with production Go code."
 weight: 6
 cover:
-  image: "/images/posts/real-time-ride-hailing-cover.png"
+  image: "images/posts/real-time-ride-hailing-cover.png"
   alt: "Real-Time Ride-Hailing Architecture series: Uber and Grab — matching, GPS, WebSocket at scale"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/"
 ---
 
 > **Series context:** This is Part 5 of the [Real-Time Ride-Hailing Architecture](/series/ride-hailing-realtime-architecture/) series. For location ingestion and geospatial indexing, start at [Part 1](/series/ride-hailing-realtime-architecture/part-1-location-ingestion/).

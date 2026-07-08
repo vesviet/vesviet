@@ -1,10 +1,10 @@
-﻿---
+---
 title: "Load Balancing L4/L7 in Go — DSR, Rate Limiting & API Gateway"
 slug: "02-load-balancing-api-gateway-go"
 date: "2026-06-18T09:30:00+07:00"
-lastmod: 2026-07-03T15:41:55+07:00
+lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
-author: "Tanh"
+author: "Lê Tuấn Anh"
 description: "L4 vs L7 load balancing internals, Direct Server Return with HAProxy sysctl config, Token Bucket rate limiting middleware in Go, and API Gateway patterns."
 tags: ["load balancer", "api gateway", "rate limiting", "golang", "token bucket", "system design"]
 categories: ["System Design", "Backend Engineering"]
@@ -13,9 +13,10 @@ TocOpen: true
 series: ["system-design"]
 mermaid: true
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
+canonicalURL: "https://tanhdev.com/series/system-design/02-load-balancing-api-gateway-go/"
 ---
 
 > **Prerequisite:** Part 2 of the [System Design Masterclass](/series/system-design/). Read [Part 1: System Design Thinking](/series/system-design/01-introduction-system-design-golang/) first to understand foundational trade-off frameworks.

@@ -1,12 +1,13 @@
-﻿---
+---
 title: "Ecommerce Architecture 2026: Overcoming Tech Debt in Composable Commerce Migration"
 slug: ecommerce-architecture-composable-migration
-author: "Technical Architect Team"
-date: "2026-07-06"
+author: "Lê Tuấn Anh"
+date: "2026-07-06T00:00:00+07:00"
 cover:
-  image: "/images/posts/ecommerce-composable-cover.png"
+  image: "images/posts/ecommerce-composable-cover.png"
   alt: "E-commerce composable architecture migration: from Magento monolith to MACH modular services"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/ecommerce-architecture-composable-migration/"
 ---
 
 **Answer-first:** Monolith decoupling succeeds only when solving eventual consistency and distributed tracing overhead early. Mitigate inventory overselling via Redis-based BFF locking, stream database sync in real-time via Debezium CDC and Kafka, and build distributed tracing via OpenTelemetry from day one to avoid system blindness.

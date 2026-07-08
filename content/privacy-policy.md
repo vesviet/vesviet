@@ -1,7 +1,7 @@
 ---
 title: "Privacy Policy"
-date: 2026-06-15T00:00:00+07:00
-lastmod: 2026-06-15T00:00:00+07:00
+date: "2026-06-15T00:00:00+07:00"
+lastmod: "2026-06-15T00:00:00+07:00"
 draft: false
 description: "tanhdev.com privacy policy: how we collect, use, and protect visitor data. Last updated June 2026."
 comments: false

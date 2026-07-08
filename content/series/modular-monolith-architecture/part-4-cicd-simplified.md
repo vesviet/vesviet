@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Part 4: CI/CD Simplified & Atomic Deployments"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "Why is CI/CD management for Microservices so complex? Discover the power of Atomic Deployments and how Shopify runs hundreds of thousands of tests in under"
@@ -8,9 +8,11 @@ aliases:
   - "/series/modular-monolith-architecture/part-4-cicd-simplified/"
   - "/series/modular-monolith-architecture/ddd-module-boundaries-modular-monolith/part-4-cicd-simplified.md"
 cover:
-  image: "/images/posts/golang-microservices-cover.png"
+  image: "images/posts/golang-microservices-cover.png"
   alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/cicd-simplified-atomic-deployments-monolith/"
 ---
 
 # Part 4: CI/CD Simplified & The Power of Atomic Deployments

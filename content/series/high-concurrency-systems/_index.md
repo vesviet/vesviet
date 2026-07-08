@@ -1,17 +1,19 @@
-﻿---
+---
 title: "Masterclass: High Concurrency Systems & B2B Commerce"
 description: "How to scale backend systems from 1,000 to 25 million requests per month without database bottlenecks or locking issues."
-date: 2026-06-16T12:00:00+07:00
-lastmod: 2026-07-03T15:41:55+07:00
+date: "2026-06-16T12:00:00+07:00"
+lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 weight: 100
 slug: "high-concurrency-systems"
 categories: ["Series", "Backend Architecture", "System Design"]
 tags: ["High Concurrency", "Go", "PostgreSQL", "System Design", "Microservices"]
 cover:
-  image: "/images/posts/realtime-inventory-cover.png"
+  image: "images/posts/realtime-inventory-cover.png"
   alt: "Masterclass: High Concurrency Systems and B2B Commerce — queues, caches, and distributed architecture"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/"
 ---
 
 # Masterclass: High Concurrency Systems & B2B Commerce

@@ -1,7 +1,7 @@
-﻿---
+---
 title: "AI Code Bug Taxonomy: Silent Failures to Slopsquatting (2025)"
-date: 2026-05-31T17:30:00+07:00
-lastmod: 2026-05-31T17:30:00+07:00
+date: "2026-05-31T17:30:00+07:00"
+lastmod: "2026-05-31T17:30:00+07:00"
 draft: false
 weight: 4
 categories:
@@ -22,9 +22,11 @@ description: "The 5 AI code bug categories: logic failures, security gaps, N+1 q
 aliases:
   - /series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy/
 cover:
-  image: "/images/posts/vibe-coding-cover.png"
+  image: "images/posts/vibe-coding-cover.png"
   alt: "Vibe Coding and AI Code Review series: from prototype to production AI-assisted engineering"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy/"
 ---
 
 > **Series Orientation:** This article is Part 3 of the **AI Code Review & Vibe Coding** series, examining the unique failure modes of AI-generated code. For the broader business context, see the [Series Executive Summary](/series/ai-code-review-vibe-coding/executive-summary/).

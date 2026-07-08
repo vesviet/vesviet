@@ -1,16 +1,18 @@
-﻿---
+---
 title: "AI-Driven Engineer: From Code Typist to Architect"
-date: 2026-05-10T14:00:00+07:00
-lastmod: 2026-05-10T14:00:00+07:00
+date: "2026-05-10T14:00:00+07:00"
+lastmod: "2026-05-10T14:00:00+07:00"
 draft: false
 weight: 10
 description: "Roadmap for software engineers in the AI era: mindset shift from code typist to system architect, AI tool mastery, system design, and AI-native applications."
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/ai-native-frontend-cover.png"
+  image: "images/posts/ai-native-frontend-cover.png"
   alt: "AI-Driven Engineer series: from code typist to AI-native software architect"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/"
 ---
 
 This series is for **every software engineer** — from Freshers who are confused by the pace of AI evolution, to Seniors looking to upgrade their value in the eyes of businesses and clients.

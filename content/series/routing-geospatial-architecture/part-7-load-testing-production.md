@@ -1,16 +1,18 @@
-﻿---
+---
 title: "Part 7: Load Testing and Performance Tuning for Production"
 description: "How to survive 20,000 requests per second. We uncover Linux Kernel network tuning, K6 Coordinated Omission, and Golang CPU bottlenecks."
-date: 2026-06-15T07:20:00+07:00
-lastmod: 2026-06-15T07:20:00+07:00
+date: "2026-06-15T07:20:00+07:00"
+lastmod: "2026-06-15T07:20:00+07:00"
 draft: false
 tags: ["k6", "load testing", "linux", "performance", "golang", "system design"]
 series: ["Routing & Geospatial Architecture"]
 series_order: 7
 cover:
-  image: "/images/posts/graphhopper-cover.png"
+  image: "images/posts/graphhopper-cover.png"
   alt: "Geospatial and Routing Engine Architecture series: Go and GraphHopper for production routing"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-7-load-testing-production/"
 ---
 
 Load testing is the final boss of System Design. A junior engineer runs a script, sees "20,000 RPS" with 0 errors, and assumes the system is ready. A Principal Engineer knows that unless you tune the Linux Kernel, bypass Coordinated Omission, and simulate realistic chaos, that number is a complete lie.

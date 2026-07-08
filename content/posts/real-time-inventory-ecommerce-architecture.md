@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Real-Time Inventory Synchronization: Kafka, CDC & Redis for E-commerce"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Real Time Inventory Ecommerce Architecture"
 slug: "real-time-inventory-ecommerce-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-06-08T14:35:00+07:00"
@@ -23,9 +20,10 @@ tags:
   - "System Design"
 mermaid: true
 cover:
-  image: "/images/posts/realtime-inventory-cover.png"
+  image: "images/posts/realtime-inventory-cover.png"
   alt: "Real-time inventory architecture for e-commerce: event-driven sync, Kafka, and oversell prevention"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/real-time-inventory-ecommerce-architecture/"
 ---
 
 **Answer-first:** Attempting to simultaneously write inventory updates to a fast cache (Redis) and a relational database (PostgreSQL) creates the dual-write problem. If one system fails, data diverges. Furthermore, synchronous `SELECT FOR UPDATE` queries in SQL cause massive lock queues and API timeouts.

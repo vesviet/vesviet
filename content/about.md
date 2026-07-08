@@ -1,7 +1,7 @@
 ---
 title: "Lê Tuấn Anh — Senior Software Engineer & Go Backend Architect"
-date: "2021-10-14 18:48:02"
-lastmod: "2026-06-06"
+date: "2021-10-14T18:48:02+07:00"
+lastmod: "2026-06-06T10:00:00+07:00"
 aliases:
   - /about-me/
   - /contact/

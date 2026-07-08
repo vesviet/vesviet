@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Cloudflare D1 + Durable Objects: Build a Real-Time Cart"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Cloudflare D1 Durable Objects Realtime Cart"
 slug: "cloudflare-d1-durable-objects-realtime-cart"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
@@ -25,9 +22,10 @@ description: "Build a real-time shopping cart using Cloudflare D1, Durable Objec
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/cloudflare-edge-cover.png"
+  image: "images/posts/cloudflare-edge-cover.png"
   alt: "Cloudflare D1 and Durable Objects: build a real-time cart with edge-native state and SQLite"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/cloudflare-d1-durable-objects-realtime-cart/"
 ---
 
 **Answer-first:** Eliminate database latency and Redis caching overhead for global e-commerce by pairing Cloudflare Workers at the edge with Durable Objects for strongly consistent, real-time in-memory state. Use D1 for serverless SQLite persistence, routing concurrent device updates through a transactional, conflict-free architecture.

@@ -1,8 +1,8 @@
-﻿---
+---
 title: "Part 1: DDD Bounded Contexts — Magento to 21 Services"
 description: "Map Magento 2's 240+ modules to 21 bounded contexts using DDD: Checkout ≠ Order, Pricing ≠ Promotion, and why 21 services is the right number."
-date: 2026-04-08T10:00:00+07:00
-lastmod: 2026-07-03T15:41:55+07:00
+date: "2026-04-08T10:00:00+07:00"
+lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 weight: 2
 slug: "part-1-ddd-bounded-contexts"
@@ -15,9 +15,10 @@ series_order: 1
 ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
 cover:
-  image: "/images/posts/ecommerce-composable-cover.png"
+  image: "images/posts/ecommerce-composable-cover.png"
   alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
   relative: false
+canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-1-ddd-bounded-contexts/"
 ---
 
 Every Magento team that decides to migrate to microservices faces the same first question: **how many services?**

@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Alipay Double 11: 583,000 TPS Architecture Explained"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Alipay Double 11 Architecture Tps"
 slug: "alipay-double-11-architecture-tps"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
@@ -25,9 +22,10 @@ description: "How Alipay's engineering team scaled Double 11 to 583,000 TPS usin
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/alipay-double11-cover.png"
+  image: "images/posts/alipay-double11-cover.png"
   alt: "Alipay Double 11 architecture explained: 583,000 TPS — distributed payment processing at scale"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/alipay-double-11-architecture-tps/"
 ---
 
 **Answer-first:** Alipay scaled to 583,000 TPS using Logical Data Center (LDC) unitization for multi-site active-active disaster recovery, OceanBase for distributed relational storage with Raft consensus, RocketMQ for transactional messaging, and SOFAStack middleware. This architecture guarantees horizontal scalability and financial-grade consistency under peak load.

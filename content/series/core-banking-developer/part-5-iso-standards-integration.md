@@ -1,14 +1,16 @@
-﻿---
+---
 title: "Part 5: ISO 8583 & ISO 20022 Core Banking Standards"
-date: 2026-05-06T18:00:00+07:00
-lastmod: 2026-06-10T16:00:00+07:00
+date: "2026-05-06T18:00:00+07:00"
+lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
 description: "ISO 8583 for ATM/POS card transactions and ISO 20022 for SWIFT cross-border payments: what Core Banking Developers need to implement both standards."
 weight: 6
 cover:
-  image: "/images/posts/banking-microservices-cover.png"
+  image: "images/posts/banking-microservices-cover.png"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-5-iso-standards-integration/"
 ---
 
 > **Prerequisite:** This article covers the external communication layer of Core Banking. Before diving in, ensure you understand how the internal services are structured — see [Part 4 — Banking Microservices Architecture](/series/core-banking-developer/part-4-modern-core-banking-architecture/) for the foundational service topology and event-driven patterns.

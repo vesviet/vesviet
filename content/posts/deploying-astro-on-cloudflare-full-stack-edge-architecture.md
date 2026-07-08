@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Astro on Cloudflare: Full-Stack Edge Architecture"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Deploying Astro On Cloudflare Full Stack Edge Architecture"
 slug: "deploying-astro-on-cloudflare-full-stack-edge-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-04-24T14:00:00+07:00"
@@ -25,9 +22,10 @@ description: "Two paths to Cloudflare: building a full-stack edge site with Astr
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/cloudflare-edge-cover.png"
+  image: "images/posts/cloudflare-edge-cover.png"
   alt: "Deploying Astro on Cloudflare: full-stack edge architecture with Workers, D1, and KV"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/"
 ---
 
 **Answer-first:** Deploying Astro on Cloudflare Pages utilizes V8 isolates for near-zero cold starts and global edge execution. The architecture relies on D1 edge database bindings, Durable Objects for real-time state, and Cloudflare CDN caching policies to deliver high-performance, cost-effective web applications.

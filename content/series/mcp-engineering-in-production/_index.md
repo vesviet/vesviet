@@ -1,16 +1,18 @@
-﻿---
+---
 title: "MCP Engineering in Production: Go SDK to Enterprise"
-date: 2026-05-15T14:00:00+07:00
-lastmod: 2026-06-16T14:00:00+07:00
+date: "2026-05-15T14:00:00+07:00"
+lastmod: "2026-06-16T14:00:00+07:00"
 draft: false
 description: "Deploy MCP servers in production with Go: protocol fundamentals, OAuth 2.1 identity, gateway architecture, OWASP security, and enterprise observability."
 ShowToc: true
 TocOpen: true
 weight: 60
 cover:
-  image: "/images/posts/generative-ui-mcp-cover.png"
+  image: "images/posts/generative-ui-mcp-cover.png"
   alt: "MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/"
 ---
 
 # MCP Engineering in Production: Go SDK to Enterprise

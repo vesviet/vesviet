@@ -505,29 +505,18 @@
 
 <!-- Preload LCP Images for Core Web Vitals -->
 {{- if .IsHome }}
-  {{- with site.Params.profileMode }}
-    {{- if .imageUrl }}
-      {{- if (urls.Parse .imageUrl).IsAbs }}
-      <!-- crossorigin required for cross-origin preload to be effective (LCP fix) -->
-      <link rel="preload" as="image" href="{{ .imageUrl }}" fetchpriority="high" crossorigin="anonymous">
-      {{- else }}
-      <link rel="preload" as="image" href="{{ .imageUrl | absURL }}" fetchpriority="high">
-      {{- end }}
-    {{- end }}
+  {{- $img := resources.Get site.Params.profileMode.imageUrl }}
+  {{- if $img }}
+    {{- $resized := $img.Resize "120x120" }}
+    <link rel="preload" as="image" href="{{ $resized.Permalink }}" fetchpriority="high">
   {{- end }}
 {{- else if .IsPage }}
-  {{- if .Params.cover.image }}
-    {{- $img := "" }}
-    {{- if not (urls.Parse .Params.cover.image).IsAbs }}
-      {{- $img = resources.Get .Params.cover.image }}
-    {{- end }}
-    {{- if $img }}
-      {{- $processableFormats := (slice "jpg" "jpeg" "png" "tif" "bmp" "gif" "webp") -}}
-      {{- if in $processableFormats $img.MediaType.SubType }}
-        <link rel="preload" as="image" href="{{ $img.Permalink }}" fetchpriority="high">
-      {{- end }}
-    {{- else }}
-      <link rel="preload" as="image" href="{{ .Params.cover.image | absURL }}" fetchpriority="high">
+  {{- with .Params.cover.image }}
+    {{- $cover := or ($.Resources.Get .) (resources.Get .) }}
+    {{- if $cover }}
+      {{- $w1 := $cover.Resize "720x webp" }}
+      {{- $w2 := $cover.Resize "1080x webp" }}
+      <link rel="preload" as="image" href="{{ $cover.Permalink }}" imagesrcset="{{ $w1.RelPermalink }} 720w, {{ $w2.RelPermalink }} 1080w" imagesizes="(max-width: 768px) 720px, 1080px" fetchpriority="high">
     {{- end }}
   {{- end }}
 {{- end }}

@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Kubernetes In-Place Pod Resizing: Scale CPU & Memory Without Restart"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Kubernetes In Place Pod Resizing Guide"
 slug: "kubernetes-in-place-pod-resizing-guide"
 author: "Lê Tuấn Anh"
 date: "2026-06-12T14:00:00+07:00"
@@ -25,9 +22,10 @@ tags:
   - "VPA"
   - "K8s v1.35"
 cover:
-  image: "/images/posts/kubernetes-pod-resize-cover.png"
+  image: "images/posts/kubernetes-pod-resize-cover.png"
   alt: "Kubernetes in-place pod resizing: scale CPU and memory resources without restarting pods"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/kubernetes-in-place-pod-resizing-guide/"
 ---
 
 **Answer-first:** In-Place Pod Resizing (GA in Kubernetes v1.35) allows you to modify CPU and memory requests/limits on running containers without restarting the pod — eliminating cold-start disruptions for AI inference, databases, and stateful workloads. This guide covers requirements, production YAML, VPA integration, cost optimization patterns, and gotchas.

@@ -1,14 +1,16 @@
-﻿---
+---
 title: "Part 5 — Scaling for Billion-Yen Campaign Traffic"
-date: 2026-05-05T21:00:00+07:00
-lastmod: 2026-05-05T21:00:00+07:00
+date: "2026-05-05T21:00:00+07:00"
+lastmod: "2026-05-05T21:00:00+07:00"
 draft: false
 description: "How PayPay survives billion-yen campaign traffic spikes: KEDA Cron Scaler pre-warming, load shedding priorities, Kafka buffering, and TiDB elastic node scaling."
 weight: 6
 cover:
-  image: "/images/posts/paypay-scaling-cover.png"
+  image: "images/posts/paypay-scaling-cover.png"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-5-campaign-architecture/"
 ---
 
 ## Why Campaigns Are the Ultimate Stress Test

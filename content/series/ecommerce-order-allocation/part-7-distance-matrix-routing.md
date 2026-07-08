@@ -1,17 +1,19 @@
-﻿---
+---
 title: "GraphHopper vs OSRM for Distance Matrix: Replace Google Maps API at $0 (Production Guide)"
 slug: "part-7-distance-matrix-routing"
-date: 2026-05-06T20:30:00+07:00
-lastmod: 2026-06-26T21:00:00+07:00
+date: "2026-05-06T20:30:00+07:00"
+lastmod: "2026-06-26T21:00:00+07:00"
 draft: false
 description: "Self-host GraphHopper or OSRM for distance matrix routing. Compute 10k pairs in <50ms for free instead of paying $510/day for Google Maps. Code included."
 weight: 8
 keywords: ["graphhopper vs osrm", "distance matrix routing", "osrm distance matrix", "graphhopper distance matrix", "distance.to alternative", "google maps distance matrix alternative", "ecommerce order allocation", "or-tools vrp", "open source routing engine"]
 mermaid: true
 cover:
-  image: "/images/posts/order-fulfillment-cover.png"
+  image: "images/posts/order-fulfillment-cover.png"
   alt: "E-commerce Order Allocation Architecture series: Amazon and eBay warehouse and last-mile design"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/part-7-distance-matrix-routing/"
 ---
 
 > **Series context:** This is Part 7 of the [E-commerce Order Allocation](/series/ecommerce-order-allocation/) series. The distance matrix built here feeds directly into the OR-Tools VRP solver in [Part 6](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/).

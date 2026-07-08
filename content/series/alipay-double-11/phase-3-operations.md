@@ -1,15 +1,17 @@
-﻿---
+---
 title: "Phase 3: Operations Playbook"
-date: 2026-05-02T18:10:00+07:00
-lastmod: 2026-05-02T18:10:00+07:00
+date: "2026-05-02T18:10:00+07:00"
+lastmod: "2026-05-02T18:10:00+07:00"
 draft: false
 description: "Operational readiness for Double 11: capacity planning, full-link stress testing, incident command, dashboards, downgrade strategies, and checklists."
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/alipay-double11-cover.png"
+  image: "images/posts/alipay-double11-cover.png"
   alt: "Alipay Double 11 Architecture series: 583,000 TPS payment processing at extreme scale"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-3-operations/"
 ---
 [← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/phase-2-architecture/) • [Next →](/series/alipay-double-11/phase-4-technology/)

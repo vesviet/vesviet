@@ -1,7 +1,7 @@
-﻿---
+---
 title: "GenUI State Management: Astro vs Next.js RSC — Frontend (P2)"
-date: 2026-05-16T12:05:00+07:00
-lastmod: 2026-05-16T12:05:00+07:00
+date: "2026-05-16T12:05:00+07:00"
+lastmod: "2026-05-16T12:05:00+07:00"
 draft: false
 description: "Comparing AIState and UIState. Framework-Agnostic architecture with Astro/Svelte. When to use SSE, and when WebSockets are mandatory in Generative UI."
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 2
 categories: ["Series", "Generative UI", "Frontend Architecture"]
 tags: ["Generative UI", "AI Frontend", "Astro", "State Management", "WebSockets", "SSE"]
 cover:
-  image: "/images/posts/generative-ui-mcp-cover.png"
+  image: "images/posts/generative-ui-mcp-cover.png"
   alt: "Generative UI and AI-Native Frontend Architecture series: MCP, LLM-driven UIs, and roadmap"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-2-state-management/"
 ---
 
 In the previous part, we agreed on discarding Chatbots to move towards Generative UI. But for AI to "spawn" UI Components right on the user's screen, the Frontend and Backend cannot just communicate via standard stateless APIs. They need to share a common State.

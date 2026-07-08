@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Dapr Workflow Go Tutorial: Orchestrated Saga Pattern"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Dapr Workflow Saga Orchestration Guide"
 slug: "dapr-workflow-saga-orchestration-guide"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
@@ -25,9 +22,10 @@ description: "Step-by-step Go code for Orchestrated Saga using Dapr Workflow: du
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/dapr-saga-cover.png"
+  image: "images/posts/dapr-saga-cover.png"
   alt: "Dapr Workflow Go tutorial: orchestrated Saga pattern with compensation and distributed transaction"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/dapr-workflow-saga-orchestration-guide/"
 ---
 
 **Answer-first:** Dapr Workflows implement the Saga pattern in Go by coordinating distributed transactions through stateful, durable orchestration. If a step fails, the orchestrator executes compensating transactions in reverse order, ensuring eventual consistency without requiring complex manual state management or two-phase commit overhead.

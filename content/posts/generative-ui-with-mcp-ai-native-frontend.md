@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Generative UI with MCP: Architecting AI-Native Frontends"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Generative Ui With Mcp Ai Native Frontend"
 slug: "generative-ui-with-mcp-ai-native-frontend"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
@@ -25,12 +22,13 @@ description: "Architecting dynamic generative UI applications with Model Context
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/generative-ui-mcp-cover.png"
+  image: "images/posts/generative-ui-mcp-cover.png"
   alt: "Generative UI with MCP: AI-native frontend architecture using Model Context Protocol tool calls"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-frontend/"
 ---
 
-**Answer-first:** Generative UI architectures use Model Context Protocol (MCP) to stream UI component declarations from LLMs. Security requires compiling prop schemas via Zod at the gateway, matching them against versioned local primitive registries rather than executing raw client-side code.
+**Answer-first:** Generative UI architectures leverage Model Context Protocol (MCP) to stream dynamic UI component schemas from LLMs. Securing these interfaces requires validating inputs via Zod prop schemas at the API gateway and rendering only pre-compiled, versioned local primitive React components in the browser, eliminating the risk of arbitrary remote code execution.
 
 ### What You'll Learn That AI Won't Tell You
 - Security controls for dynamic TSX execution in edge isolates.

@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Vibe Coding & AI Code Review: Prototype to Production"
-date: 2026-05-31T16:00:00+07:00
-lastmod: 2026-05-31T16:00:00+07:00
+date: "2026-05-31T16:00:00+07:00"
+lastmod: "2026-05-31T16:00:00+07:00"
 draft: false
 weight: 25
 categories:
@@ -18,9 +18,11 @@ description: "Vibe coding for CEOs, PMs, BAs + AI code review for engineers. Pro
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/vibe-coding-cover.png"
+  image: "images/posts/vibe-coding-cover.png"
   alt: "Vibe Coding and AI Code Review series: from prototype to production workflow"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-code-review-vibe-coding/"
 ---
 
 In February 2025, Andrej Karpathy — OpenAI co-founder and former Tesla AI Lead — posted a tweet that quietly rewired how an entire generation thinks about software development:

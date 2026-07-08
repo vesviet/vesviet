@@ -100,17 +100,15 @@
       import('https://cdn.jsdelivr.net/npm/mermaid@10.9.3/dist/mermaid.esm.min.mjs')
     ]).then(([_, mermaidModule]) => {
         const mermaid = mermaidModule.default;
-        mermaid.initialize({ 
-            startOnLoad: false,
-            theme: document.body.className.includes('dark') ? 'dark' : 'default'
-        });
-        
+
+        // 1. Initial DOM setup (done once)
         blocks.forEach((block) => {
             const wrapper = document.createElement('div');
             wrapper.classList.add('mermaid-wrapper');
             
             const mermaidDiv = document.createElement('div');
             mermaidDiv.classList.add('mermaid');
+            mermaidDiv.dataset.originalCode = block.textContent;
             mermaidDiv.textContent = block.textContent;
             wrapper.appendChild(mermaidDiv);
             
@@ -120,71 +118,119 @@
             closeBtn.textContent = '✖ Exit Presentation';
             wrapper.appendChild(closeBtn);
             
-            block.parentElement.replaceWith(wrapper);
-        });
-        
-        // Render Mermaid into SVGs natively
-        mermaid.run({
-          querySelector: '.mermaid',
-        }).then(() => {
-            document.querySelectorAll('.mermaid-wrapper').forEach((wrapper) => {
-                const svg = wrapper.querySelector('.mermaid svg');
-                const closeBtn = wrapper.querySelector('.mermaid-close-btn');
-                
-                // Initialize svg-pan-zoom logic directly onto the Mermaid SVG output
-                const pz = svgPanZoom(svg, {
-                    zoomEnabled: true,
-                    controlIconsEnabled: true,
-                    fit: true,
-                    center: true,
-                    minZoom: 0.1,
-                    maxZoom: 20,
-                    mouseWheelZoomEnabled: true
-                });
-                
-                wrapper.pz = pz; // cache the instance
-
-                // 1. By default, lock the graph so it acts like a normal image.
-                pz.disablePan();
-                pz.disableZoom();
-                pz.disableControlIcons();
-                
-                // 2. Intercept Exit click
-                closeBtn.addEventListener('click', (e) => {
-                    e.stopPropagation(); // prevent wrapper re-trigger
-                    wrapper.classList.remove('mermaid-fullscreen');
-                    document.body.style.overflow = '';
-                    closeBtn.style.display = 'none';
-                    pz.disablePan();
-                    pz.disableZoom();
-                    pz.disableControlIcons();
-                    pz.resize(); pz.fit(); pz.center();
-                });
-
-                // 3. Intercept Click to enter Presentation Mode
-                wrapper.addEventListener('click', function(e) {
-                    const isFullscreen = this.classList.contains('mermaid-fullscreen');
-                    // Prevent triggering if they are already in fullscreen (avoids interrupting panning)
-                    if (!isFullscreen) {
-                        this.classList.add('mermaid-fullscreen');
-                        document.body.style.overflow = 'hidden'; // Stop background website scroll
-                        closeBtn.style.display = 'block'; // Show bright red EXIT button
-                        
-                        // Unleash Mouse Wheel Zooming and Click-Dragging
+            // Attach event listeners ONCE
+            closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // prevent wrapper re-trigger
+                wrapper.classList.remove('mermaid-fullscreen');
+                document.body.style.overflow = '';
+                closeBtn.style.display = 'none';
+                if (wrapper.pz) {
+                    wrapper.pz.disablePan();
+                    wrapper.pz.disableZoom();
+                    wrapper.pz.disableControlIcons();
+                    wrapper.pz.resize();
+                    wrapper.pz.fit();
+                    wrapper.pz.center();
+                }
+            });
+            
+            wrapper.addEventListener('click', function(e) {
+                const isFullscreen = this.classList.contains('mermaid-fullscreen');
+                if (!isFullscreen) {
+                    this.classList.add('mermaid-fullscreen');
+                    document.body.style.overflow = 'hidden';
+                    closeBtn.style.display = 'block';
+                    
+                    if (this.pz) {
                         this.pz.enablePan();
                         this.pz.enableZoom();
                         this.pz.enableControlIcons();
-                        
-                        // Instantly recalculate bounds for the huge screen overlay
                         setTimeout(() => {
-                            this.pz.resize();
-                            this.pz.fit();
-                            this.pz.center();
+                            if (this.pz) {
+                                this.pz.resize();
+                                this.pz.fit();
+                                this.pz.center();
+                            }
                         }, 50);
                     }
-                });
+                }
             });
+            
+            block.parentElement.replaceWith(wrapper);
         });
+        
+        // 2. Define the render/re-render logic
+        function renderDiagrams() {
+            const currentTheme = document.documentElement.dataset.theme || 'light';
+            mermaid.initialize({ 
+                startOnLoad: false,
+                theme: currentTheme === 'dark' ? 'dark' : 'default'
+            });
+            
+            // For each diagram: destroy pan-zoom, clear processed attribute, restore text content
+            document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+                const wrapper = mermaidDiv.closest('.mermaid-wrapper');
+                if (wrapper && wrapper.pz) {
+                    wrapper.pz.destroy();
+                    delete wrapper.pz;
+                }
+                mermaidDiv.removeAttribute('data-processed');
+                mermaidDiv.textContent = mermaidDiv.dataset.originalCode;
+            });
+            
+            return mermaid.run({
+                querySelector: '.mermaid',
+            }).then(() => {
+                // Initialize svg-pan-zoom on newly generated SVGs
+                document.querySelectorAll('.mermaid-wrapper').forEach((wrapper) => {
+                    const svg = wrapper.querySelector('.mermaid svg');
+                    if (!svg) return;
+                    
+                    const pz = svgPanZoom(svg, {
+                        zoomEnabled: true,
+                        controlIconsEnabled: true,
+                        fit: true,
+                        center: true,
+                        minZoom: 0.1,
+                        maxZoom: 20,
+                        mouseWheelZoomEnabled: true
+                    });
+                    
+                    wrapper.pz = pz;
+                    
+                    // Lock by default
+                    pz.disablePan();
+                    pz.disableZoom();
+                    pz.disableControlIcons();
+                    
+                    // If already fullscreen, enable pan-zoom
+                    if (wrapper.classList.contains('mermaid-fullscreen')) {
+                        pz.enablePan();
+                        pz.enableZoom();
+                        pz.enableControlIcons();
+                        pz.resize();
+                        pz.fit();
+                        pz.center();
+                    }
+                });
+            }).catch((err) => {
+                console.error('Mermaid render error:', err);
+            });
+        }
+        
+        // 3. Initial run
+        renderDiagrams();
+        
+        // 4. Bind listener to #theme-toggle for dynamic theme re-rendering
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                // Wait for the theme state transition to complete on the <html> tag
+                setTimeout(() => {
+                    renderDiagrams();
+                }, 50);
+            });
+        }
     });
   });
 </script>

@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Part 7: Extraction Pattern â€“ When Should You Extract Microservices?"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "Not everything belongs in a Monolith. Learn how to determine when a module should be extracted into a Microservice through lessons from Sentry, GitLab, and"
@@ -8,9 +8,11 @@ aliases:
   - "/series/modular-monolith-architecture/part-7-extraction-pattern/"
   - "/series/modular-monolith-architecture/migration-playbook-microservices-to-modular-monolith/part-7-extraction-pattern.md"
 cover:
-  image: "/images/posts/golang-microservices-cover.png"
+  image: "images/posts/golang-microservices-cover.png"
   alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/extraction-pattern-when-to-extract-microservices/"
 ---
 
 # Part 7: Extraction Pattern â€“ When Should You Extract Microservices?

@@ -1,8 +1,5 @@
-﻿---
+---
 title: "GraphHopper vs CARTO: Order Fulfillment Routing Engine"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Graphhopper Distance Matrix Routing"
 slug: "graphhopper-distance-matrix-routing"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T15:05:00+07:00"
@@ -24,12 +21,13 @@ description: "A comparison between the GraphHopper Distance Matrix API and CARTO
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/graphhopper-cover.png"
+  image: "images/posts/graphhopper-cover.png"
   alt: "GraphHopper distance matrix and routing: production configuration, matrix API, and isochrone calculation"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/graphhopper-distance-matrix-routing/"
 ---
 
-**Answer-first:** GraphHopper's Distance Matrix API is optimized for high-performance Vehicle Routing Problems (VRP), offering sub-millisecond route calculations using contraction hierarchies. In contrast, CARTO excels at macroscopic spatial analytics. For last-mile fulfillment, self-hosting GraphHopper on Kubernetes provides maximum throughput and lowest routing latency.
+**Answer-first:** Self-hosting GraphHopper on Kubernetes using pre-computed Contraction Hierarchies (CH) provides the sub-millisecond distance matrix calculations required for real-time last-mile routing. While CARTO is superior for macroscopic spatial visualization and SQL-based analytics, GraphHopper is the optimal choice for high-throughput, low-latency vehicle routing optimization (VRP) pipelines.
 
 ### What You'll Learn That AI Won't Tell You
 - High-throughput GraphHopper Distance Matrix Go client wrapper implementations optimized for concurrent logistics queries.

@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Deconstructing the Ecosystem: Service Details by Domain"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Deconstructing Ecommerce Service Details Domain"
 slug: "deconstructing-ecommerce-service-details-domain"
 author: "Lê Tuấn Anh"
 date: "2026-04-12T08:00:00+07:00"
@@ -13,9 +10,10 @@ categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "Deconstructing E-commerce by Domain: service responsibilities, data ownership, and API contracts"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/deconstructing-ecommerce-service-details-domain/"
 ---
 
 **Answer-first:** We partition the e-commerce domain into six logical business domains—Identity, Catalog, Cart, Checkout, Order, and Fulfillment—containing 21 isolated services. Each service owns its database exclusively, communicating asynchronously via event brokers to ensure scalability and prevent tight coupling.

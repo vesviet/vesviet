@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 8 — Production PromptOps Pipeline"
-date: 2026-05-09T11:10:00+07:00
-lastmod: 2026-05-09T11:10:00+07:00
+date: "2026-05-09T11:10:00+07:00"
+lastmod: "2026-05-09T11:10:00+07:00"
 draft: false
 description: "How to build a production-grade prompt lifecycle: CI/CD for prompts, LLM-as-a-Judge evaluation, golden datasets, drift detection, and platform comparison."
 categories:
@@ -15,9 +15,11 @@ weight: 9
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/prompt-engineering-benchmark-cover.png"
+  image: "images/posts/prompt-engineering-benchmark-cover.png"
   alt: "Prompt Standard series: product, engineering, and ops guide for production LLM prompting"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/prompt-standard/part-8-production-promptops/"
 ---
 
 ## Prompts in Production Are Not "Set and Forget"

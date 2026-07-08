@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Shopee Flash Sale Architecture: Rate Limiting & Redis"
-cover:
-  image: "/images/posts/shopee-flash-sale-cover.png"
-  alt: "Shopee Flash Sale Architecture"
 slug: "shopee-flash-sale-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
@@ -25,9 +22,10 @@ description: "How Shopee engineers prevent crashes during 11.11 flash sales: rat
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/shopee-flash-sale-cover.png"
+  image: "images/posts/shopee-flash-sale-cover.png"
   alt: "Shopee Flash Sale Architecture: rate limiting, Redis token bucket, and distributed queue design"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/shopee-flash-sale-architecture/"
 ---
 
 **Answer-first:** Architecting flash sale systems requires preventing database overload using multi-stage rate limiting and Redis-based inventory pre-decisions. Traffic shields block duplicate requests, and asynchronous checkout queues decouple order submission from payment processing.

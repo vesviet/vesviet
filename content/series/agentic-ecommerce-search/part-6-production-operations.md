@@ -1,9 +1,9 @@
-﻿---
+---
 title: "Production Agentic Search Optimization in Go"
-date: 2026-05-22T22:45:00+07:00
-lastmod: 2026-05-22T22:45:00+07:00
+date: "2026-05-22T22:45:00+07:00"
+lastmod: "2026-05-22T22:45:00+07:00"
 draft: false
-author: "Vesviet Team"
+author: "Lê Tuấn Anh"
 weight: 7
 slug: "part-6-production-operations"
 keywords: ["Agentic Search Production Optimization"]
@@ -13,9 +13,10 @@ categories: ["Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/agentic-ecommerce-search-cover.png"
+  image: "images/posts/agentic-ecommerce-search-cover.png"
   alt: "Agentic E-commerce Search Engine Architecture series: vector databases, ranking, and Go"
   relative: false
+canonicalURL: "https://tanhdev.com/series/agentic-ecommerce-search/part-6-production-operations/"
 ---
 
 In [Part 5: Critique Loop - Preventing LLM Hallucination](/series/agentic-ecommerce-search/part-5-critique-loop/), we successfully built an automated response auditing module to ensure logical accuracy. However, when deploying this Agentic Search system to a large-scale production environment serving millions of users, you will immediately face practical operational challenges:

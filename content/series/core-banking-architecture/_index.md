@@ -1,17 +1,19 @@
-﻿---
+---
 title: "Modern Core Banking Architecture: From Double-Entry Ledger to Fintech Microservices"
 description: "In-depth series on modern Core Banking system architecture — Immutable Double-Entry Ledger, ACID transactions on distributed SQL, Event Sourcing, ISO 20022"
-date: 2026-06-18T11:00:00+07:00
-lastmod: 2026-06-18T11:00:00+07:00
+date: "2026-06-18T11:00:00+07:00"
+lastmod: "2026-06-18T11:00:00+07:00"
 draft: false
 weight: 50
 slug: "core-banking-architecture"
 categories: ["Series", "Core Banking", "Fintech Architecture"]
 tags: ["TigerBeetle", "TiDB", "CockroachDB", "ISO 20022", "FAPI 2.0", "Apache Flink", "Event Sourcing", "Distributed SQL"]
 cover:
-  image: "/images/posts/banking-microservices-cover.png"
+  image: "images/posts/banking-microservices-cover.png"
   alt: "Modern Core Banking Architecture series: from double-entry ledger to fintech microservices in Go"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/core-banking-architecture/"
 ---
 
 # Modern Core Banking Architecture

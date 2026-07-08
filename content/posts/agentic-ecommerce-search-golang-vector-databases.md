@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Architecting Agentic E-commerce Search with Golang"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Agentic Ecommerce Search Golang Vector Databases"
 slug: "agentic-ecommerce-search-golang-vector-databases"
 author: "Lê Tuấn Anh"
 date: "2026-05-22T10:00:00+07:00"
@@ -15,9 +12,10 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 cover:
-  image: "/images/posts/agentic-ecommerce-search-cover.png"
+  image: "images/posts/agentic-ecommerce-search-cover.png"
   alt: "Architecting Agentic E-commerce Search with Golang and vector databases — pgvector, re-ranking, query expansion"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/agentic-ecommerce-search-golang-vector-databases/"
 ---
 
 **Answer-first:** Agentic E-commerce Search transforms traditional search from passive keyword matching to active shopping assistance using AI agents that understand complex queries, apply business logic filters, and provide personalized results in real-time.

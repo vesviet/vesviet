@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Architecting 21-Service E-commerce with Golang & DDD"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Architecting 21 Service Ecommerce Golang Ddd"
 slug: "architecting-21-service-ecommerce-golang-ddd"
 author: "Lê Tuấn Anh"
 aliases:
@@ -17,9 +14,10 @@ categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "Architecting a 21-service e-commerce platform with Golang and Domain-Driven Design"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/architecting-21-service-ecommerce-golang-ddd/"
 ---
 
 **Answer-first:** We decompose the monolith into 21 microservices using Domain-Driven Design (DDD) to isolate business boundaries. Implementing the Kratos framework in Go enables strong structural subtyping for clean layer segregation, while Dapr Workflows handle distributed transactions asynchronously via the Saga pattern to avoid race conditions.

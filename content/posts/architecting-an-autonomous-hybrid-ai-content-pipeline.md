@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Autonomous Hybrid-AI Pipeline: Cron to State-Machine"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Architecting An Autonomous Hybrid Ai Content Pipeline"
 slug: "architecting-an-autonomous-hybrid-ai-content-pipeline"
 author: "Lê Tuấn Anh"
 date: "2026-05-18T09:00:00+07:00"
@@ -26,9 +23,10 @@ description: "Replacing a $3.50/day cron job with a $0.05/day autonomous AI pipe
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/hybrid-ai-pipeline-cover.png"
+  image: "images/posts/hybrid-ai-pipeline-cover.png"
   alt: "Autonomous Hybrid-AI Content Pipeline: from cron trigger to state machine with human-in-the-loop"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/"
 ---
 
 **Answer-first:** Transition from fragile, expensive cron jobs to a resilient, state-based Finite State Machine (FSM) for autonomous content pipelines. Dramatically reduce LLM API fees by employing a tiered hybrid routing strategy—using local models for routing and frontier models only for editing—and implement Wake-on-LAN to control GPU server utility costs.

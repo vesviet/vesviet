@@ -1,10 +1,10 @@
-﻿---
+---
 title: "Go API Rate Limiting: Token Bucket & Redis Lua"
 slug: "11-security-api-rate-limiting"
 date: "2026-06-18T14:00:00+07:00"
-lastmod: 2026-07-03T15:41:55+07:00
+lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
-author: "Tanh"
+author: "Lê Tuấn Anh"
 description: "Advanced API rate limiting in Go: Token Bucket vs Leaky Bucket, distributed sliding window with Redis Lua, IP spoofing prevention."
 tags: ["rate limiting", "security", "golang", "redis", "lua", "envoy", "system design"]
 categories: ["System Design", "Backend Engineering"]
@@ -13,9 +13,10 @@ TocOpen: true
 series: ["system-design"]
 mermaid: true
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
+canonicalURL: "https://tanhdev.com/series/system-design/11-security-api-rate-limiting/"
 ---
 
 > **Prerequisite:** This is Part 11 of the [System Design Masterclass](/series/system-design/). Previous parts built the core components — this part covers securing APIs and managing client traffic spikes at scale.

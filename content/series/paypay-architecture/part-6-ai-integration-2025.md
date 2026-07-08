@@ -1,14 +1,16 @@
-﻿---
+---
 title: "Part 6 — PayPay Goes AI-Native: LLM Hub & RAG (2025)"
-date: 2026-05-05T21:00:00+07:00
-lastmod: 2026-05-05T21:00:00+07:00
+date: "2026-05-05T21:00:00+07:00"
+lastmod: "2026-05-05T21:00:00+07:00"
 draft: false
 description: "How PayPay built its 2025 AI platform: multi-model LLM Hub, internal RAG pipeline, delinquency chatbot, and autonomous AI agents for payment operations."
 weight: 7
 cover:
-  image: "/images/posts/paypay-scaling-cover.png"
+  image: "images/posts/paypay-scaling-cover.png"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-6-ai-integration-2025/"
 ---
 
 ## Why a Payment Platform at Scale Needs an AI Architecture

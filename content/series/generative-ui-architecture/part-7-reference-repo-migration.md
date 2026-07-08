@@ -1,7 +1,7 @@
-﻿---
+---
 title: "GenUI Boilerplate & Strangler Fig Migration — Frontend (P7)"
-date: 2026-05-16T12:30:00+07:00
-lastmod: 2026-05-16T12:30:00+07:00
+date: "2026-05-16T12:30:00+07:00"
+lastmod: "2026-05-16T12:30:00+07:00"
 draft: false
 description: "Astro + Svelte Boilerplate structure for GenUI. Phased Rollout strategy using the Strangler Fig Pattern to bring AI into Legacy systems without Rewrites."
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 7
 categories: ["Series", "Generative UI", "Frontend Architecture"]
 tags: ["Generative UI", "Astro", "Svelte", "Strangler Fig", "Migration", "AI Frontend", "Boilerplate"]
 cover:
-  image: "/images/posts/generative-ui-mcp-cover.png"
+  image: "images/posts/generative-ui-mcp-cover.png"
   alt: "Generative UI and AI-Native Frontend Architecture series: MCP, LLM-driven UIs, and roadmap"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-7-reference-repo-migration/"
 ---
 
 This is the conclusion of the series. The best architectural theories remain merely on paper if we lack a clear execution path.

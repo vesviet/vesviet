@@ -1,15 +1,17 @@
-﻿---
+---
 title: "Kafka & Flink in Ride-Hailing: Event Streaming at Scale"
 slug: "part-3-event-streaming-kafka"
-date: 2026-05-06T20:00:00+07:00
-lastmod: 2026-06-11T20:00:00+07:00
+date: "2026-05-06T20:00:00+07:00"
+lastmod: "2026-06-11T20:00:00+07:00"
 draft: false
 description: "How Uber and Grab process millions of GPS events/s with Kafka: topic design, partition strategy, Flink for surge pricing, and exactly-once semantics in Go."
 weight: 4
 cover:
-  image: "/images/posts/real-time-ride-hailing-cover.png"
+  image: "images/posts/real-time-ride-hailing-cover.png"
   alt: "Real-Time Ride-Hailing Architecture series: Uber and Grab — matching, GPS, WebSocket at scale"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/part-3-event-streaming-kafka/"
 ---
 
 ## Why Do We Need Event Streaming?

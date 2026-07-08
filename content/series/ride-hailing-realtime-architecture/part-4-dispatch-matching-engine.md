@@ -1,15 +1,17 @@
-﻿---
+---
 title: "Ride-Hailing Dispatch Engine: Bipartite Matching, Uber DISCO & Grab DispatchGym (2026)"
 slug: "part-4-dispatch-matching-engine"
-date: 2026-05-06T20:00:00+07:00
-lastmod: 2026-06-26T21:00:00+07:00
+date: "2026-05-06T20:00:00+07:00"
+lastmod: "2026-06-26T21:00:00+07:00"
 draft: false
 description: "How ride-hailing dispatch works at scale: bipartite matching in <2 seconds, Uber DISCO, Grab DispatchGym, Gojek Jaeger, batched optimization, and"
 weight: 5
 cover:
-  image: "/images/posts/real-time-ride-hailing-cover.png"
+  image: "images/posts/real-time-ride-hailing-cover.png"
   alt: "Real-Time Ride-Hailing Architecture series: Uber and Grab — matching, GPS, WebSocket at scale"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/part-4-dispatch-matching-engine/"
 ---
 
 Every time you tap "Book Ride," a system makes dozens of decisions in under two seconds: Which driver? What route? What's the real ETA? This article breaks down exactly how the **dispatch algorithm** works — from the greedy approach that fails at scale, to the bipartite graphs, batched matching, and [surge pricing](/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/) mechanics that power Uber, Lyft, Grab, and Gojek today.

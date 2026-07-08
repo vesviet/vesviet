@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 3 — Separating Role, Rules, Workflow, and Skill to Reduce Prompt Chaos"
-date: 2026-05-09T10:45:00+07:00
-lastmod: 2026-05-09T10:45:00+07:00
+date: "2026-05-09T10:45:00+07:00"
+lastmod: "2026-05-09T10:45:00+07:00"
 draft: false
 description: "How to split prompts into small, maintainable layers — making them easier to reuse, debug, and scale across teams."
 categories:
@@ -12,9 +12,11 @@ weight: 4
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/prompt-engineering-benchmark-cover.png"
+  image: "images/posts/prompt-engineering-benchmark-cover.png"
   alt: "Prompt Standard series: product, engineering, and ops guide for production LLM prompting"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/prompt-standard/part-3-layered-prompt-design/"
 ---
 
 ## Why a Single Monolithic Prompt Always Becomes Unmanageable

@@ -1,14 +1,16 @@
-﻿---
+---
 title: "Part 2 — Inventory Management: Real-time Stock Sync"
-date: 2026-05-06T20:30:00+07:00
-lastmod: 2026-05-06T20:30:00+07:00
+date: "2026-05-06T20:30:00+07:00"
+lastmod: "2026-05-06T20:30:00+07:00"
 draft: false
 description: "A real-time inventory system is the foundation of all allocation decisions."
 weight: 3
 cover:
-  image: "/images/posts/order-fulfillment-cover.png"
+  image: "images/posts/order-fulfillment-cover.png"
   alt: "E-commerce Order Allocation Architecture series: Amazon and eBay warehouse and last-mile design"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/part-2-inventory-realtime/"
 ---
 
 ## Why is Inventory a Hard Problem?

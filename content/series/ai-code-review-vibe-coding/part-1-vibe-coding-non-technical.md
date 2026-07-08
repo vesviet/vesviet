@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Vibe Coding for CEOs, PMs, and BAs: Tools & The Production Wall"
-date: 2026-05-31T16:30:00+07:00
-lastmod: 2026-05-31T16:30:00+07:00
+date: "2026-05-31T16:30:00+07:00"
+lastmod: "2026-05-31T16:30:00+07:00"
 draft: false
 weight: 2
 categories:
@@ -22,9 +22,11 @@ description: "Vibe coding guide for non-technical builders: best tools (Lovable,
 aliases:
   - /series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical/
 cover:
-  image: "/images/posts/vibe-coding-cover.png"
+  image: "images/posts/vibe-coding-cover.png"
   alt: "Vibe Coding and AI Code Review series: from prototype to production AI-assisted engineering"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical/"
 ---
 
 > **Series Orientation:** This article is Part 1 of the **AI Code Review & Vibe Coding** series, tailored for non-technical builders navigating the initial phase of vibe coding. For the overall roadmap, see the [Series Executive Summary](/series/ai-code-review-vibe-coding/executive-summary/).

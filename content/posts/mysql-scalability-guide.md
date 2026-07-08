@@ -1,8 +1,5 @@
 ---
 title: "MySQL Scalability: Read Replicas, Sharding & TiDB"
-cover:
-  image: "/images/posts/mysql-scalability-cover.png"
-  alt: "Mysql Scalability Guide"
 slug: "mysql-scalability-guide"
 author: "Lê Tuấn Anh"
 date: "2026-06-10T14:30:00+07:00"
@@ -24,9 +21,10 @@ tags:
   - "GORM"
   - "Golang"
 cover:
-  image: "/images/posts/mysql-scalability-cover.png"
+  image: "images/posts/mysql-scalability-cover.png"
   alt: "MySQL Scalability: read replicas, sharding, and TiDB NewSQL — performance architecture guide"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/mysql-scalability-guide/"
 ---
 
 **Answer-first:** MySQL scalability is the practical throughput ceiling of your database at each resource level. A single tuned InnoDB instance delivers 100–500 TPS at baseline, scaling to 6,000–10,000+ TPS with connection pooling, read replicas, and optimal hardware. Beyond that, write-scaling requires sharding or a distributed SQL layer.

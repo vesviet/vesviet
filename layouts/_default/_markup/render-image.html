@@ -1,0 +1,22 @@
+{{- $u := urls.Parse .Destination -}}
+{{- $src := $u.String -}}
+{{- $w := "" -}}
+{{- $h := "" -}}
+{{- if not $u.IsAbs -}}
+  {{- $path := strings.TrimPrefix "/" (strings.TrimPrefix "./" $u.Path) }}
+  {{- $img := or (.Page.Resources.Get $path) (resources.Get $path) -}}
+  {{- if $img -}}
+    {{- $w = $img.Width -}}
+    {{- $h = $img.Height -}}
+    {{- $processableFormats := (slice "jpg" "jpeg" "png" "tif" "bmp" "gif") -}}
+    {{- if in $processableFormats $img.MediaType.SubType -}}
+      {{- $webp := $img.Resize "1200x webp" -}}
+      {{- $src = $webp.RelPermalink -}}
+      {{- $w = $webp.Width -}}
+      {{- $h = $webp.Height -}}
+    {{- else -}}
+      {{- $src = $img.RelPermalink -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+<img src="{{ $src }}" alt="{{ .Text }}" {{ with .Title }}title="{{ . }}"{{ end }} {{ with $w }}width="{{ . }}"{{ end }} {{ with $h }}height="{{ . }}"{{ end }} loading="lazy">

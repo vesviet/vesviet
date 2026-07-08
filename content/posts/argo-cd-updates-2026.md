@@ -1,8 +1,5 @@
-﻿---
+---
 title: "What's New in Argo CD 3.4 & 3.3: Cluster Pause & Upgrades"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Argo Cd Updates 2026"
 slug: "argo-cd-updates-2026"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T15:00:00+07:00"
@@ -20,9 +17,10 @@ description: "Argo CD v3.4 & v3.3 (2026): Cluster Pause, PreDelete Hooks, SemVer
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/argocd-2026-cover.png"
+  image: "images/posts/argocd-2026-cover.png"
   alt: "What's new in Argo CD 3.4 and 3.3: cluster pause, GitOps improvements, and upgrade guide"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/argo-cd-updates-2026/"
 ---
 
 **Answer-first:** Argo CD v3.4 and v3.3 introduce Cluster Pause to freeze reconciliation across target clusters during major maintenance, PreDelete hooks for graceful lifecycle cleanups, annotation-based sync filtering, and a revamped ApplicationSet UI. These features significantly simplify GitOps configuration management for large-scale multi-tenant Kubernetes environments.

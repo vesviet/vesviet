@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Part 6: Migration Playbook â€“ Consolidating Microservices"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "A practical guide to safely transitioning from Microservices back to a Modular Monolith using the Reverse Strangler Fig pattern, Dual-write databases, and"
@@ -8,9 +8,11 @@ aliases:
   - "/series/modular-monolith-architecture/part-6-migration-playbook/"
   - "/series/modular-monolith-architecture/observability-in-process-modular-monolith-opentelemetry/part-6-migration-playbook.md"
 cover:
-  image: "/images/posts/golang-microservices-cover.png"
+  image: "images/posts/golang-microservices-cover.png"
   alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/migration-playbook-microservices-to-modular-monolith/"
 ---
 
 # Part 6: Migration Playbook â€“ Consolidating Microservices into a Monolith

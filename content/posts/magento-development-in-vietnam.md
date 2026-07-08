@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Magento Agency & Development in Vietnam: Scoping Guide"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Magento Development In Vietnam"
 slug: "magento-development-in-vietnam"
 author: "Lê Tuấn Anh"
 aliases:
@@ -15,9 +12,9 @@ description: "How to find and evaluate a Magento agency in Vietnam: effort layer
 categories: ["Engineering", "Business"]
 ShowToc: true
 TocOpen: true
-canonicalURL: "https://tanhdev.com/posts/magento-vietnam/"
+canonicalURL: "https://tanhdev.com/posts/magento-development-in-vietnam/"
 cover:
-  image: "/images/posts/magento-developers-vietnam-cover.png"
+  image: "images/posts/magento-developers-vietnam-cover.png"
   alt: "Magento agency and development in Vietnam: scoping guide for enterprise e-commerce projects"
   relative: false
 ---

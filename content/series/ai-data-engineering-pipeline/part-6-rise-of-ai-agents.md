@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Part 6: The Rise of AI Agents - From Reading to Autonomy"
 slug: "part-6-rise-of-ai-agents"
 aliases:
@@ -14,9 +14,11 @@ categories: ["Data Engineering", "AI/ML", "Architecture"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "images/posts/graphrag-vs-naive-rag-cover.png"
   alt: "Enterprise AI Data Pipeline and GraphRAG Architecture series: graph-based retrieval at scale"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-6-rise-of-ai-agents/"
 ---
 
 ## 1. The Decline of Static RAG

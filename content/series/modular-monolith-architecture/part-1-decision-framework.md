@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Part 1: Architectural Decision Framework"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "Use real-world latency, performance data, and lessons from Stack Overflow to decide when to use a Modular Monolith instead of Microservices."
@@ -8,9 +8,11 @@ aliases:
   - "/series/modular-monolith-architecture/part-1-decision-framework/"
   - "/series/modular-monolith-architecture/executive-summary-amazon-prime-video-monolith/part-1-decision-framework.md"
 cover:
-  image: "/images/posts/golang-microservices-cover.png"
+  image: "images/posts/golang-microservices-cover.png"
   alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/decision-framework-modular-monolith-vs-microservices/"
 ---
 
 # Part 1: Architectural Decision Framework

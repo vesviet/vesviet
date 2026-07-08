@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Knowledge Distillation: Distilling DeepSeek-R1 | SLM Playbook"
-date: 2026-05-24T08:00:00+07:00
-lastmod: 2026-05-24T08:00:00+07:00
+date: "2026-05-24T08:00:00+07:00"
+lastmod: "2026-05-24T08:00:00+07:00"
 draft: false
 description: "Learn how to distill reasoning capabilities (Chain of Thought) from DeepSeek-R1 to Qwen Coder. Build an automated synthetic data pipeline in Python."
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 5
 categories: ["Series", "SLM Playbook"]
 tags: ["AI Engineering", "Knowledge Distillation", "DeepSeek-R1", "Qwen Coder", "Reasoning"]
 cover:
-  image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
+  image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
   alt: "SLM Playbook series: fine-tuning, LoRA, QLoRA, and production deployment of Small Language Models"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/slm-playbook/part-4-knowledge-distillation-r1/"
 ---
 [← Series hub](/series/slm-playbook/)
 [← Previous](/series/slm-playbook/part-3-lora-qlora-tuning/) | [Next →](/series/slm-playbook/part-5-preference-alignment/)

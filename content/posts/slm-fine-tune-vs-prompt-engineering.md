@@ -1,13 +1,12 @@
 ---
 title: "Prompt Engineering vs Fine-Tuning: When to Use Each (GPT-5 Era Decision Guide)"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Slm Fine Tune Vs Prompt Engineering"
 slug: "slm-fine-tune-vs-prompt-engineering"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
 lastmod: "2026-06-26T21:00:00+07:00"
 draft: false
+aliases:
+  - /posts/prompt-engineering-vs-fine-tuning-benchmark/
 mermaid: true
 categories:
   - "AI"
@@ -26,9 +25,10 @@ description: "Prompt engineering vs fine-tuning vs RAG: a clear 2026 decision fr
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
+  image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
   alt: "Prompt Engineering vs Fine-Tuning vs RAG — 2026 decision framework for LLM engineers"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/slm-fine-tune-vs-prompt-engineering/"
 ---
 
 **Answer-first:** Choose prompt engineering for rapid prototyping and general domains. Deploy RAG when your application requires real-time retrieval from a frequently updated knowledge base. Commit to QLoRA fine-tuning only when you need strict output formatting, persistent style compliance under adversarial input, or significant prompt token compression.

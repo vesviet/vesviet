@@ -1,8 +1,8 @@
-﻿---
+---
 title: "Part 10: ADR Walkthrough — 24 Architecture Decisions Explained"
 description: "24 architecture decisions for Composable Commerce: why Dapr over Kafka, Kustomize over Helm, go-kratos over Gin, and the event-driven founding decision."
-date: 2026-06-10T10:00:00+07:00
-lastmod: 2026-06-24T10:00:00+07:00
+date: "2026-06-10T10:00:00+07:00"
+lastmod: "2026-06-24T10:00:00+07:00"
 draft: false
 weight: 11
 slug: "part-10-adr-walkthrough"
@@ -15,9 +15,10 @@ series_order: 10
 ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
 cover:
-  image: "/images/posts/ecommerce-composable-cover.png"
+  image: "images/posts/ecommerce-composable-cover.png"
   alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
   relative: false
+canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-10-adr-walkthrough/"
 ---
 
 21 services. 24 decisions. 3.5 months of deliberation captured in Architecture Decision Records.

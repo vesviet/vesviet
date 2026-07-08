@@ -5,6 +5,7 @@
 :root {
     --main-width: 840px;
     --nav-width: 1200px;
+    --secondary: rgb(85, 85, 85);
 }
 
 
@@ -13,28 +14,24 @@
     transition: all 0.2s ease-in-out;
 }
 
-/* Primary Buttons: Contact Me & My Resume */
-.profile .buttons .button:nth-child(1),
-.profile .buttons .button:nth-child(2) {
+/* Primary Buttons */
+.profile .buttons .button.primary {
     background-color: var(--primary);
     color: var(--theme);
     font-weight: 600;
     border: 1px solid var(--primary);
 }
-.profile .buttons .button:nth-child(1):hover,
-.profile .buttons .button:nth-child(2):hover {
+.profile .buttons .button.primary:hover {
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
     transform: translateY(-2px);
 }
 
-/* Secondary Buttons: LinkedIn & GitHub */
-.profile .buttons .button:nth-child(3),
-.profile .buttons .button:nth-child(4) {
+/* Secondary Buttons */
+.profile .buttons .button.secondary {
     background: transparent;
     border: 1px solid var(--tertiary);
 }
-.profile .buttons .button:nth-child(3):hover,
-.profile .buttons .button:nth-child(4):hover {
+.profile .buttons .button.secondary:hover {
     border-color: var(--primary);
     background-color: var(--tertiary);
     transform: translateY(-2px);
@@ -206,3 +203,10 @@ button:focus-visible {
     outline: 3px solid var(--primary);
     outline-offset: 2px;
 }
+
+/* 5. Readability Overrides (from PaperMod) */
+.md-content pre code {
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+}
+

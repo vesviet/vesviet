@@ -1,8 +1,5 @@
-﻿---
+---
 title: "PayPay Architecture: Scaling Payments to 70M Users"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Paypay Architecture Scaling"
 slug: "paypay-architecture-scaling"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
@@ -25,9 +22,10 @@ description: "An in-depth look at PayPay's engineering stack: handling 70M users
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/paypay-scaling-cover.png"
+  image: "images/posts/paypay-scaling-cover.png"
   alt: "PayPay architecture and scaling: distributed payment system engineering in Japan"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/paypay-architecture-scaling/"
 ---
 
 **Answer-first:** PayPay handles 7.8B annual transactions using a cloud-native architecture centered on TiDB for distributed ACID transactions, Kafka for event streaming, and Kotlin/Go microservices. GitOps-driven deployments and continuous chaos engineering ensure high availability and disaster recovery.

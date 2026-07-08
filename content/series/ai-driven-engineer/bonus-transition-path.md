@@ -1,7 +1,7 @@
-﻿---
+---
 title: "[Bonus] The 30-60-90 Day Roadmap: From Code Typist to AI-Driven Engineer"
-date: 2026-05-10T17:00:00+07:00
-lastmod: 2026-05-10T17:00:00+07:00
+date: "2026-05-10T17:00:00+07:00"
+lastmod: "2026-05-10T17:00:00+07:00"
 draft: false
 description: "A detailed action map to help programmers transform in 3 months: Tool setup, mindset training, and building real-world projects."
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 11
 categories: ["Series", "Software Engineering", "Learning Path"]
 tags: ["AI", "Career", "Roadmap"]
 cover:
-  image: "/images/posts/ai-native-frontend-cover.png"
+  image: "images/posts/ai-native-frontend-cover.png"
   alt: "AI-Driven Engineer series: evolving from code typist to AI-native software architect"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/bonus-transition-path/"
 ---
 
 ## Foreword: The Transformation Journey

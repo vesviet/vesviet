@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Magento AI Integration: Modernize Without Rebuilding"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Magento Ai Integration Strategy Architecture"
 slug: "magento-ai-integration-strategy-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-05-24T09:18:00+07:00"
@@ -14,9 +11,10 @@ categories: ["Engineering", "Strategy"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/magento-ai-cover.png"
+  image: "images/posts/magento-ai-cover.png"
   alt: "Magento AI integration strategy: add ML recommendations, semantic search, and chatbot without rebuilding"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/magento-ai-integration-strategy-architecture/"
 ---
 
 **Answer-first:** Integrating AI into Magento requires decoupling AI workloads via event-driven architecture to prevent MySQL lock contention, PHP-FPM exhaustion, and performance degradation in production environments.

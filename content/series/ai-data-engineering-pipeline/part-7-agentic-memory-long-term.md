@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Part 7: Agentic Memory - Solving the 'Goldfish' Curse"
 slug: "part-7-agentic-memory-long-term"
 date: "2026-05-17T12:00:00+07:00"
@@ -14,9 +14,11 @@ aliases:
   - "/series/ai-data-engineering-pipeline/part-7-agentic-memory-long-term/part-8-inference-optimization-vllm"
   - "/series/ai-data-engineering-pipeline/part-6-rise-of-ai-agents/part-7-agentic-memory-long-term"
 cover:
-  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "images/posts/graphrag-vs-naive-rag-cover.png"
   alt: "Enterprise AI Data Pipeline and GraphRAG Architecture series: graph-based retrieval at scale"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-7-agentic-memory-long-term/"
 ---
 
 ## 1. The Context Window Deception & The "Goldfish" Curse

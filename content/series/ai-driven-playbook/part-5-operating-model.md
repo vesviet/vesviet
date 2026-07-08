@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 5 — Operating Model: Evolving Your Team for the AI Era"
-date: 2026-05-18T08:00:00+07:00
-lastmod: 2026-05-18T08:00:00+07:00
+date: "2026-05-18T08:00:00+07:00"
+lastmod: "2026-05-18T08:00:00+07:00"
 draft: false
 description: "Cut through the LinkedIn hype. Redefine the SDLC, the Definition of Done, and establish a clear AI Escalation Boundary that keeps Enterprise systems from"
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 7
 categories: ["Series", "Enterprise Playbook"]
 tags: ["AI", "Enterprise Architecture", "CTO", "Tech Lead"]
 cover:
-  image: "/images/posts/hybrid-ai-pipeline-cover.png"
+  image: "images/posts/hybrid-ai-pipeline-cover.png"
   alt: "AI-Driven Engineer Enterprise Playbook series: workflows, autonomous pipelines, and tooling"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-5-operating-model/"
 ---
 
 Scroll through LinkedIn or Twitter and you will find countless posts making sensational claims: *"AI will replace QA"*, *"Product Managers will now write their own code"*, or *"1 Dev today equals 10 Devs from the past"*.

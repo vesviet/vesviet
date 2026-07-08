@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Optimizing vLLM Serving: AWQ, GPTQ, & GGUF | SLM Playbook"
-date: 2026-05-26T08:00:00+07:00
-lastmod: 2026-05-26T08:00:00+07:00
+date: "2026-05-26T08:00:00+07:00"
+lastmod: "2026-05-26T08:00:00+07:00"
 draft: false
 description: "SLM production serving guide on vLLM. Compare AWQ, GPTQ, and GGUF quantization formats and set up memory-efficient Dynamic LoRA serving configurations."
 ShowToc: true
@@ -12,9 +12,11 @@ tags: ["AI Engineering", "vLLM", "Quantization", "Model Serving", "AWQ"]
 aliases:
   - "/series/slm-playbook/part-2-vllm-serving/"
 cover:
-  image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
+  image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
   alt: "SLM Playbook series: fine-tuning, LoRA, QLoRA, and production deployment of Small Language Models"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/slm-playbook/part-6-vllm-deployment-evals/"
 ---
 [â† Series hub](/series/slm-playbook/)
 [â† Previous](/series/slm-playbook/part-5-preference-alignment/)

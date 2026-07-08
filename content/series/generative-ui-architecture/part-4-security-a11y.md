@@ -1,7 +1,7 @@
-﻿---
+---
 title: "GenUI Security: XSS, Prompt Injection & WCAG — Frontend (P4)"
-date: 2026-05-16T12:15:00+07:00
-lastmod: 2026-05-16T12:15:00+07:00
+date: "2026-05-16T12:15:00+07:00"
+lastmod: "2026-05-16T12:15:00+07:00"
 draft: false
 description: "Securing GenUI: Prevent Prompt Injection via Component Registry Allowlist. Validate JSON with Zod. Ensure WCAG and aria-live for dynamic UIs."
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 4
 categories: ["Series", "Generative UI", "Frontend Architecture"]
 tags: ["Generative UI", "AI Security", "XSS", "Prompt Injection", "Accessibility", "Zod", "WCAG"]
 cover:
-  image: "/images/posts/generative-ui-mcp-cover.png"
+  image: "images/posts/generative-ui-mcp-cover.png"
   alt: "Generative UI and AI-Native Frontend Architecture series: MCP, LLM-driven UIs, and roadmap"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-4-security-a11y/"
 ---
 
 If traditional Frontend development has an immutable rule that says *"Never trust user input"*, for AI-Native Frontends, that rule is: **"Never trust LLM output"**.

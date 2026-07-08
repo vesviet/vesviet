@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Executive Summary — The SLM Playbook"
-date: 2026-05-20T21:05:00+07:00
-lastmod: 2026-05-20T21:05:00+07:00
+date: "2026-05-20T21:05:00+07:00"
+lastmod: "2026-05-20T21:05:00+07:00"
 draft: false
 description: "A high-level overview of why enterprises are shifting to self-hosted Small Language Models (SLMs) to optimize cost, privacy, and domain-specific performance."
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 1
 categories: ["Series", "SLM Playbook"]
 tags: ["AI", "vLLM", "System Design", "CTO", "Architect"]
 cover:
-  image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
+  image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
   alt: "SLM Playbook series: fine-tuning, LoRA, QLoRA, and production deployment of Small Language Models"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/slm-playbook/executive-summary/"
 ---
 
 [← Series hub](/series/slm-playbook/)

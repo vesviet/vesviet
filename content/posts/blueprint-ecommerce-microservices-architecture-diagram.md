@@ -1,8 +1,5 @@
-﻿---
+---
 title: "E-Commerce Microservices Architecture Diagram: 21-Service Go Blueprint (2026)"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Blueprint Ecommerce Microservices Architecture Diagram"
 slug: "blueprint-ecommerce-microservices-architecture-diagram"
 author: "Lê Tuấn Anh"
 date: "2026-04-12T08:30:00+07:00"
@@ -15,9 +12,10 @@ categories: ["Architecture", "System Design"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "E-Commerce Microservices Architecture Diagram: 21-service Golang DDD blueprint for 2026"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/blueprint-ecommerce-microservices-architecture-diagram/"
 ---
 
 **Answer-first:** Complete architectural blueprint of a Go 21-service e-commerce platform. Covers domain boundaries, traffic flow, and event-driven patterns.

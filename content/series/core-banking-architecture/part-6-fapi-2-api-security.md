@@ -1,18 +1,19 @@
-﻿---
+---
 title: "FAPI 2.0: DPoP, mTLS & Sender-Constrained Tokens"
-date: 2026-06-18T11:50:00+07:00
-lastmod: 2026-07-03T15:41:55+07:00
+date: "2026-06-18T11:50:00+07:00"
+lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 description: "FAPI 2.0 DPoP: Node.js ES256 JWT generation, Go verification, mTLS Kubernetes 1-3ms vs <0.1ms pooled, PAR flow, and token replay protection."
 weight: 6
 series: ["core-banking-architecture"]
 keywords: ["FAPI 2.0 DPoP implementation", "mTLS kubernetes latency overhead", "sender constrained tokens OAuth 2.1", "fintech API security"]
-author: "Tuan Anh"
+author: "Lê Tuấn Anh"
 schema: ["Article", "TechArticle", "FAQPage"]
 cover:
-  image: "/images/posts/banking-microservices-cover.png"
+  image: "images/posts/banking-microservices-cover.png"
   alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
   relative: false
+canonicalURL: "https://tanhdev.com/series/core-banking-architecture/part-6-fapi-2-api-security/"
 ---
 
 > **Series (Part 6 of 8):** After mastering the payment data flow in [Part 5](/series/core-banking-architecture/part-5-iso-20022-payment-gateways/), this article focuses on the API security layer — where a single design flaw can lead to token theft and unauthorized fund transfers.

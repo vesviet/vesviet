@@ -1,10 +1,10 @@
-﻿---
+---
 title: "Database Sharding in Go — TiDB, PostgreSQL & Connection Pools"
 slug: "04-database-scaling-sharding"
 date: "2026-06-18T10:30:00+07:00"
-lastmod: 2026-07-03T15:41:55+07:00
+lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
-author: "Tanh"
+author: "Lê Tuấn Anh"
 description: "Horizontal database scaling in Go: Range/Hash sharding, B-Tree vs LSM-Tree internals, TiDB Percolator 2PC, and database/sql connection pool tuning."
 tags: ["database", "sharding", "golang", "postgresql", "tidb", "connection pool", "system design"]
 categories: ["System Design", "Backend Engineering"]
@@ -13,9 +13,10 @@ TocOpen: true
 series: ["system-design"]
 mermaid: true
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
+canonicalURL: "https://tanhdev.com/series/system-design/04-database-scaling-sharding/"
 ---
 
 > **Prerequisite:** Part 4 of the [System Design Masterclass](/series/system-design/). Read [Part 3: Caching Strategies](/series/system-design/03-caching-strategies-redis-golang/) to understand the cache layer before examining storage.

@@ -21,7 +21,7 @@ description: "Learn how to detect, diagnose, and fix goroutine leaks in producti
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/goroutine-leak-cover.png"
+  image: "images/posts/goroutine-leak-cover.png"
   alt: "Goroutine Leak Detection and Fix in Production Go Services — pprof, goleak, synctest"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/goroutine-leak-detection-production-golang/"

@@ -1,14 +1,16 @@
-﻿---
+---
 title: "Part 6: Core Banking Security, PCI-DSS & Audit Trails"
-date: 2026-05-06T18:00:00+07:00
-lastmod: 2026-06-10T16:00:00+07:00
+date: "2026-05-06T18:00:00+07:00"
+lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
 description: "Core Banking security for developers: PCI-DSS and AML compliance, tamper-proof audit trail design, and handling sensitive financial data safely."
 weight: 7
 cover:
-  image: "/images/posts/banking-microservices-cover.png"
+  image: "images/posts/banking-microservices-cover.png"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-6-security-compliance-audit/"
 ---
 
 ## Why is Core Banking Security Different?

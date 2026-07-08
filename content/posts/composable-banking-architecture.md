@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Composable Banking Architecture: From Monolith to Modular Core"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Composable Banking Architecture"
 slug: "composable-banking-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-06-10T14:55:00+07:00"
@@ -26,9 +23,10 @@ description: "How banks replace monolithic cores (Temenos, Finacle) with composa
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/banking-microservices-cover.png"
+  image: "images/posts/banking-microservices-cover.png"
   alt: "Composable Banking Architecture: from monolith to modular core banking services"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/composable-banking-architecture/"
 ---
 
 **Answer-first:** Composable banking replaces rigid legacy cores with modular Go microservices. The transition uses the Strangler Fig pattern to decouple domains, while distributed Sagas manage eventual consistency across transaction engines, and NewSQL databases provide horizontal scaling without sacrificing ACID compliance.

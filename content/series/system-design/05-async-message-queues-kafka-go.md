@@ -1,10 +1,10 @@
-﻿---
+---
 title: "Kafka Worker Pool in Go — Backpressure & Exactly-Once"
 slug: "05-async-message-queues-kafka-go"
 date: "2026-06-18T11:00:00+07:00"
-lastmod: 2026-07-03T15:41:55+07:00
+lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
-author: "Tanh"
+author: "Lê Tuấn Anh"
 description: "Kafka zero-copy internals, bounded Worker Pool with Go channel backpressure, partition-aware ordering, and Exactly-Once via DB transaction."
 tags: ["event-driven", "kafka", "golang", "worker pool", "backpressure", "message queue", "system design"]
 categories: ["System Design", "Backend Engineering"]
@@ -13,9 +13,10 @@ TocOpen: true
 series: ["system-design"]
 mermaid: true
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
+canonicalURL: "https://tanhdev.com/series/system-design/05-async-message-queues-kafka-go/"
 ---
 
 > **Prerequisite:** Part 5 of the [System Design Masterclass](/series/system-design/). Read [Part 4: Database Scaling](/series/system-design/04-database-scaling-sharding/) to understand the storage tier that persisted events are written to.

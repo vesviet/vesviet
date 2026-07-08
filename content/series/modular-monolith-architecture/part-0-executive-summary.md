@@ -1,14 +1,16 @@
-﻿---
+---
 title: "Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure"
-lastmod: 2026-07-03T15:41:55+07:00
+lastmod: "2026-07-03T15:41:55+07:00"
 description: "Discover why Amazon Prime Video cut infrastructure costs by 90% after moving from Serverless/Microservices back to a Monolith, alongside case studies from"
 slug: "executive-summary-amazon-prime-video-monolith"
 aliases: ["/series/modular-monolith-architecture/part-0-executive-summary/"]
 tags: ["Modular Monolith", "AWS", "Serverless", "FinOps", "Amazon Prime"]
 cover:
-  image: "/images/posts/golang-microservices-cover.png"
+  image: "images/posts/golang-microservices-cover.png"
   alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/executive-summary-amazon-prime-video-monolith/"
 ---
 
 # Part 0: Executive Summary â€” How Amazon Prime Video Saved 90% on Infrastructure Costs

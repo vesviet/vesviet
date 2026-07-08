@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 7 — System Design: The Priceless Survival Territory for Developers"
-date: 2026-05-10T16:00:00+07:00
-lastmod: 2026-05-10T16:00:00+07:00
+date: "2026-05-10T16:00:00+07:00"
+lastmod: "2026-05-10T16:00:00+07:00"
 draft: false
 description: "AI can write excellent code, but it cannot design macro-systems."
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 8
 categories: ["Series", "Software Engineering"]
 tags: ["AI", "System Design", "Career"]
 cover:
-  image: "/images/posts/ai-native-frontend-cover.png"
+  image: "images/posts/ai-native-frontend-cover.png"
   alt: "AI-Driven Engineer series: evolving from code typist to AI-native software architect"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-7-system-design-survival/"
 ---
 
 No matter how top-tier your Prompt Engineering skills are, sooner or later you will hit a reality wall: **Writing code to create a feature is easy, but designing a system that can handle millions of users is incredibly difficult.**

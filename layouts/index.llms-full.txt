@@ -1,0 +1,17 @@
+# {{ site.Title }} - Full Corpus
+
+This file contains the full corpus of all published technical posts on tanhdev.com.
+
+---
+{{- range where site.RegularPages "Section" "posts" }}
+{{- if not .Params.draft }}
+---
+TITLE: {{ .Title }}
+DATE: {{ .Date.Format "2006-01-02T15:04:05-07:00" }}
+CATEGORIES: {{ with .Params.categories }}{{ delimit . ", " }}{{ end }}
+DESCRIPTION: {{ .Description | default .Summary }}
+URL: {{ .Permalink }}
+---
+{{ .RawContent }}
+{{- end }}
+{{- end }}

@@ -1,18 +1,19 @@
-﻿---
+---
 title: "Event Sourcing & CQRS: Immutable Ledger for Microservices"
-date: 2026-06-18T11:20:00+07:00
-lastmod: 2026-07-03T15:41:55+07:00
+date: "2026-06-18T11:20:00+07:00"
+lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 description: "Event Sourcing in Core Banking: PostgreSQL event store schema, CQRS balance <1ms vs O(N) SUM, Transactional Outbox with Debezium CDC — Monzo architecture."
 weight: 3
 series: ["core-banking-architecture"]
 keywords: ["event sourcing saga pattern fintech", "transactional outbox pattern postgres", "CQRS balance calculation latency", "Monzo microservices architecture"]
-author: "Tuan Anh"
+author: "Lê Tuấn Anh"
 schema: ["Article", "TechArticle", "FAQPage"]
 cover:
-  image: "/images/posts/banking-microservices-cover.png"
+  image: "images/posts/banking-microservices-cover.png"
   alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
   relative: false
+canonicalURL: "https://tanhdev.com/series/core-banking-architecture/part-3-event-sourcing-cqrs/"
 ---
 
 > **Series (Part 3 of 8):** This article builds upon the ACID transactions foundation from [Part 2](/series/core-banking-architecture/part-2-distributed-sql-acid-latency/). We will design a ledger using Event Sourcing — the exact solution that Monzo, Starling Bank, and many large neo-banks use to scale.

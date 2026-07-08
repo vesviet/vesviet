@@ -11,7 +11,7 @@ categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/moving-from-magento-to-microservices-cover.png"
+  image: "images/posts/moving-from-magento-to-microservices-cover.png"
   alt: "Zero-Downtime Blueprint: Moving from Magento to Microservices — Strangler Fig Pattern"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/moving-from-magento-to-microservices/"

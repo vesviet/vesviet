@@ -1,10 +1,10 @@
-﻿---
+---
 title: "Saga Pattern in Go — Temporal, Outbox Pattern & Debezium"
 slug: "08-saga-pattern-distributed-transactions-go"
 date: "2026-06-18T12:30:00+07:00"
-lastmod: 2026-07-03T15:41:55+07:00
+lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
-author: "Tanh"
+author: "Lê Tuấn Anh"
 description: "Replace 2PC with Saga in Go: Temporal SDK LIFO compensation, Transactional Outbox, and Debezium CDC EventRouter config."
 tags: ["saga pattern", "distributed transactions", "golang", "temporal", "outbox pattern", "debezium", "system design"]
 categories: ["System Design", "Backend Engineering"]
@@ -13,9 +13,10 @@ TocOpen: true
 series: ["system-design"]
 mermaid: true
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
+canonicalURL: "https://tanhdev.com/series/system-design/08-saga-pattern-distributed-transactions-go/"
 ---
 
 > **Prerequisite:** Part 8 of the [System Design Masterclass](/series/system-design/). Read [Part 7: Idempotent API Design](/series/system-design/07-idempotency-api-design-go/) first — compensating transactions in Saga must be idempotent.

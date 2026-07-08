@@ -1,7 +1,7 @@
-﻿---
+---
 title: "The Reality of C10M: Surviving Extreme Traffic — Exec Summary"
-date: 2026-06-09T10:00:00+07:00
-lastmod: 2026-06-09T10:00:00+07:00
+date: "2026-06-09T10:00:00+07:00"
+lastmod: "2026-06-09T10:00:00+07:00"
 draft: false
 slug: "executive-summary"
 description: "An overview for Tech Leads & Architects: Why traditional scaling fails at millions of requests and how to build high-concurrency systems using Golang."
@@ -11,9 +11,11 @@ weight: 0
 categories: ["Series", "High Concurrency", "Backend Architecture"]
 tags: ["Golang", "System Design", "Microservices", "Executive Summary", "Scalability"]
 cover:
-  image: "/images/posts/realtime-inventory-cover.png"
+  image: "images/posts/realtime-inventory-cover.png"
   alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/executive-summary/"
 ---
 
 Despite the massive advancements in cloud computing, enterprise applications facing explosive traffic growth inevitably hit a brutal wall: the Database and the Network layer. The root cause lies not in the hardware, but in the **Architecture**. We attempt to solve the "Millions of Requests per Second" (C10M) problem by simply throwing more servers at it (Vertical/Horizontal Scaling), only to realize that stateful bottlenecks, cache stampedes, and dual-write inconsistencies bring the entire cluster to its knees.

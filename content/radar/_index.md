@@ -1,8 +1,10 @@
 ---
 title: "Tech Radar 🤖"
-lastmod: 2026-06-26T21:00:00+07:00
+lastmod: "2026-06-26T21:00:00+07:00"
 description: "Daily curated tech intelligence covering Go, Kubernetes, AI/ML, cloud-native infrastructure, and microservices — analysis and engineering insights from a"
 ShowToc: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/radar/"
 ---
 
 The Tech Radar is a daily engineering signal log — each entry is a focused deep-dive on one significant development in Go, Kubernetes, cloud-native infrastructure, AI/ML, or platform engineering. Not a news summary. An analysis of what the signal means for backend architects and platform teams building production systems.

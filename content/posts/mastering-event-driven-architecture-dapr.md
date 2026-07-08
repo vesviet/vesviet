@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Mastering Event-Driven Architecture with Dapr Pub/Sub"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Mastering Event Driven Architecture Dapr"
 slug: "mastering-event-driven-architecture-dapr"
 author: "Lê Tuấn Anh"
 date: "2026-04-12T09:05:00+07:00"
@@ -15,9 +12,10 @@ categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/dapr-saga-cover.png"
+  image: "images/posts/dapr-saga-cover.png"
   alt: "Mastering event-driven architecture with Dapr: pub/sub, bindings, and actor model in Go microservices"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/mastering-event-driven-architecture-dapr/"
 ---
 
 **Answer-first:** Build resilient event-driven microservices by using Dapr's Pub/Sub APIs to decouple message transport. Ensuring eventual consistency requires implementing the Transactional Outbox pattern on writes, utilizing dead-letter queues (DLQs) for failed runs, and designing idempotent message handlers.

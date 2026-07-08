@@ -1,16 +1,18 @@
-﻿---
+---
 title: "Chapter 2: Flash Sale Engine - Solving Overselling and Hot Keys"
-date: 2026-05-05T08:20:00+07:00
-lastmod: 2026-05-05T08:20:00+07:00
+date: "2026-05-05T08:20:00+07:00"
+lastmod: "2026-05-05T08:20:00+07:00"
 draft: false
 mermaid: true
 description: "Solving the overselling problem and handling hot keys using Redis and Lua Scripts."
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/shopee-flash-sale-cover.png"
+  image: "images/posts/shopee-flash-sale-cover.png"
   alt: "Shopee Architecture series: scaling for flash sales — rate limiting, Redis, and distributed systems"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/shopee-architecture/02-flash-sale-engine/"
 ---
 # Chapter 2: Flash Sale Engine - The Mystery Behind Redis and Hot Keys
 

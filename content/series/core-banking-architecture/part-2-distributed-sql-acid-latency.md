@@ -1,18 +1,19 @@
-﻿---
+---
 title: "Distributed SQL ACID Latency: TiDB, CockroachDB & Spanner"
-date: 2026-06-18T11:10:00+07:00
-lastmod: 2026-07-03T15:41:55+07:00
+date: "2026-06-18T11:10:00+07:00"
+lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 description: "Distributed SQL ACID latency: Spanner TrueTime commit-wait 2-14ms, TiDB Percolator TSO 1-3ms, CockroachDB HLC."
 weight: 2
 series: ["core-banking-architecture"]
 keywords: ["distributed sql transaction latency", "TiDB percolator overhead", "Spanner TrueTime vs CockroachDB HLC", "2PC network latency fintech"]
-author: "Tuan Anh"
+author: "Lê Tuấn Anh"
 schema: ["Article", "TechArticle", "FAQPage"]
 cover:
-  image: "/images/posts/banking-microservices-cover.png"
+  image: "images/posts/banking-microservices-cover.png"
   alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
   relative: false
+canonicalURL: "https://tanhdev.com/series/core-banking-architecture/part-2-distributed-sql-acid-latency/"
 ---
 
 > **Series (Part 2 of 8):** This article assumes you are familiar with the Double-Entry Ledger from [Part 1](/series/core-banking-architecture/part-1-double-entry-ledger-schema/). We will analyze why a PostgreSQL monolith hits limitations at scale and how Distributed SQL options solve that problem.

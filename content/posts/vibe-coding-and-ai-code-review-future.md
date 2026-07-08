@@ -1,8 +1,5 @@
-﻿---
+---
 title: "What is Vibe Coding? Why AI Code Review is the Future"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Vibe Coding And Ai Code Review Future"
 slug: "vibe-coding-and-ai-code-review-future"
 author: "Lê Tuấn Anh"
 date: "2026-05-31T18:30:00+07:00"
@@ -21,9 +18,10 @@ description: "Discover what vibe coding is, why AI prototypes hit a Production W
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/vibe-coding-cover.png"
+  image: "images/posts/vibe-coding-cover.png"
   alt: "What is Vibe Coding? Why AI code review is the future of software engineering workflows"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/vibe-coding-and-ai-code-review-future/"
 ---
 
 **Answer-first:** "Vibe coding"—relying on AI to write code without understanding it—creates complex, hard-to-maintain codebases that fail in production. Resolving this requires automated AI code reviews in the CI/CD pipeline to enforce design conventions and detect security vulnerabilities.

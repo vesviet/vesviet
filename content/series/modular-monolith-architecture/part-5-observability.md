@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Part 5: Observability in Memory â€“ When Everything Shares a Single Call Stack"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "Comparing Distributed Tracing in Microservices with In-process Profiling in a Modular Monolith. Why is OpenTelemetry on a Monolith faster and cheaper?"
@@ -8,9 +8,11 @@ aliases:
   - "/series/modular-monolith-architecture/part-5-observability/"
   - "/series/modular-monolith-architecture/cicd-simplified-atomic-deployments-monolith/part-5-observability.md"
 cover:
-  image: "/images/posts/golang-microservices-cover.png"
+  image: "images/posts/golang-microservices-cover.png"
   alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/observability-in-process-modular-monolith-opentelemetry/"
 ---
 
 # Part 5: Observability in Memory â€“ When Everything Shares a Single Call Stack

@@ -1,9 +1,9 @@
-﻿---
+---
 title: "Active RAG & Strict Tool Calling With Real-time APIs"
-date: 2026-05-22T22:35:00+07:00
-lastmod: 2026-05-22T22:35:00+07:00
+date: "2026-05-22T22:35:00+07:00"
+lastmod: "2026-05-22T22:35:00+07:00"
 draft: false
-author: "Vesviet Team"
+author: "Lê Tuấn Anh"
 weight: 5
 slug: "part-4-active-rag-tool-calling"
 keywords: ["Active RAG Tool Calling Eino"]
@@ -13,9 +13,10 @@ categories: ["Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/agentic-ecommerce-search-cover.png"
+  image: "images/posts/agentic-ecommerce-search-cover.png"
   alt: "Agentic E-commerce Search Engine Architecture series: vector databases, ranking, and Go"
   relative: false
+canonicalURL: "https://tanhdev.com/series/agentic-ecommerce-search/part-4-active-rag-tool-calling/"
 ---
 
 In [Part 3: Qdrant Hybrid Search - Solving Semantic and Hard Filters](/series/agentic-ecommerce-search/part-3-qdrant-hybrid-search/), we successfully built a powerful Hybrid search engine combining Dense Semantic and Sparse Lexical Search. However, a practical e-commerce search system goes far beyond merely retrieving static documents from a vector database.

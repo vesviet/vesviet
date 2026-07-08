@@ -18,6 +18,9 @@ tags:
   - Multi-Agent Orchestration
   - MCP
 aliases: ["/radar/radar-2026-05-28-openai-deployco-apple-gemini/"]
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/radar/radar-2026-05-28-openai-deployco-apple-gemini/"
+slug: "radar-2026-05-28-openai-deployco-apple-gemini"
 ---
 
 In this edition of our [tech radar](/radar/), we break down the developments of **May 28, 2026**. Following the [May 26 radar on AI Ethics and Anthropic's $30B funding](/radar/radar-2026-05-26/), the landscape of Enterprise AI has experienced a seismic shift. We are officially seeing the end of the "Model-as-a-Service" era, giving way to massive B2B integration plays and autonomous "Agent-as-a-Service" workflows.

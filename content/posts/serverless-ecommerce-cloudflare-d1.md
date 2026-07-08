@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Serverless E-Commerce: Cloudflare Workers & D1 Architecture"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Serverless Ecommerce Cloudflare D1"
 slug: "serverless-ecommerce-cloudflare-d1"
 author: "Lê Tuấn Anh"
 date: "2026-05-25T17:00:00+07:00"
@@ -23,9 +20,10 @@ description: "How to architect a zero-ops serverless e-commerce backend using Cl
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/cloudflare-edge-cover.png"
+  image: "images/posts/cloudflare-edge-cover.png"
   alt: "Serverless e-commerce with Cloudflare D1: SQLite at the edge for high-performance storefronts"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/serverless-ecommerce-cloudflare-d1/"
 ---
 
 **Answer-first:** Serverless e-commerce on Cloudflare Workers utilizes edge-native compute for sub-millisecond routing. D1 database tables hold persistent relational state, while Durable Objects manage transactional operations like cart locking, balancing global low-latency with strict data consistency.

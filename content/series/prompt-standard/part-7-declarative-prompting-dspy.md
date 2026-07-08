@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 7 — Declarative Prompting with DSPy"
-date: 2026-05-09T11:05:00+07:00
-lastmod: 2026-05-09T11:05:00+07:00
+date: "2026-05-09T11:05:00+07:00"
+lastmod: "2026-05-09T11:05:00+07:00"
 draft: false
 description: "What if you stopped hand-writing prompts and let a framework optimize them automatically?"
 categories:
@@ -14,9 +14,11 @@ weight: 8
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/prompt-engineering-benchmark-cover.png"
+  image: "images/posts/prompt-engineering-benchmark-cover.png"
   alt: "Prompt Standard series: product, engineering, and ops guide for production LLM prompting"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/prompt-standard/part-7-declarative-prompting-dspy/"
 ---
 
 ## The Problem with Hand-Written Prompts

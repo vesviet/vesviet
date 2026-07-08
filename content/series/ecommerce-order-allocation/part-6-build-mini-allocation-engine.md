@@ -1,15 +1,17 @@
-﻿---
+---
 title: "Google OR-Tools: Build a Delivery Allocation Engine"
 slug: "part-6-build-mini-allocation-engine"
-date: 2026-05-06T20:30:00+07:00
-lastmod: 2026-06-11T20:00:00+07:00
+date: "2026-05-06T20:30:00+07:00"
+lastmod: "2026-06-11T20:00:00+07:00"
 draft: false
 description: "Build a delivery allocation engine with Google OR-Tools in Python: VRP with capacity constraints, EXPRESS order priority, and FastAPI microservice packaging."
 weight: 7
 cover:
-  image: "/images/posts/order-fulfillment-cover.png"
+  image: "images/posts/order-fulfillment-cover.png"
   alt: "E-commerce Order Allocation Architecture series: Amazon and eBay warehouse and last-mile design"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/"
 ---
 
 ## Problem Statement

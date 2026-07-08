@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 2 — State, Memory & Context Management"
-date: 2026-05-17T08:00:00+07:00
-lastmod: 2026-05-17T08:00:00+07:00
+date: "2026-05-17T08:00:00+07:00"
+lastmod: "2026-05-17T08:00:00+07:00"
 draft: false
 description: "Solving the Context Window limitation, differentiating In-session vs Cross-session memory, and RAG integration strategies to ensure Agents never 'forget'."
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 3
 categories: ["Series", "Agent Architecture"]
 tags: ["AI", "Multi-Agent", "Memory", "RAG", "Vector Database"]
 cover:
-  image: "/images/posts/agentic-ai-swarm-cover.png"
+  image: "images/posts/agentic-ai-swarm-cover.png"
   alt: "Agentic System Architecture series: multi-agent production systems with Go and LiteLLM"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/agentic-system-architecture/part-2-memory/"
 ---
 
 > **Prerequisite:** To firmly grasp the foundational concepts of Memory Architecture in AI systems, please review [Comprehensive AI-Native System Architecture](/series/ai-driven-playbook/part-8-ai-native-system-architecture/).

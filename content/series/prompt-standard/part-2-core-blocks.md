@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 2 — The 8 Core Blocks of an Agent Prompt"
-date: 2026-05-09T10:40:00+07:00
-lastmod: 2026-05-09T10:40:00+07:00
+date: "2026-05-09T10:40:00+07:00"
+lastmod: "2026-05-09T10:40:00+07:00"
 draft: false
 description: "A simple 8-block framework that any team can use to start standardizing prompts for AI agents."
 categories:
@@ -12,9 +12,11 @@ weight: 3
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/prompt-engineering-benchmark-cover.png"
+  image: "images/posts/prompt-engineering-benchmark-cover.png"
   alt: "Prompt Standard series: product, engineering, and ops guide for production LLM prompting"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/prompt-standard/part-2-core-blocks/"
 ---
 
 ## Start with a Framework, Not a Long Prompt

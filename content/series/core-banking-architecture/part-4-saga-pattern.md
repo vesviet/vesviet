@@ -1,18 +1,19 @@
-﻿---
+---
 title: "Saga Pattern: Distributed Transactions Without 2PC"
-date: 2026-06-18T11:30:00+07:00
-lastmod: 2026-07-03T15:41:55+07:00
+date: "2026-06-18T11:30:00+07:00"
+lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 description: "Saga Pattern in Fintech: Choreography (5ms) vs Orchestration (50ms), Temporal Go workflows, failure transition matrices, and DLQ strategies for compensation"
 weight: 4
 series: ["core-banking-architecture"]
 keywords: ["saga pattern fintech microservices", "orchestration vs choreography saga", "temporal workflow golang banking", "distributed transaction compensation"]
-author: "Tuan Anh"
+author: "Lê Tuấn Anh"
 schema: ["Article", "TechArticle", "FAQPage"]
 cover:
-  image: "/images/posts/banking-microservices-cover.png"
+  image: "images/posts/banking-microservices-cover.png"
   alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
   relative: false
+canonicalURL: "https://tanhdev.com/series/core-banking-architecture/part-4-saga-pattern/"
 ---
 
 > **Series (Part 4 of 8):** This article builds upon Event Sourcing from [Part 3](/series/core-banking-architecture/part-3-event-sourcing-cqrs/). The Saga Pattern solves the problem: "How do we ensure consistency when a transaction must coordinate across multiple microservices without using distributed locks or 2PC?"

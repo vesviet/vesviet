@@ -11,7 +11,7 @@ categories: ["Engineering", "Strategy"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/magento-still-worth-investing-2026-cover.png"
+  image: "images/posts/magento-still-worth-investing-2026-cover.png"
   alt: "Is Magento Worth It in 2026? The 2.4.9 Reality — Architecture Decision Guide"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/magento-still-worth-investing-2026/"

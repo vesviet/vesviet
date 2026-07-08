@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Executive Summary — Software Engineers in the AI Era: Who Stays, Who Leaves?"
-date: 2026-05-10T14:10:00+07:00
-lastmod: 2026-05-10T14:10:00+07:00
+date: "2026-05-10T14:10:00+07:00"
+lastmod: "2026-05-10T14:10:00+07:00"
 draft: false
 description: "A comprehensive overview of the purge in the software industry as AI participates in the Software Development Life Cycle (SDLC)."
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 1
 categories: ["Series", "Software Engineering"]
 tags: ["AI", "System Design", "Career"]
 cover:
-  image: "/images/posts/ai-native-frontend-cover.png"
+  image: "images/posts/ai-native-frontend-cover.png"
   alt: "AI-Driven Engineer series: evolving from code typist to AI-native software architect"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/executive-summary/"
 ---
 
 The software industry is witnessing a historic transfer of power. Power is gradually leaving the hands of those who "only know how to type code" to those who "know how to solve problems using systems and AI."

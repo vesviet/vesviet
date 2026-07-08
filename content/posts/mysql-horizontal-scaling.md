@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Vitess vs GORM Sharding: MySQL Write Scaling in Go"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Mysql Horizontal Scaling"
 slug: "mysql-horizontal-scaling"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T15:10:00+07:00"
@@ -25,7 +22,7 @@ description: "Vitess vs GORM Sharding for MySQL write scaling in Go: VTGate quer
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/mysql-scalability-cover.png"
+  image: "images/posts/mysql-scalability-cover.png"
   alt: "Vitess vs GORM Sharding: MySQL horizontal write scaling patterns in Go"
   relative: false
 ---

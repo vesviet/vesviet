@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 6 — From Prompting to Context Engineering"
-date: 2026-05-09T11:00:00+07:00
-lastmod: 2026-05-09T11:00:00+07:00
+date: "2026-05-09T11:00:00+07:00"
+lastmod: "2026-05-09T11:00:00+07:00"
 draft: false
 description: "In 2026, the industry moved from prompt engineering to context engineering."
 categories:
@@ -15,9 +15,11 @@ weight: 7
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/prompt-engineering-benchmark-cover.png"
+  image: "images/posts/prompt-engineering-benchmark-cover.png"
   alt: "Prompt Standard series: product, engineering, and ops guide for production LLM prompting"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/prompt-standard/part-6-context-engineering/"
 ---
 
 ## The Biggest Shift in 2026: Context Over Phrasing

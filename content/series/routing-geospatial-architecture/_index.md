@@ -1,14 +1,16 @@
-﻿---
+---
 title: "Geospatial & Routing Engine Architecture: Go & Graphhopper"
 description: "8-part masterclass: build a Distance Matrix API and Routing Engine from scratch with Golang, GraphHopper, Redis, H3 Geospatial Indexing, and Mapbox."
 slug: "routing-geospatial-architecture"
-date: 2026-06-14T22:25:00+07:00
-lastmod: 2026-06-14T22:25:00+07:00
+date: "2026-06-14T22:25:00+07:00"
+lastmod: "2026-06-14T22:25:00+07:00"
 draft: false
 cover:
-  image: "/images/posts/graphhopper-cover.png"
+  image: "images/posts/graphhopper-cover.png"
   alt: "Geospatial and Routing Engine Architecture series: Go and GraphHopper for production distance matrix"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/"
 ---
 
 Modern Logistics and Delivery systems rely heavily on one core capability: **Calculating distances and travel times (Distance Matrix) quickly and accurately.**

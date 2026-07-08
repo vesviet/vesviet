@@ -1,4 +1,4 @@
-﻿---
+---
 title: "AWS EKS vs ECS: Architecture, Cost & Real-World Use Cases (2026)"
 slug: "aws-eks-vs-ecs-comparison"
 author: "Lê Tuấn Anh"
@@ -12,9 +12,10 @@ categories: ["DevOps", "Engineering", "AWS"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/aws-eks-vs-ecs-cover.png"
+  image: "images/posts/aws-eks-vs-ecs-cover.png"
   alt: "AWS EKS vs ECS architecture comparison — tanhdev.com"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/aws-eks-vs-ecs-comparison/"
 ---
 
 **Answer-first:** Choose AWS EKS for Kubernetes-native GitOps (ArgoCD, Dapr) and cloud-portable architectures. Choose ECS for zero-cost control planes, rapid deployment, and pure AWS-native simplicity. Go stateless containers on Graviton Spot to cut compute costs by 35%, and use Network Load Balancers for high-performance internal gRPC routing.

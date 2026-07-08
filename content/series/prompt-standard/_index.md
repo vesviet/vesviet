@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Prompt Standard: Product, Engineering & Ops Guide"
-date: 2026-05-09T10:30:00+07:00
-lastmod: 2026-05-09T10:30:00+07:00
+date: "2026-05-09T10:30:00+07:00"
+lastmod: "2026-05-09T10:30:00+07:00"
 draft: false
 weight: 30
 description: "Master Prompt Standard for your whole team: foundations, versioning, Context Engineering, DSPy declarative prompting, and Production PromptOps pipelines."
@@ -16,9 +16,11 @@ tags:
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/prompt-engineering-benchmark-cover.png"
+  image: "images/posts/prompt-engineering-benchmark-cover.png"
   alt: "Prompt Standard series: product, engineering, and ops guide for production LLM prompting"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/prompt-standard/"
 ---
 
 This series is designed for **developers, BAs, PMs, QAs, content creators, accountants, operations staff, and anyone working with AI agents** who wants to move beyond "writing prompts by feel."

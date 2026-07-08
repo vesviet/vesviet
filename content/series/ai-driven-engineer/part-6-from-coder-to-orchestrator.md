@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 6 — Role Shift: From Coder to AI Orchestrator"
-date: 2026-05-10T15:50:00+07:00
-lastmod: 2026-05-10T15:50:00+07:00
+date: "2026-05-10T15:50:00+07:00"
+lastmod: "2026-05-10T15:50:00+07:00"
 draft: false
 description: "Secrets to becoming an 'AI Orchestrator'. The art of Context Engineering and the mindset of problem decomposition."
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 7
 categories: ["Series", "Software Engineering"]
 tags: ["AI", "System Design", "Career"]
 cover:
-  image: "/images/posts/ai-native-frontend-cover.png"
+  image: "images/posts/ai-native-frontend-cover.png"
   alt: "AI-Driven Engineer series: evolving from code typist to AI-native software architect"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/"
 ---
 
 In Part 5, we saw the Board of Directors (BOD) frantically equipping internal AI systems to push productivity KPIs. At this point, if you stubbornly sit and type every line of code from start to finish, you will be left behind. To survive, programmers must shed the "Coder" jacket and put on the **"AI Orchestrator"** mantle.

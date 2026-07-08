@@ -1,16 +1,18 @@
-﻿---
+---
 title: "Agentic System Architecture: Multi-Agent in Production"
-date: 2026-05-14T08:00:00+07:00
-lastmod: 2026-06-16T08:00:00+07:00
+date: "2026-05-14T08:00:00+07:00"
+lastmod: "2026-06-16T08:00:00+07:00"
 draft: false
 description: "Design and operate multi-agent systems in production: topology, memory management, secure tool calling, guardrails, and AgentOps observability with Go."
 ShowToc: true
 TocOpen: true
 weight: 50
 cover:
-  image: "/images/posts/agentic-ai-swarm-cover.png"
+  image: "images/posts/agentic-ai-swarm-cover.png"
   alt: "Agentic System Architecture: multi-agent in production — orchestration, tools, and deployment"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/agentic-system-architecture/"
 ---
 
 # Agentic System Architecture: Multi-Agent in Production

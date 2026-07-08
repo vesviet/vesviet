@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Part 2: FinOps Cost Reality - The Hidden Tax of Microservices"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "Analyzing the AWS bill of distributed architectures: Hidden costs from Service Mesh (Istio), data transfer fees (Cross-AZ Egress), and Observability waste."
@@ -8,9 +8,11 @@ aliases:
   - "/series/modular-monolith-architecture/part-2-finops-cost-reality/"
   - "/series/modular-monolith-architecture/decision-framework-modular-monolith-vs-microservices/part-2-finops-cost-reality.md"
 cover:
-  image: "/images/posts/golang-microservices-cover.png"
+  image: "images/posts/golang-microservices-cover.png"
   alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/finops-cost-reality-microservices-tax/"
 ---
 
 # Part 2: FinOps Cost Reality - The "Hidden Tax" of Microservices

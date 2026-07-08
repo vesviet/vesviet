@@ -1,16 +1,18 @@
-﻿---
+---
 title: "E-commerce Order Allocation Architecture (Amazon, eBay)"
-date: 2026-05-06T20:30:00+07:00
-lastmod: 2026-05-06T20:30:00+07:00
+date: "2026-05-06T20:30:00+07:00"
+lastmod: "2026-05-06T20:30:00+07:00"
 draft: false
 weight: 110
 description: "An in-depth series on the order allocation problem — from Amazon's CONDOR and Anticipatory Shipping to building a Mini Order Allocation Engine."
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/order-fulfillment-cover.png"
+  image: "images/posts/order-fulfillment-cover.png"
   alt: "E-commerce Order Allocation Architecture series: Amazon and eBay warehouse and fulfillment design"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/"
 ---
 
 The **Order Fulfillment Allocation** problem is one of the most complex optimization challenges in e-commerce. When a customer places an order, the system must decide in milliseconds: which warehouse should fulfill it, which driver should deliver it, and whether to consolidate or split the order—all while minimizing costs and maximizing delivery speed.

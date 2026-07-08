@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 2 — AI Platform Layer: Building a Private AI Ecosystem & Architectural Freedom"
-date: 2026-05-14T08:00:00+07:00
-lastmod: 2026-05-14T08:00:00+07:00
+date: "2026-05-14T08:00:00+07:00"
+lastmod: "2026-05-14T08:00:00+07:00"
 draft: false
 description: "Escape the Pay-per-seat and Vendor Lock-in traps by building an internal AI Gateway, enforcing Cost Governance, and leveraging the power of Local LLMs."
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 3
 categories: ["Series", "Enterprise Playbook"]
 tags: ["AI", "Enterprise Architecture", "CTO", "Tech Lead"]
 cover:
-  image: "/images/posts/hybrid-ai-pipeline-cover.png"
+  image: "images/posts/hybrid-ai-pipeline-cover.png"
   alt: "AI-Driven Engineer Enterprise Playbook series: workflows, autonomous pipelines, and tooling"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-2-ai-platform-layer/"
 ---
 
 In [Part 1](/series/ai-driven-playbook/part-1-context-engineering-ddd/), we solved the code quality problem using *Context Engineering*. But when you start scaling AI across the entire organization, Chief Technology Officers (CTOs) immediately hit another wall: **Cost and Security**.
@@ -136,7 +138,7 @@ Enterprises shouldn't rely solely on the Cloud. The advent of massive Unified Me
 
 With RAM capacities ranging from 64GB to 192GB, you can run extremely powerful Open-source models (like `Llama-3-70B` or `Qwen-2.5-Coder`) right in your office using Ollama.
 
-![Mac Studio acting as a Local LLM Server in a Data Center](/images/mac_studio_infra.png)
+![Mac Studio acting as a Local LLM Server in a Data Center](images/mac_studio_infra.png)
 
 **The Dual Benefit:**
 1. **Zero API Cost:** Inference for 90% of basic CRUD tasks is completely free.

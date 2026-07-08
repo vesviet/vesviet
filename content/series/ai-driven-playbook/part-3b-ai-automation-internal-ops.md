@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 3B — AI Automation for Internal Operations: Proving ROI"
-date: 2026-05-16T08:00:00+07:00
-lastmod: 2026-05-16T08:00:00+07:00
+date: "2026-05-16T08:00:00+07:00"
+lastmod: "2026-05-16T08:00:00+07:00"
 draft: false
 description: "Win executive buy-in for the AI Platform by solving 'money-making' operational problems: Automated Reconciliation, Excel processing, and Lightweight"
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 5
 categories: ["Series", "Enterprise Playbook"]
 tags: ["AI", "Enterprise Architecture", "CTO", "Tech Lead"]
 cover:
-  image: "/images/posts/hybrid-ai-pipeline-cover.png"
+  image: "images/posts/hybrid-ai-pipeline-cover.png"
   alt: "AI-Driven Engineer Enterprise Playbook series: workflows, autonomous pipelines, and tooling"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-3b-ai-automation-internal-ops/"
 ---
 
 The powerful RAG system we built in [Part 3A](/series/ai-driven-playbook/part-3a-enterprise-rag-architecture/) would be nothing more than an expensive "tech toy" if it only answers questions like: *"What does this function in the project do?"*

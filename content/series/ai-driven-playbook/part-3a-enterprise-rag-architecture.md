@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 3A — Enterprise RAG Architecture: Building the Internal 'Brain'"
-date: 2026-05-15T08:00:00+07:00
-lastmod: 2026-05-15T08:00:00+07:00
+date: "2026-05-15T08:00:00+07:00"
+lastmod: "2026-05-15T08:00:00+07:00"
 draft: false
 description: "Building RAG in an Enterprise isn't just dumping PDFs into a VectorDB."
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 4
 categories: ["Series", "Enterprise Playbook"]
 tags: ["AI", "Enterprise Architecture", "CTO", "Tech Lead"]
 cover:
-  image: "/images/posts/hybrid-ai-pipeline-cover.png"
+  image: "images/posts/hybrid-ai-pipeline-cover.png"
   alt: "AI-Driven Engineer Enterprise Playbook series: workflows, autonomous pipelines, and tooling"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-3a-enterprise-rag-architecture/"
 ---
 
 90% of RAG (Retrieval-Augmented Generation) tutorials online are "toy examples": Write 10 lines of Python, read a PDF file, perform naive chunking, stuff it into a Vector Database, and then run a Q&A.

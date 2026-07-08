@@ -1,10 +1,10 @@
-﻿---
+---
 title: "Idempotent API Design in Go — Idempotency Key & Redis SetNX"
 slug: "07-idempotency-api-design-go"
 date: "2026-06-18T12:00:00+07:00"
-lastmod: 2026-07-03T15:41:55+07:00
+lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
-author: "Tanh"
+author: "Lê Tuấn Anh"
 description: "Idempotent API in Go: Redis SetNX middleware, response recorder, payload hash, DB fallback schema, and the Stripe idempotency pattern."
 tags: ["idempotency", "api design", "golang", "redis", "payment", "retry", "system design"]
 categories: ["System Design", "Backend Engineering"]
@@ -13,9 +13,10 @@ TocOpen: true
 series: ["system-design"]
 mermaid: true
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
+canonicalURL: "https://tanhdev.com/series/system-design/07-idempotency-api-design-go/"
 ---
 
 > **Prerequisite:** Part 7 of the [System Design Masterclass](/series/system-design/). Read [Part 6: Distributed Locks](/series/system-design/06-distributed-locks-concurrency/) — concurrent duplicate request blocking relies on the same mutual exclusion primitives.

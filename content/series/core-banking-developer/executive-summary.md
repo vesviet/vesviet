@@ -1,14 +1,16 @@
-﻿---
+---
 title: "The Landscape of Core Banking Developers"
-date: 2026-05-06T18:00:00+07:00
-lastmod: 2026-06-10T16:00:00+07:00
+date: "2026-05-06T18:00:00+07:00"
+lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
 description: "Overview of the Core Banking Developer role: responsibilities, required skills, and why it is one of the highest-paid engineering specializations."
 weight: 1
 cover:
-  image: "/images/posts/banking-microservices-cover.png"
+  image: "images/posts/banking-microservices-cover.png"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/core-banking-developer/executive-summary/"
 ---
 
 ## Who is a Core Banking Developer?

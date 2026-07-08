@@ -1,15 +1,17 @@
-﻿---
+---
 title: "Phase 1: Timeline and Scale Evolution"
-date: 2026-05-02T18:10:00+07:00
-lastmod: 2026-05-02T18:10:00+07:00
+date: "2026-05-02T18:10:00+07:00"
+lastmod: "2026-05-02T18:10:00+07:00"
 draft: false
 description: "A timeline of Alipay Double 11 scaling evolution from 2009 to the cloud-native era: crises, architectural resets, and operational maturity."
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/alipay-double11-cover.png"
+  image: "images/posts/alipay-double11-cover.png"
   alt: "Alipay Double 11 Architecture series: 583,000 TPS payment processing at extreme scale"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-1-timeline/"
 ---
 [← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/executive-summary/) • [Next →](/series/alipay-double-11/phase-2-architecture/)

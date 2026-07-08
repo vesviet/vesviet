@@ -1,17 +1,19 @@
-﻿---
+---
 title: "Banking Microservices Architecture: Event Sourcing, CQRS & Saga Patterns in Go (2026)"
 slug: "part-4-modern-core-banking-architecture"
-date: 2026-05-06T18:00:00+07:00
-lastmod: 2026-06-26T21:00:00+07:00
+date: "2026-05-06T18:00:00+07:00"
+lastmod: "2026-06-26T21:00:00+07:00"
 draft: false
 description: "How digital banks replace T24/Flexcube with Go microservices: Event Sourcing for the double-entry ledger, CQRS for reporting, Saga patterns for distributed"
 weight: 5
 keywords: ["banking microservices architecture", "core banking microservices", "event sourcing banking", "cqrs banking", "saga pattern banking", "core banking developer"]
 schema: ["Article", "FAQPage"]
 cover:
-  image: "/images/posts/banking-microservices-cover.png"
+  image: "images/posts/banking-microservices-cover.png"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-4-modern-core-banking-architecture/"
 ---
 
 > **Series context (Part 4 of 8):** This article assumes familiarity with [ACID transactions and database concurrency](/series/core-banking-developer/part-3-database-transactions-acid/). Understanding why consistency guarantees are hard at the database layer is essential context before introducing distributed patterns here.

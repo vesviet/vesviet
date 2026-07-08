@@ -1,10 +1,10 @@
-﻿---
+---
 title: "Go Observability & pprof — Memory Leaks, CPU Profiling & GODEBUG"
 slug: "10-observability-pprof-golang"
 date: "2026-06-18T13:30:00+07:00"
-lastmod: 2026-07-03T15:41:55+07:00
+lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
-author: "Tanh"
+author: "Lê Tuấn Anh"
 description: "Go pprof: heap diff memory leak diagnosis, goroutine leak detection, CPU flame graphs, GODEBUG gctrace parsing, and Four Golden Signals."
 tags: ["observability", "golang", "pprof", "memory leak", "cpu profiling", "godebug", "system design"]
 categories: ["System Design", "Backend Engineering"]
@@ -13,9 +13,10 @@ TocOpen: true
 series: ["system-design"]
 mermaid: true
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
+canonicalURL: "https://tanhdev.com/series/system-design/10-observability-pprof-golang/"
 ---
 
 > **Prerequisite:** This is Part 10 of the [System Design Masterclass](/series/system-design/). Previous parts built the architecture — this part teaches you how to *see inside* a running system and diagnose production performance issues.

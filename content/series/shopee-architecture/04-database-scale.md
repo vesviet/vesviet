@@ -1,17 +1,19 @@
-﻿---
+---
 title: "Shopee DB: MySQL Sharding to TiDB NewSQL Migration"
 slug: "04-database-scale"
-date: 2026-05-05T08:40:00+07:00
-lastmod: 2026-06-11T20:00:00+07:00
+date: "2026-05-05T08:40:00+07:00"
+lastmod: "2026-06-11T20:00:00+07:00"
 draft: false
 mermaid: true
 description: "How Shopee scaled from MySQL sharding to TiDB NewSQL: ProxySQL connection pooling, read replica architecture, and TiDB migration for 100M+ users."
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/shopee-flash-sale-cover.png"
+  image: "images/posts/shopee-flash-sale-cover.png"
   alt: "Shopee Architecture series: scaling for flash sales — rate limiting, Redis, and distributed systems"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/shopee-architecture/04-database-scale/"
 ---
 # Chapter 4: Database Scale - The Rise of TiDB and NewSQL
 

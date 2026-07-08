@@ -1,11 +1,13 @@
-﻿---
+---
 title: "Software Architecture & System Design Series"
 description: "Deep dive into real-world software architecture, microservices, system design, and AI engineering. Technical case studies and tutorials."
-lastmod: 2026-06-01T10:00:00+07:00
+lastmod: "2026-06-01T10:00:00+07:00"
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "Software Architecture and System Design Series — Go, microservices, AI engineering, and distributed systems"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/"
 ---
 
 Welcome to the definitive hub for system design case studies and software architecture deep dives. Drawing from over 17 years of experience in backend engineering and building resilient platforms, these **20 in-depth series** break down complex [distributed systems](/posts/mastering-event-driven-architecture-dapr/) into digestible, actionable lessons — from e-commerce flash sales to core banking, from ride-hailing real-time systems to production AI agents.

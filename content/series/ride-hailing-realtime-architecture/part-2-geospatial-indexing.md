@@ -1,15 +1,17 @@
-﻿---
+---
 title: "Uber H3 Geospatial Indexing: Find Nearest Driver in <100ms with Redis (Production Guide)"
 slug: "part-2-geospatial-indexing"
-date: 2026-05-06T20:00:00+07:00
-lastmod: 2026-06-26T21:00:00+07:00
+date: "2026-05-06T20:00:00+07:00"
+lastmod: "2026-06-26T21:00:00+07:00"
 draft: false
 description: "How Uber and Grab find the nearest driver in <100ms: H3 hexagonal grid at Resolution 8, Redis GEO vs SET+H3, K-Ring search, S2 Geometry, and a complete Go"
 weight: 3
 cover:
-  image: "/images/posts/real-time-ride-hailing-cover.png"
+  image: "images/posts/real-time-ride-hailing-cover.png"
   alt: "Real-Time Ride-Hailing Architecture series: Uber and Grab — matching, GPS, WebSocket at scale"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/"
 ---
 
 ## The Problem: Finding a Needle in a Haystack

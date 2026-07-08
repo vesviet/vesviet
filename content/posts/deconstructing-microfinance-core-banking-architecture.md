@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Microfinance Core Banking System: Architecture & Engineering Guide"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Deconstructing Microfinance Core Banking Architecture"
 slug: "deconstructing-microfinance-core-banking-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-05-27T10:00:00+07:00"
@@ -14,10 +11,12 @@ series: ["core-banking-developer"]
 categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
+mermaid: true
 cover:
-  image: "/images/posts/banking-microservices-cover.png"
+  image: "images/posts/banking-microservices-cover.png"
   alt: "Microfinance Core Banking System: architecture and engineering guide for distributed financial services"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/deconstructing-microfinance-core-banking-architecture/"
 ---
 
 **Answer-first:** Microfinance core banking requires a decentralized architecture: a double-entry ledger for transaction auditing, a joint liability group (JLG) loan engine with optimistic concurrency controls, modular interest/amortization processors, and parallelized worker pools to handle heavy End-of-Day batch processing.

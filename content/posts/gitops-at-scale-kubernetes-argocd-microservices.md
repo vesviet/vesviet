@@ -1,8 +1,5 @@
-﻿---
+---
 title: "GitOps at Scale: Kubernetes & ArgoCD for Microservices"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Gitops At Scale Kubernetes Argocd Microservices"
 slug: "gitops-at-scale-kubernetes-argocd-microservices"
 author: "Lê Tuấn Anh"
 date: "2026-04-12T07:00:00+07:00"
@@ -15,9 +12,10 @@ categories: ["DevOps", "Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/argocd-2026-cover.png"
+  image: "images/posts/argocd-2026-cover.png"
   alt: "GitOps at scale with Kubernetes and Argo CD: multi-cluster microservices deployment architecture"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/gitops-at-scale-kubernetes-argocd-microservices/"
 ---
 
 **Answer-first:** Eliminate manual deployment errors and drift by implementing split-repo GitOps with ArgoCD. By configuring the `selfHeal: true` policy, ArgoCD automatically corrects cluster mutations. Structure configurations using Kustomize overlays and the App-of-Apps pattern, enabling safe, auditable rollbacks via simple `git revert` commands.

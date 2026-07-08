@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 8 — Grand Finale: Comprehensive AI-Native System Architecture"
-date: 2026-05-21T08:00:00+07:00
-lastmod: 2026-05-21T08:00:00+07:00
+date: "2026-05-21T08:00:00+07:00"
+lastmod: "2026-05-21T08:00:00+07:00"
 draft: false
 description: "The complete picture: Restructuring the entire software platform, shifting from traditional Microservices to Event-driven AI Workflows and Multi-Agent"
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 10
 categories: ["Series", "Enterprise Playbook"]
 tags: ["AI", "Enterprise Architecture", "CTO", "Tech Lead"]
 cover:
-  image: "/images/posts/hybrid-ai-pipeline-cover.png"
+  image: "images/posts/hybrid-ai-pipeline-cover.png"
   alt: "AI-Driven Engineer Enterprise Playbook series: workflows, autonomous pipelines, and tooling"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-8-ai-native-system-architecture/"
 ---
 
 From [Part 1](/series/ai-driven-playbook/part-1-context-engineering-ddd/) through [Part 7](/series/ai-driven-playbook/part-7-ai-security-engineering/), we have systematically assembled all the puzzle pieces: *Context, Gateway, Data, CI/CD, Process, Monitoring, and Security*.

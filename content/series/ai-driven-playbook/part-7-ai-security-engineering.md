@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 7 — AI Security Engineering: Ironclad Armor for New Attack Surfaces"
-date: 2026-05-20T08:00:00+07:00
-lastmod: 2026-05-20T08:00:00+07:00
+date: "2026-05-20T08:00:00+07:00"
+lastmod: "2026-05-20T08:00:00+07:00"
 draft: false
 description: "AI creates entirely new attack surfaces. A practical guide to designing defenses against Prompt Injection, RAG Poisoning, Data Exfiltration, and"
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 9
 categories: ["Series", "Enterprise Playbook"]
 tags: ["AI", "Enterprise Architecture", "CTO", "Tech Lead"]
 cover:
-  image: "/images/posts/hybrid-ai-pipeline-cover.png"
+  image: "images/posts/hybrid-ai-pipeline-cover.png"
   alt: "AI-Driven Engineer Enterprise Playbook series: workflows, autonomous pipelines, and tooling"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-7-ai-security-engineering/"
 ---
 
 For years, Security Engineers have fought against deterministic vulnerabilities like SQL Injection, XSS, or buffer overflows. The rise of Generative AI has opened an entirely **new Attack Surface** of a probabilistic nature.

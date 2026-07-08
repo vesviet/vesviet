@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Go Microservices Architecture: Production Guide"
 slug: "go-microservices"
 date: "2026-06-12T00:00:00+07:00"
@@ -12,9 +12,10 @@ author: "Lê Tuấn Anh"
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/golang-microservices-cover.png"
+  image: "images/posts/golang-microservices-cover.png"
   alt: "Go microservices architecture production guide 2026"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/go-microservices/"
 ---
 
 **Answer-first:** Go's compile-time binary output (~15MB), goroutine scheduler (~2KB initial stack), and sub-microsecond JSON marshaling make it the default choice for latency-sensitive microservices. It delivers predictable GC pauses and ultra-fast container startup times compared to JVM-based alternatives — and its operational simplicity is underrated.

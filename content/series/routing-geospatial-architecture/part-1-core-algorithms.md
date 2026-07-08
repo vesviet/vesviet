@@ -1,16 +1,18 @@
-﻿---
+---
 title: "Part 1: Core Routing Algorithms — A* & Dijkstra Visualized"
 description: "A deep dive into the core algorithms powering modern logistics. Learn why Dijkstra beats A* for Distance Matrices and how Contraction Hierarchies work."
-date: 2026-06-14T22:35:00+07:00
-lastmod: 2026-06-14T22:35:00+07:00
+date: "2026-06-14T22:35:00+07:00"
+lastmod: "2026-06-14T22:35:00+07:00"
 draft: false
 tags: ["golang", "graphhopper", "routing", "algorithms"]
 series: ["Routing & Geospatial Architecture"]
 series_order: 1
 cover:
-  image: "/images/posts/graphhopper-cover.png"
+  image: "images/posts/graphhopper-cover.png"
   alt: "Geospatial and Routing Engine Architecture series: Go and GraphHopper for production routing"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-1-core-algorithms/"
 ---
 
 When building a high-scale logistics or delivery system, generic algorithm tutorials often lead developers astray. They tell you that A* is universally better than Dijkstra. However, in the real world of **Routing Engines** and **Distance Matrices**, the truth is much more complex.

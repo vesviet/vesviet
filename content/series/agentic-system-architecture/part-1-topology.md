@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 1 — Agent Topology & Orchestration"
-date: 2026-05-15T08:00:00+07:00
-lastmod: 2026-05-15T08:00:00+07:00
+date: "2026-05-15T08:00:00+07:00"
+lastmod: "2026-05-15T08:00:00+07:00"
 draft: false
 description: "Explore Multi-Agent design patterns (Supervisor, P2P) and how to build a simple Python Orchestrator for task coordination."
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 2
 categories: ["Series", "Agent Architecture"]
 tags: ["AI", "Multi-Agent", "Orchestration", "System Design"]
 cover:
-  image: "/images/posts/agentic-ai-swarm-cover.png"
+  image: "images/posts/agentic-ai-swarm-cover.png"
   alt: "Agentic System Architecture series: multi-agent production systems with Go and LiteLLM"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/agentic-system-architecture/part-1-topology/"
 ---
 
 > **Prerequisite:** To understand the context and why we need Multi-Agent systems instead of traditional Microservices, please refer to [Comprehensive AI-Native System Architecture](/series/ai-driven-playbook/part-8-ai-native-system-architecture/).

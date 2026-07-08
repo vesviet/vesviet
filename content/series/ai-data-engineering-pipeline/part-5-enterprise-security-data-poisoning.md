@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Part 5: Enterprise Security & Data Poisoning - The Silent Assassin"
 slug: "part-5-enterprise-security-data-poisoning"
 date: "2026-05-17T12:00:00+07:00"
@@ -14,9 +14,11 @@ aliases:
   - "/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/part-6-rise-of-ai-agents"
   - "/series/ai-data-engineering-pipeline/part-4-streaming-cdc-federated-rag/part-5-enterprise-security-data-poisoning"
 cover:
-  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "images/posts/graphrag-vs-naive-rag-cover.png"
   alt: "Enterprise AI Data Pipeline and GraphRAG Architecture series: graph-based retrieval at scale"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/"
 ---
 
 ## 1. The Silent Assassin: Indirect Prompt Injection

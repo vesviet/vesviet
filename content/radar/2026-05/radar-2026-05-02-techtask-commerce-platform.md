@@ -18,6 +18,9 @@ description: "A 24-hour TechTask radar connecting fresh platform signals to real
 ShowToc: true
 TocOpen: true
 aliases: ["/radar/radar-2026-05-02-techtask-commerce-platform/"]
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/radar/radar-2026-05-02-techtask-commerce-platform/"
+slug: "radar-2026-05-02-techtask-commerce-platform"
 ---
 
 The strongest TechTask signal in the last 24 hours is not a single framework release. It is the way several platform updates are converging on the same message: commerce modernization is no longer mainly about decomposing a monolith. It is about operating the decomposed system safely.

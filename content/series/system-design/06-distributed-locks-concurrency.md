@@ -1,10 +1,10 @@
-﻿---
+---
 title: "Distributed Locks in Go — Redlock Math, etcd & Split-Brain"
 slug: "06-distributed-locks-concurrency"
 date: "2026-06-18T11:30:00+07:00"
-lastmod: 2026-07-03T15:41:55+07:00
+lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
-author: "Tanh"
+author: "Lê Tuấn Anh"
 description: "Redlock MIN_VALIDITY math, clock drift analysis, redsync implementation in Go, etcd lease locks, and Redis vs etcd decision matrix."
 tags: ["distributed lock", "redis", "redlock", "golang", "etcd", "concurrency", "system design"]
 categories: ["System Design", "Backend Engineering"]
@@ -13,9 +13,10 @@ TocOpen: true
 series: ["system-design"]
 mermaid: true
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
+canonicalURL: "https://tanhdev.com/series/system-design/06-distributed-locks-concurrency/"
 ---
 
 > **Prerequisite:** Part 6 of the [System Design Masterclass](/series/system-design/). Read [Part 5: Kafka & Event-Driven](/series/system-design/05-async-message-queues-kafka-go/) to understand event sourcing patterns before tackling lock coordination.

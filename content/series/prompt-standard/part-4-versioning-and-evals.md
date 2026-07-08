@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 4 — From Gut-Feel Prompts to Testable, Versionable Prompts"
-date: 2026-05-09T10:50:00+07:00
-lastmod: 2026-05-09T10:50:00+07:00
+date: "2026-05-09T10:50:00+07:00"
+lastmod: "2026-05-09T10:50:00+07:00"
 draft: false
 description: "Prompts only mature when teams can version, compare, and measure output quality instead of judging by gut feeling."
 categories:
@@ -12,9 +12,11 @@ weight: 5
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/prompt-engineering-benchmark-cover.png"
+  image: "images/posts/prompt-engineering-benchmark-cover.png"
   alt: "Prompt Standard series: product, engineering, and ops guide for production LLM prompting"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/prompt-standard/part-4-versioning-and-evals/"
 ---
 
 ## Prompts Deserve the Same Discipline as Code

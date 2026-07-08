@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Replace MySQL Sharding with TiDB: Distributed SQL Migration Guide"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Mysql Scaling Sharding Tidb Architecture"
 slug: "mysql-scaling-sharding-tidb-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-05-26T14:00:00+07:00"
@@ -23,9 +20,10 @@ description: "Replace MySQL manual sharding with TiDB: TiKV, Raft consensus, Per
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/mysql-scalability-cover.png"
+  image: "images/posts/mysql-scalability-cover.png"
   alt: "Replace MySQL Sharding with TiDB: distributed SQL migration guide for Go engineers"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/mysql-scaling-sharding-tidb-architecture/"
 ---
 
 **Answer-first:** Migrate from manual MySQL sharding to TiDB to eliminate application-level routing complexity. TiDB handles distributed SQL queries natively using TiKV storage nodes and Raft consensus. Use the TiDB Data Migration (DM) tool to merge source shards online with minimal downtime.

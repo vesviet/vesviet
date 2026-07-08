@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 4 — Policy-as-Code: Agentic CI/CD Guardrails for AI-Generated Code"
-date: 2026-05-17T08:00:00+07:00
-lastmod: 2026-05-17T08:00:00+07:00
+date: "2026-05-17T08:00:00+07:00"
+lastmod: "2026-05-17T08:00:00+07:00"
 draft: false
 description: "Go far beyond 'AI reviews code.' Build Deterministic Guardrails, enforce Unit Tests for Boundary Conditions, and enforce architectural risk controls on"
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 6
 categories: ["Series", "Enterprise Playbook"]
 tags: ["AI", "Enterprise Architecture", "CTO", "Tech Lead"]
 cover:
-  image: "/images/posts/hybrid-ai-pipeline-cover.png"
+  image: "images/posts/hybrid-ai-pipeline-cover.png"
   alt: "AI-Driven Engineer Enterprise Playbook series: workflows, autonomous pipelines, and tooling"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-4-policy-as-code-agentic-cicd/"
 ---
 
 The 10x productivity of an AI-Native Developer is a "curse" if your CI/CD pipeline still runs at 1x speed.

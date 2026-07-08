@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 6 — AI Observability & Evals: Eliminating Operational Blind Spots"
-date: 2026-05-19T08:00:00+07:00
-lastmod: 2026-05-19T08:00:00+07:00
+date: "2026-05-19T08:00:00+07:00"
+lastmod: "2026-05-19T08:00:00+07:00"
 draft: false
 description: "Running AI in production without Observability and Evals is a fatal mistake."
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 8
 categories: ["Series", "Enterprise Playbook"]
 tags: ["AI", "Enterprise Architecture", "CTO", "Tech Lead"]
 cover:
-  image: "/images/posts/hybrid-ai-pipeline-cover.png"
+  image: "images/posts/hybrid-ai-pipeline-cover.png"
   alt: "AI-Driven Engineer Enterprise Playbook series: workflows, autonomous pipelines, and tooling"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-6-ai-observability-governance/"
 ---
 
 Many engineers in the current market can build an AI App in a weekend. But those who know how to **operate an AI system in production (AI Platform Operations)** can be counted on one hand.
@@ -77,7 +79,7 @@ The Platform Engineering team must track these 4 vital metrics on the Dashboard:
 | `trc_2b4c` | `marketing` | `gpt-4o` | 3,100 | 2.1s | 400ms | $0.01 | ⚠️ Overridden (User edited) |
 | `trc_9f1d` | `sys-agent` | `local-llama3` | 8,500 | 4.5s | 1200ms | $0.00 | 🛑 Hallucination Detected |
 
-![AI Monitoring Dashboard Interface (Mockup)](/images/langfuse_dashboard.png)
+![AI Monitoring Dashboard Interface (Mockup)](images/langfuse_dashboard.png)
 
 ---
 

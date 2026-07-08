@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Executive Summary — Building an AI-Native Engineering Organization"
-date: 2026-05-13T07:00:00+07:00
-lastmod: 2026-05-13T07:00:00+07:00
+date: "2026-05-13T07:00:00+07:00"
+lastmod: "2026-05-13T07:00:00+07:00"
 draft: false
 description: "The complete panoramic view of how to architect, operate, and govern a software development organization built around AI platforms (Enterprise AI Platform"
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 1
 categories: ["Series", "Enterprise Playbook"]
 tags: ["AI", "Enterprise Architecture", "CTO", "Tech Lead"]
 cover:
-  image: "/images/posts/hybrid-ai-pipeline-cover.png"
+  image: "images/posts/hybrid-ai-pipeline-cover.png"
   alt: "AI-Driven Engineer Enterprise Playbook series: workflows, autonomous pipelines, and tooling"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/executive-summary/"
 ---
 
 If the [first series](/series/ai-driven-engineer/) helped you shift your mindset from "Code Typist" to "Architect," then this Playbook answers the next foundational question at the enterprise scale: **"How do you scale a single individual's 10x productivity into the productivity of an entire organization?"**

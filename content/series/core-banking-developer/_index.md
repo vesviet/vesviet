@@ -1,16 +1,18 @@
-﻿---
+---
 title: "Core Banking Developer Roadmap"
-date: 2026-05-06T18:00:00+07:00
-lastmod: 2026-05-06T18:00:00+07:00
+date: "2026-05-06T18:00:00+07:00"
+lastmod: "2026-05-06T18:00:00+07:00"
 draft: false
 weight: 100
 description: "Learn core banking architecture: double-entry ledger, transaction processing, microservices, ISO 8583/20022, and building a mini banking system."
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/banking-microservices-cover.png"
+  image: "images/posts/banking-microservices-cover.png"
   alt: "Core Banking Developer Roadmap series: architecture patterns, event sourcing, and distributed ledger"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/core-banking-developer/"
 ---
 
 This series is designed for **full-stack developers** who want to transition into the **Core Banking** domain — one of the most complex and technically demanding systems in the software industry. Programming languages are not a barrier here; the foundation of systems thinking, architecture, and domain knowledge is what determines whether you can handle a financial processing system.

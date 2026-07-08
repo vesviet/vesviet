@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Hybrid AI Architecture & Self-Hosted vLLM | SLM Playbook"
-date: 2026-05-21T08:00:00+07:00
-lastmod: 2026-05-21T08:00:00+07:00
+date: "2026-05-21T08:00:00+07:00"
+lastmod: "2026-05-21T08:00:00+07:00"
 draft: false
 description: "Economic analysis of self-hosting Small Language Models (SLMs) with vLLM, VRAM formula calculation, and establishing a Hybrid Routing Gateway to combine SLM"
 ShowToc: true
@@ -10,9 +10,11 @@ weight: 2
 categories: ["Series", "SLM Playbook"]
 tags: ["AI Engineering", "vLLM", "System Architecture", "FinOps"]
 cover:
-  image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
+  image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
   alt: "SLM Playbook series: fine-tuning, LoRA, QLoRA, and production deployment of Small Language Models"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/slm-playbook/part-1-slm-hybrid-architecture/"
 ---
 [← Series hub](/series/slm-playbook/)
 [← Previous](/series/slm-playbook/executive-summary/) | [Next →](/series/slm-playbook/part-2-sft-data-engineering/)

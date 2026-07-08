@@ -1,16 +1,18 @@
-﻿---
+---
 title: "Real-Time Ride-Hailing Architecture: Uber & Grab"
-date: 2026-05-06T20:00:00+07:00
-lastmod: 2026-05-06T20:00:00+07:00
+date: "2026-05-06T20:00:00+07:00"
+lastmod: "2026-05-06T20:00:00+07:00"
 draft: false
 weight: 120
 description: "How Uber and Grab handle millions of GPS updates/sec: H3 geospatial indexing, Kafka event streaming, DISCO matching, surge pricing, and RAMEN notifications."
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/real-time-ride-hailing-cover.png"
+  image: "images/posts/real-time-ride-hailing-cover.png"
   alt: "Real-Time Ride-Hailing Architecture series: Uber and Grab matching, GPS, and WebSocket at scale"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/"
 ---
 
 This series dives deep into the technical architecture behind the most critical feature of ride-hailing applications: **Real-time capabilities**.

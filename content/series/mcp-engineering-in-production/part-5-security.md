@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Part 5: Production Security & OWASP MCP Top 10"
-date: 2026-05-15T14:00:00+07:00
-lastmod: 2026-05-15T14:00:00+07:00
+date: "2026-05-15T14:00:00+07:00"
+lastmod: "2026-05-15T14:00:00+07:00"
 draft: false
 weight: 6
 categories:
@@ -15,9 +15,11 @@ description: "Analyzing the top 10 security vulnerabilities of the Model Context
 aliases:
   - /series/mcp-engineering-in-production/part-5-security/
 cover:
-  image: "/images/posts/generative-ui-mcp-cover.png"
+  image: "images/posts/generative-ui-mcp-cover.png"
   alt: "MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-5-security/"
 ---
 
 In a distributed Agentic architecture, when you boldly grant an AI Agent the right to auto-discover and execute tools without human approval, you are expanding the system's attack surface to an unprecedented scale.

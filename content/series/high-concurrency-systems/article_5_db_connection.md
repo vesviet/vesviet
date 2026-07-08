@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Chapter 5: Optimizing Golang Database Connection Pools"
-date: 2026-06-09T10:20:00+07:00
-lastmod: 2026-06-09T10:20:00+07:00
+date: "2026-06-09T10:20:00+07:00"
+lastmod: "2026-06-09T10:20:00+07:00"
 draft: false
 series: ["Mastering High-Concurrency Systems in Production"]
 series_order: 5
@@ -12,9 +12,11 @@ description: "Tune your *sql.DB connection pool parameters (MaxOpenConns, MaxIdl
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/realtime-inventory-cover.png"
+  image: "images/posts/realtime-inventory-cover.png"
   alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/golang-database-connection-pool-optimization/"
 ---
 [← Previous](/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/) | [Series hub](/series/high-concurrency-systems/) | [Next →](/series/high-concurrency-systems/api-gateway-vs-service-mesh/)
 

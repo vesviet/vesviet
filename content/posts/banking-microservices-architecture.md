@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Banking Microservices Architecture: Go, Saga & Event Sourcing"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Banking Microservices Architecture"
 slug: "banking-microservices-architecture"
 date: "2026-06-01T15:15:00+07:00"
 lastmod: "2026-06-27T07:00:00+07:00"
@@ -25,9 +22,10 @@ ShowToc: true
 TocOpen: true
 author: "Lê Tuấn Anh"
 cover:
-  image: "/images/posts/banking-microservices-cover.png"
+  image: "images/posts/banking-microservices-cover.png"
   alt: "Banking Microservices Architecture with Go: Saga pattern, event sourcing, and distributed ledger"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/banking-microservices-architecture/"
 ---
 
 **Answer-first:** A modern banking microservices architecture replaces legacy monolithic ledgers (like T24 or Flexcube) using Go for high-throughput transaction routing. The system achieves distributed consistency without two-phase commit (2PC) by combining Event Sourcing (immutable ledger streams), Saga Orchestration (using Temporal or Dapr), the Transactional Outbox pattern, and PostgreSQL unique constraints for API idempotency.

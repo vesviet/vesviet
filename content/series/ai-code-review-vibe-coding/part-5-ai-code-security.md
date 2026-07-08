@@ -1,7 +1,7 @@
-﻿---
+---
 title: "AI Code Security: OWASP LLM Top 10, RAG Poisoning & Zero Trust"
-date: 2026-05-31T18:30:00+07:00
-lastmod: 2026-05-31T18:30:00+07:00
+date: "2026-05-31T18:30:00+07:00"
+lastmod: "2026-05-31T18:30:00+07:00"
 draft: false
 weight: 6
 categories:
@@ -23,9 +23,11 @@ description: "Security threat model for AI-generated code: OWASP LLM Top 10, RAG
 aliases:
   - /series/ai-code-review-vibe-coding/part-5-ai-code-security/
 cover:
-  image: "/images/posts/vibe-coding-cover.png"
+  image: "images/posts/vibe-coding-cover.png"
   alt: "Vibe Coding and AI Code Review series: from prototype to production AI-assisted engineering"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/ai-code-review-vibe-coding/part-5-ai-code-security/"
 ---
 
 > **Series Orientation:** This article is Part 5 of the **AI Code Review & Vibe Coding** series, presenting the security threat model for AI-generated code. For the automated review pipeline that runs these security checks, see [Part 4 — Building the Review Pipeline](/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent/).

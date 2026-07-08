@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Part 8: Case Study Matrix â€“ The Monuments of the Modular Monolith"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "A compilation of the greatest Modular Monolith case studies from Shopify, Stack Overflow, Notion, WhatsApp, Target, and Basecamp."
@@ -8,9 +8,11 @@ aliases:
   - "/series/modular-monolith-architecture/part-8-case-study-matrix/"
   - "/series/modular-monolith-architecture/extraction-pattern-when-to-extract-microservices/part-8-case-study-matrix.md"
 cover:
-  image: "/images/posts/golang-microservices-cover.png"
+  image: "images/posts/golang-microservices-cover.png"
   alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/case-study-matrix-modular-monolith-success-stories/"
 ---
 
 # Part 8: Case Study Matrix â€“ The Monuments of the Modular Monolith

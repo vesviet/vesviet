@@ -1,17 +1,19 @@
-﻿---
+---
 title: "Composable Commerce Migration: Magento 2 → Microservices Golang"
 description: "Escape Magento with 21 Go microservices: DDD bounded contexts, Strangler Fig migration, EAV schema extraction, Dapr PubSub, and GitOps with ArgoCD."
-date: 2026-04-01T10:00:00+07:00
-lastmod: 2026-06-24T10:00:00+07:00
+date: "2026-04-01T10:00:00+07:00"
+lastmod: "2026-06-24T10:00:00+07:00"
 draft: false
 weight: 145
 slug: "composable-commerce-migration"
 categories: ["Series", "Software Engineering", "Backend Architecture"]
 tags: ["Magento", "Microservices", "Golang", "DDD", "Strangler Fig", "Rush Monorepo", "Dapr", "Kratos"]
 cover:
-  image: "/images/posts/ecommerce-composable-cover.png"
+  image: "images/posts/ecommerce-composable-cover.png"
   alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
   relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/"
 ---
 
 # Composable Commerce Migration: Magento 2 → Microservices Golang

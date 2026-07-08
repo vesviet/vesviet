@@ -1,8 +1,5 @@
-﻿---
+---
 title: "Self-Hosting GraphHopper on Kubernetes with OSM Data"
-cover:
-  image: "/images/posts/default-post.png"
-  alt: "Graphhopper Kubernetes Self Hosting Osm"
 slug: "graphhopper-kubernetes-self-hosting-osm"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
@@ -25,9 +22,10 @@ description: "Step-by-step guide to deploying GraphHopper on Kubernetes with Ope
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/graphhopper-cover.png"
+  image: "images/posts/graphhopper-cover.png"
   alt: "GraphHopper Kubernetes self-hosting with OpenStreetMap: deployment, data import, and scaling guide"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/graphhopper-kubernetes-self-hosting-osm/"
 ---
 
 **Answer-first:** Self-hosting GraphHopper on Kubernetes requires mounting OpenStreetMap (OSM) data via Persistent Volume Claims (PVC), tuning JVM memory parameters to cache routing graphs, and configuring liveness/readiness probes to handle the long startup index pre-loading times.
