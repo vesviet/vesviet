@@ -10,7 +10,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/"
 ---
 
-Welcome to the definitive hub for system design case studies and software architecture deep dives. Drawing from over 17 years of experience in backend engineering and building resilient platforms, these **20 in-depth series** break down complex [distributed systems](/posts/mastering-event-driven-architecture-dapr/) into digestible, actionable lessons — from e-commerce flash sales to core banking, from ride-hailing real-time systems to production AI agents.
+Welcome to the definitive hub for system design case studies and software architecture deep dives. Drawing from over 17 years of experience in backend engineering and building resilient platforms, these **21 in-depth series** break down complex [distributed systems](/posts/mastering-event-driven-architecture-dapr/) into digestible, actionable lessons — from e-commerce flash sales to core banking, from ride-hailing real-time systems to production AI agents.
 
 ## Exploring Real-World Software Architecture & Microservices
 
@@ -33,6 +33,8 @@ Scaling an e-commerce platform during flash sales is one of the toughest challen
 - **[Agentic E-commerce Search Engine Architecture](/series/agentic-ecommerce-search/)** — A hands-on series guiding you through building an Agentic Search system for e-commerce using Golang, Qdrant Hybrid Search, Redis Caching, and the Eino (CloudWeGo) Multi-Agent orchestration framework.
 
 - **[Composable Commerce Migration: Magento 2 → Microservices Golang](/series/composable-commerce-migration/)** — The definitive playbook for escaping Magento Enterprise ($125K–200K/year): DDD bounded contexts, 3-phase Strangler Fig migration (CDC → Dual-write → Cutover), EAV schema extraction, Dapr PubSub + Transactional Outbox, Rush monorepo for 21 Go services, and GitOps with ArgoCD — drawn from a real production platform.
+
+- **[E-Commerce Re-Architecture in Vietnam: Magento to Go Microservices](/series/magento-migration-vietnam/)** — The CTO playbook for migrating a Magento monolith to production Go microservices with a Vietnam engineering team. Covers team vetting (Go vs PHP), phase-by-phase cost models (Vietnam vs US/EU), zero-downtime Strangler Fig execution, remote team management, and post-migration SRE operations.
 
 - **[Alipay Double 11 Architecture](/series/alipay-double-11/)** — How Alipay scaled Double 11 to 61M QPS: LDC unitization, OceanBase, RocketMQ, SOFAStack, and annual stress testing for planet-scale payment reliability.
 
@@ -114,7 +116,7 @@ Choosing the right starting point depends on your background and goals:
 |---|---|---|
 | **New to distributed systems** | [Shopee Architecture](/series/shopee-architecture/) or [Ride-Hailing Architecture](/series/ride-hailing-realtime-architecture/) | Foundational patterns: caching, [message queues (Kafka)](/posts/mastering-event-driven-architecture-dapr/), geofencing, and database sharding |
 | **Senior backend engineer** | [High-Concurrency Systems](/series/high-concurrency-systems/) or [Core Banking Developer](/series/core-banking-developer/) | Deep technical patterns: C10M, Thundering Herd, Distributed Locks, and Idempotency |
-| **Magento / e-commerce engineer** | [Composable Commerce Migration](/series/composable-commerce-migration/) | Full migration playbook: DDD decomposition, EAV schema extraction, Strangler Fig, Dapr PubSub, zero-downtime cutover |
+| **Magento / e-commerce engineer** | [Composable Commerce Migration](/series/composable-commerce-migration/) → [Magento to Go: Vietnam Series](/series/magento-migration-vietnam/) | Full migration playbook: DDD decomposition, EAV schema extraction, Strangler Fig + execution with a Vietnam Go team, cost models, and post-migration SRE |
 | **Engineer adapting to AI** | [AI-Driven Engineer](/series/ai-driven-engineer/) → [AI-Driven Playbook](/series/ai-driven-playbook/) | Mindset shift first, then hands-on execution with IDE setup, RAG, and CI/CD |
 | **Building AI products** | [Agentic System Architecture](/series/agentic-system-architecture/) → [MCP Engineering](/series/mcp-engineering-in-production/) | Multi-agent topology, tool calling, and production MCP infrastructure |
 | **Non-technical builder (CEO/PM/BA)** | [Vibe Coding & AI Code Review](/series/ai-code-review-vibe-coding/) | Understand your limits with AI-generated code and when to hand off to engineers |
@@ -137,6 +139,6 @@ Senior engineers should explore the [E-Commerce Order Allocation](/series/ecomme
 The AI series follow a deliberate learning path: start with [AI-Driven Engineer](/series/ai-driven-engineer/) (mindset), then [AI-Driven Playbook](/series/ai-driven-playbook/) (execution), [Vibe Coding & AI Code Review](/series/ai-code-review-vibe-coding/) (shipping AI code safely), [AI Data Engineering Pipeline](/series/ai-data-engineering-pipeline/) (data layer), [Agentic System Architecture](/series/agentic-system-architecture/) (multi-agent design), and finally [MCP Engineering](/series/mcp-engineering-in-production/) (production infrastructure). The [SLM Playbook](/series/slm-playbook/) and [Generative UI](/series/generative-ui-architecture/) series complement this path with model deployment and frontend architecture.
 {{< /faq >}}
 
-{{< faq q="Do I need to read all 17 series?" >}}
+{{< faq q="Do I need to read all 21 series?" >}}
 No. Each series is self-contained and can be read independently. Use the **Where Should You Start?** table above to find the best entry point for your profile. However, series within the same category often cross-reference each other, so exploring related series will deepen your understanding.
 {{< /faq >}}
