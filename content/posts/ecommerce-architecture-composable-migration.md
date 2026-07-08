@@ -5,6 +5,7 @@ author: "Lê Tuấn Anh"
 date: "2026-07-06T00:00:00+07:00"
 lastmod: "2026-07-08T18:21:00+07:00"
 draft: false
+series: ["magento-migration-vietnam"]
 mermaid: true
 description: "MACH migration hard lessons: Strangler Fig via Envoy, Debezium CDC double-write, Redis BFF locking, and OpenTelemetry from day one to avoid system blindness."
 categories:

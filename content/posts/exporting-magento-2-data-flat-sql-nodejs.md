@@ -5,6 +5,7 @@ author: "Lê Tuấn Anh"
 date: "2024-03-09T10:38:22+07:00"
 lastmod: "2026-07-03T15:22:00+07:00"
 draft: false
+series: ["magento-migration-vietnam"]
 tags: ["Magento", "SQL", "Node.js", "Data Migration", "EAV", "ETL"]
 description: "Production-grade guide to extracting data from Magento 2's EAV model. Includes direct SQL queries and a resilient Node.js streaming pipeline."
 categories: ["Engineering"]

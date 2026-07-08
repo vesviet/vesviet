@@ -5,6 +5,7 @@ author: "Lê Tuấn Anh"
 date: "2026-04-14T21:20:00+07:00"
 lastmod: "2026-07-03T14:57:00+07:00"
 draft: false
+series: ["magento-migration-vietnam"]
 tags: ["Magento", "Microservices", "Migration", "System Design", "Debezium", "Dapr"]
 description: "Execution playbook: 3-Phase Strangler Fig, Debezium CDC, bidirectional Dapr sync, and a 30-day hot standby for safe rollback until Magento is terminated."
 categories: ["Architecture", "Engineering"]
@@ -215,6 +216,7 @@ If you are assessing vendor capability before a migration, our [Magento Developm
 - [Go Microservices Architecture: Production Guide](/posts/go-microservices/) — the complete architectural manual for the destination stack.
 - [Architecting a 21-Service E-Commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/) — the destination architecture after the migration: a full 21-service distributed system.
 - [Mastering Event-Driven Architecture with Dapr Pub/Sub](/posts/mastering-event-driven-architecture-dapr/) — the event-driven backbone (Saga, DLQ, Outbox) that replaces the Magento monolith's synchronous coupling.
+- [Magento Migration Cost: Vietnam vs US/EU Team (2026 Model)](/series/magento-migration-vietnam/magento-migration-cost-vietnam-vs-us-eu/) — phase-by-phase budget breakdown with real Vietnam rate data and break-even analysis.
 
 {{< author-cta >}}
 

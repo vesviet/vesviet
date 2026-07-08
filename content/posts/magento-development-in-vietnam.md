@@ -7,6 +7,7 @@ aliases:
 date: "2026-04-30T09:10:00+07:00"
 lastmod: "2026-07-03T00:00:00+07:00"
 draft: false
+series: ["magento-migration-vietnam"]
 tags: ["Magento", "Vietnam", "E-commerce", "Outsourcing", "Project Management", "Architecture"]
 description: "How to find and evaluate a Magento agency in Vietnam: effort layers for each project type, proposal red flags, hidden complexity, and delivery phase checklist."
 categories: ["Engineering", "Business"]

@@ -5,6 +5,7 @@ author: "Lê Tuấn Anh"
 date: "2026-05-24T09:18:00+07:00"
 lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
+series: ["magento-migration-vietnam"]
 tags: ["Magento", "AI", "E-commerce", "Architecture", "Strategy", "Microservices"]
 description: "A CTO's guide to Magento AI integration: avoid database locks, leverage vector search and agentic commerce, and calculate TCO without replatforming."
 categories: ["Engineering", "Strategy"]

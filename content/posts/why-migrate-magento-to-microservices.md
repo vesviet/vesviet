@@ -5,6 +5,7 @@ author: "Lê Tuấn Anh"
 date: "2026-04-14T22:00:00+07:00"
 lastmod: "2026-07-03T14:57:00+07:00"
 draft: false
+series: ["magento-migration-vietnam"]
 mermaid: true
 tags: ["Magento", "Microservices", "System Design", "Migration", "Architecture", "Golang"]
 description: "When to migrate from Magento: EAV performance limits, shared-DB contention, Saga pattern benefits, and a frank migrate/don't-migrate checklist with team size and traffic thresholds."

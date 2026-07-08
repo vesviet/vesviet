@@ -5,6 +5,7 @@ author: "Lê Tuấn Anh"
 date: "2026-05-30T11:30:00+07:00"
 lastmod: "2026-07-08T18:21:00+07:00"
 draft: false
+series: ["magento-migration-vietnam"]
 tags: ["Magento", "Vietnam", "Hiring", "Engineering", "Architecture", "Team Building"]
 description: "How to vet Magento developers in Vietnam: 5 production-level interview questions covering Plugin/Preference, Schema, reindex, integrations, and boundaries."
 categories: ["Engineering", "Strategy"]
@@ -182,4 +183,5 @@ Use **staff augmentation** (individual developers who join under your leadership
 - **[Magento Development in Vietnam: 2026 Guide](/posts/magento-vietnam/)** — Full market overview: cost tiers, agency vs freelance models, and when to consider migrating off Magento entirely.
 - **[Magento Agency & Development in Vietnam: Scoping Guide](/posts/magento-development-in-vietnam/)** — How to scope and evaluate Magento agencies in Vietnam: proposal red flags, hidden complexity, and delivery phase checklist.
 - **[Is Magento Worth It in 2026? The 2.4.9 Reality](/posts/magento-still-worth-investing-2026/)** — Decision framework for the Magento 2.4.9 upgrade vs platform migration question.
+- **[Go Engineers in Vietnam: Vetting for Magento Migration](/series/magento-migration-vietnam/go-engineers-vietnam-migration-vetting/)** — If your migration requires Go engineers rather than Magento PHP specialists, this post covers the 5 production interview scenarios specific to distributed systems migration work.
 - **[Hire a Go Backend Architect for Magento Migration](/hire/)** — If you need senior technical leadership for a Magento-to-Go migration, I'm available for architecture reviews and consulting.

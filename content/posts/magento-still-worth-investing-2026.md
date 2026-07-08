@@ -5,6 +5,7 @@ author: "Lê Tuấn Anh"
 date: "2026-05-17T11:50:00+07:00"
 lastmod: "2026-05-17T11:50:00+07:00"
 draft: false
+series: ["magento-migration-vietnam"]
 tags: ["Magento", "E-commerce", "Architecture", "Strategy", "Security", "Upgrades"]
 description: "Is Magento worth investing in for 2026? Understand the real cost of the 2.4.9 release: infra upgrades, extension compatibility, and long-term ownership."
 categories: ["Engineering", "Strategy"]
