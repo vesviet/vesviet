@@ -33,19 +33,19 @@ canonicalURL: "https://tanhdev.com/posts/serverless-ecommerce-cloudflare-d1/"
 - Managing distributed lock states in Durable Objects without causing bottleneck stalls.
 
 
-Running a traditional PHP/MySQL stack for e-commerce works until a flash sale hits. Then you're scaling servers, tuning Redis, and hoping your monolithic database doesn't lock up. If you are exploring [moving away from Magento](/posts/moving-from-magento-to-microservices) or simply evaluating the edge, there is a radically different approach: building a transactional e-commerce engine entirely on Cloudflare's edge network.
+Running a traditional PHP/MySQL stack for e-commerce works until a flash sale hits. Then you're scaling servers, tuning Redis, and hoping your monolithic database doesn't lock up. If you are exploring [moving away from Magento](/posts/moving-from-magento-to-microservices/) or simply evaluating the edge, there is a radically different approach: building a transactional e-commerce engine entirely on Cloudflare's edge network.
 
 This post breaks down the architecture of a zero-ops, serverless e-commerce backend using Cloudflare Workers, D1 (SQLite), and Durable Objects. We will look at how to structure the database, how to prevent inventory overselling without Redis, and where the limits of this architecture lie.
 
 ## The "Zero-Ops" E-Commerce Dream
 
-The traditional e-commerce problem is state. Serving static product pages is a solved problem (as discussed in [deploying full-stack edge architecture](/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture)), but the moment a user adds an item to their cart, you need a transactional backend.
+The traditional e-commerce problem is state. Serving static product pages is a solved problem (as discussed in [deploying full-stack edge architecture](/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/)), but the moment a user adds an item to their cart, you need a transactional backend.
 
 Cloudflare’s edge stack shifts this paradigm. Instead of sending users back to a centralized US-East data center for every API call, the API (Workers) and the database read replicas (D1) sit within milliseconds of the user. The latency profile completely changes.
 
 ## Architecting the Edge-Native E-Commerce Stack
 
-A purely serverless e-commerce setup looks drastically different from traditional [microservices vs monoliths](/posts/architecting-21-service-ecommerce-golang-ddd).
+A purely serverless e-commerce setup looks drastically different from traditional [microservices vs monoliths](/posts/architecting-21-service-ecommerce-golang-ddd/).
 
 ```mermaid
 flowchart TD

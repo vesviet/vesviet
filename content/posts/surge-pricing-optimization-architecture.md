@@ -37,13 +37,13 @@ canonicalURL: "https://tanhdev.com/posts/surge-pricing-optimization-architecture
 
 Why is it that every time it rains, ride-hailing fares double, or even triple? It's not a human operator manually adjusting the prices behind a desk. Rather, it's the result of an incredibly sophisticated Stream Processing engine running in the background executing the **surge pricing algorithm**.
 
-In this article, we will "dissect" the architecture of a real-time dynamic pricing system. We will explore everything from dividing geographical space using Uber's H3 library to the data processing architecture built on Kafka and Flink. Furthermore, we will examine why [Scaling your Database to handle Surge traffic](/posts/mysql-horizontal-scaling) is a strict prerequisite to prevent your system from crashing during massive traffic spikes.
+In this article, we will "dissect" the architecture of a real-time dynamic pricing system. We will explore everything from dividing geographical space using Uber's H3 library to the data processing architecture built on Kafka and Flink. Furthermore, we will examine why [Scaling your Database to handle Surge traffic](/posts/mysql-horizontal-scaling/) is a strict prerequisite to prevent your system from crashing during massive traffic spikes.
 
 ---
 
 ## Understanding Surge Pricing and the Surge Multiplier
 
-In economic terms, Surge Pricing is essentially a Supply - Demand Matching problem within a Marketplace ecosystem. Similar supply-side allocation challenges appear in [logistics dispatch and routing systems](/posts/graphhopper-distance-matrix-routing) that coordinate delivery fleets at scale.
+In economic terms, Surge Pricing is essentially a Supply - Demand Matching problem within a Marketplace ecosystem. Similar supply-side allocation challenges appear in [logistics dispatch and routing systems](/posts/graphhopper-distance-matrix-routing/) that coordinate delivery fleets at scale.
 - **Demand:** The number of riders currently opening the app, searching for rides, or requesting trips in a specific area.
 - **Supply:** The number of drivers currently online and ready to accept rides in that same area.
 
@@ -103,7 +103,7 @@ Based on the `Demand / Supply` ratio of each H3 cell within this window, Flink c
 
 ### High-Performance Caching with Redis for Sub-100ms API Responses
 The calculated Surge Multipliers (e.g., `[89283082803ffff: 1.5x]`) are continuously overwritten into **Redis** by Flink. 
-When a customer's app makes a `Get_Fare()` API call, the [Backend API Microservice](/posts/banking-microservices-architecture) directly queries Redis using the customer's `H3_Index` key. Because Redis serves data entirely from RAM, the API response time is guaranteed to stay **under 100ms**.
+When a customer's app makes a `Get_Fare()` API call, the [Backend API Microservice](/posts/banking-microservices-architecture/) directly queries Redis using the customer's `H3_Index` key. Because Redis serves data entirely from RAM, the API response time is guaranteed to stay **under 100ms**.
 
 ---
 

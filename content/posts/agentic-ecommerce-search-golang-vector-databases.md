@@ -153,7 +153,7 @@ The transition from Elasticsearch BM25 to an **Agentic E-commerce Search** archi
 
 E-commerce systems in 2026 will abandon dry, rigid search bars in favor of personalized, interactive Conversational Commerce for every individual shopper.
 
-For a deeper evaluation of retrieval strategies at enterprise scale — when naive vector RAG fails, how GraphRAG builds knowledge graphs over product catalogs, and the cost-accuracy tradeoffs at different corpus sizes — see [GraphRAG vs Naive RAG: Enterprise Architecture Guide](/posts/graphrag-vs-naive-rag-enterprise-guide).
+For a deeper evaluation of retrieval strategies at enterprise scale — when naive vector RAG fails, how GraphRAG builds knowledge graphs over product catalogs, and the cost-accuracy tradeoffs at different corpus sizes — see [GraphRAG vs Naive RAG: Enterprise Architecture Guide](/posts/graphrag-vs-naive-rag-enterprise-guide/).
 
 ---
 

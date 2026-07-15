@@ -1,4 +1,5 @@
 ---
+
 title: "Part 9: Agentic Observability - Monitoring & Debugging the AI's Train of Thought"
 slug: "part-9-agentic-observability-monitoring"
 date: "2026-05-17T12:00:00+07:00"
@@ -19,6 +20,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-9-agentic-observability-monitoring/"
+mermaid: true
 ---
 
 ## 1. The "Black Box" Problem & The Incompetence of Traditional APM

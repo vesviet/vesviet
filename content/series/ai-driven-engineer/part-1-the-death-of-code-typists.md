@@ -1,4 +1,5 @@
 ---
+
 title: "Part 1 — The Death of 'Code Typists': When Syntax is No Longer an Advantage"
 date: "2026-05-10T15:00:00+07:00"
 lastmod: "2026-05-10T15:00:00+07:00"
@@ -15,6 +16,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-1-the-death-of-code-typists/"
+mermaid: true
 ---
 
 For years, the image of a talented programmer was often associated with blazing fast typing speeds, the ability to memorize dozens of API libraries, and writing code without a single syntax error. We called them pure "Coders". But as AI enters the playing field, a harsh reality has emerged: **Writing code is only the easiest part of building software.**

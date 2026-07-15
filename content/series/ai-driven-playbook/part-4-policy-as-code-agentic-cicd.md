@@ -1,4 +1,5 @@
 ---
+
 title: "Part 4 — Policy-as-Code: Agentic CI/CD Guardrails for AI-Generated Code"
 date: "2026-05-17T08:00:00+07:00"
 lastmod: "2026-05-17T08:00:00+07:00"
@@ -15,6 +16,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-4-policy-as-code-agentic-cicd/"
+mermaid: true
 ---
 
 The 10x productivity of an AI-Native Developer is a "curse" if your CI/CD pipeline still runs at 1x speed.

@@ -39,7 +39,7 @@ You've instrumented your Go service with `net/http/pprof`, run `go tool pprof` l
 
 The production performance profile is the one that matters. **Go pprof Kubernetes remote profiling** is the practice of capturing real profiles from live pods — but `localhost:6060/debug/pprof` doesn't work against a pod running inside a Kubernetes cluster. You need a set of practical techniques for safely reaching the pprof HTTP endpoint of a specific pod, capturing profiles under real production load, and integrating continuous profiling without the operational overhead of manual profiling sessions.
 
-This post covers the three principal approaches — `kubectl port-forward`, pprof sidecar pattern, and Pyroscope continuous profiling — plus how to read the flame graph output for common Go performance issues. For the foundational pprof concepts and local profiling workflow, see [Go pprof Tutorial: CPU & Memory Profiling in Production](/posts/golang-pprof-profiling-memory-cpu-tutorial).
+This post covers the three principal approaches — `kubectl port-forward`, pprof sidecar pattern, and Pyroscope continuous profiling — plus how to read the flame graph output for common Go performance issues. For the foundational pprof concepts and local profiling workflow, see [Go pprof Tutorial: CPU & Memory Profiling in Production](/posts/golang-pprof-profiling-memory-cpu-tutorial/).
 
 ---
 
@@ -367,7 +367,7 @@ If your service is already degrading in production and you need to profile witho
 3. **Only then capture CPU** (`/debug/pprof/profile?seconds=10`) — the 10-second window minimizes the observation window during an active incident
 4. **Prefer Pyroscope historical data** over live captures during incidents, if Pyroscope is deployed — no additional overhead on the struggling pod
 
-For the goroutine pool patterns that prevent goroutine explosion before you even need to profile it, see [Goroutine Pool Patterns in Go: errgroup & Backpressure](/posts/golang-goroutine-pool-errgroup-worker).
+For the goroutine pool patterns that prevent goroutine explosion before you even need to profile it, see [Goroutine Pool Patterns in Go: errgroup & Backpressure](/posts/golang-goroutine-pool-errgroup-worker/).
 
 ---
 
@@ -420,7 +420,7 @@ If GC background worker frames consume more than 10–15% of CPU in a profile, t
 - Set `GOGC` higher (default 100) to reduce GC frequency at the cost of higher peak memory
 - Set `GOMEMLIMIT` (introduced in Go 1.19) to cap total memory usage
 
-For the goroutine-specific patterns in flame graphs, see [Goroutine Leak Detection and Fix in Production Go Services](/posts/goroutine-leak-detection-production-golang).
+For the goroutine-specific patterns in flame graphs, see [Goroutine Leak Detection and Fix in Production Go Services](/posts/goroutine-leak-detection-production-golang/).
 
 ---
 
@@ -502,7 +502,7 @@ INCIDENT: Go service showing elevated CPU or memory growth
    → Check if regression correlates with a recent deployment
 ```
 
-This playbook aligns with the GitOps operational practices described in [GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/) and the Argo CD deployment management covered in [What's New in Argo CD 3.4 & 3.3](/posts/argo-cd-updates-2026).
+This playbook aligns with the GitOps operational practices described in [GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/) and the Argo CD deployment management covered in [What's New in Argo CD 3.4 & 3.3](/posts/argo-cd-updates-2026/).
 
 ---
 

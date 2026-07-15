@@ -1,4 +1,5 @@
 ---
+
 title: "Part 1 — Agent Topology & Orchestration"
 date: "2026-05-15T08:00:00+07:00"
 lastmod: "2026-05-15T08:00:00+07:00"
@@ -15,6 +16,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/agentic-system-architecture/part-1-topology/"
+mermaid: true
 ---
 
 > **Prerequisite:** To understand the context and why we need Multi-Agent systems instead of traditional Microservices, please refer to [Comprehensive AI-Native System Architecture](/series/ai-driven-playbook/part-8-ai-native-system-architecture/).

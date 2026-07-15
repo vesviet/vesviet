@@ -1,9 +1,11 @@
 ---
+
 title: "Newsletter — tanhdev.com"
 slug: "newsletter"
 description: "Đăng ký nhận bản tin hàng tuần về kiến trúc phần mềm, Go, AI Engineering và các công nghệ mới nhất từ Lê Tuấn Anh."
 date: "2026-06-17T22:00:00+07:00"
 draft: false
+author: "Lê Tuấn Anh"
 ---
 
 # Newsletter

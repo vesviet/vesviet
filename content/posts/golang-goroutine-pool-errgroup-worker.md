@@ -41,7 +41,7 @@ Every Go engineer eventually writes the same mistake: a loop that launches gorou
 
 The solution is not to avoid goroutines — Go's concurrency model is one of its greatest strengths. The solution is to use the correct pattern for the workload: worker pools, bounded semaphores, and backpressure mechanisms that keep concurrency within sustainable bounds regardless of input volume.
 
-This post covers four production-grade **golang goroutine pool** patterns with complete code, benchmarks, and use-case guidance. It is the proactive counterpart to [Goroutine Leak Detection and Fix in Production Go Services](/posts/goroutine-leak-detection-production-golang) — that post detects and fixes leaks; this one prevents them architecturally. For the foundational CPU and heap profiling workflow that helps you measure pool performance, see [Go pprof Tutorial: CPU & Memory Profiling in Production](/posts/golang-pprof-profiling-memory-cpu-tutorial).
+This post covers four production-grade **golang goroutine pool** patterns with complete code, benchmarks, and use-case guidance. It is the proactive counterpart to [Goroutine Leak Detection and Fix in Production Go Services](/posts/goroutine-leak-detection-production-golang/) — that post detects and fixes leaks; this one prevents them architecturally. For the foundational CPU and heap profiling workflow that helps you measure pool performance, see [Go pprof Tutorial: CPU & Memory Profiling in Production](/posts/golang-pprof-profiling-memory-cpu-tutorial/).
 
 ---
 
@@ -446,7 +446,7 @@ func (p *WorkerPool[T]) Start(ctx context.Context) {
 
 In the pprof flame graph, samples from this goroutine will now show `pool=order-processor worker_id=3` as labels, making it trivial to distinguish between pools in a complex service.
 
-For the complete pprof workflow in Kubernetes, see [Go pprof in Kubernetes: Remote Profiling & Flame Graphs](/posts/go-pprof-kubernetes-remote-profiling).
+For the complete pprof workflow in Kubernetes, see [Go pprof in Kubernetes: Remote Profiling & Flame Graphs](/posts/go-pprof-kubernetes-remote-profiling/).
 
 ---
 
@@ -493,7 +493,7 @@ var (
 
 Alert on `worker_pool_jobs_dropped_total` rate > 0 as an indicator that the pool is consistently at capacity and needs scaling.
 
-For event-driven microservices architectures where this worker pool pattern integrates with Dapr Pub/Sub consumers, see [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr) for the full Dapr integration pattern. For the definitive guide on the complete architecture, read the [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
+For event-driven microservices architectures where this worker pool pattern integrates with Dapr Pub/Sub consumers, see [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr/) for the full Dapr integration pattern. For the definitive guide on the complete architecture, read the [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
 
 ---
 

@@ -43,7 +43,7 @@ Cloudflare Workers + D1 + Durable Objects offer a fundamentally different model:
 
 This post walks through building a production-grade shopping cart using this stack: the D1 schema, the Workers API for cart operations, and Durable Objects for handling concurrent cart edits from multiple browser tabs.
 
-For the architectural foundation, see [Serverless E-Commerce: Cloudflare Workers & D1 Architecture](/posts/serverless-ecommerce-cloudflare-d1). For the broader edge architecture context including Astro SSR and R2 storage, see [Astro on Cloudflare: Full-Stack Edge Architecture](/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture).
+For the architectural foundation, see [Serverless E-Commerce: Cloudflare Workers & D1 Architecture](/posts/serverless-ecommerce-cloudflare-d1/). For the broader edge architecture context including Astro SSR and R2 storage, see [Astro on Cloudflare: Full-Stack Edge Architecture](/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/).
 
 ---
 
@@ -88,7 +88,7 @@ graph TD
 
 **D1 is the source of truth** for products, sessions, and confirmed cart states. **Durable Objects** are the hot path for real-time cart mutations — they hold the current cart state in memory and handle concurrent updates with strong consistency, then asynchronously flush the final state to D1 when the cart is confirmed or when a persistence checkpoint is needed.
 
-This separation means that adding an item to the cart (a sub-1ms Durable Object memory write) is decoupled from the D1 write (a durable SQLite write) — giving you the responsiveness of in-memory operations with the durability of a relational store. For teams running a full microservices e-commerce stack alongside this edge cart, see [Architecting a 21-Service E-Commerce Ecosystem in Go](/posts/architecting-21-service-ecommerce-golang-ddd) for how the cart integrates with inventory, order, and payment services via DDD boundaries.
+This separation means that adding an item to the cart (a sub-1ms Durable Object memory write) is decoupled from the D1 write (a durable SQLite write) — giving you the responsiveness of in-memory operations with the durability of a relational store. For teams running a full microservices e-commerce stack alongside this edge cart, see [Architecting a 21-Service E-Commerce Ecosystem in Go](/posts/architecting-21-service-ecommerce-golang-ddd/) for how the cart integrates with inventory, order, and payment services via DDD boundaries.
 
 ---
 
@@ -543,7 +543,7 @@ async function createCheckoutSession(
 
 The economics strongly favor Cloudflare Workers for cart workloads at most e-commerce scales. The D1 10 GB size limit is the primary constraint — for a product catalog of 100,000 items at ~1 KB/row, that's 100 MB. Cart sessions and cart items for 1 million users are another ~500 MB. Most e-commerce platforms fit comfortably within 10 GB.
 
-Once a checkout is confirmed, the order flows into fulfillment. For the warehouse allocation and last-mile delivery layer that processes confirmed orders, see [Order Fulfillment Algorithm: Warehouse to Last-Mile](/posts/order-fulfillment-algorithm-warehouse-last-mile).
+Once a checkout is confirmed, the order flows into fulfillment. For the warehouse allocation and last-mile delivery layer that processes confirmed orders, see [Order Fulfillment Algorithm: Warehouse to Last-Mile](/posts/order-fulfillment-algorithm-warehouse-last-mile/).
 
 ---
 

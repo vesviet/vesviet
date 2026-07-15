@@ -496,7 +496,7 @@ The patterns in this post — the Transactional Outbox, idempotent consumers, DL
 - For how PayPay implements Kafka-native idempotency at 7.8 billion transactions/year (without Dapr's abstraction layer), see [Part 2 — Handling the Surge: Event-Driven & Kafka](/series/paypay-architecture/part-2-event-driven-kafka/).
 - For high concurrency event-driven scaling patterns using these concepts, check out our [High Concurrency Systems](/series/high-concurrency-systems/) masterclass.
 - For deploying these Go microservices on Kubernetes with GitOps, see [GitOps at Scale with Argo CD](/posts/gitops-at-scale-kubernetes-argocd-microservices/).
-- For the observability layer — how to propagate W3C trace context across Kafka topics, configure tail-based sampling in OTel Collector, and trace gRPC calls between Dapr sidecars — see [Go Microservices Distributed Tracing Architecture](/posts/go-microservices-distributed-tracing-architecture).
+- For the observability layer — how to propagate W3C trace context across Kafka topics, configure tail-based sampling in OTel Collector, and trace gRPC calls between Dapr sidecars — see [Go Microservices Distributed Tracing Architecture](/posts/go-microservices-distributed-tracing-architecture/).
 
 {{< author-cta >}}
 

@@ -1,4 +1,5 @@
 ---
+
 title: "Part 4 — Blurring SDLC Lines & The QC Revolution"
 date: "2026-05-10T15:30:00+07:00"
 lastmod: "2026-05-10T15:30:00+07:00"
@@ -15,6 +16,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-4-blurring-sdlc-lines-and-qc-revolution/"
+mermaid: true
 ---
 
 The traditional Software Development Life Cycle (SDLC) is often described as a factory assembly line. Business Analysts (BA) write requirements $\rightarrow$ Designers draw UI $\rightarrow$ Developers (Dev) write code $\rightarrow$ Quality Assurance (QA) finds bugs $\rightarrow$ DevOps pushes to the server. Everyone sits in their own "silo" and communicates via Jira tickets.

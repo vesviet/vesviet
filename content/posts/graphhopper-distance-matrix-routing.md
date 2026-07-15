@@ -37,7 +37,7 @@ canonicalURL: "https://tanhdev.com/posts/graphhopper-distance-matrix-routing/"
 
 In last-mile delivery and logistics, calculating a route is not just about finding the shortest path from point A to point B. When a system needs to coordinate thousands of drivers and orders simultaneously, computational costs can explode exponentially. 
 
-This article will compare two popular approaches: utilizing **GraphHopper** for lightning-fast **GraphHopper distance matrix calculation**, and leveraging the **CARTO Spatial Platform** (focused on spatial analysis in Cloud Data Warehouses). We will also explore how to integrate this routing data into [Real-time Surge Pricing Calculation](/posts/surge-pricing-optimization-architecture) to optimize operational costs. For routing within geospatial indexing systems (H3 hexagons, Redis GEO), see [Part 2 — Geospatial Indexing: H3, S2 & Redis GEO](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/).
+This article will compare two popular approaches: utilizing **GraphHopper** for lightning-fast **GraphHopper distance matrix calculation**, and leveraging the **CARTO Spatial Platform** (focused on spatial analysis in Cloud Data Warehouses). We will also explore how to integrate this routing data into [Real-time Surge Pricing Calculation](/posts/surge-pricing-optimization-architecture/) to optimize operational costs. For routing within geospatial indexing systems (H3 hexagons, Redis GEO), see [Part 2 — Geospatial Indexing: H3, S2 & Redis GEO](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/).
 
 ---
 
@@ -76,7 +76,7 @@ Unlike GraphHopper, which is a dedicated routing engine, **CARTO** is a cloud-na
 
 ### CARTO Analytics Toolbox for BigQuery
 
-Instead of managing your own servers (e.g. via a [GitOps deployment system](/posts/argo-cd-updates-2026)) and calculating distances in your application backend, CARTO allows you to execute routing functions directly inside **Google BigQuery** or **Snowflake** via the CARTO Analytics Toolbox. This solution is ideal for analyzing historical data, generating reports, and simulating macro strategies (e.g., deciding where to open a new warehouse).
+Instead of managing your own servers (e.g. via a [GitOps deployment system](/posts/argo-cd-updates-2026/)) and calculating distances in your application backend, CARTO allows you to execute routing functions directly inside **Google BigQuery** or **Snowflake** via the CARTO Analytics Toolbox. This solution is ideal for analyzing historical data, generating reports, and simulating macro strategies (e.g., deciding where to open a new warehouse).
 
 ### Integrating Third-Party Routing APIs (TomTom, Mapbox, HERE)
 
@@ -84,7 +84,7 @@ CARTO does not develop its own internal routing engine; instead, it connects dir
 
 **Cost and Applicability Comparison:**
 * **GraphHopper (Self-Hosted):** Fixed cost (server rental), suitable for VRP systems continuously generating tens of thousands of matrix requests per minute.
-* **CARTO / Commercial APIs:** Pay-per-API-call. Suitable for BI analysis, but if used for real-time route optimization, API costs can skyrocket to tens of thousands of dollars per month. A [scalable database architecture](/posts/mysql-horizontal-scaling) is also needed to cache this high volume of requests.
+* **CARTO / Commercial APIs:** Pay-per-API-call. Suitable for BI analysis, but if used for real-time route optimization, API costs can skyrocket to tens of thousands of dollars per month. A [scalable database architecture](/posts/mysql-horizontal-scaling/) is also needed to cache this high volume of requests.
 
 ---
 

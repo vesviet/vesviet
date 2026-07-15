@@ -1,4 +1,5 @@
 ---
+
 title: "Part 8 — The Junior Paradox: Building Foundations When AI Does the Basics"
 date: "2026-05-10T16:10:00+07:00"
 lastmod: "2026-05-10T16:10:00+07:00"
@@ -15,6 +16,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-8-the-junior-paradox/"
+mermaid: true
 ---
 
 At this point, we have painted a relatively bright prospect: Programmers escaping the drudgery of boring typing, becoming System Architects, and orchestrating AI.

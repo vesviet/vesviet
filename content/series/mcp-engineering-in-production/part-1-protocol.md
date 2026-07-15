@@ -1,4 +1,5 @@
 ---
+
 title: "Part 1: Protocol Fundamentals & Transport Evolution"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
@@ -20,6 +21,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-1-protocol/"
+mermaid: true
 ---
 
 To master a protocol, you must understand its DNA. Before we write Go code in the upcoming parts, we need to dismantle the architecture of the Model Context Protocol (MCP). Underneath the complex AI workflows, MCP is surprisingly simple and elegant. It is built on top of the **[JSON-RPC 2.0](https://www.jsonrpc.org/specification)** specification, a stateless, lightweight remote procedure call protocol.

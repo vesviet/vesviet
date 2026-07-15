@@ -258,7 +258,7 @@ This enables **multi-tenant fine-tuned serving** — multiple teams sharing a si
 
 vLLM supports serving quantized models (GGUF, AWQ, GPTQ) with minimal throughput degradation compared to full-precision serving. A 4-bit AWQ Llama 3.1 8B model fits on a single 24GB GPU and serves approximately 500–800 tokens/second at batch size 1 — suitable for most production SLM workloads.
 
-For the complete vLLM deployment guide with LoRA adapter management and autoscaling on Kubernetes, see [Part 2: vLLM Serving & Inference Optimization](/series/slm-playbook/part-2-vllm-serving/) which covers the full infrastructure stack. Production deployment of AI services also requires careful API versioning and authentication — covered in [OAuth 2.1 & Prompt Versioning for Production AI Agents](/posts/production-ai-apis-oauth-versioning-meta-predictions). For teams deploying autonomous multi-agent AI systems powered by self-hosted SLMs, see [Production Agentic AI Swarm: OpenClaw & LiteLLM](/posts/deploying-autonomous-ai-swarm-openclaw-litellm).
+For the complete vLLM deployment guide with LoRA adapter management and autoscaling on Kubernetes, see [Part 2: vLLM Serving & Inference Optimization](/series/slm-playbook/part-2-vllm-serving/) which covers the full infrastructure stack. Production deployment of AI services also requires careful API versioning and authentication — covered in [OAuth 2.1 & Prompt Versioning for Production AI Agents](/posts/production-ai-apis-oauth-versioning-meta-predictions/). For teams deploying autonomous multi-agent AI systems powered by self-hosted SLMs, see [Production Agentic AI Swarm: OpenClaw & LiteLLM](/posts/deploying-autonomous-ai-swarm-openclaw-litellm/).
 
 ---
 

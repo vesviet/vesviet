@@ -146,7 +146,7 @@ Key topics in the payment pipeline:
 
 This event sourcing model provides a complete audit trail: the current state of any transaction can be reconstructed by replaying its events from the beginning. This is a hard regulatory requirement for licensed payment service providers in Japan.
 
-For a similar event-driven architecture implemented using Dapr Pub/Sub in a Go stack, see [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr).
+For a similar event-driven architecture implemented using Dapr Pub/Sub in a Go stack, see [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr/).
 
 ---
 
@@ -182,7 +182,7 @@ PayPay migrated from MySQL to TiDB using a dual-write strategy:
 
 The dual-write phase lasted 6 weeks. During this phase, the application code added a `WriteTiDB` flag that could be toggled via a feature flag without deployment — a kill switch in case TiDB showed unexpected behavior.
 
-For a deeper comparison of TiDB, MySQL sharding, and OceanBase in the payment context, see [MySQL Database Scaling: Sharding and TiDB Architecture](/posts/mysql-scaling-sharding-tidb-architecture). For the complementary view from Alipay's similar architectural journey, see [Alipay Double 11: 583,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/).
+For a deeper comparison of TiDB, MySQL sharding, and OceanBase in the payment context, see [MySQL Database Scaling: Sharding and TiDB Architecture](/posts/mysql-scaling-sharding-tidb-architecture/). For the complementary view from Alipay's similar architectural journey, see [Alipay Double 11: 583,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/).
 
 ---
 

@@ -178,7 +178,7 @@ The `surge_curve` function is a piecewise linear or sigmoid curve calibrated per
 
 The multiplier is applied at the fare estimation step — before the rider accepts the ride. Uber's design philosophy is to show riders the surge clearly at the point of decision, with the option to wait for surge to decrease.
 
-This surge architecture is covered in depth in our standalone post on [Surge Pricing Algorithm & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture). For the full production implementation — Flink state management, anti-collusion detection, and multiplier damping algorithms — see [Part 5: Surge Pricing Engine](/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/).
+This surge architecture is covered in depth in our standalone post on [Surge Pricing Algorithm & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture/). For the full production implementation — Flink state management, anti-collusion detection, and multiplier damping algorithms — see [Part 5: Surge Pricing Engine](/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/).
 
 ---
 
@@ -198,7 +198,7 @@ Push notifications at Uber's scale face several engineering challenges:
 
 RAMEN solves this with a **per-device ordered queue** in Redis. Each notification has a monotonically increasing sequence number. The driver app acknowledges notifications by sequence number. If the driver receives sequence 5 before sequence 4, they request a retransmit of sequence 4 before rendering either notification.
 
-For the underlying event-driven infrastructure that supports notification routing, see [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr). For the complete RAMEN architecture — WebSocket connection management, APNs/FCM fan-out, and exactly-once delivery guarantees — see [Part 6: Real-Time Push with RAMEN](/series/ride-hailing-realtime-architecture/part-6-realtime-push-ramen/).
+For the underlying event-driven infrastructure that supports notification routing, see [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr/). For the complete RAMEN architecture — WebSocket connection management, APNs/FCM fan-out, and exactly-once delivery guarantees — see [Part 6: Real-Time Push with RAMEN](/series/ride-hailing-realtime-architecture/part-6-realtime-push-ramen/).
 
 ---
 

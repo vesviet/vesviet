@@ -34,7 +34,7 @@ cover:
 - Configuring proxy routing layers like Vitess to scale MySQL queries horizontally.
 
 
-When your application reaches millions of users, a single database instance will inevitably become the biggest bottleneck in your entire architecture. To solve this, **MySQL database scaling** becomes mandatory. You must [Scale DB for Microservices](/posts/banking-microservices-architecture) using Horizontal Scaling techniques.
+When your application reaches millions of users, a single database instance will inevitably become the biggest bottleneck in your entire architecture. To solve this, **MySQL database scaling** becomes mandatory. You must [Scale DB for Microservices](/posts/banking-microservices-architecture/) using Horizontal Scaling techniques.
 
 This article delves into the differences between scaling methods and compares the two most popular Sharding architectures today: Middleware-level Sharding (Vitess) and Application-level Sharding in Go (GORM Sharding plugin).
 
@@ -49,7 +49,7 @@ However, this method has three fatal limits:
 2. **Exponential Cost Curve:** A single 128-Core / 1TB RAM server is astronomically more expensive than the combined cost of four 32-Core / 256GB RAM servers.
 3. **Single Point of Failure (SPOF):** No matter how premium the hardware is, if that single server crashes or experiences a disk failure, the entire system goes down.
 
-When your CPU consistently exceeds 80% due to massive write transaction volume, it is time to transition to **Horizontal Scaling (Scaling Out)** – distributing your data across multiple smaller servers. For a broader overview of all scaling methods, read our [comprehensive MySQL Scalability guide](/posts/mysql-scalability-guide).
+When your CPU consistently exceeds 80% due to massive write transaction volume, it is time to transition to **Horizontal Scaling (Scaling Out)** – distributing your data across multiple smaller servers. For a broader overview of all scaling methods, read our [comprehensive MySQL Scalability guide](/posts/mysql-scalability-guide/).
 
 ---
 
@@ -68,7 +68,7 @@ If your system has a Read/Write ratio of 90/10 (such as a blog, news site, or e-
 The biggest issue with Replication is **Replication Lag**. When a user changes their account name (written to the Primary) and immediately refreshes the webpage (read from a Replica), they might still see the old name because the data hasn't synchronized yet. The solution for this "Read-after-Write inconsistency" is to force critical read queries for that user back to the Primary for a few seconds following an update.
 
 ### 2. Write-Scaling (Sharding)
-If your system (like Core Banking or a [Surge Pricing Engine](/posts/surge-pricing-optimization-architecture)) has a massive volume of Writes that overwhelms the Primary node, Replication becomes useless. You must resort to **Sharding**.
+If your system (like Core Banking or a [Surge Pricing Engine](/posts/surge-pricing-optimization-architecture/)) has a massive volume of Writes that overwhelms the Primary node, Replication becomes useless. You must resort to **Sharding**.
 Sharding is the process of splitting a large table into multiple smaller pieces (shards) and storing them across different physical MySQL servers based on a **Sharding Key** (e.g., `user_id`).
 
 ---
@@ -77,7 +77,7 @@ Sharding is the process of splitting a large table into multiple smaller pieces 
 
 **Vitess is a database clustering system built at YouTube that provides transparent MySQL sharding. It acts as an intelligent proxy layer, allowing Go applications to connect to Vitess as if it were a single MySQL database while it routes queries to thousands of underlying shards.**
 
-**Vitess** is a database clustering system for horizontal scaling of MySQL, often deployed using modern [GitOps platforms like Argo CD](/posts/argo-cd-updates-2026). Originally developed by YouTube, it is now used by massive platforms like Slack and GitHub. Vitess acts as a Middleware layer sitting between the application and the database. 
+**Vitess** is a database clustering system for horizontal scaling of MySQL, often deployed using modern [GitOps platforms like Argo CD](/posts/argo-cd-updates-2026/). Originally developed by YouTube, it is now used by massive platforms like Slack and GitHub. Vitess acts as a Middleware layer sitting between the application and the database. 
 
 Your application connects to Vitess as if it were a standard MySQL server, remaining completely unaware of which Shard the data resides on.
 

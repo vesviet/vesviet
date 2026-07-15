@@ -156,7 +156,7 @@ OceanBase 4.x introduced an independent Arbitration Service — a lightweight pr
 | Oracle Compatibility | Full (OB Oracle mode) | No | No |
 | Financial/HTAP Use | Primary design target | Strong HTAP | Strong OLTP |
 
-For a full comparison with TiDB in the context of scaling a MySQL-based payment ledger, see our post on [MySQL Database Scaling: Sharding and TiDB Architecture](/posts/mysql-scaling-sharding-tidb-architecture).
+For a full comparison with TiDB in the context of scaling a MySQL-based payment ledger, see our post on [MySQL Database Scaling: Sharding and TiDB Architecture](/posts/mysql-scaling-sharding-tidb-architecture/).
 
 ---
 
@@ -186,7 +186,7 @@ During Double 11 2023, the Alibaba RocketMQ cluster sustained:
 - Peak throughput of **multiple millions of messages per second**
 - P99 message delivery latency under 5ms for payment-critical topics
 
-For a deeper exploration of event-driven patterns using a similar architecture, see [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr).
+For a deeper exploration of event-driven patterns using a similar architecture, see [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr/).
 
 ---
 
@@ -253,6 +253,6 @@ All three are distributed relational databases using consensus protocols (Paxos 
 ### How many transactions did Alipay process during Double 11 2023?
 The verified peak was **583,000 payment transactions per second (TPS)** sustained during the midnight spike. The total transaction volume for the 24-hour event exceeded several hundred billion RMB in payment value. The infrastructure handled this without reported SLA violations due to LDC unit isolation and OceanBase's horizontal scaling.
 
-For a comparison with how a different payment platform solved similar concurrency challenges — how PayPay handles 7.8 billion transactions/year using Kafka idempotency, TiDB, and campaign-era Redis counters — see [PayPay Architecture: Scaling to Billions of Transactions](/posts/paypay-architecture-scaling).
+For a comparison with how a different payment platform solved similar concurrency challenges — how PayPay handles 7.8 billion transactions/year using Kafka idempotency, TiDB, and campaign-era Redis counters — see [PayPay Architecture: Scaling to Billions of Transactions](/posts/paypay-architecture-scaling/).
 
 {{< author-cta >}}

@@ -1,4 +1,5 @@
 ---
+
 title: "Critique Loop: Preventing LLM Hallucination"
 date: "2026-05-22T22:40:00+07:00"
 lastmod: "2026-05-22T22:40:00+07:00"
@@ -17,6 +18,7 @@ cover:
   alt: "Agentic E-commerce Search Engine Architecture series: vector databases, ranking, and Go"
   relative: false
 canonicalURL: "https://tanhdev.com/series/agentic-ecommerce-search/part-5-critique-loop/"
+mermaid: true
 ---
 
 In [Part 4: Active RAG & Strict Tool Calling - Connecting LLMs to Real-time APIs](/series/agentic-ecommerce-search/part-4-active-rag-tool-calling/), we successfully built a cyclic ReAct graph allowing the LLM to call APIs to check inventory and promotions in real-time. However, in a real-world production environment, giving an LLM access to Tools is not enough to guarantee absolute accuracy.

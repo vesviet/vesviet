@@ -1,4 +1,5 @@
 ---
+
 title: "Hire Lê Tuấn Anh — Go Backend Architect & Consulting"
 date: "2026-06-06T10:00:00+07:00"
 lastmod: "2026-07-03T10:00:00+07:00"
@@ -15,6 +16,7 @@ cover:
   image: "images/posts/hire-cover.png"
   alt: "Hire Lê Tuấn Anh — Senior Go Backend Architect & Microservices Consultant, Vietnam"
   relative: false
+author: "Lê Tuấn Anh"
 ---
 
 > *"Let's solve hard backend problems together — the kind that keep your engineers up at night."*

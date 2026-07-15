@@ -40,7 +40,7 @@ Legacy core banking systems were designed in a different era. Temenos T24, Finac
 
 Composable banking replaces that monolith with a network of independent, purpose-built service components. This post is a deep engineering guide to what that actually means in Go microservices terms: ledger concurrency patterns, event-driven Saga orchestration, BaaS API idempotency, ISO 20022 message flows, and a step-by-step Strangler Fig migration strategy.
 
-For the foundational Saga mechanics in Go, see [Dapr Workflow Saga Orchestration Guide](/posts/dapr-workflow-saga-orchestration-guide) and [Financial Microservices Architecture: Saga & Ledger](/posts/banking-microservices-architecture).
+For the foundational Saga mechanics in Go, see [Dapr Workflow Saga Orchestration Guide](/posts/dapr-workflow-saga-orchestration-guide/) and [Financial Microservices Architecture: Saga & Ledger](/posts/banking-microservices-architecture/).
 
 ---
 
@@ -295,7 +295,7 @@ func (s *AccountService) DebitAccount(ctx context.Context, tx *sql.Tx, input Deb
 
 Debezium reads the PostgreSQL WAL and forwards every `outbox_events` INSERT directly to Kafka, with zero polling overhead and guaranteed at-least-once delivery. Even if Kafka is down during the database commit, Debezium will forward the event once Kafka recovers.
 
-For a complete walkthrough of the broader event-driven patterns powering this approach, see [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr). For the observability layer across these banking microservices — W3C trace propagation, OTel Collector sampling, and tracing Kafka consumers — see [Go Microservices Distributed Tracing Architecture](/posts/go-microservices-distributed-tracing-architecture).
+For a complete walkthrough of the broader event-driven patterns powering this approach, see [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr/). For the observability layer across these banking microservices — W3C trace propagation, OTel Collector sampling, and tracing Kafka consumers — see [Go Microservices Distributed Tracing Architecture](/posts/go-microservices-distributed-tracing-architecture/).
 
 ---
 
@@ -540,7 +540,7 @@ func (r *ReconciliationEngine) RunBalanceCheck(ctx context.Context) error {
 
 ## Next-Gen Core Banking Vendor Landscape
 
-For teams evaluating off-the-shelf composable cores before building in-house, the microfinance vertical offers a useful contrast: it shares the same double-entry ledger and Saga requirements but operates on high-frequency, low-value group loans — see [Microfinance Core Banking Architecture](/posts/deconstructing-microfinance-core-banking-architecture) for that lens.
+For teams evaluating off-the-shelf composable cores before building in-house, the microfinance vertical offers a useful contrast: it shares the same double-entry ledger and Saga requirements but operates on high-frequency, low-value group loans — see [Microfinance Core Banking Architecture](/posts/deconstructing-microfinance-core-banking-architecture/) for that lens.
 
 | Vendor | Runtime | Database | Customization | Tenancy |
 |---|---|---|---|---|

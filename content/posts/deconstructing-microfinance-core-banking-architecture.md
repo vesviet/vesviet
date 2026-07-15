@@ -164,7 +164,7 @@ Because modern CBS architectures manage millions of loans, they rely on distribu
 
 **Continue Reading:** The [Core Banking Developer Learning Path](/series/core-banking-developer/) series goes deeper on ACID transactions, ISO 8583/20022 standards, and building a complete mini banking system from scratch.
 
-For the broader strategic picture — how banks replace monolithic cores like Temenos T24 with full composable architectures using Go microservices, Saga orchestration, and Strangler Fig migrations — see [Composable Banking Architecture: From Monolith to Modular Core](/posts/composable-banking-architecture).
+For the broader strategic picture — how banks replace monolithic cores like Temenos T24 with full composable architectures using Go microservices, Saga orchestration, and Strangler Fig migrations — see [Composable Banking Architecture: From Monolith to Modular Core](/posts/composable-banking-architecture/).
 
 **Related Reading:** For the broader landscape of engineers working on core banking systems and the skills they need, see [The Landscape of Core Banking Developers](/series/core-banking-developer/executive-summary/). For a contrast at global scale — how PayPay applies similar transaction ledger and idempotency patterns for 70M users — see [PayPay Architecture: Scaling Payments to 70M Users](/posts/paypay-architecture-scaling/). For the architectural framework and ISO standards behind modern core banking, see the [Core Banking Architecture series](/series/core-banking-architecture/).
 

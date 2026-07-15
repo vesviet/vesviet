@@ -1,4 +1,5 @@
 ---
+
 title: "Part 6: Observability & Audit Trail"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
@@ -20,6 +21,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-6-observability/"
+mermaid: true
 ---
 
 As mentioned in [Part 5](/series/mcp-engineering-in-production/part-5-security/), the **MCP08 (Lack of Audit & Telemetry)** vulnerability is one of the biggest risks in Agentic systems. In the [AI Driven Playbook](/series/ai-driven-playbook/), we agreed that: When AI automates tasks on behalf of humans, the requirements for Observability and Auditing become stricter than ever, especially under the pressure of regulations like the EU AI Act.

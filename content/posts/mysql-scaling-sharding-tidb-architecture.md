@@ -45,7 +45,7 @@ In this deep dive, we will explore the architectural progression of scaling MySQ
 
 **Replacing MySQL sharding** means migrating from a setup where the application manually routes queries to multiple MySQL instances (based on a shard key like `user_id % 4`) to a single TiDB cluster that auto-partitions data internally using Raft Regions — and exposes one standard MySQL connection string to the application.
 
-Most scaling journeys start with a single primary instance handling both read and write operations. Before jumping to Sharding, it is highly recommended to review the basic strategies in our [MySQL Scalability Guide](/posts/mysql-scalability-guide). When read volume saturates the CPU or disk bandwidth, the standard mitigation is to implement a Primary-Replica replication topology.
+Most scaling journeys start with a single primary instance handling both read and write operations. Before jumping to Sharding, it is highly recommended to review the basic strategies in our [MySQL Scalability Guide](/posts/mysql-scalability-guide/). When read volume saturates the CPU or disk bandwidth, the standard mitigation is to implement a Primary-Replica replication topology.
 
 ```mermaid
 flowchart TD
@@ -286,7 +286,7 @@ TiDB offers the horizontal write scalability of sharding without the application
 
 ---
 
-🔗 **Next Step:** To see how database scaling and high-availability topologies fit into broader cloud infrastructure designs, read our guide on [architecting large-scale systems](/series/agentic-system-architecture) and contrast traditional regional database systems with modern [edge computing databases](/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture).
+🔗 **Next Step:** To see how database scaling and high-availability topologies fit into broader cloud infrastructure designs, read our guide on [architecting large-scale systems](/series/agentic-system-architecture/) and contrast traditional regional database systems with modern [edge computing databases](/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/).
 
 **Continue Reading:** [Financial Microservices Architecture: Saga & Double-Entry Ledger](/posts/banking-microservices-architecture/) — how the database layer covered here supports ACID-compliant financial transaction processing in a distributed system.
 

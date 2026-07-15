@@ -1,4 +1,5 @@
 ---
+
 title: "Part 8: Writing a Core Banking PRD — Developer Guide"
 date: "2026-05-27T07:10:00+07:00"
 lastmod: "2026-06-10T16:00:00+07:00"
@@ -11,6 +12,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-8-core-banking-prd/"
+mermaid: true
 ---
 
 In core banking system (CBS) development, the Product Requirements Document (PRD) is vastly different from a standard SaaS or mobile app PRD. While a SaaS PRD focuses heavily on user interfaces, user growth metrics, and customer delight, a Core Banking PRD must prioritize **financial integrity, transactional consistency, auditability, and regulatory compliance**.

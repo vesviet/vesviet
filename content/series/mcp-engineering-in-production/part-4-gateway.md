@@ -1,4 +1,5 @@
 ---
+
 title: "Part 4: MCP Gateway Architecture"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
@@ -20,6 +21,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-4-gateway/"
+mermaid: true
 ---
 
 When deploying Model Context Protocol (MCP) in a large Enterprise, you will quickly hit an architectural wall. If 50 distinct AI Agents (Coding Agents, HR Bots, Financial Analysts) need to talk to 100 different internal systems (Jira, Confluence, GitHub, internal DBs), letting them connect directly creates a chaotic matrix of 5,000 P2P connections. 

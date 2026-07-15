@@ -1,4 +1,5 @@
 ---
+
 title: "Part 3A — Enterprise RAG Architecture: Building the Internal 'Brain'"
 date: "2026-05-15T08:00:00+07:00"
 lastmod: "2026-05-15T08:00:00+07:00"
@@ -15,6 +16,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-3a-enterprise-rag-architecture/"
+mermaid: true
 ---
 
 90% of RAG (Retrieval-Augmented Generation) tutorials online are "toy examples": Write 10 lines of Python, read a PDF file, perform naive chunking, stuff it into a Vector Database, and then run a Q&A.

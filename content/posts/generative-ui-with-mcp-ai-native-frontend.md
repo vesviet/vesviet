@@ -544,7 +544,7 @@ Putting it all together, here is the minimal directory structure for a Next.js M
   confirm-action.ts
 ```
 
-This architecture integrates naturally with the edge-native deployment model described in [Astro on Cloudflare: Full-Stack Edge Architecture](/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture) for globally low-latency AI UI delivery, and with the real-time state management patterns in [Cloudflare D1 + Durable Objects: Build a Real-Time Cart](/posts/cloudflare-d1-durable-objects-realtime-cart/) for AI-assisted shopping experiences.
+This architecture integrates naturally with the edge-native deployment model described in [Astro on Cloudflare: Full-Stack Edge Architecture](/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/) for globally low-latency AI UI delivery, and with the real-time state management patterns in [Cloudflare D1 + Durable Objects: Build a Real-Time Cart](/posts/cloudflare-d1-durable-objects-realtime-cart/) for AI-assisted shopping experiences.
 
 ---
 

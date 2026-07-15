@@ -1,4 +1,5 @@
 ---
+
 title: "Hybrid AI Architecture & Self-Hosted vLLM | SLM Playbook"
 date: "2026-05-21T08:00:00+07:00"
 lastmod: "2026-05-21T08:00:00+07:00"
@@ -15,6 +16,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/slm-playbook/part-1-slm-hybrid-architecture/"
+mermaid: true
 ---
 [← Series hub](/series/slm-playbook/)
 [← Previous](/series/slm-playbook/executive-summary/) | [Next →](/series/slm-playbook/part-2-sft-data-engineering/)

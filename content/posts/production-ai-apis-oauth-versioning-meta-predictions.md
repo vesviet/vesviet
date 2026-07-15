@@ -45,7 +45,7 @@ This post covers all three: OAuth 2.1 for AI agent identity, prompt versioning a
 
 Every AI Agent I have deployed starts life with an API key. It is fast, it is simple, and it is a ticking time bomb.
 
-The problem is not that API keys are conceptually wrong. The problem is that AI Agents are not humans. A human with a stolen session token eventually logs out. An autonomous swarm (like the one discussed in our [AI Swarm deployment guide](/posts/deploying-autonomous-ai-swarm-openclaw-litellm)) with a stolen API key keeps running — generating requests, burning tokens, exfiltrating data — until someone notices an anomaly in the billing dashboard three weeks later.
+The problem is not that API keys are conceptually wrong. The problem is that AI Agents are not humans. A human with a stolen session token eventually logs out. An autonomous swarm (like the one discussed in our [AI Swarm deployment guide](/posts/deploying-autonomous-ai-swarm-openclaw-litellm/)) with a stolen API key keeps running — generating requests, burning tokens, exfiltrating data — until someone notices an anomaly in the billing dashboard three weeks later.
 
 **The specific failure mode I witnessed:** In one deployment, a Prompt Injection attack against a customer-facing support agent caused it to emit its own configuration headers in a response body. Those headers contained the long-lived API key used to authenticate against our internal tool execution layer. The attacker had a key that did not expire for 90 days. We caught it in 72 hours — which is not a success story, it is a near miss.
 
@@ -115,7 +115,7 @@ The critical security property: the Identity Provider only trusts clients hosted
 
 The most consequential gap in AI engineering practice right now is the treatment of prompts as configuration rather than code. Configuration does not need tests, does not need version history, does not need a deployment pipeline. Code does. Prompts are code.
 
-The failure mode that convinced me: we updated the system prompt for an internal report-generation agent (similar to the nodes in our [Hybrid AI Content Pipeline](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline)) — a three-line change to improve output formatting. The agent worked correctly in every test we ran. What we did not notice was that the formatting change subtly altered how the agent interpreted ambiguous instructions about date ranges. Reports generated after the prompt change had a systematic off-by-one on fiscal quarter boundaries. The error was silent at the code level. No exceptions. No 4xx responses. Just wrong numbers in 23 executive reports before a finance manager caught a discrepancy by hand.
+The failure mode that convinced me: we updated the system prompt for an internal report-generation agent (similar to the nodes in our [Hybrid AI Content Pipeline](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)) — a three-line change to improve output formatting. The agent worked correctly in every test we ran. What we did not notice was that the formatting change subtly altered how the agent interpreted ambiguous instructions about date ranges. Reports generated after the prompt change had a systematic off-by-one on fiscal quarter boundaries. The error was silent at the code level. No exceptions. No 4xx responses. Just wrong numbers in 23 executive reports before a finance manager caught a discrepancy by hand.
 
 ### The Versioning Model That Works
 

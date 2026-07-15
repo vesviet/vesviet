@@ -32,7 +32,7 @@ canonicalURL: "https://tanhdev.com/posts/argo-cd-updates-2026/"
 
 GitOps is steadily becoming the gold standard for configuration management and application deployment on Kubernetes. Among the tools available, Argo CD continues to maintain its leading position. In the first half of 2026, the Argo project released two landmark versions: **Argo CD 3.3** and **Argo CD 3.4**. These releases address numerous headaches related to application lifecycle management, synchronization performance, and incident response capabilities.
 
-This article dives deep into the most prominent features of these two versions, while also highlighting crucial **breaking changes** that Platform/DevOps teams must be aware of before upgrading. If your infrastructure relies on an [ArgoCD-based GitOps platform](/posts/gitops-at-scale-kubernetes-argocd-microservices) for deploying microservices, these upgrades are impossible to ignore.
+This article dives deep into the most prominent features of these two versions, while also highlighting crucial **breaking changes** that Platform/DevOps teams must be aware of before upgrading. If your infrastructure relies on an [ArgoCD-based GitOps platform](/posts/gitops-at-scale-kubernetes-argocd-microservices/) for deploying microservices, these upgrades are impossible to ignore.
 
 ---
 
@@ -47,13 +47,13 @@ The focus for Argo CD in 2026 is not a complete redesign of the user interface o
 
 ## What's New in Argo CD 3.4 (May 2026)
 
-The 3.4 update brings powerful control tools that help SREs sleep better at night, especially when managing high-throughput services like a [Real-time Surge Pricing Engine](/posts/surge-pricing-optimization-architecture).
+The 3.4 update brings powerful control tools that help SREs sleep better at night, especially when managing high-throughput services like a [Real-time Surge Pricing Engine](/posts/surge-pricing-optimization-architecture/).
 
 ### Cluster-Level Pause Reconciliation - A Lifesaver During Incidents
 
 One of the most highly anticipated features is **Cluster-Level Pause Reconciliation**. 
 
-Previously, when an incident occurred in Production (e.g., a [database bottleneck requiring sharding](/posts/mysql-horizontal-scaling), or a memory leak), engineers often had to manually intervene using `kubectl` to roll back or patch manifest files directly on the cluster to salvage the situation immediately. However, Argo CD would detect this drift (Out of Sync) and immediately **reconcile (sync back)** the old configuration from Git, unintentionally "breaking" the SRE's rescue efforts.
+Previously, when an incident occurred in Production (e.g., a [database bottleneck requiring sharding](/posts/mysql-horizontal-scaling/), or a memory leak), engineers often had to manually intervene using `kubectl` to roll back or patch manifest files directly on the cluster to salvage the situation immediately. However, Argo CD would detect this drift (Out of Sync) and immediately **reconcile (sync back)** the old configuration from Git, unintentionally "breaking" the SRE's rescue efforts.
 
 With Argo CD 3.4, you can **pause** the entire reconciliation process at the cluster level using the new first-class CLI commands:
 

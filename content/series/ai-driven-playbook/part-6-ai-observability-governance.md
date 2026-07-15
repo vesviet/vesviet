@@ -1,4 +1,5 @@
 ---
+
 title: "Part 6 — AI Observability & Evals: Eliminating Operational Blind Spots"
 date: "2026-05-19T08:00:00+07:00"
 lastmod: "2026-05-19T08:00:00+07:00"
@@ -15,6 +16,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-6-ai-observability-governance/"
+mermaid: true
 ---
 
 Many engineers in the current market can build an AI App in a weekend. But those who know how to **operate an AI system in production (AI Platform Operations)** can be counted on one hand.

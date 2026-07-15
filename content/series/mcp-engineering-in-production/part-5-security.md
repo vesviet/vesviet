@@ -1,4 +1,5 @@
 ---
+
 title: "Part 5: Production Security & OWASP MCP Top 10"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
@@ -20,6 +21,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-5-security/"
+mermaid: true
 ---
 
 In a distributed Agentic architecture, when you boldly grant an AI Agent the right to auto-discover and execute tools without human approval, you are expanding the system's attack surface to an unprecedented scale.

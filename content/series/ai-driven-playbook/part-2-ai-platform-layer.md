@@ -1,4 +1,5 @@
 ---
+
 title: "Part 2 — AI Platform Layer: Building a Private AI Ecosystem & Architectural Freedom"
 date: "2026-05-14T08:00:00+07:00"
 lastmod: "2026-05-14T08:00:00+07:00"
@@ -15,6 +16,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-2-ai-platform-layer/"
+mermaid: true
 ---
 
 In [Part 1](/series/ai-driven-playbook/part-1-context-engineering-ddd/), we solved the code quality problem using *Context Engineering*. But when you start scaling AI across the entire organization, Chief Technology Officers (CTOs) immediately hit another wall: **Cost and Security**.

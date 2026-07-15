@@ -1,4 +1,5 @@
 ---
+
 title: "Part 8 — Grand Finale: Comprehensive AI-Native System Architecture"
 date: "2026-05-21T08:00:00+07:00"
 lastmod: "2026-05-21T08:00:00+07:00"
@@ -15,6 +16,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-8-ai-native-system-architecture/"
+mermaid: true
 ---
 
 From [Part 1](/series/ai-driven-playbook/part-1-context-engineering-ddd/) through [Part 7](/series/ai-driven-playbook/part-7-ai-security-engineering/), we have systematically assembled all the puzzle pieces: *Context, Gateway, Data, CI/CD, Process, Monitoring, and Security*.

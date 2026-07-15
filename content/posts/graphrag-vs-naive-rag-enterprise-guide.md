@@ -353,7 +353,7 @@ Use a structured evaluation set that includes:
 
 Automate evaluation with LLM-as-judge against a golden dataset. Track metrics across deployments in CI/CD — a regression in multi-hop faithfulness above a threshold should block deployment.
 
-For the broader AI engineering decision framework (when to use RAG vs fine-tuning vs prompting), see [Fine-Tune vs Prompt-Engineer an LLM: Decision Guide](/posts/slm-fine-tune-vs-prompt-engineering/). For teams building autonomous AI agents that query GraphRAG systems at runtime, see [Production Agentic AI Swarm: OpenClaw & LiteLLM](/posts/deploying-autonomous-ai-swarm-openclaw-litellm) for the multi-agent orchestration layer.
+For the broader AI engineering decision framework (when to use RAG vs fine-tuning vs prompting), see [Fine-Tune vs Prompt-Engineer an LLM: Decision Guide](/posts/slm-fine-tune-vs-prompt-engineering/). For teams building autonomous AI agents that query GraphRAG systems at runtime, see [Production Agentic AI Swarm: OpenClaw & LiteLLM](/posts/deploying-autonomous-ai-swarm-openclaw-litellm/) for the multi-agent orchestration layer.
 
 ---
 

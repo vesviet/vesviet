@@ -1,4 +1,5 @@
 ---
+
 title: "Magento AI Integration: Modernize Without Rebuilding"
 slug: "magento-ai-integration-strategy-architecture"
 author: "Lê Tuấn Anh"
@@ -16,6 +17,7 @@ cover:
   alt: "Magento AI integration strategy: add ML recommendations, semantic search, and chatbot without rebuilding"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/magento-ai-integration-strategy-architecture/"
+mermaid: true
 ---
 
 **Answer-first:** Integrating AI into Magento requires decoupling AI workloads via event-driven architecture to prevent MySQL lock contention, PHP-FPM exhaustion, and performance degradation in production environments.
@@ -210,6 +212,6 @@ Integrating AI into legacy e-commerce is not a database query problem; it is an 
 
 By utilizing event-driven, asynchronous data streaming, you can isolate your stable transactional core while layering high-performance, agentic search and customer support services. You don't need to rebuild your storefront to leverage AI—you need to decouple it.
 
-For the broader PHP ecosystem perspective — how AI agents, serverless functions, and Model Context Protocol are reshaping Laravel development toward 2028 — see [Laravel in the AI Era: 10 Predictions for 2028](/posts/the-future-of-laravel-development-in-ai-era).
+For the broader PHP ecosystem perspective — how AI agents, serverless functions, and Model Context Protocol are reshaping Laravel development toward 2028 — see [Laravel in the AI Era: 10 Predictions for 2028](/posts/the-future-of-laravel-development-in-ai-era/).
 
 {{< author-cta >}}

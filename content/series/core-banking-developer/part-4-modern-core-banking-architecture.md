@@ -1,4 +1,5 @@
 ---
+
 title: "Banking Microservices Architecture: Event Sourcing, CQRS & Saga Patterns in Go (2026)"
 slug: "part-4-modern-core-banking-architecture"
 date: "2026-05-06T18:00:00+07:00"
@@ -14,6 +15,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-4-modern-core-banking-architecture/"
+mermaid: true
 ---
 
 > **Series context (Part 4 of 8):** This article assumes familiarity with [ACID transactions and database concurrency](/series/core-banking-developer/part-3-database-transactions-acid/). Understanding why consistency guarantees are hard at the database layer is essential context before introducing distributed patterns here.
@@ -258,4 +260,4 @@ No, it actually massively increases throughput. Cross-bank transfers are not pro
 
 🔗 **Next Step:** Now that you understand banking microservices architecture and its event-driven patterns, see how these services communicate with the outside world through international financial standards. Continue reading [Part 5 — International Integration Standards: ISO 8583 & ISO 20022](/series/core-banking-developer/part-5-iso-standards-integration/).
 
-🔗 **Deep Dive:** For a complete engineering guide to the full composable banking stack — ledger concurrency patterns, Strangler Fig migrations, RFC 8705 mTLS, and the next-gen vendor landscape — see [Composable Banking Architecture: From Monolith to Modular Core](/posts/composable-banking-architecture).
+🔗 **Deep Dive:** For a complete engineering guide to the full composable banking stack — ledger concurrency patterns, Strangler Fig migrations, RFC 8705 mTLS, and the next-gen vendor landscape — see [Composable Banking Architecture: From Monolith to Modular Core](/posts/composable-banking-architecture/).

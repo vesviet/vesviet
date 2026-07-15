@@ -1,4 +1,5 @@
 ---
+
 title: "Part 2 — Man vs. Machine Boundaries: What to Delegate and What to Keep"
 date: "2026-05-10T15:10:00+07:00"
 lastmod: "2026-05-10T15:10:00+07:00"
@@ -15,6 +16,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-2-man-vs-machine-boundaries/"
+mermaid: true
 ---
 
 Upon realizing that typing speed has been defeated by AI (as discussed in Part 1), an invisible fear engulfs programmers: *"So what will I do if AI does everything?"*

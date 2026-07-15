@@ -1,4 +1,5 @@
 ---
+
 title: "Part 3: Identity & AuthN For Agentic Workflows"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
@@ -20,6 +21,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-3-identity/"
+mermaid: true
 ---
 
 If Part 2 helped you build a robust Server, Part 3 addresses the most headache-inducing question in Security: **"How does the MCP Server know WHICH Agent is calling it, and does that Agent have the PERMISSION to do so?"**

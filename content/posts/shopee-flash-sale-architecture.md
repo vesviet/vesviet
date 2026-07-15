@@ -129,7 +129,7 @@ Reserving inventory in Redis is fast, but Redis alone is not the system of recor
 3. **Async (< 200ms)**: A consumer reads from the queue and writes the inventory decrement to the database inside a transaction
 4. **Async**: Order is created, payment is triggered, and the user receives confirmation
 
-This pattern — Redis for fast atomicity, database for durability — is called the **Cache-Ahead Write** pattern and is the standard approach for high-concurrency inventory systems. For a deeper look at event-driven approaches that coordinate multi-service writes reliably, see [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr).
+This pattern — Redis for fast atomicity, database for durability — is called the **Cache-Ahead Write** pattern and is the standard approach for high-concurrency inventory systems. For a deeper look at event-driven approaches that coordinate multi-service writes reliably, see [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr/).
 
 For comparison with how similar patterns are implemented in a [21-service e-commerce platform](/posts/architecting-21-service-ecommerce-golang-ddd/), including the saga orchestration that coordinates inventory → order → payment.
 
@@ -164,7 +164,7 @@ Even after per-user rate limiting, the aggregate load during a flash sale far ex
 3. Users receive a "processing your order" status while their request is in the queue
 4. When the consumer processes their request, they receive a success or failure notification via WebSocket or push notification
 
-This decouples the user-facing acceptance rate from the backend processing rate, allowing Shopee to accept bursts of purchase requests without crashing the order pipeline. The dynamic pricing and demand signal layer that feeds queue prioritization uses algorithms similar to those explored in [Surge Pricing Algorithm & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture).
+This decouples the user-facing acceptance rate from the backend processing rate, allowing Shopee to accept bursts of purchase requests without crashing the order pipeline. The dynamic pricing and demand signal layer that feeds queue prioritization uses algorithms similar to those explored in [Surge Pricing Algorithm & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture/).
 
 ---
 
@@ -185,7 +185,7 @@ While MySQL handles transactional writes, Shopee uses TiDB's HTAP capabilities (
 - Real-time fraud scoring (comparing current purchase velocity to historical baselines)
 - Seller performance monitoring (orders received, fulfillment rate)
 
-TiDB can serve these analytical queries from TiFlash without interfering with the OLTP workload on the main storage nodes. For more on MySQL scaling strategies, see [MySQL Database Scaling: Vitess & GORM Sharding](/posts/mysql-horizontal-scaling).
+TiDB can serve these analytical queries from TiFlash without interfering with the OLTP workload on the main storage nodes. For more on MySQL scaling strategies, see [MySQL Database Scaling: Vitess & GORM Sharding](/posts/mysql-horizontal-scaling/).
 
 ---
 
@@ -255,6 +255,6 @@ Flash sale inventory reservation happens in Redis (in-memory, sub-millisecond). 
 ### How does rate limiting work in a flash sale system?
 Shopee uses a layered approach: CDN-level connection throttling, API gateway per-user token bucket rate limiting (in Redis), and IP-level challenge flows for high-velocity requesters. Accepted requests that pass all rate limiting gates are placed in a virtual queue consumed at a rate the backend can sustain, decoupling acceptance rate from processing rate.
 
-For the full engineering blueprint — including Debezium CDC, Kafka partition keying by SKU, and the idempotent Redis Lua script that prevents overselling under Kafka rebalances — see [Real-Time Inventory Synchronization: Kafka, CDC & Redis](/posts/real-time-inventory-ecommerce-architecture). For how inventory allocation decisions are made once inventory is synchronized — warehouse selection, split shipments, and anticipatory shipping — see [Part 2: Real-Time Inventory Allocation Architecture](/series/ecommerce-order-allocation/part-2-inventory-realtime/).
+For the full engineering blueprint — including Debezium CDC, Kafka partition keying by SKU, and the idempotent Redis Lua script that prevents overselling under Kafka rebalances — see [Real-Time Inventory Synchronization: Kafka, CDC & Redis](/posts/real-time-inventory-ecommerce-architecture/). For how inventory allocation decisions are made once inventory is synchronized — warehouse selection, split shipments, and anticipatory shipping — see [Part 2: Real-Time Inventory Allocation Architecture](/series/ecommerce-order-allocation/part-2-inventory-realtime/).
 
 {{< author-cta >}}

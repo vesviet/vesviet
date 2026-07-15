@@ -39,7 +39,7 @@ GraphHopper is arguably the most capable open-source routing engine available �
 
 This post is a production-grade Kubernetes deployment guide for GraphHopper using real OpenStreetMap data. By the end, you will have a StatefulSet deployment with persistent OSM graph files, correctly sized JVM resources, liveness and readiness probes that account for CH pre-processing time, and a zero-downtime map update strategy.
 
-For the routing algorithm comparison and API usage, see [GraphHopper vs CARTO: Order Fulfillment Routing Engine](/posts/graphhopper-distance-matrix-routing).
+For the routing algorithm comparison and API usage, see [GraphHopper vs CARTO: Order Fulfillment Routing Engine](/posts/graphhopper-distance-matrix-routing/).
 
 ---
 
@@ -62,7 +62,7 @@ Before committing to a self-hosted deployment, weigh the options:
 - Your routing requirements need custom vehicle profiles (e-bikes, cargo trucks, motorcycle)
 - Data sovereignty requirements prohibit sending GPS coordinates to third-party APIs
 
-For most logistics platforms in Southeast Asia, the break-even volume is around 100,000–200,000 routing queries per day. Below that threshold, the GraphHopper Cloud API is cost-effective. If you are evaluating GraphHopper for order fulfillment and last-mile routing, see [Order Fulfillment Algorithm: Warehouse to Last-Mile](/posts/order-fulfillment-algorithm-warehouse-last-mile) for how the routing engine fits into the broader allocation pipeline. For platforms needing real-time geospatial compute with dynamic pricing signals, see [Surge Pricing Algorithm & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture).
+For most logistics platforms in Southeast Asia, the break-even volume is around 100,000–200,000 routing queries per day. Below that threshold, the GraphHopper Cloud API is cost-effective. If you are evaluating GraphHopper for order fulfillment and last-mile routing, see [Order Fulfillment Algorithm: Warehouse to Last-Mile](/posts/order-fulfillment-algorithm-warehouse-last-mile/) for how the routing engine fits into the broader allocation pipeline. For platforms needing real-time geospatial compute with dynamic pricing signals, see [Surge Pricing Algorithm & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture/).
 
 ---
 
@@ -398,7 +398,7 @@ This approach requires maintaining two StatefulSets with separate PVCs, but ensu
 4. Patches the Service selector to point to the standby
 5. Marks the previous active as the new standby
 
-For the GitOps workflow that manages CronJob and StatefulSet configuration in source control, see [GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices).
+For the GitOps workflow that manages CronJob and StatefulSet configuration in source control, see [GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/).
 
 ---
 
@@ -443,7 +443,7 @@ Key metrics to alert on:
 - `jvm_memory_used_bytes{area="heap"}` — JVM heap utilization (alert if >85% of `-Xmx`)
 - `process_resident_memory_bytes` — total process RSS (alert if approaching container memory limit)
 
-Integrate these dashboards with the broader Kubernetes observability stack described in [Go pprof in Kubernetes: Remote Profiling & Flame Graphs](/posts/go-pprof-kubernetes-remote-profiling).
+Integrate these dashboards with the broader Kubernetes observability stack described in [Go pprof in Kubernetes: Remote Profiling & Flame Graphs](/posts/go-pprof-kubernetes-remote-profiling/).
 
 ---
 
