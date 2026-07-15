@@ -2,9 +2,9 @@
 title: "Build Production Go MCP Servers: The Definitive Guide"
 slug: "go-mcp-server-development-production-guide"
 author: "Lê Tuấn Anh"
-date: "2026-07-22T10:00:00+07:00"
-lastmod: "2026-07-22T10:00:00+07:00"
-draft: true
+date: "2026-07-15T13:28:00+07:00"
+lastmod: "2026-07-15T13:28:00+07:00"
+draft: false
 mermaid: true
 categories:
   - "Golang"
