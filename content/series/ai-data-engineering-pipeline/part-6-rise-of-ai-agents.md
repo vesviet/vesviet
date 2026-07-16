@@ -185,9 +185,7 @@ sequenceDiagram
 By decoupling the agent from static paths and letting it select tools dynamically within a ReAct cycle, the system can autonomously adapt to environment state changes.
 
 
----
-
-## ReAct Execution Loop in Go
+---## ReAct Execution Loop in Go
 
 Autonomous agents extend RAG systems by executing code, calling tools, and updating status parameters. The ReAct (Reasoning and Acting) execution pattern runs in a loop: the LLM analyzes a goal, determines which tool to run, receives the tool's execution result, and loops until the final goal is met.
 
@@ -295,6 +293,6 @@ Unconstrained loops can cause agents to enter infinite execution cycles, exhaust
 
 🔗 **Next Step:** Learn to design persistent state systems in [Part 7: Agentic Memory - Solving the 'Goldfish' Curse]({{< ref "part-7-agentic-memory-long-term.md" >}}).
 
----
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*---
 
 [← Previous Part: Part 5: Enterprise Security & Data Poisoning - The Silent Assassin]({{< ref "part-5-enterprise-security-data-poisoning.md" >}})  |  [Next Part: Part 7: Agentic Memory - Solving the 'Goldfish' Curse]({{< ref "part-7-agentic-memory-long-term.md" >}})

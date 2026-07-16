@@ -172,9 +172,7 @@ graph TD
 By decoupling execution history from the active context window, we ensure that agents retain knowledge across months of conversations without suffering from performance degradation.
 
 
----
-
-## Implementation of Semantic Memory Consolidation
+---## Implementation of Semantic Memory Consolidation
 
 As chat histories grow, they consume significant token counts and degrade LLM response latency. Rather than scaling context windows indefinitely, we implement a tiered memory consolidation system:
 1. **Short-Term Memory:** Transient conversation history kept in active memory (ephemeral KV cache).
@@ -256,6 +254,6 @@ To maintain a clean database, memory nodes cannot persist indefinitely without v
 
 🔗 **Next Step:** Optimize runtime configurations for high concurrent traffic in [Part 8: Inference Optimization & vLLM Deployment on Production]({{< ref "part-8-inference-optimization-vllm.md" >}}).
 
----
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*---
 
 [← Previous Part: Part 6: The Rise of AI Agents - From Reading to Autonomy]({{< ref "part-6-rise-of-ai-agents.md" >}})  |  [Next Part: Part 8: Inference Optimization & vLLM Deployment on Production]({{< ref "part-8-inference-optimization-vllm.md" >}})

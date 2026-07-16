@@ -215,9 +215,7 @@ graph TD
 By transitioning to vision-based document processing, the database captures not only text fragments but also structural relationships, ensuring complete fidelity during retrieval.
 
 
----
-
-## Advanced Layout Analysis: Multimodal Document Ingestion
+---## Advanced Layout Analysis: Multimodal Document Ingestion
 
 Standard optical character recognition (OCR) fails to preserve document context when dealing with complex multi-column reports, nested tables, and inline charts. The modern approach uses Multimodal Vision-Language Models (VLMs) like Llama 3.2 Vision or Claude 3.5 Sonnet to parse document pages as full images. The VLM processes the visual layout natively and outputs a structured Markdown schema that preserves tables and semantic headings.
 
@@ -351,6 +349,6 @@ To extract structured content with high consistency, we define strict schema req
 
 🔗 **Next Step:** Master document chunking and caching in [Part 3: The Art of Chunking & Semantic Caching]({{< ref "part-3-late-chunking-semantic-caching.md" >}}).
 
----
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*---
 
 [← Previous Part: Part 1: The Convergence - Agentic RAG & GraphRAG]({{< ref "part-1-agentic-graphrag-long-context.md" >}})  |  [Next Part: Part 3: The Art of Chunking & Semantic Caching]({{< ref "part-3-late-chunking-semantic-caching.md" >}})

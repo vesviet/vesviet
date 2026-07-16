@@ -183,9 +183,7 @@ graph TD
 By exporting these structured traces to a central APM dashboard, engineers can quickly locate malfunctioning tools and trace prompt errors in production.
 
 
----
-
-## Observability Tracing: Monitoring the Agent's Chain of Thought
+---## Observability Tracing: Monitoring the Agent's Chain of Thought
 
 Monitoring autonomous agents requires tracking the execution flow across multiple LLM steps, tool invocations, and vector queries. Standard APM metrics like API latency and response code are insufficient; we must trace the internal dependencies of each reasoning step.
 
@@ -262,6 +260,6 @@ Operational metrics must track direct execution costs to prevent runaway billing
 
 🔗 **Next Step:** Establish automated evaluation pipelines in [Part 10: Production Evals & CI/CD for AI - The Final Checkpoint]({{< ref "part-10-production-evals-cicd.md" >}}).
 
----
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*---
 
 [← Previous Part: Part 8: Inference Optimization & vLLM Deployment on Production]({{< ref "part-8-inference-optimization-vllm.md" >}})  |  [Next Part: Part 10: Production Evals & CI/CD for AI - The Final Checkpoint]({{< ref "part-10-production-evals-cicd.md" >}})

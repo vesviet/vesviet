@@ -198,9 +198,7 @@ func main() {
 Integrating these evaluation suites directly into the CI/CD pipeline ensures that prompt optimizations and code modifications never cause regressions in retrieval quality.
 
 
----
-
-## Automated CI/CD Evaluation Test Harness
+---## Automated CI/CD Evaluation Test Harness
 
 To deploy updates safely, we replace manual "vibe checks" with automated regression testing. The CI/CD pipeline runs a suite of test prompts against the candidate model. The output is evaluated using LLM-as-a-Judge API endpoints (such as Ragas or TruLens) to compute metrics:
 - **Faithfulness:** Verifies the answer contains no hallucinations and matches the retrieved context.
@@ -298,6 +296,6 @@ To guarantee reproducible test metrics, the Judge LLM is configured with a stric
 
 🔗 **Next Step:** Explore the full index of the series in the [AI Data Engineering Pipeline Series](/series/ai-data-engineering-pipeline/).
 
----
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*---
 
 [← Previous Part: Part 9: Agentic Observability - Monitoring & Debugging the AI's Train of Thought]({{< ref "part-9-agentic-observability-monitoring.md" >}})

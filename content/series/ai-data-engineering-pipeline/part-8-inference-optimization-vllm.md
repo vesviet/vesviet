@@ -201,9 +201,7 @@ func main() {
 Through client-side balancing and hardware-level KV cache paging, the architecture scales to thousands of concurrent users while keeping latency bounds under control.
 
 
----
-
-## Configuring vLLM for Enterprise Scale
+---## Configuring vLLM for Enterprise Scale
 
 Scaling an open-source Large Language Model (like Llama-3-70B) in production requires optimized memory management. Standard inference frameworks allocate static, peak-size chunks of VRAM for each session's context key-value (KV) cache, leading to severe memory fragmentation. vLLM solves this by implementing PagedAttention, partitioning the KV cache into physical blocks that are indexed dynamically, similar to virtual memory in operating systems.
 
@@ -307,6 +305,6 @@ Optimizing server runtimes requires addressing the memory bandwidth bottlenecks 
 
 🔗 **Next Step:** Monitor and debug agent reasoning steps in [Part 9: Agentic Observability - Monitoring & Debugging the AI's Train of Thought]({{< ref "part-9-agentic-observability-monitoring.md" >}}).
 
----
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*---
 
 [← Previous Part: Part 7: Agentic Memory - Solving the 'Goldfish' Curse]({{< ref "part-7-agentic-memory-long-term.md" >}})  |  [Next Part: Part 9: Agentic Observability - Monitoring & Debugging the AI's Train of Thought]({{< ref "part-9-agentic-observability-monitoring.md" >}})

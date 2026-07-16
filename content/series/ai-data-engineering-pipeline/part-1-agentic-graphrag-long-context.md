@@ -167,9 +167,7 @@ To mitigate this, the pipeline applies context pruning strategies:
 - **Graph Pruning:** Discarding weakly connected nodes in the local sub-graph to keep the prompt focused.
 
 
----
-
-## Hybrid Retrieval Algorithms: Linking Dense and Relational Graphs
+---## Hybrid Retrieval Algorithms: Linking Dense and Relational Graphs
 
 The optimal retrieval architecture leverages both dense vectors (for raw semantic similarity) and knowledge graphs (for structured entities and relationships). The following Go code implements a hybrid ranker that combines dense vector search results and knowledge graph query results using Reciprocal Rank Fusion (RRF). RRF provides a robust mathematical framework to merge disparate ranking lists without normalizing their underlying score distributions.
 
@@ -264,6 +262,6 @@ While large context windows allow loading entire files into LLMs, the financial 
 
 🔗 **Next Step:** Dive into high-fidelity data extraction in [Part 2: Ingestion & Multimodal Knowledge Graphs]({{< ref "part-2-agentic-ingestion-multimodal.md" >}}).
 
----
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*---
 
 [← Previous Part: The Disruption of Naive RAG and the GraphRAG Era]({{< ref "executive-summary.md" >}})  |  [Next Part: Part 2: Agentic Ingestion & Multimodal Knowledge Graphs]({{< ref "part-2-agentic-ingestion-multimodal.md" >}})

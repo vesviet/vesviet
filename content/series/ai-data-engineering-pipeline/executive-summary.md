@@ -200,7 +200,7 @@ graph TD
 Below is a detailed matrix highlighting the fundamental trade-offs between a basic Vector Search approach (Traditional RAG) and a Knowledge Graph-based approach (GraphRAG):
 
 | Architectural Axis | Traditional RAG (Vector Search) | GraphRAG (Knowledge Graph + Vector) |
-| :--- | :--- | :--- |
+| :--- | :--- | :---|
 | **Retrieval Strategy** | K-Nearest Neighbors in Vector Space | Index traversal combined with vector similarity search |
 | **Multi-hop Queries** | Fails; cannot traverse relationships logically | Succeeds; jumps from node to node across relationships |
 | **Context Utilization** | Often returns redundant chunks of same text | Selects diverse entities and key global summaries |
@@ -307,6 +307,6 @@ Implementing an enterprise AI pipeline requires a structured approach to mitigat
 
 🔗 **Next Step:** Learn about the convergence of Agentic RAG and GraphRAG in [Part 1: The Convergence - Agentic RAG & GraphRAG]({{< ref "part-1-agentic-graphrag-long-context.md" >}}).
 
----
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*---
 
 [Next Part: Part 1: The Convergence - Agentic RAG & GraphRAG]({{< ref "part-1-agentic-graphrag-long-context.md" >}})

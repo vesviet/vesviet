@@ -166,9 +166,7 @@ Our pipeline mitigates this through a multi-tier defense:
 3. **Structured Outputs:** Forcing LLMs to return strict JSON using tool constraints, making instruction hijacking easy to detect programmatically.
 
 
----
-
-## Row-Level Security (RLS) in Vector Retrieval
+---## Row-Level Security (RLS) in Vector Retrieval
 
 RAG databases must support strict authorization checks to ensure users only access information matching their active permissions. Passing permissions checks in the application layer after retrieving vectors is highly vulnerable to leakage. Instead, we enforce Row-Level Security directly inside the vector search query by applying metadata filters.
 
@@ -266,6 +264,6 @@ To ensure compliance in sensitive environments, the pipeline implements comprehe
 
 🔗 **Next Step:** Transition from reading pipelines to autonomous execution in [Part 6: The Rise of AI Agents - From Reading to Autonomy]({{< ref "part-6-rise-of-ai-agents.md" >}}).
 
----
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*---
 
 [← Previous Part: Part 4: Streaming CDC & Federated RAG - Real-Time Knowledge]({{< ref "part-4-streaming-cdc-federated-rag.md" >}})  |  [Next Part: Part 6: The Rise of AI Agents - From Reading to Autonomy]({{< ref "part-6-rise-of-ai-agents.md" >}})

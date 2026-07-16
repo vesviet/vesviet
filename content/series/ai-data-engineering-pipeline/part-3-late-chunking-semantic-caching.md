@@ -177,9 +177,7 @@ To reduce inference overhead and API latency, our Semantic Cache Layer enforces 
 - **User-Specific Scope Isolation:** Keys are salted with user authentication groups (e.g. `user_group:admin`) to prevent privilege escalation.
 
 
----
-
-## Implementing Late Chunking in Go
+---## Implementing Late Chunking in Go
 
 Late chunking leverages transformer models to compute contextualized token embeddings before performing physical boundary splitting. This technique guarantees that pronouns and domain keywords maintain their surrounding context across text boundaries. The following Go code connects to a central embedding gateway service and chunks a token stream based on local cosine similarity drops:
 
@@ -281,6 +279,6 @@ Applying late chunking introduces specific computational patterns compared to si
 
 🔗 **Next Step:** Explore real-time synchronization in [Part 4: Streaming CDC & Federated RAG - Real-Time Knowledge]({{< ref "part-4-streaming-cdc-federated-rag.md" >}}).
 
----
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*---
 
 [← Previous Part: Part 2: Agentic Ingestion & Multimodal Knowledge Graphs]({{< ref "part-2-agentic-ingestion-multimodal.md" >}})  |  [Next Part: Part 4: Streaming CDC & Federated RAG - Real-Time Knowledge]({{< ref "part-4-streaming-cdc-federated-rag.md" >}})

@@ -187,9 +187,7 @@ When data is partitioned across multiple regional instances, a single query must
 - **Score Re-ranking:** Re-scores vectors across different partition norms using a centralized Cross-Encoder.
 
 
----
-
-## Change Data Capture (CDC) Pipeline Architecture
+---## Change Data Capture (CDC) Pipeline Architecture
 
 Batch processing pipelines create data silos where retrieval indexes lag behind the system of record. To enable 100% data freshness, we establish a real-time CDC pipeline. The database transaction log (MySQL binary log or PostgreSQL WAL) is monitored by Debezium, which streams raw event payloads to an Apache Kafka cluster. A Go worker service processes these streams and updates the Vector Database (Qdrant) in real time.
 
@@ -285,6 +283,6 @@ Database schemas inevitably evolve as new features are added. This schema drift 
 
 🔗 **Next Step:** Understand pipeline security vulnerabilities in [Part 5: Enterprise Security & Data Poisoning - The Silent Assassin]({{< ref "part-5-enterprise-security-data-poisoning.md" >}}).
 
----
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*---
 
 [← Previous Part: Part 3: The Art of Chunking & Semantic Caching]({{< ref "part-3-late-chunking-semantic-caching.md" >}})  |  [Next Part: Part 5: Enterprise Security & Data Poisoning - The Silent Assassin]({{< ref "part-5-enterprise-security-data-poisoning.md" >}})
