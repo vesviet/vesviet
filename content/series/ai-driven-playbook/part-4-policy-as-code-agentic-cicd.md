@@ -178,4 +178,4 @@ An "Agentic" CI/CD system is one where you use AI to catch AI's mistakes, combin
 
 But tools and machinery are useless if the People (the Team) still operate on old habits. Concepts like "2-week Sprints" or "Code complete = Done" no longer apply.
 
-In **Part 5**, we will completely overhaul the team structure and redefine how the operation runs: **Operating Model for AI-Native Engineering Teams**.
+In **[Part 5](/series/ai-driven-playbook/part-5-operating-model/)**, we will completely overhaul the team structure and redefine how the operation runs: **Operating Model for AI-Native Engineering Teams**.

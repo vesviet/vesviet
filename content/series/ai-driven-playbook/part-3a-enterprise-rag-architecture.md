@@ -191,4 +191,4 @@ An **Enterprise RAG Architecture** can never be "Plug-and-Play". It requires the
 
 Once this internal "Brain" is loaded with clean, accurate, and real-time data, it is time to bring it out to generate actual Cash Flow (ROI) for the company.
 
-In **Part 3B**, we will see how to use the AI Platform and RAG to solve "money-making" operational problems: *Automated Reconciliation, Excel Report Processing, and freeing up thousands of manual labor hours for the Operations team.*
+In **[Part 3B](/series/ai-driven-playbook/part-3b-ai-automation-internal-ops/)**, we will see how to use the AI Platform and RAG to solve "money-making" operational problems: *Automated Reconciliation, Excel Report Processing, and freeing up thousands of manual labor hours for the Operations team.*

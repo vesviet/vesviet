@@ -142,4 +142,4 @@ By splitting `.cursorrules` according to Bounded Contexts (DDD) and forcing AI t
 
 However, no matter how well you optimize context locally, letting every Dev directly hit the OpenAI API from their IDE poses severe risks of source code leakage and runaway costs.
 
-In **Part 2**, we will defuse this ticking time bomb by building a **Private AI Ecosystem (AI Gateway via LiteLLM)** — a mandatory step to control your infrastructure and escape the SaaS "Pay-per-seat" trap.
+In **[Part 2](/series/ai-driven-playbook/part-2-ai-platform-layer/)**, we will defuse this ticking time bomb by building a **Private AI Ecosystem (AI Gateway via LiteLLM)** — a mandatory step to control your infrastructure and escape the SaaS "Pay-per-seat" trap.

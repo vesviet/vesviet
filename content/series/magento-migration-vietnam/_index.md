@@ -4,6 +4,8 @@ description: "The CTO playbook for migrating Magento to Go microservices with a 
 date: "2026-07-08T19:00:00+07:00"
 lastmod: "2026-07-08T19:00:00+07:00"
 draft: false
+ShowToc: true
+TocOpen: true
 weight: 200
 slug: "magento-migration-vietnam"
 categories: ["Series", "Software Engineering", "Engineering Management"]
