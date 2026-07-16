@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/modern-tech-compariso
 [← Series hub]({{< ref "/series/alipay-double-11/_index.md" >}})
 [← Prev]({{< ref "/series/alipay-double-11/phase-4-deep-dive.md" >}}) • [Next →]({{< ref "/series/alipay-double-11/phase-5-synthesis.md" >}})
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Phase 4: Deep Dive (Technology Internals)]({{< ref "/series/alipay-double-11/phase-4-deep-dive.md" >}}).
+> **Prerequisite:** [Phase 4: Deep Dive (Technology Internals)]({{< ref "phase-4-deep-dive.md" >}})
 
 This page maps the architectural concepts and custom middleware developed for the Double 11 event to modern, open-source cloud-native equivalents. The goal is to provide a blueprint for software architects today to implement the same reliability and throughput patterns using standard CNCF (Cloud Native Computing Foundation) tools.
 
@@ -261,3 +261,9 @@ Instead, apply this **Adopt vs. Build Decision Matrix**:
 1. **Leverage standard CNCF Tools**: Modern open-source solutions have matured to support the design patterns developed by Alipay. Use gRPC, Envoy, and Kubernetes to achieve cell-based scalability.
 2. **Prioritize Declarative Configurations**: Avoid hardcoding routing rules inside your application code. Use service mesh definitions and gateway routing configurations to manage cells.
 3. **Use Context Control in Aggregators**: When querying sharded storage or multiple cells, always protect your threads using bounded context timeouts and concurrent map protections in your Go aggregators.
+
+---
+
+Need help implementing high-scale architectures? Feel free to [Contact me](/contact/) or [Hire me](/hire/) to review your system design and codebase.
+
+🔗 **Next Step:** [Phase 5: Synthesis and Lessons Learned]({{< ref "phase-5-synthesis.md" >}})

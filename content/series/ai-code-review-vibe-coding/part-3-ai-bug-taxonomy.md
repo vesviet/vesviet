@@ -31,7 +31,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-> **Series Orientation:** This article is Part 3 of the **AI Code Review & Vibe Coding** series, examining the unique failure modes of AI-generated code. For the broader business context, see the [Series Executive Summary]({{< ref "/series/ai-code-review-vibe-coding/executive-summary.md" >}}).
+> **Prerequisite:** [Context Engineering for AI Coding: AGENTS.md, Cursor Rules & RAG]({{< ref "part-2-context-engineering-codebase.md" >}})
 
 When engineers first review AI-generated code, they often encounter a counterintuitive phenomenon: the code looks right. It passes compilation. The tests are green. The function signatures are clean. The variable names are descriptive. And somewhere inside, there is a logic error that will silently corrupt your data, or a missing authorization check that will expose every user record to the first person who thinks to try a simple query manipulation.
 
@@ -352,4 +352,6 @@ Part 4 covers the infrastructure for running this review at scale — the multi-
 
 ---
 
-*Next: [Part 4 — Building the Review Pipeline: Zero-Trust Mindset, Multi-Agent, and Mutation Testing]({{< ref "/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent.md" >}})*
+Need help auditing your AI-generated code for hidden vulnerabilities? [Contact me](/contact/) to arrange a technical review.
+
+🔗 **Next Step:** [AI Code Review Pipeline: Zero-Trust, Multi-Agent & Mutation Testing]({{< ref "part-4-review-pipeline-multi-agent.md" >}})

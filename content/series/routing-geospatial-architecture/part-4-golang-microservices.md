@@ -199,6 +199,97 @@ func (s *RoutingService) DispatchRouteHandler(w http.ResponseWriter, r *http.Req
 }
 ```
 
+## Deep Dive: Implementing Circuit Breaking and Request Collapse
+
+To protect our downstream GraphHopper engine, let us look at a concrete implementation in Golang using `sony/gobreaker` for circuit breaking and `golang.org/x/sync/singleflight` for request deduplication (collapsing concurrent identical requests).
+
+Below is the complete, production-ready Go wrapper client:
+
+```go
+package routing
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"net/http"
+	"time"
+
+	"github.com/sony/gobreaker"
+	"golang.org/x/sync/singleflight"
+)
+
+type GraphHopperClient struct {
+	httpClient *http.Client
+	cb         *gobreaker.CircuitBreaker
+	sfGroup    singleflight.Group
+	baseURL    string
+}
+
+func NewGraphHopperClient(baseURL string) *GraphHopperClient {
+	// Configure the Circuit Breaker
+	settings := gobreaker.Settings{
+		Name:        "GraphHopper-Routing-Engine",
+		MaxRequests: 3,
+		Interval:    10 * time.Second,
+		Timeout:     5 * time.Second,
+		ReadyToTrip: func(counts gobreaker.Counts) bool {
+			// Trip the breaker if error rate exceeds 50% after at least 10 requests
+			failureRatio := float64(counts.TotalFailures) / float64(counts.Requests)
+			return counts.Requests >= 10 && failureRatio >= 0.5
+		},
+	}
+
+	return &GraphHopperClient{
+		httpClient: &http.Client{Timeout: 5 * time.Second},
+		cb:         gobreaker.NewCircuitBreaker(settings),
+		baseURL:    baseURL,
+	}
+}
+
+// RequestRoute computes a route, utilizing SingleFlight to collapse identical concurrent requests
+func (c *GraphHopperClient) RequestRoute(ctx context.Context, routeKey string, origin, destination string) (string, error) {
+	// Singleflight collapses concurrent identical route requests into one call
+	res, err, shared := c.sfGroup.Do(routeKey, func() (interface{}, error) {
+		// Circuit Breaker wraps the actual downstream HTTP call
+		return c.cb.Execute(func() (interface{}, error) {
+			reqURL := fmt.Sprintf("%s/route?point=%s&point=%s&profile=car", c.baseURL, origin, destination)
+			req, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+			if err != nil {
+				return nil, err
+			}
+
+			resp, err := c.httpClient.Do(req)
+			if err != nil {
+				return nil, err
+			}
+			defer resp.Body.Close()
+
+			if resp.StatusCode != http.StatusOK {
+				return nil, fmt.Errorf("downstream error status code: %d", resp.StatusCode)
+			}
+
+			// In a real application, you would parse and return the response body
+			return "route-payload", nil
+		})
+	})
+
+	if err != nil {
+		if errors.Is(err, gobreaker.ErrOpenState) {
+			return "", fmt.Errorf("circuit breaker is open, downstream service down: %w", err)
+		}
+		return "", err
+	}
+
+	fmt.Printf("Request key: %s, Shared request: %t\n", routeKey, shared)
+	return res.(string), nil
+}
+```
+
+### Key Advantages of This Wrapper:
+1. **Singleflight Deduplication**: If 50 riders in the same spatial cell request a route to the same destination simultaneously, `c.sfGroup.Do` blocks 49 of them and makes exactly one downstream HTTP call. When the single call completes, the returned payload is instantly shared with all 50 Goroutines. This prevents the "thundering herd" problem from spiking downstream CPU usage.
+2. **Dynamic Breaker States**: If GraphHopper becomes overloaded and begins timing out or returning 500 errors, the `sony/gobreaker` transitions from the `Closed` state to the `Open` state. In this state, any incoming request is rejected immediately with `ErrOpenState`, preventing Golang from spinning up new idle connections and blocking threads. After 5 seconds (the configured `Timeout`), the breaker shifts to `Half-Open` to send a probe request. If the probe succeeds, the breaker closes; otherwise, it opens again.
+
 ---
 
 ## FAQ: Backend Routing Traps

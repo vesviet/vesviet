@@ -317,5 +317,5 @@ If your enterprise e-commerce or B2B platform is struggling with slow database q
 
 ---
 
-[← Previous]({{< ref "article_3_rate_limiting.md" >}}) | [Series hub]({{< ref "_index.md" >}}) | [Next →]({{< ref "article_5_db_connection.md" >}})
+🔗 **Next Step:** [Chapter 5: Optimizing Golang Database Connection Pools]({{< ref "article_5_db_connection.md" >}})
 

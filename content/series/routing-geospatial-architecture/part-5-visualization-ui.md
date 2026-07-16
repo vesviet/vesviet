@@ -154,6 +154,102 @@ func ServeRouteGeoJSON(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
+## Deep Dive: React & Deck.gl Integration
+
+To complement the Golang GeoJSON API endpoint, we must implement a frontend visualization component. Below is a complete, production-ready React component that integrates Mapbox GL with Deck.gl to render high-performance 3D routing lines.
+
+```jsx
+import React, { useState, useEffect } from 'react';
+import DeckGL from '@deck.gl/react';
+import { Map } from 'react-map-gl';
+import { PathLayer } from '@deck.gl/layers';
+
+// Set your Mapbox token
+const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoieW91ci1tYXBib3gtdG9rZW4ifQ.example';
+
+// Initial viewport settings
+const INITIAL_VIEW_STATE = {
+  longitude: 13.404954, // Berlin center
+  latitude: 52.520008,
+  zoom: 12,
+  pitch: 45,
+  bearing: 0
+};
+
+export default function RoutingMap() {
+  const [routeGeoJSON, setRouteGeoJSON] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetch route from our Go API Gateway
+    fetch('http://localhost:8080/api/route', {
+      headers: {
+        'X-Routing-Region': 'berlin'
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        setRouteGeoJSON(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching route data:', error);
+        setLoading(false);
+      });
+  }, []);
+
+  // Configure Deck.gl layers
+  const layers = [
+    new PathLayer({
+      id: 'route-layer',
+      data: routeGeoJSON ? [routeGeoJSON] : [],
+      getPath: d => d.geometry.coordinates,
+      getColor: [0, 173, 216, 255], // Brand blue
+      getWidth: 8,
+      widthMinPixels: 3,
+      widthMaxPixels: 15,
+      rounded: true,
+      shadowEnabled: true,
+      parameters: {
+        // Prevent Z-fighting against the Mapbox terrain mesh
+        polygonOffset: true,
+        polygonOffsetFactor: -1,
+        polygonOffsetUnits: -1
+      }
+    })
+  ];
+
+  return (
+    <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
+      {loading && (
+        <div style={{
+          position: 'absolute', zIndex: 10, top: 20, left: 20,
+          background: 'white', padding: '10px 20px', borderRadius: 4
+        }}>
+          Loading route path...
+        </div>
+      )}
+      <DeckGL
+        initialViewState={INITIAL_VIEW_STATE}
+        controller={true}
+        layers={layers}
+      >
+        <Map
+          reuseMaps
+          mapLib={import('mapbox-gl')}
+          mapStyle="mapbox://styles/mapbox/dark-v11"
+          mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
+        />
+      </DeckGL>
+    </div>
+  );
+}
+```
+
+### Explaining the Frontend Architecture:
+1. **Separation of Concerns**: Mapbox acts purely as a static background tile renderer, while Deck.gl handles the WebGL overlay. By drawing the path using Deck.gl's `PathLayer` instead of Mapbox's built-in GeoJSON layers, we bypass the heavy Main-Thread CPU overhead of Mapbox's coordinate parsing. Deck.gl compiles the coordinate buffer once and uploads it directly to GPU memory, allowing smooth 60 FPS viewport transitions even when drawing thousands of paths simultaneously.
+2. **Preventing Z-Fighting**: Note the `parameters: { polygonOffset: true, polygonOffsetFactor: -1 }` configuration. When rendering 3D map views, both the underlying Mapbox vector tile layer and our custom Deck.gl path layer occupy the same depth coordinates in the WebGL depth buffer. The GPU can struggle to order them correctly, resulting in flickering lines. Setting a negative `polygonOffsetFactor` tells the WebGL context to pull the path geometry slightly closer to the camera viewport without actually altering its geographical altitude.
+3. **Smooth Viewport State**: The `@deck.gl/react` wrapper seamlessly synchronizes viewport states like panning, zooming, pitching, and bearing with the background Mapbox instance, ensuring they remain perfectly in sync during user interactions.
 
 ---
 

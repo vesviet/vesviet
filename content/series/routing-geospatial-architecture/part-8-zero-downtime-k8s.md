@@ -109,6 +109,85 @@ Code execution takes milliseconds, but the speed of light is unforgiving. A user
 To achieve global low latency, deploy your Kubernetes clusters to multiple regions (e.g., US-East, EU-West, AP-South). 
 **The Fix:** Use a Geo DNS provider (like Route53 or Cloudflare). The authoritative DNS will inspect the user's location and resolve the domain to the IP of the closest cluster. **Crucially**, you must configure L7 Health Checks with a low TTL (30s). If the Singapore cluster loses power, the DNS provider will automatically withdraw the IP and route Asian users to Tokyo.
 
+## Production Kubernetes Deployment Manifest
+
+To ensure that the blue-green map update lifecycle and graceful shutdown patterns function correctly, we must configure our Kubernetes manifests with precise SRE configurations. Below is a complete, production-ready deployment manifest (`graphhopper-deployment.yaml`) highlighting resource boundaries, lifecycles, and health checks:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: graphhopper-routing-engine
+  namespace: logistics
+  labels:
+    app: graphhopper
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: graphhopper
+  template:
+    metadata:
+      labels:
+        app: graphhopper
+    spec:
+      containers:
+      - name: graphhopper
+        image: graphhopper/graphhopper:8.0
+        command: ["java"]
+        args: [
+          "-XX:MaxRAMPercentage=75.0", # Dynamically limit Heap to 75% of container RAM
+          "-XX:+UseG1GC",              # Use G1 Garbage Collector for low latency
+          "-jar",
+          "/graphhopper-web.jar",
+          "server",
+          "/data/config.yml"
+        ]
+        resources:
+          limits:
+            cpu: "4"
+            memory: 16Gi
+          requests:
+            cpu: "2"
+            memory: 12Gi
+        ports:
+        - containerPort: 8989
+          name: http
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 120 # Give JVM time to load the OSM graph cache
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 120
+          periodSeconds: 5
+        lifecycle:
+          preStop:
+            exec:
+              command: ["sh", "-c", "sleep 15"] # Let kube-proxy remove Pod from service endpoints
+        volumeMounts:
+        - name: osm-graph-cache
+          mountPath: /data
+      volumes:
+      - name: osm-graph-cache
+        persistentVolumeClaim:
+          claimName: graphhopper-pvc
+```
+
+### Explaining the Manifest Details:
+1. **RollingUpdate Strategy**: By setting `maxUnavailable: 0` and `maxSurge: 1`, Kubernetes guarantees that during a rollout (such as updating map files or deploying a new code version), the cluster will spin up a new container first. It will wait for the new container to pass its readiness checks before terminating any of the old containers. This prevents temporary capacity drops.
+2. **Readiness and Liveness Probes**: GraphHopper requires a significant boot time (typically 1–3 minutes depending on map size) to load the compiled Contraction Hierarchies graph into heap memory. By setting `initialDelaySeconds: 120`, we prevent Kubernetes from prematurely killing the container during its initialization sequence. The readiness probe ensures that no client traffic is routed to a pod until the graph is fully loaded.
+3. **Graceful Terminations via PreStop Hook**: When Kubernetes terminates a pod (e.g. during scale-down or updating), it sends a `SIGTERM` signal. However, there is a propagation delay before the load-balancer and kube-proxy remove the pod from their IP lists. By executing `sleep 15` in the `preStop` hook, we force the container to wait 15 seconds before processing the `SIGTERM`. During this period, the pod stops receiving new requests while gracefully finishing any in-flight routing queries, eliminating 502/503 HTTP errors during rollouts.
+
 ---
 
 ## FAQ: Senior SRE Nightmares

@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-2-architecture/
 [← Series hub]({{< ref "/series/alipay-double-11/_index.md" >}})
 [← Prev]({{< ref "/series/alipay-double-11/phase-1-timeline.md" >}}) • [Next →]({{< ref "/series/alipay-double-11/phase-3-operations.md" >}})
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Phase 1: Timeline and Scale Evolution]({{< ref "/series/alipay-double-11/phase-1-timeline.md" >}}).
+> **Prerequisite:** [Phase 1: Timeline and Scale Evolution]({{< ref "phase-1-timeline.md" >}})
 
 This phase focuses on the **architectural blueprint** that enables planetary scaling while preserving absolute transactional correctness and operational control. The core design philosophy is: *scale through containment, not coordination.*
 
@@ -250,3 +250,9 @@ To understand the resilience of the unitized LDC architecture, we can review the
 
 - [Alipay Logical Data Center (LDC) Architecture](https://www.alibabacloud.com/blog/how-alipay-supports-double-11-with-logical-data-center-architecture_594892)
 - [OceanBase: Handling Double 11 Peak Traffic](https://en.oceanbase.com/)
+
+---
+
+Need help implementing high-scale architectures? Feel free to [Contact me](/contact/) or [Hire me](/hire/) to review your system design and codebase.
+
+🔗 **Next Step:** [Phase 3: Operations Playbook]({{< ref "phase-3-operations.md" >}})

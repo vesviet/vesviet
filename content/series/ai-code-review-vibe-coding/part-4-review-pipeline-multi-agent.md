@@ -31,7 +31,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-> **Series Orientation:** This article is Part 4 of the **AI Code Review & Vibe Coding** series, focusing on building an automated multi-agent quality gate pipeline. For the bug taxonomy that informs these gates, see [Part 3 — AI Code Bug Taxonomy]({{< ref "/series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy.md" >}}).
+> **Prerequisite:** [AI Code Bug Taxonomy: Silent Failures to Slopsquatting (2025)]({{< ref "part-3-ai-bug-taxonomy.md" >}})
 
 The software industry has spent two years discovering that the productivity problem of AI coding is not generation speed — it is verification speed.
 
@@ -444,4 +444,6 @@ Part 5 takes the security elements of this pipeline and goes deeper: the full th
 
 ---
 
-*Next: [Part 5 — AI Code Security: OWASP LLM Top 10, Supply Chain Attacks, and Zero Trust for Agents]({{< ref "/series/ai-code-review-vibe-coding/part-5-ai-code-security.md" >}})*
+Looking to build a zero-trust multi-agent review pipeline in your CI/CD? [Hire me](/hire/) to set up automated mutation testing.
+
+🔗 **Next Step:** [AI Code Security: OWASP LLM Top 10, RAG Poisoning & Zero Trust]({{< ref "part-5-ai-code-security.md" >}})

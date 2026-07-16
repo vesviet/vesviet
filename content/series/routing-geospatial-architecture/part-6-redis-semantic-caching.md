@@ -151,6 +151,65 @@ func (c *GeoCacheWrapper) SetCachedRoute(ctx context.Context, h3Origin, h3Dest, 
 }
 ```
 
+## Deep Dive: Mitigating Cache Penetration with Bloom Filters
+
+In production routing systems, cache performance is vulnerable to a specific type of attack called **Cache Penetration**. This occurs when clients (or malicious scripts) request route calculations for coordinates that do not map to valid roads—such as coordinates in the middle of the ocean, inside national parks, or outside the serviced geographic boundaries. 
+
+Because these impossible route queries always result in a downstream "no path found" error, they are traditionally not cached. This allows an attacker to bypass the Redis caching layer entirely and directly bomb the CPU-intensive GraphHopper routing engine with thousands of requests per second.
+
+To mitigate this, we implement a **Redis Bloom Filter** in the API Gateway. A Bloom filter is a space-efficient probabilistic data structure that can tell us if an item is *definitely not* in a set, or if it *might be* in the set. Before executing a routing request, the API Gateway checks a Bloom Filter populated with all valid, driveable H3 index cells. If the H3 cell is not in the Bloom Filter, the gateway rejects the request instantly with a 400 Bad Request without hitting Redis or GraphHopper.
+
+Below is a Go implementation of the Bloom Filter verification check:
+
+```go
+package caching
+
+import (
+	"context"
+	"fmt"
+	"github.com/redis/go-redis/v9"
+)
+
+type SpatialGuard struct {
+	rdb            *redis.Client
+	bloomFilterKey string
+}
+
+func NewSpatialGuard(rdb *redis.Client, filterKey string) *SpatialGuard {
+	return &SpatialGuard{
+		rdb:            rdb,
+		bloomFilterKey: filterKey,
+	}
+}
+
+// IsValidH3Cell checks the Bloom Filter in Redis to see if the H3 index contains driveable roads
+func (g *SpatialGuard) IsValidH3Cell(ctx context.Context, h3Index string) (bool, error) {
+	// Execute Redis Bloom Filter check command: BF.EXISTS key item
+	exists, err := g.rdb.Do(ctx, "BF.EXISTS", g.bloomFilterKey, h3Index).Bool()
+	if err != nil {
+		// Fallback to true on Redis error to maintain system availability
+		return true, fmt.Errorf("bloom filter check failed, falling back to bypass: %w", err)
+	}
+	return exists, nil
+}
+
+// RegisterValidH3Cells populates the Bloom Filter with a list of driveable H3 cells
+func (g *SpatialGuard) RegisterValidH3Cells(ctx context.Context, h3Indices []string) error {
+	pipe := g.rdb.Pipeline()
+	for _, h3Index := range h3Indices {
+		pipe.Do(ctx, "BF.ADD", g.bloomFilterKey, h3Index)
+	}
+	_, err := pipe.Exec(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to bulk load H3 cells into Bloom Filter: %w", err)
+	}
+	return nil
+}
+```
+
+### Operational Considerations:
+1. **False Positives vs. Space Trade-off**: Bloom filters have a configurable false-positive probability (e.g., 1%). A 1% false positive rate means that out of 100 invalid coordinates, 99 will be rejected instantly at the edge, and only 1 will reach the routing engine. This represents a 99% reduction in malicious traffic load.
+2. **Initialization Pipeline**: During the offline map compilation process (which we discussed in the blue-green map update lifecycle), a utility script crawls all valid roads in the Geofabrik map extract, converts their geometries into H3 indexes at Resolution 8, and uploads them to the Redis Bloom Filter. This ensures the filter is always in sync with the latest map topology.
 
 ---
 

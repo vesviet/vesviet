@@ -37,7 +37,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-> **Series Orientation:** This article is Part 6 of the **AI Code Review & Vibe Coding** series, looking at team governance and developer career paths. For the preceding security chapters, see [Part 5 — AI Code Security]({{< ref "/series/ai-code-review-vibe-coding/part-5-ai-code-security.md" >}}).
+> **Prerequisite:** [AI Code Security: OWASP LLM Top 10, RAG Poisoning & Zero Trust]({{< ref "part-5-ai-code-security.md" >}})
 
 As highlighted earlier in this series, the METR study (2025) revealed a striking paradox: experienced developers using AI tools were actually **19% slower** on complex real-world tasks, even while believing they were 24% faster.
 
@@ -494,6 +494,6 @@ The series stops here. The discipline is ongoing.
 
 ---
 
-*Return to: [Series Index — AI Code Review & Vibe Coding]({{< ref "/series/ai-code-review-vibe-coding/_index.md" >}})*
+Need advice on aligning your organization's AI tools with ISO/IEC 42001 or the EU AI Act? [Hire me](/hire/) to design your compliance framework.
 
-*Related series: [The AI-Driven Engineer]({{< ref "/series/ai-driven-engineer/_index.md" >}}) | [The AI-Driven Playbook]({{< ref "/series/ai-driven-playbook/_index.md" >}})*
+🔗 **Next Step:** [Series Index Page]({{< ref "_index.md" >}})

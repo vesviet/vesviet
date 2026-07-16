@@ -244,5 +244,5 @@ If your enterprise e-commerce or B2B platform is struggling with slow database q
 
 ---
 
-[← Previous]({{< ref "article_2_caching.md" >}}) | [Series hub]({{< ref "_index.md" >}}) | [Next →]({{< ref "article_4_outbox_pattern.md" >}})
+🔗 **Next Step:** [Chapter 4: Solving the Dual-Write Problem with Transactional Outbox Pattern]({{< ref "article_4_outbox_pattern.md" >}})
 

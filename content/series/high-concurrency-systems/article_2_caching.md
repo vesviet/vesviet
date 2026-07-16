@@ -256,5 +256,5 @@ If your enterprise e-commerce or B2B platform is struggling with slow database q
 
 ---
 
-[← Previous]({{< ref "article_1_system_design.md" >}}) | [Series hub]({{< ref "_index.md" >}}) | [Next →]({{< ref "article_3_rate_limiting.md" >}})
+🔗 **Next Step:** [Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm]({{< ref "article_3_rate_limiting.md" >}})
 

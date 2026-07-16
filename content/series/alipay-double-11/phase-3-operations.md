@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-3-operations/"
 [← Series hub]({{< ref "/series/alipay-double-11/_index.md" >}})
 [← Prev]({{< ref "/series/alipay-double-11/phase-2-architecture.md" >}}) • [Next →]({{< ref "/series/alipay-double-11/phase-4-technology.md" >}})
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Phase 2: Core Architecture]({{< ref "/series/alipay-double-11/phase-2-architecture.md" >}}).
+> **Prerequisite:** [Phase 2: Core Architecture (LDC, Unitization, Multi-Active)]({{< ref "phase-2-architecture.md" >}})
 
 This phase is about how peak performance becomes **repeatable**. The core claim of Alipay's operations team is simple: *peaks are won in preparation and automation, not heroics.* Under planet-scale loads, manual operational tasks fail due to human latency. Therefore, readiness must be engineered into the software stack itself.
 
@@ -229,3 +229,9 @@ Degradation plans are organized into structured tiers:
 1. **Automation is a Force Multiplier**: Manual checklists will fail under peak concurrent load. Runbooks must be codified.
 2. **FLST is the Confidence Engine**: You cannot trust performance claims unless they have been verified on production systems using synthetic traffic and shadow databases.
 3. **Protect the Core**: Design the system to degrade gracefully. A successful peak means the customer could pay, even if they didn't receive their transaction email immediately.
+
+---
+
+Need help implementing high-scale architectures? Feel free to [Contact me](/contact/) or [Hire me](/hire/) to review your system design and codebase.
+
+🔗 **Next Step:** [Phase 4: Technology Overview]({{< ref "phase-4-technology.md" >}})

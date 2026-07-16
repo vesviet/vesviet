@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-5-synthesis/"
 [← Series hub]({{< ref "/series/alipay-double-11/_index.md" >}})
 [← Prev]({{< ref "/series/alipay-double-11/modern-tech-comparison.md" >}}) • [Next →]({{< ref "/series/alipay-double-11/research-index.md" >}})
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Modern Tech Comparison]({{< ref "/series/alipay-double-11/modern-tech-comparison.md" >}}).
+> **Prerequisite:** [Modern Tech Comparison]({{< ref "modern-tech-comparison.md" >}})
 
 This final phase consolidates the Double 11 architectural journey into a set of engineering principles, mathematical frameworks, and operational strategies that you can apply to any high-throughput system. Treat this as the "what to copy and how to calculate it" guide.
 
@@ -188,3 +188,9 @@ Planet-scale payment reliability is not achieved by adopting a single tool or cl
 - The **software architecture** supports cell isolation and horizontal growth.
 - The **database layer** guarantees consistency through distributed consensus without blocking on cross-city latency.
 - The **operations engine** validates capacity via continuous, automated stress testing on production environments.
+
+---
+
+Need help implementing high-scale architectures? Feel free to [Contact me](/contact/) or [Hire me](/hire/) to review your system design and codebase.
+
+🔗 **Next Step:** [Research Index]({{< ref "research-index.md" >}})

@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-1-timeline/"
 [← Series hub]({{< ref "/series/alipay-double-11/_index.md" >}})
 [← Prev]({{< ref "/series/alipay-double-11/executive-summary.md" >}}) • [Next →]({{< ref "/series/alipay-double-11/phase-2-architecture.md" >}})
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Executive Summary]({{< ref "/series/alipay-double-11/executive-summary.md" >}}).
+> **Prerequisite:** [Executive Summary]({{< ref "executive-summary.md" >}})
 
 ## Overview
 
@@ -151,3 +151,9 @@ As the system scaled, the primary optimization metric shifted from *absolute cap
 1. **Shift the Bottleneck Upstream**: In 2012, Alipay learned that database vertical scaling is a dead end. Scale out at the application layer through routing and unitization before the database becomes a single point of failure.
 2. **Shorten the Prep Window via Automation**: Relying on manual readiness checklists will eventually block scaling. Invest in automated load testing and self-healing systems.
 3. **Optimize for Cost, not just Capacity**: Designing a system that survives peak traffic by keeping thousands of servers idle year-round is a failure of cost engineering. Build for elasticity from day one.
+
+---
+
+Need help implementing high-scale architectures? Feel free to [Contact me](/contact/) or [Hire me](/hire/) to review your system design and codebase.
+
+🔗 **Next Step:** [Phase 2: Core Architecture (LDC, Unitization, Multi-Active)]({{< ref "phase-2-architecture.md" >}})

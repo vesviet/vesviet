@@ -31,6 +31,8 @@ ShowToc: true
 TocOpen: true
 ---
 
+> **Prerequisite:** [Vibe Coding for CEOs, PMs, and BAs: Tools & The Production Wall]({{< ref "part-1-vibe-coding-non-technical.md" >}})
+
 In 2025, METR — an AI safety and capability research organization — ran a rigorous randomized controlled trial. Sixteen experienced open-source developers worked on 246 real-world tasks, each randomly assigned to either use AI coding tools freely or not at all.
 
 The result was counterintuitive: developers using AI tools were **19% slower** on complex tasks.
@@ -342,7 +344,9 @@ Part 3 covers what those high-value review tasks are: the full taxonomy of AI-ge
 
 ---
 
-*Next: [Part 3 — AI Bug Taxonomy: From Silent Logic Failures to Slopsquatting]({{< ref "/series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy.md" >}})*
+Want to set up custom Cursor rules and AGENTS.md for your codebase? [Hire me](/hire/) to boost your team's development speed safely.
+
+🔗 **Next Step:** [AI Code Bug Taxonomy: Silent Failures to Slopsquatting (2025)]({{< ref "part-3-ai-bug-taxonomy.md" >}})
 
 ---
 

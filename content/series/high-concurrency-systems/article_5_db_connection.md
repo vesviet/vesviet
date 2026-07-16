@@ -262,5 +262,5 @@ If your enterprise e-commerce or B2B platform is struggling with slow database q
 
 ---
 
-[← Previous]({{< ref "article_4_outbox_pattern.md" >}}) | [Series hub]({{< ref "_index.md" >}}) | [Next →]({{< ref "article_6_api_gateway.md" >}})
+🔗 **Next Step:** [Chapter 6: API Gateway vs Service Mesh in Microservices Architecture]({{< ref "article_6_api_gateway.md" >}})
 

@@ -62,6 +62,12 @@ To handle massive volume, Shopee configures Kafka producers with specific parame
 - `batch.size` and `linger.ms`: Producers hold messages for a brief period (e.g., `linger.ms = 5`) to batch multiple messages into a single TCP packet, drastically increasing network throughput.
 - `Enable.Idempotence=true`: Ensures that even if a network retry occurs, Kafka writes duplicate payloads exactly once, keeping the inventory status clean.
 
+### Kafka Partitioning and Consumer Backpressure Strategy
+
+To prevent database contention at the worker level, partition design and backpressure are heavily optimized:
+- **Partition Key Selection:** Ordering transactions by `user_id` or `order_id` ensures that events for the same entity land on the same partition. This guarantees strict sequential processing of order updates per user. However, to prevent hot-spotting (e.g., when a single hot seller receives a flood of orders), Shopee applies a hybrid key format: `item_id:user_id` or dynamically hashes keys to distribute load uniformly across Kafka partitions.
+- **Consumer Backpressure Control:** Worker pods pull messages in batches. If the target database (TiDB/MySQL) CPU usage exceeds 80% or write queue limits are hit, workers dynamically apply backpressure. Rather than shutting down the consumer container (which causes expensive Kafka rebalances), the consumer loop invokes `KafkaConsumer.pause()` on its assigned partitions. The worker continues to process existing in-flight records, and once DB load cools down, it calls `KafkaConsumer.resume()` to resume fetching.
+
 ---
 
 ## 2. Eventual Consistency
@@ -75,6 +81,12 @@ Shopee embraces the philosophy of **Eventual Consistency** for distributed syste
 To maintain eventual consistency across microservices (like Order and Payment), Shopee avoids 2-Phase Commit (2PC) transactions due to lock contention. Instead, they use:
 1. **The Saga Pattern:** Orchestrating a series of local transactions. If Payment fails, a compensating transaction is published to refund the inventory in Redis and MySQL.
 2. **The Outbox Pattern:** Ensures the database update and message publication to Kafka occur atomically. The service writes to an `Outbox` table in the same transaction as the core order table, and an independent publisher sweeps the outbox to push events to Kafka.
+
+### Transaction Log Mining (CDC) & Idempotent Consumption
+
+To scale the Outbox Pattern without impacting application performance, Shopee adopts **Change Data Capture (CDC)**:
+- **Binlog Tailers (Canal/Debezium):** Writing to a separate Outbox table inside the same MySQL database still incurs disk I/O and lock overhead. Under mega-concurrency, engineers bypass application-level writing. Instead, CDC tools tail the MySQL binary log (binlog) asynchronously. The CDC system reads raw transaction commits, extracts order events, and publishes them to Kafka with sub-millisecond lag.
+- **Idempotency Safeguards:** Since Kafka offers at-least-once delivery guarantees under network partitions, downstream services must be fully idempotent. When the Payment Service receives a `PaymentCharge` event, it performs a lookup on a distributed lock / state store using a unique business key: `order_id:payment_attempt_sequence`. If the key exists in Redis with a `COMPLETED` state, the message is acknowledged and discarded. If not, it uses a database `INSERT ... ON DUPLICATE KEY UPDATE` to lock and update the status atomically.
 
 ---
 
@@ -207,6 +219,16 @@ func ExecuteWithRetry(ctx context.Context, cfg BackoffConfig, operation func(ctx
   - Disabling historical purchase search.
   - Hiding dashboard stats for sellers.
   - Pausing heavy recommendation pipelines.
+
+### Priority-Based Gateway Routing & Request Shedding
+
+Under extreme saturation, the API Gateway acts as the first line of defense using hierarchical classification:
+- **Traffic Classification:** All incoming requests are classified into four Tiers:
+  - **Tier 0 (Critical):** Checkout submission, payment processing, core inventory hold.
+  - **Tier 1 (Core):** Product search, cart additions, product page details.
+  - **Tier 2 (Non-Core):** Recommendations, dynamic reviews, vouchers.
+  - **Tier 3 (Auxiliary):** Analytics, seller dashboard updates, live chat notifications.
+- **Active Load Control:** If the gateway detects internal latency rising or cluster-wide CPU exceeding 85%, it triggers dynamic rate-limiting. Tier 3 requests are instantly rejected with custom status codes or static fallback files cached at the CDN. Tier 2 requests are subjected to a high probability of drop (e.g., 50% random drop), while Tier 0 requests are protected by dedicating isolated thread pools and priority lanes to ensure that users who are actively paying can finalize their transactions.
 
 ---
 

@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/executive-summary/"
 [← Series hub]({{< ref "/series/alipay-double-11/_index.md" >}})
 [Next →]({{< ref "/series/alipay-double-11/phase-1-timeline.md" >}})
 
-> **Prerequisite:** This is the executive summary and introductory overview of the **Alipay Double 11 Architecture** series. No prior reading is required to start here.
+> **Prerequisite:** General understanding of global financial systems scale, high-throughput payment architectures, and transaction reliability.
 
 **From 50M CNY to 544K TPS: Lessons in Building Planet-Scale Systems**
 
@@ -154,3 +154,9 @@ If you are tasked with scaling a high-throughput transaction system today, you d
 2. **Conduct Production Load Drills**: If you haven't run a load test on your production environment using shadow databases, you do not know if your system will survive a peak event.
 3. **Establish Hard Degrade Paths**: Define explicit, automated toggles that disable non-critical features (like recommended items, activity logs, and email notifications) when the core database latency increases past a specific millisecond threshold.
 4. **Design for Write Buffering**: Use LSM-tree database structures or message queues to convert random disk write spikes into sequential logs or buffered streams.
+
+---
+
+Need help implementing high-scale architectures? Feel free to [Contact me](/contact/) or [Hire me](/hire/) to review your system design and codebase.
+
+🔗 **Next Step:** [Phase 1: Timeline and Scale Evolution]({{< ref "phase-1-timeline.md" >}})

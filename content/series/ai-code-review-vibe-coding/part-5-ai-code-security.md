@@ -32,7 +32,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-> **Series Orientation:** This article is Part 5 of the **AI Code Review & Vibe Coding** series, presenting the security threat model for AI-generated code. For the automated review pipeline that runs these security checks, see [Part 4 — Building the Review Pipeline]({{< ref "/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent.md" >}}).
+> **Prerequisite:** [AI Code Review Pipeline: Zero-Trust, Multi-Agent & Mutation Testing]({{< ref "part-4-review-pipeline-multi-agent.md" >}})
 
 In 2025, security researchers introduced a metric that should permanently reshape how engineering teams think about AI-generated code: AI-assisted code exhibits **2.7× higher vulnerability density** than carefully reviewed human-written code. Not because AI is uniquely incompetent at security — it is not — but because the patterns of failure are systematic, predictable, and concentrated in exactly the areas that automated detection is weakest.
 
@@ -306,4 +306,6 @@ Part 6 closes the series with the governance frameworks, observability practices
 
 ---
 
-*Next: [Part 6 — Governance, Observability, and the Future of the Engineering Career]({{< ref "/series/ai-code-review-vibe-coding/part-6-governance-observability-career.md" >}})*
+Need a security threat modeling assessment or advice on OWASP compliance for LLMs? [Contact me](/contact/) for professional advice.
+
+🔗 **Next Step:** [Vibe Coding Governance: AGENTS.md, Cursor Rules & AI Observability for Engineering Teams (2026)]({{< ref "part-6-governance-observability-career.md" >}})

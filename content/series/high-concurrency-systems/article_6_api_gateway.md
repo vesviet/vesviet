@@ -294,5 +294,5 @@ If your enterprise e-commerce or B2B platform is struggling with slow database q
 
 ---
 
-[← Previous]({{< ref "article_5_db_connection.md" >}}) | [Series hub]({{< ref "_index.md" >}}) | [Next →]({{< ref "article_7_idempotency.md" >}})
+🔗 **Next Step:** [Chapter 7: Designing Idempotency APIs for Payment Systems]({{< ref "article_7_idempotency.md" >}})
 

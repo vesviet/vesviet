@@ -31,7 +31,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-> **Series Orientation:** This article is Part 1 of the **AI Code Review & Vibe Coding** series, tailored for non-technical builders navigating the initial phase of vibe coding. For the overall roadmap, see the [Series Executive Summary]({{< ref "/series/ai-code-review-vibe-coding/executive-summary.md" >}}).
+> **Prerequisite:** [What Is Vibe Coding — And Why Every Engineer Must Care (2025)]({{< ref "executive-summary.md" >}})
 
 In July 2025, the CEO of a Series A startup proudly demoed a working internal operations system — **140,000 lines of code** — built entirely with Claude prompts over four weeks. No engineers on the founding team. No technical co-founder. Just a business founder, a clear problem, and a willingness to "give in to the vibes."
 
@@ -318,4 +318,6 @@ The engineers who benefit most from understanding vibe coding are the ones who r
 
 ---
 
-*Next: [Part 2 — Context Engineering: AGENTS.md, Cursor Rules, and RAG for Real Codebases]({{< ref "/series/ai-code-review-vibe-coding/part-2-context-engineering-codebase.md" >}})*
+Need guidance on integrating AI tooling safely into your business? [Contact me](/contact/) today.
+
+🔗 **Next Step:** [Context Engineering for AI Coding: AGENTS.md, Cursor Rules & RAG]({{< ref "part-2-context-engineering-codebase.md" >}})

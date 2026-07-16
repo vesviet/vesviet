@@ -323,5 +323,5 @@ If your enterprise e-commerce or B2B platform is struggling with slow database q
 
 ---
 
-[← Previous]({{< ref "article_6_api_gateway.md" >}}) | [Series hub]({{< ref "_index.md" >}}) | [Next →]({{< ref "article_8_distributed_locking.md" >}})
+🔗 **Next Step:** [Chapter 8: Distributed Locking — Redlock vs ZooKeeper]({{< ref "article_8_distributed_locking.md" >}})
 

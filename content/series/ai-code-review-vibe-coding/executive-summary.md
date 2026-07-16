@@ -28,6 +28,8 @@ ShowToc: true
 TocOpen: true
 ---
 
+> **Prerequisite:** This executive summary assumes a basic understanding of general software engineering trends and familiarity with AI-assisted coding tools (e.g., Copilot, Cursor).
+
 In February 2025, Andrej Karpathy posted a tweet that most engineers scrolled past:
 
 > *"There's a new kind of coding I call 'vibe coding', where you fully give in to the vibes, embrace exponentials, and forget that the code even exists... I just see stuff, say stuff, run stuff, and copy-paste stuff."*
@@ -199,4 +201,6 @@ If the answer is "not entirely" — you are in exactly the right place.
 
 ---
 
-*Next: [Part 1 — Vibe Coding for CEOs, PMs, and BAs: Tools, Workflow, and The Production Wall]({{< ref "/series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical.md" >}})*
+If you want to transition your organization from casual vibe coding to disciplined vibe engineering, [Hire me](/hire/) for custom consulting and team training.
+
+🔗 **Next Step:** [Vibe Coding for CEOs, PMs, and BAs: Tools & The Production Wall]({{< ref "part-1-vibe-coding-non-technical.md" >}})

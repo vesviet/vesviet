@@ -260,5 +260,5 @@ If your enterprise e-commerce or B2B platform is struggling with slow database q
 
 ---
 
-[← Previous]({{< ref "article_7_idempotency.md" >}}) | [Series hub]({{< ref "_index.md" >}}) | [Next →]({{< ref "article_9_sharding.md" >}})
+🔗 **Next Step:** [Chapter 9: Database Sharding & Read/Write Splitting]({{< ref "article_9_sharding.md" >}})
 

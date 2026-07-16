@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-4-deep-dive/"
 [← Series hub]({{< ref "/series/alipay-double-11/_index.md" >}})
 [← Prev]({{< ref "/series/alipay-double-11/phase-4-technology.md" >}}) • [Next →]({{< ref "/series/alipay-double-11/modern-tech-comparison.md" >}})
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Phase 4: Technology Overview]({{< ref "/series/alipay-double-11/phase-4-technology.md" >}}).
+> **Prerequisite:** [Phase 4: Technology Overview]({{< ref "phase-4-technology.md" >}})
 
 This document is a deep-dive companion to Phase 4. It focuses on the **internal mechanics** that define the hard limits of peak performance systems: RPC protocol layouts, consensus log replication pipelines, storage engine compaction configurations, and distributed transactions.
 
@@ -143,3 +143,9 @@ While local mutations in a partition use Paxos, transaction blocks touching mult
 1. **Multiplex Connections to Avoid Head-of-Line Blocking**: Use binary protocols (like Bolt or gRPC HTTP/2) to share connections, minimizing socket and thread allocation overhead under heavy concurrent request spikes.
 2. **Buffer Disk Writes in Memory**: Never write directly to relational database disks on the critical path. Use LSM-tree storage models to queue updates in memory and append logs sequentially to disk.
 3. **Decouple Quorum from Remote Locations**: Design Paxos groups so that a quorum can be reached using local, low-latency nodes, avoiding cross-region network latency penalties on writes.
+
+---
+
+Need help implementing high-scale architectures? Feel free to [Contact me](/contact/) or [Hire me](/hire/) to review your system design and codebase.
+
+🔗 **Next Step:** [Modern Tech Comparison]({{< ref "modern-tech-comparison.md" >}})

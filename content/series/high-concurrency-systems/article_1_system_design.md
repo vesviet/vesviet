@@ -240,5 +240,5 @@ If your enterprise e-commerce or B2B platform is struggling with slow database q
 
 ---
 
-[← Previous]({{< ref "executive-summary.md" >}}) | [Series hub]({{< ref "_index.md" >}}) | [Next →]({{< ref "article_2_caching.md" >}})
+🔗 **Next Step:** [Chapter 2: The 3 Caching Vulnerabilities (Penetration, Breakdown, Avalanche) & Go Singleflight]({{< ref "article_2_caching.md" >}})
 

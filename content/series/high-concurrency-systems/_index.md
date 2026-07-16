@@ -42,23 +42,35 @@ If your enterprise e-commerce or B2B platform is struggling with slow database q
 
 Forget generic, theoretical scaling advice. This curriculum tackles the exact concurrency challenges faced in production:
 
-1. **[Part 1: The Concurrency Problem & Pessimistic Locks]({{< ref "article_8_distributed_locking.md" >}})**
-   *Why relying on `SELECT FOR UPDATE` will eventually bring your database to a halt under high load, and how to detect it before it's too late.*
+0. **[The Reality of C10M: Surviving Extreme Traffic — Exec Summary]({{< ref "executive-summary.md" >}})**
+   *An overview for Tech Leads & Architects: Why traditional scaling fails at millions of requests and how to build high-concurrency systems using Golang.*
 
-2. **[Part 2: Optimistic Locking & Redis Redlock]({{< ref "article_8_distributed_locking.md" >}})**
-   *Transitioning to versioned updates and distributed locks. Understanding when Redlock is necessary and when it introduces unnecessary complexity.*
+1. **[Chapter 1: How Systems Handle Millions of Requests/s (C10M)? Lessons from Shopee & Alipay]({{< ref "article_1_system_design.md" >}})**
+   *A deep dive into how modern distributed systems break the C10M barrier using stateless APIs, multi-level caching, and Go.*
 
-3. **[Part 3: Go Channels & Worker Pools for Order Ingestion]({{< ref "article_1_system_design.md" >}})**
-   *How to absorb sudden traffic spikes (Flash Sales) by decoupling ingestion from processing using native Go concurrency patterns.*
+2. **[Chapter 2: The 3 Caching Vulnerabilities (Penetration, Breakdown, Avalanche) & Go Singleflight]({{< ref "article_2_caching.md" >}})**
+   *Learn how to defend against Cache Penetration, Avalanche, and Breakdown using Bloom Filters, TTL jittering, and Golang singleflight.*
 
-4. **[Part 4: Dapr PubSub & Event-Driven Architecture]({{< ref "article_6_api_gateway.md" >}})**
-   *Scaling horizontally across microservices. Ensuring guaranteed event delivery and handling idempotency.* *(Note: Before scaling horizontally, ensure your module boundaries are clean. Consider the Reverse Strangler pattern in our [Modular Monolith Architecture]({{< ref "/series/modular-monolith-architecture/_index.md" >}}) masterclass.)*
+3. **[Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm]({{< ref "article_3_rate_limiting.md" >}})**
+   *Discover why local rate limiters fail in Microservices and how Redis Lua scripts powering the GCRA algorithm solve distributed throttling.*
 
-5. **[Part 5: Transactional Outbox Pattern]({{< ref "article_4_outbox_pattern.md" >}})**
-   *Solving the dual-write problem. How to safely update your database and publish a Kafka event without distributed transactions.*
+4. **[Chapter 4: Solving the Dual-Write Problem with Transactional Outbox Pattern]({{< ref "article_4_outbox_pattern.md" >}})**
+   *Master the Transactional Outbox Pattern using GORM and CDC to eliminate Dual-Write data inconsistencies in event-driven systems.*
 
-6. **[Part 6: Saga Orchestration in Go]({{< ref "article_4_outbox_pattern.md" >}})**
-   *Managing complex, multi-service workflows (Inventory Reservation -> Payment -> Shipping) with reliable compensation logic.*
+5. **[Chapter 5: Optimizing Golang Database Connection Pools]({{< ref "article_5_db_connection.md" >}})**
+   *Tune your *sql.DB connection pool parameters (MaxOpenConns, MaxIdleConns) and implement PgBouncer to maximize Go database performance.*
+
+6. **[Chapter 6: API Gateway vs Service Mesh in Microservices Architecture]({{< ref "article_6_api_gateway.md" >}})**
+   *Understand the clear boundaries between North-South traffic (API Gateway) and East-West traffic (Service Mesh) in large Go architectures.*
+
+7. **[Chapter 7: Designing Idempotency APIs for Payment Systems]({{< ref "article_7_idempotency.md" >}})**
+   *Prevent double-charging customers by implementing robust Idempotency Keys and Atomic Redis locks in your HTTP POST transactions.*
+
+8. **[Chapter 8: Distributed Locking — Redlock vs ZooKeeper]({{< ref "article_8_distributed_locking.md" >}})**
+   *Master distributed synchronization by comparing Redis Redlock algorithms against strongly consistent Apache ZooKeeper locks.*
+
+9. **[Chapter 9: Database Sharding & Read/Write Splitting]({{< ref "article_9_sharding.md" >}})**
+   *Scale your relational database infinitely using GORM dbresolver for Read/Write splitting and Consistent Hashing for massive Sharding.*
 
 ---
 

@@ -237,5 +237,5 @@ If your enterprise e-commerce or B2B platform is struggling with slow database q
 
 ---
 
-[← Previous]({{< ref "article_8_distributed_locking.md" >}}) | [Series hub]({{< ref "_index.md" >}})
+🔗 **Next Step:** [Masterclass: High Concurrency Systems & B2B Commerce]({{< ref "_index.md" >}})
 

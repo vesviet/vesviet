@@ -23,6 +23,7 @@ In this 8-part series, we will dive deep into building a complete Distance Matri
 
 ## 🗺️ Series Contents (8 Parts)
 
+- **[Executive Summary: Geospatial & Routing Architecture]({{< ref "/series/routing-geospatial-architecture/executive-summary.md" >}})**
 - **[Part 1: Core Algorithms (A*, Dijkstra) Visualized]({{< ref "/series/routing-geospatial-architecture/part-1-core-algorithms.md" >}})**
 - **[Part 2: Zero to Hero Environment Setup (Docker, OSM Data, Golang)]({{< ref "/series/routing-geospatial-architecture/part-2-environment-setup.md" >}})**
 - **[Part 3: Spatial Indexing (Uber H3, PostGIS & Redis GEO)]({{< ref "/series/routing-geospatial-architecture/part-3-spatial-indexing.md" >}})**

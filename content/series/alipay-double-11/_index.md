@@ -23,11 +23,10 @@ This is a structured research series on how Alipay scaled Double 11 from early c
 1. [Executive Summary]({{< ref "/series/alipay-double-11/executive-summary.md" >}})
 
 ### Engineering leadership (60–90 minutes)
-1. [Executive Summary]({{< ref "/series/alipay-double-11/executive-summary.md" >}})
-2. [Phase 1 — Timeline]({{< ref "/series/alipay-double-11/phase-1-timeline.md" >}})
-3. [Phase 2 — Architecture]({{< ref "/series/alipay-double-11/phase-2-architecture.md" >}})
-4. [Phase 3 — Operations]({{< ref "/series/alipay-double-11/phase-3-operations.md" >}})
-5. [Phase 5 — Synthesis]({{< ref "/series/alipay-double-11/phase-5-synthesis.md" >}})
+1. [Phase 1 — Timeline]({{< ref "/series/alipay-double-11/phase-1-timeline.md" >}})
+2. [Phase 2 — Architecture]({{< ref "/series/alipay-double-11/phase-2-architecture.md" >}})
+3. [Phase 3 — Operations]({{< ref "/series/alipay-double-11/phase-3-operations.md" >}})
+4. [Phase 5 — Synthesis]({{< ref "/series/alipay-double-11/phase-5-synthesis.md" >}})
 
 ### Full technical deep dive (6–10 hours)
 Read everything above, then:

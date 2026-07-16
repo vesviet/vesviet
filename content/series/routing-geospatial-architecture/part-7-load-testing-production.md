@@ -133,6 +133,85 @@ func main() {
 
 ---
 
+## Deep Dive: Scripting Geospatial Load Tests with K6
+
+To verify the performance boundaries of our Golang API Gateway and Redis semantic cache under peak load, we must execute realistic load tests. Using static coordinates will yield false confidence, as the cache hit rate will be artificially close to 100%. We need a script that dynamically samples random geographical coordinates within our target city bounding box (in this case, Berlin).
+
+Below is a complete, production-ready **K6 Load Testing Script** (`loadtest.js`):
+
+```javascript
+import http from 'k6/http';
+import { check, sleep } from 'k6';
+
+// Define the bounding box for Berlin (minLon, minLat, maxLon, maxLat)
+const BERLIN_BBOX = {
+  minLon: 13.30,
+  minLat: 52.45,
+  maxLon: 13.50,
+  maxLat: 52.55
+};
+
+// Generate a random float between two values
+function randomFloat(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+// Generate a random coordinate pair formatted for the routing API
+function generateRandomPoint() {
+  const lon = randomFloat(BERLIN_BBOX.minLon, BERLIN_BBOX.maxLon);
+  const lat = randomFloat(BERLIN_BBOX.minLat, BERLIN_BBOX.maxLat);
+  return `${lon},${lat}`;
+}
+
+export const options = {
+  stages: [
+    { duration: '1m', target: 50 },  // Ramp-up to 50 virtual users
+    { duration: '3m', target: 200 }, // Sustained heavy load of 200 users
+    { duration: '1m', target: 0 }    // Ramp-down to 0
+  ],
+  thresholds: {
+    http_req_duration: ['p(95)<150', 'p(99)<300'], // 95% of requests must resolve under 150ms, 99% under 300ms
+    http_req_failed: ['rate<0.01']                 // Error rate must remain below 1%
+  }
+};
+
+export default function () {
+  const origin = generateRandomPoint();
+  const dest1 = generateRandomPoint();
+  const dest2 = generateRandomPoint();
+
+  // Construct our matrix route request query
+  // Point format: point=lon,lat
+  const url = `http://localhost:8080/api/route?point=${origin}&point=${dest1}&point=${dest2}`;
+  
+  const params = {
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Routing-Region': 'berlin'
+    }
+  };
+
+  const res = http.get(url, params);
+
+  // Assertions to verify correctness under load
+  check(res, {
+    'status is 200': (r) => r.status === 200,
+    'has valid region': (r) => r.json().region === 'berlin',
+    'has valid geometry': (r) => r.json().geometry !== undefined
+  });
+
+  // Simulate realistic dispatch behavior with a think-time delay
+  sleep(randomFloat(0.5, 2.0));
+}
+```
+
+### Explaining the Load Testing Strategy:
+1. **Dynamic Bounding Box Sampling**: The `generateRandomPoint` function generates random latitude and longitude pairs constrained by `BERLIN_BBOX`. By sending unique spatial coordinates on every iteration, we test the true capability of the caching layer. If coordinates are clustered together in the same hexagonal H3 cell, it exercises cache hits, whereas outliers exercise downstream GraphHopper map matching and CH searches.
+2. **K6 SLO Thresholds**: We declare service-level objectives (SLOs) inside the `options.thresholds` block. During the test, K6 monitors the `http_req_duration` metric. If the 95th percentile latency exceeds 150ms, or if the failure rate exceeds 1%, the load test fails with a non-zero exit code, indicating an architectural regression.
+3. **Simulating Driver Think-Time**: The `sleep(randomFloat(0.5, 2.0))` function models realistic human dispatcher behavior. Instead of hammering the server in an infinite zero-delay loop, virtual users wait a random interval between 0.5 and 2.0 seconds between queries, preventing unrealistic pipeline socket exhaustion.
+
+---
+
 ## FAQ: Golang Performance Bottlenecks
 
 {{< faq q="My Golang API on Kubernetes experiences severe latency spikes and 'CPU Throttled' alerts, but CPU usage is low. Why?" >}}

@@ -55,6 +55,12 @@ Tracing every single request in an environment with millions of requests per sec
 1. **Head-Based Sampling:** The API Gateway decides whether to trace a request immediately at the edge. If the sampling rate is set to 1%, only 1% of transactions generate tracing data, and the rest are ignored. The downstream services read the `traceparent` flags bit and skip span creation entirely for non-sampled requests.
 2. **Tail-Based Sampling:** Collecting 100% of spans in the local memory of intermediate OpenTelemetry Collectors. The collector groups all spans by Trace ID, evaluates the entire trace (e.g., checking if it contains an error code or has an execution latency exceeding 500ms), and only exports the trace to database storage if it meets the critical criteria. This saves 90% of storage costs while capturing all failure traces.
 
+### Baggage API & Asynchronous Message Queue Propagation
+
+To propagate vital business metadata across distributed traces, Shopee leverages the W3C **Baggage API**:
+- **Context vs. Baggage:** While the trace context transmits tracing metadata (like trace ID and parent span ID), Baggage allows propagation of key-value pairs (e.g., `user_tier=vip` or `origin_region=sg`) downstream. This enables microservices deep down the stack to make execution decisions (such as allocating premium compute resources) without performing expensive database retrievals.
+- **Queue Injection/Extraction:** When passing tracing contexts through asynchronous message queues (e.g., Apache Kafka), standard HTTP headers cannot be used. OpenTelemetry provides specialized text-map inject methods to serialise trace contexts into Kafka Record Headers (specifically placing the traceparent value inside a byte-array header key named `traceparent`). Upon consuming, order workers extract this header to reconstruct the trace context, linking synchronous REST/gRPC actions to asynchronous background operations.
+
 ---
 
 ## 2. Metrics Collection and Log Storage
@@ -147,6 +153,36 @@ func RecordRPCLatency(method string, code string, startTime time.Time) {
 }
 ```
 
+### Telemetry Implementation Walkthrough
+
+The Go telemetry wrapper shown above performs critical tasks at the boundaries:
+1. **Dynamic Context Propagation:** `InjectTraceContext` retrieves the active OpenTelemetry span context from Go's native `context.Context` and maps W3C-standard headers to outgoing gRPC metadata. This maintains execution graphs across microservices.
+2. **Asynchronous Instrumentation:** The `ExtractTraceContext` counterpart intercepts incoming request headers, reconstructing the trace hierarchy. It uses `promauto.NewHistogramVec` to log latency distributions. The histograms utilize predefined bucket margins to capture microsecond-level variances in database queries.
+
+### ClickHouse Schema Design for Trillions of Logs
+
+To ingest and query logs efficiently, Shopee utilizes a columnar table schema optimized for log search:
+
+```sql
+CREATE TABLE telemetry.microservice_logs
+(
+    timestamp DateTime64(6, 'UTC'),
+    service_name LowCardinality(String),
+    log_level LowCardinality(String),
+    trace_id String,
+    span_id String,
+    message String,
+    attributes Map(String, String)
+)
+ENGINE = ReplacingMergeTree(timestamp)
+PARTITION BY toYYYYMMDD(timestamp)
+ORDER BY (service_name, log_level, timestamp, trace_id)
+SETTINGS index_granularity = 8192;
+```
+
+- **LowCardinality Strings:** Columns like `service_name` and `log_level` contain a small set of unique values. Marking them as `LowCardinality` optimizes dictionary-based compression and speeds up filter operations.
+- **Ordered Primary Keys:** Querying logs by `service_name` and `log_level` first is the most common debug workflow. Ordering the columns in the primary key array allows ClickHouse's sparse indexes to skip over non-matching data blocks without scanning the entire disk table.
+
 ---
 
 ## 3. Real-Time Analytics with Apache Flink
@@ -173,6 +209,13 @@ graph TD
 
 - **Automated Alerts:** Flink monitors the stream of HTTP 500 errors. If it exceeds 100 errors per second within a tumbling time window, it fires an immediate Slack or PagerDuty alert to wake up the engineers.
 - **Anti-Fraud System:** If Flink detects a single IP address attempting to create 1,000 shopping carts in 1 minute via the log stream, it triggers a security rule to block that IP instantly, neutralizing the attacker before further transactions occur.
+
+### Flink Windowing & Out-Of-Order Event Handling
+
+To accurately process metrics from thousands of microservices, Flink handles event-time processing:
+- **Tumbling vs. Sliding Windows:** Tumbling windows (non-overlapping blocks, e.g., every 10 seconds) evaluate absolute thresholds like "errors per block." Sliding windows (overlapping blocks, e.g., 1-minute window moving every 5 seconds) are used for rate calculations (such as calculating spike velocities) to prevent edge anomalies.
+- **Watermarks and Latency Handling:** Event streams are naturally out-of-order due to network delays and queue buffering. Flink utilizes *Bounded-Out-Of-Orderness Watermarks* to allow for a configurable delay (e.g., 3 seconds). If an event arrives late but within the watermark, it is correctly incorporated into the window calculation, ensuring accurate alerts.
+- **State Persistence:** Flink uses a RocksDB state backend to store window data locally on SSDs. This state is periodically backed up to distributed storage (like HDFS or Ceph) via checkpoints, enabling sub-second fault recovery during infrastructure outages.
 
 ---
 

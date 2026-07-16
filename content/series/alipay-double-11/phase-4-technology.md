@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-4-technology/"
 [← Series hub]({{< ref "/series/alipay-double-11/_index.md" >}})
 [← Prev]({{< ref "/series/alipay-double-11/phase-3-operations.md" >}}) • [Next →]({{< ref "/series/alipay-double-11/phase-4-deep-dive.md" >}})
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Phase 3: Operations Playbook]({{< ref "/series/alipay-double-11/phase-3-operations.md" >}}).
+> **Prerequisite:** [Phase 3: Operations Playbook]({{< ref "phase-3-operations.md" >}})
 
 This phase describes the core technology layers and software engineering paradigms that Alipay developed to scale its transaction processing systems. Building systems for Double 11 is not only an infrastructure scaling challenge; it is a software complexity challenge. The engineering team had to design a unified core platform capable of handling thousands of distinct business requirements (promotions, installment plans, international cards) without turning the codebase into an unmaintainable monolith.
 
@@ -223,3 +223,9 @@ The following matrix summarizes the relationship between business constraints an
 1. **Decouple Business Logic from Process Logic**: Use the Middle Platform design pattern to keep the critical write path clean and prevent business-specific dependencies from polluting the system core.
 2. **Enforce strict Latency Budgets**: Security checks must run under a hard deadline (e.g., 50ms). Use asynchronous streaming feature computation and fail-safe soft allowances to protect availability.
 3. **Standardize the Application Platform**: Build or adopt a unified distributed application platform (like SOFAStack or modern CNCF equivalents) to guarantee that all microservices adhere to consistent tracing, routing, and operational policies.
+
+---
+
+Need help implementing high-scale architectures? Feel free to [Contact me](/contact/) or [Hire me](/hire/) to review your system design and codebase.
+
+🔗 **Next Step:** [Phase 4: Deep Dive (Technology Internals)]({{< ref "phase-4-deep-dive.md" >}})
