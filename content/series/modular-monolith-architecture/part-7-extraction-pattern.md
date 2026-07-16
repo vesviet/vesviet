@@ -1,20 +1,18 @@
----title: "Part 7: Extraction Pattern – When Should You Extract Microservices?"
+---
+title: "Part 7: Extraction Pattern – When Should You Extract Microservices?"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "Not everything belongs in a Monolith. Learn how to determine when a module should be extracted into a Microservice through lessons from Sentry, GitLab, and"
 slug: "extraction-pattern-when-to-extract-microservices"
 tags: ["Microservices", "Extraction", "Sentry", "GitLab", "Modular Monolith", "Architecture"]
-aliases:
-  - "/series/modular-monolith-architecture/part-7-extraction-pattern/"
-  - "/series/modular-monolith-architecture/migration-playbook-microservices-to-modular-monolith/part-7-extraction-pattern.md"
-cover:
-  image: "images/posts/golang-microservices-cover.png"
-  alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
-  relative: false
+aliases: ["/series/modular-monolith-architecture/part-7-extraction-pattern/", "/series/modular-monolith-architecture/migration-playbook-microservices-to-modular-monolith/part-7-extraction-pattern.md"]
+cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/extraction-pattern-when-to-extract-microservices/"
 ShowToc: true
 TocOpen: true
 ---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 7: Part 6: Migration Playbook – Consolidating Microservices]({{< ref "part-6-migration-playbook.md" >}}).
 
 # Part 7: Extraction Pattern – When Should You Extract Microservices?
 
@@ -167,4 +165,13 @@ Managing third-party dependencies in a single repository requires isolating pack
 
 Thus, we have gone through all the theory and design processes. In **[Part 8: Case Study Matrix]({{< ref "part-8-case-study-matrix.md" >}})** (the final article of this Playbook series), we will validate all our reasoning with a comprehensive table of speaking numbers from Shopify, Stack Overflow, Target, Zulip, Notion, and Basecamp.
 
+---
 
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "part-6-migration-playbook.md" >}})
+[Next Part →]({{< ref "part-8-case-study-matrix.md" >}})
+
+🔗 **Next Step:** Continue to [Part 8: Part 8: Case Study Matrix – The Monuments of the Modular Monolith]({{< ref "part-8-case-study-matrix.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

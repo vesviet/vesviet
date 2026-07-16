@@ -1,28 +1,22 @@
----title: "Part 1: Protocol Fundamentals & Transport Evolution"
+---
+title: "Part 1: Protocol Fundamentals & Transport Evolution"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
 draft: false
 weight: 2
-categories:
-  - Architecture
-tags:
-  - MCP
-  - Transport
-  - HTTP
-  - Core Primitives
+categories: ["Architecture"]
+tags: ["MCP", "Transport", "HTTP", "Core Primitives"]
 description: "Deep dive into the 5 Core Primitives of MCP and the evolution of the Transport Layer from local STDIO to enterprise-scale Streamable HTTP (SSE)."
-aliases:
-  - /series/mcp-engineering-in-production/part-1-protocol/
-cover:
-  image: "images/posts/generative-ui-mcp-cover.png"
-  alt: "MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment"
-  relative: false
+aliases: ["/series/mcp-engineering-in-production/part-1-protocol/"]
+cover: {'image': 'images/posts/generative-ui-mcp-cover.png', 'alt': 'MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-1-protocol/"
 mermaid: true
 ShowToc: true
 TocOpen: true
 ---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 1: Executive Summary: MCP - The Control Plane of the AI Ecosystem]({{< ref "executive-summary.md" >}}).
 
 To master a protocol, you must understand its DNA. Before we write Go code in the upcoming parts, we need to dismantle the architecture of the Model Context Protocol (MCP). Underneath the complex AI workflows, MCP is surprisingly simple and elegant. It is built on top of the **[JSON-RPC 2.0](https://www.jsonrpc.org/specification)** specification, a stateless, lightweight remote procedure call protocol.
 
@@ -186,6 +180,13 @@ func main() {
 }
 ```
 
-
 ---
-*Next up: [Part 2: Build a Production Server with Go](/series/mcp-engineering-in-production/part-2-build/)*
+
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "executive-summary.md" >}})
+[Next Part →]({{< ref "part-2-build.md" >}})
+
+🔗 **Next Step:** Continue to [Part 2: Part 2: Build a Production Server with Go]({{< ref "part-2-build.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

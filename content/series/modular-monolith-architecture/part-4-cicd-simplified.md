@@ -1,20 +1,18 @@
----title: "Part 4: CI/CD Simplified & Atomic Deployments"
+---
+title: "Part 4: CI/CD Simplified & Atomic Deployments"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "Why is CI/CD management for Microservices so complex? Discover the power of Atomic Deployments and how Shopify runs hundreds of thousands of tests in under"
 slug: "cicd-simplified-atomic-deployments-monolith"
 tags: ["CI/CD", "Deployments", "Shopify", "Buildkite", "Modular Monolith", "Testing"]
-aliases:
-  - "/series/modular-monolith-architecture/part-4-cicd-simplified/"
-  - "/series/modular-monolith-architecture/ddd-module-boundaries-modular-monolith/part-4-cicd-simplified.md"
-cover:
-  image: "images/posts/golang-microservices-cover.png"
-  alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
-  relative: false
+aliases: ["/series/modular-monolith-architecture/part-4-cicd-simplified/", "/series/modular-monolith-architecture/ddd-module-boundaries-modular-monolith/part-4-cicd-simplified.md"]
+cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/cicd-simplified-atomic-deployments-monolith/"
 ShowToc: true
 TocOpen: true
 ---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 4: Part 3: Domain-Driven Design (DDD) Boundaries in a Modular Monolith]({{< ref "part-3-ddd-module-boundaries.md" >}}).
 
 # Part 4: CI/CD Simplified & The Power of Atomic Deployments
 
@@ -166,4 +164,13 @@ To optimize the execution speed of modules within a monolithic binary, engineers
 
 Simplifying CI/CD alone can save an organization countless work hours. However, when the system goes into Production, how do we track errors? In a distributed architecture, we need highly expensive Distributed Tracing. In a Monolith, this problem is much simpler and more effective. Discover how in **[Part 5: Observability in Memory]({{< ref "part-5-observability.md" >}})**.
 
+---
 
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "part-3-ddd-module-boundaries.md" >}})
+[Next Part →]({{< ref "part-5-observability.md" >}})
+
+🔗 **Next Step:** Continue to [Part 5: Part 5: Observability in Memory – When Everything Shares a Single Call Stack]({{< ref "part-5-observability.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

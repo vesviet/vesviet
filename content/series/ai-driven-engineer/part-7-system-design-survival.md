@@ -1,5 +1,4 @@
 ---
-
 title: "Part 7 — System Design: The Priceless Survival Territory for Developers"
 date: "2026-05-10T16:00:00+07:00"
 lastmod: "2026-05-10T16:00:00+07:00"
@@ -10,14 +9,13 @@ TocOpen: true
 weight: 8
 categories: ["Series", "Software Engineering"]
 tags: ["AI", "System Design", "Career"]
-cover:
-  image: "images/posts/ai-native-frontend-cover.png"
-  alt: "AI-Driven Engineer series: evolving from code typist to AI-native software architect"
-  relative: false
+cover: {'image': 'images/posts/ai-native-frontend-cover.png', 'alt': 'AI-Driven Engineer series: evolving from code typist to AI-native software architect', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-7-system-design-survival/"
 mermaid: true
 ---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 7: Part 6 — Role Shift: From Coder to AI Orchestrator]({{< ref "part-6-from-coder-to-orchestrator.md" >}}).
 
 No matter how top-tier your Prompt Engineering skills are, sooner or later you will hit a reality wall: **Writing code to create a feature is easy, but designing a system that can handle millions of users is incredibly difficult.**
 
@@ -157,8 +155,13 @@ Enforcing design compliance programmatically requires structured steps:
 - **Audit Network Routes:** Run security linters to verify that only designated components have network routes to internal database instances.
 - **Document Decisions:** Compile Architectural Decision Records (ADRs) to record tradeoffs and maintain context history for future development loops.
 
+---
 
-<div style="display: flex; justify-content: space-between; margin-top: 2rem;">
-  <div><a href="/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/">← Previous: Part 6</a></div>
-  <div><a href="/series/ai-driven-engineer/part-8-the-junior-paradox/">Next Article: Part 8 →</a></div>
-</div>
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "part-6-from-coder-to-orchestrator.md" >}})
+[Next Part →]({{< ref "part-8-the-junior-paradox.md" >}})
+
+🔗 **Next Step:** Continue to [Part 8: Part 8 — The Junior Paradox: Building Foundations When AI Does the Basics]({{< ref "part-8-the-junior-paradox.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

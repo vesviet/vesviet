@@ -1,26 +1,21 @@
----title: "Executive Summary: MCP - The Control Plane of the AI Ecosystem"
+---
+title: "Executive Summary: MCP - The Control Plane of the AI Ecosystem"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
 draft: false
 weight: 1
-categories:
-  - Architecture
-tags:
-  - MCP
-  - System Design
-  - Enterprise Architecture
+categories: ["Architecture"]
+tags: ["MCP", "System Design", "Enterprise Architecture"]
 description: "What is the Model Context Protocol? Why has MCP become the Control Plane of the AI ecosystem?"
-aliases:
-  - /series/mcp-engineering-in-production/executive-summary/
-cover:
-  image: "images/posts/generative-ui-mcp-cover.png"
-  alt: "MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment"
-  relative: false
+aliases: ["/series/mcp-engineering-in-production/executive-summary/"]
+cover: {'image': 'images/posts/generative-ui-mcp-cover.png', 'alt': 'MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/executive-summary/"
 ShowToc: true
 TocOpen: true
 ---
+
+> **Prerequisite:** This is the executive summary and introductory overview of the **Mcp Engineering In Production** series. No prior reading is required to start here.
 
 In less than two years since its launch, the **Model Context Protocol (MCP)** has transformed from an internal Anthropic initiative into an open industry standard. Now managed by the Agentic AI Foundation under the [Linux Foundation](https://www.linuxfoundation.org/), MCP is redefining how we design software systems. If TCP/IP connects computers, and REST connects microservices, then the MCP protocol was born to directly connect LLMs (Large Language Models) and AI Agents with real-world data and tools.
 
@@ -163,6 +158,12 @@ Tracking agent actions requires propagating tracing context through dynamic tool
 ### Rate Limiting and Downstream API Protection
 Enforce rate limits on MCP endpoints to prevent downstream API exhaustion from recursive agent loops. Implement a token bucket rate limiter in the gateway middleware layer, restricting client requests to 60 calls per minute. If an agent exceeds this limit, return HTTP status 429 and suspend the session dynamically.
 
-
 ---
-*Next up: [Part 1: Protocol Fundamentals & Transport Evolution](/series/mcp-engineering-in-production/part-1-protocol/)*
+
+## Navigation & Next Steps
+
+[Next Part →]({{< ref "part-1-protocol.md" >}})
+
+🔗 **Next Step:** Continue to [Part 1: Part 1: Protocol Fundamentals & Transport Evolution]({{< ref "part-1-protocol.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

@@ -1,27 +1,21 @@
----title: "Part 2: Build a Production Server with Go"
+---
+title: "Part 2: Build a Production Server with Go"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
 draft: false
 weight: 3
-categories:
-  - Implementation
-tags:
-  - Golang
-  - MCP SDK
-  - Best Practices
-  - Error Handling
+categories: ["Implementation"]
+tags: ["Golang", "MCP SDK", "Best Practices", "Error Handling"]
 description: "A practical guide to building a Model Context Protocol Server with the Go SDK."
-aliases:
-  - /series/mcp-engineering-in-production/part-2-build/
-cover:
-  image: "images/posts/generative-ui-mcp-cover.png"
-  alt: "MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment"
-  relative: false
+aliases: ["/series/mcp-engineering-in-production/part-2-build/"]
+cover: {'image': 'images/posts/generative-ui-mcp-cover.png', 'alt': 'MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-2-build/"
 ShowToc: true
 TocOpen: true
 ---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 2: Part 1: Protocol Fundamentals & Transport Evolution]({{< ref "part-1-protocol.md" >}}).
 
 Writing a simple Python script that runs over `stdio` to demo the Model Context Protocol (MCP) on your local machine is easy. But deploying an MCP Server into a Kubernetes cluster to handle thousands of AI Agent requests per minute without crashing requires a powerful compiled language, a small memory footprint, and excellent concurrency support. That's why **Go (Golang)** has become the top choice for Infrastructure and Platform teams.
 
@@ -189,4 +183,12 @@ You have just walked through the foundational structure of a Production MCP Serv
 But how do we protect this server? What prevents a malicious (or hacked) AI Agent from arbitrarily calling `provision_cloud_resource` and spinning up thousands of massive VMs, burning through the company's bank account? We will need to fundamentally solve the problem of identity and authorization.
 
 ---
-*Next up: [Part 3: Identity & AuthN for Agents](/series/mcp-engineering-in-production/part-3-identity/)*
+
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "part-1-protocol.md" >}})
+[Next Part →]({{< ref "part-3-identity.md" >}})
+
+🔗 **Next Step:** Continue to [Part 3: Part 3: Identity & AuthN For Agentic Workflows]({{< ref "part-3-identity.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

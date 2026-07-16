@@ -9,13 +9,12 @@ TocOpen: true
 weight: 11
 categories: ["Series", "Software Engineering", "Learning Path"]
 tags: ["AI", "Career", "Roadmap"]
-cover:
-  image: "images/posts/ai-native-frontend-cover.png"
-  alt: "AI-Driven Engineer series: evolving from code typist to AI-native software architect"
-  relative: false
+cover: {'image': 'images/posts/ai-native-frontend-cover.png', 'alt': 'AI-Driven Engineer series: evolving from code typist to AI-native software architect', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/bonus-transition-path/"
 ---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 10: Part 9 — LLM Integration: The Mindset of Building AI-Native Applications]({{< ref "part-9-building-ai-native-architecture.md" >}}).
 
 ## Foreword: The Transformation Journey
 
@@ -204,3 +203,13 @@ To evaluate the impact of AI-assisted development, track code quality indicators
 
 
 > 🚀 **Your Next Mission:** If you checked all the boxes above, you are ready for Phase 2. Step into the shoes of a System Architect and build the actual Enterprise Infrastructure in our hands-on **[AI-Driven Engineer: Enterprise Playbook](/series/ai-driven-playbook/)**.
+
+---
+
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "part-9-building-ai-native-architecture.md" >}})
+
+🔗 **Next Step:** This concludes the series. Review the full table of contents and curriculum mapping on the [Series Index Page]({{< ref "_index.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

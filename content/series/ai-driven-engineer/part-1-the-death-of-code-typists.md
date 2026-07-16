@@ -1,5 +1,4 @@
 ---
-
 title: "Part 1 — The Death of 'Code Typists': When Syntax is No Longer an Advantage"
 date: "2026-05-10T15:00:00+07:00"
 lastmod: "2026-05-10T15:00:00+07:00"
@@ -10,14 +9,13 @@ TocOpen: true
 weight: 2
 categories: ["Series", "Software Engineering"]
 tags: ["AI", "System Design", "Career"]
-cover:
-  image: "images/posts/ai-native-frontend-cover.png"
-  alt: "AI-Driven Engineer series: evolving from code typist to AI-native software architect"
-  relative: false
+cover: {'image': 'images/posts/ai-native-frontend-cover.png', 'alt': 'AI-Driven Engineer series: evolving from code typist to AI-native software architect', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-1-the-death-of-code-typists/"
 mermaid: true
 ---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 1: Executive Summary — Software Engineers in the AI Era: Who Stays, Who Leaves?]({{< ref "executive-summary.md" >}}).
 
 For years, the image of a talented programmer was often associated with blazing fast typing speeds, the ability to memorize dozens of API libraries, and writing code without a single syntax error. We called them pure "Coders". But as AI enters the playing field, a harsh reality has emerged: **Writing code is only the easiest part of building software.**
 
@@ -199,8 +197,13 @@ To prevent AI-generated code from introducing syntax and style degradation:
 - **Enforce Linter Pre-commit Hooks:** Bind linter execution to git hooks. A developer cannot commit code that fails basic lint requirements.
 - **Automate Format Checks:** Run `gofmt -s` on CI runners to enforce standardized spacing and block formats across all files automatically.
 
+---
 
-<div style="display: flex; justify-content: space-between; margin-top: 2rem;">
-  <div></div>
-  <div><a href="/series/ai-driven-engineer/part-2-man-vs-machine-boundaries/">Next Article: Part 2 →</a></div>
-</div>
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "executive-summary.md" >}})
+[Next Part →]({{< ref "part-2-man-vs-machine-boundaries.md" >}})
+
+🔗 **Next Step:** Continue to [Part 2: Part 2 — Man vs. Machine Boundaries: What to Delegate and What to Keep]({{< ref "part-2-man-vs-machine-boundaries.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

@@ -1,20 +1,18 @@
----title: "Part 3: Domain-Driven Design (DDD) Boundaries in a Modular Monolith"
+---
+title: "Part 3: Domain-Driven Design (DDD) Boundaries in a Modular Monolith"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "How to keep a Monolith from becoming a 'Big Ball of Mud'? A guide to establishing Module boundaries using Bounded Contexts, Spring Modulith, and Packwerk."
 slug: "ddd-module-boundaries-modular-monolith"
 tags: ["Domain-Driven Design", "DDD", "Modular Monolith", "Spring Modulith", "Packwerk", "Architecture"]
-aliases:
-  - "/series/modular-monolith-architecture/part-3-ddd-module-boundaries/"
-  - "/series/modular-monolith-architecture/finops-cost-reality-microservices-tax/part-3-ddd-module-boundaries.md"
-cover:
-  image: "images/posts/golang-microservices-cover.png"
-  alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
-  relative: false
+aliases: ["/series/modular-monolith-architecture/part-3-ddd-module-boundaries/", "/series/modular-monolith-architecture/finops-cost-reality-microservices-tax/part-3-ddd-module-boundaries.md"]
+cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/ddd-module-boundaries-modular-monolith/"
 ShowToc: true
 TocOpen: true
 ---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 3: Part 2: FinOps Cost Reality - The Hidden Tax of Microservices]({{< ref "part-2-finops-cost-reality.md" >}}).
 
 # Part 3: Domain-Driven Design (DDD) Boundaries in a Modular Monolith
 
@@ -190,4 +188,13 @@ When integrating the monolith with external services, configure client-side roun
 
 Maintaining strict code borders helps you turn a Monolith into a collection of independent modules. But how do you ensure the Build and Test process for a massive CodeBase doesn't become overloaded? See Shopify's solution in **[Part 4: CI/CD Simplified]({{< ref "part-4-cicd-simplified.md" >}})**.
 
+---
 
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "part-2-finops-cost-reality.md" >}})
+[Next Part →]({{< ref "part-4-cicd-simplified.md" >}})
+
+🔗 **Next Step:** Continue to [Part 4: Part 4: CI/CD Simplified & Atomic Deployments]({{< ref "part-4-cicd-simplified.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

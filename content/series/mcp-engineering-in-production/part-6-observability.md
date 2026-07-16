@@ -1,28 +1,22 @@
----title: "Part 6: Observability & Audit Trail"
+---
+title: "Part 6: Observability & Audit Trail"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
 draft: false
 weight: 7
-categories:
-  - Operations
-tags:
-  - Observability
-  - OpenTelemetry
-  - SIEM
-  - Auditing
+categories: ["Operations"]
+tags: ["Observability", "OpenTelemetry", "SIEM", "Auditing"]
 description: "Eliminating operational 'blind spots' in AI systems. A guide to setting up OpenTelemetry, Distributed Tracing, and SIEM integration for MCP Servers."
-aliases:
-  - /series/mcp-engineering-in-production/part-6-observability/
-cover:
-  image: "images/posts/generative-ui-mcp-cover.png"
-  alt: "MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment"
-  relative: false
+aliases: ["/series/mcp-engineering-in-production/part-6-observability/"]
+cover: {'image': 'images/posts/generative-ui-mcp-cover.png', 'alt': 'MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-6-observability/"
 mermaid: true
 ShowToc: true
 TocOpen: true
 ---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 6: Part 5: Production Security & OWASP MCP Top 10]({{< ref "part-5-security.md" >}}).
 
 As mentioned in [Part 5](/series/mcp-engineering-in-production/part-5-security/), the **MCP08 (Lack of Audit & Telemetry)** vulnerability is one of the biggest risks in Agentic systems. In the [AI Driven Playbook](/series/ai-driven-playbook/), we agreed that: When AI automates tasks on behalf of humans, the requirements for Observability and Auditing become stricter than ever, especially under the pressure of regulations like the EU AI Act.
 
@@ -212,6 +206,13 @@ When updating MCP container instances, configure the runtime to handle terminati
 ### Certificate Management and mutual TLS Security
 Secure transport channels by enforcing mutual TLS (mTLS) authentication. Both the gateway client and backend MCP servers must exchange and verify cryptographically signed certificates. Rotate certificates automatically using cert-manager, blocking unauthorized requests from accessing tools.
 
-
 ---
-*Next up: [Part 7: Enterprise Scaling & Governance](/series/mcp-engineering-in-production/part-7-enterprise/)*
+
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "part-5-security.md" >}})
+[Next Part →]({{< ref "part-7-enterprise.md" >}})
+
+🔗 **Next Step:** Continue to [Part 7: Part 7: Enterprise Scaling & Governance]({{< ref "part-7-enterprise.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

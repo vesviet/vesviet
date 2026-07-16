@@ -1,20 +1,18 @@
----title: "Part 1: Architectural Decision Framework"
+---
+title: "Part 1: Architectural Decision Framework"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "Use real-world latency, performance data, and lessons from Stack Overflow to decide when to use a Modular Monolith instead of Microservices."
 slug: "decision-framework-modular-monolith-vs-microservices"
 tags: ["Architecture", "Modular Monolith", "Microservices", "System Design", "Stack Overflow"]
-aliases:
-  - "/series/modular-monolith-architecture/part-1-decision-framework/"
-  - "/series/modular-monolith-architecture/executive-summary-amazon-prime-video-monolith/part-1-decision-framework.md"
-cover:
-  image: "images/posts/golang-microservices-cover.png"
-  alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
-  relative: false
+aliases: ["/series/modular-monolith-architecture/part-1-decision-framework/", "/series/modular-monolith-architecture/executive-summary-amazon-prime-video-monolith/part-1-decision-framework.md"]
+cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/decision-framework-modular-monolith-vs-microservices/"
 ShowToc: true
 TocOpen: true
 ---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 1: Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure]({{< ref "part-0-executive-summary.md" >}}).
 
 # Part 1: Architectural Decision Framework
 
@@ -179,4 +177,13 @@ To optimize the execution speed of modules within a monolithic binary, engineers
 
 In **[Part 2: FinOps Cost Reality]({{< ref "part-2-finops-cost-reality.md" >}})**, we will open the "Cloud Bill" to analyze in detail how sidecars, service meshes, and cross-AZ traffic fees are eroding the budgets of Microservices systems.
 
+---
 
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "part-0-executive-summary.md" >}})
+[Next Part →]({{< ref "part-2-finops-cost-reality.md" >}})
+
+🔗 **Next Step:** Continue to [Part 2: Part 2: FinOps Cost Reality - The Hidden Tax of Microservices]({{< ref "part-2-finops-cost-reality.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

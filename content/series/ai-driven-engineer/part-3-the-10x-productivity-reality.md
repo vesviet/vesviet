@@ -1,5 +1,4 @@
 ---
-
 title: "Part 3 — The 10x Productivity Reality: Where We Speed Up, Where We Slow Down"
 date: "2026-05-10T15:20:00+07:00"
 lastmod: "2026-05-10T15:20:00+07:00"
@@ -10,14 +9,13 @@ TocOpen: true
 weight: 4
 categories: ["Series", "Software Engineering"]
 tags: ["AI", "System Design", "Career"]
-cover:
-  image: "images/posts/ai-native-frontend-cover.png"
-  alt: "AI-Driven Engineer series: evolving from code typist to AI-native software architect"
-  relative: false
+cover: {'image': 'images/posts/ai-native-frontend-cover.png', 'alt': 'AI-Driven Engineer series: evolving from code typist to AI-native software architect', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-3-the-10x-productivity-reality/"
 mermaid: true
 ---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 3: Part 2 — Man vs. Machine Boundaries: What to Delegate and What to Keep]({{< ref "part-2-man-vs-machine-boundaries.md" >}}).
 
 Social media and tech marketing campaigns constantly inject a concept into our heads: **"10x Developer thanks to AI"**. The image of a programmer sipping coffee, typing a few prompts, and finishing a week's worth of work in one morning is incredibly appealing.
 
@@ -163,8 +161,13 @@ func main() {
 ### KPI Tracking and Code Quality Metrics
 To evaluate the impact of AI-assisted development, track code quality indicators in the CI pipeline. Monitor the change lead time (from commit to production) alongside the code churn rate (lines deleted within 7 days). A rising churn rate indicates hallucinated patterns, requiring adjustment of the prompt templates.
 
+---
 
-<div style="display: flex; justify-content: space-between; margin-top: 2rem;">
-  <div><a href="/series/ai-driven-engineer/part-2-man-vs-machine-boundaries/">← Previous: Part 2</a></div>
-  <div><a href="/series/ai-driven-engineer/part-4-blurring-sdlc-lines-and-qc-revolution/">Next Article: Part 4 →</a></div>
-</div>
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "part-2-man-vs-machine-boundaries.md" >}})
+[Next Part →]({{< ref "part-4-blurring-sdlc-lines-and-qc-revolution.md" >}})
+
+🔗 **Next Step:** Continue to [Part 4: Part 4 — Blurring SDLC Lines & The QC Revolution]({{< ref "part-4-blurring-sdlc-lines-and-qc-revolution.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

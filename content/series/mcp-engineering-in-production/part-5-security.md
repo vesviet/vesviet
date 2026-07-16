@@ -1,28 +1,22 @@
----title: "Part 5: Production Security & OWASP MCP Top 10"
+---
+title: "Part 5: Production Security & OWASP MCP Top 10"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
 draft: false
 weight: 6
-categories:
-  - Security
-tags:
-  - OWASP
-  - Vulnerabilities
-  - Prompt Injection
-  - Tool Poisoning
+categories: ["Security"]
+tags: ["OWASP", "Vulnerabilities", "Prompt Injection", "Tool Poisoning"]
 description: "Analyzing the top 10 security vulnerabilities of the Model Context Protocol according to the OWASP MCP Top 10 (Beta), including Token Mismanagement, Tool"
-aliases:
-  - /series/mcp-engineering-in-production/part-5-security/
-cover:
-  image: "images/posts/generative-ui-mcp-cover.png"
-  alt: "MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment"
-  relative: false
+aliases: ["/series/mcp-engineering-in-production/part-5-security/"]
+cover: {'image': 'images/posts/generative-ui-mcp-cover.png', 'alt': 'MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-5-security/"
 mermaid: true
 ShowToc: true
 TocOpen: true
 ---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 5: Part 4: MCP Gateway Architecture]({{< ref "part-4-gateway.md" >}}).
 
 In a distributed Agentic architecture, when you boldly grant an AI Agent the right to auto-discover and execute tools without human approval, you are expanding the system's attack surface to an unprecedented scale.
 
@@ -145,4 +139,12 @@ If you do not accurately log *which Agent* called *which Tool* at *what time* wi
 How do we build a comprehensive monitoring system to fully mitigate MCP08? We will move to the Observability piece of the puzzle in the next article.
 
 ---
-*Next up: [Part 6: Observability & Audit Trail](/series/mcp-engineering-in-production/part-6-observability/)*
+
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "part-4-gateway.md" >}})
+[Next Part →]({{< ref "part-6-observability.md" >}})
+
+🔗 **Next Step:** Continue to [Part 6: Part 6: Observability & Audit Trail]({{< ref "part-6-observability.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

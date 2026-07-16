@@ -1,20 +1,18 @@
----title: "Part 5: Observability in Memory – When Everything Shares a Single Call Stack"
+---
+title: "Part 5: Observability in Memory – When Everything Shares a Single Call Stack"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "Comparing Distributed Tracing in Microservices with In-process Profiling in a Modular Monolith. Why is OpenTelemetry on a Monolith faster and cheaper?"
 slug: "observability-in-process-modular-monolith-opentelemetry"
 tags: ["Observability", "OpenTelemetry", "Distributed Tracing", "Modular Monolith", "Profiling"]
-aliases:
-  - "/series/modular-monolith-architecture/part-5-observability/"
-  - "/series/modular-monolith-architecture/cicd-simplified-atomic-deployments-monolith/part-5-observability.md"
-cover:
-  image: "images/posts/golang-microservices-cover.png"
-  alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
-  relative: false
+aliases: ["/series/modular-monolith-architecture/part-5-observability/", "/series/modular-monolith-architecture/cicd-simplified-atomic-deployments-monolith/part-5-observability.md"]
+cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/observability-in-process-modular-monolith-opentelemetry/"
 ShowToc: true
 TocOpen: true
 ---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 5: Part 4: CI/CD Simplified & Atomic Deployments]({{< ref "part-4-cicd-simplified.md" >}}).
 
 # Part 5: Observability in Memory – When Everything Shares a Single Call Stack
 
@@ -165,4 +163,13 @@ Managing third-party dependencies in a single repository requires isolating pack
 
 Observability in a Monolith is clear, cheap, and effective. But if your system is *currently* Microservices (or a terrible Spaghetti Monolith) and you want to consolidate them into a Modular Monolith, where should you start? **[Part 6: Migration Playbook]({{< ref "part-6-migration-playbook.md" >}})** provides a detailed roadmap.
 
+---
 
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "part-4-cicd-simplified.md" >}})
+[Next Part →]({{< ref "part-6-migration-playbook.md" >}})
+
+🔗 **Next Step:** Continue to [Part 6: Part 6: Migration Playbook – Consolidating Microservices]({{< ref "part-6-migration-playbook.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

@@ -7,13 +7,12 @@ weight: 10
 description: "Roadmap for software engineers in the AI era: mindset shift from code typist to system architect, AI tool mastery, system design, and AI-native applications."
 ShowToc: true
 TocOpen: true
-cover:
-  image: "images/posts/ai-native-frontend-cover.png"
-  alt: "AI-Driven Engineer series: from code typist to AI-native software architect"
-  relative: false
+cover: {'image': 'images/posts/ai-native-frontend-cover.png', 'alt': 'AI-Driven Engineer series: from code typist to AI-native software architect', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/"
 ---
+
+
 
 This series is for **every software engineer** — from Freshers who are confused by the pace of AI evolution, to Seniors looking to upgrade their value in the eyes of businesses and clients.
 

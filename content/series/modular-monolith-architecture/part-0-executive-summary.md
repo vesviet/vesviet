@@ -1,18 +1,18 @@
----title: "Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure"
+---
+title: "Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure"
 lastmod: "2026-07-03T15:41:55+07:00"
 description: "Discover why Amazon Prime Video cut infrastructure costs by 90% after moving from Serverless/Microservices back to a Monolith, alongside case studies from"
 slug: "executive-summary-amazon-prime-video-monolith"
 aliases: ["/series/modular-monolith-architecture/part-0-executive-summary/"]
 tags: ["Modular Monolith", "AWS", "Serverless", "FinOps", "Amazon Prime"]
-cover:
-  image: "images/posts/golang-microservices-cover.png"
-  alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
-  relative: false
+cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/executive-summary-amazon-prime-video-monolith/"
 ShowToc: true
 TocOpen: true
 ---
+
+> **Prerequisite:** This is the executive summary and introductory overview of the **Modular Monolith Architecture** series. No prior reading is required to start here.
 
 # Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure Costs
 
@@ -142,3 +142,13 @@ The tipping point occurs when a system handles large data and high-frequency int
 {{< faq q="How much did Segment save by migrating to a monolith?" >}}
 By consolidating 140 microservices into a single Monolithic Worker, Segment saved over $250,000 in cloud infrastructure costs in just their first year while significantly reducing engineering operational overhead.
 {{< /faq >}}
+
+---
+
+## Navigation & Next Steps
+
+[Next Part →]({{< ref "part-1-decision-framework.md" >}})
+
+🔗 **Next Step:** Continue to [Part 1: Part 1: Architectural Decision Framework]({{< ref "part-1-decision-framework.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

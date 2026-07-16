@@ -1,28 +1,22 @@
----title: "Part 3: Identity & AuthN For Agentic Workflows"
+---
+title: "Part 3: Identity & AuthN For Agentic Workflows"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
 draft: false
 weight: 4
-categories:
-  - Security
-tags:
-  - Identity
-  - SPIFFE
-  - OAuth
-  - Zero Trust
+categories: ["Security"]
+tags: ["Identity", "SPIFFE", "OAuth", "Zero Trust"]
 description: "Solving the problem of AI Agent identity. Deep dive into the OAuth 2.1 + PKCE standard, CIMD, and integrating Workload Identity (SPIFFE/SPIRE) for the MCP"
-aliases:
-  - /series/mcp-engineering-in-production/part-3-identity/
-cover:
-  image: "images/posts/generative-ui-mcp-cover.png"
-  alt: "MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment"
-  relative: false
+aliases: ["/series/mcp-engineering-in-production/part-3-identity/"]
+cover: {'image': 'images/posts/generative-ui-mcp-cover.png', 'alt': 'MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-3-identity/"
 mermaid: true
 ShowToc: true
 TocOpen: true
 ---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 3: Part 2: Build a Production Server with Go]({{< ref "part-2-build.md" >}}).
 
 If Part 2 helped you build a robust Server, Part 3 addresses the most headache-inducing question in Security: **"How does the MCP Server know WHICH Agent is calling it, and does that Agent have the PERMISSION to do so?"**
 
@@ -184,6 +178,13 @@ In addition to token checks:
 ### Telemetry Correlation and OpenTelemetry Tracing Conventions
 Tracking agent actions requires propagating tracing context through dynamic tool invocations. Utilize the OpenTelemetry SDK to create parent spans for LLM reasoning sessions, linking tool executions as child spans. Annote traces with metadata fields such as model name, token consumption, and execution duration to locate latency bottlenecks in the system.
 
-
 ---
-*Next up: [Part 4: MCP Gateway Architecture](/series/mcp-engineering-in-production/part-4-gateway/)*
+
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "part-2-build.md" >}})
+[Next Part →]({{< ref "part-4-gateway.md" >}})
+
+🔗 **Next Step:** Continue to [Part 4: Part 4: MCP Gateway Architecture]({{< ref "part-4-gateway.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

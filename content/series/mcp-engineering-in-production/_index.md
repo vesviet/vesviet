@@ -7,13 +7,12 @@ description: "Deploy MCP servers in production with Go: protocol fundamentals, O
 ShowToc: true
 TocOpen: true
 weight: 60
-cover:
-  image: "images/posts/generative-ui-mcp-cover.png"
-  alt: "MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment"
-  relative: false
+cover: {'image': 'images/posts/generative-ui-mcp-cover.png', 'alt': 'MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/"
 ---
+
+
 
 # MCP Engineering in Production: Go SDK to Enterprise
 

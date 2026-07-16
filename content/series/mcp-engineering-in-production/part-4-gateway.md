@@ -1,28 +1,22 @@
----title: "Part 4: MCP Gateway Architecture"
+---
+title: "Part 4: MCP Gateway Architecture"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
 draft: false
 weight: 5
-categories:
-  - Architecture
-tags:
-  - Gateway
-  - API Management
-  - Scalability
-  - Service Mesh
+categories: ["Architecture"]
+tags: ["Gateway", "API Management", "Scalability", "Service Mesh"]
 description: "Solving the N×M connectivity problem in Agentic systems. Analyzing Hub-and-Spoke vs Federated Mesh patterns, and the role of the Gateway in Policy Enforcement."
-aliases:
-  - /series/mcp-engineering-in-production/part-4-gateway/
-cover:
-  image: "images/posts/generative-ui-mcp-cover.png"
-  alt: "MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment"
-  relative: false
+aliases: ["/series/mcp-engineering-in-production/part-4-gateway/"]
+cover: {'image': 'images/posts/generative-ui-mcp-cover.png', 'alt': 'MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-4-gateway/"
 mermaid: true
 ShowToc: true
 TocOpen: true
 ---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 4: Part 3: Identity & AuthN For Agentic Workflows]({{< ref "part-3-identity.md" >}}).
 
 When deploying Model Context Protocol (MCP) in a large Enterprise, you will quickly hit an architectural wall. If 50 distinct AI Agents (Coding Agents, HR Bots, Financial Analysts) need to talk to 100 different internal systems (Jira, Confluence, GitHub, internal DBs), letting them connect directly creates a chaotic matrix of 5,000 P2P connections. 
 
@@ -205,6 +199,13 @@ Enforce rate limits on MCP endpoints to prevent downstream API exhaustion from r
 ### Ingress Load Balancing and Gateway Autoscaling
 Deploy MCP gateway instances behind an ingress controller utilizing round-robin load balancing. Configure the Horizontal Pod Autoscaling (HPA) controller to scale pods based on active connection metrics. This ensures the gateway pool maintains adequate resource headroom to handle traffic spikes during concurrent agent tasks.
 
-
 ---
-*Next up: [Part 5: Production Security & OWASP MCP Top 10](/series/mcp-engineering-in-production/part-5-security/)*
+
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "part-3-identity.md" >}})
+[Next Part →]({{< ref "part-5-security.md" >}})
+
+🔗 **Next Step:** Continue to [Part 5: Part 5: Production Security & OWASP MCP Top 10]({{< ref "part-5-security.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

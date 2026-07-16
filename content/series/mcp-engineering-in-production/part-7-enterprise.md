@@ -1,27 +1,23 @@
----title: "Part 7: Enterprise Scaling & Governance"
+---
+title: "Part 7: Enterprise Scaling & Governance"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
 draft: false
 weight: 8
-categories:
-  - Architecture
-tags:
-  - Enterprise
-  - Governance
-  - Versioning
-  - Multi-tenant
+categories: ["Architecture"]
+tags: ["Enterprise", "Governance", "Versioning", "Multi-tenant"]
 description: "Bringing MCP to enterprise scale: Multi-tenancy management, Versioning strategies to prevent 'silent failures', and building an Internal Registry to control"
-aliases:
-  - /series/mcp-engineering-in-production/part-7-enterprise/
-cover:
-  image: "images/posts/generative-ui-mcp-cover.png"
-  alt: "MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment"
-  relative: false
+aliases: ["/series/mcp-engineering-in-production/part-7-enterprise/"]
+cover: {'image': 'images/posts/generative-ui-mcp-cover.png', 'alt': 'MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-7-enterprise/"
 ShowToc: true
 TocOpen: true
----By this article, you have successfully built a secure, observable MCP Server, protected by a Gateway. But the journey of scaling MCP into an Enterprise environment (spanning hundreds of teams and thousands of tools) requires one final capability layer: **Governance**. Your architecture is only truly complete when it aligns with the broader [Agentic System Architecture](/series/agentic-system-architecture/) model.
+---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 7: Part 6: Observability & Audit Trail]({{< ref "part-6-observability.md" >}}).
+
+By this article, you have successfully built a secure, observable MCP Server, protected by a Gateway. But the journey of scaling MCP into an Enterprise environment (spanning hundreds of teams and thousands of tools) requires one final capability layer: **Governance**. Your architecture is only truly complete when it aligns with the broader [Agentic System Architecture](/series/agentic-system-architecture/) model.
 
 Without Governance, your system will quickly devolve into a tangled mess of conflicting versions, data leaking across departments, and "Shadow MCP Servers" springing up like weeds. In environments like those explored in the [Core Banking Developer](/series/core-banking-developer/) series, a lack of governance leads directly to catastrophic systemic failures.
 
@@ -183,3 +179,12 @@ Secure transport channels by enforcing mutual TLS (mTLS) authentication. Both th
 ### Telemetry Correlation and OpenTelemetry Tracing Conventions
 Tracking agent actions requires propagating tracing context through dynamic tool invocations. Utilize the OpenTelemetry SDK to create parent spans for LLM reasoning sessions, linking tool executions as child spans. Annote traces with metadata fields such as model name, token consumption, and execution duration to locate latency bottlenecks in the system.
 
+---
+
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "part-6-observability.md" >}})
+
+🔗 **Next Step:** This concludes the series. Review the full table of contents and curriculum mapping on the [Series Index Page]({{< ref "_index.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

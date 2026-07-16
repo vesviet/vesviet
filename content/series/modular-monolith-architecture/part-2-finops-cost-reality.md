@@ -1,20 +1,18 @@
----title: "Part 2: FinOps Cost Reality - The Hidden Tax of Microservices"
+---
+title: "Part 2: FinOps Cost Reality - The Hidden Tax of Microservices"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "Analyzing the AWS bill of distributed architectures: Hidden costs from Service Mesh (Istio), data transfer fees (Cross-AZ Egress), and Observability waste."
 slug: "finops-cost-reality-microservices-tax"
 tags: ["FinOps", "AWS", "Istio", "Cloud Cost", "Segment", "Modular Monolith"]
-aliases:
-  - "/series/modular-monolith-architecture/part-2-finops-cost-reality/"
-  - "/series/modular-monolith-architecture/decision-framework-modular-monolith-vs-microservices/part-2-finops-cost-reality.md"
-cover:
-  image: "images/posts/golang-microservices-cover.png"
-  alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
-  relative: false
+aliases: ["/series/modular-monolith-architecture/part-2-finops-cost-reality/", "/series/modular-monolith-architecture/decision-framework-modular-monolith-vs-microservices/part-2-finops-cost-reality.md"]
+cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/finops-cost-reality-microservices-tax/"
 ShowToc: true
 TocOpen: true
 ---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 2: Part 1: Architectural Decision Framework]({{< ref "part-1-decision-framework.md" >}}).
 
 # Part 2: FinOps Cost Reality - The "Hidden Tax" of Microservices
 
@@ -174,4 +172,13 @@ Operating multiple schemas under a single database instance requires setting str
 
 After realizing the hefty price of a distributed system, how do we merge code into a single block (Monolith) without turning it into a chaotic "Spaghetti Code" mess? The answer lies in establishing virtual "boundaries." Discover how in **[Part 3: Domain-Driven Design (DDD) Boundaries]({{< ref "part-3-ddd-module-boundaries.md" >}})**.
 
+---
 
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "part-1-decision-framework.md" >}})
+[Next Part →]({{< ref "part-3-ddd-module-boundaries.md" >}})
+
+🔗 **Next Step:** Continue to [Part 3: Part 3: Domain-Driven Design (DDD) Boundaries in a Modular Monolith]({{< ref "part-3-ddd-module-boundaries.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

@@ -1,20 +1,18 @@
----title: "Part 8: Case Study Matrix – The Monuments of the Modular Monolith"
+---
+title: "Part 8: Case Study Matrix – The Monuments of the Modular Monolith"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "A compilation of the greatest Modular Monolith case studies from Shopify, Stack Overflow, Notion, WhatsApp, Target, and Basecamp."
 slug: "case-study-matrix-modular-monolith-success-stories"
 tags: ["Case Study", "Modular Monolith", "Shopify", "Stack Overflow", "Notion", "WhatsApp"]
-aliases:
-  - "/series/modular-monolith-architecture/part-8-case-study-matrix/"
-  - "/series/modular-monolith-architecture/extraction-pattern-when-to-extract-microservices/part-8-case-study-matrix.md"
-cover:
-  image: "images/posts/golang-microservices-cover.png"
-  alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
-  relative: false
+aliases: ["/series/modular-monolith-architecture/part-8-case-study-matrix/", "/series/modular-monolith-architecture/extraction-pattern-when-to-extract-microservices/part-8-case-study-matrix.md"]
+cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/case-study-matrix-modular-monolith-success-stories/"
 ShowToc: true
 TocOpen: true
 ---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 8: Part 7: Extraction Pattern – When Should You Extract Microservices?]({{< ref "part-7-extraction-pattern.md" >}}).
 
 # Part 8: Case Study Matrix – The Monuments of the Modular Monolith
 
@@ -192,3 +190,12 @@ Operating multiple schemas under a single database instance requires setting str
 
 Thank you for joining the **Modular Monolith Architecture Playbook**. Apply this framework to your organization's next system design to gain the maximum advantage in speed and cost!
 
+---
+
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "part-7-extraction-pattern.md" >}})
+
+🔗 **Next Step:** This concludes the series. Review the full table of contents and curriculum mapping on the [Series Index Page]({{< ref "_index.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

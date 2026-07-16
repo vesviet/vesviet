@@ -1,20 +1,18 @@
----title: "Part 6: Migration Playbook – Consolidating Microservices"
+---
+title: "Part 6: Migration Playbook – Consolidating Microservices"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "A practical guide to safely transitioning from Microservices back to a Modular Monolith using the Reverse Strangler Fig pattern, Dual-write databases, and"
 slug: "migration-playbook-microservices-to-modular-monolith"
 tags: ["Migration", "Strangler Fig", "Modular Monolith", "Database", "Conway's Law"]
-aliases:
-  - "/series/modular-monolith-architecture/part-6-migration-playbook/"
-  - "/series/modular-monolith-architecture/observability-in-process-modular-monolith-opentelemetry/part-6-migration-playbook.md"
-cover:
-  image: "images/posts/golang-microservices-cover.png"
-  alt: "Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal"
-  relative: false
+aliases: ["/series/modular-monolith-architecture/part-6-migration-playbook/", "/series/modular-monolith-architecture/observability-in-process-modular-monolith-opentelemetry/part-6-migration-playbook.md"]
+cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/migration-playbook-microservices-to-modular-monolith/"
 ShowToc: true
 TocOpen: true
 ---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 6: Part 5: Observability in Memory – When Everything Shares a Single Call Stack]({{< ref "part-5-observability.md" >}}).
 
 # Part 6: Migration Playbook – 
 ## 4. Transactional Outbox Pattern in Monolith Migration
@@ -196,4 +194,13 @@ Consolidating Microservices into a Modular Monolith is a project requiring metic
 
 So, is there ever a time when we **SHOULD NOT** merge a service into a Monolith, or even have to **EXTRACT** it from the Monolith? Absolutely. Blindly pursuing a Monolith is equally dangerous. Let's explore the correct separation philosophy in **[Part 7: Extraction Pattern]({{< ref "part-7-extraction-pattern.md" >}})**.
 
+---
 
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "part-5-observability.md" >}})
+[Next Part →]({{< ref "part-7-extraction-pattern.md" >}})
+
+🔗 **Next Step:** Continue to [Part 7: Part 7: Extraction Pattern – When Should You Extract Microservices?]({{< ref "part-7-extraction-pattern.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

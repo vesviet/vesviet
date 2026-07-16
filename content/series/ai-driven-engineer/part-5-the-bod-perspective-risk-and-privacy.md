@@ -1,5 +1,4 @@
 ---
-
 title: "Part 5 — The BOD Perspective: Expectations, Costs, Legal Risks & Internal AI"
 date: "2026-05-10T15:40:00+07:00"
 lastmod: "2026-05-10T15:40:00+07:00"
@@ -10,14 +9,13 @@ TocOpen: true
 weight: 6
 categories: ["Series", "Software Engineering"]
 tags: ["AI", "System Design", "Career"]
-cover:
-  image: "images/posts/ai-native-frontend-cover.png"
-  alt: "AI-Driven Engineer series: evolving from code typist to AI-native software architect"
-  relative: false
+cover: {'image': 'images/posts/ai-native-frontend-cover.png', 'alt': 'AI-Driven Engineer series: evolving from code typist to AI-native software architect', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/"
 mermaid: true
 ---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 5: Part 4 — Blurring SDLC Lines & The QC Revolution]({{< ref "part-4-blurring-sdlc-lines-and-qc-revolution.md" >}}).
 
 So far, we have discussed AI extensively from the perspective of Programmers and Testers. But if you step into the boardroom of the Board of Directors (BOD) or Chief Technology Officers (CTO), you'll see a completely different lens.
 
@@ -170,8 +168,13 @@ func main() {
 ### KPI Tracking and Code Quality Metrics
 To evaluate the impact of AI-assisted development, track code quality indicators in the CI pipeline. Monitor the change lead time (from commit to production) alongside the code churn rate (lines deleted within 7 days). A rising churn rate indicates hallucinated patterns, requiring adjustment of the prompt templates.
 
+---
 
-<div style="display: flex; justify-content: space-between; margin-top: 2rem;">
-  <div><a href="/series/ai-driven-engineer/part-4-blurring-sdlc-lines-and-qc-revolution/">← Previous: Part 4</a></div>
-  <div><a href="/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/">Next Article: Part 6 →</a></div>
-</div>
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "part-4-blurring-sdlc-lines-and-qc-revolution.md" >}})
+[Next Part →]({{< ref "part-6-from-coder-to-orchestrator.md" >}})
+
+🔗 **Next Step:** Continue to [Part 6: Part 6 — Role Shift: From Coder to AI Orchestrator]({{< ref "part-6-from-coder-to-orchestrator.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

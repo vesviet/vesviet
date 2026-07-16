@@ -1,5 +1,4 @@
 ---
-
 title: "Part 6 — Role Shift: From Coder to AI Orchestrator"
 date: "2026-05-10T15:50:00+07:00"
 lastmod: "2026-05-10T15:50:00+07:00"
@@ -10,14 +9,13 @@ TocOpen: true
 weight: 7
 categories: ["Series", "Software Engineering"]
 tags: ["AI", "System Design", "Career"]
-cover:
-  image: "images/posts/ai-native-frontend-cover.png"
-  alt: "AI-Driven Engineer series: evolving from code typist to AI-native software architect"
-  relative: false
+cover: {'image': 'images/posts/ai-native-frontend-cover.png', 'alt': 'AI-Driven Engineer series: evolving from code typist to AI-native software architect', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/"
 mermaid: true
 ---
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 6: Part 5 — The BOD Perspective: Expectations, Costs, Legal Risks & Internal AI]({{< ref "part-5-the-bod-perspective-risk-and-privacy.md" >}}).
 
 In Part 5, we saw the Board of Directors (BOD) frantically equipping internal AI systems to push productivity KPIs. At this point, if you stubbornly sit and type every line of code from start to finish, you will be left behind. To survive, programmers must shed the "Coder" jacket and put on the **"AI Orchestrator"** mantle.
 
@@ -189,8 +187,13 @@ To coordinate complex tasks across multiple agents:
 ### KPI Tracking and Code Quality Metrics
 To evaluate the impact of AI-assisted development, track code quality indicators in the CI pipeline. Monitor the change lead time (from commit to production) alongside the code churn rate (lines deleted within 7 days). A rising churn rate indicates hallucinated patterns, requiring adjustment of the prompt templates.
 
+---
 
-<div style="display: flex; justify-content: space-between; margin-top: 2rem;">
-  <div><a href="/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/">← Previous: Part 5</a></div>
-  <div><a href="/series/ai-driven-engineer/part-7-system-design-survival/">Next Article: Part 7 →</a></div>
-</div>
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "part-5-the-bod-perspective-risk-and-privacy.md" >}})
+[Next Part →]({{< ref "part-7-system-design-survival.md" >}})
+
+🔗 **Next Step:** Continue to [Part 7: Part 7 — System Design: The Priceless Survival Territory for Developers]({{< ref "part-7-system-design-survival.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
