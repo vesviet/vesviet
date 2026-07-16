@@ -34,7 +34,7 @@ This final article in **The SLM Playbook** series compares the technical attribu
 Quantization is the process of compressing model weights from 16-bit floating-point (FP16/BF16) to lower-bit integer representations (such as INT8 or INT4). This drastically reduces VRAM requirements and accelerates hardware compute operations.
 
 ```
-â”Œ──────────────────────────────────────────────────────────────â”
+┌──────────────────────────────────────────────────────────────┐
 │                Quantization Format Comparison                │
 ├──────────────────┬──────────────────┬────────────────────────┤
 │ Format           │ Primary Target   │ Technical Attributes   │
@@ -75,7 +75,7 @@ In enterprise deployments, different teams require distinct fine-tuned behaviors
 Hosting separate model instances on individual GPUs drives up infrastructure budgets exponentially. vLLM's **Dynamic LoRA Serving** resolves this issue.
 
 ```
-                   â”Œ────────────────â”
+                   ┌────────────────┐
                    │  User Request  │
                    └───────┬────────┘
                            │
@@ -83,17 +83,17 @@ Hosting separate model instances on individual GPUs drives up infrastructure bud
              [e.g., 'X-Lora-Adapter: accounting']
                            │
                            ▼
-         â”Œ──────────────────────────────────────â”
+         ┌──────────────────────────────────────┐
          │        vLLM Server Container         │
          │                                      │
-         │        â”Œ───────────────────â”         │
+         │        ┌───────────────────┐          │
          │        │   Base Model 8B   │         │ (Shared in VRAM)
          │        │   (FP16 or AWQ)   │         │
          │        └─────────┬─────────┘         │
          │                  │                   │
-         │     â”Œ────────────┼────────────â”      │
+         │     ┌────────────┼────────────┐       │
          │     ▼            ▼            ▼      │ (Loaded dynamically
-         │ â”Œ───────â”    â”Œ───────â”    â”Œ───────â”  │  on-demand)
+         │ ┌───────┐     ┌───────┐     ┌───────┐   │  on-demand)
          │ │Lora A │    │Lora B │    │Lora C │  │
          │ └───────┘    └───────┘    └───────┘  │
          └──────────────────────────────────────┘
@@ -131,7 +131,7 @@ When invoking the API, clients simply specify their target adapter in the reques
 The following benchmarks demonstrate the memory and throughput gains achieved on a single NVIDIA A10G (24GB VRAM) running **Llama 3 8B**:
 
 ```
-â”Œ──────────────────────────────────────────────────────────────â”
+┌──────────────────────────────────────────────────────────────┐
 │                     Serving Benchmark Results                │
 ├──────────────────┬──────────────────┬────────────────────────┤
 │ Format           │ Throughput (tps) │ Peak VRAM Usage        │
