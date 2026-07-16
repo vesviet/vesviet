@@ -13,7 +13,10 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/executive-summary/"
 ShowToc: true
 TocOpen: true
+
 ---
+
+> **Prerequisite:** Baseline understanding of retail banking operations, transactional databases, and distributed ledger systems.
 
 ## Who is a Core Banking Developer?
 
@@ -201,3 +204,15 @@ Automated regression tests run continuously in the deployment pipeline. Every ch
 Cryptographic operations are offloaded to hardware security modules (HSMs) or specialized CPU instructions to minimize CPU utilization during TLS handshakes and payload encryption steps. This ensures high throughput for payment SWITCH APIs.
 
 All configurations (interest rates, overdraft limits, transaction fees) are versioned and stored in the database, allowing dynamic system updates without requiring service redeployment or downtime. This flexibility reduces production operational overhead.
+
+🔗 **Next Step:** Explore general ledger posting models in [Part 1: Double-Entry Ledger Schema Design]({{< ref "part-1-double-entry-ledger.md" >}}).
+
+---
+
+*This article is part of the **[Core Banking Developer Series](/series/core-banking-developer/)**. Check out the full index to see the complete architectural context.*
+
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+
+---
+
+[Next Part: Part 1: Double-Entry Ledger Schema Design]({{< ref "part-1-double-entry-ledger.md" >}})

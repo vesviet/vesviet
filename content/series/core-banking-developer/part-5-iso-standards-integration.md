@@ -13,7 +13,10 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-5-iso-standards-integration/"
 ShowToc: true
 TocOpen: true
+
 ---
+
+> **Prerequisite:** [Part 4: Modern Event-Driven Core Architecture]({{< ref "part-4-modern-core-banking-architecture.md" >}}) on event-sourcing structures.
 
 ShowToc: true
 TocOpen: true
@@ -25,7 +28,6 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-5-iso-standards-integration/"
 ---
 
-> **Prerequisite:** This article covers the external communication layer of Core Banking. Before diving in, ensure you understand how the internal services are structured — see [Part 4 — Banking Microservices Architecture](/series/core-banking-developer/part-4-modern-core-banking-architecture/) for the foundational service topology and event-driven patterns.
 
 ## Why are international standards important?
 
@@ -348,3 +350,15 @@ sequenceDiagram
 ```
 
 To ensure complete system reliability, the engineering team establishes regular performance benchmarks under simulated transaction loads. The metrics focus on transactional throughput, lock contention rates, and memory allocation efficiency under garbage collection stress in Go runtimes. We monitor latency profiles closely to identify bottleneck indicators under concurrent traffic.
+
+🔗 **Next Step:** Understand data audit trails and logging in [Part 6: Security, Compliance, and Audit Trails]({{< ref "part-6-security-compliance-audit.md" >}}).
+
+---
+
+*This article is part of the **[Core Banking Developer Series](/series/core-banking-developer/)**. Check out the full index to see the complete architectural context.*
+
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+
+---
+
+[← Previous Part: Part 4: Modern Event-Driven Core Architecture]({{< ref "part-4-modern-core-banking-architecture.md" >}})  |  [Next Part: Part 6: Security, Compliance, and Audit Trails]({{< ref "part-6-security-compliance-audit.md" >}})

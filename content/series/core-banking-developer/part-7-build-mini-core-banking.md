@@ -13,7 +13,10 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-7-build-mini-core-banking/"
 ShowToc: true
 TocOpen: true
+
 ---
+
+> **Prerequisite:** [Part 6: Security, Compliance, and Audit Trails]({{< ref "part-6-security-compliance-audit.md" >}}) on audit ledger logs.
 
 ## Project Objectives
 
@@ -537,3 +540,15 @@ Once you have a functional Mini Core Banking system, you can extend it:
 5. **Study Apache Fineract:** Dive into the open-source code of a real-world Core Banking system.
 
 > *Congratulations on completing the series! The final step is learning how to document these complex systems. Continue reading **[Part 8 — Writing a Core Banking PRD: Developer Guide]({{< ref "part-8-core-banking-prd.md" >}})** to master the art of specification.*
+
+🔗 **Next Step:** Learn to write product requirement specifications in [Part 8: Writing a Core Banking PRD — Developer Guide]({{< ref "part-8-core-banking-prd.md" >}}).
+
+---
+
+*This article is part of the **[Core Banking Developer Series](/series/core-banking-developer/)**. Check out the full index to see the complete architectural context.*
+
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+
+---
+
+[← Previous Part: Part 6: Security, Compliance, and Audit Trails]({{< ref "part-6-security-compliance-audit.md" >}})  |  [Next Part: Part 8: Writing a Core Banking PRD — Developer Guide]({{< ref "part-8-core-banking-prd.md" >}})

@@ -13,7 +13,10 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-2-banking-domain-casa-lending/"
 ShowToc: true
 TocOpen: true
+
 ---
+
+> **Prerequisite:** [Part 1: Double-Entry Ledger Schema Design]({{< ref "part-1-double-entry-ledger.md" >}}) on standard accounting invariants.
 
 ## Overview of the Three Core Modules
 
@@ -249,7 +252,9 @@ stateDiagram-v2
 ## Interest Calculation Mathematical Model
 
 Interest computations typically follow strict mathematical standards. For example, daily interest accrual is defined as:
-$$	ext{Accrual} = 	ext{Balance} 	imes \left( rac{	ext{Interest Rate}}{	ext{Day Count Convention}} ight)$$
+$$	ext{Accrual} = 	ext{Balance} 	imes \left( 
+rac{	ext{Interest Rate}}{	ext{Day Count Convention}} 
+ight)$$
 where the Day Count Convention is set to 365 or 360 depending on local central bank regulations.
 
 ## Interest Accrual Engine in Go
@@ -303,3 +308,15 @@ Automated regression tests run continuously in the deployment pipeline. Every ch
 Cryptographic operations are offloaded to hardware security modules (HSMs) or specialized CPU instructions to minimize CPU utilization during TLS handshakes and payload encryption steps. This ensures high throughput for payment SWITCH APIs.
 
 All configurations (interest rates, overdraft limits, transaction fees) are versioned and stored in the database, allowing dynamic system updates without requiring service redeployment or downtime. This flexibility reduces production operational overhead.
+
+🔗 **Next Step:** Master database transaction isolation levels in [Part 3: Transaction Isolation and ACID Guarantees]({{< ref "part-3-database-transactions-acid.md" >}}).
+
+---
+
+*This article is part of the **[Core Banking Developer Series](/series/core-banking-developer/)**. Check out the full index to see the complete architectural context.*
+
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+
+---
+
+[← Previous Part: Part 1: Double-Entry Ledger Schema Design]({{< ref "part-1-double-entry-ledger.md" >}})  |  [Next Part: Part 3: Transaction Isolation and ACID Guarantees]({{< ref "part-3-database-transactions-acid.md" >}})

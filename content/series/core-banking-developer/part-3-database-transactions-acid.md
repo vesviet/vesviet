@@ -14,7 +14,10 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-3-database-transactions-acid/"
 ShowToc: true
 TocOpen: true
+
 ---
+
+> **Prerequisite:** [Part 2: CASA & Lending Domain Logic]({{< ref "part-2-banking-domain-casa-lending.md" >}}) on transaction parameters.
 
 ## The Core Problem: Concurrency
 
@@ -322,3 +325,15 @@ To ensure complete system reliability, the engineering team establishes regular 
 Database connections are managed via a centralized connection pool to prevent TCP port exhaustion during peak loads. The pool configuration dynamically scales between minimum idle connections and maximum active limits based on queue metrics. This prevents deadlock loops and connection starvation under concurrent requests.
 
 System auditing checks execute asynchronously to avoid blocking the primary transaction path. The metrics are dispatched to the monitoring cluster using decoupled buffered channels, ensuring that logger latency does not bleed into customer API responses. The tracing collector captures intermediate spans and aggregates metrics.
+
+🔗 **Next Step:** Explore event-sourcing and CQRS in [Part 4: Modern Event-Driven Core Architecture]({{< ref "part-4-modern-core-banking-architecture.md" >}}).
+
+---
+
+*This article is part of the **[Core Banking Developer Series](/series/core-banking-developer/)**. Check out the full index to see the complete architectural context.*
+
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+
+---
+
+[← Previous Part: Part 2: CASA & Lending Domain Logic]({{< ref "part-2-banking-domain-casa-lending.md" >}})  |  [Next Part: Part 4: Modern Event-Driven Core Architecture]({{< ref "part-4-modern-core-banking-architecture.md" >}})

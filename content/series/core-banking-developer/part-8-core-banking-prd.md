@@ -14,9 +14,10 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-8-core-banking-prd/"
 mermaid: true
+
 ---
 
-> **Prerequisite:** This guide assumes you have built or are building your ledger switch. Before writing requirements, see the implementation details in **[Part 7 — Build a Mini Core Banking System in Go]({{< ref "part-7-build-mini-core-banking.md" >}})**.
+> **Prerequisite:** [Part 7: Build a Mini Core Banking System in Go]({{< ref "part-7-build-mini-core-banking.md" >}}) on core ledger code.
 
 In core banking system (CBS) development, the Product Requirements Document (PRD) is vastly different from a standard SaaS or mobile app PRD. While a SaaS PRD focuses heavily on user interfaces, user growth metrics, and customer delight, a Core Banking PRD must prioritize **financial integrity, transactional consistency, auditability, and regulatory compliance**.
 
@@ -237,4 +238,14 @@ func (sv *SignatureVerifier) Verify(payload []byte, signature []byte) error {
 
 This security framework guarantees that a request cannot be altered or fabricated after it has been signed by the client, satisfying strict regulatory security standards.
 
-[← Previous Part: Part 7 — Build a Mini Core Banking System in Go]({{< ref "part-7-build-mini-core-banking.md" >}})
+🔗 **Next Step:** Explore the full curriculum of this series in the [Core Banking Developer Series](/series/core-banking-developer/).
+
+---
+
+*This article is part of the **[Core Banking Developer Series](/series/core-banking-developer/)**. Check out the full index to see the complete architectural context.*
+
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+
+---
+
+[← Previous Part: Part 7: Build a Mini Core Banking System in Go]({{< ref "part-7-build-mini-core-banking.md" >}})

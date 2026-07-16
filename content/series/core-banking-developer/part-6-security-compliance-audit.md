@@ -13,7 +13,10 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-6-security-compliance-audit/"
 ShowToc: true
 TocOpen: true
+
 ---
+
+> **Prerequisite:** [Part 5: ISO 8583 & ISO 20022 Messaging]({{< ref "part-5-iso-standards-integration.md" >}}) on message translation layers.
 
 ## Why is Core Banking Security Different?
 
@@ -310,3 +313,15 @@ Database connections are managed via a centralized connection pool to prevent TC
 System auditing checks execute asynchronously to avoid blocking the primary transaction path. The metrics are dispatched to the monitoring cluster using decoupled buffered channels, ensuring that logger latency does not bleed into customer API responses. The tracing collector captures intermediate spans and aggregates metrics.
 
 Error handling policies follow standardized bank error codes, mapping database constraints to explicit, human-readable API responses while hiding internal database stack traces to prevent security exposure. The boundary middleware sanitizes outbound error messages.
+
+🔗 **Next Step:** Execute the step-by-step Go implementation in [Part 7: Build a Mini Core Banking System in Go]({{< ref "part-7-build-mini-core-banking.md" >}}).
+
+---
+
+*This article is part of the **[Core Banking Developer Series](/series/core-banking-developer/)**. Check out the full index to see the complete architectural context.*
+
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+
+---
+
+[← Previous Part: Part 5: ISO 8583 & ISO 20022 Messaging]({{< ref "part-5-iso-standards-integration.md" >}})  |  [Next Part: Part 7: Build a Mini Core Banking System in Go]({{< ref "part-7-build-mini-core-banking.md" >}})

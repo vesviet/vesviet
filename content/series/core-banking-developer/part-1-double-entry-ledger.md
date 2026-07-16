@@ -14,7 +14,10 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-1-double-entry-ledger/"
 ShowToc: true
 TocOpen: true
+
 ---
+
+> **Prerequisite:** Read the [Executive Summary]({{< ref "executive-summary.md" >}}) for the high-level roadmap of core banking evolution.
 
 ## Why does a developer need to learn accounting?
 
@@ -252,3 +255,15 @@ Automated regression tests run continuously in the deployment pipeline. Every ch
 Cryptographic operations are offloaded to hardware security modules (HSMs) or specialized CPU instructions to minimize CPU utilization during TLS handshakes and payload encryption steps. This ensures high throughput for payment SWITCH APIs.
 
 All configurations (interest rates, overdraft limits, transaction fees) are versioned and stored in the database, allowing dynamic system updates without requiring service redeployment or downtime. This flexibility reduces production operational overhead.
+
+🔗 **Next Step:** Understand current and savings account logic in [Part 2: CASA & Lending Domain Logic]({{< ref "part-2-banking-domain-casa-lending.md" >}}).
+
+---
+
+*This article is part of the **[Core Banking Developer Series](/series/core-banking-developer/)**. Check out the full index to see the complete architectural context.*
+
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+
+---
+
+[← Previous Part: The Disruptive Future of Core Banking Architecture]({{< ref "executive-summary.md" >}})  |  [Next Part: Part 2: CASA & Lending Domain Logic]({{< ref "part-2-banking-domain-casa-lending.md" >}})

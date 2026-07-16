@@ -18,7 +18,10 @@ canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-4-modern-c
 mermaid: true
 ShowToc: true
 TocOpen: true
+
 ---
+
+> **Prerequisite:** [Part 3: Transaction Isolation and ACID Guarantees]({{< ref "part-3-database-transactions-acid.md" >}}) on database lock behaviors.
 
 > **Series context (Part 4 of 8):** This article assumes familiarity with [ACID transactions and database concurrency](/series/core-banking-developer/part-3-database-transactions-acid/). Understanding why consistency guarantees are hard at the database layer is essential context before introducing distributed patterns here.
 
@@ -260,7 +263,6 @@ No, it actually massively increases throughput. Cross-bank transfers are not pro
 
 🔗 **Previous Step:** Explore the foundational database layer in [Part 3 — Database Design for Financial Transactions (ACID & Concurrency)](/series/core-banking-developer/part-3-database-transactions-acid/).
 
-🔗 **Next Step:** Now that you understand banking microservices architecture and its event-driven patterns, see how these services communicate with the outside world through international financial standards. Continue reading [Part 5 — International Integration Standards: ISO 8583 & ISO 20022](/series/core-banking-developer/part-5-iso-standards-integration/).
 
 🔗 **Deep Dive:** For a complete engineering guide to the full composable banking stack — ledger concurrency patterns, Strangler Fig migrations, RFC 8705 mTLS, and the next-gen vendor landscape — see [Composable Banking Architecture: From Monolith to Modular Core](/posts/composable-banking-architecture/).
 
@@ -328,3 +330,15 @@ To ensure complete system reliability, the engineering team establishes regular 
 Database connections are managed via a centralized connection pool to prevent TCP port exhaustion during peak loads. The pool configuration dynamically scales between minimum idle connections and maximum active limits based on queue metrics. This prevents deadlock loops and connection starvation under concurrent requests.
 
 System auditing checks execute asynchronously to avoid blocking the primary transaction path. The metrics are dispatched to the monitoring cluster using decoupled buffered channels, ensuring that logger latency does not bleed into customer API responses. The tracing collector captures intermediate spans and aggregates metrics.
+
+🔗 **Next Step:** Learn card networks and wire messaging in [Part 5: ISO 8583 & ISO 20022 Messaging]({{< ref "part-5-iso-standards-integration.md" >}}).
+
+---
+
+*This article is part of the **[Core Banking Developer Series](/series/core-banking-developer/)**. Check out the full index to see the complete architectural context.*
+
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+
+---
+
+[← Previous Part: Part 3: Transaction Isolation and ACID Guarantees]({{< ref "part-3-database-transactions-acid.md" >}})  |  [Next Part: Part 5: ISO 8583 & ISO 20022 Messaging]({{< ref "part-5-iso-standards-integration.md" >}})
