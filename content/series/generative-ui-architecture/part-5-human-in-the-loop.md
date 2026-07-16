@@ -15,7 +15,10 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-5-human-in-the-loop/"
+
 ---
+
+> **Prerequisite:** [Part 4: Security & Accessibility (A11y) in GenUI]({{< ref "part-4-security-a11y.md" >}}) on validation schemas.
 
 Unlike traditional software (where feedback happens in tens of milliseconds), AI systems always come with a haunting ghost: **Latency**. 
 
@@ -226,7 +229,6 @@ By designing these Fallback paths, you ensure that AI remains an "Enhancement" l
 
 ---
 
-🔗 **Next Step:** A GenUI system with countless ever-changing Components is a nightmare for Quality Assurance (QA) teams. How do you automate testing for an interface when you don't know what it will look like beforehand? Read on in **[Part 6 — E2E Testing & Performance Optimization at the Edge]({{< ref "part-6-e2e-testing-edge.md" >}})**.
 
 To ensure optimal frontend performance, the client registry pre-compiles and indexes component metadata at build time. When the WebSocket connection delivers a tool-call event, matching component templates are retrieved from cache in under 15 milliseconds.
 
@@ -251,3 +253,15 @@ State serialization protocols guarantee that the frontend client can recover fro
 Internationalization support is handled by passing locale parameters in the tool-call payload. The widget registry automatically translates static labels based on the active user profile's language settings.
 
 Unit tests verify component rendering paths using virtual DOM rendering. Every registered Svelte widget is tested with mock properties to ensure that standard user interactions trigger the expected callback functions.
+
+🔗 **Next Step:** Master end-to-end testing and caching in [Part 6: E2E Testing & Performance Optimization at the Edge]({{< ref "part-6-e2e-testing-edge.md" >}}).
+
+---
+
+*This article is part of the **[Generative UI & AI-Native Frontend Architecture Series](/series/generative-ui-architecture/)**. Check out the full index to see the complete architectural context.*
+
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+
+---
+
+[← Previous Part: Part 4: Security & Accessibility (A11y) in GenUI]({{< ref "part-4-security-a11y.md" >}})  |  [Next Part: Part 6: E2E Testing & Performance Optimization at the Edge]({{< ref "part-6-e2e-testing-edge.md" >}})

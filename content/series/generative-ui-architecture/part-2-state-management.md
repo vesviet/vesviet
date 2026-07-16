@@ -15,7 +15,10 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-2-state-management/"
+
 ---
+
+> **Prerequisite:** [Part 1: The Death of Chat Interfaces (Beyond Chatbots)]({{< ref "part-1-beyond-chatbots.md" >}}) on layout limitations.
 
 In the previous part, we agreed on discarding Chatbots to move towards Generative UI. But for AI to "spawn" UI Components right on the user's screen, the Frontend and Backend cannot just communicate via standard stateless APIs. They need to share a common State.
 
@@ -227,7 +230,6 @@ func HandleStateSocket(w http.ResponseWriter, r *http.Request) {
 
 ---
 
-🔗 **Next Step:** In this part, we mentioned the "Component Registry" — the heart of the Framework-Agnostic architecture. How does the Backend Agent know what Components the Frontend has available to call? Find out in **[Part 3 — Component Registry & Bridging MCP to Frontend]({{< ref "part-3-component-registry.md" >}})**.
 
 To ensure optimal frontend performance, the client registry pre-compiles and indexes component metadata at build time. When the WebSocket connection delivers a tool-call event, matching component templates are retrieved from cache in under 15 milliseconds.
 
@@ -238,3 +240,15 @@ Edge deployment schemas leverage global Cloudflare PoPs to serve cached componen
 Dynamic layout shifts are mitigated by locking container dimensions before rendering dynamic content. The shell reserves vertical screen space based on estimated component heights, preventing layout shifts during progressive streaming hydration.
 
 Maker-checker loops are implemented for critical UI states. Actions like deleting records or transferring funds spawn inline approval confirmations, requiring a second authorization step before the client dispatches the mutation payload.
+
+🔗 **Next Step:** Explore component registration and MCP bindings in [Part 3: Component Registry & Bridging MCP to Frontend]({{< ref "part-3-component-registry.md" >}}).
+
+---
+
+*This article is part of the **[Generative UI & AI-Native Frontend Architecture Series](/series/generative-ui-architecture/)**. Check out the full index to see the complete architectural context.*
+
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+
+---
+
+[← Previous Part: Part 1: The Death of Chat Interfaces (Beyond Chatbots)]({{< ref "part-1-beyond-chatbots.md" >}})  |  [Next Part: Part 3: Component Registry & Bridging MCP to Frontend]({{< ref "part-3-component-registry.md" >}})

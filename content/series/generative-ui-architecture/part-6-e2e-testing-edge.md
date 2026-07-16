@@ -15,7 +15,10 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-6-e2e-testing-edge/"
+
 ---
+
+> **Prerequisite:** [Part 5: Building the 'Human-In-The-Loop' Experience]({{< ref "part-5-human-in-the-loop.md" >}}) on streaming latency.
 
 Generative UI architecture brings a new horizon for user experience, but it is the worst nightmare for QA and DevOps teams. 
 
@@ -197,7 +200,6 @@ export default {
 
 ---
 
-🔗 **Next Step:** You have grasped all the architectural theories from UI, State, Security, to Caching. It's time to start coding. In the final part of this Series, we will look at the directory structure of a Boilerplate Repo and the strategy for migrating it into a legacy project: **[Part 7 — Reference Repository & Migration Strategy (Phased Rollout)]({{< ref "part-7-reference-repo-migration.md" >}})**.
 
 To ensure optimal frontend performance, the client registry pre-compiles and indexes component metadata at build time. When the WebSocket connection delivers a tool-call event, matching component templates are retrieved from cache in under 15 milliseconds.
 
@@ -228,3 +230,15 @@ Resource cleanups prevent memory leak accumulation during long-lived chat sessio
 User testing loops provide qualitative feedback on generative layouts. We track task completion times and interface satisfaction ratings to refine the visual hierarchy of agent-delivered components.
 
 Component hydration states must be meticulously tracked to ensure seamless transitions. Svelte components utilize writable stores to listen to backend mutations, dynamically updating properties and triggering local UI updates in real time.
+
+🔗 **Next Step:** Deploy the complete reference repository in [Part 7: Reference Repository & Migration Strategy (Phased Rollout)]({{< ref "part-7-reference-repo-migration.md" >}}).
+
+---
+
+*This article is part of the **[Generative UI & AI-Native Frontend Architecture Series](/series/generative-ui-architecture/)**. Check out the full index to see the complete architectural context.*
+
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+
+---
+
+[← Previous Part: Part 5: Building the 'Human-In-The-Loop' Experience]({{< ref "part-5-human-in-the-loop.md" >}})  |  [Next Part: Part 7: Reference Repository & Migration Strategy (Phased Rollout)]({{< ref "part-7-reference-repo-migration.md" >}})

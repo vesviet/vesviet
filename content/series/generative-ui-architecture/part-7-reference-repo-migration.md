@@ -15,7 +15,10 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-7-reference-repo-migration/"
+
 ---
+
+> **Prerequisite:** [Part 6: E2E Testing & Performance Optimization at the Edge]({{< ref "part-6-e2e-testing-edge.md" >}}) on mock testing.
 
 This is the conclusion of the series. The best architectural theories remain merely on paper if we lack a clear execution path.
 
@@ -191,3 +194,15 @@ Dynamic layout shifts are mitigated by locking container dimensions before rende
 Maker-checker loops are implemented for critical UI states. Actions like deleting records or transferring funds spawn inline approval confirmations, requiring a second authorization step before the client dispatches the mutation payload.
 
 Network latency and socket failures are handled gracefully. If a WebSocket connection drops mid-stream, the client-side recovery service attempts reconnection with exponential backoff while retaining local UI input states in memory.
+
+🔗 **Next Step:** Explore the full curriculum of this series in the [Generative UI & AI-Native Frontend Architecture Series](/series/generative-ui-architecture/).
+
+---
+
+*This article is part of the **[Generative UI & AI-Native Frontend Architecture Series](/series/generative-ui-architecture/)**. Check out the full index to see the complete architectural context.*
+
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+
+---
+
+[← Previous Part: Part 6: E2E Testing & Performance Optimization at the Edge]({{< ref "part-6-e2e-testing-edge.md" >}})

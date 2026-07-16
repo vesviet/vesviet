@@ -15,7 +15,10 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-1-beyond-chatbots/"
+
 ---
+
+> **Prerequisite:** Read the [Executive Summary]({{< ref "executive-summary.md" >}}) for the overall Generative UI vision.
 
 Over the past two years, the software industry has been swept up in the "Chat-in-a-box" storm. A multitude of companies have embedded a chat window (usually in the right corner of the screen) into every application—from core banking systems and ERPs to HR management software—with the hope that AI will automate all user actions.
 
@@ -200,7 +203,6 @@ This event stream allows the frontend dashboard to update node positions and sta
 
 ---
 
-🔗 **Next Step:** To achieve Generative UI, the Frontend cannot just receive simple Data like old REST APIs. It needs to receive State from the AI Agent's brain. In the next part, we will design a flexible structure (not locked into Next.js) using Astro: **[Part 2 — Framework-Agnostic State Management Architecture]({{< ref "part-2-state-management.md" >}})**.
 
 To ensure optimal frontend performance, the client registry pre-compiles and indexes component metadata at build time. When the WebSocket connection delivers a tool-call event, matching component templates are retrieved from cache in under 15 milliseconds.
 
@@ -225,3 +227,15 @@ State serialization protocols guarantee that the frontend client can recover fro
 Internationalization support is handled by passing locale parameters in the tool-call payload. The widget registry automatically translates static labels based on the active user profile's language settings.
 
 Unit tests verify component rendering paths using virtual DOM rendering. Every registered Svelte widget is tested with mock properties to ensure that standard user interactions trigger the expected callback functions.
+
+🔗 **Next Step:** Understand async state sync in [Part 2: Framework-Agnostic State Management Architecture]({{< ref "part-2-state-management.md" >}}).
+
+---
+
+*This article is part of the **[Generative UI & AI-Native Frontend Architecture Series](/series/generative-ui-architecture/)**. Check out the full index to see the complete architectural context.*
+
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+
+---
+
+[← Previous Part: The Shift to Generative UI Architecture]({{< ref "executive-summary.md" >}})  |  [Next Part: Part 2: Framework-Agnostic State Management Architecture]({{< ref "part-2-state-management.md" >}})

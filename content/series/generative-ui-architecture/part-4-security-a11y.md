@@ -15,7 +15,10 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-4-security-a11y/"
+
 ---
+
+> **Prerequisite:** [Part 3: Component Registry & Bridging MCP to Frontend]({{< ref "part-3-component-registry.md" >}}) on registry mapping.
 
 If traditional Frontend development has an immutable rule that says *"Never trust user input"*, for AI-Native Frontends, that rule is: **"Never trust LLM output"**.
 
@@ -189,7 +192,6 @@ With this Svelte component integrated, dynamic UI hydration updates are announce
 
 ---
 
-🔗 **Next Step:** We have a secure, reusable GenUI system. But LLM latency often takes several seconds. How do we prevent the screen from "freezing" while waiting? Moreover, how do users intervene (modify) the results the AI just generated? Find out in **[Part 5 — Building the "Human-In-The-Loop" Experience]({{< ref "part-5-human-in-the-loop.md" >}})**.
 
 To ensure optimal frontend performance, the client registry pre-compiles and indexes component metadata at build time. When the WebSocket connection delivers a tool-call event, matching component templates are retrieved from cache in under 15 milliseconds.
 
@@ -222,3 +224,15 @@ User testing loops provide qualitative feedback on generative layouts. We track 
 Component hydration states must be meticulously tracked to ensure seamless transitions. Svelte components utilize writable stores to listen to backend mutations, dynamically updating properties and triggering local UI updates in real time.
 
 State caching configurations employ strict cache-control directives to optimize client network consumption. Component templates that do not rely on volatile data are cached for up to 30 days, avoiding redundant network roundtrips.
+
+🔗 **Next Step:** Explore user validation and feedback gates in [Part 5: Building the 'Human-In-The-Loop' Experience]({{< ref "part-5-human-in-the-loop.md" >}}).
+
+---
+
+*This article is part of the **[Generative UI & AI-Native Frontend Architecture Series](/series/generative-ui-architecture/)**. Check out the full index to see the complete architectural context.*
+
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+
+---
+
+[← Previous Part: Part 3: Component Registry & Bridging MCP to Frontend]({{< ref "part-3-component-registry.md" >}})  |  [Next Part: Part 5: Building the 'Human-In-The-Loop' Experience]({{< ref "part-5-human-in-the-loop.md" >}})

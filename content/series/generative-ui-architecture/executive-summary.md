@@ -15,7 +15,10 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/executive-summary/"
+
 ---
+
+> **Prerequisite:** Baseline understanding of single-page applications, server-side rendering, and model interaction patterns.
 
 Despite the LLM hype, enterprise software applications integrating AI are facing a major issue: low Retention Rates. The root cause lies not in the intelligence of the Model, but in the **User Interface**. We are trying to cram complex business workflows into a narrow Chatbot frame, forcing users to communicate in natural language rather than through intuitive graphical operations.
 
@@ -144,9 +147,7 @@ Unlike static widgets, Generative UI components must transition smoothly across 
 
 This series will take you step-by-step through the process of building a fully secure, performant, framework-agnostic Generative UI platform. We transition from standard sidebar chatbots to interactive, agents-orchestrated workspaces that can safely run in production at the Edge.
 
-🔗 **Next Step:** To see how we go beyond traditional chat interfaces and design these dynamic components, read **[Part 1 — The Death of Chat Interfaces (Beyond Chatbots)]({{< ref "part-1-beyond-chatbots.md" >}})**.
 
-[Next Part: Part 1 — Beyond Chatbots]({{< ref "part-1-beyond-chatbots.md" >}})
 
 To ensure optimal frontend performance, the client registry pre-compiles and indexes component metadata at build time. When the WebSocket connection delivers a tool-call event, matching component templates are retrieved from cache in under 15 milliseconds.
 
@@ -177,3 +178,15 @@ Resource cleanups prevent memory leak accumulation during long-lived chat sessio
 User testing loops provide qualitative feedback on generative layouts. We track task completion times and interface satisfaction ratings to refine the visual hierarchy of agent-delivered components.
 
 Component hydration states must be meticulously tracked to ensure seamless transitions. Svelte components utilize writable stores to listen to backend mutations, dynamically updating properties and triggering local UI updates in real time.
+
+🔗 **Next Step:** Learn how we move beyond chat interfaces in [Part 1: The Death of Chat Interfaces (Beyond Chatbots)]({{< ref "part-1-beyond-chatbots.md" >}}).
+
+---
+
+*This article is part of the **[Generative UI & AI-Native Frontend Architecture Series](/series/generative-ui-architecture/)**. Check out the full index to see the complete architectural context.*
+
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+
+---
+
+[Next Part: Part 1: The Death of Chat Interfaces (Beyond Chatbots)]({{< ref "part-1-beyond-chatbots.md" >}})
