@@ -148,5 +148,21 @@ To orchestrate queries across 100+ MCP servers:
 - **Token Bucket Rate Limiting:** Enforce strict request rate limits per agent session to prevent downstream API exhaustion.
 
 
+
+
+## Operational Context: Executive Summary Appendix
+
+### Telemetry Correlation and OpenTelemetry Tracing Conventions
+Tracking agent actions requires propagating tracing context through dynamic tool invocations. Utilize the OpenTelemetry SDK to create parent spans for LLM reasoning sessions, linking tool executions as child spans. Annote traces with metadata fields such as model name, token consumption, and execution duration to locate latency bottlenecks in the system.
+
+
+
+
+## Operational Context: Executive Summary Appendix
+
+### Rate Limiting and Downstream API Protection
+Enforce rate limits on MCP endpoints to prevent downstream API exhaustion from recursive agent loops. Implement a token bucket rate limiter in the gateway middleware layer, restricting client requests to 60 calls per minute. If an agent exceeds this limit, return HTTP status 429 and suspend the session dynamically.
+
+
 ---
 *Next up: [Part 1: Protocol Fundamentals & Transport Evolution](/series/mcp-engineering-in-production/part-1-protocol/)*

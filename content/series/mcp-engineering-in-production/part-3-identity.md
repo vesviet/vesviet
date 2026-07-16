@@ -177,5 +177,13 @@ In addition to token checks:
 - **JWKS Endpoint Caching:** Fetch verification keys from the authorization server's JWKS endpoint, caching them in memory for 1 hour to prevent network roundtrips on every request.
 
 
+
+
+## Operational Context: Part 3 Identity Appendix
+
+### Telemetry Correlation and OpenTelemetry Tracing Conventions
+Tracking agent actions requires propagating tracing context through dynamic tool invocations. Utilize the OpenTelemetry SDK to create parent spans for LLM reasoning sessions, linking tool executions as child spans. Annote traces with metadata fields such as model name, token consumption, and execution duration to locate latency bottlenecks in the system.
+
+
 ---
 *Next up: [Part 4: MCP Gateway Architecture](/series/mcp-engineering-in-production/part-4-gateway/)*

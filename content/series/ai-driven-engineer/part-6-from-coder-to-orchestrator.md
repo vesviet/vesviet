@@ -182,6 +182,14 @@ To coordinate complex tasks across multiple agents:
 - **Retry Counters:** Set a maximum retry limit of 3 refactoring attempts to prevent agents from falling into infinite loops if compiler errors cannot be resolved.
 
 
+
+
+## Operational Context: Part 6 From Coder To Orchestrator Appendix
+
+### KPI Tracking and Code Quality Metrics
+To evaluate the impact of AI-assisted development, track code quality indicators in the CI pipeline. Monitor the change lead time (from commit to production) alongside the code churn rate (lines deleted within 7 days). A rising churn rate indicates hallucinated patterns, requiring adjustment of the prompt templates.
+
+
 <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
   <div><a href="/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/">← Previous: Part 5</a></div>
   <div><a href="/series/ai-driven-engineer/part-7-system-design-survival/">Next Article: Part 7 →</a></div>

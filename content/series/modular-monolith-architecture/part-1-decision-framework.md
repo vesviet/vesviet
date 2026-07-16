@@ -169,6 +169,14 @@ In high-frequency low-latency systems, we must design around CPU caches:
 When you separate operations into microservices, you ensure that every communication is forced to hit the main RAM and network interfaces, bypassing CPU caches. In a modular monolith, functions running on the same thread reuse CPU registers and L1 cache blocks. Under the MESI (Modified, Exclusive, Shared, Invalid) cache coherency protocol, sharing memory across CPU cores can trigger cache line invalidations. By designing modules that communicate via clean channels with minimal shared state, we prevent cache thrashing, maximizing local processing speed.
 
 
+
+
+## Operational Context: Part 1 Decision Framework Appendix
+
+### Performance Profiling and CPU Optimization
+To optimize the execution speed of modules within a monolithic binary, engineers must perform regular profiling using tools like Go's `pprof`. Profiling runs expose CPU bottlenecks caused by excessive pointer dereferencing and memory allocations. By replacing heap allocations with stack-allocated values and utilizing `sync.Pool` for reusable structures, garbage collection overhead is reduced, allowing the application to achieve sub-nanosecond processing efficiency.
+
+
 In **[Part 2: FinOps Cost Reality]({{< ref "part-2-finops-cost-reality.md" >}})**, we will open the "Cloud Bill" to analyze in detail how sidecars, service meshes, and cross-AZ traffic fees are eroding the budgets of Microservices systems.
 
 

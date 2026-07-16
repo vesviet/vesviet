@@ -182,5 +182,29 @@ To prevent a single failing MCP server from taking down the entire agent pipelin
 3. **Connection Pooling:** Reuse TCP connections via Go's `http.Transport` IdleConnTimeout configurations.
 
 
+
+
+## Operational Context: Part 4 Gateway Appendix
+
+### Telemetry Correlation and OpenTelemetry Tracing Conventions
+Tracking agent actions requires propagating tracing context through dynamic tool invocations. Utilize the OpenTelemetry SDK to create parent spans for LLM reasoning sessions, linking tool executions as child spans. Annote traces with metadata fields such as model name, token consumption, and execution duration to locate latency bottlenecks in the system.
+
+
+
+
+## Operational Context: Part 4 Gateway Appendix
+
+### Rate Limiting and Downstream API Protection
+Enforce rate limits on MCP endpoints to prevent downstream API exhaustion from recursive agent loops. Implement a token bucket rate limiter in the gateway middleware layer, restricting client requests to 60 calls per minute. If an agent exceeds this limit, return HTTP status 429 and suspend the session dynamically.
+
+
+
+
+## Operational Context: Part 4 Gateway Appendix
+
+### Ingress Load Balancing and Gateway Autoscaling
+Deploy MCP gateway instances behind an ingress controller utilizing round-robin load balancing. Configure the Horizontal Pod Autoscaling (HPA) controller to scale pods based on active connection metrics. This ensures the gateway pool maintains adequate resource headroom to handle traffic spikes during concurrent agent tasks.
+
+
 ---
 *Next up: [Part 5: Production Security & OWASP MCP Top 10](/series/mcp-engineering-in-production/part-5-security/)*

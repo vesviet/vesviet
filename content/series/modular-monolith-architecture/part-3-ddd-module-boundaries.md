@@ -164,6 +164,30 @@ In a distributed microservice architecture, ensuring transactional consistency a
 For example, if payment succeeds but inventory fails, the Saga orchestrator must trigger a `RefundPayment` action. In a modular monolith, we can avoid this operational complexity. We run our business operations in separate schemas under the same database instance. This allows us to use standard SQL local transactions, guaranteeing atomic commits across the billing and inventory tables in sub-millisecond execution times without network-locked loops.
 
 
+
+
+## Operational Context: Part 3 Ddd Module Boundaries Appendix
+
+### Performance Profiling and CPU Optimization
+To optimize the execution speed of modules within a monolithic binary, engineers must perform regular profiling using tools like Go's `pprof`. Profiling runs expose CPU bottlenecks caused by excessive pointer dereferencing and memory allocations. By replacing heap allocations with stack-allocated values and utilizing `sync.Pool` for reusable structures, garbage collection overhead is reduced, allowing the application to achieve sub-nanosecond processing efficiency.
+
+
+
+
+## Operational Context: Part 3 Ddd Module Boundaries Appendix
+
+### Memory Footprint and GC Optimization
+Go's runtime manages memory allocation using a target percentage threshold. When memory usage climbs past this threshold, the garbage collector runs a sweep cycle, pausing execution threads. In a monolithic setup hosting multiple concurrent domains, you must tune this using the `GOGC` environment variable. Setting `GOGC` to 80 or 50 reduces the maximum memory footprint, ensuring the application stays within container memory quotas without triggering out-of-memory crashes.
+
+
+
+
+## Operational Context: Part 3 Ddd Module Boundaries Appendix
+
+### Network Egress Controls and Local Subnet Routing
+When integrating the monolith with external services, configure client-side round-robin load balancing. By resolving downstream service IPs using internal DNS records, the application bypasses external NAT Gateways, routing all traffic within the local private subnet. This co-location eliminates network hops, securing communications and avoiding data transfer egress fees across availability zones.
+
+
 Maintaining strict code borders helps you turn a Monolith into a collection of independent modules. But how do you ensure the Build and Test process for a massive CodeBase doesn't become overloaded? See Shopify's solution in **[Part 4: CI/CD Simplified]({{< ref "part-4-cicd-simplified.md" >}})**.
 
 

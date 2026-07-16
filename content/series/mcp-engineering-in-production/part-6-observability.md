@@ -173,5 +173,45 @@ Tracing agent reasoning loops requires propagating contexts:
 - Route trace telemetry to Jaeger or Datadog over gRPC to visualize latency bottlenecks in the tool chain.
 
 
+
+
+## Operational Context: Part 6 Observability Appendix
+
+### Telemetry Correlation and OpenTelemetry Tracing Conventions
+Tracking agent actions requires propagating tracing context through dynamic tool invocations. Utilize the OpenTelemetry SDK to create parent spans for LLM reasoning sessions, linking tool executions as child spans. Annote traces with metadata fields such as model name, token consumption, and execution duration to locate latency bottlenecks in the system.
+
+
+
+
+## Operational Context: Part 6 Observability Appendix
+
+### Rate Limiting and Downstream API Protection
+Enforce rate limits on MCP endpoints to prevent downstream API exhaustion from recursive agent loops. Implement a token bucket rate limiter in the gateway middleware layer, restricting client requests to 60 calls per minute. If an agent exceeds this limit, return HTTP status 429 and suspend the session dynamically.
+
+
+
+
+## Operational Context: Part 6 Observability Appendix
+
+### Ingress Load Balancing and Gateway Autoscaling
+Deploy MCP gateway instances behind an ingress controller utilizing round-robin load balancing. Configure the Horizontal Pod Autoscaling (HPA) controller to scale pods based on active connection metrics. This ensures the gateway pool maintains adequate resource headroom to handle traffic spikes during concurrent agent tasks.
+
+
+
+
+## Operational Context: Part 6 Observability Appendix
+
+### Graceful Shutdown and Connection Draining
+When updating MCP container instances, configure the runtime to handle termination signals. Upon receiving a SIGTERM signal, the gateway stops accepting new connection requests, completes in-flight tool calls, flushes telemetry logs to the storage backend, and shuts down TCP sockets safely, ensuring zero-downtime deployments.
+
+
+
+
+## Operational Context: Part 6 Observability Appendix
+
+### Certificate Management and mutual TLS Security
+Secure transport channels by enforcing mutual TLS (mTLS) authentication. Both the gateway client and backend MCP servers must exchange and verify cryptographically signed certificates. Rotate certificates automatically using cert-manager, blocking unauthorized requests from accessing tools.
+
+
 ---
 *Next up: [Part 7: Enterprise Scaling & Governance](/series/mcp-engineering-in-production/part-7-enterprise/)*
