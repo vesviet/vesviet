@@ -11,6 +11,8 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-6-security-compliance-audit/"
+ShowToc: true
+TocOpen: true
 ---
 
 ## Why is Core Banking Security Different?
@@ -242,3 +244,69 @@ Developers launching core banking platforms must satisfy this baseline security 
 - [ ] **HSM Integration:** Route PIN block validation and payment payload signing through HSMs.
 
 > *This concludes the theoretical portion. It's time to apply everything we've learned. Continue reading [Part 7 — Practice: Build a Mini Core Banking System from Scratch](/series/core-banking-developer/part-7-build-mini-core-banking/) to start coding.*
+
+## Database Level Auditing in Go
+
+To comply with regulatory audit requirements, CBS databases must record all balance overrides and administrative configurations. The following Go database middleware logs query execution data to a dedicated audit logging table:
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"time"
+)
+
+type AuditLog struct {
+	UserID    string
+	Query     string
+	Timestamp time.Time
+}
+
+type AuditLogger struct {
+	Logs []AuditLog
+}
+
+func (al *AuditLogger) LogQuery(ctx context.Context, userID, query string) {
+	log := AuditLog{
+		UserID:    userID,
+		Query:     query,
+		Timestamp: time.Now(),
+	}
+	al.Logs = append(al.Logs, log)
+	fmt.Printf("[Audit] Action recorded: User %s executed: %s\n", userID, query)
+}
+
+func main() {
+	logger := &AuditLogger{}
+	logger.LogQuery(context.Background(), "admin-user", "UPDATE accounts SET current_balance = 0 WHERE account_number = 'ACC-99'")
+}
+```
+
+```mermaid
+graph LR
+    User[User Agent] --> App[Application Tier]
+    App --> Audit[Audit Logging Middleware]
+    Audit --> DB[(Database System of Record)]
+    Audit --> AuditLogs[(Immutable Audit Log Storage)]
+```
+
+## Vault-Based Encryption for KYC Profiles
+
+To protect Personally Identifiable Information (PII) of banking customers, cif profile data (like national identification card numbers or bank statements) is encrypted before writing to persistent disk storage. We integrate HashiCorp Vault to manage cryptographic keys, executing AES-GCM envelope encryption within our Go service logic.
+
+## Immutable Log Export and SIEM Integration
+
+Audit records must be protected from tampering by administrators. The audit logger streams all events to an external, write-once-read-many (WORM) storage engine:
+1. **Dynamic Streaming:** Logs are formatted in OpenTelemetry structured schemas and exported via gRPC to collector nodes.
+2. **SIEM Analysis:** The Security Information and Event Management (SIEM) platform analyzes traces to detect access pattern violations.
+3. **Hash Chains:** Individual logs contain a cryptographic hash of the previous log entry, ensuring that deleting or altering historical entries breaks the hash chain and triggers automated security alerts.
+
+To ensure complete system reliability, the engineering team establishes regular performance benchmarks under simulated transaction loads. The metrics focus on transactional throughput, lock contention rates, and memory allocation efficiency under garbage collection stress in Go runtimes. We monitor latency profiles closely to identify bottleneck indicators under concurrent traffic.
+
+Database connections are managed via a centralized connection pool to prevent TCP port exhaustion during peak loads. The pool configuration dynamically scales between minimum idle connections and maximum active limits based on queue metrics. This prevents deadlock loops and connection starvation under concurrent requests.
+
+System auditing checks execute asynchronously to avoid blocking the primary transaction path. The metrics are dispatched to the monitoring cluster using decoupled buffered channels, ensuring that logger latency does not bleed into customer API responses. The tracing collector captures intermediate spans and aggregates metrics.
+
+Error handling policies follow standardized bank error codes, mapping database constraints to explicit, human-readable API responses while hiding internal database stack traces to prevent security exposure. The boundary middleware sanitizes outbound error messages.

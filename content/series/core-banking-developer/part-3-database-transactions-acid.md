@@ -12,6 +12,8 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-3-database-transactions-acid/"
+ShowToc: true
+TocOpen: true
 ---
 
 ## The Core Problem: Concurrency
@@ -182,3 +184,141 @@ func transfer(fromID, toID string) {
 - [ ] Run periodic invariant checks: `SUM(DEBIT) = SUM(CREDIT)`
 
 > *Next, we will look at how modern digital banks solve this problem at the scale of hundreds of millions of transactions per day using Microservices architecture. Continue reading [Part 4 — Banking Microservices Architecture (Modern Core Banking)](/series/core-banking-developer/part-4-modern-core-banking-architecture/).*
+
+## Pessimistic Locking to Prevent Race Conditions
+
+When processing high-frequency ledger updates, concurrent database transactions can result in race conditions. We mitigate this by executing pessimistic locking using the `SELECT FOR UPDATE` query syntax. The database blocks concurrent reads on the locked rows until the transaction commits.
+
+The following Go code snippet demonstrates how to safely lock accounts and process a debit within a transaction boundary:
+
+```go
+package main
+
+import (
+	"context"
+	"database/sql"
+	"fmt"
+)
+
+func DebitAccount(ctx context.Context, db *sql.DB, accNum string, amount int64) error {
+	tx, err := db.BeginTx(ctx, &sql.TxOptions{Isolation: sql.LevelReadCommitted})
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	// 1. Lock the account row
+	var balance int64
+	query := "SELECT current_balance FROM accounts WHERE account_number = $1 FOR UPDATE"
+	err = tx.QueryRowContext(ctx, query, accNum).Scan(&balance)
+	if err != nil {
+		return fmt.Errorf("failed to lock account: %w", err)
+	}
+
+	// 2. Validate balance
+	if balance < amount {
+		return fmt.Errorf("insufficient balance: balance is %d, required %d", balance, amount)
+	}
+
+	// 3. Update balance
+	updateQuery := "UPDATE accounts SET current_balance = current_balance - $1 WHERE account_number = $2"
+	_, err = tx.ExecContext(ctx, updateQuery, amount, accNum)
+	if err != nil {
+		return fmt.Errorf("failed to update balance: %w", err)
+	}
+
+	return tx.Commit()
+}
+
+func main() {
+	fmt.Println("Pessimistic locking module initialized.")
+}
+```
+
+```mermaid
+sequenceDiagram
+    participant Tx1 as Transaction 1
+    participant DB as database
+    participant Tx2 as Transaction 2
+    
+    Tx1->>DB: SELECT ... FOR UPDATE (Lock Account A)
+    DB-->>Tx1: Return Account Balance
+    Tx2->>DB: SELECT ... FOR UPDATE (Lock Account A)
+    Note over DB: Tx2 blocks waiting for Tx1 lock
+    Tx1->>DB: UPDATE Account A Balance & COMMIT
+    DB-->>Tx1: Commit Success (Lock Released)
+    DB-->>Tx2: Return Account Balance
+    Tx2->>DB: UPDATE Account A Balance & COMMIT
+```
+
+## Distributed Transaction Strategies: Saga vs 2PC
+
+When a ledger update spans multiple physical microservices (e.g. Account Service and Card service), distributed transaction management is mandatory.
+- **Two-Phase Commit (2PC):** Guarantees atomicity across nodes but locks databases, increasing system latency.
+- **Saga Pattern:** Relies on asynchronous local transactions. If a step fails, the system executes compensating transactions to rollback the overall state.
+
+## Saga Orchestration Pattern in Go
+
+Below is a simplified implementation of a Saga Orchestrator in Go, processing multi-stage transactions with compensation routines:
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+)
+
+type SagaStep struct {
+	Execute  func(ctx context.Context) error
+	Compensate func(ctx context.Context) error
+}
+
+type SagaOrchestrator struct {
+	Steps []SagaStep
+}
+
+func (s *SagaOrchestrator) Run(ctx context.Context) error {
+	completed := []SagaStep{}
+	for _, step := range s.Steps {
+		if err := step.Execute(ctx); err != nil {
+			fmt.Println("[Saga] Error detected. Rolling back completed steps...")
+			for i := len(completed) - 1; i >= 0; i-- {
+				_ = completed[i].Compensate(ctx)
+			}
+			return err
+		}
+		completed = append(completed, step)
+	}
+	return nil
+}
+
+func main() {
+	orchestrator := &SagaOrchestrator{
+		Steps: []SagaStep{
+			{
+				Execute:    func(c context.Context) error { fmt.Println("Deduct funds"); return nil },
+				Compensate: func(c context.Context) error { fmt.Println("Refund funds"); return nil },
+			},
+			{
+				Execute:    func(c context.Context) error { fmt.Println("Hold stock failed"); return fmt.Errorf("insufficient stock") },
+				Compensate: func(c context.Context) error { return nil },
+			},
+		},
+	}
+	_ = orchestrator.Run(context.Background())
+}
+```
+
+## Deadlock Avoidance and Lock Escalation Policies
+
+High-concurrency database updates can trigger deadlocks if multiple transactions attempt to lock the same resources in differing orders. We enforce strict deadlock prevention rules:
+1. **Sorted Lock Ordering:** In multi-account operations, accounts are locked in alphabetical order based on their Account Numbers, ensuring that concurrent transactions never lock resources circularly.
+2. **Short Transaction Durations:** Transactions do not perform external API requests or slow computations while holding locks; all processing is completed beforehand.
+3. **Lock Escalation Mitigation:** We avoid massive bulk updates that force the database to escalate row locks to full-table locks.
+
+To ensure complete system reliability, the engineering team establishes regular performance benchmarks under simulated transaction loads. The metrics focus on transactional throughput, lock contention rates, and memory allocation efficiency under garbage collection stress in Go runtimes. We monitor latency profiles closely to identify bottleneck indicators under concurrent traffic.
+
+Database connections are managed via a centralized connection pool to prevent TCP port exhaustion during peak loads. The pool configuration dynamically scales between minimum idle connections and maximum active limits based on queue metrics. This prevents deadlock loops and connection starvation under concurrent requests.
+
+System auditing checks execute asynchronously to avoid blocking the primary transaction path. The metrics are dispatched to the monitoring cluster using decoupled buffered channels, ensuring that logger latency does not bleed into customer API responses. The tracing collector captures intermediate spans and aggregates metrics.

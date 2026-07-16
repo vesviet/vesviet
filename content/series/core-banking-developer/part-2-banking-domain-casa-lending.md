@@ -11,6 +11,8 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-2-banking-domain-casa-lending/"
+ShowToc: true
+TocOpen: true
 ---
 
 ## Overview of the Three Core Modules
@@ -179,3 +181,125 @@ Loans          ├───┬─── 1:N ───┬───┤ Ledger Entr
 > *Now you understand the business domains. Next, we will dive deep into the technical implementation to ensure data accuracy in extremely high-concurrency environments. Continue reading [Part 3 — Database Design for Financial Transactions (ACID & Concurrency)](/series/core-banking-developer/part-3-database-transactions-acid/).*
 
 > **Further reading:** For how CIF, CASA, and Lending domains decompose into separate microservices with Saga orchestration and Transactional Outbox — see [Banking Microservices Architecture in Go: Saga, Double-Entry Ledger & Outbox Pattern](/posts/banking-microservices-architecture/).
+
+## CASA Account Creation and Lifecycle in Go
+
+CASA accounts transition through multiple states to enforce operational controls. The following Go code maps the CASA account state machine and validates transactions against account status parameters:
+
+```go
+package main
+
+import (
+	"errors"
+	"fmt"
+)
+
+type AccountStatus string
+
+const (
+	Active   AccountStatus = "ACTIVE"
+	Dormant  AccountStatus = "DORMANT"
+	Frozen   AccountStatus = "FROZEN"
+	Closed   AccountStatus = "CLOSED"
+)
+
+type CASAAccount struct {
+	AccountNumber string
+	Balance       int64
+	Status        AccountStatus
+}
+
+func (a *CASAAccount) ProcessTransaction(amount int64, txType string) error {
+	if a.Status == Frozen {
+		return errors.New("transaction blocked: account is frozen")
+	}
+	if a.Status == Closed {
+		return errors.New("transaction blocked: account is closed")
+	}
+	if txType == "WITHDRAWAL" && a.Balance < amount {
+		return errors.New("transaction blocked: insufficient funds")
+	}
+
+	if txType == "WITHDRAWAL" {
+		a.Balance -= amount
+	} else {
+		a.Balance += amount
+	}
+
+	return nil
+}
+
+func main() {
+	acc := CASAAccount{AccountNumber: "110022", Balance: 50000, Status: Frozen}
+	err := acc.ProcessTransaction(10000, "WITHDRAWAL")
+	fmt.Println("Transaction result:", err)
+}
+```
+
+```mermaid
+stateDiagram-v2
+    [*] --> Active
+    Active --> Dormant : Inactivity > 12 Months
+    Active --> Frozen : Security Lock
+    Frozen --> Active : Clearance
+    Dormant --> Active : Customer KYC Update
+    Active --> Closed : Customer Request
+```
+
+## Interest Calculation Mathematical Model
+
+Interest computations typically follow strict mathematical standards. For example, daily interest accrual is defined as:
+$$	ext{Accrual} = 	ext{Balance} 	imes \left( rac{	ext{Interest Rate}}{	ext{Day Count Convention}} ight)$$
+where the Day Count Convention is set to 365 or 360 depending on local central bank regulations.
+
+## Interest Accrual Engine in Go
+
+The Interest Engine processes daily calculations across all active savings accounts, writing accrual nodes to the database:
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+type AccrualJob struct {
+	AccountNo    string
+	DailyRate    float64
+	AccruedToday float64
+}
+
+func CalculateAccrual(balance int64, annualRate float64) float64 {
+	dailyRate := annualRate / 365.0
+	return float64(balance) * dailyRate
+}
+
+func main() {
+	balance := int64(250000000) // 250M VND
+	annualRate := 0.055         // 5.5%
+	accrued := CalculateAccrual(balance, annualRate)
+	fmt.Printf("Daily interest accrued: %.2f VND\n", accrued)
+}
+```
+
+## Reactivation Protocol for Dormant Accounts
+
+When a customer's account has been dormant for over 12 months, the system blocks all online transactions to prevent fraud. Reactivating the account follows a strict compliance protocol:
+1. **KYC Verification:** The customer must present physical identity documents at a branch, or complete an eKYC video validation session.
+2. **BOD Activation:** A Maker submits a reactivation request, which must be approved by a compliance Checker (Maker-Checker segregation).
+3. **Ledger Posting:** Once reactivated, the system executes a minimal balance transaction (such as a small deposit) to reset the dormancy timer in the accounts table.
+
+To ensure complete system reliability, the engineering team establishes regular performance benchmarks under simulated transaction loads. The metrics focus on transactional throughput, lock contention rates, and memory allocation efficiency under garbage collection stress in Go runtimes. We monitor latency profiles closely to identify bottleneck indicators under concurrent traffic.
+
+Database connections are managed via a centralized connection pool to prevent TCP port exhaustion during peak loads. The pool configuration dynamically scales between minimum idle connections and maximum active limits based on queue metrics. This prevents deadlock loops and connection starvation under concurrent requests.
+
+System auditing checks execute asynchronously to avoid blocking the primary transaction path. The metrics are dispatched to the monitoring cluster using decoupled buffered channels, ensuring that logger latency does not bleed into customer API responses. The tracing collector captures intermediate spans and aggregates metrics.
+
+Error handling policies follow standardized bank error codes, mapping database constraints to explicit, human-readable API responses while hiding internal database stack traces to prevent security exposure. The boundary middleware sanitizes outbound error messages.
+
+Automated regression tests run continuously in the deployment pipeline. Every change to the ledger engine triggers thousands of simulated transaction loops to verify that no balance discrepancies can be introduced under race conditions. This rigorous validation ensures high reliability of the double-entry accounting layer.
+
+Cryptographic operations are offloaded to hardware security modules (HSMs) or specialized CPU instructions to minimize CPU utilization during TLS handshakes and payload encryption steps. This ensures high throughput for payment SWITCH APIs.
+
+All configurations (interest rates, overdraft limits, transaction fees) are versioned and stored in the database, allowing dynamic system updates without requiring service redeployment or downtime. This flexibility reduces production operational overhead.

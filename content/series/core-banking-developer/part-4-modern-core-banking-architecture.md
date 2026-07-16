@@ -16,6 +16,8 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-4-modern-core-banking-architecture/"
 mermaid: true
+ShowToc: true
+TocOpen: true
 ---
 
 > **Series context (Part 4 of 8):** This article assumes familiarity with [ACID transactions and database concurrency](/series/core-banking-developer/part-3-database-transactions-acid/). Understanding why consistency guarantees are hard at the database layer is essential context before introducing distributed patterns here.
@@ -261,3 +263,68 @@ No, it actually massively increases throughput. Cross-bank transfers are not pro
 🔗 **Next Step:** Now that you understand banking microservices architecture and its event-driven patterns, see how these services communicate with the outside world through international financial standards. Continue reading [Part 5 — International Integration Standards: ISO 8583 & ISO 20022](/series/core-banking-developer/part-5-iso-standards-integration/).
 
 🔗 **Deep Dive:** For a complete engineering guide to the full composable banking stack — ledger concurrency patterns, Strangler Fig migrations, RFC 8705 mTLS, and the next-gen vendor landscape — see [Composable Banking Architecture: From Monolith to Modular Core](/posts/composable-banking-architecture/).
+
+## Event-Driven Core Banking Architecture
+
+Modern core architectures leverage event sourcing to record the complete history of ledger state modifications. The system writes transaction events to an immutable event log, and the current balance is reconstructed dynamically by replaying these events.
+
+The following Go code snippet illustrates an event consumer router that parses financial transaction events and applies them to CASA balance projections:
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type Event struct {
+	Type    string `json:"type"`
+	Payload []byte `json:"payload"`
+}
+
+type BalanceUpdatePayload struct {
+	AccountNo string `json:"account_no"`
+	Amount    int64  `json:"amount"`
+}
+
+func RouteEvent(evt Event) error {
+	switch evt.Type {
+	case "BALANCE_DEBIT":
+		var p BalanceUpdatePayload
+		json.Unmarshal(evt.Payload, &p)
+		fmt.Printf("[Event] Debit account %s by %d\n", p.AccountNo, p.Amount)
+	case "BALANCE_CREDIT":
+		var p BalanceUpdatePayload
+		json.Unmarshal(evt.Payload, &p)
+		fmt.Printf("[Event] Credit account %s by %d\n", p.AccountNo, p.Amount)
+	}
+	return nil
+}
+
+func main() {
+	payload, _ := json.Marshal(BalanceUpdatePayload{AccountNo: "ACC-55", Amount: 200000})
+	evt := Event{Type: "BALANCE_CREDIT", Payload: payload}
+	RouteEvent(evt)
+}
+```
+
+```mermaid
+graph TD
+    Api[API Gateway] --> Command[Account Command Service]
+    Command --> EventLog[(Kafka Event Log)]
+    EventLog --> Projector[Balance Projector Worker]
+    Projector --> ReadDB[(Postgres Read DB)]
+    Api --> Query[Balance Query Service]
+    Query --> ReadDB
+```
+
+## CQRS Read Model Synchronization
+
+To maintain optimal query latencies in high-concurrency environments, read models are isolated from the transaction execution engine. A background worker queries database WAL updates and updates secondary search engines (such as Elasticsearch) to enable real-time dashboard searches.
+
+To ensure complete system reliability, the engineering team establishes regular performance benchmarks under simulated transaction loads. The metrics focus on transactional throughput, lock contention rates, and memory allocation efficiency under garbage collection stress in Go runtimes. We monitor latency profiles closely to identify bottleneck indicators under concurrent traffic.
+
+Database connections are managed via a centralized connection pool to prevent TCP port exhaustion during peak loads. The pool configuration dynamically scales between minimum idle connections and maximum active limits based on queue metrics. This prevents deadlock loops and connection starvation under concurrent requests.
+
+System auditing checks execute asynchronously to avoid blocking the primary transaction path. The metrics are dispatched to the monitoring cluster using decoupled buffered channels, ensuring that logger latency does not bleed into customer API responses. The tracing collector captures intermediate spans and aggregates metrics.

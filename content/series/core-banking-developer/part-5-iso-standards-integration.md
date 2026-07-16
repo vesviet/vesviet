@@ -11,6 +11,8 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-5-iso-standards-integration/"
+ShowToc: true
+TocOpen: true
 ---
 
 ShowToc: true
@@ -292,3 +294,57 @@ func ParsePain001(xmlData []byte) (*Document, error) {
 
 > *Next, we will explore one of the hardest and most important aspects of Core Banking: security, auditing, and compliance. Continue reading [Part 6 — Security, Compliance & Audit](/series/core-banking-developer/part-6-security-compliance-audit/).*
 
+## Implementing ISO 8583 Message Parsing in Go
+
+Mapping credit/debit card message streams requires parsing binary-encoded ISO 8583 frames. The following Go code defines a basic message interface that extracts the transaction amount and cardholder details from raw message payloads:
+
+```go
+package main
+
+import (
+	"errors"
+	"fmt"
+)
+
+type ISO8583Message struct {
+	MTI        string // Message Type Identifier
+	Fields     map[int]string
+}
+
+func ParseISO8583(payload []byte) (*ISO8583Message, error) {
+	if len(payload) < 4 {
+		return nil, errors.New("invalid payload length")
+	}
+
+	msg := &ISO8583Message{
+		MTI:    string(payload[:4]),
+		Fields: make(map[int]string),
+	}
+
+	// Simulated extraction of Fields (Field 4: Amount, Field 11: System Trace Audit Number)
+	msg.Fields[4] = "000000500000" // 500,000 VND
+	msg.Fields[11] = "123456"
+
+	return msg, nil
+}
+
+func main() {
+	rawMsg := []byte("0200SomeBinaryData")
+	msg, _ := ParseISO8583(rawMsg)
+	fmt.Printf("Parsed ISO message. MTI: %s, Amount: %s\n", msg.MTI, msg.Fields[4])
+}
+```
+
+```mermaid
+sequenceDiagram
+    participant Merchant as POS Terminal / ATM
+    participant Switch as Payment Authorization Switch
+    participant Core as Core Banking Ledger
+    
+    Merchant->>Switch: Send ISO 8583 Authorization Request (MTI 0100)
+    Switch->>Core: Validate Available Balance & Hold Funds
+    Core-->>Switch: Authorization Approved (Debit Hold Active)
+    Switch-->>Merchant: Send Authorization Response (MTI 0110)
+```
+
+To ensure complete system reliability, the engineering team establishes regular performance benchmarks under simulated transaction loads. The metrics focus on transactional throughput, lock contention rates, and memory allocation efficiency under garbage collection stress in Go runtimes. We monitor latency profiles closely to identify bottleneck indicators under concurrent traffic.

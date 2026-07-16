@@ -11,6 +11,8 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-7-build-mini-core-banking/"
+ShowToc: true
+TocOpen: true
 ---
 
 ## Project Objectives
@@ -535,4 +537,3 @@ Once you have a functional Mini Core Banking system, you can extend it:
 5. **Study Apache Fineract:** Dive into the open-source code of a real-world Core Banking system.
 
 > *Congratulations on completing the series! The final step is learning how to document these complex systems. Continue reading **[Part 8 — Writing a Core Banking PRD: Developer Guide]({{< ref "part-8-core-banking-prd.md" >}})** to master the art of specification.*
-

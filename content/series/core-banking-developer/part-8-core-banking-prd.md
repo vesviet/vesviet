@@ -206,3 +206,35 @@ When reviewing or writing your CBS PRD, ensure all these checkboxes are met:
 - [ ] **Batch Recovery:** Does the EOD batch flow support transaction rollback and resumption from checkpoints?
 - [ ] **Maker-Checker Queue:** Is dual-authorization implemented as a centralized queue rather than hardcoded table flags?
 - [ ] **Idempotency:** Are all financial endpoints protected by a mandatory client-side idempotency key?
+
+## Non-Repudiation Security Framework
+
+To prevent fraud and transaction disputes, the Core Banking PRD mandates that all API transfer requests must carry a cryptographic signature verifying the user's identity.
+
+```go
+package prd
+
+import (
+	"crypto"
+	"crypto/rsa"
+	"crypto/sha256"
+	"errors"
+)
+
+type SignatureVerifier struct {
+	PublicKey *rsa.PublicKey
+}
+
+func (sv *SignatureVerifier) Verify(payload []byte, signature []byte) error {
+	hashed := sha256.Sum256(payload)
+	err := rsa.VerifyPKCS1v15(sv.PublicKey, crypto.SHA256, hashed[:], signature)
+	if err != nil {
+		return errors.New("cryptographic validation failed: invalid signature payload")
+	}
+	return nil
+}
+```
+
+This security framework guarantees that a request cannot be altered or fabricated after it has been signed by the client, satisfying strict regulatory security standards.
+
+[← Previous Part: Part 7 — Build a Mini Core Banking System in Go]({{< ref "part-7-build-mini-core-banking.md" >}})
