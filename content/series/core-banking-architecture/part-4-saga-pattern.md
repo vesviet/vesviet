@@ -14,7 +14,11 @@ cover:
   alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
   relative: false
 canonicalURL: "https://tanhdev.com/series/core-banking-architecture/part-4-saga-pattern/"
+ShowToc: true
+TocOpen: true
 ---
+
+**Answer-first:** Distributed transactions across microservices are coordinated using the Saga pattern. Rather than locking databases across services (2PC), a Saga coordinator sequences independent local transactions and executes compensating transactions to roll back state if any step fails.
 
 > **Series (Part 4 of 8):** This article builds upon Event Sourcing from [Part 3](/series/core-banking-architecture/part-3-event-sourcing-cqrs/). The Saga Pattern solves the problem: "How do we ensure consistency when a transaction must coordinate across multiple microservices without using distributed locks or 2PC?"
 
@@ -380,8 +384,22 @@ func TestDoubleFaultCompensationDLQ(t *testing.T) {
 
 > 💡 **Read more:** [Event Sourcing & CQRS](/series/core-banking-architecture/part-3-event-sourcing-cqrs/) — Event Sourcing serves as the foundation for the Saga.
 
-## FAQ
+### Compensating Transaction Failures and Out-of-Order Execution in Sagas
 
+A critical vulnerability of the Saga pattern is the handling of compensation failures. Sagas do not hold global database locks. If a multi-step transaction fails midway, the Saga coordinator executes compensations to roll back the completed steps. However, a compensation transaction itself can fail due to network timeouts, database outages, or insufficient funds.
+
+To guarantee eventual consistency, systems implement the following resilience patterns:
+- **Exponential Backoff and Retry:** If a compensation fails (e.g., releasing reserved funds in a ledger), the coordinator retries the operation with exponential backoff. The target service must be designed to be idempotent to handle these retries safely.
+- **Dead Letter Queues (DLQ) and Manual Intervention:** If a compensation fails repeatedly after a maximum number of retries, the coordinator writes the transaction state to a DLQ and alerts the operations team for manual reconciliation.
+- **The Out-of-Order Compensation Trap:** In highly congested distributed networks, a compensation event (e.g., Cancel Order) might arrive at a microservice before the corresponding forward event (Create Order) due to network routing delays. If the service processes the compensation first, it might create a duplicate record or fail. To prevent this, the service must write a Compensated tombstone record using the Saga session ID. When the late-arriving forward event finally arrives, the service detects the tombstone and rejects the transaction.
+
+### Saga Orchestrator High Availability and Recovery Workflow
+
+To prevent the Saga coordinator from becoming a single point of failure, it is deployed as a stateless service behind an active-active load balancer, with its session state persisted in a distributed database. If a coordinator node crashes mid-transaction, another coordinator node retrieves the active session from the database and resumes the Saga sequence from the last recorded state.
+
+Additionally, the coordinator implements a reconciliation engine that runs continuously in the background. This engine scans the active Saga database for sessions that have been in a pending state longer than a specified timeout (e.g., 30 seconds). When it detects a stalled transaction, it automatically triggers a query to the participant microservices to verify the status of the local transactions, resolving the Saga state by either executing the remaining steps or initiating the compensation chain.
+
+## FAQ
 
 {{< faq q="Temporal vs Apache Airflow for Sagas — what's the difference?" >}}
 Airflow is a workflow orchestrator for data pipelines (batch, not real-time). Temporal is designed for **durable, real-time business processes** with millisecond latency, fault-tolerance, and built-in retry/compensation semantics suitable for financial transactions.
@@ -393,8 +411,37 @@ No. A Saga guarantees **eventual consistency** — there is no isolation between
 
 {{< faq q="Will a compensation always succeed?" >}}
 No. That is exactly why a **DLQ + manual intervention process** must exist. For example, if an account gets frozen after it was debited but before the refund occurs → the compensation cannot complete automatically. The ops team must handle it manually with a full audit trail.
+{{< /faq >}}
 
+## Saga Latency, Compensation Atomicity, and Timeout Ambiguity
+
+Executing transactions across multiple microservices (e.g., reserving funds, calling payment networks, and updating ledgers) requires distributed transaction coordination. Core banking architectures use the Saga pattern to manage these workflows.
+
+### Orchestration vs. Choreography Saga Latency
+
+1. **Choreography-Based Sagas:** Services communicate using event pub-sub models, triggering local transactions independently. This approach has low latency but is difficult to audit and debug.
+2. **Orchestration-Based Sagas:** A dedicated orchestrator service manages the transaction sequence. While this introduces network hop latency, it provides centralized control and clear auditability.
+
+```
+Orchestration Pattern Latency Path:
+  Orchestrator ──► Ledger Service (Reserve Funds) ──► Orchestrator
+  Orchestrator ──► Payment Service (Debit Card)   ──► Orchestrator
+  Total Network Hops: 4 (linear execution latency)
+```
+
+### Compensational Transaction Atomicity
+
+Sagas do not use database-level locks across services. If a step fails, the orchestrator executes compensations to roll back changes.
+- **Backward Recovery:** Undoing completed steps (e.g., releasing reserved funds). Compensations must be idempotent; if a network failure occurs during rollback, the orchestrator retries until successful.
+- **Forward Recovery:** Continuing the saga despite failures, routing to manual review or automated fallbacks.
+
+### Timeout Ambiguity and Idempotent Coordinators
+
+Network failures introduce state ambiguity. If a service call times out, the orchestrator cannot verify if the transaction succeeded or failed.
+- **Idempotency Locks:** Services lock the target account during transactions using unique saga session IDs. If the orchestrator retries a request, the service returns the cached outcome rather than executing a duplicate transaction.
+- **Reconciliation Loops:** Out-of-band reconciliation jobs compare service logs daily, resolving any pending or unresolved saga states automatically.
 ---
 
 *Up Next: [Part 5 — ISO 20022 & Payment Gateways](/series/core-banking-architecture/part-5-iso-20022-payment-gateways/) — Efficiently parsing pacs.008 XML, mapping XPath to SQL columns, and webhook idempotency strategies.*
-{{< /faq >}}
+
+{{< author-cta >}}

@@ -14,7 +14,11 @@ cover:
   alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
   relative: false
 canonicalURL: "https://tanhdev.com/series/core-banking-architecture/part-6-fapi-2-api-security/"
+ShowToc: true
+TocOpen: true
 ---
+
+**Answer-first:** Financial-grade API (FAPI) 2.0 enforces cryptographic API security using Mutual TLS (mTLS), pushed authorization requests (PAR), and signed request objects (JAR/JARM). This prevents credential hijacking, session sniffing, and token forgery in open banking networks.
 
 > **Series (Part 6 of 8):** After mastering the payment data flow in [Part 5](/series/core-banking-architecture/part-5-iso-20022-payment-gateways/), this article focuses on the API security layer — where a single design flaw can lead to token theft and unauthorized fund transfers.
 
@@ -456,8 +460,32 @@ curl --cert expired.crt --key expired.key \
 
 > 💡 **Read more:** [Streaming Fraud Detection](/series/core-banking-architecture/part-7-streaming-fraud-detection/) — Fraud detection using a FAPI-secured event stream.
 
-## FAQ
+### mTLS Certificate Pinning and Client Credentials Lifecycle Management in FAPI 2.0
 
+Financial-Grade API (FAPI) 2.0 security relies on Mutual TLS (mTLS) for secure client authentication. This requires the client application to present a valid X.509 certificate during the TLS handshake. The resource server validates the certificate chain against a trusted root certificate authority (CA) and extracts the certificate thumbprint to bind it to the issued access token.
+
+Operationalizing FAPI 2.0 introduces certificate lifecycle challenges:
+- **Certificate Rotation:** Client certificates expire and must be rotated without interrupting API services. The authorization server supports dual-certificate registration, allowing clients to register a new certificate before the old one expires. During the rotation window, the gateway accepts either certificate.
+- **Certificate Pinning:** To prevent man-in-the-middle (MitM) attacks caused by compromised external certificate authorities, clients use certificate pinning, hardcoding the expected server certificate thumbprint in the client application.
+- **Cryptographic Token Binding Verification:** When the client calls a resource API (e.g., retrieving bank account balances), the gateway validates the access token signature and extracts the cnf (confirmation) claim containing the certificate thumbprint. It then compares this thumbprint against the client certificate presented in the active mTLS session. If they do not match, the gateway rejects the request with a 401 Unauthorized error.
+
+### DPoP (Demonstrating Proof-of-Possession) token security
+
+To complement mTLS, FAPI 2.0 architectures deploy DPoP (Demonstrating Proof-of-Possession) at the application layer. DPoP binds access tokens to a client-generated private key. When calling a protected API, the client signs a token request with its private key, producing a DPoP proof JWT. The resource server verifies this JWT before granting access. This ensures that even if an access token is leaked or intercepted, it cannot be used by an attacker without the corresponding private key.
+
+### Kubernetes Network Isolation for Security Enclaves
+
+At the network layer, FAPI 2.0 workloads run in isolated Kubernetes namespaces with strict network policies. All incoming traffic to the banking core must pass through a specialized API Gateway pod. Direct pod-to-pod communication between external APIs and internal database nodes is explicitly blocked, ensuring that a compromised API gateway cannot directly access ledger databases.
+
+### Client Secret Rotation and Token Revocation Mechanisms
+
+Authorization servers implement dynamic client registration (DCR) and automated client secret rotation. If a client application detects a potential credential leak, it initiates an API call to revoke active tokens and rotate keys. The revocation event is streamed instantly to API gateways, which immediately invalidate the associated access tokens.
+
+### Cryptographic Auditing and Signature Logs
+
+To meet regulatory requirements for financial auditing, the gateway logs the signature verification results and cryptographic thumbprints of all incoming transactions. These security logs are stored in an immutable, write-once-read-many (WORM) storage system, providing a secure audit trail for forensic investigators.
+
+## FAQ
 
 {{< faq q="DPoP or mTLS — which should I choose?" >}}
 It depends on the client type:
@@ -473,8 +501,37 @@ Yes, but a service mesh like Linkerd or Istio handles cert rotation automaticall
 
 {{< faq q="Where should the DPoP private key be stored in a mobile app?" >}}
 iOS: Secure Enclave (hardware-backed key storage). Android: StrongBox or Android Keystore (hardware-backed when supported by the device). The private key must never be exported out of the secure enclave.
+{{< /faq >}}
 
+## mTLS Client Certificates, Signed Request Objects, and PAR Flow Mechanics
+
+Financial-grade API (FAPI) 2.0 provides advanced security controls for banking API networks, protecting transactions from credential hijacking and message alteration.
+
+### mTLS Client Certificate Validation
+
+FAPI 2.0 requires Mutual TLS (mTLS) for authentication and token binding:
+- **Token Binding:** The authorization server binds the issued access token to the client's mTLS certificate thumbprint (`x5t#S256`).
+- **Resource Server Validation:** When the client calls a banking API, the resource server extracts the certificate thumbprint and verifies it matches the bound token. Even if an attacker steals the token, it is unusable without the matching private key.
+
+### Signed Request Objects (JAR/JARM)
+
+JWT Secured Authorization Requests (JAR) enforce cryptographic integrity:
+- **Signed Requests:** Clients sign authorization parameters in a JWT using RSA/ECDSA keys before submitting them, preventing tampering in transit.
+- **Signed Responses (JARM):** The authorization server returns signed response parameters, preventing authorization code injection attacks.
+
+### Pushed Authorization Requests (PAR) Flow Mechanics
+
+PAR prevents authorization parameters from leaking through browser histories:
+
+```
+1. Client sends authorization parameters in a secure POST to the /par endpoint.
+2. Authorization Server validates parameters, generates a reference URI, and returns it.
+3. Client redirects the browser to the /authorize endpoint using only the reference URI.
+```
+
+This prevents interception of sensitive query parameters and ensures strict parameter validation before browser interaction begins.
 ---
 
 *Up Next: [Part 7 — Streaming Fraud Detection](/series/core-banking-architecture/part-7-streaming-fraud-detection/) — Apache Flink CEP patterns, RocksDB memory tuning, async ML inference, and achieving <100ms fraud scoring SLAs.*
-{{< /faq >}}
+
+{{< author-cta >}}

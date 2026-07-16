@@ -12,11 +12,13 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/part-1-location-ingestion/"
+ShowToc: true
+TocOpen: true
 ---
 
-## The Challenge: Millions of Drivers, Every 4 Seconds
+**Answer-first:** High-concurrency location ingestion processes millions of concurrent GPS pings by using lightweight transport protocols (gRPC or MQTT) terminated at scalable load balancers. Routing updates to Apache Kafka and caching active coordinates in-memory (Redis) achieves sub-100ms end-to-end latency and protects core systems from write bottlenecks.
 
-**Answer-first:** Uber and Grab handle 1.25 million GPS write operations per second from ~5 million active drivers. HTTP REST fails at this scale due to per-request TCP+TLS handshake overhead. The solution is persistent connections (gRPC streams or MQTT) with Protobuf serialization, Kalman Filter noise reduction, and batched coordinate uploads — cutting network calls by 67% while maintaining sub-200ms end-to-end latency.
+## The Challenge: Millions of Drivers, Every 4 Seconds
 
 Grab has approximately **5 million drivers** operating in Southeast Asia. Uber has over **5 million drivers** globally. If every driver sends a GPS coordinate every 4 seconds, the system must receive:
 
@@ -203,6 +205,11 @@ Raw GPS (after Kalman):   Map Matched:
 
 (Scattered coordinates)   (Snapped closely to the road)
 ```
+## FAQ
+
+{{< faq q="How does the location ingestion API handle network reconnections without dropping pings?" >}}
+The mobile client buffers GPS locations locally during network disconnections. Upon reconnection, it streams the buffered coordinates in batches, utilizing sequence numbers to allow the ingestion broker to deduplicate and order the incoming telemetry points.
+{{< /faq >}}
 
 ---
 
@@ -249,5 +256,13 @@ Driver Phone GPS Sensor
 | GPS payload size (Protobuf) | ~40-60 bytes |
 | Raw GPS bandwidth | ~15-22 MB/s |
 | End-to-end latency (phone → Redis) | < 200ms |
+---
+
+## References & Further Reading
+
+- [Apache Kafka Documentation](https://kafka.apache.org/documentation/)
+- [High-Throughput Ingestion Best Practices](https://github.com/donnemartin/system-design-primer)
 
 > *Next, we will explore how Uber uses the H3 algorithm to divide the map into millions of hexagons and find the closest driver in the blink of an eye. Continue reading [Part 2 — Geospatial Indexing: H3, S2 Geometry & Redis GEO](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/).*
+
+{{< author-cta >}}

@@ -17,6 +17,8 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/agentic-system-architecture/part-3-tool-calling/"
 ---
 
+**Answer-first:** Secure tool calling requires schema validation, local sandboxing, and strict permission models. By parsing LLM tool calls against schema definitions and executing them in isolated runtimes, developers prevent remote code execution and unauthorized data access.
+
 > **Prerequisite:** AI Security requires a different mindset compared to traditional Web Security. Please refer to [Comprehensive AI-Native System Architecture](/series/ai-driven-playbook/part-8-ai-native-system-architecture/) to understand the system context before diving into Tool Calling.
 
 In [Part 2](/series/agentic-system-architecture/part-2-memory/), our Agent achieved perfect memory. But a good memory alone isn't enough; the true power of an Agentic System lies in its ability to **Take Action** by calling Tools.
@@ -161,6 +163,13 @@ Limit the number of Tool calls within a specific timeframe to prevent DDoS attac
 Each Tool should have its own API Key or OAuth scope, adhering to the Principle of Least Privilege:
 - "Draft" Agents do not need deletion rights.
 - Only "Admin" Agents possess Write/Delete privileges.
+## FAQ
 
+{{< faq q="How do you secure an LLM agent that has write access to system shells?" >}}
+You must execute shell tool commands inside isolated containers (like Docker or gVisor sandboxes) with resource constraints and zero network access. Additionally, you enforce an approval gate requiring human review for high-risk actions.
+{{< /faq >}}
 ---
+
 🔗 **Next Step:** Your system is now perfectly designed, your Agents have great memory, and they are strictly protected. But when deploying to Production, how do you know if your Agent is genuinely effective or just burning API costs daily? Find out in [Part 4 — AgentOps & Production Observability](/series/agentic-system-architecture/part-4-agentops/).
+
+{{< author-cta >}}

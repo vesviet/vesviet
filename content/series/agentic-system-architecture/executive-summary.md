@@ -17,6 +17,8 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/agentic-system-architecture/executive-summary/"
 ---
 
+**Answer-first:** This executive summary outlines the transition from unstructured prompting to production agentic engineering. Standardizing topologies, integrating secure sandbox tool environments, and establishing strict operational observability are necessary to run autonomous agents reliably at scale.
+
 While using an AI to write code or answer support tickets is becoming commonplace, the true transformation in enterprise software lies in **Agentic Systems**. We are moving away from monolithic, single-prompt architectures toward distributed networks of AI Agents that can plan, coordinate, and execute complex workflows autonomously.
 
 ## The Limitation of the "Single Agent" Paradigm
@@ -42,3 +44,11 @@ This series explores the four critical pillars of designing and operating a Mult
 This series is written for Senior Backend Engineers, AI Architects, and Technical Leaders who need to move beyond proof-of-concept AI bots. If you are tasked with integrating autonomous agents into an enterprise environment where security, cost, and determinism are paramount, this is your blueprint.
 
 Let's dive into the core of Agentic Design: **[Part 1 — Agent Topology & Orchestration](/series/agentic-system-architecture/part-1-topology/)**.
+## FAQ
+
+{{< faq q="What is the core design principle of an autonomous agent architecture?" >}}
+The core principle is the separation of execution from decision-making. The LLM acts as the decision-making runtime engine that parses input and plans actions, while the integration layer securely executes tools and reads data sources.
+{{< /faq >}}
+---
+
+{{< author-cta >}}

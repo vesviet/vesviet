@@ -14,12 +14,15 @@ cover:
   alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
   relative: false
 canonicalURL: "https://tanhdev.com/series/core-banking-architecture/part-2-distributed-sql-acid-latency/"
+ShowToc: true
+TocOpen: true
 ---
+
+**Answer-first:** Distributed SQL databases reconcile ACID compliance with low-latency reads by using Spanner-like clock synchronization (TrueTime/HLC) and Raft-based multi-group consensus. This architecture guarantees strict serializability and localized transaction routing without relying on a single bottleneck coordinator.
 
 > **Series (Part 2 of 8):** This article assumes you are familiar with the Double-Entry Ledger from [Part 1](/series/core-banking-architecture/part-1-double-entry-ledger-schema/). We will analyze why a PostgreSQL monolith hits limitations at scale and how Distributed SQL options solve that problem.
 
 > **⚠️ Note:** This article is synthesized from official documentation, engineering blogs, and published benchmark papers. The latency figures and schema designs reflect the source material at the time of writing. Always verify with your team's architect or lead engineer before applying them to a production system.
-
 
 ## What is Distributed SQL Transaction Latency?
 
@@ -36,14 +39,15 @@ PostgreSQL is a great choice for most Fintech startups. But at scales of **10,00
 - **Sharding complexity**: Manual PostgreSQL sharding requires complex application-layer routing logic, easily leading to **cross-shard transaction anomalies**.
 - **Migration pain**: WeBank and Shopee Pay both migrated from sharded MySQL to TiDB to solve exactly this problem.
 
-**When should you migrate?**
-
+{{< faq q="When should you migrate?" >}}
 | Indicator | Action |
 |----------|-----------|
 | Write TPS > 10,000 on a single node | Consider TiDB or CockroachDB |
 | P99 latency > 100ms due to table scans | Add read replicas or CQRS |
 | Shard count > 16 with manual routing | Migrate to distributed SQL |
 | Cross-shard transactions > 20% of workload | Distributed ACID (2PC) is required |
+
+{{< /faq >}}
 
 ---
 
@@ -276,7 +280,6 @@ func BenchmarkTiDBTransactionLatency(b *testing.B) {
 
 ## FAQ
 
-
 {{< faq q="Is TiDB or CockroachDB more suitable for Vietnam Fintech?" >}}
 TiDB has more abundant Chinese documentation and is adopted by many Asian fintechs (WeBank, Shopee Pay, ZaloPay). CockroachDB is stronger for multi-region deployments if you require active-active cross-datacenter topologies.
 {{< /faq >}}
@@ -289,8 +292,9 @@ Only choose Spanner if you are already on GCP and require global scale from day 
 1. Enable **Async Commit** (default in TiDB 5.0+).
 2. Place PD (Placement Driver) nodes close to TiKV nodes in terms of networking.
 3. Use **1PC** (one-phase commit) for single-region transactions when possible.
-
+{{< /faq >}}
 ---
 
 *Up Next: [Part 3 — Event Sourcing & CQRS](/series/core-banking-architecture/part-3-event-sourcing-cqrs/) — Designing an immutable ledger with event store schemas, CQRS read models, and the Transactional Outbox pattern to avoid dual-writes.*
-{{< /faq >}}
+
+{{< author-cta >}}

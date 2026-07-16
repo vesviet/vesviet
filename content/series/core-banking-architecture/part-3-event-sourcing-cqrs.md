@@ -14,7 +14,11 @@ cover:
   alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
   relative: false
 canonicalURL: "https://tanhdev.com/series/core-banking-architecture/part-3-event-sourcing-cqrs/"
+ShowToc: true
+TocOpen: true
 ---
+
+**Answer-first:** Event sourcing and CQRS separate write-heavy transaction streams from read-heavy queries. By appending immutable events to a journal and projecting them asynchronously to specialized read databases, core banking systems achieve millisecond-level response times and complete audit trails.
 
 > **Series (Part 3 of 8):** This article builds upon the ACID transactions foundation from [Part 2](/series/core-banking-architecture/part-2-distributed-sql-acid-latency/). We will design a ledger using Event Sourcing — the exact solution that Monzo, Starling Bank, and many large neo-banks use to scale.
 
@@ -394,8 +398,26 @@ func TestOutboxAtomicityUnderFailure(t *testing.T) {
 
 > 💡 **Read more:** [Saga Pattern](/series/core-banking-architecture/part-4-saga-pattern/) — Saga Pattern to handle distributed failures.
 
-## FAQ
+### Handling Schema Evolution in Event Sourced Ledgers
 
+Event sourcing relies on the immutability of historical events. However, as business requirements change, the schemas of these events must evolve. For example, regulatory updates may require adding a mandatory customer tax identifier field to all historical Account Created events. Since historical events cannot be modified, developers must design strategies to deserialize legacy event schemas into updated application models without corrupting database state.
+
+There are three primary patterns for managing schema evolution in event stores:
+1. **Event Upcasting:** This is an in-memory transformation pattern. The event store reads the raw legacy JSON/XML event from disk and routes it through an upcaster class before deserialization. The upcaster intercepts the event payload, injects default values for new fields or maps deprecated parameters, and returns the updated schema representation to the application engine. This ensures the application code only interacts with the latest schema version.
+2. **Event Transformation (Migration):** This pattern involves writing a migration script that reads the entire event log, applies the schema changes, and writes the transformed events to a new event store database. While this provides clean data on disk, it requires system downtime and carries high operational risk during validation.
+3. **Dual-Schema Serialization:** The application parser maintains multiple versions of the event classes. The deserializer inspects an event metadata version field and routes the payload to the corresponding class version. This avoids upcasting overhead but increases code complexity.
+
+### Read Model Synchronization Patterns and Event Handling Rules
+
+To keep CQRS projection databases consistent, developers implement idempotency checks on the consumer side. When a projection consumer processes an event, it stores the event's unique ID and version number in a local database transaction. If the consumer receives a duplicate event due to network retries, the local database transaction fails or ignores the insert, preventing duplicate balance updates.
+
+Furthermore, projection databases can utilize specialized index structures to optimize read performance. For example, read databases can partition query tables by account holder region, ensuring that local bank queries do not scan global tables. Running asynchronous database indexing scripts during low-traffic windows ensures that query indexes remain clean and compact, maintaining low latency queries even under high transactional load.
+
+### Event Store Pruning and Archiving Policies
+
+While event stores are theoretically infinite, keeping all historical events on active disks is costly and degrades recovery performance. Banking systems split event stores into hot and cold tiers. Events older than seven years are migrated to cold object storage (such as AWS S3 Glacier or Google Cloud Storage Archive) in compressed Apache Parquet format. This satisfies regulatory compliance for historical records while keeping the active event store disk usage and indexing costs optimized.
+
+## FAQ
 
 {{< faq q="Does Event Sourcing make queries more complex?" >}}
 Yes — Event Sourcing optimizes for writes and auditing, but complicates reads. This is exactly why CQRS exists. The write side stores events; the read side builds materialized views optimized for queries. You should not use pure Event Sourcing without CQRS read models.
@@ -407,8 +429,37 @@ Yes, but you need to monitor LAG (Debezium lag behind the WAL position). For vol
 
 {{< faq q="How often should a snapshot be taken?" >}}
 It depends on average event size and acceptable replay time. Rule of thumb: snapshot every **500 events**. With an average event size of 1KB → snapshot file ~500KB. Replaying from a snapshot (0 events) up to the max (500 events) will never exceed a few dozen milliseconds.
+{{< /faq >}}
 
+## Event-Store Compaction, CQRS Version Lag, and Out-of-Order Events
+
+Event sourcing captures every transaction as an immutable event. While this provides a complete audit trail, query performance degrades as event history grows. Compaction and snapshotting resolve this bottleneck.
+
+### Event-Store Compaction and Snapshotting
+
+To calculate an account balance, the system reconstructs the state by reading and applying all historical events. For accounts with millions of transactions, this is highly inefficient.
+- **Snapshots:** The system generates account state snapshots every $K$ events (e.g., every 100 events).
+- **Compaction Pipeline:** When querying the balance, the application loads the latest snapshot and replays only the events that occurred after the snapshot timestamp:
+
+```
+[Events 1 to 100]  ──►  Compiled into Snapshot #1 (Balance: $500)
+[Event 101: +$50]  ──►  Replayed over Snapshot #1
+Current Balance    ──►  $500 + $50 = $550
+```
+
+### CQRS Projection Synchronization and Version Lag
+
+Write operations append events to the Event Store, while read operations query specialized read databases. Because projections update asynchronously, there is a delay (version lag) before read models reflect changes.
+- **Read-Your-Own-Writes Consistency:** To prevent a customer from seeing an outdated balance after depositing funds, write responses include the latest event version number (e.g., `version: 402`). Client read requests include this version number. The read service blocks the request until the projection database updates to at least version 402.
+- **Optimistic Concurrency Control:** Write operations verify the account version before appending events, rejecting changes if the target version has shifted.
+
+### Out-of-Order Event Sequence Buffering
+
+In distributed networks, events may arrive at the projection engine out of order:
+- **Sequence Buffering:** The projection engine maintains an in-memory buffer. If event $N+1$ arrives before event $N$, the engine queues it in the buffer and waits for event $N$ before executing updates.
+- **Idempotency Keys:** Projections track processed event IDs to prevent duplicate updates.
 ---
 
 *Up Next: [Part 4 — Saga Pattern](/series/core-banking-architecture/part-4-saga-pattern/) — Choreography vs Orchestration Saga, failure transition matrices, and implementation with Temporal workflow engine.*
-{{< /faq >}}
+
+{{< author-cta >}}

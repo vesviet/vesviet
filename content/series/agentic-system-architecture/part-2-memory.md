@@ -1,5 +1,4 @@
 ---
-
 title: "Part 2 — State, Memory & Context Management"
 date: "2026-05-17T08:00:00+07:00"
 lastmod: "2026-05-17T08:00:00+07:00"
@@ -18,6 +17,8 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/agentic-system-architecture/part-2-memory/"
 mermaid: true
 ---
+
+**Answer-first:** Agent memory systems combine short-term context window stuffing, long-term vector search indexing, and graph-structured entity relations. This hybrid design allows agents to maintain session consistency, retrieve past preferences, and query semantic associations.
 
 > **Prerequisite:** To firmly grasp the foundational concepts of Memory Architecture in AI systems, please review [Comprehensive AI-Native System Architecture](/series/ai-driven-playbook/part-8-ai-native-system-architecture/).
 
@@ -147,6 +148,13 @@ print(memory.get_current_context())
 ```
 
 By doing this, the Agent always retains the **Core Context (Summary)** and the **Most Recent Details (Recent History)**, without ever crashing due to exceeding the Token Limit.
+## FAQ
 
+{{< faq q="Why is a star topology preferred for complex agentic workflows?" >}}
+Agent memory systems combine short-term context window stuffing, long-term vector search indexing, and graph-structured entity relations. This hybrid design allows agents to maintain session consistency, retrieve past preferences, and query semantic associations.
+{{< /faq >}}
 ---
+
 🔗 **Next Step:** The Agent remembers enough and coordinates smoothly — but when it uses that knowledge to "Call Tools" (e.g., deleting files, querying DB), who protects the system from security risks? Find out in [Part 3 — Secure Tool Calling & Guardrails](/series/agentic-system-architecture/part-3-tool-calling/).
+
+{{< author-cta >}}

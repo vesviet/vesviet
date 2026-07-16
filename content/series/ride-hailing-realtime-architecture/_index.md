@@ -15,6 +15,8 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/"
 ---
 
+**Answer-first:** This series covers the high-concurrency real-time architecture required to power ride-hailing services like Uber and Grab, discussing GPS ingestion, spatial indexing, Kafka event streams, dispatch matching, dynamic pricing, and WebSocket gateways.
+
 This series dives deep into the technical architecture behind the most critical feature of ride-hailing applications: **Real-time capabilities**.
 
 Seeing a car move smoothly on a map might seem simple, but behind it lies a massive distributed network: from battery-optimized GPS transport protocols, map gridding algorithms using hexagons (H3), the Kafka backbone processing millions of events per second, the DISCO system for optimal ride matching, to RAMEN — Uber's real-time notification push network.

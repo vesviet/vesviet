@@ -12,7 +12,11 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/part-3-event-streaming-kafka/"
+ShowToc: true
+TocOpen: true
 ---
+
+**Answer-first:** Apache Kafka and Flink form the real-time event streaming backbone of ride-hailing architectures. By partitioning stream topics by location and processing events in stateful sliding windows, the system routes GPS locations and matches rides with sub-second latency.
 
 ## Why Do We Need Event Streaming?
 
@@ -66,10 +70,12 @@ Partition 3: [abc123-t1] [ghi789-t1] [abc123-t2] [ghi789-t2] ...
              ↑ The sequence of GPS updates for each driver is guaranteed within the partition
 ```
 
-**Why use `driver_id` as the partition key?**
+{{< faq q="Why use `driver_id` as the partition key?" >}}
 - It ensures all GPS updates from the same driver go into the same partition.
 - A consumer processing partition 3 will see a continuous GPS timeline for driver abc123.
 - Otherwise, GPS points might arrive out of order: timestamp 10:00:03 arriving before 10:00:01.
+
+{{< /faq >}}
 
 ### The Hot Partition Problem
 
@@ -227,5 +233,13 @@ If fraud-detector falls behind, it does not affect the redis-geo-updater.
 For GPS updates, **At-Least-Once** is perfectly fine because receiving the same coordinate again simply overwrites the old position in Redis — causing no harm.
 
 For billing (calculating the cost of a ride), you absolutely must use **Exactly-Once** processing (using Kafka transactions + idempotent consumers) or design **idempotent** consumers by using the `trip_id` as a deduplication key.
+---
+
+## References & Further Reading
+
+- [Apache Flink State Backends](https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/)
+- [Kafka Partitioning Strategies](https://www.confluent.io/blog/how-choose-number-topics-partitions-kafka-cluster/)
 
 > *Next, we will delve into the true brain of the system — the DISCO Matching Engine — where the decision of which driver gets which ride is made. Continue reading [Part 4 — DISCO & Matching Engine: The Ride Dispatch Algorithm](/series/ride-hailing-realtime-architecture/part-4-dispatch-matching-engine/).*
+
+{{< author-cta >}}

@@ -17,6 +17,8 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/agentic-system-architecture/part-4-agentops/"
 ---
 
+**Answer-first:** AgentOps establishes production observability using trace collection, cost tracking, and guardrail evaluation. Logging every agent execution trace allows developers to audit asynchronous loops, measure LLM latencies, and prevent runaway loop costs.
+
 > **Prerequisite:** Before discussing Monitoring, you must thoroughly understand the operational architecture of AI in the Enterprise. Please review [Comprehensive AI-Native System Architecture](/series/ai-driven-playbook/part-8-ai-native-system-architecture/).
 
 We've come a long way: Designing the Topology ([Part 1](/series/agentic-system-architecture/part-1-topology/)), building Memory ([Part 2](/series/agentic-system-architecture/part-2-memory/)), and erecting Guardrails ([Part 3](/series/agentic-system-architecture/part-3-tool-calling/)).
@@ -150,6 +152,11 @@ LLM Models are constantly updated stealthily by Providers (OpenAI, Anthropic). E
 > **Root Cause:** The Provider (OpenAI) released a minor update for the model (silently updated). This update caused the Agent to automatically append "Would you like to think more about it?" at the end of every sales pitch, inadvertently causing customers to hesitate.
 > 📊 **Impact:** A plunge of $300,000 in revenue in 48 hours before the team noticed the issue, due to a lack of tracking metrics.
 > 📈 **Resolution:** Build an automated Evals (Evaluation) system. Configure Alerting: Trigger a red alert if `Avg_Turns_Per_Sale` spikes or `Conversion_Rate` drops > 10% within 2 hours. *(Source: Synthesized from AgentOps reports on Hacker News).*
+## FAQ
+
+{{< faq q="What are the key metrics logged by agent monitoring pipelines?" >}}
+Monitoring pipelines track execution path traces, token consumption, agent loop cycle counts, database queries, and tool call success rates. These metrics help identify looping bugs, locate latencies, and control operational costs.
+{{< /faq >}}
 
 ---
 
@@ -162,3 +169,6 @@ Congratulations! Across the 4 parts of the **Agentic System Architecture** serie
 - And finally, the ability to illuminate every dark corner of the system with Observability (Part 4).
 
 You now possess a solid foundational knowledge to design, protect, and operate a Multi-Agent system at an Enterprise scale. Start building your first Orchestrator today!
+---
+
+{{< author-cta >}}

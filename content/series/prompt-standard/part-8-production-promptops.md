@@ -20,7 +20,10 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/prompt-standard/part-8-production-promptops/"
+mermaid: true
 ---
+
+**Answer-first:** Production PromptOps establishes operational pipelines for monitoring, logging, and continuous deployment of prompts. By capturing a sample of runtime inputs/outputs and analyzing semantic drift via LLM-as-a-Judge evaluations, engineering teams detect performance degradation and safely roll back prompt configurations in real-time.
 
 ## Prompts in Production Are Not "Set and Forget"
 
@@ -130,4 +133,25 @@ The teams that win with AI in 2026 are not the ones with the cleverest prompts. 
 
 > *You can return to the [Series Hub](/series/prompt-standard/) to review the full learning path, or use this series as onboarding material for your team.*
 
-{{< author-cta >}}
+### Production PromptOps Observability Loop
+
+The telemetry pipeline monitors live agent performance, running offline judges to detect drift and automate rollbacks:
+
+```mermaid
+graph TD
+    Client[Application Client] --> Gateway[API Gateway]
+    Gateway --> LLM[Large Language Model]
+    Gateway --> Kafka[Log Broker]
+    Kafka --> Trace[OTel Event Collector]
+    Trace --> Eval[LLM-as-a-Judge Eval Runner]
+    Eval --> Metric[ElasticSearch/Grafana Dashboard]
+    Metric --> Alert{Drift Detected?}
+    Alert -- Yes --> Rollback[Automatic Prompt Version Rollback]
+```
+
+## FAQ
+
+{{< faq q="How do you detect silent prompt drift in production environments?" >}}
+Production systems log a sample of LLM inputs/outputs (e.g., 1%) and run asynchronous evaluations using an LLM-as-a-Judge. When semantic accuracy or format adherence drops below a configured threshold, the system triggers alerts for engineers to inspect.
+{{< /faq >}}
+

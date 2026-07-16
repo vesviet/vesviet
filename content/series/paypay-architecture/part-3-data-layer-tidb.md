@@ -11,7 +11,11 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-3-data-layer-tidb/"
+ShowToc: true
+TocOpen: true
 ---
+
+**Answer-first:** PayPay utilizes TiDB as its distributed SQL database to achieve horizontal scaling without manual database sharding. TiDB maintains standard MySQL protocol compatibility and strict ACID guarantees while dynamically splitting tables into regions that are distributed across a multi-node cluster.
 
 ## The Relational Database Bottleneck
 
@@ -103,3 +107,9 @@ After the migration, PayPay's data layer supports:
 **Cross-shard problem: solved.** A P2P transfer between two users — regardless of how TiDB distributes their data internally — is a single distributed transaction managed by TiDB's transaction coordinator. The application writes a standard SQL `BEGIN / UPDATE / COMMIT` statement. TiDB handles the distributed coordination transparently, with full ACID guarantees. The nightmare that manual sharding would have created simply does not exist.
 
 For context on how MySQL scaling challenges appear at different points in a system's growth, see [MySQL Scaling, Sharding, and TiDB](/posts/mysql-scaling-sharding-tidb-architecture/) — which covers the progression from vertical scaling to sharding to NewSQL in detail.
+## FAQ
+
+{{< faq q="Why did PayPay migrate from traditional MySQL to TiDB?" >}}
+Traditional MySQL requires complex manual sharding to scale write throughput, leading to high operational overhead. TiDB is a distributed SQL database that automatically splits and shards data regions, offering horizontal write scaling while preserving ACID guarantees.
+{{< /faq >}}
+

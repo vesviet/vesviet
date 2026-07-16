@@ -11,7 +11,11 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/executive-summary/"
+ShowToc: true
+TocOpen: true
 ---
+
+**Answer-first:** Real-time ride-hailing systems process millions of location updates and matching requests per second. Using highly optimized ingestion pipelines, H3 geospatial indexing, and real-time Kafka event streams, these architectures match riders and drivers under 100ms.
 
 ## The Engineering Challenge
 
@@ -105,3 +109,11 @@ This entire series is synthesized from official technical sources:
 - **Lyft Engineering:** *"Real-time Map Matching"*, *"ETA Prediction"*
 
 > *Begin the journey with [Part 1 — Location Ingestion: Collecting Millions of GPS Coordinates Per Second](/series/ride-hailing-realtime-architecture/part-1-location-ingestion/). We will explore why HTTP REST is insufficient and the alternative protocols used by Uber/Grab.*
+## FAQ
+
+{{< faq q="What is the primary architectural bottleneck in ride-hailing GPS ingestion?" >}}
+The primary bottleneck is write-heavy write IOPS. Traditional disk-bound databases cannot handle millions of active driver updates per second. Ride-hailing architectures route GPS pings to high-throughput message brokers like Apache Kafka and store active coordinates in Redis RAM.
+{{< /faq >}}
+---
+
+{{< author-cta >}}

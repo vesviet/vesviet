@@ -12,11 +12,13 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/"
+ShowToc: true
+TocOpen: true
 ---
 
-## The Problem: Finding a Needle in a Haystack
-
 **Answer-first:** Uber and Grab find the nearest available driver in under 100ms by dividing the Earth's surface into hexagonal cells (H3 index at Resolution 8, each ~0.74 km²). Instead of calculating distance to every driver, they look up only the 7 cells nearest to the rider — reducing millions of comparisons to dozens.
+
+## The Problem: Finding a Needle in a Haystack
 
 When you tap "Book" on Grab, the system must find the most suitable driver within a radius of a few kilometers. But the system is tracking millions of drivers simultaneously. The naive approach — calculating the distance from you to **every** driver — is impossible:
 
@@ -255,6 +257,57 @@ Neighboring cells (a K-Ring) might reside on different nodes
 → A K-Ring query = a scatter-gather operation across multiple nodes
 ```
 
+## Uber H3 Hexagonal Grid Internals and Spatial Search Comparison
+
+The Uber H3 spatial index represents a highly engineered approach to geographic data partitioning. H3 splits the globe into a hierarchical set of hexagons, providing consistent topology that simplifies distance computations. Unlike traditional square geohash grids, hexagons have the unique property that the distance between a cell center and all six adjacent neighbors is uniform. 
+
+A standard H3 index is encoded as a single 64-bit integer, structured as follows:
+- **Reserved Bit (1 bit):** Unused, set to 0.
+- **Mode (4 bits):** Identifies the type of H3 representation (e.g., cell, edge).
+- **Edge Mode (3 bits):** Used when representing boundaries.
+- **Resolution (4 bits):** The scale level, ranging from 0 (global) to 15 (sub-meter). For ride-hailing, Resolution 8 (average area 0.74 km², edge length 461m) represents the industry standard sweet spot.
+- **Base Cell (7 bits):** The root base cell index.
+- **Child Index (3 bits per resolution level up to 15):** The path to navigate down the hierarchical grid tree.
+
+### Redis GEO vs. Redis SET + H3 Spatial Search Comparison
+
+When implementing driver lookup at scale, engineering teams evaluate the trade-offs between Redis GEO commands (built-in Geohash-based spatial indexing) and custom H3 indexing sharded over Redis SETs.
+
+```
+Redis GEO (ZSET-based Geohash):
+  - Pro: Natively supported by Redis using GEOADD, GEODIST, and GEOSEARCH commands.
+  - Con: Hard to scale horizontally. All location data for a city resides in a single, massive Sorted Set key. Sharding this key requires complex client-side proxying and loses database atomicity.
+
+Redis SET + H3 Indexing:
+  - Pro: Highly sharded by design. Each H3 cell corresponds to a unique Redis SET key (e.g., `drivers:h3:882a100d6dfffff`). High-frequency driver GPS updates only modify a single localized key, distributing write load across a Redis cluster.
+  - Con: Querying across boundaries requires client-side aggregation. To search a radius, the application must compute the target cell's neighbor ring (K-Ring search) and issue multiple concurrent requests.
+```
+
+By sharding spatial coordinates over H3 keys, ride-hailing backend systems avoid database locking hotspots and distribute the 1.25 million writes/second GPS telemetry workload evenly across memory nodes.
+
+### Geospatial Indexing Performance Optimization under High Write Load
+
+When managing spatial data for millions of active drivers, the primary operational bottleneck is the memory footprint and CPU utilization of index updates. In a high-concurrency system, driver location telemetry is updated every 4 seconds. If a city has 200,000 active drivers, this generates 50,000 location write operations per second.
+
+Under a standard Redis GEO configuration, coordinates are stored in a single Sorted Set using Geohash-based integers. This creates a severe write bottleneck because a single Sorted Set cannot be sharded across a Redis Cluster automatically without custom client-side proxy logic. Furthermore, high-frequency writes to a single massive Sorted Set lead to CPU lock contention, which degrades query performance.
+
+To overcome this, production architectures partition coordinates using H3 hexagonal cells as the primary sharding key. Each H3 cell at Resolution 8 corresponds to a distinct Redis SET or Sorted Set key. When a driver reports a new coordinate:
+1. The ingestion gateway converts the coordinates to an H3 index.
+2. The gateway issues two Redis commands in a pipeline: a delete command (SREM) to remove the driver ID from the old H3 cell key, and an add command (SADD) to insert the driver ID into the new H3 cell key.
+3. Because the H3 cell key is localized, the writes are distributed evenly across the Redis Cluster shards based on the hash slot of the cell ID.
+
+This H3 sharding approach distributes the write load across multiple database nodes, preventing CPU bottlenecks. However, spatial searches now require a scatter-gather operation. To find drivers within a 2-kilometer radius of a rider, the matching engine must calculate the rider's H3 cell and retrieve all neighboring cells (known as a K-Ring search). For a 2-kilometer radius at Resolution 8, this involves querying a K-Ring of size 2, which consists of 19 cells. The application client issues 19 parallel queries to the Redis Cluster, retrieves the driver IDs from each cell, and then merges and filters the results based on actual routing distance.
+
+This introduces a slight query latency overhead compared to a single-key Redis GEO lookup, but it scales horizontally to handle millions of active driver updates without database locks. The trade-offs between these spatial indexing approaches are summarized below:
+
+- **Redis GEO (Geohash):** Simple to query using built-in radius search commands, but suffers from poor write scalability because all locations are locked on a single Redis key. It is limited to a few million active drivers before hitting CPU thresholds.
+- **H3 Hexagonal Grid (Redis SETs):** Highly scalable because writes are sharded across the cluster. It requires custom client-side K-Ring calculations and parallel queries to merge neighbor sets, but handles tens of millions of drivers easily.
+
+## FAQ
+
+{{< faq q="Why does Uber use hexagonal grids (H3) instead of square grids (Geohash)?" >}}
+Hexagonal cells have a constant distance between the center of a cell and the centers of all its adjacent neighbors. This uniform neighbor distance simplifies radius searches and dynamic calculations, whereas square grids suffer from diagonal distance distortion.
+{{< /faq >}}
 ---
 
 ## References & Further Reading
@@ -264,3 +317,5 @@ Neighboring cells (a K-Ring) might reside on different nodes
 - **Self-hosted routing:** The same H3 hexagonal indexing used here for driver proximity is also the caching layer for [GraphHopper Distance Matrix in production](/posts/graphhopper-distance-matrix-production-guide/) — replacing Google Maps API at $510/day.
 
 > *Next, we will delve into the backbone of the entire system — Apache Kafka — where every GPS event, ride request, and acceptance flows. Continue reading [Part 3 — Event Streaming: The Apache Kafka & Flink Backbone](/series/ride-hailing-realtime-architecture/part-3-event-streaming-kafka/).*
+
+{{< author-cta >}}

@@ -20,7 +20,10 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/prompt-standard/part-6-context-engineering/"
+mermaid: true
 ---
+
+**Answer-first:** Context engineering optimizes how external data is retrieved and injected into the LLM context window. Instead of loading raw documents, systems run semantic chunking, metadata filtering, and re-ranking pipelines to deliver high-density, relevant context, preventing model distraction and minimizing needle-in-a-haystack lookup failures.
 
 ## The Biggest Shift in 2026: Context Over Phrasing
 
@@ -113,7 +116,26 @@ The fastest way to improve agent quality is usually not to rewrite the prompt. I
 
 If your agent is hallucinating, the first question should not be "is the prompt clear enough?" but rather "is the agent receiving the right data?"
 
-> *Next, we will look at a radical approach: what if you stopped writing prompts entirely and let a framework optimize them for you?*
-> *Continue to [Part 7 — Declarative Prompting with DSPy](/series/prompt-standard/part-7-declarative-prompting-dspy/).*
+### Modern RAG Context Pipeline
 
-{{< author-cta >}}
+High-density context engineering pipelines use semantic chunking, embedding searches, and cross-encoder re-ranking to deliver optimized contexts:
+
+```mermaid
+graph LR
+    Doc[Raw PDF/Web Document] --> Split[Semantic Chunking]
+    Split --> Embed[Vector Indexing]
+    Query[User Query] --> VecSearch[Vector Semantic Search]
+    Embed --> VecSearch
+    VecSearch --> Rerank[Cross-Encoder Re-ranking]
+    Rerank --> Context[Top 3 Relevant Chunks]
+    Context --> Prompt[Final Prompt Assembly]
+```
+
+## FAQ
+
+{{< faq q="What is the role of context pruning in large-context models?" >}}
+Large-context models (like Claude 3 or Gemini 1.5) can process millions of tokens, but accuracy drops due to the 'needle in a haystack' phenomenon. Context pruning uses semantic search (vector indexing) and ranking algorithms to inject only high-value information into the prompt.
+{{< /faq >}}
+---
+
+> *Next, we will look at a radical approach: what if you stopped writing prompts entirely and let a framework optimize them for you? Continue reading [Part 7 — Declarative Prompting: DSPy](/series/prompt-standard/part-7-declarative-prompting-dspy/).*

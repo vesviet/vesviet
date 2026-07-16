@@ -21,6 +21,8 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/prompt-standard/part-7-declarative-prompting-dspy/"
 ---
 
+**Answer-first:** Declarative prompting separates program flow from prompt instructions using programming frameworks like DSPy. Instead of manually editing adjectives, developers define input-output signatures, and DSPy compiles them into optimized prompts and few-shot examples by backpropagating metrics over training datasets.
+
 ## The Problem with Hand-Written Prompts
 
 Even with a solid Prompt Standard, hand-crafted prompts have a fundamental weakness: **they are optimized by human intuition, not by data.**
@@ -126,6 +128,38 @@ DSPy represents a future where prompt quality is a function of data and metrics,
 The mental model shift: **stop writing prompts, start defining contracts and metrics.**
 
 > *In the final part, we bring everything together into a production-grade PromptOps pipeline: CI/CD for prompts, LLM-as-a-Judge, and drift detection.*
-> *Continue to [Part 8 — Production PromptOps Pipeline](/series/prompt-standard/part-8-production-promptops/).*
 
-{{< author-cta >}}
+### Declarative Signature Compiler
+
+Frameworks like DSPy compile high-level interface declarations into optimized prompt instructions:
+
+```go
+package dspy
+
+type Signature interface {
+	Inputs() []string
+	Outputs() []string
+}
+
+type Predictor struct {
+	Sig Signature
+}
+
+func NewPredictor(sig Signature) *Predictor {
+	return &Predictor{Sig: sig}
+}
+
+// Compile compiles the declarative configuration into a prompt instruction
+func (p *Predictor) Compile() string {
+	return "Input: " + p.Sig.Inputs()[0] + " -> Output: " + p.Sig.Outputs()[0]
+}
+```
+
+## FAQ
+
+{{< faq q="How does DSPy replace manual prompt engineering?" >}}
+DSPy compiles declarative pipelines into optimized prompt instructions and few-shot examples using machine learning algorithms. Instead of manually editing adjectives, DSPy uses a metric (like accuracy) to evaluate outputs and backpropagate improvements into the prompts.
+{{< /faq >}}
+---
+
+> *Continue to [Part 8 — Production PromptOps Pipeline](/series/prompt-standard/part-8-production-promptops/).*

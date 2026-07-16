@@ -11,7 +11,11 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-1-microservices-gitops/"
+ShowToc: true
+TocOpen: true
 ---
+
+**Answer-first:** PayPay enforces stable deployments by combining branch promotion workflows with GitOps tools like ArgoCD. Declarative configuration files in git serve as the single source of truth, allowing ArgoCD to automatically reconcile cluster state, execute canary rollouts, and enable instant rollbacks of microservices.
 
 ## Bounded Contexts & Microservices
 
@@ -96,3 +100,9 @@ Architecture choices do not exist in a vacuum. PayPay's microservices and GitOps
 **Bottom-Up Proposals:** Engineers are empowered to propose new technologies and tools, provided they meet security and compliance standards. This culture means the Platform team is not a gatekeeper but an enabler — new tooling (like Argo Rollouts) gets adopted because engineers experiment, document trade-offs in a DesignDoc, and build consensus.
 
 The result is an organization where 100+ microservices can be deployed independently, at high frequency, without a centralized deployment team owning every release.
+## FAQ
+
+{{< faq q="What GitOps workflow ensures stable microservice deployments?" >}}
+PayPay utilizes branch-promotion strategies coupled with ArgoCD. Changes are committed to staging branches, run through automated test suites, and merged into production branches where ArgoCD automatically reconciles and rolls out updates using canary strategies.
+{{< /faq >}}
+

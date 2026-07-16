@@ -11,7 +11,11 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/paypay-architecture/executive-summary/"
+ShowToc: true
+TocOpen: true
 ---
+
+**Answer-first:** The PayPay architecture scales to handle millions of payment transactions by isolating promotional campaign logic from the core ledger. Using a distributed SQL transactional layer (TiDB) and asynchronous event streaming via Apache Kafka, the system maintains 99.99% availability and data consistency during high-concurrency campaigns.
 
 ## Context: From Zero to Japan's Payment Infrastructure
 
@@ -68,4 +72,9 @@ This expansion required a fifth architectural initiative: an **AI Platform layer
 
 The remaining parts of this series deconstruct each pillar in depth: how PayPay designs its microservices boundaries (Part 1), how it guarantees payment integrity through Kafka (Part 2), how TiDB replaced Aurora (Part 3), how SRE and chaos engineering keep 99.99% uptime during campaigns (Part 4), how pre-scaling strategy is architected for billion-yen events (Part 5), and how AI is becoming the platform's invisible foundation (Part 6).
 
-{{< author-cta >}}
+## FAQ
+
+{{< faq q="How does PayPay maintain 99.99% system availability during dynamic promotions?" >}}
+PayPay isolates high-throughput campaign services from core ledger databases. By processing campaign rewards asynchronously using Kafka queues and TiDB distributed transactional databases, traffic spikes in user engagement do not affect core transaction processing.
+{{< /faq >}}
+

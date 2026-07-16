@@ -12,7 +12,11 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/part-4-dispatch-matching-engine/"
+ShowToc: true
+TocOpen: true
 ---
+
+**Answer-first:** Dispatch and matching engines resolve spatial routing in real-time by querying active drivers within localized H3 rings. By running parallel bipartite matching algorithms, the engine pairs riders and drivers to minimize pickup ETA and passenger wait times.
 
 Every time you tap "Book Ride," a system makes dozens of decisions in under two seconds: Which driver? What route? What's the real ETA? This article breaks down exactly how the **dispatch algorithm** works — from the greedy approach that fails at scale, to the bipartite graphs, batched matching, and [surge pricing](/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/) mechanics that power Uber, Lyft, Grab, and Gojek today.
 
@@ -466,6 +470,11 @@ The critical innovation: a driver finishing a GrabFood delivery can be **immedia
 | **Total Wait Time** | Total time a rider waits (rider + driver travel time) | Minimize |
 | **Driver Idle Mileage** | Distance driven without a passenger | Minimize |
 | **Marketplace Liquidity** | Balance of supply/demand across zones | Maintain |
+## FAQ
+
+{{< faq q="What matching algorithm minimizes total passenger pickup wait times?" >}}
+Matching engines resolve driver assignment as a Maximum Weight Bipartite Matching problem. By buffering requests for a short window (e.g., 2–5 seconds) and calculating match scores based on H3 distance and ETA, the engine optimizes globally rather than greedily.
+{{< /faq >}}
 
 ---
 
@@ -483,6 +492,9 @@ RL models treat dispatching as a Markov Decision Process (MDP), allowing the sys
 **What is the difference between S2 and H3 in dispatch systems?**
 S2 (Google) uses square cells and is excellent for precise geofencing and hierarchical sharding. H3 (Uber) uses hexagonal cells, which offer uniform adjacency — all 6 neighbors are equidistant — making proximity searches and surge pricing heatmaps more accurate for real-time matching.
 
+**Further reading:** For the distance matrix layer that powers routing in dispatch systems — and how to replace the Google Maps Distance Matrix API ($510/day) with self-hosted GraphHopper or OSRM — see [GraphHopper Distance Matrix: Self-Host & Replace Google Maps API](/posts/graphhopper-distance-matrix-production-guide/).
+---
+
 > *Next, we will look into Surge Pricing — the dynamic pricing system based on real-time supply and demand ratios. Continue reading [Part 5 — Surge Pricing: Dynamic Pricing Based on Real-time Supply and Demand](/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/).*
 
-**Further reading:** For the distance matrix layer that powers routing in dispatch systems — and how to replace the Google Maps Distance Matrix API ($510/day) with self-hosted GraphHopper or OSRM — see [GraphHopper Distance Matrix: Self-Host & Replace Google Maps API](/posts/graphhopper-distance-matrix-production-guide/).
+{{< author-cta >}}

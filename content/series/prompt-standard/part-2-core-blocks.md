@@ -19,6 +19,8 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/prompt-standard/part-2-core-blocks/"
 ---
 
+**Answer-first:** Structured prompts are divided into eight core blocks: Identity, Constraints, Context, Guidelines, Input Variables, Output Format, Few-Shot Examples, and Fallback Handlers. Separating these concerns ensures that prompt components can be independently versioned, dynamically composed at runtime, and easily reused across different specialized AI agents.
+
 ## Start with a Framework, Not a Long Prompt
 
 A manageable prompt is usually divided into small blocks. You do not need all of them on day one, but this is a highly practical framework:
@@ -148,6 +150,44 @@ This prompt is not long, but it has structure.
 A good prompt does not have to be complex. It just needs to be **clear enough, organized enough, and consistent enough** for the agent to know how to work.
 
 > *In the next part, we discuss a very practical technique: splitting prompts into layers to reduce chaos and improve maintainability.*
-> *Continue to [Part 3 — Separating Role, Rules, Workflow, and Skill](/series/prompt-standard/part-3-layered-prompt-design/).*
 
-{{< author-cta >}}
+### Structured Prompt Go Schema
+
+The 8-block Prompt Standard structure can be represented as a modular Go schema for serialization and runtime composition:
+
+```go
+package prompt
+
+import "fmt"
+
+// CorePrompt represents the 8-block Prompt Standard structure
+type CorePrompt struct {
+	Identity      string            `yaml:"identity"`
+	Constraints   []string          `yaml:"constraints"`
+	Context       map[string]string `yaml:"context"`
+	Guidelines    []string          `yaml:"guidelines"`
+	InputVars     map[string]any    `yaml:"input_variables"`
+	OutputFormat  string            `yaml:"output_format"`
+	FewShot       []FewShotExample  `yaml:"few_shot_examples"`
+	Fallback      string            `yaml:"fallback_handler"`
+}
+
+type FewShotExample struct {
+	Input  string `yaml:"input"`
+	Output string `yaml:"output"`
+}
+
+func (p *CorePrompt) Compile() string {
+	// Dynamically build system instructions
+	return fmt.Sprintf("Identity: %s\nConstraints: %v\nOutput: %s", p.Identity, p.Constraints, p.OutputFormat)
+}
+```
+
+## FAQ
+
+{{< faq q="Why is separating Identity from Mission critical in agent design?" >}}
+Identity defines the agent's behavior, tone, and system-level defaults (e.g., senior Go developer), while Mission defines the task-specific goals (e.g., refactoring database handlers). Separating them allows developers to reuse the same Identity template across multiple task-specific agents.
+{{< /faq >}}
+---
+
+> *Continue to [Part 3 — Separating Role, Rules, Workflow, and Skill](/series/prompt-standard/part-3-layered-prompt-design/).*

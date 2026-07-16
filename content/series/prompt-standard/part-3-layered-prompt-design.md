@@ -17,7 +17,10 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/prompt-standard/part-3-layered-prompt-design/"
+mermaid: true
 ---
+
+**Answer-first:** Layered prompt design dynamically constructs the LLM context window by assembling modular prompt files based on the agent's current runtime state. This prevents context bloat, reduces inference API costs, and enhances response accuracy by only feeding the model the specific rules and tools needed for the immediate step.
 
 ## Why a Single Monolithic Prompt Always Becomes Unmanageable
 
@@ -121,6 +124,32 @@ If a team wants to use AI agents seriously, prompts should be organized like cod
 - with individually replaceable parts
 
 > *In the next part, we move from prompt architecture to operations: how to version and test prompts to know which version actually performs better.*
-> *Continue to [Part 4 — From Gut-Feel Prompts to Testable, Versionable Prompts](/series/prompt-standard/part-4-versioning-and-evals/).*
 
-{{< author-cta >}}
+### Layered Prompt Design Runtime Assembly
+
+The application core dynamically queries the prompt template store to resolve, inherit, and compose layers into a single prompt context:
+
+```mermaid
+sequenceDiagram
+    participant App as Application Core
+    participant Store as Prompt Template Store
+    participant Compiler as Runtime Compiler
+    participant LLM as Model Gateway
+
+    App->>Store: Request Prompt (Agent: SDET Reviewer)
+    Store->>Compiler: Load base_identity.md
+    Store->>Compiler: Load constraints_sdet.md
+    Store->>Compiler: Load few_shot_qa.md
+    Compiler->>Compiler: Assemble layers & inject user variables
+    Compiler->>LLM: Send System + User messages
+    LLM-->>App: Return Structured JSON response
+```
+
+## FAQ
+
+{{< faq q="What is the performance advantage of layered prompts over monolithic prompts?" >}}
+Layered prompts dynamically construct the LLM context window based on current runtime state, only appending relevant rules and tools. This keeps the prompt context small, reduces LLM processing latency (time-to-first-token), and lowers API consumption costs.
+{{< /faq >}}
+---
+
+> *Continue to [Part 4 — From Gut-Feel Prompts to Testable, Versionable Prompts](/series/prompt-standard/part-4-versioning-and-evals/).*

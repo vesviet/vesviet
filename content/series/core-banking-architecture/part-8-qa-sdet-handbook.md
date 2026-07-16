@@ -14,7 +14,11 @@ cover:
   alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
   relative: false
 canonicalURL: "https://tanhdev.com/series/core-banking-architecture/part-8-qa-sdet-handbook/"
+ShowToc: true
+TocOpen: true
 ---
+
+**Answer-first:** Core banking testing requires systematic chaos injection, load generation, and consumer-driven contract verification. SDET teams isolate service dependencies using contract mocks and inject network/database faults to verify the system remains resilient and zero-data-loss under stress.
 
 > **Series (Part 8 of 8):** This concluding article compiles a comprehensive testing strategy specifically tailored for each layer of the Core Banking Architecture covered in previous parts — from ledger consistency to distributed SQL, Sagas, ISO 20022, API Security, and Streaming Fraud Detection.
 
@@ -407,7 +411,6 @@ echo "All load testing gates PASSED — safe to deploy to production"
 
 ## Appendix: Testing Tools & Libraries
 
-
 | Tool | Used For | Language |
 |------|---------|----------|
 | **libfaketime** | Clock drift injection | C/Linux |
@@ -422,8 +425,27 @@ echo "All load testing gates PASSED — safe to deploy to production"
 
 ---
 
-## FAQ
+### Simulating Network Partitions and Disk Contention in Distributed SQL Databases
 
+Testing distributed databases (such as TiDB or CockroachDB) in core banking environments requires verifying that database consensus layers remain correct under severe infrastructure failures. Standard unit testing is insufficient. SDET teams build automated chaos testing pipelines using Jepsen-like frameworks.
+
+These pipelines execute the following test scenarios:
+- **Network Split-Brain Injections:** Using iptables rules, the chaos controller splits a 5-node database cluster into a majority partition of 3 nodes and a minority partition of 2 nodes. The test runner issues concurrent write transactions to both partitions. The test verifies that transactions on the majority partition continue successfully, while transactions on the minority partition fail with expected database availability errors. Once the partition heals, the runner verifies that no transaction data was lost or corrupted, and that the state reconciled automatically via the Raft consensus log.
+- **Disk I/O Contention and Slowdowns:** Using Linux control groups (cgroups) or tools like stress-ng, the chaos agent injects disk write delays on database nodes. The test verifies that the database consensus layer handles the slow replica node by routing reads and writes to faster nodes, keeping P99 latency within acceptable SLAs and preventing transaction dropouts.
+
+### Automated Clock Skew Verification
+
+In distributed SQL databases, clock synchronization is critical for maintaining transaction consistency. If a database node's local clock drifts beyond the maximum threshold (e.g., 500ms), transaction isolation rules can fail, leading to stale reads. SDET teams build automated tests that inject clock drift into database containers using Linux namespaces or system calls. The test suite verifies that the database node detects the drift, automatically exits the consensus group, and rejects new writes to prevent data inconsistency.
+
+### Performance Benchmarking Pipelines
+
+Validating banking systems requires running continuous performance benchmarking in CI/CD pipelines. The test suite runs daily runs of JMeter or k6 scripts, generating transactional loads that mimic real-world bank operations. The performance telemetry is sent to a central Prometheus dashboard, which compares the P99 latency against baseline runs. If a new code change increases database lock times or decreases throughput by more than 5%, the pipeline automatically fails, preventing performance regressions from reaching production.
+
+### Automated Schema Migration Tests
+
+Database migrations in core banking systems must be executed without downtime. SDET pipelines run automated migration tests that apply database schema upgrades (using tools like Liquibase or Flyway) while simulating active transaction workloads. The test verifies that the migration runs concurrently without locking the main tables or dropping transactions.
+
+## FAQ
 
 {{< faq q="How much coverage is enough for a Core Banking system?" >}}
 There is no absolute number, but follow the **3-layer rule**:
@@ -444,9 +466,32 @@ TestHarness is good for **operator-level unit tests** (testing a single operator
 
 {{< faq q="How do I detect silent data corruption in production?" >}}
 Run **continuous reconciliation** — a background job that reads from the event store and recomputes the balance, comparing it against the CQRS read model. Any difference → P1 alert. The interval depends on transaction volume: 5 minutes for large systems, 1 hour for smaller systems. This acts as the "immune system" of Core Banking.
+{{< /faq >}}
+
+## Chaos Fault Injection, Hotspot Performance Testing, and Transaction Mocks
+
+Validating core banking systems requires rigorous testing under simulated stress conditions to ensure the system prevents data loss and remains resilient.
+
+### Consumer-Driven Contract Testing
+
+Core banking microservices communicate through strict API contracts. SDET teams deploy contract testing tools (such as Pact) to verify compatibility:
+- **Consumer Contracts:** Service consumers define expected API request/response structures.
+- **Provider Verification:** The provider service runs tests against these contracts in CI pipelines, preventing breaking changes from being deployed.
+
+### Chaos Fault Injection and Stress Testing
+
+SRE teams inject faults to verify resilience:
+- **Network Partition Injections:** Using tools like Chaos Mesh, SREs simulate network partitions between database regions, verifying that consensus layers (Raft) fail over without corrupting transaction states.
+- **Connection Exhaustion:** Injecting resource constraints on database connection pools to verify that core ledgers queue transactions gracefully rather than dropping transactions.
+
+### Synthetic Transaction Simulation
+
+SDET teams deploy load generators that simulate real-world transaction patterns:
+- **Concurrent Load Profiles:** Generating thousands of concurrent payments per second to identify resource bottlenecks.
+- **Mock Service Endpoints:** Using high-performance mock gateways to simulate external card networks and clearing houses (e.g., Visa, SWIFT), enabling isolated end-to-end performance audits.
 
 ---
-{{< /faq >}}
+
 ## Series Conclusion: Core Banking Architecture
 
 Throughout the 8 parts of this series, we have traversed the entire stack of a production-grade Core Banking system:
@@ -466,3 +511,6 @@ Throughout the 8 parts of this series, we have traversed the entire stack of a p
 - [Composable Banking Architecture](/posts/composable-banking-architecture/) — From monolith to modular core
 - [PayPay Architecture](/series/paypay-architecture/) — Scaling to 70M users with TiDB and Kafka idempotency
 - [High Concurrency Systems](/series/high-concurrency-systems/) — Distributed locking and idempotency APIs
+---
+
+{{< author-cta >}}

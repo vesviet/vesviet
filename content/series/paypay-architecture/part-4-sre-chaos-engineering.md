@@ -11,7 +11,11 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-4-sre-chaos-engineering/"
+ShowToc: true
+TocOpen: true
 ---
+
+**Answer-first:** PayPay ensures system resilience by executing automated chaos engineering experiments in staging environments using tools like Chaos Mesh. Injecting artificial network latency, pod failures, and disk I/O bottlenecks allows SRE teams to verify that failover protocols activate without compromising transaction consistency.
 
 ## Designing for Failure
 
@@ -142,3 +146,9 @@ The test procedure:
 This gate has prevented multiple would-be incidents. It embodies the engineering culture shift that the 2018 campaign crash initiated: from reactive firefighting to proactive resilience engineering.
 
 For engineers building high-reliability Go services, the [goroutine leak detection](/posts/goroutine-leak-detection-production-golang/) post covers production-grade observability techniques that complement the SRE patterns described in this part. The campaign-specific infrastructure decisions that tie this SRE posture together are covered in [Part 5](/series/paypay-architecture/part-5-campaign-architecture/).
+## FAQ
+
+{{< faq q="What is the blast radius of SRE chaos injections in payment architectures?" >}}
+SRE teams restrict chaos injection to staging environments and execute them on single service components using tools like Chaos Mesh. By limiting failure injection to isolated network delays or database connection pool limits, SREs audit resilience without risking data loss.
+{{< /faq >}}
+

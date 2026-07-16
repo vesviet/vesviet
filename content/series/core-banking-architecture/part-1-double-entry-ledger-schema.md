@@ -14,17 +14,19 @@ cover:
   alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
   relative: false
 canonicalURL: "https://tanhdev.com/series/core-banking-architecture/part-1-double-entry-ledger-schema/"
+ShowToc: true
+TocOpen: true
 ---
+
+**Answer-first:** High-throughput double-entry ledgers require immutable transaction logs and separate balances tables. By decoupling transaction insertion from balance updates, databases avoid contention on hot account rows, achieving horizontal scalability and consistent ledger state across high-frequency transaction volumes.
 
 > **Series (Part 1 of 8):** This series dives deep into production-grade Core Banking architecture. This article focuses on the most critical foundation: schema design for a Double-Entry Ledger and concurrency locking strategies. If you are new to Core Banking, please read the [Core Banking Developer Series](/series/core-banking-developer/) first.
 
 > **⚠️ Note:** This article is synthesized from official documentation, engineering blogs, and published benchmark papers. The latency figures and schema designs reflect the source material at the time of writing. Always verify with your team's architect or lead engineer before applying them to a production system.
 
-
 ## What is a Double-Entry Ledger Database Schema?
 
 A database schema for a double-entry ledger requires immutability, ACID guarantees, and precise locking mechanisms to avoid race conditions. Modern systems like TigerBeetle eliminate traditional pessimistic locking by utilizing a single-threaded state machine, achieving 1,000,000 TPS on a single CPU core. For scaling into a distributed environment, see [Part 2 — Distributed SQL & ACID Latency](/series/core-banking-architecture/part-2-distributed-sql-acid-latency/) for a comparison between TiDB, CockroachDB, and Spanner.
-
 
 ---
 
@@ -354,8 +356,17 @@ func reconcileAllTransactions(db *sql.DB) ([]UnbalancedTx, error) {
 
 ---
 
-## FAQ
+### High-Throughput Ledger Sharding and Row Locking Contention
 
+In transactional systems, row-level locking on balance tables is a primary cause of latency bottlenecks. When a popular merchant account (such as a major utility provider or e-commerce merchant) receives thousands of payments simultaneously, database transactions queue up waiting for an exclusive write lock on the merchant's balance row. This resource contention degrades database performance and leads to transaction timeout failures.
+
+To eliminate this hot-spot contention, core banking ledgers implement the Split-Balance (or Shared-Balance) Pattern:
+- **Balance Sharding:** Instead of representing an account balance as a single row in the database, the system splits the balance record into N distinct shard rows (e.g., account_id_1, account_id_2, ..., account_id_N).
+- **Distributed Writes:** When depositing funds to the merchant account, the application randomly selects one of the N shards to update. This distributes the row-level write locks across N independent records, reducing locking contention by a factor of N.
+- **Aggregated Reads:** To retrieve the total account balance, the query aggregates the balance values across all N shard rows, aggregating them on read.
+- **Reconciliation:** An offline cron job periodically consolidates the balance shards back into a single record during low-traffic windows to clean up the database index.
+
+## FAQ
 
 {{< faq q="Is TigerBeetle suitable for every Fintech application?" >}}
 Not necessarily. TigerBeetle is optimized for **high-throughput financial ledgers** (>100,000 TPS), but lacks SQL query flexibility. If you need complex reporting queries, joins, or integration with traditional ORMs, PostgreSQL + a double-entry schema remains an excellent choice.
@@ -368,8 +379,32 @@ Floating-point numbers (IEEE 754) cannot represent many decimal fractions precis
 {{< faq q="What is the difference between a Reversal Entry and a Void Entry?" >}}
 - **Reversal Entry**: Creating a new, opposite entry pointing back to the original entry via `reversalentrykey`. Used to correct errors after a transaction has already settled.
 - **Void Pending**: Canceling a transfer that is currently in a `pending` state (unsettled). This only modifies `debits_pending`/`credits_pending` without affecting `posted` fields.
+{{< /faq >}}
 
+## Ledger Partitioning Strategies and Multi-Tenant Ledger Isolation Patterns
+
+In high-throughput financial core banking systems, ledger databases scale by implementing partition models. This isolates transactional data, reducing row-level locks and distributing storage.
+
+### Ledger Database Partitioning Models
+
+To maintain sub-10ms response times while executing millions of transactions, ledger tables are partitioned:
+1. **Range Partitioning by Date:** Ledger entries are partitioned horizontally by month (e.g., `entries_2026_05`). Active writes only target the current month's partition, keeping index trees small. Historical partitions are set to read-only, allowing partition pruning during audits.
+2. **Hash Partitioning by Account ID:** For balance tables, rows are sharded using hash partition models (e.g., `account_id % partition_count`). This distributes balance updates across multiple database nodes, eliminating write bottlenecks on hot account records.
+
+### Cryptographic Audit-Trail Security
+
+Ledger integrity is guaranteed using cryptographic block hashing:
+- **Chained Entry Hashes:** Each ledger entry contains a cryptographic hash of the current record concatenated with the hash of the preceding entry:
+  $$\text{Hash}_{N} = \text{HMAC-SHA256}\left(\text{Record}_{N} \parallel \text{Hash}_{N-1}\right)$$
+- **Immutable Log Auditing:** Security agents verify the ledger periodically by re-calculating the hash chain. Any unauthorized row modification breaks the cryptographic chain, triggering real-time alerts.
+
+### Multi-Tenant Isolation Patterns
+
+For enterprise core systems hosting multiple banks or branches, ledger tables enforce multi-tenant isolation:
+- **Logical Isolation:** Shared tables utilizing tenant identifier columns. PostgreSQL Row-Level Security (RLS) policies filter records automatically based on connection contexts.
+- **Physical Isolation:** Dedicated schemas or databases per tenant. This guarantees complete database resource isolation and simplifies compliance with local data residency laws.
 ---
 
 *Up Next: [Part 2 — Distributed SQL & ACID Latency: TiDB vs CockroachDB vs Spanner](/series/core-banking-architecture/part-2-distributed-sql-acid-latency/) — Detailed analysis of 2PC overhead, TrueTime math, and Percolator lock recovery.*
-{{< /faq >}}
+
+{{< author-cta >}}

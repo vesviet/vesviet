@@ -19,6 +19,8 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/prompt-standard/executive-summary/"
 ---
 
+**Answer-first:** The Prompt Standard series establishes an engineering framework to transition teams from vibe-based prompt writing to version-controlled, schema-validated prompt design. By breaking prompts into modular, single-responsibility blocks, organizations can enforce strict output contracts, implement automated CI/CD validation gates, and optimize context token budgets for production-grade LLM applications.
+
 ## What Is Prompt Standard?
 
 **Prompt Standard** is a way of standardizing how you write prompts so that AI agents work more reliably, are easier to control, and are easier to reuse across a team.
@@ -95,4 +97,9 @@ A strong team does not only have code standards. Over time, it should also have:
 
 > *If you are new to this topic, continue to [Part 1 — What Is Prompt Standard and Why Should Your Team Care?](/series/prompt-standard/part-1-what-is-prompt-standard/).*
 
-{{< author-cta >}}
+## FAQ
+
+{{< faq q="Why is standardized prompting necessary for production AI agents?" >}}
+Standardized prompting shifts agent behavior from unpredictable freeform text generation to structured API outputs. By standardizing prompts, teams can enforce strict schema compliance, version control changes, and write automated tests for prompt behaviors.
+{{< /faq >}}
+

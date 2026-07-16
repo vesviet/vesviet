@@ -19,6 +19,8 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/prompt-standard/part-4-versioning-and-evals/"
 ---
 
+**Answer-first:** Prompts must be treated as application code: stored in Git, versioned semantic-style, and tested against golden datasets using automated evaluation frameworks. Running regression tests in CI/CD pipelines ensures that changes to prompt templates do not degrade agent performance or break output schemas before deployment.
+
 ## Prompts Deserve the Same Discipline as Code
 
 If a prompt directly affects:
@@ -113,6 +115,41 @@ Standardizing prompts without versioning and evaluation only gets you halfway.
 A strong prompt is not just a well-written prompt. It is a prompt that is **measurable, reviewable, and improvable in a controlled way.**
 
 > *In the final foundations part, we assemble everything into a minimum viable Prompt Standard kit for immediate team deployment.*
-> *Continue to [Part 5 — A Minimum Viable Prompt Standard Kit](/series/prompt-standard/part-5-team-template/).*
 
-{{< author-cta >}}
+### Automated Prompt Verification Testing
+
+Prompts are verified using automated unit tests checking variable injection, constraint validation, and schema formatting:
+
+```go
+package prompt_test
+
+import (
+	"testing"
+	"github.com/stretchr/testify/assert"
+)
+
+func TestPromptTemplateValidation(t *testing.T) {
+	tmpl, err := LoadTemplate("prompt-standard/part-4-versioning-and-evals.md")
+	assert.NoError(t, err)
+
+	// Validate variables are injected and schema compiles
+	variables := map[string]any{
+		"UserQuestion": "How do I secure an API gateway?",
+	}
+	compiled, err := tmpl.Execute(variables)
+	assert.NoError(t, err)
+	
+	// Assert constraints are preserved
+	assert.Contains(t, compiled, "Answer-first:")
+	assert.Contains(t, compiled, "Lê Tuấn Anh")
+}
+```
+
+## FAQ
+
+{{< faq q="How do you implement CI/CD prompt gates using golden datasets?" >}}
+CI/CD pipelines run automated tools like Promptfoo against a structured JSON/YAML registry. Any pull request modifying a prompt must run against a golden dataset of test cases, requiring a threshold pass rate (e.g., 95%) before merging into the main branch.
+{{< /faq >}}
+---
+
+> *Continue to [Part 5 — A Minimum Viable Prompt Standard Kit](/series/prompt-standard/part-5-team-template/).*

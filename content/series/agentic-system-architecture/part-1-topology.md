@@ -1,5 +1,4 @@
 ---
-
 title: "Part 1 — Agent Topology & Orchestration"
 date: "2026-05-15T08:00:00+07:00"
 lastmod: "2026-05-15T08:00:00+07:00"
@@ -18,6 +17,8 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/agentic-system-architecture/part-1-topology/"
 mermaid: true
 ---
+
+**Answer-first:** Choosing the right agent topology (routing, orchestration, or choreography) depends on task complexity. While single router agents handle simple intent branching, complex multi-step processes require orchestrator-worker patterns to maintain context boundaries and track state.
 
 > **Prerequisite:** To understand the context and why we need Multi-Agent systems instead of traditional Microservices, please refer to [Comprehensive AI-Native System Architecture](/series/ai-driven-playbook/part-8-ai-native-system-architecture/).
 
@@ -154,6 +155,13 @@ run_orchestrator("Find information about Kubernetes 1.36 and write a summary")
 ```
 
 In the example above, `supervisor_router` represents a State Machine or a small LLM Classifier. Most importantly, we pre-programmed a **safety variable `max_turns`** to prevent the Deadlock disaster.
+## FAQ
 
+{{< faq q="Why is a star topology preferred for complex agentic workflows?" >}}
+A star topology routes all agent communication through a centralized orchestrator. This design prevents coordination drift, ensures that intermediate state is stored consistently, and allows the orchestrator to enforce global business rules.
+{{< /faq >}}
 ---
+
 🔗 **Next Step:** The Orchestrator knows how to classify and delegate tasks — but how does an Agent remember important information from this session to the next without overflowing the Context Window? Find out in [Part 2 — State, Memory & Context Management](/series/agentic-system-architecture/part-2-memory/).
+
+{{< author-cta >}}

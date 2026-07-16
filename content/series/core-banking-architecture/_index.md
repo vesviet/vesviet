@@ -14,7 +14,11 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-architecture/"
+ShowToc: true
+TocOpen: true
 ---
+
+**Answer-first:** This series presents a comprehensive technical blueprint for designing and building a mission-critical core banking system, addressing double-entry ledger schemas, distributed transaction consistency, CQRS event sourcing, ISO 20022 messaging, FAPI security, and real-time streaming fraud detection.
 
 # Modern Core Banking Architecture
 

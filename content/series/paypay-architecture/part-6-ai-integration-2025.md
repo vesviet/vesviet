@@ -11,7 +11,11 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-6-ai-integration-2025/"
+ShowToc: true
+TocOpen: true
 ---
+
+**Answer-first:** PayPay integrates AI into its transaction pipelines by streaming payment events asynchronously to machine learning scoring models. Running inference out-of-band prevents risk assessment evaluations from adding latency to the synchronous checkout flow, enabling real-time fraud detection and dynamic credit scoring.
 
 ## Why a Payment Platform at Scale Needs an AI Architecture
 
@@ -42,12 +46,12 @@ LLM API Hub (internal gateway)
 └───────┴───────────┴──────────┘
 ```
 
-**Why a multi-model hub?**
-
+{{< faq q="Why a multi-model hub?" >}}
 - **No vendor lock-in:** If OpenAI changes pricing or model behavior, PayPay can shift traffic to Gemini or Claude without modifying any consuming application.
 - **Cost optimization:** GPT-4o-mini handles routine, lower-complexity tasks (document summarization, FAQ generation, code comments) at a fraction of the cost of larger models. GPT-4o or Claude 3 Opus handle complex reasoning tasks (fraud pattern analysis, multi-step agent workflows) where accuracy justifies the higher token cost.
 - **Security and compliance layer:** All requests pass through the hub's sanitization layer before reaching external LLM APIs. Sensitive user PII, financial data, and internal system details are detected and filtered before transmission. Responses are validated against safety policies before returning to the consuming application.
 - **Unified rate limiting and audit logging:** Every LLM API call is logged with the consuming service, model used, token count, latency, and cost. This audit trail is essential for both cost governance and regulatory compliance in a financial services context.
+{{< /faq >}}
 
 ## Layer 2: The Internal RAG Pipeline
 
@@ -178,3 +182,4 @@ PayPay's AI architecture in 2025 represents a broader shift happening across fin
 The transition from the 2018 platform (a QR payment app that crashed under its first campaign) to the 2025 platform (a 70-million-user Financial OS with autonomous AI agents) did not happen through a single architectural decision. It happened through continuous iteration — each campaign, each incident, each new capability driving the next architectural improvement.
 
 For teams building agentic AI systems into their own platforms, the [Agentic System Architecture](/series/agentic-system-architecture/) series covers the multi-agent orchestration patterns that underpin systems like PayPay's code review agent and delinquency chatbot in technical depth.
+

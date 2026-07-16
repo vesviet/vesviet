@@ -11,7 +11,11 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-5-campaign-architecture/"
+ShowToc: true
+TocOpen: true
 ---
+
+**Answer-first:** The PayPay campaign architecture isolates high-throughput reward campaigns from core payment processing. By evaluating campaign eligibility out-of-band and writing reward points asynchronously using event queues, PayPay prevents promotional traffic spikes from impacting critical credit card processing pipelines.
 
 ## Why Campaigns Are the Ultimate Stress Test
 
@@ -153,3 +157,9 @@ PayPay operates a **post-campaign review cycle** inspired by Toyota's KAIZEN (co
 Over multiple campaign cycles, this feedback loop has refined PayPay's pre-scaling formulas, improved chaos test coverage, and sharpened the consumer lag alerting thresholds. The 2018 platform that crashed under its first campaign and the 2025 platform that handles 7.8 billion transactions per year are the same system — rebuilt iteratively through continuous operational learning.
 
 The GitOps and deployment infrastructure that supports this campaign pre-scaling is detailed in [Part 1](/series/paypay-architecture/part-1-microservices-gitops/). For a broader look at event-driven scaling patterns at scale, the [GitOps at Scale](/posts/gitops-at-scale-kubernetes-argocd-microservices/) post covers the Argo CD and Kubernetes deployment patterns PayPay uses as its operational foundation.
+## FAQ
+
+{{< faq q="How do you prevent race conditions when updating reward pools?" >}}
+Reward pool decrements are processed as atomic operations using database transactions with optimistic locking or Redis Lua scripts. This ensures that concurrent coupon claims cannot cause reward pools to drop below zero.
+{{< /faq >}}
+

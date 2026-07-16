@@ -12,11 +12,13 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/part-6-realtime-push-ramen/"
+ShowToc: true
+TocOpen: true
 ---
 
-## The Problem: Pushing Instant Notifications to Millions of Devices
+**Answer-first:** Scaling real-time dispatch pushes requires a stateful WebSocket gateway layer that maintains millions of persistent TCP connections. Terminating mTLS at high-performance reverse proxies (Envoy) and tracking socket locations in a distributed Redis connection registry allows backend dispatchers to push targeted ride offers under 10ms.
 
-**Answer-first:** Uber's RAMEN system maintains persistent gRPC bidirectional streams to every active driver app. When a match is made, the ride offer travels from the matching engine to the driver's phone in under 100ms — without polling. This is how millions of connections are held open simultaneously without crashing the backend.
+## The Problem: Pushing Instant Notifications to Millions of Devices
 
 When DISCO decides to match you with Driver John Doe, the system must:
 1. Send the ride offer to **exactly** John Doe's phone (out of millions of connected phones).
@@ -319,6 +321,60 @@ Pros: Simpler to maintain, uses open standards. Cons: WebSockets over HTTP/1.1 s
  Total elapsed time: < 2 seconds
 ```
 
+## WebSocket Gateway Load Balancing and Connection State Persistence
+
+Maintaining millions of persistent TCP connections requires a highly scalable WebSocket gateway layer. The WebSocket nodes act as stateful connection terminators, streaming telemetry from mobile clients and pushing dispatch commands from backend servers.
+
+### WebSocket Load Balancing and mTLS Termination
+
+In a production environment, load balancing WebSocket connections differs from standard stateless HTTP traffic:
+- **L4 Load Balancing (IP Hash):** Layer 4 load balancers (e.g., HAProxy or AWS NLB) distribute TCP connections based on client IP hashing. This ensures connection sticky routing, preventing reconnection storms.
+- **mTLS Termination:** The WebSocket gateway terminates Mutual TLS (mTLS) to secure data transport. High-performance terminators (such as Envoy) offload cryptographic decryption using hardware-accelerated SSL modules, preventing CPU bottlenecks on app servers.
+
+### Distributed Connection State Registries
+
+Because clients can reside on any gateway node, the matching engine needs to know where to route push notifications. A distributed connection state registry (built on Redis or Consul) tracks client-to-gateway mapping:
+
+```
+Client (Driver:123)  ──►  WebSocket Gateway Node B  (Establishes Connection)
+Gateway Node B       ──►  SADD gateway:connections:node_b "driver:123"
+                          HSET driver:session "driver:123" "node_b"
+```
+
+When the dispatch engine needs to push a ride offer to `driver:123`, it queries `driver:session` in Redis, identifies `node_b` as the active connection host, and routes the message to the corresponding Node B push broker.
+
+### Backpressure Handling and Notification Fallbacks
+
+Stateful connections are vulnerable to network fluctuations and device sleeps:
+- **Backpressure Handling:** Gateway nodes monitor client connection write buffers. If a client's network link slows down, the gateway queues non-essential telemetry and drops duplicate pings, preventing memory exhaustion.
+- **APNs/FCM Fallback Loop:** If a WebSocket connection drops during dispatch matching, the gateway marks the connection dead and fallbacks to push notification systems (FCM for Android, APNs for iOS). This ensures ride offers are delivered even if the persistent socket is disconnected.
+
+### WebSocket Connection Lifecycle and Keep-Alive (Heartbeat) Protocol Optimization
+
+Maintaining persistent TCP connections for millions of active mobile devices requires careful optimization of the WebSocket connection lifecycle. Mobile devices frequently switch between cellular towers and Wi-Fi networks, leading to silent connection drops where the server believes the connection is active but the client is unreachable (half-open sockets).
+
+To detect half-open sockets quickly without exhausting mobile battery life, the WebSocket gateway implements a customized keep-alive (heartbeat) protocol:
+- **Ping-Pong Frames:** The gateway server sends a WebSocket Ping frame to the client every 30 seconds. The client device must respond with a Pong frame within a 5-second window. If no Pong is received, the server terminates the socket.
+- **TCP Keep-Alive Fallback:** At the OS level, TCP keep-alives are configured with short probes. This ensures that dead TCP connections are cleaned up by the operating system kernel, releasing file descriptors.
+- **Connection Churn and Sharding:** Under high connection churn (e.g., during a rainstorm when thousands of users open and close the app), the gateway experiences a connection storm. To prevent connection-tracking databases (such as Redis session store) from lockups, session keys are sharded using consistent hashing over multiple Redis instances. Session writes are batched in memory and flushed asynchronously.
+
+### APNs/FCM Fallback Loop and Push Reliability
+
+If a WebSocket connection terminates while the matching engine is attempting to dispatch a ride offer, the system initiates a fallback loop:
+1. **Status Verification:** The engine queries the connection registry. If the socket is marked disconnected or if a WebSocket push fails to write to the socket buffer, the state changes to offline.
+2. **Push Notification Dispatch:** The engine immediately routes the dispatch payload to the platform-specific push notification service: Apple Push Notification service (APNs) for iOS devices, or Firebase Cloud Messaging (FCM) for Android devices.
+3. **Payload Optimization:** The push notification payload is minimal, containing only a secure notification token and the trip ID. The mobile client intercepts this background push, wakes up the app, and re-establishes a secure WebSocket connection to retrieve the full dispatch offer details.
+
+### APNs/FCM Fallback Push Payload Optimization
+
+To ensure high delivery rates under extreme conditions, the push payloads are restricted to minimal sizes. Heavy JSON payloads are avoided because APNs enforces a strict 4KB maximum payload size for HTTP/2 requests, and FCM enforces 4KB for data messages. The fallback gateway formats payloads using compact binary tokens where possible or optimized string mappings, letting the client retrieve the full JSON metadata asynchronously.
+
+## FAQ
+
+{{< faq q="Why are persistent WebSocket connections preferred over HTTP long polling for dispatch?" >}}
+WebSockets provide low-overhead bi-directional transport, enabling sub-10ms push notifications. HTTP polling introduces latency and requires continuous connection handshake overhead, which quickly degrades mobile battery life and increases server resource use.
+{{< /faq >}}
+
 ---
 
 ## Official Reference Sources
@@ -336,3 +392,6 @@ Pros: Simpler to maintain, uses open standards. Cons: WebSockets over HTTP/1.1 s
 | [Google S2 Geometry](https://s2geometry.io/) | API reference for S2 |
 
 > *Congratulations on completing the series! You now deeply understand every architectural layer behind that smoothly moving car on your map. From the GPS sensor → Kalman Filter → Kafka → H3 → DISCO → RAMEN → Your App. **Every layer represents a fascinating distributed engineering challenge.***
+---
+
+{{< author-cta >}}

@@ -19,6 +19,8 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/prompt-standard/part-5-team-template/"
 ---
 
+**Answer-first:** Implementing a unified prompt template requires defining a standardized markdown layout that segregates system instructions from user variables. Enforcing schema validation on variables prior to API calls prevents prompt injection vulnerabilities and guarantees that inputs conform to the types expected by the template.
+
 ## The Goal Is Not Perfection — It Is Getting Started
 
 Many teams delay because they think they need a massive prompt system.
@@ -149,4 +151,41 @@ A good standard should be:
 > *If you have mastered the foundations, continue to the advanced sections:*
 > *Read [Part 6 — From Prompting to Context Engineering](/series/prompt-standard/part-6-context-engineering/).*
 
-{{< author-cta >}}
+### Team Template Parsing and Variable Compilation
+
+The team standard template uses standard text engine parsing to inject variables safely:
+
+```go
+package main
+
+import (
+	"bytes"
+	"text/template"
+)
+
+const teamPromptTemplate = `
+## Identity
+You are a senior DevOps engineer working on the tanhdev.com website.
+## Goal
+{{.Goal}}
+## Constraints
+- Enforce mTLS for all gateways.
+`
+
+func GeneratePrompt(goal string) (string, error) {
+	tmpl, err := template.New("team").Parse(teamPromptTemplate)
+	if err != nil {
+		return "", err
+	}
+	var buf bytes.Buffer
+	err = tmpl.Execute(&buf, map[string]any{"Goal": goal})
+	return buf.String(), err
+}
+```
+
+## FAQ
+
+{{< faq q="How should teams handle custom variables in prompt templates?" >}}
+Custom variables should be defined using standard placeholder syntax (like Go templates or Jinja) and validated against a schema before being sent to the LLM. This prevents user input injection vulnerabilities and ensures the prompt matches expected types.
+{{< /faq >}}
+

@@ -41,7 +41,6 @@ Companion research that extends specific topics from this series:
 
 ## FAQ
 
-
 {{< faq q="How does PayPay handle 7.8 billion transactions per year without downtime?" >}}
 PayPay uses three layers of reliability: (1) microservices with circuit breakers isolate failures to individual services without cascading; (2) Kafka-backed event sourcing with idempotency keys prevents double-processing on retry; (3) campaign pre-scaling — before major promotions, PayPay pre-warms the compute fleet based on historical traffic models, avoiding cold-start latency during traffic spikes. Source: PayPay Engineering Blog (2023–2024).
 {{< /faq >}}
