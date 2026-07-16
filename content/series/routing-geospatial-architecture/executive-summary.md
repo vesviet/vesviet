@@ -15,7 +15,15 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/executive-summary/"
 mermaid: true
+ShowToc: true
+TocOpen: true
+series_order: 0
 ---
+
+[← Series hub]({{< ref "/series/routing-geospatial-architecture/_index.md" >}})
+[Next →]({{< ref "/series/routing-geospatial-architecture/part-1-core-algorithms.md" >}})
+
+> **Prerequisite:** This is the executive summary and introductory overview of the **Routing & Geospatial Architecture** series. No prior reading is required to start here.
 
 ## The Engineering Challenge
 
@@ -101,4 +109,6 @@ Graphhopper (Java) is an exceptional routing engine, but **Golang** is superior 
 | **Caching Layer** | Redis | In-memory semantic caching to serve duplicate/nearby matrix requests instantly. |
 | **Map Data** | OpenStreetMap (OSM) | Free, highly accurate, and customizable map data. |
 
-> *Ready to dive into the technical details? Begin the masterclass with [Part 1: Core Algorithms (A*, Dijkstra) Visualized](/series/routing-geospatial-architecture/part-1-core-algorithms/).*
+Need help building high-scale routing engines or spatial indexing pipelines? [Contact me](/contact/) to discuss your project.
+
+🔗 **Next Step:** Begin the masterclass with [Part 1: Core Algorithms (A*, Dijkstra) Visualized]({{< ref "/series/routing-geospatial-architecture/part-1-core-algorithms.md" >}}).

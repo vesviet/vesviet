@@ -1,4 +1,5 @@
 ---
+
 title: "Part 1: Architectural Decision Framework"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "Use real-world latency, performance data, and lessons from Stack Overflow to decide when to use a Modular Monolith instead of Microservices."
@@ -11,6 +12,15 @@ canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/decision
 ShowToc: true
 TocOpen: true
 ---
+
+**Answer-first:** Deciding between a Modular Monolith and Microservices depends on organizational scale, transaction consistency requirements, and latency limits. Teams with under 50 developers should build a modular monolith to avoid the administrative and operational 'microservice premium', using direct memory function calls to bypass network latency and complex distributed transaction protocols.
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure]({{< ref "part-0-executive-summary.md" >}}).
+
+### What You'll Learn That AI Won't Tell You
+- **Physical Speed Disparity:** Why HTTP network hops are 100,000x slower than in-process function execution in RAM.
+- **Stack Overflow Metrics:** How Stack Overflow scales to billions of page views using only 9 web servers and database vertical scaling.
+- **MESI Cache Line Invalidation:** How improper shared-state boundaries inside a monolith cause CPU cache thrashing.
 
 > **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 1: Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure]({{< ref "part-0-executive-summary.md" >}}).
 
@@ -166,15 +176,6 @@ In high-frequency low-latency systems, we must design around CPU caches:
 - A local network hop takes 100,000 to 500,000 nanoseconds.
 When you separate operations into microservices, you ensure that every communication is forced to hit the main RAM and network interfaces, bypassing CPU caches. In a modular monolith, functions running on the same thread reuse CPU registers and L1 cache blocks. Under the MESI (Modified, Exclusive, Shared, Invalid) cache coherency protocol, sharing memory across CPU cores can trigger cache line invalidations. By designing modules that communicate via clean channels with minimal shared state, we prevent cache thrashing, maximizing local processing speed.
 
-
-
-
-## Operational Context: Part 1 Decision Framework Appendix
-
-### Performance Profiling and CPU Optimization
-To optimize the execution speed of modules within a monolithic binary, engineers must perform regular profiling using tools like Go's `pprof`. Profiling runs expose CPU bottlenecks caused by excessive pointer dereferencing and memory allocations. By replacing heap allocations with stack-allocated values and utilizing `sync.Pool` for reusable structures, garbage collection overhead is reduced, allowing the application to achieve sub-nanosecond processing efficiency.
-
-
 In **[Part 2: FinOps Cost Reality]({{< ref "part-2-finops-cost-reality.md" >}})**, we will open the "Cloud Bill" to analyze in detail how sidecars, service meshes, and cross-AZ traffic fees are eroding the budgets of Microservices systems.
 
 ---
@@ -184,6 +185,6 @@ In **[Part 2: FinOps Cost Reality]({{< ref "part-2-finops-cost-reality.md" >}})*
 [← Previous Part]({{< ref "part-0-executive-summary.md" >}})
 [Next Part →]({{< ref "part-2-finops-cost-reality.md" >}})
 
-🔗 **Next Step:** Continue to [Part 2: Part 2: FinOps Cost Reality - The Hidden Tax of Microservices]({{< ref "part-2-finops-cost-reality.md" >}})
+🔗 **Next Step:** Continue to [Part 2: FinOps Cost Reality - The Hidden Tax of Microservices]({{< ref "part-2-finops-cost-reality.md" >}})
 
 Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

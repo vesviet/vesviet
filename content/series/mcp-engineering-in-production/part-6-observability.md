@@ -1,4 +1,5 @@
 ---
+
 title: "Part 6: Observability & Audit Trail"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
@@ -15,6 +16,15 @@ mermaid: true
 ShowToc: true
 TocOpen: true
 ---
+
+**Answer-first:** Monitoring MCP server performance requires tracking active SSE streams, tool execution latency, connection drops, and LLM input-output cardialities. Exposing Prometheus metrics from gateways and backend services helps identify slow tool handlers and troubleshoot socket exhaustion under heavy load.
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 5: Production Security & OWASP MCP Top 10]({{< ref "part-5-security.md" >}}).
+
+### What You'll Learn That AI Won't Tell You
+- **Socket Exhaustion Signals:** Why monitoring active TCP connections in the CLOSE_WAIT state is critical for gateways.
+- **Prometheus Collector Setups:** Scraping metrics from ephemeral container nodes using consul discovery.
+- **Grafana Dashboard Layouts:** Combining active client streams with database transaction latency charts.
 
 > **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 6: Part 5: Production Security & OWASP MCP Top 10]({{< ref "part-5-security.md" >}}).
 
@@ -166,45 +176,40 @@ Tracing agent reasoning loops requires propagating contexts:
 - Annotate spans with custom attributes like `llm.model`, `llm.tokens.prompt`, `llm.tokens.completion`, and `mcp.tool.name`.
 - Route trace telemetry to Jaeger or Datadog over gRPC to visualize latency bottlenecks in the tool chain.
 
+## 5. Prometheus Metrics Scraping & Dashboard Configurations
 
+To monitor the health of your MCP gateway and backend servers, you must set up automated scraping configurations. Below is the Prometheus scrape configuration block and the metrics dictionary to build your Grafana dashboards.
 
+### Prometheus Configuration Snippet
+Add this job definition to your `prometheus.yml` configuration:
 
-## Operational Context: Part 6 Observability Appendix
+```yaml
+scrape_configs:
+  - job_name: 'mcp-gateway'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['mcp-gateway.production.internal:8080']
+    metrics_path: '/metrics'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'prod-gateway-01'
 
-### Telemetry Correlation and OpenTelemetry Tracing Conventions
-Tracking agent actions requires propagating tracing context through dynamic tool invocations. Utilize the OpenTelemetry SDK to create parent spans for LLM reasoning sessions, linking tool executions as child spans. Annote traces with metadata fields such as model name, token consumption, and execution duration to locate latency bottlenecks in the system.
+  - job_name: 'mcp-backend-servers'
+    scrape_interval: 10s
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      - action: keep
+        source_labels: [__meta_kubernetes_pod_label_app]
+        regex: mcp-server-.*
+```
 
-
-
-
-## Operational Context: Part 6 Observability Appendix
-
-### Rate Limiting and Downstream API Protection
-Enforce rate limits on MCP endpoints to prevent downstream API exhaustion from recursive agent loops. Implement a token bucket rate limiter in the gateway middleware layer, restricting client requests to 60 calls per minute. If an agent exceeds this limit, return HTTP status 429 and suspend the session dynamically.
-
-
-
-
-## Operational Context: Part 6 Observability Appendix
-
-### Ingress Load Balancing and Gateway Autoscaling
-Deploy MCP gateway instances behind an ingress controller utilizing round-robin load balancing. Configure the Horizontal Pod Autoscaling (HPA) controller to scale pods based on active connection metrics. This ensures the gateway pool maintains adequate resource headroom to handle traffic spikes during concurrent agent tasks.
-
-
-
-
-## Operational Context: Part 6 Observability Appendix
-
-### Graceful Shutdown and Connection Draining
-When updating MCP container instances, configure the runtime to handle termination signals. Upon receiving a SIGTERM signal, the gateway stops accepting new connection requests, completes in-flight tool calls, flushes telemetry logs to the storage backend, and shuts down TCP sockets safely, ensuring zero-downtime deployments.
-
-
-
-
-## Operational Context: Part 6 Observability Appendix
-
-### Certificate Management and mutual TLS Security
-Secure transport channels by enforcing mutual TLS (mTLS) authentication. Both the gateway client and backend MCP servers must exchange and verify cryptographically signed certificates. Rotate certificates automatically using cert-manager, blocking unauthorized requests from accessing tools.
+### Core Telemetry Metrics to Track
+Configure your Grafana panels to alert on these metrics:
+- `mcp_gateway_active_streams`: Track the number of active SSE connections. Sudden drops indicate proxy timeout issues.
+- `mcp_tool_execution_duration_seconds`: Histogram of latency per tool call. Set thresholds at 1.5s for warnings.
+- `mcp_tool_errors_total`: Counter of failed tool calls, segmented by `error_code` and `tool_name` labels.
 
 ---
 
@@ -213,6 +218,6 @@ Secure transport channels by enforcing mutual TLS (mTLS) authentication. Both th
 [← Previous Part]({{< ref "part-5-security.md" >}})
 [Next Part →]({{< ref "part-7-enterprise.md" >}})
 
-🔗 **Next Step:** Continue to [Part 7: Part 7: Enterprise Scaling & Governance]({{< ref "part-7-enterprise.md" >}})
+🔗 **Next Step:** Continue to [Part 7: Enterprise Scaling & Governance]({{< ref "part-7-enterprise.md" >}})
 
 Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

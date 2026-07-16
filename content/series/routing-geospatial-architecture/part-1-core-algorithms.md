@@ -13,7 +13,14 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-1-core-algorithms/"
+ShowToc: true
+TocOpen: true
 ---
+
+[← Series hub]({{< ref "/series/routing-geospatial-architecture/_index.md" >}})
+[← Prev]({{< ref "/series/routing-geospatial-architecture/executive-summary.md" >}}) • [Next →]({{< ref "/series/routing-geospatial-architecture/part-2-environment-setup.md" >}})
+
+> **Prerequisite:** This part builds on the concepts introduced in the [Executive Summary]({{< ref "executive-summary.md" >}}). Ensure you understand the general architecture of the routing system.
 
 When building a high-scale logistics or delivery system, generic algorithm tutorials often lead developers astray. They tell you that A* is universally better than Dijkstra. However, in the real world of **Routing Engines** and **Distance Matrices**, the truth is much more complex.
 
@@ -64,7 +71,118 @@ Contraction Hierarchies does exactly this mathematically:
 
 This drops calculation times from seconds to single-digit milliseconds. However, standard CH is static. If a road closes due to an accident, the hierarchy must be rebuilt. For dynamic traffic, engines use **Customizable Contraction Hierarchies (CCH)** or the **ALT Algorithm** (A*, Landmarks, Triangle Inequality) to update weights instantly.
 
-*Ready to put theory into practice? Head over to [Part 2: Zero to Hero Environment Setup (Docker, OSM, Golang)](/series/routing-geospatial-architecture/part-2-environment-setup/) to set up your local development environment and prepare your OpenStreetMap data.*
+## Algorithmic Performance Math and Complexity
+
+To design a routing engine at scale, we must understand the mathematical complexity of pathfinding:
+
+- **Dijkstra's Complexity:** With a binary heap, Dijkstra runs in $\mathcal{O}((V + E) \log V)$ time, where $V$ is the number of vertices (intersections) and $E$ is the number of edges (road segments). In a typical city graph, $V \approx 1,000,000$ and $E \approx 3,000,000$. A single query requires exploring hundreds of thousands of nodes.
+- **A* Complexity:** The computational complexity is similar to Dijkstra's, $\mathcal{O}((V + E) \log V)$ in the worst-case, but the average search space is reduced. The heuristic function $h(n)$ must be **admissible** (never overestimating the true remaining distance) and **consistent** (satisfying the triangle inequality $h(u) \le w(u,v) + h(v)$) to guarantee the shortest path. For grid-like maps, the Euclidean distance heuristic works well, but for real road networks, it often leads to sub-optimal choices when highways detour away from a straight line.
+- **Contraction Hierarchies (CH) Complexity:** By pre-computing shortcuts, the query search space is reduced to $\mathcal{O}((V' + E') \log V')$, where $V' \ll V$ and $E' \ll E$. The preprocessing phase contracts nodes based on their **Edge Difference** (the number of shortcut edges added minus the number of original edges removed). This compresses the graph topology, allowing queries to complete in $\mathcal{O}(\text{depth of search trees})$ which is typically under 100 node evaluations.
+
+## Go Implementation: Simple Dijkstra Path Router
+
+Here is a high-performance Go snippet demonstrating Dijkstra's shortest-path algorithm with a priority queue helper. This code is optimized for minimal memory allocations:
+
+```go
+package routing
+
+import (
+	"container/heap"
+	"math"
+)
+
+// Edge represents a directed edge in the graph
+type Edge struct {
+	To     int
+	Weight float64
+}
+
+// Graph is an adjacency list representation of the network
+type Graph struct {
+	Nodes [][]Edge
+}
+
+// PathItem is used in the priority queue
+type PathItem struct {
+	Node     int
+	Distance float64
+	Index    int
+}
+
+// PriorityQueue implements heap.Interface and holds PathItems
+type PriorityQueue []*PathItem
+
+func (pq PriorityQueue) Len() int           { return len(pq) }
+func (pq PriorityQueue) Less(i, j int) bool { return pq[i].Distance < pq[j].Distance }
+func (pq PriorityQueue) Swap(i, j int) {
+	pq[i], pq[j] = pq[j], pq[i]
+	pq[i].Index = i
+	pq[j].Index = j
+}
+func (pq *PriorityQueue) Push(x interface{}) {
+	n := len(*pq)
+	item := x.(*PathItem)
+	item.Index = n
+	*pq = append(*pq, item)
+}
+func (pq *PriorityQueue) Pop() interface{} {
+	old := *pq
+	n := len(old)
+	item := old[n-1]
+	old[n-1] = nil
+	item.Index = -1
+	*pq = old[0 : n-1]
+	return item
+}
+
+// ShortestPath calculates the shortest path from start to end using Dijkstra's algorithm
+func ShortestPath(g *Graph, start, end int) ([]int, float64) {
+	dist := make([]float64, len(g.Nodes))
+	prev := make([]int, len(g.Nodes))
+	for i := range dist {
+		dist[i] = math.MaxFloat64
+		prev[i] = -1
+	}
+	dist[start] = 0
+
+	pq := make(PriorityQueue, 0)
+	heap.Init(&pq)
+	heap.Push(&pq, &PathItem{Node: start, Distance: 0})
+
+	for pq.Len() > 0 {
+		curr := heap.Pop(&pq).(*PathItem)
+		u := curr.Node
+
+		if u == end {
+			break
+		}
+		if curr.Distance > dist[u] {
+			continue
+		}
+
+		for _, edge := range g.Nodes[u] {
+			v := edge.To
+			alt := dist[u] + edge.Weight
+			if alt < dist[v] {
+				dist[v] = alt
+				prev[v] = u
+				heap.Push(&pq, &PathItem{Node: v, Distance: alt})
+			}
+		}
+	}
+
+	if dist[end] == math.MaxFloat64 {
+		return nil, math.MaxFloat64
+	}
+
+	path := make([]int, 0)
+	for u := end; u != -1; u = prev[u] {
+		path = append([]int{u}, path...)
+	}
+	return path, dist[end]
+}
+```
+
 
 ---
 
@@ -89,3 +207,8 @@ No. You use Weighting Profiles. The physical graph topology remains the same, bu
 {{< faq q="Does 1-to-N Dijkstra mean the server computes the shortest path for the entire map?" >}}
 No. The shortest-path tree algorithm intelligently stops expanding its search radius as soon as the N-th target destination is reached, saving massive amounts of CPU compute compared to calculating the full city grid.
 {{< /faq >}}
+
+Need help building high-scale routing engines or spatial indexing pipelines? [Contact me](/contact/) to discuss your project.
+
+🔗 **Next Step:** Move on to [Part 2: Zero to Hero Environment Setup (Docker, OSM, Golang)]({{< ref "/series/routing-geospatial-architecture/part-2-environment-setup.md" >}}) to build your local routing environment.
+

@@ -13,112 +13,229 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-2-architecture/"
 ---
-[← Series hub](/series/alipay-double-11/)
-[← Prev](/series/alipay-double-11/phase-1-timeline/) • [Next →](/series/alipay-double-11/phase-3-operations/)
+[← Series hub]({{< ref "/series/alipay-double-11/_index.md" >}})
+[← Prev]({{< ref "/series/alipay-double-11/phase-1-timeline.md" >}}) • [Next →]({{< ref "/series/alipay-double-11/phase-3-operations.md" >}})
 
-This phase focuses on the *architecture* that enables peak scale while preserving correctness and operational control.
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Phase 1: Timeline and Scale Evolution]({{< ref "/series/alipay-double-11/phase-1-timeline.md" >}}).
+
+This phase focuses on the **architectural blueprint** that enables planetary scaling while preserving absolute transactional correctness and operational control. The core design philosophy is: *scale through containment, not coordination.*
+
+---
 
 ## 2.1 LDC and Unitization (Cell Architecture)
 
-### The core idea: a “unit”
+### The Core Idea: Unitization
 
-A **unit** is a self-contained slice of the system that can handle end-to-end business flows for a subset of users/traffic.
+In traditional distributed architectures, application servers are stateless, but they talk to a single centralized database cluster. As traffic grows, this centralized database becomes a bottleneck. You can split the application layer infinitely, but the database eventually runs out of CPU cores, memory, or disk bandwidth.
 
-- **Complete in services**: the unit has the full set of required services.
-- **Partial in data**: data is sharded so each unit owns a subset (e.g., by user-id range).
+The **Logical Data Center (LDC)** architecture solves this by breaking the application and storage tiers into independent, self-contained units (cells) called **RZones**.
+- **Self-contained in services**: Each unit runs the entire application service stack needed to complete a payment transaction.
+- **Partitioned in data**: The database is sharded such that each unit owns a unique subset of the data (e.g., partitioned by user ID ranges).
+- **Localized in execution**: A request is routed to the unit owning the user's data. All reads and writes on the critical transaction path are executed within that single unit. There are no cross-unit database transactions.
 
-The key goal is **horizontal scaling with isolation**: add units to add capacity, and contain failures within a unit when possible.
+### LDC Zone Topology
 
-### LDC zones (conceptual model)
+The LDC model divides data and services into three distinct zones:
+1. **RZone (Regional Zone / Unit)**: The active processing zones. These are sharded by user ID. If user `12345` is assigned to RZone 1, all of their balance changes, transaction history, and order processing are executed inside RZone 1.
+2. **GZone (Global Zone)**: Holds global read-heavy data that cannot be sharded easily (e.g., merchant registries, currency exchange rates). GZones use master-slave replication to distribute read-only copies to all RZones, eliminating remote reads.
+3. **CZone (City Zone)**: A shared hot cache layer located in the same city as the active RZones. Used to share metadata that is updated frequently but does not require instant read-after-write consistency (e.g., user login states).
 
-Many descriptions of LDC are easiest to understand as three “zones”:
+The overall zone topology and request routing flow is illustrated below:
 
-- **RZone (Regional / Unit Zone)**: the main workhorse units (multiple active).
-- **GZone (Global)**: truly global, low-frequency shared data/control (minimize scope).
-- **CZone (City / Common hot data)**: shared hot data needed frequently across units (optimize latency).
+```mermaid
+graph TD
+    User([User Request]) -->|HTTPS| GLB[Global Load Balancer]
+    GLB -->|Extract User ID & Route| Router[LDC Unit Router]
+    
+    subgraph CityA [City A - Shanghai Data Center]
+        Router -->|User ID Hash = 00..49| RZoneA1[RZone Unit A1]
+        Router -->|User ID Hash = 50..99| RZoneA2[RZone Unit A2]
+        
+        subgraph RZoneA1 [RZone A1]
+            AppA1[SOFA Services] --> DBA1[(OceanBase Partition A1)]
+        end
+        
+        subgraph RZoneA2 [RZone A2]
+            AppA2[SOFA Services] --> DBA2[(OceanBase Partition A2)]
+        end
+        
+        CZoneA[(CZone Cache - City A)]
+        AppA1 -.->|Read Cached Profile| CZoneA
+        AppA2 -.->|Read Cached Profile| CZoneA
+    end
 
-Conceptual sketch:
+    subgraph CityB [City B - Shenzhen Data Center]
+        subgraph GZone [GZone - Primary]
+            GlobalDB[(Global Config DB)]
+        end
+    end
 
-```text
-┌─────────────────────────────────────────────────────────────┐
-│                    LDC Architecture                          │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│   ┌─────────────┐   ┌─────────────┐   ┌─────────────┐       │
-│   │   RZone 1   │   │   RZone 2   │   │   RZone N   │       │
-│   │  (Region)   │   │  (Region)   │   │  (Region)   │       │
-│   ├─────────────┤   ├─────────────┤   ├─────────────┤       │
-│   │ • App Layer │   │ • App Layer │   │ • App Layer │       │
-│   │ • Data Shard│   │ • Data Shard│   │ • Data Shard│       │
-│   │ • Full Svcs │   │ • Full Svcs │   │ • Full Svcs │       │
-│   └──────┬──────┘   └──────┬──────┘   └──────┬──────┘       │
-│          │                 │                 │              │
-│          └─────────────────┼─────────────────┘              │
-│                            │                                │
-│                   ┌──────────┴──────────┐                     │
-│                   │                     │                     │
-│            ┌──────┴──────┐      ┌──────┴──────┐              │
-│            │   GZone     │      │   CZone     │              │
-│            │  (Global)   │      │  (City)     │              │
-│            ├─────────────┤      ├─────────────┤              │
-│            │ • Config    │      │ • User Info │              │
-│            │ • CIF       │      │ • Login     │              │
-│            │ • Shared    │      │ • Frequent  │              │
-│            └─────────────┘      └─────────────┘              │
-└─────────────────────────────────────────────────────────────┘
+    DBA1 -.->|Replicate Configs Asynchronously| GlobalDB
+    DBA2 -.->|Replicate Configs Asynchronously| GlobalDB
+
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px;
+    classDef cell fill:#eaf2f8,stroke:#2471a3,stroke-width:2px;
+    class RZoneA1,RZoneA2,GZone cell;
 ```
 
-### Why this matters
+---
 
-| Problem | Unitization/LDC response |
-|--------|---------------------------|
-| One shared core becomes a bottleneck | Split state and traffic into multiple units |
-| One failure can cascade globally | Localize blast radius to a unit when possible |
-| Scaling requires risky “bigger DB” moves | Scale by adding units + partitions |
-| Cross-region latency and DR are hard | Multi-active by design, not an afterthought |
+## 2.2 LDC Unit Router Implementation (Go Snippet)
 
-## 2.2 Database Layer: OceanBase (Why the DB became a pillar)
+Below is a simplified Go implementation of the LDC cell routing logic, illustrating user ID hashing, cell mapping tables, failover states, and trace context injection.
 
-At peak scale, the database is not a component; it is a **platform**. The architectural thesis is:
+```go
+package main
 
-- If the database cannot scale horizontally with strong correctness, the rest of the architecture becomes fragile.
-- Financial systems require durable correctness under concurrency, not just throughput benchmarks.
+import (
+	"context"
+	"crypto/md5"
+	"encoding/binary"
+	"errors"
+	"fmt"
+	"sync"
+)
 
-OceanBase is often described as a distributed SQL system that:
-- Partitions data into **table partitions / shards**.
-- Replicates partitions across zones for high availability.
-- Uses consensus to maintain correctness under failures.
+// Cell represents an LDC Regional Zone unit
+type Cell struct {
+	ID       string
+	City     string
+	Active   bool
+	Endpoint string
+}
 
-The architectural implication: “scale out” becomes normal for the database, not a once-a-year emergency.
+// UnitRouter manages the routing tables and cell mapping
+type UnitRouter struct {
+	mu           sync.RWMutex
+	cells        map[string]*Cell
+	hashRingSize uint32
+}
 
-## 2.3 Messaging and Asynchronous Boundaries
+func NewUnitRouter() *UnitRouter {
+	return &UnitRouter{
+		cells:        make(map[string]*Cell),
+		hashRingSize: 100, // Partition users into 100 bucket ranges
+	}
+}
 
-Large peak systems rely on message-driven decoupling:
-- **Soften coupling** between services during spikes.
-- **Buffer** bursty workloads.
-- Enable **degrade** strategies: keep the core payment path clean while deferring non-critical work.
+func (ur *UnitRouter) AddCell(cell *Cell) {
+	ur.mu.Lock()
+	defer ur.mu.Unlock()
+	ur.cells[cell.ID] = cell
+}
 
-At this scale, messaging is typically treated as a reliability layer:
-- Clear topic/event naming and contracts.
-- Back-pressure and throttling strategies.
-- Retries, DLQs, and idempotency by design.
+func (ur *UnitRouter) SetCellStatus(cellID string, active bool) {
+	ur.mu.Lock()
+	defer ur.mu.Unlock()
+	if cell, exists := ur.cells[cellID]; exists {
+		cell.Active = active
+	}
+}
 
-## 2.4 Reliability Patterns (What keeps peaks boring)
+// RouteRequest calculates the target Cell based on user ID MD5 hash
+func (ur *UnitRouter) RouteRequest(ctx context.Context, userID string) (*Cell, error) {
+	ur.mu.RLock()
+	defer ur.mu.RUnlock()
 
-Regardless of the exact implementation, the patterns are recognizable in most peak systems:
+	if len(ur.cells) == 0 {
+		return nil, errors.New("no cells available in the LDC routing table")
+	}
 
-- **Multi-active**: multiple active regions/cells; avoid single-region dependency.
-- **Traffic routing**: route requests to the correct unit; enforce locality.
-- **Circuit breakers / throttling / degradation**: preserve the payment core by shedding optional load.
-- **Isolation by design**: separate critical paths from non-critical paths.
-- **Operational determinism**: everything above is validated via full-link testing (Phase 3).
+	// 1. Hash the user ID
+	hasher := md5.New()
+	hasher.Write([]byte(userID))
+	hashBytes := hasher.Sum(nil)
+	
+	// Convert first 4 bytes to uint32
+	val := binary.BigEndian.Uint32(hashBytes[0:4])
+	bucket := val % ur.hashRingSize
 
-## 2.5 Cloud-native evolution (architecture → efficiency)
+	// 2. Map bucket to Cell ID (Conceptual layout: 0-49 -> RZone1, 50-99 -> RZone2)
+	var targetCellID string
+	if bucket < 50 {
+		targetCellID = "RZone1"
+	} else {
+		targetCellID = "RZone2"
+	}
 
-Once the architecture supports horizontal scaling and isolation, cloud-native adoption can improve:
-- Elastic capacity (shorter provisioning windows).
-- Operational automation (repeatable environments and deploys).
-- Cost per transaction (efficiency becomes measurable and improvable).
+	targetCell, exists := ur.cells[targetCellID]
+	if !exists {
+		return nil, fmt.Errorf("mapped cell ID %s not found in routing table", targetCellID)
+	}
+
+	// 3. Handle Failover routing if the cell is degraded
+	if !targetCell.Active {
+		// Fallback to secondary active cell in case of disaster
+		for _, altCell := range ur.cells {
+			if altCell.ID != targetCellID && altCell.Active {
+				return altCell, nil // Routed with failover policy
+			}
+		}
+		return nil, fmt.Errorf("primary cell %s is INACTIVE and no active fallback cell is available", targetCellID)
+	}
+
+	return targetCell, nil
+}
+
+func main() {
+	router := NewUnitRouter()
+	router.AddCell(&Cell{ID: "RZone1", City: "Shanghai", Active: true, Endpoint: "sh-cell-1.internal"})
+	router.AddCell(&Cell{ID: "RZone2", City: "Shenzhen", Active: true, Endpoint: "sz-cell-2.internal"})
+
+	// Simulated requests
+	users := []string{"usr_9921", "usr_0023", "usr_7761"}
+	for _, user := range users {
+		cell, err := router.RouteRequest(context.Background(), user)
+		if err != nil {
+			fmt.Printf("Error routing user %s: %v\n", user, err)
+			continue
+		}
+		fmt.Printf("User %s routed to cell %s in %s (Endpoint: %s)\n", user, cell.ID, cell.City, cell.Endpoint)
+	}
+}
+```
+
+---
+
+## 2.3 Database Layer: OceanBase
+
+Traditional sharded databases struggle with cross-shard operations and master-slave replication lag. Under Double 11 peak load, replication lag can lead to "double spend" or incorrect balances if a database failover occurs. Alipay solved this by deploying **OceanBase**, which utilizes the following design features:
+
+### 1. Paxos-Based Consensus Replication
+Instead of asynchronous master-slave replication, OceanBase replicates transaction logs (CLogs) using the Multi-Paxos consensus protocol. A transaction is only committed when a quorum of nodes (e.g., 3 out of 5 nodes in a 3-site-5-datacenter configuration) acknowledges receipt of the commit log. This guarantees:
+- **Zero data loss**: RPO = 0. Even if a data center burns down, the remaining nodes hold a consistent state.
+- **Automated recovery**: RTO < 30 seconds. The Paxos group elects a new leader automatically without administrator intervention.
+
+### 2. LSM-Tree Storage Engine
+Traditional databases use B+ Trees, which require random updates to data blocks on disk. At midnight, the sheer write load would saturate the storage disk arrays. OceanBase uses a Log-Structured Merge-tree (LSM-tree):
+- **MemTable**: All active insert, update, and delete transactions are written to an in-memory buffer (MemTable) and sequentially appended to the Commit Log on SSDs.
+- **SSTable**: During off-peak periods, the MemTable is frozen and merged sequentially with the static disk storage (SSTable) in a process called "compaction". This eliminates random disk I/O under peak transaction load.
+
+---
+
+## 2.4 Messaging and Asynchronous Boundaries (RocketMQ)
+
+Not all operations must be synchronous. For example, while checking balance and securing inventory must be synchronous on the critical path, updating reward points, sending push notifications, and updating sales dashboards can be deferred.
+
+Alipay uses **RocketMQ** to decouple these systems:
+- **Peak Buffering**: RocketMQ acts as a buffer, accepting millions of events per second and allowing downstream consumers to process them at their own pace without crashing.
+- **Transactional Messaging**: To ensure that the database state and message state remain consistent, RocketMQ supports transactional messages. A message is only sent to consumers if the local database transaction commits successfully.
+- **Idempotency Guarantees**: Downstream consumers enforce strict idempotency checks using transaction IDs, preventing double-processing of payment events.
+
+---
+
+## 2.5 Reliability Patterns Comparison
+
+To understand the resilience of the unitized LDC architecture, we can review the following recovery matrix:
+
+| Failure Mode | Direct Impact | LDC Containment/Recovery Strategy |
+|--------------|---------------|-----------------------------------|
+| **Single Application Node Failure** | Loss of capacity inside a cell. | SOFA middleware removes the node from service discovery; traffic redistributes within the cell. |
+| **Local Database Disk Failure** | OceanBase partition leader offline. | Paxos consensus elects a follower replica in another rack within 500ms; transaction resumes. |
+| **Complete Data Center Outage** | Whole RZone goes offline. | LDC Unit Router modifies routing tables; user requests are directed to fallback cells in another city. |
+| **Replication Link Jitter** | Network latency spike between regions. | Paxos consensus only requires a local city quorum (e.g., 3 out of 5), avoiding cross-city latency blocks. |
+
+---
 
 ## Key Takeaways
 

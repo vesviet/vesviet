@@ -27,9 +27,11 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy/"
+ShowToc: true
+TocOpen: true
 ---
 
-> **Series Orientation:** This article is Part 3 of the **AI Code Review & Vibe Coding** series, examining the unique failure modes of AI-generated code. For the broader business context, see the [Series Executive Summary](/series/ai-code-review-vibe-coding/executive-summary/).
+> **Series Orientation:** This article is Part 3 of the **AI Code Review & Vibe Coding** series, examining the unique failure modes of AI-generated code. For the broader business context, see the [Series Executive Summary]({{< ref "/series/ai-code-review-vibe-coding/executive-summary.md" >}}).
 
 When engineers first review AI-generated code, they often encounter a counterintuitive phenomenon: the code looks right. It passes compilation. The tests are green. The function signatures are clean. The variable names are descriptive. And somewhere inside, there is a logic error that will silently corrupt your data, or a missing authorization check that will expose every user record to the first person who thinks to try a simple query manipulation.
 
@@ -350,4 +352,4 @@ Part 4 covers the infrastructure for running this review at scale — the multi-
 
 ---
 
-*Next: [Part 4 — Building the Review Pipeline: Zero-Trust Mindset, Multi-Agent, and Mutation Testing](/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent/)*
+*Next: [Part 4 — Building the Review Pipeline: Zero-Trust Mindset, Multi-Agent, and Mutation Testing]({{< ref "/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent.md" >}})*

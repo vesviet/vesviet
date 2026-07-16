@@ -1,4 +1,5 @@
 ---
+
 title: "Part 5: Production Security & OWASP MCP Top 10"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
@@ -15,6 +16,15 @@ mermaid: true
 ShowToc: true
 TocOpen: true
 ---
+
+**Answer-first:** Securing MCP deployments requires preventing prompt injections, sanitizing inputs, limiting database execution permissions, and encrypting network traffic. Implementing JSON Schema validation, strict query timeouts, read-only database connections, and mTLS protocols ensures that AI tools cannot be coerced into exposing or modifying sensitive data.
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 4: MCP Gateway Architecture]({{< ref "part-4-gateway.md" >}}).
+
+### What You'll Learn That AI Won't Tell You
+- **Prompt Injection Mechanics:** How LLMs are manipulated to append destructive SQL commands to query strings.
+- **Database Security Limits:** Running postgres with low statement timeouts to prevent Denial of Service (DoS).
+- **Network Isolation:** Setting up Kubernetes network policies to isolate MCP containers from the core VPC.
 
 > **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 5: Part 4: MCP Gateway Architecture]({{< ref "part-4-gateway.md" >}}).
 
@@ -145,6 +155,6 @@ How do we build a comprehensive monitoring system to fully mitigate MCP08? We wi
 [← Previous Part]({{< ref "part-4-gateway.md" >}})
 [Next Part →]({{< ref "part-6-observability.md" >}})
 
-🔗 **Next Step:** Continue to [Part 6: Part 6: Observability & Audit Trail]({{< ref "part-6-observability.md" >}})
+🔗 **Next Step:** Continue to [Part 6: Observability & Audit Trail]({{< ref "part-6-observability.md" >}})
 
 Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

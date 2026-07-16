@@ -24,6 +24,8 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-code-review-vibe-coding/executive-summary/"
+ShowToc: true
+TocOpen: true
 ---
 
 In February 2025, Andrej Karpathy posted a tweet that most engineers scrolled past:
@@ -165,6 +167,26 @@ Zero-trust mindset. Generator-Critic adversarial pipeline. Multi-agent review ar
 **Part 6 — Governance, Observability, and the Engineering Career**
 Why DORA metrics are no longer sufficient in the AI era. The AI Instability Tax. ISO/IEC 42001 as the new certifiable governance standard. The Deskilling Crisis and the Hollow Middle risk. What the engineering career looks like in 2030: Coder → Orchestrator → Architect of AI systems.
 
+The overall paradigm transition from unstructured prototyping (Vibe Coding) to production-ready governance (Vibe Engineering) is summarized in the flowchart below:
+
+```mermaid
+graph TD
+    subgraph Vibe Coding [Phase 1: Casual Vibe Coding]
+        A[CEO/PM/BA Prompt] --> B[AI Code Generation]
+        B --> C[Blind Trust Deploy]
+        C --> D{Production Wall & Security Breach}
+    end
+
+    subgraph Vibe Engineering [Phase 2: Vibe Engineering & Spec-Driven Development]
+        E[Machine-Readable Spec] --> F[Context-Informed AI Gen]
+        F --> G[Zero-Trust Review Gate]
+        G --> H[Verification & Mutation Testing]
+        H --> I[Resilient Production Deployment]
+    end
+
+    D -.->|Rescue & Transition| E
+```
+
 ---
 
 ## A Question Before You Begin
@@ -177,4 +199,4 @@ If the answer is "not entirely" — you are in exactly the right place.
 
 ---
 
-*Next: [Part 1 — Vibe Coding for CEOs, PMs, and BAs: Tools, Workflow, and The Production Wall](/series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical/)*
+*Next: [Part 1 — Vibe Coding for CEOs, PMs, and BAs: Tools, Workflow, and The Production Wall]({{< ref "/series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical.md" >}})*

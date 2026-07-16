@@ -27,9 +27,11 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical/"
+ShowToc: true
+TocOpen: true
 ---
 
-> **Series Orientation:** This article is Part 1 of the **AI Code Review & Vibe Coding** series, tailored for non-technical builders navigating the initial phase of vibe coding. For the overall roadmap, see the [Series Executive Summary](/series/ai-code-review-vibe-coding/executive-summary/).
+> **Series Orientation:** This article is Part 1 of the **AI Code Review & Vibe Coding** series, tailored for non-technical builders navigating the initial phase of vibe coding. For the overall roadmap, see the [Series Executive Summary]({{< ref "/series/ai-code-review-vibe-coding/executive-summary.md" >}}).
 
 In July 2025, the CEO of a Series A startup proudly demoed a working internal operations system — **140,000 lines of code** — built entirely with Claude prompts over four weeks. No engineers on the founding team. No technical co-founder. Just a business founder, a clear problem, and a willingness to "give in to the vibes."
 
@@ -146,6 +148,109 @@ OAuth flows, webhook verification, third-party API rate limiting, retry logic, a
 **Signal 5: You have paying customers and the cost of failure exceeds the benefit of speed.**
 The risk calculus changes fundamentally when real money and real user trust are at stake. A production failure that costs you a customer relationship or triggers a data breach is not recoverable with a new prompt.
 
+### Anatomy of a Production Wall: Bad vs. Remediation Code
+
+To understand exactly what happens at the Production Wall, consider this concrete database lookup example. The first is typical of AI-generated code from high-speed prompts (written without database context), while the second represents production-ready Go code that handles connection pooling, prevents SQL injection, and enforces query deadlines.
+
+```go
+package database
+
+import (
+	"context"
+	"database/sql"
+	"errors"
+	"fmt"
+	"time"
+
+	_ "github.com/lib/pq"
+)
+
+// User represents the database entity for a user.
+type User struct {
+	ID    int
+	Email string
+	Role  string
+}
+
+// =========================================================================
+// ANTI-PATTERN: Typical Vibe-Coded Implementation (Fragile & Vulnerable)
+// =========================================================================
+//
+// func GetUserRaw(email string) (*User, error) {
+//     // 1. Connection created per request (no pooling, leads to resource exhaustion under load)
+//     db, _ := sql.Open("postgres", "postgresql://user:pass@localhost/db")
+//
+//     // 2. SQL injection vulnerability (direct string interpolation)
+//     query := fmt.Sprintf("SELECT id, email, role FROM users WHERE email = '%s'", email)
+//
+//     // 3. No context/timeout handling (queries can hang indefinitely)
+//     rows, err := db.Query(query)
+//     if err != nil {
+//         return nil, err
+//     }
+//     // 4. Missing defer rows.Close() (leads to memory/connection leaks)
+//
+//     if rows.Next() {
+//         var u User
+//         // 5. Unhandled scanner errors
+//         _ = rows.Scan(&u.ID, &u.Email, &u.Role)
+//         return &u, nil
+//     }
+//     return nil, nil
+// }
+
+// =========================================================================
+// REMEDIATED: Production-Ready Go Database Adapter (Resilient & Secure)
+// =========================================================================
+
+type UserRepository struct {
+	db *sql.DB
+}
+
+func NewUserRepository(db *sql.DB) *UserRepository {
+	return &UserRepository{db: db}
+}
+
+// GetUserSecure retrieves a user by their email using secure practices.
+func (r *UserRepository) GetUserSecure(ctx context.Context, email string) (*User, error) {
+	// 1. Enforce operation deadline via Context Timeout
+	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
+	defer cancel()
+
+	// 2. Prevent SQL injection using parameterized inputs
+	query := `SELECT id, email, role FROM users WHERE email = $1`
+
+	var u User
+	// 3. Use QueryRowContext to propagate context cancellation/timeout
+	err := r.db.QueryRowContext(ctx, query, email).Scan(&u.ID, &u.Email, &u.Role)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, fmt.Errorf("user not found for email %q: %w", email, err)
+		}
+		// 4. Proper context timeout classification
+		if errors.Is(ctx.Err(), context.DeadlineExceeded) {
+			return nil, fmt.Errorf("database timeout exceeded: %w", ctx.Err())
+		}
+		return nil, fmt.Errorf("database query failure: %w", err)
+	}
+
+	return &u, nil
+}
+```
+
+The diagram below visualizes the decision flow as you hit the Production Wall:
+
+```mermaid
+graph TD
+    A[Start Idea/Concept] --> B[Vibe Coding Prototyping]
+    B --> C{Verify Production Wall Signals}
+    C -->|No Signals Triggered| B
+    C -->|Signal 1: Fix loops / Signal 2: Load failures / Signal 3: PII or Payments / Signal 4: Complex Integration / Signal 5: Paying Customers| D[The Production Wall]
+    D --> E[Decision Point]
+    E -->|Ignore & Keep Vibe Coding| F[High risk: Moltbook-style Security Breach or System Crash]
+    E -->|Cross the Wall: Standard Engineering Handoff| G[Secure, Scalable & Auditable Architecture]
+```
+
 ---
 
 ## The Moltbook Breach: What the Most Instructive Failure of 2026 Teaches Us
@@ -213,4 +318,4 @@ The engineers who benefit most from understanding vibe coding are the ones who r
 
 ---
 
-*Next: [Part 2 — Context Engineering: AGENTS.md, Cursor Rules, and RAG for Real Codebases](/series/ai-code-review-vibe-coding/part-2-context-engineering-codebase/)*
+*Next: [Part 2 — Context Engineering: AGENTS.md, Cursor Rules, and RAG for Real Codebases]({{< ref "/series/ai-code-review-vibe-coding/part-2-context-engineering-codebase.md" >}})*

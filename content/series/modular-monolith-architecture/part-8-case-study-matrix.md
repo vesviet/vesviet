@@ -1,4 +1,5 @@
 ---
+
 title: "Part 8: Case Study Matrix – The Monuments of the Modular Monolith"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "A compilation of the greatest Modular Monolith case studies from Shopify, Stack Overflow, Notion, WhatsApp, Target, and Basecamp."
@@ -11,6 +12,15 @@ canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/case-stu
 ShowToc: true
 TocOpen: true
 ---
+
+**Answer-first:** The Modular Monolith case study matrix analyzes how Notion, Stack Overflow, Target, and Lyft optimize resources by balancing monolithic vertical scaling with selective service extraction. These real-world architectures prove that keeping core domains co-located in a single binary reduces cloud costs, code duplication, and tooling friction.
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 7: Extraction Pattern – When Should You Extract Microservices?]({{< ref "part-7-extraction-pattern.md" >}}).
+
+### What You'll Learn That AI Won't Tell You
+- **Notion Database Consolidation:** How Notion runs shard migrations inside monolithic logic.
+- **Lyft Microservice Consolidations:** Why Lyft merged several microservices back into their core monorepo.
+- **Target Peak Scale Handling:** How Target manages Black Friday traffic peaks using vertical monolith replicas.
 
 > **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 8: Part 7: Extraction Pattern – When Should You Extract Microservices?]({{< ref "part-7-extraction-pattern.md" >}}).
 
@@ -158,37 +168,21 @@ Using in-memory caches requires monitoring to avoid Out-Of-Memory (OOM) crashes:
 
 
 
-## Operational Context: Part 8 Case Study Matrix Appendix
-
-### Performance Profiling and CPU Optimization
-To optimize the execution speed of modules within a monolithic binary, engineers must perform regular profiling using tools like Go's `pprof`. Profiling runs expose CPU bottlenecks caused by excessive pointer dereferencing and memory allocations. By replacing heap allocations with stack-allocated values and utilizing `sync.Pool` for reusable structures, garbage collection overhead is reduced, allowing the application to achieve sub-nanosecond processing efficiency.
-
-
-
-
-## Operational Context: Part 8 Case Study Matrix Appendix
-
-### Memory Footprint and GC Optimization
-Go's runtime manages memory allocation using a target percentage threshold. When memory usage climbs past this threshold, the garbage collector runs a sweep cycle, pausing execution threads. In a monolithic setup hosting multiple concurrent domains, you must tune this using the `GOGC` environment variable. Setting `GOGC` to 80 or 50 reduces the maximum memory footprint, ensuring the application stays within container memory quotas without triggering out-of-memory crashes.
-
-
-
-
-## Operational Context: Part 8 Case Study Matrix Appendix
-
-### Network Egress Controls and Local Subnet Routing
-When integrating the monolith with external services, configure client-side round-robin load balancing. By resolving downstream service IPs using internal DNS records, the application bypasses external NAT Gateways, routing all traffic within the local private subnet. This co-location eliminates network hops, securing communications and avoiding data transfer egress fees across availability zones.
-
-
-
-
-## Operational Context: Part 8 Case Study Matrix Appendix
-
-### Transactional Isolation and Database Lock Mitigations
-Operating multiple schemas under a single database instance requires setting strict transactional isolation levels. Run transactions using the `Read Committed` isolation level to prevent dirty reads while avoiding lock contention. Ensure that updates to the database occur in alphabetical order of the tables to mitigate deadlock situations during peak request concurrency.
-
-
 Thank you for joining the **Modular Monolith Architecture Playbook**. Apply this framework to your organization's next system design to gain the maximum advantage in speed and cost!
+
+## 5. Architectural Breakdown Matrix of Bounded Context Case Studies
+
+The table below summarizes the core architectural parameters and deployment strategies of prominent tech companies that leverage Modular Monoliths or consolidate microservices back into a single codebase.
+
+| Company | Core Technology Stack | Peak Request Throughput | Primary Reason for Monolithic Strategy | Key Optimization Mechanism |
+|---------|-----------------------|--------------------------|-----------------------------------------|----------------------------|
+| **Stack Overflow** | IIS Web Servers, MS SQL, C# / .NET | 1.3 Billion page views/month | Extreme query speed and low latency limits | Extensive in-memory caching of tag indices, vertical hardware scaling |
+| **Notion** | Node.js / Go, PostgreSQL | 100M+ active users | Database consistency and transaction speed | Custom application-level Postgres sharding, local cache caching |
+| **Lyft** | Python, Go, Envoy Proxy | Tens of thousands of rides/sec | Organizational friction and debugging overhead | Consolidation of microservices into coarse-grained 'Macroservices' |
+| **Segment** | Go, Docker, AWS ECS | Millions of events/second | Infrastructure cost overhead and container drift | Merging 140 destination workers into a single monolithic binary |
+
+### Core Takeaways from Enterprise Restructuring Case Studies
+Analyzing these architectures reveals that distributed system overhead is a physical bottleneck. When organizations transition from microservices to modular monoliths, they witness an immediate reduction in log ingestion volume, an elimination of cross-service connection overheads, and a return to simpler deployment validation cycles.
 
 ---
 

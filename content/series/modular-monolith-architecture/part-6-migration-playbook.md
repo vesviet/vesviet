@@ -1,4 +1,5 @@
 ---
+
 title: "Part 6: Migration Playbook – Consolidating Microservices"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "A practical guide to safely transitioning from Microservices back to a Modular Monolith using the Reverse Strangler Fig pattern, Dual-write databases, and"
@@ -11,6 +12,15 @@ canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/migratio
 ShowToc: true
 TocOpen: true
 ---
+
+**Answer-first:** Decommissioning microservices and returning to a Modular Monolith requires a structured Reverse Strangler Fig migration playbook. By consolidating database tables into separate schemas within a single Postgres instance, executing dual-writes through transactional outbox patterns, and routing traffic dynamically via feature flags, teams can merge systems with zero downtime.
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 5: Observability in Memory – When Everything Shares a Single Call Stack]({{< ref "part-5-observability.md" >}}).
+
+### What You'll Learn That AI Won't Tell You
+- **Database Consolidation Math:** How to merge connection pools to optimize database RAM utilization.
+- **Transactional Outbox Implementations:** The SQL schema design for safe event auditing during migrations.
+- **Canary Merging Safety:** Running dual-writes for 14 days to audit state reconciliation before switching readers.
 
 > **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 6: Part 5: Observability in Memory – When Everything Shares a Single Call Stack]({{< ref "part-5-observability.md" >}}).
 
@@ -98,44 +108,6 @@ Merging live databases from separate microservices back into a shared monolithic
 
 
 
-## Operational Context: Part 6 Migration Playbook Appendix
-
-### Performance Profiling and CPU Optimization
-To optimize the execution speed of modules within a monolithic binary, engineers must perform regular profiling using tools like Go's `pprof`. Profiling runs expose CPU bottlenecks caused by excessive pointer dereferencing and memory allocations. By replacing heap allocations with stack-allocated values and utilizing `sync.Pool` for reusable structures, garbage collection overhead is reduced, allowing the application to achieve sub-nanosecond processing efficiency.
-
-
-
-
-## Operational Context: Part 6 Migration Playbook Appendix
-
-### Memory Footprint and GC Optimization
-Go's runtime manages memory allocation using a target percentage threshold. When memory usage climbs past this threshold, the garbage collector runs a sweep cycle, pausing execution threads. In a monolithic setup hosting multiple concurrent domains, you must tune this using the `GOGC` environment variable. Setting `GOGC` to 80 or 50 reduces the maximum memory footprint, ensuring the application stays within container memory quotas without triggering out-of-memory crashes.
-
-
-
-
-## Operational Context: Part 6 Migration Playbook Appendix
-
-### Network Egress Controls and Local Subnet Routing
-When integrating the monolith with external services, configure client-side round-robin load balancing. By resolving downstream service IPs using internal DNS records, the application bypasses external NAT Gateways, routing all traffic within the local private subnet. This co-location eliminates network hops, securing communications and avoiding data transfer egress fees across availability zones.
-
-
-
-
-## Operational Context: Part 6 Migration Playbook Appendix
-
-### Transactional Isolation and Database Lock Mitigations
-Operating multiple schemas under a single database instance requires setting strict transactional isolation levels. Run transactions using the `Read Committed` isolation level to prevent dirty reads while avoiding lock contention. Ensure that updates to the database occur in alphabetical order of the tables to mitigate deadlock situations during peak request concurrency.
-
-
-
-
-## Operational Context: Part 6 Migration Playbook Appendix
-
-### Monorepo Dependency Isolation and Compilation Tuning
-Managing third-party dependencies in a single repository requires isolating package definitions. Avoid declaring globally scoped dependencies. Instead, configure discrete dependency lists for each module. Utilize build caching tools in the CI runner to skip unchanged packages during build steps, compressing compilation times and accelerating validation loops.
-
-
 Consolidating Microservices into a Monolith
 
 Breaking a Monolith into multiple Microservices is often referred to as the **Strangler Fig Pattern**. The process of consolidating distributed Microservices back into a central Monolith system follows the opposite direction: the **Reverse Strangler Fig Pattern**.
@@ -192,6 +164,58 @@ Moving code won't kill a system, but making a mistake when moving data will dest
 
 Consolidating Microservices into a Modular Monolith is a project requiring meticulous care. It reduces long-term costs (FinOps) but will require short-term effort from the engineering team.
 
+## 5. SQL Database Schema Merge & Outbox Table Structure
+
+Before merging application code, database tables must be migrated under a single Postgres instance. Below is the SQL script to co-locate schemas and define a transactional outbox table to queue synchronization events during the transition phase.
+
+```sql
+-- Create distinct schemas inside the consolidated database
+CREATE SCHEMA IF NOT EXISTS billing;
+CREATE SCHEMA IF NOT EXISTS inventory;
+
+-- Define billing payments table
+CREATE TABLE billing.payments (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    order_id VARCHAR(50) NOT NULL,
+    amount NUMERIC(12, 2) NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Define transaction outbox table for audit logging
+CREATE TABLE billing.outbox (
+    id BIGSERIAL PRIMARY KEY,
+    aggregate_type VARCHAR(50) NOT NULL,
+    aggregate_id VARCHAR(50) NOT NULL,
+    event_type VARCHAR(100) NOT NULL,
+    payload JSONB NOT NULL,
+    processed BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Index for processing optimization
+CREATE INDEX idx_outbox_unprocessed ON billing.outbox (id) WHERE processed = FALSE;
+
+-- Trigger to log outbox events on new payments
+CREATE OR REPLACE FUNCTION billing.queue_payment_event()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO billing.outbox (aggregate_type, aggregate_id, event_type, payload)
+    VALUES ('Payment', NEW.id::text, 'PaymentProcessed', json_build_object(
+        'order_id', NEW.order_id,
+        'amount', NEW.amount,
+        'status', NEW.status
+    ));
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_payment_processed
+    AFTER INSERT ON billing.payments
+    FOR EACH ROW
+    EXECUTE FUNCTION billing.queue_payment_event();
+```
+
 So, is there ever a time when we **SHOULD NOT** merge a service into a Monolith, or even have to **EXTRACT** it from the Monolith? Absolutely. Blindly pursuing a Monolith is equally dangerous. Let's explore the correct separation philosophy in **[Part 7: Extraction Pattern]({{< ref "part-7-extraction-pattern.md" >}})**.
 
 ---
@@ -201,6 +225,6 @@ So, is there ever a time when we **SHOULD NOT** merge a service into a Monolith,
 [← Previous Part]({{< ref "part-5-observability.md" >}})
 [Next Part →]({{< ref "part-7-extraction-pattern.md" >}})
 
-🔗 **Next Step:** Continue to [Part 7: Part 7: Extraction Pattern – When Should You Extract Microservices?]({{< ref "part-7-extraction-pattern.md" >}})
+🔗 **Next Step:** Continue to [Part 7: Extraction Pattern – When Should You Extract Microservices?]({{< ref "part-7-extraction-pattern.md" >}})
 
 Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

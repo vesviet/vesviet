@@ -13,7 +13,14 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-3-spatial-indexing/"
+ShowToc: true
+TocOpen: true
 ---
+
+[← Series hub]({{< ref "/series/routing-geospatial-architecture/_index.md" >}})
+[← Prev]({{< ref "/series/routing-geospatial-architecture/part-2-environment-setup.md" >}}) • [Next →]({{< ref "/series/routing-geospatial-architecture/part-4-golang-microservices.md" >}})
+
+> **Prerequisite:** This part builds on the local environment set up in [Part 2: Zero to Hero Environment Setup (Docker, OSM, Golang)]({{< ref "part-2-environment-setup.md" >}}).
 
 A fatal mistake made by junior engineers building ride-hailing apps is connecting their API Gateway directly to the Routing Engine. 
 
@@ -61,7 +68,72 @@ How do massive platforms match riders and drivers instantly without database loc
 
 **Spatial Compaction:** To store massive, complex service zones (Geofences) without consuming gigabytes of memory, Uber uses the `h3.compact()` function. This algorithm recursively collapses 7 smaller child hexagons into 1 large parent hexagon, compressing the spatial data by up to 80%.
 
-*With the Spatial Indexing pre-filter in place, the next step is packaging these components into a professional API Gateway. Dive into [Part 4: Golang API & Microservices Integration (Kratos & Dapr)](/series/routing-geospatial-architecture/part-4-golang-microservices/) to see the implementation details.*
+## Geohash vs Uber H3 vs Google S2 Geometry
+
+Geospatial indexing systems partition the Earth's surface differently:
+
+- **Geohash (Base32):** Divides the world into a quadtree grid of bounding boxes. String prefix matching represents proximity (e.g. `w3gv7` is inside `w3gv`). However, because it uses rectangular blocks, it suffers from severe shape distortion near the poles. Furthermore, cells at boundary edges do not share equidistant centers, leading to directional search bias.
+- **Google S2 (Hilbert Curve):** Projects the Earth onto a cube, and uses a 1D Hilbert space-filling curve to index cells. It supports hierarchical representation from Level 0 (face of the cube) to Level 30 (sub-centimeter resolution). S2 cells are quadrilateral (four-sided), which still introduces edge-distance distortion between diagonal and orthogonal neighbors.
+- **Uber H3 (Hexagonal):** Employs an icosahedral projection mapped with hexagons. H3 hexagons guarantee that every neighboring cell's centroid is exactly the same distance away. This equidistant property makes H3 the gold standard for radius-based search, dynamic dispatch, and smoothing algorithms (convolution kernels) that prevent price cliffs in surge calculations.
+
+## Go Implementation: H3 Index Conversion Helper
+
+Here is a high-performance Go helper snippet demonstrating coordinates to H3 conversion and neighbor queries:
+
+```go
+package indexing
+
+import (
+	"fmt"
+	"github.com/uber/h3-go/v3"
+)
+
+// H3Helper wraps spatial indexing operations
+type H3Helper struct {
+	Resolution int
+}
+
+// NewH3Helper creates a helper with a default resolution
+func NewH3Helper(res int) *H3Helper {
+	return &H3Helper{Resolution: res}
+}
+
+// LatLngToH3 converts coordinates to an H3 Index string
+func (h *H3Helper) LatLngToH3(lat, lng float64) string {
+	coordinate := h3.GeoCoord{Latitude: lat, Longitude: lng}
+	index := h3.FromGeo(coordinate, h.Resolution)
+	return fmt.Sprintf("%x", index)
+}
+
+// GetKRing returns the neighboring H3 indexes within a given step radius
+func (h *H3Helper) GetKRing(h3IndexStr string, k int) ([]string, error) {
+	var index h3.H3Index
+	_, err := fmt.Sscanf(h3IndexStr, "%x", &index)
+	if err != nil {
+		return nil, fmt.Errorf("invalid H3 index string: %w", err)
+	}
+
+	ring := h3.KRing(index, k)
+	result := make([]string, len(ring))
+	for i, idx := range ring {
+		result[i] = fmt.Sprintf("%x", idx)
+	}
+	return result, nil
+}
+
+// AreNeighbors checks if two cell indexes share an edge
+func (h *H3Helper) AreNeighbors(originStr, destStr string) (bool, error) {
+	var origin, dest h3.H3Index
+	if _, err := fmt.Sscanf(originStr, "%x", &origin); err != nil {
+		return false, fmt.Errorf("invalid origin H3 index: %w", err)
+	}
+	if _, err := fmt.Sscanf(destStr, "%x", &dest); err != nil {
+		return false, fmt.Errorf("invalid destination H3 index: %w", err)
+	}
+	return h3.AreNeighbors(origin, dest), nil
+}
+```
+
 
 ---
 
@@ -86,3 +158,8 @@ Another classic trap: using `ST_Distance < 5000`. The `ST_Distance` function is 
 {{< faq q="Why did my API Gateway crash when a user searched for drivers across the Pacific Ocean?" >}}
 This is the **Antimeridian Problem** (Longitude 180). When a bounding box crosses the Date Line, naive spatial algorithms wrap the polygon the "long way" around the Earth (spanning 358 degrees). You must explicitly detect and split trans-Pacific bounding boxes into a MultiPolygon before querying.
 {{< /faq >}}
+
+Need help building high-scale routing engines or spatial indexing pipelines? [Contact me](/contact/) to discuss your project.
+
+🔗 **Next Step:** Package these components in [Part 4: Golang API & Microservices Integration (Kratos & Dapr)]({{< ref "/series/routing-geospatial-architecture/part-4-golang-microservices.md" >}}).
+

@@ -1,4 +1,5 @@
 ---
+
 title: "Part 1 — The Death of 'Code Typists': When Syntax is No Longer an Advantage"
 date: "2026-05-10T15:00:00+07:00"
 lastmod: "2026-05-10T15:00:00+07:00"
@@ -14,6 +15,15 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-1-the-death-of-code-typists/"
 mermaid: true
 ---
+
+**Answer-first:** Programmers who only write boilerplate code and translate requests to syntax are facing obsolescence. Because AI can generate code instantly, technical value is shifting to engineers who focus on context engineering, architectural integrity, and system-level troubleshooting.
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Executive Summary — Software Engineers in the AI Era: Who Stays, Who Leaves?]({{< ref "executive-summary.md" >}}).
+
+### What You'll Learn That AI Won't Tell You
+- **Boilerplate Obsolescence:** Why AI reduces the time spent on writing controllers and SQL entities to zero.
+- **The Compilation Bottleneck:** How compiler feedback loops are automated using AI terminals.
+- **Cognitive Load Optimization:** Shifting focus from syntax memorization to system design.
 
 > **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 1: Executive Summary — Software Engineers in the AI Era: Who Stays, Who Leaves?]({{< ref "executive-summary.md" >}}).
 
@@ -204,6 +214,6 @@ To prevent AI-generated code from introducing syntax and style degradation:
 [← Previous Part]({{< ref "executive-summary.md" >}})
 [Next Part →]({{< ref "part-2-man-vs-machine-boundaries.md" >}})
 
-🔗 **Next Step:** Continue to [Part 2: Part 2 — Man vs. Machine Boundaries: What to Delegate and What to Keep]({{< ref "part-2-man-vs-machine-boundaries.md" >}})
+🔗 **Next Step:** Continue to [Part 2 — Man vs. Machine Boundaries: What to Delegate and What to Keep]({{< ref "part-2-man-vs-machine-boundaries.md" >}})
 
 Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

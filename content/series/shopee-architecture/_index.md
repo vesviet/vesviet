@@ -19,12 +19,12 @@ This series explores the core architectural patterns and technologies Shopee use
 
 ## Series Contents
 
-- [Chapter 1: Microservices Foundation](/series/shopee-architecture/01-microservices-foundation/)
-- [Chapter 2: Flash Sale Engine](/series/shopee-architecture/02-flash-sale-engine/)
-- [Chapter 3: Traffic Shield](/series/shopee-architecture/03-traffic-shield/)
-- [Chapter 4: Database Scale](/series/shopee-architecture/04-database-scale/)
-- [Chapter 5: Observability](/series/shopee-architecture/05-observability/)
+- [Chapter 1: Microservices Foundation]({{< ref "/series/shopee-architecture/01-microservices-foundation.md" >}})
+- [Chapter 2: Flash Sale Engine]({{< ref "/series/shopee-architecture/02-flash-sale-engine.md" >}})
+- [Chapter 3: Traffic Shield]({{< ref "/series/shopee-architecture/03-traffic-shield.md" >}})
+- [Chapter 4: Database Scale]({{< ref "/series/shopee-architecture/04-database-scale.md" >}})
+- [Chapter 5: Observability]({{< ref "/series/shopee-architecture/05-observability.md" >}})
 
 ---
 
-*Looking for a practical guide to migrating a legacy e-commerce platform to a microservices architecture similar to Shopee's? See our **[Composable Commerce Migration Series](/series/composable-commerce-migration/)** for a step-by-step production case study.*
+*Looking for a practical guide to migrating a legacy e-commerce platform to a microservices architecture similar to Shopee's? See our **[Composable Commerce Migration Series]({{< ref "/series/composable-commerce-migration/_index.md" >}})** for a step-by-step production case study.*

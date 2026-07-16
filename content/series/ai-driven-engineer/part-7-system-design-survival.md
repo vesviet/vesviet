@@ -1,4 +1,5 @@
 ---
+
 title: "Part 7 — System Design: The Priceless Survival Territory for Developers"
 date: "2026-05-10T16:00:00+07:00"
 lastmod: "2026-05-10T16:00:00+07:00"
@@ -14,6 +15,15 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-7-system-design-survival/"
 mermaid: true
 ---
+
+**Answer-first:** System design is the ultimate human skill in the AI era. While AI can write code blocks, it struggles with trade-off analysis, network constraint mapping, and database sizing, making domain design and infrastructure architecture the core focus for software engineers.
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 6 — Role Shift: From Coder to AI Orchestrator]({{< ref "part-6-from-coder-to-orchestrator.md" >}}).
+
+### What You'll Learn That AI Won't Tell You
+- **CAP Theorem Realities:** Analyzing distributed systems for consistency and availability under network partitions.
+- **Latency Budget Planning:** Mapping timing budgets across databases, network hops, and API layers.
+- **Database Sharding Trade-offs:** Deciding when to partition databases based on write volumes and query styles.
 
 > **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 7: Part 6 — Role Shift: From Coder to AI Orchestrator]({{< ref "part-6-from-coder-to-orchestrator.md" >}}).
 
@@ -162,6 +172,6 @@ Enforcing design compliance programmatically requires structured steps:
 [← Previous Part]({{< ref "part-6-from-coder-to-orchestrator.md" >}})
 [Next Part →]({{< ref "part-8-the-junior-paradox.md" >}})
 
-🔗 **Next Step:** Continue to [Part 8: Part 8 — The Junior Paradox: Building Foundations When AI Does the Basics]({{< ref "part-8-the-junior-paradox.md" >}})
+🔗 **Next Step:** Continue to [Part 8 — The Junior Paradox: Building Foundations When AI Does the Basics]({{< ref "part-8-the-junior-paradox.md" >}})
 
 Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

@@ -14,6 +14,8 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/"
+ShowToc: true
+TocOpen: true
 ---
 
 # Masterclass: High Concurrency Systems & B2B Commerce

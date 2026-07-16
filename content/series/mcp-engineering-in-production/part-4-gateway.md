@@ -1,4 +1,5 @@
 ---
+
 title: "Part 4: MCP Gateway Architecture"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
@@ -15,6 +16,15 @@ mermaid: true
 ShowToc: true
 TocOpen: true
 ---
+
+**Answer-first:** Centralizing multiple backend MCP servers behind a single API gateway simplifies agent integration and enforces security boundaries. By writing gateway middleware that translates client HTTP/SSE requests into internal JSON-RPC calls, manages connection pools, and monitors server health, engineers can build a highly resilient routing layer.
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 3: Identity & AuthN For Agentic Workflows]({{< ref "part-3-identity.md" >}}).
+
+### What You'll Learn That AI Won't Tell You
+- **Connection Pool Overhead:** Managing hundreds of persistent SSE streams without running out of TCP sockets.
+- **Dynamic Tool Merging:** How the gateway aggregates tools from multiple MCP servers into a single schema list.
+- **Routing Failovers:** Automatically shifting requests to backup servers when primary nodes return 5xx errors.
 
 > **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 4: Part 3: Identity & AuthN For Agentic Workflows]({{< ref "part-3-identity.md" >}}).
 
@@ -175,29 +185,103 @@ To prevent a single failing MCP server from taking down the entire agent pipelin
 2. **Health Check Probes:** Periodically send background ping checks to all target servers to update the healthy connection pool.
 3. **Connection Pooling:** Reuse TCP connections via Go's `http.Transport` IdleConnTimeout configurations.
 
+## 5. Complete Go Gateway Reverse Proxy and Tool Routing Implementation
 
+The code below implements a Go gateway that aggregates backend MCP servers, parses client requests, and routes tool execution calls to the appropriate destination service over HTTP.
 
+```go
+package main
 
-## Operational Context: Part 4 Gateway Appendix
+import (
+	"bytes"
+	"context"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"sync"
+	"time"
+)
 
-### Telemetry Correlation and OpenTelemetry Tracing Conventions
-Tracking agent actions requires propagating tracing context through dynamic tool invocations. Utilize the OpenTelemetry SDK to create parent spans for LLM reasoning sessions, linking tool executions as child spans. Annote traces with metadata fields such as model name, token consumption, and execution duration to locate latency bottlenecks in the system.
+type Gateway struct {
+	mu      sync.RWMutex
+	routes  map[string]string // Maps ToolName -> Backend Server URL
+	client  *http.Client
+}
 
+type ToolCallRequest struct {
+	ToolName string          `json:"tool"`
+	Params   json.RawMessage `json:"arguments"`
+}
 
+type ToolCallResponse struct {
+	Output string `json:"output"`
+	Status string `json:"status"`
+}
 
+func NewGateway() *Gateway {
+	return &Gateway{
+		routes: make(map[string]string),
+		client: &http.Client{Timeout: 5 * time.Second},
+	}
+}
 
-## Operational Context: Part 4 Gateway Appendix
+func (g *Gateway) RegisterRoute(toolName string, backendURL string) {
+	g.mu.Lock()
+	defer g.mu.Unlock()
+	g.routes[toolName] = backendURL
+}
 
-### Rate Limiting and Downstream API Protection
-Enforce rate limits on MCP endpoints to prevent downstream API exhaustion from recursive agent loops. Implement a token bucket rate limiter in the gateway middleware layer, restricting client requests to 60 calls per minute. If an agent exceeds this limit, return HTTP status 429 and suspend the session dynamically.
+func (g *Gateway) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
 
+	var req ToolCallRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Bad request", http.StatusBadRequest)
+		return
+	}
 
+	g.mu.RLock()
+	backendURL, exists := g.routes[req.ToolName]
+	g.mu.RUnlock()
 
+	if !exists {
+		http.Error(w, "Tool routing path not found", http.StatusNotFound)
+		return
+	}
 
-## Operational Context: Part 4 Gateway Appendix
+	// Forward payment payload to backend MCP server
+	buf := new(bytes.Buffer)
+	_ = json.NewEncoder(buf).Encode(req)
 
-### Ingress Load Balancing and Gateway Autoscaling
-Deploy MCP gateway instances behind an ingress controller utilizing round-robin load balancing. Configure the Horizontal Pod Autoscaling (HPA) controller to scale pods based on active connection metrics. This ensures the gateway pool maintains adequate resource headroom to handle traffic spikes during concurrent agent tasks.
+	ctx, cancel := context.WithTimeout(r.Context(), 3*time.Second)
+	defer cancel()
+
+	httpReq, _ := http.NewRequestWithContext(ctx, "POST", backendURL, buf)
+	httpReq.Header.Set("Content-Type", "application/json")
+
+	resp, err := g.client.Do(httpReq)
+	if err != nil {
+		http.Error(w, "Backend route execution failed: "+err.Error(), http.StatusBadGateway)
+		return
+	}
+	defer resp.Body.Close()
+
+	w.WriteHeader(resp.StatusCode)
+	var routeResp ToolCallResponse
+	_ = json.NewDecoder(resp.Body).Decode(&routeResp)
+	_ = json.NewEncoder(w).Encode(routeResp)
+}
+
+func main() {
+	gateway := NewGateway()
+	gateway.RegisterRoute("process_payment", "http://payment-mcp.internal:8081/call")
+	
+	fmt.Println("MCP Gateway router initialized on port :8080")
+}
+```
 
 ---
 
@@ -206,6 +290,6 @@ Deploy MCP gateway instances behind an ingress controller utilizing round-robin 
 [← Previous Part]({{< ref "part-3-identity.md" >}})
 [Next Part →]({{< ref "part-5-security.md" >}})
 
-🔗 **Next Step:** Continue to [Part 5: Part 5: Production Security & OWASP MCP Top 10]({{< ref "part-5-security.md" >}})
+🔗 **Next Step:** Continue to [Part 5: Production Security & OWASP MCP Top 10]({{< ref "part-5-security.md" >}})
 
 Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

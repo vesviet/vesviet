@@ -11,6 +11,8 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/"
+ShowToc: true
+TocOpen: true
 ---
 
 Modern Logistics and Delivery systems rely heavily on one core capability: **Calculating distances and travel times (Distance Matrix) quickly and accurately.**
@@ -21,14 +23,14 @@ In this 8-part series, we will dive deep into building a complete Distance Matri
 
 ## 🗺️ Series Contents (8 Parts)
 
-- **[Part 1: Core Algorithms (A*, Dijkstra) Visualized](/series/routing-geospatial-architecture/part-1-core-algorithms/)**
-- **[Part 2: Zero to Hero Environment Setup (Docker, OSM Data, Golang)](/series/routing-geospatial-architecture/part-2-environment-setup/)**
-- **[Part 3: Spatial Indexing (Uber H3, PostGIS & Redis GEO)](/series/routing-geospatial-architecture/part-3-spatial-indexing/)**
-- **[Part 4: Golang API & Microservices Integration (Kratos & Dapr)](/series/routing-geospatial-architecture/part-4-golang-microservices/)**
-- **[Part 5: Route Visualization UI with Mapbox & Deck.gl](/series/routing-geospatial-architecture/part-5-visualization-ui/)**
-- **[Part 6: Location Clustering with Uber H3 & Redis Semantic Caching](/series/routing-geospatial-architecture/part-6-redis-semantic-caching/)**
-- **[Part 7: Load Testing and Performance Tuning for Production](/series/routing-geospatial-architecture/part-7-load-testing-production/)**
-- **[Part 8: Zero-Downtime Map Updates & Multi-Region Kubernetes](/series/routing-geospatial-architecture/part-8-zero-downtime-k8s/)**
+- **[Part 1: Core Algorithms (A*, Dijkstra) Visualized]({{< ref "/series/routing-geospatial-architecture/part-1-core-algorithms.md" >}})**
+- **[Part 2: Zero to Hero Environment Setup (Docker, OSM Data, Golang)]({{< ref "/series/routing-geospatial-architecture/part-2-environment-setup.md" >}})**
+- **[Part 3: Spatial Indexing (Uber H3, PostGIS & Redis GEO)]({{< ref "/series/routing-geospatial-architecture/part-3-spatial-indexing.md" >}})**
+- **[Part 4: Golang API & Microservices Integration (Kratos & Dapr)]({{< ref "/series/routing-geospatial-architecture/part-4-golang-microservices.md" >}})**
+- **[Part 5: Route Visualization UI with Mapbox & Deck.gl]({{< ref "/series/routing-geospatial-architecture/part-5-visualization-ui.md" >}})**
+- **[Part 6: Location Clustering with Uber H3 & Redis Semantic Caching]({{< ref "/series/routing-geospatial-architecture/part-6-redis-semantic-caching.md" >}})**
+- **[Part 7: Load Testing and Performance Tuning for Production]({{< ref "/series/routing-geospatial-architecture/part-7-load-testing-production.md" >}})**
+- **[Part 8: Zero-Downtime Map Updates & Multi-Region Kubernetes]({{< ref "/series/routing-geospatial-architecture/part-8-zero-downtime-k8s.md" >}})**
 
 ---
 

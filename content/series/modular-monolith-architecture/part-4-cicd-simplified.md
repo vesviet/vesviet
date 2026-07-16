@@ -1,4 +1,5 @@
 ---
+
 title: "Part 4: CI/CD Simplified & Atomic Deployments"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "Why is CI/CD management for Microservices so complex? Discover the power of Atomic Deployments and how Shopify runs hundreds of thousands of tests in under"
@@ -11,6 +12,15 @@ canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/cicd-sim
 ShowToc: true
 TocOpen: true
 ---
+
+**Answer-first:** Large monoliths can avoid slow CI/CD pipelines by implementing monorepo caching tools like Bazel, Go build caches, and selective test execution based on git diffs. Shopify proves that deploying a massive monolithic codebase multiple times a day is achievable through atomic migrations and automated pipeline optimizations.
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 3: Domain-Driven Design (DDD) Boundaries in a Modular Monolith]({{< ref "part-3-ddd-module-boundaries.md" >}}).
+
+### What You'll Learn That AI Won't Tell You
+- **Bazel AST Parsing:** How Bazel maps dependency graphs to rebuild only modified packages.
+- **GitHub Actions Caching:** Real configuration keys to share Go compilation caches across PR runners.
+- **Shopify's Deployment Cadence:** How automated merge queues and canary testing protect high-traffic deployments.
 
 > **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 4: Part 3: Domain-Driven Design (DDD) Boundaries in a Modular Monolith]({{< ref "part-3-ddd-module-boundaries.md" >}}).
 
@@ -113,54 +123,67 @@ When codebases grow to millions of lines, CI/CD execution times can slow to a cr
 2. **Parallel Testing:** Segment unit tests by package boundaries. If a pull request only modifies the `billing` module, the CI pipeline runs only the `billing_test.go` suites.
 3. **Build Target Decoupling:** Organize Go modules with discrete `go.mod` files inside module directories. This isolates dependency management and prevents third-party dependency conflicts from leaking across boundaries.
 
+## 5. Optimized GitHub Actions Pipeline for Selective Module Testing
 
+Running tests across a massive monolith on every commit wastes compute time. The configuration below uses Git diffs to detect which module directories have changed and executes tests only for those directories.
 
+```yaml
+name: Monolith Selective CI
 
-## Operational Context: Part 4 Cicd Simplified Appendix
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-### Performance Profiling and CPU Optimization
-To optimize the execution speed of modules within a monolithic binary, engineers must perform regular profiling using tools like Go's `pprof`. Profiling runs expose CPU bottlenecks caused by excessive pointer dereferencing and memory allocations. By replacing heap allocations with stack-allocated values and utilizing `sync.Pool` for reusable structures, garbage collection overhead is reduced, allowing the application to achieve sub-nanosecond processing efficiency.
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      billing: ${{ steps.filter.outputs.billing }}
+      inventory: ${{ steps.filter.outputs.inventory }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            billing:
+              - 'internal/billing/**'
+              - 'go.mod'
+            inventory:
+              - 'internal/inventory/**'
+              - 'go.mod'
 
+  test-billing:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.billing == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+          cache: true
+      - name: Test Billing Module
+        run: go test -v ./internal/billing/...
 
+  test-inventory:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.inventory == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+          cache: true
+      - name: Test Inventory Module
+        run: go test -v ./internal/inventory/...
+```
 
-
-## Operational Context: Part 4 Cicd Simplified Appendix
-
-### Memory Footprint and GC Optimization
-Go's runtime manages memory allocation using a target percentage threshold. When memory usage climbs past this threshold, the garbage collector runs a sweep cycle, pausing execution threads. In a monolithic setup hosting multiple concurrent domains, you must tune this using the `GOGC` environment variable. Setting `GOGC` to 80 or 50 reduces the maximum memory footprint, ensuring the application stays within container memory quotas without triggering out-of-memory crashes.
-
-
-
-
-## Operational Context: Part 4 Cicd Simplified Appendix
-
-### Network Egress Controls and Local Subnet Routing
-When integrating the monolith with external services, configure client-side round-robin load balancing. By resolving downstream service IPs using internal DNS records, the application bypasses external NAT Gateways, routing all traffic within the local private subnet. This co-location eliminates network hops, securing communications and avoiding data transfer egress fees across availability zones.
-
-
-
-
-## Operational Context: Part 4 Cicd Simplified Appendix
-
-### Transactional Isolation and Database Lock Mitigations
-Operating multiple schemas under a single database instance requires setting strict transactional isolation levels. Run transactions using the `Read Committed` isolation level to prevent dirty reads while avoiding lock contention. Ensure that updates to the database occur in alphabetical order of the tables to mitigate deadlock situations during peak request concurrency.
-
-
-
-
-## Operational Context: Part 4 Cicd Simplified Appendix
-
-### Monorepo Dependency Isolation and Compilation Tuning
-Managing third-party dependencies in a single repository requires isolating package definitions. Avoid declaring globally scoped dependencies. Instead, configure discrete dependency lists for each module. Utilize build caching tools in the CI runner to skip unchanged packages during build steps, compressing compilation times and accelerating validation loops.
-
-
-
-
-## Operational Context: Part 4 Cicd Simplified Appendix
-
-### Performance Profiling and CPU Optimization
-To optimize the execution speed of modules within a monolithic binary, engineers must perform regular profiling using tools like Go's `pprof`. Profiling runs expose CPU bottlenecks caused by excessive pointer dereferencing and memory allocations. By replacing heap allocations with stack-allocated values and utilizing `sync.Pool` for reusable structures, garbage collection overhead is reduced, allowing the application to achieve sub-nanosecond processing efficiency.
-
+### Build Caching Strategy in Production Pipelines
+To maximize speed, we leverage Go's compilation cache. The `actions/setup-go` action caches the `$GOCACHE` directory. This ensures that third-party dependencies are compiled only once, reducing test run times from minutes to under 10 seconds.
 
 Simplifying CI/CD alone can save an organization countless work hours. However, when the system goes into Production, how do we track errors? In a distributed architecture, we need highly expensive Distributed Tracing. In a Monolith, this problem is much simpler and more effective. Discover how in **[Part 5: Observability in Memory]({{< ref "part-5-observability.md" >}})**.
 
@@ -171,6 +194,6 @@ Simplifying CI/CD alone can save an organization countless work hours. However, 
 [← Previous Part]({{< ref "part-3-ddd-module-boundaries.md" >}})
 [Next Part →]({{< ref "part-5-observability.md" >}})
 
-🔗 **Next Step:** Continue to [Part 5: Part 5: Observability in Memory – When Everything Shares a Single Call Stack]({{< ref "part-5-observability.md" >}})
+🔗 **Next Step:** Continue to [Part 5: Observability in Memory – When Everything Shares a Single Call Stack]({{< ref "part-5-observability.md" >}})
 
 Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

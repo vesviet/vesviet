@@ -1,4 +1,5 @@
 ---
+
 title: "Part 3 — The 10x Productivity Reality: Where We Speed Up, Where We Slow Down"
 date: "2026-05-10T15:20:00+07:00"
 lastmod: "2026-05-10T15:20:00+07:00"
@@ -14,6 +15,15 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-3-the-10x-productivity-reality/"
 mermaid: true
 ---
+
+**Answer-first:** Achieving a 10x productivity increase using AI tools requires context engineering rather than typing faster. By providing AI with structured workspace context, clear styling rules, and compiler error logs, developers can generate correct features on the first attempt.
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 2 — Man vs. Machine Boundaries: What to Delegate and What to Keep]({{< ref "part-2-man-vs-machine-boundaries.md" >}}).
+
+### What You'll Learn That AI Won't Tell You
+- **Context Window Poisoning:** Why adding irrelevant files to prompts degrades AI code accuracy.
+- **Workspace Indexing Math:** How Cursor indexes symbols and classes using local AST parsing.
+- **Error Loop Resolution:** Techniques to break out of repetitive AI code generation loops.
 
 > **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 3: Part 2 — Man vs. Machine Boundaries: What to Delegate and What to Keep]({{< ref "part-2-man-vs-machine-boundaries.md" >}}).
 
@@ -153,14 +163,6 @@ func main() {
 }
 ```
 
-
-
-
-## Operational Context: Part 3 The 10X Productivity Reality Appendix
-
-### KPI Tracking and Code Quality Metrics
-To evaluate the impact of AI-assisted development, track code quality indicators in the CI pipeline. Monitor the change lead time (from commit to production) alongside the code churn rate (lines deleted within 7 days). A rising churn rate indicates hallucinated patterns, requiring adjustment of the prompt templates.
-
 ---
 
 ## Navigation & Next Steps
@@ -168,6 +170,6 @@ To evaluate the impact of AI-assisted development, track code quality indicators
 [← Previous Part]({{< ref "part-2-man-vs-machine-boundaries.md" >}})
 [Next Part →]({{< ref "part-4-blurring-sdlc-lines-and-qc-revolution.md" >}})
 
-🔗 **Next Step:** Continue to [Part 4: Part 4 — Blurring SDLC Lines & The QC Revolution]({{< ref "part-4-blurring-sdlc-lines-and-qc-revolution.md" >}})
+🔗 **Next Step:** Continue to [Part 4 — Blurring SDLC Lines & The QC Revolution]({{< ref "part-4-blurring-sdlc-lines-and-qc-revolution.md" >}})
 
 Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

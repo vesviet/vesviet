@@ -1,4 +1,5 @@
 ---
+
 title: "Part 3: Identity & AuthN For Agentic Workflows"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
@@ -15,6 +16,15 @@ mermaid: true
 ShowToc: true
 TocOpen: true
 ---
+
+**Answer-first:** Securing MCP servers requires enforcing authorization controls at the gateway level. By validating client identity using JWT tokens, checking scope permissions, and routing API calls with dynamic context variables, architects can ensure that AI agents only execute tools and read resources that their human users are authorized to access.
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 2: Build a Production Server with Go]({{< ref "part-2-build.md" >}}).
+
+### What You'll Learn That AI Won't Tell You
+- **Context Sharing Patterns:** Forwarding the end-user's JWT token through the gateway down to the backend MCP servers.
+- **Least-Privilege Agent Design:** Mapping LLM tool permissions to specific user role groups in LDAP/OIDC.
+- **Dynamic Resource Filters:** Filtering SQL response data to hide sensitive fields before returning it to the agent.
 
 > **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 3: Part 2: Build a Production Server with Go]({{< ref "part-2-build.md" >}}).
 
@@ -170,14 +180,6 @@ In addition to token checks:
 - **Mutual TLS (mTLS):** Configure the gateway to require client certificates from downstream MCP agents. This ensures network connections are verified before HTTP middleware runs.
 - **JWKS Endpoint Caching:** Fetch verification keys from the authorization server's JWKS endpoint, caching them in memory for 1 hour to prevent network roundtrips on every request.
 
-
-
-
-## Operational Context: Part 3 Identity Appendix
-
-### Telemetry Correlation and OpenTelemetry Tracing Conventions
-Tracking agent actions requires propagating tracing context through dynamic tool invocations. Utilize the OpenTelemetry SDK to create parent spans for LLM reasoning sessions, linking tool executions as child spans. Annote traces with metadata fields such as model name, token consumption, and execution duration to locate latency bottlenecks in the system.
-
 ---
 
 ## Navigation & Next Steps
@@ -185,6 +187,6 @@ Tracking agent actions requires propagating tracing context through dynamic tool
 [← Previous Part]({{< ref "part-2-build.md" >}})
 [Next Part →]({{< ref "part-4-gateway.md" >}})
 
-🔗 **Next Step:** Continue to [Part 4: Part 4: MCP Gateway Architecture]({{< ref "part-4-gateway.md" >}})
+🔗 **Next Step:** Continue to [Part 4: MCP Gateway Architecture]({{< ref "part-4-gateway.md" >}})
 
 Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

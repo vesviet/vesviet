@@ -1,4 +1,5 @@
 ---
+
 title: "Part 3: Domain-Driven Design (DDD) Boundaries in a Modular Monolith"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "How to keep a Monolith from becoming a 'Big Ball of Mud'? A guide to establishing Module boundaries using Bounded Contexts, Spring Modulith, and Packwerk."
@@ -11,6 +12,15 @@ canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/ddd-modu
 ShowToc: true
 TocOpen: true
 ---
+
+**Answer-first:** Restricting dependency paths is critical to preventing a Modular Monolith from turning into a 'Big Ball of Mud'. By mapping bounded contexts to Go internal packages, using compiler-level boundary tools like Packwerk, and executing cross-domain queries via asynchronous in-memory event buses, developers can maintain logical isolation and prepare for future microservices extraction.
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 2: FinOps Cost Reality - The Hidden Tax of Microservices]({{< ref "part-2-finops-cost-reality.md" >}}).
+
+### What You'll Learn That AI Won't Tell You
+- **Go Package Level Enforcement:** How to use Go's `internal` folder structure to prevent unauthorized imports at compile time.
+- **Packwerk Boundary Rules:** The setup required to analyze and restrict package dependency graphs automatically.
+- **Database Schema Isolation:** How to configure multiple schema namespaces inside a single database connection pool.
 
 > **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 3: Part 2: FinOps Cost Reality - The Hidden Tax of Microservices]({{< ref "part-2-finops-cost-reality.md" >}}).
 
@@ -161,30 +171,105 @@ Using an in-process event bus allows us to maintain loose coupling:
 In a distributed microservice architecture, ensuring transactional consistency across multiple databases requires two-phase commits (2PC) or the Saga pattern. Two-phase commits act as a performance bottleneck because they acquire locks across networks, leading to high failure rates. Sagas split the business transaction into multiple independent local transactions, using compensating transactions to roll back state if a step fails.
 For example, if payment succeeds but inventory fails, the Saga orchestrator must trigger a `RefundPayment` action. In a modular monolith, we can avoid this operational complexity. We run our business operations in separate schemas under the same database instance. This allows us to use standard SQL local transactions, guaranteeing atomic commits across the billing and inventory tables in sub-millisecond execution times without network-locked loops.
 
+## 5. Complete Go Interface & Domain Event Broker Implementation
 
+To demonstrate how to execute cross-domain boundaries without leaking coupling, we present a complete Go event broker pattern. Here, the `Billing` and `Inventory` modules communicate using thread-safe asynchronous Go channels, ensuring neither domain imports the other's internal structures.
 
+```go
+package main
 
-## Operational Context: Part 3 Ddd Module Boundaries Appendix
+import (
+	"context"
+	"fmt"
+	"sync"
+	"time"
+)
 
-### Performance Profiling and CPU Optimization
-To optimize the execution speed of modules within a monolithic binary, engineers must perform regular profiling using tools like Go's `pprof`. Profiling runs expose CPU bottlenecks caused by excessive pointer dereferencing and memory allocations. By replacing heap allocations with stack-allocated values and utilizing `sync.Pool` for reusable structures, garbage collection overhead is reduced, allowing the application to achieve sub-nanosecond processing efficiency.
+// Event represents a generic domain event payload
+type Event struct {
+	Name      string
+	Timestamp time.Time
+	Data      interface{}
+}
 
+// OrderCreatedData is the specific domain event payload
+type OrderCreatedData struct {
+	OrderID   string
+	CustomerID string
+	Amount    float64
+}
 
+// EventListener defines the callback structure for subscribers
+type EventListener func(event Event)
 
+// InMemoryEventBus coordinates loose coupling between modules
+type InMemoryEventBus struct {
+	mu        sync.RWMutex
+	listeners map[string][]EventListener
+}
 
-## Operational Context: Part 3 Ddd Module Boundaries Appendix
+func NewEventBus() *InMemoryEventBus {
+	return &InMemoryEventBus{
+		listeners: make(map[string][]EventListener),
+	}
+}
 
-### Memory Footprint and GC Optimization
-Go's runtime manages memory allocation using a target percentage threshold. When memory usage climbs past this threshold, the garbage collector runs a sweep cycle, pausing execution threads. In a monolithic setup hosting multiple concurrent domains, you must tune this using the `GOGC` environment variable. Setting `GOGC` to 80 or 50 reduces the maximum memory footprint, ensuring the application stays within container memory quotas without triggering out-of-memory crashes.
+func (eb *InMemoryEventBus) Subscribe(eventName string, listener EventListener) {
+	eb.mu.Lock()
+	defer eb.mu.Unlock()
+	eb.listeners[eventName] = append(eb.listeners[eventName], listener)
+}
 
+func (eb *InMemoryEventBus) Publish(eventName string, data interface{}) {
+	eb.mu.RLock()
+	defer eb.mu.RUnlock()
+	
+	event := Event{
+		Name:      eventName,
+		Timestamp: time.Now(),
+		Data:      data,
+	}
+	
+	for _, listener := range eb.listeners[eventName] {
+		go listener(event) // Execute asynchronously to avoid blocking the main thread
+	}
+}
 
+// BillingModule handles payments without importing Inventory
+type BillingModule struct {
+	bus *InMemoryEventBus
+}
 
+func NewBillingModule(bus *InMemoryEventBus) *BillingModule {
+	m := &BillingModule{bus: bus}
+	m.bus.Subscribe("OrderCreated", m.HandleOrderCreated)
+	return m
+}
 
-## Operational Context: Part 3 Ddd Module Boundaries Appendix
+func (bm *BillingModule) HandleOrderCreated(ev Event) {
+	data, ok := ev.Data.(OrderCreatedData)
+	if !ok {
+		fmt.Println("Error: Invalid event payload received")
+		return
+	}
+	fmt.Printf("[Billing] Processing payment of $%.2f for Order: %s\n", data.Amount, data.OrderID)
+}
 
-### Network Egress Controls and Local Subnet Routing
-When integrating the monolith with external services, configure client-side round-robin load balancing. By resolving downstream service IPs using internal DNS records, the application bypasses external NAT Gateways, routing all traffic within the local private subnet. This co-location eliminates network hops, securing communications and avoiding data transfer egress fees across availability zones.
+func main() {
+	bus := NewEventBus()
+	_ = NewBillingModule(bus)
 
+	fmt.Println("Simulating system startup...")
+	bus.Publish("OrderCreated", OrderCreatedData{
+		OrderID:    "ord_9812",
+		CustomerID: "cust_5521",
+		Amount:     149.99,
+	})
+	
+	// Allow goroutines to complete
+	time.Sleep(100 * time.Millisecond)
+}
+```
 
 Maintaining strict code borders helps you turn a Monolith into a collection of independent modules. But how do you ensure the Build and Test process for a massive CodeBase doesn't become overloaded? See Shopify's solution in **[Part 4: CI/CD Simplified]({{< ref "part-4-cicd-simplified.md" >}})**.
 
@@ -195,6 +280,6 @@ Maintaining strict code borders helps you turn a Monolith into a collection of i
 [← Previous Part]({{< ref "part-2-finops-cost-reality.md" >}})
 [Next Part →]({{< ref "part-4-cicd-simplified.md" >}})
 
-🔗 **Next Step:** Continue to [Part 4: Part 4: CI/CD Simplified & Atomic Deployments]({{< ref "part-4-cicd-simplified.md" >}})
+🔗 **Next Step:** Continue to [Part 4: CI/CD Simplified & Atomic Deployments]({{< ref "part-4-cicd-simplified.md" >}})
 
 Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

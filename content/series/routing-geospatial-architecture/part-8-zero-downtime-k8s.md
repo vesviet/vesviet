@@ -13,7 +13,14 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-8-zero-downtime-k8s/"
+ShowToc: true
+TocOpen: true
 ---
+
+[← Series hub]({{< ref "/series/routing-geospatial-architecture/_index.md" >}})
+[← Prev]({{< ref "/series/routing-geospatial-architecture/part-7-load-testing-production.md" >}})
+
+> **Prerequisite:** This final part requires the optimizations from [Part 7: Load Testing and Performance Tuning for Production]({{< ref "part-7-load-testing-production.md" >}}) to successfully deploy to Kubernetes.
 
 Writing a fast algorithm is only half the battle. The true test of a Principal Engineer is deploying a massive, stateful Routing Engine to the Cloud without causing a single second of downtime during map updates or infrastructure failures. 
 
@@ -31,7 +38,66 @@ If you run the graph generation script inside your live serving Pods, you guaran
 When deploying the new version, you cannot use standard Kubernetes Rolling Updates. A Rolling Update will cause a "Split-Brain" scenario where 50% of your pods route on the old map and 50% on the new map, completely destroying your Redis Semantic Cache Hit Rate.
 **The Fix:** Use **Argo Rollouts** for a Blue-Green deployment. When the "Green" pods boot up, they use a Kubernetes `initContainer` running the AWS CLI to pull the 50GB cache from S3 into an `emptyDir` volume. The main Graphhopper container starts only when the data is fully downloaded. Once Readiness Probes confirm the graph is loaded into RAM, Argo Rollouts instantly flips 100% of the traffic to the Green pods.
 
-*Deploying to Kubernetes wraps up our distributed routing system. For optimal performance and minimal infrastructure waste, ensure you have set up semantic caching as detailed in [Part 6: Location Clustering with Uber H3 & Redis Semantic Caching](/series/routing-geospatial-architecture/part-6-redis-semantic-caching/) and applied kernel network optimizations from [Part 7: Load Testing and Performance Tuning for Production](/series/routing-geospatial-architecture/part-7-load-testing-production/).*
+## Kubernetes RollingUpdate vs Argo Rollouts Blue-Green
+
+When updating map datasets in production, the strategy chosen determines whether your cache remains consistent:
+
+- **Kubernetes `RollingUpdate` (Incremental):** Standard K8s deployments terminate old Pods and create new ones one-by-one. In a high-throughput routing environment, this creates a **"Split-Brain"** state where 50% of your gateway instances route traffic on the old graph, and the other 50% route on the new graph. Since these graphs have different node IDs and turn restrictions, this triggers a massive wave of cache misses and corrupts the Redis Semantic Cache.
+- **Argo Rollouts Blue-Green (Atomic):** Instead of incremental updates, Argo Rollouts deploys a complete secondary set of pods (Green) alongside the running set (Blue). The Green pods load the new map data and run their readiness checks. Once 100% of the Green pods are healthy, Argo Rollouts executes a dynamic service endpoint swap, switching 100% of the user traffic to the new map instantly. This maintains perfect cache consistency.
+
+## Go Implementation: Graceful Shutdown Handler
+
+When scaling down pods during deployments, Kubernetes sends a `SIGTERM` signal. The Golang gateway must capture this signal and drain all active HTTP/gRPC requests before exiting:
+
+```go
+package main
+
+import (
+	"context"
+	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+)
+
+// StartHTTPServerWithGracefulShutdown launches an HTTP server and listens for exit signals to exit cleanly
+func StartHTTPServerWithGracefulShutdown(handler http.Handler, addr string) {
+	server := &http.Server{
+		Addr:    addr,
+		Handler: handler,
+	}
+
+	// Create channel to listen for interrupt/termination signals
+	stopChan := make(chan os.Signal, 1)
+	signal.Notify(stopChan, os.Interrupt, syscall.SIGTERM)
+
+	go func() {
+		log.Printf("Serving routing requests on %s...", addr)
+		if err := server.ListenAndServe(); err != http.ErrServerClosed {
+			log.Fatalf("HTTP server ListenAndServe failed: %v", err)
+		}
+	}()
+
+	// Block until a signal is received
+	sig := <-stopChan
+	log.Printf("Received signal: %v. Initiating graceful shutdown...", sig)
+
+	// Set a deadline context to drain active connections (e.g. 15 seconds)
+	// During this period, the server stops accepting new connections
+	// but finishes processing any active, in-flight routing requests
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+
+	if err := server.Shutdown(ctx); err != nil {
+		log.Fatalf("Server forced to shutdown with active connections: %v", err)
+	}
+
+	log.Println("Server exited cleanly. All connections drained.")
+}
+```
+
 
 ---
 
@@ -70,3 +136,8 @@ Check your `/etc/resolv.conf`. Kubernetes defaults to `ndots: 5`. This forces th
 {{< faq q="I enabled OpenTelemetry tracing on my Routing API, but now my Cluster CPU is at 100%. Why?" >}}
 Tracing 100% of 20,000 RPS will destroy your infrastructure bandwidth and CPU. You MUST implement **Tail-Based Sampling** at the OTel Collector level. The collector buffers traces in RAM and ONLY exports them to Jaeger if they contain an HTTP 5xx error or extremely high P99 latency. Normal requests are discarded.
 {{< /faq >}}
+
+Need help building high-scale routing engines or spatial indexing pipelines? [Contact me](/contact/) to discuss your project.
+
+🔗 **Next Step:** You have completed the Routing & Geospatial Architecture masterclass! Feel free to review the [Executive Summary]({{< ref "executive-summary.md" >}}) or explore other series.
+

@@ -27,9 +27,11 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent/"
+ShowToc: true
+TocOpen: true
 ---
 
-> **Series Orientation:** This article is Part 4 of the **AI Code Review & Vibe Coding** series, focusing on building an automated multi-agent quality gate pipeline. For the bug taxonomy that informs these gates, see [Part 3 — AI Code Bug Taxonomy](/series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy/).
+> **Series Orientation:** This article is Part 4 of the **AI Code Review & Vibe Coding** series, focusing on building an automated multi-agent quality gate pipeline. For the bug taxonomy that informs these gates, see [Part 3 — AI Code Bug Taxonomy]({{< ref "/series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy.md" >}}).
 
 The software industry has spent two years discovering that the productivity problem of AI coding is not generation speed — it is verification speed.
 
@@ -101,6 +103,124 @@ The key design decisions:
 2. **Severity-based gating**: not every agent finding blocks the merge. High-risk findings (authorization gaps, exposed secrets, injection vulnerabilities) block automatically. Lower-risk findings are surfaced as required review items. Minor items are non-blocking comments.
 
 3. **Human focus preservation**: the pipeline is designed to present human reviewers with a curated, pre-triaged set of issues requiring judgment — not the full automated output. Warning fatigue kills review quality. The critic agents filter, not just report.
+
+### Concurrency and Aggregation in Go
+
+To implement this Generator-Critic pipeline in practice, we need an orchestrator that can run various critic agents concurrently, collect their findings, and make a deterministic gating decision. The following Go code demonstrates this orchestration logic, including error propagation, timeouts, and severity evaluation.
+
+```go
+package review
+
+import (
+	"context"
+	"fmt"
+	"sync"
+	"time"
+)
+
+type Severity string
+
+const (
+	SeverityP0 Severity = "P0" // Blocks merge automatically
+	SeverityP1 Severity = "P1" // Requires manual sign-off
+	SeverityP2 Severity = "P2" // Non-blocking suggestion
+)
+
+type Finding struct {
+	AgentName string
+	File      string
+	Line      int
+	Issue     string
+	Severity  Severity
+}
+
+type Agent interface {
+	Run(ctx context.Context, files []string) ([]Finding, error)
+}
+
+// Orchestrator coordinates parallel execution of critic agents.
+type Orchestrator struct {
+	agents []Agent
+}
+
+func NewOrchestrator(agents ...Agent) *Orchestrator {
+	return &Orchestrator{agents: agents}
+}
+
+// ExecuteReview runs all agents concurrently and aggregates findings.
+func (o *Orchestrator) ExecuteReview(ctx context.Context, files []string) ([]Finding, error) {
+	ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
+	defer cancel()
+
+	findingsChan := make(chan []Finding, len(o.agents))
+	errChan := make(chan error, len(o.agents))
+
+	var wg sync.WaitGroup
+	for _, agent := range o.agents {
+		wg.Add(1)
+		go func(a Agent) {
+			defer wg.Done()
+			results, err := a.Run(ctx, files)
+			if err != nil {
+				errChan <- err
+				return
+			}
+			findingsChan <- results
+		}(agent)
+	}
+
+	// Close channels once all agents finish
+	go func() {
+		wg.Wait()
+		close(findingsChan)
+		close(errChan)
+	}()
+
+	// Check for any execution errors
+	for err := range errChan {
+		if err != nil {
+			return nil, fmt.Errorf("agent review failed: %w", err)
+		}
+	}
+
+	var allFindings []Finding
+	for findings := range findingsChan {
+		allFindings = append(allFindings, findings...)
+	}
+
+	return allFindings, nil
+}
+
+// EvaluateGate checks if any P0 (blocking) findings exist.
+func EvaluateGate(findings []Finding) bool {
+	for _, f := range findings {
+		if f.Severity == SeverityP0 {
+			return false // Gate failed, block the build
+		}
+	}
+	return true // Gate passed
+}
+```
+
+The review pipeline's parallel execution and gating logic are visualized below:
+
+```mermaid
+graph TD
+    PR[New Pull Request] --> Init[Trigger Review Pipeline]
+    Init --> Spawn{Spawn Critic Agents Concurrently}
+    Spawn --> SAST[SAST Agent]
+    Spawn --> Sec[Security Auditor Agent]
+    Spawn --> Arch[Architecture Agent]
+    Spawn --> Perf[Performance Agent]
+    SAST --> Coll[Aggregate Findings]
+    Sec --> Coll
+    Arch --> Coll
+    Perf --> Coll
+    Coll --> Eval{Evaluate Findings}
+    Eval -->|Any P0 Findings| Block[Block Merge: Notify Author & Reviewer]
+    Eval -->|P1 Findings Only| ReqReview[Flag Required Review Items: Wait for Human Approval]
+    Eval -->|P2 Findings or Clean| Pass[Pass Gate: Auto-Merge or Fast-Track Review]
+```
 
 ---
 
@@ -324,4 +444,4 @@ Part 5 takes the security elements of this pipeline and goes deeper: the full th
 
 ---
 
-*Next: [Part 5 — AI Code Security: OWASP LLM Top 10, Supply Chain Attacks, and Zero Trust for Agents](/series/ai-code-review-vibe-coding/part-5-ai-code-security/)*
+*Next: [Part 5 — AI Code Security: OWASP LLM Top 10, Supply Chain Attacks, and Zero Trust for Agents]({{< ref "/series/ai-code-review-vibe-coding/part-5-ai-code-security.md" >}})*

@@ -18,24 +18,143 @@ canonicalURL: "https://tanhdev.com/series/shopee-architecture/05-observability/"
 
 **Debugging a 30-hop microservice failure requires three pillars of observability: Distributed Tracing via OpenTelemetry, columnar log storage via ClickHouse, and real-time stream processing via Apache Flink. Together, they isolate latency bottlenecks across tens of thousands of pods in seconds.**
 
-[← Series hub](/series/shopee-architecture/) | [← Prev](/series/shopee-architecture/04-database-scale/)
+[← Series hub]({{< ref "/series/shopee-architecture/_index.md" >}}) | [← Prev]({{< ref "/series/shopee-architecture/04-database-scale.md" >}})
+
+> **Prerequisite:** Before reading this chapter, please ensure you have read the previous article in this series: [Chapter 4: Shopee DB: MySQL Sharding to TiDB NewSQL Migration]({{< ref "04-database-scale.md" >}}).
 
 Imagine you are an on-call engineer during the 11.11 mega-sale. Suddenly, alerts go off: Checkout success rates are plummeting, and users are facing continuous Timeouts. In an old Monolithic system, you would simply open `error.log` and find the exact broken line in the `pay()` function.
+
 However, at Shopee, the lifecycle of a single "Checkout" button press jumps across 30 different services:
 `API Gateway -> Order Service -> Promo Service -> Inventory Service -> Payment Service -> Banking Gateway...`
 
 If a bottleneck (latency spike) occurs at service #25, how do you find it among tens of thousands of running Pods? The answer lies in the **3 Pillars of Observability**: Metrics, Logs, and Distributed Tracing.
 
-## 1. Distributed Tracing
+---
+
+## 1. Distributed Tracing and Context Propagation
 
 **By injecting a globally unique TraceID into the headers of every gRPC call, Shopee reconstructs the entire request journey as a waterfall chart. This instantly isolates which specific service among 30 hops caused a timeout.**
 
 The ultimate tool to map the journey of a request is **Distributed Tracing** (Shopee uses platforms based on OpenTelemetry and Jaeger).
-
 - **Trace ID:** The exact millisecond a user request hits the API Gateway, it generates a globally unique identifier (e.g., `TraceID: a8f9x0`).
 - **Context Propagation:** The crucial part is that this `TraceID` is injected into the Metadata/Headers of every subsequent gRPC call. When the Order Service calls the Promo Service, it passes the `TraceID` along.
 - **Span ID:** Every time the request enters and exits a service, it creates a time block called a **Span**. 
-The system aggregates all this data and visualizes it as a Waterfall chart. An engineer can instantly see: "The request took 5ms in Inventory, but got stuck for 5000ms in Payment. The Payment gateway is the root cause!"
+
+### W3C Trace Context propagation
+
+To ensure interoperability, Shopee uses the W3C Trace Context standard. The HTTP/gRPC headers contain:
+- `traceparent`: Format `00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01`
+  - `00`: Version.
+  - `4bf92f3577b34da6a3ce929d0e0e4736`: 16-byte Trace ID.
+  - `00f067aa0ba902b7`: 8-byte Parent Span ID.
+  - `01`: Trace flags (controls sampling).
+
+### Tracing Latency Overhead Optimization
+
+Tracing every single request in an environment with millions of requests per second introduces major CPU, memory allocation, and network bandwidth overhead. To optimize this, Shopee uses a two-pronged sampling strategy:
+1. **Head-Based Sampling:** The API Gateway decides whether to trace a request immediately at the edge. If the sampling rate is set to 1%, only 1% of transactions generate tracing data, and the rest are ignored. The downstream services read the `traceparent` flags bit and skip span creation entirely for non-sampled requests.
+2. **Tail-Based Sampling:** Collecting 100% of spans in the local memory of intermediate OpenTelemetry Collectors. The collector groups all spans by Trace ID, evaluates the entire trace (e.g., checking if it contains an error code or has an execution latency exceeding 500ms), and only exports the trace to database storage if it meets the critical criteria. This saves 90% of storage costs while capturing all failure traces.
+
+---
+
+## 2. Metrics Collection and Log Storage
+
+### Prometheus Scraping Targets & High Cardinality
+
+Prometheus monitors system health via a Pull model, querying `/metrics` endpoints on each pod. To prevent memory explosion in Prometheus server instances, Shopee enforces strict rules on metrics labels:
+- **Prometheus Scraping Target Config:** Prometheus discovers pods dynamically using Kubernetes DNS endpoints and scrapes them at brief intervals (e.g., every 10-15 seconds).
+- **Avoiding High Cardinality:** Placing dynamic identifiers like `user_id` or `order_id` in Prometheus label fields is strictly prohibited. Prometheus creates a unique time series for every combination of labels. Dynamic values would create millions of time series, exhausting the RAM of Prometheus servers (high-cardinality label pollution).
+
+### Log Storage with ClickHouse
+
+With millions of requests per second, the volume of Logs and Spans generated is astronomical (tens of Terabytes daily). Using a traditional Elasticsearch (ELK Stack) cluster would consume massive amounts of RAM and disk space just to maintain Inverted Indexes.
+
+Shopee pivoted to using **ClickHouse**—an incredibly fast, columnar OLAP database.
+- **Extreme Compression:** Because it stores data column by column, ClickHouse applies highly efficient compression algorithms like ZSTD. This reduces PetaBytes of log storage overhead by massive factors compared to Elastic.
+- **Vectorized Query Execution:** Even when scanning across billions of log lines, an engineer can run `SELECT ... WHERE TraceID = 'a8f9x0'` and receive results in just 1-2 seconds, thanks to ClickHouse's vectorized processing and multi-core parallel architecture.
+
+### Go Implementation: Telemetry and Metrics Integration
+
+Here is a Go implementation demonstrating how to inject/extract OpenTelemetry Trace Context and report custom latency metrics to Prometheus:
+
+```go
+package telemetry
+
+import (
+	"context"
+	"time"
+	"google.golang.org/grpc/metadata"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
+	"go.opentelemetry.io/otel/propagation"
+)
+
+var (
+	// Prometheus metrics vector to trace RPC latency.
+	rpcDuration = promauto.NewHistogramVec(
+		prometheus.HistogramOpts{
+			Name:    "shopee_rpc_duration_seconds",
+			Help:    "Execution latency of gRPC microservice calls.",
+			Buckets: []float64{0.002, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5},
+		},
+		[]string{"service_method", "response_code"},
+	)
+)
+
+// InjectTraceContext injects the current trace context into gRPC metadata for propagation.
+func InjectTraceContext(ctx context.Context) context.Context {
+	md, ok := metadata.FromOutgoingContext(ctx)
+	if !ok {
+		md = metadata.New(nil)
+	}
+
+	propagator := propagation.TraceContext{}
+	carrier := propagation.HeaderCarrier{}
+	
+	// Inject trace context fields from context.Context into W3C carrier headers
+	propagator.Inject(ctx, carrier)
+
+	// Copy injected values from carrier to outgoing metadata
+	for _, key := range carrier.Keys() {
+		md.Set(key, carrier.Get(key))
+	}
+
+	return metadata.NewOutgoingContext(ctx, md)
+}
+
+// ExtractTraceContext extracts the trace context from incoming gRPC metadata.
+func ExtractTraceContext(ctx context.Context) context.Context {
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return ctx
+	}
+
+	carrier := propagation.HeaderCarrier{}
+	for key, values := range md {
+		if len(values) > 0 {
+			carrier.Set(key, values[0])
+		}
+	}
+
+	propagator := propagation.TraceContext{}
+	return propagator.Extract(ctx, carrier)
+}
+
+// RecordRPCLatency logs latency measurements to Prometheus vector buckets.
+func RecordRPCLatency(method string, code string, startTime time.Time) {
+	elapsed := time.Since(startTime).Seconds()
+	rpcDuration.WithLabelValues(method, code).Observe(elapsed)
+}
+```
+
+---
+
+## 3. Real-Time Analytics with Apache Flink
+
+**Apache Flink processes event streams in real-time to automate incident response. It can detect an HTTP 500 spike and trigger a PagerDuty alert, or identify a bot creating 1,000 carts and block the IP instantly—before humans intervene.**
+
+Logs and Traces are not just for humans to read; machines read them too.
+Shopee utilizes **Apache Flink**—a Stream Processing framework—to analyze continuous event streams in real-time.
 
 ```mermaid
 graph TD
@@ -52,25 +171,17 @@ graph TD
     OTEL --> Flink[Apache Flink<br/>Real-time Alerts]
 ```
 
-## 2. Extreme Log Storage with ClickHouse
-
-**To store tens of terabytes of daily logs without exhausting RAM on inverted indexes, Shopee uses ClickHouse. Its columnar architecture and ZSTD compression reduce storage overhead massively while executing vectorized queries across billions of lines in 1-2 seconds.**
-
-With millions of requests per second, the volume of Logs and Spans generated is astronomical (tens of Terabytes daily). Using a traditional Elasticsearch (ELK Stack) cluster would consume massive amounts of RAM and disk space just to maintain Inverted Indexes.
-
-Shopee pivoted to using **ClickHouse**—an incredibly fast, columnar OLAP database.
-- **Extreme Compression:** Because it stores data column by column, ClickHouse applies highly efficient compression algorithms like ZSTD. This reduces PetaBytes of log storage overhead by massive factors compared to Elastic.
-- **Vectorized Query Execution:** Even when scanning across billions of log lines, an engineer can run `SELECT ... WHERE TraceID = 'a8f9x0'` and receive results in just 1-2 seconds, thanks to ClickHouse's vectorized processing and multi-core parallel architecture.
-
-## 3. Real-Time Ecosystem with Apache Flink
-
-**Apache Flink processes event streams in real-time to automate incident response. It can detect an HTTP 500 spike and trigger a PagerDuty alert, or identify a bot creating 1,000 carts and block the IP instantly—before humans intervene.**
-
-Logs and Traces are not just for humans to read; machines read them too.
-Shopee utilizes **Apache Flink**—a Stream Processing framework—to analyze continuous event streams in real-time.
 - **Automated Alerts:** Flink monitors the stream of HTTP 500 errors. If it exceeds 100 errors per second within a tumbling time window, it fires an immediate Slack or PagerDuty alert to wake up the engineers.
 - **Anti-Fraud System:** If Flink detects a single IP address attempting to create 1,000 shopping carts in 1 minute via the log stream, it triggers a security rule to block that IP instantly, neutralizing the attacker before further transactions occur.
 
-**Developer Takeaway:** The more complex your Microservices become, the blinder you are without proper Observability. Injecting TraceIDs via Headers, centralizing logs in a system like ClickHouse, and visualizing them in Grafana is the best insurance investment you can make for any large-scale project.
+---
+
+## Summary and Developer Takeaways
+
+The more complex your Microservices become, the blinder you are without proper Observability. Injecting TraceIDs via Headers, centralizing logs in a system like ClickHouse, and visualizing them in Grafana is the best insurance investment you can make for any large-scale project.
+
+*Troubled by missing traces or excessive observability overhead in your cluster? [Hire me](/hire/) to optimize your OpenTelemetry, ClickHouse, and Prometheus setup.*
+
+🔗 **Next Step:** This concludes the Shopee Architecture series. You can return to the [Series Hub]({{< ref "_index.md" >}}) for a complete overview, or explore our case study on migrating legacy platforms in the [Composable Commerce Migration Series]({{< ref "/series/composable-commerce-migration/_index.md" >}}).
 
 {{< author-cta >}}

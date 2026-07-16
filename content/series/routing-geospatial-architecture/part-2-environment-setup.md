@@ -13,7 +13,14 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-2-environment-setup/"
+ShowToc: true
+TocOpen: true
 ---
+
+[← Series hub]({{< ref "/series/routing-geospatial-architecture/_index.md" >}})
+[← Prev]({{< ref "/series/routing-geospatial-architecture/part-1-core-algorithms.md" >}}) • [Next →]({{< ref "/series/routing-geospatial-architecture/part-3-spatial-indexing.md" >}})
+
+> **Prerequisite:** Before starting this part, ensure you have read [Part 1: Core Routing Algorithms — A* & Dijkstra Visualized]({{< ref "part-1-core-algorithms.md" >}}).
 
 Setting up a local routing engine is notoriously difficult. Most generic tutorials offer a basic Docker command that crashes silently, leaving developers confused. 
 
@@ -118,7 +125,58 @@ var routingClient = &http.Client{
 
 When hitting the `POST /matrix` endpoint, Graphhopper strictly expects GeoJSON coordinate formatting: `[Longitude, Latitude]`.
 
-*Now that the environment is ready, a common pitfall is connecting your API Gateway directly to the Routing Engine without location filtering. See [Part 3: Spatial Indexing (Uber H3, PostGIS & Redis GEO)](/series/routing-geospatial-architecture/part-3-spatial-indexing/) to learn how to use Spatial Indexing as a high-speed pre-filter.*
+## Docker Compose Network Boundaries & Topology
+
+In a production-like environment, keeping services in a single default Docker network is a security and performance risk. We split our services into two network boundaries:
+
+1. **`routing-edge` (Public network boundary):** Only the Golang API Gateway container has access to this network. It handles public traffic from client apps (port 8080/443).
+2. **`routing-internal` (Private network boundary):** This network is strictly internal. The Graphhopper routing engine and Redis caching layers live here. The Golang API Gateway is the only bridge between the public-facing edge and the internal backend. Graphhopper (port 8989) and Redis (port 6379) are not exposed to the public internet, preventing unauthorized routing queries or cache tampering.
+
+Here is the updated configuration illustrating this isolation:
+
+```yaml
+version: '3.8'
+
+networks:
+  routing-edge:
+    driver: bridge
+  routing-internal:
+    internal: true
+
+services:
+  gateway:
+    image: my-golang-gateway:latest
+    ports:
+      - "8080:8080"
+    networks:
+      - routing-edge
+      - routing-internal
+    depends_on:
+      - graphhopper
+      - redis
+
+  graphhopper:
+    image: graphhopper/graphhopper:latest
+    volumes:
+      - ./data:/data
+    networks:
+      - routing-internal
+    environment:
+      - JAVA_OPTS=-Xmx6g
+
+  redis:
+    image: redis:7-alpine
+    networks:
+      - routing-internal
+```
+
+## Hugo and OSM Data Import Workflows
+
+Building this series locally also requires running the Hugo content site and integrating OpenStreetMap datasets.
+
+- **Hugo Dependencies:** The website uses Hugo Extended version 0.120+ to compile the SCSS and process asset pipelines. Ensure your host has Dart Sass installed to compile layout overrides.
+- **OSM Data Import Pipelines:** While the `osmium` tool extracts bounding boxes, automating this in a CI/CD environment or a local shell script is highly recommended. The import script should curl the `.pbf` data, check its MD5 checksum, run `osmium extract`, and finally delete the raw country-wide file to keep the disk footprint minimal.
+
 
 ---
 
@@ -151,3 +209,8 @@ Graphhopper can take several seconds to compute massive matrices. If your Golang
 {{< faq q="Does self-hosting Graphhopper mean I have unlimited Matrix API calls?" >}}
 Yes, you bypass external API subscription limits. However, you are strictly bound by your server's RAM. Requesting a 10,000x10,000 matrix will instantly cause a Java Out-Of-Memory crash if you haven't allocated enough heap space.
 {{< /faq >}}
+
+Need help building high-scale routing engines or spatial indexing pipelines? [Contact me](/contact/) to discuss your project.
+
+🔗 **Next Step:** Learn about spatial indexing in [Part 3: Spatial Indexing (Uber H3, PostGIS & Redis GEO)]({{< ref "/series/routing-geospatial-architecture/part-3-spatial-indexing.md" >}}).
+

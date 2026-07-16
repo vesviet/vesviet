@@ -13,7 +13,14 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-5-visualization-ui/"
+ShowToc: true
+TocOpen: true
 ---
+
+[← Series hub]({{< ref "/series/routing-geospatial-architecture/_index.md" >}})
+[← Prev]({{< ref "/series/routing-geospatial-architecture/part-4-golang-microservices.md" >}}) • [Next →]({{< ref "/series/routing-geospatial-architecture/part-6-redis-semantic-caching.md" >}})
+
+> **Prerequisite:** This part assumes familiarity with the Golang API Gateway designed in [Part 4: Golang API & Microservices Integration (Kratos & Dapr)]({{< ref "part-4-golang-microservices.md" >}}).
 
 Rendering a single route on Google Maps is trivial. Rendering 100,000 historical vehicle routes, Origin-Destination matrices, and dynamic H3 geofences simultaneously? That requires offloading computation from the browser's CPU to the GPU using WebGL.
 
@@ -45,7 +52,108 @@ When visualizing H3 grids (like driver density zones), do not generate GeoJSON p
 
 Instead, send only the 15-character H3 ID string (e.g., `8928308280fffff`). On the frontend, use Deck.gl's `H3HexagonLayer`. The library will use mathematical shaders to draw the perfect hexagon directly on the GPU, saving 99% of your network bandwidth.
 
-*To handle millions of map and grid queries from the client without bottlenecking the backend, we need to implement Redis Semantic Caching. Explore this architecture in [Part 6: Location Clustering with Uber H3 & Redis Semantic Caching](/series/routing-geospatial-architecture/part-6-redis-semantic-caching/).*
+## WebGL Coordinate Projections & Web Mercator Math
+
+To display geographic data on a screen, spherical coordinates (longitude, latitude in WGS84 EPSG:4326) must be projected onto a flat 2D plane. Standard web maps use the **Web Mercator projection (EPSG:3857)**.
+
+Doing this projection on the CPU for 100,000 active paths consumes massive resources and blocks the main execution thread. Instead, Deck.gl performs this projection directly in the **Vertex Shader on the GPU**.
+
+The mathematical projection mapping longitude ($\lambda$) and latitude ($\phi$) to coordinate values ($x, y$) is:
+
+$$x = R \cdot \lambda$$
+
+$$y = R \cdot \ln\left(\tan\left(\frac{\pi}{4} + \frac{\phi}{2}\right)\right)$$
+
+where $R$ is the Earth's radius. The WebGL shader bakes these mathematical transformations into a coordinate translation matrix, executing calculations in parallel across thousands of shader cores.
+
+## Mapbox Custom Layer Integration
+
+Deck.gl's `MapboxOverlay` integrates directly into the Mapbox GL JS rendering pipeline. Rather than creating a separate HTML overlay canvas that lags when the user pans or zooms, Deck.gl hooks into Mapbox's WebGL context.
+
+When Mapbox renders a frame, it passes its camera view matrix to Deck.gl. Deck.gl uses the same WebGL state, allowing it to render its layers synchronously in the same depth buffer. This eliminates visual stutter and ensures that elements like terrain elevation and dynamic route heights are drawn in correct spatial order.
+
+## Client-Server GeoJSON Payload Flow
+
+Below is the sequence diagram illustrating how coordinate requests flow from the frontend through the Go gateway to the mapping backend:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Client as Frontend (Mapbox + Deck.gl)
+    participant Gateway as Go API Gateway
+    participant Caching as Redis (Semantic Cache)
+    participant Router as Graphhopper Engine
+
+    Client->>Gateway: GET /route?start=lat,lng&end=lat,lng
+    Note over Client, Gateway: Sends WGS84 coords
+    Gateway->>Gateway: Snap coordinates to H3 Resolution 9
+    Gateway->>Caching: Query cache: route:{h3_start}:{h3_end}
+    alt Cache Hit
+        Caching-->>Gateway: Return cached route GeoJSON
+    else Cache Miss
+        Gateway->>Router: Forward routing request
+        Router-->>Gateway: Return calculated path (WGS84 polyline)
+        Gateway->>Caching: Store path in Redis with TTL
+    end
+    Gateway-->>Client: Return compressed path GeoJSON
+    Client->>Client: WebGL Shader projection (WGS84 -> Web Mercator)
+    Client->>Client: Render dynamic Deck.gl PathLayer at 60 FPS
+```
+
+## Go Implementation: Route GeoJSON Endpoint
+
+This handler demonstrates how the backend formats and serves the GeoJSON payload for rendering on the Mapbox client:
+
+```go
+package handlers
+
+import (
+	"encoding/json"
+	"net/http"
+)
+
+// GeoJSONGeometry represents the structure of GeoJSON path geometry
+type GeoJSONGeometry struct {
+	Type        string      `json:"type"`
+	Coordinates [][]float64 `json:"coordinates"`
+}
+
+// RouteResponse represents the API response payload containing the path
+type RouteResponse struct {
+	Type     string          `json:"type"`
+	Geometry GeoJSONGeometry `json:"geometry"`
+	Distance float64         `json:"distance"`
+	Duration float64         `json:"duration"`
+}
+
+// ServeRouteGeoJSON handles client requests for route visualization
+func ServeRouteGeoJSON(w http.ResponseWriter, r *http.Request) {
+	// In production, you would fetch coordinates from query params
+	// and query the Graphhopper routing engine
+	coordinates := [][]float64{
+		{106.660172, 10.762622},
+		{106.662134, 10.764831},
+		{106.665311, 10.768102},
+		{106.670498, 10.771988},
+	}
+
+	response := RouteResponse{
+		Type: "Feature",
+		Geometry: GeoJSONGeometry{
+			Type:        "LineString",
+			Coordinates: coordinates,
+		},
+		Distance: 1540.23, // in meters
+		Duration: 245.5,   // in seconds
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.WriteHeader(http.StatusOK)
+	_ = json.NewEncoder(w).Encode(response)
+}
+```
+
 
 ---
 
@@ -58,3 +166,8 @@ This is a classic WebGL rendering glitch called **Z-Fighting**. Because your rou
 {{< faq q="My Mapbox map suddenly turned entirely white!" >}}
 You hit a `WebGL Context Lost` error. This happens when the OS reclaims GPU memory (e.g., when the user plugs in a new 4K monitor or the GPU runs out of VRAM due to massive datasets). Your React/Vue application must listen for the `webglcontextlost` event and gracefully reload the Mapbox and Deck.gl instances to recover.
 {{< /faq >}}
+
+Need help building high-scale routing engines or spatial indexing pipelines? [Contact me](/contact/) to discuss your project.
+
+🔗 **Next Step:** Implement caching layers in [Part 6: Location Clustering with Uber H3 & Redis Semantic Caching]({{< ref "/series/routing-geospatial-architecture/part-6-redis-semantic-caching.md" >}}).
+

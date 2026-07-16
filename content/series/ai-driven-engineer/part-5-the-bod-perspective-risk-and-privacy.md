@@ -1,4 +1,5 @@
 ---
+
 title: "Part 5 — The BOD Perspective: Expectations, Costs, Legal Risks & Internal AI"
 date: "2026-05-10T15:40:00+07:00"
 lastmod: "2026-05-10T15:40:00+07:00"
@@ -14,6 +15,15 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/"
 mermaid: true
 ---
+
+**Answer-first:** Implementing AI tools in enterprise settings requires managing IP leakage, software licenses, and security risks. Organizations must use private model deployments, enforce copyleft license checks, and run code scanning to prevent copyright and security violations.
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 4 — Blurring SDLC Lines & The QC Revolution]({{< ref "part-4-blurring-sdlc-lines-and-qc-revolution.md" >}}).
+
+### What You'll Learn That AI Won't Tell You
+- **Copyleft Leakage Risks:** How AI code generation can introduce GPL-licensed snippets, violating IP policies.
+- **Zero-Data Retention APIs:** Configuring API calls to guarantee models do not retain business data.
+- **Enterprise Security Audits:** Conducting code origin reviews to verify the authorship of AI outputs.
 
 > **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 5: Part 4 — Blurring SDLC Lines & The QC Revolution]({{< ref "part-4-blurring-sdlc-lines-and-qc-revolution.md" >}}).
 
@@ -160,14 +170,6 @@ func main() {
 }
 ```
 
-
-
-
-## Operational Context: Part 5 The Bod Perspective Risk And Privacy Appendix
-
-### KPI Tracking and Code Quality Metrics
-To evaluate the impact of AI-assisted development, track code quality indicators in the CI pipeline. Monitor the change lead time (from commit to production) alongside the code churn rate (lines deleted within 7 days). A rising churn rate indicates hallucinated patterns, requiring adjustment of the prompt templates.
-
 ---
 
 ## Navigation & Next Steps
@@ -175,6 +177,6 @@ To evaluate the impact of AI-assisted development, track code quality indicators
 [← Previous Part]({{< ref "part-4-blurring-sdlc-lines-and-qc-revolution.md" >}})
 [Next Part →]({{< ref "part-6-from-coder-to-orchestrator.md" >}})
 
-🔗 **Next Step:** Continue to [Part 6: Part 6 — Role Shift: From Coder to AI Orchestrator]({{< ref "part-6-from-coder-to-orchestrator.md" >}})
+🔗 **Next Step:** Continue to [Part 6 — Role Shift: From Coder to AI Orchestrator]({{< ref "part-6-from-coder-to-orchestrator.md" >}})
 
 Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

@@ -33,9 +33,11 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-code-review-vibe-coding/part-6-governance-observability-career/"
+ShowToc: true
+TocOpen: true
 ---
 
-> **Series Orientation:** This article is Part 6 of the **AI Code Review & Vibe Coding** series, looking at team governance and developer career paths. For the preceding security chapters, see [Part 5 — AI Code Security](/series/ai-code-review-vibe-coding/part-5-ai-code-security/).
+> **Series Orientation:** This article is Part 6 of the **AI Code Review & Vibe Coding** series, looking at team governance and developer career paths. For the preceding security chapters, see [Part 5 — AI Code Security]({{< ref "/series/ai-code-review-vibe-coding/part-5-ai-code-security.md" >}}).
 
 As highlighted earlier in this series, the METR study (2025) revealed a striking paradox: experienced developers using AI tools were actually **19% slower** on complex real-world tasks, even while believing they were 24% faster.
 
@@ -45,7 +47,7 @@ The teams winning the AI transition are not the ones that generate the most code
 
 This final part covers that infrastructure.
 
-> **Scope note:** This article covers governance and observability *as applied to AI code review teams and the code they produce* — tool policies, data classification, spec-first workflows, and the production monitoring specific to AI-assisted development. For the **career mindset shift** from engineer to orchestrator at depth, see [From Coder to AI Orchestrator](/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/) in the AI-Driven Engineer series. For **platform-level AI observability** — inference monitoring, eval frameworks, and model performance dashboards — see [AI Observability & Evals](/series/ai-driven-playbook/part-6-ai-observability-governance/) in the AI-Driven Playbook series.
+> **Scope note:** This article covers governance and observability *as applied to AI code review teams and the code they produce* — tool policies, data classification, spec-first workflows, and the production monitoring specific to AI-assisted development. For the **career mindset shift** from engineer to orchestrator at depth, see [From Coder to AI Orchestrator]({{< ref "/series/ai-driven-engineer/part-6-from-coder-to-orchestrator.md" >}}) in the AI-Driven Engineer series. For **platform-level AI observability** — inference monitoring, eval frameworks, and model performance dashboards — see [AI Observability & Evals]({{< ref "/series/ai-driven-playbook/part-6-ai-observability-governance.md" >}}) in the AI-Driven Playbook series.
 
 ---
 
@@ -113,7 +115,7 @@ Before deploying AI coding tools across a team, these are the minimum governance
 - [ ] New team members complete 30-minute AI governance orientation before first commit with AI tools
 - [ ] Publish AI tool policy in the same place as coding standards — not in a separate HR portal
 
-> **For the practical AGENTS.md setup and Cursor Rules configuration**, see [Part 2 — Context Engineering: AGENTS.md & Cursor Rules](/series/ai-code-review-vibe-coding/part-2-context-engineering-codebase/) and [What is Vibe Coding? Why AI Code Review is the Future](/posts/vibe-coding-and-ai-code-review-future/).
+> **For the practical AGENTS.md setup and Cursor Rules configuration**, see [Part 2 — Context Engineering: AGENTS.md & Cursor Rules]({{< ref "/series/ai-code-review-vibe-coding/part-2-context-engineering-codebase.md" >}}) and [What is Vibe Coding? Why AI Code Review is the Future](/posts/vibe-coding-and-ai-code-review-future/).
 
 ### AI Tool Classification: Approved, Restricted, Prohibited
 
@@ -263,6 +265,109 @@ Prioritize alerts for:
 
 Non-alert observability — the data you review proactively but do not trigger alerts on — covers the quality scores, usage patterns, and cost trends that inform optimization decisions.
 
+### Cryptographic Auditing and Compliance in Go
+
+In enterprise environments, particularly under regulatory frameworks like the EU AI Act or ISO/IEC 42001, audit trails must be secure and tamper-evident. The following Go code demonstrates a custom logging hook designed to ship cryptographically signed audit payloads to an external platform. By using HMAC-SHA256 signatures, the compliance platform can verify that logs have not been modified or fabricated since generation.
+
+```go
+package compliance
+
+import (
+	"bytes"
+	"context"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"time"
+)
+
+// AuditPayload represents a compliance audit log entry.
+type AuditPayload struct {
+	Timestamp string    `json:"timestamp"`
+	Actor     string    `json:"actor"`
+	Action    string    `json:"action"`
+	Resource  string    `json:"resource"`
+	Status    string    `json:"status"`
+	Details   string    `json:"details"`
+}
+
+// SignedAuditHook signs audit payloads and ships them to a compliance platform.
+type SignedAuditHook struct {
+	endpoint  string
+	secretKey []byte
+	client    *http.Client
+}
+
+func NewSignedAuditHook(endpoint string, secretKey []byte) *SignedAuditHook {
+	return &SignedAuditHook{
+		endpoint:  endpoint,
+		secretKey: secretKey,
+		client:    &http.Client{Timeout: 5 * time.Second},
+	}
+}
+
+// LogAndSign ships a cryptographically signed compliance log.
+func (h *SignedAuditHook) LogAndSign(ctx context.Context, actor, action, resource, status, details string) error {
+	payload := AuditPayload{
+		Timestamp: time.Now().UTC().Format(time.RFC3339),
+		Actor:     actor,
+		Action:    action,
+		Resource:  resource,
+		Status:    status,
+		Details:   details,
+	}
+
+	bodyBytes, err := json.Marshal(payload)
+	if err != nil {
+		return fmt.Errorf("failed to marshal audit payload: %w", err)
+	}
+
+	// Cryptographic signing of audit logs using HMAC-SHA256
+	mac := hmac.New(sha256.New, h.secretKey)
+	mac.Write(bodyBytes)
+	signature := hex.EncodeToString(mac.Sum(nil))
+
+	req, err := http.NewRequestWithContext(ctx, "POST", h.endpoint, bytes.NewReader(bodyBytes))
+	if err != nil {
+		return fmt.Errorf("failed to create http request: %w", err)
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("X-Audit-Signature", signature)
+
+	resp, err := h.client.Do(req)
+	if err != nil {
+		return fmt.Errorf("failed to ship audit log: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusAccepted {
+		return fmt.Errorf("compliance endpoint returned non-2xx status: %d", resp.StatusCode)
+	}
+
+	return nil
+}
+```
+
+The compliance pipeline below outlines how code changes, runtime agent actions, and cryptographic validation link together:
+
+```mermaid
+graph TD
+    A[AI-Generated PR or Code Change] --> B[CI Compliance Pipeline]
+    B --> C{Scan for License & Security}
+    C -->|Violations Found| D[Fail Build: Generate Compliance Alert]
+    C -->|Compliant| E[Inject Cryptographic Signing Hook]
+    E --> F[Deploy Code to Production]
+    F --> G[Production AI Agent Operation]
+    G --> H[Generate Audit Event]
+    H --> I[SignedAuditHook: Sign Payload via HMAC-SHA256]
+    I --> J[Ship to External Compliance Platform]
+    J --> K[Immutable Ledger Verification]
+```
+
 ---
 
 ## The Career Transition: From Coder to Orchestrator
@@ -389,6 +494,6 @@ The series stops here. The discipline is ongoing.
 
 ---
 
-*Return to: [Series Index — AI Code Review & Vibe Coding](/series/ai-code-review-vibe-coding/)*
+*Return to: [Series Index — AI Code Review & Vibe Coding]({{< ref "/series/ai-code-review-vibe-coding/_index.md" >}})*
 
-*Related series: [The AI-Driven Engineer](/series/ai-driven-engineer/) | [The AI-Driven Playbook](/series/ai-driven-playbook/)*
+*Related series: [The AI-Driven Engineer]({{< ref "/series/ai-driven-engineer/_index.md" >}}) | [The AI-Driven Playbook]({{< ref "/series/ai-driven-playbook/_index.md" >}})*

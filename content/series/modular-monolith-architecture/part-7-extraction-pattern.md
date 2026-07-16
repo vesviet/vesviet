@@ -1,4 +1,5 @@
 ---
+
 title: "Part 7: Extraction Pattern – When Should You Extract Microservices?"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "Not everything belongs in a Monolith. Learn how to determine when a module should be extracted into a Microservice through lessons from Sentry, GitLab, and"
@@ -11,6 +12,15 @@ canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/extracti
 ShowToc: true
 TocOpen: true
 ---
+
+**Answer-first:** Extraction of a module into an independent microservice is only justified when it requires different scaling profiles, team boundaries, or deployment velocities. The extraction process is executed by creating an interface wrapper around the module, routing calls through an API gateway, and separating the database tables using asynchronous data replication.
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 6: Migration Playbook – Consolidating Microservices]({{< ref "part-6-migration-playbook.md" >}}).
+
+### What You'll Learn That AI Won't Tell You
+- **Extraction Threshold Metrics:** Quantitative triggers (e.g. CPU saturation ratios) that justify extraction.
+- **Interface Wrappers:** How to write a Go interface that switches between internal and gRPC implementations.
+- **Database Separation Loops:** Replicating database tables using Change Data Capture (CDC) during migrations.
 
 > **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 7: Part 6: Migration Playbook – Consolidating Microservices]({{< ref "part-6-migration-playbook.md" >}}).
 
@@ -122,46 +132,69 @@ ConnectRPC relies on HTTP/2, which offers features over HTTP/1.1:
 - **Server Push:** Push data to clients before they ask, optimizing real-time monitoring streams.
 To prevent load balancers from becoming a bottleneck, configure the client adapter to use client-side round-robin load balancing. The client polls the Kubernetes DNS API or Consul to fetch a list of healthy pod IPs, maintaining persistent HTTP/2 connection pools to each target pod directly.
 
+## 5. Dynamic Module Interface Switching Implementation
 
+The Go code below demonstrates how to define a service interface that can switch dynamically between an in-memory method execution and a remote gRPC service call based on configuration, enabling zero-code-change microservices extraction.
 
+```go
+package main
 
-## Operational Context: Part 7 Extraction Pattern Appendix
+import (
+	"context"
+	"fmt"
+)
 
-### Performance Profiling and CPU Optimization
-To optimize the execution speed of modules within a monolithic binary, engineers must perform regular profiling using tools like Go's `pprof`. Profiling runs expose CPU bottlenecks caused by excessive pointer dereferencing and memory allocations. By replacing heap allocations with stack-allocated values and utilizing `sync.Pool` for reusable structures, garbage collection overhead is reduced, allowing the application to achieve sub-nanosecond processing efficiency.
+type PaymentRequest struct {
+	OrderID string
+	Amount  float64
+}
 
+type PaymentResponse struct {
+	TransactionID string
+	Success       bool
+}
 
+// PaymentService defines the shared boundary contract
+type PaymentService interface {
+	ProcessPayment(ctx context.Context, req PaymentRequest) (PaymentResponse, error)
+}
 
+// InProcessPaymentServiceImpl runs inside the monolithic application RAM
+type InProcessPaymentServiceImpl struct{}
 
-## Operational Context: Part 7 Extraction Pattern Appendix
+func (s *InProcessPaymentServiceImpl) ProcessPayment(ctx context.Context, req PaymentRequest) (PaymentResponse, error) {
+	fmt.Printf("[Monolith-InProcess] Processing transaction for Order: %s\n", req.OrderID)
+	return PaymentResponse{TransactionID: "tx_inmemory_99", Success: true}, nil
+}
 
-### Memory Footprint and GC Optimization
-Go's runtime manages memory allocation using a target percentage threshold. When memory usage climbs past this threshold, the garbage collector runs a sweep cycle, pausing execution threads. In a monolithic setup hosting multiple concurrent domains, you must tune this using the `GOGC` environment variable. Setting `GOGC` to 80 or 50 reduces the maximum memory footprint, ensuring the application stays within container memory quotas without triggering out-of-memory crashes.
+// RemoteGRPCPaymentServiceImpl calls the extracted microservice
+type RemoteGRPCPaymentServiceImpl struct {
+	gRPCClient string // Simulated client wrapper
+}
 
+func (s *RemoteGRPCPaymentServiceImpl) ProcessPayment(ctx context.Context, req PaymentRequest) (PaymentResponse, error) {
+	fmt.Printf("[Extracted-gRPC] Making remote call to payment service: %s\n", s.gRPCClient)
+	return PaymentResponse{TransactionID: "tx_grpc_44", Success: true}, nil
+}
 
+// PaymentServiceFactory returns the implementation based on environment configuration
+func PaymentServiceFactory(isExtracted bool) PaymentService {
+	if isExtracted {
+		return &RemoteGRPCPaymentServiceImpl{gRPCClient: "payment-service.vpc.internal:9090"}
+	}
+	return &InProcessPaymentServiceImpl{}
+}
 
+func main() {
+	// 1. Monolith Mode
+	svc1 := PaymentServiceFactory(false)
+	_, _ = svc1.ProcessPayment(context.Background(), PaymentRequest{OrderID: "ord_101", Amount: 29.99})
 
-## Operational Context: Part 7 Extraction Pattern Appendix
-
-### Network Egress Controls and Local Subnet Routing
-When integrating the monolith with external services, configure client-side round-robin load balancing. By resolving downstream service IPs using internal DNS records, the application bypasses external NAT Gateways, routing all traffic within the local private subnet. This co-location eliminates network hops, securing communications and avoiding data transfer egress fees across availability zones.
-
-
-
-
-## Operational Context: Part 7 Extraction Pattern Appendix
-
-### Transactional Isolation and Database Lock Mitigations
-Operating multiple schemas under a single database instance requires setting strict transactional isolation levels. Run transactions using the `Read Committed` isolation level to prevent dirty reads while avoiding lock contention. Ensure that updates to the database occur in alphabetical order of the tables to mitigate deadlock situations during peak request concurrency.
-
-
-
-
-## Operational Context: Part 7 Extraction Pattern Appendix
-
-### Monorepo Dependency Isolation and Compilation Tuning
-Managing third-party dependencies in a single repository requires isolating package definitions. Avoid declaring globally scoped dependencies. Instead, configure discrete dependency lists for each module. Utilize build caching tools in the CI runner to skip unchanged packages during build steps, compressing compilation times and accelerating validation loops.
-
+	// 2. Extracted Microservice Mode
+	svc2 := PaymentServiceFactory(true)
+	_, _ = svc2.ProcessPayment(context.Background(), PaymentRequest{OrderID: "ord_102", Amount: 50.00})
+}
+```
 
 Thus, we have gone through all the theory and design processes. In **[Part 8: Case Study Matrix]({{< ref "part-8-case-study-matrix.md" >}})** (the final article of this Playbook series), we will validate all our reasoning with a comprehensive table of speaking numbers from Shopify, Stack Overflow, Target, Zulip, Notion, and Basecamp.
 
@@ -172,6 +205,6 @@ Thus, we have gone through all the theory and design processes. In **[Part 8: Ca
 [← Previous Part]({{< ref "part-6-migration-playbook.md" >}})
 [Next Part →]({{< ref "part-8-case-study-matrix.md" >}})
 
-🔗 **Next Step:** Continue to [Part 8: Part 8: Case Study Matrix – The Monuments of the Modular Monolith]({{< ref "part-8-case-study-matrix.md" >}})
+🔗 **Next Step:** Continue to [Part 8: Case Study Matrix – The Monuments of the Modular Monolith]({{< ref "part-8-case-study-matrix.md" >}})
 
 Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

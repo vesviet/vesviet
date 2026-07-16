@@ -1,4 +1,5 @@
 ---
+
 title: "Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure"
 lastmod: "2026-07-03T15:41:55+07:00"
 description: "Discover why Amazon Prime Video cut infrastructure costs by 90% after moving from Serverless/Microservices back to a Monolith, alongside case studies from"
@@ -12,6 +13,15 @@ ShowToc: true
 TocOpen: true
 ---
 
+**Answer-first:** Amazon Prime Video reduced infrastructure costs by 90% by consolidating their audio/video monitoring service from serverless AWS Lambda/Step Functions into a single modular monolith. This transition eliminated high-frequency state transition fees and S3 network egress bottlenecks, highlighting that in-memory data processing is far more cost-effective than distributed microservices for high-throughput systems.
+
+> **Prerequisite:** This is the executive summary and introductory overview of the **Modular Monolith Architecture** series. No prior reading is required to start here.
+
+### What You'll Learn That AI Won't Tell You
+- **Step Function Transition Math:** How high-frequency state machine loops trigger superlinear cloud billing charges.
+- **In-Memory vs S3 latency:** Microsecond-level memory sharing benchmarks vs millisecond-level network storage overhead.
+- **Tooling Consolidation:** How running multiple logical steps inside a single EC2 or ECS container simplifies debugging and CI/CD pipelines.
+
 > **Prerequisite:** This is the executive summary and introductory overview of the **Modular Monolith Architecture** series. No prior reading is required to start here.
 
 # Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure Costs
@@ -22,7 +32,6 @@ This article synthesizes a real-world report from the engineering team at **Amaz
 
 ## 1. The Classic Case Study: Amazon Prime Video's 90% Savings
 
-**Answer-first:** Amazon Prime Video reduced infrastructure costs by 90% by migrating their audio/video monitoring service from a Serverless architecture (AWS Lambda and Step Functions) back to a Monolith. This consolidation eliminated massive state transition fees and S3 network egress bottlenecks caused by high-frequency inter-service data transfers.
 
 In 2023, the team developing the audio/video monitoring service for Amazon Prime Video published an [engineering case study](https://www.primevideotech.com/video-streaming/scaling-up-the-prime-video-audio-video-monitoring-service-and-reducing-costs-by-90) that sent shockwaves through the engineering community: They reduced their **infrastructure costs by 90%** by redesigning their system from Serverless Microservices back to a traditional Monolith.
 
@@ -149,6 +158,6 @@ By consolidating 140 microservices into a single Monolithic Worker, Segment save
 
 [Next Part →]({{< ref "part-1-decision-framework.md" >}})
 
-🔗 **Next Step:** Continue to [Part 1: Part 1: Architectural Decision Framework]({{< ref "part-1-decision-framework.md" >}})
+🔗 **Next Step:** Continue to [Part 1: Architectural Decision Framework]({{< ref "part-1-decision-framework.md" >}})
 
 Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

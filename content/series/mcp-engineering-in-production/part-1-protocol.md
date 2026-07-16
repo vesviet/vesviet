@@ -1,4 +1,5 @@
 ---
+
 title: "Part 1: Protocol Fundamentals & Transport Evolution"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
@@ -15,6 +16,15 @@ mermaid: true
 ShowToc: true
 TocOpen: true
 ---
+
+**Answer-first:** The Model Context Protocol (MCP) is based on a JSON-RPC 2.0 message format operating over stdio or HTTP/SSE transports. By understanding the 5 core primitives—Protocols, Clients, Servers, Tools, and Resources—architects can build secure, decoupled integrations that expose APIs to LLM agents using structured semantic schemas.
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Executive Summary: MCP - The Control Plane of the AI Ecosystem]({{< ref "executive-summary.md" >}}).
+
+### What You'll Learn That AI Won't Tell You
+- **JSON-RPC State Transitions:** How MCP manages request-response sequences inside persistent SSE connections.
+- **Resource vs Tool Semantics:** When to expose static read-only files vs executing state-changing write APIs.
+- **Firewall Bypass Mechanics:** Why SSE is more reliable than WebSockets in enterprise proxy networks.
 
 > **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 1: Executive Summary: MCP - The Control Plane of the AI Ecosystem]({{< ref "executive-summary.md" >}}).
 
@@ -187,6 +197,6 @@ func main() {
 [← Previous Part]({{< ref "executive-summary.md" >}})
 [Next Part →]({{< ref "part-2-build.md" >}})
 
-🔗 **Next Step:** Continue to [Part 2: Part 2: Build a Production Server with Go]({{< ref "part-2-build.md" >}})
+🔗 **Next Step:** Continue to [Part 2: Build a Production Server with Go]({{< ref "part-2-build.md" >}})
 
 Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

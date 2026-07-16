@@ -1,4 +1,5 @@
 ---
+
 title: "Part 7: Enterprise Scaling & Governance"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
@@ -14,6 +15,15 @@ canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-7-e
 ShowToc: true
 TocOpen: true
 ---
+
+**Answer-first:** Exposing MCP gateways to public networks requires implementing mutual TLS (mTLS) authentication, setting client-side rate limits, managing certificate rotations, and configuring Nginx ingress controllers to support persistent SSE connections. These controls protect backend servers from DDoS attacks and unauthorized tool calls.
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 6: Observability & Audit Trail]({{< ref "part-6-observability.md" >}}).
+
+### What You'll Learn That AI Won't Tell You
+- **SSE Connection Draining:** Handling gateway upgrades without dropping active client connections.
+- **Nginx Timeout Configuration:** Tuning ingress buffers to prevent proxy connection drops every 60 seconds.
+- **cert-manager Integration:** Setting up automatic Let's Encrypt certificates for mutual authentication.
 
 > **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 7: Part 6: Observability & Audit Trail]({{< ref "part-6-observability.md" >}}).
 
@@ -137,47 +147,47 @@ In production environments, traffic spikes can saturate memory capacity of the g
 2. **Prometheus Adapter:** Install the Prometheus Adapter in Kubernetes to expose Gateway-specific metrics to the custom metrics API.
 3. **Target Thresholds:** Set HPA thresholds to trigger scaling events when active connections per pod exceed 500, ensuring resource headroom is maintained during spikes.
 
+## 5. mutual TLS Nginx Ingress Controller Configuration
 
+When routing external traffic to the MCP gateway, the ingress controller must be configured to support mutual TLS (mTLS) and keep-alive connections for Server-Sent Events (SSE). Below is the complete Kubernetes Nginx Ingress resource definition.
 
-## Operational Context: Part 7 Enterprise Appendix
-
-### Telemetry Correlation and OpenTelemetry Tracing Conventions
-Tracking agent actions requires propagating tracing context through dynamic tool invocations. Utilize the OpenTelemetry SDK to create parent spans for LLM reasoning sessions, linking tool executions as child spans. Annote traces with metadata fields such as model name, token consumption, and execution duration to locate latency bottlenecks in the system.
-
-
-
-## Operational Context: Part 7 Enterprise Appendix
-
-### Rate Limiting and Downstream API Protection
-Enforce rate limits on MCP endpoints to prevent downstream API exhaustion from recursive agent loops. Implement a token bucket rate limiter in the gateway middleware layer, restricting client requests to 60 calls per minute. If an agent exceeds this limit, return HTTP status 429 and suspend the session dynamically.
-
-
-
-## Operational Context: Part 7 Enterprise Appendix
-
-### Ingress Load Balancing and Gateway Autoscaling
-Deploy MCP gateway instances behind an ingress controller utilizing round-robin load balancing. Configure the Horizontal Pod Autoscaling (HPA) controller to scale pods based on active connection metrics. This ensures the gateway pool maintains adequate resource headroom to handle traffic spikes during concurrent agent tasks.
-
-
-
-## Operational Context: Part 7 Enterprise Appendix
-
-### Graceful Shutdown and Connection Draining
-When updating MCP container instances, configure the runtime to handle termination signals. Upon receiving a SIGTERM signal, the gateway stops accepting new connection requests, completes in-flight tool calls, flushes telemetry logs to the storage backend, and shuts down TCP sockets safely, ensuring zero-downtime deployments.
-
-
-
-## Operational Context: Part 7 Enterprise Appendix
-
-### Certificate Management and mutual TLS Security
-Secure transport channels by enforcing mutual TLS (mTLS) authentication. Both the gateway client and backend MCP servers must exchange and verify cryptographically signed certificates. Rotate certificates automatically using cert-manager, blocking unauthorized requests from accessing tools.
-
-
-
-## Operational Context: Part 7 Enterprise Appendix
-
-### Telemetry Correlation and OpenTelemetry Tracing Conventions
-Tracking agent actions requires propagating tracing context through dynamic tool invocations. Utilize the OpenTelemetry SDK to create parent spans for LLM reasoning sessions, linking tool executions as child spans. Annote traces with metadata fields such as model name, token consumption, and execution duration to locate latency bottlenecks in the system.
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mcp-gateway-ingress
+  namespace: mcp
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    # Enable mutual TLS authentication
+    nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
+    nginx.ingress.kubernetes.io/auth-tls-secret: "mcp/ca-certificates"
+    nginx.ingress.kubernetes.io/auth-tls-error-page: "https://tanhdev.com/error/unauthorized"
+    # Tune timeouts for persistent Server-Sent Events (SSE) connections
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+    nginx.ingress.kubernetes.io/connection-proxy-header: "keep-alive"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - gateway.mcp.tanhdev.com
+      secretName: mcp-gateway-tls
+  rules:
+    - host: gateway.mcp.tanhdev.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mcp-gateway-service
+                port:
+                  number: 443
+```
 
 ---
 

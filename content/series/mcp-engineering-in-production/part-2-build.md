@@ -1,4 +1,5 @@
 ---
+
 title: "Part 2: Build a Production Server with Go"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
@@ -14,6 +15,15 @@ canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-2-b
 ShowToc: true
 TocOpen: true
 ---
+
+**Answer-first:** Building a production-grade MCP server in Go requires using the official SDK to define tools, resources, and custom handlers. By structuring handler registration, using struct validation to sanitize input parameters, and wrapping executions with context cancellations, engineers can build resilient servers that handle high-concurrency requests.
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 1: Protocol Fundamentals & Transport Evolution]({{< ref "part-1-protocol.md" >}}).
+
+### What You'll Learn That AI Won't Tell You
+- **Go SDK Internals:** Registering Go methods with custom JSON schemas using reflect features.
+- **Context Propagation:** Passing cancel triggers down to SQL queries when an LLM aborts an action.
+- **Resource Content Negotiation:** Dynamically formatting binary payloads into base64 strings.
 
 > **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 2: Part 1: Protocol Fundamentals & Transport Evolution]({{< ref "part-1-protocol.md" >}}).
 
@@ -189,6 +199,6 @@ But how do we protect this server? What prevents a malicious (or hacked) AI Agen
 [← Previous Part]({{< ref "part-1-protocol.md" >}})
 [Next Part →]({{< ref "part-3-identity.md" >}})
 
-🔗 **Next Step:** Continue to [Part 3: Part 3: Identity & AuthN For Agentic Workflows]({{< ref "part-3-identity.md" >}})
+🔗 **Next Step:** Continue to [Part 3: Identity & AuthN For Agentic Workflows]({{< ref "part-3-identity.md" >}})
 
 Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

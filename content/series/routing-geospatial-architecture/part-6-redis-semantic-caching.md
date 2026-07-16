@@ -13,7 +13,14 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-6-redis-semantic-caching/"
+ShowToc: true
+TocOpen: true
 ---
+
+[← Series hub]({{< ref "/series/routing-geospatial-architecture/_index.md" >}})
+[← Prev]({{< ref "/series/routing-geospatial-architecture/part-5-visualization-ui.md" >}}) • [Next →]({{< ref "/series/routing-geospatial-architecture/part-7-load-testing-production.md" >}})
+
+> **Prerequisite:** You should understand route rendering and spatial properties from [Part 5: Route Visualization UI with Mapbox & Deck.gl]({{< ref "part-5-visualization-ui.md" >}}).
 
 Caching an exact GPS coordinate is impossible. Because floating-point numbers are infinitely precise, two users standing 1 meter apart will have completely different coordinates (`106.0001` vs `106.0002`). If your Redis key is simply `lat1,lng1:lat2,lng2`, your Cache Hit Rate will forever remain at 0%.
 
@@ -43,7 +50,107 @@ Imagine your most popular cache key (e.g., from the Airport to Downtown) expires
 A massive concert ends. 100,000 users check the route home from the exact same H3 hexagon. In a Redis Cluster, this creates a "Hot Key." All 100,000 requests map to a single hash slot, crashing one Redis node while the rest of the cluster sits idle.
 **The Fix (L1 Caching):** You cannot scale out of a Hot Key. Your Golang API Gateway must implement an In-Memory L1 Cache (e.g., using `ristretto`) to absorb the Hot Key traffic before it even touches the network.
 
-*How do we verify that our API Gateway, Redis cache, and Graphhopper routing engine will survive under massive production load? Read [Part 7: Load Testing and Performance Tuning for Production](/series/routing-geospatial-architecture/part-7-load-testing-production/) to simulate a 20,000 RPS load test and tune the Linux kernel.*
+## Redis Geospatial Commands: `GEOSEARCH` vs `GEORADIUS`
+
+Historically, Redis developers used the `GEORADIUS` and `GEORADIUSBYMEMBER` commands to search for elements within a circular geographic area. However, starting with Redis 6.2, these commands are deprecated in favor of the more unified and flexible **`GEOSEARCH`** command.
+
+`GEOSEARCH` allows developers to query indexed geohash sets using circular areas (`BYRADIUS`) or rectangular bounding boxes (`BYBOX`). It supports dynamically locating origin points from explicit coordinates (`FROMLONLAT`) or existing set members (`FROMMEMBER`). Under the hood, Redis stores geospatial data inside a Sorted Set (ZSET) where scores represent 52-bit Geohashes. `GEOSEARCH` queries run in logarithmic time $\mathcal{O}(\log(N) + M)$, where $N$ is the total elements in the set and $M$ is the number of results returned, making it extremely fast for high-concurrency dispatching.
+
+## Cache Invalidation and Versioning Pipelines
+
+While routes can be cached semantically to achieve high hit rates, mapping data changes over time (e.g. road construction, new traffic rules, seasonal closures). A static cache will serve stale, incorrect routes.
+
+To handle invalidation without executing expensive database scans, we design an explicit cache invalidation pipeline:
+
+- **Key Versioning:** All cache keys incorporate a map schema version (e.g. `route:map_v2:origin:dest`). When the underlying map data is updated, we simply increment the schema version config variable at the API gateway. The gateway immediately writes and reads using the new key namespace, leaving the old keys to expire gracefully via their TTL.
+- **Dynamic TTL Decay:** Routes in dense city centers are subject to rapid traffic changes. We apply a variable TTL: shorter durations (e.g. 5-10 minutes) for high-congestion city hexagons, and longer durations (e.g. 1-2 hours) for highway or rural connections.
+
+## Go Implementation: Redis Geospatial Caching Wrapper
+
+This code block demonstrates how to use the modern `GeoSearch` commands and manage semantic cache keys using the popular `go-redis/v9` library in Go:
+
+```go
+package caching
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"github.com/redis/go-redis/v9"
+)
+
+// GeoCacheWrapper wraps Redis client calls for geospatial searches and caching
+type GeoCacheWrapper struct {
+	rdb *redis.Client
+}
+
+// NewGeoCacheWrapper initializes the Redis client wrapper
+func NewGeoCacheWrapper(addr string) *GeoCacheWrapper {
+	rdb := redis.NewClient(&redis.Options{
+		Addr: addr,
+	})
+	return &GeoCacheWrapper{rdb: rdb}
+}
+
+// AddDriverLocation indexes a driver's longitude/latitude in a Redis Geospatial Index
+func (c *GeoCacheWrapper) AddDriverLocation(ctx context.Context, key string, lng, lat float64, driverID string) error {
+	_, err := c.rdb.GeoAdd(ctx, key, &redis.GeoLocation{
+		Longitude: lng,
+		Latitude:  lat,
+		Name:      driverID,
+	}).Result()
+	if err != nil {
+		return fmt.Errorf("failed to GEOADD driver %s: %w", driverID, err)
+	}
+	return nil
+}
+
+// SearchNearbyDrivers queries the Redis Geospatial Index using GEOSEARCH
+func (c *GeoCacheWrapper) SearchNearbyDrivers(ctx context.Context, key string, lng, lat, radiusKm float64, count int) ([]string, error) {
+	// GEOSEARCH is the modern replacement for GEORADIUS
+	locations, err := c.rdb.GeoSearch(ctx, key, &redis.GeoSearchQuery{
+		Longitude:  lng,
+		Latitude:   lat,
+		Radius:     radiusKm,
+		RadiusUnit: "km",
+		Count:      count,
+		Sort:       "ASC",
+	}).Result()
+	if err != nil {
+		return nil, fmt.Errorf("failed to GEOSEARCH nearby drivers: %w", err)
+	}
+
+	driverIDs := make([]string, len(locations))
+	for i, loc := range locations {
+		driverIDs[i] = loc.Name
+	}
+	return driverIDs, nil
+}
+
+// GetCachedRoute retrieves a semantically cached route if it exists
+func (c *GeoCacheWrapper) GetCachedRoute(ctx context.Context, h3Origin, h3Dest string) (string, error) {
+	cacheKey := fmt.Sprintf("route:v1:%s:%s", h3Origin, h3Dest)
+	val, err := c.rdb.Get(ctx, cacheKey).Result()
+	if err == redis.Nil {
+		return "", nil // cache miss
+	} else if err != nil {
+		return "", fmt.Errorf("failed to query Redis for cache key %s: %w", cacheKey, err)
+	}
+	return val, nil // cache hit
+}
+
+// SetCachedRoute stores a calculated route geometry in Redis with a TTL
+func (c *GeoCacheWrapper) SetCachedRoute(ctx context.Context, h3Origin, h3Dest, geojson string, ttl time.Duration) error {
+	cacheKey := fmt.Sprintf("route:v1:%s:%s", h3Origin, h3Dest)
+	err := c.rdb.Set(ctx, cacheKey, geojson, ttl).Err()
+	if err != nil {
+		return fmt.Errorf("failed to write route cache in Redis: %w", err)
+	}
+	return nil
+}
+```
+
 
 ---
 
@@ -60,3 +167,8 @@ This is **Cache Penetration**. Fake routes don't exist, so they are never cached
 {{< faq q="My Redis server crashed with OOM, but `used_memory` was only 5GB out of 16GB. Why?" >}}
 Welcome to **Memory Fragmentation**. Caching and deleting variable-length JSON strings causes the `jemalloc` allocator to fragment memory. The OS sees Redis using 15GB (`used_memory_rss`), while Redis only holds 5GB of data. You MUST monitor `mem_fragmentation_ratio` and enable `activedefrag yes` to defragment memory without restarting.
 {{< /faq >}}
+
+Need help building high-scale routing engines or spatial indexing pipelines? [Contact me](/contact/) to discuss your project.
+
+🔗 **Next Step:** Verify system scale under load in [Part 7: Load Testing and Performance Tuning for Production]({{< ref "/series/routing-geospatial-architecture/part-7-load-testing-production.md" >}}).
+

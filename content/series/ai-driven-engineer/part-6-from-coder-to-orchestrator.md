@@ -1,4 +1,5 @@
 ---
+
 title: "Part 6 — Role Shift: From Coder to AI Orchestrator"
 date: "2026-05-10T15:50:00+07:00"
 lastmod: "2026-05-10T15:50:00+07:00"
@@ -14,6 +15,15 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/"
 mermaid: true
 ---
+
+**Answer-first:** Shifting from coder to orchestrator requires developers to manage AI agents, design system boundaries, and direct code generation. Engineers must focus on domain-driven design, schema contracts, and assembly integration, treating AI as a high-speed execution engine.
+
+> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 5 — The BOD Perspective: Expectations, Costs, Legal Risks & Internal AI]({{< ref "part-5-the-bod-perspective-risk-and-privacy.md" >}}).
+
+### What You'll Learn That AI Won't Tell You
+- **Orchestration Workflow Design:** Managing multiple sub-agents to complete complex software tasks.
+- **API Contract Enforcement:** Defining OpenAPI and Protobuf schemas before calling AI code generators.
+- **System Assembly Strategies:** Structuring code modules so they integrate with zero compilation errors.
 
 > **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 6: Part 5 — The BOD Perspective: Expectations, Costs, Legal Risks & Internal AI]({{< ref "part-5-the-bod-perspective-risk-and-privacy.md" >}}).
 
@@ -179,14 +189,6 @@ To coordinate complex tasks across multiple agents:
 - **Consensus Voting:** Run three independent evaluator agents to rate the quality of generated code. If two out of three approve, transition the FSM to the Approve state.
 - **Retry Counters:** Set a maximum retry limit of 3 refactoring attempts to prevent agents from falling into infinite loops if compiler errors cannot be resolved.
 
-
-
-
-## Operational Context: Part 6 From Coder To Orchestrator Appendix
-
-### KPI Tracking and Code Quality Metrics
-To evaluate the impact of AI-assisted development, track code quality indicators in the CI pipeline. Monitor the change lead time (from commit to production) alongside the code churn rate (lines deleted within 7 days). A rising churn rate indicates hallucinated patterns, requiring adjustment of the prompt templates.
-
 ---
 
 ## Navigation & Next Steps
@@ -194,6 +196,6 @@ To evaluate the impact of AI-assisted development, track code quality indicators
 [← Previous Part]({{< ref "part-5-the-bod-perspective-risk-and-privacy.md" >}})
 [Next Part →]({{< ref "part-7-system-design-survival.md" >}})
 
-🔗 **Next Step:** Continue to [Part 7: Part 7 — System Design: The Priceless Survival Territory for Developers]({{< ref "part-7-system-design-survival.md" >}})
+🔗 **Next Step:** Continue to [Part 7 — System Design: The Priceless Survival Territory for Developers]({{< ref "part-7-system-design-survival.md" >}})
 
 Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

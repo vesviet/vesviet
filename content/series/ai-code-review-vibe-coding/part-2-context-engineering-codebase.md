@@ -27,6 +27,8 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-code-review-vibe-coding/part-2-context-engineering-codebase/"
+ShowToc: true
+TocOpen: true
 ---
 
 In 2025, METR — an AI safety and capability research organization — ran a rigorous randomized controlled trial. Sixteen experienced open-source developers worked on 246 real-world tasks, each randomly assigned to either use AI coding tools freely or not at all.
@@ -41,9 +43,9 @@ The developers who slowed down were spending significant time on what researcher
 
 This part of the series is about solving that problem.
 
-> **Series Orientation:** This article is Part 2 of the **AI Code Review & Vibe Coding** series, detailing the context engineering practices needed to align AI generation with codebase conventions. For the preceding guide on initial tools and non-technical vibe coding, see [Part 1 — Vibe Coding & The Production Wall](/series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical/).
+> **Series Orientation:** This article is Part 2 of the **AI Code Review & Vibe Coding** series, detailing the context engineering practices needed to align AI generation with codebase conventions. For the preceding guide on initial tools and non-technical vibe coding, see [Part 1 — Vibe Coding & The Production Wall]({{< ref "/series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical.md" >}}).
 >
-> **Scope note:** This article focuses specifically on *code-review-level* context engineering — the practices individual engineers and teams use to make AI agents produce reviewable, architecturally correct code on an existing codebase. If you are interested in *platform-level* context infrastructure — building an organizational AI Platform layer, internal RAG systems at scale, or enterprise knowledge management — see [Context Engineering: Domain-Driven Design for AI](/series/ai-driven-playbook/part-1-context-engineering-ddd/) in the AI-Driven Playbook series.
+> **Scope note:** This article focuses specifically on *code-review-level* context engineering — the practices individual engineers and teams use to make AI agents produce reviewable, architecturally correct code on an existing codebase. If you are interested in *platform-level* context infrastructure — building an organizational AI Platform layer, internal RAG systems at scale, or enterprise knowledge management — see [Context Engineering: Domain-Driven Design for AI]({{< ref "/series/ai-driven-playbook/part-1-context-engineering-ddd.md" >}}) in the AI-Driven Playbook series.
 
 ---
 
@@ -340,7 +342,7 @@ Part 3 covers what those high-value review tasks are: the full taxonomy of AI-ge
 
 ---
 
-*Next: [Part 3 — AI Bug Taxonomy: From Silent Logic Failures to Slopsquatting](/series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy/)*
+*Next: [Part 3 — AI Bug Taxonomy: From Silent Logic Failures to Slopsquatting]({{< ref "/series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy.md" >}})*
 
 ---
 

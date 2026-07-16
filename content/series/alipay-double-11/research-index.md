@@ -13,7 +13,7 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/research-index/"
 ---
-[← Series hub](/series/alipay-double-11/)
+[← Series hub]({{< ref "/series/alipay-double-11/_index.md" >}})
 
 This index explains what each document covers and suggests reading paths depending on your time budget and role.
 
@@ -21,32 +21,32 @@ This index explains what each document covers and suggests reading paths dependi
 
 | Page | What it covers | Best for |
 |------|-----------------|----------|
-| [Executive Summary](/series/alipay-double-11/executive-summary/) | The story, the numbers, and the 3 pillars | Execs, CTO/VP Eng, PMs |
-| [Phase 1: Timeline](/series/alipay-double-11/phase-1-timeline/) | Key milestones and why the architecture had to change | Everyone |
-| [Phase 2: Architecture](/series/alipay-double-11/phase-2-architecture/) | LDC/unitization, multi-active, DB and MQ foundations | Architects, senior engineers |
-| [Phase 3: Operations](/series/alipay-double-11/phase-3-operations/) | Capacity planning, full-link stress testing, incident command | Engineering leadership, SRE |
-| [Phase 4: Technology Overview](/series/alipay-double-11/phase-4-technology/) | Middle platform, payment flow, risk control, SOFAStack | Architects, ICs |
-| [Phase 4: Deep Dive](/series/alipay-double-11/phase-4-deep-dive/) | Internals: RPC, MQ, storage engine, transactions, ML risk control | Deep technical readers |
-| [Modern Tech Comparison](/series/alipay-double-11/modern-tech-comparison/) | Mapping to Kubernetes, Kafka/Pulsar, gRPC, modern DBs, service mesh | Teams modernizing today |
-| [Phase 5: Synthesis](/series/alipay-double-11/phase-5-synthesis/) | Patterns, anti-patterns, KPIs, decision framework | Leaders + architects |
+| [Executive Summary]({{< ref "/series/alipay-double-11/executive-summary.md" >}}) | The story, the numbers, and the 3 pillars | Execs, CTO/VP Eng, PMs |
+| [Phase 1: Timeline]({{< ref "/series/alipay-double-11/phase-1-timeline.md" >}}) | Key milestones and why the architecture had to change | Everyone |
+| [Phase 2: Architecture]({{< ref "/series/alipay-double-11/phase-2-architecture.md" >}}) | LDC/unitization, multi-active, DB and MQ foundations | Architects, senior engineers |
+| [Phase 3: Operations]({{< ref "/series/alipay-double-11/phase-3-operations.md" >}}) | Capacity planning, full-link stress testing, incident command | Engineering leadership, SRE |
+| [Phase 4: Technology Overview]({{< ref "/series/alipay-double-11/phase-4-technology.md" >}}) | Middle platform, payment flow, risk control, SOFAStack | Architects, ICs |
+| [Phase 4: Deep Dive]({{< ref "/series/alipay-double-11/phase-4-deep-dive.md" >}}) | Internals: RPC, MQ, storage engine, transactions, ML risk control | Deep technical readers |
+| [Modern Tech Comparison]({{< ref "/series/alipay-double-11/modern-tech-comparison.md" >}}) | Mapping to Kubernetes, Kafka/Pulsar, gRPC, modern DBs, service mesh | Teams modernizing today |
+| [Phase 5: Synthesis]({{< ref "/series/alipay-double-11/phase-5-synthesis.md" >}}) | Patterns, anti-patterns, KPIs, decision framework | Leaders + architects |
 
 ## Reading Paths (By Time Budget)
 
 ### 10–15 minutes (Executive)
-1. [Executive Summary](/series/alipay-double-11/executive-summary/)
+1. [Executive Summary]({{< ref "/series/alipay-double-11/executive-summary.md" >}})
 
 ### 60–90 minutes (Engineering leadership)
-1. [Executive Summary](/series/alipay-double-11/executive-summary/)
-2. [Phase 1: Timeline](/series/alipay-double-11/phase-1-timeline/)
-3. [Phase 2: Architecture](/series/alipay-double-11/phase-2-architecture/)
-4. [Phase 3: Operations](/series/alipay-double-11/phase-3-operations/)
-5. [Phase 5: Synthesis](/series/alipay-double-11/phase-5-synthesis/)
+1. [Executive Summary]({{< ref "/series/alipay-double-11/executive-summary.md" >}})
+2. [Phase 1: Timeline]({{< ref "/series/alipay-double-11/phase-1-timeline.md" >}})
+3. [Phase 2: Architecture]({{< ref "/series/alipay-double-11/phase-2-architecture.md" >}})
+4. [Phase 3: Operations]({{< ref "/series/alipay-double-11/phase-3-operations.md" >}})
+5. [Phase 5: Synthesis]({{< ref "/series/alipay-double-11/phase-5-synthesis.md" >}})
 
 ### 6–10 hours (Full technical deep dive)
 Read everything above, then:
-1. [Phase 4: Technology Overview](/series/alipay-double-11/phase-4-technology/)
-2. [Modern Tech Comparison](/series/alipay-double-11/modern-tech-comparison/)
-3. [Phase 4: Deep Dive](/series/alipay-double-11/phase-4-deep-dive/)
+1. [Phase 4: Technology Overview]({{< ref "/series/alipay-double-11/phase-4-technology.md" >}})
+2. [Modern Tech Comparison]({{< ref "/series/alipay-double-11/modern-tech-comparison.md" >}})
+3. [Phase 4: Deep Dive]({{< ref "/series/alipay-double-11/phase-4-deep-dive.md" >}})
 
 ## Quick Reference (What to Copy)
 

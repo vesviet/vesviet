@@ -15,6 +15,9 @@ apple_touch_icon = "/apple-touch-icon.png"
 [markup]
   [markup.goldmark.renderer]
     unsafe = true
+  [markup.highlight]
+    useClasses = true
+
 
 
 [permalinks]

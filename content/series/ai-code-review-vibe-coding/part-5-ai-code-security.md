@@ -28,15 +28,17 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-code-review-vibe-coding/part-5-ai-code-security/"
+ShowToc: true
+TocOpen: true
 ---
 
-> **Series Orientation:** This article is Part 5 of the **AI Code Review & Vibe Coding** series, presenting the security threat model for AI-generated code. For the automated review pipeline that runs these security checks, see [Part 4 — Building the Review Pipeline](/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent/).
+> **Series Orientation:** This article is Part 5 of the **AI Code Review & Vibe Coding** series, presenting the security threat model for AI-generated code. For the automated review pipeline that runs these security checks, see [Part 4 — Building the Review Pipeline]({{< ref "/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent.md" >}}).
 
 In 2025, security researchers introduced a metric that should permanently reshape how engineering teams think about AI-generated code: AI-assisted code exhibits **2.7× higher vulnerability density** than carefully reviewed human-written code. Not because AI is uniquely incompetent at security — it is not — but because the patterns of failure are systematic, predictable, and concentrated in exactly the areas that automated detection is weakest.
 
 This part provides the complete security threat model: the specific vulnerabilities AI generates most frequently, the attack classes unique to AI systems that traditional security tooling is not designed to detect, the agent-specific risks that emerge when AI moves from code generation to autonomous action, and the regulatory requirements that are becoming legally enforceable obligations for engineering teams.
 
-> **Scope note:** This article addresses **AI-generated code security** — the vulnerabilities, attack patterns, and review practices that apply to code written *by* AI agents. If you are looking for **AI system security** — hardening LLM inference infrastructure, securing model serving endpoints, or AI platform attack surface management — see [AI Security Engineering: Ironclad Armor for New Attack Surfaces](/series/ai-driven-playbook/part-7-ai-security-engineering/) in the AI-Driven Playbook series. The two scopes are complementary; both are necessary in production.
+> **Scope note:** This article addresses **AI-generated code security** — the vulnerabilities, attack patterns, and review practices that apply to code written *by* AI agents. If you are looking for **AI system security** — hardening LLM inference infrastructure, securing model serving endpoints, or AI platform attack surface management — see [AI Security Engineering: Ironclad Armor for New Attack Surfaces]({{< ref "/series/ai-driven-playbook/part-7-ai-security-engineering.md" >}}) in the AI-Driven Playbook series. The two scopes are complementary; both are necessary in production.
 
 ---
 
@@ -304,4 +306,4 @@ Part 6 closes the series with the governance frameworks, observability practices
 
 ---
 
-*Next: [Part 6 — Governance, Observability, and the Future of the Engineering Career](/series/ai-code-review-vibe-coding/part-6-governance-observability-career/)*
+*Next: [Part 6 — Governance, Observability, and the Future of the Engineering Career]({{< ref "/series/ai-code-review-vibe-coding/part-6-governance-observability-career.md" >}})*
