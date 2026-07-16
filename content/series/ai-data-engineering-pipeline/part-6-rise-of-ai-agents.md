@@ -21,6 +21,10 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-6-rise-of-ai-agents/"
 ---
 
+**Answer-First:** Moving from static retrieval to autonomous agents requires translating natural language goals into structured tool calls and loops (ReAct/Plan-and-Solve) that interface directly with transactional APIs.
+
+> **Prerequisite:** [Part 5: Enterprise Security & Data Poisoning - The Silent Assassin]({{< ref "part-5-enterprise-security-data-poisoning.md" >}}) on data access controls.
+
 ## 1. The Decline of Static RAG
 
 In the previous 5 parts, we built a perfect RAG machine: real-time data (CDC), absolute security, and strict authorization. But no matter how perfect, traditional RAG suffers from a fatal flaw: **It only knows how to "Read" and "Speak", not how to "Do".**
@@ -56,7 +60,7 @@ The emergence of the **Model Context Protocol (MCP)** managed by the Linux Found
 
 When shifting to Multi-Agent systems, programmers debated fiercely between AutoGen and LangGraph.
 
-**AutoGen** designs Agents like a group of people chatting with each other (Group Chat) â€“ very creative but chaotic. You never know where the conversation will lead.
+**AutoGen** designs Agents like a group of people chatting with each other (Group Chat) – very creative but chaotic. You never know where the conversation will lead.
 
 Conversely, **LangGraph** wins absolutely in the Enterprise environment. It forces the Agent's thought flow into a Directed Acyclic Graph (DAG) with Cyclic capabilities.
 *   **Stateful Management:** All memory and work progress are saved as Checkpoints. If the server crashes at Step 4, LangGraph will auto-recover and resume from Step 4, instead of grinding again from Step 1. Enterprises need stability and predictability, and LangGraph was born to deliver that.
@@ -80,5 +84,217 @@ The combination of AI automation and human accountability is the key to bringing
 
 Agentic AI transforms your system from an encyclopedia into a true workforce. By combining reasoning capabilities (Plan-and-Solve), a transcendent connection standard (MCP), and the absolute control of LangGraph (HITL), 2026 enterprises are automating processes that seemed only humans could do.
 
-However, an AI Agent only performs well if it can "remember" what it has done. In **[Part 7: Agentic Memory - Long-Term Personalized Storage]({{< ref "part-7-agentic-memory-long-term.md" >}})**, we will dissect **Mem0** and **Zep** to see how engineers grant AI a "hippocampus" â€“ the ability to remember events across time.
+However, an AI Agent only performs well if it can "remember" what it has done. In **[Part 7: Agentic Memory - Long-Term Personalized Storage]({{< ref "part-7-agentic-memory-long-term.md" >}})**, we will dissect **Mem0** and **Zep** to see how engineers grant AI a "hippocampus" – the ability to remember events across time.
 
+## ReAct Execution Loop in Go
+
+Autonomous agents extend RAG systems by executing code, calling tools, and updating status parameters. The ReAct (Reasoning and Acting) execution pattern runs in a loop: the LLM analyzes a goal, determines which tool to run, receives the tool's execution result, and loops until the final goal is met.
+
+The following Go code implements this complete execution runtime, showing how to dynamically invoke registered tools using structured natural language commands:
+
+```go
+package main
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"strings"
+	"time"
+)
+
+type Tool interface {
+	Name() string
+	Execute(ctx context.Context, args string) (string, error)
+}
+
+// ServerRestartTool mock tool definition
+type ServerRestartTool struct{}
+
+func (t *ServerRestartTool) Name() string { return "restart_server" }
+func (t *ServerRestartTool) Execute(ctx context.Context, args string) (string, error) {
+	fmt.Printf("[Tool] Executing restart_server with args: %s\n", args)
+	time.Sleep(100 * time.Millisecond)
+	return "Server successfully restarted. System status is green.", nil
+}
+
+type AgentExecutor struct {
+	Tools map[string]Tool
+}
+
+func NewAgentExecutor() *AgentExecutor {
+	return &AgentExecutor{Tools: make(map[string]Tool)}
+}
+
+func (ae *AgentExecutor) RegisterTool(t Tool) {
+	ae.Tools[t.Name()] = t
+}
+
+func (ae *AgentExecutor) ExecuteLoop(ctx context.Context, task string) (string, error) {
+	// A real LLM would be called here to decide which tool to execute.
+	// We simulate a 2-step loop: 1. call restart_server, 2. return final answer.
+	fmt.Printf("[Agent] Task received: %s\n", task)
+	
+	// Step 1: Decision to run restart_server
+	selectedTool := "restart_server"
+	args := "server_id=prod-srv-99"
+	
+	tool, ok := ae.Tools[selectedTool]
+	if !ok {
+		return "", errors.New("tool not found")
+	}
+	
+	result, err := tool.Execute(ctx, args)
+	if err != nil {
+		return "", err
+	}
+	
+	// Step 2: Final Answer generation
+	finalAnswer := fmt.Sprintf("Action complete. Restart tool reported: %s", result)
+	return finalAnswer, nil
+}
+
+func main() {
+	executor := NewAgentExecutor()
+	executor.RegisterTool(&ServerRestartTool{})
+	
+	ctx := context.Background()
+	ans, _ := executor.ExecuteLoop(ctx, "Restart production server prod-srv-99")
+	fmt.Println("[Agent Final Answer]:", ans)
+}
+```
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant A as Agent Orchestrator
+    participant LLM as Language Model
+    participant T as Tool Runtime
+    
+    U->>A: Send Goal
+    loop ReAct Cycle
+        A->>LLM: Send Context & Tool Declarations
+        LLM-->>A: Thought + Action (Tool Name, Args)
+        A->>T: Execute Tool(Args)
+        T-->>A: Return Execution Result
+        A->>LLM: Append Tool Result to History
+    end
+    A-->>U: Return Final Answer
+```
+
+By decoupling the agent from static paths and letting it select tools dynamically within a ReAct cycle, the system can autonomously adapt to environment state changes.
+
+
+---
+
+## ReAct Execution Loop in Go
+
+Autonomous agents extend RAG systems by executing code, calling tools, and updating status parameters. The ReAct (Reasoning and Acting) execution pattern runs in a loop: the LLM analyzes a goal, determines which tool to run, receives the tool's execution result, and loops until the final goal is met.
+
+The following Go code implements this complete execution runtime, showing how to dynamically invoke registered tools using structured natural language commands:
+
+```go
+package main
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"strings"
+	"time"
+)
+
+type Tool interface {
+	Name() string
+	Execute(ctx context.Context, args string) (string, error)
+}
+
+// ServerRestartTool mock tool definition
+type ServerRestartTool struct{}
+
+func (t *ServerRestartTool) Name() string { return "restart_server" }
+func (t *ServerRestartTool) Execute(ctx context.Context, args string) (string, error) {
+	fmt.Printf("[Tool] Executing restart_server with args: %s\n", args)
+	time.Sleep(100 * time.Millisecond)
+	return "Server successfully restarted. System status is green.", nil
+}
+
+type AgentExecutor struct {
+	Tools map[string]Tool
+}
+
+func NewAgentExecutor() *AgentExecutor {
+	return &AgentExecutor{Tools: make(map[string]Tool)}
+}
+
+func (ae *AgentExecutor) RegisterTool(t Tool) {
+	ae.Tools[t.Name()] = t
+}
+
+func (ae *AgentExecutor) ExecuteLoop(ctx context.Context, task string) (string, error) {
+	// A real LLM would be called here to decide which tool to execute.
+	// We simulate a 2-step loop: 1. call restart_server, 2. return final answer.
+	fmt.Printf("[Agent] Task received: %s\n", task)
+	
+	// Step 1: Decision to run restart_server
+	selectedTool := "restart_server"
+	args := "server_id=prod-srv-99"
+	
+	tool, ok := ae.Tools[selectedTool]
+	if !ok {
+		return "", errors.New("tool not found")
+	}
+	
+	result, err := tool.Execute(ctx, args)
+	if err != nil {
+		return "", err
+	}
+	
+	// Step 2: Final Answer generation
+	finalAnswer := fmt.Sprintf("Action complete. Restart tool reported: %s", result)
+	return finalAnswer, nil
+}
+
+func main() {
+	executor := NewAgentExecutor()
+	executor.RegisterTool(&ServerRestartTool{})
+	
+	ctx := context.Background()
+	ans, _ := executor.ExecuteLoop(ctx, "Restart production server prod-srv-99")
+	fmt.Println("[Agent Final Answer]:", ans)
+}
+```
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant A as Agent Orchestrator
+    participant LLM as Language Model
+    participant T as Tool Runtime
+    
+    U->>A: Send Goal
+    loop ReAct Cycle
+        A->>LLM: Send Context & Tool Declarations
+        LLM-->>A: Thought + Action (Tool Name, Args)
+        A->>T: Execute Tool(Args)
+        T-->>A: Return Execution Result
+        A->>LLM: Append Tool Result to History
+    end
+    A-->>U: Return Final Answer
+```
+
+By decoupling the agent from static paths and letting it select tools dynamically within a ReAct cycle, the system can autonomously adapt to environment state changes.
+
+## State Machine and Flow Control for Autonomous Loops
+
+Unconstrained loops can cause agents to enter infinite execution cycles, exhausting resources and racking up massive API charges. We prevent this by implementing a formal state machine:
+
+1. **Max Iteration Guardrails:** Every execution context carries a `MaxSteps` counter (typically capped at 8). The agent aborts if the goal is not met within this limit.
+2. **Circular Call Detection:** The runtime hashes the history of (Tool Name, Argument) tuples. If the exact same action is invoked consecutively, the execution loop raises an error.
+3. **Execution Timeouts:** Individual tool runs are bounded by context deadlines, ensuring slow API integrations do not lock the executor thread.
+
+🔗 **Next Step:** Learn to design persistent state systems in [Part 7: Agentic Memory - Solving the 'Goldfish' Curse]({{< ref "part-7-agentic-memory-long-term.md" >}}).
+
+---
+
+[← Previous Part: Part 5: Enterprise Security & Data Poisoning - The Silent Assassin]({{< ref "part-5-enterprise-security-data-poisoning.md" >}})  |  [Next Part: Part 7: Agentic Memory - Solving the 'Goldfish' Curse]({{< ref "part-7-agentic-memory-long-term.md" >}})

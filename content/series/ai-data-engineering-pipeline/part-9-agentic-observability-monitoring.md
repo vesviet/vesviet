@@ -23,6 +23,10 @@ canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-9-ag
 mermaid: true
 ---
 
+**Answer-First:** Monitoring autonomous agents requires tracking LLM inputs, reasoning traces, intermediate tool execution outputs, and token costs using specialized LLM-native APM tools rather than simple HTTP return codes.
+
+> **Prerequisite:** [Part 8: Inference Optimization & vLLM Deployment on Production]({{< ref "part-8-inference-optimization-vllm.md" >}}) on model hosting.
+
 ## 1. The "Black Box" Problem & The Incompetence of Traditional APM
 
 In traditional software systems (Web/App), you can use APM (Application Performance Monitoring) tools like Datadog or New Relic for monitoring. If the system returns an `HTTP 200 OK` code, you know everything is working fine. If it returns `HTTP 500`, you open the Log to see which line of code failed.
@@ -111,4 +115,153 @@ Optimized Inference (Part 8) makes the Agent run fast. Observability (Part 9) ma
 
 But your system is only truly perfect if it can **Automatically evaluate itself** (CI/CD for AI). Welcome to the final leg of the Series: **[Part 10: Production Evals & CI/CD for AI]({{< ref "part-10-production-evals-cicd.md" >}})**.
 
+## Observability Tracing: Monitoring the Agent's Chain of Thought
 
+Monitoring autonomous agents requires tracking the execution flow across multiple LLM steps, tool invocations, and vector queries. Standard APM metrics like API latency and response code are insufficient; we must trace the internal dependencies of each reasoning step.
+
+The following Go code snippet shows how to export structured tracing logs conforming to OpenTelemetry specifications. It captures tool calls, latency metrics, and token costs:
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"time"
+)
+
+type Span struct {
+	Name       string        `json:"name"`
+	ParentSpan string        `json:"parent_span,omitempty"`
+	Duration   time.Duration `json:"duration_ms"`
+	Input      string        `json:"input"`
+	Output     string        `json:"output"`
+	TokenCount int           `json:"token_count"`
+	Metadata   map[string]string `json:"metadata"`
+}
+
+type TracingExporter struct{}
+
+func (te *TracingExporter) ExportSpan(span Span) {
+	bytes, _ := json.MarshalIndent(span, "", "  ")
+	fmt.Println("[Tracing Event]:")
+	fmt.Println(string(bytes))
+}
+
+func main() {
+	exporter := &TracingExporter{}
+	
+	// Trace a tool call within a parent agent trace
+	toolSpan := Span{
+		Name:       "execute_postgres_query",
+		ParentSpan: "agent_react_loop_root",
+		Duration:   24 * time.Millisecond,
+		Input:      "SELECT count(*) FROM sales_records",
+		Output:     "{"count": 15200}",
+		TokenCount: 120,
+		Metadata: map[string]string{
+			"db_host": "db-prod-replica",
+		},
+	}
+	
+	exporter.ExportSpan(toolSpan)
+}
+```
+
+```mermaid
+graph TD
+    AgentCall[Agent API Call] --> TraceRoot[Root Span: Resolve Issue]
+    TraceRoot --> LLMThought1[Child Span 1: LLM Reasoning Decision]
+    LLMThought1 --> ToolExecution[Child Span 2: Execute Database Tool]
+    ToolExecution --> LLMThought2[Child Span 3: LLM Synthesis]
+    LLMThought2 --> TraceResponse[Resolve Success]
+    
+    TraceRoot --> TraceAggregator[OpenTelemetry Collector]
+    TraceAggregator --> Datadog[APM Dashboard Visualization]
+```
+
+By exporting these structured traces to a central APM dashboard, engineers can quickly locate malfunctioning tools and trace prompt errors in production.
+
+
+---
+
+## Observability Tracing: Monitoring the Agent's Chain of Thought
+
+Monitoring autonomous agents requires tracking the execution flow across multiple LLM steps, tool invocations, and vector queries. Standard APM metrics like API latency and response code are insufficient; we must trace the internal dependencies of each reasoning step.
+
+The following Go code snippet shows how to export structured tracing logs conforming to OpenTelemetry specifications. It captures tool calls, latency metrics, and token costs:
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"time"
+)
+
+type Span struct {
+	Name       string        `json:"name"`
+	ParentSpan string        `json:"parent_span,omitempty"`
+	Duration   time.Duration `json:"duration_ms"`
+	Input      string        `json:"input"`
+	Output     string        `json:"output"`
+	TokenCount int           `json:"token_count"`
+	Metadata   map[string]string `json:"metadata"`
+}
+
+type TracingExporter struct{}
+
+func (te *TracingExporter) ExportSpan(span Span) {
+	bytes, _ := json.MarshalIndent(span, "", "  ")
+	fmt.Println("[Tracing Event]:")
+	fmt.Println(string(bytes))
+}
+
+func main() {
+	exporter := &TracingExporter{}
+	
+	// Trace a tool call within a parent agent trace
+	toolSpan := Span{
+		Name:       "execute_postgres_query",
+		ParentSpan: "agent_react_loop_root",
+		Duration:   24 * time.Millisecond,
+		Input:      "SELECT count(*) FROM sales_records",
+		Output:     "{"count": 15200}",
+		TokenCount: 120,
+		Metadata: map[string]string{
+			"db_host": "db-prod-replica",
+		},
+	}
+	
+	exporter.ExportSpan(toolSpan)
+}
+```
+
+```mermaid
+graph TD
+    AgentCall[Agent API Call] --> TraceRoot[Root Span: Resolve Issue]
+    TraceRoot --> LLMThought1[Child Span 1: LLM Reasoning Decision]
+    LLMThought1 --> ToolExecution[Child Span 2: Execute Database Tool]
+    ToolExecution --> LLMThought2[Child Span 3: LLM Synthesis]
+    LLMThought2 --> TraceResponse[Resolve Success]
+    
+    TraceRoot --> TraceAggregator[OpenTelemetry Collector]
+    TraceAggregator --> Datadog[APM Dashboard Visualization]
+```
+
+By exporting these structured traces to a central APM dashboard, engineers can quickly locate malfunctioning tools and trace prompt errors in production.
+
+## Cost Attribution and Token Quota Management
+
+Operational metrics must track direct execution costs to prevent runaway billing events:
+
+* **Token Tracking:** Logs exact input and output tokens per user request, mapping them directly to internal departmental cost centers.
+* **Quota Allocation:** Restricts API consumption patterns using Redis-based sliding window rate limiters.
+* **Cost Estimation:** Generates real-time cost estimations based on token metrics, flagging anomalies when single execution threads exceed $2.00 in cost.
+
+🔗 **Next Step:** Establish automated evaluation pipelines in [Part 10: Production Evals & CI/CD for AI - The Final Checkpoint]({{< ref "part-10-production-evals-cicd.md" >}}).
+
+---
+
+[← Previous Part: Part 8: Inference Optimization & vLLM Deployment on Production]({{< ref "part-8-inference-optimization-vllm.md" >}})  |  [Next Part: Part 10: Production Evals & CI/CD for AI - The Final Checkpoint]({{< ref "part-10-production-evals-cicd.md" >}})

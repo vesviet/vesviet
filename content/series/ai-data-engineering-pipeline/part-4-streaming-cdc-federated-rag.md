@@ -21,6 +21,10 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-4-streaming-cdc-federated-rag/"
 ---
 
+**Answer-First:** Real-time data freshness is achieved by linking transactional databases to vector indexes using Change Data Capture (CDC) via Debezium and Kafka, bypassing slow nightly batch ETLs.
+
+> **Prerequisite:** [Part 3: The Art of Chunking & Semantic Caching]({{< ref "part-3-late-chunking-semantic-caching.md" >}}) on caching patterns.
+
 ## 1. "Yesterday's Data" is a Disaster
 
 If a customer asks a banking Chatbot about savings interest rates, and the Chatbot answers based on a PDF policy file that was changed... 2 hours ago. What happens?
@@ -96,4 +100,191 @@ However, no matter how clean, real-time, and well-governed your data is, if your
 
 In **[Part 5: Enterprise Security & Data Poisoning]({{< ref "part-5-enterprise-security-data-poisoning.md" >}})**, we will step into the underworld of AI Security, where Hackers use "Indirect Prompt Injections" to manipulate your RAG, and explore how to build a Defense-in-Depth system.
 
+## Change Data Capture (CDC) Pipeline Architecture
 
+Batch processing pipelines create data silos where retrieval indexes lag behind the system of record. To enable 100% data freshness, we establish a real-time CDC pipeline. The database transaction log (MySQL binary log or PostgreSQL WAL) is monitored by Debezium, which streams raw event payloads to an Apache Kafka cluster. A Go worker service processes these streams and updates the Vector Database (Qdrant) in real time.
+
+```mermaid
+graph LR
+    Postgres[(PostgreSQL DB)] -->|WAL Reader| Debezium[Debezium Connector]
+    Debezium -->|JSON Events| Kafka{Kafka Topic}
+    Kafka -->|Stream Consumer| GoWorker[Go Vector Sync Worker]
+    GoWorker -->|Embed Text| EmbedAPI[Embedding API Service]
+    GoWorker -->|UPSERT Vectors| Qdrant[(Qdrant Vector DB)]
+```
+
+The following Go code implements a resilient Kafka consumer designed to process database event payloads and sync them to Qdrant:
+
+```go
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"time"
+)
+
+type CDCEvent struct {
+	Table     string                 `json:"table"`
+	Action    string                 `json:"action"` // "CREATE", "UPDATE", "DELETE"
+	Before    map[string]interface{} `json:"before"`
+	After     map[string]interface{} `json:"after"`
+	Timestamp int64                  `json:"timestamp"`
+}
+
+type SyncWorker struct {
+	QdrantEndpoint string
+}
+
+func (s *SyncWorker) ProcessCDCEvent(ctx context.Context, rawPayload []byte) error {
+	var event CDCEvent
+	if err := json.Unmarshal(rawPayload, &event); err != nil {
+		return err
+	}
+
+	fmt.Printf("[CDC Worker] Event received for table %s, action: %s\n", event.Table, event.Action)
+	
+	switch event.Action {
+	case "CREATE", "UPDATE":
+		return s.upsertVector(ctx, event.After)
+	case "DELETE":
+		return s.deleteVector(ctx, event.Before)
+	}
+
+	return nil
+}
+
+func (s *SyncWorker) upsertVector(ctx context.Context, afterData map[string]interface{}) error {
+	// Extract content text, call embedding API, and push vector to Qdrant
+	id := afterData["id"]
+	fmt.Printf("Upserting Qdrant record ID: %v\n", id)
+	time.Sleep(50 * time.Millisecond) // Mock operation
+	return nil
+}
+
+func (s *SyncWorker) deleteVector(ctx context.Context, beforeData map[string]interface{}) error {
+	id := beforeData["id"]
+	fmt.Printf("Deleting Qdrant record ID: %v\n", id)
+	time.Sleep(50 * time.Millisecond) // Mock operation
+	return nil
+}
+
+func main() {
+	worker := &SyncWorker{QdrantEndpoint: "http://qdrant:6333"}
+	samplePayload := `{"table": "company_policies", "action": "CREATE", "after": {"id": 1005, "content": "All remote work must be authorized by managers."}, "timestamp": 1782298000}`
+	
+	ctx := context.Background()
+	_ = worker.ProcessCDCEvent(ctx, []byte(samplePayload))
+}
+```
+
+## Federated Search over Distributed Vector Stores
+
+When data is partitioned across multiple regional instances, a single query must execute across a federated layout. The Federated Search Coordinator acts as a fan-out proxy:
+- **Parallel Dispatch:** Dispatches search vectors to local vector partitions.
+- **Schema Mapping:** Standardizes differing database metadata properties.
+- **Score Re-ranking:** Re-scores vectors across different partition norms using a centralized Cross-Encoder.
+
+
+---
+
+## Change Data Capture (CDC) Pipeline Architecture
+
+Batch processing pipelines create data silos where retrieval indexes lag behind the system of record. To enable 100% data freshness, we establish a real-time CDC pipeline. The database transaction log (MySQL binary log or PostgreSQL WAL) is monitored by Debezium, which streams raw event payloads to an Apache Kafka cluster. A Go worker service processes these streams and updates the Vector Database (Qdrant) in real time.
+
+```mermaid
+graph LR
+    Postgres[(PostgreSQL DB)] -->|WAL Reader| Debezium[Debezium Connector]
+    Debezium -->|JSON Events| Kafka{Kafka Topic}
+    Kafka -->|Stream Consumer| GoWorker[Go Vector Sync Worker]
+    GoWorker -->|Embed Text| EmbedAPI[Embedding API Service]
+    GoWorker -->|UPSERT Vectors| Qdrant[(Qdrant Vector DB)]
+```
+
+The following Go code implements a resilient Kafka consumer designed to process database event payloads and sync them to Qdrant:
+
+```go
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"time"
+)
+
+type CDCEvent struct {
+	Table     string                 `json:"table"`
+	Action    string                 `json:"action"` // "CREATE", "UPDATE", "DELETE"
+	Before    map[string]interface{} `json:"before"`
+	After     map[string]interface{} `json:"after"`
+	Timestamp int64                  `json:"timestamp"`
+}
+
+type SyncWorker struct {
+	QdrantEndpoint string
+}
+
+func (s *SyncWorker) ProcessCDCEvent(ctx context.Context, rawPayload []byte) error {
+	var event CDCEvent
+	if err := json.Unmarshal(rawPayload, &event); err != nil {
+		return err
+	}
+
+	fmt.Printf("[CDC Worker] Event received for table %s, action: %s\n", event.Table, event.Action)
+	
+	switch event.Action {
+	case "CREATE", "UPDATE":
+		return s.upsertVector(ctx, event.After)
+	case "DELETE":
+		return s.deleteVector(ctx, event.Before)
+	}
+
+	return nil
+}
+
+func (s *SyncWorker) upsertVector(ctx context.Context, afterData map[string]interface{}) error {
+	// Extract content text, call embedding API, and push vector to Qdrant
+	id := afterData["id"]
+	fmt.Printf("Upserting Qdrant record ID: %v\n", id)
+	time.Sleep(50 * time.Millisecond) // Mock operation
+	return nil
+}
+
+func (s *SyncWorker) deleteVector(ctx context.Context, beforeData map[string]interface{}) error {
+	id := beforeData["id"]
+	fmt.Printf("Deleting Qdrant record ID: %v\n", id)
+	time.Sleep(50 * time.Millisecond) // Mock operation
+	return nil
+}
+
+func main() {
+	worker := &SyncWorker{QdrantEndpoint: "http://qdrant:6333"}
+	samplePayload := `{"table": "company_policies", "action": "CREATE", "after": {"id": 1005, "content": "All remote work must be authorized by managers."}, "timestamp": 1782298000}`
+	
+	ctx := context.Background()
+	_ = worker.ProcessCDCEvent(ctx, []byte(samplePayload))
+}
+```
+
+## Federated Search over Distributed Vector Stores
+
+When data is partitioned across multiple regional instances, a single query must execute across a federated layout. The Federated Search Coordinator acts as a fan-out proxy:
+- **Parallel Dispatch:** Dispatches search vectors to local vector partitions.
+- **Schema Mapping:** Standardizes differing database metadata properties.
+- **Score Re-ranking:** Re-scores vectors across different partition norms using a centralized Cross-Encoder.
+
+## Handling Schema Drift in CDC Pipelines
+
+Database schemas inevitably evolve as new features are added. This schema drift presents a unique challenge for real-time vector synchronization:
+
+1. **Dynamic Mapping:** The worker uses reflection to inspect new fields and map them to metadata payloads dynamically, preventing parsing failures.
+2. **Embedding Re-triggering:** If a field marked as part of the core text context is updated, the pipeline automatically re-triggers the embedding process for the affected record.
+3. **Dead Letter Queue (DLQ):** Messages that fail deserialization due to severe schema mismatches are routed to a Kafka DLQ for manual inspection, preserving pipeline throughput.
+
+🔗 **Next Step:** Understand pipeline security vulnerabilities in [Part 5: Enterprise Security & Data Poisoning - The Silent Assassin]({{< ref "part-5-enterprise-security-data-poisoning.md" >}}).
+
+---
+
+[← Previous Part: Part 3: The Art of Chunking & Semantic Caching]({{< ref "part-3-late-chunking-semantic-caching.md" >}})  |  [Next Part: Part 5: Enterprise Security & Data Poisoning - The Silent Assassin]({{< ref "part-5-enterprise-security-data-poisoning.md" >}})

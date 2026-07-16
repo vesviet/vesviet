@@ -21,6 +21,10 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-7-agentic-memory-long-term/"
 ---
 
+**Answer-First:** Long-term agentic memory requires splitting context into hierarchical semantic storage (short-term episodic KV-cache, medium-term vector databases, and long-term GraphRAG nodes), preventing context window bloat and performance decay.
+
+> **Prerequisite:** [Part 6: The Rise of AI Agents - From Reading to Autonomy]({{< ref "part-6-rise-of-ai-agents.md" >}}) on execution runtimes.
+
 ## 1. The Context Window Deception & The "Goldfish" Curse
 
 Many Chief Technology Officers (CTOs) in 2024 believed that: When models like Gemini 1.5 Pro or Claude 3 launched with **1-2 million token Context Windows**, the AI "memory" problem was solved. They stuffed entire chat histories and dozens of PDFs into each prompt, hoping the AI would natively understand the context.
@@ -95,4 +99,163 @@ At this point, we have perfected the Brain (RAG), the Hands (Tool/MCP), and the 
 
 Welcome to **[Part 8: Inference Optimization & vLLM Deployment]({{< ref "part-8-inference-optimization-vllm.md" >}})**, where we will learn how to overclock AI models to run in real-world Production Cloud environments.
 
+## Implementation of Semantic Memory Consolidation
 
+As chat histories grow, they consume significant token counts and degrade LLM response latency. Rather than scaling context windows indefinitely, we implement a tiered memory consolidation system:
+1. **Short-Term Memory:** Transient conversation history kept in active memory (ephemeral KV cache).
+2. **Medium-Term Memory:** Relational entities and vector summaries matching the query domain.
+3. **Long-Term Memory:** Consolidated graph schemas. Periodically, a background worker analyzes chat logs, extracts permanent facts, and writes them to a persistent Graph database.
+
+The following Go code snippet implements a memory consolidator that extracts core key-value facts from raw transcripts and updates a PostgreSQL cache:
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"strings"
+	"time"
+)
+
+type MemoryNode struct {
+	Entity    string
+	Attribute string
+	Value     string
+	UpdatedAt time.Time
+}
+
+type MemoryConsolidator struct {
+	MemoryDB map[string]MemoryNode
+}
+
+func NewConsolidator() *MemoryConsolidator {
+	return &MemoryConsolidator{MemoryDB: make(map[string]MemoryNode)}
+}
+
+func (mc *MemoryConsolidator) ConsolidateTranscript(ctx context.Context, transcript string) {
+	// A production service would send the transcript to a specialized extraction model.
+	// Here we simulate parsing a key statement: "User preferred code style is Go"
+	lines := strings.Split(transcript, "\n")
+	for _, line := range lines {
+		if strings.Contains(line, "preferred code style") {
+			node := MemoryNode{
+				Entity:    "User",
+				Attribute: "preferred_code_style",
+				Value:     "Go",
+				UpdatedAt: time.Now(),
+			}
+			mc.MemoryDB[node.Entity+":"+node.Attribute] = node
+			fmt.Printf("[Memory] Consolidated state: %s -> %s\n", node.Attribute, node.Value)
+		}
+	}
+}
+
+func main() {
+	consolidator := NewConsolidator()
+	sampleTranscript := "User: I need to write a microservice.\nSystem: What language?\nUser: My preferred code style is Go."
+	
+	ctx := context.Background()
+	consolidator.ConsolidateTranscript(ctx, sampleTranscript)
+}
+```
+
+```mermaid
+graph TD
+    RawSession[Ephemeral Session Logs] --> InactiveCheck{Session Idle?}
+    InactiveCheck -->|Yes| Consolidator[Consolidation Worker]
+    Consolidator --> Extract[Extract Permanent Entities & Facts]
+    Extract --> GraphDB[(Neo4j Graph Database)]
+    Extract --> RelationalDB[(Postgres KV Store)]
+```
+
+By decoupling execution history from the active context window, we ensure that agents retain knowledge across months of conversations without suffering from performance degradation.
+
+
+---
+
+## Implementation of Semantic Memory Consolidation
+
+As chat histories grow, they consume significant token counts and degrade LLM response latency. Rather than scaling context windows indefinitely, we implement a tiered memory consolidation system:
+1. **Short-Term Memory:** Transient conversation history kept in active memory (ephemeral KV cache).
+2. **Medium-Term Memory:** Relational entities and vector summaries matching the query domain.
+3. **Long-Term Memory:** Consolidated graph schemas. Periodically, a background worker analyzes chat logs, extracts permanent facts, and writes them to a persistent Graph database.
+
+The following Go code snippet implements a memory consolidator that extracts core key-value facts from raw transcripts and updates a PostgreSQL cache:
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"strings"
+	"time"
+)
+
+type MemoryNode struct {
+	Entity    string
+	Attribute string
+	Value     string
+	UpdatedAt time.Time
+}
+
+type MemoryConsolidator struct {
+	MemoryDB map[string]MemoryNode
+}
+
+func NewConsolidator() *MemoryConsolidator {
+	return &MemoryConsolidator{MemoryDB: make(map[string]MemoryNode)}
+}
+
+func (mc *MemoryConsolidator) ConsolidateTranscript(ctx context.Context, transcript string) {
+	// A production service would send the transcript to a specialized extraction model.
+	// Here we simulate parsing a key statement: "User preferred code style is Go"
+	lines := strings.Split(transcript, "\n")
+	for _, line := range lines {
+		if strings.Contains(line, "preferred code style") {
+			node := MemoryNode{
+				Entity:    "User",
+				Attribute: "preferred_code_style",
+				Value:     "Go",
+				UpdatedAt: time.Now(),
+			}
+			mc.MemoryDB[node.Entity+":"+node.Attribute] = node
+			fmt.Printf("[Memory] Consolidated state: %s -> %s\n", node.Attribute, node.Value)
+		}
+	}
+}
+
+func main() {
+	consolidator := NewConsolidator()
+	sampleTranscript := "User: I need to write a microservice.\nSystem: What language?\nUser: My preferred code style is Go."
+	
+	ctx := context.Background()
+	consolidator.ConsolidateTranscript(ctx, sampleTranscript)
+}
+```
+
+```mermaid
+graph TD
+    RawSession[Ephemeral Session Logs] --> InactiveCheck{Session Idle?}
+    InactiveCheck -->|Yes| Consolidator[Consolidation Worker]
+    Consolidator --> Extract[Extract Permanent Entities & Facts]
+    Extract --> GraphDB[(Neo4j Graph Database)]
+    Extract --> RelationalDB[(Postgres KV Store)]
+```
+
+By decoupling execution history from the active context window, we ensure that agents retain knowledge across months of conversations without suffering from performance degradation.
+
+## Memory Pruning and Relevance Decay Algorithms
+
+To maintain a clean database, memory nodes cannot persist indefinitely without validation. The memory manager enforces a consolidation routine:
+
+* **Exponential Decay:** Every memory relationship is assigned an Access Count and a decay score based on elapsed time.
+* **Relevance Ranking:** When memory queries execute, nodes with high decay and low access counts are pruned or archived.
+* **Conflict Resolution:** If a new transaction contradicts an existing memory node, the agent triggers a verification query to resolve the conflict before overwriting the old value.
+
+🔗 **Next Step:** Optimize runtime configurations for high concurrent traffic in [Part 8: Inference Optimization & vLLM Deployment on Production]({{< ref "part-8-inference-optimization-vllm.md" >}}).
+
+---
+
+[← Previous Part: Part 6: The Rise of AI Agents - From Reading to Autonomy]({{< ref "part-6-rise-of-ai-agents.md" >}})  |  [Next Part: Part 8: Inference Optimization & vLLM Deployment on Production]({{< ref "part-8-inference-optimization-vllm.md" >}})

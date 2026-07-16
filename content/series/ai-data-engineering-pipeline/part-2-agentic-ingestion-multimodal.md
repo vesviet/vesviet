@@ -21,6 +21,10 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-2-agentic-ingestion-multimodal/"
 ---
 
+**Answer-First:** High-fidelity ingestion converts complex unstructured PDFs, tables, and charts into structured node-and-edge schemas using multimodal Vision-language models (VLMs) instead of lossy layout-blind text extractors.
+
+> **Prerequisite:** [Part 1: The Convergence - Agentic RAG & GraphRAG]({{< ref "part-1-agentic-graphrag-long-context.md" >}}) on relational and vector search integration.
+
 ## 1. The Fall of Traditional OCR: The "Garbage In, Garbage Out" Pain
 
 In Enterprise RAG architecture, the most ruthless formula is: **Garbage In = Garbage Out**.
@@ -88,4 +92,265 @@ However, no matter how clean your data is, if your Embedding and Retrieval strat
 
 In **[Part 3: The Art of Chunking & Semantic Caching]({{< ref "part-3-late-chunking-semantic-caching.md" >}})**, we will dive deep into the ultimate technique of 2026: **Late Chunking** (Preserving context before slicing) and how to use Redis as **Semantic Caching** to reduce LLM API costs by 70%.
 
+## Advanced Layout Analysis: Multimodal Document Ingestion
 
+Standard optical character recognition (OCR) fails to preserve document context when dealing with complex multi-column reports, nested tables, and inline charts. The modern approach uses Multimodal Vision-Language Models (VLMs) like Llama 3.2 Vision or Claude 3.5 Sonnet to parse document pages as full images. The VLM processes the visual layout natively and outputs a structured Markdown schema that preserves tables and semantic headings.
+
+The following Go code snippet demonstrates how to parse a PDF page image, convert it to a base64 payload, and dispatch it to a multimodal parsing API endpoint:
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/base64"
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+)
+
+type VLMRequest struct {
+	Model    string        `json:"model"`
+	Messages []MessageItem `json:"messages"`
+}
+
+type MessageItem struct {
+	Role    string       `json:"role"`
+	Content []ContentItem `json:"content"`
+}
+
+type ContentItem struct {
+	Type     string         `json:"type"`
+	Text     string         `json:"text,omitempty"`
+	ImageURL *ImageURLParam `json:"image_url,omitempty"`
+}
+
+type ImageURLParam struct {
+	URL string `json:"url"`
+}
+
+func ParsePageWithVLM(imagePath string, apiKey string) (string, error) {
+	file, err := os.Open(imagePath)
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+
+	imgBytes, err := io.ReadAll(file)
+	if err != nil {
+		return "", err
+	}
+
+	base64Image := base64.StdEncoding.EncodeToString(imgBytes)
+	dataURL := fmt.Sprintf("data:image/png;base64,%s", base64Image)
+
+	reqPayload := VLMRequest{
+		Model: "llama-3.2-11b-vision-instruct",
+		Messages: []MessageItem{
+			{
+				Role: "user",
+				Content: []ContentItem{
+					{
+						Type: "text",
+						Text: "Convert this PDF page image into structured Markdown. Retain all table columns exactly, and extract visual flowcharts as text bullet lists.",
+					},
+					{
+						Type: "image_url",
+						ImageURL: &ImageURLParam{
+							URL: dataURL,
+						},
+					},
+				},
+			},
+		},
+	}
+
+	jsonBytes, err := json.Marshal(reqPayload)
+	if err != nil {
+		return "", err
+	}
+
+	req, err := http.NewRequest("POST", "https://api.vlm-provider.com/v1/chat/completions", bytes.NewBuffer(jsonBytes))
+	if err != nil {
+		return "", err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+apiKey)
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	return string(respBody), nil
+}
+
+func main() {
+	// Example call
+	// markdownResult, err := ParsePageWithVLM("page_1.png", "YOUR_KEY")
+	fmt.Println("VLM Document Ingest Module loaded.")
+}
+```
+
+```mermaid
+graph TD
+    PDF[Raw PDF Document] --> Render[Render Pages to PNG Images]
+    Render --> BatchVLM[VLM Layout Analyzer API]
+    BatchVLM --> MD[Structured Markdown Files]
+    MD --> TableExtract[Table Node Builder]
+    MD --> ParagraphExtract[Text Block Builder]
+    TableExtract --> GraphDB[Knowledge Graph Nodes]
+    ParagraphExtract --> Embeddings[Vector Database Embeddings]
+```
+
+By transitioning to vision-based document processing, the database captures not only text fragments but also structural relationships, ensuring complete fidelity during retrieval.
+
+
+---
+
+## Advanced Layout Analysis: Multimodal Document Ingestion
+
+Standard optical character recognition (OCR) fails to preserve document context when dealing with complex multi-column reports, nested tables, and inline charts. The modern approach uses Multimodal Vision-Language Models (VLMs) like Llama 3.2 Vision or Claude 3.5 Sonnet to parse document pages as full images. The VLM processes the visual layout natively and outputs a structured Markdown schema that preserves tables and semantic headings.
+
+The following Go code snippet demonstrates how to parse a PDF page image, convert it to a base64 payload, and dispatch it to a multimodal parsing API endpoint:
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/base64"
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+)
+
+type VLMRequest struct {
+	Model    string        `json:"model"`
+	Messages []MessageItem `json:"messages"`
+}
+
+type MessageItem struct {
+	Role    string       `json:"role"`
+	Content []ContentItem `json:"content"`
+}
+
+type ContentItem struct {
+	Type     string         `json:"type"`
+	Text     string         `json:"text,omitempty"`
+	ImageURL *ImageURLParam `json:"image_url,omitempty"`
+}
+
+type ImageURLParam struct {
+	URL string `json:"url"`
+}
+
+func ParsePageWithVLM(imagePath string, apiKey string) (string, error) {
+	file, err := os.Open(imagePath)
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+
+	imgBytes, err := io.ReadAll(file)
+	if err != nil {
+		return "", err
+	}
+
+	base64Image := base64.StdEncoding.EncodeToString(imgBytes)
+	dataURL := fmt.Sprintf("data:image/png;base64,%s", base64Image)
+
+	reqPayload := VLMRequest{
+		Model: "llama-3.2-11b-vision-instruct",
+		Messages: []MessageItem{
+			{
+				Role: "user",
+				Content: []ContentItem{
+					{
+						Type: "text",
+						Text: "Convert this PDF page image into structured Markdown. Retain all table columns exactly, and extract visual flowcharts as text bullet lists.",
+					},
+					{
+						Type: "image_url",
+						ImageURL: &ImageURLParam{
+							URL: dataURL,
+						},
+					},
+				},
+			},
+		},
+	}
+
+	jsonBytes, err := json.Marshal(reqPayload)
+	if err != nil {
+		return "", err
+	}
+
+	req, err := http.NewRequest("POST", "https://api.vlm-provider.com/v1/chat/completions", bytes.NewBuffer(jsonBytes))
+	if err != nil {
+		return "", err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+apiKey)
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	return string(respBody), nil
+}
+
+func main() {
+	// Example call
+	// markdownResult, err := ParsePageWithVLM("page_1.png", "YOUR_KEY")
+	fmt.Println("VLM Document Ingest Module loaded.")
+}
+```
+
+```mermaid
+graph TD
+    PDF[Raw PDF Document] --> Render[Render Pages to PNG Images]
+    Render --> BatchVLM[VLM Layout Analyzer API]
+    BatchVLM --> MD[Structured Markdown Files]
+    MD --> TableExtract[Table Node Builder]
+    MD --> ParagraphExtract[Text Block Builder]
+    TableExtract --> GraphDB[Knowledge Graph Nodes]
+    ParagraphExtract --> Embeddings[Vector Database Embeddings]
+```
+
+By transitioning to vision-based document processing, the database captures not only text fragments but also structural relationships, ensuring complete fidelity during retrieval.
+
+## Vision LLMs Layout Schema Specs
+
+To extract structured content with high consistency, we define strict schema requirements in our system prompt. The model is instructed to output standard JSON with the following layout properties:
+
+1. **Page Classification:** Categorizes the page layout (e.g. `report`, `flowchart`, `table_sheet`, `mixed_document`).
+2. **Text Blocks:** A list of parsed text segments containing block coordinates, heading level, and body content.
+3. **Table Data:** For every detected table grid, the model outputs raw rows and columns under a unified array schema.
+4. **Graph Edge Relations:** Extracts connections from flowcharts and organizational diagrams, yielding explicit relationships in the format `SourceNode -> Relationship -> TargetNode`.
+5. **Figure Metadata:** Captures image descriptions and titles to ensure visual figures remain indexed alongside textual content.
+
+🔗 **Next Step:** Master document chunking and caching in [Part 3: The Art of Chunking & Semantic Caching]({{< ref "part-3-late-chunking-semantic-caching.md" >}}).
+
+---
+
+[← Previous Part: Part 1: The Convergence - Agentic RAG & GraphRAG]({{< ref "part-1-agentic-graphrag-long-context.md" >}})  |  [Next Part: Part 3: The Art of Chunking & Semantic Caching]({{< ref "part-3-late-chunking-semantic-caching.md" >}})

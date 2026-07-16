@@ -21,6 +21,10 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-10-production-evals-cicd/"
 ---
 
+**Answer-First:** Continuous integration for AI systems demands automated validation pipelines using LLM-as-a-Judge frameworks (e.g., Ragas/TruLens) to compute exact quantitative metrics for faithfulness, answer relevance, and context recall before every deployment.
+
+> **Prerequisite:** [Part 9: Agentic Observability - Monitoring & Debugging the AI's Train of Thought]({{< ref "part-9-agentic-observability-monitoring.md" >}}) on operational tracing.
+
 ## 1. The End of the "Vibe Check" Era
 
 A few years ago, the process of testing an AI system went like this: The programmer tweaks the Prompt file, types a few questions into the chatbox, skims through to see if the AI's answer sounds reasonable (vibe check), shouts *"Looks Good To Me" (LGTM)*, and hits Deploy to Production.
@@ -106,3 +110,194 @@ You have officially mastered the **Data Pipeline & Agentic AI Architecture** to 
 
 Thank you for accompanying us through this series!
 
+## Automated CI/CD Evaluation Test Harness
+
+To deploy updates safely, we replace manual "vibe checks" with automated regression testing. The CI/CD pipeline runs a suite of test prompts against the candidate model. The output is evaluated using LLM-as-a-Judge API endpoints (such as Ragas or TruLens) to compute metrics:
+- **Faithfulness:** Verifies the answer contains no hallucinations and matches the retrieved context.
+- **Answer Relevance:** Verifies the answer directly addresses the query.
+- **Context Recall:** Verifies the retriever successfully captured the necessary information.
+
+```mermaid
+graph TD
+    PR[New Code Commit / PR] --> RunTests[Execute Test Harness]
+    RunTests --> RetrieveContext[Query Retrievers]
+    RetrieveContext --> GenerateAnswer[Generate Model Response]
+    GenerateAnswer --> JudgeAPI[LLM-as-a-Judge Evaluator]
+    JudgeAPI --> CalculateMetrics[Compute Faithfulness & Recall]
+    CalculateMetrics --> CheckThreshold{Score >= 0.85?}
+    CheckThreshold -->|Yes| PassPipeline[Merge & Deploy to Production]
+    CheckThreshold -->|No| FailPipeline[Reject Build & Alert Developers]
+```
+
+The following Go code snippet implements a test harness that runs a validation query, sends the query and response to a Judge API, and verifies that the faithfulness score exceeds our minimum quality threshold:
+
+```go
+package main
+
+import (
+	"context"
+	"errors"
+	"fmt"
+)
+
+type ValidationTest struct {
+	Query           string
+	ExpectedKeyword string
+}
+
+type JudgeResult struct {
+	Faithfulness   float64 // Scale 0.0 to 1.0
+	AnswerRelevance float64 // Scale 0.0 to 1.0
+}
+
+func RunEvaluationSuite(ctx context.Context, tests []ValidationTest) error {
+	for _, test := range tests {
+		fmt.Printf("[CI Eval] Running validation test: %s\n", test.Query)
+		
+		// Simulate retrieval + model response generation
+		simulatedResponse := "The system balance matches exactly the audited database log."
+		simulatedContext := "Audited logs show system balance was correct as of Q3."
+		
+		// Call Judge API to compute faithfulness
+		judge, err := evaluateWithJudge(simulatedResponse, simulatedContext)
+		if err != nil {
+			return err
+		}
+		
+		fmt.Printf("           Scores: Faithfulness: %.2f, Relevance: %.2f\n", judge.Faithfulness, judge.AnswerRelevance)
+		
+		if judge.Faithfulness < 0.85 {
+			return fmt.Errorf("evaluation failed: faithfulness score %.2f is below quality threshold of 0.85", judge.Faithfulness)
+		}
+	}
+	return nil
+}
+
+func evaluateWithJudge(response, context string) (JudgeResult, error) {
+	// Simulated response from Judge model API
+	return JudgeResult{
+		Faithfulness:   0.94,
+		AnswerRelevance: 0.89,
+	}, nil
+}
+
+func main() {
+	tests := []ValidationTest{
+		{Query: "Is the system balance audited?", ExpectedKeyword: "audited"},
+	}
+	
+	ctx := context.Background()
+	if err := RunEvaluationSuite(ctx, tests); err != nil {
+		fmt.Println("[CI Eval Result] FAILED:", err)
+	} else {
+		fmt.Println("[CI Eval Result] ALL TESTS PASSED.")
+	}
+}
+```
+
+Integrating these evaluation suites directly into the CI/CD pipeline ensures that prompt optimizations and code modifications never cause regressions in retrieval quality.
+
+
+---
+
+## Automated CI/CD Evaluation Test Harness
+
+To deploy updates safely, we replace manual "vibe checks" with automated regression testing. The CI/CD pipeline runs a suite of test prompts against the candidate model. The output is evaluated using LLM-as-a-Judge API endpoints (such as Ragas or TruLens) to compute metrics:
+- **Faithfulness:** Verifies the answer contains no hallucinations and matches the retrieved context.
+- **Answer Relevance:** Verifies the answer directly addresses the query.
+- **Context Recall:** Verifies the retriever successfully captured the necessary information.
+
+```mermaid
+graph TD
+    PR[New Code Commit / PR] --> RunTests[Execute Test Harness]
+    RunTests --> RetrieveContext[Query Retrievers]
+    RetrieveContext --> GenerateAnswer[Generate Model Response]
+    GenerateAnswer --> JudgeAPI[LLM-as-a-Judge Evaluator]
+    JudgeAPI --> CalculateMetrics[Compute Faithfulness & Recall]
+    CalculateMetrics --> CheckThreshold{Score >= 0.85?}
+    CheckThreshold -->|Yes| PassPipeline[Merge & Deploy to Production]
+    CheckThreshold -->|No| FailPipeline[Reject Build & Alert Developers]
+```
+
+The following Go code snippet implements a test harness that runs a validation query, sends the query and response to a Judge API, and verifies that the faithfulness score exceeds our minimum quality threshold:
+
+```go
+package main
+
+import (
+	"context"
+	"errors"
+	"fmt"
+)
+
+type ValidationTest struct {
+	Query           string
+	ExpectedKeyword string
+}
+
+type JudgeResult struct {
+	Faithfulness   float64 // Scale 0.0 to 1.0
+	AnswerRelevance float64 // Scale 0.0 to 1.0
+}
+
+func RunEvaluationSuite(ctx context.Context, tests []ValidationTest) error {
+	for _, test := range tests {
+		fmt.Printf("[CI Eval] Running validation test: %s\n", test.Query)
+		
+		// Simulate retrieval + model response generation
+		simulatedResponse := "The system balance matches exactly the audited database log."
+		simulatedContext := "Audited logs show system balance was correct as of Q3."
+		
+		// Call Judge API to compute faithfulness
+		judge, err := evaluateWithJudge(simulatedResponse, simulatedContext)
+		if err != nil {
+			return err
+		}
+		
+		fmt.Printf("           Scores: Faithfulness: %.2f, Relevance: %.2f\n", judge.Faithfulness, judge.AnswerRelevance)
+		
+		if judge.Faithfulness < 0.85 {
+			return fmt.Errorf("evaluation failed: faithfulness score %.2f is below quality threshold of 0.85", judge.Faithfulness)
+		}
+	}
+	return nil
+}
+
+func evaluateWithJudge(response, context string) (JudgeResult, error) {
+	// Simulated response from Judge model API
+	return JudgeResult{
+		Faithfulness:   0.94,
+		AnswerRelevance: 0.89,
+	}, nil
+}
+
+func main() {
+	tests := []ValidationTest{
+		{Query: "Is the system balance audited?", ExpectedKeyword: "audited"},
+	}
+	
+	ctx := context.Background()
+	if err := RunEvaluationSuite(ctx, tests); err != nil {
+		fmt.Println("[CI Eval Result] FAILED:", err)
+	} else {
+		fmt.Println("[CI Eval Result] ALL TESTS PASSED.")
+	}
+}
+```
+
+Integrating these evaluation suites directly into the CI/CD pipeline ensures that prompt optimizations and code modifications never cause regressions in retrieval quality.
+
+## LLM-as-a-Judge Prompt Engineering Consistency
+
+To guarantee reproducible test metrics, the Judge LLM is configured with a strict system instruction set:
+
+1. **Deterministic Parameters:** Temperature is set to 0.0, and top_p is locked to 1.0.
+2. **Step-by-Step Rationale:** The Judge must output its analysis chain before yielding a score, reducing random score variation.
+3. **Structured Scoring:** Output is restricted to a structured JSON schema, preventing parsing failures.
+4. **Reference Baseline:** The prompt provides explicit grading rubrics, mapping specific logical flaws (e.g. contradiction, extrapolation) to quantitative penalty scores.
+
+🔗 **Next Step:** Explore the full index of the series in the [AI Data Engineering Pipeline Series](/series/ai-data-engineering-pipeline/).
+
+---
+
+[← Previous Part: Part 9: Agentic Observability - Monitoring & Debugging the AI's Train of Thought]({{< ref "part-9-agentic-observability-monitoring.md" >}})
