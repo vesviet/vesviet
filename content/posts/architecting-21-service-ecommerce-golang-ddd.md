@@ -35,7 +35,16 @@ In this deep tech dive, we will tear apart the "Hello World" abstraction of Micr
 
 **21-service decomposition around 5 core domains, each with strict database-per-service isolation. The most volatile flow is the Checkout Saga: `Checkout` cannot use a 4-table SQL transaction across service boundaries — instead it publishes `checkout.requested` to Dapr (backed by Redis), and `Order`, `Warehouse`, and `Pricing` react independently in parallel. This is Event-Choreography, not Orchestration.**
 
-Microservices without bounded contexts degenerate into a latency-heavy "Distributed Monolith". We bounded our ecosystem loosely around five core domains, prioritizing strict database-per-service isolation (If you are just starting out, this is exactly why you might want to start with a [Modular Monolith Architecture](/series/modular-monolith-architecture/) before jumping to distributed extraction):
+Microservices without bounded contexts degenerate into a latency-heavy "Distributed Monolith". In Domain-Driven Design, a Bounded Context defines the logical boundary within which a specific domain model is defined and applicable. Within this boundary, terms in the Ubiquitous Language have a unique, unambiguous meaning.
+
+For example, a `Product` in our e-commerce catalog context contains marketing copy, categorization tags, and high-resolution media. However, in the warehouse inventory context, that same product is modeled as a physical Stock Keeping Unit (SKU) with dimensional weight, physical bin location, and reservation queues. In the billing context, it is represented as a taxable pricing formula. Attempting to force a single, monolithic `Product` model across all 21 microservices leads to bloated databases, lock contention, and organizational coupling. 
+
+By modeling these as distinct Bounded Contexts, we ensure that each service owns a minimal, optimized database schema. The services collaborate through explicit Context Maps:
+- **Conformist Relationship:** The downstream Checkout Context conforms to the product IDs defined by the upstream Catalog Context.
+- **Customer-Supplier Relationship:** The Order Context acts as a customer to the Warehouse Context, requesting stock reservations and receiving success/failure signals.
+- **Shared Kernel:** Used very sparingly, only for global currencies and country-code configurations shared across localized shipping services.
+
+We bounded our ecosystem loosely around five core domains, prioritizing strict database-per-service isolation (If you are just starting out, this is exactly why you might want to start with a [Modular Monolith Architecture](/series/modular-monolith-architecture/) before jumping to distributed extraction):
 
 ```mermaid
 graph TD
@@ -92,6 +101,59 @@ func (r *orderRepo) Save(ctx context.Context, o *biz.Order) error {
     return r.data.db.WithContext(ctx).Create(o).Error
 }
 ```
+
+### Configuring Kratos Router Middleware
+
+To ensure that common cross-cutting concerns (authentication, tracing, logging, validation) are handled uniformly across all 21 microservices, we initialize Kratos servers with a structured middleware chain. In Kratos, middleware functions intercept requests on both HTTP and gRPC routers before delegating them to the usecase layer.
+
+Here is the Go initialization snippet for our HTTP server router middleware:
+
+```go
+import (
+    "context"
+    "github.com/go-kratos/kratos/v2/middleware"
+    "github.com/go-kratos/kratos/v2/middleware/auth/jwt"
+    "github.com/go-kratos/kratos/v2/middleware/logging"
+    "github.com/go-kratos/kratos/v2/middleware/recovery"
+    "github.com/go-kratos/kratos/v2/middleware/tracing"
+    "github.com/go-kratos/kratos/v2/middleware/validate"
+    "github.com/go-kratos/kratos/v2/transport/http"
+    jwtv4 "github.com/golang-jwt/jwt/v4"
+)
+
+// NewHTTPServer initializes the Kratos HTTP server with robust router middlewares
+func NewHTTPServer(c *conf.Server, authConf *conf.Auth, logger log.Logger, usecase *biz.OrderUsecase) *http.Server {
+    var opts = []http.ServerOption{
+        http.Middleware(
+            recovery.Recovery(), // 1. Safely recover from application panics
+            tracing.Server(),    // 2. Propagate OpenTelemetry tracing headers
+            logging.Server(logger), // 3. Structured JSON request logging
+            validate.Validator(),  // 4. Validate Protobuf models automatically
+            jwt.Server(func(token *jwtv4.Token) (interface{}, error) {
+                return []byte(authConf.JwtKey), nil
+            }), // 5. Enforce JWT authentication at the router layer
+        ),
+    }
+    
+    if c.Http.Addr != "" {
+        opts = append(opts, http.Address(c.Http.Addr))
+    }
+    if c.Http.Timeout != nil {
+        opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
+    }
+    
+    srv := http.NewServer(opts...)
+    v1.RegisterOrderServiceHTTPServer(srv, usecase)
+    return srv
+}
+```
+
+This middleware chain provides several critical architectural benefits:
+1. **Recovery:** Intercepts runtime panic errors, logs stack traces, and returns clean HTTP `500 Internal Server Error` responses, preventing worker processes from crashing.
+2. **Tracing:** Enables end-to-end trace propagation using OpenTelemetry. It extracts the trace context from incoming headers and links downstream database queries or outbound network requests, providing a cohesive timeline in Jaeger.
+3. **Logging:** Standardizes metadata (e.g., latency, status codes, route paths) for centralized log aggregation.
+4. **Validation:** Executes code-generated validation rules defined in protobuf files (e.g., `min_len = 1` for usernames). Invalid inputs are rejected at the edge of the router before invoking any database transactions.
+5. **JWT Authentication:** Inspects authorization headers, validates cryptographically signed tokens, and injects user claims into the request context.
 
 We tie these layers together dynamically using **Google Wire** for compile-time Dependency Injection. This allows developers to write unit tests with mocked repositories effortlessly, entirely insulating the business core from transport protocols.
 

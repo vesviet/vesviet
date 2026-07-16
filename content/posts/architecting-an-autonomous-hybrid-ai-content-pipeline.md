@@ -281,7 +281,7 @@ flowchart TD
 **Layer 1 — Deterministic Gates (non-negotiable):**
 - Word count ≥ 1,400 words
 - H1 present, ≥ 2 H2 sections
-- No forbidden phrases (placeholder text, "as an AI")
+- No forbidden phrases (boilerplate text, "as an AI")
 - Valid YAML frontmatter (`draft: false`, `date` present)
 - Hugo `--renderToMemory` build passes
 
@@ -388,6 +388,15 @@ router_settings:
   fallbacks:
     - {"primary": ["fallback", "local-fallback"]}
 ```
+
+### Tiered Fallback Routing & Gateway Mechanics
+
+The LiteLLM gateway acts as a resilient reverse proxy, orchestrating requests across heterogeneous model providers. When a query is initiated, the router follows a strict fallback cascade:
+
+1. **Gateway Exception Catching**: The router registers hook listeners for common exception vectors—specifically connection timeouts (`ConnectTimeout`), server-side errors (`InternalServerError`/`5xx`), and rate limits (`RateLimitError`/`429`).
+2. **Circuit Breaker State Machine**: Each model target in the routing pool is monitored by an active circuit breaker. If a target (e.g., the local Ollama endpoint) fails more than 5 times within a sliding 60-second window, the circuit breaker transitions from `Closed` to `Open` state. All subsequent requests bypass this target immediately, avoiding TCP connection timeouts and queuing delays. A background thread runs periodic health checks every 30 seconds; once a check passes, the breaker transitions to `Half-Open` and eventually `Closed`.
+3. **Multi-Tier Cascade**: If the primary cloud endpoint (Claude) is rate-limited or times out, LiteLLM catches the exception and falls back to `fallback` (o4-mini). If the network is fully degraded or cloud endpoints are unreachable, it routes to `local-fallback` (Ollama running Gemma4). If the local model is the primary target but fails due to hardware constraints (e.g., CUDA out-of-memory or high queue concurrency), the cascade sequence escalates the request back to the hosted endpoints in reverse order of cost-per-token.
+4. **Dynamic Token & Cost Tracking**: Every routed request is wrapped in a custom callback middleware. On successful generation or error, the callback logs the actual prompt and completion tokens. For cloud fallbacks, cost calculations are computed in real-time based on current model pricing tables and charged against the API key's daily billing quota. If a high-cost fallback (e.g., Claude 3.5 Opus or o4-mini) is invoked, the tracking system decrements the remaining budget bucket. If the budget is depleted, the gateway triggers a soft-limit alarm and restricts routing options exclusively to local or lower-tier models.
 
 > **Agent multiplier reality:** In an autonomous pipeline, a single content item triggers **3–10x more LLM calls** than a single-turn chatbot interaction—planning, scoring, generation, validation, retry. Budget accordingly. Add a **25% buffer** to all token estimates.
 

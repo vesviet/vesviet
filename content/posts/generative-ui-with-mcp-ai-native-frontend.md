@@ -385,6 +385,15 @@ function ComponentRegistry({ componentName, props, onAction }: RegistryProps) {
 }
 ```
 
+### Security Validation & Schema Parsing Architecture
+
+At the core of the dynamic UI generation is the strict validation boundary. The component registry handles validation and instantiation through a deterministic pipeline:
+
+1. **Zod Schema Parsing**: Every dynamic UI component registers a corresponding Zod schema defining the exact data types, constraints, and allowed fields for its props. Rather than relying on standard React `propTypes` or TypeScript interfaces (which are erased at compile time), the system performs strict runtime enforcement.
+2. **Runtime Prop Checking via `safeParse`**: Upon receiving serialized props from the LLM or an external API gateway, the component loader invokes `schema.safeParse(props)`. This method is non-throwing, returning a discriminated union (`{ success: true, data: T }` or `{ success: false, error: ZodError }`). Using `safeParse` prevents runtime crashes and unhandled exceptions that could be leveraged for denial-of-service style attacks.
+3. **Handling Validation Failures & Safe UI Fallbacks**: When `safeParse` returns `success: false`, the system does not simply crash or render a blank screen. Instead, the registry catches the exception, reports the violation to the telemetry layer, and falls back to a pre-defined, static `SafeFallbackComponent` (e.g., rendering a generic text description or a read-only warning state). This prevents partial UI rendering errors from breaking the page's React tree.
+4. **Preventing Prop Injection**: To block malicious payloads designed to inject unauthorized props (such as overriding click handlers like `onAction`, hijacking React's internal `dangerouslySetInnerHTML`, or injecting script tags), the schema definition explicitly defines strict validation rules. Any unregistered or extraneous properties are automatically stripped out during parsing (or trigger validation errors if `.strict()` is called on the schema). This guarantees that only verified, sanitized data parameters are spread into the JSX component.
+
 ### Defense Layer 2: Sandboxed Components for Untrusted Content
 
 Components that render user-provided content (reviews, comments, document bodies) should run in a sandboxed iframe:
@@ -475,7 +484,7 @@ export function ConfirmAction({
                     <input
                         value={typedValue}
                         onChange={e => setTypedValue(e.target.value)}
-                        placeholder="CONFIRM"
+                        className="typed-confirm-input"
                     />
                 </div>
             ) : (

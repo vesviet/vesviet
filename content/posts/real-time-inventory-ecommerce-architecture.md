@@ -91,9 +91,153 @@ By connecting Debezium (using the native `pgoutput` plugin), every committed tra
 
 ### 2. Kafka Partitioning by SKU ID
 
-
-
 If orders for a single SKU are scattered randomly across partitions, multiple consumers will attempt to decrement the Redis stock concurrently. SKU-based partitioning converts concurrent chaos into an orderly, single-threaded queue.
+
+### Concurrency, Race Conditions, and Local Locking
+
+When a high-traffic sale occurs, thousands of orders for the same hot SKU are generated in seconds. If the consumer group processes these events concurrently using multiple goroutines, a classic race condition emerges: two goroutines read the same initial stock count, calculate deductions, and write back incorrect values, causing stock drift.
+
+To prevent race conditions while maintaining high throughput, we must combine Kafka partition partitioning with localized concurrency control:
+1. **Partition Level Order**: Kafka routes all messages with the same partition key (the SKU ID) to the same partition. This ensures that only one consumer instance in the cluster processes events for that SKU.
+2. **Worker Pool Locking**: If a consumer processes messages in parallel using a goroutine worker pool, it must synchronize access to the SKU. We can manage this using a sharded mutex map (`sync.Map`) keying locks by SKU. Before processing, a goroutine acquires the lock for that SKU, processes the database update, and then releases it.
+
+---
+
+## Production Go Kafka Consumer Group Implementation
+
+Below is the complete Go code block implementing a manual offset-managed Kafka consumer group reader. It demonstrates local sharded locking by SKU and explicit offset commit management to guarantee at-least-once delivery.
+
+```go
+package inventory
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"log"
+	"sync"
+	"time"
+
+	"github.com/segmentio/kafka-go"
+)
+
+// InventoryUpdateEvent represents the schema emitted by the database CDC stream
+type InventoryUpdateEvent struct {
+	OrderID      string    `json:"order_id"`
+	SKU          string    `json:"sku"`
+	QuantityDelta int       `json:"quantity_delta"` // negative for inventory decrement
+	EventTime    time.Time `json:"event_time"`
+}
+
+// SKUKeyedLockManager provides sharded mutex locking to prevent concurrent goroutines
+// from racing on the same SKU during batch processing.
+type SKUKeyedLockManager struct {
+	locks sync.Map
+}
+
+func (m *SKUKeyedLockManager) GetLock(sku string) *sync.Mutex {
+	actual, _ := m.locks.LoadOrStore(sku, &sync.Mutex{})
+	return actual.(*sync.Mutex)
+}
+
+type ConsumerGroupHandler struct {
+	reader  *kafka.Reader
+	lockMgr *SKUKeyedLockManager
+}
+
+func NewConsumerGroupHandler(brokers []string, topic, groupID string) *ConsumerGroupHandler {
+	r := kafka.NewReader(kafka.ReaderConfig{
+		Brokers:          brokers,
+		GroupID:          groupID,
+		Topic:            topic,
+		MinBytes:         10e3, // 10KB
+		MaxBytes:         10e6, // 10MB
+		CommitInterval:   0,    // Set to 0 to disable background auto-commit of offsets
+		StartOffset:      kafka.LastOffset,
+		RebalanceTimeout: 10 * time.Second,
+	})
+
+	return &ConsumerGroupHandler{
+		reader:  r,
+		lockMgr: &SKUKeyedLockManager{},
+	}
+}
+
+// Run starts the read loop. It blocks until the context is cancelled.
+func (h *ConsumerGroupHandler) Run(ctx context.Context) {
+	log.Println("Starting Go Kafka Consumer Group Handler...")
+	defer h.reader.Close()
+
+	for {
+		// 1. FetchMessage blocks until a message is available and retrieves partition/offset data
+		msg, err := h.reader.FetchMessage(ctx)
+		if err != nil {
+			if ctx.Err() != nil {
+				return // Context cancelled, exit cleanly
+			}
+			log.Printf("Error fetching message: %v", err)
+			time.Sleep(1 * time.Second)
+			continue
+		}
+
+		// 2. Hand off message to worker goroutine for concurrent processing
+		go func(m kafka.Message) {
+			var event InventoryUpdateEvent
+			if err := json.Unmarshal(m.Value, &event); err != nil {
+				log.Printf("Invalid payload encoding, skipping offset commit: %v", err)
+				// We commit the offset of corrupted payloads to prevent head-of-line blocking
+				_ = h.reader.CommitMessages(ctx, m)
+				return
+			}
+
+			// 3. Acquire local lock for the specific SKU to serialize concurrent reads/writes
+			mu := h.lockMgr.GetLock(event.SKU)
+			mu.Lock()
+			defer mu.Unlock()
+
+			// 4. Execute the inventory update in database and cache transactionally
+			err := h.processInventoryUpdate(ctx, event)
+			if err != nil {
+				log.Printf("Failed to process inventory update for SKU %s, Order %s: %v", event.SKU, event.OrderID, err)
+				// DO NOT commit the offset. The consumer will block, prompting manual SRE intervention
+				// or forwarding to a Dead Letter Queue (DLQ) depending on policy.
+				return
+			}
+
+			// 5. Commit offset manually once downstream databases have successfully saved state
+			if err := h.reader.CommitMessages(ctx, m); err != nil {
+				log.Printf("Failed to commit offset: %v (Partition: %d, Offset: %d)", err, m.Partition, m.Offset)
+			}
+		}(msg)
+	}
+}
+
+func (h *ConsumerGroupHandler) processInventoryUpdate(ctx context.Context, event InventoryUpdateEvent) error {
+	// In production, you would:
+	// A. Query current database balance
+	// B. Verify event.QuantityDelta doesn't violate business rules (overselling)
+	// C. Execute transactional database write & Redis Lua update
+	// D. Handle transient DB errors with retry policy
+	
+	// Simulated DB write:
+	time.Sleep(20 * time.Millisecond)
+	return nil
+}
+```
+
+### Explaining Offset Management and Rebalancing Risks
+
+Manual offset management is critical for guaranteeing **at-least-once** delivery semantics:
+
+#### The Danger of Auto-Commit
+When `CommitInterval` is left at its default (e.g. 5 seconds), the consumer client periodically commits the offset of the highest message read, without knowing if the processing logic succeeded. If the worker process crashes after reading message #100 but before successfully updating the Redis cache, that message is lost permanently. By setting the commit interval to `0` and using `CommitMessages` manually, we guarantee that the offset is only committed after the database transaction succeeds.
+
+#### Handling Rebalances and Duplication
+When a consumer instance joins or leaves the group, Kafka triggers a rebalance, reassigning partitions among active consumers. If consumer A fetches a message, updates the database, and crashes *before* committing the offset, the partition will be reassigned to consumer B. Consumer B will read the same message from the last committed offset and attempt to process it again.
+
+To prevent this from causing double deductions, the downstream processing must be **idempotent**. This is where we combine:
+- **Unique Idempotency Keys**: Checking for the existence of `idempotent:{SKU}:{OrderID}` in Redis.
+- **Database Unique Constraints**: Storing processed Kafka offsets and message UUIDs in a `processed_messages` table within the same transaction that decrements stock. If the transaction attempts to run a second time, the unique key constraint on the message UUID will fail, causing a rollback and avoiding duplicate stock deductions.
 
 > **Performance Tip:** Profiling the memory consumption of high-throughput Kafka consumers in Go requires specialized tooling. Read our [Go pprof Tutorial](/posts/golang-pprof-profiling-memory-cpu-tutorial/) for memory profiling techniques.
 

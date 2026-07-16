@@ -648,8 +648,17 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: driver-service
+  namespace: platform
+  labels:
+    app: driver-service
+    tier: backend
 spec:
   replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
   selector:
     matchLabels:
       app: driver-service
@@ -660,22 +669,37 @@ spec:
     spec:
       containers:
         - name: driver-service
-          image: yourorg/driver-service:latest
+          image: yourorg/driver-service:v1.2.0
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 50051
               name: grpc
+          # 1. Startup Probe: Protects the container during slow initializations (e.g. cache warming or DB migrations)
+          startupProbe:
+            grpc:
+              port: 50051
+              service: driver.v1.DriverService
+            initialDelaySeconds: 2
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 10 # Allows up to 50 seconds (10 * 5s) to start up
+          # 2. Liveness Probe: Determines if the container needs a restart (e.g. deadlock or memory exhaustion)
           livenessProbe:
             grpc:
               port: 50051
               service: driver.v1.DriverService
-            initialDelaySeconds: 10
             periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+          # 3. Readiness Probe: Determines if the container is ready to accept traffic
           readinessProbe:
             grpc:
               port: 50051
               service: driver.v1.DriverService
-            initialDelaySeconds: 5
             periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 2
+            successThreshold: 1
           resources:
             requests:
               cpu: "100m"
@@ -685,7 +709,27 @@ spec:
               memory: "512Mi"
 ```
 
-> **Kubernetes gRPC Health Probe**: Kubernetes 1.24+ has native gRPC health probe support via `livenessProbe.grpc`. This replaces the need for a separate HTTP health endpoint. Requires registering `google.golang.org/grpc/health/grpc_health_v1`.
+### Probe Configuration & Timing Rationale
+
+To operate a gRPC service reliably at scale, you must configure Kubernetes health probes using a multi-tiered strategy. Utilizing native gRPC probes (introduced in Kubernetes 1.24) eliminates the need to bundle `grpc_health_probe` binaries in your minimal distroless Docker images or expose secondary HTTP ports.
+
+#### 1. Startup Probe Timing
+The startup probe is designed to protect slow-starting containers. When a container starts up, it may need to initialize database connection pools, verify cache states, or complete lightweight schema checks.
+- **`initialDelaySeconds: 2`**: We wait 2 seconds after the container starts before firing the first startup probe, giving the Go binary a brief window to run its main function.
+- **`periodSeconds: 5`** and **`failureThreshold: 10`**: The probe checks every 5 seconds. If it fails 10 times consecutively, Kubernetes kills the container. This configuration grants the application up to 50 seconds to complete its boot sequence. During this startup window, both liveness and readiness probes are disabled, preventing premature restarts.
+
+#### 2. Liveness Probe Timing
+The liveness probe determines if the Go application is still running. It should only fail when the container enters an unrecoverable state, such as a memory lock deadlocking the main router loop or thread pool exhaustion.
+- **`periodSeconds: 10`** and **`failureThreshold: 3`**: Checked every 10 seconds. It requires 3 consecutive failures (30 seconds total) before restarting the pod. This prevents transient network issues or garbage collection spikes from triggering unnecessary container restarts.
+- **`timeoutSeconds: 2`**: If the server fails to respond to the gRPC health request within 2 seconds, it is marked as failed.
+
+#### 3. Readiness Probe Timing
+The readiness probe determines if the pod is prepared to handle client traffic. If a database goes offline temporarily, the readiness probe should fail, removing the pod from the Kubernetes Service load balancer endpoint list.
+- **`periodSeconds: 5`** and **`failureThreshold: 2`**: We check more frequently (every 5 seconds) and trigger fast exclusion (after 2 consecutive failures, or 10 seconds) to ensure that failing instances are removed from the active router pool quickly.
+- **`successThreshold: 1`**: As soon as a single check passes, the pod is put back into the service endpoints list to resume routing.
+
+This three-tiered approach guarantees maximum application availability, isolates unhealthy pods quickly, and prevents cascading restarts during traffic spikes.
+
 
 ---
 

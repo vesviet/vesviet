@@ -67,6 +67,45 @@ If your system has a Read/Write ratio of 90/10 (such as a blog, news site, or e-
 #### The Challenge of Replication Lag & Read-after-Write Consistency
 The biggest issue with Replication is **Replication Lag**. When a user changes their account name (written to the Primary) and immediately refreshes the webpage (read from a Replica), they might still see the old name because the data hasn't synchronized yet. The solution for this "Read-after-Write inconsistency" is to force critical read queries for that user back to the Primary for a few seconds following an update.
 
+#### ProxySQL: Transparent Read/Write Splitting
+
+Rather than hardcoding read/write routing logic within the Go application code (which increases complexity and couples the codebase to the infrastructure layout), production systems employ **ProxySQL**. ProxySQL is an open-source, high-performance, protocol-aware proxy that sits between your Go application and the MySQL cluster, routing queries transparently.
+
+ProxySQL categorizes servers into **Hostgroups**:
+- **Hostgroup 0 (Writer):** Contains the primary database node.
+- **Hostgroup 1 (Readers):** Contains the pool of read-replicas.
+
+By defining routing rules using regex matches on incoming SQL text, ProxySQL intercepts queries and routes them to the appropriate hostgroup. For instance, write queries (`INSERT`, `UPDATE`, `DELETE`) are sent to the writer hostgroup, while standard `SELECT` statements are distributed across readers. Crucially, queries that lock rows (like `SELECT ... FOR UPDATE`) must be explicitly routed to the writer hostgroup to prevent execution on read replicas.
+
+Here are the basic configuration lines executed via the ProxySQL admin console (SQLite-based interface running on port 6032) to set up read/write splits:
+
+```sql
+-- 1. Define MySQL nodes and assign them to Hostgroups
+INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (0, 'mysql-primary.internal', 3306);
+INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (1, 'mysql-replica-1.internal', 3306);
+INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (1, 'mysql-replica-2.internal', 3306);
+
+-- Load the servers configuration into ProxySQL runtime and persist to disk
+LOAD MYSQL SERVERS TO RUNTIME;
+SAVE MYSQL SERVERS TO DISK;
+
+-- 2. Define Query Routing Rules
+-- Rule A: Route locking SELECT statements to the Writer (Hostgroup 0)
+INSERT INTO mysql_query_rules (rule_id, active, match_pattern, destination_hostgroup, apply) 
+VALUES (1, 1, '^SELECT.*FOR UPDATE$', 0, 1);
+
+-- Rule B: Route all standard SELECT statements to the Readers (Hostgroup 1)
+INSERT INTO mysql_query_rules (rule_id, active, match_pattern, destination_hostgroup, apply) 
+VALUES (2, 1, '^SELECT', 1, 1);
+
+-- Load query rules into ProxySQL runtime and persist to disk
+LOAD MYSQL QUERY RULES TO RUNTIME;
+SAVE MYSQL QUERY RULES TO DISK;
+```
+
+This configuration ensures that your Go database connection string can target a single ProxySQL port (typically 6033), letting the proxy layer handle load balancing, failovers, and read/write splitting automatically.
+
+
 ### 2. Write-Scaling (Sharding)
 If your system (like Core Banking or a [Surge Pricing Engine](/posts/surge-pricing-optimization-architecture/)) has a massive volume of Writes that overwhelms the Primary node, Replication becomes useless. You must resort to **Sharding**.
 Sharding is the process of splitting a large table into multiple smaller pieces (shards) and storing them across different physical MySQL servers based on a **Sharding Key** (e.g., `user_id`).

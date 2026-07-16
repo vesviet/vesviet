@@ -220,8 +220,81 @@ function parseCookies(cookieHeader: string): Record<string, string> {
 
 The Durable Object is the heart of the real-time cart. It maintains the cart state in memory and handles concurrent requests with JavaScript's single-threaded execution model — eliminating the need for locks.
 
+### TypeScript Durable State Structure
+
+In Durable Objects, the state is persisted using a key-value store exposed via `this.ctx.storage`. Because JavaScript's native `Map` object does not serialize to JSON (it serializes to an empty object `{}`), developers must define a serializable representation of the state for storage operations.
+
+Below is the structured TypeScript schema for a production cart state. It includes metadata for cart validation, applied promotional coupons, and helper methods to convert the in-memory state to a serializable payload:
+
+```typescript
+// Define the structure of a single cart item
+export interface CartItem {
+  productId: string;
+  sku: string;
+  name: string;
+  priceCents: number;
+  quantity: number;
+  addedAt: number;
+}
+
+// Define the structure of applied discounts
+export interface CouponDiscount {
+  code: string;
+  discountCents: number;
+  type: "percentage" | "fixed_amount";
+  value: number;
+}
+
+// The complete state structure stored in the Durable Object's memory
+export interface DurableCartState {
+  userId: string | null;
+  items: Map<string, CartItem>; // In-memory map for O(1) lookups
+  coupon: CouponDiscount | null;
+  currency: string;
+  lastUpdated: number;
+  version: number;
+}
+
+// The JSON-serializable structure used for persisting to this.ctx.storage
+export interface SerializableCartState {
+  userId: string | null;
+  items: [string, CartItem][]; // Converted to tuples for JSON safety
+  coupon: CouponDiscount | null;
+  currency: string;
+  lastUpdated: number;
+  version: number;
+}
+
+// Helper function to serialize the in-memory state for storage
+export function serializeCartState(state: DurableCartState): SerializableCartState {
+  return {
+    userId: state.userId,
+    items: Array.from(state.items.entries()),
+    coupon: state.coupon,
+    currency: state.currency,
+    lastUpdated: state.lastUpdated,
+    version: state.version,
+  };
+}
+
+// Helper function to deserialize the stored state back into memory
+export function deserializeCartState(stored: SerializableCartState): DurableCartState {
+  return {
+    userId: stored.userId,
+    items: new Map<string, CartItem>(stored.items),
+    coupon: stored.coupon,
+    currency: stored.currency,
+    lastUpdated: stored.lastUpdated,
+    version: stored.version,
+  };
+}
+```
+
+By explicitly defining `SerializableCartState` using an array of entries (`[string, CartItem][]`), we guarantee that the `Map` contents are preserved accurately during `this.ctx.storage.put()` operations without silent data loss.
+
 ```typescript
 // src/cart-do.ts
+
 import { DurableObject } from 'cloudflare:workers';
 
 interface CartItem {

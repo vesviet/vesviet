@@ -4,6 +4,8 @@ description: "Serverless Edge e-commerce with Cloudflare Workers, D1, and Turbor
 date: "2026-06-17T21:00:00+07:00"
 lastmod: "2026-06-24T00:00:00+07:00"
 draft: false
+ShowToc: true
+TocOpen: true
 slug: "cloudflare-zero-devops-ecommerce-architecture"
 author: "Lê Tuấn Anh"
 images: ["images/default-post.png"]
@@ -41,6 +43,65 @@ Merging an Admin API and a Public API into a single backend is an invitation for
 * **`packages/database`**: Drizzle ORM schema and migrations for Cloudflare D1.
 
 Because both apps and packages share the same Turborepo workspace, a schema change in `packages/contract` or `packages/database` propagates to all consumers at build time — no manual version bumping required.
+
+### Monorepo Pipeline Configuration (turbo.json)
+
+To coordinate tasks across multiple frontend applications, serverless Workers, and shared libraries, the root of the project defines a `turbo.json` pipeline configuration. This configuration ensures tasks execute in the correct order, caches build artifacts, and avoids redundant compilation.
+
+```json
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [
+    "**/.env.*local"
+  ],
+  "pipeline": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "dist/**",
+        "build/**"
+      ]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": [
+        "build"
+      ],
+      "outputs": []
+    },
+    "deploy": {
+      "dependsOn": [
+        "build",
+        "lint",
+        "test"
+      ],
+      "outputs": []
+    }
+  }
+}
+```
+
+### Explaining Turborepo Build Optimization
+
+Turborepo constructs an internal Directed Acyclic Graph (DAG) of project tasks to execute builds concurrently. The configuration key `dependsOn: ["^build"]` instructs Turborepo that a package's `build` task cannot run until all of its internal dependency packages have completed their respective `build` tasks. For example, the `public-api` worker depends on the `@ecommerce/contract` and `@ecommerce/database` packages; therefore, Turborepo compiles the contracts and databases first.
+
+#### Artifact Hashing and Caching
+Before running any task, Turborepo computes a unique hash based on:
+1. The contents of all files in the package directory.
+2. The hashes of all internal dependencies.
+3. The specified `globalDependencies` (like environmental configuration files).
+4. Defined task settings and command-line arguments.
+
+If the computed hash matches a previous run, Turborepo bypasses execution entirely, printing `cache hit` and replaying the cached stdout and file output artifacts (located in the `outputs` array) in milliseconds.
+
+#### Remote Cache Integration
+In large e-commerce teams, local cache hits are extended to CI/CD servers via Remote Caching. When a build completes on a developer's machine or in a GitHub Action, the compiled outputs are uploaded to a centralized, encrypted remote cache. When another developer or the deployment pipeline checks out the branch, Turborepo downloads the pre-built binaries from the remote store, reducing average build times by over 90%.
 
 ---
 
@@ -226,6 +287,85 @@ export async function processEdgeCheckout(
   }
 }
 ```
+
+---
+
+## 3b. Edge Caching Strategy and Routing Configuration
+
+In an e-commerce platform, serving product lists and details with sub-100ms latency globally requires aggressive edge caching. Cloudflare Workers allow developers to intercept fetch requests and interact programmatically with the globally distributed Cloudflare Cache API, bypassing database calls entirely for hot static routes.
+
+Below is the routing and edge caching script integrated into Aura Store's `public-api` worker.
+
+```typescript
+// apps/public-api/src/caching.ts - Edge Caching & Routing Handler
+export async function handleRequest(request: Request, env: any, ctx: any): Promise<Response> {
+  const url = new URL(request.url);
+  const cache = caches.default;
+
+  // 1. Bypass cache for non-GET requests, carts, checkout, and admin paths
+  const isCacheablePath = 
+    url.pathname.startsWith('/api/v1/products') || 
+    url.pathname.startsWith('/api/v1/catalog');
+  
+  if (request.method !== 'GET' || !isCacheablePath) {
+    return fetch(request);
+  }
+
+  // 2. Check if the response exists in the edge node's local cache
+  let response = await cache.match(request);
+  if (response) {
+    // Clone response to append diagnostic header
+    const headers = new Headers(response.headers);
+    headers.set('X-Cache-Status', 'HIT-EDGE');
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: headers
+    });
+  }
+
+  // 3. Cache Miss: Query the origin (D1 database or external microservice)
+  response = await fetch(request);
+
+  // 4. Cache only successful responses (HTTP 200 OK)
+  if (response.status === 200) {
+    const headers = new Headers(response.headers);
+    
+    // s-maxage=3600: Cache on the Cloudflare edge PoP for 1 hour
+    // max-age=60: Instruct client browser to cache for 60 seconds
+    // stale-while-revalidate=600: Serve stale cache for up to 10 minutes while updating
+    headers.set('Cache-Control', 'public, max-age=60, s-maxage=3600, stale-while-revalidate=600');
+    headers.set('X-Cache-Status', 'MISS-EDGE');
+
+    const cacheableResponse = new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: headers
+    });
+
+    // Write to cache asynchronously without blocking the client response
+    ctx.waitUntil(cache.put(request, cacheableResponse.clone()));
+
+    return cacheableResponse;
+  }
+
+  return response;
+}
+```
+
+### Deep Dive into Edge Caching Architecture
+
+The caching strategy relies on several advanced characteristics of the Cloudflare network:
+
+#### V8 Isolate-Level Routing
+Traditional CDNs evaluate caching rules using static configuration policies (like Page Rules). By using Cloudflare Workers, we evaluate caching logic programmatically within the V8 isolate itself. This gives us the flexibility to write custom headers, dynamic bypass rules (e.g., bypassing cache if specific authentication cookies are present), and query-parameter normalization (e.g., sorting URL query keys alphabetically to prevent cache-key fragmentation).
+
+#### The Role of stale-while-revalidate
+The `stale-while-revalidate=600` directive is essential for maintaining sub-10ms latency. If a product details page has expired from the edge cache but is still within the 10-minute revalidation window, the edge node serves the stale cached response immediately. Simultaneously, it fires an asynchronous subrequest to the D1 database to pull the fresh data and update the cache. This eliminates "cache stampedes" where a sudden traffic spike to an expired item overloads the database, since only the first request triggers revalidation.
+
+#### Cache Invalidation and KV Storage
+Because the Cache API is node-local (meaning a cache entry on a London node does not exist on a Tokyo node), we cannot easily run a global "purge cache" command programmatically. For critical updates that must propagate instantly (like inventory depletion), we combine the Cache API with **Cloudflare KV**.
+The worker stores a version token or last-modified timestamp in KV under a global key. When verifying requests, the worker fetches this token and appends it as a cache-key modifier. When a merchant updates product details, the Admin API changes the global token in KV. Downstream workers see the new token, causing a cache mismatch and forcing a fresh fetch, invalidating the old cache globally in sub-seconds.
 
 ---
 

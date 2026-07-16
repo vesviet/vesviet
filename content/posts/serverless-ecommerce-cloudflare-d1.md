@@ -160,7 +160,82 @@ const event = await stripe.webhooks.constructEventAsync(
 );
 ```
 
+## Cloudflare D1 Query Optimization & Serverless Limits
+
+Deploying SQLite at the edge via Cloudflare D1 offers a unique execution environment, but it comes with strict resource limits and query characteristics that differ substantially from traditional PostgreSQL or MySQL servers. To build a high-performance storefront, you must understand cold starts, query limits, and optimization techniques tailored for D1.
+
+### Cold Starts and Connection Lifecycle
+Unlike serverless databases running on traditional VM-based platforms (like AWS Lambda connecting to RDS), Cloudflare Workers run on V8 isolates. Worker cold starts are typically sub-10ms because they do not require spinning up a guest operating system.
+
+However, D1 databases have their own warming behavior:
+- **Isolate Warmth:** When a worker isolate starts, the binding connection to D1 is initialized. The first query against D1 may experience a slight overhead (typically 10-30ms) as the edge node mounts the underlying SQLite database file and compiles the SQL statements.
+- **Statement Caching:** You should define your queries using parameterized prepared statements. Parameterized queries (`SELECT * FROM products WHERE sku = ?`) allow D1 to cache the compiled SQL execution plan. Re-compiling raw SQL strings on every request wastes CPU cycles and increases query latency.
+
+### D1 Query Limits & Batch Operations
+Cloudflare D1 enforces strict limits to ensure tenant isolation across the edge:
+- **Maximum Execution Time:** A single SQL query must execute within 5 seconds.
+- **Payload Limits:** The response size of a single query result is limited to 10MB.
+- **Row Read and Write Limits:** D1 charges and throttles based on the number of rows read and written. A poorly optimized query that scans a table of 100,000 rows to return 10 items will consume 100,000 "row reads," quickly exhausting your monthly billing quotas and degrading edge performance.
+
+To minimize the round-trip network latency between the Worker isolate and the D1 primary node (especially during writes), you should use D1’s batch querying capability. The `.batch()` API compiles multiple statements and sends them in a single HTTP payload:
+
+```typescript
+// Executing batch operations to minimize HTTP round-trips
+const stmt1 = env.DB.prepare("INSERT INTO orders (id, user_id, total_cents) VALUES (?, ?, ?)");
+const stmt2 = env.DB.prepare("UPDATE products SET inventory_count = inventory_count - ? WHERE id = ?");
+
+const batchResults = await env.DB.batch([
+  stmt1.bind(orderId, userId, totalCents),
+  stmt2.bind(quantity, productId)
+]);
+```
+
+### SQLite Query Optimizer Guide for D1
+
+Because D1 runs SQLite under the hood, standard SQLite optimization techniques apply. Here is how to profile and optimize your D1 queries:
+
+#### 1. Analyze with EXPLAIN QUERY PLAN
+To inspect how D1 intends to execute a query, prepend `EXPLAIN QUERY PLAN` to your SQL. This returns a high-level representation of SQLite's query plan:
+
+```sql
+EXPLAIN QUERY PLAN 
+SELECT p.id, p.sku, o.status 
+FROM products p
+JOIN orders o ON p.id = o.product_id
+WHERE o.status = 'pending';
+```
+
+If the output contains `SCAN TABLE products`, it indicates SQLite is performing a full table scan, checking every single row because a foreign key index is missing. Look for `SEARCH TABLE` which indicates an index is being utilized.
+
+#### 2. Avoid Column Scanning via Covering Indexes
+If you frequently query a subset of columns, use a covering index. A covering index contains all the columns referenced in the query, allowing SQLite to fetch the data directly from the index B-Tree without performing a second lookup in the main table B-Tree:
+
+```sql
+-- Creating a covering index for fast product lookup by SKU and price
+CREATE INDEX idx_products_sku_price ON products(sku, price_cents);
+```
+
+#### 3. Offload Large Columns to R2
+SQLite stores data in pages (typically 4096 bytes). If you store large JSON payloads or text descriptions in a D1 cell, a single row can span multiple pages. This increases the number of page reads required to execute a query, even if the large column is not selected. 
+- **Guideline:** Store product descriptions, long HTML specs, and image binaries in **Cloudflare R2**. Keep only the R2 resource URLs and metadata inside D1.
+
+#### 4. The D1 Row-Read Profiler
+When running queries locally or in staging, inspect the execution metadata returned by D1:
+
+```typescript
+const { results, meta } = await env.DB.prepare(
+  "SELECT * FROM products WHERE inventory_count < ?"
+).bind(10).all();
+
+console.log(`Rows read: ${meta.rows_read}`);
+console.log(`Rows written: ${meta.rows_written}`);
+console.log(`Duration: ${meta.duration}ms`);
+```
+
+If `meta.rows_read` is significantly larger than `results.length`, your query is inefficient. Always optimize the query until `rows_read` matches `results.length` as closely as possible.
+
 ## WooCommerce vs Cloudflare: The Trade-offs
+
 
 This architecture is incredibly fast and practically free to run at low volumes. However, it is not a drop-in replacement for WooCommerce.
 

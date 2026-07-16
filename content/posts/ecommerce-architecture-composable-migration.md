@@ -115,6 +115,69 @@ Migrating a high-traffic monolith to a composable system must never be executed 
 +--------------------------------------------------------------+
 ```
 
+### Strangler Fig Routing & Data Synchronization Diagram
+
+The diagram below represents the architectural data and traffic flows during the migration process. It details the request routing paths evaluated by the Envoy API gateway at the edge, alongside the asynchronous CDC-driven synchronization backplane keeping the legacy database in parity.
+
+```mermaid
+graph TD
+    Client[User Client] -->|HTTP Requests| Gateway[Ingress Gateway / Envoy]
+    
+    subgraph Route Evaluation
+        Gateway -->|/api/v1/cart/*<br/>(Migrated)| CartCluster[Composable Cart Service]
+        Gateway -->|/api/v1/catalog/*<br/>(Migrated)| CatalogCluster[Composable Catalog Service]
+        Gateway -->|/*<br/>(Legacy Default)| MonoCluster[Monolith Legacy Cluster]
+    end
+
+    subgraph Composable Layer
+        CartCluster -->|1. Write| NewCartDB[(New Cart DB)]
+        CatalogCluster -->|Read/Write| NewCatalogDB[(New Catalog DB)]
+    end
+
+    subgraph Legacy Layer
+        MonoCluster -->|Write| LegacyDB[(Legacy DB)]
+    end
+
+    subgraph CDC Data Synchronization
+        NewCartDB -.->|2. Capture Binlogs| CDC[Debezium CDC]
+        CDC -->|3. Publish| Kafka[[Kafka Event Bus]]
+        Kafka -->|4. Consume| SyncWorker[Go Sync Worker]
+        SyncWorker -.->|5. Replicate| LegacyDB
+    end
+
+    style Gateway fill:#f9f,stroke:#333,stroke-width:2px
+    style MonoCluster fill:#fbb,stroke:#333,stroke-width:1px
+    style CartCluster fill:#bfb,stroke:#333,stroke-width:1px
+    style CatalogCluster fill:#bfb,stroke:#333,stroke-width:1px
+```
+
+### Understanding the Strangler Fig Migration Pattern
+
+The Strangler Fig pattern provides a low-risk methodology for modernizing legacy e-commerce applications. Instead of attempting a high-risk cutover, we gradually replace legacy components with composable microservices. This is similar to a strangler fig tree that grows around a host tree, eventually replacing it completely.
+
+#### Slicing Boundaries via Domain-Driven Design (DDD)
+The first step in any migration is defining boundary contexts. Monolithic applications are tightly coupled. To decouple them, we must extract logical subdomains. Candidate subdomains like Shopping Carts, Catalogs, and Checkouts should be decoupled:
+- **Catalog/Search**: Typically read-heavy, making it an ideal first candidate for isolation. Extracting this reduces the load on the legacy monolith database.
+- **Cart**: Highly transactional but localized. It does not require immediate deep integration with inventory warehouses until the checkout stage.
+- **Checkout/Orders**: The most complex subdomain due to payment integrations and inventory locks. This should be migrated last, after the read-heavy domains have run stably in production.
+
+#### Session and Authentication Management Across Boundaries
+One of the most common blockers is maintaining user session continuity. If a client is routed to the new Cart service for cart operations, but is routed to the legacy monolith for profile management, they must remain authenticated.
+
+We handle this by configuring the Ingress Gateway (Envoy) to act as an authentication translation layer:
+- The gateway intercepts incoming session identifiers (e.g. legacy PHP session cookies or custom cookies).
+- It calls a lightweight shared Auth Service or decrypts the session token directly using WebAssembly (Wasm) filters in Envoy.
+- It attaches standardized headers (such as `X-User-ID` and `X-User-Roles`) to the request context before forwarding it to downstream microservices, isolating the new services from having to understand legacy database session schemas.
+
+#### Choosing Asynchronous CDC Over Application Double-Writing
+To keep databases synchronized during the parallel run phase, we must avoid application-level double writing (where the microservice code explicitly writes to both the legacy and composable databases). This pattern introduces several severe liabilities:
+1. **Transaction Coupling**: A failure writing to the legacy database will force a rollback on the primary transaction, degrading the performance and reliability of the new service.
+2. **Network Overhead**: Adding synchronous network calls to legacy endpoints increases API response latency.
+3. **Data Drift**: If the worker process dies after the first write completes but before the second write starts, the databases drift permanently.
+
+By choosing Change Data Capture (CDC) via Debezium and Kafka, database writes remain local and fast. The CDC engine tail-reads the database's Write-Ahead Log (WAL) or binlog, converts commits into events, and streams them asynchronously. This ensures that even if the sync worker experiences a transient database lock or outage, Kafka will buffer the events, guaranteeing that the sync worker will eventually resume replication without dropping transactions.
+
+
 ### Phase 1: Strangler Fig Gateway Routing
 In this initial phase, we place an API gateway (e.g., Envoy or Kong) in front of the infrastructure. All traffic routes through this gateway.
 * The legacy monolith remains the default backend cluster.
