@@ -1,5 +1,6 @@
 ---
 title: "GenUI Security: XSS, Prompt Injection & WCAG — Frontend (P4)"
+mermaid: true
 date: "2026-05-16T12:15:00+07:00"
 lastmod: "2026-05-16T12:15:00+07:00"
 draft: false
@@ -152,6 +153,18 @@ To fortify a final layer of defense at the network level:
 Very few people talk about accessibility when discussing AI UIs. When an LLM is free to write HTML, it tends to generate a meaningless nesting of `<div>` tags (div soup), rather than semantic tags like `<nav>`, `<article>`, `<button>`. 
 
 **The Consequence:** Screen Readers for the visually impaired are completely disabled. ARIA labels, Keyboard traps, and color contrast ratios are entirely ignored.
+
+```mermaid
+graph TD
+    Client[Client Browser] -->|WebSocket| WS[WebSocket Gateway]
+    WS -->|Raw Agent Component Payload| SchemaVal{Zod Schema Validator}
+    SchemaVal -->|Invalid| Reject[Reject & Log Event]
+    SchemaVal -->|Valid JSON| Allowlist{Component Allowlist Check}
+    Allowlist -->|Not Allowed| Reject
+    Allowlist -->|Allowed & Registered| SvelteIsland[Svelte Island Hydration]
+    SvelteIsland -->|ARIA Live Announcement| ScreenReader[Polite Screen Reader Notification]
+    SvelteIsland -->|Safe Render| DOM[Secure Client DOM Update]
+```
 
 ### Svelte Implementation: Accessible Announcements (Aria-live)
 

@@ -278,14 +278,13 @@ Merging them creates a single service with two incompatible scaling profiles: Pr
 
 {{< faq q="How do I validate my bounded context boundaries before writing code?" >}}
 Apply the transaction test: *"Can this business rule be enforced within a single service's database transaction?"* If yes, the boundary is correct. If the rule requires coordinating two services, you need a Saga or a read query — and that coordination cost is the price you pay for keeping those services separate.
+{{< /faq >}}
 
 ---
 
 *This series documents a real production platform. Every service port, every ADR reference, and every domain boundary in this article reflects the actual implementation — not a theoretical exercise.*
 
 *For a comparison of how a regional super-app decomposed similar domains at 100× the order volume, see the [Shopee Architecture Series](/series/shopee-architecture/) — particularly useful when deciding whether your service count should scale with transaction volume or team topology.*
-
-{{< /faq >}}
 
 ---
 
