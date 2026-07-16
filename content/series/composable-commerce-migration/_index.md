@@ -92,11 +92,11 @@ Magento 2's EAV schema, integer primary keys, and PHP module coupling make migra
 
 | Your Profile | Recommended Entry Point | Why |
 |---|---|---|
-| **PM / BA / CTO** | [Part 0: Executive Summary](/series/composable-commerce-migration/part-0-executive-summary/) | Business case, cost comparison, migration ROI |
-| **Backend engineer (Magento)** | [Part 5: EAV Schema Migration](/series/composable-commerce-migration/part-5-eav-schema-migration/) | The technical trap most teams hit first |
-| **Golang engineer** | [Part 3: Kratos v2 Internals](/series/composable-commerce-migration/part-3-golang-kratos/) | Framework deep-dive with real service code |
-| **Architect / Tech Lead** | [Part 1: DDD Bounded Contexts](/series/composable-commerce-migration/part-1-ddd-bounded-contexts/) | Domain decomposition before writing a line of code |
-| **DevOps / SRE** | [Part 8: Phase 3 Cutover + GitOps](/series/composable-commerce-migration/part-8-phase3-full-cutover/) | Zero-downtime cutover and ArgoCD deployment model |
+| **PM / BA / CTO** | [Part 0: Executive Summary](https://tanhdev.com/series/composable-commerce-migration/part-0-executive-summary/) | Business case, cost comparison, migration ROI |
+| **Backend engineer (Magento)** | [Part 5: EAV Schema Migration](https://tanhdev.com/series/composable-commerce-migration/part-5-eav-schema-migration/) | The technical trap most teams hit first |
+| **Golang engineer** | [Part 3: Kratos v2 Internals](https://tanhdev.com/series/composable-commerce-migration/part-3-golang-kratos/) | Framework deep-dive with real service code |
+| **Architect / Tech Lead** | [Part 1: DDD Bounded Contexts](https://tanhdev.com/series/composable-commerce-migration/part-1-ddd-bounded-contexts/) | Domain decomposition before writing a line of code |
+| **DevOps / SRE** | [Part 8: Phase 3 Cutover + GitOps](https://tanhdev.com/series/composable-commerce-migration/part-8-phase3-full-cutover/) | Zero-downtime cutover and ArgoCD deployment model |
 
 ---
 
