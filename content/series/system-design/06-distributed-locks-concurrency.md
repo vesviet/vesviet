@@ -286,6 +286,7 @@ else
 end
 ```
 This atomically checks if the lock value matches your client's unique token before deleting. Without this check, you might delete a lock owned by another client (after your TTL expired).
+{{< /faq >}}
 
 ---
 
