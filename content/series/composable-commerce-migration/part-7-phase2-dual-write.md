@@ -332,9 +332,10 @@ Customer data can legitimately be updated by both systems concurrently — a cus
 {{< faq q="How long does Phase 2 typically take?" >}}
 The minimum safe timeline is **3–4 weeks** when each service gets proper monitoring time: Customer Service (1 week stabilization), Catalog Service (1 week), and Order Service (10 days graduated ramp). Teams that try to compress Phase 2 into days tend to miss edge cases in the conflict resolver — particularly for coupon usage counts and inventory levels during concurrent updates. The extended timeline is not bureaucracy; it is the minimum observation window needed to catch anomalies before they compound.
 
+{{< /faq >}}
+
 ---
 
 *This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
 
-*Need help assessing the risks of your own platform migration? â†’ [Book a 1:1 Architecture Consultation](/hire/)*
-{{< /faq >}}
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*

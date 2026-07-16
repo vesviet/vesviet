@@ -354,9 +354,10 @@ A standalone `grpc-gateway` binary adds a network hop: `Client → grpc-gateway 
 **Offset pagination:** `SELECT * FROM orders OFFSET 10000 LIMIT 20` — scans 10,000 rows to return 20. Slow at scale, and if orders are inserted between requests, you get duplicate or skipped rows.  
 **Cursor pagination:** `SELECT * FROM orders WHERE id > $cursor ORDER BY id LIMIT 20` — index seek directly to the cursor position. Consistent (no duplicates/skips) and O(1) regardless of page number. For a merchant with 500,000 orders, cursor pagination is mandatory; offset pagination at page 500 is a full-table scan.
 
+{{< /faq >}}
+
 ---
 
 *This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
 
-*Need help assessing the risks of your own platform migration? â†’ [Book a 1:1 Architecture Consultation](/hire/)*
-{{< /faq >}}
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*

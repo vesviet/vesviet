@@ -380,9 +380,10 @@ Zero-downtime means: **no HTTP 5xx errors during the traffic shift, no queued or
 {{< faq q="How long should Magento run as a hot standby after cutover?" >}}
 A minimum of **30 days** in read-only archive mode. This covers: (1) billing cycles that reference Magento order IDs, (2) customer service escalations about historical orders, (3) the window to detect any edge-case data missing from the migration. After 30 days, shut down Magento's application tier but keep the database snapshot for an additional 90 days in cold storage before permanent deletion.
 
+{{< /faq >}}
+
 ---
 
 *This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
 
-*Need help assessing the risks of your own platform migration? â†’ [Book a 1:1 Architecture Consultation](/hire/)*
-{{< /faq >}}
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*

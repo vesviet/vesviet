@@ -1,4 +1,5 @@
 ---
+mermaid: true
 title: "Part 2: Rush Monorepo — 21 Go Services & 2 Frontends"
 description: "Why Rush beats Nx and Turborepo for a mixed Go + Next.js monorepo: strict dependency governance, PNPM workspaces, and incremental CI builds."
 date: "2026-04-15T10:00:00+07:00"
@@ -47,6 +48,24 @@ The decisive factor for the Composable Commerce Platform: **`common-versions.jso
 The second factor: the Magento PHP ecosystem taught us the cost of **phantom dependencies** — where a package works locally because it's installed somewhere in node_modules, but fails in production because it's not a declared dependency. Rush + PNPM's strict isolation prevents this class of bug entirely.
 
 ## 2. Repository Structure
+
+```mermaid
+graph TD
+    Storefront["@composable/storefront"]
+    Admin["@composable/admin-dashboard"]
+    UI["@composable/ui-components"]
+    API["@composable/api-client"]
+    Utils["@composable/utils"]
+    
+    Storefront --> UI
+    Storefront --> API
+    Storefront --> Utils
+    Admin --> UI
+    Admin --> API
+    Admin --> Utils
+    UI --> Utils
+    API --> Utils
+```
 
 ```
 composable-commerce/               ← root of the monorepo
@@ -313,9 +332,10 @@ No. Rush only manages packages with a `package.json`. Go services live in `servi
 {{< faq q="What happens if `buf generate` is not run after a proto change?" >}}
 The TypeScript SDK in `packages/api-client/generated/` goes stale. CI enforces freshness: if generated files differ from committed files, the pipeline fails with `buf lint` + `buf generate --check`. This prevents the frontend from shipping with a TypeScript type that no longer matches the backend's proto contract.
 
+{{< /faq >}}
+
 ---
 
 *This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
 
-*Need help assessing the risks of your own platform migration? â†’ [Book a 1:1 Architecture Consultation](/hire/)*
-{{< /faq >}}
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*

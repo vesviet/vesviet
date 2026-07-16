@@ -216,9 +216,10 @@ We recommend: 2–3 Go backend engineers, 1 DevOps/SRE engineer (for CDC, Kubern
 {{< faq q="Is Kratos v2 production-ready?" >}}
 Yes. Kratos v2 (go-kratos.dev) is maintained by Bilibili's engineering team and used in production by multiple large-scale Go services in China and Southeast Asia. It provides a clean abstraction over gRPC + HTTP transport, Wire-based dependency injection, and a pluggable middleware chain — making it a natural fit for a 21-service platform where consistency of patterns matters more than framework flexibility.
 
+{{< /faq >}}
+
 ---
 
 *This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
 
-*Need help assessing the risks of your own platform migration? â†’ [Book a 1:1 Architecture Consultation](/hire/)*
-{{< /faq >}}
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*

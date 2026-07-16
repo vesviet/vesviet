@@ -369,9 +369,10 @@ Yes — until Phase 3 cutover is complete. The CDC sync pipeline (Part 6), the d
 {{< faq q="What if two Magento instances have the same `attribute_code` but different semantics?" >}}
 This happens with custom attributes created by third-party extensions that use generic codes like `custom_attribute_1`. In this case, also check `eav_attribute.frontend_label` and `eav_attribute.source_model` to disambiguate. Document any ambiguous attributes in your `magento_id_map` as a comment field before starting the extraction — resolving this post-extraction is significantly more expensive.
 
+{{< /faq >}}
+
 ---
 
 *This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
 
-*Need help assessing the risks of your own platform migration? â†’ [Book a 1:1 Architecture Consultation](/hire/)*
-{{< /faq >}}
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*

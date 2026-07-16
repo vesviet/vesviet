@@ -391,9 +391,10 @@ The Strangler Fig works by routing traffic at the proxy/gateway layer — not by
 {{< faq q="How do you handle the initial Debezium snapshot without blocking production MySQL?" >}}
 Debezium's `snapshot.mode: initial` reads all rows using a consistent snapshot — it uses MySQL's `REPEATABLE READ` isolation level, which means it doesn't lock the table. However, it does consume significant I/O bandwidth during the snapshot phase (reading millions of rows sequentially). Best practice: run the initial snapshot during off-peak hours, monitor MySQL I/O metrics, and configure Debezium's `max.batch.size` to throttle the read rate if needed.
 
+{{< /faq >}}
+
 ---
 
 *This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
 
-*Need help assessing the risks of your own platform migration? â†’ [Book a 1:1 Architecture Consultation](/hire/)*
-{{< /faq >}}
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*

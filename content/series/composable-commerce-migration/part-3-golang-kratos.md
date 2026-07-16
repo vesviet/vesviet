@@ -430,9 +430,10 @@ Wire generates Go code at compile time — there is no reflection, no XML config
 {{< faq q="Can I use a single kratos service for both REST and gRPC without running two separate server processes?" >}}
 Yes — that is exactly what `kratos.Server(gs, hs)` does. Both the gRPC server (`:9001`) and HTTP server (`:8001`) run as goroutines within the same process. They share the same `biz` layer and the same database connection pool. The proto annotations (`google.api.http`) handle HTTP↔gRPC routing automatically so you write the handler logic once.
 
+{{< /faq >}}
+
 ---
 
 *This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
 
-*Need help assessing the risks of your own platform migration? â†’ [Book a 1:1 Architecture Consultation](/hire/)*
-{{< /faq >}}
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*

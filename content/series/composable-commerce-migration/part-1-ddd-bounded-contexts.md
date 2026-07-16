@@ -1,4 +1,5 @@
 ---
+mermaid: true
 title: "Part 1: DDD Bounded Contexts — Magento to 21 Services"
 description: "Map Magento 2's 240+ modules to 21 bounded contexts using DDD: Checkout ≠ Order, Pricing ≠ Promotion, and why 21 services is the right number."
 date: "2026-04-08T10:00:00+07:00"
@@ -49,6 +50,55 @@ For example:
 - "A coupon can only be used once per customer" → Promotion Service owns coupon redemption. The invariant is *within* one service. Correct boundary.
 
 ## 2. The 6 Bounded Context Groups
+
+```mermaid
+graph TD
+    subgraph Commerce Flow
+        Checkout[Checkout Service]
+        Order[Order Service]
+        Payment[Payment Service]
+    end
+    subgraph Product & Content
+        Catalog[Catalog Service]
+        Pricing[Pricing Service]
+        Promotion[Promotion Service]
+        Search[Search Service]
+    end
+    subgraph Identity & Access
+        Auth[Auth Service]
+        User[User Service]
+        Customer[Customer Service]
+    end
+    subgraph Logistics
+        Warehouse[Warehouse Service]
+        Fulfillment[Fulfillment Service]
+        Shipping[Shipping Service]
+    end
+    subgraph Post-Purchase
+        Return[Return Service]
+        Loyalty[Loyalty Service]
+    end
+    subgraph Platform & Operations
+        Gateway[Gateway Service]
+        Analytics[Analytics Service]
+        Review[Review Service]
+        Notification[Notification Service]
+        Location[Location Service]
+    end
+
+    Gateway --> Checkout
+    Gateway --> Catalog
+    Gateway --> Customer
+    Checkout --> Order
+    Checkout --> Pricing
+    Checkout --> Promotion
+    Checkout --> Payment
+    Order --> Warehouse
+    Warehouse --> Fulfillment
+    Fulfillment --> Shipping
+    Return --> Order
+    Loyalty --> Order
+```
 
 The platform organizes 21 services into 6 domain groups. Here is the complete mapping — including which Magento modules each service replaces:
 
@@ -235,9 +285,10 @@ Apply the transaction test: *"Can this business rule be enforced within a single
 
 *For a comparison of how a regional super-app decomposed similar domains at 100× the order volume, see the [Shopee Architecture Series](/series/shopee-architecture/) — particularly useful when deciding whether your service count should scale with transaction volume or team topology.*
 
+{{< /faq >}}
+
 ---
 
 *This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
 
-*Need help assessing the risks of your own platform migration? â†’ [Book a 1:1 Architecture Consultation](/hire/)*
-{{< /faq >}}
+*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
