@@ -125,53 +125,322 @@ CREATE TABLE audit_logs (
 
 ---
 
+ShowToc: true
+TocOpen: true
+cover:
+  image: "images/posts/banking-microservices-cover.png"
+  alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
+  relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-7-build-mini-core-banking/"
+---
+
+## Project Objectives
+
+This is the final capstone project. You will build a complete **Mini Core Banking** system, simultaneously applying all the principles we've covered:
+
+- ✅ **Part 1:** Double-entry bookkeeping with an immutable Ledger
+- ✅ **Part 2:** CIF, CASA, and Lending domain models
+- ✅ **Part 3:** ACID transactions, Pessimistic Locking, and Idempotency
+- ✅ **Part 4:** Event-driven design with the Outbox Pattern
+- ✅ **Part 5:** Standardized message structures (ISO-inspired)
+- ✅ **Part 6:** Audit trails and data classification
+
+You can use any language: Go, Java, Python, Node.js, .NET — the architectural principles remain the same.
+
+---
+
+## Step 1: Design the Database Schema
+
+This is the foundation. Get this right, and everything else flows naturally.
+
+```sql
+-- ============================================================
+-- 1. CUSTOMERS (CIF)
+-- ============================================================
+CREATE TABLE customers (
+    cif_number      VARCHAR(20)  PRIMARY KEY,
+    customer_type   VARCHAR(15)  NOT NULL CHECK (customer_type IN ('INDIVIDUAL','CORPORATE')),
+    full_name       VARCHAR(255) NOT NULL,
+    id_number       VARCHAR(30)  UNIQUE NOT NULL,
+    kyc_status      VARCHAR(20)  NOT NULL DEFAULT 'PENDING',
+    created_at      TIMESTAMPTZ  NOT NULL DEFAULT NOW()
+);
+
+-- ============================================================
+-- 2. ACCOUNTS (CASA)
+-- ============================================================
+CREATE TABLE accounts (
+    account_number    VARCHAR(20)  PRIMARY KEY,
+    cif_number        VARCHAR(20)  NOT NULL REFERENCES customers(cif_number),
+    account_type      VARCHAR(30)  NOT NULL,
+    currency          CHAR(3)      NOT NULL DEFAULT 'VND',
+    status            VARCHAR(20)  NOT NULL DEFAULT 'ACTIVE',
+    current_balance   BIGINT       NOT NULL DEFAULT 0,
+    available_balance BIGINT       NOT NULL DEFAULT 0,
+    version           BIGINT       NOT NULL DEFAULT 1,
+    created_at        TIMESTAMPTZ  NOT NULL DEFAULT NOW()
+);
+
+-- ============================================================
+-- 3. LEDGER ENTRIES (Double-Entry Bookkeeping)
+-- ============================================================
+CREATE TABLE ledger_entries (
+    id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    transaction_id  UUID        NOT NULL,
+    account_number  VARCHAR(20) NOT NULL REFERENCES accounts(account_number),
+    entry_type      CHAR(6)     NOT NULL CHECK (entry_type IN ('DEBIT','CREDIT')),
+    amount          BIGINT      NOT NULL CHECK (amount > 0),
+    currency        CHAR(3)     NOT NULL,
+    balance_after   BIGINT      NOT NULL,
+    description     TEXT,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Prevent edits to the ledger
+CREATE RULE no_update_ledger AS ON UPDATE TO ledger_entries DO INSTEAD NOTHING;
+CREATE RULE no_delete_ledger AS ON DELETE TO ledger_entries DO INSTEAD NOTHING;
+
+-- ============================================================
+-- 4. TRANSACTIONS (Idempotency Control)
+-- ============================================================
+CREATE TABLE financial_transactions (
+    id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    idempotency_key VARCHAR(64) UNIQUE NOT NULL,
+    type            VARCHAR(30) NOT NULL, -- 'DEPOSIT','WITHDRAWAL','TRANSFER','FEE'
+    status          VARCHAR(20) NOT NULL DEFAULT 'PROCESSING',
+    from_account    VARCHAR(20),
+    to_account      VARCHAR(20),
+    amount          BIGINT      NOT NULL,
+    currency        CHAR(3)     NOT NULL,
+    description     TEXT,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    completed_at    TIMESTAMPTZ
+);
+
+-- ============================================================
+-- 5. OUTBOX (At-Least-Once Event Publishing)
+-- ============================================================
+CREATE TABLE outbox_events (
+    id           UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    topic        VARCHAR(100) NOT NULL,
+    payload      JSONB        NOT NULL,
+    status       VARCHAR(20)  NOT NULL DEFAULT 'PENDING',
+    created_at   TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
+    published_at TIMESTAMPTZ
+);
+
+-- ============================================================
+-- 6. AUDIT LOG
+-- ============================================================
+CREATE TABLE audit_logs (
+    id          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    entity_type VARCHAR(50) NOT NULL,
+    entity_id   VARCHAR(50) NOT NULL,
+    action      VARCHAR(50) NOT NULL,
+    actor_id    VARCHAR(50) NOT NULL,
+    before_data JSONB,
+    after_data  JSONB,
+    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+```
+
+---
+
 ## Step 2: Implement the Money Transfer Logic
 
-This is the most critical use case. **All steps below must happen within a single Database Transaction**:
+This is the most critical use case. Below is the complete Go implementation of the HTTP handler processing funds transfer under strict concurrency control.
 
-```
-FLOW: POST /v1/transfers
-  Header: Idempotency-Key: <uuid-from-client>
+```go
+package main
 
-STEP 1: Check Idempotency Key
-  → If already completed: return old result (200 OK)
-  → If processing: return 409 Conflict
-  → If new: proceed
+import (
+	"context"
+	"database/sql"
+	"encoding/json"
+	"errors"
+	"net/http"
+	"time"
 
-STEP 2: Validate Input
-  → amount > 0
-  → from_account != to_account
-  → currency is valid
+	"github.com/google/uuid"
+)
 
-STEP 3: BEGIN DATABASE TRANSACTION
-  
-  STEP 3a: Lock both accounts (order by ID to prevent deadlocks)
-    → SELECT ... FOR UPDATE WHERE account_number IN (from, to) ORDER BY account_number
+type TransferRequest struct {
+	FromAccount string `json:"from_account"`
+	ToAccount   string `json:"to_account"`
+	Amount      int64  `json:"amount"`
+	Currency    string `json:"currency"`
+	Description string `json:"description"`
+}
 
-  STEP 3b: Check business rules
-    → available_balance(from) >= amount
-    → status(from) = 'ACTIVE'
-    → status(to) = 'ACTIVE'
+type TransferResponse struct {
+	TransactionID string `json:"transaction_id"`
+	Status        string `json:"status"`
+}
 
-  STEP 3c: Update Balances
-    → UPDATE accounts SET current_balance -= amount, available_balance -= amount WHERE from
-    → UPDATE accounts SET current_balance += amount, available_balance += amount WHERE to
+type TransferHandler struct {
+	db *sql.DB
+}
 
-  STEP 3d: Write Double-Entry Ledger (2 entries)
-    → INSERT DEBIT entry (from_account, amount, balance_after_deduction)
-    → INSERT CREDIT entry (to_account, amount, balance_after_addition)
+func (h *TransferHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
 
-  STEP 3e: Insert financial_transaction record (status = COMPLETED)
+	idempotencyKey := r.Header.Get("Idempotency-Key")
+	if idempotencyKey == "" {
+		http.Error(w, "Missing Idempotency-Key header", http.StatusBadRequest)
+		return
+	}
 
-  STEP 3f: Insert idempotency_key record
+	var req TransferRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
 
-  STEP 3g: Insert outbox_events (topic: 'transfer.completed')
+	// Validate inputs
+	if req.Amount <= 0 || req.FromAccount == req.ToAccount || req.Currency == "" {
+		http.Error(w, "Validation failed: invalid fields", http.StatusBadRequest)
+		return
+	}
 
-  STEP 3h: Insert audit_log
+	ctx := r.Context()
 
-STEP 4: COMMIT TRANSACTION
+	// 1. Check Idempotency Table
+	var txID string
+	var status string
+	var cachedResult []byte
+	err := h.db.QueryRowContext(ctx, 
+		"SELECT id, status FROM financial_transactions WHERE idempotency_key = $1", 
+		idempotencyKey).Scan(&txID, &status)
+	
+	if err == nil {
+		if status == "COMPLETED" {
+			w.Header().Set("Content-Type", "application/json")
+			w.Write(cachedResult)
+			return
+		}
+		http.Error(w, "Transaction currently processing", http.StatusConflict)
+		return
+	} else if !errors.Is(err, sql.ErrNoRows) {
+		http.Error(w, "Database error", http.StatusInternalServerError)
+		return
+	}
 
-STEP 5: Return 202 Accepted + transaction_id
+	// 2. Begin Transaction
+	tx, err := h.db.BeginTx(ctx, &sql.TxOptions{Isolation: sql.LevelReadCommitted})
+	if err != nil {
+		http.Error(w, "Failed to begin transaction", http.StatusInternalServerError)
+		return
+	}
+	defer tx.Rollback()
+
+	// 3. Lock Accounts Deterministically to prevent deadlocks
+	firstAcc, secondAcc := req.FromAccount, req.ToAccount
+	if req.FromAccount > req.ToAccount {
+		firstAcc, secondAcc = req.ToAccount, req.FromAccount
+	}
+
+	var firstBalance, firstAvailable, secondBalance, secondAvailable int64
+	var firstStatus, secondStatus string
+
+	// Lock first account
+	err = tx.QueryRowContext(ctx, 
+		"SELECT current_balance, available_balance, status FROM accounts WHERE account_number = $1 FOR UPDATE", 
+		firstAcc).Scan(&firstBalance, &firstAvailable, &firstStatus)
+	if err != nil {
+		http.Error(w, "Failed to lock first account", http.StatusInternalServerError)
+		return
+	}
+
+	// Lock second account
+	err = tx.QueryRowContext(ctx, 
+		"SELECT current_balance, available_balance, status FROM accounts WHERE account_number = $1 FOR UPDATE", 
+		secondAcc).Scan(&secondBalance, &secondAvailable, &secondStatus)
+	if err != nil {
+		http.Error(w, "Failed to lock second account", http.StatusInternalServerError)
+		return
+	}
+
+	// Re-verify balances on source account
+	var srcAvailable int64
+	var srcStatus string
+	err = tx.QueryRowContext(ctx, 
+		"SELECT available_balance, status FROM accounts WHERE account_number = $1", 
+		req.FromAccount).Scan(&srcAvailable, &srcStatus)
+	if err != nil || srcStatus != "ACTIVE" || srcAvailable < req.Amount {
+		http.Error(w, "Insufficient available funds or account inactive", http.StatusBadRequest)
+		return
+	}
+
+	newTxID := uuid.New().String()
+
+	// 4. Update Balances
+	_, err = tx.ExecContext(ctx, 
+		"UPDATE accounts SET current_balance = current_balance - $1, available_balance = available_balance - $1 WHERE account_number = $2", 
+		req.Amount, req.FromAccount)
+	if err != nil {
+		return
+	}
+	_, err = tx.ExecContext(ctx, 
+		"UPDATE accounts SET current_balance = current_balance + $1, available_balance = available_balance + $1 WHERE account_number = $2", 
+		req.Amount, req.ToAccount)
+	if err != nil {
+		return
+	}
+
+	// Fetch balances after transaction for ledger reporting
+	var fromBalAfter, toBalAfter int64
+	tx.QueryRowContext(ctx, "SELECT current_balance FROM accounts WHERE account_number = $1", req.FromAccount).Scan(&fromBalAfter)
+	tx.QueryRowContext(ctx, "SELECT current_balance FROM accounts WHERE account_number = $1", req.ToAccount).Scan(&toBalAfter)
+
+	// 5. Insert double-entry ledger postings
+	ledgerQuery := `
+		INSERT INTO ledger_entries (transaction_id, account_number, entry_type, amount, currency, balance_after, description) 
+		VALUES ($1, $2, $3, $4, $5, $6, $7)`
+	_, err = tx.ExecContext(ctx, ledgerQuery, newTxID, req.FromAccount, "DEBIT", req.Amount, req.Currency, fromBalAfter, req.Description)
+	if err != nil {
+		return
+	}
+	_, err = tx.ExecContext(ctx, ledgerQuery, newTxID, req.ToAccount, "CREDIT", req.Amount, req.Currency, toBalAfter, req.Description)
+	if err != nil {
+		return
+	}
+
+	// 6. Record transaction with completed status
+	_, err = tx.ExecContext(ctx, `
+		INSERT INTO financial_transactions (id, idempotency_key, type, status, from_account, to_account, amount, currency, description, completed_at) 
+		VALUES ($1, $2, 'TRANSFER', 'COMPLETED', $3, $4, $5, $6, $7, $8)`,
+		newTxID, idempotencyKey, req.FromAccount, req.ToAccount, req.Amount, req.Currency, req.Description, time.Now())
+	if err != nil {
+		return
+	}
+
+	// 7. Insert outbox event
+	eventPayload, _ := json.Marshal(req)
+	_, err = tx.ExecContext(ctx, 
+		"INSERT INTO outbox_events (topic, payload) VALUES ('transfer.completed', $1)", 
+		eventPayload)
+	if err != nil {
+		return
+	}
+
+	if err := tx.Commit(); err != nil {
+		http.Error(w, "Failed to commit transaction", http.StatusInternalServerError)
+		return
+	}
+
+	resp := TransferResponse{
+		TransactionID: newTxID,
+		Status:        "COMPLETED",
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusAccepted)
+	json.NewEncoder(w).Encode(resp)
+}
 ```
 
 ---
@@ -205,12 +474,6 @@ Once built, you MUST stress test the system by sending highly concurrent request
 # Scenario: 100 users transferring money simultaneously from Account A to B
 
 k6 run --vus 100 --duration 30s transfer_test.js
-
-# After testing, verify:
-# 1. Did the total amount of money in the system change?
-# 2. Is the ledger balanced? (DEBIT = CREDIT)
-# 3. Were there any duplicate transactions?
-# 4. Did any account balance drop below zero?
 ```
 
 ```javascript
@@ -271,4 +534,5 @@ Once you have a functional Mini Core Banking system, you can extend it:
 4. **Rate Limiting & Fraud Detection:** Detect anomalous transactions using a Rule Engine.
 5. **Study Apache Fineract:** Dive into the open-source code of a real-world Core Banking system.
 
-> *Congratulations on completing the series! You now have a solid foundation to begin your journey as a Core Banking Developer. Remember: in this field, **meticulousness and systems thinking are vastly more important than coding speed.***
+> *Congratulations on completing the series! The final step is learning how to document these complex systems. Continue reading **[Part 8 — Writing a Core Banking PRD: Developer Guide]({{< ref "part-8-core-banking-prd.md" >}})** to master the art of specification.*
+

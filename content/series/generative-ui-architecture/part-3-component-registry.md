@@ -37,60 +37,133 @@ When an Agent wants to fetch weather data, it doesn't call the API itself. It is
 
 In Generative UI, we leverage this exact "Tool Call" mechanism, but apply it to the Frontend. Instead of calling a tool on the Backend, the Agent calls a "UI Tool" to request the Frontend to display an interface. **We map 1-1 between the Backend MCP Tool and the Frontend UI Component.**
 
-## 3.2. The Component Registry Concept
+## 3.2. The Component Registry & Async Lazy-Loading
 
-The **Component Registry** is simply a dictionary (Map) living on the Frontend (e.g., in Astro's config), used to match the `Tool_Name` called by the AI with the actual `Component_Name` in the source code.
+The **Component Registry** is the central directory (Map) living on the Frontend. It matches the tool name called by the LLM with the actual Svelte or Vue component files in the client repository.
 
-### End-to-End Flow Diagram:
+In production applications, registering dozens of widgets in a single static imports file can cause severe page-load bloat. Svelte and Astro allow resolving this by using **asynchronous dynamic imports**, which splits each component into its own lazy-loaded Javascript bundle, fetched on-demand when the LLM triggers it.
 
-```mermaid
-sequenceDiagram
-    participant B as Backend Agent
-    participant W as WebSocket Server
-    participant C as Component Registry (Frontend)
-    participant D as DOM (Browser)
+Below is a Svelte implementation of a lazy-loading component registry using dynamic imports, skeleton states, and custom prop bindings.
 
-    B->>W: Tool Call {"tool": "RenderWeatherWidget", "args": {"temp": 30}}
-    W->>C: Broadcast JSON down to Client
-    C->>C: Look up "RenderWeatherWidget" in dictionary
-    C->>D: Grab corresponding Component, pass args as Props and render
-```
-
-### Mock Frontend Code Example (Astro/Svelte):
-
-First, you register valid Components in the Registry:
-```javascript
-// src/lib/registry.js
-import WeatherWidget from '../components/WeatherWidget.svelte';
-import ShopeeOrderCancel from '../components/ShopeeOrderCancel.svelte';
-
-export const ComponentRegistry = {
-  "RenderWeatherWidget": WeatherWidget,
-  "RenderOrderCancel": ShopeeOrderCancel,
-  // Any Component not here will be ignored
-};
-```
-
-In the main Render component (Dynamic Component):
-```svelte
-<!-- src/components/DynamicRenderer.svelte -->
+```html
+<!-- AsyncRegistryLoader.svelte -->
 <script>
-  import { ComponentRegistry } from '$lib/registry';
-  export let aiPayload; // Example: { tool: "RenderWeatherWidget", args: { temp: 30 } }
+    import { writable } from 'svelte/store';
+    import LoadingSkeleton from './LoadingSkeleton.svelte';
+    import ErrorDisplay from './ErrorDisplay.svelte';
 
-  // Look up component in Registry
-  $: TargetComponent = ComponentRegistry[aiPayload.tool];
+    export let componentName; // Incoming name from the LLM, e.g. "RenderWeatherWidget"
+    export let componentProps; // Props payload from the LLM tool call
+
+    // Registry mapping tool names to lazy-loaded Svelte modules
+    const ASYNC_REGISTRY = {
+        "RenderWeatherWidget": () => import('../components/WeatherWidget.svelte'),
+        "RenderOrderCancel": () => import('../components/ShopeeOrderCancel.svelte')
+    };
+
+    let loadedComponent = null;
+    let loading = true;
+    let errorMsg = null;
+
+    // Reactive statement to trigger load whenever the component name changes
+    $: if (componentName) {
+        loadWidget(componentName);
+    }
+
+    async function loadWidget(name) {
+        loading = true;
+        errorMsg = null;
+        loadedComponent = null;
+
+        const importer = ASYNC_REGISTRY[name];
+        if (!importer) {
+            errorMsg = `Component "${name}" is not registered in the system.`;
+            loading = false;
+            return;
+        }
+
+        try {
+            // Dynamically import the module
+            const module = await importer();
+            loadedComponent = module.default;
+        } catch (err) {
+            errorMsg = `Failed to load component bundle: ${err.message}`;
+        } finally {
+            loading = false;
+        }
+    }
 </script>
 
-{#if TargetComponent}
-  <!-- ⚠️ SECURITY WARNING: In reality aiPayload.args must be validated by Zod before spreading into Props. (See Part 4) -->
-  <svelte:component this={TargetComponent} {...aiPayload.args} />
-{:else}
-  <div class="error">Agent requested a non-existent interface.</div>
-{/if}
+<div class="dynamic-registry-wrapper">
+    {#if loading}
+        <LoadingSkeleton />
+    {:else if errorMsg}
+        <ErrorDisplay message={errorMsg} />
+    {:else if loadedComponent}
+        <svelte:component this={loadedComponent} {...componentProps} />
+    {/if}
+</div>
 ```
 
-## 3.3. Controlled Generative UI Design Pattern
+---
+
+## 3.3. Server-Side: Mapping MCP Tools to Frontend Components
+
+On the backend, when an LLM chooses to invoke a tool, we need a routing mechanism to format this response into the standardized GenUI protocol. Below is a Go example showcasing how a server processes an LLM tool-use block and generates the correct client payload.
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+)
+
+// MCPToolCall represents a tool invocation requested by the LLM
+type MCPToolCall struct {
+	ID        string          `json:"id"`
+	Type      string          `json:"type"` // "function"
+	Function  FunctionDetails `json:"function"`
+}
+
+type FunctionDetails struct {
+	Name      string `json:"name"` // E.g., "RenderWeatherWidget"
+	Arguments string `json:"arguments"` // JSON string representation of arguments
+}
+
+// ClientEvent represents the event sent down the WebSocket to the client registry
+type ClientEvent struct {
+	EventID     string          `json:"id"`
+	ComponentID string          `json:"component_id"`
+	Props       json.RawMessage `json:"props"`
+}
+
+// ProcessToolCall converts an LLM tool call into a front-end registry render instruction
+func ProcessToolCall(rawCall []byte) (*ClientEvent, error) {
+	var call MCPToolCall
+	if err := json.Unmarshal(rawCall, &call); err != nil {
+		return nil, err
+	}
+
+	// Validate if the tool is designed for UI rendering
+	if call.Function.Name != "RenderWeatherWidget" && call.Function.Name != "RenderOrderCancel" {
+		return nil, fmt.Errorf("tool %s is not a registered GenUI component", call.Function.Name)
+	}
+
+	return &ClientEvent{
+		EventID:     call.ID,
+		ComponentID: call.Function.Name,
+		Props:       json.RawMessage(call.Function.Arguments),
+	}, nil
+}
+```
+
+This backend router validates tool choices and structures them into clean JSON events containing the exact arguments the Svelte widgets require.
+
+---
+
+## 3.4. Controlled Generative UI Design Pattern
 
 The architecture above is called **Controlled Generative UI**.
 
@@ -102,4 +175,6 @@ You DO NOT allow the AI to think up button colors or write `<div>` tags. You for
 3. **Reusability:** Components in the Registry can absolutely be the same Components used for normal static screens. You don't need to write separate Components just for AI.
 
 ---
-🔗 **Next Step:** The Component Registry brings endless flexibility, but it's also a vital security checkpoint. What if we allowed AI to pass *any* JSON into a Component's Props? What happens to accessibility standards for the visually impaired (WCAG)? Read on in [Part 4 — Security & Accessibility (A11y) in GenUI](/series/generative-ui-architecture/part-4-security-a11y/).
+
+🔗 **Next Step:** The Component Registry brings endless flexibility, but it's also a vital security checkpoint. What if we allowed AI to pass *any* JSON into a Component's Props? What happens to accessibility standards for the visually impaired (WCAG)? Read on in **[Part 4 — Security & Accessibility (A11y) in GenUI]({{< ref "part-4-security-a11y.md" >}})**.
+

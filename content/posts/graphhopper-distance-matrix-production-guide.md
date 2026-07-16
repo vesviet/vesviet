@@ -90,7 +90,7 @@ Both engines are free, self-hostable, and use OpenStreetMap data. The decision c
 - ✅ You have a **multi-vehicle fleet** — motorcycles filtering lanes, trucks avoiding weight-restricted roads, cyclists on bike paths — all needing different rules
 - ✅ You need **runtime Custom Models** — change toll preferences, road restrictions, or vehicle weights without restarting and rebuilding the graph
 - ✅ Your backend is **Java-based** and you want embedded mode (no HTTP overhead)
-- ✅ You are building an **e-commerce order allocation** system where flexibility across SKU types and vehicle classes matters more than the 2.5× raw speed delta (see [Distance Matrix for Order Allocation](/series/ecommerce-order-allocation/part-7-distance-matrix-routing/))
+- ✅ You are building an **e-commerce order allocation** system where flexibility across SKU types and vehicle classes matters more than the 2.5× raw speed delta (see [E-commerce Order Allocation Series](/series/ecommerce-order-allocation/))
 - ✅ You want a **single engine** that can also handle H3 geospatial caching, Valhalla-style turn restrictions, and matrix + route in one deployment
 
 ### Verdict for most production systems
@@ -559,7 +559,7 @@ GraphHopper loads the road graph into memory for fast queries. Vietnam (~880MB O
 
 ## Internal Links & Next Steps
 
-- **E-commerce routing series:** This guide is referenced from [Part 7 — Distance Matrix Routing in E-commerce Order Allocation](/series/ecommerce-order-allocation/part-7-distance-matrix-routing/), which shows how a GraphHopper matrix feeds a VRP solver.
+- **E-commerce routing series:** This guide is referenced from the [E-commerce Order Allocation](/series/ecommerce-order-allocation/) series, which shows how a self-hosted matrix feeds a VRP solver.
 - **Ride-hailing:** The same H3 spatial indexing used for caching is also how Uber finds nearby drivers — see [H3 Geospatial Indexing for Ride-Hailing Architecture](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/).
 - **High-concurrency systems:** For serving matrix results under high request volume, see [Rate Limiting and Singleflight Patterns](/series/high-concurrency-systems/).
 

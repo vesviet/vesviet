@@ -1,5 +1,4 @@
----
-title: "Executive Summary: MCP - The Control Plane of the AI Ecosystem"
+---title: "Executive Summary: MCP - The Control Plane of the AI Ecosystem"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
 draft: false
@@ -19,6 +18,8 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/executive-summary/"
+ShowToc: true
+TocOpen: true
 ---
 
 In less than two years since its launch, the **Model Context Protocol (MCP)** has transformed from an internal Anthropic initiative into an open industry standard. Now managed by the Agentic AI Foundation under the [Linux Foundation](https://www.linuxfoundation.org/), MCP is redefining how we design software systems. If TCP/IP connects computers, and REST connects microservices, then the MCP protocol was born to directly connect LLMs (Large Language Models) and AI Agents with real-world data and tools.
@@ -85,6 +86,67 @@ To combat this, new security standards are being established. **OAuth 2.1 with P
 Deploying MCP to an Enterprise production environment is the process of building a complete AI Orchestration Infrastructure, demanding absolute seriousness in System Design, Security, and Observability.
 
 In the upcoming articles, we will roll up our sleeves and dive into the actual code.
+
+
+## 4. Model Context Protocol Gateway Client Setup
+
+To begin implementing the Model Context Protocol, we need to understand the communication lifecycle between the Agent Gateway and backend MCP servers. In production, gateways must perform health checks and connection handshakes.
+
+### Go MCP Status Verifier
+The following code verified the availability of an MCP server before routing queries:
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"net/http"
+	"time"
+)
+
+func VerifyMCPAvailability(ctx context.Context, endpoint string) error {
+	client := &http.Client{
+		Timeout: 3 * time.Second,
+	}
+	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
+	if err != nil {
+		return err
+	}
+	
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("server returned error status: %d", resp.StatusCode)
+	}
+	fmt.Println("MCP server status verified successfully.")
+	return nil
+}
+
+func main() {
+	ctx, cancel := context.WithTimeout(context.Background(), 5 * time.Second)
+	defer cancel()
+	_ = VerifyMCPAvailability(ctx, "http://localhost:8080/health")
+}
+```
+
+### Client-Server Handshake Mechanics
+When establishing connection loops:
+- The agent gateway initiates a handshake, declaring its capability set.
+- The server replies with a list of available tools, schemas, and resource definitions.
+- Heartbeat tickers run every 10 seconds to maintain TCP connection states.
+
+### Technical Appendix: MCP Gateway Architecture & Routing Algorithms
+To orchestrate queries across 100+ MCP servers:
+- **Capability Routing Tables:** Store tools, schemas, and resource maps in an in-memory trie structure for fast prefix matching.
+- **Latency-Based Load Balancing:** Route requests to the replica with the lowest response time over a sliding window.
+- **Failover Policies:** Implement automatic request retries with exponential backoff if a target server drops the SSE connection.
+- **Token Bucket Rate Limiting:** Enforce strict request rate limits per agent session to prevent downstream API exhaustion.
+
 
 ---
 *Next up: [Part 1: Protocol Fundamentals & Transport Evolution](/series/mcp-engineering-in-production/part-1-protocol/)*

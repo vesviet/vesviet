@@ -102,6 +102,54 @@ In the future, we will not just use AI as a tool to type code. We will embed art
 ---
 💬 **Discussion Corner:** In your opinion, what core skill (Data Structures, Computer Networks, or SQL) is the most important one that Juniors MUST self-study (the hard way) instead of having AI generate it?
 
+
+### Go Static Code Smell Detector
+
+Seniors must build tools that inspect AI generated artifacts. The following program detects simple code anti-patterns like using bad imports or global variables.
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+func CheckCodeSmells(code string) []string {
+	var warnings []string
+	if strings.Contains(code, "import .") {
+		warnings = append(warnings, "Anti-pattern: dot import used")
+	}
+	if strings.Contains(code, "goto ") {
+		warnings = append(warnings, "Anti-pattern: goto statement used")
+	}
+	return warnings
+}
+
+func main() {
+	sample := "package main\nimport . \"fmt\"\nfunc main() { goto End; End: }"
+	smells := CheckCodeSmells(sample)
+	for _, smell := range smells {
+		fmt.Println("WARNING:", smell)
+	}
+}
+```
+
+### Mentoring Juniors in the AI Era
+To prevent juniors from becoming dependent on LLMs:
+- **First-principles Mentorship:** Force juniors to write basic algorithms before using LLM utilities.
+- **Deep Code Reviews:** Require juniors to explain the generated code they submit.
+- **AST Enforcement:** Put static lint checkers in place to catch anti-patterns.
+- **Architectural Tasks:** Involve junior developers in design sessions to develop systemic thinking.
+
+### Technical Appendix: Controlling Technical Debt & Refactoring Legacy Codebases
+AI assistance can generate code at speed, but unchecked generation leads to code bloat:
+- **Set Code Deletion Metrics:** Encourage developers to delete unused boilerplate files.
+- **Refactor Small Slices:** Focus refactoring changes on single functions rather than editing entire files at once.
+- **Verify with Test Suites:** Run regression tests continuously during refactoring sessions.
+- **Build Technical Debt Ledgers:** Track code smells inside a Markdown file, updating progress logs as issues are resolved.
+
+
 <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
   <div><a href="/series/ai-driven-engineer/part-7-system-design-survival/">← Previous: Part 7</a></div>
   <div><a href="/series/ai-driven-engineer/part-9-building-ai-native-architecture/">Next Article: Part 9 →</a></div>

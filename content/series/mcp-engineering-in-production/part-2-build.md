@@ -1,5 +1,4 @@
----
-title: "Part 2: Build a Production Server with Go"
+---title: "Part 2: Build a Production Server with Go"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
 draft: false
@@ -20,6 +19,8 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-2-build/"
+ShowToc: true
+TocOpen: true
 ---
 
 Writing a simple Python script that runs over `stdio` to demo the Model Context Protocol (MCP) on your local machine is easy. But deploying an MCP Server into a Kubernetes cluster to handle thousands of AI Agent requests per minute without crashing requires a powerful compiled language, a small memory footprint, and excellent concurrency support. That's why **Go (Golang)** has become the top choice for Infrastructure and Platform teams.

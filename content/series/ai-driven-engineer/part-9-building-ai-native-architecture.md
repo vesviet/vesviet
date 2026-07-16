@@ -93,6 +93,61 @@ Thank you for joining this Roadmap. It's time to close the reading tab, open you
 ---
 💬 **Discussion Corner:** The mindset shift from "Code Typist" to "System Architect" does not happen overnight. What is the biggest barrier preventing you from deeply integrating AI into your current product's core (becoming AI-Native)? Technical difficulties (Vector DB/RAG) or management barriers? Leave a comment!
 
+
+### Go Vector DB Semantic Search Client
+
+AI-native applications retrieve business context by querying vector databases. Below is a mock vector similarity retrieval client.
+
+```go
+package main
+
+import (
+	"bytes"
+	"fmt"
+	"net/http"
+)
+
+type VectorClient struct {
+	URL string
+}
+
+func (vc *VectorClient) QuerySimilarDocuments(embedding []float32) int {
+	// Send raw bytes representing embedding float slice to search REST api
+	buf := new(bytes.Buffer)
+	resp, err := http.Post(vc.URL+"/search", "application/octet-stream", buf)
+	if err != nil {
+		return 500
+	}
+	defer resp.Body.Close()
+	return resp.StatusCode
+}
+
+func main() {
+	client := &VectorClient{URL: "http://vector-db.local"}
+	status := client.QuerySimilarDocuments([]float32{0.1, 0.44, -0.9})
+	fmt.Printf("Vector database response status: %d\n", status)
+}
+```
+
+### Layout of an AI-Native Retrieval Stack
+AI-native architectures are structured around data pipelines:
+- **Ingestion Pipeline:** Parse, chunk, and embed source documents using embedding models.
+- **Vector Storage:** Index vectors in high-performance index graphs (HNSW).
+- **Retrieval Engine:** Query vector DBs to fetch relevant source context.
+- **Generative Loop:** Feed retrieved context into LLMs to synthesize answers.
+- **Evaluation Loop:** Measure retrieval quality and accuracy in real time.
+
+### Technical Appendix: HNSW Index Sizing & Cosine Similarity Metrics
+To design scalable semantic search indexes:
+- **HNSW Graph Construction:** Configure HNSW index parameters like `M` (max connection links per node) and `efConstruction` (size of dynamic candidate list during build) to balance recall accuracy and search latency.
+- **Distance Metrics Selection:** Use Cosine Similarity or Dot Product metrics to compare floating-point embeddings depending on normalized vector length.
+- **Memory Calculations:** Calculating RAM needed for vectors:
+  - 1,000,000 documents with 1,536-dimensional embeddings using 32-bit floats.
+  - Size per vector: 1,536 * 4 bytes = 6 KB.
+  - Base memory: 1,000,000 * 6 KB = 6 GB.
+  - Plus 50-100% graph overhead for HNSW: ~12 GB of RAM required, which must be partitioned and co-located to prevent page faults during execution.
+
+
 <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
   <div><a href="/series/ai-driven-engineer/part-8-the-junior-paradox/">← Previous: Part 8</a></div>
   <div><a href="/series/ai-driven-playbook/">Explore the Playbook Series →</a></div>

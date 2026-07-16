@@ -47,6 +47,85 @@ Instead of checking for a specific text string (Exact Match), check the "Propert
 
 By testing the **presence of structure** rather than specific text, your tests will survive any phrasing changes made by the AI.
 
+```mermaid
+sequenceDiagram
+    participant Runner as Playwright Test Runner
+    participant Browser as Browser Client
+    participant MockServer as Mock WebSocket Server
+    
+    Runner->>Browser: Load Astro Shell Page
+    Runner->>MockServer: Setup payload expectation
+    Runner->>Browser: Type command into chat box
+    Browser->>MockServer: Send user input
+    MockServer-->>Browser: Stream A2UI JSON payload
+    Browser->>Browser: Validate schema via Zod
+    Browser->>Browser: Dynamically render Svelte widget
+    Runner->>Browser: Check for DOM property expectations (form fields, buttons)
+    Runner-->>Runner: Assert test success
+```
+
+### Playwright E2E Test Script: Property-Based Assertions with Mock Socket
+
+Below is a Playwright end-to-end integration test demonstrating how to mock the real-time agent connection, trigger the dynamic rendering of a widget, and perform structural assertions that ignore LLM textual variations.
+
+```javascript
+import { test, expect } from '@playwright/test';
+
+test.describe('Generative UI Component Rendering Tests', () => {
+    test('should dynamically render the salary adjustment form upon socket payload receipt', async ({ page }) => {
+        // 1. Navigate to the Astro dashboard page
+        await page.goto('/dashboard');
+
+        // 2. Establish connection and mock the agent websocket stream
+        const wsUrl = 'ws://localhost:8080/ws/agent-state';
+        
+        // Mock WebSocket logic inside the browser page context
+        await page.evaluate((url) => {
+            const mockSocket = new window.WebSocket(url);
+            
+            // Wait for open then dispatch dynamic GenUI payload
+            setTimeout(() => {
+                const eventPayload = {
+                    id: "test-event-uuid-1",
+                    component_id: "order-cancellation-widget",
+                    props: {
+                        employeeId: "EMP-492",
+                        employeeName: "Nguyen Van A",
+                        currentSalary: 1500,
+                        proposedSalary: 2000
+                    }
+                };
+                
+                // Trigger client-side socket message callback
+                const msgEvent = new MessageEvent('message', {
+                    data: JSON.stringify(eventPayload)
+                });
+                mockSocket.dispatchEvent(msgEvent);
+            }, 500);
+        }, wsUrl);
+
+        // 3. Perform property-based assertions (avoid hardcoded text matches)
+        const formLocator = page.locator('.salary-approval-card');
+        await expect(formLocator).toBeVisible({ timeout: 5000 });
+
+        // Assert structural elements exist
+        const proposedInput = formLocator.locator('input[type="number"]');
+        await expect(proposedInput).toBeVisible();
+        await expect(proposedInput).toHaveValue('2000');
+
+        // Assert submit buttons are active and clickable
+        const approveBtn = formLocator.locator('button:has-text("Approve")');
+        await expect(approveBtn).toBeEnabled();
+
+        // 4. Act: Trigger modification
+        await proposedInput.fill('1800');
+        await approveBtn.click();
+    });
+});
+```
+
+---
+
 ## 6.2. Semantic Caching at the Edge
 
 Another major issue is cost and latency. If 1,000 users type *"How to change password"*, calling the OpenAI API 1,000 times is a horrific waste of both money and waiting time (latency).
@@ -61,13 +140,62 @@ Semantic Caching solves this using Vector Databases:
 4. `"Change password"` and `"How do I change my password"` have very high geometric similarity (Similarity > 0.95).
 5. Cache **HIT**!
 
-### Edge Caching Architecture
-To optimize latency down to milliseconds, the Semantic Cache should not be placed on the Backend Server, but at the **Edge** — for example, using Cloudflare Workers combined with Vectorize (Cloudflare's Vector Database).
+### Cloudflare Worker Implementation: Edge Semantic Cache
 
-1. The user's request hits the Cloudflare Worker at the nearest Point of Presence (e.g., POP Singapore).
-2. The Worker embeds the prompt into a vector and queries the Cache.
-3. If HIT, the Worker immediately returns the A2UI JSON structure to the Client. Latency < 50ms. Zero cost for calling OpenAI.
-4. Only upon a MISS is the request routed back to the Backend Kubernetes cluster for the AI Agent to process.
+Below is the code for a Cloudflare Worker using **Cloudflare Vectorize** to query semantic vector caches. If a similar question exists in the index, it immediately retrieves the cached dynamic UI template response from KV, bypassing the LLM server completely.
+
+```typescript
+interface Env {
+  VECTOR_INDEX: VectorizeIndex;
+  TEMPLATE_KV: KVNamespace;
+  TEXT_EMBEDDING_API: string; // URL to embedding model
+}
+
+export default {
+  async fetch(request: Request, env: Env): Promise<Response> {
+    const { query } = await request.json() as { query: string };
+
+    // 1. Fetch text embedding from Cloudflare AI or external model
+    const embeddingResponse = await fetch(env.TEXT_EMBEDDING_API, {
+      method: "POST",
+      body: JSON.stringify({ text: query })
+    });
+    const { embedding } = await embeddingResponse.json() as { embedding: number[] };
+
+    // 2. Query Vectorize Database for similarity matches
+    const matches = await env.VECTOR_INDEX.query(embedding, {
+      topK: 1,
+      returnValues: false,
+      returnMetadata: true
+    });
+
+    const threshold = 0.92; // Cosine similarity limit
+    if (matches.matches.length > 0 && matches.matches[0].score >= threshold) {
+      const match = matches.matches[0];
+      const cachedTemplateId = match.metadata?.template_id as string;
+      
+      // 3. Fetch pre-rendered GenUI JSON structure from KV (Cache HIT)
+      const cachedPayload = await env.TEMPLATE_KV.get(cachedTemplateId);
+      if (cachedPayload) {
+        return new Response(cachedPayload, {
+          headers: { 
+            "Content-Type": "application/json",
+            "X-Cache": "HIT-SEMANTIC" 
+          }
+        });
+      }
+    }
+
+    // 4. Cache MISS: Forward request to the core LLM Agent cluster
+    return new Response(JSON.stringify({ status: "MISS", reason: "No matching semantic context found" }), {
+      status: 200,
+      headers: { "X-Cache": "MISS" }
+    });
+  }
+};
+```
 
 ---
-🔗 **Next Step:** You have grasped all the architectural theories from UI, State, Security, to Caching. It's time to start coding. In the final part of this Series, we will look at the directory structure of a Boilerplate Repo and the strategy for migrating it into a legacy project: [Part 7 — Reference Repository & Migration Strategy](/series/generative-ui-architecture/part-7-reference-repo-migration/).
+
+🔗 **Next Step:** You have grasped all the architectural theories from UI, State, Security, to Caching. It's time to start coding. In the final part of this Series, we will look at the directory structure of a Boilerplate Repo and the strategy for migrating it into a legacy project: **[Part 7 — Reference Repository & Migration Strategy (Phased Rollout)]({{< ref "part-7-reference-repo-migration.md" >}})**.
+

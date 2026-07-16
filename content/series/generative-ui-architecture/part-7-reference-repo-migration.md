@@ -83,7 +83,6 @@ The reasons why we chose these technologies must be documented and protected to 
 | **Frontend Orchestrator** | Astro | Next.js, Remix | No Vendor lock-in to React. Supports Island Architecture: mix Svelte, Vue, React on the same page. Outputs static HTML for non-AI pages. |
 | **UI Components** | Svelte | React, Vue | Compiles to Vanilla JS, no Virtual DOM runtime overhead. A Svelte Component bundle is 40% smaller than a React equivalent. Ideal for GenUI which needs to dynamically render many small Components simultaneously. |
 | **State Management** | Nano Stores | Zustand, Pinia, Redux | Framework-independent. Works inside both `.astro` and `.svelte` files. Extremely simple API, avoiding Store bloat when tracking multiple Agent States. |
-| **Schema Validation** | Zod | Yup, Valibot | TypeScript-native, automatic schema inference. `.safeParse()` allows graceful error handling without try/catch blocks. |
 | **Edge Caching** | Cloudflare Workers + Vectorize | Redis, Pinecone | Cheap, sits closest to the user (POP). Integrates natively with Cloudflare Pages currently used for the ICM project. |
 
 ## 7.4. Migration Strategy: Strangler Fig Pattern
@@ -91,6 +90,63 @@ The reasons why we chose these technologies must be documented and protected to 
 There is a massive trap that many CTOs/Tech Leads fall into: Deciding to tear down the legacy app and "rewrite from scratch" with AI. The failure rate of Rewrite projects often exceeds 70%.
 
 Instead, use the **Strangler Fig Pattern** — a strategy that slowly strangles the old application with the new one.
+
+```mermaid
+graph TD
+    User[User Client] --> Gateway[API Gateway / Cloudflare Reverse Proxy]
+    Gateway -->|Path: /refund/* | GenUIApp[New GenUI Astro App Shell]
+    Gateway -->|Default: /* | LegacyApp[Legacy E-Commerce Monolith]
+    
+    GenUIApp -->|State Sync WS| AgentServer[AI Agent Orchestrator]
+    LegacyApp -->|SQL Queries| LegacyDB[(Legacy Production DB)]
+    GenUIApp -->|API Mutations| LegacyDB
+```
+
+### Implementing Strangler Fig API Gateway Routing (Nginx)
+
+To execute Phase 3 and Phase 5 of the rollout plan, Nginx or Cloudflare Workers act as reverse proxies, splitting client traffic based on route patterns and progressive canary weights.
+
+Below is an Nginx configuration snippet demonstrating how to route all general traffic to the legacy monolithic system, while directing 10% of the `/refund` traffic to the new GenUI Astro instance to support a safe canary rollout.
+
+```nginx
+# Upstream configuration for Canary distribution
+upstream genui_canary {
+    server genui-server.internal:3000 weight=10; # GenUI Svelte / Astro App
+    server legacy-monolith.internal:8080 weight=90; # Old Monolith App
+}
+
+server {
+    listen 80;
+    server_name shopee.vesviet.com;
+
+    # Default route - handles standard catalog, cart, checkouts
+    location / {
+        proxy_pass http://legacy-monolith.internal:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    # Strangled path - return & refunds running GenUI
+    location /refund/ {
+        # Route through the weight-distributed canary upstream
+        proxy_pass http://genui_canary;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;
+    }
+
+    # WebSocket connection upgrade for GenUI real-time agents
+    location /ws/agent-state {
+        proxy_pass http://agent-orchestrator.internal:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_read_timeout 86400; # Keep WS alive
+    }
+}
+```
 
 ### Phased Rollout
 
@@ -114,10 +170,11 @@ The list below helps Team Leads instantly answer the question: "What are we doin
 | **Sprint 4** | Integrate Telemetry + E2E Tests (Property-based) for OrderCancel flow | 🟡 Medium | Rollback test suite, no prod impact |
 | **Sprint 5** | Canary Release: route 10% of traffic to GenUI (Nginx weight) | 🔴 High | `nginx weight=0` routes back to 0% in < 5 mins |
 | **Sprint 6+** | Gradually increase: 10% → 50% → 100%. Repeat cycle for next feature | 🟡 Adjust accordingly | Monitor Telemetry Reject Rate < 5% |
+---
 
 ## 7.5. Series Conclusion
 
-We have come a long way from recognizing the weaknesses of Chatbots ([Part 1](/series/generative-ui-architecture/part-1-beyond-chatbots/)), designing an independent Framework-Agnostic architecture ([Part 2](/series/generative-ui-architecture/part-2-state-management/)), building a secure Component Registry ([Part 3](/series/generative-ui-architecture/part-3-component-registry/) & [Part 4](/series/generative-ui-architecture/part-4-security-a11y/)), optimizing UX with Human-in-the-loop ([Part 5](/series/generative-ui-architecture/part-5-human-in-the-loop/)), and finally Testing & Caching ([Part 6](/series/generative-ui-architecture/part-6-e2e-testing-edge/)).
+We have come a long way from recognizing the weaknesses of Chatbots (**[Part 1]({{< ref "part-1-beyond-chatbots.md" >}})**), designing an independent Framework-Agnostic architecture (**[Part 2]({{< ref "part-2-state-management.md" >}})**), building a secure Component Registry (**[Part 3]({{< ref "part-3-component-registry.md" >}})** & **[Part 4]({{< ref "part-4-security-a11y.md" >}})**), optimizing UX with Human-in-the-loop (**[Part 5]({{< ref "part-5-human-in-the-loop.md" >}})**), and finally Testing & Caching (**[Part 6]({{< ref "part-6-e2e-testing-edge.md" >}})**).
 
 Generative UI is not just a technological hype. It is the next evolutionary form of Frontend Architecture in the AI era. By bridging an MCP Server to Astro's Component Registry, you have granted your Agentic system the ability to output visual interfaces, while maintaining absolute control over security and user experience.
 

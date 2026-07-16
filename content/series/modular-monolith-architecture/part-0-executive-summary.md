@@ -1,5 +1,4 @@
----
-title: "Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure"
+---title: "Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure"
 lastmod: "2026-07-03T15:41:55+07:00"
 description: "Discover why Amazon Prime Video cut infrastructure costs by 90% after moving from Serverless/Microservices back to a Monolith, alongside case studies from"
 slug: "executive-summary-amazon-prime-video-monolith"
@@ -11,9 +10,11 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/executive-summary-amazon-prime-video-monolith/"
+ShowToc: true
+TocOpen: true
 ---
 
-# Part 0: Executive Summary â€” How Amazon Prime Video Saved 90% on Infrastructure Costs
+# Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure Costs
 
 In the tech industry, Serverless architecture and Microservices are often hailed as the ultimate solutions for infinite scalability. However, this infinite scalability comes with massive hidden FinOps risks when traffic crosses a critical tipping point.
 
@@ -64,6 +65,68 @@ Amazon Prime Video is not alone; a massive wave of returning to centralized arch
 Software optimization isn't about how many services you split your system into; it's about how you physically arrange the communication of the system. **In-memory execution is always cheaper and faster than network communication.**
 
 In **[Part 1: Decision Framework]({{< ref "part-1-decision-framework.md" >}})**, we will dive deep into technical numbers (Latency Benchmarks) and Martin Fowler's "Microservice Premium" model, equipping you with precise quantitative criteria to choose the right architecture for your project.
+
+
+## 4. Deep-Dive: Serverless vs. Monolith Cost Metrics & Case Studies
+
+When evaluating the transition from Serverless to Monolithic architectures, it is crucial to analyze the underlying cost models. Serverless offerings like AWS Lambda charge based on execution duration and memory allocation, while AWS Step Functions charge per state transition. At high throughput, these transaction fees scale superlinearly, turning what seems like an operational optimization into a massive financial burden.
+
+### AWS Step Functions Billing Mechanics and Standard Workflow Math
+The primary driver behind Amazon Prime Video's high cloud bill was the orchestration cost. AWS Step Functions standard workflows charge $25 per million state transitions. For a service performing high-frequency video quality analysis:
+- Let's assume a real-world scenario where the system monitors 100 video streams concurrently.
+- Each stream generates 30 frames per second, and each frame must be processed.
+- The video processing state machine consists of 5 transitions: Ingestion, Audio Extract, Video Analyze, Sync, and Aggregation.
+- The total transitions per second equals: 100 streams * 30 frames/sec * 5 transitions = 15,000 transitions per second.
+- In a single day, this generates: 15,000 transitions/sec * 86,400 seconds = 1,296,000,000 transitions per day.
+- The daily cost for orchestration alone equates to: (1,296,000,000 / 1,000,000) * $25 = **$32,400 per day** or over **$970,000 per month**.
+
+Consolidating the orchestration logic into a single Go application running on Amazon ECS entirely eliminated this cost. In ECS, the transitions are CPU instructions rather than API calls.
+
+### Network and Storage Egress Bottlenecks and Serialization Overhead
+In the serverless setup, state was persisted across Lambda invocations via Amazon S3. Video frames were serialized to JSON, written to S3, and read back by the next Lambda function. This introduced:
+1. **Serialization Overhead:** High CPU utilization spent converting binary video frames to JSON/base64 and back.
+2. **Network Egress Fees:** Enormous data transfer costs between AWS Lambda and Amazon S3 across Availability Zones (AZs).
+3. **I/O Latency:** Reading and writing to S3 added 20-50ms of network latency per step, degrading real-time monitoring performance.
+
+In the modular monolith, the raw video frame is stored in a thread-safe in-memory buffer, and pointers to the memory block are passed directly between processing modules in sub-nanosecond execution time.
+
+### Macroservices Restructuring Case Studies (Segment, Pinterest, 37signals)
+The industry-wide move toward "Macroservices" or Modular Monoliths is documented across several enterprise leaders:
+- **Segment:** The engineering team had split their destination workers into 140 individual microservices. Each microservice required its own Auto-Scaling Group, CloudWatch log streams, and CI/CD pipelines. This created massive tooling complexity and high resource wastage due to cold standby instances. By consolidating them into a single monolithic destination worker, they eliminated the infrastructure overhead, reduced CPU idle times, and saved $250,000 in the first year alone.
+- **Pinterest:** Consolidated dozens of scattered microservices into a few large-scale domain services, eradicating nested gRPC hops and cross-AZ latency.
+- **37signals:** Escaped the cloud entirely by moving from AWS to bare-metal servers. Using Kamal for deployment, they cut $1.5 million in yearly operating costs while maintaining the same Majestic Monolith code layout.
+
+### Architectural Transition Path
+
+```mermaid
+graph TD
+    subgraph Serverless Architecture (Old)
+        SF[AWS Step Functions] -->|Orchestrate| L1[AWS Lambda: Audio Ingest]
+        SF -->|Orchestrate| L2[AWS Lambda: Video Ingest]
+        SF -->|Orchestrate| L3[AWS Lambda: Aggregator]
+        L1 -->|Write Video Frames| S3[(Amazon S3)]
+        L2 -->|Write Video Frames| S3
+        S3 -->|Read Video Frames| L3
+    end
+    subgraph Monolithic Architecture (New)
+        ECS[Amazon ECS/EC2 Container]
+        ECS -->|In-Memory Audio/Video Processing| ECS
+        ECS -->|Direct Memory Sharing| RAM[(In-Memory Buffer)]
+    end
+```
+
+### Production Deployment Checklist for Consolidation
+To migrate from serverless to a modular monolith, engineers must follow these steps:
+- Audit all Lambda entry points and group them by domain boundary.
+- Implement an in-memory orchestration loop to replace Step Functions.
+- Refactor data exchange to use standard Go structs instead of JSON files.
+- Provision ECS task definitions with memory limit thresholds aligned with real workloads.
+- Configure Prometheus gauges to track memory consumption during peak processing intervals.
+- Establish robust autoscaling triggers based on memory allocation rate rather than simple CPU load averages.
+
+### Technical Appendix: ECS Container Sizing & Tuning
+For monolithic deployments on Amazon ECS, resource allocation is critical. Standard containers run into garbage collection pauses when memory pressure exceeds 80%. When processing video and audio streams inside a single process, Go's runtime memory allocator (`mcache` and `mcentral`) manages allocation blocks. To tune the garbage collector, set the `GOGC` environment variable to a lower value (e.g. 80 or 50) to trigger sweeps more frequently, or pre-allocate large byte arrays at startup to prevent memory fragmentation. Use ECS tasks co-located inside the same AWS placement group to ensure zero-latency internal network calls when integrating external telemetry proxies.
+
 
 ## FAQ
 

@@ -22,14 +22,14 @@ This series addresses the biggest gap in modern AI application development: the 
 
 ## Series Content
 
-- **Executive Summary:** [The Shift to Generative UI Architecture](/series/generative-ui-architecture/executive-summary/)
-- **Part 1:** [The Death of Chat Interfaces (Beyond Chatbots)](/series/generative-ui-architecture/part-1-beyond-chatbots/)
-- **Part 2:** [Framework-Agnostic State Management Architecture](/series/generative-ui-architecture/part-2-state-management/)
-- **Part 3:** [Component Registry & Bridging MCP to Frontend](/series/generative-ui-architecture/part-3-component-registry/)
-- **Part 4:** [Security & Accessibility (A11y) in GenUI](/series/generative-ui-architecture/part-4-security-a11y/)
-- **Part 5:** [Building the "Human-In-The-Loop" Experience](/series/generative-ui-architecture/part-5-human-in-the-loop/)
-- **Part 6:** [E2E Testing & Performance Optimization at the Edge](/series/generative-ui-architecture/part-6-e2e-testing-edge/)
-- **Part 7:** [Reference Repository & Migration Strategy (Phased Rollout)](/series/generative-ui-architecture/part-7-reference-repo-migration/)
+- **Executive Summary:** [The Shift to Generative UI Architecture]({{< ref "executive-summary.md" >}})
+- **Part 1:** [The Death of Chat Interfaces (Beyond Chatbots)]({{< ref "part-1-beyond-chatbots.md" >}})
+- **Part 2:** [Framework-Agnostic State Management Architecture]({{< ref "part-2-state-management.md" >}})
+- **Part 3:** [Component Registry & Bridging MCP to Frontend]({{< ref "part-3-component-registry.md" >}})
+- **Part 4:** [Security & Accessibility (A11y) in GenUI]({{< ref "part-4-security-a11y.md" >}})
+- **Part 5:** [Building the "Human-In-The-Loop" Experience]({{< ref "part-5-human-in-the-loop.md" >}})
+- **Part 6:** [E2E Testing & Performance Optimization at the Edge]({{< ref "part-6-e2e-testing-edge.md" >}})
+- **Part 7:** [Reference Repository & Migration Strategy (Phased Rollout)]({{< ref "part-7-reference-repo-migration.md" >}})
 
 ## Companion Article: MCP in Practice
 

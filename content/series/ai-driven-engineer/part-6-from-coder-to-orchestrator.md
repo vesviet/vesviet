@@ -130,6 +130,58 @@ Is System Design truly the only "life preserver" keeping Programmers from being 
 ---
 💬 **Discussion Corner:** Confess, have you ever written a generic prompt (like "fix this bug for me") and received a pile of garbage code? What was your most expensive lesson when setting "constraints" for AI?
 
+
+### Go Multi-Agent Orchestration Pipeline
+
+Moving from line coder to system orchestrator means writing pipelines that control specialized agents. Below is a sequential execution structure.
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+type AgentTask struct {
+	Name    string
+	Execute func() error
+}
+
+func RunOrchestrator(tasks []AgentTask) error {
+	for i, task := range tasks {
+		fmt.Printf("[STEP %d] Running Agent: %s\n", i+1, task.Name)
+		if err := task.Execute(); err != nil {
+			return fmt.Errorf("agent failed on task %s: %w", task.Name, err)
+		}
+	}
+	fmt.Println("Orchestration pipeline executed successfully.")
+	return nil
+}
+
+func main() {
+	pipeline := []AgentTask{
+		{Name: "ASTLinter", Execute: func() error { return nil }},
+		{Name: "CommitValidator", Execute: func() error { return nil }},
+	}
+	_ = RunOrchestrator(pipeline)
+}
+```
+
+### Design of Orchestrator Workspaces
+Orchestrators coordinate multiple processes:
+- **State Tracking:** Maintain a central state document updating task status.
+- **Conflict Resolution:** If agent outputs conflict, run challenge models to find errors.
+- **Resource Constraints:** Allocate dynamic virtual machines to keep execution parallel.
+- **Telemetry Analysis:** Log execution metrics to find routing bottlenecks.
+
+### Technical Appendix: Finite State Machines for Multi-Agent Consensus
+To coordinate complex tasks across multiple agents:
+- **State Definition:** Define task progress using a Finite State Machine (FSM). States include Draft, Review, Reject, Refactor, and Approve.
+- **Transition Triggers:** Transitions occur based on validation events (e.g. linter checks passing).
+- **Consensus Voting:** Run three independent evaluator agents to rate the quality of generated code. If two out of three approve, transition the FSM to the Approve state.
+- **Retry Counters:** Set a maximum retry limit of 3 refactoring attempts to prevent agents from falling into infinite loops if compiler errors cannot be resolved.
+
+
 <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
   <div><a href="/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/">← Previous: Part 5</a></div>
   <div><a href="/series/ai-driven-engineer/part-7-system-design-survival/">Next Article: Part 7 →</a></div>

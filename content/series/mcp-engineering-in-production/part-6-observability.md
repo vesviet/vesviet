@@ -1,6 +1,4 @@
----
-
-title: "Part 6: Observability & Audit Trail"
+---title: "Part 6: Observability & Audit Trail"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
 draft: false
@@ -22,6 +20,8 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-6-observability/"
 mermaid: true
+ShowToc: true
+TocOpen: true
 ---
 
 As mentioned in [Part 5](/series/mcp-engineering-in-production/part-5-security/), the **MCP08 (Lack of Audit & Telemetry)** vulnerability is one of the biggest risks in Agentic systems. In the [AI Driven Playbook](/series/ai-driven-playbook/), we agreed that: When AI automates tasks on behalf of humans, the requirements for Observability and Auditing become stricter than ever, especially under the pressure of regulations like the EU AI Act.
@@ -120,6 +120,58 @@ Based on live metrics, if the Gateway notices an Agent continuously calling the 
 Observability turns the "black box" of AI into a transparent, verifiable system. By leveraging OpenTelemetry, Metrics, and Tracing, you ensure that every action taken by an autonomous Agent is auditable and justifiable to compliance boards. 
 
 Once you have a solid Gateway, tight Security, and comprehensive Observability, the final step is to scale this system out for the entire enterprise to use.
+
+
+## 4. Go Observability Correlation Middleware
+
+Observability in MCP architectures is critical to detect agent hallucination and monitor Tool Execution times. The following middleware correlates logs using unique Trace IDs.
+
+### Observability Log Snippet
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"time"
+)
+
+func TraceLoggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		startTime := time.Now()
+		traceID := r.Header.Get("X-Trace-ID")
+		if traceID == "" {
+			traceID = fmt.Sprintf("tr-%d", time.Now().UnixNano())
+		}
+		
+		fmt.Printf("[MCP LOG] START | TraceID: %s | Path: %s\n", traceID, r.URL.Path)
+		next.ServeHTTP(w, r)
+		fmt.Printf("[MCP LOG] END   | TraceID: %s | Duration: %v\n", traceID, time.Since(startTime))
+	})
+}
+
+func main() {
+	mux := http.NewServeMux()
+	mux.Handle("/mcp/v1/tools/call", TraceLoggingMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("success"))
+	})))
+	fmt.Println("Telemetry logging middleware bound to handler chain.")
+}
+```
+
+### Monitoring Hallucinations and Loop Detection
+By analyzing observability metrics:
+- Track tool call failure ratios. A spike in errors indicates malformed inputs from the agent.
+- Log agent responses alongside tool outputs. This matches execution contexts to find hallucinations.
+- Implement loop detection: if the same tool is called with matching parameters more than 5 times in a minute, terminate the session.
+
+### Technical Appendix: OpenTelemetry Spans for Agent Tool Execution
+Tracing agent reasoning loops requires propagating contexts:
+- Use OpenTelemetry SDK to create spans for the main reasoning loop.
+- Nest tool execution calls as child spans under the active agent query trace.
+- Annotate spans with custom attributes like `llm.model`, `llm.tokens.prompt`, `llm.tokens.completion`, and `mcp.tool.name`.
+- Route trace telemetry to Jaeger or Datadog over gRPC to visualize latency bottlenecks in the tool chain.
+
 
 ---
 *Next up: [Part 7: Enterprise Scaling & Governance](/series/mcp-engineering-in-production/part-7-enterprise/)*

@@ -1,5 +1,4 @@
----
-title: "Part 5: Observability in Memory â€“ When Everything Shares a Single Call Stack"
+---title: "Part 5: Observability in Memory – When Everything Shares a Single Call Stack"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "Comparing Distributed Tracing in Microservices with In-process Profiling in a Modular Monolith. Why is OpenTelemetry on a Monolith faster and cheaper?"
 slug: "observability-in-process-modular-monolith-opentelemetry"
@@ -13,9 +12,11 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/observability-in-process-modular-monolith-opentelemetry/"
+ShowToc: true
+TocOpen: true
 ---
 
-# Part 5: Observability in Memory â€“ When Everything Shares a Single Call Stack
+# Part 5: Observability in Memory – When Everything Shares a Single Call Stack
 
 When it comes to operating a production system, Observability is the line between fixing an issue in 10 minutes and staying up all night searching for the root cause. Microservices architecture has made Observability extremely expensive and complex with the advent of **Distributed Tracing**.
 
@@ -49,7 +50,7 @@ Although **OpenTelemetry** is known as the gold standard for Distributed Tracing
 ### B. Single Call Stack and the Absolute Stack Trace
 The biggest advantage of running in a single process is **Stack Trace Integrity**.
 When an Exception occurs in the Database layer of the *Inventory* module (deep within a processing flow originating from the *Checkout* module), the Monolith system will print a single Stack Trace displaying the exact path from the outermost Controller, through the Internal APIs, down to the exact line of code that threw the error.
-Everything is perfectly linked, synchronous, and 100% reliable â€“ something Distributed Tracing can never guarantee.
+Everything is perfectly linked, synchronous, and 100% reliable – something Distributed Tracing can never guarantee.
 
 ### C. Deep In-process Profiling
 A "secret weapon" of the Monolith is the ability to run **Continuous Profiling** (e.g., using `pprof` in Go, JFR in Java, or Datadog Profiler).
@@ -61,6 +62,66 @@ To set up an optimal Observability system for a Modular Monolith:
 1. **Instrument at Module Boundaries:** Attach OpenTelemetry spans at the public methods (Internal APIs) of each module. This helps you generate beautiful Dependency Graphs exactly like Microservices, but without the network latency cost.
 2. **Monitor the Global Connection Pool:** Closely monitor the Database Connection Pool. In a Monolith, a slow-running module can hold a database connection for a long time and exhaust the pool for the entire application (A weakness to note).
 3. **Apply Structured Logging (JSON Logs):** Ensure logs are appended with a static `module_name` to easily filter errors by the responsible team on systems like ELK or Datadog.
+
+
+## 4. Custom Correlation Tracing In-Memory
+
+Because a Modular Monolith runs in a single process, we do not need expensive tracing agents like Jaeger or OpenTelemetry collectors to trace execution flow. Instead, we can pass correlation IDs through Go's `context.Context` to link call stacks.
+
+### Go Context Correlation Tracer
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"time"
+)
+
+type correlationKey string
+const traceKey correlationKey = "correlation_id"
+
+func StartModuleSpan(ctx context.Context, moduleName string) (context.Context, func()) {
+	traceID, ok := ctx.Value(traceKey).(string)
+	if !ok {
+		traceID = fmt.Sprintf("tr-%d", time.Now().UnixNano())
+		ctx = context.WithValue(ctx, traceKey, traceID)
+	}
+	start := time.Now()
+	fmt.Printf("[TRACE STARTED] ID: %s | Module: %s\n", traceID, moduleName)
+	
+	return ctx, func() {
+		fmt.Printf("[TRACE FINISHED] ID: %s | Module: %s | Duration: %v\n", traceID, moduleName, time.Since(start))
+	}
+}
+
+func main() {
+	ctx := context.Background()
+	ctx, end1 := StartModuleSpan(ctx, "Billing")
+	time.Sleep(10 * time.Millisecond)
+	
+	_, end2 := StartModuleSpan(ctx, "Notification")
+	time.Sleep(5 * time.Millisecond)
+	
+	end2()
+	end1()
+}
+```
+
+### Structured Logs and Local Context Benefits
+Using correlation IDs inside `context.Context` gives us high-fidelity logs:
+- **Low CPU/RAM Overhead:** Creating an in-memory span is a simple struct allocation, compared to sending JSON spans over network sockets.
+- **Deterministic Tracking:** The correlation ID is guaranteed to propagate through synchronous goroutines.
+- **Unified Log Aggregation:** Any logger (Logrus, Zap) can extract the ID from the context and append it as a field to stdout.
+- **Simplified Production Audits:** In production, checking a single file containing trace IDs shows the complete lifecycle of a request from gateway to final storage.
+
+### Technical Appendix: Log Shipping and OpenTelemetry Semantic Conventions
+To make logs queryable on platforms like Elasticsearch, Datadog, or Grafana Loki:
+- **Use JSON Formatting:** Emit all stdout logs in JSON format rather than raw text.
+- **Structure Log Fields:** Map logs to the OpenTelemetry semantic conventions. Ensure each log block contains `trace.id`, `span.id`, `service.name`, `log.level`, and `message`.
+- **Configure Fluentbit Shipping:** Deploy a local Fluentbit daemon on each cluster node. Fluentbit reads local container logs, parses the JSON payload, and routes them asynchronously to the aggregation backend.
+- **Local Context Enrichment:** Automatically append active database metrics (like open connections and CPU load) to the span logging context during trace closures to simplify troubleshooting.
+
 
 Observability in a Monolith is clear, cheap, and effective. But if your system is *currently* Microservices (or a terrible Spaghetti Monolith) and you want to consolidate them into a Modular Monolith, where should you start? **[Part 6: Migration Playbook]({{< ref "part-6-migration-playbook.md" >}})** provides a detailed roadmap.
 

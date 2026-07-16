@@ -1,6 +1,4 @@
----
-
-title: "Part 3: Identity & AuthN For Agentic Workflows"
+---title: "Part 3: Identity & AuthN For Agentic Workflows"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
 draft: false
@@ -22,6 +20,8 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-3-identity/"
 mermaid: true
+ShowToc: true
+TocOpen: true
 ---
 
 If Part 2 helped you build a robust Server, Part 3 addresses the most headache-inducing question in Security: **"How does the MCP Server know WHICH Agent is calling it, and does that Agent have the PERMISSION to do so?"**
@@ -119,6 +119,63 @@ This is the ultimate safety net for Enterprise systems, ensuring that destructiv
 Identity for AI Agents is a complex paradigm shift. We are moving from human-centric identities (passwords, cookies) to machine-centric identities (cryptographic SVIDs, Short-lived JWTs). By strictly applying OAuth 2.1, CIMD, and SPIFFE, you ensure that every Tool call is fully authenticated and traceable.
 
 Once you have a secure Server (Part 2) and strong Identities (Part 3), the next question is: How do you connect 100 Agents to 500 MCP Servers without creating an unmanageable spaghetti network? We need an orchestrator.
+
+
+## 4. Go Middleware for Agent Identity & Authentication
+
+Securing dynamic Model Context Protocol endpoints requires authenticating the caller context and verifying JWT signatures before exposing tooling access to agents.
+
+### AuthN Middleware Snippet
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"strings"
+)
+
+func ValidateMCPToken(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		authHeader := r.Header.Get("Authorization")
+		if authHeader == "" || !strings.HasPrefix(authHeader, "Bearer ") {
+			http.Error(w, "Unauthorized: bearer token required", http.StatusUnauthorized)
+			return
+		}
+		
+		token := strings.TrimPrefix(authHeader, "Bearer ")
+		// Simulate JWT claim extraction and trust boundary validation
+		if token == "invalid-token" {
+			http.Error(w, "Forbidden: invalid credentials", http.StatusForbidden)
+			return
+		}
+		
+		fmt.Println("Access authorized for client credentials context.")
+		next.ServeHTTP(w, r)
+	})
+}
+
+func main() {
+	mux := http.NewServeMux()
+	mux.Handle("/mcp/v1/tools", ValidateMCPToken(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("[]"))
+	})))
+	fmt.Println("AuthN middleware registered on gateway server.")
+}
+```
+
+### Identity and Token Claims Verification
+When validating agent tokens:
+- Extract the `agent_role` and `org_id` claims from the JWT.
+- Map claims against tools to build granular access lists.
+- Reject requests if the signature has expired or if key rotation fails.
+
+### Technical Appendix: Token Lifecycle and mTLS Configurations
+In addition to token checks:
+- **Short-Lived Access Tokens:** Issue tokens with an expiration window of 15 minutes. Use refresh tokens stored in Redis to cycle them.
+- **Mutual TLS (mTLS):** Configure the gateway to require client certificates from downstream MCP agents. This ensures network connections are verified before HTTP middleware runs.
+- **JWKS Endpoint Caching:** Fetch verification keys from the authorization server's JWKS endpoint, caching them in memory for 1 hour to prevent network roundtrips on every request.
+
 
 ---
 *Next up: [Part 4: MCP Gateway Architecture](/series/mcp-engineering-in-production/part-4-gateway/)*

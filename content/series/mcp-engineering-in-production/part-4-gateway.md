@@ -1,6 +1,4 @@
----
-
-title: "Part 4: MCP Gateway Architecture"
+---title: "Part 4: MCP Gateway Architecture"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
 draft: false
@@ -22,6 +20,8 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-4-gateway/"
 mermaid: true
+ShowToc: true
+TocOpen: true
 ---
 
 When deploying Model Context Protocol (MCP) in a large Enterprise, you will quickly hit an architectural wall. If 50 distinct AI Agents (Coding Agents, HR Bots, Financial Analysts) need to talk to 100 different internal systems (Jira, Confluence, GitHub, internal DBs), letting them connect directly creates a chaotic matrix of 5,000 P2P connections. 
@@ -123,6 +123,64 @@ By enforcing a strict Zero Trust network policy at the VPC level, Agents are *on
 The MCP Gateway is the unsung hero of Enterprise Agentic systems. It transforms a fragile, chaotic web of direct connections into a robust, observable, and governable platform. By handling routing, protocol translation, and central policy enforcement, it allows Developers to focus purely on business logic in their MCP Servers.
 
 But architecture alone is not enough. We must look at the specific security threats facing the tools themselves. In the next part, we will dive headfirst into the dark side of MCP: The OWASP Top 10 Vulnerabilities.
+
+
+## 4. Go Gateway Routing Implementation
+
+An Agent Gateway must route dynamic JSON-RPC requests across a pool of physical MCP servers. This requires a proxy that routes requests based on capabilities.
+
+### Proxy Routing Snippet
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"net/http/httputil"
+	"net/url"
+)
+
+type GatewayRouter struct {
+	Servers map[string]*httputil.ReverseProxy
+}
+
+func NewGatewayRouter() *GatewayRouter {
+	return &GatewayRouter{Servers: make(map[string]*httputil.ReverseProxy)}
+}
+
+func (gr *GatewayRouter) RouteRequest(w http.ResponseWriter, r *http.Request) {
+	toolName := r.URL.Query().Get("tool")
+	targetServer := "http://localhost:8081" // fallback server
+	
+	if toolName == "sql_query" {
+		targetServer = "http://localhost:8082" // database-mcp
+	}
+	
+	target, _ := url.Parse(targetServer)
+	proxy := httputil.NewSingleHostReverseProxy(target)
+	fmt.Printf("Routing tool call '%s' to target endpoint: %s\n", toolName, targetServer)
+	proxy.ServeHTTP(w, r)
+}
+
+func main() {
+	router := NewGatewayRouter()
+	http.HandleFunc("/mcp/route", router.RouteRequest)
+	fmt.Println("MCP Gateway Routing initialized.")
+}
+```
+
+### Dynamic Capability Discovery
+The gateway performs the following tasks:
+- Periodically queries `/mcp/v1/tools` across all registered servers.
+- Stores the mapping of tool names to backend URLs in an in-memory lookup table.
+- Implements round-robin load balancing when multiple servers export identical tools.
+
+### Technical Appendix: Reverse Proxy Load Balancing and Circuit Breakers
+To prevent a single failing MCP server from taking down the entire agent pipeline:
+1. **Circuit Breakers:** Implement circuit breaker patterns. If an MCP server fails 5 consecutive times, trip the breaker and route requests to a fallback service.
+2. **Health Check Probes:** Periodically send background ping checks to all target servers to update the healthy connection pool.
+3. **Connection Pooling:** Reuse TCP connections via Go's `http.Transport` IdleConnTimeout configurations.
+
 
 ---
 *Next up: [Part 5: Production Security & OWASP MCP Top 10](/series/mcp-engineering-in-production/part-5-security/)*

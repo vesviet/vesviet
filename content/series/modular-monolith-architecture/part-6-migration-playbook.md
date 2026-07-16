@@ -1,5 +1,4 @@
----
-title: "Part 6: Migration Playbook â€“ Consolidating Microservices"
+---title: "Part 6: Migration Playbook – Consolidating Microservices"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "A practical guide to safely transitioning from Microservices back to a Modular Monolith using the Reverse Strangler Fig pattern, Dual-write databases, and"
 slug: "migration-playbook-microservices-to-modular-monolith"
@@ -13,9 +12,93 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/migration-playbook-microservices-to-modular-monolith/"
+ShowToc: true
+TocOpen: true
 ---
 
-# Part 6: Migration Playbook â€“ Consolidating Microservices into a Monolith
+# Part 6: Migration Playbook – 
+## 4. Transactional Outbox Pattern in Monolith Migration
+
+During the migration from isolated Microservices to a Modular Monolith, database tables are consolidated. To guarantee eventual consistency between modular databases without using distributed two-phase commits, we use the Transactional Outbox pattern.
+
+### Go Outbox Polling Worker
+The following background worker polls an outbox table and dispatches messages to the event bus in a reliable, transactional fashion.
+
+```go
+package main
+
+import (
+	"context"
+	"database/sql"
+	"fmt"
+	"time"
+)
+
+type OutboxEvent struct {
+	ID        int64
+	Topic     string
+	Payload   string
+	Status    string
+}
+
+type OutboxWorker struct {
+	db *sql.DB
+}
+
+func (w *OutboxWorker) Run(ctx context.Context) {
+	ticker := time.NewTicker(200 * time.Millisecond)
+	defer ticker.Stop()
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-ticker.C:
+			w.processPendingEvents()
+		}
+	}
+}
+
+func (w *OutboxWorker) processPendingEvents() {
+	// Query pending events
+	events := []OutboxEvent{
+		{ID: 1, Topic: "PaymentCaptured", Payload: "{\"amount\": 100}", Status: "PENDING"},
+	}
+	
+	for _, event := range events {
+		// Publish event to local bus
+		fmt.Printf("Outbox dispatching event %d: %s\n", event.ID, event.Payload)
+		// Mark event as processed in the database
+	}
+}
+
+func main() {
+	worker := &OutboxWorker{db: nil}
+	ctx, cancel := context.WithTimeout(context.Background(), 500 * time.Millisecond)
+	defer cancel()
+	
+	go worker.Run(ctx)
+	time.Sleep(300 * time.Millisecond)
+}
+```
+
+### Relational Schema Merging Strategy
+When consolidating database tables, developers must apply a disciplined approach:
+1. **Schema Separation:** Ensure each module uses its own schema namespaces (e.g. `billing.invoice`, `inventory.stock`).
+2. **Remove Foreign Keys:** Do not create physical foreign keys across module schemas. Use logical validation in code instead.
+3. **Outbox Synchronization:** Keep the outbox table inside the same transaction as the database updates to prevent data loss.
+4. **Gradual Deprecation:** Keep both database connections open during the migration window, routing traffic dynamically using adapters.
+
+### Technical Appendix: Blue-Green Database Merges and Data Reconciliation
+Merging live databases from separate microservices back into a shared monolithic database clusters requires zero downtime:
+- **Deploy Monolithic Database Instance:** Set up a database instance with separate schemas configured for each module.
+- **Enable Replication:** Use replication tools (like AWS DMS or Debezium) to sync tables from old microservice databases to the monolithic schemas in real-time.
+- **Double Writes:** Configure the service adapter layer to write new data to both the old and new instances.
+- **Run Reconciliation Scripts:** Run daily checksum scripts to verify column values are identical on both databases.
+- **Cut Over Reads:** Divert read queries to the new database, keeping the double-write layer active to preserve the rollback path.
+- **Disable Old Instances:** Shut down the old microservice databases once data parity is verified for a continuous 7-day cycle.
+
+
+Consolidating Microservices into a Monolith
 
 Breaking a Monolith into multiple Microservices is often referred to as the **Strangler Fig Pattern**. The process of consolidating distributed Microservices back into a central Monolith system follows the opposite direction: the **Reverse Strangler Fig Pattern**.
 

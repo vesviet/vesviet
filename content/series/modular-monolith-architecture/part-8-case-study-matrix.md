@@ -1,5 +1,4 @@
----
-title: "Part 8: Case Study Matrix â€“ The Monuments of the Modular Monolith"
+---title: "Part 8: Case Study Matrix – The Monuments of the Modular Monolith"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "A compilation of the greatest Modular Monolith case studies from Shopify, Stack Overflow, Notion, WhatsApp, Target, and Basecamp."
 slug: "case-study-matrix-modular-monolith-success-stories"
@@ -13,13 +12,15 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/case-study-matrix-modular-monolith-success-stories/"
+ShowToc: true
+TocOpen: true
 ---
 
-# Part 8: Case Study Matrix â€“ The Monuments of the Modular Monolith
+# Part 8: Case Study Matrix – The Monuments of the Modular Monolith
 
 Numerous debates about architectural design often lead to dead ends due to a lack of quantitative, real-world numbers. There is a common misconception that: "Only Microservices can withstand web-scale loads."
 
-To conclude this Playbook series, we will look at the **Case Study Matrix** â€“ a compilation of the greatest Modular Monolith systems, ranging from massive e-commerce platforms to billion-user chat applications.
+To conclude this Playbook series, we will look at the **Case Study Matrix** – a compilation of the greatest Modular Monolith systems, ranging from massive e-commerce platforms to billion-user chat applications.
 
 ## 1. Shopify: 284 Million Requests/Minute with Ruby On Rails
 
@@ -58,7 +59,7 @@ The company belonging to the creator of the Ruby on Rails framework (DHH) holds 
 The retail giant Target once applied Microservices extensively for its mobile backend.
 - **The Problem:** To load a checkout screen, the Mobile App had to call back and forth across dozens of Micro-APIs. The latency generated from HTTP handshakes severely degraded the user experience.
 - **How they executed:** Target decided to **Consolidate** these Micro-APIs back into a larger Monolithic API Backend.
-- **The Result:** Completely eradicated internal network hops, reducing the average latency of requests by over **120ms** â€“ a critical timeframe for E-commerce conversion rates.
+- **The Result:** Completely eradicated internal network hops, reducing the average latency of requests by over **120ms** – a critical timeframe for E-commerce conversion rates.
 
 ## 6. Stack Overflow: The Art of In-Memory Caching
 
@@ -73,6 +74,89 @@ The resurgence of the **Modular Monolith** in the years 2024-2026 is not a techn
 By rigorously designing hard Domain boundaries using tools (Packwerk, ArchUnit), consolidating databases to avoid fragmentation, and fully leveraging the power of modern hardware through internal Caching, the Modular Monolith helps us save FinOps costs, simplify CI/CD, and return the inherent Developer Velocity back to engineers.
 
 > "Start with a Monolith. If the boundaries are good enough, you can always split it into Microservices someday... but 90% of projects will never need that day."
+
+
+## 4. In-Process Tag-Engine Caching Mechanics
+
+To achieve the lightning-fast performance of Shopify and Basecamp inside a Modular Monolith, aggressive local caching is necessary. The primary challenge is cache invalidation. A tag-based caching engine allows invalidating multiple related cache blocks simultaneously.
+
+### Go Thread-Safe Tagged Cache
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+type TaggedCache struct {
+	mu    sync.RWMutex
+	items map[string]interface{}
+	tags  map[string]map[string]bool
+}
+
+func NewTaggedCache() *TaggedCache {
+	return &TaggedCache{
+		items: make(map[string]interface{}),
+		tags:  make(map[string]map[string]bool),
+	}
+}
+
+func (c *TaggedCache) Set(key string, val interface{}, tags []string) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.items[key] = val
+	for _, t := range tags {
+		if c.tags[t] == nil {
+			c.tags[t] = make(map[string]bool)
+		}
+		c.tags[t][key] = true
+	}
+}
+
+func (c *TaggedCache) Get(key string) (interface{}, bool) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	val, exists := c.items[key]
+	return val, exists
+}
+
+func (c *TaggedCache) InvalidateTag(tag string) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	if keys, found := c.tags[tag]; found {
+		for key := range keys {
+			delete(c.items, key)
+		}
+		delete(c.tags, tag)
+	}
+}
+
+func main() {
+	cache := NewTaggedCache()
+	cache.Set("user_123_profile", "John Doe", []string{"users", "user_123"})
+	cache.Set("user_123_settings", "Dark Mode", []string{"users", "user_123"})
+
+	cache.InvalidateTag("user_123") // Invalidates both keys
+	
+	_, ok := cache.Get("user_123_profile")
+	fmt.Println("Profile exists after invalidation:", ok)
+}
+```
+
+### Invalidation Strategies in High-Concurrency Systems
+When implementing tagged caching:
+- **Lock Contention Mitigation:** Use partitioned mutex locks to prevent threads from blocking on unrelated keys.
+- **Memory Pressure Handling:** Implement an LRU eviction policy to drop older tags when heap allocation approaches 80% limit.
+- **Cache Penetration Prevention:** Use single-flight groups to coordinate database fetches when a high-traffic key is invalidated.
+- **Event-Driven Eviction:** Connect the tagged cache invalidator directly to the in-memory event bus to flush entries automatically on record updates.
+
+### Technical Appendix: Memory Profiling and Heap Allocation Tuning
+Using in-memory caches requires monitoring to avoid Out-Of-Memory (OOM) crashes:
+- Run Go's pprof tool (`go tool pprof`) periodically to analyze active heap objects.
+- Use `sync.Pool` to reuse byte buffers and struct instances, reducing garbage collection sweep CPU cycles.
+- Set a hard memory limit in Go using the `debug.SetMemoryLimit` API. This prevents container OOM termination by triggering aggressive garbage collection when the heap approaches the container's memory ceiling.
+
 
 Thank you for joining the **Modular Monolith Architecture Playbook**. Apply this framework to your organization's next system design to gain the maximum advantage in speed and cost!
 

@@ -1,6 +1,4 @@
----
-
-title: "Part 1: Protocol Fundamentals & Transport Evolution"
+---title: "Part 1: Protocol Fundamentals & Transport Evolution"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
 draft: false
@@ -22,6 +20,8 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-1-protocol/"
 mermaid: true
+ShowToc: true
+TocOpen: true
 ---
 
 To master a protocol, you must understand its DNA. Before we write Go code in the upcoming parts, we need to dismantle the architecture of the Model Context Protocol (MCP). Underneath the complex AI workflows, MCP is surprisingly simple and elegant. It is built on top of the **[JSON-RPC 2.0](https://www.jsonrpc.org/specification)** specification, a stateless, lightweight remote procedure call protocol.
@@ -146,6 +146,46 @@ This handshake defines the dynamic contract between AI and Machine. If the serve
 MCP provides a standardized syntax for AI-to-Machine communication. By shifting the transport layer from `stdio` to HTTP/SSE, we have unlocked the ability to deploy MCP globally as part of an Enterprise architecture. Understanding the 5 core primitives is essential before diving into code.
 
 However, to build a resilient Server capable of handling thousands of requests, we need a robust language and strict implementation disciplines. In the next part, we will use the Official Go SDK to construct the backbone of an Enterprise Server.
+
+
+### Go SSE Transport Connection Checker
+
+To ensure reliable communication over Server-Sent Events (SSE) in production, gateways must monitor transport channel stability. The following utility tests connections against SSE stream endpoints.
+
+```go
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"net/http"
+	"time"
+)
+
+func CheckSSETransport(url string) {
+	client := http.Client{Timeout: 10 * time.Second}
+	resp, err := client.Get(url)
+	if err != nil {
+		fmt.Println("SSE transport check failed:", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	reader := bufio.NewReader(resp.Body)
+	for i := 0; i < 3; i++ {
+		line, err := reader.ReadString('\n')
+		if err != nil {
+			break
+		}
+		fmt.Printf("Received event stream chunk: %s", line)
+	}
+}
+
+func main() {
+	fmt.Println("Initializing SSE Transport verify loop...")
+}
+```
+
 
 ---
 *Next up: [Part 2: Build a Production Server with Go](/series/mcp-engineering-in-production/part-2-build/)*

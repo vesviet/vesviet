@@ -49,15 +49,111 @@ When a user clicks "Confirm" on a GenUI Component, don't wait for the Backend to
 
 In the Generative UI architecture, **HITL is not a feature, but a security principle.** When the AI decides to execute an action that affects data (Mutation), it is not allowed to call the Backend API directly. Instead, it must **generate a Component that allows the user to Approve, Reject, or Modify**.
 
-### Example: Human Resources (HR) System
-- **Scenario:** A manager commands: *"Increase employee A's salary to $2000"*.
-- **The WRONG way (Fully automated):** The Agent automatically calls the `POST /api/salary` API and updates the Database. If the AI misheard "A" as "B" or "2000" as "20000", the consequences are dire.
-- **The RIGHT way (Generative UI HITL):** 
-  1. The Agent generates a JSON requesting to call the tool: `RenderSalaryAdjustmentForm`.
-  2. The Frontend renders the Form Component containing: Employee Name (A), Old Salary ($1500), Proposed New Salary ($2000).
-  3. This Form has 2 buttons: **[Confirm]** and **[Cancel]**. The inputs can be freely *Modified*.
-  4. The manager sees the Form, corrects $2000 to $1800, and manually clicks **[Confirm]**.
-  5. Only then does the Form on the Frontend actually call the API (or send a confirmation signal back via WebSocket to the Agent).
+### Svelte Implementation: Interactive Salary Adjustment HITL Form
+
+Below is the Svelte implementation of an interactive Approval widget. It receives the proposed adjustment details from the LLM agent, mounts them into editable input fields, and prompts the manager for manual approval before transmitting the API mutation payload.
+
+```html
+<!-- SalaryApprovalWidget.svelte -->
+<script>
+    import { createEventDispatcher } from 'svelte';
+    export let employeeId;
+    export let employeeName;
+    export let currentSalary;
+    export let proposedSalary;
+
+    const dispatch = createEventDispatcher();
+
+    let adjustedSalary = proposedSalary;
+    let comments = "";
+    let isSubmitting = false;
+
+    function handleApprove() {
+        isSubmitting = true;
+        
+        // Dispatch action up to the Socket/API Orchestrator (Human Confirmed)
+        dispatch('action', {
+            widgetId: 'salary-adjustment-form',
+            data: {
+                status: 'APPROVED',
+                employee_id: employeeId,
+                final_salary: parseFloat(adjustedSalary),
+                comments: comments
+            }
+        });
+    }
+
+    function handleReject() {
+        isSubmitting = true;
+        dispatch('action', {
+            widgetId: 'salary-adjustment-form',
+            data: {
+                status: 'REJECTED',
+                employee_id: employeeId,
+                comments: comments
+            }
+        });
+    }
+</script>
+
+<div class="salary-approval-card border border-amber-300 bg-amber-50 p-6 rounded-lg shadow-sm">
+    <h3 class="text-lg font-bold text-amber-800 mb-4 flex items-center">
+        ⚠️ AI Proposal: Salary Adjustment Approval Required
+    </h3>
+    
+    <div class="grid grid-cols-2 gap-4 mb-4">
+        <div>
+            <span class="text-xs text-gray-500 block">Employee Name</span>
+            <strong class="text-gray-800">{employeeName} (ID: {employeeId})</strong>
+        </div>
+        <div>
+            <span class="text-xs text-gray-500 block">Current Base Salary</span>
+            <strong class="text-gray-800">${currentSalary.toLocaleString()}/yr</strong>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label for="proposed-salary" class="block text-xs text-gray-500 mb-1">Proposed Base Salary (Editable)</label>
+        <input 
+            type="number" 
+            id="proposed-salary" 
+            bind:value={adjustedSalary} 
+            disabled={isSubmitting}
+            class="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-amber-200"
+        />
+    </div>
+
+    <div class="mb-4">
+        <label for="comments" class="block text-xs text-gray-500 mb-1">Approver Comments</label>
+        <textarea 
+            id="comments" 
+            bind:value={comments} 
+            disabled={isSubmitting}
+            placeholder="Add reasoning for approval/modification/rejection..."
+            class="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-amber-200"
+        ></textarea>
+    </div>
+
+    <div class="flex gap-2 justify-end">
+        <button 
+            on:click={handleReject} 
+            disabled={isSubmitting}
+            class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium disabled:opacity-50"
+        >
+            Reject Proposal
+        </button>
+        <button 
+            on:click={handleApprove} 
+            disabled={isSubmitting}
+            class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-medium disabled:opacity-50"
+        >
+            Approve & Execute
+        </button>
+    </div>
+</div>
+```
+
+---
 
 ## 5.3. Fallback UI: Graceful Degradation
 
@@ -65,10 +161,70 @@ Generative UI relies heavily on LLMs and WebSockets. If OpenAI/Anthropic goes do
 
 The design principle of **Graceful Degradation** requires the system to fall back to a safe mode, rather than crashing entirely.
 
-1. **Fallback to Traditional GUI:** If the LLM returns malformed JSON more than 3 times (exceeding Zod's Auto-Correction limit), the Frontend automatically displays a standard static Form for the user to manually fill out.
-2. **Offline Mode:** If the WebSocket disconnects for a prolonged period, disable the "Chat / Generative AI" area entirely, show a "Lost connection to Smart Assistant" warning, but **still allow** the user to use the app's basic features via standard REST APIs.
+```mermaid
+graph TD
+    IncomingEvent[Incoming WS Event] --> Verify[Zod Schema Verification]
+    Verify -->|Pass| Mount[Mount Component & Hydrate]
+    Verify -->|Fail: Validation Error| AutoCorrect[Retry/Auto-Correction Request]
+    AutoCorrect -->|Auto-Correction Limit Exceeded| FallbackUI[Render Static Standard HTML Form]
+    Mount -->|Svelte Runtime Crash| SvelteCatch[Error Boundary Interceptor]
+    SvelteCatch --> FallbackUI
+```
+
+### Implementing Error Boundaries in Svelte (Graceful Crash Recovery)
+
+Since vanilla Svelte 4 does not feature a native React-style `ErrorBoundary` component, developers implement this pattern using wrapper structures that intercept errors manually or use try/catch blocks within reactive components.
+
+Below is a Svelte implementation of a resilient Component Sandbox wrapper designed to prevent dynamic widget crashes from leaking up and crashing the entire page.
+
+```html
+<!-- WidgetSandbox.svelte -->
+<script>
+    export let targetComponent;
+    export let componentProps;
+
+    let error = null;
+
+    // Svelte lifecycle catcher helper
+    function catchError(fn) {
+        return function(...args) {
+            try {
+                fn(...args);
+            } catch (err) {
+                console.error("Caught GenUI Svelte execution error:", err);
+                error = err;
+            }
+        };
+    }
+</script>
+
+<div class="sandbox-container">
+    {#if error}
+        <div class="fallback-card border border-gray-300 p-4 rounded bg-gray-50 text-gray-700">
+            <h4 class="font-bold text-gray-800">Operational System Fallback</h4>
+            <p class="text-sm">We encountered an error loading this smart assistant component. Please use the manual fallback form below.</p>
+            <hr class="my-2" />
+            <!-- Render standard HTML backup form -->
+            <form action="/api/manual-adjust" method="POST">
+                <input type="hidden" name="employee_id" value={componentProps.employeeId} />
+                <label class="block text-xs text-gray-500">Base Salary</label>
+                <input type="number" name="salary" value={componentProps.proposedSalary} class="border p-2 w-full rounded" />
+                <button type="submit" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded">Submit Manually</button>
+            </form>
+        </div>
+    {:else}
+        <svelte:component 
+            this={targetComponent} 
+            {...componentProps} 
+            on:action 
+        />
+    {/if}
+</div>
+```
 
 By designing these Fallback paths, you ensure that AI remains an "Enhancement" layer, rather than the Achilles heel of your system.
 
 ---
-🔗 **Next Step:** A GenUI system with countless ever-changing Components is a nightmare for Quality Assurance (QA) teams. How do you automate testing for an interface when you don't know what it will look like beforehand? Read on in [Part 6 — E2E Testing & Performance Optimization at the Edge](/series/generative-ui-architecture/part-6-e2e-testing-edge/).
+
+🔗 **Next Step:** A GenUI system with countless ever-changing Components is a nightmare for Quality Assurance (QA) teams. How do you automate testing for an interface when you don't know what it will look like beforehand? Read on in **[Part 6 — E2E Testing & Performance Optimization at the Edge]({{< ref "part-6-e2e-testing-edge.md" >}})**.
+

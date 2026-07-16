@@ -99,12 +99,6 @@ type CustomerRiskScore struct {
 }
 ```
 
-**3. Sanctions Screening:**
-Check all transactions and customers against international watchlists:
-- OFAC (US Treasury)
-- UN Security Council
-- EU Consolidated List
-
 ---
 
 ## Designing the Audit Trail
@@ -124,16 +118,84 @@ CREATE TABLE audit_logs (
     ip_address      INET,
     before_state    JSONB,                  -- State prior to change
     after_state     JSONB,                  -- State after change
+    hash            CHAR(64)    NOT NULL,   -- Cryptographic hash of log content
+    previous_hash   CHAR(64)    NOT NULL,   -- Hash chain to prevent tampering
     created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
-    
-    -- No updated_at column — audit logs are immutable
-    -- NEVER UPDATE or DELETE from this table
 );
 
 -- Guarantee immutability via PostgreSQL Row Security
 ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
 CREATE POLICY audit_insert_only ON audit_logs FOR INSERT WITH CHECK (true);
--- INSERT only, no SELECT without rights, absolutely no UPDATE/DELETE
+```
+
+### Go Implementation: Tamper-Proof Audit Log Hashing Chain
+
+To prevent rogue Database Administrators (DBAs) or hackers with root access from updating or deleting rows in the `audit_logs` table, the core engine hashes each log row, chaining it to the hash of the previous log entry. If any entry is modified, deleted, or inserted out of order, the chain breaks.
+
+```go
+package security
+
+import (
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
+)
+
+type AuditLog struct {
+	ID           string
+	EntityType   string
+	EntityID     string
+	Action       string
+	ActorID      string
+	BeforeState  string
+	AfterState   string
+	PreviousHash string
+	Hash         string
+}
+
+// CalculateLogHash computes the SHA256 HMAC for a log entry to maintain the hash chain
+func CalculateLogHash(log *AuditLog, secretKey []byte) (string, error) {
+	mac := hmac.New(sha256.New, secretKey)
+	
+	// Write log fields into hasher in deterministic order
+	data := fmt.Sprintf("%s|%s|%s|%s|%s|%s|%s|%s",
+		log.ID,
+		log.EntityType,
+		log.EntityID,
+		log.Action,
+		log.ActorID,
+		log.BeforeState,
+		log.AfterState,
+		log.PreviousHash,
+	)
+	
+	_, err := mac.Write([]byte(data))
+	if err != nil {
+		return "", err
+	}
+	
+	return hex.EncodeToString(mac.Sum(nil)), nil
+}
+
+// VerifyChain checks if the audit log hash chain remains valid and untampered
+func VerifyChain(logs []AuditLog, secretKey []byte) bool {
+	for i := 0; i < len(logs); i++ {
+		// Verify individual log hash
+		expectedHash, err := CalculateLogHash(&logs[i], secretKey)
+		if err != nil || expectedHash != logs[i].Hash {
+			return false // Hash mismatch
+		}
+
+		// Verify chain linkage (if not the first record)
+		if i > 0 {
+			if logs[i].PreviousHash != logs[i-1].Hash {
+				return false // Chain broken
+			}
+		}
+	}
+	return true
+}
 ```
 
 ### Append-Only Pattern for the Ledger
@@ -165,5 +227,18 @@ PIN Processing Flow (ATM Withdrawal):
 3. HSM: decrypts the PIN Block → verifies PIN against stored offset → returns "VALID"/"INVALID"
 4. The plaintext PIN NEVER appears in the application code memory
 ```
+
+---
+
+## Security Configuration & Compliance Checklist
+
+Developers launching core banking platforms must satisfy this baseline security checklist before release:
+
+- [ ] **Data Encryption at Rest:** Enable AES-256 column-level encryption for cards (PAN) and customer PII.
+- [ ] **Data Encryption in Transit:** Enforce TLS 1.3 for all internal gRPC service communication.
+- [ ] **MFA Enforcement:** Force Multi-Factor Authentication for all administrative access.
+- [ ] **No Raw Log Leaks:** Ensure PAN, CVV, passwords, and KYC documents are scrubbed from system log files (Zap/Logback configs).
+- [ ] **Tamper-Proof Chaining:** Enable cryptographic hash chaining on the central `audit_logs` table.
+- [ ] **HSM Integration:** Route PIN block validation and payment payload signing through HSMs.
 
 > *This concludes the theoretical portion. It's time to apply everything we've learned. Continue reading [Part 7 — Practice: Build a Mini Core Banking System from Scratch](/series/core-banking-developer/part-7-build-mini-core-banking/) to start coding.*

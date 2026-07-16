@@ -13,13 +13,23 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-5-iso-standards-integration/"
 ---
 
+ShowToc: true
+TocOpen: true
+cover:
+  image: "images/posts/banking-microservices-cover.png"
+  alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
+  relative: false
+author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-5-iso-standards-integration/"
+---
+
 > **Prerequisite:** This article covers the external communication layer of Core Banking. Before diving in, ensure you understand how the internal services are structured — see [Part 4 — Banking Microservices Architecture](/series/core-banking-developer/part-4-modern-core-banking-architecture/) for the foundational service topology and event-driven patterns.
 
 ## Why are international standards important?
 
 Core Banking does not operate in isolation. It must communicate with:
 - **Card Networks:** Visa, Mastercard, AMEX — to process ATM/POS transactions.
-- **Domestic Clearing Houses:** National interbank settlement systems.
+- **Domestic Clearing Houses:** National interbank settlement systems (e.g. NAPAS in Vietnam).
 - **Cross-Border Payments:** SWIFT — connecting over 11,000 financial institutions globally.
 
 All these systems "talk" to each other using two primary message standards: **ISO 8583** and **ISO 20022**.
@@ -31,6 +41,37 @@ All these systems "talk" to each other using two primary message standards: **IS
 ### What is it?
 
 ISO 8583 is the international standard for financial transaction card originated messages (ATM withdrawals, POS purchases, card-to-card transfers). Every time you swipe a card at a supermarket, an ISO 8583 message travels from the POS terminal → Acquiring Bank → Visa/Mastercard → Issuing Bank → Core Banking, and back, all in under 2 seconds.
+
+The diagram below details the end-to-end routing of an ISO 8583 `0100` Authorization Request message:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Customer as Cardholder
+    participant POS as Merchant POS / ATM
+    participant Acquirer as Acquirer Switch (ISO 8583)
+    participant Network as Card Network (Visa/MC)
+    participant Issuer as Issuer Payment Switch (Go)
+    participant Core as Core Banking Ledger
+
+    Customer->>POS: Swipes Card / Enters PIN
+    POS->>Acquirer: Package ISO 8583 (MTI 0100)
+    Acquirer->>Network: Route MTI 0100 via VIP Network
+    Network->>Issuer: Deliver MTI 0100 to Issuer Endpoint
+    activate Issuer
+    Issuer->>Issuer: Parse ISO 8583 Message Fields
+    Issuer->>Core: gRPC: Request Hold (Card Number, Amount)
+    activate Core
+    Core->>Core: Check Available Balance (Hold Amount)
+    Core-->>Issuer: Hold Successful (Hold ID)
+    deactivate Core
+    Issuer->>Issuer: Construct Response (MTI 0110, DE 39 = "00")
+    Issuer-->>Network: Send MTI 0110
+    deactivate Issuer
+    Network-->>Acquirer: Deliver MTI 0110
+    Acquirer-->>POS: Print Slip / Dispense Cash
+    POS-->>Customer: Transaction Approved
+```
 
 ### ISO 8583 Message Structure
 
@@ -84,24 +125,74 @@ Bit 4  = 1 → Field 7 (Transmission Date & Time) is present
 | DE 41 | Card Acceptor Terminal ID | ATM/POS Machine ID |
 | DE 49 | Currency Code | `704` (VND under ISO 4217) |
 
-### Important Response Codes
+### Go Implementation: Encoding/Decoding ISO 8583 Bitmaps
 
-| Code | Meaning |
-|---|---|
-| `00` | Approved |
-| `05` | Do not honor (General decline) |
-| `14` | Invalid card number |
-| `51` | Insufficient funds |
-| `54` | Expired card |
-| `55` | Incorrect PIN |
-| `91` | Issuer or switch is inoperative |
+Fintech switches require highly optimized binary parser engines. Below is a Go implementation illustrating how to inspect a message's binary bitmap to determine which fields are present and serialize the data fields.
 
-### Open Source Libraries for Practice
+```go
+package iso8583
 
-You can practice parsing and generating ISO 8583 messages using these libraries (no need to buy the official standard document):
-- **Java:** [jPOS](https://jpos.org/) — The most complete, production-grade ISO 8583 library.
-- **Go:** [moov-io/iso8583](https://github.com/moov-io/iso8583) — Used by many modern fintechs.
-- **Python:** [pyiso8583](https://pypi.org/project/pyiso8583/)
+import (
+	"encoding/binary"
+	"errors"
+	"fmt"
+)
+
+type ISOMessage struct {
+	MTI    string
+	Bitmap []byte // 8 bytes for 64-bit primary bitmap
+	Fields map[int]string
+}
+
+// SetField marks a field as present in the bitmap and stores its value
+func (m *ISOMessage) SetField(fieldNum int, value string) error {
+	if fieldNum < 2 || fieldNum > 64 {
+		return errors.New("field must be between 2 and 64")
+	}
+	m.Fields[fieldNum] = value
+
+	// Set corresponding bit in bitmap (0-indexed byte, 7-indexed bit)
+	byteIdx := (fieldNum - 1) / 8
+	bitIdx := uint(7 - ((fieldNum - 1) % 8))
+	m.Bitmap[byteIdx] |= (1 << bitIdx)
+
+	return nil
+}
+
+// HasField returns true if the field is present according to the bitmap
+func (m *ISOMessage) HasField(fieldNum int) bool {
+	if fieldNum < 1 || fieldNum > 64 {
+		return false
+	}
+	byteIdx := (fieldNum - 1) / 8
+	bitIdx := uint(7 - ((fieldNum - 1) % 8))
+	return (m.Bitmap[byteIdx] & (1 << bitIdx)) != 0
+}
+
+// Encode packs the MTI and Bitmap into a raw byte slice
+func (m *ISOMessage) Encode() ([]byte, error) {
+	var packet []byte
+	packet = append(packet, []byte(m.MTI)...)
+	packet = append(packet, m.Bitmap...)
+
+	// In a real implementation, we append variables and fixed length fields
+	// matching their definitions (e.g. LLVAR, LLLVAR, fixed)
+	for i := 2; i <= 64; i++ {
+		if m.HasField(i) {
+			packet = append(packet, []byte(m.Fields[i])...)
+		}
+	}
+	return packet, nil
+}
+
+func NewMessage(mti string) *ISOMessage {
+	return &ISOMessage{
+		MTI:    mti,
+		Bitmap: make([]byte, 8),
+		Fields: make(map[int]string),
+	}
+}
+```
 
 ---
 
@@ -123,36 +214,61 @@ From 2022 to 2025, **SWIFT is migrating its entire network** to ISO 20022, manda
 | `camt.054` | BankToCustomerDebitCreditNotification | Debit/Credit notification |
 | `pacs.008` | FIToFICustomerCreditTransfer | Interbank transfer |
 
-### Example pain.001 Message (Credit Transfer)
+### Go Implementation: Parsing ISO 20022 pain.001 XML
 
-```xml
-<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.09">
-  <CstmrCdtTrfInitn>
-    <GrpHdr>
-      <MsgId>MSG-2026-001</MsgId>
-      <CreDtTm>2026-05-06T10:00:00</CreDtTm>
-      <NbOfTxs>1</NbOfTxs>
-      <CtrlSum>1000000</CtrlSum>
-    </GrpHdr>
-    <PmtInf>
-      <PmtMtd>TRF</PmtMtd>
-      <DbtrAcct>
-        <Id><IBAN>VN12345678901234567890</IBAN></Id>
-      </DbtrAcct>
-      <CdtTrfTxInf>
-        <Amt>
-          <InstdAmt Ccy="VND">1000000</InstdAmt>
-        </Amt>
-        <CdtrAcct>
-          <Id><IBAN>VN09876543210987654321</IBAN></Id>
-        </CdtrAcct>
-        <RmtInf>
-          <Ustrd>May invoice payment</Ustrd>
-        </RmtInf>
-      </CdtTrfTxInf>
-    </PmtInf>
-  </CstmrCdtTrfInitn>
-</Document>
+For credit transfer processing, a core banking developer writes code to parse incoming XML payloads securely. Below is a sample Go parser using standard library `encoding/xml` to extract transfer details from a `pain.001` document.
+
+```go
+package iso20022
+
+import (
+	"encoding/xml"
+	"fmt"
+)
+
+type Document struct {
+	XMLName          xml.Name         `xml:"Document"`
+	CstmrCdtTrfInitn CstmrCdtTrfInitn `xml:"CstmrCdtTrfInitn"`
+}
+
+type CstmrCdtTrfInitn struct {
+	GrpHdr GroupHeader `xml:"GrpHdr"`
+	PmtInf PaymentInfo `xml:"PmtInf"`
+}
+
+type GroupHeader struct {
+	MsgId   string    `xml:"MsgId"`
+	CreDtTm string    `xml:"CreDtTm"`
+	NbOfTxs int       `xml:"NbOfTxs"`
+	CtrlSum float64   `xml:"CtrlSum"`
+}
+
+type PaymentInfo struct {
+	PmtMtd      string        `xml:"PmtMtd"`
+	DbtrAcct    AccountIdent  `xml:"DbtrAcct"`
+	CdtTrfTxInf CreditTxInfo  `xml:"CdtTrfTxInf"`
+}
+
+type AccountIdent struct {
+	IBAN string `xml:"DbtrAcct>Id>IBAN"`
+}
+
+type CreditTxInfo struct {
+	Amount       float64      `xml:"Amt>InstdAmt"`
+	Currency     string       `xml:"Amt>InstdAmt>Ccy,attr"`
+	CdtrIBAN     string       `xml:"CdtrAcct>Id>IBAN"`
+	UnstrdRemit  string       `xml:"RmtInf>Ustrd"`
+}
+
+// ParsePain001 takes raw XML bytes and returns parsed document data
+func ParsePain001(xmlData []byte) (*Document, error) {
+	var doc Document
+	err := xml.Unmarshal(xmlData, &doc)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal ISO 20022 XML: %w", err)
+	}
+	return &doc, nil
+}
 ```
 
 ### Why is ISO 20022 better than ISO 8583?
@@ -175,3 +291,4 @@ From 2022 to 2025, **SWIFT is migrating its entire network** to ISO 20022, manda
 - **Architecture:** For how ISO 20022 and ISO 8583 message flows integrate into Saga-orchestrated microservices with idempotent payment APIs — see [Banking Microservices Architecture in Go: Saga, Double-Entry Ledger & Outbox Pattern](/posts/banking-microservices-architecture/).
 
 > *Next, we will explore one of the hardest and most important aspects of Core Banking: security, auditing, and compliance. Continue reading [Part 6 — Security, Compliance & Audit](/series/core-banking-developer/part-6-security-compliance-audit/).*
+

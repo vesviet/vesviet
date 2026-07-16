@@ -42,7 +42,66 @@ The evolution of interfaces:
 - **Adaptive UI / Personalization:** The interface automatically changes layout based on fixed rules (e.g., Responsive design, Dark/Light mode, or product recommendations based on history).
 - **Generative UI:** The interface does not exist until the user interacts. The AI evaluates the user's Intent and generates the most appropriate UI assembly at that exact moment.
 
-> 🔥 **Example:** Instead of a user having to open a chat box and type *"Cancel Shopee order code 123"*, the AI Agent silently processes this intent and immediately **renders an "Order Cancellation Widget"** (Order Cancellation Widget). This component displays the order information, a list of return warehouses, and cancellation reasons. The user simply verifies visually and clicks the "Confirm" button. No text chat box appears.
+```mermaid
+graph TD
+    UserRequest[User Request: Cancel order 123] -->|Natural Language| IntentEngine[LLM Intent Matcher]
+    IntentEngine -->|Resolved Tool: cancel_order| Registry[Component Registry]
+    Registry -->|Fetch Widget metadata| Loader[Dynamic Component Loader]
+    Loader -->|Hydrate with parameters| Viewport[Browser Viewport: Render Svelte Order Cancellation Widget]
+```
+
+### Dynamic State Payloads in GenUI
+
+In standard REST configurations, JSON APIs return structured models (e.g., a list of orders). In a Generative UI architecture, the payload includes both the **component signature** (telling the registry which component to load) and the **hydration state** (the parameters to feed into it).
+
+Below is the Go representation of a dynamic GenUI stream message payload:
+
+```go
+package genui
+
+import (
+	"encoding/json"
+	"time"
+)
+
+type UIComponentPayload struct {
+	ComponentID string          `json:"component_id"` // E.g. "order-cancellation-widget"
+	Version     string          `json:"version"`      // Semver version of the component
+	Props       json.RawMessage `json:"props"`        // Raw JSON properties to inject
+	Timestamp   time.Time       `json:"timestamp"`
+}
+
+// CancellationProps defines parameters for the Order Cancellation Svelte widget
+type CancellationProps struct {
+	OrderID         string   `json:"order_id"`
+	ReasonOptions   []string `json:"reason_options"`
+	AllowRefund     bool     `json:"allow_refund"`
+	RefundAccount   string   `json:"refund_account"`
+}
+
+func CreateCancellationPayload(orderID string) (*UIComponentPayload, error) {
+	props := CancellationProps{
+		OrderID:       orderID,
+		ReasonOptions: []string{"Item damaged", "Delayed shipping", "Wrong size ordered", "Other"},
+		AllowRefund:   true,
+		RefundAccount: "Visa **** 1234",
+	}
+
+	propsBytes, err := json.Marshal(props)
+	if err != nil {
+		return nil, err
+	}
+
+	return &UIComponentPayload{
+		ComponentID: "order-cancellation-widget",
+		Version:     "1.2.0",
+		Props:       propsBytes,
+		Timestamp:   time.Now(),
+	}, nil
+}
+```
+
+---
 
 ## 1.3. Future UX Patterns Replacing Chatbots
 
@@ -64,5 +123,82 @@ The solution is **Collaborative Dashboards**:
 - Using **Node-based views (Grid/Graph)** or **Kanban Boards** to represent Agents as "virtual employees" at work.
 - Users have a holistic view (Transparency), knowing exactly which Agent is idle, which is processing, and can jump in to intervene (Human-in-the-loop) at any step in the process.
 
+To support real-time updates of agent states on a collaborative dashboard, the backend must stream state transition events. Below is a Go HTTP event handler that broadcasts agent lifecycle transitions using Server-Sent Events (SSE):
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"time"
+)
+
+type AgentState struct {
+	AgentID   string `json:"agent_id"`
+	AgentName string `json:"agent_name"`
+	Status    string `json:"status"` // E.g., IDLE, PLANNING, EXECUTING, WAITING_APPROVAL
+	TaskName  string `json:"task_name"`
+}
+
+// StreamAgentStates establishes an SSE stream with the client dashboard
+func StreamAgentStates(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/event-stream")
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("Connection", "keep-alive")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	flusher, ok := w.(http.Flusher)
+	if !ok {
+		http.Error(w, "Streaming unsupported", http.StatusInternalServerError)
+		return
+	}
+
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+
+	// Simulate agent state transitions
+	agent := AgentState{
+		AgentID:   "agent-007",
+		AgentName: "Financial Analyst Agent",
+		Status:    "PLANNING",
+		TaskName:  "Calculating Q3 Revenue Accruals",
+	}
+
+	for {
+		select {
+		case <-r.Context().Done():
+			fmt.Println("Client disconnected from Agent Dashboard Stream")
+			return
+		case <-ticker.C:
+			// Simulate transition
+			switch agent.Status {
+			case "PLANNING":
+				agent.Status = "EXECUTING"
+				agent.TaskName = "Analyzing general ledger postings..."
+			case "EXECUTING":
+				agent.Status = "WAITING_APPROVAL"
+				agent.TaskName = "Confirming balance adjustment of 50M VND"
+			case "WAITING_APPROVAL":
+				agent.Status = "IDLE"
+				agent.TaskName = ""
+			default:
+				agent.Status = "PLANNING"
+				agent.TaskName = "Calculating Q3 Revenue Accruals"
+			}
+
+			data, _ := json.Marshal(agent)
+			fmt.Fprintf(w, "data: %s\n\n", data)
+			flusher.Flush()
+		}
+	}
+}
+```
+
+This event stream allows the frontend dashboard to update node positions and status lights in real-time, providing immediate visibility and control over the active agents.
+
 ---
-🔗 **Next Step:** To achieve Generative UI, the Frontend cannot just receive simple Data like old REST APIs. It needs to receive State from the AI Agent's brain. In the next part, we will design a flexible structure (not locked into Next.js) using Astro: [Part 2 — Framework-Agnostic State Management Architecture](/series/generative-ui-architecture/part-2-state-management/).
+
+🔗 **Next Step:** To achieve Generative UI, the Frontend cannot just receive simple Data like old REST APIs. It needs to receive State from the AI Agent's brain. In the next part, we will design a flexible structure (not locked into Next.js) using Astro: **[Part 2 — Framework-Agnostic State Management Architecture]({{< ref "part-2-state-management.md" >}})**.
+

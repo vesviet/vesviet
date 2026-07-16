@@ -1,5 +1,4 @@
----
-title: "Masterclass: Modular Monolith Architecture & Microservices Reversal"
+---title: "Masterclass: Modular Monolith Architecture & Microservices Reversal"
 description: "Why are 42% of enterprises abandoning Microservices to return to the Modular Monolith? Learn how to optimize millions of dollars in cloud costs."
 date: "2026-06-09T10:00:00+07:00"
 lastmod: "2026-06-16T10:00:00+07:00"
@@ -14,6 +13,8 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/"
+ShowToc: true
+TocOpen: true
 ---
 
 # Masterclass: Modular Monolith Architecture & Microservices Reversal

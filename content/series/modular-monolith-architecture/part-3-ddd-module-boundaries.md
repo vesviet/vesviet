@@ -1,5 +1,4 @@
----
-title: "Part 3: Domain-Driven Design (DDD) Boundaries in a Modular Monolith"
+---title: "Part 3: Domain-Driven Design (DDD) Boundaries in a Modular Monolith"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "How to keep a Monolith from becoming a 'Big Ball of Mud'? A guide to establishing Module boundaries using Bounded Contexts, Spring Modulith, and Packwerk."
 slug: "ddd-module-boundaries-modular-monolith"
@@ -13,11 +12,13 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/ddd-module-boundaries-modular-monolith/"
+ShowToc: true
+TocOpen: true
 ---
 
 # Part 3: Domain-Driven Design (DDD) Boundaries in a Modular Monolith
 
-The biggest reason engineering teams fear the Monolith architecture is due to terrible past experiences with "Spaghetti Monoliths" or the "Big Ball of Mud" â€” where the code for the Billing function calls directly into the database of the Cart function, creating an inextricable web of cross-dependencies.
+The biggest reason engineering teams fear the Monolith architecture is due to terrible past experiences with "Spaghetti Monoliths" or the "Big Ball of Mud" — where the code for the Billing function calls directly into the database of the Cart function, creating an inextricable web of cross-dependencies.
 
 To leverage the performance advantages of a Monolith while still achieving independent development velocity like Microservices, we must build a **Modular Monolith**. The key to this architecture is strictly applying **Domain-Driven Design (DDD)** principles and establishing hard "borders" right within the code.
 
@@ -65,7 +66,103 @@ This proves that the Modular Monolith is not a conservative "all-in-one" mindset
 
 > [!FAQ]
 > **Question: Does prohibiting SQL JOINs degrade the Monolith's performance?**
-> **Answer:** For complex display tasks (Dashboards), calling multiple Internal APIs instead of 1 JOIN query might create a small overhead. To handle this, Modular Monolith systems often apply the **CQRS** (Command Query Responsibility Segregation) model â€“ separating the write database (containing strict module boundaries) and creating specialized materialized views (aggregated display tables) for reading (automatically updated via events).
+> **Answer:** For complex display tasks (Dashboards), calling multiple Internal APIs instead of 1 JOIN query might create a small overhead. To handle this, Modular Monolith systems often apply the **CQRS** (Command Query Responsibility Segregation) model – separating the write database (containing strict module boundaries) and creating specialized materialized views (aggregated display tables) for reading (automatically updated via events).
+
+
+## 4. Event Storming & In-Memory Decoupled Communication
+
+Enforcing strict module boundaries requires that modules communicate asynchronously through events rather than sharing database transactions or importing foreign packages. This decoupled pattern is modeled via Event Storming.
+
+### Event Storming Aggregate Flow
+```mermaid
+stateDiagram-v2
+    [*] --> SubmitOrder : Command
+    SubmitOrder --> OrderCreated : Event
+    state OrderCreated {
+        [*] --> ProcessPayment : Command
+        ProcessPayment --> PaymentCaptured : Event
+        ProcessPayment --> PaymentFailed : Event
+    }
+    PaymentCaptured --> UpdateInventory : Command
+    UpdateInventory --> InventoryReserved : Event
+```
+
+### Go Channel-Based Event Bus
+The following thread-safe Event Bus allows modules to publish and subscribe to domain events asynchronously in-memory.
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+type Event struct {
+	Topic string
+	Data  interface{}
+}
+
+type EventBus struct {
+	mu   sync.RWMutex
+	subs map[string][]chan Event
+}
+
+func NewEventBus() *EventBus {
+	return &EventBus{
+		subs: make(map[string][]chan Event),
+	}
+}
+
+func (eb *EventBus) Subscribe(topic string) chan Event {
+	eb.mu.Lock()
+	defer eb.mu.Unlock()
+	ch := make(chan Event, 100)
+	eb.subs[topic] = append(eb.subs[topic], ch)
+	return ch
+}
+
+func (eb *EventBus) Publish(e Event) {
+	eb.mu.RLock()
+	defer eb.mu.RUnlock()
+	if channels, found := eb.subs[e.Topic]; found {
+		for _, ch := range channels {
+			select {
+			case ch <- e:
+			default:
+				// Dropping event to prevent blocking
+			}
+		}
+	}
+}
+
+func main() {
+	bus := NewEventBus()
+	orderEvents := bus.Subscribe("OrderCreated")
+
+	go func() {
+		for event := range orderEvents {
+			fmt.Printf("Subscriber received event: %+v\n", event.Data)
+		}
+	}()
+
+	bus.Publish(Event{Topic: "OrderCreated", Data: "Order #12345"})
+	time.Sleep(50 * time.Millisecond)
+}
+```
+
+### Decoupling vs. Shared Databases
+Using an in-process event bus allows us to maintain loose coupling:
+- **Zero Schema Leakage:** The `Billing` module cannot access the `Inventory` tables directly. It listens to the `OrderCreated` event and maintains its own records.
+- **Asynchronous Execution:** High latency operations like sending email notifications or charging credit cards do not block the user session thread.
+- **Testability:** Each module can be tested in isolation by mocking the event channels.
+- **Simplified Operations:** We do not need to install, configure, and monitor Kafka or RabbitMQ clusters during early development stages.
+
+### Technical Appendix: Saga Pattern vs. Distributed Transactions
+In a distributed microservice architecture, ensuring transactional consistency across multiple databases requires two-phase commits (2PC) or the Saga pattern. Two-phase commits act as a performance bottleneck because they acquire locks across networks, leading to high failure rates. Sagas split the business transaction into multiple independent local transactions, using compensating transactions to roll back state if a step fails.
+For example, if payment succeeds but inventory fails, the Saga orchestrator must trigger a `RefundPayment` action. In a modular monolith, we can avoid this operational complexity. We run our business operations in separate schemas under the same database instance. This allows us to use standard SQL local transactions, guaranteeing atomic commits across the billing and inventory tables in sub-millisecond execution times without network-locked loops.
+
 
 Maintaining strict code borders helps you turn a Monolith into a collection of independent modules. But how do you ensure the Build and Test process for a massive CodeBase doesn't become overloaded? See Shopify's solution in **[Part 4: CI/CD Simplified]({{< ref "part-4-cicd-simplified.md" >}})**.
 

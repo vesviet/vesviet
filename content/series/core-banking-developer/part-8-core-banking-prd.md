@@ -1,11 +1,12 @@
 ---
-
 title: "Part 8: Writing a Core Banking PRD — Developer Guide"
 date: "2026-05-27T07:10:00+07:00"
 lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
 description: "How to write a Core Banking PRD: structuring business rules, accounting logic, and distributed systems requirements for product managers and developers."
 weight: 9
+ShowToc: true
+TocOpen: true
 cover:
   image: "images/posts/banking-microservices-cover.png"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
@@ -14,6 +15,8 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-8-core-banking-prd/"
 mermaid: true
 ---
+
+> **Prerequisite:** This guide assumes you have built or are building your ledger switch. Before writing requirements, see the implementation details in **[Part 7 — Build a Mini Core Banking System in Go]({{< ref "part-7-build-mini-core-banking.md" >}})**.
 
 In core banking system (CBS) development, the Product Requirements Document (PRD) is vastly different from a standard SaaS or mobile app PRD. While a SaaS PRD focuses heavily on user interfaces, user growth metrics, and customer delight, a Core Banking PRD must prioritize **financial integrity, transactional consistency, auditability, and regulatory compliance**.
 
@@ -71,8 +74,87 @@ Core banking ledger updates must follow strict accounting principles.
 
 ### Section E: Maker-Checker (4-Eyes Principle)
 To prevent internal fraud and operational errors, sensitive configurations and high-value transactions must be routed through a maker-checker workflow.
+
+#### Maker-Checker Database Schema (PostgreSQL DDL)
+To enforce the 4-eyes principle at the database layer, the pending queues are modeled in a dedicated schema.
+
+```sql
+CREATE TABLE maker_checker_requests (
+    id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    action_type   VARCHAR(50) NOT NULL, -- e.g., 'CREATE_CASA_ACCOUNT', 'APPROVE_LOAN'
+    payload       JSONB NOT NULL,       -- Complete JSON data for execution
+    maker_id      VARCHAR(50) NOT NULL,
+    status        VARCHAR(20) NOT NULL DEFAULT 'PENDING' CHECK (status IN ('PENDING', 'APPROVED', 'REJECTED')),
+    checker_id    VARCHAR(50),
+    rejection_reason TEXT,
+    created_at    TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at    TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Indexing for quick queue lookups
+CREATE INDEX idx_maker_checker_pending ON maker_checker_requests(status) WHERE status = 'PENDING';
+```
+
+#### Go Implementation: Enforcing Segregation of Duties
+The core service must programmatically enforce that the maker cannot approve their own request.
+
+```go
+package prd
+
+import (
+	"context"
+	"database/sql"
+	"errors"
+	"fmt"
+)
+
+type ApprovalService struct {
+	db *sql.DB
+}
+
+// ApproveRequest processes the checker approval step of a maker-checker request
+func (s *ApprovalService) ApproveRequest(ctx context.Context, requestID string, checkerID string) error {
+	tx, err := s.db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	// 1. Fetch Request
+	var makerID string
+	var status string
+	query := "SELECT maker_id, status FROM maker_checker_requests WHERE id = $1 FOR UPDATE"
+	err = tx.QueryRowContext(ctx, query, requestID).Scan(&makerID, &status)
+	if err != nil {
+		return fmt.Errorf("failed to retrieve request: %w", err)
+	}
+
+	// 2. Validate current status
+	if status != "PENDING" {
+		return fmt.Errorf("request cannot be approved: current status is %s", status)
+	}
+
+	// 3. Enforce 4-Eyes Invariant (Segregation of Duties)
+	if makerID == checkerID {
+		return errors.New("security violation: checker cannot be the same user as the maker")
+	}
+
+	// 4. Update status and record checker
+	updateQuery := "UPDATE maker_checker_requests SET status = 'APPROVED', checker_id = $1, updated_at = NOW() WHERE id = $2"
+	_, err = tx.ExecContext(ctx, updateQuery, checkerID, requestID)
+	if err != nil {
+		return fmt.Errorf("failed to update request status: %w", err)
+	}
+
+	// In a real system, the payload is parsed and executed here within the transaction.
+
+	return tx.Commit()
+}
+```
+
 - **Queue-Based Centralized Approval:** Maker creates the request $\rightarrow$ Payload is written to a pending queue $\rightarrow$ Checker approves or rejects the payload $\rightarrow$ Transaction executes.
 - **Segregation of Duties:** A user who acts as the Maker for a specific transaction must be programmatically blocked from acting as the Checker for that same transaction.
+
 
 ### Section F: Non-Functional Requirements (NFRs)
 NFRs in Core Banking are functional barriers. They must be measurable:

@@ -55,7 +55,90 @@ To keep the system Future-proof and easily integrable into Legacy projects, we m
   3. The Frontend (Astro) acts as the *Orchestrator*. It receives this JSON, looks in its *Component Registry*, grabs the corresponding Svelte/Vue Component, injects the Data, and renders it on screen.
 - **Pros:** Backend Agents can be written in any language. Frontend can use Astro to mix React, Vue, and Svelte on the same page (Islands Architecture). Absolute security because AI never touches HTML/JS code; it only returns Data.
 
-## 2.3. Synchronization Protocol: SSE vs WebSockets
+## 2.3. Svelte Implementation: Dynamic UIState Rendering
+
+To bridge the gap between `AIState` (JSON data) and `UIState` (rendered components) in a framework-agnostic way, we implement a reactive store in Svelte. Svelte is ideal for this pattern due to its tiny runtime footprint and excellent compile-time reactivity.
+
+Below is a Svelte component registry loader that takes an incoming stream of `AIState` events, validates them, and instantiates the corresponding Svelte widgets dynamically using Svelte's `<svelte:component>` tag.
+
+```html
+<!-- ComponentLoader.svelte -->
+<script>
+    import { onMount } from 'svelte';
+    import { writable } from 'svelte/store';
+    
+    // Import potential GenUI widgets
+    import FlightWidget from './widgets/FlightWidget.svelte';
+    import OrderWidget from './widgets/OrderWidget.svelte';
+    import DefaultFallback from './widgets/DefaultFallback.svelte';
+
+    // Local component registry mapping ID to Svelte Component definitions
+    const REGISTRY = {
+        'flight-booking-widget': FlightWidget,
+        'order-cancellation-widget': OrderWidget
+    };
+
+    // Store holding the currently active UI components (UIState)
+    export const uiStateStore = writable([]);
+
+    // Establish WebSocket connection to stream AIState updates
+    let socket;
+    
+    onMount(() => {
+        socket = new WebSocket('ws://localhost:8080/ws/agent-state');
+        
+        socket.onmessage = (event) => {
+            const message = JSON.parse(event.data);
+            
+            // Check if component exists in our registry
+            const ComponentClass = REGISTRY[message.component_id] || DefaultFallback;
+            
+            // Parse component props (AIState -> UIState transformation)
+            const newWidget = {
+                id: message.id || Math.random().toString(),
+                component: ComponentClass,
+                props: message.props
+            };
+
+            // Update Svelte store (triggers UI re-render)
+            uiStateStore.update(current => [...current, newWidget]);
+        };
+
+        return () => {
+            if (socket) socket.close();
+        };
+    });
+
+    function handleWidgetAction(event) {
+        // Send user feedback back to the Agent context (Bi-directional state sync)
+        if (socket && socket.readyState === WebSocket.OPEN) {
+            socket.send(JSON.stringify({
+                event_type: 'UI_INTERACTION',
+                widget_id: event.detail.widgetId,
+                payload: event.detail.data
+            }));
+        }
+    }
+</script>
+
+<div class="widget-island-container">
+    {#each $uiStateStore as widget (widget.id)}
+        <div class="widget-wrapper border p-4 m-2 rounded shadow-sm bg-white">
+            <svelte:component 
+                this={widget.component} 
+                {...widget.props} 
+                on:action={handleWidgetAction} 
+            />
+        </div>
+    {/each}
+</div>
+```
+
+This Svelte orchestrator enables rendering multi-framework UI elements dynamically while maintaining a clean, decoupled boundary from backend agent frameworks.
+
+---
+
+## 2.4. Synchronization Protocol: SSE vs WebSockets
 
 Once the Frontend knows how to render, the next question is: What communication channel should the Frontend use to receive signals from the Agent?
 
@@ -70,9 +153,79 @@ Complex Agentic systems require continuous Bi-directional interaction.
 - In true Generative UI, UI state changes every millisecond when a user interacts with an AI-generated Component. Using HTTP POST for every interaction will cause unacceptable latency.
 - **Recommendation:** Use **WebSockets** (or WebRTC Data Channels for heavy real-time apps) to manage `UIState` and `AIState`. 
 
+To manage WebSocket-based state sync on the backend, Go engineers write persistent hub controllers. Below is a Go WebSocket handler that establishes the bi-directional communication channel, processing user interactions and updating the Agent's conversation state.
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"sync"
+
+	"github.com/gorilla/websocket"
+)
+
+var upgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+	CheckOrigin: func(r *http.Request) bool {
+		return true // Enforce strict CORS in production
+	},
+}
+
+type ClientInteraction struct {
+	EventType string          `json:"event_type"`
+	WidgetID  string          `json:"widget_id"`
+	Payload   json.RawMessage `json:"payload"`
+}
+
+type ClientConn struct {
+	conn *websocket.Conn
+	mu   sync.Mutex
+}
+
+func HandleStateSocket(w http.ResponseWriter, r *http.Request) {
+	ws, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		fmt.Printf("failed to upgrade websocket: %v\n", err)
+		return
+	}
+	defer ws.Close()
+
+	client := &ClientConn{conn: ws}
+	fmt.Println("New Agent WebSocket established")
+
+	// Read loop to handle client interaction (UIState updates back to AIState)
+	for {
+		_, message, err := ws.ReadMessage()
+		if err != nil {
+			fmt.Printf("websocket read error: %v\n", err)
+			break
+		}
+
+		var interaction ClientInteraction
+		if err := json.Unmarshal(message, &interaction); err != nil {
+			fmt.Printf("invalid payload received: %v\n", err)
+			continue
+		}
+
+		// Process user interaction (e.g. update agent memory context)
+		fmt.Printf("Interaction received for widget %s: %s\n", 
+			interaction.WidgetID, string(interaction.Payload))
+
+		// In a real system, the payload is forwarded directly to the active 
+		// LangGraph or AutoGen agent state machine.
+	}
+}
+```
+
 > ⚠️ **Architectural Note (Operations & Recovery):** When using WebSockets, you will have to deal with 2 major infrastructure problems:
 > 1. **Sticky Sessions:** The Load Balancer must route the Client's connection to the exact Pod/Container running that Agent in the Kubernetes cluster.
 > 2. **State Recovery:** WebSockets drop connections very easily in real-world network environments (like 4G/Mobile). When the Frontend reconnects successfully, it must have a mechanism to automatically "pull" (sync) the current state from the Backend's `AIState` to recover the `UIState`, preventing Components from "freezing" due to a silent signal loss.
 
 ---
-🔗 **Next Step:** In this part, we mentioned the "Component Registry" — the heart of the Framework-Agnostic architecture. How does the Backend Agent know what Components the Frontend has available to call? Find out in [Part 3 — Component Registry & Bridging MCP to Frontend](/series/generative-ui-architecture/part-3-component-registry/).
+
+🔗 **Next Step:** In this part, we mentioned the "Component Registry" — the heart of the Framework-Agnostic architecture. How does the Backend Agent know what Components the Frontend has available to call? Find out in **[Part 3 — Component Registry & Bridging MCP to Frontend]({{< ref "part-3-component-registry.md" >}})**.
+

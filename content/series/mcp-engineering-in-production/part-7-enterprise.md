@@ -1,5 +1,4 @@
----
-title: "Part 7: Enterprise Scaling & Governance"
+---title: "Part 7: Enterprise Scaling & Governance"
 date: "2026-05-15T14:00:00+07:00"
 lastmod: "2026-05-15T14:00:00+07:00"
 draft: false
@@ -20,9 +19,9 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-7-enterprise/"
----
-
-By this article, you have successfully built a secure, observable MCP Server, protected by a Gateway. But the journey of scaling MCP into an Enterprise environment (spanning hundreds of teams and thousands of tools) requires one final capability layer: **Governance**. Your architecture is only truly complete when it aligns with the broader [Agentic System Architecture](/series/agentic-system-architecture/) model.
+ShowToc: true
+TocOpen: true
+---By this article, you have successfully built a secure, observable MCP Server, protected by a Gateway. But the journey of scaling MCP into an Enterprise environment (spanning hundreds of teams and thousands of tools) requires one final capability layer: **Governance**. Your architecture is only truly complete when it aligns with the broader [Agentic System Architecture](/series/agentic-system-architecture/) model.
 
 Without Governance, your system will quickly devolve into a tangled mess of conflicting versions, data leaking across departments, and "Shadow MCP Servers" springing up like weeds. In environments like those explored in the [Core Banking Developer](/series/core-banking-developer/) series, a lack of governance leads directly to catastrophic systemic failures.
 
@@ -78,3 +77,67 @@ Deploying MCP correctly is not just about solving technical problems; it's how y
 
 ---
 *Back to index: [Series MCP Engineering In Production](/series/mcp-engineering-in-production/)*
+
+
+## 4. Health and Readiness Probe Checker
+
+Enterprise environments deploying Model Context Protocol gateways require standard endpoints for Kubernetes probes. The health checker must verify connections to downstream MCP servers, system memory usage, and file descriptor limits.
+
+### Go Health Check Handler
+```go
+package main
+
+import (
+	"encoding/json"
+	"net/http"
+	"time"
+)
+
+type SubSystemStatus struct {
+	Name   string `json:"name"`
+	Status string `json:"status"`
+}
+
+type HealthResponse struct {
+	Status    string            `json:"status"`
+	Timestamp time.Time         `json:"timestamp"`
+	SubSystems []SubSystemStatus `json:"subsystems"`
+}
+
+func HealthCheckHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	
+	statusList := []SubSystemStatus{
+		{Name: "postgres-mcp", Status: "UP"},
+		{Name: "slack-mcp", Status: "UP"},
+		{Name: "filesystem-sandbox", Status: "UP"},
+	}
+	
+	res := HealthResponse{
+		Status:    "UP",
+		Timestamp: time.Now(),
+		SubSystems: statusList,
+	}
+	
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(res)
+}
+
+func main() {
+	http.HandleFunc("/healthz", HealthCheckHandler)
+	http.ListenAndServe(":8080", nil)
+}
+```
+
+### Enterprise High Availability (HA) Deployments
+To ensure maximum availability, MCP architectures incorporate:
+- **Redundant Gateway Pools:** Deploy multiple gateway replicas behind an ingress controller.
+- **Failover Routing:** Automatically redirect tool calls to fallback MCP servers if primary health probes fail.
+- **Graceful Termination:** Catch SIGTERM signals, stop accepting new tool calls, complete in-flight requests, and shut down connections safely.
+
+### Technical Appendix: Horizontal Auto-Scaling and Custom Kubernetes Metrics
+In production environments, traffic spikes can saturate memory capacity of the gateway instances. To scale gateways dynamically:
+1. **Horizontal Pod Autoscaling (HPA):** Configure HPA to monitor custom metrics like `mcp_active_connections` or `http_request_duration_seconds`.
+2. **Prometheus Adapter:** Install the Prometheus Adapter in Kubernetes to expose Gateway-specific metrics to the custom metrics API.
+3. **Target Thresholds:** Set HPA thresholds to trigger scaling events when active connections per pod exceed 500, ensuring resource headroom is maintained during spikes.
+

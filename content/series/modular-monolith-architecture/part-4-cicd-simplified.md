@@ -1,5 +1,4 @@
----
-title: "Part 4: CI/CD Simplified & Atomic Deployments"
+---title: "Part 4: CI/CD Simplified & Atomic Deployments"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "Why is CI/CD management for Microservices so complex? Discover the power of Atomic Deployments and how Shopify runs hundreds of thousands of tests in under"
 slug: "cicd-simplified-atomic-deployments-monolith"
@@ -13,6 +12,8 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/cicd-simplified-atomic-deployments-monolith/"
+ShowToc: true
+TocOpen: true
 ---
 
 # Part 4: CI/CD Simplified & The Power of Atomic Deployments
@@ -61,6 +62,59 @@ When operating Microservices, an organization needs a large DevOps/SRE team just
 With a Modular Monolith, the Platform Engineering team's efforts are restructured:
 - There is only **one deployment process** to maintain (maintain 1 excellent CI/CD script instead of 100 terrible ones).
 - The Kubernetes/DevOps infrastructure budget is reallocated toward renting extremely powerful servers to **parallelize CI tests**, delivering direct value to developer Velocity.
+
+
+## 4. Code Compliance: Enforcing Import Boundaries via Go AST
+
+To guarantee that developers do not bypass the boundary constraints of the Modular Monolith, we can write a simple Go AST (Abstract Syntax Tree) parser tool. This tool runs in the CI/CD pipeline to block pull requests containing illegal cross-module imports.
+
+### AST Static Import Validator
+```go
+package main
+
+import (
+	"fmt"
+	"go/ast"
+	"go/parser"
+	"go/token"
+	"os"
+	"strings"
+)
+
+func main() {
+	fset := token.NewFileSet()
+	// Parse imports only to speed up processing
+	node, err := parser.ParseFile(fset, "billing/billing.go", nil, parser.ImportsOnly)
+	if err != nil {
+		fmt.Printf("Failed to parse file: %v\n", err)
+		os.Exit(1)
+	}
+
+	illegalImport := "inventory/internal"
+	for _, spec := range node.Imports {
+		path := strings.Trim(spec.Path.Value, "\"")
+		if strings.Contains(path, illegalImport) {
+			fmt.Printf("CRITICAL: Architectural violation detected! Package 'billing' cannot import '%s'\n", path)
+			os.Exit(2)
+		}
+	}
+	fmt.Println("AST Static Import Validation: Success (No violations).")
+}
+```
+
+### Static Analysis benefits in a Monorepo
+By integrating this validator into the pre-commit hook or CI workflow, we get the following benefits:
+- **Automatic Boundary Verification:** We do not rely on manual code review to find package leaks. The linter fails the build instantly if a developer creates a forbidden dependency.
+- **Zero Cost Execution:** AST parsing takes less than 100 milliseconds, compared to running heavy runtime system checks.
+- **Scalability:** As the monolith grows, we can add new rules to the mapping file without altering core compiler flags.
+- **Clear Migration Paths:** When we eventually extract a module, we can be confident that there are no hidden package imports coupling it to the monolith.
+
+### Technical Appendix: Bazel & Go Build Cache Optimization
+When codebases grow to millions of lines, CI/CD execution times can slow to a crawl, dragging down developer productivity. To mitigate this in a monolithic monorepo:
+1. **Incremental Compilation:** Use build tools like Bazel or Go's built-in build cache (`GOCACHE`). These tools analyze the AST import graph and rebuild only the packages that have changed.
+2. **Parallel Testing:** Segment unit tests by package boundaries. If a pull request only modifies the `billing` module, the CI pipeline runs only the `billing_test.go` suites.
+3. **Build Target Decoupling:** Organize Go modules with discrete `go.mod` files inside module directories. This isolates dependency management and prevents third-party dependency conflicts from leaking across boundaries.
+
 
 Simplifying CI/CD alone can save an organization countless work hours. However, when the system goes into Production, how do we track errors? In a distributed architecture, we need highly expensive Distributed Tracing. In a Monolith, this problem is much simpler and more effective. Discover how in **[Part 5: Observability in Memory]({{< ref "part-5-observability.md" >}})**.
 
