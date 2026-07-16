@@ -25,8 +25,6 @@ TocOpen: true
 - **Context Propagation:** Passing cancel triggers down to SQL queries when an LLM aborts an action.
 - **Resource Content Negotiation:** Dynamically formatting binary payloads into base64 strings.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 2: Part 1: Protocol Fundamentals & Transport Evolution]({{< ref "part-1-protocol.md" >}}).
-
 Writing a simple Python script that runs over `stdio` to demo the Model Context Protocol (MCP) on your local machine is easy. But deploying an MCP Server into a Kubernetes cluster to handle thousands of AI Agent requests per minute without crashing requires a powerful compiled language, a small memory footprint, and excellent concurrency support. That's why **Go (Golang)** has become the top choice for Infrastructure and Platform teams.
 
 In this article, we will dive deep into using the Go SDK to build a Production MCP Server, while avoiding the pitfalls that engineers new to Agentic AI often fall into. We will also explore advanced concepts like `context.Context` cancellation handling and Context Window optimization.

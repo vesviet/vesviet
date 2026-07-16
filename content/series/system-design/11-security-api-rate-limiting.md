@@ -18,16 +18,20 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/11-security-api-rate-limiting/"
 ---
+**Answer-first:** API rate limiting defends backend services by restricting request volume. Security requires a layered defense: Web Application Firewalls (WAF) block edge-level volumetric spikes, API Gateways manage L7 credentials and quotas, and application middleware enforces fine-grained business limits. Client identification must rely on validated, secure IP parsing (using the PROXY protocol or rightmost `X-Forwarded-For` checks).
 
 > **Prerequisite:** This is Part 11 of the [System Design Masterclass](/series/system-design/). Previous parts built the core components — this part covers securing APIs and managing client traffic spikes at scale.
 
-**Answer-first:** API rate limiting defends backend services by restricting request volume. Security requires a layered defense: Web Application Firewalls (WAF) block edge-level volumetric spikes, API Gateways manage L7 credentials and quotas, and application middleware enforces fine-grained business limits. Client identification must rely on validated, secure IP parsing (using the PROXY protocol or rightmost `X-Forwarded-For` checks).
+### What You'll Learn That AI Won't Tell You
+- **WAF Header Sanitization:** Why relying on standard proxy forwarding configurations invites IP header spoofing, and how to safely strip user headers.
+- **Limiter Sharding Performance:** How to split the global limiter map in Go using hash-based sharding to avoid lock contention on multi-core CPUs.
+- **Atomic Lua Script Limits:** Why sliding window limit checks inside Redis Lua scripts cause script evaluation delays when tracking millions of keys.
 
 ---
 
 ## Layered Rate Limiting Architecture & IP Spoofing Prevention
 
-**Answer-first:** Secure rate limiting requires a tiered approach, deploying quick-reject rules at the edge WAF, routing quotas at the L7 gateway, and business-level limits in application middleware. To prevent client IP spoofing, proxies must strip client-supplied `X-Forwarded-For` headers, trust only verified internal proxy IPs, or use the PROXY protocol at the TCP layer.
+**Key Concept:** Secure rate limiting requires a tiered approach, deploying quick-reject rules at the edge WAF, routing quotas at the L7 gateway, and business-level limits in application middleware. To prevent client IP spoofing, proxies must strip client-supplied `X-Forwarded-For` headers, trust only verified internal proxy IPs, or use the PROXY protocol at the TCP layer.
 
 ### Layered Defense Options
 
@@ -73,7 +77,7 @@ If the reverse proxy appends to this header without sanitization, the server rec
 
 ## In-Memory Rate Limiting: Token Bucket vs. Leaky Bucket
 
-**Answer-first:** Token Bucket allows bursts by accumulating tokens over time up to a set capacity limit. Leaky Bucket enforces a smooth, constant output rate by introducing forced delay gaps between calls. In high-concurrency Go services, global locks on rate limiters cause high mutex contention; sharding limiters or using atomic CAS mitigates lock queues.
+**Algorithm Comparison:** Token Bucket allows bursts by accumulating tokens over time up to a set capacity limit. Leaky Bucket enforces a smooth, constant output rate by introducing forced delay gaps between calls. In high-concurrency Go services, global locks on rate limiters cause high mutex contention; sharding limiters or using atomic CAS mitigates lock queues.
 
 ### Algorithm Comparison
 
@@ -171,7 +175,7 @@ func (sl *ShardedLimiter) Allow(key string, r rate.Limit, b int) bool {
 
 ## Distributed Rate Limiting with Redis & Lua
 
-**Answer-first:** Distributed rate limiting synchronizes quotas across horizontal app nodes using a central data store. By implementing the Sliding Window Log/Counter using a Redis Sorted Set (ZSET), we track exact transaction timestamps. Race conditions are eliminated by executing the check-and-write inside an atomic Redis Lua script.
+**Distributed Strategy:** Distributed rate limiting synchronizes quotas across horizontal app nodes using a central data store. By implementing the Sliding Window Log/Counter using a Redis Sorted Set (ZSET), we track exact transaction timestamps. Race conditions are eliminated by executing the check-and-write inside an atomic Redis Lua script.
 
 ```
                   +-----------------------------------+
@@ -352,8 +356,15 @@ Do not read `X-Forwarded-For` without validating proxies. Clean client headers a
 
 {{< faq q="What is Envoy's external rate limiting architecture?" >}}
 Envoy delegates rate limit decisions to an external service using a gRPC filter (`envoy.filters.http.ratelimit`). The gRPC server implements Lyft's `RateLimitService`, running configurations against a central Redis cluster to decide whether a request should be rate-limited.
+{{< /faq >}}
 
 ---
 
-🔗 **Next:** [Part 12: Communication Protocols — gRPC vs REST vs GraphQL in Go Microservices](/series/system-design/12-communication-protocols-microservices/)
-{{< /faq >}}
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "10-observability-pprof-golang.md" >}})
+[Next Part →]({{< ref "12-communication-protocols-microservices.md" >}})
+
+🔗 **Next Step:** Continue to [Part 12: Communication Protocols — gRPC vs REST vs GraphQL in Go Microservices]({{< ref "12-communication-protocols-microservices.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

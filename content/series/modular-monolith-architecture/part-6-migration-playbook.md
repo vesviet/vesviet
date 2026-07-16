@@ -22,8 +22,6 @@ TocOpen: true
 - **Transactional Outbox Implementations:** The SQL schema design for safe event auditing during migrations.
 - **Canary Merging Safety:** Running dual-writes for 14 days to audit state reconciliation before switching readers.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 6: Part 5: Observability in Memory – When Everything Shares a Single Call Stack]({{< ref "part-5-observability.md" >}}).
-
 # Part 6: Migration Playbook – 
 ## 4. Transactional Outbox Pattern in Monolith Migration
 

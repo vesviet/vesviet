@@ -22,8 +22,6 @@ TocOpen: true
 - **In-Memory vs S3 latency:** Microsecond-level memory sharing benchmarks vs millisecond-level network storage overhead.
 - **Tooling Consolidation:** How running multiple logical steps inside a single EC2 or ECS container simplifies debugging and CI/CD pipelines.
 
-> **Prerequisite:** This is the executive summary and introductory overview of the **Modular Monolith Architecture** series. No prior reading is required to start here.
-
 # Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure Costs
 
 In the tech industry, Serverless architecture and Microservices are often hailed as the ultimate solutions for infinite scalability. However, this infinite scalability comes with massive hidden FinOps risks when traffic crosses a critical tipping point.

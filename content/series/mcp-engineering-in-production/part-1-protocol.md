@@ -26,8 +26,6 @@ TocOpen: true
 - **Resource vs Tool Semantics:** When to expose static read-only files vs executing state-changing write APIs.
 - **Firewall Bypass Mechanics:** Why SSE is more reliable than WebSockets in enterprise proxy networks.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 1: Executive Summary: MCP - The Control Plane of the AI Ecosystem]({{< ref "executive-summary.md" >}}).
-
 To master a protocol, you must understand its DNA. Before we write Go code in the upcoming parts, we need to dismantle the architecture of the Model Context Protocol (MCP). Underneath the complex AI workflows, MCP is surprisingly simple and elegant. It is built on top of the **[JSON-RPC 2.0](https://www.jsonrpc.org/specification)** specification, a stateless, lightweight remote procedure call protocol.
 
 When comparing modern system architectures, especially high-throughput environments discussed in the [Shopee Architecture Series](/series/shopee-architecture/), engineers often lean towards binary protocols like gRPC. However, MCP chose JSON-RPC for a very specific reason: LLMs natively understand JSON, and debugging a prompt trace is exponentially easier when the payload is human-readable text rather than compiled Protocol Buffers.

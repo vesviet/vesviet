@@ -22,8 +22,6 @@ TocOpen: true
 - **Packwerk Boundary Rules:** The setup required to analyze and restrict package dependency graphs automatically.
 - **Database Schema Isolation:** How to configure multiple schema namespaces inside a single database connection pool.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 3: Part 2: FinOps Cost Reality - The Hidden Tax of Microservices]({{< ref "part-2-finops-cost-reality.md" >}}).
-
 # Part 3: Domain-Driven Design (DDD) Boundaries in a Modular Monolith
 
 The biggest reason engineering teams fear the Monolith architecture is due to terrible past experiences with "Spaghetti Monoliths" or the "Big Ball of Mud" — where the code for the Billing function calls directly into the database of the Cart function, creating an inextricable web of cross-dependencies.

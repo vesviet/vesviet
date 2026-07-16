@@ -25,8 +25,6 @@ mermaid: true
 - **Zero-Data Retention APIs:** Configuring API calls to guarantee models do not retain business data.
 - **Enterprise Security Audits:** Conducting code origin reviews to verify the authorship of AI outputs.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 5: Part 4 — Blurring SDLC Lines & The QC Revolution]({{< ref "part-4-blurring-sdlc-lines-and-qc-revolution.md" >}}).
-
 So far, we have discussed AI extensively from the perspective of Programmers and Testers. But if you step into the boardroom of the Board of Directors (BOD) or Chief Technology Officers (CTO), you'll see a completely different lens.
 
 Executives (BOD) don't care how fancy your AI is, or how long your prompts are. Their lens consists of 3 vital variables: **Cost, Time-to-Market, and Risk Management.**

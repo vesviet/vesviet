@@ -22,8 +22,6 @@ TocOpen: true
 - **Stack Overflow Metrics:** How Stack Overflow scales to billions of page views using only 9 web servers and database vertical scaling.
 - **MESI Cache Line Invalidation:** How improper shared-state boundaries inside a monolith cause CPU cache thrashing.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 1: Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure]({{< ref "part-0-executive-summary.md" >}}).
-
 # Part 1: Architectural Decision Framework
 
 How can a Senior Developer or System Architect make the right decision between using a **Modular Monolith** and **Microservices**? The answer doesn't lie in the hype, but in quantitative factors: Team organization structure, data integrity, and transaction volume.

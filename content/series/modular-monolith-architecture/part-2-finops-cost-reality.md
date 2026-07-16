@@ -22,8 +22,6 @@ TocOpen: true
 - **Cross-AZ Egress Pricing:** The math behind AWS data transfer rates that inflate cloud costs by $0.02 per GB.
 - **Prometheus Metric Cardialities:** How microservices generate redundant telemetry tags that clog metrics backends.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 2: Part 1: Architectural Decision Framework]({{< ref "part-1-decision-framework.md" >}}).
-
 # Part 2: FinOps Cost Reality - The "Hidden Tax" of Microservices
 
 One of the most appealing promises of Microservices is lean Auto-scaling capability: "Only spin up servers for the service under load." Theoretically, this saves cloud costs. However, when contrasted with the reality of cloud cost management (FinOps), companies discover the exact opposite: **Microservices architectures are often many times more expensive than Monoliths**.

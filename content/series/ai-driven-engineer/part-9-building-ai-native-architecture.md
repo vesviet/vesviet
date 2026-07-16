@@ -25,8 +25,6 @@ mermaid: true
 - **Semantic Caching Latency:** Reducing API costs by caching similar natural language queries in Redis.
 - **Retry Loop Guardrails:** Implementing backoff rules to prevent runaway API billing during model errors.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 9: Part 8 — The Junior Paradox: Building Foundations When AI Does the Basics]({{< ref "part-8-the-junior-paradox.md" >}}).
-
 In the previous 8 parts, we dissected using AI as a **Tool** to assist programmers. We explored the [death of syntax memorization](/series/ai-driven-engineer/part-1-the-death-of-code-typists/), the [boundaries of responsibility](/series/ai-driven-engineer/part-2-man-vs-machine-boundaries/), navigated [AI review fatigue](/series/ai-driven-engineer/part-3-the-10x-productivity-reality/) and [legal landmines](/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/), and established the need for [Orchestration](/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/) and [System Design](/series/ai-driven-engineer/part-7-system-design-survival/). But in this final part, we will flip the script entirely.
 
 The ultimate mission of a System Architect (AI-Driven Architect) is not just coding faster, but **putting AI as the "heart" of the very product they are building**. We call this **AI-Native Application** architecture.

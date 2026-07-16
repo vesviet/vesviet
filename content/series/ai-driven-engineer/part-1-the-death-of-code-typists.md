@@ -25,8 +25,6 @@ mermaid: true
 - **The Compilation Bottleneck:** How compiler feedback loops are automated using AI terminals.
 - **Cognitive Load Optimization:** Shifting focus from syntax memorization to system design.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 1: Executive Summary — Software Engineers in the AI Era: Who Stays, Who Leaves?]({{< ref "executive-summary.md" >}}).
-
 For years, the image of a talented programmer was often associated with blazing fast typing speeds, the ability to memorize dozens of API libraries, and writing code without a single syntax error. We called them pure "Coders". But as AI enters the playing field, a harsh reality has emerged: **Writing code is only the easiest part of building software.**
 
 ## Who are "Code Typists"?

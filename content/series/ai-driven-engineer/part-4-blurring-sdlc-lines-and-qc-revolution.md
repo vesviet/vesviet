@@ -25,8 +25,6 @@ mermaid: true
 - **Vulnerability Scanning:** Detecting security flaws introduced by AI using open-source static checkers.
 - **Automated Pull Request Checks:** Integrating AI code review triggers in GitHub Actions.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 4: Part 3 — The 10x Productivity Reality: Where We Speed Up, Where We Slow Down]({{< ref "part-3-the-10x-productivity-reality.md" >}}).
-
 The traditional Software Development Life Cycle (SDLC) is often described as a factory assembly line. Business Analysts (BA) write requirements $\rightarrow$ Designers draw UI $\rightarrow$ Developers (Dev) write code $\rightarrow$ Quality Assurance (QA) finds bugs $\rightarrow$ DevOps pushes to the server. Everyone sits in their own "silo" and communicates via Jira tickets.
 
 But AI has swung a sledgehammer, smashing these walls. When a BA can ask AI to generate a runnable Proof of Concept, and a Developer can ask AI to write automated test scripts, the boundaries between roles become incredibly blurred.

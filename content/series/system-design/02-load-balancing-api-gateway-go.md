@@ -18,16 +18,20 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/02-load-balancing-api-gateway-go/"
 ---
+**Answer-first:** L4 load balancing routes traffic by transport-layer (IP/TCP/UDP) metadata — minimal CPU overhead but limited intelligence. L7 load balancing inspects HTTP headers, paths, and cookies — enables content-based routing and advanced health checks at the cost of higher processing overhead per request.
 
 > **Prerequisite:** Part 2 of the [System Design Masterclass](/series/system-design/). Read [Part 1: System Design Thinking](/series/system-design/01-introduction-system-design-golang/) first to understand foundational trade-off frameworks.
 
-**Answer-first:** L4 load balancing routes traffic by transport-layer (IP/TCP/UDP) metadata — minimal CPU overhead but limited intelligence. L7 load balancing inspects HTTP headers, paths, and cookies — enables content-based routing and advanced health checks at the cost of higher processing overhead per request.
+### What You'll Learn That AI Won't Tell You
+- **DSR Kernel Level Setup:** The exact HAProxy configurations and Linux kernel sysctl variables required to prevent backend loopback conflicts.
+- **Envoy Proxy Latency Metrics:** Under what load conditions Envoy's JWT validation filters begin to inflate tail latency (p99) to unacceptable levels.
+- **Lock Contention in Rate Limiters:** How mutex locks in local rate limiter structures cause goroutine scheduling churn in multi-core production systems.
 
 ---
 
 ## L4 vs L7 Load Balancing — The Definitive Comparison
 
-**Answer-first:** The fundamental difference is where in the network stack the routing decision is made. L4 (Transport Layer) routes at TCP/UDP level using IP+port tuples. L7 (Application Layer) routes at HTTP level using headers, URLs, and payloads.
+**Key Concept:** The fundamental difference is where in the network stack the routing decision is made. L4 (Transport Layer) routes at TCP/UDP level using IP+port tuples. L7 (Application Layer) routes at HTTP level using headers, URLs, and payloads.
 
 ### Architecture Comparison
 
@@ -68,7 +72,7 @@ graph TD
 
 ## Direct Server Return (DSR) — How Asymmetric Routing Works
 
-**Answer-first:** In DSR mode, the load balancer handles inbound requests but backend servers send response traffic directly to the client — bypassing the load balancer entirely. This eliminates the load balancer as a response throughput bottleneck.
+**Architectural Strategy:** In DSR mode, the load balancer handles inbound requests but backend servers send response traffic directly to the client — bypassing the load balancer entirely. This eliminates the load balancer as a response throughput bottleneck.
 
 ### DSR Traffic Flow
 
@@ -131,7 +135,7 @@ For Shopee Flash Sale serving 500k+ RPS, response payloads (product listings, im
 
 ## Load Balancing Algorithms — When to Use Each
 
-**Answer-first:** Algorithm selection depends on request size variance. Round Robin and Least Connections work well when requests are homogeneous. Consistent Hashing is mandatory for stateful protocols (Redis, gRPC streaming). IP Hash enables sticky sessions without cookie overhead.
+**Key Guideline:** Algorithm selection depends on request size variance. Round Robin and Least Connections work well when requests are homogeneous. Consistent Hashing is mandatory for stateful protocols (Redis, gRPC streaming). IP Hash enables sticky sessions without cookie overhead.
 
 | Algorithm | Time Complexity | Optimal For | Failure Mode |
 |---|---|---|---|
@@ -145,7 +149,7 @@ For Shopee Flash Sale serving 500k+ RPS, response payloads (product listings, im
 
 ## Token Bucket Rate Limiting Middleware in Go
 
-**Answer-first:** Token Bucket is the industry-standard rate limiting algorithm because it allows request bursting (filling tokens at the rate limit pace) while smoothing out sustained overload. Go's `golang.org/x/time/rate` implements Token Bucket with O(1) time complexity via a lazy refill model.
+**Core Pattern:** Token Bucket is the industry-standard rate limiting algorithm because it allows request bursting (filling tokens at the rate limit pace) while smoothing out sustained overload. Go's `golang.org/x/time/rate` implements Token Bucket with O(1) time complexity via a lazy refill model.
 
 ### How Token Bucket Works
 
@@ -355,8 +359,15 @@ In standard proxy mode, both request AND response pass through the load balancer
 **IP Hash:** Simple, O(1), good for sticky sessions. Problem: all users from one office NAT appear as the same IP → overload one server.
 
 **Consistent Hash:** Use for routing to stateful backends (Redis shards, gRPC streams) where the same client must always reach the same backend regardless of cluster size changes. Minimizes remapping when nodes are added/removed. Covered in depth at [Part 9: Consistent Hashing](/series/system-design/09-consistent-hashing-sharding/).
+{{< /faq >}}
 
 ---
 
-🔗 **Next:** [Part 3: Caching Strategies & Cache Stampede in Go](/series/system-design/03-caching-strategies-redis-golang/) — XFetch algorithm, Redis LRU/LFU internals, singleflight deduplication.
-{{< /faq >}}
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "01-introduction-system-design-golang.md" >}})
+[Next Part →]({{< ref "03-caching-strategies-redis-golang.md" >}})
+
+🔗 **Next Step:** Continue to [Part 3: Caching Strategies & Cache Stampede in Go]({{< ref "03-caching-strategies-redis-golang.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

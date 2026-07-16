@@ -25,8 +25,6 @@ mermaid: true
 - **API Contract Enforcement:** Defining OpenAPI and Protobuf schemas before calling AI code generators.
 - **System Assembly Strategies:** Structuring code modules so they integrate with zero compilation errors.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 6: Part 5 — The BOD Perspective: Expectations, Costs, Legal Risks & Internal AI]({{< ref "part-5-the-bod-perspective-risk-and-privacy.md" >}}).
-
 In Part 5, we saw the Board of Directors (BOD) frantically equipping internal AI systems to push productivity KPIs. At this point, if you stubbornly sit and type every line of code from start to finish, you will be left behind. To survive, programmers must shed the "Coder" jacket and put on the **"AI Orchestrator"** mantle.
 
 ## What is an AI Orchestrator?

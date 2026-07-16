@@ -26,8 +26,6 @@ TocOpen: true
 - **Dynamic Tool Merging:** How the gateway aggregates tools from multiple MCP servers into a single schema list.
 - **Routing Failovers:** Automatically shifting requests to backup servers when primary nodes return 5xx errors.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 4: Part 3: Identity & AuthN For Agentic Workflows]({{< ref "part-3-identity.md" >}}).
-
 When deploying Model Context Protocol (MCP) in a large Enterprise, you will quickly hit an architectural wall. If 50 distinct AI Agents (Coding Agents, HR Bots, Financial Analysts) need to talk to 100 different internal systems (Jira, Confluence, GitHub, internal DBs), letting them connect directly creates a chaotic matrix of 5,000 P2P connections. 
 
 This is why the **MCP Gateway** was born, becoming a mandatory architectural component in 2026 for any organization operating [Agentic Systems](/series/agentic-system-architecture/).

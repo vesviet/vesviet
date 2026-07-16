@@ -22,8 +22,6 @@ TocOpen: true
 - **GitHub Actions Caching:** Real configuration keys to share Go compilation caches across PR runners.
 - **Shopify's Deployment Cadence:** How automated merge queues and canary testing protect high-traffic deployments.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 4: Part 3: Domain-Driven Design (DDD) Boundaries in a Modular Monolith]({{< ref "part-3-ddd-module-boundaries.md" >}}).
-
 # Part 4: CI/CD Simplified & The Power of Atomic Deployments
 
 One of the biggest drivers pushing teams toward Microservices is the promise of **"Independent Deployment."** In theory, team A can deploy service A without caring about team B. But reality is often much crueler: The existence of "Dependency Hell."

@@ -26,8 +26,6 @@ TocOpen: true
 - **Database Security Limits:** Running postgres with low statement timeouts to prevent Denial of Service (DoS).
 - **Network Isolation:** Setting up Kubernetes network policies to isolate MCP containers from the core VPC.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 5: Part 4: MCP Gateway Architecture]({{< ref "part-4-gateway.md" >}}).
-
 In a distributed Agentic architecture, when you boldly grant an AI Agent the right to auto-discover and execute tools without human approval, you are expanding the system's attack surface to an unprecedented scale.
 
 As the Defense in Depth principles emphasized in the [AI Driven Playbook](/series/ai-driven-playbook/), protecting AI is not just about protecting the model, but protecting the data flow. To systematize these new risks, the **OWASP MCP Top 10 (Beta)** project was officially announced in late 2025. 

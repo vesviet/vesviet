@@ -22,8 +22,6 @@ TocOpen: true
 - **Cardiality Reduction:** Techniques to strip connection attributes from logs, saving thousands in Datadog bills.
 - **Sampling Strategies:** How to implement tail-based sampling locally to retain error traces while dropping 99% of success spans.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 5: Part 4: CI/CD Simplified & Atomic Deployments]({{< ref "part-4-cicd-simplified.md" >}}).
-
 # Part 5: Observability in Memory – When Everything Shares a Single Call Stack
 
 When it comes to operating a production system, Observability is the line between fixing an issue in 10 minutes and staying up all night searching for the root cause. Microservices architecture has made Observability extremely expensive and complex with the advent of **Distributed Tracing**.

@@ -25,8 +25,6 @@ mermaid: true
 - **Mentorship Restructuring:** Designing code reviews that evaluate understanding rather than syntax outputs.
 - **Fundamentals Verification:** Testing junior developers on basic algorithms and data structures without tools.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 8: Part 7 — System Design: The Priceless Survival Territory for Developers]({{< ref "part-7-system-design-survival.md" >}}).
-
 At this point, we have painted a relatively bright prospect: Programmers escaping the drudgery of boring typing, becoming System Architects, and orchestrating AI.
 
 But this prospect is only true for **Senior Developers** — those who already have a solid professional foundation to assess the right/wrong of source code. For newcomers (Freshers/Juniors), the advent of AI has inadvertently created the worst training crisis in history: **The Junior Paradox.**

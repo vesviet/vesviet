@@ -25,8 +25,6 @@ TocOpen: true
 - **Nginx Timeout Configuration:** Tuning ingress buffers to prevent proxy connection drops every 60 seconds.
 - **cert-manager Integration:** Setting up automatic Let's Encrypt certificates for mutual authentication.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 7: Part 6: Observability & Audit Trail]({{< ref "part-6-observability.md" >}}).
-
 By this article, you have successfully built a secure, observable MCP Server, protected by a Gateway. But the journey of scaling MCP into an Enterprise environment (spanning hundreds of teams and thousands of tools) requires one final capability layer: **Governance**. Your architecture is only truly complete when it aligns with the broader [Agentic System Architecture](/series/agentic-system-architecture/) model.
 
 Without Governance, your system will quickly devolve into a tangled mess of conflicting versions, data leaking across departments, and "Shadow MCP Servers" springing up like weeds. In environments like those explored in the [Core Banking Developer](/series/core-banking-developer/) series, a lack of governance leads directly to catastrophic systemic failures.

@@ -24,8 +24,6 @@ canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/bonus-transition-pa
 - **API Cost Mitigation:** Designing local mock servers to test LLM tools without using paid tokens.
 - **CI/CD Pipeline Integration:** Setting up automated git review bots to validate AI code changes.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 10: Part 9 — LLM Integration: The Mindset of Building AI-Native Applications]({{< ref "part-9-building-ai-native-architecture.md" >}}).
-
 ## Foreword: The Transformation Journey
 
 After reading the 9 articles in this series, you might be feeling "overwhelmed" or confused. That's a normal feeling when an old mindset (coding for a living) is shattered. To transform from a "Code Typist" to a true "AI-Driven Engineer," you cannot do it overnight.

@@ -18,16 +18,20 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/03-caching-strategies-redis-golang/"
 ---
+**Answer-first:** Effective caching strategy selection hinges on the acceptable consistency window and the read/write access pattern of the workload. Write-Through suits financial records; Write-Behind suits analytics and event counters; Cache-Aside is the default for read-heavy API responses.
 
 > **Prerequisite:** Part 3 of the [System Design Masterclass](/series/system-design/). Read [Part 2: Load Balancing L4/L7](/series/system-design/02-load-balancing-api-gateway-go/) to understand the traffic layer before diving into the caching tier.
 
-**Answer-first:** Effective caching strategy selection hinges on the acceptable consistency window and the read/write access pattern of the workload. Write-Through suits financial records; Write-Behind suits analytics and event counters; Cache-Aside is the default for read-heavy API responses.
+### What You'll Learn That AI Won't Tell You
+- **XFetch Mathematical Constants:** How to configure the scaling factor ($\beta$) in XFetch to balance background refresh CPU usage against cache miss rates.
+- **Redis Memory Allocation Overhead:** How Redis's internal jemalloc allocator causes memory fragmentation, and why LRU evictions don't immediately free up RAM.
+- **Singleflight Leakage:** The danger of singleflight lockups when backend queries hang indefinitely, and how to guard it using Go context timeouts.
 
 ---
 
 ## How Does Cache Stampede Happen?
 
-**Answer-first:** Cache Stampede (thundering herd) occurs when a popular cached key expires and multiple concurrent goroutines simultaneously detect a cache miss — then all query the database simultaneously. The burst of duplicate DB queries can exceed connection pool capacity and cause cascading failure.
+**Key Concept:** Cache Stampede (thundering herd) occurs when a popular cached key expires and multiple concurrent goroutines simultaneously detect a cache miss — then all query the database simultaneously. The burst of duplicate DB queries can exceed connection pool capacity and cause cascading failure.
 
 ### Anatomy of the Problem
 
@@ -124,7 +128,7 @@ func (c *ProductCacheService) GetOrFetch(
 
 ## Write-Through vs Write-Behind — Which to Choose?
 
-**Answer-first:** Write-Through writes synchronously to both cache and DB within the same request — strong consistency but higher write latency. Write-Behind writes to cache first, then flushes to DB asynchronously — lower write latency but risk of data loss if the cache crashes before the flush completes.
+**Write Pattern Comparison:** Write-Through writes synchronously to both cache and DB within the same request — strong consistency but higher write latency. Write-Behind writes to cache first, then flushes to DB asynchronously — lower write latency but risk of data loss if the cache crashes before the flush completes.
 
 ### All 5 Caching Patterns Compared
 
@@ -209,7 +213,7 @@ func (r *ProductRepository) UpdateProduct(ctx context.Context, product *Product)
 
 ## Redis LRU vs LFU Internals
 
-**Answer-first:** Redis implements neither true LRU nor true LFU — both are **probabilistic approximations** using sampling for O(1) eviction. LRU suits recency-based workloads; LFU protects hot keys from eviction during flash sale bursts.
+**Eviction Strategy:** Redis implements neither true LRU nor true LFU — both are **probabilistic approximations** using sampling for O(1) eviction. LRU suits recency-based workloads; LFU protects hot keys from eviction during flash sale bursts.
 
 ### Redis LRU — Probabilistic Sampling
 
@@ -249,7 +253,7 @@ lfu-decay-time 1                # Decay counter after N minutes idle
 
 ## XFetch Algorithm — Probabilistic Early Expiration
 
-**Answer-first:** XFetch solves cache stampede by allowing background pre-computation before key expiry, with probability increasing as TTL runs low. No locking, no coordination needed.
+**Algorithm Strategy:** XFetch solves cache stampede by allowing background pre-computation before key expiry, with probability increasing as TTL runs low. No locking, no coordination needed.
 
 ### XFetch Mathematical Formula
 
@@ -391,8 +395,15 @@ Cache Stampede occurs when a popular key expires and many concurrent goroutines 
 
 {{< faq q="Redis LRU vs LFU — which to configure?" >}}
 Use **LFU** (`allkeys-lfu`) when your workload has clearly identifiable hot keys (e.g., flash sale items, viral content) that need protection from eviction. Use **LRU** (`allkeys-lru`) for general-purpose caches with more uniform access patterns. With Redis 4.0+, LFU is generally better for production e-commerce.
+{{< /faq >}}
 
 ---
 
-🔗 **Next:** [Part 4: Database Scaling & Connection Pool Tuning in Go](/series/system-design/04-database-scaling-sharding/) — PostgreSQL Range Partitioning, TiDB Percolator 2PC, and `database/sql` pool tuning.
-{{< /faq >}}
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "02-load-balancing-api-gateway-go.md" >}})
+[Next Part →]({{< ref "04-database-scaling-sharding.md" >}})
+
+🔗 **Next Step:** Continue to [Part 4: Database Scaling & Connection Pool Tuning in Go]({{< ref "04-database-scaling-sharding.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

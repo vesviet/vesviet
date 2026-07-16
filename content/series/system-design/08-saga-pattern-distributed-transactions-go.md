@@ -18,16 +18,20 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/08-saga-pattern-distributed-transactions-go/"
 ---
+**Answer-first:** The Saga Pattern coordinates distributed transactions across microservices by decomposing a large transaction into a sequence of local transactions. If any step fails, the system automatically executes **compensating transactions** in reverse order to undo completed steps. Each local transaction must be idempotent.
 
 > **Prerequisite:** Part 8 of the [System Design Masterclass](/series/system-design/). Read [Part 7: Idempotent API Design](/series/system-design/07-idempotency-api-design-go/) first — compensating transactions in Saga must be idempotent.
 
-**Answer-first:** The Saga Pattern coordinates distributed transactions across microservices by decomposing a large transaction into a sequence of local transactions. If any step fails, the system automatically executes **compensating transactions** in reverse order to undo completed steps. Each local transaction must be idempotent.
+### What You'll Learn That AI Won't Tell You
+- **Temporal Workflow Determinism:** How Temporal's event sourcing workflow engine replays Go code, and why random functions or time sleeps crash workers.
+- **Debezium EventRouter Tuning:** The exact JSON configuration keys needed to customize Kafka routing keys and prevent partition ordering issues.
+- **Pivot State Analysis:** Identifying the "point of no return" in a distributed saga where compensations are no longer allowed.
 
 ---
 
 ## What Are the Problems with 2PC in Microservices?
 
-**Answer-first:** Two-Phase Commit (2PC) is a blocking protocol with a coordinator single point of failure. If the coordinator crashes between the Prepare and Commit phases, all participants are blocked indefinitely with locks held — a catastrophic failure mode in microservices. These are the same [core banking distributed transaction challenges](/posts/deconstructing-microfinance-core-banking-architecture/) seen in legacy systems.
+**Key Concept:** Two-Phase Commit (2PC) is a blocking protocol with a coordinator single point of failure. If the coordinator crashes between the Prepare and Commit phases, all participants are blocked indefinitely with locks held — a catastrophic failure mode in microservices. These are the same [core banking distributed transaction challenges](/posts/deconstructing-microfinance-core-banking-architecture/) seen in legacy systems.
 
 ### 2PC Failure Scenario
 
@@ -59,7 +63,7 @@ sequenceDiagram
 
 ## Saga Orchestration vs Choreography
 
-**Answer-first:** Orchestration uses a central coordinator (Temporal workflow engine) that explicitly calls each service step in sequence — easier to debug, full state visibility. Choreography uses event reactions — each service emits events that trigger the next service — more decoupled but much harder to trace when failures occur.
+**Pattern Comparison:** Orchestration uses a central coordinator (Temporal workflow engine) that explicitly calls each service step in sequence — easier to debug, full state visibility. Choreography uses event reactions — each service emits events that trigger the next service — more decoupled but much harder to trace when failures occur.
 
 ### Saga Flow Diagram
 
@@ -86,7 +90,7 @@ graph LR
 
 ## Temporal Go SDK — Full Orchestration Implementation
 
-**Answer-first:** Temporal's `workflow.Saga` provides automatic LIFO (Last In, First Out) compensation execution — the last successful step is compensated first, then the second-to-last, and so on. This matches business logic: you must refund payment before releasing inventory, then cancel the order.
+**Temporal Implementation:** Temporal's `workflow.Saga` provides automatic LIFO (Last In, First Out) compensation execution — the last successful step is compensated first, then the second-to-last, and so on. This matches business logic: you must refund payment before releasing inventory, then cancel the order.
 
 ```go
 package saga
@@ -210,7 +214,7 @@ func NotifyFulfillmentActivity(orderID string) error {
 
 ## Transactional Outbox Pattern — Guaranteed Event Delivery
 
-**Answer-first:** The Transactional Outbox Pattern guarantees that Kafka events are published **atomically with the DB write** — if the write commits, the event will eventually be published. If the service crashes after committing but before publishing, the CDC connector (Debezium) reads the committed outbox row from the WAL and publishes it on recovery.
+**Architecture Pattern:** The Transactional Outbox Pattern guarantees that Kafka events are published **atomically with the DB write** — if the write commits, the event will eventually be published. If the service crashes after committing but before publishing, the CDC connector (Debezium) reads the committed outbox row from the WAL and publishes it on recovery.
 
 ### Why You Need It
 
@@ -337,8 +341,15 @@ Compensations must be: (1) **Idempotent** — running multiple times produces th
 
 {{< faq q="When should you use the Outbox Pattern?" >}}
 Use Outbox when you need the guarantee: "if the DB transaction commits, the Kafka event WILL be published." Don't use it if: best-effort event publishing is acceptable, or if the CDC pipeline latency (typically 100–500ms) is too high for your use case (use synchronous event publishing instead, accepting the risk of message loss on crash).
+{{< /faq >}}
 
 ---
 
-🔗 **Next:** [Part 9: Consistent Hashing — Virtual Nodes & CRC32 Ring in Go](/series/system-design/09-consistent-hashing-sharding/) — Why modulo hashing fails, virtual node variance math, and a thread-safe GetN implementation.
-{{< /faq >}}
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "07-idempotency-api-design-go.md" >}})
+[Next Part →]({{< ref "09-consistent-hashing-sharding.md" >}})
+
+🔗 **Next Step:** Continue to [Part 9: Consistent Hashing — Virtual Nodes & CRC32 Ring in Go]({{< ref "09-consistent-hashing-sharding.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

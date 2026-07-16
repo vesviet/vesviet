@@ -25,8 +25,6 @@ mermaid: true
 - **Latency Budget Planning:** Mapping timing budgets across databases, network hops, and API layers.
 - **Database Sharding Trade-offs:** Deciding when to partition databases based on write volumes and query styles.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 7: Part 6 — Role Shift: From Coder to AI Orchestrator]({{< ref "part-6-from-coder-to-orchestrator.md" >}}).
-
 No matter how top-tier your Prompt Engineering skills are, sooner or later you will hit a reality wall: **Writing code to create a feature is easy, but designing a system that can handle millions of users is incredibly difficult.**
 
 In an era where AI is taking over "typing" tasks, System Design is the life preserver, the "inviolable territory" that keeps you from being phased out.

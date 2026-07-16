@@ -25,8 +25,6 @@ mermaid: true
 - **Logical Gap Audits:** Identifying assumptions in AI reasoning before code hits production.
 - **System Verification Hooks:** Integrating test execution loops directly into AI prompt workflows.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 2: Part 1 — The Death of 'Code Typists': When Syntax is No Longer an Advantage]({{< ref "part-1-the-death-of-code-typists.md" >}}).
-
 Upon realizing that typing speed has been defeated by AI (as discussed in Part 1), an invisible fear engulfs programmers: *"So what will I do if AI does everything?"*
 
 The answer lies in clearly defining the boundary: AI doesn't do "everything". AI only handles the **technical muscle work**, while humans retain the **brains and responsibility**. To optimize the software development process without losing control, we need to draw a red line between the "Machine's Territory" and the "Human's Territory".

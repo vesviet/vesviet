@@ -22,8 +22,6 @@ TocOpen: true
 - **Interface Wrappers:** How to write a Go interface that switches between internal and gRPC implementations.
 - **Database Separation Loops:** Replicating database tables using Change Data Capture (CDC) during migrations.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 7: Part 6: Migration Playbook – Consolidating Microservices]({{< ref "part-6-migration-playbook.md" >}}).
-
 # Part 7: Extraction Pattern – When Should You Extract Microservices?
 
 Advocating for a **Modular Monolith** architecture does not equate to a conservative "put absolutely everything in one place" mentality. In reality, even the greatest Monolith systems like Shopify, Sentry, or GitLab possess a few "satellites" (Microservices) orbiting their central core.

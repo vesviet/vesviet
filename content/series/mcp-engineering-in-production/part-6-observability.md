@@ -26,8 +26,6 @@ TocOpen: true
 - **Prometheus Collector Setups:** Scraping metrics from ephemeral container nodes using consul discovery.
 - **Grafana Dashboard Layouts:** Combining active client streams with database transaction latency charts.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 6: Part 5: Production Security & OWASP MCP Top 10]({{< ref "part-5-security.md" >}}).
-
 As mentioned in [Part 5](/series/mcp-engineering-in-production/part-5-security/), the **MCP08 (Lack of Audit & Telemetry)** vulnerability is one of the biggest risks in Agentic systems. In the [AI Driven Playbook](/series/ai-driven-playbook/), we agreed that: When AI automates tasks on behalf of humans, the requirements for Observability and Auditing become stricter than ever, especially under the pressure of regulations like the EU AI Act.
 
 When a human clicks a button and the system crashes, we have an error stack trace. When an Agent hallucinates, calls the wrong MCP tool, and drops a database table, we need more than a stack trace—we need the entire "Chain of Thought" leading to that disaster.

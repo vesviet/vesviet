@@ -12,7 +12,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-Welcome to the definitive hub for system design case studies and software architecture deep dives. Drawing from over 17 years of experience in backend engineering and building resilient platforms, these **21 in-depth series** break down complex [distributed systems](/posts/mastering-event-driven-architecture-dapr/) into digestible, actionable lessons — from e-commerce flash sales to core banking, from ride-hailing real-time systems to production AI agents.
+Welcome to the definitive hub for system design case studies and software architecture deep dives. Drawing from over 17 years of experience in backend engineering and building resilient platforms, these **23 in-depth series** break down complex [distributed systems](/posts/mastering-event-driven-architecture-dapr/) into digestible, actionable lessons — from e-commerce flash sales to core banking, from ride-hailing real-time systems to production AI agents.
 
 ## Exploring Real-World Software Architecture & Microservices
 
@@ -141,6 +141,6 @@ Senior engineers should explore the [E-Commerce Order Allocation]({{< ref "/seri
 The AI series follow a deliberate learning path: start with [AI-Driven Engineer]({{< ref "/series/ai-driven-engineer/_index.md" >}}) (mindset), then [AI-Driven Playbook]({{< ref "/series/ai-driven-playbook/_index.md" >}}) (execution), [Vibe Coding & AI Code Review]({{< ref "/series/ai-code-review-vibe-coding/_index.md" >}}) (shipping AI code safely), [AI Data Engineering Pipeline]({{< ref "/series/ai-data-engineering-pipeline/_index.md" >}}) (data layer), [Agentic System Architecture]({{< ref "/series/agentic-system-architecture/_index.md" >}}) (multi-agent design), and finally [MCP Engineering]({{< ref "/series/mcp-engineering-in-production/_index.md" >}}) (production infrastructure). The [SLM Playbook]({{< ref "/series/slm-playbook/_index.md" >}}) and [Generative UI]({{< ref "/series/generative-ui-architecture/_index.md" >}}) series complement this path with model deployment and frontend architecture.
 {{< /faq >}}
 
-{{< faq q="Do I need to read all 21 series?" >}}
+{{< faq q="Do I need to read all 23 series?" >}}
 No. Each series is self-contained and can be read independently. Use the **Where Should You Start?** table above to find the best entry point for your profile. However, series within the same category often cross-reference each other, so exploring related series will deepen your understanding.
 {{< /faq >}}

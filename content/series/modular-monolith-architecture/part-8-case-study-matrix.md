@@ -22,8 +22,6 @@ TocOpen: true
 - **Lyft Microservice Consolidations:** Why Lyft merged several microservices back into their core monorepo.
 - **Target Peak Scale Handling:** How Target manages Black Friday traffic peaks using vertical monolith replicas.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 8: Part 7: Extraction Pattern – When Should You Extract Microservices?]({{< ref "part-7-extraction-pattern.md" >}}).
-
 # Part 8: Case Study Matrix – The Monuments of the Modular Monolith
 
 Numerous debates about architectural design often lead to dead ends due to a lack of quantitative, real-world numbers. There is a common misconception that: "Only Microservices can withstand web-scale loads."

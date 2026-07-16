@@ -18,16 +18,20 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/04-database-scaling-sharding/"
 ---
+**Answer-first:** Database sharding distributes data horizontally across independent partitions (shards) based on a shard key, reducing write contention and enabling linear storage growth. Choosing the wrong shard key leads to hot spots that can be worse than no sharding at all.
 
 > **Prerequisite:** Part 4 of the [System Design Masterclass](/series/system-design/). Read [Part 3: Caching Strategies](/series/system-design/03-caching-strategies-redis-golang/) to understand the cache layer before examining storage.
 
-**Answer-first:** Database sharding distributes data horizontally across independent partitions (shards) based on a shard key, reducing write contention and enabling linear storage growth. Choosing the wrong shard key leads to hot spots that can be worse than no sharding at all.
+### What You'll Learn That AI Won't Tell You
+- **PostgreSQL Connection Memory Math:** Why each PostgreSQL connection eats 5–10MB of server RAM, and why a naive `database/sql` pool configuration crashes databases.
+- **TiDB Percolator Failures:** The exact edge cases where primary lock failures leave secondary locks orphaned, and how TiDB's async lock resolver cleans them up.
+- **LSM-Tree Write Amplification:** The performance penalty of Cassandra/TiKV compaction cycles on SSD disk lifespan.
 
 ---
 
 ## Vertical vs Horizontal Scaling — When to Switch?
 
-**Answer-first:** Vertical scaling (scale-up) increases resources on a single server — simple but has a hard physical ceiling and non-linear cost growth. Horizontal scaling (scale-out) adds more servers — no theoretical ceiling, linear cost, but significantly higher operational complexity.
+**Key Concept:** Vertical scaling (scale-up) increases resources on a single server — simple but has a hard physical ceiling and non-linear cost growth. Horizontal scaling (scale-out) adds more servers — no theoretical ceiling, linear cost, but significantly higher operational complexity.
 
 ### Scaling Migration Ladder
 
@@ -46,7 +50,7 @@ canonicalURL: "https://tanhdev.com/series/system-design/04-database-scaling-shar
 
 ## B-Tree vs LSM-Tree — Storage Engine Internals
 
-**Answer-first:** B-Tree (InnoDB, PostgreSQL) is optimized for read-heavy workloads with low-latency point lookups. LSM-Tree (RocksDB, Cassandra, TiKV) is optimized for write-heavy workloads by buffering writes in memory before flushing sequentially to disk.
+**Storage Engine Comparison:** B-Tree (InnoDB, PostgreSQL) is optimized for read-heavy workloads with low-latency point lookups. LSM-Tree (RocksDB, Cassandra, TiKV) is optimized for write-heavy workloads by buffering writes in memory before flushing sequentially to disk.
 
 ### B-Tree (InnoDB, PostgreSQL Heap)
 
@@ -104,7 +108,7 @@ graph LR
 
 ## Choosing an Optimal Shard Key
 
-**Answer-first:** A good shard key must: (1) have **high cardinality** — many unique values for even distribution; (2) ensure **write distribution** — no single value receives disproportionate writes (avoid time-based keys); (3) maintain **query locality** — common queries only need to touch one shard.
+**Shard Key Conditions:** A good shard key must: (1) have **high cardinality** — many unique values for even distribution; (2) ensure **write distribution** — no single value receives disproportionate writes (avoid time-based keys); (3) maintain **query locality** — common queries only need to touch one shard.
 
 ### Three Partitioning Strategies
 
@@ -178,7 +182,7 @@ func (r *ShardRouter) GetShardDSN(userID int64) string {
 
 ## TiDB Percolator — Distributed Commit Protocol
 
-**Answer-first:** TiDB uses Percolator Two-Phase Commit (2PC) on top of TiKV — a distributed key-value store. This provides distributed ACID transactions without application-level coordination.
+**Consensus Pattern:** TiDB uses Percolator Two-Phase Commit (2PC) on top of TiKV — a distributed key-value store. This provides distributed ACID transactions without application-level coordination.
 
 ```
 Phase 1 — Prewrite:
@@ -202,7 +206,7 @@ Phase 2 — Commit:
 
 ## Go Connection Pool Tuning — `database/sql`
 
-**Answer-first:** The `database/sql` connection pool must be configured to match your database's capacity. The most common misconfiguration: `MaxOpenConns` not set (defaults to unlimited), causing the application to open thousands of connections and crash PostgreSQL.
+**Tuning Guide:** The `database/sql` connection pool must be configured to match your database's capacity. The most common misconfiguration: `MaxOpenConns` not set (defaults to unlimited), causing the application to open thousands of connections and crash PostgreSQL.
 
 ### PostgreSQL vs MySQL Connection Model
 
@@ -321,8 +325,15 @@ A shard key must satisfy three conditions: (1) **High cardinality** — many uni
 
 {{< faq q="When should you use TiDB instead of MySQL sharding?" >}}
 Use TiDB when: dataset > 1 TB needs complex SQL queries, you need horizontal scaling without manual re-sharding, or you need distributed ACID transactions between multiple tables without application-level 2PC. Don't use TiDB when: latency < 2ms is critical (TiDB commit ~3ms), or the team lacks TiDB operational expertise.
+{{< /faq >}}
 
 ---
 
-🔗 **Next:** [Part 5: Event-Driven Architecture & Kafka in Go](/series/system-design/05-async-message-queues-kafka-go/) — Worker Pool pattern, backpressure via buffered channels, and Exactly-Once Semantics.
-{{< /faq >}}
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "03-caching-strategies-redis-golang.md" >}})
+[Next Part →]({{< ref "05-async-message-queues-kafka-go.md" >}})
+
+🔗 **Next Step:** Continue to [Part 5: Event-Driven Architecture & Kafka in Go]({{< ref "05-async-message-queues-kafka-go.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

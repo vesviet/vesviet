@@ -25,8 +25,6 @@ mermaid: true
 - **Workspace Indexing Math:** How Cursor indexes symbols and classes using local AST parsing.
 - **Error Loop Resolution:** Techniques to break out of repetitive AI code generation loops.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 3: Part 2 — Man vs. Machine Boundaries: What to Delegate and What to Keep]({{< ref "part-2-man-vs-machine-boundaries.md" >}}).
-
 Social media and tech marketing campaigns constantly inject a concept into our heads: **"10x Developer thanks to AI"**. The image of a programmer sipping coffee, typing a few prompts, and finishing a week's worth of work in one morning is incredibly appealing.
 
 But the truth in the trenches of real-world projects is much harsher. AI provides immense power, but it follows the law of conservation of energy: The time you save when "typing code" will be partially (or entirely) reclaimed during the reading and maintenance phases if you don't know what you're doing.

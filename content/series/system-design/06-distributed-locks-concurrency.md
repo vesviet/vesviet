@@ -18,16 +18,20 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/06-distributed-locks-concurrency/"
 ---
+**Answer-first:** Distributed locks solve the mutual exclusion problem across independent servers — ensuring only one server can modify a shared resource at a time. Redis Redlock provides high-performance locking using majority quorum across multiple master nodes; etcd provides stronger guarantees via Raft consensus at the cost of higher latency.
 
 > **Prerequisite:** Part 6 of the [System Design Masterclass](/series/system-design/). Read [Part 5: Kafka & Event-Driven](/series/system-design/05-async-message-queues-kafka-go/) to understand event sourcing patterns before tackling lock coordination.
 
-**Answer-first:** Distributed locks solve the mutual exclusion problem across independent servers — ensuring only one server can modify a shared resource at a time. Redis Redlock provides high-performance locking using majority quorum across multiple master nodes; etcd provides stronger guarantees via Raft consensus at the cost of higher latency.
+### What You'll Learn That AI Won't Tell You
+- **Redlock Clock Drift Math:** Why unsynchronized system clocks (NTP drifts) allow two clients to acquire the same Redis lock, and how to verify with fencing tokens.
+- **Rsync Lock-Release Failures:** The dangerous Lua script race condition when executing un-coordinated lock releases in Redis under network partitions.
+- **etcd Keep-Alive Overhead:** How etcd's HTTP/2 stream heartbeats impact cluster CPU utilization when holding thousands of concurrent locks.
 
 ---
 
 ## Why Do Race Conditions Occur in Distributed Systems?
 
-**Answer-first:** Race conditions occur across server processes when multiple servers independently read and then write shared state without coordination. A single-process mutex doesn't help — you need a lock mechanism visible across all processes.
+**Key Concept:** Race conditions occur across server processes when multiple servers independently read and then write shared state without coordination. A single-process mutex doesn't help — you need a lock mechanism visible across all processes.
 
 ### Anatomy of a Distributed Race Condition
 
@@ -53,7 +57,7 @@ Neither server knew the other was running the same transaction simultaneously. A
 
 ## Redlock Safety Math — Calculating Validity Time
 
-**Answer-first:** Redlock calculates a `validity_time` to determine whether the acquired lock is still safe to use — subtracting acquisition time and clock drift from the TTL. A negative validity time means the lock has already expired during acquisition and must be released immediately.
+**Calculation Standard:** Redlock calculates a `validity_time` to determine whether the acquired lock is still safe to use — subtracting acquisition time and clock drift from the TTL. A negative validity time means the lock has already expired during acquisition and must be released immediately.
 
 ### The Redlock Validity Formula
 
@@ -91,7 +95,7 @@ graph TD
 
 ## Implementing Redlock with go-redsync
 
-**Answer-first:** `go-redsync/redsync` is the canonical Go Redlock implementation. It handles majority quorum, retry with jitter, and safe unlock via Lua script (prevents unlocking another client's lock).
+**Redsync Library:** `go-redsync/redsync` is the canonical Go Redlock implementation. It handles majority quorum, retry with jitter, and safe unlock via Lua script (prevents unlocking another client's lock).
 
 ```go
 package lock
@@ -162,7 +166,7 @@ func (dlm *DistributedLockManager) ExecuteWithLock(
 
 ## Redis Redlock vs etcd — Decision Matrix
 
-**Answer-first:** Redis Redlock is AP-style — high performance (~1–5ms), but has clock drift edge cases. etcd is CP-style via Raft consensus — linearizable, automatic lease renewal, but higher latency (~5–20ms) and requires a dedicated etcd cluster.
+**Consensus Comparison:** Redis Redlock is AP-style — high performance (~1–5ms), but has clock drift edge cases. etcd is CP-style via Raft consensus — linearizable, automatic lease renewal, but higher latency (~5–20ms) and requires a dedicated etcd cluster.
 
 | Property | Redis Redlock | etcd (Raft) | ZooKeeper |
 |---|---|---|---|
@@ -240,7 +244,7 @@ func (e *EtcdLockManager) ExecuteWithLock(
 
 ## How to Prevent Split-Brain with Distributed Locks?
 
-**Answer-first:** Split-brain occurs when a network partition causes two groups of servers to simultaneously believe they hold the lock. The prevention mechanism differs between Redis and etcd.
+**Failure Scenario:** Split-brain occurs when a network partition causes two groups of servers to simultaneously believe they hold the lock. The prevention mechanism differs between Redis and etcd.
 
 **With Redis Redlock:**
 - Require locks on majority (N/2 + 1) nodes — any minority partition cannot form quorum.
@@ -286,7 +290,15 @@ This atomically checks if the lock value matches your client's unique token befo
 ---
 
 > [!TIP]
-> **Locks vs Idempotency — when to use which:** Distributed locks prevent concurrent execution of a critical section. Idempotency keys prevent duplicate side effects from retried requests. For payment flows, you need **both**: a lock ensures only one payment process runs at a time, while an idempotency key ensures that a client retry after a timeout doesn't double-charge. See [Part 7: Idempotent API Design](/series/system-design/07-idempotency-api-design-go/).
+> **Locks vs Idempotency — when to use which:** Distributed locks prevent concurrent execution of a critical section. Idempotency keys prevent duplicate side effects from retried requests. For payment flows, you need **both**: a lock ensures only one payment process runs at a time, while an idempotency key ensures that a client retry after a timeout doesn't double-charge. See [Part 7: Idempotent API Design]({{< ref "07-idempotency-api-design-go.md" >}}).
 
-🔗 **Next:** [Part 7: Idempotent API Design in Go](/series/system-design/07-idempotency-api-design-go/) — Idempotency Key, Redis SetNX middleware, HTTP response recorder, and the Stripe API pattern.
-{{< /faq >}}
+---
+
+## Navigation & Next Steps
+
+[← Previous Part]({{< ref "05-async-message-queues-kafka-go.md" >}})
+[Next Part →]({{< ref "07-idempotency-api-design-go.md" >}})
+
+🔗 **Next Step:** Continue to [Part 7: Idempotent API Design in Go]({{< ref "07-idempotency-api-design-go.md" >}})
+
+Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

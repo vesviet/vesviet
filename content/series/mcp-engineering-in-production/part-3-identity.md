@@ -26,8 +26,6 @@ TocOpen: true
 - **Least-Privilege Agent Design:** Mapping LLM tool permissions to specific user role groups in LDAP/OIDC.
 - **Dynamic Resource Filters:** Filtering SQL response data to hide sensitive fields before returning it to the agent.
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 3: Part 2: Build a Production Server with Go]({{< ref "part-2-build.md" >}}).
-
 If Part 2 helped you build a robust Server, Part 3 addresses the most headache-inducing question in Security: **"How does the MCP Server know WHICH Agent is calling it, and does that Agent have the PERMISSION to do so?"**
 
 In the early days of Agentic AI, developers often bypassed this by hardcoding long-lived API Keys. But in a Zero Trust environment, an API Key stored in plain text inside a Python script of an Agent is a ticking time bomb. If the Agent falls victim to a [Prompt Injection](/series/mcp-engineering-in-production/part-5-security/) attack, the hacker captures that API Key and gains full access to your infrastructure.
