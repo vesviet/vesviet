@@ -1,28 +1,90 @@
-# Project: tanhdev.com Technical SEO & Frontend Optimization Sprint
+# Project: tanhdev.com Posts SEO & Content Quality Audit Sprint
 
-## Architecture
-- Website URL: https://tanhdev.com/
-- Static Site Generator: Hugo (with PaperMod theme)
-- Deploy Target: Cloudflare Pages
-- Code Layout:
-  - `content/posts/`, `content/series/`, `content/radar/` — Blog posts and content
-  - `content/reading-map.md` — Site cluster mapping
-  - `layouts/` — Custom HTML layout templates
-  - `assets/` — CSS/JS assets, images, styling
-  - `static/` — Static assets (mapped to root during build)
-  - `hugo.toml` — Hugo site configuration
+## Architecture & Content Layout
+- **Website URL**: https://tanhdev.com/
+- **SSG**: Hugo (with PaperMod theme)
+- **Deployment Platform**: Cloudflare Pages
+- **Content Hierarchy**:
+  - `content/posts/` — Individual long-form posts (58 files). Enforces a 1,400+ words SEO baseline.
+  - `content/series/` — Curriculum-based, multi-part tutorials grouped under directories (e.g. `agentic-ecommerce-search/`).
+  - `content/radar/` — Tech updates and short architectural radars.
+  - `content/reading-map.md` — Site index grouping 57 published essays into content pillars.
+- **Config & Infrastructure**:
+  - `hugo.toml` — Permalinks formatted with trailing slashes `/posts/:slug/`. Custom outputs configured for `llms.txt` and `llms-full.txt`.
+  - `static/robots.txt` — Grants indexing access to AI bots (GPTBot, ClaudeBot, PerplexityBot) while blocking scraping search bots.
+  - `static/_headers` — Exposes caching rules for static resources.
 
-## Milestones
-| # | Name | Scope | Dependencies | Status |
-|---|---|---|---|---|
-| 1 | M1: Canonical URLs & Author Metadata | Resolve duplicate canonicals, self-referential canonical script, author standardization (Tickets 1, 2, 9) | None | DONE |
-| 2 | M2: Header Navigation, Accessibility & Dropdowns | Crawlable menu links, ARIA attributes, Escape key close handlers (Tickets 3, 15) | None | DONE |
-| 3 | M3: Asset Pipeline, LCP & Responsive Images | Relocate static images to assets, Goldmark render hook, LCP preloading (Tickets 4, 12, 13) | None | DONE |
-| 4 | M4: Mermaid Theme Sync & Dynamic Rendering | Add render configuration, dynamic theme switching scripts (Tickets 8, 14) | None | DONE |
-| 5 | M5: CSS Hierarchy, Contrast & Typography | Class-based buttons styling, theme variables contrast, code wrapping (Tickets 11, 16, 17) | None | PLANNED |
-| 6 | M6: Config, Caching, MCP Schemas & Content Quality | plain-text output formats, llms-full.txt layout, Cloudflare caching, MCP schema validation, Answer-First & FAQ placeholder validations (Tickets 5, 6, 7, 10, 18, 19, 20, 21, 22, 23) | M1, M2, M3, M4, M5 | PLANNED |
+## Detailed Milestones
 
-## Interface Contracts & Guidelines
-- All modifications must follow `guidelines.md` in `/home/user/personalized/agent/vesviet/guidelines.md`.
-- Ensure proper syntax and formatting for Hugo frontmatter.
-- Static assets relocated from `/static/` to `/assets/` must have updated references in the content files.
+| Milestone | Name | Objective | Scope | Status |
+| --- | --- | --- | --- | --- |
+| **M1** | Discovery & Setup | Verify file directories, index canonicals/slugs, analyze guidelines and previous reports. | `/content/posts/`, `_internal/` | **COMPLETE** |
+| **M2** | Technical Scan Execution | Implement and execute programmatic script checking for word counts, Mojibake patterns, broken internal links, and TOC status. | `verify_posts.py`, `/content/posts/` | PLANNED |
+| **M3** | Content Quality & E-E-A-T | Scan Answer-First placement, verify placeholders (FAQs, boilerplate templates), audit schema integration and E-E-A-T signals. | `/content/posts/`, `layouts/` | PLANNED |
+| **M4** | Report Consolidation | Consolidate technical and quality findings into single source of truth report markdown files. | `/posts_audit_report.md`, `/seo_audit_report.md` | PLANNED |
+| **M5** | Independent Review | Run review passes to verify E-E-A-T compliance and test implementation solutions. | `/plan/baiviet/publish-log.md` | PLANNED |
+
+## Interface Contracts & Schemas
+
+### 1. `seo-audit-report.json`
+Specifies metadata validation results for individual pages, ensuring Answer-First formatting, proper keyword clustering, and technical search visibility.
+```json
+{
+  "document_path": "string",
+  "audit_type": "string (post_draft_pre_publish | repository_wide)",
+  "keywords": {
+    "primary": "string",
+    "secondary": ["string"]
+  },
+  "geo_aeo_execution": {
+    "answer_first_structure": "string (Pass/Fail status)",
+    "query_fan_out": "string",
+    "fact_density": "string",
+    "ai_extractability": "string"
+  },
+  "topical_authority": {
+    "information_gain": "string",
+    "cluster_position": "string (pillar | supporting)",
+    "pillar_page": "string"
+  },
+  "issues": [
+    {
+      "severity": "string (Low | Medium | High)",
+      "category": "string",
+      "finding": "string",
+      "recommendation": "string"
+    }
+  ],
+  "technical_escalations": [
+    {
+      "owner": "string",
+      "task": "string"
+    }
+  ],
+  "next_steps": "string"
+}
+```
+
+### 2. `internal-link-audit.json`
+Ensures crawler link flow, identifying dead-ends, orphans, and broken links across the posts directory.
+```json
+{
+  "stats": {
+    "total_pages": "integer",
+    "total_links": "integer",
+    "avg_outbound": "float",
+    "avg_inbound": "float"
+  },
+  "orphans": ["string (filenames/slugs)"],
+  "dead_ends": ["string (filenames/slugs)"],
+  "top_linked_pages": [["string", "integer"]],
+  "top_linking_pages": [["string", "integer"]],
+  "detailed_nodes": {
+    "slug": {
+      "type": "string (posts | series | radar)",
+      "inbound_count": "integer",
+      "outbound_count": "integer"
+    }
+  }
+}
+```

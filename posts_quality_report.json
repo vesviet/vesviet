@@ -1,0 +1,4019 @@
+{
+  "summary": {
+    "total_posts_checked": 58,
+    "total_issues_found": 0,
+    "eeat_rating_distribution": {
+      "HIGH DEPTH": 16,
+      "MEDIUM DEPTH": 37,
+      "LOW DEPTH": 5
+    },
+    "posts_with_issues_count": 0,
+    "answer_first_violations_count": 0,
+    "posts_with_boilerplate_count": 0,
+    "posts_with_date_formatting_issues_count": 0
+  },
+  "posts": {
+    "agentic-ecommerce-search-golang-vector-databases.md": {
+      "filename": "agentic-ecommerce-search-golang-vector-databases.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/agentic-ecommerce-search-golang-vector-databases.md",
+      "eeat": {
+        "code_blocks": 1,
+        "mermaid_diagrams": 1,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 1,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 1,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 31,
+        "summary_text": "Agentic E-commerce Search transforms traditional search from passive keyword matching to active shopping assistance using AI agents that understand complex queries, apply business logic filters, and provide personalized results in real-time.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-05-22T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-06-10T16:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "ai-native-frontend-architecture-predictions-2028.md": {
+      "filename": "ai-native-frontend-architecture-predictions-2028.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/ai-native-frontend-architecture-predictions-2028.md",
+      "eeat": {
+        "code_blocks": 2,
+        "mermaid_diagrams": 4,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 0,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 0,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 2,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 42,
+        "summary_text": "By 2028, AI-native frontends will shift from static components to dynamic, real-time interfaces generated via Model Context Protocol (MCP) contracts. Standardized component registries and streaming state synchronization will replace manual UI development, making schema validation at the edge a critical security requirement.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-05-16T21:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-05-16T21:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "alipay-double-11-architecture-tps.md": {
+      "filename": "alipay-double-11-architecture-tps.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/alipay-double-11-architecture-tps.md",
+      "eeat": {
+        "code_blocks": 0,
+        "mermaid_diagrams": 1,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 4
+        },
+        "total_case_study": 4,
+        "arch_depth_counts": {
+          "microservices": 6,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 1
+        },
+        "total_arch_depth": 7,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 42,
+        "summary_text": "Alipay scaled to 583,000 TPS using Logical Data Center (LDC) unitization for multi-site active-active disaster recovery, OceanBase for distributed relational storage with Raft consensus, RocketMQ for transactional messaging, and SOFAStack middleware. This architecture guarantees horizontal scalability and financial-grade consistency under peak load.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-01T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-06-10T16:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "architecting-21-service-ecommerce-golang-ddd.md": {
+      "filename": "architecting-21-service-ecommerce-golang-ddd.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/architecting-21-service-ecommerce-golang-ddd.md",
+      "eeat": {
+        "code_blocks": 4,
+        "mermaid_diagrams": 1,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 1
+        },
+        "total_case_study": 1,
+        "arch_depth_counts": {
+          "microservices": 12,
+          "modular monolith": 1,
+          "bounded context": 1,
+          "saga pattern": 5,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 19,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 4,
+        "rating": "HIGH DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 44,
+        "summary_text": "We decompose the monolith into 21 microservices using Domain-Driven Design (DDD) to isolate business boundaries. Implementing the Kratos framework in Go enables strong structural subtyping for clean layer segregation, while Dapr Workflows handle distributed transactions asynchronously via the Saga pattern to avoid race conditions.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-04-12T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-03T00:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "architecting-an-autonomous-hybrid-ai-content-pipeline.md": {
+      "filename": "architecting-an-autonomous-hybrid-ai-content-pipeline.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/architecting-an-autonomous-hybrid-ai-content-pipeline.md",
+      "eeat": {
+        "code_blocks": 7,
+        "mermaid_diagrams": 4,
+        "case_study_counts": {
+          "case study": 1,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 1,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 1
+        },
+        "total_case_study": 3,
+        "arch_depth_counts": {
+          "microservices": 0,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 0,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 48,
+        "summary_text": "Transition from fragile, expensive cron jobs to a resilient, state-based Finite State Machine (FSM) for autonomous content pipelines. Dramatically reduce LLM API fees by employing a tiered hybrid routing strategy—using local models for routing and frontier models only for editing—and implement Wake-on-LAN to control GPU server utility costs.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-05-18T09:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-05-18T09:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "argo-cd-updates-2026.md": {
+      "filename": "argo-cd-updates-2026.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/argo-cd-updates-2026.md",
+      "eeat": {
+        "code_blocks": 2,
+        "mermaid_diagrams": 0,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 1
+        },
+        "total_case_study": 1,
+        "arch_depth_counts": {
+          "microservices": 4,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 4,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 43,
+        "summary_text": "Argo CD v3.4 and v3.3 introduce Cluster Pause to freeze reconciliation across target clusters during major maintenance, PreDelete hooks for graceful lifecycle cleanups, annotation-based sync filtering, and a revamped ApplicationSet UI. These features significantly simplify GitOps configuration management for large-scale multi-tenant Kubernetes environments.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-01T15:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-06-10T14:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "aws-eks-vs-ecs-comparison.md": {
+      "filename": "aws-eks-vs-ecs-comparison.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/aws-eks-vs-ecs-comparison.md",
+      "eeat": {
+        "code_blocks": 2,
+        "mermaid_diagrams": 4,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 5,
+          "throughput": 0
+        },
+        "total_case_study": 5,
+        "arch_depth_counts": {
+          "microservices": 7,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 7,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 4,
+        "rating": "HIGH DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 45,
+        "summary_text": "Choose AWS EKS for Kubernetes-native GitOps (ArgoCD, Dapr) and cloud-portable architectures. Choose ECS for zero-cost control planes, rapid deployment, and pure AWS-native simplicity. Go stateless containers on Graviton Spot to cut compute costs by 35%, and use Network Load Balancers for high-performance internal gRPC routing.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-26T21:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-08T18:21:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "banking-microservices-architecture.md": {
+      "filename": "banking-microservices-architecture.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/banking-microservices-architecture.md",
+      "eeat": {
+        "code_blocks": 5,
+        "mermaid_diagrams": 2,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 3
+        },
+        "total_case_study": 3,
+        "arch_depth_counts": {
+          "microservices": 5,
+          "modular monolith": 0,
+          "bounded context": 1,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 5
+        },
+        "total_arch_depth": 11,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 4,
+        "rating": "HIGH DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 52,
+        "summary_text": "A modern banking microservices architecture replaces legacy monolithic ledgers (like T24 or Flexcube) using Go for high-throughput transaction routing. The system achieves distributed consistency without two-phase commit (2PC) by combining Event Sourcing (immutable ledger streams), Saga Orchestration (using Temporal or Dapr), the Transactional Outbox pattern, and PostgreSQL unique constraints for API idempotency.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-01T15:15:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-08T18:21:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "blueprint-ecommerce-microservices-architecture-diagram.md": {
+      "filename": "blueprint-ecommerce-microservices-architecture-diagram.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/blueprint-ecommerce-microservices-architecture-diagram.md",
+      "eeat": {
+        "code_blocks": 0,
+        "mermaid_diagrams": 3,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 1
+        },
+        "total_case_study": 1,
+        "arch_depth_counts": {
+          "microservices": 12,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 1,
+          "consistent hashing": 0,
+          "cqrs": 4,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 17,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 17,
+        "summary_text": "Complete architectural blueprint of a Go 21-service e-commerce platform. Covers domain boundaries, traffic flow, and event-driven patterns.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-04-12T08:30:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-08T18:21:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "cloudflare-d1-durable-objects-realtime-cart.md": {
+      "filename": "cloudflare-d1-durable-objects-realtime-cart.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/cloudflare-d1-durable-objects-realtime-cart.md",
+      "eeat": {
+        "code_blocks": 6,
+        "mermaid_diagrams": 1,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 1,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 1,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 41,
+        "summary_text": "Eliminate database latency and Redis caching overhead for global e-commerce by pairing Cloudflare Workers at the edge with Durable Objects for strongly consistent, real-time in-memory state. Use D1 for serverless SQLite persistence, routing concurrent device updates through a transactional, conflict-free architecture.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-01T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-06-01T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "cloudflare-zero-devops-ecommerce.md": {
+      "filename": "cloudflare-zero-devops-ecommerce.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/cloudflare-zero-devops-ecommerce.md",
+      "eeat": {
+        "code_blocks": 5,
+        "mermaid_diagrams": 0,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 0,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 0,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 1,
+        "rating": "LOW DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 44,
+        "summary_text": "Cloudflare Workers and Turborepo enable a \"Zero DevOps\" e-commerce architecture by deploying serverless API handlers directly to the edge, utilizing D1 for transactional storage, and automatically compiling SDKs on API changes. This setup eliminates traditional server administration and scales horizontally with sub-100ms response times.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-17T21:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-06-24T00:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "composable-banking-architecture.md": {
+      "filename": "composable-banking-architecture.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/composable-banking-architecture.md",
+      "eeat": {
+        "code_blocks": 10,
+        "mermaid_diagrams": 3,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 2
+        },
+        "total_case_study": 2,
+        "arch_depth_counts": {
+          "microservices": 14,
+          "modular monolith": 0,
+          "bounded context": 1,
+          "saga pattern": 1,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 1
+        },
+        "total_arch_depth": 17,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 4,
+        "rating": "HIGH DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 39,
+        "summary_text": "Composable banking replaces rigid legacy cores with modular Go microservices. The transition uses the Strangler Fig pattern to decouple domains, while distributed Sagas manage eventual consistency across transaction engines, and NewSQL databases provide horizontal scaling without sacrificing ACID compliance.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-10T14:55:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-08T18:21:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "dapr-workflow-saga-orchestration-guide.md": {
+      "filename": "dapr-workflow-saga-orchestration-guide.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/dapr-workflow-saga-orchestration-guide.md",
+      "eeat": {
+        "code_blocks": 9,
+        "mermaid_diagrams": 2,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 2
+        },
+        "total_case_study": 2,
+        "arch_depth_counts": {
+          "microservices": 11,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 2,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 13,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 4,
+        "rating": "HIGH DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 41,
+        "summary_text": "Dapr Workflows implement the Saga pattern in Go by coordinating distributed transactions through stateful, durable orchestration. If a step fails, the orchestrator executes compensating transactions in reverse order, ensuring eventual consistency without requiring complex manual state management or two-phase commit overhead.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-01T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-03T00:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "deconstructing-ecommerce-service-details-domain.md": {
+      "filename": "deconstructing-ecommerce-service-details-domain.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/deconstructing-ecommerce-service-details-domain.md",
+      "eeat": {
+        "code_blocks": 4,
+        "mermaid_diagrams": 0,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 1
+        },
+        "total_case_study": 1,
+        "arch_depth_counts": {
+          "microservices": 6,
+          "modular monolith": 0,
+          "bounded context": 2,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 1,
+          "outbox pattern": 1
+        },
+        "total_arch_depth": 10,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 1,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 1,
+        "signals_present": 4,
+        "rating": "HIGH DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 37,
+        "summary_text": "We partition the e-commerce domain into six logical business domains—Identity, Catalog, Cart, Checkout, Order, and Fulfillment—containing 21 isolated services. Each service owns its database exclusively, communicating asynchronously via event brokers to ensure scalability and prevent tight coupling.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-04-12T08:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-04-12T08:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "deconstructing-microfinance-core-banking-architecture.md": {
+      "filename": "deconstructing-microfinance-core-banking-architecture.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/deconstructing-microfinance-core-banking-architecture.md",
+      "eeat": {
+        "code_blocks": 0,
+        "mermaid_diagrams": 1,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 1,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 1,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 2,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 37,
+        "summary_text": "Microfinance core banking requires a decentralized architecture: a double-entry ledger for transaction auditing, a joint liability group (JLG) loan engine with optimistic concurrency controls, modular interest/amortization processors, and parallelized worker pools to handle heavy End-of-Day batch processing.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-05-27T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-08T18:21:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "deploying-astro-on-cloudflare-full-stack-edge-architecture.md": {
+      "filename": "deploying-astro-on-cloudflare-full-stack-edge-architecture.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture.md",
+      "eeat": {
+        "code_blocks": 19,
+        "mermaid_diagrams": 2,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 2,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 2,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 40,
+        "summary_text": "Deploying Astro on Cloudflare Pages utilizes V8 isolates for near-zero cold starts and global edge execution. The architecture relies on D1 edge database bindings, Durable Objects for real-time state, and Cloudflare CDN caching policies to deliver high-performance, cost-effective web applications.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-04-24T14:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-04-24T14:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "deploying-autonomous-ai-swarm-openclaw-litellm.md": {
+      "filename": "deploying-autonomous-ai-swarm-openclaw-litellm.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/deploying-autonomous-ai-swarm-openclaw-litellm.md",
+      "eeat": {
+        "code_blocks": 3,
+        "mermaid_diagrams": 1,
+        "case_study_counts": {
+          "case study": 1,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 1
+        },
+        "total_case_study": 2,
+        "arch_depth_counts": {
+          "microservices": 0,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 0,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 47,
+        "summary_text": "Orchestrate a resilient, 24/7 autonomous AI swarm by decoupling agent execution from LLM providers using LiteLLM as an API gateway. Handle rate limits via key-pooling and automatic fallbacks, manage agent tasks with OpenClaw, and isolate container permissions using Docker `cap_drop` to mitigate SSRF and prompt injection risks.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-05-17T21:45:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-03T15:22:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "ecommerce-architecture-composable-migration.md": {
+      "filename": "ecommerce-architecture-composable-migration.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/ecommerce-architecture-composable-migration.md",
+      "eeat": {
+        "code_blocks": 3,
+        "mermaid_diagrams": 1,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 3,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 3,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 43,
+        "summary_text": "Monolith decoupling succeeds only when solving eventual consistency and distributed tracing overhead early. Mitigate inventory overselling via Redis-based BFF locking, stream database sync in real-time via Debezium CDC and Kafka, and build distributed tracing via OpenTelemetry from day one to avoid system blindness.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-07-06T00:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-08T18:21:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "exporting-magento-2-data-flat-sql-nodejs.md": {
+      "filename": "exporting-magento-2-data-flat-sql-nodejs.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/exporting-magento-2-data-flat-sql-nodejs.md",
+      "eeat": {
+        "code_blocks": 7,
+        "mermaid_diagrams": 0,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 4,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 4,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 2,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 42,
+        "summary_text": "Extracting Magento 2 EAV data efficiently requires direct SQL joins that flatten entity tables, avoiding expensive ORM overhead. By piping the database cursor into Node.js transform streams, we handle backpressure natively, exporting millions of product records with a memory footprint under 100MB.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2024-03-09T10:38:22+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-03T15:22:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "generative-ui-with-mcp-ai-native-frontend.md": {
+      "filename": "generative-ui-with-mcp-ai-native-frontend.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/generative-ui-with-mcp-ai-native-frontend.md",
+      "eeat": {
+        "code_blocks": 11,
+        "mermaid_diagrams": 2,
+        "case_study_counts": {
+          "case study": 1,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 1,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 2,
+        "arch_depth_counts": {
+          "microservices": 0,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 0,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 50,
+        "summary_text": "Generative UI architectures leverage Model Context Protocol (MCP) to stream dynamic UI component schemas from LLMs. Securing these interfaces requires validating inputs via Zod prop schemas at the API gateway and rendering only pre-compiled, versioned local primitive React components in the browser, eliminating the risk of arbitrary remote code execution.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-01T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-06-01T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "gitops-at-scale-kubernetes-argocd-microservices.md": {
+      "filename": "gitops-at-scale-kubernetes-argocd-microservices.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/gitops-at-scale-kubernetes-argocd-microservices.md",
+      "eeat": {
+        "code_blocks": 8,
+        "mermaid_diagrams": 1,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 6,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 6,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 41,
+        "summary_text": "Eliminate manual deployment errors and drift by implementing split-repo GitOps with ArgoCD. By configuring the `selfHeal: true` policy, ArgoCD automatically corrects cluster mutations. Structure configurations using Kustomize overlays and the App-of-Apps pattern, enabling safe, auditable rollbacks via simple `git revert` commands.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-04-12T07:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-03T00:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "go-126-green-tea-gc-cgo-performance-guide.md": {
+      "filename": "go-126-green-tea-gc-cgo-performance-guide.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/go-126-green-tea-gc-cgo-performance-guide.md",
+      "eeat": {
+        "code_blocks": 7,
+        "mermaid_diagrams": 1,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 2
+        },
+        "total_case_study": 2,
+        "arch_depth_counts": {
+          "microservices": 3,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 3,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 4,
+        "rating": "HIGH DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 39,
+        "summary_text": "Go 1.26 ships three landmark runtime features: the Green Tea garbage collector (10–40% GC overhead reduction), ~30% faster cgo calls for AI inference bindings, and an experimental goroutine leak profile that detects permanently blocked goroutines via GC reachability analysis.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-12T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-03T00:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "go-mcp-server-development-production-guide.md": {
+      "filename": "go-mcp-server-development-production-guide.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/go-mcp-server-development-production-guide.md",
+      "eeat": {
+        "code_blocks": 13,
+        "mermaid_diagrams": 1,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 3
+        },
+        "total_case_study": 3,
+        "arch_depth_counts": {
+          "microservices": 3,
+          "modular monolith": 0,
+          "bounded context": 1,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 4,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 4,
+        "rating": "HIGH DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 44,
+        "summary_text": "Production-grade Go MCP servers require the official `modelcontextprotocol/go-sdk` and strict JSON schemas. Because stdio transport uses standard output, you must route all internal logs to stderr to prevent client crashes. Return validation errors as tool-level failures rather than system errors to preserve connection persistence.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-07-15T13:28:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-15T13:28:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "go-microservices-distributed-tracing-architecture.md": {
+      "filename": "go-microservices-distributed-tracing-architecture.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/go-microservices-distributed-tracing-architecture.md",
+      "eeat": {
+        "code_blocks": 3,
+        "mermaid_diagrams": 1,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 5,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 5,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 43,
+        "summary_text": "Solve observability blind spots across distributed Go microservices by implementing an OpenTelemetry pipeline. Propagate W3C trace context across HTTP/gRPC boundaries and Kafka streams, batch metrics at the local agent level, and use tail-based sampling at the collector gateway to filter noise before ingestion.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-08T14:30:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-03T00:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "go-microservices.md": {
+      "filename": "go-microservices.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/go-microservices.md",
+      "eeat": {
+        "code_blocks": 13,
+        "mermaid_diagrams": 0,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 1,
+          "latency reduced": 0,
+          "rps": 1,
+          "throughput": 2
+        },
+        "total_case_study": 4,
+        "arch_depth_counts": {
+          "microservices": 38,
+          "modular monolith": 1,
+          "bounded context": 5,
+          "saga pattern": 2,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 2
+        },
+        "total_arch_depth": 48,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 43,
+        "summary_text": "Go's compile-time binary output (~15MB), goroutine scheduler (~2KB initial stack), and sub-microsecond JSON marshaling make it the default choice for latency-sensitive microservices. It delivers predictable GC pauses and ultra-fast container startup times compared to JVM-based alternatives — and its operational simplicity is underrated.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-12T00:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-03T00:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "go-pprof-kubernetes-remote-profiling.md": {
+      "filename": "go-pprof-kubernetes-remote-profiling.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/go-pprof-kubernetes-remote-profiling.md",
+      "eeat": {
+        "code_blocks": 20,
+        "mermaid_diagrams": 0,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 1
+        },
+        "total_case_study": 1,
+        "arch_depth_counts": {
+          "microservices": 4,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 4,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 39,
+        "summary_text": "Safely profile production Go services in Kubernetes by establishing a secure `kubectl port-forward` to the runtime's pprof endpoint. Collecting CPU, memory, and goroutine profiles in real-time allows generating flame graphs or streaming data to Pyroscope without introducing high overhead.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-01T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-03T00:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "golang-goroutine-pool-errgroup-worker.md": {
+      "filename": "golang-goroutine-pool-errgroup-worker.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/golang-goroutine-pool-errgroup-worker.md",
+      "eeat": {
+        "code_blocks": 10,
+        "mermaid_diagrams": 1,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 1
+        },
+        "total_case_study": 1,
+        "arch_depth_counts": {
+          "microservices": 4,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 4,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 4,
+        "rating": "HIGH DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 43,
+        "summary_text": "Unbounded goroutines in production trigger OOM crashes and garbage collection spirals. Prevent failures by enforcing concurrency limits using `errgroup.WithContext` for group error handling, channel-based worker pools for continuous jobs, and buffered semaphores for rate-limiting, transforming variable runtime resource usage into predictable, fixed bounds.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-01T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-03T00:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "golang-grpc-microservices-production-guide.md": {
+      "filename": "golang-grpc-microservices-production-guide.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/golang-grpc-microservices-production-guide.md",
+      "eeat": {
+        "code_blocks": 12,
+        "mermaid_diagrams": 0,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 5,
+          "throughput": 4
+        },
+        "total_case_study": 9,
+        "arch_depth_counts": {
+          "microservices": 11,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 11,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 44,
+        "summary_text": "Optimize inter-service communication in Go microservices using gRPC and Protobuf, delivering 3-10× smaller payloads and sub-millisecond latencies compared to REST. Secure communication channels with mutual TLS (mTLS), handle cross-cutting concerns using custom interceptor middleware, and implement native gRPC health checking for container readiness probes.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-11T21:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-03T00:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "golang-pprof-profiling-memory-cpu-tutorial.md": {
+      "filename": "golang-pprof-profiling-memory-cpu-tutorial.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/golang-pprof-profiling-memory-cpu-tutorial.md",
+      "eeat": {
+        "code_blocks": 13,
+        "mermaid_diagrams": 0,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 1
+        },
+        "total_case_study": 1,
+        "arch_depth_counts": {
+          "microservices": 1,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 1,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 35,
+        "summary_text": "Go pprof is the standard library profiling tool for diagnosing CPU usage, memory allocation, and goroutine leaks in production Go services, with safe exposure via internal HTTP endpoints and minimal performance overhead when configured correctly.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-02T08:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-03T00:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "goroutine-leak-detection-production-golang.md": {
+      "filename": "goroutine-leak-detection-production-golang.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/goroutine-leak-detection-production-golang.md",
+      "eeat": {
+        "code_blocks": 25,
+        "mermaid_diagrams": 0,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 3,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 3,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 2,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 45,
+        "summary_text": "Goroutine leaks block indefinitely and hold GC roots, leading to slow, silent memory exhaustion and pod restarts. Pinpoint leaks by comparing pprof profile snapshots (specifically `goroutineleak` in Go 1.26), write deterministic tests with Go 1.24’s `synctest`, and set automated telemetry alerts on active goroutine counts.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-05-26T20:30:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-03T00:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "graphhopper-distance-matrix-production-guide.md": {
+      "filename": "graphhopper-distance-matrix-production-guide.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/graphhopper-distance-matrix-production-guide.md",
+      "eeat": {
+        "code_blocks": 9,
+        "mermaid_diagrams": 0,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 1
+        },
+        "total_case_study": 1,
+        "arch_depth_counts": {
+          "microservices": 1,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 1,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 56,
+        "summary_text": "GraphHopper distance matrix is the `/matrix` API of the open-source GraphHopper routing engine. It accepts N points and returns an N×N matrix of travel durations (seconds) and distances (meters) based on real road networks from OpenStreetMap — completely free when self-hosted. For 100 delivery stops, it computes 10,000 pairs in under 50ms on a standard VPS.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-11T20:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-08T18:21:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "graphhopper-distance-matrix-routing.md": {
+      "filename": "graphhopper-distance-matrix-routing.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/graphhopper-distance-matrix-routing.md",
+      "eeat": {
+        "code_blocks": 2,
+        "mermaid_diagrams": 0,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 3
+        },
+        "total_case_study": 3,
+        "arch_depth_counts": {
+          "microservices": 1,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 1,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 44,
+        "summary_text": "Self-hosting GraphHopper on Kubernetes using pre-computed Contraction Hierarchies (CH) provides the sub-millisecond distance matrix calculations required for real-time last-mile routing. While CARTO is superior for macroscopic spatial visualization and SQL-based analytics, GraphHopper is the optimal choice for high-throughput, low-latency vehicle routing optimization (VRP) pipelines.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-01T15:05:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-06-10T16:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "graphhopper-kubernetes-self-hosting-osm.md": {
+      "filename": "graphhopper-kubernetes-self-hosting-osm.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/graphhopper-kubernetes-self-hosting-osm.md",
+      "eeat": {
+        "code_blocks": 11,
+        "mermaid_diagrams": 2,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 2,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 2,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 34,
+        "summary_text": "Self-hosting GraphHopper on Kubernetes requires mounting OpenStreetMap (OSM) data via Persistent Volume Claims (PVC), tuning JVM memory parameters to cache routing graphs, and configuring liveness/readiness probes to handle the long startup index pre-loading times.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-01T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-06-01T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "graphrag-vs-naive-rag-enterprise-guide.md": {
+      "filename": "graphrag-vs-naive-rag-enterprise-guide.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/graphrag-vs-naive-rag-enterprise-guide.md",
+      "eeat": {
+        "code_blocks": 7,
+        "mermaid_diagrams": 3,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 0,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 0,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 2,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 44,
+        "summary_text": "Naive RAG works well for simple keyword queries on isolated documents. For complex, global questions spanning multiple entities, GraphRAG is superior as it builds a knowledge graph using LLMs. Enterprise implementations require combining change data capture (CDC) with vector search to keep graphs synchronized.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-01T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-06-01T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "kubernetes-in-place-pod-resizing-guide.md": {
+      "filename": "kubernetes-in-place-pod-resizing-guide.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/kubernetes-in-place-pod-resizing-guide.md",
+      "eeat": {
+        "code_blocks": 11,
+        "mermaid_diagrams": 2,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 1,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 1,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 46,
+        "summary_text": "In-Place Pod Resizing (GA in Kubernetes v1.35) allows you to modify CPU and memory requests/limits on running containers without restarting the pod — eliminating cold-start disruptions for AI inference, databases, and stateful workloads. This guide covers requirements, production YAML, VPA integration, cost optimization patterns, and gotchas.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-12T14:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-08T18:21:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "leaseinvietnam-ai-powered-expat-rental-intelligence-system.md": {
+      "filename": "leaseinvietnam-ai-powered-expat-rental-intelligence-system.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/leaseinvietnam-ai-powered-expat-rental-intelligence-system.md",
+      "eeat": {
+        "code_blocks": 5,
+        "mermaid_diagrams": 2,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 0,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 0,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 2,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 40,
+        "summary_text": "LeaseInVietnam runs an autonomous AI pipeline that ingests, cleans, and translates rental listings. By extracting structured property attributes using LLM-based schemas, it converts raw data into high-value expat guides and property listings, serving as a high-converting B2B lead generation engine.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-04-24T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-04-24T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "magento-ai-integration-strategy-architecture.md": {
+      "filename": "magento-ai-integration-strategy-architecture.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/magento-ai-integration-strategy-architecture.md",
+      "eeat": {
+        "code_blocks": 1,
+        "mermaid_diagrams": 2,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 2,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 2,
+        "arch_depth_counts": {
+          "microservices": 3,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 3,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 4,
+        "rating": "HIGH DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 24,
+        "summary_text": "Integrating AI into Magento requires decoupling AI workloads via event-driven architecture to prevent MySQL lock contention, PHP-FPM exhaustion, and performance degradation in production environments.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-05-24T09:18:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-06-10T16:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "magento-developers-in-vietnam.md": {
+      "filename": "magento-developers-in-vietnam.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/magento-developers-in-vietnam.md",
+      "eeat": {
+        "code_blocks": 0,
+        "mermaid_diagrams": 0,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 1,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 1,
+        "arch_depth_counts": {
+          "microservices": 4,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 4,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 2,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 23,
+        "summary_text": "How to technically vet Magento developers in Vietnam: hiring models, interview questions to identify real engineers, and red flags to avoid tech debt.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-05-30T11:30:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-08T18:21:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "magento-development-in-vietnam.md": {
+      "filename": "magento-development-in-vietnam.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/magento-development-in-vietnam.md",
+      "eeat": {
+        "code_blocks": 0,
+        "mermaid_diagrams": 0,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 3,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 3,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 1,
+        "rating": "LOW DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 39,
+        "summary_text": "Scoping Magento projects in Vietnam requires defining effort layers across frontend, catalog complexity, and checkout integrations. Evaluate agencies by checking their technical depth on EAV queries, and avoid delivery delays by enforcing strict, phased milestone checkins and API contracts.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-04-30T09:10:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-03T00:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "magento-still-worth-investing-2026.md": {
+      "filename": "magento-still-worth-investing-2026.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/magento-still-worth-investing-2026.md",
+      "eeat": {
+        "code_blocks": 0,
+        "mermaid_diagrams": 0,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 7,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 7,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 1,
+        "rating": "LOW DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 40,
+        "summary_text": "Magento 2.4.9 remains viable for large-scale enterprise commerce but carries high ownership costs due to mandatory PHP 8.3/OpenSearch upgrades and extension maintenance. For fast-growing businesses, migrating to a composable or microservices architecture often provides better long-term scalability and development velocity.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-05-17T11:50:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-05-17T11:50:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "magento-vietnam.md": {
+      "filename": "magento-vietnam.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/magento-vietnam.md",
+      "eeat": {
+        "code_blocks": 0,
+        "mermaid_diagrams": 0,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 1,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 1,
+        "arch_depth_counts": {
+          "microservices": 9,
+          "modular monolith": 0,
+          "bounded context": 1,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 10,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 2,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 54,
+        "summary_text": "Vietnam's Magento market is concentrated in Ho Chi Minh City and Hanoi. SMBs dominate with Open Source (CE), while enterprises run Adobe Commerce. With CE 2.4.6 end-of-life approaching, the market is actively bifurcating — upgrade projects are booming, and so is the quality gap between teams that can execute them and those that cannot.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-12T00:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-08T18:21:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "mastering-event-driven-architecture-dapr.md": {
+      "filename": "mastering-event-driven-architecture-dapr.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/mastering-event-driven-architecture-dapr.md",
+      "eeat": {
+        "code_blocks": 11,
+        "mermaid_diagrams": 1,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 8,
+          "modular monolith": 0,
+          "bounded context": 1,
+          "saga pattern": 3,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 6
+        },
+        "total_arch_depth": 18,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 36,
+        "summary_text": "Build resilient event-driven microservices by using Dapr's Pub/Sub APIs to decouple message transport. Ensuring eventual consistency requires implementing the Transactional Outbox pattern on writes, utilizing dead-letter queues (DLQs) for failed runs, and designing idempotent message handlers.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-04-12T09:05:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-03T00:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "moving-from-magento-to-microservices.md": {
+      "filename": "moving-from-magento-to-microservices.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/moving-from-magento-to-microservices.md",
+      "eeat": {
+        "code_blocks": 1,
+        "mermaid_diagrams": 0,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 31,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 31,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 2,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 50,
+        "summary_text": "Migrate a complex Magento monolith to microservices without downtime by utilizing a 3-Phase Strangler Fig pattern. Stream legacy updates to Go microservices in real time using Debezium CDC, manage bidirectional synchronizations using Dapr Pub/Sub to maintain eventual consistency, and keep Magento as a 30-day hot standby for instant rollback capability.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-04-14T21:20:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-03T14:57:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "mysql-horizontal-scaling.md": {
+      "filename": "mysql-horizontal-scaling.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/mysql-horizontal-scaling.md",
+      "eeat": {
+        "code_blocks": 1,
+        "mermaid_diagrams": 1,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 3
+        },
+        "total_case_study": 3,
+        "arch_depth_counts": {
+          "microservices": 3,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 3,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 4,
+        "rating": "HIGH DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 18,
+        "summary_text": "Vitess vs GORM Sharding for MySQL write scaling: VReplication zero-downtime vs. application-level sharding — ErrMissingShardingKey tradeoffs in Go.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-01T15:10:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-03T15:22:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "mysql-scalability-guide.md": {
+      "filename": "mysql-scalability-guide.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/mysql-scalability-guide.md",
+      "eeat": {
+        "code_blocks": 21,
+        "mermaid_diagrams": 0,
+        "case_study_counts": {
+          "case study": 1,
+          "production failure": 1,
+          "symptom:": 1,
+          "root cause:": 1,
+          "impact:": 1,
+          "latency reduced": 0,
+          "rps": 2,
+          "throughput": 8
+        },
+        "total_case_study": 15,
+        "arch_depth_counts": {
+          "microservices": 3,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 3,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 46,
+        "summary_text": "MySQL scalability is the practical throughput ceiling of your database at each resource level. A single tuned InnoDB instance delivers 100–500 TPS at baseline, scaling to 6,000–10,000+ TPS with connection pooling, read replicas, and optimal hardware. Beyond that, write-scaling requires sharding or a distributed SQL layer.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-10T14:30:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-03T15:22:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "mysql-scaling-sharding-tidb-architecture.md": {
+      "filename": "mysql-scaling-sharding-tidb-architecture.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/mysql-scaling-sharding-tidb-architecture.md",
+      "eeat": {
+        "code_blocks": 3,
+        "mermaid_diagrams": 3,
+        "case_study_counts": {
+          "case study": 1,
+          "production failure": 1,
+          "symptom:": 1,
+          "root cause:": 1,
+          "impact:": 2,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 4
+        },
+        "total_case_study": 10,
+        "arch_depth_counts": {
+          "microservices": 2,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 1,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 3,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 4,
+        "rating": "HIGH DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 40,
+        "summary_text": "Migrate from manual MySQL sharding to TiDB to eliminate application-level routing complexity. TiDB handles distributed SQL queries natively using TiKV storage nodes and Raft consensus. Use the TiDB Data Migration (DM) tool to merge source shards online with minimal downtime.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-05-26T14:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-08T18:21:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "order-fulfillment-algorithm-warehouse-last-mile.md": {
+      "filename": "order-fulfillment-algorithm-warehouse-last-mile.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/order-fulfillment-algorithm-warehouse-last-mile.md",
+      "eeat": {
+        "code_blocks": 3,
+        "mermaid_diagrams": 0,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 1
+        },
+        "total_case_study": 1,
+        "arch_depth_counts": {
+          "microservices": 1,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 1,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 34,
+        "summary_text": "High-throughput e-commerce requires routing order fulfillment using a multi-criteria optimization model. By calculating stock availability, warehouse proximity, and split-shipment constraints via a Vehicle Routing Problem (VRP) solver, we minimize shipping costs and shipping times.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-01T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-06-01T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "paypay-architecture-scaling.md": {
+      "filename": "paypay-architecture-scaling.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/paypay-architecture-scaling.md",
+      "eeat": {
+        "code_blocks": 0,
+        "mermaid_diagrams": 2,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 1
+        },
+        "total_case_study": 1,
+        "arch_depth_counts": {
+          "microservices": 9,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 9,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 35,
+        "summary_text": "PayPay handles 7.8B annual transactions using a cloud-native architecture centered on TiDB for distributed ACID transactions, Kafka for event streaming, and Kotlin/Go microservices. GitOps-driven deployments and continuous chaos engineering ensure high availability and disaster recovery.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-01T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-06-01T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "production-ai-apis-oauth-versioning-meta-predictions.md": {
+      "filename": "production-ai-apis-oauth-versioning-meta-predictions.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/production-ai-apis-oauth-versioning-meta-predictions.md",
+      "eeat": {
+        "code_blocks": 6,
+        "mermaid_diagrams": 0,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 0,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 0,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 1,
+        "rating": "LOW DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 35,
+        "summary_text": "Production AI API design requires securing agent identities using OAuth 2.1 client credentials, versioning prompts inside CI/CD gates to prevent quality regression, and tracking runtime costs. Monitoring token usage and accuracy ensures robust operational predictability.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-05-18T20:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-05-18T20:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "real-time-inventory-ecommerce-architecture.md": {
+      "filename": "real-time-inventory-ecommerce-architecture.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/real-time-inventory-ecommerce-architecture.md",
+      "eeat": {
+        "code_blocks": 1,
+        "mermaid_diagrams": 1,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 1
+        },
+        "total_case_study": 1,
+        "arch_depth_counts": {
+          "microservices": 2,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 2
+        },
+        "total_arch_depth": 4,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 4,
+        "rating": "HIGH DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 41,
+        "summary_text": "Attempting to simultaneously write inventory updates to a fast cache (Redis) and a relational database (PostgreSQL) creates the dual-write problem. If one system fails, data diverges. Furthermore, synchronous `SELECT FOR UPDATE` queries in SQL cause massive lock queues and API timeouts.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-08T14:35:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-08T18:21:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "real-time-ride-hailing-architecture.md": {
+      "filename": "real-time-ride-hailing-architecture.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/real-time-ride-hailing-architecture.md",
+      "eeat": {
+        "code_blocks": 1,
+        "mermaid_diagrams": 2,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 3
+        },
+        "total_case_study": 3,
+        "arch_depth_counts": {
+          "microservices": 0,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 0,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 36,
+        "summary_text": "Ride-hailing architectures ingest millions of GPS pings per second using Uber's H3 spatial index for geofencing. Kafka streams location updates to matching engines for driver allocation, while Flink processes real-time pricing and push gateways notify users.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-01T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-06-10T16:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "serverless-ecommerce-cloudflare-d1.md": {
+      "filename": "serverless-ecommerce-cloudflare-d1.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/serverless-ecommerce-cloudflare-d1.md",
+      "eeat": {
+        "code_blocks": 3,
+        "mermaid_diagrams": 1,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 2,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 2,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 34,
+        "summary_text": "Serverless e-commerce on Cloudflare Workers utilizes edge-native compute for sub-millisecond routing. D1 database tables hold persistent relational state, while Durable Objects manage transactional operations like cart locking, balancing global low-latency with strict data consistency.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-05-25T17:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-05-25T17:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "shopee-flash-sale-architecture.md": {
+      "filename": "shopee-flash-sale-architecture.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/shopee-flash-sale-architecture.md",
+      "eeat": {
+        "code_blocks": 2,
+        "mermaid_diagrams": 1,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 2,
+          "throughput": 0
+        },
+        "total_case_study": 2,
+        "arch_depth_counts": {
+          "microservices": 1,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 1,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 2,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 4,
+        "rating": "HIGH DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 31,
+        "summary_text": "Architecting flash sale systems requires preventing database overload using multi-stage rate limiting and Redis-based inventory pre-decisions. Traffic shields block duplicate requests, and asynchronous checkout queues decouple order submission from payment processing.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-01T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-06-10T16:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "slm-fine-tune-vs-prompt-engineering.md": {
+      "filename": "slm-fine-tune-vs-prompt-engineering.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/slm-fine-tune-vs-prompt-engineering.md",
+      "eeat": {
+        "code_blocks": 2,
+        "mermaid_diagrams": 2,
+        "case_study_counts": {
+          "case study": 1,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 2
+        },
+        "total_case_study": 3,
+        "arch_depth_counts": {
+          "microservices": 0,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 0,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 3,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 45,
+        "summary_text": "Choose prompt engineering for rapid prototyping and general domains. Deploy RAG when your application requires real-time retrieval from a frequently updated knowledge base. Commit to QLoRA fine-tuning only when you need strict output formatting, persistent style compliance under adversarial input, or significant prompt token compression.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-01T10:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-08T18:21:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "surge-pricing-optimization-architecture.md": {
+      "filename": "surge-pricing-optimization-architecture.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/surge-pricing-optimization-architecture.md",
+      "eeat": {
+        "code_blocks": 0,
+        "mermaid_diagrams": 1,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 1,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 1,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 2,
+        "rating": "MEDIUM DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 36,
+        "summary_text": "Surge pricing calculates dynamic multipliers by matching supply and demand in real-time. The architecture indexes locations via H3 hexagons, streams GPS updates through Kafka, and aggregates demand density using Apache Flink to calculate price updates dynamically.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-06-01T15:20:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-06-10T16:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "the-future-of-laravel-development-in-ai-era.md": {
+      "filename": "the-future-of-laravel-development-in-ai-era.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/the-future-of-laravel-development-in-ai-era.md",
+      "eeat": {
+        "code_blocks": 5,
+        "mermaid_diagrams": 4,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 1
+        },
+        "total_case_study": 1,
+        "arch_depth_counts": {
+          "microservices": 0,
+          "modular monolith": 8,
+          "bounded context": 2,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 10,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 4,
+        "rating": "HIGH DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 35,
+        "summary_text": "By 2028, AI-assisted Laravel development will automate CRUD and tests, shifting developer focus toward modular monolith architecture, strict API design, and asynchronous queue orchestration. Standardized conventions will enable AI agents to maintain clean, scalable codebases.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-05-16T21:35:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-05-16T21:35:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "vibe-coding-and-ai-code-review-future.md": {
+      "filename": "vibe-coding-and-ai-code-review-future.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/vibe-coding-and-ai-code-review-future.md",
+      "eeat": {
+        "code_blocks": 0,
+        "mermaid_diagrams": 0,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 0,
+          "modular monolith": 0,
+          "bounded context": 0,
+          "saga pattern": 0,
+          "consistent hashing": 0,
+          "cqrs": 0,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 0,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 0,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 0,
+        "signals_present": 0,
+        "rating": "LOW DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 36,
+        "summary_text": "\"Vibe coding\"—relying on AI to write code without understanding it—creates complex, hard-to-maintain codebases that fail in production. Resolving this requires automated AI code reviews in the CI/CD pipeline to enforce design conventions and detect security vulnerabilities.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-05-31T18:30:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-06-10T16:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    },
+    "why-migrate-magento-to-microservices.md": {
+      "filename": "why-migrate-magento-to-microservices.md",
+      "filepath": "/home/user/personalized/vesviet/content/posts/why-migrate-magento-to-microservices.md",
+      "eeat": {
+        "code_blocks": 5,
+        "mermaid_diagrams": 3,
+        "case_study_counts": {
+          "case study": 0,
+          "production failure": 0,
+          "symptom:": 0,
+          "root cause:": 0,
+          "impact:": 0,
+          "latency reduced": 0,
+          "rps": 0,
+          "throughput": 0
+        },
+        "total_case_study": 0,
+        "arch_depth_counts": {
+          "microservices": 22,
+          "modular monolith": 1,
+          "bounded context": 1,
+          "saga pattern": 3,
+          "consistent hashing": 0,
+          "cqrs": 2,
+          "outbox pattern": 0
+        },
+        "total_arch_depth": 29,
+        "sme_exp_counts": {
+          "in my experience": 0,
+          "in our production": 1,
+          "we built": 0,
+          "I designed": 0,
+          "I recommend": 0,
+          "my consulting": 0,
+          "my client": 0
+        },
+        "total_sme_exp": 1,
+        "signals_present": 4,
+        "rating": "HIGH DEPTH"
+      },
+      "answer_first": {
+        "tag_count": 1,
+        "is_at_start": true,
+        "word_count": 35,
+        "summary_text": "Migrate from Magento's monolithic EAV architecture to microservices when database locks during checkout, slow page speed, and deployment coupling block business growth. A headless, API-first approach decouples checkout and catalog, improving latency and developer agility.",
+        "is_unique": true,
+        "violations": []
+      },
+      "boilerplate": {
+        "found_phrases": {},
+        "has_boilerplate": false
+      },
+      "dates": {
+        "date": {
+          "exists": true,
+          "raw": "date: \"2026-04-14T22:00:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "lastmod": {
+          "exists": true,
+          "raw": "lastmod: \"2026-07-03T14:57:00+07:00\"",
+          "is_valid": true,
+          "error": ""
+        },
+        "has_formatting_issue": false
+      },
+      "violations": []
+    }
+  }
+}
