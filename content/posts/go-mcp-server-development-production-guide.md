@@ -24,6 +24,7 @@ cover:
   alt: "Go MCP Server development with the official Model Context Protocol Go SDK"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/go-mcp-server-development-production-guide/"
+noTranslation: true
 ---
 
 **Answer-first:** Production-grade Go MCP servers require the official `modelcontextprotocol/go-sdk` and strict JSON schemas. Because stdio transport uses standard output, you must route all internal logs to stderr to prevent client crashes. Return validation errors as tool-level failures rather than system errors to preserve connection persistence.

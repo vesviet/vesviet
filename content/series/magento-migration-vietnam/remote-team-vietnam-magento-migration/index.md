@@ -16,6 +16,7 @@ cover:
   alt: "Remote team playbook: Vietnam engineers through a Magento migration"
   relative: false
 canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/remote-team-vietnam-magento-migration/"
+noTranslation: true
 ---
 
 **Answer-first:** The biggest failure mode in running a remote Vietnam team through a Magento migration is not the timezone gap — it's synchronous dependency on the client-side technical lead for decisions that should be pre-documented. Async-first coordination with defined phase gates eliminates 80% of timezone friction. The remaining 20% requires one weekly sync window and a clear incident escalation path.

@@ -521,7 +521,7 @@
   {{- end }}
 {{- end }}
 
-{{ if .IsPage }}
+{{ if and .IsPage (not .Params.noTranslation) }}
 <link rel="alternate" hreflang="vi" href="{{ replace .Permalink "https://tanhdev.com" "https://learn.tanhdev.com" }}" />
 <link rel="alternate" hreflang="x-default" href="{{ .Permalink }}" />
 {{ end }}

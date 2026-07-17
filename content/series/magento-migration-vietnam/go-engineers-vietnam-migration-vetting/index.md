@@ -16,6 +16,7 @@ cover:
   alt: "Vetting Go engineers in Vietnam for Magento migration projects"
   relative: false
 canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/go-engineers-vietnam-migration-vetting/"
+noTranslation: true
 ---
 
 **Answer-first:** Vetting Go engineers for Magento migration requires a different interview framework than greenfield hiring. The critical signal is not Go syntax fluency — it's distributed systems experience under legacy coupling constraints. Five production scenarios reveal whether a candidate can actually own migration work versus only build clean APIs from scratch.

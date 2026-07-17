@@ -9,6 +9,7 @@ TocOpen: true
 author: Lê Tuấn Anh
 draft: false
 mermaid: true
+noTranslation: true
 ---
 
 Trong Dapr State Store, sự lựa chọn giữa Strong Consistency (nhất quán mạnh) và Eventual Consistency (nhất quán cuối) quyết định độ trễ và tính toàn vẹn dữ liệu. Strong Consistency phù hợp cho giao dịch tài chính (dùng CockroachDB), trong khi Eventual Consistency tối ưu cho hệ thống cần throughput cao (dùng Redis).

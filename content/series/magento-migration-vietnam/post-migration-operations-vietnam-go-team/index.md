@@ -16,6 +16,7 @@ cover:
   alt: "Post-migration operations with a Vietnam Go team: SLO, on-call, observability"
   relative: false
 canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/post-migration-operations-vietnam-go-team/"
+noTranslation: true
 ---
 
 **Answer-first:** A Vietnam Go team can own full production operations for a post-Magento microservices platform — but only if SLOs, runbooks, and escalation paths are defined before cutover, not after. Teams that hand off operations without this infrastructure spend their first 90 days in reactive incident mode. Teams that build it before day one transition smoothly from migration team to engineering team.

@@ -9,6 +9,7 @@ TocOpen: true
 author: "Lê Tuấn Anh"
 draft: false
 mermaid: true
+noTranslation: true
 ---
 
 Trong bài kiểm tra hiệu năng (benchmark) các framework Go dưới tải cao, Fiber (dựa trên fasthttp) cho throughput cao nhất đối với API đơn giản. Tuy nhiên, Kratos và Gin lại mang đến sự ổn định và hệ sinh thái middleware tốt hơn cho các kiến trúc microservices phức tạp ở môi trường Production.

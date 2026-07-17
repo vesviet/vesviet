@@ -16,6 +16,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/"
+noTranslation: true
 ---
 
 

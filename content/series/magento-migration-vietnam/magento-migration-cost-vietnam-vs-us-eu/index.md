@@ -16,6 +16,7 @@ cover:
   alt: "Cost model: Magento to Go microservices migration Vietnam vs US/EU"
   relative: false
 canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/magento-migration-cost-vietnam-vs-us-eu/"
+noTranslation: true
 ---
 
 **Answer-first:** A full B2B Magento → Go migration with a Vietnam team costs $320,000–$520,000 over 12–18 months. The equivalent US/EU team costs $900,000–$1,500,000 for the same scope. The Vietnam advantage is not lower quality — it's a structural market difference of $580,000–$980,000 in direct labor savings. Break-even on management overhead typically occurs at month 4–6.

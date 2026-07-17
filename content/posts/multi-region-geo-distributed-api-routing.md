@@ -9,6 +9,7 @@ TocOpen: true
 author: Lê Tuấn Anh
 draft: false
 mermaid: true
+noTranslation: true
 ---
 
 Geo-distributed API Routing giúp điều hướng request của người dùng đến server gần nhất để giảm thiểu độ trễ. Các phương pháp phổ biến bao gồm DNS Latency-based Routing (như AWS Route53) và Anycast IP (như Cloudflare), kết hợp với cơ chế đồng bộ dữ liệu liên vùng (cross-region replication).

@@ -15,6 +15,7 @@ cover:
   alt: "Agentic E-commerce Search Engine Architecture series — vector databases, ranking, and Go"
   relative: false
 canonicalURL: "https://tanhdev.com/series/agentic-ecommerce-search/"
+noTranslation: true
 ---
 
 # Agentic E-commerce Search Engine Architecture
