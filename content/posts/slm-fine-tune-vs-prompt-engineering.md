@@ -31,7 +31,7 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/slm-fine-tune-vs-prompt-engineering/"
 ---
 
-**Answer-first:** Choose prompt engineering for rapid prototyping and general domains. Deploy RAG when your application requires real-time retrieval from a frequently updated knowledge base. Commit to QLoRA fine-tuning only when you need strict output formatting, persistent style compliance under adversarial input, or significant prompt token compression.
+**Answer-first:** When evaluating **prompt engineering vs fine tuning**, the decision hinges on behavior versus knowledge. Choose prompt engineering for rapid prototyping and general domains. Deploy RAG when your application requires real-time retrieval from a frequently updated knowledge base. Commit to QLoRA fine-tuning only when you need strict output formatting, persistent style compliance under adversarial input, or significant prompt token compression.
 
 ### What You'll Learn That AI Won't Tell You
 - Production cost-benefit thresholds comparing fine-tuning a 7B model locally versus calling proprietary APIs for structured schema generation.
