@@ -12,7 +12,7 @@ categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/moving-from-magento-to-microservices-cover.png"
+  image: "images/posts/strangler-fig-shared-database-quick-win-cover.png"
   alt: "Magento database migration decision: Shared DB vs CDC vs Event Bus — Architecture Comparison"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/strangler-fig-shared-database-quick-win/"
