@@ -3,7 +3,7 @@ title: "Generative UI with MCP: Architecting AI-Native Frontends"
 slug: "generative-ui-with-mcp-ai-native-frontend"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
-lastmod: "2026-06-01T10:00:00+07:00"
+lastmod: "2026-07-18T07:43:55+07:00"
 draft: false
 mermaid: true
 categories:
@@ -522,7 +522,7 @@ The AI routes confirmation-required actions through this component. The componen
 
 ---
 
-## Next.js + MCP Reference Implementation and Case Study
+## Next.js + MCP Reference Implementation and Case Study (for a deeper dive on building the backend server itself, see [Go MCP Server Development]({{< ref "go-mcp-server-development-production-guide" >}}))
 
 Putting it all together, here is the minimal directory structure for a Next.js MCP-enabled Generative UI application:
 

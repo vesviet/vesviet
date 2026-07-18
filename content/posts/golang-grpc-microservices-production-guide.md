@@ -3,7 +3,7 @@ title: "Golang gRPC Microservices: Protobuf, TLS & Middleware"
 slug: "golang-grpc-microservices-production-guide"
 author: "Lê Tuấn Anh"
 date: "2026-06-11T21:00:00+07:00"
-lastmod: "2026-07-03T00:00:00+07:00"
+lastmod: "2026-07-18T07:43:55+07:00"
 draft: false
 description: "Production guide to Golang gRPC microservices: Protobuf service design, mTLS, interceptor middleware, graceful shutdown, health checks, and Docker deployment."
 categories:
@@ -813,7 +813,7 @@ Single-instance Go gRPC server (4 vCPU / 8GB) handling unary RPCs:
 - 2.8× higher throughput at 100 concurrent clients
 - 3.5× lower p99 latency
 
-These benchmarks used the `driver.v1.GetDriver` unary RPC with a 64-byte Protobuf response.
+These benchmarks used the `driver.v1.GetDriver` unary RPC with a 64-byte Protobuf response (for a broader comparison of HTTP runtimes, check out our [High-Throughput Go Framework Benchmarks]({{< ref "high-throughput-go-framework-benchmarks-gin-fiber-kratos" >}})).
 
 ---
 

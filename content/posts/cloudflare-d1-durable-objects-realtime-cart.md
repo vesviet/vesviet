@@ -3,7 +3,7 @@ title: "Cloudflare D1 + Durable Objects: Build a Real-Time Cart"
 slug: "cloudflare-d1-durable-objects-realtime-cart"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
-lastmod: "2026-06-01T10:00:00+07:00"
+lastmod: "2026-07-18T07:43:55+07:00"
 draft: false
 mermaid: true
 categories:
@@ -218,7 +218,7 @@ function parseCookies(cookieHeader: string): Record<string, string> {
 
 ## Durable Objects for Real-Time Sync: Handling Concurrent Cart Edits
 
-The Durable Object is the heart of the real-time cart. It maintains the cart state in memory and handles concurrent requests with JavaScript's single-threaded execution model — eliminating the need for locks.
+The Durable Object is the heart of the real-time cart (and a key component of [Zero-DevOps E-Commerce with Cloudflare]({{< ref "cloudflare-zero-devops-ecommerce" >}})). It maintains the cart state in memory and handles concurrent requests with JavaScript's single-threaded execution model — eliminating the need for locks.
 
 ### TypeScript Durable State Structure
 

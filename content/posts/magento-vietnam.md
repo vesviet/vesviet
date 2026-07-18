@@ -5,6 +5,8 @@ date: "2026-06-12T00:00:00+07:00"
 lastmod: "2026-07-08T18:21:00+07:00"
 draft: false
 series: ["magento-migration-vietnam"]
+aliases:
+  - "/posts/magento-developers-in-vietnam/"
 summary: "Vietnam's Magento talent pool runs deep — but finding engineers who can handle production architecture is harder. Cost tiers, vetting signals, hiring models, and when to migrate."
 description: "Vietnam Magento 2026: cost tiers ($15–$80/hr), agency/freelance/ODC models, vetting signals, 2.4.9 upgrade readiness, and migration triggers."
 tags: ["Magento", "Vietnam", "E-commerce", "Hiring"]
@@ -113,9 +115,54 @@ Vietnam's Magento talent market covers three distinct tiers:
 
 The most common and expensive mismatch: paying Tier 2 rates for Tier 1 output.
 
-For the full five-question technical interview playbook — including how to test Plugin vs Preference judgment, Declarative Schema knowledge, reindex diagnostics, integration failure handling, and platform boundary awareness — see [Magento Developers in Vietnam: Hiring & Vetting Guide](/posts/magento-developers-in-vietnam/).
+### The Technical Filter: Five Interview Questions That Actually Separate Levels
 
-Read more: [Magento Developers in Vietnam: Hiring & Vetting Guide](/posts/magento-developers-in-vietnam/)
+**Generic Magento questions test memory, not engineering judgment. These five questions — on Plugin vs Preference, schema design, reindex diagnostics, integration failure handling, and platform boundaries — reveal how a developer actually thinks under real production conditions.**
+
+#### Question 1: Plugin vs Preference — when would you use each?
+
+**What a weak answer looks like:** "Use Preferences to override a class, use Plugins for interceptors."
+
+**What a strong answer looks like:** The candidate explains that Preferences replace an entire class, which creates conflicts when multiple modules try to override the same class simultaneously. Plugins intercept specific method executions (`before`, `after`, `around`) without touching the original class — multiple plugins on the same method stack cooperatively. A strong candidate will also note that `around` plugins should be avoided when `before` or `after` will do, because they carry higher overhead and make debugging harder.
+
+**Why it matters:** A developer who reaches for Preferences when a Plugin will do is the same developer who creates extension conflicts that take days to untangle on a live store.
+
+#### Question 2: How would you add a field to a customer account without modifying core tables?
+
+**What a weak answer looks like:** "Add a column to `customer_entity`" or "use a custom attribute in the admin."
+
+**What a strong answer looks like:** The candidate describes using `db_schema.xml` (Declarative Schema) to add the column to the customer entity table, plus a `data_patch` to backfill existing records if needed — or alternatively, explains the tradeoff of a separate entity table linked by `customer_id` when the data is complex or high-write.
+
+**Why it matters:** This reveals database design judgment. Does the developer think about upgrade safety, index impact, and schema migrations, or do they just add columns wherever it's convenient?
+
+#### Question 3: A catalog reindex is taking 40 minutes on a 25,000 SKU store. What do you investigate first?
+
+**What a strong answer covers:**
+- Whether the reindex is full or partial, and whether the Mview changelog is backed up
+- MySQL slow query log to find the bottleneck join
+- Whether the flat catalog is enabled (deprecated in 2.x, often left on from Magento 1 migrations)
+- Redis/Varnish configuration — are invalidations cascading unnecessarily?
+- Whether the reindex can be moved to a read replica to avoid locking the primary
+
+**Why it matters:** This is a diagnostic question. It shows whether the developer approaches production problems methodically or fires random fixes and hopes.
+
+#### Question 4: Describe a Magento integration you built — what broke in production and how did you fix it?
+
+This is intentionally open-ended. You are not looking for a perfect story. You are looking for:
+
+- **Specificity:** Can they name the external system, the failure mode, and the recovery path?
+- **Honesty:** Do they admit the failure or reframe it as "a challenge we managed"?
+- **Engineering depth:** Did they implement retries, idempotency keys, reconciliation jobs? Or did they just "add a try/catch"?
+
+Weak engineers talk about how they connected two APIs. Strong engineers talk about what happens when the connection fails at 2am with 400 pending orders in the queue.
+
+#### Question 5: When would you tell a client that a feature should NOT be built in Magento?
+
+This question has no wrong answer — it's a judgment test. You are looking for a developer who understands the boundaries of the platform, not just someone who will build whatever is asked.
+
+Strong answers mention: custom loyalty systems that would be better as a standalone service, complex B2B quoting workflows that Magento's native quoting module handles poorly, or real-time inventory systems that would overload Magento's event system at scale.
+
+A developer who can't name a single thing that shouldn't be built in Magento is a developer who will build everything inside Magento until it collapses.
 
 ---
 

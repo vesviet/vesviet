@@ -39,7 +39,7 @@ canonicalURL: "https://tanhdev.com/posts/graphhopper-distance-matrix-production-
 
 
 
-This guide covers everything you need to run GraphHopper distance matrix in production: Docker setup, the `/matrix` API, Custom Models for truck/motorcycle routing, H3-based Redis caching, and an honest comparison with OSRM, Valhalla, and Google Maps.
+This guide covers everything you need to run GraphHopper distance matrix in production: Docker setup, the `/matrix` API, Custom Models for truck/motorcycle routing, H3-based Redis caching, and an honest comparison with OSRM, Valhalla, and Google Maps (for a deeper dive into routing engine selection, see our [OSRM vs GraphHopper Architecture Comparison]({{< ref "osrm-vs-graphhopper-architecture-comparison" >}})).
 
 ---
 
@@ -482,6 +482,68 @@ class CachedDistanceMatrix:
                 )
 
         return DistanceMatrix(durations=durations, distances=distances)
+```
+
+For Go microservices, the equivalent caching layer utilizing `github.com/uber/h3-go/v4` and `github.com/redis/go-redis/v9`:
+
+```go
+package matrix
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"time"
+
+	"github.com/redis/go-redis/v9"
+	"github.com/uber/h3-go/v4"
+)
+
+type Location struct {
+	Lat float64 `json:"lat"`
+	Lng float64 `json:"lng"`
+}
+
+type CachedMatrix struct {
+	gh    *GraphHopperClient
+	redis *redis.Client
+}
+
+func (c *CachedMatrix) h3Key(a, b Location) string {
+	cellA := h3.LatLngToCell(h3.NewLatLng(a.Lat, a.Lng), 9)
+	cellB := h3.LatLngToCell(h3.NewLatLng(b.Lat, b.Lng), 9)
+
+	minCell, maxCell := cellA, cellB
+	if cellB < cellA {
+		minCell, maxCell = cellB, cellA
+	}
+	return fmt.Sprintf("gh:matrix:%x:%x", minCell, maxCell)
+}
+
+func (c *CachedMatrix) GetPair(ctx context.Context, origin, dest Location) (map[string]int, error) {
+	key := c.h3Key(origin, dest)
+	cached, err := c.redis.Get(ctx, key).Result()
+	if err == nil {
+		var result map[string]int
+		json.Unmarshal([]byte(cached), &result)
+		return result, nil
+	}
+
+	// Cache miss fallback to GraphHopper HTTP API
+	matrix, err := c.gh.GetMatrix([]Location{origin, dest})
+	if err != nil {
+		return nil, err
+	}
+	
+	result := map[string]int{
+		"duration_s": matrix.Durations[0][1],
+		"distance_m": matrix.Distances[0][1],
+	}
+
+	data, _ := json.Marshal(result)
+	c.redis.SetEx(ctx, key, data, 30*24*time.Hour)
+	return result, nil
+}
 ```
 
 **Cache hit ratio in practice:**

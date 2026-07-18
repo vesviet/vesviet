@@ -69,7 +69,7 @@ Go is exceptional for network and infrastructure layers. It struggles in:
 
 Every microservice must map to exactly one Domain-Driven Design (DDD) Bounded Context with its own dedicated database. There is strictly no shared database between services — we enforced this via Kubernetes NetworkPolicy rules in the migration, and it prevented the most common decomposition anti-pattern from ever becoming tempting.
 
-Our 21-service decomposition after the Magento migration:
+Our 21-service decomposition after the Magento migration (see the full visual layout in our [E-Commerce Blueprint Diagram]({{< ref "blueprint-ecommerce-microservices-architecture-diagram" >}})):
 
 | Domain | Service | Database | Key responsibility |
 |--------|---------|----------|-------------------|
@@ -123,7 +123,9 @@ Read more: [Architecting 21-Service E-commerce with DDD](/posts/architecting-21-
 
 ### gRPC for Go microservices — what production looks like
 
-gRPC is used for critical synchronous paths: Checkout → Price, Checkout → Inventory, Order → Auth.
+While we evaluated several high-performance runtimes (detailed in our [Go Framework Throughput Benchmarks]({{< ref "high-throughput-go-framework-benchmarks-gin-fiber-kratos" >}})), gRPC is used for critical synchronous paths: Checkout → Price, Checkout → Inventory, Order → Auth.
+
+When crossing data center boundaries, managing these gRPC and REST calls natively requires a [Multi-region Geo-distributed API Routing]({{< ref "multi-region-geo-distributed-api-routing" >}}) architecture to maintain latency SLAs.
 
 The production setup:
 - **Protobuf contract-first design:** Every service-to-service interface is defined in `.proto` files stored in a shared `api/` repository. The schema registry enforces backward compatibility via field addition rules — you can add fields, never remove or change field numbers.

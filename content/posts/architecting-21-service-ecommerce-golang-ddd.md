@@ -29,7 +29,7 @@ canonicalURL: "https://tanhdev.com/posts/architecting-21-service-ecommerce-golan
 
 Scaling an e-commerce platform past 10,000+ orders per day containing multiple SKUs across dynamic warehouses is where naive architecture breaks down. Hardware scaling ceases to be a magic bullet when distributed transactions, race conditions, and eventual consistency are involved.
 
-In this deep tech dive, we will tear apart the "Hello World" abstraction of Microservices. We will look at exactly how our **21-service distributed ecosystem** interacts under the hood. I will share the exact Golang architectural patterns (Kratos), the Saga orchestration for distributed checkout, and how we handle race conditions under severe load.
+In this deep tech dive, we will tear apart the "Hello World" abstraction of Microservices. We will look at exactly how our **21-service distributed ecosystem** interacts under the hood (you can view the full visual layout in our [E-Commerce Blueprint Diagram]({{< ref "blueprint-ecommerce-microservices-architecture-diagram" >}})). I will share the exact Golang architectural patterns (Kratos), the Saga orchestration for distributed checkout, and how we handle race conditions under severe load.
 
 ## 1. The Distributed Landscape
 

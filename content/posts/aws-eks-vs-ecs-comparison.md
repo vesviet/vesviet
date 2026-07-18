@@ -3,7 +3,7 @@ title: "AWS EKS vs ECS: Architecture, Cost & Use Cases (2026)"
 slug: "aws-eks-vs-ecs-comparison"
 author: "Lê Tuấn Anh"
 date: "2026-06-26T21:00:00+07:00"
-lastmod: "2026-07-08T18:21:00+07:00"
+lastmod: "2026-07-18T07:43:55+07:00"
 draft: false
 mermaid: true
 tags: ["AWS", "EKS", "ECS", "Kubernetes", "Container Orchestration", "DevOps", "Go", "Microservices", "Fargate"]
@@ -18,7 +18,7 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/aws-eks-vs-ecs-comparison/"
 ---
 
-**Answer-first:** Choose AWS EKS for Kubernetes-native GitOps (ArgoCD, Dapr) and cloud-portable architectures. Choose ECS for zero-cost control planes, rapid deployment, and pure AWS-native simplicity. Go stateless containers on Graviton Spot to cut compute costs by 35%, and use Network Load Balancers for high-performance internal gRPC routing.
+**Answer-first:** Choose AWS EKS for Kubernetes-native GitOps (ArgoCD, Dapr) and cloud-portable architectures. Choose ECS for zero-cost control planes, rapid deployment, and pure AWS-native simplicity. Go stateless containers on Graviton Spot to cut compute costs by 35%, and use Network Load Balancers for high-performance internal gRPC routing (for cross-region strategies, see [Multi-Region API Routing]({{< ref "multi-region-geo-distributed-api-routing" >}})).
 
 ### What You'll Learn That AI Won't Tell You
 - The hidden costs of EKS VPC CNI ipam and how ECS handles routing faster.

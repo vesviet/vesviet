@@ -3,7 +3,7 @@ title: "Composable Banking Architecture: Monolith to Modular"
 slug: "composable-banking-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-06-10T14:55:00+07:00"
-lastmod: "2026-07-08T18:21:00+07:00"
+lastmod: "2026-07-18T07:43:55+07:00"
 draft: false
 mermaid: true
 categories:
@@ -206,7 +206,7 @@ Choreography (services reacting to events with no central coordinator) works for
 
 ### Temporal Workflow for a Fund Transfer Saga
 
-Temporal persists the full execution history of every workflow run in its internal database. If a worker crashes mid-transfer, Temporal replays the event log from the last checkpoint — completed activities return their cached results without re-executing, and execution resumes from the interrupted step.
+Temporal persists the full execution history of every workflow run in its internal database. If a worker crashes mid-transfer, Temporal replays the event log from the last checkpoint — completed activities return their cached results without re-executing, and execution resumes from the interrupted step (for a deep dive into the code mechanics, see [Temporal Saga Implementation Guide]({{< ref "temporal-saga-pattern-golang-distributed-transactions" >}})).
 
 ```go
 // FundTransferWorkflow is the Saga orchestrator — MUST be deterministic.

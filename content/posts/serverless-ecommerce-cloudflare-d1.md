@@ -3,7 +3,7 @@ title: "Serverless E-Commerce: Cloudflare Workers & D1 Architecture"
 slug: "serverless-ecommerce-cloudflare-d1"
 author: "Lê Tuấn Anh"
 date: "2026-05-25T17:00:00+07:00"
-lastmod: "2026-05-25T17:00:00+07:00"
+lastmod: "2026-07-18T07:43:55+07:00"
 draft: false
 mermaid: true
 categories:
@@ -35,7 +35,7 @@ canonicalURL: "https://tanhdev.com/posts/serverless-ecommerce-cloudflare-d1/"
 
 Running a traditional PHP/MySQL stack for e-commerce works until a flash sale hits. Then you're scaling servers, tuning Redis, and hoping your monolithic database doesn't lock up. If you are exploring [moving away from Magento](/posts/moving-from-magento-to-microservices/) or simply evaluating the edge, there is a radically different approach: building a transactional e-commerce engine entirely on Cloudflare's edge network.
 
-This post breaks down the architecture of a zero-ops, serverless e-commerce backend using Cloudflare Workers, D1 (SQLite), and Durable Objects. We will look at how to structure the database, how to prevent inventory overselling without Redis, and where the limits of this architecture lie.
+This post breaks down the architecture of a zero-ops, serverless e-commerce backend using Cloudflare Workers, D1 (SQLite), and Durable Objects (for an executive summary of the business benefits, see [Zero-DevOps E-Commerce with Cloudflare]({{< ref "cloudflare-zero-devops-ecommerce" >}})). We will look at how to structure the database, how to prevent inventory overselling without Redis, and where the limits of this architecture lie.
 
 ## The "Zero-Ops" E-Commerce Dream
 

@@ -3,8 +3,10 @@ title: "OSRM vs GraphHopper: Architecture Comparison and Routing Engine Selectio
 slug: "osrm-vs-graphhopper-architecture-comparison"
 author: "Lê Tuấn Anh"
 date: "2026-07-17T14:00:00+07:00"
-lastmod: "2026-07-17T14:00:00+07:00"
+lastmod: "2026-07-18T08:00:00+07:00"
 draft: false
+aliases:
+  - "/posts/graphhopper-distance-matrix-routing/"
 categories:
   - "Architecture"
   - "Geospatial"
@@ -46,7 +48,7 @@ To mitigate the extreme rigidity of CH, OSRM introduced **Multi-Level Dijkstra (
 
 MLD relies on hierarchical graph partitioning. It divides the global graph into nested cells (e.g., cell level 1 might be a neighborhood, level 2 a city, level 3 a state). During the pre-processing phase (`osrm-partition` and `osrm-customize`), MLD calculates the optimal travel times between all boundary nodes of each cell. 
 
-Because of this encapsulation, if a traffic jam occurs deep inside a specific cell, you only need to recalculate the metrics for that single cell and its parents, rather than the entire planet. This drops the update time from hours to mere seconds, allowing OSRM to support live traffic updates. [Read more about OSRM Distance Matrix applications](/posts/graphhopper-distance-matrix-routing/).
+Because of this encapsulation, if a traffic jam occurs deep inside a specific cell, you only need to recalculate the metrics for that single cell and its parents, rather than the entire planet. This drops the update time from hours to mere seconds, allowing OSRM to support live traffic updates (see our guide on [OSRM Shared Memory on Kubernetes for Live Traffic]({{< ref "osrm-shared-memory-kubernetes-live-traffic" >}})).
 
 ### OSRM's Memory-Mapped Files (mmap)
 
@@ -112,3 +114,31 @@ Choosing between OSRM and GraphHopper is rarely about "which is better overall,"
 - Your developers are primarily familiar with the Java ecosystem and prefer an engine that is easier to extend programmatically through Java APIs rather than C++.
 
 Both engines represent the pinnacle of open-source geospatial engineering. Evaluate your requirements against their architectural trade-offs to make the right call for your infrastructure.
+
+## SME Field Notes: Urban Routing Realities in Ho Chi Minh City
+
+Running a last-mile delivery fleet or ride-hailing service in high-density, rapidly growing cities like **Ho Chi Minh City (HCMC)** exposes the severe limitations of standard academic routing models. Straight-line (Euclidean) or simple Manhattan distance approximations are practically useless here.
+
+```
+                  [ Binh Thanh District ]
+                            ||
+                     (Saigon Bridge)
+                            ||
+       =================== Saigon River ===================
+                            ||
+                     (Thu Thiem Bridge)
+                            ||
+                    [ Thu Duc City ]
+```
+
+### The Saigon River Barrier
+Saigon River divides the central districts (District 1, Binh Thanh, District 4) from the rapidly developing eastern urban area (Thu Duc City / old District 2). 
+* A customer standing in Binh Thanh is geographically less than 800 meters from a driver located in Thu Duc City. 
+* However, because they are separated by the river, the driver must travel several kilometers to cross either the **Saigon Bridge** or the **Thu Thiem Bridge**. 
+* Any VRP solver that uses straight-line distance will constantly assign Thu Duc drivers to Binh Thanh orders, leading to massive delivery delays and frustrated drivers. Running a real-time routing Matrix query is mandatory to capture the true topological constraint.
+
+### Two-Wheel (Motorcycle) vs. Four-Wheel (Truck/Car) Routing
+In Vietnam, two-wheel vehicles handle over 90% of last-mile deliveries. Their routing profiles are radically different from cars:
+* **One-Way Streets**: Central HCMC (District 1 and District 3) is packed with narrow, one-way roads. Motorcycles can bypass many traffic jams by navigating specific alleyway systems (hems) where cars cannot fit.
+* **Turn Restrictions**: Many major intersections prohibit cars from turning left during peak hours (e.g., 06:00 - 09:00 and 16:00 - 19:00) to prevent gridlock. Motorcycles, however, are exempt from these restrictions. Custom profiles must reflect these conditional rules to prevent routing errors.
+* **Alleyway (Hem) Routing**: HCMC's housing structure is dominated by deep, labyrinthine alley networks. In many cases, these alleys are narrower than 1.5 meters. The routing engine must exclude these paths when executing truck profiles, but include them for motorcycle couriers.

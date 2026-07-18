@@ -3,7 +3,7 @@ title: "Mastering Event-Driven Architecture with Dapr Pub/Sub"
 slug: "mastering-event-driven-architecture-dapr"
 author: "Lê Tuấn Anh"
 date: "2026-04-12T09:05:00+07:00"
-lastmod: "2026-07-03T00:00:00+07:00"
+lastmod: "2026-07-18T07:43:55+07:00"
 draft: false
 mermaid: true
 tags: ["Event-Driven", "Dapr", "Golang", "Go", "Message Queue", "Architecture", "Microservices", "Kafka", "Saga"]
@@ -318,7 +318,7 @@ A Saga is an orchestrated sequence of local transactions. The Checkout service p
 
 The diagram above shows **Choreography**: each service knows its role and reacts to events independently. No central coordinator exists.
 
-For complex sagas with many conditional branches, consider **Dapr Workflow** (orchestration): a durable workflow engine where a single orchestrator function defines the entire saga steps, handles state persistence, and manages retries and compensation automatically. The tradeoff is coupling — the orchestrator knows about every participant.
+For complex sagas with many conditional branches, consider **Dapr Workflow** (orchestration): a durable workflow engine where a single orchestrator function defines the entire saga steps, handles state persistence (for state storage nuances, see [Dapr State Store Consistency Trade-offs]({{< ref "dapr-state-store-consistency-tradeoffs" >}})), and manages retries and compensation automatically. The tradeoff is coupling - the orchestrator knows about every participant.
 
 **Rule of thumb:** Use choreography for 2–4 step sagas. Switch to Dapr Workflow when compensating transaction logic becomes complex enough that a single developer cannot reason about the entire flow at a glance.
 

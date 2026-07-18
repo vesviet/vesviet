@@ -3,7 +3,7 @@ title: "AI-Native Frontend in 2028: 10 Architecture Predictions"
 slug: "ai-native-frontend-architecture-predictions-2028"
 author: "Lê Tuấn Anh"
 date: "2026-05-16T21:00:00+07:00"
-lastmod: "2026-05-16T21:00:00+07:00"
+lastmod: "2026-07-18T07:43:55+07:00"
 draft: false
 tags: ["AI Frontend", "Generative UI", "Astro", "MCP", "Prediction", "Architecture", "WebSockets", "Zod"]
 description: "10 honest predictions for AI-Native Frontend Architecture by 2028: Component Registries, MCP contracts, streaming transports, and career impacts."
@@ -76,7 +76,7 @@ sequenceDiagram
     R->>D: Render component with validated props
 ```
 
-By 2028, every serious production frontend ships a companion MCP Server that exposes its Component Registry as "UI Tools" — allowing any Agent (Claude, GPT, Gemini) to render contextually correct interfaces without knowing the underlying framework.
+By 2028, every serious production frontend ships a companion MCP Server (for an in-depth implementation guide, see [Go MCP Server Development]({{< ref "go-mcp-server-development-production-guide" >}})) that exposes its Component Registry as "UI Tools" — allowing any Agent (Claude, GPT, Gemini) to render contextually correct interfaces without knowing the underlying framework.
 
 **The counterargument:** Anthropic invented MCP. If a competitor (OpenAI, Google) pushes a rival standard at scale, we get a VHS/Betamax fragmentation. The smart bet is framework-agnostic adapters over hard MCP coupling.
 

@@ -192,7 +192,7 @@ VRP solvers require a distance (or travel time) matrix between all delivery poin
 
 Amazon uses a combination of GraphHopper (self-hosted on the road network data from OpenStreetMap) and proprietary HERE Maps APIs to pre-compute realistic road-network travel times between all pairs of delivery locations in a zone. This distance matrix computation happens the night before, so routes are planned by morning.
 
-For a detailed breakdown of GraphHopper's distance matrix API and how it is deployed in production, see [GraphHopper vs CARTO: Order Fulfillment Routing Engine](/posts/graphhopper-distance-matrix-routing/) and the full [Geospatial & Routing Engine Architecture series](/series/routing-geospatial-architecture/).
+For a detailed breakdown of GraphHopper's distance matrix API and how it is deployed in production, see our [OSRM vs GraphHopper Architecture Comparison]({{< ref "osrm-vs-graphhopper-architecture-comparison" >}}) and the full [Geospatial & Routing Engine Architecture series](/series/routing-geospatial-architecture/).
 
 ### The "A-to-Z" Driver App and Sequence Optimization
 
