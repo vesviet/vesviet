@@ -1,35 +1,60 @@
 ---
-title: "Part 3: Golang + Kratos v2 — Microservice Framework Internals"
-description: "Kratos v2 for production Go microservices: 5-layer directory layout, Wire compile-time DI, dual HTTP+gRPC transport, and 21-service common library."
+title: "Part 3: Polyglot Tech Stack & Golang + Kratos v2 Internals"
+description: "Selecting the optimal languages (Go, TypeScript, Python) for Magento migration, and deep diving into Kratos v2 for production Go microservices."
 date: "2026-04-22T10:00:00+07:00"
-lastmod: "2026-07-03T15:41:55+07:00"
+lastmod: "2026-07-20T14:35:00+07:00"
 draft: false
 weight: 4
 slug: "part-3-golang-kratos"
 ShowToc: true
 TocOpen: true
 categories: ["Series", "Software Engineering", "Backend Architecture"]
-tags: ["Golang", "Kratos", "Microservices", "gRPC", "Wire", "Dependency Injection", "Go Framework"]
+tags: ["Golang", "TypeScript", "Python", "Kratos", "Microservices", "Migration", "Architecture"]
 series: ["Composable Commerce Migration"]
 series_order: 3
 ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
 cover:
   image: "images/posts/ecommerce-composable-cover.png"
-  alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
+  alt: "Composable Commerce Migration series: Polyglot Tech Stack & Kratos v2 internals"
   relative: false
 canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-3-golang-kratos/"
 ---
 
-For engineers coming from Magento PHP, the shift to Go microservices isn't just a language change — it's a fundamentally different way of organizing code. Magento has controllers, models, blocks, helpers, and plugins. Go with Kratos v2 has exactly five layers, each with a precisely defined responsibility.
+**Answer-first:** Migrating away from Magento requires a Polyglot architecture: TypeScript for the Headless Frontend (Next.js/Nuxt) and BFF, Python for AI/Data pipelines, and Go (Golang) for the high-throughput core commerce backend. A production Go microservice uses Kratos v2 with a 5-layer layout, Wire compile-time DI, and dual HTTP+gRPC transport standardized across all services.
 
-**Answer-first:** A production Go microservice on this platform follows the Kratos v2 directory convention (`api/ → cmd/ → internal/biz/ → internal/data/ → internal/server/`), uses Google Wire for compile-time dependency injection, exposes both HTTP and gRPC simultaneously on different ports (8xxx/9xxx), and imports a shared `common` library at `v1.9.5` that provides outbox, caching, worker, metrics, and logging — standardized across all 21 services.
+> [!NOTE] What You'll Learn That AI Won't Tell You
+> - Why replacing PHP with just one language (e.g., Node.js only) creates new bottlenecks at scale.
+> - How a shared `common` library at a fixed version (`v1.9.5`) eliminates boilerplate across 21 Go microservices.
 
-## 1. The 5-Layer Directory Structure
+## 1. The Polyglot Tech Stack: Beyond PHP
+
+For engineers coming from Magento, the shift to a modern microservices architecture isn't just a language change — it's a paradigm shift from a monolithic PHP application to a specialized, polyglot ecosystem. You don't replace Magento with a single language; you replace it with domain-specific tools.
+
+Here is the architectural rationale for our tech stack selection in 2026:
+
+### A. Core Commerce Backend (Golang)
+When replacing core Magento modules (Inventory, Checkout, Pricing, Catalog), **Go** is the dominant choice.
+- **Why Go:** Provides exceptional concurrency handling (`goroutines`), an extremely low memory footprint, and rapid compilation. It excels at building lightweight, high-performance APIs that do not suffer from PHP's synchronous blocking nature. During a flash sale, Go microservices scale surgically and efficiently.
+- **Framework:** Kratos v2 (detailed below).
+
+### B. Frontend, API Gateways & BFF (TypeScript / Node.js)
+The presentation layer and integration glue have entirely shifted to the JavaScript ecosystem.
+- **Why TypeScript:** It shares a unified language between the frontend UI and the Backend-For-Frontend (BFF) layers, ensuring end-to-end type safety.
+- **Migration Role:** Replaces Magento's legacy Luma frontend (Knockout.js/RequireJS) with a Headless architecture (e.g., Next.js or Nuxt.js). API Gateways built in Node (NestJS or Express) route traffic to the underlying Go microservices.
+
+### C. Data Pipelines & AI Integration (Python)
+As platforms transition to "AI-Native" commerce, Python becomes a mandatory supporting language.
+- **Why Python:** It is the lingua franca of AI, Machine Learning, and heavy data processing. It is essential for building personalized recommendation engines, demand forecasting models, and RAG (Retrieval-Augmented Generation) systems.
+- **Migration Role:** Extracting reporting, analytics, and search intelligence out of Magento's MySQL database into dedicated AI/ML services.
+
+For the remainder of this article, we will dive deeply into the implementation details of the **Core Commerce Backend** using Go and Kratos v2.
+
+## 2. Core Backend: The 5-Layer Directory Structure
 
 Every one of the 21 services follows the same layout:
 
-```
+```text
 order-service/
 ├── api/
 │   └── order/
@@ -79,7 +104,7 @@ order-service/
 
 This separation is not ceremonial. It means: **biz never knows it's running behind gRPC**. You can add a CLI transport, a queue consumer, or a test harness that calls `biz` directly — without changing business logic.
 
-## 2. Wire: Compile-Time Dependency Injection
+## 3. Wire: Compile-Time Dependency Injection
 
 In Magento, the dependency injection container is runtime — Magento builds the DI graph when the application boots, resolving dependencies from XML configuration files. This is slow, error-prone, and generates bugs that only appear at runtime.
 
@@ -143,7 +168,7 @@ func initApp(logger log.Logger, conf *conf.Bootstrap) (*kratos.App, func(), erro
 
 No reflection. No runtime DI container. The initialization order is determined at compile time, and Go's type system guarantees every dependency is satisfied. If you add a new dependency to `OrderUseCase` but forget to provide it in `ProviderSet`, `go build` fails.
 
-## 3. Dual Transport: HTTP + gRPC on Separate Ports
+## 4. Dual Transport: HTTP + gRPC on Separate Ports
 
 Every service exposes two ports simultaneously:
 
@@ -202,7 +227,7 @@ func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) (*kratos.App, f
 
 This is not arbitrary — it's discoverable. Any engineer who knows a service's HTTP port immediately knows its gRPC port by adding 1000.
 
-## 4. The biz Layer: Where Business Logic Lives
+## 5. The biz Layer: Where Business Logic Lives
 
 This is where the real domain work happens. In Magento terms, `biz` is the combination of your Service Layer (service contracts), your Models (domain entities), and your business rule enforcement — but strictly isolated from any I/O.
 
@@ -272,7 +297,7 @@ func (uc *OrderUseCase) CreateOrder(ctx context.Context, order *Order) (*Order, 
 
 Notice: `biz` has no import for `database/sql`, `pgxpool`, or any PostgreSQL library. It depends only on interfaces. This is why you can test `biz` with a mock repository — no database required.
 
-## 5. The common Library: v1.9.5
+## 6. The common Library: v1.9.5
 
 With 21 services, every pattern you implement in one service will be implemented in all 21. The platform solves this with a shared Go module:
 
@@ -283,7 +308,7 @@ require gitlab.com/ta-microservices/common v1.9.5
 
 ADR-023 documents that `common v1.9.5` eliminated **4,150 lines of duplicate boilerplate** across 19 services compared to v1.0.0. Here's what's in it:
 
-```
+```text
 common/
 ├── cache/        ← Cache-Aside with single-flight stampede protection
 ├── config/       ← go-kratos Config utilities
@@ -332,7 +357,7 @@ cron.Schedule("0 * * * *", "cleanup-expired-carts", func(ctx context.Context) er
 })
 ```
 
-## 6. Kratos Errors: Not Just HTTP Status Codes
+## 7. Kratos Errors: Not Just HTTP Status Codes
 
 Magento's error handling returns PHP exceptions that get caught and converted to HTTP responses. Kratos's error system is more precise:
 
@@ -356,7 +381,7 @@ errors.InternalServer("DB_ERROR", "database unavailable")
 
 The `reason` field (`ORDER_NOT_FOUND`) is the machine-readable code. Frontend code pattern-matches on `reason` for specific error handling (e.g., redirect to cart if `CART_EXPIRED`), while the `message` is displayed to users.
 
-## 7. Configuration: go-kratos Config
+## 8. Configuration: go-kratos Config
 
 Each service reads configuration from:
 1. `configs/config.yaml` (base config, committed to repo)
@@ -418,7 +443,6 @@ With the service internals understood, we can look at the API layer: how service
 
 ## FAQ
 
-
 {{< faq q="go-kratos vs Gin — which is faster?" >}}
 Gin is marginally faster for pure HTTP throughput in benchmarks (~15–20% lower latency in synthetic tests). For real-world microservices, the difference is negligible — the database and network dominate latency, not the framework overhead. The decisive advantage of go-kratos over Gin is dual transport: Kratos handles HTTP and gRPC from the same proto definition. Gin requires you to write separate HTTP handlers and gRPC server code — effectively doubling the boilerplate for each endpoint.
 {{< /faq >}}
@@ -429,7 +453,6 @@ Wire generates Go code at compile time — there is no reflection, no XML config
 
 {{< faq q="Can I use a single kratos service for both REST and gRPC without running two separate server processes?" >}}
 Yes — that is exactly what `kratos.Server(gs, hs)` does. Both the gRPC server (`:9001`) and HTTP server (`:8001`) run as goroutines within the same process. They share the same `biz` layer and the same database connection pool. The proto annotations (`google.api.http`) handle HTTP↔gRPC routing automatically so you write the handler logic once.
-
 {{< /faq >}}
 
 ---
