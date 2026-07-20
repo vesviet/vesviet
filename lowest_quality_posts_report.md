@@ -9,7 +9,7 @@ This report presents a comprehensive synthesis of the content quality audit find
 An audit of the articles in `vesviet/content/posts` was conducted to identify compliance, structural, and quality violations. Across the analyzed corpus, several high-risk issues have been identified, including:
 1. **Critical Quality Failures**: Five articles fail core technical depth, word count, and brand voice guidelines.
 2. **AI Governance Violations**: Direct violations of the **AI-GOVERNANCE LOCK** and **SME LOCK**, most notably the presence of identical, templated placeholder FAQ sections across 10 posts.
-3. **Format & Style Drift**: Widespread displacement, omission, or repetition of the mandatory **Answer-First** block (including 3 Vietnamese-language posts), rendering issues with Mermaid diagram configurations, incorrect timezone offsets, and author persona discrepancies.
+3. **Format & Style Drift**: Widespread displacement, omission, or repetition of the mandatory **Answer-First** block, rendering issues with Mermaid diagram configurations, incorrect timezone offsets, and author persona discrepancies. *(Note: The 3 Vietnamese posts were recently translated to English and their compliance issues have been fixed).*
 
 ---
 
@@ -134,9 +134,6 @@ Per the style guide: *"The introduction MUST begin with `**Answer-first:**` foll
 * `graphhopper-distance-matrix-production-guide.md`
 * `magento-ai-integration-strategy-architecture.md`
 * `agentic-ecommerce-search-golang-vector-databases.md`
-* `dapr-state-store-consistency-tradeoffs.md` (Vietnamese post)
-* `high-throughput-go-framework-benchmarks-gin-fiber-kratos.md` (Vietnamese post)
-* `multi-region-geo-distributed-api-routing.md` (Vietnamese post)
 
 #### 2. Repetitive Answer-First Blocks
 Several articles repeat the `**Answer-first:**` block at the beginning of multiple headings/subsections, generating a highly artificial layout:
@@ -208,5 +205,5 @@ To restore the repository to compliance, the following remediation steps must be
 * **Expansion**: Expand `deconstructing-ecommerce-service-details-domain.md` and `ecommerce-architecture-composable-migration.md` to meet the 1,400+ word baseline by adding concrete Go code snippets, Drizzle/SQL database schemas, and actual SRE configuration templates.
 
 ### Step 5: Enforce Information Gain and E-E-A-T Signals
-* **Info Gain Statement**: Add a dedicated "What You'll Learn That AI Won't Tell You" introduction statement or subsection in all articles to satisfy the **INFORMATION-GAIN LOCK**. This is particularly important for the high-value Vietnamese technical posts (`dapr-state-store-consistency-tradeoffs.md`, `high-throughput-go-framework-benchmarks-gin-fiber-kratos.md`, `multi-region-geo-distributed-api-routing.md`) which contain excellent data but lack the explicit Info Gain framing.
+* **Info Gain Statement**: Add a dedicated "What You'll Learn That AI Won't Tell You" introduction statement or subsection in all articles to satisfy the **INFORMATION-GAIN LOCK**. *(Note: This has been successfully applied to the previously missing Vietnamese posts, which are now translated).*
 * **E-E-A-T Signals**: Integrate code blocks, original configurations, and practitioner case studies in `graphhopper-distance-matrix-routing.md` to remove the generic AI tone.
