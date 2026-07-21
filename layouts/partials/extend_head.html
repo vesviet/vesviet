@@ -525,3 +525,41 @@
 <link rel="alternate" hreflang="vi" href="{{ replace .Permalink "https://tanhdev.com" "https://learn.tanhdev.com" }}" />
 <link rel="alternate" hreflang="x-default" href="{{ .Permalink }}" />
 {{ end }}
+
+{{ if .IsHome }}
+<!-- Schema.org — Person & WebSite for Homepage E-E-A-T -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "{{ .Site.BaseURL }}#website",
+      "url": "{{ .Site.BaseURL }}",
+      "name": "{{ .Site.Title }}",
+      "description": "{{ .Site.Params.description }}",
+      "publisher": {
+        "@id": "{{ .Site.BaseURL }}#person"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "{{ .Site.BaseURL }}#person",
+      "name": "Lê Tuấn Anh",
+      "url": "{{ .Site.BaseURL }}",
+      "image": "{{ .Site.BaseURL }}vesviet.png",
+      "jobTitle": "Senior Go Backend Architect & Distributed Systems Engineer",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Independent Consultant"
+      },
+      "knowsAbout": ["Go (Programming Language)", "Microservices", "Distributed Systems", "System Architecture", "Software Engineering", "Kubernetes"],
+      "sameAs": [
+        "https://www.linkedin.com/in/vesviet",
+        "https://github.com/vesviet"
+      ]
+    }
+  ]
+}
+</script>
+{{ end }}
