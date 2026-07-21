@@ -1,9 +1,9 @@
 ---
-title: "Goroutine Pool Patterns in Go: errgroup & Backpressure"
+title: "Golang Goroutine Pool Patterns: errgroup & Worker Pools"
 slug: "golang-goroutine-pool-errgroup-worker"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
-lastmod: "2026-07-03T00:00:00+07:00"
+lastmod: "2026-07-21T22:04:45+07:00"
 draft: false
 mermaid: true
 categories:
@@ -18,7 +18,7 @@ tags:
   - "Worker Pool"
   - "Backpressure"
   - "Production"
-description: "Production Go concurrency patterns: errgroup worker pools, semaphore-based rate limiting, bounded queues, and graceful backpressure for microservices."
+description: "Master Golang goroutine pool patterns using errgroup, semaphores, and worker pools. Prevent memory spikes and OOM crashes under high concurrency."
 ShowToc: true
 TocOpen: true
 cover:
@@ -28,7 +28,9 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/golang-goroutine-pool-errgroup-worker/"
 ---
 
-**Answer-first:** Unbounded goroutines in production trigger OOM crashes and garbage collection spirals. Prevent failures by enforcing concurrency limits using `errgroup.WithContext` for group error handling, channel-based worker pools for continuous jobs, and buffered semaphores for rate-limiting, transforming variable runtime resource usage into predictable, fixed bounds.
+# Golang Goroutine Pool Patterns: errgroup & Backpressure
+
+**Answer-first:** A Golang goroutine pool limits concurrent execution using bounded channels or semaphores (`golang.org/x/sync/semaphore`), preventing OOM crashes and GC pauses under high-throughput workloads while propagating cancellation via `errgroup`.
 
 ### What You'll Learn That AI Won't Tell You
 - Preventing goroutine leaks in high-concurrency worker pools using errgroup.
@@ -44,6 +46,8 @@ The solution is not to avoid goroutines — Go's concurrency model is one of its
 This post covers four production-grade **golang goroutine pool** patterns with complete code, benchmarks, and use-case guidance. It is the proactive counterpart to [Goroutine Leak Detection and Fix in Production Go Services](/posts/goroutine-leak-detection-production-golang/) — that post detects and fixes leaks; this one prevents them architecturally. For the foundational CPU and heap profiling workflow that helps you measure pool performance, see [Go pprof Tutorial: CPU & Memory Profiling in Production](/posts/golang-pprof-profiling-memory-cpu-tutorial/).
 
 ---
+
+## Why Unbounded Goroutines Fail: The Need for Worker Pools
 
 ## Why Unbounded Goroutines Will Destroy Your Production Service
 
@@ -62,6 +66,8 @@ The failure modes are:
 The correct approach is to decide, upfront, the maximum concurrency your system can sustain, and enforce that limit structurally.
 
 ---
+
+## Implementing Golang Goroutine Pools with errgroup & Semaphores
 
 ## Pattern 1: `errgroup` — The Idiomatic Go Worker Pool
 

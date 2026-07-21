@@ -12,7 +12,6 @@ categories: ["Data Engineering", "AI/ML", "DevOps"]
 ShowToc: true
 TocOpen: true
 aliases:
-  - "/series/ai-data-engineering-pipeline/part-9-agentic-observability-monitoring/part-10-production-evals-cicd"
   - "/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/part-9-agentic-observability-monitoring"
 cover:
   image: "images/posts/graphrag-vs-naive-rag-cover.png"

@@ -81,6 +81,8 @@ If your problem **only requires delivering from a fixed warehouse to customers**
 
 > **Prerequisite:** This section assumes familiarity with [Order Allocation Algorithms](/series/ecommerce-order-allocation/part-3-allocation-algorithms/) and how a VRP solver consumes a pre-built distance matrix.
 
+> **Architecture Context:** In a production distributed e-commerce system, distance matrix calculations feed directly into the Logistics & Fulfillment domain. See the complete [E-Commerce Microservices Architecture Blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/) for how Warehouse and Shipping services integrate with the global API Gateway.
+
 You need a **Routing Engine** to load road network graph data. This data is usually downloaded for free from **OpenStreetMap (OSM)** — which the community constantly updates whenever a new road is built, an alley is removed, or weight restrictions change. When the roads change, you simply re-download the map file (`.osm.pbf`) and restart the engine.
 
 ### Why not standard Dijkstra or A*?

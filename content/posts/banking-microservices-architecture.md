@@ -389,7 +389,7 @@ func PollOutbox(ctx context.Context, db *pgxpool.Pool, producer sarama.SyncProdu
 
 
 
-Two-Phase Commit (2PC) locks databases and crushes throughput. We must use Sagas to ensure Eventual Consistency (for a complete implementation guide, see [Orchestrated Saga Pattern with Temporal]({{< ref "temporal-saga-pattern-golang-distributed-transactions" >}})).
+Two-Phase Commit (2PC) locks databases and crushes throughput. We must use Sagas to ensure Eventual Consistency (for a complete implementation guide, see [Orchestrated Saga Pattern with Temporal]({{< ref "temporal-saga-pattern-golang-distributed-transactions.md" >}})).
 
 ### Orchestrator Comparison
 
@@ -404,7 +404,7 @@ Two-Phase Commit (2PC) locks databases and crushes throughput. We must use Sagas
 
 **Architecture Decision (2026 Core Banking Standard):**
 - **Temporal** is required if you need long-term PCI-DSS audit trails, history archival to S3, and process complex multi-day workflows (e.g. mortgage origination). Note that Temporal has a hard event history limit (51,200 events), necessitating the `Continue-As-New` strategy for infinite financial ledgers.
-- **Dapr Workflows** are optimal for short-lived Sagas (e.g. cross-service payment transfers) if you already use Dapr for sidecar routing and pub/sub (understanding [Dapr State Store Consistency Trade-offs]({{< ref "dapr-state-store-consistency-tradeoffs" >}}) is critical here).
+- **Dapr Workflows** are optimal for short-lived Sagas (e.g. cross-service payment transfers) if you already use Dapr for sidecar routing and pub/sub (understanding [Dapr State Store Consistency Trade-offs]({{< ref "dapr-state-store-consistency-tradeoffs.md" >}}) is critical here).
 
 ### Go Temporal Workflow Code Structure
 

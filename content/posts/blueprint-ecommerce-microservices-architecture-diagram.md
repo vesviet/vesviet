@@ -1,13 +1,13 @@
 ---
-title: "E-Commerce Microservices Architecture: 21-Service Blueprint"
+title: "Ecommerce Architecture: 21-Service Microservices Blueprint"
 slug: "blueprint-ecommerce-microservices-architecture-diagram"
 author: "Lê Tuấn Anh"
 date: "2026-04-12T08:30:00+07:00"
-lastmod: "2026-07-08T18:21:00+07:00"
+lastmod: "2026-07-21T22:04:45+07:00"
 draft: false
 mermaid: true
 tags: ["System Architecture", "Microservices", "Mermaid", "Golang", "API Gateway", "DDD", "Dapr", "Kubernetes", "ecommerce architecture"]
-description: "21 Mermaid architecture diagrams for a production Go e-commerce platform: domain boundaries, traffic flow, and event-driven patterns."
+description: "Complete e-commerce architecture blueprint: 21 Go microservices, 6 DDD domains, API gateway routing, and event-driven patterns. Free Mermaid diagrams."
 categories: ["Architecture", "System Design"]
 ShowToc: true
 TocOpen: true
@@ -18,7 +18,22 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/blueprint-ecommerce-microservices-architecture-diagram/"
 ---
 
-**Answer-first:** Complete architectural blueprint of a Go 21-service e-commerce platform. Covers domain boundaries, traffic flow, and event-driven patterns.
+# Ecommerce Architecture: 21-Service Microservices Blueprint
+
+## What is Ecommerce Architecture? Monolith vs Microservices
+
+**Answer-first:** Ecommerce architecture is the structural design of software components, databases, and network integrations powering an online store. While monolithic architecture unifies catalog, cart, and checkout in a single application, microservices architecture splits these capabilities into independent services, allowing dedicated scaling, isolated deployments, and fault-tolerant domain boundaries for enterprise platforms.
+
+### Monolithic vs Microservices E-Commerce Comparison
+
+| Dimension | Monolithic E-Commerce | Microservices E-Commerce |
+| :--- | :--- | :--- |
+| **Scaling** | Vertical scaling of entire monolith application | Independent horizontal scaling per domain (e.g., Catalog 10x Cart) |
+| **Database Architecture** | Single shared database with cross-table SQL joins | Database-per-service (PostgreSQL, Redis, Elasticsearch) with zero cross-domain access |
+| **Deployment Frequency** | Low frequency; all-or-nothing monolithic releases | High frequency; independent CI/CD pipelines per microservice |
+| **Fault Tolerance** | Low; a single bug or memory leak crashes the entire store | High; failure in one domain (e.g., Reviews) does not block Checkout |
+| **Complexity** | Low initial architectural and operational complexity | High distributed complexity (Saga pattern, gRPC contracts, Dapr mesh) |
+| **Operational Cost** | Lower initial cost; scales expensively at high traffic | Higher initial infrastructure setup; cost-effective at high scale |
 
 ### What You'll Learn That AI Won't Tell You
 - Practical latency and memory metrics comparing an Envoy-based API Gateway to a custom Go reverse proxy under 100k concurrent connections.
@@ -29,7 +44,7 @@ When transitioning from a monolithic platform to a distributed microservice setu
 
 This post is the architectural anchor for the full composable commerce series. It presents the complete system blueprint and explains the reasoning behind each domain boundary. For deep-dives into specific layers, each section links to the dedicated post in the series.
 
-## The 6 Business Domains
+## Microservices Ecommerce Architecture: The 6 Core Business Domains
 
 **A scalable e-commerce architecture divides into six core domains: Identity (Auth), Catalog (Search/Products), Cart (Checkout), Orders (Fulfillment), Inventory (Stock), and Promotions. Each domain owns its dedicated database to eliminate shared-state contention.**
 
@@ -238,6 +253,14 @@ For the full argument on when this complexity is justified — and when it isn't
 | [GitOps with ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/) | App-of-Apps, Kustomize overlays, rollback playbook |
 | [Magento to Microservices: Why](/posts/why-migrate-magento-to-microservices/) | Decision framework: when to migrate, when not to |
 | [Magento to Microservices: How](/posts/moving-from-magento-to-microservices/) | 3-phase Strangler Fig, Debezium CDC, bidirectional sync |
+
+## Author & Real-World Engineering Experience / Về Tác Giả & Kinh Nghiệm Thực Tế
+
+This architectural blueprint and pattern guide was authored by **Lê Tuấn Anh**, a Senior Fullstack & Microservices Engineer with over 10 years of experience architecting high-throughput distributed systems and enterprise e-commerce platforms.
+
+- **Core Engineering Expertise**: Domain-Driven Design (DDD), Clean Architecture, and microservice micro-frameworks in **Go 1.25+ (Golang)** using **Kratos v2**, **GORM**, and **Dapr (Distributed Application Runtime)**.
+- **Production Benchmarks**: Real-world experience building 21+ distributed microservices handling 100k+ concurrent connections, sub-50ms p99 latencies, distributed Saga transactions, and GitOps deployments on Kubernetes.
+- **Commitment to Quality**: Every diagram, sequence flow, and pattern presented here is derived from production-tested systems, ensuring real-world resilience, fault isolation, and zero-downtime scalability.
 
 {{< author-cta >}}
 

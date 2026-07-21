@@ -11,7 +11,6 @@ categories: ["Data Engineering", "AI/ML", "Architecture", "DevOps"]
 ShowToc: true
 TocOpen: true
 aliases:
-  - "/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/part-9-agentic-observability-monitoring"
   - "/series/ai-data-engineering-pipeline/part-7-agentic-memory-long-term/part-8-inference-optimization-vllm"
 cover:
   image: "images/posts/graphrag-vs-naive-rag-cover.png"

@@ -11,7 +11,6 @@ categories: ["Data Engineering", "AI/ML", "Security"]
 ShowToc: true
 TocOpen: true
 aliases:
-  - "/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/part-6-rise-of-ai-agents"
   - "/series/ai-data-engineering-pipeline/part-4-streaming-cdc-federated-rag/part-5-enterprise-security-data-poisoning"
 cover:
   image: "images/posts/graphrag-vs-naive-rag-cover.png"

@@ -11,7 +11,6 @@ categories: ["Data Engineering", "AI/ML", "Architecture"]
 ShowToc: true
 TocOpen: true
 aliases:
-  - "/series/ai-data-engineering-pipeline/part-7-agentic-memory-long-term/part-8-inference-optimization-vllm"
   - "/series/ai-data-engineering-pipeline/part-6-rise-of-ai-agents/part-7-agentic-memory-long-term"
 cover:
   image: "images/posts/graphrag-vs-naive-rag-cover.png"

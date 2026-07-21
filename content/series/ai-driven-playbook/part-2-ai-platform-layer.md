@@ -140,8 +140,6 @@ Enterprises shouldn't rely solely on the Cloud. The advent of massive Unified Me
 
 With RAM capacities ranging from 64GB to 192GB, you can run extremely powerful Open-source models (like `Llama-3-70B` or `Qwen-2.5-Coder`) right in your office using Ollama.
 
-![Mac Studio acting as a Local LLM Server in a Data Center](images/mac_studio_infra.png)
-
 **The Dual Benefit:**
 1. **Zero API Cost:** Inference for 90% of basic CRUD tasks is completely free.
 2. **Absolute Privacy:** Sensitive data (like financial trading algorithms) never leaves the internal network.

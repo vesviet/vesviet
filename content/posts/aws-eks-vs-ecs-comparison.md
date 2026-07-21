@@ -18,7 +18,7 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/aws-eks-vs-ecs-comparison/"
 ---
 
-**Answer-first:** Choose AWS EKS for Kubernetes-native GitOps (ArgoCD, Dapr) and cloud-portable architectures. Choose ECS for zero-cost control planes, rapid deployment, and pure AWS-native simplicity. Go stateless containers on Graviton Spot to cut compute costs by 35%, and use Network Load Balancers for high-performance internal gRPC routing (for cross-region strategies, see [Multi-Region API Routing]({{< ref "multi-region-geo-distributed-api-routing" >}})).
+**Answer-first:** Choose AWS EKS for Kubernetes-native GitOps (ArgoCD, Dapr) and cloud-portable architectures. Choose ECS for zero-cost control planes, rapid deployment, and pure AWS-native simplicity. Go stateless containers on Graviton Spot to cut compute costs by 35%, and use Network Load Balancers for high-performance internal gRPC routing (for cross-region strategies, see [Multi-Region API Routing]({{< ref "multi-region-geo-distributed-api-routing.md" >}})).
 
 ### What You'll Learn That AI Won't Tell You
 - The hidden costs of EKS VPC CNI ipam and how ECS handles routing faster.
@@ -575,4 +575,4 @@ At Vigo Retail, EKS was the right call. The CNCF ecosystem — ArgoCD + Dapr + K
 
 ---
 
-**From the Tech Radar:** The [May 13, 2026 Tech Radar](/radar/radar-2026-05-13/) covered AgentOps meeting Kubernetes — Signadot's initiative to run AI agent testing inside live Kubernetes sandboxes. For teams choosing EKS specifically to run agentic workloads, this is the most relevant recent signal on where the K8s + AI convergence is heading operationally.
+**From the Tech Radar:** The [May 13, 2026 Tech Radar]({{< ref "/radar/2026-05/radar-2026-05-13.md" >}}) covered AgentOps meeting Kubernetes — Signadot's initiative to run AI agent testing inside live Kubernetes sandboxes. For teams choosing EKS specifically to run agentic workloads, this is the most relevant recent signal on where the K8s + AI convergence is heading operationally.

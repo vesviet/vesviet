@@ -81,8 +81,6 @@ The Platform Engineering team must track these 4 vital metrics on the Dashboard:
 | `trc_2b4c` | `marketing` | `gpt-4o` | 3,100 | 2.1s | 400ms | $0.01 | ⚠️ Overridden (User edited) |
 | `trc_9f1d` | `sys-agent` | `local-llama3` | 8,500 | 4.5s | 1200ms | $0.00 | 🛑 Hallucination Detected |
 
-![AI Monitoring Dashboard Interface (Mockup)](images/langfuse_dashboard.png)
-
 ---
 
 ## 4. The Evaluation Pipeline (Evals): The Heart of Scaling AI

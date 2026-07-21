@@ -34,6 +34,8 @@ When you have multiple squads touching the same codebase, feature overlap create
 
 Below, we go beyond the high-level diagrams to deconstruct the exact business capabilities, storage choices, and operational profiles of the 21 individual microservices that power this ecosystem.
 
+> **System Architecture Map:** For the high-level visual topology and domain interaction diagram of all 21 microservices, refer to the [E-Commerce Microservices Architecture Blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/).
+
 ---
 
 ## 1. The Transactional Commerce Flow

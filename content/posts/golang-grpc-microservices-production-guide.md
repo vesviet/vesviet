@@ -813,7 +813,7 @@ Single-instance Go gRPC server (4 vCPU / 8GB) handling unary RPCs:
 - 2.8× higher throughput at 100 concurrent clients
 - 3.5× lower p99 latency
 
-These benchmarks used the `driver.v1.GetDriver` unary RPC with a 64-byte Protobuf response (for a broader comparison of HTTP runtimes, check out our [High-Throughput Go Framework Benchmarks]({{< ref "high-throughput-go-framework-benchmarks-gin-fiber-kratos" >}})).
+These benchmarks used the `driver.v1.GetDriver` unary RPC with a 64-byte Protobuf response (for a broader comparison of HTTP runtimes, check out our [High-Throughput Go Framework Benchmarks]({{< ref "high-throughput-go-framework-benchmarks-gin-fiber-kratos.md" >}})).
 
 ---
 

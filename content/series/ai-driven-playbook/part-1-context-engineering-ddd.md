@@ -27,6 +27,8 @@ In small student projects (monoliths), this might work. But in an Enterprise env
 
 This article redefines how you communicate with AI through **Context Engineering**, built upon the architectural foundation of Domain-Driven Design (DDD).
 
+> **Model Selection Strategy:** When deciding between prompt optimization, retrieval mechanisms, and model customization, see our full evaluation framework in [Prompt Engineering vs Fine-Tuning vs RAG framework](/posts/slm-fine-tune-vs-prompt-engineering/).
+
 ---
 
 ## 1. The Tech Lead Perspective: Escaping the "Tool-Centric" Trap

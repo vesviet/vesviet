@@ -2,7 +2,6 @@
 title: "Part 6: The Rise of AI Agents - From Reading to Autonomy"
 slug: "part-6-rise-of-ai-agents"
 aliases:
-  - "/series/ai-data-engineering-pipeline/part-6-rise-of-ai-agents/part-7-agentic-memory-long-term"
   - "/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/part-6-rise-of-ai-agents/"
 date: "2026-05-17T12:00:00+07:00"
 lastmod: "2026-05-17T12:00:00+07:00"

@@ -4,9 +4,10 @@
   "description": "tanhdev.com — Le Tuan Anh technical blog",
   "private": true,
   "scripts": {
-    "build": "hugo --gc --minify && npx pagefind --site public",
+    "build": "./scripts/generate-llms-txt.sh && hugo --gc --minify && npx pagefind --site public",
     "build:hugo": "hugo --gc --minify",
     "build:index": "npx pagefind --site public",
+    "build:llms": "./scripts/generate-llms-txt.sh",
     "dev": "hugo server --disableFastRender"
   }
 }

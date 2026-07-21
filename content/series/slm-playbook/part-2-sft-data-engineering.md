@@ -9,8 +9,6 @@ TocOpen: true
 weight: 3
 categories: ["Series", "SLM Playbook"]
 tags: ["AI Engineering", "Fine-Tuning", "Data Engineering", "Axolotl"]
-aliases:
-  - "/series/slm-playbook/part-2-vllm-serving/"
 cover:
   image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
   alt: "SLM Playbook series: fine-tuning, LoRA, QLoRA, and production deployment of Small Language Models"

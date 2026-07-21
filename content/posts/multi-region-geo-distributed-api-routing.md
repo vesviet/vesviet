@@ -23,7 +23,7 @@ In the era of global digitization, user experience is directly determined by app
 
 Building a Geo-Distributed API system solves three core challenges:
 
-1. **Latency Reduction:** By deploying API entry points closer to the geographical location of end-users, we minimize the number of network hops data packets must traverse. Processes that consume multiple RTTs, such as TCP handshakes and TLS security negotiations, are handled extremely quickly at the edge or in nearby regions, reducing response times from hundreds of milliseconds to tens or even single digits of milliseconds. In this model, a distributed [API Gateway](/series/high-concurrency-systems/article_6_api_gateway/) acts as the first line of defense in each region to receive, authenticate, and coordinate traffic flows.
+1. **Latency Reduction:** By deploying API entry points closer to the geographical location of end-users, we minimize the number of network hops data packets must traverse. Processes that consume multiple RTTs, such as TCP handshakes and TLS security negotiations, are handled extremely quickly at the edge or in nearby regions, reducing response times from hundreds of milliseconds to tens or even single digits of milliseconds. In this model, a distributed [API Gateway](/series/high-concurrency-systems/api-gateway-vs-service-mesh/) acts as the first line of defense in each region to receive, authenticate, and coordinate traffic flows.
 
 2. **High Availability & Disaster Recovery:** When an entire geographical region suffers a catastrophic failure (e.g., massive power outages, data center fires, or severed international submarine cables), a well-designed multi-region API system can automatically detect the issue and failover user traffic to the nearest operational region without causing any noticeable service disruption.
 
@@ -153,7 +153,7 @@ When data is partitioned across multiple geographical zones, we directly confron
 
 This solution works by assigning each user a specific "Home Region" based on their geographical location. For example, all account information, orders, and activities for a user in Vietnam will be primarily stored in the AWS Singapore Region (`ap-southeast-1`).
 
-All regular Write and Read operations for this user are processed directly in Singapore at extremely fast speeds. This data is only asynchronously replicated to other regions (like the US or Europe) for backup or statistical analysis purposes. This mechanism is closely tied to [Database Sharding](/series/high-concurrency-systems/article_9_sharding/) strategies, splitting the physical database via geographic shard keys.
+All regular Write and Read operations for this user are processed directly in Singapore at extremely fast speeds. This data is only asynchronously replicated to other regions (like the US or Europe) for backup or statistical analysis purposes. This mechanism is closely tied to [Database Sharding](/series/high-concurrency-systems/database-sharding-read-write-splitting/) strategies, splitting the physical database via geographic shard keys.
 
 ### 2. Read-Local, Write-Global Model
 

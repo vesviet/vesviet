@@ -10,8 +10,6 @@ description: "Build enterprise AI data pipelines: GraphRAG, multimodal ingestion
 categories: ["Data Engineering", "AI/ML"]
 ShowToc: true
 TocOpen: true
-aliases:
-  - "/series/ai-data-engineering-pipeline/executive-summary"
 cover:
   image: "images/posts/graphrag-vs-naive-rag-cover.png"
   alt: "Enterprise AI Data Pipeline and GraphRAG Architecture series — graph-based retrieval at scale"

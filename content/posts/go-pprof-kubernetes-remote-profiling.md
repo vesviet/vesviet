@@ -3,7 +3,7 @@ title: "Go pprof in Kubernetes: Remote Profiling & Flame Graphs"
 slug: "go-pprof-kubernetes-remote-profiling"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
-lastmod: "2026-07-03T00:00:00+07:00"
+lastmod: "2026-07-21T22:04:45+07:00"
 draft: false
 categories:
   - "Engineering"
@@ -18,7 +18,7 @@ tags:
   - "Pyroscope"
   - "Performance"
   - "kubectl"
-description: "How to safely profile CPU, memory, and goroutines in Go services running in Kubernetes using kubectl port-forward, pprof, and Pyroscope."
+description: "Safely profile Go microservices in Kubernetes using Go pprof and kubectl port-forward. Generate CPU memory flame graphs in production without overhead."
 ShowToc: true
 TocOpen: true
 cover:
@@ -28,7 +28,9 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/go-pprof-kubernetes-remote-profiling/"
 ---
 
-**Answer-first:** Safely profile production Go services in Kubernetes by establishing a secure `kubectl port-forward` to the runtime's pprof endpoint. Collecting CPU, memory, and goroutine profiles in real-time allows generating flame graphs or streaming data to Pyroscope without introducing high overhead.
+# Go pprof in Kubernetes: Remote Profiling & Flame Graphs
+
+**Answer-first:** Remote Go pprof profiling in Kubernetes exposes CPU, heap, and goroutine profiles over a secure `kubectl port-forward` tunnel, enabling live flame graph inspection (`go tool pprof -http=:8080`) without exposing debug endpoints publicly.
 
 ### What You'll Learn That AI Won't Tell You
 - Production port forwarding configuration to profile CPU without service downtime.
@@ -58,6 +60,8 @@ There are three approaches to solving this, each with different trade-offs:
 | Pyroscope continuous profiling | Medium-High | Low (~1-3% CPU) | Always-on | Long-term performance trend analysis |
 
 ---
+
+## Safe Remote Profiling Setup via kubectl port-forward
 
 ## Method 1: `kubectl port-forward` — The Manual On-Demand Approach
 
@@ -370,6 +374,8 @@ If your service is already degrading in production and you need to profile witho
 For the goroutine pool patterns that prevent goroutine explosion before you even need to profile it, see [Goroutine Pool Patterns in Go: errgroup & Backpressure](/posts/golang-goroutine-pool-errgroup-worker/).
 
 ---
+
+## Analyzing Memory Leaks and CPU Flame Graphs with go tool pprof
 
 ## Reading Flame Graphs: A Practical Walkthrough for Go Services
 

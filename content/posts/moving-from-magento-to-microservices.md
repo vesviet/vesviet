@@ -1,13 +1,13 @@
 ---
-title: "Zero-Downtime: Moving from Magento to Microservices"
+title: "Why Migrate Magento to Microservices: Zero-Downtime Guide"
 slug: "moving-from-magento-to-microservices"
 author: "Lê Tuấn Anh"
 date: "2026-04-14T21:20:00+07:00"
-lastmod: "2026-07-03T14:57:00+07:00"
+lastmod: "2026-07-21T22:04:45+07:00"
 draft: false
 series: ["magento-migration-vietnam"]
 tags: ["Magento", "Microservices", "Migration", "System Design", "Debezium", "Dapr"]
-description: "Execution playbook: 3-Phase Strangler Fig, Debezium CDC, bidirectional Dapr sync, and a 30-day hot standby for safe rollback until Magento is terminated."
+description: "Why migrate Magento to microservices? Zero-downtime Strangler Fig migration playbook using Debezium CDC, Dapr event sync, and dual-write strategy."
 categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
@@ -18,7 +18,9 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/moving-from-magento-to-microservices/"
 ---
 
-**Answer-first:** Migrate a complex Magento monolith to microservices without downtime by utilizing a 3-Phase Strangler Fig pattern. Stream legacy updates to Go microservices in real time using Debezium CDC, manage bidirectional synchronizations using Dapr Pub/Sub to maintain eventual consistency, and keep Magento as a 30-day hot standby for instant rollback capability.
+# Why Migrate Magento to Microservices: Zero-Downtime Blueprint
+
+**Answer-first:** Migrating Magento to microservices resolves database lock contention and slow deployment cycles. Using the Strangler Fig pattern with Debezium CDC and Dapr event streaming enables incremental service extraction without site downtime.
 
 ### What You'll Learn That AI Won't Tell You
 - Decoupling cart and checkout tables from Magento core databases.
@@ -36,6 +38,10 @@ Instead of burning the old house down before the new one is built, we employed a
 > **Decision checkpoint:** This article covers *how* to execute the migration. If you are still evaluating *whether* the migration makes sense for your business — team size thresholds, EAV performance limits, migrate/don't-migrate checklist — read [Migrating Magento to Microservices: When & Why →](/posts/why-migrate-magento-to-microservices/) first.
 
 Here is the exact playbook we used to safely migrate 10 core commerce domains (Catalog, Order, Customer, Payment, Fulfillment, etc.) from Magento to a modern stack, achieving 99.9% uptime and a <5 minute rollback capability.
+
+---
+
+## Why Migrate Magento to Microservices: Monolith Bottlenecks
 
 ## The Three Non-Trivial Migration Roadblocks
 
@@ -80,6 +86,8 @@ This checklist reflects what we validated across two large-scale Magento migrati
 
 ---
 
+## The 3-Phase Strangler Fig Migration Playbook
+
 ## Phase 1: Read-Only Migration (The Smart Gateway)
 
 **Phase 1 extracts read-only paths (product catalog and search) by deploying an API Gateway. All write requests route to Magento, while read requests hit the new Go microservices backed by an Elasticsearch or Typesense index synchronized via CDC.**
@@ -115,7 +123,7 @@ Phase 1 rollback is the simplest — all writes still go to Magento, so there is
 
 ## Phase 2: Read-Write Migration & Dual Sync
 
-**Phase 2 migrates write operations (cart and user profiles) using the Strangler Fig pattern. A bi-directional dual-write sync is established using Kafka and Debezium, ensuring that legacy Magento tables and new microservice databases stay eventually consistent.**
+**Phase 2 migrates write operations (cart and user profiles) using the Strangler Fig pattern. A bi-directional dual-write sync is established using Kafka and Debezium, ensuring that legacy Magento tables and new microservice databases stay eventually consistent. For target architecture reference, see our [21-service e-commerce blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/).**
 
 Phase 1 proves the systems can read. Phase 2 proves they can manage state. We began migrating write-APIs incrementally, starting with lower-risk domains like `Customer`, then `Catalog`, and finally `Order`.
 

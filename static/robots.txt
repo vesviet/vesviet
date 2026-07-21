@@ -65,3 +65,5 @@ Disallow: /
 # Sitemaps
 # ──────────────────────────────────────────────
 Sitemap: https://tanhdev.com/sitemap.xml
+# Agentic SEO Discoverability
+# llms.txt: https://tanhdev.com/llms.txt

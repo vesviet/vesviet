@@ -318,7 +318,7 @@ A Saga is an orchestrated sequence of local transactions. The Checkout service p
 
 The diagram above shows **Choreography**: each service knows its role and reacts to events independently. No central coordinator exists.
 
-For complex sagas with many conditional branches, consider **Dapr Workflow** (orchestration): a durable workflow engine where a single orchestrator function defines the entire saga steps, handles state persistence (for state storage nuances, see [Dapr State Store Consistency Trade-offs]({{< ref "dapr-state-store-consistency-tradeoffs" >}})), and manages retries and compensation automatically. The tradeoff is coupling - the orchestrator knows about every participant.
+For complex sagas with many conditional branches, consider **Dapr Workflow** (orchestration): a durable workflow engine where a single orchestrator function defines the entire saga steps, handles state persistence (for state storage nuances, see [Dapr State Store Consistency Trade-offs]({{< ref "dapr-state-store-consistency-tradeoffs.md" >}})), and manages retries and compensation automatically. The tradeoff is coupling - the orchestrator knows about every participant.
 
 **Rule of thumb:** Use choreography for 2–4 step sagas. Switch to Dapr Workflow when compensating transaction logic becomes complex enough that a single developer cannot reason about the entire flow at a glance.
 

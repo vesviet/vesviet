@@ -11,7 +11,6 @@ categories: ["Data Engineering", "AI/ML"]
 ShowToc: true
 TocOpen: true
 aliases:
-  - "/series/ai-data-engineering-pipeline/part-4-streaming-cdc-federated-rag/part-5-enterprise-security-data-poisoning"
   - "/series/ai-data-engineering-pipeline/part-3-late-chunking-semantic-caching/part-4-streaming-cdc-federated-rag"
 cover:
   image: "images/posts/graphrag-vs-naive-rag-cover.png"

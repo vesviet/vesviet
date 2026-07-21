@@ -1,9 +1,9 @@
 ---
-title: "MySQL Sharding to TiDB: Distributed SQL Migration Guide"
+title: "Replace MySQL Sharding with TiDB: Architecture Guide"
 slug: "mysql-scaling-sharding-tidb-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-05-26T14:00:00+07:00"
-lastmod: "2026-07-08T18:21:00+07:00"
+lastmod: "2026-07-21T22:04:45+07:00"
 draft: false
 mermaid: true
 categories:
@@ -16,7 +16,7 @@ tags:
   - "TiDB"
   - "Sharding"
   - "NewSQL"
-description: "Replace MySQL manual sharding with TiDB: TiKV, Raft consensus, Percolator ACID, TiFlash HTAP, and a step-by-step DM shard merge guide."
+description: "How to replace MySQL manual sharding with TiDB. Distributed SQL architecture, TiKV Raft consensus, TiFlash HTAP, and zero-downtime DM migration."
 ShowToc: true
 TocOpen: true
 cover:
@@ -26,7 +26,9 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/mysql-scaling-sharding-tidb-architecture/"
 ---
 
-**Answer-first:** Migrate from manual MySQL sharding to TiDB to eliminate application-level routing complexity. TiDB handles distributed SQL queries natively using TiKV storage nodes and Raft consensus. Use the TiDB Data Migration (DM) tool to merge source shards online with minimal downtime.
+# Replace MySQL Sharding with TiDB: Distributed SQL Architecture
+
+**Answer-first:** Replacing manual MySQL sharding with TiDB eliminates complex application-level routing logic. TiDB provides horizontal scaling via TiKV Raft consensus and TiFlash HTAP while preserving 100% MySQL protocol compatibility and ACID compliance.
 
 ### What You'll Learn That AI Won't Tell You
 - Migrating schemas to TiDB with zero downtime using DM-portal.
@@ -38,6 +40,8 @@ Scaling a relational database is one of the most demanding challenges in system 
 In this deep dive, we will explore the architectural progression of scaling MySQL—beginning with replication topologies, stepping through the complexities and operational hazards of manual database sharding (including proxy middleware like Vitess), and evaluating NewSQL alternatives, specifically the distributed architecture of TiDB.
 
 ---
+
+## Why Replace MySQL Sharding: Eliminating Application Routing
 
 ## The Limits of Traditional MySQL Scaling
 
@@ -227,6 +231,8 @@ TiDB solves this by integrating **TiFlash**, a column-oriented storage engine. T
 * **Smart Routing:** The TiDB optimizer automatically routes analytical queries to TiFlash and transactional queries to TiKV, allowing teams to run real-time BI dashboards on live database data without building complex ETL (Extract, Transform, Load) pipelines.
 
 ---
+
+## TiDB vs AWS Aurora vs CockroachDB: Architectural Comparison
 
 ## Scalable Database Architecture: Making the Right Choice
 

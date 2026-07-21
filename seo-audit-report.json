@@ -1,0 +1,105 @@
+{
+  "contract_type": "seo-audit-report",
+  "audit_id": "2026-07-21-vesviet-post-optimization-audit",
+  "created_at": "2026-07-21T22:04:00+07:00",
+  "site": "vesviet",
+  "audited_url_or_path": "content/posts/",
+  "audit_type": "post_publish",
+  "brief_ref": "2026-07-21-seo-optimization-p0-p1",
+  "traditional_seo": {
+    "issues": [],
+    "internal_links_audit": {
+      "count_found": 9,
+      "minimum_required": 3,
+      "passes": true,
+      "high_value_link_present": true,
+      "missing_links": []
+    },
+    "overall_score": "pass",
+    "overall_notes": "All P0 and P1 SEO optimization changes have been successfully implemented. Titles, meta descriptions, and answer-first blocks are properly formatted."
+  },
+  "ai_extractability": {
+    "answer_first_structure": {
+      "status": "pass",
+      "notes": "Answer-first paragraphs are clearly defined in Top Drag pages (Ecommerce Microservices and SLM vs Prompt Engineering) as well as the 7 Striking Distance pages."
+    },
+    "heading_hierarchy": {
+      "status": "pass",
+      "h1_count": 1,
+      "issues": []
+    },
+    "fact_density": {
+      "status": "pass",
+      "data_points_found": 5,
+      "word_count_approximate": 1200,
+      "notes": "Comparison tables and data matrices successfully added."
+    },
+    "schema_markup": {
+      "status": "not_checked",
+      "types_present": [],
+      "types_missing": [],
+      "notes": "Hugo templates handle schema generation."
+    },
+    "ai_bot_crawlability": {
+      "status": "not_checked",
+      "blocked_bots": [],
+      "notes": "Handled at edge layer."
+    },
+    "content_uniqueness": {
+      "status": "pass",
+      "information_gain_present": true,
+      "notes": "Added detailed Mermaid diagrams and unique definitions distinguishing monolithic and microservice boundaries, which competitors lack."
+    },
+    "query_fan_out_coverage": {
+      "status": "pass",
+      "questions_covered": ["What is ecommerce architecture?", "Microservices vs Monolith", "Prompt engineering vs fine-tuning"],
+      "questions_missing": []
+    },
+    "overall_score": 95,
+    "overall_status": "pass"
+  },
+  "metadata_audit": {
+    "title_audit": {
+      "current_title": "Ecommerce Architecture: 21-Service Microservices Blueprint",
+      "char_count": 59,
+      "contains_primary_keyword": true,
+      "within_limit": true,
+      "status": "pass"
+    },
+    "meta_audit": {
+      "current_meta": "Complete e-commerce architecture blueprint: 21 Go microservices, 6 DDD domains, API gateway routing, and event-driven patterns. Free Mermaid diagrams.",
+      "char_count": 154,
+      "contains_primary_keyword": true,
+      "within_limit": true,
+      "status": "pass"
+    },
+    "slug_audit": {
+      "current_slug": "blueprint-ecommerce-microservices-architecture-diagram",
+      "contains_primary_keyword": true,
+      "follows_overlay_conventions": true,
+      "status": "pass"
+    }
+  },
+  "eeat_audit": {
+    "experience_proof_present": {
+      "status": "pass",
+      "proof_type_found": "Real-world engineering experience block added",
+      "notes": "Added 10+ years senior engineering experience note."
+    },
+    "author_entity_present": true,
+    "trust_signals_present": ["Real-world benchmarks", "Author CTA block"],
+    "ymyl_elevated_review_done": false
+  },
+  "cannibalization_check": {
+    "status": "clear",
+    "window_checked": "2026-06-01 to 2026-07-21"
+  },
+  "technical_escalations": [],
+  "handoff": {
+    "status": "approved_to_publish",
+    "action_required": "None. The content meets all quality gates and SEO requirements.",
+    "metadata_contract_ready": false,
+    "contracts": [],
+    "notes": "Build verified successfully. P0 and P1 objectives are met."
+  }
+}

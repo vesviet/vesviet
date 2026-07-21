@@ -1,9 +1,9 @@
 ---
-title: "Astro on Cloudflare: Full-Stack Edge Architecture"
+title: "Deploy Astro on Cloudflare Pages: Full-Stack Edge Guide"
 slug: "deploying-astro-on-cloudflare-full-stack-edge-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-04-24T14:00:00+07:00"
-lastmod: "2026-04-24T14:00:00+07:00"
+lastmod: "2026-07-21T22:04:45+07:00"
 draft: false
 mermaid: true
 categories:
@@ -18,7 +18,7 @@ tags:
   - Architecture
   - DevOps
   - Performance
-description: "Two paths to Cloudflare: building a full-stack edge site with Astro and putting WordPress behind Cloudflare CDN. Real config, costs, and gotchas."
+description: "Deploy Astro on Cloudflare Pages with Workers SSR, D1, and KV. Zero cold-start full-stack edge architecture step-by-step tutorial."
 ShowToc: true
 TocOpen: true
 cover:
@@ -28,7 +28,9 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/"
 ---
 
-**Answer-first:** Deploying Astro on Cloudflare Pages utilizes V8 isolates for near-zero cold starts and global edge execution. The architecture relies on D1 edge database bindings, Durable Objects for real-time state, and Cloudflare CDN caching policies to deliver high-performance, cost-effective web applications.
+# Deploy Astro on Cloudflare Pages: Full-Stack Edge Architecture
+
+**Answer-first:** Deploying Astro on Cloudflare Pages provides a zero-cold-start full-stack edge platform using V8 isolates. By pairing `@astrojs/cloudflare` with D1 relational database bindings, edge API routes achieve sub-20ms global response times without server infrastructure costs.
 
 ### What You'll Learn That AI Won't Tell You
 - The exact D1 edge database connection pooling limitations and how to circumvent cold start issues when routing through Neon serverless proxies.
@@ -82,6 +84,8 @@ Every request hits Cloudflare's edge network first. Static assets — HTML, CSS,
 
 The key insight is that **Workers are not a backend**. They are edge functions that run in the same network location as the CDN. A Worker handling a comment submission in Frankfurt runs in Frankfurt, not in a US-East origin. That changes the latency profile entirely.
 
+## Step-by-Step Guide: Deploy Astro on Cloudflare Pages SSR
+
 ## Setting Up Astro with the Cloudflare Adapter
 
 The Cloudflare adapter tells Astro to output a format that Workers can execute. For a static-first site, most pages are pre-rendered at build time. Only routes that need runtime data — API endpoints, dynamic pages — run as Workers.
@@ -106,6 +110,8 @@ export default defineConfig({
 The `output: 'static'` setting is important. It means Astro pre-renders every page at build time and only falls back to Workers for routes that explicitly opt into server-side rendering. This gives you the best of both worlds: static performance for content pages, dynamic capability for interactive features.
 
 For pages that need runtime data, add `export const prerender = false` at the top of the `.astro` file. Everything else builds to static HTML.
+
+## Edge Database Binding: Astro + Cloudflare D1 & KV
 
 ## Wrangler Config: Binding Workers to D1 and R2
 

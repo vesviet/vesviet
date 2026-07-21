@@ -48,7 +48,7 @@ To mitigate the extreme rigidity of CH, OSRM introduced **Multi-Level Dijkstra (
 
 MLD relies on hierarchical graph partitioning. It divides the global graph into nested cells (e.g., cell level 1 might be a neighborhood, level 2 a city, level 3 a state). During the pre-processing phase (`osrm-partition` and `osrm-customize`), MLD calculates the optimal travel times between all boundary nodes of each cell. 
 
-Because of this encapsulation, if a traffic jam occurs deep inside a specific cell, you only need to recalculate the metrics for that single cell and its parents, rather than the entire planet. This drops the update time from hours to mere seconds, allowing OSRM to support live traffic updates (see our guide on [OSRM Shared Memory on Kubernetes for Live Traffic]({{< ref "osrm-shared-memory-kubernetes-live-traffic" >}})).
+Because of this encapsulation, if a traffic jam occurs deep inside a specific cell, you only need to recalculate the metrics for that single cell and its parents, rather than the entire planet. This drops the update time from hours to mere seconds, allowing OSRM to support live traffic updates (see our guide on [OSRM Shared Memory on Kubernetes for Live Traffic]({{< ref "osrm-shared-memory-kubernetes-live-traffic.md" >}})).
 
 ### OSRM's Memory-Mapped Files (mmap)
 

@@ -1,9 +1,9 @@
 ---
-title: "Cloudflare D1 + Durable Objects: Build a Real-Time Cart"
+title: "Cloudflare D1 & Durable Objects: Build Real-Time Cart"
 slug: "cloudflare-d1-durable-objects-realtime-cart"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
-lastmod: "2026-07-18T07:43:55+07:00"
+lastmod: "2026-07-21T22:04:45+07:00"
 draft: false
 mermaid: true
 categories:
@@ -18,7 +18,7 @@ tags:
   - "TypeScript"
   - "Edge Computing"
   - "Shopping Cart"
-description: "Build a real-time shopping cart using Cloudflare D1, Durable Objects, and Workers. Full schema, TypeScript code, and conflict-free concurrent updates."
+description: "Build a sub-10ms real-time e-commerce cart with Cloudflare D1 and Durable Objects. Complete TypeScript code, WebSocket state sync, and zero Redis locks."
 ShowToc: true
 TocOpen: true
 cover:
@@ -28,7 +28,9 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/cloudflare-d1-durable-objects-realtime-cart/"
 ---
 
-**Answer-first:** Eliminate database latency and Redis caching overhead for global e-commerce by pairing Cloudflare Workers at the edge with Durable Objects for strongly consistent, real-time in-memory state. Use D1 for serverless SQLite persistence, routing concurrent device updates through a transactional, conflict-free architecture.
+# Cloudflare D1 + Durable Objects: Building a Real-Time Cart
+
+**Answer-first:** Combining Cloudflare Durable Objects for single-point state coordination with D1 SQL for persistent storage eliminates database lock contention and Redis cache invalidation overhead, delivering sub-10ms real-time cart synchronization for e-commerce.
 
 ### What You'll Learn That AI Won't Tell You
 - How to design cart locking mechanisms in Durable Objects without deadlocks.
@@ -67,6 +69,8 @@ Cloudflare Workers eliminate this floor by running your API logic at the Cloudfl
 - Applications that exceed D1's row-level limits (D1 database size cap is currently 10 GB per database)
 
 ---
+
+## Architecture: Pairing Durable Objects (State) with D1 (Persistence)
 
 ## Architecture Overview: D1 for Persistence, Durable Objects for Real-Time State
 
@@ -216,9 +220,11 @@ function parseCookies(cookieHeader: string): Record<string, string> {
 
 ---
 
+## Handling High-Concurrency Cart Updates Without Lock Contention
+
 ## Durable Objects for Real-Time Sync: Handling Concurrent Cart Edits
 
-The Durable Object is the heart of the real-time cart (and a key component of [Zero-DevOps E-Commerce with Cloudflare]({{< ref "cloudflare-zero-devops-ecommerce" >}})). It maintains the cart state in memory and handles concurrent requests with JavaScript's single-threaded execution model — eliminating the need for locks.
+The Durable Object is the heart of the real-time cart (and a key component of [Zero-DevOps E-Commerce with Cloudflare]({{< ref "cloudflare-zero-devops-ecommerce.md" >}})). It maintains the cart state in memory and handles concurrent requests with JavaScript's single-threaded execution model — eliminating the need for locks.
 
 ### TypeScript Durable State Structure
 
