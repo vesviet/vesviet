@@ -1,0 +1,57 @@
+{
+  "contract_type": "seo-metadata",
+  "metadata_id": "2026-07-22-vesviet-distance-matrix-routing",
+  "created_at": "2026-07-22T08:30:00+07:00",
+  "site": "vesviet",
+  "url_or_path": "content/series/ecommerce-order-allocation/part-7-distance-matrix-routing.md",
+  "brief_ref": "2026-07-22-tanhdev-gsc-refresh-brief",
+  "audit_ref": "2026-07-22-vesviet-gsc-performance-audit",
+  "title": "Distance Matrix Routing Guide: OSRM & GraphHopper (2026)",
+  "title_char_count": 56,
+  "meta_description": "High-performance distance matrix routing guide. Benchmark OSRM vs GraphHopper with sub-5ms matrix generation for ecommerce order allocation.",
+  "meta_char_count": 140,
+  "slug": "series/ecommerce-order-allocation/part-7-distance-matrix-routing",
+  "primary_keyword": "distance matrix routing",
+  "secondary_keywords": [
+    "graphhopper distance matrix",
+    "osrm distance matrix",
+    "zindi sendy logistics osrm",
+    "haversine distance algorithm"
+  ],
+  "schema_types": [
+    "Article",
+    "FAQPage",
+    "BreadcrumbList"
+  ],
+  "canonical_url": "https://tanhdev.com/series/ecommerce-order-allocation/part-7-distance-matrix-routing/",
+  "social": {
+    "og_title": "Distance Matrix Routing Guide: OSRM vs GraphHopper Benchmarks",
+    "og_description": "Production guide to distance matrix routing for ecommerce order allocation and logistics.",
+    "og_image": "/images/distance-matrix-routing-2026.png",
+    "twitter_card": "summary_large_image"
+  },
+  "frontmatter_fields": {
+    "publishDate": "2026-04-20T10:00:00+07:00",
+    "updateDate": "2026-07-22T08:30:00+07:00",
+    "category": "architecture",
+    "tags": [
+      "distance-matrix",
+      "osrm",
+      "graphhopper",
+      "logistics",
+      "routing"
+    ],
+    "draft": false,
+    "author": "Lê Tuấn Anh"
+  },
+  "seo_publishing_overlay": {
+    "sprint_date": "2026-07-22",
+    "content_cluster": "ecommerce-order-allocation",
+    "pillar_page_url": "/series/ecommerce-order-allocation/",
+    "geo_ready": true
+  },
+  "status": "ready_to_publish",
+  "notes": "Publisher-ready metadata specs generated from GSC performance analysis. Applies high-CTR title tag and expands schema coverage to include FAQPage.",
+  "hreflang": null,
+  "ai_bots_allowed": true
+}
