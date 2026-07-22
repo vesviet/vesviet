@@ -17,7 +17,10 @@ tags:
 description: "A high-performance OSRM routing system design guide. Optimizing memory with IPC Shared Memory, CH vs MLD, and achieving zero-downtime traffic updates on K8s."
 ShowToc: true
 TocOpen: true
+canonicalURL: "https://tanhdev.com/posts/osrm-shared-memory-kubernetes-live-traffic/"
 ---
+
+**Answer-first:** Run `osrm-datastore` with shared memory when several OSRM processes on the same Kubernetes node must serve one large preprocessed map without duplicating tens of gigabytes of RAM. Use atomic dataset swaps and readiness checks to update routing data without interrupting traffic; this pattern does not provide live traffic by itself.
 
 ## The Challenge of Operating Large-Scale OSRM on Kubernetes
 
@@ -28,7 +31,7 @@ Normally, the `osrm-routed` process loads the entire binary map file directly in
 1.  **Massive RAM Wastage and Cost Overruns:** If you configure the Horizontal Pod Autoscaler (HPA) to scale up to 5 replicas on the same Worker Node to handle throughput, each Pod pulls a separate copy of the map into its own RAM. You end up consuming 5 times the necessary physical memory, leading to exorbitant EC2/GCE instance costs.
 2.  **Service Disruption during Scaling:** The agonizingly slow cold start completely defeats the purpose of auto-scaling. When a sudden traffic spike hits your API, the HPA will spin up new Pods, but they will sit in an unready state for 10 minutes. By the time they are ready, the traffic spike might have already overwhelmed your existing Pods, causing cascading failures.
 
-The perfect architectural solution to this problem is **OSRM Shared Memory**.
+The perfect architectural solution to this problem is **OSRM Shared Memory**. For choosing between engines before operating the cluster, compare [OSRM and GraphHopper for large logistics workloads](/posts/osrm-vs-graphhopper-architecture-comparison/).
 
 ## How OSRM Shared Memory Works (`osrm-datastore`)
 

@@ -29,6 +29,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent/"
 ShowToc: true
 TocOpen: true
+mermaid: true
 ---
 
 > **Prerequisite:** [AI Code Bug Taxonomy: Silent Failures to Slopsquatting (2025)]({{< ref "part-3-ai-bug-taxonomy.md" >}})

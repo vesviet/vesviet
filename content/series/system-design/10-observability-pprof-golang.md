@@ -11,7 +11,6 @@ categories: ["System Design", "Backend Engineering"]
 ShowToc: true
 TocOpen: true
 series: ["system-design"]
-mermaid: true
 cover:
   image: "images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"

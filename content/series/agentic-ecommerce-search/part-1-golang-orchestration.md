@@ -17,6 +17,7 @@ cover:
   alt: "Agentic E-commerce Search Engine Architecture series: vector databases, ranking, and Go"
   relative: false
 canonicalURL: "https://tanhdev.com/series/agentic-ecommerce-search/part-1-golang-orchestration/"
+mermaid: true
 ---
 
 If you have ever tried to push a RAG or Multi-Agent system written in Python (using LangChain or AutoGen) into a Production environment with thousands of concurrent requests, you have likely tasted the pain. Servers run out of RAM, CPUs become bottlenecked, and latency skyrockets uncontrollably.

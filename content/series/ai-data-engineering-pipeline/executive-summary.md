@@ -18,6 +18,7 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/executive-summary-graphrag-data-pipeline/"
 weight: 0
+mermaid: true
 ---
 
 **Answer-First:** Scaling AI in the enterprise requires moving beyond naive RAG towards a robust, event-driven data engineering pipeline powered by GraphRAG and vision-based ingestion, ensuring 100% data freshness, safety, and measurable quality.

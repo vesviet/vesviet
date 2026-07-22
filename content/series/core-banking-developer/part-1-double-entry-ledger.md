@@ -14,7 +14,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-1-double-entry-ledger/"
 ShowToc: true
 TocOpen: true
-
+mermaid: true
 ---
 
 > **Prerequisite:** Read the [Executive Summary]({{< ref "executive-summary.md" >}}) for the high-level roadmap of core banking evolution.

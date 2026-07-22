@@ -25,6 +25,8 @@ canonicalURL: "https://tanhdev.com/posts/cloudflare-zero-devops-ecommerce-archit
 
 **Answer-first:** Cloudflare Workers and Turborepo enable a "Zero DevOps" e-commerce architecture by deploying serverless API handlers directly to the edge, utilizing D1 for transactional storage, and automatically compiling SDKs on API changes. This setup eliminates traditional server administration and scales horizontally with sub-100ms response times.
 
+For a stateful edge checkout pattern, pair it with [Cloudflare D1 and Durable Objects for real-time carts](/posts/cloudflare-d1-durable-objects-realtime-cart/).
+
 Tired of maintaining expensive Kubernetes clusters, fine-tuning Auto-scaling groups on AWS, or wiring together complex CI/CD pipelines just to keep an e-commerce store alive? Welcome to the **Zero DevOps** era.
 
 In this post, we dissect **Aura Store** — a production-grade Cloudflare Workers E-commerce platform built entirely on Edge infrastructure, powered by a Turborepo Monorepo. Everything you see below is drawn directly from the running codebase.

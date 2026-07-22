@@ -1,7 +1,7 @@
 {{- $question := .Get "q" | default (.Get 0) -}}
 {{- $answer := .Inner | markdownify -}}
 <div class="faq-item" style="margin-bottom: 1.5rem;">
-  <h3 class="faq-question">{{ $question }}</h3>
+  <h3 id="{{ $question | anchorize }}" class="faq-question">{{ $question }}</h3>
   <div class="faq-answer" style="margin-top: 0.5rem;">{{ $answer }}</div>
 </div>
 {{- .Page.Store.Add "faqs" (slice (dict "question" $question "answer" ($answer | plainify))) -}}

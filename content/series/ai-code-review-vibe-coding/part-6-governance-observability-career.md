@@ -35,6 +35,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-code-review-vibe-coding/part-6-governance-observability-career/"
 ShowToc: true
 TocOpen: true
+mermaid: true
 ---
 
 > **Prerequisite:** [AI Code Security: OWASP LLM Top 10, RAG Poisoning & Zero Trust]({{< ref "part-5-ai-code-security.md" >}})

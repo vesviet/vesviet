@@ -15,7 +15,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-1-beyond-chatbots/"
-
+mermaid: true
 ---
 
 > **Prerequisite:** Read the [Executive Summary]({{< ref "executive-summary.md" >}}) for the overall Generative UI vision.

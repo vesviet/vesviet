@@ -18,6 +18,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-1-agentic-graphrag-long-context/"
+mermaid: true
 ---
 
 **Answer-First:** Long-context LLMs do not replace retrieval systems; rather, the ultimate architecture combines Agentic RAG and GraphRAG to synthesize multi-hop relational data and pinpoint granular evidence within massive datasets.

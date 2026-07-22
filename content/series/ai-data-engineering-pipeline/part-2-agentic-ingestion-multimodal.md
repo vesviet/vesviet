@@ -18,6 +18,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-2-agentic-ingestion-multimodal/"
+mermaid: true
 ---
 
 **Answer-First:** High-fidelity ingestion converts complex unstructured PDFs, tables, and charts into structured node-and-edge schemas using multimodal Vision-language models (VLMs) instead of lossy layout-blind text extractors.

@@ -15,7 +15,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-6-e2e-testing-edge/"
-
+mermaid: true
 ---
 
 > **Prerequisite:** [Part 5: Building the 'Human-In-The-Loop' Experience]({{< ref "part-5-human-in-the-loop.md" >}}) on streaming latency.

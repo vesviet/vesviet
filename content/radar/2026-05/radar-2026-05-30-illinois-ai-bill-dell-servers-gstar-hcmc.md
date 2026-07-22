@@ -1,4 +1,5 @@
 ---
+noindex: true
 title: "Tech Radar May 30: Illinois AI Bill & Dell Server Surge"
 date: "2026-05-30T10:30:00+07:00"
 lastmod: "2026-05-30T10:30:00+07:00"

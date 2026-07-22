@@ -12,6 +12,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/executive-summary/"
+mermaid: true
 ---
 [← Series hub]({{< ref "/series/alipay-double-11/_index.md" >}})
 [Next →]({{< ref "/series/alipay-double-11/phase-1-timeline.md" >}})

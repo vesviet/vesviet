@@ -18,6 +18,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/"
+mermaid: true
 ---
 
 **Answer-First:** Deploying high-throughput production LLMs requires GPU memory optimizations such as PagedAttention, continuous batching, and model quantization via vLLM to scale concurrent requests within physical hardware limits.

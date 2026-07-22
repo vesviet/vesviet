@@ -19,6 +19,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-10-production-evals-cicd/"
+mermaid: true
 ---
 
 **Answer-First:** Continuous integration for AI systems demands automated validation pipelines using LLM-as-a-Judge frameworks (e.g., Ragas/TruLens) to compute exact quantitative metrics for faithfulness, answer relevance, and context recall before every deployment.

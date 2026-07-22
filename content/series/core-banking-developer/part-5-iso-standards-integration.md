@@ -13,7 +13,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-5-iso-standards-integration/"
 ShowToc: true
 TocOpen: true
-
+mermaid: true
 ---
 
 > **Prerequisite:** [Part 4: Modern Event-Driven Core Architecture]({{< ref "part-4-modern-core-banking-architecture.md" >}}) on event-sourcing structures.

@@ -31,6 +31,8 @@ canonicalURL: "https://tanhdev.com/posts/ecommerce-architecture-composable-migra
 
 **Answer-first:** Monolith decoupling succeeds only when solving eventual consistency and distributed tracing overhead early. Mitigate inventory overselling via Redis-based BFF locking, stream database sync in real-time via Debezium CDC and Kafka, and build distributed tracing via OpenTelemetry from day one to avoid system blindness.
 
+See the [21-service e-commerce architecture blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/) for the domain boundaries this migration targets.
+
 ### What You'll Learn That AI Won't Tell You
 - Strangler Fig routing configurations for Envoy that migrate traffic path-by-path from Magento to Go microservices without dropping active sessions.
 - How to implement a double-write database sync listener in Go to prevent data drift during the multi-month migration window.

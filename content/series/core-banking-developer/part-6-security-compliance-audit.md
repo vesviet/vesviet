@@ -13,7 +13,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-6-security-compliance-audit/"
 ShowToc: true
 TocOpen: true
-
+mermaid: true
 ---
 
 > **Prerequisite:** [Part 5: ISO 8583 & ISO 20022 Messaging]({{< ref "part-5-iso-standards-integration.md" >}}) on message translation layers.

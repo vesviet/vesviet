@@ -1,4 +1,5 @@
 ---
+noindex: true
 title: "Research Index"
 date: "2026-05-02T18:10:00+07:00"
 lastmod: "2026-05-02T18:10:00+07:00"

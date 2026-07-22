@@ -15,6 +15,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/slm-playbook/executive-summary/"
+mermaid: true
 ---
 
 [← Series hub](/series/slm-playbook/)

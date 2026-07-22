@@ -14,7 +14,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-3-database-transactions-acid/"
 ShowToc: true
 TocOpen: true
-
+mermaid: true
 ---
 
 > **Prerequisite:** [Part 2: CASA & Lending Domain Logic]({{< ref "part-2-banking-domain-casa-lending.md" >}}) on transaction parameters.

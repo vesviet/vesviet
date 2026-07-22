@@ -18,6 +18,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-6-rise-of-ai-agents/"
+mermaid: true
 ---
 
 **Answer-First:** Moving from static retrieval to autonomous agents requires translating natural language goals into structured tool calls and loops (ReAct/Plan-and-Solve) that interface directly with transactional APIs.

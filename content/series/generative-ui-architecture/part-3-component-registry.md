@@ -16,8 +16,6 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-3-component-registry/"
-mermaid: true
-
 ---
 
 > **Prerequisite:** [Part 2: Framework-Agnostic State Management Architecture]({{< ref "part-2-state-management.md" >}}) on WebSocket sync.

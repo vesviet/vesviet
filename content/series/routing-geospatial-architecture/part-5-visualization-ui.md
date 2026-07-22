@@ -15,6 +15,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-5-visualization-ui/"
 ShowToc: true
 TocOpen: true
+mermaid: true
 ---
 
 [← Series hub]({{< ref "/series/routing-geospatial-architecture/_index.md" >}})

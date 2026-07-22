@@ -18,6 +18,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-7-agentic-memory-long-term/"
+mermaid: true
 ---
 
 **Answer-First:** Long-term agentic memory requires splitting context into hierarchical semantic storage (short-term episodic KV-cache, medium-term vector databases, and long-term GraphRAG nodes), preventing context window bloat and performance decay.

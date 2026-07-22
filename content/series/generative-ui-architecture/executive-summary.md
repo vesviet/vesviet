@@ -15,7 +15,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/executive-summary/"
-
+mermaid: true
 ---
 
 > **Prerequisite:** Baseline understanding of single-page applications, server-side rendering, and model interaction patterns.

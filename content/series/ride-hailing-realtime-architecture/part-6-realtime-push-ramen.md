@@ -392,6 +392,8 @@ WebSockets provide low-overhead bi-directional transport, enabling sub-10ms push
 | [Google S2 Geometry](https://s2geometry.io/) | API reference for S2 |
 
 > *Congratulations on completing the series! You now deeply understand every architectural layer behind that smoothly moving car on your map. From the GPS sensor → Kalman Filter → Kafka → H3 → DISCO → RAMEN → Your App. **Every layer represents a fascinating distributed engineering challenge.***
+
+Return to the [Real-Time Ride-Hailing Architecture series hub](/series/ride-hailing-realtime-architecture/) to revisit the full location, matching, and dispatch flow.
 ---
 
 {{< author-cta >}}

@@ -12,6 +12,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/modern-tech-comparison/"
+mermaid: true
 ---
 [← Series hub]({{< ref "/series/alipay-double-11/_index.md" >}})
 [← Prev]({{< ref "/series/alipay-double-11/phase-4-deep-dive.md" >}}) • [Next →]({{< ref "/series/alipay-double-11/phase-5-synthesis.md" >}})

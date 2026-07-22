@@ -13,6 +13,7 @@ tags: ["AI", "Career", "Roadmap"]
 cover: {'image': 'images/posts/ai-native-frontend-cover.png', 'alt': 'AI-Driven Engineer series: evolving from code typist to AI-native software architect', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/bonus-transition-path/"
+mermaid: true
 ---
 
 **Answer-first:** Transitioning to an AI-driven engineer requires a structured 30-60-90 day roadmap. In the first 30 days, focus on mastering IDE context tools and hotkeys. In the next 60 days, build AI-native applications using APIs and agent frameworks. In the final 90 days, re-engineer software development life cycles and lead architectural code reviews.

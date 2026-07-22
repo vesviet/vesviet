@@ -13,7 +13,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-2-banking-domain-casa-lending/"
 ShowToc: true
 TocOpen: true
-
+mermaid: true
 ---
 
 > **Prerequisite:** [Part 1: Double-Entry Ledger Schema Design]({{< ref "part-1-double-entry-ledger.md" >}}) on standard accounting invariants.

@@ -15,6 +15,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/executive-summary/"
+mermaid: true
 ---
 
 If the [first series](/series/ai-driven-engineer/) helped you shift your mindset from "Code Typist" to "Architect," then this Playbook answers the next foundational question at the enterprise scale: **"How do you scale a single individual's 10x productivity into the productivity of an entire organization?"**

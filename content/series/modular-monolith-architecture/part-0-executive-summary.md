@@ -11,6 +11,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/executive-summary-amazon-prime-video-monolith/"
 ShowToc: true
 TocOpen: true
+mermaid: true
 ---
 
 **Answer-first:** Amazon Prime Video reduced infrastructure costs by 90% by consolidating their audio/video monitoring service from serverless AWS Lambda/Step Functions into a single modular monolith. This transition eliminated high-frequency state transition fees and S3 network egress bottlenecks, highlighting that in-memory data processing is far more cost-effective than distributed microservices for high-throughput systems.

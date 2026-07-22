@@ -17,7 +17,10 @@ tags:
 description: "A Golang developer's guide to implementing the Orchestrated Saga Pattern using the Temporal Go SDK. Build durable banking transactions with automated, idempotent compensation."
 ShowToc: true
 TocOpen: true
+canonicalURL: "https://tanhdev.com/posts/temporal-saga-pattern-golang-distributed-transactions/"
 ---
+
+**Answer-first:** Use Temporal to implement an orchestrated Saga when a Go workflow spans independently committed services and needs durable retries, observable state, and idempotent compensation. It avoids distributed locks and two-phase commit, but each activity must remain deterministic and each compensation path must be explicitly designed.
 
 ## The Pain of Distributed Transactions in Core Banking
 

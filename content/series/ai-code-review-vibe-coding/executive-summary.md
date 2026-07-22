@@ -26,6 +26,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-code-review-vibe-coding/executive-summary/"
 ShowToc: true
 TocOpen: true
+mermaid: true
 ---
 
 > **Prerequisite:** This executive summary assumes a basic understanding of general software engineering trends and familiarity with AI-assisted coding tools (e.g., Copilot, Cursor).

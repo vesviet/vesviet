@@ -18,7 +18,10 @@ tags:
 description: "In-depth comparison of OSRM and GraphHopper from an architect's perspective. Analyzing CH, MLD, LM algorithms, custom routing profiles, and real-world memory performance."
 ShowToc: true
 TocOpen: true
+canonicalURL: "https://tanhdev.com/posts/osrm-vs-graphhopper-architecture-comparison/"
 ---
+
+**Answer-first:** Choose OSRM when your workload prioritizes low-latency routing or matrix throughput on a mostly static road graph; choose GraphHopper when custom vehicle profiles, runtime weighting rules, or commercial routing features matter more. Both require operational ownership, map preprocessing, and capacity planning once cloud routing APIs no longer fit the workload.
 
 ## Introduction: When Do You Outgrow Cloud Route APIs?
 

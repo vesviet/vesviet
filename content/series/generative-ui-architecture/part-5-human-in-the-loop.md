@@ -15,7 +15,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-5-human-in-the-loop/"
-
+mermaid: true
 ---
 
 > **Prerequisite:** [Part 4: Security & Accessibility (A11y) in GenUI]({{< ref "part-4-security-a11y.md" >}}) on validation schemas.

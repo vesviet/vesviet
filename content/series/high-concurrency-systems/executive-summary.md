@@ -18,6 +18,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/executive-summary/"
 series: ["Mastering High-Concurrency Systems in Production"]
 series_order: 0
+mermaid: true
 ---
 
 > **Prerequisite:** This is the executive summary and introductory overview of the **High Concurrency Systems** series. No prior reading is required to start here. You can view the full series roadmap at the [Series Hub]({{< ref "_index.md" >}}).

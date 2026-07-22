@@ -18,6 +18,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-4-streaming-cdc-federated-rag/"
+mermaid: true
 ---
 
 **Answer-First:** Real-time data freshness is achieved by linking transactional databases to vector indexes using Change Data Capture (CDC) via Debezium and Kafka, bypassing slow nightly batch ETLs.

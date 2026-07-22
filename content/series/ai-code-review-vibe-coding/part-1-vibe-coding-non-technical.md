@@ -29,6 +29,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical/"
 ShowToc: true
 TocOpen: true
+mermaid: true
 ---
 
 > **Prerequisite:** [What Is Vibe Coding — And Why Every Engineer Must Care (2025)]({{< ref "executive-summary.md" >}})

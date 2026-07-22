@@ -18,6 +18,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/"
+mermaid: true
 ---
 
 **Answer-First:** Secure RAG pipelines defend against indirect prompt injections and data poisoning by sanitizing inputs, enforcing database-level Row-Level Security (RLS) policies, and validating context boundaries before LLM ingestion.

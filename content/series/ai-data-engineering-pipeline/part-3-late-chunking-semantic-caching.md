@@ -18,6 +18,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-3-late-chunking-semantic-caching/"
+mermaid: true
 ---
 
 **Answer-First:** Late chunking preserves full document attention context by chunking embedding vectors after passing the entire text through a transformer model, while semantic caching reduces costs by matching incoming query intents at the database layer.

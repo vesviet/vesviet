@@ -15,7 +15,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-7-reference-repo-migration/"
-
+mermaid: true
 ---
 
 > **Prerequisite:** [Part 6: E2E Testing & Performance Optimization at the Edge]({{< ref "part-6-e2e-testing-edge.md" >}}) on mock testing.

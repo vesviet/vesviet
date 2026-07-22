@@ -1,4 +1,5 @@
 ---
+noindex: true
 title: "Part 5 — A Minimum Viable Prompt Standard Kit for Immediate Deployment"
 date: "2026-05-09T10:55:00+07:00"
 lastmod: "2026-05-09T10:55:00+07:00"

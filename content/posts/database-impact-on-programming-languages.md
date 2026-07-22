@@ -1,16 +1,23 @@
 ---
 title: "How Databases Shaped Go, PHP, Node.js, and Rust"
-date: "2026-07-20T00:00:00Z"
+date: "2026-07-20T00:00:00+07:00"
+lastmod: "2026-07-22T21:00:00+07:00"
 draft: false
+description: "How database limits shaped PHP, Node.js, Go, and Rust: connection pooling, async I/O, type-safe queries, and production scalability trade-offs."
 categories: ["Architecture", "Backend"]
 tags: ["Database", "Golang", "PHP", "Node.js", "Rust", "System Design"]
 author: "Lê Tuấn Anh"
 slug: "database-impact-on-programming-languages"
+canonicalURL: "https://tanhdev.com/posts/database-impact-on-programming-languages/"
+ShowToc: true
+TocOpen: true
 cover:
   image: "images/posts/database-programming-languages-cover.jpg"
   alt: "How databases shaped programming languages"
   relative: false
 ---
+
+**Answer-first:** Database connection limits, I/O waits, transaction semantics, and type safety have shaped how PHP, Node.js, Go, and Rust handle concurrency and data access. Language choice does not remove database constraints; it changes where pooling, backpressure, query validation, and failure handling must live.
 
 Databases are the most critical I/O bottleneck in backend systems. Over the past 20 years, network latency, connection limits, and transaction safety have forced programming languages to rethink their concurrency models, evolve new syntaxes, and invent smarter ORMs.
 

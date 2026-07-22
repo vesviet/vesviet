@@ -13,7 +13,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/executive-summary/"
 ShowToc: true
 TocOpen: true
-
+mermaid: true
 ---
 
 > **Prerequisite:** Baseline understanding of retail banking operations, transactional databases, and distributed ledger systems.

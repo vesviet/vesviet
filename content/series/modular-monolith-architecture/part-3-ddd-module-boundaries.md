@@ -11,6 +11,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/ddd-module-boundaries-modular-monolith/"
 ShowToc: true
 TocOpen: true
+mermaid: true
 ---
 
 **Answer-first:** Restricting dependency paths is critical to preventing a Modular Monolith from turning into a 'Big Ball of Mud'. By mapping bounded contexts to Go internal packages, using compiler-level boundary tools like Packwerk, and executing cross-domain queries via asynchronous in-memory event buses, developers can maintain logical isolation and prepare for future microservices extraction.

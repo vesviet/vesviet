@@ -13,6 +13,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/part-5-split-consolidation-lastmile/"
+mermaid: true
 ---
 
 **Answer-First:** Split shipments increase last-mile courier costs but reduce delivery times. The allocation engine balances this trade-off using a greedy set-covering heuristic: it iteratively assigns order lines to warehouses that satisfy the largest volume of remaining items in the cart. If the calculated shipping costs exceed the customer's payment threshold, the engine routes packages through a consolidation hub, sacrificing transit speed to preserve profit margins.
