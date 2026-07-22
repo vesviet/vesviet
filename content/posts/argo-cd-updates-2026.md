@@ -1,9 +1,9 @@
 ---
-title: "What's New in Argo CD 3.4 & 3.3: Cluster Pause & Upgrades"
+title: "Argo CD 3.4 & 3.3 Guide: GitOps Upgrades & Cluster Pause (2026)"
 slug: "argo-cd-updates-2026"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T15:00:00+07:00"
-lastmod: "2026-06-10T14:00:00+07:00"
+lastmod: "2026-07-22T08:30:00+07:00"
 draft: false
 categories:
   - "DevOps"
@@ -13,7 +13,7 @@ tags:
   - "Argo CD"
   - "CI/CD"
   - "Platform Engineering"
-description: "Argo CD v3.4 & v3.3 (2026): Cluster Pause, PreDelete Hooks, SemVer breaking change 2014 plus RC: annotation filtering, Teams Workflow, ApplicationSet UI."
+description: "Master Argo CD v3.4 & v3.3 updates. Complete GitOps guide for Cluster Pause, PreDelete Hooks, and multi-tenant Kubernetes application sets."
 ShowToc: true
 TocOpen: true
 cover:
@@ -36,7 +36,9 @@ This article dives deep into the most prominent features of these two versions, 
 
 ---
 
-## Overview of the Argo CD Roadmap in 2026
+## Overview of the Argo CD Roadmap & Breaking Changes in 2026
+
+**Answer-first:** Upgrading to Argo CD v3.4 requires inspecting custom CRD annotations and Helm values. Key breaking changes include stricter SemVer parsing for ApplicationSet generators and revised RBAC roles for multi-tenant cluster management.
 
 The focus for Argo CD in 2026 is not a complete redesign of the user interface or a massive overhaul of the core architecture. Instead, the maintainers have focused heavily on solving the **pain points of enterprise users**. Specifically:
 - Enhancing control during emergencies (Incident Response).

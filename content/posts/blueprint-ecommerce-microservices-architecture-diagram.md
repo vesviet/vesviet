@@ -1,13 +1,13 @@
 ---
-title: "Ecommerce Architecture: 21-Service Microservices Blueprint"
+title: "E-Commerce Microservices Architecture: 21-Service Blueprint"
 slug: "blueprint-ecommerce-microservices-architecture-diagram"
 author: "Lê Tuấn Anh"
 date: "2026-04-12T08:30:00+07:00"
-lastmod: "2026-07-21T22:04:45+07:00"
+lastmod: "2026-07-22T08:30:00+07:00"
 draft: false
 mermaid: true
 tags: ["System Architecture", "Microservices", "Mermaid", "Golang", "API Gateway", "DDD", "Dapr", "Kubernetes", "ecommerce architecture"]
-description: "Complete e-commerce architecture blueprint: 21 Go microservices, 6 DDD domains, API gateway routing, and event-driven patterns. Free Mermaid diagrams."
+description: "Complete microservices ecommerce architecture diagram & blueprint. Build a composable commerce stack with Golang, DDD, and Dapr."
 categories: ["Architecture", "System Design"]
 ShowToc: true
 TocOpen: true
@@ -42,7 +42,7 @@ canonicalURL: "https://tanhdev.com/posts/blueprint-ecommerce-microservices-archi
 
 When transitioning from a monolithic platform to a distributed microservice setup, the hardest question isn't "How do we write the code?" — it's "How do these moving parts talk to each other safely, and why is each boundary drawn exactly where it is?"
 
-This post is the architectural anchor for the full composable commerce series. It presents the complete system blueprint and explains the reasoning behind each domain boundary. For deep-dives into specific layers, each section links to the dedicated post in the series.
+This post is the primary architectural anchor for our composable commerce series. It presents the complete 21-service system blueprint and domain boundaries. For a practical step-by-step decoupling guide, see our sister article on [Composable E-Commerce Migration](/posts/ecommerce-architecture-composable-migration/).
 
 ## Microservices Ecommerce Architecture: The 6 Core Business Domains
 
