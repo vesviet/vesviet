@@ -274,11 +274,16 @@
 {{- end }}
 
 {{- if and .IsPage .File (or (eq .Section "posts") (eq .Section "series") (eq .Section "radar")) }}
-<!-- Schema.org — Article for /posts/*, /series/*/part-*, /radar/* (E-E-A-T + Rich Results) -->
+{{- $isTech := or (intersect .Params.categories (slice "Architecture" "Backend" "Engineering" "DevOps" "System Design" "Machine Learning" "AI")) (findRE "(?i)(vs|comparison|benchmark|architecture|guide|blueprint)" .Title) -}}
+<!-- Schema.org — Article / TechArticle for /posts/*, /series/*/part-*, /radar/* (E-E-A-T + Rich Results) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Article",
+  "@type": {{ if $isTech }}["TechArticle", "Article"]{{ else }}"Article"{{ end }},
+  {{- if $isTech }}
+  "proficiencyLevel": "Expert",
+  {{ with .Params.tags }}"dependencies": {{ . | jsonify }},{{ end }}
+  {{- end }}
   "@id": "{{ .Permalink }}#article",
   "headline": {{ .Title | jsonify }},
   "description": {{ with .Description }}{{ . | jsonify }}{{ else }}{{ .Summary | jsonify }}{{ end }},
@@ -421,12 +426,12 @@
 
 {{- if not $faqs }}
   {{- $raw := .RawContent -}}
-  {{- $faqMatches := findRESubmatch `(?ms)^## FAQ\s*$(.*?)(?:^## |\z)` $raw 1 -}}
+  {{- $parsedFaqs := slice -}}
+  {{- $faqMatches := findRESubmatch `(?ms)^## (?:FAQ|Frequently Asked Questions)\s*$(.*?)(?:^## |\z)` $raw 1 -}}
   {{- if gt (len $faqMatches) 0 -}}
     {{- $faqSection := index $faqMatches 0 -}}
     {{- $faqContent := index $faqSection 1 -}}
     {{- $matches := findRESubmatch `(?ms)^### ([^\n]+)\s*^([^#].*?)(?:^### |\z)` $faqContent -}}
-    {{- $parsedFaqs := slice -}}
     {{- range $matches -}}
       {{- $q := trim (index . 1) " \n\r" -}}
       {{- $a := trim (index . 2) " \n\r" -}}
@@ -435,8 +440,19 @@
       {{- $a = replaceRE `\n+` " " $a -}}
       {{- $parsedFaqs = $parsedFaqs | append (dict "question" $q "answer" $a) -}}
     {{- end -}}
-    {{- $faqs = $parsedFaqs -}}
   {{- end -}}
+  {{- $shortcodeMatches := findRESubmatch `(?ms)\{\{< faq q="([^"]+)" >\}\}(.*?)\{\{< /faq >\}\}` $raw -}}
+  {{- range $shortcodeMatches -}}
+    {{- $q := trim (index . 1) " \n\r" -}}
+    {{- $a := trim (index . 2) " \n\r" -}}
+    {{- $a = replaceRE `\*\*|\*|__|` "" $a -}}
+    {{- $a = replaceRE `\[([^\]]+)\]\([^\)]+\)` "$1" $a -}}
+    {{- $a = replaceRE `\n+` " " $a -}}
+    {{- $parsedFaqs = $parsedFaqs | append (dict "question" $q "answer" $a) -}}
+  {{- end -}}
+  {{- if gt (len $parsedFaqs) 0 }}
+    {{- $faqs = $parsedFaqs }}
+  {{- end }}
 {{- end }}
 {{- if $faqs }}
 <!-- Schema.org — FAQPage -->
