@@ -18,9 +18,17 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/03-caching-strategies-redis-golang/"
 ---
-**Answer-first:** Effective caching strategy selection hinges on the acceptable consistency window and the read/write access pattern of the workload. Write-Through suits financial records; Write-Behind suits analytics and event counters; Cache-Aside is the default for read-heavy API responses.
 
-> **Prerequisite:** Part 3 of the [System Design Masterclass](/series/system-design/). Read [Part 2: Load Balancing L4/L7](/series/system-design/02-load-balancing-api-gateway-go/) to understand the traffic layer before diving into the caching tier.
+> **Prerequisite:** Part 3 of the [System Design Masterclass](/series/system-design/). Read [Part 2: Load Balancing L4/L7](/series/system-design/02-load-balancing-api-gateway-go/) first.
+
+# Caching Strategies in Go — Cache Stampede, XFetch & Redis LFU
+
+> **Executive Summary & Quick Answer**: Caching strategies in high-traffic Go services combine Cache-Aside for read-heavy operations, Write-Through for financial records, and Write-Behind for event counters. Mitigating Cache Stampede requires `golang.org/x/sync/singleflight` deduplication and XFetch probabilistic early recomputation.
+>
+> **Key Takeaways**:
+> - **Cache Stampede Prevention**: `singleflight` collapses parallel cache miss requests into a single database fetch, preventing DB pool exhaustion.
+> - **Probabilistic Early Refresh**: XFetch evaluates $ -\beta \times \delta \times \ln(\text{rand}()) $ to recompute expiring keys before TTL reaches zero.
+> - **Eviction Policies**: Redis LFU (Least Frequently Used) tracks access frequency bits to retain hot items under memory pressure better than LRU.
 
 ### What You'll Learn That AI Won't Tell You
 - **XFetch Mathematical Constants:** How to configure the scaling factor ($\beta$) in XFetch to balance background refresh CPU usage against cache miss rates.
@@ -30,6 +38,7 @@ canonicalURL: "https://tanhdev.com/series/system-design/03-caching-strategies-re
 ---
 
 ## How Does Cache Stampede Happen?
+
 
 **Key Concept:** Cache Stampede (thundering herd) occurs when a popular cached key expires and multiple concurrent goroutines simultaneously detect a cache miss — then all query the database simultaneously. The burst of duplicate DB queries can exceed connection pool capacity and cause cascading failure.
 
@@ -406,4 +415,4 @@ Use **LFU** (`allkeys-lfu`) when your workload has clearly identifiable hot keys
 
 🔗 **Next Step:** Continue to [Part 4: Database Scaling & Connection Pool Tuning in Go]({{< ref "04-database-scaling-sharding.md" >}})
 
-Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

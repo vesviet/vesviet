@@ -421,4 +421,4 @@ go tool pprof -http=:8090 http://localhost:6060/debug/pprof/heap
 
 🔗 **Next Step:** Continue to [Part 11: Security & API Rate Limiting]({{< ref "11-security-api-rate-limiting.md" >}})
 
-Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

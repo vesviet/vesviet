@@ -18,9 +18,17 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/02-load-balancing-api-gateway-go/"
 ---
-**Answer-first:** L4 load balancing routes traffic by transport-layer (IP/TCP/UDP) metadata — minimal CPU overhead but limited intelligence. L7 load balancing inspects HTTP headers, paths, and cookies — enables content-based routing and advanced health checks at the cost of higher processing overhead per request.
 
-> **Prerequisite:** Part 2 of the [System Design Masterclass](/series/system-design/). Read [Part 1: System Design Thinking](/series/system-design/01-introduction-system-design-golang/) first to understand foundational trade-off frameworks.
+> **Prerequisite:** Part 2 of the [System Design Masterclass](/series/system-design/). Read [Part 1: System Design Thinking](/series/system-design/01-introduction-system-design-golang/) first.
+
+# Load Balancing L4/L7 in Go — DSR, Rate Limiting & API Gateway
+
+> **Executive Summary & Quick Answer**: L4 load balancing routes traffic at the transport layer using IP/TCP metadata with minimal CPU overhead, whereas L7 load balancing inspects HTTP headers, cookies, and URLs for intelligent content-based routing. Combining L4 Direct Server Return (DSR) with L7 Envoy API Gateways and Go token-bucket rate limiters handles peak traffic spikes smoothly.
+>
+> **Key Takeaways**:
+> - **L4 DSR Efficiency**: Direct Server Return (DSR) routes incoming TCP SYN packets through L4 load balancers while backends reply directly to clients, bypassing return bottleneck.
+> - **L7 Envoy Routing**: Envoy proxies inspect HTTP paths/headers for dynamic microservice dispatching, circuit breaking, and distributed tracing context propagation.
+> - **Token Bucket Limiting**: Idiomatic Go rate limiters use atomic time replenishment or thread-safe mutex channels to prevent CPU thundering herds.
 
 ### What You'll Learn That AI Won't Tell You
 - **DSR Kernel Level Setup:** The exact HAProxy configurations and Linux kernel sysctl variables required to prevent backend loopback conflicts.
@@ -30,6 +38,7 @@ canonicalURL: "https://tanhdev.com/series/system-design/02-load-balancing-api-ga
 ---
 
 ## L4 vs L7 Load Balancing — The Definitive Comparison
+
 
 **Key Concept:** The fundamental difference is where in the network stack the routing decision is made. L4 (Transport Layer) routes at TCP/UDP level using IP+port tuples. L7 (Application Layer) routes at HTTP level using headers, URLs, and payloads.
 
@@ -370,4 +379,4 @@ In standard proxy mode, both request AND response pass through the load balancer
 
 🔗 **Next Step:** Continue to [Part 3: Caching Strategies & Cache Stampede in Go]({{< ref "03-caching-strategies-redis-golang.md" >}})
 
-Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

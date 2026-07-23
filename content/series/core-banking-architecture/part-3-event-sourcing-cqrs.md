@@ -7,6 +7,8 @@ description: "Event Sourcing in Core Banking: PostgreSQL event store schema, CQR
 weight: 3
 series: ["core-banking-architecture"]
 keywords: ["event sourcing saga pattern fintech", "transactional outbox pattern postgres", "CQRS balance calculation latency", "Monzo microservices architecture"]
+categories: ["FinTech", "Event-Driven", "Architecture"]
+tags: ["Event Sourcing", "CQRS", "Kafka", "PostgreSQL", "Golang", "Microservices"]
 author: "Lê Tuấn Anh"
 schema: ["Article", "TechArticle", "FAQPage"]
 cover:
@@ -16,13 +18,24 @@ cover:
 canonicalURL: "https://tanhdev.com/series/core-banking-architecture/part-3-event-sourcing-cqrs/"
 ShowToc: true
 TocOpen: true
+mermaid: true
 ---
+
+> **Executive Summary & Quick Answer**: Building an immutable ledger with Event Sourcing and CQRS decouples high-throughput command processing from complex query analytics. By projecting domain event streams asynchronously into optimized read models, banking platforms serve customer balance dashboards with zero command-side database locks.
 
 **Answer-first:** Event sourcing and CQRS separate write-heavy transaction streams from read-heavy queries. By appending immutable events to a journal and projecting them asynchronously to specialized read databases, core banking systems achieve millisecond-level response times and complete audit trails.
 
 > **Series (Part 3 of 8):** This article builds upon the ACID transactions foundation from [Part 2](/series/core-banking-architecture/part-2-distributed-sql-acid-latency/). We will design a ledger using Event Sourcing — the exact solution that Monzo, Starling Bank, and many large neo-banks use to scale.
 
 ## What are Event Sourcing & CQRS in Fintech?
+
+```mermaid
+graph LR
+    Cmd[Deposit Command] --> WriteDB[(Event Store DB)]
+    WriteDB --> Bus((Kafka Event Stream))
+    Bus --> Proj[Read Model Projector]
+    Proj --> ReadDB[(PostgreSQL Read View)]
+```
 
 Fintech microservice systems utilize Event Sourcing and CQRS patterns to maintain distributed data consistency without distributed locks. To avoid dual-write failures, the Transactional Outbox pattern is applied in combination with CDC tools like Debezium. Pre-calculated CQRS balance lookups achieve **<1ms** latency, whereas on-the-fly `SUM()` aggregates degrade from **2ms to 200ms** at $O(N)$ with account history length.
 
@@ -417,18 +430,22 @@ Furthermore, projection databases can utilize specialized index structures to op
 
 While event stores are theoretically infinite, keeping all historical events on active disks is costly and degrades recovery performance. Banking systems split event stores into hot and cold tiers. Events older than seven years are migrated to cold object storage (such as AWS S3 Glacier or Google Cloud Storage Archive) in compressed Apache Parquet format. This satisfies regulatory compliance for historical records while keeping the active event store disk usage and indexing costs optimized.
 
-## FAQ
+## Frequently Asked Questions (FAQ)
 
 {{< faq q="Does Event Sourcing make queries more complex?" >}}
 Yes — Event Sourcing optimizes for writes and auditing, but complicates reads. This is exactly why CQRS exists. The write side stores events; the read side builds materialized views optimized for queries. You should not use pure Event Sourcing without CQRS read models.
 {{< /faq >}}
 
-{{< faq q="Can Debezium handle large PostgreSQL WAL volumes?" >}}
-Yes, but you need to monitor LAG (Debezium lag behind the WAL position). For volumes >10,000 TPS, it's recommended to dedicate a PostgreSQL replica purely for Debezium to avoid impacting the primary.
+{{< faq "Can I run Event Sourcing on PostgreSQL, or do I need EventStoreDB?" >}}
+PostgreSQL handles Event Sourcing well up to **thousands of events/sec** using an append-only `event_store` table. Choose EventStoreDB or Kafka if you require **>50,000 events/sec**, native gRPC streaming, or distributed topic routing out of the box.
 {{< /faq >}}
 
-{{< faq q="How often should a snapshot be taken?" >}}
+{{< faq "How often should a snapshot be taken?" >}}
 It depends on average event size and acceptable replay time. Rule of thumb: snapshot every **500 events**. With an average event size of 1KB → snapshot file ~500KB. Replaying from a snapshot (0 events) up to the max (500 events) will never exceed a few dozen milliseconds.
+{{< /faq >}}
+
+{{< faq "How do event-sourced systems handle schema evolution?" >}}
+Schema modifications use upcasters—transformer functions that map legacy event JSON structures to current event versions during event stream deserialization.
 {{< /faq >}}
 
 ## Event-Store Compaction, CQRS Version Lag, and Out-of-Order Events
@@ -458,6 +475,8 @@ Write operations append events to the Event Store, while read operations query s
 In distributed networks, events may arrive at the projection engine out of order:
 - **Sequence Buffering:** The projection engine maintains an in-memory buffer. If event $N+1$ arrives before event $N$, the engine queues it in the buffer and waits for event $N$ before executing updates.
 - **Idempotency Keys:** Projections track processed event IDs to prevent duplicate updates.
+
+To read about event-driven banking microservices patterns in Go, consult [Part 4: Modern Event-Driven Core Banking Architecture](/series/core-banking-developer/part-4-modern-core-banking-architecture/). For dedicated event-driven architecture design, connect with [FinTech Solutions Engineers](/hire/).
 ---
 
 *Up Next: [Part 4 — Saga Pattern](/series/core-banking-architecture/part-4-saga-pattern/) — Choreography vs Orchestration Saga, failure transition matrices, and implementation with Temporal workflow engine.*

@@ -265,6 +265,6 @@ Instead, apply this **Adopt vs. Build Decision Matrix**:
 
 ---
 
-Need help implementing high-scale architectures? Feel free to [Contact me](/contact/) or [Hire me](/hire/) to review your system design and codebase.
+Need help implementing high-scale architectures? Feel free to [Get in touch](/hire/) or [Hire me](/hire/) to review your system design and codebase.
 
 🔗 **Next Step:** [Phase 5: Synthesis and Lessons Learned]({{< ref "phase-5-synthesis.md" >}})

@@ -348,4 +348,4 @@ Virtual nodes improve load distribution by giving each physical node multiple po
 
 🔗 **Next Step:** Continue to [Part 10: Observability & pprof in Go]({{< ref "10-observability-pprof-golang.md" >}})
 
-Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

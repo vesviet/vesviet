@@ -352,4 +352,4 @@ Use Outbox when you need the guarantee: "if the DB transaction commits, the Kafk
 
 🔗 **Next Step:** Continue to [Part 9: Consistent Hashing — Virtual Nodes & CRC32 Ring in Go]({{< ref "09-consistent-hashing-sharding.md" >}})
 
-Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

@@ -442,7 +442,10 @@ func TestFraudScoringLatencySLA(t *testing.T) {
     
     for i := 0; i < sampleSize; i++ {
         start := time.Now()
-        _ = fraudScoringService.Score(generateTestTransaction())
+        score := fraudScoringService.Score(generateTestTransaction())
+        if score.RiskScore < 0 {
+            t.Fatal("invalid risk score")
+        }
         latencies = append(latencies, time.Since(start))
     }
     

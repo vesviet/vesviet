@@ -158,6 +158,6 @@ If you are tasked with scaling a high-throughput transaction system today, you d
 
 ---
 
-Need help implementing high-scale architectures? Feel free to [Contact me](/contact/) or [Hire me](/hire/) to review your system design and codebase.
+Need help implementing high-scale architectures? Feel free to [Get in touch](/hire/) or [Hire me](/hire/) to review your system design and codebase.
 
 🔗 **Next Step:** [Phase 1: Timeline and Scale Evolution]({{< ref "phase-1-timeline.md" >}})

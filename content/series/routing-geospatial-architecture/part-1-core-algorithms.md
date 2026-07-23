@@ -5,6 +5,7 @@ date: "2026-06-14T22:35:00+07:00"
 lastmod: "2026-06-14T22:35:00+07:00"
 draft: false
 tags: ["golang", "graphhopper", "routing", "algorithms"]
+categories: ["Geospatial", "Algorithms"]
 series: ["Routing & Geospatial Architecture"]
 series_order: 1
 cover:
@@ -13,41 +14,65 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-1-core-algorithms/"
+mermaid: true
 ShowToc: true
 TocOpen: true
 ---
 
-[← Series hub]({{< ref "/series/routing-geospatial-architecture/_index.md" >}})
-[← Prev]({{< ref "/series/routing-geospatial-architecture/executive-summary.md" >}}) • [Next →]({{< ref "/series/routing-geospatial-architecture/part-2-environment-setup.md" >}})
+> **Prerequisite:** This part builds on the concepts introduced in the [Executive Summary](/series/routing-geospatial-architecture/executive-summary/).
 
-> **Prerequisite:** This part builds on the concepts introduced in the [Executive Summary]({{< ref "executive-summary.md" >}}). Ensure you understand the general architecture of the routing system.
+# Part 1: Core Routing Algorithms — A* & Dijkstra Visualized
+
+> **Executive Summary & Quick Answer**: A* pathfinding uses Euclidean heuristics to accelerate 1-to-1 point routing, whereas Single-Source Dijkstra is mathematically superior for 1-to-N distance matrix calculations because it builds a single shortest-path search tree to all reachable destinations in one pass.
+>
+> **Key Takeaways**:
+> - **Matrix Efficiency**: Dijkstra expands radial wavefronts in a single pass, computing 1-to-N driver matrices 10x faster than running N independent A* searches.
+> - **Turn Restrictions**: Edge-based graph representation models turn penalties (e.g. prohibited U-turns) by representing turns as edges between directed road segments.
+> - **Shortcut Hierarchies**: Contraction Hierarchies contract local nodes offline, reducing real-time search space by orders of magnitude.
+
+### What You'll Learn That AI Won't Tell You
+- **Map Matching Math:** How Hidden Markov Models (HMM) and R-trees snap noisy GPS coordinates to road segments.
+- **Priority Queue Implementation:** Idiomatic Go `container/heap` code for priority queues in pathfinding.
+- **Contraction Shortcuts:** The exact node ordering heuristics used by GraphHopper to generate CH shortcuts.
 
 When building a high-scale logistics or delivery system, generic algorithm tutorials often lead developers astray. They tell you that A* is universally better than Dijkstra. However, in the real world of **Routing Engines** and **Distance Matrices**, the truth is much more complex.
 
 In this first part of our masterclass, we will move beyond academic theory. We will visualize the exact lifecycle of a routing request—from snapping a GPS coordinate to the road, to bypassing traffic, and finally calculating routes in milliseconds using Contraction Hierarchies.
 
+```mermaid
+flowchart TD
+    GPS[Raw GPS Coordinate Ping] -->|R-Tree Radius Search| MBR[Identify Nearby Road Edges]
+    MBR -->|HMM Map Matching & Viterbi| Snap[Snap Coordinate to Logical Road]
+    Snap --> Decision{Routing Goal?}
+    Decision -- 1-to-1 Route --> AStar[A* Search with Haversine Heuristic]
+    Decision -- 1-to-N Distance Matrix --> Dijkstra[Single-Source Dijkstra Search Tree]
+    AStar --> CH[Traverse Contraction Hierarchies Shortcuts]
+    Dijkstra --> CH
+```
+
 ## Map Matching: Snapping GPS to the Graph
 
-**Answer-first:** Before algorithms can route you, the engine must map your raw GPS coordinate to a physical road segment using **Map Matching**. Industry-standard systems use **R-Trees** (spatial bounding boxes) combined with **Hidden Markov Models (HMM)** to infer the correct road based on your trajectory.
+Before algorithms can route you, the engine must map your raw GPS coordinate to a physical road segment using **Map Matching**. Industry-standard systems use **R-Trees** (spatial bounding boxes) combined with **Hidden Markov Models (HMM)** to infer the correct road based on your trajectory.
 
 When your phone sends a GPS ping, it might be off by 10 or 20 meters. If you are driving on a highway overpass, your raw coordinate might look like you are on the local street below.
 
-A naive routing engine calculates the distance to every road in the city. This is computationally impossible. Instead, modern engines like Graphhopper use **R-Trees**. R-trees group road segments into Minimum Bounding Rectangles (MBRs). The engine queries the tree to find all roads within a 50-meter radius in logarithmic time.
+A naive routing engine calculates the distance to every road in the city. This is computationally impossible. Instead, modern engines like GraphHopper use **R-Trees**. R-trees group road segments into Minimum Bounding Rectangles (MBRs). The engine queries the tree to find all roads within a 50-meter radius in logarithmic time.
 
-To prevent snapping to the wrong road (like the underpass), engines use **Hidden Markov Models (HMM)** and the Viterbi algorithm. HMMs evaluate the *probability* of your path by looking at your historical trajectory and the network topology, ensuring you stay on the logical road.
+To prevent snapping to the wrong road (like the underpass), engines use **Hidden Markov Models (HMM)** and the Viterbi algorithm. HMMs evaluate the probability of your path by looking at your historical trajectory and network topology, ensuring you stay on the logical road.
 
 ## Dijkstra vs A*: The Reality for Logistics
 
-**Answer-first:** **A*** is faster for Point-to-Point navigation (A to B) because it uses a heuristic to guide the search. However, **Dijkstra** is superior for Distance Matrix generation (1 to N) because it naturally builds a shortest-path tree to all reachable nodes simultaneously.
+**A*** is faster for Point-to-Point navigation (A to B) because it uses a heuristic to guide the search. However, **Dijkstra** is superior for Distance Matrix generation (1 to N) because it naturally builds a shortest-path tree to all reachable nodes simultaneously.
 
 Academic tutorials love to praise A*. A* uses a **heuristic function $h(n)$**, usually Euclidean distance (for city routing) or Haversine distance (for global routing), to guess the remaining distance. This acts like a compass, forcing the algorithm to search aggressively toward the destination.
 
-But logistics systems like Grab or ShopeeXpress rarely do pure Point-to-Point routing. They compute **Distance Matrices** (e.g., finding the closest 10 drivers to 1 passenger). 
+But logistics systems like Grab or ShopeeXpress compute **Distance Matrices** (e.g., finding the closest 10 drivers to 1 passenger). 
 If you use A* for a 1-to-10 matrix, you must run the algorithm 10 separate times. If you use **Single-Source Dijkstra**, you run it exactly *once*. Dijkstra expands outward like a ripple, finding the shortest path to every node it touches. The search stops the moment the 10th driver is found, making it exponentially cheaper for matrix calculations.
 
 ## Edge-Based Graphs and Turn Restrictions
 
-**Answer-first:** To handle real-world rules like "No U-Turns" or "No Left Turns," routing engines convert Node-based graphs into **Edge-Based graphs**. This allows the algorithm to track the transition state between two specific road segments.
+To handle real-world rules like "No U-Turns" or "No Left Turns," routing engines convert Node-based graphs into **Edge-Based graphs**. This allows the algorithm to track the transition state between two specific road segments.
+
 
 Standard graph theory treats intersections as nodes and roads as edges. But what happens if an intersection forbids left turns? In a node-based graph, the algorithm only knows it reached the node; it forgets which road it came from. 
 
@@ -208,7 +233,7 @@ No. You use Weighting Profiles. The physical graph topology remains the same, bu
 No. The shortest-path tree algorithm intelligently stops expanding its search radius as soon as the N-th target destination is reached, saving massive amounts of CPU compute compared to calculating the full city grid.
 {{< /faq >}}
 
-Need help building high-scale routing engines or spatial indexing pipelines? [Contact me](/contact/) to discuss your project.
+Need help building high-scale routing engines or spatial indexing pipelines? [Get in touch](/hire/) to discuss your project.
 
 🔗 **Next Step:** Move on to [Part 2: Zero to Hero Environment Setup (Docker, OSM, Golang)]({{< ref "/series/routing-geospatial-architecture/part-2-environment-setup.md" >}}) to build your local routing environment.
 

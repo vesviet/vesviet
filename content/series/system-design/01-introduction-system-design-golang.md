@@ -18,9 +18,17 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/01-introduction-system-design-golang/"
 ---
-**Answer-first:** Sound system design thinking is fundamentally about evaluating and selecting trade-offs across performance, reliability, and cost. No system is perfect — architects optimize for the constraints imposed by real business requirements and technical realities.
 
 > **Prerequisite:** This is Part 1 of the [System Design Masterclass](/series/system-design/) series. Familiarity with basic distributed systems concepts and Go syntax is assumed.
+
+# Go System Design: CAP, PACELC & Clean Architecture Primer
+
+> **Executive Summary & Quick Answer**: System design in Go balances CAP/PACELC trade-offs across consistency, availability, and latency. Clean Architecture isolates business logic behind Go interfaces while dependency injection decouples domain layers from database and transport protocols.
+>
+> **Key Takeaways**:
+> - **CAP Theorem**: Network partitions force an absolute choice between Consistency (CP) and Availability (AP).
+> - **PACELC Matrix**: When normal operation occurs (else), systems trade off Latency (L) versus Consistency (C).
+> - **Clean Architecture**: Domain interfaces isolate business logic from SQL/gRPC infrastructure, enabling unit testing without mocks.
 
 ### What You'll Learn That AI Won't Tell You
 - **CAP Theorem Realities:** A rigorous look at Gilbert and Lynch's proof showing why network partitions force an absolute choice between availability and consistency.
@@ -30,6 +38,7 @@ canonicalURL: "https://tanhdev.com/series/system-design/01-introduction-system-d
 ---
 
 ## How Do You Build System Design Thinking?
+
 
 **Key Concept:** System design mastery is built on three pillars: mastering foundational theorems (CAP, PACELC), practicing trade-off analysis on real-world case studies, and repeatedly decomposing large problems into measurable, independently scalable components.
 
@@ -253,12 +262,13 @@ func main() {
 
 > [!TIP]
 > **Testing benefit:** Since `UserService` depends only on the `UserRepository` interface, you can mock it in tests without a real database:
-> ```go
-> type MockUserRepo struct{}
-> func (m *MockUserRepo) FindByID(id string) (*domain.User, error) {
->     return &domain.User{ID: id, Name: "Test User"}, nil
-> }
-> ```
+
+```go
+type MockUserRepo struct{}
+func (m *MockUserRepo) FindByID(id string) (*domain.User, error) {
+    return &domain.User{ID: id, Name: "Test User"}, nil
+}
+```
 
 ### Dependency Flow Diagram
 
@@ -323,4 +333,4 @@ Use **microservices** when: 3+ squads are working in the same codebase causing d
 
 🔗 **Next Step:** Continue to [Part 2: Load Balancing L4/L7 & Rate Limiting in Go]({{< ref "02-load-balancing-api-gateway-go.md" >}})
 
-Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

@@ -6,6 +6,7 @@ draft: false
 series: ["Mastering High-Concurrency Systems in Production"]
 series_order: 1
 tags: ["golang", "system design", "high concurrency", "architecture"]
+categories: ["High Concurrency", "System Architecture"]
 mermaid: true
 slug: "how-systems-handle-c10m"
 description: "A deep dive into how modern distributed systems break the C10M barrier using stateless APIs, multi-level caching, and Go."
@@ -21,13 +22,28 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/how-systems-handle-c10m/"
 ---
 
-> **Prerequisite:** Before reading this chapter, please ensure you have read the previous article in this series: [Executive Summary: The Reality of C10M: Surviving Extreme Traffic]({{< ref "executive-summary.md" >}}).
+> **Prerequisite:** Before reading this chapter, review our [Go System Design Primer](/series/system-design/01-introduction-system-design-golang/).
+
+# Chapter 1: How Systems Handle Millions of Requests/s (C10M)? Lessons from Shopee & Alipay
+
+> **Executive Summary & Quick Answer**: Scaling web applications to handle 10 million concurrent connections (C10M) requires bypassing Linux OS kernel interrupt overhead via DPDK poll-mode drivers, building stateless application tiers in Go with `sync.Pool` memory reuse, and sharding database layers across unitized clusters.
+>
+> **Key Takeaways**:
+> - **Kernel Bypass**: DPDK user-space drivers eliminate `sk_buff` allocation and interrupt context switching, unlocking 10x packet throughput.
+> - **Zero-Allocation RAM Pools**: Go `sync.Pool` reuses request/response buffer structs in RAM, reducing GC allocation pauses under 100k RPS loads.
+> - **Stateless Horizontal Scale**: Stateless Go API gateways delegate state to Redis L2 caches and sharded SQL backends for linear throughput growth.
+
+### What You'll Learn That AI Won't Tell You
+- **Linux Interrupt Bottlenecks:** Why hardware interrupt handling caps standard TCP network stacks at C100K.
+- **DPDK DMA Scatter-Gather:** Direct Memory Access buffer polling in user-space Go and C runtimes.
+- **Shopee & Alipay Architecture:** How Unitized Data Centers (LDC) isolate fault domains for Double 11 traffic spikes.
 
 To build a system capable of handling millions of Requests Per Second (RPS) — known as the **C10M** problem — vertical scaling is never enough. It requires a meticulously designed Distributed Architecture.
 
 ## 1. The Shift from C10K to C10M
 
 While **C10K** (10,000 concurrent connections) was solved by non-blocking I/O (like NGINX using `epoll` or `kqueue`), **C10M** shifts the bottleneck entirely to the operating system kernel. Systems must bypass the kernel using technologies like DPDK or XDP to handle 10 million connections efficiently.
+
 
 The C10K problem haunted engineers in the early 2000s. It was permanently solved by Non-blocking I/O multiplexing. With Golang, its ultra-lightweight `Goroutines` and runtime-integrated netpoll (which abstracts `epoll` on Linux) make C10K trivial.
 
@@ -229,6 +245,24 @@ func main() {
 ```
 
 By reusing memory using `sync.Pool`, we avoid allocations in the hot path. Under 100,000 RPS, this simple optimization reduces heap allocations by over 90%, preventing the Go runtime from entering frequent garbage collection cycles and saving valuable CPU cycles.
+
+## Frequently Asked Questions (FAQ)
+
+{{< faq q="Why does standard Linux kernel networking bottleneck at C100K connections?" >}}
+Standard Linux network drivers rely on hardware interrupts for every incoming packet, triggering CPU context switches and kernel memory buffer allocations (`sk_buff`). At 10 million concurrent connections, interrupt handling consumes 100% of CPU time, starving application logic.
+{{< /faq >}}
+
+{{< faq q="How does DPDK kernel bypass achieve C10M packet throughput?" >}}
+DPDK (Data Plane Development Kit) replaces kernel network drivers with user-space Poll Mode Drivers (PMD). Using Direct Memory Access (DMA), incoming network packets are written directly into application memory buffers without kernel context switching or memory copying.
+{{< /faq >}}
+
+{{< faq q="Why is sync.Pool critical for high-throughput Go backend servers?" >}}
+Under 100,000+ requests per second, continuously allocating request and response payload structs on the heap triggers frequent Garbage Collection (GC) STW pauses. `sync.Pool` recycles allocated memory buffers across goroutines, reducing heap allocation overhead by over 90%.
+{{< /faq >}}
+
+{{< faq q="How does Alipay's Logical Data Center (LDC) architecture isolate fault domains?" >}}
+Alipay's LDC shards user traffic and database records geographically into autonomous logical zones based on User ID. Each zone processes end-to-end payment transactions locally, preventing global system outages if a single datacenter node fails.
+{{< /faq >}}
 
 ---
 

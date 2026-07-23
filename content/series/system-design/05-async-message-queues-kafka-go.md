@@ -18,9 +18,17 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/05-async-message-queues-kafka-go/"
 ---
-**Answer-first:** Event-Driven Architecture decouples services through asynchronous communication via a durable message log. In Go, goroutines and buffered channels implement natural backpressure — when consumers fall behind producers, the channel fills up and blocks the producer, throttling the ingest rate automatically.
 
-> **Prerequisite:** Part 5 of the [System Design Masterclass](/series/system-design/). Read [Part 4: Database Scaling](/series/system-design/04-database-scaling-sharding/) to understand the storage tier that persisted events are written to.
+> **Prerequisite:** Part 5 of the [System Design Masterclass](/series/system-design/). Read [Part 4: Database Scaling](/series/system-design/04-database-scaling-sharding/) first.
+
+# Kafka Worker Pool in Go — Backpressure & Exactly-Once
+
+> **Executive Summary & Quick Answer**: High-throughput event streaming in Go leverages Kafka zero-copy `sendfile()` kernel transfers combined with bounded goroutine worker pools. Natural backpressure is achieved using buffered Go channels, while partition-pinned workers preserve message ordering without distributed locks.
+>
+> **Key Takeaways**:
+> - **Zero-Copy Performance**: Kafka bypasses user-space buffer copies via `sendfile()`, routing data directly from Linux page cache to network socket buffers.
+> - **Channel Backpressure**: Bounded Go channels automatically throttle poll loops when downstream workers reach memory capacity limits.
+> - **Partition-Aware Ordering**: Pinning specific Kafka partition IDs to dedicated worker goroutines maintains strict message sequence guarantees.
 
 ### What You'll Learn That AI Won't Tell You
 - **Kernel-Level sendfile() Mechanics:** How zero-copy I/O bypasses the context switches between user and kernel space, preventing CPU cache invalidation.
@@ -30,6 +38,7 @@ canonicalURL: "https://tanhdev.com/series/system-design/05-async-message-queues-
 ---
 
 ## Kafka vs RabbitMQ — When to Use Each?
+
 
 **Key Concept:** Kafka is a **distributed commit log** — messages are retained indefinitely, consumers manage their own offsets, and replay is possible. RabbitMQ is a **message broker** — messages are deleted after acknowledgment, the broker handles routing complexity, push-based delivery. They solve different problems.
 
@@ -179,11 +188,6 @@ func KafkaConsumerLoop(ctx context.Context, jobChan chan<- Message) {
                     msgOffset++
                 case <-ctx.Done():
                     return
-                default:
-                    // Buffer full → backpressure: pause consumption
-                    // In production: reduce Kafka poll rate, don't commit offset
-                    log.Printf("WARN: backpressure applied at offset %d", msgOffset)
-                    time.Sleep(10 * time.Millisecond)
                 }
             }
         }
@@ -365,4 +369,4 @@ True end-to-end exactly-once for external side effects (DB writes, API calls) re
 
 🔗 **Next Step:** Continue to [Part 6: Distributed Locks — Redlock, etcd & Split-Brain Prevention in Go]({{< ref "06-distributed-locks-concurrency.md" >}})
 
-Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

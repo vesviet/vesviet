@@ -192,6 +192,6 @@ Planet-scale payment reliability is not achieved by adopting a single tool or cl
 
 ---
 
-Need help implementing high-scale architectures? Feel free to [Contact me](/contact/) or [Hire me](/hire/) to review your system design and codebase.
+Need help implementing high-scale architectures? Feel free to [Get in touch](/hire/) or [Hire me](/hire/) to review your system design and codebase.
 
 🔗 **Next Step:** [Research Index]({{< ref "research-index.md" >}})

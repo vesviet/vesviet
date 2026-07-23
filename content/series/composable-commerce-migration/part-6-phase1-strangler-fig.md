@@ -264,27 +264,48 @@ The Gateway implements a 3-failure automatic fallback:
 ```go
 // gateway-service/internal/health/monitor.go
 
+type DomainHealth struct {
+    failures atomic.Uint64
+}
+
 type HealthMonitor struct {
-    failureCounts sync.Map  // domain → consecutive failure count
-    flagStore     FlagStore
+    mu        sync.RWMutex
+    domains   map[string]*DomainHealth
+    flagStore FlagStore
+}
+
+func NewHealthMonitor(flagStore FlagStore) *HealthMonitor {
+    return &HealthMonitor{
+        domains:   make(map[string]*DomainHealth),
+        flagStore: flagStore,
+    }
 }
 
 func (m *HealthMonitor) RecordFailure(domain string) {
-    count, _ := m.failureCounts.LoadOrStore(domain, int64(0))
-    newCount := count.(int64) + 1
-    m.failureCounts.Store(domain, newCount)
+    m.mu.Lock()
+    dh, exists := m.domains[domain]
+    if !exists {
+        dh = &DomainHealth{}
+        m.domains[domain] = dh
+    }
+    m.mu.Unlock()
 
+    newCount := dh.failures.Add(1)
     if newCount >= 3 {
         // 3 consecutive failures → auto-disable feature flag
         m.flagStore.Disable(domain + "_read")
         log.Warnf("Auto-disabled %s_read after %d consecutive failures", domain, newCount)
-        // Alert sent to #migration-issues Slack
         alert.Send(fmt.Sprintf("⚠️ %s_read auto-disabled — check service health", domain))
     }
 }
 
 func (m *HealthMonitor) RecordSuccess(domain string) {
-    m.failureCounts.Store(domain, int64(0))
+    m.mu.RLock()
+    dh, exists := m.domains[domain]
+    m.mu.RUnlock()
+    if exists {
+        dh.failures.Store(0)
+    }
 }
 ```
 

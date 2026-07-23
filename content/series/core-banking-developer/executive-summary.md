@@ -191,19 +191,87 @@ Modern bank ledgers must be designed to automatically track metrics required for
 2. **High-Quality Liquid Assets (HQLA):** Cash reserves and government bonds are monitored in dedicated sub-ledgers to calculate LCR, ensuring the bank can survive a 30-day liquidity stress scenario.
 3. **Anti-Money Laundering (AML) Rules:** Transaction handlers trigger automated events if single deposits exceed $10,000, routing details to compliance dashboards.
 
-To ensure complete system reliability, the engineering team establishes regular performance benchmarks under simulated transaction loads. The metrics focus on transactional throughput, lock contention rates, and memory allocation efficiency under garbage collection stress in Go runtimes. We monitor latency profiles closely to identify bottleneck indicators under concurrent traffic.
+## Core Banking Context Isolation and gRPC Routing Engine
 
-Database connections are managed via a centralized connection pool to prevent TCP port exhaustion during peak loads. The pool configuration dynamically scales between minimum idle connections and maximum active limits based on queue metrics. This prevents deadlock loops and connection starvation under concurrent requests.
+In a microservices core banking architecture, strict boundary isolation between bounded contexts (Ledger Engine, CIF, CASA Deposits, Lending, Payments) prevents cascading failures across domain boundaries. The gRPC transaction router decouples API client requests from internal database operations, enforcing zero-trust context propagation via metadata headers.
 
-System auditing checks execute asynchronously to avoid blocking the primary transaction path. The metrics are dispatched to the monitoring cluster using decoupled buffered channels, ensuring that logger latency does not bleed into customer API responses. The tracing collector captures intermediate spans and aggregates metrics.
+```go
+package domain
 
-Error handling policies follow standardized bank error codes, mapping database constraints to explicit, human-readable API responses while hiding internal database stack traces to prevent security exposure. The boundary middleware sanitizes outbound error messages.
+import (
+	"context"
+	"fmt"
+	"sync"
+	"google.golang.org/grpc/metadata"
+)
 
-Automated regression tests run continuously in the deployment pipeline. Every change to the ledger engine triggers thousands of simulated transaction loops to verify that no balance discrepancies can be introduced under race conditions. This rigorous validation ensures high reliability of the double-entry accounting layer.
+// TransactionContext encapsulates multi-tenant tenant isolation and tracing metadata.
+type TransactionContext struct {
+	TenantID      string
+	CorrelationID string
+	SourceDomain  string
+	TargetDomain  string
+}
 
-Cryptographic operations are offloaded to hardware security modules (HSMs) or specialized CPU instructions to minimize CPU utilization during TLS handshakes and payload encryption steps. This ensures high throughput for payment SWITCH APIs.
+// DomainRouter dispatches transactions across microservice bounded contexts with strict context validation.
+type DomainRouter struct {
+	mu     sync.RWMutex
+	routes map[string]func(ctx context.Context, payload []byte) ([]byte, error)
+}
 
-All configurations (interest rates, overdraft limits, transaction fees) are versioned and stored in the database, allowing dynamic system updates without requiring service redeployment or downtime. This flexibility reduces production operational overhead.
+// NewDomainRouter initializes the central domain routing registry.
+func NewDomainRouter() *DomainRouter {
+	return &DomainRouter{
+		routes: make(map[string]func(ctx context.Context, payload []byte) ([]byte, error)),
+	}
+}
+
+// RegisterDomainHandler registers a domain handler for a specific target context.
+func (r *DomainRouter) RegisterDomainHandler(domain string, handler func(ctx context.Context, payload []byte) ([]byte, error)) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	r.routes[domain] = handler
+}
+
+// RouteTransaction extracts gRPC metadata and dispatches request to the bounded domain.
+func (r *DomainRouter) RouteTransaction(ctx context.Context, targetDomain string, payload []byte) ([]byte, error) {
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return nil, fmt.Errorf("missing gRPC transaction metadata")
+	}
+
+	tenantIDs := md.Get("x-tenant-id")
+	if len(tenantIDs) == 0 || tenantIDs[0] == "" {
+		return nil, fmt.Errorf("unauthorized transaction: missing tenant context")
+	}
+
+	r.mu.RLock()
+	handler, exists := r.routes[targetDomain]
+	r.mu.RUnlock()
+
+	if !exists {
+		return nil, fmt.Errorf("unsupported domain target: %s", targetDomain)
+	}
+
+	return handler(ctx, payload)
+}
+```
+
+```mermaid
+graph TD
+    Client[Mobile / Web Client] --> Ingress[API Gateway / gRPC Ingress]
+    Ingress --> Router[Domain Routing Engine]
+    Router --> LedgerContext[Ledger & Balance Context]
+    Router --> CASAContext[CASA & Deposit Context]
+    Router --> LendingContext[Lending & Loan Context]
+    Router --> PaymentContext[Payment Switch Context]
+    
+    LedgerContext --> PostgresLedger[(Ledger DB)]
+    CASAContext --> PostgresCASA[(CASA DB)]
+    LendingContext --> PostgresLending[(Lending DB)]
+```
+
+By enforcing metadata extraction and tenant isolation at the router layer, individual microservices operate independently without exposure to raw database connection pools across domain boundaries.
 
 🔗 **Next Step:** Explore general ledger posting models in [Part 1: Double-Entry Ledger Schema Design]({{< ref "part-1-double-entry-ledger.md" >}}).
 

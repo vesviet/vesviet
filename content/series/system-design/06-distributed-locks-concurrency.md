@@ -18,9 +18,17 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/06-distributed-locks-concurrency/"
 ---
-**Answer-first:** Distributed locks solve the mutual exclusion problem across independent servers — ensuring only one server can modify a shared resource at a time. Redis Redlock provides high-performance locking using majority quorum across multiple master nodes; etcd provides stronger guarantees via Raft consensus at the cost of higher latency.
 
-> **Prerequisite:** Part 6 of the [System Design Masterclass](/series/system-design/). Read [Part 5: Kafka & Event-Driven](/series/system-design/05-async-message-queues-kafka-go/) to understand event sourcing patterns before tackling lock coordination.
+> **Prerequisite:** Part 6 of the [System Design Masterclass](/series/system-design/). Read [Part 5: Kafka & Event-Driven](/series/system-design/05-async-message-queues-kafka-go/) first.
+
+# Distributed Locks in Go — Redlock Math, etcd & Split-Brain
+
+> **Executive Summary & Quick Answer**: Distributed locks enforce mutual exclusion across independent microservice instances. Redis Redlock achieves high-performance locking across quorum master nodes with Lua-script atomicity, while etcd provides linearizable Raft-backed leases with fencing tokens to guarantee absolute safety under network partitions.
+>
+> **Key Takeaways**:
+> - **Redlock Validity Formula**: Lock validity equals $\text{TTL} - \text{elapsed\_time} - \text{clock\_drift}$; if validity $\le 0$, release immediately.
+> - **Fencing Tokens**: Monotonically increasing fencing tokens (e.g. etcd revision numbers) block delayed GC-paused lockholders at storage layer boundaries.
+> - **Raft vs Redis Quorum**: Use etcd for high-correctness financial transactions and Redis Redlock for high-throughput rate limiting or worker job distribution.
 
 ### What You'll Learn That AI Won't Tell You
 - **Redlock Clock Drift Math:** Why unsynchronized system clocks (NTP drifts) allow two clients to acquire the same Redis lock, and how to verify with fencing tokens.
@@ -30,6 +38,7 @@ canonicalURL: "https://tanhdev.com/series/system-design/06-distributed-locks-con
 ---
 
 ## Why Do Race Conditions Occur in Distributed Systems?
+
 
 **Key Concept:** Race conditions occur across server processes when multiple servers independently read and then write shared state without coordination. A single-process mutex doesn't help — you need a lock mechanism visible across all processes.
 
@@ -302,4 +311,4 @@ This atomically checks if the lock value matches your client's unique token befo
 
 🔗 **Next Step:** Continue to [Part 7: Idempotent API Design in Go]({{< ref "07-idempotency-api-design-go.md" >}})
 
-Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

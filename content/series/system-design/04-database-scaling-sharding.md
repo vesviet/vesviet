@@ -18,9 +18,17 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/04-database-scaling-sharding/"
 ---
-**Answer-first:** Database sharding distributes data horizontally across independent partitions (shards) based on a shard key, reducing write contention and enabling linear storage growth. Choosing the wrong shard key leads to hot spots that can be worse than no sharding at all.
 
-> **Prerequisite:** Part 4 of the [System Design Masterclass](/series/system-design/). Read [Part 3: Caching Strategies](/series/system-design/03-caching-strategies-redis-golang/) to understand the cache layer before examining storage.
+> **Prerequisite:** Part 4 of the [System Design Masterclass](/series/system-design/). Read [Part 3: Caching Strategies](/series/system-design/03-caching-strategies-redis-golang/) first.
+
+# Database Sharding in Go — TiDB, PostgreSQL & Connection Pools
+
+> **Executive Summary & Quick Answer**: Horizontal database sharding partitions SQL tables across independent database nodes using hash or range shard keys. In Go services, combining application-level shard routing with tuned `database/sql` connection pools (`SetMaxOpenConns`, `SetMaxIdleConns`) prevents RAM exhaustion and write bottlenecks.
+>
+> **Key Takeaways**:
+> - **Shard Key Selection**: High-cardinality keys (e.g. `user_id`) prevent write hot-spotting compared to range keys like timestamps.
+> - **Connection Pooling**: PostgreSQL allocates 5-10MB RAM per open backend connection; tune Go `SetMaxOpenConns` to avoid memory exhaustion.
+> - **NewSQL Scaling**: Distributed SQL databases like TiDB implement Percolator 2PC over Raft consensus groups to provide horizontal scale with full ACID semantics.
 
 ### What You'll Learn That AI Won't Tell You
 - **PostgreSQL Connection Memory Math:** Why each PostgreSQL connection eats 5–10MB of server RAM, and why a naive `database/sql` pool configuration crashes databases.
@@ -30,6 +38,7 @@ canonicalURL: "https://tanhdev.com/series/system-design/04-database-scaling-shar
 ---
 
 ## Vertical vs Horizontal Scaling — When to Switch?
+
 
 **Key Concept:** Vertical scaling (scale-up) increases resources on a single server — simple but has a hard physical ceiling and non-linear cost growth. Horizontal scaling (scale-out) adds more servers — no theoretical ceiling, linear cost, but significantly higher operational complexity.
 
@@ -336,4 +345,4 @@ Use TiDB when: dataset > 1 TB needs complex SQL queries, you need horizontal sca
 
 🔗 **Next Step:** Continue to [Part 5: Event-Driven Architecture & Kafka in Go]({{< ref "05-async-message-queues-kafka-go.md" >}})
 
-Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

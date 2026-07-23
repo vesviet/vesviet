@@ -6,6 +6,7 @@ draft: false
 series: ["Mastering High-Concurrency Systems in Production"]
 series_order: 4
 tags: ["golang", "kafka", "outbox pattern", "microservices"]
+categories: ["High Concurrency", "Messaging"]
 mermaid: true
 slug: "transactional-outbox-pattern-dual-write"
 description: "Master the Transactional Outbox Pattern using GORM and CDC to eliminate Dual-Write data inconsistencies in event-driven systems."
@@ -51,7 +52,7 @@ Because writing to PostgreSQL and publishing to Kafka do not share an ACID Trans
 
 ## 2. Rescue via Transactional Outbox Pattern
 
-The Outbox Pattern turns \"publishing an event\" into a local Database insert. By storing the business entity and the event within the same SQL transaction, atomicity is guaranteed.
+The Outbox Pattern turns "publishing an event" into a local Database insert. By storing the business entity and the event within the same SQL transaction, atomicity is guaranteed.
 
 The **Transactional Outbox** places an "Outbox table" directly inside the primary database. 
 
@@ -166,7 +167,7 @@ There are three common delivery semantics:
 
 ## Go Implementation: Bounded Consumer with Manual Offset Commit
 
-The following Go code implements a resilient Kafka consumer designed for "At-Least-Once" delivery. It disables automatic offset commits (`enable.auto.commit = false`) and manually commits offsets synchronously only after processing completes successfully.
+The following Go code implements a resilient Kafka consumer designed for "At-Least-Once" delivery. It disables automatic offset commits (`enable.auto.commit = false`) and manually commits offsets synchronously only after processing completes successfully. Mock delay calls (`time.Sleep`) are eliminated in favor of context-aware select blocks and `sync.WaitGroup` completion tracking.
 
 ```go
 package main
@@ -177,6 +178,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"sync"
 	"syscall"
 	"time"
 
@@ -194,6 +196,7 @@ type OrderEvent struct {
 type EventConsumer struct {
 	consumer *kafka.Consumer
 	topic    string
+	wg       sync.WaitGroup
 }
 
 // NewEventConsumer configures and instantiates the consumer group.
@@ -216,6 +219,9 @@ func NewEventConsumer(brokers string, groupID string, topic string) (*EventConsu
 
 // Start listens for incoming events and handles manual offset commits.
 func (ec *EventConsumer) Start(ctx context.Context) {
+	ec.wg.Add(1)
+	defer ec.wg.Done()
+
 	err := ec.consumer.Subscribe(ec.topic, nil)
 	if err != nil {
 		fmt.Printf("Subscription Error: %v\n", err)
@@ -234,7 +240,7 @@ func (ec *EventConsumer) Start(ctx context.Context) {
 			msg, err := ec.consumer.ReadMessage(100 * time.Millisecond)
 			if err != nil {
 				// Handle timeout (transient) vs partition boundaries
-				if err.(kafka.Error).Code() == kafka.ErrTimedOut {
+				if kerr, ok := err.(kafka.Error); ok && kerr.Code() == kafka.ErrTimedOut {
 					continue
 				}
 				fmt.Printf("Consumer error: %v\n", err)
@@ -242,13 +248,17 @@ func (ec *EventConsumer) Start(ctx context.Context) {
 			}
 
 			// Process the event
-			err = ec.processEvent(msg)
+			err = ec.processEvent(ctx, msg)
 			if err != nil {
-				// Log the error and back off. Do NOT commit the offset!
+				// Log error and back off with context deadline select. Do NOT commit the offset!
 				fmt.Printf("Skipping commit. Processing failed for partition %d, offset %s: %v\n", 
 					msg.TopicPartition.Partition, msg.TopicPartition.Offset.String(), err)
-				time.Sleep(1 * time.Second) // Simple backoff before retrying
-				continue
+				select {
+				case <-ctx.Done():
+					return
+				case <-time.After(1 * time.Second):
+					continue
+				}
 			}
 
 			// Processing succeeded. Manually commit the offset.
@@ -264,23 +274,27 @@ func (ec *EventConsumer) Start(ctx context.Context) {
 }
 
 // processEvent executes the business logic for the event.
-func (ec *EventConsumer) processEvent(msg *kafka.Message) error {
+func (ec *EventConsumer) processEvent(ctx context.Context, msg *kafka.Message) error {
 	var event OrderEvent
 	err := json.Unmarshal(msg.Value, &event)
 	if err != nil {
 		return fmt.Errorf("failed to deserialize payload: %w", err)
 	}
 
-	// Simulate inventory reservation logic
+	// Context check before processing payload
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+
+	// Inventory reservation logic
 	fmt.Printf("[Processing] Reserving inventory for Order ID: %s, Amount: $%.2f\n", event.OrderID, event.Amount)
-	time.Sleep(100 * time.Millisecond) // Simulate DB processing overhead
-	
 	return nil
 }
 
-// Close gracefully terminates the connection.
+// Close gracefully terminates the connection after routine completion.
 func (ec *EventConsumer) Close() {
 	_ = ec.consumer.Close()
+	ec.wg.Wait()
 }
 
 func main() {
@@ -294,14 +308,13 @@ func main() {
 		fmt.Printf("Failed to create consumer: %v\n", err)
 		return
 	}
-	defer consumer.Close()
 
 	go consumer.Start(ctx)
 
 	// Wait for OS shutdown signal
 	<-sigChan
 	cancel()
-	time.Sleep(500 * time.Millisecond) // Allow cleanup
+	consumer.Close() // Synchronous termination wait via sync.WaitGroup
 }
 ```
 
@@ -318,4 +331,3 @@ If your enterprise e-commerce or B2B platform is struggling with slow database q
 ---
 
 🔗 **Next Step:** [Chapter 5: Optimizing Golang Database Connection Pools]({{< ref "article_5_db_connection.md" >}})
-

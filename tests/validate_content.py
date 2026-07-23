@@ -61,3 +61,4 @@ if errors:
     sys.exit(1)
 
 print("Content validation passed.")
+

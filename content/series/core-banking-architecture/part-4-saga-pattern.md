@@ -7,6 +7,8 @@ description: "Saga Pattern in Fintech: Choreography (5ms) vs Orchestration (50ms
 weight: 4
 series: ["core-banking-architecture"]
 keywords: ["saga pattern fintech microservices", "orchestration vs choreography saga", "temporal workflow golang banking", "distributed transaction compensation"]
+categories: ["FinTech", "Distributed Transactions", "Microservices"]
+tags: ["Saga Pattern", "Orchestration", "Choreography", "Distributed Systems", "Golang"]
 author: "Lê Tuấn Anh"
 schema: ["Article", "TechArticle", "FAQPage"]
 cover:
@@ -16,13 +18,29 @@ cover:
 canonicalURL: "https://tanhdev.com/series/core-banking-architecture/part-4-saga-pattern/"
 ShowToc: true
 TocOpen: true
+mermaid: true
 ---
+
+> **Executive Summary & Quick Answer**: Executing distributed financial transactions across independent microservices requires the Saga Pattern to replace blocking two-phase commits (2PC). Using orchestrator-led state machines with persistent state logs ensures compensating transactions execute automatically whenever downstream steps fail.
 
 **Answer-first:** Distributed transactions across microservices are coordinated using the Saga pattern. Rather than locking databases across services (2PC), a Saga coordinator sequences independent local transactions and executes compensating transactions to roll back state if any step fails.
 
 > **Series (Part 4 of 8):** This article builds upon Event Sourcing from [Part 3](/series/core-banking-architecture/part-3-event-sourcing-cqrs/). The Saga Pattern solves the problem: "How do we ensure consistency when a transaction must coordinate across multiple microservices without using distributed locks or 2PC?"
 
 ## What is the Saga Pattern in Fintech?
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant O as Saga Orchestrator
+    participant A as Account Service
+    participant P as Payment Gateway
+    O->>A: Reserve Funds (Local Tx 1)
+    A-->>O: Success
+    O->>P: Execute External Transfer
+    P-->>O: Failed (Timeout)
+    O->>A: Compensate: Release Reserve (Local Tx 2)
+```
 
 A Saga is a sequence of local transactions. Each local transaction updates the database of its respective service and publishes an event or message to trigger the next local transaction. If any step fails, the Saga executes **compensating transactions** to undo the preceding steps — ensuring eventual consistency without the need for distributed locks.
 
@@ -399,20 +417,6 @@ To prevent the Saga coordinator from becoming a single point of failure, it is d
 
 Additionally, the coordinator implements a reconciliation engine that runs continuously in the background. This engine scans the active Saga database for sessions that have been in a pending state longer than a specified timeout (e.g., 30 seconds). When it detects a stalled transaction, it automatically triggers a query to the participant microservices to verify the status of the local transactions, resolving the Saga state by either executing the remaining steps or initiating the compensation chain.
 
-## FAQ
-
-{{< faq q="Temporal vs Apache Airflow for Sagas — what's the difference?" >}}
-Airflow is a workflow orchestrator for data pipelines (batch, not real-time). Temporal is designed for **durable, real-time business processes** with millisecond latency, fault-tolerance, and built-in retry/compensation semantics suitable for financial transactions.
-{{< /faq >}}
-
-{{< faq q="Does a Saga guarantee ACID?" >}}
-No. A Saga guarantees **eventual consistency** — there is no isolation between steps. Another transaction reading an "intermediate" state (after step 1 but before step 2) is entirely possible. This is the trade-off compared to 2PC. In Core Banking, systems typically use **Read Committed** isolation and accept a small window of inconsistency (~seconds).
-{{< /faq >}}
-
-{{< faq q="Will a compensation always succeed?" >}}
-No. That is exactly why a **DLQ + manual intervention process** must exist. For example, if an account gets frozen after it was debited but before the refund occurs → the compensation cannot complete automatically. The ops team must handle it manually with a full audit trail.
-{{< /faq >}}
-
 ## Saga Latency, Compensation Atomicity, and Timeout Ambiguity
 
 Executing transactions across multiple microservices (e.g., reserving funds, calling payment networks, and updating ledgers) requires distributed transaction coordination. Core banking architectures use the Saga pattern to manage these workflows.
@@ -440,6 +444,22 @@ Sagas do not use database-level locks across services. If a step fails, the orch
 Network failures introduce state ambiguity. If a service call times out, the orchestrator cannot verify if the transaction succeeded or failed.
 - **Idempotency Locks:** Services lock the target account during transactions using unique saga session IDs. If the orchestrator retries a request, the service returns the cached outcome rather than executing a duplicate transaction.
 - **Reconciliation Loops:** Out-of-band reconciliation jobs compare service logs daily, resolving any pending or unresolved saga states automatically.
+
+## Frequently Asked Questions (FAQ)
+
+{{< faq "Why is Orchestration preferred over Choreography for complex banking Sagas?" >}}
+Orchestration centralizes saga workflow logic in a dedicated state machine, preventing brittle, hard-to-trace circular event dependencies between microservices.
+{{< /faq >}}
+
+{{< faq "What happens if a compensating transaction fails during a Saga rollback?" >}}
+Compensating actions must be retryable and idempotent; if persistent failures occur, the item escalates to a human operator DLQ (Dead Letter Queue).
+{{< /faq >}}
+
+{{< faq "How do Saga state machines handle network timeout ambiguity?" >}}
+When network calls time out, the orchestrator issues idempotent status query requests to verify whether the downstream transaction succeeded before deciding to retry or compensate.
+{{< /faq >}}
+
+For deeper architecture insight into distributed transaction patterns, read [Part 3: Event Sourcing & CQRS](/series/core-banking-architecture/part-3-event-sourcing-cqrs/) or connect with our team via [Saga Architecture Services](/hire/).
 ---
 
 *Up Next: [Part 5 — ISO 20022 & Payment Gateways](/series/core-banking-architecture/part-5-iso-20022-payment-gateways/) — Efficiently parsing pacs.008 XML, mapping XPath to SQL columns, and webhook idempotency strategies.*

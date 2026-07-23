@@ -7,6 +7,8 @@ description: "Distributed SQL ACID latency: Spanner TrueTime commit-wait 2-14ms,
 weight: 2
 series: ["core-banking-architecture"]
 keywords: ["distributed sql transaction latency", "TiDB percolator overhead", "Spanner TrueTime vs CockroachDB HLC", "2PC network latency fintech"]
+categories: ["FinTech", "Distributed SQL", "Database Performance"]
+tags: ["TiDB", "CockroachDB", "Spanner", "Distributed SQL", "ACID", "Latency"]
 author: "Lê Tuấn Anh"
 schema: ["Article", "TechArticle", "FAQPage"]
 cover:
@@ -16,13 +18,30 @@ cover:
 canonicalURL: "https://tanhdev.com/series/core-banking-architecture/part-2-distributed-sql-acid-latency/"
 ShowToc: true
 TocOpen: true
+mermaid: true
 ---
+
+> **Executive Summary & Quick Answer**: Distributed SQL engines (TiDB Percolator, CockroachDB HLC, Google Spanner TrueTime) balance multi-region ACID compliance with low-latency commitments. Understanding clock drift bounds (TrueTime 2-7ms wait) vs TSO central allocator overhead is critical for tuning financial transaction latency under cross-region replication.
 
 **Answer-first:** Distributed SQL databases reconcile ACID compliance with low-latency reads by using Spanner-like clock synchronization (TrueTime/HLC) and Raft-based multi-group consensus. This architecture guarantees strict serializability and localized transaction routing without relying on a single bottleneck coordinator.
 
 > **Series (Part 2 of 8):** This article assumes you are familiar with the Double-Entry Ledger from [Part 1](/series/core-banking-architecture/part-1-double-entry-ledger-schema/). We will analyze why a PostgreSQL monolith hits limitations at scale and how Distributed SQL options solve that problem.
 
 > **⚠️ Note:** This article is synthesized from official documentation, engineering blogs, and published benchmark papers. The latency figures and schema designs reflect the source material at the time of writing. Always verify with your team's architect or lead engineer before applying them to a production system.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant App as Go Application
+    participant TSO as TiDB TSO / Clock
+    participant KV as TiKV Primary Region
+    participant Rep as TiKV Replica Region
+    App->>TSO: Fetch Start Timestamp
+    App->>KV: Prewrite Tx Mutex Keys
+    KV->>Rep: Raft Quorum Commit
+    App->>TSO: Fetch Commit Timestamp
+    App->>KV: Commit Tx Keys
+```
 
 ## What is Distributed SQL Transaction Latency?
 
@@ -251,6 +270,13 @@ go test ./ledger/... -run TestClockSkewResilience
 ### Test 3: TSO Latency Measurement
 
 ```go
+package main
+
+import (
+	"testing"
+	"time"
+)
+
 // Measure TSO round trip overhead in TiDB
 func BenchmarkTiDBTransactionLatency(b *testing.B) {
     db := openTiDBConnection()
@@ -278,17 +304,17 @@ func BenchmarkTiDBTransactionLatency(b *testing.B) {
 
 > 💡 **Read more:** [PayPay Architecture — TiDB at Scale](/series/paypay-architecture/) — TiDB architecture in practice.
 
-## FAQ
+## Frequently Asked Questions (FAQ)
 
-{{< faq q="Is TiDB or CockroachDB more suitable for Vietnam Fintech?" >}}
+{{< faq "Is TiDB or CockroachDB more suitable for Vietnam Fintech?" >}}
 TiDB has more abundant Chinese documentation and is adopted by many Asian fintechs (WeBank, Shopee Pay, ZaloPay). CockroachDB is stronger for multi-region deployments if you require active-active cross-datacenter topologies.
 {{< /faq >}}
 
-{{< faq q="Should I start with Spanner?" >}}
+{{< faq "Should I start with Spanner?" >}}
 Only choose Spanner if you are already on GCP and require global scale from day one. Spanner costs are significantly higher than self-managed TiDB/CockroachDB.
 {{< /faq >}}
 
-{{< faq q="How do I reduce TSO overhead in TiDB?" >}}
+{{< faq "How do I reduce TSO overhead in TiDB?" >}}
 1. Enable **Async Commit** (default in TiDB 5.0+).
 2. Place PD (Placement Driver) nodes close to TiKV nodes in terms of networking.
 3. Use **1PC** (one-phase commit) for single-region transactions when possible.
@@ -296,5 +322,7 @@ Only choose Spanner if you are already on GCP and require global scale from day 
 ---
 
 *Up Next: [Part 3 — Event Sourcing & CQRS](/series/core-banking-architecture/part-3-event-sourcing-cqrs/) — Designing an immutable ledger with event store schemas, CQRS read models, and the Transactional Outbox pattern to avoid dual-writes.*
+
+For distributed SQL deployment assistance or tuning TiDB latency in cloud environments, consult our team via [Distributed Systems & Database Consulting](/hire/).
 
 {{< author-cta >}}

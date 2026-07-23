@@ -184,7 +184,7 @@ LEFT JOIN attr_ids a_v ON a_v.attribute_id = v.attribute_id
 LEFT JOIN catalog_product_entity_text t
     ON t.entity_id = e.entity_id AND t.store_id = 0
     AND t.attribute_id IN (SELECT attribute_id FROM attr_ids WHERE backend_type = 'text')
-LEFT JOIN attr_ids a_t ON a_t.attribute_id = t.attribute_id AND a_t = a_v
+LEFT JOIN attr_ids a_t ON a_t.attribute_id = t.attribute_id
 
 -- Integer attributes (status, visibility, tax_class_id)
 LEFT JOIN catalog_product_entity_int i

@@ -367,4 +367,4 @@ Envoy delegates rate limit decisions to an external service using a gRPC filter 
 
 🔗 **Next Step:** Continue to [Part 12: Communication Protocols — gRPC vs REST vs GraphQL in Go Microservices]({{< ref "12-communication-protocols-microservices.md" >}})
 
-Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

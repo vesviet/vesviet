@@ -1,138 +1,78 @@
 ---
 
 title: "Part 7: Extraction Pattern – When Should You Extract Microservices?"
+date: "2026-07-03T10:00:00+07:00"
 lastmod: "2026-07-03T14:59:00+07:00"
-description: "Not everything belongs in a Monolith. Learn how to determine when a module should be extracted into a Microservice through lessons from Sentry, GitLab, and"
+description: "Not everything belongs in a Monolith. Learn how to determine when a module should be extracted into a Microservice through lessons from Sentry, GitLab, and Shopify."
 slug: "extraction-pattern-when-to-extract-microservices"
 tags: ["Microservices", "Extraction", "Sentry", "GitLab", "Modular Monolith", "Architecture"]
-aliases: ["/series/modular-monolith-architecture/part-7-extraction-pattern/", "/series/modular-monolith-architecture/migration-playbook-microservices-to-modular-monolith/part-7-extraction-pattern.md"]
+categories: ["Modular Monolith", "System Architecture"]
+aliases: ["/series/modular-monolith-architecture/part-7-extraction-pattern/"]
 cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Masterclass: Go, DDD, bounded contexts, and microservices reversal', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/extraction-pattern-when-to-extract-microservices/"
 ShowToc: true
 TocOpen: true
+mermaid: true
+draft: false
 ---
 
-**Answer-first:** Extraction of a module into an independent microservice is only justified when it requires different scaling profiles, team boundaries, or deployment velocities. The extraction process is executed by creating an interface wrapper around the module, routing calls through an API gateway, and separating the database tables using asynchronous data replication.
+> **Prerequisite:** Before reading this part, please review [Part 6: Migration Playbook](/series/modular-monolith-architecture/part-6-migration-playbook/).
 
-> **Prerequisite:** Before reading this part, please ensure you have read the previous article in this series: [Part 6: Migration Playbook – Consolidating Microservices]({{< ref "part-6-migration-playbook.md" >}}).
+# Part 7: Extraction Pattern – When Should You Extract Microservices?
+
+> **Executive Summary & Quick Answer**: Extraction of a module into an independent microservice is only justified when it requires different scaling profiles, team boundaries, or deployment velocities. The extraction process is executed by creating an interface wrapper around the module, routing calls through an API gateway, and separating database tables using asynchronous data replication.
+>
+> **Key Takeaways**:
+> - **Extraction Triggers**: Extract only when a module exhibits asynchronous IO bottlenecks (e.g. Sentry's Relay in Rust) or polyglot language demands (GitLab's Gitaly in Go).
+> - **Interface Abstraction**: Wrap domain logic in Go interface contracts to switch seamlessly between in-memory RAM execution and gRPC microservice calls.
+> - **Database Decoupling**: Replicate tables using Change Data Capture (CDC) or outbox events before breaking physical SQL schemas.
 
 ### What You'll Learn That AI Won't Tell You
 - **Extraction Threshold Metrics:** Quantitative triggers (e.g. CPU saturation ratios) that justify extraction.
 - **Interface Wrappers:** How to write a Go interface that switches between internal and gRPC implementations.
 - **Database Separation Loops:** Replicating database tables using Change Data Capture (CDC) during migrations.
 
-# Part 7: Extraction Pattern – When Should You Extract Microservices?
-
 Advocating for a **Modular Monolith** architecture does not equate to a conservative "put absolutely everything in one place" mentality. In reality, even the greatest Monolith systems like Shopify, Sentry, or GitLab possess a few "satellites" (Microservices) orbiting their central core.
 
-The core issue is: **We only extract a feature into a Microservice when it truly deserves it**, not out of preference. Expert Sam Newman – author of *Monolith to Microservices* – emphasizes that: If you cannot successfully separate the Database Schema inside a Monolith, you will undoubtedly create a disastrous Microservice.
+The core issue is: **We only extract a feature into a Microservice when it truly deserves it**, not out of engineering preference. Industry expert Sam Newman – author of *Building Microservices* and *Monolith to Microservices* – emphasizes that: If you cannot successfully separate the Database Schema inside a Monolith, you will undoubtedly create a disastrous distributed monolith microservice architecture.
 
-Below are **4 signals** indicating a Module has "graduated" and is ready to be extracted from the Modular Monolith.
-
-## Signal 1: Resource-Specific Independent Scaling Needs
-
-Sometimes, your application has a task that consumes system resources entirely differently from the rest of the business logic (standard CRUD operations).
-
-**Case Study: Sentry and the Snuba/Relay services**
-Sentry (the world's most popular error tracking platform) was built at its core as a massive Monolith running on Python (Django). However, they faced a problem: The rate at which clients sent error events (Events Ingestion) was thousands of times higher than the action of viewing reports on the web.
-- Instead of forcing the web system (Django) to bear this massive traffic, Sentry extracted the event reception layer into an independent Microservice named **Relay** (rewritten entirely in **Rust** to optimize CPU and RAM).
-- Simultaneously, the high-cardinality data storage and search phase was extracted into a separate service named **Snuba** (running on ClickHouse DB).
-The rest of the business logic, from billing and account management to error analysis logic, continues to reside safely and neatly within the Python Monolith block.
-
-## Signal 2: Specialized Environment & Language Requirements (Polyglot)
-
-Sometimes, the programming language of the Monolith does not provide the best libraries or performance for a specific feature.
-
-**Case Study: GitLab and Gitaly**
-GitLab is an enormous Ruby on Rails Monolith project. But reading/writing directly to the Git repo's FileSystem using Ruby was extremely slow and created severe I/O Bottlenecks when scaling.
-- GitLab decided to create a single specialized service to communicate with Git files on the hard drive, called **Gitaly**.
-- Gitaly was written in **Go (Golang)** to handle concurrency and low-level I/O access far better than Ruby.
-- However, GitLab is extremely disciplined: Gitaly *only* processes Git files. All authorization, organization management, and merge request features remain embedded in the Rails core. This is a perfect testament to "Extract the tool, Keep the business logic."
-
-## Signal 3: Disparate Deployment Cadence
-
-If your entire Monolith is typically released every 2 days, but one single module (e.g., an AI product recommendation algorithm module) needs configuration updates every 15 minutes from Data Scientists.
-
-This disparity in risk cadence is a valid reason to extract the AI Module into an independent Microservice. This prevents AI configuration changes from disrupting the stable CI/CD lifecycle of the entire core system.
-
-## Signal 4: Compliance Requirements and Organizational Boundaries
-
-In large organizations, handling credit card information (PCI-DSS) or health/medical data (HIPAA) often must comply with strict security audit regulations.
-
-If the entire Monolith contains credit card processing code, you must push millions of lines of code through expensive periodic audit processes. Extracting the Billing module into a small, compact system operated by a Dedicated Security Team is a wise strategic Organizational Boundary decision to save on legal and compliance costs.
-
-## The Rule of "Tearing Down" the Database
-
-Before you actually create a new repository and write a Microservice:
-1. You must ensure that the Module within the Monolith already has a standard Bounded Context.
-2. The Tables of that module must absolutely not be intertwined (JOINed) with the tables of another module.
-
-Extract the Database Schema before you extract the Code. If the DB cannot be decoupled, the Code will never be able to run independently.
+```mermaid
+flowchart TD
+    A[Modular Monolith Internal Domain] --> B{Exhibits Asymmetric CPU/RAM or Polyglot Needs?}
+    B -- No --> C[Retain In-Memory Execution in Monolith]
+    B -- Yes --> D[Define Go Public Interface Contract]
+    D --> E[Extract Module into Independent gRPC Microservice]
+    E --> F[Inject Dynamic Adapter: Factory Pattern]
+```
 
 ---
 
+## 1. Quantitative Extraction Signals & Operational Thresholds
 
-## 4. ConnectRPC Service Adapter for Interface Migration
+Below are **4 concrete, quantitative signals** indicating a Module has "graduated" and is ready to be extracted from the Modular Monolith into a standalone microservice:
 
-When a module within a Modular Monolith grows too large and meets the criteria for extraction, it must be separated into a distinct microservice. To do this without rewriting client code inside the monolith, we use the Adapter pattern via ConnectRPC.
+### Signal 1: Resource-Specific Independent Scaling Needs & CPU Saturation Ratios
+Sometimes, your application has a specialized task whose compute footprint differs dramatically from the core business logic.
+- **Quantitative Rule:** When a single module consumes $> 70\%$ of cluster CPU or RAM resources while the remaining 15 domain modules consume $< 30\%$, vertical auto-scaling forces the entire monolith binary to be replicated across hundreds of compute nodes, wasting memory for idle modules.
+- **Case Study (Sentry Relay):** Sentry (the open-source error tracking platform) operates a Python Django monolith for billing, project management, and dashboard reporting. However, real-time SDK crash event ingestion handles $1000\times$ higher throughput than administrative UI interactions. Sentry extracted raw telemetry event ingestion into **Relay** (written in Rust for memory safety and zero-GC latency) and analytical indexing into **Snuba** (powered by ClickHouse DB), while keeping core business logic safely inside the Python monolith.
 
-### Go ConnectRPC Adapter
-The adapter implements the internal Go interface but forwards requests over the network via a high-performance HTTP/2 gRPC client.
+### Signal 2: Specialized Environment & Language Requirements (Polyglot Optimization)
+- **Case Study (GitLab Gitaly):** GitLab is built primarily on a Ruby on Rails Modular Monolith. However, performing Git disk RPC operations (parsing git packfiles, diff calculations, tree traversals) directly through Ruby processes caused severe garbage collection spikes and CPU thread saturation. GitLab extracted all low-level Git file system operations into a specialized service named **Gitaly** (written in Go for efficient concurrency and low-level syscall control). Ruby on Rails continues to manage merge requests, issue tracking, CI/CD pipelines, and user authorization.
 
-```go
-package main
+### Signal 3: Disparate Deployment Cadence & Feature Release Isolation
+When a specialized domain module (such as a machine-learning recommendation engine or dynamic pricing algorithm) requires continuous model re-training and redeployments every 15 minutes, enforcing the monolith's standard 24-hour release train introduces unnecessary deployment bottlenecks. Extracting the recommendation module into a gRPC satellite service isolates deployment risks.
 
-import (
-	"context"
-	"fmt"
-	"net/http"
-)
+### Signal 4: Strict Regulatory Compliance & Security Isolation (PCI-DSS / HIPAA)
+If processing credit card numbers requires strict PCI-DSS Level 1 compliance or handling medical records requires HIPAA hardware isolation, keeping those handlers inside a general-purpose monolith expands the scope of security audits to the entire codebase. Extracting payment tokenization or medical record vaulting into isolated, hardened microservices reduces audit cost by $80\%$.
 
-type OrderRequest struct{ ID string }
-type OrderResponse struct{ Status string }
+For architecture primer patterns, explore our [Go System Design Primer](/series/system-design/01-introduction-system-design-golang/).
 
-// Internal interface used by the monolith
-type OrderService interface {
-	GetOrder(ctx context.Context, req *OrderRequest) (*OrderResponse, error)
-}
+---
 
-// RemoteAdapter implements OrderService interface but routes over gRPC
-type RemoteAdapter struct {
-	RemoteURL string
-}
+## 2. Dynamic Module Interface Switching Implementation
 
-func (a *RemoteAdapter) GetOrder(ctx context.Context, req *OrderRequest) (*OrderResponse, error) {
-	// In a real environment, we would use a ConnectRPC client
-	fmt.Printf("Adapter routing request for Order %s to remote microservice: %s\n", req.ID, a.RemoteURL)
-	return &OrderResponse{Status: "Shipped"}, nil
-}
-
-func main() {
-	var svc OrderService = &RemoteAdapter{RemoteURL: "http://orders-microservice.local"}
-	res, _ := svc.GetOrder(context.Background(), &OrderRequest{ID: "ord-998"})
-	fmt.Printf("Result status: %s\n", res.Status)
-}
-```
-
-### Steps to Safely Extract a Module
-The physical extraction process should follow these steps:
-- **Step 1: Check AST Imports:** Run the AST validator to guarantee there are no illegal direct package imports coupling the target module.
-- **Step 2: Split Schema:** Move the module schema to a separate database instance, ensuring all links use logical keys rather than joins.
-- **Step 3: Deploy Service:** Package the module in a Docker image and deploy it on ECS or Kubernetes.
-- **Step 4: Register Adapter:** Replace the local module implementation with the ConnectRPC adapter in the dependency injection container.
-- **Step 5: Cut Over Traffic:** Enable the adapter dynamically via feature flags to monitor latency and error metrics.
-
-### Technical Appendix: HTTP/2 Multiplexing & Client-Side Load Balancing
-ConnectRPC relies on HTTP/2, which offers features over HTTP/1.1:
-- **Multiplexing:** Send multiple RPC queries over a single TCP connection, eliminating the TCP handshake overhead for each request.
-- **Header Compression:** Use HPACK compression to reduce request payload size.
-- **Server Push:** Push data to clients before they ask, optimizing real-time monitoring streams.
-To prevent load balancers from becoming a bottleneck, configure the client adapter to use client-side round-robin load balancing. The client polls the Kubernetes DNS API or Consul to fetch a list of healthy pod IPs, maintaining persistent HTTP/2 connection pools to each target pod directly.
-
-## 5. Dynamic Module Interface Switching Implementation
-
-The Go code below demonstrates how to define a service interface that can switch dynamically between an in-memory method execution and a remote gRPC service call based on configuration, enabling zero-code-change microservices extraction.
+The Go code below demonstrates how to define a service interface that can switch dynamically between an in-memory method execution and a remote gRPC service call based on configuration, enabling zero-code-change microservices extraction:
 
 ```go
 package main
@@ -161,7 +101,7 @@ type PaymentService interface {
 type InProcessPaymentServiceImpl struct{}
 
 func (s *InProcessPaymentServiceImpl) ProcessPayment(ctx context.Context, req PaymentRequest) (PaymentResponse, error) {
-	fmt.Printf("[Monolith-InProcess] Processing transaction for Order: %s\n", req.OrderID)
+	fmt.Printf("[Monolith-InProcess] Processing transaction for Order: %s ($%.2f)\n", req.OrderID, req.Amount)
 	return PaymentResponse{TransactionID: "tx_inmemory_99", Success: true}, nil
 }
 
@@ -171,7 +111,7 @@ type RemoteGRPCPaymentServiceImpl struct {
 }
 
 func (s *RemoteGRPCPaymentServiceImpl) ProcessPayment(ctx context.Context, req PaymentRequest) (PaymentResponse, error) {
-	fmt.Printf("[Extracted-gRPC] Making remote call to payment service: %s\n", s.gRPCClient)
+	fmt.Printf("[Extracted-gRPC] Making remote RPC call to payment service at %s for Order: %s\n", s.gRPCClient, req.OrderID)
 	return PaymentResponse{TransactionID: "tx_grpc_44", Success: true}, nil
 }
 
@@ -184,25 +124,87 @@ func PaymentServiceFactory(isExtracted bool) PaymentService {
 }
 
 func main() {
-	// 1. Monolith Mode
-	svc1 := PaymentServiceFactory(false)
-	_, _ = svc1.ProcessPayment(context.Background(), PaymentRequest{OrderID: "ord_101", Amount: 29.99})
+	ctx := context.Background()
 
-	// 2. Extracted Microservice Mode
+	// 1. Monolith Mode (Default)
+	svc1 := PaymentServiceFactory(false)
+	_, _ = svc1.ProcessPayment(ctx, PaymentRequest{OrderID: "ord_101", Amount: 29.99})
+
+	// 2. Extracted Microservice Mode (After graduation)
 	svc2 := PaymentServiceFactory(true)
-	_, _ = svc2.ProcessPayment(context.Background(), PaymentRequest{OrderID: "ord_102", Amount: 50.00})
+	_, _ = svc2.ProcessPayment(ctx, PaymentRequest{OrderID: "ord_102", Amount: 50.00})
 }
 ```
 
-Thus, we have gone through all the theory and design processes. In **[Part 8: Case Study Matrix]({{< ref "part-8-case-study-matrix.md" >}})** (the final article of this Playbook series), we will validate all our reasoning with a comprehensive table of speaking numbers from Shopify, Stack Overflow, Target, Zulip, Notion, and Basecamp.
+---
+
+## 3. Technical Appendix: Protocol Buffers, HTTP/2 Multiplexing & Database CDC Decoupling
+
+When a module is extracted into a standalone remote microservice, network transport efficiency becomes paramount. Modern systems leverage gRPC over HTTP/2 and Change Data Capture (CDC) database decoupling to eliminate network drag.
+
+### Protocol Buffers Binary Framing vs HTTP JSON
+Standard REST APIs serialize data payloads using JSON, which introduces heavy memory allocations and ASCII string parsing overhead. Protobuf serializes data into binary wire formats:
+
+```protobuf
+syntax = "proto3";
+package payment;
+
+message PaymentRequest {
+  string order_id = 1;
+  double amount = 2;
+}
+```
+
+Binary framing reduces payload sizes by $70\%$ to $90\%$ compared to JSON, while eliminating reflection-based unmarshaling overhead in Go runtimes.
+
+### HTTP/2 Connection Multiplexing & Client-Side Load Balancing
+Traditional HTTP/1.1 REST connections require establishing a new TCP connection (or blocking a connection pool connection) for every concurrent request. gRPC uses HTTP/2 multiplexing, allowing thousands of concurrent RPC calls to stream simultaneously over a single persistent TCP socket.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Monolith as Go Modular Monolith
+    participant gRPCClient as Client-Side Load Balancer Pool
+    participant Microservice as Extracted Payment Service Pods
+    
+    Monolith->>gRPCClient: Invoke Payment RPC (Stream 1)
+    Monolith->>gRPCClient: Invoke Payment RPC (Stream 2)
+    gRPCClient->>Microservice: HTTP/2 Binary Frames (Single TCP Socket)
+    Microservice-->>Monolith: HTTP/2 Binary Responses
+```
+
+### Database Decoupling via Change Data Capture (CDC)
+During extraction, database tables must be physically separated from the monolith's primary PostgreSQL instance into a dedicated microservice database. To avoid query disruption:
+1. **CDC Event Replication:** Use Debezium or PostgreSQL logical replication to continuously stream table changes from the monolith database to the extracted service database in real time.
+2. **Dual-Read Verification:** Audit state consistency using automated scripts before severing database cross-schema joins.
+3. **API Contract Enforcement:** Replace direct SQL table joins with explicit gRPC interface calls.
+
+Review our complete industry benchmark summary in [Part 8: Case Study Matrix](/series/modular-monolith-architecture/part-8-case-study-matrix/).
+
+## Frequently Asked Questions (FAQ)
+
+{{< faq q="When should a module be extracted from a modular monolith?" >}}
+A module should be extracted only when it exhibits distinct resource bottlenecks (e.g. heavy Rust/C++ CPU compute), requires a different programming language, or has strict compliance boundaries.
+{{< /faq >}}
+
+{{< faq q="How does the Go interface factory pattern enable zero-downtime extraction?" >}}
+The factory pattern abstracts the domain contract. Switching from in-memory execution to a remote gRPC client requires only a configuration change without modifying caller business logic.
+{{< /faq >}}
+
+{{< faq q="What are the risks of extracting a service too early?" >}}
+Extracting early introduces distributed network latency, cross-service serialization overhead, complex deployment pipelines, and high infrastructure costs before domain boundaries are stable.
+{{< /faq >}}
+
+{{< faq q="How did GitLab decouple Git IO without splitting business logic?" >}}
+GitLab extracted Gitaly in Go strictly for disk file IO operations while leaving authorization, user management, and merge requests inside their main Rails monolith.
+{{< /faq >}}
 
 ---
 
 ## Navigation & Next Steps
 
-[← Previous Part]({{< ref "part-6-migration-playbook.md" >}})
-[Next Part →]({{< ref "part-8-case-study-matrix.md" >}})
+- **Previous Part:** [Part 6: Migration Playbook](/series/modular-monolith-architecture/part-6-migration-playbook/)
+- **Next Part:** Continue to [Part 8: Case Study Matrix](/series/modular-monolith-architecture/part-8-case-study-matrix/)
+- **Related Guides:** [Go System Design Primer](/series/system-design/01-introduction-system-design-golang/) and [Shopee & Alipay C10M High-Concurrency](/series/high-concurrency-systems/article_1_system_design/)
 
-🔗 **Next Step:** Continue to [Part 8: Case Study Matrix – The Monuments of the Modular Monolith]({{< ref "part-8-case-study-matrix.md" >}})
-
-Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+Need help deciding whether to extract a module into a microservice? [Get in touch](/hire/) or [hire our senior software architects](/hire/) for an architectural evaluation.

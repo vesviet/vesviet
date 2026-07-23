@@ -7,6 +7,8 @@ description: "Real-world double-entry ledger schema: TigerBeetle Zig 128-byte st
 weight: 1
 series: ["core-banking-architecture"]
 keywords: ["double entry ledger database schema", "TigerBeetle architecture", "pessimistic vs optimistic locking ledger", "Mambu GL schema"]
+categories: ["FinTech", "Architecture", "Database Design"]
+tags: ["TigerBeetle", "PostgreSQL", "Ledger Schema", "Double-Entry", "FinTech", "Architecture"]
 author: "Lê Tuấn Anh"
 schema: ["Article", "TechArticle", "FAQPage"]
 cover:
@@ -16,7 +18,10 @@ cover:
 canonicalURL: "https://tanhdev.com/series/core-banking-architecture/part-1-double-entry-ledger-schema/"
 ShowToc: true
 TocOpen: true
+mermaid: true
 ---
+
+> **Executive Summary & Quick Answer**: Ultra-high-throughput ledger systems require specialized schema layouts like TigerBeetle's 128-byte fixed structures or PostgreSQL partition tables decoupling balance accumulation from transaction insertion. Isolating transaction logging from balance state eliminates hot-row lock contention, enabling 10,000+ TPS.
 
 **Answer-first:** High-throughput double-entry ledgers require immutable transaction logs and separate balances tables. By decoupling transaction insertion from balance updates, databases avoid contention on hot account rows, achieving horizontal scalability and consistent ledger state across high-frequency transaction volumes.
 
@@ -27,6 +32,14 @@ TocOpen: true
 ## What is a Double-Entry Ledger Database Schema?
 
 A database schema for a double-entry ledger requires immutability, ACID guarantees, and precise locking mechanisms to avoid race conditions. Modern systems like TigerBeetle eliminate traditional pessimistic locking by utilizing a single-threaded state machine, achieving 1,000,000 TPS on a single CPU core. For scaling into a distributed environment, see [Part 2 — Distributed SQL & ACID Latency](/series/core-banking-architecture/part-2-distributed-sql-acid-latency/) for a comparison between TiDB, CockroachDB, and Spanner.
+
+```mermaid
+graph TD
+    Client[Client Request] --> Router[Ledger Router]
+    Router --> TxLog[(Immutable Tx Log)]
+    Router --> BalWorker[Async Balance Accumulator]
+    BalWorker --> BalTable[(Account Balances DB)]
+```
 
 ---
 
@@ -337,6 +350,11 @@ func TestConcurrentWithdrawal(t *testing.T) {
 ### Test 2: Continuous Reconciliation Job
 
 ```go
+type UnbalancedTx struct {
+    TransactionID string
+    Discrepancy   int64
+}
+
 func reconcileAllTransactions(db *sql.DB) ([]UnbalancedTx, error) {
     query := `
         SELECT transaction_id, 
@@ -366,21 +384,6 @@ To eliminate this hot-spot contention, core banking ledgers implement the Split-
 - **Aggregated Reads:** To retrieve the total account balance, the query aggregates the balance values across all N shard rows, aggregating them on read.
 - **Reconciliation:** An offline cron job periodically consolidates the balance shards back into a single record during low-traffic windows to clean up the database index.
 
-## FAQ
-
-{{< faq q="Is TigerBeetle suitable for every Fintech application?" >}}
-Not necessarily. TigerBeetle is optimized for **high-throughput financial ledgers** (>100,000 TPS), but lacks SQL query flexibility. If you need complex reporting queries, joins, or integration with traditional ORMs, PostgreSQL + a double-entry schema remains an excellent choice.
-{{< /faq >}}
-
-{{< faq q="Why not use FLOAT to store money?" >}}
-Floating-point numbers (IEEE 754) cannot represent many decimal fractions precisely. For example: `0.1 + 0.2 = 0.30000000000000004` in most programming languages. Over millions of calculations, these precision errors accumulate and unbalance the ledger. Use `NUMERIC(18,4)` or `BIGINT` (storing values as cents/pennies).
-{{< /faq >}}
-
-{{< faq q="What is the difference between a Reversal Entry and a Void Entry?" >}}
-- **Reversal Entry**: Creating a new, opposite entry pointing back to the original entry via `reversalentrykey`. Used to correct errors after a transaction has already settled.
-- **Void Pending**: Canceling a transfer that is currently in a `pending` state (unsettled). This only modifies `debits_pending`/`credits_pending` without affecting `posted` fields.
-{{< /faq >}}
-
 ## Ledger Partitioning Strategies and Multi-Tenant Ledger Isolation Patterns
 
 In high-throughput financial core banking systems, ledger databases scale by implementing partition models. This isolates transactional data, reducing row-level locks and distributing storage.
@@ -403,6 +406,23 @@ Ledger integrity is guaranteed using cryptographic block hashing:
 For enterprise core systems hosting multiple banks or branches, ledger tables enforce multi-tenant isolation:
 - **Logical Isolation:** Shared tables utilizing tenant identifier columns. PostgreSQL Row-Level Security (RLS) policies filter records automatically based on connection contexts.
 - **Physical Isolation:** Dedicated schemas or databases per tenant. This guarantees complete database resource isolation and simplifies compliance with local data residency laws.
+
+## Frequently Asked Questions (FAQ)
+
+{{< faq "Is TigerBeetle suitable for every Fintech application?" >}}
+Not necessarily. TigerBeetle is optimized for **high-throughput financial ledgers** (>100,000 TPS), but lacks SQL query flexibility. If you need complex reporting queries, joins, or integration with traditional ORMs, PostgreSQL + a double-entry schema remains an excellent choice.
+{{< /faq >}}
+
+{{< faq "Why not use FLOAT to store money?" >}}
+Floating-point numbers (IEEE 754) cannot represent many decimal fractions precisely. For example: `0.1 + 0.2 = 0.30000000000000004` in most programming languages. Over millions of calculations, these precision errors accumulate and unbalance the ledger. Use `NUMERIC(18,4)` or `BIGINT` (storing values as cents/pennies).
+{{< /faq >}}
+
+{{< faq "What is the difference between a Reversal Entry and a Void Entry?" >}}
+- **Reversal Entry**: Creating a new, opposite entry pointing back to the original entry via `reversalentrykey`. Used to correct errors after a transaction has already settled.
+- **Void Pending**: Canceling a transfer that is currently in a `pending` state (unsettled). This only modifies `debits_pending`/`credits_pending` without affecting `posted` fields.
+{{< /faq >}}
+
+To learn more about foundational accounting structures, read [Part 1: Double-Entry Ledger Core Banking Guide](/series/core-banking-developer/part-1-double-entry-ledger/) or consult our core banking engineering practice via [Architecture Consultation & Engineering Services](/hire/).
 ---
 
 *Up Next: [Part 2 — Distributed SQL & ACID Latency: TiDB vs CockroachDB vs Spanner](/series/core-banking-architecture/part-2-distributed-sql-acid-latency/) — Detailed analysis of 2PC overhead, TrueTime math, and Percolator lock recovery.*

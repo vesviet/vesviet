@@ -410,4 +410,4 @@ You've completed all 12 parts of the masterclass. Here's the complete knowledge 
 
 🔗 **Series Hub:** Continue to [System Design Masterclass (Golang)](/series/system-design/)
 
-Need help implementing this architecture in your organization? [Contact us](/contact/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

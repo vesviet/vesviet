@@ -5,6 +5,7 @@ date: "2026-06-15T07:20:00+07:00"
 lastmod: "2026-06-15T07:20:00+07:00"
 draft: false
 tags: ["k6", "load testing", "linux", "performance", "golang", "system design"]
+categories: ["Geospatial", "DevOps"]
 series: ["Routing & Geospatial Architecture"]
 series_order: 7
 cover:
@@ -15,39 +16,56 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-7-load-testing-production/"
 ShowToc: true
 TocOpen: true
+mermaid: true
 ---
 
-[← Series hub]({{< ref "/series/routing-geospatial-architecture/_index.md" >}})
-[← Prev]({{< ref "/series/routing-geospatial-architecture/part-6-redis-semantic-caching.md" >}}) • [Next →]({{< ref "/series/routing-geospatial-architecture/part-8-zero-downtime-k8s.md" >}})
+> **Prerequisite:** Before starting load testing, review [Part 6: Location Clustering & Semantic Caching](/series/routing-geospatial-architecture/part-6-redis-semantic-caching/).
 
-> **Prerequisite:** Before starting the load testing, ensure you have integrated the caching layers detailed in [Part 6: Location Clustering with Uber H3 & Redis Semantic Caching]({{< ref "part-6-redis-semantic-caching.md" >}}).
+# Part 7: Load Testing and Performance Tuning for Production
+
+> **Executive Summary & Quick Answer**: Load testing a high-scale routing architecture requires avoiding Coordinated Omission by using K6 open-arrival-rate models (`executor: 'constant-arrival-rate'`), tuning the Linux kernel TCP stack (`sysctl net.core.somaxconn=65535`), and profiling Go GC garbage collections using `pprof`.
+>
+> **Key Takeaways**:
+> - **Open Model Stressing**: Open-arrival-rate load testing blasts requests on exact schedules, preventing slow API responses from hiding queue delays.
+> - **Linux Kernel Sockets**: Increase `somaxconn` and `tcp_tw_reuse` parameters to prevent `TIME_WAIT` socket exhaustion under 20,000 RPS loads.
+> - **Randomized GPS Traces**: Inject dynamic GPS coordinate datasets via K6 `SharedArray` to stress GraphHopper pathfinding rather than caching layers.
+
+### What You'll Learn That AI Won't Tell You
+- **Coordinated Omission Fixes:** Configuring K6 `constant-arrival-rate` executors.
+- **Sysctl Kernel Optimization:** Tuning `net.ipv4.ip_local_port_range` and `nofile` ulimits.
+- **Pprof Allocation Hotspots:** Locating Go string concatenation memory leaks during load runs.
 
 Load testing is the final boss of System Design. A junior engineer runs a script, sees "20,000 RPS" with 0 errors, and assumes the system is ready. A Principal Engineer knows that unless you tune the Linux Kernel, bypass Coordinated Omission, and simulate realistic chaos, that number is a complete lie.
 
-**Answer-first:** Load testing a routing engine is not just about testing your Go code. It is a brutal stress test of the Linux Kernel network stack (sockets, TCP reuse, SOMAXCONN), the Go runtime scheduler, and the memory footprint of your load testing tool itself.
+Load testing a routing engine is a stress test of the Linux Kernel network stack (sockets, TCP reuse, SOMAXCONN), the Go runtime scheduler, and the memory footprint of your load testing tool itself.
 
----
+```mermaid
+flowchart TD
+    K6[K6 Constant-Arrival-Rate Load Generator] -->|Open Model Schedule: 20k RPS| Kernel[Linux Kernel Net Stack: tuned somaxconn & tcp_tw_reuse]
+    Kernel --> GoGateway[Golang API Gateway: Pprof Inspected]
+    GoGateway -->|Cache Hits| Redis[(Redis L2 Semantic Cache)]
+    GoGateway -->|Cache Misses| GH[(GraphHopper Engine Pool)]
+```
 
 ## 1. The Lies Your Load Tester Tells You
 
 ### The Coordinated Omission Trap
 If you configure K6 with a "Closed Model" (`constant-vus: 1000`), the Virtual Users will wait for the slow server to respond before firing the next request. If your API degrades from 50ms to 5,000ms latency, the load generator inherently slows down to "protect" the server. The test reports 0 errors, but production will crash.
-**The Fix:** You MUST use an "Open Model" (`constant-arrival-rate`). This forces K6 to ruthlessly blast 10,000 requests per second precisely on schedule, exposing the true failure point of the system queue.
+**The Fix:** You MUST use an "Open Model" (`constant-arrival-rate`). This forces K6 to blast 10,000 requests per second precisely on schedule, exposing the true failure point of the system queue.
 
 ### Benchmarking the Cache, Not the Engine
-If your K6 script uses hardcoded lat/lng coordinates, the first request is computed by Graphhopper, and the next 19,999 requests are instantly served by Redis. You are benchmarking Redis, not your routing engine.
-**The Fix:** You must use K6's `SharedArray` to inject realistic, randomized GPS traces from an external JSON file, forcing Graphhopper to calculate thousands of unique paths.
+If your K6 script uses hardcoded lat/lng coordinates, the first request is computed by GraphHopper, and the next 19,999 requests are instantly served by Redis. You are benchmarking Redis, not your routing engine.
+**The Fix:** Use K6's `SharedArray` to inject realistic, randomized GPS traces from an external JSON file, forcing GraphHopper to calculate thousands of unique paths.
 
 ### K6 Metric Cardinality OOM
 When testing with dynamic, random GPS coordinates (e.g., `/api/route?lat=X&lng=Y`), K6 attempts to track every unique URL variation as a separate time-series metric in RAM. This triggers a "High Cardinality" explosion, crashing the K6 injector process with an Out of Memory (OOM) error. You MUST group requests using K6's `name` tag.
 
----
-
 ## 2. Linux Kernel & Go Runtime Tuning
 
-You cannot achieve 20,000 RPS on default OS settings. The Linux kernel will protect itself by dropping your connections.
+You cannot achieve 20,000 RPS on default OS settings. The Linux kernel will protect itself by dropping connections.
 
 ### Socket Exhaustion & `somaxconn`
+
 When K6 hits your Golang API, you might see `Connection Refused` errors even if the Golang CPU is sitting at 10%. This happens because the OS "Listen Backlog" queue is full. You must increase the kernel parameter `sysctl -w net.core.somaxconn=65535` to allow the OS to queue more incoming TCP handshakes.
 
 ### `nf_conntrack` Silent Packet Drops
@@ -230,7 +248,7 @@ This is the **JSON Reflection Bottleneck**. If you use `json.Unmarshal` to read 
 The standard library `compress/gzip` in Go lacks hardware SIMD optimization and burns CPU trying to compress large JSON responses. You MUST switch to `github.com/klauspost/compress/gzip` (which uses SSE 4.2 assembly instructions) or offload the compression entirely to an Nginx Edge Proxy.
 {{< /faq >}}
 
-Need help building high-scale routing engines or spatial indexing pipelines? [Contact me](/contact/) to discuss your project.
+Need help building high-scale routing engines or spatial indexing pipelines? [Get in touch](/hire/) to discuss your project.
 
 🔗 **Next Step:** Deploy to production in [Part 8: Zero-Downtime Map Updates & Multi-Region Kubernetes]({{< ref "/series/routing-geospatial-architecture/part-8-zero-downtime-k8s.md" >}}).
 
