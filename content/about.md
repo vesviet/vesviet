@@ -2,10 +2,11 @@
 
 title: "Lê Tuấn Anh — Senior Software Engineer & Go Backend Architect"
 date: "2021-10-14T18:48:02+07:00"
-lastmod: "2026-06-06T10:00:00+07:00"
+lastmod: "2026-07-23T13:34:42+07:00"
 aliases:
   - /about-me/
-description: "Lê Tuấn Anh — Senior Go & Microservices Engineer, 17+ years building high-traffic e-commerce platforms. Specializes in backend architecture and GitOps."
+  - /privacy-policy/
+description: "Lê Tuấn Anh — Senior Go & Microservices Engineer, 17+ years building high-traffic e-commerce platforms. Specializes in backend architecture, GitOps, and site privacy policies."
 author: "Lê Tuấn Anh"
 ---
 
@@ -64,6 +65,21 @@ Rather than relying purely on theoretical designs, I architected this holistic p
 - **Resilient Distributed Data:** Employs Dapr Pub/Sub coupled with the Transactional Outbox pattern for guaranteed cross-service event delivery.
 - **Complex Orchestration:** Utilizes Saga patterns for reliable cross-domain Order and Payment rollbacks natively in Go.
 - **GitOps Operations:** Declarative infrastructure scaling, secrets management, and automated cluster deployment via ArgoCD.
+
+---
+
+### 🔒 Privacy Policy
+
+At tanhdev.com (accessible from https://tanhdev.com/), the privacy of our visitors is one of our primary priorities.
+
+#### Log Files
+tanhdev.com follows standard procedures using hosting log files. Information collected includes IP addresses, browser types, Internet Service Provider (ISP), date/time stamps, referring/exit pages, and click counts. This data is used solely for trend analysis, site administration, and demographic gathering, and is not linked to personally identifiable information.
+
+#### Cookies & Advertising Partners
+tanhdev.com uses cookies to store visitor preferences and page access history. Third-party vendors (e.g. Google AdSense) may use DART cookies to serve ads based on visits. Visitors can opt out via [Google AdSense Privacy Policy](https://policies.google.com/technologies/ads) or disable cookies via browser settings.
+
+#### Data Protection Rights (CCPA & GDPR)
+Under CCPA and GDPR regulations, users have the right to access, rectify, or request deletion of personal data. To exercise any data privacy rights, contact us at [vesviet@gmail.com](mailto:vesviet@gmail.com).
 
 ---
 

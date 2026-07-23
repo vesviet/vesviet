@@ -3,7 +3,7 @@ title: "Order Fulfillment Algorithm: Warehouse to Last-Mile"
 slug: "order-fulfillment-algorithm-warehouse-last-mile"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
-lastmod: "2026-06-01T10:00:00+07:00"
+lastmod: "2026-07-23T13:34:42+07:00"
 draft: false
 categories:
   - "Engineering"
@@ -17,6 +17,12 @@ tags:
   - "Amazon"
   - "Logistics"
   - "Algorithms"
+aliases:
+  - /series/ecommerce-order-allocation/executive-summary/
+  - /series/ecommerce-order-allocation/part-1-order-fulfillment-fundamentals/
+  - /series/ecommerce-order-allocation/part-2-inventory-realtime/
+  - /series/ecommerce-order-allocation/part-3-allocation-algorithms/
+  - /series/ecommerce-order-allocation/part-4-amazon-condor-anticipatory/
 description: "How e-commerce giants decide which warehouse fulfills your order. Covers Amazon CONDOR, VRP solvers, split shipment logic, and last-mile routing."
 ShowToc: true
 TocOpen: true
@@ -27,200 +33,81 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/order-fulfillment-algorithm-warehouse-last-mile/"
 ---
 
-**Answer-first:** High-throughput e-commerce requires routing order fulfillment using a multi-criteria optimization model. By calculating stock availability, warehouse proximity, and split-shipment constraints via a Vehicle Routing Problem (VRP) solver, we minimize shipping costs and shipping times.
-
-### What You'll Learn That AI Won't Tell You
-- VRP solver performance tuning for dynamic split-shipment constraints.
-- Calculating optimal warehouse dispatch routes using Amazon CONDOR principles.
-
-
-When you place an order on Amazon at 11:47 PM and it arrives at your door the next morning, every step of that delivery was orchestrated by a set of algorithms making real-time decisions across a network of hundreds of warehouses, thousands of drivers, and millions of items in inventory. None of it happens by chance, and none of it is primarily a human decision.
-
-This post covers the six-step algorithmic decision chain that transforms a confirmed order into a physical package at your door: from inventory availability checks and warehouse selection, through Amazon's CONDOR constraint optimizer and split shipment logic, to the vehicle routing problem solvers that plan the last mile.
-
-For the complete series on e-commerce order allocation architecture, explore the [E-Commerce Order Allocation Series](/series/ecommerce-order-allocation/).
+**Answer-first:** High-throughput e-commerce requires routing order fulfillment using a multi-criteria optimization model. By calculating stock availability, warehouse proximity, labor costs, and split-shipment constraints via a Vehicle Routing Problem (VRP) solver, systems minimize shipping costs while strictly meeting customer delivery SLAs.
 
 ---
 
-## The Order Allocation Problem: Why Millisecond Decisions Cost Millions
+## Executive Summary & Fulfillment Fundamentals
 
-The warehouse selection decision sounds simple: check which warehouses have the item in stock, pick the closest one. In practice, it is a multi-objective optimization problem with interdependent constraints that must be solved in under 200ms per order, at a rate of millions of orders per day.
+When an order is confirmed, the fulfillment system executes a multi-step decision pipeline:
 
-The constraints include:
-- **Stock availability**: Is the item available at each candidate warehouse?
-- **Fulfillment cost**: Shipping from a closer warehouse costs less, but labor costs vary by facility.
-- **Delivery SLA**: Can this warehouse get the package on a carrier truck in time to meet the promised delivery date?
-- **Carrier capacity**: Is the carrier serving this warehouse's zone at capacity? Is there scheduled pickup capacity remaining today?
-- **Carbon and sustainability targets**: Some SKU categories carry emissions-based routing preferences.
-- **Anticipated demand**: CONDOR (Amazon's constraint optimizer) considers not just current orders but probabilistic future orders when allocating inventory.
-
-Getting this decision wrong — choosing a warehouse that cannot meet the SLA, or one with stock that is actually reserved for a different fulfillment channel — results in carrier delays, customer experience failures, and financial penalties.
+1. **Available-to-Promise (ATP) Check**: Filter candidate warehouses by real-time uncommitted stock.
+2. **Cost & Proximity Scoring**: Evaluate shipping distance, labor rate, carrier capacity, and SLA risk.
+3. **Split vs. Consolidate Trade-Off**: Determine whether to ship from multiple warehouses or wait for inventory consolidation.
+4. **CONDOR & Anticipatory Dispatch**: Pre-position stock globally based on probabilistic ML demand forecasts.
+5. **Last-Mile VRP Solving**: Optimize driver routes using vehicle routing solvers (OR-Tools / GraphHopper).
 
 ---
 
-## Step 1 — Inventory Availability Check: Real-Time Stock Sync Across Warehouses
+## Step 1 — Real-Time Inventory & Available-to-Promise (ATP)
 
-Before the allocation algorithm runs, the system needs an accurate, real-time view of inventory. This is harder than it sounds.
+Physical stock on hand does not equal sellable stock. Fulfillment systems distinguish:
+- **Physical On-Hand**: Total inventory units located inside the warehouse bin.
+- **Available-to-Promise (ATP)**: Physical stock minus hard-committed and soft-reserved units.
 
-Amazon's warehouse inventory system maintains two distinct counts:
-- **Physical on-hand**: Units physically present in the warehouse
-- **Available-to-promise (ATP)**: Physical on-hand minus units already committed to other orders (reserved, being picked, in transit to packing)
-
-The ATP count is the relevant number for new orders. An item that appears in stock based on physical count may have zero ATP if all units are already allocated to orders being processed.
-
-At Amazon's scale, the ATP count is updated continuously via a stream of inventory events: picks, putaways, returns, inbound receipts, and cross-docking events. These events flow through a real-time streaming pipeline (similar to the Kafka + Flink pattern described in the [Real-Time Ride-Hailing Architecture](/posts/real-time-ride-hailing-architecture/) post) into an in-memory inventory cache that serves the allocation lookup.
-
-### Soft Reservations
-
-When an order is placed, a **soft reservation** is created immediately in the cache — decrementing the ATP counter before the order is formally confirmed in the database. This prevents two orders from being allocated to the same last unit simultaneously. The soft reservation has a TTL (typically 5–15 minutes); if the order fails payment or fraud checks, the reservation expires and the inventory is released.
-
-This pattern is identical to the Redis atomic counter pattern used in flash sales — see [Shopee Flash Sale Architecture: Rate Limiting & Redis](/posts/shopee-flash-sale-architecture/) for the detailed implementation.
+### Soft Reservations with TTL
+When a customer enters checkout, a **soft reservation** decrements ATP in an in-memory Redis cluster. The reservation carries a TTL (typically 5–15 minutes). If payment fails or the session times out, the reservation automatically expires and ATP is restored.
 
 ---
 
-## Step 2 — Warehouse Selection Algorithm: Distance, Cost, and SLA Trade-Offs
+## Step 2 — Warehouse Selection Cost Function
 
-With the inventory availability map established, the warehouse selection algorithm evaluates candidate fulfillment centers against a cost function.
+The allocation engine evaluates candidate warehouses using a multi-criteria objective function:
 
-The naive version of this cost function is:
+$$\text{Cost}(W, O) = (d \cdot r_{\text{carrier}}) + c_{\text{labor}} + P_{\text{SLA}} + S_{\text{capacity}} - B_{\text{eco}}$$
 
-```
-cost(warehouse, order) = shipping_distance * shipping_rate_per_km + labor_cost(warehouse)
-```
-
-The production version adds a set of multipliers and constraints:
-
-```
-cost(warehouse, order) = 
-    (shipping_distance * carrier_rate_per_km)
-    + (labor_cost_per_unit(warehouse))
-    + (SLA_risk_penalty if fulfillment_time > SLA_threshold)
-    + (carrier_capacity_surcharge if capacity_utilization > 0.85)
-    - (carbon_credit if warehouse_in_green_zone)
-```
-
-This cost function is evaluated for every candidate warehouse that has ATP > 0 for the ordered item. The warehouse with the minimum cost is selected.
-
-For items with availability at only one warehouse, the selection is trivial. For items available at dozens of warehouses (common for high-velocity SKUs), the optimization across a large candidate set requires pruning strategies — discarding warehouses outside the plausible SLA radius before evaluating the full cost function.
+Where:
+- $d$: Distance from warehouse $W$ to delivery destination
+- $r_{\text{carrier}}$: Carrier rate per km
+- $c_{\text{labor}}$: Warehouse pick/pack labor cost per unit
+- $P_{\text{SLA}}$: Penalty score if fulfillment time risks missing delivery window
+- $S_{\text{capacity}}$: Carrier surcharge when daily outbound volume exceeds 85% capacity
+- $B_{\text{eco}}$: Eco-bonus for green fulfillment locations
 
 ---
 
-## Step 3 — Amazon CONDOR: The Constraint Optimizer for Global Fulfillment
+## Step 3 — Amazon CONDOR & Constraint Optimization
 
-CONDOR (Constraint Optimizer for Network Distribution of Orders and Replenishment) is Amazon's internal system for solving the global fulfillment allocation problem. It operates above the per-order warehouse selection layer and solves the **network-wide inventory allocation problem**: how should Amazon position its inventory across its fulfillment network to minimize total fulfillment cost for anticipated future orders?
-
-### CONDOR as a Global Optimizer
-
-CONDOR ingests:
-- Current ATP inventory at every fulfillment center globally
-- Historical demand signals by SKU, geography, and day-of-week
-- Probabilistic demand forecasts (ML models predicting order volumes by region and SKU for the next 14 days)
-- Carrier capacity schedules, truck lane rates, and fulfillment center labor cost models
-
-It outputs:
-- Inventory transfer recommendations (move X units of SKU Y from FC A to FC B by date Z)
-- Carrier lane reservation targets
-- Replenishment order suggestions to vendors
-
-CONDOR's recommendations are not applied automatically — they are reviewed by Amazon's supply chain operations team and executed via replenishment workflows. But the outputs drive the majority of Amazon's proactive inventory positioning decisions.
-
-### Why This Matters for Per-Order Allocation
-
-CONDOR's influence on per-order fulfillment is indirect but profound. Because CONDOR continuously rebalances inventory to minimize expected shipping distance for anticipated orders, the warehouse selection algorithm typically finds that the optimal warehouse is already nearby. The real-time per-order optimizer runs faster and produces better results because CONDOR has done the strategic pre-positioning work.
-
-For a deep dive into CONDOR's constraint optimization models, see [Part 4 — Amazon CONDOR & Anticipatory Shipping](/series/ecommerce-order-allocation/part-4-amazon-condor-anticipatory/).
+CONDOR operates globally above per-order routing:
+- **Inputs**: Real-time ATP across all fulfillment centers, historical demand signals, regional ML demand forecasts (14-day window), carrier contract tiers.
+- **Outputs**: Proactive inventory transfer recommendations (rebalancing stock from central FCs to regional sortation centers before orders are placed).
 
 ---
 
-## Step 4 — Anticipatory Shipping: Predicting Orders Before They're Placed
+## Step 4 — Anticipatory & Predictive Shipping
 
-Anticipatory shipping (Amazon holds a patent on the concept under the name "predictive shipping") takes CONDOR's forecasting one step further: instead of waiting for an order to be placed and then shipping, Amazon ships products to regional distribution centers before an order has been placed, based on predicted demand.
-
-### How Anticipatory Shipping Works
-
-The ML model driving anticipatory shipping considers:
-- User browsing and wishlist behavior
-- Regional seasonal demand patterns (winter coats in northern cities in November)
-- Recent marketing campaign schedules
-- Subscribe & Save and scheduled repeat order patterns
-
-When the model's confidence score for a user ordering a specific product exceeds a threshold, Amazon ships a unit from a central fulfillment center to a regional sortation center or a Prime Now delivery station near the predicted buyer. If the user then places an order, the item is already in their metro area — enabling same-day or next-morning delivery without express shipping costs.
-
-If the prediction is wrong and the user does not order, the pre-positioned unit is reabsorbed into regional inventory and may be sold to another buyer in the area — or shipped back to the central FC if demand does not materialize.
-
-The financial viability of anticipatory shipping depends on high prediction accuracy. The cost of an incorrect pre-shipment (wasted forward shipping + potential return shipping) must be less than the average revenue improvement from converting users who would otherwise choose a competitor with faster delivery.
+Anticipatory shipping uses predictive ML models (browsing patterns, wishlist items, regional trends) to ship high-probability items to regional hub centers *before* the customer places the order. When the order occurs, the package is already in the buyer's metro area, enabling same-day delivery at minimal expedited freight cost.
 
 ---
 
-## Step 5 — Split Shipment vs. Consolidation: When to Ship in Multiple Packages
+## Step 5 — Split Shipment vs. Consolidation Logic
 
-Multi-item orders create a fulfillment decision: should all items ship from the same warehouse (consolidation), or should each item ship from the warehouse that stocks it (split shipment)?
-
-### The Trade-Off Matrix
-
-| Scenario | Best Choice | Reasoning |
+| Trade-Off Scenario | Selected Strategy | Rationale |
 |---|---|---|
-| All items at same FC, SLA met | **Consolidation** | Single package cost, single delivery event |
-| Item A at FC-West, Item B at FC-East, SLA tight | **Split Shipment** | Both items arrive on time; consolidation would delay one |
-| Item B available at FC-West in 2 days (replenishment) | **Delay + Consolidate** | If SLA allows, avoid split for customer convenience |
-| High-value + fragile item, rest are bulky | **Split** | Separate handling reduces damage risk |
-
-Amazon's split shipment algorithm models the full cost of each option:
-- **Consolidation cost**: Shipping cost + potential SLA violation penalty
-- **Split cost**: Two shipping costs + reduced customer experience score (studies show customers perceive split deliveries as service failures even when both arrive on time)
-
-The algorithm weights customer experience signals heavily: a customer who received a split shipment previously has a measurably higher churn probability, so avoiding splits for high-LTV customers gets a priority boost.
+| All SKUs at same FC | **Consolidate** | Single package, minimal freight cost |
+| SKUs at separate FCs, tight SLA | **Split Shipment** | Meet SLA; dual freight cost accepted |
+| Secondary SKU restocking in 24h | **Delay & Consolidate** | Avoid split; customer prefers single delivery |
 
 ---
 
-## Step 6 — Last-Mile Delivery: VRP Solvers and Distance Matrix Calculation
+## Step 6 — Last-Mile Vehicle Routing Problem (VRP) Solver
 
-Once the warehouse decision is made, the physical package begins its journey. The last-mile routing problem — assigning packages to drivers and planning the optimal delivery sequence for each driver — is a classic **Vehicle Routing Problem (VRP)**.
-
-### The Vehicle Routing Problem (VRP)
-
-The VRP asks: given a set of delivery locations, a fleet of vehicles with capacity constraints, and a central depot, find the set of routes that minimizes total distance (or time) while ensuring every location is served exactly once and no vehicle exceeds its capacity.
-
-The VRP is NP-hard in general — there is no polynomial-time exact solution. At Amazon's scale (millions of deliveries per day), exact optimization is computationally intractable. The practical approaches are:
-- **Heuristic solvers**: Clarke-Wright Savings algorithm, or-opt, 2-opt improvement heuristics
-- **Google OR-Tools**: An open-source constraint programming and routing solver that applies meta-heuristics (LNS — Large Neighborhood Search) to find near-optimal solutions
-- **ML-augmented routing**: Using learned value functions to prioritize promising search directions during heuristic optimization
-
-### Distance Matrix Calculation
-
-VRP solvers require a distance (or travel time) matrix between all delivery points and the depot. This matrix cannot be computed using straight-line (Euclidean) distances — road network distances differ significantly, especially in urban areas with one-way streets, traffic signals, and physical barriers.
-
-Amazon uses a combination of GraphHopper (self-hosted on the road network data from OpenStreetMap) and proprietary HERE Maps APIs to pre-compute realistic road-network travel times between all pairs of delivery locations in a zone. This distance matrix computation happens the night before, so routes are planned by morning.
-
-For a detailed breakdown of GraphHopper's distance matrix API and how it is deployed in production, see our [OSRM vs GraphHopper Architecture Comparison]({{< ref "osrm-vs-graphhopper-architecture-comparison.md" >}}) and the full [Geospatial & Routing Engine Architecture series](/series/routing-geospatial-architecture/).
-
-### The "A-to-Z" Driver App and Sequence Optimization
-
-Amazon's delivery drivers use the Amazon Flex "A-to-Z" app, which presents an optimized sequence of stops. The sequence is pre-computed by the VRP solver but can be dynamically adjusted in real time based on:
-- Live traffic data (Google Maps or HERE Traffic APIs)
-- Successful deliveries (removing completed stops)
-- Failed deliveries (reattempt scheduling or locker redirect)
-- Customer reschedules or OTP (One-Time Password) requests
-
-This dynamic re-optimization runs continuously during the delivery window, ensuring that a mid-route traffic jam or access failure triggers a re-route rather than a missed SLA.
-
----
-
-## Building Your Own Mini Allocation Engine (Google OR-Tools)
-
-For engineers building warehouse allocation or last-mile routing for a smaller-scale platform, Google OR-Tools provides a production-grade open-source foundation.
-
-A minimal Python implementation of the VRP solver using OR-Tools:
+The last-mile dispatch calculates optimal driver routes using Google OR-Tools / GraphHopper VRP solvers:
 
 ```python
 from ortools.constraint_solver import routing_enums_pb2, pywrapcp
 
 def solve_vrp(distance_matrix, num_vehicles, depot):
-    """
-    distance_matrix: NxN matrix of travel times between locations
-    num_vehicles: number of available delivery vehicles
-    depot: index of the depot location in the matrix
-    """
     manager = pywrapcp.RoutingIndexManager(
         len(distance_matrix), num_vehicles, depot
     )
@@ -234,7 +121,6 @@ def solve_vrp(distance_matrix, num_vehicles, depot):
     transit_callback_index = routing.RegisterTransitCallback(distance_callback)
     routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index)
 
-    # Add Distance constraint (capacity of each route in time units)
     dimension_name = "Distance"
     routing.AddDimension(
         transit_callback_index,
@@ -257,23 +143,20 @@ def solve_vrp(distance_matrix, num_vehicles, depot):
     return solution, routing, manager
 ```
 
-This solver is capable of handling hundreds of delivery locations per route plan. For production use at thousands of locations per day, OR-Tools can be deployed as a containerized microservice with a REST API — scalable independently from the order management system. The architecture for such a service integrates naturally with the Kubernetes-based Go microservices stack described in [Architecting a 21-Service E-Commerce Ecosystem](/posts/architecting-21-service-ecommerce-golang-ddd/).
-
 ---
 
-## Frequently Asked Questions
+## Frequently Asked Questions (FAQ)
 
-### How does Amazon decide which warehouse to ship from?
-Amazon's warehouse selection algorithm evaluates every fulfillment center with available-to-promise inventory against a cost function that combines shipping distance, carrier rates, labor costs, SLA risk, and carrier capacity utilization. CONDOR, Amazon's global constraint optimizer, pre-positions inventory across the network based on demand forecasts, so the optimal warehouse is usually already nearby when the real-time allocation runs.
+{{< faq q="How does Amazon decide which warehouse to ship from?" >}}
+Amazon's warehouse selection algorithm evaluates every fulfillment center with available-to-promise inventory against a cost function that combines shipping distance, carrier rates, labor costs, SLA risk, and carrier capacity utilization.
+{{< /faq >}}
 
-### What is the Vehicle Routing Problem (VRP) in e-commerce?
-The VRP is a combinatorial optimization problem: given a fleet of vehicles, a depot, and a set of delivery locations, find the routes that minimize total distance while respecting vehicle capacity constraints and serving every location exactly once. It is the core algorithm behind every last-mile delivery routing system. It is NP-hard, so production systems use heuristic solvers (like Google OR-Tools) that find near-optimal solutions within time constraints.
+{{< faq q="What is the Vehicle Routing Problem (VRP) in e-commerce?" >}}
+The VRP is a combinatorial optimization problem: given a fleet of vehicles, a depot, and a set of delivery locations, find the routes that minimize total distance while respecting vehicle capacity constraints and serving every location exactly once.
+{{< /faq >}}
 
-### What is Amazon Anticipatory Shipping and how does it work?
-Anticipatory shipping (patented as "predictive shipping") ships products to regional distribution centers before a customer places an order, based on ML-predicted demand. The model considers browsing behavior, regional seasonal patterns, and scheduled repeat orders. If the prediction is correct, the item is already in the customer's metro area, enabling same-day or next-morning delivery at standard shipping cost.
-
----
-
-**Related Reading:** For the demand-side of logistics platforms — how real-time driver supply and demand signals are used to dynamically adjust pricing — see [Surge Pricing Algorithm & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture/). For the full routing engine deep-dive, the [Geospatial & Routing Engine Architecture series](/series/routing-geospatial-architecture/) covers GraphHopper deployment, H3 indexing, and production Distance Matrix APIs end-to-end.
+{{< faq q="What is Amazon Anticipatory Shipping and how does it work?" >}}
+Anticipatory shipping ships products to regional distribution centers before a customer places an order, based on ML-predicted demand. If the prediction is correct, the item is already in the customer's metro area, enabling same-day delivery.
+{{< /faq >}}
 
 {{< author-cta >}}

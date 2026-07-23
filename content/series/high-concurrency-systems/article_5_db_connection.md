@@ -262,5 +262,5 @@ If your enterprise e-commerce or B2B platform is struggling with slow database q
 
 ---
 
-🔗 **Next Step:** [Chapter 6: API Gateway vs Service Mesh in Microservices Architecture]({{< ref "article_6_api_gateway.md" >}})
+🔗 **Next Step:** [Chapter 6: API Gateway vs Service Mesh in Microservices Architecture](/posts/shopee-flash-sale-architecture/)
 

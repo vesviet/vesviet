@@ -247,4 +247,4 @@ In production deployments, a 2-hop to 3-hop traversal depth centered around prim
 - [Part 2 — Agentic Ingestion & Multimodal Document Processing](/series/ai-data-engineering-pipeline/part-2-agentic-ingestion-multimodal/)
 - [Part 7 — Agentic Memory Systems: Episodic, Semantic & Working](/series/ai-data-engineering-pipeline/part-7-agentic-memory-long-term/)
 - [Part 8 — Inference Optimization: vLLM & PagedAttention](/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/)
-- [Part 1 — Hybrid AI Architecture & Self-Hosted vLLM](/series/slm-playbook/part-1-slm-hybrid-architecture/)
+- [Part 1 — Hybrid AI Architecture & Self-Hosted vLLM](/posts/slm-fine-tune-vs-prompt-engineering/)

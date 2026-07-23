@@ -251,4 +251,4 @@ Before shipping candidate models and orchestrator agents to production cluster e
 - [Part 2 — Man vs. Machine Boundaries in Engineering](/series/ai-driven-engineer/part-2-man-vs-machine-boundaries/)
 - [Part 3 — The 10x Productivity Reality: Debunking the Myth](/series/ai-driven-engineer/part-3-the-10x-productivity-reality/)
 - [Part 6 — From Coder to Orchestrator: Swarms & Workflows](/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/)
-- [Part 1 — Context Engineering: DDD for AI](/series/ai-driven-playbook/part-1-context-engineering-ddd/)
+- [Part 1 — Context Engineering: DDD for AI](/posts/ai-native-frontend-architecture-predictions-2028/)

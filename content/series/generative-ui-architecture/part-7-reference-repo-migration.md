@@ -205,7 +205,7 @@ Before shipping candidate models and orchestrator agents to production cluster e
 
 ## Internal Series Navigation
 
-- [Part 3 — Component Registry & JSON Schema Protocol](/series/generative-ui-architecture/part-3-component-registry/)
-- [Part 5 — Human-in-the-Loop Workflows & Approvals](/series/generative-ui-architecture/part-5-human-in-the-loop/)
-- [Part 6 — Edge Rendering & E2E Testing for Dynamic UIs](/series/generative-ui-architecture/part-6-e2e-testing-edge/)
+- [Part 3 — Component Registry & JSON Schema Protocol](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 5 — Human-in-the-Loop Workflows & Approvals](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 6 — Edge Rendering & E2E Testing for Dynamic UIs](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Bonus — The 90-Day Transition Blueprint](/series/ai-driven-engineer/bonus-transition-path/)

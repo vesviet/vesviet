@@ -2,7 +2,7 @@
 
 title: "Hire Lê Tuấn Anh — Go Backend Architect & Consulting"
 date: "2026-06-06T10:00:00+07:00"
-lastmod: "2026-07-03T10:00:00+07:00"
+lastmod: "2026-07-23T13:34:42+07:00"
 description: "Senior Go Backend Architect in Vietnam. 17+ years in microservices & high-traffic e-commerce. Magento-to-Go migrations. Consulting & architecture reviews."
 keywords: ["hire go backend architect vietnam", "golang consultant vietnam", "microservices consultant", "magento to microservices migration", "backend architecture review", "go engineer vietnam consulting"]
 slug: "hire"
@@ -10,6 +10,7 @@ aliases:
   - /professional-services/
   - /contact/
   - /portfolio/seo-marketing/
+  - /newsletter/
 showToc: true
 TocOpen: true
 cover:
@@ -101,6 +102,14 @@ The best starting point is a short conversation about your problem. No long form
 - **GitHub:** [github.com/vesviet](https://github.com/vesviet)
 
 I read every message and respond within 48 hours on business days.
+
+### 📬 Newsletter
+
+Đăng ký nhận bản tin hàng tuần về kiến trúc phần mềm, Go, AI Engineering và các công nghệ mới nhất từ Lê Tuấn Anh.
+
+*Tính năng Newsletter trực tiếp qua email đang được hoàn thiện.* Bạn có thể theo dõi các bài viết mới nhất tại trang chủ hoặc kết nối qua [LinkedIn](https://www.linkedin.com/in/vesviet) & [GitHub](https://github.com/vesviet).
+
+👉 **[Xem tất cả bài viết](/posts/)** | **[Xem các series](/series/)**
 
 ---
 

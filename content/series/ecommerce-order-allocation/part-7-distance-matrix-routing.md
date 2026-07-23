@@ -79,7 +79,7 @@ def build_haversine_matrix(locations):
 
 If your problem **only requires delivering from a fixed warehouse to customers**, **without caring about real-time traffic** or **rush hour histories**, and solely needs distance based on the **actual existing road network** — then this is the perfect, most cost-effective solution.
 
-> **Prerequisite:** This section assumes familiarity with [Order Allocation Algorithms](/series/ecommerce-order-allocation/part-3-allocation-algorithms/) and how a VRP solver consumes a pre-built distance matrix.
+> **Prerequisite:** This section assumes familiarity with [Order Allocation Algorithms](/posts/order-fulfillment-algorithm-warehouse-last-mile/) and how a VRP solver consumes a pre-built distance matrix.
 
 > **Architecture Context:** In a production distributed e-commerce system, distance matrix calculations feed directly into the Logistics & Fulfillment domain. See the complete [E-Commerce Microservices Architecture Blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/) for how Warehouse and Shipping services integrate with the global API Gateway.
 
@@ -387,4 +387,4 @@ Use **Haversine** as a lightweight "Candidate Filter" to eliminate points that a
 - [GraphHopper Matrix API Reference](https://docs.graphhopper.com/#tag/Matrix-API)
 - [OpenStreetMap Vietnam Data (Geofabrik)](https://download.geofabrik.de/asia/vietnam.html)
 
-🔗 **Next Step:** Now that you understand how to build an accurate distance matrix with GraphHopper, see how this feeds into [Part 6 — Building a Mini Allocation Engine](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/) and the complete [Series Executive Summary](/series/ecommerce-order-allocation/executive-summary/).
+🔗 **Next Step:** Now that you understand how to build an accurate distance matrix with GraphHopper, see how this feeds into [Part 6 — Building a Mini Allocation Engine](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/) and the complete [Series Executive Summary](/posts/order-fulfillment-algorithm-warehouse-last-mile/).

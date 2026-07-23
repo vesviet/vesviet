@@ -17,7 +17,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/slm-playbook/part-2-sft-data-engineering/"
 ---
 [← Series hub](/series/slm-playbook/)
-[← Previous](/series/slm-playbook/part-1-slm-hybrid-architecture/) | [Next →](/series/slm-playbook/part-3-lora-qlora-tuning/)
+[← Previous](/posts/slm-fine-tune-vs-prompt-engineering/) | [Next →](/series/slm-playbook/part-3-lora-qlora-tuning/)
 
 In the era of LLMs/SLMs, the classic data science proverb: **"Garbage In, Garbage Out"** has never been more relevant.
 

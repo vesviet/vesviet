@@ -106,7 +106,7 @@ Cell D (District 9 - Outskirts): Supply=12, Demand=3   → Surge 1.0x
 
 ### The Basic Model: Supply-Demand Ratio and Allocation Algorithms
 
-Just like in e-commerce [allocation algorithms](/series/ecommerce-order-allocation/part-3-allocation-algorithms/) that decide which warehouse fulfills an order, the surge engine evaluates resources dynamically.
+Just like in e-commerce [allocation algorithms](/posts/order-fulfillment-algorithm-warehouse-last-mile/) that decide which warehouse fulfills an order, the surge engine evaluates resources dynamically.
 
 ```
 surge_multiplier = f(demand / supply)

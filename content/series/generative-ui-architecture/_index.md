@@ -22,13 +22,13 @@ This series addresses the biggest gap in modern AI application development: the 
 
 ## Series Content
 
-- **Executive Summary:** [The Shift to Generative UI Architecture]({{< ref "executive-summary.md" >}})
-- **Part 1:** [The Death of Chat Interfaces (Beyond Chatbots)]({{< ref "part-1-beyond-chatbots.md" >}})
-- **Part 2:** [Framework-Agnostic State Management Architecture]({{< ref "part-2-state-management.md" >}})
-- **Part 3:** [Component Registry & Bridging MCP to Frontend]({{< ref "part-3-component-registry.md" >}})
-- **Part 4:** [Security & Accessibility (A11y) in GenUI]({{< ref "part-4-security-a11y.md" >}})
-- **Part 5:** [Building the "Human-In-The-Loop" Experience]({{< ref "part-5-human-in-the-loop.md" >}})
-- **Part 6:** [E2E Testing & Performance Optimization at the Edge]({{< ref "part-6-e2e-testing-edge.md" >}})
+- **Executive Summary:** [The Shift to Generative UI Architecture](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- **Part 1:** [The Death of Chat Interfaces (Beyond Chatbots)](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- **Part 2:** [Framework-Agnostic State Management Architecture](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- **Part 3:** [Component Registry & Bridging MCP to Frontend](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- **Part 4:** [Security & Accessibility (A11y) in GenUI](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- **Part 5:** [Building the "Human-In-The-Loop" Experience](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- **Part 6:** [E2E Testing & Performance Optimization at the Edge](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - **Part 7:** [Reference Repository & Migration Strategy (Phased Rollout)]({{< ref "part-7-reference-repo-migration.md" >}})
 
 ## Companion Article: MCP in Practice

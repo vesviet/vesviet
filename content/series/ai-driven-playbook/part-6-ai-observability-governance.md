@@ -41,7 +41,7 @@ But when AI fails, it **does not throw an error**. The LLM will "confidently" pr
 
 ## 2. AI Observability Architecture (The SRE Mindset)
 
-To prevent the disaster above, the AI Gateway (LiteLLM) we established in [Part 2](/series/ai-driven-playbook/part-2-ai-platform-layer/) must be connected to a dedicated Telemetry system (such as Langfuse, LangSmith, or DataDog LLM Observability).
+To prevent the disaster above, the AI Gateway (LiteLLM) we established in [Part 2](/posts/ai-native-frontend-architecture-predictions-2028/) must be connected to a dedicated Telemetry system (such as Langfuse, LangSmith, or DataDog LLM Observability).
 
 ```mermaid
 graph TD

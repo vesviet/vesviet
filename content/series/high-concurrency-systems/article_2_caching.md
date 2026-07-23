@@ -20,7 +20,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/"
 ---
 
-> **Prerequisite:** Before reading this chapter, review [Chapter 1: How Systems Handle Millions of Requests/s](/series/high-concurrency-systems/how-systems-handle-c10m/).
+> **Prerequisite:** Before reading this chapter, review [Chapter 1: How Systems Handle Millions of Requests/s](/posts/shopee-flash-sale-architecture/).
 
 # Chapter 2: The 3 Caching Vulnerabilities (Penetration, Breakdown, Avalanche) & Go Singleflight
 

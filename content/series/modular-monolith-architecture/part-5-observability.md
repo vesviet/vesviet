@@ -255,7 +255,7 @@ Initialize an OTLP trace provider with a local batch exporter, wrapping key modu
 
 - **Previous Part:** [Part 4: CI/CD Simplified](/series/modular-monolith-architecture/part-4-cicd-simplified/)
 - **Next Part:** Continue to [Part 6: Migration Playbook](/series/modular-monolith-architecture/part-6-migration-playbook/)
-- **Related Guides:** [Caching Strategies & Redis LFU in Go](/series/system-design/03-caching-strategies-redis-golang/) and [C10M High-Concurrency Architecture](/series/high-concurrency-systems/article_1_system_design/)
+- **Related Guides:** [Caching Strategies & Redis LFU in Go](/series/system-design/03-caching-strategies-redis-golang/) and [C10M High-Concurrency Architecture](/posts/shopee-flash-sale-architecture/)
 
 Need help setting up low-overhead OpenTelemetry tracing for your monolith? [Get in touch](/hire/) or [hire our observability experts](/hire/) for an architectural review.
 

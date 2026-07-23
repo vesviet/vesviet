@@ -214,8 +214,8 @@ Before shipping candidate models and orchestrator agents to production cluster e
 
 ## Internal Series Navigation
 
-- [Executive Summary — Building an AI-Native Organization](/series/ai-driven-playbook/executive-summary/)
-- [Part 1 — Context Engineering: DDD for AI](/series/ai-driven-playbook/part-1-context-engineering-ddd/)
+- [Executive Summary — Building an AI-Native Organization](/posts/ai-native-frontend-architecture-predictions-2028/)
+- [Part 1 — Context Engineering: DDD for AI](/posts/ai-native-frontend-architecture-predictions-2028/)
 - [Part 5 — The Boardroom Perspective: AI Security & Privacy](/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/)
 - [Part 5 — Enterprise Security, RBAC & Data Poisoning Defense](/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/)
 - [Part 5 — MCP Security Engineering & Isolation](/series/mcp-engineering-in-production/part-5-security/)

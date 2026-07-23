@@ -280,4 +280,4 @@ Before shipping candidate models and orchestrator agents to production cluster e
 - [Part 7 — System Design Survival: Architectural Shield](/series/ai-driven-engineer/part-7-system-design-survival/)
 - [Bonus — The 90-Day Transition Blueprint](/series/ai-driven-engineer/bonus-transition-path/)
 - [Part 2 — Building Production-Grade MCP Servers in Go/Python](/series/mcp-engineering-in-production/part-2-build/)
-- [Part 1 — Context Engineering: DDD for AI](/series/ai-driven-playbook/part-1-context-engineering-ddd/)
+- [Part 1 — Context Engineering: DDD for AI](/posts/ai-native-frontend-architecture-predictions-2028/)

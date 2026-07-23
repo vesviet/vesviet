@@ -228,4 +228,4 @@ Before shipping candidate models and orchestrator agents to production cluster e
 - [Part 3 — The 10x Productivity Reality: Debunking the Myth](/series/ai-driven-engineer/part-3-the-10x-productivity-reality/)
 - [Part 5 — The Boardroom Perspective: AI Security & Privacy](/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/)
 - [Part 7 — System Design Survival: Architectural Shield](/series/ai-driven-engineer/part-7-system-design-survival/)
-- [Human-in-the-Loop Workflows & Approvals](/series/generative-ui-architecture/part-5-human-in-the-loop/)
+- [Human-in-the-Loop Workflows & Approvals](/posts/generative-ui-with-mcp-ai-native-frontend/)

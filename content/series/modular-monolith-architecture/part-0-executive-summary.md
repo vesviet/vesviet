@@ -83,7 +83,7 @@ The lesson from Prime Video doesn't imply that Serverless or Microservices are i
 
 However, for workloads involving **large data and high-frequency inter-service messaging**, Microservices will quickly reach a *Tipping Point*. At this point, the costs of Serialize/Deserialize (packing/unpacking data) and Network I/O will devour the actual Compute resources. Switching to a Monolith (direct in-RAM function calls) becomes cheaper by orders of magnitude.
 
-Refer to our companion guide on [High Concurrency System Design](/series/high-concurrency-systems/article_1_system_design/) to explore how C10M architectures balance memory locality and worker pool allocations.
+Refer to our companion guide on [High Concurrency System Design](/posts/shopee-flash-sale-architecture/) to explore how C10M architectures balance memory locality and worker pool allocations.
 
 ## 3. The Million-Dollar Consolidation Wave
 

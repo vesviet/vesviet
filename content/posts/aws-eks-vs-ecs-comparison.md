@@ -575,4 +575,4 @@ At Vigo Retail, EKS was the right call. The CNCF ecosystem — ArgoCD + Dapr + K
 
 ---
 
-**From the Tech Radar:** The [May 13, 2026 Tech Radar]({{< ref "/radar/2026-05/radar-2026-05-13.md" >}}) covered AgentOps meeting Kubernetes — Signadot's initiative to run AI agent testing inside live Kubernetes sandboxes. For teams choosing EKS specifically to run agentic workloads, this is the most relevant recent signal on where the K8s + AI convergence is heading operationally.
+**From the Tech Radar:** The [May 13, 2026 Tech Radar](/radar/2026-05/) covered AgentOps meeting Kubernetes — Signadot's initiative to run AI agent testing inside live Kubernetes sandboxes. For teams choosing EKS specifically to run agentic workloads, this is the most relevant recent signal on where the K8s + AI convergence is heading operationally.

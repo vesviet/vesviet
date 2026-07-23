@@ -366,4 +366,4 @@ The App-of-Apps pattern uses a root Argo CD Application that manages a collectio
 
 ---
 
-**From the Tech Radar:** The [May 13, 2026 Tech Radar]({{< ref "/radar/2026-05/radar-2026-05-13.md" >}}) covered a directly relevant signal — Signadot's AgentOps meets Kubernetes initiative, which bridges AI agent testing with Kubernetes sandbox environments. Relevant for any team running GitOps pipelines with agentic CI/CD workflows.
+**From the Tech Radar:** The [May 13, 2026 Tech Radar](/radar/2026-05/) covered a directly relevant signal — Signadot's AgentOps meets Kubernetes initiative, which bridges AI agent testing with Kubernetes sandbox environments. Relevant for any team running GitOps pipelines with agentic CI/CD workflows.

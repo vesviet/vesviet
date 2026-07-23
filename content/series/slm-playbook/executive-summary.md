@@ -19,7 +19,7 @@ mermaid: true
 ---
 
 [← Series hub](/series/slm-playbook/)
-[Next →](/series/slm-playbook/part-1-slm-hybrid-architecture/)
+[Next →](/posts/slm-fine-tune-vs-prompt-engineering/)
 
 For the past two years, enterprise AI adoption has been dominated by a singular architectural pattern: API integration with massive, closed-source models (Frontier LLMs). While this API-Centric model allows for rapid prototyping, it becomes a severe liability when scaled to production workloads handling sensitive company data.
 
@@ -269,6 +269,6 @@ This dual-path design prevents service interruptions. It also allows developers 
 
 This playbook is written for CTOs, AI Architects, and Senior Backend Engineers. If you are responsible for lowering AI operational costs, securing data privacy, and building customized AI features that strictly follow your business logic, this series provides the exact engineering blueprints.
 
-Let's dive into the core architecture: **[Part 1 — Hybrid AI & Self-Hosted vLLM](/series/slm-playbook/part-1-slm-hybrid-architecture/)**.
+Let's dive into the core architecture: **[Part 1 — Hybrid AI & Self-Hosted vLLM](/posts/slm-fine-tune-vs-prompt-engineering/)**.
 
 {{< author-cta >}}

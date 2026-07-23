@@ -21,11 +21,11 @@ This series bridges theory and practice, covering the real-world architecture of
 
 ## Series Overview
 
-- [Executive Summary — The Big Picture of Order Allocation](/series/ecommerce-order-allocation/executive-summary/)
-- [Part 1 — Order Fulfillment: From "Buy" Click to Delivery](/series/ecommerce-order-allocation/part-1-order-fulfillment-fundamentals/)
-- [Part 2 — Inventory Management: Real-time Stock Sync](/series/ecommerce-order-allocation/part-2-inventory-realtime/)
-- [Part 3 — Allocation Algorithms: Assignment, Bin Packing & VRP](/series/ecommerce-order-allocation/part-3-allocation-algorithms/)
-- [Part 4 — Amazon CONDOR & Anticipatory Shipping](/series/ecommerce-order-allocation/part-4-amazon-condor-anticipatory/)
+- [Executive Summary — The Big Picture of Order Allocation](/posts/order-fulfillment-algorithm-warehouse-last-mile/)
+- [Part 1 — Order Fulfillment: From "Buy" Click to Delivery](/posts/order-fulfillment-algorithm-warehouse-last-mile/)
+- [Part 2 — Inventory Management: Real-time Stock Sync](/posts/order-fulfillment-algorithm-warehouse-last-mile/)
+- [Part 3 — Allocation Algorithms: Assignment, Bin Packing & VRP](/posts/order-fulfillment-algorithm-warehouse-last-mile/)
+- [Part 4 — Amazon CONDOR & Anticipatory Shipping](/posts/order-fulfillment-algorithm-warehouse-last-mile/)
 - [Part 5 — Split Shipment, Consolidation & Last-Mile Delivery](/series/ecommerce-order-allocation/part-5-split-consolidation-lastmile/)
 - [Part 6 — Hands-on: Building a Mini Allocation Engine with Google OR-Tools](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/)
 - [Part 7 — Distance Matrix: Routing Distance Calculation Algorithms](/series/ecommerce-order-allocation/part-7-distance-matrix-routing/)

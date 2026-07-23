@@ -209,4 +209,4 @@ Before shipping candidate models and orchestrator agents to production cluster e
 - [Executive Summary — The Vibe Coding Revolution](/series/ai-code-review-vibe-coding/executive-summary/)
 - [Part 1 — Vibe Coding & Non-Technical Founders](/series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical/)
 - [Part 3 — The AI Bug Taxonomy: Hallucinations & Phantom APIs](/series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy/)
-- [Part 1 — Context Engineering: DDD for AI](/series/ai-driven-playbook/part-1-context-engineering-ddd/)
+- [Part 1 — Context Engineering: DDD for AI](/posts/ai-native-frontend-architecture-predictions-2028/)

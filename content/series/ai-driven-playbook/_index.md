@@ -25,13 +25,13 @@ This is the **Hands-on Playbook** designed specifically for developers writing c
 
 In this series, we will get our hands dirty with system architectures, configuration files, and best practices distilled from Enterprise environments. The playbook is divided into robust pillars:
 
-- **Executive Summary:** [Building an AI-Native Engineering Organization](/series/ai-driven-playbook/executive-summary/)
-- **Part 1:** [Context Engineering: Domain-Driven Design for AI](/series/ai-driven-playbook/part-1-context-engineering-ddd/)
-- **Part 2:** [AI Platform Layer: Building a Private AI Ecosystem & Architectural Freedom](/series/ai-driven-playbook/part-2-ai-platform-layer/)
+- **Executive Summary:** [Building an AI-Native Engineering Organization](/posts/ai-native-frontend-architecture-predictions-2028/)
+- **Part 1:** [Context Engineering: Domain-Driven Design for AI](/posts/ai-native-frontend-architecture-predictions-2028/)
+- **Part 2:** [AI Platform Layer: Building a Private AI Ecosystem & Architectural Freedom](/posts/ai-native-frontend-architecture-predictions-2028/)
 - **Part 3A:** [Enterprise RAG Architecture: Building the Internal "Brain"](/series/ai-driven-playbook/part-3a-enterprise-rag-architecture/)
-- **Part 3B:** [AI Automation for Internal Ops & Proving ROI](/series/ai-driven-playbook/part-3b-ai-automation-internal-ops/)
-- **Part 4:** [Policy-as-Code: Agentic CI/CD Guardrails](/series/ai-driven-playbook/part-4-policy-as-code-agentic-cicd/)
+- **Part 3B:** [AI Automation for Internal Ops & Proving ROI](/posts/ai-native-frontend-architecture-predictions-2028/)
+- **Part 4:** [Policy-as-Code: Agentic CI/CD Guardrails](/posts/ai-native-frontend-architecture-predictions-2028/)
 - **Part 5:** [Operating Model: Evolving AI-Era Operations](/series/ai-driven-playbook/part-5-operating-model/)
 - **Part 6:** [AI Observability & Evals: Eliminating Operational Blind Spots](/series/ai-driven-playbook/part-6-ai-observability-governance/)
 - **Part 7:** [AI Security Engineering: Ironclad Armor for New Attack Surfaces](/series/ai-driven-playbook/part-7-ai-security-engineering/)
-- **Part 8:** [Grand Finale: Comprehensive AI-Native System Architecture](/series/ai-driven-playbook/part-8-ai-native-system-architecture/)
+- **Part 8:** [Grand Finale: Comprehensive AI-Native System Architecture](/posts/ai-native-frontend-architecture-predictions-2028/)

@@ -85,7 +85,7 @@ In 2014, WhatsApp served over 450 million active users with an engineering staff
 Segment initially broke their event processing pipeline into 140 separate microservices (one per integration destination). As destination services multiplied, infrastructure complexity exploded: worker queues stalled, AWS billing costs soared, and managing 140 deployment pipelines consumed 70% of engineering bandwidth.
 - **The Remedy:** Segment consolidated all 140 microservice repositories back into a single **Go Monolithic Worker pool**. All destination integrations execute inside a single binary process. Result: Infrastructure expenses decreased by **$250,000 in Year 1**, and developer deployment velocity increased 5x.
 
-For concurrency patterns, compare this with our [High-Concurrency Systems C10M Guide](/series/high-concurrency-systems/article_1_system_design/).
+For concurrency patterns, compare this with our [High-Concurrency Systems C10M Guide](/posts/shopee-flash-sale-architecture/).
 
 ---
 
@@ -194,6 +194,6 @@ A tagged in-memory cache maps keys to domain tags. Invalidating a single tag pur
 
 - **Previous Part:** [Part 7: Extraction Pattern](/series/modular-monolith-architecture/part-7-extraction-pattern/)
 - **Series Index:** Return to [Modular Monolith Architecture Masterclass Index](/series/modular-monolith-architecture/)
-- **Related Series:** Explore [System Design Series Primer](/series/system-design/01-introduction-system-design-golang/) and [High Concurrency Systems](/series/high-concurrency-systems/article_1_system_design/)
+- **Related Series:** Explore [System Design Series Primer](/series/system-design/01-introduction-system-design-golang/) and [High Concurrency Systems](/posts/shopee-flash-sale-architecture/)
 
 Need an end-to-end architectural evaluation for your software stack? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) for system design audits.

@@ -220,7 +220,7 @@ Before shipping candidate models and orchestrator agents to production cluster e
 
 ## Internal Series Navigation
 
-- [Part 1 — Hybrid AI Architecture & Self-Hosted vLLM](/series/slm-playbook/part-1-slm-hybrid-architecture/)
+- [Part 1 — Hybrid AI Architecture & Self-Hosted vLLM](/posts/slm-fine-tune-vs-prompt-engineering/)
 - [Part 8 — Inference Optimization: vLLM & PagedAttention](/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/)
 - [Part 10 — Production Evals & CI/CD Guardrails](/series/ai-data-engineering-pipeline/part-10-production-evals-cicd/)
 - [Bonus — The 90-Day Transition Blueprint](/series/ai-driven-engineer/bonus-transition-path/)

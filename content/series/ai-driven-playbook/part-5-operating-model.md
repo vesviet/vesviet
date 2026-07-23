@@ -206,8 +206,8 @@ Before shipping candidate models and orchestrator agents to production cluster e
 
 ## Internal Series Navigation
 
-- [Executive Summary — Building an AI-Native Organization](/series/ai-driven-playbook/executive-summary/)
-- [Part 1 — Context Engineering: DDD for AI](/series/ai-driven-playbook/part-1-context-engineering-ddd/)
-- [Part 3B — AI Automation for Internal Operations](/series/ai-driven-playbook/part-3b-ai-automation-internal-ops/)
+- [Executive Summary — Building an AI-Native Organization](/posts/ai-native-frontend-architecture-predictions-2028/)
+- [Part 1 — Context Engineering: DDD for AI](/posts/ai-native-frontend-architecture-predictions-2028/)
+- [Part 3B — AI Automation for Internal Operations](/posts/ai-native-frontend-architecture-predictions-2028/)
 - [Part 7 — AI Security Engineering](/series/ai-driven-playbook/part-7-ai-security-engineering/)
 - [Part 6 — From Coder to Orchestrator: Swarms & Workflows](/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/)

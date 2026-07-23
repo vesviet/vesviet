@@ -205,6 +205,6 @@ GitLab extracted Gitaly in Go strictly for disk file IO operations while leaving
 
 - **Previous Part:** [Part 6: Migration Playbook](/series/modular-monolith-architecture/part-6-migration-playbook/)
 - **Next Part:** Continue to [Part 8: Case Study Matrix](/series/modular-monolith-architecture/part-8-case-study-matrix/)
-- **Related Guides:** [Go System Design Primer](/series/system-design/01-introduction-system-design-golang/) and [Shopee & Alipay C10M High-Concurrency](/series/high-concurrency-systems/article_1_system_design/)
+- **Related Guides:** [Go System Design Primer](/series/system-design/01-introduction-system-design-golang/) and [Shopee & Alipay C10M High-Concurrency](/posts/shopee-flash-sale-architecture/)
 
 Need help deciding whether to extract a module into a microservice? [Get in touch](/hire/) or [hire our senior software architects](/hire/) for an architectural evaluation.

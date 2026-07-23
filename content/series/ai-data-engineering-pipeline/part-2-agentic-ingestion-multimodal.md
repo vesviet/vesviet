@@ -258,4 +258,4 @@ Before shipping candidate models and orchestrator agents to production cluster e
 - [Part 3 — Late Chunking & Contextual Retrieval](/series/ai-data-engineering-pipeline/part-3-late-chunking-semantic-caching/)
 - [Part 4 — Real-time Streaming CDC & Federated GraphRAG Architecture](/series/ai-data-engineering-pipeline/part-4-streaming-cdc-federated-rag/)
 - [Part 5 — Enterprise Security, RBAC & Data Poisoning Defense](/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/)
-- [Part 1 — Context Engineering: DDD for AI](/series/ai-driven-playbook/part-1-context-engineering-ddd/)
+- [Part 1 — Context Engineering: DDD for AI](/posts/ai-native-frontend-architecture-predictions-2028/)

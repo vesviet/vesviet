@@ -213,4 +213,4 @@ Before shipping candidate models and orchestrator agents to production cluster e
 - [Part 5 — MCP Security Engineering & Isolation](/series/mcp-engineering-in-production/part-5-security/)
 - [Part 6 — Observability & Tracing](/series/mcp-engineering-in-production/part-6-observability/)
 - [Executive Summary — Model Context Protocol in Production](/series/mcp-engineering-in-production/executive-summary/)
-- [Part 1 — Context Engineering: DDD for AI](/series/ai-driven-playbook/part-1-context-engineering-ddd/)
+- [Part 1 — Context Engineering: DDD for AI](/posts/ai-native-frontend-architecture-predictions-2028/)

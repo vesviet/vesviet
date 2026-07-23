@@ -206,5 +206,5 @@ Before shipping candidate models and orchestrator agents to production cluster e
 
 - [Part 6 — From Passive RAG to Autonomous Agents](/series/ai-data-engineering-pipeline/part-6-rise-of-ai-agents/)
 - [Part 8 — Inference Optimization: vLLM & PagedAttention](/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/)
-- [State Management for Generative UI](/series/generative-ui-architecture/part-2-state-management/)
-- [Part 2 — Agentic Memory Architecture](/series/agentic-system-architecture/part-2-memory/)
+- [State Management for Generative UI](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 2 — Agentic Memory Architecture](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)

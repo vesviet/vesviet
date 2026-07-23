@@ -70,7 +70,7 @@ The biggest mistake when transitioning to Microservices is underestimating **Net
 
 In a **Modular Monolith** architecture, modules communicate with each other via *in-process method calls* (function calls in RAM). This happens in a few nanoseconds. When you split a module into a Microservice, *serializing* data (like JSON), sending packets over TCP/IP, processing routing, security, and *deserializing* at the other end consumes milliseconds.
 
-If a business logic requires calling back and forth across 5 microservices, you have compounded tens of milliseconds of useless latency into the system, significantly slowing down the end-user experience. Explore how this relates to high-throughput systems in our [High Concurrency System Design guide](/series/high-concurrency-systems/article_1_system_design/).
+If a business logic requires calling back and forth across 5 microservices, you have compounded tens of milliseconds of useless latency into the system, significantly slowing down the end-user experience. Explore how this relates to high-throughput systems in our [High Concurrency System Design guide](/posts/shopee-flash-sale-architecture/).
 
 ## 3. Case Study: Stack Overflow's Art of Vertical Scaling
 
@@ -197,6 +197,6 @@ Each business domain lives in a top-level internal directory (e.g. `internal/bil
 
 - **Previous Part:** [Part 0: Executive Summary — Amazon Prime Video Case Study](/series/modular-monolith-architecture/part-0-executive-summary/)
 - **Next Part:** Continue to [Part 2: FinOps Cost Reality](/series/modular-monolith-architecture/part-2-finops-cost-reality/)
-- **Related Guides:** [Go Clean Architecture Primer](/series/system-design/01-introduction-system-design-golang/) and [C10M Concurrency Lessons](/series/high-concurrency-systems/article_1_system_design/)
+- **Related Guides:** [Go Clean Architecture Primer](/series/system-design/01-introduction-system-design-golang/) and [C10M Concurrency Lessons](/posts/shopee-flash-sale-architecture/)
 
 Need help implementing this decision framework in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) for an architectural audit.

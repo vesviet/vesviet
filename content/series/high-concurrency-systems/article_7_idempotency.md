@@ -19,7 +19,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/idempotency-api-design-payments/"
 ---
 
-> **Prerequisite:** Before reading this chapter, please ensure you have read the previous article in this series: [Chapter 6: API Gateway vs Service Mesh in Microservices Architecture]({{< ref "article_6_api_gateway.md" >}}).
+> **Prerequisite:** Before reading this chapter, please ensure you have read the previous article in this series: [Chapter 6: API Gateway vs Service Mesh in Microservices Architecture](/posts/shopee-flash-sale-architecture/).
 
 In E-commerce or Fintech, the ultimate nightmare is not a system crash, but **charging a customer twice for a single order**. This is usually caused by network lag, an impatient user double-clicking "Pay", or automated app retry logic.
 

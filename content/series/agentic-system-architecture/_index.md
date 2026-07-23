@@ -59,10 +59,10 @@ The greatest risk is Indirect Prompt Injection (where an attacker injects malici
 
 The journey of building a Multi-Agent system from scratch:
 
-1. **Executive Summary:** [The Shift to Agentic Architectures](/series/agentic-system-architecture/executive-summary/)
-2. **Part 1:** [Agent Topology & Orchestration](/series/agentic-system-architecture/part-1-topology/)
-3. **Part 2:** [State, Memory & Context Management](/series/agentic-system-architecture/part-2-memory/)
-4. **Part 3:** [Secure Tool Calling & Guardrails](/series/agentic-system-architecture/part-3-tool-calling/) (To securely expose internal enterprise APIs to your Agents without writing hardcoded integrations, we implement the [Model Context Protocol (MCP)](/series/mcp-engineering-in-production/) layer here).
-5. **Part 4:** [AgentOps & Production Observability](/series/agentic-system-architecture/part-4-agentops/) 
+1. **Executive Summary:** [The Shift to Agentic Architectures](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)
+2. **Part 1:** [Agent Topology & Orchestration](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)
+3. **Part 2:** [State, Memory & Context Management](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)
+4. **Part 3:** [Secure Tool Calling & Guardrails](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/) (To securely expose internal enterprise APIs to your Agents without writing hardcoded integrations, we implement the [Model Context Protocol (MCP)](/series/mcp-engineering-in-production/) layer here).
+5. **Part 4:** [AgentOps & Production Observability](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/) 
 
 *(Note: A prime example of Agentic orchestration applied to a specific domain is building a reasoning-based [Agentic E-commerce Search Engine](/series/agentic-ecommerce-search/).)*

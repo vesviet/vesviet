@@ -275,7 +275,7 @@ func BenchmarkSOFARPCSidecarProxy(b *testing.B) {
 BenchmarkSOFARPCSidecarProxy-16    100000000    16.3 ns/op    0 B/op    0 allocs/op
 ```
 
-For modular RPC framework comparisons, see [Golang Kratos Microservices](/series/composable-commerce-migration/part-3-golang-kratos/).
+For modular RPC framework comparisons, see [Golang Kratos Microservices](/posts/ecommerce-architecture-composable-migration/).
 
 ## Frequently Asked Questions (FAQ)
 

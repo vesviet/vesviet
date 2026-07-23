@@ -243,5 +243,5 @@ Before shipping candidate models and orchestrator agents to production cluster e
 
 - [Part 9 — Agentic Observability: OpenTelemetry & Cost Monitoring](/series/ai-data-engineering-pipeline/part-9-agentic-observability-monitoring/)
 - [Executive Summary: The Disruption of Naive RAG](/series/ai-data-engineering-pipeline/executive-summary/)
-- [Edge Rendering & E2E Testing for Dynamic UIs](/series/generative-ui-architecture/part-6-e2e-testing-edge/)
-- [Architecting an Autonomous Content Pipeline](/series/ai-driven-playbook/part-3b-ai-automation-internal-ops/)
+- [Edge Rendering & E2E Testing for Dynamic UIs](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Architecting an Autonomous Content Pipeline](/posts/ai-native-frontend-architecture-predictions-2028/)

@@ -375,7 +375,7 @@ func BenchmarkOTelSpanProcessor(b *testing.B) {
 BenchmarkOTelSpanProcessor-16    100000000    12.4 ns/op    0 B/op    0 allocs/op
 ```
 
-For domain context migration patterns, see [DDD Bounded Context Migration](/series/composable-commerce-migration/part-1-ddd-bounded-contexts/).
+For domain context migration patterns, see [DDD Bounded Context Migration](/posts/ecommerce-architecture-composable-migration/).
 
 ## Frequently Asked Questions (FAQ)
 

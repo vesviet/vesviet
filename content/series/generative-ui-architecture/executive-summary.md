@@ -180,8 +180,8 @@ Before shipping candidate models and orchestrator agents to production cluster e
 
 ## Internal Series Navigation
 
-- [Part 1 — Beyond Chatbots: Dynamic Component Rendering](/series/generative-ui-architecture/part-1-beyond-chatbots/)
-- [Part 2 — State Management for Generative UI](/series/generative-ui-architecture/part-2-state-management/)
-- [Part 3 — Component Registry & JSON Schema Protocol](/series/generative-ui-architecture/part-3-component-registry/)
-- [Part 4 — Generative UI Security & Accessibility](/series/generative-ui-architecture/part-4-security-a11y/)
-- [Part 1 — The Dawn of Generative UI](/series/generative-ui-architecture/part-1-beyond-chatbots/)
+- [Part 1 — Beyond Chatbots: Dynamic Component Rendering](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 2 — State Management for Generative UI](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 3 — Component Registry & JSON Schema Protocol](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 4 — Generative UI Security & Accessibility](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 1 — The Dawn of Generative UI](/posts/generative-ui-with-mcp-ai-native-frontend/)

@@ -45,7 +45,7 @@ Forget generic, theoretical scaling advice. This curriculum tackles the exact co
 0. **[The Reality of C10M: Surviving Extreme Traffic — Exec Summary]({{< ref "executive-summary.md" >}})**
    *An overview for Tech Leads & Architects: Why traditional scaling fails at millions of requests and how to build high-concurrency systems using Golang.*
 
-1. **[Chapter 1: How Systems Handle Millions of Requests/s (C10M)? Lessons from Shopee & Alipay]({{< ref "article_1_system_design.md" >}})**
+1. **[Chapter 1: How Systems Handle Millions of Requests/s (C10M)? Lessons from Shopee & Alipay](/posts/shopee-flash-sale-architecture/)**
    *A deep dive into how modern distributed systems break the C10M barrier using stateless APIs, multi-level caching, and Go.*
 
 2. **[Chapter 2: The 3 Caching Vulnerabilities (Penetration, Breakdown, Avalanche) & Go Singleflight]({{< ref "article_2_caching.md" >}})**
@@ -60,7 +60,7 @@ Forget generic, theoretical scaling advice. This curriculum tackles the exact co
 5. **[Chapter 5: Optimizing Golang Database Connection Pools]({{< ref "article_5_db_connection.md" >}})**
    *Tune your *sql.DB connection pool parameters (MaxOpenConns, MaxIdleConns) and implement PgBouncer to maximize Go database performance.*
 
-6. **[Chapter 6: API Gateway vs Service Mesh in Microservices Architecture]({{< ref "article_6_api_gateway.md" >}})**
+6. **[Chapter 6: API Gateway vs Service Mesh in Microservices Architecture](/posts/shopee-flash-sale-architecture/)**
    *Understand the clear boundaries between North-South traffic (API Gateway) and East-West traffic (Service Mesh) in large Go architectures.*
 
 7. **[Chapter 7: Designing Idempotency APIs for Payment Systems]({{< ref "article_7_idempotency.md" >}})**

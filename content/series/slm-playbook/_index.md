@@ -24,12 +24,12 @@ This series is designed as a **Hands-On Technical Playbook**, taking you from qu
 ## Series Contents
 
 - [Executive Summary: The SLM Playbook](/series/slm-playbook/executive-summary/)
-- [Part 1: Hybrid AI & Self-Hosted vLLM](/series/slm-playbook/part-1-slm-hybrid-architecture/)
+- [Part 1: Hybrid AI & Self-Hosted vLLM](/posts/slm-fine-tune-vs-prompt-engineering/)
 - [Part 2: Data Engineering for SFT](/series/slm-playbook/part-2-sft-data-engineering/)
 - [Part 3: Practical LoRA & QLoRA Fine-Tuning](/series/slm-playbook/part-3-lora-qlora-tuning/)
-- [Part 4: Task & Knowledge Distillation](/series/slm-playbook/part-4-knowledge-distillation-r1/)
-- [Part 5: Preference Alignment (DPO, KTO, GRPO)](/series/slm-playbook/part-5-preference-alignment/)
-- [Part 6: Enterprise Serving & Quantization](/series/slm-playbook/part-6-vllm-deployment-evals/)
+- [Part 4: Task & Knowledge Distillation](/posts/slm-fine-tune-vs-prompt-engineering/)
+- [Part 5: Preference Alignment (DPO, KTO, GRPO)](/posts/slm-fine-tune-vs-prompt-engineering/)
+- [Part 6: Enterprise Serving & Quantization](/posts/slm-fine-tune-vs-prompt-engineering/)
 
 ---
 

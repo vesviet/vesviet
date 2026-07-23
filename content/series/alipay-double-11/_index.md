@@ -37,7 +37,7 @@ Read everything above, then:
 ## Series Contents
 
 - [Executive Summary]({{< ref "/series/alipay-double-11/executive-summary.md" >}})
-- [Research Index]({{< ref "/series/alipay-double-11/research-index.md" >}})
+- [Research Index](/posts/alipay-double-11-architecture-tps/)
 - [Phase 1 — Timeline]({{< ref "/series/alipay-double-11/phase-1-timeline.md" >}})
 - [Phase 2 — Architecture]({{< ref "/series/alipay-double-11/phase-2-architecture.md" >}})
 - [Phase 3 — Operations]({{< ref "/series/alipay-double-11/phase-3-operations.md" >}})

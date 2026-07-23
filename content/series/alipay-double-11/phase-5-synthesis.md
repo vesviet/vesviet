@@ -15,7 +15,7 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-5-synthesis/"
 mermaid: true
 ---
 [← Series hub]({{< ref "/series/alipay-double-11/_index.md" >}})
-[← Prev]({{< ref "/series/alipay-double-11/modern-tech-comparison.md" >}}) • [Next →]({{< ref "/series/alipay-double-11/research-index.md" >}})
+[← Prev]({{< ref "/series/alipay-double-11/modern-tech-comparison.md" >}}) • [Next →](/posts/alipay-double-11-architecture-tps/)
 
 > **Prerequisite:** [Modern Tech Comparison]({{< ref "modern-tech-comparison.md" >}})
 
@@ -194,4 +194,4 @@ Planet-scale payment reliability is not achieved by adopting a single tool or cl
 
 Need help implementing high-scale architectures? Feel free to [Get in touch](/hire/) or [Hire me](/hire/) to review your system design and codebase.
 
-🔗 **Next Step:** [Research Index]({{< ref "research-index.md" >}})
+🔗 **Next Step:** [Research Index](/posts/alipay-double-11-architecture-tps/)

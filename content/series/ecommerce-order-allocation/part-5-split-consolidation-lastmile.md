@@ -285,4 +285,4 @@ For technical consultation on warehousing algorithms, database schema designs, o
 
 ---
 
-← [Previous Part: Part 4 — Amazon CONDOR & Anticipatory Shipping](/series/ecommerce-order-allocation/part-4-amazon-condor-anticipatory/) | [Next Part: Part 6 — Hands-on: Building a Mini Allocation Engine with Google OR-Tools](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/) →
+← [Previous Part: Part 4 — Amazon CONDOR & Anticipatory Shipping](/posts/order-fulfillment-algorithm-warehouse-last-mile/) | [Next Part: Part 6 — Hands-on: Building a Mini Allocation Engine with Google OR-Tools](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/) →

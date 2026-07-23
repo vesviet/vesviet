@@ -262,5 +262,5 @@ If your enterprise e-commerce or B2B platform is struggling with slow database q
 
 ---
 
-🔗 **Next Step:** [Chapter 1: How Systems Handle Millions of Requests/s (C10M)? Lessons from Shopee & Alipay]({{< ref "article_1_system_design.md" >}})
+🔗 **Next Step:** [Chapter 1: How Systems Handle Millions of Requests/s (C10M)? Lessons from Shopee & Alipay](/posts/shopee-flash-sale-architecture/)
 
