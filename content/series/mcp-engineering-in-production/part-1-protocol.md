@@ -8,7 +8,6 @@ weight: 2
 categories: ["Architecture"]
 tags: ["MCP", "Transport", "HTTP", "Core Primitives"]
 description: "Deep dive into the 5 Core Primitives of MCP and the evolution of the Transport Layer from local STDIO to enterprise-scale Streamable HTTP (SSE)."
-aliases: ["/series/mcp-engineering-in-production/part-1-protocol/"]
 cover: {'image': 'images/posts/generative-ui-mcp-cover.png', 'alt': 'MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment', 'relative': False}
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-1-protocol/"

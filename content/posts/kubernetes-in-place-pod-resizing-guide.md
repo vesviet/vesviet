@@ -5,7 +5,7 @@ author: "Lê Tuấn Anh"
 date: "2026-06-12T14:00:00+07:00"
 lastmod: "2026-07-08T18:21:00+07:00"
 draft: false
-description: "Kubernetes In-Place Pod Resizing GA in v1.35: modify CPU/memory on running containers without restart. YAML examples, VPA integration, and cost optimization."
+description: "Kubernetes in-place pod resizing guide: verify version and provider support, use safe resource policies, and validate VPA behavior before production rollout."
 ShowToc: true
 TocOpen: true
 mermaid: true
@@ -28,7 +28,7 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/kubernetes-in-place-pod-resizing-guide/"
 ---
 
-**Answer-first:** In-Place Pod Resizing (GA in Kubernetes v1.35) allows you to modify CPU and memory requests/limits on running containers without restarting the pod — eliminating cold-start disruptions for AI inference, databases, and stateful workloads. This guide covers requirements, production YAML, VPA integration, cost optimization patterns, and gotchas.
+**Answer-first:** In-place pod resizing can update CPU and memory resources without recreating a pod when the Kubernetes version, runtime, workload policy, and managed provider support the requested resize. Confirm the feature status and provider documentation for the exact cluster version before relying on it for stateful workloads.
 
 ### What You'll Learn That AI Won't Tell You
 - In-place pod resizing edge cases where CPU updates cause container restarts.
@@ -47,21 +47,18 @@ This post is the production guide: what it is, how to use it, and where the shar
 
 ### Before vs. After
 
-| Scenario | Before v1.35 | After v1.35 |
+| Scenario | Without in-place resize support | With verified in-place resize support |
 |----------|-------------|-------------|
-| AI inference pod needs more memory during peak | Delete pod → Schedule new pod → Load model weights (30s–5min cold start) | PATCH resize → Memory limit increased in ~1s → No disruption |
-| Database needs CPU burst for overnight batch | Vertical Pod Autoscaler triggers restart → connections dropped | VPA patches resize → CPU limit raised → zero connection loss |
-| Development pod needs temporary resources | Edit deployment → rolling restart | `kubectl resize` → instant |
-| Idle pods wasting resources overnight | Scale down replicas (losing state) | Resize down → keep pod alive with minimal resources |
+| AI inference pod needs more memory during peak | Recreate or reschedule according to controller behavior | Request a resize; observe status and retain a restart fallback |
+| Database needs CPU burst for overnight batch | Controller may recreate the pod | Resize only after validating workload and provider behavior |
+| Development pod needs temporary resources | Edit the controller template or recreate the pod | Use the supported resize API and reconcile the controller template |
+| Idle pods wasting resources overnight | Scale replicas or change the template | Resize down only when current usage makes the reduction safe |
 
 ### The Journey to GA
 
-| Version | Status | Notes |
+| Version | Status | Validation required |
 |---------|--------|-------|
-| v1.27 (2023) | Alpha | Feature gate `InPlacePodVerticalScaling` |
-| v1.31 (2024) | Beta | Enabled by default on API server, not kubelet |
-| v1.33 (2025) | Beta | Enabled by default everywhere |
-| v1.35 (Dec 2025) | **Stable (GA)** | No feature gates needed. Enabled by default. |
+| Any cluster version | Varies by Kubernetes release and provider | Confirm the Kubernetes feature documentation and control-plane, kubelet, and runtime versions |
 
 ---
 
@@ -73,20 +70,19 @@ This post is the production guide: what it is, how to use it, and where the shar
 
 | Component | Minimum Version | Notes |
 |-----------|----------------|-------|
-| Kubernetes | v1.35+ | GA, no feature gates |
-| containerd | ≥ 1.6.9 | Supports `UpdateContainerResources` CRI call |
-| CRI-O | ≥ 1.25 | Alternative to containerd |
-| kubelet | v1.35+ | Must match API server version |
-| kubectl | v1.35+ | For `kubectl resize` convenience command |
+| Kubernetes | Provider-supported version | Confirm feature state and API availability in the installed version |
+| Container runtime | Provider-supported version | Confirm the runtime can update requested resources safely |
+| Kubelet | Compatible with control plane | Test resize status transitions on a representative node pool |
+| kubectl | Compatible client | Use the cluster's supported API or documented command |
 
-### Managed Kubernetes Support (as of June 2026)
+### Managed Kubernetes Support
 
-| Provider | Supported | Notes |
+| Provider | Validation question | Notes |
 |----------|-----------|-------|
-| **EKS** | ✅ v1.35 clusters | Available since March 2026 |
-| **GKE** | ✅ v1.35 clusters | Rapid channel first |
-| **AKS** | ✅ v1.35 clusters | Preview since Feb 2026 |
-| **K3s** | ✅ v1.35+ | Works with embedded containerd |
+| **EKS** | Does the chosen version and node runtime document support? | Verify against the current EKS release notes. |
+| **GKE** | Is the feature enabled in the selected channel and node image? | Verify against the current GKE documentation. |
+| **AKS** | Is the feature available in the selected region and tier? | Verify against the current AKS documentation. |
+| **K3s** | Does the bundled Kubernetes/runtime combination support the workflow? | Test it on the target distribution. |
 
 ---
 
@@ -275,7 +271,7 @@ If the ETL job hits a memory-intensive phase, an external controller (or VPA) ca
 
 
 
-### VPA with In-Place Update Mode
+### VPA and In-Place Resize Compatibility
 
 ```yaml
 apiVersion: autoscaling.k8s.io/v1
@@ -288,7 +284,9 @@ spec:
     kind: Deployment
     name: llm-inference
   updatePolicy:
-    updateMode: "InPlace"  # New mode: resize without restart
+    # Select only a mode documented by the VPA version installed in this cluster.
+    # Verify whether that version can request in-place resizing before enabling it.
+    updateMode: "Auto"
   resourcePolicy:
     containerPolicies:
     - containerName: inference
@@ -301,7 +299,7 @@ spec:
       controlledResources: ["cpu", "memory"]
 ```
 
-### How VPA + In-Place Resize Works
+### Intended VPA + In-Place Resize Flow
 
 ```mermaid
 flowchart TD
@@ -366,7 +364,7 @@ spec:
           restartPolicy: OnFailure
 ```
 
-**Cost savings estimate:** If an AI inference pod runs on a `p3.2xlarge` ($3.06/hr) equivalent during business hours and can downscale to `m5.xlarge` ($0.192/hr) equivalent during 12 off-peak hours — that's ~$34/day savings per pod.
+**Cost validation:** Estimate savings from the actual node or accelerator allocation, purchase model, autoscaler behavior, utilization, and minimum replica count. Resizing a pod does not itself move it to a cheaper instance type or guarantee that a node can be removed.
 
 ---
 
@@ -396,7 +394,7 @@ kubectl patch pod myapp --subresource resize --type merge -p \
 ```
 
 **2. Forgetting resizePolicy:**
-If you don't specify `resizePolicy`, the default is `NotRequired` for both CPU and memory. This is usually fine for CPU but can be surprising for memory on apps that read memory limits at startup (e.g., JVM `-XX:MaxRAMPercentage`).
+Do not rely on an assumed default `resizePolicy`. Check the API documentation for the installed Kubernetes version and explicitly declare restart behavior for CPU and memory. Apps that read limits at startup, such as JVM workloads using `-XX:MaxRAMPercentage`, need workload-level validation.
 
 **3. Deployment rollout overrides resize:**
 A normal Deployment rollout creates new pods with the Deployment's `spec.template.resources`. Any in-place resize on the old pods is lost. For persistent resizes, update the Deployment spec too.
@@ -460,5 +458,5 @@ The pod's `status.resize` field will be set to `Deferred` — meaning the kubele
 {{< /faq >}}
 
 {{< faq q="How does In-Place Pod Resizing help with AI inference costs?" >}}
-AI inference pods often need high resources (GPU, memory for model weights) during active inference but sit idle between requests. In-Place Resizing allows you to scale CPU/memory down during idle periods and up during load spikes — without the 30-second to 5-minute cold start of loading model weights into a new pod. Combined with time-based CronJobs or VPA, this can reduce compute costs by 40-60% for inference workloads with predictable traffic patterns.
+AI inference pods can need high resources during active inference but sit idle between requests. When the workload, provider, and resize path have been validated, in-place resizing may reduce disruption compared with recreating a pod. Estimate any savings from observed utilization, autoscaler decisions, and the actual node or accelerator billing model rather than applying a generic percentage.
 {{< /faq >}}

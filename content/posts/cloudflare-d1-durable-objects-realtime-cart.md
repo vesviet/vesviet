@@ -18,7 +18,7 @@ tags:
   - "TypeScript"
   - "Edge Computing"
   - "Shopping Cart"
-description: "Build a sub-10ms real-time e-commerce cart with Cloudflare D1 and Durable Objects. Complete TypeScript code, WebSocket state sync, and zero Redis locks."
+description: "Build a real-time e-commerce cart with Cloudflare D1 and Durable Objects. Complete TypeScript patterns for signed sessions, state synchronization, and checkout-safe inventory handling."
 ShowToc: true
 TocOpen: true
 cover:
@@ -30,7 +30,7 @@ canonicalURL: "https://tanhdev.com/posts/cloudflare-d1-durable-objects-realtime-
 
 # Cloudflare D1 + Durable Objects: Building a Real-Time Cart
 
-**Answer-first:** Combining Cloudflare Durable Objects for single-point state coordination with D1 SQL for persistent storage eliminates database lock contention and Redis cache invalidation overhead, delivering sub-10ms real-time cart synchronization for e-commerce.
+**Answer-first:** Use a Durable Object to serialize updates for one cart and Durable Object storage to recover its working state. Keep D1 for product data and durable business records, then reserve and revalidate inventory during checkout. Measure end-to-end latency in the target region rather than assuming an edge latency target.
 
 ### What You'll Learn That AI Won't Tell You
 - How to design cart locking mechanisms in Durable Objects without deadlocks.
@@ -90,9 +90,9 @@ graph TD
     end
 ```
 
-**D1 is the source of truth** for products, sessions, and confirmed cart states. **Durable Objects** are the hot path for real-time cart mutations — they hold the current cart state in memory and handle concurrent updates with strong consistency, then asynchronously flush the final state to D1 when the cart is confirmed or when a persistence checkpoint is needed.
+**D1 is the source of truth** for products, orders, and any business record that must be queried outside the cart coordinator. **Durable Object storage** is the durable working state for a cart; the Durable Object serializes concurrent mutations for that cart. Persist an immutable checkout snapshot to D1 only after inventory is reserved and the checkout workflow owns the transition.
 
-This separation means that adding an item to the cart (a sub-1ms Durable Object memory write) is decoupled from the D1 write (a durable SQLite write) — giving you the responsiveness of in-memory operations with the durability of a relational store. For teams running a full microservices e-commerce stack alongside this edge cart, see [Architecting a 21-Service E-Commerce Ecosystem in Go](/posts/architecting-21-service-ecommerce-golang-ddd/) for how the cart integrates with inventory, order, and payment services via DDD boundaries.
+This separation keeps cart interaction responsive without treating a cart edit as an inventory reservation. Latency depends on client location, Durable Object placement, payload size, and downstream calls, so establish a production SLO from measured percentiles. For teams running a full microservices e-commerce stack alongside this edge cart, see [Architecting a 21-Service E-Commerce Ecosystem in Go](/posts/architecting-21-service-ecommerce-golang-ddd/) for how the cart integrates with inventory, order, and payment services via DDD boundaries.
 
 ---
 
@@ -184,7 +184,7 @@ export default {
 
 async function handleCartRequest(request: Request, env: Env): Promise<Response> {
     // Resolve or create the cart session from the cookie
-    const cartId = getOrCreateCartId(request);
+    const cartId = await getOrCreateCartId(request, env.CART_COOKIE_SECRET);
     
     // Get the Durable Object for this cart session
     // The DO ID is derived from the cartId — same cartId = same DO instance globally
@@ -192,20 +192,38 @@ async function handleCartRequest(request: Request, env: Env): Promise<Response> 
     const cartDO = env.CART_DO.get(doId);
     
     // Forward the request to the Durable Object
-    const doResponse = await cartDO.fetch(request);
+    const headers = new Headers(request.headers);
+    headers.set('X-Cart-ID', cartId);
+    const doResponse = await cartDO.fetch(new Request(request, { headers }));
     
     // Set/refresh the cart session cookie
     const response = new Response(doResponse.body, doResponse);
-    response.headers.append('Set-Cookie', 
-        `cart_id=${cartId}; HttpOnly; Secure; SameSite=Strict; Max-Age=2592000; Path=/`
+    response.headers.append('Set-Cookie',
+        `cart_session=${await signCartId(cartId, env.CART_COOKIE_SECRET)}; HttpOnly; Secure; SameSite=Strict; Max-Age=2592000; Path=/`
     );
     
     return response;
 }
 
-function getOrCreateCartId(request: Request): string {
+async function getOrCreateCartId(request: Request, secret: string): Promise<string> {
     const cookies = parseCookies(request.headers.get('Cookie') || '');
-    return cookies['cart_id'] ?? crypto.randomUUID();
+    return await verifyCartId(cookies['cart_session'], secret) ?? crypto.randomUUID();
+}
+
+async function signCartId(cartId: string, secret: string): Promise<string> {
+    const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+    const signature = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(cartId));
+    const encoded = btoa(String.fromCharCode(...new Uint8Array(signature)))
+        .replaceAll('+', '-').replaceAll('/', '_').replaceAll('=', '');
+    return `${cartId}.${encoded}`;
+}
+
+async function verifyCartId(value: string | undefined, secret: string): Promise<string | null> {
+    if (!value) return null;
+    const separator = value.lastIndexOf('.');
+    if (separator < 1) return null;
+    const cartId = value.slice(0, separator);
+    return (await signCartId(cartId, secret)) === value ? cartId : null;
 }
 
 function parseCookies(cookieHeader: string): Record<string, string> {
@@ -323,7 +341,7 @@ export class CartDurableObject extends DurableObject {
     private initialized = false;
 
     async fetch(request: Request): Promise<Response> {
-        // Initialize state from D1 on first request
+        // Initialize state from Durable Object storage on first request.
         if (!this.initialized) {
             await this.loadFromStorage();
             this.initialized = true;
@@ -393,7 +411,8 @@ export class CartDurableObject extends DurableObject {
             return new Response(JSON.stringify({ error: 'Product not found' }), { status: 404 });
         }
 
-        // Check stock availability
+        // This is a cart-level availability hint, not a reservation. Checkout must
+        // reserve and revalidate inventory in the inventory system.
         const existingItem = this.state.items.get(body.productId);
         const currentQty = existingItem?.quantity ?? 0;
         if (currentQty + body.quantity > product.stock) {
@@ -412,10 +431,9 @@ export class CartDurableObject extends DurableObject {
         });
         this.state.lastUpdated = Date.now();
 
-        // Schedule async persistence to D1
-        // Using ctx.waitUntil ensures the response is returned immediately
-        // while the D1 write completes in the background
-        this.ctx.waitUntil(this.persistToD1());
+        // Persist cart state in Durable Object storage. Do not treat this write as
+        // a checkout reservation or a substitute for inventory transactions.
+        this.ctx.waitUntil(this.persistToStorage());
 
         // Schedule cart abandonment alarm
         this.ctx.storage.setAlarm(Date.now() + 30 * 60 * 1000); // 30 minutes
@@ -437,7 +455,7 @@ export class CartDurableObject extends DurableObject {
         const item = this.state.items.get(productId)!;
         this.state.items.set(productId, { ...item, quantity: body.quantity });
         this.state.lastUpdated = Date.now();
-        this.ctx.waitUntil(this.persistToD1());
+        this.ctx.waitUntil(this.persistToStorage());
 
         return this.getCart();
     }
@@ -445,16 +463,13 @@ export class CartDurableObject extends DurableObject {
     private removeItem(productId: string): Response {
         this.state.items.delete(productId);
         this.state.lastUpdated = Date.now();
-        this.ctx.waitUntil(this.persistToD1());
+        this.ctx.waitUntil(this.persistToStorage());
         return this.getCart();
     }
 
-    // Called when the abandonment alarm fires
+    // Called when the abandonment alarm fires.
     async alarm(): Promise<void> {
-        // Mark cart as abandoned in D1
-        const env = this.env as Env;
-        // The cart ID is the DO's name
-        console.log('Cart abandonment alarm fired');
+        await this.ctx.storage.put('cartStatus', 'abandoned');
     }
 
     private async loadFromStorage(): Promise<void> {
@@ -469,8 +484,9 @@ export class CartDurableObject extends DurableObject {
         }
     }
 
-    private async persistToD1(): Promise<void> {
-        // Also persist to DO storage for fast cold-start recovery
+    private async persistToStorage(): Promise<void> {
+        // Durable Object storage is the cart's durable working state and supports
+        // recovery after eviction. Order creation persists its checkout snapshot to D1.
         await this.ctx.storage.put('cartState', {
             items: Object.fromEntries(this.state.items),
             lastUpdated: this.state.lastUpdated,
@@ -491,7 +507,7 @@ This is the fundamental reason Durable Objects are powerful for shopping cart st
 
 ### Abandoned Cart TTL
 
-The `ctx.storage.setAlarm()` call in `addItem` schedules a Cloudflare-managed alarm. If the alarm fires (user hasn't interacted with the cart in 30 minutes), the DO's `alarm()` method runs — marking the cart as abandoned in D1. This enables abandoned cart email workflows without requiring a separate scheduler service.
+The `ctx.storage.setAlarm()` call in `addItem` schedules a Cloudflare-managed alarm. If the alarm fires (user hasn't interacted with the cart in 30 minutes), the DO's `alarm()` method marks the cart state as abandoned in Durable Object storage. An email workflow should consume an explicit, permission-aware event rather than infer consent from an abandoned cart.
 
 ### Session Expiry and Cart Merging
 
@@ -554,7 +570,7 @@ async function mergeAnonymousCart(
 
 ## Connecting to a Payment Flow: Cart → Checkout with Stripe or Paddle
 
-When the user proceeds to checkout, the DO serializes the cart state and creates a Stripe Checkout Session:
+When the user proceeds to checkout, the inventory service must atomically reserve stock and reprice the order before a payment session is created. The Durable Object serializes cart edits, but it does not serialize stock across carts:
 
 ```typescript
 async function createCheckoutSession(
@@ -572,8 +588,12 @@ async function createCheckoutSession(
         throw new Error('Cart is empty');
     }
 
-    // Create Stripe line items from cart
-    const lineItems = cart.items.map(item => ({
+    // Revalidate price and atomically reserve inventory before creating payment.
+    // The reservation endpoint must be idempotent and return a short-lived token.
+    const reservation = await reserveInventoryAndPrice(env, cart.items, cartId);
+
+    // Create Stripe line items from the server-authoritative reservation.
+    const lineItems = reservation.items.map(item => ({
         price_data: {
             currency: 'usd',
             product_data: { name: item.name },
@@ -609,18 +629,17 @@ async function createCheckoutSession(
 
 ---
 
-## Performance and Cost Analysis: D1 + Workers vs. Traditional Backend
+## Capacity and Cost Validation
 
-| Metric | Cloudflare Workers + D1 | Traditional (AWS EC2 + RDS) |
+| Dimension | Cloudflare Workers + D1 + Durable Objects | Traditional backend |
 |---|---|---|
-| **Global P50 latency** | 10–25ms (edge) | 50–200ms (regional) |
-| **Cost at 1M cart API calls/day** | ~$5–15/month | ~$150–500/month (EC2 + RDS) |
 | **Operational overhead** | Near-zero | Medium (EC2, RDS, Redis) |
-| **Cold start latency** | <1ms (V8 isolate) | N/A (always-on) |
-| **D1 size limit** | 10 GB/database | Unlimited (managed) |
-| **Concurrent edit safety** | Native (DO) | Requires Redis locks |
+| **Latency** | Measure by user region, DO location, payload, and D1 access pattern | Measure by client-to-region path, cache, and database path |
+| **Cost** | Model Workers, DO, D1 reads/writes, egress, and plan limits | Model compute, database, cache, egress, operations, and HA |
+| **Concurrent cart edits** | Serialized per Durable Object ID | Requires an equivalent per-cart concurrency strategy |
+| **Inventory correctness** | Requires an external reservation and checkout revalidation | Requires an atomic reservation and checkout revalidation |
 
-The economics strongly favor Cloudflare Workers for cart workloads at most e-commerce scales. The D1 10 GB size limit is the primary constraint — for a product catalog of 100,000 items at ~1 KB/row, that's 100 MB. Cart sessions and cart items for 1 million users are another ~500 MB. Most e-commerce platforms fit comfortably within 10 GB.
+Do not infer suitability from database size alone. D1 query limits, write serialization characteristics, Durable Object placement, inventory throughput, regional data requirements, and payment integrations determine whether this design fits. Run a representative load test and cost projection before selecting it for checkout-critical traffic.
 
 Once a checkout is confirmed, the order flows into fulfillment. For the warehouse allocation and last-mile delivery layer that processes confirmed orders, see [Order Fulfillment Algorithm: Warehouse to Last-Mile](/posts/order-fulfillment-algorithm-warehouse-last-mile/).
 
@@ -632,7 +651,7 @@ Once a checkout is confirmed, the order flows into fulfillment. For the warehous
 A Durable Object (DO) is a Cloudflare Workers primitive that provides a single-threaded, strongly consistent execution context with persistent storage. Unlike regular Workers (which can run on any edge node), a DO always runs on one specific Cloudflare datacenter for a given ID. Use DOs when you need strong consistency for a specific entity's state — shopping carts, game state, presence channels, collaborative document editing.
 
 ### Is Cloudflare D1 production-ready for e-commerce?
-Yes, as of 2025. D1 exited beta in late 2024 and is the recommended persistent storage solution for Workers. Key limitations to be aware of: 10 GB max database size per D1 instance (can be worked around with multiple D1 databases per tenant), no long-running transactions spanning multiple requests, and read-only replicas are geographically eventual (writes go to the primary region).
+It can be appropriate for cart-adjacent data when its current documented limits match the workload. Confirm the current Cloudflare D1 limits, consistency model, regional behavior, and pricing for the deployed plan. Keep checkout, payment idempotency, and inventory reservation correctness explicit regardless of the backing database.
 
 ### How does D1 compare to PlanetScale or Neon for edge databases?
 D1 (SQLite at the edge) is purpose-built for Cloudflare Workers and has the lowest latency from Worker code. PlanetScale (MySQL) and Neon (PostgreSQL) require a TCP connection from the Worker to their servers — adding 10–50ms for the connection overhead. However, PlanetScale and Neon support larger datasets, more complex queries, and full PostgreSQL/MySQL feature sets. For standard e-commerce schemas that fit within 10 GB, D1 is the optimal choice for a Cloudflare-native stack.

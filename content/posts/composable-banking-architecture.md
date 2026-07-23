@@ -29,7 +29,7 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/composable-banking-architecture/"
 ---
 
-**Answer-first:** Composable banking replaces rigid legacy cores with modular Go microservices. The transition uses the Strangler Fig pattern to decouple domains, while distributed Sagas manage eventual consistency across transaction engines, and NewSQL databases provide horizontal scaling without sacrificing ACID compliance.
+**Answer-first:** Composable banking can separate independently changing capabilities, but it does not remove ledger, regulatory, or operational constraints. Use a staged migration, explicit data ownership, idempotent payment APIs, and a ledger design reviewed for the applicable jurisdiction and institution.
 
 ### What You'll Learn That AI Won't Tell You
 - Strangler fig patterns for core banking systems that prevent data corruption.
@@ -74,14 +74,14 @@ Domain-Driven Design (DDD) provides the **"how"**: each BIAN Service Domain maps
 
 ## The Business Case: Why Legacy Cores Are Breaking Down in 2026
 
-Legacy monolith maintenance now consumes **70-80% of bank IT budgets** on average, leaving little capital for innovation. Several converging pressures have turned this from a long-term concern into an immediate operational risk.
+The modernization case depends on the institution's licensing, operating model, change failure rate, regulatory obligations, and skill profile. Quantify those inputs from the bank's own finance and delivery data before deciding whether to migrate.
 
 **Cost indicators driving migration decisions:**
 
-- **TCO reduction:** Banks completing composable modernization report **20-40% lower Total Cost of Ownership** over three years, primarily from eliminating vendor licensing fees and reducing SRE toil.
-- **Time-to-market acceleration:** Product release cycles improve by **40-60%**. Launching a new credit card product drops from 12-18 months to 6-10 weeks.
-- **Talent risk:** COBOL engineers command **2-3× market salary premiums** due to supply scarcity, and attrition accelerates as the workforce ages. Each legacy developer who leaves takes institutional knowledge that cannot be replaced.
-- **Security posture:** Monolithic systems show a 50% higher surface area for security breaches compared to isolated, network-policy-governed microservices, due to the blast radius of any single compromised component.
+- **TCO:** Include license, infrastructure, vendor support, engineering, reconciliation, migration, and dual-run costs. Do not assume a service decomposition lowers the total.
+- **Time to market:** Measure lead time, change failure rate, recovery time, and approval lead time per product line; a distributed architecture can improve one bottleneck while adding others.
+- **Talent risk:** Document succession coverage and critical-system knowledge from the actual support roster rather than applying a generic salary multiple.
+- **Security posture:** Reduce blast radius with least privilege, network segmentation, audit trails, and tested recovery. More services also increase identity, patching, and integration surface area.
 
 The business case is no longer "should we modernize?" It is "what sequence minimizes migration risk?"
 
@@ -122,12 +122,19 @@ In Go, a retry loop with exponential backoff handles the version conflict:
 func (r *AccountRepo) UpdateBalance(ctx context.Context, id uuid.UUID, delta decimal.Decimal, version int) error {
     const maxRetries = 5
     for attempt := 0; attempt < maxRetries; attempt++ {
-        result := r.db.ExecContext(ctx,
+        result, err := r.db.ExecContext(ctx,
             `UPDATE accounts SET balance = balance + $1, version = version + 1, updated_at = NOW()
              WHERE id = $2 AND version = $3`,
             delta, id, version,
         )
-        if result.RowsAffected == 1 {
+        if err != nil {
+            return err
+        }
+        rows, err := result.RowsAffected()
+        if err != nil {
+            return err
+        }
+        if rows == 1 {
             return nil // success
         }
         // Version conflict — re-read and retry
@@ -321,23 +328,34 @@ func (h *PaymentHandler) InitiateTransfer(w http.ResponseWriter, r *http.Request
     hash := sha256.Sum256([]byte(r.Header.Get("X-Client-ID") + ":" + idempotencyKey))
     keyHash := hex.EncodeToString(hash[:])
 
-    // Atomic insert: if key_hash already exists, ON CONFLICT returns the stored status
-    var status string
+    // Claim the key. Only the request that inserts a row may perform the side effect.
+    var claimed string
     err := h.db.QueryRowContext(r.Context(), `
         INSERT INTO idempotency_keys (key_hash, status, created_at)
         VALUES ($1, 'PROCESSING', NOW())
-        ON CONFLICT (key_hash) DO UPDATE SET updated_at = NOW()
-        RETURNING status`,
+        ON CONFLICT (key_hash) DO NOTHING
+        RETURNING key_hash`,
         keyHash,
-    ).Scan(&status)
-    if err != nil {
+    ).Scan(&claimed)
+    if err != nil && !errors.Is(err, sql.ErrNoRows) {
         http.Error(w, "database error", http.StatusInternalServerError)
         return
     }
 
-    if status != "PROCESSING" {
-        // Duplicate request: return the previously cached result
-        h.returnCachedResult(w, keyHash)
+    if claimed == "" {
+        // A concurrent request must never re-run a payment. Return a completed
+        // result, or a retriable in-progress response with a status endpoint.
+        status, err := h.lookupIdempotencyStatus(r.Context(), keyHash)
+        if err != nil {
+            http.Error(w, "database error", http.StatusInternalServerError)
+            return
+        }
+        if status == "COMPLETED" || status == "FAILED" {
+            h.returnCachedResult(w, keyHash)
+            return
+        }
+        w.Header().Set("Retry-After", "2")
+        http.Error(w, "payment is still processing", http.StatusConflict)
         return
     }
 
@@ -358,7 +376,7 @@ BaaS payment APIs map to ISO 20022 XML messages at the interbank layer. Understa
 | **camt.052** | Cash Management | Intraday account report | Treasury monitors intraday cash |
 | **camt.053** | Cash Management | End-of-day bank statement | Reconciliation runs at T+0 close |
 
-The `pain.001` → `pacs.008` transformation is a critical data mapping step: the `pain` message carries debtor intent (what the customer wants), while the `pacs` message carries the actual interbank instruction. Improper mapping — dropping reference fields like `EndToEndId` — breaks downstream reconciliation and SEPA compliance.
+The `pain.001` → `pacs.008` transformation is a critical data mapping step: the `pain` message carries debtor intent (what the customer wants), while the `pacs` message carries the interbank instruction. Validate mapping, retention, and reconciliation requirements against the payment scheme and jurisdiction; this article is not compliance advice.
 
 ### Verification of Payee (VoP) API Integration
 
@@ -565,7 +583,7 @@ Composable banking architecture replaces a monolithic core banking system with a
 
 ### Why are banks migrating away from monolithic core banking systems?
 
-Three converging pressures: cost (legacy maintenance consumes 70-80% of IT budgets), talent scarcity (COBOL engineers command 2-3× market premiums and the workforce is retiring), and speed (launching a product on a monolith takes 12-18 months; composable architectures reduce this to 6-10 weeks).
+Three common pressures are cost, talent concentration, and delivery speed. Their size and remediation depend on the institution; use a measured baseline and a regulated change plan before committing to a modernization program.
 
 ### What is the Strangler Fig pattern in core banking migration?
 

@@ -19,8 +19,6 @@ tags:
   - security
   - vibe coding security
 description: "Vibe coding guide for non-technical builders: best tools (Lovable, Cursor, Bolt.new), prompting techniques, CEO/PM case studies, and 5 Production Wall signals."
-aliases:
-  - /series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical/
 cover:
   image: "images/posts/vibe-coding-cover.png"
   alt: "Vibe Coding and AI Code Review series: from prototype to production AI-assisted engineering"

@@ -1,5 +1,5 @@
 ---
-title: "Shopee Flash Sale Architecture: Rate Limiting & Redis"
+title: "Flash Sale Architecture: Rate Limiting & Redis"
 slug: "shopee-flash-sale-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
@@ -11,14 +11,14 @@ categories:
   - "Architecture"
   - "E-Commerce"
 tags:
-  - "Shopee"
+  - "Flash Sale Architecture"
   - "Flash Sale"
   - "Redis"
   - "Rate Limiting"
   - "High Concurrency"
   - "MySQL"
   - "TiDB"
-description: "How Shopee engineers prevent crashes during 11.11 flash sales: rate limiting, Redis inventory locks, traffic shields, and microservices resilience."
+description: "Reference architecture for preventing flash-sale overload: rate limiting, Redis inventory reservations, traffic shields, and resilient checkout queues."
 ShowToc: true
 TocOpen: true
 cover:
@@ -28,16 +28,16 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/shopee-flash-sale-architecture/"
 ---
 
-**Answer-first:** Architecting flash sale systems requires preventing database overload using multi-stage rate limiting and Redis-based inventory pre-decisions. Traffic shields block duplicate requests, and asynchronous checkout queues decouple order submission from payment processing.
+**Answer-first:** Flash-sale systems protect the database with layered admission control, an atomic short-lived inventory reservation, idempotent order creation, and asynchronous processing. Redis can absorb a burst, but the final order and stock transition must be reconciled against a durable inventory source.
 
 ### What You'll Learn That AI Won't Tell You
 - Multi-stage cache invalidation strategies that keep checkout fast.
 - Handling concurrent Redis connections during million-user flash sales.
 
 
-At exactly midnight on 11.11, Shopee users across Southeast Asia and Taiwan simultaneously tap the same button. In the first 10 seconds of a flash sale, a single product page can receive requests from millions of concurrent sessions — all competing to purchase the same 1,000 units of inventory. One oversell, one server crash, or one database deadlock during that window results in a cascade of chargebacks, angry users, and front-page news headlines.
+At the start of a high-demand sale, many users can attempt to buy the same limited stock at once. One oversell, server failure, or database deadlock can create an expensive recovery process. This article presents a reference architecture; it does not claim to document Shopee's internal implementation.
 
-This post breaks down the engineering systems Shopee built to survive flash sale traffic spikes: how they pre-heat inventory into Redis, how they use layered rate limiting at the API gateway, how they scale MySQL and TiDB for high-concurrency write loads, and what their real-time observability stack looks like during the 11.11 event window.
+This post explains how a flash-sale system can pre-stage inventory into Redis, apply layered rate limits at the API gateway, protect the durable inventory store, and maintain observability during the event window. Choose concrete limits, queues, and data stores from a capacity test rather than copying the example values.
 
 For the complete architecture deep-dive across all five layers, see the [Shopee Architecture Series](/series/shopee-architecture/). The Flash Sale Engine chapter is covered in depth at [Chapter 2: Flash Sale Engine](/series/shopee-architecture/02-flash-sale-engine/). If you want to explore the underlying Go patterns for absorbing this kind of traffic, explore deeper in our [High Concurrency Systems](/series/high-concurrency-systems/) masterclass.
 
@@ -59,7 +59,7 @@ The solution requires a fundamentally different approach: **push the concurrency
 
 ---
 
-## Shopee's Microservices Foundation: Service Decomposition for Traffic Isolation
+## Reference Service Decomposition for Traffic Isolation
 
 Shopee's platform decomposes around a set of bounded domains. For flash sale traffic specifically, the critical services are:
 
@@ -85,11 +85,11 @@ Traffic from the storefront service to the flash sale path is also physically se
 
 ## The Flash Sale Engine: Pre-Heating Inventory and Redis Atomic Counters
 
-The core of Shopee's flash sale architecture is a **Redis-first inventory layer** that absorbs the initial purchase burst before anything hits the relational database.
+The core of this reference architecture is a **Redis-first reservation layer** that absorbs the initial purchase burst before the durable inventory workflow runs.
 
 ### Pre-Heating: Moving Inventory Into Redis Before the Sale Starts
 
-30 minutes before a flash sale event, the Flash Sale Engine writes the available inventory count for each participating product into Redis:
+Before a flash sale event, the Flash Sale Engine writes an explicitly reconciled allocatable quantity for each participating product into Redis. The timing and TTL must be selected from operational requirements:
 
 ```
 SET flash:inventory:{productId} {quantity}

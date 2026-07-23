@@ -28,7 +28,7 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-frontend/"
 ---
 
-**Answer-first:** Generative UI architectures leverage Model Context Protocol (MCP) to stream dynamic UI component schemas from LLMs. Securing these interfaces requires validating inputs via Zod prop schemas at the API gateway and rendering only pre-compiled, versioned local primitive React components in the browser, eliminating the risk of arbitrary remote code execution.
+**Answer-first:** MCP can expose tools that return structured data for an application-owned UI protocol; it does not standardize React component discovery, rendering, or sandboxing. Secure generative UI by validating structured output, authorizing every action server-side, and rendering only pre-compiled local components or genuinely isolated untrusted content.
 
 ### What You'll Learn That AI Won't Tell You
 - Security controls for dynamic TSX execution in edge isolates.
@@ -37,7 +37,7 @@ canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-fronte
 
 The first generation of AI-powered chat interfaces followed a simple pattern: the user types a message, the LLM generates text, the UI renders text. The second generation added tool calls — the LLM could invoke functions and render the results as text. The third generation — **Generative UI** — goes further: the LLM generates not just text responses but *interactive UI components* that are rendered directly in the browser, enabling experiences that feel less like chatting with a text box and more like using a responsive, intelligent application.
 
-Generative UI represents a genuine architectural shift. It requires a new contract between the AI model and the frontend: the **Model Context Protocol (MCP)**, developed by Anthropic. (For a complete guide on operating MCP securely in production, see our [MCP Engineering in Production](/series/mcp-engineering-in-production/) masterclass). MCP defines how AI models discover available tools and UI components, how they invoke those components with typed parameters, and how the frontend renders and sandboxes dynamically generated interfaces.
+Generative UI requires an explicit contract between the model, backend, and frontend. **Model Context Protocol (MCP)** is useful when the model must discover and invoke backend tools. The application still owns the UI component registry, renderer, authorization model, and sandbox policy; these are conventions layered on top of MCP rather than capabilities defined by the MCP specification. (For a complete guide on operating MCP securely in production, see our [MCP Engineering in Production](/series/mcp-engineering-in-production/) masterclass).
 
 This post covers the architectural design of a Generative UI system using MCP: the evolution from text to interactive UI, the MCP contract layer, client-agent state synchronization, the component registry, security controls, and a Next.js reference implementation.
 
@@ -69,20 +69,20 @@ Generative UI is the correct architecture when:
 
 ---
 
-## Model Context Protocol (MCP): The System Contract Layer for UI Generation
+## MCP and the Application UI Contract
 
-MCP is an open protocol specification that defines a standard interface for AI models to discover and invoke tools, including UI rendering tools. Without MCP, each AI application builds a proprietary contract between the model and the frontend — making components non-reusable and integrations fragile.
+MCP is an open protocol for discovering and invoking tools, prompts, and resources. A UI renderer can expose a tool such as `render_component`, but the component schema, renderer, permission mapping, and sandbox are application-specific. Make that boundary explicit so a client does not mistake a local UI convention for an MCP interoperability guarantee.
 
-### The MCP Component Contract
+### The Application Component Contract
 
-An MCP UI component is defined by:
+An application UI component contract can define:
 
 1. **Schema**: A JSON Schema or TypeScript type definition describing the component's props
 2. **Renderer**: A React (or framework-agnostic) component that renders the given props
 3. **Permissions**: What data the component can access and what actions it can trigger
 4. **Sandbox level**: Whether the component runs in a trusted or sandboxed iframe context
 
-A component definition in MCP format:
+An application component definition:
 
 ```typescript
 // mcp-registry/components/order-status-card.ts
@@ -105,7 +105,7 @@ export const OrderStatusCardSchema = z.object({
 
 export type OrderStatusCardProps = z.infer<typeof OrderStatusCardSchema>;
 
-export const OrderStatusCardMCPDefinition = {
+export const OrderStatusCardDefinition = {
     name: "order-status-card",
     description: "Displays the current status of an order with actionable options",
     schema: OrderStatusCardSchema,
@@ -114,9 +114,9 @@ export const OrderStatusCardMCPDefinition = {
 };
 ```
 
-### How the Model Discovers Components
+### How the Model Selects an Application Component
 
-The MCP server exposes a tools/list endpoint that returns all registered components. When the LLM generates a response, it selects the most appropriate component from the registry and generates its props:
+The MCP server can expose a `render_component` tool that accepts a constrained component name and JSON props. The application maps that tool call to its local registry; the renderer remains outside the MCP protocol:
 
 ```json
 // LLM response (MCP tool_use block)
@@ -286,6 +286,10 @@ class ComponentRegistry {
         // Also register as "latest" for convenience
         this.components.set(definition.name, definition);
     }
+
+    getDefinition(name: string, version?: string): ComponentDefinition | null {
+        return this.components.get(version ? `${name}@${version}` : name) ?? null;
+    }
     
     async resolve(
         name: string,
@@ -363,7 +367,7 @@ function ComponentRegistry({ componentName, props, onAction }: RegistryProps) {
     
     useEffect(() => {
         async function load() {
-            const definition = await registry.get(componentName);
+            const definition = registry.getDefinition(componentName);
             if (!definition) return;
             
             // Validate props against the schema — rejects malformed or injected props
@@ -396,7 +400,7 @@ At the core of the dynamic UI generation is the strict validation boundary. The 
 
 ### Defense Layer 2: Sandboxed Components for Untrusted Content
 
-Components that render user-provided content (reviews, comments, document bodies) should run in a sandboxed iframe:
+Components that render user-provided content (reviews, comments, document bodies) should run on a separate origin in a sandboxed iframe. A same-origin iframe with both `allow-scripts` and `allow-same-origin` is not an isolation boundary:
 
 ```typescript
 function SandboxedComponent({ componentName, props }: { componentName: string; props: unknown }) {
@@ -408,14 +412,14 @@ function SandboxedComponent({ componentName, props }: { componentName: string; p
             type: "RENDER_COMPONENT",
             componentName,
             props,
-        }, window.location.origin);
+        }, 'https://sandbox.example.com');
     }, [componentName, props]);
     
     return (
         <iframe
             ref={iframeRef}
-            src="/sandbox/component-host"
-            sandbox="allow-scripts allow-same-origin"  // No allow-forms, no allow-top-navigation
+            src="https://sandbox.example.com/component-host"
+            sandbox="allow-scripts"  // No same-origin, forms, popups, or top navigation
             style={{ border: "none", width: "100%", height: "auto" }}
         />
     );
@@ -434,9 +438,11 @@ const ContentSecurityPolicy = `
     style-src 'self' 'unsafe-inline';
     img-src 'self' data: blob:;
     connect-src 'self' https://api.stripe.com;
-    frame-src 'none';
+    frame-src https://sandbox.example.com;
 `;
 ```
+
+The sandbox host must use its own restrictive CSP and validate both `event.origin` and message shape before receiving `postMessage` data. No generated UI action should directly call a privileged API; route it through a server-side authorization check.
 
 ---
 

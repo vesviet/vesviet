@@ -798,22 +798,23 @@ conn, _ := grpc.NewClient(
 
 ## Performance Benchmarks
 
-**A single Go gRPC server (4 vCPU / 8GB) handles 72,000 RPS at 100 concurrent clients with p99 latency of 5.2ms using the unary `GetDriver` RPC and 64-byte Protobuf responses. Compared to equivalent HTTP/JSON: 2.8× higher throughput, 3.5× lower p99 latency. Binary Protobuf serialization accounts for ~40% of the latency advantage.**
+**gRPC often reduces payload size and serialization work for internal APIs, but throughput and latency depend on the protocol, handler, TLS, network, allocations, and downstream work. Publish a reproducible benchmark before using performance figures for a protocol decision.**
 
-Single-instance Go gRPC server (4 vCPU / 8GB) handling unary RPCs:
+Use a benchmark table with the measured environment rather than treating the following capacity plan as a portable result:
 
 | Concurrency | Throughput | p50 Latency | p99 Latency |
 |-------------|:----------:|:-----------:|:-----------:|
-| 10 clients | 12,000 RPS | 0.7ms | 2.1ms |
-| 50 clients | 45,000 RPS | 1.1ms | 3.8ms |
-| 100 clients | 72,000 RPS | 1.4ms | 5.2ms |
-| 200 clients | 91,000 RPS | 2.2ms | 8.9ms |
+| 10 clients | Measure | Measure | Measure |
+| 50 clients | Measure | Measure | Measure |
+| 100 clients | Measure | Measure | Measure |
+| 200 clients | Measure | Measure | Measure |
 
-**Compared to equivalent Go HTTP/JSON server:**
-- 2.8× higher throughput at 100 concurrent clients
-- 3.5× lower p99 latency
+**Compare against an equivalent HTTP/JSON server only when all of these are fixed:**
+- Hardware or pod requests/limits, region, Go and gRPC versions, and TLS configuration.
+- Request/response schemas, compression, payload distribution, connection reuse, and client behavior.
+- Handler work, downstream dependencies, benchmark command, warm-up time, duration, and percentile calculation.
 
-These benchmarks used the `driver.v1.GetDriver` unary RPC with a 64-byte Protobuf response (for a broader comparison of HTTP runtimes, check out our [High-Throughput Go Framework Benchmarks]({{< ref "high-throughput-go-framework-benchmarks-gin-fiber-kratos.md" >}})).
+The `driver.v1.GetDriver` unary RPC with a 64-byte Protobuf response is a useful low-overhead test case, but it does not predict a business endpoint with authorization, database access, or external calls. For a broader comparison of HTTP runtimes, check out our [High-Throughput Go Framework Benchmarks]({{< ref "high-throughput-go-framework-benchmarks-gin-fiber-kratos.md" >}})).
 
 ---
 
@@ -824,7 +825,7 @@ gRPC in Go is a framework for building inter-service communication using the gRP
 {{< /faq >}}
 
 {{< faq q="gRPC vs REST in Go microservices — which should I use?" >}}
-Use gRPC for internal microservice-to-microservice communication where you control both client and server: it delivers 2–3× higher throughput and 3–5× lower latency than HTTP/JSON. Use REST for public-facing APIs that are consumed by browsers or third-party clients without SDK support. A common pattern: gRPC internally, REST externally via a gRPC-Gateway transcoding layer.
+Use gRPC for internal microservice-to-microservice communication when you control both client and server and value typed contracts or streaming. Use REST for public-facing APIs consumed by browsers or third-party clients without SDK support. Benchmark representative endpoints before treating either protocol as a performance default. A common pattern is gRPC internally and REST externally via a gRPC-Gateway transcoding layer.
 {{< /faq >}}
 
 {{< faq q="How do I add authentication to a gRPC server in Go?" >}}

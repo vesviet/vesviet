@@ -86,11 +86,11 @@ If you're new here, this page is the fastest way to understand what I build and 
 - [Replace MySQL Sharding with TiDB: Distributed SQL Migration Guide](/posts/mysql-scaling-sharding-tidb-architecture/)
 - [GraphHopper Distance Matrix: Self-Host & Replace Google Maps API](/posts/graphhopper-distance-matrix-production-guide/)
 - [Self-Hosting GraphHopper on Kubernetes with OSM Data](/posts/graphhopper-kubernetes-self-hosting-osm/)
-- [GraphHopper vs CARTO: Order Fulfillment Routing Engine](/posts/graphhopper-distance-matrix-routing/)
+- [OSRM vs GraphHopper: Routing Engine Selection](/posts/osrm-vs-graphhopper-architecture-comparison/)
 
 ## Pillar 5 – AI Systems & Agentic Pipelines (2026 Focus)
 
-**Information Gain**: Production cost/latency benchmarks of prompt engineering vs LoRA fine-tuning, real agentic swarm and hybrid AI pipeline architectures that actually run reliably.
+**Information Gain**: Architecture trade-offs, measurement frameworks, and implementation patterns for prompt engineering, fine-tuning, agentic systems, and hybrid AI pipelines.
 
 - [Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)
 - [Production Agentic AI Swarm: OpenClaw & LiteLLM](/posts/deploying-autonomous-ai-swarm-openclaw-litellm/)
@@ -108,7 +108,7 @@ If you're new here, this page is the fastest way to understand what I build and 
 **Information Gain**: What “senior Magento/architecture” talent in Vietnam actually looks like in 2026, concrete vetting signals beyond theme work.
 
 - [Magento Development in Vietnam: 2026 Guide — Cost, Hiring & Upgrade](/posts/magento-vietnam/)
-- [How to Technically Vet Magento Developers in Vietnam: Interview Playbook 2026](/posts/magento-developers-in-vietnam/)
+- [Magento Development in Vietnam: Cost, Hiring & Upgrade](/posts/magento-vietnam/)
 - [Magento Agency & Development in Vietnam: Scoping Guide](/posts/magento-development-in-vietnam/)
 
 ## Tech Radar
