@@ -827,10 +827,10 @@ Using **memory-mapped persistent files** (`syscall.Mmap`), the OS kernel maps th
 ```mermaid
 classDiagram
     class IndexHeader {
-        +uint32 Magic (0x56454354)
-        +uint16 Version (1)
-        +uint32 Dimension (768)
-        +uint8 MetricType (1=Cosine)
+        +uint32 Magic
+        +uint16 Version
+        +uint32 Dimension
+        +uint8 MetricType
         +uint64 NodeCount
         +uint32 EntryNodeID
         +uint32 MaxLevel
@@ -848,8 +848,8 @@ classDiagram
         +uint32[] LayerNeighbors
     }
     
-    IndexHeader --|mmap zero-copy| VectorDataSlab
-    IndexHeader --|mmap zero-copy| GraphLevelSlab
+    IndexHeader --> VectorDataSlab : mmap_zero_copy
+    IndexHeader --> GraphLevelSlab : mmap_zero_copy
 ```
 
 ### Production Go `mmap` Persistent File Manager
