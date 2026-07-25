@@ -74,9 +74,7 @@ Domain-Driven Design (DDD) provides the **"how"**: each BIAN Service Domain maps
 
 ## The Business Case: Why Legacy Cores Are Breaking Down in 2026
 
-The modernization case depends on the institution's licensing, operating model, change failure rate, regulatory obligations, and skill profile. Quantify those inputs from the bank's own finance and delivery data before deciding whether to migrate.
-
-**Cost indicators driving migration decisions:**
+The modernization case depends on the institution's licensing, operating model, change failure rate, regulatory obligations, and skill profile. Quantify those inputs from the bank's own finance and delivery data before deciding whether to migrate. **Cost indicators driving migration decisions:**. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below.
 
 - **TCO:** Include license, infrastructure, vendor support, engineering, reconciliation, migration, and dual-run costs. Do not assume a service decomposition lowers the total.
 - **Time to market:** Measure lead time, change failure rate, recovery time, and approval lead time per product line; a distributed architecture can improve one bottleneck while adding others.

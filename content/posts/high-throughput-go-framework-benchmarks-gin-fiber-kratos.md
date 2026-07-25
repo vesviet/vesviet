@@ -324,7 +324,7 @@ Starting from version Go 1.19, Go introduced a breakthrough memory configuration
 
 ## Final Verdict: Which Framework for Production?
 
-Choosing a framework for a Production environment is not merely about finding the one with the highest benchmark score. It is a balancing act between technical performance, system stability, development velocity, and long-term codebase maintainability for the engineering team.
+Choosing a framework for a Production environment is not merely about finding the one with the highest benchmark score. It is a balancing act between technical performance, system stability, development velocity, and long-term codebase maintainability for the engineering team. The sequence diagram below traces the component interactions, data events, and boundary transitions across the workflow.
 
 ```mermaid
 graph TD

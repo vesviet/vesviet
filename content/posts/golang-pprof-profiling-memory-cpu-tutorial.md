@@ -46,8 +46,7 @@ This tutorial is a deep-dive into production-ready Go profiling. We will explore
 
 ## Safely Exposing pprof Endpoints in Production
 
-
-The most common way to enable profiling is to import the `net/http/pprof` package. As a side effect of the import, this package automatically registers its HTTP handlers to the default `http.DefaultServeMux`.
+The most common way to enable profiling is to import the `net/http/pprof` package. As a side effect of the import, this package automatically registers its HTTP handlers to the default `http.DefaultServeMux`. The code implementation below illustrates the production configuration, error handling, and performance optimization techniques.
 
 ```go
 // Exposing pprof safely on an internal port

@@ -763,7 +763,7 @@ func (a *SagaActivities) PostLedgerEntry(ctx context.Context, req TransactionReq
 
 ## Section 4: Deep Failure Analysis & Edge Cases
 
-Designing distributed financial systems requires preparing for rare, complex edge cases that crash naive implementations.
+Designing distributed financial systems requires preparing for rare, complex edge cases that crash naive implementations. The code implementation below illustrates the production configuration, error handling, and performance optimization techniques. Writing clean, performant code requires adhering to established software engineering patterns and defensive programming. The code implementation below illustrates the production configuration, memory efficiency rules, error handling strategies, and performance optimization techniques.
 
 ```
                   +-------------------------------------------------+
@@ -854,32 +854,23 @@ func GoodWorkflow(ctx workflow.Context) error {
 
 ---
 
-## Section 5: Structured Technical FAQ
+## Section 5: Frequently Asked Questions (FAQ)
 
-### Q1: How does Temporal guarantee workflow state persistence across worker node crashes without writing to database twice?
-**Answer**: Temporal separates orchestration state from application database state. The Temporal Cluster maintains an append-only Event History log (stored in PostgreSQL/Cassandra/MySQL). When an activity finishes, the worker reports the result back to the cluster, which appends an `ActivityTaskCompleted` event to the workflow history. If a worker node dies, Temporal assigns the task queue item to a new worker. The new worker replays the event history from the beginning, skipping activity executions whose results are already recorded in history events. Application state mutations occur strictly inside activities using local database transactions protected by idempotency keys.
+### How do Saga pattern compensation workflows guarantee financial consistency during partial transaction failures in Go?
 
-### Q2: How should non-compensable activities (e.g., sending an external SMS or non-reversible bank wire) be handled in a Saga?
-**Answer**: In FinTech Sagas, activities are categorized into three types: Compensable, Pivot, and Repeatable/Forward-Recovery. Non-compensable operations (such as non-reversible SWIFT wires or SMS notifications) should be designated as the **Pivot Step** or placed *after* the Pivot Step in the workflow sequence. A Pivot Step is a point of no return: once it completes, the Saga cannot roll back and must commit to forward execution. If a failure occurs *after* the Pivot Step, the workflow must use retry policies with infinite retries or trigger human operator intervention (via Temporal Signals) rather than executing backward compensations.
+**Answer:** Saga pattern compensation workflows track mutating local transactions sequentially and register inverse compensating operations (e.g., `saga.AddCompensation`) immediately after each successful mutating step. If a downstream step fails (such as an account credit rejection or ledger lock failure), the Temporal workflow engine unwinds the transaction by executing registered compensations in strict reverse order ($C_n \rightarrow \dots \rightarrow C_1$). This ensures that all previously debited or reserved funds are refunded, restoring multi-database balances to a consistent financial state without leaving stranded unallocated money.
 
-### Q3: What is the latency and throughput overhead of using Temporal for Saga orchestration compared to raw gRPC or 2PC?
-**Answer**: Temporal introduces minor network latency (typically 2ms to 10ms per activity step) due to persisting history events to the Temporal database cluster. However, this overhead is negligible compared to business logic and database disk I/O in FinTech transactions (which take 50ms to 500ms). In terms of throughput, a single Temporal cluster can process over 10,000 workflow transactions per second by horizontal scaling of worker nodes and DB sharding. Furthermore, Temporal completely avoids the severe lock-contention latency spikes characteristic of 2PC, resulting in significantly lower tail latencies (p99) under heavy system load.
+### How does the Temporal Go SDK handle activity retry policies, heartbeats, and transient network errors?
 
-### Q4: How should idempotency keys be structured across multi-step Sagas to prevent cross-transaction collision?
-**Answer**: Idempotency keys must combine a unique client request token with the specific step step-identifier and workflow execution ID. A production format is: `[ClientToken]#[WorkflowID]#[ActivityName]#[AttemptCount]`. For example: `req_tx_998123#wf_money_transfer_4410#DebitAccount#v1`. Including the activity name and step prefix prevents an idempotency check in the `DebitAccount` activity from accidentally colliding with an idempotency key evaluated in the `CreditAccount` or `Refund` activities.
+**Answer:** The Temporal Go SDK configures activity retry behavior using `temporal.RetryPolicy` parameters, including initial backoff intervals, exponential backoff coefficients, maximum retry attempts, and explicit non-retryable application error lists (such as `InsufficientFundsError` or `AccountFrozenError`). For long-running or distributed activities, worker nodes issue periodic heartbeats using `activity.RecordHeartbeat(ctx, details)`. If a network partition or worker crash interrupts heartbeating beyond `HeartbeatTimeout`, the Temporal cluster marks the activity execution stale and reschedules it onto an operational worker node automatically.
 
-### Q5: How do you safely deploy backward-compatible workflow code updates in Temporal when updating Go Saga logic?
-**Answer**: Because Temporal workflows can run for days or months, updating Go workflow code requires using Temporal's deterministic versioning API (`workflow.GetVersion`). Never modify existing workflow control structures directly without version guards. For example, to add a new verification activity to an active workflow:
+### How is idempotency enforced in distributed transactions to prevent double-debiting during activity retries?
 
-```go
-v := workflow.GetVersion(ctx, "AddIdentityVerificationStep", workflow.DefaultVersion, 1)
-if v == 1 {
-    // New workflow code branch
-    err = workflow.ExecuteActivity(ctx, activities.VerifyIdentity, req).Get(ctx, nil)
-} else {
-    // Legacy workflow code branch for replaying past executions
-}
-```
+**Answer:** Idempotency is enforced by pairing unique transaction request tokens with database-level atomic lock records (`idempotency_keys` table using `SELECT FOR UPDATE`). Before executing balance mutations inside an activity, the Go worker queries the idempotency table for the unique key formatted as `[ClientToken]#[WorkflowID]#[ActivityName]`. If the record already exists with status `COMPLETED`, the activity skips the database update and returns the cached result payload directly; if novel, it inserts a `PROCESSING` status, executes the SQL transaction, updates the status to `COMPLETED`, and commits atomically.
+
+### How does event-driven transaction recovery operate when a Temporal worker pod crashes mid-execution?
+
+**Answer:** Event-driven transaction recovery relies on Temporal's append-only Event History log, which records every workflow state transition and activity completion in the Temporal cluster storage layer. When a worker pod crashes mid-execution, the Temporal cluster detects the lost connection and assigns the pending workflow task queue item to another worker node in the cluster. The new worker replays the event history from line 1, feeding historical activity outputs from the history log instead of re-executing completed activities, resuming execution seamlessly from the exact point of failure.
 
 ---
 

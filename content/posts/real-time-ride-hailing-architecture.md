@@ -46,7 +46,7 @@ For the complete deep-dive into each component, explore the [Full Ride-Hailing A
 
 ## The Real-Time Challenge: What Happens in the First 3 Seconds After You Open the App
 
-From a user's perspective, ride-hailing feels instant. From an engineering perspective, those 3 seconds involve:
+From a user's perspective, ride-hailing feels instant. From an engineering perspective, those 3 seconds involve. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
 
 1. **GPS position reported**: Your phone sends a location update to Uber/Grab's ingestion service. So do the phones of every active driver within 10 km.
 2. **Geospatial index updated**: Your location and nearby driver locations are updated in an in-memory geospatial index.
@@ -203,6 +203,8 @@ For the underlying event-driven infrastructure that supports notification routin
 ---
 
 ## The Full Architecture Stack: How All 6 Layers Connect
+
+Understanding the architectural topology of The Full Architecture Stack: How All 6 Layers Connect requires tracing the end-to-end event sequence and data flow. The diagram below illustrates how components, API boundaries, and background workers coordinate during request processing. Visualizing system interactions helps clarify data boundaries, concurrency limits, and failure domain separation. The sequence diagram below traces the component interactions, message flows, API gateways, and boundary transitions across the complete execution path.
 
 ```mermaid
 graph TB

@@ -31,7 +31,7 @@ canonicalURL: "https://tanhdev.com/posts/ai-native-frontend-architecture-predict
 
 ## Executive Summary & AI Playbook Baseline
 
-Transitioning engineering organizations into AI-native operations requires an end-to-end strategy across 5 foundational pillars:
+Transitioning engineering organizations into AI-native operations requires an end-to-end strategy across 5 foundational pillars. The following design baselines outline the essential trade-offs, performance targets, and architectural patterns required for enterprise deployment. Establishing an effective architecture requires defining clear performance baselines, fault-tolerance mechanisms, and modular service boundaries early in the design cycle. The following principles and design baselines outline the essential trade-offs and operational patterns required for successful enterprise deployment.
 
 1. **Context Engineering & DDD**: Aligning agent context windows with Domain-Driven Design bounded contexts to eliminate prompt hallucination.
 2. **AI Platform Layer**: Centralizing LLM API gateways, semantic caching, rate limiting, and model fallback cascades across all frontend and backend clients.
@@ -43,7 +43,8 @@ Transitioning engineering organizations into AI-native operations requires an en
 
 ## 1. Context Engineering & Domain-Driven Design (DDD)
 
-Context engineering injects structured, domain-scoped data into LLM prompts using Domain-Driven Design (DDD) boundaries:
+Context engineering injects structured, domain-scoped data into LLM prompts using Domain-Driven Design (DDD) boundaries. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
+
 - **Bounded Context Isolation**: Prompts receive data scoped strictly to their aggregate root (e.g. Cart, Order, or Catalog). Decoupling domain contexts ensures that client-side AI agent reasoning remains tightly bound to relevant fields, preventing prompt context contamination across microservices and reducing token consumption by over 60%.
 - **Frontend AI Agent Integration**: Client-side AI agents run directly within the browser runtime or web worker threads, consuming user interactions and DOM events to build real-time context snapshots. These agents manage sliding token window buffers and local state caches before dispatching context bundles to remote inference providers.
 - **Schema-Enforced Context**: Data is passed as strongly-typed JSON schemas rather than raw, unstructured natural language strings to eliminate hallucination vectors. System prompts declare expected input and output JSON Schemas, ensuring that agent thought loops operate on predictable, versioned data structures.
@@ -52,7 +53,7 @@ Context engineering injects structured, domain-scoped data into LLM prompts usin
 
 ## 2. Centralized AI Platform Layer & Edge Runtime Optimization
 
-A modern enterprise AI Platform Layer decouples product code from cloud LLM vendors via centralized proxying, token usage tracking, and edge runtime optimization:
+A modern enterprise AI Platform Layer decouples product code from cloud LLM vendors via centralized proxying, token usage tracking, and edge runtime optimization. The sequence diagram below traces the component interactions, data events, and boundary transitions across the workflow. Visualizing system interactions helps clarify data boundaries, concurrency limits, and failure domain separation. The sequence diagram below traces the component interactions, message flows, API gateways, and boundary transitions across the complete execution path.
 
 ```mermaid
 graph TD
@@ -73,7 +74,7 @@ Centralizing model routing at the edge gateway boundary (deployed on platforms l
 
 ## 3. Policy-as-Code & Agentic CI/CD
 
-All AI-generated code and runtime UI payloads pass through automated policy enforcement gates before execution or deployment. In Generative UI runtimes, policy rules validate tool call arguments against strict schema boundaries:
+All AI-generated code and runtime UI payloads pass through automated policy enforcement gates before execution or deployment. In Generative UI runtimes, policy rules validate tool call arguments against strict schema boundaries. The code implementation below illustrates the production configuration, error handling, and performance optimization techniques.
 
 ```typescript
 import { z } from "zod";

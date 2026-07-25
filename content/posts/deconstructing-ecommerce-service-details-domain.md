@@ -41,7 +41,7 @@ Below, we go beyond the high-level diagrams to deconstruct the exact business ca
 
 ## 1. The Transactional Commerce Flow
 
-This domain is the financial engine of the company. It operates under strict transactional guarantees. If any service here experiences elevated latency, checkout drop-off rates spike immediately.
+This domain is the financial engine of the company. It operates under strict transactional guarantees. If any service here experiences elevated latency, checkout drop-off rates spike immediately. The code implementation below illustrates the production configuration, error handling, and performance optimization techniques.
 
 ```
 +-------------------------------------------------------------+
@@ -196,7 +196,7 @@ These are utilities that keep the system running.
 
 ## Cross-Domain Communication via Go Interfaces
 
-To prevent direct coupling, microservices interact via defined gRPC contracts or event-driven messages. Below is the Go interface definition showing how the Checkout service abstracts communication with the Catalog and Warehouse domains.
+To prevent direct coupling, microservices interact via defined gRPC contracts or event-driven messages. Below is the Go interface definition showing how the Checkout service abstracts communication with the Catalog and Warehouse domains. The code implementation below illustrates the production configuration, error handling, and performance optimization techniques.
 
 ```go
 package checkout

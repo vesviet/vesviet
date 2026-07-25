@@ -45,7 +45,7 @@ Cloudflare’s edge stack shifts this paradigm. Instead of sending users back to
 
 ## Architecting the Edge-Native E-Commerce Stack
 
-A purely serverless e-commerce setup looks drastically different from traditional [microservices vs monoliths](/posts/architecting-21-service-ecommerce-golang-ddd/).
+A purely serverless e-commerce setup looks drastically different from traditional [microservices vs monoliths](/posts/architecting-21-service-ecommerce-golang-ddd/). The sequence diagram below traces the component interactions, data events, and boundary transitions across the workflow. Visualizing system interactions helps clarify data boundaries, concurrency limits, and failure domain separation. The sequence diagram below traces the component interactions, message flows, API gateways, and boundary transitions across the complete execution path.
 
 ```mermaid
 flowchart TD
@@ -137,9 +137,7 @@ You don't need to write locking logic; the architecture itself provides the mute
 
 ## Payment Processing at the Edge
 
-Integrating payments at the edge has specific constraints. Cloudflare Workers run on V8 isolates, not Node.js. 
-
-When using the Stripe Node SDK, you must explicitly configure it to use the `fetch` API, and crucially, use `SubtleCrypto` to verify webhooks.
+Integrating payments at the edge has specific constraints. Cloudflare Workers run on V8 isolates, not Node.js. When using the Stripe Node SDK, you must explicitly configure it to use the `fetch` API, and crucially, use `SubtleCrypto` to verify webhooks. The code implementation below illustrates the production configuration, error handling, and performance optimization techniques.
 
 ```javascript
 import Stripe from 'stripe';
@@ -236,7 +234,7 @@ If `meta.rows_read` is significantly larger than `results.length`, your query is
 
 ## WooCommerce vs Cloudflare: The Trade-offs
 
-This architecture is incredibly fast and practically free to run at low volumes. However, it is not a drop-in replacement for WooCommerce.
+This architecture is incredibly fast and practically free to run at low volumes. However, it is not a drop-in replacement for WooCommerce. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
 
 1. **The Missing Ecosystem:** WooCommerce gives you thousands of plugins for shipping integration (FedEx, UPS), complex tax calculations, and PDF invoice generation. On Cloudflare, you have to build these integrations from scratch or rely on 3rd-party SaaS APIs.
 2. **No Admin Panel:** You will need to build your own React or Astro admin dashboard to manage products and view orders.

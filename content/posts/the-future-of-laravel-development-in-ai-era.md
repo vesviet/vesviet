@@ -116,9 +116,8 @@ Tasks that used to train juniors — creating simple forms, adding validation ru
 
 ## 06. Deep Eloquent & DB Optimization becomes the most expensive human skill
 
-AI writes naive ORM code. It prioritizes readability over database performance. Correcting AI-generated N+1 issues and missing indexes becomes a critical human survival skill.
+AI writes naive ORM code. It prioritizes readability over database performance. Correcting AI-generated N+1 issues and missing indexes becomes a critical human survival skill. **AI-Generated CRUD (Naive & Dangerous at scale):**. The code implementation below illustrates the production configuration, error handling, and performance optimization techniques.
 
-**AI-Generated CRUD (Naive & Dangerous at scale):**
 ```php
 // AI often writes this:
 $users = User::all();
@@ -139,7 +138,7 @@ $users = User::withSum('invoices', 'amount')->get();
 
 ## 07. Queue Orchestration & Event-Driven Architecture separates the Seniors
 
-Where AI struggles most is distributed system architecture: race conditions, dead-letter queues, and retry strategies. Laravel's robust Queue system is the final fortress for senior engineers.
+Where AI struggles most is distributed system architecture: race conditions, dead-letter queues, and retry strategies. Laravel's robust Queue system is the final fortress for senior engineers. The sequence diagram below traces the component interactions, data events, and boundary transitions across the workflow.
 
 ```mermaid
 flowchart LR
@@ -186,7 +185,7 @@ if ($lock->get()) {
 
 ## 09. The era of the "Super Solo-Founder"
 
-Laravel has always been the indie-hacker's weapon of choice (thanks to Forge, Vapor, and Envoyer). Combine this ecosystem with AI, and the output of a single solo developer in 2028 will match a 5-person agency from 2022.
+Laravel has always been the indie-hacker's weapon of choice (thanks to Forge, Vapor, and Envoyer). Combine this ecosystem with AI, and the output of a single solo developer in 2028 will match a 5-person agency from 2022. The sequence diagram below traces the component interactions, data events, and boundary transitions across the workflow.
 
 ```mermaid
 flowchart TD
@@ -207,9 +206,8 @@ While tools like `laravel/prompts` are great for CLI, the future lies in deeper 
 
 ## The Actionable Roadmap: What to Stop vs. Double Down On
 
-The shift is inevitable. If you write Laravel code for a living, here is how you adjust your learning trajectory:
+The shift is inevitable. If you write Laravel code for a living, here is how you adjust your learning trajectory: **What to STOP learning:**. The breakdown below summarizes the primary technical criteria, phase milestones, and architectural recommendations. Selecting the optimal technical path requires evaluating workload scale, team operational maturity, and infrastructure costs across all deployment phases. The breakdown below summarizes the primary technical criteria, phase milestones, risk mitigations, and architectural recommendations.
 
-**What to STOP learning:**
 *   Memorizing exact syntax for array helpers or collection methods.
 *   Worrying about how fast you can type out CRUD boilerplate.
 *   Treating Laravel purely as a request/response web framework.

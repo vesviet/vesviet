@@ -570,22 +570,23 @@ SPIRE Server supports **Trust Domain Federation**. The AWS SPIRE Server and GCP 
 
 ---
 
-## Section 6: Structured Technical FAQ
+## Section 6: Frequently Asked Questions (FAQ)
 
-### Q1: How does SPIFFE/SPIRE handle agent restarts or socket disconnections without dropping active mTLS connections?
-**Answer**: SPIFFE/SPIRE separates identity issuance from connection state. When a Go microservice establishes a gRPC or HTTP mTLS connection, the TLS session key is derived during the initial handshake and held in memory by the kernel TCP stack. If the SPIRE Agent DaemonSet restarts or the UNIX domain socket is interrupted, the `go-spiffe/v2` SDK `X509Source` retains the current valid SVID in memory and continues serving active TLS connections. The application continues operating transparently while the SDK retries the socket connection in the background.
+### How does SPIFFE/SPIRE secretless workload identity attestation operate in Kubernetes and Linux environments?
 
-### Q2: What is the performance impact of frequent SVID certificate rotation on Go microservice throughput?
-**Answer**: The performance impact is negligible. `go-spiffe/v2` executes certificate updates atomically using Go's `sync/atomic` pointer swaps on an in-memory `tls.Config`. Rotating an SVID does not flush connection pools or terminate existing HTTP/2 or gRPC streams. Microservices undergoing SVID rotation maintain full throughput (>50,000 RPS) with zero added latency spikes or dropped TCP packets.
+**Answer:** SPIFFE/SPIRE identity attestation operates without static API keys or hardcoded secrets by interrogating host kernel primitives and the Kubernetes API over a local UNIX domain socket (`unix:///tmp/spire-agent/public/api.sock`). When a process requests an identity document (SVID), the SPIRE Agent inspects the calling process's Linux PID, UID, GID, cgroups, and container image SHA256 digest via Kubelet APIs. If the attestation selectors match the configured SPIRE Server registration entries, the SPIRE Agent issues a short-lived X.509 SVID certificate containing the workload's SPIFFE URI inside the Subject Alternative Name (SAN).
 
-### Q3: How do you integrate legacy bare-metal servers or non-containerized virtual machines into a SPIFFE trust domain?
-**Answer**: SPIRE provides dedicated Node Attestors for bare-metal and VM environments. For AWS EC2 or GCP VMs, SPIRE uses Instance Identity Documents (IIDs) or TPM 2.0 (Trusted Platform Module) chips to attest the VM host. For bare-metal Linux servers, SPIRE uses SSH keys, join tokens, or X.509 pop attestors. Once the SPIRE Agent is attested on the host VM, non-containerized Go binaries connect to the local SPIRE Agent socket (`unix:///tmp/spire-agent/public/api.sock`) and undergo process-level attestation (UID/GID, binary path, and cgroup).
+### What is the CPU and network latency overhead of Istio Envoy mTLS sidecar proxies in high-throughput Go microservices?
 
-### Q4: Does SPIRE replace Istio Citadel/istiod CA, or do they co-exist?
-**Answer**: SPIRE can completely replace `istiod` CA for workload identity issuance. By integrating SPIRE with Envoy's Secret Discovery Service (SDS), Envoy sidecars pull SVIDs directly from the local SPIRE Agent socket. This architecture unifies identity across containerized Istio workloads and non-mesh workloads (VMs, bare-metal), eliminating fragmented identity silos and bringing the entire infrastructure under a single SPIFFE trust domain.
+**Answer:** Istio Envoy mTLS sidecar proxies introduce minimal CPU and latency overhead (typically 0.5ms to 1.5ms per request) by establishing long-lived HTTP/2 multiplexed TCP connections with TLS 1.3 session resumption. Because cryptographic handshakes are performed once when the TCP connection opens, subsequent RPC payloads stream through Envoy's zero-copy memory buffers without incurring per-request handshake overhead. Additionally, offloading mTLS encryption and SPIFFE SAN policy enforcement to the Envoy sidecar reduces microservice application memory churn and eliminates complex TLS lifecycle management inside application code.
 
-### Q5: How does SPIFFE prevent a compromised sidecar container from stealing another container's cryptographic key material?
-**Answer**: SPIFFE uses isolation at the operating system kernel boundary. The SPIRE Agent verifies the Unix domain socket peer credentials (`SO_PEERCRED`) on every connection. The Linux kernel guarantees that PID, UID, and GID returned by `getsockopt` cannot be spoofed by user-space processes. Because each container runs with distinct cgroup paths and network namespaces, the SPIRE Agent verifies that the requesting PID matches the registered container metadata before releasing the SVID key pair. Furthermore, private keys are generated in memory and never written to disk.
+### How do Go microservices integrate with the SPIFFE Workload API using `go-spiffe/v2` for dynamic TLS certificate watching?
+
+**Answer:** Go microservices integrate with the SPIFFE Workload API by initializing an `X509Source` background watcher from the `github.com/spiffe/go-spiffe/v2` SDK connected to the SPIRE Agent UNIX socket. The `X509Source` automatically fetches, parses, and maintains the application's X.509 SVID and Trust Domain CA bundles in memory. When passed to standard Go `tls.Config` constructors via `tlsconfig.MTLSServerConfig` or `tlsconfig.MTLSClientConfig`, `X509Source` handles certificate rotation dynamically without requiring application restarts, socket re-initialization, or dropping active gRPC/HTTP connections.
+
+### How does Zero Trust identity rotation function in SPIFFE/SPIRE without causing service downtime or dropped TCP connections?
+
+**Answer:** Zero Trust identity rotation in SPIFFE/SPIRE uses short-lived SVID certificates (1-hour lifespan) that the local SPIRE Agent automatically refreshes at 50% of their validity period (every 30 minutes). When a refreshed SVID is issued, `go-spiffe/v2` executes an atomic in-memory pointer swap on the active `tls.Config` certificate chain. Active HTTP/2 and gRPC TCP connections continue executing on existing TLS session keys uninterrupted, while all newly established TLS handshakes immediately use the updated SVID, providing 100% continuous mTLS availability with zero downtime.
 
 ---
 

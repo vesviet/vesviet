@@ -65,7 +65,7 @@ For the full breakdown of each service's responsibilities, see [Deconstructing t
 
 ## The High-Level Architecture
 
-**The 21-service e-commerce blueprint uses Go for high-throughput edge APIs, Dapr for event pub/sub, and PostgreSQL for transactional storage. An Envoy-based API Gateway routes external traffic to the appropriate isolated domain service.**
+The following system architecture diagram and sequence flow illustrate how control signals, API boundaries, background workers, and data pipelines interact during request execution. This comprehensive trace highlights the key communication protocols, retry mechanisms, and state transitions required to maintain operational stability under peak production loads.
 
 ```mermaid
 graph TD
@@ -254,7 +254,7 @@ For the full argument on when this complexity is justified — and when it isn't
 
 ## Author & Real-World Engineering Experience / Về Tác Giả & Kinh Nghiệm Thực Tế
 
-This architectural blueprint and pattern guide was authored by **Lê Tuấn Anh**, a Senior Fullstack & Microservices Engineer with over 10 years of experience architecting high-throughput distributed systems and enterprise e-commerce platforms.
+This architectural blueprint and pattern guide was authored by **Lê Tuấn Anh**, a Senior Fullstack & Microservices Engineer with over 10 years of experience architecting high-throughput distributed systems and enterprise e-commerce platforms. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below.
 
 - **Core Engineering Expertise**: Domain-Driven Design (DDD), Clean Architecture, and microservice micro-frameworks in **Go 1.25+ (Golang)** using **Kratos v2**, **GORM**, and **Dapr (Distributed Application Runtime)**.
 - **Production Benchmarks**: Real-world experience building 21+ distributed microservices handling 100k+ concurrent connections, sub-50ms p99 latencies, distributed Saga transactions, and GitOps deployments on Kubernetes.

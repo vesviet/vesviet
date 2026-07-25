@@ -42,7 +42,7 @@ canonicalURL: "https://tanhdev.com/posts/shopee-flash-sale-architecture/"
 
 ## Executive Summary & System Design Foundations
 
-High-concurrency systems handling millions of concurrent requests (C10M scale) must push load shedding and admission control as close to the network edge as possible:
+High-concurrency systems handling millions of concurrent requests (C10M scale) must push load shedding and admission control as close to the network edge as possible. The following design baselines outline the essential trade-offs, performance targets, and architectural patterns required for enterprise deployment.
 
 1. **Edge Admission Control**: Offload connection handling via eBPF/DPDK and API Gateways.
 2. **Atomic In-Memory Reservation**: Reserve stock in Redis via single-threaded Lua scripts to prevent DB row lock contention.
@@ -63,7 +63,7 @@ Handling 10 million concurrent connections (C10M) requires rethinking traditiona
 
 ## 2. API Gateway vs. Service Mesh at Edge Boundaries
 
-For high-traffic flash sales, API Gateways and Service Meshes serve distinct architectural roles across traffic boundaries:
+For high-traffic flash sales, API Gateways and Service Meshes serve distinct architectural roles across traffic boundaries. The sequence diagram below traces the component interactions, data events, and boundary transitions across the workflow. Visualizing system interactions helps clarify data boundaries, concurrency limits, and failure domain separation. The sequence diagram below traces the component interactions, message flows, API gateways, and boundary transitions across the complete execution path.
 
 ```mermaid
 graph TD
@@ -238,6 +238,8 @@ func (r *RateLimiter) Allow(ctx context.Context, key string, capacity int, refil
 ---
 
 ## 5. Reference Service Decomposition
+
+Understanding the architectural topology of Reference Service Decomposition requires tracing the end-to-end event sequence and data flow. The diagram below illustrates how components, API boundaries, and background workers coordinate during request processing. Visualizing system interactions helps clarify data boundaries, concurrency limits, and failure domain separation. The sequence diagram below traces the component interactions, message flows, API gateways, and boundary transitions across the complete execution path.
 
 ```mermaid
 graph LR

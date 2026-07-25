@@ -539,21 +539,17 @@ func FastMarshal(v any) ([]byte, error) {
 
 ## Section 7: Frequently Asked Questions (FAQ)
 
-### Q1: How does NATS JetStream handle message deduplication in high-throughput Go microservices?
+### Why choose NATS JetStream over Apache Kafka for Go-based microservices?
 
-**Answer:** NATS JetStream provides native, server-side stream deduplication via the `Nats-Msg-Id` header. When publishing messages from Go, developers set a unique identifier (such as a UUIDv4 or domain idempotency key) in `msg.Header.Set("Nats-Msg-Id", eventID)`. The JetStream broker tracks these IDs within a sliding deduplication window (`StreamConfig.Duplicates`, e.g., 5 minutes). If a network timeout causes a client to re-publish an identical message within this window, JetStream detects the existing `Nats-Msg-Id` in its Raft log, acknowledges the original sequence number, and discards the duplicate payload before it reaches downstream consumers.
+**Answer:** NATS JetStream is engineered natively in Go (`nats.go` with zero Cgo dependencies), delivering sub-millisecond p99 pub/sub latencies (<0.8 ms) and a lightweight ~22MB broker footprint per node compared to JVM-based Kafka brokers that require gigabytes of RAM. Operating without external coordination services like ZooKeeper or KRaft, NATS JetStream embeds Raft consensus directly into the single binary, eliminating Cgo build friction, cross-boundary GC pauses, and operational complexity while providing built-in Key-Value and Object stores.
 
-### Q2: Why choose NATS JetStream over Apache Kafka for Go-based microservice architectures?
+### How does CQRS handle eventual consistency and prevent stale read views during asynchronous event processing?
 
-**Answer:** NATS JetStream is engineered natively in Go, offering zero-Cgo dependency (`nats.go`), sub-millisecond p99 latency (<0.8 ms), and a minimal broker RAM footprint (~22 MB per node compared to 3+ GB for JVM-based Kafka brokers). Additionally, JetStream dramatically simplifies microservice operations by consolidating message streaming, Key-Value caching, and Object storage into a single binary, eliminating the need for ZooKeeper/KRaft dependencies and heavy C libraries (`librdkafka`).
+**Answer:** In CQRS architectures, write commands update the command database and emit domain events asynchronously, creating a transient eventual consistency window before read projections receive updates. To manage this window cleanly, client interfaces return a `202 Accepted` status with a correlation ID or utilize optimistic read-guards where clients fetch projections using version tokens or fallback short-TTL cache invalidation. On the worker side, strict at-least-once idempotency guards using Redis `SETNX` lock keys guarantee that retried or out-of-order events update the read view deterministically without creating duplicate updates or inconsistent entity states.
 
-### Q3: How is CQRS idempotency enforced on the read-projection consumer side when processing JetStream events?
+### What are the primary NATS JetStream stream retention policies and how do they impact event replay in microservices?
 
-**Answer:** Read-side idempotency is enforced by combining JetStream durable pull subscriptions with an atomic check-and-set key guard in the read storage layer (e.g., Redis or PostgreSQL). The consumer worker fetches messages using `js.PullSubscribe()` with manual acknowledgments (`nats.ManualAck()`). Before updating the read projection, the worker attempts an atomic operation like `SETNX event_lock:<event_id> 1` in Redis. If the key already exists (indicating a duplicate delivery), the worker immediately ACKs the message (`msg.Ack()`) and skips duplicate database writes. If novel, it updates the read projection and ACKs the stream.
-
-### Q4: How do pull consumers differ from push consumers in NATS JetStream, and why are pull consumers preferred for CQRS read workers?
-
-**Answer:** Pull consumers put the client in complete control of message flow by requiring worker instances to explicitly request batches of messages (`sub.Fetch(batchSize)`). Push consumers, in contrast, have the broker push messages asynchronously to subscribers, which can easily overwhelm downstream read databases (like PostgreSQL or Redis) during unexpected traffic bursts. Pull consumers provide natural backpressure management and integrate smoothly with Kubernetes Horizontal Pod Autoscaling (HPA), allowing Go worker pods to scale dynamically based on pull queue length.
+**Answer:** NATS JetStream supports three distinct stream retention policies defined via `StreamConfig.Retention`: `LimitsPolicy` (retains messages until maximum byte, count, or age limits are reached, making it ideal for event sourcing and CQRS replay), `InterestPolicy` (deletes messages once all registered durable consumers have acknowledged them, minimizing disk usage for pure pub/sub), and `WorkQueuePolicy` (deletes messages as soon as a single worker processes and ACKs them, functioning like a classic task queue). Selecting `LimitsPolicy` with SSD/NVMe `FileStorage` enables read projection workers to replay historical streams from sequence zero when rebuilding read databases or deploying new microservice features.
 
 ---
 

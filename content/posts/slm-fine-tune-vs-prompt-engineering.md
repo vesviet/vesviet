@@ -45,7 +45,7 @@ canonicalURL: "https://tanhdev.com/posts/slm-fine-tune-vs-prompt-engineering/"
 
 ## Executive Summary & SLM Playbook Architecture
 
-Small Language Models (SLMs, 1B–8B parameters) combined with fine-tuning and local inference (vLLM) rival proprietary frontier LLMs on specialized domain tasks at a fraction of the cost:
+Small Language Models (SLMs, 1B–8B parameters) combined with fine-tuning and local inference (vLLM) rival proprietary frontier LLMs on specialized domain tasks at a fraction of the cost. The following design baselines outline the essential trade-offs, performance targets, and architectural patterns required for enterprise deployment.
 
 1. **SLM Hybrid Architecture**: Router directs easy tasks to local SLMs and complex reasoning to cloud frontier models.
 2. **Knowledge Distillation**: Distill reasoning trajectories from teacher models (DeepSeek-R1 / GPT-4o) into student SLMs.
@@ -69,7 +69,7 @@ Small Language Models (SLMs, 1B–8B parameters) combined with fine-tuning and l
 
 ## 1. SLM Hybrid Architecture & Knowledge Distillation
 
-Instead of routing every user request to an expensive frontier cloud model:
+Instead of routing every user request to an expensive frontier cloud model. The sequence diagram below traces the component interactions, data events, and boundary transitions across the workflow. Visualizing system interactions helps clarify data boundaries, concurrency limits, and failure domain separation. The sequence diagram below traces the component interactions, message flows, API gateways, and boundary transitions across the complete execution path.
 
 ```mermaid
 graph TD
@@ -218,7 +218,8 @@ trainer.model.save_pretrained("./outputs/llama3-8b-qlora/final_adapter")
 
 ## 2. Preference Alignment: DPO, KTO, and GRPO
 
-Fine-tuning for format compliance gets you halfway; preference alignment guarantees brand tone and safety:
+Fine-tuning for format compliance gets you halfway; preference alignment guarantees brand tone and safety. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
+
 - **DPO (Direct Preference Optimization)**: Optimizes model policy directly on $(Prompt, Chosen, Rejected)$ triplets without training a separate reward model.
 - **KTO (Kahneman-Tversky Optimization)**: Operates on binary $(Prompt, Response, IsGood)$ signals, simplifying data curation.
 - **GRPO (Group Relative Policy Optimization)**: Evaluates a group of outputs against rule-based reward functions (used in R1 reasoning models).

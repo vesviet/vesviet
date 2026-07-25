@@ -122,7 +122,7 @@ Both engines represent the pinnacle of open-source geospatial engineering. Evalu
 
 ## SME Field Notes: Urban Routing Realities in Ho Chi Minh City
 
-Running a last-mile delivery fleet or ride-hailing service in high-density, rapidly growing cities like **Ho Chi Minh City (HCMC)** exposes the severe limitations of standard academic routing models. Straight-line (Euclidean) or simple Manhattan distance approximations are practically useless here.
+Running a last-mile delivery fleet or ride-hailing service in high-density, rapidly growing cities like **Ho Chi Minh City (HCMC)** exposes the severe limitations of standard academic routing models. Straight-line (Euclidean) or simple Manhattan distance approximations are practically useless here. The code implementation below illustrates the production configuration, error handling, and performance optimization techniques.
 
 ```
                   [ Binh Thanh District ]

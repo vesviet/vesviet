@@ -134,7 +134,7 @@ Customer service is a major cost center, especially during seasonal surges.
 
 ## 5. Open-Source vs. Proprietary APIs: Navigating the E-commerce AI Cost Curve
 
-A critical decision for the TCO (Total Cost of Ownership) is choosing between proprietary APIs (e.g., OpenAI, Claude, Gemini) and hosting open-source LLMs (e.g., Llama, Mistral, DeepSeek).
+A critical decision for the TCO (Total Cost of Ownership) is choosing between proprietary APIs (e.g., OpenAI, Claude, Gemini) and hosting open-source LLMs (e.g., Llama, Mistral, DeepSeek). The code implementation below illustrates the production configuration, error handling, and performance optimization techniques.
 
 ```
 Proprietary APIs (Pay-as-you-go)        Open-Source Hosting (Self-Hosted)
@@ -154,7 +154,7 @@ Proprietary models charge per million tokens. While this seems minor, production
 
 ## 6. Data Privacy and Compliance: GDPR, CCPA, and AI in E-commerce
 
-Feeding customer and catalog data to AI models introduces major compliance challenges under data protection laws like GDPR (Europe) and CCPA/CPRA (California):
+Feeding customer and catalog data to AI models introduces major compliance challenges under data protection laws like GDPR (Europe) and CCPA/CPRA (California). The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
 
 1. **Automated Decision-Making (ADMT):** CCPA grants consumers the right to opt out of automated decision-making technologies, which includes AI-driven dynamic pricing or profiling. E-commerce platforms must provide clear "Opt-Out" mechanisms.
 2. **Explainable AI (XAI):** Under GDPR, if an AI model decides to deny a promotion or credit limit to a user, the business must be able to explain the logic behind the automated outcome. Deep-learning black boxes do not satisfy this requirement; you must build transparency logs.

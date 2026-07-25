@@ -43,6 +43,8 @@ But "buy time" only works if you have a clear plan for Phase 2. This post define
 
 ## Three Options on the Table
 
+When decomposing a complex monolithic database into modular microservices, engineering teams generally evaluate three distinct architectural migration strategies. Each option balances operational complexity against long-term decoupling speed, data consistency requirements, service autonomy, and infrastructure maintenance overhead under peak production loads.
+
 ```
 ┌──────────────────┬──────────────────────────┬──────────────────────────┐
 │  OPTION A        │  OPTION B                │  OPTION C                │
@@ -58,6 +60,8 @@ But "buy time" only works if you have a clear plan for Phase 2. This post define
 ---
 
 ## Option A — Shared Database (The Quick Win)
+
+Option A allows new microservices to read and write directly to tables within the existing legacy monolith database. While this approach minimizes initial migration effort and avoids immediate data sync pipelines, it retains database coupling, increases schema mutation risk, and delays true microservice isolation.
 
 ```
 ┌──────────────┐         ┌──────────────────────────────┐
@@ -143,6 +147,8 @@ If you commit to Option A as a transitional state:
 
 ## Option B — Evolutionary CDC + Outbox (Recommended Path)
 
+Option B utilizes Change Data Capture (CDC) and transactional outbox patterns to asynchronously replicate database state to microservice datastores. This approach guarantees eventual consistency, event ordering, and message durability while completely decoupling application runtime dependencies, enabling seamless independent microservice deployments.
+
 ```
 ┌──────────────┐              ┌──────────────────┐
 │  PHP Magento │──WRITE──────▶│  MySQL Magento   │
@@ -224,6 +230,8 @@ tx.Exec(`INSERT INTO magento_outbox (event_type, payload)
 ---
 
 ## Option C — Full DB Separation + Event Bus
+
+Option C enforces immediate database isolation by provisioning independent, dedicated datastores for each microservice from day one. Communication across domain boundaries occurs strictly via asynchronous domain events and strongly-typed gRPC interfaces, ensuring strict domain boundary enforcement, zero schema sharing, and maximum operational team autonomy.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -321,6 +329,8 @@ The fundamental difference is **who publishes events**:
 
 ## Decision Framework — Which Option Is Right for You?
 
+Selecting the optimal architecture requires evaluating workload scale, team operational maturity, and infrastructure cost. The decision matrix below summarizes the primary technical criteria to help guide your deployment strategy. Selecting the optimal technical path requires evaluating workload scale, team operational maturity, and infrastructure costs across all deployment phases. The breakdown below summarizes the primary technical criteria, phase milestones, risk mitigations, and architectural recommendations.
+
 ```
 Q1: Does your team have 2+ engineers with distributed systems experience?
   └─ NO  → Stay on Option A, add guardrails (schema pinning, read-only policy)
@@ -372,7 +382,7 @@ Not all domains carry equal risk. Migrate in this order regardless of whether yo
 
 ## Infrastructure Checklist Before DB Separation
 
-Before committing to Option B or C, validate these prerequisites:
+Before committing to Option B or C, validate these prerequisites. The checklist below details the mandatory observability, deployment, and data migration prerequisites. Before executing a database split, ensure your infrastructure platform satisfies essential observability, security, and transaction safety requirements. The checklist below details the mandatory prerequisites and deployment safeguards for a safe production migration.
 
 ```yaml
 required_before_option_b:
@@ -393,6 +403,8 @@ additional_for_option_c:
 ---
 
 ## Recommended Roadmap
+
+Selecting the optimal architecture requires evaluating workload scale, team operational maturity, and infrastructure cost. The decision matrix below summarizes the primary technical criteria to help guide your deployment strategy. Selecting the optimal technical path requires evaluating workload scale, team operational maturity, and infrastructure costs across all deployment phases. The breakdown below summarizes the primary technical criteria, phase milestones, risk mitigations, and architectural recommendations.
 
 ```
 0–6 months (NOW)             6–12 months                12–24 months

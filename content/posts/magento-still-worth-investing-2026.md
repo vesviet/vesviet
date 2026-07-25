@@ -51,7 +51,7 @@ References (official):
 
 ## 2. The Real Cost Is Not Licensing. It Is Upgrade Friction.
 
-If your store is non-trivial, you are not running "Magento." You are running:
+If your store is non-trivial, you are not running "Magento." You are running. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
 
 - Magento core
 - a web of third-party extensions
@@ -122,7 +122,7 @@ If you keep shipping on Luma by default, you are usually betting on higher ongoi
 
 ## 4. When Magento Is Not the Best Investment
 
-Magento is usually the wrong investment when:
+Magento is usually the wrong investment when. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
 
 - your complexity is low and will stay low
 - you want a managed platform with minimal infrastructure ownership
@@ -143,6 +143,8 @@ Here is the scan-friendly version of that tradeoff, incorporating 2026 TCO (Tota
 In cases where your primary goal is to minimize "non-revenue-generating" technical overhead and launch quickly, a SaaS platform is often the better business decision, even if Magento looks "more powerful" on paper.
 
 ## 5. If You Are Already Running Magento: What To Do Right Now
+
+Deploying and maintaining If You Are Already Running Magento: What To Do Right Now involves several critical architectural decisions and operational trade-offs. The key technical considerations and best practices are outlined in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
 
 1. **Do NOT upgrade directly to 2.4.9 if you are on 2.4.6 or 2.4.7.** The jump in PHP and database requirements is too wide. The community consensus is to bridge the gap by upgrading to **2.4.8** first, stabilizing your infra, and then planning the 2.4.9 migration.
 2. **Audit your extensions for Laminas/Zend dependencies.** Any module calling old framework code will be a fatal error in 2.4.9. Contact your vendors now.

@@ -41,7 +41,7 @@ canonicalURL: "https://tanhdev.com/posts/order-fulfillment-algorithm-warehouse-l
 
 ## Executive Summary & Fulfillment Fundamentals
 
-When an order is confirmed, the fulfillment system executes a multi-step decision pipeline:
+When an order is confirmed, the fulfillment system executes a multi-step decision pipeline. The following design baselines outline the essential trade-offs, performance targets, and architectural patterns required for enterprise deployment. Establishing an effective architecture requires defining clear performance baselines, fault-tolerance mechanisms, and modular service boundaries early in the design cycle. The following principles and design baselines outline the essential trade-offs and operational patterns required for successful enterprise deployment.
 
 1. **Available-to-Promise (ATP) Check**: Filter candidate warehouses by real-time uncommitted stock.
 2. **Cost & Proximity Scoring**: Evaluate shipping distance, labor rate, carrier capacity, and SLA risk.
@@ -53,7 +53,8 @@ When an order is confirmed, the fulfillment system executes a multi-step decisio
 
 ## Step 1 — Real-Time Inventory & Available-to-Promise (ATP)
 
-Physical stock on hand does not equal sellable stock. Fulfillment systems distinguish:
+Physical stock on hand does not equal sellable stock. Fulfillment systems distinguish. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
+
 - **Physical On-Hand**: Total inventory units located inside the warehouse bin.
 - **Available-to-Promise (ATP)**: Physical stock minus hard-committed and soft-reserved units.
 
@@ -133,11 +134,8 @@ func (e *InventoryEngine) ReserveATP(ctx context.Context, warehouseID, sku, orde
 
 ## Step 2 — Warehouse Selection Cost Function
 
-The allocation engine evaluates candidate warehouses using a multi-criteria objective function:
+The allocation engine evaluates candidate warehouses using a multi-criteria objective function: $$\text{Cost}(W, O) = (d \cdot r_{\text{carrier}}) + c_{\text{labor}} + P_{\text{SLA}} + S_{\text{capacity}} - B_{\text{eco}}$$ Where. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below.
 
-$$\text{Cost}(W, O) = (d \cdot r_{\text{carrier}}) + c_{\text{labor}} + P_{\text{SLA}} + S_{\text{capacity}} - B_{\text{eco}}$$
-
-Where:
 - $d$: Distance from warehouse $W$ to delivery destination
 - $r_{\text{carrier}}$: Carrier rate per km
 - $c_{\text{labor}}$: Warehouse pick/pack labor cost per unit
@@ -149,7 +147,8 @@ Where:
 
 ## Step 3 — Amazon CONDOR & Constraint Optimization
 
-CONDOR operates globally above per-order routing:
+CONDOR operates globally above per-order routing. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
+
 - **Inputs**: Real-time ATP across all fulfillment centers, historical demand signals, regional ML demand forecasts (14-day window), carrier contract tiers.
 - **Outputs**: Proactive inventory transfer recommendations (rebalancing stock from central FCs to regional sortation centers before orders are placed).
 

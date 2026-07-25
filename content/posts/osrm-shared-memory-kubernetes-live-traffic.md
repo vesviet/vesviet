@@ -14,6 +14,7 @@ cover:
   image: "images/posts/osrm-k8s-cover.png"
   alt: "OSRM Shared Memory Kubernetes Architecture"
   relative: false
+canonicalURL: "https://tanhdev.com/posts/osrm-shared-memory-kubernetes-live-traffic/"
 ---
 
 # OSRM Shared Memory on Kubernetes: Live Traffic Updates with Zero-Downtime
@@ -140,6 +141,8 @@ By leveraging OSRM Shared Memory and Multi-Level Dijkstra, you can achieve a hig
 
 ## System Architecture & Sequence Flow
 
+The following system architecture diagram and sequence flow illustrate how control signals, API boundaries, background workers, and data pipelines interact during request execution. This comprehensive trace highlights the key communication protocols, retry mechanisms, and state transitions required to maintain operational stability under peak production loads.
+
 ```mermaid
 sequenceDiagram
     autonumber
@@ -162,13 +165,15 @@ sequenceDiagram
 
 ## Architectural Trade-offs & Production Considerations (2026 Baseline)
 
-In high-concurrency production deployments, balancing throughput, resilience, and operational cost requires strict engineering discipline. When evaluating modern patterns against legacy monolithic or non-vector architectures, several critical failure modes and trade-offs emerge:
+In high-concurrency production deployments, balancing throughput, resilience, and operational cost requires strict engineering trade-offs. Engineering teams must carefully evaluate latency overhead, state consistency guarantees, automated failover strategies, and resource allocations to ensure long-term system stability and predictable performance under extreme peak traffic.
 
 1. **Latency vs. Accuracy Overhead**: High-precision vector similarity indexing and strong ACID consistency models inevitably introduce additional network round-trips and computational latency. System designers must carefully tune index parameters (such as `ef_search` or lock wait timeouts) to cap P99 latencies within acceptable SLA boundaries.
 2. **Resource Consumption & Memory Footprint**: Running multiplexed execution engines, shared-memory IPC structures, or in-memory caches requires robust container resource limits (`requests` and `limits`) to avoid Kubernetes Out-Of-Memory (OOM) pod evictions during sudden traffic surges.
 3. **Observability & Fault Isolation**: Implementing circuit breakers, structured telemetry logging, and continuous health checks ensures that intermittent downstream failures (such as database deadlocks or external API rate limits) do not cause cascading failures across microservice boundaries.
 
 ## Related Pillar Articles & Further Reading
+
+To deepen your technical expertise in high-throughput backend systems, distributed cloud infrastructure, and modern software architecture, explore these related deep dives from our platform. Each comprehensive article provides hands-on code examples, production benchmarks, architectural decision frameworks, and real-world deployment strategies to help you build resilient systems at enterprise scale.
 
 - [OSRM vs GraphHopper Architecture Comparison](/posts/osrm-vs-graphhopper-architecture-comparison/)
 - [GraphHopper Kubernetes Self-Hosting Guide](/posts/graphhopper-kubernetes-self-hosting-osm/)

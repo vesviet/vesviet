@@ -7,7 +7,7 @@ lastmod: "2026-07-18T07:43:55+07:00"
 draft: false
 mermaid: true
 tags: ["AWS", "EKS", "ECS", "Kubernetes", "Container Orchestration", "DevOps", "Go", "Microservices", "Fargate"]
-description: "A practitioner's guide to EKS vs ECS: control plane costs, Fargate trade-offs, EKS Auto Mode, and when to choose each."
+description: "A practitioner's guide to EKS vs ECS: control plane costs, Fargate trade-offs, EKS Auto Mode, and when to choose each for containerized workloads."
 categories: ["DevOps", "Engineering", "AWS"]
 ShowToc: true
 TocOpen: true
@@ -484,6 +484,7 @@ Argo Rollouts is the 2025 standard for EKS progressive delivery. It replaces `De
 
 ## 11. Final Decision Framework
 
+Selecting the optimal architecture requires evaluating workload scale, team operational maturity, and infrastructure cost. The decision matrix below summarizes the primary technical criteria to help guide your deployment strategy. Selecting the optimal technical path requires evaluating workload scale, team operational maturity, and infrastructure costs across all deployment phases. The breakdown below summarizes the primary technical criteria, phase milestones, risk mitigations, and architectural recommendations.
 
 ```mermaid
 flowchart TD

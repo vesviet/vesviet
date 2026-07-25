@@ -47,7 +47,8 @@ For the implementation series covering the full AI data engineering pipeline, se
 
 ## The Limits of Naive RAG: Why Vector Similarity Fails for Global Context
 
-Naive RAG answers questions by finding document chunks whose *embedding vector* is similar to the query's embedding vector. This is effective when:
+Naive RAG answers questions by finding document chunks whose *embedding vector* is similar to the query's embedding vector. This is effective when. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
+
 - The answer is contained within a single coherent document section
 - The user's query language closely matches the source document language
 - The question does not require reasoning across multiple documents
@@ -68,7 +69,7 @@ These failure modes are not bugs in the RAG implementation. They are fundamental
 
 ## GraphRAG Engine Topology: Entities, Relations, and Graph Communities
 
-GraphRAG replaces the document chunk as the retrieval unit with a **knowledge graph** — a structured representation of entities and the relationships between them.
+GraphRAG replaces the document chunk as the retrieval unit with a **knowledge graph** — a structured representation of entities and the relationships between them. The sequence diagram below traces the component interactions, data events, and boundary transitions across the workflow.
 
 ```mermaid
 graph LR
@@ -105,7 +106,7 @@ This two-level retrieval approach:
 
 ## Ingestion Pipelines: Extracting Knowledge Graphs from Unstructured Data
 
-The GraphRAG ingestion pipeline has more steps than naive RAG, reflecting the additional structure it builds:
+The GraphRAG ingestion pipeline has more steps than naive RAG, reflecting the additional structure it builds. The sequence diagram below traces the component interactions, data events, and boundary transitions across the workflow. Visualizing system interactions helps clarify data boundaries, concurrency limits, and failure domain separation. The sequence diagram below traces the component interactions, message flows, API gateways, and boundary transitions across the complete execution path.
 
 ```mermaid
 graph TD

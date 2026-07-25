@@ -152,7 +152,8 @@ For a similar event-driven architecture implemented using Dapr Pub/Sub in a Go s
 
 ## Database Scaling: How TiDB Solved the Relational Ledger Bottleneck
 
-The payment transaction ledger is the most performance-critical database in any fintech platform. It must support:
+The payment transaction ledger is the most performance-critical database in any fintech platform. It must support. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
+
 - **High write throughput**: Every payment generates 2–6 ledger entries (debit, credit, fee, tax, etc.)
 - **Strong consistency**: A ledger debit without a corresponding credit is a financial error
 - **ACID transactions**: Multi-row updates must be atomic

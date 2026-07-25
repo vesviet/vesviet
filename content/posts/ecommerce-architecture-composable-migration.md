@@ -140,7 +140,7 @@ Protobuf contract compilation bridges Go microservices and frontend TypeScript c
 
 ## 3. Core Backend: Golang + Kratos v2 Internals
 
-Each Go microservice implements a strict 5-layer Clean Architecture layout using the Kratos v2 framework:
+Each Go microservice implements a strict 5-layer Clean Architecture layout using the Kratos v2 framework. The code implementation below illustrates the production configuration, error handling, and performance optimization techniques. Writing clean, performant code requires adhering to established software engineering patterns and defensive programming. The code implementation below illustrates the production configuration, memory efficiency rules, error handling strategies, and performance optimization techniques.
 
 ```text
 order-service/
@@ -167,7 +167,7 @@ Unlike runtime reflection-based DI containers (such as Spring or Magento XML inj
 
 ## 4. The Real Bottleneck in Decoupling (Eventual Consistency)
 
-When separating read-heavy search services (Elasticsearch/Meilisearch) from core transactional inventory services via an asynchronous event bus, temporary data replication lag (typically 200ms to 2s) is inevitable.
+When separating read-heavy search services (Elasticsearch/Meilisearch) from core transactional inventory services via an asynchronous event bus, temporary data replication lag (typically 200ms to 2s) is inevitable. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below.
 
 - **The Concurrency Hazard**: A customer views a product page showing 1 item remaining and clicks "Add to Cart". The Inventory Service immediately reserves the item and decrements stock to 0. However, because the CDC event has not yet reached Elasticsearch, a second customer refreshes the search results, sees 1 item remaining, attempts to checkout, and encounters a frustrating failure.
 - **Practical Mitigation (Redis Lease Locking at BFF Layer)**: To eliminate checkout friction without coupling read services back to the primary database, the Backend-For-Frontend (BFF) gateway acquires a temporary lease lock in Redis upon inventory reservation. Subsequent checkout requests for that SKU check the Redis lease key before touching the database. If leased, the BFF returns instant backpressure response status to the second user, preventing phantom checkout attempts while Elasticsearch completes replication.
@@ -176,7 +176,7 @@ When separating read-heavy search services (Elasticsearch/Meilisearch) from core
 
 ## 5. Solving Legacy Monolith Sync: The CDC Architecture
 
-Avoiding application-level double writing prevents database drift, dual-phase commit lock contention, and network latency overhead. Change Data Capture (CDC) uses Debezium and Kafka Connect to tail the PostgreSQL Write-Ahead Log (WAL) or MySQL binary logs (binlogs) out-of-band:
+Avoiding application-level double writing prevents database drift, dual-phase commit lock contention, and network latency overhead. Change Data Capture (CDC) uses Debezium and Kafka Connect to tail the PostgreSQL Write-Ahead Log (WAL) or MySQL binary logs (binlogs) out-of-band. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below.
 
 - **Debezium WAL Log Parsing**: Debezium captures row-level insert, update, and delete mutations directly from the database engine log without modifying application code or incurring SQL query overhead on the legacy database.
 - **Kafka Event Streaming**: Captured mutations are published to dedicated Apache Kafka topics (e.g. `legacy.inventory_stocks`), preserving absolute global transaction order across table entities.
@@ -205,7 +205,7 @@ graph TD
 
 ## 6. The Phased Migration Roadmap & Envoy Routing
 
-Transitioning a high-volume monolithic e-commerce application to composable microservices without taking downtime requires an incremental three-phase **Strangler Fig pattern** managed by Envoy Proxy:
+Transitioning a high-volume monolithic e-commerce application to composable microservices without taking downtime requires an incremental three-phase **Strangler Fig pattern** managed by Envoy Proxy. The breakdown below summarizes the primary technical criteria, phase milestones, and architectural recommendations. Selecting the optimal technical path requires evaluating workload scale, team operational maturity, and infrastructure costs across all deployment phases. The breakdown below summarizes the primary technical criteria, phase milestones, risk mitigations, and architectural recommendations.
 
 - **Phase 1: Read-Only Shadow Routing & Validation**: Envoy mirrors production traffic to new composable microservices in shadow mode. Incoming read requests are evaluated side-by-side to compare response payloads and latency metrics without exposing users to potential bugs.
 - **Phase 2: Weighted Cluster Routing & Phased Traffic Shifting**: Using Envoy runtime weighted cluster routing, engineering teams shift traffic incrementally (e.g., 1% → 5% → 25% → 100%) to new domain microservices while keeping fallback routes active to the legacy monolith.
@@ -286,7 +286,7 @@ static_resources:
 
 ## 7. Go Event Listener for Parallel Database Sync
 
-To process CDC event streams reliably at high throughput without risking data drift or duplicate processing during database synchronization, the Go synchronization worker implements a worker pool concurrent pipeline:
+To process CDC event streams reliably at high throughput without risking data drift or duplicate processing during database synchronization, the Go synchronization worker implements a worker pool concurrent pipeline. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below.
 
 - **Worker Pool Concurrency & Go Channels**: Incoming Kafka messages are dispatched across a pool of concurrent Go worker goroutines via buffered channels. Each worker manages its own database transaction lifecycle, enabling parallel table row replication up to thousands of events per second.
 - **Idempotency Key Verification**: Because Kafka guarantees at-least-once delivery, every CDC message carries a unique event UUID. Workers perform transactional idempotency checks against a `processed_events` table before executing `UPSERT` statements, preventing duplicate state mutations.

@@ -22,6 +22,7 @@ TocOpen: true
 cover:
   image: "images/posts/mysql-scalability-cover.png"
   alt: "Replace MySQL Sharding with TiDB: distributed SQL migration guide for Go engineers"
+canonicalURL: "https://tanhdev.com/posts/mysql-scaling-sharding-tidb-architecture/"
 ---
 
 # Replace MySQL Sharding with TiDB: Distributed SQL Architecture

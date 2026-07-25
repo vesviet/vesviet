@@ -42,9 +42,8 @@ This article examines the differences between scaling methods and compares the t
 
 ## The Limits of Vertical Scaling and When to Scale MySQL?
 
-**Vertical Scaling (Scaling Up)** involves pumping more resources (CPU, RAM, NVMe SSDs) into a single Database server. 
+**Vertical Scaling (Scaling Up)** involves pumping more resources (CPU, RAM, NVMe SSDs) into a single Database server. However, this method has three fatal limits. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
 
-However, this method has three fatal limits:
 1. **Physical Hardware Limits:** You cannot buy a server with infinite RAM or CPU.
 2. **Exponential Cost Curve:** A single 128-Core / 1TB RAM server is astronomically more expensive than the combined cost of four 32-Core / 256GB RAM servers.
 3. **Single Point of Failure (SPOF):** No matter how premium the hardware is, if that single server crashes or experiences a disk failure, the entire system goes down.

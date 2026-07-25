@@ -41,7 +41,7 @@ canonicalURL: "https://tanhdev.com/posts/architecting-an-autonomous-hybrid-ai-co
 
 ## Executive Summary & Agentic Architecture Overview
 
-Building production-grade autonomous agent systems requires moving beyond single-prompt loops to robust agentic system architecture:
+The following system architecture diagram and sequence flow illustrate how control signals, API boundaries, background workers, and data pipelines interact during request execution. This comprehensive trace highlights the key communication protocols, retry mechanisms, and state transitions required to maintain operational stability under peak production loads.
 
 1. **Topology & Orchestration**: Master-worker agent swarms managed by explicit state machines.
 2. **Memory System Architecture**: Working memory (context window), short-term memory (Redis session), and long-term memory (Vector/Graph RAG).
@@ -83,7 +83,7 @@ The master orchestrator tracks node health and enforces strict state transition 
 
 ## 2. Agent Memory Systems (Working, Short-Term, Long-Term)
 
-Production agents manage three distinct memory tiers to balance low latency, cost efficiency, and deep contextual grounding:
+Production agents manage three distinct memory tiers to balance low latency, cost efficiency, and deep contextual grounding. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
 
 - **Working Memory (Context Window)**: Holds the dynamic context window for active LLM turns, including system prompts, active tool call schemas, and conversation histories. To prevent context window bloat and truncation errors, working memory is pruned using sliding-window token management and summarization heuristics.
 - **Short-Term Memory (Redis Session Store)**: Captures intermediate subtask outputs across multi-step pipeline workflows. Redis hashes store structured key-value payloads (such as scraped raw Markdown, MinHash signatures, and partial JSON drafts) with explicit Time-To-Live (TTL) expirations to isolate pipeline runs.
@@ -93,7 +93,7 @@ Production agents manage three distinct memory tiers to balance low latency, cos
 
 ## 3. Tool Calling & Model Context Protocol (MCP)
 
-Agents communicate with external infrastructure—such as web scrapers, database instances, and publishing platforms—through standardized Model Context Protocol (MCP) servers. MCP replaces proprietary, hardcoded tool integration wrappers with a uniform JSON-RPC protocol over standard input/output (stdio) or HTTP/SSE transports.
+Agents communicate with external infrastructure—such as web scrapers, database instances, and publishing platforms—through standardized Model Context Protocol (MCP) servers. MCP replaces proprietary, hardcoded tool integration wrappers with a uniform JSON-RPC protocol over standard input/output (stdio) or HTTP/SSE transports. The sequence diagram below traces the component interactions, data events, and boundary transitions across the workflow.
 
 ```mermaid
 sequenceDiagram
@@ -114,7 +114,7 @@ By enforcing strict JSON Schema validation for tool inputs and outputs, MCP guar
 
 ## 4. 3-Tier Hybrid AI Routing & Cost Engineering
 
-To minimize operational costs while maintaining high-quality outputs, incoming content signals pass through a 3-tier hybrid routing architecture:
+To minimize operational costs while maintaining high-quality outputs, incoming content signals pass through a 3-tier hybrid routing architecture. The sequence diagram below traces the component interactions, data events, and boundary transitions across the workflow. Visualizing system interactions helps clarify data boundaries, concurrency limits, and failure domain separation. The sequence diagram below traces the component interactions, message flows, API gateways, and boundary transitions across the complete execution path.
 
 ```mermaid
 flowchart TD
@@ -136,7 +136,7 @@ flowchart TD
 
 ## 5. Wake-on-LAN & AgentOps Pipeline
 
-To maintain a zero-idle energy footprint, local GPU worker servers remain powered off until triggered by the cloud orchestrator. Hardware Wake-on-LAN (WoL) magic packets boot the local worker server on demand:
+To maintain a zero-idle energy footprint, local GPU worker servers remain powered off until triggered by the cloud orchestrator. Hardware Wake-on-LAN (WoL) magic packets boot the local worker server on demand. The code implementation below illustrates the production configuration, error handling, and performance optimization techniques.
 
 ```python
 import socket, binascii
@@ -156,7 +156,7 @@ Once the worker completes its batch inference tasks, the AgentOps pipeline flush
 
 ## 6. The 4-Layer Quality Gate & GitOps Publish Flow
 
-Before generated content is published to production, it must pass through a strict 4-layer evaluation gate:
+Before generated content is published to production, it must pass through a strict 4-layer evaluation gate. The sequence diagram below traces the component interactions, data events, and boundary transitions across the workflow. Visualizing system interactions helps clarify data boundaries, concurrency limits, and failure domain separation. The sequence diagram below traces the component interactions, message flows, API gateways, and boundary transitions across the complete execution path.
 
 ```mermaid
 flowchart TD
