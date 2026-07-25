@@ -28,6 +28,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/graphrag-vs-naive-rag-enterprise-guide/"
 ---
 
+# GraphRAG vs Naive RAG: Enterprise Architecture Guide
+
+> **Answer-First:** Enterprise GraphRAG extends Naive RAG by extracting entities and relationships into a knowledge graph layer alongside vector embeddings. This multi-hop topology retrieval resolves complex domain queries across interconnected documents where isolated vector similarity searches fail, with PostgreSQL WAL streaming CDC maintaining real-time graph synchronization.
+
 - Schema design for knowledge graphs that speed up global enterprise RAG.
 - Syncing GraphRAG knowledge bases in real-time using PostgreSQL WAL events.
 

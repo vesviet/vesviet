@@ -17,9 +17,9 @@ cover:
 mermaid: true
 ---
 
-## Dapr State Store Consistency Trade-offs Explained
+# Dapr State Store Consistency Trade-offs Explained
 
-> **Executive Summary & Quick Answer**: Dapr state management requires explicit selection between Strong and Eventual consistency depending on state store backend capabilities. Utilizing Optimistic Concurrency Control (OCC) with ETags prevents lost updates in Go microservices, guaranteeing ACID guarantees on CockroachDB while maintaining sub-5ms writes on Redis.
+> **Answer-First:** Dapr state management requires explicit selection between Strong and Eventual consistency depending on state store backend capabilities. Utilizing Optimistic Concurrency Control (OCC) with ETags prevents lost updates in Go microservices, guaranteeing ACID guarantees on CockroachDB while maintaining sub-5ms writes on Redis.
 >
 > **Key Takeaways**:
 > - `ConsistencyStrong` enforces synchronous quorum writes, increasing latency by 15-30ms but preventing dirty reads.

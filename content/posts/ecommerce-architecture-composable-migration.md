@@ -38,6 +38,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/ecommerce-architecture-composable-migration/"
 ---
 
+# Composable E-Commerce Migration: Overcoming Tech Debt
+
+> **Answer-First:** Migrating a monolithic e-commerce application (such as Magento) to composable architecture requires decomposing domains into 21 bounded contexts using Strangler Fig proxy routing with Envoy, real-time Debezium CDC for zero-drift database sync, and Go microservices built on Kratos v2 and Protobuf gRPC.
+
 See the [21-service e-commerce architecture blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/) for the domain boundaries this migration targets.
 
 - Why replacing a legacy PHP monolith (Magento) requires 21 DDD bounded contexts rather than naive 4–6 microservices.
@@ -114,7 +118,7 @@ graph TD
 
 ## 2. Monorepo Architecture: Rush & Go Workspaces
 
-Managing 21 Go microservices and 2 frontend apps (Next.js storefront and React admin) requires structured monorepo governance:
+Managing 21 Go microservices and 2 frontend applications (Next.js storefront and React admin panel) within a single codebase requires structured monorepo governance. Without strict dependency management and code sharing policies, multi-service repositories quickly degrade into fragmented codebases with divergent library versions and redundant utility functions.
 
 ```
 composable-commerce/
@@ -130,13 +134,13 @@ composable-commerce/
 └── services/                      ← 21 Go microservices (Go module per service)
 ```
 
-Protobuf contract compilation bridges Go services and frontend TypeScript code using `buf generate`, ensuring that any API schema change in Go immediately surfaces type-check errors in frontend builds before deployment.
+Protobuf contract compilation bridges Go microservices and frontend TypeScript code using `buf generate`. By configuring automated pre-commit hooks and CI checks, any API schema change in a Go service `.proto` file immediately regenerates TypeScript interfaces and client stubs. If a backend developer modifies a RPC parameter signature, frontend builds fail immediately during type-checking before code can be merged into production.
 
 ---
 
 ## 3. Core Backend: Golang + Kratos v2 Internals
 
-Each Go microservice implements a strict 5-layer layout:
+Each Go microservice implements a strict 5-layer Clean Architecture layout using the Kratos v2 framework:
 
 ```text
 order-service/
@@ -153,19 +157,20 @@ order-service/
 ```
 
 ### Wire Compile-Time Dependency Injection
-Unlike runtime DI containers (Spring, Magento XML), Go Wire resolves dependencies at build time. If a dependency is missing, `go build` fails immediately.
+Unlike runtime reflection-based DI containers (such as Spring or Magento XML injection), Go Wire resolves component dependencies at compile time. `wire.go` specifies provider sets for databases, repositories, business logic use-cases, and transport servers. Running `wire` generates deterministic initialization code in `wire_gen.go`. If a developer forgets to provide a required dependency, `go build` fails immediately at compile time rather than crashing in production.
 
 ### Protobuf Money Type & Cursor Pagination
-- **Money Type**: Never use floats for financial prices. Use Google Money proto (`currency_code`, `units`, `nanos`) to eliminate floating-point rounding errors.
-- **Cursor Pagination**: Replaces offset pagination (`OFFSET 10000`) with stable index seeking (`WHERE id > $cursor LIMIT 20`), ensuring O(1) page access even over 500,000+ records.
+- **Exact Money Representation**: Financial calculations must never use floating-point types (`float32`/`float64`) due to binary rounding inaccuracies (e.g., `0.1 + 0.2 != 0.3`). Microservices adopt Google's standard `google.type.Money` protobuf contract (`currency_code`, `units`, `nanos`), executing monetary arithmetic using 64-bit integer fixed-point units in Go.
+- **High-Performance Cursor Pagination**: Standard SQL offset pagination (`OFFSET 10000 LIMIT 20`) forces database engines to perform full index scans to discard 10,000 rows. Composable services implement seek-based cursor pagination (`WHERE (created_at, id) < ($cursor_time, $cursor_id) ORDER BY created_at DESC, id DESC LIMIT 20`), providing O(1) query execution speeds regardless of table depth across millions of historical orders.
 
 ---
 
 ## 4. The Real Bottleneck in Decoupling (Eventual Consistency)
 
-When separating the Search Engine (Elasticsearch) and the Inventory Service via an Event-bus, data takes a few seconds to synchronize.
-- **The Problem**: A customer clicks "Add to Cart" for the last item in stock. Inventory deducts stock immediately, but Search UI has not received the event yet. A second customer attempts purchase and hits a checkout error.
-- **Practical Solution**: Use Redis at the BFF (Backend-For-Frontend) layer to acquire a lease lock for that SKU and user session. Subsequent attempts on the same stock pool are held at the BFF gateway, bypassing database hits and returning instant backpressure status.
+When separating read-heavy search services (Elasticsearch/Meilisearch) from core transactional inventory services via an asynchronous event bus, temporary data replication lag (typically 200ms to 2s) is inevitable.
+
+- **The Concurrency Hazard**: A customer views a product page showing 1 item remaining and clicks "Add to Cart". The Inventory Service immediately reserves the item and decrements stock to 0. However, because the CDC event has not yet reached Elasticsearch, a second customer refreshes the search results, sees 1 item remaining, attempts to checkout, and encounters a frustrating failure.
+- **Practical Mitigation (Redis Lease Locking at BFF Layer)**: To eliminate checkout friction without coupling read services back to the primary database, the Backend-For-Frontend (BFF) gateway acquires a temporary lease lock in Redis upon inventory reservation. Subsequent checkout requests for that SKU check the Redis lease key before touching the database. If leased, the BFF returns instant backpressure response status to the second user, preventing phantom checkout attempts while Elasticsearch completes replication.
 
 ---
 

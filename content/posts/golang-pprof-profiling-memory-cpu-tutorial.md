@@ -27,6 +27,8 @@ canonicalURL: "https://tanhdev.com/posts/golang-pprof-profiling-memory-cpu-tutor
 
 # Go pprof CPU & Memory Profiling: Production Tutorial
 
+> **Answer-First:** Profiling Go services in production requires exposing `net/http/pprof` endpoints securely over private management ports or authenticated sidecars. By capturing CPU profiles, flame graphs, and memory profiles (`inuse_space` vs. `alloc_space`) via `go tool pprof`, developers can diagnose performance bottlenecks and memory leaks without restarting pods.
+
 - Reading memory profiles to identify slow allocations in performance hot paths.
 - Analyzing flame graphs to detect lock contention on global mutexes.
 

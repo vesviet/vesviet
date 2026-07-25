@@ -28,6 +28,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/kubernetes-in-place-pod-resizing-guide/"
 ---
 
+# Kubernetes In-Place Pod Resizing: No-Restart Scaling
+
+> **Answer-First:** Kubernetes In-Place Pod Resizing allows dynamically mutating container CPU and memory requests and limits without deleting, rescheduling, or restarting pods. Configured via `resizePolicy` in container specs and automated through Vertical Pod Autoscaler (VPA), it prevents connection drops and state loss in latency-critical microservices and AI workloads.
+
 - In-place pod resizing edge cases where CPU updates cause container restarts.
 - Configuring kubelet parameters to support resizing without disrupting running JVM tasks.
 

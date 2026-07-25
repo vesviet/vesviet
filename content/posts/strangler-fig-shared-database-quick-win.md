@@ -18,6 +18,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/strangler-fig-shared-database-quick-win/"
 ---
 
+# Magento Migration: Shared DB, CDC, or Event Bus?
+
+> **Answer-First:** Migrating a Magento monolith using the Strangler Fig pattern requires choosing between three data migration strategies: Shared Database (quickest compute win, temporary EAV query bottleneck), Change Data Capture / Debezium (automated async sync to Go microservice DBs), and Event Bus separation (cleanest microservice decoupling, requiring PHP codebase modification).
+
 - Why Go running against Magento's MySQL is faster at the compute layer but still bottlenecked at the EAV query layer — and what actually fixes it.
 - The single deciding factor between CDC (Option B) and Event Bus (Option C): who owns the PHP Magento codebase.
 

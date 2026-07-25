@@ -18,6 +18,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/gitops-at-scale-kubernetes-argocd-microservices/"
 ---
 
+# GitOps at Scale: Kubernetes & ArgoCD for Microservices
+
+> **Answer-First:** Deploying 21 microservices at scale requires replacing manual `kubectl apply` with an ArgoCD GitOps pull model utilizing the App-of-Apps pattern, Kustomize environment overlays, automated `selfHeal` drift reconciliation, and `git revert` instant rollbacks without cluster credentials in CI.
+
 - The security risks of running `kubectl apply` in production and how the App-of-Apps pattern eliminates credential exposure.
 - Practical steps to configure annotation-based sync filtering in ArgoCD to isolate multi-tenant microservices deployments.
 
@@ -358,6 +362,10 @@ Directly running `kubectl apply` bypasses the version control system, creating d
 
 {{< faq q="How does the Argo CD App-of-Apps pattern simplify configuration management for 21+ microservices?" >}}
 The App-of-Apps pattern uses a root Argo CD Application that manages a collection of child Application manifests. Each child application represents a microservice deployment. This hierarchy allows platform teams to bootstrap, version control, and synchronize the entire multi-tenant service ecosystem as a single declarative unit.
+{{< /faq >}}
+
+{{< faq q="How does Argo CD handle emergency production rollbacks when a deployed image is faulty?" >}}
+Emergency rollbacks in GitOps are executed by running `git revert` on the offending Git commit. Argo CD detects the updated target commit in the repository within minutes and automatically synchronizes the Kubernetes cluster to the previous stable manifest state, preserving full auditability without requiring direct cluster access.
 {{< /faq >}}
 
 ---

@@ -14,12 +14,15 @@ cover:
   image: "images/posts/osrm-k8s-cover.png"
   alt: "OSRM Shared Memory Kubernetes Architecture"
   relative: false
-mermaid: true
 ---
 
-## OSRM Shared Memory on Kubernetes: Live Traffic Updates with Zero-Downtime
+# OSRM Shared Memory on Kubernetes: Live Traffic Updates with Zero-Downtime
 
-> **Executive Summary & Quick Answer**: Deploying Open Source Routing Machine (OSRM) on Kubernetes using `ipc: host` shared memory enables live traffic edge-weight updates without restarting routing engines. This setup delivers sub-2ms P99 distance matrix calculations and eliminates RAM duplication across container pods.
+> **Answer-First:** Operating Open Source Routing Machine (OSRM) on Kubernetes with POSIX shared memory (`ipc: host`) and `osrm-datastore` atomic memory pointer swapping enables sub-2ms routing matrix queries and live traffic updates without restarting pods or duplicating map memory across containers.
+
+## Executive Summary & Quick Answer
+
+> Deploying Open Source Routing Machine (OSRM) on Kubernetes using `ipc: host` shared memory enables live traffic edge-weight updates without restarting routing engines. This setup delivers sub-2ms P99 distance matrix calculations and eliminates RAM duplication across container pods.
 >
 > **Key Takeaways**:
 > - POSIX shared memory (`/dev/shm`) allows multiple `osrm-routed` instances to read the same map graph in RAM.
@@ -53,7 +56,7 @@ How do you update the map data or inject live traffic without dropping connectio
 
 1.  `osrm-datastore` initializes a second shared memory block alongside the currently active one.
 2.  It securely loads the newly compiled map data into this second, dormant block.
-3.  Once fully loaded, it sends a system signal to perform an atomic pointer swap. All incoming HTTP routing requests arriving after this exact microsecond will seamlessly read from the new block.
+3.  Once fully loaded, it sends a system signal to perform an atomic pointer swap. All incoming HTTP routing requests arriving after this exact microsecond will instantly read from the new block.
 4.  The old memory block is eventually orphaned. Once no active HTTP request is reading from it, the Linux kernel automatically garbage-collects it.
 
 ## Designing the Zero-Downtime Live Traffic Pipeline
@@ -178,7 +181,7 @@ In high-concurrency production deployments, balancing throughput, resilience, an
 Without IPC host shared memory, each OSRM pod must load the full 15GB+ map dataset into its private RAM. Host IPC allows 10 pods on a node to share a single memory segment, saving over 135GB of node RAM.
 
 ### Q2: How does live traffic weight updating work in OSRM without downtime?
-`osrm-datastore` writes updated traffic speed profiles to a secondary shared memory block and atomically swaps the memory pointer; active `osrm-routed` threads seamlessly pick up new weights on their next query.
+`osrm-datastore` writes updated traffic speed profiles to a secondary shared memory block and atomically swaps the memory pointer; active `osrm-routed` threads immediately pick up new weights on their next query.
 
 ### Q3: What are the trade-offs between OSRM and GraphHopper for high-concurrency routing?
 OSRM provides faster pure matrix query performance (sub-2ms) via Contraction Hierarchies in C++, whereas GraphHopper offers dynamic customization of routing profiles in Java at the cost of higher GC and memory overhead.

@@ -18,6 +18,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/mastering-event-driven-architecture-dapr/"
 ---
 
+# Mastering Event-Driven Architecture with Dapr Pub/Sub in Go
+
+> **Answer-First:** Distributed microservices maintain eventual data consistency without synchronous coupling by using Dapr Pub/Sub sidecars (v1.14+) alongside Go. Dapr abstracts message brokers (Kafka/Redis) while guaranteeing resilience through orchestrated Saga transactions, Redis-backed idempotent message handlers (`SET key NX`), and dead-letter queue (DLQ) routing for unhandled poison messages.
+
 - How to configure dead-letter queues in Dapr to handle poison messages.
 - Designing idempotent message handlers that process duplicate events safely.
 

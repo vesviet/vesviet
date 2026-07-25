@@ -28,7 +28,9 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/go-pprof-kubernetes-remote-profiling/"
 ---
 
-## Go pprof in Kubernetes: Remote Profiling & Flame Graphs
+# Go pprof in Kubernetes: Remote Profiling & Flame Graphs
+
+> **Answer-First:** Remote profiling Go microservices in Kubernetes combines `net/http/pprof` endpoints with `kubectl port-forward` or continuous profilers like Pyroscope. This captures production CPU, heap, and goroutine profiles under real load with negligible overhead (<1% CPU) without exposing internal debug ports publicly.
 
 - Production port forwarding configuration to profile CPU without service downtime.
 - Decoding complex memory profiles and locating garbage collection allocation hot paths.

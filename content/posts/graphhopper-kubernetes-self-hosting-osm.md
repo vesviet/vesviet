@@ -28,6 +28,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/graphhopper-kubernetes-self-hosting-osm/"
 ---
 
+# Self-Hosting GraphHopper on Kubernetes with OSM Data
+
+> **Answer-First:** Self-hosting GraphHopper on Kubernetes with OpenStreetMap (OSM) data requires a StatefulSet with PVC persistent storage for PBF graph files, JVM memory heap tuning, and startup probe initial delays (300s+) to accommodate Contraction Hierarchies (CH) pre-computation without crash loops.
+
 - PVC provisioning configurations for OSM PBF files in multi-region clusters.
 - Tuning health probe timeouts to accommodate long graph pre-computation periods.
 

@@ -29,6 +29,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/go-microservices-distributed-tracing-architecture/"
 ---
 
+# Go Microservices Distributed Tracing Architecture (2026)
+
+> **Answer-First:** Distributed tracing in Go microservices relies on OpenTelemetry (OTel) SDKs to propagate W3C Trace Context across HTTP APIs, gRPC calls, and Kafka event streams. By implementing an OTel Collector Gateway with tail-based sampling, engineering teams maintain end-to-end transaction visibility and rapidly pinpoint latency bottlenecks without incurring prohibitive telemetry storage costs.
+
 - OpenTelemetry collector tuning for low-overhead distributed tracing.
 - Propagating span contexts over asynchronous Kafka messaging systems without breaking tracing chains.
 
@@ -347,7 +351,7 @@ func InjectTraceToKafka(ctx context.Context, headers *[]RecordHeader) {
 }
 ```
 
-By ensuring the Kafka consumer extracts this header, the event stream connects seamlessly back to the originating HTTP request.
+By ensuring the Kafka consumer extracts this header, the event stream connects transparently back to the originating HTTP request.
 
 ## Advanced Collector Gateways and Tail-Based Sampling
 

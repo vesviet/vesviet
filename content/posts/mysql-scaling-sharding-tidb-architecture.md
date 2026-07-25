@@ -22,11 +22,11 @@ TocOpen: true
 cover:
   image: "images/posts/mysql-scalability-cover.png"
   alt: "Replace MySQL Sharding with TiDB: distributed SQL migration guide for Go engineers"
-  relative: false
-canonicalURL: "https://tanhdev.com/posts/mysql-scaling-sharding-tidb-architecture/"
 ---
 
-## Replace MySQL Sharding with TiDB: Distributed SQL Architecture
+# Replace MySQL Sharding with TiDB: Distributed SQL Architecture
+
+> **Answer-First:** Replacing manual MySQL database sharding with TiDB eliminates application-layer query routing and cross-shard JOIN limitations by using an auto-partitioning distributed SQL engine with Raft consensus storage (TiKV), stateless compute nodes, and native Percolator distributed ACID transactions.
 
 - Migrating schemas to TiDB with zero downtime using DM-portal.
 - How TiKV nodes scale independently of TiDB SQL computation nodes.
@@ -167,7 +167,7 @@ While Vitess preserves your existing investment in MySQL storage engines (InnoDB
 
 ## Enter NewSQL: TiDB as a Sharding Alternative
 
-**TiDB acts as a drop-in MySQL replacement that scales horizontally without manual sharding. It processes distributed queries seamlessly, allowing e-commerce platforms to scale writes across dozens of nodes while maintaining standard SQL syntax and ACID transaction guarantees.**
+**TiDB acts as a drop-in MySQL replacement that scales horizontally without manual sharding. It processes distributed queries transparently, allowing e-commerce platforms to scale writes across dozens of nodes while maintaining standard SQL syntax and ACID transaction guarantees.**
 
 NewSQL databases represent a class of modern relational databases that provide the horizontal scalability of NoSQL systems while preserving ACID transaction guarantees and standard SQL syntax. **TiDB** (developed by PingCAP) is an open-source, distributed NewSQL database designed to serve as a drop-in replacement for scaled-out MySQL databases.
 
@@ -275,16 +275,19 @@ While TiDB is highly compatible with the MySQL wire protocol, it is not a drop-i
 
 For systems that do not rely heavily on database-level procedural code, migrating to TiDB eliminates the operational drag of sharding, providing a clear path to scale database writes horizontally.
 
-## Frequently Asked Questions (FAQ)
+## FAQ
 
-**How do you scale a MySQL database?**
-You start by scaling vertically (upgrading hardware) and adding read replicas. When write throughput becomes the bottleneck, you must transition to horizontal scaling (sharding) or adopt a NewSQL database like TiDB.
+{{< faq q="How do you scale a MySQL database when write throughput hits a single-server bottleneck?" >}}
+You start by scaling vertically (upgrading server CPU/RAM/NVMe) and adding read replicas. When write throughput saturates disk I/O, you must transition to horizontal scaling via manual database sharding or adopt a NewSQL distributed database like TiDB.
+{{< /faq >}}
 
-**What is the difference between sharding and partitioning?**
-Partitioning generally refers to dividing a large table into smaller, manageable pieces within the same database instance. Sharding is horizontal partitioning where the data is distributed across entirely separate physical database instances, requiring application-level routing.
+{{< faq q="What is the difference between database partitioning and horizontal sharding?" >}}
+Partitioning divides a large table into smaller storage segments within a single database instance. Sharding distributes table rows across multiple independent physical database instances, requiring application-level routing or proxy middleware.
+{{< /faq >}}
 
-**Why is TiDB a good replacement for MySQL sharding?**
-TiDB offers the horizontal write scalability of sharding without the application-level complexity. It automatically handles data partitioning (Regions), query routing, and re-balancing. It also supports distributed ACID transactions natively, which is incredibly difficult to achieve in a manually sharded MySQL environment.
+{{< faq q="Why is TiDB a superior replacement for manual MySQL sharding?" >}}
+TiDB provides horizontal write scalability without application-layer complexity. It automatically partitions data into 96MB Raft Regions, handles cross-node query routing, and supports distributed ACID transactions natively via the Percolator 2PC protocol.
+{{< /faq >}}
 
 ---
 

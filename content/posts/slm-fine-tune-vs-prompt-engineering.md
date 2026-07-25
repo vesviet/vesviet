@@ -39,6 +39,8 @@ canonicalURL: "https://tanhdev.com/posts/slm-fine-tune-vs-prompt-engineering/"
 
 # Prompt Engineering vs Fine-Tuning vs RAG: Complete 2026 Decision Guide
 
+> **Answer-First:** Choose Prompt Engineering for rapid prototyping on broad tasks, RAG for accessing dynamic real-time knowledge, and Fine-Tuning (LoRA/QLoRA) for strict output formatting, specialized domain style, and reducing per-request token costs. Combining Small Language Models (SLMs) with RAG and LoRA delivers frontier-level accuracy on specialized tasks at significantly lower compute costs.
+
 ---
 
 ## Executive Summary & SLM Playbook Architecture

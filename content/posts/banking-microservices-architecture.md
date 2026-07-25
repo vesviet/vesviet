@@ -28,6 +28,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/banking-microservices-architecture/"
 ---
 
+# Banking Microservices in Go: Saga & Event Sourcing
+
+> **Answer-First:** Building resilient banking microservices in Go requires replacing monolithic core systems with double-entry ledger immutability, Transactional Outbox patterns via Kafka, and Temporal Saga orchestration. This architectural combination guarantees strict financial consistency, prevents double-spending, and handles transient payment gateway failures gracefully.
+
 - How to implement transactional outbox pattern to guarantee eventual consistency.
 - Saga Orchestration patterns that handle transient payment gateway timeouts gracefully.
 

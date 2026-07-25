@@ -14,12 +14,15 @@ cover:
   image: "images/posts/argocd-2026-cover.png"
   alt: "Argo CD 3.4 & 3.3 Guide: GitOps Upgrades & Cluster Pause (2026)"
   relative: false
-mermaid: true
 ---
 
-## Argo CD 3.4 & 3.3 Guide: GitOps Upgrades & Cluster Pause (2026)
+# Argo CD 3.4 & 3.3 Guide: GitOps Upgrades & Cluster Pause (2026)
 
-> **Executive Summary & Quick Answer**: Argo CD 3.4 introduces native Cluster Pause capabilities and native integration with Kargo for event-driven GitOps promotions. This architecture prevents cascading deployment failures during infrastructure incidents and cuts deployment sync drift duration by 60%.
+> **Answer-First:** Argo CD 3.4 and 3.3 introduce native Cluster Pause reconciliation for instant cluster-wide sync freezing during P1 incidents, event-driven promotions via Kargo integration, PreDelete hooks for graceful workload teardown, and shallow Git cloning (depth=1) to dramatically accelerate monorepo sync times.
+
+## Executive Summary & Quick Answer
+
+> Argo CD 3.4 introduces native Cluster Pause capabilities and native integration with Kargo for event-driven GitOps promotions. This architecture prevents cascading deployment failures during infrastructure incidents and cuts deployment sync drift duration by 60%.
 >
 > **Key Takeaways**:
 > - Cluster Pause allows instant cluster-wide sync freezing during P1 incidents without modifying Git manifests.
@@ -114,7 +117,7 @@ Large companies often store their entire Kubernetes configuration in a **Monorep
 
 ### OIDC Background Token Refresh Eliminates Session Timeouts
 
-Getting kicked out of the Argo CD screen (Session Timeout) while monitoring a deployment progress is an extremely frustrating experience. With version 3.3, Argo CD integrates **Background Token Refresh** for OIDC providers (Okta, Keycloak, Dex). The token will be silently refreshed in the background as long as the user is actively working or keeping the tab open, providing a seamless experience.
+Getting kicked out of the Argo CD screen (Session Timeout) while monitoring a deployment progress is an extremely frustrating experience. With version 3.3, Argo CD integrates **Background Token Refresh** for OIDC providers (Okta, Keycloak, Dex). The token will be silently refreshed in the background as long as the user is actively working or keeping the tab open, providing an uninterrupted session experience.
 
 ---
 
@@ -191,6 +194,10 @@ Cluster Pause allows SRE teams to halt all reconciliation activities across targ
 
 {{< faq q="How do PreDelete hooks improve resources lifecycle management compared to standard Argo CD sync phases?" >}}
 PreDelete hooks run custom hook pods or jobs before target resources are removed by the controller. This is crucial for graceful termination, enabling database backups, connection draining, or external DNS record deletion to complete successfully before Kubernetes destroys the deployment or namespace.
+{{< /faq >}}
+
+{{< faq q="How do Kargo stage promotions complement Argo CD GitOps pipelines?" >}}
+While Argo CD maintains continuous reconciliation between Git repositories and cluster states, Kargo manages high-velocity multi-stage promotions (such as Warehouse to Stage to Prod) with automated test gates. Using both allows platform teams to separate infrastructure drift prevention from application release workflows.
 {{< /faq >}}
 
 ---

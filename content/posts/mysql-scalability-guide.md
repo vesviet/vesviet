@@ -27,6 +27,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/mysql-scalability-guide/"
 ---
 
+# MySQL Scalability Guide: Read Replicas, Sharding, and Distributed SQL
+
+> **Answer-First:** Scaling MySQL requires matching the solution to the bottleneck: tune InnoDB buffer pool (70–80% RAM) and ProxySQL pooling for initial gains; add async read replicas for read-heavy workloads; apply Vitess or GORM application-level sharding for write-heavy data (>1TB); or migrate to distributed NewSQL (TiDB) when cross-shard queries and manual re-sharding become unsustainable.
+
 - Tuning InnoDB buffer pool size for high read/write ratio workloads.
 - Why standard read replication fails to solve write bottlenecks and when toshard.
 

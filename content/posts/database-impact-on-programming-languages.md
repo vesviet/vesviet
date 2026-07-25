@@ -17,7 +17,9 @@ cover:
 mermaid: true
 ---
 
-## How Databases Shaped Go, PHP, Node.js, and Rust
+# How Databases Shaped Go, PHP, Node.js, and Rust
+
+> **Answer-First:** Database connection limits and I/O bottlenecks shaped modern language runtimes. PHP relies on external poolers like PgBouncer, Node.js uses non-blocking event loops, while Go (`database/sql`) and Rust (`sqlx`) integrate multiplexed connection pools and compile-time SQL safety directly into their language ecosystems.
 
 > **Executive Summary & Quick Answer**: Database connection models directly dictated language runtime concurrency features. PHP evolved Swoole/FrankenPHP to bypass FPM connection startup latency, Go built the `database/sql` multiplexed connection pool into its standard library, and Rust leveraged async/await ownership to eliminate runtime GC overhead during database I/O.
 >

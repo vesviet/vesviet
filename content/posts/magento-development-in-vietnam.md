@@ -22,6 +22,8 @@ cover:
 
 # Magento Enterprise Project Scoping & Agency Cost Matrix
 
+> **Answer-First:** Scoping an enterprise Magento project in Vietnam requires accounting for four effort layers: storefront, backend logic, integration/data reliability, and operational readiness. Accurate budgeting depends on a paid discovery phase, explicit API retry and idempotency assumptions, and a cost matrix covering both initial implementation ($20k–$100k+) and ongoing maintenance.
+
 - Vendor management templates and scope definition checklists for outsourced dev.
 - Common project scoping pitfalls that lead to budget overruns in custom integrations.
 

@@ -18,6 +18,10 @@ cover:
   relative: false
 ---
 
+# Building a Custom Golang Vector Database Engine with HNSW
+
+> **Answer-First:** Building a custom Go vector database engine with HNSW uses 256-bit SIMD AVX2 loop unrolling, off-heap `mmap` zero-GC slab memory, and Product Quantization (PQ-32). This achieves 98.4% Recall@10 at 14,200 QPS with sub-millisecond 0.82ms latency while reducing vector RAM footprint by 96%.
+
 >
 > **Key Takeaways**:
 > - **Throughput & Latency**: Achieves **98.4% Recall@10 at 14,200 Queries Per Second (QPS)** on 768-dimensional embeddings with a sub-millisecond p99 latency of **0.82 ms** on standard cloud hardware.

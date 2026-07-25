@@ -28,6 +28,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/go-126-green-tea-gc-cgo-performance-guide/"
 ---
 
+# Go 1.26: Green Tea GC, Faster CGO & Goroutine Leak Detection
+
+> **Answer-First:** Go 1.26 introduces the Green Tea garbage collector, replacing object-by-object graph walking with page-oriented marking to leverage spatial locality and AVX-512 vector acceleration. It reduces GC CPU overhead and tail latency while optimizing CGO transition paths and introducing a native goroutine leak profiler for production diagnostics.
+
 - Performance metrics of garbage collection optimization in Go 1.26.
 - Memory overhead trade-offs when calling CGO functions in high-throughput network threads.
 

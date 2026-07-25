@@ -26,10 +26,12 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/real-time-inventory-ecommerce-architecture/"
 ---
 
+# Real-Time Inventory Topology: CDC, Kafka, and Redis
+
+> **Answer-First:** Building high-throughput real-time inventory systems requires a hybrid Speed & Truth architecture. Change Data Capture (Debezium) streams database stock updates into Apache Kafka, while atomic Redis Lua scripts handle instant sub-millisecond stock reservations with zero overselling during high-concurrency flash sales.
+
 - Write-through caches configuration in Redis to prevent inventory drift.
 - Lua scripting implementations in Redis that prevent double-reservations under peak load.
-
-## Real-Time Inventory Topology: CDC, Kafka, and Redis
 
 **Real-time inventory synchronization** is the process of propagating stock count changes from the system of record (database) to all sales channels — web storefront, mobile app, WMS, ERP — in sub-second time. Instead of batch ETL jobs that run every hour, a CDC + Kafka pipeline streams every committed stock change as an event, eliminating overselling and stale stock displays.
 

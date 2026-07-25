@@ -18,7 +18,9 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/blueprint-ecommerce-microservices-architecture-diagram/"
 ---
 
-## Ecommerce Architecture: 21-Service Microservices Blueprint
+# Ecommerce Architecture: 21-Service Microservices Blueprint
+
+> **Answer-First:** This 21-service e-commerce microservices architecture uses Golang Domain-Driven Design (DDD), Dapr pub/sub, gRPC inter-service communication, and CQRS with Elasticsearch projections. This blueprint enables independent domain scaling, sub-50ms P99 search latencies, and distributed Saga checkout transactions without cross-database coupling.
 
 ## E-Commerce Architecture Patterns: Monolith vs Microservices
 
@@ -269,3 +271,8 @@ We use a lightweight, compiled gateway like Envoy or a custom Go gateway utilizi
 {{< faq q="What strategies prevent cascading failures when a downstream microservice experiences latency spikes?" >}}
 We implement the Circuit Breaker and bulkhead patterns at the service boundary. In Go, libraries like `go-resiliency/breaker` or Sentinel intercept outbound HTTP/gRPC client calls. If the failure rate exceeds 50%, the breaker trips immediately, returning a cached response or an architectural fallback rather than blocking goroutines.
 {{< /faq >}}
+
+{{< faq q="How do you handle distributed checkout transactions across multiple microservices without shared SQL transactions?" >}}
+We implement the Saga Pattern orchestrated via Dapr pub/sub and Redis state stores. The Checkout service publishes events like `checkout.requested`, allowing Order, Warehouse, and Payment services to process local database transactions independently and emit compensating events if any step fails.
+{{< /faq >}}
+

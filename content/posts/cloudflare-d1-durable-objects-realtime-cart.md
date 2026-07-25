@@ -28,7 +28,9 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/cloudflare-d1-durable-objects-realtime-cart/"
 ---
 
-## Cloudflare D1 + Durable Objects: Building a Real-Time Cart
+# Cloudflare D1 + Durable Objects: Building a Real-Time Cart
+
+> **Answer-First:** Building a real-time e-commerce cart on Cloudflare combines Durable Objects for strongly consistent, single-threaded in-memory session state across active browser tabs with Cloudflare D1 (edge SQLite) for long-term order persistence. This edge-native architecture eliminates Redis clusters and centralized database bottlenecks, enabling sub-50ms worldwide cart synchronization with zero cold starts.
 
 - How to design cart locking mechanisms in Durable Objects without deadlocks.
 - Tuning sub-request allocations to stay within Cloudflare's free-tier runtime boundaries.

@@ -17,9 +17,9 @@ cover:
 mermaid: true
 ---
 
-## Architecting Agentic E-commerce Search with Golang
+# Architecting Agentic E-commerce Search with Golang
 
-> **Executive Summary & Quick Answer**: Agentic e-commerce search replaces rigid keyword matching with Golang-driven vector search using Qdrant gRPC and Cohere re-ranking. By combining BM25 keyword filtering with sub-20ms vector similarity lookup, systems achieve a 35% higher search conversion rate while maintaining sub-50ms P99 latencies.
+> **Answer-First:** Agentic e-commerce search replaces rigid keyword matching with Golang-driven vector search using Qdrant gRPC and Cohere re-ranking. Combining BM25 keyword filtering with sub-20ms vector similarity lookup achieves a 35% higher conversion rate while maintaining sub-50ms P99 search latencies.
 >
 > **Key Takeaways**:
 > - Qdrant gRPC transport reduces payload serialization overhead by 40% compared to REST JSON.

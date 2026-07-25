@@ -28,7 +28,9 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/graphhopper-distance-matrix-production-guide/"
 ---
 
-## GraphHopper Distance Matrix: Production Self-Hosting & API Guide
+# GraphHopper Distance Matrix: Production Self-Hosting & API Guide
+
+> **Answer-First:** Self-hosting GraphHopper distance matrix via Docker and the `/matrix` API provides a cost-effective, high-throughput alternative to Google Maps for logistics routing. By caching OpenStreetMap (OSM) road networks in memory with H3 spatial indexing and Redis, engineering teams can compute 1,000x1,000 distance-time matrices in milliseconds to power last-mile Vehicle Routing Problem (VRP) algorithms.
 
 - Setting up GraphHopper self-hosting routing engine with custom profile caches.
 - Configuring RAM allocations to hold entire continental OpenStreetMap networks.

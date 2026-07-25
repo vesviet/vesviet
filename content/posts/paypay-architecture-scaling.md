@@ -28,6 +28,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/paypay-architecture-scaling/"
 ---
 
+# PayPay Architecture: Scaling to 70M Users & 100k Peak TPS
+
+> **Answer-First:** PayPay scales payment infrastructure to 70M+ users and 100k+ peak TPS using a Kubernetes microservices stack backed by TiDB for ACID-compliant ledger storage and Kafka for event sourcing. Reliability is enforced through GitOps workflows, automated chaos engineering fault injection, and asynchronous event decoupling to isolate checkout processes from banking outages.
+
 - Running chaos engineering scripts in TiDB payment systems.
 - How event sourcing with Kafka isolates PayPay checkout routes from legacy bank outages.
 

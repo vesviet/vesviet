@@ -29,6 +29,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/composable-banking-architecture/"
 ---
 
+# Composable Banking Architecture: Monolith to Modular
+
+> **Answer-First:** Composable banking replaces monolithic core banking systems with independent, swappable Packaged Business Capabilities (PBCs) based on MACH principles. Using Go microservices, event-driven Saga orchestration, and Strangler Fig patterns, banks can update specific capabilities like payments without risking core ledger stability or total outages.
+
 - Strangler fig patterns for core banking systems that prevent data corruption.
 - How to bridge legacy COBOL records into dynamic JSON streams using Go middleware.
 

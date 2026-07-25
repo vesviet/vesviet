@@ -29,6 +29,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/real-time-ride-hailing-architecture/"
 ---
 
+# Real-Time Ride-Hailing Architecture: Matching, Spatial Indexing & Websockets
+
+> **Answer-First:** Real-time ride-hailing platforms like Uber and Grab process millions of GPS updates per second using hexagonal spatial partitioning (Uber H3), Kafka stream ingestion, in-memory matching engines (DISCO), dynamic surge pricing algorithms, and persistent push gateways (RAMEN/WebSockets) to complete driver-passenger matching under 3 seconds.
+
 - Scaling matching engines to millions of geographic updates using H3 indexing.
 - Designing low-latency push notification gateways to dispatch driver routes.
 

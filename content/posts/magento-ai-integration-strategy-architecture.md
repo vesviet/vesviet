@@ -20,6 +20,10 @@ canonicalURL: "https://tanhdev.com/posts/magento-ai-integration-strategy-archite
 mermaid: true
 ---
 
+# Magento AI Integration: Modernize Without Rebuilding
+
+> **Answer-First:** Integrating AI into Magento requires decoupling analytical workloads from Magento's MySQL/EAV transactional database using queue-based workers and dedicated external vector databases (such as Qdrant or pgvector). Offloading synchronous LLM calls prevents database lock contention, PHP-FPM thread exhaustion, and site outages while enabling agentic e-commerce capabilities.
+
 - Queue-based worker systems that isolate Magento from LLM latency.
 - Writing robust fallback routes when third-party AI translation services go offline.
 

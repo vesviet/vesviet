@@ -36,6 +36,8 @@ canonicalURL: "https://tanhdev.com/posts/shopee-flash-sale-architecture/"
 
 # Flash Sale Architecture: Rate Limiting & Redis
 
+> **Answer-First:** High-concurrency flash sale architectures handle millions of concurrent requests (C10M scale) by using kernel bypass networking (DPDK/eBPF), edge rate limiting via atomic Redis Lua token buckets, pre-warmed in-memory inventory decrementing, and asynchronous Kafka queue leveling before persisting to distributed TiDB/MySQL database clusters.
+
 ---
 
 ## Executive Summary & System Design Foundations
@@ -51,16 +53,17 @@ High-concurrency systems handling millions of concurrent requests (C10M scale) m
 
 ## 1. High-Concurrency Systems & The C10M Challenge
 
-Handling 10 million concurrent connections (C10M) requires rethinking traditional OS network stacks:
-- **Kernel Bypass**: Use DPDK / eBPF to bypass standard Linux network stack context switches.
-- **Event-Driven Non-Blocking I/O**: Asynchronous epoll / io_uring event loops in Go/C++ microservices.
-- **CPU Pinning & NUMA Awareness**: Bind worker threads to dedicated CPU cores and local NUMA memory nodes to avoid cache invalidation overhead.
+Handling 10 million concurrent connections (C10M) requires rethinking traditional OS network stacks. Standard Linux socket handling incurs severe CPU overhead due to kernel context switches, lock contention in network driver queues, and memory copy operations between kernel space and user space.
+
+- **Kernel Bypass Networking**: Systems employ Data Plane Development Kit (DPDK) or eBPF (Extended Berkeley Packet Filter) to route network packets directly to user-space application buffers. Bypassing standard Linux network interrupts reduces CPU cycle consumption per packet by up to 80%.
+- **Event-Driven Non-Blocking I/O**: High-performance worker nodes leverage `io_uring` or `epoll` event loops in Go/C++ microservices. Single-threaded non-blocking event loops process tens of thousands of active socket handles per core without thread context switching overhead.
+- **CPU Pinning & NUMA Awareness**: Thread pools are pinned to specific physical CPU cores using CPU affinity masks (`sched_setaffinity`). Allocating memory buffers within the local Non-Uniform Memory Access (NUMA) node avoids cross-socket memory bus latency.
 
 ---
 
 ## 2. API Gateway vs. Service Mesh at Edge Boundaries
 
-For high-traffic flash sales, API Gateways and Service Meshes serve distinct architectural roles:
+For high-traffic flash sales, API Gateways and Service Meshes serve distinct architectural roles across traffic boundaries:
 
 ```mermaid
 graph TD
@@ -72,14 +75,16 @@ graph TD
     end
 ```
 
-- **API Gateway (North-South)**: Handles TLS termination, IP rate limiting, JWT verification, and route rewriting for external clients.
-- **Service Mesh (East-West)**: Handles mTLS, sidecar proxying, circuit breaking, and OpenTelemetry tracing between internal microservices.
+- **API Gateway (North-South)**: Positioned at the network edge to handle TLS termination, global IP rate limiting, DDoS mitigation, JWT token authentication, and public API path rewriting before requests enter internal clusters.
+- **Service Mesh (East-West)**: Operates inside the Kubernetes cluster via sidecar proxies (e.g., Envoy). The service mesh enforces mutual TLS (mTLS) security, dynamic service discovery, fine-grained circuit breaking, and distributed OpenTelemetry trace propagation across internal microservice calls.
 
 ---
 
 ## 3. Flash Sale Engine & Atomic Redis Inventory
 
-Before a flash sale, inventory is pre-warmed into Redis:
+During high-concurrency sales, querying or updating inventory directly in relational databases (MySQL/PostgreSQL) causes immediate system collapse due to database row lock contention. When thousands of concurrent transactions execute `UPDATE items SET stock = stock - 1 WHERE id = 100`, the database engine serializes requests, exhausting connection pools.
+
+To prevent database lockup, inventory counters are pre-warmed into Redis clusters prior to sale launch. Stock reservations execute in-memory via single-threaded, atomic Lua scripts:
 
 ```lua
 -- Atomic Lua inventory reservation script
@@ -98,6 +103,8 @@ end
 redis.call('DECRBY', key, quantity)
 return 1       -- Success, proceed to order queue
 ```
+
+Because Redis executes Lua scripts as a single atomic operation on a single thread per shard, race conditions and overselling are physically impossible. Once stock drops to 0, subsequent requests fail instantly in Redis (< 1ms) without ever reaching backend database servers.
 
 ---
 

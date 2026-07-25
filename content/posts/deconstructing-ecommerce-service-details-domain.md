@@ -18,6 +18,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/deconstructing-ecommerce-service-details-domain/"
 ---
 
+# Deconstructing the Ecosystem: Service Details by Domain
+
+> **Answer-First:** Partitioning 21 Go microservices across 6 DDD domains isolates business capabilities into strict database-per-service boundaries linked by gRPC and Kafka events. This architecture guarantees independent schema migrations, eliminates transactional coupling, and prevents database deadlocks between order management and inventory.
+
 - Why microservices must own their schema migrations (via Golang-Migrate) independently, and the specific event schemas that prevent transactional coupling.
 - Real-world database deadlocks encountered when segregating order history from the catalog database, and how they were solved using CQRS.
 
@@ -354,4 +358,8 @@ We map domain boundaries using Event Storming to identify business events and th
 
 {{< faq q="What database strategy should be used to maintain isolation between the 21 microservices?" >}}
 Each microservice must own its database schema exclusively. Sharing database tables across service boundaries is a strict anti-pattern that creates tight coupling. Services communicate only via public API contracts (gRPC/Protobuf) or asynchronous events (Kafka/RabbitMQ), using schema migration tools like Golang-Migrate independently.
+{{< /faq >}}
+
+{{< faq q="How are cross-domain data dependencies handled without shared database joins?" >}}
+Cross-domain queries rely on CQRS read models and event-driven data replication. Microservices publish domain events (such as `OrderCreated`) to Kafka, and downstream consumers update local query-optimized read views, guaranteeing sub-millisecond query responses without cross-database locks.
 {{< /faq >}}

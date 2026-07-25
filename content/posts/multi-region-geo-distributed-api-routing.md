@@ -12,6 +12,10 @@ draft: false
 mermaid: true
 ---
 
+# Multi-region Geo-distributed API Routing Architecture
+
+> **Answer-First:** Building a multi-region geo-distributed API routing architecture optimizes global user latency and disaster recovery by routing traffic to the closest regional origin via Anycast IP (Network Layer BGP routing) or DNS Latency Routing (Route 53). Terminating TCP/TLS handshakes at local edge points reduces user latency from hundreds of milliseconds to single digits, surviving regional outages transparently.
+
 > [!NOTE]
 ## The Need for Geo-Distributed APIs
 
@@ -216,3 +220,7 @@ If the system absolutely must record data simultaneously in multiple different r
 
 3. **Read-Local, Write-Global Architecture:**
 Allows applications to read data from a replica in the closest region for the fastest response times. However, all data write tasks must be forwarded to a single central Master Database for sequential processing, accepting higher write latency in exchange for absolute integrity of the source data.
+
+### What is the best strategy to handle submarine cable faults when routing user traffic between Vietnam and Singapore?
+
+Combine domestic edge connection termination (Anycast IP via Cloudflare or AWS CloudFront) in local POPs (Hanoi/HCMC) with origin forwarding over dedicated private backbones. This terminates TCP/TLS handshakes locally in 2–5ms, bypassing public internet congestion during submarine cable outages and maintaining low latency to the Singapore origin.

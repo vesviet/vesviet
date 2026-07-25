@@ -28,6 +28,10 @@ tags:
 canonicalURL: "https://tanhdev.com/posts/production-ai-apis-oauth-versioning-meta-predictions/"
 ---
 
+# Production AI APIs: OAuth 2.1, Gateway Rate Limiting & Prompt Versioning
+
+> **Answer-First:** Operating production AI APIs securely requires short-lived OAuth 2.1 JWT Bearer Token Grants (RFC 7523 with `private_key_jwt`) for machine-to-machine agent authentication instead of static API keys. Prompts must be versioned in source control with CI eval gates, while API Gateways enforce dual token-bucket rate limits on request count and total token consumption.
+
 - Secure prompt versioning practices using git commits and CI checks.
 - Rate-limiting AI agents at the API Gateway using token-bucket configurations.
 

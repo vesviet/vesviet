@@ -18,7 +18,10 @@ cover:
   relative: false
 ---
 
-> 
+# Distributed Transactions in Go with Temporal Saga Pattern
+
+> **Answer-First:** Distributed transactions in Go microservices are best implemented using the Temporal Saga pattern, replacing blocking Two-Phase Commit (2PC) locks with imperative workflow orchestration, dynamic reverse compensations (`saga.AddCompensation`), and PostgreSQL idempotency tables to guarantee financial event consistency during network partitions.
+
 > **Key Takeaways**:
 > - **Fault-Tolerant Orchestration over Choreography**: Temporal replaces fragile event-driven "event soup" with deterministic event histories. Tail latencies drop, and debugging distributed state machines transforms from distributed trace stitching to reading a unified workflow history log.
 > - **Dual-Entry Invariant Protection via Reverse Compensations**: By executing backward compensation routines registered dynamically via `saga.AddCompensation`, failed financial transfers automatically issue compensating refunds with sub-second execution once downstream failures are confirmed.
@@ -138,7 +141,7 @@ To understand how Temporal orchestrates distributed FinTech transactions, let's 
 
 ### 1. Happy Path Money Transfer Flow
 
-In the happy path, all local transactions ($T_1, T_2, T_3, T_4$) succeed sequentially. Temporal durable execution logs each completed activity to its persistence layer, ensuring that even if the Go worker node running the workflow crashes, another worker can resume the workflow seamlessly.
+In the happy path, all local transactions ($T_1, T_2, T_3, T_4$) succeed sequentially. Temporal durable execution logs each completed activity to its persistence layer, ensuring that even if the Go worker node running the workflow crashes, another worker can resume the workflow transparently.
 
 ```mermaid
 sequenceDiagram

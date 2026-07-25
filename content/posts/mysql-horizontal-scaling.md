@@ -27,6 +27,10 @@ cover:
   relative: false
 ---
 
+# Vitess vs GORM Sharding: MySQL Write Scaling in Go
+
+> **Answer-First:** Scaling MySQL write capacity in Go requires choosing between Vitess middleware proxy routing (VTGate) for transparent, zero-downtime cluster-wide resharding, or GORM application-level sharding for low-overhead Go-native table partitioning that requires explicit sharding keys in every query.
+
 - Designing database sharding keys that prevent cross-shard joins.
 - Configuring proxy routing layers like Vitess to scale MySQL queries horizontally.
 
@@ -190,4 +194,8 @@ If your project is written exclusively in Go and only has one or two historical 
 
 {{< faq q="When should I use Vitess vs GORM Sharding?" >}}
 Use **GORM Sharding** when: your team is Go-only, you have 1-2 tables to shard, and budget is tight (zero infrastructure overhead). Use **Vitess** when: you need zero-downtime resharding (VReplication), have a polyglot stack, or need the shard routing fully transparent to the application. Vitess is the right long-term choice for platform teams; GORM Sharding is the right starting point for Go product teams.
+{{< /faq >}}
+
+{{< faq q="What happens if a query in GORM Sharding omits the sharding key?" >}}
+Omitting the sharding key triggers an `ErrMissingShardingKey` error. If error enforcement is disabled, GORM Sharding fallback causes a Scatter-Gather operation across all database shards, merging results in Go RAM and causing severe CPU/memory spikes.
 {{< /faq >}}

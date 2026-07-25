@@ -28,7 +28,9 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/"
 ---
 
-## Deploy Astro on Cloudflare Pages: Full-Stack Edge Architecture
+# Deploy Astro on Cloudflare Pages: Full-Stack Edge Architecture
+
+> **Answer-First:** Deploying Astro on Cloudflare Pages leverages V8 isolates and serverless Workers SSR to achieve zero cold-start full-stack edge performance worldwide. Integrating Cloudflare D1 (edge SQLite), KV, R2 storage, and Pagefind static search delivers under-200ms page load times globally at minimal cost without operating traditional servers.
 
 - The exact D1 edge database connection pooling limitations and how to circumvent cold start issues when routing through Neon serverless proxies.
 - How to configure Durable Objects for real-time state synchronization without hitting Cloudflare's sub-request quota limits.
@@ -586,4 +588,8 @@ Cloudflare Pages and Workers run on V8 isolates rather than traditional Node.js 
 
 {{< faq q="How do you handle database connections from Astro running on Cloudflare Workers?" >}}
 Workers cannot establish direct, persistent TCP connections to traditional relational databases due to their short execution lifecycle. Instead, we use Cloudflare D1 (sqlite-based edge DB) directly via edge bindings, or connect to PostgreSQL/MySQL databases using HTTP-based connection pools like Neon Serverless Driver or Prisma Accelerate.
+{{< /faq >}}
+
+{{< faq q="Can you host full-text search directly on Cloudflare Pages without an external search engine?" >}}
+Yes, you can use Pagefind, an open-source static search library. Pagefind indexes server-rendered HTML output during the Astro build process and generates lightweight static search indexes that are deployed directly to Cloudflare Pages, requiring zero server backend or paid search API.
 {{< /faq >}}

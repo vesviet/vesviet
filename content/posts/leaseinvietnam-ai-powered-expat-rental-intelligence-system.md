@@ -30,6 +30,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/leaseinvietnam-ai-powered-expat-rental-intelligence-system/"
 ---
 
+# LeaseInVietnam: AI-Powered Expat Rental & B2B Lead Engine
+
+> **Answer-First:** LeaseInVietnam combines anti-hallucination web scraping, Go backend services, and local LLMs to publish verified expat rental intelligence for Vietnam. By maintaining traceable evidence chains for every rental price and location, the autonomous system converts organic search traffic into high-margin B2B service leads via automated webhooks and Telegram routing.
+
 - Structuring scrapers to bypass IP blocks while parsing rental data.
 - Using LLMs to standardize unstructured rental locations into precise lat-long values.
 

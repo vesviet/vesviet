@@ -21,6 +21,10 @@ TocOpen: true
 canonicalURL: "https://tanhdev.com/posts/osrm-vs-graphhopper-architecture-comparison/"
 ---
 
+# OSRM vs GraphHopper: Routing Engine Architecture Comparison
+
+> **Answer-First:** OSRM offers sub-millisecond route calculation using C++ Contraction Hierarchies optimized for static single-profile applications like ride-hailing. GraphHopper uses Java-based Customizable Contraction Hierarchies and Landmark algorithms to support dynamic multi-profile routing required for complex 3PL logistics.
+
 ## Introduction: When Do You Outgrow Cloud Route APIs?
 
 In the early stages of building a logistics, delivery, or ride-hailing system, leveraging cloud services like the Google Maps Directions API, HERE Maps API, or Mapbox is the undeniable safe bet. They provide highly accurate ETAs, excellent documentation, and require zero infrastructure maintenance. However, as the system scales past 100,000 requests per day or when you start needing massive Distance Matrices for multi-vehicle route optimization (VRP), the Total Cost of Ownership (TCO) inflates uncontrollably. 
@@ -143,3 +147,17 @@ In Vietnam, two-wheel vehicles handle over 90% of last-mile deliveries. Their ro
 * **One-Way Streets**: Central HCMC (District 1 and District 3) is packed with narrow, one-way roads. Motorcycles can bypass many traffic jams by navigating specific alleyway systems (hems) where cars cannot fit.
 * **Turn Restrictions**: Many major intersections prohibit cars from turning left during peak hours (e.g., 06:00 - 09:00 and 16:00 - 19:00) to prevent gridlock. Motorcycles, however, are exempt from these restrictions. Custom profiles must reflect these conditional rules to prevent routing errors.
 * **Alleyway (Hem) Routing**: HCMC's housing structure is dominated by deep, labyrinthine alley networks. In many cases, these alleys are narrower than 1.5 meters. The routing engine must exclude these paths when executing truck profiles, but include them for motorcycle couriers.
+
+---
+
+## Frequently Asked Questions (FAQ)
+
+### Q1: When should I choose OSRM over GraphHopper for routing infrastructure?
+**Answer**: Choose OSRM when you need sub-millisecond query latencies (< 2ms), massive static distance matrix calculations (such as 1000x1000 matrices for driver dispatching), and single-vehicle profiles (like ride-hailing cars). OSRM uses shared memory (`mmap`) across worker processes to minimize RAM footprint.
+
+### Q2: How does GraphHopper handle dynamic vehicle restrictions without recompiling graph datasets?
+**Answer**: GraphHopper leverages Customizable Contraction Hierarchies (CCH) and Landmark (LM) algorithms paired with Custom Models. This allows developers to dynamically inject runtime weight, height, turn, and time-based penalties per request without executing multi-hour graph pre-processing steps.
+
+### Q3: Can OSRM and GraphHopper route motorcycle fleets through narrow urban alleyways (hems)?
+**Answer**: Both engines parse custom OpenStreetMap (OSM) tags, but GraphHopper allows dynamic profile switching for motorcycle alleyway navigation versus truck weight limits per query. OSRM requires separate, static pre-processed graph profiles compiled in advance for each vehicle type.
+

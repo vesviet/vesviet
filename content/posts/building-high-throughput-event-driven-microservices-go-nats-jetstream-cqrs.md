@@ -18,6 +18,10 @@ cover:
   relative: false
 ---
 
+# High-Throughput Event-Driven Microservices in Go with NATS JetStream & CQRS
+
+> **Answer-First:** Building high-throughput event-driven microservices with Go, NATS JetStream, and CQRS decouples write commands from read queries. Utilizing NATS JetStream pull consumers, server-side deduplication, and atomic Redis read guards processes 100,000+ transactions per second with sub-0.8ms P99 latencies and zero database write contention.
+
 ---
 
 ## Section 1: Architectural Rationale: Why Go + NATS JetStream for Event-Driven Microservices

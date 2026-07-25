@@ -18,10 +18,14 @@ cover:
   relative: false
 ---
 
+# Zero-Trust Service Mesh Security in Go: SPIFFE/SPIRE & Istio
+
+> **Answer-First:** Zero-Trust microservice security in Go replaces static IP filters and hardcoded credentials with SPIFFE/SPIRE cryptographic workload attestation and Istio mTLS. SPIRE dynamic X.509 SVID issuance and in-memory rotation via `go-spiffe/v2` allow services to maintain continuous mutual TLS authentication without dropping TCP connections or incurring performance degradation under high load.
+
 >
 > **Key Takeaways**:
 > - **Cryptographic Workload Identity**: Eliminates static API keys and k8s secrets by dynamically issuing short-lived X.509 SVIDs over local UNIX domain sockets using kernel and container attestation.
-> - **Seamless In-Memory SVID Rotation**: `go-spiffe/v2` streams certificate updates dynamically into memory, achieving 100% continuous mTLS connection persistence under 50,000+ RPS without dropping active TCP streams.
+> - **Uninterrupted In-Memory SVID Rotation**: `go-spiffe/v2` streams certificate updates dynamically into memory, achieving 100% continuous mTLS connection persistence under 50,000+ RPS without dropping active TCP streams.
 > - **PCI-DSS 4.0 Audit Alignment**: Maps directly to PCI-DSS 4.0 Requirements 4.2 (mTLS encryption in transit), 7.2/8.2 (workload access control & strong authentication), and 10.2 (SPIFFE ID tied non-repudiable audit logging).
 
 - How to implement atomic in-memory TLS certificate updates in Go gRPC servers without tearing down active client connections or incurring handshake latency spikes.
@@ -569,7 +573,7 @@ SPIRE Server supports **Trust Domain Federation**. The AWS SPIRE Server and GCP 
 ## Section 6: Structured Technical FAQ
 
 ### Q1: How does SPIFFE/SPIRE handle agent restarts or socket disconnections without dropping active mTLS connections?
-**Answer**: SPIFFE/SPIRE separates identity issuance from connection state. When a Go microservice establishes a gRPC or HTTP mTLS connection, the TLS session key is derived during the initial handshake and held in memory by the kernel TCP stack. If the SPIRE Agent DaemonSet restarts or the UNIX domain socket is interrupted, the `go-spiffe/v2` SDK `X509Source` retains the current valid SVID in memory and continues serving active TLS connections. The application continues operating seamlessly while the SDK retries the socket connection in the background.
+**Answer**: SPIFFE/SPIRE separates identity issuance from connection state. When a Go microservice establishes a gRPC or HTTP mTLS connection, the TLS session key is derived during the initial handshake and held in memory by the kernel TCP stack. If the SPIRE Agent DaemonSet restarts or the UNIX domain socket is interrupted, the `go-spiffe/v2` SDK `X509Source` retains the current valid SVID in memory and continues serving active TLS connections. The application continues operating transparently while the SDK retries the socket connection in the background.
 
 ### Q2: What is the performance impact of frequent SVID certificate rotation on Go microservice throughput?
 **Answer**: The performance impact is negligible. `go-spiffe/v2` executes certificate updates atomically using Go's `sync/atomic` pointer swaps on an in-memory `tls.Config`. Rotating an SVID does not flush connection pools or terminate existing HTTP/2 or gRPC streams. Microservices undergoing SVID rotation maintain full throughput (>50,000 RPS) with zero added latency spikes or dropped TCP packets.

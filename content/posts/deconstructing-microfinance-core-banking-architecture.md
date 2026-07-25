@@ -14,12 +14,15 @@ cover:
   image: "images/posts/microfinance-core-banking-cover.png"
   alt: "Microfinance Core Banking Architecture & Engineering Guide"
   relative: false
-mermaid: true
 ---
 
-## Microfinance Core Banking: Architecture & Engineering Guide
+# Microfinance Core Banking: Architecture & Engineering Guide
 
-> **Executive Summary & Quick Answer**: Microfinance core banking requires specialized Joint Liability Group (JLG) group guarantee logic, compulsory savings enforcement, and declining-balance EMI calculation. By implementing ACID transactions in Go with strict double-entry ledger validation, institutions maintain financial audit compliance while scaling to millions of micro-loans.
+> **Answer-First:** Microfinance core banking requires specialized Joint Liability Group (JLG) group guarantee logic, compulsory savings collateral enforcement, declining-balance EMI calculations, and atomic double-entry ledger transactions written in Go and PostgreSQL to ensure financial audit compliance.
+
+## Executive Summary & Quick Answer
+
+> Microfinance core banking requires specialized Joint Liability Group (JLG) group guarantee logic, compulsory savings enforcement, and declining-balance EMI calculation. By implementing ACID transactions in Go with strict double-entry ledger validation, institutions maintain financial audit compliance while scaling to millions of micro-loans.
 >
 > **Key Takeaways**:
 > - JLG group guarantee rules automatically freeze group disbursement if any single member defaults.
@@ -80,7 +83,7 @@ $$EMI = \frac{i \times P}{1 - (1 + i)^{-n}}$$
 
 ### Module 3: CASA and Compulsory Savings Logic
 
-To mitigate risk, MFIs utilize Compulsory Savings as cash collateral. The CBS must seamlessly bridge the CASA (Current Account, Savings Account) module with the Loan module.
+To mitigate risk, MFIs utilize Compulsory Savings as cash collateral. The CBS must programmatically bridge the CASA (Current Account, Savings Account) module with the Loan module.
 
 The system places a `HOLD_FUNDS` constraint on the client's linked savings account equal to the product's collateral requirement (e.g., 20% of the disbursed loan). As the loan is repaid, the system must execute `RELEASE_FUNDS` commands proportionally.
 
@@ -169,7 +172,7 @@ Because modern CBS architectures manage millions of loans, they rely on distribu
 
 For the broader strategic picture — how banks replace monolithic cores like Temenos T24 with full composable architectures using Go microservices, Saga orchestration, and Strangler Fig migrations — see [Composable Banking Architecture: From Monolith to Modular Core](/posts/composable-banking-architecture/).
 
-**Related Reading:** For the broader landscape of engineers working on core banking systems and the skills they need, see [The Landscape of Core Banking Developers](/series/core-banking-developer/executive-summary/). For a contrast at global scale — how PayPay applies similar transaction ledger and idempotency patterns for 70M users — see [PayPay Architecture: Scaling Payments to 70M Users](/posts/paypay-architecture-scaling/). For the architectural framework and ISO standards behind modern core banking, see the [Core Banking Architecture series](/series/core-banking-architecture/).
+**Related Reading:** For engineers working on core banking systems and the skills they need, see [The Core Banking Developer Guide](/series/core-banking-developer/executive-summary/). For a contrast at global scale — how PayPay applies similar transaction ledger and idempotency patterns for 70M users — see [PayPay Architecture: Scaling Payments to 70M Users](/posts/paypay-architecture-scaling/). For the architectural framework and ISO standards behind modern core banking, see the [Core Banking Architecture series](/series/core-banking-architecture/).
 
 {{< author-cta >}}
 
@@ -181,6 +184,10 @@ A double-entry ledger ensures that every financial transaction consists of equal
 
 {{< faq q="How do you guarantee atomic consistency in a Go-based JLG (Joint Liability Group) loan engine during EOD processing?" >}}
 We use strict database transactions (`SELECT ... FOR UPDATE`) to lock account rows, combined with optimistic concurrency control (`version` checks) at the application level. All ledger entries are write-once, append-only logs. For End-of-Day (EOD) batch updates, we process transactions using parallel Go worker pools coordinated via channels and sync groups, wrapping each account calculation in a nested SQL transaction.
+{{< /faq >}}
+
+{{< faq q="How does offline field collection synchronization prevent double-spending in microfinance operations?" >}}
+Field collection apps use client-side idempotent transaction keys and cryptographically signed offline receipts. When connectivity to the core banking API is restored, the synchronization gateway evaluates transactions in strict sequence using optimistic locking and deduplication keys before committing ledger entries.
 {{< /faq >}}
 
 ## Production Code Benchmark & Implementation

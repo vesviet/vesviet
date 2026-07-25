@@ -26,6 +26,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/serverless-ecommerce-cloudflare-d1/"
 ---
 
+# Serverless E-Commerce: Cloudflare Workers & D1 Architecture
+
+> **Answer-First:** Architecting zero-ops serverless e-commerce on Cloudflare pairs Workers for low-latency edge API routing, D1 (SQLite) for distributed read-heavy catalog data, and Durable Objects for single-threaded transactional inventory locks without Redis overhead.
+
 - Edge-native schema migrations and connection tuning for SQLite-based D1.
 - Managing distributed lock states in Durable Objects without causing bottleneck stalls.
 

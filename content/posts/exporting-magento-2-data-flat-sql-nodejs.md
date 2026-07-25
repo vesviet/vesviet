@@ -18,6 +18,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/exporting-magento-2-data-flat-sql-nodejs/"
 ---
 
+# Exporting Magento 2 Data: Flatten EAV with SQL & Node
+
+> **Answer-First:** Extracting data from Magento 2's EAV database model requires flattened SQL joins with index hints for orders and catalog attributes, coupled with a Node.js streaming ETL pipeline using `stream.pipeline` backpressure and `ON CONFLICT DO UPDATE` upserts to stay under 100MB RAM.
+
 - How to optimize complex EAV joins in MySQL using index hints to prevent full table scans on catalogs exceeding 1 million SKUs.
 - Complete Node.js stream backpressure implementations that keep memory usage under 100MB while processing millions of records.
 
@@ -537,4 +541,8 @@ EAV distributes a single entity's attributes across multiple tables (e.g., `cata
 
 {{< faq q="How does Node.js streams prevent memory overflow during large Magento catalog exports?" >}}
 Instead of loading millions of database rows into memory at once, we use cursor-based SQL queries and pipe them into Node.js transform streams. Backpressure handles memory management: if the destination write stream (like a CSV writer or Elasticsearch API) is slow, it signals the source database read stream to pause reading, keeping memory usage stable below 100MB.
+{{< /faq >}}
+
+{{< faq q="How do you handle store-scope inheritance when exporting Magento 2 product attributes via SQL?" >}}
+Magento attributes inherit values from the default store scope (store_id = 0) unless overridden at a specific store view. SQL queries must perform `LEFT JOIN` operations against both store_id = 0 and the target store_id, using `COALESCE(store_val.value, default_val.value)` to fall back gracefully to the default attribute value.
 {{< /faq >}}

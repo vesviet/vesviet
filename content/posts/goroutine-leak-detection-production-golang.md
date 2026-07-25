@@ -27,10 +27,12 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/goroutine-leak-detection-production-golang/"
 ---
 
+# Goroutine Leak Detection and Fix in Production Go Services
+
+> **Answer-First:** Goroutine leaks occur when goroutines block indefinitely on unbuffered channels, missing context timeouts, or unclosed tickers, holding GC roots and causing slow OOM kills (exit code 137). Developers can detect and prevent leaks using `pprof` goroutine profiles, Uber's `goleak` in unit tests, and Go 1.24 `synctest` time-virtualization.
+
 - Writing automated test cases that detect goroutine leaks before deploying.
 - Analyzing production runtime stack traces to locate orphaned channels.
-
-> 
 
 A Kubernetes pod abruptly restarts with exit code 137. The memory metrics dashboard shows a slow, perfectly linear staircase pattern stretching over three days. There are no panic logs in stdout, no database errors, and no abnormal CPU spikes. Just a slow, silent OOM (Out Of Memory) death.
 

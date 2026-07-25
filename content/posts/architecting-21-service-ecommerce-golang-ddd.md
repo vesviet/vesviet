@@ -20,6 +20,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/architecting-21-service-ecommerce-golang-ddd/"
 ---
 
+# Architecting 21-Service E-commerce with Golang & DDD
+
+> **Answer-First:** Architecting a 21-service e-commerce ecosystem in Go requires strict Domain-Driven Design context boundaries, Kratos framework isolation, Dapr Saga orchestration for checkout, and database-level idempotency tables to handle At-Least-Once event delivery safely without distributed lock bottlenecks.
+
 - The exact performance overhead of using Go's structural subtyping versus manual dependency injection in high-throughput microservices.
 - Why scoping database transactions to a single Aggregate root is critical, and how we resolved out-of-order event delivery using Kafka partition keys.
 
@@ -243,4 +247,8 @@ Go's implicit interface implementation decoupling allows domain layers to define
 
 {{< faq q="How do you handle transactional boundaries across multiple aggregates in a Go microservices architecture?" >}}
 Each transaction must be scoped to a single Aggregate root. For operations spanning multiple microservices, we avoid distributed 2PC transactions due to latency and lock overhead. Instead, we implement the Saga pattern using Dapr Workflows or temporal orchestrators, with asynchronous compensation events ensuring eventual consistency.
+{{< /faq >}}
+
+{{< faq q="How do you ensure idempotency across distributed microservices when Dapr delivers duplicate events?" >}}
+Every microservice database maintains a dedicated `processed_events` table. Before executing domain updates, the receiving service inserts the incoming `event_id` within the same DB transaction. Duplicate deliveries trigger a primary key constraint violation, causing the microservice to safely acknowledge and drop the message.
 {{< /faq >}}

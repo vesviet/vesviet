@@ -17,9 +17,9 @@ cover:
 mermaid: true
 ---
 
-## Surge Pricing Algorithm & Spatial Indexing Architecture
+# Surge Pricing Algorithm & Spatial Indexing Architecture
 
-> **Executive Summary & Quick Answer**: Real-time surge pricing engines index geographical rider demand and driver supply using Uber H3 hexagonal spatial grids and Redis sliding windows. This architecture processes 100,000+ location updates per second in Go, calculating dynamic fare multipliers in sub-5ms while preventing boundary gaming.
+> **Answer-First:** Real-time surge pricing engines index geographical rider demand and driver supply using Uber H3 hexagonal spatial grids and Redis sliding windows. Written in Go, this architecture processes 100,000+ location updates per second to calculate dynamic fare multipliers in sub-5ms while preventing boundary gaming.
 >
 > **Key Takeaways**:
 > - Uber H3 spatial resolution 8 (0.7 km2 hexagons) provides optimal granularity for urban ride demand.
