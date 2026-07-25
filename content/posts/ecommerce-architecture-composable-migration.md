@@ -176,7 +176,11 @@ When separating read-heavy search services (Elasticsearch/Meilisearch) from core
 
 ## 5. Solving Legacy Monolith Sync: The CDC Architecture
 
-Avoiding application-level double writing prevents database drift and network latency overhead. Use **Change Data Capture (CDC)** to stream binlogs in real-time:
+Avoiding application-level double writing prevents database drift, dual-phase commit lock contention, and network latency overhead. Change Data Capture (CDC) uses Debezium and Kafka Connect to tail the PostgreSQL Write-Ahead Log (WAL) or MySQL binary logs (binlogs) out-of-band:
+
+- **Debezium WAL Log Parsing**: Debezium captures row-level insert, update, and delete mutations directly from the database engine log without modifying application code or incurring SQL query overhead on the legacy database.
+- **Kafka Event Streaming**: Captured mutations are published to dedicated Apache Kafka topics (e.g. `legacy.inventory_stocks`), preserving absolute global transaction order across table entities.
+- **Eventual Consistency & Reconciliation**: Downstream composable microservices consume binlog events asynchronously. While eventual consistency introduces a transient replication delay (typically under 100ms), downstream consumers enforce schema transformation and write to domain-isolated databases, guaranteeing eventual data convergence across legacy and modern platforms.
 
 ```mermaid
 graph TD
@@ -201,7 +205,11 @@ graph TD
 
 ## 6. The Phased Migration Roadmap & Envoy Routing
 
-Adopt a three-phase **Strangler Fig pattern** to incrementally replace monolithic routes:
+Transitioning a high-volume monolithic e-commerce application to composable microservices without taking downtime requires an incremental three-phase **Strangler Fig pattern** managed by Envoy Proxy:
+
+- **Phase 1: Read-Only Shadow Routing & Validation**: Envoy mirrors production traffic to new composable microservices in shadow mode. Incoming read requests are evaluated side-by-side to compare response payloads and latency metrics without exposing users to potential bugs.
+- **Phase 2: Weighted Cluster Routing & Phased Traffic Shifting**: Using Envoy runtime weighted cluster routing, engineering teams shift traffic incrementally (e.g., 1% → 5% → 25% → 100%) to new domain microservices while keeping fallback routes active to the legacy monolith.
+- **Phase 3: Full Cutover & Monolith Strangling**: Once a domain route (such as `/api/v1/cart` or `/api/v1/catalog`) achieves zero error rates over sustained peak traffic windows, the legacy monolith endpoints for that domain are formally deprecated and unmounted.
 
 ```mermaid
 graph TD
@@ -277,6 +285,12 @@ static_resources:
 ---
 
 ## 7. Go Event Listener for Parallel Database Sync
+
+To process CDC event streams reliably at high throughput without risking data drift or duplicate processing during database synchronization, the Go synchronization worker implements a worker pool concurrent pipeline:
+
+- **Worker Pool Concurrency & Go Channels**: Incoming Kafka messages are dispatched across a pool of concurrent Go worker goroutines via buffered channels. Each worker manages its own database transaction lifecycle, enabling parallel table row replication up to thousands of events per second.
+- **Idempotency Key Verification**: Because Kafka guarantees at-least-once delivery, every CDC message carries a unique event UUID. Workers perform transactional idempotency checks against a `processed_events` table before executing `UPSERT` statements, preventing duplicate state mutations.
+- **Transaction Rollback & Error Recovery**: If a database error occurs during payload deserialization or SQL execution, the worker triggers an immediate transaction rollback, routes the failing event to a Dead Letter Queue (DLQ) topic, and dispatches alert metrics to OpenTelemetry.
 
 ```go
 package main

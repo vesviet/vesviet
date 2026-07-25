@@ -457,3 +457,7 @@ The fundamental difference is the runtime model. AWS Lambda runs inside a lightw
 ### How do you handle relational data at the Edge?
 
 Instead of routing every query back to a centralised RDS instance in `us-east-1`, use **Cloudflare D1**. D1 is a globally distributed SQL database built on SQLite. Drizzle ORM wraps D1 with a fully type-safe query builder, so your schema and queries are validated at compile time — not at runtime in production.
+
+### How does transaction batching in D1 prevent SQLite database lock contention during flash sales?
+
+Cloudflare D1 utilizes a single-writer model based on SQLite, which can trigger `SQLITE_BUSY` lock errors under high concurrent write spikes. By grouping multiple SQL statements into a single native `db.batch()` execution block, D1 locks the database file exactly once and writes all updates atomically, reducing file-system I/O overhead and preventing lock timeouts during high-traffic flash sales.

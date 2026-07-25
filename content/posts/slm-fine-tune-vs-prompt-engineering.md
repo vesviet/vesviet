@@ -69,7 +69,7 @@ Small Language Models (SLMs, 1B–8B parameters) combined with fine-tuning and l
 
 ## 1. SLM Hybrid Architecture & Knowledge Distillation
 
-Instead of routing every user request to a expensive frontier cloud model:
+Instead of routing every user request to an expensive frontier cloud model:
 
 ```mermaid
 graph TD
@@ -84,6 +84,14 @@ graph TD
 - Generate chain-of-thought (CoT) reasoning traces using a frontier teacher model.
 - Filter out incorrect reasoning paths via deterministic validation scripts.
 - Fine-tune a 1B–8B student SLM on the validated reasoning dataset using QLoRA.
+
+### Deep Dive: LoRA Hyperparameter Tuning Engineering (r=16, alpha=32)
+
+Parameter-Efficient Fine-Tuning (PEFT) using Low-Rank Adaptation (LoRA) decomposes weight update matrices $\Delta W$ into two low-rank matrices $A$ and $B$ ($\Delta W = B \cdot A$), drastically reducing trainable parameters while preserving base model knowledge:
+
+- **Rank Selection ($r=16$)**: Setting rank $r=16$ provides the optimal trade-off between parameter capacity and memory efficiency. For an 8B parameter model, $r=16$ adds fewer than 40 million trainable parameters (~0.5% of model weights), ensuring that fine-tuning fits comfortably within 24GB GPU VRAM buffers.
+- **Scaling Factor ($\alpha=32$)**: The alpha hyperparameter controls the scaling ratio $\frac{\alpha}{r}$. With $\alpha=32$ and $r=16$, the scaling multiplier is $2.0$. This ensures stable gradient flow during backpropagation, preventing learning collapse or slow convergence.
+- **Target Modules Coverage**: Unlike early LoRA implementations that only adapted attention projection weights (`q_proj`, `v_proj`), production QLoRA tunes all linear layers (`q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj`). Adapting MLP gate and up/down projection layers is critical for capturing complex domain-specific formatting and structural reasoning without degradation.
 
 ### Production QLoRA Fine-Tuning Pipeline & YAML Config
 
@@ -220,6 +228,22 @@ Fine-tuning for format compliance gets you halfway; preference alignment guarant
 ## 3. Self-Hosting Local SLMs with vLLM & Multi-LoRA
 
 vLLM serves quantized SLMs and dynamically swaps multiple LoRA adapters on a single GPU:
+
+### Deep Dive: SLM Quantization Frameworks (AWQ vs GGUF vs EXL2)
+
+Selecting the correct model quantization format is essential for maximizing token throughput and optimizing GPU memory allocation:
+
+- **AWQ (Activation-aware Weight Quantization)**: AWQ analyzes channel activation distributions to identify critical weights before applying 4-bit matrix quantization. Optimized specifically for Tensor Core GPUs, AWQ models served via vLLM achieve maximum batched inference throughput with near-zero accuracy degradation.
+- **GGUF (GPT-Generated Unified Format)**: Designed for the `llama.cpp` ecosystem, GGUF supports variable quantizations (e.g. Q4_K_M, Q8_0, IQ3_XS) and hybrid CPU/GPU offloading. GGUF excels in edge environments, local developer workstations, and Apple Silicon unified memory runtimes.
+- **EXL2 (ExLlamaV2)**: EXL2 allows sub-bit precision tuning (e.g. 3.5 or 4.25 bits per weight) by mixing different quantization levels across layers. EXL2 delivers extremely low per-token latency for low-batch and single-user real-time streaming applications on CUDA devices.
+
+### Prompt Latency Benchmarking & Cost Trade-offs
+
+Evaluating total cost of ownership (TCO) requires measuring both prefill latency (Time-To-First-Token) and decoding speed across architectural patterns:
+
+- **Time-To-First-Token (TTFT) Benchmarking**: Prompt engineering on cloud models requires sending massive context windows (4k–32k tokens), driving TTFT upwards of 800ms–1,500ms due to heavy prefill computation. Conversely, fine-tuned SLMs collapse prompt lengths down to 50–150 tokens because task formatting is baked into the model weights, achieving TTFT under 150ms.
+- **Inter-Token Latency (ITL) & Throughput**: Using 4-bit AWQ quantized SLMs on self-hosted vLLM instances enables generation speeds exceeding 140 tokens/sec per stream, compared to 30–50 tokens/sec on cloud frontier API endpoints.
+- **Economic & Cost Trade-off Analysis**: At enterprise scale (10 million requests/month), cloud prompt engineering costs roughly $15,000–$40,000/month in token API fees. Self-hosting a fine-tuned 8B SLM on two NVIDIA A10G cloud instances costs under $1,800/month total infrastructure—a 90%+ reduction in operating expenditure.
 
 ### Production vLLM Multi-LoRA & Merged Model Serving
 
