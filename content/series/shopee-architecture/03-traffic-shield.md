@@ -1,5 +1,5 @@
 ---
-title: "Shopee Traffic Shield: Kafka Peak Shaving & Circuit"
+title: "Shopee Traffic Shield: Kafka Peak Shaving & Circuit Breakers | Go Production Guide"
 date: "2026-05-05T08:30:00+07:00"
 lastmod: "2026-05-05T08:30:00+07:00"
 draft: false
@@ -23,7 +23,7 @@ image: "images/posts/shopee-flash-sale-cover.png"
 
 **To survive 11.11 traffic spikes without database collapse, Shopee shifts heavy processing to asynchronous Kafka queues. The system guarantees checkout survival by enforcing graceful degradation and circuit breakers that disable non-essential features under extreme load.**
 
-[← Series hub](/series/system-design/) | [← Prev](/series/shopee-architecture/02-flash-sale-engine/) | [Next →](/series/shopee-architecture/04-database-scale/)
+[← Series hub](/series/shopee-architecture/) | [← Prev](/series/shopee-architecture/02-flash-sale-engine/) | [Next →](/series/shopee-architecture/04-database-scale/)
 
 > **Prerequisite:** Read the previous article: Chapter 2: Flash Sale Engine - Solving Overselling and Hot Keys.
 

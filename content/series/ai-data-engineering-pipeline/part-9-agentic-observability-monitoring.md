@@ -29,7 +29,7 @@ Without standardized distributed tracing, identifying why an agent query took 8.
 
 ## OpenTelemetry Tracing Pipeline Architecture
 
-OpenTelemetry pipelines collect distributed trace spans across agent orchestrators, vector retrieval nodes, and LLM API calls into Jaeger or Tempo.
+**Answer-first:** OpenTelemetry pipelines collect distributed trace spans across agent orchestrators, vector retrieval nodes, and LLM API calls into Jaeger or Tempo.
 
 > **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
@@ -67,7 +67,7 @@ sequenceDiagram
 
 ## Standard OpenTelemetry Semantic Conventions for GenAI
 
-GenAI semantic conventions standardize span attributes for LLM model names, prompt token counts, completion token counts, and tool names.
+**Answer-first:** GenAI semantic conventions standardize span attributes for LLM model names, prompt token counts, completion token counts, and tool names.
 
 To standardize observability across disparate AI frameworks (LangChain, LlamaIndex, custom Go engines), the OpenTelemetry foundation established standard **GenAI Semantic Conventions**:
 
@@ -84,7 +84,7 @@ To standardize observability across disparate AI frameworks (LangChain, LlamaInd
 
 ## Production Go OpenTelemetry Instrumentor
 
-Production Go instrumentors inject OpenTelemetry context into HTTP and gRPC request headers, tracking full multi-agent call trees.
+**Answer-first:** Production Go instrumentors inject OpenTelemetry context into HTTP and gRPC request headers, tracking full multi-agent call trees.
 
 This production-grade Go middleware instrumenting LLM API calls using `go.opentelemetry.io/otel/trace`. It records nested spans, token usage metrics, model metadata, and cost attributes:
 
@@ -215,7 +215,7 @@ func main() {
 
 ## Comparative Matrix: Observability Strategies
 
-Basic application logging misses multi-step agent reasoning loops, while OpenTelemetry distributed tracing reveals exact step latencies and costs.
+**Answer-first:** Basic application logging misses multi-step agent reasoning loops, while OpenTelemetry distributed tracing reveals exact step latencies and costs.
 
 | Dimension | Basic Application Logging | Vendor SaaS (LangSmith / Arize) | OpenTelemetry Native (OTel) |
 | :--- | :--- | :--- | :--- |
@@ -227,9 +227,22 @@ Basic application logging misses multi-step agent reasoning loops, while OpenTel
 
 ---
 
+## Frequently Asked Questions (FAQ)
+
+### Q1: How do OpenTelemetry GenAI semantic conventions standardize tracing across different LLM providers?
+GenAI semantic conventions define a unified schema for span names and attributes (e.g., `gen_ai.system`, `gen_ai.request.model`, `gen_ai.usage.input_tokens`). This allows observability platforms like Grafana, Jaeger, or Datadog to visualize spans uniformly regardless of whether the backend vendor is OpenAI, Anthropic, or a self-hosted vLLM cluster.
+
+### Q2: How can enterprise teams track real-time token costs without exposing raw prompts to telemetry exporters?
+Cost tracking is performed by extracting token counters (`input_tokens`, `output_tokens`) from model execution responses and calculating USD cost attributes within span metadata. Prompts and completions can be sanitized or hashed at the OpenTelemetry Collector layer, leaving cost and performance metrics fully visible.
+
+### Q3: What is the latency impact of instrumenting nested agent tool loops with OpenTelemetry spans?
+OpenTelemetry SDKs buffer and export trace spans asynchronously in non-blocking background worker queues. The overhead per span creation is under 1 microsecond, causing negligible impact on overall agent turn execution time.
+
+---
+
 ## Technical Deep-Dive: OpenTelemetry Instrumentation & Cost Monitoring Invariants
 
-Cost monitoring in GenAI observability requires aggregating token usage attributes per tenant and setting metric alert thresholds on latency spikes.
+**Answer-first:** Cost monitoring in GenAI observability requires aggregating token usage attributes per tenant and setting metric alert thresholds on latency spikes.
 
 Enterprise observability for multi-agent workflows demands continuous trace context propagation and real-time token expenditure tracking.
 
@@ -238,13 +251,14 @@ Enterprise observability for multi-agent workflows demands continuous trace cont
 1. **Context Propagation**: Inject W3C `traceparent` headers into all outgoing HTTP and gRPC tool calls.
 2. **PII Masking**: Mask sensitive prompt tokens (SSNs, API keys) at the OpenTelemetry Collector boundary before exporting.
 3. **Cost Anomaly Alerts**: Set Prometheus alert rules to fire when real-time token consumption exceeds designated cost thresholds.
+
 ---
 
 ## Internal Series Navigation
 
-Advance to Part 10 to learn about production evals and CI/CD quality guardrails.
+**Answer-first:** Advance to Part 10 to learn about production evals and CI/CD quality guardrails.
 
 - [Part 8 — Inference Optimization: vLLM & PagedAttention](/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/)
 - [Part 10 — Production Evals & CI/CD Guardrails](/series/ai-data-engineering-pipeline/part-10-production-evals-cicd/)
 - [MCP Observability & Tracing](/series/mcp-engineering-in-production/part-6-observability/)
-- [Observability with pprof and Golang](/series/system-design/10-observability-pprof-golang/)
+- [AI Data Engineering Pipeline Masterclass](/series/ai-data-engineering-pipeline/)

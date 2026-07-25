@@ -35,7 +35,7 @@ image: "images/posts/graphhopper-cover.png"
 > - **MGET Pipelining**: Fetch 100 distance matrix spatial pairs in a single Redis TCP pipeline to reduce network roundtrip overhead.
 > - **XFetch Probabilistic Recomputation**: Recompute expiring routes before TTL hits zero to prevent thundering-herd spikes on GraphHopper.
 
-### What You'll Learn That AI Won't Tell You
+**What You'll Learn That AI Won't Tell You:**
 - **XFetch Mathematical Formula:** How to evaluate $ -\beta \times \delta \times \ln(\text{rand}()) $ for early background updates.
 - **Key Versioning Strategies:** Deleting millions of legacy route keys without running blocking Redis `KEYS` commands.
 - **Bloom Filter Guarding:** Rejecting impossible coordinate lookups at the API Gateway using Redis Bloom Filters.
@@ -243,8 +243,6 @@ func (g *SpatialGuard) RegisterValidH3Cells(ctx context.Context, h3Indices []str
 
 ## FAQ: Production Caching Nightmares
 
-Tuning machine learning workflows for Part 6 Redis Semantic Caching relies on QLoRA 4-bit quantization and LoRA adapter parameter updates. Distributed GPU inference pipelines maintain low latency for client requests.Tuning machine learning workflows for Part 6 Redis Semantic Caching relies on QLoRA 4-bit quantization and LoRA adapter parameter updates. Distributed GPU inference pipelines maintain low latency for client requests.
-
 {{< faq q="Graphhopper just updated the map. How do I delete millions of old cached routes in Redis?" >}}
 NEVER use `SCAN` or `KEYS` to delete millions of records on production. Redis is single-threaded; `SCAN` will block the server. Instead, use **Key Versioning** (e.g., `route:map_v2:origin:dest`). When the map updates, simply increment the version variable in your API config. Old keys are instantly orphaned and gracefully expire via their TTL.
 {{< /faq >}}
@@ -257,10 +255,5 @@ This is **Cache Penetration**. Fake routes don't exist, so they are never cached
 Welcome to **Memory Fragmentation**. Caching and deleting variable-length JSON strings causes the `jemalloc` allocator to fragment memory. The OS sees Redis using 15GB (`used_memory_rss`), while Redis only holds 5GB of data. You MUST monitor `mem_fragmentation_ratio` and enable `activedefrag yes` to defragment memory without restarting.
 {{< /faq >}}
 
-Security enforcement for Part 6 Redis Semantic Caching integrates SPIFFE/SPIRE workload identities with mutual TLS sidecar proxies. Automated JWT token validation prevents unauthorized cross-service API access.
-
 🔗 **Next Step:** Verify system scale under load in [Part 7: Load Testing and Performance Tuning for Production](/series/routing-geospatial-architecture/part-7-load-testing-production/).
 
-## Architectural Context & Pillar References
-
-Domain-driven design in Part 6 Redis Semantic Caching establishes clean Bounded Context boundaries. In-process event dispatchers decouple domain entity mutations from secondary notification workers.

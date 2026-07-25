@@ -190,6 +190,8 @@ func (o *PipelineOrchestrator) ProcessDocument(ctx context.Context, doc Document
 	return nil
 }
 
+func main() {
+	ctx := context.Background()
 	orchestrator := NewPipelineOrchestrator()
 	doc := DocumentPayload{
 		ID:         "doc-fin-2026-q3",

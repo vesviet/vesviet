@@ -154,6 +154,7 @@ class EnterpriseRAGSecurityGuard:
 
         # Step 2: Scan Query for Indirect Injection
         if self.scan_for_prompt_injection(request.query_text):
+            return SecurityValidationResult(
                 is_safe=False,
                 sanitized_query="",
                 user_context=user_context,
@@ -163,6 +164,7 @@ class EnterpriseRAGSecurityGuard:
         # Step 3: Construct Deterministic RBAC Filter
         rbac_clause = self.build_rbac_sql_filter(user_context)
 
+        return SecurityValidationResult(
             is_safe=True,
             sanitized_query=request.query_text.strip(),
             user_context=user_context,
@@ -230,7 +232,7 @@ Securing enterprise RAG data ingestion and vector query pipelines requires zero-
 
 ### Production Micro-Benchmarks & SLA Thresholds
 
-Architecting resilient systems for Part 5 Enterprise Security Data Poisoning demands strict rate limiting via Token Bucket algorithms at the edge API gateway. Dynamic concurrency limits prevent node resource exhaustion during unplanned traffic spikes.Architecting resilient systems for Part 5 Enterprise Security Data Poisoning demands strict rate limiting via Token Bucket algorithms at the edge API gateway. Dynamic concurrency limits prevent node resource exhaustion during unplanned traffic spikes.
+Architecting resilient systems for Part 5 Enterprise Security Data Poisoning demands strict rate limiting via Token Bucket algorithms at the edge API gateway. Dynamic concurrency limits prevent node resource exhaustion during unplanned traffic spikes.
 
 ### Architectural Invariants & Failure-Mode Defenses
 
@@ -239,8 +241,6 @@ Security posture for Part 5 Enterprise Security Data Poisoning requires strict i
 ### Operational Checklist for Production Deployment
 
 For Part 5 Enterprise Security Data Poisoning, state persistence relies on pessimistic transaction locks and ACID compliance across distributed SQL clusters. Dual-write patterns utilize Outbox CDC event streaming to maintain eventual consistency.
-
-Saga orchestration in Part 5 Enterprise Security Data Poisoning handles multi-step distributed transactions with explicit compensating transactions. If a downstream payment step fails, upstream inventory reservations roll back atomically.
 
 ---
 

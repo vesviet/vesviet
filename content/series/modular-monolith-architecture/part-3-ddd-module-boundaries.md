@@ -21,7 +21,7 @@ image: "images/posts/golang-microservices-cover.png"
 
 > **Prerequisite:** Before reading this part, please review [Part 2: FinOps Cost Reality](/series/modular-monolith-architecture/part-2-finops-cost-reality/).
 
-### What You'll Learn That AI Won't Tell You
+**What You'll Learn That AI Won't Tell You:**
 - **Go Package Level Enforcement:** How to use Go's `internal` folder structure to prevent unauthorized imports at compile time.
 - **Packwerk Boundary Rules:** The setup required to analyze and restrict package dependency graphs automatically.
 - **Database Schema Isolation:** How to configure multiple schema namespaces inside a single database connection pool.
@@ -45,6 +45,8 @@ sequenceDiagram
 
 ## 1. Core Principle: Bounded Contexts and Internal APIs
 
+**Answer-first:** Bounded contexts isolate domain logic into explicit package folders, exposing only public Go interfaces as internal APIs while strictly forbidding direct access to implementation structs or foreign database schemas.
+
 In Microservices, if Service A wants to retrieve data from Service B, it is forced to call an HTTP API or gRPC; it cannot poke directly into B's Database. This is a physical barrier.
 
 In a Modular Monolith, because all code resides in the same memory space, it's very easy to violate this rule. To prevent that, we create **Bounded Contexts** through architectural conventions:
@@ -54,6 +56,8 @@ In a Modular Monolith, because all code resides in the same memory space, it's v
 
 ## 2. Database Boundaries: Defending Against Cross-Schema JOINs
 
+**Answer-first:** Modular monoliths defend database boundaries by isolating data into distinct PostgreSQL schemas (e.g. `schema_orders`, `schema_identity`), preventing SQL JOINs across modules and enforcing application-level data aggregation via in-memory event channels.
+
 The most dangerous level of coupling in a Monolith isn't in the code, but in the Database. Executing a `JOIN` query between the `orders` table of the *Order* module and the `users` table of the *Identity* module completely destroys the ability to decouple modules.
 
 **Standard design model (Database-per-module pattern):**
@@ -62,9 +66,11 @@ The most dangerous level of coupling in a Monolith isn't in the code, but in the
 - If the Order module needs User information, the system will execute a method call within the application (e.g., `UserService.getUserById(id)`), retrieve the result into RAM, and process it in code (Application-level join) instead of using a direct SQL JOIN.
 - If large-scale data synchronization is needed, use an **Internal Event Bus** (in-memory event-driven architecture) instead of sharing a common transaction.
 
-For clean architecture patterns, refer to our guide on [Go Clean Architecture & CAP Theorem](/series/system-design/01-introduction-system-design-golang/).
+For clean architecture patterns, refer to our guide on [Modular Monolith Architecture](/series/modular-monolith-architecture/).
 
 ## 3. Enforcing Boundaries with Automated Tools
+
+**Answer-first:** Static analysis tools like Spring Modulith (ArchUnit for Java), Go `internal` folder rules, and Packwerk automatically audit package dependency graphs during build time, instantly failing local tests if unauthorized cross-module imports occur.
 
 Paper conventions are often broken when deadline pressure mounts. The solution adopted by leading tech companies is turning these conventions into Static Analysis tools that run directly during compilation or in the CI/CD pipeline.
 
@@ -76,6 +82,8 @@ If an engineer intentionally violates a boundary, the Unit Test will fail right 
 
 ## 4. DHH's "Citadel" Model (Basecamp)
 
+**Answer-first:** DHH's "Citadel" model keeps 99% of core business features inside a central Majestic Monolith, extracting specialized micro-services ("Outposts") only when unique runtime requirements (such as AI processing or WebSocket streaming) demand it.
+
 David Heinemeier Hansson (DHH) - the creator of the Ruby on Rails framework, proposed the **"Majestic Monolith & Citadel"** model. Accordingly, 99% of business logic will reside in the central "Citadel" (Monolith).
 
 However, if there is a specific function that requires distinct technology (like processing AI with Python, or handling massive WebSocket streams with Elixir), only then is it extracted into independent "Outposts."
@@ -84,7 +92,9 @@ This proves that the Modular Monolith is not a conservative "all-in-one" mindset
 
 A common question is whether prohibiting SQL JOINs degrades the Monolith's performance. For complex display tasks (such as Dashboards), calling multiple Internal APIs instead of a single JOIN query might create a small overhead. To handle this, Modular Monolith systems often apply the **CQRS** (Command Query Responsibility Segregation) model – separating the write database (containing strict module boundaries) and creating specialized materialized views (aggregated display tables) for reading (automatically updated via events).
 
-## 4. Event Storming & In-Memory Decoupled Communication
+## 5. Event Storming & In-Memory Decoupled Communication
+
+**Answer-first:** Event Storming identifies domain event transitions, allowing modules to communicate asynchronously via channel-based in-memory event buses. This replaces complex distributed Saga orchestrators and 2-phase commits with fast, local database transactions.
 
 Enforcing strict module boundaries requires that modules communicate asynchronously through events rather than sharing database transactions or importing foreign packages. This decoupled pattern is modeled via Event Storming.
 
@@ -182,7 +192,9 @@ Using an in-process event bus allows us to maintain loose coupling:
 In a distributed microservice architecture, ensuring transactional consistency across multiple databases requires two-phase commits (2PC) or the Saga pattern. Two-phase commits act as a performance bottleneck because they acquire locks across networks, leading to high failure rates. Sagas split the business transaction into multiple independent local transactions, using compensating transactions to roll back state if a step fails.
 For example, if payment succeeds but inventory fails, the Saga orchestrator must trigger a `RefundPayment` action. In a modular monolith, we can avoid this operational complexity. We run our business operations in separate schemas under the same database instance. This allows us to use standard SQL local transactions, guaranteeing atomic commits across the billing and inventory tables in sub-millisecond execution times without network-locked loops.
 
-## 5. Complete Go Interface & Domain Event Broker Implementation (Zero Facade Code)
+## 6. Complete Go Interface & Domain Event Broker Implementation (Zero Facade Code)
+
+**Answer-first:** A production Go domain event broker uses thread-safe listener maps and `sync.WaitGroup` concurrency to publish and process domain events asynchronously, keeping module boundaries completely decoupled.
 
 To demonstrate how to execute cross-domain boundaries without leaking coupling, we present a complete Go event broker pattern using `sync.WaitGroup` for deterministic sync:
 
@@ -288,9 +300,11 @@ Maintaining strict code borders helps you turn a Monolith into a collection of i
 
 ## Navigation & Next Steps
 
+**Answer-first:** Proceed to Part 4 to explore simplified CI/CD pipelines, or review related guides on Kafka worker pools and distributed locking.
+
 - **Previous Part:** [Part 2: FinOps Cost Reality](/series/modular-monolith-architecture/part-2-finops-cost-reality/)
 - **Next Part:** Continue to [Part 4: CI/CD Simplified](/series/modular-monolith-architecture/part-4-cicd-simplified/)
-- **Related Guides:** [Kafka Worker Pools in Go](/series/system-design/05-async-message-queues-kafka-go/) and [Distributed Locking in Go](/series/system-design/06-distributed-locks-concurrency/)
+- **Related Guides:** [Modular Monolith Architecture Masterclass](/series/modular-monolith-architecture/)
 
 Need help establishing domain boundaries in your monolithic codebase? [Get in touch](/hire/) or [hire our senior software architects](/hire/) for a code structure review.
 

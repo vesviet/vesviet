@@ -16,7 +16,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-2-architecture/"
 mermaid: true
 ---
-[← Series hub](/series/system-design/)
+[← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/phase-1-timeline/) • [Next →](/series/alipay-double-11/phase-3-operations/)
 
 > **Executive Summary & Quick Answer**: Alipay's Logical Data Center (LDC) unitization architecture partitions database tables and application servers into self-contained "RZone" units based on user ID hashes. This multi-active setup bounds failure blast radiuses and allows horizontal scaling across multiple data centers.

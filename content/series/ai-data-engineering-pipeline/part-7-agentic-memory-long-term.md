@@ -31,7 +31,7 @@ Treating every interaction turn as a fresh stateless request leads to frustratin
 
 ## The Tri-Tier Agentic Memory Architecture
 
-Tri-tier memory architecture organizes agent context into short-term working scratchpads, episodic interaction logs, and long-term semantic graphs.
+**Answer-first:** Tri-tier memory architecture organizes agent context into short-term working scratchpads, episodic interaction logs, and long-term semantic graphs.
 
 > **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
@@ -60,7 +60,7 @@ graph TD
 
 ## Production Python Memory Manager
 
-Production memory managers store conversation sessions in Redis, archive episodic interactions in Qdrant, and update entity relationships in Neo4j.
+**Answer-first:** Production memory managers store conversation sessions in Redis, archive episodic interactions in Qdrant, and update entity relationships in Neo4j.
 
 This production-grade Python memory management system utilizing `Pydantic`, `Redis`, and `pgvector` concepts to manage working memory sliding windows and semantic memory retrieval:
 
@@ -151,7 +151,7 @@ if __name__ == "__main__":
 
 ## Comparative Matrix: Memory Tier Characteristics
 
-Working memory is volatile and fast, episodic memory provides temporal interaction search, and semantic memory retains domain facts permanently.
+**Answer-first:** Working memory is volatile and fast, episodic memory provides temporal interaction search, and semantic memory retains domain facts permanently.
 
 | Metric / Attribute | Working Memory | Episodic Memory | Semantic Memory |
 | :--- | :--- | :--- | :--- |
@@ -163,9 +163,22 @@ Working memory is volatile and fast, episodic memory provides temporal interacti
 
 ---
 
+## Frequently Asked Questions (FAQ)
+
+### Q1: How does an agentic working memory buffer prevent context overflow during long-running tasks?
+Working memory relies on sliding-window token budgets and LLM context truncation strategies. When conversation tokens approach model limits, older turns are pruned or compressed into high-level summaries while retaining the system prompt and core user instructions.
+
+### Q2: What is the role of asynchronous reflection workers in agentic memory consolidation?
+Reflection workers run as background tasks that periodically process episodic interaction logs. They extract key facts, user preferences, and entity relationships, updating the long-term semantic vector database and knowledge graph without blocking real-time agent responses.
+
+### Q3: How are GDPR and right-to-be-forgotten requests handled across multi-tier memory systems?
+When a user requests data deletion, an automated purge cascade issues explicit key deletes in Redis working session caches, row deletions in PostgreSQL JSONB logs, vector record purges in pgvector/Qdrant, and entity node detachments in Neo4j.
+
+---
+
 ## Technical Deep-Dive: Enterprise Memory Systems & Persistence Invariants
 
-Persisting agent memory at scale demands automatic summarization of past conversations and graph reconciliation to prevent memory decay.
+**Answer-first:** Persisting agent memory at scale demands automatic summarization of past conversations and graph reconciliation to prevent memory decay.
 
 Enterprise agentic memory architectures require continuous state synchronization and strict memory bounds across multi-tier storage layers.
 
@@ -174,11 +187,12 @@ Enterprise agentic memory architectures require continuous state synchronization
 1. **Token Budget Sliding Windows**: Prune oldest conversation turns automatically when working memory exceeds token caps.
 2. **Asynchronous Reflection Workers**: Distill episodic dialogue logs into structured semantic triples via background jobs to prevent inline user latency.
 3. **GDPR Purge Cascades**: Execute cascading deletes across Redis session caches, pgvector tables, and Neo4j graph nodes upon user deletion requests.
+
 ---
 
 ## Internal Series Navigation
 
-Proceed to Part 8 to examine inference optimization with vLLM and PagedAttention.
+**Answer-first:** Proceed to Part 8 to examine inference optimization with vLLM and PagedAttention.
 
 - [Part 6 — From Passive RAG to Autonomous Agents](/series/ai-data-engineering-pipeline/part-6-rise-of-ai-agents/)
 - [Part 8 — Inference Optimization: vLLM & PagedAttention](/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/)

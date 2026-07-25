@@ -17,12 +17,12 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-1-timeline/"
 mermaid: true
 ---
 
-[← Series hub](/series/system-design/)
-[← Prev](/series/slm-playbook/executive-summary/) • [Next →](/series/alipay-double-11/phase-2-architecture/)
+[← Series hub](/series/alipay-double-11/)
+[← Prev](/series/alipay-double-11/executive-summary/) • [Next →](/series/alipay-double-11/phase-2-architecture/)
 
 > **Executive Summary & Quick Answer**: Alipay's Double 11 engineering journey evolved over a decade from a centralized monolithic database (2009) to a planet-scale multi-active cloud-native architecture capable of processing over 583,000 TPS at peak.
 
-> **Prerequisite:** [Executive Summary](/series/slm-playbook/executive-summary/)
+> **Prerequisite:** [Executive Summary](/series/alipay-double-11/executive-summary/)
 
 ## Overview
 
@@ -213,7 +213,7 @@ Alipay offloaded non-critical workloads to public cloud infrastructure during Do
 
 Need help implementing high-scale architectures? Consult our team via [Hire High Concurrency Architect](/hire/).
 
-🔗 **Next Step:** Return to [Alipay Double 11 Series Hub](/series/system-design/) or proceed to [Phase 2: Core Architecture](/series/alipay-double-11/phase-2-architecture/).
+🔗 **Next Step:** Return to [Alipay Double 11 Series Hub](/series/alipay-double-11/) or proceed to [Phase 2: Core Architecture](/series/alipay-double-11/phase-2-architecture/).
 
 ## Architectural Context & Pillar References
 

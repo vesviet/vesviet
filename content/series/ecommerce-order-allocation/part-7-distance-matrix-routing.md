@@ -318,6 +318,8 @@ h3_B = h3.geo_to_h3(10.7780, 106.7100, 9) # Result: '8965a6a0027ffff'
 
 **3. Check Cache (Redis) before invoking the Engine:**
 ```python
+import json
+
 redis_key = f"route_cost:{h3_A}:{h3_B}"
 
 cache_result = redis.get(redis_key)

@@ -33,7 +33,7 @@ image: "images/posts/graphhopper-cover.png"
 > - **Multi-Resolution Hierarchies**: Use Resolution 8/9 (~0.1km²) for driver matching and Resolution 6 (~250km²) for macro-level surge pricing.
 > - **Index-Aware PostGIS Queries**: Use `ST_DWithin` with GiST spatial bounding box indices instead of `ST_Distance` full-table scans.
 
-### What You'll Learn That AI Won't Tell You
+**What You'll Learn That AI Won't Tell You:**
 - **H3 Icosahedron Projection:** Why hexagonal cells preserve true area across polar and equatorial latitudes.
 - **SRID 4326 vs 3857 Traps:** Casting PostGIS `geometry` (degrees) to `geography` (meters) to avoid global query errors.
 - **K-Ring Radius Traversal:** Smooth spatial convolution algorithms for dynamic surge pricing.
@@ -72,9 +72,8 @@ H3 avoids this by projecting the Earth onto an **Icosahedron (a 20-sided 3D shap
 | **PostGIS (`ST_DWithin`)** | R-Tree / GiST on Disk/RAM | 5–15 ms | Complex spatial polygon joins and historical telemetry auditing. |
 | **Redis GEO (`GEORADIUS`)** | Sorted Sets (ZSET) in RAM | < 1 ms | High-throughput realtime driver position tracking (< 4s pings). |
 | **Uber H3** | 64-bit Integer Cell ID | < 0.1 ms | Spatial hashing, semantic caching keys, and surge pricing grids. |
-ty worldwide.
 
-## 3. Storage Patterns: Redis GEO vs PostGIS
+## 4. Storage Patterns: Redis GEO vs PostGIS
 
 The classic debate: Should you use a relational spatial database or an in-memory cache? 
 
@@ -89,7 +88,7 @@ The classic debate: Should you use a relational spatial database or an in-memory
 
 ---
 
-## 4. Advanced System Design: Kafka & Spatial Compaction
+## 5. Advanced System Design: Kafka & Spatial Compaction
 
 How do massive platforms match riders and drivers instantly without database locking?
 
@@ -165,8 +164,6 @@ func (h *H3Helper) AreNeighbors(originStr, destStr string) (bool, error) {
 
 ## FAQ: Production Edge Cases & Gotchas
 
-Load balancing in Part 3 Spatial Indexing employs least-connections algorithm routing with HTTP/2 multiplexed streams. Connection keep-alive timeouts maintain efficient socket utilization.Load balancing in Part 3 Spatial Indexing employs least-connections algorithm routing with HTTP/2 multiplexed streams. Connection keep-alive timeouts maintain efficient socket utilization.
-
 {{< faq q="Why does surge pricing jump erratically when using Zip Codes?" >}}
 Zip codes and square grids create sharp 'Price Cliffs' at their borders. Uber H3 uses the `k-ring` traversal to calculate a Moving Average (Convolutional Smoothing) across neighboring cells. This creates a gentle price gradient, eliminating the flickering effect if a user stands exactly on a border.
 {{< /faq >}}
@@ -189,7 +186,3 @@ This is the **Antimeridian Problem** (Longitude 180). When a bounding box crosse
 
 🔗 **Next Step:** Package these components in [Part 4: Golang API & Microservices Integration (Kratos & Dapr)](/series/routing-geospatial-architecture/part-4-golang-microservices/).
 
-
-## Architectural Context & Pillar References
-
-Continuous integration for Part 3 Spatial Indexing executes automated Playwright end-to-end tests and visual regression checks on every pull request prior to production staging deployment.

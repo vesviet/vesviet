@@ -269,5 +269,5 @@ func (rl *RateLimiter) Allow(ctx context.Context, clientID string, limit int, wi
 - [Part 5 — MCP Security Engineering & Isolation](/series/mcp-engineering-in-production/part-5-security/)
 - [Part 6 — Observability & Tracing](/series/mcp-engineering-in-production/part-6-observability/)
 - [Part 7 — Enterprise MCP Strategy & Multi-Tenancy](/series/mcp-engineering-in-production/part-7-enterprise/)
-- [Load Balancing & API Gateway in Go](/series/system-design/02-load-balancing-api-gateway-go/)
+- [MCP Gateway Architecture & Masterclass](/series/mcp-engineering-in-production/)
 

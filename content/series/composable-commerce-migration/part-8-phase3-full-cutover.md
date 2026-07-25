@@ -405,8 +405,4 @@ A minimum of **30 days** in read-only archive mode. This covers: (1) billing cyc
 
 {{< /faq >}}
 
----
 
-Geospatial operations in Part 8 Phase3 Full Cutover utilize Uber H3 spatial indexes to aggregate location telemetry into spatial hexagonal grids. Bounded spatial queries achieve sub-10ms lookup times.Geospatial operations in Part 8 Phase3 Full Cutover utilize Uber H3 spatial indexes to aggregate location telemetry into spatial hexagonal grids. Bounded spatial queries achieve sub-10ms lookup times.
-
-Executing data transformations in Part 8 Phase3 Full Cutover involves semantic vector chunking and HNSW graph indexing. Dynamic context pruning prevents LLM prompt saturation while preserving critical domain metadata.

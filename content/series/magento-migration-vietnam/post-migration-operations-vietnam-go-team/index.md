@@ -1,5 +1,5 @@
 ---
-title: "Post-Magento Operations: Running a Vietnam Go Team in Produc"
+title: "Post-Migration Operations: Managing Vietnam Go Team"
 slug: "post-migration-operations-vietnam-go-team"
 author: "Lê Tuấn Anh"
 date: "2026-07-11T08:00:00+07:00"
@@ -327,23 +327,6 @@ Compared to:
 
 ---
 
-## FAQ
-
-Within Index, optimizing memory utilization requires Goroutine pool sizing and non-blocking ring buffer allocation. Profiling CPU profile samples via Go pprof identifies GC pause time reductions under high load.Within Index, optimizing memory utilization requires Goroutine pool sizing and non-blocking ring buffer allocation. Profiling CPU profile samples via Go pprof identifies GC pause time reductions under high load.
-
-### How do we handle production support for B2B customers who call directly?
-
-B2B customers often escalate technical issues through account management, not standard support. Build an "account manager escalation" runbook that account managers can follow: specific Slack channel, specific SLA (1-hour response during business hours), and a designated Vietnam engineer as the account-facing technical contact.
-
-### What if the Vietnam team loses a key engineer post-migration?
-
-Mitigation built into the system:
-- No single engineer is the sole owner of production knowledge (pair programming + documentation enforced)
-- All runbooks are reviewed quarterly for accuracy
-- On-call rotation ensures all engineers have practical debugging experience, not just the expert
-
-Budget 4–6 weeks of knowledge transfer for any departure. The documentation-first culture makes this significantly less painful than the same departure in a Magento-era shop where knowledge lived in one PHP developer's head.
-
 ## Observability Span Processing Benchmarks
 
 Evaluating Go OpenTelemetry span processing and exporter latency demonstrates minimal CPU footprint:
@@ -385,7 +368,18 @@ For domain context migration patterns, see [DDD Bounded Context Migration](/post
 
 ## Frequently Asked Questions (FAQ)
 
-Geospatial operations in Index utilize Uber H3 spatial indexes to aggregate location telemetry into spatial hexagonal grids. Bounded spatial queries achieve sub-10ms lookup times.
+{{< faq "How do we handle production support for B2B customers who call directly?" >}}
+B2B customers often escalate technical issues through account management, not standard support. Build an "account manager escalation" runbook that account managers can follow: specific Slack channel, specific SLA (1-hour response during business hours), and a designated Vietnam engineer as the account-facing technical contact.
+{{< /faq >}}
+
+{{< faq "What if the Vietnam team loses a key engineer post-migration?" >}}
+Mitigation built into the system:
+- No single engineer is the sole owner of production knowledge (pair programming + documentation enforced)
+- All runbooks are reviewed quarterly for accuracy
+- On-call rotation ensures all engineers have practical debugging experience, not just the expert
+
+Budget 4–6 weeks of knowledge transfer for any departure. The documentation-first culture makes this significantly less painful than the same departure in a Magento-era shop where knowledge lived in one PHP developer's head.
+{{< /faq >}}
 
 {{< faq "How are on-call rotations structured for offshore Vietnam engineering teams?" >}}
 On-call rotations utilize follow-the-sun schedules, transferring primary incident response duties between regional timezone shifts.
@@ -420,7 +414,3 @@ That outcome is achievable with a properly staffed, properly supported Vietnam t
 
 *Ready to plan your migration? [Hire Vietnam Engineering Team](/hire/)*
 
-
-## Architectural Context & Pillar References
-
-Executing data transformations in Index involves semantic vector chunking and HNSW graph indexing. Dynamic context pruning prevents LLM prompt saturation while preserving critical domain metadata.

@@ -31,7 +31,7 @@ If your RAG system relies on traditional **Nightly Batch ETL**, your AI agents w
 
 ## The Streaming CDC Paradigm Shift
 
-Streaming Change Data Capture (CDC) streams database mutations into vector indexes in real time, eliminating stale vector database search results.
+**Answer-first:** Streaming Change Data Capture (CDC) streams database mutations into vector indexes in real time, eliminating stale vector database search results.
 
 > **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
@@ -65,11 +65,21 @@ sequenceDiagram
 2. **Sub-Second Knowledge Sync**: Event-driven streaming updates vector embeddings and graph relations within 200ms to 500ms of the physical database transaction commit.
 3. **Exact Change Semantics**: CDC events convey exact mutation metadata (`before` image, `after` image, `op: "c"|"u"|"d"`), allowing vector indices to delete obsolete chunk vectors instantly when a record is dropped.
 
+### Comparison Matrix: Batch ETL vs. Real-Time Streaming CDC
+
+| Architectural Feature | Traditional Batch ETL | Real-Time Streaming CDC |
+| :--- | :--- | :--- |
+| **Data Freshness / Latency** | 12 to 24 hours (Nightly Batch) | Sub-second (< 500ms P99) |
+| **Database Load Profile** | High periodic `SELECT *` table scans | Continuous low-overhead WAL tailing |
+| **Deletion Handling** | Soft deletes or full re-indexing required | Instant transactional `op: "d"` record purges |
+| **Consistency Guarantee** | Stale context windows between runs | Eventual consistency within hundreds of ms |
+| **Resource Overhead** | High burst CPU/RAM during batch runs | Constant, predictable streaming footprint |
+
 ---
 
 ## Production Go CDC Event Consumer
 
-Production Go CDC consumers parse PostgreSQL Debezium event streams, triggering instant incremental vector indexing for updated database records.
+**Answer-first:** Production Go CDC consumers parse PostgreSQL Debezium event streams, triggering instant incremental vector indexing for updated database records.
 
 This production-grade Go streaming consumer built with `github.com/segmentio/kafka-go` and `golang.org/x/sync/errgroup`. It consumes Debezium Postgres WAL change events and updates vector embeddings and Neo4j graph nodes concurrently:
 
@@ -216,7 +226,7 @@ func main() {
 
 ## Federated GraphRAG Query Routing Architecture
 
-Federated query routers distribute search queries across domain-specific knowledge graphs and aggregate partial graph results into unified context.
+**Answer-first:** Federated query routers distribute search queries across domain-specific knowledge graphs and aggregate partial graph results into unified context.
 
 In enterprise organizations operating across distinct geographical jurisdictions (e.g., US-East, EU-Central, APAC), regulations like GDPR and HIPAA prohibit consolidating raw document vectors into a single centralized database.
 
@@ -246,9 +256,22 @@ graph TD
 
 ---
 
+## Frequently Asked Questions
+
+### Q1: How does Debezium minimize database performance impact when streaming CDC events?
+Debezium reads changes directly from the PostgreSQL Write-Ahead Log (WAL) or MySQL binary logs on disk without issuing heavy SQL SELECT queries. This decoupled log-tailing approach ensures zero computational or locking overhead on active production OLTP tables.
+
+### Q2: What happens when Kafka goes down during CDC processing?
+PostgreSQL retains unconsumed WAL logs (via logical replication slots) up to configured storage limits. When Kafka recovers, Debezium resumes streaming from the exact last acknowledged WAL offset without data loss.
+
+### Q3: How do federated GraphRAG query routers preserve data privacy across compliance boundaries?
+Federated routers execute local sub-graph searches entirely within regional boundaries (e.g., EU-Central for GDPR). Only anonymized, policy-sanitized sub-graph metadata is returned to the central context aggregator.
+
+---
+
 ## Internal Series Navigation
 
-Move to Part 5 to explore enterprise security, RBAC filtering, and data poisoning defense in RAG.
+**Answer-first:** Move to Part 5 to explore enterprise security, RBAC filtering, and data poisoning defense in RAG.
 
 - [Part 3 — Late Chunking & Contextual Retrieval](/series/ai-data-engineering-pipeline/part-3-late-chunking-semantic-caching/)
 - [Part 5 — Enterprise Security, RBAC & Data Poisoning Defense](/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/)

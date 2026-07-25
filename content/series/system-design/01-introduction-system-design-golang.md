@@ -40,6 +40,8 @@ image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 
 ## How Do You Build System Design Thinking?
 
+**Answer-first:** System design thinking relies on evaluating 3D performance-reliability-cost trade-offs, calculating composite availability math ($A_{\text{composite}} = A_A \times A_B \times A_C$), and establishing strict SLI metrics, SLO targets, and SLA contracts.
+
 **Key Concept:** System design mastery is built on three pillars: mastering foundational theorems (CAP, PACELC), practicing trade-off analysis on real-world case studies, and repeatedly decomposing large problems into measurable, independently scalable components.
 
 Great architects don't answer *"which technology to use?"* — they answer *"what do we give up by choosing this?"*. Every technical decision carries hidden costs: latency, complexity, operational burden, or consistency degradation.
@@ -83,6 +85,8 @@ $$A_{\text{composite}} = 1 - (1 - A_A) \times (1 - A_B)$$
 
 ## CAP Theorem and the Asynchronous Network Model
 
+**Answer-first:** The CAP theorem proves that when network partitions (P) occur, distributed systems must choose between Consistency (CP) and Availability (AP), as asynchronous networks cannot guarantee atomic state synchronization and instant client responses simultaneously.
+
 **Theorem Definition:** The CAP Theorem (Seth Gilbert & Nancy Lynch, 2002) states that in an asynchronous distributed system, when a Network Partition (P) occurs, you can only guarantee one of: Consistency (C) or Availability (A). All three simultaneously is impossible.
 
 ### Formal Proof (Gilbert & Lynch, 2002)
@@ -112,6 +116,8 @@ This per-operation flexibility is something CAP cannot model — which is why PA
 ---
 
 ## PACELC Database Matrix
+
+**Answer-first:** The PACELC theorem extends CAP by evaluating healthy network operation (Else): systems must trade off Latency (L) versus Consistency (C). Databases like Cassandra choose PA/EL for low latency, while Google Spanner chooses PC/EC for linearizability.
 
 **Core Principle:** PACELC (Daniel Abadi, 2012) extends CAP by addressing the **non-partition case**: when the network is healthy, systems still face a trade-off between Latency (L) and Consistency (C). This is the more relevant trade-off in 99.9% of operational time.
 
@@ -144,6 +150,8 @@ Concrete signals that indicate a monolith is the bottleneck:
 ---
 
 ## Clean Architecture & Dependency Inversion in Go
+
+**Answer-first:** Clean Architecture in Go isolates domain logic behind interfaces (ports) and repository adapters, ensuring business rules have zero compile-time dependencies on database engines or transport protocols.
 
 This practical Clean Architecture & Dependency Inversion in Go section details production-grade Go code, middleware setup, and architectural patterns designed to ensure high performance and system resilience under peak load.
 
@@ -292,6 +300,8 @@ graph LR
 
 ## Case Study: Alipay LDC Unitization — CAP at Extreme Scale
 
+**Answer-first:** Alipay's Logical Data Center (LDC) unitization applies tier-based CAP trade-offs: user-facing RZone cells prioritize AP availability via local OceanBase replicas, while GZone settlement cells enforce PC strict consistency for ledger balance reconciliation.
+
 Alipay Double 11 is the benchmark for applying CAP Theorem in practice at massive scale. Full analysis at [Alipay Double 11 Architecture](/posts/alipay-double-11-architecture-tps/).
 
 > 🔥 **[Production Insight]: Alipay LDC & Eventual Consistency**
@@ -306,7 +316,7 @@ Alipay Double 11 is the benchmark for applying CAP Theorem in practice at massiv
 
 ## FAQ
 
-Geospatial operations in 01 Introduction System Design Golang utilize Uber H3 spatial indexes to aggregate location telemetry into spatial hexagonal grids. Bounded spatial queries achieve sub-10ms lookup times.Geospatial operations in 01 Introduction System Design Golang utilize Uber H3 spatial indexes to aggregate location telemetry into spatial hexagonal grids. Bounded spatial queries achieve sub-10ms lookup times.
+**Answer-first:** This FAQ clarifies differences between SLA/SLO/SLI error budgets, PACELC non-partition latency choices, and concrete operational triggers for monolith-to-microservices migration.
 
 {{< faq q="What is the difference between SLA, SLO, and SLI?" >}}
 - **SLI** is the measured metric from the system (e.g., request success rate = 99.95%).
@@ -332,9 +342,10 @@ Use **microservices** when: 3+ squads are working in the same codebase causing d
 
 ## Navigation & Next Steps
 
+**Answer-first:** Advance to Part 2 for L4/L7 load balancing algorithms and rate limiting implementation patterns in Go.
+
 [Next Part →](/series/system-design/02-load-balancing-api-gateway-go/)
 
 🔗 **Next Step:** Continue to [Part 2: Load Balancing L4/L7 & Rate Limiting in Go](/series/system-design/02-load-balancing-api-gateway-go/)
 
-Executing data transformations in 01 Introduction System Design Golang involves semantic vector chunking and HNSW graph indexing. Dynamic context pruning prevents LLM prompt saturation while preserving critical domain metadata.
 

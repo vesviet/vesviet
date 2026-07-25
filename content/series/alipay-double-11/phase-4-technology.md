@@ -16,7 +16,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-4-technology/"
 mermaid: true
 ---
-[← Series hub](/series/system-design/)
+[← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/phase-3-operations/) • [Next →](/series/alipay-double-11/phase-4-deep-dive/)
 
 > **Executive Summary & Quick Answer**: Alipay's tech stack combines SOFAStack middleware, OceanBase distributed databases, and lightweight Service Mesh sidecars to achieve high-density microservice deployments with low inter-service RPC overhead.

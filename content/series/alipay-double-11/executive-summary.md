@@ -14,7 +14,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/executive-summary/"
 mermaid: true
 ---
-[← Series hub](/series/system-design/)
+[← Series hub](/series/alipay-double-11/)
 [Next →](/series/alipay-double-11/phase-1-timeline/)
 
 > **Prerequisite:** General understanding of global financial systems scale, high-throughput payment architectures, and transaction reliability.

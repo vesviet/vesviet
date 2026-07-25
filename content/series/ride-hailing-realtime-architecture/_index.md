@@ -1,5 +1,5 @@
 ---
-title: "Real-Time Ride-Hailing Architecture: Uber & Grab | Go Produc"
+title: "Real-Time Ride-Hailing Architecture: Uber & Grab"
 date: "2026-05-06T20:00:00+07:00"
 lastmod: "2026-05-06T20:00:00+07:00"
 draft: false

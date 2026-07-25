@@ -1,5 +1,5 @@
 ---
-title: "Shopee Architecture Masterclass: Flash Sale Scale | Go Produ"
+title: "Shopee Architecture Masterclass: Flash Sale Scale | Go Production Guide"
 date: "2026-05-05T08:00:00+07:00"
 lastmod: "2026-05-05T08:00:00+07:00"
 draft: false
@@ -28,7 +28,7 @@ This series explores the core architectural patterns and technologies Shopee use
 
 ---
 
-*Looking for a practical guide to migrating a legacy e-commerce platform to a microservices architecture similar to Shopee's? See our **[Composable Commerce Migration Series](/series/system-design/)** for a step-by-step production case study.*
+*Looking for a practical guide to migrating a legacy e-commerce platform to a microservices architecture similar to Shopee's? See our **[Composable Commerce Migration Series](/series/composable-commerce-migration/)** for a step-by-step production case study.*
 
 
 ## Architectural Scope & Technical Pillars

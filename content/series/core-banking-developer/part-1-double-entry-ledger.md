@@ -21,7 +21,7 @@ mermaid: true
 
 > **Executive Summary & Quick Answer**: Double-entry bookkeeping in core banking guarantees that every transaction records equal Debit and Credit entries across sub-ledgers. Enforcing $\sum \text{Debits} = \sum \text{Credits}$ at the database schema level via atomic PostgreSQL transactions and Go ledger validation engines prevents financial imbalance, race conditions, and audit compliance failures.
 
-> **Prerequisite:** Read the [Executive Summary](/series/slm-playbook/executive-summary/) for the high-level roadmap of core banking evolution.
+> **Prerequisite:** Read the [Executive Summary](/series/core-banking-developer/executive-summary/) for the high-level roadmap of core banking evolution.
 
 ## Why does a developer need to learn accounting?
 

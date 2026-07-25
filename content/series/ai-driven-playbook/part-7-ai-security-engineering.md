@@ -39,7 +39,7 @@ Traditional security tools inspect HTTP headers and SQL injection patterns. They
 
 ## Defense-in-Depth AI Security Pipeline
 
-Defense-in-depth AI security pipelines enforce input sanitization, prompt injection filtering, vector payload RBAC, and output validation.
+**Answer-first:** Defense-in-depth AI security pipelines enforce input sanitization, prompt injection filtering, vector payload RBAC, and output validation.
 
 ```mermaid
 graph TD
@@ -60,7 +60,7 @@ graph TD
 
 ## The Four Core AI Security Pillars
 
-The four pillars of AI security are prompt injection defense, data leakage prevention, model authorization, and supply chain integrity.
+**Answer-first:** The four pillars of AI security are prompt injection defense, data leakage prevention, model authorization, and supply chain integrity.
 
 1. **Input Prompt Guarding**: Intercepts direct and indirect prompt injection attempts. Uses AST regex filters and lightweight classification models to catch adversarial instruction overrides before context is assembled.
 2. **Cryptographic Access Control**: Enforces Attribute-Based Access Control (ABAC) and Row-Level Security (RLS) by binding user JWT scopes directly to vector similarity and graph database queries.
@@ -71,7 +71,7 @@ The four pillars of AI security are prompt injection defense, data leakage preve
 
 ## Comparative Matrix: Legacy Web Security vs. AI Security Engineering
 
-Legacy security focuses on SQL injection and XSS, whereas AI security addresses prompt hijacking, vector data poisoning, and model evasion.
+**Answer-first:** Legacy security focuses on SQL injection and XSS, whereas AI security addresses prompt hijacking, vector data poisoning, and model evasion.
 
 | Security Dimension | Legacy Web Application Security | AI Security Engineering |
 | :--- | :--- | :--- |
@@ -85,7 +85,7 @@ Legacy security focuses on SQL injection and XSS, whereas AI security addresses 
 
 ## Production Python AI Security Engineering Guardrail
 
-Production Python security guardrails intercept user prompts and LLM completion outputs, sanitizing injection payloads in real time.
+**Answer-first:** Production Python security guardrails intercept user prompts and LLM completion outputs, sanitizing injection payloads in real time.
 
 This production-grade Python security engineering pipeline using `Pydantic` and `hashlib` that enforces input prompt scanning, JWT RBAC predicate generation, output secret redaction, and SOC2 audit logging:
 
@@ -181,13 +181,24 @@ if __name__ == "__main__":
 
 ---
 
----
+## Frequently Asked Questions (FAQ)
+
+**Answer-first:** This FAQ addresses critical AI security questions covering indirect prompt injection risks, cryptographic multi-tenant vector isolation, and post-generation secret leakage defense.
+
+### Q1: How does indirect prompt injection differ from direct prompt injection in enterprise AI systems?
+Direct prompt injection occurs when a malicious user inputs instructions directly into a chatbot prompt to override system behavior. Indirect prompt injection occurs when malicious instructions are hidden inside third-party documents (e.g. PDFs, web pages, or code repos) ingested by RAG vector pipelines. When an unsuspecting user queries that context, the LLM executes the embedded instructions.
+
+### Q2: What is the most effective approach for enforcing multi-tenant data isolation in vector databases?
+The most secure approach is binding user JWT claims (`tenant_id`, `clearance_level`, `roles`) directly to pre-retrieval Row-Level Security (RLS) vector payload filters in pgvector or Qdrant. This ensures non-authorized document chunks are excluded during HNSW search rather than filtered in application memory.
+
+### Q3: How do post-generation output sanitizers prevent accidental API key leaks in AI-generated code?
+Output sanitizers pass generated completion streams through regex scanners looking for high-entropy tokens and vendor secret formats (e.g., `sk-live-...`, AWS access keys, or private keys). Matching strings are automatically replaced with `[REDACTED_SECRET_KEY]` before being delivered to the user UI.
 
 ---
 
 ## Internal Series Navigation
 
-Review the entire AI-Driven Playbook series covering enterprise RAG, team operating models, observability, and security.
+**Answer-first:** Review the entire AI-Driven Playbook series covering enterprise RAG, team operating models, observability, and security.
 
 - [Executive Summary — Building an AI-Native Organization](/posts/ai-native-frontend-architecture-predictions-2028/)
 - [Part 1 — Context Engineering: DDD for AI](/posts/ai-native-frontend-architecture-predictions-2028/)

@@ -1,5 +1,5 @@
 ---
-title: "Shopee Flash Sale Engine: Redis Lua & Overselling | Go Production Guide"
+title: "Shopee Flash Sale Engine: Redis Lua & Overselling"
 date: "2026-05-05T08:20:00+07:00"
 lastmod: "2026-05-05T08:20:00+07:00"
 draft: false
@@ -24,7 +24,7 @@ Shopee prevents overselling during high-concurrency flash sales by combining loc
 
 **Flash sales generate massive traffic spikes that instantly crush traditional databases via row locks. Shopee solves this using a two-tier caching architecture, atomic Lua scripts in Redis, and inventory sharding to guarantee sub-millisecond response times without overselling.**
 
-[← Series hub](/series/system-design/) | [← Prev](/series/shopee-architecture/01-microservices-foundation/) | [Next →](/series/shopee-architecture/03-traffic-shield/)
+[← Series hub](/series/shopee-architecture/) | [← Prev](/series/shopee-architecture/01-microservices-foundation/) | [Next →](/series/shopee-architecture/03-traffic-shield/)
 
 > **Prerequisite:** Read the previous article: Chapter 1: Microservices Foundation - The Power of Go, gRPC, and API Gateway.
 
@@ -294,8 +294,6 @@ For historical perspective on flash sale scaling milestones, see [Alipay Double 
 ---
 
 ## References & Further Reading
-
-Architecting resilient systems for high-concurrency flash sale engines demands strict rate limiting via Token Bucket algorithms at the edge API gateway. Dynamic concurrency limits prevent node resource exhaustion during unplanned traffic spikes.
 
 - [Handling Flash Sales with Redis and Lua (Medium)](https://medium.com/@kiki.syah/inventory-system-design-to-handle-flash-sales-37fc2e8dcffb)
 - [Solving the Hot Key Problem with Inventory Sharding](https://medium.com/@soesah/how-to-handle-flash-sales-using-redis-c02058e0a811)

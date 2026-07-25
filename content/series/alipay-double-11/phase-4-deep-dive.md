@@ -17,7 +17,7 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-4-deep-dive/"
 mermaid: true
 ---
 
-[← Series hub](/series/system-design/)
+[← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/phase-4-technology/) • [Next →](/series/alipay-double-11/modern-tech-comparison/)
 
 > **Executive Summary & Quick Answer**: Alipay's Double 11 technology deep dive reveals high-performance internals: binary Bolt RPC protocol multiplexing over single TCP streams, RocketMQ 2PC transactional messaging for async decoupling, OceanBase LSM-tree compaction tuning, and multi-zone Paxos quorum consensus to achieve 583,000 TPS payment processing.

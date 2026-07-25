@@ -24,7 +24,7 @@ In this 8-part series, we will examine building a complete Distance Matrix API a
 
 ## 🗺️ Series Contents (8 Parts)
 
-- **[Executive Summary: Geospatial & Routing Architecture](/series/slm-playbook/executive-summary/)**
+- **[Executive Summary: Geospatial & Routing Architecture](/series/routing-geospatial-architecture/executive-summary/)**
 - **[Part 1: Core Algorithms (A*, Dijkstra) Visualized](/series/routing-geospatial-architecture/part-1-core-algorithms/)**
 - **[Part 2: Zero to Hero Environment Setup (Docker, OSM Data, Golang)](/series/routing-geospatial-architecture/part-2-environment-setup/)**
 - **[Part 3: Spatial Indexing (Uber H3, PostGIS & Redis GEO)](/series/routing-geospatial-architecture/part-3-spatial-indexing/)**

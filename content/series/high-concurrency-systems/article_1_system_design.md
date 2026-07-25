@@ -1,11 +1,13 @@
 ---
-title: "Chapter 1: How Systems Handle Millions of Requests/s (C10M)? Lessons from Shopee & Alipay"
+title: "High Concurrency System Design Architecture in Go"
 description: "Deep dive into C10M high-concurrency architecture, epoll, io_uring, DPDK kernel bypass, L4/L7 load balancing, and zero-copy Go memory management."
 date: "2026-05-10T10:00:00+07:00"
 lastmod: "2026-07-24T10:00:00+07:00"
 draft: false
 weight: 1
 slug: "article_1_system_design"
+cover:
+  image: "/images/series/high-concurrency-systems/cover.jpg"
 ShowToc: true
 TocOpen: true
 categories: ["FinTech", "High Concurrency", "Backend Engineering"]

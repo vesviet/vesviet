@@ -435,8 +435,4 @@ Debezium's `snapshot.mode: initial` reads all rows using a consistent snapshot â
 
 {{< /faq >}}
 
----
 
-For Part 6 Phase1 Strangler Fig, state persistence relies on pessimistic transaction locks and ACID compliance across distributed SQL clusters. Dual-write patterns utilize Outbox CDC event streaming to maintain eventual consistency.For Part 6 Phase1 Strangler Fig, state persistence relies on pessimistic transaction locks and ACID compliance across distributed SQL clusters. Dual-write patterns utilize Outbox CDC event streaming to maintain eventual consistency.
-
-Saga orchestration in Part 6 Phase1 Strangler Fig handles multi-step distributed transactions with explicit compensating transactions. If a downstream payment step fails, upstream inventory reservations roll back atomically.

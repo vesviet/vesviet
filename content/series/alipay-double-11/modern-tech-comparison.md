@@ -15,7 +15,7 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/modern-tech-compariso
 mermaid: true
 ---
 
-[← Series hub](/series/system-design/)
+[← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/phase-4-deep-dive/) • [Next →](/series/alipay-double-11/phase-5-synthesis/)
 
 > **Prerequisite:** [Phase 4: Deep Dive (Technology Internals)](/series/alipay-double-11/phase-4-deep-dive/)

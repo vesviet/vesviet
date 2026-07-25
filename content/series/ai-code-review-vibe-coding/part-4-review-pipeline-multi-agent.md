@@ -86,6 +86,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strings"
 	"sync"
 	"time"
 
@@ -187,6 +188,7 @@ func (p *CodeReviewPipeline) auditPerformance(ctx context.Context, diff string) 
 	default:
 		// Authentic performance inspection without mock delays
 		var findings []ReviewFinding
+		lines := strings.Split(diff, "\n")
 		for idx, line := range lines {
 			if strings.HasPrefix(line, "+") && strings.Contains(line, "make(chan ") && !strings.Contains(line, ",") {
 				findings = append(findings, ReviewFinding{
@@ -208,8 +210,10 @@ func (p *CodeReviewPipeline) auditSyntax(ctx context.Context, diff string) ([]Re
 	default:
 		// Authentic syntax linting without mock delays
 		var findings []ReviewFinding
+		lines := strings.Split(diff, "\n")
 		for idx, line := range lines {
 			if strings.HasPrefix(line, "+") && strings.Contains(line, "func ") && !strings.Contains(line, "//") {
+				findings = append(findings, ReviewFinding{
 					AgentName: "Syntax Linter",
 					Severity:  "INFO",
 					Line:      idx + 1,

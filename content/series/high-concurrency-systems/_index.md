@@ -40,7 +40,7 @@ Welcome to the **High Concurrency Systems** Masterclass.
 
 Forget generic, theoretical scaling advice. This curriculum tackles the exact concurrency challenges faced in production:
 
-0. **[The Reality of C10M: Surviving Extreme Traffic — Exec Summary](/series/slm-playbook/executive-summary/)**
+0. **[The Reality of C10M: Surviving Extreme Traffic — Exec Summary](/series/high-concurrency-systems/executive-summary/)**
    *An overview for Tech Leads & Architects: Why traditional scaling fails at millions of requests and how to build high-concurrency systems using Golang.*
 
 1. **[Chapter 1: How Systems Handle Millions of Requests/s (C10M)? Lessons from Shopee & Alipay](/posts/shopee-flash-sale-architecture/)**

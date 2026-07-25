@@ -23,7 +23,7 @@ image: "images/posts/golang-microservices-cover.png"
 
 > **Prerequisite:** Before reading this part, please review [Part 5: Observability in Memory](/series/modular-monolith-architecture/part-5-observability/).
 
-### What You'll Learn That AI Won't Tell You
+**What You'll Learn That AI Won't Tell You:**
 - **Database Consolidation Math:** How to merge connection pools to optimize database RAM utilization.
 - **Transactional Outbox Implementations:** The SQL schema design for safe event auditing during migrations.
 - **Canary Merging Safety:** Running dual-writes for 14 days to audit state reconciliation before switching readers.
@@ -45,6 +45,8 @@ flowchart TD
 
 ## 1. Conway's Law: Organizational Preparation
 
+**Answer-first:** Conway's Law dictates that software architecture mirrors organizational communication. Merging microservices back into a modular monolith requires first restructuring isolated engineering pods into domain macro-teams sharing unified monorepo governance.
+
 In 1968, Melvin Conway stated a classic law (Conway's Law):
 > "Any organization that designs a system will produce a design whose structure is a copy of the organization's communication structure."
 
@@ -57,6 +59,8 @@ You cannot successfully transition from Microservices to a Modular Monolith if y
 
 ## 2. Reverse Strangler Fig Pattern: Merging Code with Zero Downtime
 
+**Answer-first:** The Reverse Strangler Fig pattern safely migrates microservice logic into internal monolith packages using Anti-Corruption Layers (ACLs) and canary API Gateway routing, allowing gradual traffic migration without user disruption.
+
 The goal of this model is to bring features from an external Microservice into the core Monolith without the end-user ever noticing.
 
 **Step 1: Create a New Module Inside the Monolith**
@@ -68,11 +72,13 @@ If the data structure of the old Microservice is too different, build a translat
 **Step 3: Routing at the API Gateway (Canary Routing)**
 Use an API Gateway or Load Balancer to route traffic. Initially, push 95% of traffic to the old Microservice (Legacy) and 5% to the corresponding API on the Modular Monolith system (New). Test thoroughly for errors and gradually increase the ratio to 100%.
 
-For database routing and sharding details, refer to our [Database Scaling & Sharding Guide](/series/system-design/04-database-scaling-sharding/).
+For database routing and sharding details, refer to our [Modular Monolith Architecture Guide](/series/modular-monolith-architecture/).
 
 ---
 
 ## 3. The Biggest Nightmare: Database Consolidation & Dual-Write Verification
+
+**Answer-first:** Database consolidation requires a 3-phase dual-write strategy: write incoming data to both legacy microservice and monolith databases, run asynchronous historical backfills with 14-day zero-discrepancy reconciliation, and then safely cut over read traffic.
 
 Moving code won't kill a system, but making a mistake when moving data will destroy a business. The process of moving data from the Microservice's Database to a shared Schema in the Monolith's Database must use a **Dual-Write** strategy to guarantee absolute safety.
 
@@ -93,6 +99,8 @@ Switch read traffic to query the Monolith DB. Keep the dual-write active for 7 d
 ---
 
 ## 4. Transactional Outbox Worker Implementation (Zero Facade Code)
+
+**Answer-first:** A Go transactional outbox worker processes domain events concurrently using non-blocking channels and context deadlines, guaranteeing eventual consistency across module schemas without distributed two-phase commits.
 
 During the migration from isolated Microservices to a Modular Monolith, database tables are consolidated. To guarantee eventual consistency without sleep loops, we use `context.Context` cancellation and channels:
 
@@ -177,6 +185,8 @@ When consolidating database tables, developers must apply a disciplined approach
 
 ## 5. SQL Database Schema Merge & Outbox Table Structure
 
+**Answer-first:** Database consolidation co-locates isolated PostgreSQL schemas (`billing`, `inventory`) under a single database instance, using PL/pgSQL triggers and transactional outbox tables to log events atomically without cross-schema foreign keys.
+
 Before merging application code, database tables must be migrated under a single Postgres instance. The SQL script to co-locate schemas and define a transactional outbox table to queue synchronization events during the transition phase.
 
 ```sql
@@ -233,14 +243,9 @@ So, is there ever a time when we **SHOULD NOT** merge a service into a Monolith,
 
 ## Navigation & Next Steps
 
+**Answer-first:** Advance to Part 7 to discover when and how to selectively extract high-volume microservices from the monolith.
+
 [← Previous Part](/series/modular-monolith-architecture/part-5-observability/)
 [Next Part →](/series/modular-monolith-architecture/part-7-extraction-pattern/)
 
 🔗 **Next Step:** Continue to [Part 7: Extraction Pattern – When Should You Extract Microservices?](/series/modular-monolith-architecture/part-7-extraction-pattern/)
-
-Security posture for microservice consolidation migrations requires strict input sanitization, OWASP top 10 threat mitigation, and automated dependency vulnerability scanning in CI/CD pipelines.
-
-
-## Architectural Context & Pillar References
-
-For microservices-to-monolith migration, state persistence relies on pessimistic transaction locks and ACID compliance across distributed SQL clusters. Dual-write patterns utilize Outbox CDC event streaming to maintain eventual consistency.

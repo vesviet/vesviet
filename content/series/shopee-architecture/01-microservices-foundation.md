@@ -1,10 +1,10 @@
 ---
-title: "Shopee Microservices: Golang, gRPC & API Gateway | Go Produc"
+title: "Shopee Microservices: Golang, gRPC & API Gateway"
 date: "2026-05-05T08:10:00+07:00"
 lastmod: "2026-05-05T08:10:00+07:00"
 draft: false
 mermaid: true
-description: "How Shopee builds its distributed backend infrastructure with Golang, gRPC, and Microservices API Gateways to handle massive traffic scale Learn production engi"
+description: "How Shopee builds its distributed backend infrastructure with Golang, gRPC, and Microservices API Gateways to handle massive traffic scale."
 ShowToc: true
 TocOpen: true
 cover:
@@ -25,7 +25,7 @@ image: "images/posts/shopee-flash-sale-cover.png"
 
 **Shopee handles millions of concurrent users by abandoning monolithic architectures in favor of microservices built on Golang and gRPC. This foundation guarantees isolated scaling and sub-millisecond inter-service communication.**
 
-[← Series hub](/series/system-design/) | [Next →](/series/shopee-architecture/02-flash-sale-engine/)
+[← Series hub](/series/shopee-architecture/) | [Next →](/series/shopee-architecture/02-flash-sale-engine/)
 
 > **Prerequisite:** This is the first chapter of the **Shopee Architecture** series. No prior reading is required to start here. You can view the full series roadmap at the Series Hub.
 

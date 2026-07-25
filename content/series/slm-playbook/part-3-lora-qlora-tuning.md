@@ -1,5 +1,5 @@
 ---
-title: "QLoRA Fine-Tuning Guide: Axolotl & PEFT Model Tuning in Go"
+title: "QLoRA Fine-Tuning Guide: Axolotl, Unsloth & PEFT Tuning"
 slug: "part-3-lora-qlora-tuning"
 date: "2026-06-20T12:00:00+07:00"
 lastmod: "2026-07-23T10:40:00+07:00"
@@ -32,6 +32,8 @@ Full fine-tuning of an 8B parameter model in FP16 precision requires updating 8 
 
 ## QLoRA Fine-Tuning Pipeline Architecture
 
+**Answer-first:** QLoRA pipeline architecture quantizes frozen base model parameters into 4-bit NormalFloat (NF4) memory blocks while attaching $r=16$ low-rank trainable adapter matrices, enabling high-performance SFT training on a single 16GB GPU.
+
 Quantized Low-Rank Adaptation (QLoRA) quantizes frozen 8B base model weights into 4-bit NormalFloat (NF4) memory blocks while training $r=16$ low-rank adapters via Unsloth Triton kernels.
 
 ```mermaid
@@ -53,6 +55,8 @@ graph TD
 
 ## Parameter Efficiency Breakdown
 
+**Answer-first:** Restricting gradient updates to low-rank matrices $A$ and $B$ reduces trainable parameters to under 0.8% of base model weights, dropping GPU VRAM requirements from 80GB to 14GB during PyTorch training runs.
+
 ```text
 [Base Model: 8 Billion Parameters - FROZEN in 4-bit VRAM]
   ├── Weight Matrix W (4096 x 4096) = 16.7M Params (Frozen)
@@ -68,6 +72,8 @@ By restricting gradient updates to matrices $A$ and $B$, memory footprint drops 
 
 ## Comparative Matrix: Full Fine-Tuning vs. LoRA vs. QLoRA (Unsloth)
 
+**Answer-first:** Unsloth QLoRA reduces 8B model training memory to 9GB VRAM and accelerates training throughput by 4.5x compared to standard PyTorch full fine-tuning, allowing production SFT on consumer GPUs.
+
 | Fine-Tuning Method | Precision | VRAM Required (8B Model) | Relative Training Speed | Hardware Needed |
 | :--- | :--- | :--- | :--- | :--- |
 | **Full Fine-Tuning** | FP16 / BF16 | 80GB+ VRAM | 1.0x (Baseline) | 8x A100 GPUs |
@@ -78,6 +84,8 @@ By restricting gradient updates to matrices $A$ and $B$, memory footprint drops 
 ---
 
 ## Production Python Unsloth / PEFT QLoRA Training Pipeline
+
+**Answer-first:** A production Python QLoRA pipeline uses Unsloth and PEFT configuration parameters to attach low-rank adapters to attention projection layers (`q_proj`, `v_proj`), tracking loss convergence and VRAM allocations.
 
 ```python
 import torch
@@ -172,6 +180,8 @@ if __name__ == "__main__":
 ---
 
 ## Internal Series Navigation
+
+**Answer-first:** Navigate adjacent chapters in the SLM Playbook covering vLLM PagedAttention inference optimization, synthetic dataset curation, and production CI/CD evaluation pipelines.
 
 Explore adjacent chapters in the SLM Playbook covering data engineering, inference optimization, and production evaluation gates.
 

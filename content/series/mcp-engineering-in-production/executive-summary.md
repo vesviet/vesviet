@@ -40,6 +40,8 @@ MCP functions as **The USB-C Standard for AI Applications**, providing a clean, 
 
 ## Model Context Protocol System Architecture
 
+**Answer-first:** The Model Context Protocol architecture places an enterprise gateway between AI hosts and backend servers, standardizing communication over JSON-RPC 2.0 while enforcing OAuth 2.1 authentication, rate limiting, and audit logging.
+
 The architecture diagram below illustrates how an Enterprise MCP Gateway decouples client hosts (Cursor, Claude, or custom agents) from downstream tool servers while enforcing OAuth 2.1 identity, token bucket rate limiting, and OpenTelemetry audit tracing across backend microservices:
 
 ```mermaid
@@ -65,6 +67,8 @@ graph TD
 
 ## Comparative Matrix: Ad-Hoc REST Integration vs. Production MCP Standard
 
+**Answer-first:** Ad-hoc REST integrations suffer from hardcoded tool discovery and shared API keys, whereas the MCP standard unifies transport via stdio/SSE, automates dynamic tool discovery, and secures identity using OAuth 2.1 PKCE.
+
 | Architectural Dimension | Ad-Hoc REST Custom API Glue Code | Production Model Context Protocol (MCP) |
 | :--- | :--- | :--- |
 | **Protocol Standard** | Proprietary REST / GraphQL wrappers | Standardized JSON-RPC 2.0 Specification |
@@ -76,6 +80,8 @@ graph TD
 ---
 
 ## Production Go MCP JSON-RPC 2.0 Server Router
+
+**Answer-first:** A production Go MCP server routes JSON-RPC 2.0 requests for `tools/list` and `tools/call`, providing thread-safe tool registration, parameter validation, and standardized error response formatting.
 
 ```go
 package main
@@ -231,6 +237,8 @@ func main() {
 
 ## Frequently Asked Questions (FAQ)
 
+**Answer-first:** This FAQ addresses key engineering decisions around adopting JSON-RPC 2.0, enterprise Gateway security management, and core MCP server primitives (Resources, Tools, and Prompts).
+
 Model Context Protocol (MCP) implementations depend on robust SSE transport, JSON-RPC message validation, and OAuth2 authorization boundaries.
 
 ### Q1: Why did Model Context Protocol (MCP) adopt JSON-RPC 2.0 over REST or gRPC?
@@ -248,6 +256,8 @@ MCP defines 3 core primitives:
 ---
 
 ## Technical Deep-Dive: Model Context Protocol & System Topology Invariants
+
+**Answer-first:** Production MCP topologies enforce strict system invariants: sub-25ms transport latency, W3C trace context propagation, context cancellation handling, and hermetic state isolation across concurrent sessions.
 
 Deploying production Model Context Protocol (MCP) server architectures requires strict protocol adherence and zero-trust RPC security.
 
@@ -274,6 +284,8 @@ Deploying production Model Context Protocol (MCP) server architectures requires 
 
 ## Internal Series Navigation
 
+**Answer-first:** Navigate the MCP Engineering in Production series covering core protocol design, Go/Python server construction, OAuth2 authentication, gateway routing, and security isolation.
+
 - [Part 1 — Model Context Protocol Core Architecture](/series/mcp-engineering-in-production/part-1-protocol/)
 - [Part 2 — Building Production-Grade MCP Servers in Go/Python](/series/mcp-engineering-in-production/part-2-build/)
 - [Part 3 — Identity & Authentication: OAuth2 & mTLS](/series/mcp-engineering-in-production/part-3-identity/)
@@ -288,7 +300,3 @@ Deploying production Model Context Protocol (MCP) server architectures requires 
 | **Protocol Handler Pool** | 256 Workers | 1,024 Workers | Bounded async protocol handlers |
 | **State Registry Limit** | 50 Connections | 200 Connections | In-memory state registry with Redis backup |
 | **Protocol Error Rate** | < 0.02% | > 0.2% | Automatic SSE reconnect & payload retry |
-
-#### Operational Checklist for Production Readiness
-
-Analyzing content series mcp-engineering-in-production executive-summary item 23: system verification requires rigorous unit test coverage, explicit error propagation, and zero-downtime canary deployment mechanics.

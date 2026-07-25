@@ -1,5 +1,5 @@
 ---
-title: "Part 2: Zero to Hero Environment Setup (Docker, OSM, Golang)"
+title: "Part 2: Environment Setup with Docker, OSM & Golang"
 description: "A complete, production-ready guide to setting up a local Graphhopper routing engine with OpenStreetMap data and a high-performance Golang API client."
 date: "2026-06-14T22:45:00+07:00"
 lastmod: "2026-06-14T22:45:00+07:00"
@@ -31,7 +31,7 @@ image: "images/posts/graphhopper-cover.png"
 > - **Container Tuning**: Allocate sufficient JVM heap (`JAVA_OPTS=-Xmx6g`) to prevent Out-Of-Memory (OOM) failures during Contraction Hierarchies shortcut generation.
 > - **Client Resiliency**: Golang HTTP clients must use connection pooling (`MaxIdleConnsPerHost: 100`) to sustain high matrix throughput.
 
-### What You'll Learn That AI Won't Tell You
+**What You'll Learn That AI Won't Tell You:**
 - **Osmium Bounding Box Formulas:** How to extract city bounding boxes using min/max coordinate pairs.
 - **GraphHopper config.yml Settings:** Production values for `profiles` (car, bike) and `ch.profiles`.
 - **Go HTTP Client Resiliency:** Setting KeepAlive durations and transport timeouts for matrix APIs.
@@ -277,8 +277,6 @@ This script can be easily scheduled as a CronJob in Kubernetes or as part of a J
 
 ## FAQ: Production Troubleshooting
 
-Security posture for Part 2 Environment Setup requires strict input sanitization, OWASP top 10 threat mitigation, and automated dependency vulnerability scanning in CI/CD pipelines.Security posture for Part 2 Environment Setup requires strict input sanitization, OWASP top 10 threat mitigation, and automated dependency vulnerability scanning in CI/CD pipelines.
-
 {{< faq q="Why does my Graphhopper Docker container crash immediately after starting?" >}}
 This is almost always an OOM (Out of Memory) error during the initial `.osm.pbf` graph import. You must set the `JAVA_OPTS=-Xmx4g` (or higher) environment variable in your docker-compose file.
 {{< /faq >}}
@@ -295,10 +293,5 @@ Use the `osmium extract` command-line tool. You can crop a massive 2GB national 
 Unlike Google Maps which expects `[Latitude, Longitude]`, the Graphhopper Matrix POST API strictly requires GeoJSON array formatting: `[Longitude, Latitude]`.
 {{< /faq >}}
 
-For Part 2 Environment Setup, state persistence relies on pessimistic transaction locks and ACID compliance across distributed SQL clusters. Dual-write patterns utilize Outbox CDC event streaming to maintain eventual consistency.
-
 🔗 **Next Step:** Learn about spatial indexing in [Part 3: Spatial Indexing (Uber H3, PostGIS & Redis GEO)](/series/routing-geospatial-architecture/part-3-spatial-indexing/).
 
-## Architectural Context & Pillar References
-
-Saga orchestration in Part 2 Environment Setup handles multi-step distributed transactions with explicit compensating transactions. If a downstream payment step fails, upstream inventory reservations roll back atomically.

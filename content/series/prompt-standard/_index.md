@@ -1,5 +1,5 @@
 ---
-title: "Prompt Standard: Product, Engineering & Ops Guide | Go Produ"
+title: "Prompt Standard: Product, Engineering & Ops Guide"
 date: "2026-05-09T10:30:00+07:00"
 lastmod: "2026-07-23T13:34:42+07:00"
 draft: false

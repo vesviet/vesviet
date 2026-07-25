@@ -14,7 +14,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-5-synthesis/"
 mermaid: true
 ---
-[← Series hub](/series/system-design/)
+[← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/modern-tech-comparison/) • [Next →](/posts/alipay-double-11-architecture-tps/)
 
 > **Prerequisite:** [Modern Tech Comparison](/series/alipay-double-11/modern-tech-comparison/)

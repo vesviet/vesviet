@@ -1,5 +1,5 @@
 ---
-title: "PayPay Event-Driven Architecture: Kafka at Scale | Go Produc"
+title: "PayPay Event-Driven Architecture: Kafka at Scale"
 date: "2026-05-05T21:00:00+07:00"
 lastmod: "2026-05-05T21:00:00+07:00"
 draft: false

@@ -120,8 +120,8 @@ func NewInventoryMicroservice() *InventoryMicroservice {
 }
 
 func (s *InventoryMicroservice) CheckStock(ctx context.Context, sku string) (*InventoryItem, error) {
-	s.RLock()
-	defer s.RUnlock()
+	s.mu.RLock()
+	defer s.mu.RUnlock()
 
 	select {
 	case <-ctx.Done():
@@ -137,8 +137,8 @@ func (s *InventoryMicroservice) CheckStock(ctx context.Context, sku string) (*In
 }
 
 func (s *InventoryMicroservice) ReserveStock(ctx context.Context, sku string, qty int) error {
-	s.Lock()
-	defer s.Unlock()
+	s.mu.Lock()
+	defer s.mu.Unlock()
 
 	select {
 	case <-ctx.Done():
@@ -199,7 +199,9 @@ func (t *AIAgentInventoryTool) ExecuteToolCall(ctx context.Context, toolName str
 	}
 }
 
-Fault tolerance in Part 9 Building Ai Native Architecture relies on Netflix Hystrix-style circuit breaker state machines. Consecutive downstream errors trigger Open state fallback handlers instantly.Fault tolerance in Part 9 Building Ai Native Architecture relies on Netflix Hystrix-style circuit breaker state machines. Consecutive downstream errors trigger Open state fallback handlers instantly.
+func main() {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 
 	service := NewInventoryMicroservice()
 	aiAdapter := NewAIAgentInventoryTool(service)
@@ -258,21 +260,27 @@ AI-native architectures enforce Zero-Trust by requiring AI agents to attach the 
 
 **Answer-first:** AI-native architectural invariants demand zero direct coupling between frontend APIs and LLM providers, isolating reasoning behind Go service facades.
 
-Data pipeline orchestration in Part 9 Building Ai Native Architecture utilizes Apache Kafka topic partitioning aligned with domain-driven customer keys. Compaction policies preserve snapshot state while minimizing disk footprint.
+Building AI-native software platforms requires a strict architectural boundary between Large Language Models and core domain microservices. By exposing type-safe interface wrappers—such as the Model Context Protocol (MCP) or JSON-RPC tool adapters—backend systems allow autonomous agents to execute business operations while preserving data integrity and security guardrails.
 
-### System Performance Metrics & Developer Productivity Benchmarks
+### System Performance Metrics & Latency Invariants
 
-In Part 9 Building Ai Native Architecture (Ai Driven Engineer), latency SLA governance requires sub-20ms P99 targets across microservice calls. Instrumenting gRPC client deadlines alongside distributed OpenTelemetry trace propagation ensures early bottleneck isolation.
+AI-native backend services must maintain sub-millisecond execution times for internal tool invocations to offset downstream LLM inference latency:
+- **Tool Execution SLA:** Domain microservices process tool call payloads (`CheckStock`, `ReserveStock`) in sub-5ms latency bounds.
+- **Payload Schema Validation:** Strict JSON unmarshaling and Pydantic/Go struct validations intercept invalid parameter payloads prior to database queries.
+- **Concurrent Request Handling:** Thread-safe state locks (`sync.RWMutex`) prevent race conditions during parallel agent operations.
 
 ### Enterprise Governance Invariants & Security Guardrails
 
-Frontend state synchronization in Part 9 Building Ai Native Architecture uses Server-Sent Events (SSE) streaming JSON patch updates to client Zustand stores. Optimistic UI updates provide immediate feedback before server ACK.
+Isolating AI agents behind service facades enforces enterprise governance and security policies:
+1. **Machine-Readable Tool Schema Definitions:** Exposing rigid argument parameters guarantees agents pass valid parameter types (`SKU`, `Qty`).
+2. **Context-Aware Cancellation:** Propagating Go `context.Context` ensures runaway LLM reasoning loops or disconnected HTTP clients immediately terminate active backend database operations.
+3. **Decoupled Business Logic:** Business rules and state mutations remain completely isolated within canonical domain services rather than embedded in LLM system prompts.
 
 ### Operational Checklist for Software Engineering Teams
 
-Architecting resilient systems for Part 9 Building Ai Native Architecture demands strict rate limiting via Token Bucket algorithms at the edge API gateway. Dynamic concurrency limits prevent node resource exhaustion during unplanned traffic spikes.
-
-Security posture for Part 9 Building Ai Native Architecture requires strict input sanitization, OWASP top 10 threat mitigation, and automated dependency vulnerability scanning in CI/CD pipelines.
+- **Model Context Protocol (MCP) Standardization:** Standardize agent-to-service interfaces using standardized MCP tool definitions.
+- **Granular Tool Telemetry:** Record OpenTelemetry spans for every tool execution, logging agent IDs, input parameters, execution duration, and outcome status.
+- **Fallback Circuit Breakers:** Implement rate limiters and circuit breakers on external LLM provider calls to prevent API quota exhaustion during traffic spikes.
 
 ---
 

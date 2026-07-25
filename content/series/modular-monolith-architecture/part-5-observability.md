@@ -32,7 +32,7 @@ image: "images/posts/golang-microservices-cover.png"
 > - **Stack Trace Fidelity**: A single panic produces a complete call stack across all domain boundaries from gateway to storage.
 > - **Cost Optimization**: Eliminates third-party log cardinality fees by deduplicating internal network telemetry.
 
-### What You'll Learn That AI Won't Tell You
+**What You'll Learn That AI Won't Tell You:**
 - **In-Memory Trace Propagation:** How Go context propagation handles tracing across package lines without network calls.
 - **Cardinality Reduction:** Techniques to strip connection attributes from logs, saving thousands in Datadog bills.
 - **Sampling Strategies:** How to implement tail-based sampling locally to retain error traces while dropping 99% of success spans.
@@ -113,7 +113,7 @@ Distributed microservices emit every HTTP span across the wire, generating netwo
 2. **Decision Engine at Endpoint Completion:** When the top-level HTTP handler returns, an in-process sampler evaluates the request outcome. If the handler returned an HTTP `5xx` error or latency exceeded a configured P99 threshold (e.g., 200ms), the full trace buffer is flushed to the OpenTelemetry collector.
 3. **99% Low-Latency Drop:** Successful, low-latency requests drop 99% of internal module spans while keeping aggregate counters in local memory. This strategy cuts telemetry ingestion fees by over 80% without sacrificing error visibility.
 
-For rate limiting and gateway observability, see our [Distributed Rate Limiting with Redis & GCRA](/series/high-concurrency-systems/article_3_rate_limiting/) guide.
+For rate limiting and gateway observability, see our [Distributed Rate Limiting with Redis & GCRA](/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/) guide.
 
 ---
 
@@ -255,7 +255,7 @@ Initialize an OTLP trace provider with a local batch exporter, wrapping key modu
 
 - **Previous Part:** [Part 4: CI/CD Simplified](/series/modular-monolith-architecture/part-4-cicd-simplified/)
 - **Next Part:** Continue to [Part 6: Migration Playbook](/series/modular-monolith-architecture/part-6-migration-playbook/)
-- **Related Guides:** [Caching Strategies & Redis LFU in Go](/series/system-design/03-caching-strategies-redis-golang/) and [C10M High-Concurrency Architecture](/posts/shopee-flash-sale-architecture/)
+- **Related Guides:** [Modular Monolith Architecture](/series/modular-monolith-architecture/) and [C10M High-Concurrency Architecture](/posts/shopee-flash-sale-architecture/)
 
 Need help setting up low-overhead OpenTelemetry tracing for your monolith? [Get in touch](/hire/) or [hire our observability experts](/hire/) for an architectural review.
 

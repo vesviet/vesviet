@@ -26,7 +26,7 @@ image: "images/posts/shopee-flash-sale-cover.png"
 
 **To scale beyond MySQL sharding limitations, Shopee migrated to TiDB—a NewSQL database that provides infinite horizontal scalability by decoupling compute from storage, eliminating the need for manual sharding and distributed transaction logic.**
 
-[← Series hub](/series/system-design/) | [← Prev](/series/shopee-architecture/03-traffic-shield/) | [Next →](/series/shopee-architecture/05-observability/)
+[← Series hub](/series/shopee-architecture/) | [← Prev](/series/shopee-architecture/03-traffic-shield/) | [Next →](/series/shopee-architecture/05-observability/)
 
 > **Prerequisite:** Read the previous article: Chapter 3: Traffic Shield - Peak Shaving with Kafka and Graceful Degradation.
 
@@ -259,8 +259,6 @@ BenchmarkTiDBRegionSplitRouting-16    50000000    31.2 ns/op    0 B/op    0 allo
 
 ## Frequently Asked Questions (FAQ)
 
-For 04 Database Scale, state persistence relies on pessimistic transaction locks and ACID compliance across distributed SQL clusters. Dual-write patterns utilize Outbox CDC event streaming to maintain eventual consistency.For 04 Database Scale, state persistence relies on pessimistic transaction locks and ACID compliance across distributed SQL clusters. Dual-write patterns utilize Outbox CDC event streaming to maintain eventual consistency.
-
 {{< faq "Why migrate from manual MySQL sharding to TiDB NewSQL?" >}}
 Manual sharding requires complex application routing and cross-shard transaction logic, whereas TiDB automates range sharding while preserving ACID semantics.
 {{< /faq >}}
@@ -281,14 +279,8 @@ The Placement Driver allocates global timestamps for TSO transactions and contin
 
 ## References & Further Reading
 
-Saga orchestration in 04 Database Scale handles multi-step distributed transactions with explicit compensating transactions. If a downstream payment step fails, upstream inventory reservations roll back atomically.
-
 - [PingCAP Case Study: How Shopee scales its Database with TiDB](https://www.pingcap.com/case-studies/shopee-scales-its-database-with-tidb/)
 - [TiDB HTAP Architecture and TiFlash](https://www.pingcap.com/blog/htap-database-what-is-it-and-why-you-need-it/)
 
 {{< author-cta >}}
 
-
-## Architectural Context & Pillar References
-
-Within 04 Database Scale, optimizing memory utilization requires Goroutine pool sizing and non-blocking ring buffer allocation. Profiling CPU profile samples via Go pprof identifies GC pause time reductions under high load.

@@ -4,7 +4,7 @@ date: "2026-05-05T08:50:00+07:00"
 lastmod: "2026-05-05T08:50:00+07:00"
 draft: false
 mermaid: true
-description: "How Shopee engineering utilizes ClickHouse and Distributed Tracing to debug millions of concurrent requests across microservices clusters Learn production engin"
+description: "How Shopee engineering utilizes ClickHouse and Distributed Tracing to debug millions of concurrent requests across microservices clusters."
 ShowToc: true
 TocOpen: true
 cover:
@@ -19,7 +19,7 @@ image: "images/posts/shopee-flash-sale-cover.png"
 
 **Debugging a 30-hop microservice failure requires three pillars of observability: Distributed Tracing via OpenTelemetry, columnar log storage via ClickHouse, and real-time stream processing via Apache Flink. Together, they isolate latency bottlenecks across tens of thousands of pods in seconds.**
 
-[← Series hub](/series/system-design/) | [← Prev](/series/shopee-architecture/04-database-scale/)
+[← Series hub](/series/shopee-architecture/) | [← Prev](/series/shopee-architecture/04-database-scale/)
 
 > **Prerequisite:** Read the previous article: [Chapter 4: Shopee DB: MySQL Sharding to TiDB NewSQL Migration](/series/shopee-architecture/04-database-scale/).
 
@@ -226,11 +226,7 @@ The more complex your Microservices become, the blinder you are without proper O
 
 *Troubled by missing traces or excessive observability overhead in your cluster? [Hire me](/hire/) to optimize your OpenTelemetry, ClickHouse, and Prometheus setup.*
 
-🔗 **Next Step:** This concludes the Shopee Architecture series. You can return to the [Series Hub](/series/system-design/) for a complete overview, or explore our case study on migrating legacy platforms in the [Composable Commerce Migration Series](/series/system-design/).
+🔗 **Next Step:** This concludes the Shopee Architecture series. You can return to the [Series Hub](/series/shopee-architecture/) for a complete overview, or explore our case study on migrating legacy platforms in the [Composable Commerce Migration Series](/series/composable-commerce-migration/).
 
 {{< author-cta >}}
 
-
-## Architectural Context & Pillar References
-
-Implementing 05 Observability demands strict ACID transactional isolation and pessimistic row locking during balance or inventory updates. Distributed Saga orchestration coordinates multi-stage rollbacks, preventing partial state writes across heterogeneous databases.

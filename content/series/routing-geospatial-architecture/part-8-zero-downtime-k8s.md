@@ -35,7 +35,7 @@ image: "images/posts/graphhopper-cover.png"
 > - **InitContainer Hydration**: Pre-compiled 50GB GraphHopper graph shortcut caches are pulled from S3 storage using high-speed AWS CLI `initContainers`.
 > - **Graceful Drain**: Golang API gateways catch `SIGTERM` signals and use `http.Server.Shutdown(ctx)` to drain inflight routing requests without 502 errors.
 
-### What You'll Learn That AI Won't Tell You
+**What You'll Learn That AI Won't Tell You:**
 - **Argo Rollouts Blue-Green YAML Spec:** Exact manifest configuration for routing service cutovers.
 - **Readiness vs Liveness Traps:** Tuning probes to avoid premature pod restarts during 8GB JVM heap warmups.
 - **Multi-Region GeoDNS Failover:** Routing requests to the closest geographic cluster via Route53 latency routing.
@@ -131,7 +131,7 @@ func StartHTTPServerWithGracefulShutdown(handler http.Handler, addr string) {
 
 ---
 
-## 2. Surviving Multi-Region Kubernetes & Global Latency
+## 4. Surviving Multi-Region Kubernetes & Global Latency
 
 Code execution takes milliseconds, but the speed of light is unforgiving. A user in London hitting a Singapore cluster will suffer 200ms of TCP handshake latency before the API even receives the request.
 
@@ -239,7 +239,7 @@ OSM map updates are pre-compiled offline via automated Kubernetes Jobs into S3 g
 This is the **Tail at Scale (P99) problem**. If you fan out 100 requests, and just 1 request hits a 2-second tail latency, the entire matrix waits 2 seconds. Averages lie. You MUST monitor Prometheus P99 metrics and implement **Hedging Requests**: if a request exceeds 100ms, the Gateway automatically fires a duplicate request to a different pod and takes the fastest result.
 {{< /faq >}}
 
-🔗 **Next Step:** You have completed the Routing & Geospatial Architecture masterclass! Feel free to review the [Executive Summary](/series/slm-playbook/executive-summary/) or explore other series.
+🔗 **Next Step:** You have completed the Routing & Geospatial Architecture masterclass! Feel free to review the [Executive Summary](/series/routing-geospatial-architecture/executive-summary/) or explore other series.
 
 ## Architectural Context & Pillar References
 

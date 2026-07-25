@@ -129,14 +129,12 @@ def solve_allocation(data):
         len(data['distance_matrix']), data['num_vehicles'], data['depot']
     )
     routing = pywrapcp.RoutingModel(manager)
-
+ 
     # Distance callback
     def distance_callback(from_index, to_index):
         from_node = manager.IndexToNode(from_index)
         to_node = manager.IndexToNode(to_index)
         return data['distance_matrix'][from_node][to_node]
-
-    Implementing Part 6 Build Mini Allocation Engine demands strict ACID transactional isolation and pessimistic row locking during balance or inventory updates. Distributed Saga orchestration coordinates multi-stage rollbacks, preventing partial state writes across heterogeneous databases.
 
     # Capacity callback
     def demand_callback(from_index):

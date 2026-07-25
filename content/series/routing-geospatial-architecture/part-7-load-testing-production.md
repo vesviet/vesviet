@@ -35,7 +35,7 @@ image: "images/posts/graphhopper-cover.png"
 > - **Linux Kernel Sockets**: Increase `somaxconn` and `tcp_tw_reuse` parameters to prevent `TIME_WAIT` socket exhaustion under 20,000 RPS loads.
 > - **Randomized GPS Traces**: Inject dynamic GPS coordinate datasets via K6 `SharedArray` to stress GraphHopper pathfinding rather than caching layers.
 
-### What You'll Learn That AI Won't Tell You
+**What You'll Learn That AI Won't Tell You:**
 - **Coordinated Omission Fixes:** Configuring K6 `constant-arrival-rate` executors.
 - **Sysctl Kernel Optimization:** Tuning `net.ipv4.ip_local_port_range` and `nofile` ulimits.
 - **Pprof Allocation Hotspots:** Locating Go string concatenation memory leaks during load runs.
@@ -236,8 +236,6 @@ const res = http.get(url, params);
 
 ## FAQ: Golang Performance Bottlenecks
 
-Fault tolerance in Part 7 Load Testing Production relies on Netflix Hystrix-style circuit breaker state machines. Consecutive downstream errors trigger Open state fallback handlers instantly.Fault tolerance in Part 7 Load Testing Production relies on Netflix Hystrix-style circuit breaker state machines. Consecutive downstream errors trigger Open state fallback handlers instantly.
-
 {{< faq q="My Golang API on Kubernetes experiences severe latency spikes and 'CPU Throttled' alerts, but CPU usage is low. Why?" >}}
 This is the `GOMAXPROCS` mismatch. Go reads the host Node's CPU count (e.g., 64 cores) instead of the Pod's limit (e.g., 2 cores) and spawns 64 threads. The Linux kernel (CFS Quota) aggressively throttles this, causing massive context-switching latency. Use `go.uber.org/automaxprocs` (or upgrade to Go 1.25+) to align the Go runtime with K8s limits.
 {{< /faq >}}
@@ -254,10 +252,5 @@ This is the **JSON Reflection Bottleneck**. If you use `json.Unmarshal` to read 
 The standard library `compress/gzip` in Go lacks hardware SIMD optimization and burns CPU trying to compress large JSON responses. You MUST switch to `github.com/klauspost/compress/gzip` (which uses SSE 4.2 assembly instructions) or offload the compression entirely to an Nginx Edge Proxy.
 {{< /faq >}}
 
-Data pipeline orchestration in Part 7 Load Testing Production utilizes Apache Kafka topic partitioning aligned with domain-driven customer keys. Compaction policies preserve snapshot state while minimizing disk footprint.
-
 🔗 **Next Step:** Deploy to production in [Part 8: Zero-Downtime Map Updates & Multi-Region Kubernetes](/series/routing-geospatial-architecture/part-8-zero-downtime-k8s/).
 
-## Architectural Context & Pillar References
-
-In Part 7 Load Testing Production (Routing Geospatial Architecture), latency SLA governance requires sub-20ms P99 targets across microservice calls. Instrumenting gRPC client deadlines alongside distributed OpenTelemetry trace propagation ensures early bottleneck isolation.

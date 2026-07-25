@@ -23,7 +23,7 @@ image: "images/posts/golang-microservices-cover.png"
 
 > **Prerequisite:** Before reading this part, please review [Part 6: Migration Playbook](/series/modular-monolith-architecture/part-6-migration-playbook/).
 
-### What You'll Learn That AI Won't Tell You
+**What You'll Learn That AI Won't Tell You:**
 - **Extraction Threshold Metrics:** Quantitative triggers (e.g. CPU saturation ratios) that justify extraction.
 - **Interface Wrappers:** How to write a Go interface that switches between internal and gRPC implementations.
 - **Database Separation Loops:** Replicating database tables using Change Data Capture (CDC) during migrations.
@@ -45,6 +45,8 @@ flowchart TD
 
 ## 1. Quantitative Extraction Signals & Operational Thresholds
 
+**Answer-first:** Extracting a module into an independent microservice is justified when specific operational signals occur: CPU saturation exceeding 70% for a single domain, specialized polyglot language needs, disparate 15-minute deployment cadences, or strict PCI-DSS/HIPAA security audit isolation.
+
 Quantitative operational signals govern when a module has graduated and is ready for extraction from a modular monolith into an independent microservice:
 
 ### Signal 1: Resource-Specific Independent Scaling Needs & CPU Saturation Ratios
@@ -61,11 +63,13 @@ When a specialized domain module (such as a machine-learning recommendation engi
 ### Signal 4: Strict Regulatory Compliance & Security Isolation (PCI-DSS / HIPAA)
 If processing credit card numbers requires strict PCI-DSS Level 1 compliance or handling medical records requires HIPAA hardware isolation, keeping those handlers inside a general-purpose monolith expands the scope of security audits to the entire codebase. Extracting payment tokenization or medical record vaulting into isolated, hardened microservices reduces audit cost by $80\%$.
 
-For architecture primer patterns, explore our [Go System Design Primer](/series/system-design/01-introduction-system-design-golang/).
+For architecture primer patterns, explore our [Modular Monolith Architecture](/series/modular-monolith-architecture/).
 
 ---
 
 ## 2. Dynamic Module Interface Switching Implementation
+
+**Answer-first:** Defining public Go interface contracts enables zero-code-change microservices extraction, allowing factory implementations to switch dynamically between fast in-process memory execution and remote gRPC calls based on configuration flags.
 
 The Go code below demonstrates how to define a service interface that can switch dynamically between an in-memory method execution and a remote gRPC service call based on configuration, enabling zero-code-change microservices extraction:
 
@@ -135,6 +139,8 @@ func main() {
 
 ## 3. Technical Appendix: Protocol Buffers, HTTP/2 Multiplexing & Database CDC Decoupling
 
+**Answer-first:** Extracted microservices minimize network overhead by combining binary Protocol Buffers (reducing payloads by 70–90%), HTTP/2 multiplexed TCP sockets, and Change Data Capture (CDC) database replication via Debezium to safely separate schemas without downtime.
+
 When a module is extracted into a standalone remote microservice, network transport efficiency becomes paramount. Modern systems leverage gRPC over HTTP/2 and Change Data Capture (CDC) database decoupling to eliminate network drag.
 
 ### Protocol Buffers Binary Framing vs HTTP JSON
@@ -180,15 +186,10 @@ Review our complete industry benchmark summary in [Part 8: Case Study Matrix](/s
 
 ## Navigation & Next Steps
 
-Load balancing in microservice extraction architectures employs least-connections algorithm routing with HTTP/2 multiplexed streams. Connection keep-alive timeouts maintain efficient socket utilization.
+**Answer-first:** Continue to Part 8 for the comprehensive industry case study matrix, or review related guides on Go system design and C10M high-concurrency architectures.
 
 - **Previous Part:** [Part 6: Migration Playbook](/series/modular-monolith-architecture/part-6-migration-playbook/)
 - **Next Part:** Continue to [Part 8: Case Study Matrix](/series/modular-monolith-architecture/part-8-case-study-matrix/)
-- **Related Guides:** [Go System Design Primer](/series/system-design/01-introduction-system-design-golang/) and [Shopee & Alipay C10M High-Concurrency](/posts/shopee-flash-sale-architecture/)
+- **Related Guides:** [Modular Monolith Architecture](/series/modular-monolith-architecture/) and [Shopee & Alipay C10M High-Concurrency](/posts/shopee-flash-sale-architecture/)
 
 Need help deciding whether to extract a module into a microservice? [Get in touch](/hire/) or [hire our senior software architects](/hire/) for an architectural evaluation.
-
-
-## Architectural Context & Pillar References
-
-In microservice extraction patterns, API contract evolution uses Protocol Buffers with backward-compatible schema fields. gRPC-Web proxies bridge browser frontends directly to backend microservice clusters.

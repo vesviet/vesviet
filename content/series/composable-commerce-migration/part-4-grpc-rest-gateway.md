@@ -1,6 +1,6 @@
 ---
-title: "Part 4: gRPC Internal + REST Gateway — API Contract Lifecycle"
-description: "Comprehensive guide to microservices API contract engineering: Protobuf schema evolution, grpc-gateway reverse proxying, Envoy routing, and zero-downtime breaking changes."
+title: "Part 4: gRPC Internal & REST Gateway: API Contract Lifecycle"
+description: "Guide to microservices API contract engineering: Protobuf schema evolution, grpc-gateway reverse proxying, Envoy routing, and zero-downtime breaking changes."
 date: "2026-05-18T10:00:00+07:00"
 lastmod: "2026-07-24T10:00:00+07:00"
 draft: false
@@ -13,6 +13,10 @@ tags: ["gRPC", "Protobuf", "grpc-gateway", "REST API", "Microservices", "Golang"
 series: ["Composable Commerce Migration"]
 series_order: 4
 author: "Lê Tuấn Anh"
+cover:
+  image: "images/posts/ecommerce-composable-cover.png"
+  alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
+  relative: false
 mermaid: true
 ---
 

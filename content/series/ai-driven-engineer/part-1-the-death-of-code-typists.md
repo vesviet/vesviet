@@ -39,6 +39,8 @@ In 2026, typing syntax manually is as outdated as writing raw assembly code by h
 
 ## The Death of the Syntax Typist
 
+**Answer-first:** Manual syntax typing has lost economic value as AI assistants instantly synthesize boilerplate code. Modern engineering value comes from designing domain boundaries, managing concurrency, and defining precise interface specifications.
+
 Boilerplate syntax writing is automated by AI code generators, making architectural design, domain modeling, and system boundaries the primary developer value.
 
 ```mermaid
@@ -76,6 +78,8 @@ The engineer's true value lies entirely in deciding:
 
 ## Comparative Matrix: Traditional Typist vs. AI-Native Architect
 
+**Answer-first:** Traditional typists spend hours writing CRUD boilerplate and unit test stubs manually, whereas AI-native architects automate code generation in seconds and focus 100% of their effort on domain boundaries, architecture, and security audits.
+
 Traditional code typists focus on line-by-line syntax, while AI-native architects design resilient domain boundaries and orchestrate agent code generators.
 
 | Task Domain | Traditional Code Typist (Manual) | AI-Native Architect (AI Assisted) |
@@ -89,6 +93,8 @@ Traditional code typists focus on line-by-line syntax, while AI-native architect
 ---
 
 ## Production Go Microservice Architecture
+
+**Answer-first:** Production Go services leverage decoupled interfaces, thread-safe repositories, and explicit context cancellation, allowing AI engines to generate reliable, high-throughput microservices without manual boilerplate coding.
 
 Production Go microservices emphasize clean domain boundaries, interfaces, and concurrency patterns that AI agents can easily generate and extend.
 
@@ -135,8 +141,8 @@ func NewInMemoryAccountRepo() *InMemoryAccountRepo {
 }
 
 func (r *InMemoryAccountRepo) GetByID(ctx context.Context, id string) (*Account, error) {
-	r.RLock()
-	defer r.RUnlock()
+	r.mu.RLock()
+	defer r.mu.RUnlock()
 
 	select {
 	case <-ctx.Done():
@@ -153,8 +159,8 @@ func (r *InMemoryAccountRepo) GetByID(ctx context.Context, id string) (*Account,
 }
 
 func (r *InMemoryAccountRepo) UpdateBalance(ctx context.Context, id string, amount float64) error {
-	r.Lock()
-	defer r.Unlock()
+	r.mu.Lock()
+	defer r.mu.Unlock()
 
 	select {
 	case <-ctx.Done():
@@ -216,6 +222,8 @@ func main() {
 
 ## Technical Deep-Dive: System Architecture & Developer Productivity Invariants
 
+**Answer-first:** Enforcing strict interface segregation and thread-safe mutex patterns yields sub-second compilation feedback and 65% faster pull request reviews while preventing concurrency races in production.
+
 Architectural invariants require strict interface segregation and strong typing in Go to keep AI-generated code modular and maintainable.
 
 ### System Performance Metrics & Developer Productivity Benchmarks
@@ -232,6 +240,8 @@ Architectural invariants require strict interface segregation and strong typing 
 ---
 
 ## Internal Series Navigation
+
+**Answer-first:** Continue through the AI-Driven Engineer series to explore human-machine task division, productivity myths, workflow orchestration swarms, and context engineering.
 
 Advance to Part 2 to establish clear task boundaries between human engineers and AI code generators.
 

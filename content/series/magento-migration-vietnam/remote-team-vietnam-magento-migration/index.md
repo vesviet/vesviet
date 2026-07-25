@@ -8,7 +8,7 @@ draft: false
 series: ["magento-migration-vietnam"]
 tags: ["Remote Team", "Vietnam", "Migration", "Engineering Management", "Magento", "Golang", "Timezone"]
 categories: ["Engineering Management", "Remote Work"]
-description: "What breaks when running a Magento migration with a remote Vietnam engineering team — timezone strategy, incident response, and red flags Learn production engin"
+description: "Complete guide to hiring, onboarding, and managing a remote Go engineering team in Vietnam for Magento microservices migration."
 ShowToc: true
 TocOpen: true
 cover:

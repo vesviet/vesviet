@@ -35,7 +35,7 @@ image: "images/posts/graphhopper-cover.png"
 > - **Circuit Breakers**: Wrapping HTTP client calls in `gobreaker` trips open when error rates exceed 50%, preventing cascading thread exhaustion.
 > - **Protobuf GC Optimization**: Use 1D flattened arrays (`index = row * cols + col`) instead of nested structs to eliminate object allocations during matrix deserialization.
 
-### What You'll Learn That AI Won't Tell You
+**What You'll Learn That AI Won't Tell You:**
 - **Singleflight Traps:** Avoiding memory retention by clearing singleflight keys after execution.
 - **Protobuf Memory Alignment:** Flat 1D slice byte layout for ultra-fast gRPC matrix transport.
 - **Dapr Pub/Sub Telemetry:** Decoupling realtime driver location pings from sync routing APIs.
@@ -329,8 +329,6 @@ func (c *GraphHopperClient) RequestRoute(ctx context.Context, routeKey string, o
 
 ## FAQ: Backend Routing Traps
 
-Within Part 4 Golang Microservices, optimizing memory utilization requires Goroutine pool sizing and non-blocking ring buffer allocation. Profiling CPU profile samples via Go pprof identifies GC pause time reductions under high load.Within Part 4 Golang Microservices, optimizing memory utilization requires Goroutine pool sizing and non-blocking ring buffer allocation. Profiling CPU profile samples via Go pprof identifies GC pause time reductions under high load.
-
 {{< faq q="I sent a Custom Model to avoid Toll Roads, but Graphhopper ignored it. Why?" >}}
 Welcome to the `ch.disable=true` trap. Contraction Hierarchies (Speed Mode) pre-calculates the fastest paths and cannot process dynamic weights at runtime. To use custom rules, you MUST send a POST request and append `?ch.disable=true` to force Graphhopper into Flexible Mode (Dijkstra/A*).
 {{< /faq >}}
@@ -343,10 +341,5 @@ You have a tracing blind spot. In Kratos v2, you must inject the OpenTelemetry m
 You hit Graphhopper's `Maximum visited nodes exceeded` limit. This is a safety mechanism in `config.yml` (`routing.max_visited_nodes`) to prevent RAM exhaustion. Do not blindly increase this limit; instead, design your Golang worker to split the massive matrix into smaller sub-grids.
 {{< /faq >}}
 
-Geospatial operations in Part 4 Golang Microservices utilize Uber H3 spatial indexes to aggregate location telemetry into spatial hexagonal grids. Bounded spatial queries achieve sub-10ms lookup times.
-
 🔗 **Next Step:** Build the visualization dashboard in [Part 5: Route Visualization UI with Mapbox & Deck.gl](/series/routing-geospatial-architecture/part-5-visualization-ui/).
 
-## Architectural Context & Pillar References
-
-Executing data transformations in Part 4 Golang Microservices involves semantic vector chunking and HNSW graph indexing. Dynamic context pruning prevents LLM prompt saturation while preserving critical domain metadata.

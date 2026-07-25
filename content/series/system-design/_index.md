@@ -1,5 +1,5 @@
 ---
-title: "System Design Masterclass: Scalable Systems in Go | Go Produ"
+title: "System Design Masterclass: Scalable Systems in Go | Go Production Guide"
 slug: "system-design"
 description: "System Design with Go for Senior Engineers: Load Balancing, Caching, DB Sharding, Distributed Locks, Saga Pattern, and Observability — in production."
 author: "Lê Tuấn Anh"

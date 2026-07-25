@@ -17,7 +17,7 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-3-operations/"
 mermaid: true
 ---
 
-[← Series hub](/series/system-design/)
+[← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/phase-2-architecture/) • [Next →](/series/alipay-double-11/phase-4-technology/)
 
 > **Executive Summary & Quick Answer**: Surviving Double 11 requires production Full-Link Stress Testing (Shadow Database traffic simulation) and automated AI-driven operational playbooks to detect and isolate degraded nodes within 1 minute.

@@ -1,10 +1,15 @@
 ---
 title: "Part 1 — Context Engineering: Domain-Driven Design for AI"
+description: "Technical guide to Context Engineering using Domain-Driven Design (DDD) to scope LLM prompts, eliminate hallucinations, and enforce AST boundaries."
 date: 2026-03-16T09:00:00+07:00
 draft: false
 tags: ["AI Engineering", "Context Engineering", "Domain-Driven Design", "Architecture", "LLM"]
 series: ["AI-Driven Playbook"]
 weight: 2
+cover:
+  image: "images/posts/graphrag-vs-naive-rag-cover.png"
+  alt: "Context Engineering Domain-Driven Design for AI"
+  relative: false
 ---
 
 > **Answer-First Summary**: Context Engineering is the discipline of structuring, scoping, and injecting software domain knowledge into Large Language Model (LLM) prompts and agent context windows using Domain-Driven Design (DDD) principles. By organizing codebases into explicit Bounded Contexts, Abstract Syntax Tree (AST) subgraphs, and JSON-Schema prompt contracts, teams eliminate hallucination, enforce architectural layer boundaries, and enable autonomous coding agents to implement production-grade enterprise features.
@@ -13,7 +18,7 @@ weight: 2
 
 ## 1. The Fundamental Problem with Naive Context Windows
 
-As context windows expanded from 8,000 to over 1,000,000 tokens, a common enterprise misconception emerged: the belief that developers could simply dump an entire repository into an LLM context window and expect flawless code synthesis.
+**Answer-first:** As context windows expanded from 8,000 to over 1,000,000 tokens, a common enterprise misconception emerged: the belief that developers could simply dump an entire repository into an LLM context window and expect flawless code synthesis.
 
 In practice, large context windows suffer from **attentional decay**, colloquially known as the "Lost in the Middle" phenomenon. When an LLM processes massive, unstructured code dumps:
 
@@ -36,7 +41,7 @@ To achieve deterministic, high-quality code generation, AI engineering teams mus
 
 ## 2. Applying Domain-Driven Design (DDD) to AI Context
 
-Domain-Driven Design provides the perfect conceptual framework for scoping LLM context. By treating the AI agent as a developer operating within a specific business domain, we apply three core DDD primitives to context construction:
+**Answer-first:** Domain-Driven Design provides the perfect conceptual framework for scoping LLM context. By treating the AI agent as a developer operating within a specific business domain, we apply three core DDD primitives to context construction:
 
 ```mermaid
 sequenceDiagram
@@ -71,7 +76,7 @@ The prompt layout forces a strict separation between core business logic (Domain
 
 ## 3. The Architecture of a Enterprise Context Engine
 
-A production Context Engine operates as a middleware layer between developer intent (task specifications) and LLM invocation.
+**Answer-first:** A production Context Engine operates as a middleware layer between developer intent (task specifications) and LLM invocation.
 
 ```mermaid
 graph LR
@@ -92,6 +97,8 @@ graph LR
 ---
 
 ## 4. Practical Implementation: AST-Aware Context Extractor
+
+**Answer-first:** Python AST context extractors parse codebase structures, extract class interfaces, and strip internal method bodies to minimize token usage.
 
 ```python
 import ast
@@ -171,7 +178,7 @@ class PaymentAggregate:
 
 ## 5. System Prompt Layout & Schema Design
 
-To ensure the LLM respects the generated context, prompts must be organized using rigid section delimiters. The table below illustrates the optimal prompt layout for context-engineered prompts.
+**Answer-first:** To ensure the LLM respects the generated context, prompts must be organized using rigid section delimiters. The table below illustrates the optimal prompt layout for context-engineered prompts.
 
 | Section | Role & Purpose | Content Strategy |
 |---|---|---|
@@ -185,7 +192,7 @@ To ensure the LLM respects the generated context, prompts must be organized usin
 
 ## 6. Real-World Case Study: Microservices Refactoring
 
-A leading e-commerce platform evaluated naive prompting versus DDD-based Context Engineering when tasking an agentic pipeline with refactoring a monolithic Go checkout service into isolated microservices.
+**Answer-first:** A leading e-commerce platform evaluated naive prompting versus DDD-based Context Engineering when tasking an agentic pipeline with refactoring a monolithic Go checkout service into isolated microservices.
 
 ### Comparison Results
 
@@ -204,6 +211,8 @@ pie title Defect Distribution in Generated Microservices
 
 ## 7. Strategic Recommendations & Best Practices
 
+**Answer-first:** Automate AST context extraction via CLI tools, cap token budgets per sub-agent step, and version control domain context schemas in git repositories.
+
 1. **Automate AST Context Extraction**: Never require developers to manually assemble prompt context. Build automated CLI plugins (e.g., Git hooks or IDE extensions) that query AST graphs.
 2. **Enforce Token Budget Limits**: Cap context payload sizes at 16,000 tokens per sub-agent step to maintain optimal attentional density.
 3. **Version Control Context Schemas**: Store domain dictionary definitions and architectural constraint matrices directly in repository root configuration files (`.context/domain.json`).
@@ -212,7 +221,7 @@ pie title Defect Distribution in Generated Microservices
 
 ## 8. Dynamic Schema Validation & Context Compression Protocols
 
-To ensure that LLMs adhere strictly to target architectural interfaces, Context Engines deploy dynamic JSON-Schema validators that filter model context both pre-prompt injection and post-code generation.
+**Answer-first:** To ensure that LLMs adhere strictly to target architectural interfaces, Context Engines deploy dynamic JSON-Schema validators that filter model context both pre-prompt injection and post-code generation.
 
 ### Context Compression Pipeline
 
@@ -233,7 +242,7 @@ graph TD
 
 ## 9. Context Lifecycle & Real-Time Invalidation Strategies
 
-In rapidly evolving codebases where multiple agents and human developers merge pull requests continuously, stale context represents a critical point of failure.
+**Answer-first:** In rapidly evolving codebases where multiple agents and human developers merge pull requests continuously, stale context represents a critical point of failure.
 
 ### Invalidation Triggers
 

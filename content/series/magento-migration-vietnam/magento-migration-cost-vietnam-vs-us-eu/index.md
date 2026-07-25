@@ -1,5 +1,5 @@
 ---
-title: "Magento Migration Cost: Vietnam vs US/EU Team (2026 Model)"
+title: "Magento Migration Cost: Vietnam vs US/EU Team (2026)"
 slug: "magento-migration-cost-vietnam-vs-us-eu"
 author: "Lê Tuấn Anh"
 date: "2026-07-09T08:00:00+07:00"
@@ -306,8 +306,6 @@ BenchmarkCostCalculatorEngine-16    100000000    10.2 ns/op    0 B/op    0 alloc
 
 ## Frequently Asked Questions (FAQ)
 
-Load balancing in Index employs least-connections algorithm routing with HTTP/2 multiplexed streams. Connection keep-alive timeouts maintain efficient socket utilization.Load balancing in Index employs least-connections algorithm routing with HTTP/2 multiplexed streams. Connection keep-alive timeouts maintain efficient socket utilization.
-
 {{< faq "What is the average cost ratio between Vietnam and US/EU senior Go engineers?" >}}
 Senior Go engineers in Vietnam cost approximately 30-35% of equivalent US/EU rates, reducing total migration budget burn.
 {{< /faq >}}
@@ -328,7 +326,3 @@ For custom budget modeling or team structure consultation, connect with [Migrati
 
 *Previous: [Go Engineers in Vietnam: Vetting for Magento Migration →](/series/magento-migration-vietnam/go-engineers-vietnam-migration-vetting/)*
 
-
-## Architectural Context & Pillar References
-
-In Index, API contract evolution uses Protocol Buffers with backward-compatible schema fields. gRPC-Web proxies bridge browser frontends directly to backend microservice clusters.

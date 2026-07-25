@@ -135,6 +135,7 @@ class AIBugTaxonomyScanner:
             # Check 1: Phantom API Method Detection
             if isinstance(node, ast.Attribute):
                 if node.attr in self.phantom_methods:
+                    violations.append(TaxonomyViolation(
                         line=node.lineno,
                         category="Phantom API Hallucination",
                         severity="HIGH",
@@ -146,6 +147,7 @@ class AIBugTaxonomyScanner:
                 for alias in node.names:
                     base_pkg = alias.name.split('.')[0]
                     if base_pkg not in self.verified_packages and base_pkg not in sys.stdlib_module_names:
+                        violations.append(TaxonomyViolation(
                             line=node.lineno,
                             category="Typosquatted Package Risk",
                             severity="CRITICAL",
@@ -155,6 +157,7 @@ class AIBugTaxonomyScanner:
             # Check 3: Silent Failure Suppression
             if isinstance(node, ast.ExceptHandler):
                 if node.type is None:
+                    violations.append(TaxonomyViolation(
                         line=node.lineno,
                         category="Silent Failure Suppression",
                         severity="MEDIUM",
@@ -213,21 +216,24 @@ While newer frontier models (e.g., Claude 3.5 Sonnet, GPT-4o) exhibit lower hall
 
 **Answer-first:** Addressing AI-generated bugs requires combining AST symbol verification with automated unit test synthesis during continuous integration runs.
 
-For Part 3 Ai Bug Taxonomy, state persistence relies on pessimistic transaction locks and ACID compliance across distributed SQL clusters. Dual-write patterns utilize Outbox CDC event streaming to maintain eventual consistency.For Part 3 Ai Bug Taxonomy, state persistence relies on pessimistic transaction locks and ACID compliance across distributed SQL clusters. Dual-write patterns utilize Outbox CDC event streaming to maintain eventual consistency.
+Abstract Syntax Tree (AST) scanning provides a deterministic defense layer against common LLM code generation failures. By inspecting code structures at the syntax tree level, security and review pipelines can detect non-existent API calls, unverified third-party dependencies, and unsafe exception handling patterns before code reaches runtime execution.
 
-### System Throughput & Latency Metrics
+### AST Bug Taxonomy Analysis & Detection Latency
 
-Saga orchestration in Part 3 Ai Bug Taxonomy handles multi-step distributed transactions with explicit compensating transactions. If a downstream payment step fails, upstream inventory reservations roll back atomically.
+Static AST parsing operates with near-zero latency overhead (sub-10ms for typical source files). By evaluating structural nodes—such as `ast.Attribute`, `ast.Import`, and `ast.ExceptHandler`—the parser identifies structural anti-patterns without requiring expensive runtime execution or dynamic sandbox instantiation.
 
 ### System Safety & Execution Guardrails
 
-Within Part 3 Ai Bug Taxonomy, optimizing memory utilization requires Goroutine pool sizing and non-blocking ring buffer allocation. Profiling CPU profile samples via Go pprof identifies GC pause time reductions under high load.
+Enterprise vibe coding governance requires automated guardrails at every layer of the development pipeline:
+1. **Symbol Table Verification:** Cross-referencing generated attribute calls against canonical package APIs to intercept phantom function invocations.
+2. **Package Registry Allowlisting:** Validating imported modules against an organizationally approved lockfile to prevent typosquatting and slopsquatting attacks.
+3. **Strict Exception Enforcement:** Flagging bare `except:` clauses that silently swallow errors and hide critical application failures.
 
 ### Operational Checklist for Software Engineering Teams
 
-Geospatial operations in Part 3 Ai Bug Taxonomy utilize Uber H3 spatial indexes to aggregate location telemetry into spatial hexagonal grids. Bounded spatial queries achieve sub-10ms lookup times.
-
-Executing data transformations in Part 3 Ai Bug Taxonomy involves semantic vector chunking and HNSW graph indexing. Dynamic context pruning prevents LLM prompt saturation while preserving critical domain metadata.
+- **AST Scanner Integration:** Deploy pre-commit hooks and CI steps that execute AST taxonomy scanners on every pull request containing AI-assisted code.
+- **Dependency Sandboxing:** Require explicit security approval for any newly introduced package name detected in AI code prompts or diffs.
+- **Automated Regression Guardrails:** Pair AST static checks with mutation testing to ensure generated unit tests cover all logic branches.
 
 ---
 
@@ -239,7 +245,3 @@ Executing data transformations in Part 3 Ai Bug Taxonomy involves semantic vecto
 - [Part 2 — Codebase Context Engineering for AI Reviewers](/series/ai-code-review-vibe-coding/part-2-context-engineering-codebase/)
 - [Part 4 — Multi-Agent Review Pipeline Architecture](/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent/)
 - [Part 5 — AI Code Security: Prompt Injection & Credentials](/series/ai-code-review-vibe-coding/part-5-ai-code-security/)
-
-## Architectural Context & Pillar References
-
-Tuning machine learning workflows for Part 3 Ai Bug Taxonomy relies on QLoRA 4-bit quantization and LoRA adapter parameter updates. Distributed GPU inference pipelines maintain low latency for client requests.

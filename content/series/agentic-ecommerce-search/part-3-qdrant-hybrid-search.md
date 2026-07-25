@@ -223,6 +223,7 @@ func (q *QdrantSearchClient) CreatePayloadIndexes(ctx context.Context) error {
 	}
 
 	// 4. Create a Bool index for in_stock (filtering available products)
+	_, err = q.client.CreateFieldIndex(ctx, &qdrant.CreateFieldIndexCollection{
 		FieldName:      "in_stock",
 		FieldType:      qdrant.PayloadSchemaType_Bool.Enum(),
 	})

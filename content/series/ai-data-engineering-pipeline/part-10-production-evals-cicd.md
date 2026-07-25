@@ -29,7 +29,7 @@ In GenAI and RAG engineering, responses are non-deterministic. A minor adjustmen
 
 ## The Ragas Evaluation Framework Architecture
 
-The Ragas evaluation framework computes metrics for faithfulness, answer relevance, context recall, and precision using automated LLM-as-a-Judge pipelines.
+**Answer-first:** The Ragas evaluation framework automates LLM-as-a-Judge scoring against explicit production SLAs: Faithfulness >= 0.85, Context Precision >= 0.80, and Answer Relevance >= 0.90. It processes evaluation suites at >= 50 samples/min in CI pipelines to automatically block regressive PR builds.
 
 > **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
@@ -65,7 +65,7 @@ graph TD
 
 ## Production Python Benchmark: Ragas Evaluation Test Suite
 
-Production Ragas test suites run synthetic dataset evaluations against RAG candidate pipelines to block regressive deployments in CI/CD.
+**Answer-first:** A production Python Ragas test suite evaluates golden datasets under strict CI/CD performance SLAs: execution latency under 180 seconds for 50 benchmark samples, evaluation cost below $0.10 per run, and 100% enforcement of the 0.85 Faithfulness pass threshold.
 
 This production-grade Python evaluation script using `Ragas` concepts and `LiteLLM` that runs automated scoring over golden benchmark samples and asserts pass/fail thresholds for CI/CD pipelines:
 
@@ -186,7 +186,7 @@ if __name__ == "__main__":
 
 ## Comparative Matrix: Testing Approaches
 
-Manual spot-checking is unscalable, whereas automated Ragas evaluation suites provide continuous quantitative quality scores across releases.
+**Answer-first:** Automated LLM-as-a-Judge evaluations outperform manual spot-checking by completing CI runs in 1–3 minutes at $0.05–$0.20 per execution, maintaining 99%+ factual verification consistency without manual human review overhead.
 
 | Metric | Manual Spot-Checking | Heuristic String Matching (BLEU/ROUGE) | Automated LLM-as-a-Judge Evals |
 | :--- | :--- | :--- | :--- |
@@ -198,9 +198,24 @@ Manual spot-checking is unscalable, whereas automated Ragas evaluation suites pr
 
 ---
 
+## Frequently Asked Questions (FAQ)
+
+**Answer-first:** This FAQ addresses key engineering questions on LLM-as-a-Judge mechanics, scoring reliability with zero temperature, evaluation drift prevention, and fast CI/CD golden dataset execution strategies.
+
+### Q1: How does LLM-as-a-Judge score RAG faithfulness without human ground truth annotations?
+LLM-as-a-Judge uses an automated claim extraction and verification pipeline. The judge model breaks down the generated answer into individual factual assertions, then checks each assertion against the retrieved context chunks to verify whether it is explicitly supported.
+
+### Q2: How can teams prevent evaluation drift or judge bias in automated CI/CD quality gates?
+To prevent evaluation drift, judge prompts enforce strict JSON schemas, zero temperature sampling (`temperature=0.0`), and version-controlled golden test suites. For borderline evaluation scores ($\pm 0.03$ of cutoff), multi-pass scoring computes the median across repeated runs.
+
+### Q3: What is the optimal execution strategy for running Ragas evaluations in fast CI/CD pipelines?
+Rather than running full evaluations on thousands of production queries during PR builds, CI pipelines execute targeted test runs on a curated golden dataset (50-100 representative edge-case samples). Full regression evaluation runs asynchronously on nightly schedule builds.
+
+---
+
 ## Technical Deep-Dive: Production Evaluation & Continuous Integration Invariants
 
-Integrating LLM-as-a-Judge into CI/CD requires async test batching, cost budget guards, and deterministic evaluation metric thresholds.
+**Answer-first:** Continuous evaluation pipelines require strict operational invariants: zero-temperature sampling (`temperature=0.0`), multi-pass scoring on borderline results within +/- 0.03 of cutoff, and sub-3-minute build execution SLAs to maintain engineering velocity.
 
 Integrating automated LLM-as-a-Judge evaluations into CI/CD build gates demands deterministic metric scoring and tight execution SLAs.
 
@@ -209,11 +224,12 @@ Integrating automated LLM-as-a-Judge evaluations into CI/CD build gates demands 
 1. **Golden Dataset Versioning**: Store golden evaluation datasets alongside application source code to ensure version alignment.
 2. **Temperature Zero Enforcement**: Execute LLM-as-a-Judge prompts with `temperature=0.0` and structured JSON response formats to ensure scoring reproducibility.
 3. **Multi-Pass Borderline Re-evaluation**: Re-run evaluation prompts 3 times and take the median score if Faithfulness falls within $\pm 0.03$ of the cutoff gate.
+
 ---
 
 ## Internal Series Navigation
 
-Review the complete AI Data Engineering Pipeline series from GraphRAG architecture to production evaluation.
+**Answer-first:** Review the complete AI Data Engineering Pipeline series from GraphRAG architecture to production evaluation.
 
 - [Part 9 — Agentic Observability: OpenTelemetry & Cost Monitoring](/series/ai-data-engineering-pipeline/part-9-agentic-observability-monitoring/)
 - [Executive Summary: The Disruption of Naive RAG](/series/ai-data-engineering-pipeline/executive-summary/)

@@ -1,5 +1,5 @@
 ---
-title: "Uber RAMEN Architecture: Real-Time Push Messaging | Go Produ"
+title: "Uber RAMEN Architecture: Real-Time Push Messaging"
 slug: "part-6-realtime-push-ramen"
 date: "2026-05-06T20:00:00+07:00"
 lastmod: "2026-06-11T20:00:00+07:00"
@@ -177,8 +177,6 @@ Server #7: Finds the socket for abc123 in memory → Pushes the message
 ---
 
 ## Ensuring Reliability
-
-In Part 6 Realtime Push Ramen (Ride Hailing Realtime Architecture), latency SLA governance requires sub-20ms P99 targets across microservice calls. Instrumenting gRPC client deadlines alongside distributed OpenTelemetry trace propagation ensures early bottleneck isolation.In Part 6 Realtime Push Ramen (Ride Hailing Realtime Architecture), latency SLA governance requires sub-20ms P99 targets across microservice calls. Instrumenting gRPC client deadlines alongside distributed OpenTelemetry trace propagation ensures early bottleneck isolation.
 
 ### At-Least-Once Delivery
 
@@ -365,8 +363,6 @@ If a WebSocket connection terminates while the matching engine is attempting to 
 To ensure high delivery rates under extreme conditions, the push payloads are restricted to minimal sizes. Heavy JSON payloads are avoided because APNs enforces a strict 4KB maximum payload size for HTTP/2 requests, and FCM enforces 4KB for data messages. The fallback gateway formats payloads using compact binary tokens where possible or optimized string mappings, letting the client retrieve the full JSON metadata asynchronously.
 
 ## FAQ
-
-Frontend state synchronization in Part 6 Realtime Push Ramen uses Server-Sent Events (SSE) streaming JSON patch updates to client Zustand stores. Optimistic UI updates provide immediate feedback before server ACK.
 
 {{< faq q="Why are persistent WebSocket connections preferred over HTTP long polling for dispatch?" >}}
 WebSockets provide low-overhead bi-directional transport, enabling sub-10ms push notifications. HTTP polling introduces latency and requires continuous connection handshake overhead, which quickly degrades mobile battery life and increases server resource use.

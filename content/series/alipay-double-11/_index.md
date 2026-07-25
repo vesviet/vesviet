@@ -22,7 +22,7 @@ This is a structured research series on how Alipay scaled Double 11 from early c
 **Answer-first:** Recommended reading paths structure exploration across scale evolution timelines, cell unitization, operations, and deep technology internals.
 
 ### Executive overview (10–15 minutes)
-1. [Executive Summary](/series/slm-playbook/executive-summary/)
+1. [Executive Summary](/series/alipay-double-11/executive-summary/)
 
 ### Engineering leadership (60–90 minutes)
 1. [Phase 1 — Timeline](/series/alipay-double-11/phase-1-timeline/)
@@ -40,7 +40,7 @@ Read everything above, then:
 
 **Answer-first:** The Alipay Double 11 series analyzes how financial platforms scale to 583,000 TPS using LDC unitization, OceanBase, and RocketMQ.
 
-- [Executive Summary](/series/slm-playbook/executive-summary/)
+- [Executive Summary](/series/alipay-double-11/executive-summary/)
 - [Alipay Double 11 Series Index](/series/alipay-double-11/)
 - [Primary Pillar Benchmark](/posts/alipay-double-11-architecture-tps/)
 - [Phase 1 — Timeline](/series/alipay-double-11/phase-1-timeline/)
