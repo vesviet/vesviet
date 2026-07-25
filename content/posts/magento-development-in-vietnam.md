@@ -1,5 +1,5 @@
 ---
-title: "Magento Enterprise Scoping & Cost Matrix Guide"
+title: "Magento Enterprise Project Scoping & Agency Cost Matrix"
 slug: "magento-development-in-vietnam"
 author: "Lê Tuấn Anh"
 aliases:
@@ -19,6 +19,8 @@ cover:
   alt: "Magento enterprise scoping and cost matrix guide"
   relative: false
 ---
+
+# Magento Enterprise Project Scoping & Agency Cost Matrix
 
 - Vendor management templates and scope definition checklists for outsourced dev.
 - Common project scoping pitfalls that lead to budget overruns in custom integrations.

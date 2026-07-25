@@ -33,6 +33,8 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/order-fulfillment-algorithm-warehouse-last-mile/"
 ---
 
+# Order Fulfillment Algorithm: Warehouse to Last-Mile
+
 ---
 
 ## Executive Summary & Fulfillment Fundamentals
@@ -55,6 +57,75 @@ Physical stock on hand does not equal sellable stock. Fulfillment systems distin
 
 ### Soft Reservations with TTL
 When a customer enters checkout, a **soft reservation** decrements ATP in an in-memory Redis cluster. The reservation carries a TTL (typically 5–15 minutes). If payment fails or the session times out, the reservation automatically expires and ATP is restored.
+
+### Production Redis Lua Engine for Atomic ATP Soft Reservations
+
+In high-concurrency e-commerce environments during sales events, naive non-atomic stock checks (e.g., executing a read `GET stock` followed by `DECRBY`) cause catastrophic race conditions and overselling. To prevent database row lock contention while maintaining strict transactional guarantees, modern order fulfillment engines delegate soft reservations to single-threaded, atomic Redis Lua scripts.
+
+#### Atomic Reservation Protocol:
+1. **Stock Check & Decrement**: Atomically verify if `stock_key` (e.g., `atp:wh_sg01:sku_9942`) holds sufficient uncommitted units.
+2. **TTL Key Binding**: If stock is available, decrement `stock_key` by `requested_qty` and create a reservation key (`reservation:ord_1042:sku_9942`) bound with a strict Time-To-Live (TTL) expiration window (e.g., 900 seconds / 15 minutes).
+3. **Rollback & Expire**: If stock is insufficient, exit immediately with zero mutations. If checkout completes, the worker converts the soft reservation into a hard database commitment. If the session expires, Redis keyspace notifications (`__keyevent@0__:expired`) automatically trigger an `INCRBY` rollback back to the warehouse stock pool.
+
+Below is a complete, thread-safe Go implementation using `github.com/redis/go-redis/v9`:
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"github.com/redis/go-redis/v9"
+)
+
+// AtomicLuaReserve evaluates available stock, decrements counter, and sets TTL reservation atomically.
+const AtomicLuaReserve = `
+local stock_key = KEYS[1]
+local res_key   = KEYS[2]
+local req_qty   = tonumber(ARGV[1])
+local ttl_sec   = tonumber(ARGV[2])
+
+local current_stock = tonumber(redis.call("GET", stock_key) or "0")
+if current_stock >= req_qty then
+    redis.call("DECRBY", stock_key, req_qty)
+    redis.call("SETEX", res_key, ttl_sec, req_qty)
+    return 1
+else
+    return 0
+end
+`
+
+type InventoryEngine struct {
+	client *redis.Client
+	script *redis.Script
+}
+
+// NewInventoryEngine initializes the Redis client and pre-compiles the Lua script SHA.
+func NewInventoryEngine(client *redis.Client) *InventoryEngine {
+	return &InventoryEngine{
+		client: client,
+		script: redis.NewScript(AtomicLuaReserve),
+	}
+}
+
+// ReserveATP executes the atomic soft reservation for an order SKU.
+func (e *InventoryEngine) ReserveATP(ctx context.Context, warehouseID, sku, orderID string, qty int, ttl time.Duration) (bool, error) {
+	stockKey := fmt.Sprintf("atp:{%s:%s}:stock", warehouseID, sku)
+	resKey := fmt.Sprintf("atp:{%s:%s}:res:%s", warehouseID, sku, orderID)
+
+	keys := []string{stockKey, resKey}
+	args := []interface{}{qty, int(ttl.Seconds())}
+
+	res, err := e.script.Run(ctx, e.client, keys, args...).Int64()
+	if err != nil {
+		return false, fmt.Errorf("redis ATP reservation script failed: %w", err)
+	}
+
+	return res == 1, nil
+}
+```
 
 ---
 
@@ -100,46 +171,93 @@ Anticipatory shipping uses predictive ML models (browsing patterns, wishlist ite
 
 ## Step 6 — Last-Mile Vehicle Routing Problem (VRP) Solver
 
-The last-mile dispatch calculates optimal driver routes using Google OR-Tools / GraphHopper VRP solvers:
+The last-mile dispatch system solves a Capacitated Vehicle Routing Problem (CVRP) with Time Windows. Beyond simple distance minimization, enterprise logistics engines enforce physical fleet payload capacity limits and node disjunctions (penalizing dropped stops during capacity overflow) to prevent dispatch deadlocks.
+
+### Production Google OR-Tools VRP Solver Parameter Configuration
+
+Production last-mile dispatch engines optimize multi-vehicle delivery routes by configuring Google OR-Tools pywrapcp with Guided Local Search metaheuristics:
 
 ```python
+from typing import Dict, List, Tuple
 from ortools.constraint_solver import routing_enums_pb2, pywrapcp
 
-def solve_vrp(distance_matrix, num_vehicles, depot):
-    manager = pywrapcp.RoutingIndexManager(
-        len(distance_matrix), num_vehicles, depot
-    )
+def solve_capacitated_vrp(
+    distance_matrix: List[List[int]],
+    demands: List[int],
+    vehicle_capacities: List[int],
+    depot: int = 0,
+    time_limit_sec: int = 15,
+) -> Tuple[Dict[int, List[int]], int]:
+    """Solves Capacitated VRP with payload limits, drop penalties, and GLS metaheuristics."""
+    num_locations = len(distance_matrix)
+    num_vehicles = len(vehicle_capacities)
+
+    # 1. Initialize Routing Manager and Model
+    manager = pywrapcp.RoutingIndexManager(num_locations, num_vehicles, depot)
     routing = pywrapcp.RoutingModel(manager)
 
-    def distance_callback(from_index, to_index):
+    # 2. Distance Callback Registration
+    def distance_callback(from_index: int, to_index: int) -> int:
         from_node = manager.IndexToNode(from_index)
         to_node = manager.IndexToNode(to_index)
         return distance_matrix[from_node][to_node]
 
-    transit_callback_index = routing.RegisterTransitCallback(distance_callback)
-    routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index)
+    transit_idx = routing.RegisterTransitCallback(distance_callback)
+    routing.SetArcCostEvaluatorOfAllVehicles(transit_idx)
 
-    dimension_name = "Distance"
-    routing.AddDimension(
-        transit_callback_index,
-        0,       # no slack
-        3000,    # maximum distance per vehicle
-        True,    # start cumul to zero
-        dimension_name,
+    # 3. Add Capacity Constraint Dimension
+    def demand_callback(from_index: int) -> int:
+        from_node = manager.IndexToNode(from_index)
+        return demands[from_node]
+
+    demand_idx = routing.RegisterUnaryTransitCallback(demand_callback)
+    routing.AddDimensionWithVehicleCapacity(
+        demand_idx,
+        0,                  # Null capacity slack
+        vehicle_capacities, # Vehicle payload limit vector
+        True,               # Start capacity accumulator at zero
+        "Capacity"
     )
 
-    search_parameters = pywrapcp.DefaultRoutingSearchParameters()
-    search_parameters.first_solution_strategy = (
+    # 4. Enforce Node Disjunctions with Overflow Penalty
+    penalty = 100_000  # Penalty for unserviced drop point
+    for node in range(1, num_locations):
+        routing.AddDisjunction([manager.NodeToIndex(node)], penalty)
+
+    # 5. Search Parameter Tuning & Metaheuristics
+    search_params = pywrapcp.DefaultRoutingSearchParameters()
+    search_params.first_solution_strategy = (
         routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC
     )
-    search_parameters.local_search_metaheuristic = (
+    search_params.local_search_metaheuristic = (
         routing_enums_pb2.LocalSearchMetaheuristic.GUIDED_LOCAL_SEARCH
     )
-    search_parameters.time_limit.FromSeconds(30)
+    search_params.time_limit.seconds = time_limit_sec
+    search_params.log_search = False
 
-    solution = routing.SolveWithParameters(search_parameters)
-    return solution, routing, manager
+    # 6. Solve and Extract Vehicle Route Vectors
+    solution = routing.SolveWithParameters(search_params)
+    if not solution:
+        return {}, -1
+
+    routes: Dict[int, List[int]] = {}
+    for vehicle_id in range(num_vehicles):
+        index = routing.Start(vehicle_id)
+        route = []
+        while not routing.IsEnd(index):
+            node = manager.IndexToNode(index)
+            route.append(node)
+            index = solution.Value(routing.NextVar(index))
+        route.append(manager.IndexToNode(index))
+        routes[vehicle_id] = route
+
+    return routes, solution.ObjectiveValue()
 ```
+
+#### Key Solver Design Decisions:
+- **First Solution Strategy (`PATH_CHEAPEST_ARC`)**: Rapidly constructs an initial feasible route baseline to maximize search efficiency within tight latency budgets.
+- **Guided Local Search (`GUIDED_LOCAL_SEARCH`)**: Escapes local minima by dynamically penalizing frequently traversed solution edges during local transformations.
+- **Disjunction Penalties (`AddDisjunction`)**: Guarantees solver feasibility when total daily demand exceeds available driver fleet capacity by isolating unserved nodes for 3PL fallback dispatch.
 
 ---
 

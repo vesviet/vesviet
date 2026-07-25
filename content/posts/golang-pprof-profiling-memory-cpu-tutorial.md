@@ -1,5 +1,5 @@
 ---
-title: "Go pprof in Kubernetes: CPU & Memory Profiling"
+title: "Go pprof CPU & Memory Profiling: Production Tutorial"
 slug: "golang-pprof-profiling-memory-cpu-tutorial"
 author: "Lê Tuấn Anh"
 date: "2026-06-02T08:00:00+07:00"
@@ -24,6 +24,8 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/posts/golang-pprof-profiling-memory-cpu-tutorial/"
 ---
+
+# Go pprof CPU & Memory Profiling: Production Tutorial
 
 - Reading memory profiles to identify slow allocations in performance hot paths.
 - Analyzing flame graphs to detect lock contention on global mutexes.

@@ -34,6 +34,8 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/shopee-flash-sale-architecture/"
 ---
 
+# Flash Sale Architecture: Rate Limiting & Redis
+
 ---
 
 ## Executive Summary & System Design Foundations
@@ -99,7 +101,136 @@ return 1       -- Success, proceed to order queue
 
 ---
 
-## 4. Reference Service Decomposition
+## 4. Atomic Rate Limiting Engine: Production Redis Lua & Go Token Bucket
+
+To safeguard downstream order microservices from C10M traffic surges, rate limiting must evaluate at the API Gateway before requests reach application workers. Traditional in-memory local limiters fail across auto-scaled gateway nodes due to inconsistent global state, while Naive Redis `INCR` counter patterns suffer from race conditions and boundary spike vulnerabilities (2x burst problem).
+
+### Token Bucket vs. Sliding Window Log under C10M Load
+
+| Rate Limiter Algorithm | Time Complexity | Memory Complexity | C10M Flash Sale Suitability |
+| :--- | :--- | :--- | :--- |
+| **Fixed Window (`INCR`)** | $O(1)$ | $O(1)$ per key | ❌ **High Risk**: Allows 2x burst traffic at window boundaries. |
+| **Sliding Window Log (`ZADD`)** | $O(N)$ | $O(N)$ log items | ❌ **Unsuitable**: Excessive memory and CPU overhead per request. |
+| **Atomic Token Bucket (Lua)** | $O(1)$ | $O(1)$ fixed hash | ✅ **Optimal**: Smooth traffic shaping, exact sub-second precision. |
+
+---
+
+### Production Redis Lua Atomic Token Bucket Script
+
+This Lua script executes atomically within Redis, updating available tokens based on elapsed fractional seconds while enforcing strict TTL boundaries to avoid memory leaks:
+
+```lua
+-- Atomic Token Bucket Rate Limiter
+-- KEYS[1]: Redis Key (e.g., "{user:1001}:rate_limit")
+-- ARGV[1]: Max Bucket Capacity (e.g., 100)
+-- ARGV[2]: Token Refill Rate per Second (e.g., 10.0)
+-- ARGV[3]: Current Unix Timestamp in fractional seconds (e.g., 1774944000.125)
+-- ARGV[4]: Requested Tokens (e.g., 1)
+
+local key = KEYS[1]
+local capacity = tonumber(ARGV[1])
+local refill_rate = tonumber(ARGV[2])
+local now = tonumber(ARGV[3])
+local requested = tonumber(ARGV[4])
+
+-- Retrieve current state (returns false for missing hash fields)
+local data = redis.call('HMGET', key, 'tokens', 'last_updated')
+local tokens = tonumber(data[1])
+local last_updated = tonumber(data[2])
+
+if tokens == nil or last_updated == nil then
+    tokens = capacity
+    last_updated = now
+else
+    local delta = math.max(0, now - last_updated)
+    tokens = math.min(capacity, tokens + delta * refill_rate)
+end
+
+-- Key TTL set to twice the full bucket refill duration to guarantee auto-eviction
+local ttl = math.ceil(capacity / refill_rate) * 2
+
+if tokens >= requested then
+    tokens = tokens - requested
+    redis.call('HSET', key, 'tokens', tokens, 'last_updated', now)
+    redis.call('EXPIRE', key, ttl)
+    return {1, math.floor(tokens), 0} -- Allowed: 1, Remaining tokens, Retry-After: 0
+else
+    redis.call('HSET', key, 'tokens', tokens, 'last_updated', now)
+    redis.call('EXPIRE', key, ttl)
+    local retry_after = math.ceil((requested - tokens) / refill_rate)
+    return {0, math.floor(tokens), retry_after} -- Denied: 0, Remaining tokens, Retry-After seconds
+end
+```
+
+---
+
+### Production Go Rate Limiter Implementation
+
+The API Gateway integrates atomic rate limiting via a thread-safe Go wrapper using github.com/redis/go-redis/v9 and pre-compiled EVALSHA scripts:
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"github.com/redis/go-redis/v9"
+)
+
+// RateLimiter wraps Redis client and compiled Lua script.
+type RateLimiter struct {
+	client *redis.Client
+	script *redis.Script
+}
+
+// NewRateLimiter compiles the atomic Token Bucket Lua script.
+func NewRateLimiter(client *redis.Client, luaScript string) *RateLimiter {
+	return &RateLimiter{
+		client: client,
+		script: redis.NewScript(luaScript),
+	}
+}
+
+// RateLimitResult encapsulates admission evaluation details.
+type RateLimitResult struct {
+	Allowed        bool
+	Remaining      int64
+	RetryAfterSecs int64
+}
+
+// Allow evaluates if an incoming request is admitted by the rate limiter.
+func (r *RateLimiter) Allow(ctx context.Context, key string, capacity int, refillRate float64, requested int) (*RateLimitResult, error) {
+	// Floating-point unix timestamp in seconds for sub-second precision
+	now := float64(time.Now().UnixNano()) / 1e9
+
+	res, err := r.script.Run(ctx, r.client, []string{key}, capacity, refillRate, now, requested).Result()
+	if err != nil {
+		return nil, fmt.Errorf("rate limit execution failed: %w", err)
+	}
+
+	values, ok := res.([]interface{})
+	if !ok || len(values) < 3 {
+		return nil, fmt.Errorf("invalid script response format")
+	}
+
+	return &RateLimitResult{
+		Allowed:        values[0].(int64) == 1,
+		Remaining:      values[1].(int64),
+		RetryAfterSecs: values[2].(int64),
+	}, nil
+}
+```
+
+### Production Trade-Offs & Resiliency Signals
+
+1. **Redis Cluster Hash Tagging**: Always format rate limit keys using Redis Hash Tags (e.g., `{user:1001}:rate_limit`). This forces multi-key or single-key Lua evaluations to target a single Redis cluster slot, avoiding cross-slot `CROSSSLOT Keys in request don't hash to the same slot` errors.
+2. **Fail-Open vs. Fail-Closed Strategy**: If Redis latency spikes > 5ms or connection pools degrade under C10M peak load, the API Gateway MUST degrade gracefully. Standard practice mandates **Fail-Open** for authenticated VIP users (allowing traffic to be shaped downstream by Kafka queue backpressure) and **Fail-Closed** for unauthenticated/bot IP ranges.
+
+---
+
+## 5. Reference Service Decomposition
 
 ```mermaid
 graph LR
