@@ -1,6 +1,5 @@
 ---
-
-title: "Uber H3 Geospatial Indexing: Find Nearest Driver in <100ms with Redis (Production Guide)"
+title: "Uber H3 Geospatial Indexing: Redis Driver Discovery"
 slug: "part-2-geospatial-indexing"
 date: "2026-05-06T20:00:00+07:00"
 lastmod: "2026-06-26T21:00:00+07:00"
@@ -18,6 +17,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/"
 ShowToc: true
 TocOpen: true
+image: "images/posts/real-time-ride-hailing-cover.png"
 ---
 
 > **Executive Summary & Quick Answer**: Uber and Grab find the nearest available driver in under 100ms by dividing the Earth's surface into hexagonal cells (H3 index at Resolution 8, each ~0.74 km²). Instead of calculating distance to every driver, they look up only the 7 cells nearest to the rider — reducing millions of comparisons to dozens.
@@ -225,6 +225,8 @@ func main() {
 
 ## Method 3: Google S2 Geometry & 64-Bit Hilbert Curves
 
+This practical Method 3: Google S2 Geometry & 64-Bit Hilbert Curves section details production-grade Go code, middleware setup, and architectural patterns designed to ensure high performance and system resilience under peak load.
+
 **Google S2 Geometry** projects the Earth onto a cube, mapping each face with a space-filling **Hilbert Curve**. S2 represents every spatial cell as a single **64-bit integer (`uint64`)**.
 
 ### Advantages of S2 64-Bit Integers
@@ -269,6 +271,8 @@ By partitioning driver updates into separate Redis SET keys by H3 Cell ID (`driv
 
 ## Frequently Asked Questions (FAQ)
 
+High availability for Part 2 Geospatial Indexing is maintained through multi-region active-active deployment topologies. Dynamic DNS failover routers redirect traffic seamlessly during cloud provider outages.High availability for Part 2 Geospatial Indexing is maintained through multi-region active-active deployment topologies. Dynamic DNS failover routers redirect traffic seamlessly during cloud provider outages.
+
 {{< faq q="Why does Uber use hexagonal grids (H3) instead of square grids (Geohash)?" >}}
 Hexagonal cells have a constant distance between the center of a cell and the centers of all its adjacent neighbors. This uniform neighbor distance simplifies radius searches and dynamic calculations, whereas square grids suffer from diagonal distance distortion.
 {{< /faq >}}
@@ -289,6 +293,8 @@ Resolution 8 (average cell area ~0.74 km², edge length ~461 meters) is the glob
 
 ## Navigation & Next Steps
 
+Fault tolerance in Part 2 Geospatial Indexing relies on Netflix Hystrix-style circuit breaker state machines. Consecutive downstream errors trigger Open state fallback handlers instantly.
+
 - **Previous Part:** [Part 1 — Location Ingestion](/series/ride-hailing-realtime-architecture/part-1-location-ingestion/)
 - **Series Index:** Return to [Ride-Hailing Architecture Executive Summary](/series/ride-hailing-realtime-architecture/executive-summary/)
 - **Related Guides:** [Go Spatial Indexing Masterclass](/series/routing-geospatial-architecture/part-3-spatial-indexing/) and [Redis Caching Strategies](/series/system-design/03-caching-strategies-redis-golang/)
@@ -298,6 +304,11 @@ Need help implementing high-scale spatial indexing or Redis cluster sharding? [G
 - [Google S2 Geometry Library](https://s2geometry.io/)
 - **Self-hosted routing:** The same H3 hexagonal indexing used here for driver proximity is also the caching layer for [GraphHopper Distance Matrix in production](/posts/graphhopper-distance-matrix-production-guide/) — replacing Google Maps API at $510/day.
 
-> *Next, we will delve into the backbone of the entire system — Apache Kafka — where every GPS event, ride request, and acceptance flows. Continue reading [Part 3 — Event Streaming: The Apache Kafka & Flink Backbone](/series/ride-hailing-realtime-architecture/part-3-event-streaming-kafka/).*
+> *Next, we will examine the backbone of the entire system — Apache Kafka — where every GPS event, ride request, and acceptance flows. Continue reading [Part 3 — Event Streaming: The Apache Kafka & Flink Backbone](/series/ride-hailing-realtime-architecture/part-3-event-streaming-kafka/).*
 
 {{< author-cta >}}
+
+---
+## Related Architecture & Pillar Guides
+For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
+- [Banking Microservices in Go: Saga & Event Sourcing](/posts/banking-microservices-architecture/)

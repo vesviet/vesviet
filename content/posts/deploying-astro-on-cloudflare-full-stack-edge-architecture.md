@@ -30,20 +30,14 @@ canonicalURL: "https://tanhdev.com/posts/deploying-astro-on-cloudflare-full-stac
 
 # Deploy Astro on Cloudflare Pages: Full-Stack Edge Architecture
 
-**Answer-first:** Deploying Astro on Cloudflare Pages provides a zero-cold-start full-stack edge platform using V8 isolates. By pairing `@astrojs/cloudflare` with D1 relational database bindings, edge API routes achieve sub-20ms global response times without server infrastructure costs.
-
-### What You'll Learn That AI Won't Tell You
 - The exact D1 edge database connection pooling limitations and how to circumvent cold start issues when routing through Neon serverless proxies.
 - How to configure Durable Objects for real-time state synchronization without hitting Cloudflare's sub-request quota limits.
-
 
 Running a content site on a traditional VPS or a managed Node.js host is fine until it isn't. You pay for compute that sits idle 95% of the time, you manage SSL renewals, you worry about cold starts, and you watch your Lighthouse score suffer because your origin is in Singapore while your readers are in Frankfurt.
 
 Cloudflare's edge stack solves all of this. This post covers two paths: building a greenfield site with Astro on Cloudflare's full edge stack — Workers, R2, D1, Pagefind — and putting an existing WordPress site behind Cloudflare's CDN without migrating anything. Both approaches, real config, and the tradeoffs that matter.
 
 ## The Stack
-
-Before diving into the architecture, here is what each piece does and why it earns its place:
 
 | Component | Role | Why not the alternative |
 |---|---|---|

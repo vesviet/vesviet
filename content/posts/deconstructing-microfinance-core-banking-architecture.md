@@ -25,16 +25,12 @@ mermaid: true
 > - Compulsory savings holds act as loan collateral locked via database-level conditional triggers.
 > - Declining balance interest math requires exact 64-bit integer fixed-point arithmetic to prevent rounding drift.
 
-**Answer-first:** Microfinance core banking requires a decentralized architecture: a double-entry ledger for transaction auditing, a joint liability group (JLG) loan engine with optimistic concurrency controls, modular interest/amortization processors, and parallelized worker pools to handle heavy End-of-Day batch processing.
-
-### What You'll Learn That AI Won't Tell You
 - How to prevent phantom funds in double-entry ledgers by writing strict write-once, append-only transaction logs.
 - Optimistic concurrency control implementations using version-checks and `SELECT ... FOR UPDATE` that survived concurrent interest calculations on 50,000 active accounts.
 
-
 Building a Core Banking System (CBS) for a Microfinance Institution (MFI) presents a radically different set of engineering challenges compared to traditional retail banking. While commercial banks focus heavily on individual credit scores and card networks, microfinance operates on high-frequency, low-value transactions, group-based lending, and offline field collections. 
 
-If you are an engineer or Business Analyst transitioning into fintech, understanding the architectural nuances of platforms like Apache Fineract (Mifos X) or Musoni is critical. In this guide, we will break down the 5 must-have modules of a Microfinance CBS, providing the database schemas, mathematical formulas, double-entry mappings, and the actual Product Requirements Document (PRD) snippets you need to build them.
+If you are an engineer or Business Analyst transitioning into fintech, understanding the architectural nuances of platforms like Apache Fineract (Mifos X) or Musoni is critical. This guide we will break down the 5 must-have modules of a Microfinance CBS, providing the database schemas, mathematical formulas, double-entry mappings, and the actual Product Requirements Document (PRD) snippets you need to build them.
 
 ---
 
@@ -256,7 +252,6 @@ func main() {
 ```
 
 
-
 ## Architectural Trade-offs & Production Considerations (2026 Baseline)
 
 In high-concurrency production deployments, balancing throughput, resilience, and operational cost requires strict engineering discipline. When evaluating modern patterns against legacy monolithic or non-vector architectures, several critical failure modes and trade-offs emerge:
@@ -265,7 +260,6 @@ In high-concurrency production deployments, balancing throughput, resilience, an
 2. **Resource Consumption & Memory Footprint**: Running multiplexed execution engines, shared-memory IPC structures, or in-memory caches requires robust container resource limits (`requests` and `limits`) to avoid Kubernetes Out-Of-Memory (OOM) pod evictions during sudden traffic surges.
 3. **Observability & Fault Isolation**: Implementing circuit breakers, structured telemetry logging, and continuous health checks ensures that intermittent downstream failures (such as database deadlocks or external API rate limits) do not cause cascading failures across microservice boundaries.
 
-
 ## Related Pillar Articles & Further Reading
 
 - [Banking Microservices in Go: Saga & Event Sourcing](/posts/banking-microservices-architecture/)
@@ -273,7 +267,6 @@ In high-concurrency production deployments, balancing throughput, resilience, an
 - [Core Banking Developer Series](/series/core-banking-developer/)
 - [PayPay Architecture & Scaling Analysis](/posts/paypay-architecture-scaling/)
 - [Dapr Workflow Saga Orchestration Guide](/posts/dapr-workflow-saga-orchestration-guide/)
-
 
 ## Frequently Asked Questions (FAQ)
 

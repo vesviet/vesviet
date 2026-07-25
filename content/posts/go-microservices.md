@@ -18,12 +18,8 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/go-microservices/"
 ---
 
-**Answer-first:** Go is a strong option for latency-sensitive services when its concurrency model, deployment model, and team skills fit the workload. Binary size, startup time, serialization, and GC behavior vary with dependencies and traffic, so compare representative services with a reproducible benchmark instead of assuming a universal winner.
-
-### What You'll Learn That AI Won't Tell You
 - Tuning goroutine schedulers for latency-sensitive microservices.
 - Why standard HTTP/1.1 pools are a bottleneck compared to HTTP/2 and gRPC transport.
-
 
 Choosing Go for microservices is an architecture decision, not a language preference. The goroutine model, binary size, and serialization speed change what the deployment unit looks like at the infrastructure level.
 
@@ -34,7 +30,6 @@ Go's goroutine model and simple deployment artifact can make it a strong fit for
 ---
 
 ## Why Go for Microservices?
-
 
 
 ### The performance case
@@ -62,7 +57,6 @@ Go is exceptional for network and infrastructure layers. It struggles in:
 ---
 
 ## Domain Decomposition — Getting the Boundaries Right
-
 
 
 ### DDD Bounded Context as the decomposition unit
@@ -113,7 +107,6 @@ Read more: [Architecting 21-Service E-commerce with DDD](/posts/architecting-21-
 ## Inter-Service Communication — REST, gRPC, or Events?
 
 
-
 | Pattern | Use case | Go library | Latency | Coupling |
 |---------|----------|------------|---------|----------|
 | gRPC | Sync service-to-service | `google.golang.org/grpc` | <1ms (protobuf) | Tight (proto contract) |
@@ -154,7 +147,6 @@ Read more: [Mastering Event-Driven Architecture with Dapr](/posts/mastering-even
 ---
 
 ## Distributed Transactions — The Saga Pattern
-
 
 
 ### Choreography Saga — simple flows
@@ -221,7 +213,6 @@ Read more: [Dapr Workflow Saga Orchestration Guide](/posts/dapr-workflow-saga-or
 ---
 
 ## Observability — Tracing, Metrics, and Profiling
-
 
 
 We learned this the hard way during the first month of production. A checkout latency regression appeared — P95 at 450ms, up from 80ms. The issue was in the Pricing service's interaction with the Price Rules caching layer, but the symptom was visible only in the Checkout service's response time. Without distributed tracing, we would have spent days looking in the wrong place.
@@ -324,7 +315,6 @@ Read more: [Goroutine Leak Detection in Production Go](/posts/goroutine-leak-det
 ## Concurrency Patterns — Goroutines Done Right
 
 
-
 ### Worker pool with errgroup
 
 The bounded worker pool is the most important concurrency pattern in production Go microservices. It prevents unbounded goroutine creation under load:
@@ -395,7 +385,6 @@ Read more: [Goroutine Pool Patterns: errgroup & Backpressure](/posts/golang-goro
 ---
 
 ## Deployment — Kubernetes + GitOps with ArgoCD
-
 
 
 ### Go-specific Kubernetes optimization
@@ -498,7 +487,6 @@ Read more: [GitOps at Scale: Kubernetes & ArgoCD](/posts/gitops-at-scale-kuberne
 ## Resilience Patterns — Circuit Breaking and Retry
 
 
-
 ### Circuit breaker with gobreaker
 
 `sony/gobreaker` is the standard Go implementation of the Circuit Breaker pattern:
@@ -565,7 +553,6 @@ Jitter is critical to prevent thundering-herd: if 100 services all retry simulta
 ---
 
 ## When Microservices is Wrong for Your Team
-
 
 
 ### Signals you are NOT ready

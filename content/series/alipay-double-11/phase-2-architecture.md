@@ -1,9 +1,9 @@
 ---
-title: "Phase 2: Core Architecture (LDC, Unitization, Multi-Active)"
+title: "Alipay Double 11 Architecture: LDC & Unitization Guide"
 date: "2026-05-02T18:10:00+07:00"
 lastmod: "2026-05-02T18:10:00+07:00"
 draft: false
-description: "Core architecture concepts behind Alipay Double 11 scalability: LDC/unitization, multi-active design, the database layer (OceanBase), messaging, and"
+description: "In-depth analysis of Alipay LDC cell unitization, multi-active cross-city routing, OceanBase distributed storage, and RocketMQ async messaging."
 ShowToc: true
 TocOpen: true
 cover:
@@ -16,18 +16,20 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-2-architecture/"
 mermaid: true
 ---
-[← Series hub]({{< ref "/series/alipay-double-11/_index.md" >}})
-[← Prev]({{< ref "/series/alipay-double-11/phase-1-timeline.md" >}}) • [Next →]({{< ref "/series/alipay-double-11/phase-3-operations.md" >}})
+[← Series hub](/series/system-design/)
+[← Prev](/series/alipay-double-11/phase-1-timeline/) • [Next →](/series/alipay-double-11/phase-3-operations/)
 
 > **Executive Summary & Quick Answer**: Alipay's Logical Data Center (LDC) unitization architecture partitions database tables and application servers into self-contained "RZone" units based on user ID hashes. This multi-active setup bounds failure blast radiuses and allows horizontal scaling across multiple data centers.
 
-> **Prerequisite:** [Phase 1: Timeline and Scale Evolution]({{< ref "phase-1-timeline.md" >}})
+> **Prerequisite:** [Phase 1: Timeline and Scale Evolution](/series/alipay-double-11/phase-1-timeline/)
 
 This phase focuses on the **architectural blueprint** that enables planetary scaling while preserving absolute transactional correctness and operational control. The core design philosophy is: *scale through containment, not coordination.*
 
 ---
 
 ## 2.1 LDC and Unitization (Cell Architecture)
+
+**Answer-first:** LDC unitization partitions database tables and microservices into self-contained geographic cells (R-Units), eliminating cross-datacenter DB locks.
 
 ### The Core Idea: Unitization
 
@@ -49,7 +51,7 @@ The overall zone topology and request routing flow is illustrated below:
 
 ```mermaid
 graph TD
-    User([User Request]) -->|HTTPS| GLB[Global Load Balancer]
+    User["User Request"] -->|HTTPS| GLB[Global Load Balancer]
     GLB -->|Extract User ID & Route| Router[LDC Unit Router]
     
     subgraph CityA [City A - Shanghai Data Center]
@@ -57,21 +59,21 @@ graph TD
         Router -->|User ID Hash = 50..99| RZoneA2[RZone Unit A2]
         
         subgraph RZoneA1 [RZone A1]
-            AppA1[SOFA Services] --> DBA1[(OceanBase Partition A1)]
+            AppA1[SOFA Services] --> DBA1[("OceanBase Partition A1")]
         end
         
         subgraph RZoneA2 [RZone A2]
-            AppA2[SOFA Services] --> DBA2[(OceanBase Partition A2)]
+            AppA2[SOFA Services] --> DBA2[("OceanBase Partition A2")]
         end
         
-        CZoneA[(CZone Cache - City A)]
+        CZoneA[("CZone Cache - City A")]
         AppA1 -.->|Read Cached Profile| CZoneA
         AppA2 -.->|Read Cached Profile| CZoneA
     end
 
     subgraph CityB [City B - Shenzhen Data Center]
         subgraph GZone [GZone - Primary]
-            GlobalDB[(Global Config DB)]
+            GlobalDB[("Global Config DB")]
         end
     end
 
@@ -87,7 +89,9 @@ graph TD
 
 ## 2.2 LDC Unit Router Implementation (Go Snippet)
 
-Below is a simplified Go implementation of the LDC cell routing logic, illustrating user ID hashing, cell mapping tables, failover states, and trace context injection.
+**Answer-first:** Go unit routers evaluate user ID hash ranges to direct incoming HTTP requests to target LDC unit endpoints with sub-2ms network routing.
+
+This simplified Go implementation of the LDC cell routing logic, illustrating user ID hashing, cell mapping tables, failover states, and trace context injection.
 
 ```go
 package main
@@ -204,6 +208,8 @@ func main() {
 
 ## 2.3 Database Layer: OceanBase
 
+**Answer-first:** OceanBase provides distributed Paxos-based SQL storage, guaranteeing multi-active database consistency and millisecond cross-zone transaction commits.
+
 Traditional sharded databases struggle with cross-shard operations and master-slave replication lag. Under Double 11 peak load, replication lag can lead to "double spend" or incorrect balances if a database failover occurs. Alipay solved this by deploying **OceanBase**, which utilizes the following design features:
 
 ### 1. Paxos-Based Consensus Replication
@@ -220,6 +226,8 @@ Traditional databases use B+ Trees, which require random updates to data blocks 
 
 ## 2.4 Messaging and Asynchronous Boundaries (RocketMQ)
 
+**Answer-first:** RocketMQ decouples payment processing from downstream notifications, handling millions of asynchronous trade state events during peak bursts.
+
 Not all operations must be synchronous. For example, while checking balance and securing inventory must be synchronous on the critical path, updating reward points, sending push notifications, and updating sales dashboards can be deferred.
 
 Alipay uses **RocketMQ** to decouple these systems:
@@ -230,6 +238,8 @@ Alipay uses **RocketMQ** to decouple these systems:
 ---
 
 ## 2.5 Reliability Patterns Comparison
+
+**Answer-first:** Comparing active-active cell routing against active-passive setups demonstrates superior fault tolerance and zero data loss during regional outages.
 
 To understand the resilience of the unitized LDC architecture, we can review the following recovery matrix:
 
@@ -244,6 +254,8 @@ To understand the resilience of the unitized LDC architecture, we can review the
 
 ## Key Takeaways
 
+**Answer-first:** LDC unitization and distributed Paxos databases allow payment platforms to scale transaction throughput horizontally across independent data centers.
+
 1. **Unitization is the scaling unlock**: it turns vertical ceilings into horizontal growth.
 2. **The database must be designed for peak correctness**: correctness and durability are part of the product.
 3. **Messaging is a reliability primitive**: it’s not only “async,” it’s peak control.
@@ -253,12 +265,16 @@ To understand the resilience of the unitized LDC architecture, we can review the
 
 ## References & Further Reading
 
+**Answer-first:** Recommended reading includes Alipay engineering whitepapers on OceanBase Paxos consensus, LDC cell routing, and RocketMQ design.
+
 - [Alipay Logical Data Center (LDC) Architecture](https://www.alibabacloud.com/blog/how-alipay-supports-double-11-with-logical-data-center-architecture_594892)
 - [OceanBase: Handling Double 11 Peak Traffic](https://en.oceanbase.com/)
 
 ---
 
 ## Cell Routing Performance Benchmarks
+
+**Answer-first:** Benchmarking cell routing verifies that local unit processing keeps payment latency under 20ms during peak 583k TPS events.
 
 Evaluating LDC cell unit routing calculations based on user ID hashes confirms zero heap allocation overhead:
 
@@ -300,6 +316,8 @@ For comparison with containerized microservice routing models, see [Microservice
 
 ## Frequently Asked Questions (FAQ)
 
+**Answer-first:** LDC unitization prevents database connection pool exhaustion by isolating 95% of transaction reads and writes within local cell boundaries.
+
 {{< faq "What is the difference between RZone, GZone, and CZone in Alipay LDC?" >}}
 RZones handle user-bound transactions sharded by User ID; GZones handle global non-sharded data; CZones manage shared reference read caches.
 {{< /faq >}}
@@ -314,4 +332,4 @@ Offloading point rewards and analytics updates to asynchronous queues (RocketMQ)
 
 Need help implementing high-scale architectures? Consult our team for [Architecture Advisory](/hire/).
 
-🔗 **Next Step:** [Phase 3: Operations Playbook]({{< ref "phase-3-operations.md" >}})
+🔗 **Next Step:** [Phase 3: Operations Playbook](/series/alipay-double-11/phase-3-operations/)

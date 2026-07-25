@@ -3,7 +3,7 @@ title: "Distributed SQL ACID Latency: TiDB, CockroachDB & Spanner"
 date: "2026-06-18T11:10:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
-description: "Distributed SQL ACID latency: Spanner TrueTime commit-wait 2-14ms, TiDB Percolator TSO 1-3ms, CockroachDB HLC."
+description: "In-depth guide to distributed SQL ACID transaction latencies: Google Spanner TrueTime, CockroachDB HLC, and TiDB Percolator TSO in fintech systems."
 weight: 2
 series: ["core-banking-architecture"]
 keywords: ["distributed sql transaction latency", "TiDB percolator overhead", "Spanner TrueTime vs CockroachDB HLC", "2PC network latency fintech"]
@@ -25,6 +25,8 @@ mermaid: true
 
 **Answer-first:** Distributed SQL databases reconcile ACID compliance with low-latency reads by using Spanner-like clock synchronization (TrueTime/HLC) and Raft-based multi-group consensus. This architecture guarantees strict serializability and localized transaction routing without relying on a single bottleneck coordinator.
 
+> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+
 > **Series (Part 2 of 8):** This article assumes you are familiar with the Double-Entry Ledger from [Part 1](/series/core-banking-architecture/part-1-double-entry-ledger-schema/). We will analyze why a PostgreSQL monolith hits limitations at scale and how Distributed SQL options solve that problem.
 
 > **⚠️ Note:** This article is synthesized from official documentation, engineering blogs, and published benchmark papers. The latency figures and schema designs reflect the source material at the time of writing. Always verify with your team's architect or lead engineer before applying them to a production system.
@@ -45,11 +47,15 @@ sequenceDiagram
 
 ## What is Distributed SQL Transaction Latency?
 
+**Answer-first:** Distributed SQL latency measures round-trip time for cross-node 2PC consensus, consensus log replication, and clock synchronization wait times.
+
 Distributed SQL databases like TiDB, Spanner, and CockroachDB incur network latency overheads for ACID transactions due to distributed consensus and time synchronization. Two-phase commit (2PC) and timestamp oracles typically add **1-3ms of latency** per transaction — a small number that has a significant impact when multiplied by millions of transactions per second.
 
 ---
 
 ## Why Does PostgreSQL Hit Limits at Large Scale?
+
+**Answer-first:** Single-node PostgreSQL hits write bottlenecks when transaction throughput exceeds single-disk I/O and connection pool limits.
 
 PostgreSQL is a great choice for most Fintech startups. But at scales of **10,000+ TPS with datasets in the hundreds of millions of records**, the limitations become apparent:
 
@@ -71,6 +77,8 @@ PostgreSQL is a great choice for most Fintech startups. But at scales of **10,00
 ---
 
 ## Google Spanner TrueTime: The Exact Math
+
+**Answer-first:** Google Spanner TrueTime uses atomic clocks and GPS receivers to bound clock uncertainty, enforcing commit-wait delays of 2-7ms for serializability.
 
 [Google Spanner](https://cloud.google.com/spanner/docs/transactions) uses GPS receivers and atomic clocks to provide external consistency (linearizability). This is the mathematical mechanism behind the commit wait:
 
@@ -110,6 +118,8 @@ Unlike traditional 2PC (where a coordinator crash leads to permanent transaction
 
 ## CockroachDB Hybrid Logical Clocks (HLC)
 
+**Answer-first:** CockroachDB Hybrid Logical Clocks combine physical NTP timestamps with logical counters to order distributed transactions without hardware atomic clocks.
+
 CockroachDB runs on commodity hardware — no GPS or atomic clocks. It uses **HLC** combining a physical wall clock and a logical counter to ensure causal ordering:
 
 ### HLC Update Rules
@@ -132,6 +142,8 @@ CockroachDB uses a **max clock offset parameter** (default **500ms**). If a tran
 ---
 
 ## TiDB Percolator: Distributed Transactions with TSO
+
+**Answer-first:** TiDB implements the Percolator 2PC protocol with a centralized Timestamp Oracle (TSO), achieving sub-3ms transaction timestamp allocation.
 
 TiDB implements distributed transactions using the **Percolator** model (from Google) on top of the TiKV key-value store:
 
@@ -163,13 +175,10 @@ Client           PD (TSO)         TiKV (Primary)    TiKV (Secondary)
   │────prewrite(secondary)────────────────────────────────▶│
   │◀──prewrite_ok──────────────────────│                   │
   │◀──prewrite_ok──────────────────────────────────────────│
-  │                                    │                   │
   │────get_ts────▶│                    │                   │
   │◀──commit_ts───│                    │                   │
-  │                                    │                   │
   │────commit(primary, commit_ts)──────▶│                   │
   │◀──commit_ok────────────────────────│                   │
-  │                                    │                   │
   │    (async cleanup secondary locks in background)
   
 Total latency: start_ts RTT (1-3ms) + prewrite RTTs + commit_ts RTT = ~5-15ms
@@ -187,6 +196,8 @@ When transaction $T_2$ encounters a stale lock from $T_1$:
 ---
 
 ## Redlock Is Not Safe for Fintech
+
+**Answer-first:** Redis Redlock fails during network partitions or process pauses; financial systems require distributed SQL with Raft/Paxos consensus.
 
 [Martin Kleppmann](https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html) has proven that **Redlock is unsafe** for correctness-critical systems because:
 
@@ -209,6 +220,8 @@ When transaction $T_2$ encounters a stale lock from $T_1$:
 
 ## Migration Case Studies
 
+**Answer-first:** Migration case studies detail shifting monolithic core databases to TiDB or CockroachDB for multi-region active-active transaction scaling.
+
 ### WeBank: MySQL Sharding → TiDB
 
 WeBank (2021) migrated from **sharded MySQL** to TiDB to handle transaction history scale:
@@ -226,6 +239,8 @@ Groww (an Indian fintech) migrated from MySQL to CockroachDB using **MOLT** (Mig
 
 ## Latency Comparison Matrix
 
+**Answer-first:** The latency matrix compares 2PC commit-wait times, consensus replication delays, and throughput across Spanner, CockroachDB, and TiDB.
+
 | Database | Write Latency (single op) | Cross-region | Consistency Model |
 |----------|--------------------------|--------------|-------------------|
 | PostgreSQL (single node) | <1ms | N/A | Serializable |
@@ -237,6 +252,8 @@ Groww (an Indian fintech) migrated from MySQL to CockroachDB using **MOLT** (Mig
 ---
 
 ## QA & SDET Testing Strategy
+
+**Answer-first:** Testing distributed SQL resilience requires injecting network latency jitter, clock skew, and node partitions during active transfers.
 
 ### Test 1: Network Split-Brain Simulation
 
@@ -305,6 +322,8 @@ func BenchmarkTiDBTransactionLatency(b *testing.B) {
 > 💡 **Read more:** [PayPay Architecture — TiDB at Scale](/series/paypay-architecture/) — TiDB architecture in practice.
 
 ## Frequently Asked Questions (FAQ)
+
+**Answer-first:** Distributed SQL databases achieve ACID compliance across region nodes by combining Raft/Paxos consensus with bounded clock synchronization.
 
 {{< faq "Is TiDB or CockroachDB more suitable for Vietnam Fintech?" >}}
 TiDB has more abundant Chinese documentation and is adopted by many Asian fintechs (WeBank, Shopee Pay, ZaloPay). CockroachDB is stronger for multi-region deployments if you require active-active cross-datacenter topologies.

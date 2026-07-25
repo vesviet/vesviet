@@ -1,6 +1,6 @@
 ---
-title: "Modern Core Banking Architecture: From Double-Entry Ledger to Fintech Microservices"
-description: "In-depth series on modern Core Banking system architecture — Immutable Double-Entry Ledger, ACID transactions on distributed SQL, Event Sourcing, ISO 20022"
+title: "Core Banking Systems Architecture Masterclass Guide"
+description: "Deconstruct Core Banking architecture: double-entry ledgers, CASA savings, loans, ISO standards, payment switches, EOD batches, and security."
 date: "2026-06-18T11:00:00+07:00"
 lastmod: "2026-06-18T11:00:00+07:00"
 draft: false
@@ -22,13 +22,15 @@ TocOpen: true
 
 # Modern Core Banking Architecture
 
-This series is designed for **Software Architects, Senior Backend Engineers, and SDETs** who want to dive deep into the technical foundations of production-grade financial systems. We won't stop at theory — each article includes real-world database schemas, specific latency benchmarks (in ms), executable code samples, and specialized testing strategies (QA/SDET) for every topic.
+This series is designed for **Software Architects, Senior Backend Engineers, and SDETs** who want to examine the technical foundations of production-grade financial systems. We won't stop at theory — each article includes real-world database schemas, specific latency benchmarks (in ms), executable code samples, and specialized testing strategies (QA/SDET) for every topic.
 
 References include: [TigerBeetle Docs](https://docs.tigerbeetle.com/), [Mambu GL API](https://api.mambu.com/), [PingCAP Blog](https://www.pingcap.com/), [Monzo Engineering](https://monzo.com/blog/), [OpenID FAPI 2.0 Spec](https://openid.net/specs/fapi-2_0-profile.html), [Apache Flink Docs](https://nightlies.apache.org/flink/), [Martin Kleppmann's Blog](https://martin.kleppmann.com/), and [Google Spanner Docs](https://cloud.google.com/spanner/docs/).
 
 ---
 
 ## Series Content
+
+**Answer-first:** The core banking architecture series provides a comprehensive blueprint dissecting double-entry ledgers, CASA accounts, loans, and ISO standards.
 
 1. **[Part 1 — Double-Entry Ledger: Schema, Immutability & Locking](/series/core-banking-architecture/part-1-double-entry-ledger-schema/)**
 2. **[Part 2 — Distributed SQL & ACID Latency: TiDB vs CockroachDB vs Spanner](/series/core-banking-architecture/part-2-distributed-sql-acid-latency/)**
@@ -43,6 +45,8 @@ References include: [TigerBeetle Docs](https://docs.tigerbeetle.com/), [Mambu GL
 
 ## Who Should Read This Series?
 
+**Answer-first:** This series is designed for backend architects, fintech developers, and SDET leads building high-concurrency ledger systems.
+
 | Role | Where to Start |
 |---------|------------------|
 | **Backend Engineers** entering the Fintech space | Part 1 → Part 3 |
@@ -51,3 +55,23 @@ References include: [TigerBeetle Docs](https://docs.tigerbeetle.com/), [Mambu GL
 | **Security Engineers** working on API Auth | Part 6 |
 | **Data Engineers** building Fraud Detection | Part 7 |
 | **QA / SDETs** needing testing strategies for Fintech | Part 8 |
+
+## Financial Systems Architecture Matrix
+
+| Part | Focus | Technical Scope | Reliability Metric |
+|---|---|---|---|
+| **Part 1** | Double-Entry Ledger | PostgreSQL, Bounded Balances | 100% mathematical auditability |
+| **Part 2** | Distributed SQL ACID | CockroachDB, Spanner Commit Wait | Serializable transaction isolation |
+| **Part 3** | Core Banking Monolith | Go Domain Architecture | High-concurrency account processing |
+| **Part 4** | Saga Pattern in Fintech | Temporal, Dapr Saga Orchestration | Guaranteed eventual consistency |
+| **Part 5** | ISO 20022 Gateways | Go XML Parser, PACS.008 | Sub-ms payment message parsing |
+| **Part 6** | FAPI 2.0 Security | DPoP, Mutual TLS, OAuth 2.1 | Bank-grade API authorization |
+| **Part 7** | Streaming Fraud Detection | Apache Flink, CEP Rules | Real-time transaction scoring |
+| **Part 8** | QA/SDET Handbook | Automated Financial Test Suite | Zero regression test gate |
+
+## Target Audience & Banking Prerequisites
+
+Created for **Enterprise Financial Architects, Lead Banking Developers, and SDET Leads**.
+
+**Prerequisites:**
+- Deep understanding of financial compliance, double-entry bookkeeping, and transaction isolation levels.

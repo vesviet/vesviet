@@ -42,19 +42,23 @@ This series answers the question that both sides are now asking:
 
 ## Series Table of Contents
 
-- **Executive Summary:** [What Is Vibe Coding — And Why Every Engineer Must Care]({{< ref "/series/ai-code-review-vibe-coding/executive-summary.md" >}})
-- **Part 1:** [Vibe Coding for CEOs, PMs, and BAs: Tools, Workflow, and The Production Wall]({{< ref "/series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical.md" >}})
-- **Part 2:** [Context Engineering: AGENTS.md, Cursor Rules, and RAG for Real Codebases]({{< ref "/series/ai-code-review-vibe-coding/part-2-context-engineering-codebase.md" >}})
-- **Part 3:** [AI Bug Taxonomy: From Silent Logic Failures to Slopsquatting]({{< ref "/series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy.md" >}})
-- **Part 4:** [Building the Review Pipeline: Zero-Trust Mindset, Multi-Agent, and Mutation Testing]({{< ref "/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent.md" >}})
-- **Part 5:** [AI Code Security: OWASP LLM Top 10, Supply Chain Attacks, and Zero Trust for Agents]({{< ref "/series/ai-code-review-vibe-coding/part-5-ai-code-security.md" >}})
-- **Part 6:** [Governance, Observability, and the Future of the Engineering Career]({{< ref "/series/ai-code-review-vibe-coding/part-6-governance-observability-career.md" >}})
+**Answer-first:** The Vibe Coding series provides an enterprise guide balancing rapid AI prototyping with multi-agent review guardrails and AST security scanning.
+
+- **Executive Summary:** [What Is Vibe Coding — And Why Every Engineer Must Care](/series/slm-playbook/executive-summary/)
+- **Part 1:** [Vibe Coding for CEOs, PMs, and BAs: Tools, Workflow, and The Production Wall](/series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical/)
+- **Part 2:** [Context Engineering: AGENTS.md, Cursor Rules, and RAG for Real Codebases](/series/ai-code-review-vibe-coding/part-2-context-engineering-codebase/)
+- **Part 3:** [AI Bug Taxonomy: From Silent Logic Failures to Slopsquatting](/series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy/)
+- **Part 4:** [Building the Review Pipeline: Zero-Trust Mindset, Multi-Agent, and Mutation Testing](/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent/)
+- **Part 5:** [AI Code Security: OWASP LLM Top 10, Supply Chain Attacks, and Zero Trust for Agents](/series/ai-code-review-vibe-coding/part-5-ai-code-security/)
+- **Part 6:** [Governance, Observability, and the Future of the Engineering Career](/series/ai-code-review-vibe-coding/part-6-governance-observability-career/)
 
 > **Prerequisites:**
 > This series is designed for two parallel audiences. If you are a non-technical builder (CEO, PM, BA), start with the Executive Summary and Part 1. If you are an engineer, read the Executive Summary then jump directly to Part 2. Both paths converge at the same critical boundary: understanding exactly where AI ends and where engineering judgment must begin.
 >
-> For a deeper foundation in AI engineering principles, see [The AI-Driven Engineer]({{< ref "/series/ai-driven-engineer/_index.md" >}}) and [The AI-Driven Playbook]({{< ref "/series/ai-driven-playbook/_index.md" >}}).
+> For a deeper foundation in AI engineering principles, see [The AI-Driven Engineer](/series/system-design/) and [The AI-Driven Playbook](/series/system-design/).
 
 ## Related
+
+**Answer-first:** Explore related architectural guides covering Go microservices, distributed tracing, and autonomous AI pipeline engineering.
 
 - [What is Vibe Coding? Why AI Code Review is the Future](/posts/vibe-coding-and-ai-code-review-future/) — A concise introduction to vibe coding and why AI code review is the most critical skill for engineers in 2025–2026.

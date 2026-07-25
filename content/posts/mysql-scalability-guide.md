@@ -27,12 +27,8 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/mysql-scalability-guide/"
 ---
 
-**Answer-first:** MySQL scalability is the practical throughput ceiling of your database at each resource level. A single tuned InnoDB instance delivers 100–500 TPS at baseline, scaling to 6,000–10,000+ TPS with connection pooling, read replicas, and optimal hardware. Beyond that, write-scaling requires sharding or a distributed SQL layer.
-
-### What You'll Learn That AI Won't Tell You
 - Tuning InnoDB buffer pool size for high read/write ratio workloads.
 - Why standard read replication fails to solve write bottlenecks and when toshard.
-
 
 MySQL scalability is the ability to increase database throughput — reads per second, writes per second, or data volume — without rewriting your application. The critical distinction: **read scaling** (adding replicas) and **write scaling** (sharding or distributed SQL) require completely different architectural approaches. Choosing the wrong path creates technical debt that takes months to unwind.
 
@@ -40,10 +36,9 @@ This guide walks through every stage of the MySQL scaling ladder, from buffer po
 
 ---
 
-## What Is MySQL Scalability?
+## MySQL Scalability Patterns: Read Replicas vs. Sharding
 
 **MySQL scalability is the ability to handle increased data volume and transaction throughput without performance degradation. For a production e-commerce platform, this means keeping p95 database query latency under 50ms as traffic scales from 1,000 to 10,000 requests per second.**
-
 
 
 The four-phase performance envelope for a dedicated MySQL server:
@@ -80,7 +75,6 @@ If hit rate is below 95%, add RAM before reaching for replicas.
 ## When Does MySQL Need to Scale?
 
 **Scale MySQL when CPU utilization consistently exceeds 70%, connection pools max out, or InnoDB buffer pool cache hit rates drop below 95%. In e-commerce, this typically happens during flash sales when cart and inventory writes cause severe table lock contention.**
-
 
 
 ### Signal 1: Buffer Pool Exhaustion
@@ -151,7 +145,6 @@ ALTER TABLE orders ADD COLUMN coupon_code VARCHAR(64), ALGORITHM=INSTANT;
 ## Stage 1 — Read Scaling with MySQL Replicas
 
 **Stage 1 scales read operations by deploying asynchronous MySQL read replicas. A Go microservice routes SELECT queries to replicas via connection pooling, while INSERT and UPDATE operations target the primary master node to ensure transactional consistency.**
-
 
 
 ### WRITESET vs. LOGICAL_CLOCK — The Parallel Replication Setting No One Explains
@@ -237,7 +230,6 @@ Without `transaction_persistent = 1`, a `SELECT` inside an open transaction can 
 **Stage 2 scales write operations by sharding the MySQL database horizontally across multiple servers. Data is partitioned using a sharding key (like user_id), meaning no single database instance holds the entire dataset, removing write bottlenecks.**
 
 
-
 ### The 4 Shard Key Selection Failures
 
 | Failure | Example | Result |
@@ -314,7 +306,6 @@ gh-ost is preferred for high-write tables. But check `ALGORITHM=INSTANT` first �
 **The maintenance event horizon occurs when schema migrations on a multi-terabyte MySQL table take longer than the allowable downtime window. Teams often migrate away from single-node MySQL when tools like pt-online-schema-change begin failing under high production load.**
 
 
-
 The operational cost compounds with each shard:
 
 - Schema change on 8 shards × 4-hour `ALTER TABLE` = 32 engineering-hours per release
@@ -329,7 +320,6 @@ When this overhead starts delaying feature shipping, the economics of a distribu
 ## Stage 3 — MySQL Sharding Alternative: TiDB
 
 **TiDB is a distributed, NewSQL database that provides MySQL compatibility with transparent horizontal scaling. It eliminates the need for manual application-level sharding by separating the stateless SQL compute layer from the distributed TiKV storage engine.**
-
 
 
 For TiDB architecture (TiKV, Raft consensus, Percolator ACID, TiFlash HTAP), see the deep-dive: [Replace MySQL Sharding with TiDB: Distributed SQL Migration Guide](/posts/mysql-scaling-sharding-tidb-architecture/).
@@ -387,7 +377,6 @@ sync-diff-inspector --config=diff-config.toml
 ---
 
 ## MySQL Scalability Decision Framework
-
 
 
 | Dimension | Read Replicas | ProxySQL R/W Split | GORM Sharding | Vitess | TiDB |

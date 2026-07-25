@@ -1,5 +1,5 @@
 ---
-title: "Part 5 — Scaling for Billion-Yen Campaign Traffic"
+title: "PayPay Campaign Engine: Peak Sales & Wallet Rewards"
 date: "2026-05-05T21:00:00+07:00"
 lastmod: "2026-05-05T21:00:00+07:00"
 draft: false
@@ -16,6 +16,7 @@ canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-5-campaign-ar
 ShowToc: true
 TocOpen: true
 mermaid: true
+image: "images/posts/paypay-scaling-cover.png"
 ---
 
 > **Executive Summary & Quick Answer**: Scaling for billion-yen cashback campaigns requires pre-warmed Redis cluster caching, token-bucket rate limiting at the API gateway, and async queue-based payment processing to shave peak traffic spikes.
@@ -27,8 +28,8 @@ mermaid: true
 ```mermaid
 graph TD
     User[User Request] --> GW[API Gateway Rate Limiter]
-    GW -->|Pass| Redis[(Redis Pre-Warmed Cache)]
-    Redis -->|Quota Validated| Queue((Kafka Async Queue))
+    GW -->|Pass| Redis[("Redis Pre-Warmed Cache")]
+    Redis -->|Quota Validated| Queue(("Kafka Async Queue"))
     Queue --> Processor[Go Payment Workers]
 ```
 
@@ -214,6 +215,8 @@ BenchmarkRedisLuaQuotaCheck-16    100000000    14.1 ns/op    0 B/op    0 allocs/
 By executing inventory decrement scripts inside Redis rather than relational database tables, campaign services prevent locks on central customer accounts.
 
 ## Frequently Asked Questions (FAQ)
+
+Frequently asked questions regarding high-concurrency campaign engine scaling, atomic quota management, and traffic peak-shaving.
 
 {{< faq "How do you prevent race conditions when updating reward pools?" >}}
 Reward pool decrements are processed as atomic operations using database transactions with optimistic locking or Redis Lua scripts. This ensures that concurrent coupon claims cannot cause reward pools to drop below zero.

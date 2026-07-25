@@ -26,12 +26,8 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/serverless-ecommerce-cloudflare-d1/"
 ---
 
-**Answer-first:** Serverless e-commerce on Cloudflare Workers utilizes edge-native compute for sub-millisecond routing. D1 database tables hold persistent relational state, while Durable Objects manage transactional operations like cart locking, balancing global low-latency with strict data consistency.
-
-### What You'll Learn That AI Won't Tell You
 - Edge-native schema migrations and connection tuning for SQLite-based D1.
 - Managing distributed lock states in Durable Objects without causing bottleneck stalls.
-
 
 Running a traditional PHP/MySQL stack for e-commerce works until a flash sale hits. Then you're scaling servers, tuning Redis, and hoping your monolithic database doesn't lock up. If you are exploring [moving away from Magento](/posts/moving-from-magento-to-microservices/) or simply evaluating the edge, there is a radically different approach: building a transactional e-commerce engine entirely on Cloudflare's edge network.
 
@@ -236,14 +232,13 @@ If `meta.rows_read` is significantly larger than `results.length`, your query is
 
 ## WooCommerce vs Cloudflare: The Trade-offs
 
-
 This architecture is incredibly fast and practically free to run at low volumes. However, it is not a drop-in replacement for WooCommerce.
 
 1. **The Missing Ecosystem:** WooCommerce gives you thousands of plugins for shipping integration (FedEx, UPS), complex tax calculations, and PDF invoice generation. On Cloudflare, you have to build these integrations from scratch or rely on 3rd-party SaaS APIs.
 2. **No Admin Panel:** You will need to build your own React or Astro admin dashboard to manage products and view orders.
 3. **Database Migrations:** If you adopt a Database-per-tenant strategy to bypass the 10GB limit, running schema migrations across thousands of D1 instances requires a robust, custom DevOps pipeline.
 
-## Conclusion
+## Architectural Summary & Production Checklist
 
 Building a serverless e-commerce engine on Cloudflare Workers and D1 is a masterclass in modern edge architecture. It eliminates idle server costs, scales infinitely, and solves race conditions natively with Durable Objects. 
 

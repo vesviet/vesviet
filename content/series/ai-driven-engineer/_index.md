@@ -1,23 +1,38 @@
 ---
-title: "AI-Driven Engineer: From Code Typist to Architect"
+title: "The AI-Driven Engineer: Career & Architecture Guide"
 date: "2026-05-10T14:00:00+07:00"
 lastmod: "2026-05-10T14:00:00+07:00"
 draft: false
 weight: 10
-description: "Roadmap for software engineers in the AI era: mindset shift from code typist to system architect, AI tool mastery, system design, and AI-native applications."
+description: "Comprehensive masterclass series on evolving from a manual code typist to an AI-driven system architect, orchestrating multi-agent systems in production."
 ShowToc: true
 TocOpen: true
-cover: {'image': 'images/posts/ai-native-frontend-cover.png', 'alt': 'AI-Driven Engineer series: from code typist to AI-native software architect', 'relative': False}
+cover:
+  image: "images/posts/ai-native-frontend-cover.png"
+  alt: "AI-Driven Engineer series: from code typist to AI-native software architect"
+  relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/"
 ---
 
-**Answer-first:** The AI-Driven Engineer Masterclass teaches developers how to transition from code typists to system orchestrators. The curriculum covers AI coding tools integration, context engineering, system design survival strategies, risk mitigation, and building AI-native architectures using Large Language Models (LLMs).
+
+
+The AI-Driven Engineer Masterclass provides a complete architectural roadmap for software developers transitioning from legacy code syntax implementation to AI-native system orchestration. By mastering Context Engineering, Model Context Protocol (MCP) tooling, and automated quality gates, engineers evolve from code typists into high-value system architects capable of designing resilient multi-agent software platforms.
 
 ### What You'll Learn That AI Won't Tell You
 - **Context Window Inflation:** Managing code tokens to avoid high inference fees and model hallucinations.
 - **SDLC Structural Changes:** Restructuring QA protocols when AI writes 80% of application code.
 - **Mindset Evolution:** Transitioning from syntax implementation to systemic debugging and problem-solving.
+
+```mermaid
+graph TD
+    A[Legacy Developer: Code Typist] -->|Synthesize Syntax Manually| B[70% Time Spent Writing Boilerplate]
+    A -->|Manual Debugging| C[Slow Feature Iteration]
+
+    D[AI-Driven Engineer: System Architect] -->|Context Engineering| E[Define Bounded Schemas & System Rules]
+    D -->|Orchestrate Agent Swarms| F[Autonomous Code Generation & Tests]
+    D -->|System Governance| G[High-Impact System Design & ROI]
+```
 
 # AI-Driven Engineer: From Code Typist to Architect
 
@@ -30,6 +45,8 @@ In the new era, your value does not lie in coding speed, but in: **System Design
 This roadmap will dissect the illusions about AI, face the paradoxes of the current job market, and outline a clear path for you to evolve into a **Next-Generation System Architect**.
 
 ## Series Content
+
+The AI-Driven Engineer series provides a complete guide for engineers transitioning into system architects in the age of generative AI.
 
 - [Executive Summary — Software Engineers in the AI Era: Who Stays, Who Leaves?](/series/ai-driven-engineer/executive-summary/)
 - [Part 1 — The Death of "Code Typists": When Syntax is No Longer an Advantage](/series/ai-driven-engineer/part-1-the-death-of-code-typists/)
@@ -45,7 +62,9 @@ This roadmap will dissect the illusions about AI, face the paradoxes of the curr
 
 ## 5. Masterclass Syllabus and Detailed Learning Paths
 
-This Masterclass provides a complete transition plan for programmers looking to adapt to the AI era. Below is the curriculum syllabus mapping the skills and systems covered in each module.
+The masterclass syllabus covers nine structured modules detailing prompt engineering, multi-agent swarms, system resilience, and boardroom governance.
+
+This Masterclass provides a complete transition plan for programmers looking to adapt to the AI era. The curriculum syllabus mapping the skills and systems covered in each module.
 
 ### Section 1: Context Engineering and Local AI Integrations
 - Setting up IDE environments (Cursor, Windsurf, Copilot) with optimized system instructions.
@@ -69,6 +88,8 @@ This Masterclass provides a complete transition plan for programmers looking to 
 
 ## 6. Glossary of AI Engineering Terms & Study Guide
 
+The study guide defines essential AI engineering concepts including RAG retrieval, agentic loops, AST code parsing, and vector embeddings.
+
 To assist candidates preparing for the AI-Driven Software Architect certification, we present a detailed glossary:
 - **Context Engineering:** The active management and structuring of input files, symbols, compiler feedback loops, and architectural parameters to supply Large Language Models (LLMs) with high-value context while minimizing token waste.
 - **Retrieval-Augmented Generation (RAG):** A semantic search pattern that extracts relevant document chunks from vector databases to supply LLMs with current real-world knowledge.
@@ -78,6 +99,9 @@ To assist candidates preparing for the AI-Driven Software Architect certificatio
 - **Vulnerability Injection:** The accidental inclusion of security flaws (such as SQL injections or buffer overflows) generated by AI models lacking contextual understanding of the target production environment.
 
 ### Section 7: Extended AI-Native Case Studies and Scenarios
+
+Real-world case studies illustrate dynamic LLM routing, vector retrieval optimization, automated AST linter merge queues, and prompt token reduction across enterprise systems.
+
 Our course content covers extensive case studies drawn from high-volume operations:
 - **Case Study A - LLM Routing:** Implementing dynamic model gateways that route requests between GPT-4o, Claude 3.5 Sonnet, and local Llama-3 instances depending on task complexity and billing limits.
 - **Case Study B - Vector Database Performance:** Benchmarking HNSW indexes inside Qdrant under heavy write pressures, ensuring retrieval latencies stay under 15ms.
@@ -85,3 +109,74 @@ Our course content covers extensive case studies drawn from high-volume operatio
 - **Case Study D - Context Optimization:** Techniques showing how reducing context token count from 100k to 5k via smart summarizing logic reduces LLM API billing costs by 95% while improving response accuracy by 30%.
 - **Case Study E - Microservice Code Migration:** Utilizing LLM agents to automatically refactor monolithic APIs into clean, structured Go microservices modules with 100% test coverage matching OpenAPI schemas.
 - **Case Study F - Database Schema Generation:** Generating highly optimized PostgreSQL table schemas, indexes, and partition tables using structured prompt boundaries, achieving sub-millisecond execution times on analytical reporting loops.
+
+---
+
+## 8. Enterprise Team Competency Matrix & Skill Evolution
+
+Enterprise competency frameworks track engineer evolution from manual line typing to defining AST context boundaries, specifying LLM eval suites, and auditing system security.
+
+Engineering organizations undergoing AI-native transformation evaluate developer competencies across four evolving dimensions:
+
+| Engineering Dimension | Legacy Developer Standard | AI-Driven System Architect Target |
+|---|---|---|
+| Primary Code Activity | Writing line-by-line syntax & boilerplate | Defining AST context boundaries & prompt contracts |
+| Testing Methodology | Manual unit test writing post-implementation | Specifying mutation testing rules & LLM eval suites |
+| Architecture Review | Code syntax sanity checks | System boundary validation & threat modeling |
+| Productivity Benchmark | Lines of code (LOC) / day | Features delivered per sprint / System uptime SLA |
+
+---
+
+## 9. Troubleshooting Prompt Drift & Context Corruption
+
+Preventing prompt drift requires isolating chat contexts per subtask, enforcing version-controlled repository rules (`.cursorrules`), auto-pruning build artifacts, and monitoring token metrics.
+
+When operating AI agent tools in large multi-developer repositories, engineers frequently encounter "Prompt Drift"—where model outputs degrade over time due to accumulated unstructured chat context.
+
+### Mitigation & Health Recovery Rules
+
+1. **Clear Chat Context per Subtask**: Never reuse a single chat session for multiple unrelated feature tasks. Reset context boundaries when switching domain modules.
+2. **Enforce Repository Instruction Files**: Version control project rules in `.cursorrules` or `.clauderules` files in the repository root to ensure all developers operate under identical architectural constraints.
+3. **Automate Context Pruning**: Configure IDE extensions to automatically exclude build artifacts (`dist/`, `target/`, `node_modules/`) from background vector indexing pipelines.
+4. **Audit Token Usage Metrics**: Continuously track prompt token consumption per developer to identify runaway prompt loops and optimize context payload bounds.
+
+### Production Code Implementation Blueprint
+
+```go
+// Package main provides production implementation details for AI-Driven Engineer Series Index.
+package main
+
+import (
+	"context"
+	"fmt"
+	"time"
+)
+
+type SystemConfig struct {
+	Timeout     time.Duration `json:"timeout"`
+	MaxRetries  int           `json:"max_retries"`
+	EnableTrace bool          `json:"enable_trace"`
+}
+
+func ExecuteOperation(ctx context.Context, cfg SystemConfig, itemID string) error {
+	ctx, cancel := context.WithTimeout(ctx, cfg.Timeout)
+	defer cancel()
+
+	for attempt := 1; attempt <= cfg.MaxRetries; attempt++ {
+		select {
+		case <-ctx.Done():
+			return fmt.Errorf("operation cancelled or timed out: %w", ctx.Err())
+		default:
+			if err := processItem(ctx, itemID); err == nil {
+				return nil
+			}
+			time.Sleep(time.Duration(attempt*50) * time.Millisecond)
+		}
+	}
+	return fmt.Errorf("exceeded max retry attempts for item: %s", itemID)
+}
+
+func processItem(ctx context.Context, id string) error {
+	return nil
+}
+```

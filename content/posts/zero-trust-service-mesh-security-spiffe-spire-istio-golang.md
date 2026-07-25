@@ -18,16 +18,12 @@ cover:
   relative: false
 ---
 
-**Answer-first:** Zero-Trust [Go microservices](/posts/go-microservices/) architectures in Cardholder Data Environments (CDE) eliminate network-based trust by replacing static IP/token authentication with cryptographically verifiable SPIFFE/SPIRE workload identities. By combining kernel-level attestation (Linux cgroups, K8s ServiceAccount, container image SHA256) with short-lived X.509 SVID certificates (rotated automatically in-memory every 1 hour without service restarts), Go microservices and Istio Envoy sidecars establish end-to-end mTLS with strict SAN identity validation. This setup fulfills PCI-DSS 4.0 requirements 3, 4, 6, 7, 8, 10, and 12 with non-repudiable cryptographic audit trails and zero secret sprawl.
 >
 > **Key Takeaways**:
 > - **Cryptographic Workload Identity**: Eliminates static API keys and k8s secrets by dynamically issuing short-lived X.509 SVIDs over local UNIX domain sockets using kernel and container attestation.
 > - **Seamless In-Memory SVID Rotation**: `go-spiffe/v2` streams certificate updates dynamically into memory, achieving 100% continuous mTLS connection persistence under 50,000+ RPS without dropping active TCP streams.
 > - **PCI-DSS 4.0 Audit Alignment**: Maps directly to PCI-DSS 4.0 Requirements 4.2 (mTLS encryption in transit), 7.2/8.2 (workload access control & strong authentication), and 10.2 (SPIFFE ID tied non-repudiable audit logging).
 
-**Answer-first:** Implementing PCI-DSS 4.0 compliance in modern Go microservice architectures requires replacing static credentials with dynamic, kernel-attested SPIFFE/SPIRE cryptographic identities. By enforcing strict SPIFFE ID SAN matching in Go gRPC services alongside Istio Envoy `PeerAuthentication` (STRICT mTLS) and `AuthorizationPolicy` manifests, organizations prevent lateral movement, automate short-lived certificate rotation in memory, and generate non-repudiable audit trails across containerized financial workloads.
-
-### What You'll Learn That AI Won't Tell You
 - How to implement atomic in-memory TLS certificate updates in Go gRPC servers without tearing down active client connections or incurring handshake latency spikes.
 - The precise kernel attestation cascade (Linux cgroups pid matching combined with K8s kubelet container image digests) that prevents malicious side-loaded containers from acquiring SPIFFE SVIDs.
 - Operational patterns for surviving SPIRE Agent socket disconnects under heavy load without degrading microservice availability.
@@ -125,7 +121,7 @@ Golang is the primary language for building high-performance microservices in cl
 
 ### 2.1 SPIFFE Workload API Integration in Go
 
-The code snippet below demonstrates how a production-grade Go application connects to the local SPIRE Agent UNIX domain socket, initializes an `X509Source` background watcher, and continuously updates certificate chains in memory without requiring service restarts.
+Connecting a production-grade Go application to the local SPIRE Agent UNIX domain socket requires initializing an `X509Source` background watcher to continuously refresh certificate chains in memory without requiring service restarts.
 
 ```go
 package spiffeutil
@@ -524,7 +520,7 @@ sequenceDiagram
 
 ## Section 4: PCI-DSS 4.0 Requirement-by-Requirement Compliance Mapping
 
-The table below provides a rigorous forensic mapping between PCI-DSS 4.0 requirements and the SPIFFE/SPIRE + Istio Zero-Trust architecture.
+Mapping PCI-DSS 4.0 regulatory requirements to a SPIFFE/SPIRE and Istio Zero-Trust architecture establishes explicit cryptographic controls across key security domains:
 
 | PCI-DSS 4.0 Requirement | Title & Core Compliance Objective | Zero-Trust SPIFFE/SPIRE & Istio Implementation | Architectural Compliance Proof |
 |---|---|---|---|

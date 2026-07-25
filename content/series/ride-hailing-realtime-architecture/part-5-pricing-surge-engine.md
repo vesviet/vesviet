@@ -14,6 +14,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/"
 ShowToc: true
 TocOpen: true
+image: "images/posts/real-time-ride-hailing-cover.png"
 ---
 
 **Answer-first:** Surge pricing engines compute dynamic multipliers in real-time by analyzing supply-demand ratios within H3 hex cells. These engines ingest location data to update prices dynamically, balancing market availability during peak demand hours.
@@ -30,10 +31,9 @@ The surge rate is calculated by a pricing engine that evaluates the ratio of inc
 
 ## Why is Surge Pricing Necessary?
 
-On New Year's Eve, during heavy rain, or at rush hour — the demand for rides skyrockets, but the number of available drivers remains unchanged. If prices were kept fixed:
-- Riders wouldn't be able to book a ride because there are no available drivers.
-- Drivers in other areas would have no incentive to move to the hot zones.
-- The system would be overwhelmed, leading to massive wait times.
+On New Year's Eve, during heavy rain, or at rush hour — the demand for rides skyrockets, but the number of available drivers remains unchanged. If prices were kept fixed: - Riders wouldn't be able to book a ride because there are no available drivers.
+
+- Drivers in other areas would have no incentive to move to the hot zones. - The system would be overwhelmed, leading to massive wait times.
 
 **Surge Pricing** (or Dynamic Pricing) is not merely a tool to increase revenue — it is a **marketplace equilibrium mechanism**:
 
@@ -55,6 +55,8 @@ Price increases → Two simultaneous effects:
 
 ## Surge Pricing Engine Architecture
 
+The diagram below illustrates the surge pricing data pipeline, tracing incoming location updates and ride requests through Kafka streaming, Flink window processing, Redis caching, and real-time app consumption:
+
 ```
 ┌────────────────────────────────────────────────────────────────┐
 │                      DATA PIPELINE                              │
@@ -71,13 +73,9 @@ Price increases → Two simultaneous effects:
 │                           ┌────────────────────┐                │
 │                           │  Pricing Engine     │                │
 │                           │  (Surge Calculator) │                │
-│                           └─────────┬──────────┘                │
-│                                     │                            │
 │                           ┌─────────▼──────────┐                │
 │                           │  Redis Cache        │                │
 │                           │  (Surge Multipliers) │                │
-│                           └─────────┬──────────┘                │
-│                                     │                            │
 │                    ┌────────────────┼────────────────┐           │
 │                    ▼                ▼                ▼           │
 │              Rider App        Driver App       Matching Engine   │
@@ -329,3 +327,4 @@ To mitigate this cold start issue, the surge engine applies a hybrid pricing str
 ---
 
 {{< author-cta >}}
+

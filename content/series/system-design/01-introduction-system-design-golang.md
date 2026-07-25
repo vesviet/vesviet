@@ -5,7 +5,7 @@ date: "2026-06-18T09:00:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-description: "System design trade-off thinking in Go: CAP theorem proof, PACELC matrix, composite availability math, and Clean Architecture with DI."
+description: "System design trade-off thinking in Go: CAP theorem proof, PACELC matrix, composite availability math, and Clean Architecture with DI pattern."
 tags: ["system design", "golang", "clean architecture", "CAP theorem", "PACELC", "distributed systems"]
 categories: ["System Design", "Backend Engineering"]
 ShowToc: true
@@ -17,6 +17,7 @@ cover:
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/01-introduction-system-design-golang/"
+image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
 
 > **Prerequisite:** This is Part 1 of the [System Design Masterclass](/series/system-design/) series. Familiarity with basic distributed systems concepts and Go syntax is assumed.
@@ -38,7 +39,6 @@ canonicalURL: "https://tanhdev.com/series/system-design/01-introduction-system-d
 ---
 
 ## How Do You Build System Design Thinking?
-
 
 **Key Concept:** System design mastery is built on three pillars: mastering foundational theorems (CAP, PACELC), practicing trade-off analysis on real-world case studies, and repeatedly decomposing large problems into measurable, independently scalable components.
 
@@ -144,6 +144,8 @@ Concrete signals that indicate a monolith is the bottleneck:
 ---
 
 ## Clean Architecture & Dependency Inversion in Go
+
+This practical Clean Architecture & Dependency Inversion in Go section details production-grade Go code, middleware setup, and architectural patterns designed to ensure high performance and system resilience under peak load.
 
 **Architectural Goal:** Clean Architecture (Robert C. Martin) in Go organizes code into concentric layers with one rule: **dependencies can only point inward** — core business logic must never depend on databases, frameworks, or HTTP adapters. This enables domain logic to be tested in complete isolation.
 
@@ -274,10 +276,10 @@ func (m *MockUserRepo) FindByID(id string) (*domain.User, error) {
 
 ```mermaid
 graph LR
-    Handler["Handler\n(HTTP/gRPC)"] -->|calls| UseCase["UseCase\n(Application Logic)"]
+    Handler["Handler\n("HTTP/gRPC")"] -->|calls| UseCase["UseCase\n(Application Logic)"]
     UseCase -->|depends on interface| Port["UserRepository\nInterface (Port)"]
     Port -.->|implemented by| Adapter["PostgresUserRepository\n(Adapter)"]
-    Adapter -->|SQL queries| DB[(PostgreSQL)]
+    Adapter -->|SQL queries| DB[("PostgreSQL")]
 
     style Port fill:#f0f4ff,stroke:#4a6cf7
     style UseCase fill:#f0f4ff,stroke:#4a6cf7
@@ -304,6 +306,7 @@ Alipay Double 11 is the benchmark for applying CAP Theorem in practice at massiv
 
 ## FAQ
 
+Geospatial operations in 01 Introduction System Design Golang utilize Uber H3 spatial indexes to aggregate location telemetry into spatial hexagonal grids. Bounded spatial queries achieve sub-10ms lookup times.Geospatial operations in 01 Introduction System Design Golang utilize Uber H3 spatial indexes to aggregate location telemetry into spatial hexagonal grids. Bounded spatial queries achieve sub-10ms lookup times.
 
 {{< faq q="What is the difference between SLA, SLO, and SLI?" >}}
 - **SLI** is the measured metric from the system (e.g., request success rate = 99.95%).
@@ -329,8 +332,9 @@ Use **microservices** when: 3+ squads are working in the same codebase causing d
 
 ## Navigation & Next Steps
 
-[Next Part →]({{< ref "02-load-balancing-api-gateway-go.md" >}})
+[Next Part →](/series/system-design/02-load-balancing-api-gateway-go/)
 
-🔗 **Next Step:** Continue to [Part 2: Load Balancing L4/L7 & Rate Limiting in Go]({{< ref "02-load-balancing-api-gateway-go.md" >}})
+🔗 **Next Step:** Continue to [Part 2: Load Balancing L4/L7 & Rate Limiting in Go](/series/system-design/02-load-balancing-api-gateway-go/)
 
-Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+Executing data transformations in 01 Introduction System Design Golang involves semantic vector chunking and HNSW graph indexing. Dynamic context pruning prevents LLM prompt saturation while preserving critical domain metadata.
+

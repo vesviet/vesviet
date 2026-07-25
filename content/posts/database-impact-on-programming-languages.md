@@ -25,8 +25,6 @@ mermaid: true
 > - Rust `sqlx` validates SQL queries at compile time via macros, eliminating runtime query parsing latency.
 > - PHP connection overhead created modern external poolers like PgBouncer and ProxySQL.
 
-**Answer-first:** Database connection limits, I/O waits, transaction semantics, and type safety have shaped how PHP, Node.js, Go, and Rust handle concurrency and data access. Language choice does not remove database constraints; it changes where pooling, backpressure, query validation, and failure handling must live.
-
 Databases are the most critical I/O bottleneck in backend systems. Over the past 20 years, network latency, connection limits, and transaction safety have forced programming languages to rethink their concurrency models, evolve new syntaxes, and invent smarter ORMs.
 
 Here is a deep architectural dive into how database constraints drove the evolution of PHP, Node.js, Rust, and Go.
@@ -205,7 +203,6 @@ flowchart TB
 ```
 
 
-
 ## Architectural Trade-offs & Production Considerations (2026 Baseline)
 
 In high-concurrency production deployments, balancing throughput, resilience, and operational cost requires strict engineering discipline. When evaluating modern patterns against legacy monolithic or non-vector architectures, several critical failure modes and trade-offs emerge:
@@ -214,14 +211,12 @@ In high-concurrency production deployments, balancing throughput, resilience, an
 2. **Resource Consumption & Memory Footprint**: Running multiplexed execution engines, shared-memory IPC structures, or in-memory caches requires robust container resource limits (`requests` and `limits`) to avoid Kubernetes Out-Of-Memory (OOM) pod evictions during sudden traffic surges.
 3. **Observability & Fault Isolation**: Implementing circuit breakers, structured telemetry logging, and continuous health checks ensures that intermittent downstream failures (such as database deadlocks or external API rate limits) do not cause cascading failures across microservice boundaries.
 
-
 ## Related Pillar Articles & Further Reading
 
 - [High-Throughput Go Framework Benchmarks](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/)
 - [Composable Commerce Migration Blueprint](/posts/ecommerce-architecture-composable-migration/)
 - [Dapr Workflow Saga Orchestration Guide](/posts/dapr-workflow-saga-orchestration-guide/)
 - [Golang pprof Memory & CPU Profiling Tutorial](/posts/golang-pprof-profiling-memory-cpu-tutorial/)
-
 
 ## Frequently Asked Questions (FAQ)
 

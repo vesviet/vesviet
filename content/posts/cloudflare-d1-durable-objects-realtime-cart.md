@@ -30,12 +30,8 @@ canonicalURL: "https://tanhdev.com/posts/cloudflare-d1-durable-objects-realtime-
 
 # Cloudflare D1 + Durable Objects: Building a Real-Time Cart
 
-**Answer-first:** Use a Durable Object to serialize updates for one cart and Durable Object storage to recover its working state. Keep D1 for product data and durable business records, then reserve and revalidate inventory during checkout. Measure end-to-end latency in the target region rather than assuming an edge latency target.
-
-### What You'll Learn That AI Won't Tell You
 - How to design cart locking mechanisms in Durable Objects without deadlocks.
 - Tuning sub-request allocations to stay within Cloudflare's free-tier runtime boundaries.
-
 
 > 
 
@@ -49,7 +45,7 @@ For the architectural foundation, see [Serverless E-Commerce: Cloudflare Workers
 
 ---
 
-## Why Cloudflare Workers + D1 Is a Game-Changer for Edge E-Commerce
+## Why Cloudflare Workers + D1 Is a architectural milestone for Edge E-Commerce
 
 Traditional e-commerce cart APIs have a latency floor: **the round trip from the user's browser to your datacenter**. A user in Ho Chi Minh City hitting a server in Singapore adds 20–30ms of irreducible network latency per API call. A user in Jakarta hitting a server in the US adds 150–200ms.
 

@@ -20,12 +20,8 @@ canonicalURL: "https://tanhdev.com/posts/moving-from-magento-to-microservices/"
 
 # Why Migrate Magento to Microservices: Zero-Downtime Blueprint
 
-**Answer-first:** Migrating Magento to microservices resolves database lock contention and slow deployment cycles. Using the Strangler Fig pattern with Debezium CDC and Dapr event streaming enables incremental service extraction without site downtime.
-
-### What You'll Learn That AI Won't Tell You
 - Decoupling cart and checkout tables from Magento core databases.
 - Data synchronization pipelines that prevent order loss during checkout transitions.
-
 
 > 
 
@@ -60,7 +56,6 @@ Once the data layer was untangled, we executed the 3-phase rollout.
 ## Pre-Migration Readiness Checklist
 
 **Before starting a Magento migration, ensure three capabilities are live: an API Gateway for traffic routing, centralized logging with OpenTelemetry tracing, and a Change Data Capture (CDC) pipeline like Debezium to sync legacy MySQL data.**
-
 
 
 This checklist reflects what we validated across two large-scale Magento migrations. Skip an item and you will discover why it matters at 2am during Phase 2.
@@ -179,7 +174,6 @@ Once the 30-day quarantine period cleanly expired, we finally terminated Magento
 ## Post-Cutover Validation Protocol
 
 **After cutover, validate success through synthetic transactions, tracking business metrics (checkout conversion rates), and monitoring the OpenTelemetry dashboard for error spikes. SRE teams must verify that the p99 latency target is met under live traffic.**
-
 
 
 ### Week 1 — Intensive Validation (Daily)

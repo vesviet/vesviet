@@ -1,5 +1,5 @@
 ---
-title: "Part 2 — Codebase Context Engineering for AI Reviewers"
+title: "Codebase Context Engineering for AI Code Reviewers"
 slug: "part-2-context-engineering-codebase"
 date: "2026-05-26T08:00:00+07:00"
 lastmod: "2026-07-23T10:40:00+07:00"
@@ -8,26 +8,20 @@ author: "Lê Tuấn Anh"
 tags: ["Context Engineering", "AST", "Code Review", "Python", "Developer Tools", "Architecture"]
 categories: ["Engineering"]
 cover:
-  image: "images/posts/ai-code-review-vibe-coding-cover.png"
+  image: "images/posts/vibe-coding-cover.png"
   alt: "Codebase Context Engineering for AI Reviewers AST dependency graph"
   relative: false
 mermaid: true
 canonicalURL: "https://tanhdev.com/series/ai-code-review-vibe-coding/part-2-context-engineering-codebase/"
-description: "Exhaustive technical summary and production engineering guide for Part 2 — Codebase Context Engineering for AI Reviewers."
+description: "Comprehensive technical guide to building AST context bundlers and codebase context assembly pipelines for automated AI code review engines."
 ShowToc: true
 TocOpen: true
 ---
 
+
+
 # Part 2 — Codebase Context Engineering for AI Reviewers
 
-> **Executive Summary & Quick Answer**: AI code reviewers perform poorly when evaluated on isolated code diffs lacking architectural context. **Codebase Context Engineering** builds AST dependency graphs, parses project `.cursorrules` files, and bundles relevant interface definitions into token-optimized prompt payloads to increase review accuracy by 48%.
->
-> **Key Takeaways**:
-> - **48% Higher Review Efficacy**: Injecting relevant AST dependency interfaces prevents false-positive code review warnings.
-> - **Token-Optimized AST Pruning**: Strips non-relevant implementation bodies, retaining only target interface signatures.
-> - **Standardized Rules Enforcement**: Project `.cursorrules` files enforce repository-specific design conventions automatically.
-
----
 
 When human senior engineers perform a code review, they do not read a pull request git diff in complete isolation. They draw upon deep mental context regarding the repository's overall architecture, domain model boundaries, error handling conventions, and database schema mappings.
 
@@ -37,17 +31,21 @@ When an AI code reviewer evaluates an isolated 20-line diff snippet without this
 
 ## The Codebase Context Assembly Pipeline
 
+Context assembly pipelines extract relevant AST nodes, import graphs, and schema definitions to supply LLM reviewers with precise codebase context.
+
+> **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+
 ```mermaid
 graph TD
     PRDiff[Incoming Pull Request Git Diff] --> DependencyGraph[1. AST Dependency Graph Extractor]
     
     subgraph Context Assembly Engine
-        DependencyGraph --> RelFiles[Extract Dependent Interface & Model Files]
-        RelFiles --> RulesParser[2. Parse Repository .cursorrules & Guidelines]
-        RulesParser --> ASTPruner[3. AST Signature Pruning: Strip Function Bodies]
+        DependencyGraph --> RelFiles["Extract Dependent Interface & Model Files"]
+        RelFiles --> RulesParser["2. Parse Repository .cursorrules & Guidelines"]
+        RulesParser --> ASTPruner["3. AST Signature Pruning: Strip Function Bodies"]
     end
 
-    ASTPruner --> TokenBudgeter[4. Token-Budget Allocation & Truncation]
+    ASTPruner --> TokenBudgeter["4. Token-Budget Allocation & Truncation"]
     TokenBudgeter --> AIReviewerPrompt[Synthesized AI Code Reviewer Prompt]
     AIReviewerPrompt --> LLMReviewer[Frontier LLM Review Engine]
     LLMReviewer --> HighValueFeedback[High-Precision Code Review Comments]
@@ -56,6 +54,8 @@ graph TD
 ---
 
 ## Comparative Matrix: Isolated Diff Review vs. Context-Engineered Review
+
+Reviewing git diffs in isolation misses cross-file dependency breaks, whereas context-engineered reviews inspect upstream interfaces and callers.
 
 | Review Dimension | Isolated Git Diff Review | Context-Engineered AST Review |
 | :--- | :--- | :--- |
@@ -69,12 +69,14 @@ graph TD
 
 ## Production Python AST Context Bundler
 
-Below is a production-grade Python context bundler using `ast` parsing that reads repository source files, prunes function bodies to retain interface signatures, parses `.cursorrules`, and generates a token-optimized prompt payload for AI code reviewers:
+Production Python AST bundlers parse file dependencies and type definitions, packaging them into token-budgeted prompt contexts for LLM review agents.
+
+This production-grade Python context bundler using `ast` parsing that reads repository source files, prunes function bodies to retain interface signatures, parses `.cursorrules`, and generates a token-optimized prompt payload for AI code reviewers:
 
 ```python
 import ast
 import os
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from pydantic import BaseModel, Field
 
 class ASTSignature(BaseModel):
@@ -92,7 +94,7 @@ class ContextEngineeringEngine:
     def __init__(self, repo_root: str):
         self.repo_root = repo_root
 
-    def load_repository_rules((self)) -> str:
+    def load_repository_rules(self) -> str:
         """Parses .cursorrules or .ai-context file from repo root."""
         rules_path = os.path.join(self.repo_root, ".cursorrules")
         if os.path.exists(rules_path):
@@ -163,50 +165,11 @@ if __name__ == "__main__":
 
 ---
 
-## Frequently Asked Questions (FAQ)
-
-### Q1: How do project `.cursorrules` files improve AI code reviewer precision?
-A `.cursorrules` file defines custom repository conventions—such as mandatory table column naming, error handling patterns, or forbidden third-party imports. Injecting `.cursorrules` into the AI reviewer prompt ensures code feedback aligns 100% with internal engineering guidelines rather than applying generic open-source style defaults.
-
-### Q2: Why is AST signature pruning necessary when long context windows (1M+ tokens) are available?
-While 1M token context windows exist, passing full un-pruned codebases into every code review prompt incurs massive financial costs and introduces latency delays. AST signature pruning strips implementation details while retaining function signatures and interfaces, providing high-precision context at less than 5% of the token cost.
-
-### Q3: How do automated context engines identify which dependent files to include in a code review payload?
-Context engines parse the modified file's `import` statements and construct an internal AST Dependency Graph. By identifying directly imported modules and parent interface definitions, the engine automatically selects only the files required to understand the current diff's execution context.
-
----
-
-## Technical Deep-Dive: Enterprise Code Review & Vibe Coding Governance
-
-Operating automated multi-agent code review pipelines over AI-generated codebases requires continuous quality assertion and strict latency limits.
-
-### System Throughput & Latency Metrics
-
-- **Concurrent Query Capacity**: Handling 5,000 concurrent multi-agent search traversals with zero goroutine leak.
-- **Vector Cosine Similarity Speed**: Evaluating top-100 vector candidate distances in under 4.5ms using SIMD-accelerated dot products.
-- **AST Security Inspection**: Analyzing multi-file Git diffs across security, performance, and syntax dimensions in sub-120ms total time.
-- **Cache Hit Ratio**: Achieving 88% cache hit rate on recurring semantic query intents via Redis vector caching.
-
-### System Safety & Execution Guardrails
-
-1. **Non-Blocking Channel Multiplexing**: Concurrent worker pools utilize bounded Go channels and context timeouts to ensure total resilience against external vendor outages.
-2. **Sanitized Input Inspection**: All raw text inputs undergo regex sanitization and parameter bounds checking prior to vector embedding generation.
-3. **Audit Trace Logging**: Detailed audit logs record every agent state transition, tool call observation, and final synthesis response.
-
-### Operational Checklist for Software Engineering Teams
-
-Before shipping candidate models and orchestrator agents to production cluster environments, engineering leads must confirm the following operational milestones:
-
-1. **Automated CI Integration**: Run full static analysis, content validation, and unit tests on every pull request.
-2. **Telemetry Dashboard Setup**: Configure OpenTelemetry metrics dashboards capturing P95/P99 latencies, token costs, and tool error rates.
-3. **Disaster Recovery Drills**: Test automated failover protocols when primary LLM endpoints or vector databases become unreachable.
-4. **Security Audit Clearance**: Perform automated security scanning for SQL injection risk, prompt injection vulnerabilities, and secret leakage.
-
----
-
 ## Internal Series Navigation
+
+Advance to Part 3 to analyze the AI bug taxonomy including hallucinations and phantom APIs.
 
 - [Executive Summary — The Vibe Coding Revolution](/series/ai-code-review-vibe-coding/executive-summary/)
 - [Part 1 — Vibe Coding & Non-Technical Founders](/series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical/)
 - [Part 3 — The AI Bug Taxonomy: Hallucinations & Phantom APIs](/series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy/)
-- [Part 1 — Context Engineering: DDD for AI](/posts/ai-native-frontend-architecture-predictions-2028/)
+- [Part 1 — Context Engineering: DDD for AI](/series/ai-driven-playbook/part-1-context-engineering-ddd/)

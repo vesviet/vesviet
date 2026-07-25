@@ -29,12 +29,8 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/real-time-ride-hailing-architecture/"
 ---
 
-**Answer-first:** Ride-hailing architectures ingest millions of GPS pings per second using Uber's H3 spatial index for geofencing. Kafka streams location updates to matching engines for driver allocation, while Flink processes real-time pricing and push gateways notify users.
-
-### What You'll Learn That AI Won't Tell You
 - Scaling matching engines to millions of geographic updates using H3 indexing.
 - Designing low-latency push notification gateways to dispatch driver routes.
-
 
 The moment you open the Uber or Grab app, a cascade of real-time systems activates simultaneously: your phone begins transmitting GPS coordinates, a geospatial index updates your location, a matching engine re-evaluates nearby driver availability, a pricing model recalculates the fare based on supply-demand ratios, and a push notification pipeline prepares to deliver your match confirmation in under 3 seconds.
 

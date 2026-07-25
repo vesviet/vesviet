@@ -19,9 +19,6 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/laravel-vs-golang-when-to-add-features/"
 ---
 
-**Answer-first:** Continue building in Laravel for 90% of new features — business logic, admin panels, complex workflows, reporting. Switch to Golang only when the new feature requires > 1,000 concurrent users, a sub-20ms latency SLA, or needs to scale completely independently from the rest of the system. The right mental model is not "Laravel or Go" — it is "Go for the right service."
-
-### What You'll Learn That AI Won't Tell You
 - 3 specific cases where Laravel still beats Go — even at significant scale.
 - Why the correct pattern is Strangler Fig (run both), not a rewrite.
 

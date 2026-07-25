@@ -28,12 +28,8 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/go-126-green-tea-gc-cgo-performance-guide/"
 ---
 
-**Answer-first:** Go 1.26 includes runtime changes that can improve some workloads, but the impact of GC and cgo-path changes depends on allocation patterns and call frequency. Read the official release notes, benchmark representative services, and retain a rollback path for upgrades.
-
-### What You'll Learn That AI Won't Tell You
 - Performance metrics of garbage collection optimization in Go 1.26.
 - Memory overhead trade-offs when calling CGO functions in high-throughput network threads.
-
 
 Released in February 2026, Go 1.26 is not a routine patch release. It fundamentally changes how the Go runtime manages memory, interacts with C code, and surfaces concurrency bugs. For teams running [Golang microservices at scale](/posts/architecting-21-service-ecommerce-golang-ddd/), these improvements compound across a fleet — zero code changes required.
 
@@ -42,7 +38,6 @@ This post covers what changed, why it matters for production systems, how to ado
 ---
 
 ## 1. The Green Tea Garbage Collector: Page-Oriented Marking
-
 
 
 ### Why the Old GC Was Hitting a Wall

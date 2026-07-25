@@ -1,11 +1,11 @@
 ---
-title: "Caching Strategies in Go — Cache Stampede, XFetch & Redis LFU"
+title: "Caching Strategies in Go: Cache Stampede & Redis | Go Production Guide"
 slug: "03-caching-strategies-redis-golang"
 date: "2026-06-18T10:00:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-description: "Solve Cache Stampede with singleflight and XFetch. Compare Write-Through vs Write-Behind. Redis LRU/LFU internals for Go."
+description: "Solve Cache Stampede in Go using singleflight and XFetch algorithms. Compare Write-Through vs Write-Behind with Redis LRU/LFU caching strategies."
 tags: ["caching", "redis", "golang", "cache stampede", "singleflight", "write-through", "system design"]
 categories: ["System Design", "Backend Engineering"]
 ShowToc: true
@@ -17,18 +17,12 @@ cover:
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/03-caching-strategies-redis-golang/"
+image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
 
+> Implementing write-through and cache-aside patterns in Go using Redis Sentinel guarantees cache consistency and protects downstream SQL databases.
+
 > **Prerequisite:** Part 3 of the [System Design Masterclass](/series/system-design/). Read [Part 2: Load Balancing L4/L7](/series/system-design/02-load-balancing-api-gateway-go/) first.
-
-# Caching Strategies in Go — Cache Stampede, XFetch & Redis LFU
-
-> **Executive Summary & Quick Answer**: Caching strategies in high-traffic Go services combine Cache-Aside for read-heavy operations, Write-Through for financial records, and Write-Behind for event counters. Mitigating Cache Stampede requires `golang.org/x/sync/singleflight` deduplication and XFetch probabilistic early recomputation.
->
-> **Key Takeaways**:
-> - **Cache Stampede Prevention**: `singleflight` collapses parallel cache miss requests into a single database fetch, preventing DB pool exhaustion.
-> - **Probabilistic Early Refresh**: XFetch evaluates $ -\beta \times \delta \times \ln(\text{rand}()) $ to recompute expiring keys before TTL reaches zero.
-> - **Eviction Policies**: Redis LFU (Least Frequently Used) tracks access frequency bits to retain hot items under memory pressure better than LRU.
 
 ### What You'll Learn That AI Won't Tell You
 - **XFetch Mathematical Constants:** How to configure the scaling factor ($\beta$) in XFetch to balance background refresh CPU usage against cache miss rates.
@@ -38,7 +32,6 @@ canonicalURL: "https://tanhdev.com/series/system-design/03-caching-strategies-re
 ---
 
 ## How Does Cache Stampede Happen?
-
 
 **Key Concept:** Cache Stampede (thundering herd) occurs when a popular cached key expires and multiple concurrent goroutines simultaneously detect a cache miss — then all query the database simultaneously. The burst of duplicate DB queries can exceed connection pool capacity and cause cascading failure.
 
@@ -389,30 +382,9 @@ func (t *TieredCache) Set(key, value string) {
 
 ---
 
-## FAQ
-
-
-{{< faq q="What is Cache Stampede and how do you fix it?" >}}
-Cache Stampede occurs when a popular key expires and many concurrent goroutines all detect the miss simultaneously — then all query the DB at once. Three layers of defense: (1) **Singleflight** — in-process deduplication, O(1) cost, handles 95% of cases; (2) **XFetch** — probabilistic early refresh, no locks needed; (3) **Redis SETNX lock** — cross-process mutual exclusion.
-{{< /faq >}}
-
-{{< faq q="Write-Through vs Write-Behind — which to use?" >}}
-**Write-Through:** Synchronous write to cache + DB. No data loss, write latency = DB latency. Use for: payment records, order creation, any data where losing a write is unacceptable.
-
-**Write-Behind:** Write to cache, flush to DB asynchronously. Write latency is very low but data loss possible if the cache node crashes before flushing. Use for: view counters, analytics events, non-critical aggregations.
-{{< /faq >}}
-
-{{< faq q="Redis LRU vs LFU — which to configure?" >}}
-Use **LFU** (`allkeys-lfu`) when your workload has clearly identifiable hot keys (e.g., flash sale items, viral content) that need protection from eviction. Use **LRU** (`allkeys-lru`) for general-purpose caches with more uniform access patterns. With Redis 4.0+, LFU is generally better for production e-commerce.
-{{< /faq >}}
-
----
-
 ## Navigation & Next Steps
 
-[← Previous Part]({{< ref "02-load-balancing-api-gateway-go.md" >}})
-[Next Part →]({{< ref "04-database-scaling-sharding.md" >}})
+[← Previous Part](/series/system-design/02-load-balancing-api-gateway-go/)
+[Next Part →](/series/system-design/04-database-scaling-sharding/)
 
-🔗 **Next Step:** Continue to [Part 4: Database Scaling & Connection Pool Tuning in Go]({{< ref "04-database-scaling-sharding.md" >}})
-
-Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+🔗 **Next Step:** Continue to [Part 4: Database Scaling & Connection Pool Tuning in Go](/series/system-design/04-database-scaling-sharding/)

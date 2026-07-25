@@ -20,9 +20,7 @@ canonicalURL: "https://tanhdev.com/posts/blueprint-ecommerce-microservices-archi
 
 # Ecommerce Architecture: 21-Service Microservices Blueprint
 
-**Answer-first:** Ecommerce architecture is the structural design of software components, databases, and network integrations powering an online store. While monolithic architecture unifies catalog, cart, and checkout in a single application, microservices architecture splits these capabilities into independent services, allowing dedicated scaling, isolated deployments, and fault-tolerant domain boundaries for enterprise platforms.
-
-## What is Ecommerce Architecture? Monolith vs Microservices
+## E-Commerce Architecture Patterns: Monolith vs Microservices
 
 ### Monolithic vs Microservices E-Commerce Comparison
 
@@ -35,10 +33,8 @@ canonicalURL: "https://tanhdev.com/posts/blueprint-ecommerce-microservices-archi
 | **Complexity** | Low initial architectural and operational complexity | High distributed complexity (Saga pattern, gRPC contracts, Dapr mesh) |
 | **Operational Cost** | Lower initial cost; scales expensively at high traffic | Higher initial infrastructure setup; cost-effective at high scale |
 
-### What You'll Learn That AI Won't Tell You
 - Practical latency and memory metrics comparing an Envoy-based API Gateway to a custom Go reverse proxy under 100k concurrent connections.
 - How to tune circuit breaker thresholds (`go-resiliency/breaker`) to prevent premature service isolation during temporary network jitters.
-
 
 When transitioning from a monolithic platform to a distributed microservice setup, the hardest question isn't "How do we write the code?" — it's "How do these moving parts talk to each other safely, and why is each boundary drawn exactly where it is?"
 

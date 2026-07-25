@@ -1,5 +1,5 @@
 ---
-title: "System Design Masterclass (Golang)"
+title: "System Design Masterclass: Scalable Systems in Go | Go Produ"
 slug: "system-design"
 description: "System Design with Go for Senior Engineers: Load Balancing, Caching, DB Sharding, Distributed Locks, Saga Pattern, and Observability — in production."
 author: "Lê Tuấn Anh"
@@ -16,6 +16,7 @@ cover:
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/"
+image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
 
 # System Design Masterclass (Golang)
@@ -105,3 +106,4 @@ canonicalURL: "https://tanhdev.com/series/system-design/"
 ---
 
 👉 **[Hire for architecture consulting](/hire/)** if you need to solve scale challenges, optimize database performance, or design concurrency-safe systems for your organization.
+

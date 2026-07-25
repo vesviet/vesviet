@@ -3,7 +3,7 @@ title: "Data Engineering SFT: NEFTune & SemDeDup | SLM Playbook"
 date: "2026-05-22T08:00:00+07:00"
 lastmod: "2026-05-22T08:00:00+07:00"
 draft: false
-description: "Data engineering guide for Supervised Fine-Tuning (SFT). Learn NEFTune noise injection math and build a SemDeDup pipeline in Python."
+description: "Data engineering guide for Supervised Fine-Tuning (SFT). Learn NEFTune noise injection math and build a production SemDeDup data pipeline in Python."
 ShowToc: true
 TocOpen: true
 weight: 3
@@ -15,7 +15,13 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/slm-playbook/part-2-sft-data-engineering/"
+image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
 ---
+
+
+
+> **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+
 [← Series hub](/series/slm-playbook/)
 [← Previous](/posts/slm-fine-tune-vs-prompt-engineering/) | [Next →](/series/slm-playbook/part-3-lora-qlora-tuning/)
 
@@ -40,7 +46,6 @@ Key research from Meta AI's *"LIMA: Less Is More for Alignment"* demonstrated th
 ├──────────────────────────────┼───────────────────────────────┤
 │ Performance Collapse         │ Model outputs repetitive loops│
 │                              │ or malformed JSON syntax.     │
-├──────────────────────────────┼───────────────────────────────┤
 │ Compute Waste                │ Skyrockets training costs and │
 │                              │ duration on leased hardware.  │
 └──────────────────────────────┴───────────────────────────────┘
@@ -145,8 +150,6 @@ If you feed all these to the model, it wastes up to 80% of its gradient steps re
 ---
 
 ## 4. Python Implementation: Building a SemDeDup Tool
-
-Here is a complete Python script leveraging `sentence-transformers` and `scikit-learn` to deduplicate a raw JSONL SFT dataset:
 
 ```python
 import json
@@ -261,10 +264,8 @@ Applying NEFTune and SemDeDup to a Llama 3 8B SFT run on NVIDIA A10G GPUs yielde
 ├──────────────────────────────┬───────────────────────────────┤
 │ Dataset Size                 │ Reduced by 42% (Pruned 20k+   │
 │                              │ redundant semantic samples)   │
-├──────────────────────────────┼───────────────────────────────┤
 │ SFT Training Time            │ Cut from 8 hours to 4.6 hours │
 │                              │ (~45% GPU lease cost savings) │
-├──────────────────────────────┼───────────────────────────────┤
 │ AlpacaEval 2.0 Win Rate      │ Increased from 18.2% to 24.5% │
 │                              │ due to NEFTune regularization│
 └──────────────────────────────┴───────────────────────────────┘

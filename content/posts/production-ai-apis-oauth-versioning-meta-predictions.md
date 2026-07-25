@@ -28,12 +28,8 @@ tags:
 canonicalURL: "https://tanhdev.com/posts/production-ai-apis-oauth-versioning-meta-predictions/"
 ---
 
-**Answer-first:** Production AI API design requires securing agent identities using OAuth 2.1 client credentials, versioning prompts inside CI/CD gates to prevent quality regression, and tracking runtime costs. Monitoring token usage and accuracy ensures robust operational predictability.
-
-### What You'll Learn That AI Won't Tell You
 - Secure prompt versioning practices using git commits and CI checks.
 - Rate-limiting AI agents at the API Gateway using token-bucket configurations.
-
 
 Running AI APIs in production for the past 18 months has produced three lessons that I did not find in any "getting started with LLMs" tutorial. They emerged from incidents, postmortems, and that specific kind of 2 AM Slack message where a word you never wanted to see — "silent," as in "silent failure" — appears in a production context.
 

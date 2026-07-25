@@ -26,14 +26,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/real-time-inventory-ecommerce-architecture/"
 ---
 
-**Answer-first:** Attempting to simultaneously write inventory updates to a fast cache (Redis) and a relational database (PostgreSQL) creates the dual-write problem. If one system fails, data diverges. Furthermore, synchronous `SELECT FOR UPDATE` queries in SQL cause massive lock queues and API timeouts.
-
-### What You'll Learn That AI Won't Tell You
 - Write-through caches configuration in Redis to prevent inventory drift.
 - Lua scripting implementations in Redis that prevent double-reservations under peak load.
 
-
-## What Is Real-Time Inventory Synchronization?
+## Real-Time Inventory Topology: CDC, Kafka, and Redis
 
 **Real-time inventory synchronization** is the process of propagating stock count changes from the system of record (database) to all sales channels — web storefront, mobile app, WMS, ERP — in sub-second time. Instead of batch ETL jobs that run every hour, a CDC + Kafka pipeline streams every committed stock change as an event, eliminating overselling and stale stock displays.
 
@@ -44,13 +40,11 @@ To guarantee accuracy without sacrificing sub-millisecond response times, modern
 ## The Dual-Write Dilemma and Lock Contention
 
 
-
 When thousands of concurrent requests attempt to decrement stock for the exact same database row, row-level locks force sequential processing. This completely overwhelms connection pools.
 
 > **Migration Context:** Many legacy monolithic e-commerce platforms struggle with this exact issue. Learn how event-driven decoupling solves this in our guide on [Magento AI Integration Strategy & Architecture](/posts/magento-ai-integration-strategy-architecture/).
 
 ## The Speed & Truth Architecture Pattern
-
 
 
 ```mermaid
@@ -104,8 +98,6 @@ To prevent race conditions while maintaining high throughput, we must combine Ka
 ---
 
 ## Production Go Kafka Consumer Group Implementation
-
-Below is the complete Go code block implementing a manual offset-managed Kafka consumer group reader. It demonstrates local sharded locking by SKU and explicit offset commit management to guarantee at-least-once delivery.
 
 ```go
 package inventory
@@ -244,7 +236,6 @@ To prevent this from causing double deductions, the downstream processing must b
 ## Idempotent Inventory Deductions in Redis Cluster
 
 
-
 If a Kafka consumer group rebalances, a partition might be reassigned before offsets are committed, causing duplicate events.
 
 ### The Cluster Cross-Slot Constraint (Hash Tags)
@@ -281,7 +272,6 @@ return stock - qty
 Avoid growing infinite Redis sets. By saving the `idempotent` key with a TTL (`EX 86400` for 24 hours), the keys automatically expire after the risk of Kafka duplication passes, conserving volatile memory.
 
 ## State Drift and Disaster Recovery
-
 
 
 If Redis completely fails and restarts empty, a bootstrap script reads the initial ledger quantities from Postgres minus pending orders, reconstructing the real-time cache before traffic resumes.

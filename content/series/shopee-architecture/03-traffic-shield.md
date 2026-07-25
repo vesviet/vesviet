@@ -1,10 +1,10 @@
 ---
-title: "Chapter 3: Traffic Shield - Peak Shaving with Kafka and Graceful Degradation"
+title: "Shopee Traffic Shield: Kafka Peak Shaving & Circuit"
 date: "2026-05-05T08:30:00+07:00"
 lastmod: "2026-05-05T08:30:00+07:00"
 draft: false
 mermaid: true
-description: "How Shopee uses Apache Kafka for peak shaving and implements graceful degradation during 11.11."
+description: "How Shopee uses Apache Kafka for peak shaving traffic spikes and implements graceful degradation during mega shopping events like 11.11 in high-load production."
 ShowToc: true
 TocOpen: true
 cover:
@@ -15,6 +15,7 @@ categories: ["Asynchronous Processing", "SRE", "Messaging"]
 tags: ["Shopee", "Kafka", "Peak Shaving", "Rate Limiting", "Graceful Degradation"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/03-traffic-shield/"
+image: "images/posts/shopee-flash-sale-cover.png"
 ---
 # Chapter 3: Peak Shaving - The Power of Apache Kafka and Graceful Degradation
 
@@ -22,9 +23,9 @@ canonicalURL: "https://tanhdev.com/series/shopee-architecture/03-traffic-shield/
 
 **To survive 11.11 traffic spikes without database collapse, Shopee shifts heavy processing to asynchronous Kafka queues. The system guarantees checkout survival by enforcing graceful degradation and circuit breakers that disable non-essential features under extreme load.**
 
-[← Series hub]({{< ref "/series/shopee-architecture/_index.md" >}}) | [← Prev]({{< ref "/series/shopee-architecture/02-flash-sale-engine.md" >}}) | [Next →]({{< ref "/series/shopee-architecture/04-database-scale.md" >}})
+[← Series hub](/series/system-design/) | [← Prev](/series/shopee-architecture/02-flash-sale-engine/) | [Next →](/series/shopee-architecture/04-database-scale/)
 
-> **Prerequisite:** Before reading this chapter, please ensure you have read the previous article in this series: Chapter 2: Flash Sale Engine - Solving Overselling and Hot Keys.
+> **Prerequisite:** Read the previous article: Chapter 2: Flash Sale Engine - Solving Overselling and Hot Keys.
 
 In Chapter 2, we utilized Redis to deduct inventory in a fraction of a millisecond. However, the purchase journey isn't over. The system still needs to: Create the order record in MySQL, generate an invoice, deduct money from ShopeePay, calculate shipping, and award Shopee Coins.
 
@@ -45,15 +46,15 @@ The core philosophy of Flash Sale design is: **Accept requests blazingly fast, p
 ```mermaid
 graph LR
     subgraph Traffic Storm
-        Users((Millions of Users)) -->|1 Million Req/s| Checkout[Checkout Service]
+        Users(("Millions of Users")) -->|1 Million Req/s| Checkout[Checkout Service]
     end
     
-    Checkout -->|Write| Kafka[(Apache Kafka<br/>Message Broker)]
+    Checkout -->|Write| Kafka[("Apache Kafka<br/>Message Broker")]
     
     subgraph Async Processing
         Kafka -->|Pull at 10k/s| Worker1[Order Worker]
         Kafka -->|Pull at 10k/s| Worker2[Payment Worker]
-        Worker1 --> DB[(MySQL / TiDB)]
+        Worker1 --> DB[("MySQL / TiDB")]
         Worker2 --> API[External APIs]
     end
 ```
@@ -304,3 +305,6 @@ Under high load, API Gateways reject low-priority auxiliary requests (recommenda
 🔗 **Next Step:** Return to Part 02: Flash Sale Engine or proceed to persistent storage in Part 04: Database Scale.
 
 {{< author-cta >}}
+
+## Architectural Context & Pillar References
+

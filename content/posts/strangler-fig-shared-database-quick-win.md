@@ -18,9 +18,6 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/strangler-fig-shared-database-quick-win/"
 ---
 
-**Answer-first:** Three database strategies exist for Magento→Golang migration: (A) Shared DB — immediate compute win, dangerous as a final state; (B) CDC + Debezium — gradual DB separation without changing PHP code; (C) Full Event Bus — complete autonomy but requires Magento to publish every state change as an event. **Option B is the recommended path for most teams.**
-
-### What You'll Learn That AI Won't Tell You
 - Why Go running against Magento's MySQL is faster at the compute layer but still bottlenecked at the EAV query layer — and what actually fixes it.
 - The single deciding factor between CDC (Option B) and Event Bus (Option C): who owns the PHP Magento codebase.
 

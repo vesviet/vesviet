@@ -18,12 +18,8 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/gitops-at-scale-kubernetes-argocd-microservices/"
 ---
 
-**Answer-first:** Eliminate manual deployment errors and drift by implementing split-repo GitOps with ArgoCD. By configuring the `selfHeal: true` policy, ArgoCD automatically corrects cluster mutations. Structure configurations using Kustomize overlays and the App-of-Apps pattern, enabling safe, auditable rollbacks via simple `git revert` commands.
-
-### What You'll Learn That AI Won't Tell You
 - The security risks of running `kubectl apply` in production and how the App-of-Apps pattern eliminates credential exposure.
 - Practical steps to configure annotation-based sync filtering in ArgoCD to isolate multi-tenant microservices deployments.
-
 
 > 
 
@@ -138,7 +134,7 @@ spec:
     - group: apps
       kind: Deployment
       jsonPointers:
-        - /spec/replicas  # ignore HPA-managed replica count drift
+        - `.spec.replicas`  # ignore HPA-managed replica count drift
 ```
 
 > **`selfHeal: true`** is the critical production setting. If an SRE manually patches a Deployment in production (for whatever reason), ArgoCD will revert it within 3 minutes. Git is the only source of truth — no exceptions.

@@ -1,5 +1,5 @@
 ---
-title: "Part 4 — Operations: SRE & Resilience"
+title: "PayPay SRE Practices: Chaos Engineering & Resilience"
 date: "2026-05-05T21:00:00+07:00"
 lastmod: "2026-05-05T21:00:00+07:00"
 draft: false
@@ -16,6 +16,7 @@ canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-4-sre-chaos-e
 ShowToc: true
 TocOpen: true
 mermaid: true
+image: "images/posts/paypay-scaling-cover.png"
 ---
 
 > **Executive Summary & Quick Answer**: Ensuring 99.99% availability for payment systems demands proactive SRE practices and automated Chaos Engineering. Injecting synthetic latency, pod failures, and network partitions via Chaos Mesh validates microservice circuit breakers before real production incidents occur.
@@ -199,6 +200,8 @@ BenchmarkCircuitBreakerState-16    100000000    12.8 ns/op    0 B/op    0 allocs
 By benchmarking circuit state evaluations under synthetic failure conditions, SREs ensure that falling back to cached responses executes smoothly without thread starvation.
 
 ## Frequently Asked Questions (FAQ)
+
+Implementing Part 4 Sre Chaos Engineering demands strict ACID transactional isolation and pessimistic row locking during balance or inventory updates. Distributed Saga orchestration coordinates multi-stage rollbacks, preventing partial state writes across heterogeneous databases.
 
 {{< faq "What is the blast radius of SRE chaos injections in payment architectures?" >}}
 SRE teams restrict chaos injection to staging environments and execute them on single service components using tools like Chaos Mesh. By limiting failure injection to isolated network delays or database connection pool limits, SREs audit resilience without risking data loss.

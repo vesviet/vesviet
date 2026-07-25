@@ -1,9 +1,8 @@
 ---
-
-title: "Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure"
+title: "Modular Monolith Guide: Prime Video & Monolith Revival"
 date: "2026-07-03T10:00:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
-description: "Discover why Amazon Prime Video cut infrastructure costs by 90% after moving from Serverless/Microservices back to a Monolith, alongside case studies from Segment, Pinterest, and 37signals."
+description: "Discover why Amazon Prime Video cut infrastructure costs by 90% after moving from Microservices back to a Modular Monolith architecture in production systems."
 slug: "executive-summary-amazon-prime-video-monolith"
 aliases: ["/series/modular-monolith-architecture/part-0-executive-summary/"]
 tags: ["Modular Monolith", "AWS", "Serverless", "FinOps", "Amazon Prime"]
@@ -15,7 +14,10 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 draft: false
+image: "images/posts/golang-microservices-cover.png"
 ---
+
+> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 > **Prerequisite:** This is the executive summary and introductory overview of the **Modular Monolith Architecture** series. No prior reading is required to start here.
 
@@ -63,17 +65,17 @@ The new system (Monolith) was packaged and deployed directly on **Amazon EC2 / A
 ```mermaid
 graph TD
     subgraph Serverless Architecture (Old)
-        SF[AWS Step Functions] -->|Orchestrate| L1[AWS Lambda: Audio Ingest]
-        SF -->|Orchestrate| L2[AWS Lambda: Video Ingest]
-        SF -->|Orchestrate| L3[AWS Lambda: Aggregator]
-        L1 -->|Write Video Frames| S3[(Amazon S3)]
+        SF[AWS Step Functions] -->|Orchestrate| L1["AWS Lambda: Audio Ingest"]
+        SF -->|Orchestrate| L2["AWS Lambda: Video Ingest"]
+        SF -->|Orchestrate| L3["AWS Lambda: Aggregator"]
+        L1 -->|Write Video Frames| S3[("Amazon S3")]
         L2 -->|Write Video Frames| S3
         S3 -->|Read Video Frames| L3
     end
     subgraph Monolithic Architecture (New)
-        ECS[Amazon ECS/EC2 Container]
+        ECS["Amazon ECS/EC2 Container"]
         ECS -->|In-Memory Audio/Video Processing| ECS
-        ECS -->|Direct Memory Sharing| RAM[(In-Memory Buffer)]
+        ECS -->|Direct Memory Sharing| RAM[("In-Memory Buffer")]
     end
 ```
 
@@ -119,7 +121,7 @@ In the modular monolith, the raw video frame is stored in a thread-safe in-memor
 
 ### Benchmark Demonstration: In-Memory Processing vs Storage Round-Trips
 
-Below is a production-ready Go benchmark showing the throughput difference between in-memory frame processing using `sync.Pool` versus round-trip serialization allocations:
+This production-ready Go benchmark showing the throughput difference between in-memory frame processing using `sync.Pool` versus round-trip serialization allocations:
 
 ```go
 package main
@@ -217,6 +219,8 @@ For detailed guidelines on structuring domains cleanly, read [Part 3: DDD Module
 
 ## Frequently Asked Questions (FAQ)
 
+Designing modular monolith architectures involves evaluating domain-driven module boundaries, in-memory event dispatching, and microservice extraction triggers.
+
 {{< faq q="Why did Amazon Prime Video move away from serverless?" >}}
 Amazon Prime Video abandoned their serverless architecture because AWS Step Functions orchestration fees and Amazon S3 read/write costs became too expensive when processing thousands of high-frequency video streams. Transitioning to a modular monolith running on Amazon ECS reduced infrastructure costs by 90%.
 {{< /faq >}}
@@ -242,3 +246,7 @@ Go uses `sync.Pool` to reuse pre-allocated byte slices across goroutines. Pointe
 
 Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
 
+## Architectural Context & Pillar References
+
+- [Laravel vs Golang Decision Framework](/posts/laravel-vs-golang-when-to-add-features/)
+- [E-Commerce Composable Migration](/posts/ecommerce-architecture-composable-migration/)

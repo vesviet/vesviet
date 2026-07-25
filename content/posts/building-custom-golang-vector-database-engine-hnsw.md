@@ -18,7 +18,6 @@ cover:
   relative: false
 ---
 
-**Answer-first:** Building a production-grade, Go-native vector database engine for [Go microservices](/posts/go-microservices/) requires overcoming three classic systems bottlenecks: algorithmic complexity, CPU instruction latency, and garbage collector pressure. By combining **Hierarchical Navigable Small World (HNSW)** multi-layer graphs for $O(\log N)$ search complexity, **256-bit AVX2 SIMD unrolling** via unsafe pointer arithmetic for sub-nanosecond vector math, **Product Quantization (PQ)** for 75%–96% memory footprint reduction, and **memory-mapped (`mmap`) off-heap storage**, you can construct a zero-allocation vector search engine in pure Go that rivals C++ solutions like Faiss or USearch without CGO overhead.
 >
 > **Key Takeaways**:
 > - **Throughput & Latency**: Achieves **98.4% Recall@10 at 14,200 Queries Per Second (QPS)** on 768-dimensional embeddings with a sub-millisecond p99 latency of **0.82 ms** on standard cloud hardware.
@@ -26,9 +25,6 @@ cover:
 > - **Memory Efficiency**: Product Quantization (PQ-32) compresses 768-dimensional `float32` vectors from **3,072 bytes down to 32 bytes** (a 96x compression ratio for vector data), enabling 100M+ vectors to reside entirely in RAM.
 > - **Zero-GC Overhead**: Off-heap persistent memory-mapping (`syscall.Mmap`) paired with `unsafe.Slice` zero-copy rehydration completely bypasses Go runtime garbage collection scan cycles, keeping GC pause times below **150 microseconds**.
 
-**Answer-first:** A Go-native vector database engine combines HNSW graph indexing, loop-unrolled SIMD vector operations, Product Quantization, and mmap off-heap memory buffers. This architectural pattern eliminates CGO transition overhead (30–100ns per call) and Go GC pointer-scanning pauses while maintaining 98%+ recall at over 14,000 QPS.
-
-### What You'll Learn That AI Won't Tell You
 - How to bypass Go bounds checking and force AVX2 vectorization in pure Go using `unsafe.Pointer` loop unrolling without assembly maintenance overhead.
 - Why naive Go pointer-based graph data structures trigger catastrophic GC pause spikes at 1M+ vectors—and how mmap off-heap slab allocation solves it.
 - How to implement Asymmetric Distance Computation (ADC) lookup tables for Product Quantization to evaluate distance in $O(m)$ byte additions instead of $O(d)$ floating-point multiplications.
@@ -172,7 +168,7 @@ During a search query for vector $\mathbf{q}$:
 
 ### Production-Ready Go HNSW Graph Implementation
 
-Below is a complete, production-grade Go implementation of HNSW core data structures, priority queues, layer traversal, vector insertion, and heuristic neighbor selection.
+Implementing a production-grade HNSW graph engine in Go requires constructing core vector nodes, concurrent priority queues, multi-layer traversal, node insertion logic, and heuristic neighbor selection algorithms.
 
 ```go
 package vectorDB

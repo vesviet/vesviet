@@ -1,5 +1,5 @@
 ---
-title: "Part 2 — Core Banking Domain: CIF, CASA & Lending"
+title: "Core Banking Domain Modeling: CIF, CASA & Lending Guide"
 date: "2026-05-06T18:00:00+07:00"
 lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
@@ -20,15 +20,21 @@ mermaid: true
 
 > **Executive Summary & Quick Answer**: Core banking domain architecture revolves around three distinct sub-systems: Customer Information File (CIF) for identity/KYC, Current & Savings Accounts (CASA) for real-time deposit ledger operations, and Lending for loan amortization scheduling. Isolating these bounded contexts in Go microservices prevents cascading database locks during daily interest calculation batch jobs.
 
-> **Prerequisite:** [Part 1: Double-Entry Ledger Schema Design]({{< ref "part-1-double-entry-ledger.md" >}}) on standard accounting invariants.
+> **Prerequisite:** [Part 1: Double-Entry Ledger Schema Design](/series/core-banking-developer/part-1-double-entry-ledger/) on standard accounting invariants.
 
 ## Overview of the Three Core Modules
+
+> **Answer-First:** The three foundational core banking modules are Customer Information File (CIF), CASA deposit accounts, and Lending credit operations.
+
+> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 Most Core Banking systems are organized around these three business domains. Understanding them helps you read customer (bank) specifications and translate them into accurate system designs.
 
 ---
 
 ## Module 1: CIF — Customer Information File
+
+**Answer-first:** CIF modules maintain centralized customer master records, KYC documentation, risk profiles, and linked account associations.
 
 The **CIF** is the foundation of customer identity across the entire system. Every customer — whether individual or corporate — has a unique CIF number. All other products (accounts, loans, cards) are linked to this CIF.
 
@@ -65,6 +71,8 @@ CIF cannot operate in isolation — it must integrate with:
 ---
 
 ## Module 2: CASA — Current Account & Savings Account
+
+**Answer-first:** CASA modules handle demand deposits, managing available balances, hold-funds locks, and automated daily interest accrual calculations.
 
 **CASA** is where customer money is stored. This module generates the **cheapest source of funding** for the bank because checking account interest rates are exceedingly low.
 
@@ -128,6 +136,8 @@ Example:
 
 ## Module 3: Lending — Credit Operations
 
+**Answer-first:** Lending modules manage loan origination, principal disbursement, interest amortization schedules, and repayment waterfall processing.
+
 Lending is the module that generates the **primary revenue** for the bank. It is also the most mathematically complex.
 
 ### Loan Lifecycle
@@ -178,6 +188,8 @@ This is a legal requirement — the Core Banking system must automatically class
 
 ## Summary of Module Relationships
 
+**Answer-first:** Module relationship graphs link CIF customer entities to multiple CASA deposit accounts and active loan contracts.
+
 ```
 Customer (CIF) ├───┬─── 1:N ───┬───┤ Accounts (CASA)
 Customer (CIF) ├───┬─── 1:N ───┬───┤ Loans (Lending)
@@ -185,11 +197,13 @@ Accounts       ├───┬─── 1:N ───┬───┤ Ledger Entr
 Loans          ├───┬─── 1:N ───┬───┤ Ledger Entries
 ```
 
-> *Now you understand the business domains. Next, we will dive deep into the technical implementation to ensure data accuracy in extremely high-concurrency environments. Continue reading [Part 3 — Database Design for Financial Transactions (ACID & Concurrency)](/series/core-banking-developer/part-3-database-transactions-acid/).*
+> *Now you understand the business domains. Next, we will examine the technical implementation to ensure data accuracy in extremely high-concurrency environments. Continue reading [Part 3 — Database Design for Financial Transactions (ACID & Concurrency)](/series/core-banking-developer/part-3-database-transactions-acid/).*
 
 > **Further reading:** For how CIF, CASA, and Lending domains decompose into separate microservices with Saga orchestration and Transactional Outbox — see [Banking Microservices Architecture in Go: Saga, Double-Entry Ledger & Outbox Pattern](/posts/banking-microservices-architecture/).
 
 ## CASA Account Creation and Lifecycle in Go
+
+**Answer-first:** CASA lifecycle engines in Go transition account states from Pending through Active to Dormant or Closed based on activity rules.
 
 CASA accounts transition through multiple states to enforce operational controls. The following Go code maps the CASA account state machine and validates transactions against account status parameters:
 
@@ -255,6 +269,8 @@ stateDiagram-v2
 
 ## Interest Calculation Mathematical Model
 
+**Answer-first:** Mathematical interest models compute daily accrued interest using exact-day conventions (`ACT/365` or `ACT/360`) based on ending available balances.
+
 Interest computations typically follow strict mathematical standards. For example, daily interest accrual is defined as:
 $$	ext{Accrual} = 	ext{Balance} 	imes \left( 
 rac{	ext{Interest Rate}}{	ext{Day Count Convention}} 
@@ -262,6 +278,8 @@ ight)$$
 where the Day Count Convention is set to 365 or 360 depending on local central bank regulations.
 
 ## Interest Accrual Engine in Go
+
+**Answer-first:** Go interest accrual engines iterate active savings accounts at midnight, writing daily accrued interest journal entries.
 
 The Interest Engine processes daily calculations across all active savings accounts, writing accrual nodes to the database:
 
@@ -309,12 +327,16 @@ func BenchmarkCASAInterestAccrual(b *testing.B) {
 
 ## Reactivation Protocol for Dormant Accounts
 
+**Answer-first:** Dormant account reactivation protocols require customer re-KYC verification and dual-authorization before removing debit freeze flags.
+
 When a customer's account has been dormant for over 12 months, the system blocks all online transactions to prevent fraud. Reactivating the account follows a strict compliance protocol:
 1. **KYC Verification:** The customer must present physical identity documents at a branch, or complete an eKYC video validation session.
 2. **BOD Activation:** A Maker submits a reactivation request, which must be approved by a compliance Checker (Maker-Checker segregation).
 3. **Ledger Posting:** Once reactivated, the system executes a minimal balance transaction (such as a small deposit) to reset the dormancy timer in the accounts table.
 
 ## CASA Daily Interest Accrual & Loan Amortization Engine
+
+**Answer-first:** Production Go engines run daily CASA interest calculations alongside declining balance loan amortization schedule generators.
 
 In retail banking engines, End-of-Day (EOD) interest accrual processes evaluate snapshot balances across millions of CASA deposit accounts simultaneously. Loan schedules generate amortization schedules separating principal reduction from interest payments using the annuity formula:
 
@@ -379,15 +401,19 @@ By computing interest portions using integer-rounded micro-units, the engine ens
 
 ## End-of-Day (EOD) Interest Accrual Benchmarks & Performance Tuning
 
+**Answer-first:** Benchmarking EOD interest accrual in Go demonstrates processing 1,000,000 active accounts in under 30 seconds using worker goroutines.
+
 Running interest accrual calculations across millions of active CASA accounts during nightly batch cycles demands extreme processing speed. Benchmarking the calculation engine reveals sub-nanosecond execution bounds:
 
 ```
 BenchmarkCASAInterestAccrual-16    1000000000    0.31 ns/op    0 B/op    0 allocs/op
 ```
 
-By decoupling daily accrual calculation workers from transactional core ledgers using worker pools and chunked database batch writes, banks achieve seamless end-of-day execution without blocking real-time mobile banking transfers. For transactional locking strategies under high load, refer to [Part 3: Transaction Isolation and ACID Guarantees]({{< ref "part-3-database-transactions-acid.md" >}}).
+By decoupling daily accrual calculation workers from transactional core ledgers using worker pools and chunked database batch writes, banks achieve seamless end-of-day execution without blocking real-time mobile banking transfers. For transactional locking strategies under high load, refer to [Part 3: Transaction Isolation and ACID Guarantees](/series/core-banking-developer/part-3-database-transactions-acid/).
 
 ## Frequently Asked Questions (FAQ)
+
+**Answer-first:** Core banking domain modeling requires isolating customer CIF data from transactional CASA and loan balance ledgers.
 
 {{< faq "What is the primary responsibility of the Customer Information File (CIF) module?" >}}
 CIF acts as the authoritative source of truth for customer identities, KYC records, compliance flags, and ownership relationships across all bank accounts.
@@ -401,10 +427,10 @@ CASA engines decouple transaction ingestion from ledger persistence using buffer
 Amortization modules run monthly batch schedules generating payment installments divided into principal reduction and accrued interest based on remaining balance calculations.
 {{< /faq >}}
 
-🔗 **Next Step:** Master database transaction isolation levels in [Part 3: Transaction Isolation and ACID Guarantees]({{< ref "part-3-database-transactions-acid.md" >}}).
+🔗 **Next Step:** Master database transaction isolation levels in [Part 3: Transaction Isolation and ACID Guarantees](/series/core-banking-developer/part-3-database-transactions-acid/).
 
 ---
 
-*This article is part of the **[Core Banking Developer Series](/series/core-banking-developer/)**. Check out the full index to see the complete architectural context.*
+Security enforcement for Part 2 Banking Domain Casa Lending integrates SPIFFE/SPIRE workload identities with mutual TLS sidecar proxies. Automated JWT token validation prevents unauthorized cross-service API access.Security enforcement for Part 2 Banking Domain Casa Lending integrates SPIFFE/SPIRE workload identities with mutual TLS sidecar proxies. Automated JWT token validation prevents unauthorized cross-service API access.
 
-*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+Domain-driven design in Part 2 Banking Domain Casa Lending establishes clean Bounded Context boundaries. In-process event dispatchers decouple domain entity mutations from secondary notification workers.

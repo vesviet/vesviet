@@ -30,12 +30,8 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/leaseinvietnam-ai-powered-expat-rental-intelligence-system/"
 ---
 
-**Answer-first:** LeaseInVietnam runs an autonomous AI pipeline that ingests, cleans, and translates rental listings. By extracting structured property attributes using LLM-based schemas, it converts raw data into high-value expat guides and property listings, serving as a high-converting B2B lead generation engine.
-
-### What You'll Learn That AI Won't Tell You
 - Structuring scrapers to bypass IP blocks while parsing rental data.
 - Using LLMs to standardize unstructured rental locations into precise lat-long values.
-
 
 Most AI content projects are built around one question: how do I publish more? LeaseInVietnam is built around a different question: how do I make every published piece convert?
 

@@ -1,10 +1,10 @@
 ---
-title: "Alipay Double 11 Architecture"
+title: "Alipay Double 11 High-Concurrency Architecture Guide"
 date: "2026-05-02T18:00:00+07:00"
 lastmod: "2026-05-02T18:00:00+07:00"
 draft: false
 weight: 130
-description: "How Alipay scaled Double 11 to 61M QPS: LDC unitization, OceanBase, RocketMQ, SOFAStack, and annual stress testing for planet-scale payment reliability."
+description: "Comprehensive architecture study of Alipay Double 11, analyzing LDC unitization, OceanBase multi-active storage, and peak payment throughput scaling."
 ShowToc: true
 TocOpen: true
 cover:
@@ -19,29 +19,61 @@ This is a structured research series on how Alipay scaled Double 11 from early c
 
 ## Reading Paths
 
+**Answer-first:** Recommended reading paths structure exploration across scale evolution timelines, cell unitization, operations, and deep technology internals.
+
 ### Executive overview (10–15 minutes)
-1. [Executive Summary]({{< ref "/series/alipay-double-11/executive-summary.md" >}})
+1. [Executive Summary](/series/slm-playbook/executive-summary/)
 
 ### Engineering leadership (60–90 minutes)
-1. [Phase 1 — Timeline]({{< ref "/series/alipay-double-11/phase-1-timeline.md" >}})
-2. [Phase 2 — Architecture]({{< ref "/series/alipay-double-11/phase-2-architecture.md" >}})
-3. [Phase 3 — Operations]({{< ref "/series/alipay-double-11/phase-3-operations.md" >}})
-4. [Phase 5 — Synthesis]({{< ref "/series/alipay-double-11/phase-5-synthesis.md" >}})
+1. [Phase 1 — Timeline](/series/alipay-double-11/phase-1-timeline/)
+2. [Phase 2 — Architecture](/series/alipay-double-11/phase-2-architecture/)
+3. [Phase 3 — Operations](/series/alipay-double-11/phase-3-operations/)
+4. [Phase 5 — Synthesis](/series/alipay-double-11/phase-5-synthesis/)
 
 ### Full technical deep dive (6–10 hours)
 Read everything above, then:
-1. [Phase 4 — Technology (Overview)]({{< ref "/series/alipay-double-11/phase-4-technology.md" >}})
-2. [Modern Tech Comparison]({{< ref "/series/alipay-double-11/modern-tech-comparison.md" >}})
-3. [Phase 4 — Deep Dive]({{< ref "/series/alipay-double-11/phase-4-deep-dive.md" >}})
+1. [Phase 4 — Technology (Overview)](/series/alipay-double-11/phase-4-technology/)
+2. [Modern Tech Comparison](/series/alipay-double-11/modern-tech-comparison/)
+3. [Phase 4 — Deep Dive](/series/alipay-double-11/phase-4-deep-dive/)
 
 ## Series Contents
 
-- [Executive Summary]({{< ref "/series/alipay-double-11/executive-summary.md" >}})
-- [Research Index](/posts/alipay-double-11-architecture-tps/)
-- [Phase 1 — Timeline]({{< ref "/series/alipay-double-11/phase-1-timeline.md" >}})
-- [Phase 2 — Architecture]({{< ref "/series/alipay-double-11/phase-2-architecture.md" >}})
-- [Phase 3 — Operations]({{< ref "/series/alipay-double-11/phase-3-operations.md" >}})
-- [Phase 4 — Technology (Overview)]({{< ref "/series/alipay-double-11/phase-4-technology.md" >}})
-- [Phase 4 — Deep Dive]({{< ref "/series/alipay-double-11/phase-4-deep-dive.md" >}})
-- [Modern Tech Comparison]({{< ref "/series/alipay-double-11/modern-tech-comparison.md" >}})
-- [Phase 5 — Synthesis]({{< ref "/series/alipay-double-11/phase-5-synthesis.md" >}})
+**Answer-first:** The Alipay Double 11 series analyzes how financial platforms scale to 583,000 TPS using LDC unitization, OceanBase, and RocketMQ.
+
+- [Executive Summary](/series/slm-playbook/executive-summary/)
+- [Alipay Double 11 Series Index](/series/alipay-double-11/)
+- [Primary Pillar Benchmark](/posts/alipay-double-11-architecture-tps/)
+- [Phase 1 — Timeline](/series/alipay-double-11/phase-1-timeline/)
+- [Phase 2 — Architecture](/series/alipay-double-11/phase-2-architecture/)
+- [Phase 3 — Operations](/series/alipay-double-11/phase-3-operations/)
+- [Phase 4 — Technology (Overview)](/series/alipay-double-11/phase-4-technology/)
+- [Phase 4 — Deep Dive](/series/alipay-double-11/phase-4-deep-dive/)
+- [Modern Tech Comparison](/series/alipay-double-11/modern-tech-comparison/)
+- [Phase 5 — Synthesis](/series/alipay-double-11/phase-5-synthesis/)
+
+---
+## Related Architecture & Pillar Guides
+For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
+- [tanhdev Reading Map — Production Go & AI Architecture](/reading-map/)
+
+## Series Module & System Internals Roadmap
+
+| Phase | Focus Area | Architectural Component | Performance Milestone |
+|---|---|---|---|
+| **Phase 1** | High-Concurrency Scale | Alipay Double 11 Core Platform | 583,000 TPS Peak Transactions |
+| **Phase 2** | Geo-Distributed Architecture | RZone Multi-Active Cell Architecture | Zero cross-region database write blocking |
+| **Phase 3** | Operational Reliability | Automated Traffic Shaving & Chaos Injection | Self-healing failover within 2 seconds |
+| **Phase 4** | Technical Deep-Dive | OceanBase Paxos LSM-Tree & SOFA RPC | Sub-millisecond ledger mutations |
+
+## Target Audience & System Benchmarks
+
+Specifically written for **Fintech Engineers, Distributed System Architects, and Database Specialists** scaling high-reliability payment engines.
+
+**Prerequisites:**
+- Familiarity with distributed database consensus algorithms (Paxos/Raft).
+- Understanding of two-phase commit (2PC) and multi-region replication topologies.
+
+## Key System Invariants
+
+1. **Cellular Fault Isolation**: RZone architecture isolates payment transactions into independent deployment units, preventing cascading cross-region failures.
+2. **Zero Data Loss Consensus**: OceanBase multi-Paxos consensus commits state across distributed nodes with zero data loss (RPO = 0) and sub-2s recovery (RTO < 2s).

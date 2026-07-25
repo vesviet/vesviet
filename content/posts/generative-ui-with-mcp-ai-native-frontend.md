@@ -35,8 +35,6 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-frontend/"
 ---
 
-**Answer-first:** Model Context Protocol (MCP) enables AI agents to discover backend capabilities and emit structured tool invocations for application-rendered dynamic UIs. Secure Generative UI requires schema validation (Zod) at the component registry boundary, state synchronization between agent reasoners and DOM elements, sandboxed isolated runtimes for untrusted content, human-in-the-loop confirmation gates, and automated E2E edge testing.
-
 ---
 
 ## Executive Summary & Generative UI Architecture

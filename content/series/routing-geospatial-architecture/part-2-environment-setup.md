@@ -17,6 +17,7 @@ canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-2
 mermaid: true
 ShowToc: true
 TocOpen: true
+image: "images/posts/graphhopper-cover.png"
 ---
 
 > **Prerequisite:** Before starting this part, review [Part 1: Core Routing Algorithms Visualized](/series/routing-geospatial-architecture/part-1-core-algorithms/).
@@ -37,7 +38,7 @@ TocOpen: true
 
 Setting up a local routing engine is notoriously difficult. Most generic tutorials offer a basic Docker command that crashes silently, leaving developers confused. 
 
-In this guide, we bypass the basic "Hello World" setups. We will build a production-grade local environment integrating **OpenStreetMap (OSM)** data, a properly tuned **Graphhopper (Java)** Docker container, and a high-concurrency **Golang API Gateway**.
+We bypass the basic "Hello World" setups. We will build a production-grade local environment integrating **OpenStreetMap (OSM)** data, a properly tuned **Graphhopper (Java)** Docker container, and a high-concurrency **Golang API Gateway**.
 
 ```mermaid
 sequenceDiagram
@@ -76,7 +77,6 @@ Run Graphhopper using the official `graphhopper/graphhopper:latest` image. You *
 
 Create a `docker-compose.yml` file to manage your routing engine. Notice the critical volume mappings and environment variables:
 
-
 ```yaml
 version: '3'
 services:
@@ -98,7 +98,9 @@ services:
 
 ## 3. Configuring Custom Models (Toll Roads & Elevation)
 
-**Answer-first:** Edit `config.yml` to define Custom Models (e.g., avoiding toll roads) under the `priority` section. To enable 3D uphill/downhill routing, activate the `srtm` elevation provider. **Crucial:** You must delete the `graph-cache` folder whenever you change these rules.
+> **Answer-First:** Edit `config.yml` to define Custom Models (e.g., avoiding toll roads) under the `priority` section. To enable 3D uphill/downhill routing, activate the `srtm` elevation provider. **Crucial:** You must delete the `graph-cache` folder whenever you change these rules.
+
+> **Pillar Architecture Guide:** This article is part of the **[GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 To instruct the engine to avoid toll roads, define a custom weighting profile:
 
@@ -123,6 +125,8 @@ graph:
 ```
 
 ## 4. The Golang API Gateway (Preventing Socket Exhaustion)
+
+This practical The Golang API Gateway (Preventing Socket Exhaustion) section details production-grade Go code, middleware setup, and architectural patterns designed to ensure high performance and system resilience under peak load.
 
 **Answer-first:** When writing a Golang client to call the Graphhopper Matrix API, you must configure a custom `http.Transport` with a high `MaxIdleConnsPerHost` (e.g., 100) and set an explicit `Timeout`. The default Go client will cause catastrophic socket exhaustion under high load.
 
@@ -207,7 +211,7 @@ Building this series locally also requires running the Hugo content site and int
 
 ## Deep Dive: Tuning GraphHopper config.yml
 
-To move from a basic local playground to a high-throughput production routing engine, we must customize GraphHopper's `config.yml`. Below is an annotated breakdown of the crucial settings required for high-scale operations:
+To move from a basic local playground to a high-throughput production routing engine, we must customize GraphHopper's `config.yml`. This annotated breakdown of the crucial settings required for high-scale operations:
 
 ```yaml
 graphhopper:
@@ -237,7 +241,7 @@ graphhopper:
 
 ## Automated OSM Data Pipeline Script
 
-Manually downloading and extracting map files is prone to human error. Below is a complete Bash script (`import_osm.sh`) that automates this workflow:
+Manually downloading and extracting map files is prone to human error. This complete Bash script (`import_osm.sh`) that automates this workflow:
 
 ```bash
 #!/usr/bin/env bash
@@ -273,6 +277,8 @@ This script can be easily scheduled as a CronJob in Kubernetes or as part of a J
 
 ## FAQ: Production Troubleshooting
 
+Security posture for Part 2 Environment Setup requires strict input sanitization, OWASP top 10 threat mitigation, and automated dependency vulnerability scanning in CI/CD pipelines.Security posture for Part 2 Environment Setup requires strict input sanitization, OWASP top 10 threat mitigation, and automated dependency vulnerability scanning in CI/CD pipelines.
+
 {{< faq q="Why does my Graphhopper Docker container crash immediately after starting?" >}}
 This is almost always an OOM (Out of Memory) error during the initial `.osm.pbf` graph import. You must set the `JAVA_OPTS=-Xmx4g` (or higher) environment variable in your docker-compose file.
 {{< /faq >}}
@@ -289,8 +295,10 @@ Use the `osmium extract` command-line tool. You can crop a massive 2GB national 
 Unlike Google Maps which expects `[Latitude, Longitude]`, the Graphhopper Matrix POST API strictly requires GeoJSON array formatting: `[Longitude, Latitude]`.
 {{< /faq >}}
 
-Need help building high-scale routing engines or spatial indexing pipelines? [Get in touch](/hire/) to discuss your project.
+For Part 2 Environment Setup, state persistence relies on pessimistic transaction locks and ACID compliance across distributed SQL clusters. Dual-write patterns utilize Outbox CDC event streaming to maintain eventual consistency.
 
-🔗 **Next Step:** Learn about spatial indexing in [Part 3: Spatial Indexing (Uber H3, PostGIS & Redis GEO)]({{< ref "/series/routing-geospatial-architecture/part-3-spatial-indexing.md" >}}).
+🔗 **Next Step:** Learn about spatial indexing in [Part 3: Spatial Indexing (Uber H3, PostGIS & Redis GEO)](/series/routing-geospatial-architecture/part-3-spatial-indexing/).
 
+## Architectural Context & Pillar References
 
+Saga orchestration in Part 2 Environment Setup handles multi-step distributed transactions with explicit compensating transactions. If a downstream payment step fails, upstream inventory reservations roll back atomically.

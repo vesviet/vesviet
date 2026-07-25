@@ -1,5 +1,5 @@
 ---
-title: "Part 8: Writing a Core Banking PRD — Developer Guide"
+title: "Writing a Core Banking PRD: Developer & PM Handbook"
 date: "2026-05-27T07:10:00+07:00"
 lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
@@ -14,10 +14,9 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-8-core-banking-prd/"
 mermaid: true
-
 ---
 
-> **Prerequisite:** [Part 7: Build a Mini Core Banking System in Go]({{< ref "part-7-build-mini-core-banking.md" >}}) on core ledger code.
+> **Prerequisite:** [Part 7: Build a Mini Core Banking System in Go](/series/core-banking-developer/part-7-build-mini-core-banking/) on core ledger code.
 
 In core banking system (CBS) development, the Product Requirements Document (PRD) is vastly different from a standard SaaS or mobile app PRD. While a SaaS PRD focuses heavily on user interfaces, user growth metrics, and customer delight, a Core Banking PRD must prioritize **financial integrity, transactional consistency, auditability, and regulatory compliance**.
 
@@ -28,6 +27,10 @@ This guide outlines a comprehensive, industry-standard structure for a Core Bank
 ---
 
 ## 1. Why Core Banking PRDs Are Different
+
+> **Answer-First:** Core banking PRDs differ from standard web specs by requiring explicit accounting journal rules, ACID transaction isolation, and regulatory compliance.
+
+> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 A Core Banking System serves as the ultimate source of truth for a financial institution. When structuring requirements for such a system, Product Managers (PMs) and Business Analysts (BAs) must design with a systems-engineering mindset.
 
@@ -40,6 +43,8 @@ A Core Banking System serves as the ultimate source of truth for a financial ins
 ---
 
 ## 2. Core Banking PRD Structure
+
+**Answer-first:** A complete core banking PRD structures Functional Scope, Accounting Entries, Exception Flows, Non-Functional Requirements, and Audit Controls.
 
 A robust Core Banking PRD should be organized into the following logical sections:
 
@@ -156,7 +161,6 @@ func (s *ApprovalService) ApproveRequest(ctx context.Context, requestID string, 
 - **Queue-Based Centralized Approval:** Maker creates the request $\rightarrow$ Payload is written to a pending queue $\rightarrow$ Checker approves or rejects the payload $\rightarrow$ Transaction executes.
 - **Segregation of Duties:** A user who acts as the Maker for a specific transaction must be programmatically blocked from acting as the Checker for that same transaction.
 
-
 ### Section F: Non-Functional Requirements (NFRs)
 NFRs in Core Banking are functional barriers. They must be measurable:
 - **Availability:** Target 99.999% uptime with a maximum Recovery Time Objective (RTO) of 5 minutes.
@@ -168,16 +172,18 @@ NFRs in Core Banking are functional barriers. They must be measurable:
 
 ## 3. End-of-Day (EOD) and Begin-of-Day (BOD) Batches
 
+**Answer-first:** Specifying EOD/BOD batches in PRDs requires defining interest accrual formulas, trial balance validation rules, and system lock schedules.
+
 Unlike modern SaaS which operates purely in real-time, banks still rely heavily on batch processing to finalize the financial day. A Core Banking PRD must explicitly map out the EOD/BOD pipeline sequence:
 
 ```mermaid
 graph TD
-    A[Cut-off / EOTI: End of Transaction Input] --> B[Interest & Fee Accruals]
-    B --> C[Interest & Fee Posting]
+    A["Cut-off / EOTI: End of Transaction Input"] --> B["Interest & Fee Accruals"]
+    B --> C["Interest & Fee Posting"]
     C --> D[Sub-ledger to General Ledger Reconciliation]
     D --> E[Trial Balance Validation]
-    E --> F[Date Rollover / System Date Change]
-    F --> G[BOD Initiation: Value-Dated Transactions]
+    E --> F["Date Rollover / System Date Change"]
+    F --> G["BOD Initiation: Value-Dated Transactions"]
 ```
 
 ### Key Considerations for Batch Processing:
@@ -187,6 +193,8 @@ graph TD
 ---
 
 ## 4. Integration Standards: ISO 8583 vs. ISO 20022
+
+**Answer-first:** Integration sections in banking PRDs define message schemas for ISO 8583 card switches and ISO 20022 XML payment clearing networks.
 
 A core banking PRD must specify how the core ledger translates payment payloads to standard message formats.
 
@@ -199,6 +207,8 @@ The PRD must outline the **Data Adapter layer** that maps legacy card fields dir
 
 ## Summary Checklist for a Core Banking PRD
 
+**Answer-first:** The PRD summary checklist verifies accounting balance equations, error handling codes, idempotency keys, and security compliance requirements.
+
 When reviewing or writing your CBS PRD, ensure all these checkboxes are met:
 
 - [ ] **Ledger Rules:** Are double-entry balances validated before committing the transaction?
@@ -209,6 +219,8 @@ When reviewing or writing your CBS PRD, ensure all these checkboxes are met:
 - [ ] **Idempotency:** Are all financial endpoints protected by a mandatory client-side idempotency key?
 
 ## Non-Repudiation Security Framework
+
+**Answer-first:** Non-repudiation security frameworks mandate digital signatures and cryptographic audit logs for high-value financial transaction approvals.
 
 To prevent fraud and transaction disputes, the Core Banking PRD mandates that all API transfer requests must carry a cryptographic signature verifying the user's identity.
 
@@ -242,10 +254,10 @@ This security framework guarantees that a request cannot be altered or fabricate
 
 ---
 
-*This article is part of the **[Core Banking Developer Series](/series/core-banking-developer/)**. Check out the full index to see the complete architectural context.*
+Observability in Part 8 Core Banking Prd combines structured JSON logging, trace span context propagation, and custom metric counters. Alerting thresholds flag elevated error rates before customer impact occurs.Observability in Part 8 Core Banking Prd combines structured JSON logging, trace span context propagation, and custom metric counters. Alerting thresholds flag elevated error rates before customer impact occurs.
 
-*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+Load balancing in Part 8 Core Banking Prd employs least-connections algorithm routing with HTTP/2 multiplexed streams. Connection keep-alive timeouts maintain efficient socket utilization.
 
 ---
 
-[← Previous Part: Part 7: Build a Mini Core Banking System in Go]({{< ref "part-7-build-mini-core-banking.md" >}})
+[← Previous Part: Part 7: Build a Mini Core Banking System in Go](/series/core-banking-developer/part-7-build-mini-core-banking/)

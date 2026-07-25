@@ -25,12 +25,8 @@ mermaid: true
 > - Docker container privileges (`cap_drop: ALL`) prevent autonomous agents from escaping execution sandboxes.
 > - Multi-agent task queues maintain state via Redis streams to handle asynchronous execution.
 
-**Answer-first:** Orchestrate a resilient, 24/7 autonomous AI swarm by decoupling agent execution from LLM providers using LiteLLM as an API gateway. Handle rate limits via key-pooling and automatic fallbacks, manage agent tasks with OpenClaw, and isolate container permissions using Docker `cap_drop` to mitigate SSRF and prompt injection risks.
-
-### What You'll Learn That AI Won't Tell You
 - Docker cap-drop security patterns that protect local credentials from AI agents.
 - Setting up model fallbacks and pool-key routing in LiteLLM to bypass API rate limits.
-
 
 > 
 
@@ -132,7 +128,7 @@ router_settings:
     - {"gemini-2.5-flash": ["gemini-2.5-flash", "ops-fallback"]}
 ```
 
-### Why this is a game-changer:
+### Why this is a architectural milestone:
 1.  **Cost Optimization:** By pooling multiple API keys for models like `gemini-2.5-flash`, you can run heavy agentic workflows (which require continuous looping and planning) entirely within free tiers.
 2.  **Autonomous Survival:** Notice the `fallbacks` array. If all Gemini keys hit a 429 Rate Limit, LiteLLM automatically transparently reroutes the exact same prompt to Groq's `llama-3.3-70b-versatile`. The OpenClaw agent is completely unaware of the failure; it just receives the JSON response and continues its work.
 
@@ -213,14 +209,12 @@ In high-concurrency production deployments, balancing throughput, resilience, an
 2. **Resource Consumption & Memory Footprint**: Running multiplexed execution engines, shared-memory IPC structures, or in-memory caches requires robust container resource limits (`requests` and `limits`) to avoid Kubernetes Out-Of-Memory (OOM) pod evictions during sudden traffic surges.
 3. **Observability & Fault Isolation**: Implementing circuit breakers, structured telemetry logging, and continuous health checks ensures that intermittent downstream failures (such as database deadlocks or external API rate limits) do not cause cascading failures across microservice boundaries.
 
-
 ## Related Pillar Articles & Further Reading
 
 - [Autonomous Hybrid-AI Content Pipeline Guide](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)
 - [Agentic System Architecture Series](/series/agentic-system-architecture/)
 - [Go MCP Server Development Guide](/posts/go-mcp-server-development-production-guide/)
 - [Vibe Coding and AI Code Review Future](/posts/vibe-coding-and-ai-code-review-future/)
-
 
 ## Frequently Asked Questions (FAQ)
 

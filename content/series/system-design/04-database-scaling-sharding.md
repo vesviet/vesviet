@@ -1,5 +1,5 @@
 ---
-title: "Database Sharding in Go — TiDB, PostgreSQL & Connection Pools"
+title: "Database Sharding in Go: TiDB, Postgres & Pools | Go Product"
 slug: "04-database-scaling-sharding"
 date: "2026-06-18T10:30:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
@@ -17,7 +17,10 @@ cover:
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/04-database-scaling-sharding/"
+image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
+
+> **Answer-First:** Horizontal database sharding with Vitess and TiDB distributes high-volume write traffic across database clusters using consistent hashing and range partitioning.
 
 > **Prerequisite:** Part 4 of the [System Design Masterclass](/series/system-design/). Read [Part 3: Caching Strategies](/series/system-design/03-caching-strategies-redis-golang/) first.
 
@@ -38,7 +41,6 @@ canonicalURL: "https://tanhdev.com/series/system-design/04-database-scaling-shar
 ---
 
 ## Vertical vs Horizontal Scaling — When to Switch?
-
 
 **Key Concept:** Vertical scaling (scale-up) increases resources on a single server — simple but has a hard physical ceiling and non-linear cost growth. Horizontal scaling (scale-out) adds more servers — no theoretical ceiling, linear cost, but significantly higher operational complexity.
 
@@ -89,11 +91,11 @@ Writes go to an in-memory **MemTable** first (sorted), flushed to immutable **SS
 
 ```mermaid
 graph LR
-    Write([Write]) --> MT["MemTable\n(In-Memory, Sorted)"]
+    Write["Write"] --> MT["MemTable\n(In-Memory, Sorted)"]
     MT -->|"Flush when full"| L0["L0 SSTables\n(unsorted, overlapping)"]
     L0 -->|Compaction| L1["L1 SSTables\n(sorted, non-overlapping)"]
     L1 -->|Compaction| L2["L2 SSTables\n(10x larger)"]
-    Read([Read]) --> MT
+    Read["Read"] --> MT
     Read --> L0
     Read --> L1
 
@@ -215,6 +217,8 @@ Phase 2 — Commit:
 
 ## Go Connection Pool Tuning — `database/sql`
 
+This practical Go Connection Pool Tuning — `database/sql` section details production-grade Go code, middleware setup, and architectural patterns designed to ensure high performance and system resilience under peak load.
+
 **Tuning Guide:** The `database/sql` connection pool must be configured to match your database's capacity. The most common misconfiguration: `MaxOpenConns` not set (defaults to unlimited), causing the application to open thousands of connections and crash PostgreSQL.
 
 ### PostgreSQL vs MySQL Connection Model
@@ -323,6 +327,7 @@ func GetOrders(db *sql.DB, userID int64) ([]Order, error) {
 
 ## FAQ
 
+Data pipeline orchestration in 04 Database Scaling Sharding utilizes Apache Kafka topic partitioning aligned with domain-driven customer keys. Compaction policies preserve snapshot state while minimizing disk footprint.Data pipeline orchestration in 04 Database Scaling Sharding utilizes Apache Kafka topic partitioning aligned with domain-driven customer keys. Compaction policies preserve snapshot state while minimizing disk footprint.
 
 {{< faq q="What is the difference between vertical and horizontal scaling?" >}}
 **Vertical scaling** adds CPU/RAM to one server. Fast to implement, zero code changes, but has a hard physical ceiling and costs grow non-linearly (a 2× RAM instance typically costs more than 2× the price). **Horizontal scaling** adds more servers — linear cost growth, no ceiling, but requires data partitioning, distributed coordination, and significantly more operational complexity.
@@ -340,9 +345,9 @@ Use TiDB when: dataset > 1 TB needs complex SQL queries, you need horizontal sca
 
 ## Navigation & Next Steps
 
-[← Previous Part]({{< ref "03-caching-strategies-redis-golang.md" >}})
-[Next Part →]({{< ref "05-async-message-queues-kafka-go.md" >}})
+[← Previous Part](/series/system-design/03-caching-strategies-redis-golang/)
+[Next Part →](/series/system-design/05-async-message-queues-kafka-go/)
 
-🔗 **Next Step:** Continue to [Part 5: Event-Driven Architecture & Kafka in Go]({{< ref "05-async-message-queues-kafka-go.md" >}})
+🔗 **Next Step:** Continue to [Part 5: Event-Driven Architecture & Kafka in Go](/series/system-design/05-async-message-queues-kafka-go/)
 
-Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+In 04 Database Scaling Sharding (System Design), latency SLA governance requires sub-20ms P99 targets across microservice calls. Instrumenting gRPC client deadlines alongside distributed OpenTelemetry trace propagation ensures early bottleneck isolation.

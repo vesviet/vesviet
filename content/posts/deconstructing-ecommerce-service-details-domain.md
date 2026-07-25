@@ -18,9 +18,6 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/deconstructing-ecommerce-service-details-domain/"
 ---
 
-**Answer-first:** We partition the e-commerce domain into six logical business domains—Identity, Catalog, Cart, Checkout, Order, and Fulfillment—containing 21 isolated services. Each service owns its database exclusively, communicating asynchronously via event brokers to ensure scalability and prevent tight coupling.
-
-### What You'll Learn That AI Won't Tell You
 - Why microservices must own their schema migrations (via Golang-Migrate) independently, and the specific event schemas that prevent transactional coupling.
 - Real-world database deadlocks encountered when segregating order history from the catalog database, and how they were solved using CQRS.
 

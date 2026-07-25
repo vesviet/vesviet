@@ -27,9 +27,6 @@ canonicalURL: "https://tanhdev.com/posts/go-mcp-server-development-production-gu
 noTranslation: true
 ---
 
-**Answer-first:** Production-grade Go MCP servers require the official `modelcontextprotocol/go-sdk` and strict JSON schemas. Because stdio transport uses standard output, you must route all internal logs to stderr to prevent client crashes. Return validation errors as tool-level failures rather than system errors to preserve connection persistence.
-
-## What You'll Learn That AI Won't Tell You
 - How a single standard library `print` statement can immediately corrupt a JSON-RPC stdio pipeline and crash your agent gateway.
 - The critical semantic difference between Go native errors and MCP tool-level errors for maintaining connection persistence.
 - Concrete architectural patterns for managing multi-minute cloud provisioning tasks within strict HTTP/SSE timeouts.

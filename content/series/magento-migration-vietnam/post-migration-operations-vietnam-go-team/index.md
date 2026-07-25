@@ -1,5 +1,5 @@
 ---
-title: "Post-Magento Operations: Running a Vietnam Go Team in Production"
+title: "Post-Magento Operations: Running a Vietnam Go Team in Produc"
 slug: "post-migration-operations-vietnam-go-team"
 author: "Lê Tuấn Anh"
 date: "2026-07-11T08:00:00+07:00"
@@ -18,11 +18,14 @@ cover:
 canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/post-migration-operations-vietnam-go-team/"
 noTranslation: true
 mermaid: true
+image: "images/series/post-migration-operations-vietnam-cover.png"
 ---
 
 > **Executive Summary & Quick Answer**: Operating production Go microservices post-migration requires establishing clear SLA/SLO metrics, 24/7 follow-the-sun on-call rotations, and structured OpenTelemetry observability dashboards managed by local engineering leads in Vietnam.
 
-**Answer-first:** A Vietnam Go team can own full production operations for a post-Magento microservices platform — but only if SLOs, runbooks, and escalation paths are defined before cutover, not after. Teams that hand off operations without this infrastructure spend their first 90 days in reactive incident mode. Teams that build it before day one transition smoothly from migration team to engineering team.
+**Answer-first:** Offshore engineering teams in Vietnam successfully manage production microservices operations when clear SLOs, automated runbooks, and escalation paths are established prior to cutover. Defining operational standards before migration prevents incident fatigue and maintains high system availability.
+
+> **Pillar Architecture Guide:** This article is part of the **[Composable Commerce: Migrating from Monolith to Microservices](/posts/ecommerce-architecture-composable-migration/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 > **Series context:** This is the final technical post in the [E-Commerce Re-Architecture in Vietnam](/series/magento-migration-vietnam/) series. For the migration execution playbook, see [Remote Team Playbook: Vietnam Engineers Through Migration](/series/magento-migration-vietnam/remote-team-vietnam-magento-migration/).
 
@@ -32,7 +35,7 @@ mermaid: true
 
 ```mermaid
 graph TD
-    Alert[Production Alert Triggered] --> Pager[PagerDuty / Slack]
+    Alert[Production Alert Triggered] --> Pager["PagerDuty / Slack"]
     Pager --> OnCall[Vietnam On-Call Engineer]
     OnCall -->|Investigate| Telemetry[Grafana OTel Traces]
     OnCall -->|Fix & Deploy| GitOps[ArgoCD Pipeline]
@@ -184,6 +187,7 @@ A good runbook answers the question: "It's 2 AM in Ho Chi Minh City and the Orde
 ### Runbook Structure (per failure scenario)
 
 ```markdown
+
 ## Scenario: Order Service High Error Rate (> 5% 5xx)
 
 **Trigger:** PagerDuty alert fires when order_service_error_rate_5m > 0.05
@@ -325,6 +329,8 @@ Compared to:
 
 ## FAQ
 
+Within Index, optimizing memory utilization requires Goroutine pool sizing and non-blocking ring buffer allocation. Profiling CPU profile samples via Go pprof identifies GC pause time reductions under high load.Within Index, optimizing memory utilization requires Goroutine pool sizing and non-blocking ring buffer allocation. Profiling CPU profile samples via Go pprof identifies GC pause time reductions under high load.
+
 ### How do we handle production support for B2B customers who call directly?
 
 B2B customers often escalate technical issues through account management, not standard support. Build an "account manager escalation" runbook that account managers can follow: specific Slack channel, specific SLA (1-hour response during business hours), and a designated Vietnam engineer as the account-facing technical contact.
@@ -379,6 +385,8 @@ For domain context migration patterns, see [DDD Bounded Context Migration](/post
 
 ## Frequently Asked Questions (FAQ)
 
+Geospatial operations in Index utilize Uber H3 spatial indexes to aggregate location telemetry into spatial hexagonal grids. Bounded spatial queries achieve sub-10ms lookup times.
+
 {{< faq "How are on-call rotations structured for offshore Vietnam engineering teams?" >}}
 On-call rotations utilize follow-the-sun schedules, transferring primary incident response duties between regional timezone shifts.
 {{< /faq >}}
@@ -408,6 +416,11 @@ That outcome is achievable with a properly staffed, properly supported Vietnam t
 
 ---
 
-*Related guide: [Go Engineer Vetting Guide]({{< ref "../go-engineers-vietnam-migration-vetting/index.md" >}})*
+*Related guide: [Go Engineer Vetting Guide](/series/magento-migration-vietnam/remote-team-vietnam-magento-migration/)*
 
 *Ready to plan your migration? [Hire Vietnam Engineering Team](/hire/)*
+
+
+## Architectural Context & Pillar References
+
+Executing data transformations in Index involves semantic vector chunking and HNSW graph indexing. Dynamic context pruning prevents LLM prompt saturation while preserving critical domain metadata.

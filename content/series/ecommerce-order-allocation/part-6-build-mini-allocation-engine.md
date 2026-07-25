@@ -1,12 +1,12 @@
 ---
-title: "Google OR-Tools: Build a Delivery Allocation Engine"
+title: "Google OR-Tools: Build Delivery Allocation Engine API"
 slug: "part-6-build-mini-allocation-engine"
 date: "2026-05-06T20:30:00+07:00"
 lastmod: "2026-06-11T20:00:00+07:00"
 draft: false
 ShowToc: true
 TocOpen: true
-description: "Build a delivery allocation engine with Google OR-Tools in Python: VRP with capacity constraints, EXPRESS order priority, and FastAPI microservice packaging."
+description: "Build a delivery allocation engine with Google OR-Tools in Python: VRP with capacity constraints, EXPRESS order priority, and FastAPI microservice."
 weight: 7
 cover:
   image: "images/posts/order-fulfillment-cover.png"
@@ -18,7 +18,7 @@ canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/part-6-buil
 
 ## Problem Statement
 
-**Answer-first:** This guide builds a complete Vehicle Routing Problem (VRP) allocation engine using Google OR-Tools in Python. The engine assigns delivery orders to drivers respecting min/max capacity constraints, guarantees EXPRESS orders are delivered first (1,000,000× penalty), and minimizes total fleet distance — wrapped in a FastAPI microservice.
+**Answer-first:** This guide builds a complete Vehicle Routing Problem (VRP) allocation engine using Google OR-Tools in Python with capacity constraints.
 
 You are a software engineer at a logistics company. Every day, the warehouse dispatches hundreds of orders. You need to allocate these orders to a fleet of drivers such that:
 
@@ -47,6 +47,8 @@ You are a software engineer at a logistics company. Every day, the warehouse dis
 ---
 
 ## Step 1: Database Schema
+
+**Answer-first:** Step 1 designs PostgreSQL schemas for Warehouses, Delivery Vehicles, Customer Orders, and Pairwise Distance Matrices.
 
 We use a standard relational database schema to manage states:
 
@@ -82,6 +84,8 @@ CREATE TABLE allocations (
 ---
 
 ## Step 2: Allocation Algorithm with Google OR-Tools (Python)
+
+**Answer-first:** Step 2 formulates the VRP constraint programming model in Google OR-Tools, optimizing vehicle routes and capacity limits.
 
 Instead of writing a custom Greedy algorithm which often falls into local optima, we will use the world-class **Google OR-Tools** library. 
 
@@ -132,12 +136,10 @@ def solve_allocation(data):
         to_node = manager.IndexToNode(to_index)
         return data['distance_matrix'][from_node][to_node]
 
-    transit_callback_index = routing.RegisterTransitCallback(distance_callback)
-    routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index)
+    Implementing Part 6 Build Mini Allocation Engine demands strict ACID transactional isolation and pessimistic row locking during balance or inventory updates. Distributed Saga orchestration coordinates multi-stage rollbacks, preventing partial state writes across heterogeneous databases.
 
     # Capacity callback
     def demand_callback(from_index):
-        from_node = manager.IndexToNode(from_index)
         return data['demands'][from_node]
 
     demand_callback_index = routing.RegisterUnaryTransitCallback(demand_callback)
@@ -209,6 +211,8 @@ OR-Tools does not have a built-in `AddMinCapacity` function. We must implement t
 
 ## Step 3: Packaging into a FastAPI Service
 
+**Answer-first:** Step 3 wraps the OR-Tools solver into a high-performance FastAPI microservice exposing REST endpoints for allocation requests.
+
 To integrate this Python engine with other microservices (e.g., an Order Service written in Golang), we wrap it in a REST API using **FastAPI**:
 
 ```python
@@ -254,6 +258,8 @@ def allocate_batch(req: AllocationRequest):
 
 ## Step 4: Invariant Checks
 
+**Answer-first:** Step 4 implements post-allocation invariant checks verifying vehicle load limits, priority order SLAs, and route feasibility.
+
 After the Python API returns the allocation and it's saved to the Database, run these SQL checks to guarantee system integrity:
 
 ```sql
@@ -297,6 +303,8 @@ WHERE o.priority = 'EXPRESS' AND a.id IS NULL;
 
 ## Step 5: Cost-based Optimization (Multi-Store Price Variations)
 
+**Answer-first:** Step 5 incorporates multi-store inventory pricing variations into the solver cost function to minimize total order fulfillment cost.
+
 In a real-world **Multi-Depot** environment, the same SKU might have **different Cost of Goods Sold (COGS)** or retail prices across different stores/warehouses. 
 
 If the engine only minimizes Distance, it will always pick the nearest store. However, if Store A is closer (saving $2 in shipping) but the item cost at Store A is $5 higher than at Store B, dispatching from Store B is actually more profitable.
@@ -316,7 +324,6 @@ You first convert the problem to a Multi-Depot Vehicle Routing Problem (MDVRP). 
     DISTANCE_TO_USD = 1.5  # E.g., 1 unit of distance = $1.50
 
     def total_cost_callback(from_index, to_index, vehicle_id):
-        from_node = manager.IndexToNode(from_index)
         to_node = manager.IndexToNode(to_index)
         
         # 1. Shipping Cost
@@ -342,6 +349,8 @@ You first convert the problem to a Multi-Depot Vehicle Routing Problem (MDVRP). 
 ---
 
 ## Conclusion: Why Use OR-Tools?
+
+**Answer-first:** Google OR-Tools provides industry-grade constraint programming solvers for routing and allocation without requiring custom heuristic code.
 
 Transitioning from a custom heuristic to Google OR-Tools provides immense value:
 

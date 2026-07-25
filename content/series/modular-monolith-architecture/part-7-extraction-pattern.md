@@ -1,9 +1,8 @@
 ---
-
-title: "Part 7: Extraction Pattern – When Should You Extract Microservices?"
+title: "Microservice Extraction: When to Split the Monolith"
 date: "2026-07-03T10:00:00+07:00"
 lastmod: "2026-07-03T14:59:00+07:00"
-description: "Not everything belongs in a Monolith. Learn how to determine when a module should be extracted into a Microservice through lessons from Sentry, GitLab, and Shopify."
+description: "Learn exactly when to extract a module from a Monolith into a Microservice through real-world engineering lessons from Sentry, GitLab, and Shopify."
 slug: "extraction-pattern-when-to-extract-microservices"
 tags: ["Microservices", "Extraction", "Sentry", "GitLab", "Modular Monolith", "Architecture"]
 categories: ["Modular Monolith", "System Architecture"]
@@ -15,18 +14,14 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 draft: false
+image: "images/posts/golang-microservices-cover.png"
 ---
 
+> Extracting a module from a modular monolith into an independent microservice should only occur when domain isolation, specialized hardware scaling (e.g. GPU inference), or team organizational velocity demands it. Having pre-enforced DDD bounded contexts ensures extraction requires only introducing network RPC adapters rather than domain refactoring.
+
+> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series and **[Composable E-Commerce Migration](/posts/ecommerce-architecture-composable-migration/)** guide. Please refer to the original article for a comprehensive overview of the architecture.
+
 > **Prerequisite:** Before reading this part, please review [Part 6: Migration Playbook](/series/modular-monolith-architecture/part-6-migration-playbook/).
-
-# Part 7: Extraction Pattern – When Should You Extract Microservices?
-
-> **Executive Summary & Quick Answer**: Extraction of a module into an independent microservice is only justified when it requires different scaling profiles, team boundaries, or deployment velocities. The extraction process is executed by creating an interface wrapper around the module, routing calls through an API gateway, and separating database tables using asynchronous data replication.
->
-> **Key Takeaways**:
-> - **Extraction Triggers**: Extract only when a module exhibits asynchronous IO bottlenecks (e.g. Sentry's Relay in Rust) or polyglot language demands (GitLab's Gitaly in Go).
-> - **Interface Abstraction**: Wrap domain logic in Go interface contracts to switch seamlessly between in-memory RAM execution and gRPC microservice calls.
-> - **Database Decoupling**: Replicate tables using Change Data Capture (CDC) or outbox events before breaking physical SQL schemas.
 
 ### What You'll Learn That AI Won't Tell You
 - **Extraction Threshold Metrics:** Quantitative triggers (e.g. CPU saturation ratios) that justify extraction.
@@ -39,18 +34,18 @@ The core issue is: **We only extract a feature into a Microservice when it truly
 
 ```mermaid
 flowchart TD
-    A[Modular Monolith Internal Domain] --> B{Exhibits Asymmetric CPU/RAM or Polyglot Needs?}
-    B -- No --> C[Retain In-Memory Execution in Monolith]
-    B -- Yes --> D[Define Go Public Interface Contract]
+    A[Modular Monolith Internal Domain] --> B{"Exhibits Asymmetric CPU/RAM or Polyglot Needs?"}
+    B -->|"No"| C[Retain In-Memory Execution in Monolith]
+    B -->|"Yes"| D[Define Go Public Interface Contract]
     D --> E[Extract Module into Independent gRPC Microservice]
-    E --> F[Inject Dynamic Adapter: Factory Pattern]
+    E --> F["Inject Dynamic Adapter: Factory Pattern"]
 ```
 
 ---
 
 ## 1. Quantitative Extraction Signals & Operational Thresholds
 
-Below are **4 concrete, quantitative signals** indicating a Module has "graduated" and is ready to be extracted from the Modular Monolith into a standalone microservice:
+Quantitative operational signals govern when a module has graduated and is ready for extraction from a modular monolith into an independent microservice:
 
 ### Signal 1: Resource-Specific Independent Scaling Needs & CPU Saturation Ratios
 Sometimes, your application has a specialized task whose compute footprint differs dramatically from the core business logic.
@@ -181,30 +176,19 @@ During extraction, database tables must be physically separated from the monolit
 
 Review our complete industry benchmark summary in [Part 8: Case Study Matrix](/series/modular-monolith-architecture/part-8-case-study-matrix/).
 
-## Frequently Asked Questions (FAQ)
-
-{{< faq q="When should a module be extracted from a modular monolith?" >}}
-A module should be extracted only when it exhibits distinct resource bottlenecks (e.g. heavy Rust/C++ CPU compute), requires a different programming language, or has strict compliance boundaries.
-{{< /faq >}}
-
-{{< faq q="How does the Go interface factory pattern enable zero-downtime extraction?" >}}
-The factory pattern abstracts the domain contract. Switching from in-memory execution to a remote gRPC client requires only a configuration change without modifying caller business logic.
-{{< /faq >}}
-
-{{< faq q="What are the risks of extracting a service too early?" >}}
-Extracting early introduces distributed network latency, cross-service serialization overhead, complex deployment pipelines, and high infrastructure costs before domain boundaries are stable.
-{{< /faq >}}
-
-{{< faq q="How did GitLab decouple Git IO without splitting business logic?" >}}
-GitLab extracted Gitaly in Go strictly for disk file IO operations while leaving authorization, user management, and merge requests inside their main Rails monolith.
-{{< /faq >}}
-
 ---
 
 ## Navigation & Next Steps
+
+Load balancing in microservice extraction architectures employs least-connections algorithm routing with HTTP/2 multiplexed streams. Connection keep-alive timeouts maintain efficient socket utilization.
 
 - **Previous Part:** [Part 6: Migration Playbook](/series/modular-monolith-architecture/part-6-migration-playbook/)
 - **Next Part:** Continue to [Part 8: Case Study Matrix](/series/modular-monolith-architecture/part-8-case-study-matrix/)
 - **Related Guides:** [Go System Design Primer](/series/system-design/01-introduction-system-design-golang/) and [Shopee & Alipay C10M High-Concurrency](/posts/shopee-flash-sale-architecture/)
 
 Need help deciding whether to extract a module into a microservice? [Get in touch](/hire/) or [hire our senior software architects](/hire/) for an architectural evaluation.
+
+
+## Architectural Context & Pillar References
+
+In microservice extraction patterns, API contract evolution uses Protocol Buffers with backward-compatible schema fields. gRPC-Web proxies bridge browser frontends directly to backend microservice clusters.

@@ -1,5 +1,5 @@
 ---
-title: "E-commerce Order Allocation Architecture (Amazon, eBay)"
+title: "E-commerce Order Allocation Architecture Systems Guide"
 date: "2026-05-06T20:30:00+07:00"
 lastmod: "2026-05-06T20:30:00+07:00"
 draft: false
@@ -21,6 +21,8 @@ This series bridges theory and practice, covering the real-world architecture of
 
 ## Series Overview
 
+**Answer-first:** This series analyzes e-commerce order allocation algorithms, warehouse optimization, vehicle routing problems, and distance matrix computation.
+
 - [Executive Summary — The Big Picture of Order Allocation](/posts/order-fulfillment-algorithm-warehouse-last-mile/)
 - [Part 1 — Order Fulfillment: From "Buy" Click to Delivery](/posts/order-fulfillment-algorithm-warehouse-last-mile/)
 - [Part 2 — Inventory Management: Real-time Stock Sync](/posts/order-fulfillment-algorithm-warehouse-last-mile/)
@@ -32,6 +34,25 @@ This series bridges theory and practice, covering the real-world architecture of
 
 ## Production Case Study
 
+**Answer-first:** The production case study explores how e-commerce leaders solve multi-warehouse order splitting and last-mile delivery optimization.
+
 See the full warehouse-to-last-mile pipeline in a live production context:
 
 - **[Order Fulfillment Algorithm: Warehouse to Last-Mile](/posts/order-fulfillment-algorithm-warehouse-last-mile/)** — How a Southeast Asian e-commerce operator runs a real-time order allocation engine: WMS integration, slot commitment windows, driver scoring, re-allocation triggers, and SLA breach mitigation.
+
+## Order Allocation System Architecture Matrix
+
+| Part | Topic | Core Engine & Algorithm | Business Impact |
+|---|---|---|---|
+| **Part 1** | Real-Time Inventory Reservation | Redis Atomic Lua, Kafka CDC | Zero overselling across warehouses |
+| **Part 2** | Multi-Warehouse Allocation | Google OR-Tools Integer Programming | Minimum shipping cost and split shipments |
+| **Part 3** | Distance & Carrier Routing | GraphHopper, Distance Matrix API | Lowest-cost carrier selection per zip code |
+| **Part 4** | Order Fulfillment Engine | Go Microservices Engine | Sub-10ms allocation latency at 5,000 QPS |
+
+## Target Audience & Logistics Prerequisites
+
+Engineered for **Supply Chain Architects, E-commerce Backend Leads, and Operations Research Engineers**.
+
+**Prerequisites:**
+- Experience with inventory management and order fulfillment lifecycles.
+- Basic understanding of linear programming, graph algorithms, and Go backend development.

@@ -1,6 +1,6 @@
 ---
 title: "Magento to Go Microservices: Vietnam Migration Series"
-description: "The CTO playbook for migrating Magento to Go microservices with a Vietnam team — cost models, vetting, remote ops, zero-downtime strategy."
+description: "The CTO playbook for migrating Magento to Go microservices with a Vietnam engineering team — cost models, vetting, remote ops, and strategy."
 date: "2026-07-08T19:00:00+07:00"
 lastmod: "2026-07-08T19:00:00+07:00"
 draft: false
@@ -11,17 +11,16 @@ slug: "magento-migration-vietnam"
 categories: ["Series", "Software Engineering", "Engineering Management"]
 tags: ["Magento", "Microservices", "Golang", "Vietnam", "Migration", "Ecommerce", "Cost Model", "Remote Team"]
 cover:
-  image: "images/series/magento-migration-vietnam-cover.png"
+  image: "images/series/remote-team-vietnam-migration-cover.png"
   alt: "E-Commerce Re-Architecture in Vietnam: Magento to Go Microservices"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/"
 noTranslation: true
+image: "images/series/remote-team-vietnam-migration-cover.png"
 ---
 
-
 Your Magento platform handles 2,000 orders a day. Your engineering team spends **60–70% of every sprint on maintenance** — patches, extension conflicts, and EAV query optimization — instead of shipping features. Category pages take 4 seconds. Checkout breaks during flash sales.
-
 
 Adobe Commerce 2.4.5 and 2.4.6 lose security support on **August 11, 2026**. You're not just facing a performance problem. You're facing a compliance deadline.
 
@@ -35,11 +34,9 @@ Yes. Here's exactly how.
 
 ## 🎯 Who This Series Is For
 
-You are running a B2B or B2C e-commerce platform on Magento 2. Your store has:
-- **50,000+ SKUs** with custom attribute sets or complex pricing rules
-- **2,000+ orders/day** at baseline, with seasonal peaks 3–5× that
-- **Multiple custom extensions** built over 5+ years by multiple teams
-- A development team spending more time on Magento firefighting than on product work
+You are running a B2B or B2C e-commerce platform on Magento 2.
+
+Your store has: - **50,000+ SKUs** with custom attribute sets or complex pricing rules - **2,000+ orders/day** at baseline, with seasonal peaks 3–5× that - **Multiple custom extensions** built over 5+ years by multiple teams - A development team spending more time on Magento firefighting than on product work
 
 You've evaluated MACH architectures, read about Strangler Fig patterns, and know Go is the right technology. What you don't have is a **concrete execution model** — one that accounts for real B2B complexity, real Vietnam team dynamics, and real budget constraints.
 
@@ -89,7 +86,7 @@ This series is built on:
 
 - [Magento Development in Vietnam: Cost, Hiring & Upgrade](/posts/magento-vietnam/) — Market rates, talent pool overview, engagement model comparison
 - [Magento Agency & Development in Vietnam: Scoping Guide](/posts/magento-development-in-vietnam/) — How to scope a migration engagement with a Vietnam agency
-- [Vetting Magento Developers in Vietnam: Interview Playbook](/posts/magento-developers-in-vietnam/) — Technical interview framework for Magento PHP specialists
+- [Vetting Magento Developers in Vietnam: Interview Playbook](/posts/magento-development-in-vietnam/) — Technical interview framework for Magento PHP specialists
 - [**Go Engineers in Vietnam: Vetting for Magento Migration**](/series/magento-migration-vietnam/go-engineers-vietnam-migration-vetting/) — 🆕 Five production-level migration scenarios, distributed systems red flags, green signals
 - [**Magento Migration Cost: Vietnam vs US/EU Team (2026 Model)**](/series/magento-migration-vietnam/magento-migration-cost-vietnam-vs-us-eu/) — 🆕 Phase-by-phase budget breakdown, Vietnam vs. US/EU rate comparison, break-even analysis
 
@@ -111,6 +108,7 @@ This series is built on:
 ---
 
 ## 🏗️ Architecture Consulting
+
 
 **Planning a Magento migration?** Before committing to a vendor or timeline, get an independent architecture review.
 
@@ -137,3 +135,4 @@ A 2-week engagement delivers:
 | Enterprise migration timeline | 12–18 months (B2B complex) |
 | Productivity dip during migration | 25–40% for months 4–8 (documented) |
 | Tiki Vietnam: services on GKE | 100+ microservices (Go + Java + Kafka) |
+

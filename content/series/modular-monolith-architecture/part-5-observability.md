@@ -1,6 +1,5 @@
 ---
-
-title: "Part 5: Observability in Memory – When Everything Shares a Single Call Stack"
+title: "Modular Monolith Observability: Logging & Profiling"
 date: "2026-07-03T10:00:00+07:00"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "Comparing Distributed Tracing in Microservices with In-process Profiling in a Modular Monolith. Why is OpenTelemetry on a Monolith faster and cheaper?"
@@ -15,7 +14,12 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 draft: false
+image: "images/posts/golang-microservices-cover.png"
 ---
+
+> **Answer-First:** Observability in modular monoliths leverages in-process OpenTelemetry span propagation across module boundaries without network serialization overhead. Combining in-memory context tracking with structured logging reduces telemetry ingestion costs while retaining microservice-level latency visibility.
+
+> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series and **[Composable E-Commerce Migration](/posts/ecommerce-architecture-composable-migration/)** guide. Please refer to the original article for a comprehensive overview of the architecture.
 
 > **Prerequisite:** Before reading this part, please review [Part 4: CI/CD Simplified](/series/modular-monolith-architecture/part-4-cicd-simplified/).
 
@@ -115,8 +119,6 @@ For rate limiting and gateway observability, see our [Distributed Rate Limiting 
 
 ## 3. Go In-Memory Span Tracking (Zero Facade Code)
 
-Below is an authentic Go trace wrapper that measures domain execution latency using `sync.WaitGroup` worker pools and Go context values:
-
 ```go
 package main
 
@@ -168,8 +170,6 @@ func main() {
 ---
 
 ## 4. Production OpenTelemetry Go SDK Setup
-
-Below is a complete, production-ready OpenTelemetry initialization helper that configures standard gRPC transport credentials and provides clean helper functions for span creation:
 
 ```go
 package telemetry
@@ -258,4 +258,6 @@ Initialize an OTLP trace provider with a local batch exporter, wrapping key modu
 - **Related Guides:** [Caching Strategies & Redis LFU in Go](/series/system-design/03-caching-strategies-redis-golang/) and [C10M High-Concurrency Architecture](/posts/shopee-flash-sale-architecture/)
 
 Need help setting up low-overhead OpenTelemetry tracing for your monolith? [Get in touch](/hire/) or [hire our observability experts](/hire/) for an architectural review.
+
+## Architectural Context & Pillar References
 

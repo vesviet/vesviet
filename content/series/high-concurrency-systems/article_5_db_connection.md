@@ -8,7 +8,7 @@ series_order: 5
 tags: ["golang", "database", "connection pool", "performance"]
 mermaid: true
 slug: "golang-database-connection-pool-optimization"
-description: "Tune your *sql.DB connection pool parameters (MaxOpenConns, MaxIdleConns) and implement PgBouncer to maximize Go database performance."
+description: "Tune your Go *sql.DB connection pool parameters (MaxOpenConns, MaxIdleConns) and implement PgBouncer to maximize database performance in production."
 ShowToc: true
 TocOpen: true
 cover:
@@ -17,9 +17,12 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/golang-database-connection-pool-optimization/"
+image: "images/posts/realtime-inventory-cover.png"
 ---
 
-> **Prerequisite:** Before reading this chapter, please ensure you have read the previous article in this series: [Chapter 4: Solving the Dual-Write Problem with Transactional Outbox Pattern]({{< ref "article_4_outbox_pattern.md" >}}).
+> **Pillar Architecture Guide:** This article is part of the **[High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+
+> **Prerequisite:** Read the previous article: [Chapter 4: Solving the Dual-Write Problem with Transactional Outbox Pattern](/series/high-concurrency-systems/article_4_outbox_pattern/).
 
 If your Golang system processes business logic blazingly fast but chokes at the Database layer, 90% of the time, it is due to an incorrectly configured `*sql.DB`.
 
@@ -51,10 +54,14 @@ The `database/sql` package provides 4 optimization parameters, but their default
 Never allow a connection to live forever. Cloud Firewalls and Load Balancers aggressively terminate silent TCP connections, leading to `broken pipe` errors in Go. Configure `SetConnMaxLifetime` to `5-10 minutes` to periodically refresh the pool.
 
 ```go
-db.SetMaxOpenConns(100)
-db.SetMaxIdleConns(50) 
-db.SetConnMaxLifetime(10 * time.Minute)
-db.SetConnMaxIdleTime(5 * time.Minute)
+package main
+
+func configureDBPool(db *sql.DB) {
+	db.SetMaxOpenConns(100)
+	db.SetMaxIdleConns(50)
+	db.SetConnMaxLifetime(10 * time.Minute)
+	db.SetConnMaxIdleTime(5 * time.Minute)
+}
 ```
 
 ---
@@ -68,7 +75,7 @@ If your database server has 8 CPU cores, and you establish 1,000 active connecti
 ```mermaid
 graph TD
     subgraph "High Connection Clutter (1,000 Connections)"
-        CPU_Overload[8 CPU Cores] -->|80% CPU wasted| ContextSwitch[OS Context Switching & Process Scheduling]
+        CPU_Overload[8 CPU Cores] -->|80% CPU wasted| ContextSwitch["OS Context Switching & Process Scheduling"]
         CPU_Overload -->|20% CPU used| QueryExecution[Actual SQL Query Execution]
     end
     subgraph "Optimized Sizing (Connections matched to Hardware)"
@@ -103,8 +110,8 @@ Even with perfect Go configurations, an architectural scaling issue arises: if t
 
 ```mermaid
 flowchart LR
-    GoPods[50 Go Pods: 5,000 Connections] -->|Lightweight Client Connections| PgBouncer[PgBouncer Proxy Node]
-    PgBouncer -->|Multiplexed DB Connections: ~100 Pool| Postgres[(PostgreSQL Primary DB)]
+    GoPods["50 Go Pods: 5,000 Connections"] -->|Lightweight Client Connections| PgBouncer[PgBouncer Proxy Node]
+    PgBouncer -->|Multiplexed DB Connections: ~100 Pool| Postgres[("PostgreSQL Primary DB")]
 ```
 
 PgBouncer operates in three pooling modes, each presenting distinct architectural trade-offs:
@@ -121,7 +128,7 @@ PgBouncer operates in three pooling modes, each presenting distinct architectura
 
 ## Go Implementation: Resilient Connection Pooling and Timeout Enforcement
 
-The following Go code implements a resilient database initializer that tunes the database connection pool parameters, enforces connection timeouts, and handles graceful shutdowns.
+Resilient database initialization requires tuning `database/sql` connection pool limits (`SetMaxOpenConns`, `SetMaxIdleConns`, `SetConnMaxLifetime`), enforcing context query timeouts, and managing graceful shutdown signals.
 
 ```go
 package main
@@ -254,13 +261,12 @@ Tuning your connection pool parameters and routing database traffic through PgBo
 
 ---
 
-## 🎯 Architecture Review & Consulting (Hire Me)
-
-If your enterprise e-commerce or B2B platform is struggling with slow database queries, checkout timeouts, or scaling bottlenecks, don't let it jeopardize your business revenue.
-
-👉 **[Book a 1:1 Architecture Consultation this week](/hire/)** with Lê Tuấn Anh (Vesviet) to identify bottlenecks and implement proven scaling strategies.
-
 ---
 
 🔗 **Next Step:** [Chapter 6: API Gateway vs Service Mesh in Microservices Architecture](/posts/shopee-flash-sale-architecture/)
 
+
+---
+## Related Architecture & Pillar Guides
+For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
+- [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)

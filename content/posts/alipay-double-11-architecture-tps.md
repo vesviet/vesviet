@@ -30,8 +30,6 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/alipay-double-11-architecture-tps/"
 ---
 
-**Answer-first:** Alipay scaled to 583,000 TPS using Logical Data Center (LDC) unitization for multi-site active-active disaster recovery, OceanBase for distributed relational storage with Raft consensus, RocketMQ for transactional messaging, and SOFAStack middleware. This architecture guarantees horizontal scalability and financial-grade consistency under peak load.
-
 ---
 
 ## Executive Summary & Research Baseline

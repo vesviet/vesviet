@@ -18,8 +18,6 @@ cover:
   relative: false
 ---
 
-**Answer-first:** Building high-throughput event-driven microservices in Go using NATS JetStream and CQRS separates write mutators from read projections via a Raft-backed log. NATS JetStream provides sub-millisecond latency, native message deduplication (`Nats-Msg-Id`), stream retention, and durable pull consumers. Microservices achieve >100,000 ops/sec, eliminating database write contention and ensuring at-least-once delivery guarantees.
-
 ---
 
 ## Section 1: Architectural Rationale: Why Go + NATS JetStream for Event-Driven Microservices

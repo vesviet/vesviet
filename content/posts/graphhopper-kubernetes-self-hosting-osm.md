@@ -28,18 +28,14 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/graphhopper-kubernetes-self-hosting-osm/"
 ---
 
-**Answer-first:** Self-hosting GraphHopper on Kubernetes requires mounting OpenStreetMap (OSM) data via Persistent Volume Claims (PVC), tuning JVM memory parameters to cache routing graphs, and configuring liveness/readiness probes to handle the long startup index pre-loading times.
-
-### What You'll Learn That AI Won't Tell You
 - PVC provisioning configurations for OSM PBF files in multi-region clusters.
 - Tuning health probe timeouts to accommodate long graph pre-computation periods.
-
 
 GraphHopper is arguably the most capable open-source routing engine available — it supports Contraction Hierarchies (CH) for sub-millisecond route queries, custom vehicle profiles, turn restrictions, and the full OpenStreetMap road network. The problem most teams encounter is not the algorithm; it is the operational challenge of running it in Kubernetes: loading a large OSM PBF file, sizing JVM memory correctly, handling the long CH pre-processing startup time, and updating map data without downtime.
 
 This post is a production-grade Kubernetes deployment guide for GraphHopper using real OpenStreetMap data. By the end, you will have a StatefulSet deployment with persistent OSM graph files, correctly sized JVM resources, liveness and readiness probes that account for CH pre-processing time, and a zero-downtime map update strategy.
 
-For the routing algorithm comparison and API usage, see [GraphHopper vs CARTO: Order Fulfillment Routing Engine](/posts/graphhopper-distance-matrix-routing/).
+For the routing algorithm comparison and API usage, see [GraphHopper vs CARTO: Order Fulfillment Routing Engine](/posts/graphhopper-distance-matrix-production-guide/).
 
 ---
 
@@ -460,6 +456,6 @@ Use the blue-green graph update pattern: maintain two StatefulSets (active and s
 
 ---
 
-**Related Reading:** Once GraphHopper is running in production, see [Go pprof in Kubernetes: Remote Profiling & Flame Graphs](/posts/go-pprof-kubernetes-remote-profiling/) to profile your routing service and identify JVM/Go performance bottlenecks. For the business use case driving this infrastructure, see [GraphHopper vs CARTO: Order Fulfillment Routing Engine](/posts/graphhopper-distance-matrix-routing/) and the [Geospatial & Routing Engine Architecture series](/series/routing-geospatial-architecture/).
+**Related Reading:** Once GraphHopper is running in production, see [Go pprof in Kubernetes: Remote Profiling & Flame Graphs](/posts/go-pprof-kubernetes-remote-profiling/) to profile your routing service and identify JVM/Go performance bottlenecks. For the business use case driving this infrastructure, see [GraphHopper vs CARTO: Order Fulfillment Routing Engine](/posts/graphhopper-distance-matrix-production-guide/) and the [Geospatial & Routing Engine Architecture series](/series/routing-geospatial-architecture/).
 
 {{< author-cta >}}

@@ -25,12 +25,8 @@ mermaid: true
 > - HNSW indexing with `ef_search=64` balances recall (98%) and latency under high traffic.
 > - Hybrid query expansion prevents zero-result dropouts on tail e-commerce search queries.
 
-**Answer-first:** Agentic E-commerce Search transforms traditional search from passive keyword matching to active shopping assistance using AI agents that understand complex queries, apply business logic filters, and provide personalized results in real-time.
-
-### What You'll Learn That AI Won't Tell You
 - Practical strategies for tuning vector search precision without bloating RAM.
 - How to coordinate multiple AI search agents to prevent search query latency spikes.
-
 
 The search system is the beating heart of every e-commerce platform. If customers cannot find a product, they cannot buy it. However, as we move through 2026, user search behavior has evolved drastically from typing short, abrupt keywords (e.g., *"men's running shoes"*) to submitting complex, goal-oriented queries (e.g., *"find me a pair of men's waterproof trail running shoes, size 42, under $100, that can be delivered by tomorrow"*). Against these multifaceted intents, traditional search engines begin to show their limitations.
 
@@ -50,8 +46,7 @@ It is completely powerless against real-time Business Logic, such as: *"Filter o
 
 ---
 
-## What is Agentic Search? Semantic Search vs. Agentic AI
-
+## Agentic Search Architecture: Vector Routing vs. Multi-Agent Systems
 
 
 **Agentic Search** solves this by introducing a "Brain" (Orchestration Layer) in front of the databases. Instead of querying the database directly, the system employs an Autonomous AI Agent.
@@ -154,7 +149,7 @@ Deploying Agentic Search introduces two major challenges:
 
 ---
 
-## Conclusion
+## Architectural Summary & Production Checklist
 
 The transition from Elasticsearch BM25 to an **Agentic E-commerce Search** architecture is not merely swapping one database for another. It is a fundamental architectural paradigm shift: separating the *Static Data Storage* capability (Vector DB/RDBMS) from the *Reasoning* capability (LLM Agent), and using **Golang** as the robust, high-speed orchestrator bridging the two.
 
@@ -200,14 +195,12 @@ In high-concurrency production deployments, balancing throughput, resilience, an
 2. **Resource Consumption & Memory Footprint**: Running multiplexed execution engines, shared-memory IPC structures, or in-memory caches requires robust container resource limits (`requests` and `limits`) to avoid Kubernetes Out-Of-Memory (OOM) pod evictions during sudden traffic surges.
 3. **Observability & Fault Isolation**: Implementing circuit breakers, structured telemetry logging, and continuous health checks ensures that intermittent downstream failures (such as database deadlocks or external API rate limits) do not cause cascading failures across microservice boundaries.
 
-
 ## Related Pillar Articles & Further Reading
 
 - [Agentic E-Commerce Search Series](/series/agentic-ecommerce-search/)
 - [GraphRAG vs Naive RAG Guide](/posts/graphrag-vs-naive-rag-enterprise-guide/)
 - [Go MCP Server Production Guide](/posts/go-mcp-server-development-production-guide/)
 - [Autonomous Hybrid AI Pipeline](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)
-
 
 ## Frequently Asked Questions (FAQ)
 

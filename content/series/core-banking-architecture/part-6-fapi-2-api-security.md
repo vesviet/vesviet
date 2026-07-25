@@ -1,5 +1,5 @@
 ---
-title: "FAPI 2.0: DPoP, mTLS & Sender-Constrained Tokens"
+title: "FAPI 2.0 Security: DPoP, mTLS & Sender-Constrained Tokens"
 date: "2026-06-18T11:50:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
@@ -20,15 +20,21 @@ TocOpen: true
 
 **Answer-first:** Financial-grade API (FAPI) 2.0 enforces cryptographic API security using Mutual TLS (mTLS), pushed authorization requests (PAR), and signed request objects (JAR/JARM). This prevents credential hijacking, session sniffing, and token forgery in open banking networks.
 
+> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+
 > **Series (Part 6 of 8):** After mastering the payment data flow in [Part 5](/series/core-banking-architecture/part-5-iso-20022-payment-gateways/), this article focuses on the API security layer — where a single design flaw can lead to token theft and unauthorized fund transfers.
 
 ## What is FAPI 2.0 DPoP Implementation?
+
+**Answer-first:** FAPI 2.0 DPoP (Demonstrating Proof-of-Possession) binds access tokens to client public keys, preventing stolen token replay attacks in open banking.
 
 The Financial-grade API (FAPI) 2.0 standard mandates the use of sender-constrained tokens via DPoP or mTLS to prevent token theft. Deploying mTLS in Kubernetes adds **1-3ms** of latency for the initial handshake, but this drops to **<0.1ms** with connection pooling and HTTP Keep-Alive.
 
 ---
 
 ## Why Aren't OAuth 2.0 Bearer Tokens Enough for Fintech?
+
+**Answer-first:** OAuth 2.0 bearer tokens are vulnerable to man-in-the-middle interception; FAPI 2.0 requires cryptographically sender-constrained tokens.
 
 Bearer tokens have a fundamental vulnerability: anyone holding the token can use it — just like cash. If an attacker intercepts a bearer token:
 
@@ -47,6 +53,8 @@ Bearer tokens have a fundamental vulnerability: anyone holding the token can use
 ---
 
 ## DPoP: The Mathematical Mechanism
+
+**Answer-first:** DPoP mechanisms generate asymmetric key pairs to sign HTTP request headers, ensuring only the key holder can use the access token.
 
 DPoP works by requiring the client to **sign a proof JWT** for every HTTP request, binding it to:
 - The client's public key (in the JWT header).
@@ -243,6 +251,8 @@ func (v *DPoPVerifier) VerifyDPoP(
 
 ## FAPI 2.0 Mandatory Parameters
 
+**Answer-first:** FAPI 2.0 mandates PKCE, DPoP or mTLS token binding, Pushed Authorization Requests (PAR), and short-lived access token lifespans.
+
 Source: [OpenID FAPI 2.0 Profile](https://openid.net/specs/fapi-2_0-profile.html)
 
 ### Entropy Requirements
@@ -267,6 +277,8 @@ Source: [OpenID FAPI 2.0 Profile](https://openid.net/specs/fapi-2_0-profile.html
 ---
 
 ## mTLS Latency: Kubernetes Benchmark
+
+**Answer-first:** Benchmarking mutual TLS (mTLS) shows connection pooling reduces handshake overhead from 3ms down to under 0.1ms per gRPC call.
 
 Source: [Linkerd Performance Benchmarks](https://linkerd.io/2021/05/27/linkerd-performance-benchmarks/).
 
@@ -326,6 +338,8 @@ client := &http.Client{
 
 ## PAR (Pushed Authorization Requests)
 
+**Answer-first:** Pushed Authorization Requests (PAR) move authorization parameters from front-channel URL query strings to secure back-channel POST requests.
+
 In traditional OAuth 2.0, authorization parameters are sent via URL redirect:
 
 ```
@@ -364,6 +378,8 @@ https://auth.bank.vn/authorize?
 ---
 
 ## QA & SDET Testing Strategy
+
+**Answer-first:** Testing FAPI 2.0 security requires attempting replay attacks with intercepted tokens and verifying mTLS certificate validation.
 
 ### Test 1: DPoP Token Replay Attack Simulation
 
@@ -426,8 +442,12 @@ curl --cert expired.crt --key expired.key \
 
 ## FAPI 2.0 Security Checklist
 
+**Answer-first:** The FAPI security checklist covers DPoP signature verification, mTLS certificate binding, PAR endpoints, and token revocation APIs.
+
 ```markdown
 ## Pre-deployment Security Gate
+
+**Answer-first:** Pre-deployment security gates run automated SAST and FAPI conformance test suites before approving API gateway releases.
 
 ### Authorization Server
 - [ ] PAR endpoint enabled and enforced
@@ -487,6 +507,8 @@ To meet regulatory requirements for financial auditing, the gateway logs the sig
 
 ## FAQ
 
+**Answer-first:** FAPI 2.0 protects financial APIs against token theft by combining mTLS transport security with DPoP cryptographic proof-of-possession.
+
 {{< faq q="DPoP or mTLS — which should I choose?" >}}
 It depends on the client type:
 - **DPoP**: Better for browser-based clients and mobile apps — no certificate management required.
@@ -504,6 +526,8 @@ iOS: Secure Enclave (hardware-backed key storage). Android: StrongBox or Android
 {{< /faq >}}
 
 ## mTLS Client Certificates, Signed Request Objects, and PAR Flow Mechanics
+
+**Answer-first:** mTLS client certificates and signed JWT request objects establish mutual cryptographic identity between fintech apps and open banking gateways.
 
 Financial-grade API (FAPI) 2.0 provides advanced security controls for banking API networks, protecting transactions from credential hijacking and message alteration.
 

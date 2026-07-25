@@ -1,5 +1,5 @@
 ---
-title: "Executive Summary — The SLM Playbook"
+title: "SLM Playbook: Small Language Models Architecture | Go Produc"
 date: "2026-05-20T21:05:00+07:00"
 lastmod: "2026-05-20T21:05:00+07:00"
 draft: false
@@ -16,7 +16,10 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/slm-playbook/executive-summary/"
 mermaid: true
+image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
 ---
+
+> **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 [← Series hub](/series/slm-playbook/)
 [Next →](/posts/slm-fine-tune-vs-prompt-engineering/)
@@ -25,10 +28,9 @@ For the past two years, enterprise AI adoption has been dominated by a singular 
 
 ## The Problem with API-Centric Architectures
 
-Relying exclusively on commercial APIs (such as GPT-4 or Claude 3.5 Sonnet) introduces three critical bottlenecks for scale-ups and enterprises:
-- **Data Privacy and Compliance:** Many organizations—especially in banking, healthcare, and defense—cannot send sensitive PII (Personally Identifiable Information) or proprietary code over public internet endpoints.
-- **Astronomical Operating Costs (TCO):** Running millions of daily tokens through premium commercial APIs results in uncontrollable, recurring operational expenses.
-- **Generic Output:** Commercial models are designed to be generalists. They often struggle to strictly adhere to highly specific internal enterprise data schemas or private coding frameworks without massive, repetitive few-shot prompting.
+Relying exclusively on commercial APIs (such as GPT-4 or Claude 3.5 Sonnet) introduces three critical bottlenecks for scale-ups and enterprises: - **Data Privacy and Compliance:** Many organizations—especially in banking, healthcare, and defense—cannot send sensitive PII (Personally Identifiable Information) or proprietary code over public internet endpoints.
+
+- **Astronomical Operating Costs (TCO):** Running millions of daily tokens through premium commercial APIs results in uncontrollable, recurring operational expenses. - **Generic Output:** Commercial models are designed to be generalists. They often struggle to strictly adhere to highly specific internal enterprise data schemas or private coding frameworks without massive, repetitive few-shot prompting.
 
 ## The Small Language Model (SLM) Solution
 
@@ -46,15 +48,15 @@ The system design diagram below shows how the routing gateway acts as the single
 
 ```mermaid
 graph TD
-    User[Developer / API Client] --> Gateway[Go Hybrid Router Gateway]
+    User["Developer / API Client"] --> Gateway[Go Hybrid Router Gateway]
     Gateway --> Classifier{Intent Classifier}
     
     Classifier -->|Simple Tasks / PII Scrubbing / Autocomplete| LocalvLLM[Local vLLM Serving Cluster]
-    Classifier -->|Complex Reasoning / Multi-Step Logic| FrontierAPI[Frontier API Gateway - Claude/GPT]
+    Classifier -->|Complex Reasoning / Multi-Step Logic| FrontierAPI["Frontier API Gateway - Claude/GPT"]
     
     subgraph VPC Private Compute Zone
-        LocalvLLM -->|Llama-3-8B-Instruct / Qwen-2.5-Coder| LocalGPU[NVIDIA A10G GPU / vLLM]
-        LocalGPU --> Cache[(Redis Cache & Vector DB)]
+        LocalvLLM -->|Llama-3-8B-Instruct / Qwen-2.5-Coder| LocalGPU["NVIDIA A10G GPU / vLLM"]
+        LocalGPU --> Cache[("Redis Cache & Vector DB")]
     end
     
     subgraph Public Cloud API Zone
@@ -69,8 +71,6 @@ graph TD
 ---
 
 ## 2. Strategic Cost & Latency Analysis (TCO)
-
-Let's model the Total Cost of Ownership (TCO) comparison. Suppose an organization of 250 engineers issues a total of **500,000 queries per month**, averaging 1,000 input tokens and 500 output tokens per query.
 
 ### Scenario A: Pure Frontier API Model (e.g., Claude 3.5 Sonnet)
 *   **Input Token Price:** \$3.00 per million tokens.
@@ -94,8 +94,6 @@ By routing simple tasks (such as code auto-complete, spelling corrections, simpl
 ---
 
 ## 3. Go Implementation: Hybrid Router Gateway
-
-Below is a complete, production-grade Go implementation of the `HybridRouter`. It analyzes incoming prompts for keywords indicating complex reasoning tasks (e.g., "architect", "explain", "refactor", "optimize") and routes them to Anthropic's Claude API, while sending standard tasks to a local vLLM server:
 
 ```go
 package main
@@ -272,3 +270,4 @@ This playbook is written for CTOs, AI Architects, and Senior Backend Engineers. 
 Let's dive into the core architecture: **[Part 1 — Hybrid AI & Self-Hosted vLLM](/posts/slm-fine-tune-vs-prompt-engineering/)**.
 
 {{< author-cta >}}
+

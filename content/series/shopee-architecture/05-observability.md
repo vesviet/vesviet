@@ -1,10 +1,10 @@
 ---
-title: "Chapter 5: Observability - Finding Bugs in the Microservices Jungle"
+title: "Shopee Observability: ClickHouse & Distributed Tracing"
 date: "2026-05-05T08:50:00+07:00"
 lastmod: "2026-05-05T08:50:00+07:00"
 draft: false
 mermaid: true
-description: "How Shopee uses ClickHouse and Distributed Tracing to debug millions of requests."
+description: "How Shopee engineering utilizes ClickHouse and Distributed Tracing to debug millions of concurrent requests across microservices clusters Learn production engin"
 ShowToc: true
 TocOpen: true
 cover:
@@ -13,14 +13,15 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/05-observability/"
+image: "images/posts/shopee-flash-sale-cover.png"
 ---
 # Chapter 5: Observability - Finding Bugs in the Microservices Jungle
 
 **Debugging a 30-hop microservice failure requires three pillars of observability: Distributed Tracing via OpenTelemetry, columnar log storage via ClickHouse, and real-time stream processing via Apache Flink. Together, they isolate latency bottlenecks across tens of thousands of pods in seconds.**
 
-[← Series hub]({{< ref "/series/shopee-architecture/_index.md" >}}) | [← Prev]({{< ref "/series/shopee-architecture/04-database-scale.md" >}})
+[← Series hub](/series/system-design/) | [← Prev](/series/shopee-architecture/04-database-scale/)
 
-> **Prerequisite:** Before reading this chapter, please ensure you have read the previous article in this series: [Chapter 4: Shopee DB: MySQL Sharding to TiDB NewSQL Migration]({{< ref "04-database-scale.md" >}}).
+> **Prerequisite:** Read the previous article: [Chapter 4: Shopee DB: MySQL Sharding to TiDB NewSQL Migration](/series/shopee-architecture/04-database-scale/).
 
 Imagine you are an on-call engineer during the 11.11 mega-sale. Suddenly, alerts go off: Checkout success rates are plummeting, and users are facing continuous Timeouts. In an old Monolithic system, you would simply open `error.log` and find the exact broken line in the `pay()` function.
 
@@ -81,7 +82,7 @@ Shopee pivoted to using **ClickHouse**—an incredibly fast, columnar OLAP datab
 
 ### Go Implementation: Telemetry and Metrics Integration
 
-Here is a Go implementation demonstrating how to inject/extract OpenTelemetry Trace Context and report custom latency metrics to Prometheus:
+Injecting and extracting OpenTelemetry Trace Context alongside Prometheus custom latency metrics in Go requires structured middleware handlers:
 
 ```go
 package telemetry
@@ -194,17 +195,17 @@ Shopee utilizes **Apache Flink**—a Stream Processing framework—to analyze co
 
 ```mermaid
 graph TD
-    Gateway[API Gateway<br/>Generates TraceID] -->|Passes TraceID| Order[Order Service<br/>Span A]
-    Order -->|Passes TraceID| Inventory[Inventory Service<br/>Span B]
-    Order -->|Passes TraceID| Promo[Promo Service<br/>Span C]
+    Gateway["API Gateway<br/>Generates TraceID"] -->|Passes TraceID| Order["Order Service<br/>Span A"]
+    Order -->|Passes TraceID| Inventory["Inventory Service<br/>Span B"]
+    Order -->|Passes TraceID| Promo["Promo Service<br/>Span C"]
     
     Gateway -.-> OTEL[Telemetry Collector]
     Order -.-> OTEL
     Inventory -.-> OTEL
     Promo -.-> OTEL
     
-    OTEL --> ClickHouse[(ClickHouse<br/>Metrics & Log Storage)]
-    OTEL --> Flink[Apache Flink<br/>Real-time Alerts]
+    OTEL --> ClickHouse[("ClickHouse<br/>Metrics & Log Storage")]
+    OTEL --> Flink["Apache Flink<br/>Real-time Alerts"]
 ```
 
 - **Automated Alerts:** Flink monitors the stream of HTTP 500 errors. If it exceeds 100 errors per second within a tumbling time window, it fires an immediate Slack or PagerDuty alert to wake up the engineers.
@@ -225,6 +226,11 @@ The more complex your Microservices become, the blinder you are without proper O
 
 *Troubled by missing traces or excessive observability overhead in your cluster? [Hire me](/hire/) to optimize your OpenTelemetry, ClickHouse, and Prometheus setup.*
 
-🔗 **Next Step:** This concludes the Shopee Architecture series. You can return to the [Series Hub]({{< ref "_index.md" >}}) for a complete overview, or explore our case study on migrating legacy platforms in the [Composable Commerce Migration Series]({{< ref "/series/composable-commerce-migration/_index.md" >}}).
+🔗 **Next Step:** This concludes the Shopee Architecture series. You can return to the [Series Hub](/series/system-design/) for a complete overview, or explore our case study on migrating legacy platforms in the [Composable Commerce Migration Series](/series/system-design/).
 
 {{< author-cta >}}
+
+
+## Architectural Context & Pillar References
+
+Implementing 05 Observability demands strict ACID transactional isolation and pessimistic row locking during balance or inventory updates. Distributed Saga orchestration coordinates multi-stage rollbacks, preventing partial state writes across heterogeneous databases.

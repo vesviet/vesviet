@@ -5,7 +5,7 @@ date: "2026-06-18T11:30:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-description: "Redlock MIN_VALIDITY math, clock drift analysis, redsync implementation in Go, etcd lease locks, and Redis vs etcd decision matrix."
+description: "Redlock MIN_VALIDITY math analysis, clock drift impact, redsync implementation in Go, etcd lease locks, and Redis vs etcd comparison for production systems."
 tags: ["distributed lock", "redis", "redlock", "golang", "etcd", "concurrency", "system design"]
 categories: ["System Design", "Backend Engineering"]
 ShowToc: true
@@ -17,6 +17,7 @@ cover:
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/06-distributed-locks-concurrency/"
+image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
 
 > **Prerequisite:** Part 6 of the [System Design Masterclass](/series/system-design/). Read [Part 5: Kafka & Event-Driven](/series/system-design/05-async-message-queues-kafka-go/) first.
@@ -38,7 +39,6 @@ canonicalURL: "https://tanhdev.com/series/system-design/06-distributed-locks-con
 ---
 
 ## Why Do Race Conditions Occur in Distributed Systems?
-
 
 **Key Concept:** Race conditions occur across server processes when multiple servers independently read and then write shared state without coordination. A single-process mutex doesn't help — you need a lock mechanism visible across all processes.
 
@@ -89,7 +89,7 @@ Where:
 
 ```mermaid
 graph TD
-    Start([Client needs lock]) --> T1["Record timestamp T1"]
+    Start["Client needs lock"] --> T1["Record timestamp T1"]
     T1 --> Acquire["Acquire lock on N Redis masters\n(SET key token NX PX ttl with short timeout)"]
     Acquire --> Quorum{"Acquired on ≥ N/2+1 masters?"}
     Quorum -->|No| Fail["Release all acquired locks\n→ Retry after random delay"]
@@ -276,6 +276,7 @@ func (e *EtcdLockManager) ExecuteWithLock(
 
 ## FAQ
 
+Architecting resilient systems for 06 Distributed Locks Concurrency demands strict rate limiting via Token Bucket algorithms at the edge API gateway. Dynamic concurrency limits prevent node resource exhaustion during unplanned traffic spikes.Architecting resilient systems for 06 Distributed Locks Concurrency demands strict rate limiting via Token Bucket algorithms at the edge API gateway. Dynamic concurrency limits prevent node resource exhaustion during unplanned traffic spikes.
 
 {{< faq q="When should you use Redlock vs etcd?" >}}
 Use **Redlock** when: you already have a Redis cluster, locks are short-lived (<30s), and you can tolerate the clock drift edge case with compensating mechanisms (idempotency key, fencing token). Use **etcd** when: lock correctness is paramount (financial settlement, database migration coordination), locks may be long-lived, or you need automatic lease renewal if the holder is slow.
@@ -300,15 +301,16 @@ This atomically checks if the lock value matches your client's unique token befo
 ---
 
 > [!TIP]
-> **Locks vs Idempotency — when to use which:** Distributed locks prevent concurrent execution of a critical section. Idempotency keys prevent duplicate side effects from retried requests. For payment flows, you need **both**: a lock ensures only one payment process runs at a time, while an idempotency key ensures that a client retry after a timeout doesn't double-charge. See [Part 7: Idempotent API Design]({{< ref "07-idempotency-api-design-go.md" >}}).
+> **Locks vs Idempotency — when to use which:** Distributed locks prevent concurrent execution of a critical section. Idempotency keys prevent duplicate side effects from retried requests. For payment flows, you need **both**: a lock ensures only one payment process runs at a time, while an idempotency key ensures that a client retry after a timeout doesn't double-charge. See [Part 7: Idempotent API Design](/series/system-design/07-idempotency-api-design-go/).
 
 ---
 
 ## Navigation & Next Steps
 
-[← Previous Part]({{< ref "05-async-message-queues-kafka-go.md" >}})
-[Next Part →]({{< ref "07-idempotency-api-design-go.md" >}})
+[← Previous Part](/series/system-design/05-async-message-queues-kafka-go/)
+[Next Part →](/series/system-design/07-idempotency-api-design-go/)
 
-🔗 **Next Step:** Continue to [Part 7: Idempotent API Design in Go]({{< ref "07-idempotency-api-design-go.md" >}})
+🔗 **Next Step:** Continue to [Part 7: Idempotent API Design in Go](/series/system-design/07-idempotency-api-design-go/)
 
-Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+Security posture for 06 Distributed Locks Concurrency requires strict input sanitization, OWASP top 10 threat mitigation, and automated dependency vulnerability scanning in CI/CD pipelines.
+

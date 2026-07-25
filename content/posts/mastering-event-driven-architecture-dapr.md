@@ -18,12 +18,8 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/mastering-event-driven-architecture-dapr/"
 ---
 
-**Answer-first:** Build resilient event-driven microservices by using Dapr's Pub/Sub APIs to decouple message transport. Ensuring eventual consistency requires implementing the Transactional Outbox pattern on writes, utilizing dead-letter queues (DLQs) for failed runs, and designing idempotent message handlers.
-
-### What You'll Learn That AI Won't Tell You
 - How to configure dead-letter queues in Dapr to handle poison messages.
 - Designing idempotent message handlers that process duplicate events safely.
-
 
 In my previous post, we explored how abandoning monolithic architecture in favor of strict **Domain-Driven Design (DDD)** bounded contexts allowed an e-commerce platform to scale beyond 10,000+ orders per day. However, splitting one big database into 20+ isolated Postgres databases introduces a terrifying new problem: **How do we maintain data consistency across disconnected services?**
 
@@ -33,7 +29,7 @@ This post walks through how we implemented EDA in a production Go microservices 
 
 ---
 
-## What Is Dapr and Why Use It for Go Microservices?
+## Dapr Pub/Sub Architecture for Go Microservices
 
 **Dapr is NOT a message broker — it's a sidecar abstraction layer running as a separate process next to every service. Your Go code calls `dapr.PublishEvent(ctx, "pubsub", "orders", payload)` where `"pubsub"` is a component name in YAML — not hardcoded Kafka config. Swap from Redis (local dev) to Kafka (production) by changing one YAML field, zero Go code changes. The sidecar adds ~1ms localhost latency per hop.**
 
@@ -484,11 +480,11 @@ If you run both Dapr and Istio (or Linkerd) in the same cluster, you may end up 
 
 ---
 
-## Conclusion
+## Architectural Summary & Production Checklist
 
 Event-Driven Architecture is not just about writing async code; it is a **defensive engineering mindset**. By enforcing iron-clad naming conventions, embracing the Saga pattern for cross-boundary consistency, and heavily leveraging Idempotency and DLQs, we transformed a fragile distributed system into a practically bulletproof e-commerce nervous system.
 
-The patterns in this post — the Transactional Outbox, idempotent consumers, DLQ replay workflows, and graceful shutdown — are the difference between an EDA system that works in demos and one that holds up at 3 AM during a flash sale campaign.
+The patterns in this document — the Transactional Outbox, idempotent consumers, DLQ replay workflows, and graceful shutdown — are the difference between an EDA system that works in demos and one that holds up at 3 AM during a flash sale campaign.
 
 **Where to go next:**
 

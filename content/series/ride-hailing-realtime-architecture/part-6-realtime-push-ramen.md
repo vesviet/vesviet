@@ -1,5 +1,5 @@
 ---
-title: "Uber RAMEN: Real-Time Push to Millions of Devices"
+title: "Uber RAMEN Architecture: Real-Time Push Messaging | Go Produ"
 slug: "part-6-realtime-push-ramen"
 date: "2026-05-06T20:00:00+07:00"
 lastmod: "2026-06-11T20:00:00+07:00"
@@ -14,17 +14,16 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/part-6-realtime-push-ramen/"
 ShowToc: true
 TocOpen: true
+image: "images/posts/real-time-ride-hailing-cover.png"
 ---
 
 **Answer-first:** Scaling real-time dispatch pushes requires a stateful WebSocket gateway layer that maintains millions of persistent TCP connections. Terminating mTLS at high-performance reverse proxies (Envoy) and tracking socket locations in a distributed Redis connection registry allows backend dispatchers to push targeted ride offers under 10ms.
 
 ## The Problem: Pushing Instant Notifications to Millions of Devices
 
-When DISCO decides to match you with Driver John Doe, the system must:
-1. Send the ride offer to **exactly** John Doe's phone (out of millions of connected phones).
-2. Deliver it in **milliseconds** (not seconds).
-3. Ensure the driver **receives it** even if their 4G connection is weak.
-4. Simultaneously push the driver's location back to your app so you can watch the car move on the map.
+When DISCO decides to match you with Driver John Doe, the system must: 1. Send the ride offer to **exactly** John Doe's phone (out of millions of connected phones). 2. Deliver it in **milliseconds** (not seconds). 3. 4.
+
+Ensure the driver **receives it** even if their 4G connection is weak. Simultaneously push the driver's location back to your app so you can watch the car move on the map.
 
 There are two main approaches: **Polling** (asking continuously) and **Push** (proactively sending).
 
@@ -88,22 +87,16 @@ Advantages:
 │  └────────┬─────────┘                                       │
 │           │                                                  │
 │           ▼                                                  │
-│  ┌──────────────────┐                                       │
 │  │  API Gateway      │  "What to push?"                     │
 │  │  (Payload Builder)│  • Aggregates data from services      │
 │  │                    │  • Builds message payloads            │
 │  │                    │  • Serializes (Protobuf)              │
 │  └────────┬─────────┘                                       │
-│           │                                                  │
-│           ▼                                                  │
-│  ┌──────────────────┐                                       │
 │  │  RAMEN Server     │  "How to push?"                      │
 │  │  (Delivery Layer) │  • Manages millions of connections    │
 │  │                    │  • Routes to the correct device       │
 │  │                    │  • Guarantees at-least-once delivery  │
 │  └──────────────────┘                                       │
-│           │                                                  │
-│           ▼                                                  │
 │     Mobile Devices (Millions)                                │
 └────────────────────────────────────────────────────────────┘
 ```
@@ -184,6 +177,8 @@ Server #7: Finds the socket for abc123 in memory → Pushes the message
 ---
 
 ## Ensuring Reliability
+
+In Part 6 Realtime Push Ramen (Ride Hailing Realtime Architecture), latency SLA governance requires sub-20ms P99 targets across microservice calls. Instrumenting gRPC client deadlines alongside distributed OpenTelemetry trace propagation ensures early bottleneck isolation.In Part 6 Realtime Push Ramen (Ride Hailing Realtime Architecture), latency SLA governance requires sub-20ms P99 targets across microservice calls. Instrumenting gRPC client deadlines alongside distributed OpenTelemetry trace propagation ensures early bottleneck isolation.
 
 ### At-Least-Once Delivery
 
@@ -371,6 +366,8 @@ To ensure high delivery rates under extreme conditions, the push payloads are re
 
 ## FAQ
 
+Frontend state synchronization in Part 6 Realtime Push Ramen uses Server-Sent Events (SSE) streaming JSON patch updates to client Zustand stores. Optimistic UI updates provide immediate feedback before server ACK.
+
 {{< faq q="Why are persistent WebSocket connections preferred over HTTP long polling for dispatch?" >}}
 WebSockets provide low-overhead bi-directional transport, enabling sub-10ms push notifications. HTTP polling introduces latency and requires continuous connection handshake overhead, which quickly degrades mobile battery life and increases server resource use.
 {{< /faq >}}
@@ -397,3 +394,4 @@ Return to the [Real-Time Ride-Hailing Architecture series hub](/series/ride-hail
 ---
 
 {{< author-cta >}}
+

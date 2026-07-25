@@ -1,10 +1,10 @@
 ---
-title: "Core Banking Developer Roadmap"
+title: "Core Banking Developer Guide: Monolith to Microservices"
 date: "2026-05-06T18:00:00+07:00"
 lastmod: "2026-05-06T18:00:00+07:00"
 draft: false
 weight: 100
-description: "Learn core banking architecture: double-entry ledger, transaction processing, microservices, ISO 8583/20022, and building a mini banking system."
+description: "Comprehensive developer series on core banking architecture: double-entry ledgers, ACID transactions, event sourcing, ISO standards, and security."
 ShowToc: true
 TocOpen: true
 cover:
@@ -21,6 +21,8 @@ The learning path is divided into knowledge layers, from business mindset to dis
 
 ## Series Contents
 
+**Answer-first:** The core banking developer curriculum covers eight modules from double-entry domain modeling to building a functional mini core banking engine in Go.
+
 - [Executive Summary — The Landscape of Core Banking Developers](/series/core-banking-developer/executive-summary/)
 - [Part 1 — The Double-Entry Ledger Foundation](/series/core-banking-developer/part-1-double-entry-ledger/)
 - [Part 2 — Core Banking Domain: CIF, CASA & Lending](/series/core-banking-developer/part-2-banking-domain-casa-lending/)
@@ -33,7 +35,27 @@ The learning path is divided into knowledge layers, from business mindset to dis
 
 ## Real-World Case Studies
 
+**Answer-first:** Case studies analyze real-world core banking migrations from legacy COBOL and Java monoliths to modern Go event-sourced microservices.
+
 Apply the theory from this series to real production systems:
 
 - **[Microfinance Core Banking: Architecture & Engineering Guide](/posts/deconstructing-microfinance-core-banking-architecture/)** — Dissects a production-grade microfinance system: transaction ledger design, KYC/AML integration, interest accrual engine, and the engineering trade-offs unique to emerging-market fintech.
 
+
+## Developer Masterclass Module Matrix
+
+| Part | Module Focus | Core Engineering Topics | Target Compliance / Reliability |
+|---|---|---|---|
+| **Part 1** | Monolith to Microservices | Bounded Context Migration, Strangler Fig | Zero downtime migration path |
+| **Part 2** | CASA & Lending Domains | Double-Entry Accounting, Account Lifecycle | Strict ledger balance invariant |
+| **Part 3** | Database Concurrency | Distributed SQL, ACID, Pessimistic Locking | Zero double-spend under high QPS |
+| **Part 4** | Payment Gateways | ISO 20022 XML, Swift MT/MX Parser | High-throughput payment parsing |
+| **Part 5** | Production Testing Handbook | QA/SDET Strategy, Chaos Engineering | 100% deterministic test coverage |
+
+## Target Audience & Domain Prerequisites
+
+Written for **Fintech Software Engineers, Backend Developers, and Core Banking System Integrators**.
+
+**Prerequisites:**
+- solid understanding of relational database transactions (ACID principles).
+- Familiarity with double-entry accounting fundamentals and financial domain concepts.

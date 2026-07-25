@@ -1,6 +1,5 @@
 ---
-
-title: "Part 3: Domain-Driven Design (DDD) Boundaries in a Modular Monolith"
+title: "DDD Module Boundaries & Decoupling Modular Monoliths"
 date: "2026-07-03T10:00:00+07:00"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "How to keep a Monolith from becoming a 'Big Ball of Mud'? A guide to establishing Module boundaries using Bounded Contexts, Spring Modulith, and Packwerk."
@@ -15,18 +14,12 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 draft: false
+image: "images/posts/golang-microservices-cover.png"
 ---
 
+> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series and **[Composable E-Commerce Migration](/posts/ecommerce-architecture-composable-migration/)** guide. Please refer to the original article for a comprehensive overview of the architecture.
+
 > **Prerequisite:** Before reading this part, please review [Part 2: FinOps Cost Reality](/series/modular-monolith-architecture/part-2-finops-cost-reality/).
-
-# Part 3: Domain-Driven Design (DDD) Boundaries in a Modular Monolith
-
-> **Executive Summary & Quick Answer**: Restricting dependency paths is critical to preventing a Modular Monolith from turning into a 'Big Ball of Mud'. By mapping bounded contexts to Go internal packages, using compiler-level boundary tools like Packwerk, and executing cross-domain queries via asynchronous in-memory event buses, developers can maintain logical isolation and prepare for future microservices extraction.
->
-> **Key Takeaways**:
-> - **Language Boundaries**: Enforce package isolation using Go's `internal` folder structure to restrict cross-domain imports at compile time.
-> - **Database Isolation**: Isolate tables into distinct PostgreSQL schemas per module to prohibit cross-domain SQL `JOIN` operations.
-> - **Asynchronous Decoupling**: Use thread-safe `sync.WaitGroup` and in-memory event buses for event notification across bounded contexts.
 
 ### What You'll Learn That AI Won't Tell You
 - **Go Package Level Enforcement:** How to use Go's `internal` folder structure to prevent unauthorized imports at compile time.
@@ -83,15 +76,13 @@ If an engineer intentionally violates a boundary, the Unit Test will fail right 
 
 ## 4. DHH's "Citadel" Model (Basecamp)
 
-David Heinemeier Hansson (DHH) - the creator of the Ruby on Rails framework, proposed the **"Majestic Monolith & Citadel"** model.
-Accordingly, 99% of business logic will reside in the central "Citadel" (Monolith). However, if there is a specific function that requires distinct technology (like processing AI with Python, or handling massive WebSocket streams with Elixir), only then is it extracted into independent "Outposts."
+David Heinemeier Hansson (DHH) - the creator of the Ruby on Rails framework, proposed the **"Majestic Monolith & Citadel"** model. Accordingly, 99% of business logic will reside in the central "Citadel" (Monolith).
+
+However, if there is a specific function that requires distinct technology (like processing AI with Python, or handling massive WebSocket streams with Elixir), only then is it extracted into independent "Outposts."
 
 This proves that the Modular Monolith is not a conservative "all-in-one" mindset, but an optimization mindset: Only distribute what truly needs to be distributed.
 
-> [!FAQ]
-> **Question: Does prohibiting SQL JOINs degrade the Monolith's performance?**
-> **Answer:** For complex display tasks (Dashboards), calling multiple Internal APIs instead of 1 JOIN query might create a small overhead. To handle this, Modular Monolith systems often apply the **CQRS** (Command Query Responsibility Segregation) model – separating the write database (containing strict module boundaries) and creating specialized materialized views (aggregated display tables) for reading (automatically updated via events).
-
+A common question is whether prohibiting SQL JOINs degrades the Monolith's performance. For complex display tasks (such as Dashboards), calling multiple Internal APIs instead of a single JOIN query might create a small overhead. To handle this, Modular Monolith systems often apply the **CQRS** (Command Query Responsibility Segregation) model – separating the write database (containing strict module boundaries) and creating specialized materialized views (aggregated display tables) for reading (automatically updated via events).
 
 ## 4. Event Storming & In-Memory Decoupled Communication
 
@@ -112,7 +103,7 @@ stateDiagram-v2
 ```
 
 ### Go Channel-Based Event Bus
-The following thread-safe Event Bus allows modules to publish and subscribe to domain events asynchronously in-memory.
+A thread-safe in-memory Event Bus enables decoupled modules to publish and subscribe to domain events asynchronously:
 
 ```go
 package main
@@ -292,24 +283,6 @@ func main() {
 ```
 
 Maintaining strict code borders helps you turn a Monolith into a collection of independent modules. But how do you ensure the Build and Test process for a massive Codebase doesn't become overloaded? See Shopify's solution in **[Part 4: CI/CD Simplified](/series/modular-monolith-architecture/part-4-cicd-simplified/)**.
-
-## Frequently Asked Questions (FAQ)
-
-{{< faq q="How do bounded contexts prevent a monolith from turning into spaghetti code?" >}}
-Bounded contexts define strict internal APIs and isolate package visibility. In Go, using `internal/` packages prevents cross-domain imports at compile time.
-{{< /faq >}}
-
-{{< faq q="Why isolate PostgreSQL database schemas per module?" >}}
-Schema isolation per module prevents developers from executing cross-domain SQL JOIN queries, enforcing application-layer API boundaries and allowing future database decoupling.
-{{< /faq >}}
-
-{{< faq q="How does an in-memory event bus differ from Kafka?" >}}
-An in-memory event bus dispatches events across Go goroutines using pointers in nanoseconds with zero network setup, whereas Kafka requires cluster brokers and network serialization.
-{{< /faq >}}
-
-{{< faq q="Why is sync.WaitGroup preferred over time.Sleep in Go goroutine handlers?" >}}
-`sync.WaitGroup` guarantees deterministic thread synchronization, waiting precisely for goroutines to complete without arbitrary timing assumptions or test flakiness.
-{{< /faq >}}
 
 ---
 

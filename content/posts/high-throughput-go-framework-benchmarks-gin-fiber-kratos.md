@@ -12,18 +12,14 @@ draft: false
 mermaid: true
 ---
 
-**Answer-first:** In high-load performance benchmarks of Go frameworks, Fiber (based on fasthttp) delivers the highest throughput for simple APIs due to zero memory allocation. However, Kratos and Gin provide superior stability, standard library compatibility, and robust middleware ecosystems required for complex microservices architectures in Production environments.
-
 > [!NOTE]
-> **What You'll Learn That AI Won't Tell You:** This article goes beyond generic "Hello World" tests by simulating a real-world high-throughput scenario with connection-pooled database I/O, middleware overhead, and Context cancelation. It provides actual k6 load testing scripts, `wrk` Lua header injection configurations, and detailed `pprof` CPU/Memory profiling results to demonstrate how Garbage Collection impacts p99 latency in Gin and Kratos compared to Fiber's zero-allocation model.
-
 ## The Testing Methodology (Beyond Hello World)
 
 In the software engineering world, "Hello World" performance tests are common but offer very little practical value for [designing high-concurrency systems](/series/high-concurrency-systems/). An empty handler returning a simple string only measures a framework's routing parse speed and the minimal overhead of a TCP handshake. When deploying an application to a real production environment, systems face much more complex challenges, including database connectivity, concurrent resource management via connection pooling, middleware chain execution (logging, request authentication, authorization), and Context lifecycle handling. Therefore, this article establishes a more realistic testing methodology to closely simulate actual backend applications.
 
 We set up our benchmark tests on standard AWS hardware using a `c6i.2xlarge` instance (8 vCPUs, 16 GiB RAM) running Ubuntu 22.04 LTS. Both the testing client and the server running the Go application were placed in the same VPC to completely minimize any margin of error caused by physical network latency.
 
-In this testing scenario, each framework will process a GET request directed to the `/ping` endpoint. This endpoint does not merely return a static JSON response; it is forced to execute a middleware to extract (or generate) a Request ID from the HTTP Header (`X-Request-ID`), attach that information to the processing context, and execute a simulated query against a PostgreSQL database via a [database connection](/series/high-concurrency-systems/golang-database-connection-pool-optimization/) retrieved from an optimized connection pool. Utilizing a simulated database query allows us to accurately measure the framework's asynchronous interaction capabilities during an I/O block, while also evaluating its resource deallocation mechanisms and its ability to propagate Context Cancelation signals down the stack.
+In this testing scenario, each framework will process a GET request directed to the `/ping` endpoint. This endpoint does not merely return a static JSON response; it is forced to execute a middleware to extract (or generate) a Request ID from the HTTP Header (`X-Request-ID`), attach that information to the processing context, and execute a simulated query against a PostgreSQL database via a [database connection](/series/high-concurrency-systems/article_5_db_connection/) retrieved from an optimized connection pool. Utilizing a simulated database query allows us to accurately measure the framework's asynchronous interaction capabilities during an I/O block, while also evaluating its resource deallocation mechanisms and its ability to propagate Context Cancelation signals down the stack.
 
 We configured a Database Connection Pool optimized for high load with the following specific parameters:
 - `SetMaxOpenConns(50)`: Limits the maximum number of concurrent connections to 50 to avoid exhausting the DB Server's connection ports under high load.
@@ -32,7 +28,7 @@ We configured a Database Connection Pool optimized for high load with the follow
 
 ### Go Benchmark Code
 
-Below is the complete source code of the benchmark test file written using the Go Testing Framework. This file performs a direct in-memory performance comparison between the Gin and Fiber frameworks using the exact same DB Pool connection configuration:
+Benchmarking Gin and Fiber framework throughput under heavy concurrent load requires isolating database pool overhead using identical connection pool configurations:
 
 ```go
 package main

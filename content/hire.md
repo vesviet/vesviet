@@ -15,7 +15,7 @@ showToc: true
 TocOpen: true
 cover:
   image: "images/posts/hire-cover.png"
-  alt: "Hire Lê Tuấn Anh — Senior Go Backend Architect & Microservices Consultant, Vietnam"
+  alt: "Hire Lê Tuấn Anh — Go Backend Architect & Consulting"
   relative: false
 author: "Lê Tuấn Anh"
 ---
@@ -25,6 +25,8 @@ author: "Lê Tuấn Anh"
 **Senior Go Backend Architect with 17+ years production experience, based in Vietnam (UTC+7). Led the zero-downtime migration of a decade-old Magento monolith to 21 Go microservices handling 25M+ requests/month at 8,000 RPS peak. Available for architecture reviews (1–2 weeks), advisory retainers (monthly), and hands-on consulting (project-based). Contact: vesviet@gmail.com.**
 
 ## 👋 Who I Am
+
+**Answer-first:** Lê Tuấn Anh (vesviet) is a Senior Go Backend Architect with 17+ years of experience leading zero-downtime microservices migrations, high-traffic system design, and platform reliability engineering.
 
 I am **Lê Tuấn Anh** ([vesviet](https://github.com/vesviet)), a Senior Go Backend Architect and Distributed Systems Engineer with **17+ years** of production experience. I have led the migration of a decade-old Magento monolith into a **21-service Go microservices ecosystem** at zero downtime, designed APIs handling **25M+ requests/month** at peak 8,000 RPS, and reduced p95 latency from 1.2s to 120ms through architecture and caching strategy.
 
@@ -36,6 +38,8 @@ I work with teams that need:
 ---
 
 ## 🎯 What I Can Help With
+
+**Answer-first:** Senior technical advisory and consulting services covering Go microservices architecture, Magento-to-Go monolith migrations, high-traffic reliability engineering, and GitOps platform design.
 
 ### Microservices Architecture & Migration
 - Strangler Fig migrations from PHP/Magento/Laravel monoliths to Go microservices
@@ -63,6 +67,8 @@ I work with teams that need:
 
 ## 💼 Recent Work (Selected)
 
+**Answer-first:** Selected production achievements including zero-downtime migration of a Magento monolith to 21 Go microservices, high-throughput gRPC edge APIs at 8,000 RPS, and composable architecture design.
+
 | Project | Scope | Outcome |
 |---------|-------|---------|
 | Independent Consultant (2021–Present) | Monolith → 21 Go services, B2B/B2C Commerce | Zero-downtime migration, 40% checkout throughput improvement |
@@ -75,6 +81,8 @@ I work with teams that need:
 
 ## 🤝 Engagement Types
 
+**Answer-first:** Flexible consulting engagement models ranging from 1–2 week architecture reviews and monthly advisory retainers to project-based hands-on engineering and specialized technical workshops.
+
 | Type | Description | Duration |
 |------|-------------|----------|
 | **Architecture Review** | Deep review of your current system, migration plan, or scaling strategy | 1–2 weeks |
@@ -86,6 +94,8 @@ I work with teams that need:
 
 ## 📍 Location & Availability
 
+**Answer-first:** Based in Vietnam (UTC+7) with global remote availability for engineering teams across Asia, Europe, and North America, offering flexible meeting hours and async-first communication.
+
 - **Based in:** Vietnam (UTC+7)
 - **Remote:** Yes — globally available
 - **On-site:** Vietnam and Southeast Asia
@@ -94,6 +104,8 @@ I work with teams that need:
 ---
 
 ## 📫 Let's Talk
+
+**Answer-first:** Direct technical consultation for backend engineering challenges, architecture reviews, and migration planning via email or LinkedIn with prompt 48-hour response SLAs.
 
 The best starting point is a short conversation about your problem. No long forms.
 
@@ -109,11 +121,13 @@ I read every message and respond within 48 hours on business days.
 
 *Tính năng Newsletter trực tiếp qua email đang được hoàn thiện.* Bạn có thể theo dõi các bài viết mới nhất tại trang chủ hoặc kết nối qua [LinkedIn](https://www.linkedin.com/in/vesviet) & [GitHub](https://github.com/vesviet).
 
-👉 **[Xem tất cả bài viết](/posts/)** | **[Xem các series](/series/)**
+👉 **[Xem tất cả bài viết](/reading-map/)** | **[Xem các series](/series/)**
 
 ---
 
 ## FAQ
+
+**Answer-first:** Frequently asked questions regarding consulting scope, Magento-to-Go migration engagements, remote collaboration, and advisory retainers.
 
 {{< faq q="What does a Go backend architecture consulting engagement look like?" >}}
 A typical engagement starts with a **1-week discovery phase** (paid): I review your current architecture, codebase, and infrastructure configuration, then produce a written Technical Assessment document covering bottlenecks, risk areas, and a prioritized roadmap. From there, engagements take one of three forms: a **2-week Architecture Review** (detailed ADR + migration plan for one specific problem), an **ongoing Advisory Retainer** (monthly fixed hours for architectural guidance, code review, and escalation support), or **hands-on consulting** (direct implementation on a specific migration or scaling problem). All engagements start with a 30-minute scoping call — no forms, no decks.
@@ -130,3 +144,8 @@ Yes. I am based in Vietnam (UTC+7) and work with clients in North America, Europ
 {{< faq q="What is the minimum engagement size you take on?" >}}
 The minimum effective engagement is an **Architecture Review** (1–2 weeks) because shorter engagements do not allow enough time to produce actionable technical output. I do not do hourly 1-hour sessions — they are too shallow to be useful for backend architecture problems. If you are unsure whether a full engagement is warranted, start with the 30-minute scoping call (free) where we scope the problem. If it is solvable with a written answer or a reference to an existing post, I will tell you directly rather than recommend an engagement.
 {{< /faq >}}
+
+---
+## Related Architecture & Pillar Guides
+For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
+- [Go Microservices Architecture: Complete Production Guide](/posts/go-microservices/)

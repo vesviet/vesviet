@@ -1,5 +1,5 @@
 ---
-title: "Real-Time Ride-Hailing Architecture: Uber & Grab"
+title: "Real-Time Ride-Hailing Architecture: Uber & Grab | Go Produc"
 date: "2026-05-06T20:00:00+07:00"
 lastmod: "2026-05-06T20:00:00+07:00"
 draft: false
@@ -13,6 +13,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/"
+image: "images/posts/real-time-ride-hailing-cover.png"
 ---
 
 **Answer-first:** This series covers the high-concurrency real-time architecture required to power ride-hailing services like Uber and Grab, discussing GPS ingestion, spatial indexing, Kafka event streams, dispatch matching, dynamic pricing, and WebSocket gateways.
@@ -38,3 +39,22 @@ All content is synthesized from the official engineering blogs of Uber, Grab, an
 Building on Part 5's theory with a full architectural implementation:
 
 - **[Surge Pricing Algorithm & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture/)** — End-to-end implementation of a surge pricing engine: H3 hex grid demand/supply aggregation, Kafka real-time event pipeline, Redis geospatial caching, and multiplier computation at sub-50ms latency.
+
+
+## Real-Time Ride-Hailing System Architecture Matrix
+
+| Part | Core Module | Primary Tech Stack | Performance Metric |
+|---|---|---|---|
+| **Part 1** | Location Ingestion | Go gRPC, Worker Pools, Redis HSet | 500,000 GPS updates/sec |
+| **Part 2** | Geospatial Indexing | Uber H3 Indexing, Spatial Aggregation | Sub-millisecond driver radius lookup |
+| **Part 3** | Event Streaming Backbone | Apache Kafka, Flink RocksDB State | Real-time trajectory stream processing |
+| **Part 4** | DISCO Dispatch Engine | Bipartite Graph Matching, Kuhn-Munkres | Minimum ETA matching across drivers |
+| **Part 5** | Dynamic Surge Pricing | Real-time Kafka Flink Aggregations | Instant demand-supply multiplier adjustments |
+
+## Target Audience & Geospatial Prerequisites
+
+Designed for **Real-Time Systems Engineers, Geospatial Architects, and High-Concurrency Backend Developers**.
+
+**Prerequisites:**
+- Understanding of spatial indexing (H3, S2, R-Tree) and spatial query optimizations.
+- Experience with stream processing frameworks (Apache Flink, Kafka Streams).

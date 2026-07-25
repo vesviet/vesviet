@@ -29,12 +29,8 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/go-microservices-distributed-tracing-architecture/"
 ---
 
-**Answer-first:** Solve observability blind spots across distributed Go microservices by implementing an OpenTelemetry pipeline. Propagate W3C trace context across HTTP/gRPC boundaries and Kafka streams, batch metrics at the local agent level, and use tail-based sampling at the collector gateway to filter noise before ingestion.
-
-### What You'll Learn That AI Won't Tell You
 - OpenTelemetry collector tuning for low-overhead distributed tracing.
 - Propagating span contexts over asynchronous Kafka messaging systems without breaking tracing chains.
-
 
 > 
 
@@ -43,7 +39,6 @@ Monitoring complex Go microservices requires more than isolated logs. When a req
 By 2026, **OpenTelemetry (OTel)** has cemented itself as the vendor-neutral standard for telemetry. This guide explores the architecture of distributed tracing in Go, from SDK context propagation to advanced Collector Gateway configurations.
 
 ## The 2026 Paradigm: OpenTelemetry Pipeline
-
 
 
 ```mermaid
@@ -85,7 +80,6 @@ Historically, organizations utilized proprietary daemonsets (like Datadog or New
 > **Related Insight:** To understand how to diagnose CPU and memory anomalies within the sidecars themselves, see our [Go pprof Tutorial: CPU & Memory Profiling in Production](/posts/golang-pprof-profiling-memory-cpu-tutorial/).
 
 ## Overcoming Go Context Propagation Traps
-
 
 
 The Go `context.Context` is the backbone of trace propagation. 
@@ -336,7 +330,6 @@ func ClientInterceptor(tracer trace.Tracer) grpc.UnaryClientInterceptor {
 ## Propagating Context via Apache Kafka
 
 
-
 Breaking trace context on message ingestion is the number one visibility gap in asynchronous systems. 
 
 Here is the 2026 standard for Go Kafka carriers:
@@ -359,7 +352,6 @@ By ensuring the Kafka consumer extracts this header, the event stream connects s
 ## Advanced Collector Gateways and Tail-Based Sampling
 
 
-
 A critical requirement for tail-based sampling is that **all spans with the same Trace ID must land on the same Collector instance**. Therefore, local agents must utilize a `loadbalancing` exporter configured with a Trace ID routing policy.
 
 ### PII Redaction via Transform Processor
@@ -375,7 +367,6 @@ processors:
 ```
 
 ## Integrating Logs, Metrics, and Traces
-
 
 
 This triad of correlation allows engineers to observe a latency metric, click the Exemplar, view the exact distributed trace in Tempo, and read the correlated logs in Loki.

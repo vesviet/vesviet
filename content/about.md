@@ -1,13 +1,17 @@
 ---
 
-title: "Lê Tuấn Anh — Senior Software Engineer & Go Backend Architect"
+title: "Lê Tuấn Anh — Senior Go Backend Architect & Consultant"
 date: "2021-10-14T18:48:02+07:00"
 lastmod: "2026-07-23T13:34:42+07:00"
 aliases:
   - /about-me/
   - /privacy-policy/
-description: "Lê Tuấn Anh — Senior Go & Microservices Engineer, 17+ years building high-traffic e-commerce platforms. Specializes in backend architecture, GitOps, and site privacy policies."
+description: "Lê Tuấn Anh — Senior Go Backend Architect with 17+ years building high-traffic microservices, event-driven platforms, GitOps, and cloud ecosystems."
 author: "Lê Tuấn Anh"
+cover:
+  image: "images/posts/hire-cover.png"
+  alt: "Lê Tuấn Anh — Senior Go Backend Architect & Consultant"
+  relative: false
 ---
 
 > *"Architecting scalable systems and leading teams to build resilient, high-performance platforms."*
@@ -88,3 +92,8 @@ Under CCPA and GDPR regulations, users have the right to access, rectify, or req
 Whether it's discussing the nuances of Clean Architecture, plotting out high-load system migrations, or exchanging battle stories about Kubernetes deployments—my inbox is always open.
 
 [Email](mailto:vesviet@gmail.com) • [LinkedIn](https://www.linkedin.com/in/vesviet) • [GitHub](https://github.com/vesviet)
+
+---
+## Related Architecture & Pillar Guides
+For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
+- [AWS EKS vs ECS: Architecture, Cost & Use Cases](/posts/aws-eks-vs-ecs-comparison/)

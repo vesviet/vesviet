@@ -1,11 +1,11 @@
 ---
-title: "Go Observability & pprof — Memory Leaks, CPU Profiling & GODEBUG"
+title: "Go Observability & pprof: Memory Leaks & Tracing | Go Production Guide"
 slug: "10-observability-pprof-golang"
 date: "2026-06-18T13:30:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-description: "Go pprof: heap diff memory leak diagnosis, goroutine leak detection, CPU flame graphs, GODEBUG gctrace parsing, and Four Golden Signals."
+description: "Go pprof guide: heap diff memory leak diagnosis, goroutine leak detection, CPU flame graphs, GODEBUG gctrace, and Four Golden Signals in production."
 tags: ["observability", "golang", "pprof", "memory leak", "cpu profiling", "godebug", "system design"]
 categories: ["System Design", "Backend Engineering"]
 ShowToc: true
@@ -16,8 +16,9 @@ cover:
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/10-observability-pprof-golang/"
+image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
-**Answer-first:** Go's built-in `pprof` profiler provides CPU sampling, heap allocation analysis, goroutine stack inspection, and blocking profiler — all available as HTTP endpoints in running production services with minimal overhead. Heap diff between two snapshots is the fastest way to identify memory leaks.
+Go's built-in `pprof` profiler provides CPU sampling, heap allocation analysis, goroutine stack inspection, and blocking profiler — all available as HTTP endpoints in running production services with minimal overhead. Heap diff between two snapshots is the fastest way to identify memory leaks.
 
 > **Prerequisite:** This is Part 10 of the [System Design Masterclass](/series/system-design/). Previous parts built the architecture — this part teaches you how to *see inside* a running system and diagnose production performance issues.
 
@@ -29,6 +30,8 @@ canonicalURL: "https://tanhdev.com/series/system-design/10-observability-pprof-g
 ---
 
 ## Four Golden Signals — The Observability Foundation
+
+This practical Four Golden Signals — The Observability Foundation section details production-grade Go code, middleware setup, and architectural patterns designed to ensure high performance and system resilience under peak load.
 
 **Key Concept:** Google SRE Book's Four Golden Signals are the minimum metrics needed to describe the health of any service. Before investing in detailed profiling, ensure these four are instrumented and alerting correctly.
 
@@ -195,6 +198,8 @@ gc 1          = GC cycle number 1
 
 ## Goroutine Leak Detection
 
+This practical Goroutine Leak Detection section details production-grade Go code, middleware setup, and architectural patterns designed to ensure high performance and system resilience under peak load.
+
 **Leak Diagnosis:** A goroutine leak occurs when goroutines block indefinitely — waiting on a channel that never receives, waiting for a lock never released, or waiting on a context that's never cancelled. The goroutine count grows monotonically and memory grows proportionally to the stack size of leaked goroutines.
 
 ```go
@@ -256,6 +261,8 @@ func (e *RuntimeMetricsExporter) Start() {
 **Common goroutine leak patterns in Go:**
 
 ```go
+package main
+
 // ❌ LEAK: goroutine blocked on channel that nobody reads
 func leakyHandler(w http.ResponseWriter, r *http.Request) {
     ch := make(chan Result) // Unbuffered channel
@@ -338,27 +345,39 @@ func StartObservabilityStack(pprofPort int, leakThreshold int) {
 > 🔥 **[Production Failure]: Go Service OOM — 2 GB/hour Growth**
 > **Symptom:** Service memory grew 2 GB/hour. OOM kill after 8 hours. CPU normal. No obvious hot path.
 > **Investigation:**
-> ```bash
-> go tool pprof -base baseline.pprof peak.pprof
-> (pprof) top 5
-> # → strings.(*Builder).WriteString: +1.8 GB increase
-> ```
+
+```bash
+go tool pprof -base baseline.pprof peak.pprof
+(pprof) top 5
+# → strings.(*Builder).WriteString: +1.8 GB increase
+```
+
 > **Root Cause:** An HTTP middleware accumulated request URL paths into a `strings.Builder` variable captured in a closure — the variable was scoped to the server lifetime, not the request lifetime.
-> ```go
-> // ❌ Bug: var buf captured at server init, never reset
-> var buf strings.Builder
-> mux.Handle("/api/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
->     buf.WriteString(r.URL.Path) // Grows forever!
->     // ...
-> }))
->
-> // ✅ Fix: local variable scoped to each request
-> mux.Handle("/api/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
->     var buf strings.Builder // Allocated per-request, GC'd after handler returns
->     buf.WriteString(r.URL.Path)
->     // ...
-> }))
-> ```
+
+```go
+package main
+
+import (
+	"net/http"
+	"strings"
+)
+
+func setupRoutes(mux *http.ServeMux) {
+	// ❌ Bug: var buf captured at server init, never reset
+	var buf strings.Builder
+	mux.Handle("/api/buggy", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		buf.WriteString(r.URL.Path) // Grows forever!
+		// ...
+	}))
+
+	// ✅ Fix: local variable scoped to each request
+	mux.Handle("/api/fixed", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var buf strings.Builder // Allocated per-request, GC'd after handler returns
+		buf.WriteString(r.URL.Path)
+		// ...
+	}))
+}
+```
 > **Resolution:** Heap diff identified the exact function in < 10 minutes. Fix was a single-line scope change. Memory leak eliminated.
 
 ---
@@ -386,39 +405,10 @@ You've completed 10 parts of the masterclass. Here's the knowledge map you've bu
 
 ---
 
-## FAQ
-
-
-{{< faq q="How do you detect memory leaks in Go?" >}}
-Five steps: (1) capture baseline heap with `curl .../heap -o baseline.pprof`, (2) run load test for 10–30 minutes, (3) capture peak heap, (4) `go tool pprof -base baseline.pprof peak.pprof`, (5) `top 20` to identify functions with the largest allocation increase. Goroutine leak: `curl .../goroutine?debug=2` and grep for `chan receive` in the output.
-{{< /faq >}}
-
-{{< faq q="How do you use go tool pprof?" >}}
-```bash
-# CPU (5–10% overhead during capture):
-go tool pprof http://localhost:6060/debug/pprof/profile?seconds=30
-
-# Heap (< 1% overhead):
-go tool pprof -inuse_space http://localhost:6060/debug/pprof/heap
-
-# Flame graph web UI:
-go tool pprof -http=:8090 http://localhost:6060/debug/pprof/heap
-
-# Interactive commands: top / list <func> / web / svg
-```
-{{< /faq >}}
-
-{{< faq q="What is the difference between inuse_space and alloc_space?" >}}
-`inuse_space` = memory **currently held** (live objects). Use to find memory leaks — if it grows continuously over time, something is accumulating. `alloc_space` = total memory allocated from process start, including already GC'd objects. Use to find hot allocation paths causing frequent GC cycles. Debugging a memory leak → `inuse_space`. Reducing GC pressure → `alloc_space`.
-{{< /faq >}}
-
----
-
 ## Navigation & Next Steps
 
-[← Previous Part]({{< ref "09-consistent-hashing-sharding.md" >}})
-[Next Part →]({{< ref "11-security-api-rate-limiting.md" >}})
+[← Previous Part](/series/system-design/09-consistent-hashing-sharding/)
+[Next Part →](/series/system-design/11-security-api-rate-limiting/)
 
-🔗 **Next Step:** Continue to [Part 11: Security & API Rate Limiting]({{< ref "11-security-api-rate-limiting.md" >}})
+🔗 **Next Step:** Continue to [Part 11: Security & API Rate Limiting](/series/system-design/11-security-api-rate-limiting/)
 
-Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

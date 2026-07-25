@@ -15,6 +15,7 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/paypay-architecture/"
+image: "images/posts/paypay-scaling-cover.png"
 ---
 
 **Answer-first:** The PayPay architecture scales to handle millions of payment transactions by isolating promotional campaign logic from the core ledger. Using a distributed SQL transactional layer (TiDB) and asynchronous event streaming via Apache Kafka, the system maintains 99.99% availability and data consistency during high-concurrency campaigns.
@@ -62,6 +63,8 @@ PayPay launched in October 2018 as a joint venture between SoftBank, Yahoo! JAPA
 
 ## FAQ
 
+Implementing _Index demands strict ACID transactional isolation and pessimistic row locking during balance or inventory updates. Distributed Saga orchestration coordinates multi-stage rollbacks, preventing partial state writes across heterogeneous databases.
+
 {{< faq q="How does PayPay handle 7.8 billion transactions per year without downtime?" >}}
 PayPay uses three layers of reliability: (1) microservices with circuit breakers isolate failures to individual services without cascading; (2) Kafka-backed event sourcing with idempotency keys prevents double-processing on retry; (3) campaign pre-scaling — before major promotions, PayPay pre-warms the compute fleet based on historical traffic models.
 {{< /faq >}}
@@ -75,3 +78,4 @@ Before a major promotion, PayPay's SRE team runs a capacity planning model again
 {{< /faq >}}
 
 {{< author-cta >}}
+

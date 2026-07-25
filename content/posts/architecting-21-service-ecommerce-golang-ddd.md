@@ -20,12 +20,8 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/architecting-21-service-ecommerce-golang-ddd/"
 ---
 
-**Answer-first:** We decompose the monolith into 21 microservices using Domain-Driven Design (DDD) to isolate business boundaries. Implementing the Kratos framework in Go enables strong structural subtyping for clean layer segregation, while Dapr Workflows handle distributed transactions asynchronously via the Saga pattern to avoid race conditions.
-
-### What You'll Learn That AI Won't Tell You
 - The exact performance overhead of using Go's structural subtyping versus manual dependency injection in high-throughput microservices.
 - Why scoping database transactions to a single Aggregate root is critical, and how we resolved out-of-order event delivery using Kafka partition keys.
-
 
 Scaling an e-commerce platform past 10,000+ orders per day containing multiple SKUs across dynamic warehouses is where naive architecture breaks down. Hardware scaling ceases to be a magic bullet when distributed transactions, race conditions, and eventual consistency are involved.
 
@@ -221,7 +217,7 @@ CREATE TABLE processed_events (
 ```
 Before processing an incoming Dapr message, the service opens a database transaction and attempts to insert the `event_id`. If it throws a constraint violation, the event was already processed, and the system safely acks and drops the duplicate message.
 
-## Conclusion
+## Architectural Summary & Production Checklist
 
 **Three architectural decisions that make the 21-service system absorb Black Friday traffic without dropping orders: (1) Kratos enforces clean architecture boundaries — no business logic in handlers, no database logic in biz layer; (2) Optimistic Concurrency Control prevents inventory overselling without distributed locks; (3) Idempotency table in every service's database eliminates duplicate-processing from Dapr At-Least-Once delivery.**
 

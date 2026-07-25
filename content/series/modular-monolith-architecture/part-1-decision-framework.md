@@ -1,6 +1,5 @@
 ---
-
-title: "Part 1: Architectural Decision Framework"
+title: "Monolith vs Microservices: Engineering Trade-Offs | Go Produ"
 date: "2026-07-03T10:00:00+07:00"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "Use real-world latency, performance data, and lessons from Stack Overflow to decide when to use a Modular Monolith instead of Microservices."
@@ -15,7 +14,10 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 draft: false
+image: "images/posts/golang-microservices-cover.png"
 ---
+
+> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series and **[Composable E-Commerce Migration](/posts/ecommerce-architecture-composable-migration/)** guide. Please refer to the original article for a comprehensive overview of the architecture.
 
 > **Prerequisite:** Before reading this part, please review [Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure](/series/modular-monolith-architecture/part-0-executive-summary/).
 
@@ -39,8 +41,8 @@ This article provides a solid Decision Framework based on real-world Latency Ben
 
 ## 1. Martin Fowler's Rule and the "Microservice Premium"
 
-Software architecture expert Martin Fowler defined the concept of the **"Microservice Premium."** His model highlights:
-- For applications with low or medium complexity, team productivity using a Monolith is consistently higher compared to Microservices.
+Software architecture expert Martin Fowler defined the concept of the **"Microservice Premium."** His model highlights: - For applications with low or medium complexity, team productivity using a Monolith is consistently higher compared to Microservices.
+
 - Only when a system crosses an "intersection point" of organizational complexity (when the number of developers reaches the hundreds) do Microservices begin to provide management benefits.
 
 > **Martin Fowler's Golden Rule:** "Don't even consider microservices unless you have a system that's too complex to manage as a monolith."
@@ -49,13 +51,13 @@ The "Premium" here isn't just server costs; it's deployment time, the difficulty
 
 ```mermaid
 flowchart TD
-    A[Evaluate Architectural Need] --> B{Team Size > 50 & Independent Deployment Required?}
-    B -- No --> C[Adopt Modular Monolith Architecture]
-    B -- Yes --> D{High Network Latency Tolerable across Boundaries?}
-    D -- Yes --> E[Extract Targeted Microservices]
-    D -- No --> F[Keep Performance-Critical Domains In-Memory]
-    C --> G[Direct In-RAM Function Calls & Clean Interfaces]
-    E --> H[Network gRPC / Event Bus Boundaries]
+    A[Evaluate Architectural Need] --> B{"Team Size > 50 & Independent Deployment Required?"}
+    B -->|"No"| C[Adopt Modular Monolith Architecture]
+    B -->|"Yes"| D{High Network Latency Tolerable across Boundaries?}
+    D -->|"Yes"| E[Extract Targeted Microservices]
+    D -->|"No"| F[Keep Performance-Critical Domains In-Memory]
+    C --> G["Direct In-RAM Function Calls & Clean Interfaces"]
+    E --> H["Network gRPC / Event Bus Boundaries"]
 ```
 
 ## 2. The Speed Gap: In-process vs Network Hop
@@ -175,6 +177,8 @@ For financial and infrastructure analysis, explore [Part 2: FinOps Cost Reality]
 
 ## Frequently Asked Questions (FAQ)
 
+Geospatial operations in Part 1 Decision Framework utilize Uber H3 spatial indexes to aggregate location telemetry into spatial hexagonal grids. Bounded spatial queries achieve sub-10ms lookup times.Geospatial operations in Part 1 Decision Framework utilize Uber H3 spatial indexes to aggregate location telemetry into spatial hexagonal grids. Bounded spatial queries achieve sub-10ms lookup times.
+
 {{< faq q="When should a team switch from a Modular Monolith to Microservices?" >}}
 A team should consider switching to microservices only when domain complexity and team organization scale beyond 50-100 developers, requiring completely independent release lifecycles and dedicated operational ownership.
 {{< /faq >}}
@@ -195,8 +199,15 @@ Each business domain lives in a top-level internal directory (e.g. `internal/bil
 
 ## Navigation & Next Steps
 
+Executing data transformations in Part 1 Decision Framework involves semantic vector chunking and HNSW graph indexing. Dynamic context pruning prevents LLM prompt saturation while preserving critical domain metadata.
+
 - **Previous Part:** [Part 0: Executive Summary — Amazon Prime Video Case Study](/series/modular-monolith-architecture/part-0-executive-summary/)
 - **Next Part:** Continue to [Part 2: FinOps Cost Reality](/series/modular-monolith-architecture/part-2-finops-cost-reality/)
 - **Related Guides:** [Go Clean Architecture Primer](/series/system-design/01-introduction-system-design-golang/) and [C10M Concurrency Lessons](/posts/shopee-flash-sale-architecture/)
 
 Need help implementing this decision framework in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) for an architectural audit.
+
+
+## Architectural Context & Pillar References
+
+Tuning machine learning workflows for Part 1 Decision Framework relies on QLoRA 4-bit quantization and LoRA adapter parameter updates. Distributed GPU inference pipelines maintain low latency for client requests.

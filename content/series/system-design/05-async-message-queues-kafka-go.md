@@ -5,7 +5,7 @@ date: "2026-06-18T11:00:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-description: "Kafka zero-copy internals, bounded Worker Pool with Go channel backpressure, partition-aware ordering, and Exactly-Once via DB transaction."
+description: "Kafka zero-copy architecture, bounded Worker Pool with Go channel backpressure, partition ordering, and Exactly-Once transactional commits Learn production engi"
 tags: ["event-driven", "kafka", "golang", "worker pool", "backpressure", "message queue", "system design"]
 categories: ["System Design", "Backend Engineering"]
 ShowToc: true
@@ -17,6 +17,7 @@ cover:
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/05-async-message-queues-kafka-go/"
+image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
 
 > **Prerequisite:** Part 5 of the [System Design Masterclass](/series/system-design/). Read [Part 4: Database Scaling](/series/system-design/04-database-scaling-sharding/) first.
@@ -38,7 +39,6 @@ canonicalURL: "https://tanhdev.com/series/system-design/05-async-message-queues-
 ---
 
 ## Kafka vs RabbitMQ — When to Use Each?
-
 
 **Key Concept:** Kafka is a **distributed commit log** — messages are retained indefinitely, consumers manage their own offsets, and replay is possible. RabbitMQ is a **message broker** — messages are deleted after acknowledgment, the broker handles routing complexity, push-based delivery. They solve different problems.
 
@@ -107,6 +107,8 @@ Lookup: binary search on `.index` file → sequential scan from closest entry. C
 ---
 
 ## Implementing Backpressure in Go
+
+This practical Implementing Backpressure in Go section details production-grade Go code, middleware setup, and architectural patterns designed to ensure high performance and system resilience under peak load.
 
 **Go Design Pattern:** Backpressure in Go is implemented naturally via **buffered channels** — when the buffer is full, the sender blocks, propagating pressure back to the upstream producer. Combined with a bounded worker pool, the system automatically throttles ingest when consumers are slower than producers.
 
@@ -347,7 +349,6 @@ func (c *OrderEventConsumer) ProcessOrderEvent(
 
 ## FAQ
 
-
 {{< faq q="What is the difference between Kafka and RabbitMQ?" >}}
 Kafka is a **distributed log** — messages persist indefinitely, consumers manage offsets, replay is possible, throughput is in millions/s. RabbitMQ is a **message broker** — messages deleted after ACK, broker handles complex routing, push-based. Choose Kafka for event sourcing, audit trails, and fan-out to multiple consumers. Choose RabbitMQ for task queues, request-reply, and complex routing patterns.
 {{< /faq >}}
@@ -364,9 +365,8 @@ True end-to-end exactly-once for external side effects (DB writes, API calls) re
 
 ## Navigation & Next Steps
 
-[← Previous Part]({{< ref "04-database-scaling-sharding.md" >}})
-[Next Part →]({{< ref "06-distributed-locks-concurrency.md" >}})
+[← Previous Part](/series/system-design/04-database-scaling-sharding/)
+[Next Part →](/series/system-design/06-distributed-locks-concurrency/)
 
-🔗 **Next Step:** Continue to [Part 6: Distributed Locks — Redlock, etcd & Split-Brain Prevention in Go]({{< ref "06-distributed-locks-concurrency.md" >}})
+🔗 **Next Step:** Continue to [Part 6: Distributed Locks — Redlock, etcd & Split-Brain Prevention in Go](/series/system-design/06-distributed-locks-concurrency/)
 
-Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.

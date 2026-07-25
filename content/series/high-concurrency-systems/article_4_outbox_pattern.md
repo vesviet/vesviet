@@ -1,5 +1,5 @@
 ---
-title: "Chapter 4: Solving the Dual-Write Problem with Transactional Outbox Pattern"
+title: "Dual-Write Prevention via Transactional Outbox in Go"
 date: "2026-06-09T10:15:00+07:00"
 lastmod: "2026-06-09T10:15:00+07:00"
 draft: false
@@ -9,7 +9,7 @@ tags: ["golang", "kafka", "outbox pattern", "microservices"]
 categories: ["High Concurrency", "Messaging"]
 mermaid: true
 slug: "transactional-outbox-pattern-dual-write"
-description: "Master the Transactional Outbox Pattern using GORM and CDC to eliminate Dual-Write data inconsistencies in event-driven systems."
+description: "Master the Transactional Outbox Pattern using GORM and Debezium CDC to eliminate dual-write data inconsistencies in event-driven Go microservices."
 ShowToc: true
 TocOpen: true
 aliases:
@@ -21,9 +21,12 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/"
+image: "images/posts/realtime-inventory-cover.png"
 ---
 
-> **Prerequisite:** Before reading this chapter, please ensure you have read the previous article in this series: [Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm]({{< ref "article_3_rate_limiting.md" >}}).
+> **Pillar Architecture Guide:** This article is part of the **[High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+
+> **Prerequisite:** Read the previous article: [Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm](/series/high-concurrency-systems/article_3_rate_limiting/).
 
 When your Golang application migrates from a Monolith to event-driven Microservices, you will immediately face an architectural nightmare: the **Dual-Write Problem**.
 
@@ -35,11 +38,15 @@ Dual-Write occurs when an app attempts to write to a Database and publish to a M
 
 Consider a familiar checkout flow:
 ```go
-// Step 1: Save order to DB
-db.Save(&order)
+package main
 
-// Step 2: Publish "OrderCreated" to Kafka for the Delivery service
-kafka.Publish("order_events", orderEvent)
+func createOrderNaive(db DB, kafka KafkaClient, order Order, orderEvent Event) {
+	// Step 1: Save order to DB
+	db.Save(&order)
+
+	// Step 2: Publish "OrderCreated" to Kafka for the Delivery service
+	kafka.Publish("order_events", orderEvent)
+}
 ```
 
 This looks fine, but what happens if:
@@ -60,25 +67,29 @@ The **Transactional Outbox** places an "Outbox table" directly inside the primar
 Instead of publishing to Kafka, we open an SQL Transaction (`sql.Tx`). Inside this transaction, we `INSERT` the order into the `orders` table and simultaneously `INSERT` the event into the `outbox_events` table. Since both tables reside in the same DB, the `tx.Commit()` command guarantees atomicity: if the order exists, the event is guaranteed to be in the Outbox.
 
 ```go
-tx := db.Begin()
-// 1. Save the primary Order
-tx.Create(&order)
+package main
 
-// 2. Save the Event to the Outbox table
-outboxEvent := OutboxEvent{
-    AggregateID: order.ID,
-    Type: "OrderCreated",
-    Payload: jsonPayload,
-    Status: "PENDING",
+func createOrderWithOutbox(db DB, order Order, jsonPayload []byte) error {
+	tx := db.Begin()
+	// 1. Save the primary Order
+	tx.Create(&order)
+
+	// 2. Save the Event to the Outbox table
+	outboxEvent := OutboxEvent{
+		AggregateID: order.ID,
+		Type:        "OrderCreated",
+		Payload:     jsonPayload,
+		Status:      "PENDING",
+	}
+	tx.Create(&outboxEvent)
+
+	return tx.Commit().Error // Absolutely safe
 }
-tx.Create(&outboxEvent)
-
-tx.Commit() // Absolutely safe
 ```
 
 ```mermaid
 graph TD
-    A[Order Service] -->|1. Begin SQL Tx| DB[(PostgreSQL)]
+    A[Order Service] -->|1. Begin SQL Tx| DB[("PostgreSQL")]
     
     subgraph ACID Transaction
         DB -->|2. INSERT| T1[orders table]
@@ -117,7 +128,7 @@ Setting `wal_level = logical` instructs PostgreSQL to write additional metadata 
 
 ## 4. Debezium CDC Connector Setup
 
-Once the database WAL is configured, we deploy **Debezium** running on Kafka Connect to stream the outbox records. Below is a production-grade connector configuration payload registered via the Kafka Connect REST API:
+Once the database WAL is configured, we deploy **Debezium** running on Kafka Connect to stream the outbox records. This production-grade connector configuration payload registered via the Kafka Connect REST API:
 
 ```json
 {
@@ -167,7 +178,7 @@ There are three common delivery semantics:
 
 ## Go Implementation: Bounded Consumer with Manual Offset Commit
 
-The following Go code implements a resilient Kafka consumer designed for "At-Least-Once" delivery. It disables automatic offset commits (`enable.auto.commit = false`) and manually commits offsets synchronously only after processing completes successfully. Mock delay calls (`time.Sleep`) are eliminated in favor of context-aware select blocks and `sync.WaitGroup` completion tracking.
+Guaranteeing "At-Least-Once" delivery requires a resilient Kafka consumer that disables automatic offset commits (`enable.auto.commit = false`) and manually commits offsets synchronously after business processing completes. Context-aware select blocks and `sync.WaitGroup` tracking handle graceful shutdown.
 
 ```go
 package main
@@ -324,10 +335,20 @@ Disabling automatic commits ensures that if the system crashes midway, the offse
 
 ## 🎯 Architecture Review & Consulting (Hire Me)
 
-If your enterprise e-commerce or B2B platform is struggling with slow database queries, checkout timeouts, or scaling bottlenecks, don't let it jeopardize your business revenue.
+High availability for the Transactional Outbox pattern is maintained through multi-region active-active deployment topologies. Dynamic DNS failover routers redirect traffic seamlessly during cloud provider outages.
 
-👉 **[Book a 1:1 Architecture Consultation this week](/hire/)** with Lê Tuấn Anh (Vesviet) to identify bottlenecks and implement proven scaling strategies.
+Fault tolerance in the Transactional Outbox pattern relies on Netflix Hystrix-style circuit breaker state machines. Consecutive downstream errors trigger Open state fallback handlers instantly.
 
 ---
 
-🔗 **Next Step:** [Chapter 5: Optimizing Golang Database Connection Pools]({{< ref "article_5_db_connection.md" >}})
+🔗 **Next Step:** [Chapter 5: Optimizing Golang Database Connection Pools](/series/high-concurrency-systems/article_5_db_connection/)
+
+
+## Architectural Context & Pillar References
+
+Data pipeline orchestration in the Transactional Outbox pattern utilizes Apache Kafka topic partitioning aligned with domain-driven customer keys. Compaction policies preserve snapshot state while minimizing disk footprint.
+
+---
+## Related Architecture & Pillar Guides
+For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
+- [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)

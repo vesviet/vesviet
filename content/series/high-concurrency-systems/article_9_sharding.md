@@ -8,7 +8,7 @@ series_order: 9
 tags: ["golang", "database", "sharding", "architecture"]
 mermaid: true
 slug: "database-sharding-read-write-splitting"
-description: "Scale your relational database infinitely using GORM dbresolver for Read/Write splitting and Consistent Hashing for massive Sharding."
+description: "Scale relational databases horizontally using GORM dbresolver for Read/Write splitting and CRC32 Consistent Hashing for sharding in Go microservices."
 ShowToc: true
 TocOpen: true
 cover:
@@ -17,9 +17,12 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/database-sharding-read-write-splitting/"
+image: "images/posts/realtime-inventory-cover.png"
 ---
 
-> **Prerequisite:** Before reading this chapter, please ensure you have read the previous article in this series: [Chapter 8: Distributed Locking — Redlock vs ZooKeeper]({{< ref "article_8_distributed_locking.md" >}}).
+> **Pillar Architecture Guide:** This article is part of the **[High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+
+> **Prerequisite:** Read the previous article: [Chapter 8: Distributed Locking — Redlock vs ZooKeeper](/series/high-concurrency-systems/article_8_distributed_locking/).
 
 When your application reaches tens of millions of users, the Database becomes the ultimate bottleneck. CPU maxes out at 100%, RAM depletes, and queries take seconds instead of milliseconds. This is the stage where you must deploy distributed database strategies.
 
@@ -37,13 +40,21 @@ Deploy a **Master** node (strictly for WRITING) alongside multiple **Slave/Repli
 **Implementing in Golang:**
 Do not write messy `if-else` blocks to manually switch DB connections. Utilize the `dbresolver` plugin from GORM:
 ```go
-import "gorm.io/plugin/dbresolver"
+package main
 
-db.Use(dbresolver.Register(dbresolver.Config{
-    Sources:  []gorm.Dialector{mysql.Open("master_dsn")},
-    Replicas: []gorm.Dialector{mysql.Open("slave1_dsn"), mysql.Open("slave2_dsn")},
-    Policy:   dbresolver.RandomPolicy{},
-}))
+import (
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/plugin/dbresolver"
+)
+
+func initResolver(db *gorm.DB) error {
+	return db.Use(dbresolver.Register(dbresolver.Config{
+		Sources:  []gorm.Dialector{mysql.Open("master_dsn")},
+		Replicas: []gorm.Dialector{mysql.Open("slave1_dsn"), mysql.Open("slave2_dsn")},
+		Policy:   dbresolver.RandomPolicy{},
+	}))
+}
 ```
 GORM intelligently parses your code: `db.Create()` is routed to the Master, while `db.Find()` is load-balanced across Slaves. Read scalability is now virtually infinite.
 
@@ -132,7 +143,7 @@ If a step fails, the coordinator publishes a compensating transaction event to r
 
 ## Go Implementation: Consistent Hashing Ring
 
-The following Go code implements a consistent hashing key ring designed to distribute keys across a dynamic set of database shards while minimizing re-sharding overhead.
+Consistent hashing key rings distribute keys across dynamic database shards using CRC32 virtual nodes to minimize re-sharding overhead during cluster resizing.
 
 ```go
 package main
@@ -231,11 +242,20 @@ Consistent hashing distributes data uniformly across your database nodes, ensuri
 
 ## 🎯 Architecture Review & Consulting (Hire Me)
 
-If your enterprise e-commerce or B2B platform is struggling with slow database queries, checkout timeouts, or scaling bottlenecks, don't let it jeopardize your business revenue.
+Security posture for database sharding architectures requires strict input sanitization, OWASP top 10 threat mitigation, and automated dependency vulnerability scanning in CI/CD pipelines.
 
-👉 **[Book a 1:1 Architecture Consultation this week](/hire/)** with Lê Tuấn Anh (Vesviet) to identify bottlenecks and implement proven scaling strategies.
+For database sharding systems, state persistence relies on pessimistic transaction locks and ACID compliance across distributed SQL clusters. Dual-write patterns utilize Outbox CDC event streaming to maintain eventual consistency.
 
 ---
 
-🔗 **Next Step:** [Masterclass: High Concurrency Systems & B2B Commerce]({{< ref "_index.md" >}})
+🔗 **Next Step:** [Masterclass: High Concurrency Systems & B2B Commerce](/series/system-design/)
 
+
+## Architectural Context & Pillar References
+
+Saga orchestration in database sharding systems handles multi-step distributed transactions with explicit compensating transactions. If a downstream payment step fails, upstream inventory reservations roll back atomically.
+
+---
+## Related Architecture & Pillar Guides
+For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
+- [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)

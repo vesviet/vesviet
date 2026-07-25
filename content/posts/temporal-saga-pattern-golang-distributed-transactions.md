@@ -20,8 +20,6 @@ TocOpen: true
 canonicalURL: "https://tanhdev.com/posts/temporal-saga-pattern-golang-distributed-transactions/"
 ---
 
-**Answer-first:** Use Temporal to implement an orchestrated Saga when a Go workflow spans independently committed services and needs durable retries, observable state, and idempotent compensation. It avoids distributed locks and two-phase commit, but each activity must remain deterministic and each compensation path must be explicitly designed.
-
 ## The Pain of Distributed Transactions in Core Banking
 
 In a traditional monolithic architecture, ensuring the ACID (Atomicity, Consistency, Isolation, Durability) properties of a financial transaction is remarkably straightforward. You simply open a Database Transaction, execute multiple SQL statements (debit account A, credit account B, insert an audit log), and finally issue a `COMMIT`. If any step fails, you issue a `ROLLBACK`, and the database engine magically reverts everything to its pristine state.

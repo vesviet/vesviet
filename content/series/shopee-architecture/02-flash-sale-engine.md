@@ -1,10 +1,10 @@
 ---
-title: "Chapter 2: Flash Sale Engine - Solving Overselling and Hot Keys"
+title: "Shopee Flash Sale Engine: Redis Lua & Overselling | Go Production Guide"
 date: "2026-05-05T08:20:00+07:00"
 lastmod: "2026-05-05T08:20:00+07:00"
 draft: false
 mermaid: true
-description: "Solving the overselling problem and handling hot keys using Redis and Lua Scripts."
+description: "Solve the high-concurrency overselling problem and handle hot cache keys using Redis and atomic Lua scripts during high-traffic flash sale events in Go."
 ShowToc: true
 TocOpen: true
 cover:
@@ -15,17 +15,18 @@ categories: ["Caching", "High Traffic", "FinTech"]
 tags: ["Shopee", "Flash Sale", "Redis", "Lua", "Inventory Sharding", "Hot Keys"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/02-flash-sale-engine/"
+image: "images/posts/shopee-flash-sale-cover.png"
 ---
 
 # Chapter 2: Flash Sale Engine - The Mystery Behind Redis and Hot Keys
 
-> **Executive Summary & Quick Answer**: Shopee prevents overselling during high-concurrency flash sales by combining local memory caching, Redis inventory sharding, and atomic Lua script decrements to eliminate database row locks.
+Shopee prevents overselling during high-concurrency flash sales by combining local memory caching, Redis inventory sharding, and atomic Lua script decrements to eliminate database row locks.
 
 **Flash sales generate massive traffic spikes that instantly crush traditional databases via row locks. Shopee solves this using a two-tier caching architecture, atomic Lua scripts in Redis, and inventory sharding to guarantee sub-millisecond response times without overselling.**
 
-[← Series hub]({{< ref "/series/shopee-architecture/_index.md" >}}) | [← Prev]({{< ref "/series/shopee-architecture/01-microservices-foundation.md" >}}) | [Next →]({{< ref "/series/shopee-architecture/03-traffic-shield.md" >}})
+[← Series hub](/series/system-design/) | [← Prev](/series/shopee-architecture/01-microservices-foundation/) | [Next →](/series/shopee-architecture/03-traffic-shield/)
 
-> **Prerequisite:** Before reading this chapter, please ensure you have read the previous article in this series: Chapter 1: Microservices Foundation - The Power of Go, gRPC, and API Gateway.
+> **Prerequisite:** Read the previous article: Chapter 1: Microservices Foundation - The Power of Go, gRPC, and API Gateway.
 
 Flash Sale events are the ultimate stress test for system architecture. When an iPhone is sold for $1, millions of users will smash the "Buy Now" button in the exact same millisecond. If this massive spike hits a MySQL database directly, the system will instantly crash due to Row Locks and Deadlocks. 
 
@@ -286,20 +287,6 @@ BenchmarkRedisLuaScriptInference-16    100000000    13.6 ns/op    0 B/op    0 al
 
 For historical perspective on flash sale scaling milestones, see [Alipay Double 11 Timeline](/series/alipay-double-11/phase-1-timeline/).
 
-## Frequently Asked Questions (FAQ)
-
-{{< faq "How does Lua script execution guarantee atomic inventory decrements?" >}}
-Redis executes Lua scripts in a single-threaded event loop, guaranteeing that quota checks and `DECR` operations run atomically without inter-thread race conditions.
-{{< /faq >}}
-
-{{< faq "What is inventory sharding and why is it necessary?" >}}
-Inventory sharding splits a single product's stock count into N sub-keys (e.g. `stock_1`, `stock_2`), dividing high-frequency write contention across multiple Redis cluster nodes.
-{{< /faq >}}
-
-{{< faq "What happens if a Redis cluster node fails during a flash sale?" >}}
-Redis Sentinel or Cluster auto-failover promotes read replicas to master within seconds, while application local memory caches absorb brief connection spikes.
-{{< /faq >}}
-
 *Struggling with hot keys and database locking during flash sales? Book a [Flash Sale Engineering Consultation](/hire/).*
 
 🔗 **Next Step:** Compare with previous foundation in Part 01: Microservices Foundation or proceed to Part 03: Traffic Shield System.
@@ -308,8 +295,15 @@ Redis Sentinel or Cluster auto-failover promotes read replicas to master within 
 
 ## References & Further Reading
 
+Architecting resilient systems for high-concurrency flash sale engines demands strict rate limiting via Token Bucket algorithms at the edge API gateway. Dynamic concurrency limits prevent node resource exhaustion during unplanned traffic spikes.
+
 - [Handling Flash Sales with Redis and Lua (Medium)](https://medium.com/@kiki.syah/inventory-system-design-to-handle-flash-sales-37fc2e8dcffb)
 - [Solving the Hot Key Problem with Inventory Sharding](https://medium.com/@soesah/how-to-handle-flash-sales-using-redis-c02058e0a811)
 - [Shopee Engineering Blog](https://careers.shopee.sg/blog/)
 
 {{< author-cta >}}
+
+---
+## Related Architecture & Pillar Guides
+For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
+- [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)

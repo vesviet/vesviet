@@ -28,15 +28,10 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/banking-microservices-architecture/"
 ---
 
-**Answer-first:** A modern banking microservices architecture replaces legacy monolithic ledgers (like T24 or Flexcube) using Go for high-throughput transaction routing. The system achieves distributed consistency without two-phase commit (2PC) by combining Event Sourcing (immutable ledger streams), Saga Orchestration (using Temporal or Dapr), the Transactional Outbox pattern, and PostgreSQL unique constraints for API idempotency.
-
-### What You'll Learn That AI Won't Tell You
 - How to implement transactional outbox pattern to guarantee eventual consistency.
 - Saga Orchestration patterns that handle transient payment gateway timeouts gracefully.
 
-
 ## 1. Introduction: Deconstructing the Legacy Core
-
 
 
 For decades, banks relied on monolithic core systems like Temenos T24 or Oracle FLEXCUBE. While robust, these systems present severe bottlenecks for modern digital banking. They were designed for overnight batch processing, not real-time, API-first global transactions.
@@ -49,7 +44,6 @@ Migrating to a microservices architecture in 2026 requires dismantling these bot
 By leveraging Go's highly concurrent runtime and a distributed event-driven architecture, we optimize the system for <10ms database writes at 10,000 TPS, ensuring scalability and fault tolerance.
 
 ## 2. Domain Decomposition: Mapping Core Banking Contexts
-
 
 
 To successfully migrate using the Strangler Fig pattern, you must establish an Anti-Corruption Layer (ACL) that translates legacy models into modern bounded contexts.
@@ -76,7 +70,6 @@ graph TD
 Each service owns its database. The Ledger Service never queries the Accounts database directly; instead, it subscribes to immutable state change events.
 
 ## 3. Event Sourcing: Designing the Immutable Double-Entry Ledger
-
 
 
 The core constraint of any financial system is to never store balances as the primary record. Storing a mutable `balance` column leads to lost updates and irreversible data corruption. Instead, you must store the transactions (Event Sourcing).
@@ -302,9 +295,7 @@ func auditLedgerInvariants(ctx context.Context, db *pgxpool.Pool) ([]Reconciliat
 By separating this verification loop from the hot write path, the system maintains ultra-low transaction commit latencies while guaranteeing cryptographic and mathematical proof of ledger correctness within seconds.
 
 
-
 ## 4. The Transactional Outbox Pattern: Preventing Dual-Write Failures
-
 
 
 If a service deducts money in the database but fails to publish the `MoneyDeducted` event to Kafka due to a network timeout, the system becomes permanently inconsistent. 
@@ -388,7 +379,6 @@ func PollOutbox(ctx context.Context, db *pgxpool.Pool, producer sarama.SyncProdu
 ## 5. Saga Orchestration: Temporal vs. Dapr for Distributed Transactions
 
 
-
 Two-Phase Commit (2PC) locks databases and crushes throughput. We must use Sagas to ensure Eventual Consistency (for a complete implementation guide, see [Orchestrated Saga Pattern with Temporal]({{< ref "temporal-saga-pattern-golang-distributed-transactions.md" >}})).
 
 ### Orchestrator Comparison
@@ -451,7 +441,6 @@ func FinancialTransferSaga(ctx workflow.Context, req TransferRequest) (err error
 ## 6. Designing Idempotent Payment APIs in Go
 
 
-
 When Kafka redelivers a message, or a client retries a timeout, the API must be safe to call repeatedly.
 
 1. **Check:** The client sends an `Idempotency-Key` header.
@@ -461,7 +450,6 @@ When Kafka redelivers a message, or a client retries a timeout, the API must be 
 This robust mechanism is fundamentally similar to [H3 geospatial indexing](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/) collisions or [Redis caching](/posts/graphhopper-distance-matrix-production-guide/) optimizations—you must assume distributed networks will duplicate data.
 
 ## 7. Observability: OpenTelemetry in Distributed Ledgers
-
 
 
 In Go, when using `segmentio/kafka-go`, native OTel wrappers do not exist. We must construct a custom `TextMapCarrier` to map OTel context fields into `kafka.Header`.

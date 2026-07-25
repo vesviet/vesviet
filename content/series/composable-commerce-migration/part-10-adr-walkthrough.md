@@ -1,6 +1,6 @@
 ---
-title: "Part 10: ADR Walkthrough — 24 Architecture Decisions Explained"
-description: "24 architecture decisions for Composable Commerce: why Dapr over Kafka, Kustomize over Helm, go-kratos over Gin, and the event-driven founding decision."
+title: "Composable Commerce Architecture Decision Records Guide"
+description: "Architectural analysis of 24 ADRs for composable commerce migration: Dapr PubSub, Kustomize GitOps, go-kratos microservices, and outbox patterns."
 date: "2026-06-10T10:00:00+07:00"
 lastmod: "2026-06-24T10:00:00+07:00"
 draft: false
@@ -27,9 +27,13 @@ An ADR (Architecture Decision Record) is a short document that answers the quest
 
 This article walks through all 24 ADRs of the Composable Commerce Platform, grouped by category, with the counter-intuitive choices highlighted. Most ADRs are one-paragraph summaries; the ones that are genuinely surprising get deeper treatment.
 
-**Answer-first:** The 24 ADRs cluster around three recurring themes: (1) **resilience over simplicity** — Dapr over raw Redis, Kustomize over Helm, outbox over in-process event dispatch; (2) **standardization over flexibility** — every service uses the same 5-layer Kratos v2 layout, the same `common` library, the same Goose migrations; (3) **explicit over implicit** — ADR-001 (event-driven) was decided 3 months before any code, ensuring every service was designed with events as a first-class constraint from day one.
+**Answer-first:** Architectural Decision Records (ADRs) enforce three core principles: resilience over simplicity, strict layer standardization, and explicit event-driven boundaries. Standardizing service layouts, outbox patterns, and database migrations before writing code ensures consistent microservices governance across large engineering teams.
+
+> **Pillar Architecture Guide:** This article is part of the **[Composable Commerce: Migrating from Monolith to Microservices](/posts/ecommerce-architecture-composable-migration/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 ## The Decision Timeline: What It Reveals
+
+**Answer-first:** The ADR decision timeline highlights key architectural pivots, documenting why lightweight event-driven Go services replaced legacy PHP monoliths.
 
 Before the decisions themselves, the timeline:
 
@@ -52,6 +56,8 @@ Before the decisions themselves, the timeline:
 The Feb 3 batch of 19 decisions represents an architecture alignment session where decisions made informally during design were formally documented.
 
 ## Category 1: Architecture & Design (ADR-001 to ADR-004)
+
+**Answer-first:** Architecture decisions establish DDD domain boundaries, Strangler Fig migration patterns, and event-driven microservice decoupling.
 
 ### ADR-001: Event-Driven Architecture (2025-11-17)
 **Decision**: Dapr Pub/Sub with Redis Streams for ALL transactional events
@@ -92,6 +98,8 @@ The discipline: services that need data from another service's domain must eithe
 
 ## Category 2: Technology Stack (ADR-005 to ADR-007)
 
+**Answer-first:** Tech stack decisions select Golang for microservice performance, PostgreSQL for transactional storage, and Dapr for distributed primitives.
+
 ### ADR-005: Go 1.25 + go-kratos v2
 **Counter-intuitive choice.** Three Go HTTP frameworks were considered:
 
@@ -129,6 +137,8 @@ Distroless images have no shell, no package manager, no `curl` — attack surfac
 
 ## Category 3: Deployment & Operations (ADR-008 to ADR-010)
 
+**Answer-first:** Deployment decisions standardize on Kubernetes EKS, Kustomize overlays, and ArgoCD GitOps pipelines for automated zero-downtime releases.
+
 ### ADR-008: GitLab CI (not GitHub Actions)
 The team was already on GitLab for code hosting. GitLab CI's reusable pipeline templates (`.gitlab-ci.yml` `include:`) allow a central DevOps team to define shared build + test + deploy pipelines that all 21 service repos inherit.
 
@@ -149,6 +159,8 @@ Standard observability stack. Notable: Jaeger with OpenTelemetry instrumented at
 
 ## Category 4: APIs & Integration (ADR-011 to ADR-013)
 
+**Answer-first:** API decisions mandate gRPC for internal inter-service communication and GraphQL for unified frontend client data fetching.
+
 ### ADR-011: gRPC + REST (Dual Protocol)
 The proto file generates both gRPC handlers and HTTP routes (via `google/api/annotations.proto`). No duplication. External clients get REST; internal services get gRPC. This is documented in Part 4 of this series.
 
@@ -162,6 +174,8 @@ JWT tokens issued by Auth Service, validated at the Gateway before any request r
 
 ## Category 5: Configuration & Data (ADR-014 to ADR-015)
 
+**Answer-first:** Configuration decisions enforce 12-factor environment variables and secret management via HashiCorp Vault integration.
+
 ### ADR-014: go-kratos Config + K8s ConfigMaps
 Configuration hierarchy: `configs/config.yaml` (base, committed) → K8s ConfigMap (environment-specific, not committed) → K8s Secrets (credentials, managed by Vault/SOPS).
 
@@ -174,6 +188,8 @@ Configuration hierarchy: `configs/config.yaml` (base, committed) → K8s ConfigM
 Goose wraps every migration in `BEGIN; ... COMMIT;` — if a migration fails halfway, the entire step rolls back. For an e-commerce database with financial data, atomicity is non-negotiable.
 
 ## Category 6: Frontend & Development (ADR-016 to ADR-020)
+
+**Answer-first:** Frontend decisions adopt Next.js PWA frontends connected to Go microservices via edge API gateways.
 
 ### ADR-016: React + Next.js
 **Decision**: React 18 + Next.js 14 (App Router + RSC)
@@ -196,6 +212,8 @@ Circuit breaker configuration (ADR-020): 5 consecutive failures → open for 60 
 
 ## Category 7: Data & Domain (ADR-021 to ADR-024)
 
+**Answer-first:** Data decisions enforce transactional outbox patterns, UUID primary keys, and asynchronous event-driven state reconciliation.
+
 ### ADR-021: Price & Stock Data Ownership
 **Decision**: Pricing Service owns price; Warehouse Service owns stock quantity; Promotion Service applies discount rules
 
@@ -216,6 +234,8 @@ The contested alternative was "Catalog shows stock level from Warehouse via gRPC
 
 ## The 5 Most Counter-Intuitive Decisions
 
+**Answer-first:** Counter-intuitive decisions include choosing Dapr over raw Kafka, Kustomize over Helm, and PostgreSQL outbox tables over external message brokers.
+
 | Decision | What most engineers would choose | What was chosen | Key reason |
 |---|---|---|---|
 | Event messaging | Raw Redis Streams directly | Dapr abstraction layer | Broker portability |
@@ -226,9 +246,11 @@ The contested alternative was "Catalog shows stock level from Warehouse via gRPC
 
 ## Final Word
 
+**Answer-first:** Documenting architecture decision records (ADRs) maintains engineering alignment and prevents regression during multi-phase monolith migrations.
+
 24 decisions, all accepted, none rejected, none superseded — that's either a sign of excellent upfront design or a sign that the team hasn't been honest about retrospective rethinking. The March 2026 batch (ADR-022, 023, 024) suggests some honest retrospective happened: these decisions document gaps found during implementation, not upfront design.
 
-The most important single decision remains ADR-001 — made 3 months before everything else. **Event-driven first** shaped the entire migration strategy: CDC with Debezium, dual-write via events, Transactional Outbox, choreography saga. Without that founding commitment, the 3-phase Strangler Fig migration documented in this series wouldn't have worked.
+The most important single decision remains ADR-001 — made 3 months before everything else. **Event-driven first** shaped the entire migration strategy: CDC with Debezium, dual-write via events, Transactional Outbox, choreography saga. Without that founding commitment, the 3-phase Strangler Fig migration would not have succeeded.
 
 ---
 

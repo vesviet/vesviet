@@ -1,5 +1,5 @@
 ---
-title: "Part 6 — MCP Observability & Tracing: Auditing the Control Plane"
+title: "MCP Observability & Tracing: Auditing Control Planes"
 slug: "part-6-observability"
 date: "2026-06-08T08:00:00+07:00"
 lastmod: "2026-07-23T10:40:00+07:00"
@@ -13,10 +13,13 @@ cover:
   relative: false
 mermaid: true
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-6-observability/"
-description: "Exhaustive technical summary and production engineering guide for Part 6 — MCP Observability & Tracing: Auditing the Control Plane."
+description: "Implement OpenTelemetry distributed tracing and Prometheus metrics for MCP servers to audit tool calls, track latency SLAs, and maintain SOC2 compliance."
 ShowToc: true
 TocOpen: true
+image: "images/posts/mcp-engineering-in-production-cover.png"
 ---
+
+
 
 # Part 6 — MCP Observability & Tracing: Auditing the Control Plane
 
@@ -91,8 +94,6 @@ sequenceDiagram
 
 ## Production Go OpenTelemetry MCP Tracing Middleware
 
-Below is a production-grade Go middleware module that instruments MCP JSON-RPC requests using `go.opentelemetry.io/otel/trace`, recording tool metrics, execution latencies, and error states without corrupting `stdio` streams:
-
 ```go
 package main
 
@@ -101,11 +102,6 @@ import (
 	"fmt"
 	"log"
 	"time"
-
-	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/codes"
-	"go.opentelemetry.io/otel/trace"
 )
 
 type MCPToolCallRequest struct {
@@ -217,37 +213,22 @@ Sensitive data anonymization is enforced at the **OpenTelemetry Collector** laye
 
 ---
 
-## Technical Deep-Dive: Model Context Protocol & System Topology Invariants
-
-Deploying production Model Context Protocol (MCP) server architectures requires strict protocol adherence and zero-trust RPC security.
-
-### Protocol Performance Metrics & Latency Benchmarks
-
-- **JSON-RPC Dispatch Latency**: Sub-12ms processing time for local stdio transport frames and sub-25ms for SSE transport frames.
-- **Resource Streaming Throughput**: Streamed multi-megabyte log and database resources at over 150MB/sec using chunked stream handlers.
-- **Tool Discovery Efficiency**: Sub-5ms response time for server tool capabilities listing (`tools/list`).
-- **Connection Handshake Overhead**: Sub-18ms initial client-server protocol capabilities handshake negotiation.
-
-### Protocol Invariants & Transport Security Guardrails
-
-1. **Strict JSON-RPC 2.0 Validation**: All incoming requests undergo immediate JSON-RPC format parsing and schema validation prior to tool execution dispatch.
-2. **Context Cancellation Propagation**: Client context cancellations trigger immediate goroutine cancellation signals across active MCP server tool executions.
-3. **Hermetic Memory Isolation**: MCP tool handlers operate within bounded execution contexts, preventing state leakage across concurrent client sessions.
-
-### Operational Checklist for Software Engineering Teams
-
-Before shipping candidate models and orchestrator agents to production cluster environments, engineering leads must confirm the following operational milestones:
-
-1. **Automated CI Integration**: Run full static analysis, content validation, and unit tests on every pull request.
-2. **Telemetry Dashboard Setup**: Configure OpenTelemetry metrics dashboards capturing P95/P99 latencies, token costs, and tool error rates.
-3. **Disaster Recovery Drills**: Test automated failover protocols when primary LLM endpoints or vector databases become unreachable.
-4. **Security Audit Clearance**: Perform automated security scanning for SQL injection risk, prompt injection vulnerabilities, and secret leakage.
-
----
-
 ## Internal Series Navigation
 
 - [Part 4 — MCP Gateway Architecture & Routing](/series/mcp-engineering-in-production/part-4-gateway/)
 - [Part 5 — MCP Security Engineering & Isolation](/series/mcp-engineering-in-production/part-5-security/)
 - [Part 7 — Enterprise MCP Strategy & Multi-Tenancy](/series/mcp-engineering-in-production/part-7-enterprise/)
 - [Part 9 — Agentic Observability: OpenTelemetry & Cost Monitoring](/series/ai-data-engineering-pipeline/part-9-agentic-observability-monitoring/)
+
+#### System Trade-offs & SLA Analysis for Part 6 Observability
+
+| MCP Observability Metric | Target Telemetry SLA | Telemetry Load Ceiling | Monitoring Strategy |
+|---|---|---|---|
+| **Span Export SLA** | < 18 ms | > 55 ms | OpenTelemetry OTLP gRPC batching |
+| **Telemetry Exporter Pool** | 200 Workers | 800 Workers | Non-blocking span exporter Goroutines |
+| **Collector Connection Limit** | 60 Connections | 240 Connections | Persistent OTLP gRPC channel pool |
+| **Dropped Span Budget** | < 0.01% | > 0.1% | Ring buffer telemetry queueing |
+
+#### Operational Checklist for Production Readiness
+
+System verification requires rigorous unit test coverage, explicit error propagation, and zero-downtime canary deployment mechanics across all telemetry collection pipelines.

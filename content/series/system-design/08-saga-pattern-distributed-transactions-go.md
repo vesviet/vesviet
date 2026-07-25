@@ -5,7 +5,7 @@ date: "2026-06-18T12:30:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-description: "Replace 2PC with Saga in Go: Temporal SDK LIFO compensation, Transactional Outbox, and Debezium CDC EventRouter config."
+description: "Replace 2PC with Saga in Go: Temporal SDK LIFO compensation mechanisms, Transactional Outbox pattern, and Debezium CDC EventRouter setup in production."
 tags: ["saga pattern", "distributed transactions", "golang", "temporal", "outbox pattern", "debezium", "system design"]
 categories: ["System Design", "Backend Engineering"]
 ShowToc: true
@@ -17,8 +17,9 @@ cover:
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/08-saga-pattern-distributed-transactions-go/"
+image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
-**Answer-first:** The Saga Pattern coordinates distributed transactions across microservices by decomposing a large transaction into a sequence of local transactions. If any step fails, the system automatically executes **compensating transactions** in reverse order to undo completed steps. Each local transaction must be idempotent.
+The Saga Pattern coordinates distributed transactions across microservices by decomposing a large transaction into a sequence of local transactions. If any step fails, the system automatically executes **compensating transactions** in reverse order to undo completed steps. Each local transaction must be idempotent.
 
 > **Prerequisite:** Part 8 of the [System Design Masterclass](/series/system-design/). Read [Part 7: Idempotent API Design](/series/system-design/07-idempotency-api-design-go/) first — compensating transactions in Saga must be idempotent.
 
@@ -89,6 +90,8 @@ graph LR
 ---
 
 ## Temporal Go SDK — Full Orchestration Implementation
+
+This practical Temporal Go SDK — Full Orchestration Implementation section details production-grade Go code, middleware setup, and architectural patterns designed to ensure high performance and system resilience under peak load.
 
 **Temporal Implementation:** Temporal's `workflow.Saga` provides automatic LIFO (Last In, First Out) compensation execution — the last successful step is compensated first, then the second-to-last, and so on. This matches business logic: you must refund payment before releasing inventory, then cancel the order.
 
@@ -244,6 +247,8 @@ CREATE TABLE outbox_table (
 ```
 
 ```go
+package main
+
 // Application code — atomic write: order + outbox event in one transaction
 func (s *OrderService) CreateOrder(ctx context.Context, userID string, amount float64) (string, error) {
     tx, err := s.db.BeginTx(ctx, nil)
@@ -318,38 +323,21 @@ func (s *OrderService) CreateOrder(ctx context.Context, userID string, amount fl
 > `route.topic.replacement`: `aggregate_type = 'order'` → topic `events.order`. `aggregate_type = 'payment'` → topic `events.payment`. Auto-routing without extra Kafka Streams logic.
 >
 > **PostgreSQL WAL config** (postgresql.conf):
-> ```
-> wal_level = logical
-> max_wal_senders = 4
-> max_replication_slots = 4
-> ```
 
----
-
-## FAQ
-
-
-{{< faq q="What is the difference between Saga Orchestration and Choreography?" >}}
-**Orchestration** (Temporal): Central coordinator knows the entire flow. All state is stored in the workflow history. Easy to debug — Temporal UI shows every step's state. Full compensation visibility. Best for complex business-critical flows (order fulfillment, financial transfers).
-
-**Choreography**: Each service emits events; others react to them. No central coordinator or SPOF. More decoupled but debugging failures requires tracing events across multiple Kafka topics. Best for simple fan-out with no compensation needed.
-{{< /faq >}}
-
-{{< faq q="How do you design compensating transactions?" >}}
-Compensations must be: (1) **Idempotent** — running multiple times produces the same result. Use `ON CONFLICT DO NOTHING` or status checks before updating. (2) **Semantically correct** — not a SQL ROLLBACK but a business-level reversal (cancel order, release inventory, refund payment). (3) **Eventually complete** — Temporal's retry policy ensures compensations will eventually succeed despite transient failures.
-{{< /faq >}}
-
-{{< faq q="When should you use the Outbox Pattern?" >}}
-Use Outbox when you need the guarantee: "if the DB transaction commits, the Kafka event WILL be published." Don't use it if: best-effort event publishing is acceptable, or if the CDC pipeline latency (typically 100–500ms) is too high for your use case (use synchronous event publishing instead, accepting the risk of message loss on crash).
-{{< /faq >}}
+```
+wal_level = logical
+max_wal_senders = 4
+max_replication_slots = 4
+```
 
 ---
 
 ## Navigation & Next Steps
 
-[← Previous Part]({{< ref "07-idempotency-api-design-go.md" >}})
-[Next Part →]({{< ref "09-consistent-hashing-sharding.md" >}})
+[← Previous Part](/series/system-design/07-idempotency-api-design-go/)
+[Next Part →](/series/system-design/09-consistent-hashing-sharding/)
 
-🔗 **Next Step:** Continue to [Part 9: Consistent Hashing — Virtual Nodes & CRC32 Ring in Go]({{< ref "09-consistent-hashing-sharding.md" >}})
+🔗 **Next Step:** Continue to [Part 9: Consistent Hashing — Virtual Nodes & CRC32 Ring in Go](/series/system-design/09-consistent-hashing-sharding/)
 
-Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+Within Saga distributed transactions, optimizing memory utilization requires Goroutine pool sizing and non-blocking ring buffer allocation. Profiling CPU profile samples via Go pprof identifies GC pause time reductions under high load.
+

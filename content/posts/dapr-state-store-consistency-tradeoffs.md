@@ -25,12 +25,8 @@ mermaid: true
 > - `ConcurrencyFirstWrite` uses ETags to detect concurrent mutation conflicts and return 409 Conflict status.
 > - Redis state stores support `ConsistencyEventual` for high-throughput counters but risk stale reads under failover.
 
-**Answer-first:** The choice between Strong Consistency (for data integrity in financial transactions via CockroachDB) and Eventual Consistency (for high throughput via Redis) determines your system's latency and reliability. Dapr State Store abstracts these complexities, allowing developers to switch underlying databases seamlessly while utilizing Optimistic Concurrency Control (OCC) to prevent write conflicts.
-
 > [!NOTE]
-> **What You'll Learn That AI Won't Tell You:** Beyond generic definitions, this article provides production-tested YAML configurations for integrating Redis and CockroachDB with Dapr, detailed Mermaid sequence diagrams illustrating ETag-based conflict resolution, and real-world latency benchmarks under a 5000-concurrent-user load test.
-
-## Introduction to Dapr State Management
+## Dapr State Store Architecture & Consistency Models
 
 In modern distributed application development, state management remains one of the most complex challenges. When transitioning to a [microservices architecture](/posts/banking-microservices-architecture/), each service typically requires independent data storage and querying capabilities. This leads to technology fragmentation, where a system might simultaneously use Redis for caching, PostgreSQL for transactional data, and Cassandra for large unstructured data. Dapr (Distributed Application Runtime) emerged to solve this issue through a robust abstraction mechanism.
 
@@ -217,14 +213,12 @@ In high-concurrency production deployments, balancing throughput, resilience, an
 2. **Resource Consumption & Memory Footprint**: Running multiplexed execution engines, shared-memory IPC structures, or in-memory caches requires robust container resource limits (`requests` and `limits`) to avoid Kubernetes Out-Of-Memory (OOM) pod evictions during sudden traffic surges.
 3. **Observability & Fault Isolation**: Implementing circuit breakers, structured telemetry logging, and continuous health checks ensures that intermittent downstream failures (such as database deadlocks or external API rate limits) do not cause cascading failures across microservice boundaries.
 
-
 ## Related Pillar Articles & Further Reading
 
 - [Dapr Workflow Go Tutorial: Orchestrated Saga Pattern](/posts/dapr-workflow-saga-orchestration-guide/)
 - [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr/)
 - [Banking Microservices Architecture in Go](/posts/banking-microservices-architecture/)
 - [Composable Banking Architecture Guide](/posts/composable-banking-architecture/)
-
 
 ## Frequently Asked Questions (FAQ)
 

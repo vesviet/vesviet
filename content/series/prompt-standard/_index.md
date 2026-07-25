@@ -1,5 +1,5 @@
 ---
-title: "Prompt Standard: Product, Engineering & Ops Guide"
+title: "Prompt Standard: Product, Engineering & Ops Guide | Go Produ"
 date: "2026-05-09T10:30:00+07:00"
 lastmod: "2026-07-23T13:34:42+07:00"
 draft: false
@@ -32,6 +32,7 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/prompt-standard/"
 mermaid: true
+image: "images/posts/prompt-engineering-benchmark-cover.png"
 ---
 
 **Answer-first:** The Prompt Standard series establishes an engineering framework to transition teams from vibe-based prompt writing to version-controlled, schema-validated prompt design. By breaking prompts into modular, single-responsibility blocks, organizations can enforce strict output contracts, implement automated CI/CD validation gates, and optimize context token budgets for production-grade LLM applications.
@@ -107,12 +108,12 @@ graph TD
         A[Freeform Prompt Idea] --> B[Ad-Hoc Text Editing]
         B --> C[Manual Model Query]
         C --> D{Does it look okay?}
-        D -- Yes --> E[Deploy Raw String]
-        D -- No --> B
+        D -->|"Yes"| E[Deploy Raw String]
+        D -->|"No"| B
     end
 
     subgraph PromptStandard [Prompt Standard Workflow]
-        F[Define Signature & Goal] --> G[Decompose into Core Blocks]
+        F["Define Signature & Goal"] --> G[Decompose into Core Blocks]
         G --> H[Store YAML + Markdown in Git]
         H --> I[Automated Schema Validation]
         I --> J[Run Golden Test Suite]
@@ -247,11 +248,17 @@ import (
 )
 
 const teamPromptTemplate = `
+
 ## Identity
+
 You are a senior DevOps engineer working on the tanhdev.com website.
+
 ## Goal
+
 {{.Goal}}
+
 ## Constraints
+
 - Enforce mTLS for all gateways.
 `
 
@@ -274,7 +281,7 @@ Context Engineering focuses on retrieving and injecting relevant, high-density c
 
 ```mermaid
 graph LR
-    Doc[Raw PDF/Web Document] --> Split[Semantic Chunking]
+    Doc["Raw PDF/Web Document"] --> Split[Semantic Chunking]
     Split --> Embed[Vector Indexing]
     Query[User Query] --> VecSearch[Vector Semantic Search]
     Embed --> VecSearch
@@ -331,9 +338,9 @@ graph TD
     Gateway --> Kafka[Log Broker]
     Kafka --> Trace[OTel Event Collector]
     Trace --> Eval[LLM-as-a-Judge Eval Runner]
-    Eval --> Metric[ElasticSearch/Grafana Dashboard]
+    Eval --> Metric["ElasticSearch/Grafana Dashboard"]
     Metric --> Alert{Drift Detected?}
-    Alert -- Yes --> Rollback[Automatic Prompt Version Rollback]
+    Alert -->|"Yes"| Rollback[Automatic Prompt Version Rollback]
 ```
 
 ---
@@ -365,3 +372,4 @@ Production systems log a sample of LLM inputs/outputs (e.g. 1%) and run asynchro
 {{< /faq >}}
 
 {{< author-cta >}}
+

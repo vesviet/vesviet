@@ -35,8 +35,6 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/"
 ---
 
-**Answer-first:** Transitioning from fragile, expensive cron jobs to an autonomous hybrid-AI pipeline requires a state-based Finite State Machine (FSM), structured Agent Topology, multi-tier memory (working, short-term, long-term vector/graph memory), and Model Context Protocol (MCP) tool calling. Using local models for triage and frontier models only for final writing drops token costs from ~$3.50/day to ~$0.05/day.
-
 ---
 
 ## Executive Summary & Agentic Architecture Overview

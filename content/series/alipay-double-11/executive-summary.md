@@ -1,9 +1,9 @@
 ---
-title: "Executive Summary: Alipay Double 11 Architecture"
+title: "Alipay Double 11 Architecture: Executive Summary Guide"
 date: "2026-05-02T18:10:00+07:00"
 lastmod: "2026-05-02T18:10:00+07:00"
 draft: false
-description: "A concise executive summary of Alipay’s Double 11 evolution: unitization (LDC), automated stress testing, OceanBase, and operational discipline."
+description: "Complete technical summary of Alipay Double 11 scaling, examining 583k peak TPS, LDC unitization, full-link stress testing, and OceanBase databases."
 ShowToc: true
 TocOpen: true
 cover:
@@ -14,14 +14,16 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/executive-summary/"
 mermaid: true
 ---
-[← Series hub]({{< ref "/series/alipay-double-11/_index.md" >}})
-[Next →]({{< ref "/series/alipay-double-11/phase-1-timeline.md" >}})
+[← Series hub](/series/system-design/)
+[Next →](/series/alipay-double-11/phase-1-timeline/)
 
 > **Prerequisite:** General understanding of global financial systems scale, high-throughput payment architectures, and transaction reliability.
 
 **From 50M CNY to 544K TPS: Lessons in Building Planet-Scale Systems**
 
 ## TL;DR
+
+**Answer-first:** Alipay scaled to 583,000 TPS using Logical Data Center (LDC) unitization, OceanBase Paxos storage, RocketMQ event streams, and shadow stress testing.
 
 Between the inaugural event in 2009 and the peak milestone of 2019, Alipay scaled its transactional capacity by an astronomical **~5,440x**, culminating in a peak throughput of **544,000 transactions per second (TPS)** (and subsequently reaching over 583,000 TPS). Crucially, this scaling was not achieved by sacrificing safety; the system maintained strict **financial-grade reliability (99.99% availability)** and a target of **zero data loss (Recovery Point Objective, RPO = 0)**. 
 
@@ -33,6 +35,8 @@ To achieve this level of performance at planet-scale, Alipay had to pioneer new 
 ---
 
 ## The Story: From Crisis to Record
+
+**Answer-first:** The Double 11 story tracks Alipay journey from 2009 database crashes to multi-region active-active cell routing delivering record-breaking throughput.
 
 ### 2009–2011: The Heuristic Era
 In 2009, Double 11 was conceived as a promotional campaign on Taobao Mall (Tmall). The transactional volume, though unprecedented for the site, was small by modern standards—peaking at approximately 100 TPS. The engineering response was reactive, characterized by vertical database scaling, connection pool tuning, and code-level optimization. However, as year-on-year growth exceeded 200%, the limits of vertical scaling quickly became apparent.
@@ -50,32 +54,34 @@ By 2019, the architecture had matured to support a record **544,000 payment TPS*
 
 ## The 3 Pillars of Alipay's Scale Architecture
 
+**Answer-first:** The three pillars of Alipay scale are LDC cell unitization for database sharding, OceanBase distributed Paxos SQL, and RocketMQ async event streams.
+
 The overall system architecture of Alipay's Double 11 solution can be visualized in the following system design diagram, illustrating how traffic flows from users, gets routed to unit cells, utilizes partitioned databases, and is tested via synthetic stress injection.
 
 ```mermaid
 graph TD
-    User([User Requests]) -->|HTTP/HTTPS| Gateway[API Routing Gateway]
+    User["User Requests"] -->|HTTP/HTTPS| Gateway[API Routing Gateway]
     Gateway -->|User ID Hash Routing| RZone1[RZone Unit 1]
     Gateway -->|User ID Hash Routing| RZone2[RZone Unit 2]
     
     subgraph RZone1 [RZone 1 - Shanghai Cell]
         App1[SOFA Application Services]
-        Cache1[(Local Redis Cache)]
-        OB_Shard1[(OceanBase Partition 1)]
+        Cache1[("Local Redis Cache")]
+        OB_Shard1[("OceanBase Partition 1")]
         App1 --> Cache1
         App1 --> OB_Shard1
     end
 
     subgraph RZone2 [RZone 2 - Shenzhen Cell]
         App2[SOFA Application Services]
-        Cache2[(Local Redis Cache)]
-        OB_Shard2[(OceanBase Partition 2)]
+        Cache2[("Local Redis Cache")]
+        OB_Shard2[("OceanBase Partition 2")]
         App2 --> Cache2
         App2 --> OB_Shard2
     end
 
-    subgraph GZone [GZone - Global Config / CIF]
-        GDB[(Global Read-Only Config DB)]
+    subgraph GZone["GZone - Global Config / CIF"]
+        GDB[("Global Read-Only Config DB")]
     end
 
     RZone1 -.->|Read Configuration| GZone
@@ -84,8 +90,8 @@ graph TD
     subgraph StressTesting [Full-Link Stress Testing Engine]
         Injector[Synthetic Traffic Injector]
         Injector -->|Inject Header: X-Stress-Test=true| Gateway
-        OB_Shard1 -->|Detects Stress Flag| ShadowDB1[(Shadow Table / DB 1)]
-        OB_Shard2 -->|Detects Stress Flag| ShadowDB2[(Shadow Table / DB 2)]
+        OB_Shard1 -->|Detects Stress Flag| ShadowDB1[("Shadow Table / DB 1")]
+        OB_Shard2 -->|Detects Stress Flag| ShadowDB2[("Shadow Table / DB 2")]
     end
 
     classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px;
@@ -114,6 +120,8 @@ Before 2013, scaling relational databases meant sharding MySQL or Oracle manuall
 
 ## Detailed Performance and Growth Metrics
 
+**Answer-first:** Metrics document growth from 400 TPS in 2009 to 583,000 TPS in 2020 while keeping p99 payment latencies under 20ms.
+
 The following metrics represent the actual and estimated growth logs compiled across the decade of Double 11 optimization:
 
 | Year | Peak Transaction Throughput (TPS) | Primary Database Engine | Primary Stress Validation Method |
@@ -134,6 +142,8 @@ The following metrics represent the actual and estimated growth logs compiled ac
 
 ## Stack Comparison: Alipay Middleware vs. Modern Cloud-Native
 
+**Answer-first:** Custom SOFA middleware and OceanBase map directly to modern Go microservices, Kubernetes GitOps, NATS JetStream, and TiDB/CockroachDB.
+
 To modern software architects, the custom middleware developed by Alipay can be mapped directly to modern, open-source CNCF projects:
 
 | Alipay Custom Stack | Modern CNCF / Open-Source Equivalent | Core Architectural Function |
@@ -149,6 +159,8 @@ To modern software architects, the custom middleware developed by Alipay can be 
 
 ## Actionable Takeaways for Modern Architects
 
+**Answer-first:** Architectural takeaways emphasize partitioning data into independent cells, running shadow stress tests in production, and decoupling writes asynchronously.
+
 If you are tasked with scaling a high-throughput transaction system today, you do not need to replicate Alipay's internal codebase. Instead, you should implement their architectural patterns:
 
 1. **Partition State at the Edge**: Don't try to build a faster database cluster. Instead, route requests to self-contained application and storage units (cells) as close to the ingress as possible.
@@ -160,4 +172,9 @@ If you are tasked with scaling a high-throughput transaction system today, you d
 
 Need help implementing high-scale architectures? Feel free to [Get in touch](/hire/) or [Hire me](/hire/) to review your system design and codebase.
 
-🔗 **Next Step:** [Phase 1: Timeline and Scale Evolution]({{< ref "phase-1-timeline.md" >}})
+🔗 **Next Step:** [Phase 1: Timeline and Scale Evolution](/series/alipay-double-11/phase-1-timeline/)
+
+## Architectural Context & Pillar References
+
+- [Alipay Double 11 High-Availability Architecture](/posts/alipay-double-11-architecture-tps/)
+- [PayPay Architecture & Scaling Playbook](/posts/paypay-architecture-scaling/)

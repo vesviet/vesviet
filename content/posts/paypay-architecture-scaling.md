@@ -28,12 +28,8 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/paypay-architecture-scaling/"
 ---
 
-**Answer-first:** PayPay handles 7.8B annual transactions using a cloud-native architecture centered on TiDB for distributed ACID transactions, Kafka for event streaming, and Kotlin/Go microservices. GitOps-driven deployments and continuous chaos engineering ensure high availability and disaster recovery.
-
-### What You'll Learn That AI Won't Tell You
 - Running chaos engineering scripts in TiDB payment systems.
 - How event sourcing with Kafka isolates PayPay checkout routes from legacy bank outages.
-
 
 PayPay launched in October 2018 and grew to 10 million users in just 3 months — a growth rate that no Japanese fintech had ever seen. By 2025, the platform had crossed 70 million registered users and processed 7.8 billion payments per year. Behind this growth is an engineering team that has had to scale not just their infrastructure, but their entire engineering culture: from service standardization and GitOps-driven deployments to chaos engineering and AI-powered fraud detection.
 

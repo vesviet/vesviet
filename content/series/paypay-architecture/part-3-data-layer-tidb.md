@@ -1,5 +1,5 @@
 ---
-title: "Part 3 — The Data Layer: From Aurora to TiDB"
+title: "PayPay Data Infrastructure: TiDB & MySQL Sharding | Go Produ"
 date: "2026-05-05T21:00:00+07:00"
 lastmod: "2026-05-05T21:00:00+07:00"
 draft: false
@@ -16,19 +16,20 @@ canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-3-data-layer-
 ShowToc: true
 TocOpen: true
 mermaid: true
+image: "images/posts/paypay-scaling-cover.png"
 ---
 
 > **Executive Summary & Quick Answer**: PayPay migrated its database layer from AWS Aurora MySQL to TiDB Distributed SQL to overcome vertical scaling limitations. TiDB's Raft-based auto-sharding and horizontal compute/storage separation deliver linear scaling under billion-row transaction tables.
 
-**Answer-first:** PayPay utilizes TiDB as its distributed SQL database to achieve horizontal scaling without manual database sharding. TiDB maintains standard MySQL protocol compatibility and strict ACID guarantees while dynamically splitting tables into regions that are distributed across a multi-node cluster.
+> **Answer-First:** PayPay utilizes TiDB as its distributed SQL database to achieve horizontal scaling without manual database sharding. TiDB maintains standard MySQL protocol compatibility and strict ACID guarantees while dynamically splitting tables into regions that are distributed across a multi-node cluster.
 
 ## The Relational Database Bottleneck
 
 ```mermaid
 graph TD
-    SQL[TiDB SQL Compute Layer] --> KV1[TiKV Storage Node 1 (Raft Leader)]
-    SQL --> KV2[TiKV Storage Node 2 (Raft Follower)]
-    SQL --> KV3[TiKV Storage Node 3 (Raft Follower)]
+    SQL[TiDB SQL Compute Layer] --> KV1["TiKV Storage Node 1 (Raft Leader)"]
+    SQL --> KV2["TiKV Storage Node 2 (Raft Follower)"]
+    SQL --> KV3["TiKV Storage Node 3 (Raft Follower)"]
 ```
 
 When PayPay launched, **AWS Aurora (MySQL compatible)** was the obvious choice for the payment ledger. Aurora is managed, reliable, and well-understood. It scales read capacity easily through Read Replicas. For a startup under urgency to ship, it was the right decision.
@@ -161,6 +162,8 @@ By decoupling stateless TiDB compute nodes from stateful TiKV storage nodes, dat
 
 ## Frequently Asked Questions (FAQ)
 
+Implementing Part 3 Data Layer Tidb demands strict ACID transactional isolation and pessimistic row locking during balance or inventory updates. Distributed Saga orchestration coordinates multi-stage rollbacks, preventing partial state writes across heterogeneous databases.
+
 {{< faq "Why did PayPay migrate from traditional MySQL to TiDB?" >}}
 Traditional MySQL requires complex manual sharding to scale write throughput, leading to high operational overhead. TiDB is a distributed SQL database that automatically splits and shards data regions, offering horizontal write scaling while preserving ACID guarantees.
 {{< /faq >}}
@@ -174,4 +177,3 @@ TiDB implements the MySQL wire protocol and SQL parser dialect, allowing Go appl
 {{< /faq >}}
 
 Next step: Learn how PayPay validates high availability under failure injection in [Part 4: SRE & Chaos Engineering](/series/paypay-architecture/part-4-sre-chaos-engineering/). For specialized NewSQL migration consulting, reach out via [Distributed Database Engineering Services](/hire/).
-

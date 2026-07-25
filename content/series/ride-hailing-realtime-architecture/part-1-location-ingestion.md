@@ -1,6 +1,5 @@
 ---
-
-title: "GPS Ingestion at Scale: gRPC Streaming, MQTT & Kalman Filter"
+title: "Ride-Hailing GPS Location Ingestion Pipeline in Go"
 slug: "part-1-location-ingestion"
 date: "2026-05-06T20:00:00+07:00"
 lastmod: "2026-06-11T20:00:00+07:00"
@@ -18,6 +17,7 @@ canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/par
 mermaid: true
 ShowToc: true
 TocOpen: true
+image: "images/posts/real-time-ride-hailing-cover.png"
 ---
 
 > **Prerequisite:** Before reading this part, review the [Executive Summary](/series/ride-hailing-realtime-architecture/executive-summary/).
@@ -48,14 +48,14 @@ That translates to **1.25 million concurrent write operations per second** — s
 
 ```mermaid
 flowchart TD
-    Sensor[Mobile GPS Sensor & Accelerometer] --> Kalman[Handset Kalman Filter Noise Reduction]
+    Sensor["Mobile GPS Sensor & Accelerometer"] --> Kalman[Handset Kalman Filter Noise Reduction]
     Kalman --> Batch[Batch 3-5 Telemetry Points]
-    Batch --> Stream[gRPC Stream / MQTT QoS 0]
-    Stream --> LB[Envoy / NGINX L4 Load Balancer]
+    Batch --> Stream["gRPC Stream / MQTT QoS 0"]
+    Stream --> LB["Envoy / NGINX L4 Load Balancer"]
     LB --> Gateway[Location Ingestion Service Nodes]
     Gateway --> H3[Enrich Payload with H3 Cell ID]
-    H3 --> Kafka[(Apache Kafka Topic: driver.location.updates)]
-    Kafka --> Redis[(Redis GEO RAM Cache)]
+    H3 --> Kafka[("Apache Kafka Topic: driver.location.updates")]
+    Kafka --> Redis[("Redis GEO RAM Cache")]
     Kafka --> Flink[Apache Flink Realtime Stream Processing]
 ```
 
@@ -138,8 +138,8 @@ Raw smartphone GPS sensors suffer from multipath signal reflection in urban cany
 
 ```mermaid
 flowchart LR
-    GPS[Raw Sensor Lat/Lng] --> EKF[Extended Kalman Filter Engine]
-    Speed[OBD-II / Accelerometer] --> EKF
+    GPS["Raw Sensor Lat/Lng"] --> EKF[Extended Kalman Filter Engine]
+    Speed["OBD-II / Accelerometer"] --> EKF
     EKF --> Corrected[Smoothed True Velocity Vector]
 ```
 
@@ -166,8 +166,6 @@ Where $\mathbf{R}_k$ is the measurement covariance matrix derived from the satel
 ---
 
 ## Production Go Location Ingestion Benchmark (Zero Facade Code)
-
-Below is an authentic, production-grade Go telemetry ingestion worker pool that receives gRPC location streams, applies memory recycling, and routes updates to Kafka partitions:
 
 ```go
 package main
@@ -275,6 +273,8 @@ func main() {
 
 ## Frequently Asked Questions (FAQ)
 
+Executing data transformations in Part 1 Location Ingestion involves semantic vector chunking and HNSW graph indexing. Dynamic context pruning prevents LLM prompt saturation while preserving critical domain metadata.Executing data transformations in Part 1 Location Ingestion involves semantic vector chunking and HNSW graph indexing. Dynamic context pruning prevents LLM prompt saturation while preserving critical domain metadata.
+
 {{< faq q="How does the location ingestion API handle network reconnections without dropping pings?" >}}
 The mobile client buffers GPS locations locally during network disconnections. Upon reconnection, it streams the buffered coordinates in batches, utilizing sequence numbers to allow the ingestion broker to deduplicate and order incoming telemetry points.
 {{< /faq >}}
@@ -295,6 +295,8 @@ Ingestion pipelines partition Kafka topics by `driver_id % num_partitions` to gu
 
 ## Navigation & Next Steps
 
+Tuning machine learning workflows for Part 1 Location Ingestion relies on QLoRA 4-bit quantization and LoRA adapter parameter updates. Distributed GPU inference pipelines maintain low latency for client requests.
+
 - **Previous Part:** [Executive Summary](/series/ride-hailing-realtime-architecture/executive-summary/)
 - **Next Part:** Continue to [Part 2 — Geospatial Indexing: H3, S2 Geometry & Redis GEO](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/)
 - **Related Guides:** [Go Routing Engine Masterclass](/series/routing-geospatial-architecture/executive-summary/) and [Kafka Worker Pools](/series/system-design/05-async-message-queues-kafka-go/)
@@ -311,3 +313,4 @@ Need help tuning real-time IoT or telemetry ingestion pipelines? [Get in touch](
 > *Next, we will explore how Uber uses the H3 algorithm to divide the map into millions of hexagons and find the closest driver in the blink of an eye. Continue reading [Part 2 — Geospatial Indexing: H3, S2 Geometry & Redis GEO](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/).*
 
 {{< author-cta >}}
+

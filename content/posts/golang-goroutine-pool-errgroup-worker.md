@@ -30,12 +30,8 @@ canonicalURL: "https://tanhdev.com/posts/golang-goroutine-pool-errgroup-worker/"
 
 # Golang Goroutine Pool Patterns: errgroup & Backpressure
 
-**Answer-first:** A Golang goroutine pool limits concurrent execution using bounded channels or semaphores (`golang.org/x/sync/semaphore`), preventing OOM crashes and GC pauses under high-throughput workloads while propagating cancellation via `errgroup`.
-
-### What You'll Learn That AI Won't Tell You
 - Preventing goroutine leaks in high-concurrency worker pools using errgroup.
 - Writing robust worker pools that propagate context cancellation to all active goroutines.
-
 
 > 
 

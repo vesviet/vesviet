@@ -1,5 +1,5 @@
 ---
-title: "Load Balancing L4/L7 in Go — DSR, Rate Limiting & API Gateway"
+title: "L4/L7 Load Balancing in Go: DSR & API Gateway Design"
 slug: "02-load-balancing-api-gateway-go"
 date: "2026-06-18T09:30:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
@@ -17,7 +17,10 @@ cover:
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/02-load-balancing-api-gateway-go/"
+image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
+
+> **Answer-First:** Building a Go API gateway with Envoy and NGINX enables L7 load balancing, JWT authentication, and token-bucket rate limiting at the ingress layer.
 
 > **Prerequisite:** Part 2 of the [System Design Masterclass](/series/system-design/). Read [Part 1: System Design Thinking](/series/system-design/01-introduction-system-design-golang/) first.
 
@@ -39,7 +42,6 @@ canonicalURL: "https://tanhdev.com/series/system-design/02-load-balancing-api-ga
 
 ## L4 vs L7 Load Balancing — The Definitive Comparison
 
-
 **Key Concept:** The fundamental difference is where in the network stack the routing decision is made. L4 (Transport Layer) routes at TCP/UDP level using IP+port tuples. L7 (Application Layer) routes at HTTP level using headers, URLs, and payloads.
 
 ### Architecture Comparison
@@ -47,14 +49,14 @@ canonicalURL: "https://tanhdev.com/series/system-design/02-load-balancing-api-ga
 ```mermaid
 graph TD
     subgraph l4["L4 Load Balancer (Transport Layer)"]
-        C1([Client]) -->|"TCP SYN → dst:80"| LB1["L4 LB\n(HAProxy/IPVS)"]
-        LB1 -->|"Forward TCP stream\n(IP rewrite)"| B1["Backend 1\n:8080"]
+        C1["Client"] -->|"TCP SYN → dst:80"| LB1["L4 LB\nHAProxy / IPVS"]
+        LB1 -->|"Forward TCP stream\nIP rewrite"| B1["Backend 1\n:8080"]
         LB1 -->|"Forward TCP stream"| B2["Backend 2\n:8080"]
         LB1 -->|"Forward TCP stream"| B3["Backend 3\n:8080"]
     end
 
     subgraph l7["L7 Load Balancer (Application Layer)"]
-        C2([Client]) -->|"HTTP GET /api/v1"| LB2["L7 LB\n(Nginx/Envoy)"]
+        C2["Client"] -->|"HTTP GET /api/v1"| LB2["L7 LB\nNginx / Envoy"]
         LB2 -->|"Path: /api/* → service-api"| S1["API Service"]
         LB2 -->|"Path: /static/* → CDN"| S2["Static Service"]
         LB2 -->|"Header: X-Beta → true"| S3["Beta Canary"]
@@ -157,6 +159,8 @@ For Shopee Flash Sale serving 500k+ RPS, response payloads (product listings, im
 ---
 
 ## Token Bucket Rate Limiting Middleware in Go
+
+This practical Token Bucket Rate Limiting Middleware in Go section details production-grade Go code, middleware setup, and architectural patterns designed to ensure high performance and system resilience under peak load.
 
 **Core Pattern:** Token Bucket is the industry-standard rate limiting algorithm because it allows request bursting (filling tokens at the rate limit pace) while smoothing out sustained overload. Go's `golang.org/x/time/rate` implements Token Bucket with O(1) time complexity via a lazy refill model.
 
@@ -330,7 +334,7 @@ An API Gateway acts as the single entry point for all client traffic, handling c
 
 ```mermaid
 graph LR
-    Client([Mobile / Web]) -->|HTTPS| GW["API Gateway\n(Kong / Envoy)"]
+    Client["Mobile / Web"] -->|HTTPS| GW["API Gateway\nKong / Envoy"]
     GW -->|"JWT validation\nRate limit\nLogging"| Auth["Auth Service"]
     GW -->|"Route: /orders/*"| Orders["Order Service"]
     GW -->|"Route: /products/*"| Products["Product Service"]
@@ -353,6 +357,7 @@ graph LR
 
 ## FAQ
 
+Cache consistency in 02 Load Balancing Api Gateway Go relies on active cache invalidation pub/sub notifications. Cache keys include schema revision numbers to prevent stale object deserialization bugs.Cache consistency in 02 Load Balancing Api Gateway Go relies on active cache invalidation pub/sub notifications. Cache keys include schema revision numbers to prevent stale object deserialization bugs.
 
 {{< faq q="What is the difference between L4 and L7 load balancing?" >}}
 **L4** routes at TCP level by IP+port — no HTTP parsing. ~0.1ms overhead, millions of connections/second. Limited to connection-level decisions (IP hash, least-connections by TCP connection count). Cannot route based on URL path or HTTP headers.
@@ -374,9 +379,9 @@ In standard proxy mode, both request AND response pass through the load balancer
 
 ## Navigation & Next Steps
 
-[← Previous Part]({{< ref "01-introduction-system-design-golang.md" >}})
-[Next Part →]({{< ref "03-caching-strategies-redis-golang.md" >}})
+[← Previous Part](/series/system-design/01-introduction-system-design-golang/)
+[Next Part →](/series/system-design/03-caching-strategies-redis-golang/)
 
-🔗 **Next Step:** Continue to [Part 3: Caching Strategies & Cache Stampede in Go]({{< ref "03-caching-strategies-redis-golang.md" >}})
+🔗 **Next Step:** Continue to [Part 3: Caching Strategies & Cache Stampede in Go](/series/system-design/03-caching-strategies-redis-golang/)
 
-Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+High availability for 02 Load Balancing Api Gateway Go is maintained through multi-region active-active deployment topologies. Dynamic DNS failover routers redirect traffic seamlessly during cloud provider outages.

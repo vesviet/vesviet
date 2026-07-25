@@ -17,6 +17,7 @@ canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-1
 mermaid: true
 ShowToc: true
 TocOpen: true
+image: "images/posts/graphhopper-cover.png"
 ---
 
 > **Prerequisite:** This part builds on the concepts introduced in the [Executive Summary](/series/routing-geospatial-architecture/executive-summary/).
@@ -73,7 +74,6 @@ If you use A* for a 1-to-10 matrix, you must run the algorithm 10 separate times
 
 To handle real-world rules like "No U-Turns" or "No Left Turns," routing engines convert Node-based graphs into **Edge-Based graphs**. This allows the algorithm to track the transition state between two specific road segments.
 
-
 Standard graph theory treats intersections as nodes and roads as edges. But what happens if an intersection forbids left turns? In a node-based graph, the algorithm only knows it reached the node; it forgets which road it came from. 
 
 Routing engines solve this by making the *roads* the nodes, and the *turns* the edges. This is called an **Edge-Based Graph**. When the algorithm evaluates a turn, it checks an internal penalty table. If a left turn is forbidden, the transition cost is set to infinity, forcing the route to go straight. This is also why you sometimes see "zigzag" routes on grid cities if the engine applies heavy penalties to left turns across traffic.
@@ -81,6 +81,8 @@ Routing engines solve this by making the *roads* the nodes, and the *turns* the 
 ## Time-Dependent Routing for Real-time Traffic
 
 **Answer-first:** Classical algorithms assume static distances. **Time-Dependent Dijkstra (TDD)** dynamically updates the weight of an edge $w(u,v,t)$ based on the vehicle's calculated *arrival time* $t$ at that specific intersection.
+
+> **Pillar Architecture Guide:** This article is part of the **[GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 Traffic is not static. If a route takes 2 hours, the traffic at your destination will be completely different by the time you arrive. Time-Dependent routing solves this by applying the **FIFO (First-In-First-Out)** property. As the algorithm traverses the graph, it calculates the arrival time at each node and queries a time-varying speed matrix to get the true travel cost for the next segment.
 
@@ -105,8 +107,6 @@ To design a routing engine at scale, we must understand the mathematical complex
 - **Contraction Hierarchies (CH) Complexity:** By pre-computing shortcuts, the query search space is reduced to $\mathcal{O}((V' + E') \log V')$, where $V' \ll V$ and $E' \ll E$. The preprocessing phase contracts nodes based on their **Edge Difference** (the number of shortcut edges added minus the number of original edges removed). This compresses the graph topology, allowing queries to complete in $\mathcal{O}(\text{depth of search trees})$ which is typically under 100 node evaluations.
 
 ## Go Implementation: Simple Dijkstra Path Router
-
-Here is a high-performance Go snippet demonstrating Dijkstra's shortest-path algorithm with a priority queue helper. This code is optimized for minimal memory allocations:
 
 ```go
 package routing
@@ -208,7 +208,6 @@ func ShortestPath(g *Graph, start, end int) ([]int, float64) {
 }
 ```
 
-
 ---
 
 ## FAQ: Routing Algorithms & Real-World Edge Cases
@@ -235,5 +234,7 @@ No. The shortest-path tree algorithm intelligently stops expanding its search ra
 
 Need help building high-scale routing engines or spatial indexing pipelines? [Get in touch](/hire/) to discuss your project.
 
-🔗 **Next Step:** Move on to [Part 2: Zero to Hero Environment Setup (Docker, OSM, Golang)]({{< ref "/series/routing-geospatial-architecture/part-2-environment-setup.md" >}}) to build your local routing environment.
+🔗 **Next Step:** Move on to [Part 2: Zero to Hero Environment Setup (Docker, OSM, Golang)](/series/routing-geospatial-architecture/part-2-environment-setup/) to build your local routing environment.
+
+## Architectural Context & Pillar References
 

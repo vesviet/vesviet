@@ -25,8 +25,6 @@ mermaid: true
 > - `osrm-datastore` updates speed profile weights live in under 500ms without dropping active HTTP connections.
 > - Shared memory host IPC reduces container node memory consumption from 64GB down to 16GB per node.
 
-**Answer-first:** Run `osrm-datastore` with shared memory when several OSRM processes on the same Kubernetes node must serve one large preprocessed map without duplicating tens of gigabytes of RAM. Use atomic dataset swaps and readiness checks to update routing data without interrupting traffic; this pattern does not provide live traffic by itself.
-
 ## The Challenge of Operating Large-Scale OSRM on Kubernetes
 
 When self-hosting the Open Source Routing Machine (OSRM) with massive datasets (like the entire North America or Southeast Asia map), you encounter a highly frustrating barrier: **The Cold Start Problem**.
@@ -132,8 +130,7 @@ Set up Prometheus Alerts to monitor for **IPC Memory Leaks**. Occasionally, an a
 
 If the `emptyDir` hits its `sizeLimit`, Kubernetes will ruthlessly trigger an **OOMKill** (Out Of Memory Kill) on your Pod. Worse, if no limit was set, it could crash the entire Worker Node. Regularly monitor `node_memory_Shmem_bytes` in Grafana to detect anomalies early.
 
-
-## Conclusion and Final Thoughts
+## Operational Summary & Production Recommendations
 
 By leveraging OSRM Shared Memory and Multi-Level Dijkstra, you can achieve a highly scalable, zero-downtime routing infrastructure on Kubernetes that effectively handles live traffic updates without wasting exorbitant amounts of memory. This design significantly lowers cloud infrastructure costs while maintaining sub-millisecond query latency. Always ensure proper monitoring of IPC memory segments to prevent catastrophic out-of-memory errors in production environments.
 
@@ -159,7 +156,6 @@ sequenceDiagram
 ```
 
 
-
 ## Architectural Trade-offs & Production Considerations (2026 Baseline)
 
 In high-concurrency production deployments, balancing throughput, resilience, and operational cost requires strict engineering discipline. When evaluating modern patterns against legacy monolithic or non-vector architectures, several critical failure modes and trade-offs emerge:
@@ -168,14 +164,12 @@ In high-concurrency production deployments, balancing throughput, resilience, an
 2. **Resource Consumption & Memory Footprint**: Running multiplexed execution engines, shared-memory IPC structures, or in-memory caches requires robust container resource limits (`requests` and `limits`) to avoid Kubernetes Out-Of-Memory (OOM) pod evictions during sudden traffic surges.
 3. **Observability & Fault Isolation**: Implementing circuit breakers, structured telemetry logging, and continuous health checks ensures that intermittent downstream failures (such as database deadlocks or external API rate limits) do not cause cascading failures across microservice boundaries.
 
-
 ## Related Pillar Articles & Further Reading
 
 - [OSRM vs GraphHopper Architecture Comparison](/posts/osrm-vs-graphhopper-architecture-comparison/)
 - [GraphHopper Kubernetes Self-Hosting Guide](/posts/graphhopper-kubernetes-self-hosting-osm/)
 - [GraphHopper Distance Matrix Production Guide](/posts/graphhopper-distance-matrix-production-guide/)
 - [Order Fulfillment & Warehouse Last-Mile Routing](/posts/order-fulfillment-algorithm-warehouse-last-mile/)
-
 
 ## Frequently Asked Questions (FAQ)
 

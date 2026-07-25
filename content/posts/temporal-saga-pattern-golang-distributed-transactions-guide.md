@@ -18,16 +18,12 @@ cover:
   relative: false
 ---
 
-**Answer-first:** Implementing distributed transactions in FinTech [Go microservices](/posts/go-microservices/) using the Temporal Saga Pattern in Go guarantees eventual consistency across decoupled databases without the tight coupling or blocking lock risks of Two-Phase Commit (2PC). By centralizing orchestration inside Temporal’s fault-tolerant event history engine, developers define linear workflow logic paired with automated compensation functions (`saga.AddCompensation`). When an activity downstream fails, Temporal executes compensations in strict reverse order, guaranteeing that financial dual-entry invariants ($\sum \text{Debits} = \sum \text{Credits}$) are eventually preserved even across network partitions, node crashes, and activity timeouts.
 > 
 > **Key Takeaways**:
 > - **Fault-Tolerant Orchestration over Choreography**: Temporal replaces fragile event-driven "event soup" with deterministic event histories. Tail latencies drop, and debugging distributed state machines transforms from distributed trace stitching to reading a unified workflow history log.
 > - **Dual-Entry Invariant Protection via Reverse Compensations**: By executing backward compensation routines registered dynamically via `saga.AddCompensation`, failed financial transfers automatically issue compensating refunds with sub-second execution once downstream failures are confirmed.
 > - **Production-Grade Idempotency & Heartbeating**: Combining PostgreSQL unique idempotency keys (`idempotency_keys` table with `SELECT FOR UPDATE`) with Temporal's `HeartbeatTimeout` and `activity.RecordHeartbeat` guarantees zero duplicate debits during activity worker retries or network split-brain scenarios.
 
-**Answer-first:** Temporal Saga Pattern in Golang provides an orchestrated, event-driven framework to handle multi-service distributed transactions with guaranteed backward compensation on failure. It solves the lack of isolation in BASE transactions by coupling durable workflow state replay with idempotent SQL activity execution, eliminating partial state corruption in high-volume microservices.
-
-### What You'll Learn That AI Won't Tell You
 - **The Zombie Activity Pitfall**: Why setting `StartToCloseTimeout` without database-level idempotency locks causes phantom debits during prolonged TCP network partitions.
 - **Dynamic Compensation Registration**: How to structure `workflow.NewSaga` in Go so that partial failures (e.g., debit succeeds, fraud check passes, but ledger credit fails) only execute compensation for steps that actually mutated state.
 - **Handling Non-Compensable External Side-Effects**: Practical design patterns for handling third-party banking APIs (e.g., SWIFT/ACH wires) that cannot be programmatically rolled back.
@@ -254,8 +250,6 @@ sequenceDiagram
 ---
 
 ## Section 3: Production-Ready Go Implementation with Temporal SDK
-
-Below is a complete, production-grade implementation of a FinTech Money Transfer Saga using the official `go.temporal.io/sdk`. It contains zero sleeping facade stubs or hardcoded mock logic.
 
 ### 1. Domain Models & Struct Definitions (`types.go`)
 

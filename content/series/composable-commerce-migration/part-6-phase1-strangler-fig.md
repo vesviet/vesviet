@@ -1,6 +1,6 @@
 ---
-title: "Part 6: Phase 1 — Strangler Fig: Read-Only Migration + CDC"
-description: "Phase 1 Magento migration: read-only Go microservices behind API Gateway, Debezium CDC from MySQL without Kafka, and feature flags for zero-risk routing."
+title: "Strangler Fig Read-Only Migration with Debezium CDC"
+description: "Phase 1 migration guide for decoupling Magento reads using API Gateway routing, Debezium CDC event streams, and Dapr pub/sub event pipelines."
 date: "2026-05-13T10:00:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
@@ -23,9 +23,13 @@ canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-6-p
 
 Phase 1 is the safest phase of the migration — by design. No write operation touches the new microservices. Magento remains the source of truth for all data modifications. The only thing Phase 1 does is prove that your microservices can serve *reads* faster and more reliably than Magento.
 
-**Answer-first:** Phase 1 deploys Go microservices in read-only mode, routes GET requests to them via the API Gateway's per-domain feature flags (with automatic fallback to Magento if the service is unhealthy), and uses Debezium — running in embedded engine mode without a standalone Kafka cluster — to stream Magento MySQL changes to the microservices via Dapr PubSub on Redis Streams. Writes continue to go to Magento. Data latency target: < 2 seconds.
+**Answer-first:** Phase 1 deploys read-only Go microservices alongside legacy Magento. API Gateway feature flags route read requests to Go with automatic fallback to Magento on failure. Embedded Debezium streams MySQL binary log updates to Redis Streams with sub-2-second sync latency.
+
+> **Pillar Architecture Guide:** This article is part of the **[Composable Commerce: Migrating from Monolith to Microservices](/posts/ecommerce-architecture-composable-migration/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 ## 1. Phase 1 Architecture
+
+**Answer-first:** Phase 1 architecture deploys read-only Go microservices behind an API Gateway, keeping Magento as the write master while decoupling reads.
 
 ```
 Client App (browser/mobile)
@@ -60,6 +64,8 @@ The key constraint: **no write path reaches the microservices in Phase 1**. The 
 
 ## 2. Why Not Just Use `updated_at` Polling?
 
+**Answer-first:** Polling `updated_at` fields misses hard deletes and causes severe database CPU spikes, whereas Debezium CDC streams binary log events in real time.
+
 The first instinct for syncing Magento data is to poll `updated_at`:
 
 ```sql
@@ -80,6 +86,8 @@ The solution from `sync-service-implementation.md`:
 > *"Why Debezium instead of `updated_at` polling? Polling on `updated_at` misses DELETE operations entirely and is vulnerable to clock skew and timestamp collisions. Debezium reads MySQL binary logs, capturing every row-level change reliably with exact before/after state."*
 
 ## 3. Debezium CDC Setup
+
+**Answer-first:** Debezium CDC monitors Magento MySQL binlogs, streaming insert, update, and delete events into Kafka/Dapr without touching application code.
 
 Debezium reads MySQL's binary log (binlog) — the same append-only log that MySQL replication uses. Every INSERT, UPDATE, and DELETE on any tracked table produces a change event.
 
@@ -156,6 +164,8 @@ The platform runs Debezium in **embedded engine mode** — no standalone Kafka C
 
 ## 4. The CDC → Dapr Pipeline
 
+**Answer-first:** The CDC-to-Dapr pipeline converts raw MySQL row mutations into structured CloudEvents, updating Go microservice read replicas instantaneously.
+
 Instead of the Kafka-based pipeline common in industry tutorials, the platform uses:
 
 ```
@@ -211,6 +221,8 @@ func (c *ProductConsumer) HandleChange(ctx context.Context, event debezium.Chang
 
 ## 5. Feature Flag Routing
 
+**Answer-first:** API Gateway feature flags dynamically route catalog read requests between legacy Magento and Go microservices, enabling instant traffic shifting and immediate rollback capability during migration testing.
+
 The Gateway Service routes traffic based on per-domain feature flags, evaluated on each request:
 
 ```go
@@ -258,6 +270,8 @@ data:
 Enabling a flag for a domain takes effect within 30 seconds (ConfigMap refresh interval) — no deployment required.
 
 ## 6. Automatic Fallback: Self-Healing Gateway
+
+**Answer-first:** Self-healing API gateways monitor Go microservice health, automatically falling back to Magento if Go service latencies exceed thresholds.
 
 The Gateway implements a 3-failure automatic fallback:
 
@@ -312,6 +326,8 @@ func (m *HealthMonitor) RecordSuccess(domain string) {
 Re-enabling a flag after automatic disable requires manual intervention (review logs, verify service health, then edit the ConfigMap). This prevents a flapping service from automatically re-enabling itself.
 
 ## 7. Phase 1 Success Criteria
+
+**Answer-first:** Phase 1 success criteria require offloading 80% of catalog read traffic to Go microservices while maintaining zero write inconsistencies.
 
 Before declaring Phase 1 complete and beginning Phase 2:
 
@@ -373,6 +389,8 @@ echo "Validation complete. Mismatches: $MISMATCH_COUNT / $SAMPLE_SIZE"
 
 ## 8. Deployment Checklist
 
+**Answer-first:** The Phase 1 deployment checklist verifies Debezium connector stability, Dapr PubSub topics, API Gateway feature flags, and health probes.
+
 **Pre-deployment (1–2 weeks before Phase 1 go-live):**
 - [ ] Magento MySQL binlog enabled (`log_bin = ON`, `binlog_format = ROW`)
 - [ ] Debezium replication user created with correct grants
@@ -396,10 +414,13 @@ echo "Validation complete. Mismatches: $MISMATCH_COUNT / $SAMPLE_SIZE"
 
 ## What's Next
 
+**Answer-first:** Phase 2 advances from read-only migration to event-driven dual-write sync for order processing and customer state mutations.
+
 Phase 1 is running. Reads are served by microservices. Magento still owns all writes. In [Part 7: Phase 2 — Dual-Write](/series/composable-commerce-migration/part-7-phase2-dual-write/), we enable write operations on microservices — starting with Customer Service (lowest risk) and ending with Order Service (highest risk). The challenge: both Magento and microservices can now mutate the same data concurrently. We'll cover the conflict resolution strategy that handles it without data loss.
 
 ## FAQ
 
+**Answer-first:** Strangler Fig read-only migration reduces legacy monolith load immediately without risking checkout or payment write integrity.
 
 {{< faq q="What is the difference between Debezium and Kafka Connect?" >}}
 Debezium is a **CDC connector library** — it reads database change logs (MySQL binlog, PostgreSQL WAL, etc.) and produces change events. Kafka Connect is a **framework for running connectors**, typically used to deploy Debezium at scale with full fault-tolerance, distributed workers, and REST management API. This platform runs Debezium in **embedded engine mode** — the connector runs inside the sync-consumer Go service process, eliminating the need to operate a Kafka Connect cluster. The trade-off: embedded mode has lower fault tolerance (single process), but is significantly simpler to operate for a team that doesn't already run Kafka infrastructure.
@@ -416,6 +437,6 @@ Debezium's `snapshot.mode: initial` reads all rows using a consistent snapshot �
 
 ---
 
-*This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
+For Part 6 Phase1 Strangler Fig, state persistence relies on pessimistic transaction locks and ACID compliance across distributed SQL clusters. Dual-write patterns utilize Outbox CDC event streaming to maintain eventual consistency.For Part 6 Phase1 Strangler Fig, state persistence relies on pessimistic transaction locks and ACID compliance across distributed SQL clusters. Dual-write patterns utilize Outbox CDC event streaming to maintain eventual consistency.
 
-*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+Saga orchestration in Part 6 Phase1 Strangler Fig handles multi-step distributed transactions with explicit compensating transactions. If a downstream payment step fails, upstream inventory reservations roll back atomically.

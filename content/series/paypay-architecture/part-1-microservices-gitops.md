@@ -1,5 +1,5 @@
 ---
-title: "Part 1 — The Foundation: Microservices & GitOps"
+title: "PayPay Microservices: GitOps & Kubernetes Blueprint"
 date: "2026-05-05T21:00:00+07:00"
 lastmod: "2026-05-05T21:00:00+07:00"
 draft: false
@@ -16,11 +16,12 @@ canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-1-microservic
 ShowToc: true
 TocOpen: true
 mermaid: true
+image: "images/posts/paypay-scaling-cover.png"
 ---
 
 > **Executive Summary & Quick Answer**: PayPay scales over 100 microservices for 60+ million users in Japan by combining Domain-Driven Design boundaries with GitOps CD automation using ArgoCD and Argo Rollouts. Automated canary deployments validate new code against live production metrics before full traffic shifting.
 
-**Answer-first:** PayPay enforces stable deployments by combining branch promotion workflows with GitOps tools like ArgoCD. Declarative configuration files in git serve as the single source of truth, allowing ArgoCD to automatically reconcile cluster state, execute canary rollouts, and enable instant rollbacks of microservices.
+> **Answer-First:** PayPay enforces stable deployments by combining branch promotion workflows with GitOps tools like ArgoCD. Declarative configuration files in git serve as the single source of truth, allowing ArgoCD to automatically reconcile cluster state, execute canary rollouts, and enable instant rollbacks of microservices.
 
 ## Bounded Contexts & Microservices
 
@@ -116,7 +117,7 @@ The result is an organization where 100+ microservices can be deployed independe
 
 ## gRPC Performance Benchmarks & High-Concurrency Routing
 
-Internal RPC routing across microservices requires minimal serialization latency to satisfy PayPay's strict P99 latency bounds (< 20ms). Below is a benchmark measuring Go gRPC client invocation and Protobuf serialization speed:
+Internal RPC routing across microservices requires minimal serialization latency to satisfy PayPay's strict P99 latency bounds (< 20ms). This benchmark measuring Go gRPC client invocation and Protobuf serialization speed:
 
 ```go
 package main
@@ -202,4 +203,3 @@ Argo Rollouts query Prometheus metrics (error rate, latency P99) during step-wis
 {{< /faq >}}
 
 Next step: See how PayPay powers asynchronous transaction processing in [Part 2: Event-Driven Architecture with Kafka](/series/paypay-architecture/part-2-event-driven-kafka/). If you need assistance structuring high-scale Kubernetes GitOps pipelines, consult our team via [Cloud Native DevOps Consulting](/hire/).
-

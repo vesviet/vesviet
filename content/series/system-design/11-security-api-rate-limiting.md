@@ -1,11 +1,11 @@
 ---
-title: "Go API Rate Limiting: Token Bucket & Redis Lua"
+title: "Go API Rate Limiting: Token Bucket & Redis Lua Algorithms"
 slug: "11-security-api-rate-limiting"
 date: "2026-06-18T14:00:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-description: "Advanced API rate limiting in Go: Token Bucket vs Leaky Bucket, distributed sliding window with Redis Lua, IP spoofing prevention."
+description: "Advanced API rate limiting in Go: Token Bucket vs Leaky Bucket algorithms, distributed sliding window with Redis Lua, and IP anti-spoofing techniques."
 tags: ["rate limiting", "security", "golang", "redis", "lua", "envoy", "system design"]
 categories: ["System Design", "Backend Engineering"]
 ShowToc: true
@@ -17,8 +17,10 @@ cover:
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/11-security-api-rate-limiting/"
+image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
-**Answer-first:** API rate limiting defends backend services by restricting request volume. Security requires a layered defense: Web Application Firewalls (WAF) block edge-level volumetric spikes, API Gateways manage L7 credentials and quotas, and application middleware enforces fine-grained business limits. Client identification must rely on validated, secure IP parsing (using the PROXY protocol or rightmost `X-Forwarded-For` checks).
+
+> API rate limiting defends backend services by restricting request volume. Security requires a layered defense: Web Application Firewalls (WAF) block edge-level volumetric spikes, API Gateways manage L7 credentials and quotas, and application middleware enforces fine-grained business limits. Client identification must rely on validated, secure IP parsing (using the PROXY protocol or rightmost `X-Forwarded-For` checks).
 
 > **Prerequisite:** This is Part 11 of the [System Design Masterclass](/series/system-design/). Previous parts built the core components — this part covers securing APIs and managing client traffic spikes at scale.
 
@@ -30,6 +32,7 @@ canonicalURL: "https://tanhdev.com/series/system-design/11-security-api-rate-lim
 ---
 
 ## Layered Rate Limiting Architecture & IP Spoofing Prevention
+
 
 **Key Concept:** Secure rate limiting requires a tiered approach, deploying quick-reject rules at the edge WAF, routing quotas at the L7 gateway, and business-level limits in application middleware. To prevent client IP spoofing, proxies must strip client-supplied `X-Forwarded-For` headers, trust only verified internal proxy IPs, or use the PROXY protocol at the TCP layer.
 
@@ -43,10 +46,12 @@ Distributed architectures should not rely on a single choke point. The workload 
 | **API Gateway (L7)** | Client API keys quota mapping, global tenant limiting, routing | Kong, Envoy, Traefik | Decent routing metadata; high latency impact if centralized. |
 | **Application Middleware** | Granular user actions (e.g., limit profile edits, payment retries) | Go middleware + Redis | Full database access and context; expensive CPU/network overhead. |
 
+The architecture diagram below illustrates the multi-tiered rate limiting pipeline from edge WAF DDoS filtering to API gateway tenant quotas and Go application middleware rules.
+
 ```mermaid
 graph TD
-    Client([Internet Traffic]) -->|"DDoS / Bot Blocking\nLayer 3/4"| WAF["☁️ Edge WAF\n(Cloudflare WAF / AWS WAF)"]
-    WAF -->|"Volumetric threats blocked\nClean traffic passes"| GW["🔀 API Gateway / Reverse Proxy\n(Kong / Envoy / Traefik)"]
+    Client["Internet Traffic"] -->|"DDoS / Bot Blocking\nLayer 3/4"| WAF["☁️ Edge WAF\nCloudflare WAF / AWS WAF"]
+    WAF -->|"Volumetric threats blocked\nClean traffic passes"| GW["🔀 API Gateway / Reverse Proxy\nKong / Envoy / Traefik"]
     GW -->|"JWT / API Key quotas\nTenant-level routing limits"| App["⚙️ Go Application Middleware\n(Redis + Business Context)"]
     App -->|"Granular rules:\nuser action limits, payment retries"| Svc["🗄️ Upstream Services\n(DB, Queue, Cache)"]
 
@@ -93,6 +98,8 @@ If the reverse proxy appends to this header without sanitization, the server rec
 The default implementation of `golang.org/x/time/rate` locks a global `sync.Mutex` on every check:
 
 ```go
+package main
+
 func (lim *Limiter) AllowN(now time.Time, n int) bool {
     lim.mu.Lock()
     defer lim.mu.Unlock()
@@ -342,29 +349,11 @@ func (rl *RedisRateLimiter) Middleware(next http.Handler) http.Handler {
 
 ---
 
-## FAQ
-
-
-{{< faq q="How do you prevent IP spoofing in a rate limiter?" >}}
-Do not read `X-Forwarded-For` without validating proxies. Clean client headers at the edge reverse proxy, or rely on the PROXY protocol at the transport layer to propagate validated TCP connection source IP metadata.
-{{< /faq >}}
-
-{{< faq q="When should you use local in-memory limiting vs. Redis?" >}}
-* **In-Memory (`x/time/rate`):** High throughput, minimal latency overhead. Use for process-specific limits or when horizontal node isolation is acceptable.
-* **Redis:** Coordinates limits across multiple nodes, ensuring global quotas. Necessary for pricing/tier-based user thresholds.
-{{< /faq >}}
-
-{{< faq q="What is Envoy's external rate limiting architecture?" >}}
-Envoy delegates rate limit decisions to an external service using a gRPC filter (`envoy.filters.http.ratelimit`). The gRPC server implements Lyft's `RateLimitService`, running configurations against a central Redis cluster to decide whether a request should be rate-limited.
-{{< /faq >}}
-
----
-
 ## Navigation & Next Steps
 
-[← Previous Part]({{< ref "10-observability-pprof-golang.md" >}})
-[Next Part →]({{< ref "12-communication-protocols-microservices.md" >}})
+[← Previous Part](/series/system-design/10-observability-pprof-golang/)
+[Next Part →](/series/system-design/12-communication-protocols-microservices/)
 
-🔗 **Next Step:** Continue to [Part 12: Communication Protocols — gRPC vs REST vs GraphQL in Go Microservices]({{< ref "12-communication-protocols-microservices.md" >}})
+🔗 **Next Step:** Continue to [Part 12: Communication Protocols — gRPC vs REST vs GraphQL in Go Microservices](/series/system-design/12-communication-protocols-microservices/)
 
-Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+Fault tolerance in API rate limiting systems relies on Netflix Hystrix-style circuit breaker state machines. Consecutive downstream errors trigger Open state fallback handlers instantly.

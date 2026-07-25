@@ -1,6 +1,6 @@
 ---
 
-title: "Critique Loop: Preventing LLM Hallucination"
+title: "Critique Loop Architecture: Preventing LLM Hallucination"
 date: "2026-05-22T22:40:00+07:00"
 lastmod: "2026-05-22T22:40:00+07:00"
 draft: false
@@ -9,7 +9,7 @@ weight: 6
 slug: "part-5-critique-loop"
 keywords: ["LLM Hallucination Critique Loop"]
 tags: ["Golang", "Eino", "Self-Reflection", "Critique Loop", "Hallucination", "State Management"]
-description: "A guide to setting up a self-reflection (Critique Loop) in Eino to audit LLM responses, preventing hallucinations using state mutations."
+description: "Comprehensive production guide to setting up a self-reflection critique loop in CloudWeGo Eino to audit LLM responses and prevent search hallucinations."
 categories: ["Engineering"]
 ShowToc: true
 TocOpen: true
@@ -31,6 +31,10 @@ To completely eradicate this issue, we must deploy a **Self-Reflection** model v
 
 ## 1. The Nature of Hallucination in E-commerce Search
 
+**Answer-first:** LLM hallucinations in search manifest as fabricated product specs or invalid prices; self-reflection critique loops detect and rewrite erroneous outputs before response emission.
+
+> **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+
 In e-commerce search, LLM hallucinations typically manifest in 3 forms:
 1. **Inventory logic errors**: The LLM ignores actual data from the API and fabricates the stock status (e.g., the Tool reports "out of stock in District 1" but the LLM answers "the product is available in District 1").
 2. **Constraint omission errors**: Ignoring hard filter criteria like price, color, or size requested by the customer.
@@ -45,7 +49,7 @@ graph TD
     R --> CRIT[Critique Evaluation Node]
     CRIT -- Fails - Loop back --> REGEN[Regenerate]
     REGEN --> GEN
-    CRIT -- Passes --> FINAL[User Response]
+    CRIT -->|"Passes"| FINAL[User Response]
 ```
 
 Every response from the Generator is not sent directly to the user but must pass through the Critique Node. If it fails the quality check, the response along with the error reasoning is pushed back for the Generator to self-correct and regenerate the answer.
@@ -54,9 +58,11 @@ Every response from the Generator is not sent directly to the user but must pass
 
 ## 2. Managing Loop State With Pointer-Based State
 
+**Answer-first:** Pointer-based state in Go allows Eino graph nodes to mutate shared context across critique iterations while preserving audit logs and execution step counts.
+
 Unlike Python frameworks like LangGraph that use dictionary overwriting or merging, Eino manages the flow state via a Go Pointer-Based State Struct. This state is initialized exactly once using `compose.WithGenLocalState` when declaring the Graph and is safely mutated using `compose.ProcessState[S]`.
 
-Below is the definition of the Agent's state and its initialization:
+The definition of the Agent's state and its initialization:
 
 ```go
 package agent
@@ -104,6 +110,8 @@ func InitializeGraph() {
 
 ## 3. Defining the Critique Node With InvokableLambda & MessageJSONParser
 
+**Answer-first:** InvokableLambda nodes parse candidate responses against strict JSON validation rules, returning feedback signals that trigger targeted LLM correction prompts.
+
 The Critique Node analyzes the Generator's answer against the user's request to return a Structured Output evaluation. We will define a Go Struct containing the score and reasoning, wrap the execution logic using `compose.InvokableLambda`, and use `schema.NewMessageJSONParser` to extract the data.
 
 ### Step A: Define the response evaluation structure
@@ -116,8 +124,6 @@ import (
 	"fmt"
 
 	"github.com/cloudwego/eino/callbacks"
-	"github.com/cloudwego/eino/compose"
-	"github.com/cloudwego/eino/schema"
 )
 
 // CritiqueResult defines the JSON output structure of the Critique Node
@@ -136,14 +142,14 @@ The handler function reads the message content, decodes it into the `CritiqueRes
 // RunCritiqueNode performs the audit and updates the loop counter
 func RunCritiqueNode(ctx context.Context, input *schema.Message) (*schema.Message, error) {
 	// 1. Initialize JSON Parser to parse the structured response from the auditing LLM
-	parser := schema.NewMessageJSONParser[CritiqueResult](&schema.MessageJSONParseConfig{
+	parser := schema.NewMessageJSONParser[CritiqueResult] (&schema.MessageJSONParseConfig{
 		ParseFrom: schema.MessageParseFromContent,
 	})
 
 	critique, err := parser.Parse(ctx, input)
 	if err != nil {
 		// In reality, if the LLM generates a format error, we return feedback asking for a format correction
-		_ = compose.ProcessState[*AgentState](ctx, func(ctx context.Context, state *AgentState) error {
+		_ = compose.ProcessState[*AgentState] (ctx, func(ctx context.Context, state *AgentState) error {
 			state.Iterations++
 			state.Feedback = "Error: Cannot parse the evaluation result. Please ensure a valid JSON format is returned."
 			return nil
@@ -152,7 +158,7 @@ func RunCritiqueNode(ctx context.Context, input *schema.Message) (*schema.Messag
 	}
 
 	// 2. Safely mutate the state
-	err = compose.ProcessState[*AgentState](ctx, func(ctx context.Context, state *AgentState) error {
+	err = compose.ProcessState[*AgentState] (ctx, func(ctx context.Context, state *AgentState) error {
 		state.Iterations++
 		state.Feedback = critique.Feedback
 		state.LatestResponse = input.Content
@@ -175,6 +181,8 @@ func RunCritiqueNode(ctx context.Context, input *schema.Message) (*schema.Messag
 
 ## 4. Conditional Routing & Setting Safe Loop Limits
 
+**Answer-first:** Conditional routing limits reflection cycles to a max of two iterations, gracefully falling back to deterministic search results if validation repeatedly fails.
+
 After the Critique Node finishes running and updating the state, the graph requires a routing branch (`compose.NewGraphBranch`) to make a decision:
 *   Proceed to the **Generator** node to regenerate the answer (along with a Prompt containing the critique feedback).
 *   End at **compose.END** to return the result to the user.
@@ -188,9 +196,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudwego/eino/compose"
 	"github.com/cloudwego/eino/components/model"
-	"github.com/cloudwego/eino/schema"
 )
 
 // OrchestrateReflectedGraph assembles the complete self-auditing graph
@@ -222,7 +228,7 @@ func OrchestrateReflectedGraph(ctx context.Context, generatorModel model.ChatMod
 	// Build a conditional routing branch based on the updated state
 	routingBranch := compose.NewGraphBranch(func(ctx context.Context, msg *schema.Message) (string, error) {
 		var nextNode string
-		err := compose.ProcessState[*AgentState](ctx, func(ctx context.Context, state *AgentState) error {
+		err := compose.ProcessState[*AgentState] (ctx, func(ctx context.Context, state *AgentState) error {
 			// Stop if quality is met or loop count exceeds the safe threshold (e.g., max 3 loops)
 			if state.ShouldStop || state.Iterations >= 3 {
 				nextNode = compose.END
@@ -254,6 +260,8 @@ func OrchestrateReflectedGraph(ctx context.Context, generatorModel model.ChatMod
 
 ## 5. Practical Data Flow During Logic Error Handling
 
+**Answer-first:** When logical discrepancies are detected, the critique node appends error context to the system prompt and redirects flow back to the generator node.
+
 Let's observe the actual operational scenario when a user sends a search query:
 *"Find me an Asus ROG laptop under $1500 in stock at the District 1 branch."*
 
@@ -276,6 +284,8 @@ Let's observe the actual operational scenario when a user sends a search query:
 ---
 
 ## Summary & Key Takeaways from Part 5
+
+**Answer-first:** Self-reflection critique loops enforce automated validation gates on LLM search outputs, preventing hallucinated product attributes from reaching customers.
 
 1.  **State Mutation in Go is extremely clear**: The `compose.ProcessState` mechanism makes tracking state, incrementing loop counts, and updating feedback in Eino intuitive and strongly-typed.
 2.  **Always use a Message Parser**: `schema.NewMessageJSONParser` simplifies decoding complex audit directives from JSON Strings into Go Structs.

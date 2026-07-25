@@ -18,12 +18,8 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/exporting-magento-2-data-flat-sql-nodejs/"
 ---
 
-**Answer-first:** Extracting Magento 2 EAV data efficiently requires direct SQL joins that flatten entity tables, avoiding expensive ORM overhead. By piping the database cursor into Node.js transform streams, we handle backpressure natively, exporting millions of product records with a memory footprint under 100MB.
-
-### What You'll Learn That AI Won't Tell You
 - How to optimize complex EAV joins in MySQL using index hints to prevent full table scans on catalogs exceeding 1 million SKUs.
 - Complete Node.js stream backpressure implementations that keep memory usage under 100MB while processing millions of records.
-
 
 When migrating off Magento 2, the first obstacle is always the database schema. Magento does not store data in clean flat rows — it uses an **Entity-Attribute-Value (EAV)** model that spreads data across dozens of tables with store-scope inheritance. Understanding this before writing SQL will save you days.
 
@@ -200,7 +196,7 @@ To extract large datasets with a constant, low memory footprint, we must stream 
 
 ### Implementation of Direct MySQL Stream Export
 
-Below is a complete Node.js implementation that streams a flattened Magento product catalog query directly from the database and writes it to a file. It uses the `mysql2` object mode stream and applies a Transform stream to handle backpressure and garbage collection efficiently.
+Streaming a flattened Magento product catalog query directly from MySQL requires configuring the `mysql2` object mode stream alongside Node.js Transform streams to manage memory backpressure and garbage collection efficiency.
 
 ```javascript
 // stream-export.js — Direct MySQL Streaming Export

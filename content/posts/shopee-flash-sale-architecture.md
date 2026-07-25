@@ -35,8 +35,6 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/shopee-flash-sale-architecture/"
 ---
 
-**Answer-first:** High-concurrency flash-sale architectures absorb peak traffic by applying C10M kernel-bypass networking at the edge, enforcing multi-layer rate limiting at the API Gateway, and executing atomic Redis Lua inventory reservations before any write request reaches the relational database.
-
 ---
 
 ## Executive Summary & System Design Foundations

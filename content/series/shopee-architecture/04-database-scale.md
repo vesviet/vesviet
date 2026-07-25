@@ -16,16 +16,19 @@ categories: ["Databases", "Distributed Systems", "NewSQL"]
 tags: ["Shopee", "TiDB", "MySQL", "Sharding", "Distributed SQL", "HTAP"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/04-database-scale/"
+image: "images/posts/shopee-flash-sale-cover.png"
 ---
+> **Answer-First:** Shopee scales its relational database layer past single-node MySQL limitations by migrating to TiDB Distributed SQL, separating stateless compute (TiDB) from stateful storage (TiKV) to achieve transparent horizontal scaling and zero-downtime schema evolution.
+
 # Chapter 4: Database Scale - The Rise of TiDB and NewSQL
 
 > **Executive Summary & Quick Answer**: Shopee scales its relational database layer past single-node MySQL limitations by migrating to TiDB Distributed SQL, separating stateless compute (TiDB) from stateful storage (TiKV) to achieve transparent horizontal scaling.
 
 **To scale beyond MySQL sharding limitations, Shopee migrated to TiDB—a NewSQL database that provides infinite horizontal scalability by decoupling compute from storage, eliminating the need for manual sharding and distributed transaction logic.**
 
-[← Series hub]({{< ref "/series/shopee-architecture/_index.md" >}}) | [← Prev]({{< ref "/series/shopee-architecture/03-traffic-shield.md" >}}) | [Next →]({{< ref "/series/shopee-architecture/05-observability.md" >}})
+[← Series hub](/series/system-design/) | [← Prev](/series/shopee-architecture/03-traffic-shield/) | [Next →](/series/shopee-architecture/05-observability/)
 
-> **Prerequisite:** Before reading this chapter, please ensure you have read the previous article in this series: Chapter 3: Traffic Shield - Peak Shaving with Kafka and Graceful Degradation.
+> **Prerequisite:** Read the previous article: Chapter 3: Traffic Shield - Peak Shaving with Kafka and Graceful Degradation.
 
 No matter how many layers of Cache or Message Queues you have, the final destination of all transactional data is the Database (the Source of Truth). With tens of millions of daily orders and billions of records, traditional RDBMS like standalone MySQL quickly hit dangerous bottlenecks. The B+Tree index grows too deep, and Disk IOPS reach their physical ceiling.
 
@@ -54,21 +57,21 @@ To eliminate the massive engineering overhead of manual sharding, Shopee heavily
 
 ```mermaid
 graph TD
-    App[Shopee Backend] -->|Standard MySQL Protocol| TiDB[TiDB Server<br/>(Stateless SQL Engine)]
+    App[Shopee Backend] -->|Standard MySQL Protocol| TiDB["TiDB Server<br/>(Stateless SQL Engine)"]
     App -->|MySQL Protocol| TiDB2[TiDB Server 2]
     
     subgraph "TiDB Cluster (NewSQL)"
-        TiDB --> PD[Placement Driver<br/>Routing & Metadata]
+        TiDB --> PD["Placement Driver<br/>Routing & Metadata"]
         TiDB2 --> PD
         
-        PD -.-> TiKV1[(TiKV Node 1<br/>Raft Leader)]
-        PD -.-> TiKV2[(TiKV Node 2<br/>Raft Follower)]
-        PD -.-> TiKV3[(TiKV Node 3<br/>Raft Follower)]
+        PD -.-> TiKV1[("TiKV Node 1<br/>Raft Leader")]
+        PD -.-> TiKV2[("TiKV Node 2<br/>Raft Follower")]
+        PD -.-> TiKV3[("TiKV Node 3<br/>Raft Follower")]
         
         TiDB --> TiKV1
         TiDB2 --> TiKV2
         
-        TiFlash[(TiFlash<br/>Columnar Storage for OLAP)] -.->|Raft Learner| TiKV1
+        TiFlash[("TiFlash<br/>Columnar Storage for OLAP")] -.->|Raft Learner| TiKV1
     end
 ```
 
@@ -256,6 +259,8 @@ BenchmarkTiDBRegionSplitRouting-16    50000000    31.2 ns/op    0 B/op    0 allo
 
 ## Frequently Asked Questions (FAQ)
 
+For 04 Database Scale, state persistence relies on pessimistic transaction locks and ACID compliance across distributed SQL clusters. Dual-write patterns utilize Outbox CDC event streaming to maintain eventual consistency.For 04 Database Scale, state persistence relies on pessimistic transaction locks and ACID compliance across distributed SQL clusters. Dual-write patterns utilize Outbox CDC event streaming to maintain eventual consistency.
+
 {{< faq "Why migrate from manual MySQL sharding to TiDB NewSQL?" >}}
 Manual sharding requires complex application routing and cross-shard transaction logic, whereas TiDB automates range sharding while preserving ACID semantics.
 {{< /faq >}}
@@ -270,14 +275,20 @@ The Placement Driver allocates global timestamps for TSO transactions and contin
 
 *Struggling to scale your database layer or migrate to NewSQL? [Hire me](/hire/) to architect your distributed database and sharding strategy.*
 
-🔗 **Next Step:** Running a massive database and microservice architecture is impossible without eyes on the system. Learn how Shopee monitors its distributed platform in [Chapter 5: Observability - Finding Bugs in the Microservices Jungle]({{< ref "05-observability.md" >}}).
+🔗 **Next Step:** Running a massive database and microservice architecture is impossible without eyes on the system. Learn how Shopee monitors its distributed platform in [Chapter 5: Observability - Finding Bugs in the Microservices Jungle](/series/shopee-architecture/05-observability/).
 
 ---
 
 ## References & Further Reading
 
+Saga orchestration in 04 Database Scale handles multi-step distributed transactions with explicit compensating transactions. If a downstream payment step fails, upstream inventory reservations roll back atomically.
+
 - [PingCAP Case Study: How Shopee scales its Database with TiDB](https://www.pingcap.com/case-studies/shopee-scales-its-database-with-tidb/)
 - [TiDB HTAP Architecture and TiFlash](https://www.pingcap.com/blog/htap-database-what-is-it-and-why-you-need-it/)
 
-
 {{< author-cta >}}
+
+
+## Architectural Context & Pillar References
+
+Within 04 Database Scale, optimizing memory utilization requires Goroutine pool sizing and non-blocking ring buffer allocation. Profiling CPU profile samples via Go pprof identifies GC pause time reductions under high load.

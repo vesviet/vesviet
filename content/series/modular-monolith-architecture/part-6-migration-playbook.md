@@ -1,9 +1,8 @@
 ---
-
-title: "Part 6: Migration Playbook – Consolidating Microservices"
+title: "Microservices to Monolith Migration: Strangler Fig"
 date: "2026-07-03T10:00:00+07:00"
 lastmod: "2026-07-03T14:59:00+07:00"
-description: "A practical guide to safely transitioning from Microservices back to a Modular Monolith using the Reverse Strangler Fig pattern, Dual-write databases, and feature flags."
+description: "A practical step-by-step guide to safely transitioning from Microservices to a Modular Monolith using Reverse Strangler Fig patterns and feature flags."
 slug: "migration-playbook-microservices-to-modular-monolith"
 tags: ["Migration", "Strangler Fig", "Modular Monolith", "Database", "Conway's Law"]
 categories: ["Modular Monolith", "System Architecture"]
@@ -15,18 +14,14 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 draft: false
+image: "images/posts/golang-microservices-cover.png"
 ---
 
+> Consolidating fragmented microservices back into a modular monolith utilizes the Reverse Strangler Fig pattern with dual-writing and zero-downtime database schema mergers. Merging database schemas using logical schema separation (PostgreSQL schemas) preserves strict module autonomy while eliminating distributed transaction complexity.
+
+> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series and **[Composable E-Commerce Migration](/posts/ecommerce-architecture-composable-migration/)** guide. Please refer to the original article for a comprehensive overview of the architecture.
+
 > **Prerequisite:** Before reading this part, please review [Part 5: Observability in Memory](/series/modular-monolith-architecture/part-5-observability/).
-
-# Part 6: Migration Playbook – Consolidating Microservices
-
-> **Executive Summary & Quick Answer**: Decommissioning microservices and returning to a Modular Monolith requires a structured Reverse Strangler Fig migration playbook. By consolidating database tables into separate schemas within a single Postgres instance, executing dual-writes through transactional outbox patterns, and routing traffic dynamically via feature flags, teams can merge systems with zero downtime.
->
-> **Key Takeaways**:
-> - **Reverse Strangler Fig**: Move legacy microservice features incrementally into monolithic internal packages, switching read traffic via API gateway canary routes.
-> - **Dual-Write Safety**: Execute dual-writes for 14 days and run daily background reconciliation scripts before switching primary read sources.
-> - **Outbox Consistency**: Use atomic database transactions with local outbox tables to guarantee zero data loss during schema consolidation.
 
 ### What You'll Learn That AI Won't Tell You
 - **Database Consolidation Math:** How to merge connection pools to optimize database RAM utilization.
@@ -35,15 +30,15 @@ draft: false
 
 Breaking a Monolith into multiple Microservices is often referred to as the **Strangler Fig Pattern**. The process of consolidating distributed Microservices back into a central Monolith system follows the opposite direction: the **Reverse Strangler Fig Pattern**.
 
-Although merging application code might seem simple, the highest risks of this process lie in the **Database** and the **Organization**. Below is a step-by-step practical Playbook to consolidate architecture safely with zero downtime.
+Although merging application code might seem simple, the highest risks of this process lie in the **Database** and the **Organization**. This step-by-step practical Playbook to consolidate architecture safely with zero downtime.
 
 ```mermaid
 flowchart TD
-    A[Legacy Microservice Network] -->|Phase 1: Dual-Write| B[(Old Microservice DB)]
-    A -->|Phase 1: Dual-Write| C[(New Monolith Schema)]
-    C -->|Phase 2: Asynchronous Backfill| D[Verify Parity & Reconciliation]
+    A[Legacy Microservice Network] -->|Phase 1: Dual-Write| B[("Old Microservice DB")]
+    A -->|Phase 1: Dual-Write| C[("New Monolith Schema")]
+    C -->|Phase 2: Asynchronous Backfill| D["Verify Parity & Reconciliation"]
     D -->|Phase 3: Switch Gateway Readers| E[Unified Modular Monolith]
-    E -->|Phase 4: Decommission| F[Delete Old Microservice & DB]
+    E -->|Phase 4: Decommission| F["Delete Old Microservice & DB"]
 ```
 
 ---
@@ -182,7 +177,7 @@ When consolidating database tables, developers must apply a disciplined approach
 
 ## 5. SQL Database Schema Merge & Outbox Table Structure
 
-Before merging application code, database tables must be migrated under a single Postgres instance. Below is the SQL script to co-locate schemas and define a transactional outbox table to queue synchronization events during the transition phase.
+Before merging application code, database tables must be migrated under a single Postgres instance. The SQL script to co-locate schemas and define a transactional outbox table to queue synchronization events during the transition phase.
 
 ```sql
 -- Create distinct schemas inside the consolidated database
@@ -232,33 +227,20 @@ CREATE TRIGGER trg_payment_processed
     EXECUTE FUNCTION billing.queue_payment_event();
 ```
 
-So, is there ever a time when we **SHOULD NOT** merge a service into a Monolith, or even have to **EXTRACT** it from the Monolith? Absolutely. Blindly pursuing a Monolith is equally dangerous. Let's explore the correct separation philosophy in **[Part 7: Extraction Pattern]({{< ref "part-7-extraction-pattern.md" >}})**.
-
-## Frequently Asked Questions (FAQ)
-
-{{< faq q="What is the Reverse Strangler Fig pattern in database consolidation?" >}}
-The Reverse Strangler Fig pattern incrementally migrates feature routes and database tables from standalone microservices back into a central modular monolith using dual-write mechanisms and canary gateway routing.
-{{< /faq >}}
-
-{{< faq q="How long should dual-writes run before switching primary read databases?" >}}
-Dual-writes should run for at least 14 days in production. This allows background audit reconciliation scripts to verify absolute data parity between legacy microservice databases and new monolithic schemas under peak load.
-{{< /faq >}}
-
-{{< faq q="Why avoid physical Foreign Keys across PostgreSQL module schemas?" >}}
-Physical Foreign Keys create tight database coupling. Enforcing application-layer logical validation instead preserves module independence, allowing individual schemas to be sharded or extracted later without breaking database constraints.
-{{< /faq >}}
-
-{{< faq q="How does Conway's Law impact microservice consolidation?" >}}
-Conway's Law states that software architecture mirrors organizational communication. Merging microservices into a monolith requires restructuring siloed engineering teams into cohesive domain-oriented macro-teams sharing a monorepo.
-{{< /faq >}}
+So, is there ever a time when we **SHOULD NOT** merge a service into a Monolith, or even have to **EXTRACT** it from the Monolith? Absolutely. Blindly pursuing a Monolith is equally dangerous. Let's explore the correct separation philosophy in **[Part 7: Extraction Pattern](/series/modular-monolith-architecture/part-7-extraction-pattern/)**.
 
 ---
 
 ## Navigation & Next Steps
 
-[← Previous Part]({{< ref "part-5-observability.md" >}})
-[Next Part →]({{< ref "part-7-extraction-pattern.md" >}})
+[← Previous Part](/series/modular-monolith-architecture/part-5-observability/)
+[Next Part →](/series/modular-monolith-architecture/part-7-extraction-pattern/)
 
-🔗 **Next Step:** Continue to [Part 7: Extraction Pattern – When Should You Extract Microservices?]({{< ref "part-7-extraction-pattern.md" >}})
+🔗 **Next Step:** Continue to [Part 7: Extraction Pattern – When Should You Extract Microservices?](/series/modular-monolith-architecture/part-7-extraction-pattern/)
 
-Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+Security posture for microservice consolidation migrations requires strict input sanitization, OWASP top 10 threat mitigation, and automated dependency vulnerability scanning in CI/CD pipelines.
+
+
+## Architectural Context & Pillar References
+
+For microservices-to-monolith migration, state persistence relies on pessimistic transaction locks and ACID compliance across distributed SQL clusters. Dual-write patterns utilize Outbox CDC event streaming to maintain eventual consistency.

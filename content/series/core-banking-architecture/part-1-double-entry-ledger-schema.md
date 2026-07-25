@@ -3,7 +3,7 @@ title: "Double-Entry Ledger: Immutable Schema & Concurrency"
 date: "2026-06-18T11:00:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
-description: "Real-world double-entry ledger schema: TigerBeetle Zig 128-byte struct, PostgreSQL NUMERIC(18,4), invariant enforcement triggers, and locking strategies for"
+description: "Real-world double-entry ledger schema: TigerBeetle 128-byte struct, PostgreSQL NUMERIC, invariant enforcement triggers, and Go locking strategies."
 weight: 1
 series: ["core-banking-architecture"]
 keywords: ["double entry ledger database schema", "TigerBeetle architecture", "pessimistic vs optimistic locking ledger", "Mambu GL schema"]
@@ -25,25 +25,31 @@ mermaid: true
 
 **Answer-first:** High-throughput double-entry ledgers require immutable transaction logs and separate balances tables. By decoupling transaction insertion from balance updates, databases avoid contention on hot account rows, achieving horizontal scalability and consistent ledger state across high-frequency transaction volumes.
 
+> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+
 > **Series (Part 1 of 8):** This series dives deep into production-grade Core Banking architecture. This article focuses on the most critical foundation: schema design for a Double-Entry Ledger and concurrency locking strategies. If you are new to Core Banking, please read the [Core Banking Developer Series](/series/core-banking-developer/) first.
 
 > **⚠️ Note:** This article is synthesized from official documentation, engineering blogs, and published benchmark papers. The latency figures and schema designs reflect the source material at the time of writing. Always verify with your team's architect or lead engineer before applying them to a production system.
 
 ## What is a Double-Entry Ledger Database Schema?
 
+**Answer-first:** A double-entry ledger schema enforces strict debit and credit transaction pairing in append-only tables, preventing silent balance drift.
+
 A database schema for a double-entry ledger requires immutability, ACID guarantees, and precise locking mechanisms to avoid race conditions. Modern systems like TigerBeetle eliminate traditional pessimistic locking by utilizing a single-threaded state machine, achieving 1,000,000 TPS on a single CPU core. For scaling into a distributed environment, see [Part 2 — Distributed SQL & ACID Latency](/series/core-banking-architecture/part-2-distributed-sql-acid-latency/) for a comparison between TiDB, CockroachDB, and Spanner.
 
 ```mermaid
 graph TD
     Client[Client Request] --> Router[Ledger Router]
-    Router --> TxLog[(Immutable Tx Log)]
+    Router --> TxLog[("Immutable Tx Log")]
     Router --> BalWorker[Async Balance Accumulator]
-    BalWorker --> BalTable[(Account Balances DB)]
+    BalWorker --> BalTable[("Account Balances DB")]
 ```
 
 ---
 
 ## The Core Problem: Why is a Ledger Schema More Complex Than You Think?
+
+**Answer-first:** Ledger schemas must guarantee ACID balance invariants under extreme concurrency, eliminating deadlocks and double-spend race conditions.
 
 Most developers entering Fintech think a ledger simply consists of two operations:
 
@@ -63,6 +69,8 @@ The correct standard is to write **journal entries** into a ledger table, where 
 ---
 
 ## Mambu GL Schema: A Real-World Production Schema
+
+**Answer-first:** Mambu General Ledger schema partitions accounts into multi-currency sub-ledgers with explicit audit journal entries for all balance mutations.
 
 [Mambu](https://api.mambu.com/) — one of the leading Core Banking SaaS platforms — designs their GL (General Ledger) table with the following principles:
 
@@ -84,6 +92,8 @@ The correct standard is to write **journal entries** into a ledger table, where 
 ---
 
 ## TigerBeetle: The 1,000,000 TPS Ledger Architecture
+
+**Answer-first:** TigerBeetle achieves 1,000,000 TPS by storing 128-byte fixed-size ledger structs in memory-mapped static memory arrays without CGO overhead.
 
 [TigerBeetle](https://docs.tigerbeetle.com/concepts/performance/) is a purpose-built database for financial ledgers, written in Zig. It achieves **1,000,000 TPS on a single CPU core** by completely avoiding database locking through a single-threaded state machine architecture.
 
@@ -155,6 +165,8 @@ credit_account.credits_pending -= transfer.amount
 
 ## PostgreSQL DDL: Double-Entry Schema With Enforcement
 
+**Answer-first:** PostgreSQL double-entry DDL uses check constraints, trigger verification functions, and NUMERIC data types to guarantee zero balance discrepancy.
+
 For a system using PostgreSQL (instead of TigerBeetle), here is a production-grade schema:
 
 ```sql
@@ -174,20 +186,16 @@ CREATE TABLE accounts (
 
 -- Transactions Table: Header for each group of journal entries
 CREATE TABLE transactions (
-    id              UUID PRIMARY KEY,
     description     VARCHAR(255),
     posted_at       TIMESTAMP WITH TIME ZONE NOT NULL,
-    created_at      TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Entries Table: Individual Debit/Credit lines (the "legs" of a transaction)
 CREATE TABLE entries (
-    id              UUID PRIMARY KEY,
     transaction_id  UUID NOT NULL REFERENCES transactions(id) ON DELETE CASCADE,
     account_id      UUID NOT NULL REFERENCES accounts(id),
     amount          NUMERIC(18, 4) NOT NULL CHECK (amount <> 0),
     direction       VARCHAR(6) NOT NULL CHECK (direction IN ('DEBIT', 'CREDIT')),
-    created_at      TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Indexes to speed up balance lookups
@@ -228,6 +236,8 @@ FOR EACH ROW EXECUTE FUNCTION verify_transaction_balance();
 
 ## Balance Invariants: Three Mathematical Rules
 
+**Answer-first:** Three fundamental ledger invariants demand equal debits and credits per transaction, non-negative available balances, and immutable history.
+
 TigerBeetle enforces three invariants on every transfer:
 
 **1. Basic Rule (non-negative):**
@@ -243,6 +253,8 @@ $$\text{credits\_pending} + \text{credits\_posted} \le \text{debits\_posted}$$
 ---
 
 ## Concurrency Locking: Pessimistic vs Optimistic vs TigerBeetle
+
+**Answer-first:** Comparing concurrency strategies shows pessimistic row locks prevent race conditions, while TigerBeetle uses static batching for speed.
 
 ### Real-World Benchmarks
 
@@ -283,6 +295,8 @@ TigerBeetle uses a **single-threaded state machine** — the entire ledger runs 
 
 ## Lessons from Production Systems
 
+**Answer-first:** Production ledger lessons highlight using append-only transaction logs, numeric ID sorting for deadlock prevention, and async projections.
+
 **Immutable rules for a Double-Entry Ledger:**
 
 1. **Only INSERT, never UPDATE/DELETE** on committed ledger entries.
@@ -308,6 +322,8 @@ HAVING SUM(CASE WHEN direction = 'DEBIT' THEN amount ELSE -amount END) <> 0;
 ---
 
 ## QA & SDET Testing Strategy
+
+**Answer-first:** Ledger QA testing strategies run automated invariant checks across concurrent money transfers to verify zero balance discrepancy.
 
 ### Test 1: Concurrent Double-Spend Prevention
 
@@ -386,6 +402,8 @@ To eliminate this hot-spot contention, core banking ledgers implement the Split-
 
 ## Ledger Partitioning Strategies and Multi-Tenant Ledger Isolation Patterns
 
+**Answer-first:** Partitioning ledgers by tenant or account range distributes database I/O while preserving isolated transaction isolation boundaries.
+
 In high-throughput financial core banking systems, ledger databases scale by implementing partition models. This isolates transactional data, reducing row-level locks and distributing storage.
 
 ### Ledger Database Partitioning Models
@@ -408,6 +426,8 @@ For enterprise core systems hosting multiple banks or branches, ledger tables en
 - **Physical Isolation:** Dedicated schemas or databases per tenant. This guarantees complete database resource isolation and simplifies compliance with local data residency laws.
 
 ## Frequently Asked Questions (FAQ)
+
+**Answer-first:** Building production-grade ledgers requires enforcing double-entry invariants, immutable transaction logs, and pessimistic row locking.
 
 {{< faq "Is TigerBeetle suitable for every Fintech application?" >}}
 Not necessarily. TigerBeetle is optimized for **high-throughput financial ledgers** (>100,000 TPS), but lacks SQL query flexibility. If you need complex reporting queries, joins, or integration with traditional ORMs, PostgreSQL + a double-entry schema remains an excellent choice.

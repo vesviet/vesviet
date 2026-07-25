@@ -12,11 +12,7 @@ draft: false
 mermaid: true
 ---
 
-**Answer-first:** Geo-distributed API Routing directs user requests to the nearest geographic server to minimize latency. Utilizing methods like DNS Latency-based Routing (AWS Route53) or Anycast IP (Cloudflare), combined with robust cross-region data replication, significantly improves response times and system availability for global audiences.
-
 > [!NOTE]
-> **What You'll Learn That AI Won't Tell You:** This guide breaks down real-world latency metrics from Southeast Asian ISPs to AWS Singapore, provides concrete Terraform infrastructure code for Route53 latency routing, and details advanced Edge routing techniques using Cloudflare Workers to bypass DNS caching limits and perform dynamic L7 failovers.
-
 ## The Need for Geo-Distributed APIs
 
 In the era of global digitization, user experience is directly determined by application response speed. When a business scales to serve customers across multiple countries and continents, a single-region central server architectural model quickly reveals severe physical limitations. The nature of network communication involves the movement of data packets through fiber optic cables, which is ultimately bounded by the speed of light. A request traveling from Vietnam to a server located in the US East region (us-east-1) must traverse tens of thousands of kilometers and numerous transit hops, resulting in a minimum Round Trip Time (RTT) of 200ms to 300ms. For applications requiring real-time interaction or financial transactions, this latency is unacceptable.
@@ -153,7 +149,7 @@ When data is partitioned across multiple geographical zones, we directly confron
 
 This solution works by assigning each user a specific "Home Region" based on their geographical location. For example, all account information, orders, and activities for a user in Vietnam will be primarily stored in the AWS Singapore Region (`ap-southeast-1`).
 
-All regular Write and Read operations for this user are processed directly in Singapore at extremely fast speeds. This data is only asynchronously replicated to other regions (like the US or Europe) for backup or statistical analysis purposes. This mechanism is closely tied to [Database Sharding](/series/high-concurrency-systems/database-sharding-read-write-splitting/) strategies, splitting the physical database via geographic shard keys.
+All regular Write and Read operations for this user are processed directly in Singapore at extremely fast speeds. This data is only asynchronously replicated to other regions (like the US or Europe) for backup or statistical analysis purposes. This mechanism is closely tied to [Database Sharding](/series/high-concurrency-systems/article_9_sharding/) strategies, splitting the physical database via geographic shard keys.
 
 ### 2. Read-Local, Write-Global Model
 

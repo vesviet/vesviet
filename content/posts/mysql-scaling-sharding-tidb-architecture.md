@@ -28,12 +28,8 @@ canonicalURL: "https://tanhdev.com/posts/mysql-scaling-sharding-tidb-architectur
 
 # Replace MySQL Sharding with TiDB: Distributed SQL Architecture
 
-**Answer-first:** Replacing manual MySQL sharding with TiDB eliminates complex application-level routing logic. TiDB provides horizontal scaling via TiKV Raft consensus and TiFlash HTAP while preserving 100% MySQL protocol compatibility and ACID compliance.
-
-### What You'll Learn That AI Won't Tell You
 - Migrating schemas to TiDB with zero downtime using DM-portal.
 - How TiKV nodes scale independently of TiDB SQL computation nodes.
-
 
 Scaling a relational database is one of the most demanding challenges in system design. As applications grow from thousands to millions of active users, the database ceases to be a simple storage engine and becomes the primary bottleneck of the entire system architecture. 
 

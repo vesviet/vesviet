@@ -1,5 +1,5 @@
 ---
-title: "Tech Radar Digest — July 2026"
+title: "Tech Radar Digest July 2026: AI Swarms & Edge K8s Log"
 date: "2026-07-21T23:59:59+07:00"
 lastmod: "2026-07-23T10:00:00+07:00"
 author: "Lê Tuấn Anh"
@@ -10,8 +10,8 @@ TocOpen: true
 categories: ["Tech Radar"]
 tags: ["Tech Radar", "Cloud Native", "DevOps", "Architecture", "Engineering", "Golang", "Kubernetes"]
 cover:
-  image: "images/radar/radar-2026-07-03-cover.png"
-  alt: "Tech Radar Digest — July 2026"
+  image: "images/posts/default-post.png"
+  alt: "Tech Radar Digest July 2026: AI Swarms & Edge K8s Log"
   relative: false
 aliases:
   - /radar/2026-07/tech-radar-july-03-2026-autonomous-ai-swarms-openclaw-kubernetes/
@@ -26,11 +26,14 @@ aliases:
   - /radar/2026-07/radar-2026-07-17/
   - /radar/2026-07/radar-2026-07-20/
   - /radar/2026-07/radar-2026-07-21/
+description: "Curated July 2026 Tech Radar digest covering autonomous AI swarms, edge WasmEdge on K3s, zero-trust MCP protocols, and cloud-native AI gateway FinOps."
 ---
 
 > **Answer-first:** Tech Radar Digest for July 2026 aggregates 6 daily technical briefings detailing autonomous AI swarms, WasmEdge SLM runtime execution, zero-trust MCP authorization, and modular monolith agentic governance. Production guidelines detail edge deployment topologies, liquid neural networks, and multi-agent coordination frameworks.
 
 ## Overview — Tech Radar Digest — July 2026
+
+**Answer-first:** Architectural analysis of Overview — Tech Radar Digest — July 2026, detailing production deployment guidelines, system performance impacts, and fault-tolerant operational strategies under 2026 engineering standards.
 
 This monthly digest consolidates 6 daily Tech Radar briefings published throughout July 2026. The edition explores cutting-edge developments in autonomous AI agent swarms, WebAssembly on edge infrastructure, Model Context Protocol (MCP) authorization models, and agentic governance.
 
@@ -186,7 +189,9 @@ Currently, WasmEdge excels in CPU inference environments. CUDA/GPU ecosystem int
 
 ## Tech Radar 14/07: Zero-Trust AI Swarms & MCP
 
-Welcome to this week's **Tech Radar**. In our previous issue, we discussed [Cloud-Native AI Architecture](/radar/radar-2026-07-10/). Once we have a robust infrastructure (Envoy, K8s Inference), the next problem immediately arises: How do we control this AI Swarm? Do not let AI Agents roam free in production. Today, we dive deep into **Zero-Trust Security for Multi-Agent Swarms**.
+**Answer-first:** Architectural analysis of /07: Zero-Trust AI Swarms & MCP, detailing production deployment guidelines, system performance impacts, and fault-tolerant operational strategies under 2026 engineering standards.
+
+Building on [Cloud-Native AI Architecture](/radar/2026-07/radar-2026-07-10/), controlling autonomous multi-agent systems requires enforcing strict operational governance. **Zero-Trust Security for Multi-Agent Swarms** prevents unconstrained agent execution in production.
 
 ### 1. Tech News Radar: Agentic Vulnerabilities and the Rise of Non-Human Identity
 
@@ -247,13 +252,15 @@ No. MCP focuses on the connection protocol and OAuth 2.1 authentication. You are
 
 ## Tech Radar 17/07: WasmEdge for Edge AI Models
 
+**Answer-first:** Architectural analysis of /07: WasmEdge for Edge AI Models, detailing production deployment guidelines, system performance impacts, and fault-tolerant operational strategies under 2026 engineering standards.
+
 The rise of **Small Language Models (SLMs)** such as Llama-3 (8B) and Phi-3 is pushing the AI processing trend to the Edge. However, inherited from distributed architectures in [Agentic System Architecture](/series/agentic-system-architecture/), the toughest challenge in Platform Engineering lies not in the Model itself, but in the **Runtime**. Running AI using Docker containers at the Edge is exposing too many weaknesses in memory and speed.
 
 ### 1. The Problem with Docker Containers at the Edge
 
 **Answer-first:** Edge AI runtimes must be compared using the model, accelerator, image, device, isolation needs, and cold-start SLO. Containers and WebAssembly have different operational trade-offs; neither is universally lighter or safer for every workload.
 
-When deployed on resource-constrained devices like NVIDIA Jetson Orin or small Edge servers, Docker hits physical barriers (as we previously warned in [Tech Radar 14/07: Zero-Trust Security](/radar/radar-2026-07-14/)):
+When deployed on resource-constrained devices like NVIDIA Jetson Orin or small Edge servers, Docker hits physical barriers (as we previously warned in **Tech Radar 14/07: Zero-Trust Security**):
 * **Python & CUDA Overhead:** Docker is inherently just an OS virtualization layer. To run AI, you still have to package the entire Python, PyTorch, and CUDA environments. Consequently, the runtime "eats up" over 1 GB of RAM even before loading model weights.
 * **Sluggish Cold-starts:** Initializing namespaces, cgroups, mounting OverlayFS, and loading massive Python libraries takes 5 to 15 seconds. In Event-driven AI systems demanding immediate responses, this latency is unacceptable.
 * **Memory Sharing (Multi-tenancy) Issues:** Although Linux supports `mmap`, sharing memory pages between independent Docker containers requires complex bind-mount configurations and breaks easily if the image is improperly packaged.
@@ -294,6 +301,8 @@ Deploying Multi-tenant workloads at the Edge always faces the risk of cross-tena
 
 ## Tech Radar 20/07: Governing Multi-Agent Systems at Scale with AWS Loom and AIOS
 
+**Answer-first:** Architectural analysis of /07: Governing Multi-Agent Systems at Scale with AWS Loom and AIOS, detailing production deployment guidelines, system performance impacts, and fault-tolerant operational strategies under 2026 engineering standards.
+
 The explosion of multi-agent systems has led to a critical enterprise bottleneck: governance. When hundreds of autonomous agents interact, delegate tasks, and consume infrastructure resources, the traditional "API Gateway" approach fails to provide adequate oversight. The July 20, 2026 news cycle highlights a definitive industry pivot from building standalone agents to designing robust Agentic Operating Systems and Governance Layers.
 
 ### 1. AWS Loom: The Open-Source Governance Control Plane
@@ -330,6 +339,8 @@ As models become increasingly commoditized, the differentiator for engineering t
 
 ## Tech Radar 21/07: Modular Monolith Optimizing AI Agents
 
+**Answer-first:** Architectural analysis of /07: Modular Monolith Optimizing AI Agents, detailing production deployment guidelines, system performance impacts, and fault-tolerant operational strategies under 2026 engineering standards.
+
 When the Multi-Agent trend exploded, the natural reflex of most Backend Engineers was: "Let's package each Agent as a Microservice!". This mindset makes perfect sense for traditional Web/App systems. However, for the AI Agents ecosystem, [inherited from the Agentic System Architecture problem](/series/agentic-system-architecture/), this is the genesis of a performance disaster.
 
 ### 1. The "Translation Tax" Bottleneck of Microservices
@@ -354,7 +365,7 @@ An AI Agent needs to maintain Memory, conversational history (Context), and plan
 **Answer-first:** Instead of running the Model Context Protocol (MCP) as independent services via REST/SSE, embedding the MCP Server to run locally (`stdio`) inside the Modular Monolith completely eliminates redundant Gateways and Service Meshes.
 
 The Model Context Protocol (MCP) is the "USB-C port" for connecting external Tools to the LLM. However:
-* **The Problem with Standalone MCP:** If each team develops its own MCP Server, you will quickly have dozens of Microservices requiring internal mTLS, Authentication, and Rate-limiting management (as warned in [Tech Radar 14/07: Zero-Trust Security](/radar/radar-2026-07-14/)).
+* **The Problem with Standalone MCP:** If each team develops its own MCP Server, you will quickly have dozens of Microservices requiring internal mTLS, Authentication, and Rate-limiting management (as warned in **Tech Radar 14/07: Zero-Trust Security**).
 * **Local `stdio` Integration:** In a Modular Monolith architecture, the host process (AI Agent) will directly invoke MCP Tools via the OS's standard `stdin/stdout` streams. JSON-RPC communication happens at blistering speeds over the local pipe system, ensuring absolute Encapsulation without exposing an API over a network port.
 
 ---

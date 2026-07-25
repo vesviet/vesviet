@@ -29,12 +29,8 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/composable-banking-architecture/"
 ---
 
-**Answer-first:** Composable banking can separate independently changing capabilities, but it does not remove ledger, regulatory, or operational constraints. Use a staged migration, explicit data ownership, idempotent payment APIs, and a ledger design reviewed for the applicable jurisdiction and institution.
-
-### What You'll Learn That AI Won't Tell You
 - Strangler fig patterns for core banking systems that prevent data corruption.
 - How to bridge legacy COBOL records into dynamic JSON streams using Go middleware.
-
 
 Legacy core banking systems were designed in a different era. Temenos T24, Finacle, and Flexcube shared one defining assumption: the bank's entire product catalogue — deposits, lending, payments, trade finance — would live inside a single, tightly coupled application and a single, shared database. That assumption held when banking moved at human speed. It breaks completely when product releases need to go from months to days, when a single fraud engine update must not risk a payments outage, and when engineers on a COBOL codebase are retiring faster than they can be replaced.
 
@@ -44,7 +40,7 @@ For the foundational Saga mechanics in Go, see [Dapr Workflow Saga Orchestration
 
 ---
 
-## What Is Composable Banking Architecture?
+## Composable Banking System Topology
 
 Composable banking is a software design approach that replaces a single-unit core banking system with a network of independent, swappable Packaged Business Capabilities (PBCs). Based on MACH principles (Microservices, API-first, Cloud-native, Headless), it lets a financial institution replace the payment engine without touching the lending module, or launch an embedded finance product line without rebuilding the core ledger.
 

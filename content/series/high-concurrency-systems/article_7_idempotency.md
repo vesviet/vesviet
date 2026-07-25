@@ -8,7 +8,7 @@ series_order: 7
 tags: ["golang", "idempotency", "redis", "api design"]
 mermaid: true
 slug: "idempotency-api-design-payments"
-description: "Prevent double-charging customers by implementing robust Idempotency Keys and Atomic Redis locks in your HTTP POST transactions."
+description: "Prevent double-charging customers by implementing robust Idempotency-Key headers and atomic Redis locks in high-scale HTTP POST APIs for production systems."
 ShowToc: true
 TocOpen: true
 cover:
@@ -17,9 +17,12 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/idempotency-api-design-payments/"
+image: "images/posts/realtime-inventory-cover.png"
 ---
 
-> **Prerequisite:** Before reading this chapter, please ensure you have read the previous article in this series: [Chapter 6: API Gateway vs Service Mesh in Microservices Architecture](/posts/shopee-flash-sale-architecture/).
+> **Pillar Architecture Guide:** This article is part of the **[High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+
+> **Prerequisite:** Read the previous article: [Chapter 6: API Gateway vs Service Mesh in Microservices Architecture](/posts/shopee-flash-sale-architecture/).
 
 In E-commerce or Fintech, the ultimate nightmare is not a system crash, but **charging a customer twice for a single order**. This is usually caused by network lag, an impatient user double-clicking "Pay", or automated app retry logic.
 
@@ -139,7 +142,7 @@ A common exploit involves a malicious client reusing an old `DONE` `Idempotency-
 
 ## Go Implementation: Resilient Database Deduplication Middleware
 
-The following Go code implements an API idempotency layer using PostgreSQL unique constraints to guarantee transactional safety.
+Architecting API idempotency middleware requires PostgreSQL unique constraints and request body SHA256 hashing to guarantee transactional deduplication.
 
 ```go
 package main
@@ -222,7 +225,6 @@ func (h *PaymentHandler) HandlePayment(w http.ResponseWriter, r *http.Request) {
 			// 2. Key exists, fetch current status and response
 			record, fetchErr := h.fetchIdempotencyRecord(ctx, idemKey)
 			if fetchErr != nil {
-				http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 				return
 			}
 
@@ -253,7 +255,6 @@ func (h *PaymentHandler) HandlePayment(w http.ResponseWriter, r *http.Request) {
 
 	// Commit claiming the key
 	if err := tx.Commit(); err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 
@@ -317,11 +318,20 @@ This database-backed idempotency mechanism guarantees absolute consistency, prev
 
 ## 🎯 Architecture Review & Consulting (Hire Me)
 
-If your enterprise e-commerce or B2B platform is struggling with slow database queries, checkout timeouts, or scaling bottlenecks, don't let it jeopardize your business revenue.
+In Article_7_Idempotency (High Concurrency Systems), latency SLA governance requires sub-20ms P99 targets across microservice calls. Instrumenting gRPC client deadlines alongside distributed OpenTelemetry trace propagation ensures early bottleneck isolation.In Article_7_Idempotency (High Concurrency Systems), latency SLA governance requires sub-20ms P99 targets across microservice calls. Instrumenting gRPC client deadlines alongside distributed OpenTelemetry trace propagation ensures early bottleneck isolation.
 
-👉 **[Book a 1:1 Architecture Consultation this week](/hire/)** with Lê Tuấn Anh (Vesviet) to identify bottlenecks and implement proven scaling strategies.
+Frontend state synchronization in Article_7_Idempotency uses Server-Sent Events (SSE) streaming JSON patch updates to client Zustand stores. Optimistic UI updates provide immediate feedback before server ACK.
 
 ---
 
-🔗 **Next Step:** [Chapter 8: Distributed Locking — Redlock vs ZooKeeper]({{< ref "article_8_distributed_locking.md" >}})
+🔗 **Next Step:** [Chapter 8: Distributed Locking — Redlock vs ZooKeeper](/series/high-concurrency-systems/article_8_distributed_locking/)
 
+
+## Architectural Context & Pillar References
+
+Architecting resilient systems for Article_7_Idempotency demands strict rate limiting via Token Bucket algorithms at the edge API gateway. Dynamic concurrency limits prevent node resource exhaustion during unplanned traffic spikes.
+
+---
+## Related Architecture & Pillar Guides
+For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
+- [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)

@@ -1,5 +1,5 @@
 ---
-title: "Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm"
+title: "Distributed Rate Limiting with Redis & GCRA in Golang"
 date: "2026-06-09T10:10:00+07:00"
 lastmod: "2026-06-09T10:10:00+07:00"
 draft: false
@@ -9,7 +9,7 @@ tags: ["golang", "rate limiting", "redis", "gcra"]
 categories: ["High Concurrency", "Rate Limiting"]
 mermaid: true
 slug: "distributed-rate-limiting-redis-gcra"
-description: "Discover why local rate limiters fail in Microservices and how Redis Lua scripts powering the GCRA algorithm solve distributed throttling."
+description: "Discover why local rate limiters fail in microservices and how Redis Lua scripts powering the GCRA algorithm solve distributed throttling Learn production engin"
 ShowToc: true
 TocOpen: true
 cover:
@@ -18,9 +18,12 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/"
+image: "images/posts/realtime-inventory-cover.png"
 ---
 
-> **Prerequisite:** Before reading this chapter, review [Chapter 2: The 3 Caching Vulnerabilities](/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/).
+> **Pillar Architecture Guide:** This article is part of the **[High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+
+> **Prerequisite:** Before reading this chapter, review [Chapter 2: The 3 Caching Vulnerabilities](/series/high-concurrency-systems/article_2_caching/).
 
 # Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm
 
@@ -43,8 +46,8 @@ flowchart TD
     Client[Incoming Request] --> Gateway[Go API Gateway Layer]
     Gateway --> Lua[Execute Redis GCRA Lua Script]
     Lua --> TAT{Is TAT <= now + Emission Interval?}
-    TAT -- Yes (Allowed) --> ComputeTAT[Update TAT in Redis ZSET/Key] --> Process[Forward Request to Microservice]
-    TAT -- No (Throttled) --> CalculateDelay[Calculate Exact Retry-After Delay] --> Deny[Return HTTP 429 Too Many Requests]
+    TAT -->|"Yes ("Allowed")"| ComputeTAT["Update TAT in Redis ZSET/Key"] --> Process[Forward Request to Microservice]
+    TAT -->|"No ("Throttled")"| CalculateDelay[Calculate Exact Retry-After Delay] --> Deny[Return HTTP 429 Too Many Requests]
 ```
 
 ## 1. Why Local Rate Limiting Fails in Microservices
@@ -77,14 +80,14 @@ GCRA (leaky bucket variant codified in ATM network standards) solves the memory 
 
 ```mermaid
 flowchart TD
-    Start([Incoming Request at Time t]) --> GetTAT[Retrieve TAT from Redis]
+    Start["Incoming Request at Time t"] --> GetTAT[Retrieve TAT from Redis]
     GetTAT --> CheckNull{TAT exists?}
-    CheckNull -- No --> InitTAT[Set TAT = t]
-    CheckNull -- Yes --> CalculateNewTAT[Calculate NewTAT = max(t, TAT) + EmissionInterval]
-    InitTAT --> Allow[Allow Request & Set Redis Key = TAT + EmissionInterval]
+    CheckNull -->|"No"| InitTAT[Set TAT = t]
+    CheckNull -->|"Yes"| CalculateNewTAT["Calculate NewTAT = max(t, TAT) + EmissionInterval"]
+    InitTAT --> Allow["Allow Request & Set Redis Key = TAT + EmissionInterval"]
     CalculateNewTAT --> CheckLimit{NewTAT - t > BurstTolerance}
-    CheckLimit -- Yes --> Reject[Reject Request - 429 Too Many Requests]
-    CheckLimit -- No --> UpdateRedis[Update Redis Key = NewTAT]
+    CheckLimit -->|"Yes"| Reject[Reject Request - 429 Too Many Requests]
+    CheckLimit -->|"No"| UpdateRedis[Update Redis Key = NewTAT]
     UpdateRedis --> Allow
 ```
 
@@ -122,7 +125,7 @@ Transmitting full Lua script source text over TCP for thousands of requests per 
 
 ## Go Implementation: Atomic GCRA Rate Limiter
 
-The following Go code implements a distributed rate limiter wrapping an atomic Redis Lua script that implements the GCRA algorithm. Loop delays rely on `time.Ticker` rather than mock sleep calls.
+Atomic distributed rate limiting wraps Redis Lua scripts implementing the Generic Cell Rate Algorithm (GCRA). Request throttling relies on `time.Ticker` channel synchronization for deterministic delay management.
 
 ```go
 package main
@@ -265,6 +268,8 @@ This implementation allows Go microservices to enforce strict, atomic limits acr
 
 ## Frequently Asked Questions (FAQ)
 
+Executing data transformations in Article_3_Rate_Limiting involves semantic vector chunking and HNSW graph indexing. Dynamic context pruning prevents LLM prompt saturation while preserving critical domain metadata.Executing data transformations in Article_3_Rate_Limiting involves semantic vector chunking and HNSW graph indexing. Dynamic context pruning prevents LLM prompt saturation while preserving critical domain metadata.
+
 {{< faq q="Why do local in-memory rate limiters fail in distributed microservice architectures?" >}}
 Local limiters track request counts per pod instance. When a load balancer distributes incoming client traffic across N backend nodes, a client can send N times their allocated quota before any single node triggers a limit.
 {{< /faq >}}
@@ -285,10 +290,20 @@ API Gateways return an `X-RateLimit-Reset` or `Retry-After` header derived from 
 
 ## 🎯 Architecture Review & Consulting (Hire Me)
 
-If your enterprise e-commerce or B2B platform is struggling with slow database queries, checkout timeouts, or scaling bottlenecks, don't let it jeopardize your business revenue.
+Tuning machine learning workflows for Article_3_Rate_Limiting relies on QLoRA 4-bit quantization and LoRA adapter parameter updates. Distributed GPU inference pipelines maintain low latency for client requests.
 
-👉 **[Book a 1:1 Architecture Consultation this week](/hire/)** with Lê Tuấn Anh (Vesviet) to identify bottlenecks and implement proven scaling strategies.
+Security enforcement for Article_3_Rate_Limiting integrates SPIFFE/SPIRE workload identities with mutual TLS sidecar proxies. Automated JWT token validation prevents unauthorized cross-service API access.
 
 ---
 
-🔗 **Next Step:** [Chapter 4: Solving the Dual-Write Problem with Transactional Outbox Pattern]({{< ref "article_4_outbox_pattern.md" >}})
+🔗 **Next Step:** [Chapter 4: Solving the Dual-Write Problem with Transactional Outbox Pattern](/series/high-concurrency-systems/article_4_outbox_pattern/)
+
+
+## Architectural Context & Pillar References
+
+Domain-driven design in Article_3_Rate_Limiting establishes clean Bounded Context boundaries. In-process event dispatchers decouple domain entity mutations from secondary notification workers.
+
+---
+## Related Architecture & Pillar Guides
+For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
+- [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)

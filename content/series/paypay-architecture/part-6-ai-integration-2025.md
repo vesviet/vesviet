@@ -1,5 +1,5 @@
 ---
-title: "Part 6 — PayPay Goes AI-Native: LLM Hub & RAG (2025)"
+title: "PayPay AI Platform: Machine Learning & Fraud Engine"
 date: "2026-05-05T21:00:00+07:00"
 lastmod: "2026-05-05T21:00:00+07:00"
 draft: false
@@ -16,6 +16,7 @@ canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-6-ai-integrat
 ShowToc: true
 TocOpen: true
 mermaid: true
+image: "images/posts/paypay-scaling-cover.png"
 ---
 
 > **Executive Summary & Quick Answer**: Integrating AI capabilities into payment platforms involves embedding real-time LLM RAG hubs for customer support and ML fraud detection models into transaction evaluation pipelines, enforcing sub-20ms model inference SLAs.
@@ -24,12 +25,14 @@ mermaid: true
 
 ## Why a Payment Platform at Scale Needs an AI Architecture
 
+The diagram below illustrates how payment transactions are evaluated by the real-time machine learning fraud detection pipeline and scored against vector database feature sets:
+
 ```mermaid
 graph LR
     Tx[Transaction Flow] --> ML[Fraud Detection ML Model]
-    ML -->|Feature Vector| Qdrant[(Vector DB)]
+    ML -->|Feature Vector| Qdrant[("Vector DB")]
     ML -->|Risk Score < 0.05| Pass[Approve Payment]
-    ML -->|Risk Score > 0.80| Block[Block & Trigger Verification]
+    ML -->|"Risk Score > 0.80"| Block["Block & Trigger Verification"]
 ```
 
 In 2024, PayPay crossed 70 million registered users. At that scale, the support surface becomes enormous: millions of users with questions about payments, delinquent accounts, transaction disputes, and product features. The fraud detection surface grows with every new user and transaction pattern. The internal engineering organization — hundreds of engineers across multiple business units — generates thousands of decisions per week that benefit from knowledge retrieval and synthesis.
@@ -236,6 +239,8 @@ BenchmarkFraudModelInference-16    20000000    52.6 ns/op    0 B/op    0 allocs/
 By decoupling real-time fraud scoring from synchronous payment settlement, PayPay achieves low transaction rejection rates without adding latency to customer checkouts.
 
 ## Frequently Asked Questions (FAQ)
+
+Frequently asked questions regarding machine learning fraud detection inference, RAG support architectures, and LLM data privacy.
 
 {{< faq "How are machine learning models deployed for real-time fraud detection?" >}}
 Models are exported to ONNX or TensorRT formats and deployed on specialized GPU inference microservices accessible via ultra-low-latency gRPC APIs.

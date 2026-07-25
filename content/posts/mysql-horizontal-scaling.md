@@ -27,16 +27,12 @@ cover:
   relative: false
 ---
 
-**Answer-first:** Vitess vs GORM Sharding for MySQL write scaling: VReplication zero-downtime vs. application-level sharding — ErrMissingShardingKey tradeoffs in Go.
-
-### What You'll Learn That AI Won't Tell You
 - Designing database sharding keys that prevent cross-shard joins.
 - Configuring proxy routing layers like Vitess to scale MySQL queries horizontally.
 
-
 When your application reaches millions of users, a single database instance will inevitably become the biggest bottleneck in your entire architecture. To solve this, **MySQL database scaling** becomes mandatory. You must [Scale DB for Microservices](/posts/banking-microservices-architecture/) using Horizontal Scaling techniques.
 
-This article delves into the differences between scaling methods and compares the two most popular Sharding architectures today: Middleware-level Sharding (Vitess) and Application-level Sharding in Go (GORM Sharding plugin).
+This article examines the differences between scaling methods and compares the two most popular Sharding architectures today: Middleware-level Sharding (Vitess) and Application-level Sharding in Go (GORM Sharding plugin).
 
 ---
 
@@ -104,7 +100,6 @@ SAVE MYSQL QUERY RULES TO DISK;
 ```
 
 This configuration ensures that your Go database connection string can target a single ProxySQL port (typically 6033), letting the proxy layer handle load balancing, failovers, and read/write splitting automatically.
-
 
 ### 2. Write-Scaling (Sharding)
 If your system (like Core Banking or a [Surge Pricing Engine](/posts/surge-pricing-optimization-architecture/)) has a massive volume of Writes that overwhelms the Primary node, Replication becomes useless. You must resort to **Sharding**.

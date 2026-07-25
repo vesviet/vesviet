@@ -1,5 +1,5 @@
 ---
-title: "Practical QLoRA Fine-tuning: Axolotl, Unsloth & PEFT Optimization"
+title: "QLoRA Fine-Tuning Guide: Axolotl & PEFT Model Tuning in Go"
 slug: "part-3-lora-qlora-tuning"
 date: "2026-06-20T12:00:00+07:00"
 lastmod: "2026-07-23T10:40:00+07:00"
@@ -8,48 +8,45 @@ author: "Lê Tuấn Anh"
 tags: ["QLoRA", "Fine-Tuning", "Unsloth", "Axolotl", "Python", "PyTorch", "PEFT"]
 categories: ["Engineering", "AI/ML"]
 cover:
-  image: "images/posts/slm-playbook-cover.png"
+  image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
   alt: "Practical QLoRA Fine tuning Axolotl and Unsloth training pipeline"
   relative: false
 mermaid: true
 canonicalURL: "https://tanhdev.com/series/slm-playbook/part-3-lora-qlora-tuning/"
-description: "Exhaustive technical summary and production engineering guide for Practical QLoRA Fine-tuning: Axolotl, Unsloth & PEFT Optimization."
+description: "Exhaustive technical summary and production engineering guide for Practical QLoRA Fine-tuning using Axolotl, Unsloth, and PEFT methods for production AI models."
 ShowToc: true
 TocOpen: true
+image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
 ---
+
+> **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 # Practical QLoRA Fine-tuning: Axolotl, Unsloth & PEFT Optimization
 
-> **Executive Summary & Quick Answer**: Full parameter fine-tuning of large language models is computationally cost-prohibitive for most engineering teams. **Quantized Low-Rank Adaptation (QLoRA)** compresses base model weights into 4-bit NormalFloat precision while training low-rank adapter matrices ($r=16, \alpha=32$), reducing VRAM requirements by 80% to allow fine-tuning 8B SLMs on a single consumer GPU.
->
-> **Key Takeaways**:
-> - **80% VRAM Reduction**: 4-bit NF4 quantization permits fine-tuning an 8B model on a single 16GB GPU.
-> - **2x Faster Training with Unsloth**: Optimized triton kernels accelerate QLoRA training speed by 2x to 5x compared to standard HuggingFace PEFT.
-> - **Zero Base Model Degradation**: Low-rank adapter weights freeze base model parameters, preserving general instruction capabilities while mastering domain tasks.
-
----
 
 Full fine-tuning of an 8B parameter model in FP16 precision requires updating 8 Billion weights simultaneously. This demands over 80GB of GPU VRAM for model weights and optimizer states, forcing teams to rent expensive multi-GPU A100/H100 clusters.
 
-**QLoRA (Quantized Low-Rank Adaptation)** revolutionizes model customization by quantizing the base model to 4-bit precision while training a tiny set of low-rank adapter matrices (representing less than 1% of total parameters).
+**QLoRA (Quantized Low-Rank Adaptation)** substantially transforms model customization by quantizing the base model to 4-bit precision while training a tiny set of low-rank adapter matrices (representing less than 1% of total parameters).
 
 ---
 
 ## QLoRA Fine-Tuning Pipeline Architecture
 
+Quantized Low-Rank Adaptation (QLoRA) quantizes frozen 8B base model weights into 4-bit NormalFloat (NF4) memory blocks while training $r=16$ low-rank adapters via Unsloth Triton kernels.
+
 ```mermaid
 graph TD
-    BaseModel[Base SLM: Llama-3.1-8B] --> NF4Quant[1. 4-bit NormalFloat (NF4) Quantization]
+    BaseModel["Base SLM: Llama-3.1-8B"] --> NF4Quant["1. 4-bit NormalFloat (NF4) Quantization"]
     
     subgraph Memory-Optimized QLoRA Pipeline
         NF4Quant --> FreezeBase[2. Freeze 4-bit Base Model Weights]
-        FreezeBase --> AttachAdapters[3. Attach Low-Rank Adapter Matrices: r=16, alpha=32]
-        Dataset[Domain Training Dataset] --> UnslothKernel[4. Unsloth / Triton Fast Training Kernel]
+        FreezeBase --> AttachAdapters["3. Attach Low-Rank Adapter Matrices: r=16, alpha=32"]
+        Dataset[Domain Training Dataset] --> UnslothKernel["4. Unsloth / Triton Fast Training Kernel"]
         AttachAdapters --> UnslothKernel
     end
 
     UnslothKernel --> GPUTraining[5. Single 16GB GPU PyTorch Training Run]
-    GPUTraining --> AdapterWeights[Export Fine-Tuned LoRA Adapter (.safetensors)]
+    GPUTraining --> AdapterWeights["Export Fine-Tuned LoRA Adapter (.safetensors)"]
 ```
 
 ---
@@ -82,11 +79,9 @@ By restricting gradient updates to matrices $A$ and $B$, memory footprint drops 
 
 ## Production Python Unsloth / PEFT QLoRA Training Pipeline
 
-Below is a production-grade Python QLoRA fine-tuning script utilizing `Unsloth`, `peft`, `bitsandbytes`, and HuggingFace `SFTTrainer` that configures 4-bit quantization, LoRA target modules, and training metrics logging:
-
 ```python
 import torch
-from typing import Dict, Any
+from typing import Dict, Any, Tuple
 from pydantic import BaseModel
 
 class FineTuningConfig(BaseModel):
@@ -164,7 +159,6 @@ class QLoRATrainerPipeline:
 
 if __name__ == "__main__":
     import time
-    from typing import Tuple
 
     cfg = FineTuningConfig()
     pipeline = QLoRATrainerPipeline(cfg)
@@ -177,48 +171,9 @@ if __name__ == "__main__":
 
 ---
 
-## Frequently Asked Questions (FAQ)
-
-### Q1: What is the recommended LoRA rank ($r$) and alpha ($\alpha$) for domain fine-tuning?
-For most domain adaptation tasks (e.g., teaching an 8B model to format JSON, summarize medical notes, or generate SQL), setting LoRA rank $r=16$ and alpha $\alpha=32$ provides the optimal balance between learning capacity and memory efficiency. Setting $r > 64$ increases VRAM usage without yielding measurable accuracy improvements.
-
-### Q2: Why does Unsloth achieve 2x to 5x faster QLoRA training speed than standard HuggingFace PEFT?
-Standard HuggingFace PEFT relies on Python-level PyTorch matrix multiplication loops. Unsloth rewrites backpropagation and matrix multiplication steps directly in OpenAI Triton C-level GPU kernels, eliminating Python overhead and optimizing memory bandwidth utilization.
-
-### Q3: Can fine-tuned LoRA adapters be merged back into the base model weights for serving?
-Yes. After training, the low-rank adapter matrices $A$ and $B$ can be merged directly back into the base model weight tensor $W$ using $W_{\text{new}} = W_{\text{base}} + (\frac{\alpha}{r})(A \cdot B)$. This outputs a single un-quantized or quantized GGUF/vLLM model file ready for production inference serving.
-
----
-
-## Technical Deep-Dive: Small Language Models & Hybrid Inference Invariants
-
-Deploying specialized Small Language Models (SLMs) alongside frontier commercial LLMs requires strict routing logic and quantization precision.
-
-### Inference Performance Metrics & Quantization Benchmarks
-
-- **TTFT (Time to First Token)**: Sub-18ms TTFT using vLLM vNDArray PagedAttention engine on NVIDIA L4 GPUs.
-- **Inference Throughput**: Over 280 tokens per second for quantized 4-bit AWQ/GGUF 8B parameter models.
-- **Memory VRAM Footprint**: 5.8GB VRAM consumption for Llama-3-8B 4-bit QLoRA adapters running on edge server instances.
-- **Cost Reduction Ratio**: 82% reduction in cloud API token expense compared to routing all traffic to frontier commercial LLMs.
-
-### Model Fine-Tuning Invariants & Weight Protections
-
-1. **Deterministic Low-Rank Projection**: LoRA adapter matrices ($W_A \times W_B$) maintain rank $r=16$ and scaling factor $\alpha=32$ across fine-tuning checkpoints.
-2. **Hermetic GPU Sandbox Isolation**: On-premise fine-tuning worker loops run inside isolated CUDA container runtimes with zero external egress access.
-3. **Automated Loss Threshold Gate**: Fine-tuned checkpoint weights are rejected if validation perplexity exceeds baseline thresholds on holdout test benchmarks.
-
-### Operational Checklist for Software Engineering Teams
-
-Before shipping candidate models and orchestrator agents to production cluster environments, engineering leads must confirm the following operational milestones:
-
-1. **Automated CI Integration**: Run full static analysis, content validation, and unit tests on every pull request.
-2. **Telemetry Dashboard Setup**: Configure OpenTelemetry metrics dashboards capturing P95/P99 latencies, token costs, and tool error rates.
-3. **Disaster Recovery Drills**: Test automated failover protocols when primary LLM endpoints or vector databases become unreachable.
-4. **Security Audit Clearance**: Perform automated security scanning for SQL injection risk, prompt injection vulnerabilities, and secret leakage.
-
----
-
 ## Internal Series Navigation
+
+Explore adjacent chapters in the SLM Playbook covering data engineering, inference optimization, and production evaluation gates.
 
 - [Part 1 — Hybrid AI Architecture & Self-Hosted vLLM](/posts/slm-fine-tune-vs-prompt-engineering/)
 - [Part 8 — Inference Optimization: vLLM & PagedAttention](/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/)

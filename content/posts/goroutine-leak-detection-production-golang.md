@@ -27,12 +27,8 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/goroutine-leak-detection-production-golang/"
 ---
 
-**Answer-first:** Goroutine leaks block indefinitely and hold GC roots, leading to slow, silent memory exhaustion and pod restarts. Pinpoint leaks by comparing pprof profile snapshots (specifically `goroutineleak` in Go 1.26), write deterministic tests with Go 1.24’s `synctest`, and set automated telemetry alerts on active goroutine counts.
-
-### What You'll Learn That AI Won't Tell You
 - Writing automated test cases that detect goroutine leaks before deploying.
 - Analyzing production runtime stack traces to locate orphaned channels.
-
 
 > 
 

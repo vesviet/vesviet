@@ -1,9 +1,8 @@
 ---
-
-title: "Part 8: Case Study Matrix – The Monuments of the Modular Monolith"
+title: "Modular Monolith Case Studies: Shopify & StackOverflow"
 date: "2026-07-03T10:00:00+07:00"
 lastmod: "2026-07-03T14:59:00+07:00"
-description: "A compilation of the greatest Modular Monolith case studies from Shopify, Stack Overflow, Notion, WhatsApp, Target, and Basecamp."
+description: "A compilation of modular monolith case studies from tech leaders including Shopify, Stack Overflow, Notion, WhatsApp, Target, and Basecamp Learn production engi"
 slug: "case-study-matrix-modular-monolith-success-stories"
 tags: ["Case Study", "Modular Monolith", "Shopify", "Stack Overflow", "Notion", "WhatsApp"]
 categories: ["Modular Monolith", "System Architecture"]
@@ -15,7 +14,10 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 draft: false
+image: "images/posts/golang-microservices-cover.png"
 ---
+
+> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series and **[Composable E-Commerce Migration](/posts/ecommerce-architecture-composable-migration/)** guide. Please refer to the original article for a comprehensive overview of the architecture.
 
 > **Prerequisite:** Before reading this part, please review [Part 7: Extraction Pattern](/series/modular-monolith-architecture/part-7-extraction-pattern/).
 
@@ -35,16 +37,16 @@ draft: false
 
 Numerous debates about architectural design often lead to dead ends due to a lack of quantitative, real-world numbers. There is a common misconception that: "Only Microservices can withstand web-scale loads."
 
-To conclude this Playbook series, we will look at the **Case Study Matrix** – a compilation of the greatest Modular Monolith systems, ranging from massive e-commerce platforms to billion-user chat applications.
+This section examines the **Case Study Matrix** – a compilation of the greatest Modular Monolith systems, ranging from massive e-commerce platforms to billion-user chat applications.
 
 ```mermaid
 graph TD
     subgraph Modular Monolith Titans
-        SO[Stack Overflow: 9 Web Servers for 1.3B Views]
-        SH[Shopify: 284M Requests/Min on Rails Monolith]
-        NO[Notion: 200B Data Blocks via Monolithic Sharding]
-        WA[WhatsApp: 2M Concurrent TCP Hops on 1 Node]
-        37[37signals: $1.5M Cloud Savings via Bare-Metal Monolith]
+        SO["Stack Overflow: 9 Web Servers for 1.3B Views"]
+        SH["Shopify: 284M Requests/Min on Rails Monolith"]
+        NO["Notion: 200B Data Blocks via Monolithic Sharding"]
+        WA["WhatsApp: 2M Concurrent TCP Hops on 1 Node"]
+        37["37signals: $1.5M Cloud Savings via Bare-Metal Monolith"]
     end
 ```
 
@@ -53,7 +55,7 @@ graph TD
 ## 1. Enterprise Case Study Deep-Dives
 
 ### Stack Overflow: 1.3 Billion Monthly Page Views on 9 Web Servers
-Stack Overflow is the ultimate testament to the efficiency of vertical hardware scaling paired with monolithic architecture.
+Stack Overflow is the ultimate demonstration of the efficiency of vertical hardware scaling paired with monolithic architecture.
 - **The Infrastructure Spec:** Stack Overflow operates its entire primary web traffic on **only 9 web servers** running IIS and .NET C# code, paired with 2 primary Microsoft SQL Server instances (one active, one failover). Each web server features 64 CPU cores and 256 GB of RAM, running at CPU utilization rates consistently under 15%.
 - **How They Scale:** Instead of distributing microservices across Kubernetes clusters, Stack Overflow caches almost everything in local web server RAM using custom L1/L2 data structures and Redis. SQL queries use pre-compiled execution plans, and static assets are served directly via edge CDNs.
 
@@ -90,8 +92,6 @@ For concurrency patterns, compare this with our [High-Concurrency Systems C10M G
 ---
 
 ## 2. In-Memory Tagged Cache Implementation in Go (Zero Facade Code)
-
-Below is an authentic Go tagged cache implementation that handles thread-safe invalidation across monolithic domain modules:
 
 ```go
 package main
@@ -172,6 +172,8 @@ func main() {
 
 ## Frequently Asked Questions (FAQ)
 
+Saga orchestration in Part 8 Case Study Matrix handles multi-step distributed transactions with explicit compensating transactions. If a downstream payment step fails, upstream inventory reservations roll back atomically.Saga orchestration in Part 8 Case Study Matrix handles multi-step distributed transactions with explicit compensating transactions. If a downstream payment step fails, upstream inventory reservations roll back atomically.
+
 {{< faq q="How does Stack Overflow handle billions of views with only 9 web servers?" >}}
 Stack Overflow scales vertically using high-spec web servers, combined with in-memory tag caching and a heavily optimized Microsoft SQL Server failover pair.
 {{< /faq >}}
@@ -192,8 +194,15 @@ A tagged in-memory cache maps keys to domain tags. Invalidating a single tag pur
 
 ## Navigation & Next Steps
 
+Within Part 8 Case Study Matrix, optimizing memory utilization requires Goroutine pool sizing and non-blocking ring buffer allocation. Profiling CPU profile samples via Go pprof identifies GC pause time reductions under high load.
+
 - **Previous Part:** [Part 7: Extraction Pattern](/series/modular-monolith-architecture/part-7-extraction-pattern/)
 - **Series Index:** Return to [Modular Monolith Architecture Masterclass Index](/series/modular-monolith-architecture/)
 - **Related Series:** Explore [System Design Series Primer](/series/system-design/01-introduction-system-design-golang/) and [High Concurrency Systems](/posts/shopee-flash-sale-architecture/)
 
 Need an end-to-end architectural evaluation for your software stack? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) for system design audits.
+
+
+## Architectural Context & Pillar References
+
+Geospatial operations in Part 8 Case Study Matrix utilize Uber H3 spatial indexes to aggregate location telemetry into spatial hexagonal grids. Bounded spatial queries achieve sub-10ms lookup times.

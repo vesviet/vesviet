@@ -30,18 +30,14 @@ canonicalURL: "https://tanhdev.com/posts/graphhopper-distance-matrix-production-
 
 # GraphHopper Distance Matrix: Production Self-Hosting & API Guide
 
-**Answer-first:** The GraphHopper Distance Matrix API computes all-to-all route distances and travel times for vehicle routing. Self-hosting via Docker on a single VPS replaces Google Maps and CARTO distance matrices, eliminating $500+/day in API fees while keeping batch calculations under 50ms.
-
-### What You'll Learn That AI Won't Tell You
 - Setting up GraphHopper self-hosting routing engine with custom profile caches.
 - Configuring RAM allocations to hold entire continental OpenStreetMap networks.
 
-
-## What Is the GraphHopper Distance Matrix?
+## GraphHopper Distance Matrix Execution Engine
 
 ## How to Call the GraphHopper Matrix API (/matrix Endpoint)
 
-This guide covers everything you need to run GraphHopper distance matrix in production: Docker setup, the `/matrix` API, Custom Models for truck/motorcycle routing, H3-based Redis caching, and an honest comparison with OSRM, Valhalla, and Google Maps (for a deeper dive into routing engine selection, see our [OSRM vs GraphHopper Architecture Comparison]({{< ref "osrm-vs-graphhopper-architecture-comparison.md" >}})).
+Running GraphHopper distance matrix in production requires configuring Docker deployment, the `/matrix` API endpoint, Custom Models for vehicle-specific routing (truck/motorcycle), H3-based Redis caching, and evaluating performance tradeoffs against OSRM, Valhalla, and Google Maps (for a deeper dive into routing engine selection, see our [OSRM vs GraphHopper Architecture Comparison]({{< ref "osrm-vs-graphhopper-architecture-comparison.md" >}})).
 
 ---
 
@@ -233,7 +229,6 @@ class GraphHopperClient:
             durations=data["times"],
             distances=data["distances"],
         )
-
 
 # --- Usage example ---
 

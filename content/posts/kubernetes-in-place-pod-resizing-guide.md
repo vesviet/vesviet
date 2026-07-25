@@ -28,12 +28,8 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/kubernetes-in-place-pod-resizing-guide/"
 ---
 
-**Answer-first:** In-place pod resizing can update CPU and memory resources without recreating a pod when the Kubernetes version, runtime, workload policy, and managed provider support the requested resize. Confirm the feature status and provider documentation for the exact cluster version before relying on it for stateful workloads.
-
-### What You'll Learn That AI Won't Tell You
 - In-place pod resizing edge cases where CPU updates cause container restarts.
 - Configuring kubelet parameters to support resizing without disrupting running JVM tasks.
-
 
 Before this feature, changing a container's resource allocation required deleting and recreating the pod. For a stateful database holding connections, an AI model with 30GB of weights loaded in memory, or a long-running batch job — that restart is catastrophic. In-Place Pod Resize finally decouples resource management from pod lifecycle.
 
@@ -42,7 +38,6 @@ This post is the production guide: what it is, how to use it, and where the shar
 ---
 
 ## 1. What Is In-Place Pod Resizing?
-
 
 
 ### Before vs. After
@@ -63,7 +58,6 @@ This post is the production guide: what it is, how to use it, and where the shar
 ---
 
 ## 2. Requirements
-
 
 
 ### Infrastructure Checklist
@@ -87,7 +81,6 @@ This post is the production guide: what it is, how to use it, and where the shar
 ---
 
 ## 3. How It Works: Resize Policy and Pod Status
-
 
 
 ### Resize Flow
@@ -270,7 +263,6 @@ If the ETL job hits a memory-intensive phase, an external controller (or VPA) ca
 ## 5. VPA Integration: Automatic In-Place Resizing
 
 
-
 ### VPA and In-Place Resize Compatibility
 
 ```yaml
@@ -369,7 +361,6 @@ spec:
 ---
 
 ## 6. Limitations and Gotchas
-
 
 
 ### Hard Limitations

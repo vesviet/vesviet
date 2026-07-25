@@ -1,5 +1,5 @@
 ---
-title: "Ride-Hailing Dispatch Engine: Bipartite Matching, Uber DISCO & Grab DispatchGym (2026)"
+title: "Ride-Hailing Dispatch Engine: Uber DISCO Architecture"
 slug: "part-4-dispatch-matching-engine"
 date: "2026-05-06T20:00:00+07:00"
 lastmod: "2026-06-26T21:00:00+07:00"
@@ -14,6 +14,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/part-4-dispatch-matching-engine/"
 ShowToc: true
 TocOpen: true
+image: "images/posts/real-time-ride-hailing-cover.png"
 ---
 
 **Answer-first:** Dispatch and matching engines resolve spatial routing in real-time by querying active drivers within localized H3 rings. By running parallel bipartite matching algorithms, the engine pairs riders and drivers to minimize pickup ETA and passenger wait times.
@@ -49,8 +50,6 @@ Uber refers to this problem as **Global Optimization** — finding an assignment
 ---
 
 ## Bipartite Graph Matching: The Mathematical Foundation (Lyft)
-
-Before diving into the systems, it helps to understand the **mathematical model** that all ride-hailing matching engines share at their core.
 
 Lyft formalizes dispatch as a **bipartite graph matching problem**:
 
@@ -96,9 +95,12 @@ Result: System-wide optimal — not just locally optimal for each individual req
 
 ## Uber DISCO: The Core Dispatch Algorithm Architecture
 
+
 **DISCO** (Dispatch Optimization) is Uber's matching system, responsible for pairing millions of ride requests with drivers every day.
 
 ### Overall Architecture
+
+The schematic below outlines the core dispatch pipeline, mapping how demand ride requests and supply driver status updates are processed by the DISCO engine for candidate filtering, ETA calculation, batch optimization, and RAMEN push notification:
 
 ```
 ┌─────────────────┐     ┌─────────────────┐
@@ -385,7 +387,6 @@ DispatchGym Architecture:
 └────────────────┬──────────────────┘
                  │  State observation
                  ▼
-┌───────────────────────────────────┐
 │         RL Agent (Policy)          │
 │  - Gymnasium API compatible        │
 │  - Trainable with any RL algo      │
@@ -393,7 +394,6 @@ DispatchGym Architecture:
 └────────────────┬──────────────────┘
                  │  Action (dispatch decision)
                  ▼
-┌───────────────────────────────────┐
 │        Reward Computation          │
 │  - Total completed trips           │
 │  - Average pickup ETA              │
@@ -439,7 +439,6 @@ Grab solved this with the **Fulfilment Platform** — a unified three-layer arch
 └───────────────┬────────────────────────┘
                 │ Demand signals
                 ▼
-┌────────────────────────────────────────┐
 │         Fulfilment Platform            │
 │  - Unified dispatch engine             │
 │  - Supply shaping & driver incentives  │
@@ -447,7 +446,6 @@ Grab solved this with the **Fulfilment Platform** — a unified three-layer arch
 └───────────────┬────────────────────────┘
                 │ Infrastructure
                 ▼
-┌────────────────────────────────────────┐
 │         Technology Infrastructure      │
 │  - DynamoDB (OLTP: live orders)        │
 │  - MySQL partitioned (OLAP: analytics) │
@@ -470,6 +468,7 @@ The critical innovation: a driver finishing a GrabFood delivery can be **immedia
 | **Total Wait Time** | Total time a rider waits (rider + driver travel time) | Minimize |
 | **Driver Idle Mileage** | Distance driven without a passenger | Minimize |
 | **Marketplace Liquidity** | Balance of supply/demand across zones | Maintain |
+
 ## FAQ
 
 {{< faq q="What matching algorithm minimizes total passenger pickup wait times?" >}}
@@ -479,6 +478,7 @@ Matching engines resolve driver assignment as a Maximum Weight Bipartite Matchin
 ---
 
 ## FAQ: Dispatch Algorithms
+
 
 **What is a dispatch algorithm?**
 A dispatch algorithm is a system used by ride-hailing platforms like Uber and Grab to optimally match riders with available drivers. It goes beyond finding the closest driver by using batched matching and global optimization to minimize the total wait time (ETA) for all users.
@@ -498,3 +498,4 @@ S2 (Google) uses square cells and is excellent for precise geofencing and hierar
 > *Next, we will look into Surge Pricing — the dynamic pricing system based on real-time supply and demand ratios. Continue reading [Part 5 — Surge Pricing: Dynamic Pricing Based on Real-time Supply and Demand](/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/).*
 
 {{< author-cta >}}
+

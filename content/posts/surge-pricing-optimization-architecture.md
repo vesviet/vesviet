@@ -25,16 +25,12 @@ mermaid: true
 > - Redis atomic pipelines aggregate supply/demand ratios over 2-minute sliding windows.
 > - Exponential smoothing dampens sudden pricing spikes, ensuring smooth fare transitions for riders.
 
-**Answer-first:** Surge pricing calculates dynamic multipliers by matching supply and demand in real-time. The architecture indexes locations via H3 hexagons, streams GPS updates through Kafka, and aggregates demand density using Apache Flink to calculate price updates dynamically.
-
-### What You'll Learn That AI Won't Tell You
 - Implementing spatial aggregators in Apache Flink for surge multipliers.
 - Preventing pricing oscillations using smooth sliding-window time series models.
 
-
 Why is it that every time it rains, ride-hailing fares double, or even triple? It's not a human operator manually adjusting the prices behind a desk. Rather, it's the result of an incredibly sophisticated Stream Processing engine running in the background executing the **surge pricing algorithm**.
 
-In this article, we will "dissect" the architecture of a real-time dynamic pricing system. We will explore everything from dividing geographical space using Uber's H3 library to the data processing architecture built on Kafka and Flink. Furthermore, we will examine why [Scaling your Database to handle Surge traffic](/posts/mysql-horizontal-scaling/) is a strict prerequisite to prevent your system from crashing during massive traffic spikes.
+This analysis we will "dissect" the architecture of a real-time dynamic pricing system. We will explore everything from dividing geographical space using Uber's H3 library to the data processing architecture built on Kafka and Flink. Furthermore, we will examine why [Scaling your Database to handle Surge traffic](/posts/mysql-horizontal-scaling/) is a strict prerequisite to prevent your system from crashing during massive traffic spikes.
 
 ---
 
@@ -198,7 +194,6 @@ func main() {
 ```
 
 
-
 ## Architectural Trade-offs & Production Considerations (2026 Baseline)
 
 In high-concurrency production deployments, balancing throughput, resilience, and operational cost requires strict engineering discipline. When evaluating modern patterns against legacy monolithic or non-vector architectures, several critical failure modes and trade-offs emerge:
@@ -207,14 +202,12 @@ In high-concurrency production deployments, balancing throughput, resilience, an
 2. **Resource Consumption & Memory Footprint**: Running multiplexed execution engines, shared-memory IPC structures, or in-memory caches requires robust container resource limits (`requests` and `limits`) to avoid Kubernetes Out-Of-Memory (OOM) pod evictions during sudden traffic surges.
 3. **Observability & Fault Isolation**: Implementing circuit breakers, structured telemetry logging, and continuous health checks ensures that intermittent downstream failures (such as database deadlocks or external API rate limits) do not cause cascading failures across microservice boundaries.
 
-
 ## Related Pillar Articles & Further Reading
 
 - [Real-Time Ride-Hailing Architecture Blueprint](/posts/real-time-ride-hailing-architecture/)
 - [Geospatial Indexing in Ride-Hailing Systems](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/)
 - [GraphHopper Distance Matrix Production Guide](/posts/graphhopper-distance-matrix-production-guide/)
 - [Argo CD Updates 2026 Guide](/posts/argo-cd-updates-2026/)
-
 
 ## Frequently Asked Questions (FAQ)
 

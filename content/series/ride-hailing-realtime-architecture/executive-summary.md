@@ -1,6 +1,5 @@
 ---
-
-title: "Executive Summary — The Big Picture of Real-time Ride-Hailing Systems"
+title: "Real-Time Ride-Hailing Architecture: Grab & Uber | Go Produc"
 date: "2026-05-06T20:00:00+07:00"
 lastmod: "2026-05-06T20:00:00+07:00"
 draft: false
@@ -17,6 +16,7 @@ canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/exe
 mermaid: true
 ShowToc: true
 TocOpen: true
+image: "images/posts/real-time-ride-hailing-cover.png"
 ---
 
 # Executive Summary — The Big Picture of Real-time Ride-Hailing Systems
@@ -50,28 +50,30 @@ This is not a typical CRUD application. It is one of the most complex distribute
 
 ## Overall Architecture
 
+The flowchart below illustrates the end-to-end real-time architecture, tracing telemetry ingestion from driver mobile apps to Kafka event streaming, Redis H3 spatial indexing, DISCO matching, and gRPC push delivery:
+
 ```mermaid
 flowchart TD
     subgraph Mobile Apps
-        Rider[Rider App: Book & View]
-        Driver[Driver App: Telemetry Pings]
+        Rider["Rider App: Book & View"]
+        Driver["Driver App: Telemetry Pings"]
     end
 
     subgraph API & Ingestion Tier
-        Gateway[API Gateway & L4 Load Balancer]
+        Gateway["API Gateway & L4 Load Balancer"]
         LocationSvc[Supply Location Ingestion Service]
         DemandSvc[Demand Ride Request Service]
     end
 
     subgraph Streaming & Storage Backbone
-        Kafka[(Apache Kafka Event Log)]
-        Redis[(Redis GEO + H3 Spatial Index)]
+        Kafka[("Apache Kafka Event Log")]
+        Redis[("Redis GEO + H3 Spatial Index")]
     end
 
     subgraph Engine Processing Tier
         DISCO[DISCO Matching Engine]
         Surge[Dynamic Surge Pricing Engine]
-        Ramen[RAMEN Push Service: gRPC / QUIC]
+        Ramen["RAMEN Push Service: gRPC / QUIC"]
     end
 
     Driver -->|gRPC/MQTT 4s Pings| Gateway
@@ -140,8 +142,6 @@ If a driver's cellular network switches between 4G and 5G or briefly drops in a 
 ---
 
 ## High-Concurrency GPS Ingestion Worker Pool in Go (Zero Facade Code)
-
-Below is an authentic Go benchmark demonstrating parallel GPS telemetry ingestion into atomic Redis spatial sets:
 
 ```go
 package main
@@ -231,6 +231,8 @@ func main() {
 
 ## Frequently Asked Questions (FAQ)
 
+Real-time ride-hailing platforms require high-throughput driver location ingestion, H3 spatial indexing, and deterministic surge pricing engines.
+
 {{< faq q="What is the primary architectural bottleneck in ride-hailing GPS ingestion?" >}}
 The primary bottleneck is write-heavy write IOPS. Traditional disk-bound databases cannot handle millions of active driver updates per second. Ride-hailing architectures route GPS pings to high-throughput message brokers like Apache Kafka and store active coordinates in Redis RAM.
 {{< /faq >}}
@@ -255,3 +257,4 @@ gRPC over QUIC/HTTP3 eliminates TCP head-of-line blocking on unstable mobile cel
 - **Related Masterclasses:** Compare with [Geospatial & Routing Architecture](/series/routing-geospatial-architecture/executive-summary/) and [Modular Monolith Case Studies](/series/modular-monolith-architecture/part-8-case-study-matrix/)
 
 Need an architectural assessment for your real-time tracking or logistics platform? [Get in touch](/hire/) or [hire our real-time systems team](/hire/) for a consultation.
+

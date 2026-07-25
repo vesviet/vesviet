@@ -18,12 +18,8 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/aws-eks-vs-ecs-comparison/"
 ---
 
-**Answer-first:** Choose AWS EKS for Kubernetes-native GitOps (ArgoCD, Dapr) and cloud-portable architectures. Choose ECS for zero-cost control planes, rapid deployment, and pure AWS-native simplicity. Go stateless containers on Graviton Spot to cut compute costs by 35%, and use Network Load Balancers for high-performance internal gRPC routing (for cross-region strategies, see [Multi-Region API Routing]({{< ref "multi-region-geo-distributed-api-routing.md" >}})).
-
-### What You'll Learn That AI Won't Tell You
 - The hidden costs of EKS VPC CNI ipam and how ECS handles routing faster.
 - How to optimize IP allocation policies to prevent subnet exhaustion in large-scale Kubernetes environments.
-
 
 > 
 
@@ -32,7 +28,6 @@ I've run both in production. At Vigo Retail, I architected a 21-service Go micro
 ---
 
 ## 1. TL;DR — Quick Decision Table
-
 
 
 | Decision Factor | Choose ECS | Choose EKS |
@@ -52,7 +47,6 @@ I've run both in production. At Vigo Retail, I architected a 21-service Go micro
 ---
 
 ## 2. What Are ECS and EKS? Core Architecture
-
 
 
 ### 2.1 Amazon ECS — AWS-Native Container Orchestration
@@ -128,7 +122,6 @@ Every Kubernetes tool you've heard of works here: Helm, ArgoCD, Argo Rollouts, D
 ## 3. Real Cost Breakdown — No Bullshit Numbers
 
 
-
 ### 3.1 Control Plane Cost: ECS $0 vs EKS $73/month
 
 This is the only hard-dollar advantage ECS has over EKS at the control plane level:
@@ -191,7 +184,6 @@ These costs hit both ECS and EKS, but EKS can compound them:
 ## 4. Performance & Scalability
 
 
-
 ### 4.1 Startup & Scale-Out Speed
 
 This is where EKS (with Karpenter) beats ECS significantly for bursty workloads:
@@ -226,7 +218,6 @@ Both ECS (`awsvpc` mode) and EKS (VPC CNI) assign real VPC IP addresses directly
 ---
 
 ## 5. Use Cases — When to Choose ECS, When to Choose EKS
-
 
 
 ### 5.1 Startup (Speed & Simplicity) → ECS Fargate
@@ -332,8 +323,7 @@ Both clusters share the same VPC. They communicate via VPC peering or PrivateLin
 
 ---
 
-## 6. EKS Auto Mode (2026): Game Changer?
-
+## 6. EKS Auto Mode (2026): Architecture & Operational Impact
 
 
 ### What EKS Auto Mode Automates
@@ -357,7 +347,6 @@ If you're starting a new EKS cluster today, enable Auto Mode from day one. Don't
 ---
 
 ## 7. Operational Overhead & Team Requirements
-
 
 
 ### 7.1 ECS: Minimal Ops
@@ -418,7 +407,6 @@ This GitOps pattern is not available for ECS. ECS teams use CodeDeploy (blue/gre
 ## 8. Ecosystem & Tooling
 
 
-
 ### 8.1 ECS: AWS Native Tools
 
 | Tool | ECS Integration |
@@ -462,7 +450,6 @@ Argo Rollouts is the 2025 standard for EKS progressive delivery. It replaces `De
 ## 9. Security & IAM
 
 
-
 | Feature | ECS | EKS |
 |---------|-----|-----|
 | Workload identity mechanism | **Task IAM Role** | **EKS Pod Identity** (recommended) / IRSA (legacy) |
@@ -479,7 +466,6 @@ Argo Rollouts is the 2025 standard for EKS progressive delivery. It replaces `De
 ## 10. Vendor Lock-in & Portability
 
 
-
 | Portability dimension | ECS | EKS |
 |----------------------|-----|-----|
 | Move to GCP/Azure | ❌ Full rewrite | ✅ Port manifests to GKE/AKS |
@@ -493,7 +479,6 @@ Argo Rollouts is the 2025 standard for EKS progressive delivery. It replaces `De
 ---
 
 ## 11. Final Decision Framework
-
 
 
 ```mermaid
@@ -522,7 +507,6 @@ flowchart TD
 ---
 
 ## FAQ
-
 
 {{< faq q="Is EKS better than ECS?" >}}
 Neither is universally better. EKS gives you the Kubernetes ecosystem (ArgoCD, Dapr, KEDA, Helm) at the cost of higher operational complexity and $73/month per cluster. ECS gives you AWS-native simplicity with zero control plane cost. Choose based on your team's expertise and what ecosystem tools you actually need — not industry hype.

@@ -17,8 +17,9 @@ cover:
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/12-communication-protocols-microservices/"
+image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
-**Answer-first:** gRPC is optimized for internal microservices using binary Protobuf serialization over multiplexed HTTP/2 or HTTP/3 streams. REST uses standard JSON over HTTP/1.1 or HTTP/2, serving as the default for public APIs. GraphQL operates as an aggregator at the API gateway or Backend-for-Frontend (BFF) layer, allowing clients to query specific properties, but requires complexity limits and DataLoader batching to prevent server degradation.
+Microservices communication uses gRPC for high-throughput internal RPCs via binary Protobuf serialization, REST for public HTTP APIs, and GraphQL for API Gateway aggregation. Selecting the right protocol depends on payload size, streaming requirements, and client integration needs.
 
 > **Prerequisite:** This is Part 12 of the [System Design Masterclass](/series/system-design/). Previous parts built the reliability patterns — this part covers comparing communication protocols and data formats for microservice communication.
 
@@ -30,6 +31,7 @@ canonicalURL: "https://tanhdev.com/series/system-design/12-communication-protoco
 ---
 
 ## Overview of Communication Protocols
+
 
 **Key Concept:** gRPC, REST, and GraphQL operate on different layers of serialization, schema safety, and client-server coordination. gRPC enforces strict API contract schemas at compile time; REST provides loose, flexible JSON responses over standard HTTP semantics; GraphQL relies on schema-based graph models, allowing clients to fetch customized fields in a single query round trip.
 
@@ -53,7 +55,27 @@ canonicalURL: "https://tanhdev.com/series/system-design/12-communication-protoco
 ### Serialization Benchmarks in Go
 
 ```go
+package main
+
+import (
+	"testing"
+	"encoding/json"
+)
+
+type BenchmarkPayload struct {
+	ID        string `json:"id"`
+	Amount    int64  `json:"amount"`
+	Timestamp int64  `json:"timestamp"`
+}
+
 // Run using: go test -bench=. -benchmem
+func BenchmarkJSONSerialization(b *testing.B) {
+	payload := BenchmarkPayload{ID: "tx_12345", Amount: 5000, Timestamp: 1770000000}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_, _ = json.Marshal(payload)
+	}
+}
 ```
 
 | Format | Marshal Speed (ops/s) | Unmarshal Speed (ops/s) | Bytes Allocated / Op | Payload Size |
@@ -121,7 +143,7 @@ protoc --go_out=. --go_opt=paths=source_relative \
        ping/v1/ping.proto
 ```
 
-This generates `ping.pb.go` (message types) and `ping_grpc.pb.go` (service interface + client stub).
+This generates `ping.pb.go` (message types) and `ping_grpc.pb.go` (service interface + client bindings).
 
 #### Schema Evolution — Backward-Compatible Changes
 
@@ -152,11 +174,13 @@ message PingRequest {
 
 ### Transport Layer: HTTP/2 vs HTTP/3
 
+The diagram below contrasts HTTP/2 TCP multiplexing with HTTP/3 QUIC UDP stream isolation under packet loss conditions.
+
 ```mermaid
 graph LR
     subgraph h2["HTTP/2 — TCP (Head-of-Line Blocking)"]
         direction LR
-        C1([Client]) -->|"Single TCP Connection"| M1["Multiplexer"]
+        C1["Client"] -->|"Single TCP Connection"| M1["Multiplexer"]
         M1 --> S1a["Stream 1"]
         M1 --> S1b["Stream 2"]
         M1 --> S1c["Stream 3"]
@@ -165,7 +189,7 @@ graph LR
 
     subgraph h3["HTTP/3 — QUIC/UDP (Independent Streams)"]
         direction LR
-        C2([Client]) -->|"QUIC Streams (UDP)"| S2a["Stream 1"]
+        C2["Client"] -->|"QUIC Streams ('UDP')"| S2a["Stream 1"]
         C2 --> S2b["Stream 2"]
         C2 --> S2c["Stream 3"]
         LOSS2["❌ Packet Loss"] -.->|"Blocks ONLY Stream 2"| S2b
@@ -181,6 +205,8 @@ graph LR
 ---
 
 ## GraphQL Gateway & ConnectRPC in Go
+
+This practical GraphQL Gateway & ConnectRPC in Go section details production-grade Go code, middleware setup, and architectural patterns designed to ensure high performance and system resilience under peak load.
 
 **Vulnerability Pattern:** GraphQL aggregations are vulnerable to nested recursion DDoS attacks and N+1 resolver queries. Gateways must implement query complexity limits and DataLoader batch caching. ConnectRPC in Go provides a modern alternative to standard gRPC and gRPC-Web, running directly on standard `net/http` handlers without requiring external Envoy proxy configurations.
 
@@ -237,7 +263,7 @@ import (
 	"golang.org/x/net/http2/h2c"
 	"connectrpc.com/connect"
 	
-	// Pre-generated protoc-gen-go and protoc-gen-connect-go stubs
+	// Pre-generated protoc-gen-go and protoc-gen-connect-go generated interfaces
 	pingv1 "example/gen/ping/v1"
 	"example/gen/ping/v1/pingv1connect"
 )
@@ -365,22 +391,6 @@ func TestgRPCKeepaliveIdleTimeout(t *testing.T) {
 
 ---
 
-## FAQ
-
-
-{{< faq q="What is the N+1 query problem in GraphQL and how do you resolve it in Go?" >}}
-The N+1 problem occurs when a resolver queries child fields sequentially for each parent item (resulting in 1 query for parents, and N queries for children). Fix this in Go using the **DataLoader** pattern to batch child IDs into a single database fetch (`SELECT IN`) and cache the results for the request duration.
-{{< /faq >}}
-
-{{< faq q="What is gRPC connection pinning and how does L7 load balancing solve it?" >}}
-gRPC uses persistent HTTP/2 TCP connections. Standard L4 load balancers route the connection to a single backend container once, meaning all subsequent multiplexed requests over that connection stay pinned to that container. Deploy an L7 proxy (e.g. Envoy) to terminate the HTTP/2 connection and balance requests individually using latency-aware routing (e.g. peak EWMA).
-{{< /faq >}}
-
-{{< faq q="How does ConnectRPC differ from standard gRPC?" >}}
-ConnectRPC runs directly on standard Go `net/http` handlers and does not require HTTP/2 trailers or specialized reverse proxies like Envoy. It supports standard gRPC, base64-encoded gRPC-Web, and a simple POST JSON Connect protocol concurrently on a single handler port.
-
----
-{{< /faq >}}
 ## Series Summary — System Design Masterclass (Golang)
 
 You've completed all 12 parts of the masterclass. Here's the complete knowledge map you've built:
@@ -406,8 +416,8 @@ You've completed all 12 parts of the masterclass. Here's the complete knowledge 
 
 ## Navigation & Next Steps
 
-[← Previous Part]({{< ref "11-security-api-rate-limiting.md" >}})
+[← Previous Part](/series/system-design/11-security-api-rate-limiting/)
 
 🔗 **Series Hub:** Continue to [System Design Masterclass (Golang)](/series/system-design/)
 
-Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
+

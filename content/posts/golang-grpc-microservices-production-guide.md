@@ -26,12 +26,8 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/golang-grpc-microservices-production-guide/"
 ---
 
-**Answer-first:** Optimize inter-service communication in Go microservices using gRPC and Protobuf, delivering 3-10× smaller payloads and sub-millisecond latencies compared to REST. Secure communication channels with mutual TLS (mTLS), handle cross-cutting concerns using custom interceptor middleware, and implement native gRPC health checking for container readiness probes.
-
-### What You'll Learn That AI Won't Tell You
 - Optimizing Protobuf serialization overhead in Go-based gRPC microservices.
 - How to set up connection keep-alive parameters to prevent TCP connection drops during peak load.
-
 
 ## Why gRPC for Go Microservices?
 
@@ -730,7 +726,6 @@ The readiness probe determines if the pod is prepared to handle client traffic. 
 
 This three-tiered approach guarantees maximum application availability, isolates unhealthy pods quickly, and prevents cascading restarts during traffic spikes.
 
-
 ---
 
 ## Common gRPC Mistakes in Go Production
@@ -829,7 +824,7 @@ Use gRPC for internal microservice-to-microservice communication when you contro
 {{< /faq >}}
 
 {{< faq q="How do I add authentication to a gRPC server in Go?" >}}
-Use a Unary Interceptor for token validation. Extract the token from incoming metadata (`metadata.FromIncomingContext(ctx)`), validate it against your auth service or JWT library, and inject the parsed claims into the context. For service-to-service auth, use mTLS (mutual TLS) — both sides present client certificates, eliminating token overhead entirely. See the `AuthUnaryInterceptor` and mTLS setup in this guide.
+Use a Unary Interceptor for token validation. Extract the token from incoming metadata (`metadata.FromIncomingContext(ctx)`), validate it against your auth service or JWT library, and inject the parsed claims into the context. For service-to-service auth, use mTLS (mutual TLS) — both sides present client certificates, eliminating token overhead entirely. See the `AuthUnaryInterceptor` and mTLS setup below.
 {{< /faq >}}
 
 {{< faq q="How does gRPC streaming work in Go?" >}}
@@ -837,7 +832,7 @@ gRPC supports four communication patterns: (1) Unary — single request/response
 {{< /faq >}}
 
 {{< faq q="What causes 'transport is closing' errors in gRPC Go?" >}}
-The most common cause is a missing keepalive configuration. Load balancers and NAT firewalls silently close idle TCP connections after 4–10 minutes. Configure `keepalive.ServerParameters` and `keepalive.ClientParameters` as shown in this guide. The second common cause is calling `conn.Close()` before all RPCs complete — use `srv.GracefulStop()` on the server and `conn.Close()` only after all client calls return.
+The most common cause is a missing keepalive configuration. Load balancers and NAT firewalls silently close idle TCP connections after 4–10 minutes. Configure `keepalive.ServerParameters` and `keepalive.ClientParameters` as shown below. The second common cause is calling `conn.Close()` before all RPCs complete — use `srv.GracefulStop()` on the server and `conn.Close()` only after all client calls return.
 {{< /faq >}}
 
 {{< faq q="How do I test gRPC services in Go?" >}}
