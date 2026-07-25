@@ -1,7 +1,7 @@
 ---
 title: "Tech Radar — Daily Go, K8s & AI Systems Engineering"
 lastmod: "2026-07-22T21:00:00+07:00"
-description: "Daily curated tech intelligence covering Go, Kubernetes, AI/ML, cloud-native infrastructure, and microservices — analysis and engineering insights from Lê Tuấn Anh."
+description: "Daily curated tech intelligence covering Go, Kubernetes, AI/ML, cloud-native infrastructure, and microservices analysis from Lê Tuấn Anh."
 ShowToc: false
 author: "Lê Tuấn Anh"
 cover:

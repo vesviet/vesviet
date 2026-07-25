@@ -18,7 +18,7 @@ tags:
   - "TypeScript"
   - "Edge Computing"
   - "Shopping Cart"
-description: "Build a real-time e-commerce cart with Cloudflare D1 and Durable Objects. Complete TypeScript patterns for signed sessions, state synchronization, and checkout-safe inventory handling."
+description: "Build a real-time e-commerce cart with Cloudflare D1 and Durable Objects: TypeScript patterns for signed sessions, WebSockets, and state sync."
 ShowToc: true
 TocOpen: true
 cover:
@@ -28,7 +28,7 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/cloudflare-d1-durable-objects-realtime-cart/"
 ---
 
-# Cloudflare D1 + Durable Objects: Building a Real-Time Cart
+## Cloudflare D1 + Durable Objects: Building a Real-Time Cart
 
 - How to design cart locking mechanisms in Durable Objects without deadlocks.
 - Tuning sub-request allocations to stay within Cloudflare's free-tier runtime boundaries.
@@ -238,7 +238,7 @@ function parseCookies(cookieHeader: string): Record<string, string> {
 
 ## Durable Objects for Real-Time Sync: Handling Concurrent Cart Edits
 
-The Durable Object is the heart of the real-time cart (and a key component of [Zero-DevOps E-Commerce with Cloudflare]({{< ref "cloudflare-zero-devops-ecommerce.md" >}})). It maintains the cart state in memory and handles concurrent requests with JavaScript's single-threaded execution model — eliminating the need for locks.
+The Durable Object is the heart of the real-time cart (and a key component of [Zero-DevOps E-Commerce with Cloudflare](/posts/cloudflare-zero-devops-ecommerce/)). It maintains the cart state in memory and handles concurrent requests with JavaScript's single-threaded execution model — eliminating the need for locks.
 
 ### TypeScript Durable State Structure
 

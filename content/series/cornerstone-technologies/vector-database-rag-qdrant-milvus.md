@@ -1,13 +1,14 @@
 ---
-title: "Vector Database là gì? Kiến trúc HNSW & RAG Pipeline (Qdrant)"
-meta: "Vector Database là gì? Hướng dẫn chuyên sâu về kiến trúc Vector DB, giải phẫu thuật toán HNSW, so sánh Qdrant vs Milvus và cách tối ưu RAM cho RAG Pipeline."
+title: "Vector Database: Kiến trúc HNSW & RAG Pipeline (Qdrant)"
+description: "Vector Database là gì? Hướng dẫn chuyên sâu kiến trúc Vector DB, giải phẫu thuật toán HNSW, so sánh Qdrant vs Milvus và cách tối ưu RAM cho RAG Pipeline."
 slug: vector-database-rag-qdrant-milvus
 author: "Lê Tuấn Anh (Senior Go Engineer)"
+date: "2026-05-10"
 author_profile: "/about/"
 credentials: "Kinh nghiệm thiết kế hệ thống AI Engineering & High-Concurrency"
 ---
 
-# Vector Database là gì? Kiến trúc HNSW & RAG Pipeline (Qdrant)
+## Vector Database là gì? Kiến trúc HNSW & RAG Pipeline (Qdrant)
 
 Trong kỷ nguyên của AI sinh tạo (Generative AI) và Large Language Models (LLMs), khả năng hiểu và truy xuất dữ liệu phi cấu trúc một cách linh hoạt là yếu tố quyết định sự thành bại của các ứng dụng thông minh. Nếu bạn đang thiết kế một kiến trúc nền tảng cho [Cornerstone Technologies](/series/cornerstone-technologies/), bạn sẽ không thể bỏ qua vai trò của Vector Database. Khác với các hệ quản trị cơ sở dữ liệu truyền thống, Vector Database là thành phần hạt nhân trong một [AI Data Engineering Pipeline](/series/ai-data-engineering-pipeline/executive-summary/) thực thụ, đảm nhiệm trọng trách biến ngôn ngữ tự nhiên thành tri thức có thể tính toán được.
 

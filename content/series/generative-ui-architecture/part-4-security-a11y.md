@@ -6,7 +6,7 @@ date: 2026-03-21T09:00:00+07:00
 lastmod: "2026-07-23T10:40:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-4-security-a11y/"
+canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-frontend/"
 tags: ["Generative UI", "Security", "Prompt Injection", "Accessibility", "WCAG", "XSS"]
 categories: ["Engineering", "Frontend", "Security"]
 cover:
@@ -323,9 +323,9 @@ test('Prop sanitizer strips inline event handlers', () => {
 **Answer-first:** Advance to Part 5 to explore Human-in-the-Loop approval workflows and interactive user feedback loops.
 
 - [Executive Summary — The Shift to Generative UI](/series/generative-ui-architecture/executive-summary/)
-- [Part 1 — Beyond Chatbots: Dynamic Component Rendering](/series/generative-ui-architecture/part-1-beyond-chatbots/)
-- [Part 2 — State Management for Generative UI](/series/generative-ui-architecture/part-2-state-management/)
-- [Part 3 — Component Registry & JSON Schema Protocol](/series/generative-ui-architecture/part-3-component-registry/)
-- [Part 5 — Human-in-the-Loop Workflows](/series/generative-ui-architecture/part-5-human-in-the-loop/)
-- [Part 6 — E2E Testing & Edge Performance](/series/generative-ui-architecture/part-6-e2e-testing-edge/)
+- [Part 1 — Beyond Chatbots: Dynamic Component Rendering](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 2 — State Management for Generative UI](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 3 — Component Registry & JSON Schema Protocol](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 5 — Human-in-the-Loop Workflows](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 6 — E2E Testing & Edge Performance](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 7 — Reference Repo & Migration Playbook](/series/generative-ui-architecture/part-7-reference-repo-migration/)

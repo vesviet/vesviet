@@ -13,7 +13,7 @@ cover:
   relative: false
 mermaid: true
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-5-security/"
-description: "Exhaustive technical summary and production engineering guide for Part 5 — MCP Security Engineering, Isolation, and Defense-in-Depth for production systems."
+description: "Technical summary and production guide for Part 5 — MCP Security Engineering, Isolation, and Defense-in-Depth for production systems."
 ShowToc: true
 TocOpen: true
 image: "images/posts/mcp-engineering-in-production-cover.png"
@@ -21,7 +21,7 @@ image: "images/posts/mcp-engineering-in-production-cover.png"
 
 
 
-# Part 5 — MCP Security Engineering & Isolation: Defense-in-Depth
+## Part 5 — MCP Security Engineering & Isolation: Defense-in-Depth
 
 > **Executive Summary & Quick Answer**: Operating Model Context Protocol (MCP) servers exposes infrastructure to novel AI security risks, including Path Traversal in Resource URIs, Indirect Prompt Injections in Tool Descriptions, and Shadow Parameter Manipulation. Implementing container sandboxing, gVisor container isolation, and AST path sanitization protects enterprise backends against full system compromise.
 >

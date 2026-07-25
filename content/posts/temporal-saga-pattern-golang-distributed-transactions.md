@@ -1,5 +1,5 @@
 ---
-title: "Orchestrated Saga Pattern with Temporal: Building Durable Distributed Transactions in Go"
+title: "Orchestrated Saga Pattern with Temporal in Go (Guide)"
 slug: "temporal-saga-pattern-golang-distributed-transactions"
 author: "Lê Tuấn Anh"
 date: "2026-07-17T16:00:00+07:00"
@@ -14,7 +14,7 @@ tags:
   - "Saga Pattern"
   - "Distributed Transactions"
   - "Microservices"
-description: "A Golang developer's guide to implementing the Orchestrated Saga Pattern using the Temporal Go SDK. Build durable banking transactions with automated, idempotent compensation."
+description: "Golang developer's guide to implementing Orchestrated Sagas using Temporal Go SDK. Build durable distributed banking transactions with auto-compensation."
 ShowToc: true
 TocOpen: true
 canonicalURL: "https://tanhdev.com/posts/temporal-saga-pattern-golang-distributed-transactions/"
@@ -99,7 +99,8 @@ func InterbankTransferWorkflow(ctx workflow.Context, input TransferInput) (err e
 			
 			// 3. Iterate backwards through the compensation stack (LIFO)
 			for i := len(compensations) - 1; i >= 0; i-- {
-				compErr := compensations[i](disconnectedCtx)
+				compFn := compensations[i]
+				compErr := compFn(disconnectedCtx)
 				if compErr != nil {
 					logger.Error("Catastrophic compensation failure! Requires manual intervention", "error", compErr)
 				}

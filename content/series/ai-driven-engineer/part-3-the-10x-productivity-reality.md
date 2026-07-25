@@ -20,7 +20,7 @@ TocOpen: true
 
 
 
-# Part 3 — The 10x Productivity Reality: Debunking the Myth
+## Part 3 — The 10x Productivity Reality: Debunking the Myth
 
 Claims of unconditional "10x productivity gains" from AI code assistants collapse under empirical scrutiny when teams measure end-to-end SDLC output. While AI accelerates initial code generation by 3x, it creates downstream code review bottlenecks and subtle bug injections unless paired with automated context engineering and rigorous CI/CD evals.
 

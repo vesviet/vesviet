@@ -18,7 +18,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-# Part 1 — Agentic GraphRAG vs. Long-Context Window: Architectural Trade-offs
+## Part 1 — Agentic GraphRAG vs. Long-Context Window: Architectural Trade-offs
 
 > **Executive Summary & Quick Answer**: Relying exclusively on 1M+ token context windows introduces quadratic latency degradation ($O(N^2)$ attention overhead), severe token cost inflation, and needle-in-a-haystack recall loss. Agentic GraphRAG extracts focused entity subgraphs to achieve 65% faster Time-To-First-Token (TTFT) at less than 10% of the inference cost.
 >

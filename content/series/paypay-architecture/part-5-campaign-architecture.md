@@ -3,7 +3,7 @@ title: "PayPay Campaign Engine: Peak Sales & Wallet Rewards"
 date: "2026-05-05T21:00:00+07:00"
 lastmod: "2026-05-05T21:00:00+07:00"
 draft: false
-description: "How PayPay survives billion-yen campaign traffic spikes: KEDA Cron Scaler pre-warming, load shedding priorities, Kafka buffering, and TiDB elastic node scaling."
+description: "How PayPay survives billion-yen campaign traffic spikes: KEDA Cron Scaler pre-warming, priority load shedding, and Kafka buffering in production."
 weight: 6
 cover:
   image: "images/posts/paypay-scaling-cover.png"

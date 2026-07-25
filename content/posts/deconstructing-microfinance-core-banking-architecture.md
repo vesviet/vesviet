@@ -1,6 +1,7 @@
 ---
 title: "Microfinance Core Banking: Architecture & Engineering Guide"
 slug: "deconstructing-microfinance-core-banking-architecture"
+description: "Master microfinance core banking architecture with Golang & PostgreSQL. Design Joint Liability Group lending, double-entry ledgers, and EMI calculations."
 author: "Lê Tuấn Anh"
 date: "2026-05-28T16:00:00+07:00"
 lastmod: "2026-07-23T10:00:00+07:00"
@@ -16,7 +17,7 @@ cover:
 mermaid: true
 ---
 
-# Microfinance Core Banking: Architecture & Engineering Guide
+## Microfinance Core Banking: Architecture & Engineering Guide
 
 > **Executive Summary & Quick Answer**: Microfinance core banking requires specialized Joint Liability Group (JLG) group guarantee logic, compulsory savings enforcement, and declining-balance EMI calculation. By implementing ACID transactions in Go with strict double-entry ledger validation, institutions maintain financial audit compliance while scaling to millions of micro-loans.
 >

@@ -20,7 +20,7 @@ TocOpen: true
 
 
 
-# Part 2 — Man vs. Machine Boundaries in Engineering
+## Part 2 — Man vs. Machine Boundaries in Engineering
 
 Drawing precise operational boundaries between autonomous AI generation and mandatory human engineering oversight is essential for preventing production outages. High-risk distributed systems architecture, concurrency locks, and security compliance require human ownership, while repetitive syntax translation, test generation, and DTO mapping are delegated to AI agents.
 

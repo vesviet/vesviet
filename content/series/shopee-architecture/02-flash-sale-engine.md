@@ -18,7 +18,7 @@ canonicalURL: "https://tanhdev.com/series/shopee-architecture/02-flash-sale-engi
 image: "images/posts/shopee-flash-sale-cover.png"
 ---
 
-# Chapter 2: Flash Sale Engine - The Mystery Behind Redis and Hot Keys
+## Chapter 2: Flash Sale Engine - The Mystery Behind Redis and Hot Keys
 
 Shopee prevents overselling during high-concurrency flash sales by combining local memory caching, Redis inventory sharding, and atomic Lua script decrements to eliminate database row locks.
 

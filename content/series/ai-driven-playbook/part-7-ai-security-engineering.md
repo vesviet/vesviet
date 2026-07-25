@@ -20,7 +20,7 @@ TocOpen: true
 
 
 
-# Part 7 — AI Security Engineering: Zero-Trust Guardrails & Threat Modeling
+## Part 7 — AI Security Engineering: Zero-Trust Guardrails & Threat Modeling
 
 AI Security Engineering replaces traditional perimeter security with a Zero-Trust Defense-in-Depth architecture. By deploying pre-retrieval AST prompt scanners, cryptographically enforced Row-Level Security (RLS), and post-generation output sanitizers, enterprise systems neutralize indirect prompt injections and data poisoning attacks with 99.4% efficacy.
 

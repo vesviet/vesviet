@@ -3,7 +3,7 @@ title: "Real-Time Ride-Hailing Architecture: Executive Summary"
 date: "2026-05-06T20:00:00+07:00"
 lastmod: "2026-05-06T20:00:00+07:00"
 draft: false
-description: "An architectural overview of ride-hailing super apps — from GPS ingestion, spatial indexing, event streaming, matching, and pricing, to real-time communication."
+description: "Architectural overview of ride-hailing super apps — covering GPS ingestion, Uber H3 spatial indexing, Kafka event streaming, matching, and pricing."
 weight: 1
 tags: ["ride-hailing", "geospatial", "architecture", "system-design", "uber"]
 categories: ["Ride Hailing", "System Architecture"]
@@ -19,7 +19,7 @@ TocOpen: true
 image: "images/posts/real-time-ride-hailing-cover.png"
 ---
 
-# Executive Summary — The Big Picture of Real-time Ride-Hailing Systems
+## Executive Summary — The Big Picture of Real-time Ride-Hailing Systems
 
 > **Executive Summary & Quick Answer**: Real-time ride-hailing platforms combine MQTT/gRPC stream ingestion for driver GPS telemetry, Uber H3 hexagonal spatial indexing in Redis RAM, Apache Kafka event streaming, and DISCO global assignment matching engines to dispatch rides in under 2 seconds.
 >

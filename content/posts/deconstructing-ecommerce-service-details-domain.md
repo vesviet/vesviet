@@ -7,7 +7,7 @@ lastmod: "2026-04-12T08:00:00+07:00"
 draft: false
 series: ["magento-migration-vietnam"]
 tags: ["Domain-Driven Design", "Microservices", "System Design", "Architecture"]
-description: "How 21 Go microservices partition across 6 DDD domains: service ownership, database boundaries, and async event contracts for a production e-commerce platform."
+description: "How 21 Go microservices partition across 6 DDD domains: service ownership, database boundaries, and async event contracts for e-commerce platforms."
 categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true

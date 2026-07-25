@@ -20,7 +20,7 @@ TocOpen: true
 
 
 
-# Part 1 — The Death of 'Code Typists': When Syntax is No Longer an Advantage
+## Part 1 — The Death of 'Code Typists': When Syntax is No Longer an Advantage
 
 The economic value of manually typing programming syntax has collapsed to zero. Modern software engineering rewards developers who design resilient system architectures, curate context windows, and enforce strict domain boundaries, replacing manual boilerplate typing with automated AI code synthesis.
 

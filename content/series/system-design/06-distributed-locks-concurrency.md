@@ -5,7 +5,7 @@ date: "2026-06-18T11:30:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-description: "Redlock MIN_VALIDITY math analysis, clock drift impact, redsync implementation in Go, etcd lease locks, and Redis vs etcd comparison for production systems."
+description: "Redlock MIN_VALIDITY math analysis, clock drift impact, redsync implementation in Go, etcd lease locks, and Redis vs etcd comparison."
 tags: ["distributed lock", "redis", "redlock", "golang", "etcd", "concurrency", "system design"]
 categories: ["System Design", "Backend Engineering"]
 ShowToc: true
@@ -22,7 +22,7 @@ image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 
 > **Prerequisite:** Part 6 of the [System Design Masterclass](/series/system-design/). Read [Part 5: Kafka & Event-Driven](/series/system-design/05-async-message-queues-kafka-go/) first.
 
-# Distributed Locks in Go — Redlock Math, etcd & Split-Brain
+## Distributed Locks in Go — Redlock Math, etcd & Split-Brain
 
 > **Executive Summary & Quick Answer**: Distributed locks enforce mutual exclusion across independent microservice instances. Redis Redlock achieves high-performance locking across quorum master nodes with Lua-script atomicity, while etcd provides linearizable Raft-backed leases with fencing tokens to guarantee absolute safety under network partitions.
 >

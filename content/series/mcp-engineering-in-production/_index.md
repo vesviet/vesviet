@@ -17,7 +17,7 @@ image: "images/posts/mcp-engineering-in-production-cover.png"
 
 > **Answer-First Summary**: Operating Model Context Protocol (MCP) servers in enterprise production requires replacing local `stdio` streams with high-concurrency HTTP/SSE gateways, enforcing OAuth 2.1 identity controls, and deploying zero-trust AST parameter sanitization. This masterclass provides production Go SDK blueprints for building scalable MCP gateways, mitigating OWASP MCP top security risks, and maintaining real-time OpenTelemetry observability across multi-agent workflows.
 
-# MCP Engineering in Production: Go SDK to Enterprise
+## MCP Engineering in Production: Go SDK to Enterprise
 
 **What You'll Learn That AI Won't Tell You:**
 - **Transport Layer Overheads:** Real-world performance differences between stdio and HTTP/SSE transport modes.

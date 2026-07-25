@@ -15,7 +15,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/05-observability/"
 image: "images/posts/shopee-flash-sale-cover.png"
 ---
-# Chapter 5: Observability - Finding Bugs in the Microservices Jungle
+## Chapter 5: Observability - Finding Bugs in the Microservices Jungle
 
 **Debugging a 30-hop microservice failure requires three pillars of observability: Distributed Tracing via OpenTelemetry, columnar log storage via ClickHouse, and real-time stream processing via Apache Flink. Together, they isolate latency bottlenecks across tens of thousands of pods in seconds.**
 

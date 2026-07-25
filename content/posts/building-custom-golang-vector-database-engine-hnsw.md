@@ -1,11 +1,11 @@
 ---
-title: "Building a Custom Go-Native Vector Database Engine with HNSW, SIMD & Product Quantization"
+title: "Building a Custom Go Vector DB Engine with HNSW & SIMD"
 slug: "building-custom-golang-vector-database-engine-hnsw"
 author: "Lê Tuấn Anh"
 date: "2026-07-23T08:00:00+07:00"
 lastmod: "2026-07-23T08:00:00+07:00"
 draft: false
-description: "Deep-dive systems engineering guide to building a production-grade, Go-native vector search engine featuring HNSW graphs, AVX2 SIMD cosine distance, Product Quantization (PQ), and mmap persistent storage."
+description: "Systems engineering guide to building a production-grade, Go-native vector search engine featuring HNSW graphs, SIMD cosine distance, and lock-free concurrency."
 ShowToc: true
 TocOpen: true
 mermaid: true

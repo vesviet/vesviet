@@ -6,7 +6,7 @@ date: 2026-03-20T09:00:00+07:00
 lastmod: "2026-07-23T10:40:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-3-component-registry/"
+canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-frontend/"
 tags: ["Generative UI", "Component Registry", "MCP", "Model Context Protocol", "Architecture"]
 categories: ["Engineering", "Frontend"]
 cover:
@@ -320,9 +320,9 @@ export const ThemedGenUIWrapper: React.FC<{ tenantTheme: Record<string, string>;
 **Answer-first:** Advance to Part 4 to explore Generative UI security, prompt injection defenses, and WCAG accessibility guardrails.
 
 - [Executive Summary — The Shift to Generative UI](/series/generative-ui-architecture/executive-summary/)
-- [Part 1 — Beyond Chatbots: Dynamic Component Rendering](/series/generative-ui-architecture/part-1-beyond-chatbots/)
-- [Part 2 — State Management for Generative UI](/series/generative-ui-architecture/part-2-state-management/)
-- [Part 4 — Generative UI Security & Accessibility](/series/generative-ui-architecture/part-4-security-a11y/)
-- [Part 5 — Human-in-the-Loop Workflows](/series/generative-ui-architecture/part-5-human-in-the-loop/)
-- [Part 6 — E2E Testing & Edge Performance](/series/generative-ui-architecture/part-6-e2e-testing-edge/)
+- [Part 1 — Beyond Chatbots: Dynamic Component Rendering](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 2 — State Management for Generative UI](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 4 — Generative UI Security & Accessibility](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 5 — Human-in-the-Loop Workflows](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 6 — E2E Testing & Edge Performance](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 7 — Reference Repo & Migration Playbook](/series/generative-ui-architecture/part-7-reference-repo-migration/)

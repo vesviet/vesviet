@@ -25,7 +25,7 @@ image: "images/posts/graphhopper-cover.png"
 
 > **Prerequisite:** This is the executive summary and introductory overview of the **Routing & Geospatial Architecture** series. No prior reading is required to start here.
 
-# Executive Summary: Geospatial & Routing Architecture
+## Executive Summary: Geospatial & Routing Architecture
 
 > **Executive Summary & Quick Answer**: High-concurrency routing systems combine Java-based GraphHopper engines for Contraction Hierarchies pathfinding with a Golang API Gateway using Uber H3 hexagonal indexing and Redis semantic caching. This architecture resolves 100x100 distance matrices in under 30ms while reducing compute load by up to 95%.
 >

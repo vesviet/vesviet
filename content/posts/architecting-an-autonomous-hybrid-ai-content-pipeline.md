@@ -25,7 +25,7 @@ aliases:
   - /series/agentic-system-architecture/part-2-memory/
   - /series/agentic-system-architecture/part-3-tool-calling/
   - /series/agentic-system-architecture/part-4-agentops/
-description: "Replacing a $3.50/day cron job with a $0.05/day autonomous AI pipeline: Hybrid AI, Agentic System Topology, Memory Architecture, Wake-On-LAN orchestration, MinHash dedup, and a 4-layer quality gate."
+description: "Replace costly crons with an autonomous $0.05/day AI pipeline: Hybrid AI, Agentic System Topology, Memory Architecture, and automated quality gates."
 ShowToc: true
 TocOpen: true
 cover:

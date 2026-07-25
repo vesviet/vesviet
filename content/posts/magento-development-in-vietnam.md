@@ -9,7 +9,7 @@ lastmod: "2026-07-18T08:00:00+07:00"
 draft: false
 series: ["magento-migration-vietnam"]
 tags: ["Magento", "Vietnam", "E-commerce", "Project Management", "Architecture", "Scoping"]
-description: "How to scope a Magento enterprise project: effort layers for each project type, proposal red flags, cost matrices, hidden complexity, and delivery phase checklist."
+description: "How to scope a Magento enterprise project: effort estimation, proposal red flags, cost matrices, and managing hidden architectural complexity."
 categories: ["Engineering", "Business"]
 ShowToc: true
 TocOpen: true

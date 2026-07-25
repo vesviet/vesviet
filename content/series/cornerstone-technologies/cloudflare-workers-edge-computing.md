@@ -6,7 +6,7 @@ author: "Lê Tuấn Anh (Senior Go Engineer)"
 date: 2026-07-25
 ---
 
-# Cloudflare Workers & Edge Computing: Kiến trúc V8 Isolates
+## Cloudflare Workers & Edge Computing: Kiến trúc V8 Isolates
 
 Trong kiến trúc hệ thống hiện đại, việc tối ưu hóa độ trễ (latency) là một bài toán sống còn. Với tư cách là một Senior Go Engineer, tôi đã trải qua nhiều kiến trúc từ Monolithic, Microservices trên Kubernetes, cho đến Serverless với AWS Lambda. Tuy nhiên, khi cần xử lý hàng triệu request với độ trễ tính bằng mili-giây, Cloudflare Workers đã thay đổi hoàn toàn cục diện cuộc chơi nhờ kiến trúc V8 Isolates. Bài viết này nằm trong chuỗi [Cornerstone Technologies](/series/cornerstone-technologies/) nhằm đi sâu vào khía cạnh hạ tầng của Edge Computing. 
 
@@ -163,7 +163,7 @@ Một trong những ứng dụng mạnh mẽ nhất của Workers hiện nay là
 * Caching thông thường dựa trên đường dẫn URL chuẩn xác. Nếu URL lệch một ký tự, cache miss.
 * Semantic Caching đánh giá ý nghĩa (semantics) của câu hỏi. Nếu User A hỏi "Thời tiết Hà Nội hôm nay thế nào?" và User B hỏi "Hôm nay HN nắng hay mưa?", cả hai đều nhận cùng một câu trả lời từ Cache.
 
-Chúng ta có thể thực thi logic Semantic Caching này ngay trên Cloudflare Workers sử dụng Vector Database (như Cloudflare Vectorize) và [ứng dụng Semantic Edge Caching](/series/generative-ui-architecture/part-6-e2e-testing-edge/).
+Chúng ta có thể thực thi logic Semantic Caching này ngay trên Cloudflare Workers sử dụng Vector Database (như Cloudflare Vectorize) và [ứng dụng Semantic Edge Caching](/posts/generative-ui-with-mcp-ai-native-frontend/).
 
 1. Request tới Worker.
 2. Worker dùng AI model nhẹ (ví dụ: bge-micro) sinh ra Embeddings cho câu hỏi (Mất ~10-15ms).

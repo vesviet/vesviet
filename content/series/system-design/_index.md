@@ -1,5 +1,5 @@
 ---
-title: "System Design Masterclass: Scalable Systems in Go | Go Production Guide"
+title: "System Design Masterclass: Scalable Systems in Go Guide"
 slug: "system-design"
 description: "System Design with Go for Senior Engineers: Load Balancing, Caching, DB Sharding, Distributed Locks, Saga Pattern, and Observability — in production."
 author: "Lê Tuấn Anh"
@@ -19,7 +19,7 @@ canonicalURL: "https://tanhdev.com/series/system-design/"
 image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
 
-# System Design Masterclass (Golang)
+## System Design Masterclass (Golang)
 
 **Answer-first:** Optimal system design requires continuously balancing latency, throughput, consistency, and availability — each technical decision carries trade-offs. This series delivers deep architectural analysis, rigorous trade-off evaluation, and production-grade Go implementations for engineers building high-scale distributed systems.
 

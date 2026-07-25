@@ -20,7 +20,7 @@ TocOpen: true
 
 
 
-# Part 8 — Inference Optimization: vLLM, PagedAttention & Speculative Decoding
+## Part 8 — Inference Optimization: vLLM, PagedAttention & Speculative Decoding
 
 
 In enterprise AI infrastructure, model serving cost is dictated by GPU VRAM utilization and generation throughput (tokens per second per GPU). Running large language models (LLMs) under high concurrency presents a severe memory management challenge: **Managing the KV Cache**.

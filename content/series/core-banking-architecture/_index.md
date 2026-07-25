@@ -20,7 +20,7 @@ TocOpen: true
 
 **Answer-first:** This series presents a comprehensive technical blueprint for designing and building a mission-critical core banking system, addressing double-entry ledger schemas, distributed transaction consistency, CQRS event sourcing, ISO 20022 messaging, FAPI security, and real-time streaming fraud detection.
 
-# Modern Core Banking Architecture
+## Modern Core Banking Architecture
 
 This series is designed for **Software Architects, Senior Backend Engineers, and SDETs** who want to examine the technical foundations of production-grade financial systems. We won't stop at theory — each article includes real-world database schemas, specific latency benchmarks (in ms), executable code samples, and specialized testing strategies (QA/SDET) for every topic.
 

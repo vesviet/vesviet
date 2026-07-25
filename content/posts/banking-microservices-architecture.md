@@ -17,7 +17,7 @@ tags:
   - "Banking"
   - "Go"
 keywords: ["banking microservices architecture", "go event sourcing ledger", "saga pattern banking", "transactional outbox go kafka", "idempotent payment api design"]
-description: "Build a resilient banking microservices architecture in Go. Production blueprints for double-entry ledgers, Transactional Outbox, and Temporal Saga workflows."
+description: "Build a resilient banking microservices architecture in Go. Production blueprints for double-entry ledgers, Transactional Outbox, and Temporal Sagas."
 ShowToc: true
 TocOpen: true
 author: "Lê Tuấn Anh"
@@ -379,7 +379,7 @@ func PollOutbox(ctx context.Context, db *pgxpool.Pool, producer sarama.SyncProdu
 ## 5. Saga Orchestration: Temporal vs. Dapr for Distributed Transactions
 
 
-Two-Phase Commit (2PC) locks databases and crushes throughput. We must use Sagas to ensure Eventual Consistency (for a complete implementation guide, see [Orchestrated Saga Pattern with Temporal]({{< ref "temporal-saga-pattern-golang-distributed-transactions.md" >}})).
+Two-Phase Commit (2PC) locks databases and crushes throughput. We must use Sagas to ensure Eventual Consistency (for a complete implementation guide, see [Orchestrated Saga Pattern with Temporal](/posts/temporal-saga-pattern-golang-distributed-transactions/)).
 
 ### Orchestrator Comparison
 
@@ -394,7 +394,7 @@ Two-Phase Commit (2PC) locks databases and crushes throughput. We must use Sagas
 
 **Architecture Decision (2026 Core Banking Standard):**
 - **Temporal** is required if you need long-term PCI-DSS audit trails, history archival to S3, and process complex multi-day workflows (e.g. mortgage origination). Note that Temporal has a hard event history limit (51,200 events), necessitating the `Continue-As-New` strategy for infinite financial ledgers.
-- **Dapr Workflows** are optimal for short-lived Sagas (e.g. cross-service payment transfers) if you already use Dapr for sidecar routing and pub/sub (understanding [Dapr State Store Consistency Trade-offs]({{< ref "dapr-state-store-consistency-tradeoffs.md" >}}) is critical here).
+- **Dapr Workflows** are optimal for short-lived Sagas (e.g. cross-service payment transfers) if you already use Dapr for sidecar routing and pub/sub (understanding [Dapr State Store Consistency Trade-offs](/posts/dapr-state-store-consistency-tradeoffs/) is critical here).
 
 ### Go Temporal Workflow Code Structure
 

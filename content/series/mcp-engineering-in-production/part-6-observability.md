@@ -21,7 +21,7 @@ image: "images/posts/mcp-engineering-in-production-cover.png"
 
 
 
-# Part 6 — MCP Observability & Tracing: Auditing the Control Plane
+## Part 6 — MCP Observability & Tracing: Auditing the Control Plane
 
 > **Executive Summary & Quick Answer**: Operating Model Context Protocol (MCP) servers without telemetry logging creates compliance vulnerabilities (violating OWASP MCP08: Lack of Audit & Telemetry). Instrumenting MCP servers with vendor-agnostic **OpenTelemetry (OTel)** tracing captures JSON-RPC 2.0 tool execution durations, argument metadata, and error rates in real-time Prometheus dashboards.
 >

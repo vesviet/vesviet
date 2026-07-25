@@ -13,7 +13,7 @@ cover:
   relative: false
 mermaid: true
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-3-identity/"
-description: "Architect Zero-Trust MCP identity propagation using OAuth 2.1 PKCE for user token binding and SPIFFE/SPIRE mTLS X.509 certificates for workload authentication."
+description: "Architect Zero-Trust MCP identity propagation using OAuth 2.1 PKCE for user binding and SPIFFE/SPIRE mTLS X.509 certificates for workloads."
 ShowToc: true
 TocOpen: true
 image: "images/posts/mcp-engineering-in-production-cover.png"
@@ -21,7 +21,7 @@ image: "images/posts/mcp-engineering-in-production-cover.png"
 
 
 
-# Part 3 — Identity & Authentication: OAuth2, PKCE & mTLS
+## Part 3 — Identity & Authentication: OAuth2, PKCE & mTLS
 
 > **Executive Summary & Quick Answer**: Hardcoding static API keys in AI agent code creates severe security liabilities. Production MCP architectures enforce Zero Trust authentication using **OAuth 2.1 with PKCE** for user identity propagation and **SPIFFE/SPIRE mTLS X.509 certificates** for workload-to-workload identity verification across microservice meshes.
 >

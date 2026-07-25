@@ -18,7 +18,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-# Part 3 — Late Chunking & Contextual Retrieval: Solving Chunk Boundary Loss
+## Part 3 — Late Chunking & Contextual Retrieval: Solving Chunk Boundary Loss
 
 > **Executive Summary & Quick Answer**: Standard early chunking splits text prior to embedding, destroying long-range semantic dependencies and pronoun references across chunk boundaries. Late Chunking passes the full document through the Transformer encoder layer first, computing token-level contextual representations before applying mean pooling over chunk boundaries to boost retrieval precision by 27%.
 >

@@ -22,7 +22,7 @@ image: "images/posts/graphhopper-cover.png"
 
 > **Prerequisite:** This part builds on the concepts introduced in the [Executive Summary](/series/routing-geospatial-architecture/executive-summary/).
 
-# Part 1: Core Routing Algorithms — A* & Dijkstra Visualized
+## Part 1: Core Routing Algorithms — A* & Dijkstra Visualized
 
 > **Executive Summary & Quick Answer**: A* pathfinding uses Euclidean heuristics to accelerate 1-to-1 point routing, whereas Single-Source Dijkstra is mathematically superior for 1-to-N distance matrix calculations because it builds a single shortest-path search tree to all reachable destinations in one pass.
 >

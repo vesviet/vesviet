@@ -18,7 +18,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-# Part 5 — Enterprise Security, RBAC & Data Poisoning Defense in RAG
+## Part 5 — Enterprise Security, RBAC & Data Poisoning Defense in RAG
 
 > **Executive Summary & Quick Answer**: RAG applications are vulnerable to indirect prompt injection and vector store poisoning, where malicious payloads embedded in uploaded documents compromise LLM safety. Enforcing defense-in-depth requires embedding cryptographically verified JWT RBAC filters directly into vector database queries while scanning incoming context chunks for adversarial text patterns.
 >

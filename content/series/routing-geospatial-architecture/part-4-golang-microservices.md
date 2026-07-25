@@ -1,6 +1,6 @@
 ---
 title: "Golang Routing Microservices with Kratos & Dapr Framework"
-description: "How to build a bulletproof Golang API Gateway that talks to Graphhopper. We cover Circuit Breakers, Protobuf GC optimization, and Dapr asynchronous routing."
+description: "Build a bulletproof Golang API Gateway for Graphhopper: Circuit Breakers, Protobuf GC optimization, and Dapr asynchronous routing."
 date: "2026-06-14T23:00:00+07:00"
 lastmod: "2026-06-14T23:00:00+07:00"
 draft: false
@@ -26,7 +26,7 @@ image: "images/posts/graphhopper-cover.png"
 
 > **Prerequisite:** Before reading this part, review [Part 3: Spatial Indexing](/series/routing-geospatial-architecture/part-3-spatial-indexing/).
 
-# Part 4: Golang API & Microservices Integration (Kratos & Dapr)
+## Part 4: Golang API & Microservices Integration (Kratos & Dapr)
 
 > **Executive Summary & Quick Answer**: Integrating a high-concurrency Golang API Gateway with a downstream Java routing engine requires robust defense-in-depth patterns: `golang.org/x/sync/singleflight` for request deduplication, `sony/gobreaker` circuit breakers for fail-fast isolation, and flattened 1D arrays for Protobuf distance matrix serialization to prevent Go GC pauses.
 >

@@ -27,7 +27,7 @@ tags:
   - "vLLM"
   - "Distillation"
   - "Preference Alignment"
-description: "Prompt engineering vs fine-tuning vs RAG: Compare cost, latency, token limits, knowledge distillation (DeepSeek-R1), preference alignment (DPO/GRPO), and vLLM deployment to select the right SLM architecture."
+description: "Prompt engineering vs fine-tuning vs RAG: Compare cost, latency, token limits, knowledge distillation (DeepSeek-R1), and DPO/GRPO preference alignment."
 ShowToc: true
 TocOpen: true
 cover:
@@ -37,7 +37,7 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/slm-fine-tune-vs-prompt-engineering/"
 ---
 
-# Prompt Engineering vs Fine-Tuning vs RAG: Complete 2026 Decision Guide
+## Prompt Engineering vs Fine-Tuning vs RAG: Complete 2026 Decision Guide
 
 ---
 

@@ -19,7 +19,7 @@ image: "images/posts/shopee-flash-sale-cover.png"
 ---
 > **Answer-First:** Shopee handles millions of concurrent users by migrating from legacy monoliths to high-performance Go microservices. Inter-service gRPC Protobuf communication and Istio/Envoy service mesh sidecars enforce strict SLAs and sub-millisecond RPC latencies across thousands of internal microservice nodes.
 
-# Chapter 1: Building a Massive Foundation with Microservices, Golang, and gRPC
+## Chapter 1: Building a Massive Foundation with Microservices, Golang, and gRPC
 
 > **Executive Summary & Quick Answer**: Shopee handles millions of concurrent users by migrating from PHP/Java monoliths to high-performance Go microservices. Inter-service gRPC Protobuf communication and Istio/Envoy service mesh sidecars enforce strict SLAs and sub-millisecond RPC latencies.
 

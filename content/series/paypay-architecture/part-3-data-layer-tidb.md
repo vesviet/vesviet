@@ -3,7 +3,7 @@ title: "PayPay Data Infrastructure: TiDB & MySQL Sharding in Go"
 date: "2026-05-05T21:00:00+07:00"
 lastmod: "2026-05-05T21:00:00+07:00"
 draft: false
-description: "Why PayPay migrated from AWS Aurora to self-hosted TiDB: the Aurora bottleneck, TiDB's distributed architecture, the phased migration strategy, and the results."
+description: "Why PayPay migrated from AWS Aurora to self-hosted TiDB: analyzing Aurora bottlenecks, TiDB distributed SQL, and phased zero-downtime migration."
 weight: 4
 cover:
   image: "images/posts/paypay-scaling-cover.png"

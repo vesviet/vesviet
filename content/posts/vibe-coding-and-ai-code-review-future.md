@@ -1,6 +1,7 @@
 ---
 title: "What is Vibe Coding? Why AI Code Review is the Future"
 slug: "vibe-coding-and-ai-code-review-future"
+description: "Explore vibe coding and why automated AI code review is the future of engineering. Learn AST context analysis, security gates, and automated PR review."
 author: "Lê Tuấn Anh"
 date: "2026-05-31T18:30:00+07:00"
 lastmod: "2026-07-23T10:00:00+07:00"
@@ -16,7 +17,7 @@ cover:
 mermaid: true
 ---
 
-# What is Vibe Coding? Why AI Code Review is the Future
+## What is Vibe Coding? Why AI Code Review is the Future
 
 > **Executive Summary & Quick Answer**: Vibe coding combines rapid AI-assisted development with rigorous, automated AI code review gates. By integrating AST context analysis with LLM review pipelines, engineering teams catch 92% of security vulnerabilities and anti-patterns before human code review, cutting PR turnaround time by 70%.
 >

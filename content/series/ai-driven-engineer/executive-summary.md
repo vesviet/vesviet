@@ -20,7 +20,7 @@ TocOpen: true
 
 
 
-# Executive Summary — Software Engineers in the AI Era: Who Stays, Who Leaves?
+## Executive Summary — Software Engineers in the AI Era: Who Stays, Who Leaves?
 
 The commoditization of code syntax generation by frontier LLMs fundamentally restructures software engineering. Developers relying solely on manual syntax typing face high career risk, while engineers transitioning to Systems Architects, Context Engineers, and AI Orchestrators achieve 10x throughput with higher system reliability.
 

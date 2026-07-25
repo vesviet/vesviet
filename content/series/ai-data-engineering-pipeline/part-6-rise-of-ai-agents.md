@@ -18,7 +18,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-# Part 6 — From Passive RAG to Autonomous Agents: ReAct, Router & Tool Use
+## Part 6 — From Passive RAG to Autonomous Agents: ReAct, Router & Tool Use
 
 > **Executive Summary & Quick Answer**: Passive RAG systems are constrained to single-shot document retrieval, leaving complex multi-step reasoning unaddressed. Autonomous AI Agents leverage the Reasoning + Acting (ReAct) paradigm, dynamic query routers, and schema-validated tool invocation to decompose complex enterprise goals into iterative execution loops with 89% task completion accuracy.
 >

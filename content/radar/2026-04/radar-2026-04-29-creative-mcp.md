@@ -1,5 +1,6 @@
 ---
-title: "Tech Radar, April 29, 2026: Anthropic Pushes MCP into the Creative Stack - AI Connectors Turn Creative Software into Agentic Workflows"
+title: "Tech Radar: Anthropic MCP & Agentic Creative Workflows"
+description: "Discover Anthropic MCP integration into Adobe, Blender, and Autodesk creative software. Turn natural-language prompts into cross-app agentic workflows."
 author: "Lê Tuấn Anh"
 date: "2026-04-29T07:30:00+07:00"
 draft: false

@@ -21,7 +21,7 @@ image: "images/posts/mcp-engineering-in-production-cover.png"
 
 
 
-# Part 2 — Building Production-Grade MCP Servers in Go/Python
+## Part 2 — Building Production-Grade MCP Servers in Go/Python
 
 > **Executive Summary & Quick Answer**: Building production-grade MCP servers requires adhering to Domain-Driven Design (DDD) bounded contexts, stateless scaling, and structured JSON-RPC error handling. By using Go memory buffer pools (`sync.Pool`) and context cancellation timeouts, production MCP servers process high-concurrency tool calls with sub-15ms execution latency.
 >

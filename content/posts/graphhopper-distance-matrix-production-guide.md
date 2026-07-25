@@ -28,7 +28,7 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/graphhopper-distance-matrix-production-guide/"
 ---
 
-# GraphHopper Distance Matrix: Production Self-Hosting & API Guide
+## GraphHopper Distance Matrix: Production Self-Hosting & API Guide
 
 - Setting up GraphHopper self-hosting routing engine with custom profile caches.
 - Configuring RAM allocations to hold entire continental OpenStreetMap networks.
@@ -37,7 +37,7 @@ canonicalURL: "https://tanhdev.com/posts/graphhopper-distance-matrix-production-
 
 ## How to Call the GraphHopper Matrix API (/matrix Endpoint)
 
-Running GraphHopper distance matrix in production requires configuring Docker deployment, the `/matrix` API endpoint, Custom Models for vehicle-specific routing (truck/motorcycle), H3-based Redis caching, and evaluating performance tradeoffs against OSRM, Valhalla, and Google Maps (for a deeper dive into routing engine selection, see our [OSRM vs GraphHopper Architecture Comparison]({{< ref "osrm-vs-graphhopper-architecture-comparison.md" >}})).
+Running GraphHopper distance matrix in production requires configuring Docker deployment, the `/matrix` API endpoint, Custom Models for vehicle-specific routing (truck/motorcycle), H3-based Redis caching, and evaluating performance tradeoffs against OSRM, Valhalla, and Google Maps (for a deeper dive into routing engine selection, see our [OSRM vs GraphHopper Architecture Comparison](/posts/osrm-vs-graphhopper-architecture-comparison/)).
 
 ---
 

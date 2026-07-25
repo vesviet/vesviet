@@ -5,7 +5,7 @@ date: "2026-06-18T11:00:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-description: "Kafka zero-copy architecture, bounded Worker Pool with Go channel backpressure, partition ordering, and Exactly-Once transactional commits Learn production engi"
+description: "Kafka zero-copy architecture, bounded Worker Pool with Go channel backpressure, partition ordering, and Exactly-Once transactional commits in Go."
 tags: ["event-driven", "kafka", "golang", "worker pool", "backpressure", "message queue", "system design"]
 categories: ["System Design", "Backend Engineering"]
 ShowToc: true
@@ -22,7 +22,7 @@ image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 
 > **Prerequisite:** Part 5 of the [System Design Masterclass](/series/system-design/). Read [Part 4: Database Scaling](/series/system-design/04-database-scaling-sharding/) first.
 
-# Kafka Worker Pool in Go — Backpressure & Exactly-Once
+## Kafka Worker Pool in Go — Backpressure & Exactly-Once
 
 > **Executive Summary & Quick Answer**: High-throughput event streaming in Go leverages Kafka zero-copy `sendfile()` kernel transfers combined with bounded goroutine worker pools. Natural backpressure is achieved using buffered Go channels, while partition-pinned workers preserve message ordering without distributed locks.
 >

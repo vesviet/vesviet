@@ -22,7 +22,7 @@ image: "images/posts/graphhopper-cover.png"
 
 > **Prerequisite:** Before starting this part, review [Part 1: Core Routing Algorithms Visualized](/series/routing-geospatial-architecture/part-1-core-algorithms/).
 
-# Part 2: Zero to Hero Environment Setup (Docker, OSM, Golang)
+## Part 2: Zero to Hero Environment Setup (Docker, OSM, Golang)
 
 > **Executive Summary & Quick Answer**: Setting up a production-grade routing environment requires extracting OpenStreetMap `.osm.pbf` map data via Osmium tools, provisioning GraphHopper Java containers with explicit JVM heap allocations (`-Xmx6g`), and connecting a Golang API client with exponential backoff health checks.
 >

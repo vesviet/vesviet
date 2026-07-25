@@ -1,5 +1,6 @@
 ---
-title: "Tech Radar, April 27, 2026: Claude Sonnet 4.5 and the Agent SDK — The Best Coding Model Just Open-Sourced Its Infrastructure"
+title: "Tech Radar: Claude Sonnet 4.5 & Open-Source Agent SDK"
+description: "Explore Claude Sonnet 4.5 and Anthropic's open-source Agent SDK. Review autonomous coding benchmarks, computer-use capabilities, and agent infrastructure."
 author: "Lê Tuấn Anh"
 date: "2026-04-27T07:30:00+07:00"
 draft: false

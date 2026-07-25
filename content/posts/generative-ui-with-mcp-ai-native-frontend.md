@@ -25,7 +25,7 @@ aliases:
   - /series/generative-ui-architecture/part-4-security-a11y/
   - /series/generative-ui-architecture/part-5-human-in-the-loop/
   - /series/generative-ui-architecture/part-6-e2e-testing-edge/
-description: "Architecting dynamic generative UI applications with Model Context Protocol (MCP): dynamic registries, state management, security sandboxing, human-in-the-loop, and edge E2E testing."
+description: "Architect dynamic generative UI applications with Model Context Protocol (MCP): dynamic registries, state management, and security sandboxing."
 ShowToc: true
 TocOpen: true
 cover:

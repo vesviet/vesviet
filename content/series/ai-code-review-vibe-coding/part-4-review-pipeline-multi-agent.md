@@ -18,7 +18,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-# Part 4 — Multi-Agent Review Pipeline Architecture
+## Part 4 — Multi-Agent Review Pipeline Architecture
 
 > **Executive Summary & Quick Answer**: Operating a single-prompt AI code reviewer leads to context saturation and missed security vulnerabilities. A Multi-Agent Review Pipeline dispatches specialized sub-agents (Security Auditor, Performance Inspector, Syntax Linter) concurrently in Go to evaluate incoming pull requests in parallel, returning consolidated architectural code reviews in under 45 seconds.
 >

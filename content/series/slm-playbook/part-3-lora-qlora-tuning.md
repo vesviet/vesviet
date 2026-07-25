@@ -13,7 +13,7 @@ cover:
   relative: false
 mermaid: true
 canonicalURL: "https://tanhdev.com/series/slm-playbook/part-3-lora-qlora-tuning/"
-description: "Exhaustive technical summary and production engineering guide for Practical QLoRA Fine-tuning using Axolotl, Unsloth, and PEFT methods for production AI models."
+description: "Technical summary and production engineering guide for Practical QLoRA Fine-tuning using Axolotl, Unsloth, and PEFT methods for SLM models."
 ShowToc: true
 TocOpen: true
 image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
@@ -21,7 +21,7 @@ image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
 
 > **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
-# Practical QLoRA Fine-tuning: Axolotl, Unsloth & PEFT Optimization
+## Practical QLoRA Fine-tuning: Axolotl, Unsloth & PEFT Optimization
 
 
 Full fine-tuning of an 8B parameter model in FP16 precision requires updating 8 Billion weights simultaneously. This demands over 80GB of GPU VRAM for model weights and optimizer states, forcing teams to rent expensive multi-GPU A100/H100 clusters.

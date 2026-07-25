@@ -20,7 +20,7 @@ TocOpen: true
 
 
 
-# Part 6 — From Coder to Orchestrator: Swarms & Workflows
+## Part 6 — From Coder to Orchestrator: Swarms & Workflows
 
 The transition from individual programmer to Systems Orchestrator requires managing multi-agent AI swarms rather than writing single-threaded code lines. By establishing event-driven agent dispatchers, specialized role handoffs (Frontend, Backend, Database, Security), and channel synchronization in Go, orchestrators achieve parallelized feature implementation with 80% lower cycle times.
 

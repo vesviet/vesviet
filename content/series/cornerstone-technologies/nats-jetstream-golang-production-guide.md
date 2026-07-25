@@ -1,12 +1,12 @@
 ---
-title: "Toàn tập NATS JetStream cho Go Developer | Benchmark 100k RPS"
+title: "NATS JetStream cho Go Developer: Production Guide (100k RPS)"
 description: "Hướng dẫn chuyên sâu về kiến trúc NATS JetStream dành cho Golang. So sánh NATS vs Kafka, code Go production-ready và benchmark đạt 100k RPS thực tế."
 author: "Lê Tuấn Anh (Senior Go Engineer)"
 slug: "nats-jetstream-golang-production-guide"
 date: "2026-07-25"
 ---
 
-# Toàn tập NATS JetStream cho Go Developer | Benchmark 100k RPS
+## Toàn tập NATS JetStream cho Go Developer | Benchmark 100k RPS
 
 Chào các bạn, tôi là Lê Tuấn Anh, một Senior Go Engineer với nhiều năm kinh nghiệm thiết kế các hệ thống High-Concurrency. Trong quá trình xây dựng hạ tầng cho các dự án lớn, đặc biệt là các [ứng dụng trong Core Banking](/series/core-banking-developer/part-4-modern-core-banking-architecture/) và các hệ thống cần [xử lý tải cao như Alipay](/series/alipay-double-11/), tôi đã từng đối mặt với bài toán tối ưu hóa Message Broker. Nhiều người mặc định chọn Kafka cho mọi bài toán Streaming, nhưng từ trải nghiệm thực tế vận hành, tôi nhận thấy NATS JetStream kết hợp cùng Golang mang lại hiệu suất đáng kinh ngạc với chi phí phần cứng thấp hơn rất nhiều. 
 

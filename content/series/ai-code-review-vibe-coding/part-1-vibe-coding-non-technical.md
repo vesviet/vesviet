@@ -20,7 +20,7 @@ TocOpen: true
 
 
 
-# Part 1 — Vibe Coding & Non-Technical Founders: Demystifying the Magic
+## Part 1 — Vibe Coding & Non-Technical Founders: Demystifying the Magic
 
 
 For decades, the highest barrier to launching a software startup was the **Engineering Talent Bottleneck**. Non-technical founders with ground-breaking domain insights were forced to spend months raising capital or searching for technical co-founders before writing a single line of code.

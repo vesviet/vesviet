@@ -26,7 +26,7 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/mysql-scaling-sharding-tidb-architecture/"
 ---
 
-# Replace MySQL Sharding with TiDB: Distributed SQL Architecture
+## Replace MySQL Sharding with TiDB: Distributed SQL Architecture
 
 - Migrating schemas to TiDB with zero downtime using DM-portal.
 - How TiKV nodes scale independently of TiDB SQL computation nodes.

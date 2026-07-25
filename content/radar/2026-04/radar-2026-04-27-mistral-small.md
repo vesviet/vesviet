@@ -1,5 +1,6 @@
 ---
-title: "Tech Radar, April 27, 2026: Mistral Small 4 — One Open-Source Model to Rule Chat, Reasoning, and Agents"
+title: "Tech Radar: Mistral Small 4 Reasoning & Agent Model"
+description: "Discover Mistral Small 4's unified open-weights model combining chat, deep reasoning, and agentic coding. Optimize edge deployments under Apache 2.0."
 author: "Lê Tuấn Anh"
 date: "2026-04-27T08:00:00+07:00"
 draft: false

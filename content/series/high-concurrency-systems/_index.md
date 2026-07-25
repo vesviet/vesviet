@@ -19,7 +19,7 @@ TocOpen: true
 image: "images/posts/realtime-inventory-cover.png"
 ---
 
-# Masterclass: High Concurrency Systems & B2B Commerce
+## Masterclass: High Concurrency Systems & B2B Commerce
 
 Have you ever experienced a system crash precisely during the most critical moment of a Mega Sale event? Are your PostgreSQL databases buckling under the weight of locking issues when too many users attempt to place orders simultaneously?
 
@@ -43,8 +43,8 @@ Forget generic, theoretical scaling advice. This curriculum tackles the exact co
 0. **[The Reality of C10M: Surviving Extreme Traffic — Exec Summary](/series/high-concurrency-systems/executive-summary/)**
    *An overview for Tech Leads & Architects: Why traditional scaling fails at millions of requests and how to build high-concurrency systems using Golang.*
 
-1. **[Chapter 1: How Systems Handle Millions of Requests/s (C10M)? Lessons from Shopee & Alipay](/posts/shopee-flash-sale-architecture/)**
-   *A deep dive into how modern distributed systems break the C10M barrier using stateless APIs, multi-level caching, and Go.*
+1. **[Chapter 1: High Concurrency System Design Architecture in Go](/series/high-concurrency-systems/article_1_system_design/)**
+   *Deep dive into C10M high-concurrency architecture, epoll, io_uring, DPDK kernel bypass, L4/L7 load balancing, and zero-copy Go memory management.*
 
 2. **[Chapter 2: The 3 Caching Vulnerabilities (Penetration, Breakdown, Avalanche) & Go Singleflight](/series/high-concurrency-systems/article_2_caching/)**
    *Learn how to defend against Cache Penetration, Avalanche, and Breakdown using Bloom Filters, TTL jittering, and Golang singleflight.*

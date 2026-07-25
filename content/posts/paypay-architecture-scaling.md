@@ -18,7 +18,7 @@ tags:
   - "GitOps"
   - "Chaos Engineering"
   - "Fintech"
-description: "An in-depth look at PayPay's engineering stack: handling 70M users and 7.8B transactions/year using TiDB, Kafka event sourcing, GitOps, and chaos engineering."
+description: "In-depth look at PayPay's engineering stack: handling 70M users and 7.8B transactions/year using TiDB, Kafka event sourcing, and chaos engineering."
 ShowToc: true
 TocOpen: true
 cover:

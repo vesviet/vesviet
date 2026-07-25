@@ -1,13 +1,13 @@
 ---
 title: "Temporal Workflow & Golang: Kiến trúc & Production Guide"
-description: "Hướng dẫn chuyên sâu kiến trúc Temporal Workflow dành cho Go Developer. Giải thích Determinism, Event Sourcing, và cách scale Temporal Worker trên Production."
+description: "Hướng dẫn kiến trúc Temporal Workflow cho Go Developer: giải thích Determinism, Event Sourcing, và cách scale Temporal Worker trên Production."
 slug: temporal-workflow-go-architecture
 author: "Lê Tuấn Anh (Senior Go Engineer)"
 series: "Cornerstone Technologies"
 date: "2026-07-25"
 ---
 
-# Temporal Workflow & Golang: Kiến trúc & Production Guide
+## Temporal Workflow & Golang: Kiến trúc & Production Guide
 
 Khi xây dựng các hệ thống microservices quy mô lớn, việc quản lý trạng thái của các giao dịch phân tán và orchestration là một bài toán cực kỳ phức tạp. [Cornerstone Technologies](/series/cornerstone-technologies/) thường đưa ra những nền tảng làm thay đổi cách chúng ta thiết kế hệ thống, và Temporal chính là một trong số đó. Trong bài viết này, chúng ta sẽ đi sâu vào kiến trúc cốt lõi của Temporal Workflow dành cho Go Developer, từ việc hiểu rõ Determinism, Event Sourcing cho đến cách scale Temporal Worker trên môi trường Production.
 

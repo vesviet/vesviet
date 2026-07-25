@@ -18,7 +18,7 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/blueprint-ecommerce-microservices-architecture-diagram/"
 ---
 
-# Ecommerce Architecture: 21-Service Microservices Blueprint
+## Ecommerce Architecture: 21-Service Microservices Blueprint
 
 ## E-Commerce Architecture Patterns: Monolith vs Microservices
 

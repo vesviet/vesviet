@@ -21,7 +21,7 @@ image: "images/posts/mcp-engineering-in-production-cover.png"
 
 
 
-# Executive Summary — Model Context Protocol in Production: The Control Plane of AI
+## Executive Summary — Model Context Protocol in Production: The Control Plane of AI
 
 > **Executive Summary & Quick Answer**: Model Context Protocol (MCP) establishes an open, vendor-agnostic JSON-RPC 2.0 standard for connecting AI agents to enterprise data sources, tools, and prompts. Replacing ad-hoc custom integrations with production MCP Gateways enforces 100% data isolation, mTLS identity verification, and central telemetry auditing across enterprise microservices.
 >

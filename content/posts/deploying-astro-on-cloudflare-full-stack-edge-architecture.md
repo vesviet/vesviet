@@ -28,7 +28,7 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/"
 ---
 
-# Deploy Astro on Cloudflare Pages: Full-Stack Edge Architecture
+## Deploy Astro on Cloudflare Pages: Full-Stack Edge Architecture
 
 - The exact D1 edge database connection pooling limitations and how to circumvent cold start issues when routing through Neon serverless proxies.
 - How to configure Durable Objects for real-time state synchronization without hitting Cloudflare's sub-request quota limits.

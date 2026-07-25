@@ -18,7 +18,7 @@ canonicalURL: "https://tanhdev.com/series/agentic-ecommerce-search/"
 noTranslation: true
 ---
 
-# Agentic E-commerce Search Engine Architecture
+## Agentic E-commerce Search Engine Architecture
 
 In the 2026 e-commerce ecosystem, the search bar is no longer a passive "keyword matching" tool. Users expect a search engine capable of reasoning like a real shopping assistant: understanding complex semantics, parsing strict constraints (price, inventory, location), and communicating with microservices in real-time.
 

@@ -18,7 +18,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-# Part 3 — The AI Bug Taxonomy: Hallucinations & Phantom APIs
+## Part 3 — The AI Bug Taxonomy: Hallucinations & Phantom APIs
 
 > **Executive Summary & Quick Answer**: AI-generated code introduces a unique class of subtle defects distinct from traditional human coding errors. Understanding the **AI Bug Taxonomy**—encompassing Phantom API methods, Typosquatted Package Imports, Silent Type Coercions, and Logical Edge-Case Hallucinations—allows engineering teams to construct targeted AST static analysis filters that catch 95% of AI defects before code reaches production.
 >

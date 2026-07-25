@@ -22,7 +22,7 @@ image: "images/posts/real-time-ride-hailing-cover.png"
 
 > **Prerequisite:** Before reading this part, review the [Executive Summary](/series/ride-hailing-realtime-architecture/executive-summary/).
 
-# GPS Ingestion at Scale: gRPC Streaming, MQTT & Kalman Filter
+## GPS Ingestion at Scale: gRPC Streaming, MQTT & Kalman Filter
 
 > **Executive Summary & Quick Answer**: High-throughput location ingestion processes over 1 million GPS updates per second by using binary gRPC streams or MQTT over persistent TCP/QUIC connections. Devices run Kalman filters and dead-reckoning interpolation to clean telemetry noise before publishing updates to Apache Kafka and Redis.
 >

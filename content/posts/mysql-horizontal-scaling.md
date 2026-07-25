@@ -18,7 +18,7 @@ tags:
   - "Sharding"
   - "Database Scaling"
   - "Golang"
-description: "Vitess vs GORM Sharding for MySQL write scaling in Go: VTGate query routing, SQL AST parsing, ErrMissingShardingKey pitfall, and when to choose each approach."
+description: "Vitess vs GORM Sharding for MySQL write scaling in Go: VTGate query routing, SQL AST parsing, and handling the ErrMissingShardingKey pitfall."
 ShowToc: true
 TocOpen: true
 cover:

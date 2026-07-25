@@ -1,11 +1,11 @@
 ---
-title: "Zero-Trust Service Mesh Security in Go: SPIFFE/SPIRE Attestation & Istio mTLS for PCI-DSS 4.0"
+title: "Zero-Trust Service Mesh Security in Go: SPIFFE/SPIRE & Istio"
 slug: "zero-trust-service-mesh-security-spiffe-spire-istio-golang"
 author: "Lê Tuấn Anh"
 date: "2026-07-23T08:00:00+07:00"
 lastmod: "2026-07-23T08:00:00+07:00"
 draft: false
-description: "Production guide to implementing Zero-Trust microservice security in Golang using SPIFFE/SPIRE cryptographic workload attestation and Istio mTLS for PCI-DSS 4.0 compliance."
+description: "Production guide to Zero-Trust microservice security in Golang using SPIFFE/SPIRE cryptographic workload attestation and Istio mTLS service mesh."
 ShowToc: true
 TocOpen: true
 mermaid: true

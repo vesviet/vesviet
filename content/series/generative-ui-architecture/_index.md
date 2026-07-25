@@ -25,12 +25,12 @@ This series addresses the biggest gap in modern AI application development: the 
 **Answer-first:** The Generative UI series details building AI-native frontend streaming architectures with Astro, Svelte, and Model Context Protocol.
 
 - **Executive Summary:** [The Shift to Generative UI Architecture](/series/generative-ui-architecture/executive-summary/)
-- **Part 1:** [The Death of Chat Interfaces (Beyond Chatbots)](/series/generative-ui-architecture/part-1-beyond-chatbots/)
-- **Part 2:** [Framework-Agnostic State Management Architecture](/series/generative-ui-architecture/part-2-state-management/)
-- **Part 3:** [Component Registry & Bridging MCP to Frontend](/series/generative-ui-architecture/part-3-component-registry/)
-- **Part 4:** [Security & Accessibility (A11y) in GenUI](/series/generative-ui-architecture/part-4-security-a11y/)
-- **Part 5:** [Building the "Human-In-The-Loop" Experience](/series/generative-ui-architecture/part-5-human-in-the-loop/)
-- **Part 6:** [E2E Testing & Performance Optimization at the Edge](/series/generative-ui-architecture/part-6-e2e-testing-edge/)
+- **Part 1:** [The Death of Chat Interfaces (Beyond Chatbots)](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- **Part 2:** [Framework-Agnostic State Management Architecture](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- **Part 3:** [Component Registry & Bridging MCP to Frontend](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- **Part 4:** [Security & Accessibility (A11y) in GenUI](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- **Part 5:** [Building the "Human-In-The-Loop" Experience](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- **Part 6:** [E2E Testing & Performance Optimization at the Edge](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - **Part 7:** [Reference Repository & Migration Strategy (Phased Rollout)](/series/generative-ui-architecture/part-7-reference-repo-migration/)
 
 ## Companion Article: MCP in Practice

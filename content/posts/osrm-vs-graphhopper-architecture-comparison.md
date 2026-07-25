@@ -1,5 +1,5 @@
 ---
-title: "OSRM vs GraphHopper: Architecture Comparison and Routing Engine Selection for Large Logistics"
+title: "OSRM vs GraphHopper: Routing Engine Architecture Comparison"
 slug: "osrm-vs-graphhopper-architecture-comparison"
 author: "Lê Tuấn Anh"
 date: "2026-07-17T14:00:00+07:00"
@@ -15,7 +15,7 @@ tags:
   - "GraphHopper"
   - "Routing Engine"
   - "Logistics"
-description: "In-depth comparison of OSRM and GraphHopper from an architect's perspective. Analyzing CH, MLD, LM algorithms, custom routing profiles, and real-world memory performance."
+description: "In-depth architectural comparison of OSRM vs GraphHopper: analyzing Contraction Hierarchies, MLD, LM algorithms, and custom routing profiles in Go."
 ShowToc: true
 TocOpen: true
 canonicalURL: "https://tanhdev.com/posts/osrm-vs-graphhopper-architecture-comparison/"
@@ -49,7 +49,7 @@ To mitigate the extreme rigidity of CH, OSRM introduced **Multi-Level Dijkstra (
 
 MLD relies on hierarchical graph partitioning. It divides the global graph into nested cells (e.g., cell level 1 might be a neighborhood, level 2 a city, level 3 a state). During the pre-processing phase (`osrm-partition` and `osrm-customize`), MLD calculates the optimal travel times between all boundary nodes of each cell. 
 
-Because of this encapsulation, if a traffic jam occurs deep inside a specific cell, you only need to recalculate the metrics for that single cell and its parents, rather than the entire planet. This drops the update time from hours to mere seconds, allowing OSRM to support live traffic updates (see our guide on [OSRM Shared Memory on Kubernetes for Live Traffic]({{< ref "osrm-shared-memory-kubernetes-live-traffic.md" >}})).
+Because of this encapsulation, if a traffic jam occurs deep inside a specific cell, you only need to recalculate the metrics for that single cell and its parents, rather than the entire planet. This drops the update time from hours to mere seconds, allowing OSRM to support live traffic updates (see our guide on [OSRM Shared Memory on Kubernetes for Live Traffic](/posts/osrm-shared-memory-kubernetes-live-traffic/)).
 
 ### OSRM's Memory-Mapped Files (mmap)
 

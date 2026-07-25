@@ -18,8 +18,15 @@
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
         <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-        · <a href="/privacy-policy/" rel="noopener">Privacy Policy</a>
     </span>
+    {{- if site.Menus.footer }}
+    <span class="footer-legal-links">
+        {{- range $index, $item := site.Menus.footer }}
+        <span class="footer-legal-separator">·</span>
+        <a href="{{ $item.URL | absLangURL }}" rel="noopener">{{ $item.Name }}</a>
+        {{- end }}
+    </span>
+    {{- end }}
 </footer>
 {{- end }}
 

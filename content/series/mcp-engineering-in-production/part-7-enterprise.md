@@ -13,7 +13,7 @@ cover:
   relative: false
 mermaid: true
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-7-enterprise/"
-description: "Exhaustive technical summary and production engineering guide for Part 7 — Enterprise MCP Strategy and Multi-Tenancy Governance Models for production scale."
+description: "Technical summary and production guide for Part 7 — Enterprise MCP Strategy and Multi-Tenancy Governance Models for production scale."
 ShowToc: true
 TocOpen: true
 image: "images/posts/mcp-engineering-in-production-cover.png"
@@ -21,7 +21,7 @@ image: "images/posts/mcp-engineering-in-production-cover.png"
 
 
 
-# Part 7 — Enterprise MCP Strategy & Multi-Tenancy Governance
+## Part 7 — Enterprise MCP Strategy & Multi-Tenancy Governance
 
 > **Executive Summary & Quick Answer**: Scaling Model Context Protocol (MCP) across large enterprises requires an Enterprise Internal MCP Registry and strict Multi-Tenancy Governance. Enforcing exact semantic version pinning (`v1.4.2` over `:latest`), MCP Server Cards metadata registration, and tenant database isolation prevents Shadow MCP deployments and cross-tenant data leaks.
 >

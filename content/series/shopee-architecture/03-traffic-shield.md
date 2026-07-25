@@ -1,10 +1,10 @@
 ---
-title: "Shopee Traffic Shield: Kafka Peak Shaving & Circuit Breakers | Go Production Guide"
+title: "Shopee Traffic Shield: Kafka Peak Shaving & Breakers in Go"
 date: "2026-05-05T08:30:00+07:00"
 lastmod: "2026-05-05T08:30:00+07:00"
 draft: false
 mermaid: true
-description: "How Shopee uses Apache Kafka for peak shaving traffic spikes and implements graceful degradation during mega shopping events like 11.11 in high-load production."
+description: "How Shopee uses Apache Kafka for peak shaving traffic spikes and implements graceful degradation during mega 11.11 shopping events in production."
 ShowToc: true
 TocOpen: true
 cover:
@@ -17,7 +17,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/03-traffic-shield/"
 image: "images/posts/shopee-flash-sale-cover.png"
 ---
-# Chapter 3: Peak Shaving - The Power of Apache Kafka and Graceful Degradation
+## Chapter 3: Peak Shaving - The Power of Apache Kafka and Graceful Degradation
 
 > **Executive Summary & Quick Answer**: Shopee utilizes Apache Kafka queues for peak-shaving during 11.11 shopping events. Decoupling order creation from synchronous processing guarantees sub-second API responses while downstream workers process orders at a controlled rate.
 

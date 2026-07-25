@@ -24,7 +24,7 @@ image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 
 > **Prerequisite:** Part 2 of the [System Design Masterclass](/series/system-design/). Read [Part 1: System Design Thinking](/series/system-design/01-introduction-system-design-golang/) first.
 
-# Load Balancing L4/L7 in Go — DSR, Rate Limiting & API Gateway
+## Load Balancing L4/L7 in Go — DSR, Rate Limiting & API Gateway
 
 > **Executive Summary & Quick Answer**: L4 load balancing routes traffic at the transport layer using IP/TCP metadata with minimal CPU overhead, whereas L7 load balancing inspects HTTP headers, cookies, and URLs for intelligent content-based routing. Combining L4 Direct Server Return (DSR) with L7 Envoy API Gateways and Go token-bucket rate limiters handles peak traffic spikes smoothly.
 >

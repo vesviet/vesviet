@@ -24,7 +24,7 @@ image: "images/posts/graphhopper-cover.png"
 
 > **Prerequisite:** Before reading this part, review [Part 2: Zero to Hero Environment Setup](/series/routing-geospatial-architecture/part-2-environment-setup/).
 
-# Part 3: Spatial Indexing — Uber H3, PostGIS & Redis GEO
+## Part 3: Spatial Indexing — Uber H3, PostGIS & Redis GEO
 
 > **Executive Summary & Quick Answer**: Spatial indexing serves as a high-performance pre-filtering layer that prevents heavy routing engines from collapsing under load. By using Uber H3 hexagonal cells and Redis GEO to narrow down 10,000 active drivers to the 50 closest candidates in RAM (<2ms), systems reduce routing engine CPU overhead by up to 95%.
 >

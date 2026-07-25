@@ -1,6 +1,6 @@
 ---
 title: "Laravel vs Golang: When to Add Features in Each?"
-description: "You have a running Laravel system. Should new features be built in Laravel or extracted to Golang? A 4-question decision framework with TCO comparison, concrete benchmarks, and the Strangler Fig hybrid pattern most teams actually use."
+description: "Detailed guide on Laravel to Go migration: domain boundaries, gRPC internal APIs, Strangler Fig pattern, and benchmarking performance gains."
 date: "2026-07-19T10:00:00+07:00"
 lastmod: "2026-07-19T10:00:00+07:00"
 slug: "laravel-vs-golang-when-to-add-features"

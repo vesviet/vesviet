@@ -20,7 +20,7 @@ TocOpen: true
 
 
 
-# Part 7 — System Design Survival: Architectural Shield
+## Part 7 — System Design Survival: Architectural Shield
 
 While AI assistants excel at generating localized code functions, they remain blind to holistic distributed system failures, network partition handling, and cascading degradation. System design—encompassing Circuit Breakers, Rate Limiters, Distributed Locks, and CAP theorem trade-offs—serves as the ultimate career survival shield for software engineers.
 

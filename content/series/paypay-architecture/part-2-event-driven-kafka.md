@@ -3,7 +3,7 @@ title: "PayPay Event-Driven Architecture: Kafka at Scale"
 date: "2026-05-05T21:00:00+07:00"
 lastmod: "2026-05-05T21:00:00+07:00"
 draft: false
-description: "How PayPay uses Apache Kafka as a shock absorber for payment spikes, implements Outbox Pattern, and guarantees exactly-once processing for financial ledgers."
+description: "How PayPay uses Apache Kafka as a shock absorber for payment spikes, implements Outbox Pattern, and guarantees exactly-once processing."
 weight: 3
 cover:
   image: "images/posts/paypay-scaling-cover.png"

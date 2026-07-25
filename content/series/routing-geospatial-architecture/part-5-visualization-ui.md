@@ -26,7 +26,7 @@ image: "images/posts/graphhopper-cover.png"
 
 > **Prerequisite:** Before reading this part, review [Part 4: Golang API & Microservices Integration](/series/routing-geospatial-architecture/part-4-golang-microservices/).
 
-# Part 5: Route Visualization UI with Mapbox & Deck.gl
+## Part 5: Route Visualization UI with Mapbox & Deck.gl
 
 > **Executive Summary & Quick Answer**: High-density geospatial rendering (100,000+ telemetry vectors) requires offloading coordinate math from the browser DOM to WebGL GPU buffers via Deck.gl and Mapbox overlays. Using Deck.gl's `DataFilterExtension` updates GPU uniforms in 60 FPS requestAnimationFrame loops without mutating JavaScript heap allocations.
 >

@@ -1,5 +1,6 @@
 ---
-title: "Tech Radar, May 1, 2026: DigitalOcean's AI-Native Cloud - Inference Routing, Managed Retrieval, and an Integrated Stack for Agentic Systems"
+title: "Tech Radar: DigitalOcean AI-Native Cloud & Inference Routing"
+description: "Analyze DigitalOcean's AI-Native Cloud launch: managed context retrieval, intelligent inference routing, and cost-effective hosting for agentic systems."
 author: "Lê Tuấn Anh"
 date: "2026-05-01T07:30:00+07:00"
 draft: false

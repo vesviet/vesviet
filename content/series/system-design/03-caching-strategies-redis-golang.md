@@ -1,5 +1,5 @@
 ---
-title: "Caching Strategies in Go: Cache Stampede & Redis | Go Production Guide"
+title: "Caching Strategies in Go: Cache Stampede & Redis Guide"
 slug: "03-caching-strategies-redis-golang"
 date: "2026-06-18T10:00:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"

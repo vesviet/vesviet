@@ -28,7 +28,7 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/go-pprof-kubernetes-remote-profiling/"
 ---
 
-# Go pprof in Kubernetes: Remote Profiling & Flame Graphs
+## Go pprof in Kubernetes: Remote Profiling & Flame Graphs
 
 - Production port forwarding configuration to profile CPU without service downtime.
 - Decoding complex memory profiles and locating garbage collection allocation hot paths.

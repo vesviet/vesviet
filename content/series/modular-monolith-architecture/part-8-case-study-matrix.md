@@ -21,7 +21,7 @@ image: "images/posts/golang-microservices-cover.png"
 
 > **Prerequisite:** Before reading this part, please review [Part 7: Extraction Pattern](/series/modular-monolith-architecture/part-7-extraction-pattern/).
 
-# Part 8: Case Study Matrix – The Monuments of the Modular Monolith
+## Part 8: Case Study Matrix – The Monuments of the Modular Monolith
 
 > **Executive Summary & Quick Answer**: The Modular Monolith case study matrix analyzes how Notion, Stack Overflow, Target, and Lyft optimize resources by balancing monolithic vertical scaling with selective service extraction. These real-world architectures prove that keeping core domains co-located in a single binary reduces cloud costs, code duplication, and tooling friction.
 >

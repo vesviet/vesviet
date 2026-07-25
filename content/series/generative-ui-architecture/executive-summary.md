@@ -20,7 +20,7 @@ TocOpen: true
 
 
 
-# Executive Summary — The Dawn of Generative UI & Dynamic Component Rendering
+## Executive Summary — The Dawn of Generative UI & Dynamic Component Rendering
 
 > **Executive Summary & Quick Answer**: Generative UI replaces static text-only chatbot responses with dynamic, interactive React components rendered directly on the client. By streaming JSON Schema payloads from AI backends to a type-safe Component Registry, Generative UI delivers rich UI elements (charts, forms, dashboards) at sub-100ms render speeds.
 >
@@ -194,12 +194,12 @@ Operating real-time generative UI systems over Server-Sent Events (SSE) demands 
 
 **Answer-first:** Explore the entire Generative UI series covering component registries, SSE streaming handlers, and legacy frontend migration.
 
-- [Part 1 — Beyond Chatbots: Dynamic Component Rendering](/series/generative-ui-architecture/part-1-beyond-chatbots/)
-- [Part 2 — State Management for Generative UI](/series/generative-ui-architecture/part-2-state-management/)
-- [Part 3 — Component Registry & JSON Schema Protocol](/series/generative-ui-architecture/part-3-component-registry/)
-- [Part 4 — Generative UI Security & Accessibility](/series/generative-ui-architecture/part-4-security-a11y/)
-- [Part 5 — Human-in-the-Loop Workflows](/series/generative-ui-architecture/part-5-human-in-the-loop/)
-- [Part 6 — E2E Testing & Edge Performance](/series/generative-ui-architecture/part-6-e2e-testing-edge/)
+- [Part 1 — Beyond Chatbots: Dynamic Component Rendering](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 2 — State Management for Generative UI](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 3 — Component Registry & JSON Schema Protocol](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 4 — Generative UI Security & Accessibility](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 5 — Human-in-the-Loop Workflows](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 6 — E2E Testing & Edge Performance](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 7 — Reference Repo & Migration Playbook](/series/generative-ui-architecture/part-7-reference-repo-migration/)
 
 ## Architectural Context & Pillar References

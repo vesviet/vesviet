@@ -1,6 +1,7 @@
 ---
 title: "Architecting Agentic E-commerce Search with Golang"
 slug: "agentic-ecommerce-search-golang-vector-databases"
+description: "Build high-conversion agentic e-commerce search with Golang and Qdrant vector databases. Learn hybrid BM25 search, gRPC tuning, and sub-50ms query latency."
 author: "Lê Tuấn Anh"
 date: "2026-05-10T14:30:00+07:00"
 lastmod: "2026-07-23T10:00:00+07:00"
@@ -16,7 +17,7 @@ cover:
 mermaid: true
 ---
 
-# Architecting Agentic E-commerce Search with Golang
+## Architecting Agentic E-commerce Search with Golang
 
 > **Executive Summary & Quick Answer**: Agentic e-commerce search replaces rigid keyword matching with Golang-driven vector search using Qdrant gRPC and Cohere re-ranking. By combining BM25 keyword filtering with sub-20ms vector similarity lookup, systems achieve a 35% higher search conversion rate while maintaining sub-50ms P99 latencies.
 >

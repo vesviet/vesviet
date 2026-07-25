@@ -18,7 +18,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-# Part 2 — Agentic Data Ingestion & Multimodal Document Processing Pipeline
+## Part 2 — Agentic Data Ingestion & Multimodal Document Processing Pipeline
 
 > **Executive Summary & Quick Answer**: Traditional text-only OCR pipelines corrupt complex PDF layouts, multi-column tables, and embedded architectural diagrams. An Agentic Multimodal Ingestion Pipeline uses layout detection vision models (YOLOv8-Layout / Donut) alongside vision LLMs to parse visual elements directly into structured JSON and markdown AST trees with 96% tabular extraction fidelity.
 >

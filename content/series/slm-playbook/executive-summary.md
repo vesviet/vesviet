@@ -1,9 +1,9 @@
 ---
-title: "SLM Playbook: Small Language Models Architecture | Go Production Guide"
+title: "SLM Playbook: Small Language Models Architecture in Go"
 date: "2026-05-20T21:05:00+07:00"
 lastmod: "2026-05-20T21:05:00+07:00"
 draft: false
-description: "A high-level overview of why enterprises are shifting to self-hosted Small Language Models (SLMs) to optimize cost, privacy, and domain-specific performance."
+description: "High-level overview of why enterprises shift to self-hosted Small Language Models (SLMs) to optimize cost, privacy, and domain performance."
 ShowToc: true
 TocOpen: true
 weight: 1

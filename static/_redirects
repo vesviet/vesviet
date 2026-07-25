@@ -98,7 +98,6 @@
 /series/ecommerce-order-allocation/part-4-amazon-condor-anticipatory/ /posts/order-fulfillment-algorithm-warehouse-last-mile/ 301
 /series/high-concurrency-systems/how-systems-handle-c10m/ /posts/shopee-flash-sale-architecture/ 301
 /series/high-concurrency-systems/api-gateway-vs-service-mesh/ /posts/shopee-flash-sale-architecture/ 301
-/series/high-concurrency-systems/article_1_system_design/ /posts/shopee-flash-sale-architecture/ 301
 /series/high-concurrency-systems/article_6_api_gateway/ /posts/shopee-flash-sale-architecture/ 301
 /series/agentic-system-architecture/executive-summary/ /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
 /series/agentic-system-architecture/part-1-topology/ /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
@@ -124,4 +123,3 @@
 /series/generative-ui-architecture/part-5-human-in-the-loop/ /posts/generative-ui-with-mcp-ai-native-frontend/ 301
 /series/generative-ui-architecture/part-6-e2e-testing-edge/ /posts/generative-ui-with-mcp-ai-native-frontend/ 301
 /newsletter/ /hire/ 301
-/privacy-policy/ /about/ 301

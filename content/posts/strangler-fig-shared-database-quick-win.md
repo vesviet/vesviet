@@ -1,6 +1,6 @@
 ---
 title: "Magento Migration: Shared DB, CDC, or Event Bus?"
-description: "Magento database migration decision: compare Shared DB, CDC + Debezium, and Event Bus separation with a 16-dimension risk matrix and 4-question decision framework for architects."
+description: "Magento database migration decision guide: compare Shared DB, CDC + Debezium, and Event Bus separation with a 16-dimension risk evaluation matrix."
 date: "2026-07-18T18:00:00+07:00"
 lastmod: "2026-07-18T18:00:00+07:00"
 slug: "strangler-fig-shared-database-quick-win"

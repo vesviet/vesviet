@@ -20,7 +20,7 @@ TocOpen: true
 
 
 
-# Agentic Architecture & Golang Orchestration Power
+## Agentic Architecture & Golang Orchestration Power
 
 
 Building agentic search systems in Python works well for offline evaluation or low-throughput prototypes. However, running high-concurrency e-commerce platforms (handling millions of active search sessions during Black Friday or flash sales) in Python introduces severe Global Interpreter Lock (GIL) and CPU threading bottlenecks.

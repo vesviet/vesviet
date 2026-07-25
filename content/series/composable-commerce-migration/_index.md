@@ -18,7 +18,7 @@ canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/"
 
 
 
-# Composable Commerce Migration: Magento 2 → Microservices Golang
+## Composable Commerce Migration: Magento 2 → Microservices Golang
 
 Is your Magento 2 store costing you **$125,000–$200,000/year** in Enterprise license fees? Are your engineers spending 60% of their sprint chasing PHP compatibility issues and writing hacky module overrides instead of shipping features? Are you hitting the ceiling on flash-sale traffic because you can only scale the entire monolith at once?
 
@@ -66,7 +66,7 @@ Magento 2's EAV schema, integer primary keys, and PHP module coupling make migra
 4. **[Part 3: Golang + Kratos v2 — Microservice Framework Internals](/posts/ecommerce-architecture-composable-migration/)**
    *How Kratos v2 handles transport, dependency injection, and the common library pattern across 21 services.*
 
-5. **[Part 4: gRPC Internal + REST Gateway Architecture](/series/composable-commerce-migration/part-4-grpc-rest-gateway/)**
+5. **[Part 4: gRPC Internal + REST Gateway Architecture](/posts/ecommerce-architecture-composable-migration/)**
    *Service-to-service communication in gRPC, REST exposure via gRPC-Gateway, and the API Gateway routing strategy.*
 
 6. **[Part 5: EAV Schema Migration — Magento's Biggest Trap](/series/composable-commerce-migration/part-5-eav-schema-migration/)**

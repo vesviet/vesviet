@@ -5,7 +5,6 @@ date: "2021-10-14T18:48:02+07:00"
 lastmod: "2026-07-23T13:34:42+07:00"
 aliases:
   - /about-me/
-  - /privacy-policy/
 description: "Lê Tuấn Anh — Senior Go Backend Architect with 17+ years building high-traffic microservices, event-driven platforms, GitOps, and cloud ecosystems."
 author: "Lê Tuấn Anh"
 cover:
@@ -74,16 +73,7 @@ Rather than relying purely on theoretical designs, I architected this holistic p
 
 ### 🔒 Privacy Policy
 
-At tanhdev.com (accessible from https://tanhdev.com/), the privacy of our visitors is one of our primary priorities.
-
-#### Log Files
-tanhdev.com follows standard procedures using hosting log files. Information collected includes IP addresses, browser types, Internet Service Provider (ISP), date/time stamps, referring/exit pages, and click counts. This data is used solely for trend analysis, site administration, and demographic gathering, and is not linked to personally identifiable information.
-
-#### Cookies & Advertising Partners
-tanhdev.com uses cookies to store visitor preferences and page access history. Third-party vendors (e.g. Google AdSense) may use DART cookies to serve ads based on visits. Visitors can opt out via [Google AdSense Privacy Policy](https://policies.google.com/technologies/ads) or disable cookies via browser settings.
-
-#### Data Protection Rights (CCPA & GDPR)
-Under CCPA and GDPR regulations, users have the right to access, rectify, or request deletion of personal data. To exercise any data privacy rights, contact us at [vesviet@gmail.com](mailto:vesviet@gmail.com).
+For information regarding data collection, cookies, Google AdSense, GA4 Consent Mode v2, and your GDPR/CCPA data protection rights, please read our dedicated [Privacy Policy](/privacy-policy/).
 
 ---
 

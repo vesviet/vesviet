@@ -8,7 +8,7 @@ series_order: 7
 tags: ["golang", "idempotency", "redis", "api design"]
 mermaid: true
 slug: "idempotency-api-design-payments"
-description: "Prevent double-charging customers by implementing robust Idempotency-Key headers and atomic Redis locks in high-scale HTTP POST APIs for production systems."
+description: "Prevent double-charging customers by implementing robust Idempotency-Key headers and atomic Redis locks in high-scale HTTP POST APIs."
 ShowToc: true
 TocOpen: true
 cover:

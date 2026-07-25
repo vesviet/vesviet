@@ -210,3 +210,37 @@ button:focus-visible {
     overflow-wrap: normal !important;
 }
 
+/* 6. Footer Legal Navigation (Flexbox Layout) */
+.footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px 12px;
+}
+
+.footer-legal-links {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.footer-legal-links a {
+    color: var(--secondary);
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.footer-legal-links a:hover {
+    color: var(--primary);
+    text-decoration: underline;
+}
+
+.footer-legal-separator {
+    user-select: none;
+    opacity: 0.7;
+}
+
+

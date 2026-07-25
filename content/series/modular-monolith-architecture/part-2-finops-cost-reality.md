@@ -21,7 +21,7 @@ image: "images/posts/golang-microservices-cover.png"
 
 > **Prerequisite:** Before reading this part, please review [Part 1: Architectural Decision Framework](/series/modular-monolith-architecture/part-1-decision-framework/).
 
-# Part 2: FinOps Cost Reality - The "Hidden Tax" of Microservices
+## Part 2: FinOps Cost Reality - The "Hidden Tax" of Microservices
 
 > **Executive Summary & Quick Answer**: The true cost of microservices lies in hidden infrastructure charges: sidecar proxy memory overhead, cross-AZ data transfer egress fees, NAT Gateway processing fees, and high-cardinality logging ingestion. A modular monolith co-locates processing within the same private subnet and container task, bypassing these multi-thousand-dollar cloud bills entirely.
 >

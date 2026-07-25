@@ -20,7 +20,7 @@ TocOpen: true
 
 
 
-# Part 5 — AI Code Security: Prompt Injection & Credentials
+## Part 5 — AI Code Security: Prompt Injection & Credentials
 
 
 When developers generate application code using AI tools (Cursor, GitHub Copilot, Claude), LLMs frequently insert plain-text synthetic API keys or sample secrets (e.g., `api_key = "sk_live_9988221100abc"`).

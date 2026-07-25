@@ -1,6 +1,7 @@
 ---
 title: "Surge Pricing Algorithm & Spatial Indexing Architecture"
 slug: "surge-pricing-optimization-architecture"
+description: "Design a real-time surge pricing engine with Uber H3 spatial indexing and Redis sliding windows. Process high-throughput supply/demand ratios in Go."
 author: "Lê Tuấn Anh"
 date: "2026-05-12T17:00:00+07:00"
 lastmod: "2026-07-23T10:00:00+07:00"
@@ -16,7 +17,7 @@ cover:
 mermaid: true
 ---
 
-# Surge Pricing Algorithm & Spatial Indexing Architecture
+## Surge Pricing Algorithm & Spatial Indexing Architecture
 
 > **Executive Summary & Quick Answer**: Real-time surge pricing engines index geographical rider demand and driver supply using Uber H3 hexagonal spatial grids and Redis sliding windows. This architecture processes 100,000+ location updates per second in Go, calculating dynamic fare multipliers in sub-5ms while preventing boundary gaming.
 >

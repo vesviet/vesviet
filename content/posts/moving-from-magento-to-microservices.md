@@ -18,7 +18,7 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/moving-from-magento-to-microservices/"
 ---
 
-# Why Migrate Magento to Microservices: Zero-Downtime Blueprint
+## Why Migrate Magento to Microservices: Zero-Downtime Blueprint
 
 - Decoupling cart and checkout tables from Magento core databases.
 - Data synchronization pipelines that prevent order loss during checkout transitions.

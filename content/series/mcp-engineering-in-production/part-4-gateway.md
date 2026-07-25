@@ -19,7 +19,7 @@ TocOpen: true
 image: "images/posts/mcp-engineering-in-production-cover.png"
 ---
 
-# Part 4 — MCP Gateway Architecture & Routing
+## Part 4 — MCP Gateway Architecture & Routing
 
 > **Executive Summary & Quick Answer**: Operating multiple independent MCP servers across an enterprise creates point-to-point management sprawl and security leaks. An **MCP Gateway** acts as a centralized reverse proxy control plane, handling dynamic tool routing, rate limiting, authentication enforcement, and circuit breaking for all downstream MCP server microservices.
 >

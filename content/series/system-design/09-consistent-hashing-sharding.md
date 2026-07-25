@@ -5,7 +5,7 @@ date: "2026-06-18T13:00:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-description: "Why modulo hashing fails at scale, virtual node variance analysis, and CRC32 consistent hash ring implementation in Go with replication in production systems."
+description: "Why modulo hashing fails at scale, virtual node variance analysis, and CRC32 consistent hash ring implementation in Go with replication."
 tags: ["consistent hashing", "golang", "distributed systems", "sharding", "virtual nodes", "system design"]
 categories: ["System Design", "Backend Engineering"]
 ShowToc: true

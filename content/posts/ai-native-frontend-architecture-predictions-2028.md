@@ -6,7 +6,7 @@ date: "2026-05-16T21:00:00+07:00"
 lastmod: "2026-07-23T13:34:42+07:00"
 draft: false
 tags: ["AI Frontend", "Generative UI", "Astro", "MCP", "Prediction", "Architecture", "WebSockets", "Zod", "Context Engineering", "Policy-as-Code"]
-description: "10 honest predictions and architectural blueprint for AI-Native Frontend & System Architecture by 2028: Component Registries, MCP contracts, AI Platform Layers, Policy-as-Code, and agentic CI/CD pipelines."
+description: "10 predictions and architectural blueprint for AI-Native Frontend & System Architecture by 2028: Component Registries, MCP contracts, and Generative UI."
 categories: ["Engineering", "Strategy"]
 aliases:
   - /series/ai-driven-playbook/executive-summary/

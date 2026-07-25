@@ -106,6 +106,22 @@ apple_touch_icon = "/apple-touch-icon.png"
     url = "https://wiki.tanhdev.com/"
     weight = 20
 
+  [[menu.footer]]
+    identifier = "privacy"
+    name = "Privacy Policy"
+    url = "/privacy-policy/"
+    weight = 10
+  [[menu.footer]]
+    identifier = "terms"
+    name = "Terms of Service"
+    url = "/terms-of-service/"
+    weight = 20
+  [[menu.footer]]
+    identifier = "legal"
+    name = "Legal Notice"
+    url = "/legal-notice/"
+    weight = 30
+
 [mediaTypes]
   [mediaTypes."text/plain"]
     suffixes = ["txt"]

@@ -20,7 +20,7 @@ TocOpen: true
 
 
 
-# Part 6 — Enterprise AI Code Governance & Compliance
+## Part 6 — Enterprise AI Code Governance & Compliance
 
 
 As engineering organizations scale their use of AI code assistants (Cursor, Copilot, Claude Dev) across hundreds of developers, chief technology officers (CTOs) and compliance officers must establish **Enterprise AI Code Governance**.

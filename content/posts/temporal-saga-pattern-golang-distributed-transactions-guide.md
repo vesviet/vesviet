@@ -1,11 +1,11 @@
 ---
-title: "Implementing Distributed Transactions in Go with Temporal Saga Pattern"
+title: "Distributed Transactions in Go with Temporal Saga Pattern"
 slug: "temporal-saga-pattern-golang-distributed-transactions-guide"
 author: "Lê Tuấn Anh"
 date: "2026-07-23T08:00:00+07:00"
 lastmod: "2026-07-23T08:00:00+07:00"
 draft: false
-description: "Deep-dive architectural guide to implementing FinTech distributed transactions in Golang using Temporal Sagas, compensations, network partition handling, and idempotency."
+description: "Deep-dive architectural guide to implementing FinTech distributed transactions in Golang using Temporal Sagas, compensations, and event sourcing."
 ShowToc: true
 TocOpen: true
 mermaid: true

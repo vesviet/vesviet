@@ -21,11 +21,10 @@ tags:
   - "C10M"
   - "API Gateway"
 aliases:
-  - /series/high-concurrency-systems/article_1_system_design/
   - /series/high-concurrency-systems/article_6_api_gateway/
   - /series/high-concurrency-systems/how-systems-handle-c10m/
   - /series/high-concurrency-systems/api-gateway-vs-service-mesh/
-description: "Reference architecture for preventing flash-sale overload: C10M networking principles, API Gateway vs Service Mesh edge boundaries, rate limiting, Redis inventory reservations, and resilient checkout queues."
+description: "Architecture case study of Shopee 11.11 Flash Sales: Kafka peak shaving, Redis Lua rate limiting, TiDB sharding, and zero-downtime scaling."
 ShowToc: true
 TocOpen: true
 cover:

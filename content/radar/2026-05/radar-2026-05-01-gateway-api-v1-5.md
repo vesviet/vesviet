@@ -18,7 +18,7 @@ description: "Deep-dive analysis of Kubernetes Gateway API v1.5, ListenerSet pla
 canonicalURL: "https://tanhdev.com/radar/2026-05/radar-2026-05-01-gateway-api-v1-5/"
 ---
 
-# Gateway API v1.5 & Ingress2Gateway: The Future of K8s Networking
+## Gateway API v1.5 & Ingress2Gateway: The Future of K8s Networking
 
 If your ingress layer still depends on a 400-line manifest full of controller-specific annotations, you do not have a clean networking platform. You have institutional memory encoded as YAML archaeology.
 

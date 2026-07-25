@@ -28,7 +28,7 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/golang-goroutine-pool-errgroup-worker/"
 ---
 
-# Golang Goroutine Pool Patterns: errgroup & Backpressure
+## Golang Goroutine Pool Patterns: errgroup & Backpressure
 
 - Preventing goroutine leaks in high-concurrency worker pools using errgroup.
 - Writing robust worker pools that propagate context cancellation to all active goroutines.

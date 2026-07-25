@@ -23,7 +23,7 @@ image: "images/posts/golang-microservices-cover.png"
 
 > **Prerequisite:** Before reading this part, please review [Part 3: DDD Module Boundaries](/series/modular-monolith-architecture/part-3-ddd-module-boundaries/).
 
-# Part 4: CI/CD Simplified & The Power of Atomic Deployments
+## Part 4: CI/CD Simplified & The Power of Atomic Deployments
 
 > **Executive Summary & Quick Answer**: Large monoliths can avoid slow CI/CD pipelines by implementing monorepo caching tools like Bazel, Go build caches, and selective test execution based on git diffs. Shopify proves that deploying a massive monolithic codebase multiple times a day is achievable through atomic migrations and automated pipeline optimizations.
 >

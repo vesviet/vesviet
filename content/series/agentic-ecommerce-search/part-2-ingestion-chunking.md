@@ -20,7 +20,7 @@ TocOpen: true
 
 
 
-# Data Ingestion & Atomic Chunking Product Data: Semantic Catalog Pipelines
+## Data Ingestion & Atomic Chunking Product Data: Semantic Catalog Pipelines
 
 
 In general document RAG applications, text splitting divides long articles into arbitrary token chunks (e.g., 512 tokens with 50-token overlap).

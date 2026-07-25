@@ -20,7 +20,7 @@ TocOpen: true
 
 
 
-# Part 7 — Migration Playbook to Generative UI: Legacy to AI-Native Frontend
+## Part 7 — Migration Playbook to Generative UI: Legacy to AI-Native Frontend
 
 > **Executive Summary & Quick Answer**: Migrating a legacy React codebase to a Generative UI architecture does not require a complete application rewrite. By following a structured 4-Phase Strangler Fig Migration Playbook—Auditing UI Components (Phase 1), Extracting Component Registry Schemas (Phase 2), Deploying Edge SSE Stream Routers (Phase 3), and Incrementally Rolling Out Generative Views (Phase 4)—engineering teams migrate legacy applications safely without downtime.
 >
@@ -219,12 +219,12 @@ Continuous integration for a Generative UI migration executes automated Playwrig
 **Answer-first:** Review the complete Generative UI series from core concepts to enterprise reference repository migration.
 
 - [Executive Summary — The Shift to Generative UI](/series/generative-ui-architecture/executive-summary/)
-- [Part 1 — Beyond Chatbots: Dynamic Component Rendering](/series/generative-ui-architecture/part-1-beyond-chatbots/)
-- [Part 2 — State Management for Generative UI](/series/generative-ui-architecture/part-2-state-management/)
-- [Part 3 — Component Registry & JSON Schema Protocol](/series/generative-ui-architecture/part-3-component-registry/)
-- [Part 4 — Generative UI Security & Accessibility](/series/generative-ui-architecture/part-4-security-a11y/)
-- [Part 5 — Human-in-the-Loop Workflows & Approvals](/series/generative-ui-architecture/part-5-human-in-the-loop/)
-- [Part 6 — Edge Rendering & E2E Testing for Dynamic UIs](/series/generative-ui-architecture/part-6-e2e-testing-edge/)
+- [Part 1 — Beyond Chatbots: Dynamic Component Rendering](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 2 — State Management for Generative UI](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 3 — Component Registry & JSON Schema Protocol](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 4 — Generative UI Security & Accessibility](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 5 — Human-in-the-Loop Workflows & Approvals](/posts/generative-ui-with-mcp-ai-native-frontend/)
+- [Part 6 — Edge Rendering & E2E Testing for Dynamic UIs](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Bonus — The 90-Day Transition Blueprint](/series/ai-driven-engineer/bonus-transition-path/)
 
 ## Architectural Context & Pillar References

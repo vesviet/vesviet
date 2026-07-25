@@ -21,7 +21,7 @@ image: "images/posts/golang-microservices-cover.png"
 
 > **Prerequisite:** Before reading this part, please review [Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure](/series/modular-monolith-architecture/part-0-executive-summary/).
 
-# Part 1: Architectural Decision Framework
+## Part 1: Architectural Decision Framework
 
 > **Executive Summary & Quick Answer**: Deciding between a Modular Monolith and Microservices depends on organizational scale, transaction consistency requirements, and latency limits. Teams with under 50 developers should build a modular monolith to avoid the administrative and operational "microservice premium", using direct memory function calls to bypass network latency and complex distributed transaction protocols.
 >

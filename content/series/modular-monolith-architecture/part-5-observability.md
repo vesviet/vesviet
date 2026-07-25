@@ -23,7 +23,7 @@ image: "images/posts/golang-microservices-cover.png"
 
 > **Prerequisite:** Before reading this part, please review [Part 4: CI/CD Simplified](/series/modular-monolith-architecture/part-4-cicd-simplified/).
 
-# Part 5: Observability in Memory – When Everything Shares a Single Call Stack
+## Part 5: Observability in Memory – When Everything Shares a Single Call Stack
 
 > **Executive Summary & Quick Answer**: Observability in a Modular Monolith is highly efficient because trace contexts propagate in-memory via CPU registers, avoiding distributed HTTP headers. By configuring OpenTelemetry trace scopes to match module package boundaries and leveraging local logs, engineers can capture complete transaction traces with minimal performance overhead.
 >

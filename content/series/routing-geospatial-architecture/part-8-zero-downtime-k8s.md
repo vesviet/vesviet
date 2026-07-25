@@ -26,7 +26,7 @@ image: "images/posts/graphhopper-cover.png"
 
 > **Prerequisite:** Before reading this final part, review [Part 7: Load Testing & Performance Tuning](/series/routing-geospatial-architecture/part-7-load-testing-production/).
 
-# Part 8: Zero-Downtime Map Updates & Multi-Region Kubernetes
+## Part 8: Zero-Downtime Map Updates & Multi-Region Kubernetes
 
 > **Executive Summary & Quick Answer**: Deploying stateful routing engines to Kubernetes without downtime requires decoupling map graph compilation into offline jobs, hydrating Pod cache volumes via `initContainers`, and executing atomic Blue-Green traffic cuts via Argo Rollouts to preserve Redis semantic cache consistency.
 >

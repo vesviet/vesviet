@@ -20,7 +20,7 @@ description: "Production guide to real-time change data capture streaming and fe
 
 
 
-# Part 4 — Real-time Streaming CDC & Federated GraphRAG Architecture
+## Part 4 — Real-time Streaming CDC & Federated GraphRAG Architecture
 
 
 In mission-critical enterprise environments—such as financial trading desks, e-commerce order management, and medical health record platforms—data changes continuously. A product price adjustment, a contract terms revision, or a inventory status update occurs thousands of times per minute.

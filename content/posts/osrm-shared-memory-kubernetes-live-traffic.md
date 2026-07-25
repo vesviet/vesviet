@@ -1,6 +1,7 @@
 ---
-title: "OSRM Shared Memory on Kubernetes: Live Traffic Updates with Zero-Downtime"
+title: "OSRM Shared Memory on Kubernetes: Zero-Downtime Updates"
 slug: "osrm-shared-memory-kubernetes-live-traffic"
+description: "Optimize OSRM on Kubernetes with POSIX shared memory. Learn how osrm-datastore enables zero-downtime live traffic updates and sub-2ms routing performance."
 author: "Lê Tuấn Anh"
 date: "2026-05-15T15:00:00+07:00"
 lastmod: "2026-07-23T10:00:00+07:00"
@@ -16,7 +17,7 @@ cover:
 mermaid: true
 ---
 
-# OSRM Shared Memory on Kubernetes: Live Traffic Updates with Zero-Downtime
+## OSRM Shared Memory on Kubernetes: Live Traffic Updates with Zero-Downtime
 
 > **Executive Summary & Quick Answer**: Deploying Open Source Routing Machine (OSRM) on Kubernetes using `ipc: host` shared memory enables live traffic edge-weight updates without restarting routing engines. This setup delivers sub-2ms P99 distance matrix calculations and eliminates RAM duplication across container pods.
 >

@@ -20,7 +20,7 @@ TocOpen: true
 
 
 
-# Part 2 — Codebase Context Engineering for AI Reviewers
+## Part 2 — Codebase Context Engineering for AI Reviewers
 
 
 When human senior engineers perform a code review, they do not read a pull request git diff in complete isolation. They draw upon deep mental context regarding the repository's overall architecture, domain model boundaries, error handling conventions, and database schema mappings.
@@ -172,4 +172,4 @@ Advance to Part 3 to analyze the AI bug taxonomy including hallucinations and ph
 - [Executive Summary — The Vibe Coding Revolution](/series/ai-code-review-vibe-coding/executive-summary/)
 - [Part 1 — Vibe Coding & Non-Technical Founders](/series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical/)
 - [Part 3 — The AI Bug Taxonomy: Hallucinations & Phantom APIs](/series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy/)
-- [Part 1 — Context Engineering: DDD for AI](/series/ai-driven-playbook/part-1-context-engineering-ddd/)
+- **[Part 1 — Context Engineering: DDD for AI](/posts/ai-native-frontend-architecture-predictions-2028/)**

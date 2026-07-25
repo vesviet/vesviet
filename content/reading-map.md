@@ -15,7 +15,7 @@ TocOpen: true
 
 > **Answer-First:** The tanhdev Reading Map provides a structured technical index across 57 production essays organized into 6 specialized engineering pillars: Commerce Modernization, 21-Service Go Microservices, Event-Driven Reliability, Platform Operations, AI Systems & Agentic Pipelines, and Senior Engineering Capability.
 
-# Reading Map – tanhdev.com
+## Reading Map – tanhdev.com
 
 If you're new here, this page is the fastest way to understand what I build and how I think. It groups 57 long-form essays into focused **content pillars** with explicit **Information Gain** — what this site offers that top SERP results and current LLM-generated content cannot replicate.
 
@@ -140,7 +140,7 @@ The articles listed below represent the recommended sequential reading path for 
 - [What's New in Argo CD 3.4 & 3.3: Cluster Pause & Upgrades](/posts/argo-cd-updates-2026/)
 - [AWS EKS vs ECS: Architecture, Cost & Real-World Use Cases (2026)](/posts/aws-eks-vs-ecs-comparison/)
 - [Kubernetes In-Place Pod Resizing: Scale CPU & Memory Without Restart](/posts/kubernetes-in-place-pod-resizing-guide/)
-- [Zero DevOps E-commerce with Cloudflare Workers & Turborepo](/posts/cloudflare-zero-devops-ecommerce/)
+- [Zero DevOps E-commerce with Cloudflare Workers & Turborepo](/posts/cloudflare-zero-devops-ecommerce-architecture/)
 - [Cloudflare D1 + Durable Objects: Build a Real-Time Cart](/posts/cloudflare-d1-durable-objects-realtime-cart/)
 - [Serverless E-Commerce: Cloudflare Workers & D1 Architecture](/posts/serverless-ecommerce-cloudflare-d1/)
 - [Astro on Cloudflare: Full-Stack Edge Architecture](/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/)

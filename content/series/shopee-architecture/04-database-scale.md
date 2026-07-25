@@ -20,7 +20,7 @@ image: "images/posts/shopee-flash-sale-cover.png"
 ---
 > **Answer-First:** Shopee scales its relational database layer past single-node MySQL limitations by migrating to TiDB Distributed SQL, separating stateless compute (TiDB) from stateful storage (TiKV) to achieve transparent horizontal scaling and zero-downtime schema evolution.
 
-# Chapter 4: Database Scale - The Rise of TiDB and NewSQL
+## Chapter 4: Database Scale - The Rise of TiDB and NewSQL
 
 > **Executive Summary & Quick Answer**: Shopee scales its relational database layer past single-node MySQL limitations by migrating to TiDB Distributed SQL, separating stateless compute (TiDB) from stateful storage (TiKV) to achieve transparent horizontal scaling.
 

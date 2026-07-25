@@ -8,7 +8,7 @@ series_order: 8
 tags: ["golang", "distributed lock", "redis", "redlock", "zookeeper"]
 mermaid: true
 slug: "distributed-locking-redlock-zookeeper"
-description: "Master distributed synchronization in Go by comparing Redis Redlock algorithms against strongly consistent Apache ZooKeeper lease locks in high-scale systems."
+description: "Master distributed synchronization in Go by comparing Redis Redlock algorithms against strongly consistent Apache ZooKeeper lease locks."
 ShowToc: true
 TocOpen: true
 aliases:

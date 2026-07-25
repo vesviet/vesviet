@@ -2,7 +2,7 @@
 title: "Modular Monolith Guide: Prime Video & Monolith Revival"
 date: "2026-07-03T10:00:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
-description: "Discover why Amazon Prime Video cut infrastructure costs by 90% after moving from Microservices back to a Modular Monolith architecture in production systems."
+description: "Discover why Amazon Prime Video cut infrastructure costs by 90% after moving from Microservices back to a Modular Monolith architecture."
 slug: "executive-summary-amazon-prime-video-monolith"
 aliases: ["/series/modular-monolith-architecture/part-0-executive-summary/"]
 tags: ["Modular Monolith", "AWS", "Serverless", "FinOps", "Amazon Prime"]
@@ -21,7 +21,7 @@ image: "images/posts/golang-microservices-cover.png"
 
 > **Prerequisite:** This is the executive summary and introductory overview of the **Modular Monolith Architecture** series. No prior reading is required to start here.
 
-# Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure Costs
+## Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure Costs
 
 > **Executive Summary & Quick Answer**: Amazon Prime Video reduced infrastructure costs by 90% by consolidating their audio/video monitoring service from serverless AWS Lambda/Step Functions into a single modular monolith. This transition eliminated high-frequency state transition fees and S3 network egress bottlenecks, demonstrating that in-memory data processing outperforms distributed microservices for high-throughput workloads.
 >

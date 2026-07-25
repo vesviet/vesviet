@@ -13,7 +13,7 @@ cover:
   relative: false
 mermaid: true
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-1-protocol/"
-description: "Exhaustive technical summary and production engineering guide for Part 1 — MCP Core Protocol Architecture and Transport Layer Evolution for scalable AI systems."
+description: "Technical summary and production engineering guide for Part 1 — MCP Core Protocol Architecture and Transport Layer Evolution in Go microservices."
 ShowToc: true
 TocOpen: true
 image: "images/posts/mcp-engineering-in-production-cover.png"
@@ -21,7 +21,7 @@ image: "images/posts/mcp-engineering-in-production-cover.png"
 
 
 
-# Part 1 — MCP Core Protocol Architecture & Transport Evolution
+## Part 1 — MCP Core Protocol Architecture & Transport Evolution
 
 > **Executive Summary & Quick Answer**: Model Context Protocol (MCP) relies on dual-transport abstractions (`stdio` for zero-overhead local process IPC and `SSE` for remote network RPCs) transmitting JSON-RPC 2.0 messages. Understanding the protocol state machine ensures sub-20ms message framing across distributed AI agent tool servers.
 >

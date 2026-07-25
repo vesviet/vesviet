@@ -5,7 +5,7 @@ author: "Lê Tuấn Anh"
 date: "2026-06-11T21:00:00+07:00"
 lastmod: "2026-07-18T07:43:55+07:00"
 draft: false
-description: "Production guide to Golang gRPC microservices: Protobuf service design, mTLS, interceptor middleware, graceful shutdown, health checks, and Docker deployment."
+description: "Production guide to Golang gRPC microservices: Protobuf service design, mTLS, interceptor middleware, graceful shutdown, and Docker deployment."
 categories:
   - "Architecture"
   - "Golang"
@@ -809,7 +809,7 @@ Use a benchmark table with the measured environment rather than treating the fol
 - Request/response schemas, compression, payload distribution, connection reuse, and client behavior.
 - Handler work, downstream dependencies, benchmark command, warm-up time, duration, and percentile calculation.
 
-The `driver.v1.GetDriver` unary RPC with a 64-byte Protobuf response is a useful low-overhead test case, but it does not predict a business endpoint with authorization, database access, or external calls. For a broader comparison of HTTP runtimes, check out our [High-Throughput Go Framework Benchmarks]({{< ref "high-throughput-go-framework-benchmarks-gin-fiber-kratos.md" >}})).
+The `driver.v1.GetDriver` unary RPC with a 64-byte Protobuf response is a useful low-overhead test case, but it does not predict a business endpoint with authorization, database access, or external calls. For a broader comparison of HTTP runtimes, check out our [High-Throughput Go Framework Benchmarks](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/).
 
 ---
 

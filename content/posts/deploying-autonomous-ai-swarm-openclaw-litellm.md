@@ -1,6 +1,7 @@
 ---
 title: "Production Agentic AI Swarm: OpenClaw & LiteLLM"
 slug: "deploying-autonomous-ai-swarm-openclaw-litellm"
+description: "Deploy a production agentic AI swarm with OpenClaw orchestration and LiteLLM proxy gateway. Implement multi-provider failover and Docker sandboxing."
 author: "Lê Tuấn Anh"
 date: "2026-05-30T10:00:00+07:00"
 lastmod: "2026-07-23T10:00:00+07:00"
@@ -16,7 +17,7 @@ cover:
 mermaid: true
 ---
 
-# Production Agentic AI Swarm: OpenClaw & LiteLLM
+## Production Agentic AI Swarm: OpenClaw & LiteLLM
 
 > **Executive Summary & Quick Answer**: Production agentic AI swarms deploy OpenClaw orchestration backed by LiteLLM proxy gateways for multi-provider fallback and security isolation. This architecture reduces API token expenditure by 55% via local SLM routing and ensures continuous uptime through automated key rotation and docker container sandboxing.
 >

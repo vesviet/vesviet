@@ -18,7 +18,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-# Part 9 — Building AI-Native Architecture
+## Part 9 — Building AI-Native Architecture
 
 > **Executive Summary & Quick Answer**: Building an AI-Native Architecture requires refactoring traditional backend systems from static monolithic REST endpoints into modular Domain-Driven Design (DDD) bounded contexts exposed via standardized AI protocols (MCP / gRPC). This enables autonomous agents to inspect, reason over, and execute application capabilities dynamically under zero-trust security.
 >

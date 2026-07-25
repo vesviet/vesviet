@@ -18,7 +18,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-# Why E-commerce Needs Agentic Search? The Disruption of Keyword Queries
+## Why E-commerce Needs Agentic Search? The Disruption of Keyword Queries
 
 > **Executive Summary & Quick Answer**: Traditional keyword-based e-commerce search (Elasticsearch / Solr) fails on complex, multi-attribute natural language user queries (e.g., *"waterproof trail running shoes under $150 for wide feet"*). Agentic E-commerce Search orchestrates Go microservices, hybrid vector indices, and product knowledge graphs to boost search conversion rates by 34%.
 >

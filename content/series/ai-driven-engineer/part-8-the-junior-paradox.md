@@ -20,7 +20,7 @@ TocOpen: true
 
 
 
-# Part 8 — The Junior Engineer Paradox: Upskilling in AI Era
+## Part 8 — The Junior Engineer Paradox: Upskilling in AI Era
 
 The "Junior Engineer Paradox" describes how AI code tools automate entry-level syntax tasks, threatening to eliminate the traditional apprenticeship pipeline used to train senior architects. Junior engineers overcome this bottleneck by using AI as an interactive architectural mentor, accelerating their progression from syntax typist to systems designer in half the historical time.
 

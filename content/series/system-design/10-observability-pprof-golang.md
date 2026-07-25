@@ -1,5 +1,5 @@
 ---
-title: "Go Observability & pprof: Memory Leaks & Tracing | Go Production Guide"
+title: "Go Observability & pprof: Memory Leaks & Tracing Guide"
 slug: "10-observability-pprof-golang"
 date: "2026-06-18T13:30:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"

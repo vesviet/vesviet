@@ -18,7 +18,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-# Part 4 — Blurring SDLC Lines & QC Revolution
+## Part 4 — Blurring SDLC Lines & QC Revolution
 
 > **Executive Summary & Quick Answer**: The traditional software development lifecycle (SDLC)—characterized by strict wall-separated handoffs between Business Analysts, Developers, QA Testers, and DevOps Engineers—is obsolete. AI automation collapses these boundaries into a unified Quality Control (QC) feedback loop where developers execute real-time AI test generation, security scanning, and infrastructure synthesis during active coding.
 >

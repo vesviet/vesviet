@@ -18,7 +18,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-# Executive Summary: The Disruption of Naive RAG and the GraphRAG Era
+## Executive Summary: The Disruption of Naive RAG and the GraphRAG Era
 
 > **Executive Summary & Quick Answer**: Naive RAG collapses in enterprise environments due to relational blindness, unstructured document chunk destruction, and lack of fine-grained access control. Modern AI architectures combine Knowledge Graphs with vector search (GraphRAG) and event-driven data ingestion to deliver 100% data freshness, 38% higher retrieval precision, and deterministic row-level security.
 >

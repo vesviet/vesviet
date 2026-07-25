@@ -1,6 +1,6 @@
 ---
 title: "Part 7: Load Testing and Performance Tuning for Production"
-description: "How to survive 20,000 requests per second in production: Linux Kernel network tuning, K6 Coordinated Omission, and Golang CPU profiling for high scale systems."
+description: "Survive 20,000 RPS in production: Linux Kernel network tuning, K6 Coordinated Omission, and Golang CPU profiling for high-concurrency systems."
 date: "2026-06-15T07:20:00+07:00"
 lastmod: "2026-06-15T07:20:00+07:00"
 draft: false
@@ -26,7 +26,7 @@ image: "images/posts/graphhopper-cover.png"
 
 > **Prerequisite:** Before starting load testing, review [Part 6: Location Clustering & Semantic Caching](/series/routing-geospatial-architecture/part-6-redis-semantic-caching/).
 
-# Part 7: Load Testing and Performance Tuning for Production
+## Part 7: Load Testing and Performance Tuning for Production
 
 > **Executive Summary & Quick Answer**: Load testing a high-scale routing architecture requires avoiding Coordinated Omission by using K6 open-arrival-rate models (`executor: 'constant-arrival-rate'`), tuning the Linux kernel TCP stack (`sysctl net.core.somaxconn=65535`), and profiling Go GC garbage collections using `pprof`.
 >

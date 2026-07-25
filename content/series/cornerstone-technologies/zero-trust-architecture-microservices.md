@@ -1,13 +1,14 @@
 ---
-title: "Zero-Trust Architecture cho Microservices: Toàn tập mTLS & Go"
+title: "Zero-Trust Architecture cho Microservices: mTLS & Go Guide"
 slug: zero-trust-architecture-microservices
 description: "Hướng dẫn thiết kế Zero-Trust Architecture cho Microservices. Triển khai mTLS với SPIFFE/SPIRE, Identity Propagation, OAuth 2.1 và code Go production."
 author: "Lê Tuấn Anh (Senior Go Engineer)"
+date: "2026-05-10"
 series: "Cornerstone Technologies"
 tags: ["Zero-Trust", "Microservices", "mTLS", "Golang", "SPIFFE", "OAuth2.1"]
 ---
 
-# Zero-Trust Architecture cho Microservices: Toàn tập mTLS & Go
+## Zero-Trust Architecture cho Microservices: Toàn tập mTLS & Go
 
 Với vai trò là một kỹ sư hệ thống làm việc với các hệ thống high-concurrency bằng Golang, tôi đã từng chứng kiến nhiều thiết kế mạng nội bộ (internal network) dựa hoàn toàn vào chu vi bảo vệ (perimeter defense) như VPN hay Firewall tĩnh. Tuy nhiên, trong kỷ nguyên Cloud-Native và Microservices, cách tiếp cận này đã bộc lộ những lỗ hổng chết người. Một khi hacker xâm nhập được vào một service bất kỳ, toàn bộ hệ thống bên trong trở thành "mồi ngon" do sự tin tưởng ngầm định (implicit trust) giữa các node. 
 

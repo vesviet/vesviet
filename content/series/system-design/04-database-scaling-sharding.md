@@ -24,7 +24,7 @@ image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 
 > **Prerequisite:** Part 4 of the [System Design Masterclass](/series/system-design/). Read [Part 3: Caching Strategies](/series/system-design/03-caching-strategies-redis-golang/) first.
 
-# Database Sharding in Go — TiDB, PostgreSQL & Connection Pools
+## Database Sharding in Go — TiDB, PostgreSQL & Connection Pools
 
 > **Executive Summary & Quick Answer**: Horizontal database sharding partitions SQL tables across independent database nodes using hash or range shard keys. In Go services, combining application-level shard routing with tuned `database/sql` connection pools (`SetMaxOpenConns`, `SetMaxIdleConns`) prevents RAM exhaustion and write bottlenecks.
 >

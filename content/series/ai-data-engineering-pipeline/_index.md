@@ -6,7 +6,7 @@ lastmod: "2026-05-17T12:00:00+07:00"
 draft: false
 weight: 40
 tags: ["Data Engineering", "GraphRAG", "Vector Database", "RAG", "LLM", "Architecture"]
-description: "Build enterprise AI data pipelines: GraphRAG, multimodal ingestion, semantic caching, streaming CDC, security guardrails, vLLM inference, and production Evals."
+description: "Build enterprise AI data pipelines: GraphRAG, multimodal ingestion, semantic caching, streaming CDC, security guardrails, and vLLM inference."
 categories: ["Data Engineering", "AI/ML"]
 ShowToc: true
 TocOpen: true

@@ -1,6 +1,7 @@
 ---
 title: "How Databases Shaped Go, PHP, Node.js, and Rust"
 slug: "database-impact-on-programming-languages"
+description: "Discover how database connection limits and I/O bottlenecks shaped the concurrency models, ORMs, and async runtimes of Go, PHP, Node.js, and Rust."
 author: "Lê Tuấn Anh"
 date: "2026-05-25T14:00:00+07:00"
 lastmod: "2026-07-23T10:00:00+07:00"
@@ -16,7 +17,7 @@ cover:
 mermaid: true
 ---
 
-# How Databases Shaped Go, PHP, Node.js, and Rust
+## How Databases Shaped Go, PHP, Node.js, and Rust
 
 > **Executive Summary & Quick Answer**: Database connection models directly dictated language runtime concurrency features. PHP evolved Swoole/FrankenPHP to bypass FPM connection startup latency, Go built the `database/sql` multiplexed connection pool into its standard library, and Rust leveraged async/await ownership to eliminate runtime GC overhead during database I/O.
 >

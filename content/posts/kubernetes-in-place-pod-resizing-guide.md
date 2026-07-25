@@ -5,7 +5,7 @@ author: "Lê Tuấn Anh"
 date: "2026-06-12T14:00:00+07:00"
 lastmod: "2026-07-08T18:21:00+07:00"
 draft: false
-description: "Kubernetes in-place pod resizing guide: verify version and provider support, use safe resource policies, and validate VPA behavior before production rollout."
+description: "Kubernetes in-place pod resizing guide: verify version support, configure safe resource policies, and validate VPA behavior before production rollout."
 ShowToc: true
 TocOpen: true
 mermaid: true

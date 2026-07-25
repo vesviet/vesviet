@@ -20,7 +20,7 @@ TocOpen: true
 
 
 
-# Part 5 — The Boardroom Perspective: AI Security, Risk & Privacy
+## Part 5 — The Boardroom Perspective: AI Security, Risk & Privacy
 
 Enterprise Boards of Directors (BoD) prioritize three critical AI risk categories: proprietary IP leakage, regulatory non-compliance (EU AI Act / SOC2 / HIPAA), and copyright liability. Establishing a Zero Data Retention (ZDR) gateway paired with automated PII masking ensures AI adoption proceeds safely without exposing corporate IP or customer data.
 
@@ -168,4 +168,4 @@ Advance to Part 6 to learn how to transition from individual coding to multi-age
 - [Part 4 — Blurring SDLC Lines & QC Revolution](/series/ai-driven-engineer/part-4-blurring-sdlc-lines-and-qc-revolution/)
 - [Part 7 — System Design Survival: Architectural Shield](/series/ai-driven-engineer/part-7-system-design-survival/)
 - [Part 5 — Enterprise Security, RBAC & Data Poisoning Defense](/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/)
-- [Part 7 — AI Security Engineering](/series/ai-driven-playbook/part-7-ai-security-engineering/)
+- [Part 7 — AI Security Engineering](/series/ai-driven-playbook/part-7-ai-security-engineering/)

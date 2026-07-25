@@ -7,7 +7,7 @@ lastmod: "2026-07-23T13:34:42+07:00"
 draft: false
 series: ["magento-migration-vietnam"]
 mermaid: true
-description: "MACH migration hard lessons: Strangler Fig via Envoy, Debezium CDC double-write, Redis BFF locking, Rush monorepo, Kratos v2 Go architecture, and OpenTelemetry from day one."
+description: "Composable commerce migration lessons: Strangler Fig via Envoy, Debezium CDC double-write, Redis BFF locking, Rush monorepo, and Kratos Go architecture."
 categories:
   - "Architecture"
   - "E-Commerce"

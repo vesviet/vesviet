@@ -26,7 +26,7 @@ image: "images/posts/graphhopper-cover.png"
 
 > **Prerequisite:** Before reading this part, review [Part 5: Route Visualization UI](/series/routing-geospatial-architecture/part-5-visualization-ui/).
 
-# Part 6: Location Clustering with Uber H3 & Redis Semantic Caching
+## Part 6: Location Clustering with Uber H3 & Redis Semantic Caching
 
 > **Executive Summary & Quick Answer**: Semantic caching transforms continuous floating-point GPS coordinates into discrete Uber H3 hexagonal keys (Resolution 8/9), increasing cache hit rates from 0% to over 80%. Combining H3 spatial keys with Redis MGET pipelines and XFetch early recomputation prevents cache stampedes and lowers matrix latency to <2ms.
 >

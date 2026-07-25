@@ -22,7 +22,7 @@ image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 
 > **Prerequisite:** This is Part 1 of the [System Design Masterclass](/series/system-design/) series. Familiarity with basic distributed systems concepts and Go syntax is assumed.
 
-# Go System Design: CAP, PACELC & Clean Architecture Primer
+## Go System Design: CAP, PACELC & Clean Architecture Primer
 
 > **Executive Summary & Quick Answer**: System design in Go balances CAP/PACELC trade-offs across consistency, availability, and latency. Clean Architecture isolates business logic behind Go interfaces while dependency injection decouples domain layers from database and transport protocols.
 >

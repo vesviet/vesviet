@@ -34,7 +34,7 @@ graph TD
     D -->|System Governance| G[High-Impact System Design & ROI]
 ```
 
-# AI-Driven Engineer: From Code Typist to Architect
+## AI-Driven Engineer: From Code Typist to Architect
 
 This series is for **every software engineer** — from Freshers who are confused by the pace of AI evolution, to Seniors looking to upgrade their value in the eyes of businesses and clients.
 
@@ -179,4 +179,4 @@ func ExecuteOperation(ctx context.Context, cfg SystemConfig, itemID string) erro
 func processItem(ctx context.Context, id string) error {
 	return nil
 }
-```
+```

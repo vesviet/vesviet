@@ -1,10 +1,10 @@
 ---
-title: "Shopee Architecture Masterclass: Flash Sale Scale | Go Production Guide"
+title: "Shopee Architecture Masterclass: Flash Sale Scaling in Go"
 date: "2026-05-05T08:00:00+07:00"
 lastmod: "2026-05-05T08:00:00+07:00"
 draft: false
 weight: 140
-description: "A structured architectural series on how Shopee evolved its backend systems to handle extreme high concurrency during 11.11 Flash Sales in production systems."
+description: "Structured architectural series on how Shopee evolved its backend systems to handle extreme high concurrency during 11.11 Flash Sales in production."
 ShowToc: true
 TocOpen: true
 cover:

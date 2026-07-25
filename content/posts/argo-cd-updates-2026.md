@@ -1,6 +1,7 @@
 ---
-title: "Argo CD 3.4 & 3.3 Guide: GitOps Upgrades & Cluster Pause (2026)"
+title: "Argo CD 3.4 & 3.3 Guide: GitOps Upgrades & Cluster Pause"
 slug: "argo-cd-updates-2026"
+description: "Master Argo CD 3.4 & 3.3 updates with native Cluster Pause, Kargo promotion, and breaking changes. Upgrade your Kubernetes GitOps pipeline cleanly."
 author: "Lê Tuấn Anh"
 date: "2026-05-18T09:15:00+07:00"
 lastmod: "2026-07-23T10:00:00+07:00"
@@ -16,7 +17,7 @@ cover:
 mermaid: true
 ---
 
-# Argo CD 3.4 & 3.3 Guide: GitOps Upgrades & Cluster Pause (2026)
+## Argo CD 3.4 & 3.3 Guide: GitOps Upgrades & Cluster Pause (2026)
 
 > **Executive Summary & Quick Answer**: Argo CD 3.4 introduces native Cluster Pause capabilities and native integration with Kargo for event-driven GitOps promotions. This architecture prevents cascading deployment failures during infrastructure incidents and cuts deployment sync drift duration by 60%.
 >

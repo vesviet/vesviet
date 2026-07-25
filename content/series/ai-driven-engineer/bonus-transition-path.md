@@ -20,7 +20,7 @@ TocOpen: true
 
 
 
-# Bonus — The 90-Day Transition Blueprint: From Syntax Typist to AI Systems Architect
+## Bonus — The 90-Day Transition Blueprint: From Syntax Typist to AI Systems Architect
 
 Transitioning from a manual syntax typist to a high-leverage AI Systems Architect requires a structured 90-day upskilling roadmap. By shifting focus across three 30-day phases—Context Engineering & AST Schemas (Month 1), Multi-Agent Swarms & MCP Servers (Month 2), and Distributed System Resilience & Evals (Month 3)—engineers achieve 5x throughput and long-term career durability.
 

@@ -18,7 +18,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-# Part 9 — Agentic Observability: OpenTelemetry, Tracing & Cost Monitoring
+## Part 9 — Agentic Observability: OpenTelemetry, Tracing & Cost Monitoring
 
 
 Debugging traditional microservices involves tracking HTTP status codes and database query latency. Debugging AI agent architectures demands tracking non-deterministic reasoning chains, LLM API token costs, prompt context inflation, and multi-turn tool loops.

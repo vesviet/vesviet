@@ -1,6 +1,6 @@
 ---
 title: "High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos"
-description: "A performance benchmark comparing popular Go web frameworks: Gin, Fiber, and Kratos. Evaluating TPS, latency, and Garbage Collection (GC) tuning under high load."
+description: "Performance benchmark comparing Go web frameworks: Gin, Fiber, and Kratos. Evaluating TPS, latency, allocs, and Garbage Collection (GC) tuning."
 date: "2026-07-17T09:14:00+07:00"
 lastmod: "2026-07-17T09:14:00+07:00"
 slug: "high-throughput-go-framework-benchmarks-gin-fiber-kratos"

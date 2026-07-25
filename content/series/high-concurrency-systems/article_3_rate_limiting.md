@@ -9,7 +9,7 @@ tags: ["golang", "rate limiting", "redis", "gcra"]
 categories: ["High Concurrency", "Rate Limiting"]
 mermaid: true
 slug: "distributed-rate-limiting-redis-gcra"
-description: "Discover why local rate limiters fail in microservices and how Redis Lua scripts powering the GCRA algorithm solve distributed throttling Learn production engin"
+description: "Why local rate limiters fail in microservices and how Redis Lua scripts powering the GCRA algorithm solve distributed throttling at scale."
 ShowToc: true
 TocOpen: true
 cover:
@@ -25,7 +25,7 @@ image: "images/posts/realtime-inventory-cover.png"
 
 > **Prerequisite:** Before reading this chapter, review [Chapter 2: The 3 Caching Vulnerabilities](/series/high-concurrency-systems/article_2_caching/).
 
-# Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm
+## Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm
 
 > **Executive Summary & Quick Answer**: Distributed rate limiting in microservice architectures requires centralized state management in Redis to avoid load-balancer bypasses. Implementing the Generic Cell Rate Algorithm (GCRA) via atomic Lua scripts tracks Theoretical Arrival Times (TAT) using a single 64-bit integer per user key, guaranteeing sub-millisecond execution.
 >

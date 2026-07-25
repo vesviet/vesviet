@@ -20,7 +20,7 @@ TocOpen: true
 
 
 
-# Part 7 — Agentic Memory Systems: Episodic, Semantic & Working Memory Storage
+## Part 7 — Agentic Memory Systems: Episodic, Semantic & Working Memory Storage
 
 
 To act as effective digital partners, enterprise autonomous agents must remember past user decisions, architectural preferences, and historical tool execution results across weeks or months of operation.
