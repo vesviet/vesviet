@@ -1,0 +1,188 @@
+{
+  "contract_type": "seo-content-brief",
+  "brief_id": "2026-07-25-vesviet-temporal-workflow-golang",
+  "created_at": "2026-07-25T09:56:00+07:00",
+  "site": "vesviet",
+  "context": {
+    "url_or_planned_slug": "series/cornerstone-technologies/temporal-workflow-go-architecture",
+    "working_title": "Temporal Workflow with Go: Architecture & Production Determinism",
+    "search_intent": "informational",
+    "secondary_intents": [
+      "commercial"
+    ],
+    "business_outcome": "Establish topical authority in distributed systems and microservices orchestration for Go developers.",
+    "audience": "Senior Backend Engineers scaling microservices and dealing with complex distributed transactions/Sagas.",
+    "ymyl_adjacent": false,
+    "locale": "vi-VN",
+    "content_length_target": 2500
+  },
+  "topical_authority": {
+    "pillar_page_url": "/series/cornerstone-technologies/",
+    "cluster_position": "pillar",
+    "content_freshness_type": "new_topic",
+    "information_gain": "Deep dive into Temporal's execution model (Event Sourcing), strict rules of Go determinism (no goroutines inside workflows), and real-world worker scaling configurations.",
+    "key_entities": [
+      "Temporal",
+      "Workflow",
+      "Golang",
+      "Distributed Systems",
+      "Event Sourcing",
+      "Determinism",
+      "Saga Pattern"
+    ]
+  },
+  "keywords": {
+    "primary": "temporal workflow golang",
+    "secondary": [
+      "temporal architecture",
+      "temporal go sdk",
+      "distributed transactions go",
+      "temporal determinism"
+    ],
+    "cannibalization_check": "Distinct from '08-saga-pattern-distributed-transactions-go.md' which focuses entirely on the Saga pattern rather than Temporal's internal engine architecture.",
+    "serp_notes": "Top results are Temporal's official docs. Lacks deep, experience-based production guides in Vietnamese for Go."
+  },
+  "geo_aeo": {
+    "answer_first_block": "Temporal là một nền tảng orchestration cho microservices sử dụng mô hình Event Sourcing để đảm bảo workflow của bạn có thể phục hồi trạng thái sau khi crash. Trong Go, Temporal Workflow yêu cầu tính Determinism tuyệt đối (không dùng goroutine, rand, hay time native) để engine có thể replay lại chính xác trạng thái thực thi.",
+    "query_fan_out": [
+      "Temporal Workflow hoạt động như thế nào?",
+      "Determinism trong Temporal là gì và tại sao lại quan trọng?",
+      "Cách viết Temporal Workflow bằng Go SDK?",
+      "Sự khác biệt giữa Temporal Workflow và Activity?"
+    ],
+    "answer_format_per_section": [
+      {
+        "h2_heading": "Temporal Architecture: Event Sourcing & Replay Engine",
+        "format": "definition"
+      },
+      {
+        "h2_heading": "Quy tắc sống còn: Workflow Determinism trong Golang",
+        "format": "bullet_list"
+      },
+      {
+        "h2_heading": "Phân biệt Workflow vs Activity",
+        "format": "comparison_table"
+      },
+      {
+        "h2_heading": "Triển khai Temporal Worker & Scale out trong Production",
+        "format": "numbered_steps"
+      },
+      {
+        "h2_heading": "Benchmark Thực tế & Các lỗi thường gặp",
+        "format": "bullet_list"
+      },
+      {
+        "h2_heading": "FAQ: Câu hỏi thường gặp về Temporal",
+        "format": "bullet_list"
+      }
+    ],
+    "fact_density_target": "Tối thiểu 3 benchmark/best-practice configurations về timeouts (ScheduleToClose, StartToClose) và worker tuning.",
+    "ai_overview_presence": "not_checked",
+    "perplexity_citation_patterns": "Citations usually point to docs.temporal.io and GitHub repos.",
+    "ai_bot_crawlability": {
+      "status": "not_checked",
+      "notes": "Ensure robots.txt allows OAI-SearchBot and PerplexityBot."
+    }
+  },
+  "on_page_plan": {
+    "title_options": [
+      {
+        "title": "Temporal Workflow & Golang: Kiến trúc & Production Guide",
+        "char_count": 56
+      },
+      {
+        "title": "Toàn tập Temporal Workflow cho Go: Event Sourcing & Scale Worker",
+        "char_count": 64
+      }
+    ],
+    "meta_options": [
+      {
+        "meta": "Hướng dẫn chuyên sâu kiến trúc Temporal Workflow dành cho Go Developer. Giải thích Determinism, Event Sourcing, và cách scale Temporal Worker trên Production.",
+        "char_count": 160
+      }
+    ],
+    "slug_recommendation": "temporal-workflow-go-architecture",
+    "h2_outline": [
+      {
+        "h2": "Temporal Architecture: Event Sourcing & Replay Engine"
+      },
+      {
+        "h2": "Quy tắc sống còn: Workflow Determinism trong Golang"
+      },
+      {
+        "h2": "Phân biệt Workflow vs Activity"
+      },
+      {
+        "h2": "Triển khai Temporal Worker & Scale out trong Production"
+      },
+      {
+        "h2": "Benchmark Thực tế & Các lỗi thường gặp"
+      },
+      {
+        "h2": "FAQ: Câu hỏi thường gặp về Temporal"
+      }
+    ],
+    "faq_included": true,
+    "faq_questions": [
+      "Tôi có thể gọi API trực tiếp bên trong Temporal Workflow không?",
+      "Làm sao để handle versioning khi update code của Temporal Workflow?",
+      "Temporal có thay thế Kafka được không?"
+    ],
+    "out_of_scope": [
+      "Cài đặt self-hosted Temporal Cluster với Cassandra/PostgreSQL",
+      "Temporal SDK cho Java/TypeScript"
+    ]
+  },
+  "eeat_gates": {
+    "experience_proof_required": "firsthand_account",
+    "experience_proof_notes": "Chia sẻ case study thực tế khi thiết kế Temporal Activity retry policies và lỗi Non-Deterministic Error kinh điển trong Go.",
+    "author_entity": {
+      "required": true,
+      "author_name": "Lê Tuấn Anh (Senior Go Engineer)",
+      "profile_url": "/about/",
+      "credentials": "Kinh nghiệm thiết kế hệ thống High-Concurrency bằng Golang"
+    },
+    "trust_signals": [
+      "source_citations",
+      "verifiable_claims",
+      "expert_quotes"
+    ],
+    "claim_policy": "Mọi ví dụ code Go phải đảm bảo tuân thủ strict determinism rules của Temporal."
+  },
+  "schema_requirements": {
+    "schema_types": [
+      "Article",
+      "FAQPage",
+      "Person"
+    ],
+    "author_schema_required": true,
+    "faq_schema_required": true,
+    "entity_id_strategy": "https://vesviet.com/#organization",
+    "technical_seo_ticket": "Triển khai Article, FAQPage, và Person schema."
+  },
+  "internal_links": [
+    {
+      "anchor": "ứng dụng Saga Pattern bằng Temporal",
+      "target": "/series/system-design/08-saga-pattern-distributed-transactions-go/",
+      "rationale": "Link to the Saga pattern guide."
+    },
+    {
+      "anchor": "Cornerstone Technologies",
+      "target": "/series/cornerstone-technologies/",
+      "rationale": "Link to the pillar series index."
+    },
+    {
+      "anchor": "Event-Driven Architecture",
+      "target": "/series/system-design/12-communication-protocols-microservices/",
+      "rationale": "Link to foundational system design protocols."
+    }
+  ],
+  "handoff": {
+    "next_role": "content-writer",
+    "status": "ready_for_content_writer",
+    "notes": "SEO Brief hoàn thiện cho Temporal Workflow. Yêu cầu viết chặt chẽ về khái niệm Determinism.",
+    "contracts": [
+      "contracts/schemas/seo-content-brief.json"
+    ]
+  }
+}

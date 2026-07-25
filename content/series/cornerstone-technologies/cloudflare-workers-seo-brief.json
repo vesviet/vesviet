@@ -1,0 +1,183 @@
+{
+  "contract_type": "seo-content-brief",
+  "brief_id": "2026-07-25-vesviet-cloudflare-workers-edge",
+  "created_at": "2026-07-25T09:56:00+07:00",
+  "site": "vesviet",
+  "context": {
+    "url_or_planned_slug": "series/cornerstone-technologies/cloudflare-workers-edge-computing",
+    "working_title": "Cloudflare Workers & Edge Computing: A Production Guide",
+    "search_intent": "informational",
+    "secondary_intents": [
+      "commercial"
+    ],
+    "business_outcome": "Build topical authority in modern Cloud infrastructure and low-latency global architectures.",
+    "audience": "Backend Engineers, Full-Stack Developers, and DevOps looking to push compute to the CDN Edge.",
+    "ymyl_adjacent": false,
+    "locale": "vi-VN",
+    "content_length_target": 2500
+  },
+  "topical_authority": {
+    "pillar_page_url": "/series/cornerstone-technologies/",
+    "cluster_position": "pillar",
+    "content_freshness_type": "new_topic",
+    "information_gain": "Deep architectural contrast between V8 Isolates vs Docker Containers/Lambda, Cold Start metrics (0ms), and running Go/Rust via WebAssembly at the Edge.",
+    "key_entities": [
+      "Cloudflare Workers",
+      "Edge Computing",
+      "V8 Isolates",
+      "Serverless",
+      "WebAssembly",
+      "Golang",
+      "Edge Caching"
+    ]
+  },
+  "keywords": {
+    "primary": "cloudflare workers edge computing",
+    "secondary": [
+      "v8 isolates serverless",
+      "cloudflare workers vs aws lambda",
+      "webassembly cloudflare workers",
+      "edge caching"
+    ],
+    "cannibalization_check": "Cloudflare Workers was mentioned in Generative UI for Edge caching, but this is the first deep dive into V8 Isolates and WebAssembly.",
+    "serp_notes": "Top results are from Cloudflare's own blogs. Need a highly technical, engineer-to-engineer breakdown."
+  },
+  "geo_aeo": {
+    "answer_first_block": "Cloudflare Workers là một nền tảng Edge Computing (Serverless) cho phép chạy code trực tiếp tại các trung tâm dữ liệu CDN toàn cầu. Khác với AWS Lambda sử dụng Container, Workers sử dụng V8 Isolates (engine của Chrome) giúp loại bỏ hoàn toàn độ trễ Cold Start (0ms) và tối ưu hóa tài nguyên cực tốt cho các API siêu tốc hoặc Semantic Caching.",
+    "query_fan_out": [
+      "Cloudflare Workers khác gì so với AWS Lambda?",
+      "V8 Isolates là gì?",
+      "Có thể chạy code Go trên Cloudflare Workers không?",
+      "Edge Computing giúp giảm latency như thế nào?"
+    ],
+    "answer_format_per_section": [
+      {
+        "h2_heading": "Edge Computing là gì? Đưa Compute ra sát người dùng",
+        "format": "definition"
+      },
+      {
+        "h2_heading": "Giải phẫu Kiến trúc: V8 Isolates vs Docker Containers",
+        "format": "comparison_table"
+      },
+      {
+        "h2_heading": "Cloudflare Workers vs AWS Lambda: Khi nào dùng cái nào?",
+        "format": "comparison_table"
+      },
+      {
+        "h2_heading": "Chạy Golang/Rust tại Edge bằng WebAssembly (Wasm)",
+        "format": "numbered_steps"
+      },
+      {
+        "h2_heading": "Use Cases Thực tế: Semantic Edge Caching cho AI",
+        "format": "bullet_list"
+      },
+      {
+        "h2_heading": "FAQ: Câu hỏi thường gặp về Cloudflare Workers",
+        "format": "bullet_list"
+      }
+    ],
+    "fact_density_target": "Ít nhất 3 benchmark liên quan đến Cold Start times (ví dụ: <5ms cho V8 Isolates so với 200ms+ cho Lambda).",
+    "ai_overview_presence": "not_checked",
+    "perplexity_citation_patterns": "Thường trích dẫn từ tài liệu Cloudflare và các bài so sánh Serverless trên các forum kĩ thuật.",
+    "ai_bot_crawlability": {
+      "status": "not_checked",
+      "notes": "Ensure robots.txt allows OAI-SearchBot and PerplexityBot."
+    }
+  },
+  "on_page_plan": {
+    "title_options": [
+      {
+        "title": "Cloudflare Workers & Edge Computing: Kiến trúc V8 Isolates",
+        "char_count": 59
+      },
+      {
+        "title": "Toàn tập Cloudflare Workers: Đưa Go & Wasm ra Edge CDN",
+        "char_count": 55
+      }
+    ],
+    "meta_options": [
+      {
+        "meta": "Hướng dẫn chuyên sâu về Cloudflare Workers và Edge Computing. Phân tích V8 Isolates vs AWS Lambda, WebAssembly (Wasm) và cách chạy Go tại CDN Edge.",
+        "char_count": 150
+      }
+    ],
+    "slug_recommendation": "cloudflare-workers-edge-computing",
+    "h2_outline": [
+      {
+        "h2": "Edge Computing là gì? Đưa Compute ra sát người dùng"
+      },
+      {
+        "h2": "Giải phẫu Kiến trúc: V8 Isolates vs Docker Containers"
+      },
+      {
+        "h2": "Cloudflare Workers vs AWS Lambda: Khi nào dùng cái nào?"
+      },
+      {
+        "h2": "Chạy Golang/Rust tại Edge bằng WebAssembly (Wasm)"
+      },
+      {
+        "h2": "Use Cases Thực tế: Semantic Edge Caching cho AI"
+      },
+      {
+        "h2": "FAQ: Câu hỏi thường gặp về Cloudflare Workers"
+      }
+    ],
+    "faq_included": true,
+    "faq_questions": [
+      "Worker KV và Durable Objects khác nhau thế nào?",
+      "Cloudflare Workers có giới hạn thời gian chạy (execution time) không?",
+      "Làm sao để kết nối tới Database truyền thống (PostgreSQL) từ Workers?"
+    ],
+    "out_of_scope": [
+      "Chi tiết về D1 Database SQL.",
+      "Hướng dẫn cấu hình DNS Cloudflare cơ bản."
+    ]
+  },
+  "eeat_gates": {
+    "experience_proof_required": "firsthand_account",
+    "experience_proof_notes": "Cung cấp kinh nghiệm thực tế về giới hạn CPU time (10ms/50ms) của Workers và cách workaround bằng cách đẩy heavy compute xuống backend.",
+    "author_entity": {
+      "required": true,
+      "author_name": "Lê Tuấn Anh (Senior Go Engineer)",
+      "profile_url": "/about/",
+      "credentials": "Kinh nghiệm thiết kế hệ thống Cloud-Native & High-Concurrency"
+    },
+    "trust_signals": [
+      "source_citations",
+      "verifiable_claims",
+      "expert_quotes"
+    ],
+    "claim_policy": "Mọi benchmark về Cold Start phải trích dẫn nguồn uy tín hoặc dựa trên load test thực tế."
+  },
+  "schema_requirements": {
+    "schema_types": [
+      "Article",
+      "FAQPage",
+      "Person"
+    ],
+    "author_schema_required": true,
+    "faq_schema_required": true,
+    "entity_id_strategy": "https://vesviet.com/#organization",
+    "technical_seo_ticket": "Triển khai Article, FAQPage, và Person schema."
+  },
+  "internal_links": [
+    {
+      "anchor": "ứng dụng Semantic Edge Caching",
+      "target": "/series/generative-ui-architecture/part-6-e2e-testing-edge/",
+      "rationale": "Link to Generative UI edge caching part."
+    },
+    {
+      "anchor": "Cornerstone Technologies",
+      "target": "/series/cornerstone-technologies/",
+      "rationale": "Link to the pillar series index."
+    }
+  ],
+  "handoff": {
+    "next_role": "content-writer",
+    "status": "ready_for_content_writer",
+    "notes": "SEO Brief hoàn thiện cho Cloudflare Workers. Hãy nhấn mạnh phần WebAssembly (Wasm) cho Go dev để thu hút đúng đối tượng mục tiêu.",
+    "contracts": [
+      "contracts/schemas/seo-content-brief.json"
+    ]
+  }
+}

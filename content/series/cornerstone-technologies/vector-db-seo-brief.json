@@ -1,0 +1,188 @@
+{
+  "contract_type": "seo-content-brief",
+  "brief_id": "2026-07-25-vesviet-vector-db-rag",
+  "created_at": "2026-07-25T09:56:00+07:00",
+  "site": "vesviet",
+  "context": {
+    "url_or_planned_slug": "series/cornerstone-technologies/vector-database-rag-qdrant-milvus",
+    "working_title": "Vector Databases & RAG: Architecture Deep Dive (Qdrant & Milvus)",
+    "search_intent": "informational",
+    "secondary_intents": [
+      "commercial"
+    ],
+    "business_outcome": "Build topical authority in AI Engineering and infrastructure.",
+    "audience": "Backend Engineers and AI Engineers architecting LLM-powered systems and RAG pipelines.",
+    "ymyl_adjacent": false,
+    "locale": "vi-VN",
+    "content_length_target": 2500
+  },
+  "topical_authority": {
+    "pillar_page_url": "/series/cornerstone-technologies/",
+    "cluster_position": "pillar",
+    "content_freshness_type": "new_topic",
+    "information_gain": "Deep architectural explanation of HNSW algorithms, Rust-based Qdrant internals vs Go-based Milvus, and benchmark data on memory consumption for millions of vectors.",
+    "key_entities": [
+      "Vector Database",
+      "RAG",
+      "Qdrant",
+      "Milvus",
+      "HNSW",
+      "Embeddings",
+      "AI Engineering"
+    ]
+  },
+  "keywords": {
+    "primary": "vector database là gì",
+    "secondary": [
+      "vector database qdrant",
+      "thuật toán hnsw",
+      "xây dựng rag pipeline",
+      "milvus vs qdrant"
+    ],
+    "cannibalization_check": "Vector DB was mentioned in Generative UI and AI pipelines, but this is the first foundational article explaining its internal mechanisms.",
+    "serp_notes": "Top SERP results are mostly high-level marketing content from Pinecone or basic tutorials. Missing in-depth algorithm and memory profiling for production."
+  },
+  "geo_aeo": {
+    "answer_first_block": "Vector Database (Cơ sở dữ liệu Vector) là loại database chuyên dụng để lưu trữ và truy vấn dữ liệu dưới dạng các mảng số (vector embeddings) nhiều chiều. Chúng sử dụng các thuật toán Approximate Nearest Neighbor (như HNSW) để tìm kiếm dữ liệu có ngữ nghĩa tương đồng (semantic search) siêu tốc, làm nền tảng cốt lõi cho các hệ thống RAG và AI Agents.",
+    "query_fan_out": [
+      "Vector Database khác gì với Relational Database?",
+      "Thuật toán HNSW hoạt động như thế nào?",
+      "Nên chọn Qdrant, Milvus hay pgvector?",
+      "Làm sao để tối ưu RAM khi lưu trữ hàng triệu Vectors?"
+    ],
+    "answer_format_per_section": [
+      {
+        "h2_heading": "Vector Database là gì? Trái tim của hệ thống AI",
+        "format": "definition"
+      },
+      {
+        "h2_heading": "Giải phẫu thuật toán HNSW (Hierarchical Navigable Small World)",
+        "format": "bullet_list"
+      },
+      {
+        "h2_heading": "So sánh Qdrant vs Milvus vs pgvector",
+        "format": "comparison_table"
+      },
+      {
+        "h2_heading": "Triển khai RAG Pipeline với Qdrant và Go",
+        "format": "numbered_steps"
+      },
+      {
+        "h2_heading": "Memory Profiling: Tối ưu RAM cho hàng triệu Vectors",
+        "format": "bullet_list"
+      },
+      {
+        "h2_heading": "FAQ: Câu hỏi thường gặp về Vector DB",
+        "format": "bullet_list"
+      }
+    ],
+    "fact_density_target": "Tối thiểu 4 metrics về Memory Footprint (ví dụ: kích thước RAM cần thiết cho 1 triệu vector 1536-dims) và latency benchmark.",
+    "ai_overview_presence": "yes",
+    "perplexity_citation_patterns": "Citations heavily rely on Pinecone docs, Qdrant blogs, and AI engineering tutorials.",
+    "ai_bot_crawlability": {
+      "status": "not_checked",
+      "notes": "Ensure robots.txt allows OAI-SearchBot and PerplexityBot."
+    }
+  },
+  "on_page_plan": {
+    "title_options": [
+      {
+        "title": "Vector Database là gì? Kiến trúc HNSW & RAG Pipeline (Qdrant)",
+        "char_count": 62
+      },
+      {
+        "title": "Toàn tập Vector Database: Thuật toán HNSW, Qdrant & Milvus",
+        "char_count": 59
+      }
+    ],
+    "meta_options": [
+      {
+        "meta": "Vector Database là gì? Hướng dẫn chuyên sâu về kiến trúc Vector DB, giải phẫu thuật toán HNSW, so sánh Qdrant vs Milvus và cách tối ưu RAM cho RAG Pipeline.",
+        "char_count": 160
+      }
+    ],
+    "slug_recommendation": "vector-database-rag-qdrant-milvus",
+    "h2_outline": [
+      {
+        "h2": "Vector Database là gì? Trái tim của hệ thống AI"
+      },
+      {
+        "h2": "Giải phẫu thuật toán HNSW (Hierarchical Navigable Small World)"
+      },
+      {
+        "h2": "So sánh Qdrant vs Milvus vs pgvector"
+      },
+      {
+        "h2": "Triển khai RAG Pipeline với Qdrant và Go"
+      },
+      {
+        "h2": "Memory Profiling: Tối ưu RAM cho hàng triệu Vectors"
+      },
+      {
+        "h2": "FAQ: Câu hỏi thường gặp về Vector DB"
+      }
+    ],
+    "faq_included": true,
+    "faq_questions": [
+      "Có nên dùng pgvector thay vì một Vector DB chuyên dụng không?",
+      "Quantization trong Vector DB là gì?",
+      "Vector DB có hỗ trợ CRUD như database truyền thống không?"
+    ],
+    "out_of_scope": [
+      "Chi tiết cách train AI Model.",
+      "LangChain/LlamaIndex code cho Python (Focus vào architecture & Go)."
+    ]
+  },
+  "eeat_gates": {
+    "experience_proof_required": "firsthand_account",
+    "experience_proof_notes": "Yêu cầu chia sẻ kinh nghiệm xử lý OOM (Out Of Memory) khi nhồi quá nhiều vector vào RAM và cách áp dụng Scalar Quantization.",
+    "author_entity": {
+      "required": true,
+      "author_name": "Lê Tuấn Anh (Senior Go Engineer)",
+      "profile_url": "/about/",
+      "credentials": "Kinh nghiệm thiết kế hệ thống AI Engineering & High-Concurrency"
+    },
+    "trust_signals": [
+      "source_citations",
+      "verifiable_claims",
+      "expert_quotes"
+    ],
+    "claim_policy": "Mọi benchmark về RAM phải minh bạch công thức tính (ví dụ: Vectors * Dimensions * 4 bytes + HNSW overhead)."
+  },
+  "schema_requirements": {
+    "schema_types": [
+      "Article",
+      "FAQPage",
+      "Person"
+    ],
+    "author_schema_required": true,
+    "faq_schema_required": true,
+    "entity_id_strategy": "https://vesviet.com/#organization",
+    "technical_seo_ticket": "Triển khai Article, FAQPage, và Person schema."
+  },
+  "internal_links": [
+    {
+      "anchor": "ứng dụng trong Agentic Search",
+      "target": "/series/agentic-ecommerce-search/part-3-qdrant-hybrid-search/",
+      "rationale": "Link to the Qdrant hybrid search implementation."
+    },
+    {
+      "anchor": "Cornerstone Technologies",
+      "target": "/series/cornerstone-technologies/",
+      "rationale": "Link to the pillar series index."
+    },
+    {
+      "anchor": "AI Data Engineering Pipeline",
+      "target": "/series/ai-data-engineering-pipeline/executive-summary/",
+      "rationale": "Link to AI pipeline context."
+    }
+  ],
+  "handoff": {
+    "next_role": "content-writer",
+    "status": "ready_for_content_writer",
+    "notes": "SEO Brief hoàn thiện cho Vector DB. Tập trung mạnh vào HNSW và Memory Profiling để tạo khác biệt so với các bài dịch hời hợt.",
+    "contracts": [
+      "contracts/schemas/seo-content-brief.json"
+    ]
+  }
+}
