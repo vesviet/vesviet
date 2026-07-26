@@ -1,68 +1,68 @@
 ---
-title: "Temporal Workflow & Golang: Kiến trúc & Production Guide"
-description: "Hướng dẫn kiến trúc Temporal Workflow cho Go Developer: giải thích Determinism, Event Sourcing, Temporal Nexus và cách scale Temporal Worker trên Production."
+title: "Temporal Workflow & Golang: Architecture & Production Guide"
+description: "In-depth Temporal Workflow architecture guide for Go developers: Determinism, Event Sourcing, Temporal Nexus, and scaling Temporal Workers in production."
 slug: temporal-workflow-go-architecture
-author: "Lê Tuấn Anh (Senior Go Engineer)"
+author: "Le Tuan Anh (Senior Go Engineer)"
 series: "Cornerstone Technologies"
 date: "2026-07-25"
 ---
 
-# Temporal Workflow & Golang: Kiến trúc & Production Guide
+# Temporal Workflow & Golang: Architecture & Production Guide
 
-> **Answer-first:** Temporal là nền tảng durable execution cho microservices, phục hồi sự cố nhờ Event Sourcing. Trong Golang, Temporal Workflow đòi hỏi tính determinism tuyệt đối để replay event history. Để vận hành production ổn định, engineer cần phân tách Workflow/Activity, dùng ContinueAsNew nén history và tối ưu worker concurrency.
+> **Answer-First:** Temporal is a durable execution platform providing fault-tolerant state orchestration for microservices via Event Sourcing. In Golang, Temporal Workflows demand strict determinism for event history replay. Production reliability requires separating deterministic workflows from I/O activities, managing LIFO Saga compensations, tuning worker concurrency parameters, and compacting event histories via `ContinueAsNew` before hitting cluster limits.
 
-Khi xây dựng các hệ thống microservices quy mô lớn, việc quản lý trạng thái của các giao dịch phân tán và orchestration là một bài toán cực kỳ phức tạp. [Cornerstone Technologies](/series/cornerstone-technologies/) thường đưa ra những nền tảng làm thay đổi cách chúng ta thiết kế hệ thống, và Temporal chính là một trong số đó. Bài viết phân tích chi tiết kiến trúc cốt lõi của Temporal Workflow dành cho Go Developer, từ nguyên lý Determinism, Event Sourcing, kiến trúc Temporal Nexus cho đến chiến lược triển khai và scale Temporal Worker trên môi trường Production.
+When building large-scale microservice systems, managing distributed transaction states and orchestration presents complex engineering challenges. [Cornerstone Technologies](/series/cornerstone-technologies/) frequently introduces foundational paradigms that reshape system design, and Temporal is a prime example. This guide analyzes the core architecture of Temporal Workflow for Go developers, covering Determinism, Event Sourcing, Temporal Nexus cross-namespace orchestration, and production strategies for scaling Temporal Workers.
 
 ## Temporal Architecture: Event Sourcing & Replay Engine
 
-Temporal là một nền tảng orchestration cho microservices sử dụng mô hình Event Sourcing để đảm bảo workflow của bạn có thể phục hồi trạng thái sau khi crash. Trong Go, Temporal Workflow yêu cầu tính Determinism tuyệt đối để engine có thể replay lại chính xác trạng thái thực thi dựa trên lịch sử event được lưu trữ.
+Temporal is an orchestration platform for microservices that employs Event Sourcing to guarantee workflow state recovery after system crashes. In Go, Temporal Workflows require absolute determinism so the engine can accurately replay execution state based on persisted event history.
 
-Temporal hoạt động như thế nào? Thay vì duy trì trạng thái của workflow trong bộ nhớ (RAM) và chịu rủi ro mất dữ liệu khi hệ thống gặp sự cố, Temporal áp dụng kiến trúc Event Sourcing. Mỗi bước thực thi (như bắt đầu một activity, nhận tín hiệu, bộ đếm thời gian) đều được lưu lại dưới dạng các sự kiện không thể thay đổi (immutable events) vào cơ sở dữ liệu backend của Temporal Cluster. 
+How does Temporal operate under the hood? Rather than maintaining workflow state in volatile RAM—which risks data loss during unexpected crashes—Temporal adopts an Event Sourcing architecture. Every execution step (such as starting an activity, receiving a signal, or scheduling a timer) is appended as an immutable event to the backend database of the Temporal Cluster.
 
-Khi một Worker (tiến trình chạy mã Go của bạn) bị sập và được khởi động lại, Temporal sẽ không chạy lại workflow từ đầu một cách mù quáng. Thay vào đó, nó tạo ra một Replay Engine, đọc toàn bộ lịch sử các sự kiện từ Temporal Cluster và "phát lại" (replay) các dòng mã của bạn. Engine đảm bảo rằng mã sẽ đi đến đúng trạng thái cuối cùng trước khi bị crash. Điều này mang lại sự tin cậy tuyệt đối: mã của bạn dường như không bao giờ bị gián đoạn. Nếu bạn đang thiết kế [Event-Driven Architecture](/series/system-design/12-communication-protocols-microservices/), tư duy stateful, fault-tolerant này của Temporal là cực kỳ đắt giá.
+When a Worker (the process running your Go code) crashes and restarts, Temporal does not naively re-execute the workflow from scratch. Instead, it initializes a Replay Engine that reads the complete event history from the Temporal Cluster and replays your Go code execution paths. The engine ensures the code reaches the exact state prior to the failure. This mechanism provides fault tolerance where code execution appears uninterrupted. For systems designed around [Event-Driven Architecture](/series/system-design/12-communication-protocols-microservices/), Temporal's stateful, fault-tolerant model provides robust reliability.
 
-## Temporal Nexus: Orchestration Xuyên Namespace & Enterprise Boundary (2026)
+## Temporal Nexus: Cross-Namespace & Enterprise Boundary Orchestration (2026)
 
-Temporal Nexus là chuẩn kiến trúc hiện đại ra mắt nhằm giải quyết bài toán điều phối workflow liên namespace (cross-namespace) và liên cụm cluster trong doanh nghiệp. Nexus thay thế các giao thức REST/gRPC tuỳ biến bằng các hợp đồng dịch vụ bền vững (`nexus.Operation`), giúp các team chia sẻ khả năng vận hành mà không cần công khai Task Queue hay trạng thái cụm cluster nội bộ.
+Temporal Nexus is a modern architectural standard designed to resolve cross-namespace and cross-cluster workflow orchestration challenges in enterprise environments. Nexus replaces custom REST/gRPC wrapper layers with durable service contracts (`nexus.Operation`), allowing teams to share operational capabilities without exposing internal Task Queues or cluster topology details.
 
-Trong các kiến trúc microservices lớn tại doanh nghiệp, việc chia sẻ workflow giữa các đội ngũ khác nhau thường gặp rào cản về ranh giới bảo mật và hạ tầng. Trước đây, các nhóm phải tự bọc Workflow trong REST API hoặc gRPC endpoints, làm mất đi tính năng durable execution xuyên suốt. Temporal Nexus giải quyết bài toán này bằng cách giới thiệu khái niệm Endpoint và Operation:
+In large microservice architectures, sharing workflows across autonomous team boundaries often encounters security and infrastructure isolation barriers. Previously, teams wrapped Workflows in custom REST APIs or gRPC endpoints, which compromised end-to-end durable execution guarantees. Temporal Nexus addresses this problem through explicit Endpoints and Operations:
 
-- **Nexus Endpoint:** Định nghĩa cổng giao tiếp bền vững giữa hai namespace hoặc hai cụm Temporal độc lập.
-- **Nexus Operation:** Định nghĩa contract thực thi có trạng thái, cho phép Workflow ở Namespace A gọi một Operation dài hạn ở Namespace B như một bước native trong workflow mà không lo đứt gãy lịch sử replay.
-- **Tách biệt Task Queue:** Nexus đảm bảo Namespace A không cần biết tên Task Queue hay thông tin worker nội bộ của Namespace B, duy trì nguyên tắc đóng gói (encapsulation) trong phần mềm.
+- **Nexus Endpoint:** Defines a durable communication gateway between two independent namespaces or Temporal clusters.
+- **Nexus Operation:** Specifies a stateful execution contract, enabling a Workflow in Namespace A to invoke a long-running Operation in Namespace B as a native workflow step without breaking event history replay.
+- **Task Queue Encapsulation:** Nexus ensures Namespace A does not need visibility into Namespace B's internal Task Queue names or worker topologies, preserving strict software encapsulation boundaries.
 
-## Quy tắc sống còn: Workflow Determinism trong Golang
+## Critical Rules: Workflow Determinism in Golang
 
-Determinism trong Temporal là gì và tại sao lại quan trọng? Determinism có nghĩa là một hàm, khi được cung cấp cùng một đầu vào và lịch sử, luôn luôn sinh ra cùng một kết quả và đi theo cùng một nhánh logic. Trong Temporal Workflow viết bằng Go SDK, bạn tuyệt đối không được sử dụng goroutine gốc, rand, hoặc các hàm time native, để đảm bảo quá trình replay diễn ra hoàn hảo.
+What is determinism in Temporal, and why is it critical? Determinism means that a function, when supplied with identical inputs and event history, always produces identical outputs and traverses identical code paths. In Temporal Workflows written using the Go SDK, native goroutines, random number generators, or native time functions are strictly prohibited to ensure flaw-free replay execution.
 
-Việc không tuân thủ các quy tắc này sẽ dẫn đến lỗi *Non-Deterministic Error*, khiến workflow của bạn bị kẹt mãi mãi (blocked/stuck). Dưới đây là những quy tắc cốt lõi khi viết mã Go cho Workflow:
+Failing to adhere to determinism rules results in `NonDeterministicWorkflowError` exceptions, causing workflow executions to become permanently blocked. Core rules for authoring Go workflows include:
 
-*   **Không sử dụng goroutines (`go func()`) hoặc channels gốc:** Temporal SDK cung cấp các API thay thế như `workflow.Go()` và `workflow.Channel`. Engine cần theo dõi và quản lý vòng đời của mọi tiến trình đồng thời bên trong workflow.
-*   **Không sử dụng `time.Now()` hoặc `time.Sleep()`:** Luôn sử dụng `workflow.Now()` và `workflow.Sleep()`. Việc gọi `time.Now()` sẽ trả về các giá trị khác nhau giữa lần chạy ban đầu và lần replay, phá vỡ tính determinism.
-*   **Không gọi API mạng, I/O trực tiếp (HTTP, Database):** Mọi tương tác với thế giới bên ngoài, có thể thành công hoặc thất bại tuỳ thời điểm, đều phải được đóng gói vào trong **Activity**. Workflow chỉ điều phối, không thực thi I/O.
-*   **Không tạo Random (Số ngẫu nhiên, UUID):** Sử dụng các API do Temporal cung cấp, ví dụ như `workflow.SideEffect()` nếu cần gọi các hàm không deterministic, hoặc dùng các context API tương đương.
-*   **Cẩn trọng khi duyệt `map`:** Trong Go, thứ tự lặp qua một `map` bằng `range` là ngẫu nhiên. Nếu logic workflow phụ thuộc vào thứ tự này, nó sẽ không deterministic. Hãy chuyển dữ liệu sang slice hoặc mảng rồi sort trước khi duyệt.
+*   **Do not use native goroutines (`go func()`) or channels:** The Temporal Go SDK provides managed alternatives such as `workflow.Go()` and `workflow.Channel()`. The execution engine must track and manage the lifecycle of all concurrent primitives inside a workflow.
+*   **Do not use `time.Now()` or `time.Sleep()`:** Always use `workflow.Now()` and `workflow.Sleep()`. Calling `time.Now()` returns different timestamps between initial execution and subsequent replays, breaking execution determinism.
+*   **Do not invoke network or I/O operations directly (HTTP, Database):** All external interactions—which may succeed or fail non-deterministically—must be encapsulated inside an **Activity**. Workflows perform orchestration only, never direct I/O.
+*   **Do not generate non-deterministic values (Random numbers, UUIDs):** Use Temporal SDK primitives such as `workflow.SideEffect()` when invoking non-deterministic logic, or leverage equivalent context APIs.
+*   **Exercise caution when iterating maps:** In Go, map iteration via `range` is non-deterministic by default. If workflow control logic depends on key iteration order, execution determinism will fail. Sort map keys into a slice before iteration.
 
-*Kinh nghiệm firsthand:* Trong một dự án xử lý thanh toán, team tôi từng vi phạm quy tắc này khi lỡ thêm một dòng `time.Now()` để log thời gian xử lý vào trong Workflow code thay vì Activity. Ngay ngày hôm sau, khi worker restart, hàng ngàn workflow báo lỗi Non-Deterministic và bị đình trệ. Việc gỡ rối những lỗi này yêu cầu phải hiểu sâu về versioning (`workflow.GetVersion()`) để vá lỗi code mà không phá vỡ history cũ.
+*Firsthand experience:* In a high-throughput payment system, a development team introduced a native `time.Now()` call inside workflow code to record diagnostic execution latency instead of executing it inside an Activity. Upon worker restart the following day, thousands of active payment workflows failed with non-deterministic execution errors and halted. Resolving the incident required applying API versioning (`workflow.GetVersion()`) to patch code paths without invalidating existing event histories.
 
-## Phân biệt Workflow vs Activity & Triển khai Saga Pattern
+## Differentiating Workflows vs. Activities & Implementing the Saga Pattern
 
-Sự khác biệt giữa Temporal Workflow và Activity nằm ở vai trò, tính an toàn và giới hạn thiết kế. Workflow là nhạc trưởng (đòi hỏi determinism tuyệt đối, stateful), trong khi Activity là các nhạc công thực thi nhiệm vụ thực tế (stateless, có thể chứa I/O, retry tự động). Đối với các giao dịch phân tán, Workflow kết hợp Activity để quản lý Saga Pattern với danh sách compensation stack chạy theo thứ tự LIFO.
+The distinction between Temporal Workflows and Activities centers on execution roles, determinism constraints, and design boundaries. Workflows act as stateful orchestrators requiring absolute determinism, whereas Activities are stateless executors responsible for external I/O and automated retries. For distributed transactions, Workflows orchestrate Activities using the Saga Pattern with a LIFO compensation stack.
 
-Dưới đây là bảng so sánh chi tiết giữa hai khái niệm này:
+The following comparison matrix highlights the key structural, determinism, state management, and retry behavior differences between Workflows and Activities in the Temporal Go SDK:
 
-| Tính năng | Workflow | Activity |
+| Feature | Workflow | Activity |
 | :--- | :--- | :--- |
-| **Vai trò chính** | Điều phối (Orchestration), kiểm soát luồng (if/else, vòng lặp, timeout). | Thực thi tác vụ cụ thể (gọi API, chèn DB, tải file). |
-| **Determinism** | **Bắt buộc tuyệt đối.** Replay engine dựa vào mã này. | Không yêu cầu. Chứa bất cứ I/O, goroutines, DB calls nào. |
-| **Retry tự động** | Không tự động retry code của workflow khi có lỗi (vì nó stateful). | **Tự động retry** với Exponential Backoff khi fail. |
-| **State (Trạng thái)** | Stateful. Lưu vết trạng thái qua Event Sourcing. | Stateless. Nhận Input -> Trả Output. Không giữ state lâu dài. |
-| **Thời gian chạy** | Có thể tồn tại vĩnh viễn (tháng, năm). | Thường ngắn hạn (giây, phút). Nếu lâu cần heartbeat. |
-| **Thực thi song song** | Dùng `workflow.Go()` | Dùng WaitGroup hoặc promises (futures) trong Go. |
+| **Primary Role** | Orchestration and control flow (if/else, loops, timeouts). | Specific task execution (API calls, DB queries, file processing). |
+| **Determinism** | **Mandatory.** Replay engine depends on deterministic code. | Not required. May contain arbitrary I/O, goroutines, or DB calls. |
+| **Automatic Retry** | Does not automatically retry workflow code on panic. | **Automatically retries** with Exponential Backoff on failure. |
+| **State Management** | Stateful. State persisted via Event Sourcing. | Stateless. Inputs produce outputs without persistent internal state. |
+| **Execution Duration** | Can run indefinitely (months or years). | Short-lived (seconds or minutes); long tasks require heartbeats. |
+| **Parallel Execution** | Managed via `workflow.Go()` | Managed via WaitGroups or futures inside Go activities. |
 
-Nếu bạn đang phát triển các tính năng như [ứng dụng Saga Pattern bằng Temporal](/series/system-design/08-saga-pattern-distributed-transactions-go/), Workflow sẽ chứa logic điều phối các giao dịch Saga (bắt đầu, rollback), còn Activity chính là các lời gọi tới các service tham gia vào giao dịch.
+When building distributed transactions such as an [implementation of the Saga Pattern with Temporal](/series/system-design/08-saga-pattern-distributed-transactions-go/), the Workflow contains the orchestration logic (step execution and rollback triggering), while Activities represent the individual service operations participating in the transaction.
 
-Đoạn mã Go dưới đây minh họa mô hình Saga Pattern trong Temporal Workflow. Bằng cách lưu trữ danh sách các hàm bồi hoàn (compensation functions) và thực thi theo thứ tự LIFO trong khối defer, workflow đảm bảo rollback an toàn toàn bộ các bước giao dịch trước đó khi gặp sự cố:
+The Go implementation below illustrates a distributed Saga transaction managed by a Temporal Workflow, utilizing a LIFO compensation stack executed inside `workflow.NewDisconnectedContext` during failure rollbacks:
 
 ```go
 package workflows
@@ -81,7 +81,7 @@ type OrderRequest struct {
 	Quantity int
 }
 
-// OrderSagaWorkflow điều phối giao dịch phân tán mua hàng với cơ chế compensation LIFO
+// OrderSagaWorkflow orchestrates a distributed purchase transaction with LIFO compensation cleanup.
 func OrderSagaWorkflow(ctx workflow.Context, req OrderRequest) (err error) {
 	options := workflow.ActivityOptions{
 		StartToCloseTimeout: time.Minute,
@@ -91,11 +91,11 @@ func OrderSagaWorkflow(ctx workflow.Context, req OrderRequest) (err error) {
 	}
 	ctx = workflow.WithActivityOptions(ctx, options)
 
-	// Khởi tạo stack lưu trữ các hàm bồi hoàn (compensation stack)
+	// Initialize the LIFO compensation function stack
 	var compensations []func(workflow.Context) error
 	defer func() {
 		if err != nil {
-			// Thực thi các hàm bồi hoàn theo thứ tự ngược lại (LIFO)
+			// Execute compensation functions in reverse order (LIFO)
 			disconnectedCtx, _ := workflow.NewDisconnectedContext(ctx)
 			for i := len(compensations) - 1; i >= 0; i-- {
 				_ = compensations[i](disconnectedCtx)
@@ -103,60 +103,60 @@ func OrderSagaWorkflow(ctx workflow.Context, req OrderRequest) (err error) {
 		}
 	}()
 
-	// Bước 1: Trừ tiền tài khoản
+	// Step 1: Reserve funds
 	var paymentID string
 	err = workflow.ExecuteActivity(ctx, "ReservePaymentActivity", req.UserID, req.Amount).Get(ctx, &paymentID)
 	if err != nil {
 		return err
 	}
-	// Đăng ký bước bồi hoàn cho thanh toán
+	// Register payment compensation action
 	compensations = append(compensations, func(c workflow.Context) error {
 		return workflow.ExecuteActivity(c, "CancelPaymentActivity", paymentID).Get(c, nil)
 	})
 
-	// Bước 2: Giữ hàng trong kho
+	// Step 2: Reserve inventory items
 	var inventoryID string
 	err = workflow.ExecuteActivity(ctx, "ReserveInventoryActivity", req.ItemID, req.Quantity).Get(ctx, &inventoryID)
 	if err != nil {
-		return err // Defer sẽ tự động kích hoạt CancelPaymentActivity
+		return err // Defer block automatically triggers CancelPaymentActivity
 	}
 
 	return nil
 }
 ```
 
-## Triển khai Temporal Worker & Scale out trong Production
+## Deploying Temporal Workers & Scaling Out in Production
 
-Triển khai Temporal Worker yêu cầu cấu hình Task Queues và cân bằng tải hiệu quả. Để scale out, bạn cần deploy nhiều Worker container lắng nghe cùng một Task Queue, đồng thời tối ưu hoá các cấu hình bộ nhớ và số lượng goroutine hoạt động đồng thời (concurrent executions).
+Deploying Temporal Workers requires structured Task Queue architecture and efficient load distribution. To scale out, deploy multiple Worker instances listening on dedicated Task Queues while tuning concurrency parameters and worker memory allocations.
 
-Cách viết Temporal Workflow bằng Go SDK cho production không chỉ dừng ở code chạy được mà còn ở khả năng chịu tải. Dưới đây là các bước triển khai và scale out chuẩn xác:
+Running Temporal Workers in production requires operational discipline beyond basic local execution. Key strategies for scaling worker infrastructure include:
 
-1.  **Thiết kế Task Queues phân mảnh:** Đừng ném tất cả Workflows và Activities vào chung một Task Queue. Hãy phân tách theo domain (ví dụ: `PAYMENT_TASK_QUEUE`, `EMAIL_TASK_QUEUE`). Điều này giúp bạn scale worker độc lập tuỳ theo cường độ công việc của từng loại dịch vụ.
-2.  **Cấu hình Worker Tuning Parameters:** Trên production, cấu hình mặc định hiếm khi đủ tốt. Bạn cần tinh chỉnh trong Go SDK:
-    *   `MaxConcurrentActivityExecutionSize`: Số lượng Activity goroutines tối đa chạy trên một worker. (Benchmark khuyên dùng: 200 - 1000 tuỳ memory).
-    *   `MaxConcurrentWorkflowTaskExecutionSize`: Số lượng Workflow executions đồng thời.
-    *   `MaxConcurrentLocalActivityExecutionSize`: Dành cho các tác vụ rất nhỏ và cực nhanh gọn (như parse data).
-3.  **Horizontal Pod Autoscaling (HPA) trên Kubernetes:** Không dùng CPU/Memory thuần tuý để scale worker. Hãy dùng Prometheus adapter để theo dõi metric `temporal_worker_task_slots_available` hoặc độ trễ `schedule_to_start_latency`. Khi hàng đợi quá tải, hệ thống sẽ tự sinh thêm pod worker.
-4.  **Cấu hình Timeouts cẩn thận:** Bạn phải xác định đúng các loại timeout:
-    *   `ScheduleToStartTimeout`: Thời gian tối đa worker có thể nán lại (đợi trong queue). Nếu quá lâu, nghĩa là worker đang thiếu.
-    *   `StartToCloseTimeout`: Thời gian chạy thực tế của Activity. Nếu activity gọi API bên thứ ba mất 10s, hãy set 15s.
+1.  **Segment Task Queues by Domain:** Avoid lumping all Workflows and Activities into a single Task Queue. Separate queues by business domain (e.g., `PAYMENT_TASK_QUEUE`, `EMAIL_TASK_QUEUE`). This segregation allows independent worker scaling based on workload characteristics.
+2.  **Configure Worker Concurrency Parameters:** Tune worker execution limits in the Go SDK:
+    *   `MaxConcurrentActivityExecutionSize`: Maximum concurrent Activity goroutines per worker (recommended range: 200–1000 depending on memory allocated).
+    *   `MaxConcurrentWorkflowTaskExecutionSize`: Maximum concurrent Workflow task executions.
+    *   `MaxConcurrentLocalActivityExecutionSize`: Dedicated execution limit for lightweight, fast local activities.
+3.  **Horizontal Pod Autoscaling (HPA) on Kubernetes:** Rather than scaling on raw CPU/memory metrics, configure Kubernetes HPA using Prometheus metrics targeting `temporal_worker_task_slots_available` and `schedule_to_start_latency`. When queues experience backlog spikes, HPA dynamically provisions additional worker pods.
+4.  **Enforce Precise Timeout Configurations:** Define appropriate timeout parameters:
+    *   `ScheduleToStartTimeout`: Maximum duration an activity task can wait in queue before being picked up by a worker.
+    *   `StartToCloseTimeout`: Maximum execution time for an activity. If an activity calls a third-party API averaging 10 seconds, set `StartToCloseTimeout` to 15 seconds.
 
-## Benchmark Thực tế & Compaction với ContinueAsNew
+## Real-World Benchmarks & Event History Compaction with ContinueAsNew
 
-Khi vận hành Temporal trên production, bạn cần đo lường hiệu năng của hệ thống và chủ động kiểm soát kích thước event history. Kỹ thuật `workflow.ContinueAsNew` là giải pháp nén history bắt buộc khi số lượng sự kiện chạm mốc 10.000 events, ngăn ngừa lỗi tràn giới hạn 50.000 events của Temporal Cluster.
+Operating Temporal in high-concurrency environments requires monitoring event history size. The `workflow.ContinueAsNew` primitive provides mandatory event history compaction when history reaches 10,000 events, preventing workflow failures caused by Temporal Cluster's 50,000 event limit.
 
-*Case study & Benchmark:*
-Là một Senior Go Engineer, tôi từng tham gia scale cụm Temporal xử lý 50.000 workflow đồng thời. Dưới đây là những con số và bài học đắt giá:
+*Case Study & Production Metrics:*
+When scaling a Temporal cluster to support 50,000 concurrent active workflows, empirical testing established the following baseline practices:
 
-*   **Benchmark Timeouts:**
-    *   Đối với API gọi nội bộ: `StartToCloseTimeout` là 2s.
-    *   Đối với Webhooks ra bên ngoài: `StartToCloseTimeout` là 30s.
-    *   Luôn luôn sử dụng `ScheduleToCloseTimeout` (đã bao gồm thời gian nằm queue + số lần retry) như một SLA cứng, ví dụ: Không quá 5 phút cho một luồng đăng ký tài khoản.
-*   **Lỗi History Limit Exceeded (Giới hạn 50K events / 50MB):**
-    *   Temporal có giới hạn cứng về độ dài lịch sử của một workflow (thường là 50,000 events hoặc 50MB). Nếu workflow lặp vô tận hoặc xử lý event dài hạn, nó sẽ crash hoàn toàn.
-    *   *Cách khắc phục:* Sử dụng `workflow.ContinueAsNew()` để khởi động lại workflow từ trạng thái sạch khi số lượng event chạm ngưỡng 10,000. Điều này giải phóng bộ nhớ DB backend và ngăn lỗi xảy ra.
+*   **Timeout Benchmarks:**
+    *   Internal microservice calls: `StartToCloseTimeout` configured to 2s.
+    *   External webhooks: `StartToCloseTimeout` configured to 30s.
+    *   Enforce `ScheduleToCloseTimeout` as an absolute SLA boundary (e.g., maximum 5 minutes total execution time including queue wait times and retries for onboarding flows).
+*   **Mitigating History Limit Exceeded (50,000 Events / 50MB Limit):**
+    *   Temporal enforces a hard limit of 50,000 events or 50MB per workflow execution. Long-running or infinite looping workflows will crash if this limit is exceeded.
+    *   *Remediation:* Invoke `workflow.ContinueAsNew()` when `info.GetCurrentHistoryLength()` reaches 10,000 events. This compacts execution history, clears old event logs, and initializes a fresh workflow execution with carried-over state.
 
-Mẫu mã Golang bên dưới thể hiện cơ chế chủ động kiểm tra độ dài event history và thực thi hàm ContinueAsNew. Kỹ thuật này nén lịch sử sự kiện, ngăn chặn việc chạm mốc giới hạn 50.000 events của cụm Temporal Cluster:
+The Go snippet below demonstrates event history compaction using `workflow.ContinueAsNew`. The workflow continuously monitors its history event count and re-executes itself with a clean state upon exceeding 10,000 events:
 
 ```go
 package workflows
@@ -170,40 +170,42 @@ type StreamState struct {
 	LastProcessedID string
 }
 
-// ProcessOrderStreamWorkflow xử lý dòng sự kiện liên tục và tự nén history khi chạm 10,000 events
+// ProcessOrderStreamWorkflow handles continuous event streams and compacts event history upon reaching 10,000 events.
 func ProcessOrderStreamWorkflow(ctx workflow.Context, state StreamState) error {
 	logger := workflow.GetLogger(ctx)
 
 	for {
 		var eventData string
-		// Chờ nhận Signal từ hệ thống bên ngoài
+		// Wait for incoming Signal from external systems
 		signalChan := workflow.GetSignalChannel(ctx, "OrderSignalChannel")
 
 		var more bool
 		signalChan.Receive(ctx, &eventData)
 		state.ProcessedCount++
 		state.LastProcessedID = eventData
-		logger.Info("Đã xử lý signal", "count", state.ProcessedCount, "lastID", state.LastProcessedID)
+		logger.Info("Processed signal", "count", state.ProcessedCount, "lastID", state.LastProcessedID)
 
-		// Kiểm tra độ dài Lịch sử sự kiện (Event History) hiện tại của Workflow
+		// Inspect current Workflow Event History length
 		info := workflow.GetInfo(ctx)
 		if info.GetCurrentHistoryLength() >= 10000 {
-			logger.Info("History chạm ngưỡng 10,000 events. Kích hoạt ContinueAsNew để nén history.")
-			// Tự tái tạo workflow mới với state đã nén, xóa sạch event history cũ
+			logger.Info("Event history reached 10,000 events. Triggering ContinueAsNew compaction.")
+			// Re-initialize workflow with compacted state and clear event history
 			return workflow.NewContinueAsNewError(ctx, ProcessOrderStreamWorkflow, state)
 		}
 	}
 }
 ```
 
-*   **Lỗi Không Handle Signals Kịp Thời:**
-    *   Go channel trong workflow để nhận signals có thể bị block nếu không có cơ chế buffer hoặc timeout (`workflow.Selector`). Hàng ngàn signal ập đến mà workflow xử lý chậm sẽ gây phình database.
+*   **Handling Unbuffered Signals:**
+    *   Receiving signals over Go channels without concurrency buffering or selector timeouts (`workflow.Selector`) can block execution loops under high signal ingestion rates, rapidly inflating backend database size.
 
-## FAQ: Câu hỏi thường gặp về Temporal
+## Frequently Asked Questions (FAQ)
 
-*   **Tôi có thể gọi API trực tiếp bên trong Temporal Workflow không?**
-    Tuyệt đối không! Mọi I/O (gọi HTTP API, gõ DB) phải được đưa vào Activity. Việc gọi API trong Workflow phá vỡ nguyên tắc Determinism vì kết quả API có thể thay đổi trong quá trình replay.
-*   **Làm sao để handle versioning khi update code của Temporal Workflow?**
-    Trong Go SDK, bạn phải sử dụng hàm `workflow.GetVersion()`. Nó cho phép code của bạn phân nhánh an toàn giữa logic cũ và logic mới khi xử lý các workflow đang chạy dang dở (in-flight workflows) dựa trên lịch sử đã ghi.
-*   **Temporal có thay thế Kafka được không?**
-    Không. Kafka là hệ thống pub/sub (event streaming) thuần túy với throughput cực lớn (hàng triệu msg/s). Temporal là Workflow Orchestration Engine (quản lý trạng thái, timeouts, retries, saga). Chúng bổ trợ cho nhau: Kafka để luân chuyển event tốc độ cao, Temporal để quản lý vòng đời logic nghiệp vụ phức tạp.
+* **Can I make direct HTTP or database calls inside a Temporal Workflow in Go?**
+  No, direct network or database I/O is strictly prohibited inside a Temporal Workflow definition. All non-deterministic side effects and external communications must be encapsulated within Activities. Workflow code must remain completely deterministic so that the Replay Engine can accurately reconstruct execution state from event history logs.
+
+* **How do I safely update workflow code when existing instances are running in production?**
+  Workflow updates must be managed using the `workflow.GetVersion()` API provided by the Temporal Go SDK. This function inspects the recorded event history to determine whether a workflow instance was created under old or new logic, enabling both code paths to co-exist safely without triggering `NonDeterministicWorkflowError` exceptions.
+
+* **How does Temporal differ from distributed message queues like Apache Kafka?**
+  Apache Kafka is a pub/sub event streaming platform optimized for high-throughput messaging and data ingestion. In contrast, Temporal is a durable execution engine designed to manage complex state transitions, timeouts, retries, and multi-step distributed transactions. Systems frequently combine both technologies by using Kafka for high-speed event delivery and Temporal for orchestrating complex business logic workflows.
