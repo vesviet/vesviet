@@ -18,18 +18,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-
-
-## Part 2 — Man vs. Machine Boundaries in Engineering
-
-Drawing precise operational boundaries between autonomous AI generation and mandatory human engineering oversight is essential for preventing production outages. High-risk distributed systems architecture, concurrency locks, and security compliance require human ownership, while repetitive syntax translation, test generation, and DTO mapping are delegated to AI agents.
-
-**Key Takeaways**:
-- **Deterministic Risk Boundaries**: Tasks involving financial ledger state, database schema migrations, and zero-trust auth demand 100% human sign-off.
-- **Automated Boilerplate Delegation**: Standard REST endpoint generation, mock test generation, and documentation parsing operate at 95%+ AI autonomy.
-- **Human-in-the-Loop (HITL) Gates**: Gatekeeper rules intercept high-impact AI tool execution before production deployment.
-
----
+> **Key Takeaway**: Drawing precise operational boundaries between autonomous AI generation and mandatory human engineering oversight is essential for preventing production outages. High-risk distributed systems architecture, concurrency locks, and security compliance require human ownership, while repetitive syntax translation, test generation, and DTO mapping are delegated to AI agents.
 
 As engineering organizations adopt AI code assistants and autonomous sub-agents, a critical governance question arises: *Where does the machine's autonomy end, and where must human engineering oversight begin?*
 
@@ -41,7 +30,9 @@ Failing to establish clear task boundaries leads to two opposite operational fai
 
 ## The Man vs. Machine Task Classifier Topology
 
-Classifying engineering tasks separates high-leverage human architectural choices from repetitive AI tasks like boilerplate, test drafting, and doc generation.
+Classifying engineering tasks separates high-leverage human architectural choices from repetitive AI tasks like boilerplate, test drafting, and doc generation. In 2026, task classification engines analyze Model Context Protocol (MCP) tool bindings and AST symbol trees to determine blast radius boundaries dynamically.
+
+**Task Boundary Classification Topology:** This flowchart maps engineering tasks based on risk assessment and blast radius, directing high-risk security tasks to mandatory human ownership and low-risk boilerplate tasks to delegated AI agent execution.
 
 ```mermaid
 graph TD
@@ -71,6 +62,8 @@ graph TD
 
 Human engineers own security design, system trade-offs, and domain modeling, while AI machines handle syntax implementation, test mock creation, and refactoring.
 
+**Automation Degree & Boundary Matrix:** This classification matrix defines explicit automation percentages, human sign-off roles, and machine responsibilities across key software engineering domains.
+
 | Task Domain | Automation Degree | Human Role | Machine Role |
 | :--- | :--- | :--- | :--- |
 | **Boilerplate CRUD & DTOs** | 95% Autonomous | Approve Pull Request | Generate full implementation |
@@ -86,7 +79,7 @@ Human engineers own security design, system trade-offs, and domain modeling, whi
 
 Production Python classification engines analyze engineering task specs to automatically route subtasks to human review or automated AI agent execution.
 
-This authentic Python decision matrix algorithm using `Pydantic` that parses software task specifications and automatically categorizes them into AI Autonomous Execution vs. Mandatory Human Engineering Oversight based on blast radius, security risk, and state mutation criteria:
+**Pydantic Task Boundary Classifier:** The `BoundaryClassifierEngine` class parses task specifications, evaluating domain risk, blast radius, and schema mutation flags to output deterministic AI autonomy percentages and role assignments.
 
 ```python
 from enum import Enum
@@ -189,7 +182,16 @@ if __name__ == "__main__":
 
 ---
 
----
+## Frequently Asked Questions
+
+### How do engineering leaders establish Human-in-the-Loop (HITL) gates for high-risk database migrations?
+Engineering leaders configure CI/CD merge queues to require manual sign-off from a Senior Database Engineer whenever an AI-generated pull request contains DDL schema mutations or table lock operations. Additionally, automated AST pre-checks verify rollback scripts and migration lock timeouts before any change reaches staging environments.
+
+### What blast-radius criteria determine whether an engineering task can operate at 90%+ AI autonomy?
+Tasks operating at high AI autonomy must have a strictly isolated blast radius, such as non-breaking UI components, unit test stub generation, or REST DTO mapper structs. If a task touches critical system domains—such as financial transaction state, zero-trust authentication tokens, or distributed locks—it is automatically downgraded to low autonomy requiring human ownership.
+
+### How do tech leads prevent reviewer fatigue when auditing AI-generated pull requests in security domains?
+Tech leads prevent fatigue by establishing strict PR size limits (max 200 lines) and enforcing pre-commit AST static analysis rules that automatically reject invalid syntax or missing error handlers. This ensures reviewers focus 100% of their energy on auditing cryptographic boundary logic and RBAC permissions rather than spot-checking formatting.
 
 ---
 

@@ -18,18 +18,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-
-
-## Part 7 — System Design Survival: Architectural Shield
-
-While AI assistants excel at generating localized code functions, they remain blind to holistic distributed system failures, network partition handling, and cascading degradation. System design—encompassing Circuit Breakers, Rate Limiters, Distributed Locks, and CAP theorem trade-offs—serves as the ultimate career survival shield for software engineers.
-
-**Key Takeaways**:
-- **Fault-Tolerant State Machine**: Circuit breakers prevent cascading system crashes by failing fast during backend service outages.
-- **Token Bucket Rate Limiting**: Protects high-throughput microservices from traffic surges and denial-of-service degradation.
-- **Human Architectural Authority**: AI cannot resolve complex trade-offs between consistency, availability, and network latency (CAP/PACELC).
-
----
+> **Key Takeaway**: While AI assistants excel at generating localized code functions, they remain blind to holistic distributed system failures, network partition handling, and cascading degradation. System design—encompassing Circuit Breakers, Rate Limiters, Distributed Locks, and CAP theorem trade-offs—serves as the ultimate career survival shield for software engineers.
 
 As AI code generation models become increasingly sophisticated at writing localized function syntax, developers frequently ask: *What core engineering skills will protect my career value over the next decade?*
 
@@ -41,7 +30,9 @@ An AI model can write a syntactically correct HTTP handler in seconds. However, 
 
 ## The Circuit Breaker & Resilience Topology
 
-Architectural resilience shields applications from AI code defects by wrapping downstream dependencies in circuit breakers and rate limiters.
+Architectural resilience shields applications from AI code defects by wrapping downstream dependencies in circuit breakers and rate limiters. In 2026, engineers integrate Token Bucket rate limiters, Redlock distributed locking via etcd/Redis, and OpenTelemetry GenAI spans to safeguard microservice boundaries.
+
+**Circuit Breaker State Machine Topology:** This state diagram illustrates the automated transitions between CLOSED, OPEN, and HALF-OPEN states, enforcing fail-fast behavior to protect downstream microservices during outages.
 
 ```mermaid
 stateDiagram-v2
@@ -68,7 +59,7 @@ stateDiagram-v2
 
 Production Go circuit breakers monitor failure rates on external API calls, opening state to prevent cascading system crashes during outages.
 
-This production-grade Go circuit breaker implementation built with atomic counters, mutual exclusion locks, and state transitions to protect downstream microservices from cascading failures:
+**Atomic Go Circuit Breaker Implementation:** The `Execute` method manages thread-safe state transitions using `sync/atomic` CAS operations and mutex locks to intercept network calls during service degradation.
 
 ```go
 package main
@@ -202,6 +193,8 @@ func main() {
 
 Local code syntax can be generated automatically, but system architecture provides the fault-tolerant backbone that keeps services online.
 
+**Local Syntax vs. Distributed Architecture Matrix:** This comparison table contrasts single-file function syntax against distributed system architecture across scope, failure modes, AI competency, and enterprise engineering value.
+
 | Dimension | Local Function Syntax | Distributed System Architecture |
 | :--- | :--- | :--- |
 | **Scope** | Single file / local function | Multi-node cluster & network edge |
@@ -211,6 +204,17 @@ Local code syntax can be generated automatically, but system architecture provid
 | **Engineering Value** | Low (Commoditized by LLMs) | High (Core career differentiator) |
 
 ---
+
+## Frequently Asked Questions
+
+### Why cannot current AI code tools solve distributed CAP and PACELC theorem trade-offs automatically?
+AI models operate on local prompt contexts and static training patterns, lacking real-time visibility into live network latency, node partition state, or dynamic workload spikes. Resolving CAP/PACELC trade-offs requires human architects to evaluate business risk tolerance and decide whether consistency or availability must be sacrificed during network partitions.
+
+### How do atomic state transitions (`CLOSED` -> `OPEN` -> `HALF-OPEN`) prevent cascading failures in microservices?
+Atomic state transitions isolate failing services immediately when failure rates exceed configured thresholds, tripping the breaker to `OPEN` and fast-failing subsequent requests without consuming network threads. Once a sleep window expires, the breaker transitions to `HALF-OPEN` to send probe requests, safely resuming traffic only when downstream health is restored.
+
+### How do sliding-window rate limiters protect downstream database connection pools from AI token burst traffic?
+Sliding-window rate limiters track request timestamps per client IP or API key within a rolling time window, dropping or queuing requests that exceed maximum throughput quotas. By capping burst request spikes generated by autonomous AI agents, the rate limiter prevents database connection pool exhaustion and keeps P99 retrieval latencies below SLA thresholds.
 
 ---
 

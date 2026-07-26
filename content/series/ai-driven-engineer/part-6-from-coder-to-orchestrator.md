@@ -18,18 +18,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-
-
-## Part 6 — From Coder to Orchestrator: Swarms & Workflows
-
-The transition from individual programmer to Systems Orchestrator requires managing multi-agent AI swarms rather than writing single-threaded code lines. By establishing event-driven agent dispatchers, specialized role handoffs (Frontend, Backend, Database, Security), and channel synchronization in Go, orchestrators achieve parallelized feature implementation with 80% lower cycle times.
-
-**Key Takeaways**:
-- **Parallel Swarm Dispatching**: Concurrent sub-agent worker pools execute database schema design, gRPC service generation, and React UI creation simultaneously.
-- **Structured Handoff Protocols**: JSON contract schemas ensure clear inter-agent communication without lost state.
-- **Deterministic Channel Coordination**: Go channels and `errgroup` constructs manage sub-agent execution deadlines and fallback error handling.
-
----
+> **Key Takeaway**: The transition from individual programmer to Systems Orchestrator requires managing multi-agent AI swarms rather than writing single-threaded code lines. By establishing event-driven agent dispatchers, specialized role handoffs (Frontend, Backend, Database, Security), and channel synchronization in Go, orchestrators achieve parallelized feature implementation with 80% lower cycle times.
 
 In early AI-assisted development, engineers interacted with a single AI chat window in a sequential dialogue loop. The developer typed a prompt, waited for code output, pasted it into their editor, and repeated the manual cycle.
 
@@ -39,7 +28,9 @@ Modern AI-native engineering scales beyond single-agent chat. Systems Orchestrat
 
 ## Multi-Agent Swarm Orchestration Architecture
 
-Swarm orchestration coordinates autonomous agent workers across specialized subtasks like schema creation, API coding, and test writing.
+Swarm orchestration coordinates autonomous agent workers across specialized subtasks like schema creation, API coding, and test writing. In 2026, orchestrators standardise inter-agent communication using Model Context Protocol (MCP) JSON-RPC 2.0 specs over mTLS transport layers, emitting OpenTelemetry GenAI spans for full observability.
+
+**Multi-Agent Swarm Architecture Topology:** This system diagram illustrates how a human orchestrator dispatches tasks concurrently across database, backend, frontend, and security sub-agents, aggregating results into a unified CI/CD merge pipeline.
 
 ```mermaid
 graph TD
@@ -72,7 +63,7 @@ graph TD
 
 Production Go swarm dispatchers use channel-based worker pools and context deadlines to execute parallel agent workflows safely.
 
-This production-grade Go swarm orchestrator built with channels, `sync.WaitGroup`, and `golang.org/x/sync/errgroup` that dispatches specialized sub-agent tasks concurrently and aggregates handoff contracts:
+**Go Multi-Agent Swarm Dispatcher Engine:** The `DispatchSwarm` method executes parallel sub-agent tasks using `golang.org/x/sync/errgroup` worker routines, capturing handoff artifacts with context deadline controls.
 
 ```go
 package main
@@ -217,6 +208,8 @@ Within Part 6 From Coder To Orchestrator, optimizing memory utilization requires
 
 Single-agent execution bottlenecks on complex tasks, whereas multi-agent swarms divide workloads into concurrent specialized execution steps.
 
+**Single-Agent vs. Swarm Pipeline Matrix:** This comparative matrix evaluates operational differences between serial single-agent dialogue chat and parallel multi-agent swarm pipelines across execution flow, context degradation, and throughput.
+
 | Feature / Dimension | Single-Agent Dialogue Chat | Multi-Agent Swarm Pipeline |
 | :--- | :--- | :--- |
 | **Execution Flow** | Serial (Sequential wait) | Parallel (Concurrent execution) |
@@ -228,7 +221,16 @@ Single-agent execution bottlenecks on complex tasks, whereas multi-agent swarms 
 
 ---
 
----
+## Frequently Asked Questions
+
+### How do Systems Orchestrators manage context window isolation across specialized sub-agent pools?
+Systems Orchestrators isolate sub-agent contexts by instantiating dedicated, stateless model execution loops for each specialized task (e.g. Database Agent vs Frontend Agent). Rather than sharing a single bloated chat context, sub-agents pass minimal JSON contract artifacts, preventing context token window inflation and reducing inference costs by over 80%.
+
+### What JSON contract schemas are required for deterministic handoffs between backend and frontend agents?
+Deterministic handoffs require strict schema contracts defined via OpenAPI 3.1 or Protobuf specifications, specifying exact field names, data types, and nullability rules. Backend agents export these schema files upon compilation, allowing frontend agents to parse the AST types directly and synthesize type-safe TypeScript interfaces.
+
+### How do Go channels and `errgroup.WithContext` manage agent execution timeouts and graceful fallbacks?
+The `errgroup.WithContext` package ties all sub-agent worker goroutines to a parent `context.Context` deadline. If a single sub-agent stalls or exceeds its execution budget, the context triggers a cancellation signal across all child routines, allowing the orchestrator to trip a fallback circuit breaker or report a structured error response without leaking goroutines.
 
 ---
 

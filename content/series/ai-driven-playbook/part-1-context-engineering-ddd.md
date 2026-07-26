@@ -13,19 +13,23 @@ cover:
   relative: false
 ---
 
-> **Answer-First Summary**: Context Engineering is the discipline of structuring, scoping, and injecting software domain knowledge into Large Language Model (LLM) prompts and agent context windows using Domain-Driven Design (DDD) principles. By organizing codebases into explicit Bounded Contexts, Abstract Syntax Tree (AST) subgraphs, and JSON-Schema prompt contracts, teams eliminate hallucination, enforce architectural layer boundaries, and enable autonomous coding agents to implement production-grade enterprise features.
+# Part 1: Context Engineering & Domain-Driven Prompting Architecture
+
+> **Answer-First Summary**: Context Engineering structures, scopes, and injects software domain knowledge into Large Language Model prompts using Domain-Driven Design principles. By organizing codebases into explicit Bounded Contexts, Abstract Syntax Tree subgraphs, and JSON-Schema contracts, engineering teams eliminate hallucinations, enforce layer boundaries, and enable autonomous coding agents to implement production-grade enterprise features.
 
 ---
 
 ## 1. The Fundamental Problem with Naive Context Windows
 
-**Answer-first:** As context windows expanded from 8,000 to over 1,000,000 tokens, a common enterprise misconception emerged: the belief that developers could simply dump an entire repository into an LLM context window and expect flawless code synthesis.
+As context windows expanded from 8,000 to over 1,000,000 tokens, a common enterprise misconception emerged: the belief that developers could simply dump an entire repository into an LLM context window and expect flawless code synthesis.
 
 In practice, large context windows suffer from **attentional decay**, colloquially known as the "Lost in the Middle" phenomenon. When an LLM processes massive, unstructured code dumps:
 
 1. **Instruction Degradation**: Core architectural rules buried deep in context are ignored in favor of dominant statistical patterns in training data.
 2. **Layer Bleed**: The model creates direct database calls inside UI controllers or imports infrastructure packages into domain entities, violating clean architecture rules.
 3. **Token Inefficiency**: Costs scale linearly or quadratically with context length, destroying the financial feasibility of continuous agentic pipelines.
+
+**[Context Pipeline Topology] [Diagram]:** This flowchart details the attentional decay, instruction degradation, and layer bleed that occur when an unstructured codebase dump is fed into an LLM context window.
 
 ```mermaid
 graph TD
@@ -42,7 +46,9 @@ To achieve deterministic, high-quality code generation, AI engineering teams mus
 
 ## 2. Applying Domain-Driven Design (DDD) to AI Context
 
-**Answer-first:** Domain-Driven Design provides the perfect conceptual framework for scoping LLM context. By treating the AI agent as a developer operating within a specific business domain, we apply three core DDD primitives to context construction:
+Domain-Driven Design provides the perfect conceptual framework for scoping LLM context. By treating the AI agent as a developer operating within a specific business domain, we apply three core DDD primitives to context construction:
+
+**Context Engineering Execution Protocol:** This sequence diagram details how the engineering agent queries the context registry to fetch pruned AST graphs before dispatching formatted prompts to the reasoning engine.
 
 ```mermaid
 sequenceDiagram
@@ -77,7 +83,9 @@ The prompt layout forces a strict separation between core business logic (Domain
 
 ## 3. The Architecture of a Enterprise Context Engine
 
-**Answer-first:** A production Context Engine operates as a middleware layer between developer intent (task specifications) and LLM invocation.
+A production Context Engine operates as a middleware layer between developer intent (task specifications) and LLM invocation.
+
+**Enterprise Context Engine Architecture:** The block diagram illustrates the orchestration layer combining AST code indexing, DDD boundary matrices, and vector DB embeddings into a pruned context package.
 
 ```mermaid
 graph LR
@@ -99,13 +107,15 @@ graph LR
 
 ## 4. Practical Implementation: AST-Aware Context Extractor
 
-**Answer-first:** Python AST context extractors parse codebase structures, extract class interfaces, and strip internal method bodies to minimize token usage.
+Python AST context extractors parse codebase structures, extract class interfaces, and strip internal method bodies to minimize token usage.
+
+**AST Context Extractor Implementation:** The `ContextEngineeringParser` class parses Python source code ASTs to extract class signatures, public interfaces, and docstrings while stripping private method bodies.
 
 ```python
 import ast
 import json
 import sys
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 
 class ContextEngineeringParser(ast.NodeVisitor):
     """
@@ -179,7 +189,7 @@ class PaymentAggregate:
 
 ## 5. System Prompt Layout & Schema Design
 
-**Answer-first:** To ensure the LLM respects the generated context, prompts must be organized using rigid section delimiters. The table below illustrates the optimal prompt layout for context-engineered prompts.
+**[DDD Prompt Schema] [Specification]:** This matrix details the structural section delimiters and prompt organization strategy for context-engineered agent runs.
 
 | Section | Role & Purpose | Content Strategy |
 |---|---|---|
@@ -189,13 +199,37 @@ class PaymentAggregate:
 | `## EXECUTION TASK` | Specific user requirement | Step-by-step modification request |
 | `## RESPONSE FORMAT` | Guarantees code parseability | Strict markdown fenced code block specifications |
 
+**System Prompt Markdown Template:** The markdown layout template illustrates the explicit section delimiters and schema contracts injected into agent execution runs.
+
+```markdown
+<system_boundaries>
+- Bounded Context: PaymentProcessing
+- Forbidden Imports: ["github.com/vesviet/inventory/*", "database/sql"]
+- Invariants: All domain mutations must emit DomainEvents.
+</system_boundaries>
+
+<domain_dictionary>
+- Order: Aggregate Root representing verified customer purchase orders.
+- PaymentToken: Ephemeral token generated by payment gateway proxy.
+</domain_dictionary>
+
+<target_ast_interfaces>
+**[Pydantic Validation Engine] [Code Snippet]:**
+``    class PaymentGatewayInterface(ABC):
+        @abstractmethod
+        def process_payment(self, token: str, amount: Decimal) -> PaymentResult: pass``
+</target_ast_interfaces>
+```
+
 ---
 
 ## 6. Real-World Case Study: Microservices Refactoring
 
-**Answer-first:** A leading e-commerce platform evaluated naive prompting versus DDD-based Context Engineering when tasking an agentic pipeline with refactoring a monolithic Go checkout service into isolated microservices.
+A leading e-commerce platform evaluated naive prompting versus DDD-based Context Engineering when tasking an agentic pipeline with refactoring a monolithic Go checkout service into isolated microservices.
 
 ### Comparison Results
+
+**Defect Distribution Comparison:** The pie chart illustrates the sharp decrease in layer boundary violations and API hallucinations when comparing naive context dumping against DDD-based Context Engineering.
 
 ```mermaid
 pie title Defect Distribution in Generated Microservices
@@ -212,7 +246,7 @@ pie title Defect Distribution in Generated Microservices
 
 ## 7. Strategic Recommendations & Best Practices
 
-**Answer-first:** Automate AST context extraction via CLI tools, cap token budgets per sub-agent step, and version control domain context schemas in git repositories.
+Automate AST context extraction via CLI tools, cap token budgets per sub-agent step, and version control domain context schemas in git repositories.
 
 1. **Automate AST Context Extraction**: Never require developers to manually assemble prompt context. Build automated CLI plugins (e.g., Git hooks or IDE extensions) that query AST graphs.
 2. **Enforce Token Budget Limits**: Cap context payload sizes at 16,000 tokens per sub-agent step to maintain optimal attentional density.
@@ -222,13 +256,15 @@ pie title Defect Distribution in Generated Microservices
 
 ## 8. Dynamic Schema Validation & Context Compression Protocols
 
-**Answer-first:** To ensure that LLMs adhere strictly to target architectural interfaces, Context Engines deploy dynamic JSON-Schema validators that filter model context both pre-prompt injection and post-code generation.
+To ensure that LLMs adhere strictly to target architectural interfaces, Context Engines deploy dynamic JSON-Schema validators that filter model context both pre-prompt injection and post-code generation.
 
 ### Context Compression Pipeline
 
 1. **Dead Code Elimination**: Strip unused internal function definitions, local helper structures, and legacy inline comments from context payloads.
 2. **Interface Stubbing**: Replace full method implementations with minimal interface declarations and docstring annotations.
 3. **Type Alias Resolution**: Automatically resolve nested type definitions across imported packages into a single unified type context header.
+
+**Context Compression Workflow:** The diagram maps the multi-stage token reduction pipeline from raw 4,000-token source files down to a 600-token pruned context header.
 
 ```mermaid
 graph TD
@@ -239,15 +275,62 @@ graph TD
     E --> F[Inject into LLM Prompt]
 ```
 
+**Pydantic v2 Context Compression & Validation Script:** The Python code snippet utilizes Pydantic v2 to validate context payload models, calculate compression ratios, and enforce token constraints before model injection.
+
+```python
+from typing import List, Optional
+from pydantic import BaseModel, Field, field_validator
+
+class MethodSignature(BaseModel):
+    name: str
+    args: List[str]
+    returns: str
+
+class ClassContextModel(BaseModel):
+    name: str
+    docstring: Optional[str] = None
+    methods: List[MethodSignature]
+
+class ContextPayloadModel(BaseModel):
+    bounded_context: str
+    token_budget: int = Field(default=8192, le=16384)
+    classes: List[ClassContextModel]
+
+    @field_validator("bounded_context")
+    @classmethod
+    def validate_context_name(cls, v: str) -> str:
+        if not v.isidentifier():
+            raise ValueError("Bounded context must be a valid identifier")
+        return v
+
+def compress_payload(payload: ContextPayloadModel) -> str:
+    # Serializes model into compact minified JSON context block
+    return payload.model_dump_json(exclude_none=True)
+```
+
 ---
 
 ## 9. Context Lifecycle & Real-Time Invalidation Strategies
 
-**Answer-first:** In rapidly evolving codebases where multiple agents and human developers merge pull requests continuously, stale context represents a critical point of failure.
+In rapidly evolving codebases where multiple agents and human developers merge pull requests continuously, stale context represents a critical point of failure.
 
 ### Invalidation Triggers
 
 - **Git Commit Webhooks**: Whenever a merge event occurs on the `main` branch, the AST indexer invalidates modified module subgraphs in the vector store.
 - **Dependency Map Recalculation**: Automated weekly sweeps re-calculate package dependency distance matrices to reflect new domain boundaries.
 - **TTL Cache Policies**: Set maximum Time-To-Live (TTL) limits (e.g., 2 hours) on transient context embeddings generated during interactive developer pairing sessions.
+
+---
+
+## Frequently Asked Questions
+
+### Why do large context windows suffer from "attentional decay"?
+Large context windows process input tokens probabilistically, causing LLMs to prioritize dominant training patterns over instructions buried in long prompts. This leads to "Lost in the Middle" syndrome, where architectural rules and domain boundaries are ignored during code synthesis.
+
+### How does Domain-Driven Design (DDD) solve context bloat?
+DDD organizes codebases into explicit Bounded Contexts and Ubiquitous Language mappings. By extracting only relevant AST subgraphs and interface signatures, Context Engineering supplies the LLM with focused prompt payloads under 1,000 tokens while maintaining clean architecture layer boundaries.
+
+### What is the difference between AST pruning and standard RAG chunking?
+Standard RAG chunking splits files by character count or paragraph breaks, frequently severing code signatures and table definitions. AST pruning parses the programming language's syntax tree directly, stripping method implementations while retaining public interfaces, type definitions, and caller hierarchies.
+
 
