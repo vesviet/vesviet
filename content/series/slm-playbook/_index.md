@@ -30,12 +30,13 @@ This playbook provides runnable Python scripts, mathematical derivations, and pr
 
 ## Series Contents
 
-- [Part 1: Executive Summary & Hybrid AI Architecture](/series/slm-playbook/executive-summary/)
+- [Executive Summary: The SLM Playbook](/series/slm-playbook/executive-summary/)
+- [Part 1: Hybrid AI & Self-Hosted vLLM](/posts/slm-fine-tune-vs-prompt-engineering/)
 - [Part 2: Data Engineering for SFT: NEFTune & SemDeDup](/series/slm-playbook/part-2-sft-data-engineering/)
 - [Part 3: Practical LoRA & QLoRA Fine-Tuning](/series/slm-playbook/part-3-lora-qlora-tuning/)
-- [Part 4: Task & Knowledge Distillation](/series/slm-playbook/part-4-knowledge-distillation-synthetic-data/)
-- [Part 5: Preference Alignment (DPO, KTO, GRPO)](/series/slm-playbook/part-5-preference-alignment-dpo-grpo/)
-- [Part 6: Enterprise vLLM Serving & Edge Deployment](/series/slm-playbook/part-6-vllm-serving-edge-deployment/)
+- [Part 4: Task & Knowledge Distillation](/posts/slm-fine-tune-vs-prompt-engineering/)
+- [Part 5: Preference Alignment (DPO, KTO, GRPO)](/posts/slm-fine-tune-vs-prompt-engineering/)
+- [Part 6: Enterprise Serving & Quantization](/posts/slm-fine-tune-vs-prompt-engineering/)
 
 ---
 
