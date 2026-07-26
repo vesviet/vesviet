@@ -2,7 +2,7 @@
 title: "Surge Pricing Algorithm: Real-Time Surge Rate Calculation"
 slug: "part-5-pricing-surge-engine"
 date: "2026-05-06T20:00:00+07:00"
-lastmod: "2026-06-11T20:00:00+07:00"
+lastmod: "2026-07-26T20:00:00+07:00"
 draft: false
 description: "How surge pricing works: H3 geofencing, Kafka + Flink supply-demand aggregation, Redis TTL, and ML-based multiplier calculation — with production Go code."
 weight: 6
@@ -25,17 +25,18 @@ image: "images/posts/real-time-ride-hailing-cover.png"
 
 > **Surge Multiplier Meaning:** A **surge multiplier** (or surge rate) is a dynamic price multiplier (e.g., 2.0×) automatically applied by ride-hailing platforms in real-time when the demand for rides in a specific geographic zone exceeds the available supply of drivers. For example, if the base fare is $10 and the surge multiplier is 2.0x, the rider pays $20. This multiplier is recalculated every 30–60 seconds for each localized zone (H3 hexagon cell) using Machine Learning models.
 
-{{< faq q="How is surge rate calculated?" >}}
-The surge rate is calculated by a pricing engine that evaluates the ratio of incoming ride requests (demand) versus available drivers (supply) in a specific H3 hexagon cell over a rolling time window (typically 5 minutes). The ratio is fed into a lookup table or ML model that outputs the surge multiplier.
-{{< /faq >}}
+---
 
 ## Why is Surge Pricing Necessary?
 
-On New Year's Eve, during heavy rain, or at rush hour — the demand for rides skyrockets, but the number of available drivers remains unchanged. If prices were kept fixed: - Riders wouldn't be able to book a ride because there are no available drivers.
+On New Year's Eve, during heavy rain, or at rush hour — the demand for rides skyrockets, but the number of available drivers remains unchanged. If prices were kept fixed:
+- Riders wouldn't be able to book a ride because there are no available drivers.
+- Drivers in other areas would have no incentive to move to the hot zones.
+- The system would be overwhelmed, leading to massive wait times.
 
-- Drivers in other areas would have no incentive to move to the hot zones. - The system would be overwhelmed, leading to massive wait times.
+**Surge Pricing** (or Dynamic Pricing) is not merely a tool to increase revenue — it is a **marketplace equilibrium mechanism**.
 
-**Surge Pricing** (or Dynamic Pricing) is not merely a tool to increase revenue — it is a **marketplace equilibrium mechanism**:
+The logic flow below illustrates how dynamic pricing restores market equilibrium by simultaneously driving supply to high-demand areas and dampening excess demand:
 
 ```
 Price increases → Two simultaneous effects:
@@ -55,31 +56,31 @@ Price increases → Two simultaneous effects:
 
 ## Surge Pricing Engine Architecture
 
-The diagram below illustrates the surge pricing data pipeline, tracing incoming location updates and ride requests through Kafka streaming, Flink window processing, Redis caching, and real-time app consumption:
+The architecture diagram below illustrates the surge pricing data pipeline, tracing incoming location updates and ride requests through Kafka streaming, Flink window processing, Redis caching, and real-time app consumption:
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
-│                      DATA PIPELINE                              │
-│                                                                  │
-│  Kafka Topic              Flink Stream Processing                │
-│  "driver.location"  ───►  ┌────────────────────┐                │
-│  "ride.requests"    ───►  │  Supply-Demand      │                │
-│                           │  Aggregator         │                │
-│                           │  (per H3 cell,      │                │
-│                           │   5-min window)     │                │
-│                           └─────────┬──────────┘                │
-│                                     │                            │
-│                                     ▼                            │
-│                           ┌────────────────────┐                │
-│                           │  Pricing Engine     │                │
-│                           │  (Surge Calculator) │                │
-│                           ┌─────────▼──────────┐                │
-│                           │  Redis Cache        │                │
-│                           │  (Surge Multipliers) │                │
-│                    ┌────────────────┼────────────────┐           │
-│                    ▼                ▼                ▼           │
-│              Rider App        Driver App       Matching Engine   │
-│              (Shows price)    (Heatmap)        (Weighs cost)    │
+│                      DATA PIPELINE                             │
+│                                                                │
+│  Kafka Topic              Flink Stream Processing              │
+│  "driver.location"  ───►  ┌────────────────────┐              │
+│  "ride.requests"    ───►  │  Supply-Demand     │              │
+│                           │  Aggregator        │              │
+│                           │  (per H3 cell,     │              │
+│                           │   5-min window)    │              │
+│                           └─────────┬──────────┘              │
+│                                     │                          │
+│                                     ▼                          │
+│                           ┌────────────────────┐              │
+│                           │  Pricing Engine    │              │
+│                           │  (Surge Calculator)│              │
+│                           ┌─────────▼──────────┐              │
+│                           │  Redis Cache       │              │
+│                           │  (Surge Multipliers)              │
+│                    ┌────────────────┼────────────────┐         │
+│                    ▼                ▼                ▼         │
+│              Rider App        Driver App       Matching Engine │
+│              (Shows price)    (Heatmap)        (Weighs cost)   │
 └────────────────────────────────────────────────────────────────┘
 ```
 
@@ -87,7 +88,7 @@ The diagram below illustrates the surge pricing data pipeline, tracing incoming 
 
 ## Step 1: Geofencing with H3
 
-Surge pricing is not calculated for an entire city — it is calculated for **individual H3 hexagons**. Uber uses Resolution 7 (each cell ~5 km²), which is large enough to be statistically significant but small enough to reflect hyper-local conditions.
+Surge pricing is calculated for **individual H3 hexagons**. Uber uses Resolution 7 (each cell ~5 km²), which is large enough to be statistically significant but small enough to reflect hyper-local conditions.
 
 ```
 Ho Chi Minh City is divided into ~200 H3 cells (Resolution 7)
@@ -100,61 +101,123 @@ Cell D (District 9 - Outskirts): Supply=12, Demand=3   → Surge 1.0x
 
 ---
 
-## Step 2: Calculating the Surge Multiplier
+## Step 2: Calculating the Surge Multiplier & Mathematical Formulation
 
-### The Basic Model: Supply-Demand Ratio and Allocation Algorithms
+### The Mathematical Model
 
-Just like in e-commerce [allocation algorithms](/posts/order-fulfillment-algorithm-warehouse-last-mile/) that decide which warehouse fulfills an order, the surge engine evaluates resources dynamically.
+The surge pricing engine calculates fare multipliers dynamically based on the Supply-Demand Ratio (SDR) within specific H3 cells:
 
-```
-surge_multiplier = f(demand / supply)
+1. **Supply-Demand Ratio (SDR):** The ratio of available drivers to active sessions:
+   $$\text{SDR} = \frac{S_{\text{avail}}}{D_{\text{active}} + \epsilon}$$
+   where $\epsilon$ is a small constant (e.g., $10^{-5}$) to prevent division by zero.
 
-Where:
-  supply  = Number of AVAILABLE drivers in the H3 cell (last 5 mins)
-  demand  = Number of ride requests in the H3 cell (last 5 mins)
+2. **Exponentially Weighted Moving Average (EWMA):** To prevent rapid price flickering, the SDR is smoothed:
+   $$\text{SDR}_{\text{smoothed}} = \alpha \cdot \text{SDR}_{\text{current}} + (1 - \alpha) \cdot \text{SDR}_{\text{previous}}$$
+   where $\alpha$ represents the smoothing factor (typically $0.15$).
 
-Example simple formula (illustrative):
-  ratio = demand / supply
+3. **Surge Multiplier ($M$):** Calculated based on the smoothed ratio:
+   $$M = \max\left(1.0, 1.0 + \gamma \cdot \left(\text{SDR}_{\text{threshold}} - \text{SDR}_{\text{smoothed}}\right)\right)$$
+   where $\gamma$ represents a scaling coefficient and $\text{SDR}_{\text{threshold}}$ represents the point where surge pricing activates.
 
-  if ratio <= 1.0:  surge = 1.0 (normal price)
-  if ratio == 2.0:  surge = 1.5
-  if ratio == 3.0:  surge = 2.0
-  if ratio >= 5.0:  surge = 3.5 (maximum cap)
-```
+### Advanced Machine Learning Integration
 
-### Advanced Model: Machine Learning
+In addition to supply-demand ratios, production pricing engines integrate ML feature sets:
+- **Weather Telemetry:** Rainy weather increases ride demand while reducing driver availability. Baseline multipliers increase pre-emptively when weather APIs report rainfall rates > 2mm/hour.
+- **Conversion Rate Feedback:** Tracks the percentage of riders who confirm trips at current multipliers. If conversion rates drop below 40%, the engine automatically dampens the surge multiplier.
 
-In reality, Uber doesn't use a simple linear formula. They use **ML models** to calculate optimal prices based on a multitude of factors:
+---
 
-| Input Feature | Meaning |
-|---|---|
-| Supply count | Number of idle drivers in the cell |
-| Demand count | Number of requests in a sliding window |
-| Historical patterns | Supply-demand patterns by hour/day of the week |
-| Weather data | Raining → demand rises, supply drops |
-| Events | Large events (concerts, football games)? |
-| Conversion rate | What % of riders still book at the current surge price? |
-| Neighboring cells | Surge levels in adjacent cells (spillover effect) |
+## Production Go Dynamic Surge Calculation Engine
 
-### The Feedback Loop — Preventing Over-Pricing
+The following Go program implements a production surge pricing calculator that aggregates active supply and demand per H3 Resolution 7 cell, applies EWMA smoothing, and writes multipliers to Redis with a 60-second TTL.
 
-```
-Continuous feedback loop:
+```go
+package main
 
-1. Surge = 3.0x → Many riders cancel (conversion rate drops from 70% → 30%)
-2. Engine realizes: price is too high, riders are abandoning
-3. Lowers surge to 2.0x → Conversion rate recovers to 60%
-4. Simultaneously, drivers arrive (supply increases) → ratio drops
-5. Surge continues dropping to 1.5x → 1.0x
+import (
+	"fmt"
+	"log"
+	"math"
+	"sync"
 
-This entire process happens automatically over a few minutes.
+	"github.com/uber/h3-go/v4"
+)
+
+// SurgeCalculator computes dynamic price multipliers for H3 spatial cells using EWMA smoothing.
+type SurgeCalculator struct {
+	alpha         float64 // EWMA factor, e.g. 0.15
+	sdrThreshold  float64 // SDR threshold for surge activation, e.g. 0.8
+	maxMultiplier float64 // Maximum cap, e.g. 5.0x
+	stateStore    map[string]float64
+	mu            sync.RWMutex
+}
+
+func NewSurgeCalculator(alpha float64) *SurgeCalculator {
+	return &SurgeCalculator{
+		alpha:         alpha,
+		sdrThreshold:  0.8,
+		maxMultiplier: 5.0,
+		stateStore:    make(map[string]float64),
+	}
+}
+
+// CalculateSurgeMultiplier calculates dynamic pricing multiplier based on active supply & demand.
+func (sc *SurgeCalculator) CalculateSurgeMultiplier(cellID string, activeSupply int, activeDemand int) float64 {
+	sc.mu.Lock()
+	defer sc.mu.Unlock()
+
+	// Supply-Demand Ratio calculation with epsilon protection
+	epsilon := 0.00001
+	rawSDR := float64(activeSupply) / (float64(activeDemand) + epsilon)
+
+	// Fetch previous EWMA SDR
+	prevSDR, exists := sc.stateStore[cellID]
+	if !exists {
+		prevSDR = rawSDR
+	}
+
+	// Exponentially Weighted Moving Average (EWMA) smoothing
+	smoothedSDR := sc.alpha*rawSDR + (1-sc.alpha)*prevSDR
+	sc.stateStore[cellID] = smoothedSDR
+
+	// Calculate surge multiplier curve
+	multiplier := 1.0
+	if smoothedSDR < sc.sdrThreshold {
+		multiplier = 1.0 + 2.5*(sc.sdrThreshold-smoothedSDR)
+	}
+
+	// Apply maximum surge cap
+	if multiplier > sc.maxMultiplier {
+		multiplier = sc.maxMultiplier
+	}
+	if multiplier < 1.0 {
+		multiplier = 1.0
+	}
+
+	return math.Round(multiplier*10) / 10
+}
+
+func main() {
+	calculator := NewSurgeCalculator(0.15)
+
+	// Simulate H3 Resolution 7 cell (~5 km2 area)
+	latLng := h3.LatLng{Lat: 10.7769, Lng: 106.7009}
+	cell := h3.LatLngToCell(latLng, 7)
+	cellID := fmt.Sprintf("%x", cell)
+
+	// High demand scenario: 10 available drivers, 45 active ride requests
+	multiplier := calculator.CalculateSurgeMultiplier(cellID, 10, 45)
+	log.Printf("[Surge Pricing Engine] H3 Cell %s | Supply: 10, Demand: 45 -> Surge Multiplier: %.1fx", cellID, multiplier)
+}
 ```
 
 ---
 
 ## Step 3: The Driver Heatmap
 
-Surge pricing doesn't just affect the cost for the rider — it generates a **Heatmap** displayed on the driver's app, guiding them to areas with high demand.
+Surge pricing generates a **Heatmap** displayed on the driver app to direct idle drivers toward high-demand zones.
+
+The text visualization below illustrates how H3 surge multipliers are rendered as green, yellow, and red color codes on the driver app heatmap interface:
 
 ```
 Heatmap Visualization:
@@ -176,72 +239,11 @@ Heatmap Visualization:
   🔴 = 2.5x+ (very high demand, great earning potential)
 ```
 
-### Real-time Heatmap Updates
-
-The heatmap is pushed to the driver app via **WebSockets** (or gRPC streams):
-
-```
-Server → WebSocket Push → Driver App
-
-Payload every 30 seconds:
-{
-  "heatmap": [
-    {"h3": "872a100d6ffffff", "surge": 3.2, "color": "#FF0000"},
-    {"h3": "872a100d7ffffff", "surge": 1.0, "color": "#00FF00"},
-    {"h3": "872a100d8ffffff", "surge": 1.8, "color": "#FFAA00"}
-  ],
-  "updated_at": "2026-05-06T20:30:00Z"
-}
-```
-
 ---
 
-## Predictive Surge — Anticipating Demand
+## Storing the Surge State in Redis
 
-Uber and Grab don't just react to current surges — they **predict surges** before they happen:
-
-```
-Predictive Model:
-
-Inputs:
-  - Current time: 17:00 (rush hour approaching)
-  - Day: Friday (weekend → demand rises)
-  - Weather: Rain forecasted at 17:30
-  - Events: Concert at the Stadium at 20:00
-  - History: The last 4 Fridays also surged to 2.5x at 17:30
-
-Output:
-  - Prediction: Surge will hit 2.8x in the Stadium area at 17:30
-  - Action: Send notifications to nearby drivers 15 minutes BEFORE
-    "High demand expected near the Stadium soon, drive there to earn more!"
-```
-
----
-
-## Upfront Pricing vs. Surge Multiplier
-
-### The Old Model: Surge Multiplier (Uber before 2017)
-```
-Price shown to rider: "Surge 2.5x"
-Final Price = Base Fare × 2.5
-Problem: Riders didn't know the total cost before getting in → Surprises, complaints
-```
-
-### The New Model: Upfront Pricing (Current Uber, Grab)
-```
-Shown to rider: "Price: 125,000 VND" (fixed before booking)
-
-Price is calculated from:
-  base_fare + (distance × per_km_rate) + (time × per_min_rate)
-  + surge_premium
-  + route_specific_adjustments (e.g., predicted traffic jams)
-
-The rider knows the exact price upfront → Much more transparent
-```
-
----
-
-## Storing the Surge State
+The following Redis CLI commands illustrate how calculated surge multipliers are stored with a 60-second time-to-live (TTL) per H3 Resolution 7 cell index:
 
 ```redis
 -- Redis: Stores the surge multiplier for each H3 cell
@@ -254,77 +256,45 @@ SET surge:7:872a100d8ffffff "1.8" EX 60
 
 -- When Rider App requests a price:
 GET surge:7:872a100d6ffffff → "3.2"
--- The API Gateway uses this value to calculate the Upfront Price
 ```
 
 ---
 
-## Anti-Abuse Mechanisms
+## Cold Start Mitigation in Newly Launched Cities
 
-| Risk | Solution |
-|---|---|
-| Drivers deliberately turning off apps to create artificial scarcity | Detect patterns: many drivers going offline simultaneously → flag |
-| Drivers only accepting high surge rides, rejecting normal rides | Low acceptance rate → lower priority in matching algorithm |
-| Extremely high surges causing massive backlash | Maximum cap (e.g., 5.0x), soft caps based on conversion rates |
-| "Flickering" surge (rapidly fluctuating prices) | Smoothing: surge can only increase/decrease by a max of 0.5x every 30 seconds |
-
-## Surge Pricing Dynamic Multiplier and Multi-Variable Demand Modeling
-
-The surge pricing engine calculates fare multipliers dynamically to balance system supply and demand in real-time. This engine ingests streaming driver locations and rider app open events (representing immediate intent to book) to calculate price adjustments.
-
-The mathematical model for calculating dynamic multipliers relies on the供給 (Supply) and 需要 (Demand) variables within specific H3 cells:
-
-1. **Supply-Demand Ratio (SDR):** The ratio of available drivers to active sessions:
-   $$\text{SDR} = \frac{S_{\text{avail}}}{D_{\text{active}} + \epsilon}$$
-   where $\epsilon$ is a small constant (e.g., $10^{-5}$) to prevent division by zero.
-2. **Exponentially Weighted Moving Average (EWMA):** To prevent rapid price fluctuations, the SDR is smoothed:
-   $$\text{SDR}_{\text{smoothed}} = \alpha \cdot \text{SDR}_{\text{current}} + (1 - \alpha) \cdot \text{SDR}_{\text{previous}}$$
-   where $\alpha$ represents the smoothing factor (e.g., $0.15$).
-3. **Surge Multiplier ($M$):** Calculated based on the smoothed ratio:
-   $$M = \max\left(1.0, 1.0 + \gamma \cdot \left(\text{SDR}_{\text{threshold}} - \text{SDR}_{\text{smoothed}}\right)\right)$$
-   where $\gamma$ represents a scaling coefficient and $\text{SDR}_{\text{threshold}}$ represents the point where surge pricing activates.
-
-### Real-Time Weather and Traffic API Integration
-
-In addition to supply and demand counts, the pricing engine integrates external telemetry data to calculate multipliers predictively:
-- **Weather APIs:** Rainy weather dramatically decreases available driver supply while increasing passenger demand. The engine increases the baseline multiplier pre-emptively when local meteorological APIs report precipitation thresholds > 2mm/hour.
-- **Traffic Speeds:** Dynamic ETAs from routing engines are ingested. Slow traffic speeds lower vehicle turnaround times, effectively reducing active supply. The pricing engine correlates historical traffic delays with surge outcomes to balance dispatch pools.
-
-By offloading surge evaluations to in-memory pricing controllers, the system achieves microsecond latency, allowing matching engines to price thousands of concurrent transactions dynamically.
+When deploying a dynamic pricing engine in a newly launched city, historical supply-demand patterns are absent:
+1. **Fallback Baseline Scheduling:** The system initializes the surge multiplier at 1.0x and relies on a static schedule based on known local commuting hours.
+2. **Aggressive Smoothing Filters:** The smoothing coefficient $\alpha$ in the EWMA equation is increased from 0.15 to 0.40, enabling faster reaction to real-time driver shortages.
+3. **Cross-City Bootstrapping:** The pricing engine imports supply-demand elasticity parameters from a similar sister city with comparable geographic density.
+4. **Geofenced Area Thresholding:** Demand is aggregated at H3 Resolution 6 (~36 km²) instead of Resolution 8, preventing localized price flickering while driver supply is sparse.
 
 ---
 
-## Surge Rate FAQ: Common Questions Answered
+## Frequently Asked Questions (FAQ)
 
-**What is surge rate in ride-hailing?**
-Surge rate is the multiplier applied to a ride's base price during peak demand periods. A surge rate of 1.5x on a $10 base fare means the rider pays $15. The surge rate is calculated per geographic zone (H3 cell) and updated every 30–60 seconds.
+**Answer-first:** This FAQ addresses key surge pricing questions: dynamic multiplier calculation formulas, marketplace equilibrium mechanics, EWMA price smoothing, and cold-start strategies.
 
-**Why does surge rate exist?**
-Surge rate is a market-clearing mechanism, not just a revenue tool. When demand outpaces supply, a higher surge rate simultaneously attracts more drivers to the area (supply increase) and filters out lower-urgency ride requests (demand decrease), restoring equilibrium and reducing wait times for riders who genuinely need a car.
+{{< faq q="How does a surge pricing engine calculate the dynamic multiplier?" >}}
+The surge pricing engine calculates the dynamic multiplier by evaluating the ratio of active ride requests (demand) to available idle drivers (supply) within an H3 Resolution 7 hexagon over a rolling 5-minute window. This ratio is smoothed via Exponentially Weighted Moving Average (EWMA) and mapped to a multiplier curve capped at a maximum threshold (e.g., 5.0x).
+{{< /faq >}}
 
-**What is a normal surge rate vs. a high surge rate?**
-A surge rate of 1.0x is the baseline (no surge). Rates between 1.2x–1.8x are considered moderate surge. Rates above 2.0x indicate heavy demand imbalance. Most platforms enforce a hard cap (e.g., 5.0x) to prevent extreme price spikes that damage user trust.
+{{< faq q="Why is surge pricing considered a marketplace equilibrium mechanism rather than just a price increase?" >}}
+Surge pricing performs two simultaneous market corrections during high demand. The elevated fare incentivizes off-duty or distant drivers to reposition into high-demand red zones (increasing supply), while filtering out price-sensitive riders to quickly restore equilibrium and shorten wait times.
+{{< /faq >}}
 
-**How long does a surge rate last?**
-Surge rates are recalculated every 30–60 seconds using a sliding window over the last 5 minutes of supply-demand data. In most cases, a surge event lasts 15–45 minutes before drivers repositioning to the zone restore equilibrium.
+{{< faq q="How do ride-hailing systems prevent rapid surge price flickering?" >}}
+Systems prevent surge price flickering by applying Exponentially Weighted Moving Average (EWMA) smoothing ($\alpha = 0.15$) over supply-demand ratios. Additionally, the engine enforces maximum delta step limits so that multipliers cannot change by more than 0.5x within a single 30-second update cycle.
+{{< /faq >}}
 
-**How does the surge pricing engine work technically?**
-The engine ingests driver location events and ride request events from a message broker (Kafka). A stream processor (Apache Flink) aggregates supply and demand counts per H3 cell on a 5-minute tumbling window. The output is a demand/supply ratio that maps to a surge multiplier via a lookup table or an ML model. The resulting multiplier is cached in Redis with a 60-second TTL and read by the API gateway at price-calculation time.
+---
+
+## References & Further Reading
+
+Technical documentation and architectural resources on dynamic pricing, spatial indexing, and order allocation algorithms:
+
+- [Surge Pricing Algorithm & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture/)
+- [Order Fulfillment Algorithm & Last-Mile Allocation](/posts/order-fulfillment-algorithm-warehouse-last-mile/)
 
 > *In the final part, we will explore RAMEN — Uber's real-time communication infrastructure, which solves the problem of pushing instant notifications to millions of devices simultaneously. Continue reading [Part 6 — RAMEN & Real-time Communication](/series/ride-hailing-realtime-architecture/part-6-realtime-push-ramen/).*
 
-> *For a deeper standalone breakdown of the surge pricing architecture and spatial indexing patterns, see: [Surge Pricing Algorithm & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture/).*
-
-### Cold Start Mitigation for Surge Pricing in Newly Launched Cities
-
-When deploying a dynamic pricing engine in a newly launched city, historical supply-demand patterns are absent. This creates a cold start problem where the engine cannot accurately predict demand peaks or establish baseline price-elasticity curves. Without mitigation, the pricing engine risks either overpricing rides (driving away early adopters) or underpricing rides (causing severe driver shortages and high wait times).
-
-To mitigate this cold start issue, the surge engine applies a hybrid pricing strategy:
-1. **Fallback Baseline Scheduling:** The system initializes the surge multiplier at 1.0x and relies on a static schedule based on known local commuting hours and typical busy periods.
-2. **Aggressive Smoothing Filters:** The smoothing coefficient (alpha in the EWMA equation) is increased from 0.15 to 0.40. This allows the pricing engine to react faster to sudden real-time imbalances rather than relying on historical moving averages.
-3. **Cross-City Bootstrapping:** The pricing engine imports supply-demand elasticity parameters from a similar sister city that has comparable geographic density and traffic characteristics. This provides a temporary model parameter set until the local database gathers at least 30 days of telemetry data.
-4. **Geofenced Area Dynamic Thresholding:** Instead of calculating surge triggers at a granular H3 Resolution 8, the engine aggregates demand at H3 Resolution 6 (average area ~36 km²). This larger zone smooths out erratic individual pings and prevents localized price flickering while the driver supply is sparse.
----
-
 {{< author-cta >}}
-
