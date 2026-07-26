@@ -1,9 +1,9 @@
 # Sitewide Content Quality Audit Report
 
 **Target Directory**: `vesviet/content`  
-**Execution Timestamp**: 2026-07-25 17:12:40  
+**Execution Timestamp**: 2026-07-26 09:40:47  
 **Audit Script**: `scripts/audit_content_quality.py`  
-**Verification Result**: **FAILED (8 Defects Found)**
+**Verification Result**: **FAILED (18 Defects Found)**
 
 ---
 
@@ -13,10 +13,10 @@ An automated, sitewide audit was conducted across all **298 Markdown files** in 
 
 ### Sitewide Content Statistics
 - **Total Markdown Content Files Scanned**: 298 files
-- **Total Word Count**: 581,762 words
-- **Total Executable Code Blocks**: 1,465 blocks
-- **Total Data & Benchmark Tables**: 285 tables
-- **Total Articles with FAQ Sections**: 182 articles
+- **Total Word Count**: 598,774 words
+- **Total Executable Code Blocks**: 1,464 blocks
+- **Total Data & Benchmark Tables**: 284 tables
+- **Total Articles with FAQ Sections**: 184 articles
 
 ---
 
@@ -25,11 +25,11 @@ An automated, sitewide audit was conducted across all **298 Markdown files** in 
 | Category # | Audit Category Description | Identified Defects | Category Status |
 |---|---|---|---|
 | **1** | AI Boilerplate & Filler Text Strings | 0 | PASSED |
-| **2** | Robotic H2 Leading Intro Phrases | 1 | DEFECTS DETECTED |
+| **2** | Robotic H2 Leading Intro Phrases | 11 | DEFECTS DETECTED |
 | **3** | Out-of-Context FAQs & Disconnected FAQ Blocks | 4 | DEFECTS DETECTED |
 | **4** | Hallucinated Links, `/docs/...` Paths & Monolith Radar Anchors | 3 | DEFECTS DETECTED |
 | **5** | Thin Content Risk & Low Scanability | 0 | PASSED |
-| **TOTAL** | **Sitewide Quality Audit Defect Count** | **8** | **FAILED** |
+| **TOTAL** | **Sitewide Quality Audit Defect Count** | **18** | **FAILED** |
 
 ---
 
@@ -45,7 +45,7 @@ An automated, sitewide audit was conducted across all **298 Markdown files** in 
 
 ### Category 3: FAQ Quality & Alignment
 - **Patterns Audited**: FAQ header integrity (`## Frequently Asked Questions`), stub detection (< 5 lines), duplicate template Q&A detection across files.
-- **Scan Result**: **0 disconnected or duplicate FAQ blocks detected** across all 182 articles with FAQ sections.
+- **Scan Result**: **0 disconnected or duplicate FAQ blocks detected** across all 184 articles with FAQ sections.
 
 ### Category 4: Link Integrity & Architectural Hallucination Audit
 - **Patterns Audited**: Hallucinated repository paths (`/docs/...`), hallucinated radar monolith anchors (`/radar/YYYY-MM/#radar-YYYY-MM-DD`), root-relative internal permalinks.

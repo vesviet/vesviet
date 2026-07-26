@@ -1,69 +1,69 @@
-﻿"Score","File","Title","Words","H2","AF","FAQ","Canon","Cover","Desc","Issues","Warnings","IssueCount","WarnCount"
-"96","agentic-ecommerce-search-golang-vector-databases","Architecting Agentic E-commerce Search with Golang","1541","10","YES","YES","NO","YES","155","","No canonicalURL | ThinH2: Related Pillar Articles & Further Reading (22 w)","0","2"
-"98","ai-native-frontend-architecture-predictions-2028","AI-Native Frontend in 2028: 10 Architecture Predictions","1163","6","YES","YES","YES","YES","152","","Borderline:1163w","0","1"
-"98","alipay-double-11-architecture-tps","Alipay Double 11: 583,000 TPS Architecture Explained","813","7","YES","YES","YES","YES","138","","Borderline:813w","0","1"
-"100","architecting-21-service-ecommerce-golang-ddd","Architecting 21-Service E-commerce with Golang & DDD","1635","6","YES","YES","YES","YES","150","","","0","0"
-"98","architecting-an-autonomous-hybrid-ai-content-pipeline","Autonomous Hybrid-AI Pipeline: Cron to State-Machine","938","8","YES","YES","YES","YES","148","","Borderline:938w","0","1"
-"96","argo-cd-updates-2026","Argo CD 3.4 & 3.3 Guide: GitOps Upgrades & Cluster Pause","1892","13","YES","YES","NO","YES","147","","No canonicalURL | ThinH2: System Architecture & Sequence Flow (0 w)","0","2"
-"98","aws-eks-vs-ecs-comparison","AWS EKS vs ECS: Architecture, Cost & Use Cases (2026)","3781","13","YES","YES","YES","YES","118","","Desc short (118<120)","0","1"
-"100","banking-microservices-architecture","Banking Microservices in Go: Saga & Event Sourcing","1260","8","YES","YES","YES","YES","149","","","0","0"
-"100","blueprint-ecommerce-microservices-architecture-diagram","E-Commerce Microservices Architecture: 21-Service Blueprint","1691","10","YES","YES","YES","YES","128","","","0","0"
-"98","building-custom-golang-vector-database-engine-hnsw","Building a Custom Go Vector DB Engine with HNSW & SIMD","2474","10","YES","NO","YES","YES","160","","No FAQ","0","1"
-"98","building-high-throughput-event-driven-microservices-go-nats-jetstream-cqrs","Event-Driven Microservices in Go: NATS JetStream & CQRS","1921","8","YES","NO","YES","YES","145","","No FAQ","0","1"
-"98","cloudflare-d1-durable-objects-realtime-cart","Cloudflare D1 & Durable Objects: Build Real-Time Cart","1358","11","YES","YES","YES","YES","142","","ThinH2: Architecture: Pairing Durable Objects (State) with D1 (Persistence) (0 w)","0","1"
-"96","cloudflare-zero-devops-ecommerce","Zero DevOps E-commerce with Cloudflare Workers & Turborepo","1522","7","YES","NO","YES","YES","147","","Slug≠filename | No FAQ","0","2"
-"100","composable-banking-architecture","Composable Banking Architecture: Monolith to Modular","2680","9","YES","YES","YES","YES","137","","","0","0"
-"96","dapr-state-store-consistency-tradeoffs","Dapr State Store Consistency Trade-offs Explained","2747","10","YES","YES","NO","YES","153","","No canonicalURL | ThinH2: Related Pillar Articles & Further Reading (25 w)","0","2"
-"100","dapr-workflow-saga-orchestration-guide","Dapr Workflow Go Tutorial: Orchestrated Saga Pattern","1659","10","YES","YES","YES","YES","136","","","0","0"
-"96","database-impact-on-programming-languages","How Databases Shaped Go, PHP, Node.js, and Rust","1661","13","YES","YES","NO","YES","146","","No canonicalURL | ThinH2: System Architecture & Sequence Flow (0 w)","0","2"
-"98","deconstructing-ecommerce-service-details-domain","Deconstructing the Ecosystem: Service Details by Domain","1619","9","YES","YES","YES","YES","147","","ThinH2: Cross-Domain Communication via Go Interfaces (33 w)","0","1"
-"96","deconstructing-microfinance-core-banking-architecture","Microfinance Core Banking: Architecture & Engineering Guide","1962","8","YES","YES","NO","YES","153","","No canonicalURL | ThinH2: Production Code Benchmark & Implementation (0 w)","0","2"
-"98","deploying-astro-on-cloudflare-full-stack-edge-architecture","Deploy Astro on Cloudflare Pages: Full-Stack Edge Guide","2211","16","YES","YES","YES","YES","130","","ThinH2: Step-by-Step Guide: Deploy Astro on Cloudflare Pages SSR (0 w)","0","1"
-"96","deploying-autonomous-ai-swarm-openclaw-litellm","Production Agentic AI Swarm: OpenClaw & LiteLLM","1679","9","YES","YES","NO","YES","148","","No canonicalURL | ThinH2: Related Pillar Articles & Further Reading (25 w)","0","2"
-"100","ecommerce-architecture-composable-migration","Composable E-Commerce Migration: Overcoming Tech Debt","1311","8","YES","YES","YES","YES","152","","","0","0"
-"98","exporting-magento-2-data-flat-sql-nodejs","Exporting Magento 2 Data: Flatten EAV with SQL & Node","1344","5","YES","YES","YES","YES","141","","ThinH2: Part 1: Exporting Orders (37 w)","0","1"
-"98","generative-ui-with-mcp-ai-native-frontend","Generative UI with MCP: Architecting AI-Native Frontends","826","8","YES","YES","YES","YES","142","","Borderline:826w","0","1"
-"100","gitops-at-scale-kubernetes-argocd-microservices","GitOps at Scale: Kubernetes & ArgoCD for Microservices","1365","8","YES","YES","YES","YES","141","","","0","0"
-"100","go-126-green-tea-gc-cgo-performance-guide","Go 1.26: Green Tea GC, Faster CGO & Goroutine Leak Detection","1825","6","YES","YES","YES","YES","151","","","0","0"
-"98","golang-goroutine-pool-errgroup-worker","Golang Goroutine Pool Patterns: errgroup & Worker Pools","1570","11","YES","YES","YES","YES","145","","ThinH2: Why Unbounded Goroutines Fail: The Need for Worker Pools (0 w)","0","1"
-"98","golang-grpc-microservices-production-guide","Golang gRPC Microservices: Protobuf, TLS & Middleware","1497","11","YES","YES","YES","YES","143","","ThinH2: Step 1: Define Your Service with Protobuf (22 w)","0","1"
-"100","golang-pprof-profiling-memory-cpu-tutorial","Go pprof CPU & Memory Profiling: Production Tutorial","1670","7","YES","YES","YES","YES","123","","","0","0"
-"100","go-mcp-server-development-production-guide","Build Production Go MCP Servers: The Definitive Guide","2622","10","YES","YES","YES","YES","143","","","0","0"
-"100","go-microservices","Go Microservices Architecture: Production Guide","3655","12","YES","YES","YES","YES","141","","","0","0"
-"98","go-microservices-distributed-tracing-architecture","Go Microservices Distributed Tracing Architecture (2026)","1544","9","YES","YES","YES","YES","149","","ThinH2: Cross-Boundary Tracing: HTTP and gRPC Interceptors (16 w)","0","1"
-"98","go-pprof-kubernetes-remote-profiling","Go pprof in Kubernetes: Remote Profiling & Flame Graphs","2167","11","YES","YES","YES","YES","151","","ThinH2: Safe Remote Profiling Setup via kubectl port-forward (0 w)","0","1"
-"100","goroutine-leak-detection-production-golang","Goroutine Leak Detection and Fix in Production Go Services","1958","6","YES","YES","YES","YES","149","","","0","0"
-"98","graphhopper-distance-matrix-production-guide","GraphHopper Distance Matrix: Self-Host, API & Alternatives","1623","14","YES","YES","YES","YES","144","","ThinH2: GraphHopper Distance Matrix Execution Engine (0 w)","0","1"
-"98","graphhopper-kubernetes-self-hosting-osm","Self-Hosting GraphHopper on Kubernetes with OSM Data","1467","10","YES","YES","YES","YES","150","","ThinH2: The GraphHopper Docker Image: Build vs. Official Image (34 w)","0","1"
-"98","graphrag-vs-naive-rag-enterprise-guide","GraphRAG vs Naive RAG: Enterprise Architecture Guide","1758","8","YES","YES","YES","YES","155","","ThinH2: Retrieval Strategy: Hybrid Queries and Community Summarization (23 w)","0","1"
-"98","high-throughput-go-framework-benchmarks-gin-fiber-kratos","High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos","2729","7","YES","YES","YES","NO","143","","No cover","0","1"
-"100","kubernetes-in-place-pod-resizing-guide","Kubernetes In-Place Pod Resizing: No-Restart Scaling","1369","8","YES","YES","YES","YES","150","","","0","0"
-"98","laravel-vs-golang-when-to-add-features","Laravel vs Golang: When to Add Features in Each?","1269","10","YES","YES","YES","YES","140","","ThinH2: 4-Question Decision Framework (1 w)","0","1"
-"100","leaseinvietnam-ai-powered-expat-rental-intelligence-system","LeaseInVietnam: AI-Powered Expat Rental & B2B Lead Engine","2369","12","YES","YES","YES","YES","138","","","0","0"
-"100","magento-ai-integration-strategy-architecture","Magento AI Integration: Modernize Without Rebuilding","1895","9","YES","YES","YES","YES","148","","","0","0"
-"100","magento-development-in-vietnam","Magento Enterprise Project Scoping & Agency Cost Matrix","2250","8","YES","YES","YES","YES","142","","","0","0"
-"100","magento-still-worth-investing-2026","Is Magento Worth It in 2026? The 2.4.9 Reality","1900","7","YES","YES","YES","YES","152","","","0","0"
-"100","magento-vietnam","Magento Development in Vietnam: Cost, Hiring & Upgrade","3849","10","YES","YES","YES","YES","141","","","0","0"
-"100","mastering-event-driven-architecture-dapr","Mastering Event-Driven Architecture with Dapr Pub/Sub","2520","7","YES","YES","YES","YES","150","","","0","0"
-"98","moving-from-magento-to-microservices","Why Migrate Magento to Microservices: Zero-Downtime Guide","2732","10","YES","YES","YES","YES","146","","ThinH2: Why Migrate Magento to Microservices: Monolith Bottlenecks (0 w)","0","1"
-"88","multi-region-geo-distributed-api-routing","Multi-region Geo-distributed API Routing Architecture","2474","6","YES","YES","YES","NO","138","No tags","No cover","1","1"
-"100","mysql-horizontal-scaling","Vitess vs GORM Sharding: MySQL Write Scaling in Go","1492","6","YES","YES","YES","YES","141","","","0","0"
-"100","mysql-scalability-guide","MySQL Scalability: Read Replicas, Sharding & TiDB","2590","9","YES","YES","YES","YES","151","","","0","0"
-"96","mysql-scaling-sharding-tidb-architecture","Replace MySQL Sharding with TiDB: Architecture Guide","2776","8","YES","YES","NO","YES","144","","No canonicalURL | ThinH2: Why Replace MySQL Sharding: Eliminating Application Routing (0 w)","0","2"
-"98","order-fulfillment-algorithm-warehouse-last-mile","Order Fulfillment Algorithm: Warehouse to Last-Mile","814","8","YES","YES","YES","YES","145","","Borderline:814w","0","1"
-"96","osrm-shared-memory-kubernetes-live-traffic","OSRM Shared Memory on Kubernetes: Zero-Downtime Updates","1752","13","YES","YES","NO","YES","154","","No canonicalURL | ThinH2: System Architecture & Sequence Flow (0 w)","0","2"
-"98","osrm-vs-graphhopper-architecture-comparison","OSRM vs GraphHopper: Routing Engine Architecture Comparison","1850","7","YES","YES","YES","NO","147","","No cover","0","1"
-"100","paypay-architecture-scaling","PayPay Architecture: Scaling Payments to 70M Users","2376","8","YES","YES","YES","YES","147","","","0","0"
-"100","production-ai-apis-oauth-versioning-meta-predictions","OAuth 2.1 & Prompt Versioning for Production AI Agents","2540","5","YES","YES","YES","YES","152","","","0","0"
-"98","real-time-inventory-ecommerce-architecture","Real-Time Inventory: Kafka, CDC & Redis for E-Commerce","1230","6","YES","YES","YES","YES","145","","ThinH2: State Drift and Disaster Recovery (27 w)","0","1"
-"100","real-time-ride-hailing-architecture","Real-Time Ride-Hailing Architecture: Uber & Grab Stack","2391","10","YES","YES","YES","YES","150","","","0","0"
-"98","serverless-ecommerce-cloudflare-d1","Serverless E-Commerce: Cloudflare Workers & D1 Architecture","1580","9","YES","YES","YES","YES","151","","ThinH2: Payment Processing at the Edge (39 w)","0","1"
-"96","shopee-flash-sale-architecture","Flash Sale Architecture: Rate Limiting & Redis","843","7","YES","YES","YES","YES","139","","Borderline:843w | ThinH2: 5. Reference Service Decomposition (1 w)","0","2"
-"98","slm-fine-tune-vs-prompt-engineering","Prompt Engineering vs Fine-Tuning: 2026 AI Decision Guide","1174","6","YES","YES","YES","YES","151","","Borderline:1174w","0","1"
-"98","strangler-fig-shared-database-quick-win","Magento Migration: Shared DB, CDC, or Event Bus?","2202","12","YES","YES","YES","YES","146","","ThinH2: Three Options on the Table (1 w)","0","1"
-"96","surge-pricing-optimization-architecture","Surge Pricing Algorithm & Spatial Indexing Architecture","1695","10","YES","YES","NO","YES","148","","No canonicalURL | ThinH2: Production Code Benchmark & Implementation (0 w)","0","2"
-"96","temporal-saga-pattern-golang-distributed-transactions-guide","Distributed Transactions in Go with Temporal Saga Pattern","2210","6","YES","NO","YES","YES","145","","No FAQ | ThinH2: Section 3: Production-Ready Go Implementation with Temporal SDK (1 w)","0","2"
-"98","the-future-of-laravel-development-in-ai-era","Laravel in the AI Era: 10 Predictions for 2028","1288","12","YES","YES","YES","YES","149","","ThinH2: 06. Deep Eloquent & DB Optimization becomes the most expensive human skill (36 w)","0","1"
-"92","vibe-coding-and-ai-code-review-future","What is Vibe Coding? Why AI Code Review is the Future","1699","10","YES","YES","YES","YES","151","Boilerplate: c, o","","1","0"
-"100","why-migrate-magento-to-microservices","Migrating Magento to Microservices: When & Why","2191","7","YES","YES","YES","YES","154","","","0","0"
-"98","zero-trust-service-mesh-security-spiffe-spire-istio-golang","Zero-Trust Service Mesh Security in Go: SPIFFE/SPIRE & Istio","2621","8","YES","NO","YES","YES","145","","No FAQ","0","1"
+﻿"Score","File","Words","H2","AF","FAQ","Canon","Cover","DescLen","IssueN","WarnN","Issues","Warnings"
+"100","agentic-ecommerce-search-golang-vector-databases","1647","10","✅","✅","✅","✅","155","0","0","",""
+"100","ai-native-frontend-architecture-predictions-2028","1327","6","✅","✅","✅","✅","152","0","0","",""
+"98","alipay-double-11-architecture-tps","953","7","✅","✅","✅","✅","138","0","1","","Border:953w"
+"100","architecting-21-service-ecommerce-golang-ddd","1635","6","✅","✅","✅","✅","150","0","0","",""
+"98","architecting-an-autonomous-hybrid-ai-content-pipeline","1142","8","✅","✅","✅","✅","148","0","1","","Border:1142w"
+"100","argo-cd-updates-2026","2010","13","✅","✅","✅","✅","147","0","0","",""
+"100","aws-eks-vs-ecs-comparison","3844","13","✅","✅","✅","✅","146","0","0","",""
+"100","banking-microservices-architecture","1368","8","✅","✅","✅","✅","149","0","0","",""
+"100","blueprint-ecommerce-microservices-architecture-diagram","1719","10","✅","✅","✅","✅","128","0","0","",""
+"98","building-custom-golang-vector-database-engine-hnsw","2543","10","✅","❌","✅","✅","160","0","1","","No FAQ"
+"98","building-high-throughput-event-driven-microservices-go-nats-jetstream-cqrs","1865","8","✅","❌","✅","✅","145","0","1","","No FAQ"
+"98","cloudflare-d1-durable-objects-realtime-cart","1509","11","✅","✅","✅","✅","142","0","1","","ThinH2(x2):'Architecture: Pairing Durable Objects (State) with D1 (Persistence)' (0w)"
+"98","cloudflare-zero-devops-ecommerce","1487","7","✅","❌","✅","✅","147","0","1","","No FAQ"
+"100","composable-banking-architecture","2695","9","✅","✅","✅","✅","137","0","0","",""
+"100","dapr-state-store-consistency-tradeoffs","2807","10","✅","✅","✅","✅","153","0","0","",""
+"100","dapr-workflow-saga-orchestration-guide","1659","10","✅","✅","✅","✅","136","0","0","",""
+"100","database-impact-on-programming-languages","1841","13","✅","✅","✅","✅","146","0","0","",""
+"100","deconstructing-ecommerce-service-details-domain","1647","9","✅","✅","✅","✅","147","0","0","",""
+"100","deconstructing-microfinance-core-banking-architecture","2065","8","✅","✅","✅","✅","153","0","0","",""
+"98","deploying-astro-on-cloudflare-full-stack-edge-architecture","2404","16","✅","✅","✅","✅","130","0","1","","ThinH2(x2):'Step-by-Step Guide: Deploy Astro on Cloudflare Pages SSR' (0w)"
+"100","deploying-autonomous-ai-swarm-openclaw-litellm","1739","9","✅","✅","✅","✅","148","0","0","",""
+"100","ecommerce-architecture-composable-migration","1449","8","✅","✅","✅","✅","152","0","0","",""
+"98","exporting-magento-2-data-flat-sql-nodejs","1344","5","✅","✅","✅","✅","141","0","1","","ThinH2(x1):'Part 1: Exporting Orders' (37w)"
+"98","generative-ui-with-mcp-ai-native-frontend","939","8","✅","✅","✅","✅","142","0","1","","Border:939w"
+"100","gitops-at-scale-kubernetes-argocd-microservices","1365","8","✅","✅","✅","✅","141","0","0","",""
+"100","go-126-green-tea-gc-cgo-performance-guide","1825","6","✅","✅","✅","✅","151","0","0","",""
+"98","golang-goroutine-pool-errgroup-worker","1570","11","✅","✅","✅","✅","145","0","1","","ThinH2(x2):'Why Unbounded Goroutines Fail: The Need for Worker Pools' (0w)"
+"100","golang-grpc-microservices-production-guide","1592","11","✅","✅","✅","✅","143","0","0","",""
+"100","golang-pprof-profiling-memory-cpu-tutorial","1684","7","✅","✅","✅","✅","123","0","0","",""
+"100","go-mcp-server-development-production-guide","2622","10","✅","✅","✅","✅","143","0","0","",""
+"100","go-microservices","3704","12","✅","✅","✅","✅","141","0","0","",""
+"100","go-microservices-distributed-tracing-architecture","1749","9","✅","✅","✅","✅","149","0","0","",""
+"98","go-pprof-kubernetes-remote-profiling","2167","11","✅","✅","✅","✅","151","0","1","","ThinH2(x2):'Safe Remote Profiling Setup via kubectl port-forward' (0w)"
+"100","goroutine-leak-detection-production-golang","1958","6","✅","✅","✅","✅","149","0","0","",""
+"98","graphhopper-distance-matrix-production-guide","1822","14","✅","✅","✅","✅","144","0","1","","ThinH2(x2):'GraphHopper Distance Matrix Execution Engine' (0w)"
+"100","graphhopper-kubernetes-self-hosting-osm","1666","10","✅","✅","✅","✅","150","0","0","",""
+"98","graphrag-vs-naive-rag-enterprise-guide","1869","8","✅","✅","✅","✅","155","0","1","","ThinH2(x1):'Retrieval Strategy: Hybrid Queries and Community Summarization' (23w)"
+"98","high-throughput-go-framework-benchmarks-gin-fiber-kratos","2745","7","✅","✅","✅","❌","143","0","1","","No cover"
+"100","kubernetes-in-place-pod-resizing-guide","1369","8","✅","✅","✅","✅","150","0","0","",""
+"100","laravel-vs-golang-when-to-add-features","1512","10","✅","✅","✅","✅","140","0","0","",""
+"100","leaseinvietnam-ai-powered-expat-rental-intelligence-system","2523","12","✅","✅","✅","✅","138","0","0","",""
+"100","magento-ai-integration-strategy-architecture","1955","9","✅","✅","✅","✅","148","0","0","",""
+"100","magento-development-in-vietnam","2299","8","✅","✅","✅","✅","142","0","0","",""
+"100","magento-still-worth-investing-2026","2058","7","✅","✅","✅","✅","152","0","0","",""
+"100","magento-vietnam","3957","10","✅","✅","✅","✅","141","0","0","",""
+"100","mastering-event-driven-architecture-dapr","2520","7","✅","✅","✅","✅","150","0","0","",""
+"98","moving-from-magento-to-microservices","2732","10","✅","✅","✅","✅","146","0","1","","ThinH2(x2):'Why Migrate Magento to Microservices: Monolith Bottlenecks' (0w)"
+"98","multi-region-geo-distributed-api-routing","2474","6","✅","✅","✅","❌","138","0","1","","No cover"
+"100","mysql-horizontal-scaling","1538","6","✅","✅","✅","✅","141","0","0","",""
+"100","mysql-scalability-guide","2590","9","✅","✅","✅","✅","151","0","0","",""
+"98","mysql-scaling-sharding-tidb-architecture","2776","8","✅","✅","✅","✅","144","0","1","","ThinH2(x2):'Why Replace MySQL Sharding: Eliminating Application Routing' (0w)"
+"98","order-fulfillment-algorithm-warehouse-last-mile","976","8","✅","✅","✅","✅","145","0","1","","Border:976w"
+"100","osrm-shared-memory-kubernetes-live-traffic","1857","13","✅","✅","✅","✅","154","0","0","",""
+"98","osrm-vs-graphhopper-architecture-comparison","1864","7","✅","✅","✅","❌","147","0","1","","No cover"
+"100","paypay-architecture-scaling","2422","8","✅","✅","✅","✅","147","0","0","",""
+"100","production-ai-apis-oauth-versioning-meta-predictions","2540","5","✅","✅","✅","✅","152","0","0","",""
+"98","real-time-inventory-ecommerce-architecture","1359","6","✅","✅","✅","✅","145","0","1","","ThinH2(x1):'State Drift and Disaster Recovery' (27w)"
+"100","real-time-ride-hailing-architecture","2508","10","✅","✅","✅","✅","150","0","0","",""
+"100","serverless-ecommerce-cloudflare-d1","1689","9","✅","✅","✅","✅","151","0","0","",""
+"98","shopee-flash-sale-architecture","974","7","✅","✅","✅","✅","139","0","1","","Border:974w"
+"100","slm-fine-tune-vs-prompt-engineering","1286","6","✅","✅","✅","✅","151","0","0","",""
+"100","strangler-fig-shared-database-quick-win","2540","12","✅","✅","✅","✅","146","0","0","",""
+"100","surge-pricing-optimization-architecture","1862","10","✅","✅","✅","✅","148","0","0","",""
+"88","temporal-saga-pattern-golang-distributed-transactions-guide","2201","6","✅","❌","✅","✅","145","1","2","Boilerplate:[seamlessly]","No FAQ | ThinH2(x1):'Section 3: Production-Ready Go Implementation with Temporal SDK' (1w)"
+"100","the-future-of-laravel-development-in-ai-era","1381","12","✅","✅","✅","✅","149","0","0","",""
+"100","vibe-coding-and-ai-code-review-future","1775","10","✅","✅","✅","✅","151","0","0","",""
+"100","why-migrate-magento-to-microservices","2191","7","✅","✅","✅","✅","154","0","0","",""
+"98","zero-trust-service-mesh-security-spiffe-spire-istio-golang","2584","8","✅","❌","✅","✅","145","0","1","","No FAQ"

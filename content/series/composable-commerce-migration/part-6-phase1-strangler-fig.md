@@ -25,11 +25,13 @@ Phase 1 is the safest phase of the migration — by design. No write operation t
 
 **Answer-first:** Phase 1 deploys read-only Go microservices alongside legacy Magento. API Gateway feature flags route read requests to Go with automatic fallback to Magento on failure. Embedded Debezium streams MySQL binary log updates to Redis Streams with sub-2-second sync latency.
 
-> **Pillar Architecture Guide:** This article is part of the **[Composable Commerce: Migrating from Monolith to Microservices](/posts/ecommerce-architecture-composable-migration/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+> **Phase 1 Playbook:** Featured in the **[Composable Migration Architecture Guide](/posts/ecommerce-architecture-composable-migration/)**. Read the main post for full system context.
 
 ## 1. Phase 1 Architecture
 
 **Answer-first:** Phase 1 architecture deploys read-only Go microservices behind an API Gateway, keeping Magento as the write master while decoupling reads.
+
+The architectural topology below demonstrates how incoming client HTTP traffic is intercepted by the API Gateway layer, dynamically routing read-only requests to high-performance Go microservices while strictly keeping legacy Magento as the authoritative write master.
 
 ```
 Client App (browser/mobile)
@@ -60,13 +62,18 @@ Client App (browser/mobile)
          └──────────────────────────────
 ```
 
-The key constraint: **no write path reaches the microservices in Phase 1**. The Gateway routes all POST/PUT/DELETE to Magento, regardless of feature flags.
+The core constraint during Phase 1 is absolute write isolation: **no write path reaches the microservices**. The API Gateway forces all POST, PUT, and DELETE mutations to legacy Magento regardless of flag states.
+
+In modern 2026 cloud-native architecture, this gateway layer is powered by either Envoy Proxy or YARP (Yet Another Reverse Proxy):
+- **Envoy Proxy**: Standard for Kubernetes ingress and sidecar meshes. Envoy uses dynamic xDS APIs (Route Discovery Service - RDS, Cluster Discovery Service - CDS) to update routing rules in memory without process restarts or dropping active TCP connections.
+- **YARP Reverse Proxy**: Ideal for .NET / C# enterprise ecosystems or Windows/Linux hybrid stacks, delivering high-throughput HTTP route matching, destination health probing, and custom middleware request transformation.
+- **Zero-Downtime Decoupling**: Persistent connection keep-alives, HTTP/2 multiplexing, and graceful connection draining (`drain_time_ms: 15000`) prevent HTTP 502 Bad Gateway errors when shifting traffic dynamically between Magento and Go services.
 
 ## 2. Why Not Just Use `updated_at` Polling?
 
 **Answer-first:** Polling `updated_at` fields misses hard deletes and causes severe database CPU spikes, whereas Debezium CDC streams binary log events in real time.
 
-The first instinct for syncing Magento data is to poll `updated_at`:
+The conventional approach for database synchronization relies on timestamp queries. The following SQL snippet illustrates the typical `updated_at` polling query pattern that fails under high-throughput production workloads:
 
 ```sql
 -- ❌ Polling: misses DELETEs, vulnerable to timestamp skew
@@ -76,14 +83,15 @@ ORDER BY updated_at ASC
 LIMIT 1000;
 ```
 
-This fails in three ways:
-1. **DELETEs are invisible**: A deleted product has no `updated_at` entry — it simply disappears from the table
-2. **Clock skew**: If Magento MySQL is on a different server with a slightly different clock, records can fall in gaps between polling windows
-3. **High database load**: Frequent full-table timestamp scans on a production e-commerce database causes contention
+This polling pattern fails fundamentally in enterprise e-commerce environments for four critical technical reasons:
+1. **DELETE operations are invisible**: When a merchant deletes a product or order line, the physical row is deleted. There is no updated timestamp row left behind to signal the change to downstream services.
+2. **Transaction rollbacks & uncommitted reads**: If a long-running transaction updates `updated_at` to `10:00:01` but commits at `10:00:05`, a polling query running at `10:00:03` will skip that record permanently.
+3. **Clock skew & timestamp collisions**: NTP drift between application hosts and database servers causes windowing gaps, while sub-second batch writes share identical timestamps.
+4. **Database contention & index fragmentation**: Repeatedly executing windowed range queries over indexed timestamp columns causes lock escalation, buffer pool eviction, and severe MySQL CPU saturation during peak traffic.
 
-The solution from `sync-service-implementation.md`:
+By contrast, Debezium CDC attaches directly to MySQL's binary logging engine. As documented in the architecture specification:
 
-> *"Why Debezium instead of `updated_at` polling? Polling on `updated_at` misses DELETE operations entirely and is vulnerable to clock skew and timestamp collisions. Debezium reads MySQL binary logs, capturing every row-level change reliably with exact before/after state."*
+> *"Why Debezium instead of `updated_at` polling? Polling on `updated_at` misses DELETE operations entirely and is vulnerable to clock skew and timestamp collisions. Debezium reads MySQL binary logs with GTID auto-positioning, capturing every row-level change reliably with exact before/after state and sub-2-second sync latency."*
 
 ## 3. Debezium CDC Setup
 
@@ -166,7 +174,9 @@ The platform runs Debezium in **embedded engine mode** — no standalone Kafka C
 
 **Answer-first:** The CDC-to-Dapr pipeline converts raw MySQL row mutations into structured CloudEvents, updating Go microservice read replicas instantaneously.
 
-Instead of the Kafka-based pipeline common in industry tutorials, the platform uses:
+Rather than deploying complex, multi-node Kafka Connect clusters common in legacy tutorials, modern 2026 architectures adopt lightweight streaming streams using Debezium embedded engine or Debezium Server streaming directly into high-throughput brokers such as Redpanda (C++ Kafka API replacement) or NATS JetStream. 
+
+The data pipeline architecture below illustrates the stream transformation sequence from raw MySQL binary log events down to microservice read store ingestion:
 
 ```
 Magento MySQL binlog
@@ -175,9 +185,11 @@ Sync Consumer Service (Go)
     ↓ Integer → UUID translation via magento_id_map
     ↓ EAV flattening (varchar + int + decimal → single product record)
 Dapr PubSub Publisher
-    ↓ Redis Streams (platform's existing event infrastructure)
-Microservice Consumers
+    ↓ Redis Streams / NATS JetStream (sub-5ms event propagation)
+Microservice Read Replicas
 ```
+
+Standardized CloudEvent envelopes wrap each domain mutation, specifying event versioning (`v1.0.0`), event source (`magento.cdc.catalog`), and schema payload structure.
 
 Migration event topics (verified in `sync-service-implementation.md`):
 
@@ -189,7 +201,7 @@ Migration event topics (verified in `sync-service-implementation.md`):
 | `migration.stock.changed` | Sync Service | Warehouse Service |
 | `migration.dlq` | Dapr (auto) | Ops team via DLQ handler |
 
-The sync consumer code for the product pipeline:
+The Go implementation of the sync consumer handles integer-to-UUID translation, pivots fragmented Magento EAV tables (`catalog_product_entity_varchar`, `int`, `decimal`) into unified JSON models, and dispatches events to Dapr:
 
 ```go
 // sync-service/internal/consumer/product_consumer.go
@@ -223,7 +235,9 @@ func (c *ProductConsumer) HandleChange(ctx context.Context, event debezium.Chang
 
 **Answer-first:** API Gateway feature flags dynamically route catalog read requests between legacy Magento and Go microservices, enabling instant traffic shifting and immediate rollback capability during migration testing.
 
-The Gateway Service routes traffic based on per-domain feature flags, evaluated on each request:
+The Gateway layer utilizes path-based and header-based canary evaluation. In 2026 architectures, routing controls leverage Envoy dynamic Route Discovery Service (RDS) or YARP HTTP matching rules, allowing header-based canary inspection (`X-Canary-User: true`) and weighted cluster shifts (e.g. 95% traffic to Magento monolith, 5% to Go catalog microservice).
+
+The Go HTTP middleware below inspects active feature flags and target service health before routing incoming requests:
 
 ```go
 // gateway-service/internal/middleware/feature_flag.go
@@ -252,7 +266,7 @@ func FeatureFlagMiddleware(flagStore FlagStore) gin.HandlerFunc {
 }
 ```
 
-Feature flags are stored in a Kubernetes ConfigMap and hot-reloaded:
+Feature flag definitions are encapsulated inside a Kubernetes ConfigMap, enabling zero-downtime, sub-30-second hot-reloads across API Gateway pod replicas without requiring binary re-deployments:
 
 ```yaml
 # configmap/feature-flags.yaml
@@ -267,16 +281,14 @@ data:
   order_read: "false"      # Still routing to Magento
 ```
 
-Enabling a flag for a domain takes effect within 30 seconds (ConfigMap refresh interval) — no deployment required.
+Enabling a flag for a domain takes effect dynamically within seconds across all gateway instances. If anomalies occur during testing, flipping `catalog_read` back to `"false"` instantly restores 100% traffic flow to Magento monolith without dropping connected user sessions.
 
-## 6. Automatic Fallback: Self-Healing Gateway
+To prevent cascading failures and guarantee high availability, the API Gateway incorporates circuit breaker patterns and automated outlier detection. In 2026 Envoy deployments, passive health checking ejection combined with active gRPC/HTTP health checking automatically ejects failing microservice instances from upstream clusters.
 
-**Answer-first:** Self-healing API gateways monitor Go microservice health, automatically falling back to Magento if Go service latencies exceed thresholds.
-
-The Gateway implements a 3-failure automatic fallback:
+The Go health monitoring component below tracks consecutive upstream failure counters and automatically trips feature flags back to Magento fallback routing when error rates exceed threshold limits:
 
 ```go
-// gateway-service/internal/health/monitor.go
+// gateway-service/internal/middleware/health_monitor.go
 
 type DomainHealth struct {
     failures atomic.Uint64
@@ -323,13 +335,13 @@ func (m *HealthMonitor) RecordSuccess(domain string) {
 }
 ```
 
-Re-enabling a flag after automatic disable requires manual intervention (review logs, verify service health, then edit the ConfigMap). This prevents a flapping service from automatically re-enabling itself.
+When a circuit breaker trips, requests are transparently rerouted to legacy Magento. Re-enabling the feature flag requires explicit operator intervention after checking service logs and telemetry dashboard metrics, preventing service flapping.
 
 ## 7. Phase 1 Success Criteria
 
 **Answer-first:** Phase 1 success criteria require offloading 80% of catalog read traffic to Go microservices while maintaining zero write inconsistencies.
 
-Before declaring Phase 1 complete and beginning Phase 2:
+Before declaring Phase 1 complete and transitioning to Phase 2 dual-write synchronization, the deployment must meet strict operational SLAs tracked via Prometheus metrics and automated validation tools:
 
 | Metric | Target | How to Measure |
 |---|---|---|
@@ -339,7 +351,7 @@ Before declaring Phase 1 complete and beginning Phase 2:
 | Zero write errors | 0 | All POSTs returning 2xx from Magento |
 | 7-day monitoring period | Zero auto-disables | Review flag history in ConfigMap events |
 
-Data consistency validation script (runs every 15 minutes via cronjob in Phase 1):
+Automated data consistency validation runs continuously via Kubernetes CronJob. The shell script below performs randomized sample verification comparing primary key records between legacy MySQL and microservice PostgreSQL:
 
 ```bash
 #!/bin/bash

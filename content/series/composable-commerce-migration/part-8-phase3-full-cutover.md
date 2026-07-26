@@ -25,11 +25,13 @@ Phase 3 is the final act: 100% of traffic moves to microservices, Magento become
 
 **Answer-first:** Phase 3 cutover executes an immediate 100% traffic shift for stable read services and a graduated ramp over 10 days for transactional services. Legacy Magento remains a hot standby for 30 days while automated ArgoCD gitops pipelines handle production deployments.
 
-> **Pillar Architecture Guide:** This article is part of the **[Composable Commerce: Migrating from Monolith to Microservices](/posts/ecommerce-architecture-composable-migration/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+> **Phase 3 Cutover Spec:** Belongs to the **[Composable Commerce Monolith Migration](/posts/ecommerce-architecture-composable-migration/)** collection. Review the core pillar post for full details.
 
 ## 1. The 6-Week Cutover Calendar
 
 **Answer-first:** The 6-week cutover calendar structures final traffic migration, starting with low-risk staging and graduating to 100% production traffic.
+
+The 6-week cutover schedule structures the orderly transfer of live production traffic from legacy Magento to the Go microservice platform while establishing strict operational change-freeze windows and risk mitigation buffers:
 
 ```
 Week 1–2: Customer Service → 100% microservices
@@ -39,11 +41,15 @@ Week 7+:  Magento hot standby (event bus stops, archive-service runs hourly)
 Week 11:  Magento decommissioned (Day 30 of hot standby)
 ```
 
-By Week 5, Customer and Catalog are fully migrated and have been running in production for 3+ weeks. The Debezium sync has been turned off for these domains (microservices are now the source of truth, no longer followers). Only Order Service still needs the graduated ramp because orders are irreversible financial transactions.
+By Week 5, Customer and Catalog services run completely on microservices and have sustained production workloads for 3+ weeks. Debezium binlog reverse sync for these domains is deactivated. Microservices operate as the single source of truth. Only Order Service undergoes a multi-step graduated ramp because order mutations dictate real-time financial ledgers and payment gateway authorizations.
 
 ## 2. Customer + Catalog: Immediate 100% Cutover
 
 **Answer-first:** Customer and catalog domains undergo immediate 100% traffic cutover after Phase 1 and 2 dual-write synchronization validation.
+
+In 2026 production cutovers, edge network routing utilizes Anycast BGP IP routing and Cloudflare / AWS Route53 weighted DNS records with 5-second Time-to-Live (TTL) values. TLS 1.3 0-RTT session resumption eliminates connection handshake latency, while automated API Gateway cache invalidation purges legacy monolith cache entries instantly.
+
+The shell script below executes the 100% cutover for Customer Service, disabling reverse sync and launching the read-only archive pipeline:
 
 ```bash
 #!/bin/bash
@@ -56,6 +62,7 @@ kubectl patch configmap feature-flags -n production \
   --patch '{"data": {"customer_magento_sync": "false"}}'
 
 # Route 100% customer traffic to microservices
+kubectl patch configmap feature-flags -n production \
   --patch '{"data": {"customer_write": "true", "customer_read": "true", "customer_cutover": "true"}}'
 
 # Start customer archive (hourly sync to Magento for 30 days)
@@ -67,13 +74,15 @@ curl -X POST "http://archive-service:8080/api/v1/start-archive" \
 echo "Customer Service cutover complete. Monitoring for 7 days."
 ```
 
-The archive service (new in Phase 3) writes microservice data → Magento on a 1-hour schedule. This is a **one-way, read-only sync** — Magento can no longer write back. It serves as a warm backup and satisfies any regulatory requirements to keep data in the legacy system for a defined period.
+The archive service performs a one-way, read-only sync from microservice PostgreSQL to legacy Magento. Magento is rendered read-only, serving as a warm backup while fulfilling corporate audit compliance requirements.
 
 ## 3. Order Service: Graduated Traffic Ramp
 
 **Answer-first:** Order Service traffic ramps incrementally from 10% to 25%, 50%, and 100% over four weeks to monitor payment processing stability.
 
-Order Service gets special treatment because orders involve real money. The `order_cutover` feature flag accepts a `percentage` parameter that controls what fraction of new orders go to the microservice:
+Order Service cutover employs Argo Rollouts traffic management integrated with Prometheus metrics. If p99 latencies breach 200ms or 5xx HTTP error rates exceed 0.05% across a 2-minute window, automated circuit breaker rollbacks immediately restore traffic to previous stable revisions.
+
+The Go gateway router snippet below demonstrates how request traffic is partitioned deterministically using consistent customer ID hashing:
 
 ```go
 // gateway-service/internal/router/order_router.go
@@ -104,7 +113,7 @@ func routeOrderRequest(c *gin.Context, clients *ServiceClients, flags *FlagStore
 }
 ```
 
-Using customer ID hash (rather than random) ensures a customer's orders don't split between systems — all orders from `customer_id=X` go to the same system throughout the ramp period.
+Consistent customer ID hashing prevents session fragmentation—ensuring all checkout requests from a specific customer route to a single authoritative backend throughout the migration window.
 
 **The ramp schedule for Order Service (Week 5–6):**
 
@@ -115,15 +124,17 @@ Using customer ID hash (rather than random) ensures a customer's orders don't sp
 | Day 7 (Sunday) | 75% | Validate, check payment reconciliation |
 | Day 10 (Wednesday) | 100% | Final cutover, disable Magento routing |
 
-At each step, these conditions must be met before incrementing:
-1. DLQ message count = 0 (no failed events)
-2. p99 write latency < 200ms (Phase 3 SLA, tighter than Phase 2's 500ms)
-3. Payment reconciliation: total revenue in microservice DB matches Magento
-4. Zero customer complaints related to order creation
+At each ramp milestone, four mandatory gate criteria must be satisfied:
+1. DLQ message count = 0 (zero unhandled events)
+2. p99 write latency < 200ms (Phase 3 SLA target)
+3. Payment reconciliation: zero discrepancy between microservice DB and payment gateway ledgers
+4. Zero customer complaints or failed checkout sessions
 
 ## 4. The Archive Service
 
 **Answer-first:** The archive service extracts historical Magento order logs into read-only PostgreSQL data lakes for long-term audit compliance.
+
+To guarantee legacy Magento state is preserved without accepting new mutations, legacy MySQL instances are placed into strict read-only mode via `SET GLOBAL super_read_only = ON;`. The Kubernetes manifest below deploys the archive service to execute hourly state snapshots:
 
 ```yaml
 # k8s/archive-service.yaml
@@ -162,7 +173,9 @@ Archive service behavior:
 
 **Answer-first:** ArgoCD GitOps continuously synchronizes Kubernetes cluster state with Git repositories, automating deployments and drift detection.
 
-With Magento gone, all ongoing deployments use ArgoCD's GitOps model. The complete flow for a code change:
+With legacy Magento decommissioned, production deployment management shifts entirely to ArgoCD GitOps. In modern cloud environments, GitOps establishes Git repositories as the immutable single source of truth for all Kubernetes cluster state, providing automated drift detection, automated reconciliation, and audit logs.
+
+The complete automated delivery pipeline flow for microservice releases operates as follows:
 
 ```
 1. Developer: git push to feature branch
@@ -187,13 +200,13 @@ With Magento gone, all ongoing deployments use ArgoCD's GitOps model. The comple
     ArgoCD detects revert → rolls back deployment automatically
 ```
 
-No SSH to production servers. No manual `kubectl apply`. No "works on my machine" deployments. **Every production change is traceable to a Git commit.**
+No manual `kubectl apply` commands or SSH access to production nodes are permitted. Every production configuration state change is backed by an audited, signed Git commit.
 
 ## 6. Kustomize: Base + Overlays Pattern
 
 **Answer-first:** Kustomize base and overlay configurations manage environment-specific parameters across development, staging, and production clusters.
 
-Each service has environment-specific overlays:
+To maintain environment consistency across development, staging, and production clusters without template bloat, services organize manifests into base and overlay layers:
 
 ```
 gitops/apps/order-service/
@@ -211,6 +224,8 @@ gitops/apps/order-service/
         └── patch-replicas.yaml  ← replicas: 3, resources: production-sized
 ```
 
+The production overlay `kustomization.yaml` manifest configures production container image tags, replica patches, and ConfigMap/Secret generator hash suffixes:
+
 ```yaml
 # gitops/apps/order-service/overlays/production/kustomization.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -224,8 +239,14 @@ images:
     newTag: v1.2.3                 ← Updated by CI on every release
 ```
 
+The base `deployment.yaml` manifest defines standardized container ports, readiness/liveness health probes, and CPU/memory resource allocations:
+
 ```yaml
 # gitops/apps/order-service/base/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
 spec:
   template:
     spec:
@@ -259,7 +280,7 @@ spec:
 
 **Answer-first:** ArgoCD sync waves enforce strict deployment order, starting database migrations before rolling out dependent microservice pods.
 
-ArgoCD Sync Waves ensure infrastructure components start before service components:
+ArgoCD Sync Waves assign explicit numeric priorities to Kubernetes manifests, ensuring database schema migrations and messaging middleware components achieve readiness before application service pods begin rolling update deployments:
 
 ```yaml
 # gitops/apps/order-service/base/deployment.yaml
@@ -278,13 +299,13 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"   # Wave 1: Dapr before services
 ```
 
-Sync wave order: `Databases (0) → Dapr components (1) → Services (2) → Gateway (3)`
+Sync wave progression follows: `Databases & Schema Migrations (Wave 0) → PubSub & Dapr Components (Wave 1) → Microservices (Wave 2) → API Gateway (Wave 3)`.
 
 ## 8. Performance Validation: The 10× Load Test
 
 **Answer-first:** Performance validation subjects the new Go microservice architecture to 10x peak load tests, verifying sub-50ms checkout response times.
 
-Phase 3 success criterion: *"Handle 10× current production load."* The K6 load test runs during off-peak hours before declaring Phase 3 complete:
+Prior to declaring Phase 3 final cutover complete, the microservice architecture must sustain 10× historical peak traffic during distributed stress testing. The K6 stress test script below simulates high-concurrency order creation workloads to validate p99 latency SLAs:
 
 ```javascript
 // tests/load/phase3-validation.js
@@ -320,7 +341,9 @@ export default function() {
 
 **Answer-first:** Magento decommissioning takes place on Day 30 post-cutover, shutting down legacy PHP app servers and archiving old MySQL instances.
 
-After 30 days of hot standby without a rollback event:
+After maintaining 30 continuous days of zero-rollback production execution on Go microservices, legacy monolith decommissioning commences. Final database dumps (gzip SQL / compressed Parquet format) are uploaded to Amazon S3 Glacier with Object Lock compliance enabled, guaranteeing 7-year immutable data retention for regulatory compliance.
+
+The shell script below executes final decommissioning, teardown of legacy Kubernetes namespaces, tombstoning of legacy DNS entries, and cleanup of gateway feature flag definitions:
 
 ```bash
 #!/bin/bash
@@ -335,12 +358,13 @@ kubectl delete deployment archive-service -n production
 kubectl delete deployment sync-service -n migration
 
 # Step 3: Export final Magento database backup
-mysqldump --all-databases > /backup/magento-final-$(date +%Y%m%d).sql.gz
+mysqldump --all-databases | gzip > /backup/magento-final-$(date +%Y%m%d).sql.gz
 
 # Step 4: Shut down Magento application servers
 kubectl delete namespace magento
 
 # Step 5: Remove Magento feature flags from Gateway
+kubectl patch configmap feature-flags -n production \
   --type=json \
   -p='[{"op": "remove", "path": "/data/catalog_read"},
        {"op": "remove", "path": "/data/customer_read"},

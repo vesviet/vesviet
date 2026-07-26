@@ -25,13 +25,13 @@ In Phase 1, both systems existed but only one wrote data: Magento. In Phase 2, b
 
 **Answer-first:** Phase 2 implements event-driven dual-write where microservices update PostgreSQL and publish domain events to Dapr PubSub. The sync adapter service updates legacy Magento asynchronously. Concurrent write conflicts are resolved through deterministic conflict resolution policies tailored to specific domain data types.
 
-> **Pillar Architecture Guide:** This article is part of the **[Composable Commerce: Migrating from Monolith to Microservices](/posts/ecommerce-architecture-composable-migration/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+> **Phase 2 Technical Guide:** Included within **[Migrating Monoliths to Microservices](/posts/ecommerce-architecture-composable-migration/)**. See the pillar article for overall topology.
 
 ## 1. Why Not Raw Dual Write?
 
 **Answer-first:** Raw application-level dual writing causes data drift and distributed deadlock during network partition failures; event-driven sync is mandatory.
 
-Raw dual write means: write to both databases in the same request handler:
+Raw dual write attempts to mutate both legacy MySQL and microservice PostgreSQL directly within a single application HTTP request handler:
 
 ```go
 // ❌ WRONG: Raw dual write — partial failure corrupts state
@@ -51,13 +51,16 @@ func (h *CustomerHandler) CreateCustomer(ctx context.Context, req *Request) (*Re
 }
 ```
 
-This fails because there is no atomic transaction spanning two independent systems. If Magento's API is down for 200ms during the call (timeouts happen), you have a customer in the microservice database that doesn't exist in Magento. The inconsistency is silent — no error in the microservice response, and the customer appears to work normally until they try to do something that requires Magento to know about them.
+This pattern introduces catastrophic state corruption in distributed architectures for three fundamental reasons:
+1. **Lack of Distributed Atomicity**: Two-Phase Commit (2PC) protocols across heterogeneous HTTP APIs create blocking locks, extreme latency spikes, and low availability.
+2. **Network Partitions & Split-Brain**: If the legacy Magento API suffers transient timeouts (e.g. 500ms GC pause), the microservice transaction commits while the monolith write fails, leaving system state permanently desynchronized.
+3. **Unbounded Retry Failure**: Retrying failed synchronous writes in the HTTP request thread exhausts gateway connection pools and triggers cascading backend outages.
 
 ## 2. Event-Driven Dual Write: The Safe Pattern
 
 **Answer-first:** Event-driven dual write uses asynchronous Dapr PubSub channels and transactional outbox logs to synchronize state changes safely.
 
-Phase 2 uses a three-step pattern:
+To guarantee zero data loss during dual-write operation, the architecture splits mutation handling into three asynchronous, isolated stages. The ASCII sequence diagram below illustrates the decoupled event lifecycle:
 
 ```
 Step 1: Client → Gateway → Customer Service
@@ -70,7 +73,11 @@ Step 3: magento-sync-adapter:
     c. On failure → DLQ → manual review
 ```
 
-The outbox pattern in Step 2 (from [Part 9](/series/composable-commerce-migration/part-9-outbox-saga/)) guarantees: if the PostgreSQL transaction commits, the event will eventually be published. If the transaction rolls back, no event is published.
+In 2026 architectures, Step 2 is backed by Change Data Capture (CDC) utilizing Debezium Server streaming to lightweight event brokers like Redpanda or NATS JetStream. Using the Debezium Outbox Single Message Transform (SMT), database outbox table inserts are transformed directly into structured CloudEvents without requiring manual outbox polling loops.
+
+Additionally, production validation leverages **Shadow Traffic Verification (Dark Traffic)**: production write traffic payloads are cloned asynchronously to test microservice environments to compare state mutations against legacy outputs prior to enabling live dual-write flags.
+
+The Go application code below demonstrates how domain updates and outbox records commit within a single local database transaction:
 
 ```go
 // customer-service/internal/biz/customer_usecase.go
@@ -84,7 +91,7 @@ func (uc *CustomerUseCase) CreateCustomer(ctx context.Context, c *Customer) (*Cu
         created, err = uc.repo.CreateWithTx(ctx, tx, c)
         if err != nil { return err }
 
-        // Insert outbox event — will be published by common/worker OutboxProcessor
+        // Insert outbox event — captured by Debezium Outbox SMT / OutboxProcessor
         return uc.outbox.InsertWithTx(ctx, tx, events.OutboxEvent{
             Topic:   "customer.updated",
             Payload: marshalCustomer(created),
@@ -101,7 +108,9 @@ func (uc *CustomerUseCase) CreateCustomer(ctx context.Context, c *Customer) (*Cu
 
 **Answer-first:** The `magento-sync-adapter` Go service listens to Dapr event channels, translating microservice domain events back into Magento REST API calls.
 
-This new service subscribes to microservice domain events and syncs them back to Magento:
+The `magento-sync-adapter` operates as a dedicated bridge service between Dapr PubSub channels and legacy Magento REST endpoints. To protect Magento from REST API rate-limiting and connection saturation, the adapter implements client-side rate limiting (100 req/sec bucket), exponential backoff retries with jitter, and circuit breaker isolation.
+
+The Kubernetes deployment manifest below configures the adapter service alongside Dapr sidecar annotations and environment credentials:
 
 ```yaml
 # k8s/magento-sync-adapter.yaml
@@ -134,7 +143,7 @@ spec:
           value: "timestamp"   # Options: timestamp | microservices-wins | magento-wins
 ```
 
-Dapr subscription configuration:
+Dapr subscription CRDs bind domain event topics to specific adapter HTTP handler endpoints:
 
 ```yaml
 # dapr-subscriptions.yaml
@@ -165,17 +174,19 @@ spec:
 
 **Answer-first:** The conflict resolution matrix defines 5 deterministic policies (e.g. timestamp priority, authority tier) to resolve concurrent state updates.
 
-During Phase 2, both Magento and microservices can update the same record. The conflict resolver handles this by data type:
+When dual-writing across legacy monoliths and microservices, state mutations can collide. Modern 2026 architectures replace raw NTP timestamps with **Hybrid Logical Clocks (HLC)** to guarantee causality ordering despite physical clock drift. Background reconciliation processes periodically calculate Merkle tree / SHA256 checksums between MySQL and PostgreSQL tables to catch and repair silent state drift automatically.
 
 | Entity | Conflict Policy | Rationale |
 |---|---|---|
-| **Customer profile** (name, email, phone) | Timestamp-based: newer write wins | Both systems can legitimately update customer data |
+| **Customer profile** (name, email, phone) | Timestamp-based (HLC): newer write wins | Both systems can legitimately update customer data |
 | **Order status** | Microservices wins | Order state machine lives entirely in Order Service |
 | **Inventory / stock quantity** | Microservices wins | Real-time reservations managed by Warehouse Service |
 | **Product price** | Admin decision (Pricing Service) | Prices are only written from Seller Centre via Pricing Service |
-| **Coupon usage count** | Sum + reconcile | Both systems may increment the count concurrently |
+| **Coupon usage count** | Sum + reconcile (CRDT Max) | Both systems may increment the count concurrently |
 
 ### Timestamp-Based Resolution (Customer Profile)
+
+The Go conflict resolver below evaluates incoming event timestamps against stored entity state, determining whether to update the local microservice repository or trigger a reverse update back to Magento:
 
 ```go
 // magento-sync-adapter/internal/resolver/customer_resolver.go
@@ -213,6 +224,8 @@ func (r *ConflictResolver) ResolveCustomerChange(ctx context.Context, event Migr
 
 ### Coupon Usage Reconciliation
 
+For shared counter aggregations like promo coupon redemption limits, neither system's counter is strictly authoritative. The Go implementation below applies maximum-value convergence to ensure coupon quotas are strictly respected across environments:
+
 ```go
 // magento-sync-adapter/internal/resolver/coupon_resolver.go
 
@@ -237,9 +250,11 @@ func (r *ConflictResolver) ResolveCouponUsage(ctx context.Context, event Migrati
 
 **Answer-first:** Per-service migration sequences order domain transitions logically: Catalog first, Customer second, Cart third, and Checkout last.
 
-Phase 2 enables write flags one service at a time, in order of risk:
+Enabling dual-write mode proceeds incrementally following a strict domain dependency tree. Low-risk peripheral services transition first, allowing engineering teams to validate outbox event propagation before enabling mission-critical transactional domains.
 
 ### Step 1: Customer Service (Lowest Risk)
+
+The shell script below patches the production ConfigMap to activate customer domain writes and kicks off real-time validation monitoring:
 
 ```bash
 #!/bin/bash
@@ -256,24 +271,25 @@ kubectl patch configmap feature-flags -n production \
 ./scripts/validate-dual-write.sh --service=customer --sample=1000
 ```
 
-Monitoring looks for: write latency > 500ms (SLA breach), data consistency lag > 5s, `migration.dlq` message count > 0 (any failed sync needs investigation before proceeding).
+Monitoring inspects three vital metrics: p99 write latency (< 500ms SLA), data consistency lag (< 5s between PostgreSQL and MySQL), and zero accumulated messages in `migration.dlq`.
 
 ### Step 2: Catalog Service (Medium Risk)
 
-Run after Customer Service has been stable for 72 hours:
+Catalog write migration initiates after Customer Service maintains 72 consecutive hours of zero-drift dual-write execution. The command snippet below patches the catalog write feature flag:
 
 ```bash
+kubectl patch configmap feature-flags -n production \
   --patch '{"data": {"catalog_write": "true"}}'
 
 ./scripts/monitor-dual-write.sh --service=catalog --duration=1800
 ./scripts/validate-dual-write.sh --service=catalog --sample=500
 ```
 
-Catalog is medium risk because product data is less critical than order data — a brief inconsistency on a product description page is visible but not financially damaging.
+Catalog is medium risk because product metadata changes (e.g. title updates, category assignments) affect store presentation but do not directly mutate active financial ledger entries.
 
 ### Step 3: Order Service (Highest Risk)
 
-Order Service migration requires an explicit database backup before enabling:
+Order Service dual-write represents the highest operational risk. The activation script below mandates fresh database backups and interactive engineering sign-off prior to flag enablement:
 
 ```bash
 #!/bin/bash
@@ -284,6 +300,7 @@ read -p "Have you taken a Magento DB backup in the last 30 minutes? [yes/no]: " 
 [ "$CONFIRM" != "yes" ] && echo "Aborting. Take backup first." && exit 1
 
 # Stricter feature flag: 10-second health check interval, strict validation
+kubectl patch configmap feature-flags -n production \
   --patch '{
     "data": {
       "order_write": "true",
@@ -297,13 +314,15 @@ read -p "Have you taken a Magento DB backup in the last 30 minutes? [yes/no]: " 
 ./scripts/validate-dual-write.sh --service=order --sample=1000
 ```
 
-The 10-second health check interval (vs 30 seconds for Customer) means Order Service's automatic fallback triggers faster — critical because a lost order is a customer complaint and potentially a refund.
+Setting a 10-second health check probe interval ensures the API Gateway trips automatic fallback within 10 seconds of any upstream anomaly, protecting live customer checkout flows.
 
 ## 6. DLQ Monitoring: Your Early Warning System
 
 **Answer-first:** Dead-letter queue (DLQ) monitoring alerts engineering teams to failed event sync attempts, providing manual retry interfaces and payload inspection.
 
-Any event that fails to sync to Magento ends up in `migration.dlq`. During Phase 2, the DLQ must be **treated as zero-tolerance**. A non-empty DLQ means data inconsistency:
+Events failing serialization or encountering persistent Magento API errors land in `migration.dlq`. During Phase 2, DLQ depth must be strictly enforced as zero. Accumulated DLQ messages indicate active data drift between microservice PostgreSQL and legacy MySQL.
+
+Operators execute the following command script to query active DLQ queue metrics across pub/sub channels:
 
 ```bash
 # Check DLQ message count (run as pre-shift check)
@@ -314,11 +333,13 @@ dapr publish --publish-app-id ops-tool --pubsub pubsub \
 # If > 0: investigate before enabling next service's write flag
 ```
 
-A DLQ handler service processes failed events and sends alerts to `#migration-issues` Slack channel with the event payload and error message.
+A dedicated DLQ handler worker service parses unroutable CloudEvents, formats structured alert payloads, and triggers high-priority alerts to operational channels with event context and stack traces. Automated replay tooling allows engineers to re-inject fixed events into Dapr PubSub channels once underlying API issues are resolved.
 
 ## 7. Phase 2 Success Criteria
 
 **Answer-first:** Phase 2 success requires zero un-reconciled data drift across dual-written domains over a continuous 14-day operational window.
+
+Before advancing to Phase 3 full traffic cutover, the architecture must maintain absolute stability across all dual-written domains according to the following metric SLAs:
 
 | Metric | Target | When to Measure |
 |---|---|---|

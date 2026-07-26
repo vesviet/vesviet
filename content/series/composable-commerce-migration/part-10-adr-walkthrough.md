@@ -21,21 +21,21 @@ cover:
 canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-10-adr-walkthrough/"
 ---
 
+> **Answer-First:** Architectural Decision Records (ADRs) enforce three core principles: resilience over simplicity, strict layer standardization, and explicit event-driven boundaries. Standardizing service layouts, outbox patterns, and database migrations before writing code ensures consistent microservices governance across large engineering teams.
+
 21 services. 24 decisions. 3.5 months of deliberation captured in Architecture Decision Records.
 
 An ADR (Architecture Decision Record) is a short document that answers the question: "Why did we choose X when Y and Z were also options?" Without ADRs, architectural knowledge lives in engineers' heads. When they leave, the knowledge leaves too — and the next team rewrites the same component in the way that was already tried and rejected.
 
 This article walks through all 24 ADRs of the Composable Commerce Platform, grouped by category, with the counter-intuitive choices highlighted. Most ADRs are one-paragraph summaries; the ones that are genuinely surprising get deeper treatment.
 
-**Answer-first:** Architectural Decision Records (ADRs) enforce three core principles: resilience over simplicity, strict layer standardization, and explicit event-driven boundaries. Standardizing service layouts, outbox patterns, and database migrations before writing code ensures consistent microservices governance across large engineering teams.
-
-> **Pillar Architecture Guide:** This article is part of the **[Composable Commerce: Migrating from Monolith to Microservices](/posts/ecommerce-architecture-composable-migration/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+> **Pillar Architecture Guide:** This article is part of the **[Composable Commerce: Migrating from Monolith to Microservices](/posts/ecommerce-architecture-composable-migration/)** series. Please refer to the original article for a full architecture overview.
 
 ## The Decision Timeline: What It Reveals
 
 **Answer-first:** The ADR decision timeline highlights key architectural pivots, documenting why lightweight event-driven Go services replaced legacy PHP monoliths.
 
-Before the decisions themselves, the timeline:
+The chronological timeline below illustrates how architectural decisions evolved over a four-month period, moving from foundational event-driven principles to specific domain implementation details:
 
 ```
 2025-11-17: ADR-001 — Event-Driven Architecture
@@ -53,7 +53,7 @@ Before the decisions themselves, the timeline:
 
 **ADR-001 being 3 months earlier is the most revealing fact about the platform.** The team decided on event-driven architecture in November 2025 — before they had any other decisions. "Events as first-class citizens" was the founding principle; everything else was derived from it. Dapr (ADR-003), saga pattern (Part 9), dual-write via events (Part 7), and the Transactional Outbox (Part 9) are all downstream of ADR-001.
 
-The Feb 3 batch of 19 decisions represents an architecture alignment session where decisions made informally during design were formally documented.
+The Feb 3 batch of 19 decisions represents an architecture alignment session where decisions made informally during design were formally documented into MADR version 3 templates.
 
 ## Category 1: Architecture & Design (ADR-001 to ADR-004)
 
@@ -69,16 +69,20 @@ The implication: **events are contracts, not implementation details**. Changing 
 ### ADR-002: Microservices Architecture
 **Decision**: 21 services across 6 bounded context groups
 
-The ADR explicitly documents Conway's Law as a justification: *"Service count ≈ team count × 2–3."* With multiple engineering teams, 21 services is the right size. For a 5-person team, the same platform should have 5–7 services.
+The ADR explicitly documents Conway's Law as a justification: *"Service count ≈ team count × 2–3."* With multiple engineering teams, 21 services is the right size. Service boundaries align with domain-driven design (DDD) subdomains: Catalog, Order, Inventory, Payment, Customer, and Analytics. Each service operates independently with separate build pipelines and failure domains. For a 5-person team, the same platform should have 5–7 services.
 
 ### ADR-003: Dapr over Raw Redis Streams
-**Counter-intuitive choice.** Most Go microservices tutorials use Redis directly:
+**Counter-intuitive choice.** Most Go microservices tutorials use Redis directly.
+
+The code snippets below compare direct Redis driver coupling against Dapr's cloud-native pub/sub abstraction:
 
 ```go
 // ❌ Raw Redis Streams — what most tutorials show
 client := redis.NewClient(...)
 client.XAdd(ctx, &redis.XAddArgs{Stream: "orders", Values: event})
 ```
+
+The initial batch of Architecture Decision Records (ADR-002 through ADR-020) was formalized during a single architecture alignment sprint, codifying core microservice governance rules:
 
 ```go
 // ✅ Dapr PubSub — what the platform uses
@@ -101,7 +105,9 @@ The discipline: services that need data from another service's domain must eithe
 **Answer-first:** Tech stack decisions select Golang for microservice performance, PostgreSQL for transactional storage, and Dapr for distributed primitives.
 
 ### ADR-005: Go 1.25 + go-kratos v2
-**Counter-intuitive choice.** Three Go HTTP frameworks were considered:
+**Counter-intuitive choice.** Three Go HTTP frameworks were evaluated during initial discovery.
+
+The comparison table below evaluates the primary framework candidates against the platform's dual-transport requirements:
 
 | Framework | Strengths | Rejected because |
 |---|---|---|
@@ -116,10 +122,12 @@ Kratos won because ADR-002 mandated dual HTTP+gRPC transport for every service. 
 - K8s DNS for same-cluster service discovery (the common case)
 - Consul for cross-cluster and external service registration
 
-Consul was chosen because the platform has a multi-datacenter future roadmap. K8s DNS doesn't span clusters. Consul's service mesh health checks are also richer than K8s liveness probes for service discovery purposes.
+Consul was chosen because the platform has a multi-datacenter future roadmap. K8s DNS doesn't span clusters natively without complex multi-cluster CNI setups. Consul's service mesh health checks are also richer than K8s liveness probes for multi-region service discovery.
 
 ### ADR-007: Docker Multi-Stage + Distroless
 **Decision**: Docker multi-stage builds with distroless base images for production
+
+The Dockerfile snippet below illustrates the two-stage build pipeline, producing minimal container artifacts without underlying operating system binaries:
 
 ```dockerfile
 # Two-stage: build in Go, run in distroless
@@ -133,17 +141,19 @@ COPY --from=builder /app/service /service
 ENTRYPOINT ["/service"]
 ```
 
-Distroless images have no shell, no package manager, no `curl` — attack surface ~10× smaller than Alpine. The trade-off: debugging requires `kubectl exec` with a debug sidecar, not `bash`.
+Distroless images contain only application binaries and essential SSL certificates — no shell, no package manager, no `curl`. Attack surface drops ~10× compared to Alpine. The trade-off: in-pod debugging requires `kubectl exec` with an ephemeral debug sidecar container rather than invoking an internal `bash` shell.
 
 ## Category 3: Deployment & Operations (ADR-008 to ADR-010)
 
 **Answer-first:** Deployment decisions standardize on Kubernetes EKS, Kustomize overlays, and ArgoCD GitOps pipelines for automated zero-downtime releases.
 
 ### ADR-008: GitLab CI (not GitHub Actions)
-The team was already on GitLab for code hosting. GitLab CI's reusable pipeline templates (`.gitlab-ci.yml` `include:`) allow a central DevOps team to define shared build + test + deploy pipelines that all 21 service repos inherit.
+The team was already on GitLab for code hosting. GitLab CI's reusable pipeline templates (`.gitlab-ci.yml` `include:`) allow a central DevOps team to define shared build + test + deploy pipelines that all 21 service repos inherit. Updating a security scanner or Go version across 21 repos requires changing a single upstream pipeline template.
 
 ### ADR-009: ArgoCD + Kustomize (not Helm)
 **Counter-intuitive choice.** Helm is the most widely adopted Kubernetes package manager. Why Kustomize?
+
+The feature table below contrasts Helm's template abstraction against Kustomize's declarative YAML patching model:
 
 | Aspect | Helm | Kustomize |
 |---|---|---|
@@ -152,40 +162,40 @@ The team was already on GitLab for code hosting. GitLab CI's reusable pipeline t
 | **Debugging** | `helm template` to see rendered YAML | Vanilla YAML throughout |
 | **Learning curve** | Steep | Minimal (pure K8s YAML knowledge) |
 
-For a team managing 24 services, Helm's templating complexity creates a maintenance burden. Kustomize's pure-YAML patches are readable by anyone with Kubernetes knowledge — including junior engineers who don't know Helm. The base+overlay pattern also maps cleanly to the team's environment structure (dev, staging, production).
+For a team managing 21 microservices across 3 environments, Helm's templating complexity creates a maintenance burden. Kustomize's pure-YAML patches are readable by anyone with Kubernetes knowledge — including junior engineers who don't know Helm template syntax. The base+overlay pattern also maps cleanly to the team's environment structure (dev, staging, production).
 
 ### ADR-010: Prometheus + Grafana + Jaeger
-Standard observability stack. Notable: Jaeger with OpenTelemetry instrumented at the `common/metrics` library level — all 21 services get distributed tracing for free by importing `common v1.9.5`.
+Standard observability stack. Notable: Jaeger with OpenTelemetry instrumented at the `common/metrics` library level — all 21 services get distributed tracing for free by importing `common v1.9.5`. Prometheus scrapes metrics from standard `/metrics` endpoints, feeding pre-configured Grafana dashboards for latency, throughput, and error rates (RED metrics).
 
 ## Category 4: APIs & Integration (ADR-011 to ADR-013)
 
 **Answer-first:** API decisions mandate gRPC for internal inter-service communication and GraphQL for unified frontend client data fetching.
 
 ### ADR-011: gRPC + REST (Dual Protocol)
-The proto file generates both gRPC handlers and HTTP routes (via `google/api/annotations.proto`). No duplication. External clients get REST; internal services get gRPC. This is documented in Part 4 of this series.
+The proto file generates both gRPC handlers and HTTP routes (via `google/api/annotations.proto`). No duplication. External clients get REST; internal microservices communicate over high-performance gRPC with HTTP/2 multiplexing. Protobuf contracts guarantee strict type safety across microservice boundaries, eliminating runtime JSON parsing errors.
 
 ### ADR-012: Elasticsearch for Search
 **Decision**: Elasticsearch (not Meilisearch, Typesense, or PostgreSQL full-text)
 
-At 10,000+ SKUs with EAV attributes and Vietnamese language support (diacritic-heavy), Elasticsearch's Vietnamese analyzer and multi-field aggregation support were decisive. The Search Service indexes products from Catalog Service events — zero direct database access.
+At 10,000+ SKUs with EAV attributes and Vietnamese language support (diacritic-heavy), Elasticsearch's custom Vietnamese analyzer (`vi_analyzer`) and multi-field aggregation support were decisive. The Search Service indexes products from Catalog Service events asynchronously — enforcing zero direct database queries to catalog PostgreSQL instances.
 
 ### ADR-013: JWT + RBAC Authentication
-JWT tokens issued by Auth Service, validated at the Gateway before any request reaches internal services. RBAC (not ABAC) for permission management — permissions defined at the role level (`orders:create`, `products:edit`) rather than resource level.
+JWT tokens issued by Auth Service, validated at the API Gateway before any request reaches internal microservices. Role-Based Access Control (RBAC) manages permissions (`orders:create`, `products:edit`) directly within claims. Internal services operate behind a Zero Trust architecture, verifying JWT signature headers on every RPC request.
 
 ## Category 5: Configuration & Data (ADR-014 to ADR-015)
 
 **Answer-first:** Configuration decisions enforce 12-factor environment variables and secret management via HashiCorp Vault integration.
 
 ### ADR-014: go-kratos Config + K8s ConfigMaps
-Configuration hierarchy: `configs/config.yaml` (base, committed) → K8s ConfigMap (environment-specific, not committed) → K8s Secrets (credentials, managed by Vault/SOPS).
+Configuration hierarchy: `configs/config.yaml` (base, committed) → K8s ConfigMap (environment-specific overrides, managed by GitOps) → K8s Secrets (database credentials, managed by HashiCorp Vault with External Secrets Operator). This separation prevents accidental leakage of production credentials while keeping service configuration transparent.
 
 ### ADR-015: Goose for Schema Migrations
 **Counter-intuitive choice.** Two alternatives rejected:
 
-- **golang-migrate**: Popular but doesn't wrap each migration in a transaction by default. A failed migration can leave the schema in a partial state.
-- **Atlas**: Automatic schema diffing (inspects DB and generates diffs). Powerful but removes explicit developer control over migration steps.
+- **golang-migrate**: Popular but doesn't wrap each migration in a database transaction by default. A failed migration can leave the schema in a partial, broken state requiring manual database cleanup.
+- **Atlas**: Automatic schema diffing (inspects DB and generates diffs). Powerful but removes explicit developer control over migration steps and lock mechanisms.
 
-Goose wraps every migration in `BEGIN; ... COMMIT;` — if a migration fails halfway, the entire step rolls back. For an e-commerce database with financial data, atomicity is non-negotiable.
+Goose wraps every migration in `BEGIN; ... COMMIT;` — if a migration fails halfway, the entire step rolls back atomically. For an e-commerce database with financial transactions, schema atomicity is non-negotiable.
 
 ## Category 6: Frontend & Development (ADR-016 to ADR-020)
 
@@ -194,21 +204,21 @@ Goose wraps every migration in `BEGIN; ... COMMIT;` — if a migration fails hal
 ### ADR-016: React + Next.js
 **Decision**: React 18 + Next.js 14 (App Router + RSC)
 
-Next.js Server-Side Rendering is critical for SEO on the public storefront. Vietnamese e-commerce customers predominantly discover products via Google. A pure CSR (Create React App) storefront would rank poorly. The admin dashboard uses React without SSR (no SEO requirement for internal tools).
+Next.js Server-Side Rendering (SSR) is critical for SEO on the public storefront. Vietnamese e-commerce customers predominantly discover products via Google search. A pure CSR (Create React App) storefront would rank poorly. The internal admin dashboard uses client-side React without SSR (zero SEO requirement for internal tools).
 
 ### ADR-017: Common Library Architecture
-As detailed in Part 3, the `gitlab.com/ta-microservices/common v1.9.5` library eliminated 4,150 lines of duplicate code across 19 services. The key insight: *"Don't copy-paste middleware. Abstract it."*
+As detailed in Part 3, the `gitlab.com/ta-microservices/common v1.9.5` library eliminated 4,150 lines of duplicate code across 19 services. The key insight: *"Don't copy-paste middleware. Abstract it into a shared central module."* Common contains standardized logging, telemetry, outbox workers, and gRPC interceptors.
 
 ### ADR-018: K3d + Tilt for Local Development
 **Decision**: K3d (lightweight K3s in Docker) + Tilt hot reload — not Docker Compose
 
-Docker Compose doesn't simulate Dapr sidecar injection, K8s resource limits, or ConfigMap/Secret mounting. Developers who run Compose locally and Kubernetes in staging constantly hit "it works on Compose, fails on K8s" issues. K3d local gives a complete Kubernetes environment on a laptop (8GB RAM required for all 21 services).
+Docker Compose doesn't simulate Dapr sidecar injection, K8s resource limits, or ConfigMap/Secret mounting. Developers who run Compose locally and Kubernetes in staging constantly hit "it works on Compose, fails on K8s" issues. K3d local gives a complete Kubernetes environment on a laptop (8GB RAM required for all 21 services) with Tilt live-reloading code changes instantly.
 
 ### ADR-019: Structured Logging with Correlation IDs
-Every log line includes: `service`, `trace_id`, `correlation_id`, `user_id`, `request_id`. Correlation IDs propagate through Dapr event metadata. A single `correlation_id` can be searched in Grafana Loki to see the complete request journey across 5+ services.
+Every log line outputs structured JSON containing: `service`, `trace_id`, `correlation_id`, `user_id`, `request_id`. Correlation IDs propagate through Dapr event metadata. A single `correlation_id` can be searched in Grafana Loki to display the complete request journey across 5+ microservices in a single log pane.
 
 ### ADR-020: Error Handling & Resilience
-Circuit breaker configuration (ADR-020): 5 consecutive failures → open for 60 seconds → half-open (5 test requests) → closed. Exponential backoff: 1s → 2s → 4s → 8s → 16s → give up.
+Circuit breaker configuration (ADR-020): 5 consecutive failures → open for 60 seconds → half-open (5 test requests) → closed. Exponential backoff retry policy: 1s → 2s → 4s → 8s → 16s → give up. Standardized error response format across REST and gRPC API boundaries (`common/errors`).
 
 ## Category 7: Data & Domain (ADR-021 to ADR-024)
 
@@ -217,24 +227,26 @@ Circuit breaker configuration (ADR-020): 5 consecutive failures → open for 60 
 ### ADR-021: Price & Stock Data Ownership
 **Decision**: Pricing Service owns price; Warehouse Service owns stock quantity; Promotion Service applies discount rules
 
-This addresses a common Magento architecture mistake: treating price and stock as attributes of the product. In the composable platform, they are attributes of separate business capabilities. Catalog Service knows *what* a product is. Pricing Service knows *how much* it costs. Warehouse Service knows *how many exist*.
+This addresses a common Magento architecture mistake: treating price and stock as attributes of the product entity. In the composable platform, they represent attributes of separate business capabilities. Catalog Service knows *what* a product is. Pricing Service knows *how much* it costs. Warehouse Service knows *how many exist*.
 
 ### ADR-022: Dynamic SQL Pivoting for EAV
-The foundational decision for Part 5 of this series: attribute IDs must never be hardcoded. The `eav_attribute.attribute_code` lookup pattern is the safe migration approach. This ADR was written on March 2, 2026 — after the EAV spike revealed that the team's initial extraction scripts used hardcoded IDs.
+The foundational decision for Part 5 of this series: attribute IDs must never be hardcoded. The `eav_attribute.attribute_code` lookup pattern is the safe migration approach. This ADR was written on March 2, 2026 — after the EAV spike revealed that the team's initial extraction scripts used hardcoded IDs that broke when deployed across staging environments.
 
 ### ADR-023: Standardized Caching + Worker Patterns
-The ADR that unlocked `common v1.9.5`: single-flight cache stampede protection, RedLock distributed cron, and the outbox processor standardized into the common library. Before this ADR (March 2026), each service had its own outbox implementation with slight variations.
+The ADR that enabled `common v1.9.5`: single-flight cache stampede protection, RedLock distributed cron, and the outbox processor standardized into the common library. Before this ADR (March 2026), each service had its own outbox implementation with slight variations, leading to subtle bugs in worker polling.
 
 ### ADR-024: Inventory Data Ownership (17KB — The Most Debated Decision)
 At 17KB, ADR-024 is 3× longer than any other ADR. Inventory data ownership was the most contested decision in the platform's design: should Catalog Service own stock levels (as in Magento, where `cataloginventory_stock_item` is a catalog table) or should Warehouse Service own them?
 
-The decision: **Warehouse Service owns stock; Catalog Service shows a read-only stock indicator** (in_stock: true/false) populated by Warehouse Service events.
+The decision: **Warehouse Service owns stock; Catalog Service shows a read-only stock indicator** (`in_stock: true/false`) populated by Warehouse Service events.
 
 The contested alternative was "Catalog shows stock level from Warehouse via gRPC synchronous call on every product page." This was rejected because a product page load would then be gated on Warehouse Service availability — a single service failure would take down product browsing. By pre-computing `in_stock` into Catalog's own database (via events), Catalog pages are resilient to Warehouse Service failures.
 
 ## The 5 Most Counter-Intuitive Decisions
 
 **Answer-first:** Counter-intuitive decisions include choosing Dapr over raw Kafka, Kustomize over Helm, and PostgreSQL outbox tables over external message brokers.
+
+The evaluation matrix below synthesizes the five most counter-intuitive architectural decisions made during the design phase, contrasting standard community defaults against the platform's selected choices:
 
 | Decision | What most engineers would choose | What was chosen | Key reason |
 |---|---|---|---|
@@ -243,6 +255,24 @@ The contested alternative was "Catalog shows stock level from Warehouse via gRPC
 | K8s config | Helm | Kustomize | Simpler, pure YAML |
 | Schema migrations | golang-migrate | Goose | Atomic transaction wrapping |
 | Inventory ownership | In Catalog Service | In Warehouse Service (separate) | Catalog page resilience |
+
+These five decisions illustrate the core architectural philosophy of the platform: **resilience over simplicity, layer standardization, and explicit domain boundaries**. Each decision sacrificed short-term setup speed for long-term operational clarity.
+
+## FAQ
+
+**Answer-first:** Architecture Decision Records (ADRs) document architectural context, trade-offs, and governance policies to prevent technical debt during composable migrations.
+
+{{< faq q="Why use Markdown Architecture Decision Records (ADRs) instead of wiki pages or design docs?" >}}
+Versioning ADRs alongside source code in Git ensures architectural decisions evolve directly with the codebase and are reviewed via standard pull request workflows. Wiki pages frequently drift from production implementation, whereas Git-managed ADRs provide an immutable audit trail of architectural trade-offs accessible to all engineers.
+{{< /faq >}}
+
+{{< faq q="How do you handle superseding or revising an existing ADR when requirements change?" >}}
+Never edit or delete an accepted historical ADR. Instead, create a new ADR (e.g., ADR-025) with an explicit status of "Accepted", reference the original ADR, and update the original ADR's status header to "Superseded by ADR-025". This preserves the historical reasoning behind previous decisions while documenting new architectural directions.
+{{< /faq >}}
+
+{{< faq q="What is the MADR standard and why was it chosen for this project?" >}}
+MADR (Markdown Architectural Decision Records) provides a minimalist, standardized template focusing on context drivers, considered options, and positive/negative consequences. It eliminates unnecessary administrative overhead while forcing engineering teams to explicitly articulate trade-offs, performance benchmarks, and maintenance costs before adopting new technologies.
+{{< /faq >}}
 
 ## Final Word
 

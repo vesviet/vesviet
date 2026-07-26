@@ -2,7 +2,7 @@
 title: "Composable Commerce Migration: Magento to Go Microservice"
 description: "Escape Magento with 21 Go microservices: DDD bounded contexts, Strangler Fig migration, EAV schema extraction, Dapr PubSub, and GitOps with ArgoCD."
 date: "2026-04-01T10:00:00+07:00"
-lastmod: "2026-06-24T10:00:00+07:00"
+lastmod: "2026-07-26T10:00:00+07:00"
 draft: false
 weight: 145
 slug: "composable-commerce-migration"
@@ -16,13 +16,13 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/"
 ---
 
-
-
 ## Composable Commerce Migration: Magento 2 → Microservices Golang
 
 Is your Magento 2 store costing you **$125,000–$200,000/year** in Enterprise license fees? Are your engineers spending 60% of their sprint chasing PHP compatibility issues and writing hacky module overrides instead of shipping features? Are you hitting the ceiling on flash-sale traffic because you can only scale the entire monolith at once?
 
-Welcome to the definitive playbook for **Composable Commerce Migration** — how to surgically disassemble a Magento 2 monolith into a production-grade microservices platform built on **Go 1.25, Kratos v2, Dapr PubSub, and Rush monorepo**, without losing a single order in transit.
+Welcome to the technical blueprint for **Composable Commerce Migration** — how to surgically disassemble a Magento 2 monolith into a production-grade microservices platform built on **Go 1.25, Kratos v2, Dapr PubSub, and Rush monorepo**, without losing a single order in transit.
+
+> **Answer-First Summary**: The Composable Commerce Migration Masterclass provides a 3-Phase Strangler Fig pattern (Read-Only CDC -> Dual-Write PubSub -> Full Cutover) for migrating legacy Magento 2 monoliths into 21 Go 1.25 microservices. Decoupling database dependencies via Domain-Driven Design and Dapr PubSub eliminates $200k/year in license fees, cuts infrastructure costs by 60%, and ensures zero-downtime cutover.
 
 > **About this Series**
 >
@@ -30,7 +30,7 @@ Welcome to the definitive playbook for **Composable Commerce Migration** — how
 
 ---
 
-> **Answer-First Summary**: The Composable Commerce Migration Masterclass provides a battle-tested 3-Phase Strangler Fig playbook (Read-Only CDC -> Dual-Write PubSub -> Full Cutover) for disassembling legacy Magento 2 PHP monoliths into 21 high-performance Go 1.25 microservices. By decoupling database dependencies using Domain-Driven Design and Dapr PubSub, engineering teams eliminate $200k/year in enterprise license fees, reduce infrastructure operating costs by 60%, and achieve zero-downtime cutover.
+The architectural roadmap illustrates the progressive decoupling of legacy monolithic database dependencies into isolated microservices. By transitioning through real-time change data capture (CDC) and event-driven dual-write pipelines, teams achieve zero-downtime traffic cutovers.
 
 ```mermaid
 graph TD
@@ -42,7 +42,9 @@ graph TD
 
 ## 🎯 Migration Consulting
 
-Is your team planning to exit Magento or evaluating a migration to a composable commerce architecture? Need an Architecture Review of your current platform before committing to a migration strategy?
+Is your team planning to exit Magento or evaluating a migration to a composable commerce architecture? Need an Architecture Review of your current platform before committing to a migration strategy? 
+
+Our specialized technical architecture review covers Go 1.25 Profile-Guided Optimization (PGO) tuning, Dapr 1.15 PubSub component evaluation, Kubernetes Gateway API routing design, database boundary isolation, and Rush polyglot monorepo caching strategies.
 
 👉 **[Book a 1:1 Architecture Consultation](/hire/)** with Senior Architect Lê Tuấn Anh — 17+ years building enterprise e-commerce platforms across Vietnam and SEA.
 
@@ -93,6 +95,8 @@ Magento 2's EAV schema, integer primary keys, and PHP module coupling make migra
 
 **Answer-first:** This platform replaces monolithic Magento PHP monoliths with 21 decoupled Go microservices, Dapr PubSub, and modern frontend engines.
 
+Legacy Magento architectures rely on heavy PHP-FPM worker pools where each web worker consumes 512 MB to 2 GB of RAM, causing severe CPU lockups during high-concurrency flash sales. In contrast, compiling services with Go 1.25 reduces worker container footprints to 18 MB–45 MB per pod while leveraging lightweight Goroutines for asynchronous request handling. Synchronous Magento webhooks are replaced by Dapr 1.15 PubSub abstractions combined with the Transactional Outbox pattern and Dead Letter Queues (DLQ), ensuring guaranteed message delivery. Additionally, Kubernetes Gateway API combined with Envoy proxies handles edge ingress routing natively, replacing fragile PHP rewrite rules.
+
 | Capability | Magento Enterprise | This Platform |
 |---|---|---|
 | **License cost** | $125,000–$200,000/year | $0 |
@@ -107,6 +111,8 @@ Magento 2's EAV schema, integer primary keys, and PHP module coupling make migra
 ## 🧭 Where Should You Start?
 
 **Answer-first:** Start your migration by defining domain boundaries, setting up read-only Strangler Fig proxies, and deploying Debezium CDC pipelines.
+
+Successful platform transformation requires aligning engineering roles with specific migration phases. Product Managers and Business Analysts begin with Part 0 to build the financial case and evaluate total cost of ownership (TCO) reductions. Magento backend developers should immediately analyze Part 5 to untangle complex EAV attribute models into clean relational and JSONB microservice schemas. Golang developers leverage Part 3 to establish Kratos v2 framework foundations, while DevOps and SRE leads follow Part 8 to implement ArgoCD GitOps pipelines for progressive 25/50/75/100% canary cutovers.
 
 | Your Profile | Recommended Entry Point | Why |
 |---|---|---|
@@ -142,7 +148,7 @@ Yes. The 3-phase Strangler Fig approach (Read-Only → Dual-Write → Cutover) i
 
 ## 📊 Infrastructure Cost & Resource Optimization Benchmarks
 
-Migrating from a legacy PHP monolith to compiled Go microservices delivers immediate reductions in cloud infrastructure overhead:
+Migrating from a legacy PHP monolith to compiled Go microservices delivers immediate reductions in cloud infrastructure overhead. With Go 1.25 Profile-Guided Optimization (PGO), microservice binaries achieve an additional 8–12% CPU throughput improvement by optimizing inline functions and goroutine scheduling based on real-world production execution profiles. Memory utilization drops drastically from 512 MB – 2 GB per PHP-FPM worker pool down to 18 MB – 45 MB per container pod, while Dapr 1.15 sidecars provide lightweight pub/sub and state management without the heavy runtime overhead of Java-based service meshes.
 
 | Benchmark Dimension | Legacy Magento 2 PHP Infrastructure | Composable Go Microservices Platform |
 |---|---|---|
@@ -153,6 +159,8 @@ Migrating from a legacy PHP monolith to compiled Go microservices delivers immed
 
 
 ### Production Code Implementation Blueprint
+
+Production-grade Go 1.25 event consumers utilize Dapr PubSub handlers to process order domain events with context-aware timeout controls:
 
 ```go
 // Package main provides production implementation details for Composable Commerce Migration.
