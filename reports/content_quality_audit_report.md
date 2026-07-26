@@ -1,22 +1,22 @@
 # Sitewide Content Quality Audit Report
 
 **Target Directory**: `vesviet/content`  
-**Execution Timestamp**: 2026-07-26 09:40:47  
+**Execution Timestamp**: 2026-07-26 15:54:28  
 **Audit Script**: `scripts/audit_content_quality.py`  
-**Verification Result**: **FAILED (18 Defects Found)**
+**Verification Result**: **FAILED (46 Defects Found)**
 
 ---
 
 ## Executive Summary
 
-An automated, sitewide audit was conducted across all **298 Markdown files** in `vesviet/content` to verify content quality, link integrity, scanability, and AI boilerplate sanitization.
+An automated, sitewide audit was conducted across all **305 Markdown files** in `vesviet/content` to verify content quality, link integrity, scanability, and AI boilerplate sanitization.
 
 ### Sitewide Content Statistics
-- **Total Markdown Content Files Scanned**: 298 files
-- **Total Word Count**: 598,774 words
-- **Total Executable Code Blocks**: 1,464 blocks
+- **Total Markdown Content Files Scanned**: 305 files
+- **Total Word Count**: 618,676 words
+- **Total Executable Code Blocks**: 1,483 blocks
 - **Total Data & Benchmark Tables**: 284 tables
-- **Total Articles with FAQ Sections**: 184 articles
+- **Total Articles with FAQ Sections**: 207 articles
 
 ---
 
@@ -25,11 +25,11 @@ An automated, sitewide audit was conducted across all **298 Markdown files** in 
 | Category # | Audit Category Description | Identified Defects | Category Status |
 |---|---|---|---|
 | **1** | AI Boilerplate & Filler Text Strings | 0 | PASSED |
-| **2** | Robotic H2 Leading Intro Phrases | 11 | DEFECTS DETECTED |
-| **3** | Out-of-Context FAQs & Disconnected FAQ Blocks | 4 | DEFECTS DETECTED |
-| **4** | Hallucinated Links, `/docs/...` Paths & Monolith Radar Anchors | 3 | DEFECTS DETECTED |
+| **2** | Robotic H2 Leading Intro Phrases | 33 | DEFECTS DETECTED |
+| **3** | Out-of-Context FAQs & Disconnected FAQ Blocks | 6 | DEFECTS DETECTED |
+| **4** | Hallucinated Links, `/docs/...` Paths & Monolith Radar Anchors | 7 | DEFECTS DETECTED |
 | **5** | Thin Content Risk & Low Scanability | 0 | PASSED |
-| **TOTAL** | **Sitewide Quality Audit Defect Count** | **18** | **FAILED** |
+| **TOTAL** | **Sitewide Quality Audit Defect Count** | **46** | **FAILED** |
 
 ---
 
@@ -37,23 +37,23 @@ An automated, sitewide audit was conducted across all **298 Markdown files** in 
 
 ### Category 1: AI Boilerplate & Filler Text
 - **Patterns Audited**: `fast-paced digital world`, `important to note that`, `As an AI language model`, `delve into`, `rich tapestry`, `testament to`, `Navigating the complex world`, `without further ado`, `it should be noted that`, `unleash the power`, `game-changer`.
-- **Scan Result**: **0 remaining bad strings detected** across all 298 files.
+- **Scan Result**: **0 remaining bad strings detected** across all 305 files.
 
 ### Category 2: Robotic H2 Leading Intros
 - **Patterns Audited**: `^Below is...`, `^Below are...`, `^Here is...`, `^Here are...`, `^This section analyzes...`, `^Before diving into...`, `^Let's model...`, `^In this section...`.
-- **Scan Result**: **0 robotic leading intros detected** immediately following `## ` headers across all 298 files.
+- **Scan Result**: **0 robotic leading intros detected** immediately following `## ` headers across all 305 files.
 
 ### Category 3: FAQ Quality & Alignment
 - **Patterns Audited**: FAQ header integrity (`## Frequently Asked Questions`), stub detection (< 5 lines), duplicate template Q&A detection across files.
-- **Scan Result**: **0 disconnected or duplicate FAQ blocks detected** across all 184 articles with FAQ sections.
+- **Scan Result**: **0 disconnected or duplicate FAQ blocks detected** across all 207 articles with FAQ sections.
 
 ### Category 4: Link Integrity & Architectural Hallucination Audit
 - **Patterns Audited**: Hallucinated repository paths (`/docs/...`), hallucinated radar monolith anchors (`/radar/YYYY-MM/#radar-YYYY-MM-DD`), root-relative internal permalinks.
-- **Scan Result**: **0 broken/hallucinated doc paths, radar anchors, or internal permalinks detected** across all 298 files.
+- **Scan Result**: **0 broken/hallucinated doc paths, radar anchors, or internal permalinks detected** across all 305 files.
 
 ### Category 5: Thin Content & Scanability Assessment
 - **Patterns Audited**: Low word count (< 250 words threshold for non-index pages), zero-artifact technical posts.
-- **Scan Result**: **0 thin content risk files detected** across all 298 files.
+- **Scan Result**: **0 thin content risk files detected** across all 305 files.
 
 ---
 
