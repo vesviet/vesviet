@@ -21,17 +21,19 @@ TocOpen: true
 mermaid: true
 ---
 
-> **Executive Summary & Quick Answer**: Executing distributed financial transactions across independent microservices requires the Saga Pattern to replace blocking two-phase commits (2PC). Using orchestrator-led state machines with persistent state logs ensures compensating transactions execute automatically whenever downstream steps fail.
+# Saga Pattern: Distributed Transactions Without 2PC
 
-> **Answer-First:** Distributed transactions across microservices are coordinated using the Saga pattern. Rather than locking databases across services (2PC), a Saga coordinator sequences independent local transactions and executes compensating transactions to roll back state if any step fails.
+**Answer-first:** The Saga pattern coordinates distributed transactions across core banking microservices without two-phase commit (2PC). By executing local transactions and defining compensating actions for failures, Sagas ensure eventual consistency across payment and ledger services.
 
-> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original article for an architectural overview of the architecture.
 
 > **Series (Part 4 of 8):** This article builds upon Event Sourcing from [Part 3](/series/core-banking-architecture/part-3-event-sourcing-cqrs/). The Saga Pattern solves the problem: "How do we ensure consistency when a transaction must coordinate across multiple microservices without using distributed locks or 2PC?"
 
 ## What is the Saga Pattern in Fintech?
 
 **Answer-first:** The Saga pattern coordinates distributed financial transactions across microservices using a sequence of local transactions and compensating actions.
+
+The sequence diagram below illustrates how an orchestrator issues compensation commands when downstream payment processing fails.
 
 ```mermaid
 sequenceDiagram
@@ -63,7 +65,7 @@ If step 2 fails after step 1 succeeds → **compensation** is required to refund
 
 ### Choreography Saga (Event-Driven)
 
-Services communicate via events — there is no central coordinator:
+Services communicate via events — there is no central coordinator. The diagram below illustrates event broadcast paths during standard execution and failure compensation.
 
 ```
 Account Service          Payment Service         Notification Service
@@ -87,7 +89,7 @@ Failure case:
 
 ### Orchestration Saga (Central Coordinator)
 
-An Orchestrator coordinates the entire flow:
+An Orchestrator coordinates the entire flow. The topology diagram below details how microservices operate under central workflow control.
 
 ```
        Orchestrator (Temporal/Conductor)
@@ -103,6 +105,8 @@ An Orchestrator coordinates the entire flow:
 - Retry/timeout logic is managed in one place.
 
 ### Comparison Matrix
+
+The comparison matrix below evaluates key architectural trade-offs between Choreographed Sagas and Orchestrated Sagas in financial distributed systems. It highlights performance differences across execution latency, operational debugging complexity, component coupling, failure management, and target financial use cases.
 
 | Criteria | Choreography | Orchestration |
 |----------|-------------|---------------|
@@ -120,7 +124,7 @@ An Orchestrator coordinates the entire flow:
 
 **Answer-first:** Temporal Go SDK implements durable Saga workflows, managing state persistence, retries, and compensation execution automatically.
 
-[Temporal](https://temporal.io/) is currently the most popular orchestration engine for Saga patterns. Here is a real-world implementation:
+[Temporal](https://temporal.io/) is currently the most popular orchestration engine for Saga patterns. The Go implementation below manages multi-step payment execution, automated retry policies, and compensation rollbacks:
 
 ```go
 package workflows
@@ -243,7 +247,7 @@ Here is a detailed analysis of failure scenarios and how they are handled:
 
 **Answer-first:** Idempotency keys passed across Saga steps prevent double execution of financial debits during network retries.
 
-Every step in a Saga requires idempotency to ensure safe retries:
+Every step in a Saga requires idempotency to ensure safe retries. The Go activity implementation below checks Redis result locks before executing account debits:
 
 ```go
 // Activity with idempotency key
@@ -270,6 +274,8 @@ func DebitAccountActivity(ctx context.Context, req TransferRequest) (DebitResult
 
 **Tiered lock strategy for webhook idempotency:**
 
+The timeline breakdown below outlines the lock TTL tiers used to manage active processing locks versus cached responses.
+
 ```
 5 minutes: pending lock (prevents concurrent processing)
 24-48 hours: result cache (returns cached response for duplicate requests)
@@ -280,6 +286,8 @@ func DebitAccountActivity(ctx context.Context, req TransferRequest) (DebitResult
 ## Choreography Implementation: Kafka-based
 
 **Answer-first:** Kafka-based choreography routes domain events between microservices, executing local debits and publishing compensation events on errors.
+
+The Go event handlers below show how services consume topic messages and publish failure events during errors:
 
 ```go
 // Account Service — publishes event when step 1 completes
@@ -326,7 +334,7 @@ func (s *PaymentService) HandleTransferInitiated(ctx context.Context, event Tran
 
 **Answer-first:** Dead-letter queues capture un-compensable Saga failures, triggering operator war room alerts and manual remediation procedures.
 
-When the compensation chain fails, the event must be routed to a DLQ:
+When the compensation chain fails, the event must be routed to a DLQ. The Go implementation below writes unrecoverable failures to an audit log and triggers P1 alerts:
 
 ```go
 // DLQ handler — receives failed compensation events
@@ -363,7 +371,10 @@ func (h *DLQHandler) HandleFailedCompensation(ctx context.Context, event FailedC
 
 ### Test 1: Step 2 Failure + Compensation Verification
 
+The Go unit test below mocks gateway errors to verify that compensating refund activities return source accounts to original balance state.
+
 ```go
+// Scenario: Mock Payment Service to fail at step 2
 func TestStep2FailureCompensation(t *testing.T) {
     // Setup: Mock Payment Service to fail at step 2
     mockPaymentSvc := &MockPaymentService{ShouldFail: true}
@@ -390,6 +401,8 @@ func TestStep2FailureCompensation(t *testing.T) {
 ```
 
 ### Test 2: Double Failure — Step 2 + Compensation
+
+The failure injection test below confirms that double-fault scenarios route state records to the Dead Letter Queue for operator triage.
 
 ```go
 func TestDoubleFaultCompensationDLQ(t *testing.T) {
@@ -445,6 +458,8 @@ Executing transactions across multiple microservices (e.g., reserving funds, cal
 1. **Choreography-Based Sagas:** Services communicate using event pub-sub models, triggering local transactions independently. This approach has low latency but is difficult to audit and debug.
 2. **Orchestration-Based Sagas:** A dedicated orchestrator service manages the transaction sequence. While this introduces network hop latency, it provides centralized control and clear auditability.
 
+The flow diagram below traces the cumulative network hop latency incurred during an orchestrated transaction sequence.
+
 ```
 Orchestration Pattern Latency Path:
   Orchestrator ──► Ledger Service (Reserve Funds) ──► Orchestrator
@@ -469,15 +484,15 @@ Network failures introduce state ambiguity. If a service call times out, the orc
 **Answer-first:** Saga patterns achieve eventual consistency in banking microservices by executing compensating rollback steps when downstream calls fail.
 
 {{< faq "Why is Orchestration preferred over Choreography for complex banking Sagas?" >}}
-Orchestration centralizes saga workflow logic in a dedicated state machine, preventing brittle, hard-to-trace circular event dependencies between microservices.
+Orchestration centralizes saga workflow logic in a dedicated state machine, preventing brittle, hard-to-trace circular event dependencies between microservices. It also simplifies compliance auditing by maintaining an explicit, queryable log of transaction states and compensation histories.
 {{< /faq >}}
 
 {{< faq "What happens if a compensating transaction fails during a Saga rollback?" >}}
-Compensating actions must be retryable and idempotent; if persistent failures occur, the item escalates to a human operator DLQ (Dead Letter Queue).
+Compensating actions must be retryable and idempotent to handle transient network outages safely. If persistent failures exhaust retry limits, the transaction state is escalated to a Dead Letter Queue (DLQ) for operator intervention and manual ledger reconciliation.
 {{< /faq >}}
 
 {{< faq "How do Saga state machines handle network timeout ambiguity?" >}}
-When network calls time out, the orchestrator issues idempotent status query requests to verify whether the downstream transaction succeeded before deciding to retry or compensate.
+When network calls time out, the orchestrator issues idempotent status query requests to verify whether the downstream transaction succeeded before deciding to retry or compensate. By using unique idempotency keys across all attempts, downstream services return cached execution status without performing duplicate ledger mutations.
 {{< /faq >}}
 
 For deeper architecture insight into distributed transaction patterns, read [Part 3: Event Sourcing & CQRS](/series/core-banking-architecture/part-3-event-sourcing-cqrs/) or connect with our team via [Saga Architecture Services](/hire/).

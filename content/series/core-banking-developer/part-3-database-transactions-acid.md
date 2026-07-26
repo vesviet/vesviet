@@ -19,7 +19,7 @@ TocOpen: true
 mermaid: true
 ---
 
-> **Executive Summary & Quick Answer**: Enforcing ACID isolation levels in core banking prevents race conditions like lost updates and phantom reads during concurrent money transfers. Using PostgreSQL `REPEATABLE READ` or pessimistic row locking (`SELECT FOR UPDATE`) combined with Go connection pooling guarantees transactional integrity at high throughput.
+> **Answer-First:** Enforcing ACID isolation levels in core banking prevents lost updates and dirty reads during high-concurrency transfers. Using PostgreSQL `REPEATABLE READ` or pessimistic row locking (`SELECT FOR UPDATE`) combined with Go connection pooling guarantees transactional integrity. Spanner and CockroachDB provide linearizable distributed ACID transactions across microservices using Paxos consensus and Hybrid Logical Clocks.
 
 > **Prerequisite:** [Part 2: CASA & Lending Domain Logic](/series/core-banking-developer/part-2-banking-domain-casa-lending/) on transaction parameters.
 
@@ -27,7 +27,7 @@ mermaid: true
 
 > **Answer-First:** High-concurrency banking transfers risking race conditions and lost updates require strict database lock isolation to protect ledger state.
 
-> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+> **Pillar Architecture Guide:** This guide is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original guide for detailed architectural references.
 
 Imagine Customer A's account has **1,000,000 VND**. Two events happen at exactly the same time:
 - **Event 1:** The customer withdraws 800,000 VND at an ATM.
@@ -40,6 +40,8 @@ If both transactions read the balance as `1,000,000` simultaneously and then ove
 ## ACID — The Four Mandatory Properties
 
 **Answer-first:** ACID properties guarantee Atomicity (all-or-nothing), Consistency (balance invariants), Isolation (race prevention), and Durability (WAL logging).
+
+The following matrix details how the four fundamental ACID database guarantees apply directly to double-entry banking ledgers.
 
 | Property | Meaning in Core Banking |
 |---|---|
@@ -54,7 +56,7 @@ If both transactions read the balance as `1,000,000` simultaneously and then ove
 
 **Answer-first:** PostgreSQL isolation levels (Read Committed, Repeatable Read, Serializable) control visibility trade-offs during concurrent financial transactions.
 
-This is knowledge that many developers overlook but is absolutely critical in Core Banking:
+Database transaction isolation levels govern how concurrent queries perceive uncommitted or concurrently committed modifications. PostgreSQL relies on Multi-Version Concurrency Control (MVCC), creating row snapshots to serve read queries without blocking write operations.
 
 ### 1. READ UNCOMMITTED (Never used in Core Banking)
 Allows reading uncommitted data from other transactions. Causes **Dirty Reads** — reading data that might eventually be rolled back.
@@ -62,11 +64,13 @@ Allows reading uncommitted data from other transactions. Causes **Dirty Reads** 
 ### 2. READ COMMITTED (The absolute minimum acceptable)
 Only reads committed data. However, you can still experience a **Non-Repeatable Read** — reading the same record twice in the same transaction might yield different results if another transaction commits in between.
 
-### 3. REPEATABLE READ (Default in MySQL/InnoDB)
-Data read within a transaction will not change during its lifecycle, preventing Non-Repeatable Reads. However, it can still suffer from **Phantom Reads** (new rows appearing).
+### 3. REPEATABLE READ (Snapshot Isolation)
+Data read within a transaction will not change during its lifecycle, preventing Non-Repeatable Reads. However, it can still suffer from **Phantom Reads** or Write Skew anomalies where two transactions read overlapping datasets and write non-overlapping changes that violate global invariants.
 
-### 4. SERIALIZABLE (Strongest — used for critical transactions)
-Transactions execute sequentially. Prevents all anomalies including Phantom Reads. Offers the **lowest performance** but the highest safety.
+### 4. SERIALIZABLE (Serializable Snapshot Isolation - SSI)
+Transactions execute with guaranteed serial execution semantics. PostgreSQL SSI monitors read-write dependencies across transactions. If a cycle of dependencies (rw-antidependencies) is detected, PostgreSQL automatically aborts one of the transactions with a serialization failure error (`40001`), requiring application-level retries.
+
+The SQL snippet below sets the transaction isolation level to Serializable before executing financial ledger entries in PostgreSQL.
 
 ```sql
 -- PostgreSQL: Setting isolation level for a transaction
@@ -85,6 +89,8 @@ COMMIT;
 ### Pessimistic Locking
 
 Lock the record immediately upon reading, preventing any other transaction from touching it until the current transaction completes.
+
+The following PostgreSQL query acquires an exclusive row lock on a target CASA account row to block concurrent balance modifications.
 
 ```sql
 -- PostgreSQL: SELECT FOR UPDATE
@@ -106,6 +112,8 @@ COMMIT;
 ### Optimistic Locking
 
 Does not lock upon reading. Before writing, it checks if the data has been altered since it was read.
+
+The SQL statements below configure an optimistic concurrency control schema using an incremental version column.
 
 ```sql
 -- Add a version column to the accounts table
@@ -129,6 +137,8 @@ WHERE
 
 ### When to use which?
 
+The table below outlines appropriate concurrency control strategies based on transaction conflict probability and operational requirements.
+
 | Scenario | Recommended Strategy |
 |---|---|
 | ATM withdrawals, transfers (high conflict) | **Pessimistic Locking** |
@@ -145,6 +155,8 @@ Networks can timeout. Clients can retry requests. **How do you guarantee a "tran
 
 The solution is an **Idempotency Key**:
 
+The database schema below stores client idempotency keys alongside processed API response payloads.
+
 ```sql
 CREATE TABLE transaction_requests (
     idempotency_key VARCHAR(64) PRIMARY KEY,  -- UUID generated by client
@@ -154,6 +166,8 @@ CREATE TABLE transaction_requests (
     expires_at      TIMESTAMPTZ NOT NULL
 );
 ```
+
+The procedural control flow below demonstrates how core banking APIs evaluate incoming idempotency headers to prevent duplicate processing.
 
 ```
 Processing Logic:
@@ -174,6 +188,8 @@ Processing Logic:
 A deadlock occurs when Transaction A locks Account X and waits for Account Y, while Transaction B locks Account Y and waits for Account X.
 
 **The only prevention method in Core Banking:** Always lock multiple accounts in a **deterministic order**:
+
+The Go code example below compares incorrect lock ordering against deterministic lock ordering designed to prevent database deadlocks.
 
 ```go
 // WRONG: Can cause deadlock
@@ -199,6 +215,8 @@ func transfer(fromID, toID string) {
 
 **Answer-first:** Core banking database setup requires configuring `SERIALIZABLE` or `FOR UPDATE` locking, connection pool limits, and explicit transaction timeouts.
 
+The following engineering checklist summarizes mandatory database configuration policies for core banking applications.
+
 - [ ] Store currency as `BIGINT` (smallest unit), never use `FLOAT`
 - [ ] Wrap all financial operations in a single Database Transaction
 - [ ] Implement an Idempotency Key mechanism to prevent duplicates
@@ -214,7 +232,7 @@ func transfer(fromID, toID string) {
 
 When processing high-frequency ledger updates, concurrent database transactions can result in race conditions. We mitigate this by executing pessimistic locking using the `SELECT FOR UPDATE` query syntax. The database blocks concurrent reads on the locked rows until the transaction commits.
 
-The following Go code snippet demonstrates how to safely lock accounts and process a debit within a transaction boundary:
+The Go function below opens a database transaction and executes a pessimistic row lock before deducting funds from an account.
 
 ```go
 package main
@@ -260,6 +278,8 @@ func main() {
 }
 ```
 
+The sequence diagram below shows how PostgreSQL row locks force competing transactions to wait until the lock holder commits.
+
 ```mermaid
 sequenceDiagram
     participant Tx1 as Transaction 1
@@ -276,19 +296,26 @@ sequenceDiagram
     Tx2->>DB: UPDATE Account A Balance & COMMIT
 ```
 
-## Distributed Transaction Strategies: Saga vs 2PC
+## Distributed Transaction Strategies: 2PC vs Saga & Distributed SQL Guarantees
 
 **Answer-first:** Two-Phase Commit (2PC) blocks database connections across microservices, whereas Saga choreography achieves eventual consistency asynchronously.
 
-When a ledger update spans multiple physical microservices (e.g. Account Service and Card service), distributed transaction management is mandatory.
-- **Two-Phase Commit (2PC):** Guarantees atomicity across nodes but locks databases, increasing system latency.
-- **Saga Pattern:** Relies on asynchronous local transactions. If a step fails, the system executes compensating transactions to rollback the overall state.
+When financial transactions cross microservice boundary limits (e.g. Account Service and Payments Service), distributed transaction orchestration becomes mandatory.
+
+### Two-Phase Commit (2PC) vs. Saga Architecture
+- **Two-Phase Commit (2PC):** A central coordinator runs a Prepare phase followed by a Commit phase. While 2PC maintains strict ACID guarantees across nodes, network partitions or coordinator crashes hold database connection locks open indefinitely, severely reducing system throughput.
+- **Saga Pattern:** Decomposes distributed transactions into local ACID transactions within each microservice context. If a downstream step fails, compensating transactions run in reverse sequence (e.g., executing a credit refund to reverse an earlier debit). To guarantee reliable event publishing without dual-write bugs, Saga microservices pair with the **Transactional Outbox Pattern**.
+
+### Distributed SQL ACID Guarantees: Spanner & CockroachDB
+Modern cloud-native banks use Distributed SQL databases such as Google Cloud Spanner and CockroachDB to achieve horizontally scalable ACID transactions:
+- **Google Cloud Spanner:** Uses TrueTime (atomic clocks and GPS receivers) to assign monotonically increasing commit timestamps with bounded time uncertainty ($\epsilon$). This enables **External Consistency (Linearizability)** across global regions without locking remote database shards.
+- **CockroachDB:** Uses Hybrid Logical Clocks (HLC) and Raft consensus per database range shard. Multi-range transactions coordinate via two-phase commit over Raft groups, maintaining Serializable Snapshot Isolation across distributed nodes.
 
 ## Saga Orchestration Pattern in Go
 
 **Answer-first:** Saga orchestrators execute sequential local transactions across microservices, running compensating transactions if downstream steps fail.
 
-This simplified implementation of a Saga Orchestrator in Go, processing multi-stage transactions with compensation routines:
+The Go implementation below provides a lightweight Saga orchestrator capable of running sequential microservice steps and executing compensation handlers on failure.
 
 ```go
 package main
@@ -376,7 +403,7 @@ High-concurrency database updates can trigger deadlocks if multiple transactions
 
 **Answer-first:** Go concurrency engines implement both pessimistic row locks for high-contention transfers and optimistic version checks for low-contention operations.
 
-Selecting between pessimistic row locking (`SELECT FOR UPDATE`) and optimistic concurrency control (OCC via version columns) depends on lock contention frequency. Optimistic locking avoids database lock holds during read operations, whereas pessimistic locking prevents high abort rates during extreme contention:
+The Go package snippet below demonstrates optimistic concurrency control retries with version checks for low-contention account transfers.
 
 ```go
 package database
@@ -452,7 +479,7 @@ Pessimistic locking via `SELECT FOR UPDATE` is preferred for high-frequency ledg
 
 **Answer-first:** Benchmarking concurrency engines compares throughput and latency under Read Committed, Repeatable Read, and Serializable isolation levels.
 
-Comparing PostgreSQL `SERIALIZABLE` vs `READ COMMITTED WITH FOR UPDATE` under 5,000 TPS workloads demonstrates marked latency differences:
+Comparing PostgreSQL `SERIALIZABLE` vs `READ COMMITTED WITH FOR UPDATE` under 5,000 TPS workloads demonstrates marked latency differences. The execution benchmark output below quantifies sub-microsecond CPU overhead when acquiring sorted account lock pairs in Go:
 
 ```
 BenchmarkPessimisticRowLock-16    50000000    28.5 ns/op    0 B/op    0 allocs/op
@@ -465,25 +492,30 @@ Pessimistic row locking ensures predictable latency (P99 < 15ms) under heavy con
 **Answer-first:** Preventing race conditions in core banking requires using pessimistic row locks or serializable isolation combined with idempotent request keys.
 
 {{< faq "Why is READ COMMITTED insufficient for concurrent bank transfers?" >}}
-`READ COMMITTED` allows non-repeatable reads; if two concurrent transactions read the balance before either commits, both might approve withdrawals exceeding total available funds.
+`READ COMMITTED` snapshotting re-evaluates database reads at the start of each statement rather than the start of the transaction. If two concurrent transactions read an account balance of 100,000 VND simultaneously, both will see sufficient funds and approve debit operations, causing a lost update and leaving the balance negative.
 {{< /faq >}}
 
 {{< faq "When should developers use SELECT FOR UPDATE in banking ledgers?" >}}
-Pessimistic locking via `SELECT FOR UPDATE` locks specific account balance rows during active transaction processing, preventing concurrent modifications until commit.
+Pessimistic locking via `SELECT FOR UPDATE` should be used during high-concurrency financial operations like ATM withdrawals, peer-to-peer transfers, and ledger debit allocations. By acquiring explicit row-level locks on target account records prior to balance checks, the engine blocks competing transactions until the holding transaction commits or rolls back.
 {{< /faq >}}
 
-{{< faq "How do distributed databases handle cross-shard transaction deadlock?" >}}
-Distributed SQL databases use lock wait timeouts, wait-for graph analysis, and global deadlock detectors to abort lower-priority transaction branches automatically.
+{{< faq "How do distributed databases like Google Spanner guarantee ACID transactions across regions?" >}}
+Distributed SQL databases like Google Cloud Spanner achieve global ACID transactions by combining Multi-Paxos consensus per database shard with TrueTime hardware clocks. TrueTime provides tight error bounds ($\epsilon$) on physical time, enabling the system to assign globally consistent commit timestamps that guarantee linearizable multi-region transactions without lock contention across geographic locations.
+{{< /faq >}}
+
+{{< faq "How does the Saga pattern maintain data consistency across core banking microservices without 2PC?" >}}
+The Saga pattern decomposes a multi-service financial transaction into a series of local database transactions owned by individual microservices. If any downstream service fails during execution, the Saga orchestrator invokes predefined compensating transactions in reverse order to undo earlier local mutations and restore system balance.
 {{< /faq >}}
 
 🔗 **Next Step:** Explore event-sourcing and CQRS in [Part 4: Modern Event-Driven Core Architecture](/series/core-banking-developer/part-4-modern-core-banking-architecture/). For personalized architecture guidance on tuning database transaction isolation, consult [FinTech Database Engineering Specialists](/hire/).
 
 ---
 
-Data pipeline orchestration in Part 3 Database Transactions Acid utilizes Apache Kafka topic partitioning aligned with domain-driven customer keys. Compaction policies preserve snapshot state while minimizing disk footprint.Data pipeline orchestration in Part 3 Database Transactions Acid utilizes Apache Kafka topic partitioning aligned with domain-driven customer keys. Compaction policies preserve snapshot state while minimizing disk footprint.
+Data pipeline orchestration in Part 3 Database Transactions Acid uses Apache Kafka topic partitioning aligned with domain-driven customer keys. Compaction policies preserve snapshot state while minimizing disk footprint.
 
 In Part 3 Database Transactions Acid (Core Banking Developer), latency SLA governance requires sub-20ms P99 targets across microservice calls. Instrumenting gRPC client deadlines alongside distributed OpenTelemetry trace propagation ensures early bottleneck isolation.
 
 ---
 
 [← Previous Part: Part 2: CASA & Lending Domain Logic](/series/core-banking-developer/part-2-banking-domain-casa-lending/)  |  [Next Part: Part 4: Modern Event-Driven Core Architecture](/series/core-banking-developer/part-4-modern-core-banking-architecture/)
+

@@ -18,17 +18,21 @@ ShowToc: true
 TocOpen: true
 ---
 
+# FAPI 2.0 Security: DPoP, mTLS & Sender-Constrained Tokens
+
 **Answer-first:** Financial-grade API (FAPI) 2.0 enforces cryptographic API security using Mutual TLS (mTLS), pushed authorization requests (PAR), and signed request objects (JAR/JARM). This prevents credential hijacking, session sniffing, and token forgery in open banking networks.
 
-> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original article for a complete overview of the architecture.
 
-> **Series (Part 6 of 8):** After mastering the payment data flow in [Part 5](/series/core-banking-architecture/part-5-iso-20022-payment-gateways/), this article focuses on the API security layer — where a single design flaw can lead to token theft and unauthorized fund transfers.
+> **Series (Part 6 of 8):** After analyzing the payment data flow in [Part 5](/series/core-banking-architecture/part-5-iso-20022-payment-gateways/), this article focuses on the API security layer — where a single design flaw can lead to token theft and unauthorized fund transfers.
 
 ## What is FAPI 2.0 DPoP Implementation?
 
 **Answer-first:** FAPI 2.0 DPoP (Demonstrating Proof-of-Possession) binds access tokens to client public keys, preventing stolen token replay attacks in open banking.
 
-The Financial-grade API (FAPI) 2.0 standard mandates the use of sender-constrained tokens via DPoP or mTLS to prevent token theft. Deploying mTLS in Kubernetes adds **1-3ms** of latency for the initial handshake, but this drops to **<0.1ms** with connection pooling and HTTP Keep-Alive.
+The Financial-grade API (FAPI) 2.0 Security Profile standardizes modern OAuth 2.1 cryptographic controls for high-risk financial transactions. Under legacy OAuth 2.0 implementations, bearer tokens could be intercepted from HTTP headers or proxy logs and immediately replayed by malicious actors. FAPI 2.0 eliminates bearer token vulnerabilities by mandating sender-constrained tokens via application-layer DPoP (RFC 9449) or transport-layer mTLS (RFC 8705). 
+
+Deploying mTLS within Kubernetes service meshes introduces an initial handshake overhead of **1-3ms**, but persistent HTTP/2 connection pooling reduces ongoing per-request overhead to **<0.1ms**. Application-layer DPoP allows mobile and web clients to cryptographically sign every API request using asymmetric ES256 key pairs without managing X.509 client certificates. Modern regulatory open banking frameworks—including UK Open Banking Read/Write 3.1.10, EU PSD3 draft guidelines, and Australia CDR—require these sender-constrained token architectures to eliminate unauthorized fund transfers and credential interception.
 
 ---
 
@@ -64,6 +68,8 @@ DPoP works by requiring the client to **sign a proof JWT** for every HTTP reques
 
 ### DPoP JWT Structure
 
+The following structural representation details the decoded header and payload layout of a FAPI 2.0 compliant DPoP proof JWT. Notice the embedded client public key (`jwk`) in the header and the SHA-256 access token hash (`ath`) binding in the payload.
+
 ```
 Header (base64url):
 {
@@ -72,8 +78,8 @@ Header (base64url):
   "jwk": {              // Client's PUBLIC key (embedded in header)
     "kty": "EC",
     "crv": "P-256",
-    "x": "...",
-    "y": "..."
+    "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+    "y": "x_tB227t7480s4889c16g60_6n9tq2e624p8r7u"
   }
 }
 
@@ -90,6 +96,8 @@ Signature: ES256(privateKey, base64(header) + "." + base64(payload))
 ```
 
 ### Node.js DPoP Implementation (ES256)
+
+The JavaScript implementation below demonstrates how a mobile or web client generates an ES256-signed DPoP proof header for each outgoing HTTP request. The function constructs the required claims, computes the access token hash, and signs the payload using elliptic curve cryptography.
 
 ```javascript
 const crypto = require('crypto');
@@ -149,7 +157,7 @@ const { privateKey, publicKey } = crypto.generateKeyPairSync('ec', {
 const publicKeyJwk = crypto.createPublicKey(publicKey).export({ format: 'jwk' });
 
 // Generate proof for each request
-const accessToken = 'eyJhbGci...';  // Token from authorization server
+const accessToken = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkNvcmUgQmFua2luZyIsImlhdCI6MTUxNjIzOTAyMn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';  // Token from authorization server
 const dpopProof = generateDPoPProof(
     privateKey,
     publicKeyJwk,
@@ -159,11 +167,13 @@ const dpopProof = generateDPoPProof(
 );
 
 // HTTP Request headers:
-// DPoP: <dpopProof>
-// Authorization: DPoP <accessToken>
+// DPoP: eyJhbGciOiJFUzI1NiIsInR5cCI6ImRwb3Arand0In0.eyJqdGkiOiJmOGM5YjEyMyIsImh0bSI6IlBPU1QiLCJodHQiOiJodHRwczovL2FwaS5iYW5rLnZuL3RyYW5zZmVyIiwiaWF0IjoxNTE2MjM5MDIyfQ.SampleSignatureString
+// Authorization: DPoP eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkNvcmUgQmFua2luZyIsImlhdCI6MTUxNjIzOTAyMn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 ```
 
 ### Go DPoP Verification (Server-side)
+
+On the server side, the API Gateway or Resource Server must cryptographically validate every incoming DPoP proof header. The Go verification snippet below enforces algorithm checks, JTI uniqueness against replay attacks, time window limits, and token binding.
 
 ```go
 package dpop
@@ -267,6 +277,8 @@ Source: [OpenID FAPI 2.0 Profile](https://openid.net/specs/fapi-2_0-profile.html
 
 ### Client Authentication (Token Endpoint)
 
+Evaluating client authentication methods at the token endpoint is critical to ensuring compliance with FAPI 2.0 profile requirements. The comparison below summarizes the cryptographic mechanisms and security levels associated with supported and non-compliant authentication strategies.
+
 | Method | Mechanism | Security Level |
 |--------|--------|---------------|
 | `private_key_jwt` | Client signs a JWT assertion with a private key | ✅ FAPI compliant |
@@ -282,6 +294,8 @@ Source: [OpenID FAPI 2.0 Profile](https://openid.net/specs/fapi-2_0-profile.html
 
 Source: [Linkerd Performance Benchmarks](https://linkerd.io/2021/05/27/linkerd-performance-benchmarks/).
 
+Optimizing TLS 1.3 handshake parameters in Kubernetes ingress controllers significantly mitigates connection setup overhead and preserves high throughput for microservice communication. The following benchmark highlights the latency impact across initial handshakes, session reuse, and certificate revocation checks.
+
 | Scenario | Latency Overhead | Notes |
 |----------|----------------|-------|
 | **Initial mTLS handshake** | **1-3ms** | Certificate exchange + key negotiation |
@@ -290,6 +304,8 @@ Source: [Linkerd Performance Benchmarks](https://linkerd.io/2021/05/27/linkerd-p
 | **OCSP stapling** | +0.5-1ms | Real-time certificate revocation check |
 
 **Kubernetes mTLS with Linkerd sidecar:**
+
+The YAML manifest below configures Linkerd sidecar injection in a Kubernetes pod to enable automated mutual TLS encryption across service boundaries without altering application code.
 
 ```yaml
 # Linkerd annotation to automatically enable mTLS
@@ -311,6 +327,8 @@ spec:
 ```
 
 **With connection pooling (production recommendation):**
+
+To maintain low-latency connections in production environments, the Go HTTP transport code below establishes an mTLS connection pool with TLS 1.3 Keep-Alive parameters.
 
 ```go
 // Go HTTP client with mTLS and connection pool
@@ -342,34 +360,38 @@ client := &http.Client{
 
 In traditional OAuth 2.0, authorization parameters are sent via URL redirect:
 
+In standard OAuth 2.0 flows, authorization parameters are exposed directly in browser query strings, introducing severe security risks. The code block below illustrates the insecure query string pattern.
+
 ```
 ❌ Insecure:
 https://auth.bank.vn/authorize?
   response_type=code&
-  client_id=xxx&
-  redirect_uri=https://app.example.com/callback&
+  client_id=core-banking-payment-gateway-client&
+  redirect_uri=https://app.bank.vn/callback&
   scope=transfer:write&
-  ...
+  client_id=core-banking-payment-gateway-client&request_uri=urn%3Aietf%3Aparams%3Aoauth%3Arequest_uri%3Areq-7f89d3a1
   
 → The URL can be logged, shared, or tampered with via referrer headers
 ```
 
 PAR pushes parameters directly to the Authorization Server endpoint:
 
+The Pushed Authorization Requests (PAR) specification mitigates parameter tampering by forcing the client to send parameters via an authenticated back-channel POST request. The sequence below demonstrates the two-step PAR authorization protocol.
+
 ```
 ✅ PAR Flow:
 
 Step 1: Client POSTs parameters to the AS /par endpoint (authenticated)
 POST /par
-Authorization: DPoP <client_assertion>
-DPoP: <proof>
-Body: response_type=code&scope=transfer:write&...
+Authorization: DPoP eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkNvcmUgQmFua2luZyIsImlhdCI6MTUxNjIzOTAyMn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+DPoP: eyJhbGciOiJFUzI1NiIsInR5cCI6ImRwb3Arand0In0.eyJqdGkiOiJmOGM5YjEyMyIsImh0bSI6IlBPU1QiLCJodHQiOiJodHRwczovL2FwaS5iYW5rLnZuL3RyYW5zZmVyIiwiaWF0IjoxNTE2MjM5MDIyfQ.SampleSignatureString
+Body: response_type=code&scope=transfer%3Awrite&client_id=core-banking-payment-gateway-client&redirect_uri=https%3A%2F%2Fapi.bank.com%2Fcallback
 
 Response: { "request_uri": "urn:ietf:params:oauth:request_uri:random", "expires_in": 60 }
 
 Step 2: Client redirects the user with ONLY the request_uri
 https://auth.bank.vn/authorize?
-  client_id=xxx&
+  client_id=core-banking-payment-gateway-client&
   request_uri=urn:ietf:params:oauth:request_uri:random
   
 → No sensitive parameters exposed in the URL
@@ -382,6 +404,8 @@ https://auth.bank.vn/authorize?
 **Answer-first:** Testing FAPI 2.0 security requires attempting replay attacks with intercepted tokens and verifying mTLS certificate validation.
 
 ### Test 1: DPoP Token Replay Attack Simulation
+
+SDET security test suites must verify that the Resource Server rejects replayed DPoP proof tokens. The Go unit test below simulates a duplicate request using an identical JTI identifier to assert that a 401 Unauthorized status is returned.
 
 ```go
 func TestDPoPTokenReplayAttack(t *testing.T) {
@@ -402,6 +426,8 @@ func TestDPoPTokenReplayAttack(t *testing.T) {
 ```
 
 ### Test 2: Key Thumbprint Mismatch (Stolen Token)
+
+To test token binding enforcement, the test suite attempts to use a valid access token paired with a DPoP proof signed by an unauthorized key pair. The test below asserts that the API gateway correctly identifies key mismatch and denies access.
 
 ```go
 func TestStolenTokenWithWrongKey(t *testing.T) {
@@ -424,6 +450,8 @@ func TestStolenTokenWithWrongKey(t *testing.T) {
 
 ### Test 3: mTLS Certificate Expiry
 
+Mutual TLS validation must strictly reject client certificates that have passed their expiration date or failed revocation checks. The script snippet below generates an expired test certificate and verifies TLS handshake failure.
+
 ```bash
 # Generate expired certificate for testing
 openssl req -x509 -nodes -days -1 -newkey rsa:2048 \
@@ -443,6 +471,8 @@ curl --cert expired.crt --key expired.key \
 ## FAPI 2.0 Security Checklist
 
 **Answer-first:** The FAPI security checklist covers DPoP signature verification, mTLS certificate binding, PAR endpoints, and token revocation APIs.
+
+The following pre-deployment security gate checklist outlines the mandatory cryptographic and protocol assertions required before approving API gateway deployments into production.
 
 ```markdown
 ## Pre-deployment Security Gate
@@ -510,11 +540,7 @@ To meet regulatory requirements for financial auditing, the gateway logs the sig
 **Answer-first:** FAPI 2.0 protects financial APIs against token theft by combining mTLS transport security with DPoP cryptographic proof-of-possession.
 
 {{< faq q="DPoP or mTLS — which should I choose?" >}}
-It depends on the client type:
-- **DPoP**: Better for browser-based clients and mobile apps — no certificate management required.
-- **mTLS**: Better for server-to-server (B2B APIs) and payment gateways — cert rotation can be automated.
-
-FAPI 2.0 allows both. Many implementations support both to let clients choose.
+Selecting between DPoP and mTLS depends primarily on the architecture of the consuming client. DPoP is optimal for single-page applications and native mobile apps because it operates at the application layer without requiring client certificate provisioning. Conversely, mTLS is ideal for server-to-server B2B integrations where X.509 certificate lifecycle management can be fully automated. FAPI 2.0 explicitly supports both mechanisms, allowing enterprise financial gateways to accept either sender-constrained token implementation.
 {{< /faq >}}
 
 {{< faq q="Does mTLS affect Kubernetes auto-scaling?" >}}
@@ -546,6 +572,8 @@ JWT Secured Authorization Requests (JAR) enforce cryptographic integrity:
 ### Pushed Authorization Requests (PAR) Flow Mechanics
 
 PAR prevents authorization parameters from leaking through browser histories:
+
+The step-by-step sequence block below illustrates how PAR separates authorization parameter delivery from browser URL redirection to prevent query string tampering.
 
 ```
 1. Client sends authorization parameters in a secure POST to the /par endpoint.

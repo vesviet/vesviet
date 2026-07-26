@@ -21,17 +21,19 @@ TocOpen: true
 mermaid: true
 ---
 
-> **Executive Summary & Quick Answer**: Building an immutable ledger with Event Sourcing and CQRS decouples high-throughput command processing from complex query analytics. By projecting domain event streams asynchronously into optimized read models, banking platforms serve customer balance dashboards with zero command-side database locks.
+# Event Sourcing & CQRS: Immutable Ledger for Microservices
 
-> **Answer-First:** Event sourcing and CQRS separate write-heavy transaction streams from read-heavy queries. By appending immutable events to a journal and projecting them asynchronously to specialized read databases, core banking systems achieve millisecond-level response times and complete audit trails.
+**Answer-first:** Event sourcing and CQRS replace mutable database updates with an immutable append-only event log. Core banking systems record financial state changes as domain events, projecting read models asynchronously while guaranteeing auditability and zero data loss.
 
-> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original article for a detailed architectural overview of the architecture.
 
 > **Series (Part 3 of 8):** This article builds upon the ACID transactions foundation from [Part 2](/series/core-banking-architecture/part-2-distributed-sql-acid-latency/). We will design a ledger using Event Sourcing — the exact solution that Monzo, Starling Bank, and many large neo-banks use to scale.
 
 ## What are Event Sourcing & CQRS in Fintech?
 
 **Answer-first:** Event Sourcing stores financial ledger state as an append-only event stream, while CQRS projects read models for sub-millisecond query access.
+
+The architectural sequence diagram below illustrates the asynchronous propagation of financial events from the command-side database to dedicated PostgreSQL query models.
 
 ```mermaid
 graph LR
@@ -41,7 +43,7 @@ graph LR
     Proj --> ReadDB[("PostgreSQL Read View")]
 ```
 
-Fintech microservice systems utilize Event Sourcing and CQRS patterns to maintain distributed data consistency without distributed locks. To avoid dual-write failures, the Transactional Outbox pattern is applied in combination with CDC tools like Debezium. Pre-calculated CQRS balance lookups achieve **<1ms** latency, whereas on-the-fly `SUM()` aggregates degrade from **2ms to 200ms** at $O(N)$ with account history length.
+Fintech microservice systems use Event Sourcing and CQRS patterns to maintain distributed data consistency without distributed locks. To avoid dual-write failures, the Transactional Outbox pattern is applied in combination with CDC tools like Debezium. Pre-calculated CQRS balance lookups achieve **<1ms** latency, whereas on-the-fly `SUM()` aggregates degrade from **2ms to 200ms** at $O(N)$ with account history length.
 
 ---
 
@@ -53,6 +55,8 @@ Double-entry bookkeeping — invented in the 15th century — is essentially Eve
 
 - **Traditional approach**: Store **current state** (current balance) → history is lost
 - **Event Sourcing**: Store an **immutable sequence of events** → current state is the result of a replay
+
+The textual journal representation below demonstrates how event streams retain full context compared to simple current-state overwrites.
 
 ```
 Traditional:  accounts.balance = 500,000 VND   (no idea how it got there)
@@ -75,6 +79,8 @@ This is exactly how an accounting ledger works — every entry is an undeletable
 
 ### Core Event Store Table
 
+The PostgreSQL DDL statement below defines an immutable `event_store` table with strict optimistic concurrency control to handle high-volume banking streams.
+
 ```sql
 -- Event Store: Central table storing all system events
 CREATE TABLE event_store (
@@ -86,7 +92,7 @@ CREATE TABLE event_store (
     metadata        JSONB,                 -- correlation_id, causation_id, user_id, etc.
     created_at      TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 
-    -- Crucial: Prevent concurrent race conditions — each stream has its own sequence
+    -- Mandatory: Prevent concurrent race conditions — each stream has its own sequence
     CONSTRAINT uq_stream_sequence UNIQUE (stream_id, sequence_number)
 );
 
@@ -96,7 +102,7 @@ CREATE INDEX idx_event_store_stream ON event_store (stream_id, sequence_number A
 CREATE INDEX idx_event_store_created ON event_store (created_at ASC);
 ```
 
-**`sequence_number`** is the key to Optimistic Concurrency Control (OCC):
+**`sequence_number`** is the key to Optimistic Concurrency Control (OCC). The Go function below demonstrates how optimistic locking detects race conditions during append operations:
 
 ```go
 // Append event with OCC — prevents concurrent writes to the same stream
@@ -125,6 +131,8 @@ func appendEvent(db *sql.DB, streamID uuid.UUID, expectedSeq int64, event Event)
 
 For accounts with a history of **millions of transactions**, replaying the entire event store becomes extremely slow. The solution: periodic snapshots.
 
+The SQL schema below creates a snapshot view storing pre-calculated balances at specific event sequences.
+
 ```sql
 -- Snapshot Table: Stores pre-computed state at a specific sequence point
 CREATE TABLE event_snapshots (
@@ -136,6 +144,8 @@ CREATE TABLE event_snapshots (
 ```
 
 **Pattern for reading balance with a snapshot:**
+
+The Go code below illustrates how loading a baseline snapshot minimizes the event log replay count for hot accounts.
 
 ```go
 // 1. Load the latest snapshot
@@ -173,6 +183,8 @@ for _, event := range events {
 
 **Monzo Transaction Flow (simplified):**
 
+The pipeline diagram below illustrates how Monzo coordinates transaction posting across PostgreSQL, Debezium CDC, Kafka topics, and multi-model projection stores.
+
 ```
 Mobile App Request
        │
@@ -208,6 +220,8 @@ Cassandra  Elasticsearch          BigQuery
 
 ### On-the-fly Aggregation: An O(N) Disaster
 
+The SQL query below demonstrates an expensive dynamic aggregation that degrades exponentially as account entry counts grow.
+
 ```sql
 -- BAD: Calculating balance using SUM() directly from the ledger
 SELECT SUM(CASE WHEN direction = 'CREDIT' THEN amount ELSE -amount END) AS balance
@@ -218,6 +232,8 @@ WHERE account_id = 'acc-001';
 ```
 
 ### CQRS Pre-computed Read Model: <1ms
+
+The SQL query below shows an optimized indexed point lookup against a materialized read model table.
 
 ```sql
 -- GOOD: Reading pre-computed balance from a materialized view / Redis
@@ -230,6 +246,8 @@ WHERE account_id = 'acc-001';
 ```
 
 **CQRS Write/Read Flow:**
+
+The diagram below contrasts command-side HTTP state updates with decoupled query-side read cache lookups.
 
 ```
 WRITE SIDE (Command)                READ SIDE (Query)
@@ -251,6 +269,8 @@ PUT /loans/repay           →        Redis balance cache
 
 ### The Dual-Write Problem
 
+The flow below details the vulnerability of dual-write operations where network glitches prevent downstream notification delivery.
+
 ```
 ❌ WRONG — Not atomic:
 1. db.Update(account)     ← SUCCESS
@@ -261,7 +281,7 @@ PUT /loans/repay           →        Redis balance cache
 
 ### Outbox Pattern Solution
 
-Write the event into the same database transaction as the business logic, and use a background worker to publish it to Kafka:
+Write the event into the same database transaction as the business logic, and use a background worker to publish it to Kafka. The DDL script below creates a dedicated outbox table for event staging.
 
 ```sql
 -- PostgreSQL Transactional Outbox Table
@@ -280,6 +300,8 @@ CREATE INDEX idx_outbox_status_created ON outbox_events (status, created_at ASC)
 ```
 
 **Application code — inside the same DB transaction:**
+
+The Go snippet below demonstrates atomic transaction writing for both ledger entries and outbox payload events.
 
 ```go
 func (s *AccountService) Transfer(ctx context.Context, req TransferRequest) error {
@@ -307,7 +329,7 @@ func (s *AccountService) Transfer(ctx context.Context, req TransferRequest) erro
 }
 ```
 
-**Debezium CDC Connector** reads the PostgreSQL WAL and forwards events to Kafka:
+**Debezium CDC Connector** reads the PostgreSQL WAL and forwards events to Kafka. The JSON configuration snippet below sets up Debezium for outbox routing:
 
 ```json
 // Debezium connector config (connector.json)
@@ -336,7 +358,7 @@ func (s *AccountService) Transfer(ctx context.Context, req TransferRequest) erro
 
 **Answer-first:** Handling event schema evolution requires upcaster functions to transform legacy event payloads into current domain schema versions.
 
-An Event Store is immutable — you cannot modify the schema of old events. The solution is versioning:
+An Event Store is immutable — you cannot modify the schema of old events. The Go code block below implements an upcaster mapping function that converts legacy floating-point structures into integer-based cent values:
 
 ```go
 // Upcaster: Convert event v1 → v2 when reading
@@ -361,7 +383,8 @@ func upcaster(eventType string, version int, data json.RawMessage) (interface{},
             AmountCents: int64(v1.Amount * 100), // Convert
             Currency:    "VND",                   // Default
         }, nil
-    // ...
+    default:
+        return nil, fmt.Errorf("unsupported event type %s version %d", eventType, version)
     }
 }
 ```
@@ -373,6 +396,8 @@ func upcaster(eventType string, version int, data json.RawMessage) (interface{},
 **Answer-first:** Event sourcing QA tests verify snapshot consistency, out-of-order event handling, and idempotent projection replay.
 
 ### Test 1: Event Replay Consistency
+
+The Go test case below verifies that rebuilding CQRS read models from scratch produces exact state parity with live balance records.
 
 ```go
 // Scenario: Drop read model → replay from event store → verify balance match
@@ -396,6 +421,8 @@ func TestEventReplayConsistency(t *testing.T) {
 ```
 
 ### Test 2: Outbox Atomicity Under Failure
+
+The Go test case below simulates message broker outages to confirm that local database transactions persist correctly while outbox processing retries automatically.
 
 ```go
 // Inject failure BETWEEN database commit and Kafka publish
@@ -442,7 +469,7 @@ There are three primary patterns for managing schema evolution in event stores:
 
 To keep CQRS projection databases consistent, developers implement idempotency checks on the consumer side. When a projection consumer processes an event, it stores the event's unique ID and version number in a local database transaction. If the consumer receives a duplicate event due to network retries, the local database transaction fails or ignores the insert, preventing duplicate balance updates.
 
-Furthermore, projection databases can utilize specialized index structures to optimize read performance. For example, read databases can partition query tables by account holder region, ensuring that local bank queries do not scan global tables. Running asynchronous database indexing scripts during low-traffic windows ensures that query indexes remain clean and compact, maintaining low latency queries even under high transactional load.
+Additionally, projection databases can use specialized index structures to optimize read performance. For example, read databases can partition query tables by account holder region, ensuring that local bank queries do not scan global tables. Running asynchronous database indexing scripts during low-traffic windows ensures that query indexes remain clean and compact, maintaining low latency queries even under high transactional load.
 
 ### Event Store Pruning and Archiving Policies
 
@@ -465,7 +492,7 @@ It depends on average event size and acceptable replay time. Rule of thumb: snap
 {{< /faq >}}
 
 {{< faq "How do event-sourced systems handle schema evolution?" >}}
-Schema modifications use upcasters—transformer functions that map legacy event JSON structures to current event versions during event stream deserialization.
+Schema modifications use upcasters—transformer functions that map legacy event JSON structures to current event versions during event stream deserialization. Upcaster pipelines intercept historical payload versions upon reading from the database and transform them to match the active domain model in memory. This strategy allows systems to support new schema fields without performing risky, destructive updates on immutable past events.
 {{< /faq >}}
 
 ## Event-Store Compaction, CQRS Version Lag, and Out-of-Order Events
@@ -479,6 +506,8 @@ Event sourcing captures every transaction as an immutable event. While this prov
 To calculate an account balance, the system reconstructs the state by reading and applying all historical events. For accounts with millions of transactions, this is highly inefficient.
 - **Snapshots:** The system generates account state snapshots every $K$ events (e.g., every 100 events).
 - **Compaction Pipeline:** When querying the balance, the application loads the latest snapshot and replays only the events that occurred after the snapshot timestamp:
+
+The diagram below shows how state snapshots decouple historical compaction from live balance replay logic.
 
 ```
 [Events 1 to 100]  ──►  Compiled into Snapshot #1 (Balance: $500)
