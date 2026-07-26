@@ -114,7 +114,7 @@ graph TD
 ### 2015: The OceanBase Era
 - **Peak Throughput**: 140,000 payment TPS.
 - **Total Revenue**: 91.2 billion CNY.
-- **Architectural Posture**: 100% of payment core workloads migrated to OceanBase v1.0, leveraging Paxos-based transaction consensus.
+- **Architectural Posture**: 100% of payment core workloads migrated to OceanBase v1.0, utilizing Paxos-based transaction consensus.
 - **Operational Reality**: The transition to OceanBase eliminated the cost and scalability limits of foreign relational databases. The LSM-tree storage engine of OceanBase allowed peak write workloads to be absorbed in memory, reducing I/O write amplification during the midnight spike by over 70%.
 
 ### 2016: Automated Resilience and Intelligent Control
@@ -166,11 +166,16 @@ As the system scaled, the primary optimization metric shifted from *absolute cap
 
 1. **Shift the Bottleneck Upstream**: In 2012, Alipay learned that database vertical scaling is a dead end. Scale out at the application layer through routing and unitization before the database becomes a single point of failure.
 2. **Shorten the Prep Window via Automation**: Relying on manual readiness checklists will eventually block scaling. Invest in automated load testing and self-healing systems.
+3. **Decouple Storage via Asynchronous Queues**: Protect persistent databases from sudden burst traffic by executing pre-allocation in high-speed memory caches and buffering writes asynchronously through message brokers like RocketMQ.
+4. **Isolate Test State in Production**: Run production load drills safely by injecting header flags (`X-Stress-Test: true`) and routing test traffic to shadow tables to validate true capacity without corrupting live financial accounts.
+
+---
+
 ## Peak Transaction Throughput Benchmarks
 
 **Answer-first:** Peak throughput benchmarks document exponential TPS growth alongside zero-downtime database failover capabilities.
 
-Simulating multi-tenant counter aggregation for peak Double 11 payment metrics demonstrates high Go concurrency performance:
+The following Go benchmark demonstrates atomic counter synchronization under high concurrency, simulating multi-tenant counter aggregation for peak Double 11 payment throughput metrics:
 
 ```go
 package main
@@ -191,6 +196,8 @@ func BenchmarkAlipayTPSCounter(b *testing.B) {
 }
 ```
 
+Executed on a 16-core workstation under 100 million iterations, the benchmark measures atomic memory operations simulating concurrent peak payment counter increments. The result demonstrates zero allocation overhead (`0 B/op`) with an execution latency of 10.5 ns per operation, confirming lock-free synchronization under high TPS contention.
+
 ```
 BenchmarkAlipayTPSCounter-16    100000000    10.5 ns/op    0 B/op    0 allocs/op
 ```
@@ -200,15 +207,15 @@ BenchmarkAlipayTPSCounter-16    100000000    10.5 ns/op    0 B/op    0 allocs/op
 **Answer-first:** Alipay survived Double 11 traffic spikes by continuously redesigning core architectural bottlenecks before annual shopping events.
 
 {{< faq "What caused Alipay's database bottlenecks during early Double 11 events?" >}}
-Centralized relational databases hit hardware I/O and row-locking capacity limits during simultaneous payment confirmation requests.
+Early Double 11 events relied on centralized relational databases that hit severe hardware I/O and row-locking limits during simultaneous midnight payment spikes. The resulting lock contention on transaction ledgers caused connection pool starvation across application servers and forced the shift toward distributed architectures.
 {{< /faq >}}
 
 {{< faq "How did architectural resets enable 1000x scaling over 10 years?" >}}
-Alipay shifted from monolithic scaling to cell-based LDC unitization, distributing traffic across autonomous data center units.
+Over ten years, Alipay transitioned from monolithic Oracle databases to cell-based LDC unitization and OceanBase distributed SQL across multi-region datacenters. By sharding traffic into autonomous RZone units and using Multi-Paxos consensus, the platform scaled throughput while maintaining zero data loss (RPO=0).
 {{< /faq >}}
 
 {{< faq "How did elastic cloud bursting reduce hardware costs?" >}}
-Alipay offloaded non-critical workloads to public cloud infrastructure during Double 11 spikes, freeing up dedicated bare-metal nodes for the payment core.
+During peak Double 11 demand, non-critical background workloads were dynamically migrated to public cloud infrastructure via hybrid cloud orchestration. This elastic bursting mechanism freed up physical bare-metal hardware clusters specifically for core payment processing without requiring permanent year-round hardware investments.
 {{< /faq >}}
 
 Need help implementing high-scale architectures? Consult our team via [Hire High Concurrency Architect](/hire/).
@@ -223,3 +230,4 @@ In the context of Phase 1 Timeline, system reliability depends on clean componen
 ## Related Architecture & Pillar Guides
 For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
 - [Alipay Double 11: 583,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/)
+

@@ -17,6 +17,8 @@ mermaid: true
 [← Series hub](/series/alipay-double-11/)
 [Next →](/series/alipay-double-11/phase-1-timeline/)
 
+> **Executive Summary & Quick Answer**: Alipay scaled its payment engine to handle 583,000 peak TPS using Logical Data Center (LDC) unitization, OceanBase distributed Paxos storage, RocketMQ event streams, and full-link production stress testing. This design achieves 99.99% financial availability, sub-20ms latency, zero data loss (RPO=0), and sub-2-second failover (RTO<2s).
+
 > **Prerequisite:** General understanding of global financial systems scale, high-throughput payment architectures, and transaction reliability.
 
 **From 50M CNY to 544K TPS: Lessons in Building Planet-Scale Systems**
@@ -42,7 +44,7 @@ To achieve this level of performance at planet-scale, Alipay had to pioneer new 
 In 2009, Double 11 was conceived as a promotional campaign on Taobao Mall (Tmall). The transactional volume, though unprecedented for the site, was small by modern standards—peaking at approximately 100 TPS. The engineering response was reactive, characterized by vertical database scaling, connection pool tuning, and code-level optimization. However, as year-on-year growth exceeded 200%, the limits of vertical scaling quickly became apparent.
 
 ### 2012: The Breaking Point (The Hard Ceilings)
-By 2012, Alipay’s centralized Oracle database cluster hit physical limits. The database was plagued by lock contention, and connection pools were exhausted under the bursty load of buyers hitting "Pay" at exactly midnight. Furthermore, the physical data centers in Hangzhou were constrained by power grid capacity and cooling requirements; it was literally impossible to add more physical servers to the existing facilities. The engineers faced an existential threat: if the database could not scale, the business could not grow.
+By 2012, Alipay’s centralized Oracle database cluster hit physical limits. The database was plagued by lock contention, and connection pools were exhausted under the bursty load of buyers hitting "Pay" at exactly midnight. In addition, the physical data centers in Hangzhou were constrained by power grid capacity and cooling requirements; it was literally impossible to add more physical servers to the existing facilities. The engineers faced an existential threat: if the database could not scale, the business could not grow.
 
 ### 2013: The LDC Reset
 In early 2013, the leadership set an "impossible" target: design a system capable of handling **20,000 payment TPS** for the upcoming Double 11, with less than nine months to design, build, and deploy. The solution was the **Logical Data Center (LDC)** architecture. The system was decomposed into independent "RZones" (Regional Zones or Units), each responsible for a subset of the user base (e.g., partitioned by user ID). This unitization transformed the system from a single scaling point into a horizontally scalable system.
@@ -174,7 +176,20 @@ Need help implementing high-scale architectures? Feel free to [Get in touch](/hi
 
 🔗 **Next Step:** [Phase 1: Timeline and Scale Evolution](/series/alipay-double-11/phase-1-timeline/)
 
+## Frequently Asked Questions
+
+### What core design principle allowed Alipay to scale from 100 TPS to 583,000 TPS?
+Alipay adopted Logical Data Center (LDC) cell-based unitization, which partitions database tables and application services into independent RZone units by user ID hash. This strategy eliminates centralized database lock contention and allows horizontal capacity expansion across multiple data centers.
+
+### How does Full-Link Stress Testing prevent production outages during Double 11?
+Synthetic traffic injectors simulate peak Double 11 payment volume directly in production environments off-peak using special HTTP header markers (`X-Stress-Test: true`). Middleware and database drivers route marked queries to isolated shadow databases, ensuring zero contamination of actual financial accounts while validating system capacity.
+
+### Why did Alipay replace traditional MySQL/Oracle clusters with OceanBase?
+Legacy relational databases suffered from high write amplification and cross-datacenter locking under burst traffic. OceanBase uses LSM-tree storage to buffer random writes into memory before sequential disk flushing, while Multi-Paxos consensus guarantees zero data loss (RPO=0) and sub-2-second recovery (RTO<2s).
+
 ## Architectural Context & Pillar References
 
+For further exploration of high-concurrency payment architectures, distributed ledger consistency, and real-world scaling playbooks, consult the following reference guides:
 - [Alipay Double 11 High-Availability Architecture](/posts/alipay-double-11-architecture-tps/)
 - [PayPay Architecture & Scaling Playbook](/posts/paypay-architecture-scaling/)
+
