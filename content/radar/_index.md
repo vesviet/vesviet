@@ -9,15 +9,15 @@ cover:
   alt: "Tech Radar — Daily Go, K8s & AI Systems Engineering"
   relative: false
 canonicalURL: "https://tanhdev.com/radar/"
+mermaid: false
 ---
+> **Answer-first:** The Tech Radar is a practitioner-led signal log delivering real-time analysis on Golang runtime internals, Kubernetes cloud-native infrastructure, Dapr agentic frameworks, and AI systems architecture. Designed for backend architects, every entry evaluates operational impact, fault domain isolation, and production deployment trade-offs.
 
 The Tech Radar is a daily engineering signal log — each entry is a focused deep-dive on one significant development in Go, Kubernetes, cloud-native infrastructure, AI/ML, or platform engineering. Not a news summary, but an analysis of what the signal means for backend architects and platform teams building production systems.
 
 Published multiple times per week, written from the perspective of an Independent Consultant who has run 21 Go microservices at 8,000 RPS in production — with a bias toward operational impact over announcement headlines.
 
 ## Technical Focus & Tech Radar Methodology
-
-**Answer-first:** The Tech Radar is a practitioner-led signal log delivering real-time analysis on Golang runtime internals, Kubernetes cloud-native infrastructure, Dapr agentic frameworks, and AI systems architecture. Designed for backend architects, every entry evaluates operational impact, fault domain isolation, and production deployment trade-offs.
 
 ### Core Evaluation Pillars
 
@@ -41,7 +41,21 @@ Published multiple times per week, written from the perspective of an Independen
 
 ## Related Architecture & Pillar Guides
 
-For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
+Daily Tech Radar entries capture emerging software signals, which are subsequently synthesized into production blueprints and long-form architecture guides. The following pillar guides provide end-to-end implementation details for DDD service boundaries, microservice resilience, and zero-trust service mesh security:
 - [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)
-- [Go Microservices Architecture: Complete Production Guide](/posts/go-microservices/)
+- [Go Microservices Architecture: Production Engineering Guide](/posts/go-microservices/)
 - [Zero-Trust Service Mesh Security in Go: SPIFFE/SPIRE](/posts/zero-trust-service-mesh-security-spiffe-spire-istio-golang/)
+
+---
+
+## Frequently Asked Questions (FAQ)
+
+#### Q1: How does the Tech Radar select and evaluate technical signals for backend and platform engineering?
+The Tech Radar evaluates signals based on operational impact, failure domain isolation, and production stability under high-concurrency workloads rather than vendor marketing announcements. Each daily entry analyzes source code changes, control-plane recovery mechanisms, and performance profiling metrics to provide actionable guidance for backend architects.
+
+#### Q2: What core engineering domains are covered in the 2026 Tech Radar briefings?
+The radar focuses on four core technical pillars: Go 1.26 runtime optimizations (PGO, GC tuning, gRPC proxies), Kubernetes cloud-native infrastructure (Gateway API v1.5, In-Place Pod Resizing, Velero backups), Enterprise AI Systems Architecture (DeepSeek-V4 MoE, Claude Agent SDK checkpoints, vLLM scaling), and Zero-Trust Platform Engineering (SPIFFE/SPIRE workload identities, GitOps ArgoCD promotion). These evaluations prioritize production resiliency, measurable benchmarks, and fault domain isolation across distributed microservices.
+
+#### Q3: How do daily Tech Radar entries relate to long-form architecture pillar posts?
+Daily entries act as real-time signal logs capturing incremental framework updates, CVE mitigations, and model architecture shifts. When patterns mature across multiple radar logs, they are expanded into detailed pillar guides with deployable Go benchmarks, Kubernetes manifests, and sequence flow diagrams.
+

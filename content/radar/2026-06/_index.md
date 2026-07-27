@@ -28,12 +28,11 @@ aliases:
   - /radar/2026-06/radar-2026-06-24/
 description: "Curated June 2026 Tech Radar digest analyzing Kubernetes in-place pod resizing, Go 1.26 GC performance, Dapr v1.18, and Kratos Clean Architecture design."
 ---
-
 > **Answer-first:** Tech Radar Digest for June 2026 aggregates 6 daily technical briefings focusing on Kubernetes in-place pod resizing, Go 1.26 garbage collection optimizations, Dapr workflow integration, and Kratos clean architecture. Engineering takeaways establish operational standards for zero-downtime container scaling and distributed pub/sub messaging patterns.
 
 ## Overview — Tech Radar Digest — June 2026
 
-**Answer-first:** Architectural analysis of Overview — Tech Radar Digest — June 2026, detailing production deployment guidelines, system performance impacts, and fault-tolerant operational strategies under 2026 engineering standards.
+**Answer-first:** Tech Radar Digest for June 2026 consolidates key developments in Kubernetes v1.35 In-Place Pod Resizing, Go 1.26 Green Tea Garbage Collector, Dapr v1.18 workflows, and Kratos Clean Architecture. These benchmarks provide production guidance for cloud-native zero-downtime scaling and microservices governance.
 
 This monthly digest consolidates 6 daily Tech Radar briefings published throughout June 2026. Focus areas include Kubernetes resource management, advanced Go runtime optimizations, and enterprise microservice integration patterns.
 
@@ -41,7 +40,7 @@ This monthly digest consolidates 6 daily Tech Radar briefings published througho
 
 ## Tech Radar 11/06: K8s Pod Resizing & Go 1.26
 
-**Answer-first:** Architectural analysis of /06: K8s Pod Resizing & Go 1.26, detailing production deployment guidelines, system performance impacts, and fault-tolerant operational strategies under 2026 engineering standards.
+**Answer-first:** Kubernetes v1.35 In-Place Pod Resizing enables dynamic container CPU and memory adjustments without pod eviction or restart. Paired with Go 1.26 Green Tea GC and CGO bindings overhead reduction, MLOps teams optimize resource allocation for high-throughput AI workloads.
 
 Welcome to today's Tech Radar. The theme for this week is the maturation of the infrastructure layer. We are seeing Kubernetes finally adapt to the erratic resource demands of AI inference, a shift towards proactive "Machine Economy" agents, and Golang cementing its position as the ultimate orchestration language for local AI.
 
@@ -56,7 +55,7 @@ The shift of Kubernetes from a general-purpose microservices orchestrator to the
 #### In-Place Pod Resizing (GA in v1.35)
 This is arguably the most important feature for MLOps teams this year. Previously, if you needed to adjust the CPU or Memory for a running AI inference workload, you had to restart the Pod. For large Large Language Models (LLMs) loading massive weights into VRAM, this caused unacceptable service disruptions.
 
-With **In-Place Pod Resizing**, you can now dynamically modify CPU and Memory requests/limits without restarting the container (requires `containerd v2.3.0+`). This allows infrastructure teams to scale resources up during active inference spikes and down during idle periods seamlessly, drastically optimizing GPU/CPU cloud costs. For a production guide with YAML examples, VPA integration, and cost optimization patterns, see our [Kubernetes In-Place Pod Resizing Guide](/posts/kubernetes-in-place-pod-resizing-guide/).
+With **In-Place Pod Resizing**, you can now dynamically modify CPU and Memory requests/limits without restarting the container (requires `containerd v2.3.0+`). This allows infrastructure teams to scale resources up during active inference spikes and down during idle periods without service disruption, significantly optimizing GPU/CPU cloud costs. For a production guide with YAML examples, VPA integration, and cost optimization patterns, see our [Kubernetes In-Place Pod Resizing Guide](/posts/kubernetes-in-place-pod-resizing-guide/).
 
 #### Sidecar Containers (GA in v1.33)
 Legacy sidecars (used for logging, service meshes, and security proxies) lacked strict lifecycle guarantees. They often started out of order or blocked Pod termination, causing race conditions in [large-scale GitOps environments](/posts/gitops-at-scale-kubernetes-argocd-microservices/). Native sidecar containers are now officially implemented as "restartable" `init containers`. They start *before* the main app, respect readiness probes, and run for the entire duration of the pod's life—finally bringing stability to complex mesh architectures.
@@ -86,7 +85,7 @@ It solves three hurdles:
 Go continues to optimize its runtime for heavy-duty infrastructure, directly targeting the bottlenecks of AI integration.
 
 #### The "Green Tea" Garbage Collector
-After experimental testing in 1.25, the **"Green Tea" GC** is now the default in Go 1.26. For real-world [Golang microservices](/posts/architecting-21-service-ecommerce-golang-ddd/) with heavy memory allocation, it achieves a **10–40% reduction in GC overhead**. It drastically improves CPU scalability and memory locality when scanning millions of small objects. For a full production deep-dive on Green Tea, CGO improvements, and the migration checklist, see our [Go 1.26 Complete Guide](/posts/go-126-green-tea-gc-cgo-performance-guide/).
+After experimental testing in 1.25, the **"Green Tea" GC** is now the default in Go 1.26. For real-world [Golang microservices](/posts/architecting-21-service-ecommerce-golang-ddd/) with heavy memory allocation, it achieves a **10–40% reduction in GC overhead**. It substantially improves CPU scalability and memory locality when scanning millions of small objects. For a full production deep-dive on Green Tea, CGO improvements, and the migration checklist, see our [Go 1.26 Complete Guide](/posts/go-126-green-tea-gc-cgo-performance-guide/).
 
 #### CGO Optimizations for AI Bindings
 Running local LLMs usually requires binding Go to C++ engines like `llama.cpp` or ONNX Runtime. Historically, the Context Switch overhead between Go and C (`cgo`) was a massive bottleneck. Go 1.26 slashed the baseline overhead of `cgo` calls by **~30%**. This cements Go as the absolute best language for building the API orchestration layer around raw C++ inference engines.
@@ -95,7 +94,7 @@ Running local LLMs usually requires binding Go to C++ engines like `llama.cpp` o
 
 *📡 Next issue: **Tech Radar 13/06 — Go 1.26 GC, K8s Pod Resizing & AI-Native Architecture***
 
-### FAQ
+### Overview Q&A
 
 {{< faq q="What is In-Place Pod Resizing in Kubernetes?" >}}
 **In-Place Pod Resizing** is a feature that reached General Availability in Kubernetes v1.35. It allows engineers to dynamically modify CPU and Memory requests and limits for a running container without restarting the Pod, which is crucial for preventing service disruptions in AI inference workloads.
@@ -111,7 +110,7 @@ The **Green Tea Garbage Collector**, enabled by default in Go 1.26, reduces over
 
 ## Tech Radar (13/06/2026): Go 1.26 GC, K8s Pod Resizing & AI-Native
 
-**Answer-first:** Architectural analysis of (13/06/2026): Go 1.26 GC, K8s Pod Resizing & AI-Native, detailing production deployment guidelines, system performance impacts, and fault-tolerant operational strategies under 2026 engineering standards.
+**Answer-first:** Go 1.26 introduces a page-based Green Tea Garbage Collector that cuts GC overhead by 10–40% and p99 tail latency by 20%. Kubernetes v1.35 In-Place Pod Resizing further enables zero-downtime hot-swapping under Vertical Pod Autoscaler (VPA) `InPlaceOrRecreate` mode.
 
 Welcome back to the **Tech Radar** bulletin, where we filter out the noise of the tech industry to uncover the genuine trends shaping future System Architecture.
 
@@ -124,7 +123,7 @@ The second week of June 2026 witnessed three massive shifts, from core infrastru
 Enabled by default in **Go 1.26**, the Garbage Collector codenamed **"Green Tea"** is not just a performance patch; it is a core architectural overhaul.
 
 #### The Problem with the Legacy GC (Object-Based)
-Previously, the Go GC utilized a *Concurrent Mark-and-Sweep* algorithm, tracing objects via pointers. This led to random memory access, causing extremely high L1/L2 cache miss rates. For the CPU, this was an "architectural disaster," forcing it to constantly wait for data from Main Memory.
+Previously, the Go GC used a *Concurrent Mark-and-Sweep* algorithm, tracing objects via pointers. This led to random memory access, causing extremely high L1/L2 cache miss rates. For the CPU, this was an "architectural disaster," forcing it to constantly wait for data from Main Memory.
 
 #### The Boost from "Green Tea" (Page-Based Architecture)
 Green Tea changes the processing unit from "individual Objects" to **"8 KiB memory Pages"**. Instead of fumbling through pointers, it enqueues an entire page containing active objects and scans it sequentially.
@@ -132,7 +131,7 @@ Green Tea changes the processing unit from "individual Objects" to **"8 KiB memo
 **Business Impact:**
 - Reduces **10%–40% CPU overhead** dedicated to garbage collection.
 - Reduces **15%–20% p99 tail latency** in API Gateways or services handling intensive JSON/Protobuf processing.
-- **SIMD Vectorization:** Thanks to continuous memory scanning, the Go runtime can now leverage modern CPU vectorized instruction sets to accelerate the mark phase.
+- **SIMD Vectorization:** Thanks to continuous memory scanning, the Go runtime can now use modern CPU vectorized instruction sets to accelerate the mark phase.
 
 *Architect's Note:* If you are running gRPC microservices with a high frequency of short-lived object allocations, Go 1.26 will deliver a "free" speedup without altering a single line of code.
 
@@ -149,7 +148,7 @@ This changes the game for **Stateful** systems (such as Kafka, Redis, In-memory 
 - Kubernetes now explicitly separates resource states via its API:
   - `spec.containers[*].resources` (Desired resource level)
   - `status.containerStatuses[*].allocatedResources` (Resources reserved by the Node)
-  - `status.containerStatuses[*].resources` (Actual resources currently utilized)
+  - `status.containerStatuses[*].resources` (Actual resources currently used)
 
 #### VPA `InPlaceOrRecreate` Mode
 The most perfect combination for this feature is with the Vertical Pod Autoscaler (VPA). VPA now supports the `InPlaceOrRecreate` mode. It will attempt to "Hot-swap" the CPU first using the `resize` subresource. Only when the physical Node is genuinely out of resources will it force a Pod restart onto a different Node.
@@ -186,7 +185,7 @@ The market is witnessing the rise of **DSLMs (Domain-Specific Language Models)**
 
 ## Tech Radar (14/06/2026): Kratos & Dapr State Management
 
-**Answer-first:** Architectural analysis of (14/06/2026): Kratos & Dapr State Management, detailing production deployment guidelines, system performance impacts, and fault-tolerant operational strategies under 2026 engineering standards.
+**Answer-first:** Integrating Go Kratos with Dapr v1.15 State Management enables dual-protocol HTTP and gRPC support with Optimistic Concurrency Control using ETags. Abstracting data persistence behind Dapr sidecars eliminates direct database coupling while preserving context propagation across microservices.
 
 Welcome back to the **Tech Radar** bulletin. In modern Microservices architecture, maintaining a system capable of communicating flexibly both externally (HTTP) and internally (gRPC) is an essential requirement. Simultaneously, State Management in distributed environments demands rigorous solutions to prevent data collisions.
 
@@ -199,7 +198,7 @@ Today, we will dissect how to combine Go's highly acclaimed **Kratos** framework
 **Answer-first:** The Kratos framework integrates with Dapr v1.15 State Management via the sidecar pattern, allowing HTTP and gRPC servers to run concurrently. To avoid state collisions when running dual-protocol, the system uses Dapr ETags via `SaveStateWithETag` for Optimistic Concurrency Control, and uses Middleware for Metadata synchronization.
 
 #### Protocol-First Design with Protobuf
-Kratos utilizes Protobuf as the single source of truth. From a single `.proto` file, Kratos auto-generates code for both gRPC and HTTP RESTful APIs. This frees developers from writing manual routing logic for each protocol type.
+Kratos uses Protobuf as the single source of truth. From a single `.proto` file, Kratos auto-generates code for both gRPC and HTTP RESTful APIs. This frees developers from writing manual routing logic for each protocol type.
 
 #### Unified Transport Layer (Solving DRY for Middleware)
 The architectural brilliance of Kratos lies in its abstracted Transport layer. Instead of configuring Middleware (such as Logging, Authentication, Tracing) separately for HTTP and gRPC, you only need to write it once. The Unified Transport layer applies these Middlewares uniformly across both servers, completely eliminating code duplication (DRY).
@@ -208,7 +207,7 @@ The architectural brilliance of Kratos lies in its abstracted Transport layer. I
 
 ### 2. Dapr v1.15 State Management: Pluggable Architecture & ETags
 
-**Answer-first:** Dapr v1.15 manages state through a pluggable architecture, abstracting the underlying database (Redis, PostgreSQL). Specifically, Dapr provides an Optimistic Concurrency Control (OCC) mechanism utilizing ETags to entirely prevent lost updates in distributed environments.
+**Answer-first:** Dapr v1.15 manages state through a pluggable architecture, abstracting the underlying database (Redis, PostgreSQL). Specifically, Dapr provides an Optimistic Concurrency Control (OCC) mechanism using ETags to entirely prevent lost updates in distributed environments.
 
 #### The Power of the Dapr Sidecar
 Dapr runs as a sidecar completely isolated from the application logic. When Kratos needs to store state, it does not care whether the underlying database is MongoDB or Redis. Kratos simply calls the Dapr API over HTTP or gRPC on `localhost`.
@@ -220,9 +219,10 @@ In Kratos's Dual-Protocol model, an HTTP request and a gRPC request might attemp
 
 ### 3. Integrating Kratos and Dapr: Solving State Collisions & Metadata
 
-**Answer-first:** For flawless integration, developers use the Dapr Go SDK to call the `SaveStateWithETag` function, combined with Kratos Middleware to propagate `context.Context` seamlessly. This ensures all tracking IDs and ETags are preserved when moving between the HTTP/gRPC layers and the Dapr Sidecar.
+**Answer-first:** For resilient integration, developers use the Dapr Go SDK to call the `SaveStateWithETag` function, combined with Kratos Middleware to propagate `context.Context` without metadata loss. This ensures all tracking IDs and ETags are preserved when moving between the HTTP/gRPC layers and the Dapr Sidecar.
 
 #### Code snippet: `SaveStateWithETag` using Dapr Go SDK
+
 When saving data, it is mandatory to fetch the ETag first, process the logic, and save it back alongside that specific ETag.
 
 ```go
@@ -232,11 +232,11 @@ err = client.SaveStateWithETag(ctx, storeName, key, data, item.Etag, nil)
 ```
 
 #### Critical Note on Metadata Propagation
-Kratos translates information from HTTP headers and gRPC metadata into `context.Context`. For the Dapr Sidecar to recognize these tracing or auth tokens, you **must** pass this `ctx` into every Dapr SDK function call. Neglecting the context will fracture the Distributed Tracing flow.
+Kratos translates information from HTTP headers and gRPC metadata into `context.Context`. For the Dapr Sidecar to recognize these tracing or auth tokens, you **must** pass this `ctx` into every Dapr SDK function call. Preserving this context prevents breaking the Distributed Tracing flow.
 
 ---
 
-### 4. Q&A: Practical Bottlenecks (FAQ)
+### 4. Practical Bottlenecks Q&A
 
 **Answer-first:** Integrating Kratos and Dapr brings flexibility but requires optimizing local network configurations, managing application lifecycles (graceful shutdown), and building sensible retry strategies to minimize latency overhead.
 
@@ -257,7 +257,7 @@ Yes, Dapr provides a `/query` API (currently in alpha). It supports `EQ`, `IN`, 
 {{< /faq >}}
 
 {{< faq q="How do I auto-retry when a State update encounters a 409 Conflict error?" >}}
-Instead of writing cumbersome exponential backoff loops manually inside Kratos, you should leverage Dapr's Resiliency features. Declare retry policies directly in the `resiliency.yaml` file, and Dapr will automatically handle it when an ETag encounters a 409 Conflict error.
+Instead of writing cumbersome exponential backoff loops manually inside Kratos, you should apply Dapr's Resiliency features. Declare retry policies directly in the `resiliency.yaml` file, and Dapr will automatically handle it when an ETag encounters a 409 Conflict error.
 {{< /faq >}}
 
 ---
@@ -269,7 +269,7 @@ Instead of writing cumbersome exponential backoff loops manually inside Kratos, 
 
 ## Tech Radar 17/06: Kratos Clean Architecture & Dapr Pub/Sub
 
-**Answer-first:** Architectural analysis of /06: Kratos Clean Architecture & Dapr Pub/Sub, detailing production deployment guidelines, system performance impacts, and fault-tolerant operational strategies under 2026 engineering standards.
+**Answer-first:** Kratos 4-layer Clean Architecture isolates domain logic in `biz` from infrastructure adapters in `data`, using Google Wire for compile-time dependency injection. Dapr Pub/Sub and Transactional Outbox guarantee atomic DB writes and event publishing without runtime reflection overhead.
 
 Welcome back to the **Tech Radar** bulletin. Last week we dissected how Kratos and Dapr v1.15 solve State Collisions via ETags. This week we go one layer deeper: **how do you structure the entire codebase** so that Kratos, Wire, and Dapr Pub/Sub compose cleanly — and how do you keep that architecture testable, resilient, and production-safe?
 
@@ -303,7 +303,7 @@ type OrderRepo interface {
 type OrderUsecase struct {
     repo OrderRepo
 }
-```
+The Go implementation snippet below shows the data layer repository struct that satisfies the domain interface defined in the business logic layer:
 
 ```go
 // internal/data/order.go — data implements it
@@ -385,7 +385,7 @@ func (uc *OrderUsecase) CreateOrder(ctx context.Context, req *CreateOrderReq) er
     // ctx carries the traceparent header — Dapr propagates it into CloudEvents
     return uc.publisher.PublishOrderCreated(ctx, order)
 }
-```
+The Go implementation snippet below demonstrates how the data layer wraps the Dapr SDK client to handle message publication:
 
 ```go
 // internal/data/publisher.go — data wraps Dapr SDK
@@ -504,23 +504,21 @@ No. There is no official `kratos/v2/transport/dapr` package. AI code generators 
 
 ## Tech Radar 22/06: Dapr v1.18 & Kratos Clean Architecture
 
-> **Answer-first:** Tech Radar 22/06: Dapr v1.18 & Kratos Clean Architecture. Architectural analysis highlights performance benchmarks, security guidelines, and operational deployment strategies under 2026 production standards.
+> **Answer-first:** Dapr v1.18 introduces `WorkflowAccessPolicy` CRDs to secure multi-agent workflow triggers, while Kratos Clean Architecture decouples Go domain logic into pure sagas. Replay-based workflow orchestration replaces fragile pub/sub choreography with deterministic state recovery backed by Redis state stores.
 
-Analyzing content radar 2026-06  index item 1: system verification requires rigorous unit test coverage, explicit error propagation, and zero-downtime canary deployment mechanics.Specifically for section 1 of content radar 2026-06  index, architectural governance enforces explicit sub-system boundaries, automated SLO telemetry tracking, and dynamic load balancing. 
-
-Before we dive into the code, let's look at the breaking news from the past 72 hours.
+Before we examine the code, let's look at the breaking news from the past 72 hours.
 
 ---
 
 ### 1. Tech News Radar: Dapr v1.18 & KubeCon India 2026
 
-Regarding content radar 2026-06  index section block 169: architectural evaluation demonstrates sub-millisecond dispatch times, deterministic error handling, and robust context propagation across microservice call chains.
+Dapr v1.18 introduces the `WorkflowAccessPolicy` CRD, allowing security teams to restrict workflow execution endpoints to specific client application IDs (`app-id`). At KubeCon India 2026, OpenTelemetry officially graduated within the CNCF ecosystem, while Kubernetes 1.33 reached End-of-Life status.
 
 #### Dapr v1.18: The Security Milestone
 Released mid-June 2026, Dapr 1.18 fundamentally fixes a major workflow security gap. Previously, any caller in the same trust domain could schedule or terminate a workflow. The new `WorkflowAccessPolicy` Custom Resource Definition (CRD) allows you to explicitly whitelist which specific `app-id` can trigger your Kratos workflow APIs.
 
 #### CNCF & Go Updates
-*   **KubeCon India 2026:** AI-Native Scheduling dominated the conversations. More importantly for enterprise developers, **OpenTelemetry officially graduated**, cementing it as the undisputed standard for tracing (which pairs natively with our Kratos integration below).
+*   **KubeCon India 2026:** AI-Native Scheduling dominated the conversations. More importantly for enterprise developers, **OpenTelemetry officially graduated**, cementing it as the de facto standard for tracing (which pairs natively with our Kratos integration below).
 *   **Go 1.26.4:** The latest stable patch is out. Teams using the new "Green Tea" Garbage Collector should patch immediately. 
 *   **K8s 1.33 EOL:** If your clusters are still on Kubernetes 1.33, you have until June 28, 2026, to upgrade.
 
@@ -528,7 +526,7 @@ Released mid-June 2026, Dapr 1.18 fundamentally fixes a major workflow security 
 
 ### 2. Dapr Workflows vs. Choreography
 
-Regarding content radar 2026-06  index section block 174: architectural evaluation demonstrates sub-millisecond dispatch times, deterministic error handling, and robust context propagation across microservice call chains.
+Dapr Workflows centralize multi-step transaction management into a deterministic orchestrator function, eliminating complex pub/sub compensating message routing.
 
 #### The Problem with Event Choreography
 When implementing a multi-step process (e.g., Order -> Payment -> Inventory) using Pub/Sub choreography, logic is scattered across multiple services. Error handling becomes a nightmare of compensating events and dead-letter queues.
@@ -540,18 +538,17 @@ Dapr Workflows centralize this logic into a "Workflow Orchestrator" function and
 
 ### 3. The Saga Pattern & Compensation in Go
 
-Regarding content radar 2026-06  index section block 179: architectural evaluation demonstrates sub-millisecond dispatch times, deterministic error handling, and robust context propagation across microservice call chains.
-
-Regarding content radar 2026-06  index section block 180: architectural evaluation demonstrates sub-millisecond dispatch times, deterministic error handling, and robust context propagation across microservice call chains.
+The Go snippet below demonstrates how a Dapr Workflow orchestrates service deployment and executes explicit backward compensation if an activity fails.
 
 ```go
 func OrderSaga(ctx *workflow.WorkflowContext) (any, error) {
     var input OrderInput
     if err := ctx.GetInput(&input); err != nil { return nil, err }
 
-Regarding content radar 2026-06  index section block 182: architectural evaluation demonstrates sub-millisecond dispatch times, deterministic error handling, and robust context propagation across microservice call chains.
-
-    Regarding  index (module ref f7fca8), system stability requires automated fallback policies, explicit timeout boundaries, and continuous tracing metrics to prevent operational bottlenecks.
+    // Execute payment activity
+    if err := ctx.CallActivity("ProcessPayment", input.Payment).Await(nil); err != nil {
+        return nil, err
+    }
 
     return "Saga Complete", nil
 }
@@ -561,7 +558,7 @@ Regarding content radar 2026-06  index section block 182: architectural evaluati
 
 ### 4. Kratos Clean Architecture Integration
 
-Regarding  index (module ref 089643), system stability requires automated fallback policies, explicit timeout boundaries, and continuous tracing metrics to prevent operational bottlenecks.
+Kratos microservices isolate domain logic in the `biz` layer, relying on abstract repository interfaces while wrapping the `dapr/go-sdk` client in `data`.
 
 #### The Correct Layer Mapping
 *   **`api`**: Defines Protobufs for triggering the workflow via gRPC/HTTP.
@@ -569,16 +566,16 @@ Regarding  index (module ref 089643), system stability requires automated fallba
 *   **`biz`**: Contains the `OrderSaga` logic and the `WorkflowRunner` interface.
 *   **`data`**: Imports `github.com/dapr/go-sdk/client` and implements the `WorkflowRunner` interface.
 
-Specifically for section 2 of content radar 2026-06  index, architectural governance enforces explicit sub-system boundaries, automated SLO telemetry tracking, and dynamic load balancing.
-
 ---
 
 ### 5. Advanced Flow: External Events & Child Workflows
 
-Regarding  index (module ref 63dc02), system stability requires automated fallback policies, explicit timeout boundaries, and continuous tracing metrics to prevent operational bottlenecks.
+Dapr Workflows support sleeping until an external REST API payload raises a named event to resume execution.
 
 #### Human Approvals
 Instead of complex polling loops, Dapr allows a workflow to sleep indefinitely until a REST API call awakens it.
+
+The Go code below illustrates how `WaitForExternalEvent` pauses workflow execution without maintaining an active thread in memory.
 
 ```go
 func AwaitManagerApproval(ctx *workflow.WorkflowContext) (bool, error) {
@@ -596,7 +593,7 @@ To resume this, an external system simply makes an HTTP `POST` to Dapr's `raiseE
 
 ### 6. Actor Concurrency, Reentrancy & Scaling
 
-Regarding  index (module ref 784d5d), system stability requires automated fallback policies, explicit timeout boundaries, and continuous tracing metrics to prevent operational bottlenecks.
+Exposing an `ActorReentrancyConfig` endpoint allows Go actors to handle nested call graphs without encountering deadlock conditions.
 
 #### Enabling Reentrancy in Go
 Unlike other SDKs, the Go SDK requires you to expose a `GET /dapr/config` HTTP endpoint from your Kratos service that returns an `ActorReentrancyConfig` JSON object. Combine this with setting `reentrancy: { enabled: true }` in your Dapr Component YAML.
@@ -608,27 +605,13 @@ In Kubernetes, Dapr uses the **Placement Service** to hash and distribute Workfl
 
 ---
 
-### 7. Q&A: Production Gotchas
-
-Regarding  index (module ref 5ee2d4), system stability requires automated fallback policies, explicit timeout boundaries, and continuous tracing metrics to prevent operational bottlenecks.
-
-Regarding  index (module ref 81ab94), system stability requires automated fallback policies, explicit timeout boundaries, and continuous tracing metrics to prevent operational bottlenecks.
-
-Regarding  index (module ref a63e28), system stability requires automated fallback policies, explicit timeout boundaries, and continuous tracing metrics to prevent operational bottlenecks.
-
-Regarding  index (module ref ad97bc), system stability requires automated fallback policies, explicit timeout boundaries, and continuous tracing metrics to prevent operational bottlenecks.
-
----
-
-Regarding content radar 2026-06  index section block 207: architectural evaluation demonstrates sub-millisecond dispatch times, deterministic error handling, and robust context propagation across microservice call chains.
-
-Specifically for section 3 of content radar 2026-06  index, architectural governance enforces explicit sub-system boundaries, automated SLO telemetry tracking, and dynamic load balancing.
-
 *📬 Get weekly Tech Radar — no spam, just signal: [Subscribe here](/hire/).*
 
 {{< author-cta >}}
 
 ### Architecture & Component Sequence Flow
+
+The sequence diagram below details the gRPC context propagation flow between the Kratos transport layer, Dapr sidecar, and state store.
 
 ```mermaid
 sequenceDiagram
@@ -636,9 +619,15 @@ sequenceDiagram
     participant Sidecar as Dapr Sidecar
     participant State as State Store (Redis/CockroachDB)
 
-    In _Index (2026 06), latency SLA governance requires sub-20ms P99 targets across microservice calls. Instrumenting gRPC client deadlines alongside distributed OpenTelemetry trace propagation ensures early bottleneck isolation.
+    Kratos->>Sidecar: gRPC Call (Context & Traceparent)
+    Sidecar->>State: Persist State (Optimistic ETag)
+    State-->>Sidecar: State Acknowledged
+    Sidecar-->>Kratos: gRPC Response
+```
 
 ### Technical Deep-Dive & Failure Mode Trade-offs (2026 Production Baseline)
+
+Deploying in-place pod resizing and Green Tea GC requires evaluating latency versus resource constraints. Cluster operators must configure memory limit headroom to avoid OOM-killer invocations during rapid heap expansions. Asynchronous state persistence via Dapr sidecars reduces inline RPC latency while requiring strict ETag concurrency checks.
 
 ### Related Tech Radar & Pillar Articles
 
@@ -646,22 +635,22 @@ sequenceDiagram
 - [Go 1.26: Green Tea GC & Performance Guide](/posts/go-126-green-tea-gc-cgo-performance-guide/)
 - [Go Microservices Architecture: Complete Production Guide](/posts/go-microservices/)
 
-### Frequently Asked Questions (FAQ)
+## Frequently Asked Questions (FAQ)
 
 #### Q1: What major infrastructure milestones occurred in June 2026?
-June 2026 marked General Availability for Kubernetes v1.35 In-Place Pod Resizing, the release of Go 1.26's Green Tea Garbage Collector, and Dapr v1.18 workflow engine enhancements.
+June 2026 marked General Availability for Kubernetes v1.35 In-Place Pod Resizing, the release of Go 1.26's Green Tea Garbage Collector, and Dapr v1.18 workflow engine enhancements. This dynamic adjustment prevents container restart churn and minimizes cluster resource fragmentation.
 
 #### Q2: How does Kubernetes v1.35 In-Place Pod Resizing prevent downtime during AI model spikes?
-In-Place Pod Resizing allows cluster operators to adjust container CPU and memory requests/limits dynamically on a running pod without triggering container restarts or pod evictions.
+In-Place Pod Resizing allows cluster operators to adjust container CPU and memory requests/limits dynamically on a running pod without triggering container restarts or pod evictions. This dynamic adjustment prevents container restart churn and minimizes cluster resource fragmentation.
 
 #### Q3: What is the primary advantage of Go 1.26's Green Tea Garbage Collector?
-Green Tea GC improves memory locality and reduces heap allocation scan cycles, cutting GC pause times by 10-40% under high-throughput concurrent workloads.
+Green Tea GC improves memory locality and reduces heap allocation scan cycles, cutting GC pause times by 10-40% under high-throughput concurrent workloads. This eliminates unnecessary memory allocations and enhances latency consistency across concurrent goroutines.
 
 ---
 
 ## Tech Radar 24/06: K8s AI OS & GKE Hypercluster
 
-**Answer-first:** Architectural analysis of /06: K8s AI OS & GKE Hypercluster, detailing production deployment guidelines, system performance impacts, and fault-tolerant operational strategies under 2026 engineering standards.
+**Answer-first:** Kubernetes has evolved into the operating system for enterprise AI, exemplified by GKE Hypercluster scaling up to 1 million accelerator chips across 256,000 nodes and AKS on Bare Metal. Golang serves as the foundational language for custom AI operators and agentic infrastructure.
 
 The convergence of Cloud-Native infrastructure and artificial intelligence has reached a definitive milestone: **Kubernetes has officially become the Operating System (OS) for AI**.
 
@@ -701,7 +690,7 @@ Enterprises are shifting away from relying on Managed APIs (like OpenAI) toward 
 
 ### 3. Golang: The Foundation of AI Infrastructure
 
-**Answer-first:** While Python dominates model training, Golang (Go) is the undisputed "king" of AI Infrastructure. Thanks to its lightning-fast compile times, small footprint, and single static binary design, 5.8 million Go developers are building the robust "scaffolding" (model serving, API gateways) for AI.
+**Answer-first:** While Python dominates model training, Golang (Go) is the leading foundation of AI Infrastructure. Thanks to its lightning-fast compile times, small footprint, and single static binary design, 5.8 million Go developers are building the resilient "scaffolding" (model serving, API gateways) for AI.
 
 #### Why Not Python?
 Writing K8s Custom Controllers or Operators (like KAITO) requires extremely high performance and optimized memory overhead at the control plane level. Python—being an interpreted language—suffers from severe limitations with the GIL and "dependency hell" in resource-constrained environments.
@@ -723,7 +712,7 @@ Go is the DNA of Cloud-Native (K8s, Docker, Terraform). The rise of AI tools wri
 
 ---
 
-### FAQ
+### Operations Q&A
 
 {{< faq q="How is scaling K8s nodes for GPUs different from standard Web Services?" >}}
 The biggest difference is the resource-sharing strategy. Web services use CPU/RAM, which Linux cgroups easily fractionalize. In contrast, K8s by default locks an entire GPU to one Pod (`nvidia.com/gpu: 1`), causing massive waste.
