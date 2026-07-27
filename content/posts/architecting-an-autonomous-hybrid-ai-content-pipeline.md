@@ -54,6 +54,8 @@ Production AI content pipelines require deterministic orchestrators, multi-tier 
 
 A resilient pipeline replaces stateless cron scripts with an explicit Finite State Machine (FSM). By encapsulating pipeline operations within state transitions, every step—from hardware boot to scraping, filtering, and drafting—is recorded with atomic rollback safety.
 
+The state diagram below illustrates the operational lifecycle of an autonomous hybrid-AI content pipeline as a Finite State Machine (FSM). It details state transitions from hardware boot and scraping to deduplication, quality validation, and automated GitOps publishing:
+
 ```mermaid
 stateDiagram-v2
     [*] --> IDLE
@@ -93,7 +95,9 @@ Production agents decouple context storage into three distinct memory tiers to a
 
 ## 3. Tool Calling & Model Context Protocol (MCP)
 
-Agents interact with external web scrapers, database engines, and git endpoints via standard Model Context Protocol (MCP) servers. The sequence diagram details the JSON-RPC execution flow between the agent runtime, MCP gateway, and operational tools.
+Agents interact with external web scrapers, database engines, and git endpoints via standard Model Context Protocol (MCP) servers.
+
+The sequence diagram below details the JSON-RPC execution protocol between the autonomous agent runtime, the MCP gateway, and downstream database or scraping tools. Standardizing tool discovery and execution schemas via Model Context Protocol prevents invalid payload generation and runtime failures:
 
 ```mermaid
 sequenceDiagram
@@ -114,7 +118,9 @@ By enforcing strict JSON Schema validation for tool inputs and outputs, MCP guar
 
 ## 4. 3-Tier Hybrid AI Routing & Cost Engineering
 
-To process 800 daily content signals within a $0.05/day budget, incoming payloads pass through a 3-tier routing network combining Redis caching, local Go/Python model servers, and cloud escalation APIs. The flowchart outlines the tier evaluation and routing decisions.
+To process 800 daily content signals within a $0.05/day budget, incoming payloads pass through a 3-tier routing network combining Redis caching, local Go/Python model servers, and cloud escalation APIs.
+
+The flowchart below outlines the 3-tier routing strategy designed to optimize token budgets across ingestion steps. It demonstrates how incoming content signals filter through Redis semantic caching and local Gemma 4B models before conditionally escalating to frontier cloud LLMs:
 
 ```mermaid
 flowchart TD
@@ -136,7 +142,7 @@ flowchart TD
 
 ## 5. Wake-on-LAN & AgentOps Pipeline
 
-To maintain zero idle power consumption, local GPU worker nodes remain powered down until invoked by cloud schedulers. The Python function demonstrates sending UDP Wake-on-LAN (WoL) magic packets to boot local inference hardware on demand.
+To maintain zero idle power consumption, local GPU worker nodes remain powered down until invoked by cloud schedulers. The Python code snippet below demonstrates how to construct and broadcast a Wake-on-LAN (WoL) UDP magic packet to boot local GPU worker nodes on demand. Automating hardware power cycles enables local inference execution during batch windows while maintaining zero idle power consumption:
 
 ```python
 import socket, binascii
@@ -156,7 +162,9 @@ Once batch processing completes, worker microservices clear CUDA memory, log tel
 
 ## 6. The 4-Layer Quality Gate & GitOps Publish Flow
 
-Before generated articles transition to production, drafts must satisfy four validation gates covering static syntax, semantic coverage, LLM evaluation, and GitOps integration. The diagram details the pipeline verification steps.
+Before generated articles transition to production, drafts must satisfy four validation gates covering static syntax, semantic coverage, LLM evaluation, and GitOps integration.
+
+The flowchart below illustrates the 4-layer validation cascade enforced before any generated article is published to production. It traces draft validation through AST linters, heuristic scoring, LLM-as-a-Judge rubrics, and automated GitOps integration:
 
 ```mermaid
 flowchart TD
@@ -174,23 +182,20 @@ flowchart TD
 
 ---
 
-## FAQ
+## Frequently Asked Questions
 
-{{< faq q="How does MinHash deduplication help optimize token consumption in an automated content ingestion pipeline?" >}}
+### Q1: How does MinHash deduplication help optimize token consumption in an automated content ingestion pipeline?
 MinHash computes Jaccard similarity between incoming documents before sending payloads to LLM APIs. By hashing document shingles at the ingestion layer, near-duplicate items like syndicated press releases are discarded early, reducing API token costs by up to 90%.
-{{< /faq >}}
 
-{{< faq q="What is the architectural benefit of Wake-on-LAN (WOL) in a hybrid cloud-local AI pipeline?" >}}
+### Q2: What is the architectural benefit of Wake-on-LAN (WOL) in a hybrid cloud-local AI pipeline?
 Wake-on-LAN allows high-power GPU worker servers to remain completely powered off during idle periods. When scheduled jobs trigger, cloud orchestrators broadcast magic packets to boot local workers for embedding and local inference, shutting them down immediately after batch completion to sustain a $0.05/day cost target.
-{{< /faq >}}
 
-{{< faq q="Why is Model Context Protocol (MCP) used for agent tool calling?" >}}
+### Q3: Why is Model Context Protocol (MCP) used for agent tool calling?
 Model Context Protocol standardizes interface contracts, argument validation schemas, and transport layers between autonomous agents and internal microservices. It replaces fragile custom integration wrappers with a uniform JSON-RPC specification, enabling type-safe tool execution across Go and Python execution environments.
-{{< /faq >}}
 
-{{< faq q="How do GitOps quality gates prevent invalid content from reaching static site production builds?" >}}
+### Q4: How do GitOps quality gates prevent invalid content from reaching static site production builds?
 GitOps quality gates execute automated static analysis and site compilation checks inside isolated CI/CD workflows prior to deployment. Only drafts passing frontmatter schema validation, link checking, and LLM rubric thresholds automatically generate merged Pull Requests for site publishing.
-{{< /faq >}}
 
 {{< author-cta >}}
+
 

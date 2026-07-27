@@ -41,7 +41,7 @@ canonicalURL: "https://tanhdev.com/posts/order-fulfillment-algorithm-warehouse-l
 
 ## Executive Summary & Fulfillment Fundamentals
 
-When an order is confirmed, the fulfillment system executes a multi-step decision pipeline. The following design baselines outline the essential trade-offs, performance targets, and architectural patterns required for enterprise deployment. Establishing an effective architecture requires defining clear performance baselines, fault-tolerance mechanisms, and modular service boundaries early in the design cycle. The following principles and design baselines outline the essential trade-offs and operational patterns required for successful enterprise deployment.
+When an order is confirmed, the fulfillment system executes a multi-step decision pipeline to optimize inventory allocation and transit SLA:
 
 1. **Available-to-Promise (ATP) Check**: Filter candidate warehouses by real-time uncommitted stock.
 2. **Cost & Proximity Scoring**: Evaluate shipping distance, labor rate, carrier capacity, and SLA risk.
@@ -53,7 +53,7 @@ When an order is confirmed, the fulfillment system executes a multi-step decisio
 
 ## Step 1 — Real-Time Inventory & Available-to-Promise (ATP)
 
-Physical stock on hand does not equal sellable stock. Fulfillment systems distinguish. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
+Physical stock on hand does not equal sellable stock. Fulfillment systems distinguish between raw inventory counts and uncommitted inventory:
 
 - **Physical On-Hand**: Total inventory units located inside the warehouse bin.
 - **Available-to-Promise (ATP)**: Physical stock minus hard-committed and soft-reserved units.
@@ -70,7 +70,7 @@ In high-concurrency e-commerce environments during sales events, naive non-atomi
 2. **TTL Key Binding**: If stock is available, decrement `stock_key` by `requested_qty` and create a reservation key (`reservation:ord_1042:sku_9942`) bound with a strict Time-To-Live (TTL) expiration window (e.g., 900 seconds / 15 minutes).
 3. **Rollback & Expire**: If stock is insufficient, exit immediately with zero mutations. If checkout completes, the worker converts the soft reservation into a hard database commitment. If the session expires, Redis keyspace notifications (`__keyevent@0__:expired`) automatically trigger an `INCRBY` rollback back to the warehouse stock pool.
 
-Below is a complete, thread-safe Go implementation using `github.com/redis/go-redis/v9`:
+Thread-safe Go implementations execute atomic soft reservations using `github.com/redis/go-redis/v9`:
 
 ```go
 package main
@@ -134,8 +134,11 @@ func (e *InventoryEngine) ReserveATP(ctx context.Context, warehouseID, sku, orde
 
 ## Step 2 — Warehouse Selection Cost Function
 
-The allocation engine evaluates candidate warehouses using a multi-criteria objective function: $$\text{Cost}(W, O) = (d \cdot r_{\text{carrier}}) + c_{\text{labor}} + P_{\text{SLA}} + S_{\text{capacity}} - B_{\text{eco}}$$ Where. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below.
+The allocation engine evaluates candidate warehouses using a multi-criteria objective function:
 
+$$\text{Cost}(W, O) = (d \cdot r_{\text{carrier}}) + c_{\text{labor}} + P_{\text{SLA}} + S_{\text{capacity}} - B_{\text{eco}}$$
+
+Where:
 - $d$: Distance from warehouse $W$ to delivery destination
 - $r_{\text{carrier}}$: Carrier rate per km
 - $c_{\text{labor}}$: Warehouse pick/pack labor cost per unit
@@ -147,7 +150,7 @@ The allocation engine evaluates candidate warehouses using a multi-criteria obje
 
 ## Step 3 — Amazon CONDOR & Constraint Optimization
 
-CONDOR operates globally above per-order routing. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
+Amazon's CONDOR system operates at a global fleet level above per-order routing logic to prevent regional inventory stockouts:
 
 - **Inputs**: Real-time ATP across all fulfillment centers, historical demand signals, regional ML demand forecasts (14-day window), carrier contract tiers.
 - **Outputs**: Proactive inventory transfer recommendations (rebalancing stock from central FCs to regional sortation centers before orders are placed).
@@ -262,18 +265,15 @@ def solve_capacitated_vrp(
 
 ---
 
-## Frequently Asked Questions (FAQ)
+## Frequently Asked Questions
 
-{{< faq q="How does Amazon decide which warehouse to ship from?" >}}
-Amazon's warehouse selection algorithm evaluates every fulfillment center with available-to-promise inventory against a cost function that combines shipping distance, carrier rates, labor costs, SLA risk, and carrier capacity utilization.
-{{< /faq >}}
+### How do e-commerce algorithms determine which warehouse fulfills an order?
+Warehouse selection algorithms evaluate candidate fulfillment centers using a multi-criteria cost function combining shipping distance, carrier transit rates, labor costs, SLA risk penalties, and real-time Available-to-Promise (ATP) stock. Distributed optimization systems continuously rebalance global inventory to prevent local stockouts and minimize split shipments.
 
-{{< faq q="What is the Vehicle Routing Problem (VRP) in e-commerce?" >}}
-The VRP is a combinatorial optimization problem: given a fleet of vehicles, a depot, and a set of delivery locations, find the routes that minimize total distance while respecting vehicle capacity constraints and serving every location exactly once.
-{{< /faq >}}
+### What is the Vehicle Routing Problem (VRP) in last-mile logistics?
+The Vehicle Routing Problem is a combinatorial optimization challenge that calculates optimal delivery routes for a fleet servicing customer locations. Solvers like Google OR-Tools apply vehicle capacity dimensions, time-window constraints, and drop penalties to minimize total transit distance while maintaining delivery SLAs.
 
-{{< faq q="What is Amazon Anticipatory Shipping and how does it work?" >}}
-Anticipatory shipping ships products to regional distribution centers before a customer places an order, based on ML-predicted demand. If the prediction is correct, the item is already in the customer's metro area, enabling same-day delivery.
-{{< /faq >}}
+### How does Amazon's anticipatory shipping model reduce delivery latency?
+Anticipatory shipping utilizes machine learning demand forecasts to transport high-probability items to regional fulfillment hubs before customers complete their purchases. Once an order is placed, the package is already positioned in the destination metro area, enabling same-day delivery at standard shipping rates.
 
 {{< author-cta >}}

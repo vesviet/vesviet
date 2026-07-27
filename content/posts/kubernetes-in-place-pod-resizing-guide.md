@@ -43,8 +43,11 @@ This post is the production guide: what it is, how to use it, and where the shar
 
 ## 1. What Is In-Place Pod Resizing?
 
+Understanding Kubernetes in-place pod resizing requires examining how dynamic cgroup modifications replace traditional pod evictions across cloud-native environments. By enabling live resource updates without container restarts, platform engineers dynamically adjust CPU and memory allocations for stateful services, AI inference workloads, and high-concurrency microservices while preserving active TCP connections and cached application state.
 
 ### Before vs. After
+
+The following comparison illustrates operational behavior when adjusting resources under traditional eviction versus in-place resizing.
 
 | Scenario | Without in-place resize support | With verified in-place resize support |
 |----------|-------------|-------------|
@@ -55,6 +58,8 @@ This post is the production guide: what it is, how to use it, and where the shar
 
 ### The Journey to GA
 
+Ensure your control plane and node pools meet the minimum version requirements before attempting live resource mutation.
+
 | Version | Status | Validation required |
 |---------|--------|-------|
 | Any cluster version | Varies by Kubernetes release and provider | Confirm the Kubernetes feature documentation and control-plane, kubelet, and runtime versions |
@@ -63,8 +68,11 @@ This post is the production guide: what it is, how to use it, and where the shar
 
 ## 2. Requirements
 
+Verifying operational prerequisites for in-place pod resizing involves auditing control plane feature gates, container runtime capabilities, and kubelet configuration flags. In 2026 enterprise clusters, validating containerd or CRI-O cgroup update support across node pools ensures live resource mutations execute safely without triggering unintended pod restarts or container evictions.
 
 ### Infrastructure Checklist
+
+Verify that all cluster infrastructure components meet the prerequisites for in-place pod resizing.
 
 | Component | Minimum Version | Notes |
 |-----------|----------------|-------|
@@ -74,6 +82,8 @@ This post is the production guide: what it is, how to use it, and where the shar
 | kubectl | Compatible client | Use the cluster's supported API or documented command |
 
 ### Managed Kubernetes Support
+
+Check managed Kubernetes cloud provider documentation to confirm platform support for live pod resizing.
 
 | Provider | Validation question | Notes |
 |----------|-----------|-------|
@@ -86,8 +96,11 @@ This post is the production guide: what it is, how to use it, and where the shar
 
 ## 3. How It Works: Resize Policy and Pod Status
 
+Executing live resource mutations relies on a coordinated workflow between the Kubernetes API server, kubelet controllers, and container runtime interfaces. By evaluating container resizePolicy declarations and tracking pod status transitions, the control plane applies cgroup updates dynamically, ensuring resource adjustments align with node capacity and namespace quotas.
 
 ### Resize Flow
+
+The sequence diagram below traces the interaction between the Kubernetes API server, kubelet, CRI container runtime, and cgroup controller during an in-place pod resize operation:
 
 ```mermaid
 sequenceDiagram
@@ -111,6 +124,8 @@ sequenceDiagram
 
 ### Resize Policy Options
 
+To specify whether CPU or memory changes require a container restart, define explicit `resizePolicy` controls within your container specification:
+
 ```yaml
 spec:
   containers:
@@ -130,6 +145,8 @@ spec:
 > **Production recommendation:** For most services, set CPU to `NotRequired` and memory to `NotRequired` for increases only. Memory decreases on apps with large heap allocations may OOM if the app doesn't release memory.
 
 ### Pod Status During Resize
+
+Inspect the pod status object to monitor the state of pending or completed resource resize operations.
 
 ```yaml
 status:
@@ -157,7 +174,11 @@ status:
 
 ## 4. Production YAML Examples
 
+Deploying production manifests configured for in-place pod resizing requires declaring explicit resource requests, limits, and restart policies across application containers. The following YAML configurations demonstrate practical implementations for AI inference workloads, relational database instances, and long-running batch jobs requiring dynamic CPU and memory scaling under fluctuating traffic.
+
 ### Example 1: AI Inference Pod with Live CPU/Memory Scaling
+
+The following pod manifest defines an AI inference container configured with `NotRequired` restart policies for live CPU and memory scaling.
 
 ```yaml
 apiVersion: v1
@@ -206,6 +227,8 @@ kubectl patch pod llm-inference --subresource resize --type merge -p \
 
 ### Example 2: Database Pod — CPU Live, Memory Restart
 
+Configure a database container with live CPU scaling while enforcing container restart on memory changes to safely reload shared buffers.
+
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -233,6 +256,8 @@ spec:
 ```
 
 ### Example 3: Batch Job — Resize During Execution
+
+The following Job spec allows a long-running batch ETL workload to receive additional CPU and memory mid-execution without losing job progress.
 
 ```yaml
 apiVersion: batch/v1
@@ -266,8 +291,11 @@ If the ETL job hits a memory-intensive phase, an external controller (or VPA) ca
 
 ## 5. VPA Integration: Automatic In-Place Resizing
 
+Integrating the Vertical Pod Autoscaler with in-place resizing capabilities enables fully automated resource management without incurring workload downtime. By configuring VPA update policies to patch pod resize subresources directly, engineering teams eliminate cold-start latencies and State loss while optimizing cluster resource utilization across variable production demand patterns.
 
 ### VPA and In-Place Resize Compatibility
+
+Configure a VerticalPodAutoscaler resource with auto-update policies to automatically resize pod containers without evictions.
 
 ```yaml
 apiVersion: autoscaling.k8s.io/v1
@@ -296,6 +324,8 @@ spec:
 ```
 
 ### Intended VPA + In-Place Resize Flow
+
+The flowchart below shows how the VPA Updater applies recommended resource changes via in-place patch requests.
 
 ```mermaid
 flowchart TD
@@ -366,8 +396,11 @@ spec:
 
 ## 6. Limitations and Gotchas
 
+Navigating platform constraints and operational edge cases is vital when adopting live pod resizing across production Kubernetes clusters. Architectural limitations surrounding Quality of Service class immutability, node capacity exhaustion, and memory reduction risks require careful monitoring and workload design to prevent unexpected container Out-Of-Memory terminations.
 
 ### Hard Limitations
+
+Consider these platform constraints when designing applications for in-place pod resizing.
 
 | Limitation | Explanation | Workaround |
 |-----------|-------------|------------|
@@ -406,7 +439,11 @@ kube_pod_status_resize{resize="Deferred"} > 0
 
 ## 7. Monitoring and Observability
 
+Establishing continuous observability for in-place pod resizing operations requires tracking Prometheus metrics for pod resize status, cgroup quota adjustments, and node allocatable headroom. Integrating kube-state-metrics with Grafana dashboards allows platform teams to detect deferred resize requests, identify memory limits, and verify cost optimization benefits in real time.
+
 ### Key Metrics to Watch
+
+Monitor these Prometheus metrics to track pod resize status, cgroup resource limits, and node capacity headroom.
 
 ```promql
 # Pod resize state (requires kube-state-metrics v2.13+)
@@ -430,28 +467,24 @@ Track these per pod/namespace:
 
 ---
 
-## FAQ
+## Frequently Asked Questions
 
-{{< faq q="What is In-Place Pod Resizing in Kubernetes?" >}}
-**In-Place Pod Resizing** is a GA feature in Kubernetes v1.35 that allows you to modify CPU and memory requests/limits on a running container without restarting the pod. The kubelet adjusts the container's Linux cgroup limits (cpu.max, memory.max) in-place. This eliminates cold-start disruptions for stateful workloads like databases, AI inference pods, and long-running batch jobs.
-{{< /faq >}}
+Addressing key operational questions regarding Kubernetes in-place pod resizing helps infrastructure teams safely adopt no-restart scaling policies across critical production workloads. The following answers clarify version prerequisites, container restart policies, Vertical Pod Autoscaler integration rules, and node capacity handling strategies for modern enterprise Kubernetes deployments.
 
-{{< faq q="Does In-Place Pod Resizing require a container restart?" >}}
-It depends on the `resizePolicy` configuration. If set to `NotRequired` (default), the resize happens live with no restart. If set to `RestartContainer`, the container is restarted after the resize — useful for applications that read resource limits at startup (e.g., JVM heap configuration). CPU resizes are almost always safe without restart; memory resizes require care.
-{{< /faq >}}
+### What is In-Place Pod Resizing in Kubernetes?
+In-Place Pod Resizing is a Kubernetes feature that allows you to modify CPU and memory requests and limits on a running container without restarting the pod. The kubelet adjusts the container's Linux cgroup limits (`cpu.max`, `memory.max`) in-place. This eliminates cold-start disruptions for stateful workloads like databases, AI inference pods, and long-running batch jobs.
 
-{{< faq q="What Kubernetes version supports In-Place Pod Resizing?" >}}
-The feature graduated to **Stable (GA)** in Kubernetes v1.35 (December 2025). It was Beta since v1.31 and Alpha since v1.27. On v1.35+, no feature gates are needed — it works out of the box. The container runtime must support it: containerd ≥ 1.6.9 or CRI-O ≥ 1.25.
-{{< /faq >}}
+### Does In-Place Pod Resizing require a container restart?
+It depends on the `resizePolicy` configuration in your container spec. If set to `NotRequired`, the resize happens live with no container restart. If set to `RestartContainer`, the container is restarted after the resource update, which is useful for applications that read memory limits at startup.
 
-{{< faq q="Can VPA use In-Place Pod Resizing instead of restarting pods?" >}}
-Yes. VPA v1.3+ supports an `updateMode: "InPlace"` that patches the pod's resize subresource instead of evicting and recreating it. This makes VPA production-ready for stateful workloads that previously couldn't tolerate VPA's eviction-based approach.
-{{< /faq >}}
+### What Kubernetes version supports In-Place Pod Resizing?
+In-place pod resizing requires feature enablement on modern Kubernetes releases with CRI runtime support. The container runtime must support live cgroup updates via containerd or CRI-O. Verify that your control plane and node kubelets have feature support enabled before relying on no-restart scaling.
 
-{{< faq q="What happens if the node doesn't have enough resources for the resize?" >}}
-The pod's `status.resize` field will be set to `Deferred` — meaning the kubelet acknowledged the request but can't fulfill it due to insufficient node resources. The resize will be retried when resources become available. If the resize is fundamentally impossible (exceeds node capacity), the status becomes `Infeasible`. Monitor the `kube_pod_status_resize` metric to detect stuck resizes.
-{{< /faq >}}
+### Can VPA use In-Place Pod Resizing instead of restarting pods?
+Yes, supported Vertical Pod Autoscaler (VPA) controllers can apply resource recommendations in-place. By patching the pod's resize subresource instead of evicting the pod, VPA avoids downtime for latency-sensitive applications.
 
-{{< faq q="How does In-Place Pod Resizing help with AI inference costs?" >}}
-AI inference pods can need high resources during active inference but sit idle between requests. When the workload, provider, and resize path have been validated, in-place resizing may reduce disruption compared with recreating a pod. Estimate any savings from observed utilization, autoscaler decisions, and the actual node or accelerator billing model rather than applying a generic percentage.
-{{< /faq >}}
+### What happens if the node doesn't have enough resources for the resize?
+The pod's `status.resize` field will be set to `Deferred`, meaning the kubelet acknowledged the request but cannot fulfill it immediately. The resize will be retried when node capacity becomes available. If the requested increase exceeds total node capacity, the status is set to `Infeasible`.
+
+### How does In-Place Pod Resizing help with AI inference costs?
+AI inference workloads often experience fluctuating CPU and memory demands during peak traffic windows. By resizing resource requests live without unloading model weights from memory, teams can avoid costly cold starts and maintain strict SLOs.

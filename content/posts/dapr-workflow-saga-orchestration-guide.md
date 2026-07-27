@@ -79,11 +79,7 @@ Both patterns implement the Saga distributed transaction model. The choice betwe
 
 Dapr Workflow is built on the Durable Task Framework. Understanding its execution model is critical to writing correct orchestrators.
 
-When an orchestrator function executes, it does not run as a normal Go function. It runs as a **replay-based state machine**:
-
-1. **First execution**: The orchestrator runs step by step, scheduling each activity (external service call) as an async task.
-2. **After a process restart or crash**: When the workflow runtime restarts the orchestrator, it **replays** the entire history of recorded events from the backend state store. Completed activities are not re-executed — their recorded results are returned immediately.
-3. **Determinism requirement**: Because the orchestrator is replayed, it **must be deterministic**. Any non-deterministic operation (random numbers, `time.Now()`, reading environment variables) will produce different results on replay and corrupt the workflow state.
+Deterministic execution ensures that replaying history reproduces the exact sequence of state transitions. The following flowchart details the replay decision process executed by the Dapr workflow runtime upon initialization:
 
 ```mermaid
 graph TD
@@ -537,6 +533,6 @@ Dapr Workflow supports per-activity retry policies with configurable max attempt
 ### Is Dapr Workflow production-ready?
 Dapr Workflow (based on the Durable Task Framework) reached stable status in Dapr v1.12 (mid-2024). The Go SDK has stable workflow APIs from v1.11. Production considerations: choose a reliable backend (Redis Cluster or PostgreSQL via the dapr-workflow-backend component) for workflow state storage, and monitor the Dapr sidecar resource consumption under high workflow throughput.
 
-For the observability layer on top of these workflows — how to propagate W3C trace context through Kafka headers, configure tail-based sampling, and redact PII at the OTel Collector — see [Go Microservices Distributed Tracing Architecture](/posts/go-microservices-distributed-tracing-architecture/). For a comprehensive look at the entire production stack, see the [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
+For the observability layer on top of these workflows — how to propagate W3C trace context through Kafka headers, configure tail-based sampling, and redact PII at the OTel Collector — see [Go Microservices Distributed Tracing Architecture](/posts/go-microservices-distributed-tracing-architecture/). For a thorough overview of the entire production stack, see the [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
 
 {{< author-cta >}}

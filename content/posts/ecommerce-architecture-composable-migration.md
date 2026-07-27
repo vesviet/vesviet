@@ -140,7 +140,7 @@ Protobuf contract compilation bridges Go microservices and frontend TypeScript c
 
 ## 3. Core Backend: Golang + Kratos v2 Internals
 
-Each Go microservice implements a strict 5-layer Clean Architecture layout using the Kratos v2 framework. The code implementation below illustrates the production configuration, error handling, and performance optimization techniques. Writing clean, performant code requires adhering to established software engineering patterns and defensive programming. The code implementation below illustrates the production configuration, memory efficiency rules, error handling strategies, and performance optimization techniques.
+Each Go microservice implements a strict 5-layer Clean Architecture layout using the Kratos v2 framework to maintain clear separation of concerns across production workloads. The structured file layout below outlines the organization across API contracts, dependency injection bindings, domain business logic, data access repositories, and transport protocol servers:
 
 ```text
 order-service/
@@ -205,11 +205,7 @@ graph TD
 
 ## 6. The Phased Migration Roadmap & Envoy Routing
 
-Transitioning a high-volume monolithic e-commerce application to composable microservices without taking downtime requires an incremental three-phase **Strangler Fig pattern** managed by Envoy Proxy. The breakdown below summarizes the primary technical criteria, phase milestones, and architectural recommendations. Selecting the optimal technical path requires evaluating workload scale, team operational maturity, and infrastructure costs across all deployment phases. The breakdown below summarizes the primary technical criteria, phase milestones, risk mitigations, and architectural recommendations.
-
-- **Phase 1: Read-Only Shadow Routing & Validation**: Envoy mirrors production traffic to new composable microservices in shadow mode. Incoming read requests are evaluated side-by-side to compare response payloads and latency metrics without exposing users to potential bugs.
-- **Phase 2: Weighted Cluster Routing & Phased Traffic Shifting**: Using Envoy runtime weighted cluster routing, engineering teams shift traffic incrementally (e.g., 1% → 5% → 25% → 100%) to new domain microservices while keeping fallback routes active to the legacy monolith.
-- **Phase 3: Full Cutover & Monolith Strangling**: Once a domain route (such as `/api/v1/cart` or `/api/v1/catalog`) achieves zero error rates over sustained peak traffic windows, the legacy monolith endpoints for that domain are formally deprecated and unmounted.
+Transitioning a high-volume monolithic e-commerce application to composable microservices without taking downtime requires an incremental three-phase Strangler Fig migration pattern managed by Envoy Proxy. This traffic control layer dynamically directs incoming API routes across legacy monolith endpoints and modern Go microservice clusters. The architecture diagram below illustrates the route proxying topology:
 
 ```mermaid
 graph TD
@@ -244,6 +240,8 @@ graph TD
 ```
 
 ### Envoy Configuration Snippet
+
+The YAML snippet below configures Envoy HTTP route rules to forward traffic for migrated cart and catalog endpoints to modern microservice clusters while directing unmigrated routes to the legacy monolith:
 
 ```yaml
 static_resources:
@@ -286,11 +284,7 @@ static_resources:
 
 ## 7. Go Event Listener for Parallel Database Sync
 
-To process CDC event streams reliably at high throughput without risking data drift or duplicate processing during database synchronization, the Go synchronization worker implements a worker pool concurrent pipeline. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below.
-
-- **Worker Pool Concurrency & Go Channels**: Incoming Kafka messages are dispatched across a pool of concurrent Go worker goroutines via buffered channels. Each worker manages its own database transaction lifecycle, enabling parallel table row replication up to thousands of events per second.
-- **Idempotency Key Verification**: Because Kafka guarantees at-least-once delivery, every CDC message carries a unique event UUID. Workers perform transactional idempotency checks against a `processed_events` table before executing `UPSERT` statements, preventing duplicate state mutations.
-- **Transaction Rollback & Error Recovery**: If a database error occurs during payload deserialization or SQL execution, the worker triggers an immediate transaction rollback, routes the failing event to a Dead Letter Queue (DLQ) topic, and dispatches alert metrics to OpenTelemetry.
+To process CDC event streams reliably at high throughput without risking data drift or duplicate processing during database synchronization, the Go synchronization worker implements a worker pool concurrent pipeline. The Go implementation below processes Kafka CDC events and executes idempotent PostgreSQL upserts within atomic transactions:
 
 ```go
 package main
@@ -372,16 +366,19 @@ func (w *SyncWorker) processSyncEvent(ctx context.Context, event InventorySyncEv
 
 ---
 
-## FAQ: Composable Commerce Migration
+## Frequently Asked Questions
+
+Below are answers to common technical questions regarding composable e-commerce migrations, domain decomposition, and CDC database synchronization patterns in 2026. These insights clarify architectural trade-offs, performance gains from gRPC transport protocols, and strategies for managing legacy database transitions effectively without encountering unexpected downtime.
 
 ### When should a business migrate to Composable Commerce?
 When revenue hits the $5 million/year mark, or when the current monolithic platform severely bottlenecks release frequency. For small startups, packaged SaaS solutions remain more cost-effective.
 
 ### Why do we need a BFF (Backend-For-Frontend)?
-The BFF aggregates data from multiple microservices into a single API response for the Frontend, minimizing network calls and acting as a Circuit Breaker when backend services experience latency.
+The BFF aggregates data from multiple microservices into a single unified API response for the frontend application, drastically minimizing mobile network round-trips. It also acts as a circuit breaker and caching layer when downstream backend microservices experience transient latency.
 
 ### How long does the full migration take?
 End-to-end: **14–19 weeks** for a production store. Phase 1 (read-only) takes 2–3 weeks, Phase 2 (dual-write per domain) takes 4–6 weeks, and Phase 3 (full cutover) takes 8–10 weeks.
 
 ### How much faster is gRPC than REST+JSON internally?
-In production microservices, gRPC binary serialization and HTTP/2 multiplexing are **3–7× faster** than REST+JSON text parsing, reducing internal multi-hop latency from ~90ms to ~15ms.
+In production microservices, gRPC binary serialization and HTTP/2 multiplexing are **3–7× faster** than REST+JSON text parsing. This performance gain reduces internal multi-hop microservice latency from ~90ms down to ~15ms.
+

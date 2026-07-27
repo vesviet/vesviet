@@ -29,9 +29,9 @@ canonicalURL: "https://tanhdev.com/posts/architecting-21-service-ecommerce-golan
 
 Scaling an e-commerce platform past 10,000+ orders per day containing multiple SKUs across dynamic warehouses is where naive architecture breaks down. Hardware scaling ceases to be a magic bullet when distributed transactions, race conditions, and eventual consistency are involved.
 
-In this deep tech dive, we will tear apart the "Hello World" abstraction of Microservices. We will look at exactly how our **21-service distributed ecosystem** interacts under the hood (you can view the full visual layout in our [E-Commerce Blueprint Diagram](/posts/blueprint-ecommerce-microservices-architecture-diagram/)). I will share the exact Golang architectural patterns (Kratos), the Saga orchestration for distributed checkout, and how we handle race conditions under severe load.
+In this deep technical breakdown, we will tear apart the "Hello World" abstraction of Microservices. We will look at exactly how our **21-service distributed ecosystem** interacts under the hood (you can view the full visual layout in our [E-Commerce Blueprint Diagram](/posts/blueprint-ecommerce-microservices-architecture-diagram/)). I will share the exact Golang architectural patterns (Kratos), the Saga orchestration for distributed checkout, and how we handle race conditions under severe load.
 
-## 1. The Distributed Landscape
+## 1. The Distributed Architecture
 
 > **Architecture Blueprint:** Explore the full visual domain interaction diagram in our [E-Commerce Microservices 21-Service Blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/).
 
@@ -46,7 +46,7 @@ By modeling these as distinct Bounded Contexts, we ensure that each service owns
 - **Customer-Supplier Relationship:** The Order Context acts as a customer to the Warehouse Context, requesting stock reservations and receiving success/failure signals.
 - **Shared Kernel:** Used very sparingly, only for global currencies and country-code configurations shared across localized shipping services.
 
-We bounded our ecosystem loosely around five core domains, prioritizing strict database-per-service isolation (If you are just starting out, this is exactly why you might want to start with a [Modular Monolith Architecture](/series/modular-monolith-architecture/) before jumping to distributed extraction):
+We bounded our ecosystem loosely around five core domains, prioritizing strict database-per-service isolation. The architecture diagram below illustrates the asynchronous event mesh connecting core e-commerce services during a checkout saga. It demonstrates how Dapr Pub/Sub decouples the Checkout, Order, Warehouse, and Pricing services using event choreography rather than synchronous RPC calls:
 
 ```mermaid
 graph TD
@@ -72,9 +72,7 @@ The diagram above encapsulates the most volatile flow: **The Checkout Saga**. Wh
 
 **Kratos v2 physically separates Go code into layers: `internal/biz/` (business logic, knows nothing about PostgreSQL), `internal/data/` (implements biz repository interface with GORM), `internal/service/` (gRPC/HTTP transport). Google Wire provides compile-time dependency injection — unit tests use mocked repositories that implement the same biz interface, with zero real database required.**
 
-To manage 21 separate codebases, consistency among the engineering team is mandatory. We utilized **Kratos (v2)** to strictly enforce Clean Architecture in Golang. (You can explore the full stack we use in our [Microservices Tech Radar](/radar/)). By physically separating boundaries, we prevent database logic from bleeding into HTTP or gRPC handlers.
-
-Here is what a standard Kratos blueprint looks like in our ecosystem:
+To manage 21 separate codebases, structural consistency across engineering teams is mandatory. We utilize **Kratos (v2)** to strictly enforce Clean Architecture in Golang, decoupling transport protocols from domain logic. The Go code snippet below demonstrates Kratos Clean Architecture layer separation between business logic (`biz`) and data persistence (`data`), ensuring the domain core remains completely independent of GORM and PostgreSQL:
 
 ```go
 // internal/biz/order.go (Business Logic Layer)
@@ -106,9 +104,7 @@ func (r *orderRepo) Save(ctx context.Context, o *biz.Order) error {
 
 ### Configuring Kratos Router Middleware
 
-To ensure that common cross-cutting concerns (authentication, tracing, logging, validation) are handled uniformly across all 21 microservices, we initialize Kratos servers with a structured middleware chain. In Kratos, middleware functions intercept requests on both HTTP and gRPC routers before delegating them to the usecase layer.
-
-Here is the Go initialization snippet for our HTTP server router middleware:
+To ensure that cross-cutting concerns—such as authentication, tracing, logging, and input validation—are handled uniformly across all 21 microservices, Kratos initializes servers with a structured middleware chain. The following Go code snippet illustrates how to configure the HTTP router middleware interceptor pipeline for enterprise production serving:
 
 ```go
 import (
@@ -174,7 +170,8 @@ Inventory race conditions happen when two sub-second requests try to buy the las
 
 If `Warehouse Service` just fires `SELECT stock FROM items WHERE id = ?`, both concurrent threads will see `stock = 1`, and both will decrement it, leading to `-1` stock. 
 
-Instead, our Warehouse service utilizes **Optimistic Concurrency Control (OCC)** at the database layer:
+Instead of using heavy distributed locks, the Warehouse service enforces **Optimistic Concurrency Control (OCC)** directly at the database layer. The following SQL-driven Go statement illustrates how version checks and available stock bounds prevent race conditions during high-concurrency checkout bursts:
+
 ```go
 // Optimistic Locking to prevent overselling
 result := db.Exec(`
@@ -196,7 +193,8 @@ Because state is distributed, if `Warehouse` successfully locks the stock but `P
 
 `Order Service` often acts as the sink. If it sees `inventory.reservation.failed` OR `pricing.validation.failed`, it fires a massive compensation event: `checkout.failed`. 
 
-Background workers (consumers) in `Warehouse Service` catch this event and immediately trigger **Compensation Logic**: 
+When downstream services publish failure signals during a saga, background worker routines intercept the failure events to restore system state. The following Go worker handler snippet demonstrates how the Warehouse service releases reserved stock upon receiving a `checkout.failed` compensation event:
+
 ```go
 // Background Worker un-reserving stock
 func (w *WarehouseWorker) HandleCheckoutFailed(ctx context.Context, event CheckoutFailed) error {
@@ -211,7 +209,8 @@ func (w *WarehouseWorker) HandleCheckoutFailed(ctx context.Context, event Checko
 
 When you rely on network events, network retries will happen. Dapr guarantees "At-Least-Once" delivery, meaning `Warehouse Service` might receive the same `checkout.requested` event twice if a timeout occurs.
 
-To prevent reserving stock twice, every single Database in our ecosystem involved in transactions employs an `Idempotency Key`. 
+To prevent duplicate message processing when network retries occur, every database across our 21 services incorporates a dedicated idempotency table. The following DDL snippet defines the schema used by services to record unique transaction execution IDs:
+
 ```sql
 CREATE TABLE processed_events (
     event_id VARCHAR(255) PRIMARY KEY,
@@ -232,23 +231,21 @@ By mapping contexts meticulously, enforcing strict separation via Kratos, and ut
 ---
 
 **Continue Reading:**
-- [Go Microservices Architecture: Production Guide](/posts/go-microservices/) — the comprehensive architecture manual for the entire stack.
+- [Go Microservices Architecture: Production Guide](/posts/go-microservices/) — the definitive architectural manual for the entire stack.
 - [Deconstructing the Ecosystem: Service Details by Domain](/posts/deconstructing-ecommerce-service-details-domain/) — a full breakdown of all 21 services across 6 business domains.
-- [Mastering Event-Driven Architecture with Dapr Pub/Sub](/posts/mastering-event-driven-architecture-dapr/) — deep dive into the Saga, DLQ, and idempotency patterns powering this ecosystem.
+- [Mastering Event-Driven Architecture with Dapr Pub/Sub](/posts/mastering-event-driven-architecture-dapr/) — in-depth analysis of the Saga, DLQ, and idempotency patterns powering this ecosystem.
 - [GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/) — how we deploy all 21 services with zero manual `kubectl` commands.
 
 {{< author-cta >}}
 
-## FAQ
+## Frequently Asked Questions
 
-{{< faq q="Why is Go's structural subtyping particularly suited for Domain-Driven Design (DDD) boundaries?" >}}
+### Q1: Why is Go's structural subtyping particularly suited for Domain-Driven Design (DDD) boundaries?
 Go's implicit interface implementation decoupling allows domain layers to define their own dependencies without referencing infrastructure packages. Domain services declare the interfaces they consume, keeping the domain completely isolated from database drivers or transport layers (like gRPC/HTTP) and making unit testing trivial via mocking.
-{{< /faq >}}
 
-{{< faq q="How do you handle transactional boundaries across multiple aggregates in a Go microservices architecture?" >}}
+### Q2: How do you handle transactional boundaries across multiple aggregates in a Go microservices architecture?
 Each transaction must be scoped to a single Aggregate root. For operations spanning multiple microservices, we avoid distributed 2PC transactions due to latency and lock overhead. Instead, we implement the Saga pattern using Dapr Workflows or temporal orchestrators, with asynchronous compensation events ensuring eventual consistency.
-{{< /faq >}}
 
-{{< faq q="How do you ensure idempotency across distributed microservices when Dapr delivers duplicate events?" >}}
+### Q3: How do you ensure idempotency across distributed microservices when Dapr delivers duplicate events?
 Every microservice database maintains a dedicated `processed_events` table. Before executing domain updates, the receiving service inserts the incoming `event_id` within the same DB transaction. Duplicate deliveries trigger a primary key constraint violation, causing the microservice to safely acknowledge and drop the message.
-{{< /faq >}}
+

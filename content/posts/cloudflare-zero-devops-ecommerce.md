@@ -37,7 +37,7 @@ This guide we dissect **Aura Store** — a production-grade Cloudflare Workers E
 
 ## 1. Turborepo Monorepo Architecture in Practice
 
-Merging an Admin API and a Public API into a single backend is an invitation for privilege escalation bugs. Aura Store keeps them strictly apart. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below.
+Merging an Admin API and a Public API into a single backend is an invitation for privilege escalation bugs. Aura Store keeps them strictly apart across six dedicated monorepo packages:
 
 * **`apps/storefront-ui`**: Customer-facing storefront (Next.js 15+) — deployed to Cloudflare Pages for Edge rendering.
 * **`apps/admin-ui`**: The back-office control panel (Vite/React) — deployed to Pages, strictly protected behind corporate SSO.
@@ -111,9 +111,7 @@ In large e-commerce teams, local cache hits are extended to CI/CD servers via Re
 
 ## 2. Multi-Environment Wrangler Configuration
 
-Handling relational data, key-value storage, and queue processing at the edge requires careful binding definitions in the Worker configuration. The `wrangler.toml` file must define boundaries for development, staging, and production environments. 
-
-Here is the complete production-grade `wrangler.toml` config for `public-api`:
+Handling relational data, key-value storage, and queue processing at the edge requires careful binding definitions in the Worker configuration. The `wrangler.toml` file below defines multi-environment overrides for D1 database IDs, KV namespaces, and R2 bucket bindings across staging and production:
 
 ```toml
 name = "public-api-worker"
@@ -192,7 +190,7 @@ When thousands of users attempt to write to the database simultaneously during a
 ### The Solution: Transaction Batching via the D1 Batch API
 To prevent lock timeouts, we must minimize database write roundtrips. Instead of opening multiple transactions sequentially, we combine queries into a single batch using the native `db.batch()` API. This locks the database exactly once, executes all operations in memory, and writes them in a single file-system operation.
 
-Below is the TypeScript implementation showing how to execute an edge checkout transaction batch with Drizzle ORM and D1.
+The TypeScript code snippet below demonstrates how to process edge checkout transactions, deduct stock, and insert order line items within a single atomic batch:
 
 ```typescript
 import { drizzle } from "drizzle-orm/d1";
@@ -298,7 +296,7 @@ export async function processEdgeCheckout(
 
 In an e-commerce platform, serving product lists and details with sub-100ms latency globally requires aggressive edge caching. Cloudflare Workers allow developers to intercept fetch requests and interact programmatically with the globally distributed Cloudflare Cache API, bypassing database calls entirely for hot static routes.
 
-Below is the routing and edge caching script integrated into Aura Store's `public-api` worker.
+The TypeScript script below details the routing and edge caching handler integrated into Aura Store's `public-api` worker:
 
 ```typescript
 // apps/public-api/src/caching.ts - Edge Caching & Routing Handler
@@ -357,7 +355,7 @@ export async function handleRequest(request: Request, env: any, ctx: any): Promi
 }
 ```
 
-### Deep Dive into Edge Caching Architecture
+### In-Depth Edge Caching Architecture
 
 The caching strategy relies on several advanced characteristics of the Cloudflare network:
 
@@ -375,7 +373,7 @@ The worker stores a version token or last-modified timestamp in KV under a globa
 
 ## 4. Automated Mobile SDK Generation
 
-This is the sharpest edge of Aura Store's architecture, and one that almost no Cloudflare tutorial covers. API contracts are defined **once** as Zod schemas in `packages/contract`. When a PR merges, the pipeline runs. The code implementation below illustrates the production configuration, error handling, and performance optimization techniques.
+This is the sharpest edge of Aura Store's architecture. API contracts are defined once as Zod schemas in `packages/contract`. The GitHub Actions workflow YAML below automatically generates Dart and Swift client SDKs whenever contract definitions change and opens a pull request with the updated bindings:
 
 ```yaml
 # Source: .github/workflows/openapi-sdk.yml
@@ -437,7 +435,7 @@ The Stripe CLI prints a `STRIPE_WEBHOOK_SECRET` value; paste it into `apps/publi
 
 ---
 
-## 6. Frequently Asked Questions (FAQ)
+## Frequently Asked Questions
 
 ### What defines a Zero DevOps edge serverless architecture for modern e-commerce platforms?
 

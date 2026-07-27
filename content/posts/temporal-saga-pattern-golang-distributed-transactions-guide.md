@@ -137,7 +137,7 @@ In FinTech systems handling monetary movements, **Orchestrated Sagas via Tempora
 
 ## Section 2: Architecture & Sequence Flows (Mermaid Sequence Diagrams)
 
-To understand how Temporal orchestrates distributed FinTech transactions, let's analyze three critical lifecycle sequence flows: Happy Path Execution, Backward Compensation Rollback, and Network Partition / Heartbeat Timeout Recovery.
+Visualizing distributed transaction lifecycles requires analyzing sequence flows across happy-path executions, compensation rollbacks, and network recovery scenarios. Modern FinTech architectures rely on Temporal's event history logs to trace activity execution states, coordinate dynamic reverse compensations, and recover from worker node crashes across high-concurrency 2026 financial microservice networks.
 
 ### 1. Happy Path Money Transfer Flow
 
@@ -254,7 +254,11 @@ sequenceDiagram
 
 ## Section 3: Production-Ready Go Implementation with Temporal SDK
 
+Building production-ready distributed sagas in Go demands strict adherence to workflow determinism, robust activity retry policies, and database-level idempotency checks. The technical implementations below demonstrate how to structure domain types, implement Temporal workflow orchestration, and write idempotent activity handlers with PostgreSQL row-level locks across 2026 enterprise FinTech applications.
+
 ### 1. Domain Models & Struct Definitions (`types.go`)
+
+Designing strong domain models requires using integer-based minor units for monetary representations to eliminate floating-point rounding errors. The Go struct definitions below define request payloads, activity parameters, and state tracking entities:
 
 ```go
 package saga
@@ -339,6 +343,8 @@ type SagaState struct {
 ```
 
 ### 2. Workflow Implementation (`workflow.go`)
+
+Workflow functions define the deterministic control flow of the distributed transaction. The Go implementation below orchestrates multi-activity execution, dynamic compensation registration, and query state tracking:
 
 ```go
 package saga
@@ -534,6 +540,8 @@ func MoneyTransferWorkflow(ctx workflow.Context, req TransactionRequest) (finalS
 ```
 
 ### 3. Production Activity Definitions with Idempotent SQL Operations (`activities.go`)
+
+Activities handle non-deterministic side-effects such as database reads, balance mutations, and external API requests. The Go code below implements atomic database transactions with row-level locks and idempotency verification:
 
 ```go
 package saga
@@ -763,7 +771,7 @@ func (a *SagaActivities) PostLedgerEntry(ctx context.Context, req TransactionReq
 
 ## Section 4: Deep Failure Analysis & Edge Cases
 
-Designing distributed financial systems requires preparing for rare, complex edge cases that crash naive implementations. The code implementation below illustrates the production configuration, error handling, and performance optimization techniques. Writing clean, performant code requires adhering to established software engineering patterns and defensive programming. The code implementation below illustrates the production configuration, memory efficiency rules, error handling strategies, and performance optimization techniques.
+Operating distributed financial sagas in high-throughput cloud environments requires preparing for complex edge cases, network split-brain scenarios, and worker crashes. System engineers must analyze activity heartbeat timeouts, zombie process isolation, database connection pool saturation, and non-deterministic workflow replay panics to maintain strict financial consistency across 2026 production microservices.
 
 ```
                   +-------------------------------------------------+
@@ -793,10 +801,9 @@ In a microservice deployment distributed across multi-region cloud Availability 
 
 ### 2. Activity Heartbeat Timeouts & Zombie Activities
 
-A **Zombie Activity** occurs when an activity worker node experiences a prolonged Garbage Collection (GC) stop-the-world pause (or OS thread freeze) lasting 30 seconds.
+A **Zombie Activity** occurs when an activity worker node experiences a prolonged Garbage Collection (GC) stop-the-world pause (or OS thread freeze) lasting 30 seconds. Without heartbeats, Temporal waits for `StartToCloseTimeout` (e.g., 5 minutes), during which the system stalls. With heartbeats (`HeartbeatTimeout = 5s`), the worker process sends periodic pings via `activity.RecordHeartbeat(ctx, details)`. If a node freezes beyond the timeout, Temporal marks the worker dead, cancels its execution context, and reassigns the activity to a healthy worker.
 
-- Without heartbeats: Temporal waits for `StartToCloseTimeout` (e.g., 5 minutes). During these 5 minutes, the system stalls.
-- With heartbeats (`HeartbeatTimeout = 5s`): The Temporal worker background process sends a heartbeat ping every 2 seconds via `activity.RecordHeartbeat(ctx, details)`. If the node freezes for 6 seconds, Temporal immediately marks the worker dead, cancels its execution context (`ctx.Done()`), and assigns the activity to another node. When the frozen node unfreezes, its DB operation checks `ctx.Err()` and aborts cleanly.
+The diagram below illustrates the normal heartbeat flow compared to zombie worker task reassignment:
 
 ```
 Normal Heartbeat Flow:
@@ -816,7 +823,8 @@ When downstream services stutter, Temporal retry policies (`MaximumAttempts: 5`,
 If 1,000 concurrent workflows trigger activity retries simultaneously, `db.BeginTx()` will saturate max PostgreSQL connections (`max_connections = 100`), causing `pq: sorry, too many clients already` errors.
 
 **Mitigation Tactics**:
-- Set strict connection limits in Go's `sql.DB`:
+
+To prevent database connection pool saturation during activity retry bursts, configure strict connection bounds on Go's `sql.DB` handle:
   ```go
   db.SetMaxOpenConns(50)
   db.SetMaxIdleConns(25)
@@ -831,7 +839,8 @@ Temporal Go workflows execute state progression via event history replay. When a
 **Fatal Anti-Patterns (Rule Violations)**:
 - Calling standard Go `time.Now()` directly inside workflow code. During replay, `time.Now()` returns the current timestamp instead of the original historical timestamp, causing a replay divergence panic!
 - Generating random numbers (`rand.Intn()`) or UUIDs (`uuid.New()`) inside workflow functions.
-- Querying external APIs or databases directly inside workflow code (must ALWAYS be done inside Activities).
+
+To ensure workflow determinism, isolate all side-effects within Activities or use Temporal's deterministic workflow primitives:
 
 ```go
 // ❌ BAD: Non-deterministic workflow logic (Triggers Panic!)
@@ -854,23 +863,25 @@ func GoodWorkflow(ctx workflow.Context) error {
 
 ---
 
-## Section 5: Frequently Asked Questions (FAQ)
+## Frequently Asked Questions
+
+Below are answers to critical technical questions regarding Temporal Saga pattern implementations in Go, activity heartbeat timeout configurations, database idempotency key enforcement, and event-driven worker crash recovery. These concise responses summarize practical architectural guidance for orchestrating reliable, fault-tolerant distributed transactions across high-scale 2026 FinTech systems.
 
 ### How do Saga pattern compensation workflows guarantee financial consistency during partial transaction failures in Go?
 
-**Answer:** Saga pattern compensation workflows track mutating local transactions sequentially and register inverse compensating operations (e.g., `saga.AddCompensation`) immediately after each successful mutating step. If a downstream step fails (such as an account credit rejection or ledger lock failure), the Temporal workflow engine unwinds the transaction by executing registered compensations in strict reverse order ($C_n \rightarrow \dots \rightarrow C_1$). This ensures that all previously debited or reserved funds are refunded, restoring multi-database balances to a consistent financial state without leaving stranded unallocated money.
+Saga pattern compensation workflows track mutating local transactions sequentially and register inverse compensating operations (such as `saga.AddCompensation`) immediately after each successful mutating step. If a downstream step fails (such as an account credit rejection or ledger lock failure), the Temporal workflow engine unwinds the transaction by executing registered compensations in strict reverse order. This ensures that all previously debited or reserved funds are refunded, restoring multi-database balances to a consistent financial state without leaving stranded unallocated money.
 
 ### How does the Temporal Go SDK handle activity retry policies, heartbeats, and transient network errors?
 
-**Answer:** The Temporal Go SDK configures activity retry behavior using `temporal.RetryPolicy` parameters, including initial backoff intervals, exponential backoff coefficients, maximum retry attempts, and explicit non-retryable application error lists (such as `InsufficientFundsError` or `AccountFrozenError`). For long-running or distributed activities, worker nodes issue periodic heartbeats using `activity.RecordHeartbeat(ctx, details)`. If a network partition or worker crash interrupts heartbeating beyond `HeartbeatTimeout`, the Temporal cluster marks the activity execution stale and reschedules it onto an operational worker node automatically.
+The Temporal Go SDK configures activity retry behavior using `temporal.RetryPolicy` parameters, including initial backoff intervals, exponential backoff coefficients, maximum retry attempts, and explicit non-retryable application error lists. For long-running or distributed activities, worker nodes issue periodic heartbeats using `activity.RecordHeartbeat(ctx, details)`. If a network partition or worker crash interrupts heartbeating beyond `HeartbeatTimeout`, the Temporal cluster marks the activity execution stale and reschedules it onto an operational worker node automatically.
 
 ### How is idempotency enforced in distributed transactions to prevent double-debiting during activity retries?
 
-**Answer:** Idempotency is enforced by pairing unique transaction request tokens with database-level atomic lock records (`idempotency_keys` table using `SELECT FOR UPDATE`). Before executing balance mutations inside an activity, the Go worker queries the idempotency table for the unique key formatted as `[ClientToken]#[WorkflowID]#[ActivityName]`. If the record already exists with status `COMPLETED`, the activity skips the database update and returns the cached result payload directly; if novel, it inserts a `PROCESSING` status, executes the SQL transaction, updates the status to `COMPLETED`, and commits atomically.
+Idempotency is enforced by pairing unique transaction request tokens with database-level atomic lock records using an `idempotency_keys` table with `SELECT FOR UPDATE`. Before executing balance mutations inside an activity, the Go worker queries the idempotency table for the unique key. If the record already exists with status `COMPLETED`, the activity skips the database update and returns the cached result payload directly; if novel, it inserts a `PROCESSING` status, executes the SQL transaction, updates the status to `COMPLETED`, and commits atomically.
 
 ### How does event-driven transaction recovery operate when a Temporal worker pod crashes mid-execution?
 
-**Answer:** Event-driven transaction recovery relies on Temporal's append-only Event History log, which records every workflow state transition and activity completion in the Temporal cluster storage layer. When a worker pod crashes mid-execution, the Temporal cluster detects the lost connection and assigns the pending workflow task queue item to another worker node in the cluster. The new worker replays the event history from line 1, feeding historical activity outputs from the history log instead of re-executing completed activities, resuming execution seamlessly from the exact point of failure.
+Event-driven transaction recovery relies on Temporal's append-only Event History log, which records every workflow state transition and activity completion in the Temporal cluster storage layer. When a worker pod crashes mid-execution, the Temporal cluster detects the lost connection and assigns the pending workflow task queue item to another worker node in the cluster. The new worker replays the event history, feeding historical activity outputs from the history log instead of re-executing completed activities, resuming execution transparently from the exact point of failure.
 
 ---
 

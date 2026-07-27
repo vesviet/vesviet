@@ -31,7 +31,7 @@ canonicalURL: "https://tanhdev.com/posts/ai-native-frontend-architecture-predict
 
 ## Executive Summary & AI Playbook Baseline
 
-Transitioning engineering organizations into AI-native operations requires an end-to-end strategy across 5 foundational pillars. The following design baselines outline the essential trade-offs, performance targets, and architectural patterns required for enterprise deployment. Establishing an effective architecture requires defining clear performance baselines, fault-tolerance mechanisms, and modular service boundaries early in the design cycle. The following principles and design baselines outline the essential trade-offs and operational patterns required for successful enterprise deployment.
+Transitioning engineering organizations into AI-native operations requires an end-to-end strategy across 5 foundational pillars. Establishing an effective architecture requires defining clear performance baselines, fault-tolerance mechanisms, and modular service boundaries early in the design cycle.
 
 1. **Context Engineering & DDD**: Aligning agent context windows with Domain-Driven Design bounded contexts to eliminate prompt hallucination.
 2. **AI Platform Layer**: Centralizing LLM API gateways, semantic caching, rate limiting, and model fallback cascades across all frontend and backend clients.
@@ -43,7 +43,7 @@ Transitioning engineering organizations into AI-native operations requires an en
 
 ## 1. Context Engineering & Domain-Driven Design (DDD)
 
-Context engineering injects structured, domain-scoped data into LLM prompts using Domain-Driven Design (DDD) boundaries. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
+Context engineering injects structured, domain-scoped data into LLM prompts using Domain-Driven Design (DDD) boundaries to prevent hallucinations and optimize context window consumption.
 
 - **Bounded Context Isolation**: Prompts receive data scoped strictly to their aggregate root (e.g. Cart, Order, or Catalog). Decoupling domain contexts ensures that client-side AI agent reasoning remains tightly bound to relevant fields, preventing prompt context contamination across microservices and reducing token consumption by over 60%.
 - **Frontend AI Agent Integration**: Client-side AI agents run directly within the browser runtime or web worker threads, consuming user interactions and DOM events to build real-time context snapshots. These agents manage sliding token window buffers and local state caches before dispatching context bundles to remote inference providers.
@@ -53,7 +53,9 @@ Context engineering injects structured, domain-scoped data into LLM prompts usin
 
 ## 2. Centralized AI Platform Layer & Edge Runtime Optimization
 
-A modern enterprise AI Platform Layer decouples product code from cloud LLM vendors via centralized proxying, token usage tracking, and edge runtime optimization. The sequence diagram below traces the component interactions, data events, and boundary transitions across the workflow. Visualizing system interactions helps clarify data boundaries, concurrency limits, and failure domain separation. The sequence diagram below traces the component interactions, message flows, API gateways, and boundary transitions across the complete execution path.
+A modern enterprise AI Platform Layer decouples product code from cloud LLM vendors via centralized proxying, token usage tracking, and edge runtime optimization.
+
+The system architecture diagram below illustrates how an edge gateway inspects incoming requests, queries a low-latency semantic cache, and manages downstream LLM failovers:
 
 ```mermaid
 graph TD
@@ -74,7 +76,7 @@ Centralizing model routing at the edge gateway boundary (deployed on platforms l
 
 ## 3. Policy-as-Code & Agentic CI/CD
 
-All AI-generated code and runtime UI payloads pass through automated policy enforcement gates before execution or deployment. In Generative UI runtimes, policy rules validate tool call arguments against strict schema boundaries. The code implementation below illustrates the production configuration, error handling, and performance optimization techniques.
+All AI-generated code and runtime UI payloads pass through automated policy enforcement gates before execution or deployment. The following TypeScript snippet demonstrates how Zod runtime validation intercepts and sanitizes dynamic agent payloads before component mounting:
 
 ```typescript
 import { z } from "zod";
@@ -116,6 +118,8 @@ function handleAgentPayload(payload: unknown) {
 | 09 | Edge Semantic Caching cuts LLM API costs 60–80% | 🟡 Early signal |
 | 10 | Legacy SPAs become unmigrateable monoliths, requiring Strangler Fig | 🟡 Early signal |
 
+The sequence diagram below traces the end-to-end interaction flow between an autonomous AI agent, an MCP registry server, and the browser DOM during a Generative UI rendering cycle:
+
 ```mermaid
 sequenceDiagram
     participant A as AI Agent (Claude / GPT)
@@ -142,18 +146,16 @@ Model Context Protocol (MCP) serves as the core transport protocol linking brows
 
 ---
 
-## FAQ
+## Frequently Asked Questions
 
-{{< faq q="What is the technical role of Model Context Protocol (MCP) in generative UI frontends?" >}}
+### Q1: What is the technical role of Model Context Protocol (MCP) in generative UI frontends?
 MCP acts as the standardized state and capability exchange protocol between AI reasoning agents and the frontend client. Instead of writing custom API adapters for every component, the client uses MCP to negotiate component schema rendering, state synchronization, and tool execution bounds in real-time.
-{{< /faq >}}
 
-{{< faq q="How do we handle state validation when LLMs stream dynamic UI components directly to the client?" >}}
-We enforce strict schema parsing at the client boundary using libraries like Zod or TypeBox. The frontend never executes raw streamed JSON/TSX without validating props against a pre-compiled, versioned component registry.
-{{< /faq >}}
+### Q2: How do we handle state validation when LLMs stream dynamic UI components directly to the client?
+We enforce strict schema parsing at the client boundary using libraries like Zod or TypeBox. The frontend never executes raw streamed JSON/TSX without validating props against a pre-compiled, versioned component registry, preventing security vectors like XSS.
 
-{{< faq q="Why is Policy-as-Code required for agentic CI/CD pipelines?" >}}
-Policy-as-Code ensures that autonomous pull requests or code edits generated by AI agents meet security standards, linting rules, and test coverage thresholds automatically before code is merged into main branches.
-{{< /faq >}}
+### Q3: Why is Policy-as-Code required for agentic CI/CD pipelines?
+Policy-as-Code ensures that autonomous pull requests or code edits generated by AI agents meet security standards, linting rules, and test coverage thresholds automatically before code is merged into main branches. It provides deterministic compliance gates without requiring manual human code reviews for every minor change.
 
 {{< author-cta >}}
+

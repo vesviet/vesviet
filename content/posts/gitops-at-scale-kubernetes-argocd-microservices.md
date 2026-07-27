@@ -151,6 +151,8 @@ Managing manifests for 21 services across 3 environments produces 60+ YAML files
 
 ### Base Manifest (Environment-Agnostic)
 
+The Kustomize base deployment defines the standard Kubernetes pod specifications, resource limits, and health probes shared across all environments:
+
 ```yaml
 # apps/order-service/base/deployment.yaml
 apiVersion: apps/v1
@@ -193,6 +195,8 @@ spec:
             periodSeconds: 15
 ```
 
+The base kustomization file aggregates these core resources:
+
 ```yaml
 # apps/order-service/base/kustomization.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -204,7 +208,7 @@ resources:
 
 ### Production Overlay (Patches Only What Differs)
 
-The overlay never duplicates the base — it only patches what changes per environment:
+The overlay configuration patches environment-specific values into the base template without duplicating YAML declarations:
 
 ```yaml
 # apps/order-service/overlays/prod/kustomization.yaml
@@ -247,6 +251,8 @@ patchesStrategicMerge:
                       name: order-service-prod-secrets
                       key: db_host
 ```
+
+Production workloads attach a HorizontalPodAutoscaler to handle fluctuating user load:
 
 ```yaml
 # apps/order-service/overlays/prod/hpa.yaml
@@ -347,26 +353,24 @@ The investment pays off the first time you hit a bad production deploy at 2am. I
 
 **Continue Reading:**
 - [AWS EKS vs ECS: Real-World Use Cases (2026)](/posts/aws-eks-vs-ecs-comparison/) — a practitioner's comparison on choosing the right container orchestrator on AWS, based on running this stack in production.
-- [Go Microservices Architecture: Production Guide](/posts/go-microservices/) — the comprehensive architecture manual for the Go services deployed in this cluster.
+- [Go Microservices Architecture: Production Guide](/posts/go-microservices/) — the production architecture manual for the Go services deployed in this cluster.
 - [What's New in Argo CD 3.4 & 3.3: Cluster Pause & Upgrades](/posts/argo-cd-updates-2026/) — the latest features and breaking changes before you upgrade your GitOps platform.
 - [Mastering Event-Driven Architecture with Dapr Pub/Sub](/posts/mastering-event-driven-architecture-dapr/) — how the 21 microservices deployed here communicate asynchronously.
 - [MySQL Scaling: Replication, Sharding & TiDB](/posts/mysql-scaling-sharding-tidb-architecture/) — scaling the databases that these Kubernetes-managed services depend on.
 
 {{< author-cta >}}
 
-## FAQ
+## Frequently Asked Questions
 
-{{< faq q="Why is 'kubectl apply' considered an anti-pattern in a production GitOps environment?" >}}
+### Why is 'kubectl apply' considered an anti-pattern in a production GitOps environment?
 Directly running `kubectl apply` bypasses the version control system, creating drift between the desired state in Git and the actual state of the cluster. It introduces security risks by requiring developer access keys and makes it impossible to audit changes, perform automated rollbacks, or recover from disasters via Git history.
-{{< /faq >}}
 
-{{< faq q="How does the Argo CD App-of-Apps pattern simplify configuration management for 21+ microservices?" >}}
+### How does the Argo CD App-of-Apps pattern simplify configuration management for 21+ microservices?
 The App-of-Apps pattern uses a root Argo CD Application that manages a collection of child Application manifests. Each child application represents a microservice deployment. This hierarchy allows platform teams to bootstrap, version control, and synchronize the entire multi-tenant service ecosystem as a single declarative unit.
-{{< /faq >}}
 
-{{< faq q="How does Argo CD handle emergency production rollbacks when a deployed image is faulty?" >}}
+### How does Argo CD handle emergency production rollbacks when a deployed image is faulty?
 Emergency rollbacks in GitOps are executed by running `git revert` on the offending Git commit. Argo CD detects the updated target commit in the repository within minutes and automatically synchronizes the Kubernetes cluster to the previous stable manifest state, preserving full auditability without requiring direct cluster access.
-{{< /faq >}}
+
 
 ---
 

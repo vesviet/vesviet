@@ -45,7 +45,9 @@ The engineering constraint that makes this work is non-negotiable: **no fact rea
 
 ## 1. The Business Model: Traffic as a Lead Funnel, Not an Ad Inventory
 
-The revenue model is deliberately not AdSense. Expats renting in Vietnam have a predictable sequence of needs after signing a lease. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
+Structuring an AI-driven publication around high-intent lead generation rather than programmatic ad networks creates a sustainable monetization model for expat relocation platforms. In 2026 digital media architectures, converting organic web traffic into direct B2B service leads generates significantly higher per-user revenue while establishing valuable long-term vendor partnerships across regional relocation markets.
+
+The revenue model is deliberately not AdSense. Expats renting in Vietnam have a predictable sequence of needs after signing a lease:
 
 1. **Moving services** — they need a truck and English-speaking movers
 2. **Cleaning / maid services** — weekly cleaning for unfurnished or furnished units
@@ -72,6 +74,8 @@ The CTA injection is not manual. GPT-5.2 reads the article's data tags and injec
 
 ## 2. The Scam Warning Feature: Trust as a Competitive Moat
 
+Transforming market fraud anxieties into a primary trust signal enables the intelligence system to capture high-intent expat traffic while building long-term brand authority. By utilizing automated extraction algorithms to evaluate price variances, deposit terms, and address legitimacy, the platform identifies fraudulent listings and renders proactive warnings to safeguard readers across foreign rental markets.
+
 Expats renting in Vietnam have one dominant anxiety: being scammed. Fake listings, bait-and-switch prices, deposit theft, landlords who refuse to register tenants with the police. This anxiety is the reason they search in English rather than using Vietnamese platforms directly.
 
 The system turns this anxiety into a trust signal. The AI Extractor is programmed to detect scam indicators during data collection:
@@ -95,7 +99,9 @@ No Vietnamese real estate portal does this. No expat blog does this at scale. Th
 
 ## 3. The Architecture: Eight Stages, Two Nodes, One Rule
 
-The following system architecture diagram and sequence flow illustrate how control signals, API boundaries, background workers, and data pipelines interact during request execution. This comprehensive trace highlights the key communication protocols, retry mechanisms, and state transitions required to maintain operational stability under peak production loads.
+Designing an autonomous intelligence engine requires decoupling data ingestion and extraction pipelines from editorial synthesis and publishing workflows across dedicated server nodes. In 2026 AI system architectures, separating scraping infrastructure on Node 112 from PostgreSQL storage and LLM generation on Node 114 ensures high availability, strict security boundaries, and predictable execution latency.
+
+The system architecture diagram below illustrates how control signals, API boundaries, background workers, and data pipelines interact across Node 112 and Node 114:
 
 ```mermaid
 flowchart TD
@@ -122,6 +128,8 @@ flowchart TD
 Node 112 also exposes a secure Edge API Gateway that allows external workers — laptops, personal machines — to contribute crawling capacity when available. This reduces infrastructure costs by approximately 80% during peak crawl periods. The key design decision: **Node 112 always maintains its own internal workers**, so the system runs autonomously even when no external machines are connected. External workers are acceleration, not dependency.
 
 ## 4. The Anti-Hallucination Pipeline
+
+Enforcing absolute factual accuracy across automated rental publications necessitates implementing a multi-stage anti-hallucination verification pipeline. By validating extracted attributes against original DOM elements, executing strict business verification rules, and using local small language models for constrained text classification, the architecture guarantees every published metric retains a traceable evidence chain.
 
 Every field that ends up in a published article passes through four verification layers. This is not optional — it is the architectural foundation that makes the trust portal claim credible.
 
@@ -194,7 +202,9 @@ Idempotency-Key: bundle_20260424_hcmc_001
 
 ## 5. The Selector Profile System
 
-The system has 11 domain-specific YAML profiles covering `batdongsan.com.vn`, `chotot.com`, `nhatot.com`, Reddit threads, Google Maps reviews, official legal pages, and expat blog guides. The code implementation below illustrates the production configuration, error handling, and performance optimization techniques. Writing clean, performant code requires adhering to established software engineering patterns and defensive programming. The code implementation below illustrates the production configuration, memory efficiency rules, error handling strategies, and performance optimization techniques.
+Standardizing data extraction across diverse web formats requires maintaining a modular selector profile system stored as domain-specific YAML configurations. By defining priority extraction rules, DOM fallback cascades, and baseline confidence weights for every scraped platform, the system adapts to website redesigns while preserving high-confidence structured output for downstream processing.
+
+The system has 11 domain-specific YAML profiles covering `batdongsan.com.vn`, `chotot.com`, `nhatot.com`, Reddit threads, Google Maps reviews, official legal pages, and expat blog guides. Below is an example listing extraction profile for `batdongsan.com.vn`:
 
 ```yaml
 profile_id: "batdongsan_listing_detail_v1"
@@ -219,7 +229,9 @@ When a domain has no profile, the extractor falls back to generic JSON-LD and me
 
 ## 6. The Editorial Engine: GPT-5.2 as Layout Engineer
 
-Once verified bundles arrive at Node 114, PostgreSQL tracks all state transitions. The router classifies bundles into two content types. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
+Orchestrating long-form editorial synthesis using large language models requires treating generative models as deterministic layout engineers rather than unconstrained creative writers. By supplying pre-validated JSONL payloads and enforcing strict MDX component contracts, the editorial engine programmatically injects dynamic price tables, scam warnings, and contextual call-to-action blocks without risking factual hallucination.
+
+Once verified bundles arrive at Node 114, PostgreSQL tracks all state transitions. The router classifies bundles into two content types:
 
 - **Radar articles** — same category tag and location, triggers at 5 items, 600-1200 words, single CTA
 - **Guide articles** — multiple category tags for the same sub-location, triggers at 15 items with ≥3 distinct tags, deep-dive format
@@ -235,6 +247,8 @@ The model acts as a layout engineer, not a creative writer. The output is determ
 
 ## 7. Dual-Mode Operation
 
+Supporting both automated background publishing and on-demand manual execution ensures the intelligence platform balances continuous SEO growth with rapid breaking news coverage. Operating dual-mode workflows allows scheduled daily crawlers to update market indices autonomously while enabling administrators to trigger instant pipeline execution via Telegram bot commands during sudden regulatory changes or viral market events.
+
 The system supports two content production modes:
 
 **Auto mode** runs on a daily cron. The system maintains a list of core keywords — *"Thao Dien apartment price"*, *"Nha Trang nomad hub"*, *"District 7 expat living"* — and autonomously crawls, extracts, and publishes market updates and area guides without human intervention.
@@ -242,6 +256,8 @@ The system supports two content production modes:
 **Manual mode via Telegram** handles breaking trends and niche requests. An admin sends a single keyword to the Telegram bot. The bot triggers the full pipeline — search, extract, verify, write, review, publish — and the article is live within minutes. This is the mechanism for responding to a viral Reddit thread about a scam, a sudden visa regulation change, or a new expat community forming in a new district.
 
 ## 8. Content Strategy: Four Buckets, One Conversion Goal
+
+Aligning content taxonomies with distinct monetization funnels guarantees that every published article drives qualified reader leads toward partner service providers. By categorizing articles into area guides, relocation manuals, market updates, and practical living tips, the publishing pipeline dynamically embeds relevant conversion components optimized for moving, cleaning, furniture, or legal consultations.
 
 Every piece of content is designed to convert toward one of the B2B lead categories:
 
@@ -255,6 +271,8 @@ Every piece of content is designed to convert toward one of the B2B lead categor
 The Area Guides bucket is the MVP focus — evergreen content, strong SEO, no time sensitivity, ideal for testing the full 8-stage pipeline before expanding to time-sensitive market updates.
 
 ## 9. The 10-Agent Scraper Swarm
+
+Scaling geographic data ingestion across diverse domain topics requires deploying a distributed swarm of specialized web scraping agents. Each dedicated agent isolates specific attributes such as rental prices, community sentiment, infrastructure updates, or legal regulations, enforcing strict geographical bounding boxes to ensure collected intelligence remains focused on designated target rental markets.
 
 Data collection runs 10 specialized agents, each geo-fenced to Southern Vietnam (Nha Trang → Phú Quốc):
 
@@ -275,6 +293,8 @@ The geo-fence is enforced at both the system prompt level and the verifier level
 
 ## 10. Roadmap
 
+Executing a phased development roadmap enables the engineering team to validate pipeline reliability before expanding regional coverage and scaling platform capabilities. Moving from initial core urban guides to coastal market expansion and ultimately real-time short-term rental tracking ensures infrastructure stability, partner network readiness, and consistent lead generation growth across target geographic markets.
+
 **Phase 1 — MVP:** Area Guides for HCMC (Thao Dien, District 7). Evergreen content, strong SEO, no time sensitivity. Goal: validate the full 8-stage pipeline end-to-end and establish the first B2B partner relationships.
 
 **Phase 2 — Coastal expansion:** Nha Trang and Phú Quốc. Deep B2B partner integration with automated commission reconciliation via Telegram SLA bot. Market Updates and Practical Living content buckets activated.
@@ -282,6 +302,8 @@ The geo-fence is enforced at both the system prompt level and the verifier level
 **Phase 3 — Platform scale:** Short-term rental coverage (Airbnb-adjacent), real-time price tracking, and expansion to northern Vietnam (Hanoi, Hai Phong) once the southern pipeline is stable.
 
 ## 11. Lessons Learned
+
+Extracting technical insights from operating an autonomous rental intelligence platform reveals critical architectural patterns for enterprise AI systems. Decoupling ingestion networks from editorial pipelines, enforcing strict confidence thresholds, preserving quarantine queues, and constraining generative models to structured component rendering prove essential for building resilient, high-converting automated publishing engines in 2026.
 
 **The trust portal is the product, not the content.** The scam warning feature, the evidence-backed prices, the verified legal information — these are what make the B2B lead funnel work. Expats pay attention to a source that tells them when something looks wrong, not just when something looks good.
 
@@ -306,16 +328,16 @@ The geo-fence is enforced at both the system prompt level and the verifier level
 
 {{< author-cta >}}
 
-## FAQ
+## Frequently Asked Questions
 
-{{< faq q="How does the LeaseInVietnam system prevent AI hallucinations in published content?" >}}
-The system enforces a **four-layer anti-hallucination pipeline**: (1) Deterministic extraction with confidence scoring — data is extracted from JSON-LD, DOM selectors, or regex with an attached confidence score; if no evidence chain exists, the field is dropped, not guessed; (2) Verifier with hard-reject rules — any field sourced via `llm_guess` is immediately rejected; (3) Gemma4:e4b running locally receives only `verified_fields` and `evidence[]` — it cannot see raw HTML and therefore cannot hallucinate from it; (4) GPT-5.2 receives a typed JSONL payload, not a creative brief — it acts as a layout engineer outputting structured MDX, not a writer inventing facts. Records below 0.80 composite confidence go to quarantine, not to the website.
-{{< /faq >}}
+Addressing common architectural and technical inquiries clarifies how the LeaseInVietnam system combines automated web scraping, local language model verification, and lead generation webhooks. The following answers detail anti-hallucination pipelines, B2B lead monetization mechanisms, and dual-mode production workflows powering the autonomous expat rental intelligence platform.
 
-{{< faq q="How does the LeaseInVietnam B2B lead funnel work?" >}}
-Every reader interaction routes to a B2B commission partner via an n8n webhook on Node 114. When an expat fills out a CTA form, the webhook fires and routes to the relevant partner via Telegram — moving services (10–15% commission), cleaning services (bTaskee / JupViec), furniture rentals, or legal/visa consultants. The CTA component is not manually inserted: GPT-5.2 reads the article's data tags and injects the contextually correct CTA automatically. An article about deposit scams gets a legal consultation CTA. An article about moving to Thao Dien gets a moving service CTA. Commission reconciliation is logged per referral for end-of-month settlement.
-{{< /faq >}}
+### How does the LeaseInVietnam system prevent AI hallucinations in published content?
+The system enforces a four-layer anti-hallucination pipeline combining deterministic extraction, hard-reject verifier rules, isolated local SLM inference, and structured MDX output contracts. If no DOM selector or JSON-LD evidence chain exists for a rental price or location, the field is quarantined rather than guessed by the generative model.
 
-{{< faq q="What is the difference between Auto mode and Manual mode in this AI content pipeline?" >}}
-**Auto mode** runs on a daily cron against a list of core keywords (e.g., "Thao Dien apartment price," "District 7 expat living") and autonomously crawls, extracts, verifies, writes, and publishes market updates and area guides without human intervention. **Manual mode via Telegram** handles breaking trends: an admin sends a single keyword to the Telegram bot, which triggers the full 8-stage pipeline (search → extract → verify → write → review → publish) and produces a live article within minutes. Manual mode handles time-sensitive events: viral Reddit threads about scams, sudden visa regulation changes, or new expat communities forming in a new district.
-{{< /faq >}}
+### How does the LeaseInVietnam B2B lead funnel generate revenue?
+Reader interactions automatically trigger webhooks that route verified expat leads directly to partner Telegram channels for moving, cleaning, furniture rental, and visa services. GPT-5.2 inspects article topic tags to inject contextually relevant service CTAs, while commission logging tracks end-of-month referral payouts.
+
+### What is the difference between Auto mode and Manual mode in the content pipeline?
+Auto mode executes daily background jobs crawling core expat search topics and publishing verified rental market updates via GitOps. Manual mode allows administrators to trigger immediate multi-stage processing for breaking news or scam alerts by sending a single keyword command to the Telegram management bot.
+

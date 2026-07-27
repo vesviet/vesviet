@@ -31,7 +31,7 @@ canonicalURL: "https://tanhdev.com/posts/strangler-fig-shared-database-quick-win
 
 ## The Strangler Fig Dilemma: Compute vs. Data
 
-When migrating away from a Magento monolith to a Golang backend, architects face a non-obvious decision: do we migrate the *API layer* and the *database* at the same time?
+Migrating monolithic e-commerce platforms like Magento to Go microservices presents software architects with a crucial decision regarding compute and data separation timelines. Decoupling application API compute layers before refactoring underlying relational databases allows engineering teams to achieve immediate execution latency gains while systematically designing long-term data isolation strategies across modern 2026 systems.
 
 Migrating both simultaneously requires setting up Eventual Consistency, Dual-Writes, and Saga patterns from Day 1. This delays time-to-market and prevents the business from seeing performance improvements for 9–18 months.
 
@@ -43,7 +43,7 @@ But "buy time" only works if you have a clear plan for Phase 2. This post define
 
 ## Three Options on the Table
 
-When decomposing a complex monolithic database into modular microservices, engineering teams generally evaluate three distinct architectural migration strategies. Each option balances operational complexity against long-term decoupling speed, data consistency requirements, service autonomy, and infrastructure maintenance overhead under peak production loads.
+Decomposing monolithic e-commerce databases into modular microservices requires evaluating three core architectural migration paths. Engineering leaders must balance immediate compute performance gains against operational complexity, transaction consistency boundaries, legacy codebase modification requirements, and long-term service autonomy when choosing between shared database access, Change Data Capture pipelines, and event bus architectures in 2026.
 
 ```
 ┌──────────────────┬──────────────────────────┬──────────────────────────┐
@@ -110,6 +110,8 @@ MySQL row-level locks prevent dirty reads but **do not prevent business logic co
 
 #### Dark Side 3: Distributed Monolith Trap
 
+Connecting separate runtime services directly to a shared database schema creates a distributed monolith architecture. The diagram below illustrates how shared database coupling compromises microservice autonomy:
+
 ```
 Go service ───────▶ Shared MySQL ◀─────── PHP Magento
     ↑                                           ↑
@@ -119,6 +121,8 @@ Go service ───────▶ Shared MySQL ◀─────── PHP Ma
 You now have two separate runtimes but **one failure domain**. A Go query that performs a full-scan on `catalog_product_entity_varchar` degrades Magento's checkout performance. This is architecturally identical to a monolith — it is just harder to debug because two codebases are involved.
 
 #### Dark Side 4: EAV Is the Real Bottleneck — Go Doesn't Fix It
+
+Go executes database queries with minimal runtime overhead, but the execution plan remains bound by EAV schema complexity. The SQL query below illustrates the expensive multi-table join structure required to hydrate a single customer entity from Magento's EAV schema:
 
 ```sql
 -- Just to load one customer with all EAV attributes:
@@ -147,7 +151,7 @@ If you commit to Option A as a transitional state:
 
 ## Option B — Evolutionary CDC + Outbox (Recommended Path)
 
-Option B utilizes Change Data Capture (CDC) and transactional outbox patterns to asynchronously replicate database state to microservice datastores. This approach guarantees eventual consistency, event ordering, and message durability while completely decoupling application runtime dependencies, enabling seamless independent microservice deployments.
+Adopting Change Data Capture alongside transactional outbox patterns allows microservices to stream database state updates asynchronously without modifying legacy monolith source code. By capturing MySQL binary log events with Debezium and processing outbox tables in Go, backend teams achieve eventual consistency, eliminate dual-write hazards, and flatten EAV data schemas across 2026 cloud deployments.
 
 ```
 ┌──────────────┐              ┌──────────────────┐
@@ -179,7 +183,8 @@ Option B utilizes Change Data Capture (CDC) and transactional outbox patterns to
 
 ### How CDC + Outbox Works
 
-**Step 1 — Go creates its own DB for data it owns:**
+**Step 1 — Go creates its own DB for data it owns:** To decouple write paths, the Go microservice provisions standalone tables for session tokens and transactional outbox events. The SQL DDL below creates dedicated tables uncoupled from Magento's schema:
+
 ```sql
 -- Go-owned tables (Go writes here, Magento never touches)
 CREATE TABLE magento_customer_token (
@@ -198,7 +203,8 @@ CREATE TABLE magento_outbox (
 );
 ```
 
-**Step 2 — Debezium streams Magento changes → Go DB:**
+**Step 2 — Debezium streams Magento changes → Go DB:** Debezium monitors database binlogs to replicate committed changes without application intervention. The YAML configuration below specifies table inclusion filters for CDC streaming:
+
 ```yaml
 # debezium-connector.yaml
 connector.class: io.debezium.connector.mysql.MySqlConnector
@@ -208,7 +214,8 @@ table.include.list: magento.customer_entity, magento.catalog_product_entity
 # Debezium reads binlog — zero Magento PHP changes required
 ```
 
-**Step 3 — Go writes use Outbox Pattern (atomic):**
+**Step 3 — Go writes use Outbox Pattern (atomic):** To guarantee that local database updates and outgoing events commit atomically, the Go service executes outbox writes inside the primary database transaction. The Go snippet below illustrates atomic outbox event insertion:
+
 ```go
 // In a single DB transaction — no dual-write risk
 tx.Exec(`INSERT INTO magento_customer_token (...) VALUES (...)`)
@@ -273,6 +280,8 @@ The fundamental difference is **who publishes events**:
 
 ## Full 3-Way Comparison Matrix
 
+Selecting the appropriate database migration pattern requires evaluating technical, operational, and organizational tradeoffs across multiple system dimensions. The comparative breakdown below evaluates Shared Database, Change Data Capture, and Full Event Bus architectures across transactional consistency models, schema coupling risks, implementation timelines, and operational maintenance overhead for 2026 microservice migrations.
+
 | Dimension | Option A: Shared DB | Option B: CDC + Outbox | Option C: Full Event Bus |
 |---|---|---|---|
 | **Consistency model** | Strong ACID ✅ | ACID writes, eventual reads ⚠️ | Eventual consistency ❌ |
@@ -294,6 +303,8 @@ The fundamental difference is **who publishes events**:
 ---
 
 ## Risk Table Per Option
+
+Every database migration strategy carries specific architectural risks and operational trade-offs that impact production reliability. Engineering teams must evaluate potential schema breakage, race conditions, streaming pipeline failures, and event divergence scenarios, implementing targeted engineering mitigations and automated validation checks to safeguard system stability across 2026 production environments.
 
 ### Option A — Shared DB Risks
 
@@ -329,7 +340,7 @@ The fundamental difference is **who publishes events**:
 
 ## Decision Framework — Which Option Is Right for You?
 
-Selecting the optimal architecture requires evaluating workload scale, team operational maturity, and infrastructure cost. The decision matrix below summarizes the primary technical criteria to help guide your deployment strategy. Selecting the optimal technical path requires evaluating workload scale, team operational maturity, and infrastructure costs across all deployment phases. The breakdown below summarizes the primary technical criteria, phase milestones, risk mitigations, and architectural recommendations.
+Evaluating which data migration pattern fits your organization requires balancing team experience, transaction safety limits, and target timelines. Engineering leaders should assess distributed systems expertise, database transaction guarantees, and migration speed before choosing between shared database, change data capture, or event-driven patterns. The decision tree below provides a structured evaluation path.
 
 ```
 Q1: Does your team have 2+ engineers with distributed systems experience?
@@ -349,23 +360,27 @@ Q4: Can the PHP Magento team commit to building and maintaining event publishers
   └─ YES → Option C is viable (timeline: 12–18 months)
 ```
 
-{{< faq q="How long does a Magento database migration to Go take?" >}}
-Option A (Shared DB) is running now — zero additional time. Option B (CDC + Debezium separation, domain by domain) takes **3–12 months** depending on team size and domain complexity: Auth/OIDC in 1–2 months, Customer read in 2–3 months, Cart/Checkout after Saga patterns are proven. Option C (Full Event Bus) requires **12–18 months** plus PHP Magento event publisher development before Go's database can be fully independent.
-{{< /faq >}}
+## Frequently Asked Questions
 
-{{< faq q="What is the Outbox Pattern in microservices?" >}}
-The **Transactional Outbox Pattern** solves the dual-write problem in event-driven systems. Instead of writing to the database AND publishing to Kafka in two separate operations (which can fail independently), you write the event to an `outbox` table **inside the same database transaction** as the business state change. A background processor (OutboxProcessor) then reads the outbox table and publishes events to Kafka at regular intervals — typically every 500ms. This guarantees that if the DB commit succeeds, the event will eventually be published, eliminating silent data loss.
-{{< /faq >}}
+Below are answers to fundamental technical questions regarding Magento database migration strategies, Change Data Capture (CDC) setups with Debezium, and Transactional Outbox pattern implementations. These concise responses summarize practical architectural guidance for decoupling legacy monoliths, eliminating EAV bottlenecks, and ensuring data consistency across modern 2026 microservices.
 
-{{< faq q="Can I use Debezium with Magento MySQL without changing PHP code?" >}}
-Yes. Debezium is a Change Data Capture (CDC) tool that reads MySQL's binary log (`binlog`) directly — it does not require any application code changes. For Magento, you configure the [Debezium MySQL connector](https://debezium.io/documentation/reference/stable/connectors/mysql.html) to monitor specific tables (`customer_entity`, `catalog_product_entity`, etc.) and stream every INSERT/UPDATE/DELETE to Kafka or Redis Streams. The prerequisite is that MySQL `binlog` is enabled on your Magento database server (`log_bin = ON`), which is typically already the case on production MySQL instances configured for replication.
-{{< /faq >}}
+### How long does a Magento database migration to Go take?
+
+Option A (Shared DB) executes immediately as a compute-only proxy phase. Option B (CDC + Debezium domain separation) takes 3 to 12 months depending on domain complexity, migrating Auth in 1 to 2 months and Checkout after Saga patterns mature. Option C (Full Event Bus) requires 12 to 18 months along with dedicated PHP event publisher development.
+
+### What is the Outbox Pattern in microservices?
+
+The Transactional Outbox Pattern eliminates dual-write race conditions in distributed microservices. Instead of attempting independent writes to a database and message queue, outbox records are committed inside the primary database transaction. An asynchronous worker process then publishes committed events to Kafka at regular intervals.
+
+### Can I use Debezium with Magento MySQL without changing PHP code?
+
+Yes, Debezium operates directly against MySQL binary logs (`binlog`) at the infrastructure layer without requiring PHP codebase modifications. By capturing row-level changes asynchronously, Debezium streams catalog and customer events into Kafka topics with sub-100ms latency.
 
 ---
 
 ## Domain Priority — What to Separate First
 
-Not all domains carry equal risk. Migrate in this order regardless of whether you choose Option B or C:
+Sequencing microservice database separation requires categorizing domain services by business risk, data complexity, and transactional dependencies. Engineering teams should prioritize low-risk domains like authentication tokens and wishlists before refactoring complex customer schemas or high-stakes cart and checkout transaction ledgers across multi-phase 2026 migration roadmaps.
 
 | Domain | Priority | Why | Risk |
 |---|---|---|---|
@@ -404,7 +419,7 @@ additional_for_option_c:
 
 ## Recommended Roadmap
 
-Selecting the optimal architecture requires evaluating workload scale, team operational maturity, and infrastructure cost. The decision matrix below summarizes the primary technical criteria to help guide your deployment strategy. Selecting the optimal technical path requires evaluating workload scale, team operational maturity, and infrastructure costs across all deployment phases. The breakdown below summarizes the primary technical criteria, phase milestones, risk mitigations, and architectural recommendations.
+Transitioning from a shared database to full microservice independence should occur incrementally across distinct development phases. Engineering teams must establish operational guardrails during early read-only phases before decoupling high-risk transactional domains. Maintaining strict phase boundaries prevents premature architecture complexity while ensuring continuous feature delivery. The timeline below outlines the recommended multi-stage migration strategy.
 
 ```
 0–6 months (NOW)             6–12 months                12–24 months
@@ -420,6 +435,8 @@ Hard Phase 2 deadline set     read separation            Cart/Checkout LAST
 ---
 
 ## See Also
+
+To deepen your understanding of microservice migrations and database decoupling patterns, review our complementary technical guides and reference documentation. These resources provide step-by-step implementation details covering EAV schema flattening, Change Data Capture configurations with Debezium, transactional outbox implementations, and architecture decision records for enterprise 2026 systems.
 
 ### Series Deep-Dives
 

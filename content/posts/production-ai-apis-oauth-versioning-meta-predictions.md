@@ -53,7 +53,7 @@ The problem is not that API keys are conceptually wrong. The problem is that AI 
 
 The shift to OAuth 2.1 for machine-to-machine agent authentication is driven by one property: **token lifetime**. A short-lived JWT (5 to 15 minutes) changes the attack surface from "attacker has permanent access" to "attacker has a narrow window that closes before they can pivot."
 
-The OAuth 2.1 flow for an AI agent is different from a human login flow. There is no redirect URI, no browser session, no user clicking "Approve." The agent authenticates via **JWT Bearer Token Grant (RFC 7523)** — the machine-to-machine sibling of OAuth 2.1 — using a `private_key_jwt` assertion signed by a private key it controls. No client secret is ever stored:
+The OAuth 2.1 flow for an AI agent is different from a human login flow. There is no redirect URI, no browser session, no user clicking "Approve." The agent authenticates via **JWT Bearer Token Grant (RFC 7523)** — the machine-to-machine sibling of OAuth 2.1 — using a `private_key_jwt` assertion signed by a private key it controls. By eliminating static client secrets, this mechanism guarantees that credentials cannot be harvested from memory dumps or compromised source repositories. The Go implementation below demonstrates how agents dynamically sign assertion claims prior to requesting short-lived access tokens:
 
 ```go
 // Internal token fetch — runs before every tool call batch
@@ -92,7 +92,7 @@ Token refresh happens automatically, and the agent never stores anything longer-
 
 ### CIMD: The Replacement for Dynamic Client Registration
 
-The OAuth 2.1 ecosystem also introduced **Client Identity Metadata Documents (CIMD)** — a pull-based registration model where the Agent hosts a static JSON document at a well-known URL that the Identity Provider fetches to verify the client's identity:
+The OAuth 2.1 ecosystem also introduced **Client Identity Metadata Documents (CIMD)** — a pull-based registration model where the Agent hosts a static JSON document at a well-known URL that the Identity Provider fetches to verify the client's identity. This decentralized discovery mechanism eliminates manual credential provisioning and enables automated key rotation across distributed agent networks. The snippet below illustrates a compliant CIMD metadata structure:
 
 ```json
 {
@@ -121,7 +121,7 @@ The failure mode that convinced me: we updated the system prompt for an internal
 
 Prompt versioning requires four components to be effective:
 
-**1. Explicit version identifiers in the prompt artifact itself:**
+**1. Explicit version identifiers in the prompt artifact itself:** Prompts must be versioned alongside code to maintain auditing trails and allow rollbacks when unexpected model behavior occurs. Storing full changelogs and schema rules directly within the prompt metadata ensures engineering clarity across deployments:
 
 ```yaml
 # prompts/report-generator/v2.3.yaml
@@ -136,7 +136,7 @@ system: |
   ...
 ```
 
-**2. Agent-side version pinning — never use "latest":**
+**2. Agent-side version pinning — never use "latest":** Production agents must bind explicitly to immutable prompt semver tags rather than dynamic pointers. This strict pinning prevents upstream prompt modifications from breaking agent downstream workflows without explicit deployment approval:
 
 ```go
 type AgentConfig struct {
@@ -148,7 +148,7 @@ type AgentConfig struct {
 
 **3. Prompt registry with deprecation signaling:**
 
-When a prompt version is deprecated, the registry returns a warning header alongside the response — not an error, because that would break agents mid-session, but a structured warning that the telemetry captures and routes to the responsible team:
+When a prompt version is deprecated, the registry returns a warning header alongside the response — not an error, because that would break agents mid-session, but a structured warning that the telemetry captures and routes to the responsible team. This non-blocking communication channel gives ops teams real-time visibility into legacy agent traffic without degrading active user sessions:
 
 ```go
 // In the prompt registry handler
@@ -161,7 +161,7 @@ if isDeprecated(req.PromptVersion) {
 
 **4. Evaluation-gated promotion — prompts need CI too:**
 
-A prompt change cannot go to production without passing a regression evaluation suite. The suite runs the new prompt against a fixed dataset of golden inputs and compares outputs against expected structures:
+A prompt change cannot go to production without passing a regression evaluation suite. The suite runs the new prompt against a fixed dataset of golden inputs and compares outputs against expected structures. Automated evaluation pipelines enforce quality control by rejecting prompts that fail assertion metrics before deployment:
 
 ```python
 # eval/test_report_generator.py
@@ -246,18 +246,16 @@ The token count is different. The engineering discipline is the same.
 
 **Continue Reading:** The [SLM Playbook Series](/series/slm-playbook/) goes deeper on the model layer — covering LoRA fine-tuning, DPO alignment, and vLLM deployment for teams that want to own their AI models rather than depend on third-party APIs.
 
-{{< author-cta >}}
+## Frequently Asked Questions
 
-## FAQ
+### Why use OAuth 2.1 instead of API keys for AI agents?
 
-{{< faq q="Why use OAuth 2.1 instead of API keys for AI agents?" >}}
-API keys have **unbounded lifetime** — a stolen key remains valid until manually rotated. For autonomous AI agents that operate without human supervision, this creates an unacceptable risk surface: a key exfiltrated via Prompt Injection continues working for weeks or months. OAuth 2.1 with JWT Bearer Token Grant (RFC 7523) changes the risk profile because tokens expire in 5–15 minutes. An attacker who captures a token has a narrow window before it becomes useless. The agent automatically fetches a new token before each tool call batch using a private key that never leaves the agent process — no stored client secret, no long-lived credential.
-{{< /faq >}}
+API keys have an unbounded lifetime, meaning a stolen key remains valid until manually rotated. For autonomous AI agents operating without human supervision, this creates an unacceptable risk surface. OAuth 2.1 with short-lived JWT Bearer Token Grants (RFC 7523) limits token lifetimes to 5–15 minutes, drastically reducing the exposure window.
 
-{{< faq q="How do you version prompts in production without breaking running agents?" >}}
-The pattern that works: (1) **Hard-pin prompt versions in agent config** — never use "latest" aliases in production, always specify `prompt_version: "2.3.0"`; (2) **Deploy a prompt registry** that returns a deprecation warning header (not an error) when an agent requests a deprecated version — errors break mid-session, warnings allow graceful migration; (3) **Gate every prompt change behind an evaluation suite** — the new prompt must pass regression tests on golden input/output pairs before it can be promoted to production. The most common mistake is treating a prompt change as "just config" and skipping evals. The failure mode is silent: the code produces no exceptions, the agent produces wrong answers.
-{{< /faq >}}
+### How do you version prompts in production without breaking running agents?
 
-{{< faq q="Why do teams migrate away from LangChain and LlamaIndex for production AI?" >}}
-The pattern is consistent: **framework for prototyping, custom implementation for production**. AI frameworks like LangChain and LlamaIndex abstract the simple case ("connect LLM to tool") well. They abstract the wrong layer for production: error recovery across multi-step agent runs, state management for long-running tasks, cost attribution per agent step, and circuit breakers when a tool consistently fails. At prototype scale, the abstraction saves time. At production scale, the abstraction gets in the way of the exact knobs you need to tune — and the framework's opinion about how things should work conflicts with what your incident postmortem says needs to change. Teams who stay on frameworks in production usually have not yet hit the edge cases.
-{{< /faq >}}
+Production prompt versioning requires hard-pinning prompt semver tags in configuration files rather than relying on dynamic aliases. A central prompt registry should emit non-blocking deprecation headers to alert operators while maintaining session continuity. Furthermore, all prompt modifications must pass automated regression evals against golden test sets before being promoted to production.
+
+### Why do teams migrate away from AI frameworks like LangChain in production?
+
+Frameworks like LangChain simplify rapid prototyping by abstracting core model integration steps. However, in production workloads, these abstractions obscure critical control points such as custom error recovery, precise state management, and fine-grained cost attribution. Teams build lightweight custom orchestration wrappers to gain direct control over resilience mechanisms.

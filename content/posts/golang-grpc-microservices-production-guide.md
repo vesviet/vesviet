@@ -35,9 +35,7 @@ canonicalURL: "https://tanhdev.com/posts/golang-grpc-microservices-production-gu
 
 ## Why gRPC for Go Microservices?
 
-> 
-
-The key advantages over REST:
+Selecting gRPC for inter-service communication in Go microservices offers significant performance benefits over traditional REST over HTTP/1.1 interfaces. Operating on HTTP/2 multiplexed streams with binary Protocol Buffer serialization reduces network payload sizes and lowers serialization overhead across high-throughput distributed microservice architectures. The comparison table below highlights these key protocol differences:
 
 | | gRPC | REST/JSON |
 |--|------|-----------|
@@ -53,7 +51,7 @@ The key advantages over REST:
 
 ## Step 1: Define Your Service with Protobuf
 
-Create the contract first — Protobuf schema drives code generation for all languages. The code implementation below illustrates the production configuration, error handling, and performance optimization techniques. Writing clean, performant code requires adhering to established software engineering patterns and defensive programming. The code implementation below illustrates the production configuration, memory efficiency rules, error handling strategies, and performance optimization techniques.
+Designing contract-first APIs using Protocol Buffers guarantees strict schema enforcement and language-agnostic code generation across microservice ecosystems. Declaring explicit message structures, field numbers, and RPC method signatures establishes a stable communication boundary before writing implementation code. The proto definition below illustrates production configuration, message structures, and streaming service endpoints:
 
 ```protobuf
 // proto/driver/v1/driver.proto
@@ -139,6 +137,8 @@ message NavigationUpdate { string polyline = 1; }
 ```
 
 ### Generate Go Code
+
+Run the following commands to install the necessary compiler plugins and generate Go source code from your Protobuf definitions.
 
 ```bash
 # Install tools
@@ -318,6 +318,8 @@ func (s *Server) DriverSession(stream driverv1.DriverService_DriverSessionServer
 Interceptors are gRPC's equivalent of HTTP middleware — they run before and after every RPC.
 
 ### Unary Interceptor Chain (Logging + Auth + Panic Recovery)
+
+The following Go implementation builds a chain of unary server interceptors for logging, token authentication, and panic recovery.
 
 ```go
 // internal/interceptor/chain.go
@@ -642,6 +644,8 @@ EXPOSE 50051
 ENTRYPOINT ["/driver-service"]
 ```
 
+Configure the Kubernetes Deployment manifest with native gRPC health probes and explicit resource limits.
+
 ```yaml
 # k8s/deployment.yaml
 apiVersion: apps/v1
@@ -738,6 +742,8 @@ This three-tiered approach guarantees maximum application availability, isolates
 
 ### 1. Not Setting Deadlines on Every RPC
 
+Failing to set timeouts causes hanging RPC calls to block goroutines indefinitely.
+
 ```go
 // ❌ Bad: No deadline — if the server hangs, the goroutine leaks forever
 resp, err := client.GetDriver(context.Background(), req)
@@ -749,6 +755,8 @@ resp, err := client.GetDriver(ctx, req)
 ```
 
 ### 2. Ignoring gRPC Status Codes
+
+Unwrapping errors without checking status codes prevents intelligent retry logic on transient network failures.
 
 ```go
 // ❌ Bad: Treating all errors the same
@@ -773,6 +781,8 @@ if err != nil {
 
 ### 3. Re-using Streaming Connections Without Heartbeats
 
+Long-lived streaming RPCs require keepalive pings to avoid silent teardowns by intermediate network firewalls.
+
 ```go
 // Without keepalive, NAT firewalls silently drop idle gRPC streams after ~4 minutes.
 // Result: the client thinks it's connected but receives no messages.
@@ -780,6 +790,8 @@ if err != nil {
 ```
 
 ### 4. Not Using `grpc.WithDefaultServiceConfig` for Load Balancing
+
+By default, gRPC dials only the first resolved IP address, routing all traffic to a single pod unless round-robin is configured.
 
 ```go
 // ❌ Bad: gRPC default is pick_first — all traffic goes to one pod
@@ -797,7 +809,7 @@ conn, _ := grpc.NewClient(
 
 ## Performance Benchmarks
 
-**gRPC often reduces payload size and serialization work for internal APIs, but throughput and latency depend on the protocol, handler, TLS, network, allocations, and downstream work. Publish a reproducible benchmark before using performance figures for a protocol decision.**
+Evaluating gRPC throughput and latency characteristics demands rigorous benchmarking under production-like network conditions and payload sizes. While Protobuf binary serialization reduces network bandwidth requirements compared to JSON, end-to-end performance depends on connection pooling, TLS overhead, memory allocation patterns, and downstream service latency. The benchmarking framework below establishes baseline metrics:
 
 Use a benchmark table with the measured environment rather than treating the following capacity plan as a portable result:
 
@@ -819,35 +831,31 @@ The `driver.v1.GetDriver` unary RPC with a 64-byte Protobuf response is a useful
 
 ## Frequently Asked Questions
 
-{{< faq q="What is gRPC in Go?" >}}
+Below are answers to core technical questions regarding Go gRPC microservices, Protobuf service design, mTLS configuration, interceptor chains, and Kubernetes health probes in 2026. These operational insights explain how to eliminate connection drops, implement type-safe error handling, and test gRPC streaming handlers effectively.
+
+### What is gRPC in Go?
 gRPC in Go is a framework for building inter-service communication using the gRPC protocol: Protobuf for binary serialization, HTTP/2 for transport, and code-generated type-safe client/server stubs. The `google.golang.org/grpc` package is the official Go implementation. You define your API in a `.proto` file, run `protoc` with `protoc-gen-go` and `protoc-gen-go-grpc`, and implement the generated server interface — the framework handles framing, compression, flow control, and connection management.
-{{< /faq >}}
 
-{{< faq q="gRPC vs REST in Go microservices — which should I use?" >}}
+### gRPC vs REST in Go microservices — which should I use?
 Use gRPC for internal microservice-to-microservice communication when you control both client and server and value typed contracts or streaming. Use REST for public-facing APIs consumed by browsers or third-party clients without SDK support. Benchmark representative endpoints before treating either protocol as a performance default. A common pattern is gRPC internally and REST externally via a gRPC-Gateway transcoding layer.
-{{< /faq >}}
 
-{{< faq q="How do I add authentication to a gRPC server in Go?" >}}
-Use a Unary Interceptor for token validation. Extract the token from incoming metadata (`metadata.FromIncomingContext(ctx)`), validate it against your auth service or JWT library, and inject the parsed claims into the context. For service-to-service auth, use mTLS (mutual TLS) — both sides present client certificates, eliminating token overhead entirely. See the `AuthUnaryInterceptor` and mTLS setup below.
-{{< /faq >}}
+### How do I add authentication to a gRPC server in Go?
+Use a Unary Interceptor for token validation. Extract the token from incoming metadata (`metadata.FromIncomingContext(ctx)`), validate it against your auth service or JWT library, and inject the parsed claims into the context. For service-to-service auth, use mTLS (mutual TLS) — both sides present client certificates, eliminating token overhead entirely. See the `AuthUnaryInterceptor` and mTLS setup examples in this guide.
 
-{{< faq q="How does gRPC streaming work in Go?" >}}
-gRPC supports four communication patterns: (1) Unary — single request/response like HTTP; (2) Server streaming — one request, multiple responses (e.g., live location feed); (3) Client streaming — multiple requests, one response (e.g., batch GPS upload); (4) Bidirectional streaming — full-duplex, both sides send independently (e.g., driver session). Implement streaming by reading `stream.Recv()` in a loop until `io.EOF` and sending with `stream.Send()`.
-{{< /faq >}}
+### How does gRPC streaming work in Go?
+gRPC supports four communication patterns: Unary, Server streaming, Client streaming, and Bidirectional streaming. Server streaming sends multiple responses for one request, while Client streaming aggregates multiple requests into a single response. Bidirectional streaming establishes full-duplex communication where both sides send messages independently. Implement streaming by reading `stream.Recv()` in a loop until `io.EOF` and sending with `stream.Send()`.
 
-{{< faq q="What causes 'transport is closing' errors in gRPC Go?" >}}
-The most common cause is a missing keepalive configuration. Load balancers and NAT firewalls silently close idle TCP connections after 4–10 minutes. Configure `keepalive.ServerParameters` and `keepalive.ClientParameters` as shown below. The second common cause is calling `conn.Close()` before all RPCs complete — use `srv.GracefulStop()` on the server and `conn.Close()` only after all client calls return.
-{{< /faq >}}
+### What causes 'transport is closing' errors in gRPC Go?
+The most common cause is a missing keepalive configuration. Load balancers and NAT firewalls silently close idle TCP connections after 4–10 minutes. Configure `keepalive.ServerParameters` and `keepalive.ClientParameters` to keep connections active. The second common cause is calling `conn.Close()` before all RPCs complete — use `srv.GracefulStop()` on the server and `conn.Close()` only after all client calls return.
 
-{{< faq q="How do I test gRPC services in Go?" >}}
-Use `google.golang.org/grpc/test/bufconn` for in-process testing without real network: create an in-memory listener, register your server, and dial it with a `bufconn.DialContext`. This enables fast, parallel unit tests. For integration testing, use `grpcurl` (CLI gRPC client) against a running server, or Postman's gRPC support. Enable server reflection (`reflection.Register(srv)`) so these tools discover your API without importing `.proto` files.
-{{< /faq >}}
+### How do I test gRPC services in Go?
+Use `google.golang.org/grpc/test/bufconn` for in-process testing without a real network by creating an in-memory listener and dialing it with `bufconn.DialContext`. This enables fast, parallel unit tests for server handlers. For integration testing, use `grpcurl` or Postman against a running server. Enable server reflection (`reflection.Register(srv)`) so these tools discover your API without importing `.proto` files.
 
 ---
 
 ## Internal Links
 
-To deepen your technical expertise in high-throughput backend systems, distributed cloud infrastructure, and modern software architecture, explore these related deep dives from our platform. Each comprehensive article provides hands-on code examples, production benchmarks, architectural decision frameworks, and real-world deployment strategies to help you build resilient systems at enterprise scale.
+To deepen your technical expertise in high-throughput backend systems, distributed cloud infrastructure, and modern software architecture, explore these related deep dives from our platform. Each guide provides hands-on code examples, production benchmarks, architectural decision frameworks, and real-world deployment strategies to help you build resilient systems at enterprise scale.
 
 - **Full Microservices Architecture:** To see how gRPC fits into a complete event-driven 21-service ecosystem, read the [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
 - **Real-time gRPC streaming in production:** The location ingestion system in [Part 1 — GPS Location Ingestion](/series/ride-hailing-realtime-architecture/part-1-location-ingestion/) uses the exact `gRPC Bidirectional Streaming` pattern shown here.

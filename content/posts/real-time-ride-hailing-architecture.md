@@ -40,13 +40,13 @@ The moment you open the Uber or Grab app, a cascade of real-time systems activat
 
 What makes this hard is not any single component — it is the combination of all of them, processing millions of concurrent users, each with sub-second latency requirements, continuously. This post walks through all six layers of the real-time ride-hailing architecture stack, from GPS ingestion to driver notification, using Uber and Grab's engineering practices as the reference model.
 
-For the complete deep-dive into each component, explore the [Full Ride-Hailing Architecture Series](/series/ride-hailing-realtime-architecture/).
+For a detailed architectural overview of each component, explore the [Full Ride-Hailing Architecture Series](/series/ride-hailing-realtime-architecture/).
 
 ---
 
 ## The Real-Time Challenge: What Happens in the First 3 Seconds After You Open the App
 
-From a user's perspective, ride-hailing feels instant. From an engineering perspective, those 3 seconds involve. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
+From a user's perspective, ride-hailing feels instant. From an engineering perspective, those 3 seconds involve complex concurrent distributed calculations across multiple microservices. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles:
 
 1. **GPS position reported**: Your phone sends a location update to Uber/Grab's ingestion service. So do the phones of every active driver within 10 km.
 2. **Geospatial index updated**: Your location and nearby driver locations are updated in an in-memory geospatial index.
@@ -63,7 +63,7 @@ The architecture that makes this possible is layered: each layer has a specific 
 
 ## Layer 1 — Location Ingestion: How Millions of GPS Pings Are Collected Per Second
 
-Location data flows from devices via persistent TCP or WebSocket connections to Uber's **Real-Time Transport (RTT)** service cluster. This cluster's sole responsibility is to accept GPS payloads, validate them, and forward them to the event stream.
+Ingesting millions of real-time GPS telemetry updates per second demands building high-throughput edge ingress services. Ride-hailing platforms deploy regional Real-Time Transport (RTT) clusters that utilize persistent WebSocket connections, Protocol Buffer binary serialization, and windowed payload buffering to validate driver location streams while minimizing network overhead across enterprise 2026 networks.
 
 ### Key Design Decisions in the Ingestion Layer
 
@@ -79,13 +79,13 @@ Location data flows from devices via persistent TCP or WebSocket connections to 
 
 ## Layer 2 — Geospatial Indexing: Why Uber Uses Hexagons (H3), Not Circles or Squares
 
-The core problem the geospatial index solves is: given a rider's location, find all available drivers within X distance **in under 10 milliseconds**.
+Evaluating spatial driver proximity in sub-10ms query windows requires replacing naive Euclidean distance calculations with hierarchical discrete global grids. By dividing geographical space into Uber H3 hexagons, ride-hailing engines achieve uniform neighbor adjacency, hierarchical spatial aggregation across resolution levels, and high-concurrency Redis in-memory lookup performance across modern 2026 geospatial platforms.
 
 A naive approach — "scan all driver locations and calculate Euclidean distance" — fails at scale. With 50,000 active drivers in a single city, this requires 50,000 distance calculations per query. At 100 queries per second per city, this is 5 million distance calculations per second — and that's just one city.
 
 ### How H3 Hexagonal Indexing Works
 
-Uber's H3 library divides the entire Earth's surface into a hierarchical grid of hexagons at 16 resolution levels. At resolution 9 (the primary operational resolution), each hexagon covers approximately 0.1 km². Every GPS coordinate maps to exactly one hexagon ID using a fast mathematical transformation — no database lookup required.
+Uber's H3 library divides the entire Earth's surface into a hierarchical grid of hexagons at 16 resolution levels. At resolution 9 (the primary operational resolution), each hexagon covers approximately 0.1 km². Every GPS coordinate maps to exactly one hexagon ID using a fast mathematical transformation without database lookups. The sequence diagram below illustrates how driver GPS pings are converted into H3 hexagon identifiers, indexed in Redis, and matched against rider location queries:
 
 ```mermaid
 graph TD
@@ -103,7 +103,7 @@ graph TD
 - **Uniform adjacency**: Each hexagon has exactly 6 neighbors, all equidistant from the center. A square grid has 8 neighbors, with 4 diagonal neighbors that are √2 farther away than the 4 orthogonal ones. This non-uniform adjacency creates edge cases in proximity calculations.
 - **Hierarchical aggregation**: H3 hexagons at resolution N group cleanly into hexagons at resolution N-1. This makes it trivial to compute surge pricing zones (lower resolution = larger area), match driver clusters (medium resolution), and precise location indexing (high resolution) using the same spatial system.
 
-For a deeper dive into H3, GeoHash, and S2 comparison in routing contexts, see [Part 2 — Geospatial Indexing: H3, S2 & Redis GEO](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/).
+For an in-depth technical comparison of H3, GeoHash, and S2 in routing contexts, see [Part 2 — Geospatial Indexing: H3, S2 & Redis GEO](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/).
 
 ### Redis as the Geospatial Store
 
@@ -141,7 +141,7 @@ Flink's exactly-once processing semantics ensure that even in the event of a pro
 
 ## Layer 4 — DISCO: The Matching Engine That Finds Your Driver in Milliseconds
 
-DISCO (Dispatch System for Company Operations) is Uber's internal matching engine — the algorithm that decides which available driver to dispatch to which rider request.
+Solving real-time driver-passenger assignment at scale requires moving beyond greedy nearest-driver matching to global batch optimization algorithms. Modern dispatch engines like DISCO evaluate incoming ride requests in 500ms windows, balancing vehicle direction vectors, driver acceptance probabilities, and product category constraints to minimize aggregate pickup latency across 2026 ride-hailing networks.
 
 ### The Matching Problem
 
@@ -163,11 +163,11 @@ The result is that DISCO can produce matches that reduce total system-wide wait 
 
 ## Layer 5 — Surge Pricing: Supply-Demand Math in Real Time
 
-Surge pricing is not a separate system — it is a continuous output of the Flink stream processing pipeline described in Layer 3. Every 30 seconds, the Flink job emits updated supply/demand ratios per H3 zone at resolution 7.
+Dynamic surge pricing balances real-time marketplace equilibrium by continuously computing spatial supply and demand ratios. Using Apache Flink windowed aggregation streams across H3 hexagonal zones, pricing engines calculate demand multipliers in real time, encouraging driver movement to high-concurrency zones while maintaining transparent fare estimates across 2026 urban transport platforms.
 
 ### The Surge Multiplier Model
 
-The basic surge multiplier is a function of the supply/demand ratio in a zone:
+The surge multiplier is computed by assessing the real-time ratio between available drivers and active rider requests. The snippet below defines the mathematical relationship governing multiplier calculations:
 
 ```
 ratio = active_drivers / active_rider_requests
@@ -184,7 +184,7 @@ This surge architecture is covered in depth in our standalone post on [Surge Pri
 
 ## Layer 6 — RAMEN: Pushing Instant Notifications to Millions of Mobile Devices
 
-After DISCO produces a match, the driver must be notified within seconds. This is the job of RAMEN (Real-time Application Message Exchange Network) — Uber's reliable push notification infrastructure.
+Dispatching ride assignment notifications to driver devices under tight latency constraints requires building ultra-reliable push gateway infrastructure. Notification engines like RAMEN manage persistent WebSocket connections, handle mobile OS push platform fragmentation (APNs/FCM), and enforce Redis per-device ordered queues to guarantee sub-second, in-order dispatch delivery across 2026 mobile networks.
 
 ### The Notification Delivery Challenge
 
@@ -204,7 +204,7 @@ For the underlying event-driven infrastructure that supports notification routin
 
 ## The Full Architecture Stack: How All 6 Layers Connect
 
-Understanding the architectural topology of The Full Architecture Stack: How All 6 Layers Connect requires tracing the end-to-end event sequence and data flow. The diagram below illustrates how components, API boundaries, and background workers coordinate during request processing. Visualizing system interactions helps clarify data boundaries, concurrency limits, and failure domain separation. The sequence diagram below traces the component interactions, message flows, API gateways, and boundary transitions across the complete execution path.
+Connecting location ingestion, spatial indexing, stream processing, dispatch matching, surge pricing, and push notification layers requires a resilient event-driven backbone. By coupling microservices through partitioned Apache Kafka topics, real-time ride-hailing stacks isolate component failures, scale ingestion independently of matching algorithms, and deliver robust end-to-end driver-rider matching in 2026.
 
 ```mermaid
 graph TB
@@ -250,6 +250,8 @@ The six layers are loosely coupled through Kafka topics. Each layer can be scale
 ---
 
 ## Frequently Asked Questions
+
+Below are answers to core engineering questions regarding ride-hailing architecture, Uber H3 geospatial indexing, DISCO batched matching algorithms, and RAMEN push notification gateways. These technical responses provide concise implementation context and operational trade-offs for designing high-concurrency, sub-second spatial microservices in 2026.
 
 ### What database does Uber use for real-time location tracking?
 Uber uses Redis as the primary store for real-time driver locations, indexed by H3 hexagonal grid cells. Redis HASH structures map hex IDs to driver position data. The choice of Redis is driven by the sub-10ms query latency requirement — no relational database can match Redis's read throughput for this workload.

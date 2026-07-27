@@ -47,7 +47,9 @@ At midnight on November 11th (Singles' Day), Alipay processes over **583,000 pay
 
 ## LDC (Local Deployment Center) Unitization
 
-LDC unitization partitions users, services, and database shards into isolated logical units (cells). Each cell functions as an autonomous, self-contained deployment center capable of processing complete payment flows for its assigned user partition. The sequence diagram below traces the component interactions, data events, and boundary transitions across the workflow.
+LDC unitization partitions users, services, and database shards into isolated logical units (cells). Each cell functions as an autonomous, self-contained deployment center capable of processing complete payment flows for its assigned user partition.
+
+The architecture diagram below illustrates how Alipay's Global Load Balancer routes user traffic across isolated Local Deployment Center (LDC) cells based on user ID hash modulo calculations. This unitized structure ensures that each cell processes transactions independently using dedicated OceanBase database shards while core global data is routed to strongly consistent CZones:
 
 ```mermaid
 graph TD
@@ -73,7 +75,7 @@ By decoupling user accounts into RZones (Regional Units) and isolating cross-uni
 
 ## OceanBase Distributed Database Engine
 
-OceanBase is Alibaba's native distributed SQL database designed specifically for extreme transactional financial workloads. It replaces traditional single-node B-Trees with a shared-nothing, multi-replica distributed architecture. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below.
+OceanBase is Alibaba's native distributed SQL database designed specifically for extreme transactional financial workloads. It replaces traditional single-node B-Trees with a shared-nothing, multi-replica distributed architecture capable of sustaining hundreds of thousands of concurrent database commits per second:
 
 - **LSM-Tree Storage Engine**: Converts random I/O write operations into fast sequential memory writes (MemTable). Mutations are asynchronously compacted into immutable SSTables during low-traffic maintenance windows.
 - **Paxos Distributed Consensus**: Replicates transaction logs across multi-datacenter nodes using Paxos consensus. A transaction commits only after a majority quorum of replicas confirms write log persistence.
@@ -83,7 +85,7 @@ OceanBase is Alibaba's native distributed SQL database designed specifically for
 
 ## RocketMQ 5.x Transactional Messaging
 
-Financial event processing requires strict atomic consistency between local database updates and asynchronous message publishing. RocketMQ implements a 2-phase transactional message protocol. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
+Financial event processing requires strict atomic consistency between local database updates and asynchronous message publishing. RocketMQ implements a 2-phase transactional message protocol to ensure zero data loss during high-concurrency payment events:
 
 1. **Half-Message Prepare Phase**: The producer dispatches a "half-message" to the RocketMQ broker. The broker stores the message in a half-topic unavailable to consumers.
 2. **Local Transaction Execution**: The producer executes its local OceanBase database transaction (e.g. debiting account balance).
@@ -94,7 +96,7 @@ Financial event processing requires strict atomic consistency between local data
 
 ## SOFAStack Microservice Framework & RPC Optimizations
 
-Alipay's microservice fleet runs on **SOFAStack** (Scalable Open Financial Architecture), leveraging customized protocols and governance mechanisms. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
+Alipay's microservice fleet runs on **SOFAStack** (Scalable Open Financial Architecture), leveraging customized protocols and governance mechanisms engineered for extreme financial throughput:
 
 - **Bolt Protocol**: A high-performance multiplexed RPC protocol built on Netty that reduces connection overhead and serialization latencies.
 - **SOFA-Registry**: A specialized high-frequency service registry capable of managing millions of microservice pub/sub endpoints with sub-second change propagation.
@@ -113,26 +115,22 @@ Alipay's microservice fleet runs on **SOFAStack** (Scalable Open Financial Archi
 
 ---
 
-## FAQ
+## Frequently Asked Questions
 
-{{< faq q="What is LDC unitization in Alipay's architecture?" >}}
+### Q1: What is LDC unitization in Alipay's architecture?
 LDC (Local Deployment Center) unitization is a horizontal partitioning model that divides user space, services, and database shards into self-contained units. When a unit fails, only users mapped to that unit are affected, and the load balancer remaps them in milliseconds.
-{{< /faq >}}
 
-{{< faq q="How does OceanBase handle write-heavy financial transactions?" >}}
+### Q2: How does OceanBase handle write-heavy financial transactions?
 OceanBase uses an LSM-tree storage engine to write updates into memory (MemTable) before flushing to disk as immutable SSTables, converting random I/O into fast sequential writes. Paxos consensus guarantees multi-datacenter data consistency.
-{{< /faq >}}
 
-{{< faq q="How does RocketMQ guarantee exactly-once transactional message delivery?" >}}
+### Q3: How does RocketMQ guarantee exactly-once transactional message delivery?
 RocketMQ uses a 2-phase commit message protocol combined with broker back-off state checks. The producer sends a half-message, executes its local database transaction, and commits the message. If network connectivity drops, the broker queries the local transaction log to confirm execution before notifying consumers.
-{{< /faq >}}
 
-{{< faq q="What role does the SOFAStack Bolt protocol play in microservice performance?" >}}
+### Q4: What role does the SOFAStack Bolt protocol play in microservice performance?
 SOFA Bolt is an optimized TCP binary RPC protocol built on Netty. It supports connection multiplexing, heartbeat health checks, and binary serialization, reducing microservice RPC latencies by up to 40% compared to standard REST/JSON over HTTP/1.1.
-{{< /faq >}}
 
-{{< faq q="How does Alipay achieve zero data loss (RPO=0) across multi-region datacenters?" >}}
+### Q5: How does Alipay achieve zero data loss (RPO=0) across multi-region datacenters?
 Zero data loss (Recovery Point Objective = 0) is achieved via OceanBase's Paxos consensus algorithm deployed across five datacenters in three cities (5-DC 3-City topology). Transactions require confirmation from a majority quorum (3 out of 5 nodes) before committing, ensuring data availability even if an entire city datacenter fails.
-{{< /faq >}}
 
 {{< author-cta >}}
+

@@ -80,7 +80,7 @@ The Dapr sidecar adds approximately **sub-millisecond to ~1ms latency per hop** 
 
 ### Step 1: Define the Pub/Sub Component
 
-Create a component YAML that tells Dapr which message broker to use. For local development, Redis is installed by default with `dapr init`. For production, swap to Kafka by changing the `type` and `metadata`:
+To decouple application code from broker-specific SDKs, Dapr configures message channels via declarative YAML components. The component manifest below configures Kafka as the underlying message bus while exposing a uniform `pubsub` reference name to Go microservices:
 
 ```yaml
 # components/pubsub.yaml
@@ -124,7 +124,7 @@ Install the Dapr Go SDK:
 go get github.com/dapr/go-sdk
 ```
 
-Publishing an event is a single function call. The SDK handles serialization, sidecar communication, and retry on transient network errors:
+Publishing events through Dapr requires only the lightweight Go SDK client without direct Kafka dependency imports. The code implementation below constructs an idempotent event payload and emits it across the local Dapr sidecar HTTP/gRPC boundary:
 
 ```go
 package checkout
@@ -172,7 +172,7 @@ func PublishOrderCreated(ctx context.Context, order *Order) error {
 
 ### Step 3: Subscribing in Go (Push Model)
 
-The traditional push-based subscription registers HTTP route handlers that Dapr calls when events arrive:
+In the traditional push delivery model, Dapr invokes HTTP or gRPC routes exposed by your service upon message delivery. The example below configures a Go gRPC server that registers a topic event handler with built-in idempotency verification:
 
 ```go
 package warehouse
@@ -229,7 +229,7 @@ func handleOrderCreated(ctx context.Context, e *common.TopicEvent) (bool, error)
 
 ### Step 4: Streaming Subscriptions (Dapr v1.14 — Preview)
 
-Dapr v1.14 introduced **Streaming Subscriptions** as a preview feature. Instead of Dapr pushing HTTP calls to your application, your Go service opens a persistent bi-directional gRPC stream and pulls messages:
+For background worker tasks where opening inbound HTTP or gRPC listening ports is undesirable, Dapr v1.14 introduced client-managed streaming subscriptions. The Go handler below opens a persistent bi-directional gRPC stream to pull messages with explicit acknowledgment controls:
 
 ```go
 package warehouse
@@ -288,7 +288,7 @@ func RunStreamingConsumer(ctx context.Context) error {
 
 **Dapr choreography Saga: Checkout publishes `checkout.order.created` → Warehouse reserves stock and publishes `warehouse.inventory.reserved` → Payment charges and publishes result. On payment failure, a `payments.payment.failed` event triggers Warehouse to compensate (rollback stock). No central coordinator — each service knows its role. Use this pattern for 2–4 step Sagas; switch to Dapr Workflow Orchestration for 4+ steps with complex branching.**
 
-You can no longer execute a simple `BEGIN ... COMMIT` SQL block to save an order, reserve inventory, and capture a payment. If a customer checks out, we launch a **Saga**.
+You can no longer execute a simple `BEGIN ... COMMIT` SQL block to save an order, reserve inventory, and capture a payment. Maintaining data consistency across autonomous microservice databases requires executing saga workflows instead of single atomic transactions. The sequence diagram below illustrates how a choreography saga manages order creation, inventory reservation, and payment processing while triggering compensating rollbacks on failure:
 
 ```mermaid
 sequenceDiagram
@@ -336,7 +336,7 @@ Every single event payload structurally guarantees a unique `EventID`. Our Go co
 
 What if a message consistently crashes the processor because of a logical defect? Without explicit DLQ configuration, the message loops in the retry queue forever — blocking processing of subsequent events in the same partition.
 
-Configure Dapr's resiliency policies with a `deadLetterTopic`:
+To handle poison messages gracefully, Dapr manages automatic retries and dead-letter routing declaratively. The resiliency manifest below enforces exponential backoff and routes unprocessable messages to a designated DLQ topic after 5 failed attempts:
 
 ```yaml
 # components/resiliency.yaml
@@ -363,6 +363,8 @@ spec:
 Following our naming convention, a crashing `checkout.order.created` event gets routed precisely to `dlq.checkout.order.created`. This allows engineers to safely replay failed events post-mortem after deploying a hotfix, permanently eliminating critical data loss.
 
 ### DLQ Subscriber: Inspecting and Replaying Poison Messages
+
+When unhandled exceptions exhaust configured retry limits, Dapr routes poison events to dedicated dead-letter topics. The Go handler below intercepts DLQ messages, logging raw payloads for manual inspection before safely re-publishing them once patches are deployed:
 
 ```go
 package dlq
@@ -412,6 +414,8 @@ These are the failure modes that production experience reveals — and that tuto
 
 **The fix:** **Transactional Outbox Pattern**. Write the event record into an `outbox` table in the *same database transaction* as the state change. A separate CDC process (Debezium or TiCDC) reads the outbox table and publishes to Dapr/Kafka. Either both the state change and the event emission happen, or neither does.
 
+To ensure strict atomic consistency between local database updates and outgoing event broadcasts, application logic must write events directly to an outbox table. The SQL script below demonstrates executing state mutation and outbox event logging within a single atomic database transaction:
+
 ```sql
 BEGIN;
 -- 1. Business state change
@@ -442,6 +446,8 @@ Dapr (and Kafka) do not guarantee global ordering across all partitions. If `ord
 
 **The fix:** Use a consistent partition key (e.g., `order_id`) so all events for a single order are routed to the same Kafka partition. Within a single partition, ordering is guaranteed.
 
+Kafka maintains strict message ordering exclusively within a single partition, requiring explicit routing keys for stateful operations. The code snippet below attaches an explicit `partitionKey` metadata attribute to guarantee all events for a given order land on the same broker partition:
+
 ```go
 // Publish with explicit partition key
 client.PublishEvent(ctx, "pubsub", "orders.order.status_changed", event,
@@ -456,6 +462,8 @@ client.PublishEvent(ctx, "pubsub", "orders.order.status_changed", event,
 If your Go service receives SIGTERM (Kubernetes pod termination) while processing a message, the default behavior kills the process immediately — leaving the message partially processed. Dapr will redeliver it, but your handler may have already committed a side effect (e.g., partially updated the database).
 
 **The fix:** Listen for shutdown signals and finish the current message before stopping:
+
+Abrupt process termination during active message processing risks leaving downstream services in partially executed states. The snippet below intercepts OS termination signals in Go, allowing current event handlers to complete execution before releasing Dapr resources:
 
 ```go
 func main() {
@@ -500,16 +508,13 @@ The patterns in this document — the Transactional Outbox, idempotent consumers
 
 {{< author-cta >}}
 
-## FAQ
+## Frequently Asked Questions
 
-{{< faq q="What is the Transactional Outbox pattern and why is it needed with Dapr?" >}}
-The **Transactional Outbox pattern** solves the double-write problem in event-driven systems. Without it, your service writes state to Postgres, then calls `dapr.PublishEvent` — if it crashes between those two lines, the state is saved but the event is never published, leaving downstream services in an inconsistent state permanently. The fix: write the event record into an `outbox` table in the *same database transaction* as the state change, then use a CDC process (Debezium or TiCDC) to read the outbox and publish to Dapr/Kafka. Either both the state change and event emission happen (database commits), or neither does (database rolls back). No dual-write risk.
-{{< /faq >}}
+### What is the Transactional Outbox pattern and why is it essential with Dapr Pub/Sub?
+The Transactional Outbox pattern prevents partial failures during state updates and event publishing. Instead of calling Dapr `PublishEvent` directly after a database write, event payloads are saved to an `outbox` table within the same database transaction. A separate Change Data Capture process then reads the outbox table and dispatches events to Dapr, eliminating double-write inconsistencies if the service crashes mid-operation.
 
-{{< faq q="When should you use Saga Choreography vs Dapr Workflow Orchestration?" >}}
-Use **Choreography** (each service reacts to events independently with no central coordinator) for sagas with 2–4 steps where any developer can reason about the entire flow at a glance. Use **Dapr Workflow Orchestration** (a single durable orchestrator function that defines all saga steps, state persistence, retries, and compensation) when the compensating transaction logic becomes complex enough that you cannot trace a failure without reading 4+ service codebases simultaneously. The tradeoff: choreography has lower coupling but harder observability at scale; orchestration is easier to debug but creates a single point of change that all participants couple to.
-{{< /faq >}}
+### When should you use Saga Choreography versus Dapr Workflow Orchestration?
+Saga Choreography is ideal for simple 2-to-4 step workflows where microservices react autonomously to published domain events. Conversely, Dapr Workflow Orchestration is recommended for complex, multi-branch transactions where a centralized orchestrator manages state persistence, retries, and compensating rollbacks across numerous services.
 
-{{< faq q="Should I use Dapr Pub/Sub or direct Kafka for Go microservices?" >}}
-They are not mutually exclusive — Dapr can use Kafka as its backend. The decision is about the abstraction layer. Use **Dapr Pub/Sub** when you have polyglot services (Go + Python + Node.js), may need to swap brokers in the future (Redis locally, Kafka in production), or want retries, DLQ routing, and circuit breaking configured via YAML without coding them into every service. Use **Kafka directly** when you need Kafka Streams or ksqlDB for stream processing, need granular partition management and offset control, have a team with deep Kafka expertise, or your latency budget is extremely tight (Dapr adds ~1ms sidecar overhead per hop via localhost loopback).
-{{< /faq >}}
+### What are the main tradeoffs between using Dapr Pub/Sub and direct Kafka SDKs?
+Dapr Pub/Sub simplifies multi-language microservice fleets by providing uniform APIs, sidecar resilience, and YAML-configurable brokers. Direct Kafka SDK usage is preferred when applications require custom partition assignment, complex Kafka Streams processing, or sub-millisecond latency budgets without sidecar loopback overhead.

@@ -46,7 +46,7 @@ In this deep dive, we will explore the root causes of goroutine leaks in product
 
 ## The Root Causes: Real-world Leak Patterns
 
-A goroutine leaks when it is spawned but has no logical path to exit. This typically happens because the goroutine is waiting on a channel operation, a network socket, a synchronization primitive, or is stuck in an unyielding loop.
+Goroutine leaks occur when asynchronous tasks spawn without explicit exit conditions, remaining permanently blocked on synchronization primitives. Channel operations, unclosed network sockets, database connection pools, and missing context cancellations represent the primary mechanisms that trap active goroutines in production Go microservices. The common leak patterns and mitigations are detailed below:
 
 ### 1. The Unbuffered Channel Trap
 In Go, sending to an unbuffered channel blocks the sender until a receiver is ready to read from it. If the receiving goroutine exits early—due to a timeout, a request context cancellation, or an error return—the sender is left blocked forever.
@@ -445,6 +445,8 @@ To run these tests, execute:
 GOEXPERIMENT=synctest go test ./...
 ```
 
+The following test case uses `testing/synctest` to verify timeout behavior deterministically with virtual clock acceleration.
+
 ```go
 func TestConcurrentTimeoutSafe(t *testing.T) {
     synctest.Test(t, func(t *testing.T) {
@@ -568,11 +570,13 @@ Ensure these safeguards are met before deploying your Go service to production:
 - [ ] **Prometheus Alerting:** A `go_goroutines` PromQL alert is configured to monitor linear growth over 1-hour windows.
 - [ ] **CI goleak verification:** `goleak` is configured in `TestMain` or integration wrappers with custom `IgnoreTopFunction` settings for driver libraries.
 
-When building modern [agentic architectures](/series/agentic-system-architecture/) where background tasks fetch live data or run autonomous LLM tool execution loops, managing goroutine lifecycles is critical to prevent background worker threads from leaking across agent runs. By monitoring runtime statistics and catching concurrency issues early in testing, you can keep your production services stable and free of exit code 137 OOM crashes. For a comprehensive look at the entire Go production architecture that relies on these patterns, see the [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
+When building modern [agentic architectures](/series/agentic-system-architecture/) where background tasks fetch live data or run autonomous LLM tool execution loops, managing goroutine lifecycles is critical to prevent background worker threads from leaking across agent runs. By monitoring runtime statistics and catching concurrency issues early in testing, you can keep your production services stable and free of exit code 137 OOM crashes. For a complete look at the entire Go production architecture that relies on these patterns, see the [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
 
 ---
 
 ## Frequently Asked Questions
+
+Below are answers to primary technical questions regarding goroutine leak detection, `GOMEMLIMIT` garbage collection targets, data race diagnosis, and memory footprint calculations in 2026 Go microservices. These insights clarify how to identify orphaned goroutines and prevent out-of-memory container crashes under production traffic loads.
 
 ### Does GOMEMLIMIT prevent goroutine leaks?
 No. `GOMEMLIMIT` manages Go runtime Garbage Collection soft memory targets. While it can trigger aggressive GC cycles to reclaim heap objects, it has no control over active goroutine stack memory allocations. Blocked goroutine stacks remain in memory, and the heap objects they reference cannot be garbage collected.

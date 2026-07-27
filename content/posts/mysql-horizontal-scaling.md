@@ -42,13 +42,13 @@ This article examines the differences between scaling methods and compares the t
 
 ## The Limits of Vertical Scaling and When to Scale MySQL?
 
-**Vertical Scaling (Scaling Up)** involves pumping more resources (CPU, RAM, NVMe SSDs) into a single Database server. However, this method has three fatal limits. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
+Vertical Scaling (Scaling Up) involves adding CPU, RAM, and NVMe storage to a single database node. However, this approach runs into three fundamental engineering bottlenecks:
 
-1. **Physical Hardware Limits:** You cannot buy a server with infinite RAM or CPU.
-2. **Exponential Cost Curve:** A single 128-Core / 1TB RAM server is astronomically more expensive than the combined cost of four 32-Core / 256GB RAM servers.
-3. **Single Point of Failure (SPOF):** No matter how premium the hardware is, if that single server crashes or experiences a disk failure, the entire system goes down.
+1. **Physical Hardware Limits:** Single-socket and multi-socket servers have hard architectural boundaries on CPU socket capacity and memory bus channels.
+2. **Exponential Cost Curve:** High-end enterprise servers exhibit non-linear pricing, where a 128-core system costs significantly more than multiple commodity 32-core nodes combined.
+3. **Single Point of Failure (SPOF):** Hardware redundancy within a single chassis cannot protect against kernel panics, mainboard failure, or catastrophic hypervisor crashes.
 
-When your CPU consistently exceeds 80% due to massive write transaction volume, it is time to transition to **Horizontal Scaling (Scaling Out)** – distributing your data across multiple smaller servers. For a broader overview of all scaling methods, read our [comprehensive MySQL Scalability guide](/posts/mysql-scalability-guide/).
+When primary database write transactions consistently saturate storage IOPS or CPU capacity, transitioning to **Horizontal Scaling (Scaling Out)** — partitioning datasets across independent database nodes — becomes mandatory. For a broader overview of database architecture strategies, read our detailed [MySQL Scalability guide](/posts/mysql-scalability-guide/).
 
 ---
 
@@ -76,7 +76,7 @@ ProxySQL categorizes servers into **Hostgroups**:
 
 By defining routing rules using regex matches on incoming SQL text, ProxySQL intercepts queries and routes them to the appropriate hostgroup. For instance, write queries (`INSERT`, `UPDATE`, `DELETE`) are sent to the writer hostgroup, while standard `SELECT` statements are distributed across readers. Crucially, queries that lock rows (like `SELECT ... FOR UPDATE`) must be explicitly routed to the writer hostgroup to prevent execution on read replicas.
 
-Here are the basic configuration lines executed via the ProxySQL admin console (SQLite-based interface running on port 6032) to set up read/write splits:
+To enforce transparent read-write splitting without modifying application code, administrators configure ProxySQL hostgroups and query rules via its internal admin interface. Hostgroup definitions and routing rules are applied using standard ProxySQL administrative SQL statements:
 
 ```sql
 -- 1. Define MySQL nodes and assign them to Hostgroups
@@ -118,6 +118,8 @@ Sharding is the process of splitting a large table into multiple smaller pieces 
 
 Your application connects to Vitess as if it were a standard MySQL server, remaining completely unaware of which Shard the data resides on.
 
+The Vitess request topology coordinates query execution across stateless proxy instances. The VTGate proxy consults cluster topology to route incoming MySQL protocol queries directly to target VTTablets and underlying database shards:
+
 ```mermaid
 flowchart TD
     App[Golang Application] -->|MySQL Protocol| VTGate[VTGate Proxy]
@@ -153,6 +155,8 @@ When you execute `db.Where("user_id = ?", 10).Find(&Order{})`:
 3. Using a hashing algorithm (e.g., `10 % 4`), it determines the target table is `orders_2`.
 4. It rewrites the SQL to: `SELECT * FROM orders_2 WHERE user_id = 10` and executes it.
 
+Application-level sharding logic is configured directly during GORM initialization. Registering GORM sharding middleware requires defining the target partition key, total shard count, and primary key generator:
+
 ```go
 import "github.com/go-gorm/sharding"
 
@@ -185,16 +189,13 @@ If you write `db.Where("status = ?", "pending").Find(&Order{})` and forget to pa
 
 If your project is written exclusively in Go and only has one or two historical tables that need sharding, **GORM Sharding** is a perfect starting point. However, if you are building a core Platform and have abundant DevOps resources, investing in **Vitess** will guarantee infinite horizontal scalability for the future.
 
-## FAQ
+## Frequently Asked Questions
 
-{{< faq q="What is MySQL horizontal scaling?" >}}
-**MySQL horizontal scaling** means distributing data across multiple physical MySQL servers (sharding) to handle write throughput that exceeds a single machine's capacity. Unlike read replicas (which duplicate data for read throughput), sharding splits rows across servers based on a shard key. There are two Go-friendly approaches: **Vitess** (middleware layer — transparent to application) and **GORM Sharding** (application-level — requires explicit shard key in every query).
-{{< /faq >}}
+### What is MySQL horizontal scaling and how does write sharding work?
+MySQL horizontal scaling distributes data rows across multiple independent database instances to overcome single-node write IOPS and CPU constraints. Unlike read replicas that mirror data, write sharding partitions tables based on a defined sharding key to distribute transactional write traffic across cluster nodes.
 
-{{< faq q="When should I use Vitess vs GORM Sharding?" >}}
-Use **GORM Sharding** when: your team is Go-only, you have 1-2 tables to shard, and budget is tight (zero infrastructure overhead). Use **Vitess** when: you need zero-downtime resharding (VReplication), have a polyglot stack, or need the shard routing fully transparent to the application. Vitess is the right long-term choice for platform teams; GORM Sharding is the right starting point for Go product teams.
-{{< /faq >}}
+### When should an engineering team select Vitess over GORM application-level sharding?
+Teams should choose Vitess when managing large polyglot microservice ecosystems that require transparent query routing and zero-downtime dynamic resharding. Conversely, GORM Sharding is ideal for Go-native services with limited tables to shard and minimal operational resources.
 
-{{< faq q="What happens if a query in GORM Sharding omits the sharding key?" >}}
-Omitting the sharding key triggers an `ErrMissingShardingKey` error. If error enforcement is disabled, GORM Sharding fallback causes a Scatter-Gather operation across all database shards, merging results in Go RAM and causing severe CPU/memory spikes.
-{{< /faq >}}
+### What happens if a database query omits the designated sharding key in GORM Sharding?
+Omitting the sharding key in GORM Sharding causes the middleware to return an `ErrMissingShardingKey` error. If fallback behavior is enabled, the query executes a scatter-gather operation across all shards, consuming excessive database memory and CPU resources.

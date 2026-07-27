@@ -31,7 +31,7 @@ cover:
 
 This guide is for the person managing or commissioning a Magento project: the PM, the CTO, or the e-commerce director who needs to evaluate a proposal, structure an engagement via a strict cost matrix, and track delivery without being misled by vague timelines or unspecified complexity.
 
-> **Note:** For a complete overview of the market landscape, cost tiers, and 2.4.9 upgrade readiness, see our core pillar: [Magento Development in Vietnam: 2026 Guide](/posts/magento-vietnam/). For individual developer vetting playbook, see [How to Technically Vet Magento Developers in Vietnam](/posts/magento-development-in-vietnam/).
+> **Note:** For a complete overview of the market structure, cost tiers, and 2.4.9 upgrade readiness, see our core pillar: [Magento Development in Vietnam: 2026 Guide](/posts/magento-vietnam/). For individual developer vetting playbook, see [How to Technically Vet Magento Developers in Vietnam](/posts/magento-development-in-vietnam/).
 
 ## The Four Effort Layers (and Why Proposals Often Undercount Them)
 
@@ -204,7 +204,7 @@ For context on where the technical boundaries of Magento are and when it makes s
 
 ### Magento 2 Plugin & Redis Performance Configuration
 
-To eliminate database lock contention during high-concurrency catalog updates, enterprise deployments configure custom asynchronous plugins in `etc/di.xml` and configure Redis session caching in `app/etc/env.php`:
+In high-concurrency Magento enterprise deployments, catalog indexing and session storage create significant database lock contention during heavy traffic spikes. Asynchronous search indexer plugins offload indexing tasks to prevent database locks during peak transaction periods:
 
 ```xml
 <!-- etc/di.xml: Asynchronous Product Save Plugin -->
@@ -214,6 +214,8 @@ To eliminate database lock contention during high-concurrency catalog updates, e
     </type>
 </config>
 ```
+
+Session storage must also be offloaded from the MySQL primary database to an in-memory datastore to maintain low latency during flash sales. The configuration block below establishes Redis L2 caching and session persistence inside `app/etc/env.php`:
 
 ```php
 // app/etc/env.php: Redis L2 Cache & Session Configuration
@@ -236,29 +238,25 @@ return [
 
 {{< author-cta >}}
 
-## FAQ
+## Frequently Asked Questions
 
-{{< faq q="What should a Magento development proposal from a Vietnam agency include?" >}}
-A credible Magento proposal must include: (1) a **paid discovery phase** (2–4 weeks) that produces a requirements document, integration complexity matrix, and technical risk register — not a price based on assumptions; (2) **explicit integration assumptions** for each connected system (ERP, WMS, payment gateway) with documented failure recovery models; (3) **phase-by-phase deliverables** with specific test reports and acceptance criteria, not just a total timeline; (4) a **TCO section** covering ongoing costs: monthly security patches, quarterly extension compatibility work, hosting, and support retainer. If any of these are absent from the proposal, ask why before signing.
-{{< /faq >}}
+### What essential components must a Magento development proposal include?
+A credible enterprise Magento proposal must include a paid discovery phase (2–4 weeks), explicit integration assumptions covering retry and idempotency logic, and phase-by-phase deliverables with defined acceptance criteria. It should also feature a total cost of ownership (TCO) breakdown detailing ongoing maintenance, security patching, and hosting fees.
 
-{{< faq q="What are red flags in a Magento agency proposal?" >}}
-The most common red flags: skipping directly to 'Core Development' without a discovery phase (meaning the estimate is based on template assumptions, not your system); quoting integrations without explicit failure recovery models ('we'll connect the API' is not a plan); round-number estimates with no documented assumptions or three-point ranges; no TCO section (hiding ongoing costs until after launch when you negotiate from a weak position); no reference from a client who ran a high-traffic sale event on their Magento store. The most expensive Magento projects start as the cheapest proposals.
-{{< /faq >}}
+### What are the main red flags in a Magento agency proposal?
+Major red flags include skipping the discovery phase to quote directly on unverified assumptions, omitting integration failure recovery models, and using flat round-number estimates without three-point range analysis. Additionally, failing to outline post-launch total cost of ownership (TCO) often signals hidden post-launch costs.
 
-{{< faq q="How long does a Magento development project take in Vietnam?" >}}
-Timelines depend heavily on integration count and legacy complexity. A greenfield Magento 2 store with 2 integrations typically completes in **16–20 weeks** across Discovery (2–4w), Design & UX (3–5w), Core Development (8–10w), QA & Performance (2–3w), and Launch & Hypercare (1–2w). A migration project with 6+ integrations, custom checkout flows, and a legacy ERP can run **28–36 weeks**. The largest single variable is integration complexity — specifically the failure recovery model for each integration point (retry logic, idempotency, reconciliation, monitoring). Projects that skip the discovery phase routinely underestimate this by 40–60%.
-{{< /faq >}}
+### How long does an enterprise Magento project take to complete in Vietnam?
+Greenfield Magento 2 projects with 2 basic integrations typically require 16–20 weeks to complete from discovery through hypercare. Complex enterprise migrations involving 6+ custom integrations, legacy ERP synchronization, and custom checkout logic generally range between 28 and 36 weeks.
 
-{{< faq q="What does a Magento ERP integration actually cost?" >}}
-A **Magento ERP integration** typically costs **80–200 hours** of engineering effort, depending on whether the ERP exposes a documented REST API (lower end) or requires flat-file batch sync, custom middleware, or real-time event bridging (upper end). The hours are not primarily spent connecting the API — they are spent on retry logic (what happens when the ERP times out at order creation?), idempotency (does a duplicate order event create two pick lists?), reconciliation (how do you detect silent sync failures?), and monitoring (when does the integration alert, not when do customers call?). Any proposal below 80 hours for a real ERP integration is not accounting for these failure modes.
-{{< /faq >}}
+### What is the realistic cost and effort required for a Magento ERP integration?
+A production-ready Magento ERP integration typically requires 80–200 engineering hours depending on API maturity and sync requirements. Most of this effort is dedicated to building retry mechanisms, idempotency handling, silent sync failure reconciliation, and monitoring alerts rather than basic API endpoint wiring.
 
 ---
 
 ## Related Guides
 
-To deepen your technical expertise in high-throughput backend systems, distributed cloud infrastructure, and modern software architecture, explore these related deep dives from our platform. Each comprehensive article provides hands-on code examples, production benchmarks, architectural decision frameworks, and real-world deployment strategies to help you build resilient systems at enterprise scale.
+Explore these technical articles from our platform covering backend performance, distributed cloud architecture, and modern e-commerce deployment strategies:
 
 - **[Magento Development in Vietnam: 2026 Market Guide](/posts/magento-vietnam/)** — Full market overview: cost tiers, when to use agencies vs freelancers, and when to consider migrating off Magento entirely.
 - **[How to Technically Vet Magento Developers in Vietnam](/posts/magento-development-in-vietnam/)** — Five production-level interview questions and red flags for evaluating individual Magento engineers.

@@ -84,7 +84,7 @@ graph TD
 
 During high-concurrency sales, querying or updating inventory directly in relational databases (MySQL/PostgreSQL) causes immediate system collapse due to database row lock contention. When thousands of concurrent transactions execute `UPDATE items SET stock = stock - 1 WHERE id = 100`, the database engine serializes requests, exhausting connection pools.
 
-To prevent database lockup, inventory counters are pre-warmed into Redis clusters prior to sale launch. Stock reservations execute in-memory via single-threaded, atomic Lua scripts:
+To prevent database lockup, inventory counters are pre-warmed into Redis clusters prior to sale launch. Executing reservations in memory via single-threaded atomic Lua scripts guarantees non-blocking execution while eliminating race conditions. The Lua script below demonstrates atomic validation and stock decrement logic:
 
 ```lua
 -- Atomic Lua inventory reservation script
@@ -124,7 +124,7 @@ To safeguard downstream order microservices from C10M traffic surges, rate limit
 
 ### Production Redis Lua Atomic Token Bucket Script
 
-This Lua script executes atomically within Redis, updating available tokens based on elapsed fractional seconds while enforcing strict TTL boundaries to avoid memory leaks:
+Implementing globally synchronized rate limiting at edge gateways requires non-preemptible token bucket evaluations. The Lua script below executes atomically within Redis, refreshing token counts using high-resolution timestamps and enforcing key expiration to conserve memory:
 
 ```lua
 -- Atomic Token Bucket Rate Limiter
@@ -173,7 +173,7 @@ end
 
 ### Production Go Rate Limiter Implementation
 
-The API Gateway integrates atomic rate limiting via a thread-safe Go wrapper using github.com/redis/go-redis/v9 and pre-compiled EVALSHA scripts:
+Integrating Redis token bucket scripts into an API Gateway requires efficient driver bindings and script SHA caching. The Go implementation below provides a thread-safe wrapper that executes rate limiting evaluations across distributed gateway workers:
 
 ```go
 package main
@@ -257,18 +257,18 @@ graph LR
 
 ---
 
-## FAQ
+## Frequently Asked Questions
 
-{{< faq q="How does Shopee prevent overselling during flash sales?" >}}
-Shopee uses atomic Redis Lua scripts to decrement inventory counters in memory. Because Lua scripts execute atomically on single-threaded Redis keys, race conditions and database row lock contention are completely eliminated.
-{{< /faq >}}
+### How does Shopee prevent overselling during flash sales?
 
-{{< faq q="What is the difference between an API Gateway and a Service Mesh in flash sale architectures?" >}}
-An API Gateway manages North-South external traffic (rate limiting, authentication, payload validation), whereas a Service Mesh manages East-West internal service-to-service traffic (mTLS, circuit breaking, distributed tracing).
-{{< /faq >}}
+Shopee uses atomic Redis Lua scripts to decrement inventory counters in memory prior to database persistence. Because Lua scripts execute atomically on single-threaded Redis keys, race conditions and database row lock contention are completely eliminated.
 
-{{< faq q="How does C10M networking improve system concurrency?" >}}
-C10M networking uses kernel bypass techniques (DPDK, eBPF) and io_uring event loops to handle millions of concurrent network connections without suffering OS thread context switching overhead.
-{{< /faq >}}
+### What is the difference between an API Gateway and a Service Mesh in flash sale architectures?
+
+An API Gateway manages North-South external traffic including edge rate limiting, payload validation, and authentication. In contrast, a Service Mesh manages East-West internal traffic, controlling mutual TLS, circuit breaking, and distributed tracing across microservice boundaries.
+
+### How does C10M networking improve system concurrency?
+
+C10M networking uses kernel bypass techniques like DPDK and eBPF alongside io_uring event loops to handle millions of concurrent network connections without OS context switching overhead. By streaming packets directly into user-space memory buffers, edge nodes maintain sub-millisecond packet processing latency under peak load.
 
 {{< author-cta >}}

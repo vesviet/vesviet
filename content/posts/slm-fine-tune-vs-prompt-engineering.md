@@ -56,6 +56,8 @@ Small Language Models (SLMs, 1B–8B parameters) combined with fine-tuning and l
 
 ## Comparison Matrix: Prompt Engineering vs RAG vs Fine-Tuning
 
+Evaluating the trade-offs between prompt engineering, Retrieval-Augmented Generation (RAG), and fine-tuning requires evaluating operational costs, latency requirements, setup complexity, and knowledge freshness needs. System architects must analyze these foundational dimensions to determine the optimal artificial intelligence deployment strategy for specific enterprise microservices and domain workloads in 2026.
+
 | Criteria | Prompt Engineering | RAG (Retrieval-Augmented Generation) | Fine-Tuning (LoRA / QLoRA) |
 | :--- | :--- | :--- | :--- |
 | **Primary Use Case** | Rapid prototyping, broad tasks | Real-time dynamic knowledge, live data | Strict formatting, brand style, token compression |
@@ -69,7 +71,7 @@ Small Language Models (SLMs, 1B–8B parameters) combined with fine-tuning and l
 
 ## 1. SLM Hybrid Architecture & Knowledge Distillation
 
-Instead of routing every user request to an expensive frontier cloud model. The sequence diagram below traces the component interactions, data events, and boundary transitions across the workflow. Visualizing system interactions helps clarify data boundaries, concurrency limits, and failure domain separation. The sequence diagram below traces the component interactions, message flows, API gateways, and boundary transitions across the complete execution path.
+Designing cost-effective language model infrastructure requires deploying dynamic routing architectures that pair lightweight local Small Language Models with cloud frontier models. By leveraging synthetic reasoning distillation from teacher models like DeepSeek-R1, engineering teams fine-tune specialized student SLMs to execute domain tasks with minimal latency and dramatically reduced compute overhead in 2026.
 
 ```mermaid
 graph TD
@@ -95,9 +97,7 @@ Parameter-Efficient Fine-Tuning (PEFT) using Low-Rank Adaptation (LoRA) decompos
 
 ### Production QLoRA Fine-Tuning Pipeline & YAML Config
 
-To fine-tune a 1B–8B student SLM on domain distillation datasets within strict VRAM bounds (e.g., single NVIDIA RTX 4090 or A10G with 24GB VRAM), production workflows adopt 4-bit NormalFloat (NF4) QLoRA quantization.
-
-#### Production QLoRA Configuration (`qlora_config.yaml`)
+To fine-tune a 1B–8B student SLM on domain distillation datasets within strict VRAM bounds, production workflows adopt 4-bit NormalFloat (NF4) QLoRA quantization. The YAML configuration below defines hyperparameter targets, quantization parameters, and target module adaptations:
 
 ```yaml
 # Production QLoRA Training Configuration for Llama-3.1-8B / Qwen2.5-7B
@@ -142,7 +142,7 @@ training_arguments:
 
 #### Runnable Python `SFTTrainer` Execution Pipeline (`train_qlora.py`)
 
-Below is the complete, runnable Python fine-tuning script utilizing HuggingFace `trl.SFTTrainer`, `peft.LoraConfig`, and `bitsandbytes` 4-bit NF4 double quantization:
+Running automated instruction fine-tuning requires integrating HuggingFace transformers, PEFT bindings, and double quantization configs. The complete, runnable Python script below executes the SFTTrainer training loop and saves final LoRA adapter weights:
 
 ```python
 import torch
@@ -218,7 +218,7 @@ trainer.model.save_pretrained("./outputs/llama3-8b-qlora/final_adapter")
 
 ## 2. Preference Alignment: DPO, KTO, and GRPO
 
-Fine-tuning for format compliance gets you halfway; preference alignment guarantees brand tone and safety. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the comprehensive breakdown below.
+Aligning fine-tuned Small Language Models with human preference standards requires moving beyond basic instruction tuning to post-training optimization algorithms. Machine learning engineers deploy Direct Preference Optimization (DPO), Kahneman-Tversky Optimization (KTO), and Group Relative Policy Optimization (GRPO) to enforce factual consistency, maintain safety boundaries, and eliminate hallucination risks across enterprise 2026 deployments.
 
 - **DPO (Direct Preference Optimization)**: Optimizes model policy directly on $(Prompt, Chosen, Rejected)$ triplets without training a separate reward model.
 - **KTO (Kahneman-Tversky Optimization)**: Operates on binary $(Prompt, Response, IsGood)$ signals, simplifying data curation.
@@ -228,7 +228,7 @@ Fine-tuning for format compliance gets you halfway; preference alignment guarant
 
 ## 3. Self-Hosting Local SLMs with vLLM & Multi-LoRA
 
-vLLM serves quantized SLMs and dynamically swaps multiple LoRA adapters on a single GPU:
+Serving fine-tuned Small Language Models in production requires selecting high-performance inference runtimes capable of dynamic memory allocation and adapter multiplexing. By deploying quantized 8B SLMs on vLLM, engineering teams achieve high token generation throughput, low Time-To-First-Token latencies, and multi-LoRA adapter switching on single GPU instances across cost-optimized 2026 cloud infrastructure.
 
 ### Deep Dive: SLM Quantization Frameworks (AWQ vs GGUF vs EXL2)
 
@@ -251,6 +251,8 @@ Evaluating total cost of ownership (TCO) requires measuring both prefill latency
 Once trained, LoRA adapters can either be served dynamically side-by-side using vLLM's multi-LoRA feature, or merged directly into the base weights (`model.merge_and_unload()`) for maximum throughput.
 
 #### Multi-LoRA vLLM Launch Command & OpenAI API Client Request
+
+Serving quantized base models while dynamically loading specialized LoRA adapters requires configuring vLLM runtime flags. The terminal command and curl snippet below demonstrate launching multi-LoRA vLLM instances and dispatching adapter-specific inference queries:
 
 ```bash
 # Launch Production vLLM Server with Multi-LoRA Support
@@ -292,18 +294,20 @@ curl http://localhost:8000/v1/chat/completions \
 
 ---
 
-## FAQ
+## Frequently Asked Questions
 
-{{< faq q="What is the difference between fine-tuning and prompt engineering?" >}}
-Prompt engineering modifies what the model sees at inference time without changing model weights. Fine-tuning modifies model weights directly, producing persistent format and style behavior across all requests with minimal system prompt overhead.
-{{< /faq >}}
+Below are answers to essential engineering queries regarding prompt engineering trade-offs, Retrieval-Augmented Generation (RAG) integration, Small Language Model (SLM) fine-tuning, and preference alignment algorithms. These concise technical responses summarize practical guidance for architecting high-throughput, low-latency, and cost-effective machine learning inference pipelines across modern 2026 environments.
 
-{{< faq q="What is Knowledge Distillation in SLM development?" >}}
-Knowledge Distillation extracts reasoning steps and high-quality outputs from a large teacher model (e.g. DeepSeek-R1 or GPT-4o) and uses them as training data to fine-tune a small student model (e.g. 8B SLM), giving the smaller model specialized reasoning capabilities.
-{{< /faq >}}
+### What is the difference between fine-tuning and prompt engineering?
 
-{{< faq q="How does DPO compare to traditional RLHF?" >}}
-DPO (Direct Preference Optimization) eliminates the need for training a separate reward model. It optimizes the policy network directly using a binary cross-entropy loss over chosen vs. rejected response pairs, making alignment faster and more stable.
-{{< /faq >}}
+Prompt engineering modifies instructions within the context window at inference time without altering model weights. In contrast, fine-tuning updates model weights directly, baking domain formatting and behavior rules persistently into the model to reduce per-request system prompt overhead.
+
+### What is Knowledge Distillation in SLM development?
+
+Knowledge Distillation extracts reasoning paths and synthetic outputs from a high-capacity teacher model like DeepSeek-R1 or GPT-4o. These trajectories serve as instruction datasets to train a smaller student model, enabling 8B SLMs to achieve specialized reasoning capabilities at lower compute overhead.
+
+### How does DPO compare to traditional RLHF?
+
+Direct Preference Optimization (DPO) eliminates the need to train a separate reward model during alignment. It optimizes the policy network directly using binary cross-entropy loss over chosen versus rejected response pairs, simplifying training stability and reducing compute requirements.
 
 {{< author-cta >}}
