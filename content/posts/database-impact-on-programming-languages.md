@@ -208,22 +208,19 @@ flowchart TB
 ```
 
 
-## Architectural Trade-offs & Production Considerations (2026 Baseline)
+## Connection Model Trade-offs & Production Considerations
 
-In high-concurrency production deployments, balancing throughput, resilience, and operational cost requires strict engineering trade-offs. Engineering teams must carefully evaluate latency overhead, state consistency guarantees, automated failover strategies, and resource allocations to ensure long-term system stability and predictable performance under extreme peak traffic.
+The core argument of this article — that the database access model shaped each language's concurrency design — has direct operational consequences. These are the trade-offs that follow from choosing a language whose runtime treats database I/O as blocking versus non-blocking.
 
-1. **Latency vs. Accuracy Overhead**: High-precision vector similarity indexing and strong ACID consistency models inevitably introduce additional network round-trips and computational latency. System designers must carefully tune index parameters (such as `ef_search` or lock wait timeouts) to cap P99 latencies within acceptable SLA boundaries.
-2. **Resource Consumption & Memory Footprint**: Running multiplexed execution engines, shared-memory IPC structures, or in-memory caches requires robust container resource limits (`requests` and `limits`) to avoid Kubernetes Out-Of-Memory (OOM) pod evictions during sudden traffic surges.
-3. **Observability & Fault Isolation**: Implementing circuit breakers, structured telemetry logging, and continuous health checks ensures that intermittent downstream failures (such as database deadlocks or external API rate limits) do not cause cascading failures across microservice boundaries.
+1. **Pool sizing vs. database CPU limits**: Go's `database/sql` multiplexes thousands of goroutines over a small socket pool, but a larger pool is not always better — every open connection consumes a backend process/thread on the database. Setting `SetMaxOpenConns` above the database's CPU-bound sweet spot moves the bottleneck from the app to the DB and *increases* P99 latency. Size the pool to the database's parallelism, not the app's concurrency.
+2. **Process-per-request memory (PHP-FPM) vs. event loops**: PHP-FPM's process-per-request model needs an external pooler (PgBouncer) to avoid one-connection-per-worker exhaustion, which adds an extra network hop and a component to operate. Event-loop runtimes (Node.js) and green-thread runtimes (Go) avoid this but shift the failure mode to pool starvation under a slow query — one blocked query can starve the whole pool. Pick your monitoring accordingly.
+3. **Compile-time query validation vs. deploy-time coupling**: Rust's `sqlx` verifies SQL against a live schema at build time, catching column drift before deploy — but it couples your CI pipeline to a reachable database (or a cached schema snapshot). Weigh the safety against the build-infrastructure complexity, especially in air-gapped or offline build environments.
 
-## Related Pillar Articles & Further Reading
+## Related Reading
 
-To deepen your technical expertise in high-throughput backend systems, distributed cloud infrastructure, and modern software architecture, explore these related deep dives from our platform. Each comprehensive article provides hands-on code examples, production benchmarks, architectural decision frameworks, and real-world deployment strategies to help you build resilient systems at enterprise scale.
-
-- [High-Throughput Go Framework Benchmarks](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/)
-- [Composable Commerce Migration Blueprint](/posts/ecommerce-architecture-composable-migration/)
-- [Dapr Workflow Saga Orchestration Guide](/posts/dapr-workflow-saga-orchestration-guide/)
-- [Golang pprof Memory & CPU Profiling Tutorial](/posts/golang-pprof-profiling-memory-cpu-tutorial/)
+- [High-Throughput Go Framework Benchmarks](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/) — how framework choice interacts with the connection model.
+- [MySQL Scalability Guide](/posts/mysql-scalability-guide/) — tuning the database side of the pool equation.
+- [Golang pprof Memory & CPU Profiling Tutorial](/posts/golang-pprof-profiling-memory-cpu-tutorial/) — diagnosing pool starvation and connection leaks in production.
 
 ## Frequently Asked Questions (FAQ)
 

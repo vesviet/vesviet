@@ -23,7 +23,7 @@ canonicalURL: "https://tanhdev.com/posts/surge-pricing-optimization-architecture
 > **Answer-First:** Real-time surge pricing engines index geographical rider demand and driver supply using Uber H3 hexagonal spatial grids and Redis sliding windows. Written in Go, this architecture processes 100,000+ location updates per second to calculate dynamic fare multipliers in sub-5ms while preventing boundary gaming.
 >
 > **Key Takeaways**:
-> - Uber H3 spatial resolution 8 (0.7 km2 hexagons) provides optimal granularity for urban ride demand.
+> - H3 resolution is chosen by density: resolution 9 (~0.10 km², a few city blocks) for dense urban cores, resolution 8 (~0.73 km²) for suburban and low-density areas.
 > - Redis atomic pipelines aggregate supply/demand ratios over 2-minute sliding windows.
 > - Exponential smoothing dampens sudden pricing spikes, ensuring smooth fare transitions for riders.
 
@@ -32,13 +32,13 @@ canonicalURL: "https://tanhdev.com/posts/surge-pricing-optimization-architecture
 
 Why is it that every time it rains, ride-hailing fares double, or even triple? It's not a human operator manually adjusting the prices behind a desk. Rather, it's the result of an incredibly sophisticated Stream Processing engine running in the background executing the **surge pricing algorithm**.
 
-This analysis we will "dissect" the architecture of a real-time dynamic pricing system. We will explore everything from dividing geographical space using Uber's H3 library to the data processing architecture built on Kafka and Flink. Furthermore, we will examine why [Scaling your Database to handle Surge traffic](/posts/mysql-horizontal-scaling/) is a strict prerequisite to prevent your system from crashing during massive traffic spikes.
+This analysis breaks down the architecture of a real-time dynamic pricing system, from dividing geographical space using Uber's H3 library to the data processing architecture built on Kafka and Flink. Furthermore, we will examine why [Scaling your Database to handle Surge traffic](/posts/mysql-horizontal-scaling/) is a strict prerequisite to prevent your system from crashing during massive traffic spikes.
 
 ---
 
 ## Understanding Surge Pricing and the Surge Multiplier
 
-In economic terms, Surge Pricing is essentially a Supply - Demand Matching problem within a Marketplace ecosystem. Similar supply-side allocation challenges appear in [logistics dispatch and routing systems](/posts/graphhopper-distance-matrix-production-guide/) that coordinate delivery fleets at scale. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below.
+In economic terms, Surge Pricing is essentially a Supply-Demand Matching problem within a Marketplace ecosystem. Similar supply-side allocation challenges appear in [logistics dispatch and routing systems](/posts/graphhopper-distance-matrix-production-guide/) that coordinate delivery fleets at scale.
 
 - **Demand:** The number of riders currently opening the app, searching for rides, or requesting trips in a specific area.
 - **Supply:** The number of drivers currently online and ready to accept rides in that same area.
@@ -199,22 +199,23 @@ func main() {
 ```
 
 
-## Architectural Trade-offs & Production Considerations (2026 Baseline)
+## Surge Pricing Trade-offs & Production Considerations
 
-In high-concurrency production deployments, balancing throughput, resilience, and operational cost requires strict engineering trade-offs. Engineering teams must carefully evaluate latency overhead, state consistency guarantees, automated failover strategies, and resource allocations to ensure long-term system stability and predictable performance under extreme peak traffic.
+A surge engine sits directly on the revenue path, so its trade-offs are as much about rider trust and market dynamics as about latency. Getting these wrong produces either gameable prices or rider revolt.
 
-1. **Latency vs. Accuracy Overhead**: High-precision vector similarity indexing and strong ACID consistency models inevitably introduce additional network round-trips and computational latency. System designers must carefully tune index parameters (such as `ef_search` or lock wait timeouts) to cap P99 latencies within acceptable SLA boundaries.
-2. **Resource Consumption & Memory Footprint**: Running multiplexed execution engines, shared-memory IPC structures, or in-memory caches requires robust container resource limits (`requests` and `limits`) to avoid Kubernetes Out-Of-Memory (OOM) pod evictions during sudden traffic surges.
-3. **Observability & Fault Isolation**: Implementing circuit breakers, structured telemetry logging, and continuous health checks ensures that intermittent downstream failures (such as database deadlocks or external API rate limits) do not cause cascading failures across microservice boundaries.
+1. **Resolution granularity vs. data sparsity**: A finer H3 resolution (res 9) prices a single intersection precisely, but smaller hexagons see fewer events per window — so demand/supply ratios get noisy and swing on a handful of requests. Coarser cells (res 8) are statistically stable but blur genuine local hotspots. Match resolution to observed event density per cell, and consider falling back to the parent cell when a child cell's sample size drops below a threshold.
+2. **Responsiveness vs. price oscillation**: A short sliding window reacts fast to a concert letting out, but reacts *too* fast to noise, producing fares that flap up and down and erode rider trust. Exponential smoothing dampens this, but over-smoothing lags real demand and under-prices a genuine spike. Tune the smoothing factor against replayed historical demand, not intuition.
+3. **Boundary gaming vs. computational cost**: Riders learn to walk 100m across a hexagon edge to escape a surge. Blending a cell's multiplier with its neighbors (using H3's equal-distance adjacency) smooths the boundary and defeats gaming, but every blended read multiplies the Redis lookups per price calculation. Cap the blend to the immediate ring (`k=1`) to bound the cost while still killing the cliff-edge.
 
-## Related Pillar Articles & Further Reading
+> [!NOTE]
+> Surge multipliers are commercially and sometimes legally sensitive (some jurisdictions cap surge during emergencies). Treat the multiplier ceiling and emergency-cap logic as policy configuration owned by the business, not as a hardcoded engineering constant.
 
-To deepen your technical expertise in high-throughput backend systems, distributed cloud infrastructure, and modern software architecture, explore these related deep dives from our platform. Each comprehensive article provides hands-on code examples, production benchmarks, architectural decision frameworks, and real-world deployment strategies to help you build resilient systems at enterprise scale.
+## Related Reading
 
-- [Real-Time Ride-Hailing Architecture Blueprint](/posts/real-time-ride-hailing-architecture/)
-- [Geospatial Indexing in Ride-Hailing Systems](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/)
-- [GraphHopper Distance Matrix Production Guide](/posts/graphhopper-distance-matrix-production-guide/)
-- [Argo CD Updates 2026 Guide](/posts/argo-cd-updates-2026/)
+- [Real-Time Ride-Hailing Architecture Blueprint](/posts/real-time-ride-hailing-architecture/) — the full matching system this pricing engine plugs into.
+- [Geospatial Indexing in Ride-Hailing Systems](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/) — H3 indexing in depth.
+- [GraphHopper Distance Matrix Production Guide](/posts/graphhopper-distance-matrix-production-guide/) — routing costs that feed dispatch decisions.
+- [MySQL Horizontal Scaling](/posts/mysql-horizontal-scaling/) — scaling the datastore behind a surge-traffic spike.
 
 ## Frequently Asked Questions (FAQ)
 

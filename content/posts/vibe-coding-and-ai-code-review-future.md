@@ -25,7 +25,7 @@ canonicalURL: "https://vesviet.com/posts/vibe-coding-and-ai-code-review-future/"
 > **Executive Summary & Quick Answer**: Vibe coding combines rapid AI-assisted development with rigorous, automated AI code review gates. By integrating AST context analysis with LLM review pipelines, engineering teams catch 92% of security vulnerabilities and anti-patterns before human code review, cutting PR turnaround time by 70%.
 >
 > **Key Takeaways**:
-> - AST pre-filtering passes code structure context to LLMs, reducing prompt token bloat by 65%.
+> - AST pre-filtering forwards only function/class/import nodes to the LLM, cutting prompt token count substantially on large files (measure the reduction against your own codebase — it varies with how much non-structural glue a file carries).
 > - Structured JSON schema enforcement guarantees predictable AI review output and automated PR blocking.
 > - Dual-pass review separates deterministic linting from semantic architecture evaluation.
 
@@ -168,21 +168,40 @@ REVIEW_SCHEMA = {
     "required": ["passed", "findings"]
 }
 
+def extract_review_context(code_snippet: str) -> str:
+    """Pre-filter: keep only function/class definitions and imports.
+
+    This is the step that actually cuts token count — instead of sending
+    the whole file (comments, blank lines, unrelated top-level glue), we
+    walk the AST and forward only the nodes a security review cares about.
+    """
+    tree = ast.parse(code_snippet)  # raises SyntaxError on invalid input
+    relevant = []
+    for node in tree.body:
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef,
+                             ast.Import, ast.ImportFrom)):
+            segment = ast.get_source_segment(code_snippet, node)
+            if segment:
+                relevant.append(segment)
+    # Fall back to the full snippet if nothing structural was found.
+    return "\n\n".join(relevant) if relevant else code_snippet
+
+
 def analyze_python_ast_and_review(code_snippet: str) -> dict:
     try:
-        parsed_ast = ast.parse(code_snippet)
+        review_context = extract_review_context(code_snippet)
     except SyntaxError as e:
         return {"passed": False, "findings": [{"line": e.lineno, "severity": "CRITICAL", "rule": "SyntaxError", "suggestion": str(e)}]}
 
     prompt = f"""Analyze code for OWASP vulnerabilities and performance anti-patterns:
-{code_snippet}"""
-    
+{review_context}"""
+
     response = completion(
         model="openai/gpt-4o",
         messages=[{"role": "user", "content": prompt}],
         response_format={"type": "json_object", "schema": REVIEW_SCHEMA}
     )
-    
+
     return json.loads(response.choices[0].message.content)
 
 if __name__ == "__main__":
@@ -196,24 +215,20 @@ def run_cmd(user_input):
 
 ---
 
-## Architectural Trade-offs & Production Considerations (2026 Baseline)
+## AI Code Review Trade-offs & Production Considerations
 
-In high-concurrency production deployments, balancing throughput, resilience, and operational cost requires strict engineering trade-offs. Engineering teams must carefully evaluate latency overhead, state consistency guarantees, automated failover strategies, and resource allocations to ensure long-term system stability and predictable performance under extreme peak traffic.
+An automated AI review gate is only as valuable as its false-positive rate and the trust engineers place in it. These trade-offs decide whether the gate accelerates the team or gets ignored and disabled.
 
-1. **Latency vs. Accuracy Overhead**: High-precision vector similarity indexing and strong ACID consistency models inevitably introduce additional network round-trips and computational latency. System designers must carefully tune index parameters (such as `ef_search` or lock wait timeouts) to cap P99 latencies within acceptable SLA boundaries.
-2. **Resource Consumption & Memory Footprint**: Running multiplexed execution engines, shared-memory IPC structures, or in-memory caches requires robust container resource limits (`requests` and `limits`) to avoid Kubernetes Out-Of-Memory (OOM) pod evictions during sudden traffic surges.
-3. **Observability & Fault Isolation**: Implementing circuit breakers, structured telemetry logging, and continuous health checks ensures that intermittent downstream failures (such as database deadlocks or external API rate limits) do not cause cascading failures across microservice boundaries.
+1. **Precision vs. recall on the merge gate**: A gate tuned for high recall catches nearly every real vulnerability but also blocks PRs on hallucinated ones — and a gate that cries wolf gets overridden within a week. Confirming LLM findings against deterministic AST/static analysis before *blocking* (versus merely commenting) keeps the hard gate high-precision while letting the softer signals through as advisory comments.
+2. **Model cost vs. review latency**: Running every diff through a frontier model gives the best reasoning but adds per-PR cost and latency that compounds on a busy repo. AST pre-filtering (sending only changed functions, not whole files) and routing trivial diffs to a cheaper model via the gateway is what keeps the pipeline economical — but verify the filter never drops the sink or the source of a taint path, or you blind the reviewer.
+3. **Automation depth vs. human accountability**: The gate should catch mechanical issues (injection sinks, missing auth checks) so humans can focus on design and intent. It must not become the sole reviewer — an LLM cannot own the accountability for a security-critical merge. Keep a human in the loop for anything the gate flags CRITICAL, and treat the AI output as evidence, not verdict.
 
----
+## Related Reading
 
-## Related Pillar Articles & Further Reading
-
-To deepen your technical expertise in high-throughput backend systems, distributed cloud infrastructure, and modern software architecture, explore these related deep dives from our platform. Each comprehensive article provides hands-on code examples, production benchmarks, architectural decision frameworks, and real-world deployment strategies to help you build resilient systems at enterprise scale.
-
-- [AI-Native Frontend in 2028: Architecture Predictions](/posts/ai-native-frontend-architecture-predictions-2028/)
-- [Go MCP Server Development Production Guide](/posts/go-mcp-server-development-production-guide/)
-- [Production Agentic AI Swarm with OpenClaw & LiteLLM](/posts/deploying-autonomous-ai-swarm-openclaw-litellm/)
-- [SLM Fine-Tuning vs Prompt Engineering Guide](/posts/slm-fine-tune-vs-prompt-engineering/)
+- [AI-Native Frontend in 2028: Architecture Predictions](/posts/ai-native-frontend-architecture-predictions-2028/) — where generative tooling is heading.
+- [Go MCP Server Development Production Guide](/posts/go-mcp-server-development-production-guide/) — building the tools these review agents call.
+- [Production Agentic AI Swarm with OpenClaw & LiteLLM](/posts/deploying-autonomous-ai-swarm-openclaw-litellm/) — the gateway and routing layer behind the review pipeline.
+- [Production AI APIs: OAuth, Versioning & Rate Limiting](/posts/production-ai-apis-oauth-versioning-meta-predictions/) — securing the LLM gateway in CI.
 
 ---
 

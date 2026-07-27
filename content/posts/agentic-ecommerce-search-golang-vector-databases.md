@@ -190,22 +190,20 @@ Vector databases cannot efficiently handle highly volatile data like real-time i
 
 > **📚 Full Implementation Series:** This post covers the architecture overview. To build this end-to-end — from Golang orchestration and Qdrant ingestion to critique loops and production cost optimization — follow the **[Agentic E-commerce Search series](/series/agentic-ecommerce-search/)** (6 in-depth parts).
 
-## Architectural Trade-offs & Production Considerations (2026 Baseline)
+## Vector Search Trade-offs & Production Considerations
 
-In high-concurrency production deployments, balancing throughput, resilience, and operational cost requires strict engineering trade-offs. Engineering teams must carefully evaluate latency overhead, state consistency guarantees, automated failover strategies, and resource allocations to ensure long-term system stability and predictable performance under extreme peak traffic.
+The three tuning knobs that dominate a Qdrant-backed agentic search service pull against each other — you cannot maximize recall, minimize latency, and minimize memory simultaneously. These are the specific trade-offs to reason about before locking your HNSW parameters.
 
-1. **Latency vs. Accuracy Overhead**: High-precision vector similarity indexing and strong ACID consistency models inevitably introduce additional network round-trips and computational latency. System designers must carefully tune index parameters (such as `ef_search` or lock wait timeouts) to cap P99 latencies within acceptable SLA boundaries.
-2. **Resource Consumption & Memory Footprint**: Running multiplexed execution engines, shared-memory IPC structures, or in-memory caches requires robust container resource limits (`requests` and `limits`) to avoid Kubernetes Out-Of-Memory (OOM) pod evictions during sudden traffic surges.
-3. **Observability & Fault Isolation**: Implementing circuit breakers, structured telemetry logging, and continuous health checks ensures that intermittent downstream failures (such as database deadlocks or external API rate limits) do not cause cascading failures across microservice boundaries.
+1. **Recall vs. query latency (`ef_search`)**: Raising `ef_search` widens the HNSW candidate list, improving recall but adding CPU per query. The `ef_search=64` used above hits ~98% recall at sub-15ms; pushing to `ef_search=256` chases the last fraction of a percent of recall while roughly quadrupling query CPU. Tune it against a labeled relevance set, not by feel, and re-measure whenever the collection size changes materially.
+2. **Index build cost vs. serving quality (`m`, `ef_construct`)**: `m=16` / `ef_construct=128` build a graph dense enough for e-commerce catalogs in the low millions of vectors. Higher `m` improves graph connectivity but inflates RAM per vector (the whole HNSW graph is held in memory), which drives your Kubernetes memory `requests`/`limits` and therefore your node bill. Size the pod memory from `num_vectors × dim × 4 bytes × overhead`, not from a default.
+3. **Agentic fallback cost vs. zero-result rate**: The LLM query-expansion fallback rescues tail queries but adds an LLM round-trip (hundreds of ms + token cost) to every miss. Gate it behind a cosine-distance threshold (0.45 in this design) and a BM25 pre-check so you only pay for the model when cheaper paths genuinely fail — otherwise a spike in tail queries becomes a spike in your LLM bill.
 
-## Related Pillar Articles & Further Reading
+## Related Reading
 
-To deepen your technical expertise in high-throughput backend systems, distributed cloud infrastructure, and modern software architecture, explore these related deep dives from our platform. Each comprehensive article provides hands-on code examples, production benchmarks, architectural decision frameworks, and real-world deployment strategies to help you build resilient systems at enterprise scale.
-
-- [Agentic E-Commerce Search Series](/series/agentic-ecommerce-search/)
-- [GraphRAG vs Naive RAG Guide](/posts/graphrag-vs-naive-rag-enterprise-guide/)
-- [Go MCP Server Production Guide](/posts/go-mcp-server-development-production-guide/)
-- [Autonomous Hybrid AI Pipeline](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)
+- [Agentic E-Commerce Search Series](/series/agentic-ecommerce-search/) — the full 6-part build, from ingestion to critique loops.
+- [GraphRAG vs Naive RAG Guide](/posts/graphrag-vs-naive-rag-enterprise-guide/) — when graph traversal beats flat vector similarity.
+- [Go MCP Server Production Guide](/posts/go-mcp-server-development-production-guide/) — exposing the search engine as an agent-callable tool.
+- [Autonomous Hybrid AI Pipeline](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/) — routing between local SLMs and cloud LLMs to control cost.
 
 ## Frequently Asked Questions (FAQ)
 

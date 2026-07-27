@@ -207,22 +207,20 @@ Dapr uses the **Optimistic Concurrency Control (OCC) mechanism combined with ETa
 - **If it matches:** The data is successfully written, and a new ETag version is updated.
 - **If it doesn't match (Conflict):** This means during App A's processing time, App B has overwritten that record. Dapr will immediately reject it and throw an **HTTP 409 Conflict** error. App A must then catch the 409 error, read the latest state (with the new ETag), and perform a retry (Retry Pattern) or use a Merge logic mechanism.
 
-## Architectural Trade-offs & Production Considerations (2026 Baseline)
+## State Consistency Trade-offs & Production Considerations
 
-In high-concurrency production deployments, balancing throughput, resilience, and operational cost requires strict engineering trade-offs. Engineering teams must carefully evaluate latency overhead, state consistency guarantees, automated failover strategies, and resource allocations to ensure long-term system stability and predictable performance under extreme peak traffic.
+Every Dapr state-store decision is a trade between correctness and throughput. The consistency mode, the concurrency mode, and the backing store each pull the system toward either stronger guarantees or lower latency — and you rarely get both.
 
-1. **Latency vs. Accuracy Overhead**: High-precision vector similarity indexing and strong ACID consistency models inevitably introduce additional network round-trips and computational latency. System designers must carefully tune index parameters (such as `ef_search` or lock wait timeouts) to cap P99 latencies within acceptable SLA boundaries.
-2. **Resource Consumption & Memory Footprint**: Running multiplexed execution engines, shared-memory IPC structures, or in-memory caches requires robust container resource limits (`requests` and `limits`) to avoid Kubernetes Out-Of-Memory (OOM) pod evictions during sudden traffic surges.
-3. **Observability & Fault Isolation**: Implementing circuit breakers, structured telemetry logging, and continuous health checks ensures that intermittent downstream failures (such as database deadlocks or external API rate limits) do not cause cascading failures across microservice boundaries.
+1. **Strong vs. eventual consistency latency**: `ConsistencyStrong` forces the store to confirm a quorum write before acking, adding cross-replica round-trips. On CockroachDB or Cosmos DB this can turn a sub-5ms Redis write into tens of milliseconds. Reserve strong consistency for records where a stale read corrupts state (ledgers, inventory reservations) and accept eventual consistency everywhere the cost of a brief stale read is trivial.
+2. **OCC retry storms under contention**: ETag-based optimistic concurrency is cheap when writes rarely collide, but on a hot key (a popular product's stock counter) every concurrent writer but one gets a 409 and retries — amplifying load exactly when traffic peaks. For high-contention keys, prefer a single-writer actor or a server-side atomic operation over naive OCC-plus-retry, which degrades super-linearly.
+3. **Store choice vs. guarantee availability**: Not every state store honors every Dapr guarantee. Redis (without Redis Enterprise CRDTs) does not provide the same strong-consistency semantics as PostgreSQL or CockroachDB, so a component swap that looks like a config-only change can silently downgrade your correctness guarantees. Verify ETag and strong-consistency support per store before treating them as interchangeable.
 
-## Related Pillar Articles & Further Reading
+## Related Reading
 
-To deepen your technical expertise in high-throughput backend systems, distributed cloud infrastructure, and modern software architecture, explore these related deep dives from our platform. Each comprehensive article provides hands-on code examples, production benchmarks, architectural decision frameworks, and real-world deployment strategies to help you build resilient systems at enterprise scale.
-
-- [Dapr Workflow Go Tutorial: Orchestrated Saga Pattern](/posts/dapr-workflow-saga-orchestration-guide/)
-- [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr/)
-- [Banking Microservices Architecture in Go](/posts/banking-microservices-architecture/)
-- [Composable Banking Architecture Guide](/posts/composable-banking-architecture/)
+- [Dapr Workflow Go Tutorial: Orchestrated Saga Pattern](/posts/dapr-workflow-saga-orchestration-guide/) — durable orchestration when a single ETag write is not enough.
+- [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr/) — pub/sub and the transactional outbox alongside state management.
+- [Banking Microservices Architecture in Go](/posts/banking-microservices-architecture/) — where strong consistency is non-negotiable.
+- [Composable Banking Architecture Guide](/posts/composable-banking-architecture/) — consistency boundaries across modular services.
 
 ## Frequently Asked Questions (FAQ)
 

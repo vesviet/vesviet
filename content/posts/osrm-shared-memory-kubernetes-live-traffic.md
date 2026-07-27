@@ -10,6 +10,7 @@ ShowToc: true
 TocOpen: true
 categories: ["DevOps", "Architecture"]
 tags: ["OSRM", "Kubernetes", "Geospatial", "Routing", "Shared Memory", "C++", "Golang"]
+mermaid: true
 cover:
   image: "images/posts/osrm-k8s-cover.png"
   alt: "OSRM Shared Memory Kubernetes Architecture"
@@ -77,32 +78,59 @@ To automate this, we design a two-tier architecture:
 
 ## Practical Kubernetes Deployment using IPC Namespace & `/dev/shm`
 
-### Configuring the emptyDir volume with Memory Medium
+### Two sharing scopes — pick the right one
 
-The most crucial secret to successfully deploying this on Kubernetes is configuring a shared volume for the Pod using an `emptyDir` backed by `medium: Memory` to map directly into `/dev/shm`:
+This is where most Kubernetes deployments of OSRM go wrong, so be precise about *which* processes share memory:
+
+- **Within a single Pod** (the `osrm-routed` container + the `osrm-datastore` sidecar): containers in the same Pod share the Pod's IPC namespace by default, so an `emptyDir` volume with `medium: Memory` mounted into both containers is enough for them to share the `/dev/shm` segment.
+- **Across multiple Pods on the same node** (many `osrm-routed` replicas sharing one segment): an `emptyDir` **cannot** do this — each Pod gets its own isolated `emptyDir`. Cross-Pod sharing requires the Pods to join the *node's* IPC namespace with `hostIPC: true` and mount the node's `/dev/shm` via a `hostPath` volume.
+
+> [!WARNING]
+> `emptyDir` with `medium: Memory` is scoped to a single Pod. If your goal is 50 replicas sharing one 15 GB map segment on a node, `emptyDir` will silently give each Pod its own copy. Use `hostIPC: true` + `hostPath` for cross-Pod sharing.
+
+#### Model A — single Pod (main + sidecar sharing memory)
 
 ```yaml
 volumes:
   - name: dshm
     emptyDir:
-      medium: Memory
+      medium: Memory       # tmpfs in RAM, not disk-backed EBS
       sizeLimit: "50Gi"
 ```
 
-This explicit configuration guarantees that the shared memory truly resides in virtual RAM (tmpfs). If you omit `medium: Memory`, Kubernetes will fall back to using the node's disk (like an AWS EBS volume), which will catastrophically bottleneck your IOPS and completely destroy OSRM's performance.
+Omitting `medium: Memory` makes Kubernetes fall back to disk-backed storage (e.g. an AWS EBS volume), which bottlenecks IOPS and destroys OSRM's sub-2ms latency.
 
-### The Sidecar Container Design (Tight Coupling)
-
-Because POSIX Shared Memory requires processes to share a common IPC Namespace, we must group our two distinct processes into a single tightly-coupled Pod:
-
-1.  **Main Container (`osrm-routed`):** Acts as the high-performance API server, running continuously in shared-memory listening mode.
-2.  **Sidecar Container (`osrm-update-agent`):** A lightweight bash or Go script that monitors changes from the EFS volume. When an update arrives, it runs the `osrm-datastore` command to load data into `/dev/shm` and triggers the Atomic Swap.
-
-Kubernetes natively allows containers within the same Pod to share the IPC namespace by setting a simple flag in the Pod Spec:
+#### Model B — many Pods on a node sharing one segment
 
 ```yaml
 spec:
-  shareProcessNamespace: true
+  hostIPC: true            # join the NODE's IPC namespace, not the Pod's
+  containers:
+    - name: osrm-routed
+      volumeMounts:
+        - name: dshm
+          mountPath: /dev/shm
+  volumes:
+    - name: dshm
+      hostPath:
+        path: /dev/shm     # the node's shared-memory tmpfs
+        type: Directory
+```
+
+`hostIPC: true` is a privileged setting — every Pod using it can see and attach to *any* shared-memory segment on the node, so gate it behind a dedicated node pool and a restrictive PodSecurity policy rather than enabling it fleet-wide.
+
+### The Sidecar Container Design (Tight Coupling)
+
+For the single-Pod model, group the two processes into one tightly-coupled Pod so the sidecar can swap the segment the API server is reading:
+
+1.  **Main Container (`osrm-routed`):** the high-performance API server, running continuously in shared-memory listening mode.
+2.  **Sidecar Container (`osrm-update-agent`):** a lightweight bash or Go script that monitors the EFS volume; when an update arrives it runs `osrm-datastore` to load data into `/dev/shm` and triggers the atomic swap.
+
+Note that `shareProcessNamespace: true` shares the *PID* namespace (so the sidecar can signal the `osrm-routed` process directly); the IPC namespace that shared memory relies on is already shared among containers of the same Pod by default.
+
+```yaml
+spec:
+  shareProcessNamespace: true   # PID namespace — lets the sidecar signal osrm-routed
 ```
 
 ## Advanced Continuous Integration and Deployment (CI/CD) for Maps
@@ -141,7 +169,7 @@ By leveraging OSRM Shared Memory and Multi-Level Dijkstra, you can achieve a hig
 
 ## System Architecture & Sequence Flow
 
-The following system architecture diagram and sequence flow illustrate how control signals, API boundaries, background workers, and data pipelines interact during request execution. This comprehensive trace highlights the key communication protocols, retry mechanisms, and state transitions required to maintain operational stability under peak production loads.
+The sequence below traces a live-traffic update flowing through `osrm-datastore` into a secondary `/dev/shm` block, the atomic pointer swap that both routing Pods observe with zero restart, and a subsequent distance-matrix query served from the freshly-swapped segment.
 
 ```mermaid
 sequenceDiagram
@@ -163,22 +191,20 @@ sequenceDiagram
 ```
 
 
-## Architectural Trade-offs & Production Considerations (2026 Baseline)
+## Shared-Memory Trade-offs & Production Considerations
 
-In high-concurrency production deployments, balancing throughput, resilience, and operational cost requires strict engineering trade-offs. Engineering teams must carefully evaluate latency overhead, state consistency guarantees, automated failover strategies, and resource allocations to ensure long-term system stability and predictable performance under extreme peak traffic.
+Shared-memory OSRM trades operational simplicity for raw performance and memory efficiency. Those gains come with specific failure modes you must plan for.
 
-1. **Latency vs. Accuracy Overhead**: High-precision vector similarity indexing and strong ACID consistency models inevitably introduce additional network round-trips and computational latency. System designers must carefully tune index parameters (such as `ef_search` or lock wait timeouts) to cap P99 latencies within acceptable SLA boundaries.
-2. **Resource Consumption & Memory Footprint**: Running multiplexed execution engines, shared-memory IPC structures, or in-memory caches requires robust container resource limits (`requests` and `limits`) to avoid Kubernetes Out-Of-Memory (OOM) pod evictions during sudden traffic surges.
-3. **Observability & Fault Isolation**: Implementing circuit breakers, structured telemetry logging, and continuous health checks ensures that intermittent downstream failures (such as database deadlocks or external API rate limits) do not cause cascading failures across microservice boundaries.
+1. **Startup speed vs. node coupling**: Mapping into a pre-loaded `/dev/shm` segment drops Pod startup from ~10 minutes to under a second, but with `hostIPC: true` your routing Pods are now coupled to a specific node's memory state. If the node dies, every replica sharing that segment dies with it — so run the segment-owning `osrm-datastore` as a per-node DaemonSet and treat node failure, not Pod failure, as your recovery unit.
+2. **Memory savings vs. OOM blast radius**: Sharing one 15 GB map across 10 Pods saves ~135 GB of node RAM, but it also means a single oversized segment or an orphaned segment (from an unclean pointer swap) can OOM-kill the whole node, not just one Pod. Set `sizeLimit` on the tmpfs, size `kernel.shmmax` strictly above your largest `.osrm` file, and alert on `node_memory_Shmem_bytes` growth to catch orphan segments early.
+3. **Atomic swap simplicity vs. double memory during updates**: The zero-downtime pointer swap requires the *new* segment to be fully loaded alongside the *old* one before switching — so peak memory during an update is briefly 2× the map size. Provision node RAM for the update peak, not the steady state, or the swap itself will trigger the OOM you were trying to avoid.
 
-## Related Pillar Articles & Further Reading
+## Related Reading
 
-To deepen your technical expertise in high-throughput backend systems, distributed cloud infrastructure, and modern software architecture, explore these related deep dives from our platform. Each comprehensive article provides hands-on code examples, production benchmarks, architectural decision frameworks, and real-world deployment strategies to help you build resilient systems at enterprise scale.
-
-- [OSRM vs GraphHopper Architecture Comparison](/posts/osrm-vs-graphhopper-architecture-comparison/)
-- [GraphHopper Kubernetes Self-Hosting Guide](/posts/graphhopper-kubernetes-self-hosting-osm/)
-- [GraphHopper Distance Matrix Production Guide](/posts/graphhopper-distance-matrix-production-guide/)
-- [Order Fulfillment & Warehouse Last-Mile Routing](/posts/order-fulfillment-algorithm-warehouse-last-mile/)
+- [OSRM vs GraphHopper Architecture Comparison](/posts/osrm-vs-graphhopper-architecture-comparison/) — choosing the engine before you operate it.
+- [GraphHopper Kubernetes Self-Hosting Guide](/posts/graphhopper-kubernetes-self-hosting-osm/) — the JVM alternative's memory model.
+- [Order Fulfillment & Warehouse Last-Mile Routing](/posts/order-fulfillment-algorithm-warehouse-last-mile/) — where these distance-matrix queries get consumed.
+- [Kubernetes In-Place Pod Resizing Guide](/posts/kubernetes-in-place-pod-resizing-guide/) — adjusting memory limits without restarting the segment owner.
 
 ## Frequently Asked Questions (FAQ)
 
