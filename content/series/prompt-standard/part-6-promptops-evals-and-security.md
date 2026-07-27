@@ -39,7 +39,7 @@ graph LR
     Dev[Developer / DSPy Optimizer] -->|1. Commit Prompt Spec| Git[Git Repository]
     Git -->|2. Trigger Build| CI[CI Gate Pipeline]
     CI -->|3. Run Golden Dataset| LLMJudge[LLM-as-a-Judge Eval]
-    LLMJudge -->|Pass &gt;= 95%| Reg[Prompt Registry / Release Tag]
+    LLMJudge -->|"Pass >= 95%"| Reg[Prompt Registry / Release Tag]
     LLMJudge -->|Fail| Block[Block Deployment]
     Reg -->|4. Deploy to Prod| Prod[Production Runtime]
     Prod -->|5. Telemetry & Drift Monitor| Drift[Drift Alarm]

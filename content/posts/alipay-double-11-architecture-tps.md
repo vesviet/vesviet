@@ -54,11 +54,11 @@ The architecture diagram below illustrates how Alipay's Global Load Balancer rou
 ```mermaid
 graph TD
     A[User Traffic] --> B[Global Load Balancer]
-    B -->|User ID % 100 &lt; 20| C[Unit A - Region East]
-    B -->|User ID % 100 &lt; 40| D[Unit B - Region East]
-    B -->|User ID % 100 &lt; 60| E[Unit C - Region West]
-    B -->|User ID % 100 &lt; 80| F[Unit D - Region West]
-    B -->|User ID % 100 &gt;= 80| G[Core Zone - Multi-Region]
+    B -->|"User ID % 100 < 20"| C[Unit A - Region East]
+    B -->|"User ID % 100 < 40"| D[Unit B - Region East]
+    B -->|"User ID % 100 < 60"| E[Unit C - Region West]
+    B -->|"User ID % 100 < 80"| F[Unit D - Region West]
+    B -->|"User ID % 100 >= 80"| G[Core Zone - Multi-Region]
     
     C --> C1[(OceanBase Shard A)]
     D --> D1[(OceanBase Shard B)]

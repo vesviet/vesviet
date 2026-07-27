@@ -31,7 +31,7 @@ The diagram below illustrates how payment transactions are evaluated by the real
 graph LR
     Tx[Transaction Flow] --> ML[Fraud Detection ML Model]
     ML -->|Feature Vector| Qdrant[("Vector DB")]
-    ML -->|Risk Score &lt; 0.05| Pass[Approve Payment]
+    ML -->|"Risk Score < 0.05"| Pass[Approve Payment]
     ML -->|"Risk Score > 0.80"| Block["Block & Trigger Verification"]
 ```
 
