@@ -31,7 +31,7 @@ cover:
 
 This guide is for the person managing or commissioning a Magento project: the PM, the CTO, or the e-commerce director who needs to evaluate a proposal, structure an engagement via a strict cost matrix, and track delivery without being misled by vague timelines or unspecified complexity.
 
-> **Note:** For a complete overview of the market structure, cost tiers, and 2.4.9 upgrade readiness, see our core pillar: [Magento Development in Vietnam: 2026 Guide](/posts/magento-vietnam/). For individual developer vetting playbook, see [How to Technically Vet Magento Developers in Vietnam](/posts/magento-development-in-vietnam/).
+> **Note:** This guide focuses on scoping, estimating, and evaluating a Magento project. For the complete market overview — talent hubs, cost tiers, the five-question technical vetting playbook, and 2.4.9 upgrade readiness — see our core pillar: [Magento Development in Vietnam: 2026 Guide](/posts/magento-vietnam/).
 
 ## The Four Effort Layers (and Why Proposals Often Undercount Them)
 
@@ -259,6 +259,6 @@ A production-ready Magento ERP integration typically requires 80–200 engineeri
 Explore these technical articles from our platform covering backend performance, distributed cloud architecture, and modern e-commerce deployment strategies:
 
 - **[Magento Development in Vietnam: 2026 Market Guide](/posts/magento-vietnam/)** — Full market overview: cost tiers, when to use agencies vs freelancers, and when to consider migrating off Magento entirely.
-- **[How to Technically Vet Magento Developers in Vietnam](/posts/magento-development-in-vietnam/)** — Five production-level interview questions and red flags for evaluating individual Magento engineers.
+- **[The Technical Vetting Playbook: Five Interview Questions](/posts/magento-vietnam/#the-technical-filter-five-interview-questions-that-actually-separate-levels)** — Five production-level interview questions and red flags for evaluating individual Magento engineers.
 - **[Is Magento Worth It in 2026?](/posts/magento-still-worth-investing-2026/)** — Should you invest in a Magento upgrade or switch platforms? A practical decision framework.
 - **[Hire a Go Backend Architect](/hire/)** — Available for Magento architecture reviews, pre-engagement technical due diligence, and Go migration consulting.

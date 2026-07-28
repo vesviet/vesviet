@@ -216,23 +216,9 @@ The most expensive mismatch is **evolving requirements on a project-based model*
 
 ### Questions to Ask Before Signing
 
-Four questions that surface real risk before the contract, not after:
+Before committing to a contract, press the team on four areas that surface real risk: **integration failure recovery** (native API vs middleware vs direct DB sync, and what happens when it fails at 2am), **estimation method** (three-point range vs a single round number), **existing-store audit** (did they find your specific legacy blockers during discovery, or template the estimate), and **post-launch SLA** (hypercare scope and incident response in the first 30 days).
 
-> **On integrations:** *"Are you using Magento's native APIs, custom middleware, or direct database sync for the ERP integration — and what is the failure recovery model for each?"*
-
-A good answer names a specific approach and describes what happens when it fails at 2am. "We'll use the API" is not a plan.
-
-> **On estimation:** *"What is your optimistic, most likely, and pessimistic estimate for the checkout customization, and what assumptions drive the range?"*
-
-This reveals whether the team uses three-point estimation or quotes round numbers. The range matters more than the number.
-
-> **On your existing store:** *"During discovery, what technical blockers or legacy customizations did you find in our current setup, and how did you account for them in the estimate?"*
-
-If they have not audited your store yet, the estimate is templated from a previous project — not scoped to yours.
-
-> **On post-launch:** *"What does your hypercare period look like, and what is the SLA for production incidents in the first 30 days?"*
-
-Teams that have run production incidents know the answer immediately. Teams that haven't will pause.
+For the full question-by-question script — including the exact wording to use and what a weak answer sounds like — see the dedicated scoping guide: [Magento Agency & Development in Vietnam: Scoping Guide](/posts/magento-development-in-vietnam/#the-questions-that-surface-hidden-complexity).
 
 ---
 
