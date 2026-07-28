@@ -18,7 +18,7 @@ mermaid: true
 
 ## Tech Radar, May 1, 2026: DigitalOcean's AI-Native Cloud - Inference Routing, Managed Retrieval, and an Integrated Stack for Agentic Systems
 
-DigitalOcean's April 28, 2026 launch of its AI-Native Cloud is not the largest AI infrastructure announcement of the week, but it may be one of the clearest. Instead of treating AI as a feature added onto a legacy cloud, DigitalOcean is explicitly reorganizing its platform around what production AI systems now look like: multi-model inference, retrieval, routing, state, and long-running agent workflows.
+DigitalOcean's April 28, 2026 launch of its AI-Native Cloud at Deploy 2026 ([DigitalOcean announcement](https://www.digitalocean.com/blog/introducing-digitalocean-ai-native-cloud), [investor press release](https://investors.digitalocean.com/news/news-details/2026/DigitalOcean-Unveils-AI-Native-Cloud-Built-for-the-Inference-Era/default.aspx)) is not the largest AI infrastructure announcement of the week, but it may be one of the clearest. Instead of treating AI as a feature added onto a legacy cloud, DigitalOcean is explicitly reorganizing its platform around what production AI systems now look like: multi-model inference, retrieval, routing, state, and long-running agent workflows.
 
 That framing matters because it captures a broader industry shift. Teams are moving away from the old pattern of "call one model and return one answer" toward systems that route prompts, retrieve private context, execute tools, and optimize cost across repeated loops. In that world, the hard problem is no longer just model access. It is operating the surrounding system cleanly.
 

@@ -78,15 +78,39 @@ Mình verify các claim kiểm chứng được bằng nguồn công bố gốc:
 
 ---
 
-## 4. Còn tồn đọng (cần bạn quyết / cung cấp thông tin)
+## 4. Đợt 2 — bổ sung nguồn đã verify (hoàn tất)
 
-1. **11 file còn lại chưa có nguồn** (chủ yếu `2026-04/`). Mình chỉ bổ sung nguồn cho những claim đã **tự verify được**; không thêm link đoán. Cần rà theo từng bài — mình có thể làm tiếp nếu bạn muốn.
-2. **`2026-04/_index.md` dòng ~1087**: "the Codex desktop app for macOS (**with Windows following in March**)" trong một digest tháng 4 — mốc "March" nằm ở quá khứ so với ngữ cảnh, nghi là lệch thời điểm. Mình **không tự sửa** vì không verify được chắc chắn timeline Codex cho Windows.
-3. **Claim xếp hạng model dễ lỗi thời**: các bài tháng 4–5 gọi Sonnet 4.5 / GPT-5.2 / DeepSeek-V4 là "tốt nhất". Với archive tin tức nên thêm câu ràng buộc thời điểm ("tại thời điểm công bố") thay vì phát biểu tuyệt đối — mình đã làm cho bài Sonnet, các bài khác nên rà tương tự.
+Đã giảm số file không có nguồn từ **14 → 4**. Mỗi claim đều được verify bằng công bố gốc trước khi thêm link (không thêm link đoán):
+
+| File | Claim đã verify | Nguồn thêm vào |
+|---|---|---|
+| `2026-04/radar-2026-04-14.md` | Go 1.26 `//go:fix inline` + source-level inliner | [Go blog](https://go.dev/blog/inliner) |
+| `2026-04/radar-2026-04-26.md` | DeepSeek-V4 ra 24/04/2026, 1M context | [DeepSeek](https://api-docs.deepseek.com/news/news260424), [HF](https://huggingface.co/blog/deepseekv4) |
+| `2026-04/radar-2026-04-28.md` | OpenAI–Microsoft sửa thoả thuận 27/04/2026 | [OpenAI](https://openai.com/index/next-phase-of-microsoft-partnership/), [Microsoft](https://blogs.microsoft.com/blog/2026/04/27/the-next-phase-of-the-microsoft-openai-partnership/) |
+| `2026-04/radar-2026-04-29.md` | AWS mở rộng Bedrock cho OpenAI 28/04/2026 | [Amazon](https://www.aboutamazon.com/news/aws/bedrock-openai-models), [OpenAI](https://openai.com/index/openai-on-aws/) |
+| `2026-04/radar-2026-04-29-creative-mcp.md` | Anthropic ra 9 connector creative 28/04/2026 | [9to5Mac](https://9to5mac.com/2026/04/28/anthropic-releases-9-new-claude-connectors-for-creative-tools-including-blender-and-adobe), [MacRumors](https://macrumors.com/2026/04/28/claude-creative-tool-connectors) |
+| `2026-04/radar-2026-04-30.md` | Tổng hợp 2 sự kiện trên | Dẫn về nguồn gốc 27/04 + 28/04 |
+| `2026-05/radar-2026-05-01-digitalocean-*.md` | DigitalOcean AI-Native Cloud tại Deploy 2026 | [DO blog](https://www.digitalocean.com/blog/introducing-digitalocean-ai-native-cloud), [DO investor PR](https://investors.digitalocean.com/news/news-details/2026/DigitalOcean-Unveils-AI-Native-Cloud-Built-for-the-Inference-Era/default.aspx) |
+| `2026-06/radar-2026-06-22.md` | Dapr 1.18 ra 10/06/2026, là bản Workflows | [Dapr blog](https://blog.dapr.io/posts/2026/06/10/dapr-v1.18-is-now-available/) |
+| `2026-07/radar-2026-07-27.md` | MCP transport model (stdio / Streamable HTTP + SSE) | [MCP spec](https://modelcontextprotocol.io/specification/latest) |
+| `2026-04/_index.md` | — | Thêm mục điều hướng tới 8 bài daily (trước đó digest có **0** link nội bộ tới daily) |
+
+**Kết quả kiểm chứng bổ sung**: tất cả claim kiểm tra được ở đợt 2 đều **ĐÚNG** về nội dung và mốc thời gian (DeepSeek-V4 24/04 vs radar 26/04; OpenAI–MS 27/04 vs radar 28/04; AWS 28/04 vs radar 29/04; Anthropic 28/04 vs radar 29/04; Dapr 10/06 vs radar 22/06; DigitalOcean 28/04 vs radar 01/05). Không phát hiện thêm lỗi thời điểm nào ngoài 2 lỗi ở đợt 1.
+
+### 4 file còn lại không có link ngoài — đánh giá là chấp nhận được
+
+- `radar/_index.md` (592 từ) — **section landing page**, không chứa claim tin tức → không cần nguồn.
+- `2026-07/_index.md` (4.354 từ) và `2026-04/_index.md` (20.685 từ) — **digest tổng hợp** nội dung các bài daily. Với `2026-04` đã thêm điều hướng tới 8 bài daily (nơi có nguồn gốc). `2026-07/_index.md` nên làm tương tự khi có thời gian.
+
+## 5. Còn tồn đọng (cần bạn quyết)
+
+1. **`2026-04/_index.md` dòng ~1087**: "the Codex desktop app for macOS (**with Windows following in March**)" trong digest tháng 4 — mốc "March" nằm ở quá khứ so với ngữ cảnh, nghi lệch thời điểm. **Không tự sửa** vì không verify được chắc chắn timeline Codex cho Windows.
+2. **Claim xếp hạng model dễ lỗi thời**: các bài tháng 4–5 gọi Sonnet 4.5 / GPT-5.2 / DeepSeek-V4 là "tốt nhất". Đã ràng buộc thời điểm cho bài Sonnet; các bài khác nên rà tương tự.
+3. **`2026-07/_index.md`**: thêm mục điều hướng tới bài daily như đã làm cho tháng 4.
 
 ---
 
-## 5. Khuyến nghị quy trình (để không tái diễn)
+## 6. Khuyến nghị quy trình (để không tái diễn)
 
 - **Bắt buộc dẫn nguồn công bố gốc** cho mọi claim tin tức trong radar — đây là điều phân biệt radar với blog ý kiến.
 - **Ràng buộc thời điểm cho claim so sánh**: viết "tại thời điểm phát hành" thay vì "tốt nhất thế giới".

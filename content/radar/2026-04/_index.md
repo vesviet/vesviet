@@ -2066,3 +2066,16 @@ The termination of single-cloud exclusivity agreements allows enterprise archite
 For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
 - [tanhdev Reading Map — Production Go & AI Architecture](/reading-map/)
 
+
+## Individual Radar Entries in This Digest
+
+Each daily entry below is published separately with links to the primary announcements it analyses:
+
+- [Code Evolution & Runtime Recovery — Go 1.26 `//go:fix`, Dapr, Kratos](/radar/tech-radar-code-evolution-runtime-recovery-guide/) (April 14)
+- [DeepSeek-V4: 1M Context & Agentic Focus](/radar/tech-radar-deepseek-v4-1m-context-agentic-focus/) (April 26)
+- [Claude Sonnet 4.5 & Open-Source Agent SDK](/radar/tech-radar-claude-sonnet-4.5-open-source-agent-sdk/) (April 27)
+- [Mistral Small 4: Reasoning & Agent Model](/radar/tech-radar-mistral-small-4-reasoning-agent-model/) (April 27)
+- [OpenAI & Microsoft End Exclusivity](/radar/tech-radar-openai-microsoft-multi-cloud-expansion/) (April 28)
+- [Anthropic MCP & Agentic Creative Workflows](/radar/tech-radar-anthropic-mcp-agentic-creative-workflows/) (April 29)
+- [AWS & OpenAI Bedrock Multi-Cloud Expansion](/radar/tech-radar-aws-openai-bedrock-multi-cloud-expansion/) (April 29)
+- [Post-Exclusivity AI & Multi-Cloud Agent Runtime](/radar/tech-radar-post-exclusivity-ai-multi-cloud-agent-runtime/) (April 30)

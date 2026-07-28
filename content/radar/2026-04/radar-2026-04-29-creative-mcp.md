@@ -20,7 +20,7 @@ mermaid: true
 
 Anthropic's April 28, 2026 announcement about "Claude for Creative Work" looks, on the surface, like a partnership bundle for designers and media teams. Look more closely and the bigger signal becomes clear: Model Context Protocol is moving beyond developer workflows and into the software stack used for design, 3D modeling, audio production, and media operations.
 
-The new connector set spans Adobe, Autodesk Fusion, Blender, Ableton, Affinity by Canva, SketchUp, Resolume, and Splice. Combined with Anthropic's April 17 launch of Claude Design, this is not just a user-experience expansion for Claude. It is a push to make natural-language control, workflow automation, and tool interoperability part of the production surface of creative software.
+The new connector set spans nine connectors across Adobe Creative Cloud, Autodesk Fusion, Blender, Ableton Live, Affinity by Canva, SketchUp, Resolume (Arena and Wire), and Splice — available across all Claude plans on launch day ([9to5Mac coverage](https://9to5mac.com/2026/04/28/anthropic-releases-9-new-claude-connectors-for-creative-tools-including-blender-and-adobe), [MacRumors coverage](https://macrumors.com/2026/04/28/claude-creative-tool-connectors)). Combined with Anthropic's April 17 launch of Claude Design, this is not just a user-experience expansion for Claude. It is a push to make natural-language control, workflow automation, and tool interoperability part of the production surface of creative software.
 
 Three themes define the release: MCP is escaping the dev-tools niche, AI is becoming an orchestration layer across creative pipelines rather than a single-app assistant, and open connector standards are becoming a serious platform strategy.
 
