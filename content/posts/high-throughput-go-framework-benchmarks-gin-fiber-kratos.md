@@ -8,6 +8,7 @@ canonicalURL: "/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos"
 ShowToc: true
 TocOpen: true
 tags: ["Golang", "Benchmarks", "Gin", "Fiber", "Kratos", "Microservices"]
+categories: ["Engineering", "Backend"]
 author: "Lê Tuấn Anh"
 draft: false
 mermaid: true
@@ -17,7 +18,6 @@ mermaid: true
 
 > **Answer-First:** Fiber delivers the highest raw throughput and lowest memory allocations for HTTP APIs by leveraging fasthttp, while Gin offers the best balance of standard library compatibility (`net/http`) and ecosystem stability. Kratos excels in enterprise microservices requiring structured gRPC/HTTP metadata, middleware chains, and microservice governance despite slightly lower raw HTTP benchmark scores.
 
-> [!NOTE]
 ## The Testing Methodology (Beyond Hello World)
 
 Designing realistic Go framework benchmarks requires extending past simple hello world endpoints to simulate genuine production database I/O, middleware evaluation, and connection pool management under high concurrency. In 2026 high-throughput systems, evaluating framework efficiency requires measuring request context propagation, GC allocation overhead, and response latencies under synthetic traffic.

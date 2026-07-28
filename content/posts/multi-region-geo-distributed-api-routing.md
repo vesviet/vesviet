@@ -16,6 +16,9 @@ tags:
   - "Geo-Distribution"
   - "Latency Optimization"
   - "System Architecture"
+categories:
+  - "Architecture"
+  - "Engineering"
 ---
 
 # Multi-region Geo-distributed API Routing Architecture
