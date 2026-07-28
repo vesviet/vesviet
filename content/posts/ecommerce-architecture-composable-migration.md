@@ -167,7 +167,7 @@ Unlike runtime reflection-based DI containers (such as Spring or Magento XML inj
 
 ## 4. The Real Bottleneck in Decoupling (Eventual Consistency)
 
-When separating read-heavy search services (Elasticsearch/Meilisearch) from core transactional inventory services via an asynchronous event bus, temporary data replication lag (typically 200ms to 2s) is inevitable. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below.
+When separating read-heavy search services (Elasticsearch/Meilisearch) from core transactional inventory services via an asynchronous event bus, temporary data replication lag (typically 200ms to 2s) is inevitable. That lag creates one concrete hazard and demands one practical mitigation:
 
 - **The Concurrency Hazard**: A customer views a product page showing 1 item remaining and clicks "Add to Cart". The Inventory Service immediately reserves the item and decrements stock to 0. However, because the CDC event has not yet reached Elasticsearch, a second customer refreshes the search results, sees 1 item remaining, attempts to checkout, and encounters a frustrating failure.
 - **Practical Mitigation (Redis Lease Locking at BFF Layer)**: To eliminate checkout friction without coupling read services back to the primary database, the Backend-For-Frontend (BFF) gateway acquires a temporary lease lock in Redis upon inventory reservation. Subsequent checkout requests for that SKU check the Redis lease key before touching the database. If leased, the BFF returns instant backpressure response status to the second user, preventing phantom checkout attempts while Elasticsearch completes replication.
@@ -176,7 +176,7 @@ When separating read-heavy search services (Elasticsearch/Meilisearch) from core
 
 ## 5. Solving Legacy Monolith Sync: The CDC Architecture
 
-Avoiding application-level double writing prevents database drift, dual-phase commit lock contention, and network latency overhead. Change Data Capture (CDC) uses Debezium and Kafka Connect to tail the PostgreSQL Write-Ahead Log (WAL) or MySQL binary logs (binlogs) out-of-band. The key technical guidelines, architectural requirements, and implementation steps are detailed in the breakdown below.
+Avoiding application-level double writing prevents database drift, dual-phase commit lock contention, and network latency overhead. Change Data Capture (CDC) uses Debezium and Kafka Connect to tail the PostgreSQL Write-Ahead Log (WAL) or MySQL binary logs (binlogs) out-of-band. The three moving parts work as follows:
 
 - **Debezium WAL Log Parsing**: Debezium captures row-level insert, update, and delete mutations directly from the database engine log without modifying application code or incurring SQL query overhead on the legacy database.
 - **Kafka Event Streaming**: Captured mutations are published to dedicated Apache Kafka topics (e.g. `legacy.inventory_stocks`), preserving absolute global transaction order across table entities.

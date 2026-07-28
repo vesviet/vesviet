@@ -46,7 +46,7 @@ For a detailed architectural overview of each component, explore the [Full Ride-
 
 ## The Real-Time Challenge: What Happens in the First 3 Seconds After You Open the App
 
-From a user's perspective, ride-hailing feels instant. From an engineering perspective, those 3 seconds involve complex concurrent distributed calculations across multiple microservices. The key technical guidelines, architectural requirements, best practices, and implementation steps are detailed in the breakdown below. To ensure operational resilience and maintainability, engineering teams should evaluate these core principles:
+From a user's perspective, ride-hailing feels instant. From an engineering perspective, those 3 seconds involve complex concurrent distributed calculations across multiple microservices. Here is what actually happens, step by step:
 
 1. **GPS position reported**: Your phone sends a location update to Uber/Grab's ingestion service. So do the phones of every active driver within 10 km.
 2. **Geospatial index updated**: Your location and nearby driver locations are updated in an in-memory geospatial index.

@@ -112,7 +112,7 @@ For a practical breakdown on implementing these guardrails in your development w
 
 ## System Architecture & Sequence Flow
 
-The following system architecture diagram and sequence flow illustrate how control signals, API boundaries, background workers, and data pipelines interact during request execution. This comprehensive trace highlights the key communication protocols, retry mechanisms, and state transitions required to maintain operational stability under peak production loads.
+The flow below traces a pull request through the automated review gate — from the GitHub webhook, through AST-based diff extraction and the LiteLLM proxy, to the inline PR annotations that block a merge when a real vulnerability is confirmed.
 
 1. **Pull Request Trigger & Webhook Event**: When a developer opens or updates a Pull Request, GitHub Webhooks emit an `issue_comment` or `pull_request.synchronize` payload to the CI runner.
 2. **AST Parsing & Diff Context Extraction**: An Abstract Syntax Tree (AST) parser filters git diffs to extract modified functions, call trees, and import statements, stripping irrelevant whitespace and formatting changes.

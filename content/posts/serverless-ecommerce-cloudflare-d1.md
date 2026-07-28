@@ -135,7 +135,7 @@ You don't need to write locking logic; the architecture itself provides the mute
 
 ## Payment Processing at the Edge
 
-Integrating payments at the edge has specific constraints. Cloudflare Workers run on V8 isolates, not Node.js. When using the Stripe Node SDK, you must explicitly configure it to use the `fetch` API, and crucially, use `SubtleCrypto` to verify webhooks. The code implementation below illustrates the production configuration, error handling, and performance optimization techniques.
+Integrating payments at the edge has specific constraints. Cloudflare Workers run on V8 isolates, not Node.js. When using the Stripe Node SDK, you must explicitly configure it to use the `fetch` API, and crucially, use `SubtleCrypto` to verify webhooks (the Node `crypto` module is not available). The Worker below wires up exactly that:
 
 ```javascript
 import Stripe from 'stripe';

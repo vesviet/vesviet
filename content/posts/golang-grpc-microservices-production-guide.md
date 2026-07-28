@@ -855,7 +855,7 @@ Use `google.golang.org/grpc/test/bufconn` for in-process testing without a real 
 
 ## Internal Links
 
-To deepen your technical expertise in high-throughput backend systems, distributed cloud infrastructure, and modern software architecture, explore these related deep dives from our platform. Each guide provides hands-on code examples, production benchmarks, architectural decision frameworks, and real-world deployment strategies to help you build resilient systems at enterprise scale.
+Related Go microservices, tracing, and infrastructure guides:
 
 - **Full Microservices Architecture:** To see how gRPC fits into a complete event-driven 21-service ecosystem, read the [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
 - **Real-time gRPC streaming in production:** The location ingestion system in [Part 1 — GPS Location Ingestion](/series/ride-hailing-realtime-architecture/part-1-location-ingestion/) uses the exact `gRPC Bidirectional Streaming` pattern shown here.

@@ -643,7 +643,7 @@ GraphHopper loads the road graph into memory for fast queries. Vietnam (~880MB O
 
 ## Internal Links & Next Steps
 
-To deepen your technical expertise in high-throughput backend systems, distributed cloud infrastructure, and modern software architecture, explore these related deep dives from our platform. Each guide provides hands-on code examples, production benchmarks, architectural decision frameworks, and real-world deployment strategies to help you build resilient systems at enterprise scale.
+Related routing, self-hosting, and last-mile allocation deep dives:
 
 - **E-commerce routing series:** This guide is referenced from the [E-commerce Order Allocation](/series/ecommerce-order-allocation/) series, which shows how a self-hosted matrix feeds a VRP solver.
 - **Ride-hailing:** The same H3 spatial indexing used for caching is also how Uber finds nearby drivers — see [H3 Geospatial Indexing for Ride-Hailing Architecture](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/).
