@@ -1080,11 +1080,14 @@ Setting `acks=all`, `enable.idempotence=true`, and configuring topic `min.insync
 
 ---
 
-## Tech Radar, April 25, 2026: OpenAI Ships the Codex App and GPT-5.2-Codex — Agentic Coding Becomes a Command Center
+## Tech Radar, April 25, 2026: The Codex App and GPT-5.2-Codex — Agentic Coding Becomes a Command Center
 
 OpenAI launches the Codex desktop app with Git worktree isolation and GPT-5.2-Codex featuring native context compaction and reusable Skills libraries.
 
-OpenAI shipped two things this week that belong together: the Codex desktop app for macOS (with Windows following in March) and GPT-5.2-Codex, a version of GPT-5.2 further optimized for agentic coding. After reading the full source material from both announcements, the picture that emerges is not an incremental model update. It is a deliberate architectural shift in how OpenAI thinks about the relationship between developers and AI agents.
+> [!NOTE]
+> **Dating correction.** The Codex desktop app itself did not ship in the week of this entry: OpenAI released it for macOS on February 2, 2026 and added Windows support on March 4, 2026 ([OpenAI, Introducing the Codex app](https://openai.com/index/introducing-the-codex-app/)). What lands in this April window is the capability expansion documented in [Codex for (almost) everything](https://openai.com/index/codex-for-almost-everything/) (April 16, 2026). Read the analysis below as covering the Codex app *platform* rather than a launch-week report.
+
+Two OpenAI releases belong together here: the Codex desktop app (macOS February 2026, Windows March 2026) and GPT-5.2-Codex, a version of GPT-5.2 further optimized for agentic coding. After reading the full source material from both announcements, the picture that emerges is not an incremental model update. It is a deliberate architectural shift in how OpenAI thinks about the relationship between developers and AI agents.
 
 The framing in the Codex app announcement is precise: "The core challenge has shifted from what agents can do to how people can direct, supervise, and collaborate with them at scale." That is a meaningful statement. It acknowledges that the bottleneck is no longer model capability — it is the tooling for managing agents at the scale that frontier models now make possible.
 

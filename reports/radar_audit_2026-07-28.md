@@ -102,11 +102,30 @@ Mình verify các claim kiểm chứng được bằng nguồn công bố gốc:
 - `radar/_index.md` (592 từ) — **section landing page**, không chứa claim tin tức → không cần nguồn.
 - `2026-07/_index.md` (4.354 từ) và `2026-04/_index.md` (20.685 từ) — **digest tổng hợp** nội dung các bài daily. Với `2026-04` đã thêm điều hướng tới 8 bài daily (nơi có nguồn gốc). `2026-07/_index.md` nên làm tương tự khi có thời gian.
 
-## 5. Còn tồn đọng (cần bạn quyết)
+## 5. Đợt 3 — xử lý toàn bộ tồn đọng (hoàn tất)
 
-1. **`2026-04/_index.md` dòng ~1087**: "the Codex desktop app for macOS (**with Windows following in March**)" trong digest tháng 4 — mốc "March" nằm ở quá khứ so với ngữ cảnh, nghi lệch thời điểm. **Không tự sửa** vì không verify được chắc chắn timeline Codex cho Windows.
-2. **Claim xếp hạng model dễ lỗi thời**: các bài tháng 4–5 gọi Sonnet 4.5 / GPT-5.2 / DeepSeek-V4 là "tốt nhất". Đã ràng buộc thời điểm cho bài Sonnet; các bài khác nên rà tương tự.
-3. **`2026-07/_index.md`**: thêm mục điều hướng tới bài daily như đã làm cho tháng 4.
+### 5.1 Claim Codex — verify ra kết quả ngược với dự đoán
+
+Nghi vấn ban đầu là cụm "Windows following in **March**" bị sai. Verify cho thấy **claim đó ĐÚNG**: OpenAI phát hành Codex desktop app cho macOS **02/02/2026** và bổ sung Windows **04/03/2026** ([OpenAI, Introducing the Codex app](https://openai.com/index/introducing-the-codex-app/)).
+
+Lỗi thật nằm ở chỗ khác: entry được đặt tiêu đề **"Tech Radar, April 25, 2026: OpenAI *Ships* the Codex App"** và viết "shipped two things **this week**" — trong khi app đã ra từ tháng 2, lệch ~2,5 tháng. Cái thực sự thuộc khung tháng 4 là bản mở rộng năng lực [Codex for (almost) everything](https://openai.com/index/codex-for-almost-everything/) (16/04/2026).
+→ Đã sửa: bỏ chữ "Ships" ở heading, thêm callout đính chính mốc phát hành thật kèm 2 nguồn OpenAI, đổi "shipped two things this week" thành nêu đúng mốc tháng 2/tháng 3.
+
+### 5.2 Ràng buộc thời điểm cho claim dễ lỗi thời
+
+| File | Claim | Xử lý |
+|---|---|---|
+| `2026-04/radar-2026-04-27-claude-sonnet.md` | "the best coding model in the world" | Ghi rõ đây là định vị **tại thời điểm phát hành 9/2025**, và Anthropic nay đã có Sonnet 5 |
+| `2026-05/_index.md` | "Anthropic's most capable model" | Thêm mốc "at the time (May 2026)" |
+| `2026-06/_index.md` + `2026-06/radar-2026-06-22.md` | "Go 1.26.4: **the latest stable patch**" | Đổi thành "current stable patch as of this radar (June 2026)" + link [Go release history](https://go.dev/doc/devel/release) để người đọc tự kiểm bản mới nhất |
+
+### 5.3 Digest tháng 7
+
+Đã thêm mục điều hướng tới 3 bài daily (10/07, 22/07, 27/07), tương tự tháng 4.
+
+### Kết quả cuối
+
+**0 file radar** còn thiếu đường truy nguồn (không có external link **và** không có link nội bộ tới bài daily có nguồn). Build PASS, **0 link gãy**.
 
 ---
 

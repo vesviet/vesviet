@@ -29,7 +29,7 @@ Three themes define this release: the coding capability gap, the infrastructure 
 
 ### 1. Claude Sonnet 4.5: The Coding Model Benchmark
 
-Anthropic makes an unambiguous claim: Sonnet 4.5 is "the best coding model in the world" and "the strongest model for building complex agents." The specific improvements over Sonnet 4 are:
+At launch Anthropic made an unambiguous claim: Sonnet 4.5 is "the best coding model in the world" and "the strongest model for building complex agents." (That positioning applied to the September 2025 release; Anthropic has since shipped Sonnet 5.) The specific improvements over Sonnet 4 were:
 
 - **Reasoning and math**: Substantial gains on benchmark suites testing multi-step logical inference
 - **Computer use**: Best-in-class performance at navigating interfaces, executing commands, and managing state across sessions

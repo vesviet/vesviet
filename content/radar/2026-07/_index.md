@@ -407,3 +407,11 @@ sequenceDiagram
     Tool-->>Gateway: Tool Execution Payload
     Gateway-->>Agent: Validated Execution Result
 ```
+
+## Individual Radar Entries in This Digest
+
+Each daily entry below is published separately with links to the primary specifications and announcements it analyses:
+
+- [Cloud-Native AI & Envoy Gateway Setup](/radar/cloud-native-ai-envoy-gateway-kubernetes-dapr-agents-2026/) (July 10)
+- [Event-Driven Agent Sagas & Dapr Go Workflows](/radar/radar-22-07-event-driven-agentic-sagas-dapr-workflows-go/) (July 22)
+- [Scaling MCP Servers in Production Kubernetes](/radar/radar-27-07-scaling-mcp-servers-kubernetes/) (July 27)

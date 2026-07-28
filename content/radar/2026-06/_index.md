@@ -519,7 +519,7 @@ Released mid-June 2026, Dapr 1.18 fundamentally fixes a major workflow security 
 
 #### CNCF & Go Updates
 *   **KubeCon India 2026:** AI-Native Scheduling dominated the conversations. More importantly for enterprise developers, **OpenTelemetry officially graduated**, cementing it as the de facto standard for tracing (which pairs natively with our Kratos integration below).
-*   **Go 1.26.4:** The latest stable patch is out. Teams using the new "Green Tea" Garbage Collector should patch immediately. 
+*   **Go 1.26.4:** The current stable patch as of this radar (June 2026). Teams using the new "Green Tea" Garbage Collector should patch immediately — check [Go release history](https://go.dev/doc/devel/release) for the latest patch before pinning. 
 *   **K8s 1.33 EOL:** If your clusters are still on Kubernetes 1.33, you have until June 28, 2026, to upgrade.
 
 ---

@@ -795,7 +795,7 @@ The market has moved beyond MCP adoption into **MCP Governance** — MCP Gateway
 
 |---|---|---|
 | **GitHub Copilot Token Billing** | June 1 cutover to AI Credits. GPT-5.5 costs $5/$30 per M tokens. | Audit agentic sessions and set budget controls before June 1. Prompt efficiency is now a cost metric. |
-| **Claude Mythos / Project Glasswing** | Anthropic's most capable model deployed defensively via a 40-org coalition. $100M in credits committed. | Glasswing participation = asymmetric security advantage. For everyone else: Opus 4.7 + watch "Dreaming" feature. |
+| **Claude Mythos / Project Glasswing** | Anthropic's most capable model at the time (May 2026) deployed defensively via a 40-org coalition. $100M in credits committed. | Glasswing participation = asymmetric security advantage. For everyone else: Opus 4.7 + watch "Dreaming" feature. |
 | **Google I/O — May 19** | Firebase going agent-native; Android 17 AI orchestration in beta; Gemini 3.x update incoming. | Freeze new Firebase agentic architectures until May 20. Plan a Gemini evaluation sprint for week of May 20. |
 | **Agent Identity Layer** | SailPoint Agentic Fabric, ATP, DriftlessAF hit production simultaneously. | Inventory non-human identities now. Adopt ATP for multi-agent patterns before it becomes regulatory requirement. |
 | **MCP Protocol** | 78% enterprise adoption, 10K+ servers, Linux Foundation governance. MCP Gateways now mainstream. | MCP is table stakes for any new internal API. Add MCP gateway with RBAC and audit logging to your platform roadmap. |
