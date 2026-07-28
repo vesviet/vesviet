@@ -23,7 +23,7 @@ canonicalURL: "https://tanhdev.com/radar/radar-2026-05-01-gateway-api-v1-5/"
 
 If your ingress layer still depends on a 400-line manifest full of controller-specific annotations, you do not have a clean networking platform. You have institutional memory encoded as YAML archaeology.
 
-That is why the March 14, 2026 release of Gateway API v1.5 matters so much. When Kubernetes published the detailed announcement on **April 21, 2026**, the real signal was not merely that six features moved to the Standard channel. It was that Kubernetes networking is finally becoming modular enough for platform teams to delegate ownership safely, enforce TLS policy sanely, and migrate away from annotation-driven controller behavior without rewriting their entire edge stack by hand.
+That is why the March 14, 2026 release of Gateway API v1.5 matters so much. When Kubernetes published the [detailed announcement](https://kubernetes.io/blog/2026/04/21/gateway-api-v1-5/) on **April 21, 2026**, the real signal was not merely that six features moved to the Standard channel. It was that Kubernetes networking is finally becoming modular enough for platform teams to delegate ownership safely, enforce TLS policy sanely, and migrate away from annotation-driven controller behavior without rewriting their entire edge stack by hand.
 
 Three themes define this shift: listener ownership is becoming multi-tenant by design, TLS and trust policy are moving into first-class API surfaces, and migration to Gateway API is now a practical operational program rather than a whiteboard aspiration.
 

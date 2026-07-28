@@ -18,7 +18,7 @@ mermaid: true
 
 ## Tech Radar, April 27, 2026: Mistral Small 4 — One Open-Source Model to Rule Chat, Reasoning, and Agents
 
-Mistral released Small 4 this week — a 119B parameter model that consolidates what previously required three separate models. Under the Apache 2.0 license and optimized for both latency and throughput, Small 4 represents a strategic inflection point in the open-source model ecosystem.
+Mistral released Small 4 in mid-March 2026 — a 119B parameter model that consolidates what previously required three separate models ([Mistral announcement](https://mistral.ai/news/mistral-small-4)). Under the Apache 2.0 license and optimized for both latency and throughput, Small 4 represents a strategic inflection point in the open-source model ecosystem.
 
 The key innovation is not just technical performance. It is the unified architecture: Mistral has merged the capabilities of Magistral (reasoning), Pixtral (multimodal), and Devstral (agentic coding) into a single model with configurable behavior. Users no longer switch between specialized models — they configure one model to deliver fast responses, deep reasoning, or visual analysis as the task demands.
 
@@ -49,7 +49,7 @@ flowchart TD
 
 **Architectural specifications**:
 - Mixture of Experts (MoE): 128 experts, 4 active per token
-- 119B total parameters, 6B active per token (8B including embeddings)
+- 119B total parameters, 6B active per token (8B including embeddings) — per [Mistral's published specs](https://mistral.ai/news/mistral-small-4)
 - 256k context window
 - Native multimodality: text and image inputs
 
