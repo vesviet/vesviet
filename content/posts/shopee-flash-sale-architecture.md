@@ -271,4 +271,13 @@ An API Gateway manages North-South external traffic including edge rate limiting
 
 C10M networking uses kernel bypass techniques like DPDK and eBPF alongside io_uring event loops to handle millions of concurrent network connections without OS context switching overhead. By streaming packets directly into user-space memory buffers, edge nodes maintain sub-millisecond packet processing latency under peak load.
 
+## Related Reading
+
+Flash sale design overlaps with several other high-concurrency patterns — each of these covers a different facet of surviving a demand spike:
+
+- [Real-Time Inventory: Kafka, CDC & Redis for E-Commerce](/posts/real-time-inventory-ecommerce-architecture/) — the oversell-prevention and stock-reconciliation side of the same problem.
+- [Surge Pricing & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture/) — how demand spikes are priced, not just absorbed.
+- [Replace MySQL Sharding with TiDB: Architecture Guide](/posts/mysql-scaling-sharding-tidb-architecture/) — scaling the write-append order log this design persists to.
+- [Alipay Double 11: 583,000 TPS Architecture](/posts/alipay-double-11-architecture-tps/) — the same class of peak-event problem at payment scale.
+
 {{< author-cta >}}
