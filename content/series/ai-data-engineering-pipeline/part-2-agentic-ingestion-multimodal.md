@@ -6,7 +6,7 @@ lastmod: "2026-07-23T10:40:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 tags: ["Data Ingestion", "Multimodal", "OCR", "Python", "PDF Processing", "Vision LLM"]
-categories: ["Engineering", "AI/ML"]
+categories: ["Engineering", "AI"]
 cover:
   image: "images/posts/graphrag-vs-naive-rag-cover.png"
   alt: "Multimodal document ingestion pipeline architecture with vision OCR layout analysis"

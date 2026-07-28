@@ -4,7 +4,7 @@ description: "Survive 20,000 RPS in production: Linux Kernel network tuning, K6 
 date: "2026-06-15T07:20:00+07:00"
 lastmod: "2026-06-15T07:20:00+07:00"
 draft: false
-tags: ["k6", "load testing", "linux", "performance", "golang", "system design"]
+tags: ["k6", "load testing", "linux", "performance", "golang", "Architecture"]
 categories: ["Geospatial", "DevOps"]
 series: ["Routing & Geospatial Architecture"]
 series_order: 7

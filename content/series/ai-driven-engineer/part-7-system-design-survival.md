@@ -5,7 +5,7 @@ date: "2026-05-13T12:00:00+07:00"
 lastmod: "2026-07-23T10:40:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["System Design", "Resilience", "Golang", "Circuit Breaker", "Rate Limiting", "Architecture"]
+tags: ["Architecture", "Resilience", "Golang", "Circuit Breaker", "Rate Limiting"]
 categories: ["Engineering", "Architecture"]
 cover:
   image: "images/posts/ai-native-frontend-cover.png"

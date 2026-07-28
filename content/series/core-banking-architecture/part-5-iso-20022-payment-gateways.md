@@ -7,7 +7,7 @@ description: "ISO 20022 pacs.008 guide: XPath to SQL mapping, streaming Go parse
 weight: 5
 series: ["core-banking-architecture"]
 keywords: ["ISO 20022 XML parsing performance", "pacs.008 message size vs JSON", "API gateway translation latency", "webhook idempotency fintech"]
-categories: ["FinTech", "Payment Gateways", "Protocols"]
+categories: ["FinTech", "Payments", "Protocols"]
 tags: ["ISO 20022", "pacs.008", "Payment Gateway", "Latency", "Idempotency", "Golang"]
 author: "Lê Tuấn Anh"
 schema: ["Article", "TechArticle", "FAQPage"]

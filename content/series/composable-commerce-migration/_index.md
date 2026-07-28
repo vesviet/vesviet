@@ -7,7 +7,7 @@ lastmod: "2026-07-26T10:00:00+07:00"
 draft: false
 weight: 145
 slug: "composable-commerce-migration"
-categories: ["Series", "Software Engineering", "Backend Architecture"]
+categories: ["Software Engineering", "Backend"]
 tags: ["Magento", "Microservices", "Golang", "DDD", "Strangler Fig", "Rush Monorepo", "Dapr", "Kratos"]
 cover:
   image: "images/posts/ecommerce-composable-cover.png"

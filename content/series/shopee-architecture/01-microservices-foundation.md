@@ -11,7 +11,7 @@ cover:
   image: "images/posts/shopee-flash-sale-cover.png"
   alt: "Shopee Architecture series: scaling for flash sales — rate limiting, Redis, and distributed systems"
   relative: false
-categories: ["Microservices", "System Architecture", "High Concurrency"]
+categories: ["Microservices", "Architecture", "High Concurrency"]
 tags: ["Shopee", "Golang", "gRPC", "API Gateway", "Service Mesh", "Microservices"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/01-microservices-foundation/"

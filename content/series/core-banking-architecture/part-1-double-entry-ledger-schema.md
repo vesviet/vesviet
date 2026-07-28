@@ -7,7 +7,7 @@ description: "Real-world double-entry ledger schema: TigerBeetle 128-byte struct
 weight: 1
 series: ["core-banking-architecture"]
 keywords: ["double entry ledger database schema", "TigerBeetle architecture", "pessimistic vs optimistic locking ledger", "Mambu GL schema"]
-categories: ["FinTech", "Architecture", "Database Design"]
+categories: ["FinTech", "Architecture", "Database"]
 tags: ["TigerBeetle", "PostgreSQL", "Ledger Schema", "Double-Entry", "FinTech", "Architecture"]
 author: "Lê Tuấn Anh"
 schema: ["Article", "TechArticle", "FAQPage"]

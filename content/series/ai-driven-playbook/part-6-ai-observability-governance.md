@@ -7,7 +7,7 @@ description: "Production SRE guide to implementing AI observability, OpenTelemet
 ShowToc: true
 TocOpen: true
 weight: 8
-categories: ["Series", "Enterprise Playbook"]
+categories: ["Enterprise Playbook"]
 tags: ["AI", "Enterprise Architecture", "CTO", "Tech Lead"]
 cover:
   image: "images/posts/hybrid-ai-pipeline-cover.png"

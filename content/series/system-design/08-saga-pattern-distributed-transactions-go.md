@@ -6,11 +6,11 @@ lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 description: "Replace 2PC with Saga in Go: Temporal SDK LIFO compensation mechanisms, Transactional Outbox pattern, and Debezium CDC EventRouter setup in production."
-tags: ["saga pattern", "distributed transactions", "golang", "temporal", "outbox pattern", "debezium", "system design"]
-categories: ["System Design", "Backend Engineering"]
+tags: ["saga pattern", "distributed transactions", "golang", "temporal", "outbox pattern", "debezium", "Architecture"]
+categories: ["Architecture", "Backend"]
 ShowToc: true
 TocOpen: true
-series: ["system-design"]
+series: ["Architecture"]
 mermaid: true
 cover:
   image: "images/posts/ecommerce-microservices-blueprint-cover.png"

@@ -8,8 +8,8 @@ description: "High-level overview of why enterprises shift to self-hosted Small 
 ShowToc: true
 TocOpen: true
 weight: 1
-categories: ["Series", "SLM Playbook"]
-tags: ["AI", "vLLM", "System Design", "CTO", "Architect"]
+categories: ["SLM Playbook"]
+tags: ["AI", "vLLM", "Architecture", "CTO", "Architect"]
 cover:
   image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
   alt: "SLM Playbook series: fine-tuning, LoRA, QLoRA, and production deployment of Small Language Models"

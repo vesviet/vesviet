@@ -10,7 +10,7 @@ slug: "cloudflare-zero-devops-ecommerce"
 author: "Lê Tuấn Anh"
 images: ["images/default-post.png"]
 categories:
-  - System Design
+  - "Architecture"
 tags:
   - Cloudflare
   - Microservices

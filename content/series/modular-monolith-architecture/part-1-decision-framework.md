@@ -4,8 +4,8 @@ date: "2026-07-03T10:00:00+07:00"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "Use real-world latency, performance data, and lessons from Stack Overflow to decide when to use a Modular Monolith instead of Microservices."
 slug: "decision-framework-modular-monolith-vs-microservices"
-tags: ["Architecture", "Modular Monolith", "Microservices", "System Design", "Stack Overflow"]
-categories: ["Modular Monolith", "System Architecture"]
+tags: ["Architecture", "Modular Monolith", "Microservices", "Stack Overflow"]
+categories: ["Modular Monolith", "Architecture"]
 aliases: ["/series/modular-monolith-architecture/part-1-decision-framework/"]
 cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal', 'relative': False}
 author: "Lê Tuấn Anh"

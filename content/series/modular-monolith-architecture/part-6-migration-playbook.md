@@ -5,7 +5,7 @@ lastmod: "2026-07-03T14:59:00+07:00"
 description: "A practical step-by-step guide to safely transitioning from Microservices to a Modular Monolith using Reverse Strangler Fig patterns and feature flags."
 slug: "migration-playbook-microservices-to-modular-monolith"
 tags: ["Migration", "Strangler Fig", "Modular Monolith", "Database", "Conway's Law"]
-categories: ["Modular Monolith", "System Architecture"]
+categories: ["Modular Monolith", "Architecture"]
 aliases: ["/series/modular-monolith-architecture/part-6-migration-playbook/"]
 cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Production Guide: Go, DDD, bounded contexts, and microservices reversal', 'relative': False}
 author: "Lê Tuấn Anh"

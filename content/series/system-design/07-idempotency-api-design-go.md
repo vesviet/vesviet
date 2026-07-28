@@ -6,11 +6,11 @@ lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 description: "Learn idempotent API design in Go with Redis SetNX middleware, response recording, SHA-256 payload hashing, and Stripe idempotency patterns."
-tags: ["idempotency", "api design", "golang", "redis", "payment", "retry", "system design"]
-categories: ["System Design", "Backend Engineering"]
+tags: ["idempotency", "api design", "golang", "redis", "payment", "retry", "Architecture"]
+categories: ["Architecture", "Backend"]
 ShowToc: true
 TocOpen: true
-series: ["system-design"]
+series: ["Architecture"]
 mermaid: true
 cover:
   image: "images/posts/ecommerce-microservices-blueprint-cover.png"

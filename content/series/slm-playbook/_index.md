@@ -5,7 +5,7 @@ date: "2026-05-20T21:05:00+07:00"
 lastmod: "2026-07-26T15:42:00+07:00"
 draft: false
 weight: 35
-categories: ["Series", "SLM Playbook"]
+categories: ["SLM Playbook"]
 tags: ["SLM", "Fine-Tuning", "vLLM", "AI Infrastructure"]
 description: "A practical guide to selecting, fine-tuning (PEFT), aligning (DPO/KTO/GRPO), and serving Small Language Models (SLMs) on self-hosted vLLM and edge infrastructure."
 ShowToc: true

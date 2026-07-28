@@ -15,7 +15,7 @@ tags:
   - "Multi-Region Architecture"
   - "Geo-Distribution"
   - "Latency Optimization"
-  - "System Architecture"
+  - "Architecture"
 categories:
   - "Architecture"
   - "Engineering"

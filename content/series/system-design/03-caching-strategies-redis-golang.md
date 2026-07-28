@@ -6,11 +6,11 @@ lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 description: "Solve Cache Stampede in Go using singleflight and XFetch algorithms. Compare Write-Through vs Write-Behind with Redis LRU/LFU caching strategies."
-tags: ["caching", "redis", "golang", "cache stampede", "singleflight", "write-through", "system design"]
-categories: ["System Design", "Backend Engineering"]
+tags: ["caching", "redis", "golang", "cache stampede", "singleflight", "write-through", "Architecture"]
+categories: ["Architecture", "Backend"]
 ShowToc: true
 TocOpen: true
-series: ["system-design"]
+series: ["Architecture"]
 mermaid: true
 cover:
   image: "images/posts/ecommerce-microservices-blueprint-cover.png"

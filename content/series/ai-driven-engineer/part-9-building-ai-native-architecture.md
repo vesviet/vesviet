@@ -5,7 +5,7 @@ date: "2026-05-14T12:00:00+07:00"
 lastmod: "2026-07-23T10:40:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["AI Native", "Architecture", "Golang", "DDD", "Microservices", "System Design"]
+tags: ["AI Native", "Architecture", "Golang", "DDD", "Microservices"]
 categories: ["Engineering", "Architecture"]
 cover:
   image: "images/posts/ai-native-frontend-cover.png"

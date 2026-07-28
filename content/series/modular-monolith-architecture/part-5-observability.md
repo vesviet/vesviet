@@ -5,7 +5,7 @@ lastmod: "2026-07-03T14:59:00+07:00"
 description: "Comparing Distributed Tracing in Microservices with In-process Profiling in a Modular Monolith. Why is OpenTelemetry on a Monolith faster and cheaper?"
 slug: "observability-in-process-modular-monolith-opentelemetry"
 tags: ["Observability", "OpenTelemetry", "Distributed Tracing", "Modular Monolith", "Profiling"]
-categories: ["Modular Monolith", "System Architecture"]
+categories: ["Modular Monolith", "Architecture"]
 aliases: ["/series/modular-monolith-architecture/part-5-observability/"]
 cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Production Guide: Go, DDD, bounded contexts, and microservices reversal', 'relative': False}
 author: "Lê Tuấn Anh"

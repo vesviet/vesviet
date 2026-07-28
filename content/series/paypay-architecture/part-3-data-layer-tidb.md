@@ -9,7 +9,7 @@ cover:
   image: "images/posts/paypay-scaling-cover.png"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
-categories: ["Databases", "Distributed SQL", "Scalability"]
+categories: ["Database", "Distributed SQL", "Scalability"]
 tags: ["PayPay", "TiDB", "Aurora", "Distributed SQL", "NewSQL", "Database"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-3-data-layer-tidb/"

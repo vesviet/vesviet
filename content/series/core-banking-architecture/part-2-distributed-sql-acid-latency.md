@@ -7,7 +7,7 @@ description: "In-depth guide to distributed SQL ACID transaction latencies: Goog
 weight: 2
 series: ["core-banking-architecture"]
 keywords: ["distributed sql transaction latency", "TiDB percolator overhead", "Spanner TrueTime vs CockroachDB HLC", "2PC network latency fintech"]
-categories: ["FinTech", "Distributed SQL", "Database Performance"]
+categories: ["FinTech", "Distributed SQL", "Database"]
 tags: ["TiDB", "CockroachDB", "Spanner", "Distributed SQL", "ACID", "Latency"]
 author: "Lê Tuấn Anh"
 schema: ["Article", "TechArticle", "FAQPage"]

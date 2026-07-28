@@ -6,7 +6,7 @@ lastmod: "2026-07-23T10:40:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 tags: ["Data Engineering", "GraphRAG", "LLM", "Architecture", "Vector Database", "RAG Pipeline"]
-categories: ["Engineering", "AI/ML"]
+categories: ["Engineering", "AI"]
 cover:
   image: "images/posts/graphrag-vs-naive-rag-cover.png"
   alt: "Enterprise AI Data Pipeline and GraphRAG Architecture series: graph-based retrieval at scale"

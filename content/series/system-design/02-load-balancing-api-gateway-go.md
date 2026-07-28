@@ -6,11 +6,11 @@ lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 description: "L4 vs L7 load balancing internals, Direct Server Return with HAProxy sysctl config, Token Bucket rate limiting middleware in Go, and API Gateway patterns."
-tags: ["load balancer", "api gateway", "rate limiting", "golang", "token bucket", "system design"]
-categories: ["System Design", "Backend Engineering"]
+tags: ["load balancer", "api gateway", "rate limiting", "golang", "token bucket", "Architecture"]
+categories: ["Architecture", "Backend"]
 ShowToc: true
 TocOpen: true
-series: ["system-design"]
+series: ["Architecture"]
 mermaid: true
 cover:
   image: "images/posts/ecommerce-microservices-blueprint-cover.png"

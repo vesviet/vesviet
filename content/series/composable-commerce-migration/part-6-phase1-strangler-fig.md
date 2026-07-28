@@ -8,7 +8,7 @@ weight: 7
 slug: "part-6-phase1-strangler-fig"
 ShowToc: true
 TocOpen: true
-categories: ["Series", "Software Engineering", "Backend Architecture", "Migration"]
+categories: ["Software Engineering", "Backend", "Migration"]
 tags: ["Strangler Fig", "CDC", "Debezium", "Dapr", "Feature Flags", "Magento Migration", "Zero Downtime"]
 series: ["Composable Commerce Migration"]
 series_order: 6

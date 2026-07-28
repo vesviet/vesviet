@@ -9,7 +9,7 @@ cover:
   image: "images/posts/paypay-scaling-cover.png"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
-categories: ["High Traffic", "System Architecture", "FinTech"]
+categories: ["High Traffic", "Architecture", "FinTech"]
 tags: ["PayPay", "Flash Sales", "Redis", "Rate Limiting", "Campaigns", "Golang"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-5-campaign-architecture/"

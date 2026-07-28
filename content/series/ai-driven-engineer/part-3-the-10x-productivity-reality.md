@@ -5,7 +5,7 @@ date: "2026-05-11T12:00:00+07:00"
 lastmod: "2026-07-23T10:40:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["Productivity", "AI Engineering", "Metrics", "Python", "Software Management", "Strategy"]
+tags: ["Productivity", "AI", "Metrics", "Python", "Software Management", "Strategy"]
 categories: ["Engineering"]
 cover:
   image: "images/posts/ai-native-frontend-cover.png"

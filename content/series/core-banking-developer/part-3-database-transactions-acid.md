@@ -10,7 +10,7 @@ cover:
   image: "images/posts/banking-microservices-cover.png"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
   relative: false
-categories: ["FinTech", "Database Architecture", "Backend Engineering"]
+categories: ["FinTech", "Database", "Backend"]
 tags: ["ACID", "PostgreSQL", "Concurrency", "Row Locking", "Core Banking", "Golang"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-3-database-transactions-acid/"

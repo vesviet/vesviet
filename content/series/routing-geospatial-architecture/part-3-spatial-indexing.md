@@ -4,7 +4,7 @@ description: "How Spatial Indexing acts as the critical pre-filter for driver di
 date: "2026-06-14T22:50:00+07:00"
 lastmod: "2026-06-14T22:50:00+07:00"
 draft: false
-tags: ["uber h3", "postgis", "redis", "geospatial", "system design"]
+tags: ["uber h3", "postgis", "redis", "geospatial", "Architecture"]
 categories: ["Geospatial", "Database"]
 series: ["Routing & Geospatial Architecture"]
 series_order: 3

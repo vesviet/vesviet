@@ -8,8 +8,8 @@ description: "Data engineering guide for Supervised Fine-Tuning (SFT). Learn NEF
 ShowToc: true
 TocOpen: true
 weight: 2
-categories: ["Series", "SLM Playbook"]
-tags: ["AI Engineering", "Fine-Tuning", "Data Engineering", "Axolotl"]
+categories: ["SLM Playbook"]
+tags: ["AI", "Fine-Tuning", "Data Engineering", "Axolotl"]
 cover:
   image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
   alt: "SLM Playbook series: fine-tuning, LoRA, QLoRA, and production deployment of Small Language Models"

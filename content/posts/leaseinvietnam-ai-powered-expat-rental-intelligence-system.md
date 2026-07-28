@@ -7,19 +7,18 @@ lastmod: "2026-04-24T10:00:00+07:00"
 draft: false
 mermaid: true
 categories:
-  - "AI/ML"
+  - "AI"
   - "Product Development"
   - "Engineering"
 tags:
   - "Automation"
   - "LLM"
-  - "System Design"
-  - AI
-  - Local LLMs
-  - Architecture
-  - Go
-  - PostgreSQL
-  - Anti-Hallucination
+  - "Architecture"
+  - "AI"
+  - "Local LLMs"
+  - "Go"
+  - "PostgreSQL"
+  - "Anti-Hallucination"
 description: "Build an autonomous AI pipeline that scrapes and publishes expat rental intelligence for Vietnam, turning articles into a B2B lead funnel."
 ShowToc: true
 TocOpen: true

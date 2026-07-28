@@ -8,7 +8,7 @@ weight: 11
 slug: "part-10-adr-walkthrough"
 ShowToc: true
 TocOpen: true
-categories: ["Series", "Software Engineering", "Architecture"]
+categories: ["Software Engineering", "Architecture"]
 tags: ["ADR", "Architecture Decision Records", "Dapr", "ArgoCD", "Kratos", "Golang", "Kustomize", "Microservices Architecture"]
 series: ["Composable Commerce Migration"]
 series_order: 10

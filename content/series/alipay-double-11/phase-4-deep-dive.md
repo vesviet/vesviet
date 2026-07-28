@@ -10,7 +10,7 @@ cover:
   image: "images/posts/alipay-double11-cover.png"
   alt: "Alipay Double 11 Architecture series: 544,000 TPS payment processing at extreme scale"
   relative: false
-categories: ["Distributed Systems", "Cloud Native", "Database Systems"]
+categories: ["Distributed Systems", "Cloud Native", "Database"]
 tags: ["Alipay", "SOFA RPC", "RocketMQ", "OceanBase", "Paxos"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-4-deep-dive/"

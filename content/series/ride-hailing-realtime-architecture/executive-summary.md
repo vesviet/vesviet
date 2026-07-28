@@ -5,8 +5,8 @@ lastmod: "2026-05-06T20:00:00+07:00"
 draft: false
 description: "Architectural overview of ride-hailing super apps — covering GPS ingestion, Uber H3 spatial indexing, Kafka event streaming, matching, and pricing."
 weight: 1
-tags: ["ride-hailing", "geospatial", "architecture", "system-design", "uber"]
-categories: ["Ride Hailing", "System Architecture"]
+tags: ["ride-hailing", "geospatial", "architecture", "Architecture", "uber"]
+categories: ["Ride Hailing", "Architecture"]
 cover:
   image: "images/posts/real-time-ride-hailing-cover.png"
   alt: "Real-Time Ride-Hailing Architecture series: Uber and Grab — matching, GPS, WebSocket at scale"

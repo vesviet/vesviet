@@ -8,7 +8,7 @@ weight: 9
 slug: "part-8-phase3-full-cutover"
 ShowToc: true
 TocOpen: true
-categories: ["Series", "Software Engineering", "Backend Architecture", "Migration", "DevOps"]
+categories: ["Software Engineering", "Backend", "Migration", "DevOps"]
 tags: ["GitOps", "ArgoCD", "Kustomize", "Zero Downtime", "Cutover", "Magento Migration", "Kubernetes"]
 series: ["Composable Commerce Migration"]
 series_order: 8

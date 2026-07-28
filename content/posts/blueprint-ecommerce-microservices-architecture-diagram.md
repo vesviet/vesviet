@@ -6,9 +6,9 @@ date: "2026-04-12T08:30:00+07:00"
 lastmod: "2026-07-22T08:30:00+07:00"
 draft: false
 mermaid: true
-tags: ["System Architecture", "Microservices", "Mermaid", "Golang", "API Gateway", "DDD", "Dapr", "Kubernetes", "ecommerce architecture"]
+tags: ["Architecture", "Microservices", "Mermaid", "Golang", "API Gateway", "DDD", "Dapr", "Kubernetes", "ecommerce architecture"]
 description: "Complete microservices ecommerce architecture diagram & blueprint. Build a composable commerce stack with Golang, DDD, and Dapr."
-categories: ["Architecture", "System Design"]
+categories: ["Architecture"]
 ShowToc: true
 TocOpen: true
 cover:

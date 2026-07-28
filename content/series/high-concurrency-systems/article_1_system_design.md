@@ -10,7 +10,7 @@ cover:
   image: "/images/series/high-concurrency-systems/cover.jpg"
 ShowToc: true
 TocOpen: true
-categories: ["FinTech", "High Concurrency", "Backend Engineering"]
+categories: ["FinTech", "High Concurrency", "Backend"]
 tags: ["High Concurrency", "C10M", "Golang", "epoll", "io_uring", "Load Balancing", "DPDK", "Zero-Copy"]
 series: ["High Concurrency Backend Systems"]
 series_order: 1

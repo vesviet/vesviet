@@ -5,7 +5,7 @@ author: "Lê Tuấn Anh"
 description: "Engineering guide to AI-driven internal operations automation, incident triage, dependency migration swarms, and financial ROI modeling."
 date: 2026-03-17T09:00:00+07:00
 draft: false
-tags: ["AI Engineering", "Internal Operations", "DevOps", "Automation", "ROI"]
+tags: ["AI", "Internal Operations", "DevOps", "Automation", "ROI"]
 series: ["AI-Driven Playbook"]
 weight: 3
 cover:

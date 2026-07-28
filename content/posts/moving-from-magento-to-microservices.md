@@ -6,7 +6,7 @@ date: "2026-04-14T21:20:00+07:00"
 lastmod: "2026-07-21T22:04:45+07:00"
 draft: false
 series: ["magento-migration-vietnam"]
-tags: ["Magento", "Microservices", "Migration", "System Design", "Debezium", "Dapr"]
+tags: ["Magento", "Microservices", "Migration", "Architecture", "Debezium", "Dapr"]
 description: "Why migrate Magento to microservices? Zero-downtime Strangler Fig migration playbook using Debezium CDC, Dapr event sync, and dual-write strategy."
 categories: ["Architecture", "Engineering"]
 ShowToc: true

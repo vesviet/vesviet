@@ -6,11 +6,11 @@ lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 description: "System design trade-off thinking in Go: CAP theorem proof, PACELC matrix, composite availability math, and Clean Architecture with DI pattern."
-tags: ["system design", "golang", "clean architecture", "CAP theorem", "PACELC", "distributed systems"]
-categories: ["System Design", "Backend Engineering"]
+tags: ["Architecture", "golang", "clean architecture", "CAP theorem", "PACELC", "distributed systems"]
+categories: ["Architecture", "Backend"]
 ShowToc: true
 TocOpen: true
-series: ["system-design"]
+series: ["Architecture"]
 mermaid: true
 cover:
   image: "images/posts/ecommerce-microservices-blueprint-cover.png"

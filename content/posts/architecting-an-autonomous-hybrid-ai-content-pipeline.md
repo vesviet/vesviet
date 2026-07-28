@@ -7,14 +7,13 @@ lastmod: "2026-07-26T15:53:41+07:00"
 draft: false
 mermaid: true
 categories:
-  - "AI/ML"
+  - "AI"
   - "Engineering"
 tags:
   - "LLM"
   - "Automation"
   - "Architecture"
   - "AI"
-  - "System Design"
   - "Local LLMs"
   - "State Machine"
   - "GitOps"

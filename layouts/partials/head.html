@@ -1,7 +1,30 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-{{- if hugo.IsProduction | or (eq site.Params.env "production") | and (not .Params.noindex) | and (ne .Params.robotsNoIndex true) | and (ne .Section "tags") }}
+{{- $isProduction := or hugo.IsProduction (eq site.Params.env "production") }}
+{{- $isNoIndexParam := or .Params.noindex .Params.robotsNoIndex }}
+{{- $isTags := eq .Section "tags" }}
+{{- $isCategory := or (eq .Section "categories") (eq .Data.Singular "category") }}
+
+{{- $isCuratedCategory := false }}
+{{- if $isCategory }}
+  {{- if and (ne .File nil) .Params.description }}
+    {{- $isCuratedCategory = true }}
+  {{- end }}
+{{- end }}
+
+{{- $shouldIndex := false }}
+{{- if and $isProduction (not $isNoIndexParam) (not $isTags) }}
+  {{- if $isCategory }}
+    {{- if $isCuratedCategory }}
+      {{- $shouldIndex = true }}
+    {{- end }}
+  {{- else }}
+    {{- $shouldIndex = true }}
+  {{- end }}
+{{- end }}
+
+{{- if $shouldIndex }}
 <meta name="robots" content="index, follow">
 {{- else }}
 <meta name="robots" content="noindex, follow">

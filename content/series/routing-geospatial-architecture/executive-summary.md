@@ -5,8 +5,8 @@ date: "2026-06-14T22:35:00+07:00"
 lastmod: "2026-06-14T22:35:00+07:00"
 draft: false
 weight: 1
-tags: ["architecture", "golang", "graphhopper", "system-design"]
-categories: ["Geospatial", "System Architecture"]
+tags: ["architecture", "golang", "graphhopper", "Architecture"]
+categories: ["Geospatial", "Architecture"]
 series: ["Routing & Geospatial Architecture"]
 cover:
   image: "images/posts/graphhopper-cover.png"

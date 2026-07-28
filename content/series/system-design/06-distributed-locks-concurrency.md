@@ -6,11 +6,11 @@ lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 description: "Redlock MIN_VALIDITY math analysis, clock drift impact, redsync implementation in Go, etcd lease locks, and Redis vs etcd comparison."
-tags: ["distributed lock", "redis", "redlock", "golang", "etcd", "concurrency", "system design"]
-categories: ["System Design", "Backend Engineering"]
+tags: ["distributed lock", "redis", "redlock", "golang", "etcd", "concurrency", "Architecture"]
+categories: ["Architecture", "Backend"]
 ShowToc: true
 TocOpen: true
-series: ["system-design"]
+series: ["Architecture"]
 mermaid: true
 cover:
   image: "images/posts/ecommerce-microservices-blueprint-cover.png"

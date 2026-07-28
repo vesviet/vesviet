@@ -8,7 +8,7 @@ ShowToc: true
 TocOpen: true
 weight: 200
 slug: "magento-migration-vietnam"
-categories: ["Series", "Software Engineering", "Engineering Management"]
+categories: ["Software Engineering", "Engineering Management"]
 tags: ["Magento", "Microservices", "Golang", "Vietnam", "Migration", "Ecommerce", "Cost Model", "Remote Team"]
 cover:
   image: "images/series/remote-team-vietnam-migration-cover.png"

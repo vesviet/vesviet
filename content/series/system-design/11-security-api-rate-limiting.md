@@ -6,11 +6,11 @@ lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 description: "Advanced API rate limiting in Go: Token Bucket vs Leaky Bucket algorithms, distributed sliding window with Redis Lua, and IP anti-spoofing techniques."
-tags: ["rate limiting", "security", "golang", "redis", "lua", "envoy", "system design"]
-categories: ["System Design", "Backend Engineering"]
+tags: ["rate limiting", "security", "golang", "redis", "lua", "envoy", "Architecture"]
+categories: ["Architecture", "Backend"]
 ShowToc: true
 TocOpen: true
-series: ["system-design"]
+series: ["Architecture"]
 mermaid: true
 cover:
   image: "images/posts/ecommerce-microservices-blueprint-cover.png"

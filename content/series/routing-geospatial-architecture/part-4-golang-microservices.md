@@ -4,7 +4,7 @@ description: "Build a bulletproof Golang API Gateway for Graphhopper: Circuit Br
 date: "2026-06-14T23:00:00+07:00"
 lastmod: "2026-06-14T23:00:00+07:00"
 draft: false
-tags: ["golang", "kratos", "dapr", "grpc", "graphhopper", "system design"]
+tags: ["golang", "kratos", "dapr", "grpc", "graphhopper", "Architecture"]
 categories: ["Geospatial", "Microservices"]
 series: ["Routing & Geospatial Architecture"]
 series_order: 4

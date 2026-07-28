@@ -7,8 +7,8 @@ date: "2026-06-18T14:50:00+07:00"
 lastmod: "2026-06-18T16:22:00+07:00"
 draft: false
 weight: 200
-categories: ["Series", "System Design", "Backend Architecture"]
-tags: ["System Design", "Distributed Systems", "Scalability", "Golang", "Architecture"]
+categories: ["Architecture", "Backend"]
+tags: ["Architecture", "Distributed Systems", "Scalability", "Golang"]
 ShowToc: true
 TocOpen: true
 cover:

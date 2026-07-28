@@ -6,11 +6,11 @@ lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 description: "Go pprof guide: heap diff memory leak diagnosis, goroutine leak detection, CPU flame graphs, GODEBUG gctrace, and Four Golden Signals in production."
-tags: ["observability", "golang", "pprof", "memory leak", "cpu profiling", "godebug", "system design"]
-categories: ["System Design", "Backend Engineering"]
+tags: ["observability", "golang", "pprof", "memory leak", "cpu profiling", "godebug", "Architecture"]
+categories: ["Architecture", "Backend"]
 ShowToc: true
 TocOpen: true
-series: ["system-design"]
+series: ["Architecture"]
 cover:
   image: "images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"

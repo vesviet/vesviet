@@ -5,7 +5,7 @@ lastmod: "2026-07-03T14:59:00+07:00"
 description: "Analyzing the AWS bill of distributed architectures: Hidden costs from Service Mesh (Istio), data transfer fees (Cross-AZ Egress), and Observability waste."
 slug: "finops-cost-reality-microservices-tax"
 tags: ["FinOps", "AWS", "Istio", "Cloud Cost", "Segment", "Modular Monolith"]
-categories: ["Modular Monolith", "System Architecture"]
+categories: ["Modular Monolith", "Architecture"]
 aliases: ["/series/modular-monolith-architecture/part-2-finops-cost-reality/"]
 cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal', 'relative': False}
 author: "Lê Tuấn Anh"

@@ -6,11 +6,11 @@ lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 description: "Why modulo hashing fails at scale, virtual node variance analysis, and CRC32 consistent hash ring implementation in Go with replication."
-tags: ["consistent hashing", "golang", "distributed systems", "sharding", "virtual nodes", "system design"]
-categories: ["System Design", "Backend Engineering"]
+tags: ["consistent hashing", "golang", "distributed systems", "sharding", "virtual nodes", "Architecture"]
+categories: ["Architecture", "Backend"]
 ShowToc: true
 TocOpen: true
-series: ["system-design"]
+series: ["Architecture"]
 mermaid: true
 cover:
   image: "images/posts/ecommerce-microservices-blueprint-cover.png"

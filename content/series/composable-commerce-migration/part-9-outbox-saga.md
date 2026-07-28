@@ -8,7 +8,7 @@ weight: 10
 slug: "part-9-outbox-saga"
 ShowToc: true
 TocOpen: true
-categories: ["Series", "Software Engineering", "Backend Architecture", "Distributed Systems"]
+categories: ["Software Engineering", "Backend", "Distributed Systems"]
 tags: ["Saga Pattern", "Outbox Pattern", "Transactional Outbox", "Dapr", "Event-Driven", "Golang", "Idempotency", "Circuit Breaker"]
 series: ["Composable Commerce Migration"]
 series_order: 9

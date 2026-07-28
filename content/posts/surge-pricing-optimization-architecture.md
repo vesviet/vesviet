@@ -9,7 +9,7 @@ draft: false
 ShowToc: true
 TocOpen: true
 categories: ["Architecture", "Engineering"]
-tags: ["Surge Pricing", "Uber H3", "Redis", "Geospatial", "Golang", "System Design"]
+tags: ["Surge Pricing", "Uber H3", "Redis", "Geospatial", "Golang", "Architecture"]
 cover:
   image: "images/posts/surge-pricing-cover.png"
   alt: "Surge Pricing Algorithm & Spatial Indexing Architecture"

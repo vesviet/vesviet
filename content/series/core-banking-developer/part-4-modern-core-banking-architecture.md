@@ -12,7 +12,7 @@ cover:
   image: "images/posts/banking-microservices-cover.png"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
   relative: false
-categories: ["FinTech", "System Architecture", "Microservices"]
+categories: ["FinTech", "Architecture", "Microservices"]
 tags: ["Microservices", "Event Sourcing", "CQRS", "Saga Pattern", "Golang", "Core Banking"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-4-modern-core-banking-architecture/"

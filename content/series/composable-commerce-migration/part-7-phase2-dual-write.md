@@ -8,7 +8,7 @@ weight: 8
 slug: "part-7-phase2-dual-write"
 ShowToc: true
 TocOpen: true
-categories: ["Series", "Software Engineering", "Backend Architecture", "Migration"]
+categories: ["Software Engineering", "Backend", "Migration"]
 tags: ["Dual Write", "Dapr", "PubSub", "Conflict Resolution", "Feature Flags", "Magento Migration", "Event-Driven"]
 series: ["Composable Commerce Migration"]
 series_order: 7

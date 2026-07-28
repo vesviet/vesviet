@@ -6,7 +6,7 @@ lastmod: "2026-06-18T11:00:00+07:00"
 draft: false
 weight: 50
 slug: "core-banking-architecture"
-categories: ["Series", "Core Banking", "Fintech Architecture"]
+categories: ["Core Banking", "Fintech Architecture"]
 tags: ["TigerBeetle", "TiDB", "CockroachDB", "ISO 20022", "FAPI 2.0", "Apache Flink", "Event Sourcing", "Distributed SQL"]
 cover:
   image: "images/posts/banking-microservices-cover.png"

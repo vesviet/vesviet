@@ -8,8 +8,8 @@ description: "An overview for Tech Leads & Architects: Why traditional scaling f
 ShowToc: true
 TocOpen: true
 weight: 0
-categories: ["Series", "High Concurrency", "Backend Architecture"]
-tags: ["Golang", "System Design", "Microservices", "Executive Summary", "Scalability"]
+categories: ["High Concurrency", "Backend"]
+tags: ["Golang", "Architecture", "Microservices", "Executive Summary", "Scalability"]
 cover:
   image: "images/posts/realtime-inventory-cover.png"
   alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"

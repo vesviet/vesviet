@@ -5,8 +5,8 @@ lastmod: "2026-05-31T16:00:00+07:00"
 draft: false
 weight: 25
 categories:
-  - AI Engineering
-  - Vibe Coding
+  - "AI"
+  - "Vibe Coding"
 tags:
   - vibe coding
   - AI code review

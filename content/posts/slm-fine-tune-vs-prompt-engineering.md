@@ -15,7 +15,6 @@ mermaid: true
 categories:
   - "AI"
   - "Engineering"
-  - "Machine Learning"
 tags:
   - "LLM"
   - "Fine-Tuning"

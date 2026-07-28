@@ -7,7 +7,7 @@ draft: false
 weight: 3
 author: "Lê Tuấn Anh"
 tags: ["QLoRA", "Fine-Tuning", "Unsloth", "Axolotl", "Python", "PyTorch", "PEFT"]
-categories: ["Series", "SLM Playbook"]
+categories: ["SLM Playbook"]
 cover:
   image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
   alt: "Practical QLoRA Fine tuning Axolotl and Unsloth training pipeline"

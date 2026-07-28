@@ -8,7 +8,7 @@ lastmod: "2026-07-23T10:00:00+07:00"
 draft: false
 ShowToc: true
 TocOpen: true
-categories: ["AI Engineering", "Vibe Coding"]
+categories: ["AI", "Vibe Coding"]
 tags: ["Vibe Coding", "AI Code Review", "Software Engineering", "Security", "OWASP", "LiteLLM", "AST"]
 cover:
   image: "images/posts/vibe-coding-cover.png"

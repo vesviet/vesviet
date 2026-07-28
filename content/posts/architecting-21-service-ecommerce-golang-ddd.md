@@ -8,7 +8,7 @@ date: "2026-04-12T10:00:00+07:00"
 lastmod: "2026-07-03T00:00:00+07:00"
 draft: false
 mermaid: true
-tags: ["Golang", "Microservices", "System Design", "Domain-Driven Design", "Kratos", "Dapr", "Saga Pattern"]
+tags: ["Golang", "Microservices", "Architecture", "Domain-Driven Design", "Kratos", "Dapr", "Saga Pattern"]
 description: "Migrating an e-commerce monolith to 21+ distributed microservices using Golang & DDD. Explore Kratos architecture, Saga patterns, and race conditions."
 categories: ["Architecture", "Engineering"]
 ShowToc: true

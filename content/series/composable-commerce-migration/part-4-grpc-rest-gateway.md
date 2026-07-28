@@ -8,7 +8,7 @@ weight: 4
 slug: "part-4-grpc-rest-gateway"
 ShowToc: true
 TocOpen: true
-categories: ["Series", "Software Engineering", "Backend Architecture", "Microservices"]
+categories: ["Software Engineering", "Backend", "Microservices"]
 tags: ["gRPC", "Protobuf", "grpc-gateway", "REST API", "Microservices", "Golang", "API Contract", "Envoy"]
 series: ["Composable Commerce Migration"]
 series_order: 4

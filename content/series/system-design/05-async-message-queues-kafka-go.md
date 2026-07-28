@@ -6,11 +6,11 @@ lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 description: "Kafka zero-copy architecture, bounded Worker Pool with Go channel backpressure, partition ordering, and Exactly-Once transactional commits in Go."
-tags: ["event-driven", "kafka", "golang", "worker pool", "backpressure", "message queue", "system design"]
-categories: ["System Design", "Backend Engineering"]
+tags: ["event-driven", "kafka", "golang", "worker pool", "backpressure", "message queue", "Architecture"]
+categories: ["Architecture", "Backend"]
 ShowToc: true
 TocOpen: true
-series: ["system-design"]
+series: ["Architecture"]
 mermaid: true
 cover:
   image: "images/posts/ecommerce-microservices-blueprint-cover.png"

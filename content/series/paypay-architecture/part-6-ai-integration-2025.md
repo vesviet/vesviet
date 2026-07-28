@@ -9,7 +9,7 @@ cover:
   image: "images/posts/paypay-scaling-cover.png"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
-categories: ["AI Engineering", "FinTech", "Innovation"]
+categories: ["AI", "FinTech", "Innovation"]
 tags: ["PayPay", "AI Native", "LLM", "RAG", "Fraud Detection", "Python", "Golang"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-6-ai-integration-2025/"

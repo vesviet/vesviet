@@ -5,7 +5,7 @@ date: "2026-05-10T15:00:00+07:00"
 lastmod: "2026-07-23T10:40:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["AI", "System Design", "Career", "Golang", "Architecture", "Software Engineering"]
+tags: ["AI", "Architecture", "Career", "Golang", "Software Engineering"]
 categories: ["Engineering"]
 cover:
   image: "images/posts/ai-native-frontend-cover.png"

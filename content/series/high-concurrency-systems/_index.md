@@ -6,8 +6,8 @@ lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 weight: 100
 slug: "high-concurrency-systems"
-categories: ["Series", "Backend Architecture", "System Design"]
-tags: ["High Concurrency", "Go", "PostgreSQL", "System Design", "Microservices"]
+categories: ["Backend", "Architecture"]
+tags: ["High Concurrency", "Go", "PostgreSQL", "Architecture", "Microservices"]
 cover:
   image: "images/posts/realtime-inventory-cover.png"
   alt: "Masterclass: High Concurrency Systems and B2B Commerce — queues, caches, and distributed architecture"

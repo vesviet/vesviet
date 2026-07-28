@@ -10,14 +10,14 @@ ShowToc: true
 TocOpen: true
 categories:
   - "Engineering"
-  - "System Architecture"
+  - "Architecture"
   - "E-commerce"
 tags:
   - "Kafka"
   - "Redis"
   - "PostgreSQL"
   - "Debezium"
-  - "System Design"
+  - "Architecture"
 mermaid: true
 cover:
   image: "images/posts/realtime-inventory-cover.png"

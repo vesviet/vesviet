@@ -5,7 +5,7 @@ author: "Lê Tuấn Anh"
 description: "Executive summary playbook for enterprise leaders transitioning software engineering teams to AI-native architectures, context engines, and guardrails."
 date: 2026-03-15T09:00:00+07:00
 draft: false
-tags: ["AI Engineering", "Executive Playbook", "Context Engineering", "Architecture", "SDLC"]
+tags: ["AI", "Executive Playbook", "Context Engineering", "Architecture", "SDLC"]
 series: ["AI-Driven Playbook"]
 weight: 1
 cover:

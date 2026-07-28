@@ -4,7 +4,7 @@ description: "The Grand Finale. How to deploy a Stateful Routing Engine to Kuber
 date: "2026-06-15T19:30:00+07:00"
 lastmod: "2026-06-15T19:30:00+07:00"
 draft: false
-tags: ["kubernetes", "devops", "sre", "graphhopper", "argo-rollouts", "system design"]
+tags: ["kubernetes", "devops", "sre", "graphhopper", "argo-rollouts", "Architecture"]
 categories: ["Geospatial", "DevOps"]
 series: ["Routing & Geospatial Architecture"]
 series_order: 8

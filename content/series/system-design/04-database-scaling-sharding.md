@@ -6,11 +6,11 @@ lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 description: "Horizontal database scaling in Go: Range/Hash sharding, B-Tree vs LSM-Tree internals, TiDB Percolator 2PC, and database/sql connection pool tuning."
-tags: ["database", "sharding", "golang", "postgresql", "tidb", "connection pool", "system design"]
-categories: ["System Design", "Backend Engineering"]
+tags: ["database", "sharding", "golang", "postgresql", "tidb", "connection pool", "Architecture"]
+categories: ["Architecture", "Backend"]
 ShowToc: true
 TocOpen: true
-series: ["system-design"]
+series: ["Architecture"]
 mermaid: true
 cover:
   image: "images/posts/ecommerce-microservices-blueprint-cover.png"

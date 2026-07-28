@@ -7,7 +7,7 @@ description: "Production engineering guide to building enterprise internal RAG b
 ShowToc: true
 TocOpen: true
 weight: 4
-categories: ["Series", "Enterprise Playbook"]
+categories: ["Enterprise Playbook"]
 tags: ["AI", "Enterprise Architecture", "CTO", "Tech Lead"]
 cover:
   image: "images/posts/hybrid-ai-pipeline-cover.png"

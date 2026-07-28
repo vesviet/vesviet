@@ -7,7 +7,7 @@ draft: false
 weight: 40
 tags: ["Data Engineering", "GraphRAG", "Vector Database", "RAG", "LLM", "Architecture"]
 description: "Build enterprise AI data pipelines: GraphRAG, multimodal ingestion, semantic caching, streaming CDC, security guardrails, and vLLM inference."
-categories: ["Data Engineering", "AI/ML"]
+categories: ["Data Engineering", "AI"]
 ShowToc: true
 TocOpen: true
 cover:

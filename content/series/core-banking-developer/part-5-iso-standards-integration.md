@@ -9,7 +9,7 @@ cover:
   image: "images/posts/banking-microservices-cover.png"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
   relative: false
-categories: ["FinTech", "Payment Protocols", "Integration"]
+categories: ["FinTech", "Payments", "Integration"]
 tags: ["ISO 8583", "ISO 20022", "pacs.008", "Payment Gateway", "Golang", "FinTech"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-5-iso-standards-integration/"

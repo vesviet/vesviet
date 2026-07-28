@@ -8,7 +8,7 @@ weight: 6
 slug: "part-5-eav-schema-migration"
 ShowToc: true
 TocOpen: true
-categories: ["Series", "Software Engineering", "Database", "Backend Architecture"]
+categories: ["Software Engineering", "Database", "Backend"]
 tags: ["EAV", "Magento", "Schema Migration", "PostgreSQL", "MySQL", "Data Migration", "SQL"]
 series: ["Composable Commerce Migration"]
 series_order: 5

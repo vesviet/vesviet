@@ -10,7 +10,7 @@ cover:
   image: "images/posts/banking-microservices-cover.png"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
   relative: false
-categories: ["FinTech", "Core Banking", "Backend Engineering"]
+categories: ["FinTech", "Core Banking", "Backend"]
 tags: ["Core Banking", "Double-Entry Ledger", "Accounting Engine", "Golang", "PostgreSQL", "ACID"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-1-double-entry-ledger/"

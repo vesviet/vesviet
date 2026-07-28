@@ -4,7 +4,7 @@ description: "How to achieve an 80% Cache Hit Rate on a Distance Matrix API. We 
 date: "2026-06-15T07:15:00+07:00"
 lastmod: "2026-06-15T07:15:00+07:00"
 draft: false
-tags: ["redis", "h3", "caching", "golang", "architecture", "system design"]
+tags: ["redis", "h3", "caching", "golang", "architecture", "Architecture"]
 categories: ["Geospatial", "Caching"]
 series: ["Routing & Geospatial Architecture"]
 series_order: 6

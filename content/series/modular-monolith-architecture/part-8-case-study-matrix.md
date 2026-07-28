@@ -5,7 +5,7 @@ lastmod: "2026-07-03T14:59:00+07:00"
 description: "Production case study matrix evaluating real-world modular monolith migrations across FinTech, E-Commerce, and high-scale SaaS platforms."
 slug: "case-study-matrix-modular-monolith-success-stories"
 tags: ["Case Study", "Modular Monolith", "Shopify", "Stack Overflow", "Notion", "GitHub", "Etsy"]
-categories: ["Modular Monolith", "System Architecture"]
+categories: ["Modular Monolith", "Architecture"]
 aliases: ["/series/modular-monolith-architecture/part-8-case-study-matrix/"]
 cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal', 'relative': False}
 author: "Lê Tuấn Anh"

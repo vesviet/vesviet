@@ -6,7 +6,7 @@ lastmod: "2026-07-23T10:40:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 tags: ["Vibe Coding", "Code Review", "AI Security", "Python", "Static Analysis", "DevOps"]
-categories: ["Engineering", "AI/ML"]
+categories: ["Engineering", "AI"]
 cover:
   image: "images/posts/vibe-coding-cover.png"
   alt: "The Vibe Coding Revolution and Enterprise Code Review Guardrails architecture"
