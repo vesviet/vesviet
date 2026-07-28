@@ -301,7 +301,7 @@ If your enterprise e-commerce or B2B platform is struggling with slow database q
 
 ---
 
-🔗 **Next Step:** [Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm](/series/high-concurrency-systems/article_3_rate_limiting/)
+🔗 **Next Step:** [Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm](/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/)
 
 ## Architectural Context & Pillar References
 

@@ -46,28 +46,28 @@ Forget generic, theoretical scaling advice. This curriculum tackles the exact co
 1. **[Chapter 1: High Concurrency System Design Architecture in Go](/series/high-concurrency-systems/article_1_system_design/)**
    *Deep dive into C10M high-concurrency architecture, epoll, io_uring, DPDK kernel bypass, L4/L7 load balancing, and zero-copy Go memory management.*
 
-2. **[Chapter 2: The 3 Caching Vulnerabilities (Penetration, Breakdown, Avalanche) & Go Singleflight](/series/high-concurrency-systems/article_2_caching/)**
+2. **[Chapter 2: The 3 Caching Vulnerabilities (Penetration, Breakdown, Avalanche) & Go Singleflight](/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/)**
    *Learn how to defend against Cache Penetration, Avalanche, and Breakdown using Bloom Filters, TTL jittering, and Golang singleflight.*
 
-3. **[Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm](/series/high-concurrency-systems/article_3_rate_limiting/)**
+3. **[Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm](/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/)**
    *Discover why local rate limiters fail in Microservices and how Redis Lua scripts powering the GCRA algorithm solve distributed throttling.*
 
-4. **[Chapter 4: Solving the Dual-Write Problem with Transactional Outbox Pattern](/series/high-concurrency-systems/article_4_outbox_pattern/)**
+4. **[Chapter 4: Solving the Dual-Write Problem with Transactional Outbox Pattern](/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/)**
    *Master the Transactional Outbox Pattern using GORM and CDC to eliminate Dual-Write data inconsistencies in event-driven systems.*
 
-5. **[Chapter 5: Optimizing Golang Database Connection Pools](/series/high-concurrency-systems/article_5_db_connection/)**
+5. **[Chapter 5: Optimizing Golang Database Connection Pools](/series/high-concurrency-systems/golang-database-connection-pool-optimization/)**
    *Tune your *sql.DB connection pool parameters (MaxOpenConns, MaxIdleConns) and implement PgBouncer to maximize Go database performance.*
 
 6. **[Chapter 6: API Gateway vs Service Mesh in Microservices Architecture](/posts/multi-region-geo-distributed-api-routing/)**
    *Understand the clear boundaries between North-South traffic (API Gateway) and East-West traffic (Service Mesh) in large Go architectures.*
 
-7. **[Chapter 7: Designing Idempotency APIs for Payment Systems](/series/high-concurrency-systems/article_7_idempotency/)**
+7. **[Chapter 7: Designing Idempotency APIs for Payment Systems](/series/high-concurrency-systems/idempotency-api-design-payments/)**
    *Prevent double-charging customers by implementing robust Idempotency Keys and Atomic Redis locks in your HTTP POST transactions.*
 
-8. **[Chapter 8: Distributed Locking — Redlock vs ZooKeeper](/series/high-concurrency-systems/article_8_distributed_locking/)**
+8. **[Chapter 8: Distributed Locking — Redlock vs ZooKeeper](/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/)**
    *Master distributed synchronization by comparing Redis Redlock algorithms against strongly consistent Apache ZooKeeper locks.*
 
-9. **[Chapter 9: Database Sharding & Read/Write Splitting](/series/high-concurrency-systems/article_9_sharding/)**
+9. **[Chapter 9: Database Sharding & Read/Write Splitting](/series/high-concurrency-systems/database-sharding-read-write-splitting/)**
    *Scale your relational database infinitely using GORM dbresolver for Read/Write splitting and Consistent Hashing for massive Sharding.*
 
 ---

@@ -23,7 +23,7 @@ image: "images/posts/realtime-inventory-cover.png"
 
 > **Pillar Architecture Guide:** This article is part of the **[High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
-> **Prerequisite:** Before reading this chapter, review [Chapter 2: The 3 Caching Vulnerabilities](/series/high-concurrency-systems/article_2_caching/).
+> **Prerequisite:** Before reading this chapter, review [Chapter 2: The 3 Caching Vulnerabilities](/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/).
 
 ## Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm
 
@@ -296,7 +296,7 @@ Security enforcement for Article_3_Rate_Limiting integrates SPIFFE/SPIRE workloa
 
 ---
 
-🔗 **Next Step:** [Chapter 4: Solving the Dual-Write Problem with Transactional Outbox Pattern](/series/high-concurrency-systems/article_4_outbox_pattern/)
+🔗 **Next Step:** [Chapter 4: Solving the Dual-Write Problem with Transactional Outbox Pattern](/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/)
 
 
 ## Architectural Context & Pillar References

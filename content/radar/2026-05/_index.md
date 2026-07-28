@@ -1873,7 +1873,7 @@ There is no interactive session or chat. This is a **delegation model**, not a c
 
 > *Pricing above is aggregated from third-party sources at the time of writing. Verify official rates at [jules.google](https://jules.google) before making budget decisions.*
 
-Paid tiers use **Gemini 3 Pro** as the underlying model. Jules also reads `AGENTS.md`—a pattern covered in the [May 16 radar](/radar/2026-05/radar-2026-05-16/) when Grok Build was introduced.
+Paid tiers use **Gemini 3 Pro** as the underlying model. Jules also reads `AGENTS.md`—a pattern covered in the [May 16 radar](/radar/grok-build-openai-aws-multi-cloud-anthropic-wall-street-google-io-may-2026/) when Grok Build was introduced.
 
 #### Coding Agents Comparison (Updated May 2026)
 

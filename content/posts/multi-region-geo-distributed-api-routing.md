@@ -161,7 +161,7 @@ When data is partitioned across multiple geographical zones, we directly confron
 
 This solution works by assigning each user a specific "Home Region" based on their geographical location. For example, all account information, orders, and activities for a user in Vietnam will be primarily stored in the AWS Singapore Region (`ap-southeast-1`).
 
-All regular Write and Read operations for this user are processed directly in Singapore at extremely fast speeds. This data is only asynchronously replicated to other regions (like the US or Europe) for backup or statistical analysis purposes. This mechanism is closely tied to [Database Sharding](/series/high-concurrency-systems/article_9_sharding/) strategies, splitting the physical database via geographic shard keys.
+All regular Write and Read operations for this user are processed directly in Singapore at extremely fast speeds. This data is only asynchronously replicated to other regions (like the US or Europe) for backup or statistical analysis purposes. This mechanism is closely tied to [Database Sharding](/series/high-concurrency-systems/database-sharding-read-write-splitting/) strategies, splitting the physical database via geographic shard keys.
 
 ### 2. Read-Local, Write-Global Model
 

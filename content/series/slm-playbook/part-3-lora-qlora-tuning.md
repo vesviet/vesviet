@@ -223,8 +223,6 @@ Explore adjacent chapters in the SLM Playbook covering data engineering, inferen
 
 - [Part 1 — Hybrid AI Architecture & Self-Hosted vLLM](/series/slm-playbook/executive-summary/)
 - [Part 2 — Data Engineering for SFT: NEFTune & SemDeDup](/series/slm-playbook/part-2-sft-data-engineering/)
-- [Part 4 — Task & Knowledge Distillation](/series/slm-playbook/part-4-knowledge-distillation-synthetic-data/)
-- [Part 5 — Preference Alignment (DPO, KTO, GRPO)](/series/slm-playbook/part-5-preference-alignment-dpo-grpo/)
-- [Part 6 — Enterprise vLLM Serving & Edge Deployment](/series/slm-playbook/part-6-vllm-serving-edge-deployment/)
+- [Prompt Engineering vs Fine-Tuning vs RAG — the decision guide](/posts/slm-fine-tune-vs-prompt-engineering/) — covers knowledge distillation and DPO alignment referenced above.
 
 {{< author-cta >}}

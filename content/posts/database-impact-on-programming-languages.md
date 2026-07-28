@@ -11,7 +11,7 @@ TocOpen: true
 categories: ["Engineering", "Architecture"]
 tags: ["Golang", "PHP", "Node.js", "Rust", "Database", "PostgreSQL"]
 cover:
-  image: "images/posts/database-impact-languages-cover.png"
+  image: "images/posts/database-programming-languages-cover.jpg"
   alt: "How Databases Shaped Go, PHP, Node.js, and Rust"
   relative: false
 mermaid: true

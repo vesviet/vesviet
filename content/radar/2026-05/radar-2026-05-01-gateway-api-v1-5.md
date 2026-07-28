@@ -15,7 +15,7 @@ cover:
   relative: false
 mermaid: true
 description: "Deep-dive analysis of Kubernetes Gateway API v1.5, ListenerSet platform surfaces, TLSRoute mTLS policy, and AI Gateway Working Group routing standards."
-canonicalURL: "https://tanhdev.com/radar/2026-05/radar-2026-05-01-gateway-api-v1-5/"
+canonicalURL: "https://tanhdev.com/radar/radar-2026-05-01-gateway-api-v1-5/"
 ---
 > **Answer-First:** Kubernetes Gateway API v1.5 stabilizes `ListenerSet`, `TLSRoute`, and frontend mTLS client certificate validation in the Standard channel. Combined with `Ingress2Gateway 1.0`, this release provides a modular declarative control plane that replaces annotation-heavy ingress configurations with multi-tenant listener delegation and auditable cross-namespace security policies.
 

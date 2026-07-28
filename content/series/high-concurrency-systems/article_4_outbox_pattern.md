@@ -26,7 +26,7 @@ image: "images/posts/realtime-inventory-cover.png"
 
 > **Pillar Architecture Guide:** This article is part of the **[High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
-> **Prerequisite:** Read the previous article: [Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm](/series/high-concurrency-systems/article_3_rate_limiting/).
+> **Prerequisite:** Read the previous article: [Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm](/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/).
 
 When your Golang application migrates from a Monolith to event-driven Microservices, you will immediately face an architectural nightmare: the **Dual-Write Problem**.
 
@@ -341,7 +341,7 @@ Fault tolerance in the Transactional Outbox pattern relies on Netflix Hystrix-st
 
 ---
 
-🔗 **Next Step:** [Chapter 5: Optimizing Golang Database Connection Pools](/series/high-concurrency-systems/article_5_db_connection/)
+🔗 **Next Step:** [Chapter 5: Optimizing Golang Database Connection Pools](/series/high-concurrency-systems/golang-database-connection-pool-optimization/)
 
 
 ## Architectural Context & Pillar References

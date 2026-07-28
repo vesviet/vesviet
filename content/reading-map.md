@@ -53,7 +53,7 @@ For Systems Architects and Lead Engineers tackling legacy debt in Magento, PHP, 
 ### Track B: High-Concurrency Backend Systems & Reliability Engineering
 For Senior Backend Engineers optimizing Go services under heavy peak traffic:
 1. **Core Microservices:** Master [Go Microservices Production Guide](/posts/go-microservices/) and [Golang gRPC Microservices](/posts/golang-grpc-microservices-production-guide/).
-2. **Distributed Transactions:** Implement Saga orchestrations with [Dapr Workflow Go Tutorial](/posts/dapr-workflow-saga-orchestration-guide/) and [Temporal Saga Pattern in Go](/posts/temporal-saga-pattern-golang-distributed-transactions/).
+2. **Distributed Transactions:** Implement Saga orchestrations with [Dapr Workflow Go Tutorial](/posts/dapr-workflow-saga-orchestration-guide/) and [Temporal Saga Pattern in Go](/posts/temporal-saga-pattern-golang-distributed-transactions-guide/).
 3. **Observability & Debugging:** Configure remote profiling via [Go pprof in Kubernetes](/posts/go-pprof-kubernetes-remote-profiling/) and eliminate leaks using [Goroutine Leak Detection](/posts/goroutine-leak-detection-production-golang/).
 4. **Traffic Protection:** Implement peak shaving using [Shopee Flash Sale Architecture](/posts/shopee-flash-sale-architecture/) and [Surge Pricing Algorithm](/posts/surge-pricing-optimization-architecture/).
 5. **Garbage Collection Tuning:** Optimize Go runtime behavior using GOGC adjustments and memory limit flags to prevent OOM kills during high-throughput flash sale events.

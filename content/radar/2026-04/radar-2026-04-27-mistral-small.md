@@ -214,7 +214,7 @@ Running Mistral Small 4 in production involves critical trade-offs between dynam
 
 ### Related Tech Radar & Pillar Articles
 
-- [SLM Fine-Tuning vs Prompt Engineering](/posts/slm-tune-vs-prompt-engineering/)
+- [SLM Fine-Tuning vs Prompt Engineering](/posts/slm-fine-tune-vs-prompt-engineering/)
 - [High-Throughput Go & LLM Gateway Benchmarks](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/)
 - [Deploying Autonomous AI Swarms with OpenClaw](/posts/deploying-autonomous-ai-swarm-openclaw-litellm/)
 

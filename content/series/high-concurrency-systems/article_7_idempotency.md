@@ -324,7 +324,7 @@ Frontend state synchronization in Article_7_Idempotency uses Server-Sent Events 
 
 ---
 
-🔗 **Next Step:** [Chapter 8: Distributed Locking — Redlock vs ZooKeeper](/series/high-concurrency-systems/article_8_distributed_locking/)
+🔗 **Next Step:** [Chapter 8: Distributed Locking — Redlock vs ZooKeeper](/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/)
 
 
 ## Architectural Context & Pillar References

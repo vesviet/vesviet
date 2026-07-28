@@ -190,7 +190,7 @@ Currently, WasmEdge excels in CPU inference environments. CUDA/GPU ecosystem int
 
 **Answer-first:** Multi-agent swarms require zero-trust identity frameworks using SPIFFE/SPIRE SVID certificates, Envoy AI Gateway tool-filtering, and CEL parameter validation to prevent unauthorized tool execution under OWASP ASI02 risks.
 
-Building on [Cloud-Native AI Architecture](/radar/2026-07/radar-2026-07-10/), controlling autonomous multi-agent systems requires enforcing strict operational governance. **Zero-Trust Security for Multi-Agent Swarms** prevents unconstrained agent execution in production.
+Building on [Cloud-Native AI Architecture](/radar/cloud-native-ai-envoy-gateway-kubernetes-dapr-agents-2026/), controlling autonomous multi-agent systems requires enforcing strict operational governance. **Zero-Trust Security for Multi-Agent Swarms** prevents unconstrained agent execution in production.
 
 ### 1. Tech News Radar: Agentic Vulnerabilities and the Rise of Non-Human Identity
 
