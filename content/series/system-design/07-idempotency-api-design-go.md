@@ -60,7 +60,7 @@ sequenceDiagram
     end
 ```
 
-**Scale context:** Alipay Double 11 processes 583,000 transactions/second at peak. Network retries are inevitable at this scale — idempotency prevents double charges. Stripe, Adyen, PayPal all require `Idempotency-Key` for all mutating endpoints.
+**Scale context:** Alipay Double 11 processes 544,000 transactions/second at peak. Network retries are inevitable at this scale — idempotency prevents double charges. Stripe, Adyen, PayPal all require `Idempotency-Key` for all mutating endpoints.
 
 ---
 
@@ -399,7 +399,7 @@ func RetryWithIdempotency(
 ## Case Study: Alipay Double 11 Payment Safety
 
 > 🔥 **[Production Pattern]: [Alipay biz_no idempotency at scale](/posts/alipay-double-11-architecture-tps/)**
-> **Scale:** 583,000 transactions/second at Double 11 2019 peak.
+> **Scale:** 544,000 transactions/second at Double 11 2019 peak.
 > **Problem:** Network retries at this scale create millions of duplicate payment attempts per hour.
 > **Architecture:** Every payment carries a unique `biz_no` (business number) — equivalent to Idempotency Key. Backend stores `biz_no → result` in OceanBase with a UNIQUE constraint.
 > **Two-tier idempotency:** (1) Redis hot path — check in < 1ms; (2) OceanBase fallback — unique constraint ensures any Redis miss is caught by the DB-level duplicate detection.

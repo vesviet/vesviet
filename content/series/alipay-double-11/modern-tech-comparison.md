@@ -8,7 +8,7 @@ ShowToc: true
 TocOpen: true
 cover:
   image: "images/posts/alipay-double11-cover.png"
-  alt: "Alipay Double 11 Architecture series: 583,000 TPS payment processing at extreme scale"
+  alt: "Alipay Double 11 Architecture series: 544,000 TPS payment processing at extreme scale"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/modern-tech-comparison/"
@@ -300,6 +300,6 @@ Modern Go architectures utilize gRPC over HTTP/2 multiplexed connections alongsi
 ## Architectural Context & Pillar References
 
 To explore how these modern cloud-native comparisons translate into production benchmarks and enterprise scaling strategies, review the following guides:
-- [Alipay Double 11: 583,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/)
+- [Alipay Double 11: 544,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/)
 - [PayPay Architecture & Scaling Playbook](/posts/paypay-architecture-scaling/)
 

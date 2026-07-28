@@ -49,6 +49,9 @@ High-concurrency systems handling millions of concurrent requests (C10M scale) m
 3. **Asynchronous Persistence**: Enqueue confirmed reservations into Kafka for decoupling and rate leveling.
 4. **Resilient Database Layer**: Write-append order logs to sharded MySQL/TiDB clusters.
 
+> [!NOTE]
+> **On sourcing:** This article describes flash-sale architecture *patterns* for C10M-scale events; it is not a disclosure of Shopee's internal systems, and the figures here are engineering targets rather than published Shopee metrics. Shopee has not publicly documented its flash-sale internals in detail. What *is* public is its database platform choice — Shopee's adoption of TiDB is documented in PingCAP's case studies ([How Shopee Chose the Right Database](https://www.pingcap.com/case-study/choosing-right-database-for-your-applications/), [Shopping on Shopee, the TiDB Way](https://pingcap.medium.com/shopping-on-shopee-the-tidb-way-2bc3b8ab3b15)). Treat everything else as a reference pattern to validate against your own workload.
+
 ---
 
 ## 1. High-Concurrency Systems & The C10M Challenge
@@ -278,6 +281,6 @@ Flash sale design overlaps with several other high-concurrency patterns — each
 - [Real-Time Inventory: Kafka, CDC & Redis for E-Commerce](/posts/real-time-inventory-ecommerce-architecture/) — the oversell-prevention and stock-reconciliation side of the same problem.
 - [Surge Pricing & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture/) — how demand spikes are priced, not just absorbed.
 - [Replace MySQL Sharding with TiDB: Architecture Guide](/posts/mysql-scaling-sharding-tidb-architecture/) — scaling the write-append order log this design persists to.
-- [Alipay Double 11: 583,000 TPS Architecture](/posts/alipay-double-11-architecture-tps/) — the same class of peak-event problem at payment scale.
+- [Alipay Double 11: 544,000 TPS Architecture](/posts/alipay-double-11-architecture-tps/) — the same class of peak-event problem at payment scale.
 
 {{< author-cta >}}

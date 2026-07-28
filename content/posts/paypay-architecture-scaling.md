@@ -185,7 +185,7 @@ PayPay migrated from MySQL to TiDB using a dual-write strategy:
 
 The dual-write phase lasted 6 weeks. During this phase, the application code added a `WriteTiDB` flag that could be toggled via a feature flag without deployment — a kill switch in case TiDB showed unexpected behavior.
 
-For a deeper comparison of TiDB, MySQL sharding, and OceanBase in the payment context, see [MySQL Database Scaling: Sharding and TiDB Architecture](/posts/mysql-scaling-sharding-tidb-architecture/). For the complementary view from Alipay's similar architectural journey, see [Alipay Double 11: 583,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/).
+For a deeper comparison of TiDB, MySQL sharding, and OceanBase in the payment context, see [MySQL Database Scaling: Sharding and TiDB Architecture](/posts/mysql-scaling-sharding-tidb-architecture/). For the complementary view from Alipay's similar architectural journey, see [Alipay Double 11: 544,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/).
 
 ---
 

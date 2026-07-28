@@ -8,7 +8,7 @@ ShowToc: true
 TocOpen: true
 cover:
   image: "images/posts/alipay-double11-cover.png"
-  alt: "Alipay Double 11 Architecture series: 583,000 TPS payment processing at extreme scale"
+  alt: "Alipay Double 11 Architecture series: 544,000 TPS payment processing at extreme scale"
   relative: false
 categories: ["E-Commerce", "High Traffic", "Case Study"]
 tags: ["Alipay", "Double 11", "Scaling", "Architecture Evolution", "High Concurrency"]
@@ -20,7 +20,7 @@ mermaid: true
 [← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/executive-summary/) • [Next →](/series/alipay-double-11/phase-2-architecture/)
 
-> **Executive Summary & Quick Answer**: Alipay's Double 11 engineering journey evolved over a decade from a centralized monolithic database (2009) to a planet-scale multi-active cloud-native architecture capable of processing over 583,000 TPS at peak.
+> **Executive Summary & Quick Answer**: Alipay's Double 11 engineering journey evolved over a decade from a centralized monolithic database (2009) to a planet-scale multi-active cloud-native architecture capable of processing over 544,000 TPS at peak.
 
 > **Prerequisite:** [Executive Summary](/series/alipay-double-11/executive-summary/)
 
@@ -73,7 +73,7 @@ graph TD
 
 ## Chronology of Scale: Yearly Milestones
 
-**Answer-first:** Milestones detail peak TPS surges from 400 TPS in 2009 to 583,000 TPS in 2020, driven by continuous architectural innovation.
+**Answer-first:** Milestones detail peak TPS surges from 400 TPS in 2009 to 544,000 TPS by 2019, driven by continuous architectural innovation.
 
 ### 2009: The Accidental Promotion
 - **Peak Throughput**: ~100 payment TPS.
@@ -229,5 +229,5 @@ In the context of Phase 1 Timeline, system reliability depends on clean componen
 ---
 ## Related Architecture & Pillar Guides
 For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
-- [Alipay Double 11: 583,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/)
+- [Alipay Double 11: 544,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/)
 

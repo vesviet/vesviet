@@ -8,7 +8,7 @@ ShowToc: true
 TocOpen: true
 cover:
   image: "images/posts/alipay-double11-cover.png"
-  alt: "Alipay Double 11 Architecture series: 583,000 TPS payment processing at extreme scale"
+  alt: "Alipay Double 11 Architecture series: 544,000 TPS payment processing at extreme scale"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-5-synthesis/"
@@ -228,6 +228,6 @@ Mature platform teams evaluate production systems on zero data loss (RPO=0), aut
 ## Architectural Context & Pillar References
 
 To explore how these synthesis principles apply to real-world high-concurrency e-commerce systems and distributed ledger implementations, consult these reference guides:
-- [Alipay Double 11: 583,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/)
+- [Alipay Double 11: 544,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/)
 - [PayPay Architecture & Scaling Playbook](/posts/paypay-architecture-scaling/)
 

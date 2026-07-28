@@ -8,7 +8,7 @@ ShowToc: true
 TocOpen: true
 cover:
   image: "images/posts/alipay-double11-cover.png"
-  alt: "Alipay Double 11 Architecture series: 583,000 TPS payment processing at extreme scale"
+  alt: "Alipay Double 11 Architecture series: 544,000 TPS payment processing at extreme scale"
   relative: false
 categories: ["Distributed Systems", "Cloud Native", "Database Systems"]
 tags: ["Alipay", "SOFA RPC", "RocketMQ", "OceanBase", "Paxos"]
@@ -20,7 +20,7 @@ mermaid: true
 [← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/phase-4-technology/) • [Next →](/series/alipay-double-11/modern-tech-comparison/)
 
-> **Executive Summary & Quick Answer**: Alipay's Double 11 technology deep dive reveals high-performance internals: binary Bolt RPC protocol multiplexing over single TCP streams, RocketMQ 2PC transactional messaging for async decoupling, OceanBase LSM-tree compaction tuning, and multi-zone Paxos quorum consensus to achieve 583,000 TPS payment processing.
+> **Executive Summary & Quick Answer**: Alipay's Double 11 technology deep dive reveals high-performance internals: binary Bolt RPC protocol multiplexing over single TCP streams, RocketMQ 2PC transactional messaging for async decoupling, OceanBase LSM-tree compaction tuning, and multi-zone Paxos quorum consensus to achieve 544,000 TPS payment processing.
 
 > **Prerequisite:** [Phase 4: Technology Overview](/series/alipay-double-11/phase-4-technology/)
 
@@ -37,7 +37,7 @@ At planet scale, RPC is not merely a method call over the network; it is a criti
 ### 1. Bolt Protocol Layout and Multiplexing
 The Bolt protocol is a multiplexed, connection-sharing wire protocol optimized for low latency and high concurrency. Unlike standard HTTP/1.1 connections which block on a single request-response loop (head-of-line blocking), Bolt allows thousands of requests to be sent concurrently over a single TCP connection. Each request is assigned a unique 32-bit packet ID, allowing responses to be read asynchronously as they complete.
 
-- **Serialization Choices and Microsecond Benchmarks**: SOFA RPC supports multiple serialization protocols. By default, it uses **Hessian 2** for its balance of cross-language support and ease of development. However, for high-throughput, latency-critical payment core services, it dynamically switches to **Protobuf**. Internal benchmarks showed that Hessian 2 serialization takes ~45 microseconds per payload and produces a 420-byte footprint, whereas Protobuf executes in ~8 microseconds and produces a 180-byte footprint. At 583,000 TPS, this difference saves significant CPU cycles and megabytes of network bandwidth.
+- **Serialization Choices and Microsecond Benchmarks**: SOFA RPC supports multiple serialization protocols. By default, it uses **Hessian 2** for its balance of cross-language support and ease of development. However, for high-throughput, latency-critical payment core services, it dynamically switches to **Protobuf**. Internal benchmarks showed that Hessian 2 serialization takes ~45 microseconds per payload and produces a 420-byte footprint, whereas Protobuf executes in ~8 microseconds and produces a 180-byte footprint. At 544,000 TPS, this difference saves significant CPU cycles and megabytes of network bandwidth.
 - **Metadata Context Propagation**: Every Bolt packet carries a "Class Name" and a map of custom headers. This map is used to propagate transaction trace contexts, routing hints (such as user ID hashes), and operational flags (such as the `X-Stress-Test` FLST flag) across RPC boundaries without polluting the method signatures.
 
 ### 2. Service Governance and Load Balancing
@@ -251,6 +251,6 @@ Need help implementing high-scale architectures? Consult our infrastructure team
 ## Architectural Context & Pillar References
 
 For deep dives into distributed ledger mutations, binary RPC wire protocols, and LSM compaction tuning in production systems, consult these related engineering guides:
-- [Alipay Double 11: 583,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/)
+- [Alipay Double 11: 544,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/)
 - [PayPay Architecture & Scaling Playbook](/posts/paypay-architecture-scaling/)
 

@@ -1,5 +1,5 @@
 ---
-title: "Alipay Double 11: 583,000 TPS Architecture Explained"
+title: "Alipay Double 11: 544,000 TPS Architecture Explained"
 slug: "alipay-double-11-architecture-tps"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
@@ -20,23 +20,34 @@ tags:
   - "Distributed Systems"
 aliases:
   - /series/alipay-double-11/research-index/
-description: "How Alipay's engineering team scaled Double 11 to 583,000 TPS using LDC unitization, OceanBase, RocketMQ, and SOFAStack. A 2026 deep-dive."
+description: "How Alipay's engineering team scaled Double 11 to 544,000 payment TPS using LDC unitization, OceanBase, RocketMQ, and SOFAStack. A 2026 deep-dive."
 ShowToc: true
 TocOpen: true
 cover:
   image: "images/posts/alipay-double11-cover.png"
-  alt: "Alipay Double 11 architecture explained: 583,000 TPS — distributed payment processing at scale"
+  alt: "Alipay Double 11 architecture explained: 544,000 payment TPS — distributed payment processing at scale"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/alipay-double-11-architecture-tps/"
 ---
 
-# Alipay Double 11: 583,000 TPS Architecture Explained
+# Alipay Double 11: 544,000 TPS Architecture Explained
 
-> **Answer-First:** Alipay achieved 583,000 peak transactions per second (TPS) during Double 11 by migrating from a monolithic architecture to Local Deployment Center (LDC) cell-based unitization, OceanBase distributed Paxos database clusters, and RocketMQ 2-phase transactional messaging.
+> **Answer-First:** Alipay reached a reported peak of 544,000 payment transactions per second (TPS) during Double 11 by migrating from a monolithic architecture to Local Deployment Center (LDC) cell-based unitization, OceanBase distributed Paxos database clusters, and RocketMQ 2-phase transactional messaging.
 
 ## Executive Summary & Research Baseline
 
-At midnight on November 11th (Singles' Day), Alipay processes over **583,000 payment transactions per second (TPS)** — a figure Ant Group has publicly reported. Scaling payment processing to this magnitude required evolving through four major architectural phases, each solving the ceiling the previous one hit:
+Two different Double 11 peak figures circulate widely, and they measure different layers of the stack — conflating them is the most common error in write-ups on this topic:
+
+| Figure | What it actually measures | Layer | Source |
+|---|---|---|---|
+| **544,000 TPS** | Alipay **payment** transactions per second (2019) | Payment / ledger | [OceanBase engineering](https://oceanbase.medium.com/61m-qps-challenge-in-alipay-how-did-we-do-it-3eeadfb0051) |
+| **61 million QPS** | Database queries per second at the same 2019 peak | Database | [OceanBase engineering](https://oceanbase.medium.com/61m-qps-challenge-in-alipay-how-did-we-do-it-3eeadfb0051) |
+| **583,000 orders/sec** | **Order creation** on Alibaba's e-commerce platform (2020) | Commerce / order intake | [Alibaba Group press release](https://www.alibabagroup.com/document-1491144671282331648) |
+
+> [!IMPORTANT]
+> The widely-quoted 583,000 figure is **order creation throughput on Alibaba's commerce platform**, not Alipay's payment TPS. Alipay's reported payment peak is 544,000 TPS. This article is about the payment-side architecture, so 544,000 TPS is the relevant number.
+
+Scaling payment processing to this magnitude required evolving through four major architectural phases, each solving the ceiling the previous one hit:
 
 1. **Phase 1 (Monolith, Oracle)**: Monolithic Java applications hit physical database lock limits and vertical hardware capacity ceilings.
 2. **Phase 2 (Microservices, MySQL Sharding)**: Scaled horizontal read/write throughput but hit consistency ceilings and operational hazards during network partitions.

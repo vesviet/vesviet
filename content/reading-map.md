@@ -107,7 +107,7 @@ The articles listed below represent the recommended sequential reading path for 
 - [Golang gRPC Microservices: Protobuf, TLS & Middleware](/posts/golang-grpc-microservices-production-guide/)
 - [Banking Microservices Architecture: Go, Saga & Event Sourcing](/posts/banking-microservices-architecture/)
 - [Microfinance Core Banking System: Architecture & Engineering Guide](/posts/deconstructing-microfinance-core-banking-architecture/)
-- [Alipay Double 11: 583,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/)
+- [Alipay Double 11: 544,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/)
 - [PayPay Architecture: Scaling Payments to 70M Users](/posts/paypay-architecture-scaling/)
 - [Real-Time Ride-Hailing Architecture: Uber & Grab Stack](/posts/real-time-ride-hailing-architecture/)
 

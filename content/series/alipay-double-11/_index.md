@@ -9,13 +9,13 @@ ShowToc: true
 TocOpen: true
 cover:
   image: "images/posts/alipay-double11-cover.png"
-  alt: "Alipay Double 11 Architecture series: 583,000 TPS payment processing at extreme scale"
+  alt: "Alipay Double 11 Architecture series: 544,000 TPS payment processing at extreme scale"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/"
 ---
 
-> **Executive Summary & Quick Answer**: This technical series analyzes how Alipay engineered its core payment infrastructure to handle Double 11 peak loads of 583,000 TPS. Through Logical Data Center (LDC) unitization, OceanBase multi-region Paxos storage, RocketMQ asynchronous transactional messaging, and full-link production shadow testing, Alipay achieved zero-downtime scalability and sub-2-second failover.
+> **Executive Summary & Quick Answer**: This technical series analyzes how Alipay engineered its core payment infrastructure to handle Double 11 peak loads of 544,000 TPS. Through Logical Data Center (LDC) unitization, OceanBase multi-region Paxos storage, RocketMQ asynchronous transactional messaging, and full-link production shadow testing, Alipay achieved zero-downtime scalability and sub-2-second failover.
 
 This is a structured research series on how Alipay scaled Double 11 from early constraints to planet-scale reliability and throughput. It is organized as a hub + phases, so you can read it like a short book.
 
@@ -40,7 +40,7 @@ Read everything above, then:
 
 ## Series Contents
 
-**Answer-first:** The Alipay Double 11 series analyzes how financial platforms scale to 583,000 TPS using LDC unitization, OceanBase, and RocketMQ.
+**Answer-first:** The Alipay Double 11 series analyzes how financial platforms scale to 544,000 TPS using LDC unitization, OceanBase, and RocketMQ.
 
 - [Executive Summary](/series/alipay-double-11/executive-summary/)
 - [Alipay Double 11 Series Index](/series/alipay-double-11/)
@@ -65,7 +65,7 @@ The following matrix outlines the modular breakdown of this technical series, ma
 
 | Phase | Focus Area | Architectural Component | Performance Milestone |
 |---|---|---|---|
-| **Phase 1** | High-Concurrency Scale | Alipay Double 11 Core Platform | 583,000 TPS Peak Transactions |
+| **Phase 1** | High-Concurrency Scale | Alipay Double 11 Core Platform | 544,000 TPS Peak Transactions |
 | **Phase 2** | Geo-Distributed Architecture | RZone Multi-Active Cell Architecture | Zero cross-region database write blocking |
 | **Phase 3** | Operational Reliability | Automated Traffic Shaving & Chaos Injection | Self-healing failover within 2 seconds |
 | **Phase 4** | Technical Deep-Dive | OceanBase Paxos LSM-Tree & SOFA RPC | Sub-millisecond ledger mutations |
@@ -88,7 +88,7 @@ Alipay's architecture maintains strict operational rules under peak payment load
 ## Frequently Asked Questions
 
 ### How does Alipay handle Double 11 peak traffic without database failure?
-Alipay uses Logical Data Center (LDC) cell-based unitization to shard users into autonomous RZone clusters, isolating database traffic into independent local instances. This design prevents connection pool exhaustion and caps the blast radius of any single unit failure during 583,000 TPS peak traffic.
+Alipay uses Logical Data Center (LDC) cell-based unitization to shard users into autonomous RZone clusters, isolating database traffic into independent local instances. This design prevents connection pool exhaustion and caps the blast radius of any single unit failure during 544,000 TPS peak traffic.
 
 ### What storage technology guarantees financial consistency under high concurrency?
 Alipay relies on OceanBase, a distributed NewSQL database utilizing Multi-Paxos consensus across multi-region datacenters. OceanBase provides sub-millisecond local transaction commits while guaranteeing RPO=0 (zero data loss) and RTO<2s across cross-region active-active deployments.

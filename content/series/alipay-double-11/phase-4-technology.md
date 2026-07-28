@@ -8,7 +8,7 @@ ShowToc: true
 TocOpen: true
 cover:
   image: "images/posts/alipay-double11-cover.png"
-  alt: "Alipay Double 11 Architecture series: 583,000 TPS payment processing at extreme scale"
+  alt: "Alipay Double 11 Architecture series: 544,000 TPS payment processing at extreme scale"
   relative: false
 categories: ["Cloud Native", "Software Engineering", "Infrastructure"]
 tags: ["Alipay", "SOFAStack", "OceanBase", "Service Mesh", "Golang", "Java"]
@@ -316,5 +316,5 @@ Need help implementing high-scale architectures? Feel free to [Hire Infrastructu
 ## Architectural Context & Pillar References
 
 For further details on middle platform service providers, real-time risk classification engines, and SOFAStack middleware components, consult the following references:
-- [Alipay Double 11: 583,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/)
+- [Alipay Double 11: 544,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/)
 - [PayPay Architecture & Scaling Playbook](/posts/paypay-architecture-scaling/)

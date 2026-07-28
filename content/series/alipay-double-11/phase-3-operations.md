@@ -8,7 +8,7 @@ ShowToc: true
 TocOpen: true
 cover:
   image: "images/posts/alipay-double11-cover.png"
-  alt: "Alipay Double 11 Architecture series: 583,000 TPS payment processing at extreme scale"
+  alt: "Alipay Double 11 Architecture series: 544,000 TPS payment processing at extreme scale"
   relative: false
 categories: ["SRE", "Operations", "High Traffic"]
 tags: ["Alipay", "Operations", "Full-Link Stress Testing", "SRE", "Automation"]
@@ -314,7 +314,7 @@ For operational chaos automation patterns, see [SRE & Chaos Engineering Playbook
 **Answer-first:** Full-link stress testing guarantees Double 11 reliability by validating production capacity, database sharding, and fallback rules before the event.
 
 {{< faq "What is Full-Link Production Stress Testing?" >}}
-Full-link stress testing injects synthetic payment traffic directly into live production environments during off-peak hours prior to Double 11. By validating the entire microservice mesh, network switches, and database sharding under simulated 583,000 TPS, engineering teams detect hidden bottlenecks before real user events occur.
+Full-link stress testing injects synthetic payment traffic directly into live production environments during off-peak hours prior to Double 11. By validating the entire microservice mesh, network switches, and database sharding under simulated 544,000 TPS, engineering teams detect hidden bottlenecks before real user events occur.
 {{< /faq >}}
 
 {{< faq "How do shadow databases prevent test data from corrupting real financial ledgers?" >}}
@@ -332,6 +332,6 @@ Need help implementing high-scale architectures? Book an [SRE Engineering Consul
 ## Architectural Context & Pillar References
 
 For further details on operational resilience, chaos engineering, and automated incident management in production e-commerce platforms, review the following references:
-- [Alipay Double 11: 583,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/)
+- [Alipay Double 11: 544,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/)
 - [PayPay Architecture & Scaling Playbook](/posts/paypay-architecture-scaling/)
 

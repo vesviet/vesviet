@@ -8,7 +8,7 @@ ShowToc: true
 TocOpen: true
 cover:
   image: "images/posts/alipay-double11-cover.png"
-  alt: "Alipay Double 11 Architecture series: 583,000 TPS payment processing at extreme scale"
+  alt: "Alipay Double 11 Architecture series: 544,000 TPS payment processing at extreme scale"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/executive-summary/"
@@ -17,7 +17,7 @@ mermaid: true
 [← Series hub](/series/alipay-double-11/)
 [Next →](/series/alipay-double-11/phase-1-timeline/)
 
-> **Executive Summary & Quick Answer**: Alipay scaled its payment engine to handle 583,000 peak TPS using Logical Data Center (LDC) unitization, OceanBase distributed Paxos storage, RocketMQ event streams, and full-link production stress testing. This design achieves 99.99% financial availability, sub-20ms latency, zero data loss (RPO=0), and sub-2-second failover (RTO<2s).
+> **Executive Summary & Quick Answer**: Alipay scaled its payment engine to handle 544,000 peak TPS using Logical Data Center (LDC) unitization, OceanBase distributed Paxos storage, RocketMQ event streams, and full-link production stress testing. This design achieves 99.99% financial availability, sub-20ms latency, zero data loss (RPO=0), and sub-2-second failover (RTO<2s).
 
 > **Prerequisite:** General understanding of global financial systems scale, high-throughput payment architectures, and transaction reliability.
 
@@ -25,9 +25,9 @@ mermaid: true
 
 ## TL;DR
 
-**Answer-first:** Alipay scaled to 583,000 TPS using Logical Data Center (LDC) unitization, OceanBase Paxos storage, RocketMQ event streams, and shadow stress testing.
+**Answer-first:** Alipay scaled to 544,000 TPS using Logical Data Center (LDC) unitization, OceanBase Paxos storage, RocketMQ event streams, and shadow stress testing.
 
-Between the inaugural event in 2009 and the peak milestone of 2019, Alipay scaled its transactional capacity by an astronomical **~5,440x**, culminating in a peak throughput of **544,000 transactions per second (TPS)** (and subsequently reaching over 583,000 TPS). Crucially, this scaling was not achieved by sacrificing safety; the system maintained strict **financial-grade reliability (99.99% availability)** and a target of **zero data loss (Recovery Point Objective, RPO = 0)**. 
+Between the inaugural event in 2009 and the peak milestone of 2019, Alipay scaled its transactional capacity by an astronomical **~5,440x**, culminating in a peak throughput of **544,000 transactions per second (TPS)**. Crucially, this scaling was not achieved by sacrificing safety; the system maintained strict **financial-grade reliability (99.99% availability)** and a target of **zero data loss (Recovery Point Objective, RPO = 0)**. 
 
 To achieve this level of performance at planet-scale, Alipay had to pioneer new approaches in three critical dimensions:
 1. **Design to Split (Logical Data Center - LDC Unitization)**: Shifting from a monolithic or traditionally clustered database model to self-contained execution units (cells).
@@ -122,7 +122,7 @@ Before 2013, scaling relational databases meant sharding MySQL or Oracle manuall
 
 ## Detailed Performance and Growth Metrics
 
-**Answer-first:** Metrics document growth from 400 TPS in 2009 to 583,000 TPS in 2020 while keeping p99 payment latencies under 20ms.
+**Answer-first:** Metrics document growth from 400 TPS in 2009 to 544,000 TPS by 2019 while keeping p99 payment latencies under 20ms.
 
 The following metrics represent the actual and estimated growth logs compiled across the decade of Double 11 optimization:
 
@@ -178,7 +178,7 @@ Need help implementing high-scale architectures? Feel free to [Get in touch](/hi
 
 ## Frequently Asked Questions
 
-### What core design principle allowed Alipay to scale from 100 TPS to 583,000 TPS?
+### What core design principle allowed Alipay to scale from 100 TPS to 544,000 TPS?
 Alipay adopted Logical Data Center (LDC) cell-based unitization, which partitions database tables and application services into independent RZone units by user ID hash. This strategy eliminates centralized database lock contention and allows horizontal capacity expansion across multiple data centers.
 
 ### How does Full-Link Stress Testing prevent production outages during Double 11?
