@@ -310,4 +310,11 @@ Knowledge Distillation extracts reasoning paths and synthetic outputs from a hig
 
 Direct Preference Optimization (DPO) eliminates the need to train a separate reward model during alignment. It optimizes the policy network directly using binary cross-entropy loss over chosen versus rejected response pairs, simplifying training stability and reducing compute requirements.
 
+## Related Reading
+
+- [Production Agentic AI Swarm: OpenClaw & LiteLLM](/posts/deploying-autonomous-ai-swarm-openclaw-litellm/) — routing tasks between local SLMs and frontier models in production.
+- [Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/) — a working example of hybrid local/cloud model routing.
+- [GraphRAG vs Naive RAG: Enterprise Guide](/posts/graphrag-vs-naive-rag-enterprise-guide/) — the RAG option in this decision matrix, in depth.
+- [Production AI APIs: OAuth 2.1, Rate Limiting & Prompt Versioning](/posts/production-ai-apis-oauth-versioning-meta-predictions/) — versioning prompts and gating token spend.
+
 {{< author-cta >}}

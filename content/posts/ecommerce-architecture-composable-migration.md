@@ -382,3 +382,10 @@ End-to-end: **14–19 weeks** for a production store. Phase 1 (read-only) takes 
 ### How much faster is gRPC than REST+JSON internally?
 In production microservices, gRPC binary serialization and HTTP/2 multiplexing are **3–7× faster** than REST+JSON text parsing. This performance gain reduces internal multi-hop microservice latency from ~90ms down to ~15ms.
 
+
+## Related Reading
+
+- [Why Migrate Magento to Microservices: Zero-Downtime Guide](/posts/moving-from-magento-to-microservices/) — the 3-phase Strangler Fig playbook in operational detail.
+- [Magento Migration: Shared DB, CDC, or Event Bus?](/posts/strangler-fig-shared-database-quick-win/) — choosing the data-sync strategy for Phase 1.
+- [E-Commerce Microservices Architecture: 21-Service Blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/) — the target-state topology.
+- [Real-Time Inventory: Kafka, CDC & Redis](/posts/real-time-inventory-ecommerce-architecture/) — the CDC pipeline referenced above, in production form.

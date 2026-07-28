@@ -909,3 +909,10 @@ Implementing distributed transactions in Golang microservices requires moving aw
 5. **Enforce Determinism Rules**: Keep workflow functions pure—never invoke `time.Now()`, direct HTTP calls, or un-versioned code structural changes inside Go workflow code.
 
 By adhering to these architectural invariants, software engineers can build high-throughput, self-healing distributed financial systems in Go that gracefully withstand network partitions, node failures, and complex transaction rollbacks.
+
+## Related Reading
+
+- [Dapr Workflow Go Tutorial: Orchestrated Saga Pattern](/posts/dapr-workflow-saga-orchestration-guide/) — the same orchestration problem solved with Dapr instead of Temporal.
+- [Dapr State Store Consistency Trade-offs](/posts/dapr-state-store-consistency-tradeoffs/) — ETag concurrency and consistency modes behind saga state.
+- [Banking Microservices in Go: Saga & Event Sourcing](/posts/banking-microservices-architecture/) — double-entry ledgers and the transactional outbox in a financial context.
+- [Composable Banking Architecture: Monolith to Modular](/posts/composable-banking-architecture/) — where saga boundaries sit in a modular banking platform.

@@ -276,4 +276,11 @@ The Vehicle Routing Problem is a combinatorial optimization challenge that calcu
 ### How does Amazon's anticipatory shipping model reduce delivery latency?
 Anticipatory shipping utilizes machine learning demand forecasts to transport high-probability items to regional fulfillment hubs before customers complete their purchases. Once an order is placed, the package is already positioned in the destination metro area, enabling same-day delivery at standard shipping rates.
 
+## Related Reading
+
+- [GraphHopper Distance Matrix: Self-Host, API & Alternatives](/posts/graphhopper-distance-matrix-production-guide/) — producing the cost matrix the VRP solver consumes.
+- [OSRM vs GraphHopper: Routing Engine Comparison](/posts/osrm-vs-graphhopper-architecture-comparison/) — choosing the routing engine behind last-mile optimization.
+- [Real-Time Inventory: Kafka, CDC & Redis](/posts/real-time-inventory-ecommerce-architecture/) — the Available-to-Promise stock signal driving warehouse selection.
+- [Surge Pricing & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture/) — H3 spatial indexing applied to demand-side pricing.
+
 {{< author-cta >}}

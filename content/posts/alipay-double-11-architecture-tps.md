@@ -132,5 +132,12 @@ SOFA Bolt is an optimized TCP binary RPC protocol built on Netty. It supports co
 ### Q5: How does Alipay achieve zero data loss (RPO=0) across multi-region datacenters?
 Zero data loss (Recovery Point Objective = 0) is achieved via OceanBase's Paxos consensus algorithm deployed across five datacenters in three cities (5-DC 3-City topology). Transactions require confirmation from a majority quorum (3 out of 5 nodes) before committing, ensuring data availability even if an entire city datacenter fails.
 
+## Related Reading
+
+- [PayPay Architecture: Scaling to 70M Users & 100k Peak TPS](/posts/paypay-architecture-scaling/) — the same class of peak-event payment problem, solved with TiDB and Kafka.
+- [Banking Microservices in Go: Saga & Event Sourcing](/posts/banking-microservices-architecture/) — double-entry ledgers and idempotent payment APIs in code.
+- [Replace MySQL Sharding with TiDB](/posts/mysql-scaling-sharding-tidb-architecture/) — the distributed-SQL alternative to the sharding phase described above.
+- [Flash Sale Architecture: Rate Limiting & Redis](/posts/shopee-flash-sale-architecture/) — absorbing a synchronized demand spike at the edge.
+
 {{< author-cta >}}
 

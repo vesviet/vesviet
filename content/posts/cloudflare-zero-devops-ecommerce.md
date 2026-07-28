@@ -448,3 +448,9 @@ The Stripe CLI prints a `STRIPE_WEBHOOK_SECRET` value; paste it into `apps/publi
 ### How does global edge data synchronization work across Cloudflare's distributed edge nodes without creating stale data conflicts?
 
 **Answer:** Global edge data synchronization leverages Cloudflare D1's read replication network alongside Event Queue streams and KV storage versioning to propagate changes across 300+ edge locations. D1 handles primary transactional writes via atomic `db.batch()` operations, while read replicas asynchronously sync changes globally to provide ultra-low latency reads. For critical updates like inventory depletion or price updates, edge workers append global version hashes to KV cache keys, ensuring downstream edge nodes invalidate stale local cache entries and fetch fresh state in sub-seconds.
+
+## Related Reading
+
+- [Serverless E-Commerce: Cloudflare Workers & D1 Architecture](/posts/serverless-ecommerce-cloudflare-d1/) — the storefront and payment layer on the same stack.
+- [Cloudflare D1 & Durable Objects: Build Real-Time Cart](/posts/cloudflare-d1-durable-objects-realtime-cart/) — stateful cart sessions with Durable Objects.
+- [Deploy Astro on Cloudflare Pages: Full-Stack Edge Guide](/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/) — shipping the frontend to the same edge network.

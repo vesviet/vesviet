@@ -365,5 +365,12 @@ Each microservice must own its database schema exclusively. Sharing database tab
 ### Q3: How are cross-domain data dependencies handled without shared database joins?
 Cross-domain queries rely on CQRS read models and event-driven data replication. Microservices publish domain events (such as `OrderCreated`) to message brokers, and downstream consumers update local query-optimized read views, guaranteeing sub-millisecond query responses without cross-database locks.
 
+## Related Reading
+
+- [E-Commerce Microservices Architecture: 21-Service Blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/) — the full visual topology these domains sit within.
+- [Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/) — how the bounded contexts were derived.
+- [Composable E-Commerce Migration](/posts/ecommerce-architecture-composable-migration/) — migrating a monolith into this domain structure.
+- [Real-Time Inventory: Kafka, CDC & Redis](/posts/real-time-inventory-ecommerce-architecture/) — the Inventory domain in production detail.
+
 {{< author-cta >}}
 

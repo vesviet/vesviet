@@ -379,3 +379,10 @@ The core difference lies in the underlying HTTP library:
 ### How do GOMEMLIMIT and GOGC prevent OOM kills in high-throughput Go web applications?
 
 Setting `GOMEMLIMIT` establishes a soft memory target that forces the Go garbage collector to run before container RAM limits are breached. When paired with `GOGC`, this prevents memory spikes during heavy traffic bursts while maximizing memory utilization without triggering OOM exit code 137.
+
+## Related Reading
+
+- [Go Microservices Architecture: Production Guide](/posts/go-microservices/) — where framework choice fits into the wider service design.
+- [Golang gRPC Microservices: Protobuf, TLS & Middleware](/posts/golang-grpc-microservices-production-guide/) — the gRPC layer Kratos wraps.
+- [How Databases Shaped Go, PHP, Node.js, and Rust](/posts/database-impact-on-programming-languages/) — why Go's connection-pool model behaves the way these benchmarks show.
+- [Go pprof Tutorial: CPU & Memory Profiling](/posts/golang-pprof-profiling-memory-cpu-tutorial/) — reproducing these allocation measurements on your own workload.

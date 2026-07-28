@@ -158,5 +158,11 @@ MCP provides a standardized contract for how AI models discover available tools 
 ### Is Generative UI secure against malicious LLM outputs?
 Generative UI is secure when protected by runtime Zod schema validation at the component registry boundary and sandboxed iframes for untrusted content. Enforcing strict Content Security Policies (CSP) and server-side authorization on all component actions prevents unauthorized state execution.
 
+## Related Reading
+
+- [AI-Native Frontend in 2028: 10 Architecture Predictions](/posts/ai-native-frontend-architecture-predictions-2028/) — where this architecture is heading over the next few years.
+- [Build Production Go MCP Servers](/posts/go-mcp-server-development-production-guide/) — implementing the MCP server that exposes component tools.
+- [Production AI APIs: OAuth 2.1 & Rate Limiting](/posts/production-ai-apis-oauth-versioning-meta-predictions/) — authorizing the component actions referenced above.
+- [Deploy Astro on Cloudflare Pages: Full-Stack Edge Guide](/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/) — shipping a streaming-capable frontend to the edge.
 
 {{< author-cta >}}

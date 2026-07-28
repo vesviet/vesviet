@@ -196,6 +196,13 @@ Model Context Protocol standardizes interface contracts, argument validation sch
 ### Q4: How do GitOps quality gates prevent invalid content from reaching static site production builds?
 GitOps quality gates execute automated static analysis and site compilation checks inside isolated CI/CD workflows prior to deployment. Only drafts passing frontmatter schema validation, link checking, and LLM rubric thresholds automatically generate merged Pull Requests for site publishing.
 
+## Related Reading
+
+- [Production Agentic AI Swarm: OpenClaw & LiteLLM](/posts/deploying-autonomous-ai-swarm-openclaw-litellm/) — running multiple specialized agents behind a shared model gateway.
+- [Prompt Engineering vs Fine-Tuning vs RAG](/posts/slm-fine-tune-vs-prompt-engineering/) — choosing which model tier handles which pipeline stage.
+- [Build Production Go MCP Servers](/posts/go-mcp-server-development-production-guide/) — the MCP tool-calling contract this pipeline depends on.
+- [GraphRAG vs Naive RAG: Enterprise Guide](/posts/graphrag-vs-naive-rag-enterprise-guide/) — retrieval strategy for the embedding stage.
+
 {{< author-cta >}}
 
 

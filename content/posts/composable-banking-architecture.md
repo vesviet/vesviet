@@ -211,7 +211,7 @@ Choreography (services reacting to events with no central coordinator) works for
 
 ### Temporal Workflow for a Fund Transfer Saga
 
-Temporal replays the event log from the last checkpoint so completed activities return cached results without re-executing. For a deep analysis of code mechanics, see [Temporal Saga Implementation Guide](/posts/temporal-saga-pattern-golang-distributed-transactions/). The Go workflow function below details the Fund Transfer Saga orchestrator:
+Temporal replays the event log from the last checkpoint so completed activities return cached results without re-executing. For a deep analysis of code mechanics, see [Temporal Saga Implementation Guide](/posts/temporal-saga-pattern-golang-distributed-transactions-guide/). The Go workflow function below details the Fund Transfer Saga orchestrator:
 
 ```go
 // FundTransferWorkflow is the Saga orchestrator — MUST be deterministic.

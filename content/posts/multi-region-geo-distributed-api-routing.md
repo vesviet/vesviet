@@ -232,3 +232,10 @@ Allows applications to read data from a replica in the closest region for the fa
 ### What is the best strategy to handle submarine cable faults when routing user traffic between Vietnam and Singapore?
 
 Combine domestic edge connection termination (Anycast IP via Cloudflare or AWS CloudFront) in local POPs (Hanoi/HCMC) with origin forwarding over dedicated private backbones. This terminates TCP/TLS handshakes locally in 2–5ms, bypassing public internet congestion during submarine cable outages and maintaining low latency to the Singapore origin.
+
+## Related Reading
+
+- [Go Microservices Architecture: Production Guide](/posts/go-microservices/) — the service topology being routed across regions.
+- [Zero-Trust Service Mesh Security: SPIFFE/SPIRE & Istio](/posts/zero-trust-service-mesh-security-spiffe-spire-istio-golang/) — securing cross-region traffic with trust-domain federation.
+- [Replace MySQL Sharding with TiDB](/posts/mysql-scaling-sharding-tidb-architecture/) — the multi-region data layer behind read-local/write-global.
+- [Serverless E-Commerce: Cloudflare Workers & D1](/posts/serverless-ecommerce-cloudflare-d1/) — an edge-native alternative to regional origin routing.

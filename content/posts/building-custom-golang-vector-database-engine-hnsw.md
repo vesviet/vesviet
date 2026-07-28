@@ -1107,5 +1107,12 @@ CGO calls introduce non-negligible stack-switching overhead of approximately 100
 ### What are the primary performance trade-offs when tuning graph traversal hyperparameters?
 The maximum outgoing edge connections per node ($M$) and construction search depth ($efConstruction$) directly govern index build time, memory footprint, and routing graph quality. Increasing $M$ and $efConstruction$ improves high-dimensional recall and graph connectivity but increases index memory consumption and insertion latency. At query time, adjusting runtime $efSearch$ presents a direct trade-off between throughput and precision: lower $efSearch$ yields maximum QPS, while higher $efSearch$ achieves superior recall at lower throughput.
 
+## Related Reading
+
+- [Architecting Agentic E-commerce Search with Golang](/posts/agentic-ecommerce-search-golang-vector-databases/) — using a managed vector store (Qdrant) instead of building your own.
+- [GraphRAG vs Naive RAG: Enterprise Guide](/posts/graphrag-vs-naive-rag-enterprise-guide/) — when graph traversal beats flat vector similarity.
+- [Go 1.26: Green Tea GC & CGO Performance](/posts/go-126-green-tea-gc-cgo-performance-guide/) — the GC and CGO behaviour that motivates the off-heap design above.
+- [Go pprof Tutorial: CPU & Memory Profiling](/posts/golang-pprof-profiling-memory-cpu-tutorial/) — measuring the allocation and pause behaviour of a vector engine.
+
 {{< author-cta >}}
 

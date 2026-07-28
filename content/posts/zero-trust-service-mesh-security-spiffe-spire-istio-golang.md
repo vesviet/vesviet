@@ -612,3 +612,10 @@ Use this 10-point checklist before submitting your microservices architecture fo
 - [ ] **8. SPIRE Agent Resilience**: Set hostPath UNIX socket permissions to `0770` owned by dedicated security groups, ensuring unauthorized non-root host processes cannot connect to the socket.
 - [ ] **9. Multi-Region Trust Federation**: If operating across regions or clouds, verify SPIFFE Trust Domain Federation bundle exchange is secured via HTTPS and mutual CA verification.
 - [ ] **10. Disaster & Key Compromise Plan**: Test intermediate CA key rotation in SPIRE Server to confirm new Trust Bundles propagate to all running Go services within 60 seconds.
+
+## Related Reading
+
+- [Golang gRPC Microservices: Protobuf, TLS & Middleware](/posts/golang-grpc-microservices-production-guide/) — the gRPC interceptors that enforce SPIFFE ID authorization.
+- [Go Microservices Architecture: Production Guide](/posts/go-microservices/) — the broader service topology this mesh secures.
+- [GitOps at Scale: Kubernetes & ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/) — deploying `PeerAuthentication` and `AuthorizationPolicy` manifests safely.
+- [Multi-region Geo-distributed API Routing](/posts/multi-region-geo-distributed-api-routing/) — the cross-region context for SPIFFE trust-domain federation.
