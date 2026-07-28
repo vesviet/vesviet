@@ -45,7 +45,7 @@ canonicalURL: "https://tanhdev.com/posts/slm-fine-tune-vs-prompt-engineering/"
 
 ## Executive Summary & SLM Playbook Architecture
 
-Small Language Models (SLMs, 1B–8B parameters) combined with fine-tuning and local inference (vLLM) rival proprietary frontier LLMs on specialized domain tasks at a fraction of the cost. The following design baselines outline the essential trade-offs, performance targets, and architectural patterns required for enterprise deployment.
+Small Language Models (SLMs, 1B–8B parameters) combined with fine-tuning and local inference (vLLM) rival proprietary frontier LLMs on specialized domain tasks at a fraction of the cost. The playbook below rests on three architectural choices:
 
 1. **SLM Hybrid Architecture**: Router directs easy tasks to local SLMs and complex reasoning to cloud frontier models.
 2. **Knowledge Distillation**: Distill reasoning trajectories from teacher models (DeepSeek-R1 / GPT-4o) into student SLMs.

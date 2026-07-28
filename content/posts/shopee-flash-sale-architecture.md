@@ -24,7 +24,7 @@ aliases:
   - /series/high-concurrency-systems/article_6_api_gateway/
   - /series/high-concurrency-systems/how-systems-handle-c10m/
   - /series/high-concurrency-systems/api-gateway-vs-service-mesh/
-description: "Architecture case study of Shopee 11.11 Flash Sales: Kafka peak shaving, Redis Lua rate limiting, TiDB sharding, and zero-downtime scaling."
+description: "Flash sale architecture patterns for C10M-scale events: Kafka peak shaving, Redis Lua rate limiting, TiDB sharding, and zero-downtime scaling."
 ShowToc: true
 TocOpen: true
 cover:
@@ -42,7 +42,7 @@ canonicalURL: "https://tanhdev.com/posts/shopee-flash-sale-architecture/"
 
 ## Executive Summary & System Design Foundations
 
-High-concurrency systems handling millions of concurrent requests (C10M scale) must push load shedding and admission control as close to the network edge as possible. The following design baselines outline the essential trade-offs, performance targets, and architectural patterns required for enterprise deployment.
+High-concurrency systems handling millions of concurrent requests (C10M scale) must push load shedding and admission control as close to the network edge as possible. Four design baselines drive the rest of this architecture:
 
 1. **Edge Admission Control**: Offload connection handling via eBPF/DPDK and API Gateways.
 2. **Atomic In-Memory Reservation**: Reserve stock in Redis via single-threaded Lua scripts to prevent DB row lock contention.
@@ -63,7 +63,7 @@ Handling 10 million concurrent connections (C10M) requires rethinking traditiona
 
 ## 2. API Gateway vs. Service Mesh at Edge Boundaries
 
-For high-traffic flash sales, API Gateways and Service Meshes serve distinct architectural roles across traffic boundaries. The sequence diagram below traces the component interactions, data events, and boundary transitions across the workflow. Visualizing system interactions helps clarify data boundaries, concurrency limits, and failure domain separation. The sequence diagram below traces the component interactions, message flows, API gateways, and boundary transitions across the complete execution path.
+For high-traffic flash sales, API Gateways and Service Meshes serve distinct architectural roles across traffic boundaries. The diagram below shows where the Gateway terminates external traffic (rate limiting, auth, TLS) and where the mesh takes over for internal service-to-service concerns (mTLS, tracing, retries).
 
 ```mermaid
 graph TD

@@ -36,7 +36,7 @@ canonicalURL: "https://tanhdev.com/posts/alipay-double-11-architecture-tps/"
 
 ## Executive Summary & Research Baseline
 
-At midnight on November 11th (Singles' Day), Alipay processes over **583,000 payment transactions per second (TPS)**. Scaling payment processing to this magnitude required evolving through 4 major architectural phases. The following design baselines outline the essential trade-offs, performance targets, and architectural patterns required for enterprise deployment.
+At midnight on November 11th (Singles' Day), Alipay processes over **583,000 payment transactions per second (TPS)** — a figure Ant Group has publicly reported. Scaling payment processing to this magnitude required evolving through four major architectural phases, each solving the ceiling the previous one hit:
 
 1. **Phase 1 (Monolith, Oracle)**: Monolithic Java applications hit physical database lock limits and vertical hardware capacity ceilings.
 2. **Phase 2 (Microservices, MySQL Sharding)**: Scaled horizontal read/write throughput but hit consistency ceilings and operational hazards during network partitions.
