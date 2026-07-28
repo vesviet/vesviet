@@ -139,7 +139,7 @@ graph TD
 
 ## 3. Hierarchical Navigable Small World (HNSW) Graphs in Go
 
-Hierarchical Navigable Small World (HNSW) is the state-of-the-art graph-based algorithm for Approximate Nearest Neighbor search. It builds upon probabilistic skip lists, extending one-dimensional sorted linked lists into multi-dimensional navigable graphs. The sequence diagram below traces the component interactions, data events, and boundary transitions across the workflow.
+Hierarchical Navigable Small World (HNSW) is the leading graph-based algorithm for Approximate Nearest Neighbor search. It builds upon probabilistic skip lists, extending one-dimensional sorted linked lists into multi-dimensional navigable graphs. The sequence diagram below traces the component interactions, data events, and boundary transitions across the workflow.
 
 ```mermaid
 sequenceDiagram

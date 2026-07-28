@@ -292,7 +292,7 @@ export default function RoutingMap() {
 ### Explaining the Frontend Architecture:
 1. **Separation of Concerns**: Mapbox acts purely as a static background tile renderer, while Deck.gl handles the WebGL overlay. By drawing the path using Deck.gl's `PathLayer` instead of Mapbox's built-in GeoJSON layers, we bypass the heavy Main-Thread CPU overhead of Mapbox's coordinate parsing. Deck.gl compiles the coordinate buffer once and uploads it directly to GPU memory, allowing smooth 60 FPS viewport transitions even when drawing thousands of paths simultaneously.
 2. **Preventing Z-Fighting**: Note the `parameters: { polygonOffset: true, polygonOffsetFactor: -1 }` configuration. When rendering 3D map views, both the underlying Mapbox vector tile layer and our custom Deck.gl path layer occupy the same depth coordinates in the WebGL depth buffer. The GPU can struggle to order them correctly, resulting in flickering lines. Setting a negative `polygonOffsetFactor` tells the WebGL context to pull the path geometry slightly closer to the camera viewport without actually altering its geographical altitude.
-3. **Smooth Viewport State**: The `@deck.gl/react` wrapper seamlessly synchronizes viewport states like panning, zooming, pitching, and bearing with the background Mapbox instance, ensuring they remain perfectly in sync during user interactions.
+3. **Smooth Viewport State**: The `@deck.gl/react` wrapper synchronizes viewport states like panning, zooming, pitching, and bearing with the background Mapbox instance, ensuring they remain perfectly in sync during user interactions.
 
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: "Part 3B — AI Automation for Internal Ops: Proving ROI"
+mermaid: true
 author: "Lê Tuấn Anh"
 description: "Engineering guide to AI-driven internal operations automation, incident triage, dependency migration swarms, and financial ROI modeling."
 date: 2026-03-17T09:00:00+07:00

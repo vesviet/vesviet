@@ -124,7 +124,7 @@ The comparison matrix below evaluates key architectural trade-offs between Chore
 
 **Answer-first:** Temporal Go SDK implements durable Saga workflows, managing state persistence, retries, and compensation execution automatically.
 
-[Temporal](https://temporal.io/) is currently the most popular orchestration engine for Saga patterns. The Go implementation below manages multi-step payment execution, automated retry policies, and compensation rollbacks:
+[Temporal](https://temporal.io/) is among the most widely adopted orchestration engines for Saga patterns (as of this writing). The Go implementation below manages multi-step payment execution, automated retry policies, and compensation rollbacks:
 
 ```go
 package workflows

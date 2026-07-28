@@ -22,7 +22,7 @@ weight: 2
 
 
 
-> **Answer-First Summary**: Managing client-server state in Generative UI requires choosing between Next.js React Server Components (RSC) and Astro Islands Architecture. Next.js RSC streams server action payloads directly into component trees for seamless context binding, while Astro isolates dynamic AI rendering into client-hydrated widgets. This article evaluates state flows, optimistic updates, and hydration strategies across both meta-frameworks.
+> **Answer-First Summary**: Managing client-server state in Generative UI requires choosing between Next.js React Server Components (RSC) and Astro Islands Architecture. Next.js RSC streams server action payloads directly into component trees for server-driven context binding, while Astro isolates dynamic AI rendering into client-hydrated widgets. This article evaluates state flows, optimistic updates, and hydration strategies across both meta-frameworks.
 
 > **Parent Architecture Guide:** Part 2 covering Generative UI state management within [Autonomous Hybrid AI Content Pipeline](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/).
 
@@ -230,7 +230,7 @@ export function OptimisticFormWidget({ currentBalance, onUpdate }: { currentBala
 
 ## 9. Cross-Tab State Synchronization via BroadcastChannel
 
-**Answer-first:** In complex enterprise dashboards where users open multiple browser tabs, GenUI state changes must synchronize across all active windows seamlessly.
+**Answer-first:** In complex enterprise dashboards where users open multiple browser tabs, GenUI state changes must synchronize across all active windows without a page reload.
 
 ```typescript
 // BroadcastChannel Synchronization Hook for GenUI State

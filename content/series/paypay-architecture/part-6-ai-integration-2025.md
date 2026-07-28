@@ -139,7 +139,7 @@ LLM generates empathetic, accurate, personalized response
         ↓
 User can confirm repayment plan directly in chat
         ↓
-If human escalation needed → seamless handoff to human agent with full context
+If human escalation needed → handoff to human agent with full conversation context preserved
 ```
 
 **Design principles:**

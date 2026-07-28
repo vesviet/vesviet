@@ -1,5 +1,6 @@
 ---
 title: "Cloudflare Workers & Edge Computing: V8 Isolates Architecture Guide"
+mermaid: true
 description: "Production guide to Cloudflare Workers and Edge Computing. Deconstruct V8 Isolates vs AWS Lambda, WebAssembly (Wasm), TinyGo, Hyperdrive, and Durable Objects."
 slug: "cloudflare-workers-edge-computing"
 author: "Le Tuan Anh (Senior Go Engineer)"

@@ -6,6 +6,7 @@ draft: false
 weight: 20
 description: "Hands-on playbook for applying AI to real engineering workflows: IDE setup, internal RAG, AI Platform layer, Policy-as-Code CI/CD, and AI observability."
 ShowToc: true
+mermaid: true
 TocOpen: true
 cover:
   image: "images/posts/hybrid-ai-pipeline-cover.png"

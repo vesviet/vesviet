@@ -1,5 +1,6 @@
 ---
 title: "Vector Database Architecture: HNSW Indexing & RAG Pipelines with Qdrant"
+mermaid: true
 description: "In-depth guide to Vector Database architecture: dissecting HNSW index algorithms, comparing Qdrant vs. Milvus vs. pgvector, and optimizing memory footprints for high-concurrency RAG pipelines."
 slug: vector-database-rag-qdrant-milvus
 author: "Le Tuan Anh (Senior Go Engineer)"
@@ -30,7 +31,7 @@ Vector Databases are purpose-built to store millions or billions of high-dimensi
 
 ## Anatomy of HNSW Algorithm & Parameter Tuning (M, efConstruction, efSearch)
 
-Hierarchical Navigable Small World (HNSW) is a state-of-the-art Approximate Nearest Neighbor (ANN) search algorithm that structures vector points into a multi-layer graph. Upper sparse layers enable rapid logarithmic traversal across large vector spaces, while lower dense layers refine local nearest neighbors. Performance and accuracy are tuned using parameters $M$, $efConstruction$, and $efSearch$.
+Hierarchical Navigable Small World (HNSW) is a widely-adopted Approximate Nearest Neighbor (ANN) search algorithm that structures vector points into a multi-layer graph. Upper sparse layers enable rapid logarithmic traversal across large vector spaces, while lower dense layers refine local nearest neighbors. Performance and accuracy are tuned using parameters $M$, $efConstruction$, and $efSearch$.
 
 In vector database architecture, executing exact K-Nearest Neighbor (KNN) brute-force searches across tens of millions of vectors creates unacceptable $O(N)$ computational latency. HNSW resolves this trade-off by accepting a negligible drop in absolute recall in exchange for logarithmic $O(\log N)$ search speedups.
 

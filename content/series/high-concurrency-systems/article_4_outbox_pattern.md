@@ -335,7 +335,7 @@ Disabling automatic commits ensures that if the system crashes midway, the offse
 
 ## 🎯 Architecture Review & Consulting (Hire Me)
 
-High availability for the Transactional Outbox pattern is maintained through multi-region active-active deployment topologies. Dynamic DNS failover routers redirect traffic seamlessly during cloud provider outages.
+High availability for the Transactional Outbox pattern is maintained through multi-region active-active deployment topologies. Dynamic DNS failover routers redirect traffic without dropping in-flight requests during cloud provider outages.
 
 Fault tolerance in the Transactional Outbox pattern relies on Netflix Hystrix-style circuit breaker state machines. Consecutive downstream errors trigger Open state fallback handlers instantly.
 

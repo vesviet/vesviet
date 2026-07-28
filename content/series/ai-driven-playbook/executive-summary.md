@@ -1,5 +1,6 @@
 ---
 title: "Executive Summary: Building an AI-Native Organization"
+mermaid: true
 author: "Lê Tuấn Anh"
 description: "Executive summary playbook for enterprise leaders transitioning software engineering teams to AI-native architectures, context engines, and guardrails."
 date: 2026-03-15T09:00:00+07:00

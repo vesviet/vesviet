@@ -41,7 +41,7 @@ image: "images/posts/graphhopper-cover.png"
 Building a modern logistics platform (like food delivery, ride-hailing, or fleet management) requires computing distances and Estimated Times of Arrival (ETA) at an immense scale. 
 
 - **The $N^2$ Problem:** If you have 1,000 drivers and 1,000 orders, calculating the distance between every possible combination requires 1,000,000 individual route calculations.
-- **Speed:** These calculations must happen in real-time (under 50ms) to ensure seamless user experiences and prevent dispatching algorithms from timing out.
+- **Speed:** These calculations must happen in real-time (under 50ms) to keep the UI responsive and prevent dispatching algorithms from timing out.
 - **Accuracy:** The system must account for real-world constraints such as one-way streets, "no left turn" rules, and dynamic traffic congestion.
 
 Standard point-to-point APIs (like basic Google Maps API calls) are too slow and too expensive for massive Distance Matrix generation. You need an internal, highly optimized Routing Engine.
@@ -250,7 +250,7 @@ func main() {
 
 - **Sub-30ms P99 Latency:** 95% of matrix requests are served via H3 Redis semantic cache hits in under 2ms.
 - **Resource Efficiency:** GraphHopper CH pre-computation reduces JVM heap memory consumption by 70% compared to un-contracted graph Dijkstra traversal.
-- **Zero-Downtime Blue-Green Reloads:** Map graph binaries are updated seamlessly in production using Kubernetes readiness probes and double-buffered volume mounts.
+- **Zero-Downtime Blue-Green Reloads:** Map graph binaries are updated without downtime in production using Kubernetes readiness probes and double-buffered volume mounts.
 
 Compare this architecture with our [Ride-Hailing GPS Ingestion Masterclass](/series/ride-hailing-realtime-architecture/executive-summary/).
 
@@ -273,7 +273,7 @@ Contraction Hierarchies pre-calculate shortcuts across major highways, removing 
 {{< /faq >}}
 
 {{< faq q="How are OpenStreetMap data updates handled without downtime?" >}}
-A blue-green update pipeline compiles CH shortcut graphs offline in a new pod instance. Once the green instance passes health checks, the Go gateway switches routing traffic seamlessly.
+A blue-green update pipeline compiles CH shortcut graphs offline in a new pod instance. Once the green instance passes health checks, the Go gateway cuts routing traffic over to it.
 {{< /faq >}}
 
 ---

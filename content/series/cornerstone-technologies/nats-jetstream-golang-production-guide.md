@@ -1,5 +1,6 @@
 ---
 title: "NATS JetStream Production Guide for Go Developers: 100k RPS Architecture"
+mermaid: true
 description: "In-depth guide to NATS JetStream architecture for Golang engineers. Compare NATS vs Kafka, production Go V2 SDK code, and 100k RPS benchmark analysis."
 author: "Le Tuan Anh (Senior Go Engineer)"
 slug: "nats-jetstream-golang-production-guide"

@@ -6,6 +6,7 @@ draft: false
 weight: 10
 description: "Masterclass series on evolving from a manual code typist to an AI-driven system architect, orchestrating multi-agent systems in production."
 ShowToc: true
+mermaid: true
 TocOpen: true
 cover:
   image: "images/posts/ai-native-frontend-cover.png"

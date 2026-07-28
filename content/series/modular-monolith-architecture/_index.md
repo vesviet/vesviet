@@ -12,6 +12,7 @@ cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular 
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/"
 ShowToc: true
+mermaid: true
 TocOpen: true
 image: "images/posts/golang-microservices-cover.png"
 ---

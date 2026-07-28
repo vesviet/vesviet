@@ -22,7 +22,7 @@ weight: 3
 
 
 
-> **Answer-First Summary**: Connecting backend Model Context Protocol (MCP) tool execution to frontend Generative UI components requires a decoupled Component Registry layer. By mapping MCP tool call outputs directly to strongly-typed frontend component manifests using JSON-Schema contracts, developers build dynamic, secure interfaces where AI agents trigger visual client-side widgets (e.g., maps, charts, transaction tables) seamlessly without writing unsafe inline scripts or raw HTML.
+> **Answer-First Summary**: Connecting backend Model Context Protocol (MCP) tool execution to frontend Generative UI components requires a decoupled Component Registry layer. By mapping MCP tool call outputs directly to strongly-typed frontend component manifests using JSON-Schema contracts, developers build dynamic, secure interfaces where AI agents trigger visual client-side widgets (e.g., maps, charts, transaction tables) without writing unsafe inline scripts or raw HTML.
 
 > **Parent Architecture Guide:** Part 3 detailing component registries in our [Autonomous Hybrid AI Content Pipeline](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/) series.
 

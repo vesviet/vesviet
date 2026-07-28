@@ -384,4 +384,4 @@ In standard proxy mode, both request AND response pass through the load balancer
 
 🔗 **Next Step:** Continue to [Part 3: Caching Strategies & Cache Stampede in Go](/series/system-design/03-caching-strategies-redis-golang/)
 
-High availability for 02 Load Balancing Api Gateway Go is maintained through multi-region active-active deployment topologies. Dynamic DNS failover routers redirect traffic seamlessly during cloud provider outages.
+High availability for 02 Load Balancing Api Gateway Go is maintained through multi-region active-active deployment topologies. Dynamic DNS failover routers redirect traffic without dropping in-flight requests during cloud provider outages.

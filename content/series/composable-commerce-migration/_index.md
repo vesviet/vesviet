@@ -1,5 +1,6 @@
 ---
 title: "Composable Commerce Migration: Magento to Go Microservice"
+mermaid: true
 description: "Escape Magento with 21 Go microservices: DDD bounded contexts, Strangler Fig migration, EAV schema extraction, Dapr PubSub, and GitOps with ArgoCD."
 date: "2026-04-01T10:00:00+07:00"
 lastmod: "2026-07-26T10:00:00+07:00"

@@ -1,5 +1,6 @@
 ---
 title: "Zero-Trust Architecture for Microservices: mTLS & Production Go Guide"
+mermaid: true
 slug: zero-trust-architecture-microservices
 description: "In-depth engineering guide to Zero-Trust Architecture for microservices: implementing mTLS with SPIFFE/SPIRE, user identity propagation with OAuth 2.1, eBPF microsegmentation, and production Go code."
 author: "Le Tuan Anh (Senior Go Engineer)"

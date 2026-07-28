@@ -40,7 +40,7 @@ By 2026, enterprise software architecture replaced ad-hoc prompt tweaking with *
 
 ## Comparative Analysis: 2024 Prompting vs. 2026 Context Engineering
 
-The transition from early prompt design to state-of-the-art context pipeline architecture spans seven core engineering dimensions.
+The transition from early prompt design to modern context pipeline architecture spans seven core engineering dimensions.
 
 The following comparison table highlights the operational shift between 2024 intuition-driven prompt engineering and 2026 deterministic context engineering frameworks.
 

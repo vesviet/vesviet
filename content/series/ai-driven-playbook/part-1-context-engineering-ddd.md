@@ -1,5 +1,6 @@
 ---
 title: "Part 1 — Context Engineering: Domain-Driven Design for AI"
+mermaid: true
 author: "Lê Tuấn Anh"
 description: "Technical guide to Context Engineering using Domain-Driven Design (DDD) to scope LLM prompts, eliminate hallucinations, and enforce AST boundaries."
 date: 2026-03-16T09:00:00+07:00

@@ -10,6 +10,7 @@ cover:
   alt: "tanhdev Reading Map — Production Go & AI Architecture"
   relative: false
 ShowToc: true
+mermaid: true
 TocOpen: true
 ---
 
