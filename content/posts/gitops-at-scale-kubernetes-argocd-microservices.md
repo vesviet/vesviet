@@ -20,13 +20,6 @@ canonicalURL: "https://tanhdev.com/posts/gitops-at-scale-kubernetes-argocd-micro
 
 # GitOps at Scale: Kubernetes & ArgoCD for Microservices
 
-> **Answer-First:** Deploying 21 microservices at scale requires replacing manual `kubectl apply` with an ArgoCD GitOps pull model utilizing the App-of-Apps pattern, Kustomize environment overlays, automated `selfHeal` drift reconciliation, and `git revert` instant rollbacks without cluster credentials in CI.
-
-- The security risks of running `kubectl apply` in production and how the App-of-Apps pattern eliminates credential exposure.
-- Practical steps to configure annotation-based sync filtering in ArgoCD to isolate multi-tenant microservices deployments.
-
-> 
-
 Building 21 well-architected Go microservices is only half the battle. If your deployment process relies on an engineer running `kubectl apply` from their laptop on a Friday afternoon, you haven't built an enterprise platform — you've built a ticking time bomb.
 
 When designing this composable e-commerce ecosystem, we made one hard architectural rule from day one: **no human touches the production cluster directly.** Everything flows through Git. ArgoCD enforces it. Choosing EKS over ECS was a key architectural decision that enabled this first-class GitOps model; for a full cost and scaling breakdown, see our [AWS EKS vs ECS Comparison](/posts/aws-eks-vs-ecs-comparison/).
@@ -151,7 +144,7 @@ Managing manifests for 21 services across 3 environments produces 60+ YAML files
 
 ### Base Manifest (Environment-Agnostic)
 
-The Kustomize base deployment defines the standard Kubernetes pod specifications, resource limits, and health probes shared across all environments:
+Standard Kubernetes pod spec, resource limits, and health probes shared across all environments:
 
 ```yaml
 # apps/order-service/base/deployment.yaml
@@ -208,7 +201,7 @@ resources:
 
 ### Production Overlay (Patches Only What Differs)
 
-The overlay configuration patches environment-specific values into the base template without duplicating YAML declarations:
+The overlay patches environment-specific values without duplicating YAML:
 
 ```yaml
 # apps/order-service/overlays/prod/kustomization.yaml

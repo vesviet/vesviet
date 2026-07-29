@@ -21,18 +21,11 @@ canonicalURL: "https://tanhdev.com/posts/laravel-vs-golang-when-to-add-features/
 
 # Laravel vs Golang: When to Add Features in Each?
 
-> **Answer-First:** Keep CRUD features, admin panels, and rapid product iterations in Laravel to maximize developer velocity. Extract high-concurrency microservices, long-running streaming tasks, heavy computations, and gRPC internal services to Golang via the Strangler Fig pattern for sub-5ms P99 latency and lower resource consumption.
-
-- 3 specific cases where Laravel still beats Go — even at significant scale.
-- Why the correct pattern is Strangler Fig (run both), not a rewrite.
-
 ---
 
 > This post is part of the **[Magento to Go Migration series](/series/magento-migration-vietnam/)** — a CTO playbook for migrating with a Vietnam engineering team.
 
 ## The Real Question
-
-Navigating the trade-offs between Laravel and Golang requires technical leads to evaluate feature complexity against execution SLAs and concurrency demands. By identifying whether new requirements fit monolithic PHP paradigms or require compiled Go microservices, engineering teams optimize developer velocity while maintaining sub-millisecond response times under peak traffic loads.
 
 Every Tech Lead eventually faces a pivotal architectural dilemma:
 
@@ -45,8 +38,6 @@ Understanding when to leverage each language prevents two common engineering mis
 ---
 
 ## Laravel Is the Right Choice When...
-
-Retaining features within a Laravel codebase remains the optimal strategy when business logic complexity demands high developer velocity and rich ecosystem integration. In 2026 enterprise architectures, rapid prototyping, admin panel maintenance, and intricate workflow orchestrations benefit significantly from Laravel's mature ORM, built-in queue workers, and comprehensive package ecosystem.
 
 ### 1. The Feature Has Complex Business Logic
 
@@ -96,7 +87,7 @@ Filament, Nova, Livewire Volt — Go has **no equivalent**. This is where Larave
 
 ## Golang Is the Right Choice When...
 
-Extracting services into Golang is necessary when throughput requirements, concurrency scale, and low-latency performance surpass PHP-FPM runtime capabilities. Go's lightweight goroutine memory model and compiled execution enable backend teams to handle high-frequency authentication checks, real-time WebSocket streams, and compute-heavy data pipelines with minimal CPU and RAM overhead.
+Extract to Go when throughput requirements, concurrency scale, and latency targets surpass PHP-FPM capabilities. Go's lightweight goroutines and compiled execution handle high-frequency auth checks, real-time WebSocket streams, and compute-heavy pipelines with minimal overhead.
 
 ### The Memory Model: Goroutine vs PHP-FPM Worker
 
@@ -165,9 +156,9 @@ CPU-bound parallel tasks: Go's goroutine worker pool handles concurrent file ope
 
 ## The Right Architecture: Hybrid, Not Rewrite
 
-Adopting a hybrid microservices architecture combining Laravel and Golang enables organizations to modernize legacy systems without committing to risky full-system rewrites. Using the Strangler Fig migration pattern, teams gradually extract performance-critical domain boundaries into high-speed Go services while keeping core business logic, reporting, and administrative workflows within Laravel.
+The right approach is not a full rewrite. Use the Strangler Fig pattern: gradually extract performance-critical services into Go while keeping core business logic in Laravel.
 
-The hybrid architecture diagram below illustrates how Laravel and Go co-exist in production using the Strangler Fig pattern with an API Gateway:
+The hybrid architecture with the Strangler Fig pattern and an API Gateway:
 
 ```mermaid
 graph TB
@@ -225,9 +216,7 @@ Q4: Does this feature need to scale completely independently?
 
 ## TCO Comparison: Real Numbers for a Vietnam Team
 
-Evaluating the total cost of ownership across Laravel and Golang implementations requires balancing developer compensation, feature delivery timelines, and cloud infrastructure expenses. While Go services drastically reduce compute and RAM footprint under heavy load, factoring local talent availability and initial ramp-up costs ensures engineering decisions align with financial constraints.
-
-The following total cost of ownership (TCO) breakdown compares developer velocity, hiring costs, and infrastructure expenses for a Vietnam-based team:
+The following TCO breakdown compares developer velocity, hiring costs, and infrastructure expenses for a Vietnam-based team:
 
 | Dimension | New Laravel feature | New Go microservice |
 |---|---|---|
@@ -245,9 +234,7 @@ The following total cost of ownership (TCO) breakdown compares developer velocit
 
 ## The 3-Phase Roadmap Most Teams Actually Follow
 
-Executing a structured migration roadmap allows engineering organizations to systematically transition from a monolithic framework to a hybrid microservice architecture. By optimizing the existing Laravel application first, extracting isolated high-impact services second, and expanding Go microservices only as traffic dictates, teams minimize technical risk while validating performance gains.
-
-The roadmap below outlines the phased migration timeline from monolith optimization to selective microservice extraction:
+The phased migration timeline from monolith optimization to selective microservice extraction:
 
 ```
 Phase 1 (Months 0-12): Optimize Laravel first
@@ -278,8 +265,6 @@ Phase 3 (Months 18-36): Expand only where data demands it
 
 ## Common Mistakes to Avoid
 
-Avoiding common architectural pitfalls prevents engineering teams from burning capital on unnecessary rewrites or introducing premature microservice complexity. Understanding why full application rewrites fail, avoiding microservices prior to establishing monolithic stability, and resisting hyperscaler architectural trends ensures technical decisions remain grounded in empirical performance metrics and business realities.
-
 **❌ "Rewrite Laravel in Go for performance"**
 
 Teams that attempt a full rewrite typically spend 8 months and deliver 40% of the original feature set. The Go application is faster but has more bugs because the team has not yet internalized concurrency patterns. Partial rewrites under production pressure are where distributed systems get genuinely dangerous.
@@ -295,8 +280,6 @@ Tiki has 200+ engineers. Shopee has 2,000+ engineers. At that scale, distributed
 ---
 
 ## The Right Question to Ask
-
-Framing the technology choice around specific operational requirements rather than language bias empowers engineering teams to make rational architectural decisions. Technical leaders must evaluate concrete benchmark data, response latency thresholds, and team skills before determining whether extracting a feature into Go justifies the operational complexity of distributed systems.
 
 It is not *"Laravel or Golang?"*
 

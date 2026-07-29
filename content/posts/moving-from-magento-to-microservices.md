@@ -20,11 +20,6 @@ canonicalURL: "https://tanhdev.com/posts/moving-from-magento-to-microservices/"
 
 # Why Migrate Magento to Microservices: Zero-Downtime Blueprint
 
-> **Answer-First:** Migrating a Magento monolith to microservices safely requires a 3-Phase Strangler Fig Pattern instead of a risky big-bang rewrite. By placing an API Gateway to intercept domain routes (Catalog, Cart, Checkout) and using CDC event pipelines, teams decouple state while keeping Magento running until complete replacement.
-
-- Decoupling cart and checkout tables from Magento core databases.
-- Data synchronization pipelines that prevent order loss during checkout transitions.
-
 > 
 
 "Let's rewrite everything to Microservices." 
@@ -41,8 +36,6 @@ Here is the exact playbook we used to safely migrate 10 core commerce domains (C
 
 ## Why Migrate Magento to Microservices: Monolith Bottlenecks
 
-Analyzing the technical drivers for migrating away from monolithic Magento architecture requires examining transaction throughput boundaries and database lock limits. In 2026 enterprise e-commerce systems, high concurrency during flash sales exposes PHP-FPM pool exhaustion, InnoDB table lock deadlocks, and severe deployment friction, necessitating a transition toward scalable microservice boundaries.
-
 Enterprise e-commerce merchants operating high-volume Magento 2 deployments inevitably encounter architectural ceilings as transaction volumes scale. While Magento's monolithic EAV architecture excels at complex catalog management, it creates severe performance and operational bottlenecks under heavy load:
 
 1. **PHP-FPM Process Pool Exhaustion:** During flash sales, high incoming traffic consumes available PHP worker processes. Because synchronous Magento controllers execute heavy database ORM joins and external API calls within the request context, worker pools become depleted, leading to 504 Gateway Timeouts and checkout crashes.
@@ -52,8 +45,6 @@ Enterprise e-commerce merchants operating high-volume Magento 2 deployments inev
 Transitioning to decoupled microservices isolates high-throughput domains (such as Catalog and Checkout) into dedicated, independently scaled services, restoring system resilience and developer velocity.
 
 ## The Three Non-Trivial Migration Roadblocks
-
-Overcoming major architectural challenges during a Magento migration requires solving complex data mapping, primary key translation, and real-time database synchronization hurdles. Engineering teams must resolve Entity-Attribute-Value schema complexity, map legacy integer primary keys to distributed UUIDs, and establish true Change Data Capture pipelines to maintain absolute data integrity.
 
 **The three hardest roadblocks when migrating from Magento are: decoupling the shared MySQL database, untangling interdependent third-party extensions, and maintaining active user sessions across both the legacy PHP monolith and new Go microservices simultaneously.**
 
@@ -68,8 +59,6 @@ Once the data layer was untangled, we executed the 3-phase rollout.
 ---
 
 ## Pre-Migration Readiness Checklist
-
-Auditing technical readiness prior to launching a Strangler Fig migration protocol prevents catastrophic data corruption and operational downtime. Engineering leads must validate data layer flattening, verify MySQL binlog retention settings, test API Gateway feature flags, and execute complete rollback drills across staging environments before routing production user traffic.
 
 **Before starting a Magento migration, ensure three capabilities are live: an API Gateway for traffic routing, centralized logging with OpenTelemetry tracing, and a Change Data Capture (CDC) pipeline like Debezium to sync legacy MySQL data.**
 

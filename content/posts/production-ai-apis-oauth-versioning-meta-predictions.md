@@ -30,11 +30,6 @@ canonicalURL: "https://tanhdev.com/posts/production-ai-apis-oauth-versioning-met
 
 # Production AI APIs: OAuth 2.1, Gateway Rate Limiting & Prompt Versioning
 
-> **Answer-First:** Operating production AI APIs securely requires short-lived OAuth 2.1 JWT Bearer Token Grants (RFC 7523 with `private_key_jwt`) for machine-to-machine agent authentication instead of static API keys. Prompts must be versioned in source control with CI eval gates, while API Gateways enforce dual token-bucket rate limits on request count and total token consumption.
-
-- Secure prompt versioning practices using git commits and CI checks.
-- Rate-limiting AI agents at the API Gateway using token-bucket configurations.
-
 Running AI APIs in production for the past 18 months has produced three lessons that I did not find in any "getting started with LLMs" tutorial. They emerged from incidents, postmortems, and that specific kind of 2 AM Slack message where a word you never wanted to see — "silent," as in "silent failure" — appears in a production context.
 
 This post covers all three: OAuth 2.1 for AI agent identity, prompt versioning as a first-class engineering discipline, and a meta-analysis of which 2025 predictions about the AI stack actually materialized. Not a list of tips. The production shape of these problems, what the solution looks like under load, and the counterarguments I had to work through before committing to each approach.
@@ -53,7 +48,7 @@ The problem is not that API keys are conceptually wrong. The problem is that AI 
 
 The shift to OAuth 2.1 for machine-to-machine agent authentication is driven by one property: **token lifetime**. A short-lived JWT (5 to 15 minutes) changes the attack surface from "attacker has permanent access" to "attacker has a narrow window that closes before they can pivot."
 
-The OAuth 2.1 flow for an AI agent is different from a human login flow. There is no redirect URI, no browser session, no user clicking "Approve." The agent authenticates via **JWT Bearer Token Grant (RFC 7523)** — the machine-to-machine sibling of OAuth 2.1 — using a `private_key_jwt` assertion signed by a private key it controls. By eliminating static client secrets, this mechanism guarantees that credentials cannot be harvested from memory dumps or compromised source repositories. The Go implementation below demonstrates how agents dynamically sign assertion claims prior to requesting short-lived access tokens:
+The OAuth 2.1 flow for an AI agent is different from a human login flow. There is no redirect URI, no browser session, no user clicking "Approve." The agent authenticates via **JWT Bearer Token Grant (RFC 7523)** — the machine-to-machine sibling of OAuth 2.1 — using a `private_key_jwt` assertion signed by a private key it controls. This eliminates static client secrets that can be harvested from memory dumps or compromised repositories:
 
 ```go
 // Internal token fetch — runs before every tool call batch

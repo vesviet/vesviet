@@ -28,20 +28,15 @@ canonicalURL: "https://tanhdev.com/posts/real-time-inventory-ecommerce-architect
 
 # Real-Time Inventory Topology: CDC, Kafka, and Redis
 
-> **Answer-First:** Building high-throughput real-time inventory systems requires a hybrid Speed & Truth architecture. Change Data Capture (Debezium) streams database stock updates into Apache Kafka, while atomic Redis Lua scripts handle instant sub-millisecond stock reservations with zero overselling during high-concurrency flash sales.
-
-- Write-through caches configuration in Redis to prevent inventory drift.
-- Lua scripting implementations in Redis that prevent double-reservations under peak load.
-
 **Real-time inventory synchronization** is the process of propagating stock count changes from the system of record (database) to all sales channels — web storefront, mobile app, WMS, ERP — in sub-second time. Instead of batch ETL jobs that run every hour, a CDC + Kafka pipeline streams every committed stock change as an event, eliminating overselling and stale stock displays.
 
 Handling this during a flash sale — where thousands of users attempt to purchase a highly contested SKU simultaneously — is a pinnacle architectural challenge. Traditional synchronous database updates collapse under lock contention.
 
-To guarantee accuracy without sacrificing sub-millisecond response times, modern 2026 architectures adopt the **Speed & Truth Model** using PostgreSQL, Apache Kafka, and Redis.
+To guarantee accuracy without sacrificing sub-millisecond response times, the recommended approach is the **Speed & Truth Model** using PostgreSQL, Apache Kafka, and Redis.
 
 ## The Dual-Write Dilemma and Lock Contention
 
-Traditional e-commerce architectures relying on dual-writes to update relational databases and in-memory caches simultaneously trigger split-brain states and inventory drift during flash sales. High-concurrency checkout spikes cause network partitions, worker crashes, and intense row-level database lock contention, forcing transaction requests into sequential queues that degrade tail latency across modern 2026 microservices.
+Traditional e-commerce architectures that dual-write to both a relational database and an in-memory cache trigger split-brain states and inventory drift during flash sales. High-concurrency checkout spikes cause network partitions, worker crashes, and intense row-level lock contention, forcing transactions into sequential queues that degrade tail latency.
 
 Furthermore, when thousands of concurrent API requests attempt to update the exact same database row (`UPDATE inventory SET quantity = quantity - 1 WHERE sku_id = X`), row-level exclusive locks force requests into a tight sequential queue. This lock contention escalates database CPU utilization, exhausts backend connection pools, and drives tail latency (p99) into several seconds, leading to cascade failures across the payment and checkout services.
 
@@ -49,7 +44,7 @@ Furthermore, when thousands of concurrent API requests attempt to update the exa
 
 ## The Speed & Truth Architecture Pattern
 
-Decoupling high-speed stock reservations from persistent database ledgers requires implementing the Speed & Truth architecture pattern. By pairing PostgreSQL system-of-record storage with Debezium Change Data Capture, Apache Kafka event streaming, and atomic Redis Cluster caches, e-commerce platforms handle flash-sale order spikes with sub-millisecond stock checks and zero overselling in 2026.
+The Speed & Truth pattern decouples high-speed stock reservations from the persistent database ledger. PostgreSQL serves as the system of record, Debezium CDC streams changes to Kafka, and atomic Redis Cluster caches handle sub-millisecond stock checks with zero overselling.
 
 ```mermaid
 flowchart TD
@@ -103,7 +98,7 @@ To prevent race conditions while maintaining high throughput, we must combine Ka
 
 ## Production Go Kafka Consumer Group Implementation
 
-Building high-throughput inventory consumers in Go requires combining robust Kafka consumer group management with SKU-sharded mutex concurrency locks. System engineers must handle offset commits manually, implement idempotency verification, and manage partition rebalance events cleanly to process thousands of stock update events per second without encountering race conditions or data loss in 2026.
+High-throughput inventory consumers in Go combine Kafka consumer group management with SKU-sharded mutex locks. Key concerns: manual offset commits, idempotency verification, and clean partition rebalance handling.
 
 ```go
 package inventory
@@ -241,7 +236,7 @@ To prevent this from causing double deductions, the downstream processing must b
 
 ## Idempotent Inventory Deductions in Redis Cluster
 
-Executing real-time inventory deductions across distributed Redis Clusters requires enforcing strict idempotency and atomic key management. When Kafka consumer groups trigger partition rebalances or duplicate message redeliveries, custom Redis Lua scripts evaluate hash-tagged idempotency tokens and verify stock thresholds atomically, preventing double-reservations and maintaining cache slot alignment in 2026.
+Real-time inventory deductions across distributed Redis Clusters require strict idempotency and atomic key management. When Kafka consumer groups trigger partition rebalances or duplicate redeliveries, Redis Lua scripts evaluate hash-tagged idempotency tokens and verify stock thresholds atomically, preventing double-reservations.
 
 ### The Cluster Cross-Slot Constraint (Hash Tags)
 
@@ -284,7 +279,7 @@ If a Redis node crashes without persistent snapshots (AOF/RDB) or spins up empty
 
 ## Frequently Asked Questions
 
-Below are answers to fundamental engineering questions regarding real-time inventory synchronization, Change Data Capture (CDC) architectures, Redis Lua idempotency scripts, and oversell prevention strategies. These technical insights summarize practical design decisions and production recovery patterns for operating high-scale, low-latency e-commerce inventory platforms in 2026.
+Below are answers to fundamental engineering questions regarding real-time inventory synchronization, CDC architectures, Redis Lua idempotency scripts, and oversell prevention strategies.
 
 ### How do you synchronize inventory in real-time?
 

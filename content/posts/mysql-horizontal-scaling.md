@@ -29,11 +29,6 @@ cover:
 
 # Vitess vs GORM Sharding: MySQL Write Scaling in Go
 
-> **Answer-First:** Scaling MySQL write capacity in Go requires choosing between Vitess middleware proxy routing (VTGate) for transparent, zero-downtime cluster-wide resharding, or GORM application-level sharding for low-overhead Go-native table partitioning that requires explicit sharding keys in every query.
-
-- Designing database sharding keys that prevent cross-shard joins.
-- Configuring proxy routing layers like Vitess to scale MySQL queries horizontally.
-
 When your application reaches millions of users, a single database instance will inevitably become the biggest bottleneck in your entire architecture. To solve this, **MySQL database scaling** becomes mandatory. You must [Scale DB for Microservices](/posts/banking-microservices-architecture/) using Horizontal Scaling techniques.
 
 This article examines the differences between scaling methods and compares the two most popular Sharding architectures today: Middleware-level Sharding (Vitess) and Application-level Sharding in Go (GORM Sharding plugin).
@@ -48,7 +43,7 @@ Vertical Scaling (Scaling Up) involves adding CPU, RAM, and NVMe storage to a si
 2. **Exponential Cost Curve:** High-end enterprise servers exhibit non-linear pricing, where a 128-core system costs significantly more than multiple commodity 32-core nodes combined.
 3. **Single Point of Failure (SPOF):** Hardware redundancy within a single chassis cannot protect against kernel panics, mainboard failure, or catastrophic hypervisor crashes.
 
-When primary database write transactions consistently saturate storage IOPS or CPU capacity, transitioning to **Horizontal Scaling (Scaling Out)** — partitioning datasets across independent database nodes — becomes mandatory. For a broader overview of database architecture strategies, read our detailed [MySQL Scalability guide](/posts/mysql-scalability-guide/).
+When primary write transactions consistently saturate storage IOPS or CPU, transitioning to **Horizontal Scaling (Scaling Out)** — partitioning datasets across independent nodes — becomes mandatory. For a broader overview of database architecture strategies, read our detailed [MySQL Scalability guide](/posts/mysql-scalability-guide/).
 
 ---
 
@@ -76,7 +71,7 @@ ProxySQL categorizes servers into **Hostgroups**:
 
 By defining routing rules using regex matches on incoming SQL text, ProxySQL intercepts queries and routes them to the appropriate hostgroup. For instance, write queries (`INSERT`, `UPDATE`, `DELETE`) are sent to the writer hostgroup, while standard `SELECT` statements are distributed across readers. Crucially, queries that lock rows (like `SELECT ... FOR UPDATE`) must be explicitly routed to the writer hostgroup to prevent execution on read replicas.
 
-To enforce transparent read-write splitting without modifying application code, administrators configure ProxySQL hostgroups and query rules via its internal admin interface. Hostgroup definitions and routing rules are applied using standard ProxySQL administrative SQL statements:
+Configure ProxySQL hostgroups and query rules via its admin interface:
 
 ```sql
 -- 1. Define MySQL nodes and assign them to Hostgroups

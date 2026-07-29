@@ -20,22 +20,6 @@ canonicalURL: "https://tanhdev.com/posts/deconstructing-microfinance-core-bankin
 
 # Microfinance Core Banking: Architecture & Engineering Guide
 
-> **Answer-First:** Microfinance core banking requires specialized Joint Liability Group (JLG) group guarantee logic, compulsory savings collateral enforcement, declining-balance EMI calculations, and atomic double-entry ledger transactions written in Go and PostgreSQL to ensure financial audit compliance.
-
-## Executive Summary & Quick Answer
-
-Microfinance core banking platforms demand specialized architectural patterns to manage Joint Liability Group co-guarantees, compulsory savings collateral, and declining-balance interest calculations. Engineering high-concurrency ledger systems in Go and PostgreSQL ensures strict financial audit compliance while maintaining transactional consistency across millions of micro-loans.
-
-> Microfinance core banking requires specialized Joint Liability Group (JLG) group guarantee logic, compulsory savings enforcement, and declining-balance EMI calculation. By implementing ACID transactions in Go with strict double-entry ledger validation, institutions maintain financial audit compliance while scaling to millions of micro-loans.
->
-> **Key Takeaways**:
-> - JLG group guarantee rules automatically freeze group disbursement if any single member defaults.
-> - Compulsory savings holds act as loan collateral locked via database-level conditional triggers.
-> - Declining balance interest math requires exact 64-bit integer fixed-point arithmetic to prevent rounding drift.
-
-- How to prevent phantom funds in double-entry ledgers by writing strict write-once, append-only transaction logs.
-- Optimistic concurrency control implementations using version-checks and `SELECT ... FOR UPDATE` that survived concurrent interest calculations on 50,000 active accounts.
-
 Building a Core Banking System (CBS) for a Microfinance Institution (MFI) presents a radically different set of engineering challenges compared to traditional retail banking. While commercial banks focus heavily on individual credit scores and card networks, microfinance operates on high-frequency, low-value transactions, group-based lending, and offline field collections. 
 
 If you are an engineer or Business Analyst transitioning into fintech, understanding the architectural nuances of platforms like Apache Fineract (Mifos X) or Musoni is critical. This guide we will break down the 5 must-have modules of a Microfinance CBS, providing the database schemas, mathematical formulas, double-entry mappings, and the actual Product Requirements Document (PRD) snippets you need to build them.
@@ -44,7 +28,7 @@ If you are an engineer or Business Analyst transitioning into fintech, understan
 
 ## The Fundamental Difference: Joint Liability
 
-The defining architectural characteristic of microfinance core banking is the Joint Liability Group co-guarantee framework. Because individual borrowers frequently lack traditional physical collateral, microfinance systems group borrowers into collective units that co-guarantee each member's loan obligations and lock group savings during defaults.
+Because individual borrowers frequently lack traditional physical collateral, microfinance systems group borrowers into collective units that co-guarantee each member's loan obligations.
 
 ### Module 1: CIF, KYC, and Joint Liability Groups (JLGs)
 
@@ -262,8 +246,6 @@ Engineering production microfinance ledgers requires balancing strict financial 
 > This is YMYL (Your Money or Your Life) content. The patterns here are engineering guidance, not accounting or regulatory advice — validate ledger rules and retention periods against your jurisdiction's financial regulations with a qualified compliance reviewer before production use.
 
 ## Frequently Asked Questions
-
-Addressing technical questions regarding double-entry ledger implementations, Joint Liability Group guarantee enforcement, and fixed-point integer calculations helps engineers build compliant core banking systems. The following detailed answers explore key architectural patterns for managing microfinance loans and accounting entries in Go and PostgreSQL.
 
 ### Why is a double-entry ledger implementation critical for a microfinance core banking backend?
 A double-entry ledger ensures that every financial transaction consists of equal and offsetting debit and credit entries, guaranteeing that the fundamental accounting equation remains balanced. This is crucial for auditability and compliance, preventing database synchronization errors from creating phantom funds or balance discrepancies.

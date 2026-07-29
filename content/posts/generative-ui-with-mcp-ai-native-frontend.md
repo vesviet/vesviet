@@ -37,18 +37,7 @@ canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-fronte
 
 # Generative UI with MCP: Architecting AI-Native Frontends
 
-> **Answer-First:** Generative UI with Model Context Protocol (MCP) transitions frontends from text-only chat interfaces to dynamic, interactive UI components. By leveraging React Server Components, Zod runtime schema validation, dynamic component registries, and iframe sandboxing, AI agents safely trigger rich native UI components directly from structured tool call outputs.
-
-## Executive Summary & Generative UI Architecture
-
-Generative UI replaces static text-only chat responses with dynamic, interactive UI components. The core architectural pillars required for production implementation include:
-
-1. **Beyond Chatbots**: Moving from plain text to rich interactive component generation.
-2. **State Synchronization**: Reconciling LLM agent reasoning state with live DOM component state.
-3. **Component Registry**: Managing versioned, permission-gated UI component definitions.
-4. **Security & Accessibility (A11y)**: Zod schema parsing, iframe sandboxing, and WCAG compliance.
-5. **Human-in-the-Loop (HITL)**: Confirmation components for high-risk destructive actions.
-6. **E2E Testing & Edge Runtimes**: Playwright automation and Cloudflare Edge rendering.
+Generative UI with Model Context Protocol (MCP) moves frontends from text-only chat interfaces to dynamic, interactive UI components. Using React Server Components, Zod runtime schema validation, dynamic component registries, and iframe sandboxing, AI agents can safely trigger rich native UI components directly from structured tool call outputs. This post covers six pieces of that architecture: moving beyond plain-text chat, reconciling agent reasoning state with live DOM state, managing a versioned component registry, securing and making components accessible, human-in-the-loop confirmation for high-risk actions, and testing/deploying at the edge.
 
 ---
 
@@ -56,7 +45,7 @@ Generative UI replaces static text-only chat responses with dynamic, interactive
 
 Traditional conversational interfaces (Gen 1) constrained AI outputs to plain text blocks or basic Markdown formatting. As LLM tool calling matured (Gen 2), agents gained the ability to invoke backend database queries and external APIs, returning structured JSON payloads back into text stream responses.
 
-Generative UI (Gen 3) represents an architectural evolution where AI agents directly orchestrate frontend UI component hierarchies:
+Generative UI (Gen 3) has AI agents directly orchestrate frontend UI component hierarchies instead of describing results in text:
 
 ```mermaid
 graph LR

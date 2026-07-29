@@ -36,19 +36,6 @@ canonicalURL: "https://tanhdev.com/posts/shopee-flash-sale-architecture/"
 
 # Flash Sale Architecture: Rate Limiting & Redis
 
-> **Answer-First:** High-concurrency flash sale architectures handle millions of concurrent requests (C10M scale) by using kernel bypass networking (DPDK/eBPF), edge rate limiting via atomic Redis Lua token buckets, pre-warmed in-memory inventory decrementing, and asynchronous Kafka queue leveling before persisting to distributed TiDB/MySQL database clusters.
-
----
-
-## Executive Summary & System Design Foundations
-
-High-concurrency systems handling millions of concurrent requests (C10M scale) must push load shedding and admission control as close to the network edge as possible. Four design baselines drive the rest of this architecture:
-
-1. **Edge Admission Control**: Offload connection handling via eBPF/DPDK and API Gateways.
-2. **Atomic In-Memory Reservation**: Reserve stock in Redis via single-threaded Lua scripts to prevent DB row lock contention.
-3. **Asynchronous Persistence**: Enqueue confirmed reservations into Kafka for decoupling and rate leveling.
-4. **Resilient Database Layer**: Write-append order logs to sharded MySQL/TiDB clusters.
-
 > [!NOTE]
 > **On sourcing:** This article describes flash-sale architecture *patterns* for C10M-scale events; it is not a disclosure of Shopee's internal systems, and the figures here are engineering targets rather than published Shopee metrics. Shopee has not publicly documented its flash-sale internals in detail. What *is* public is its database platform choice — Shopee's adoption of TiDB is documented in PingCAP's case studies ([How Shopee Chose the Right Database](https://www.pingcap.com/case-study/choosing-right-database-for-your-applications/), [Shopping on Shopee, the TiDB Way](https://pingcap.medium.com/shopping-on-shopee-the-tidb-way-2bc3b8ab3b15)). Treat everything else as a reference pattern to validate against your own workload.
 
@@ -58,7 +45,7 @@ High-concurrency systems handling millions of concurrent requests (C10M scale) m
 
 Handling 10 million concurrent connections (C10M) requires rethinking traditional OS network stacks. Standard Linux socket handling incurs severe CPU overhead due to kernel context switches, lock contention in network driver queues, and memory copy operations between kernel space and user space.
 
-- **Kernel Bypass Networking**: Systems employ Data Plane Development Kit (DPDK) or eBPF (Extended Berkeley Packet Filter) to route network packets directly to user-space application buffers. Bypassing standard Linux network interrupts reduces CPU cycle consumption per packet by up to 80%.
+- **Kernel Bypass Networking**: Systems employ Data Plane Development Kit (DPDK) or eBPF (Extended Berkeley Packet Filter) to route network packets directly to user-space application buffers. Bypassing standard Linux network interrupts significantly reduces CPU cycle consumption per packet.
 - **Event-Driven Non-Blocking I/O**: High-performance worker nodes leverage `io_uring` or `epoll` event loops in Go/C++ microservices. Single-threaded non-blocking event loops process tens of thousands of active socket handles per core without thread context switching overhead.
 - **CPU Pinning & NUMA Awareness**: Thread pools are pinned to specific physical CPU cores using CPU affinity masks (`sched_setaffinity`). Allocating memory buffers within the local Non-Uniform Memory Access (NUMA) node avoids cross-socket memory bus latency.
 
@@ -127,7 +114,7 @@ To safeguard downstream order microservices from C10M traffic surges, rate limit
 
 ### Production Redis Lua Atomic Token Bucket Script
 
-Implementing globally synchronized rate limiting at edge gateways requires non-preemptible token bucket evaluations. The Lua script below executes atomically within Redis, refreshing token counts using high-resolution timestamps and enforcing key expiration to conserve memory:
+The Lua script below executes atomically within Redis, refreshing token counts using high-resolution timestamps and enforcing key expiration to conserve memory:
 
 ```lua
 -- Atomic Token Bucket Rate Limiter
@@ -241,8 +228,6 @@ func (r *RateLimiter) Allow(ctx context.Context, key string, capacity int, refil
 ---
 
 ## 5. Reference Service Decomposition
-
-Understanding the architectural topology of Reference Service Decomposition requires tracing the end-to-end event sequence and data flow. The diagram below illustrates how components, API boundaries, and background workers coordinate during request processing. Visualizing system interactions helps clarify data boundaries, concurrency limits, and failure domain separation. The sequence diagram below traces the component interactions, message flows, API gateways, and boundary transitions across the complete execution path.
 
 ```mermaid
 graph LR

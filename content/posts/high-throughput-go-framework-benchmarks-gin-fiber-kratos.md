@@ -16,11 +16,7 @@ mermaid: true
 
 # High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos
 
-> **Answer-First:** Fiber delivers the highest raw throughput and lowest memory allocations for HTTP APIs by leveraging fasthttp, while Gin offers the best balance of standard library compatibility (`net/http`) and ecosystem stability. Kratos excels in enterprise microservices requiring structured gRPC/HTTP metadata, middleware chains, and microservice governance despite slightly lower raw HTTP benchmark scores.
-
 ## The Testing Methodology (Beyond Hello World)
-
-Designing realistic Go framework benchmarks requires extending past simple hello world endpoints to simulate genuine production database I/O, middleware evaluation, and connection pool management under high concurrency. In 2026 high-throughput systems, evaluating framework efficiency requires measuring request context propagation, GC allocation overhead, and response latencies under synthetic traffic.
 
 We set up our benchmark tests on standard AWS hardware using a `c6i.2xlarge` instance (8 vCPUs, 16 GiB RAM) running Ubuntu 22.04 LTS. Both the testing client and the server running the Go application were placed in the same VPC to completely minimize any margin of error caused by physical network latency.
 
@@ -32,8 +28,6 @@ We configured a Database Connection Pool optimized for high load with the follow
 - `SetConnMaxLifetime(5 * time.Minute)`: Automatically closes expired connections to free memory and avoid silent disconnects caused by system firewalls.
 
 ### Go Benchmark Code
-
-Benchmarking Gin and Fiber framework throughput under heavy concurrent load requires isolating database pool overhead using identical connection pool configurations:
 
 ```go
 package main
@@ -223,8 +217,6 @@ end
 
 ## The Contenders: Gin, Fiber (fasthttp), and Kratos
 
-Evaluating Go web framework performance requires understanding how underlying networking engines and architectural paradigms impact memory allocations, concurrency models, and ecosystem compatibility. The three contenders analyzed in this benchmark suite represent distinct design philosophies ranging from standard library compliance and zero-allocation socket pooling to enterprise microservice governance architectures.
-
 Before analyzing the specific metric data, fully understanding the underlying architecture and design philosophy of each framework is absolutely essential. All three contenders chosen for this article represent three entirely different architectural trends within the Golang ecosystem.
 
 ### Gin Framework (Based on standard net/http)
@@ -271,8 +263,6 @@ Percentile latency is the most critical metric for evaluating actual user experi
 For Gin and Kratos, p99 latencies hit 9.5ms and 11.2ms respectively. This latency spike at higher percentiles is primarily a direct consequence of Garbage Collection pauses. When thousands of concurrent requests constantly allocate memory, Go's garbage collector is forced to trigger sweep cycles to reclaim RAM, creating short Stop-The-World (STW) pauses that push the latency of a small subset of requests significantly higher. Kratos has the highest p99 latency because it must perform additional metadata extraction, tracing Span initialization, and complex JSON/Protobuf serialization across multiple middleware layers.
 
 ## Profiling with `pprof`: CPU and Memory Consumption
-
-Analyzing CPU profile flame graphs and heap allocation profiles using Go's pprof tool isolates exact memory allocation bottlenecks across framework request execution paths. By inspecting runtime Garbage Collection worker overhead, socket read functions, and context allocations under sustained load, platform engineers identify structural performance trade-offs across each framework architecture.
 
 To precisely understand exactly which lines of code are consuming system CPU and RAM, we used Go's built-in performance analysis tool, `pprof`. This is a mandatory step for optimizing any system under high load.
 
@@ -362,8 +352,6 @@ Kratos was born for Enterprise-grade large systems:
 
 ## Frequently Asked Questions
 
-Addressing common developer inquiries regarding Go web framework performance clarifies performance trade-offs, operational constraints, and runtime configuration flags. The following answers evaluate memory allocation strategies, standard library compatibility issues, and runtime GC configuration rules for maintaining low latency across high-concurrency Go microservices in enterprise production.
-
 ### Why is Fiber faster than Gin in basic benchmark tests?
 
 The core difference lies in the underlying HTTP library:
@@ -372,7 +360,7 @@ The core difference lies in the underlying HTTP library:
 
 ### Is Kratos suitable for small projects?
 
-**Kratos** is a Production-grade framework designed by Bilibili to solve massive Microservices challenges. It employs an "API-first" approach with Protobuf and gRPC at its core.
+**Kratos** is a framework designed by Bilibili to solve massive Microservices challenges. It employs an "API-first" approach with Protobuf and gRPC at its core.
 - **Small projects:** Will find Kratos too "bulky" (Over-engineering). The biggest hurdle is the Learning Curve; you must learn how to organize multi-layered Clean Architecture, learn Protobuf, and how to generate code via Kratos CLI.
 - **Enterprise / Microservices projects:** This is where Kratos shines. It forces the Dev team to adhere to communication standards and provides built-in tools for Tracing, Metrics, Load Balancing, and Circuit Breakers. If you are designing a large system divided into many services, Kratos is the safest choice and offers the cleanest architecture.
 

@@ -30,11 +30,6 @@ canonicalURL: "https://tanhdev.com/posts/kubernetes-in-place-pod-resizing-guide/
 
 # Kubernetes In-Place Pod Resizing: No-Restart Scaling
 
-> **Answer-First:** Kubernetes In-Place Pod Resizing allows dynamically mutating container CPU and memory requests and limits without deleting, rescheduling, or restarting pods. Configured via `resizePolicy` in container specs and automated through Vertical Pod Autoscaler (VPA), it prevents connection drops and state loss in latency-critical microservices and AI workloads.
-
-- In-place pod resizing edge cases where CPU updates cause container restarts.
-- Configuring kubelet parameters to support resizing without disrupting running JVM tasks.
-
 Before this feature, changing a container's resource allocation required deleting and recreating the pod. For a stateful database holding connections, an AI model with 30GB of weights loaded in memory, or a long-running batch job — that restart is catastrophic. In-Place Pod Resize finally decouples resource management from pod lifecycle.
 
 This post is the production guide: what it is, how to use it, and where the sharp edges are. For the broader Kubernetes deployment context, see our [GitOps at Scale](/posts/gitops-at-scale-kubernetes-argocd-microservices/) guide. If you're also upgrading your Go services, the [Go 1.26 Green Tea GC improvements](/posts/go-126-green-tea-gc-cgo-performance-guide/) pair well with in-place resizing for memory-efficient workloads.
@@ -43,7 +38,7 @@ This post is the production guide: what it is, how to use it, and where the shar
 
 ## 1. What Is In-Place Pod Resizing?
 
-Understanding Kubernetes in-place pod resizing requires examining how dynamic cgroup modifications replace traditional pod evictions across cloud-native environments. By enabling live resource updates without container restarts, platform engineers dynamically adjust CPU and memory allocations for stateful services, AI inference workloads, and high-concurrency microservices while preserving active TCP connections and cached application state.
+In-place pod resizing applies dynamic cgroup modifications instead of pod evictions. Live resource updates happen without container restarts, letting you adjust CPU and memory for stateful services, AI inference workloads, and high-concurrency microservices while preserving TCP connections and cached state.
 
 ### Before vs. After
 
@@ -67,8 +62,6 @@ Ensure your control plane and node pools meet the minimum version requirements b
 ---
 
 ## 2. Requirements
-
-Verifying operational prerequisites for in-place pod resizing involves auditing control plane feature gates, container runtime capabilities, and kubelet configuration flags. In 2026 enterprise clusters, validating containerd or CRI-O cgroup update support across node pools ensures live resource mutations execute safely without triggering unintended pod restarts or container evictions.
 
 ### Infrastructure Checklist
 
@@ -96,7 +89,7 @@ Check managed Kubernetes cloud provider documentation to confirm platform suppor
 
 ## 3. How It Works: Resize Policy and Pod Status
 
-Executing live resource mutations relies on a coordinated workflow between the Kubernetes API server, kubelet controllers, and container runtime interfaces. By evaluating container resizePolicy declarations and tracking pod status transitions, the control plane applies cgroup updates dynamically, ensuring resource adjustments align with node capacity and namespace quotas.
+The resize workflow coordinates between the API server, kubelet, and container runtime. The control plane evaluates `resizePolicy` declarations, tracks pod status transitions, and applies cgroup updates based on node capacity and namespace quotas.
 
 ### Resize Flow
 
@@ -174,11 +167,9 @@ status:
 
 ## 4. Production YAML Examples
 
-Deploying production manifests configured for in-place pod resizing requires declaring explicit resource requests, limits, and restart policies across application containers. The following YAML configurations demonstrate practical implementations for AI inference workloads, relational database instances, and long-running batch jobs requiring dynamic CPU and memory scaling under fluctuating traffic.
-
 ### Example 1: AI Inference Pod with Live CPU/Memory Scaling
 
-The following pod manifest defines an AI inference container configured with `NotRequired` restart policies for live CPU and memory scaling.
+An AI inference container with `NotRequired` restart policies for live scaling:
 
 ```yaml
 apiVersion: v1

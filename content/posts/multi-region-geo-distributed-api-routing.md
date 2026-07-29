@@ -23,8 +23,6 @@ categories:
 
 # Multi-region Geo-distributed API Routing Architecture
 
-> **Answer-First:** Building a multi-region geo-distributed API routing architecture optimizes global user latency and disaster recovery by routing traffic to the closest regional origin via Anycast IP (Network Layer BGP routing) or DNS Latency Routing (Route 53). Terminating TCP/TLS handshakes at local edge points reduces user latency from hundreds of milliseconds to single digits, surviving regional outages transparently.
-
 ## The Need for Geo-Distributed APIs
 
 In the era of global digitization, user experience is directly determined by application response speed. When a business scales to serve customers across multiple countries and continents, a single-region central server architectural model quickly reveals severe physical limitations. The nature of network communication involves the movement of data packets through fiber optic cables, which is ultimately bounded by the speed of light. A request traveling from Vietnam to a server located in the US East region (us-east-1) must traverse tens of thousands of kilometers and numerous transit hops, resulting in a minimum Round Trip Time (RTT) of 200ms to 300ms. For applications requiring real-time interaction or financial transactions, this latency is unacceptable.
@@ -64,7 +62,7 @@ Anycast routing operates at the Network Layer via the Border Gateway Protocol (B
 **Disadvantages:**
 - Difficulty controlling routing paths: Anycast routing relies entirely on ISP decisions and the BGP protocol. Occasionally, due to peering policies between carriers, a user's packet in Vietnam might be routed through Hong Kong before reaching Singapore, despite a direct submarine cable existing.
 
-Understanding the operational trade-offs between network-layer and application-layer routing requires visualizing their underlying request pathways. The sequence diagram below contrasts the multi-hop resolution flow of DNS latency routing against the single-hop edge termination of Anycast IP routing for a client located in Vietnam:
+The sequence diagram below contrasts DNS latency routing against Anycast IP routing for a client in Vietnam:
 
 ```mermaid
 graph TD
@@ -88,7 +86,7 @@ graph TD
     end
 ```
 
-Declarative infrastructure management ensures that latency-based routing policies remain reproducible across cloud environments. The Terraform manifest below provisions AWS Route 53 records configured with region-specific latency routing policies targeting endpoints in Singapore (`ap-southeast-1`) and Hong Kong (`ap-east-1`):
+The Terraform manifest below provisions AWS Route 53 records with latency routing policies targeting Singapore (`ap-southeast-1`) and Hong Kong (`ap-east-1`):
 
 ```terraform
 terraform {

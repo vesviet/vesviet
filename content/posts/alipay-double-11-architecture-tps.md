@@ -32,9 +32,7 @@ canonicalURL: "https://tanhdev.com/posts/alipay-double-11-architecture-tps/"
 
 # Alipay Double 11: 544,000 TPS Architecture Explained
 
-> **Answer-First:** Alipay reached a reported peak of 544,000 payment transactions per second (TPS) during Double 11 by migrating from a monolithic architecture to Local Deployment Center (LDC) cell-based unitization, OceanBase distributed Paxos database clusters, and RocketMQ 2-phase transactional messaging.
-
-## Executive Summary & Research Baseline
+## Research Baseline
 
 Two different Double 11 peak figures circulate widely, and they measure different layers of the stack — conflating them is the most common error in write-ups on this topic:
 

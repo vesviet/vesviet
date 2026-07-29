@@ -30,22 +30,15 @@ canonicalURL: "https://tanhdev.com/posts/graphhopper-kubernetes-self-hosting-osm
 
 # Self-Hosting GraphHopper on Kubernetes with OSM Data
 
-> **Answer-First:** Self-hosting GraphHopper on Kubernetes with OpenStreetMap (OSM) data requires a StatefulSet with PVC persistent storage for PBF graph files, JVM memory heap tuning, and startup probe initial delays (300s+) to accommodate Contraction Hierarchies (CH) pre-computation without crash loops.
-
-- PVC provisioning configurations for OSM PBF files in multi-region clusters.
-- Tuning health probe timeouts to accommodate long graph pre-computation periods.
-
 GraphHopper is arguably the most capable open-source routing engine available — it supports Contraction Hierarchies (CH) for sub-millisecond route queries, custom vehicle profiles, turn restrictions, and the full OpenStreetMap road network. The problem most teams encounter is not the algorithm; it is the operational challenge of running it in Kubernetes: loading a large OSM PBF file, sizing JVM memory correctly, handling the long CH pre-processing startup time, and updating map data without downtime.
 
-This post is a production-grade Kubernetes deployment guide for GraphHopper using real OpenStreetMap data. By the end, you will have a StatefulSet deployment with persistent OSM graph files, correctly sized JVM resources, liveness and readiness probes that account for CH pre-processing time, and a zero-downtime map update strategy.
+This post is a Kubernetes deployment guide for GraphHopper using real OpenStreetMap data. By the end, you will have a StatefulSet deployment with persistent OSM graph files, correctly sized JVM resources, liveness and readiness probes that account for CH pre-processing time, and a zero-downtime map update strategy.
 
 For the routing algorithm comparison and API usage, see [GraphHopper vs CARTO: Order Fulfillment Routing Engine](/posts/graphhopper-distance-matrix-production-guide/).
 
 ---
 
 ## Why Self-Host GraphHopper? Cost vs. API Trade-Off Analysis
-
-Evaluating whether to self-host GraphHopper on Kubernetes versus relying on managed cloud APIs requires analyzing long-term query volumes, data latency constraints, and operational maintenance overhead. In 2026 enterprise logistics, self-hosting provides complete control over custom vehicle routing profiles and guarantees predictable monthly infrastructure expenditures despite high API throughput.
 
 Before committing to a self-hosted deployment, weigh the options:
 
@@ -70,13 +63,9 @@ For most logistics platforms in Southeast Asia, the break-even volume is around 
 
 ## Choosing the Right OSM PBF Data: Country, Region, or Bounding Box
 
-Selecting the appropriate OpenStreetMap data extract directly impacts memory allocation, graph ingestion speed, and container provisioning overhead across Kubernetes clusters. Engineering teams must balance geographic coverage requirements against host node RAM constraints, choosing focused country-level archives over massive continental datasets to optimize memory consumption and minimize initial container startup delays.
-
-OpenStreetMap provides free map data downloads in PBF (Protocol Buffer Format) through Geofabrik (the primary mirror).
+OpenStreetMap provides free map data downloads in PBF (Protocol Buffer Format) through Geofabrik (the primary mirror). Balance geographic coverage against RAM constraints — use focused country-level archives over continental datasets to optimize memory consumption and minimize startup delays.
 
 ### Data Size Reference
-
-The following memory reference details the raw PBF file size and required RAM allocation across common geographic regions.
 
 | Geography | Compressed PBF | CH Graph RAM (car profile) |
 |---|---|---|
@@ -89,8 +78,6 @@ The following memory reference details the raw PBF file size and required RAM al
 For logistics applications serving a single country, use the country-level extract. For multi-country coverage, use the regional extract. **Avoid using the global planet file** (>90 GB compressed) unless you have 512+ GB RAM available for graph pre-processing.
 
 ### Downloading OSM Data
-
-Execute the following commands to download regional OpenStreetMap data extracts and verify file checksums.
 
 ```bash
 # Vietnam only
@@ -110,9 +97,7 @@ Store the PBF file in a Kubernetes PersistentVolume (PVC) — not in the contain
 
 ## The GraphHopper Docker Image: Build vs. Official Image
 
-Containerizing GraphHopper for production workloads requires choosing between official upstream container images and customized Docker builds. In 2026 cloud-native deployments, using pinned official releases combined with externalized configuration files ensures security compliance, repeatable deployments, and simplified maintenance while maintaining flexibility for multi-profile vehicle routing environments.
-
-GraphHopper publishes an official Docker image on GitHub Container Registry. Pull the image with the commands below:
+GraphHopper publishes an official Docker image on GitHub Container Registry. For production, pin a specific version:
 
 ```bash
 docker pull ghcr.io/graphhopper/graphhopper:latest
@@ -176,8 +161,6 @@ kubectl create configmap graphhopper-config \
 
 ## Kubernetes Deployment Architecture: PersistentVolume for OSM Graph Files
 
-Structuring Kubernetes storage volumes correctly is essential to prevent costly graph re-computations upon pod restarts or cluster node re-scheduling events. GraphHopper requires dedicated persistent mounts for raw OpenStreetMap PBF archives and binary Contraction Hierarchies caches, ensuring fast node startup while preserving pre-processed road network indices across deployment lifecycles.
-
 GraphHopper requires two persistent directories mounted to the pod:
 
 1. **OSM PBF input** (`/data/osm/`): The raw map data file
@@ -197,8 +180,6 @@ graph TD
 ```
 
 ### PersistentVolumeClaim
-
-The following PersistentVolumeClaim manifest provisions SSD storage for OSM map files and pre-computed graph caches.
 
 ```yaml
 # graphhopper-pvc.yaml
@@ -240,8 +221,6 @@ kubectl delete pod osm-uploader -n logistics
 
 ## RAM and JVM Tuning: How to Size Kubernetes Requests/Limits for CH Graphs
 
-Sizing container resources accurately for GraphHopper requires distinguishing between JVM heap allocations and off-heap memory-mapped file structures. Because Contraction Hierarchies graphs rely heavily on native memory mapping for rapid lookup performance, setting explicit container limits prevents out-of-memory container terminations while allowing optimal Java garbage collection behavior.
-
 This is the most common source of GraphHopper failures in Kubernetes: the JVM OOMKill.
 
 ### Memory Requirements
@@ -276,8 +255,6 @@ Key flags:
 
 ### Kubernetes Resource Requests and Limits
 
-Configure explicit container CPU and memory requests and limits to ensure stable pod scheduling and bursting headroom during graph startup.
-
 ```yaml
 resources:
   requests:
@@ -291,8 +268,6 @@ resources:
 ---
 
 ## StatefulSet vs. Deployment: Which K8s Workload Type to Use
-
-Choosing the appropriate Kubernetes workload controller determines how GraphHopper handles persistent storage attachments, pod identity, and multi-replica scaling strategies. Because high-performance routing engines rely on single-writer persistent volumes for binary graph caches, architectural decisions between StatefulSet and Deployment controllers directly govern high-availability setups and rolling update mechanisms.
 
 GraphHopper requires a PersistentVolume with `ReadWriteOnce` access mode (a single writer). This creates a fundamental Kubernetes constraint: you cannot run multiple replicas of GraphHopper on the same PVC simultaneously.
 
@@ -393,8 +368,6 @@ spec:
 
 ## Zero-Downtime OSM Map Updates: Rolling Graph Regeneration Strategy
 
-Executing map updates without disrupting active logistics routing demands a robust blue-green deployment strategy across Kubernetes clusters. Because updating OpenStreetMap datasets requires re-building Contraction Hierarchies indices, maintaining separate standby StatefulSet instances guarantees uninterrupted API service while background workers process fresh map extracts and validate routing integrity.
-
 OSM data becomes stale over time — new roads, road closures, and access restriction changes accumulate. A practical update cadence for logistics is weekly (Geofabrik publishes weekly country extracts).
 
 ### The Blue-Green Graph Update Pattern
@@ -428,8 +401,6 @@ For the GitOps workflow that manages CronJob and StatefulSet configuration in so
 
 ## Health Probes and Readiness Gates: Waiting for CH Pre-Processing to Complete
 
-Configuring Kubernetes health probes for GraphHopper requires accounting for lengthy initial graph processing phases without triggering false container restarts. Platform engineers must balance readiness probe delays against liveness checks, allowing sufficient execution time for Contraction Hierarchies pre-computation during fresh imports while enabling rapid failure detection during operational runtime.
-
 The single most common misconfiguration is setting `initialDelaySeconds` too short on the readiness probe. GraphHopper startup involves four distinct phases:
 
 1. Load the OSM PBF file (first run: 2–5 minutes for Vietnam)
@@ -445,9 +416,7 @@ The readiness probe configuration above uses `initialDelaySeconds: 60` with `fai
 
 ## Monitoring GraphHopper on Kubernetes with Prometheus & Grafana
 
-Establishing comprehensive observability for GraphHopper instances on Kubernetes requires tracking JVM heap usage, off-heap memory consumption, and API response latencies. Integrating Prometheus exporters with Grafana dashboards enables logistics engineering teams to monitor real-time routing query rates, identify graph lookup bottlenecks, and trigger automated alerts before capacity limits are exceeded.
-
-GraphHopper's admin port exposes metrics in Dropwizard format. Use a Prometheus JMX exporter or the metrics endpoint to scrape. The ServiceMonitor manifest below configures 30-second metric scraping for Prometheus Operator:
+GraphHopper's admin port exposes metrics in Dropwizard format. Use a Prometheus JMX exporter or the metrics endpoint to scrape:
 
 ```yaml
 # ServiceMonitor for Prometheus Operator
@@ -477,8 +446,6 @@ Integrate these dashboards with the broader Kubernetes observability stack descr
 ---
 
 ## Frequently Asked Questions
-
-Addressing production operational concerns for GraphHopper on Kubernetes provides engineering teams with actionable guidelines for resource allocation, scaling, and zero-downtime maintenance. The following answers clarify memory sizing for regional graphs, multi-replica deployment constraints, and zero-downtime map data update strategies in enterprise cloud infrastructure.
 
 ### How much RAM does GraphHopper need to serve Vietnam's road network?
 For Vietnam with car + motorcycle + bike CH profiles: approximately 3–4 GB of memory-mapped off-heap memory for the graph files, plus 512MB–1GB JVM heap. Set your Kubernetes memory limit to 5 GB to provide adequate buffer. Southeast Asia region (including Thailand, Indonesia, Philippines) requires approximately 15–20 GB.

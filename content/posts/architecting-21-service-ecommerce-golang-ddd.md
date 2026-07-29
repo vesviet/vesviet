@@ -22,8 +22,6 @@ canonicalURL: "https://tanhdev.com/posts/architecting-21-service-ecommerce-golan
 
 # Architecting 21-Service E-commerce with Golang & DDD
 
-> **Answer-First:** Architecting a 21-service e-commerce ecosystem in Go requires strict Domain-Driven Design context boundaries, Kratos framework isolation, Dapr Saga orchestration for checkout, and database-level idempotency tables to handle At-Least-Once event delivery safely without distributed lock bottlenecks.
-
 - The exact performance overhead of using Go's structural subtyping versus manual dependency injection in high-throughput microservices.
 - Why scoping database transactions to a single Aggregate root is critical, and how we resolved out-of-order event delivery using Kafka partition keys.
 
@@ -46,7 +44,7 @@ By modeling these as distinct Bounded Contexts, we ensure that each service owns
 - **Customer-Supplier Relationship:** The Order Context acts as a customer to the Warehouse Context, requesting stock reservations and receiving success/failure signals.
 - **Shared Kernel:** Used very sparingly, only for global currencies and country-code configurations shared across localized shipping services.
 
-We bounded our ecosystem loosely around five core domains, prioritizing strict database-per-service isolation. The architecture diagram below illustrates the asynchronous event mesh connecting core e-commerce services during a checkout saga. It demonstrates how Dapr Pub/Sub decouples the Checkout, Order, Warehouse, and Pricing services using event choreography rather than synchronous RPC calls:
+We bounded our ecosystem loosely around five core domains, prioritizing strict database-per-service isolation:
 
 ```mermaid
 graph TD
@@ -72,7 +70,7 @@ The diagram above encapsulates the most volatile flow: **The Checkout Saga**. Wh
 
 **Kratos v2 physically separates Go code into layers: `internal/biz/` (business logic, knows nothing about PostgreSQL), `internal/data/` (implements biz repository interface with GORM), `internal/service/` (gRPC/HTTP transport). Google Wire provides compile-time dependency injection — unit tests use mocked repositories that implement the same biz interface, with zero real database required.**
 
-To manage 21 separate codebases, structural consistency across engineering teams is mandatory. We utilize **Kratos (v2)** to strictly enforce Clean Architecture in Golang, decoupling transport protocols from domain logic. The Go code snippet below demonstrates Kratos Clean Architecture layer separation between business logic (`biz`) and data persistence (`data`), ensuring the domain core remains completely independent of GORM and PostgreSQL:
+To manage 21 separate codebases, structural consistency across engineering teams is mandatory. We utilize **Kratos (v2)** to strictly enforce Clean Architecture in Golang, decoupling transport protocols from domain logic:
 
 ```go
 // internal/biz/order.go (Business Logic Layer)
@@ -104,7 +102,7 @@ func (r *orderRepo) Save(ctx context.Context, o *biz.Order) error {
 
 ### Configuring Kratos Router Middleware
 
-To ensure that cross-cutting concerns—such as authentication, tracing, logging, and input validation—are handled uniformly across all 21 microservices, Kratos initializes servers with a structured middleware chain. The following Go code snippet illustrates how to configure the HTTP router middleware interceptor pipeline for enterprise production serving:
+Kratos initializes servers with a structured middleware chain for cross-cutting concerns:
 
 ```go
 import (
@@ -170,7 +168,7 @@ Inventory race conditions happen when two sub-second requests try to buy the las
 
 If `Warehouse Service` just fires `SELECT stock FROM items WHERE id = ?`, both concurrent threads will see `stock = 1`, and both will decrement it, leading to `-1` stock. 
 
-Instead of using heavy distributed locks, the Warehouse service enforces **Optimistic Concurrency Control (OCC)** directly at the database layer. The following SQL-driven Go statement illustrates how version checks and available stock bounds prevent race conditions during high-concurrency checkout bursts:
+Instead of using heavy distributed locks, the Warehouse service enforces **Optimistic Concurrency Control (OCC)** directly at the database layer:
 
 ```go
 // Optimistic Locking to prevent overselling
@@ -191,9 +189,9 @@ If the lock fails due to an instant mismatch, `Warehouse` publishes an `inventor
 ### The Rollback (Compensation)
 Because state is distributed, if `Warehouse` successfully locks the stock but `Pricing` reports that the applied voucher is invalid, the entire Saga must abort. 
 
-`Order Service` often acts as the sink. If it sees `inventory.reservation.failed` OR `pricing.validation.failed`, it fires a massive compensation event: `checkout.failed`. 
+`Order Service` often acts as the sink. If it sees `inventory.reservation.failed` OR `pricing.validation.failed`, it fires a compensation event: `checkout.failed`. 
 
-When downstream services publish failure signals during a saga, background worker routines intercept the failure events to restore system state. The following Go worker handler snippet demonstrates how the Warehouse service releases reserved stock upon receiving a `checkout.failed` compensation event:
+When downstream services publish failure signals during a saga, the Warehouse service releases reserved stock:
 
 ```go
 // Background Worker un-reserving stock
@@ -209,7 +207,7 @@ func (w *WarehouseWorker) HandleCheckoutFailed(ctx context.Context, event Checko
 
 When you rely on network events, network retries will happen. Dapr guarantees "At-Least-Once" delivery, meaning `Warehouse Service` might receive the same `checkout.requested` event twice if a timeout occurs.
 
-To prevent duplicate message processing when network retries occur, every database across our 21 services incorporates a dedicated idempotency table. The following DDL snippet defines the schema used by services to record unique transaction execution IDs:
+Every database across our 21 services incorporates a dedicated idempotency table:
 
 ```sql
 CREATE TABLE processed_events (

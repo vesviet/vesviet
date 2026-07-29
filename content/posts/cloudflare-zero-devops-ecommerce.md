@@ -25,8 +25,6 @@ canonicalURL: "https://tanhdev.com/posts/cloudflare-zero-devops-ecommerce/"
 
 # Zero DevOps E-commerce with Cloudflare Workers & Turborepo
 
-> **Answer-First:** Building a zero-DevOps e-commerce backend combines Cloudflare Workers (serverless V8 isolates at 300+ edge locations) with Cloudflare D1 (edge SQLite) inside a Turborepo monorepo. This architecture eliminates server provisioning, Docker image maintenance, and CI/CD pipeline complexity, while automatically generating type-safe mobile SDKs (Flutter/Swift) directly from shared OpenAPI contracts on every API build.
-
 For a stateful edge checkout pattern, pair it with [Cloudflare D1 and Durable Objects for real-time carts](/posts/cloudflare-d1-durable-objects-realtime-cart/).
 
 Tired of maintaining expensive Kubernetes clusters, fine-tuning Auto-scaling groups on AWS, or wiring together complex CI/CD pipelines just to keep an e-commerce store alive? Welcome to the **Zero DevOps** era.
@@ -190,7 +188,7 @@ When thousands of users attempt to write to the database simultaneously during a
 ### The Solution: Transaction Batching via the D1 Batch API
 To prevent lock timeouts, we must minimize database write roundtrips. Instead of opening multiple transactions sequentially, we combine queries into a single batch using the native `db.batch()` API. This locks the database exactly once, executes all operations in memory, and writes them in a single file-system operation.
 
-The TypeScript code snippet below demonstrates how to process edge checkout transactions, deduct stock, and insert order line items within a single atomic batch:
+The TypeScript code below processes edge checkout transactions, deducts stock, and inserts order line items within a single atomic batch:
 
 ```typescript
 import { drizzle } from "drizzle-orm/d1";
@@ -296,7 +294,7 @@ export async function processEdgeCheckout(
 
 In an e-commerce platform, serving product lists and details with sub-100ms latency globally requires aggressive edge caching. Cloudflare Workers allow developers to intercept fetch requests and interact programmatically with the globally distributed Cloudflare Cache API, bypassing database calls entirely for hot static routes.
 
-The TypeScript script below details the routing and edge caching handler integrated into Aura Store's `public-api` worker:
+The TypeScript script below shows the routing and edge caching handler in Aura Store's `public-api` worker:
 
 ```typescript
 // apps/public-api/src/caching.ts - Edge Caching & Routing Handler

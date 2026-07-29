@@ -27,30 +27,25 @@ canonicalURL: "https://tanhdev.com/posts/mysql-scaling-sharding-tidb-architectur
 
 # Replace MySQL Sharding with TiDB: Distributed SQL Architecture
 
-> **Answer-First:** Replacing manual MySQL database sharding with TiDB eliminates application-layer query routing and cross-shard JOIN limitations by using an auto-partitioning distributed SQL engine with Raft consensus storage (TiKV), stateless compute nodes, and native Percolator distributed ACID transactions.
-
-- Migrating schemas to TiDB with zero downtime using DM-portal.
-- How TiKV nodes scale independently of TiDB SQL computation nodes.
-
 Scaling a relational database is one of the most demanding challenges in system design. As applications grow from thousands to millions of active users, the database ceases to be a simple storage engine and becomes the primary bottleneck of the entire system architecture. In this technical guide, we explore the architectural progression of scaling MySQL—beginning with replication topologies, stepping through the complexities and operational hazards of manual database sharding (including proxy middleware like Vitess), and evaluating NewSQL alternatives, specifically the distributed architecture of TiDB.
 
 ---
 
 ## Why Replace MySQL Sharding: Eliminating Application Routing
 
-As transactional database volume scales beyond single-node MySQL capacity, traditional application-level sharding forces developers to write complex routing logic into their services. Queries must explicitly specify the sharding key, cross-shard JOINs become impossible without manual application-level merging, and distributed transactions require error-prone two-phase commit (2PC) or Saga orchestration.
+When database volume scales beyond single-node MySQL capacity, traditional application-level sharding forces developers to write complex routing logic. Queries must explicitly specify the sharding key, cross-shard JOINs become impossible without manual merging, and distributed transactions require error-prone 2PC or Saga orchestration.
 
 Replacing manual sharding with a distributed SQL engine like TiDB removes this application complexity. The application connects to a stateless SQL layer via a single standard MySQL wire protocol endpoint. Behind the scenes, the distributed engine handles range-based data partitioning, auto-splits hot regions, and coordinates ACID transactions across storage nodes transparently.
 
 ## The Limits of Traditional MySQL Scaling
 
-Traditional MySQL database scaling relies primarily on vertical hardware upgrades and read replicas. This pattern hits a hard operational ceiling when write throughput saturates single-node storage IOPS or when single table sizes exceed 500GB, making schema modifications dangerous and replication lag unavoidable across multi-region production topologies in 2026.
+Traditional MySQL scaling relies on vertical hardware upgrades and read replicas. This pattern hits a hard ceiling when write throughput saturates single-node storage IOPS or when single table sizes exceed 500GB, making schema modifications dangerous and replication lag unavoidable.
 
 Migrating from a manual sharded setup means transitioning from application-level query routing across discrete database instances to a unified TiDB cluster that auto-partitions data into Raft Regions while exposing a standard MySQL wire-protocol endpoint.
 
 Before jumping to Sharding, it is highly recommended to review the basic strategies in our [MySQL Scalability Guide](/posts/mysql-scalability-guide/). When read volume saturates the CPU or disk bandwidth, the standard mitigation is to implement a Primary-Replica replication topology.
 
-The architecture diagram below illustrates a standard Primary-Replica layout. The primary database node receives all transactional write operations while asynchronously streaming binlog events to read-only replica instances:
+Standard Primary-Replica layout:
 
 ```mermaid
 flowchart TD
@@ -80,7 +75,7 @@ Historically, the SQL Thread was single-threaded. If a replica was configured to
 > 📈 **Resolution:** Batched the delete operation into segments of 5,000 rows utilizing the primary key (`id`), indexed the `created_at` column, and enabled multi-threaded `WRITESET` replication.
 > *(Source: Internal Post-Mortem 2026)*
 
-To mitigate single-threaded applier bottlenecks, modern MySQL versions support parallel worker threads. The SQL commands below enable multi-threaded appliers on replicas while configuring the primary to extract writeset dependency hashes for maximum parallelism:
+To mitigate single-threaded applier bottlenecks, modern MySQL versions support parallel worker threads:
 
 ```sql
 -- Enable multi-threaded appliers on the replica
@@ -112,13 +107,9 @@ When vertical scaling (scaling up) reaches its limit, you must transition to hor
 
 ## The Pain Points of MySQL Sharding
 
-Manual MySQL sharding introduces severe architectural complexity into backend microservices. Engineering teams must abandon native cross-shard JOIN operations, implement custom application routing logic, and coordinate two-phase commits or Saga state machines to maintain data consistency across distributed database shards in high-throughput 2026 cloud-native production environments.
+Database sharding splits data horizontally based on a chosen **shard key** (e.g., partitioning users with `user_id % 4` across four database instances). While it scales writes, it introduces massive architectural complexity by pushing database-level responsibilities up to the application layer.
 
-Database sharding is the process of partitioning a single database across multiple physical machines. It splits data horizontally based on a chosen **shard key** (e.g., partitioning users with `user_id % 4` across four database instances). 
-
-While sharding scales writes, it introduces massive architectural complexity by pushing database-level responsibilities up to the application layer.
-
-The diagram below illustrates how application-level sharding intercepts user requests. The routing layer calculates hash boundaries to direct specific `user_id` records to distinct MySQL database instances:
+Application-level sharding routes specific `user_id` records to distinct MySQL instances:
 
 ```mermaid
 flowchart TD
@@ -173,14 +164,12 @@ While Vitess preserves your existing investment in MySQL storage engines (InnoDB
 
 ## Enter NewSQL: TiDB as a Sharding Alternative
 
-TiDB functions as a modern drop-in MySQL replacement that scales relational writes horizontally without manual sharding middleware. It processes distributed SQL queries transparently, enabling enterprise applications to scale OLTP operations across dozens of storage nodes while preserving standard MySQL syntax, strong consistency, and native ACID transaction guarantees in 2026.
-
-NewSQL databases represent a class of modern relational databases that provide the horizontal scalability of NoSQL systems while preserving ACID transaction guarantees and standard SQL syntax. **TiDB** (developed by PingCAP) is an open-source, distributed NewSQL database designed to serve as a drop-in replacement for scaled-out MySQL databases.
+NewSQL databases provide the horizontal scalability of NoSQL while preserving ACID guarantees and standard SQL syntax. **TiDB** (developed by PingCAP) is an open-source distributed NewSQL database designed as a drop-in replacement for scaled-out MySQL.
 
 ### Core Architecture: Separation of Compute and Storage
 TiDB is built from the ground up as a stateless compute layer separated from a distributed transactional storage layer.
 
-The architecture diagram below illustrates the separation of compute and storage in TiDB. The stateless TiDB SQL layer delegates cluster coordination to the Placement Driver while distributing transactional rows across TiKV Raft groups and analytical data to TiFlash:
+TiDB's architecture separates compute from storage:
 
 ```mermaid
 flowchart TD
@@ -238,7 +227,7 @@ TiDB solves this by integrating **TiFlash**, a column-oriented storage engine. T
 
 ## TiDB vs AWS Aurora vs CockroachDB: Architectural Comparison
 
-Selecting the optimal database engine in 2026 requires evaluating specific workload characteristics against storage architecture trade-offs. While Amazon Aurora scales reads using a decoupled shared-storage architecture and CockroachDB prioritizes multi-region serializability, TiDB delivers horizontal write scaling with full MySQL wire-protocol compatibility and real-time HTAP analytics capabilities without requiring complex ETL data pipelines.
+Selecting the optimal database engine requires evaluating specific workload characteristics against storage architecture trade-offs. While Amazon Aurora scales reads using a decoupled shared-storage architecture and CockroachDB prioritizes multi-region serializability, TiDB delivers horizontal write scaling with full MySQL wire-protocol compatibility and real-time HTAP analytics capabilities without requiring complex ETL data pipelines.
 
 - **AWS Aurora MySQL:** Retains a single primary writer node while decoupling storage across a custom log-structured distributed storage volume. Aurora excels at high-concurrency read scaling (up to 15 read replicas with <10ms lag) and automated failover, but write throughput remains constrained by single-writer node capacity.
 - **CockroachDB:** A PostgreSQL-compatible distributed SQL database built on a Range-based key-value store using Raft consensus. CockroachDB prioritizes multi-region survivability and strict serializable isolation, but lacks native MySQL wire-protocol compatibility.

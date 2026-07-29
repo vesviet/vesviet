@@ -30,11 +30,6 @@ canonicalURL: "https://tanhdev.com/posts/go-126-green-tea-gc-cgo-performance-gui
 
 # Go 1.26: Green Tea GC, Faster CGO & Goroutine Leak Detection
 
-> **Answer-First:** Go 1.26 introduces the Green Tea garbage collector, replacing object-by-object graph walking with page-oriented marking to leverage spatial locality and AVX-512 vector acceleration. It reduces GC CPU overhead and tail latency while optimizing CGO transition paths and introducing a native goroutine leak profiler for production diagnostics.
-
-- Performance metrics of garbage collection optimization in Go 1.26.
-- Memory overhead trade-offs when calling CGO functions in high-throughput network threads.
-
 Released in February 2026, Go 1.26 is not a routine patch release. It fundamentally changes how the Go runtime manages memory, interacts with C code, and surfaces concurrency bugs. For teams running [Golang microservices at scale](/posts/architecting-21-service-ecommerce-golang-ddd/), these improvements compound across a fleet — zero code changes required.
 
 This post covers what changed, why it matters for production systems, how to adopt it, and what to watch out for during migration.
@@ -42,8 +37,6 @@ This post covers what changed, why it matters for production systems, how to ado
 ---
 
 ## 1. The Green Tea Garbage Collector: Page-Oriented Marking
-
-Go 1.26 introduces the Green Tea garbage collector to replace object-by-object graph walking with page-oriented scanning algorithms. By operating on 8 KiB memory pages sequentially, the runtime optimizes CPU cache locality and enables AVX-512 hardware vector acceleration, reducing garbage collection CPU overhead across high-throughput production workloads.
 
 ### Why the Old GC Was Hitting a Wall
 
@@ -306,8 +299,6 @@ Roll out via canary deployment — monitor GC metrics (`/sched/pauses/total/gc:s
 ---
 
 ## Frequently Asked Questions
-
-Below are answers to common technical questions regarding the Go 1.26 runtime updates, Green Tea GC performance, cgo optimizations, and experimental goroutine leak profiling. These insights clarify architectural benefits, migration risks, and operational monitoring strategies for Go microservices deployed in cloud-native environments.
 
 ### What is the Green Tea garbage collector in Go 1.26?
 The **Green Tea GC** is a new page-oriented mark-sweep garbage collector that became the default in Go 1.26. Instead of scanning objects individually (traditional graph flood), it tracks 8 KiB pages on a work queue and scans multiple objects per page in sequential memory passes. This improves CPU cache locality and enables AVX-512 vector acceleration, delivering 10–40% less GC CPU overhead in real workloads. It was experimental in Go 1.25 and is production-proven at Google scale.

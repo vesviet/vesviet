@@ -20,13 +20,9 @@ cover:
 
 # High-Throughput Event-Driven Microservices in Go with NATS JetStream & CQRS
 
-> **Answer-First:** Building high-throughput event-driven microservices with Go, NATS JetStream, and CQRS decouples write commands from read queries. Utilizing NATS JetStream pull consumers, server-side deduplication, and atomic Redis read guards processes 100,000+ transactions per second with sub-0.8ms P99 latencies and zero database write contention.
-
----
-
 ## Section 1: Architectural Rationale: Why Go + NATS JetStream for Event-Driven Microservices
 
-Scaling distributed systems beyond tens of thousands of transactions per second requires overcoming database write contention and cascading latency spikes inherent in synchronous request-response paradigms. Adopting Command Query Responsibility Segregation paired with event-driven architectures isolates write commands from analytical queries, enabling high-throughput microservices to process state mutations with sub-millisecond latencies.
+Beyond tens of thousands of transactions per second, synchronous request-response designs start hitting database write contention and cascading latency spikes. Command Query Responsibility Segregation (CQRS) paired with Event-Driven Architecture (EDA) isolates write commands from analytical queries, letting each side scale independently.
 
 To overcome these structural boundaries, high-scale engineering organizations adopt **Command Query Responsibility Segregation (CQRS)** paired with **Event-Driven Architecture (EDA)**. By explicitly separating the write path (commands) from the read path (queries), CQRS allows each side to scale independently according to its access patterns. Commands execute lightweight state mutations against write-optimized engines, emitting immutable domain events into a high-performance message broker. Decoupled consumer workers asynchronously consume these events to populate specialized, read-optimized views (such as Redis key-value pairs, Elasticsearch documents, or PostgreSQL materialized read tables).
 
@@ -55,7 +51,7 @@ To overcome these structural boundaries, high-scale engineering organizations ad
 
 ### The Performance Case for NATS JetStream vs. Apache Kafka
 
-Selecting the appropriate event stream engine is crucial when designing high-throughput microservices in Go. While Apache Kafka has historically served as the industry standard for distributed event logs, its operational weight and runtime footprint introduce substantial friction for Go-native environments:
+Selecting the appropriate event stream engine matters for high-throughput microservices in Go. Apache Kafka has historically served as the industry standard for distributed event logs, but its operational weight and runtime footprint introduce friction for Go-native environments:
 
 1. **Memory & Infrastructure Footprint:** Apache Kafka requires substantial JVM heap allocations (typically 3GB to 8GB per broker node) and, until recently, depended on external ZooKeeper clusters. In contrast, NATS JetStream is compiled as a single, lightweight binary with a baseline memory footprint of roughly 22MB per node. It utilizes an embedded Raft consensus algorithm for metadata and stream replication, eliminating external coordination dependencies entirely.
 2. **Go-Native Synergy (Zero Cgo):** The official Go client for Kafka (`confluent-kafka-go`) relies heavily on `librdkafka` via Cgo wrappers. Cgo cross-compilation introduces build complexity, garbage collector pauses across Foreign Function Interface (FFI) boundaries, and memory leaks that are difficult to profile. NATS JetStream is implemented natively in Go (`nats.go`), sharing identical memory allocation mechanics and runtime scheduler characteristics with your application services.
@@ -468,7 +464,7 @@ For alternative event bus abstractions and sidecar deployment models, compare th
 
 ## Section 6: Production Tuning & Performance Benchmarks
 
-Benchmarking NATS JetStream against Apache Kafka in a Go microservices environment demonstrates significant performance gains in tail latency, memory consumption, and CPU efficiency. The empirical benchmark results below detail how NATS JetStream delivers sub-millisecond P99 latencies under sustained workloads exceeding one hundred thousand transactions per second.
+The numbers below are from an internal benchmark run on the setup described — not published vendor figures for either project. Kafka and NATS JetStream perform very differently depending on tuning, hardware, and payload shape, so treat these as a starting point for your own load test rather than a general claim.
 
 ### Benchmark Setup & Methodology
 
@@ -476,7 +472,7 @@ Benchmarking NATS JetStream against Apache Kafka in a Go microservices environme
 - **Cluster Environment:** 3-node Kubernetes cluster (v1.30), 8 vCPUs, 16 GB RAM per node, NVMe block storage.
 - **SDK Benchmarks:** Pure Go `nats.go` (v1.34) versus `confluent-kafka-go` (v2.3.0 with `librdkafka` C-bindings).
 
-### NATS JetStream vs. Apache Kafka Benchmark Comparison
+### NATS JetStream vs. Apache Kafka — Results From This Test Run
 
 | Performance Metric | NATS JetStream (v2.10+) | Apache Kafka (v3.7 KRaft) | Technical Impact & Architectural Rationale |
 | --- | --- | --- | --- |
@@ -537,11 +533,9 @@ func FastMarshal(v any) ([]byte, error) {
 
 ## Frequently Asked Questions
 
-Addressing technical questions regarding NATS JetStream broker selection, CQRS eventual consistency patterns, and stream retention policies helps engineering teams build resilient event-driven systems in Go. The following answers cover essential architectural considerations for deploying high-throughput microservice streams under demanding production workloads.
-
 ### Why choose NATS JetStream over Apache Kafka for Go-based microservices?
 
-**Answer:** NATS JetStream is engineered natively in Go (`nats.go` with zero Cgo dependencies), delivering sub-millisecond p99 pub/sub latencies (<0.8 ms) and a lightweight ~22MB broker footprint per node compared to JVM-based Kafka brokers that require gigabytes of RAM. Operating without external coordination services like ZooKeeper or KRaft, NATS JetStream embeds Raft consensus directly into the single binary, eliminating Cgo build friction, cross-boundary GC pauses, and operational complexity while providing built-in Key-Value and Object stores.
+**Answer:** NATS JetStream is engineered natively in Go (`nats.go` with zero Cgo dependencies). In our benchmark it delivered sub-millisecond p99 pub/sub latency and a lightweight ~22MB broker footprint per node, versus JVM-based Kafka brokers that need gigabytes of RAM — though your own numbers will depend on tuning and hardware. Operating without external coordination services like ZooKeeper or KRaft, NATS JetStream embeds Raft consensus directly into the single binary, eliminating Cgo build friction, cross-boundary GC pauses, and operational complexity while providing built-in Key-Value and Object stores.
 
 ### How does CQRS handle eventual consistency and prevent stale read views during asynchronous event processing?
 

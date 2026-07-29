@@ -20,11 +20,6 @@ canonicalURL: "https://tanhdev.com/posts/mastering-event-driven-architecture-dap
 
 # Mastering Event-Driven Architecture with Dapr Pub/Sub in Go
 
-> **Answer-First:** Distributed microservices maintain eventual data consistency without synchronous coupling by using Dapr Pub/Sub sidecars (v1.14+) alongside Go. Dapr abstracts message brokers (Kafka/Redis) while guaranteeing resilience through orchestrated Saga transactions, Redis-backed idempotent message handlers (`SET key NX`), and dead-letter queue (DLQ) routing for unhandled poison messages.
-
-- How to configure dead-letter queues in Dapr to handle poison messages.
-- Designing idempotent message handlers that process duplicate events safely.
-
 In my previous post, we explored how abandoning monolithic architecture in favor of strict **Domain-Driven Design (DDD)** bounded contexts allowed an e-commerce platform to scale beyond 10,000+ orders per day. However, splitting one big database into 20+ isolated Postgres databases introduces a terrifying new problem: **How do we maintain data consistency across disconnected services?**
 
 The answer is **Event-Driven Architecture (EDA)**. Rather than chaining blocking synchronous HTTP calls across the network — which guarantees a cascading failure if a single service is down — each microservice independently broadcasts out-of-band "Events" through a centralized broker. Services are decoupled from each other's availability. A brief outage in the Notification service does not cause a checkout failure.
@@ -80,7 +75,7 @@ The Dapr sidecar adds approximately **sub-millisecond to ~1ms latency per hop** 
 
 ### Step 1: Define the Pub/Sub Component
 
-To decouple application code from broker-specific SDKs, Dapr configures message channels via declarative YAML components. The component manifest below configures Kafka as the underlying message bus while exposing a uniform `pubsub` reference name to Go microservices:
+Dapr configures message channels via declarative YAML components. This manifest configures Kafka as the underlying broker while exposing a uniform `pubsub` reference name:
 
 ```yaml
 # components/pubsub.yaml
@@ -124,7 +119,7 @@ Install the Dapr Go SDK:
 go get github.com/dapr/go-sdk
 ```
 
-Publishing events through Dapr requires only the lightweight Go SDK client without direct Kafka dependency imports. The code implementation below constructs an idempotent event payload and emits it across the local Dapr sidecar HTTP/gRPC boundary:
+Publishing events through Dapr requires only the lightweight Go SDK client:
 
 ```go
 package checkout
@@ -172,7 +167,7 @@ func PublishOrderCreated(ctx context.Context, order *Order) error {
 
 ### Step 3: Subscribing in Go (Push Model)
 
-In the traditional push delivery model, Dapr invokes HTTP or gRPC routes exposed by your service upon message delivery. The example below configures a Go gRPC server that registers a topic event handler with built-in idempotency verification:
+In the push model, Dapr invokes HTTP or gRPC routes on your service upon message delivery:
 
 ```go
 package warehouse
@@ -229,7 +224,7 @@ func handleOrderCreated(ctx context.Context, e *common.TopicEvent) (bool, error)
 
 ### Step 4: Streaming Subscriptions (Dapr v1.14 — Preview)
 
-For background worker tasks where opening inbound HTTP or gRPC listening ports is undesirable, Dapr v1.14 introduced client-managed streaming subscriptions. The Go handler below opens a persistent bi-directional gRPC stream to pull messages with explicit acknowledgment controls:
+For background workers where opening inbound HTTP/gRPC ports is undesirable, Dapr v1.14 introduced streaming subscriptions:
 
 ```go
 package warehouse
@@ -288,7 +283,7 @@ func RunStreamingConsumer(ctx context.Context) error {
 
 **Dapr choreography Saga: Checkout publishes `checkout.order.created` → Warehouse reserves stock and publishes `warehouse.inventory.reserved` → Payment charges and publishes result. On payment failure, a `payments.payment.failed` event triggers Warehouse to compensate (rollback stock). No central coordinator — each service knows its role. Use this pattern for 2–4 step Sagas; switch to Dapr Workflow Orchestration for 4+ steps with complex branching.**
 
-You can no longer execute a simple `BEGIN ... COMMIT` SQL block to save an order, reserve inventory, and capture a payment. Maintaining data consistency across autonomous microservice databases requires executing saga workflows instead of single atomic transactions. The sequence diagram below illustrates how a choreography saga manages order creation, inventory reservation, and payment processing while triggering compensating rollbacks on failure:
+You can no longer execute a simple `BEGIN ... COMMIT` SQL block to save an order, reserve inventory, and capture a payment. Maintaining data consistency across autonomous microservice databases requires saga workflows:
 
 ```mermaid
 sequenceDiagram
@@ -336,7 +331,7 @@ Every single event payload structurally guarantees a unique `EventID`. Our Go co
 
 What if a message consistently crashes the processor because of a logical defect? Without explicit DLQ configuration, the message loops in the retry queue forever — blocking processing of subsequent events in the same partition.
 
-To handle poison messages gracefully, Dapr manages automatic retries and dead-letter routing declaratively. The resiliency manifest below enforces exponential backoff and routes unprocessable messages to a designated DLQ topic after 5 failed attempts:
+To handle poison messages gracefully, Dapr manages retries and dead-letter routing declaratively:
 
 ```yaml
 # components/resiliency.yaml
@@ -364,7 +359,7 @@ Following our naming convention, a crashing `checkout.order.created` event gets 
 
 ### DLQ Subscriber: Inspecting and Replaying Poison Messages
 
-When unhandled exceptions exhaust configured retry limits, Dapr routes poison events to dedicated dead-letter topics. The Go handler below intercepts DLQ messages, logging raw payloads for manual inspection before safely re-publishing them once patches are deployed:
+When retries are exhausted, Dapr routes poison events to the dead-letter topic. A DLQ handler logs them for inspection:
 
 ```go
 package dlq
@@ -414,7 +409,7 @@ These are the failure modes that production experience reveals — and that tuto
 
 **The fix:** **Transactional Outbox Pattern**. Write the event record into an `outbox` table in the *same database transaction* as the state change. A separate CDC process (Debezium or TiCDC) reads the outbox table and publishes to Dapr/Kafka. Either both the state change and the event emission happen, or neither does.
 
-To ensure strict atomic consistency between local database updates and outgoing event broadcasts, application logic must write events directly to an outbox table. The SQL script below demonstrates executing state mutation and outbox event logging within a single atomic database transaction:
+Write events to an `outbox` table in the same transaction as the state change:
 
 ```sql
 BEGIN;

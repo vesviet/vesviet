@@ -20,12 +20,7 @@ cover:
 
 # Distributed Transactions in Go with Temporal Saga Pattern
 
-> **Answer-First:** Distributed transactions in Go microservices are best implemented using the Temporal Saga pattern, replacing blocking Two-Phase Commit (2PC) locks with imperative workflow orchestration, dynamic reverse compensations (`saga.AddCompensation`), and PostgreSQL idempotency tables to guarantee financial event consistency during network partitions.
-
-> **Key Takeaways**:
-> - **Fault-Tolerant Orchestration over Choreography**: Temporal replaces fragile event-driven "event soup" with deterministic event histories. Tail latencies drop, and debugging distributed state machines transforms from distributed trace stitching to reading a unified workflow history log.
-> - **Dual-Entry Invariant Protection via Reverse Compensations**: By executing backward compensation routines registered dynamically via `saga.AddCompensation`, failed financial transfers automatically issue compensating refunds with sub-second execution once downstream failures are confirmed.
-> - **Production-Grade Idempotency & Heartbeating**: Combining PostgreSQL unique idempotency keys (`idempotency_keys` table with `SELECT FOR UPDATE`) with Temporal's `HeartbeatTimeout` and `activity.RecordHeartbeat` guarantees zero duplicate debits during activity worker retries or network split-brain scenarios.
+Distributed transactions in Go microservices are commonly implemented using the Temporal Saga pattern: replacing blocking Two-Phase Commit (2PC) locks with imperative workflow orchestration, dynamic reverse compensations (`saga.AddCompensation`), and PostgreSQL idempotency tables to keep financial event consistency during network partitions. This guide covers:
 
 - **The Zombie Activity Pitfall**: Why setting `StartToCloseTimeout` without database-level idempotency locks causes phantom debits during prolonged TCP network partitions.
 - **Dynamic Compensation Registration**: How to structure `workflow.NewSaga` in Go so that partial failures (e.g., debit succeeds, fraud check passes, but ledger credit fails) only execute compensation for steps that actually mutated state.
@@ -137,7 +132,7 @@ In FinTech systems handling monetary movements, **Orchestrated Sagas via Tempora
 
 ## Section 2: Architecture & Sequence Flows (Mermaid Sequence Diagrams)
 
-Visualizing distributed transaction lifecycles requires analyzing sequence flows across happy-path executions, compensation rollbacks, and network recovery scenarios. Modern FinTech architectures rely on Temporal's event history logs to trace activity execution states, coordinate dynamic reverse compensations, and recover from worker node crashes across high-concurrency 2026 financial microservice networks.
+The sequence diagrams below trace three scenarios: the happy-path transfer, a mid-flight failure triggering compensation, and a worker crash during a network partition.
 
 ### 1. Happy Path Money Transfer Flow
 
@@ -254,11 +249,11 @@ sequenceDiagram
 
 ## Section 3: Production-Ready Go Implementation with Temporal SDK
 
-Building production-ready distributed sagas in Go demands strict adherence to workflow determinism, robust activity retry policies, and database-level idempotency checks. The technical implementations below demonstrate how to structure domain types, implement Temporal workflow orchestration, and write idempotent activity handlers with PostgreSQL row-level locks across 2026 enterprise FinTech applications.
+Building production-ready distributed sagas in Go needs strict workflow determinism, robust activity retry policies, and database-level idempotency checks. The implementations below cover domain types, workflow orchestration, and idempotent activity handlers with PostgreSQL row-level locks.
 
 ### 1. Domain Models & Struct Definitions (`types.go`)
 
-Designing strong domain models requires using integer-based minor units for monetary representations to eliminate floating-point rounding errors. The Go struct definitions below define request payloads, activity parameters, and state tracking entities:
+Monetary values use integer minor units (cents) to avoid floating-point rounding errors. The struct definitions below define request payloads, activity parameters, and state tracking entities:
 
 ```go
 package saga
@@ -771,7 +766,7 @@ func (a *SagaActivities) PostLedgerEntry(ctx context.Context, req TransactionReq
 
 ## Section 4: Deep Failure Analysis & Edge Cases
 
-Operating distributed financial sagas in high-throughput cloud environments requires preparing for complex edge cases, network split-brain scenarios, and worker crashes. System engineers must analyze activity heartbeat timeouts, zombie process isolation, database connection pool saturation, and non-deterministic workflow replay panics to maintain strict financial consistency across 2026 production microservices.
+Distributed financial sagas hit a recurring set of edge cases in production: network split-brain, zombie activities from stalled heartbeats, database connection pool saturation, and non-deterministic workflow replay panics.
 
 ```
                   +-------------------------------------------------+
@@ -864,8 +859,6 @@ func GoodWorkflow(ctx workflow.Context) error {
 ---
 
 ## Frequently Asked Questions
-
-Below are answers to critical technical questions regarding Temporal Saga pattern implementations in Go, activity heartbeat timeout configurations, database idempotency key enforcement, and event-driven worker crash recovery. These concise responses summarize practical architectural guidance for orchestrating reliable, fault-tolerant distributed transactions across high-scale 2026 FinTech systems.
 
 ### How do Saga pattern compensation workflows guarantee financial consistency during partial transaction failures in Go?
 

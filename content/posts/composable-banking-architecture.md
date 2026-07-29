@@ -31,11 +31,6 @@ canonicalURL: "https://tanhdev.com/posts/composable-banking-architecture/"
 
 # Composable Banking Architecture: Monolith to Modular
 
-> **Answer-First:** Composable banking replaces monolithic core banking systems with independent, swappable Packaged Business Capabilities (PBCs) based on MACH principles. Using Go microservices, event-driven Saga orchestration, and Strangler Fig patterns, banks can update specific capabilities like payments without risking core ledger stability or total outages.
-
-- Strangler fig patterns for core banking systems that prevent data corruption.
-- How to bridge legacy COBOL records into dynamic JSON streams using Go middleware.
-
 Legacy core banking systems were designed in a different era. Temenos T24, Finacle, and Flexcube shared one defining assumption: the bank's entire product catalogue — deposits, lending, payments, trade finance — would live inside a single, tightly coupled application and a single, shared database. That assumption held when banking moved at human speed. It breaks completely when product releases need to go from months to days, when a single fraud engine update must not risk a payments outage, and when engineers on a COBOL codebase are retiring faster than they can be replaced.
 
 Composable banking replaces that monolith with a network of independent, purpose-built service components. This post is a deep engineering guide to what that actually means in Go microservices terms: ledger concurrency patterns, event-driven Saga orchestration, BaaS API idempotency, ISO 20022 message flows, and a step-by-step Strangler Fig migration strategy.
@@ -48,7 +43,7 @@ For the foundational Saga mechanics in Go, see [Dapr Workflow Saga Orchestration
 
 Composable banking is a software design approach that replaces a single-unit core banking system with a network of independent, swappable Packaged Business Capabilities (PBCs). Based on MACH principles (Microservices, API-first, Cloud-native, Headless), it lets a financial institution replace the payment engine without touching the lending module, or launch an embedded finance product line without rebuilding the core ledger.
 
-The topology diagram below outlines the four-layer architectural stack of composable banking. It illustrates how client channel experiences interact with API orchestration, Packaged Business Capabilities (PBCs), and distributed cloud infrastructure:
+The topology diagram below outlines the four-layer architectural stack:
 
 ```mermaid
 graph TD
@@ -72,9 +67,9 @@ Domain-Driven Design (DDD) provides the **"how"**: each BIAN Service Domain maps
 
 ---
 
-## The Business Case: Why Legacy Cores Are Breaking Down in 2026
+## The Business Case: Why Legacy Cores Are Breaking Down
 
-Evaluating the business case for replacing legacy core banking platforms requires quantifying operational licensing costs, delivery lead times, regulatory compliance risks, and technical debt. Engineering leadership must analyze key financial indicators and change failure rates from internal operational data before committing to a composable microservices transformation.
+Quantify operational licensing costs, delivery lead times, regulatory compliance risks, and technical debt before committing to decomposition:
 
 - **TCO:** Include license, infrastructure, vendor support, engineering, reconciliation, migration, and dual-run costs. Do not assume a service decomposition lowers the total.
 - **Time to market:** Measure lead time, change failure rate, recovery time, and approval lead time per product line; a distributed architecture can improve one bottleneck while adding others.
@@ -87,13 +82,11 @@ The business case is no longer "should we modernize?" It is "what sequence minim
 
 ## Scaling the Core Ledger: Optimistic Locking vs. NewSQL
 
-Traditional monolithic banking ledgers rely on pessimistic row locking (`SELECT FOR UPDATE`), which creates severe write serialization bottlenecks on high-volume accounts during peak traffic. Scaling composable ledger microservices requires transitioning to optimistic locking versioning schemes, append-only transaction logs, or distributed NewSQL databases designed for serializable multi-region consistency.
-
-Composable architectures solve this at two levels:
+Traditional monolithic banking ledgers rely on pessimistic row locking (`SELECT FOR UPDATE`), which creates severe write serialization bottlenecks on high-volume accounts during peak traffic. Composable architectures solve this at two levels:
 
 ### Level 1: Optimistic Locking on the Account Row
 
-For moderate concurrency, replace the row lock with a `version` column. Level 1 optimistic concurrency control relies on explicit schema versioning. The SQL DDL and update query below demonstrate how to enforce optimistic locking on PostgreSQL account balances:
+For moderate concurrency, replace the row lock with a `version` column:
 
 ```sql
 -- Account table with optimistic concurrency

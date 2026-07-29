@@ -20,11 +20,6 @@ canonicalURL: "https://tanhdev.com/posts/deconstructing-ecommerce-service-detail
 
 # Deconstructing the Ecosystem: Service Details by Domain
 
-> **Answer-First:** Partitioning 21 Go microservices across 6 DDD domains isolates business capabilities into strict database-per-service boundaries linked by gRPC and Kafka events. This architecture guarantees independent schema migrations, eliminates transactional coupling, and prevents database deadlocks between order management and inventory.
-
-- Why microservices must own their schema migrations (via Golang-Migrate) independently, and the specific event schemas that prevent transactional coupling.
-- Real-world database deadlocks encountered when segregating order history from the catalog database, and how they were solved using CQRS.
-
 ---
 
 "Why 21 services? Isn't that overkill?" 
@@ -39,7 +34,7 @@ When you have multiple squads touching the same codebase, feature overlap create
 
 ## 1. The Transactional Commerce Flow
 
-The transactional commerce domain serves as the financial heartbeat of an e-commerce platform, demanding rigid ACID transactional guarantees and low-latency execution paths. The architectural diagram below illustrates how checkout orchestration, order state ledgers, and payment gateways execute state transitions using isolated, service-specific PostgreSQL databases.
+The transactional commerce domain demands rigid ACID guarantees and low-latency execution paths.
 
 ```
 +-------------------------------------------------------------+
@@ -74,7 +69,7 @@ The transactional commerce domain serves as the financial heartbeat of an e-comm
 
 ## 2. Product Catalog & Pricing
 
-High-volume e-commerce platforms require a read-heavy product catalog and pricing architecture capable of sustaining read-to-write ratios exceeding ten thousand to one. Deploying document-based storage alongside in-memory Redis caching layers guarantees sub-millisecond page rendering and fast price calculation under massive concurrent search traffic.
+The product catalog and pricing domain sustains read-to-write ratios exceeding 10,000:1. Document-based storage combined with Redis caching guarantees sub-millisecond page rendering under massive concurrent search traffic.
 
 ### Catalog Service
 * **Role**: Single source of truth for product taxonomy.
@@ -122,8 +117,6 @@ Translating digital checkout transactions into physical fulfillment workflows re
 
 ## 4. Post-Purchase Customer Experience
 
-Delivering a frictionless post-purchase experience requires asynchronous microservices dedicated to return authorization processing, product review moderation, and loyalty reward calculations. Decoupling customer engagement services from checkout critical paths ensures high platform availability while processing post-purchase domain events in the background.
-
 ### Return Service
 * **Role**: Return Merchandise Authorization (RMA) orchestrator.
 * **Capabilities**: Handles returns, coordinates restock checks with the Warehouse Service, and initiates partial or full refunds through the Payment Service.
@@ -145,8 +138,6 @@ Delivering a frictionless post-purchase experience requires asynchronous microse
 ---
 
 ## 5. Identity & Access Management
-
-Establishing a secure platform boundary requires separating customer identity management, authentication token issuance, and back-office administrative access controls into specialized domain services. Utilizing asymmetric JWT signing, automated key rotation, and strict role-based authorization rules protects user privacy and prevents unauthorized administrative actions.
 
 ### Auth Service
 * **Role**: Core security controller.
@@ -170,8 +161,6 @@ Establishing a secure platform boundary requires separating customer identity ma
 
 ## 6. Platform Operations & Shared Services
 
-Maintaining platform-wide availability, search performance, and customer notification queues requires shared operational infrastructure services. Deploying low-latency API gateways, Change Data Capture search indexers, and resilient notification workers ensures consistent traffic routing, real-time catalog search freshness, and reliable transactional message delivery.
-
 ### Gateway Service
 * **Role**: Single entry point for external traffic.
 * **Capabilities**: Route matching, TLS termination, API key verification, dynamic rate-limiting, and circuit breaking.
@@ -194,7 +183,7 @@ Maintaining platform-wide availability, search performance, and customer notific
 
 ## Production Code Implementation: Cross-Domain Go Interfaces
 
-To prevent direct architectural coupling across microservice boundaries, domain services communicate exclusively through strongly-typed gRPC contracts or asynchronous event streams. The production Go implementation below demonstrates how the Checkout orchestrator decouples catalog metadata verification from physical warehouse inventory reservation using explicit Go client interfaces:
+Domain services communicate through strongly-typed gRPC contracts or asynchronous event streams. The Checkout orchestrator decouples catalog verification from warehouse inventory reservation using explicit Go client interfaces:
 
 ```go
 package checkout

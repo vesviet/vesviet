@@ -30,8 +30,6 @@ canonicalURL: "https://tanhdev.com/posts/golang-goroutine-pool-errgroup-worker/"
 
 # Golang Goroutine Pool Patterns: errgroup & Backpressure
 
-> **Answer-First:** Production Go applications manage high concurrency using `golang.org/x/sync/errgroup` with bounded semaphores or channel-backed worker pools. These patterns enforce backpressure, propagate context cancellation on first error, and prevent uncontrolled goroutine spawning and out-of-memory crashes.
-
 - Preventing goroutine leaks in high-concurrency worker pools using errgroup.
 - Writing robust worker pools that propagate context cancellation to all active goroutines.
 
@@ -64,8 +62,6 @@ The correct approach is to decide, upfront, the maximum concurrency your system 
 ---
 
 ## Pattern 1: `errgroup` — The Idiomatic Go Worker Pool
-
-The `golang.org/x/sync/errgroup` package provides standard abstractions for coordinating concurrent task execution and capturing task errors. Combining `errgroup.WithContext` with explicit concurrency limits enforces automatic context cancellation across worker goroutines, terminating remaining tasks immediately whenever a worker encounters a processing error during batch execution:
 
 ### Basic `errgroup` Pattern
 
@@ -502,8 +498,6 @@ For event-driven microservices architectures where this worker pool pattern inte
 ---
 
 ## Frequently Asked Questions
-
-Below are answers to core technical questions regarding Go goroutine pool patterns, `errgroup` concurrency controls, channel-backed backpressure strategies, and graceful shutdown handling in 2026. These insights explain how to eliminate memory spikes, prevent OOM crashes, and maintain predictable task throughput under heavy concurrency.
 
 ### What is the difference between errgroup and sync.WaitGroup in Go?
 `sync.WaitGroup` is a primitive counter: `Add`, `Done`, and `Wait`. It has no error collection, no context propagation, and no concurrency limiting. `errgroup` wraps `WaitGroup` with error collection (returns the first non-nil error from any goroutine), context propagation (a derived context is canceled when any goroutine errors), and optional concurrency limiting via `SetLimit`. For all new code that coordinates multiple goroutines and needs error handling, prefer `errgroup` over raw `WaitGroup`.

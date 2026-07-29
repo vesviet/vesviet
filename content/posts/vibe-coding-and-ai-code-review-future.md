@@ -20,18 +20,6 @@ canonicalURL: "https://vesviet.com/posts/vibe-coding-and-ai-code-review-future/"
 
 # What is Vibe Coding? Why AI Code Review is the Future
 
-> **Answer-First:** Vibe coding combines AI-driven rapid prototyping with automated AI code review gates powered by AST context analysis. By enforcing structured AST context filtering and dual-pass LLM review pipelines in CI/CD, engineering teams maintain high code velocity while automatically catching 92% of security vulnerabilities and architectural anti-patterns before human review.
-
-> **Executive Summary & Quick Answer**: Vibe coding combines rapid AI-assisted development with rigorous, automated AI code review gates. By integrating AST context analysis with LLM review pipelines, engineering teams catch 92% of security vulnerabilities and anti-patterns before human code review, cutting PR turnaround time by 70%.
->
-> **Key Takeaways**:
-> - AST pre-filtering forwards only function/class/import nodes to the LLM, cutting prompt token count substantially on large files (measure the reduction against your own codebase — it varies with how much non-structural glue a file carries).
-> - Structured JSON schema enforcement guarantees predictable AI review output and automated PR blocking.
-> - Dual-pass review separates deterministic linting from semantic architecture evaluation.
-
-- Setting up automated AI reviewer tools in GitHub Actions.
-- How to enforce design guidelines and coding standards in LLM-assisted pipelines.
-
 In February 2025, Andrej Karpathy, former Tesla AI Lead and OpenAI co-founder, tweeted a phrase that would define a new paradigm in software development: 
 
 > *"There's a new kind of coding I call 'vibe coding', where you fully give in to the vibes, embrace exponentials, and forget that the code even exists."*
@@ -138,11 +126,12 @@ flowchart LR
 
 ## Production Code Benchmark & Implementation
 
-Evaluating system performance under realistic workload conditions requires measuring throughput, latency distribution, memory allocation, and CPU utilization. The following production-ready implementation demonstrates how to structure high-performance code, implement robust error handling, and optimize resource usage while maintaining overall code clarity and fault tolerance.
+The implementation below shows the AST pre-filtering step end-to-end — pruning a code snippet down to just its function/class/import nodes before it ever reaches the LLM, then enforcing a JSON schema so the review output is machine-parseable.
 
-- **Benchmark Methodology & Test Fixtures**: We evaluated the dual-pass review pipeline against 1,200 Python and Go code snippets containing known OWASP Top 10 vulnerabilities (command injection, XSS, insecure deserialization) alongside clean control samples.
-- **Precision and Recall Metrics**: Raw LLM prompts achieved a high recall (96%) but suffered from a poor 42% precision rate due to false-positive hallucinations. Integrating client-side AST pre-filtering and JSON Schema validation boosted precision to 94.8% while maintaining a 91.5% recall rate.
-- **Review Engine Latency & Throughput**: Powered by OpenAI `gpt-4o` via LiteLLM proxying with response schema enforcement, average end-to-end review latency per Pull Request diff remained under 3.2 seconds, processing over 120 PRs per hour per worker node.
+To illustrate how precision/recall shifts with AST pre-filtering, we ran this pipeline against a local test set of 1,200 Python and Go snippets seeded with known OWASP Top 10 vulnerabilities (command injection, XSS, insecure deserialization) plus clean control samples. These numbers are from that internal test run, not a published benchmark — treat them as directional, and re-measure against your own codebase and model before relying on them:
+
+- **Precision and recall**: raw LLM prompts (no pre-filtering) caught most planted vulnerabilities but flagged many clean snippets as findings too. Adding AST pre-filtering and JSON Schema validation cut the false-positive rate substantially, at a small cost in recall.
+- **Latency and throughput**: using `gpt-4o` via the LiteLLM proxy with schema enforcement, average end-to-end review latency per PR diff stayed in the low single-digit seconds on this test set — model choice, diff size, and provider load will move this number in either direction.
 
 ```python
 import ast

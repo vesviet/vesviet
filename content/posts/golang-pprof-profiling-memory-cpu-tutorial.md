@@ -27,11 +27,6 @@ canonicalURL: "https://tanhdev.com/posts/golang-pprof-profiling-memory-cpu-tutor
 
 # Go pprof CPU & Memory Profiling: Production Tutorial
 
-> **Answer-First:** Profiling Go services in production requires exposing `net/http/pprof` endpoints securely over private management ports or authenticated sidecars. By capturing CPU profiles, flame graphs, and memory profiles (`inuse_space` vs. `alloc_space`) via `go tool pprof`, developers can diagnose performance bottlenecks and memory leaks without restarting pods.
-
-- Reading memory profiles to identify slow allocations in performance hot paths.
-- Analyzing flame graphs to detect lock contention on global mutexes.
-
 > **Prerequisite:** This guide covers how to profile and diagnose complex performance issues in production. If you are specifically dealing with unbounded goroutine growth, ensure you first understand the foundational concepts in [Goroutine Leak Detection and Fix in Production Go Services](/posts/goroutine-leak-detection-production-golang/).
 
 Performance degradation in production is inevitable. When a Go microservice suddenly spikes to 90% CPU utilization or triggers an Out-Of-Memory (OOM) kill in Kubernetes, guessing the root cause by staring at the code is rarely effective. You need data.
@@ -227,8 +222,6 @@ When you download the profile, you can open the Web UI (`go tool pprof -http=:80
 ---
 
 ## Frequently Asked Questions
-
-Below are answers to core technical questions regarding Go pprof CPU profiling, execution tracing, heap memory analysis (`inuse_space` vs `alloc_space`), and Go 1.26 goroutine leak detection. These insights explain how to minimize diagnostic overhead, isolate memory leaks, and profile multi-tenant services effectively.
 
 ### What is the performance overhead of Go pprof?
 Heap profiling uses probabilistic sampling (default `runtime.MemProfileRate` is 512 KB) and is practically free (< 1% overhead). CPU profiling (100Hz sampling) is also very lightweight (< 2%). However, setting Block or Mutex profile rates to capture 100% of events can add 5-20% overhead. Execution tracing (`go tool trace`) is the heaviest, adding 10-20% overhead while actively running.

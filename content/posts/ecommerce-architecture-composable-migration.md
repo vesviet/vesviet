@@ -40,18 +40,11 @@ canonicalURL: "https://tanhdev.com/posts/ecommerce-architecture-composable-migra
 
 # Composable E-Commerce Migration: Overcoming Tech Debt
 
-> **Answer-First:** Migrating a monolithic e-commerce application (such as Magento) to composable architecture requires decomposing domains into 21 bounded contexts using Strangler Fig proxy routing with Envoy, real-time Debezium CDC for zero-drift database sync, and Go microservices built on Kratos v2 and Protobuf gRPC.
-
 See the [21-service e-commerce architecture blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/) for the domain boundaries this migration targets.
-
-- Why replacing a legacy PHP monolith (Magento) requires 21 DDD bounded contexts rather than naive 4–6 microservices.
-- Strangler Fig routing configurations for Envoy that migrate traffic path-by-path from Magento to Go microservices without dropping active sessions.
-- How to implement a double-write database sync listener in Go to prevent data drift during the multi-month migration window.
-- Production Go microservice architecture using Kratos v2, Wire compile-time DI, and Protobuf Money types.
 
 ---
 
-> In theory, MACH (Microservices, API-first, Cloud-native, Headless) and Composable Commerce are the "holy grail" of the e-commerce industry. However, when systems scale to process millions of transactions, issues regarding data consistency, domain decomposition, and observability costs surface. This guide details the lessons and architectural patterns from migrating a monolithic Magento application into a production-grade 21-service Go microservices platform.
+> In theory, MACH (Microservices, API-first, Cloud-native, Headless) and Composable Commerce are the "holy grail" of the e-commerce industry. However, when systems scale to process millions of transactions, issues regarding data consistency, domain decomposition, and observability costs surface. This guide details the lessons and architectural patterns from migrating a monolithic Magento application into a 21-service Go microservices platform.
 
 ---
 
@@ -118,7 +111,7 @@ graph TD
 
 ## 2. Monorepo Architecture: Rush & Go Workspaces
 
-Managing 21 Go microservices and 2 frontend applications (Next.js storefront and React admin panel) within a single codebase requires structured monorepo governance. Without strict dependency management and code sharing policies, multi-service repositories quickly degrade into fragmented codebases with divergent library versions and redundant utility functions.
+Managing 21 Go microservices and 2 frontend applications (Next.js storefront and React admin panel) in a single codebase requires structured monorepo governance. Without strict dependency management, multi-service repositories degrade into fragmented codebases with divergent library versions.
 
 ```
 composable-commerce/
@@ -140,7 +133,7 @@ Protobuf contract compilation bridges Go microservices and frontend TypeScript c
 
 ## 3. Core Backend: Golang + Kratos v2 Internals
 
-Each Go microservice implements a strict 5-layer Clean Architecture layout using the Kratos v2 framework to maintain clear separation of concerns across production workloads. The structured file layout below outlines the organization across API contracts, dependency injection bindings, domain business logic, data access repositories, and transport protocol servers:
+Each Go microservice implements a 5-layer Clean Architecture layout using Kratos v2:
 
 ```text
 order-service/
@@ -180,7 +173,7 @@ Avoiding application-level double writing prevents database drift, dual-phase co
 
 - **Debezium WAL Log Parsing**: Debezium captures row-level insert, update, and delete mutations directly from the database engine log without modifying application code or incurring SQL query overhead on the legacy database.
 - **Kafka Event Streaming**: Captured mutations are published to dedicated Apache Kafka topics (e.g. `legacy.inventory_stocks`), preserving absolute global transaction order across table entities.
-- **Eventual Consistency & Reconciliation**: Downstream composable microservices consume binlog events asynchronously. While eventual consistency introduces a transient replication delay (typically under 100ms), downstream consumers enforce schema transformation and write to domain-isolated databases, guaranteeing eventual data convergence across legacy and modern platforms.
+- **Eventual Consistency & Reconciliation**: Downstream composable microservices consume binlog events asynchronously. While eventual consistency introduces a transient replication delay (typically under 100ms), downstream consumers enforce schema transformation and write to domain-isolated databases, guaranteeing eventual data convergence across legacy and new systems.
 
 ```mermaid
 graph TD
@@ -367,8 +360,6 @@ func (w *SyncWorker) processSyncEvent(ctx context.Context, event InventorySyncEv
 ---
 
 ## Frequently Asked Questions
-
-Below are answers to common technical questions regarding composable e-commerce migrations, domain decomposition, and CDC database synchronization patterns in 2026. These insights clarify architectural trade-offs, performance gains from gRPC transport protocols, and strategies for managing legacy database transitions effectively without encountering unexpected downtime.
 
 ### When should a business migrate to Composable Commerce?
 When revenue hits the $5 million/year mark, or when the current monolithic platform severely bottlenecks release frequency. For small startups, packaged SaaS solutions remain more cost-effective.

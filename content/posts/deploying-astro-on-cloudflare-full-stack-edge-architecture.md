@@ -30,18 +30,11 @@ canonicalURL: "https://tanhdev.com/posts/deploying-astro-on-cloudflare-full-stac
 
 # Deploy Astro on Cloudflare Pages: Full-Stack Edge Architecture
 
-> **Answer-First:** Deploying Astro on Cloudflare Pages leverages V8 isolates and serverless Workers SSR to achieve zero cold-start full-stack edge performance worldwide. Integrating Cloudflare D1 (edge SQLite), KV, R2 storage, and Pagefind static search delivers under-200ms page load times globally at minimal cost without operating traditional servers.
-
-- The exact D1 edge database connection pooling limitations and how to circumvent cold start issues when routing through Neon serverless proxies.
-- How to configure Durable Objects for real-time state synchronization without hitting Cloudflare's sub-request quota limits.
-
 Running a content site on a traditional VPS or a managed Node.js host is fine until it isn't. You pay for compute that sits idle 95% of the time, you manage SSL renewals, you worry about cold starts, and you watch your Lighthouse score suffer because your origin is in Singapore while your readers are in Frankfurt.
 
 Cloudflare's edge stack solves all of this. This post covers two paths: building a greenfield site with Astro on Cloudflare's full edge stack — Workers, R2, D1, Pagefind — and putting an existing WordPress site behind Cloudflare's CDN without migrating anything. Both approaches, real config, and the tradeoffs that matter.
 
 ## The Stack
-
-Modern edge architecture relies on modular components engineered to execute compute directly at the network edge. Combining Astro with Cloudflare Workers, D1 database storage, R2 object repositories, and client-side Pagefind search eliminates origin bottlenecks while maximizing global performance and operational predictability across high-traffic 2026 static and SSR web applications.
 
 | Component | Role | Why not the alternative |
 |---|---|---|
@@ -56,8 +49,6 @@ Modern edge architecture relies on modular components engineered to execute comp
 The total monthly cost for a site doing ~50k pageviews: **~$5-8/month**, almost entirely from image transformations. Everything else is within Cloudflare's free tier.
 
 ## The Architecture
-
-Deploying on Cloudflare Pages establishes a distributed request pipeline where global CDN locations process incoming traffic instantly. Serverless V8 isolates execute dynamic backend logic close to end users, minimizing origin round-trips while connecting with edge storage primitives. The flowchart below illustrates the complete request routing architecture and build deployment flow:
 
 ```mermaid
 flowchart TD
@@ -86,7 +77,7 @@ The key insight is that **Workers are not a backend**. They are edge functions t
 
 ## Setting Up Astro with the Cloudflare Adapter
 
-Integrating the official `@astrojs/cloudflare` adapter configures the build engine to compile static content alongside edge-compatible Worker bundles. This static-first approach pre-renders predictable content pages during CI/CD execution, delegating only fully dynamic endpoints and real-time operations to serverless edge isolates at runtime. Configure `astro.config.ts` as shown below:
+The `@astrojs/cloudflare` adapter compiles static content alongside edge-compatible Worker bundles. Pre-rendered pages are built during CI/CD, while dynamic endpoints run as serverless isolates at runtime:
 
 ```typescript
 // astro.config.ts
@@ -579,8 +570,6 @@ For a content site where performance, cost, and operational simplicity matter mo
 {{< author-cta >}}
 
 ## Frequently Asked Questions
-
-Below are answers to commonly encountered technical questions regarding Astro deployments, edge database bindings, and static search implementations on Cloudflare Pages in 2026. These operational insights clarify edge runtime behaviors, connection pooling constraints, and client-side indexing strategies for production edge architectures.
 
 ### What is the cold start advantage of deploying Astro on Cloudflare Pages and Workers?
 Cloudflare Pages and Workers run on V8 isolates rather than traditional Node.js containers. This design eliminates container initialization overhead, resulting in sub-millisecond cold starts globally. It allows your edge-rendered Astro routes to execute as fast as static files directly from the nearest edge point.

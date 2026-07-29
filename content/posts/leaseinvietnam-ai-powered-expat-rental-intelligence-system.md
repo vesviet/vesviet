@@ -31,11 +31,6 @@ canonicalURL: "https://tanhdev.com/posts/leaseinvietnam-ai-powered-expat-rental-
 
 # LeaseInVietnam: AI-Powered Expat Rental & B2B Lead Engine
 
-> **Answer-First:** LeaseInVietnam combines anti-hallucination web scraping, Go backend services, and local LLMs to publish verified expat rental intelligence for Vietnam. By maintaining traceable evidence chains for every rental price and location, the autonomous system converts organic search traffic into high-margin B2B service leads via automated webhooks and Telegram routing.
-
-- Structuring scrapers to bypass IP blocks while parsing rental data.
-- Using LLMs to standardize unstructured rental locations into precise lat-long values.
-
 Most AI content projects are built around one question: how do I publish more? LeaseInVietnam is built around a different question: how do I make every published piece convert?
 
 The system is an autonomous relocation hub targeting expats and digital nomads renting in Southern Vietnam — Ho Chi Minh City, Nha Trang, Phú Quốc. It produces content in American English, publishes daily via GitOps, and routes every reader interaction toward a B2B lead funnel that pays commission on moving services, cleaning bookings, furniture rentals, and legal consultations.
@@ -43,8 +38,6 @@ The system is an autonomous relocation hub targeting expats and digital nomads r
 The engineering constraint that makes this work is non-negotiable: **no fact reaches the website unless it has a traceable evidence chain back to a real DOM element or API response.** A hallucinated rental price or a fabricated legal claim doesn't just hurt SEO — it destroys the trust that makes the lead funnel valuable.
 
 ## 1. The Business Model: Traffic as a Lead Funnel, Not an Ad Inventory
-
-Structuring an AI-driven publication around high-intent lead generation rather than programmatic ad networks creates a sustainable monetization model for expat relocation platforms. In 2026 digital media architectures, converting organic web traffic into direct B2B service leads generates significantly higher per-user revenue while establishing valuable long-term vendor partnerships across regional relocation markets.
 
 The revenue model is deliberately not AdSense. Expats renting in Vietnam have a predictable sequence of needs after signing a lease:
 
@@ -72,8 +65,6 @@ flowchart LR
 The CTA injection is not manual. GPT-5.2 reads the article's data tags and injects the contextually correct component automatically. An article about flooding in District 7 gets a cleaning service CTA. An article about deposit scams gets a legal consultation CTA. An article about moving to Thao Dien gets a moving service CTA.
 
 ## 2. The Scam Warning Feature: Trust as a Competitive Moat
-
-Transforming market fraud anxieties into a primary trust signal enables the intelligence system to capture high-intent expat traffic while building long-term brand authority. By utilizing automated extraction algorithms to evaluate price variances, deposit terms, and address legitimacy, the platform identifies fraudulent listings and renders proactive warnings to safeguard readers across foreign rental markets.
 
 Expats renting in Vietnam have one dominant anxiety: being scammed. Fake listings, bait-and-switch prices, deposit theft, landlords who refuse to register tenants with the police. This anxiety is the reason they search in English rather than using Vietnamese platforms directly.
 
@@ -127,8 +118,6 @@ flowchart TD
 Node 112 also exposes a secure Edge API Gateway that allows external workers — laptops, personal machines — to contribute crawling capacity when available. This reduces infrastructure costs by approximately 80% during peak crawl periods. The key design decision: **Node 112 always maintains its own internal workers**, so the system runs autonomously even when no external machines are connected. External workers are acceleration, not dependency.
 
 ## 4. The Anti-Hallucination Pipeline
-
-Enforcing absolute factual accuracy across automated rental publications necessitates implementing a multi-stage anti-hallucination verification pipeline. By validating extracted attributes against original DOM elements, executing strict business verification rules, and using local small language models for constrained text classification, the architecture guarantees every published metric retains a traceable evidence chain.
 
 Every field that ends up in a published article passes through four verification layers. This is not optional — it is the architectural foundation that makes the trust portal claim credible.
 
@@ -200,8 +189,6 @@ Idempotency-Key: bundle_20260424_hcmc_001
 ```
 
 ## 5. The Selector Profile System
-
-Standardizing data extraction across diverse web formats requires maintaining a modular selector profile system stored as domain-specific YAML configurations. By defining priority extraction rules, DOM fallback cascades, and baseline confidence weights for every scraped platform, the system adapts to website redesigns while preserving high-confidence structured output for downstream processing.
 
 The system has 11 domain-specific YAML profiles covering `batdongsan.com.vn`, `chotot.com`, `nhatot.com`, Reddit threads, Google Maps reviews, official legal pages, and expat blog guides. Below is an example listing extraction profile for `batdongsan.com.vn`:
 
@@ -302,7 +289,7 @@ Executing a phased development roadmap enables the engineering team to validate 
 
 ## 11. Lessons Learned
 
-Extracting technical insights from operating an autonomous rental intelligence platform reveals critical architectural patterns for enterprise AI systems. Decoupling ingestion networks from editorial pipelines, enforcing strict confidence thresholds, preserving quarantine queues, and constraining generative models to structured component rendering prove essential for building resilient, high-converting automated publishing engines in 2026.
+Key architectural patterns from operating this platform: decouple ingestion from editorial pipelines, enforce strict confidence thresholds, preserve quarantine queues, and constrain generative models to structured component rendering.
 
 **The trust portal is the product, not the content.** The scam warning feature, the evidence-backed prices, the verified legal information — these are what make the B2B lead funnel work. Expats pay attention to a source that tells them when something looks wrong, not just when something looks good.
 

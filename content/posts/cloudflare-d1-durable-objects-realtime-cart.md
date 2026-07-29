@@ -30,11 +30,6 @@ canonicalURL: "https://tanhdev.com/posts/cloudflare-d1-durable-objects-realtime-
 
 # Cloudflare D1 + Durable Objects: Building a Real-Time Cart
 
-> **Answer-First:** Building a real-time e-commerce cart on Cloudflare combines Durable Objects for strongly consistent, single-threaded in-memory session state across active browser tabs with Cloudflare D1 (edge SQLite) for long-term order persistence. This edge-native architecture eliminates Redis clusters and centralized database bottlenecks, enabling sub-50ms worldwide cart synchronization with zero cold starts.
-
-- How to design cart locking mechanisms in Durable Objects without deadlocks.
-- Tuning sub-request allocations to stay within Cloudflare's free-tier runtime boundaries.
-
 > 
 
 The traditional shopping cart architecture is a familiar set of tradeoffs: Redis for session storage, PostgreSQL for order data, and a backend API tier that coordinates between them. It works, but it introduces latency proportional to the distance between the user and your datacenter, requires operational overhead for Redis cluster management, and struggles with globally concurrent cart edits from the same user across multiple devices.
@@ -47,7 +42,7 @@ For the architectural foundation, see [Serverless E-Commerce: Cloudflare Workers
 
 ---
 
-## Why Cloudflare Workers + D1 Is a architectural milestone for Edge E-Commerce
+## Why Cloudflare Workers + D1 for Edge E-Commerce
 
 Traditional e-commerce cart APIs have a latency floor: **the round trip from the user's browser to your datacenter**. A user in Ho Chi Minh City hitting a server in Singapore adds 20–30ms of irreducible network latency per API call. A user in Jakarta hitting a server in the US adds 150–200ms.
 
@@ -70,9 +65,7 @@ Cloudflare Workers eliminate this floor by running your API logic at the Cloudfl
 
 ## Architecture Overview: D1 for Persistence, Durable Objects for Real-Time State
 
-Architecting a high-performance edge shopping cart requires partitioning ephemeral session mutations from relational order persistence. The architecture diagram below illustrates how Cloudflare Workers route incoming traffic to in-memory Durable Object instances for sub-50ms tab synchronization while asynchronously writing confirmed checkout snapshots down to Cloudflare D1 SQLite storage.
-
-The architecture diagram below illustrates the edge state synchronization between Cloudflare Workers, Durable Objects, and Cloudflare D1 (edge SQLite). It highlights how active cart sessions maintain in-memory concurrency in Durable Objects while persisting order snapshots to D1:
+The architecture diagram below illustrates the edge state synchronization between Cloudflare Workers, Durable Objects, and Cloudflare D1 (edge SQLite). Active cart sessions maintain in-memory concurrency in Durable Objects while persisting order snapshots to D1:
 
 ```mermaid
 graph TD
@@ -636,8 +629,6 @@ async function createCheckoutSession(
 ---
 
 ## Capacity and Cost Validation
-
-Evaluating Cloudflare edge infrastructure against traditional backend clusters requires comparing operational overhead, request latencies, and billing models under high-traffic scenarios. The comparison table below highlights key architectural differences, capacity trade-offs, and cost considerations for deploying serverless shopping cart applications globally.
 
 | Dimension | Cloudflare Workers + D1 + Durable Objects | Traditional backend |
 |---|---|---|

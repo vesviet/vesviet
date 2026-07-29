@@ -20,18 +20,11 @@ canonicalURL: "https://tanhdev.com/posts/aws-eks-vs-ecs-comparison/"
 
 # AWS EKS vs ECS: Architecture, Cost & Use Cases (2026)
 
-> **Answer-First:** Choose AWS ECS for zero control-plane fees ($0/mo) and rapid AWS-native container deployment with minimal operational overhead. Choose AWS EKS ($73/mo per cluster) when requiring native GitOps via ArgoCD, KEDA event-driven autoscaling, Dapr sidecar injection, and cloud-agnostic Kubernetes ecosystem portability.
-
-- The hidden costs of EKS VPC CNI ipam and how ECS handles routing faster.
-- How to optimize IP allocation policies to prevent subnet exhaustion in large-scale Kubernetes environments.
-
 I've run both in production. At Vigo Retail, I architected a 21-service Go microservices platform on EKS handling **8,000 RPS peak and 25M+ requests/month**. I've also managed ECS clusters for smaller AWS-native projects. This guide is what I wish existed before I made those decisions.
 
 ---
 
 ## 1. TL;DR — Quick Decision Table
-
-Evaluating Amazon ECS against Amazon EKS requires comparing operational overhead, ecosystem integrations, and overall infrastructure costs. The decision matrix below summarizes core architectural trade-offs to help platform engineering teams select the appropriate AWS container orchestration engine based on team size, deployment velocity, and Kubernetes domain expertise.
 
 | Decision Factor | Choose ECS | Choose EKS |
 |-----------------|-----------|-----------|
@@ -51,8 +44,6 @@ Evaluating Amazon ECS against Amazon EKS requires comparing operational overhead
 
 ## 2. What Are ECS and EKS? Core Architecture
 
-Understanding the structural differences between Amazon ECS and Amazon EKS starts with analyzing their control plane designs and worker node management paradigms. While ECS offers an AWS-native orchestration model without control plane fees, EKS provides a fully managed Kubernetes environment supporting standard CNCF API definitions.
-
 ### 2.1 Amazon ECS — AWS-Native Container Orchestration
 
 ECS launched in 2014 before Kubernetes existed. AWS designed it to be opinionated and simple.
@@ -65,7 +56,7 @@ The core primitives are straightforward:
 
 There is no control plane fee. AWS manages the orchestration layer completely. You pay only for what you run.
 
-The architecture diagram below illustrates the core components of Amazon ECS, detailing how Task Definitions map to ECS Services and Application Load Balancers without requiring a paid control plane:
+The architecture diagram below illustrates the core ECS components:
 
 ```mermaid
 graph TD
@@ -89,7 +80,7 @@ graph TD
 
 EKS gives you a fully-managed Kubernetes control plane (API server, etcd, scheduler, controllers) — you manage the worker nodes (or use Fargate/Auto Mode).
 
-The architecture diagram below details the managed EKS control plane and worker node ecosystem. It demonstrates how Kubernetes controllers, Helm packages, ArgoCD, and Karpenter interact with the control plane:
+EKS architecture:
 
 ```mermaid
 graph TD
@@ -128,8 +119,6 @@ Every Kubernetes tool you've heard of works here: Helm, ArgoCD, Argo Rollouts, D
 ---
 
 ## 3. Real Cost Breakdown — No Bullshit Numbers
-
-Calculating the total cost of ownership for containerized workloads requires evaluating control plane management fees, compute instance provisioning models, and hidden networking expenses. Engineering teams must account for hourly cluster overhead, Fargate capacity pricing, and potential version support surcharges when budgeting enterprise deployments on AWS.
 
 ### 3.1 Control Plane Cost: ECS $0 vs EKS $73/month
 
@@ -192,8 +181,6 @@ These costs hit both ECS and EKS, but EKS can compound them:
 
 ## 4. Performance & Scalability
 
-Container startup speed and autoscaling responsiveness dictate system behavior during extreme traffic surges across high-throughput production services. Infrastructure architects must evaluate how Karpenter node provisioning on EKS compares against ECS capacity providers and event-driven autoscaling mechanisms like KEDA when handling volatile request volumes.
-
 ### 4.1 Startup & Scale-Out Speed
 
 This is where EKS (with Karpenter) beats ECS significantly for bursty workloads:
@@ -228,8 +215,6 @@ Both ECS (`awsvpc` mode) and EKS (VPC CNI) assign real VPC IP addresses directly
 ---
 
 ## 5. Use Cases — When to Choose ECS, When to Choose EKS
-
-Selecting between ECS and EKS depends on organizational engineering maturity, pipeline complexity, and third-party software dependencies. While early-stage teams benefit from the rapid provisioning and minimal operational maintenance of ECS, enterprise microservice environments often require the rich GitOps and sidecar ecosystem native to Kubernetes.
 
 ### 5.1 Startup (Speed & Simplicity) → ECS Fargate
 
@@ -336,8 +321,6 @@ Both clusters share the same VPC. They communicate via VPC peering or PrivateLin
 
 ## 6. EKS Auto Mode (2026): Architecture & Operational Impact
 
-AWS EKS Auto Mode simplifies cluster management by offloading worker node provisioning, operating system patching, and core add-on lifecycle tasks directly to AWS. Platform teams gain automated Karpenter scaling and Bottlerocket OS maintenance while preserving standard Kubernetes API compatibility and existing declarative manifest workflows.
-
 ### What EKS Auto Mode Automates
 
 - **Compute:** Node provisioning via managed Karpenter — just submit your pods, nodes appear automatically
@@ -359,8 +342,6 @@ If you're starting a new EKS cluster today, enable Auto Mode from day one. Don't
 ---
 
 ## 7. Operational Overhead & Team Requirements
-
-Sustaining production container platforms demands ongoing maintenance, security patching, and control plane upgrade cycles across engineering teams. While Amazon ECS delegates orchestration maintenance entirely to AWS, operating Amazon EKS requires dedicated platform engineering resources to manage Kubernetes version lifecycles, ingress controllers, and add-on updates.
 
 ### 7.1 ECS: Minimal Ops
 

@@ -20,16 +20,9 @@ canonicalURL: "https://tanhdev.com/posts/dapr-state-store-consistency-tradeoffs/
 
 # Dapr State Store Consistency Trade-offs Explained
 
-> **Answer-First:** Dapr state management requires explicit selection between Strong and Eventual consistency depending on state store backend capabilities. Utilizing Optimistic Concurrency Control (OCC) with ETags prevents lost updates in Go microservices, guaranteeing ACID guarantees on CockroachDB while maintaining sub-5ms writes on Redis.
-
-**Key Takeaways**:
-- `ConsistencyStrong` enforces synchronous quorum writes, increasing latency by 15-30ms but preventing dirty reads.
-- `ConcurrencyFirstWrite` uses ETags to detect concurrent mutation conflicts and return 409 Conflict status.
-- Redis state stores support `ConsistencyEventual` for high-throughput counters but risk stale reads under failover.
-
 ## Dapr State Store Architecture & Consistency Models
 
-In modern distributed application development, state management remains one of the most complex challenges. When transitioning to a [microservices architecture](/posts/banking-microservices-architecture/), each service typically requires independent data storage and querying capabilities. This leads to technology fragmentation, where a system might simultaneously use Redis for caching, PostgreSQL for transactional data, and Cassandra for large unstructured data. Dapr (Distributed Application Runtime) emerged to solve this issue through a robust abstraction mechanism.
+In distributed applications, state management remains one of the most complex challenges. When transitioning to a [microservices architecture](/posts/banking-microservices-architecture/), each service typically requires independent data storage and querying capabilities. This leads to technology fragmentation, where a system might simultaneously use Redis for caching, PostgreSQL for transactional data, and Cassandra for large unstructured data. Dapr (Distributed Application Runtime) emerged to solve this issue through a robust abstraction mechanism.
 
 Dapr State Management provides a Unified API that allows applications to communicate with any state store via HTTP or gRPC without needing to implement specific driver libraries or database query syntax. The Dapr Sidecar acts as an intermediary, receiving requests such as `GET`, `POST`, and `DELETE` from the application and translating them into the corresponding operations on the configured physical database. This provides extremely high portability: developers can use Redis when developing locally and easily switch to PostgreSQL or CockroachDB for Production environments simply by altering the component's YAML configuration file—without modifying a single line of application code.
 
@@ -48,8 +41,6 @@ Conversely, **Eventual Consistency** prioritizes system availability and perform
 When building distributed systems handling thousands of concurrent requests, protecting data from race conditions is vital. There are two main approaches: Pessimistic Concurrency Control and Optimistic Concurrency Control (OCC). While pessimistic control locks resources to prevent all other access (often using solutions like [distributed locks](/series/system-design/06-distributed-locks-concurrency/)), Dapr State Store defaults to providing an OCC mechanism through the use of version identifier tags called `ETags`.
 
 The OCC mechanism operates on the assumption that data conflicts rarely occur. Instead of locking the resource before modification, the application reads the data along with an `ETag` representing the current version of that record. When the application overwrites or updates the data, it sends this old `ETag` back to Dapr. The Dapr Sidecar then requests the State Store DB to verify whether the submitted `ETag` matches the `ETag` currently stored in the DB. If they match, the write operation is accepted, and the database automatically generates a new `ETag` for that record. If they do not match, it means another client has updated this record between the current client's read and write operations. At this point, Dapr rejects the write operation and returns an `HTTP 409 Conflict` error.
-
-Below is a Mermaid diagram detailing the operational workflow of OCC in Dapr State Store for both scenarios: Successful Data Write and Conflict Handling due to ETag mismatch.
 
 ```mermaid
 sequenceDiagram
@@ -103,8 +94,6 @@ When the Client receives this 409 error, it must implement an error-catching mec
 
 Redis is an extremely fast in-memory data structure store, typically used as a cache or state store in distributed applications. Dapr supports integrating Redis as a state store through the `state.redis` component. In default or performance-optimized configurations, Redis is often set to run in Eventual Consistency mode to fully leverage its write and read speeds.
 
-Below is the detailed configuration of the `dapr-redis-state.yaml` component file used to register Redis as a State Store in Dapr with eventual consistency configuration:
-
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -137,8 +126,6 @@ When an application writes data via the Dapr Sidecar using this Redis component,
 ## Configuring CockroachDB for Strong Consistency (YAML)
 
 CockroachDB is an open-source distributed SQL database designed specifically to deliver exceptional horizontal scaling combined with ultra-high data integrity thanks to the Raft consensus protocol. Unlike traditional SQL models that use asynchronous replication, CockroachDB utilizes a Multi-Raft architecture to guarantee Strong Consistency across the entire cluster of nodes. Dapr integrates with CockroachDB through the `state.postgresql` component because CockroachDB is fully compatible with PostgreSQL's wire protocol.
-
-Below is the detailed configuration of the `dapr-cockroach-state.yaml` component file used to register CockroachDB as a State Store in Dapr with strong consistency mode:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

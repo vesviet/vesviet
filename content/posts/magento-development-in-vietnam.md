@@ -22,8 +22,6 @@ cover:
 
 # Magento Enterprise Project Scoping & Agency Cost Matrix
 
-> **Answer-First:** Scoping an enterprise Magento project in Vietnam requires accounting for four effort layers: storefront, backend logic, integration/data reliability, and operational readiness. Accurate budgeting depends on a paid discovery phase, explicit API retry and idempotency assumptions, and a cost matrix covering both initial implementation ($20k–$100k+) and ongoing maintenance.
-
 - Vendor management templates and scope definition checklists for outsourced dev.
 - Common project scoping pitfalls that lead to budget overruns in custom integrations.
 
@@ -204,7 +202,7 @@ For context on where the technical boundaries of Magento are and when it makes s
 
 ### Magento 2 Plugin & Redis Performance Configuration
 
-In high-concurrency Magento enterprise deployments, catalog indexing and session storage create significant database lock contention during heavy traffic spikes. Asynchronous search indexer plugins offload indexing tasks to prevent database locks during peak transaction periods:
+Asynchronous search indexer plugins offload indexing tasks to prevent database locks during peak transaction periods:
 
 ```xml
 <!-- etc/di.xml: Asynchronous Product Save Plugin -->
@@ -215,7 +213,7 @@ In high-concurrency Magento enterprise deployments, catalog indexing and session
 </config>
 ```
 
-Session storage must also be offloaded from the MySQL primary database to an in-memory datastore to maintain low latency during flash sales. The configuration block below establishes Redis L2 caching and session persistence inside `app/etc/env.php`:
+Session storage should also be offloaded from MySQL to Redis for low latency during flash sales:
 
 ```php
 // app/etc/env.php: Redis L2 Cache & Session Configuration

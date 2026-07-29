@@ -29,8 +29,6 @@ canonicalURL: "https://tanhdev.com/posts/goroutine-leak-detection-production-gol
 
 # Goroutine Leak Detection and Fix in Production Go Services
 
-> **Answer-First:** Goroutine leaks occur when goroutines block indefinitely on unbuffered channels, missing context timeouts, or unclosed tickers, holding GC roots and causing slow OOM kills (exit code 137). Developers can detect and prevent leaks using `pprof` goroutine profiles, Uber's `goleak` in unit tests, and Go 1.24 `synctest` time-virtualization.
-
 - Writing automated test cases that detect goroutine leaks before deploying.
 - Analyzing production runtime stack traces to locate orphaned channels.
 
@@ -45,8 +43,6 @@ In this deep dive, we will explore the root causes of goroutine leaks in product
 ---
 
 ## The Root Causes: Real-world Leak Patterns
-
-Goroutine leaks occur when asynchronous tasks spawn without explicit exit conditions, remaining permanently blocked on synchronization primitives. Channel operations, unclosed network sockets, database connection pools, and missing context cancellations represent the primary mechanisms that trap active goroutines in production Go microservices. The common leak patterns and mitigations are detailed below:
 
 ### 1. The Unbuffered Channel Trap
 In Go, sending to an unbuffered channel blocks the sender until a receiver is ready to read from it. If the receiving goroutine exits early—due to a timeout, a request context cancellation, or an error return—the sender is left blocked forever.
@@ -575,8 +571,6 @@ When building modern [agentic architectures](/series/agentic-system-architecture
 ---
 
 ## Frequently Asked Questions
-
-Below are answers to primary technical questions regarding goroutine leak detection, `GOMEMLIMIT` garbage collection targets, data race diagnosis, and memory footprint calculations in 2026 Go microservices. These insights clarify how to identify orphaned goroutines and prevent out-of-memory container crashes under production traffic loads.
 
 ### Does GOMEMLIMIT prevent goroutine leaks?
 No. `GOMEMLIMIT` manages Go runtime Garbage Collection soft memory targets. While it can trigger aggressive GC cycles to reclaim heap objects, it has no control over active goroutine stack memory allocations. Blocked goroutine stacks remain in memory, and the heap objects they reference cannot be garbage collected.

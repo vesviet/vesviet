@@ -20,8 +20,6 @@ canonicalURL: "https://tanhdev.com/posts/exporting-magento-2-data-flat-sql-nodej
 
 # Exporting Magento 2 Data: Flatten EAV with SQL & Node
 
-> **Answer-First:** Extracting data from Magento 2's EAV database model requires flattened SQL joins with index hints for orders and catalog attributes, coupled with a Node.js streaming ETL pipeline using `stream.pipeline` backpressure and `ON CONFLICT DO UPDATE` upserts to stay under 100MB RAM.
-
 - How to optimize complex EAV joins in MySQL using index hints to prevent full table scans on catalogs exceeding 1 million SKUs.
 - Complete Node.js stream backpressure implementations that keep memory usage under 100MB while processing millions of records.
 
@@ -31,11 +29,7 @@ This guide covers two extraction problems: **order export** (the simpler case) a
 
 ## Part 1: Exporting Orders
 
-Extracting historical sales data requires joining relational order tables, including `sales_order`, `sales_order_address`, `sales_order_payment`, and `sales_order_item`. Unlike complex catalog EAV models, order data structures rely on standard foreign-key relationships, enabling high-performance SQL extraction without pivoting dynamic attributes. The SQL queries below extract denormalized order headers and detailed line items:
-
 ### Full Order + Payment + Shipping Export
-
-The SQL query below joins order headers, shipping addresses, payment details, and fulfillment timestamps into a single denormalized export payload:
 
 ```sql
 SELECT
@@ -79,8 +73,6 @@ ORDER BY so.created_at ASC;
 ```
 
 ### Order Line Items (Second Pass)
-
-The SQL query below extracts individual order line items while filtering out parent configurable item placeholder rows:
 
 ```sql
 SELECT
@@ -198,13 +190,9 @@ ORDER BY e.entity_id ASC;
 
 ## Direct MySQL Streaming via mysql2 Stream API
 
-Exporting large product catalogs from Magento's MySQL database demands strict Node.js memory controls. Standard query callbacks buffer entire result sets inside V8 heap memory, triggering out-of-memory crashes on millions of records. Utilizing direct MySQL socket streaming ensures low, predictable memory consumption throughout the data extraction lifecycle.
-
-To extract large datasets with a constant, low memory footprint, we must stream rows directly from the MySQL network socket using the `mysql2` driver's streaming API.
+To extract large datasets with a constant, low memory footprint, we stream rows directly from the MySQL network socket using the `mysql2` driver's streaming API.
 
 ### Implementation of Direct MySQL Stream Export
-
-Streaming a flattened Magento product catalog query directly from MySQL requires configuring the `mysql2` object mode stream alongside Node.js Transform streams to manage memory backpressure and garbage collection efficiency.
 
 ```javascript
 // stream-export.js — Direct MySQL Streaming Export
@@ -382,11 +370,7 @@ To keep garbage collection efficient:
 
 ## Part 3: The Production Node.js Ingestion Pipeline
 
-Ingesting flattened Magento CSV data into target database environments requires a production-grade streaming pipeline engineered for reliability and high throughput. Implementing batch processing, exponential backoff retries, idempotent PostgreSQL upserts, and dead-letter queues ensures fault-tolerant ETL execution without overwhelming system RAM. The pipeline architecture diagram below details this ingestion flow:
-
 ### Pipeline Architecture
-
-The diagram below depicts the streaming data flow from source CSV file through stream parsing, batch aggregation, and idempotent PostgreSQL upserts:
 
 ```
 CSV File → Readable Stream → csv-parse → Batch Collector → DB Upsert (with retry)
@@ -395,8 +379,6 @@ CSV File → Readable Stream → csv-parse → Batch Collector → DB Upsert (wi
 ```
 
 ### Implementation
-
-The Node.js script below implements a memory-efficient batch ingestion pipeline with automated retries and dead-letter logging:
 
 ```javascript
 // migrate.js — Production-grade Magento → PostgreSQL pipeline
@@ -542,8 +524,6 @@ For the full architectural context of where this extracted data lands in a micro
 {{< author-cta >}}
 
 ## Frequently Asked Questions
-
-Below are answers to primary technical questions regarding Magento EAV database extraction, MySQL stream optimization, and Node.js backpressure management in 2026. These insights explain how store-scope fallbacks work, how memory footprint is minimized, and how to structure robust ETL data migration pipelines for enterprise e-commerce platforms.
 
 ### Why does Magento 2's EAV (Entity-Attribute-Value) database design make direct SQL extraction challenging?
 EAV distributes a single entity's attributes across multiple tables (e.g., `catalog_product_entity_varchar`, `_int`, `_decimal`) to support dynamic schema changes. Reconstructing a single product flat record requires joining several attribute tables, which causes major performance bottlenecks on large catalogs if queries are not heavily optimized with index hints and partitioned subqueries.

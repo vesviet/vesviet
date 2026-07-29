@@ -27,11 +27,9 @@ canonicalURL: "https://tanhdev.com/posts/ai-native-frontend-architecture-predict
 
 # AI-Native Frontend in 2028: 10 Architecture Predictions
 
-> **Answer-First:** By 2028, AI-native frontend architecture will transition from static design systems to dynamic Generative UI driven by Model Context Protocol (MCP) component registries, client-side Zod runtime schema validation, edge semantic caching, and streaming transport layers like WebSockets and Server-Sent Events.
-
 ## Executive Summary & AI Playbook Baseline
 
-Transitioning engineering organizations into AI-native operations requires an end-to-end strategy across 5 foundational pillars. Establishing an effective architecture requires defining clear performance baselines, fault-tolerance mechanisms, and modular service boundaries early in the design cycle.
+Transitioning to AI-native operations requires an end-to-end strategy across 5 foundational pillars:
 
 1. **Context Engineering & DDD**: Aligning agent context windows with Domain-Driven Design bounded contexts to eliminate prompt hallucination.
 2. **AI Platform Layer**: Centralizing LLM API gateways, semantic caching, rate limiting, and model fallback cascades across all frontend and backend clients.
@@ -45,7 +43,7 @@ Transitioning engineering organizations into AI-native operations requires an en
 
 Context engineering injects structured, domain-scoped data into LLM prompts using Domain-Driven Design (DDD) boundaries to prevent hallucinations and optimize context window consumption.
 
-- **Bounded Context Isolation**: Prompts receive data scoped strictly to their aggregate root (e.g. Cart, Order, or Catalog). Decoupling domain contexts ensures that client-side AI agent reasoning remains tightly bound to relevant fields, preventing prompt context contamination across microservices and reducing token consumption by over 60%.
+- **Bounded Context Isolation**: Prompts receive data scoped strictly to their aggregate root (e.g. Cart, Order, or Catalog). Decoupling domain contexts ensures that client-side AI agent reasoning remains tightly bound to relevant fields, preventing prompt context contamination across microservices and significantly reducing token consumption.
 - **Frontend AI Agent Integration**: Client-side AI agents run directly within the browser runtime or web worker threads, consuming user interactions and DOM events to build real-time context snapshots. These agents manage sliding token window buffers and local state caches before dispatching context bundles to remote inference providers.
 - **Schema-Enforced Context**: Data is passed as strongly-typed JSON schemas rather than raw, unstructured natural language strings to eliminate hallucination vectors. System prompts declare expected input and output JSON Schemas, ensuring that agent thought loops operate on predictable, versioned data structures.
 
@@ -53,9 +51,7 @@ Context engineering injects structured, domain-scoped data into LLM prompts usin
 
 ## 2. Centralized AI Platform Layer & Edge Runtime Optimization
 
-A modern enterprise AI Platform Layer decouples product code from cloud LLM vendors via centralized proxying, token usage tracking, and edge runtime optimization.
-
-The system architecture diagram below illustrates how an edge gateway inspects incoming requests, queries a low-latency semantic cache, and manages downstream LLM failovers:
+A centralized AI Platform Layer decouples product code from cloud LLM vendors via proxying, token usage tracking, and edge runtime optimization:
 
 ```mermaid
 graph TD
@@ -68,7 +64,7 @@ graph TD
 ```
 
 Centralizing model routing at the edge gateway boundary (deployed on platforms like Cloudflare Workers or Vercel Edge Runtime) allows engineering teams to optimize inference latency and cost:
-- **Edge Semantic Caching**: By computing vector embeddings for incoming prompt queries at the edge node, the platform checks vector similarity scores against pre-cached response pairs. Semantic cache hits bypass upstream LLM generation entirely, reducing latency from 1,500ms down to under 50ms while cutting API usage costs by 60–80%.
+- **Edge Semantic Caching**: By computing vector embeddings for incoming prompt queries at the edge node, the platform checks vector similarity scores against pre-cached response pairs. Semantic cache hits bypass upstream LLM generation entirely, reducing latency from 1,500ms down to under 50ms while cutting API usage costs substantially.
 - **Provider Cascade & Fallbacks**: The edge gateway dynamically routes requests based on real-time SLA metrics, context window limits, and cost thresholds—transparently failing over from high-cost models to lower-cost open-weights models or local inference endpoints without client bundle updates.
 - **Streaming Response Optimization**: Edge proxies process Server-Sent Events (SSE) and WebSocket byte streams in real-time, performing token-by-token validation and protocol transformation before relaying chunks to the browser viewport.
 
@@ -76,7 +72,7 @@ Centralizing model routing at the edge gateway boundary (deployed on platforms l
 
 ## 3. Policy-as-Code & Agentic CI/CD
 
-All AI-generated code and runtime UI payloads pass through automated policy enforcement gates before execution or deployment. The following TypeScript snippet demonstrates how Zod runtime validation intercepts and sanitizes dynamic agent payloads before component mounting:
+All AI-generated code and runtime UI payloads pass through automated policy enforcement gates before execution or deployment:
 
 ```typescript
 import { z } from "zod";
@@ -118,7 +114,7 @@ function handleAgentPayload(payload: unknown) {
 | 09 | Edge Semantic Caching cuts LLM API costs 60–80% | 🟡 Early signal |
 | 10 | Legacy SPAs become unmigrateable monoliths, requiring Strangler Fig | 🟡 Early signal |
 
-The sequence diagram below traces the end-to-end interaction flow between an autonomous AI agent, an MCP registry server, and the browser DOM during a Generative UI rendering cycle:
+The end-to-end interaction between an AI agent, MCP registry, and the browser DOM:
 
 ```mermaid
 sequenceDiagram

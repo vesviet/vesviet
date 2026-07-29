@@ -20,14 +20,7 @@ cover:
 
 # Building a Custom Golang Vector Database Engine with HNSW
 
-> **Answer-First:** Building a custom Go vector database engine with HNSW uses 256-bit SIMD AVX2 loop unrolling, off-heap `mmap` zero-GC slab memory, and Product Quantization (PQ-32). This achieves 98.4% Recall@10 at 14,200 QPS with sub-millisecond 0.82ms latency while reducing vector RAM footprint by 96%.
-
->
-> **Key Takeaways**:
-> - **Throughput & Latency**: Achieves **98.4% Recall@10 at 14,200 Queries Per Second (QPS)** on 768-dimensional embeddings with a sub-millisecond p99 latency of **0.82 ms** on standard cloud hardware.
-> - **SIMD Acceleration**: 256-bit loop-unrolled SIMD cosine distance in Go delivers a **4.1x throughput boost** over standard slice loops by removing bounds checks and leveraging CPU Fused Multiply-Add (FMA) pipelines.
-> - **Memory Efficiency**: Product Quantization (PQ-32) compresses 768-dimensional `float32` vectors from **3,072 bytes down to 32 bytes** (a 96x compression ratio for vector data), enabling 100M+ vectors to reside entirely in RAM.
-> - **Zero-GC Overhead**: Off-heap persistent memory-mapping (`syscall.Mmap`) paired with `unsafe.Slice` zero-copy rehydration completely bypasses Go runtime garbage collection scan cycles, keeping GC pause times below **150 microseconds**.
+Building a custom Go vector database engine with HNSW combines 256-bit SIMD AVX2 loop unrolling, off-heap `mmap` zero-GC slab memory, and Product Quantization (PQ-32) to get high recall at low latency while cutting vector RAM footprint dramatically. This post covers:
 
 - How to bypass Go bounds checking and force AVX2 vectorization in pure Go using `unsafe.Pointer` loop unrolling without assembly maintenance overhead.
 - Why naive Go pointer-based graph data structures trigger catastrophic GC pause spikes at 1M+ vectors—and how mmap off-heap slab allocation solves it.
@@ -1020,7 +1013,7 @@ To maintain sub-millisecond p99 latencies, the Go vector engine uses three memor
 
 ## 8. Benchmarks, Production Metrics & Latency Profiling
 
-Benchmarking the Go-native HNSW engine under heavy concurrent query workloads provides concrete empirical data regarding throughput, recall accuracy, and memory efficiency. The performance metrics below demonstrate how SIMD vectorization, Product Quantization, and memory-mapped persistence maintain sub-millisecond latencies across enterprise embedding datasets.
+The metrics below are from running the Go-native HNSW engine under concurrent query load on the hardware and dataset described. Treat these as representative of this specific setup — your own numbers will shift with hardware, dataset, and `efSearch` tuning.
 
 ### Benchmark Test Setup
 - **Hardware**: 64-core AMD EPYC 9554 CPU @ 3.10GHz, 256 GB RAM, PCIe Gen4 NVMe SSD.

@@ -35,13 +35,11 @@ canonicalURL: "https://tanhdev.com/posts/order-fulfillment-algorithm-warehouse-l
 
 # Order Fulfillment Algorithm: Warehouse to Last-Mile
 
-> **Answer-First:** An e-commerce order fulfillment algorithm selects warehouses and routes last-mile delivery using a 5-step pipeline: Available-to-Promise (ATP) stock checks, cost/proximity scoring, split vs. consolidation trade-offs, anticipatory inventory positioning (e.g. Amazon CONDOR), and Vehicle Routing Problem (VRP) solving with tools like OR-Tools or GraphHopper.
-
 ---
 
 ## Executive Summary & Fulfillment Fundamentals
 
-When an order is confirmed, the fulfillment system executes a multi-step decision pipeline to optimize inventory allocation and transit SLA:
+When an order is confirmed, the fulfillment system executes a multi-step decision pipeline:
 
 1. **Available-to-Promise (ATP) Check**: Filter candidate warehouses by real-time uncommitted stock.
 2. **Cost & Proximity Scoring**: Evaluate shipping distance, labor rate, carrier capacity, and SLA risk.

@@ -30,8 +30,6 @@ canonicalURL: "https://tanhdev.com/posts/dapr-workflow-saga-orchestration-guide/
 
 # Dapr Workflow Go Tutorial: Orchestrated Saga Pattern
 
-> **Answer-First:** Dapr Workflow implements Orchestrated Sagas in Go using replay-based durable execution, where a single orchestrator function owns the entire multi-step transaction lifecycle. It automatically records event history in a state store, surviving process restarts without duplicate execution and executing compensation handlers in sequence if any step fails.
-
 - Compensation handlers configuration in Dapr to guarantee atomic rollback.
 - How to handle transient workflows when the orchestrator instance restarts mid-transaction.
 
@@ -79,7 +77,7 @@ Both patterns implement the Saga distributed transaction model. The choice betwe
 
 Dapr Workflow is built on the Durable Task Framework. Understanding its execution model is critical to writing correct orchestrators.
 
-Deterministic execution ensures that replaying history reproduces the exact sequence of state transitions. The following flowchart details the replay decision process executed by the Dapr workflow runtime upon initialization:
+Deterministic execution ensures that replaying history reproduces the exact sequence of state transitions:
 
 ```mermaid
 graph TD

@@ -30,11 +30,6 @@ canonicalURL: "https://tanhdev.com/posts/graphhopper-distance-matrix-production-
 
 # GraphHopper Distance Matrix: Production Self-Hosting & API Guide
 
-> **Answer-First:** Self-hosting GraphHopper distance matrix via Docker and the `/matrix` API provides a cost-effective, high-throughput alternative to Google Maps for logistics routing. By caching OpenStreetMap (OSM) road networks in memory with H3 spatial indexing and Redis, engineering teams can compute 1,000x1,000 distance-time matrices in milliseconds to power last-mile Vehicle Routing Problem (VRP) algorithms.
-
-- Setting up GraphHopper self-hosting routing engine with custom profile caches.
-- Configuring RAM allocations to hold entire continental OpenStreetMap networks.
-
 ## How to Call the GraphHopper Matrix API (/matrix Endpoint)
 
 Running GraphHopper distance matrix in production requires configuring Docker deployment, the `/matrix` API endpoint, Custom Models for vehicle-specific routing (truck/motorcycle), H3-based Redis caching, and evaluating performance tradeoffs against OSRM, Valhalla, and Google Maps (for an in-depth analysis of routing engine selection, see our [OSRM vs GraphHopper Architecture Comparison](/posts/osrm-vs-graphhopper-architecture-comparison/)).
@@ -46,8 +41,6 @@ In high-volume logistics applications, structuring matrix queries efficiently mi
 ---
 
 ## Why GraphHopper Distance Matrix?
-
-Evaluating GraphHopper for high-throughput distance matrix calculations requires balancing spatial accuracy against hardware resource expenditure in 2026 logistics backends. While simplified mathematical approximations or commercial cloud endpoints offer quick initial integration, dedicated routing engines process large-scale N×M matrix requests directly against OpenStreetMap road networks, enabling dynamic route optimization without recurring per-element API operational expenses.
 
 The three main choices for open-source route distance matrix computation are **Haversine** (straight-line), **OSRM** (C++, extremely fast, rigid profiles), and **GraphHopper** (Java, flexible Custom Models). A fourth option is commercial APIs (Google Maps, HERE, Mapbox).
 
@@ -66,8 +59,6 @@ The three main choices for open-source route distance matrix computation are **H
 ---
 
 ## OSRM vs GraphHopper: Which Should You Choose?
-
-Selecting between OSRM and GraphHopper for production matrix generation depends on whether your infrastructure requires fixed multi-node raw performance or dynamic runtime profile adjustments. In 2026 enterprise routing stacks, high-volume single-vehicle fleets favor C++ memory layouts, whereas heterogeneous multi-modal logistics networks prioritize Java-based Custom Models for instant constraint updates without service restarts.
 
 Both engines are free, self-hostable, and use OpenStreetMap data. The decision comes down to **speed vs. flexibility** — and the actual performance delta is smaller than most engineers expect.
 
@@ -400,9 +391,7 @@ public class EmbeddedGraphHopperMatrix {
 
 ## H3-Based Redis Caching for Production Scale
 
-Caching matrix computations using Uber's H3 spatial index drastically reduces repetitive graph traversals across high-density urban zones in 2026 routing architectures. By indexing origin and destination coordinates into hexagonal cells and storing calculated durations inside Redis, systems bypass GraphHopper compute nodes for pre-calculated paths, reducing infrastructure costs by over ninety percent.
-
-Road networks change rarely. Caching distance matrix results by H3 cell pair reduces GraphHopper calls by 90%+ in steady-state production. The class below implements an H3 spatial key generator and Redis lookup pipeline for Python.
+Road networks change rarely. Caching distance matrix results by H3 cell pair reduces GraphHopper calls substantially in steady-state production. The class below implements an H3 spatial key generator and Redis lookup pipeline for Python.
 
 ```python
 import h3

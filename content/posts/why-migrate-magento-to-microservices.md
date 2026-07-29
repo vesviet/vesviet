@@ -21,11 +21,6 @@ canonicalURL: "https://tanhdev.com/posts/why-migrate-magento-to-microservices/"
 
 # Why Migrate Magento to Microservices: Architectural Blueprint
 
-> **Answer-First:** Migrating from Magento to microservices is justified when EAV database table lock contention, shared MySQL bottlenecking, and slow deployment cycles limit scale. Decoupling high-load modules (Checkout, Inventory) into Go microservices with dedicated databases reduces p99 latency and enables independent scaling, provided the organization can manage distributed transaction overhead (Saga pattern).
-
-- Latency improvement metrics for headless checkout over monoliths.
-- Breaking up tight database foreign keys to isolate microservice storage domains.
-
 Let's be direct: Magento is not a bad platform. For thousands of businesses, it is the right tool. It has a mature plugin ecosystem, a large developer community, and a proven track record across enterprise e-commerce.
 
 But there is a ceiling. And when you hit it, you feel it everywhere — in your deployment pipeline, in your database query times, in your team's ability to ship features independently, and ultimately in your ability to serve customers reliably at scale.
@@ -33,8 +28,6 @@ But there is a ceiling. And when you hit it, you feel it everywhere — in your 
 This post is about what that ceiling looks like technically, why it exists architecturally, and what a migration to microservices actually solves — and what it doesn't.
 
 ## The Core Problem: Magento is a Shared-State Monolith
-
-**A shared-state monolith connects all features to a single database schema. In Magento, an influx of cart updates blocks checkout table locks, meaning high traffic on one component brings down the entire system regardless of compute scale.**
 
 Magento's architecture is fundamentally a single application with a single shared MySQL database. Every module — catalog, orders, payments, inventory, customers, promotions — reads and writes to the same database cluster.
 
@@ -55,7 +48,7 @@ This design works well at low-to-medium scale. The problem surfaces when you nee
 
 During a flash sale, your `Order` and `Checkout` modules get hammered. Your `Catalog` module is mostly idle. In Magento, you cannot scale just the checkout flow — you must scale the entire application. Every PHP worker you spin up carries the full weight of every module, whether it's under load or not.
 
-In a microservice architecture, scaling decisions are executed at the service boundary rather than across the entire application stack. The YAML configuration snippet below demonstrates selective replica scaling for high-load checkout services during peak traffic:
+In a microservice architecture, you scale individual services independently:
 
 ```yaml
 # Scale only the Order service during flash sale
@@ -67,7 +60,7 @@ catalog-service:  replicas: 2   # Unchanged
 analytics-service: replicas: 1  # Unchanged
 ```
 
-The cost difference at scale is measurable. In our production environment, selective scaling during flash sale events reduced EC2 compute spend by approximately 60% compared to scaling the full Magento stack uniformly — because we only scaled the 3 services under load, not all 21.
+The cost difference at scale is measurable. In our production environment, selective scaling during flash sale events reduced EC2 compute spend significantly compared to scaling the full Magento stack uniformly — the exact savings depend on your service count and traffic distribution, but scaling only 3 hot services instead of all 21 cuts waste dramatically.
 
 ### 2. A Single Failure Brings Down Everything
 
@@ -86,7 +79,7 @@ This is not theoretical. The `Review` service going down should never affect the
 
 Magento's product catalog uses an Entity-Attribute-Value (EAV) model. Instead of storing product data in flat rows, it spreads attributes across multiple tables: `catalog_product_entity_varchar`, `catalog_product_entity_int`, `catalog_product_entity_decimal`, and so on.
 
-Fetching a single product with 30 attributes can require joining 5+ tables. At 25,000+ SKUs with complex attribute sets, this becomes a measurable latency problem — especially for search and listing pages. The SQL snippet below demonstrates the multi-table join structure needed to extract basic order and shipment IDs from Magento:
+Fetching a single product with 30 attributes can require joining 5+ tables. At 25,000+ SKUs with complex attribute sets, this becomes a measurable latency problem — especially for search and listing pages.
 
 ```sql
 -- Just to get orders with payment and shipment IDs — already 3 JOINs
@@ -165,8 +158,6 @@ No long-lived database transactions. No connection pool exhaustion. Each service
 
 ## What Microservices Actually Deliver
 
-**Microservices enable fault isolation and independent scaling. An e-commerce platform migrating from Magento to Go microservices sees p95 checkout latency drop from 1.2s to 120ms by decoupling the inventory lock from the cart database.**
-
 Based on a production 21-service Go ecosystem handling 10,000+ orders per day, here is what the architecture concretely delivers:
 
 | Capability | Magento | Microservices |
@@ -180,7 +171,7 @@ Based on a production 21-service Go ecosystem handling 10,000+ orders per day, h
 | Event reliability | ❌ Sync observers | ✅ Transactional outbox, at-least-once |
 | Zero-downtime deploy | ⚠️ Maintenance mode | ✅ Rolling updates per service |
 
-The difference between these two event models is worth unpacking. In Magento, events execute as synchronous PHP observers within the active HTTP request thread. The PHP code below illustrates how synchronous event observers introduce latency bottlenecks when interacting with external services:
+The difference between these two event models is worth unpacking. In Magento, events execute as synchronous PHP observers within the active HTTP request thread:
 
 ```php
 // Magento: Synchronous observer — blocks the HTTP request
@@ -197,7 +188,7 @@ class OrderPlaceAfterObserver implements ObserverInterface
 }
 ```
 
-In the microservice model, events commit to a local transactional outbox before asynchronous dispatch to message brokers. The Go snippet below illustrates atomic outbox persistence within a database transaction:
+In the microservice model, events commit to a local transactional outbox before asynchronous dispatch:
 
 ```go
 // Go: Transactional Outbox — event is guaranteed, non-blocking
@@ -220,8 +211,6 @@ The outbox guarantees delivery even if the Dapr broker is temporarily unavailabl
 
 ## The Real Cost of Migration
 
-**Migrating from Magento costs an average of 6–12 months of engineering time and requires duplicating infrastructure during the dual-sync phase. Organizations must invest in CI/CD, observability (OpenTelemetry), and event buses (Kafka) to support the new distributed baseline.**
-
 This is where most migration posts stop being honest. Microservices are not free.
 
 **Operational complexity increases dramatically.** You are now running 21+ services, each with its own database, deployment pipeline, and failure modes. You need Kubernetes, a service mesh, distributed tracing, centralized logging, and a team that understands all of it.
@@ -233,8 +222,6 @@ This is where most migration posts stop being honest. Microservices are not free
 **Team size matters.** A team of 2-3 developers cannot maintain 21 services. The operational overhead alone requires dedicated platform engineering capacity. Shopify or a managed Magento cloud is the right answer for small teams.
 
 ## When to Migrate (And When Not To)
-
-**Do not migrate if your store processes under 100 orders per day or requires heavy third-party Magento plugin reliance. Migrate when database lock contention causes downtime during flash sales or when developer deployment lead times exceed two weeks.**
 
 **Migrate when:**
 - You have 5+ developers and dedicated DevOps capacity
@@ -251,8 +238,6 @@ This is where most migration posts stop being honest. Microservices are not free
 - You do not have the operational maturity to run Kubernetes in production
 
 ## The Bottom Line
-
-**Migrating from Magento to microservices is an operational transformation, not just a codebase rewrite. It trades monolithic deployment simplicity for independent scalability, requiring mature GitOps and distributed tracing capabilities to succeed.**
 
 Magento's monolithic architecture is not a flaw — it is a deliberate design choice that optimizes for simplicity and ecosystem richness. For the majority of e-commerce businesses, it is the correct choice. (If you are evaluating alternatives to Magento but aren't ready for full microservices, evaluating the [Modular Monolith Architecture](/series/modular-monolith-architecture/) alternative is highly recommended).
 

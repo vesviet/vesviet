@@ -29,20 +29,15 @@ canonicalURL: "https://tanhdev.com/posts/mysql-scalability-guide/"
 
 # MySQL Scalability Guide: Read Replicas, Sharding, and Distributed SQL
 
-> **Answer-First:** Scaling MySQL requires matching the solution to the bottleneck: tune InnoDB buffer pool (70–80% RAM) and ProxySQL pooling for initial gains; add async read replicas for read-heavy workloads; apply Vitess or GORM application-level sharding for write-heavy data (>1TB); or migrate to distributed NewSQL (TiDB) when cross-shard queries and manual re-sharding become unsustainable.
-
-- Tuning InnoDB buffer pool size for high read/write ratio workloads.
-- Why standard read replication fails to solve write bottlenecks and when toshard.
-
 MySQL scalability is the ability to increase database throughput — reads per second, writes per second, or data volume — without rewriting your application. The critical distinction: **read scaling** (adding replicas) and **write scaling** (sharding or distributed SQL) require completely different architectural approaches. Choosing the wrong path creates technical debt that takes months to unwind.
 
-This guide walks through every stage of the MySQL scaling ladder, from buffer pool tuning through TiDB migration, with Go-specific implementation patterns at each step.
+This guide walks through every stage of the MySQL scaling ladder — InnoDB buffer pool tuning, ProxySQL pooling, async read replicas, Vitess/GORM sharding for write-heavy data, and TiDB migration — with Go-specific implementation patterns at each step.
 
 ---
 
 ## MySQL Scalability Patterns: Read Replicas vs. Sharding
 
-Understanding the operational trade-offs between read replication and horizontal sharding enables database architects to select appropriate performance scaling strategies. While read replicas handle high-volume SELECT query workloads, expanding write capacity requires partitioning transactional datasets or adopting distributed NewSQL engines to eliminate single-node primary database bottlenecks.
+Read replicas handle high-volume SELECT workloads, but expanding write capacity requires partitioning data or adopting distributed NewSQL engines to eliminate single-node bottlenecks.
 
 **MySQL scalability is the ability to handle increased data volume and transaction throughput without performance degradation. For a production e-commerce platform, this means keeping p95 database query latency under 50ms as traffic scales from 1,000 to 10,000 requests per second.**
 
@@ -56,14 +51,14 @@ The four-phase performance envelope for a dedicated MySQL server:
 | 3 — Connection pooling | 1,500–3,000 TPS | ProxySQL, MySQL Router |
 | 4 — Horizontal | 6,000–10,000+ TPS | Read replicas, sharding |
 
-Database administrators can adjust memory allocations dynamically without scheduling server restarts in modern MySQL releases. In-memory buffer allocations are updated at runtime via global system variables:
+Buffer pool can be resized at runtime without a restart in MySQL 8.0+:
 
 ```sql
 -- Resize buffer pool without restarting (MySQL 8.0+)
 SET GLOBAL innodb_buffer_pool_size = 8 * 1024 * 1024 * 1024; -- 8 GB
 ```
 
-Evaluating cache efficiency requires measuring how frequently read requests are satisfied directly from memory. InnoDB buffer pool hit rates are derived by comparing read requests to disk reads in global status variables:
+Check buffer pool hit rate by comparing read requests to disk reads:
 
 ```sql
 -- Buffer pool hit rate diagnostic
@@ -79,8 +74,6 @@ If hit rate is below 95%, add RAM before reaching for replicas.
 ---
 
 ## When Does MySQL Need to Scale?
-
-Identifying critical database performance metrics allows engineering teams to implement scaling solutions before production query latency degrades user experience. System alerts indicating InnoDB buffer pool cache hit rate drops, replication lag spikes, or high CPU utilization signal that database infrastructure has reached its current transactional throughput threshold.
 
 **Scale MySQL when CPU utilization consistently exceeds 70%, connection pools max out, or InnoDB buffer pool cache hit rates drop below 95%. In e-commerce, this typically happens during flash sales when cart and inventory writes cause severe table lock contention.**
 
@@ -101,7 +94,7 @@ Key output columns to prioritize:
 - **Rows Examine / Rows Sent ratio** — 1,000,000 examined / 1 sent = missing index
 - **Lock Time** — high values signal transaction contention, not missing indexes
 
-To identify high-latency statements directly on live production servers, query performance schema metrics. Execution time bottlenecks are surfaced by querying aggregated statement events:
+To identify high-latency statements on live servers, query performance schema:
 
 ```sql
 -- Find queries in the P95 execution time range
@@ -134,7 +127,7 @@ ORDER BY lag_seconds DESC;
 
 ### Signal 3: EXPLAIN Shows Full Table Scans
 
-Before making any scaling decisions or adding database replicas, inspect query execution plans to identify unindexed full table scans. The following `EXPLAIN` query evaluates whether MySQL accesses indexed data or performs an expensive full table scan for order lookups:
+Before adding replicas, inspect query execution plans for unindexed full table scans:
 
 ```sql
 -- Check before any scaling decision
@@ -153,8 +146,6 @@ ALTER TABLE orders ADD COLUMN coupon_code VARCHAR(64), ALGORITHM=INSTANT;
 ---
 
 ## Stage 1 — Read Scaling with MySQL Replicas
-
-Implementing read replication represents the initial phase of scaling MySQL databases to handle high-throughput application workloads. Offloading non-mutating SELECT queries to asynchronous replica nodes relieves read pressure on the primary database server, while intelligent connection pooling and ProxySQL routing prevent stale read operations during critical user transactions.
 
 **Stage 1 scales read operations by deploying asynchronous MySQL read replicas. A Go microservice routes SELECT queries to replicas via connection pooling, while INSERT and UPDATE operations target the primary master node to ensure transactional consistency.**
 
@@ -180,7 +171,7 @@ WHERE TABLE_TYPE = 'BASE TABLE'
   );
 ```
 
-MySQL Group Replication and parallel replica appliers rely on WRITESET dependency tracking to extract transaction write-sets and maximize parallel throughput. The SQL commands below configure binary logging formats, XXHASH64 write-set extraction on the primary server, and parallel worker preserve-commit ordering on replicas:
+Configure WRITESET dependency tracking on the primary and parallel workers on replicas:
 
 ```sql
 -- On the primary
@@ -238,8 +229,6 @@ Without `transaction_persistent = 1`, a `SELECT` inside an open transaction can 
 ---
 
 ## Stage 2 — Write Scaling with MySQL Sharding
-
-Partitioning database writes across multiple physical nodes becomes mandatory when a single primary MySQL instance reaches its hardware storage or write throughput ceiling. Selecting optimal shard keys, implementing application-level GORM routing or Vitess middleware, and managing zero-downtime online schema changes enable platforms to scale write-heavy datasets.
 
 **Stage 2 scales write operations by sharding the MySQL database horizontally across multiple servers. Data is partitioned using a sharding key (like user_id), meaning no single database instance holds the entire dataset, removing write bottlenecks.**
 
@@ -395,8 +384,6 @@ sync-diff-inspector --config=diff-config.toml
 ---
 
 ## MySQL Scalability Decision Framework
-
-Evaluating database scaling architectures requires matching specific application bottleneck signals with the appropriate technical solution path. The following comparison matrix analyzes read replicas, ProxySQL split routing, GORM application sharding, Vitess middleware, and TiDB distributed SQL across application changes, infrastructure costs, ACID guarantees, and operational complexity dimensions.
 
 | Dimension | Read Replicas | ProxySQL R/W Split | GORM Sharding | Vitess | TiDB |
 |-----------|:---:|:---:|:---:|:---:|:---:|
