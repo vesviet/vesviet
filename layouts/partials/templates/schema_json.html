@@ -42,7 +42,7 @@
     {
       "@type": "ListItem",
       "position": {{ add 1 $index  }},
-      "name": {{ $bc_pg.Name }},
+      "name": {{ default $bc_pg.Name $bc_pg.Title }},
       "item": {{ $bc_pg.Permalink | safeHTML }}
     }
     {{- end }}
@@ -53,7 +53,7 @@
     {
       "@type": "ListItem",
       "position": {{len $bc_list}},
-      "name": {{ .Name }},
+      "name": {{ default .Name .Title }},
       "item": {{ .Permalink | safeHTML }}
     }
   ]
