@@ -21,15 +21,13 @@ mermaid: true
 
 # Part 7: Build a Mini Core Banking System in Go
 
-> **Answer-First:** Building a production-grade mini core banking system in Go requires implementing an immutable double-entry ledger schema, deterministic row locking to prevent deadlocks, idempotent API handlers, and automated balance invariant reconciliation. This hands-on project validates transaction atomicity, sub-10ms transfer latency, zero-balance corruption, and at-least-once outbox event streaming under high concurrent load.
+> **Answer-first:** Building a production-grade mini core banking system in Go requires implementing an immutable double-entry ledger schema, deterministic row locking to prevent deadlocks, idempotent API handlers, and automated balance invariant reconciliation. This hands-on project validates transaction atomicity, sub-10ms transfer latency, zero-balance corruption, and at-least-once outbox event streaming under high concurrent load.
 
 > **Prerequisite:** [Part 6: Security, Compliance, and Audit Trails](/series/core-banking-developer/part-6-security-compliance-audit/) on audit ledger logs.
 
 ## Project Objectives
 
 **Answer-first:** This hands-on project builds a functional mini core banking system in Go, featuring a double-entry ledger, CASA accounts, and loan engines.
-
-> **Pillar Architecture Guide:** This guide is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the core architecture guide for an architectural reference.
 
 This hands-on capstone project synthesizes core banking engineering concepts into a fully functional mini core banking system (CBS) implemented in Go. Developers will construct a production-ready ledger service capable of processing funds transfers under concurrent load while guaranteeing strict ACID compliance, data immutability, and zero money creation or destruction.
 
@@ -59,7 +57,7 @@ graph TD
 
 ## Step 1: Design the Database Schema
 
-**Answer-first:** Step 1 designs PostgreSQL tables for Accounts, Ledger Journal Postings, Loans, and Audit Logs with strict balance check constraints.
+Step 1 designs PostgreSQL tables for Accounts, Ledger Journal Postings, Loans, and Audit Logs with strict balance check constraints.
 
 The foundation of a resilient core banking system lies in a normalized, strongly typed relational database schema. Using PostgreSQL, we establish explicit integrity constraints, foreign keys, check triggers, and immutability rules to ensure that corrupt accounting entries cannot be committed even if application-level validation fails.
 
@@ -150,7 +148,7 @@ CREATE TABLE audit_logs (
 
 ## Step 2: Implement the Money Transfer Logic
 
-**Answer-first:** Step 2 implements atomic money transfer Go functions executing pessimistic row locks and double-entry debit/credit postings.
+Step 2 implements atomic money transfer Go functions executing pessimistic row locks and double-entry debit/credit postings.
 
 Transferring funds between two deposit accounts represents the most critical path in a banking ledger engine. To handle race conditions when two users simultaneously transfer funds between the same account pair, the application tier enforces deterministic lock ordering: account numbers are sorted lexicographically before executing `SELECT ... FOR UPDATE` locks. This eliminates circular wait conditions and prevents database deadlocks under high concurrency.
 
@@ -353,7 +351,7 @@ func (h *TransferHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 ## Step 3: Write the Invariant Check
 
-**Answer-first:** Step 3 writes background invariant checks verifying that sum(debits) equals sum(credits) across all accounts in real time.
+Step 3 writes background invariant checks verifying that sum(debits) equals sum(credits) across all accounts in real time.
 
 Double-entry bookkeeping requires that every debit posting be balanced by an equal credit posting. To detect potential ledger corruption caused by database partial failures or direct administrator overrides, an automated reconciliation job calculates aggregate debit and credit sums per currency.
 
@@ -377,7 +375,7 @@ HAVING SUM(CASE WHEN entry_type = 'DEBIT'  THEN amount ELSE 0 END) !=
 
 ## Step 4: Stress Testing — The Final Exam
 
-**Answer-first:** Step 4 subjects the Go banking engine to concurrent load tests, verifying zero balance corruption and sub-10ms transfer latencies.
+Step 4 subjects the Go banking engine to concurrent load tests, verifying zero balance corruption and sub-10ms transfer latencies.
 
 Before deploying a core banking system to production, developers must simulate severe concurrent transaction bursts to verify that locking mechanisms maintain isolation under stress. Using load testing tools such as k6, we simulate 100 virtual users executing simultaneous transfers against identical account pairs.
 
@@ -417,7 +415,7 @@ export default function () {
 
 ## Project Completion Checklist
 
-**Answer-first:** The project checklist confirms double-entry compliance, ACID transaction safety, unit test coverage, and REST API integration.
+The project checklist confirms double-entry compliance, ACID transaction safety, unit test coverage, and REST API integration.
 
 ### Core Banking Logic
 - [ ] Double-entry ledger works correctly (DEBIT = CREDIT after every transaction)
@@ -444,7 +442,7 @@ export default function () {
 
 ## What's Next?
 
-**Answer-first:** After completing the mini core banking engine, explore Part 8 for guidance on writing professional core banking PRDs.
+After completing the mini core banking engine, explore Part 8 for guidance on writing professional core banking PRDs.
 
 Once you have built a functional Mini Core Banking system, you can extend its capabilities across enterprise modules:
 
@@ -460,7 +458,7 @@ Once you have built a functional Mini Core Banking system, you can extend its ca
 
 ## Concurrency Performance & System Benchmark
 
-**Answer-first:** Benchmarking the mini core banking engine demonstrates high concurrent transfer throughput with zero database deadlocks.
+Benchmarking the mini core banking engine demonstrates high concurrent transfer throughput with zero database deadlocks.
 
 To measure single-node memory allocations and transfer request processing performance, we write a Go microbenchmark executing transfer request validation and ledger entry construction.
 
@@ -506,7 +504,7 @@ For foundational double-entry ledger rules, see [Part 1: Double-Entry Bookkeepin
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** Building a mini core banking system in Go reinforces key concepts including double-entry accounting, pessimistic locking, and balance invariants.
+Building a mini core banking system in Go reinforces key concepts including double-entry accounting, pessimistic locking, and balance invariants.
 
 {{< faq "What are the core components of this mini core banking implementation?" >}}
 The mini banking engine comprises a double-entry ledger validator, a PostgreSQL transaction runner using deterministic `SELECT FOR UPDATE` locking, and a gRPC API gateway. It integrates an outbox event table to publish transaction domain events to downstream microservices with at-least-once delivery guarantees.

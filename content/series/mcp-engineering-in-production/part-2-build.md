@@ -19,11 +19,11 @@ TocOpen: true
 image: "images/posts/mcp-engineering-in-production-cover.png"
 ---
 
-
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Protocol](/series/mcp-engineering-in-production/part-1-protocol/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 2 — Building Production-Grade MCP Servers in Go/Python
 
-> **Executive Summary & Quick Answer**: Building production-grade MCP servers requires adhering to Domain-Driven Design (DDD) bounded contexts, stateless scaling, and structured JSON-RPC error handling. By using Go memory buffer pools (`sync.Pool`) and context cancellation timeouts, production MCP servers process high-concurrency tool calls with sub-15ms execution latency.
+> **Answer-first:** Building production-grade MCP servers requires adhering to Domain-Driven Design (DDD) bounded contexts, stateless scaling, and structured JSON-RPC error handling. By using Go memory buffer pools (`sync.Pool`) and context cancellation timeouts, production MCP servers process high-concurrency tool calls with sub-15ms execution latency.
 >
 > **Key Takeaways**:
 > - **DDD Bounded Context Isolation**: Microservice MCP servers isolate domain tools (Billing, K8s, Database) to restrict security blast radius.
@@ -194,27 +194,24 @@ High-concurrency Go MCP servers use `sync.Pool` memory buffer management to recy
 
 ---
 
-## Technical Deep-Dive: Model Context Protocol & System Topology Invariants
-
+## Production Invariants & Trade-offs
 Building enterprise-grade MCP servers requires isolating tool scopes and optimizing memory allocations for high throughput.
 
-### Protocol Performance Metrics & Latency Benchmarks
-
+### Performance Benchmarks
 - **Tool Call Execution SLA**: Sub-15ms execution latency for in-memory tools and sub-35ms for database queries.
 - **Memory Buffer Allocation**: `sync.Pool` memory recycling reduces Go GC pauses by up to 80% during high concurrency.
 
-### Protocol Invariants & Transport Security Guardrails
-
+### Protocol & Transport Invariants
 1. **Stateless Operations**: Server nodes store zero ephemeral session state locally; session context persists externally in Redis/PostgreSQL.
 2. **Graceful Error Responses**: Handlers wrap execution failures in `isError: true` JSON-RPC payloads to allow LLM parameter self-correction.
 
-### Operational Checklist for Software Engineering Teams
-
+### Operational Checklist
 1. **Context Timeout Limits**: Wrap all database and microservice network calls with Go `context.WithTimeout` (default 3 seconds).
 2. **Domain Isolation**: Group tools into modular DDD bounded context repositories (`mcp-billing`, `mcp-inventory`).
 
-
 ---
+
+🔗 **Next Step:** Continue to [Part 3 — Identity](/series/mcp-engineering-in-production/part-3-identity/) for the following module in the series.
 
 ## Internal Series Navigation
 
@@ -233,6 +230,5 @@ Building enterprise-grade MCP servers requires isolating tool scopes and optimiz
 | **Tool State DB Pool** | 35 Connections | 140 Connections | Dedicated tool state storage pool |
 | **Tool Failure Rate** | < 0.04% | > 0.4% | Graceful fallback response generation |
 
-#### Operational Checklist for Production Readiness
-
+#### Operational Checklist
 System verification requires rigorous unit test coverage, explicit error propagation, and zero-downtime canary deployment mechanics across all server replicas.

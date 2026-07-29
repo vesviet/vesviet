@@ -18,11 +18,9 @@ author: "Lê Tuấn Anh"
 mermaid: true
 ---
 
-> **Executive Overview:** High-concurrency system design requires lock-free data structures, asynchronous I/O multiplexing, and zero-copy memory buffers to scale to millions of requests.
+> **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/series/high-concurrency-systems/executive-summary/). Review it first if the terminology in this part is unfamiliar.
 
-> **Pillar Architecture Guide:** This article is part of the **[High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/)** series. Please refer to the original article for a comprehensive overview of the architecture.
-
-> **Answer-First:** Handling millions of requests per second (the C10M problem) requires eliminating kernel-space context switching overhead through asynchronous event loops (epoll/kqueue) or kernel-bypass networking (DPDK, io_uring), paired with zero-copy I/O memory buffers, L4 DSR (Direct Server Return) load balancing, and lock-free concurrency structures in Go.
+> **Answer-first:** Handling millions of requests per second (the C10M problem) requires eliminating kernel-space context switching overhead through asynchronous event loops (epoll/kqueue) or kernel-bypass networking (DPDK, io_uring), paired with zero-copy I/O memory buffers, L4 DSR (Direct Server Return) load balancing, and lock-free concurrency structures in Go.
 
 ```mermaid
 flowchart TD
@@ -314,3 +312,5 @@ DPDK achieves lower latency by dedicating CPU cores to 100% busy-spin polling of
 
 - [Architecting 21-Service E-commerce Golang DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)
 - [Shopee Flash Sale Infrastructure Blueprint](/posts/shopee-flash-sale-architecture/)
+
+🔗 **Next Step:** Continue to [Part 2 — Caching](/series/high-concurrency-systems/article_2_caching/) for the following module in the series.

@@ -23,11 +23,9 @@ image: "images/posts/realtime-inventory-cover.png"
 
 > Multi-tier distributed caching using Redis clusters and in-memory LRU buffers prevents database thundering herd and reduces read latency to sub-millisecond ranges.
 
-> **Pillar Architecture Guide:** This article is part of the **[High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/)** series. Please refer to the original article for a comprehensive overview of the architecture.
-
 > **Prerequisite:** Before reading this chapter, review [Chapter 1: How Systems Handle Millions of Requests/s](/posts/shopee-flash-sale-architecture/).
 
-### What You'll Learn That AI Won't Tell You
+### What You'll Learn
 - **Bloom Filter Math:** How to calculate bit array sizes ($m$) and hash function counts ($k$) for <1% false positive rates.
 - **XFetch Beta Tuning:** Adjusting the scaling factor ($\beta$) to force probabilistic background recomputation before TTL expiration.
 - **Singleflight Timeout Leaks:** Guarding singleflight calls with Go context deadlines to prevent goroutine hangs.

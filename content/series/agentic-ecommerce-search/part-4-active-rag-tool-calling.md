@@ -21,6 +21,8 @@ canonicalURL: "https://tanhdev.com/series/agentic-ecommerce-search/part-4-active
 mermaid: true
 ---
 
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Qdrant Hybrid Search](/series/agentic-ecommerce-search/part-3-qdrant-hybrid-search/). Review it first if the terminology in this part is unfamiliar.
+
 In [Part 3: Qdrant Hybrid Search - Solving Semantic and Hard Filters](/series/agentic-ecommerce-search/part-3-qdrant-hybrid-search/), we successfully built a powerful Hybrid search engine combining Dense Semantic and Sparse Lexical Search. However, a practical e-commerce search system goes far beyond merely retrieving static documents from a vector database.
 
 For example, a user asks: *"I want to buy a 400L Samsung Inverter refrigerator available at the District 1 branch that has an active promotion."*
@@ -35,8 +37,6 @@ To solve this problem thoroughly, the system must shift from the **Passive RAG**
 ## 1. The Difference Between Passive RAG and Active RAG
 
 **Answer-first:** Passive RAG fetches static context once before generation, whereas Active RAG empowers agents to dynamically call external APIs during multi-step reasoning loops.
-
-> **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 The architectural boundaries between Passive RAG and Active RAG are defined as follows:
 
@@ -66,7 +66,7 @@ graph TD
 
 ## 2. Defining Tools In Golang With Eino
 
-**Answer-first:** CloudWeGo Eino defines Go-native tools with strongly typed input schemas, enabling LLMs to trigger price calculators and inventory lookup functions safely.
+CloudWeGo Eino defines Go-native tools with strongly typed input schemas, enabling LLMs to trigger price calculators and inventory lookup functions safely.
 
 The **Eino** framework uses Go's Reflection mechanism to automatically map Structs into JSON Schemas sent to the LLM. To define a Tool, we need:
 1.  **Input Struct**: Defines the API input parameters accompanied by Struct Tags so the LLM understands the data type and description of each field.
@@ -122,7 +122,7 @@ func GetActivePromotions(ctx context.Context, input *GetPromotionsInput) (string
 
 ## 3. Strict Schema Binding With Strict Tool Calling
 
-**Answer-first:** Strict schema binding forces LLMs to generate valid JSON payloads conforming exactly to Golang struct tags, eliminating parameter parsing failures.
+Strict schema binding forces LLMs to generate valid JSON payloads conforming exactly to Golang struct tags, eliminating parameter parsing failures.
 
 Commercial LLMs like OpenAI GPT or Gemini support the **Strict Function Calling** feature (OpenAI `strict: true`). This feature forces the JSON Schema defining parameters to include the property `"additionalProperties": false`, meaning the LLM is not allowed to generate any phantom parameters outside the defined fields.
 
@@ -178,7 +178,7 @@ func BuildStrictTools() ([]tool.BaseTool, error) {
 
 ## 4. Setting Up the ReAct Loop Using Eino Graph
 
-**Answer-first:** Eino Graph configures stateful ReAct loops where LLM outputs conditionally route to tool nodes or final response generation nodes based on state evaluation.
+Eino Graph configures stateful ReAct loops where LLM outputs conditionally route to tool nodes or final response generation nodes based on state evaluation.
 
 For the LLM to perform Reasoning and Action multiple times dynamically, we will build a cyclic **Eino Graph** orchestration graph instead of a standard linear Chain.
 
@@ -251,7 +251,7 @@ func OrchestrateAgentGraph(ctx context.Context, chatModel model.ChatModel, tools
 
 ## 5. Practical Operation Scenario
 
-**Answer-first:** In practical operation, active RAG agents parse intent, invoke price filtering tools, query stock availability APIs, and synthesize accurate product recommendations.
+In practical operation, active RAG agents parse intent, invoke price filtering tools, query stock availability APIs, and synthesize accurate product recommendations.
 
 Let's observe the execution cycle of the Agentic Graph when a user asks:
 *"Give me the promotion info and check the stock at the District 1 branch for SKU 'SAMSUNG-RF400'."*
@@ -275,7 +275,7 @@ Let's observe the execution cycle of the Agentic Graph when a user asks:
 
 ## Summary & Key Takeaways from Part 4
 
-**Answer-first:** Active RAG with strict tool calling guarantees type-safe API invocation, allowing AI agents to query live inventory systems without hallucinating specs.
+Active RAG with strict tool calling guarantees type-safe API invocation, allowing AI agents to query live inventory systems without hallucinating specs.
 
 1.  **Dynamic data requires Active RAG**: Avoid injecting constantly changing data (inventory, prices, promotions) into the Vector Database. Use Tool Calling to query internal APIs in real-time.
 2.  **Strict Mode is Mandatory**: Adding the `"additionalProperties": false` constraint via `utils.WithSchemaModifier` ensures your backend system never crashes due to anomalous parameters from the LLM.
@@ -285,3 +285,5 @@ Let's observe the execution cycle of the Agentic Graph when a user asks:
 However, what if the LLM still answers incorrectly due to an internal logic error, or if data returned by a Tool has a weird format confusing the LLM? How can an Agent perform Self-Reflection and double-check its response before sending it to the customer?
 
 In **[Part 5: Critique Loop: Preventing LLM Hallucination](/series/agentic-ecommerce-search/part-5-critique-loop/)**, we will set up an independent "Retrieve-Critique-Regenerate" Loop in Eino to guarantee output quality reaches absolute perfection before displaying it to the end user.
+
+🔗 **Next Step:** Continue to [Part 5 — Critique Loop](/series/agentic-ecommerce-search/part-5-critique-loop/) for the following module in the series.

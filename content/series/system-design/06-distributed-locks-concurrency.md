@@ -24,14 +24,14 @@ image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 
 ## Distributed Locks in Go — Redlock Math, etcd & Split-Brain
 
-> **Executive Summary & Quick Answer**: Distributed locks enforce mutual exclusion across independent microservice instances. Redis Redlock achieves high-performance locking across quorum master nodes with Lua-script atomicity, while etcd provides linearizable Raft-backed leases with fencing tokens to guarantee absolute safety under network partitions.
+> **Answer-first:** Distributed locks enforce mutual exclusion across independent microservice instances. Redis Redlock achieves high-performance locking across quorum master nodes with Lua-script atomicity, while etcd provides linearizable Raft-backed leases with fencing tokens to guarantee absolute safety under network partitions.
 >
 > **Key Takeaways**:
 > - **Redlock Validity Formula**: Lock validity equals $\text{TTL} - \text{elapsed\_time} - \text{clock\_drift}$; if validity $\le 0$, release immediately.
 > - **Fencing Tokens**: Monotonically increasing fencing tokens (e.g. etcd revision numbers) block delayed GC-paused lockholders at storage layer boundaries.
 > - **Raft vs Redis Quorum**: Use etcd for high-correctness financial transactions and Redis Redlock for high-throughput rate limiting or worker job distribution.
 
-### What You'll Learn That AI Won't Tell You
+### What You'll Learn
 - **Redlock Clock Drift Math:** Why unsynchronized system clocks (NTP drifts) allow two clients to acquire the same Redis lock, and how to verify with fencing tokens.
 - **Rsync Lock-Release Failures:** The dangerous Lua script race condition when executing un-coordinated lock releases in Redis under network partitions.
 - **etcd Keep-Alive Overhead:** How etcd's HTTP/2 stream heartbeats impact cluster CPU utilization when holding thousands of concurrent locks.

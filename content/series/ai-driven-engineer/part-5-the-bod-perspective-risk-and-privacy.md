@@ -18,7 +18,9 @@ ShowToc: true
 TocOpen: true
 ---
 
-> **Key Takeaway**: Enterprise Boards of Directors (BoD) prioritize three critical AI risk categories: proprietary IP leakage, regulatory non-compliance (EU AI Act / SOC2 / HIPAA), and copyright liability. Establishing a Zero Data Retention (ZDR) gateway paired with automated PII masking ensures AI adoption proceeds safely without exposing corporate IP or customer data.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Blurring Sdlc Lines And Qc Revolution](/series/ai-driven-engineer/part-4-blurring-sdlc-lines-and-qc-revolution/). Review it first if the terminology in this part is unfamiliar.
+
+> **Answer-first:** Enterprise Boards of Directors (BoD) prioritize three critical AI risk categories: proprietary IP leakage, regulatory non-compliance (EU AI Act / SOC2 / HIPAA), and copyright liability. Establishing a Zero Data Retention (ZDR) gateway paired with automated PII masking ensures AI adoption proceeds safely without exposing corporate IP or customer data.
 
 While engineering teams focus on model benchmarks and developer velocity, the Board of Directors (BoD) and C-suite executives view AI adoption through the lens of **Enterprise Risk Management (ERM)**.
 
@@ -163,6 +165,8 @@ Automated PII engines combine regex pattern matching with Named Entity Recogniti
 Cryptographic audit trails compute immutable SHA-256 hashes of all input prompts, sanitized payloads, and AI model outputs, storing the metadata in append-only audit vaults. This cryptographic lineage proves to external SOC2 auditors that every model interaction was properly sanitized, policy-checked, and executed under zero-retention rules without exposing sensitive payload content.
 
 ---
+
+🔗 **Next Step:** Continue to [Part 6 — From Coder To Orchestrator](/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/) for the following module in the series.
 
 ## Internal Series Navigation
 

@@ -18,7 +18,9 @@ ShowToc: true
 TocOpen: true
 ---
 
-> **Key Takeaway**: The transition from individual programmer to Systems Orchestrator requires managing multi-agent AI swarms rather than writing single-threaded code lines. By establishing event-driven agent dispatchers, specialized role handoffs (Frontend, Backend, Database, Security), and channel synchronization in Go, orchestrators achieve parallelized feature implementation with 80% lower cycle times.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — The Bod Perspective Risk And Privacy](/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/). Review it first if the terminology in this part is unfamiliar.
+
+> **Answer-first:** The transition from individual programmer to Systems Orchestrator requires managing multi-agent AI swarms rather than writing single-threaded code lines. By establishing event-driven agent dispatchers, specialized role handoffs (Frontend, Backend, Database, Security), and channel synchronization in Go, orchestrators achieve parallelized feature implementation with 80% lower cycle times.
 
 In early AI-assisted development, engineers interacted with a single AI chat window in a sequential dialogue loop. The developer typed a prompt, waited for code output, pasted it into their editor, and repeated the manual cycle.
 
@@ -200,8 +202,6 @@ func main() {
 }
 ```
 
-Within Part 6 From Coder To Orchestrator, optimizing memory utilization requires Goroutine pool sizing and non-blocking ring buffer allocation. Profiling CPU profile samples via Go pprof identifies GC pause time reductions under high load.
-
 ---
 
 ## Comparative Matrix: Single-Agent vs Multi-Agent Swarm
@@ -233,6 +233,8 @@ Deterministic handoffs require strict schema contracts defined via OpenAPI 3.1 o
 The `errgroup.WithContext` package ties all sub-agent worker goroutines to a parent `context.Context` deadline. If a single sub-agent stalls or exceeds its execution budget, the context triggers a cancellation signal across all child routines, allowing the orchestrator to trip a fallback circuit breaker or report a structured error response without leaking goroutines.
 
 ---
+
+🔗 **Next Step:** Continue to [Part 7 — System Design Survival](/series/ai-driven-engineer/part-7-system-design-survival/) for the following module in the series.
 
 ## Internal Series Navigation
 

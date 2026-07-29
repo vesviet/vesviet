@@ -30,7 +30,7 @@ For any VRP (Vehicle Routing Problem) solver to find the optimal delivery route,
 
 ## 1. As the Crow Flies: The Haversine Formula
 
-**Answer-first:** Haversine formulas compute straight-line sphere distances quickly but fail to reflect real road networks and urban traffic delays.
+Haversine formulas compute straight-line sphere distances quickly but fail to reflect real road networks and urban traffic delays.
 
 This calculates the straight-line distance between two points on a sphere (the Earth) using their Latitude and Longitude.
 
@@ -79,7 +79,7 @@ def build_haversine_matrix(locations):
 
 ## 2. The Ideal Solution for the Base Problem: Routing Engine (OSRM / GraphHopper)
 
-**Answer-first:** Self-hosted routing engines like OSRM and GraphHopper pre-process road graphs into Contraction Hierarchies, returning matrix queries in sub-5ms.
+Self-hosted routing engines like OSRM and GraphHopper pre-process road graphs into Contraction Hierarchies, returning matrix queries in sub-5ms.
 
 If your problem **only requires delivering from a fixed warehouse to customers**, **without caring about real-time traffic** or **rush hour histories**, and solely needs distance based on the **actual existing road network** — then this is the perfect, most cost-effective solution.
 
@@ -145,7 +145,7 @@ curl "http://localhost:5000/table/v1/driving/106.70,10.77;106.71,10.78;106.72,10
 
 ## How to Calculate a Distance Matrix with GraphHopper
 
-**Answer-first:** Calculating distance matrices with GraphHopper involves configuring Java or Go gRPC clients to request batch pairwise road distances.
+Calculating distance matrices with GraphHopper involves configuring Java or Go gRPC clients to request batch pairwise road distances.
 
 **GraphHopper** is the most developer-friendly open-source routing engine for building a distance matrix in Java or via a self-hosted HTTP API. Unlike OSRM, GraphHopper supports runtime routing rule changes via **Custom Models** — making it the preferred choice when your delivery fleet has vehicle-specific constraints (weight limits, road class restrictions).
 
@@ -251,7 +251,7 @@ hopper.importOrLoad();
 
 ## 3. Expensive Overkill: Commercial APIs (Google Maps / Mapbox)
 
-**Answer-first:** Commercial routing APIs incur severe cost scaling at high volumes, making self-hosted open-source routing engines essential for e-commerce logistics.
+Commercial routing APIs incur severe cost scaling at high volumes, making self-hosted open-source routing engines essential for e-commerce logistics.
 
 If you are building a Ride-Hailing app that requires minute-perfect Estimated Time of Arrival (ETA) so customers don't cancel, you need real-time traffic data and historical rush hour patterns. In that case, you must use commercial APIs (like Google Maps).
 
@@ -283,7 +283,7 @@ This is exactly why domestic delivery companies self-host **OSRM** or **GraphHop
 
 ## 4. System Design Strategies to Save Compute
 
-**Answer-first:** System design strategies for routing engines include caching frequent distance matrices in Redis, spatial cell clustering, and asynchronous batching.
+System design strategies for routing engines include caching frequent distance matrices in Redis, spatial cell clustering, and asynchronous batching.
 
 To maintain high accuracy without overloading servers, large systems use these tricks:
 
@@ -374,7 +374,7 @@ Because road networks rarely change (only when there's long-term construction), 
 
 ## FAQ
 
-**Answer-first:** Self-hosting OSRM or GraphHopper on Kubernetes enables sub-5ms distance matrix generation at a fraction of commercial API costs.
+Self-hosting OSRM or GraphHopper on Kubernetes enables sub-5ms distance matrix generation at a fraction of commercial API costs.
 
 {{< faq q="Why use H3 Hexagons instead of Geohash for distance caching?" >}}
 In a square grid (Geohash), the distance from the center to the 4 straight edges differs from the distance to the 4 corners. In an H3 hexagon grid, the distance from the center to all neighboring cells is **exactly equal**. This property is critical in routing because distance error margins are uniformly controlled in all directions, making your cached distance matrix much more reliable.
@@ -394,7 +394,7 @@ Use **Haversine** as a lightweight "Candidate Filter" to eliminate points that a
 
 ## References & Further Reading
 
-**Answer-first:** Recommended geospatial resources include GraphHopper documentation, OSRM Contraction Hierarchies whitepapers, and VRP solver benchmarks.
+Recommended geospatial resources include GraphHopper documentation, OSRM Contraction Hierarchies whitepapers, and VRP solver benchmarks.
 
 - [Uber Engineering: H3 Hexagonal Hierarchical Spatial Index](https://www.uber.com/en-VN/blog/h3/)
 - [Google Maps Platform Pricing: Distance Matrix API](https://mapsplatform.google.com/pricing/)

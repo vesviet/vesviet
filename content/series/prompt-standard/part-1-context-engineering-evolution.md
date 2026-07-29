@@ -5,14 +5,8 @@ lastmod: "2026-07-26T10:30:00+07:00"
 draft: false
 weight: 10
 description: "Why static prompt engineering failed in enterprise LLM systems and how deterministic Context Engineering, token budgeting, and KV prefix caching define SOTA AI architectures in 2026."
-categories:
-  - Engineering
-  - AI
-tags:
-  - prompt
-  - standard
-  - context-engineering
-  - agent
+categories: ["Engineering", "AI"]
+tags: ["prompt", "standard", "context-engineering", "agent"]
 ShowToc: true
 TocOpen: true
 cover:
@@ -23,6 +17,8 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://vesviet.com/series/prompt-standard/part-1-context-engineering-evolution/"
 mermaid: true
 ---
+
+> **Prerequisite:** This is the starting part of the series — no prior part is required. Later parts assume the concepts introduced here.
 
 **Answer-first:** In 2026, static prompt engineering has evolved into deterministic Context Engineering. LLMs with 1M+ token context windows suffer from context bloat, attention dilution, and high token latency. Context Engineering uses dynamic token budgeting and KV-cache prefix alignment to construct cache-friendly context streams, ensuring predictable AI performance and lower infrastructure costs.
 
@@ -260,3 +256,5 @@ Static prompt engineering relies on manually written, hardcoded text templates p
 {{< /faq >}}
 
 {{< author-cta >}}
+
+🔗 **Next Step:** Continue to [Part 2 — The 8 Core Blocks](/series/prompt-standard/part-2-the-8-core-blocks/) for the following module in the series.

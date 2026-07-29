@@ -7,7 +7,10 @@ slug: "ddd-module-boundaries-modular-monolith"
 tags: ["Domain-Driven Design", "DDD", "Modular Monolith", "Spring Modulith", "Packwerk", "Architecture"]
 categories: ["Modular Monolith", "Architecture"]
 aliases: ["/series/modular-monolith-architecture/part-3-ddd-module-boundaries/"]
-cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal', 'relative': False}
+cover:
+  image: "images/posts/golang-microservices-cover.png"
+  alt: "Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal"
+  relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/ddd-module-boundaries-modular-monolith/"
 ShowToc: true
@@ -17,13 +20,11 @@ draft: false
 image: "images/posts/golang-microservices-cover.png"
 ---
 
-> **Answer-First:** A Modular Monolith prevents code degradation ("Big Ball of Mud") by applying Domain-Driven Design (DDD) Bounded Contexts, isolating database schema namespaces (e.g. `billing.payments`, `inventory.stock`), enforcing compile-time import boundaries via Go `internal` packages and `arch-go`, and using an in-memory transactional outbox pattern for asynchronous event communication.
-
-> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series and **[Composable E-Commerce Migration](/posts/ecommerce-architecture-composable-migration/)** guide. Please refer to the original article for a detailed overview of the architecture.
+> **Answer-first:** A Modular Monolith prevents code degradation ("Big Ball of Mud") by applying Domain-Driven Design (DDD) Bounded Contexts, isolating database schema namespaces (e.g. `billing.payments`, `inventory.stock`), enforcing compile-time import boundaries via Go `internal` packages and `arch-go`, and using an in-memory transactional outbox pattern for asynchronous event communication.
 
 > **Prerequisite:** Before reading this part, please review [Part 2: FinOps Cost Reality](/series/modular-monolith-architecture/part-2-finops-cost-reality/).
 
-**What You'll Learn That AI Won't Tell You:**
+**What You'll Learn:**
 - **Go Package & Arch-Go Enforcement:** How to use Go's `internal` folder structure and `arch-go` static rules to block illegal cross-module imports at compile time.
 - **Aggregate Roots & Anti-Corruption Layers (ACL):** How to encapsulate domain logic and translate external DTOs without leaking module internals.
 - **Database Schema Isolation (`billing.payments`, `inventory.stock`):** How PostgreSQL schema permissions restrict SQL JOINs across modules within a shared database instance.
@@ -95,7 +96,7 @@ func (a *OrderACLAdapter) ToPaymentVO(dto ExternalOrderDTO) (PaymentValueObject,
 
 ## 2. Database Boundaries: PostgreSQL Schema Isolation & Transactional Outbox
 
-**Answer-first:** Modular monoliths enforce database boundaries by segregating data into isolated PostgreSQL schemas (`billing.payments`, `inventory.stock`), revoking cross-schema SQL JOIN permissions, and persisting events via an in-memory Transactional Outbox pattern to guarantee event delivery.
+Modular monoliths enforce database boundaries by segregating data into isolated PostgreSQL schemas (`billing.payments`, `inventory.stock`), revoking cross-schema SQL JOIN permissions, and persisting events via an in-memory Transactional Outbox pattern to guarantee event delivery.
 
 The most dangerous coupling in a Monolith occurs at the database tier. Executing SQL `JOIN` queries between `orders.order_items` and `billing.payments` completely destroys module autonomy and blocks future database split-outs.
 
@@ -124,7 +125,7 @@ Pure in-memory Go channels risk losing domain events during unexpected applicati
 
 ## 3. Enforcing Boundaries with Automated Static Analysis (`arch-go` & Packwerk)
 
-**Answer-first:** Compile-time boundaries are enforced using Go `internal` directory rules, `arch-go` static rules, Spring Modulith (ArchUnit), and Packwerk to analyze package import graphs during builds, instantly failing tests if unauthorized cross-module imports occur.
+Compile-time boundaries are enforced using Go `internal` directory rules, `arch-go` static rules, Spring Modulith (ArchUnit), and Packwerk to analyze package import graphs during builds, instantly failing tests if unauthorized cross-module imports occur.
 
 Paper conventions degrade under tight deadlines. Leading engineering teams turn boundary conventions into hard compiler checks and automated static analysis tools integrated into local unit test suites and CI pipelines.
 
@@ -154,7 +155,7 @@ Running `arch-go` during `go test ./...` scans the Abstract Syntax Tree (AST) im
 
 ## 4. DHH's "Citadel" Model (Basecamp)
 
-**Answer-first:** DHH's "Citadel" model keeps 99% of core business features inside a central Majestic Monolith, extracting specialized micro-services ("Outposts") only when unique runtime requirements (such as AI processing or WebSocket streaming) demand it.
+DHH's "Citadel" model keeps 99% of core business features inside a central Majestic Monolith, extracting specialized micro-services ("Outposts") only when unique runtime requirements (such as AI processing or WebSocket streaming) demand it.
 
 David Heinemeier Hansson (DHH) - the creator of the Ruby on Rails framework, proposed the **"Majestic Monolith & Citadel"** model. Accordingly, 99% of business logic will reside in the central "Citadel" (Monolith).
 
@@ -166,7 +167,7 @@ A common question is whether prohibiting SQL JOINs degrades the Monolith's perfo
 
 ## 5. Event Storming & In-Memory Decoupled Communication
 
-**Answer-first:** Event Storming identifies domain event transitions, allowing modules to communicate asynchronously via channel-based in-memory event buses. This replaces complex distributed Saga orchestrators and 2-phase commits with fast, local database transactions.
+Event Storming identifies domain event transitions, allowing modules to communicate asynchronously via channel-based in-memory event buses. This replaces complex distributed Saga orchestrators and 2-phase commits with fast, local database transactions.
 
 Enforcing strict module boundaries requires that modules communicate asynchronously through events rather than sharing database transactions or importing foreign packages. This decoupled pattern is modeled via Event Storming.
 
@@ -267,7 +268,7 @@ For example, if payment succeeds but inventory fails, the Saga orchestrator must
 
 ## 6. Complete Go Interface & Domain Event Broker Implementation (Zero Facade Code)
 
-**Answer-first:** A production Go domain event broker uses thread-safe listener maps and `sync.WaitGroup` concurrency to publish and process domain events asynchronously, keeping module boundaries completely decoupled.
+A production Go domain event broker uses thread-safe listener maps and `sync.WaitGroup` concurrency to publish and process domain events asynchronously, keeping module boundaries completely decoupled.
 
 To demonstrate how to execute cross-domain boundaries without leaking coupling, we present a complete Go event broker pattern using `sync.WaitGroup` for deterministic sync:
 
@@ -373,7 +374,7 @@ Maintaining strict code borders helps you turn a Monolith into a collection of i
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** This FAQ addresses key questions regarding Aggregate Roots, PostgreSQL schema isolation, Anti-Corruption Layers, and static boundary enforcement in Modular Monoliths.
+This FAQ addresses key questions regarding Aggregate Roots, PostgreSQL schema isolation, Anti-Corruption Layers, and static boundary enforcement in Modular Monoliths.
 
 {{< faq q="How do Aggregate Roots enforce domain boundaries within a Modular Monolith?" >}}
 Aggregate Roots act as the sole entry point for modifying entities within a Bounded Context, ensuring that external modules cannot alter internal entity state directly. By restricting mutation access to root methods, business invariants and validation rules remain strictly encapsulated.
@@ -395,7 +396,7 @@ While Go `internal` directory rules enforce package visibility at compile time, 
 
 ## Navigation & Next Steps
 
-**Answer-first:** Proceed to Part 4 to explore simplified CI/CD pipelines, or review related guides on monorepo build caching and deployment automation.
+Proceed to Part 4 to explore simplified CI/CD pipelines, or review related guides on monorepo build caching and deployment automation.
 
 - **Previous Part:** [Part 2: FinOps Cost Reality](/series/modular-monolith-architecture/part-2-finops-cost-reality/)
 - **Next Part:** Continue to [Part 4: CI/CD Simplified](/series/modular-monolith-architecture/part-4-cicd-simplified/)
@@ -403,3 +404,4 @@ While Go `internal` directory rules enforce package visibility at compile time, 
 
 Need help establishing domain boundaries in your monolithic codebase? [Get in touch](/hire/) or [hire our senior software architects](/hire/) for a code structure review.
 
+🔗 **Next Step:** Continue to [Part 4 — Cicd Simplified](/series/modular-monolith-architecture/part-4-cicd-simplified/) for the following module in the series.

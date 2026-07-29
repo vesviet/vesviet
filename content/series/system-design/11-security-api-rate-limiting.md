@@ -24,7 +24,7 @@ image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 
 > **Prerequisite:** This is Part 11 of the [System Design Masterclass](/series/system-design/). Previous parts built the core components — this part covers securing APIs and managing client traffic spikes at scale.
 
-### What You'll Learn That AI Won't Tell You
+### What You'll Learn
 - **WAF Header Sanitization:** Why relying on standard proxy forwarding configurations invites IP header spoofing, and how to safely strip user headers.
 - **Limiter Sharding Performance:** How to split the global limiter map in Go using hash-based sharding to avoid lock contention on multi-core CPUs.
 - **Atomic Lua Script Limits:** Why sliding window limit checks inside Redis Lua scripts cause script evaluation delays when tracking millions of keys.
@@ -32,7 +32,6 @@ image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
 
 ## Layered Rate Limiting Architecture & IP Spoofing Prevention
-
 
 **Key Concept:** Secure rate limiting requires a tiered approach, deploying quick-reject rules at the edge WAF, routing quotas at the L7 gateway, and business-level limits in application middleware. To prevent client IP spoofing, proxies must strip client-supplied `X-Forwarded-For` headers, trust only verified internal proxy IPs, or use the PROXY protocol at the TCP layer.
 

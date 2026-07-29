@@ -1,10 +1,13 @@
 ---
 title: "The AI-Driven Engineer: Career & Architecture Guide"
+slug: "ai-driven-engineer"
 date: "2026-05-10T14:00:00+07:00"
 lastmod: "2026-05-10T14:00:00+07:00"
 draft: false
 weight: 10
 description: "Masterclass series on evolving from a manual code typist to an AI-driven system architect, orchestrating multi-agent systems in production."
+tags: ["AI-Driven Engineering", "Career", "System Architecture", "Context Engineering", "MCP", "Software Engineering"]
+categories: ["AI", "Engineering"]
 ShowToc: true
 mermaid: true
 TocOpen: true
@@ -16,11 +19,11 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/"
 ---
 
-> **Key Takeaway**: The AI-Driven Engineer Masterclass provides an architectural roadmap for software developers transitioning from legacy syntax writing to AI-native system orchestration. Operating via Context Engineering, Model Context Protocol (MCP) tool integration, and automated AST quality gates, it enables engineers to build resilient multi-agent platforms while reducing feature delivery cycle times by 65%.
+> **Answer-first:** The AI-Driven Engineer Masterclass provides an architectural roadmap for software developers transitioning from legacy syntax writing to AI-native system orchestration. Operating via Context Engineering, Model Context Protocol (MCP) tool integration, and automated AST quality gates, it enables engineers to build resilient multi-agent platforms while reducing feature delivery cycle times by 65%.
 
 The AI-Driven Engineer Masterclass provides a complete architectural roadmap for software developers transitioning from legacy code syntax implementation to AI-native system orchestration. By mastering Context Engineering, Model Context Protocol (MCP) tooling, and automated quality gates, engineers evolve from code typists into high-value system architects capable of designing resilient multi-agent software platforms.
 
-**What You'll Learn That AI Won't Tell You:**
+**What You'll Learn:**
 - **Context Window Inflation:** Managing code tokens to avoid high inference fees and model hallucinations.
 - **SDLC Structural Changes:** Restructuring QA protocols when AI writes 80% of application code.
 - **Mindset Evolution:** Transitioning from syntax implementation to systemic debugging and problem-solving.
@@ -147,7 +150,7 @@ When operating AI agent tools in large multi-developer repositories, engineers f
 **Production Retry & Timeout Handler in Go:** The `ExecuteOperation` function implements context deadline management and exponential backoff retry loops for resilient AI API tool invocations with configurable retry limits and telemetry tracing.
 
 ```go
-// Package main provides production implementation details for AI-Driven Engineer Series Index.
+// Package main demonstrates a context-aware retry pattern for AI API calls.
 package main
 
 import (

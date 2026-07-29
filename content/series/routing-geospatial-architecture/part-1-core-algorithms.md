@@ -24,14 +24,14 @@ image: "images/posts/graphhopper-cover.png"
 
 ## Part 1: Core Routing Algorithms — A* & Dijkstra Visualized
 
-> **Executive Summary & Quick Answer**: A* pathfinding uses Euclidean heuristics to accelerate 1-to-1 point routing, whereas Single-Source Dijkstra is mathematically superior for 1-to-N distance matrix calculations because it builds a single shortest-path search tree to all reachable destinations in one pass.
+> **Answer-first:** A* pathfinding uses Euclidean heuristics to accelerate 1-to-1 point routing, whereas Single-Source Dijkstra is mathematically superior for 1-to-N distance matrix calculations because it builds a single shortest-path search tree to all reachable destinations in one pass.
 >
 > **Key Takeaways**:
 > - **Matrix Efficiency**: Dijkstra expands radial wavefronts in a single pass, computing 1-to-N driver matrices 10x faster than running N independent A* searches.
 > - **Turn Restrictions**: Edge-based graph representation models turn penalties (e.g. prohibited U-turns) by representing turns as edges between directed road segments.
 > - **Shortcut Hierarchies**: Contraction Hierarchies contract local nodes offline, reducing real-time search space by orders of magnitude.
 
-**What You'll Learn That AI Won't Tell You:**
+**What You'll Learn:**
 - **Map Matching Math:** How Hidden Markov Models (HMM) and R-trees snap noisy GPS coordinates to road segments.
 - **Priority Queue Implementation:** Idiomatic Go `container/heap` code for priority queues in pathfinding.
 - **Contraction Shortcuts:** The exact node ordering heuristics used by GraphHopper to generate CH shortcuts.
@@ -65,7 +65,7 @@ To prevent snapping to the wrong road (like the underpass), engines use **Hidden
 
 ## Dijkstra vs A*: The Reality for Logistics
 
-**Answer-first:** Single-Source Dijkstra evaluates 1-to-N distance matrices in a single pass 10x faster than running N independent A* searches, keeping distance matrix resolution latencies well under the 50ms SLA threshold.
+Single-Source Dijkstra evaluates 1-to-N distance matrices in a single pass 10x faster than running N independent A* searches, keeping distance matrix resolution latencies well under the 50ms SLA threshold.
 
 **A*** is faster for Point-to-Point navigation (A to B) because it uses a heuristic to guide the search. However, **Dijkstra** is superior for Distance Matrix generation (1 to N) because it naturally builds a shortest-path tree to all reachable nodes simultaneously.
 
@@ -76,7 +76,7 @@ If you use A* for a 1-to-10 matrix, you must run the algorithm 10 separate times
 
 ## Edge-Based Graphs and Turn Restrictions
 
-**Answer-first:** Edge-based graph representation models turn restrictions and prohibited U-turns by assigning infinite weight penalties to forbidden transitions, eliminating illegal routing maneuvers while adding < 2ms execution overhead.
+Edge-based graph representation models turn restrictions and prohibited U-turns by assigning infinite weight penalties to forbidden transitions, eliminating illegal routing maneuvers while adding < 2ms execution overhead.
 
 To handle real-world rules like "No U-Turns" or "No Left Turns," routing engines convert Node-based graphs into **Edge-Based graphs**. This allows the algorithm to track the transition state between two specific road segments.
 
@@ -86,15 +86,13 @@ Routing engines solve this by making the *roads* the nodes, and the *turns* the 
 
 ## Time-Dependent Routing for Real-time Traffic
 
-**Answer-first:** Time-Dependent Dijkstra (TDD) dynamically calculates edge weights based on predicted vehicle arrival times, maintaining sub-15ms route resolution SLAs while accounting for dynamic urban congestion curves.
-
-> **Pillar Architecture Guide:** This article is part of the **[Multi-region Geo-distributed API Routing Architecture](/posts/multi-region-geo-distributed-api-routing/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+Time-Dependent Dijkstra (TDD) dynamically calculates edge weights based on predicted vehicle arrival times, maintaining sub-15ms route resolution SLAs while accounting for dynamic urban congestion curves.
 
 Traffic is not static. If a route takes 2 hours, the traffic at your destination will be completely different by the time you arrive. Time-Dependent routing solves this by applying the **FIFO (First-In-First-Out)** property. As the algorithm traverses the graph, it calculates the arrival time at each node and queries a time-varying speed matrix to get the true travel cost for the next segment.
 
 ## Contraction Hierarchies (CH): The Secret to Millisecond Scale
 
-**Answer-first:** Contraction Hierarchies (CH) pre-calculate highway shortcuts offline, reducing pathfinding search spaces from > 1,000,000 nodes down to < 100 node evaluations and cutting 1:1 route query latencies to 1–3ms (a 1,000x speedup).
+Contraction Hierarchies (CH) pre-calculate highway shortcuts offline, reducing pathfinding search spaces from > 1,000,000 nodes down to < 100 node evaluations and cutting 1:1 route query latencies to 1–3ms (a 1,000x speedup).
 
 Think of CH using the **Airport Analogy**. If you travel from Ho Chi Minh City to Hanoi, you don't drive through every local alleyway along the route. You take local roads to the airport, fly directly to the destination city, and take local roads to your hotel.
 
@@ -106,7 +104,7 @@ This drops calculation times from seconds to single-digit milliseconds. However,
 
 ## Algorithmic Performance Math and Complexity
 
-**Answer-first:** Contraction Hierarchies reduce Dijkstra graph complexity from $\mathcal{O}((V + E) \log V)$ to $\mathcal{O}((V' + E') \log V')$, reducing node evaluation depth to < 100 nodes and enabling 1:1 routing lookups in 1–3ms.
+Contraction Hierarchies reduce Dijkstra graph complexity from $\mathcal{O}((V + E) \log V)$ to $\mathcal{O}((V' + E') \log V')$, reducing node evaluation depth to < 100 nodes and enabling 1:1 routing lookups in 1–3ms.
 
 To design a routing engine at scale, we must understand the mathematical complexity of pathfinding:
 
@@ -116,7 +114,7 @@ To design a routing engine at scale, we must understand the mathematical complex
 
 ## Go Implementation: Simple Dijkstra Path Router
 
-**Answer-first:** A Go priority queue implementation (`container/heap`) executes Dijkstra shortest-path routing over adjacency lists in memory, returning optimal routes in sub-millisecond execution times.
+A Go priority queue implementation (`container/heap`) executes Dijkstra shortest-path routing over adjacency lists in memory, returning optimal routes in sub-millisecond execution times.
 
 ```go
 package routing
@@ -222,7 +220,7 @@ func ShortestPath(g *Graph, start, end int) ([]int, float64) {
 
 ## FAQ: Routing Algorithms & Real-World Edge Cases
 
-**Answer-first:** This FAQ addresses key pathfinding questions on A* grid zigzags, static CH vs dynamic CCH tradeoffs, HMM map matching on multi-level bridges, vehicle weighting profiles, and 1-to-N Dijkstra stopping criteria.
+This FAQ addresses key pathfinding questions on A* grid zigzags, static CH vs dynamic CCH tradeoffs, HMM map matching on multi-level bridges, vehicle weighting profiles, and 1-to-N Dijkstra stopping criteria.
 
 {{< faq q="Why does my routing engine give me weird 'zigzag' routes on a grid?" >}}
 Because the heuristic in A* might be overestimating the straight-line distance, or the graph is using an Edge-based configuration to heavily penalize turn costs (e.g., making straight lines cheaper than waiting to turn left, resulting in zigzags).
@@ -250,5 +248,5 @@ Need help building high-scale routing engines or spatial indexing pipelines? [Ge
 
 ## Architectural Context & Pillar References
 
-**Answer-first:** Reference pillar architecture guides on GraphHopper distance matrix production guides and real-time ride-hailing geospatial architecture.
+Reference pillar architecture guides on GraphHopper distance matrix production guides and real-time ride-hailing geospatial architecture.
 

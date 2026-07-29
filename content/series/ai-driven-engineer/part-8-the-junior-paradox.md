@@ -18,7 +18,9 @@ ShowToc: true
 TocOpen: true
 ---
 
-> **Key Takeaway**: The "Junior Engineer Paradox" describes how AI code tools automate entry-level syntax tasks, threatening to eliminate the traditional apprenticeship pipeline used to train senior architects. Junior engineers overcome this bottleneck by using AI as an interactive architectural mentor, accelerating their progression from syntax typist to systems designer in half the historical time.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 7 — System Design Survival](/series/ai-driven-engineer/part-7-system-design-survival/). Review it first if the terminology in this part is unfamiliar.
+
+> **Answer-first:** The "Junior Engineer Paradox" describes how AI code tools automate entry-level syntax tasks, threatening to eliminate the traditional apprenticeship pipeline used to train senior architects. Junior engineers overcome this bottleneck by using AI as an interactive architectural mentor, accelerating their progression from syntax typist to systems designer in half the historical time.
 
 For decades, the software development career path followed a predictable apprenticeship model:
 1. **Junior Developer (Years 1-3)**: Assigned to write basic CRUD endpoints, fix minor syntax bugs, write unit test stubs, and learn API frameworks through manual trial and error.
@@ -172,6 +174,8 @@ When basic syntax typing is automated, software engineering value concentrates e
 Tech leads should delegate syntax, formatting, and linting checks to automated pre-commit hooks and AST merge queue linters. Code review sessions then focus on high-level Socratic discussions regarding domain boundaries, API contract durability, and fault-tolerant error recovery.
 
 ---
+
+🔗 **Next Step:** Continue to [Part 9 — Building Ai Native Architecture](/series/ai-driven-engineer/part-9-building-ai-native-architecture/) for the following module in the series.
 
 ## Internal Series Navigation
 

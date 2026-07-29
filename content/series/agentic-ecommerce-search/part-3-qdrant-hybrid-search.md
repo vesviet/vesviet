@@ -21,6 +21,8 @@ canonicalURL: "https://tanhdev.com/series/agentic-ecommerce-search/part-3-qdrant
 mermaid: true
 ---
 
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — Ingestion Chunking](/series/agentic-ecommerce-search/part-2-ingestion-chunking/). Review it first if the terminology in this part is unfamiliar.
+
 In [Part 2: Data Ingestion & Atomic Chunking - Bringing Product Data into the AI Environment](/series/agentic-ecommerce-search/part-2-ingestion-chunking/), we established a clean data synchronization pipeline from PostgreSQL to Qdrant via Kafka CDC. But the journey of building a standard e-commerce search engine has just begun.
 
 When a user enters: *"Asus ROG Zephyrus G14 laptop under $1500 in stock"*
@@ -36,8 +38,6 @@ This article will guide you on how to configure and deploy an advanced Hybrid Se
 ## 1. Collection Configuration: Dense & Sparse Vectors in Parallel
 
 **Answer-first:** Qdrant collections combine dense vectors for semantic intent and sparse BM25 vectors for exact SKU matching within a single unified vector payload schema.
-
-> **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 Since Qdrant v1.7.0, we can configure a Collection to contain both Dense Vectors and Sparse Vectors simultaneously. Sparse Vectors do not require a fixed dimension size because they are stored as arrays of keyword indices and their statistical weights (values).
 
@@ -98,7 +98,7 @@ func (q *QdrantSearchClient) CreateHybridCollection(ctx context.Context) error {
 
 ## 2. Understanding Universal Query API & Reciprocal Rank Fusion (RRF)
 
-**Answer-first:** Reciprocal Rank Fusion merges dense and sparse search rankings into a single scored result list without requiring manual score normalization across algorithms.
+Reciprocal Rank Fusion merges dense and sparse search rankings into a single scored result list without requiring manual score normalization across algorithms.
 
 To combine results from two different search algorithms (Dense and Sparse), we use **Reciprocal Rank Fusion (RRF)**. RRF operates based on the rank of data points in each result list, rather than directly adding raw scores (which have completely different scales).
 
@@ -167,7 +167,7 @@ func (q *QdrantSearchClient) HybridSearch(ctx context.Context, params SearchPara
 
 ## 3. Optimizing Hard Filters With Filterable HNSW & Payload Indexing
 
-**Answer-first:** Payload indexing on boolean, numerical, and keyword fields allows Qdrant to perform strict pre-filtering during HNSW graph traversal without sacrificing latency.
+Payload indexing on boolean, numerical, and keyword fields allows Qdrant to perform strict pre-filtering during HNSW graph traversal without sacrificing latency.
 
 Although Qdrant has extremely fast vector search speeds, its performance will degrade significantly if you perform Metadata filtering (Payload Filters) without proper configuration.
 
@@ -239,7 +239,7 @@ func (q *QdrantSearchClient) CreatePayloadIndexes(ctx context.Context) error {
 
 ## Summary & Key Takeaways from Part 3
 
-**Answer-first:** Combining dense and sparse vectors via Reciprocal Rank Fusion provides comprehensive coverage for both natural language queries and exact catalog SKU searches.
+Combining dense and sparse vectors via Reciprocal Rank Fusion provides comprehensive coverage for both natural language queries and exact catalog SKU searches.
 
 1.  **Don't choose one or the other, choose both:** E-commerce requires a combination of semantic understanding (Dense vector) and exact keyword/SKU matching (Sparse vector).
 2.  **RRF is the gold standard:** Use Reciprocal Rank Fusion to combine two different score spaces without fear of ratio distortion.
@@ -249,3 +249,5 @@ func (q *QdrantSearchClient) CreatePayloadIndexes(ctx context.Context) error {
 Our Vector Database and Hybrid Search system are now capable of extremely accurate searching. But how do we turn these raw search results into an intelligent and directly interactive chat experience? How does the LLM know when to call the search API, and when to check real-time promotions?
 
 In **[Part 4: Active RAG & Strict Tool Calling: Connecting LLMs to Real-time APIs](/series/agentic-ecommerce-search/part-4-active-rag-tool-calling/)**, we will proceed to program AI Agent orchestration using the **Eino (CloudWeGo)** framework to connect LLMs directly with Go microservices via type-safe Function Calling mechanisms.
+
+🔗 **Next Step:** Continue to [Part 4 — Active Rag Tool Calling](/series/agentic-ecommerce-search/part-4-active-rag-tool-calling/) for the following module in the series.

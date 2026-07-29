@@ -18,10 +18,9 @@ TocOpen: true
 description: "Production guide to real-time change data capture streaming and federated GraphRAG query routing for enterprise distributed database pipelines."
 ---
 
-
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Late Chunking Semantic Caching](/series/ai-data-engineering-pipeline/part-3-late-chunking-semantic-caching/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 4 — Real-time Streaming CDC & Federated GraphRAG Architecture
-
 
 In mission-critical enterprise environments—such as financial trading desks, e-commerce order management, and medical health record platforms—data changes continuously. A product price adjustment, a contract terms revision, or a inventory status update occurs thousands of times per minute.
 
@@ -32,8 +31,6 @@ If your RAG system relies on traditional **Nightly Batch ETL**, your AI agents w
 ## The Streaming CDC Paradigm Shift
 
 **Answer-first:** Streaming Change Data Capture (CDC) streams database mutations into vector indexes in real time, eliminating stale vector database search results.
-
-> **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 ```mermaid
 sequenceDiagram
@@ -79,7 +76,7 @@ sequenceDiagram
 
 ## Production Go CDC Event Consumer
 
-**Answer-first:** Production Go CDC consumers parse PostgreSQL Debezium event streams, triggering instant incremental vector indexing for updated database records.
+Production Go CDC consumers parse PostgreSQL Debezium event streams, triggering instant incremental vector indexing for updated database records.
 
 This production-grade Go streaming consumer built with `github.com/segmentio/kafka-go` and `golang.org/x/sync/errgroup`. It consumes Debezium Postgres WAL change events and updates vector embeddings and Neo4j graph nodes concurrently:
 
@@ -226,7 +223,7 @@ func main() {
 
 ## Federated GraphRAG Query Routing Architecture
 
-**Answer-first:** Federated query routers distribute search queries across domain-specific knowledge graphs and aggregate partial graph results into unified context.
+Federated query routers distribute search queries across domain-specific knowledge graphs and aggregate partial graph results into unified context.
 
 In enterprise organizations operating across distinct geographical jurisdictions (e.g., US-East, EU-Central, APAC), regulations like GDPR and HIPAA prohibit consolidating raw document vectors into a single centralized database.
 
@@ -269,9 +266,11 @@ Federated routers execute local sub-graph searches entirely within regional boun
 
 ---
 
+🔗 **Next Step:** Continue to [Part 5 — Enterprise Security Data Poisoning](/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/) for the following module in the series.
+
 ## Internal Series Navigation
 
-**Answer-first:** Move to Part 5 to explore enterprise security, RBAC filtering, and data poisoning defense in RAG.
+Move to Part 5 to explore enterprise security, RBAC filtering, and data poisoning defense in RAG.
 
 - [Part 3 — Late Chunking & Contextual Retrieval](/series/ai-data-engineering-pipeline/part-3-late-chunking-semantic-caching/)
 - [Part 5 — Enterprise Security, RBAC & Data Poisoning Defense](/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/)

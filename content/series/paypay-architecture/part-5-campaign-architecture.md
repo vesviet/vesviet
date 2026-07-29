@@ -19,7 +19,9 @@ mermaid: true
 image: "images/posts/paypay-scaling-cover.png"
 ---
 
-> **Executive Summary & Quick Answer**: Scaling for billion-yen cashback campaigns requires pre-warmed Redis cluster caching, token-bucket rate limiting at the API gateway, and async queue-based payment processing to shave peak traffic spikes.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Sre Chaos Engineering](/series/paypay-architecture/part-4-sre-chaos-engineering/). Review it first if the terminology in this part is unfamiliar.
+
+> **Answer-first:** Scaling for billion-yen cashback campaigns requires pre-warmed Redis cluster caching, token-bucket rate limiting at the API gateway, and async queue-based payment processing to shave peak traffic spikes.
 
 **Answer-first:** The PayPay campaign architecture isolates high-throughput reward campaigns from core payment processing. By evaluating campaign eligibility out-of-band and writing reward points asynchronously using event queues, PayPay prevents promotional traffic spikes from impacting critical credit card processing pipelines.
 
@@ -232,3 +234,4 @@ Peak-shaving buffers excess incoming web traffic at the ingress gateway, admitti
 
 Next step: Discover how PayPay integrates AI models into payment processing in [Part 6: AI-Native Integration (2025-2026)](/series/paypay-architecture/part-6-ai-integration-2025/). For campaign traffic scaling and flash sale architecture, consult [High Traffic Architecture Specialists](/hire/).
 
+🔗 **Next Step:** Continue to [Part 6 — Ai Integration 2025](/series/paypay-architecture/part-6-ai-integration-2025/) for the following module in the series.

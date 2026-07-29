@@ -18,10 +18,9 @@ ShowToc: true
 TocOpen: true
 ---
 
-
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Golang Orchestration](/series/agentic-ecommerce-search/part-1-golang-orchestration/). Review it first if the terminology in this part is unfamiliar.
 
 ## Data Ingestion & Atomic Chunking Product Data: Semantic Catalog Pipelines
-
 
 In general document RAG applications, text splitting divides long articles into arbitrary token chunks (e.g., 512 tokens with 50-token overlap).
 
@@ -32,8 +31,6 @@ Applying naive token splitting to e-commerce product catalogs is disastrous. A c
 ## Atomic Product Ingestion Pipeline Architecture
 
 Atomic ingestion pipelines parse raw e-commerce catalog schemas into single-SKU contextual units containing specs, pricing, and category metadata for vector indexing.
-
-> **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 ```mermaid
 graph TD
@@ -174,8 +171,7 @@ if __name__ == "__main__":
 
 ---
 
-## Technical Deep-Dive: Vector Graph Search & E-Commerce Retrieval Invariants
-
+## E-Commerce Retrieval Invariants
 Invariants in product retrieval demand strict schema validation and deterministic vector embedding generation to guarantee exact payload filtering during similarity scoring.
 
 Atomic product chunking pipelines process raw e-commerce catalog feeds by enforcing single-SKU boundaries. Schema validation via Pydantic ensures attribute key-value pairs remain attached to their parent SKU before vector embedding generation.
@@ -188,8 +184,9 @@ Ingestion workers buffer product updates using async queues before generating de
 
 Catalog updates pass through automated schema validation to guarantee 100% attribute accuracy. Real-time pricing and stock modifications are routed to high-speed Redis caches, leaving vector embeddings untouched while maintaining low search latency.
 
-
 ---
+
+🔗 **Next Step:** Continue to [Part 3 — Qdrant Hybrid Search](/series/agentic-ecommerce-search/part-3-qdrant-hybrid-search/) for the following module in the series.
 
 ## Internal Series Navigation
 

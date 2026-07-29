@@ -23,7 +23,7 @@ Microservices communication uses gRPC for high-throughput internal RPCs via bina
 
 > **Prerequisite:** This is Part 12 of the [System Design Masterclass](/series/system-design/). Previous parts built the reliability patterns — this part covers comparing communication protocols and data formats for microservice communication.
 
-### What You'll Learn That AI Won't Tell You
+### What You'll Learn
 - **Protobuf Memory Allocations:** Benchmarking struct reflection versus compile-time Protobuf serialization memory footprints in Go.
 - **ConnectRPC net/http Integration:** How to mount ConnectRPC handlers directly onto Go's standard multiplexer without using intermediate gateway proxies.
 - **N+1 Query Resolution:** Implementing the DataLoader batching pattern in Go to prevent sequential database queries.
@@ -31,7 +31,6 @@ Microservices communication uses gRPC for high-throughput internal RPCs via bina
 ---
 
 ## Overview of Communication Protocols
-
 
 **Key Concept:** gRPC, REST, and GraphQL operate on different layers of serialization, schema safety, and client-server coordination. gRPC enforces strict API contract schemas at compile time; REST provides loose, flexible JSON responses over standard HTTP semantics; GraphQL relies on schema-based graph models, allowing clients to fetch customized fields in a single query round trip.
 
@@ -420,4 +419,4 @@ You've completed all 12 parts of the masterclass. Here's the complete knowledge 
 
 🔗 **Series Hub:** Continue to [System Design Masterclass (Golang)](/series/system-design/)
 
-
+🔗 **Next Step:** You have reached the final part of this series. Revisit the series index at [/series/system-design/](/series/system-design/) or explore other series linked below.

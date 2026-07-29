@@ -21,11 +21,11 @@ mermaid: true
 image: "images/series/magento-migration-cost-cover.png"
 ---
 
-> **Executive Summary & Quick Answer**: Building a dedicated Go migration team in Vietnam achieves 60-70% cost savings compared to US/EU engineering teams while delivering equal technical capabilities for complex e-commerce re-architecture projects.
+> **Prerequisite:** Familiarity with the concepts introduced in [Remote Team Vietnam Magento Migration](/series/magento-migration-vietnam/remote-team-vietnam-magento-migration/). Review it first if the terminology in this part is unfamiliar.
+
+> **Answer-first:** Building a dedicated Go migration team in Vietnam achieves 60-70% cost savings compared to US/EU engineering teams while delivering equal technical capabilities for complex e-commerce re-architecture projects.
 
 **Answer-first:** Migrating a Magento monolith to Go microservices using a Vietnam team costs $320,000–$520,000 over 12–18 months. This delivers 60% direct labor savings compared to US or EU teams while achieving break-even on management overhead by month six.
-
-> **Pillar Architecture Guide:** This article is part of the **[Composable Commerce: Migrating from Monolith to Microservices](/posts/ecommerce-architecture-composable-migration/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 > **Series context:** This post is part of the [E-Commerce Re-Architecture in Vietnam](/series/magento-migration-vietnam/) series. For the technical architecture this budget funds, read [Zero-Downtime: Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/).
 
@@ -326,3 +326,4 @@ For custom budget modeling or team structure consultation, connect with [Migrati
 
 *Previous: [Go Engineers in Vietnam: Vetting for Magento Migration →](/series/magento-migration-vietnam/go-engineers-vietnam-migration-vetting/)*
 
+🔗 **Next Step:** Continue to [Go Engineers Vietnam Migration Vetting](/series/magento-migration-vietnam/go-engineers-vietnam-migration-vetting/) for the following module in the series.

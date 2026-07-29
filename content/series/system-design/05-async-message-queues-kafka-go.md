@@ -24,14 +24,14 @@ image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 
 ## Kafka Worker Pool in Go — Backpressure & Exactly-Once
 
-> **Executive Summary & Quick Answer**: High-throughput event streaming in Go leverages Kafka zero-copy `sendfile()` kernel transfers combined with bounded goroutine worker pools. Natural backpressure is achieved using buffered Go channels, while partition-pinned workers preserve message ordering without distributed locks.
+> **Answer-first:** High-throughput event streaming in Go leverages Kafka zero-copy `sendfile()` kernel transfers combined with bounded goroutine worker pools. Natural backpressure is achieved using buffered Go channels, while partition-pinned workers preserve message ordering without distributed locks.
 >
 > **Key Takeaways**:
 > - **Zero-Copy Performance**: Kafka bypasses user-space buffer copies via `sendfile()`, routing data directly from Linux page cache to network socket buffers.
 > - **Channel Backpressure**: Bounded Go channels automatically throttle poll loops when downstream workers reach memory capacity limits.
 > - **Partition-Aware Ordering**: Pinning specific Kafka partition IDs to dedicated worker goroutines maintains strict message sequence guarantees.
 
-### What You'll Learn That AI Won't Tell You
+### What You'll Learn
 - **Kernel-Level sendfile() Mechanics:** How zero-copy I/O bypasses the context switches between user and kernel space, preventing CPU cache invalidation.
 - **Worker Pool Partition Pinning:** Why mapping partitions to specific workers is the only way to maintain order processing sequences without locking.
 - **Offset Commit Transaction Math:** Implementing transactional offset commits inside Go consumers to guarantee idempotency under broker rebalances.

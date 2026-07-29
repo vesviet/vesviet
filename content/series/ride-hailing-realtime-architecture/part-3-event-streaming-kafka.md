@@ -17,6 +17,8 @@ TocOpen: true
 image: "images/posts/real-time-ride-hailing-cover.png"
 ---
 
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — Geospatial Indexing](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/). Review it first if the terminology in this part is unfamiliar.
+
 **Answer-first:** Apache Kafka and Flink form the real-time event-streaming backbone for ride-hailing platforms, ingesting millions of GPS telemetry events per second. By partitioning Kafka topics by driver ID and executing sliding-window aggregations in Flink, systems achieve real-time location streaming, driver state management, and dynamic surge calculations with sub-second latency.
 
 ## Why Do We Need Event Streaming?
@@ -272,7 +274,7 @@ For GPS updates, **At-Least-Once** delivery is optimal: duplicate coordinates si
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** This FAQ addresses key event streaming decisions: topic partitioning strategies, Flink stateful stream processing, exactly-once delivery semantics, and Redpanda high-throughput optimizations.
+This FAQ addresses key event streaming decisions: topic partitioning strategies, Flink stateful stream processing, exactly-once delivery semantics, and Redpanda high-throughput optimizations.
 
 {{< faq q="Why is driver_id used as the primary Kafka partition key for location updates?" >}}
 Partitioning by `driver_id` ensures that all sequential GPS pings from a specific driver land on the exact same Kafka broker partition. Because Kafka guarantees strict message ordering within a single partition, downstream consumers process the driver's location history in strict chronological sequence without out-of-order jitter.
@@ -287,6 +289,8 @@ Payment and billing events use Kafka transactional producers (`transactional.id`
 {{< /faq >}}
 
 ---
+
+🔗 **Next Step:** Continue to [Part 4 — Dispatch Matching Engine](/series/ride-hailing-realtime-architecture/part-4-dispatch-matching-engine/) for the following module in the series.
 
 ## References & Further Reading
 

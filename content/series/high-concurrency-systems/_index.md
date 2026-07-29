@@ -33,7 +33,6 @@ Welcome to the **High Concurrency Systems** Masterclass.
 
 ## 🎯 Architecture Review & Consulting (Hire Me)
 
-
 ---
 
 ## 📚 Core Curriculum

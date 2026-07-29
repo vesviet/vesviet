@@ -18,10 +18,9 @@ ShowToc: true
 TocOpen: true
 ---
 
-
+> **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/series/ai-code-review-vibe-coding/executive-summary/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 1 — Vibe Coding & Non-Technical Founders: Demystifying the Magic
-
 
 For decades, the highest barrier to launching a software startup was the **Engineering Talent Bottleneck**. Non-technical founders with ground-breaking domain insights were forced to spend months raising capital or searching for technical co-founders before writing a single line of code.
 
@@ -32,8 +31,6 @@ For decades, the highest barrier to launching a software startup was the **Engin
 ## The Vibe Coding Product Generation Lifecycle
 
 The vibe coding lifecycle translates non-technical natural language prompts into executable software prototypes, requiring continuous specification refining.
-
-> **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 ```mermaid
 sequenceDiagram
@@ -144,26 +141,24 @@ if __name__ == "__main__":
 
 ---
 
-## Technical Deep-Dive: Enterprise Code Review & Vibe Coding Governance
-
+## Production Invariants & Governance
 Preventing quality decay in vibe-coded projects demands automated linting, test suite generation, and multi-agent security scans during pull request reviews.
 
 Non-technical founders using AI code generators must establish automated quality guardrails to ensure generated code remains maintainable and secure over time.
 
-### System Throughput & Latency Metrics
-
+### Throughput & Latency Metrics
 - **Specification Parsing Latency**: Translating natural language prompts into structured Pydantic AST contracts in sub-300ms.
 - **Linter Processing Speed**: Verifying AST syntax correctness and type annotations in under 15ms per generated file.
 - **Deployment Pipeline Velocity**: Transitioning verified code from intent parsing to live cloud hosting within 15 minutes.
 
-### System Safety & Execution Guardrails
-
+### Execution Guardrails
 1. **Structured Schema Validation**: Convert all founder prompts into JSON schemas before delegating generation tasks to LLMs.
 2. **Pre-Deployment Vulnerability Scanning**: Audit generated code for plain-text secrets and insecure endpoint access before merging.
 3. **Automated Test Generation**: Require LLMs to generate unit test suites alongside application feature code.
 
-
 ---
+
+🔗 **Next Step:** Continue to [Part 2 — Context Engineering Codebase](/series/ai-code-review-vibe-coding/part-2-context-engineering-codebase/) for the following module in the series.
 
 ## Internal Series Navigation
 

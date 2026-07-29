@@ -18,11 +18,11 @@ ShowToc: true
 TocOpen: true
 ---
 
-
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 6 — E2E Testing Edge](/series/generative-ui-architecture/part-6-e2e-testing-edge/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 7 — Migration Playbook to Generative UI: Legacy to AI-Native Frontend
 
-> **Executive Summary & Quick Answer**: Migrating a legacy React codebase to a Generative UI architecture does not require a complete application rewrite. By following a structured 4-Phase Strangler Fig Migration Playbook—Auditing UI Components (Phase 1), Extracting Component Registry Schemas (Phase 2), Deploying Edge SSE Stream Routers (Phase 3), and Incrementally Rolling Out Generative Views (Phase 4)—engineering teams migrate legacy applications safely without downtime.
+> **Answer-first:** Migrating a legacy React codebase to a Generative UI architecture does not require a complete application rewrite. By following a structured 4-Phase Strangler Fig Migration Playbook—Auditing UI Components (Phase 1), Extracting Component Registry Schemas (Phase 2), Deploying Edge SSE Stream Routers (Phase 3), and Incrementally Rolling Out Generative Views (Phase 4)—engineering teams migrate legacy applications safely without downtime.
 >
 > **Key Takeaways**:
 > - **Strangler Fig Migration Pattern**: Gradually replaces legacy static pages with dynamic Generative UI components.
@@ -40,8 +40,6 @@ The **Generative UI Migration Playbook** applies the proven **Strangler Fig Appl
 ## The 4-Phase Migration Roadmap
 
 **Answer-first:** The 4-phase migration roadmap guides teams from static React components through SSE streaming protocols to full Generative UI architecture.
-
-> **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 ```mermaid
 graph TD
@@ -69,7 +67,7 @@ graph TD
 
 ## Detailed Phase Execution Guidelines
 
-**Answer-first:** Phase 1 builds component registries, Phase 2 implements SSE handlers, Phase 3 connects MCP agents, and Phase 4 executes full cutover.
+Phase 1 builds component registries, Phase 2 implements SSE handlers, Phase 3 connects MCP agents, and Phase 4 executes full cutover.
 
 ### Phase 1: Component Audit & Selection (Weeks 1–2)
 - **Objective**: Identify high-value components best suited for dynamic AI rendering.
@@ -91,7 +89,7 @@ graph TD
 
 ## Production Python Migration Audit Scanner
 
-**Answer-first:** Production Python migration scanners analyze legacy component trees to identify candidate widgets for Generative UI transformation.
+Production Python migration scanners analyze legacy component trees to identify candidate widgets for Generative UI transformation.
 
 This production-grade Python migration audit scanner using `Pydantic` and file inspection rules that parses React project directories, identifies component candidates for registry conversion, and auto-generates JSON Schema descriptors:
 
@@ -174,7 +172,7 @@ if __name__ == "__main__":
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** Migrating to Generative UI allows legacy web applications to offer conversational component generation without rewriting core backend APIs.
+Migrating to Generative UI allows legacy web applications to offer conversational component generation without rewriting core backend APIs.
 
 ### Q1: How long does a typical migration from a traditional React web app to Generative UI take?
 For a medium-sized enterprise application (50 to 100 components), a complete migration using the 4-Phase Playbook typically takes 6 to 8 weeks. By focusing initial efforts on high-value components (charts, tables, metrics), teams achieve 80% of the Generative UI user experience benefits in the first 3 weeks.
@@ -187,9 +185,8 @@ Frontend developers build React components using standard TypeScript, Tailwind C
 
 ---
 
-## Technical Deep-Dive: Generative UI Architecture & Stream Rendering Invariants
-
-**Answer-first:** Migration invariants demand preserving strict component prop validation and fallback UI skeletons during real-time stream rendering.
+## Stream Rendering Invariants
+Migration invariants demand preserving strict component prop validation and fallback UI skeletons during real-time stream rendering.
 
 Continuous integration for a Generative UI migration executes automated Playwright end-to-end tests and visual regression checks on every pull request prior to production staging deployment.
 
@@ -214,9 +211,11 @@ Continuous integration for a Generative UI migration executes automated Playwrig
 
 ---
 
+🔗 **Next Step:** You have reached the final part of this series. Revisit the series index at [/series/generative-ui-architecture/](/series/generative-ui-architecture/) or explore other series linked below.
+
 ## Internal Series Navigation
 
-**Answer-first:** Review the complete Generative UI series from core concepts to enterprise reference repository migration.
+Review the complete Generative UI series from core concepts to enterprise reference repository migration.
 
 - [Executive Summary — The Shift to Generative UI](/series/generative-ui-architecture/executive-summary/)
 - [Part 1 — Beyond Chatbots: Dynamic Component Rendering](/posts/generative-ui-with-mcp-ai-native-frontend/)

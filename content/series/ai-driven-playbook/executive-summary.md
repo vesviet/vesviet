@@ -3,7 +3,7 @@ title: "Executive Summary: Building an AI-Native Organization"
 mermaid: true
 author: "Lê Tuấn Anh"
 description: "Executive summary playbook for enterprise leaders transitioning software engineering teams to AI-native architectures, context engines, and guardrails."
-date: 2026-03-15T09:00:00+07:00
+date: "2026-03-15T09:00:00+07:00"
 draft: false
 tags: ["AI", "Executive Playbook", "Context Engineering", "Architecture", "SDLC"]
 series: ["AI-Driven Playbook"]
@@ -14,9 +14,7 @@ cover:
   relative: false
 ---
 
-# Executive Summary: AI-Driven Enterprise Playbook
-
-> **Answer-First Summary**: Transitioning an enterprise software organization to an AI-Native model requires restructuring context boundaries, governance pipelines, and engineering roles. By treating domain knowledge as code-level context and embedding AI sub-agents into CI/CD quality gates, engineering leaders reduce lead time to production by 40% while cutting defect leakage by 35%.
+> **Answer-first:** Transitioning an enterprise software organization to an AI-Native model requires restructuring context boundaries, governance pipelines, and engineering roles. By treating domain knowledge as code-level context and embedding AI sub-agents into CI/CD quality gates, engineering leaders reduce lead time to production by 40% while cutting defect leakage by 35%.
 
 ---
 
@@ -323,4 +321,4 @@ AI-assisted coding relies on reactive inline code completion by individual devel
 ### What security risks are introduced by autonomous developer agents?
 Key risks include indirect prompt injection from third-party libraries, unauthorized tool execution via MCP gateways, and intellectual property contamination. Mitigating these risks requires deterministic input sanitizers, RBAC-bound tool proxies, and mandatory human approval for mutating actions.
 
-
+🔗 **Next Step:** Continue to [Part 1 — Context Engineering Ddd](/series/ai-driven-playbook/part-1-context-engineering-ddd/) for the following module in the series.

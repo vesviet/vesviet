@@ -19,7 +19,7 @@ canonicalURL: "https://tanhdev.com/series/shopee-architecture/04-database-scale/
 image: "images/posts/shopee-flash-sale-cover.png"
 ---
 
-> **Answer-First:** Shopee scales its relational database layer past single-node MySQL limits by migrating to TiDB Distributed SQL. By separating stateless SQL compute (TiDB) from stateful key-value storage (TiKV) and columnar analytics (TiFlash), TiDB delivers transparent horizontal auto-sharding and ACID transactions without application-level sharding logic.
+> **Answer-first:** Shopee scales its relational database layer past single-node MySQL limits by migrating to TiDB Distributed SQL. By separating stateless SQL compute (TiDB) from stateful key-value storage (TiKV) and columnar analytics (TiFlash), TiDB delivers transparent horizontal auto-sharding and ACID transactions without application-level sharding logic.
 
 ## Chapter 4: Database Scale - The Rise of TiDB and NewSQL
 
@@ -220,8 +220,7 @@ By adding columnar TiFlash replicas, Shopee business intelligence teams execute 
 
 ---
 
-## Summary and Developer Takeaways
-
+## Developer Takeaways
 Scaling backend data storage to millions of users requires abandoning manual application-level database sharding in favor of **Distributed NewSQL databases like TiDB**. Decoupling SQL compute from Raft-replicated TiKV storage and adding columnar TiFlash Raft learners enables transparent horizontal scaling, sub-millisecond range query routing, and real-time HTAP analytics under extreme 10M+ QPS workloads.
 
 ## Distributed SQL Region Routing Benchmarks

@@ -7,7 +7,10 @@ slug: "cicd-simplified-atomic-deployments-monolith"
 tags: ["CI/CD", "Deployments", "Shopify", "Buildkite", "Modular Monolith", "Testing"]
 categories: ["Modular Monolith", "Architecture"]
 aliases: ["/series/modular-monolith-architecture/part-4-cicd-simplified/"]
-cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal', 'relative': False}
+cover:
+  image: "images/posts/golang-microservices-cover.png"
+  alt: "Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal"
+  relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/cicd-simplified-atomic-deployments-monolith/"
 ShowToc: true
@@ -17,13 +20,11 @@ draft: false
 image: "images/posts/golang-microservices-cover.png"
 ---
 
-> **Answer-First:** Large monoliths avoid slow CI/CD pipelines by implementing monorepo path-filtering, Go build caching, and selective test execution based on git diffs. Deploying a single-binary modular monolith enables atomic deployments where application code and schema migrations ship deterministically in a single commit release.
-
-> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series and **[Composable E-Commerce Migration](/posts/ecommerce-architecture-composable-migration/)** guide. Please refer to the original article for a detailed overview of the architecture.
+> **Answer-first:** Large monoliths avoid slow CI/CD pipelines by implementing monorepo path-filtering, Go build caching, and selective test execution based on git diffs. Deploying a single-binary modular monolith enables atomic deployments where application code and schema migrations ship deterministically in a single commit release.
 
 > **Prerequisite:** Before reading this part, please review [Part 3: DDD Module Boundaries](/series/modular-monolith-architecture/part-3-ddd-module-boundaries/).
 
-**What You'll Learn That AI Won't Tell You:**
+**What You'll Learn:**
 - **Go Build Tags & Bazel Caching:** How to isolate integration tests and share Go compilation objects across CI runners.
 - **Sub-3-Minute CI Blueprint:** How git diff path filtering and worker pools compress test pipeline execution times.
 - **Internal Interface Contract Testing:** How to verify cross-module Go interfaces without external network mocks.
@@ -70,7 +71,7 @@ In addition, atomic deployments simplify zero-downtime rolling updates on Kubern
 
 ## 2. Monorepo Build Isolation & Keeping CI Builds Under 3 Minutes
 
-**Answer-first:** Monolith CI builds achieve sub-3-minute execution by isolating test execution via Go build tags (`//go:build integration`), leveraging Bazel / Go `$GOCACHE` object layers, and mapping AST package dependency graphs to run tests strictly for modified domain directories.
+Monolith CI builds achieve sub-3-minute execution by isolating test execution via Go build tags (`//go:build integration`), leveraging Bazel / Go `$GOCACHE` object layers, and mapping AST package dependency graphs to run tests strictly for modified domain directories.
 
 Monorepo build times degrade exponentially if left unmanaged. A test suite taking 3 minutes for 5 developers ballooning to 45 minutes for 50 developers destroys developer feedback loops and causes PR queue congestion.
 
@@ -108,7 +109,7 @@ Bazel stores compiled package outputs in content-addressable remote caches. If `
 
 ## 3. Internal Module Interface Contract Testing & Shopify Lessons
 
-**Answer-first:** Internal contract testing validates Go interface compliance between modules at compile-time and runtime without external network mocks, while automated merge queues maintain `main` branch stability under high engineering throughput.
+Internal contract testing validates Go interface compliance between modules at compile-time and runtime without external network mocks, while automated merge queues maintain `main` branch stability under high engineering throughput.
 
 ### Internal Module Contract Testing
 In a microservice architecture, contract testing requires external tooling like Pact. In a Modular Monolith, internal interface contract testing is performed via Go compile-time type assertions and table-driven unit suites:
@@ -134,7 +135,7 @@ Shopify maintains developer velocity across thousands of engineers using three p
 
 ## 4. Go Parallel Test Execution & Pipeline Automation Script
 
-**Answer-first:** A production Go test automation script uses goroutine worker pools and `exec.CommandContext` deadlines to execute selective package test suites concurrently, maintaining rapid CI feedback loops.
+A production Go test automation script uses goroutine worker pools and `exec.CommandContext` deadlines to execute selective package test suites concurrently, maintaining rapid CI feedback loops.
 
 The following Go automation script demonstrates concurrent package testing across internal domain directories using `sync.WaitGroup` worker pools:
 
@@ -230,7 +231,7 @@ func main() {
 
 ## 5. Optimized GitHub Actions Pipeline for Selective Module Testing
 
-**Answer-first:** GitHub Actions workflows combine path-filtering triggers (`dorny/paths-filter`) with persistent Go `$GOCACHE` layers (`actions/setup-go`), running module tests conditionally and cutting pipeline execution times to under 10 seconds.
+GitHub Actions workflows combine path-filtering triggers (`dorny/paths-filter`) with persistent Go `$GOCACHE` layers (`actions/setup-go`), running module tests conditionally and cutting pipeline execution times to under 10 seconds.
 
 Running tests across a massive monolith on every commit wastes compute time. The configuration below demonstrates a full production GitHub Actions pipeline that uses Git diffs to detect changed module directories and leverages Go `$GOCACHE` layer caching:
 
@@ -307,7 +308,7 @@ For observability in single-process monoliths, check out [Part 5: Observability 
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** This FAQ addresses key questions on atomic deployment benefits, selective test execution via Git diffs, Go `$GOCACHE` acceleration, and merge queue strategies.
+This FAQ addresses key questions on atomic deployment benefits, selective test execution via Git diffs, Go `$GOCACHE` acceleration, and merge queue strategies.
 
 {{< faq q="What are the main advantages of atomic deployments?" >}}
 Atomic deployments release the application binary and database schema migrations simultaneously under a single git commit hash. This eliminates cross-service API version mismatches and avoids complex multi-repo rollback states during production incidents.
@@ -329,7 +330,7 @@ A Merge Queue automatically batches and tests multiple approved pull requests se
 
 ## Navigation & Next Steps
 
-**Answer-first:** Proceed to Part 5 for in-memory observability or examine related guides on load balancing, API gateways, and zero-downtime Kubernetes deployments.
+Proceed to Part 5 for in-memory observability or examine related guides on load balancing, API gateways, and zero-downtime Kubernetes deployments.
 
 - **Previous Part:** [Part 3: DDD Module Boundaries](/series/modular-monolith-architecture/part-3-ddd-module-boundaries/)
 - **Next Part:** Continue to [Part 5: Observability in Memory](/series/modular-monolith-architecture/part-5-observability/)
@@ -337,3 +338,4 @@ A Merge Queue automatically batches and tests multiple approved pull requests se
 
 Need help optimizing your CI/CD pipelines for a modular monolith? [Get in touch](/hire/) or [hire our DevOps & platform engineers](/hire/) for pipeline acceleration consulting.
 
+🔗 **Next Step:** Continue to [Part 5 — Observability](/series/modular-monolith-architecture/part-5-observability/) for the following module in the series.

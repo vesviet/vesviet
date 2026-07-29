@@ -1,5 +1,6 @@
 ---
 title: "Generative UI & AI-Native Frontend Architecture Guide"
+slug: "generative-ui-architecture"
 date: "2026-05-16T12:00:00+07:00"
 lastmod: "2026-05-16T12:00:00+07:00"
 draft: false
@@ -35,7 +36,7 @@ This series addresses the biggest gap in modern AI application development: the 
 
 ## Companion Article: MCP in Practice
 
-**Answer-first:** Explore companion guides on applying Model Context Protocol (MCP) to connect AI agents with dynamic frontend UI components.
+Explore companion guides on applying Model Context Protocol (MCP) to connect AI agents with dynamic frontend UI components.
 
 - **[Generative UI with MCP: Architecting AI-Native Frontends](/posts/generative-ui-with-mcp-ai-native-frontend/)** — A standalone architecture walkthrough on integrating Model Context Protocol (MCP) into a real frontend: tool schema design, streaming response rendering, fallback UI states, and securing agent-to-frontend communication.
 
@@ -59,6 +60,6 @@ For related systemic design patterns, pillar blueprints, and curated reading pat
 
 Targeted at **Frontend Architects, Full-Stack AI Engineers, and React/Next.js Engineers**.
 
-**Prerequisites:**
+**Prerequisite:**
 - Deep proficiency with modern React (Server Components, Hooks, Concurrent Mode).
 - Familiarity with streaming protocols (SSE, WebSockets) and LLM tool calling payloads.

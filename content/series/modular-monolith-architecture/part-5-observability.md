@@ -7,7 +7,10 @@ slug: "observability-in-process-modular-monolith-opentelemetry"
 tags: ["Observability", "OpenTelemetry", "Distributed Tracing", "Modular Monolith", "Profiling"]
 categories: ["Modular Monolith", "Architecture"]
 aliases: ["/series/modular-monolith-architecture/part-5-observability/"]
-cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Production Guide: Go, DDD, bounded contexts, and microservices reversal', 'relative': False}
+cover:
+  image: "images/posts/golang-microservices-cover.png"
+  alt: "Modular Monolith Architecture Production Guide: Go, DDD, bounded contexts, and microservices reversal"
+  relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/observability-in-process-modular-monolith-opentelemetry/"
 ShowToc: true
@@ -17,15 +20,13 @@ draft: false
 image: "images/posts/golang-microservices-cover.png"
 ---
 
-> **Answer-First:** Observability in modular monoliths leverages in-process OpenTelemetry span propagation across module boundaries without network serialization overhead. Combining in-memory context tracking with structured logging reduces telemetry ingestion costs while retaining microservice-level latency visibility.
-
-> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series and **[Composable E-Commerce Migration](/posts/ecommerce-architecture-composable-migration/)** guide. Please refer to the original article for an architectural overview of the architecture.
+> **Answer-first:** Observability in modular monoliths leverages in-process OpenTelemetry span propagation across module boundaries without network serialization overhead. Combining in-memory context tracking with structured logging reduces telemetry ingestion costs while retaining microservice-level latency visibility.
 
 > **Prerequisite:** Before reading this part, please review [Part 4: CI/CD Simplified](/series/modular-monolith-architecture/part-4-cicd-simplified/).
 
 ## Part 5: Observability in Memory – When Everything Shares a Single Call Stack
 
-**What You'll Learn That AI Won't Tell You:**
+**What You'll Learn:**
 - **In-Memory Trace Propagation:** How Go context propagation handles tracing across package lines without network calls (~15ns vs 1.2µs).
 - **Cardinality Reduction:** Techniques to strip connection attributes from logs, saving thousands in observability SaaS bills.
 - **Sampling & eBPF Profiling:** How Pyroscope/Parca eBPF engines continuously profile Go runtimes under 1% overhead compared to heavy APM agents.
@@ -388,3 +389,5 @@ Initialize an OTLP trace provider with a local batch exporter, wrapping domain m
 - **Related Guides:** [Modular Monolith Architecture](/series/modular-monolith-architecture/) and [C10M High-Concurrency Architecture](/posts/shopee-flash-sale-architecture/)
 
 Need help setting up low-overhead OpenTelemetry tracing for your monolith? [Get in touch](/hire/) or [hire our observability experts](/hire/) for an architectural review.
+
+🔗 **Next Step:** Continue to [Part 6 — Migration Playbook](/series/modular-monolith-architecture/part-6-migration-playbook/) for the following module in the series.

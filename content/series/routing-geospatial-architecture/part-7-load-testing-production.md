@@ -20,22 +20,20 @@ mermaid: true
 image: "images/posts/graphhopper-cover.png"
 ---
 
-> **Answer-First:** Production load testing for geospatial microservices requires realistic traffic simulation with k6/Vegeta to identify latency spikes and connection pool bottlenecks.
-
-> **Pillar Architecture Guide:** This article is part of the **[GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+> **Answer-first:** Production load testing for geospatial microservices requires realistic traffic simulation with k6/Vegeta to identify latency spikes and connection pool bottlenecks.
 
 > **Prerequisite:** Before starting load testing, review [Part 6: Location Clustering & Semantic Caching](/series/routing-geospatial-architecture/part-6-redis-semantic-caching/).
 
 ## Part 7: Load Testing and Performance Tuning for Production
 
-> **Executive Summary & Quick Answer**: Load testing a high-scale routing architecture requires avoiding Coordinated Omission by using K6 open-arrival-rate models (`executor: 'constant-arrival-rate'`), tuning the Linux kernel TCP stack (`sysctl net.core.somaxconn=65535`), and profiling Go GC garbage collections using `pprof`.
+> **Answer-first:** Load testing a high-scale routing architecture requires avoiding Coordinated Omission by using K6 open-arrival-rate models (`executor: 'constant-arrival-rate'`), tuning the Linux kernel TCP stack (`sysctl net.core.somaxconn=65535`), and profiling Go GC garbage collections using `pprof`.
 >
 > **Key Takeaways**:
 > - **Open Model Stressing**: Open-arrival-rate load testing blasts requests on exact schedules, preventing slow API responses from hiding queue delays.
 > - **Linux Kernel Sockets**: Increase `somaxconn` and `tcp_tw_reuse` parameters to prevent `TIME_WAIT` socket exhaustion under 20,000 RPS loads.
 > - **Randomized GPS Traces**: Inject dynamic GPS coordinate datasets via K6 `SharedArray` to stress GraphHopper pathfinding rather than caching layers.
 
-**What You'll Learn That AI Won't Tell You:**
+**What You'll Learn:**
 - **Coordinated Omission Fixes:** Configuring K6 `constant-arrival-rate` executors.
 - **Sysctl Kernel Optimization:** Tuning `net.ipv4.ip_local_port_range` and `nofile` ulimits.
 - **Pprof Allocation Hotspots:** Locating Go string concatenation memory leaks during load runs.

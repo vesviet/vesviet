@@ -1,18 +1,13 @@
 ---
 title: "Prompt Standard: Product, Engineering & Ops Guide"
+slug: "prompt-standard"
 date: "2026-07-26T10:30:00+07:00"
 lastmod: "2026-07-26T10:30:00+07:00"
 draft: false
 weight: 1
 description: "The definitive six-part engineering standard for enterprise AI agents: context engineering, 8 core blocks, layered stacks, MCP tool integration, DSPy compilation, and PromptOps security."
-categories:
-  - Engineering
-  - AI
-tags:
-  - prompt
-  - standard
-  - context-engineering
-  - agent
+categories: ["Engineering", "AI"]
+tags: ["prompt", "standard", "context-engineering", "agent"]
 ShowToc: true
 TocOpen: true
 cover:

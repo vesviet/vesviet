@@ -18,9 +18,11 @@ ShowToc: true
 TocOpen: true
 ---
 
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Enterprise Security Data Poisoning](/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/). Review it first if the terminology in this part is unfamiliar.
+
 ## Part 6 — From Passive RAG to Autonomous Agents: ReAct, Router & Tool Use
 
-> **Executive Summary & Quick Answer**: Passive RAG systems are constrained to single-shot document retrieval, leaving complex multi-step reasoning unaddressed. Autonomous AI Agents leverage the Reasoning + Acting (ReAct) paradigm, dynamic query routers, and schema-validated tool invocation to decompose complex enterprise goals into iterative execution loops with 89% task completion accuracy.
+> **Answer-first:** Passive RAG systems are constrained to single-shot document retrieval, leaving complex multi-step reasoning unaddressed. Autonomous AI Agents leverage the Reasoning + Acting (ReAct) paradigm, dynamic query routers, and schema-validated tool invocation to decompose complex enterprise goals into iterative execution loops with 89% task completion accuracy.
 >
 > **Key Takeaways**:
 > - **89% Workflow Completion Rate**: ReAct state-machine loops evaluate tool outputs and critique intermediate reasoning steps dynamically.
@@ -39,8 +41,6 @@ The evolution of generative AI applications has progressed through three distinc
 ## The ReAct Loop Mechanics
 
 **Answer-first:** The ReAct (Reason + Act) loop enables AI agents to evaluate intermediate tool outputs, iteratively querying external databases until goal completion.
-
-> **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 The **ReAct (Reasoning + Acting)** framework interleaves chain-of-thought reasoning with physical environment actions (e.g., executing SQL queries, calling REST APIs, searching vector indices):
 
@@ -70,7 +70,7 @@ stateDiagram-v2
 
 ## Production Go ReAct Agent Runtime
 
-**Answer-first:** Production Go agent runtimes execute stateful ReAct loops with strict execution timeouts, tool call logging, and goroutine isolation.
+Production Go agent runtimes execute stateful ReAct loops with strict execution timeouts, tool call logging, and goroutine isolation.
 
 This production-grade Go agent loop implementing the ReAct pattern with JSON schema argument validation, context cancellation, and maximum iteration safeguards:
 
@@ -217,7 +217,7 @@ func main() {
 
 ## Comparative Matrix: System Paradigms
 
-**Answer-first:** Passive RAG executes static single-step retrieval, whereas autonomous ReAct agents execute dynamic multi-step search strategies.
+Passive RAG executes static single-step retrieval, whereas autonomous ReAct agents execute dynamic multi-step search strategies.
 
 | Feature Axis | Passive RAG Pipeline | Autonomous ReAct Agent |
 | :--- | :--- | :--- |
@@ -232,7 +232,7 @@ func main() {
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** Autonomous agents outperform passive RAG on complex multi-step workflows by dynamically querying APIs, databases, and vector stores.
+Autonomous agents outperform passive RAG on complex multi-step workflows by dynamically querying APIs, databases, and vector stores.
 
 ### Q1: How does an agentic loop decide when to stop calling external tools and return a response?
 An agentic loop concludes when the LLM outputs a response payload containing a populated `final_answer` field instead of a `tool_call` request. The system prompt instructs the agent to output `final_answer` only when the collected observations completely satisfy all constraints of the user's initial goal.
@@ -245,15 +245,14 @@ State rollbacks are managed by wrapping write-capable agent tools inside transac
 
 ---
 
+🔗 **Next Step:** Continue to [Part 7 — Agentic Memory Long Term](/series/ai-data-engineering-pipeline/part-7-agentic-memory-long-term/) for the following module in the series.
+
 ## Internal Series Navigation
 
-**Answer-first:** Advance to Part 7 to discover agentic memory systems combining episodic and working storage.
+Advance to Part 7 to discover agentic memory systems combining episodic and working storage.
 
 - [Part 5 — Enterprise Security, RBAC & Data Poisoning Defense](/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/)
 - [Part 7 — Agentic Memory Systems: Episodic, Semantic & Working](/series/ai-data-engineering-pipeline/part-7-agentic-memory-long-term/)
 - [Part 1 — Model Context Protocol Core Architecture](/series/mcp-engineering-in-production/part-1-protocol/)
 - [Agentic Architecture & Golang Orchestration Power](/series/agentic-ecommerce-search/part-1-golang-orchestration/)
 
-## Architectural Context & Pillar References
-
-Managing event streams in Part 6 Rise Of Ai Agents leverages NATS JetStream stream deduplication and consumer ACK acknowledgment windows. Idempotent consumer handlers prevent duplicate message execution.

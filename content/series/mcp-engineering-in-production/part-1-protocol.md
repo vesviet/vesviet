@@ -19,11 +19,11 @@ TocOpen: true
 image: "images/posts/mcp-engineering-in-production-cover.png"
 ---
 
-
+> **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/series/mcp-engineering-in-production/executive-summary/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 1 — MCP Core Protocol Architecture & Transport Evolution
 
-> **Executive Summary & Quick Answer**: Model Context Protocol (MCP) relies on dual-transport abstractions (`stdio` for zero-overhead local process IPC and `SSE` for remote network RPCs) transmitting JSON-RPC 2.0 messages. Understanding the protocol state machine ensures sub-20ms message framing across distributed AI agent tool servers.
+> **Answer-first:** Model Context Protocol (MCP) relies on dual-transport abstractions (`stdio` for zero-overhead local process IPC and `SSE` for remote network RPCs) transmitting JSON-RPC 2.0 messages. Understanding the protocol state machine ensures sub-20ms message framing across distributed AI agent tool servers.
 >
 > **Key Takeaways**:
 > - **Dual Transport Abstraction**: `stdio` provides local desktop IPC with zero network overhead; `SSE` provides HTTP network streaming.
@@ -186,26 +186,24 @@ During the initialization handshake, the client sends an `initialize` request co
 
 ---
 
-## Technical Deep-Dive: Model Context Protocol & System Topology Invariants
-
+## Production Invariants & Trade-offs
 Deploying production Model Context Protocol (MCP) server architectures requires strict protocol adherence and zero-trust RPC security.
 
-### Protocol Performance Metrics & Latency Benchmarks
-
+### Performance Benchmarks
 - **JSON-RPC Framing Latency**: Sub-10ms processing time for local stdio transport frames and sub-20ms for SSE transport frames.
 - **Protocol Buffer Throughput**: Streamed multi-megabyte resource payloads at over 150MB/sec using non-blocking Go readers.
 
-### Protocol Invariants & Transport Security Guardrails
-
+### Protocol & Transport Invariants
 1. **Strict Capabilities Handshake**: All client-server sessions must negotiate supported capabilities (`tools`, `resources`, `prompts`) before executing RPC methods.
 2. **Context Deadline Propagation**: Cancelled client contexts immediately trigger goroutine termination signals across active tool execution routines.
 
-### Operational Checklist for Software Engineering Teams
-
+### Operational Checklist
 1. **Transport Isolation**: Deploy stdio transport for local process desktop execution and SSE/mTLS transport for remote cloud microservices.
 2. **Schema Validation**: Enforce JSON-RPC 2.0 schema validation on all incoming request frames before dispatching to business logic.
 
 ---
+
+🔗 **Next Step:** Continue to [Part 2 — Build](/series/mcp-engineering-in-production/part-2-build/) for the following module in the series.
 
 ## Internal Series Navigation
 
@@ -214,7 +212,6 @@ Deploying production Model Context Protocol (MCP) server architectures requires 
 - [Part 3 — Identity & Authentication: OAuth2 & mTLS](/series/mcp-engineering-in-production/part-3-identity/)
 - [Part 4 — MCP Gateway Architecture & Routing](/series/mcp-engineering-in-production/part-4-gateway/)
 - [Part 6 — From Passive RAG to Autonomous Agents](/series/ai-data-engineering-pipeline/part-6-rise-of-ai-agents/)
-
 
 #### System Trade-offs & SLA Analysis for Part 1 Protocol
 
@@ -225,6 +222,5 @@ Deploying production Model Context Protocol (MCP) server architectures requires 
 | **Socket Connection Limit** | 100 Connections | 400 Connections | Epoll event loop connection management |
 | **Frame Corruption Rate** | < 0.001% | > 0.01% | CRC32 checksum verification on ingress |
 
-#### Operational Checklist for Production Readiness
-
+#### Operational Checklist
 System verification requires rigorous unit test coverage, explicit error propagation, and zero-downtime canary deployment mechanics across all transport nodes.

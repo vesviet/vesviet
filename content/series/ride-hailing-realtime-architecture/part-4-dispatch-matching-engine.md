@@ -17,6 +17,8 @@ TocOpen: true
 image: "images/posts/real-time-ride-hailing-cover.png"
 ---
 
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Event Streaming Kafka](/series/ride-hailing-realtime-architecture/part-3-event-streaming-kafka/). Review it first if the terminology in this part is unfamiliar.
+
 **Answer-first:** Dispatch and matching engines resolve spatial routing in real-time by querying active drivers within localized H3 rings. By running parallel bipartite matching algorithms, the engine pairs riders and drivers to minimize pickup ETA and passenger wait times.
 
 Every time you tap "Book Ride," a system makes dozens of decisions in under two seconds: Which driver? What route? What's the real ETA? This article breaks down exactly how the **dispatch algorithm** works — from the greedy approach that fails at scale, to the bipartite graphs, batched matching, and [surge pricing](/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/) mechanics that power Uber, Lyft, Grab, and Gojek today.
@@ -429,7 +431,7 @@ The platform architecture diagram below illustrates Grab's multi-vertical fulfil
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** This FAQ addresses key dispatch matching questions: bipartite matching optimization, S2 vs H3 indexing choices, reinforcement learning in dispatch, and multi-objective trade-offs.
+This FAQ addresses key dispatch matching questions: bipartite matching optimization, S2 vs H3 indexing choices, reinforcement learning in dispatch, and multi-objective trade-offs.
 
 {{< faq q="How does batched bipartite matching outperform greedy closest-driver matching?" >}}
 Greedy dispatch instantly assigns the closest available driver to each incoming request, which frequently starves subsequent riders and causes high overall system ETAs. Batched bipartite matching aggregates requests over rolling 2-to-5-second windows, building a cost matrix and solving linear assignment optimization (Hungarian Algorithm) to minimize total cumulative ETA by up to 22%.
@@ -444,6 +446,8 @@ Dispatch systems utilize encrypted state digests that push active trip state dir
 {{< /faq >}}
 
 ---
+
+🔗 **Next Step:** Continue to [Part 5 — Pricing Surge Engine](/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/) for the following module in the series.
 
 ## References & Further Reading
 

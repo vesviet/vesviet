@@ -16,6 +16,8 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/"
 ---
 
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Split Consolidation Lastmile](/series/ecommerce-order-allocation/part-5-split-consolidation-lastmile/). Review it first if the terminology in this part is unfamiliar.
+
 ## Problem Statement
 
 **Answer-first:** This guide builds a complete Vehicle Routing Problem (VRP) allocation engine using Google OR-Tools in Python with capacity constraints.
@@ -48,7 +50,7 @@ You are a software engineer at a logistics company. Every day, the warehouse dis
 
 ## Step 1: Database Schema
 
-**Answer-first:** Step 1 designs PostgreSQL schemas for Warehouses, Delivery Vehicles, Customer Orders, and Pairwise Distance Matrices.
+Step 1 designs PostgreSQL schemas for Warehouses, Delivery Vehicles, Customer Orders, and Pairwise Distance Matrices.
 
 We use a standard relational database schema to manage states:
 
@@ -85,7 +87,7 @@ CREATE TABLE allocations (
 
 ## Step 2: Allocation Algorithm with Google OR-Tools (Python)
 
-**Answer-first:** Step 2 formulates the VRP constraint programming model in Google OR-Tools, optimizing vehicle routes and capacity limits.
+Step 2 formulates the VRP constraint programming model in Google OR-Tools, optimizing vehicle routes and capacity limits.
 
 Instead of writing a custom Greedy algorithm which often falls into local optima, we will use the world-class **Google OR-Tools** library. 
 
@@ -209,7 +211,7 @@ OR-Tools does not have a built-in `AddMinCapacity` function. We must implement t
 
 ## Step 3: Packaging into a FastAPI Service
 
-**Answer-first:** Step 3 wraps the OR-Tools solver into a high-performance FastAPI microservice exposing REST endpoints for allocation requests.
+Step 3 wraps the OR-Tools solver into a high-performance FastAPI microservice exposing REST endpoints for allocation requests.
 
 To integrate this Python engine with other microservices (e.g., an Order Service written in Golang), we wrap it in a REST API using **FastAPI**:
 
@@ -256,7 +258,7 @@ def allocate_batch(req: AllocationRequest):
 
 ## Step 4: Invariant Checks
 
-**Answer-first:** Step 4 implements post-allocation invariant checks verifying vehicle load limits, priority order SLAs, and route feasibility.
+Step 4 implements post-allocation invariant checks verifying vehicle load limits, priority order SLAs, and route feasibility.
 
 After the Python API returns the allocation and it's saved to the Database, run these SQL checks to guarantee system integrity:
 
@@ -301,7 +303,7 @@ WHERE o.priority = 'EXPRESS' AND a.id IS NULL;
 
 ## Step 5: Cost-based Optimization (Multi-Store Price Variations)
 
-**Answer-first:** Step 5 incorporates multi-store inventory pricing variations into the solver cost function to minimize total order fulfillment cost.
+Step 5 incorporates multi-store inventory pricing variations into the solver cost function to minimize total order fulfillment cost.
 
 In a real-world **Multi-Depot** environment, the same SKU might have **different Cost of Goods Sold (COGS)** or retail prices across different stores/warehouses. 
 
@@ -348,7 +350,7 @@ You first convert the problem to a Multi-Depot Vehicle Routing Problem (MDVRP). 
 
 ## Conclusion: Why Use OR-Tools?
 
-**Answer-first:** Google OR-Tools provides industry-grade constraint programming solvers for routing and allocation without requiring custom heuristic code.
+Google OR-Tools provides industry-grade constraint programming solvers for routing and allocation without requiring custom heuristic code.
 
 Transitioning from a custom heuristic to Google OR-Tools provides immense value:
 
@@ -357,3 +359,5 @@ Transitioning from a custom heuristic to Google OR-Tools provides immense value:
 3. **Future-Proofing:** If the business later requires *"Ice cream must be delivered within 30 minutes"*, you simply add a `Time Window Dimension`. You don't have to rewrite the entire algorithm from scratch.
 
 > *You've solved the vehicle assignment and capacity problem. But there's one massive bottleneck remaining: calculating the distance between thousands of points. Read [Part 7 — Distance Matrix: Routing Distance Calculation Algorithms](/series/ecommerce-order-allocation/part-7-distance-matrix-routing/).*
+
+🔗 **Next Step:** Continue to [Part 7 — Distance Matrix Routing](/series/ecommerce-order-allocation/part-7-distance-matrix-routing/) for the following module in the series.

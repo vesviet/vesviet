@@ -20,8 +20,6 @@ canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/golang-databa
 image: "images/posts/realtime-inventory-cover.png"
 ---
 
-> **Pillar Architecture Guide:** This article is part of the **[High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/)** series. Please refer to the original article for a comprehensive overview of the architecture.
-
 > **Prerequisite:** Read the previous article: [Chapter 4: Solving the Dual-Write Problem with Transactional Outbox Pattern](/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/).
 
 If your Golang system processes business logic blazingly fast but chokes at the Database layer, 90% of the time, it is due to an incorrectly configured `*sql.DB`.
@@ -264,7 +262,6 @@ Tuning your connection pool parameters and routing database traffic through PgBo
 ---
 
 🔗 **Next Step:** [Chapter 6: API Gateway vs Service Mesh in Microservices Architecture](/posts/shopee-flash-sale-architecture/)
-
 
 ---
 ## Related Architecture & Pillar Guides

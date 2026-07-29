@@ -21,17 +21,15 @@ TocOpen: true
 mermaid: true
 ---
 
-# Event Sourcing & CQRS: Immutable Ledger for Microservices
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — Distributed Sql Acid Latency](/series/core-banking-architecture/part-2-distributed-sql-acid-latency/). Review it first if the terminology in this part is unfamiliar.
 
 **Answer-first:** Event sourcing and CQRS replace mutable database updates with an immutable append-only event log. Core banking systems record financial state changes as domain events, projecting read models asynchronously while guaranteeing auditability and zero data loss.
-
-> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original article for a detailed architectural overview of the architecture.
 
 > **Series (Part 3 of 8):** This article builds upon the ACID transactions foundation from [Part 2](/series/core-banking-architecture/part-2-distributed-sql-acid-latency/). We will design a ledger using Event Sourcing — the exact solution that Monzo, Starling Bank, and many large neo-banks use to scale.
 
 ## What are Event Sourcing & CQRS in Fintech?
 
-**Answer-first:** Event Sourcing stores financial ledger state as an append-only event stream, while CQRS projects read models for sub-millisecond query access.
+Event Sourcing stores financial ledger state as an append-only event stream, while CQRS projects read models for sub-millisecond query access.
 
 The architectural sequence diagram below illustrates the asynchronous propagation of financial events from the command-side database to dedicated PostgreSQL query models.
 
@@ -49,7 +47,7 @@ Fintech microservice systems use Event Sourcing and CQRS patterns to maintain di
 
 ## Why Was the Ledger Always Event Sourcing?
 
-**Answer-first:** Financial ledgers have historically operated as event sources, recording immutable journal entries rather than overwriting current balances.
+Financial ledgers have historically operated as event sources, recording immutable journal entries rather than overwriting current balances.
 
 Double-entry bookkeeping — invented in the 15th century — is essentially Event Sourcing in its purest form:
 
@@ -75,7 +73,7 @@ This is exactly how an accounting ledger works — every entry is an undeletable
 
 ## Event Store Schema: PostgreSQL Production Design
 
-**Answer-first:** PostgreSQL event stores use append-only tables with optimistic concurrency control, sequence numbers, and JSONB event payload schemas.
+PostgreSQL event stores use append-only tables with optimistic concurrency control, sequence numbers, and JSONB event payload schemas.
 
 ### Core Event Store Table
 
@@ -169,7 +167,7 @@ for _, event := range events {
 
 ## Monzo's Event Sourcing Architecture
 
-**Answer-first:** Monzo digital bank uses Go microservices with event-sourced account state and Cassandra read projections to scale transaction processing.
+Monzo digital bank uses Go microservices with event-sourced account state and Cassandra read projections to scale transaction processing.
 
 [Monzo Engineering](https://monzo.com/blog/2018/03/09/shipping-kafka-at-monzo/) published the details of their architecture:
 
@@ -214,7 +212,7 @@ Cassandra  Elasticsearch          BigQuery
 
 ## CQRS Latency: <1ms vs O(N) SUM()
 
-**Answer-first:** CQRS read projections serve current balances in under 1ms, eliminating slow `O(N)` SQL `SUM()` aggregations over historical ledger entries.
+CQRS read projections serve current balances in under 1ms, eliminating slow `O(N)` SQL `SUM()` aggregations over historical ledger entries.
 
 **CQRS (Command Query Responsibility Segregation)** separates the write path (commands) from the read path (queries):
 
@@ -265,7 +263,7 @@ PUT /loans/repay           →        Redis balance cache
 
 ## Transactional Outbox Pattern: Solving Dual-Writes
 
-**Answer-first:** Transactional outbox patterns write domain events to an outbox table in the same DB transaction as state mutations, guaranteeing event delivery.
+Transactional outbox patterns write domain events to an outbox table in the same DB transaction as state mutations, guaranteeing event delivery.
 
 ### The Dual-Write Problem
 
@@ -356,7 +354,7 @@ func (s *AccountService) Transfer(ctx context.Context, req TransferRequest) erro
 
 ## Event Versioning: Handling Schema Evolution
 
-**Answer-first:** Handling event schema evolution requires upcaster functions to transform legacy event payloads into current domain schema versions.
+Handling event schema evolution requires upcaster functions to transform legacy event payloads into current domain schema versions.
 
 An Event Store is immutable — you cannot modify the schema of old events. The Go code block below implements an upcaster mapping function that converts legacy floating-point structures into integer-based cent values:
 
@@ -393,7 +391,7 @@ func upcaster(eventType string, version int, data json.RawMessage) (interface{},
 
 ## QA & SDET Testing Strategy
 
-**Answer-first:** Event sourcing QA tests verify snapshot consistency, out-of-order event handling, and idempotent projection replay.
+Event sourcing QA tests verify snapshot consistency, out-of-order event handling, and idempotent projection replay.
 
 ### Test 1: Event Replay Consistency
 
@@ -477,7 +475,7 @@ While event stores are theoretically infinite, keeping all historical events on 
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** Event sourcing guarantees complete financial auditability by preserving every balance-changing event in an immutable event store.
+Event sourcing guarantees complete financial auditability by preserving every balance-changing event in an immutable event store.
 
 {{< faq q="Does Event Sourcing make queries more complex?" >}}
 Yes — Event Sourcing optimizes for writes and auditing, but complicates reads. This is exactly why CQRS exists. The write side stores events; the read side builds materialized views optimized for queries. You should not use pure Event Sourcing without CQRS read models.
@@ -497,7 +495,7 @@ Schema modifications use upcasters—transformer functions that map legacy event
 
 ## Event-Store Compaction, CQRS Version Lag, and Out-of-Order Events
 
-**Answer-first:** Compaction strategies periodic snapshot event streams, while CQRS handlers manage version lag using sequence numbers and vector clocks.
+Compaction strategies periodic snapshot event streams, while CQRS handlers manage version lag using sequence numbers and vector clocks.
 
 Event sourcing captures every transaction as an immutable event. While this provides a complete audit trail, query performance degrades as event history grows. Compaction and snapshotting resolve this bottleneck.
 
@@ -533,3 +531,5 @@ To read about event-driven banking microservices patterns in Go, consult [Part 4
 *Up Next: [Part 4 — Saga Pattern](/series/core-banking-architecture/part-4-saga-pattern/) — Choreography vs Orchestration Saga, failure transition matrices, and implementation with Temporal workflow engine.*
 
 {{< author-cta >}}
+
+🔗 **Next Step:** Continue to [Part 4 — Saga Pattern](/series/core-banking-architecture/part-4-saga-pattern/) for the following module in the series.

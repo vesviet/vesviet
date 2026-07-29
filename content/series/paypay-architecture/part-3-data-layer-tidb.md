@@ -19,9 +19,11 @@ mermaid: true
 image: "images/posts/paypay-scaling-cover.png"
 ---
 
-> **Executive Summary & Quick Answer**: PayPay migrated its database layer from AWS Aurora MySQL to TiDB Distributed SQL to overcome vertical scaling limitations. TiDB's Raft-based auto-sharding and horizontal compute/storage separation deliver linear scaling under billion-row transaction tables.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — Event Driven Kafka](/series/paypay-architecture/part-2-event-driven-kafka/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-First:** PayPay utilizes TiDB as its distributed SQL database to achieve horizontal scaling without manual database sharding. TiDB maintains standard MySQL protocol compatibility and strict ACID guarantees while dynamically splitting tables into regions that are distributed across a multi-node cluster.
+> **Answer-first:** PayPay migrated its database layer from AWS Aurora MySQL to TiDB Distributed SQL to overcome vertical scaling limitations. TiDB's Raft-based auto-sharding and horizontal compute/storage separation deliver linear scaling under billion-row transaction tables.
+
+> **Answer-first:** PayPay utilizes TiDB as its distributed SQL database to achieve horizontal scaling without manual database sharding. TiDB maintains standard MySQL protocol compatibility and strict ACID guarantees while dynamically splitting tables into regions that are distributed across a multi-node cluster.
 
 ## The Relational Database Bottleneck
 
@@ -177,3 +179,5 @@ TiDB implements the MySQL wire protocol and SQL parser dialect, allowing Go appl
 {{< /faq >}}
 
 Next step: Learn how PayPay validates high availability under failure injection in [Part 4: SRE & Chaos Engineering](/series/paypay-architecture/part-4-sre-chaos-engineering/). For specialized NewSQL migration consulting, reach out via [Distributed Database Engineering Services](/hire/).
+
+🔗 **Next Step:** Continue to [Part 4 — Sre Chaos Engineering](/series/paypay-architecture/part-4-sre-chaos-engineering/) for the following module in the series.

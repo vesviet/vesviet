@@ -19,17 +19,13 @@ TocOpen: true
 mermaid: true
 ---
 
-# Double-Entry Bookkeeping: Core Banking Ledger Guide
-
-> **Answer-First:** Double-entry bookkeeping in core banking guarantees that every transaction records equal Debit and Credit entries across sub-ledgers. Enforcing $\sum \text{Debits} = \sum \text{Credits}$ at the database schema level via atomic PostgreSQL transactions and Go ledger validation engines prevents financial imbalance, race conditions, and audit compliance failures.
+> **Answer-first:** Double-entry bookkeeping in core banking guarantees that every transaction records equal Debit and Credit entries across sub-ledgers. Enforcing $\sum \text{Debits} = \sum \text{Credits}$ at the database schema level via atomic PostgreSQL transactions and Go ledger validation engines prevents financial imbalance, race conditions, and audit compliance failures.
 
 > **Prerequisite:** Read the [Executive Summary](/series/core-banking-developer/executive-summary/) for the high-level roadmap of core banking evolution.
 
 ## Why does a developer need to learn accounting?
 
-> **Answer-First:** Developers must understand accounting principles to design software ledgers that correctly enforce balance invariants and immutable journal logs.
-
-> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original article for a complete architectural overview.
+> **Answer-first:** Developers must understand accounting principles to design software ledgers that correctly enforce balance invariants and immutable journal logs.
 
 Most software engineers view "accounting" as a back-office administrative task. However, in core banking engineering, **double-entry bookkeeping forms the core domain logic** of the transaction posting engine. If code logic allows an unbalanced journal entry or mutates a historical record, the institution risks general ledger corruption, central bank regulatory penalties, and immediate operational halt.
 
@@ -37,7 +33,7 @@ Core banking backend engineers must translate double-entry accounting rules dire
 
 ## The Principle of Double-Entry Bookkeeping
 
-> **Answer-First:** Double-entry bookkeeping mandates that every financial event records equal debit and credit journal entries, keeping the accounting equation in balance.
+> **Answer-first:** Double-entry bookkeeping mandates that every financial event records equal debit and credit journal entries, keeping the accounting equation in balance.
 
 Formulated by Renaissance mathematician Luca Pacioli, double-entry accounting operates on one fundamental invariant:
 
@@ -65,7 +61,7 @@ The table below demonstrates how a 1,000,000 VND transfer between two accounts i
 
 ## The General Ledger (GL) Table — The Heart of Core Banking
 
-> **Answer-First:** General Ledger tables store append-only transaction journal entries, serving as the single source of financial truth for the institution.
+> **Answer-first:** General Ledger tables store append-only transaction journal entries, serving as the single source of financial truth for the institution.
 
 The core banking engine relies on an append-only General Ledger table as its single source of truth.
 
@@ -92,7 +88,7 @@ CREATE TABLE ledger_entries (
 
 ## Ledger Health Check: The Balance Invariant
 
-> **Answer-First:** Balance invariant checks query the General Ledger continuously to verify that total debits equal total credits across all accounts.
+> **Answer-first:** Balance invariant checks query the General Ledger continuously to verify that total debits equal total credits across all accounts.
 
 The core ledger engine executes background audit queries to assert that the global accounting invariant holds across all sub-ledgers:
 
@@ -114,7 +110,7 @@ Any non-zero imbalance indicates software state corruption, unhandled transactio
 
 ## Account Structures in a Bank
 
-> **Answer-First:** Account structures organize financial ledgers into five categories: Assets, Liabilities, Equity, Revenue, and Expenses.
+> **Answer-first:** Account structures organize financial ledgers into five categories: Assets, Liabilities, Equity, Revenue, and Expenses.
 
 Core banking ledgers manage internal accounts alongside customer deposit accounts.
 
@@ -134,7 +130,7 @@ When a customer deposits 10,000,000 VND in cash at a branch, the ledger engine p
 
 ## Core Engineering Rules for Ledger Software
 
-> **Answer-First:** Core lessons emphasize using NUMERIC database fields, enforcing append-only journals, and avoiding direct balance column mutation.
+> **Answer-first:** Core lessons emphasize using NUMERIC database fields, enforcing append-only journals, and avoiding direct balance column mutation.
 
 1. **Prohibit Direct Balance Mutation:** Never issue arbitrary `UPDATE accounts SET balance = balance - X` queries. All balance changes must derive from appended debit and credit journal entries.
 2. **Atomic Transaction Boundaries:** Every financial transaction involving multiple accounts must execute inside an explicit ACID database transaction (`BEGIN...COMMIT`).
@@ -144,7 +140,7 @@ When a customer deposits 10,000,000 VND in cash at a branch, the ledger engine p
 
 ## References & Further Reading
 
-> **Answer-First:** Recommended ledger resources include accounting specifications, PostgreSQL DDL schemas, and Go financial transaction engines.
+> **Answer-first:** Recommended ledger resources include accounting specifications, PostgreSQL DDL schemas, and Go financial transaction engines.
 
 - [Double-entry bookkeeping (Wikipedia)](https://en.wikipedia.org/wiki/Double-entry_bookkeeping)
 - [Martin Fowler: Accounting Patterns](https://martinfowler.com/eaaDev/AccountingPattern.html)
@@ -152,7 +148,7 @@ When a customer deposits 10,000,000 VND in cash at a branch, the ledger engine p
 
 ## Double-Entry Posting Logic with Go
 
-> **Answer-First:** Go posting logic executes atomic database transactions that append debit/credit rows and assert zero balance discrepancy before commit.
+> **Answer-first:** Go posting logic executes atomic database transactions that append debit/credit rows and assert zero balance discrepancy before commit.
 
 The posting engine must programmatically validate that $\sum \text{Debits} = \sum \text{Credits}$ before attempting database commits.
 
@@ -245,13 +241,13 @@ graph TD
 
 ## Accounting Schema for Multi-Currency Balances
 
-> **Answer-First:** Multi-currency schemas record original foreign currency transaction amounts alongside converted local currency equivalents for trial balance reporting.
+> **Answer-first:** Multi-currency schemas record original foreign currency transaction amounts alongside converted local currency equivalents for trial balance reporting.
 
 International banking platforms process transactions across foreign currencies (USD, EUR, VND, JPY). To prevent currency conversion drift, accounts post entries into dedicated currency sub-ledgers. Cross-currency transfers route through central foreign exchange (FX) clearing accounts, ensuring that local base currency and foreign currency sub-ledgers remain independently balanced.
 
 ## Implementing General Ledger Reconciliation
 
-> **Answer-First:** General Ledger reconciliation scripts verify sub-ledger balances against GL control accounts, flagging discrepancies automatically.
+> **Answer-first:** General Ledger reconciliation scripts verify sub-ledger balances against GL control accounts, flagging discrepancies automatically.
 
 To maintain integrity, reconciliation background processes continuously recompute account balances from raw transaction logs and compare them against stored balance snapshots:
 
@@ -300,7 +296,7 @@ func main() {
 
 ## Multi-Currency Exchange Adjustments and Revaluation
 
-> **Answer-First:** Exchange revaluation runs recalculate foreign currency account balances at current market rates, posting unrealized FX gains/losses.
+> **Answer-first:** Exchange revaluation runs recalculate foreign currency account balances at current market rates, posting unrealized FX gains/losses.
 
 Core banking engines perform daily end-of-day foreign exchange revaluation:
 1. **Currency Position Ledgers:** Foreign currency transactions post balanced journal entries to both currency sub-ledgers and base-currency position ledgers.
@@ -309,7 +305,7 @@ Core banking engines perform daily end-of-day foreign exchange revaluation:
 
 ## Production Double-Entry Balance Validator & Posting Engine
 
-> **Answer-First:** Production Go posting engines validate debit/credit equality and execute row-level locks on target accounts before writing journal entries.
+> **Answer-first:** Production Go posting engines validate debit/credit equality and execute row-level locks on target accounts before writing journal entries.
 
 Production posting engines combine memory allocation optimization with concurrency controls.
 
@@ -435,7 +431,7 @@ High-concurrency systems use connection pooling (`pgxpool`) and table partitioni
 
 ## Frequently Asked Questions
 
-> **Answer-First:** Frequently asked questions detailing currency data types, audit trail guarantees, and transactional failure handling in double-entry ledgers.
+> **Answer-first:** Frequently asked questions detailing currency data types, audit trail guarantees, and transactional failure handling in double-entry ledgers.
 
 {{< faq "Why must monetary values in core banking ledgers be stored as integers or arbitrary-precision NUMERIC types instead of floating-point numbers?" >}}
 Floating-point representations (IEEE 754 float64) introduce non-deterministic rounding errors during binary fractional operations. Core banking engines enforce integer minor units (e.g., VND dong, USD cents) or fixed-scale SQL `NUMERIC` types to prevent micro-discrepancies that unbalance the General Ledger over millions of operations.

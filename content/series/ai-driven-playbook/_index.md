@@ -1,10 +1,13 @@
 ---
 title: "The AI-Driven Engineer Playbook: Enterprise Masterclass"
+slug: "ai-driven-playbook"
 date: "2026-05-12T08:00:00+07:00"
 lastmod: "2026-05-12T08:00:00+07:00"
 draft: false
 weight: 20
 description: "Hands-on playbook for applying AI to real engineering workflows: IDE setup, internal RAG, AI Platform layer, Policy-as-Code CI/CD, and AI observability."
+tags: ["Enterprise Playbook", "AI Platform", "MCP", "Context Engineering", "Enterprise RAG", "AI Security", "Observability"]
+categories: ["AI", "Enterprise Playbook"]
 ShowToc: true
 mermaid: true
 TocOpen: true
@@ -16,9 +19,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/"
 ---
 
-# The AI-Driven Engineer Playbook: Enterprise Masterclass
-
-> **Answer-First Summary**: The AI-Driven Engineer Enterprise Playbook is a hands-on execution guide for software engineers, tech leads, and architects modernizing production development. It delivers production architectures, Model Context Protocol (MCP) integrations, AST-aware context engines, OpenTelemetry observability, zero-trust security guardrails, and quantitative ROI models for enterprise AI adoption in 2026.
+> **Answer-first:** The AI-Driven Engineer Enterprise Playbook is a hands-on execution guide for software engineers, tech leads, and architects modernizing production development. It delivers production architectures, Model Context Protocol (MCP) integrations, AST-aware context engines, OpenTelemetry observability, zero-trust security guardrails, and quantitative ROI models for enterprise AI adoption in 2026.
 
 Welcome to **Phase 2** of your structured methodology for evolving into a next-generation AI platform software engineer. 
 
@@ -32,14 +33,14 @@ This playbook covers production system architectures, configuration files, and o
 
 - **Executive Summary:** [AI Executive Summary & Enterprise Playbook](/series/ai-driven-playbook/executive-summary/)
 - **Part 1:** [Context Engineering: Domain-Driven Design for AI](/series/ai-driven-playbook/part-1-context-engineering-ddd/)
-- **Part 2:** [AI Platform Layer: Building a Private AI Ecosystem & Architectural Freedom](/series/ai-driven-playbook/)
+- **Part 2:** _AI Platform Layer: Building a Private AI Ecosystem & Architectural Freedom_ — coming soon
 - **Part 3A:** [Enterprise RAG Architecture: Building the Internal "Brain"](/series/ai-driven-playbook/part-3a-enterprise-rag-architecture/)
 - **Part 3B:** [AI Automation for Internal Ops & Proving ROI](/series/ai-driven-playbook/part-3b-ai-automation-internal-ops/)
-- **Part 4:** [Policy-as-Code: Agentic CI/CD Guardrails](/series/ai-driven-playbook/)
+- **Part 4:** _Policy-as-Code: Agentic CI/CD Guardrails_ — coming soon
 - **Part 5:** [Operating Model: Evolving AI-Era Operations](/series/ai-driven-playbook/part-5-operating-model/)
 - **Part 6:** [AI Observability & Evals: Eliminating Operational Blind Spots](/series/ai-driven-playbook/part-6-ai-observability-governance/)
 - **Part 7:** [AI Security Engineering: Ironclad Armor for New Attack Surfaces](/series/ai-driven-playbook/part-7-ai-security-engineering/)
-- **Part 8:** [Grand Finale: Comprehensive AI-Native System Architecture](/series/ai-driven-playbook/)
+- **Part 8:** _Grand Finale: Comprehensive AI-Native System Architecture_ — coming soon
 
 ## Pillar Overview & Architecture Blueprint
 

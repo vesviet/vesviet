@@ -18,7 +18,7 @@ mermaid: true
 [← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/phase-4-deep-dive/) • [Next →](/series/alipay-double-11/phase-5-synthesis/)
 
-> **Executive Summary & Quick Answer**: This guide maps Alipay's proprietary Double 11 technology stack to modern open-source CNCF alternatives. Custom LDC cell unitization maps to Kubernetes multi-cluster deployments with Envoy gateways, OceanBase maps to TiDB/CockroachDB distributed SQL, RocketMQ maps to Kafka/Pulsar streaming brokers, and SOFA RPC maps to gRPC with OpenTelemetry context propagation.
+> **Answer-first:** This guide maps Alipay's proprietary Double 11 technology stack to modern open-source CNCF alternatives. Custom LDC cell unitization maps to Kubernetes multi-cluster deployments with Envoy gateways, OceanBase maps to TiDB/CockroachDB distributed SQL, RocketMQ maps to Kafka/Pulsar streaming brokers, and SOFA RPC maps to gRPC with OpenTelemetry context propagation.
 
 > **Prerequisite:** [Phase 4: Deep Dive (Technology Internals)](/series/alipay-double-11/phase-4-deep-dive/)
 
@@ -28,7 +28,7 @@ This page maps the architectural concepts and custom middleware developed for th
 
 ## 1) LDC Unitization vs. Kubernetes Multi-Cluster (Cells)
 
-> **Answer-First:** LDC unitization maps to Kubernetes multi-cluster cell deployments with eBPF Cilium ingress routers for regional user traffic partitioning.
+> **Answer-first:** LDC unitization maps to Kubernetes multi-cluster cell deployments with eBPF Cilium ingress routers for regional user traffic partitioning.
 
 In Alipay’s LDC architecture, the system is sharded into self-contained "RZones" that process user transaction requests locally. 
 
@@ -91,7 +91,7 @@ The matrix below compares key replication, storage, and architectural metrics ac
 
 ## 3) Message Queues: RocketMQ vs. Kafka vs. Pulsar
 
-**Answer-first:** RocketMQ sequential disk log architecture maps to NATS JetStream and Apache Pulsar for high-throughput async payment event decoupling.
+RocketMQ sequential disk log architecture maps to NATS JetStream and Apache Pulsar for high-throughput async payment event decoupling.
 
 At peak scale, the message broker's storage engine determines how it behaves under load.
 - **RocketMQ Architecture**: RocketMQ writes all incoming messages to a centralized **CommitLog** sequentially, and background threads generate indexes in **ConsumeQueue** files. This sequential-write structure means that disk I/O remains stable even when millions of topics are written to concurrently.
@@ -103,7 +103,7 @@ At peak scale, the message broker's storage engine determines how it behaves und
 
 ## 4) SOFA RPC vs. gRPC
 
-**Answer-first:** SOFA RPC binary protocol maps directly to gRPC with HTTP/2 multiplexing, protobuf contracts, and envoy service mesh sidecars.
+SOFA RPC binary protocol maps directly to gRPC with HTTP/2 multiplexing, protobuf contracts, and envoy service mesh sidecars.
 
 Alipay's Bolt-based SOFA RPC is equivalent to **gRPC** utilizing HTTP/2:
 - **Contract-First Design**: SOFA RPC defines interfaces in Java; gRPC uses **Protocol Buffers (protobuf)** to define APIs in a language-agnostic IDL, generating client and server stubs automatically in Go, Java, Rust, and Node.js.
@@ -113,7 +113,7 @@ Alipay's Bolt-based SOFA RPC is equivalent to **gRPC** utilizing HTTP/2:
 
 ## 5) Go Concurrent Multi-Cell Aggregator (Go Snippet)
 
-**Answer-first:** Go multi-cell aggregators use goroutine worker pools and fan-out channels to query distributed cell metrics in parallel.
+Go multi-cell aggregators use goroutine worker pools and fan-out channels to query distributed cell metrics in parallel.
 
 When building cell-based architectures, sometimes the system must aggregate data from multiple cells concurrently (for example, generating a unified transaction history report for an executive dashboard).
 
@@ -258,7 +258,7 @@ func main() {
 
 ## 6) Decision Framework: Build vs. Adopt
 
-**Answer-first:** The build vs. adopt framework guides teams to adopt open-source cloud-native standards unless traffic scale exceeds off-the-shelf limits.
+The build vs. adopt framework guides teams to adopt open-source cloud-native standards unless traffic scale exceeds off-the-shelf limits.
 
 If your system is not operating at peak scales of hundreds of thousands of TPS, you should avoid writing custom database protocols, RPC drivers, or messaging platforms from scratch. Building custom infrastructure increases your maintenance burden and diverts engineering focus away from business logic.
 
@@ -276,7 +276,7 @@ Instead, apply this **Adopt vs. Build Decision Matrix**:
 
 ## Key Takeaways
 
-**Answer-first:** Modern cloud-native software allows teams to replicate Double 11 scale using standard Kubernetes, Go microservices, and distributed SQL.
+Modern cloud-native software allows teams to replicate Double 11 scale using standard Kubernetes, Go microservices, and distributed SQL.
 
 1. **Use standard CNCF Tools**: Modern open-source solutions have matured to support the design patterns developed by Alipay. Use gRPC, Envoy, and Kubernetes to achieve cell-based scalability.
 2. **Prioritize Declarative Configurations**: Avoid hardcoding routing rules inside your application code. Use service mesh definitions and gateway routing configurations to manage cells.

@@ -8,7 +8,10 @@ weight: 150
 slug: "modular-monolith-architecture"
 categories: ["Software Engineering", "Backend"]
 tags: ["Modular Monolith", "Microservices", "Architecture"]
-cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Guide & Microservices Reversal — Go, DDD, and bounded contexts', 'relative': False}
+cover:
+  image: "images/posts/golang-microservices-cover.png"
+  alt: "Modular Monolith Architecture Guide & Microservices Reversal — Go, DDD, and bounded contexts"
+  relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/"
 ShowToc: true
@@ -44,7 +47,7 @@ graph TD
     Orders --> DB3[(PostgreSQL Schema: orders)]
 ```
 
-### What You'll Learn That AI Won't Tell You
+### What You'll Learn
 - **Physical vs Logical Boundaries:** The exact mechanics of using Go package structures to enforce module boundaries at the compiler level.
 - **AWS Egress Reduction:** Telemetry metrics showing how direct RAM communication reduces cloud network bills by up to 90%.
 - **Stack Overflow Scaling Pattern:** Direct insights into Stack Overflow's IIS-based vertical scaling framework handling billions of monthly hits.
@@ -221,7 +224,7 @@ If your system has become too complex for your current team to maintain, don't h
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** This FAQ section clarifies core architectural principles of Modular Monolith design, including domain boundary enforcement, FinOps cost optimization, and microservice extraction criteria.
+This FAQ section clarifies core architectural principles of Modular Monolith design, including domain boundary enforcement, FinOps cost optimization, and microservice extraction criteria.
 
 {{< faq q="What is a Modular Monolith architecture and how does it differ from a traditional monolith?" >}}
 A Modular Monolith is a single-deployable application unit strictly organized into logically independent bounded contexts using Domain-Driven Design (DDD). Unlike a traditional coupled monolith where dependencies and queries cross boundaries freely, a Modular Monolith enforces strict module autonomy at compile time, guaranteeing clean architecture without microservices operational overhead.

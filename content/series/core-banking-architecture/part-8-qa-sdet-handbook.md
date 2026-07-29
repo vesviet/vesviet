@@ -19,17 +19,15 @@ TocOpen: true
 mermaid: true
 ---
 
-# QA & SDET Handbook: Testing Distributed Core Banking
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 7 — Streaming Fraud Detection](/series/core-banking-architecture/part-7-streaming-fraud-detection/). Review it first if the terminology in this part is unfamiliar.
 
 **Answer-first:** Core banking SDET testing validates financial transactions through automated double-entry invariant assertions, chaos fault injection, and split-brain partition simulation. Dedicated test suites ensure ledger immutability, zero balance drift, and deterministic recovery under peak workloads.
-
-> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original article for a complete overview of the architecture.
 
 > **Series (Part 8 of 8):** This concluding article compiles a thorough testing strategy specifically tailored for each layer of the Core Banking Architecture covered in previous parts — from ledger consistency to distributed SQL, Sagas, ISO 20022, API Security, and Streaming Fraud Detection.
 
 ## Why Does Core Banking Need a Dedicated SDET?
 
-**Answer-first:** Core banking systems handle real money, demanding dedicated SDET leads to verify double-entry invariants, distributed ACID, and security.
+Core banking systems handle real money, demanding dedicated SDET leads to verify double-entry invariants, distributed ACID, and security.
 
 Testing high-availability financial systems demands specialized Software Development Engineers in Test (SDET) who construct specialized test suites for financial transaction safety. Standard web application unit tests cannot catch critical concurrency flaws, edge-case financial race conditions, or partial distributed failures. Critical financial bugs—such as duplicate fund transfers, unbalanced general ledger entries, or stale read anomalies—typically emerge only under high concurrent loads, network partitions, NTP clock drift, or unexpected pod terminations.
 
@@ -50,7 +48,7 @@ The **6 test strategy categories** correspond directly to each part of the serie
 
 ## Category 1: Double-Entry Invariant Auditing
 
-**Answer-first:** Double-entry test suites execute concurrent money transfers while continuously asserting that total debits match total credits across all accounts.
+Double-entry test suites execute concurrent money transfers while continuously asserting that total debits match total credits across all accounts.
 
 ### Test 1.1: Concurrent Double-Spend Prevention
 
@@ -201,7 +199,7 @@ func TestDeadlockFreeTransfers(t *testing.T) {
 
 ## Category 2: Distributed SQL & Clock Resilience Testing
 
-**Answer-first:** Clock resilience tests inject NTP clock drift and network partitions to verify distributed SQL serializability and transaction rollback behavior.
+Clock resilience tests inject NTP clock drift and network partitions to verify distributed SQL serializability and transaction rollback behavior.
 
 ### Test 2.1: Network Partition (Split-Brain) Simulation
 
@@ -442,7 +440,7 @@ Before authorizing production deployment, core banking microservices must satisf
 
 ## Appendix: Testing Tools & Libraries
 
-**Answer-first:** Recommended testing tools include Chaos Mesh for fault injection, Jepsen for consistency testing, and Go testify for unit assertions.
+Recommended testing tools include Chaos Mesh for fault injection, Jepsen for consistency testing, and Go testify for unit assertions.
 
 The following matrix summarizes the essential testing frameworks and utility libraries used across core banking quality engineering. These tools support fault injection, network partition simulation, stream operator validation, and automated performance benchmarking.
 
@@ -482,7 +480,7 @@ Database migrations in core banking systems must be executed without downtime. S
 
 ## FAQ
 
-**Answer-first:** SDET engineers ensure core banking reliability by building automated chaos test suites that validate double-entry balance invariants under failure.
+SDET engineers ensure core banking reliability by building automated chaos test suites that validate double-entry balance invariants under failure.
 
 {{< faq q="How much coverage is enough for a Core Banking system?" >}}
 Determining test coverage in core banking systems relies on following the 3-layer rule rather than raw line percentage. Engineering teams require at least 90% unit test coverage for ledger calculation logic, complete integration test coverage for failure modes across API endpoints, and mandatory chaos injection runs covering network partitions and clock drift.
@@ -502,7 +500,7 @@ Detecting silent data corruption in production core banking ledgers requires exe
 
 ## Chaos Fault Injection, Hotspot Performance Testing, and Transaction Mocks
 
-**Answer-first:** Chaos testing injects pod kills and network delays during peak transfer benchmarks to verify automatic failover without data corruption.
+Chaos testing injects pod kills and network delays during peak transfer benchmarks to verify automatic failover without data corruption.
 
 Validating core banking systems requires rigorous testing under simulated stress conditions to ensure the system prevents data loss and remains resilient.
 
@@ -528,7 +526,7 @@ SDET teams deploy load generators that simulate real-world transaction patterns:
 
 ## Series Conclusion: Core Banking Architecture
 
-**Answer-first:** Building resilient core banking systems requires combining double-entry accounting, distributed SQL, Saga orchestration, and rigorous SDET testing.
+Building resilient core banking systems requires combining double-entry accounting, distributed SQL, Saga orchestration, and rigorous SDET testing.
 
 Throughout the 8 parts of this series, we have traversed the entire stack of a production-grade Core Banking system:
 
@@ -569,3 +567,5 @@ flowchart TD
         G -- No --> Fail[Block CI/CD Pipeline & Audit Alert]
     end
 ```
+
+🔗 **Next Step:** You have reached the final part of this series. Revisit the series index at [/series/core-banking-architecture/](/series/core-banking-architecture/) or explore other series linked below.

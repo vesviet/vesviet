@@ -7,7 +7,10 @@ slug: "extraction-pattern-when-to-extract-microservices"
 tags: ["Microservices", "Extraction", "Sentry", "GitLab", "Modular Monolith", "Architecture"]
 categories: ["Modular Monolith", "Architecture"]
 aliases: ["/series/modular-monolith-architecture/part-7-extraction-pattern/"]
-cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal', 'relative': False}
+cover:
+  image: "images/posts/golang-microservices-cover.png"
+  alt: "Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal"
+  relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/extraction-pattern-when-to-extract-microservices/"
 ShowToc: true
@@ -19,11 +22,9 @@ image: "images/posts/golang-microservices-cover.png"
 
 > **Answer-first:** Extracting a module from a modular monolith into an independent microservice is justified only when domain isolation, asymmetric CPU/RAM scaling, or strict regulatory isolation demands it. Having pre-enforced DDD bounded contexts ensures extraction requires introducing network RPC adapters (gRPC) and Anti-Corruption Layers rather than refactoring internal core domain logic.
 
-> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series and **[Composable E-Commerce Migration](/posts/ecommerce-architecture-composable-migration/)** guide. Please refer to the original article for a detailed technical overview of the architecture.
-
 > **Prerequisite:** Before reading this part, please review [Part 6: Migration Playbook](/series/modular-monolith-architecture/part-6-migration-playbook/).
 
-**What You'll Learn That AI Won't Tell You:**
+**What You'll Learn:**
 - **Extraction Threshold Metrics:** Quantitative triggers (e.g. CPU saturation ratios) that justify extraction.
 - **Interface Wrappers & Anti-Corruption Layer:** How to write a Go ACL interface that switches dynamically between internal memory execution and gRPC implementations.
 - **Database Separation Loops:** Replicating database tables using Change Data Capture (CDC) and Transactional Outbox during zero-downtime migrations.
@@ -80,7 +81,7 @@ For architecture primer patterns, explore our [Modular Monolith Architecture](/s
 
 ## 2. Dynamic Module Interface Switching & Anti-Corruption Layer (ACL) Implementation
 
-**Answer-first:** Defining public Go interface contracts and Anti-Corruption Layer (ACL) adapters enables zero-code-change microservices extraction, allowing factory implementations to translate domain entities and switch dynamically between in-memory execution and remote gRPC calls.
+Defining public Go interface contracts and Anti-Corruption Layer (ACL) adapters enables zero-code-change microservices extraction, allowing factory implementations to translate domain entities and switch dynamically between in-memory execution and remote gRPC calls.
 
 The Protocol Buffer specification below defines the strongly-typed binary contract for the payment extraction interface, isolating network serialization from domain logic.
 
@@ -190,7 +191,7 @@ func PaymentServiceFactory(isExtracted bool, client paymentv1.PaymentClientServi
 
 ## 3. Zero-Downtime Database Splitting, Outbox+Kafka Streaming & Saga vs 2PC Orchestration
 
-**Answer-first:** Extracted microservices ensure data isolation without downtime by pairing Change Data Capture (CDC) via Debezium and Transactional Outbox pattern with Kafka streaming, while substituting fragile 2-Phase Commit (2PC) locks with Saga workflow state machines.
+Extracted microservices ensure data isolation without downtime by pairing Change Data Capture (CDC) via Debezium and Transactional Outbox pattern with Kafka streaming, while substituting fragile 2-Phase Commit (2PC) locks with Saga workflow state machines.
 
 Extracting a module into a standalone remote microservice replaces in-process function calls with network transport, making serialization efficiency and asynchronous data synchronization core operational requirements.
 
@@ -255,7 +256,7 @@ Review our complete industry benchmark summary in [Part 8: Case Study Matrix](/s
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** This FAQ section provides quick reference answers on microservice extraction thresholds, gRPC Anti-Corruption Layer implementation, and Saga orchestration strategies.
+This FAQ section provides quick reference answers on microservice extraction thresholds, gRPC Anti-Corruption Layer implementation, and Saga orchestration strategies.
 
 {{< faq q="When is the exact threshold to extract a module into a microservice?" >}}
 Extraction is justified when a module consistently consumes over 70% of cluster CPU or RAM, requires a deployment cadence faster than the monolith release train, or mandates strict PCI-DSS/HIPAA regulatory hardware isolation. Extracting prior to reaching these operational thresholds introduces unnecessary distributed system complexity without measurable benefits.
@@ -273,10 +274,12 @@ Two-Phase Commit relies on synchronous distributed database locks that cause sev
 
 ## Navigation & Next Steps
 
-**Answer-first:** Continue to Part 8 for the production case study matrix, or review related guides on Go system design and C10M high-concurrency architectures.
+Continue to Part 8 for the production case study matrix, or review related guides on Go system design and C10M high-concurrency architectures.
 
 - **Previous Part:** [Part 6: Migration Playbook](/series/modular-monolith-architecture/part-6-migration-playbook/)
 - **Next Part:** Continue to [Part 8: Case Study Matrix](/series/modular-monolith-architecture/part-8-case-study-matrix/)
 - **Related Guides:** [Modular Monolith Architecture](/series/modular-monolith-architecture/) and [Shopee & Alipay C10M High-Concurrency](/posts/shopee-flash-sale-architecture/)
 
 Need help deciding whether to extract a module into a microservice? [Get in touch](/hire/) or [hire our senior software architects](/hire/) for an architectural evaluation.
+
+🔗 **Next Step:** Continue to [Part 8 — Case Study Matrix](/series/modular-monolith-architecture/part-8-case-study-matrix/) for the following module in the series.

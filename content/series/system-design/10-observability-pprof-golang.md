@@ -22,7 +22,7 @@ Go's built-in `pprof` profiler provides CPU sampling, heap allocation analysis, 
 
 > **Prerequisite:** This is Part 10 of the [System Design Masterclass](/series/system-design/). Previous parts built the architecture — this part teaches you how to *see inside* a running system and diagnose production performance issues.
 
-### What You'll Learn That AI Won't Tell You
+### What You'll Learn
 - **Heap Snapshots Diff Math:** The exact mechanics of how `go tool pprof` diffs memory allocations to pinpoint memory leaks after load tests.
 - **Goroutine Stack Memory Leak:** The memory footprint calculation showing why leaked goroutines consume up to 2KB of RAM each, scaling to gigabytes under load.
 - **gctrace Telemetry Signals:** How to parse `GODEBUG=gctrace=1` outputs to compute exact garbage collection CPU steal percentages.

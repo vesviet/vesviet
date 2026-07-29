@@ -20,22 +20,20 @@ TocOpen: true
 image: "images/posts/graphhopper-cover.png"
 ---
 
-> **Answer-First:** High-throughput geospatial microservices in Go leverage H3 spatial indexes, concurrent goroutines, and Protobuf gRPC APIs for real-time ETA calculation.
-
-> **Pillar Architecture Guide:** This article is part of the **[GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+> **Answer-first:** High-throughput geospatial microservices in Go leverage H3 spatial indexes, concurrent goroutines, and Protobuf gRPC APIs for real-time ETA calculation.
 
 > **Prerequisite:** Before reading this part, review [Part 3: Spatial Indexing](/series/routing-geospatial-architecture/part-3-spatial-indexing/).
 
 ## Part 4: Golang API & Microservices Integration (Kratos & Dapr)
 
-> **Executive Summary & Quick Answer**: Integrating a high-concurrency Golang API Gateway with a downstream Java routing engine requires robust defense-in-depth patterns: `golang.org/x/sync/singleflight` for request deduplication, `sony/gobreaker` circuit breakers for fail-fast isolation, and flattened 1D arrays for Protobuf distance matrix serialization to prevent Go GC pauses.
+> **Answer-first:** Integrating a high-concurrency Golang API Gateway with a downstream Java routing engine requires robust defense-in-depth patterns: `golang.org/x/sync/singleflight` for request deduplication, `sony/gobreaker` circuit breakers for fail-fast isolation, and flattened 1D arrays for Protobuf distance matrix serialization to prevent Go GC pauses.
 >
 > **Key Takeaways**:
 > - **Singleflight Deduplication**: Singleflight collapses duplicate concurrent route requests into a single downstream HTTP call, sharing the result with all waiting callers.
 > - **Circuit Breakers**: Wrapping HTTP client calls in `gobreaker` trips open when error rates exceed 50%, preventing cascading thread exhaustion.
 > - **Protobuf GC Optimization**: Use 1D flattened arrays (`index = row * cols + col`) instead of nested structs to eliminate object allocations during matrix deserialization.
 
-**What You'll Learn That AI Won't Tell You:**
+**What You'll Learn:**
 - **Singleflight Traps:** Avoiding memory retention by clearing singleflight keys after execution.
 - **Protobuf Memory Alignment:** Flat 1D slice byte layout for ultra-fast gRPC matrix transport.
 - **Dapr Pub/Sub Telemetry:** Decoupling realtime driver location pings from sync routing APIs.

@@ -30,7 +30,7 @@ This series is the complete "Data" puzzle piece for your AI-Native Engineering e
 
 ## Master Outline (2026 SOTA Edition)
 
-**Answer-first:** The master outline covers ten production deep dives from knowledge graph construction to automated Ragas evaluation pipelines.
+The master outline covers ten production deep dives from knowledge graph construction to automated Ragas evaluation pipelines.
 
 - **[Executive Summary: The Disruption of Naive RAG and the Knowledge Runtime Architecture](/series/ai-data-engineering-pipeline/executive-summary/)**
 - **[Part 1: The Convergence](/series/ai-data-engineering-pipeline/part-1-agentic-graphrag-long-context/):** Combining Agentic RAG (The Brain), GraphRAG (The Memory), and Long-Context LLMs (2M+ Tokens).
@@ -46,7 +46,7 @@ This series is the complete "Data" puzzle piece for your AI-Native Engineering e
 
 ## Related Deep Dives
 
-**Answer-first:** Explore related architectural deep dives on Go microservices, event-driven streaming, and distributed vector database indexing.
+Explore related architectural deep dives on Go microservices, event-driven streaming, and distributed vector database indexing.
 
 Standalone technical articles that go deeper on specific concepts from this series:
 

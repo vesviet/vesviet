@@ -7,7 +7,7 @@ slug: "nats-jetstream-golang-production-guide"
 date: "2026-07-25"
 ---
 
-# NATS JetStream Production Guide for Go Developers: 100k RPS Architecture
+> **Prerequisite:** Familiarity with the concepts introduced in [Cloudflare Workers Edge Computing](/series/cornerstone-technologies/cloudflare-workers-edge-computing/). Review it first if the terminology in this part is unfamiliar.
 
 > **Answer-first:** NATS JetStream is a cloud-native event streaming engine written in Go featuring native RAFT consensus, sub-millisecond latency (<1ms), and built-in message deduplication via `Nats-Msg-Id`. Operating with a ~30MB idle RAM footprint, it eliminates JVM garbage collection pauses, replacing Kafka for high-throughput Go microservices requiring 100k RPS and Exactly-Once delivery guarantee.
 
@@ -222,3 +222,5 @@ Using the V2 typed SDK parameters and tuning patterns detailed in this guide ena
 
 ---
 *About the author: Le Tuan Anh is a Senior Go Engineer at Vesviet specializing in high-concurrency backend systems optimization and Cloud Native architecture.*
+
+🔗 **Next Step:** Continue to [Temporal Workflow Go Architecture](/series/cornerstone-technologies/temporal-workflow-go-architecture/) for the following module in the series.

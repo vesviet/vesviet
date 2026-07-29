@@ -21,20 +21,18 @@ canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/distributed-r
 image: "images/posts/realtime-inventory-cover.png"
 ---
 
-> **Pillar Architecture Guide:** This article is part of the **[High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/)** series. Please refer to the original article for a comprehensive overview of the architecture.
-
 > **Prerequisite:** Before reading this chapter, review [Chapter 2: The 3 Caching Vulnerabilities](/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/).
 
 ## Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm
 
-> **Executive Summary & Quick Answer**: Distributed rate limiting in microservice architectures requires centralized state management in Redis to avoid load-balancer bypasses. Implementing the Generic Cell Rate Algorithm (GCRA) via atomic Lua scripts tracks Theoretical Arrival Times (TAT) using a single 64-bit integer per user key, guaranteeing sub-millisecond execution.
+> **Answer-first:** Distributed rate limiting in microservice architectures requires centralized state management in Redis to avoid load-balancer bypasses. Implementing the Generic Cell Rate Algorithm (GCRA) via atomic Lua scripts tracks Theoretical Arrival Times (TAT) using a single 64-bit integer per user key, guaranteeing sub-millisecond execution.
 >
 > **Key Takeaways**:
 > - **Local Limiter Flaws**: Local in-memory limiters fail under multi-node load balancers because traffic distribution allows clients to multiply effective throughput limits.
 > - **GCRA Efficiency**: GCRA tracks arrival time deltas rather than token counts, requiring only one Redis key lookup per request.
 > - **Lua Atomicity**: Executing GCRA calculations inside Redis Lua scripts eliminates race conditions between concurrent API Gateway nodes.
 
-### What You'll Learn That AI Won't Tell You
+### What You'll Learn
 - **GCRA TAT Mathematics:** How Theoretical Arrival Time formulas ($TAT = \max(now, TAT) + \tau$) calculate exact retry delays.
 - **Lua Script Race Conditions:** Why atomic execution in Redis single-threaded engine is mandatory for rate limit precision.
 - **Memory Footprint Math:** Comparing GCRA (1 key/user) against Token Bucket and Sliding Window Log memory overheads.
@@ -297,7 +295,6 @@ Security enforcement for Article_3_Rate_Limiting integrates SPIFFE/SPIRE workloa
 ---
 
 🔗 **Next Step:** [Chapter 4: Solving the Dual-Write Problem with Transactional Outbox Pattern](/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/)
-
 
 ## Architectural Context & Pillar References
 

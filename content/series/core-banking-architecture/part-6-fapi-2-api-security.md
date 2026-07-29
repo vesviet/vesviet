@@ -18,17 +18,15 @@ ShowToc: true
 TocOpen: true
 ---
 
-# FAPI 2.0 Security: DPoP, mTLS & Sender-Constrained Tokens
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Iso 20022 Payment Gateways](/series/core-banking-architecture/part-5-iso-20022-payment-gateways/). Review it first if the terminology in this part is unfamiliar.
 
 **Answer-first:** Financial-grade API (FAPI) 2.0 enforces cryptographic API security using Mutual TLS (mTLS), pushed authorization requests (PAR), and signed request objects (JAR/JARM). This prevents credential hijacking, session sniffing, and token forgery in open banking networks.
-
-> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original article for a complete overview of the architecture.
 
 > **Series (Part 6 of 8):** After analyzing the payment data flow in [Part 5](/series/core-banking-architecture/part-5-iso-20022-payment-gateways/), this article focuses on the API security layer — where a single design flaw can lead to token theft and unauthorized fund transfers.
 
 ## What is FAPI 2.0 DPoP Implementation?
 
-**Answer-first:** FAPI 2.0 DPoP (Demonstrating Proof-of-Possession) binds access tokens to client public keys, preventing stolen token replay attacks in open banking.
+FAPI 2.0 DPoP (Demonstrating Proof-of-Possession) binds access tokens to client public keys, preventing stolen token replay attacks in open banking.
 
 The Financial-grade API (FAPI) 2.0 Security Profile standardizes modern OAuth 2.1 cryptographic controls for high-risk financial transactions. Under legacy OAuth 2.0 implementations, bearer tokens could be intercepted from HTTP headers or proxy logs and immediately replayed by malicious actors. FAPI 2.0 eliminates bearer token vulnerabilities by mandating sender-constrained tokens via application-layer DPoP (RFC 9449) or transport-layer mTLS (RFC 8705). 
 
@@ -38,7 +36,7 @@ Deploying mTLS within Kubernetes service meshes introduces an initial handshake 
 
 ## Why Aren't OAuth 2.0 Bearer Tokens Enough for Fintech?
 
-**Answer-first:** OAuth 2.0 bearer tokens are vulnerable to man-in-the-middle interception; FAPI 2.0 requires cryptographically sender-constrained tokens.
+OAuth 2.0 bearer tokens are vulnerable to man-in-the-middle interception; FAPI 2.0 requires cryptographically sender-constrained tokens.
 
 Bearer tokens have a fundamental vulnerability: anyone holding the token can use it — just like cash. If an attacker intercepts a bearer token:
 
@@ -58,7 +56,7 @@ Bearer tokens have a fundamental vulnerability: anyone holding the token can use
 
 ## DPoP: The Mathematical Mechanism
 
-**Answer-first:** DPoP mechanisms generate asymmetric key pairs to sign HTTP request headers, ensuring only the key holder can use the access token.
+DPoP mechanisms generate asymmetric key pairs to sign HTTP request headers, ensuring only the key holder can use the access token.
 
 DPoP works by requiring the client to **sign a proof JWT** for every HTTP request, binding it to:
 - The client's public key (in the JWT header).
@@ -261,7 +259,7 @@ func (v *DPoPVerifier) VerifyDPoP(
 
 ## FAPI 2.0 Mandatory Parameters
 
-**Answer-first:** FAPI 2.0 mandates PKCE, DPoP or mTLS token binding, Pushed Authorization Requests (PAR), and short-lived access token lifespans.
+FAPI 2.0 mandates PKCE, DPoP or mTLS token binding, Pushed Authorization Requests (PAR), and short-lived access token lifespans.
 
 Source: [OpenID FAPI 2.0 Profile](https://openid.net/specs/fapi-2_0-profile.html)
 
@@ -290,7 +288,7 @@ Evaluating client authentication methods at the token endpoint is critical to en
 
 ## mTLS Latency: Kubernetes Benchmark
 
-**Answer-first:** Benchmarking mutual TLS (mTLS) shows connection pooling reduces handshake overhead from 3ms down to under 0.1ms per gRPC call.
+Benchmarking mutual TLS (mTLS) shows connection pooling reduces handshake overhead from 3ms down to under 0.1ms per gRPC call.
 
 Source: [Linkerd Performance Benchmarks](https://linkerd.io/2021/05/27/linkerd-performance-benchmarks/).
 
@@ -356,7 +354,7 @@ client := &http.Client{
 
 ## PAR (Pushed Authorization Requests)
 
-**Answer-first:** Pushed Authorization Requests (PAR) move authorization parameters from front-channel URL query strings to secure back-channel POST requests.
+Pushed Authorization Requests (PAR) move authorization parameters from front-channel URL query strings to secure back-channel POST requests.
 
 In traditional OAuth 2.0, authorization parameters are sent via URL redirect:
 
@@ -401,7 +399,7 @@ https://auth.bank.vn/authorize?
 
 ## QA & SDET Testing Strategy
 
-**Answer-first:** Testing FAPI 2.0 security requires attempting replay attacks with intercepted tokens and verifying mTLS certificate validation.
+Testing FAPI 2.0 security requires attempting replay attacks with intercepted tokens and verifying mTLS certificate validation.
 
 ### Test 1: DPoP Token Replay Attack Simulation
 
@@ -470,14 +468,14 @@ curl --cert expired.crt --key expired.key \
 
 ## FAPI 2.0 Security Checklist
 
-**Answer-first:** The FAPI security checklist covers DPoP signature verification, mTLS certificate binding, PAR endpoints, and token revocation APIs.
+The FAPI security checklist covers DPoP signature verification, mTLS certificate binding, PAR endpoints, and token revocation APIs.
 
 The following pre-deployment security gate checklist outlines the mandatory cryptographic and protocol assertions required before approving API gateway deployments into production.
 
 ```markdown
 ## Pre-deployment Security Gate
 
-**Answer-first:** Pre-deployment security gates run automated SAST and FAPI conformance test suites before approving API gateway releases.
+Pre-deployment security gates run automated SAST and FAPI conformance test suites before approving API gateway releases.
 
 ### Authorization Server
 - [ ] PAR endpoint enabled and enforced
@@ -537,7 +535,7 @@ To meet regulatory requirements for financial auditing, the gateway logs the sig
 
 ## FAQ
 
-**Answer-first:** FAPI 2.0 protects financial APIs against token theft by combining mTLS transport security with DPoP cryptographic proof-of-possession.
+FAPI 2.0 protects financial APIs against token theft by combining mTLS transport security with DPoP cryptographic proof-of-possession.
 
 {{< faq q="DPoP or mTLS — which should I choose?" >}}
 Selecting between DPoP and mTLS depends primarily on the architecture of the consuming client. DPoP is optimal for single-page applications and native mobile apps because it operates at the application layer without requiring client certificate provisioning. Conversely, mTLS is ideal for server-to-server B2B integrations where X.509 certificate lifecycle management can be fully automated. FAPI 2.0 explicitly supports both mechanisms, allowing enterprise financial gateways to accept either sender-constrained token implementation.
@@ -553,7 +551,7 @@ iOS: Secure Enclave (hardware-backed key storage). Android: StrongBox or Android
 
 ## mTLS Client Certificates, Signed Request Objects, and PAR Flow Mechanics
 
-**Answer-first:** mTLS client certificates and signed JWT request objects establish mutual cryptographic identity between fintech apps and open banking gateways.
+mTLS client certificates and signed JWT request objects establish mutual cryptographic identity between fintech apps and open banking gateways.
 
 Financial-grade API (FAPI) 2.0 provides advanced security controls for banking API networks, protecting transactions from credential hijacking and message alteration.
 
@@ -587,3 +585,5 @@ This prevents interception of sensitive query parameters and ensures strict para
 *Up Next: [Part 7 — Streaming Fraud Detection](/series/core-banking-architecture/part-7-streaming-fraud-detection/) — Apache Flink CEP patterns, RocksDB memory tuning, async ML inference, and achieving <100ms fraud scoring SLAs.*
 
 {{< author-cta >}}
+
+🔗 **Next Step:** Continue to [Part 7 — Streaming Fraud Detection](/series/core-banking-architecture/part-7-streaming-fraud-detection/) for the following module in the series.

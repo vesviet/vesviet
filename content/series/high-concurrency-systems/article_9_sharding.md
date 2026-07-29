@@ -20,8 +20,6 @@ canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/database-shar
 image: "images/posts/realtime-inventory-cover.png"
 ---
 
-> **Pillar Architecture Guide:** This article is part of the **[High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/)** series. Please refer to the original article for a comprehensive overview of the architecture.
-
 > **Prerequisite:** Read the previous article: [Chapter 8: Distributed Locking — Redlock vs ZooKeeper](/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/).
 
 When your application reaches tens of millions of users, the Database becomes the ultimate bottleneck. CPU maxes out at 100%, RAM depletes, and queries take seconds instead of milliseconds. This is the stage where you must deploy distributed database strategies.
@@ -249,7 +247,6 @@ For database sharding systems, state persistence relies on pessimistic transacti
 ---
 
 🔗 **Next Step:** [Masterclass: High Concurrency Systems & B2B Commerce](/series/system-design/)
-
 
 ## Architectural Context & Pillar References
 

@@ -18,11 +18,9 @@ ShowToc: true
 TocOpen: true
 ---
 
-
-
 ## Executive Summary — The Dawn of Generative UI & Dynamic Component Rendering
 
-> **Executive Summary & Quick Answer**: Generative UI replaces static text-only chatbot responses with dynamic, interactive React components rendered directly on the client. By streaming JSON Schema payloads from AI backends to a type-safe Component Registry, Generative UI delivers rich UI elements (charts, forms, dashboards) at sub-100ms render speeds.
+> **Answer-first:** Generative UI replaces static text-only chatbot responses with dynamic, interactive React components rendered directly on the client. By streaming JSON Schema payloads from AI backends to a type-safe Component Registry, Generative UI delivers rich UI elements (charts, forms, dashboards) at sub-100ms render speeds.
 >
 > **Key Takeaways**:
 > - **Sub-100ms UI Stream Rendering**: Streaming structured JSON component props over Server-Sent Events (SSE) eliminates full page refreshes.
@@ -40,8 +38,6 @@ The first era of conversational AI user interfaces (2022–2024) relied heavily 
 ## Generative UI Streaming Architecture
 
 **Answer-first:** Generative UI streams structured JSON component specs from AI agents to frontends, rendering interactive React UI widgets in real time.
-
-> **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 ```mermaid
 graph TD
@@ -71,7 +67,7 @@ graph TD
 
 ## Comparative Matrix: Static Chatbot vs. Generative UI
 
-**Answer-first:** Static chatbots stream plain Markdown text, whereas Generative UI renders interactive buttons, forms, and charts dynamically based on intent.
+Static chatbots stream plain Markdown text, whereas Generative UI renders interactive buttons, forms, and charts dynamically based on intent.
 
 | User Interface Axis | Traditional Text Chatbot UI | Generative UI Architecture |
 | :--- | :--- | :--- |
@@ -85,7 +81,7 @@ graph TD
 
 ## Production Python Generative UI Stream Engine
 
-**Answer-first:** Production Python stream engines pipe JSON component payloads over Server-Sent Events (SSE) directly to reactive React frontend listeners.
+Production Python stream engines pipe JSON component payloads over Server-Sent Events (SSE) directly to reactive React frontend listeners.
 
 This production-grade Python Generative UI streaming engine using `Pydantic` and `LiteLLM` that converts user requests into validated JSON component prop payloads for client-side React rendering:
 
@@ -149,7 +145,7 @@ if __name__ == "__main__":
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** Generative UI enhances user experience by replacing static text responses with interactive, context-aware web components generated on demand.
+Generative UI enhances user experience by replacing static text responses with interactive, context-aware web components generated on demand.
 
 ### Q1: Why is streaming raw JSX or HTML code directly from an LLM considered a severe security risk?
 Streaming raw JSX or HTML strings allows an attacker (via indirect prompt injection) to inject malicious JavaScript `<script>` tags or inline event handlers (`onload=...`), causing Cross-Site Scripting (XSS) attacks that hijack user session cookies. Generative UI eliminates this risk by streaming strict JSON props targeting pre-compiled, whitelisted client React components.
@@ -162,9 +158,8 @@ If the AI model requests an unregistered component, the client-side component re
 
 ---
 
-## Technical Deep-Dive: Generative UI Architecture & Stream Rendering Invariants
-
-**Answer-first:** Generative UI rendering invariants require strict JSON Schema component validation and client-side error boundaries to prevent UI crashes.
+## Stream Rendering Invariants
+Generative UI rendering invariants require strict JSON Schema component validation and client-side error boundaries to prevent UI crashes.
 
 Operating real-time generative UI systems over Server-Sent Events (SSE) demands strict rendering SLAs and state synchronization guardrails.
 
@@ -190,9 +185,11 @@ Operating real-time generative UI systems over Server-Sent Events (SSE) demands 
 
 ---
 
+🔗 **Next Step:** Continue to [Part 1 — Beyond Chatbots](/series/generative-ui-architecture/part-1-beyond-chatbots/) for the following module in the series.
+
 ## Internal Series Navigation
 
-**Answer-first:** Explore the entire Generative UI series covering component registries, SSE streaming handlers, and legacy frontend migration.
+Explore the entire Generative UI series covering component registries, SSE streaming handlers, and legacy frontend migration.
 
 - [Part 1 — Beyond Chatbots: Dynamic Component Rendering](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 2 — State Management for Generative UI](/posts/generative-ui-with-mcp-ai-native-frontend/)

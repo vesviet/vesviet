@@ -21,6 +21,8 @@ canonicalURL: "https://tanhdev.com/series/agentic-ecommerce-search/part-5-critiq
 mermaid: true
 ---
 
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Active Rag Tool Calling](/series/agentic-ecommerce-search/part-4-active-rag-tool-calling/). Review it first if the terminology in this part is unfamiliar.
+
 In [Part 4: Active RAG & Strict Tool Calling - Connecting LLMs to Real-time APIs](/series/agentic-ecommerce-search/part-4-active-rag-tool-calling/), we successfully built a cyclic ReAct graph allowing the LLM to call APIs to check inventory and promotions in real-time. However, in a real-world production environment, giving an LLM access to Tools is not enough to guarantee absolute accuracy.
 
 A very common phenomenon is **Hallucination** or **constraint omission**: The LLM receives data indicating zero inventory from a Tool, yet in its final synthesized answer, it still recommends that product to the customer; or it ignores the maximum price filter explicitly requested by the user in the initial query.
@@ -32,8 +34,6 @@ To completely eradicate this issue, we must deploy a **Self-Reflection** model v
 ## 1. The Nature of Hallucination in E-commerce Search
 
 **Answer-first:** LLM hallucinations in search manifest as fabricated product specs or invalid prices; self-reflection critique loops detect and rewrite erroneous outputs before response emission.
-
-> **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 In e-commerce search, LLM hallucinations typically manifest in 3 forms:
 1. **Inventory logic errors**: The LLM ignores actual data from the API and fabricates the stock status (e.g., the Tool reports "out of stock in District 1" but the LLM answers "the product is available in District 1").
@@ -58,7 +58,7 @@ Every response from the Generator is not sent directly to the user but must pass
 
 ## 2. Managing Loop State With Pointer-Based State
 
-**Answer-first:** Pointer-based state in Go allows Eino graph nodes to mutate shared context across critique iterations while preserving audit logs and execution step counts.
+Pointer-based state in Go allows Eino graph nodes to mutate shared context across critique iterations while preserving audit logs and execution step counts.
 
 Unlike Python frameworks like LangGraph that use dictionary overwriting or merging, Eino manages the flow state via a Go Pointer-Based State Struct. This state is initialized exactly once using `compose.WithGenLocalState` when declaring the Graph and is safely mutated using `compose.ProcessState[S]`.
 
@@ -110,7 +110,7 @@ func InitializeGraph() {
 
 ## 3. Defining the Critique Node With InvokableLambda & MessageJSONParser
 
-**Answer-first:** InvokableLambda nodes parse candidate responses against strict JSON validation rules, returning feedback signals that trigger targeted LLM correction prompts.
+InvokableLambda nodes parse candidate responses against strict JSON validation rules, returning feedback signals that trigger targeted LLM correction prompts.
 
 The Critique Node analyzes the Generator's answer against the user's request to return a Structured Output evaluation. We will define a Go Struct containing the score and reasoning, wrap the execution logic using `compose.InvokableLambda`, and use `schema.NewMessageJSONParser` to extract the data.
 
@@ -181,7 +181,7 @@ func RunCritiqueNode(ctx context.Context, input *schema.Message) (*schema.Messag
 
 ## 4. Conditional Routing & Setting Safe Loop Limits
 
-**Answer-first:** Conditional routing limits reflection cycles to a max of two iterations, gracefully falling back to deterministic search results if validation repeatedly fails.
+Conditional routing limits reflection cycles to a max of two iterations, gracefully falling back to deterministic search results if validation repeatedly fails.
 
 After the Critique Node finishes running and updating the state, the graph requires a routing branch (`compose.NewGraphBranch`) to make a decision:
 *   Proceed to the **Generator** node to regenerate the answer (along with a Prompt containing the critique feedback).
@@ -260,7 +260,7 @@ func OrchestrateReflectedGraph(ctx context.Context, generatorModel model.ChatMod
 
 ## 5. Practical Data Flow During Logic Error Handling
 
-**Answer-first:** When logical discrepancies are detected, the critique node appends error context to the system prompt and redirects flow back to the generator node.
+When logical discrepancies are detected, the critique node appends error context to the system prompt and redirects flow back to the generator node.
 
 Let's observe the actual operational scenario when a user sends a search query:
 *"Find me an Asus ROG laptop under $1500 in stock at the District 1 branch."*
@@ -285,7 +285,7 @@ Let's observe the actual operational scenario when a user sends a search query:
 
 ## Summary & Key Takeaways from Part 5
 
-**Answer-first:** Self-reflection critique loops enforce automated validation gates on LLM search outputs, preventing hallucinated product attributes from reaching customers.
+Self-reflection critique loops enforce automated validation gates on LLM search outputs, preventing hallucinated product attributes from reaching customers.
 
 1.  **State Mutation in Go is extremely clear**: The `compose.ProcessState` mechanism makes tracking state, incrementing loop counts, and updating feedback in Eino intuitive and strongly-typed.
 2.  **Always use a Message Parser**: `schema.NewMessageJSONParser` simplifies decoding complex audit directives from JSON Strings into Go Structs.
@@ -294,3 +294,5 @@ Let's observe the actual operational scenario when a user sends a search query:
 With a robust self-auditing mechanism in place, how do we push this RAG Agent system into a large-scale production environment? How do we solve the LLM's slow response time with Token Streaming, optimize costs via Semantic Caching, and trace the entire execution path using OpenTelemetry?
 
 Join us in **[Part 6: Production Agentic Search Optimization in Go](/series/agentic-ecommerce-search/part-6-production-operations/)** to complete the final practical operational puzzle piece for your Agentic Search system!
+
+🔗 **Next Step:** Continue to [Part 6 — Production Operations](/series/agentic-ecommerce-search/part-6-production-operations/) for the following module in the series.

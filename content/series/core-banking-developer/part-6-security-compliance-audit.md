@@ -18,17 +18,13 @@ TocOpen: true
 mermaid: true
 ---
 
-# Part 6: Core Banking Security, PCI-DSS & Audit Trails
-
-> **Answer-First:** Core banking security mandates zero-trust architecture, hardware security module (HSM) key management, mTLS 1.3, field-level AES-256-GCM encryption for customer PII, and tamper-evident append-only audit logs. Adhering to PCI-DSS v4.0 and SOC 2 Type II controls ensures transaction privacy, immutable balance records, and strict regulatory compliance without compromising transactional throughput.
+> **Answer-first:** Core banking security mandates zero-trust architecture, hardware security module (HSM) key management, mTLS 1.3, field-level AES-256-GCM encryption for customer PII, and tamper-evident append-only audit logs. Adhering to PCI-DSS v4.0 and SOC 2 Type II controls ensures transaction privacy, immutable balance records, and strict regulatory compliance without compromising transactional throughput.
 
 > **Prerequisite:** [Part 5: ISO 8583 & ISO 20022 Messaging](/series/core-banking-developer/part-5-iso-standards-integration/) on message translation layers.
 
 ## Why is Core Banking Security Different?
 
-> **Answer-First:** Banking security requires strict zero-trust access, hardware security modules (HSM), immutable audit trails, and compliance with PCI-DSS and AML regulations.
-
-> **Pillar Architecture Guide:** This guide is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the core architecture guide for an architectural reference.
+> **Answer-first:** Banking security requires strict zero-trust access, hardware security modules (HSM), immutable audit trails, and compliance with PCI-DSS and AML regulations.
 
 In standard SaaS applications, a security breach typically involves unauthorized access to non-financial user data or service degradation. In Core Banking Systems (CBS), a single security oversight results in direct monetary theft, legal liability, and irreversible balance corruption across the General Ledger. Consequently, banking environments demand military-grade defense-in-depth, zero-trust Role-Based Access Control (RBAC), and hardware-enforced cryptographic boundaries.
 
@@ -100,7 +96,7 @@ Tokenization eliminates PAN exposure within general core banking databases. By r
 
 ## AML & CFT — Anti-Money Laundering
 
-**Answer-first:** Anti-money laundering compliance requires real-time transaction monitoring, sanctions screening, and automated suspicious activity reporting.
+Anti-money laundering compliance requires real-time transaction monitoring, sanctions screening, and automated suspicious activity reporting.
 
 Anti-Money Laundering (AML) and Countering the Financing of Terrorism (CFT) regulations require banks to execute real-time transaction monitoring and customer screening. Financial institutions must detect structuring (smurfing), identify politically exposed persons (PEPs), and flag transactions matching OFAC or UN sanction list entries.
 
@@ -134,7 +130,7 @@ Real-time AML engines compute risk scores asynchronously via stream processors l
 
 ## Designing the Audit Trail
 
-**Answer-first:** Tamper-evident audit trails record all ledger state changes, user actions, and system events using append-only logs and cryptographic hash chains.
+Tamper-evident audit trails record all ledger state changes, user actions, and system events using append-only logs and cryptographic hash chains.
 
 Regulatory bodies and SOC 2 Type II auditors mandate that every administrative action, user authorization, and system configuration change produce an immutable audit trail. Audit logs must capture the precise before and after states of mutated records, the authenticated identity of the actor, and network metadata.
 
@@ -257,7 +253,7 @@ CREATE TRIGGER ledger_immutability_guard
 
 ## Hardware Security Modules (HSM)
 
-**Answer-first:** HSM devices execute cryptographic operations (PIN translation, key generation, CVV verification) inside tamper-resistant hardware enclosures.
+HSM devices execute cryptographic operations (PIN translation, key generation, CVV verification) inside tamper-resistant hardware enclosures.
 
 An HSM is a dedicated physical hardware device that performs the most sensitive cryptographic operations (PIN encryption, card key generation, digital signatures). Cryptographic keys never leave the HSM in plaintext.
 
@@ -277,7 +273,7 @@ HSM clusters communicate with application hosts via dedicated mTLS connections u
 
 ## Security Configuration & Compliance Checklist
 
-**Answer-first:** The compliance checklist covers TLS 1.3 encryption, database column-level encryption, secret rotation, and quarterly penetration testing.
+The compliance checklist covers TLS 1.3 encryption, database column-level encryption, secret rotation, and quarterly penetration testing.
 
 Developers launching core banking platforms must satisfy this baseline security checklist before release:
 
@@ -292,7 +288,7 @@ Developers launching core banking platforms must satisfy this baseline security 
 
 ## Database Level Auditing in Go
 
-**Answer-first:** Database auditing in Go uses triggers or middleware to capture pre-update and post-update row values into immutable audit log tables.
+Database auditing in Go uses triggers or middleware to capture pre-update and post-update row values into immutable audit log tables.
 
 To comply with regulatory audit requirements, CBS databases must record all balance overrides and administrative configurations. The following Go code example illustrates database logging middleware alongside a microbenchmark for field-level AES-256-GCM encryption performance.
 
@@ -377,7 +373,7 @@ graph LR
 
 ## Geo-Spatial Data Summary
 
-**Answer-first:** Geo-spatial transaction logging records terminal location coordinates to enrich fraud detection models and flag geographic anomalies.
+Geo-spatial transaction logging records terminal location coordinates to enrich fraud detection models and flag geographic anomalies.
 
 The following compliance summary table compares audit log data retention mandates and regulatory statuses across global banking jurisdictions.
 
@@ -393,7 +389,7 @@ Geo-spatial metadata enables fraud engines to calculate velocity vectors (distan
 
 ## Vault-Based Encryption for KYC Profiles
 
-**Answer-first:** HashiCorp Vault integrates with Go microservices to encrypt customer KYC profiles (national IDs, passports) using envelope encryption.
+HashiCorp Vault integrates with Go microservices to encrypt customer KYC profiles (national IDs, passports) using envelope encryption.
 
 To protect Personally Identifiable Information (PII) of banking customers, CIF profile data (such as national identity numbers or passport scans) is encrypted before writing to persistent disk storage. Core microservices integrate with HashiCorp Vault's transit secrets engine, executing AES-256-GCM envelope encryption within memory while delegating key lifecycle management, automatic rotation, and access policy enforcement to Vault.
 
@@ -401,7 +397,7 @@ To protect Personally Identifiable Information (PII) of banking customers, CIF p
 
 ## Immutable Log Export and SIEM Integration
 
-**Answer-first:** Exporting audit logs to SIEM systems (Elasticsearch, Splunk) enables real-time security event correlation and automated threat detection.
+Exporting audit logs to SIEM systems (Elasticsearch, Splunk) enables real-time security event correlation and automated threat detection.
 
 Audit records must be protected from tampering by administrators. The audit logger streams all events to an external, write-once-read-many (WORM) storage engine:
 
@@ -413,7 +409,7 @@ Audit records must be protected from tampering by administrators. The audit logg
 
 ## Go Tamper-Evident SHA-256 Audit Logger & PCI-DSS Masker
 
-**Answer-first:** Go audit loggers compute SHA-256 hashes linking consecutive log entries into tamper-evident chains, while masking credit card numbers.
+Go audit loggers compute SHA-256 hashes linking consecutive log entries into tamper-evident chains, while masking credit card numbers.
 
 To satisfy regulatory requirements (PCI-DSS v4.0, SOC 2 Type II), the security audit engine masks Primary Account Numbers (PAN) and maintains an append-only SHA-256 cryptographic hash chain.
 
@@ -504,7 +500,7 @@ By linking each `RecordHash` to the previous entry's SHA-256 output, any retroac
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** Securing core banking applications requires encrypting sensitive cardholder data, implementing HSMs, and maintaining tamper-evident audit trails.
+Securing core banking applications requires encrypting sensitive cardholder data, implementing HSMs, and maintaining tamper-evident audit trails.
 
 {{< faq "How are credit card numbers and PII protected under PCI-DSS standards?" >}}
 Personally Identifiable Information (PII) and Primary Account Numbers (PAN) are protected using field-level AES-256-GCM encryption prior to database persistence. Cryptographic keys are managed within dedicated Hardware Security Modules (HSMs) or HashiCorp Vault instances with automated rotation policies enforced under dual control.

@@ -22,7 +22,7 @@ image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 
 > **Prerequisite:** Part 7 of the [System Design Masterclass](/series/system-design/). Read [Part 6: Distributed Locks](/series/system-design/06-distributed-locks-concurrency/) first.
 
-### What You'll Learn That AI Won't Tell You
+### What You'll Learn
 - **Payload Reuse Vulnerability:** How Stripe prevents malicious request payload tampering on existing keys using SHA-256 request body hashes in Redis.
 - **SetNX Lock Lifetime Math:** Why setting a lock TTL without a auto-extension renewal thread leads to double-charge execution gaps.
 - **Response Record Memory Leak:** The memory consumption strategy of caching full HTTP headers and response body data under high-throughput request rates.
@@ -65,7 +65,6 @@ sequenceDiagram
 ---
 
 ## Stripe-Style Idempotency Architecture
-
 
 **Stripe Implementation Pattern:** Stripe stores idempotency key metadata in Redis (hot path, TTL 24 hours) with a JSON payload containing the status, HTTP response code, headers, and body. A payload hash detects key reuse with a different request body. PostgreSQL provides a durable fallback when Redis is unavailable.
 

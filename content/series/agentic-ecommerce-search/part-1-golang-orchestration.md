@@ -18,10 +18,9 @@ ShowToc: true
 TocOpen: true
 ---
 
-
+> **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/series/agentic-ecommerce-search/executive-summary/). Review it first if the terminology in this part is unfamiliar.
 
 ## Agentic Architecture & Golang Orchestration Power
-
 
 Building agentic search systems in Python works well for offline evaluation or low-throughput prototypes. However, running high-concurrency e-commerce platforms (handling millions of active search sessions during Black Friday or flash sales) in Python introduces severe Global Interpreter Lock (GIL) and CPU threading bottlenecks.
 
@@ -32,8 +31,6 @@ Building agentic search systems in Python works well for offline evaluation or l
 ## Golang Agentic Search Orchestration Sequence
 
 Golang orchestrators receive client queries, execute concurrent vector and relational queries, and aggregate results using lightweight goroutines and channels.
-
-> **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 ```mermaid
 sequenceDiagram
@@ -201,8 +198,7 @@ func main() {
 
 ---
 
-## Technical Deep-Dive: Vector Graph Search & E-Commerce Retrieval Invariants
-
+## E-Commerce Retrieval Invariants
 Vector graph retrieval requires memory-mapped payload storage and HNSW graph indexing to maintain sub-5ms traversal latencies across million-item e-commerce catalogs.
 
 Orchestrating vector similarity search alongside product graph traversals in Go requires isolating concurrent worker pools via context-aware channel semaphores. Goroutines query vector indexes and relational product subgraphs in parallel, using sync pools to minimize allocations during high-QPS traffic spikes.
@@ -215,8 +211,9 @@ Benchmarking Go agent orchestrators against Python asyncio runtimes demonstrates
 
 To prevent stale inventory or price mismatches during agentic retrieval, Go orchestrators validate real-time stock levels in post-retrieval re-ranking filters. If a vector candidate is out of stock, context filters drop the SKU before presenting final recommendations to the user model.
 
-
 ---
+
+🔗 **Next Step:** Continue to [Part 2 — Ingestion Chunking](/series/agentic-ecommerce-search/part-2-ingestion-chunking/) for the following module in the series.
 
 ## Internal Series Navigation
 

@@ -2,7 +2,7 @@
 title: "GenUI Security: XSS, Prompt Injection & WCAG (Part 4)"
 description: "Implement security controls and accessibility standards for AI-generated UIs, including XSS prevention, DOM sanitization, and ARIA compliance."
 slug: "part-4-security-a11y"
-date: 2026-03-21T09:00:00+07:00
+date: "2026-03-21T09:00:00+07:00"
 lastmod: "2026-07-23T10:40:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
@@ -20,9 +20,9 @@ series: ["Generative UI Architecture"]
 weight: 4
 ---
 
-> **Answer-First Summary**: Building secure, accessible Generative UI systems requires defensive engineering across two critical vectors: Prompt-to-UI Injection Defenses and WCAG 2.1 AA Accessibility Enforcement. By enforcing strict prop sanitization, eliminating arbitrary HTML injection, and embedding automated accessibility attributes (`aria-live`, semantic focus traps, and contrast compliance) directly into dynamic component templates, teams prevent client-side XSS exploits while ensuring AI-generated interfaces remain fully accessible to screen readers and keyboard users.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Component Registry](/series/generative-ui-architecture/part-3-component-registry/). Review it first if the terminology in this part is unfamiliar.
 
-> **Parent Architecture Guide:** Part 4 exploring security and accessibility within [Autonomous Hybrid AI Content Pipeline](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/).
+> **Answer-first:** Building secure, accessible Generative UI systems requires defensive engineering across two critical vectors: Prompt-to-UI Injection Defenses and WCAG 2.1 AA Accessibility Enforcement. By enforcing strict prop sanitization, eliminating arbitrary HTML injection, and embedding automated accessibility attributes (`aria-live`, semantic focus traps, and contrast compliance) directly into dynamic component templates, teams prevent client-side XSS exploits while ensuring AI-generated interfaces remain fully accessible to screen readers and keyboard users.
 
 ---
 
@@ -57,7 +57,7 @@ Implementing a unified Security and Accessibility Shield ensures that every AI-g
 
 ## 2. Security Threat Model & Defense Mechanisms
 
-**Answer-first:** Defensive security mechanisms neutralize XSS, URL hijacking, and clickjacking attacks by enforcing DOMPurify sanitization in < 2ms per payload, validating 100% of JSON props against Zod schemas, and restricting link protocols strictly to HTTPS.
+Defensive security mechanisms neutralize XSS, URL hijacking, and clickjacking attacks by enforcing DOMPurify sanitization in < 2ms per payload, validating 100% of JSON props against Zod schemas, and restricting link protocols strictly to HTTPS.
 
 When an LLM constructs component prop payloads, security guardrails must enforce strict boundaries before rendering occurs in the browser.
 
@@ -95,7 +95,7 @@ Attackers generate deceptive forms that attempt to submit sensitive user credent
 
 ## 4. Production Implementation: Safe & Accessible GenUI Wrapper
 
-**Answer-first:** A production React GenUI wrapper parses JSON props using Zod schemas, strips XSS attack vectors via DOMPurify, and updates screen reader live regions within 16ms to maintain 60 FPS UI rendering.
+A production React GenUI wrapper parses JSON props using Zod schemas, strips XSS attack vectors via DOMPurify, and updates screen reader live regions within 16ms to maintain 60 FPS UI rendering.
 
 ```typescript
 import React, { useEffect, useRef } from 'react';
@@ -194,7 +194,7 @@ export const SafeGenUIWrapper: React.FC<SafeGenUIWrapperProps> = ({ payload, onA
 
 ## 5. Accessibility (WCAG 2.1 AA) Compliance Matrix for GenUI
 
-**Answer-first:** GenUI accessibility frameworks guarantee 100% WCAG 2.1 AA compliance across all dynamic components, enforcing a 4.5:1 contrast ratio, sub-100ms screen reader announcement latency via ARIA live regions, and zero keyboard focus traps.
+GenUI accessibility frameworks guarantee 100% WCAG 2.1 AA compliance across all dynamic components, enforcing a 4.5:1 contrast ratio, sub-100ms screen reader announcement latency via ARIA live regions, and zero keyboard focus traps.
 
 | WCAG Principle | Requirement for Dynamic AI UI | Implementation Strategy |
 |---|---|---|
@@ -207,7 +207,7 @@ export const SafeGenUIWrapper: React.FC<SafeGenUIWrapperProps> = ({ payload, onA
 
 ## 6. Strategic Security & Accessibility Guidelines
 
-**Answer-first:** Enforce zero raw HTML injection, automate WCAG accessibility auditing in CI/CD, and whitelist action callback handlers.
+Enforce zero raw HTML injection, automate WCAG accessibility auditing in CI/CD, and whitelist action callback handlers.
 
 1. **Enforce Zero HTML Injection**: Never allow LLMs to output raw HTML tags within JSON prop fields. Plain text strings sanitized by DOMPurify should be mandatory.
 2. **Automate WCAG Auditing in CI/CD**: Run automated accessibility tests (using axe-core or Playwright-axe) against component registry stories before releasing new widgets.
@@ -217,7 +217,7 @@ export const SafeGenUIWrapper: React.FC<SafeGenUIWrapperProps> = ({ payload, onA
 
 ## 7. Content Security Policy (CSP) Directives for GenUI Systems
 
-**Answer-first:** To prevent malicious script execution even in the event of a sanitizer bypass, enterprise applications must serve rigid HTTP Content Security Policy (CSP) headers.
+To prevent malicious script execution even in the event of a sanitizer bypass, enterprise applications must serve rigid HTTP Content Security Policy (CSP) headers.
 
 ```http
 Content-Security-Policy: 
@@ -238,7 +238,7 @@ Content-Security-Policy:
 
 ## 8. Automated Security & Accessibility Verification Matrix
 
-**Answer-first:** Automated CI/CD test gates enforce strict benchmarks: 100% XSS sanitization pass rates, 0 critical accessibility violations in axe-core audits, and sub-10ms DOMPurify execution times on fuzzing test suites.
+Automated CI/CD test gates enforce strict benchmarks: 100% XSS sanitization pass rates, 0 critical accessibility violations in axe-core audits, and sub-10ms DOMPurify execution times on fuzzing test suites.
 
 | Vulnerability Vector | Test Automation Tool | CI/CD Gate Target |
 |---|---|---|
@@ -250,7 +250,7 @@ Content-Security-Policy:
 
 ## 9. Dynamic iFrame Sandbox Isolation for Untrusted UI Widgets
 
-**Answer-first:** When third-party plugin components or user-submitted micro-widgets are rendered dynamically, applications wrap them inside an isolated HTML5 iFrame sandbox.
+When third-party plugin components or user-submitted micro-widgets are rendered dynamically, applications wrap them inside an isolated HTML5 iFrame sandbox.
 
 ```html
 <!-- Secure iFrame Sandbox for Untrusted Dynamic AI Widgets -->
@@ -271,7 +271,7 @@ Content-Security-Policy:
 
 ## 10. Automated Penetration Testing of Dynamic Props
 
-**Answer-first:** Security teams execute automated fuzz testing against the GenUI Prop Sanitizer using specialized attack dictionaries.
+Security teams execute automated fuzz testing against the GenUI Prop Sanitizer using specialized attack dictionaries.
 
 ```typescript
 // Example Automated Prop Fuzzing Test Suite
@@ -306,21 +306,23 @@ test('Prop sanitizer strips inline event handlers', () => {
 
 ## 11. Trusted Types & Subresource Integrity (SRI) Protocols
 
-**Answer-first:** To defend modern browsers against DOM-based Cross-Site Scripting (DOM XSS), enterprise GenUI apps configure W3C Trusted Types policies.
+To defend modern browsers against DOM-based Cross-Site Scripting (DOM XSS), enterprise GenUI apps configure W3C Trusted Types policies.
 
 ---
 
 ## Architectural Context & Pillar References
 
-**Answer-first:** Securing Generative UI requires multi-layer defense-in-depth across MCP tool boundaries, client registries, and browser sandboxes.
+Securing Generative UI requires multi-layer defense-in-depth across MCP tool boundaries, client registries, and browser sandboxes.
 
 - [Generative UI with Model Context Protocol Security](/posts/generative-ui-with-mcp-ai-native-frontend/) — Securing MCP component rendering and inputs.
 - [AI-Native Frontend Architecture Predictions (2028)](/posts/ai-native-frontend-architecture-predictions-2028/) — Security & accessibility guidelines for AI frontends.
 - [Autonomous Hybrid-AI Content Pipeline Deep-Dive](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/) — System-level security in content pipelines.
 
+🔗 **Next Step:** Continue to [Part 5 — Human In The Loop](/series/generative-ui-architecture/part-5-human-in-the-loop/) for the following module in the series.
+
 ## Internal Series Navigation
 
-**Answer-first:** Advance to Part 5 to explore Human-in-the-Loop approval workflows and interactive user feedback loops.
+Advance to Part 5 to explore Human-in-the-Loop approval workflows and interactive user feedback loops.
 
 - [Executive Summary — The Shift to Generative UI](/series/generative-ui-architecture/executive-summary/)
 - [Part 1 — Beyond Chatbots: Dynamic Component Rendering](/posts/generative-ui-with-mcp-ai-native-frontend/)

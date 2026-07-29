@@ -21,6 +21,8 @@ cover:
 canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-5-eav-schema-migration/"
 ---
 
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Grpc Rest Gateway](/series/composable-commerce-migration/part-4-grpc-rest-gateway/). Review it first if the terminology in this part is unfamiliar.
+
 The EAV schema is why most Magento migrations fail.
 
 It looks manageable from the outside: products stored across `catalog_product_entity`, `catalog_product_entity_varchar`, `catalog_product_entity_int`, `catalog_product_entity_decimal`, `catalog_product_entity_datetime`, and `catalog_product_entity_text`. Six tables, straightforward ETL job, done in a weekend.
@@ -29,11 +31,9 @@ Then you discover that `attribute_id = 75` means "product name" in *your* Magent
 
 **Answer-first:** Migrate Magento EAV schemas to microservices by mapping integer IDs to UUIDs, using stable attribute codes, and executing dynamic SQL pivots. The extraction runs in three phases: full historical load, incremental CDC delta sync, and cutover validation to ensure complete data integrity.
 
-> **Pillar Architecture Guide:** This article is part of the **[Composable Commerce: Migrating from Monolith to Microservices](/posts/ecommerce-architecture-composable-migration/)** series. Please refer to the original article for a complete architectural specification of the architecture.
-
 ## 1. The EAV Data Model
 
-**Answer-first:** Magento Entity-Attribute-Value (EAV) data model spreads catalog data across multiple normalized tables, causing slow JOIN queries at scale.
+Magento Entity-Attribute-Value (EAV) data model spreads catalog data across multiple normalized tables, causing slow JOIN queries at scale.
 
 A Magento product with SKU `MSH-BLK-L` (Men's Black Shirt, Large) is stored like this:
 
@@ -68,7 +68,7 @@ The problem: `attribute_id = 75` means "name" in this database. In your staging 
 
 ## 2. The Trap: Hardcoded Attribute IDs
 
-**Answer-first:** Relying on hardcoded attribute IDs risks data corruption across environments; migration scripts must query attribute codes dynamically.
+Relying on hardcoded attribute IDs risks data corruption across environments; migration scripts must query attribute codes dynamically.
 
 Hardcoding attribute numbers directly in SQL statements creates hidden environment fragility. Because attribute IDs drift whenever modules are installed or re-indexed in different order across dev, staging, and production environments, hardcoded queries fail silently by mapping incorrect column values to entity records.
 
@@ -93,7 +93,7 @@ This query will produce correct results in your development environment, possibl
 
 ## 3. The Fix: Lookup by Attribute Code
 
-**Answer-first:** Dynamic attribute code lookups retrieve metadata definitions at runtime, ensuring production-grade SQL extraction queries across staging and production.
+Dynamic attribute code lookups retrieve metadata definitions at runtime, ensuring production-grade SQL extraction queries across staging and production.
 
 To eliminate attribute ID ambiguity, extraction scripts must resolve system metadata dynamically from the `eav_attribute` table using human-readable `attribute_code` strings. Standard codes like `name`, `price`, `sku`, `status`, and `visibility` remain constant across every Magento deployment.
 
@@ -112,7 +112,7 @@ The `attribute_code` column is stable across instances. `name`, `price`, `sku`, 
 
 ## 4. The magento_id_map: Integer → UUID Translation
 
-**Answer-first:** The `magento_id_map` translation table maps legacy Magento auto-increment integer IDs to microservice UUID primary keys reliably.
+The `magento_id_map` translation table maps legacy Magento auto-increment integer IDs to microservice UUID primary keys reliably.
 
 Legacy Magento MySQL databases rely on sequential 32-bit or 64-bit `AUTO_INCREMENT` integer primary keys, which create tight coupling and security vulnerabilities when exposed via public APIs. Modern Go microservices use globally unique UUIDs for entity primary keys. In 2026 PostgreSQL 16/17 architectures, **UUID v7** (time-ordered UUIDs) is standard for primary keys, replacing random UUID v4 to eliminate B-tree index page splitting and increase bulk INSERT throughput by 25–40%.
 
@@ -147,7 +147,7 @@ After this step, the Debezium CDC sync service (described in [Part 6](/series/co
 
 ## 5. Dynamic SQL Pivot: Reading at Runtime
 
-**Answer-first:** Dynamic SQL pivot queries flatten complex EAV entity tables into single-row JSON representations ready for Go domain struct unmarshaling.
+Dynamic SQL pivot queries flatten complex EAV entity tables into single-row JSON representations ready for Go domain struct unmarshaling.
 
 The extraction query uses a Common Table Expression (CTE) named `attr_ids` to pre-fetch and map attribute codes to IDs for the active instance. It then joins `catalog_product_entity` against type-specific value tables (`varchar`, `int`, `decimal`, `text`) using filtered `LEFT JOIN` operations, aggregating values per entity using `MAX(CASE ...)` conditional expressions.
 
@@ -230,7 +230,7 @@ This query is the safe, production-ready version. The `WITH attr_ids AS (...)` C
 
 ## 6. The Go Transformation Layer & PostgreSQL JSONB Hybrid Storage
 
-**Answer-first:** Go transformation layers unmarshal SQL pivot JSON outputs into strongly typed domain models, storing dynamic attributes in PostgreSQL JSONB with GIN indexing.
+Go transformation layers unmarshal SQL pivot JSON outputs into strongly typed domain models, storing dynamic attributes in PostgreSQL JSONB with GIN indexing.
 
 Rather than replicating Magento's complex EAV tables in PostgreSQL, the target Go Catalog microservice adopts a **Hybrid Relational + JSONB** storage model. Core domain attributes (`id`, `sku`, `name`, `price_cents`, `status`, `uuid`) are stored in strongly typed relational columns. Custom, dynamic, or tenant-specific merchant attributes are preserved in a PostgreSQL `attributes jsonb` column indexed with a Generalized Inverted Index (`CREATE INDEX idx_products_attrs ON products USING gin (attributes jsonb_path_ops);`). This pattern delivers sub-5ms lookup performance on dynamic attributes across 1,000,000+ SKUs while avoiding EAV JOIN overhead.
 
@@ -285,7 +285,7 @@ func transformStatus(magentoStatus int) catalog.ProductStatus {
 
 ## 7. Customer EAV: The Same Pattern
 
-**Answer-first:** Customer EAV extraction applies identical SQL pivot patterns, converting user profiles, addresses, and credentials into Go identity models.
+Customer EAV extraction applies identical SQL pivot patterns, converting user profiles, addresses, and credentials into Go identity models.
 
 Customer data in Magento is also EAV (`customer_entity` + type-specific tables). The extraction follows the same CTE dynamic pivot strategy to extract user profiles, contact information, and group memberships cleanly:
 
@@ -323,7 +323,7 @@ GROUP BY ce.entity_id, ce.email, ce.group_id, ce.is_active, ce.created_at, idmap
 
 ## 8. Incremental Delta Sync
 
-**Answer-first:** Incremental delta sync tracks `updated_at` timestamps to stream newly modified Magento catalog records into Go microservices continuously.
+Incremental delta sync tracks `updated_at` timestamps to stream newly modified Magento catalog records into Go microservices continuously.
 
 During the initial data migration window, legacy Magento transactions continue modifying catalog records. Polling-based delta queries filter entities updated after the initial historical snapshot timestamp:
 
@@ -340,7 +340,7 @@ This is a **fallback only** — it misses DELETEs and is vulnerable to clock ske
 
 ## 9. Validation: Before Declaring Extraction Complete
 
-**Answer-first:** Validating extraction requires running record count reconciliations and checksum comparisons between Magento MySQL and Go PostgreSQL stores.
+Validating extraction requires running record count reconciliations and checksum comparisons between Magento MySQL and Go PostgreSQL stores.
 
 Automated verification scripts execute total count comparisons across Magento MySQL source tables and Go microservice PostgreSQL target tables. The verification step includes random sample row exports to validate attribute value precision and field mapping alignment.
 
@@ -381,7 +381,7 @@ echo "✅ Count matches. Review sample in /tmp/platform_sample.csv"
 
 ## Key Takeaways
 
-**Answer-first:** Migrating Magento EAV schemas requires dynamic attribute lookups, integer-to-UUID translation tables, and automated data checksum validation.
+Migrating Magento EAV schemas requires dynamic attribute lookups, integer-to-UUID translation tables, and automated data checksum validation.
 
 1. **Never hardcode `attribute_id`** — always resolve from `eav_attribute.attribute_code`
 2. **Build `magento_id_map` first** — every subsequent migration step depends on UUID cross-references
@@ -393,7 +393,7 @@ The EAV extraction is the most labor-intensive part of the migration. Once `mage
 
 ## FAQ
 
-**Answer-first:** Handling Magento EAV migration safely requires converting complex entity JOINs into flattened JSON documents for Go microservice consumption.
+Handling Magento EAV migration safely requires converting complex entity JOINs into flattened JSON documents for Go microservice consumption.
 
 {{< faq q="Why can't I just use Magento's built-in import/export CSV instead of direct SQL extraction?" >}}
 Magento's CSV import/export doesn't export attribute relationships or the `magento_id_map` cross-reference you need. CSV export gives you a flat row per product — losing the EAV structure — and has a 5,000-product limit on vanilla Magento without extension. For 10,000+ SKUs, direct SQL extraction against MySQL is the only approach that works at scale without modification.
@@ -412,3 +412,5 @@ This happens with custom attributes created by third-party extensions that use g
 *This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
 
 *Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+
+🔗 **Next Step:** Continue to [Part 6 — Phase1 Strangler Fig](/series/composable-commerce-migration/part-6-phase1-strangler-fig/) for the following module in the series.

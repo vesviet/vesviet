@@ -20,7 +20,7 @@ TocOpen: true
 image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
 ---
 
-> **Pillar Architecture Guide:** This guide is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original guide for an architectural overview of the system.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — Sft Data Engineering](/series/slm-playbook/part-2-sft-data-engineering/). Review it first if the terminology in this part is unfamiliar.
 
 > **Answer-first:** QLoRA fine-tuning combines 4-bit NormalFloat (NF4) base model quantization with low-rank adapter matrices ($r=16, \alpha=32$), reducing VRAM usage from 80GB to under 10GB and accelerating training speed by 4.5x using Unsloth Triton kernels on a single GPU.
 
@@ -214,6 +214,8 @@ The rank parameter $r$ determines the inner matrix dimension of low-rank update 
 Unsloth rewrites PyTorch forward and backward passes using custom OpenAI Triton C-level GPU kernels that perform manual memory allocation and fused matrix multiplications. This eliminates PyTorch intermediate tensor allocations, cutting VRAM overhead to 9GB for an 8B model and increasing training speed by 4.5x compared to standard Hugging Face PEFT.
 
 ---
+
+🔗 **Next Step:** You have reached the final part of this series. Revisit the series index at [/series/slm-playbook/](/series/slm-playbook/) or explore other series linked below.
 
 ## Internal Series Navigation
 

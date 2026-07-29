@@ -3,7 +3,7 @@ title: "Part 3B — AI Automation for Internal Ops: Proving ROI"
 mermaid: true
 author: "Lê Tuấn Anh"
 description: "Engineering guide to AI-driven internal operations automation, incident triage, dependency migration swarms, and financial ROI modeling."
-date: 2026-03-17T09:00:00+07:00
+date: "2026-03-17T09:00:00+07:00"
 draft: false
 tags: ["AI", "Internal Operations", "DevOps", "Automation", "ROI"]
 series: ["AI-Driven Playbook"]
@@ -14,9 +14,9 @@ cover:
   relative: false
 ---
 
-# Part 3b: AI Automation & Internal Engineering Operations
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 3A — Enterprise Rag Architecture](/series/ai-driven-playbook/part-3a-enterprise-rag-architecture/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-First Summary**: Enterprise AI automation for internal operations targets high-frequency engineering bottlenecks including incident triage, dependency migrations, and developer helpdesk tickets. Deploying lightweight sub-agents over Model Context Protocol (MCP) gateways reduces Mean Time to Resolution (MTTR) by 60%, cuts operational toil, and yields positive ROI within 90 days.
+> **Answer-first:** Enterprise AI automation for internal operations targets high-frequency engineering bottlenecks including incident triage, dependency migrations, and developer helpdesk tickets. Deploying lightweight sub-agents over Model Context Protocol (MCP) gateways reduces Mean Time to Resolution (MTTR) by 60%, cuts operational toil, and yields positive ROI within 90 days.
 
 ---
 
@@ -311,3 +311,5 @@ Agents operate under strictly scoped read-only service accounts by default. Any 
 
 ### How are financial ROI metrics calculated for internal AI automation projects?
 ROI is modeled by balancing direct engineering hours saved across triage and migrations plus avoided incident downtime costs against total model token consumption, infrastructure hosting, and initial development TCO. Typical 200-developer organizations achieve a payback period of under 50 days.
+
+🔗 **Next Step:** Continue to [Part 5 — Operating Model](/series/ai-driven-playbook/part-5-operating-model/) for the following module in the series.

@@ -1,5 +1,6 @@
 ---
 title: "Real-Time Ride-Hailing Architecture: Uber & Grab"
+slug: "ride-hailing-realtime-architecture"
 date: "2026-05-06T20:00:00+07:00"
 lastmod: "2026-05-06T20:00:00+07:00"
 draft: false
@@ -15,8 +16,6 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/"
 image: "images/posts/real-time-ride-hailing-cover.png"
 ---
-
-# Real-Time Ride-Hailing Architecture: Uber & Grab
 
 **Answer-first:** This technical series details the distributed real-time architecture powering high-concurrency ride-hailing platforms like Uber and Grab, covering 1M+ GPS/sec ingestion, Uber H3 spatial indexing, Kafka/Flink event streaming, DISCO bipartite matching, dynamic surge pricing, and gRPC/QUIC push networks.
 
@@ -61,7 +60,7 @@ The architecture matrix below summarizes the primary technology stack, data flow
 
 Designed for **Real-Time Systems Engineers, Geospatial Architects, and High-Concurrency Backend Developers**.
 
-**Prerequisites:**
+**Prerequisite:**
 - Understanding of spatial indexing (Uber H3 v4, Google S2, R-Tree) and spatial query optimizations.
 - Experience with distributed stream processing frameworks (Apache Flink, Kafka Streams, Redpanda).
 

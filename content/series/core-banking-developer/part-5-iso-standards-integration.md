@@ -18,15 +18,13 @@ TocOpen: true
 mermaid: true
 ---
 
-> **Answer-First:** Integrating legacy ATM/POS networks (ISO 8583 bitmap protocols) with modern real-time gross settlement systems (ISO 20022 XML/pacs.008 and pacs.009 schemas) requires high-performance Go parser pipelines. In-memory bitwise parsing ensures sub-5ms message translation across payment gateways while preserving full financial audit trails.
+> **Answer-first:** Integrating legacy ATM/POS networks (ISO 8583 bitmap protocols) with modern real-time gross settlement systems (ISO 20022 XML/pacs.008 and pacs.009 schemas) requires high-performance Go parser pipelines. In-memory bitwise parsing ensures sub-5ms message translation across payment gateways while preserving full financial audit trails.
 
 > **Prerequisite:** [Part 4: Modern Event-Driven Core Architecture](/series/core-banking-developer/part-4-modern-core-banking-architecture/) on event-sourcing structures.
 
 ## Why are international standards important?
 
 **Answer-first:** International messaging standards ensure interoperability across global banking networks, card acquirers, and central bank clearing systems.
-
-> **Pillar Architecture Guide:** This guide is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original guide for detailed architectural references.
 
 Core Banking does not operate in isolation. It must communicate with:
 - **Card Networks:** Visa, Mastercard, AMEX — to process ATM/POS transactions.
@@ -39,7 +37,7 @@ All these systems exchange data using two primary message standards: **ISO 8583*
 
 ## ISO 8583 — The Standard for Card Transactions
 
-**Answer-first:** ISO 8583 defines bitmap-encoded binary messages for real-time ATM and POS card payment authorizations, clearing, and reversals.
+ISO 8583 defines bitmap-encoded binary messages for real-time ATM and POS card payment authorizations, clearing, and reversals.
 
 ### What is it?
 
@@ -203,7 +201,7 @@ func NewMessage(mti string) *ISOMessage {
 
 ## ISO 20022 — The Next-Generation Financial Standard
 
-**Answer-first:** ISO 20022 uses structured XML/JSON schemas (`pacs.008`, `pacs.009`, `camt.053`) for rich cross-border payments and SWIFT MX messaging.
+ISO 20022 uses structured XML/JSON schemas (`pacs.008`, `pacs.009`, `camt.053`) for rich cross-border payments and SWIFT MX messaging.
 
 ### What is it?
 
@@ -281,7 +279,7 @@ func ParsePain001(xmlData []byte) (*Document, error) {
 
 ## Implementing ISO 8583 Message Parsing in Go
 
-**Answer-first:** Go ISO 8583 parsers unpack binary MTI bytes and data elements into strongly typed Go structs for rapid payment processing.
+Go ISO 8583 parsers unpack binary MTI bytes and data elements into strongly typed Go structs for rapid payment processing.
 
 ```go
 package main
@@ -350,7 +348,7 @@ sequenceDiagram
 
 ## Go ISO 8583 Message Parser & ISO 20022 XML Mapper
 
-**Answer-first:** Go message parsers transform legacy ISO 8583 card bitmap transactions into modern ISO 20022 XML payloads for core ledger processing.
+Go message parsers transform legacy ISO 8583 card bitmap transactions into modern ISO 20022 XML payloads for core ledger processing.
 
 ```go
 package iso
@@ -427,7 +425,7 @@ This zero-copy field slicing eliminates heap allocations when unpacking card aut
 
 ## ISO Message Parsing Benchmarks
 
-**Answer-first:** Benchmarking ISO 8583 binary parsing in Go demonstrates sub-millisecond packing and unpacking performance per message.
+Benchmarking ISO 8583 binary parsing in Go demonstrates sub-millisecond packing and unpacking performance per message.
 
 The execution benchmark output below demonstrates sub-fifty-nanosecond latency when parsing binary ISO 8583 frames in Go:
 
@@ -439,7 +437,7 @@ High-throughput card payment switches use zero-copy byte slice slicing to achiev
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** Core banking developers implement ISO 8583 for card switch integration and ISO 20022 XML schemas for SWIFT interbank payments.
+Core banking developers implement ISO 8583 for card switch integration and ISO 20022 XML schemas for SWIFT interbank payments.
 
 {{< faq "What is the structural difference between ISO 8583 and ISO 20022?" >}}
 ISO 8583 relies on compact binary or ASCII bitmap representations designed for constrained hardware and low-latency card switches. In contrast, ISO 20022 uses structured XML and JSON schemas containing rich business metadata, complete remittance detail, and extended party identification elements required for modern cross-border settlement.

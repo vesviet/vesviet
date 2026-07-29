@@ -18,9 +18,9 @@ ShowToc: true
 TocOpen: true
 ---
 
-# Part 5 — Operating Model: Evolving Your Team for the AI Era
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 3B — Ai Automation Internal Ops](/series/ai-driven-playbook/part-3b-ai-automation-internal-ops/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-First Summary**: The AI-Native Pod Operating Model replaces legacy functional silos with autonomous 3-to-4 person cross-functional squads. Led by Systems Architects and augmented by AI multi-agent swarms, these pods take end-to-end ownership of feature delivery, expanding output capacity by 4x while maintaining continuous production deployment pipelines.
+> **Answer-first:** The AI-Native Pod Operating Model replaces legacy functional silos with autonomous 3-to-4 person cross-functional squads. Led by Systems Architects and augmented by AI multi-agent swarms, these pods take end-to-end ownership of feature delivery, expanding output capacity by 4x while maintaining continuous production deployment pipelines.
 
 ---
 
@@ -190,8 +190,7 @@ Transitioning follows a phased pod migration model. Organizations begin by pilot
 
 ---
 
-## Technical Deep-Dive: Enterprise AI Playbook & Operational Topology Invariants
-
+## Operational Invariants
 Operating model invariants require continuous tracking of engineering lead times, AI approval rates, and production defect counts.
 
 Deploying an AI-driven engineering playbook across enterprise organizations requires strict operating model governance and context isolation bounds.
@@ -211,6 +210,8 @@ Deploying an AI-driven engineering playbook across enterprise organizations requ
 
 ---
 
+🔗 **Next Step:** Continue to [Part 6 — Ai Observability Governance](/series/ai-driven-playbook/part-6-ai-observability-governance/) for the following module in the series.
+
 ## Internal Series Navigation
 
 Proceed to Part 6 to discover AI observability, evaluation pipelines, and production SRE monitoring.
@@ -219,4 +220,4 @@ Proceed to Part 6 to discover AI observability, evaluation pipelines, and produc
 - [Part 1 — Context Engineering: DDD for AI](/series/ai-driven-playbook/part-1-context-engineering-ddd/)
 - [Part 3B — AI Automation for Internal Operations](/series/ai-driven-playbook/part-3b-ai-automation-internal-ops/)
 - [Part 7 — AI Security Engineering](/series/ai-driven-playbook/part-7-ai-security-engineering/)
-- [Part 6 — AI Observability & Governance](/series/ai-driven-playbook/part-6-ai-observability-governance/)
+- [Part 6 — AI Observability & Governance](/series/ai-driven-playbook/part-6-ai-observability-governance/)

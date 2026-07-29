@@ -23,7 +23,7 @@ The Saga Pattern coordinates distributed transactions across microservices by de
 
 > **Prerequisite:** Part 8 of the [System Design Masterclass](/series/system-design/). Read [Part 7: Idempotent API Design](/series/system-design/07-idempotency-api-design-go/) first — compensating transactions in Saga must be idempotent.
 
-### What You'll Learn That AI Won't Tell You
+### What You'll Learn
 - **Temporal Workflow Determinism:** How Temporal's event sourcing workflow engine replays Go code, and why random functions or time sleeps crash workers.
 - **Debezium EventRouter Tuning:** The exact JSON configuration keys needed to customize Kafka routing keys and prevent partition ordering issues.
 - **Pivot State Analysis:** Identifying the "point of no return" in a distributed saga where compensations are no longer allowed.

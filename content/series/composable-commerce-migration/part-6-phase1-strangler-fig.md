@@ -21,6 +21,8 @@ cover:
 canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-6-phase1-strangler-fig/"
 ---
 
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Eav Schema Migration](/series/composable-commerce-migration/part-5-eav-schema-migration/). Review it first if the terminology in this part is unfamiliar.
+
 Phase 1 is the safest phase of the migration — by design. No write operation touches the new microservices. Magento remains the source of truth for all data modifications. The only thing Phase 1 does is prove that your microservices can serve *reads* faster and more reliably than Magento.
 
 **Answer-first:** Phase 1 deploys read-only Go microservices alongside legacy Magento. API Gateway feature flags route read requests to Go with automatic fallback to Magento on failure. Embedded Debezium streams MySQL binary log updates to Redis Streams with sub-2-second sync latency.
@@ -29,7 +31,7 @@ Phase 1 is the safest phase of the migration — by design. No write operation t
 
 ## 1. Phase 1 Architecture
 
-**Answer-first:** Phase 1 architecture deploys read-only Go microservices behind an API Gateway, keeping Magento as the write master while decoupling reads.
+Phase 1 architecture deploys read-only Go microservices behind an API Gateway, keeping Magento as the write master while decoupling reads.
 
 The architectural topology below demonstrates how incoming client HTTP traffic is intercepted by the API Gateway layer, dynamically routing read-only requests to high-performance Go microservices while strictly keeping legacy Magento as the authoritative write master.
 
@@ -71,7 +73,7 @@ In modern 2026 cloud-native architecture, this gateway layer is powered by eithe
 
 ## 2. Why Not Just Use `updated_at` Polling?
 
-**Answer-first:** Polling `updated_at` fields misses hard deletes and causes severe database CPU spikes, whereas Debezium CDC streams binary log events in real time.
+Polling `updated_at` fields misses hard deletes and causes severe database CPU spikes, whereas Debezium CDC streams binary log events in real time.
 
 The conventional approach for database synchronization relies on timestamp queries. The following SQL snippet illustrates the typical `updated_at` polling query pattern that fails under high-throughput production workloads:
 
@@ -95,7 +97,7 @@ By contrast, Debezium CDC attaches directly to MySQL's binary logging engine. As
 
 ## 3. Debezium CDC Setup
 
-**Answer-first:** Debezium CDC monitors Magento MySQL binlogs, streaming insert, update, and delete events into Kafka/Dapr without touching application code.
+Debezium CDC monitors Magento MySQL binlogs, streaming insert, update, and delete events into Kafka/Dapr without touching application code.
 
 Debezium reads MySQL's binary log (binlog) — the same append-only log that MySQL replication uses. Every INSERT, UPDATE, and DELETE on any tracked table produces a change event.
 
@@ -172,7 +174,7 @@ The platform runs Debezium in **embedded engine mode** — no standalone Kafka C
 
 ## 4. The CDC → Dapr Pipeline
 
-**Answer-first:** The CDC-to-Dapr pipeline converts raw MySQL row mutations into structured CloudEvents, updating Go microservice read replicas instantaneously.
+The CDC-to-Dapr pipeline converts raw MySQL row mutations into structured CloudEvents, updating Go microservice read replicas instantaneously.
 
 Rather than deploying complex, multi-node Kafka Connect clusters common in legacy tutorials, modern 2026 architectures adopt lightweight streaming streams using Debezium embedded engine or Debezium Server streaming directly into high-throughput brokers such as Redpanda (C++ Kafka API replacement) or NATS JetStream. 
 
@@ -233,7 +235,7 @@ func (c *ProductConsumer) HandleChange(ctx context.Context, event debezium.Chang
 
 ## 5. Feature Flag Routing
 
-**Answer-first:** API Gateway feature flags dynamically route catalog read requests between legacy Magento and Go microservices, enabling instant traffic shifting and immediate rollback capability during migration testing.
+API Gateway feature flags dynamically route catalog read requests between legacy Magento and Go microservices, enabling instant traffic shifting and immediate rollback capability during migration testing.
 
 The Gateway layer utilizes path-based and header-based canary evaluation. In 2026 architectures, routing controls leverage Envoy dynamic Route Discovery Service (RDS) or YARP HTTP matching rules, allowing header-based canary inspection (`X-Canary-User: true`) and weighted cluster shifts (e.g. 95% traffic to Magento monolith, 5% to Go catalog microservice).
 
@@ -339,7 +341,7 @@ When a circuit breaker trips, requests are transparently rerouted to legacy Mage
 
 ## 7. Phase 1 Success Criteria
 
-**Answer-first:** Phase 1 success criteria require offloading 80% of catalog read traffic to Go microservices while maintaining zero write inconsistencies.
+Phase 1 success criteria require offloading 80% of catalog read traffic to Go microservices while maintaining zero write inconsistencies.
 
 Before declaring Phase 1 complete and transitioning to Phase 2 dual-write synchronization, the deployment must meet strict operational SLAs tracked via Prometheus metrics and automated validation tools:
 
@@ -401,7 +403,7 @@ echo "Validation complete. Mismatches: $MISMATCH_COUNT / $SAMPLE_SIZE"
 
 ## 8. Deployment Checklist
 
-**Answer-first:** The Phase 1 deployment checklist verifies Debezium connector stability, Dapr PubSub topics, API Gateway feature flags, and health probes.
+The Phase 1 deployment checklist verifies Debezium connector stability, Dapr PubSub topics, API Gateway feature flags, and health probes.
 
 **Pre-deployment (1–2 weeks before Phase 1 go-live):**
 - [ ] Magento MySQL binlog enabled (`log_bin = ON`, `binlog_format = ROW`)
@@ -426,13 +428,13 @@ echo "Validation complete. Mismatches: $MISMATCH_COUNT / $SAMPLE_SIZE"
 
 ## What's Next
 
-**Answer-first:** Phase 2 advances from read-only migration to event-driven dual-write sync for order processing and customer state mutations.
+Phase 2 advances from read-only migration to event-driven dual-write sync for order processing and customer state mutations.
 
 Phase 1 is running. Reads are served by microservices. Magento still owns all writes. In [Part 7: Phase 2 — Dual-Write](/series/composable-commerce-migration/part-7-phase2-dual-write/), we enable write operations on microservices — starting with Customer Service (lowest risk) and ending with Order Service (highest risk). The challenge: both Magento and microservices can now mutate the same data concurrently. We'll cover the conflict resolution strategy that handles it without data loss.
 
 ## FAQ
 
-**Answer-first:** Strangler Fig read-only migration reduces legacy monolith load immediately without risking checkout or payment write integrity.
+Strangler Fig read-only migration reduces legacy monolith load immediately without risking checkout or payment write integrity.
 
 {{< faq q="What is the difference between Debezium and Kafka Connect?" >}}
 Debezium is a **CDC connector library** — it reads database change logs (MySQL binlog, PostgreSQL WAL, etc.) and produces change events. Kafka Connect is a **framework for running connectors**, typically used to deploy Debezium at scale with full fault-tolerance, distributed workers, and REST management API. This platform runs Debezium in **embedded engine mode** — the connector runs inside the sync-consumer Go service process, eliminating the need to operate a Kafka Connect cluster. The trade-off: embedded mode has lower fault tolerance (single process), but is significantly simpler to operate for a team that doesn't already run Kafka infrastructure.
@@ -447,4 +449,4 @@ Debezium's `snapshot.mode: initial` reads all rows using a consistent snapshot �
 
 {{< /faq >}}
 
-
+🔗 **Next Step:** Continue to [Part 7 — Phase2 Dual Write](/series/composable-commerce-migration/part-7-phase2-dual-write/) for the following module in the series.

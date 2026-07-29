@@ -22,9 +22,7 @@ mermaid: true
 image: "images/posts/realtime-inventory-cover.png"
 ---
 
-> **Answer-First:** High-concurrency B2B commerce platforms achieve 25M monthly throughput by coupling Go microservices, distributed queues, and resilient database connection pooling.
-
-> **Pillar Architecture Guide:** This article is part of the **[High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+> **Answer-first:** High-concurrency B2B commerce platforms achieve 25M monthly throughput by coupling Go microservices, distributed queues, and resilient database connection pooling.
 
 > **Prerequisite:** This is the executive summary and introductory overview of the **High Concurrency Systems** series. No prior reading is required to start here. You can view the full series roadmap at the [Series Hub](/series/system-design/).
 

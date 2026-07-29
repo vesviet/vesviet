@@ -1,5 +1,6 @@
 ---
 title: "Core Banking Developer Guide: Monolith to Microservices"
+slug: "core-banking-developer"
 date: "2026-05-06T18:00:00+07:00"
 lastmod: "2026-07-26T09:45:00+07:00"
 draft: false
@@ -15,9 +16,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/"
 ---
 
-# Core Banking Developer Guide: Monolith to Microservices
-
-> **Answer-First:** The Core Banking Developer curriculum is an engineering roadmap covering immutable double-entry ledger design, multi-currency balance isolation, ACID database transaction controls, event-sourced posting engines, and ISO 20022/8583 integration. It equips backend developers to transition from traditional web systems to high-concurrency, zero-data-loss core financial architectures.
+> **Answer-first:** The Core Banking Developer curriculum is an engineering roadmap covering immutable double-entry ledger design, multi-currency balance isolation, ACID database transaction controls, event-sourced posting engines, and ISO 20022/8583 integration. It equips backend developers to transition from traditional web systems to high-concurrency, zero-data-loss core financial architectures.
 
 This series is designed for **full-stack developers** and backend engineers transitioning into **Core Banking Domain Engineering** — one of the most complex, high-reliability domains in software engineering. Programming syntax alone is insufficient; mastering immutable financial ledger math, ACID database isolation, distributed Saga orchestration, and multi-tenant domain boundaries determines system viability under heavy production load.
 
@@ -25,7 +24,7 @@ The curriculum is structured in progressive engineering layers: from foundationa
 
 ## Series Contents
 
-> **Answer-First:** The curriculum covers eight technical modules spanning double-entry ledger design, domain modeling, ACID transaction isolation, microservices architecture, ISO standards, security compliance, and building an event-driven core banking engine.
+> **Answer-first:** The curriculum covers eight technical modules spanning double-entry ledger design, domain modeling, ACID transaction isolation, microservices architecture, ISO standards, security compliance, and building an event-driven core banking engine.
 
 The modules below guide developers step-by-step through building, scaling, and operating production-grade core banking engines:
 
@@ -41,7 +40,7 @@ The modules below guide developers step-by-step through building, scaling, and o
 
 ## Real-World Case Studies
 
-> **Answer-First:** Production case studies examine real-world core banking migrations, deconstructing how legacy mainframe ledgers are decomposed into Go microservices and event-sourced transaction streams.
+> **Answer-first:** Production case studies examine real-world core banking migrations, deconstructing how legacy mainframe ledgers are decomposed into Go microservices and event-sourced transaction streams.
 
 The technical case studies below demonstrate how accounting theory and distributed system patterns operate inside real high-concurrency production deployments:
 
@@ -73,7 +72,7 @@ To maximize learning efficiency, developers should meet the following prerequisi
 
 ## Frequently Asked Questions
 
-> **Answer-First:** Answers to common questions regarding core banking engineering principles, database isolation levels, and zero-downtime migration architectures.
+> **Answer-first:** Answers to common questions regarding core banking engineering principles, database isolation levels, and zero-downtime migration architectures.
 
 {{< faq "What makes core banking software engineering fundamentally different from standard web application development?" >}}
 Core banking platforms mandate zero-data-loss invariants where every financial movement is persisted as immutable double-entry journal logs rather than direct row balance mutations. Additionally, posting engines must maintain strict ACID serializability and sub-millisecond pessimistic locking under heavy concurrent transaction volume.

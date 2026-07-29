@@ -4,10 +4,10 @@ mermaid: true
 description: "Production guide to Cloudflare Workers and Edge Computing. Deconstruct V8 Isolates vs AWS Lambda, WebAssembly (Wasm), TinyGo, Hyperdrive, and Durable Objects."
 slug: "cloudflare-workers-edge-computing"
 author: "Le Tuan Anh (Senior Go Engineer)"
-date: 2026-07-25
+date: "2026-07-25"
 ---
 
-# Cloudflare Workers & Edge Computing: V8 Isolates Architecture
+> **Prerequisite:** This is the starting part of the series — no prior part is required. Later parts assume the concepts introduced here.
 
 > **Answer-first:** Cloudflare Workers is a serverless edge platform using V8 Isolates, achieving <5ms cold starts with ~3MB base memory per isolate. By combining TinyGo/Rust WebAssembly binaries, Cloudflare Hyperdrive TCP connection pooling, and Durable Objects with SQLite, developers can deploy low-latency backend logic, global database caching, and AI semantic edge routing across Cloudflare's global CDN network.
 
@@ -215,3 +215,5 @@ Workers KV is designed for read-heavy workloads (>99% reads) with low mutation f
 
 ### Q4: Which implementation pattern prevents memory leaks when executing Go Wasm modules on Cloudflare Workers?
 Memory leaks occur when developers instantiate `new Go()` and call `WebAssembly.instantiate` inside the `fetch()` handler of every incoming request, leaving uncollected runtime instances in long-lived isolates. To prevent this, Wasm module instantiation must be placed in the **top-level global scope** of the JavaScript worker wrapper, guaranteeing that the Go runtime is compiled once when the isolate spawns and reused across subsequent request handling loops.
+
+🔗 **Next Step:** Continue to [Nats Jetstream Golang Production Guide](/series/cornerstone-technologies/nats-jetstream-golang-production-guide/) for the following module in the series.

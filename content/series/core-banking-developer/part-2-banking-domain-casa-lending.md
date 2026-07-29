@@ -18,15 +18,13 @@ TocOpen: true
 mermaid: true
 ---
 
-> **Answer-First:** Core banking domain architecture revolves around three sub-systems: Customer Information File (CIF) for identity and KYC, Current & Savings Accounts (CASA) for real-time deposit ledgers, and Lending for loan amortization. Isolating these bounded contexts in Go microservices prevents cascading database lock contention during End-of-Day interest calculation batch jobs.
+> **Answer-first:** Core banking domain architecture revolves around three sub-systems: Customer Information File (CIF) for identity and KYC, Current & Savings Accounts (CASA) for real-time deposit ledgers, and Lending for loan amortization. Isolating these bounded contexts in Go microservices prevents cascading database lock contention during End-of-Day interest calculation batch jobs.
 
 > **Prerequisite:** [Part 1: Double-Entry Ledger Schema Design](/series/core-banking-developer/part-1-double-entry-ledger/) on standard accounting invariants.
 
 ## Overview of the Three Core Modules
 
-> **Answer-First:** The three foundational core banking modules are Customer Information File (CIF), CASA deposit accounts, and Lending credit operations.
-
-> **Pillar Architecture Guide:** This guide is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original guide for detailed architectural references.
+> **Answer-first:** The three foundational core banking modules are Customer Information File (CIF), CASA deposit accounts, and Lending credit operations.
 
 Most Core Banking systems are organized around three distinct business domains: customer master records (CIF), demand deposits (CASA), and credit facilities (Lending). Understanding these domains enables software architects to translate banking specifications into resilient microservice boundaries and audit-compliant ledger schemas.
 
@@ -74,7 +72,7 @@ CIF cannot operate in isolation — it coordinates synchronous and asynchronous 
 
 ## Module 2: CASA — Current Account & Savings Account
 
-**Answer-first:** CASA modules handle demand deposits, managing available balances, hold-funds locks, and automated daily interest accrual calculations.
+CASA modules handle demand deposits, managing available balances, hold-funds locks, and automated daily interest accrual calculations.
 
 **CASA** (Current Account & Savings Account) represents demand deposits that customers can deposit to or withdraw from on demand. CASA balances provide banks with low-cost liquidity to fund their credit portfolios.
 
@@ -146,7 +144,7 @@ Example:
 
 ## Module 3: Lending — Credit Operations
 
-**Answer-first:** Lending modules manage loan origination, principal disbursement, interest amortization schedules, and repayment waterfall processing.
+Lending modules manage loan origination, principal disbursement, interest amortization schedules, and repayment waterfall processing.
 
 Lending operations represent the primary revenue-generating mechanism for financial institutions, translating deposit capital into interest-bearing debt facilities governed by strict financial formulas and regulatory asset classification rules.
 
@@ -208,7 +206,7 @@ Core Banking engines automatically recalculate debt asset groups during nightly 
 
 ## Summary of Module Relationships
 
-**Answer-first:** Module relationship graphs link CIF customer entities to multiple CASA deposit accounts and active loan contracts.
+Module relationship graphs link CIF customer entities to multiple CASA deposit accounts and active loan contracts.
 
 The structural entity relationship map below illustrates how customer CIF entities anchor deposit ledgers and credit facilities.
 
@@ -225,7 +223,7 @@ Loans          ├───┬─── 1:N ───┬───┤ Ledger Entr
 
 ## CASA Account Creation and Lifecycle in Go
 
-**Answer-first:** CASA lifecycle engines in Go transition account states from Pending through Active to Dormant or Closed based on activity rules.
+CASA lifecycle engines in Go transition account states from Pending through Active to Dormant or Closed based on activity rules.
 
 The Go implementation below defines the CASA account domain model and validates state transitions during transaction execution.
 
@@ -293,7 +291,7 @@ stateDiagram-v2
 
 ## Interest Calculation Mathematical Model
 
-**Answer-first:** Mathematical interest models compute daily accrued interest using exact-day conventions (`ACT/365` or `ACT/360`) based on ending available balances.
+Mathematical interest models compute daily accrued interest using exact-day conventions (`ACT/365` or `ACT/360`) based on ending available balances.
 
 The standard money market formula below specifies daily interest accrual using day-count fractions.
 
@@ -303,7 +301,7 @@ where the Day Count Convention is set to 365 or 360 depending on local central b
 
 ## Interest Accrual Engine in Go
 
-**Answer-first:** Go interest accrual engines iterate active savings accounts at midnight, writing daily accrued interest journal entries.
+Go interest accrual engines iterate active savings accounts at midnight, writing daily accrued interest journal entries.
 
 The Go implementation below demonstrates daily interest calculation functions alongside a benchmark suite for batch processing throughput.
 
@@ -351,7 +349,7 @@ func BenchmarkCASAInterestAccrual(b *testing.B) {
 
 ## Reactivation Protocol for Dormant Accounts
 
-**Answer-first:** Dormant account reactivation protocols require customer re-KYC verification and dual-authorization before removing debit freeze flags.
+Dormant account reactivation protocols require customer re-KYC verification and dual-authorization before removing debit freeze flags.
 
 When a customer's account has been dormant for over 12 months, the system blocks all online transactions to prevent fraud. Reactivating the account follows a strict compliance protocol:
 1. **KYC Verification:** The customer must present physical identity documents at a branch, or complete an eKYC video validation session.
@@ -360,7 +358,7 @@ When a customer's account has been dormant for over 12 months, the system blocks
 
 ## CASA Daily Interest Accrual & Loan Amortization Engine
 
-**Answer-first:** Production Go engines run daily CASA interest calculations alongside declining balance loan amortization schedule generators.
+Production Go engines run daily CASA interest calculations alongside declining balance loan amortization schedule generators.
 
 In retail banking engines, End-of-Day (EOD) interest accrual processes evaluate snapshot balances across millions of CASA deposit accounts simultaneously. The standard compound annuity equation below governs monthly repayment schedule calculations:
 
@@ -427,7 +425,7 @@ By computing interest portions using integer-rounded micro-units, the engine ens
 
 ## End-of-Day (EOD) Interest Accrual Benchmarks & Performance Tuning
 
-**Answer-first:** Benchmarking EOD interest accrual in Go demonstrates processing 1,000,000 active accounts in under 30 seconds using worker goroutines.
+Benchmarking EOD interest accrual in Go demonstrates processing 1,000,000 active accounts in under 30 seconds using worker goroutines.
 
 Running interest accrual calculations across millions of active CASA accounts during nightly batch cycles demands high processing speed. The Go benchmark result below demonstrates execution timing bounds under zero-allocation conditions:
 
@@ -439,7 +437,7 @@ By decoupling daily accrual calculation workers from transactional core ledgers 
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** Core banking domain modeling requires isolating customer CIF data from transactional CASA and loan balance ledgers.
+Core banking domain modeling requires isolating customer CIF data from transactional CASA and loan balance ledgers.
 
 {{< faq "What is the primary responsibility of the Customer Information File (CIF) module?" >}}
 The CIF module acts as the single source of truth for customer identities, managing personal attributes, KYC compliance verification, and tax residency profiles. It maintains relational links to all CASA accounts and loan agreements while feeding sanctions screening pipelines to prevent unauthorized transactions.

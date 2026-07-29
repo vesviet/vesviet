@@ -20,7 +20,7 @@ mermaid: true
 [← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/phase-4-technology/) • [Next →](/series/alipay-double-11/modern-tech-comparison/)
 
-> **Executive Summary & Quick Answer**: Alipay's Double 11 technology deep dive reveals high-performance internals: binary Bolt RPC protocol multiplexing over single TCP streams, RocketMQ 2PC transactional messaging for async decoupling, OceanBase LSM-tree compaction tuning, and multi-zone Paxos quorum consensus to achieve 544,000 TPS payment processing.
+> **Answer-first:** Alipay's Double 11 technology deep dive reveals high-performance internals: binary Bolt RPC protocol multiplexing over single TCP streams, RocketMQ 2PC transactional messaging for async decoupling, OceanBase LSM-tree compaction tuning, and multi-zone Paxos quorum consensus to achieve 544,000 TPS payment processing.
 
 > **Prerequisite:** [Phase 4: Technology Overview](/series/alipay-double-11/phase-4-technology/)
 
@@ -30,7 +30,7 @@ This document is a deep-dive companion to Phase 4. It focuses on the **internal 
 
 ## 4.D1 SOFA RPC and Bolt Protocol Internals
 
-> **Answer-First:** SOFA RPC uses the binary Bolt protocol over multiplexed TCP connections, minimizing serialization overhead and CPU context switching.
+> **Answer-first:** SOFA RPC uses the binary Bolt protocol over multiplexed TCP connections, minimizing serialization overhead and CPU context switching.
 
 At planet scale, RPC is not merely a method call over the network; it is a critical traffic governance plane. Alipay utilizes **SOFA RPC**, which sits on top of the custom **Bolt** protocol.
 
@@ -131,7 +131,7 @@ To prevent duplicate processing during rebalancing (at-least-once delivery guara
 
 ## 4.D3 Storage Engine Mechanics (OceanBase LSM-Tree)
 
-**Answer-first:** OceanBase LSM-Tree engines store writes in memory (MemTable) and perform daily major compactions to achieve high write throughput.
+OceanBase LSM-Tree engines store writes in memory (MemTable) and perform daily major compactions to achieve high write throughput.
 
 Traditional databases use B+ Trees, which require random updates to data blocks on disk. Under heavy peak write loads, B+ Trees lead to high write amplification and random disk I/O bottlenecks. OceanBase solves this through its Log-Structured Merge-tree (LSM-tree) storage architecture.
 
@@ -169,7 +169,7 @@ ALTER SYSTEM SET max_kept_memtable_version_count = 5;
 
 ## 4.D4 Distributed Transactions: Paxos Quorum Internals
 
-**Answer-first:** OceanBase executes multi-version concurrency control (MVCC) and Paxos consensus to commit distributed transactions across majority nodes safely.
+OceanBase executes multi-version concurrency control (MVCC) and Paxos consensus to commit distributed transactions across majority nodes safely.
 
 In OceanBase, every table partition (shard) is managed by a replica group. Replicas utilize a Paxos consensus group to execute writes and manage failovers.
 
@@ -218,7 +218,7 @@ While local mutations in a partition use Paxos, transaction blocks touching mult
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** OceanBase achieves extreme write throughput by combining LSM-Tree memory tables with asynchronous background SSTable compaction.
+OceanBase achieves extreme write throughput by combining LSM-Tree memory tables with asynchronous background SSTable compaction.
 
 {{< faq "How does the Bolt RPC protocol achieve connection multiplexing over single TCP streams?" >}}
 Bolt assigns a unique 32-bit packet ID to every outbound request frame, allowing thousands of concurrent requests to share a single TCP connection. Response packets are read asynchronously as they arrive and matched to pending caller promises without head-of-line blocking.
@@ -236,7 +236,7 @@ OceanBase buffers all transactional updates in memory (MemTables) and appends ap
 
 ## Key Takeaways
 
-**Answer-first:** Deep technology internals reveal that custom binary RPC protocols and LSM-Tree storage engines are essential for sub-millisecond payment processing.
+Deep technology internals reveal that custom binary RPC protocols and LSM-Tree storage engines are essential for sub-millisecond payment processing.
 
 1. **Multiplex Connections to Avoid Head-of-Line Blocking**: Use binary protocols (like Bolt or gRPC HTTP/2) to share connections, minimizing socket and thread allocation overhead under heavy concurrent request spikes.
 2. **Buffer Disk Writes in Memory**: Never write directly to relational database disks on the critical path. Use LSM-tree storage models to queue updates in memory and append logs sequentially to disk.

@@ -21,11 +21,11 @@ mermaid: true
 image: "images/series/post-migration-operations-vietnam-cover.png"
 ---
 
-> **Executive Summary & Quick Answer**: Operating production Go microservices post-migration requires establishing clear SLA/SLO metrics, 24/7 follow-the-sun on-call rotations, and structured OpenTelemetry observability dashboards managed by local engineering leads in Vietnam.
+> **Prerequisite:** Familiarity with the concepts introduced in [Go Engineers Vietnam Migration Vetting](/series/magento-migration-vietnam/go-engineers-vietnam-migration-vetting/). Review it first if the terminology in this part is unfamiliar.
+
+> **Answer-first:** Operating production Go microservices post-migration requires establishing clear SLA/SLO metrics, 24/7 follow-the-sun on-call rotations, and structured OpenTelemetry observability dashboards managed by local engineering leads in Vietnam.
 
 **Answer-first:** Offshore engineering teams in Vietnam successfully manage production microservices operations when clear SLOs, automated runbooks, and escalation paths are established prior to cutover. Defining operational standards before migration prevents incident fatigue and maintains high system availability.
-
-> **Pillar Architecture Guide:** This article is part of the **[Composable Commerce: Migrating from Monolith to Microservices](/posts/ecommerce-architecture-composable-migration/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 > **Series context:** This is the final technical post in the [E-Commerce Re-Architecture in Vietnam](/series/magento-migration-vietnam/) series. For the migration execution playbook, see [Remote Team Playbook: Vietnam Engineers Through Migration](/series/magento-migration-vietnam/remote-team-vietnam-magento-migration/).
 
@@ -414,3 +414,4 @@ That outcome is achievable with a properly staffed, properly supported Vietnam t
 
 *Ready to plan your migration? [Hire Vietnam Engineering Team](/hire/)*
 
+🔗 **Next Step:** You have reached the final part of this series. Revisit the series index at [/series/magento-migration-vietnam/](/series/magento-migration-vietnam/) or explore other series linked below.

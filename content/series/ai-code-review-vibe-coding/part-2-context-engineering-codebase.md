@@ -18,10 +18,9 @@ ShowToc: true
 TocOpen: true
 ---
 
-
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Vibe Coding Non Technical](/series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 2 — Codebase Context Engineering for AI Reviewers
-
 
 When human senior engineers perform a code review, they do not read a pull request git diff in complete isolation. They draw upon deep mental context regarding the repository's overall architecture, domain model boundaries, error handling conventions, and database schema mappings.
 
@@ -32,8 +31,6 @@ When an AI code reviewer evaluates an isolated 20-line diff snippet without this
 ## The Codebase Context Assembly Pipeline
 
 Context assembly pipelines extract relevant AST nodes, import graphs, and schema definitions to supply LLM reviewers with precise codebase context.
-
-> **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 ```mermaid
 graph TD
@@ -164,6 +161,8 @@ if __name__ == "__main__":
 ```
 
 ---
+
+🔗 **Next Step:** Continue to [Part 3 — Ai Bug Taxonomy](/series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy/) for the following module in the series.
 
 ## Internal Series Navigation
 

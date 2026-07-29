@@ -17,7 +17,7 @@ mermaid: true
 [← Series hub](/series/alipay-double-11/)
 [Next →](/series/alipay-double-11/phase-1-timeline/)
 
-> **Executive Summary & Quick Answer**: Alipay scaled its payment engine to handle 544,000 peak TPS using Logical Data Center (LDC) unitization, OceanBase distributed Paxos storage, RocketMQ event streams, and full-link production stress testing. This design achieves 99.99% financial availability, sub-20ms latency, zero data loss (RPO=0), and sub-2-second failover (RTO<2s).
+> **Answer-first:** Alipay scaled its payment engine to handle 544,000 peak TPS using Logical Data Center (LDC) unitization, OceanBase distributed Paxos storage, RocketMQ event streams, and full-link production stress testing. This design achieves 99.99% financial availability, sub-20ms latency, zero data loss (RPO=0), and sub-2-second failover (RTO<2s).
 
 > **Prerequisite:** General understanding of global financial systems scale, high-throughput payment architectures, and transaction reliability.
 
@@ -38,7 +38,7 @@ To achieve this level of performance at planet-scale, Alipay had to pioneer new 
 
 ## The Story: From Crisis to Record
 
-**Answer-first:** The Double 11 story tracks Alipay journey from 2009 database crashes to multi-region active-active cell routing delivering record-breaking throughput.
+The Double 11 story tracks Alipay journey from 2009 database crashes to multi-region active-active cell routing delivering record-breaking throughput.
 
 ### 2009–2011: The Heuristic Era
 In 2009, Double 11 was conceived as a promotional campaign on Taobao Mall (Tmall). The transactional volume, though unprecedented for the site, was small by modern standards—peaking at approximately 100 TPS. The engineering response was reactive, characterized by vertical database scaling, connection pool tuning, and code-level optimization. However, as year-on-year growth exceeded 200%, the limits of vertical scaling quickly became apparent.
@@ -56,7 +56,7 @@ By 2019, the architecture had matured to support a record **544,000 payment TPS*
 
 ## The 3 Pillars of Alipay's Scale Architecture
 
-**Answer-first:** The three pillars of Alipay scale are LDC cell unitization for database sharding, OceanBase distributed Paxos SQL, and RocketMQ async event streams.
+The three pillars of Alipay scale are LDC cell unitization for database sharding, OceanBase distributed Paxos SQL, and RocketMQ async event streams.
 
 The overall system architecture of Alipay's Double 11 solution can be visualized in the following system design diagram, illustrating how traffic flows from users, gets routed to unit cells, utilizes partitioned databases, and is tested via synthetic stress injection.
 
@@ -122,7 +122,7 @@ Before 2013, scaling relational databases meant sharding MySQL or Oracle manuall
 
 ## Detailed Performance and Growth Metrics
 
-**Answer-first:** Metrics document growth from 400 TPS in 2009 to 544,000 TPS by 2019 while keeping p99 payment latencies under 20ms.
+Metrics document growth from 400 TPS in 2009 to 544,000 TPS by 2019 while keeping p99 payment latencies under 20ms.
 
 The following metrics represent the actual and estimated growth logs compiled across the decade of Double 11 optimization:
 
@@ -144,7 +144,7 @@ The following metrics represent the actual and estimated growth logs compiled ac
 
 ## Stack Comparison: Alipay Middleware vs. Modern Cloud-Native
 
-**Answer-first:** Custom SOFA middleware and OceanBase map directly to modern Go microservices, Kubernetes GitOps, NATS JetStream, and TiDB/CockroachDB.
+Custom SOFA middleware and OceanBase map directly to modern Go microservices, Kubernetes GitOps, NATS JetStream, and TiDB/CockroachDB.
 
 To modern software architects, the custom middleware developed by Alipay can be mapped directly to modern, open-source CNCF projects:
 
@@ -161,7 +161,7 @@ To modern software architects, the custom middleware developed by Alipay can be 
 
 ## Actionable Takeaways for Modern Architects
 
-**Answer-first:** Architectural takeaways emphasize partitioning data into independent cells, running shadow stress tests in production, and decoupling writes asynchronously.
+Architectural takeaways emphasize partitioning data into independent cells, running shadow stress tests in production, and decoupling writes asynchronously.
 
 If you are tasked with scaling a high-throughput transaction system today, you do not need to replicate Alipay's internal codebase. Instead, you should implement their architectural patterns:
 

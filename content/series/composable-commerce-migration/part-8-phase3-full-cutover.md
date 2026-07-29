@@ -21,6 +21,8 @@ cover:
 canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-8-phase3-full-cutover/"
 ---
 
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 7 — Phase2 Dual Write](/series/composable-commerce-migration/part-7-phase2-dual-write/). Review it first if the terminology in this part is unfamiliar.
+
 Phase 3 is the final act: 100% of traffic moves to microservices, Magento becomes a passive archive, and the platform runs entirely on Go microservices via GitOps. No PHP in the critical path. No Magento license renewal needed.
 
 **Answer-first:** Phase 3 cutover executes an immediate 100% traffic shift for stable read services and a graduated ramp over 10 days for transactional services. Legacy Magento remains a hot standby for 30 days while automated ArgoCD gitops pipelines handle production deployments.
@@ -29,7 +31,7 @@ Phase 3 is the final act: 100% of traffic moves to microservices, Magento become
 
 ## 1. The 6-Week Cutover Calendar
 
-**Answer-first:** The 6-week cutover calendar structures final traffic migration, starting with low-risk staging and graduating to 100% production traffic.
+The 6-week cutover calendar structures final traffic migration, starting with low-risk staging and graduating to 100% production traffic.
 
 The 6-week cutover schedule structures the orderly transfer of live production traffic from legacy Magento to the Go microservice platform while establishing strict operational change-freeze windows and risk mitigation buffers:
 
@@ -45,7 +47,7 @@ By Week 5, Customer and Catalog services run completely on microservices and hav
 
 ## 2. Customer + Catalog: Immediate 100% Cutover
 
-**Answer-first:** Customer and catalog domains undergo immediate 100% traffic cutover after Phase 1 and 2 dual-write synchronization validation.
+Customer and catalog domains undergo immediate 100% traffic cutover after Phase 1 and 2 dual-write synchronization validation.
 
 In 2026 production cutovers, edge network routing utilizes Anycast BGP IP routing and Cloudflare / AWS Route53 weighted DNS records with 5-second Time-to-Live (TTL) values. TLS 1.3 0-RTT session resumption eliminates connection handshake latency, while automated API Gateway cache invalidation purges legacy monolith cache entries instantly.
 
@@ -78,7 +80,7 @@ The archive service performs a one-way, read-only sync from microservice Postgre
 
 ## 3. Order Service: Graduated Traffic Ramp
 
-**Answer-first:** Order Service traffic ramps incrementally from 10% to 25%, 50%, and 100% over four weeks to monitor payment processing stability.
+Order Service traffic ramps incrementally from 10% to 25%, 50%, and 100% over four weeks to monitor payment processing stability.
 
 Order Service cutover employs Argo Rollouts traffic management integrated with Prometheus metrics. If p99 latencies breach 200ms or 5xx HTTP error rates exceed 0.05% across a 2-minute window, automated circuit breaker rollbacks immediately restore traffic to previous stable revisions.
 
@@ -132,7 +134,7 @@ At each ramp milestone, four mandatory gate criteria must be satisfied:
 
 ## 4. The Archive Service
 
-**Answer-first:** The archive service extracts historical Magento order logs into read-only PostgreSQL data lakes for long-term audit compliance.
+The archive service extracts historical Magento order logs into read-only PostgreSQL data lakes for long-term audit compliance.
 
 To guarantee legacy Magento state is preserved without accepting new mutations, legacy MySQL instances are placed into strict read-only mode via `SET GLOBAL super_read_only = ON;`. The Kubernetes manifest below deploys the archive service to execute hourly state snapshots:
 
@@ -171,7 +173,7 @@ Archive service behavior:
 
 ## 5. ArgoCD GitOps: The Deployment Model After Migration
 
-**Answer-first:** ArgoCD GitOps continuously synchronizes Kubernetes cluster state with Git repositories, automating deployments and drift detection.
+ArgoCD GitOps continuously synchronizes Kubernetes cluster state with Git repositories, automating deployments and drift detection.
 
 With legacy Magento decommissioned, production deployment management shifts entirely to ArgoCD GitOps. In modern cloud environments, GitOps establishes Git repositories as the immutable single source of truth for all Kubernetes cluster state, providing automated drift detection, automated reconciliation, and audit logs.
 
@@ -204,7 +206,7 @@ No manual `kubectl apply` commands or SSH access to production nodes are permitt
 
 ## 6. Kustomize: Base + Overlays Pattern
 
-**Answer-first:** Kustomize base and overlay configurations manage environment-specific parameters across development, staging, and production clusters.
+Kustomize base and overlay configurations manage environment-specific parameters across development, staging, and production clusters.
 
 To maintain environment consistency across development, staging, and production clusters without template bloat, services organize manifests into base and overlay layers:
 
@@ -278,7 +280,7 @@ spec:
 
 ## 7. Sync Waves: Ordered Deployment
 
-**Answer-first:** ArgoCD sync waves enforce strict deployment order, starting database migrations before rolling out dependent microservice pods.
+ArgoCD sync waves enforce strict deployment order, starting database migrations before rolling out dependent microservice pods.
 
 ArgoCD Sync Waves assign explicit numeric priorities to Kubernetes manifests, ensuring database schema migrations and messaging middleware components achieve readiness before application service pods begin rolling update deployments:
 
@@ -303,7 +305,7 @@ Sync wave progression follows: `Databases & Schema Migrations (Wave 0) → PubSu
 
 ## 8. Performance Validation: The 10× Load Test
 
-**Answer-first:** Performance validation subjects the new Go microservice architecture to 10x peak load tests, verifying sub-50ms checkout response times.
+Performance validation subjects the new Go microservice architecture to 10x peak load tests, verifying sub-50ms checkout response times.
 
 Prior to declaring Phase 3 final cutover complete, the microservice architecture must sustain 10× historical peak traffic during distributed stress testing. The K6 stress test script below simulates high-concurrency order creation workloads to validate p99 latency SLAs:
 
@@ -339,7 +341,7 @@ export default function() {
 
 ## 9. Magento Decommission: Day 30
 
-**Answer-first:** Magento decommissioning takes place on Day 30 post-cutover, shutting down legacy PHP app servers and archiving old MySQL instances.
+Magento decommissioning takes place on Day 30 post-cutover, shutting down legacy PHP app servers and archiving old MySQL instances.
 
 After maintaining 30 continuous days of zero-rollback production execution on Go microservices, legacy monolith decommissioning commences. Final database dumps (gzip SQL / compressed Parquet format) are uploaded to Amazon S3 Glacier with Object Lock compliance enabled, guaranteeing 7-year immutable data retention for regulatory compliance.
 
@@ -376,7 +378,7 @@ echo "💰 License savings: starting from next renewal cycle"
 
 ## Phase 3 Completion Checklist
 
-**Answer-first:** The completion checklist verifies 100% traffic routing to Go services, ArgoCD sync green status, and Magento server shutdown.
+The completion checklist verifies 100% traffic routing to Go services, ArgoCD sync green status, and Magento server shutdown.
 
 **Week 5 (Order Service cutover complete):**
 - [ ] 10 consecutive days at 100% without auto-rollback
@@ -396,7 +398,7 @@ echo "💰 License savings: starting from next renewal cycle"
 
 ## What You've Built
 
-**Answer-first:** You have successfully transformed a legacy monolithic Magento installation into 21 resilient, high-performance Go microservices.
+You have successfully transformed a legacy monolithic Magento installation into 21 resilient, high-performance Go microservices.
 
 After Phase 3, the platform is:
 - **21 Go microservices** on Kubernetes, deployed via ArgoCD GitOps
@@ -414,7 +416,7 @@ After Phase 3, the platform is:
 
 ## FAQ
 
-**Answer-first:** Graduated traffic ramping during Phase 3 cutover minimizes operational risk when shifting live order processing to new Go microservices.
+Graduated traffic ramping during Phase 3 cutover minimizes operational risk when shifting live order processing to new Go microservices.
 
 {{< faq q="Why use ArgoCD GitOps instead of deploying directly with kubectl or Helm?" >}}
 Direct kubectl applies are manual, error-prone, and leave no audit trail. Helm works for templating but doesn't enforce the target state continuously. ArgoCD enforces **desired state = actual state** at every reconciliation cycle (default: 3 minutes). If a pod crashes and restarts with a different image tag (e.g., from a hotfix applied manually), ArgoCD detects the drift and restores the committed state. During a high-stakes cutover, this continuous enforcement is the difference between a reproducible rollback and a "it was working but now it's different" incident.
@@ -429,4 +431,4 @@ A minimum of **30 days** in read-only archive mode. This covers: (1) billing cyc
 
 {{< /faq >}}
 
-
+🔗 **Next Step:** Continue to [Part 9 — Outbox Saga](/series/composable-commerce-migration/part-9-outbox-saga/) for the following module in the series.

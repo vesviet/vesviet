@@ -1,5 +1,6 @@
 ---
 title: "Agentic System Architecture: Multi-Agent in Production"
+slug: "agentic-system-architecture"
 date: "2026-05-14T08:00:00+07:00"
 lastmod: "2026-06-16T08:00:00+07:00"
 draft: false
@@ -19,7 +20,7 @@ canonicalURL: "https://tanhdev.com/series/agentic-system-architecture/"
 
 ## Agentic System Architecture: Multi-Agent in Production
 
-**Answer-first:** Multi-agent architectures decompose enterprise monolithic AI tasks into autonomous micro-agents with clear responsibility boundaries, event-driven state transitions, and deterministic execution contracts.
+Multi-agent architectures decompose enterprise monolithic AI tasks into autonomous micro-agents with clear responsibility boundaries, event-driven state transitions, and deterministic execution contracts.
 
 Senior backend engineers and system architects are moving beyond basic single-prompt chains to production-grade distributed agent systems. In modern enterprise environments, agentic architectures run high-concurrency Go orchestrators, stateful Redis and vector memory layers, and secure Model Context Protocol (MCP) gateways to execute multi-step workflows.
 
@@ -31,7 +32,7 @@ Senior backend engineers and system architects are moving beyond basic single-pr
 
 ## 🎯 Multi-Agent Architecture Consulting (Hire Me)
 
-**Answer-first:** Independent architecture consulting specializing in high-concurrency multi-agent systems, Go orchestrators, secure tool calling, and production AgentOps telemetry.
+Independent architecture consulting specializing in high-concurrency multi-agent systems, Go orchestrators, secure tool calling, and production AgentOps telemetry.
 
 Building scalable agentic infrastructure requires rigorous topology design, typed tool schemas, rate-limited gateway proxies, and real-time observability. Whether designing autonomous agent swarms or auditing prompt security guardrails, targeted architectural guidance ensures high system reliability and zero unauthorized API access.
 
@@ -41,7 +42,7 @@ Building scalable agentic infrastructure requires rigorous topology design, type
 
 ## 💡 What is Agentic System Architecture?
 
-**Answer-first:** Agentic system architecture decouples complex business goals into specialized autonomous agents coordinated by stateful orchestrators, tool gateways, and guardrails.
+Agentic system architecture decouples complex business goals into specialized autonomous agents coordinated by stateful orchestrators, tool gateways, and guardrails.
 
 Unlike traditional linear pipelines or single-turn conversational bots, agentic system architecture structures AI models into autonomous execution nodes. Each agent operates within a defined scope, utilizing tools via structured JSON schemas, maintaining state across reasoning cycles, and handing off control via deterministic state machines or dynamic router nodes.
 
@@ -55,7 +56,7 @@ Unlike traditional linear pipelines or single-turn conversational bots, agentic 
 
 ## ❓ Frequently Asked Questions (FAQ)
 
-**Answer-first:** Production multi-agent architectures solve complex enterprise workflows by enforcing strict state management, typed tool contracts, and distributed telemetry.
+Production multi-agent architectures solve complex enterprise workflows by enforcing strict state management, typed tool contracts, and distributed telemetry.
 
 {{< faq q="What is the difference between traditional RAG and Agentic RAG?" >}}
 Traditional RAG is a linear process: receive a query, run vector retrieval, and synthesize a single answer. Agentic RAG introduces iterative reasoning loops where autonomous agents evaluate retrieved context sufficiency, formulate secondary search queries, query external APIs via tool calling, and cross-examine facts before generating a response.
@@ -73,7 +74,7 @@ Evaluating multi-agent workflows requires synthetic scenario generation, LLM-as-
 
 ## 📚 Core Curriculum
 
-**Answer-first:** The agentic architecture curriculum covers topology design, memory management, tool calling security, evaluation pipelines, production observability, benchmark suites, and governance guardrails across 6+ parts.
+The agentic architecture curriculum covers topology design, memory management, tool calling security, evaluation pipelines, production observability, benchmark suites, and governance guardrails across 6+ parts.
 
 The journey of building a Multi-Agent system from scratch:
 

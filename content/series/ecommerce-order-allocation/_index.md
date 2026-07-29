@@ -1,5 +1,6 @@
 ---
 title: "E-commerce Order Allocation Architecture Systems Guide"
+slug: "ecommerce-order-allocation"
 date: "2026-05-06T20:30:00+07:00"
 lastmod: "2026-05-06T20:30:00+07:00"
 draft: false
@@ -34,7 +35,7 @@ This series bridges theory and practice, covering the real-world architecture of
 
 ## Production Case Study
 
-**Answer-first:** The production case study explores how e-commerce leaders solve multi-warehouse order splitting and last-mile delivery optimization.
+The production case study explores how e-commerce leaders solve multi-warehouse order splitting and last-mile delivery optimization.
 
 See the full warehouse-to-last-mile pipeline in a live production context:
 
@@ -53,6 +54,6 @@ See the full warehouse-to-last-mile pipeline in a live production context:
 
 Engineered for **Supply Chain Architects, E-commerce Backend Leads, and Operations Research Engineers**.
 
-**Prerequisites:**
+**Prerequisite:**
 - Experience with inventory management and order fulfillment lifecycles.
 - Basic understanding of linear programming, graph algorithms, and Go backend development.

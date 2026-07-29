@@ -9,9 +9,9 @@ author_profile: "/about/"
 credentials: "AI Engineering & High-Concurrency System Design Experience"
 ---
 
-# Vector Database Architecture: HNSW Indexing & RAG Pipelines with Qdrant
+> **Prerequisite:** Familiarity with the concepts introduced in [Temporal Workflow Go Architecture](/series/cornerstone-technologies/temporal-workflow-go-architecture/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-First:** A Vector Database indexes high-dimensional embeddings using algorithms like Hierarchical Navigable Small World (HNSW) for ultra-fast semantic retrieval. In modern RAG architectures, combining dense semantic vectors with sparse BM25 keyword vectors via Reciprocal Rank Fusion (RRF) delivers optimal retrieval accuracy while Scalar and Binary Quantization reduce memory footprints up to 32x without degrading latency.
+> **Answer-first:** A Vector Database indexes high-dimensional embeddings using algorithms like Hierarchical Navigable Small World (HNSW) for ultra-fast semantic retrieval. In modern RAG architectures, combining dense semantic vectors with sparse BM25 keyword vectors via Reciprocal Rank Fusion (RRF) delivers optimal retrieval accuracy while Scalar and Binary Quantization reduce memory footprints up to 32x without degrading latency.
 
 With the rapid advancement of Generative AI and Large Language Models (LLMs), the ability to interpret and retrieve unstructured data flexibly dictates the success of intelligent applications. When engineering foundational systems for [Cornerstone Technologies](/series/cornerstone-technologies/), understanding the role of Vector Databases is imperative. Unlike traditional database management systems, a Vector Database forms the nuclear engine within an authentic [AI Data Engineering Pipeline](/series/ai-data-engineering-pipeline/executive-summary/), transforming natural language into computationally queryable knowledge.
 
@@ -174,3 +174,5 @@ Additionally, Qdrant supports **Memory-Mapped Files (Memmap)**, allowing vector 
 
 * **Do modern vector databases support real-time CRUD operations like traditional databases?**
   Yes, modern vector databases like Qdrant and Milvus fully support Create, Read, Update, and Delete (CRUD) operations on both vector embeddings and metadata payloads. However, because updating or deleting vectors modifies dynamic graph connections in HNSW, high-frequency writes trigger background graph compaction and re-indexing, making vector databases best optimized for write-once, read-heavy workloads.
+
+🔗 **Next Step:** Continue to [Zero Trust Architecture Microservices](/series/cornerstone-technologies/zero-trust-architecture-microservices/) for the following module in the series.

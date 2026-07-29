@@ -18,9 +18,9 @@ canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-3a-enterprise-
 mermaid: true
 ---
 
-# Enterprise RAG Architecture: Internal Knowledge Brain
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Context Engineering Ddd](/series/ai-driven-playbook/part-1-context-engineering-ddd/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-First Summary**: Enterprise RAG architectures replace naive text chunking with multi-stage data pipelines combining layout-aware global scanning, hybrid dense-sparse vector search, and cross-encoder context reranking. This architecture eliminates table slicing hallucinations, enforces metadata access controls, and cuts retrieval prompt token overhead by 70% while maintaining sub-400ms end-to-end query latency.
+> **Answer-first:** Enterprise RAG architectures replace naive text chunking with multi-stage data pipelines combining layout-aware global scanning, hybrid dense-sparse vector search, and cross-encoder context reranking. This architecture eliminates table slicing hallucinations, enforces metadata access controls, and cuts retrieval prompt token overhead by 70% while maintaining sub-400ms end-to-end query latency.
 
 ---
 
@@ -36,7 +36,7 @@ Enterprise RAG fails when naive vector ingestion processes uncleaned documents, 
 
 The biggest pain point of Enterprise RAG is "Data Noise" generated from un-structured Naive Chunking.
 
-> **[Production Failure Case Study]: The SKU and Quantity Mix-up Disaster**
+> 🔥 **[Production Failure]: The SKU and Quantity Mix-up Disaster**
 > A Logistics company used RAG to extract reconciliation data from thousands of scanned PDF invoices. They used a fixed-size chunking algorithm, cutting text every 500 characters.
 > When the LLM received the query: *"How many products with the code VNM-2024 did Customer X buy?"*, because the chunking algorithm accidentally sliced a data table in half, the LLM mistook the number `2024` in the SKU code for the "Quantity" column.
 > Result: The system automatically dispatched 2,024 products from the warehouse instead of 5. The company suffered heavy financial losses.
@@ -198,10 +198,12 @@ Suppose Hybrid Search returns the top 20 chunks of text. If you throw all 20 chu
 This is where the **Re-Ranking Layer** steps in. Use a tiny Cross-Encoder model (like `bge-reranker`) to re-score the relevance of those 20 chunks against the original query. It filters down to the 3 most essential chunks.
 
 Next, pass these 3 chunks through a **Context Compression** engine.
-> 💡 Instead of sending the full block: *"In the event of a network error, the system will execute a retry 3 times and then call the fallback function"*, the system compresses it to: *"Retry 3x on network error -> fallback"*.
-> **Cost Numbers:** Re-Ranking + Compression techniques reduce Prompt Tokens by 70%, saving thousands of USD per month and pushing answer accuracy to high precision.
+> [!TIP]
+> Instead of sending the full block: *"In the event of a network error, the system will execute a retry 3 times and then call the fallback function"*, the system compresses it to: *"Retry 3x on network error -> fallback"*.
+> [!IMPORTANT] Cost Analysis
+> Re-Ranking + Compression techniques reduce Prompt Tokens by 70%, saving thousands of USD per month and pushing answer accuracy to high precision.
 
-> ⏱️ **Performance Benchmark (RAG Latency):**
+> [!NOTE] Performance Benchmark (RAG Latency)
 > - **Pure Vector Search:** ~45ms (Fast but noisy).
 > - **Hybrid Search (BM25 + Vector) + Metadata Filter:** ~120ms (High accuracy).
 > - **Cross-Encoder Re-ranking Layer:** ~200ms (Added latency but extremely worthwhile).
@@ -247,3 +249,4 @@ Dense vector search excels at semantic intent matching but struggles with exact 
 ### How does a cross-encoder reranking layer optimize token costs?
 Hybrid search retrieves a candidate set of 20-50 vector chunks, which would consume significant token budget if sent directly to an LLM. A lightweight cross-encoder model (e.g. BGE-Reranker) rescores these candidates in milliseconds, filtering them down to the top 3-5 most relevant chunks and reducing prompt tokens by 70%.
 
+🔗 **Next Step:** Continue to [Part 3B — Ai Automation Internal Ops](/series/ai-driven-playbook/part-3b-ai-automation-internal-ops/) for the following module in the series.

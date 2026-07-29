@@ -19,7 +19,9 @@ mermaid: true
 image: "images/posts/paypay-scaling-cover.png"
 ---
 
-> **Executive Summary & Quick Answer**: Ensuring 99.99% availability for payment systems demands proactive SRE practices and automated Chaos Engineering. Injecting synthetic latency, pod failures, and network partitions via Chaos Mesh validates microservice circuit breakers before real production incidents occur.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Data Layer Tidb](/series/paypay-architecture/part-3-data-layer-tidb/). Review it first if the terminology in this part is unfamiliar.
+
+> **Answer-first:** Ensuring 99.99% availability for payment systems demands proactive SRE practices and automated Chaos Engineering. Injecting synthetic latency, pod failures, and network partitions via Chaos Mesh validates microservice circuit breakers before real production incidents occur.
 
 **Answer-first:** PayPay ensures system resilience by executing automated chaos engineering experiments in staging environments using tools like Chaos Mesh. Injecting artificial network latency, pod failures, and disk I/O bottlenecks allows SRE teams to verify that failover protocols activate without compromising transaction consistency.
 
@@ -217,3 +219,4 @@ Circuit breakers monitor error rates; when thresholds fail, they immediately tri
 
 Next step: Learn how PayPay scales its infrastructure for high-demand flash sales in [Part 5: Campaign Architecture & Flash Sales](/series/paypay-architecture/part-5-campaign-architecture/). To set up production-grade SRE automation and chaos testing gates, contact [SRE Resilience Consultants](/hire/).
 
+🔗 **Next Step:** Continue to [Part 5 — Campaign Architecture](/series/paypay-architecture/part-5-campaign-architecture/) for the following module in the series.

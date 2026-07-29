@@ -1,19 +1,12 @@
 ---
 title: "Vibe Coding & AI Code Review: Prototype to Production"
+slug: "ai-code-review-vibe-coding"
 date: "2026-05-31T16:00:00+07:00"
 lastmod: "2026-05-31T16:00:00+07:00"
 draft: false
 weight: 25
-categories:
-  - "AI"
-  - "Vibe Coding"
-tags:
-  - vibe coding
-  - AI code review
-  - production wall
-  - OWASP LLM Top 10
-  - context engineering
-  - code review pipeline
+categories: ["AI", "Vibe Coding"]
+tags: ["vibe coding", "AI code review", "production wall", "OWASP LLM Top 10", "context engineering", "code review pipeline"]
 description: "Vibe coding for CEOs, PMs, BAs + AI code review for engineers. Production Wall, bug taxonomy, OWASP LLM Top 10, review pipeline to ship AI code safely."
 ShowToc: true
 TocOpen: true
@@ -52,13 +45,13 @@ This series answers the question that both sides are now asking:
 - **Part 5:** [AI Code Security: OWASP LLM Top 10, Supply Chain Attacks, and Zero Trust for Agents](/series/ai-code-review-vibe-coding/part-5-ai-code-security/)
 - **Part 6:** [Governance, Observability, and the Future of the Engineering Career](/series/ai-code-review-vibe-coding/part-6-governance-observability-career/)
 
-> **Prerequisites:**
+> **Prerequisite:**
 > This series is designed for two parallel audiences. If you are a non-technical builder (CEO, PM, BA), start with the Executive Summary and Part 1. If you are an engineer, read the Executive Summary then jump directly to Part 2. Both paths converge at the same critical boundary: understanding exactly where AI ends and where engineering judgment must begin.
 >
 > For a deeper foundation in AI engineering principles, see [The AI-Driven Engineer](/series/ai-driven-engineer/) and [The AI-Driven Playbook](/series/ai-driven-playbook/).
 
 ## Related
 
-**Answer-first:** Explore related architectural guides covering Go microservices, distributed tracing, and autonomous AI pipeline engineering.
+Explore related architectural guides covering Go microservices, distributed tracing, and autonomous AI pipeline engineering.
 
 - [What is Vibe Coding? Why AI Code Review is the Future](/posts/vibe-coding-and-ai-code-review-future/) — A concise introduction to vibe coding and why AI code review is the most critical skill for engineers in 2025–2026.

@@ -1,13 +1,12 @@
 ---
 title: "Cornerstone Technologies: Distributed Systems Architecture & Production Guide"
-date: 2026-07-25T09:00:00+07:00
+slug: "cornerstone-technologies"
+date: "2026-07-25T09:00:00+07:00"
 draft: false
 weight: 1
 description: "In-depth technical guides (Pillar Content) on core backend engineering, edge compute, low-latency streaming, and distributed systems architecture for Senior Go Engineers."
 series: ["Cornerstone Technologies"]
 ---
-
-# Cornerstone Technologies: Distributed Systems Architecture & Production Guide
 
 > **Answer-first:** The Cornerstone Technologies series delivers production-grade architecture guides for Senior Go Engineers. It covers low-latency distributed systems, edge computing, event streaming, and cloud-native infrastructure—featuring NATS JetStream, Cloudflare Workers V8 Isolates, Temporal Workflows, Qdrant Vector DB, and SPIFFE/SPIRE Zero-Trust security with verified Golang benchmarks.
 

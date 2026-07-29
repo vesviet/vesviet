@@ -18,7 +18,9 @@ ShowToc: true
 TocOpen: true
 ---
 
-> **Executive Summary & Quick Answer**: The traditional software development lifecycle (SDLC)—characterized by strict wall-separated handoffs between Business Analysts, Developers, QA Testers, and DevOps Engineers—is obsolete. AI automation collapses these boundaries into a unified Quality Control (QC) feedback loop where developers execute real-time AI test generation, security scanning, and infrastructure synthesis during active coding.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — The 10X Productivity Reality](/series/ai-driven-engineer/part-3-the-10x-productivity-reality/). Review it first if the terminology in this part is unfamiliar.
+
+> **Answer-first:** The traditional software development lifecycle (SDLC)—characterized by strict wall-separated handoffs between Business Analysts, Developers, QA Testers, and DevOps Engineers—is obsolete. AI automation collapses these boundaries into a unified Quality Control (QC) feedback loop where developers execute real-time AI test generation, security scanning, and infrastructure synthesis during active coding.
 
 **Key Takeaways**:
 - **Zero Handoff Friction**: AI agents generate unit tests, end-to-end integration mocks, and terraform scripts directly alongside feature code.
@@ -242,8 +244,7 @@ Traditional SDLCs hand off code sequentially across siloes, while AI-native QC e
 
 ---
 
-## Technical Deep-Dive: System Architecture & Developer Productivity Invariants
-
+## Architecture Invariants
 Automating quality control requires strict execution timeouts and race condition sanitization on all AI-generated code artifacts.
 
 The collapse of traditional software development lifecycle boundaries necessitates a continuous, automated quality control pipeline. When code generation speeds increase by an order of magnitude, manual quality gates become the primary bottleneck, shifting the focus of quality assurance toward real-time AST validation, race detection, and automated execution boundary checks.
@@ -255,8 +256,7 @@ Sub-minute quality control feedback loops ensure developer velocity remains high
 - **Race Condition Detection:** Utilizing Go's `-race` detector during automated QC suite runs eliminates subtle concurrency flaws before deployment.
 - **Test Execution Timeouts:** Enforcing strict context timeouts (e.g., 50ms per unit test block) prevents non-terminating AI code loops from stalling CI/CD runners.
 
-### Enterprise Governance Invariants & Security Guardrails
-
+### Governance & Security Invariants
 Continuous quality control pipelines enforce enterprise governance invariants automatically:
 1. **Automated Static Security Analysis:** Scanning diffs for raw SQL queries, unescaped HTML templates, and hardcoded credential secrets.
 2. **Deterministic Mutation Testing:** Measuring test suite effectiveness by introducing synthetic faults into AI-generated logic.
@@ -276,6 +276,8 @@ AI assistants eliminate the syntax friction of Infrastructure as Code (IaC). Whe
 The primary risk is deploying code with undetected logical flaw loops or security authorization vulnerabilities. To mitigate this risk, teams must enforce strict automated CI/CD guardrails—including static AST security checks, unit test coverage minimums (e.g., 85%), and automated Ragas evaluation gates—before code can be merged into production.
 
 ---
+
+🔗 **Next Step:** Continue to [Part 5 — The Bod Perspective Risk And Privacy](/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/) for the following module in the series.
 
 ## Internal Series Navigation
 

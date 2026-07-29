@@ -19,9 +19,11 @@ TocOpen: true
 image: "images/posts/mcp-engineering-in-production-cover.png"
 ---
 
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Identity](/series/mcp-engineering-in-production/part-3-identity/). Review it first if the terminology in this part is unfamiliar.
+
 ## Part 4 — MCP Gateway Architecture & Routing
 
-> **Executive Summary & Quick Answer**: Operating multiple independent MCP servers across an enterprise creates point-to-point management sprawl and security leaks. An **MCP Gateway** acts as a centralized reverse proxy control plane, handling dynamic tool routing, rate limiting, authentication enforcement, and circuit breaking for all downstream MCP server microservices.
+> **Answer-first:** Operating multiple independent MCP servers across an enterprise creates point-to-point management sprawl and security leaks. An **MCP Gateway** acts as a centralized reverse proxy control plane, handling dynamic tool routing, rate limiting, authentication enforcement, and circuit breaking for all downstream MCP server microservices.
 >
 > **Key Takeaways**:
 > - **Centralized Control Plane**: Eliminates point-to-point connections by proxying all AI agent tool requests through a single gateway.
@@ -69,7 +71,6 @@ graph TD
 ---
 
 ## Comparative Matrix: Direct Point-to-Point vs. MCP Gateway Architecture
-
 
 | Architectural Dimension | Direct Point-to-Point MCP Connections | Centralized MCP Gateway Control Plane |
 | :--- | :--- | :--- |
@@ -183,22 +184,18 @@ Yes. Modern MCP Gateways feature OpenAPI-to-MCP translation modules. The Gateway
 
 ---
 
-## Technical Deep-Dive: Model Context Protocol & System Topology Invariants
-
+## Production Invariants & Trade-offs
 Deploying an MCP Gateway control plane provides central ingress governance, dynamic routing, and automated failover.
 
-### Protocol Performance Metrics & Latency Benchmarks
-
+### Performance Benchmarks
 - **Gateway Proxy Overhead**: Reverse proxy routing adds sub-3ms latency overhead using non-blocking Go HTTP transport channels.
 - **Tool Aggregation SLA**: Aggregating manifests across 20 backend MCP servers returns in sub-15ms via concurrent Goroutines.
 
-### Protocol Invariants & Transport Security Guardrails
-
+### Protocol & Transport Invariants
 1. **Namespace Collision Prevention**: Gateway applies automated namespace prefixing (`service_toolName`) when multiple backend servers export matching tool names.
 2. **Circuit Breaker Tripping**: Consecutive downstream execution timeouts trip circuit breakers to Open state, returning immediate HTTP 503 fallback responses.
 
-### Operational Checklist for Software Engineering Teams
-
+### Operational Checklist
 1. **Token Bucket Throttling**: Configure Redis-backed sliding window rate limits per client ID to prevent runaway LLM agent loops.
 2. **OpenTelemetry Context Injection**: Inject W3C `traceparent` headers at the gateway before forwarding JSON-RPC requests to downstream servers.
 ---
@@ -262,6 +259,8 @@ func (rl *RateLimiter) Allow(ctx context.Context, clientID string, limit int, wi
 ```
 
 ---
+
+🔗 **Next Step:** Continue to [Part 5 — Security](/series/mcp-engineering-in-production/part-5-security/) for the following module in the series.
 
 ## Internal Series Navigation
 

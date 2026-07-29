@@ -21,15 +21,17 @@ cover:
 canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-7-phase2-dual-write/"
 ---
 
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 6 — Phase1 Strangler Fig](/series/composable-commerce-migration/part-6-phase1-strangler-fig/). Review it first if the terminology in this part is unfamiliar.
+
 In Phase 1, both systems existed but only one wrote data: Magento. In Phase 2, both systems write data simultaneously. This is the most technically complex phase — and the one where most migrations introduce data corruption if they don't have an explicit conflict resolution strategy.
 
 **Answer-first:** Phase 2 implements event-driven dual-write where microservices update PostgreSQL and publish domain events to Dapr PubSub. The sync adapter service updates legacy Magento asynchronously. Concurrent write conflicts are resolved through deterministic conflict resolution policies tailored to specific domain data types.
 
-> **Phase 2 Technical Guide:** Included within **[Migrating Monoliths to Microservices](/posts/ecommerce-architecture-composable-migration/)**. See the pillar article for overall topology.
+> **Phase 2 Technical Guide:** For the full end-to-end migration architecture and topology, see [Migrating Monoliths to Microservices](/posts/ecommerce-architecture-composable-migration/).
 
 ## 1. Why Not Raw Dual Write?
 
-**Answer-first:** Raw application-level dual writing causes data drift and distributed deadlock during network partition failures; event-driven sync is mandatory.
+Raw application-level dual writing causes data drift and distributed deadlock during network partition failures; event-driven sync is mandatory.
 
 Raw dual write attempts to mutate both legacy MySQL and microservice PostgreSQL directly within a single application HTTP request handler:
 
@@ -58,7 +60,7 @@ This pattern introduces catastrophic state corruption in distributed architectur
 
 ## 2. Event-Driven Dual Write: The Safe Pattern
 
-**Answer-first:** Event-driven dual write uses asynchronous Dapr PubSub channels and transactional outbox logs to synchronize state changes safely.
+Event-driven dual write uses asynchronous Dapr PubSub channels and transactional outbox logs to synchronize state changes safely.
 
 To guarantee zero data loss during dual-write operation, the architecture splits mutation handling into three asynchronous, isolated stages. The ASCII sequence diagram below illustrates the decoupled event lifecycle:
 
@@ -106,7 +108,7 @@ func (uc *CustomerUseCase) CreateCustomer(ctx context.Context, c *Customer) (*Cu
 
 ## 3. The magento-sync-adapter
 
-**Answer-first:** The `magento-sync-adapter` Go service listens to Dapr event channels, translating microservice domain events back into Magento REST API calls.
+The `magento-sync-adapter` Go service listens to Dapr event channels, translating microservice domain events back into Magento REST API calls.
 
 The `magento-sync-adapter` operates as a dedicated bridge service between Dapr PubSub channels and legacy Magento REST endpoints. To protect Magento from REST API rate-limiting and connection saturation, the adapter implements client-side rate limiting (100 req/sec bucket), exponential backoff retries with jitter, and circuit breaker isolation.
 
@@ -172,7 +174,7 @@ spec:
 
 ## 4. The Conflict Resolution Matrix
 
-**Answer-first:** The conflict resolution matrix defines 5 deterministic policies (e.g. timestamp priority, authority tier) to resolve concurrent state updates.
+The conflict resolution matrix defines 5 deterministic policies (e.g. timestamp priority, authority tier) to resolve concurrent state updates.
 
 When dual-writing across legacy monoliths and microservices, state mutations can collide. Modern 2026 architectures replace raw NTP timestamps with **Hybrid Logical Clocks (HLC)** to guarantee causality ordering despite physical clock drift. Background reconciliation processes periodically calculate Merkle tree / SHA256 checksums between MySQL and PostgreSQL tables to catch and repair silent state drift automatically.
 
@@ -248,7 +250,7 @@ func (r *ConflictResolver) ResolveCouponUsage(ctx context.Context, event Migrati
 
 ## 5. Per-Service Migration Sequence
 
-**Answer-first:** Per-service migration sequences order domain transitions logically: Catalog first, Customer second, Cart third, and Checkout last.
+Per-service migration sequences order domain transitions logically: Catalog first, Customer second, Cart third, and Checkout last.
 
 Enabling dual-write mode proceeds incrementally following a strict domain dependency tree. Low-risk peripheral services transition first, allowing engineering teams to validate outbox event propagation before enabling mission-critical transactional domains.
 
@@ -318,7 +320,7 @@ Setting a 10-second health check probe interval ensures the API Gateway trips au
 
 ## 6. DLQ Monitoring: Your Early Warning System
 
-**Answer-first:** Dead-letter queue (DLQ) monitoring alerts engineering teams to failed event sync attempts, providing manual retry interfaces and payload inspection.
+Dead-letter queue (DLQ) monitoring alerts engineering teams to failed event sync attempts, providing manual retry interfaces and payload inspection.
 
 Events failing serialization or encountering persistent Magento API errors land in `migration.dlq`. During Phase 2, DLQ depth must be strictly enforced as zero. Accumulated DLQ messages indicate active data drift between microservice PostgreSQL and legacy MySQL.
 
@@ -337,7 +339,7 @@ A dedicated DLQ handler worker service parses unroutable CloudEvents, formats st
 
 ## 7. Phase 2 Success Criteria
 
-**Answer-first:** Phase 2 success requires zero un-reconciled data drift across dual-written domains over a continuous 14-day operational window.
+Phase 2 success requires zero un-reconciled data drift across dual-written domains over a continuous 14-day operational window.
 
 Before advancing to Phase 3 full traffic cutover, the architecture must maintain absolute stability across all dual-written domains according to the following metric SLAs:
 
@@ -351,13 +353,13 @@ Before advancing to Phase 3 full traffic cutover, the architecture must maintain
 
 ## What's Next
 
-**Answer-first:** Phase 3 completes the migration by executing full traffic cutover and decommissioning legacy Magento infrastructure.
+Phase 3 completes the migration by executing full traffic cutover and decommissioning legacy Magento infrastructure.
 
 With Phase 2 complete, all writes go to microservices first, then sync back to Magento. Magento is now a follower, not the source of truth. [Part 8: Phase 3 — Full Cutover](/series/composable-commerce-migration/part-8-phase3-full-cutover/) disables the reverse sync, shifts 100% of traffic to microservices with Magento on hot standby, and completes the decommission using ArgoCD GitOps.
 
 ## FAQ
 
-**Answer-first:** Event-driven dual write enables safe multi-phase migration by ensuring eventual consistency between legacy monoliths and new Go microservices.
+Event-driven dual write enables safe multi-phase migration by ensuring eventual consistency between legacy monoliths and new Go microservices.
 
 {{< faq q="What is the main risk of dual-write and how does this approach mitigate it?" >}}
 The main risk is **partial failure**: microservice writes succeed but the Magento sync fails, leaving data inconsistent between systems. The event-driven pattern mitigates this with the Transactional Outbox: the outbox event is written in the same database transaction as the business change. If either fails, both fail — atomically. The `magento-sync-adapter` then retries the sync asynchronously with exponential backoff, and failed events land in the DLQ for investigation rather than being silently lost.
@@ -374,3 +376,4 @@ The minimum safe timeline is **3–4 weeks** when each service gets proper monit
 
 ---
 
+🔗 **Next Step:** Continue to [Part 8 — Phase3 Full Cutover](/series/composable-commerce-migration/part-8-phase3-full-cutover/) for the following module in the series.

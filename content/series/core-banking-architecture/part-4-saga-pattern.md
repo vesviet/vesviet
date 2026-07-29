@@ -21,17 +21,15 @@ TocOpen: true
 mermaid: true
 ---
 
-# Saga Pattern: Distributed Transactions Without 2PC
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Event Sourcing Cqrs](/series/core-banking-architecture/part-3-event-sourcing-cqrs/). Review it first if the terminology in this part is unfamiliar.
 
 **Answer-first:** The Saga pattern coordinates distributed transactions across core banking microservices without two-phase commit (2PC). By executing local transactions and defining compensating actions for failures, Sagas ensure eventual consistency across payment and ledger services.
-
-> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original article for an architectural overview of the architecture.
 
 > **Series (Part 4 of 8):** This article builds upon Event Sourcing from [Part 3](/series/core-banking-architecture/part-3-event-sourcing-cqrs/). The Saga Pattern solves the problem: "How do we ensure consistency when a transaction must coordinate across multiple microservices without using distributed locks or 2PC?"
 
 ## What is the Saga Pattern in Fintech?
 
-**Answer-first:** The Saga pattern coordinates distributed financial transactions across microservices using a sequence of local transactions and compensating actions.
+The Saga pattern coordinates distributed financial transactions across microservices using a sequence of local transactions and compensating actions.
 
 The sequence diagram below illustrates how an orchestrator issues compensation commands when downstream payment processing fails.
 
@@ -61,7 +59,7 @@ If step 2 fails after step 1 succeeds → **compensation** is required to refund
 
 ## Choreography vs Orchestration: When to Use Which?
 
-**Answer-first:** Choreography suits simple 2-3 step event flows, while Orchestration with Temporal is required for complex multi-step payment workflows.
+Choreography suits simple 2-3 step event flows, while Orchestration with Temporal is required for complex multi-step payment workflows.
 
 ### Choreography Saga (Event-Driven)
 
@@ -122,7 +120,7 @@ The comparison matrix below evaluates key architectural trade-offs between Chore
 
 ## Temporal Workflow: Go Implementation
 
-**Answer-first:** Temporal Go SDK implements durable Saga workflows, managing state persistence, retries, and compensation execution automatically.
+Temporal Go SDK implements durable Saga workflows, managing state persistence, retries, and compensation execution automatically.
 
 [Temporal](https://temporal.io/) is among the most widely adopted orchestration engines for Saga patterns (as of this writing). The Go implementation below manages multi-step payment execution, automated retry policies, and compensation rollbacks:
 
@@ -229,7 +227,7 @@ func TransferWorkflow(ctx workflow.Context, req TransferRequest) error {
 
 ## Saga Failure Transition Matrix
 
-**Answer-first:** Saga failure transition matrices define explicit compensating triggers for every possible failure point in a multi-service transfer.
+Saga failure transition matrices define explicit compensating triggers for every possible failure point in a multi-service transfer.
 
 Here is a detailed analysis of failure scenarios and how they are handled:
 
@@ -245,7 +243,7 @@ Here is a detailed analysis of failure scenarios and how they are handled:
 
 ## Idempotency Keys in Sagas
 
-**Answer-first:** Idempotency keys passed across Saga steps prevent double execution of financial debits during network retries.
+Idempotency keys passed across Saga steps prevent double execution of financial debits during network retries.
 
 Every step in a Saga requires idempotency to ensure safe retries. The Go activity implementation below checks Redis result locks before executing account debits:
 
@@ -285,7 +283,7 @@ The timeline breakdown below outlines the lock TTL tiers used to manage active p
 
 ## Choreography Implementation: Kafka-based
 
-**Answer-first:** Kafka-based choreography routes domain events between microservices, executing local debits and publishing compensation events on errors.
+Kafka-based choreography routes domain events between microservices, executing local debits and publishing compensation events on errors.
 
 The Go event handlers below show how services consume topic messages and publish failure events during errors:
 
@@ -332,7 +330,7 @@ func (s *PaymentService) HandleTransferInitiated(ctx context.Context, event Tran
 
 ## Dead Letter Queue Strategy
 
-**Answer-first:** Dead-letter queues capture un-compensable Saga failures, triggering operator war room alerts and manual remediation procedures.
+Dead-letter queues capture un-compensable Saga failures, triggering operator war room alerts and manual remediation procedures.
 
 When the compensation chain fails, the event must be routed to a DLQ. The Go implementation below writes unrecoverable failures to an audit log and triggers P1 alerts:
 
@@ -367,7 +365,7 @@ func (h *DLQHandler) HandleFailedCompensation(ctx context.Context, event FailedC
 
 ## QA & SDET Testing Strategy
 
-**Answer-first:** Testing Sagas requires injecting service failures at every step to verify that compensating transactions execute cleanly and restore balance.
+Testing Sagas requires injecting service failures at every step to verify that compensating transactions execute cleanly and restore balance.
 
 ### Test 1: Step 2 Failure + Compensation Verification
 
@@ -449,7 +447,7 @@ Additionally, the coordinator implements a reconciliation engine that runs conti
 
 ## Saga Latency, Compensation Atomicity, and Timeout Ambiguity
 
-**Answer-first:** Managing Saga latencies demands bounded execution timeouts and explicit handling of ambiguous HTTP 504 gateway responses.
+Managing Saga latencies demands bounded execution timeouts and explicit handling of ambiguous HTTP 504 gateway responses.
 
 Executing transactions across multiple microservices (e.g., reserving funds, calling payment networks, and updating ledgers) requires distributed transaction coordination. Core banking architectures use the Saga pattern to manage these workflows.
 
@@ -481,7 +479,7 @@ Network failures introduce state ambiguity. If a service call times out, the orc
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** Saga patterns achieve eventual consistency in banking microservices by executing compensating rollback steps when downstream calls fail.
+Saga patterns achieve eventual consistency in banking microservices by executing compensating rollback steps when downstream calls fail.
 
 {{< faq "Why is Orchestration preferred over Choreography for complex banking Sagas?" >}}
 Orchestration centralizes saga workflow logic in a dedicated state machine, preventing brittle, hard-to-trace circular event dependencies between microservices. It also simplifies compliance auditing by maintaining an explicit, queryable log of transaction states and compensation histories.
@@ -501,3 +499,5 @@ For deeper architecture insight into distributed transaction patterns, read [Par
 *Up Next: [Part 5 — ISO 20022 & Payment Gateways](/series/core-banking-architecture/part-5-iso-20022-payment-gateways/) — Efficiently parsing pacs.008 XML, mapping XPath to SQL columns, and webhook idempotency strategies.*
 
 {{< author-cta >}}
+
+🔗 **Next Step:** Continue to [Part 5 — Iso 20022 Payment Gateways](/series/core-banking-architecture/part-5-iso-20022-payment-gateways/) for the following module in the series.

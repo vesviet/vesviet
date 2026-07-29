@@ -5,14 +5,8 @@ lastmod: "2026-07-26T10:30:00+07:00"
 draft: false
 weight: 40
 description: "Master 2026 context enrichment using Model Context Protocol (MCP) dynamic tool schemas, AST chunking, hybrid vector-sparse search, and cross-encoder re-ranking."
-categories:
-  - Engineering
-  - AI
-tags:
-  - prompt
-  - standard
-  - context-engineering
-  - agent
+categories: ["Engineering", "AI"]
+tags: ["prompt", "standard", "context-engineering", "agent"]
 ShowToc: true
 TocOpen: true
 cover:
@@ -23,6 +17,8 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/prompt-standard/part-4-mcp-and-hybrid-rag/"
 mermaid: true
 ---
+
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Layered Prompt Architecture](/series/prompt-standard/part-3-layered-prompt-architecture/). Review it first if the terminology in this part is unfamiliar.
 
 **Answer-first:** Dynamic context enrichment combines Model Context Protocol (MCP) for tool schema injection with a four-stage hybrid RAG pipeline. By pairing sparse/dense vector search with cross-encoder re-ranking and AST-aware chunking, systems prune context token bloat by 70% while improving LLM retrieval accuracy and avoiding context window dilution.
 
@@ -181,3 +177,5 @@ AST-aware chunking uses language syntax parsers like Tree-sitter to split code a
 {{< /faq >}}
 
 {{< author-cta >}}
+
+🔗 **Next Step:** Continue to [Part 5 — Declarative Prompting Dspy](/series/prompt-standard/part-5-declarative-prompting-dspy/) for the following module in the series.

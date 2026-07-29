@@ -18,7 +18,9 @@ ShowToc: true
 TocOpen: true
 ---
 
-> **Key Takeaway**: Claims of unconditional "10x productivity gains" from AI code assistants collapse under empirical scrutiny when teams measure end-to-end SDLC output. While AI accelerates initial code generation by 3x, it creates downstream code review bottlenecks and subtle bug injections unless paired with automated context engineering and rigorous CI/CD evals.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — Man Vs Machine Boundaries](/series/ai-driven-engineer/part-2-man-vs-machine-boundaries/). Review it first if the terminology in this part is unfamiliar.
+
+> **Answer-first:** Claims of unconditional "10x productivity gains" from AI code assistants collapse under empirical scrutiny when teams measure end-to-end SDLC output. While AI accelerates initial code generation by 3x, it creates downstream code review bottlenecks and subtle bug injections unless paired with automated context engineering and rigorous CI/CD evals.
 
 Tech media headlines and marketing campaigns frequently promise that AI code assistants will instantly transform every software developer into a "10x Engineer."
 
@@ -173,6 +175,8 @@ Enforcing micro-PR size limits ensures that pull requests contain focused, singl
 Automated AST linter merge queues parse code syntax trees during CI workflow runs, enforcing strict static checks such as error handling compliance, mutex lock pairing, and type boundary validation. By catching structural anti-patterns automatically before human review, the merge queue blocks subtle AI hallucinations from entering main repository branches.
 
 ---
+
+🔗 **Next Step:** Continue to [Part 4 — Blurring Sdlc Lines And Qc Revolution](/series/ai-driven-engineer/part-4-blurring-sdlc-lines-and-qc-revolution/) for the following module in the series.
 
 ## Internal Series Navigation
 

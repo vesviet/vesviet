@@ -18,7 +18,7 @@ canonicalURL: "https://tanhdev.com/series/shopee-architecture/02-flash-sale-engi
 image: "images/posts/shopee-flash-sale-cover.png"
 ---
 
-> **Answer-First:** Shopee prevents overselling during high-concurrency flash sales by combining local memory caching, Redis inventory sharding, and atomic Lua script decrements. This multi-tier architecture isolates hot keys in Redis memory shards and evaluates stock availability in sub-milliseconds without acquiring relational database locks.
+> **Answer-first:** Shopee prevents overselling during high-concurrency flash sales by combining local memory caching, Redis inventory sharding, and atomic Lua script decrements. This multi-tier architecture isolates hot keys in Redis memory shards and evaluates stock availability in sub-milliseconds without acquiring relational database locks.
 
 ## Chapter 2: Flash Sale Engine - The Mystery Behind Redis and Hot Keys
 
@@ -238,8 +238,7 @@ If a specific shard exhausts inventory while adjacent shards hold stock, an auto
 
 ---
 
-## Summary and Developer Takeaways
-
+## Developer Takeaways
 Building a resilient flash sale engine requires combining **in-memory local caching**, **sliding window rate limiting**, **atomic Lua inventory reservation**, and **Redis inventory sharding**. By validating stock in memory and offloading write persistence to asynchronous workers, backend services process extreme traffic spikes with zero inventory overselling.
 
 ## Redis Lua Script Performance Benchmarks

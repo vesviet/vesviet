@@ -5,14 +5,8 @@ lastmod: "2026-07-26T10:30:00+07:00"
 draft: false
 weight: 20
 description: "A deep technical specification of the 8 mandatory core blocks for enterprise agent prompts, XML tag framing, preventing instruction drift, and fail-closed execution."
-categories:
-  - Engineering
-  - AI
-tags:
-  - prompt
-  - standard
-  - context-engineering
-  - agent
+categories: ["Engineering", "AI"]
+tags: ["prompt", "standard", "context-engineering", "agent"]
 ShowToc: true
 TocOpen: true
 cover:
@@ -23,6 +17,8 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://vesviet.com/series/prompt-standard/part-2-the-8-core-blocks/"
 mermaid: true
 ---
+
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Context Engineering Evolution](/series/prompt-standard/part-1-context-engineering-evolution/). Review it first if the terminology in this part is unfamiliar.
 
 **Answer-first:** Production agent prompts are built using an 8-block modular schema rather than monolithic text strings. Isolating identity, mission, boundary locks, environment context, tool policies, workflows, output contracts, and uncertainty handlers stops agent drift, enforces fail-closed execution, and eliminates prompt injection vulnerabilities in automated multi-agent applications.
 
@@ -177,3 +173,5 @@ The Fallback and Uncertainty Policy block sets clear rules for handling low-conf
 {{< /faq >}}
 
 {{< author-cta >}}
+
+🔗 **Next Step:** Continue to [Part 3 — Layered Prompt Architecture](/series/prompt-standard/part-3-layered-prompt-architecture/) for the following module in the series.

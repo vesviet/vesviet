@@ -21,11 +21,11 @@ mermaid: true
 image: "images/series/remote-team-vietnam-migration-cover.png"
 ---
 
-> **Executive Summary & Quick Answer**: Operating a remote engineering team in Vietnam for Magento migrations succeeds through async-first documentation, standardized ADRs (Architecture Decision Records), and defined phase-gate reviews rather than forcing overlapping work hours.
+> **Prerequisite:** This is the starting part of the series — no prior part is required. Later parts assume the concepts introduced here.
+
+> **Answer-first:** Operating a remote engineering team in Vietnam for Magento migrations succeeds through async-first documentation, standardized ADRs (Architecture Decision Records), and defined phase-gate reviews rather than forcing overlapping work hours.
 
 **Answer-first:** The biggest failure mode in running a remote Vietnam team through a Magento migration is not the timezone gap — it's synchronous dependency on the client-side technical lead for decisions that should be pre-documented. Async-first coordination with defined phase gates eliminates 80% of timezone friction. The remaining 20% requires one weekly sync window and a clear incident escalation path.
-
-> **Pillar Architecture Guide:** This article is part of the **[Composable Commerce: Migrating from Monolith to Microservices](/posts/ecommerce-architecture-composable-migration/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 > **Series context:** This post is part of the [E-Commerce Re-Architecture in Vietnam](/series/magento-migration-vietnam/) series. For budget planning, read [Cost Model: Magento → Go Migration in Vietnam vs US/EU](/series/magento-migration-vietnam/magento-migration-cost-vietnam-vs-us-eu/) first.
 
@@ -53,7 +53,6 @@ Multiplied across 5 engineers and 12 months, decision latency is the primary dri
 ---
 
 ## Timezone Overlap Architecture
-
 
 ### US ↔ Vietnam Gap
 
@@ -311,10 +310,10 @@ For guidance on managing remote engineering teams or setting up offshore Go migr
 
 *Next in series: [Post-Migration Operations](/series/magento-migration-vietnam/remote-team-vietnam-magento-migration/)*
 
-
 ## Architectural Context & Pillar References
 
 - [Composable E-Commerce Migration: Overcoming Tech Debt](/posts/ecommerce-architecture-composable-migration/)
 - [Zero-Downtime: Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/)
 - [Post-Magento Operations: Running a Vietnam Go Team in Production](/series/magento-migration-vietnam/post-migration-operations-vietnam-go-team/)
 
+🔗 **Next Step:** Continue to [Magento Migration Cost Vietnam Vs Us Eu](/series/magento-migration-vietnam/magento-migration-cost-vietnam-vs-us-eu/) for the following module in the series.

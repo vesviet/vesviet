@@ -20,13 +20,13 @@ mermaid: true
 [← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/executive-summary/) • [Next →](/series/alipay-double-11/phase-2-architecture/)
 
-> **Executive Summary & Quick Answer**: Alipay's Double 11 engineering journey evolved over a decade from a centralized monolithic database (2009) to a planet-scale multi-active cloud-native architecture capable of processing over 544,000 TPS at peak.
+> **Answer-first:** Alipay's Double 11 engineering journey evolved over a decade from a centralized monolithic database (2009) to a planet-scale multi-active cloud-native architecture capable of processing over 544,000 TPS at peak.
 
 > **Prerequisite:** [Executive Summary](/series/alipay-double-11/executive-summary/)
 
 ## Overview
 
-> **Answer-First:** The Double 11 evolution tracks Alipay journey from monolithic database crashes in 2009 to multi-region active-active unitized architectures.
+> **Answer-first:** The Double 11 evolution tracks Alipay journey from monolithic database crashes in 2009 to multi-region active-active unitized architectures.
 
 **Double 11 (Singles' Day)**, initiated in 2009 as a minor promotional event on Taobao Mall, evolved over a decade into the world's largest online shopping festival. For Alipay’s engineering teams, it served as an annual crucible: a predictable yet extreme spike in transaction volume that forced the continuous redesign of payment infrastructure. This timeline tracks the evolution of Alipay’s technical scaling from a centralized database model to a modern, elastic cloud-native architecture.
 
@@ -73,7 +73,7 @@ graph TD
 
 ## Chronology of Scale: Yearly Milestones
 
-**Answer-first:** Milestones detail peak TPS surges from 400 TPS in 2009 to 544,000 TPS by 2019, driven by continuous architectural innovation.
+Milestones detail peak TPS surges from 400 TPS in 2009 to 544,000 TPS by 2019, driven by continuous architectural innovation.
 
 ### 2009: The Accidental Promotion
 - **Peak Throughput**: ~100 payment TPS.
@@ -145,7 +145,7 @@ graph TD
 
 ## Log Analysis: The Metrics of Growth
 
-**Answer-first:** Metrics analysis highlights compounding transaction volume growth, decreasing p99 latencies, and reduced hardware cost per payment transaction.
+Metrics analysis highlights compounding transaction volume growth, decreasing p99 latencies, and reduced hardware cost per payment transaction.
 
 The following table details the compounding annual growth rate (CAGR) of Double 11 payment peaks and the corresponding resource efficiency gains:
 
@@ -162,7 +162,7 @@ As the system scaled, the primary optimization metric shifted from *absolute cap
 
 ## What to Copy from this Timeline
 
-**Answer-first:** Key lessons for modern engineering teams include sharding data early, investing in automated stress testing, and enforcing asynchronous processing.
+Key lessons for modern engineering teams include sharding data early, investing in automated stress testing, and enforcing asynchronous processing.
 
 1. **Shift the Bottleneck Upstream**: In 2012, Alipay learned that database vertical scaling is a dead end. Scale out at the application layer through routing and unitization before the database becomes a single point of failure.
 2. **Shorten the Prep Window via Automation**: Relying on manual readiness checklists will eventually block scaling. Invest in automated load testing and self-healing systems.
@@ -173,7 +173,7 @@ As the system scaled, the primary optimization metric shifted from *absolute cap
 
 ## Peak Transaction Throughput Benchmarks
 
-**Answer-first:** Peak throughput benchmarks document exponential TPS growth alongside zero-downtime database failover capabilities.
+Peak throughput benchmarks document exponential TPS growth alongside zero-downtime database failover capabilities.
 
 The following Go benchmark demonstrates atomic counter synchronization under high concurrency, simulating multi-tenant counter aggregation for peak Double 11 payment throughput metrics:
 
@@ -204,7 +204,7 @@ BenchmarkAlipayTPSCounter-16    100000000    10.5 ns/op    0 B/op    0 allocs/op
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** Alipay survived Double 11 traffic spikes by continuously redesigning core architectural bottlenecks before annual shopping events.
+Alipay survived Double 11 traffic spikes by continuously redesigning core architectural bottlenecks before annual shopping events.
 
 {{< faq "What caused Alipay's database bottlenecks during early Double 11 events?" >}}
 Early Double 11 events relied on centralized relational databases that hit severe hardware I/O and row-locking limits during simultaneous midnight payment spikes. The resulting lock contention on transaction ledgers caused connection pool starvation across application servers and forced the shift toward distributed architectures.

@@ -19,9 +19,9 @@ TocOpen: true
 weight: 55
 ---
 
-# Part 5: Multi-Dimensional Agent Evaluation & LLM-as-a-Judge Harnesses
+> **Prerequisite:** This is the starting part of the series — no prior part is required. Later parts assume the concepts introduced here.
 
-**Answer-First:** Production multi-agent evaluation requires multi-dimensional grading rubrics, LLM-as-a-Judge harnesses, and trace trajectory analysis. Evaluating task completion, tool call accuracy, and path efficiency in Go benchmark pipelines prevents behavioral drift and ensures deterministic reliability.
+**Answer-first:** Production multi-agent evaluation requires multi-dimensional grading rubrics, LLM-as-a-Judge harnesses, and trace trajectory analysis. Evaluating task completion, tool call accuracy, and path efficiency in Go benchmark pipelines prevents behavioral drift and ensures deterministic reliability.
 
 ---
 
@@ -93,12 +93,10 @@ import asyncio
 from typing import List, Dict, Any, Optional
 from pydantic import BaseModel, Field
 
-
 class EvaluationRubric(BaseModel):
     correctness_weight: float = 0.4
     tool_accuracy_weight: float = 0.3
     efficiency_weight: float = 0.3
-
 
 class JudgeScoreOutput(BaseModel):
     thought_process: str = Field(description="Step-by-step reasoning for assigned scores")
@@ -107,7 +105,6 @@ class JudgeScoreOutput(BaseModel):
     efficiency_score: float = Field(ge=0.0, le=1.0, description="Trajectory step efficiency score")
     final_composite_score: float = Field(ge=0.0, le=1.0, description="Weighted composite score")
     hallucination_detected: bool = Field(description="Flag indicating fabricated facts")
-
 
 class AgentTrajectoryEvaluator:
     def __init__(self, judge_model_name: str, rubric: Optional[EvaluationRubric] = None):
@@ -162,7 +159,6 @@ Provide your evaluation as a JSON object strictly adhering to the schema."""
             final_composite_score=round(composite, 2),
             hallucination_detected=False
         )
-
 
 if __name__ == "__main__":
     evaluator = AgentTrajectoryEvaluator(judge_model_name="gpt-4o")
@@ -391,8 +387,9 @@ Synthetic evaluation suites should run on every pull request that modifies agent
 
 ---
 
-## Technical Deep-Dive: System Invariants & SLA Metrics
-
+## System Invariants & SLA Metrics
 - **Maximum Acceptable Trajectory Drift**: < 2.5% variation in composite benchmark scores across consecutive production release candidates.
 - **Evaluation Worker Pool Throughput**: Minimum 50 concurrent trajectory runs per minute in production Go benchmark harnesses.
 - **Judge Inference Latency Overhead**: Sub-300ms score generation per trajectory using lightweight structured evaluators.
+
+🔗 **Next Step:** Continue to [Part 6 — Human In The Loop](/series/agentic-system-architecture/part-6-human-in-the-loop/) for the following module in the series.

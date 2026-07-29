@@ -19,11 +19,11 @@ TocOpen: true
 image: "images/posts/mcp-engineering-in-production-cover.png"
 ---
 
-
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — Build](/series/mcp-engineering-in-production/part-2-build/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 3 — Identity & Authentication: OAuth2, PKCE & mTLS
 
-> **Executive Summary & Quick Answer**: Hardcoding static API keys in AI agent code creates severe security liabilities. Production MCP architectures enforce Zero Trust authentication using **OAuth 2.1 with PKCE** for user identity propagation and **SPIFFE/SPIRE mTLS X.509 certificates** for workload-to-workload identity verification across microservice meshes.
+> **Answer-first:** Hardcoding static API keys in AI agent code creates severe security liabilities. Production MCP architectures enforce Zero Trust authentication using **OAuth 2.1 with PKCE** for user identity propagation and **SPIFFE/SPIRE mTLS X.509 certificates** for workload-to-workload identity verification across microservice meshes.
 >
 > **Key Takeaways**:
 > - **Zero Hardcoded Secrets**: Replaces static API keys with short-lived OAuth 2.1 tokens (15-minute expiration).
@@ -203,26 +203,24 @@ SPIRE issues short-lived X.509 certificates directly to container pods based on 
 
 ---
 
-## Technical Deep-Dive: Model Context Protocol & System Topology Invariants
-
+## Production Invariants & Trade-offs
 Securing MCP server communication requires strict separation between human user identities and machine workload credentials.
 
-### Protocol Performance Metrics & Latency Benchmarks
-
+### Performance Benchmarks
 - **Token Validation Overhead**: Ed25519 asymmetric signature verification executes in sub-12ms with in-memory public key (JWKS) caching.
 - **Workload mTLS Handshake**: SPIFFE/SPIRE X.509 certificate validation adds sub-5ms overhead on ingress Envoy proxies.
 
-### Protocol Invariants & Transport Security Guardrails
-
+### Protocol & Transport Invariants
 1. **Short-Lived Credentials**: OAuth 2.1 access tokens expire within 15 minutes to limit exposure during key compromise.
 2. **Workload Cryptographic Attestation**: Service accounts must present valid SPIFFE identities before initiating SSE connections.
 
-### Operational Checklist for Software Engineering Teams
-
+### Operational Checklist
 1. **Enforce Scope Boundaries**: Reject tool requests exceeding the user's OAuth scope and prompt for interactive elevation if authorized.
 2. **Key Rotation Schedules**: Automate SPIRE X.509 certificate issuance and rotation via automated sidecar agents.
 
 ---
+
+🔗 **Next Step:** Continue to [Part 4 — Gateway](/series/mcp-engineering-in-production/part-4-gateway/) for the following module in the series.
 
 ## Internal Series Navigation
 
@@ -230,7 +228,6 @@ Securing MCP server communication requires strict separation between human user 
 - [Part 4 — MCP Gateway Architecture & Routing](/series/mcp-engineering-in-production/part-4-gateway/)
 - [Part 5 — MCP Security Engineering & Isolation](/series/mcp-engineering-in-production/part-5-security/)
 - [Part 5 — Enterprise Security, RBAC & Data Poisoning Defense](/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/)
-
 
 #### System Trade-offs & SLA Analysis for Part 3 Identity
 
@@ -241,6 +238,5 @@ Securing MCP server communication requires strict separation between human user 
 | **JWKS Cache DB Pool** | 30 Connections | 120 Connections | In-memory public key cache pool |
 | **Auth Failure Rate** | < 0.001% | > 0.05% | Immediate IP rate-limiting on failed auth |
 
-#### Operational Checklist for Production Readiness
-
+#### Operational Checklist
 System verification requires rigorous unit test coverage, explicit error propagation, and zero-downtime canary deployment mechanics across all identity provider integrations.

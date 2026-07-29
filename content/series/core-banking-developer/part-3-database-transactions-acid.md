@@ -19,15 +19,13 @@ TocOpen: true
 mermaid: true
 ---
 
-> **Answer-First:** Enforcing ACID isolation levels in core banking prevents lost updates and dirty reads during high-concurrency transfers. Using PostgreSQL `REPEATABLE READ` or pessimistic row locking (`SELECT FOR UPDATE`) combined with Go connection pooling guarantees transactional integrity. Spanner and CockroachDB provide linearizable distributed ACID transactions across microservices using Paxos consensus and Hybrid Logical Clocks.
+> **Answer-first:** Enforcing ACID isolation levels in core banking prevents lost updates and dirty reads during high-concurrency transfers. Using PostgreSQL `REPEATABLE READ` or pessimistic row locking (`SELECT FOR UPDATE`) combined with Go connection pooling guarantees transactional integrity. Spanner and CockroachDB provide linearizable distributed ACID transactions across microservices using Paxos consensus and Hybrid Logical Clocks.
 
 > **Prerequisite:** [Part 2: CASA & Lending Domain Logic](/series/core-banking-developer/part-2-banking-domain-casa-lending/) on transaction parameters.
 
 ## The Core Problem: Concurrency
 
-> **Answer-First:** High-concurrency banking transfers risking race conditions and lost updates require strict database lock isolation to protect ledger state.
-
-> **Pillar Architecture Guide:** This guide is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series. Please refer to the original guide for detailed architectural references.
+> **Answer-first:** High-concurrency banking transfers risking race conditions and lost updates require strict database lock isolation to protect ledger state.
 
 Imagine Customer A's account has **1,000,000 VND**. Two events happen at exactly the same time:
 - **Event 1:** The customer withdraws 800,000 VND at an ATM.
@@ -54,7 +52,7 @@ The following matrix details how the four fundamental ACID database guarantees a
 
 ## Isolation Levels
 
-**Answer-first:** PostgreSQL isolation levels (Read Committed, Repeatable Read, Serializable) control visibility trade-offs during concurrent financial transactions.
+PostgreSQL isolation levels (Read Committed, Repeatable Read, Serializable) control visibility trade-offs during concurrent financial transactions.
 
 Database transaction isolation levels govern how concurrent queries perceive uncommitted or concurrently committed modifications. PostgreSQL relies on Multi-Version Concurrency Control (MVCC), creating row snapshots to serve read queries without blocking write operations.
 
@@ -84,7 +82,7 @@ COMMIT;
 
 ## Locking Strategies
 
-**Answer-first:** Pessimistic `SELECT FOR UPDATE` locking prevents concurrent updates on account rows, while optimistic locking uses version numbers for low-contention reads.
+Pessimistic `SELECT FOR UPDATE` locking prevents concurrent updates on account rows, while optimistic locking uses version numbers for low-contention reads.
 
 ### Pessimistic Locking
 
@@ -149,7 +147,7 @@ The table below outlines appropriate concurrency control strategies based on tra
 
 ## Idempotency — Preventing Duplicate Transactions
 
-**Answer-first:** Idempotency keys generated from payment references prevent duplicate transfers when network timeouts trigger client transaction retries.
+Idempotency keys generated from payment references prevent duplicate transfers when network timeouts trigger client transaction retries.
 
 Networks can timeout. Clients can retry requests. **How do you guarantee a "transfer 1 million" command only happens exactly once, even if the request is sent 5 times?**
 
@@ -183,7 +181,7 @@ Processing Logic:
 
 ## Deadlocks — The Silent Enemy
 
-**Answer-first:** Deadlocks occur when concurrent transfers acquire row locks in reverse order; sorting account IDs numerically before locking prevents deadlocks.
+Deadlocks occur when concurrent transfers acquire row locks in reverse order; sorting account IDs numerically before locking prevents deadlocks.
 
 A deadlock occurs when Transaction A locks Account X and waits for Account Y, while Transaction B locks Account Y and waits for Account X.
 
@@ -213,7 +211,7 @@ func transfer(fromID, toID string) {
 
 ## Database Checklist for Core Banking
 
-**Answer-first:** Core banking database setup requires configuring `SERIALIZABLE` or `FOR UPDATE` locking, connection pool limits, and explicit transaction timeouts.
+Core banking database setup requires configuring `SERIALIZABLE` or `FOR UPDATE` locking, connection pool limits, and explicit transaction timeouts.
 
 The following engineering checklist summarizes mandatory database configuration policies for core banking applications.
 
@@ -228,7 +226,7 @@ The following engineering checklist summarizes mandatory database configuration 
 
 ## Pessimistic Locking to Prevent Race Conditions
 
-**Answer-first:** Pessimistic locking explicitly locks account rows before computing balances, blocking concurrent transactions until the current transfer commits.
+Pessimistic locking explicitly locks account rows before computing balances, blocking concurrent transactions until the current transfer commits.
 
 When processing high-frequency ledger updates, concurrent database transactions can result in race conditions. We mitigate this by executing pessimistic locking using the `SELECT FOR UPDATE` query syntax. The database blocks concurrent reads on the locked rows until the transaction commits.
 
@@ -298,7 +296,7 @@ sequenceDiagram
 
 ## Distributed Transaction Strategies: 2PC vs Saga & Distributed SQL Guarantees
 
-**Answer-first:** Two-Phase Commit (2PC) blocks database connections across microservices, whereas Saga choreography achieves eventual consistency asynchronously.
+Two-Phase Commit (2PC) blocks database connections across microservices, whereas Saga choreography achieves eventual consistency asynchronously.
 
 When financial transactions cross microservice boundary limits (e.g. Account Service and Payments Service), distributed transaction orchestration becomes mandatory.
 
@@ -313,7 +311,7 @@ Modern cloud-native banks use Distributed SQL databases such as Google Cloud Spa
 
 ## Saga Orchestration Pattern in Go
 
-**Answer-first:** Saga orchestrators execute sequential local transactions across microservices, running compensating transactions if downstream steps fail.
+Saga orchestrators execute sequential local transactions across microservices, running compensating transactions if downstream steps fail.
 
 The Go implementation below provides a lightweight Saga orchestrator capable of running sequential microservice steps and executing compensation handlers on failure.
 
@@ -392,7 +390,7 @@ func BenchmarkPessimisticRowLock(b *testing.B) {
 
 ## Deadlock Avoidance and Lock Escalation Policies
 
-**Answer-first:** Enforcing a strict alphabetical or numerical account locking order eliminates circular wait conditions and prevents database deadlocks.
+Enforcing a strict alphabetical or numerical account locking order eliminates circular wait conditions and prevents database deadlocks.
 
 High-concurrency database updates can trigger deadlocks if multiple transactions attempt to lock the same resources in differing orders. We enforce strict deadlock prevention rules:
 1. **Sorted Lock Ordering:** In multi-account operations, accounts are locked in alphabetical order based on their Account Numbers, ensuring that concurrent transactions never lock resources circularly.
@@ -401,7 +399,7 @@ High-concurrency database updates can trigger deadlocks if multiple transactions
 
 ## Go Pessimistic vs Optimistic Concurrency Control Engine
 
-**Answer-first:** Go concurrency engines implement both pessimistic row locks for high-contention transfers and optimistic version checks for low-contention operations.
+Go concurrency engines implement both pessimistic row locks for high-contention transfers and optimistic version checks for low-contention operations.
 
 The Go package snippet below demonstrates optimistic concurrency control retries with version checks for low-contention account transfers.
 
@@ -477,7 +475,7 @@ Pessimistic locking via `SELECT FOR UPDATE` is preferred for high-frequency ledg
 
 ## Concurrency Performance & Isolation Benchmarks
 
-**Answer-first:** Benchmarking concurrency engines compares throughput and latency under Read Committed, Repeatable Read, and Serializable isolation levels.
+Benchmarking concurrency engines compares throughput and latency under Read Committed, Repeatable Read, and Serializable isolation levels.
 
 Comparing PostgreSQL `SERIALIZABLE` vs `READ COMMITTED WITH FOR UPDATE` under 5,000 TPS workloads demonstrates marked latency differences. The execution benchmark output below quantifies sub-microsecond CPU overhead when acquiring sorted account lock pairs in Go:
 
@@ -489,7 +487,7 @@ Pessimistic row locking ensures predictable latency (P99 < 15ms) under heavy con
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** Preventing race conditions in core banking requires using pessimistic row locks or serializable isolation combined with idempotent request keys.
+Preventing race conditions in core banking requires using pessimistic row locks or serializable isolation combined with idempotent request keys.
 
 {{< faq "Why is READ COMMITTED insufficient for concurrent bank transfers?" >}}
 `READ COMMITTED` snapshotting re-evaluates database reads at the start of each statement rather than the start of the transaction. If two concurrent transactions read an account balance of 100,000 VND simultaneously, both will see sufficient funds and approve debit operations, causing a lost update and leaving the balance negative.

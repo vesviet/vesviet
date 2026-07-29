@@ -18,7 +18,7 @@ canonicalURL: "https://tanhdev.com/series/shopee-architecture/01-microservices-f
 image: "images/posts/shopee-flash-sale-cover.png"
 ---
 
-> **Answer-First:** Shopee handles millions of concurrent users by migrating from monolithic systems to high-performance Go microservices. Inter-service gRPC Protobuf communication and Istio/Envoy service mesh sidecars enforce strict SLAs and sub-millisecond RPC latencies across thousands of internal microservice nodes.
+> **Answer-first:** Shopee handles millions of concurrent users by migrating from monolithic systems to high-performance Go microservices. Inter-service gRPC Protobuf communication and Istio/Envoy service mesh sidecars enforce strict SLAs and sub-millisecond RPC latencies across thousands of internal microservice nodes.
 
 ## Chapter 1: Building a Massive Foundation with Microservices, Golang, and gRPC
 
@@ -267,8 +267,7 @@ Inside data center clusters, Shopee uses Envoy sidecars managed by an Istio cont
 
 ---
 
-## Summary and Developer Takeaways
-
+## Developer Takeaways
 Building an enterprise Go microservices architecture requires combining **Go's lightweight GMP concurrency model**, **gRPC HTTP/2 binary serialization**, and **API Gateway / Envoy service mesh proxies**. To guarantee sub-5ms RPC response times during 10M+ QPS traffic surges, engineers must optimize connection pools, implement lock-free round-robin routing, and enforce unary interceptor rate limiting at service boundaries.
 
 ## Microservice Communication & Serialization Benchmarks

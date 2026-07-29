@@ -20,20 +20,20 @@ canonicalURL: "https://tanhdev.com/series/system-design/04-database-scaling-shar
 image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
 
-> **Answer-First:** Horizontal database sharding with Vitess and TiDB distributes high-volume write traffic across database clusters using consistent hashing and range partitioning.
+> **Answer-first:** Horizontal database sharding with Vitess and TiDB distributes high-volume write traffic across database clusters using consistent hashing and range partitioning.
 
 > **Prerequisite:** Part 4 of the [System Design Masterclass](/series/system-design/). Read [Part 3: Caching Strategies](/series/system-design/03-caching-strategies-redis-golang/) first.
 
 ## Database Sharding in Go — TiDB, PostgreSQL & Connection Pools
 
-> **Executive Summary & Quick Answer**: Horizontal database sharding partitions SQL tables across independent database nodes using hash or range shard keys. In Go services, combining application-level shard routing with tuned `database/sql` connection pools (`SetMaxOpenConns`, `SetMaxIdleConns`) prevents RAM exhaustion and write bottlenecks.
+> **Answer-first:** Horizontal database sharding partitions SQL tables across independent database nodes using hash or range shard keys. In Go services, combining application-level shard routing with tuned `database/sql` connection pools (`SetMaxOpenConns`, `SetMaxIdleConns`) prevents RAM exhaustion and write bottlenecks.
 >
 > **Key Takeaways**:
 > - **Shard Key Selection**: High-cardinality keys (e.g. `user_id`) prevent write hot-spotting compared to range keys like timestamps.
 > - **Connection Pooling**: PostgreSQL allocates 5-10MB RAM per open backend connection; tune Go `SetMaxOpenConns` to avoid memory exhaustion.
 > - **NewSQL Scaling**: Distributed SQL databases like TiDB implement Percolator 2PC over Raft consensus groups to provide horizontal scale with full ACID semantics.
 
-### What You'll Learn That AI Won't Tell You
+### What You'll Learn
 - **PostgreSQL Connection Memory Math:** Why each PostgreSQL connection eats 5–10MB of server RAM, and why a naive `database/sql` pool configuration crashes databases.
 - **TiDB Percolator Failures:** The exact edge cases where primary lock failures leave secondary locks orphaned, and how TiDB's async lock resolver cleans them up.
 - **LSM-Tree Write Amplification:** The performance penalty of Cassandra/TiKV compaction cycles on SSD disk lifespan.

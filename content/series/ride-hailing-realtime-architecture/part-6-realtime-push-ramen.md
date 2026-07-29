@@ -17,6 +17,8 @@ TocOpen: true
 image: "images/posts/real-time-ride-hailing-cover.png"
 ---
 
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Pricing Surge Engine](/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/). Review it first if the terminology in this part is unfamiliar.
+
 **Answer-first:** Scaling real-time dispatch pushes requires a stateful WebSocket gateway layer that maintains millions of persistent TCP connections. Terminating mTLS at high-performance reverse proxies (Envoy) and tracking socket locations in a distributed Redis connection registry allows backend dispatchers to push targeted ride offers under 10ms.
 
 ## The Problem: Pushing Instant Notifications to Millions of Devices
@@ -330,7 +332,7 @@ The sequence diagram below traces the end-to-end data trajectory from driver loc
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** This FAQ addresses key push messaging topics: gRPC/QUIC transport advantages, stateful connection routing, thundering herd prevention, and background push fallbacks.
+This FAQ addresses key push messaging topics: gRPC/QUIC transport advantages, stateful connection routing, thundering herd prevention, and background push fallbacks.
 
 {{< faq q="Why are persistent gRPC/QUIC streams preferred over HTTP long polling for mobile push notifications?" >}}
 gRPC over HTTP/3 QUIC provides full-duplex, multiplexed binary streaming with minimal header overhead, delivering push notifications in under 10ms. HTTP long polling requires continuous connection handshake loops and heavy text headers, causing high CPU load on servers and rapidly draining mobile device battery life.
@@ -367,3 +369,5 @@ Return to the [Real-Time Ride-Hailing Architecture series hub](/series/ride-hail
 ---
 
 {{< author-cta >}}
+
+🔗 **Next Step:** You have reached the final part of this series. Revisit the series index at [/series/ride-hailing-realtime-architecture/](/series/ride-hailing-realtime-architecture/) or explore other series linked below.

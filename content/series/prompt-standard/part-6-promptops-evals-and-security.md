@@ -5,14 +5,8 @@ lastmod: "2026-07-26T10:30:00+07:00"
 draft: false
 weight: 60
 description: "Implement production PromptOps lifecycles, G-Eval automated CI/CD gates, OWASP ASI 2026 security posture, and Go multi-agent contract validators."
-categories:
-  - Engineering
-  - AI
-tags:
-  - prompt
-  - standard
-  - context-engineering
-  - agent
+categories: ["Engineering", "AI"]
+tags: ["prompt", "standard", "context-engineering", "agent"]
 ShowToc: true
 TocOpen: true
 cover:
@@ -23,6 +17,8 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/prompt-standard/part-6-promptops-evals-and-security/"
 mermaid: true
 ---
+
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Declarative Prompting Dspy](/series/prompt-standard/part-5-declarative-prompting-dspy/). Review it first if the terminology in this part is unfamiliar.
 
 **Answer-first:** Production PromptOps establishes CI/CD evaluation gates using LLM-as-a-Judge scoring against golden datasets to block regression deployments. Combined with OWASP ASI-compliant multi-agent security and Dual-LLM isolation patterns, organizations secure agents against indirect prompt injection, privilege abuse, and unauthorized tool execution.
 
@@ -218,3 +214,5 @@ Unstructured inter-agent messages lead to compounding hallucinations and securit
 {{< /faq >}}
 
 {{< author-cta >}}
+
+🔗 **Next Step:** You have reached the final part of this series. Revisit the series index at [/series/prompt-standard/](/series/prompt-standard/) or explore other series linked below.

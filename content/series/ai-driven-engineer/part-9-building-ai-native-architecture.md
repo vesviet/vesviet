@@ -18,7 +18,9 @@ ShowToc: true
 TocOpen: true
 ---
 
-> **Executive Summary & Quick Answer**: Building an AI-Native Architecture requires refactoring traditional backend systems from static monolithic REST endpoints into modular Domain-Driven Design (DDD) bounded contexts exposed via standardized AI protocols (MCP / gRPC). This enables autonomous agents to inspect, reason over, and execute application capabilities dynamically under zero-trust security.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 8 — The Junior Paradox](/series/ai-driven-engineer/part-8-the-junior-paradox/). Review it first if the terminology in this part is unfamiliar.
+
+> **Answer-first:** Building an AI-Native Architecture requires refactoring traditional backend systems from static monolithic REST endpoints into modular Domain-Driven Design (DDD) bounded contexts exposed via standardized AI protocols (MCP / gRPC). This enables autonomous agents to inspect, reason over, and execute application capabilities dynamically under zero-trust security.
 
 **Key Takeaways**:
 - **DDD Bounded Context Isolation**: Prevents agent tool call blast radius by strictly decoupling billing, identity, and inventory domains.
@@ -243,8 +245,7 @@ Legacy architectures treat databases as static stores, while AI-native architect
 
 ---
 
-## Technical Deep-Dive: System Architecture & Developer Productivity Invariants
-
+## Architecture Invariants
 AI-native architectural invariants demand zero direct coupling between frontend APIs and LLM providers, isolating reasoning behind Go service facades.
 
 Building AI-native software platforms requires a strict architectural boundary between Large Language Models and core domain microservices. By exposing type-safe interface wrappers—such as the Model Context Protocol (MCP) or JSON-RPC tool adapters—backend systems allow autonomous agents to execute business operations while preserving data integrity and security guardrails.
@@ -256,15 +257,13 @@ AI-native backend services must maintain sub-millisecond execution times for int
 - **Payload Schema Validation:** Strict JSON unmarshaling and Pydantic/Go struct validations intercept invalid parameter payloads prior to database queries.
 - **Concurrent Request Handling:** Thread-safe state locks (`sync.RWMutex`) prevent race conditions during parallel agent operations.
 
-### Enterprise Governance Invariants & Security Guardrails
-
+### Governance & Security Invariants
 Isolating AI agents behind service facades enforces enterprise governance and security policies:
 1. **Machine-Readable Tool Schema Definitions:** Exposing rigid argument parameters guarantees agents pass valid parameter types (`SKU`, `Qty`).
 2. **Context-Aware Cancellation:** Propagating Go `context.Context` ensures runaway LLM reasoning loops or disconnected HTTP clients immediately terminate active backend database operations.
 3. **Decoupled Business Logic:** Business rules and state mutations remain completely isolated within canonical domain services rather than embedded in LLM system prompts.
 
-### Operational Checklist for Software Engineering Teams
-
+### Operational Checklist
 - **Model Context Protocol (MCP) Standardization:** Standardize agent-to-service interfaces using standardized MCP tool definitions.
 - **Granular Tool Telemetry:** Record OpenTelemetry spans for every tool execution, logging agent IDs, input parameters, execution duration, and outcome status.
 - **Fallback Circuit Breakers:** Implement rate limiters and circuit breakers on external LLM provider calls to prevent API quota exhaustion during traffic spikes.
@@ -283,6 +282,8 @@ MCP standardizes how applications expose tools, prompts, and resources to AI age
 AI-native architectures enforce Zero-Trust by requiring AI agents to attach the requesting user's cryptographically signed JWT token to every tool execution call. Backend microservices validate the token claims and execute Row-Level Security (RLS) database queries, guaranteeing the agent cannot access data beyond the user's explicit permissions.
 
 ---
+
+🔗 **Next Step:** Continue to [Bonus Transition Path](/series/ai-driven-engineer/bonus-transition-path/) for the following module in the series.
 
 ## Internal Series Navigation
 

@@ -20,7 +20,7 @@ mermaid: true
 [← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/phase-2-architecture/) • [Next →](/series/alipay-double-11/phase-4-technology/)
 
-> **Executive Summary & Quick Answer**: Surviving Double 11 requires production Full-Link Stress Testing (Shadow Database traffic simulation) and automated AI-driven operational playbooks to detect and isolate degraded nodes within 1 minute.
+> **Answer-first:** Surviving Double 11 requires production Full-Link Stress Testing (Shadow Database traffic simulation) and automated AI-driven operational playbooks to detect and isolate degraded nodes within 1 minute.
 
 > **Prerequisite:** [Phase 2: Core Architecture (LDC, Unitization, Multi-Active)](/series/alipay-double-11/phase-2-architecture/)
 
@@ -30,7 +30,7 @@ This phase is about how peak performance becomes **repeatable**. The core claim 
 
 ## 3.1 Capacity Planning
 
-> **Answer-First:** Capacity planning models expected peak TPS using historical traffic growth curves, allocating compute and database resources across cells.
+> **Answer-first:** Capacity planning models expected peak TPS using historical traffic growth curves, allocating compute and database resources across cells.
 
 ```mermaid
 graph TD
@@ -76,7 +76,7 @@ To address this, Alipay developed **Full-Link Stress Testing (FLST)**, which run
 
 ## 3.3 Test Payload Generator (Go Snippet)
 
-**Answer-first:** Go stress test generators build synthetic payment payloads flagged with shadow traffic headers, isolating test data from production ledgers.
+Go stress test generators build synthetic payment payloads flagged with shadow traffic headers, isolating test data from production ledgers.
 
 The following production-ready Go implementation demonstrates a synthetic stress test payload generator, illustrating how to propagate stress-testing metadata headers, manage request generation rate limits, and isolate test data from production storage:
 
@@ -194,7 +194,7 @@ func main() {
 
 ## 3.4 Incident Command and Monitoring
 
-**Answer-first:** Incident command structures enforce real-time monitoring dashboards, war room escalation protocols, and rapid automated rollback triggers.
+Incident command structures enforce real-time monitoring dashboards, war room escalation protocols, and rapid automated rollback triggers.
 
 When handling 544,000 TPS, manual tracking of anomalies is impossible. Monitoring must be automated and divided into structured resolution tiers.
 
@@ -218,7 +218,7 @@ To maintain system stability during extreme payment spikes, SRE teams monitor fo
 
 ## 3.5 Downgrade and Degrade Strategies
 
-**Answer-first:** Downgrade strategies dynamically disable non-critical features (like recommended items) to preserve core payment execution during extreme load.
+Downgrade strategies dynamically disable non-critical features (like recommended items) to preserve core payment execution during extreme load.
 
 During extreme peaks, preserving the payment core is the primary directive. If a database cluster is saturated, secondary services must be sacrificed to reclaim capacity.
 
@@ -231,7 +231,7 @@ Degradation plans are organized into structured tiers:
 
 ## 3.6 Operational Readiness Checklist
 
-**Answer-first:** The operational readiness checklist covers pre-event database sanity checks, circuit breaker threshold verifications, and stress test sign-offs.
+The operational readiness checklist covers pre-event database sanity checks, circuit breaker threshold verifications, and stress test sign-offs.
 
 ### Pre-Event (T-30 Days)
 - [ ] Freeze production code changes. All deployments require senior director approval.
@@ -259,7 +259,7 @@ Degradation plans are organized into structured tiers:
 
 ## Key Takeaways
 
-**Answer-first:** Operational readiness at Double 11 scale demands automated production shadow stress testing and pre-configured feature degradation switches.
+Operational readiness at Double 11 scale demands automated production shadow stress testing and pre-configured feature degradation switches.
 
 1. **Automation is a Force Multiplier**: Manual checklists will fail under peak concurrent load. Runbooks must be codified.
 2. **FLST is the Confidence Engine**: You cannot trust performance claims unless they have been verified on production systems using synthetic traffic and shadow databases.
@@ -269,7 +269,7 @@ Degradation plans are organized into structured tiers:
 
 ## Full-Link Stress Test Routing Benchmarks
 
-**Answer-first:** FLST benchmarks validate that shadow traffic isolation adds zero latency overhead to live user payment transactions.
+FLST benchmarks validate that shadow traffic isolation adds zero latency overhead to live user payment transactions.
 
 Evaluating Go HTTP middleware shadow header evaluation and routing logic demonstrates sub-microsecond isolation performance:
 
@@ -311,7 +311,7 @@ For operational chaos automation patterns, see [SRE & Chaos Engineering Playbook
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** Full-link stress testing guarantees Double 11 reliability by validating production capacity, database sharding, and fallback rules before the event.
+Full-link stress testing guarantees Double 11 reliability by validating production capacity, database sharding, and fallback rules before the event.
 
 {{< faq "What is Full-Link Production Stress Testing?" >}}
 Full-link stress testing injects synthetic payment traffic directly into live production environments during off-peak hours prior to Double 11. By validating the entire microservice mesh, network switches, and database sharding under simulated 544,000 TPS, engineering teams detect hidden bottlenecks before real user events occur.

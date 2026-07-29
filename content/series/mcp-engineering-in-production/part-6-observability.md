@@ -19,11 +19,11 @@ TocOpen: true
 image: "images/posts/mcp-engineering-in-production-cover.png"
 ---
 
-
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Security](/series/mcp-engineering-in-production/part-5-security/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 6 — MCP Observability & Tracing: Auditing the Control Plane
 
-> **Executive Summary & Quick Answer**: Operating Model Context Protocol (MCP) servers without telemetry logging creates compliance vulnerabilities (violating OWASP MCP08: Lack of Audit & Telemetry). Instrumenting MCP servers with vendor-agnostic **OpenTelemetry (OTel)** tracing captures JSON-RPC 2.0 tool execution durations, argument metadata, and error rates in real-time Prometheus dashboards.
+> **Answer-first:** Operating Model Context Protocol (MCP) servers without telemetry logging creates compliance vulnerabilities (violating OWASP MCP08: Lack of Audit & Telemetry). Instrumenting MCP servers with vendor-agnostic **OpenTelemetry (OTel)** tracing captures JSON-RPC 2.0 tool execution durations, argument metadata, and error rates in real-time Prometheus dashboards.
 >
 > **Key Takeaways**:
 > - **Compliance Audit Trail**: Logs cryptographically signed execution traces for every MCP tool call to satisfy SOC2 Type II requirements.
@@ -213,6 +213,8 @@ Sensitive data anonymization is enforced at the **OpenTelemetry Collector** laye
 
 ---
 
+🔗 **Next Step:** Continue to [Part 7 — Enterprise](/series/mcp-engineering-in-production/part-7-enterprise/) for the following module in the series.
+
 ## Internal Series Navigation
 
 - [Part 4 — MCP Gateway Architecture & Routing](/series/mcp-engineering-in-production/part-4-gateway/)
@@ -229,6 +231,5 @@ Sensitive data anonymization is enforced at the **OpenTelemetry Collector** laye
 | **Collector Connection Limit** | 60 Connections | 240 Connections | Persistent OTLP gRPC channel pool |
 | **Dropped Span Budget** | < 0.01% | > 0.1% | Ring buffer telemetry queueing |
 
-#### Operational Checklist for Production Readiness
-
+#### Operational Checklist
 System verification requires rigorous unit test coverage, explicit error propagation, and zero-downtime canary deployment mechanics across all telemetry collection pipelines.

@@ -24,14 +24,14 @@ image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 
 ## Go System Design: CAP, PACELC & Clean Architecture Primer
 
-> **Executive Summary & Quick Answer**: System design in Go balances CAP/PACELC trade-offs across consistency, availability, and latency. Clean Architecture isolates business logic behind Go interfaces while dependency injection decouples domain layers from database and transport protocols.
+> **Answer-first:** System design in Go balances CAP/PACELC trade-offs across consistency, availability, and latency. Clean Architecture isolates business logic behind Go interfaces while dependency injection decouples domain layers from database and transport protocols.
 >
 > **Key Takeaways**:
 > - **CAP Theorem**: Network partitions force an absolute choice between Consistency (CP) and Availability (AP).
 > - **PACELC Matrix**: When normal operation occurs (else), systems trade off Latency (L) versus Consistency (C).
 > - **Clean Architecture**: Domain interfaces isolate business logic from SQL/gRPC infrastructure, enabling unit testing without mocks.
 
-### What You'll Learn That AI Won't Tell You
+### What You'll Learn
 - **CAP Theorem Realities:** A rigorous look at Gilbert and Lynch's proof showing why network partitions force an absolute choice between availability and consistency.
 - **PACELC in Practice:** Why latency-consistency trade-offs are the real bottleneck in healthy networks, and how Go services suffer under Spanner's commit wait times.
 - **Clean Architecture Cost:** The compilation and memory allocation overhead of interface-driven design in Go.
@@ -85,7 +85,7 @@ $$A_{\text{composite}} = 1 - (1 - A_A) \times (1 - A_B)$$
 
 ## CAP Theorem and the Asynchronous Network Model
 
-**Answer-first:** The CAP theorem proves that when network partitions (P) occur, distributed systems must choose between Consistency (CP) and Availability (AP), as asynchronous networks cannot guarantee atomic state synchronization and instant client responses simultaneously.
+The CAP theorem proves that when network partitions (P) occur, distributed systems must choose between Consistency (CP) and Availability (AP), as asynchronous networks cannot guarantee atomic state synchronization and instant client responses simultaneously.
 
 **Theorem Definition:** The CAP Theorem (Seth Gilbert & Nancy Lynch, 2002) states that in an asynchronous distributed system, when a Network Partition (P) occurs, you can only guarantee one of: Consistency (C) or Availability (A). All three simultaneously is impossible.
 
@@ -117,7 +117,7 @@ This per-operation flexibility is something CAP cannot model — which is why PA
 
 ## PACELC Database Matrix
 
-**Answer-first:** The PACELC theorem extends CAP by evaluating healthy network operation (Else): systems must trade off Latency (L) versus Consistency (C). Databases like Cassandra choose PA/EL for low latency, while Google Spanner chooses PC/EC for linearizability.
+The PACELC theorem extends CAP by evaluating healthy network operation (Else): systems must trade off Latency (L) versus Consistency (C). Databases like Cassandra choose PA/EL for low latency, while Google Spanner chooses PC/EC for linearizability.
 
 **Core Principle:** PACELC (Daniel Abadi, 2012) extends CAP by addressing the **non-partition case**: when the network is healthy, systems still face a trade-off between Latency (L) and Consistency (C). This is the more relevant trade-off in 99.9% of operational time.
 
@@ -151,7 +151,7 @@ Concrete signals that indicate a monolith is the bottleneck:
 
 ## Clean Architecture & Dependency Inversion in Go
 
-**Answer-first:** Clean Architecture in Go isolates domain logic behind interfaces (ports) and repository adapters, ensuring business rules have zero compile-time dependencies on database engines or transport protocols.
+Clean Architecture in Go isolates domain logic behind interfaces (ports) and repository adapters, ensuring business rules have zero compile-time dependencies on database engines or transport protocols.
 
 This practical Clean Architecture & Dependency Inversion in Go section details production-grade Go code, middleware setup, and architectural patterns designed to ensure high performance and system resilience under peak load.
 
@@ -300,7 +300,7 @@ graph LR
 
 ## Case Study: Alipay LDC Unitization — CAP at Extreme Scale
 
-**Answer-first:** Alipay's Logical Data Center (LDC) unitization applies tier-based CAP trade-offs: user-facing RZone cells prioritize AP availability via local OceanBase replicas, while GZone settlement cells enforce PC strict consistency for ledger balance reconciliation.
+Alipay's Logical Data Center (LDC) unitization applies tier-based CAP trade-offs: user-facing RZone cells prioritize AP availability via local OceanBase replicas, while GZone settlement cells enforce PC strict consistency for ledger balance reconciliation.
 
 Alipay Double 11 is the benchmark for applying CAP Theorem in practice at massive scale. Full analysis at [Alipay Double 11 Architecture](/posts/alipay-double-11-architecture-tps/).
 
@@ -316,7 +316,7 @@ Alipay Double 11 is the benchmark for applying CAP Theorem in practice at massiv
 
 ## FAQ
 
-**Answer-first:** This FAQ clarifies differences between SLA/SLO/SLI error budgets, PACELC non-partition latency choices, and concrete operational triggers for monolith-to-microservices migration.
+This FAQ clarifies differences between SLA/SLO/SLI error budgets, PACELC non-partition latency choices, and concrete operational triggers for monolith-to-microservices migration.
 
 {{< faq q="What is the difference between SLA, SLO, and SLI?" >}}
 - **SLI** is the measured metric from the system (e.g., request success rate = 99.95%).
@@ -342,10 +342,9 @@ Use **microservices** when: 3+ squads are working in the same codebase causing d
 
 ## Navigation & Next Steps
 
-**Answer-first:** Advance to Part 2 for L4/L7 load balancing algorithms and rate limiting implementation patterns in Go.
+Advance to Part 2 for L4/L7 load balancing algorithms and rate limiting implementation patterns in Go.
 
 [Next Part →](/series/system-design/02-load-balancing-api-gateway-go/)
 
 🔗 **Next Step:** Continue to [Part 2: Load Balancing L4/L7 & Rate Limiting in Go](/series/system-design/02-load-balancing-api-gateway-go/)
-
 

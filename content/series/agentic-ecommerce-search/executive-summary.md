@@ -20,7 +20,7 @@ TocOpen: true
 
 ## Why E-commerce Needs Agentic Search? The Disruption of Keyword Queries
 
-> **Executive Summary & Quick Answer**: Traditional keyword-based e-commerce search (Elasticsearch / Solr) fails on complex, multi-attribute natural language user queries (e.g., *"waterproof trail running shoes under $150 for wide feet"*). Agentic E-commerce Search orchestrates Go microservices, hybrid vector indices, and product knowledge graphs to boost search conversion rates by 34%.
+> **Answer-first:** Traditional keyword-based e-commerce search (Elasticsearch / Solr) fails on complex, multi-attribute natural language user queries (e.g., *"waterproof trail running shoes under $150 for wide feet"*). Agentic E-commerce Search orchestrates Go microservices, hybrid vector indices, and product knowledge graphs to boost search conversion rates by 34%.
 >
 > **Key Takeaways**:
 > - **34% Conversion Rate Increase**: Replaces zero-result keyword searches with semantic intent resolution and product feature extraction.
@@ -46,8 +46,6 @@ This failure mode costs e-commerce platforms millions of dollars in lost convers
 
 **Answer-first:** Agentic e-commerce search replaces keyword matching with Go orchestrators, Qdrant dense-sparse vector engines, and real-time API tool calling to resolve complex user queries.
 
-> **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
-
 ```mermaid
 graph TD
     UserQuery[Natural Language Query] --> IntentRouter["1. Golang Intent & Semantic Router"]
@@ -70,7 +68,7 @@ graph TD
 
 ## Comparative Matrix: Lexical Search vs. Agentic E-commerce Search
 
-**Answer-first:** Lexical search relies on BM25 keyword matching, whereas agentic search combines vector embeddings, LLM reasoning, and real-time inventory constraints to achieve superior semantic recall.
+Lexical search relies on BM25 keyword matching, whereas agentic search combines vector embeddings, LLM reasoning, and real-time inventory constraints to achieve superior semantic recall.
 
 | Feature / Metric | Traditional Lexical Search (BM25) | Agentic E-commerce Search (Go + Vector) |
 | :--- | :--- | :--- |
@@ -85,7 +83,7 @@ graph TD
 
 ## Production Go Agentic E-commerce Search Orchestrator
 
-**Answer-first:** A production Go search orchestrator uses errgroup concurrency and context deadlines to execute parallel vector searches, metadata filtering, and inventory verification in under 50ms.
+A production Go search orchestrator uses errgroup concurrency and context deadlines to execute parallel vector searches, metadata filtering, and inventory verification in under 50ms.
 
 This production-grade Go search orchestrator using `golang.org/x/sync/errgroup` and context deadlines that executes concurrent vector similarity search, price filter checks, and real-time inventory verification:
 
@@ -227,7 +225,7 @@ func main() {
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** Traditional search fails on long-tail queries because it lacks semantic intent parsing, whereas agentic architectures map intent directly to catalog attributes and dynamic filters.
+Traditional search fails on long-tail queries because it lacks semantic intent parsing, whereas agentic architectures map intent directly to catalog attributes and dynamic filters.
 
 ### Q1: Why does traditional Elasticsearch fail on long-tail conversational e-commerce queries?
 Elasticsearch relies on token matching (BM25 term frequencies). When a user inputs a conversational query with 15 words (e.g., *"waterproof light jacket under $200 for 10°C weather"*), Elasticsearch searches for documents containing all those exact word tokens. If a product description uses synonym terms (e.g., "rain-resistant" instead of "waterproof"), Elasticsearch returns zero results.
@@ -240,9 +238,8 @@ Basic keyword search responds in 15ms–25ms. Agentic Search executed concurrent
 
 ---
 
-## Technical Deep-Dive: Vector Graph Search & E-Commerce Retrieval Invariants
-
-**Answer-first:** High-throughput e-commerce vector retrieval requires payload indexing, SIMD-accelerated distance calculations, and reciprocal rank fusion to guarantee sub-10ms query execution.
+## E-Commerce Retrieval Invariants
+High-throughput e-commerce vector retrieval requires payload indexing, SIMD-accelerated distance calculations, and reciprocal rank fusion to guarantee sub-10ms query execution.
 
 Building high-throughput e-commerce AI search engines requires real-time vector indexing and low-latency hybrid retrieval pipelines.
 
@@ -259,8 +256,7 @@ Building high-throughput e-commerce AI search engines requires real-time vector 
 2. **Category Graph Boundary Enforcement**: Query intention parsing restricts vector neighborhood traversals within authorized product category trees.
 3. **Deterministic Score Normalization**: Vector cosine scores and sparse BM25 scores are normalized via Reciprocal Rank Fusion (RRF) before returning results to clients.
 
-### Operational Checklist for Software Engineering Teams
-
+### Operational Checklist
 Before shipping candidate models and orchestrator agents to production cluster environments, engineering leads must confirm the following operational milestones:
 
 1. **Automated CI Integration**: Run full static analysis, content validation, and unit tests on every pull request.
@@ -270,9 +266,11 @@ Before shipping candidate models and orchestrator agents to production cluster e
 
 ---
 
+🔗 **Next Step:** Continue to [Part 1 — Golang Orchestration](/series/agentic-ecommerce-search/part-1-golang-orchestration/) for the following module in the series.
+
 ## Internal Series Navigation
 
-**Answer-first:** Navigate through the complete agentic e-commerce search series to explore Golang orchestration, vector ingestion, tool calling, hallucination prevention, and production operations.
+Navigate through the complete agentic e-commerce search series to explore Golang orchestration, vector ingestion, tool calling, hallucination prevention, and production operations.
 
 - [Part 1 — Agentic Architecture & Golang Orchestration Power](/series/agentic-ecommerce-search/part-1-golang-orchestration/)
 - [Part 2 — Data Ingestion & Atomic Chunking Product Data](/series/agentic-ecommerce-search/part-2-ingestion-chunking/)

@@ -22,13 +22,13 @@ canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-9-o
 mermaid: true
 ---
 
-> **Answer-First:** Distributed transaction consistency is achieved using a choreography-based saga paired with a PostgreSQL transactional outbox. Business mutations write to the outbox atomically. Background workers publish events to Dapr PubSub every 500ms, while idempotent consumer handlers process compensation events on failure.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 8 — Phase3 Full Cutover](/series/composable-commerce-migration/part-8-phase3-full-cutover/). Review it first if the terminology in this part is unfamiliar.
+
+> **Answer-first:** Distributed transaction consistency is achieved using a choreography-based saga paired with a PostgreSQL transactional outbox. Business mutations write to the outbox atomically. Background workers publish events to Dapr PubSub every 500ms, while idempotent consumer handlers process compensation events on failure.
 
 When a customer places an order on the Composable Commerce Platform, seven events need to happen in sequence across four independent services: Order created → Payment authorized → Stock reserved → Fulfillment triggered → Notification sent → Loyalty points awarded → Shipping label generated. Any of these can fail. The network can fail. The database can fail. A third-party payment gateway can time out.
 
 Without a reliability mechanism, a 2% failure rate on any step means 2% of all orders are stuck in an inconsistent state, requiring manual intervention.
-
-> **Pillar Architecture Guide:** This article is part of the **[Composable Commerce: Migrating from Monolith to Microservices](/posts/ecommerce-architecture-composable-migration/)** series. Please refer to the original article for a complete architecture guide.
 
 ## 1. Why Choreography, Not Orchestration?
 
@@ -65,7 +65,7 @@ The primary trade-off in choreography is visualization complexity: event chains 
 
 ## 2. The Order Saga Flow
 
-**Answer-first:** The order saga flow coordinates Checkout, Inventory, Payment, and Shipping services via asynchronous event publication and compensation events.
+The order saga flow coordinates Checkout, Inventory, Payment, and Shipping services via asynchronous event publication and compensation events.
 
 The sequence flow diagram below outlines the exact event publication sequence and asynchronous service interactions executed during a successful order placement workflow:
 
@@ -121,7 +121,7 @@ Order Service consumes both events. Upon receiving both confirmations, Order Ser
 
 ## 3. The Custom PostgreSQL Outbox
 
-**Answer-first:** Transactional outbox tables write event payloads in the same database transaction as business state changes, guaranteeing event delivery.
+Transactional outbox tables write event payloads in the same database transaction as business state changes, guaranteeing event delivery.
 
 The platform deliberately avoids Dapr's native outbox component (`dapr-outbox`). Dapr's native outbox ties event state directly to Dapr actor state stores, adding operational complexity and restricting direct SQL query visibility into outbox queues. Instead, the platform standardizes on an explicit PostgreSQL relational outbox table.
 
@@ -193,7 +193,7 @@ If the `CreateOrder` database write fails (e.g., foreign key violation, disk ful
 
 ## 4. The OutboxProcessor: Publishing with Guarantees
 
-**Answer-first:** The OutboxProcessor worker polls outbox database records using row locks with `SKIP LOCKED`, publishing domain events to Dapr messaging channels to guarantee at-least-once event delivery.
+The OutboxProcessor worker polls outbox database records using row locks with `SKIP LOCKED`, publishing domain events to Dapr messaging channels to guarantee at-least-once event delivery.
 
 The `common/worker` library package provides a standardized OutboxProcessor goroutine instantiated during microservice bootstrap.
 
@@ -263,7 +263,7 @@ The inclusion of `FOR UPDATE SKIP LOCKED` is critical for horizontal scaling. Wh
 
 ## 5. Idempotency: Handling Duplicate Delivery
 
-**Answer-first:** Idempotency keys stored in Redis or PostgreSQL prevent duplicate event execution on consumer microservices during network retries.
+Idempotency keys stored in Redis or PostgreSQL prevent duplicate event execution on consumer microservices during network retries.
 
 Messaging infrastructures (Redis Streams, NATS, Kafka) operating under distributed network conditions guarantee **at-least-once delivery**. In rare cases (e.g., ACK packet lost during network hiccup), the message broker re-delivers an event. Consequently, all consumer event handlers must be strictly idempotent.
 
@@ -312,7 +312,7 @@ Out-of-order delivery protection is also enforced by comparing incoming event ti
 
 ## 6. Compensation: When the Saga Fails
 
-**Answer-first:** Compensation transactions automatically reverse partial saga state changes (e.g. releasing inventory holds) if payment processing fails.
+Compensation transactions automatically reverse partial saga state changes (e.g. releasing inventory holds) if payment processing fails.
 
 When a downstream step in a saga encounters an unrecoverable business failure (e.g. credit card declined, stock exhausted during parallel checkout), the system must execute compensating transactions to roll back previously completed steps in reverse order.
 
@@ -361,7 +361,7 @@ Compensating transactions must obey three mandatory invariants:
 
 ## 7. Resilience: Circuit Breaker + Retry
 
-**Answer-first:** Combining circuit breakers with exponential backoff retries prevents transient microservice RPC failures from breaking active Sagas.
+Combining circuit breakers with exponential backoff retries prevents transient microservice RPC failures from breaking active Sagas.
 
 External integration points (payment gateways, shipping API providers, tax calculation endpoints) are inherently prone to transient latency spikes and third-party outages. The `common/errors` library wraps inter-service client connections with resilience policies.
 
@@ -398,7 +398,7 @@ Adding exponential backoff with random jitter (±20%) ensures that when thousand
 
 ## 8. Distributed Tracing: Following a Saga
 
-**Answer-first:** Distributed tracing propagates OpenTelemetry trace context headers across Saga events, rendering full end-to-end execution spans in Tempo.
+Distributed tracing propagates OpenTelemetry trace context headers across Saga events, rendering full end-to-end execution spans in Tempo.
 
 Because choreographed sagas execute asynchronously across detached microservices and event brokers, maintaining visibility requires end-to-end distributed tracing header propagation.
 
@@ -435,7 +435,7 @@ Total saga completion time averages ~230ms for happy-path orders. In cases invol
 
 ## Why Not Dapr's Native Outbox?
 
-**Answer-first:** A custom PostgreSQL outbox provides fine-grained control over polling intervals, table indexes, and manual DLQ re-queueing.
+A custom PostgreSQL outbox provides fine-grained control over polling intervals, table indexes, and manual DLQ re-queueing.
 
 Dapr v1.11 introduced a built-in outbox pattern feature. However, the platform engineering team chose a custom PostgreSQL relational outbox implementation based on three production architectural trade-offs:
 
@@ -449,13 +449,13 @@ The trade-off: custom outbox code requires maintaining ~150 lines of worker code
 
 ## What's Next
 
-**Answer-first:** Review Part 10 for complete architecture decision records (ADRs) explaining tech stack choices and migration patterns.
+Review Part 10 for complete architecture decision records (ADRs) explaining tech stack choices and migration patterns.
 
 In the final installment of this series, [Part 10: ADR Walkthrough](/series/composable-commerce-migration/part-10-adr-walkthrough/), we examine all 24 Architecture Decision Records that govern the Composable Commerce Platform. Part 10 details the exact decision drivers, evaluated alternatives, and accepted trade-offs for critical architecture choices — including why Dapr was selected over raw Kafka, why Kustomize replaced Helm, and why go-kratos was chosen as the microservice framework.
 
 ## FAQ
 
-**Answer-first:** The transactional outbox pattern guarantees atomic event publishing in Go microservices, eliminating lost events during network partitions.
+The transactional outbox pattern guarantees atomic event publishing in Go microservices, eliminating lost events during network partitions.
 
 {{< faq q="Saga pattern vs two-phase commit — when do you use each?" >}}
 **Two-phase commit (2PC)** provides ACID guarantees across distributed resources using a coordinator and participants — but it blocks all participants until the coordinator resolves, making it slow and sensitive to coordinator failure. **Saga** provides eventual consistency through compensating transactions, without a global lock. Use 2PC when: you need synchronous consistency and can tolerate 50–200ms latency per transaction. Use Saga when: you need high throughput, your services are independently deployable, or you cannot afford a blocking coordinator (e-commerce checkout, order processing). At 10,000+ orders/day with sub-100ms latency targets, 2PC is a non-starter.
@@ -495,3 +495,4 @@ flowchart TD
     end
 ```
 
+🔗 **Next Step:** Continue to [Part 10 — Adr Walkthrough](/series/composable-commerce-migration/part-10-adr-walkthrough/) for the following module in the series.

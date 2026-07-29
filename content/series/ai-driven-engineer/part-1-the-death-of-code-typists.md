@@ -18,7 +18,9 @@ ShowToc: true
 TocOpen: true
 ---
 
-> **Key Takeaway**: The economic value of manually typing programming syntax has collapsed to zero. Modern software engineering rewards developers who design resilient system architectures, curate context windows, and enforce strict domain boundaries, replacing manual boilerplate typing with automated AI code synthesis.
+> **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/series/ai-driven-engineer/executive-summary/). Review it first if the terminology in this part is unfamiliar.
+
+> **Answer-first:** The economic value of manually typing programming syntax has collapsed to zero. Modern software engineering rewards developers who design resilient system architectures, curate context windows, and enforce strict domain boundaries, replacing manual boilerplate typing with automated AI code synthesis.
 
 For decades, software development bootcamps and university CS programs trained engineers to memorize language syntax, master IDE keyboard shortcuts, and type out repetitive boilerplate code line by line.
 
@@ -207,8 +209,7 @@ func main() {
 
 ---
 
-## Technical Deep-Dive: System Architecture & Developer Productivity Invariants
-
+## Architecture Invariants
 Enforcing strict interface segregation and thread-safe mutex patterns yields sub-second compilation feedback and 65% faster pull request reviews while preventing concurrency races in production.
 
 Architectural invariants require strict interface segregation and strong typing in Go to keep AI-generated code modular and maintainable.
@@ -219,8 +220,7 @@ Architectural invariants require strict interface segregation and strong typing 
 - **Code Review Velocity**: 65% faster PR approvals via automated unit test generation and static AST linter rules.
 - **Race Detection Zero-Tolerance**: Continuous integration pipelines execute `go test -race` to catch concurrent map read/write race conditions instantly.
 
-### Enterprise Governance Invariants & Security Guardrails
-
+### Governance & Security Invariants
 1. **Thread-Safe Mutex Locks**: Enforce memory race detectors in CI pipelines for all concurrent map accesses and shared pointer references.
 2. **Explicit Interface Contracts**: Disallow concrete struct dependencies across bounded context boundaries, requiring gRPC or Protobuf contracts.
 3. **OpenTelemetry Telemetry Spans**: Inject OTel spans (`gen_ai.usage.prompt_tokens`) into AI worker dispatch handlers for continuous observability.
@@ -239,6 +239,8 @@ Engineers must shift their focus from memorizing language APIs to mastering syst
 Engineering teams enforce strict automated quality gates in PR merge queues, including static analysis tools and `go test -race` execution wrappers. Furthermore, system architects instruct AI models to implement explicit `sync.RWMutex` locks and atomic read-copy-update mechanisms when managing shared in-memory state.
 
 ---
+
+🔗 **Next Step:** Continue to [Part 2 — Man Vs Machine Boundaries](/series/ai-driven-engineer/part-2-man-vs-machine-boundaries/) for the following module in the series.
 
 ## Internal Series Navigation
 

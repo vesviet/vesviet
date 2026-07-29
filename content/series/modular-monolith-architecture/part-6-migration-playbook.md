@@ -7,7 +7,10 @@ slug: "migration-playbook-microservices-to-modular-monolith"
 tags: ["Migration", "Strangler Fig", "Modular Monolith", "Database", "Conway's Law"]
 categories: ["Modular Monolith", "Architecture"]
 aliases: ["/series/modular-monolith-architecture/part-6-migration-playbook/"]
-cover: {'image': 'images/posts/golang-microservices-cover.png', 'alt': 'Modular Monolith Architecture Production Guide: Go, DDD, bounded contexts, and microservices reversal', 'relative': False}
+cover:
+  image: "images/posts/golang-microservices-cover.png"
+  alt: "Modular Monolith Architecture Production Guide: Go, DDD, bounded contexts, and microservices reversal"
+  relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/migration-playbook-microservices-to-modular-monolith/"
 ShowToc: true
@@ -17,13 +20,11 @@ draft: false
 image: "images/posts/golang-microservices-cover.png"
 ---
 
-> **Answer-First:** Consolidating fragmented microservices back into a modular monolith utilizes the Reverse Strangler Fig pattern with dual-writing and zero-downtime database schema mergers. Merging database schemas using logical schema separation (PostgreSQL schemas) preserves strict module autonomy while eliminating distributed transaction complexity.
-
-> **Pillar Architecture Guide:** This article is part of the **[Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)** series and **[Composable E-Commerce Migration](/posts/ecommerce-architecture-composable-migration/)** guide. Please refer to the original article for an architectural overview of the architecture.
+> **Answer-first:** Consolidating fragmented microservices back into a modular monolith utilizes the Reverse Strangler Fig pattern with dual-writing and zero-downtime database schema mergers. Merging database schemas using logical schema separation (PostgreSQL schemas) preserves strict module autonomy while eliminating distributed transaction complexity.
 
 > **Prerequisite:** Before reading this part, please review [Part 5: Observability in Memory](/series/modular-monolith-architecture/part-5-observability/).
 
-**What You'll Learn That AI Won't Tell You:**
+**What You'll Learn:**
 - **Database Consolidation Math:** How to merge connection pools to optimize database RAM utilization.
 - **Transactional Outbox Implementations:** The SQL schema design for safe event auditing during migrations.
 - **Canary Merging Safety:** Running dual-writes for 14 days to audit state reconciliation before switching readers.
@@ -60,7 +61,7 @@ Transitioning from microservices to a modular monolith fails if engineering team
 
 ## 2. Reverse Strangler Fig Pattern & Routing Strategies
 
-**Answer-first:** The Reverse Strangler Fig pattern safely migrates microservice logic into internal monolith packages using Anti-Corruption Layers (ACLs) and canary API Gateway routing, allowing gradual traffic migration without user disruption.
+The Reverse Strangler Fig pattern safely migrates microservice logic into internal monolith packages using Anti-Corruption Layers (ACLs) and canary API Gateway routing, allowing gradual traffic migration without user disruption.
 
 ### A. Strangler Fig vs Reverse Strangler Fig
 
@@ -85,7 +86,7 @@ For database routing details, refer to our [Modular Monolith Architecture Guide]
 
 ## 3. Database Consolidation: CDC vs Application Dual-Writing
 
-**Answer-first:** Database consolidation requires a 3-phase synchronization strategy: choice between application dual-writing or Change Data Capture (CDC) via Debezium and Kafka, 14-day zero-discrepancy reconciliation, and final zero-downtime read cutover.
+Database consolidation requires a 3-phase synchronization strategy: choice between application dual-writing or Change Data Capture (CDC) via Debezium and Kafka, 14-day zero-discrepancy reconciliation, and final zero-downtime read cutover.
 
 Moving code carries low risk; making errors when consolidating data causes catastrophic data corruption.
 
@@ -120,7 +121,7 @@ Read cutover proceeds only after Discrepancy Count strictly remains zero over 14
 
 ## 4. Transactional Outbox Worker Implementation
 
-**Answer-first:** A Go transactional outbox worker processes domain events concurrently using non-blocking channels and context deadlines, guaranteeing eventual consistency across module schemas without distributed two-phase commits.
+A Go transactional outbox worker processes domain events concurrently using non-blocking channels and context deadlines, guaranteeing eventual consistency across module schemas without distributed two-phase commits.
 
 The Go code below demonstrates an asynchronous transactional outbox worker processing migration sync events without blocking HTTP handlers.
 
@@ -284,3 +285,5 @@ The emergency protocol instantly toggles API Gateway routing flags back to legac
 - **Related Guides:** [Modular Monolith Architecture](/series/modular-monolith-architecture/) and [C10M High-Concurrency Architecture](/posts/shopee-flash-sale-architecture/)
 
 Need guidance consolidating legacy microservices into a high-performance monolith? [Get in touch](/hire/) or [hire our software architecture team](/hire/) for a system audit.
+
+🔗 **Next Step:** Continue to [Part 7 — Extraction Pattern](/series/modular-monolith-architecture/part-7-extraction-pattern/) for the following module in the series.

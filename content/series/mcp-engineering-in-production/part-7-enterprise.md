@@ -19,11 +19,11 @@ TocOpen: true
 image: "images/posts/mcp-engineering-in-production-cover.png"
 ---
 
-
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 6 — Observability](/series/mcp-engineering-in-production/part-6-observability/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 7 — Enterprise MCP Strategy & Multi-Tenancy Governance
 
-> **Executive Summary & Quick Answer**: Scaling Model Context Protocol (MCP) across large enterprises requires an Enterprise Internal MCP Registry and strict Multi-Tenancy Governance. Enforcing exact semantic version pinning (`v1.4.2` over `:latest`), MCP Server Cards metadata registration, and tenant database isolation prevents Shadow MCP deployments and cross-tenant data leaks.
+> **Answer-first:** Scaling Model Context Protocol (MCP) across large enterprises requires an Enterprise Internal MCP Registry and strict Multi-Tenancy Governance. Enforcing exact semantic version pinning (`v1.4.2` over `:latest`), MCP Server Cards metadata registration, and tenant database isolation prevents Shadow MCP deployments and cross-tenant data leaks.
 >
 > **Key Takeaways**:
 > - **Internal MCP Server Registry**: Centralized repository cataloging verified enterprise MCP tools, schemas, and security clearance levels.
@@ -180,26 +180,24 @@ Multi-tenant MCP servers enforce isolation by extracting the `tenant_id` claim d
 
 ---
 
-## Technical Deep-Dive: Model Context Protocol & System Topology Invariants
-
+## Production Invariants & Trade-offs
 Establishing governance across distributed MCP servers prevents unapproved tool deployments and cross-tenant data exposure.
 
-### Protocol Performance Metrics & Latency Benchmarks
-
+### Performance Benchmarks
 - **Registry Lookup Latency**: Sub-5ms response time for verifying server card metadata and clearance clearance checks.
 - **Tenant Scope Mapping**: Injecting RLS tenant predicates adds sub-1ms SQL query construction overhead.
 
-### Protocol Invariants & Transport Security Guardrails
-
+### Protocol & Transport Invariants
 1. **Immutable Version Pinning**: Production deployments must reference explicit semantic tags (`v1.4.2`), rejecting mutable tags like `:latest`.
 2. **Shadow Server Rejection**: Edge MCP gateways must deny routing requests to server IDs absent from the central registry.
 
-### Operational Checklist for Software Engineering Teams
-
+### Operational Checklist
 1. **Server Card Registration**: Require DevSecOps security audit approval before publishing new tools to the internal registry.
 2. **Row-Level Security Controls**: Extract user tenant claims from OAuth tokens to enforce database predicate boundaries.
 
 ---
+
+🔗 **Next Step:** You have reached the final part of this series. Revisit the series index at [/series/mcp-engineering-in-production/](/series/mcp-engineering-in-production/) or explore other series linked below.
 
 ## Internal Series Navigation
 
@@ -208,7 +206,6 @@ Establishing governance across distributed MCP servers prevents unapproved tool 
 - [Part 6 — Observability & Tracing](/series/mcp-engineering-in-production/part-6-observability/)
 - [Executive Summary — Model Context Protocol in Production](/series/mcp-engineering-in-production/executive-summary/)
 - [Part 1 — Context Engineering: DDD for AI](/posts/ai-native-frontend-architecture-predictions-2028/)
-
 
 #### System Trade-offs & SLA Analysis for Part 7 Enterprise
 
@@ -219,6 +216,5 @@ Establishing governance across distributed MCP servers prevents unapproved tool 
 | **Enterprise DB Pool** | 80 Connections | 320 Connections | Multi-tenant database connection pooler |
 | **Tenant SLA Breach Rate** | < 0.01% | > 0.1% | Automated tenant quota enforcement |
 
-#### Operational Checklist for Production Readiness
-
+#### Operational Checklist
 System verification requires rigorous unit test coverage, explicit error propagation, and zero-downtime canary deployment mechanics across all governed registry nodes.

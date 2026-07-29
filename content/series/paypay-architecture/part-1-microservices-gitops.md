@@ -19,9 +19,11 @@ mermaid: true
 image: "images/posts/paypay-scaling-cover.png"
 ---
 
-> **Executive Summary & Quick Answer**: PayPay scales over 100 microservices for 60+ million users in Japan by combining Domain-Driven Design boundaries with GitOps CD automation using ArgoCD and Argo Rollouts. Automated canary deployments validate new code against live production metrics before full traffic shifting.
+> **Prerequisite:** This is the starting part of the series — no prior part is required. Later parts assume the concepts introduced here.
 
-> **Answer-First:** PayPay enforces stable deployments by combining branch promotion workflows with GitOps tools like ArgoCD. Declarative configuration files in git serve as the single source of truth, allowing ArgoCD to automatically reconcile cluster state, execute canary rollouts, and enable instant rollbacks of microservices.
+> **Answer-first:** PayPay scales over 100 microservices for 60+ million users in Japan by combining Domain-Driven Design boundaries with GitOps CD automation using ArgoCD and Argo Rollouts. Automated canary deployments validate new code against live production metrics before full traffic shifting.
+
+> **Answer-first:** PayPay enforces stable deployments by combining branch promotion workflows with GitOps tools like ArgoCD. Declarative configuration files in git serve as the single source of truth, allowing ArgoCD to automatically reconcile cluster state, execute canary rollouts, and enable instant rollbacks of microservices.
 
 ## Bounded Contexts & Microservices
 
@@ -203,3 +205,5 @@ Argo Rollouts query Prometheus metrics (error rate, latency P99) during step-wis
 {{< /faq >}}
 
 Next step: See how PayPay powers asynchronous transaction processing in [Part 2: Event-Driven Architecture with Kafka](/series/paypay-architecture/part-2-event-driven-kafka/). If you need assistance structuring high-scale Kubernetes GitOps pipelines, consult our team via [Cloud Native DevOps Consulting](/hire/).
+
+🔗 **Next Step:** Continue to [Part 2 — Event Driven Kafka](/series/paypay-architecture/part-2-event-driven-kafka/) for the following module in the series.

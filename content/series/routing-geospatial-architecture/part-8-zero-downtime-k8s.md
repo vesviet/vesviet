@@ -20,22 +20,20 @@ mermaid: true
 image: "images/posts/graphhopper-cover.png"
 ---
 
-> **Answer-First:** Zero-downtime Kubernetes deployments for routing services combine Argo Rollouts canary strategies, pre-stop hook draining, and automated P99 latency validation.
-
-> **Pillar Architecture Guide:** This article is part of the **[GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+> **Answer-first:** Zero-downtime Kubernetes deployments for routing services combine Argo Rollouts canary strategies, pre-stop hook draining, and automated P99 latency validation.
 
 > **Prerequisite:** Before reading this final part, review [Part 7: Load Testing & Performance Tuning](/series/routing-geospatial-architecture/part-7-load-testing-production/).
 
 ## Part 8: Zero-Downtime Map Updates & Multi-Region Kubernetes
 
-> **Executive Summary & Quick Answer**: Deploying stateful routing engines to Kubernetes without downtime requires decoupling map graph compilation into offline jobs, hydrating Pod cache volumes via `initContainers`, and executing atomic Blue-Green traffic cuts via Argo Rollouts to preserve Redis semantic cache consistency.
+> **Answer-first:** Deploying stateful routing engines to Kubernetes without downtime requires decoupling map graph compilation into offline jobs, hydrating Pod cache volumes via `initContainers`, and executing atomic Blue-Green traffic cuts via Argo Rollouts to preserve Redis semantic cache consistency.
 >
 > **Key Takeaways**:
 > - **Atomic Cutover**: Standard Kubernetes `RollingUpdate` causes split-brain map routing; Argo Rollouts Blue-Green swaps 100% of traffic atomically upon green health checks.
 > - **InitContainer Hydration**: Pre-compiled 50GB GraphHopper graph shortcut caches are pulled from S3 storage using high-speed AWS CLI `initContainers`.
 > - **Graceful Drain**: Golang API gateways catch `SIGTERM` signals and use `http.Server.Shutdown(ctx)` to drain inflight routing requests without 502 errors.
 
-**What You'll Learn That AI Won't Tell You:**
+**What You'll Learn:**
 - **Argo Rollouts Blue-Green YAML Spec:** Exact manifest configuration for routing service cutovers.
 - **Readiness vs Liveness Traps:** Tuning probes to avoid premature pod restarts during 8GB JVM heap warmups.
 - **Multi-Region GeoDNS Failover:** Routing requests to the closest geographic cluster via Route53 latency routing.
@@ -221,7 +219,6 @@ spec:
 ---
 
 ## FAQ: Senior SRE Nightmares
-
 
 {{< faq q="During deployments, users randomly get '502 Bad Gateway' errors from the Golang API. Why?" >}}
 When Kubernetes scales down a Pod, it sends a `SIGTERM` signal. If your Golang API exits immediately, inflight routing requests are brutally killed. Because `kube-proxy` needs a few seconds to update `iptables`, new traffic still hits the dead Pod. You MUST add a `preStop` hook (e.g., `sleep 10`) in your YAML and implement `http.Server.Shutdown()` in Go to drain connections gracefully.

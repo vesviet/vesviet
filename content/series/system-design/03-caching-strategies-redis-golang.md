@@ -24,7 +24,7 @@ image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 
 > **Prerequisite:** Part 3 of the [System Design Masterclass](/series/system-design/). Read [Part 2: Load Balancing L4/L7](/series/system-design/02-load-balancing-api-gateway-go/) first.
 
-### What You'll Learn That AI Won't Tell You
+### What You'll Learn
 - **XFetch Mathematical Constants:** How to configure the scaling factor ($\beta$) in XFetch to balance background refresh CPU usage against cache miss rates.
 - **Redis Memory Allocation Overhead:** How Redis's internal jemalloc allocator causes memory fragmentation, and why LRU evictions don't immediately free up RAM.
 - **Singleflight Leakage:** The danger of singleflight lockups when backend queries hang indefinitely, and how to guard it using Go context timeouts.

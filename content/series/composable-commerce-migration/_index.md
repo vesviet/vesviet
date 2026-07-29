@@ -23,7 +23,7 @@ Is your Magento 2 store costing you **$125,000–$200,000/year** in Enterprise l
 
 Welcome to the technical blueprint for **Composable Commerce Migration** — how to surgically disassemble a Magento 2 monolith into a production-grade microservices platform built on **Go 1.25, Kratos v2, Dapr PubSub, and Rush monorepo**, without losing a single order in transit.
 
-> **Answer-First Summary**: The Composable Commerce Migration Masterclass provides a 3-Phase Strangler Fig pattern (Read-Only CDC -> Dual-Write PubSub -> Full Cutover) for migrating legacy Magento 2 monoliths into 21 Go 1.25 microservices. Decoupling database dependencies via Domain-Driven Design and Dapr PubSub eliminates $200k/year in license fees, cuts infrastructure costs by 60%, and ensures zero-downtime cutover.
+> **Answer-first:** The Composable Commerce Migration Masterclass provides a 3-Phase Strangler Fig pattern (Read-Only CDC -> Dual-Write PubSub -> Full Cutover) for migrating legacy Magento 2 monoliths into 21 Go 1.25 microservices. Decoupling database dependencies via Domain-Driven Design and Dapr PubSub eliminates $200k/year in license fees, cuts infrastructure costs by 60%, and ensures zero-downtime cutover.
 
 > **About this Series**
 >
@@ -94,7 +94,7 @@ Magento 2's EAV schema, integer primary keys, and PHP module coupling make migra
 
 ## 🆚 What This Platform Replaces
 
-**Answer-first:** This platform replaces monolithic Magento PHP monoliths with 21 decoupled Go microservices, Dapr PubSub, and modern frontend engines.
+This platform replaces monolithic Magento PHP monoliths with 21 decoupled Go microservices, Dapr PubSub, and modern frontend engines.
 
 Legacy Magento architectures rely on heavy PHP-FPM worker pools where each web worker consumes 512 MB to 2 GB of RAM, causing severe CPU lockups during high-concurrency flash sales. In contrast, compiling services with Go 1.25 reduces worker container footprints to 18 MB–45 MB per pod while leveraging lightweight Goroutines for asynchronous request handling. Synchronous Magento webhooks are replaced by Dapr 1.15 PubSub abstractions combined with the Transactional Outbox pattern and Dead Letter Queues (DLQ), ensuring guaranteed message delivery. Additionally, Kubernetes Gateway API combined with Envoy proxies handles edge ingress routing natively, replacing fragile PHP rewrite rules.
 
@@ -111,7 +111,7 @@ Legacy Magento architectures rely on heavy PHP-FPM worker pools where each web w
 
 ## 🧭 Where Should You Start?
 
-**Answer-first:** Start your migration by defining domain boundaries, setting up read-only Strangler Fig proxies, and deploying Debezium CDC pipelines.
+Start your migration by defining domain boundaries, setting up read-only Strangler Fig proxies, and deploying Debezium CDC pipelines.
 
 Successful platform transformation requires aligning engineering roles with specific migration phases. Product Managers and Business Analysts begin with Part 0 to build the financial case and evaluate total cost of ownership (TCO) reductions. Magento backend developers should immediately analyze Part 5 to untangle complex EAV attribute models into clean relational and JSONB microservice schemas. Golang developers leverage Part 3 to establish Kratos v2 framework foundations, while DevOps and SRE leads follow Part 8 to implement ArgoCD GitOps pipelines for progressive 25/50/75/100% canary cutovers.
 
@@ -127,7 +127,7 @@ Successful platform transformation requires aligning engineering roles with spec
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** Migrating from Magento to composable Go microservices eliminates performance bottlenecks and lowers infrastructure operating costs by 60%.
+Migrating from Magento to composable Go microservices eliminates performance bottlenecks and lowers infrastructure operating costs by 60%.
 
 {{< faq q="Does this series assume I'm already running Magento 2?" >}}
 Yes. The migration guides target Magento 2.x (Open Source or Commerce). The EAV schema, integer primary keys, and module coupling patterns are all Magento 2-specific. If you're on Magento 1, the DDD and Golang patterns still apply but the SQL extraction queries will differ.
@@ -157,7 +157,6 @@ Migrating from a legacy PHP monolith to compiled Go microservices delivers immed
 | **RAM Footprint / Service** | 512 MB - 2 GB per FPM Worker | **18 MB - 45 MB per Container** |
 | **P99 API Response Latency** | 450ms - 1,200ms | **12ms - 35ms** |
 | **Deployment Time** | 25 Minutes (Capistrano / Deployer) | **90 Seconds (ArgoCD GitOps)** |
-
 
 ### Production Code Implementation Blueprint
 
@@ -194,8 +193,7 @@ func processItem(ctx context.Context, id string) error {
 | **Distributed DB Pool** | 90 Connections | 360 Connections | Distributed SQL connection pooler |
 | **Routing Failure Rate** | < 0.01% | > 0.1% | Instant fallback to monolith read-replica |
 
-#### Operational Checklist for Production Readiness
-
+#### Operational Checklist
 - **Debezium CDC Sync**: Verify change data capture streaming latency remains below 100ms prior to dual-write enablement.
 - **Circuit Breaker Policies**: Configure Kratos and Dapr resiliency policies with automated failover to monolith read-replicas.
 - **ArgoCD GitOps Rollout**: Execute progressive 25/50/75/100% traffic cutover with hot-standby rollback gates.

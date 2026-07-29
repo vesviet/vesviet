@@ -19,11 +19,11 @@ TocOpen: true
 image: "images/posts/mcp-engineering-in-production-cover.png"
 ---
 
-
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Gateway](/series/mcp-engineering-in-production/part-4-gateway/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 5 — MCP Security Engineering & Isolation: Defense-in-Depth
 
-> **Executive Summary & Quick Answer**: Operating Model Context Protocol (MCP) servers exposes infrastructure to novel AI security risks, including Path Traversal in Resource URIs, Indirect Prompt Injections in Tool Descriptions, and Shadow Parameter Manipulation. Implementing container sandboxing, gVisor container isolation, and AST path sanitization protects enterprise backends against full system compromise.
+> **Answer-first:** Operating Model Context Protocol (MCP) servers exposes infrastructure to novel AI security risks, including Path Traversal in Resource URIs, Indirect Prompt Injections in Tool Descriptions, and Shadow Parameter Manipulation. Implementing container sandboxing, gVisor container isolation, and AST path sanitization protects enterprise backends against full system compromise.
 >
 > **Key Takeaways**:
 > - **Zero Path Traversal Vulnerabilities**: Strict path sanitization blocks directory traversal (`../`) in resource URIs.
@@ -165,26 +165,24 @@ Database-connected MCP servers should never use global superuser credentials. In
 
 ---
 
-## Technical Deep-Dive: Model Context Protocol & System Topology Invariants
-
+## Production Invariants & Trade-offs
 Hardening production MCP servers requires zero-trust sandboxing and automated parameter inspection.
 
-### Protocol Performance Metrics & Latency Benchmarks
-
+### Performance Benchmarks
 - **AST Path Sanitization Overhead**: Path traversal regex and canonical directory resolving executes in sub-2ms per URI request.
 - **Description Injection Scanning**: Regex pattern matching for indirect prompt injections adds sub-4ms processing overhead.
 
-### Protocol Invariants & Transport Security Guardrails
-
+### Protocol & Transport Invariants
 1. **Strict Root Chroot Jail**: File system tools must resolve and verify canonical file paths against an explicit whitelist root directory.
 2. **Kernel Isolation (gVisor)**: Intercept all application syscalls inside user-space kernel containers to prevent privilege escalation.
 
-### Operational Checklist for Software Engineering Teams
-
+### Operational Checklist
 1. **Description Sanitization**: Strip active instruction phrases (`ignore previous instructions`, `system override`) from server description manifests before passing to client LLM contexts.
 2. **Minimal Database Privileges**: Connect MCP servers using restricted PostgreSQL roles with explicit Row-Level Security (RLS) policies.
 
 ---
+
+🔗 **Next Step:** Continue to [Part 6 — Observability](/series/mcp-engineering-in-production/part-6-observability/) for the following module in the series.
 
 ## Internal Series Navigation
 
@@ -192,7 +190,6 @@ Hardening production MCP servers requires zero-trust sandboxing and automated pa
 - [Part 4 — MCP Gateway Architecture & Routing](/series/mcp-engineering-in-production/part-4-gateway/)
 - [Part 6 — Observability & Tracing](/series/mcp-engineering-in-production/part-6-observability/)
 - [Part 5 — Enterprise Security, RBAC & Data Poisoning Defense](/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/)
-
 
 #### System Trade-offs & SLA Analysis for Part 5 Security
 
@@ -203,6 +200,5 @@ Hardening production MCP servers requires zero-trust sandboxing and automated pa
 | **Policy DB Connection** | 45 Connections | 180 Connections | Read-optimized policy store connection pool |
 | **Unauthorized Pass Budget**| < 0.0000% | > 0.0001% | Deny-by-default security policy gate |
 
-#### Operational Checklist for Production Readiness
-
+#### Operational Checklist
 System verification requires rigorous unit test coverage, explicit error propagation, and zero-downtime canary deployment mechanics across all sandboxed container nodes.

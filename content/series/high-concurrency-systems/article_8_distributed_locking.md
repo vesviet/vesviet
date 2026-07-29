@@ -23,8 +23,6 @@ canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/distributed-l
 image: "images/posts/realtime-inventory-cover.png"
 ---
 
-> **Pillar Architecture Guide:** This article is part of the **[High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/)** series. Please refer to the original article for a comprehensive overview of the architecture.
-
 > **Prerequisite:** Read the previous article: [Chapter 7: Fortifying Payment Systems with Idempotent APIs](/series/high-concurrency-systems/idempotency-api-design-payments/).
 
 In a standalone Go application, preventing two Goroutines from overwriting the same data (Race Condition) is achieved via `sync.Mutex`. However, when your system scales out to 10 servers behind a Load Balancer, `sync.Mutex` is useless because it only locks local RAM. You need a **Distributed Lock**.
@@ -257,13 +255,9 @@ This watchdog implementation ensures that your distributed lock lease is dynamic
 
 ## 🎯 Architecture Review & Consulting (Hire Me)
 
-
 ---
 
 🔗 **Next Step:** [Chapter 9: Database Sharding & Read/Write Splitting](/series/high-concurrency-systems/database-sharding-read-write-splitting/)
-
-## Architectural Context & Pillar References
-
 
 ---
 ## Related Architecture & Pillar Guides

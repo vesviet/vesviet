@@ -20,22 +20,20 @@ mermaid: true
 image: "images/posts/graphhopper-cover.png"
 ---
 
-> **Answer-First:** High-density geospatial rendering (100,000+ telemetry vectors) requires offloading coordinate math from the browser DOM to WebGL GPU buffers via Deck.gl and Mapbox overlays. Using Deck.gl's `DataFilterExtension` updates GPU uniforms in 60 FPS requestAnimationFrame loops without mutating JavaScript heap allocations.
-
-> **Pillar Architecture Guide:** This article is part of the **[GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+> **Answer-first:** High-density geospatial rendering (100,000+ telemetry vectors) requires offloading coordinate math from the browser DOM to WebGL GPU buffers via Deck.gl and Mapbox overlays. Using Deck.gl's `DataFilterExtension` updates GPU uniforms in 60 FPS requestAnimationFrame loops without mutating JavaScript heap allocations.
 
 > **Prerequisite:** Before reading this part, review [Part 4: Golang API & Microservices Integration](/series/routing-geospatial-architecture/part-4-golang-microservices/).
 
 ## Part 5: Route Visualization UI with Mapbox & Deck.gl
 
-> **Executive Summary & Quick Answer**: High-density geospatial rendering (100,000+ telemetry vectors) requires offloading coordinate math from the browser DOM to WebGL GPU buffers via Deck.gl and Mapbox overlays. Using Deck.gl's `DataFilterExtension` updates GPU uniforms in 60 FPS requestAnimationFrame loops without mutating JavaScript heap allocations.
+> **Answer-first:** High-density geospatial rendering (100,000+ telemetry vectors) requires offloading coordinate math from the browser DOM to WebGL GPU buffers via Deck.gl and Mapbox overlays. Using Deck.gl's `DataFilterExtension` updates GPU uniforms in 60 FPS requestAnimationFrame loops without mutating JavaScript heap allocations.
 >
 > **Key Takeaways**:
 > - **GPU WebGL Offloading**: Render high-density vehicle routes using Deck.gl `PathLayer` interleaved with Mapbox GL JS WebGL context.
 > - **GeoJSON Conventions**: Mapbox and GeoJSON strictly enforce `[Longitude, Latitude]` coordinate ordering (unlike `[Lat, Lng]` in standard mobile pings).
 > - **TripsLayer Animations**: Animate vehicle trajectories using timestamped 4D coordinate arrays `[lng, lat, alt, timestamp]` processed directly in GPU shaders.
 
-**What You'll Learn That AI Won't Tell You:**
+**What You'll Learn:**
 - **Polyline Decoding CPU Bottlenecks:** Why passing `points_encoded=false` on GraphHopper avoids main thread JS parsing.
 - **Interleaved WebGL Rendering:** Rendering 3D Deck.gl routes below Mapbox text labels and 3D terrain buildings.
 - **Binary Array Buffers:** Converting JSON coordinate objects to ArrayBuffers to halve memory footprint.
@@ -73,7 +71,7 @@ When your Golang API returns a route from Graphhopper, it usually comes as an "E
 
 ## 2. Massive Rendering with Deck.gl
 
-**Answer-first:** Render 100,000+ vector paths at 60 FPS by interleaving Deck.gl into Mapbox's WebGL context. Use Deck.gl's `DataFilterExtension` to update shader uniforms on the GPU without mutating JavaScript heap memory.
+Render 100,000+ vector paths at 60 FPS by interleaving Deck.gl into Mapbox's WebGL context. Use Deck.gl's `DataFilterExtension` to update shader uniforms on the GPU without mutating JavaScript heap memory.
 
 To render massive datasets, use `MapboxOverlay` with `interleaved: true`. This injects Deck.gl directly into the Mapbox WebGL context, allowing your routes to render behind Mapbox text labels and 3D buildings.
 
@@ -89,7 +87,7 @@ Instead, send only the 15-character H3 ID string (e.g., `8928308280fffff`). On t
 
 ## WebGL Coordinate Projections & Web Mercator Math
 
-**Answer-first:** Offloading WGS84-to-Web Mercator (EPSG:3857) projection math to WebGL vertex shaders executes coordinate transformations across thousands of GPU cores in parallel, preventing main-thread CPU rendering freezes.
+Offloading WGS84-to-Web Mercator (EPSG:3857) projection math to WebGL vertex shaders executes coordinate transformations across thousands of GPU cores in parallel, preventing main-thread CPU rendering freezes.
 
 To display geographic data on a screen, spherical coordinates (longitude, latitude in WGS84 EPSG:4326) must be projected onto a flat 2D plane. Standard web maps use the **Web Mercator projection (EPSG:3857)**.
 
@@ -105,7 +103,7 @@ where $R$ is the Earth's radius. The WebGL shader bakes these mathematical trans
 
 ## Mapbox Custom Layer Integration
 
-**Answer-first:** Deck.gl's `MapboxOverlay` shares Mapbox's WebGL view matrix and depth buffer, eliminating canvas lag during pan/zoom interactions and enabling synchronized 3D route rendering behind text labels and terrain mesh.
+Deck.gl's `MapboxOverlay` shares Mapbox's WebGL view matrix and depth buffer, eliminating canvas lag during pan/zoom interactions and enabling synchronized 3D route rendering behind text labels and terrain mesh.
 
 Deck.gl's `MapboxOverlay` integrates directly into the Mapbox GL JS rendering pipeline. Rather than creating a separate HTML overlay canvas that lags when the user pans or zooms, Deck.gl hooks into Mapbox's WebGL context.
 
@@ -113,7 +111,7 @@ When Mapbox renders a frame, it passes its camera view matrix to Deck.gl. Deck.g
 
 ## Client-Server GeoJSON Payload Flow
 
-**Answer-first:** The client-server payload pipeline snaps coordinates to H3 Resolution 9 cells, queries Redis for sub-2ms cache hits, and streams compressed GeoJSON to Deck.gl WebGL vertex shaders for 60 FPS client rendering.
+The client-server payload pipeline snaps coordinates to H3 Resolution 9 cells, queries Redis for sub-2ms cache hits, and streams compressed GeoJSON to Deck.gl WebGL vertex shaders for 60 FPS client rendering.
 
 ```mermaid
 sequenceDiagram
@@ -141,7 +139,7 @@ sequenceDiagram
 
 ## Go Implementation: Route GeoJSON Endpoint
 
-**Answer-first:** A Go GeoJSON endpoint structures and streams `LineString` feature responses directly to the Mapbox client with proper CORS headers and HTTP 200 responses.
+A Go GeoJSON endpoint structures and streams `LineString` feature responses directly to the Mapbox client with proper CORS headers and HTTP 200 responses.
 
 This handler demonstrates how the backend formats and serves the GeoJSON payload for rendering on the Mapbox client:
 
@@ -197,7 +195,7 @@ func ServeRouteGeoJSON(w http.ResponseWriter, r *http.Request) {
 
 ## Deep Dive: React & Deck.gl Integration
 
-**Answer-first:** A production React Deck.gl component renders 3D `PathLayer` routes over Mapbox GL JS, setting `polygonOffsetFactor: -1` to prevent Z-fighting depth buffer flickering against background terrain meshes.
+A production React Deck.gl component renders 3D `PathLayer` routes over Mapbox GL JS, setting `polygonOffsetFactor: -1` to prevent Z-fighting depth buffer flickering against background terrain meshes.
 
 To complement the Golang GeoJSON API endpoint, we must implement a frontend visualization component. This complete, production-ready React component that integrates Mapbox GL with Deck.gl to render high-performance 3D routing lines.
 
@@ -298,7 +296,7 @@ export default function RoutingMap() {
 
 ## FAQ: WebGL & Mapbox Troubleshooting
 
-**Answer-first:** This FAQ addresses key frontend WebGL issues: resolving Z-fighting depth flickering via `polygonOffsetFactor`, handling WebGL context loss events, maintaining 60 FPS viewport animations, and configuring anti-aliased path miter joints.
+This FAQ addresses key frontend WebGL issues: resolving Z-fighting depth flickering via `polygonOffsetFactor`, handling WebGL context loss events, maintaining 60 FPS viewport animations, and configuring anti-aliased path miter joints.
 
 {{< faq q="My Deck.gl routes are violently flickering against Mapbox terrain. How do I fix this?" >}}
 This is a classic WebGL rendering glitch called **Z-Fighting**. Because your route and the map surface share the exact same Z-depth, the GPU doesn't know which one to draw first. Do not artificially raise the route's elevation. Instead, set `parameters: { polygonOffset: true, polygonOffsetFactor: -1 }` in your Deck.gl layer. This tricks the GPU depth buffer into prioritizing your layer without altering its physical height.

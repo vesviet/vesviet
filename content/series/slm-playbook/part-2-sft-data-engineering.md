@@ -20,7 +20,7 @@ mermaid: true
 image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
 ---
 
-> **Pillar Architecture Guide:** This guide is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original guide for an architectural breakdown of the system.
+> **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/series/slm-playbook/executive-summary/). Review it first if the terminology in this part is unfamiliar.
 
 [← Series hub](/series/slm-playbook/)
 [← Previous](/posts/slm-fine-tune-vs-prompt-engineering/) | [Next →](/series/slm-playbook/part-3-lora-qlora-tuning/)
@@ -326,3 +326,5 @@ Now that we have pristine, deduplicated data, we are ready to execute the traini
 In [**Part 3: Practical LoRA & QLoRA Fine-Tuning**](/series/slm-playbook/part-3-lora-qlora-tuning/), we configure training pipelines using **Axolotl** and **Unsloth**, dissect **Double Quantization** and **NormalFloat4 (NF4)** math, and manage the final weights merge step.
 
 {{< author-cta >}}
+
+🔗 **Next Step:** Continue to [Part 3 — Lora Qlora Tuning](/series/slm-playbook/part-3-lora-qlora-tuning/) for the following module in the series.

@@ -20,20 +20,20 @@ TocOpen: true
 image: "images/posts/graphhopper-cover.png"
 ---
 
-> **Answer-First:** Spatial indexing serves as a high-performance pre-filtering layer that prevents heavy routing engines from collapsing under load. By using Uber H3 hexagonal cells and Redis GEO to narrow down 10,000 active drivers to the 50 closest candidates in RAM (<2ms), systems reduce routing engine CPU overhead by up to 95%.
+> **Answer-first:** Spatial indexing serves as a high-performance pre-filtering layer that prevents heavy routing engines from collapsing under load. By using Uber H3 hexagonal cells and Redis GEO to narrow down 10,000 active drivers to the 50 closest candidates in RAM (<2ms), systems reduce routing engine CPU overhead by up to 95%.
 
 > **Prerequisite:** Before reading this part, review [Part 2: Zero to Hero Environment Setup](/series/routing-geospatial-architecture/part-2-environment-setup/).
 
 ## Part 3: Spatial Indexing — Uber H3, PostGIS & Redis GEO
 
-> **Executive Summary & Quick Answer**: Spatial indexing serves as a high-performance pre-filtering layer that prevents heavy routing engines from collapsing under load. By using Uber H3 hexagonal cells and Redis GEO to narrow down 10,000 active drivers to the 50 closest candidates in RAM (<2ms), systems reduce routing engine CPU overhead by up to 95%.
+> **Answer-first:** Spatial indexing serves as a high-performance pre-filtering layer that prevents heavy routing engines from collapsing under load. By using Uber H3 hexagonal cells and Redis GEO to narrow down 10,000 active drivers to the 50 closest candidates in RAM (<2ms), systems reduce routing engine CPU overhead by up to 95%.
 >
 > **Key Takeaways**:
 > - **Equidistant Neighboring**: Uber H3 hexagons eliminate directional bias present in square grids because all 6 neighbor centroids are equidistant from the center.
 > - **Multi-Resolution Hierarchies**: Use Resolution 8/9 (~0.1km²) for driver matching and Resolution 6 (~250km²) for macro-level surge pricing.
 > - **Index-Aware PostGIS Queries**: Use `ST_DWithin` with GiST spatial bounding box indices instead of `ST_Distance` full-table scans.
 
-**What You'll Learn That AI Won't Tell You:**
+**What You'll Learn:**
 - **H3 Icosahedron Projection:** Why hexagonal cells preserve true area across polar and equatorial latitudes.
 - **SRID 4326 vs 3857 Traps:** Casting PostGIS `geometry` (degrees) to `geography` (meters) to avoid global query errors.
 - **K-Ring Radius Traversal:** Smooth spatial convolution algorithms for dynamic surge pricing.
@@ -78,8 +78,6 @@ H3 avoids this by projecting the Earth onto an **Icosahedron (a 20-sided 3D shap
 The classic debate: Should you use a relational spatial database or an in-memory cache? 
 
 **Answer-first:** Production systems use **both**. 
-
-> **Pillar Architecture Guide:** This article is part of the **[GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 1. Use **Redis GEO** for live, transient driver locations. It stores Geohashes entirely in RAM, offering sub-millisecond latencies for "find nearest driver" queries.
 2. Use **PostGIS** (`ST_DWithin`) for permanent, complex geometries like warehouse boundaries, service zones, and historical analytics. 

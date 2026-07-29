@@ -20,8 +20,6 @@ canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/idempotency-a
 image: "images/posts/realtime-inventory-cover.png"
 ---
 
-> **Pillar Architecture Guide:** This article is part of the **[High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/)** series. Please refer to the original article for a comprehensive overview of the architecture.
-
 > **Prerequisite:** Read the previous article: [Chapter 6: API Gateway vs Service Mesh in Microservices Architecture](/posts/shopee-flash-sale-architecture/).
 
 In E-commerce or Fintech, the ultimate nightmare is not a system crash, but **charging a customer twice for a single order**. This is usually caused by network lag, an impatient user double-clicking "Pay", or automated app retry logic.
@@ -325,7 +323,6 @@ Frontend state synchronization in Article_7_Idempotency uses Server-Sent Events 
 ---
 
 🔗 **Next Step:** [Chapter 8: Distributed Locking — Redlock vs ZooKeeper](/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/)
-
 
 ## Architectural Context & Pillar References
 

@@ -109,7 +109,6 @@ This series is built on:
 
 ## 🏗️ Architecture Consulting
 
-
 **Planning a Magento migration?** Before committing to a vendor or timeline, get an independent architecture review.
 
 A 2-week engagement delivers:

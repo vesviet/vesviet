@@ -19,9 +19,11 @@ mermaid: true
 image: "images/posts/paypay-scaling-cover.png"
 ---
 
-> **Executive Summary & Quick Answer**: Managing transaction surges during PayPay's massive marketing campaigns requires event-driven architecture powered by Apache Kafka. Partition key tuning, Go consumer worker pools, and channel-based backpressure prevent message loss during peak traffic spikes.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Microservices Gitops](/series/paypay-architecture/part-1-microservices-gitops/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-First:** PayPay builds a decoupled microservices network by streaming transactions asynchronously via Apache Kafka. To ensure financial safety, consumers process events using idempotency keys tracked in distributed caches, preventing duplicate ledger entries or double-spend occurrences in the event of retries or network partition splits.
+> **Answer-first:** Managing transaction surges during PayPay's massive marketing campaigns requires event-driven architecture powered by Apache Kafka. Partition key tuning, Go consumer worker pools, and channel-based backpressure prevent message loss during peak traffic spikes.
+
+> **Answer-first:** PayPay builds a decoupled microservices network by streaming transactions asynchronously via Apache Kafka. To ensure financial safety, consumers process events using idempotency keys tracked in distributed caches, preventing duplicate ledger entries or double-spend occurrences in the event of retries or network partition splits.
 
 ## The Danger of Synchronous Processing
 
@@ -202,3 +204,5 @@ Go consumer workers use bounded channel buffers; when buffers fill, poll loops p
 {{< /faq >}}
 
 Next step: Learn how PayPay scales its storage engine under heavy write traffic in [Part 3: Distributed Database Layer with TiDB](/series/paypay-architecture/part-3-data-layer-tidb/). To optimize Kafka event streams and backpressure tuning, reach out via [Distributed Streaming Systems Services](/hire/).
+
+🔗 **Next Step:** Continue to [Part 3 — Data Layer Tidb](/series/paypay-architecture/part-3-data-layer-tidb/) for the following module in the series.

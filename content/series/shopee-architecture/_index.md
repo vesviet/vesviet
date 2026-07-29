@@ -1,5 +1,6 @@
 ---
 title: "Shopee Architecture Masterclass: Flash Sale Scaling in Go"
+slug: "shopee-architecture"
 date: "2026-05-05T08:00:00+07:00"
 lastmod: "2026-05-05T08:00:00+07:00"
 draft: false
@@ -16,7 +17,7 @@ canonicalURL: "https://tanhdev.com/series/shopee-architecture/"
 image: "images/posts/shopee-flash-sale-cover.png"
 ---
 
-> **Answer-First:** The Shopee Architecture series details how Go microservices, Redis Lua inventory reservation, Apache Kafka peak shaving, TiDB distributed SQL, and OpenTelemetry/ClickHouse observability handle 10M+ QPS and millions of concurrent buyers during 11.11 flash sales without overselling or database connection starvation.
+> **Answer-first:** The Shopee Architecture series details how Go microservices, Redis Lua inventory reservation, Apache Kafka peak shaving, TiDB distributed SQL, and OpenTelemetry/ClickHouse observability handle 10M+ QPS and millions of concurrent buyers during 11.11 flash sales without overselling or database connection starvation.
 
 This series explores the core architectural patterns and technologies Shopee uses to handle millions of concurrent users, specifically focusing on extreme traffic spikes during Flash Sales and mega-campaigns like 11.11.
 
@@ -33,7 +34,6 @@ The following five chapters break down Shopee's high-concurrency production stac
 ---
 
 *Looking for an architectural guide to migrating a legacy e-commerce platform to a microservices architecture similar to Shopee's? See our **[Composable Commerce Migration Series](/series/composable-commerce-migration/)** for a step-by-step production case study.*
-
 
 ## Architectural Scope & Technical Pillars
 

@@ -24,14 +24,14 @@ image: "images/posts/graphhopper-cover.png"
 
 ## Part 2: Zero to Hero Environment Setup (Docker, OSM, Golang)
 
-> **Executive Summary & Quick Answer**: Setting up a production-grade routing environment requires extracting OpenStreetMap `.osm.pbf` map data via Osmium tools, provisioning GraphHopper Java containers with explicit JVM heap allocations (`-Xmx6g`), and connecting a Golang API client with exponential backoff health checks.
+> **Answer-first:** Setting up a production-grade routing environment requires extracting OpenStreetMap `.osm.pbf` map data via Osmium tools, provisioning GraphHopper Java containers with explicit JVM heap allocations (`-Xmx6g`), and connecting a Golang API client with exponential backoff health checks.
 >
 > **Key Takeaways**:
 > - **Map Extraction**: Bounding-box cropping with `osmium extract` reduces raw `.osm.pbf` file size by 90%, speeding up graph compilation.
 > - **Container Tuning**: Allocate sufficient JVM heap (`JAVA_OPTS=-Xmx6g`) to prevent Out-Of-Memory (OOM) failures during Contraction Hierarchies shortcut generation.
 > - **Client Resiliency**: Golang HTTP clients must use connection pooling (`MaxIdleConnsPerHost: 100`) to sustain high matrix throughput.
 
-**What You'll Learn That AI Won't Tell You:**
+**What You'll Learn:**
 - **Osmium Bounding Box Formulas:** How to extract city bounding boxes using min/max coordinate pairs.
 - **GraphHopper config.yml Settings:** Production values for `profiles` (car, bike) and `ch.profiles`.
 - **Go HTTP Client Resiliency:** Setting KeepAlive durations and transport timeouts for matrix APIs.
@@ -98,9 +98,7 @@ services:
 
 ## 3. Configuring Custom Models (Toll Roads & Elevation)
 
-> **Answer-First:** Edit `config.yml` to define Custom Models (e.g., avoiding toll roads) under the `priority` section. To enable 3D uphill/downhill routing, activate the `srtm` elevation provider. **Crucial:** You must delete the `graph-cache` folder whenever you change these rules.
-
-> **Pillar Architecture Guide:** This article is part of the **[GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/)** series. Please refer to the original article for a comprehensive overview of the architecture.
+> **Answer-first:** Edit `config.yml` to define Custom Models (e.g., avoiding toll roads) under the `priority` section. To enable 3D uphill/downhill routing, activate the `srtm` elevation provider. **Crucial:** You must delete the `graph-cache` folder whenever you change these rules.
 
 To instruct the engine to avoid toll roads, define a custom weighting profile:
 

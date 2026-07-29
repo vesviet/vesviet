@@ -1,5 +1,6 @@
 ---
 title: "Alipay Double 11 High-Concurrency Architecture Guide"
+slug: "alipay-double-11"
 date: "2026-05-02T18:00:00+07:00"
 lastmod: "2026-05-02T18:00:00+07:00"
 draft: false
@@ -15,7 +16,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/"
 ---
 
-> **Executive Summary & Quick Answer**: This technical series analyzes how Alipay engineered its core payment infrastructure to handle Double 11 peak loads of 544,000 TPS. Through Logical Data Center (LDC) unitization, OceanBase multi-region Paxos storage, RocketMQ asynchronous transactional messaging, and full-link production shadow testing, Alipay achieved zero-downtime scalability and sub-2-second failover.
+> **Answer-first:** This technical series analyzes how Alipay engineered its core payment infrastructure to handle Double 11 peak loads of 544,000 TPS. Through Logical Data Center (LDC) unitization, OceanBase multi-region Paxos storage, RocketMQ asynchronous transactional messaging, and full-link production shadow testing, Alipay achieved zero-downtime scalability and sub-2-second failover.
 
 This is a structured research series on how Alipay scaled Double 11 from early constraints to planet-scale reliability and throughput. It is organized as a hub + phases, so you can read it like a short book.
 
@@ -40,7 +41,7 @@ Read everything above, then:
 
 ## Series Contents
 
-**Answer-first:** The Alipay Double 11 series analyzes how financial platforms scale to 544,000 TPS using LDC unitization, OceanBase, and RocketMQ.
+The Alipay Double 11 series analyzes how financial platforms scale to 544,000 TPS using LDC unitization, OceanBase, and RocketMQ.
 
 - [Executive Summary](/series/alipay-double-11/executive-summary/)
 - [Alipay Double 11 Series Index](/series/alipay-double-11/)
@@ -74,7 +75,7 @@ The following matrix outlines the modular breakdown of this technical series, ma
 
 Specifically written for **Fintech Engineers, Distributed System Architects, and Database Specialists** scaling high-reliability payment engines.
 
-**Prerequisites:**
+**Prerequisite:**
 - Familiarity with distributed database consensus algorithms (Paxos/Raft).
 - Understanding of two-phase commit (2PC) and multi-region replication topologies.
 

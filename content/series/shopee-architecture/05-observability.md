@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/shopee-architecture/05-observability/"
 image: "images/posts/shopee-flash-sale-cover.png"
 ---
 
-> **Answer-First:** Shopee isolates latency bottlenecks across 30+ microservice call hops by combining OpenTelemetry distributed tracing, ClickHouse columnar log storage, and Apache Flink real-time stream processing. Injecting W3C trace contexts through gRPC headers enables SREs to reconstruct waterfall traces and diagnose microservice failures in sub-seconds.
+> **Answer-first:** Shopee isolates latency bottlenecks across 30+ microservice call hops by combining OpenTelemetry distributed tracing, ClickHouse columnar log storage, and Apache Flink real-time stream processing. Injecting W3C trace contexts through gRPC headers enables SREs to reconstruct waterfall traces and diagnose microservice failures in sub-seconds.
 
 ## Chapter 5: Observability - Finding Bugs in the Microservices Jungle
 
@@ -195,8 +195,7 @@ Flink monitors log and metric streams using event-time evaluation:
 
 ---
 
-## Summary and Developer Takeaways
-
+## Developer Takeaways
 Maintaining visibility across distributed microservice architectures requires combining **OpenTelemetry W3C trace context propagation**, **ClickHouse columnar log storage**, **Prometheus metric scraping**, and **Apache Flink real-time stream analytics**. Standardizing trace context propagation across gRPC metadata and Kafka headers provides SRE teams with sub-second root cause diagnosis during high-concurrency production incidents.
 
 ## ClickHouse Telemetry Log Search Benchmarks

@@ -23,7 +23,7 @@ image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 
 > **Prerequisite:** Part 9 of the [System Design Masterclass](/series/system-design/). Read [Part 4: Database Scaling](/series/system-design/04-database-scaling-sharding/) for context on horizontal partitioning strategies.
 
-### What You'll Learn That AI Won't Tell You
+### What You'll Learn
 - **Virtual Node Standard Deviation:** The exact mathematical variance drop when increasing virtual node count ($V$) from 1 to 1000.
 - **RWMutex Lock Contention:** Why using `sync.RWMutex` on the hash ring can cause lock contention under high multi-core throughput, and how to optimize with atomic values.
 - **CRC32 vs Murmur3:** Why the choice of hashing algorithm on the ring impacts lookup distribution uniformity.

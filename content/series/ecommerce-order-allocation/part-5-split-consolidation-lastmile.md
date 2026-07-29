@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/part-5-spli
 mermaid: true
 ---
 
-**Answer-First:** Split shipments reduce delivery times but increase courier costs. The allocation engine balances this trade-off using a greedy set-covering heuristic. If calculated shipping costs exceed threshold, packages route through a consolidation hub to preserve profit margins.
+**Answer-first:** Split shipments reduce delivery times but increase courier costs. The allocation engine balances this trade-off using a greedy set-covering heuristic. If calculated shipping costs exceed threshold, packages route through a consolidation hub to preserve profit margins.
 
 > **Prerequisite:** This guide assumes familiarity with multi-dimensional routing constraints and greedy heuristic optimization patterns.
 
@@ -24,7 +24,7 @@ mermaid: true
 
 ## 1. Split vs. Consolidation — The Core Trade-off
 
-**Answer-first:** Order allocation balances customer delivery speed against freight costs, deciding whether to split items across warehouses or consolidate.
+Order allocation balances customer delivery speed against freight costs, deciding whether to split items across warehouses or consolidate.
 
 When a customer's order contains multiple items, and those items reside in different warehouses, the system faces a classic logistics dilemma:
 
@@ -71,7 +71,7 @@ graph TD
 
 ## 2. Mathematical Modeling of Logistics Costs
 
-**Answer-first:** Logistics cost modeling formulates objective functions combining warehouse picking fees, package box costs, and distance-based freight rates.
+Logistics cost modeling formulates objective functions combining warehouse picking fees, package box costs, and distance-based freight rates.
 
 To choose between split shipment and consolidation programmatically, we define a cost optimization model. The objective is to minimize the total fulfillment cost ($C_{\text{total}}$) for a given order:
 
@@ -94,7 +94,7 @@ If $C_{\text{total, split}} < C_{\text{total, consolidate}}$, the engine trigger
 
 ## 3. Database Schema for Warehouse Inventory and Freight Rates
 
-**Answer-first:** Database schemas for order allocation store multi-warehouse stock levels, SKU dimensions, carrier rate tables, and delivery zone matrices.
+Database schemas for order allocation store multi-warehouse stock levels, SKU dimensions, carrier rate tables, and delivery zone matrices.
 
 To calculate shipping costs accurately, we model warehouse locations, available inventories, and freight rate matrices:
 
@@ -134,7 +134,7 @@ CREATE TABLE warehouse_freight_rates (
 
 ## 4. Go Split Optimization Algorithm
 
-**Answer-first:** Go split optimization algorithms evaluate fulfillment combinations, selecting minimum-cost warehouse picking plans in sub-10ms.
+Go split optimization algorithms evaluate fulfillment combinations, selecting minimum-cost warehouse picking plans in sub-10ms.
 
 To calculate the minimum number of splits, the system executes a greedy set-covering search. It selects the warehouse that covers the maximum number of required SKU items, allocates them, updates the remaining requirements, and repeats the search until the entire cart is satisfied:
 
@@ -238,7 +238,7 @@ The greedy algorithm runs in $O(N \times M)$ time complexity, where $N$ is the n
 
 ## 5. Last-Mile Delivery Challenges
 
-**Answer-first:** Last-mile delivery challenges include route traffic congestion, driver capacity constraints, delivery time windows, and failed attempt costs.
+Last-mile delivery challenges include route traffic congestion, driver capacity constraints, delivery time windows, and failed attempt costs.
 
 Last-mile logistics accounts for **53% of all shipping costs**. The major operational bottlenecks include:
 
@@ -255,7 +255,7 @@ Last-mile logistics accounts for **53% of all shipping costs**. The major operat
 
 ## 6. High-Affinity SKU Layout SQL
 
-**Answer-first:** High-affinity SQL queries identify frequently co-purchased SKUs, optimizing warehouse slotting to reduce order splitting frequency.
+High-affinity SQL queries identify frequently co-purchased SKUs, optimizing warehouse slotting to reduce order splitting frequency.
 
 By analyzing historical checkout data, the system identifies items that are frequently bought together, prompting warehouse teams to co-locate them in neighboring racks:
 
@@ -277,7 +277,7 @@ ORDER BY affinity_score DESC;
 
 ## 7. Last-Mile Performance Metrics
 
-**Answer-first:** Key last-mile metrics track order split ratios, average fulfillment cost per item, click-to-deliver duration, and on-time delivery rates.
+Key last-mile metrics track order split ratios, average fulfillment cost per item, click-to-deliver duration, and on-time delivery rates.
 
 To monitor the operational health of the allocation engine, the data platform tracks several Key Performance Indicators (KPIs) in real time:
 

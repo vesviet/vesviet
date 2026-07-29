@@ -19,9 +19,9 @@ TocOpen: true
 weight: 60
 ---
 
-# Part 6: Human-in-the-Loop (HITL) Guardrails & State Interception
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Agent Evals](/series/agentic-system-architecture/part-5-agent-evals/). Review it first if the terminology in this part is unfamiliar.
 
-**Answer-First:** Enterprise agentic systems require stateful Human-in-the-Loop (HITL) interception gateways, architectural guardrails, and OWASP security controls. Suspending autonomous agent workflows before executing high-risk financial or destructive mutations guarantees regulatory compliance and mitigates prompt injection vulnerabilities.
+**Answer-first:** Enterprise agentic systems require stateful Human-in-the-Loop (HITL) interception gateways, architectural guardrails, and OWASP security controls. Suspending autonomous agent workflows before executing high-risk financial or destructive mutations guarantees regulatory compliance and mitigates prompt injection vulnerabilities.
 
 ---
 
@@ -271,13 +271,11 @@ from pydantic import BaseModel, Field
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("OWASPGuardrail")
 
-
 class ActionSecurityContext(BaseModel):
     agent_id: str
     tool_name: str
     arguments: Dict[str, Any]
     user_role: str
-
 
 class OWASPGuardrailEngine:
     INJECTION_PATTERNS = [
@@ -311,7 +309,6 @@ class OWASPGuardrailEngine:
             return False, f"OWASP LLM02: Excessive Agency. Role '{context.user_role}' cannot invoke '{context.tool_name}'."
 
         return True, "Security inspection passed."
-
 
 if __name__ == "__main__":
     engine = OWASPGuardrailEngine()
@@ -363,8 +360,9 @@ When approval timeouts expire, the HITL gateway triggers an automated fallback s
 
 ---
 
-## Technical Deep-Dive: System Security Invariants & Compliance Rules
-
+## System Security Invariants & Compliance Rules
 - **Maximum HITL Interception Latency**: Interception and state serialization completes in < 15ms in Go Redis gateways.
 - **Token Signature Expiration**: Approval JWT tokens strictly expire after 15 minutes to prevent replay attacks.
 - **Zero Bypass Enforcement**: All tool execution gateways enforce OPA policy evaluations with deny-by-default fallbacks.
+
+🔗 **Next Step:** You have reached the final part of this series. Revisit the series index at [/series/agentic-system-architecture/](/series/agentic-system-architecture/) or explore other series linked below.

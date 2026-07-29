@@ -3,7 +3,7 @@ title: "Part 1 — Context Engineering: Domain-Driven Design for AI"
 mermaid: true
 author: "Lê Tuấn Anh"
 description: "Technical guide to Context Engineering using Domain-Driven Design (DDD) to scope LLM prompts, eliminate hallucinations, and enforce AST boundaries."
-date: 2026-03-16T09:00:00+07:00
+date: "2026-03-16T09:00:00+07:00"
 draft: false
 tags: ["AI", "Context Engineering", "Domain-Driven Design", "Architecture", "LLM"]
 series: ["AI-Driven Playbook"]
@@ -14,9 +14,9 @@ cover:
   relative: false
 ---
 
-# Part 1: Context Engineering & Domain-Driven Prompting Architecture
+> **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/series/ai-driven-playbook/executive-summary/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-First Summary**: Context Engineering structures, scopes, and injects software domain knowledge into Large Language Model prompts using Domain-Driven Design principles. By organizing codebases into explicit Bounded Contexts, Abstract Syntax Tree subgraphs, and JSON-Schema contracts, engineering teams eliminate hallucinations, enforce layer boundaries, and enable autonomous coding agents to implement production-grade enterprise features.
+> **Answer-first:** Context Engineering structures, scopes, and injects software domain knowledge into Large Language Model prompts using Domain-Driven Design principles. By organizing codebases into explicit Bounded Contexts, Abstract Syntax Tree subgraphs, and JSON-Schema contracts, engineering teams eliminate hallucinations, enforce layer boundaries, and enable autonomous coding agents to implement production-grade enterprise features.
 
 ---
 
@@ -334,4 +334,4 @@ DDD organizes codebases into explicit Bounded Contexts and Ubiquitous Language m
 ### What is the difference between AST pruning and standard RAG chunking?
 Standard RAG chunking splits files by character count or paragraph breaks, frequently severing code signatures and table definitions. AST pruning parses the programming language's syntax tree directly, stripping method implementations while retaining public interfaces, type definitions, and caller hierarchies.
 
-
+🔗 **Next Step:** Continue to [Part 3A — Enterprise Rag Architecture](/series/ai-driven-playbook/part-3a-enterprise-rag-architecture/) for the following module in the series.

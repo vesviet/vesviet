@@ -59,7 +59,7 @@ The matrix below details the six core technical pillars of the SLM Playbook, map
 
 This playbook is authored for **AI Engineers, Machine Learning Infrastructure Teams, and Software Architects** building self-hosted language model infrastructure.
 
-**Prerequisites:**
+**Prerequisite:**
 - Proficiency in Python, PyTorch, and HuggingFace Transformers.
 - Fundamental knowledge of model quantization math (4-bit/8-bit precision) and CUDA VRAM allocation.
 

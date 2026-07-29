@@ -18,7 +18,9 @@ ShowToc: true
 TocOpen: true
 ---
 
-> **Key Takeaway**: Drawing precise operational boundaries between autonomous AI generation and mandatory human engineering oversight is essential for preventing production outages. High-risk distributed systems architecture, concurrency locks, and security compliance require human ownership, while repetitive syntax translation, test generation, and DTO mapping are delegated to AI agents.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — The Death Of Code Typists](/series/ai-driven-engineer/part-1-the-death-of-code-typists/). Review it first if the terminology in this part is unfamiliar.
+
+> **Answer-first:** Drawing precise operational boundaries between autonomous AI generation and mandatory human engineering oversight is essential for preventing production outages. High-risk distributed systems architecture, concurrency locks, and security compliance require human ownership, while repetitive syntax translation, test generation, and DTO mapping are delegated to AI agents.
 
 As engineering organizations adopt AI code assistants and autonomous sub-agents, a critical governance question arises: *Where does the machine's autonomy end, and where must human engineering oversight begin?*
 
@@ -194,6 +196,8 @@ Tasks operating at high AI autonomy must have a strictly isolated blast radius, 
 Tech leads prevent fatigue by establishing strict PR size limits (max 200 lines) and enforcing pre-commit AST static analysis rules that automatically reject invalid syntax or missing error handlers. This ensures reviewers focus 100% of their energy on auditing cryptographic boundary logic and RBAC permissions rather than spot-checking formatting.
 
 ---
+
+🔗 **Next Step:** Continue to [Part 3 — The 10X Productivity Reality](/series/ai-driven-engineer/part-3-the-10x-productivity-reality/) for the following module in the series.
 
 ## Internal Series Navigation
 

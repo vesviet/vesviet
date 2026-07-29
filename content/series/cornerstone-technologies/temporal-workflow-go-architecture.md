@@ -7,9 +7,9 @@ series: "Cornerstone Technologies"
 date: "2026-07-25"
 ---
 
-# Temporal Workflow & Golang: Architecture & Production Guide
+> **Prerequisite:** Familiarity with the concepts introduced in [Nats Jetstream Golang Production Guide](/series/cornerstone-technologies/nats-jetstream-golang-production-guide/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-First:** Temporal is a durable execution platform providing fault-tolerant state orchestration for microservices via Event Sourcing. In Golang, Temporal Workflows demand strict determinism for event history replay. Production reliability requires separating deterministic workflows from I/O activities, managing LIFO Saga compensations, tuning worker concurrency parameters, and compacting event histories via `ContinueAsNew` before hitting cluster limits.
+> **Answer-first:** Temporal is a durable execution platform providing fault-tolerant state orchestration for microservices via Event Sourcing. In Golang, Temporal Workflows demand strict determinism for event history replay. Production reliability requires separating deterministic workflows from I/O activities, managing LIFO Saga compensations, tuning worker concurrency parameters, and compacting event histories via `ContinueAsNew` before hitting cluster limits.
 
 When building large-scale microservice systems, managing distributed transaction states and orchestration presents complex engineering challenges. [Cornerstone Technologies](/series/cornerstone-technologies/) frequently introduces foundational paradigms that reshape system design, and Temporal is a prime example. This guide analyzes the core architecture of Temporal Workflow for Go developers, covering Determinism, Event Sourcing, Temporal Nexus cross-namespace orchestration, and production strategies for scaling Temporal Workers.
 
@@ -209,3 +209,5 @@ func ProcessOrderStreamWorkflow(ctx workflow.Context, state StreamState) error {
 
 * **How does Temporal differ from distributed message queues like Apache Kafka?**
   Apache Kafka is a pub/sub event streaming platform optimized for high-throughput messaging and data ingestion. In contrast, Temporal is a durable execution engine designed to manage complex state transitions, timeouts, retries, and multi-step distributed transactions. Systems frequently combine both technologies by using Kafka for high-speed event delivery and Temporal for orchestrating complex business logic workflows.
+
+🔗 **Next Step:** Continue to [Vector Database Rag Qdrant Milvus](/series/cornerstone-technologies/vector-database-rag-qdrant-milvus/) for the following module in the series.

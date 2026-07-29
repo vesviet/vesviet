@@ -20,9 +20,9 @@ cover:
 mermaid: true
 ---
 
-> **Answer-First:** Combining internal gRPC transport with an automated REST JSON Gateway (`grpc-gateway`) provides sub-millisecond HTTP/2 inter-service RPC performance while exposing standard OpenAPI/REST endpoints to web/mobile clients, guaranteed through Protocol Buffer contract linting and backward-compatible schema versioning.
+> **Prerequisite:** This is the starting part of the series — no prior part is required. Later parts assume the concepts introduced here.
 
-> **Parent Architecture Guide:** This article is part of our pillar series on [Ecommerce Architecture & Composable Migration](/posts/ecommerce-architecture-composable-migration/).
+> **Answer-first:** Combining internal gRPC transport with an automated REST JSON Gateway (`grpc-gateway`) provides sub-millisecond HTTP/2 inter-service RPC performance while exposing standard OpenAPI/REST endpoints to web/mobile clients, guaranteed through Protocol Buffer contract linting and backward-compatible schema versioning.
 
 The sequence diagram below illustrates the end-to-end request lifecycle as an external REST/JSON HTTP client payload is transcoded by the API Gateway into high-performance gRPC Protobuf binary calls across internal microservices.
 
@@ -436,3 +436,5 @@ func OTelInterceptor() grpc.UnaryServerInterceptor {
 	}
 }
 ```
+
+🔗 **Next Step:** Continue to [Part 5 — Eav Schema Migration](/series/composable-commerce-migration/part-5-eav-schema-migration/) for the following module in the series.

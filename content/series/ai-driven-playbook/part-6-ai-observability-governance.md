@@ -18,9 +18,9 @@ canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-6-ai-observabi
 mermaid: true
 ---
 
-# AI Observability & Evals: Production Monitoring Guide
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Operating Model](/series/ai-driven-playbook/part-5-operating-model/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-First Summary**: AI Observability applies Site Reliability Engineering (SRE) principles to generative AI systems through OpenTelemetry `gen_ai` semantic conventions, distributed prompt tracing, and continuous evaluation pipelines. This framework detects silent model drift, monitors LLM API token expenses, and reduces failure detection time from weeks to under five minutes.
+> **Answer-first:** AI Observability applies Site Reliability Engineering (SRE) principles to generative AI systems through OpenTelemetry `gen_ai` semantic conventions, distributed prompt tracing, and continuous evaluation pipelines. This framework detects silent model drift, monitors LLM API token expenses, and reduces failure detection time from weeks to under five minutes.
 
 ---
 
@@ -36,7 +36,7 @@ When a traditional web app crashes (e.g., lost database connection), the system 
 
 But when AI fails, it **does not throw an error**. The LLM will confidently produce a buggy code snippet, or a completely wrong (Hallucinated) answer—delivered in a professional tone. Without a monitoring system, you are driving on a freeway blindfolded.
 
-> **[Production Failure Case Study]: Silent Model Drift**
+> 🔥 **[Production Failure]: Silent Model Drift**
 > An internal RAG system at a bank, used to assist credit advisors, operated flawlessly for the first 2 months. In month three, the Cloud LLM provider silently updated the model's weights to optimize costs.
 > Instantly, the RAG system's accuracy plummeted from 95% to 70%. Bank employees began advising hundreds of customers with incorrect interest rates. The company was completely unaware until customers threatened legal action—because *no output quality monitoring system (Evals) had ever been established*.
 > 📊 **Impact Metrics:** Lost trust with 400+ customers; the Legal team had to intervene to settle interest rate risk disputes.
@@ -48,7 +48,7 @@ But when AI fails, it **does not throw an error**. The LLM will confidently prod
 
 ## 2. AI Observability Architecture (The SRE Mindset)
 
-To prevent the disaster above, the AI Gateway (LiteLLM) we established in [Part 2](/series/ai-driven-playbook/) must be connected to a dedicated Telemetry system (such as Langfuse, LangSmith, or DataDog LLM Observability).
+To prevent the disaster above, the AI Gateway (LiteLLM) we established in Part 2 (AI Platform Layer — coming soon) must be connected to a dedicated Telemetry system (such as Langfuse, LangSmith, or DataDog LLM Observability).
 
 **AI Observability Architecture Topology:** The diagram illustrates async trace data collection from the LiteLLM Gateway into an observability platform paired with an LLM-as-a-Judge evaluation pipeline.
 
@@ -128,7 +128,8 @@ results = evaluate(dataset=dataset, metrics=[faithfulness, answer_relevance])
 print(f"Faithfulness Score: {results['faithfulness']:.2f}")
 ```
 
-> 💰 **Cost Numbers:** Running the Evals pipeline costs approximately $10 per configuration commit. But it protects the company from "Model Drift" disasters costing thousands of dollars and destroying end-user trust.
+> [!IMPORTANT] Cost Analysis
+> Running the Evals pipeline costs approximately $10 per configuration commit. But it protects the company from "Model Drift" disasters costing thousands of dollars and destroying end-user trust.
 
 ---
 
@@ -264,3 +265,4 @@ OpenTelemetry `gen_ai` conventions define vendor-neutral standard attributes for
 ### How does an automated Evals pipeline prevent silent model drift?
 An Evals pipeline executes a Golden Dataset of curated prompts against new model releases or prompt configurations in CI/CD. Using LLM-as-a-Judge and Ragas metrics (faithfulness, answer relevance), the pipeline automatically blocks deployments if quality scores drop below established baselines.
 
+🔗 **Next Step:** Continue to [Part 7 — Ai Security Engineering](/series/ai-driven-playbook/part-7-ai-security-engineering/) for the following module in the series.

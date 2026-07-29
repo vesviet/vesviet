@@ -17,6 +17,8 @@ TocOpen: true
 image: "images/posts/real-time-ride-hailing-cover.png"
 ---
 
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Dispatch Matching Engine](/series/ride-hailing-realtime-architecture/part-4-dispatch-matching-engine/). Review it first if the terminology in this part is unfamiliar.
+
 **Answer-first:** Surge pricing engines compute dynamic multipliers in real-time by analyzing supply-demand ratios within H3 hex cells. These engines ingest location data to update prices dynamically, balancing market availability during peak demand hours.
 
 > **Series context:** This is Part 5 of the [Real-Time Ride-Hailing Architecture](/series/ride-hailing-realtime-architecture/) series. For location ingestion and geospatial indexing, start at [Part 1](/series/ride-hailing-realtime-architecture/part-1-location-ingestion/).
@@ -272,7 +274,7 @@ When deploying a dynamic pricing engine in a newly launched city, historical sup
 
 ## Frequently Asked Questions (FAQ)
 
-**Answer-first:** This FAQ addresses key surge pricing questions: dynamic multiplier calculation formulas, marketplace equilibrium mechanics, EWMA price smoothing, and cold-start strategies.
+This FAQ addresses key surge pricing questions: dynamic multiplier calculation formulas, marketplace equilibrium mechanics, EWMA price smoothing, and cold-start strategies.
 
 {{< faq q="How does a surge pricing engine calculate the dynamic multiplier?" >}}
 The surge pricing engine calculates the dynamic multiplier by evaluating the ratio of active ride requests (demand) to available idle drivers (supply) within an H3 Resolution 7 hexagon over a rolling 5-minute window. This ratio is smoothed via Exponentially Weighted Moving Average (EWMA) and mapped to a multiplier curve capped at a maximum threshold (e.g., 5.0x).
@@ -287,6 +289,8 @@ Systems prevent surge price flickering by applying Exponentially Weighted Moving
 {{< /faq >}}
 
 ---
+
+🔗 **Next Step:** Continue to [Part 6 — Realtime Push Ramen](/series/ride-hailing-realtime-architecture/part-6-realtime-push-ramen/) for the following module in the series.
 
 ## References & Further Reading
 

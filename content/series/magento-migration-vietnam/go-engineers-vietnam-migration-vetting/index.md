@@ -21,11 +21,11 @@ mermaid: true
 image: "images/series/go-engineers-vietnam-vetting-cover.png"
 ---
 
-> **Executive Summary & Quick Answer**: Vetting Go engineers in Vietnam for Magento migrations requires assessing distributed systems design skills—such as Saga orchestration, CDC outbox patterns, and dual-write conflict resolution—rather than basic syntax fluency.
+> **Prerequisite:** Familiarity with the concepts introduced in [Magento Migration Cost Vietnam Vs Us Eu](/series/magento-migration-vietnam/magento-migration-cost-vietnam-vs-us-eu/). Review it first if the terminology in this part is unfamiliar.
+
+> **Answer-first:** Vetting Go engineers in Vietnam for Magento migrations requires assessing distributed systems design skills—such as Saga orchestration, CDC outbox patterns, and dual-write conflict resolution—rather than basic syntax fluency.
 
 **Answer-first:** Vetting Go engineers for Magento migration requires a different interview framework than greenfield hiring. The critical signal is not Go syntax fluency — it's distributed systems experience under legacy coupling constraints. Five production scenarios reveal whether a candidate can actually own migration work versus only build clean APIs from scratch.
-
-> **Pillar Architecture Guide:** This article is part of the **[Composable Commerce: Migrating from Monolith to Microservices](/posts/ecommerce-architecture-composable-migration/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 > **Series context:** This post is part of the [E-Commerce Re-Architecture in Vietnam](/series/magento-migration-vietnam/) series. For background on the migration architecture this team will execute, read [Zero-Downtime: Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/) first.
 
@@ -153,7 +153,6 @@ An engineer who can only do Phase 3 is a deployment engineer, not a migration ar
 ---
 
 ## Scenario 5: Strangler Fig Feature Flag Architecture
-
 
 **The question:**
 
@@ -297,3 +296,5 @@ For assistance in assembling or auditing senior Go engineering teams in Vietnam,
 
 - [Magento Development & Outsourcing Vietnam](/posts/magento-development-in-vietnam/)
 - [Why Migrate Magento to Go Microservices](/posts/why-migrate-magento-to-microservices/)
+
+🔗 **Next Step:** Continue to [Post Migration Operations Vietnam Go Team](/series/magento-migration-vietnam/post-migration-operations-vietnam-go-team/) for the following module in the series.

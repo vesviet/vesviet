@@ -9,9 +9,9 @@ series: "Cornerstone Technologies"
 tags: ["Zero-Trust", "Microservices", "mTLS", "Golang", "SPIFFE", "OAuth2.1"]
 ---
 
-# Zero-Trust Architecture for Microservices: mTLS & Production Go Guide
+> **Prerequisite:** Familiarity with the concepts introduced in [Vector Database Rag Qdrant Milvus](/series/cornerstone-technologies/vector-database-rag-qdrant-milvus/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-First:** Zero-Trust Architecture (ZTA) for microservices eliminates implicit internal network trust through continuous identity verification. By coupling Workload Identity (mTLS via SPIFFE/SPIRE short-lived X.509 certificates) with User Identity (OAuth 2.1 JWT token propagation), ZTA secures distributed systems against lateral attacker movement with under 2ms of cryptographic latency overhead.
+> **Answer-first:** Zero-Trust Architecture (ZTA) for microservices eliminates implicit internal network trust through continuous identity verification. By coupling Workload Identity (mTLS via SPIFFE/SPIRE short-lived X.509 certificates) with User Identity (OAuth 2.1 JWT token propagation), ZTA secures distributed systems against lateral attacker movement with under 2ms of cryptographic latency overhead.
 
 As a systems engineer building high-concurrency systems in Golang, I have observed traditional internal network designs relying entirely on perimeter defenses such as VPNs or static firewalls. In cloud-native microservice environments, this perimeter model presents critical security vulnerabilities. Once an attacker breaches any single internal microservice, implicit trust between internal nodes exposes the entire service mesh to lateral movement.
 
@@ -264,3 +264,5 @@ Empirical benchmarks between Go microservices running on AWS EC2 C6i / Graviton2
 
 ---
 *Author: Le Tuan Anh — Cryptographic and zero-trust guidelines adhere strictly to IETF standards and NIST SP 800-207 specifications.*
+
+🔗 **Next Step:** You have reached the final part of this series. Revisit the series index at [/series/cornerstone-technologies/](/series/cornerstone-technologies/) or explore other series linked below.

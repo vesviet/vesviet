@@ -2,7 +2,7 @@
 title: "Component Registry & MCP to Frontend — GenUI (Part 3)"
 description: "Build a production component registry for Generative UI, focusing on dynamic manifest registration, versioning, and type-safe UI component hydration."
 slug: "part-3-component-registry"
-date: 2026-03-20T09:00:00+07:00
+date: "2026-03-20T09:00:00+07:00"
 lastmod: "2026-07-23T10:40:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
@@ -20,11 +20,9 @@ series: ["Generative UI Architecture"]
 weight: 3
 ---
 
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — State Management](/series/generative-ui-architecture/part-2-state-management/). Review it first if the terminology in this part is unfamiliar.
 
-
-> **Answer-First Summary**: Connecting backend Model Context Protocol (MCP) tool execution to frontend Generative UI components requires a decoupled Component Registry layer. By mapping MCP tool call outputs directly to strongly-typed frontend component manifests using JSON-Schema contracts, developers build dynamic, secure interfaces where AI agents trigger visual client-side widgets (e.g., maps, charts, transaction tables) without writing unsafe inline scripts or raw HTML.
-
-> **Parent Architecture Guide:** Part 3 detailing component registries in our [Autonomous Hybrid AI Content Pipeline](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/) series.
+> **Answer-first:** Connecting backend Model Context Protocol (MCP) tool execution to frontend Generative UI components requires a decoupled Component Registry layer. By mapping MCP tool call outputs directly to strongly-typed frontend component manifests using JSON-Schema contracts, developers build dynamic, secure interfaces where AI agents trigger visual client-side widgets (e.g., maps, charts, transaction tables) without writing unsafe inline scripts or raw HTML.
 
 ---
 
@@ -49,7 +47,7 @@ Without a standardized Component Registry, frontend teams must manually write cu
 
 ## 2. Architecture of an Enterprise Component Registry
 
-**Answer-first:** The Component Registry serves as the source of truth for all dynamic visual assets accessible to the AI model.
+The Component Registry serves as the source of truth for all dynamic visual assets accessible to the AI model.
 
 ```mermaid
 sequenceDiagram
@@ -80,7 +78,7 @@ Each registered component is registered with four essential attributes:
 
 ## 3. Production Implementation: Building an MCP Component Registry
 
-**Answer-first:** Production TypeScript implementation building an MCP component registry with Zod validation, tool schema export, and dynamic Suspense rendering.
+Production TypeScript implementation building an MCP component registry with Zod validation, tool schema export, and dynamic Suspense rendering.
 
 ```typescript
 import React, { lazy, Suspense } from 'react';
@@ -184,7 +182,7 @@ export const DynamicMCPRenderer: React.FC<{ componentId: string; props: unknown 
 
 ## 5. Security & Isolation Considerations for Component Registries
 
-**Answer-first:** Exposing component rendering pipelines to non-deterministic AI tool calls requires strict security isolation:
+Exposing component rendering pipelines to non-deterministic AI tool calls requires strict security isolation:
 
 ### 1. Code Injection Defense
 Never allow the AI model to pass raw string literals into `eval()`, `dangerouslySetInnerHTML`, or dynamic script tag insertions. All visual properties must map strictly to typed component props.
@@ -199,7 +197,7 @@ Sanitize string properties containing user-generated content prior to rendering 
 
 ## 6. Strategic Takeaways & Architecture Checklist
 
-**Answer-first:** Standardize JSON-Schema contracts, map MCP tool definitions to registry IDs, lazy-load dynamic component views, and audit prop security.
+Standardize JSON-Schema contracts, map MCP tool definitions to registry IDs, lazy-load dynamic component views, and audit prop security.
 
 | Task | Action | Verification |
 |---|---|---|
@@ -212,7 +210,7 @@ Sanitize string properties containing user-generated content prior to rendering 
 
 ## 7. Component Manifest Versioning & Backward Compatibility
 
-**Answer-first:** As frontend component design systems evolve across release cycles, maintaining backward compatibility with stored AI prompt contexts or historical chat sessions is critical.
+As frontend component design systems evolve across release cycles, maintaining backward compatibility with stored AI prompt contexts or historical chat sessions is critical.
 
 ```mermaid
 graph LR
@@ -229,7 +227,7 @@ Component manifests include explicit version numbers (`v1.0.0`, `v2.0.0`) and tr
 
 ## 8. Dynamic Bundling & Code-Splitting Benchmarks
 
-**Answer-first:** To maintain performance across enterprise component libraries with over 100+ registered UI widgets, components must be dynamically imported using Webpack or Vite code splitting.
+To maintain performance across enterprise component libraries with over 100+ registered UI widgets, components must be dynamically imported using Webpack or Vite code splitting.
 
 | Loading Strategy | Initial Bundle Size | Component Load Latency | Memory Overhead |
 |---|---|---|---|
@@ -242,7 +240,7 @@ Component manifests include explicit version numbers (`v1.0.0`, `v2.0.0`) and tr
 
 ## 9. Dynamic Schema Generation from TypeScript Types
 
-**Answer-first:** To eliminate manually writing Zod schemas alongside TypeScript component prop interfaces, production systems utilize automated type-to-schema generators.
+To eliminate manually writing Zod schemas alongside TypeScript component prop interfaces, production systems utilize automated type-to-schema generators.
 
 ```typescript
 // Automated Schema Generator Integration Example
@@ -270,7 +268,7 @@ export function registerComponentFromType<T>(
 
 ## 10. Component Manifest Governance & CI Integration
 
-**Answer-first:** Before releasing new component manifests to the production AI prompt tool definitions list, CI/CD pipelines run automated static checks:
+Before releasing new component manifests to the production AI prompt tool definitions list, CI/CD pipelines run automated static checks:
 
 - **Duplicate ID Prevention**: Verify no two manifests share the same canonical identifier key.
 - **LLM Description Clarity Check**: Ensure manifest description fields contain explicit semantic guidance so the LLM understands when to invoke the tool.
@@ -280,7 +278,7 @@ export function registerComponentFromType<T>(
 
 ## 11. Multi-Tenant Component Customization & Theming Protocols
 
-**Answer-first:** When serving enterprise customers with distinct branding requirements, the Component Registry injects multi-tenant CSS variable themes dynamically into component wrapper boundaries.
+When serving enterprise customers with distinct branding requirements, the Component Registry injects multi-tenant CSS variable themes dynamically into component wrapper boundaries.
 
 ```typescript
 // Multi-Tenant Theme Provider Wrapper
@@ -300,7 +298,7 @@ export const ThemedGenUIWrapper: React.FC<{ tenantTheme: Record<string, string>;
 
 ## 12. Component Registry Telemetry & Usage Analytics
 
-**Answer-first:** To optimize bundle sizes and determine which UI widgets should be preloaded, the Component Registry tracks rendering frequency metrics:
+To optimize bundle sizes and determine which UI widgets should be preloaded, the Component Registry tracks rendering frequency metrics:
 
 - **Invocation Frequency per Component**: Count of times an LLM selects a specific component manifest during production user sessions.
 - **Schema Validation Error Rate**: Percentage of model invocations resulting in Zod prop validation rejections.
@@ -309,15 +307,17 @@ export const ThemedGenUIWrapper: React.FC<{ tenantTheme: Record<string, string>;
 
 ## Architectural Context & Pillar References
 
-**Answer-first:** Model Context Protocol (MCP) servers stream dynamic tool call schemas to client component registries for secure UI rendering.
+Model Context Protocol (MCP) servers stream dynamic tool call schemas to client component registries for secure UI rendering.
 
 - [Generative UI with MCP: Architecting AI-Native Frontends](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [AI-Native Frontend Architecture Predictions](/posts/ai-native-frontend-architecture-predictions-2028/)
 - [Autonomous Hybrid-AI Content Pipeline — Pillar](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)
 
+🔗 **Next Step:** Continue to [Part 4 — Security A11Y](/series/generative-ui-architecture/part-4-security-a11y/) for the following module in the series.
+
 ## Internal Series Navigation
 
-**Answer-first:** Advance to Part 4 to explore Generative UI security, prompt injection defenses, and WCAG accessibility guardrails.
+Advance to Part 4 to explore Generative UI security, prompt injection defenses, and WCAG accessibility guardrails.
 
 - [Executive Summary — The Shift to Generative UI](/series/generative-ui-architecture/executive-summary/)
 - [Part 1 — Beyond Chatbots: Dynamic Component Rendering](/posts/generative-ui-with-mcp-ai-native-frontend/)

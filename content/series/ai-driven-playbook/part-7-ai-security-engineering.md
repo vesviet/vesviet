@@ -18,9 +18,9 @@ ShowToc: true
 TocOpen: true
 ---
 
-# Part 7 — AI Security Engineering: Zero-Trust Guardrails & Threat Modeling
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 6 — Ai Observability Governance](/series/ai-driven-playbook/part-6-ai-observability-governance/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-First Summary**: AI Security Engineering replaces traditional perimeter security with a Zero-Trust Defense-in-Depth architecture. By deploying pre-retrieval AST prompt scanners, cryptographically enforced Row-Level Security (RLS), and post-generation output sanitizers, enterprise systems neutralize indirect prompt injections and data poisoning attacks with 99.4% efficacy.
+> **Answer-first:** AI Security Engineering replaces traditional perimeter security with a Zero-Trust Defense-in-Depth architecture. By deploying pre-retrieval AST prompt scanners, cryptographically enforced Row-Level Security (RLS), and post-generation output sanitizers, enterprise systems neutralize indirect prompt injections and data poisoning attacks with 99.4% efficacy.
 
 **Key Takeaways**:
 - **Pre-Retrieval AST Prompt Guards**: Blocks malicious prompt injection signatures before queries reach vector database indices.
@@ -110,13 +110,13 @@ Legacy security focuses on SQL injection and XSS, whereas AI security addresses 
 
 Production Python security guardrails intercept user prompts and LLM completion outputs, sanitizing injection payloads in real time.
 
-**Python AI Security Engineering Guardrail Script:** The `AISecurityEngineeringPipeline` implementation demonstrates input prompt injection scanning, cryptographic RBAC filter clause generation, SOC2 prompt hashing, and output secret key redaction.
+**Python AI Security Engineering Guardrail Script:** The `AISecurityEngineeringPipeline` implementation demonstrates input prompt injection scanning, parameterized RBAC predicate generation (safe against SQL injection), SOC2 prompt hashing, and output secret key redaction.
 
 ```python
 import re
 import hashlib
 import time
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Tuple
 from pydantic import BaseModel, Field
 
 class AISecurityRequest(BaseModel):
@@ -131,7 +131,8 @@ class AISecurityAuditEntry(BaseModel):
     tenant_id: str
     prompt_hash: str
     is_safe: bool
-    rbac_filter_clause: str
+    rbac_predicate: str
+    rbac_params: Dict[str, Any]
     violations: List[str]
     timestamp: float = Field(default_factory=time.time)
 
@@ -146,6 +147,18 @@ class AISecurityEngineeringPipeline:
         # Secret leaks regex
         self.secret_rule = re.compile(r"sk-[a-zA-Z0-9]{20,}", re.IGNORECASE)
 
+    def build_rbac_predicate(self, tenant_id: str, roles: List[str]) -> Tuple[str, Dict[str, Any]]:
+        """Return a parameterized SQL predicate and params dict.
+
+        Callers must pass the params to a driver that supports named binding
+        (psycopg %(name)s, SQLAlchemy text(), etc.). Never interpolate values
+        into SQL strings — doing so re-introduces the vulnerability this
+        function exists to prevent.
+        """
+        predicate = "tenant_id = %(tenant_id)s AND required_role = ANY(%(roles)s)"
+        params = {"tenant_id": tenant_id, "roles": list(roles)}
+        return predicate, params
+
     def process_security_pipeline(self, req: AISecurityRequest) -> AISecurityAuditEntry:
         violations = []
 
@@ -155,9 +168,8 @@ class AISecurityEngineeringPipeline:
                 violations.append("Prompt Injection Signature Detected")
                 break
 
-        # Step 2: Construct Cryptographic RBAC Filter Clause
-        roles_str = ", ".join(f"'{r}'" for r in req.roles)
-        rbac_clause = f"tenant_id = '{req.tenant_id}' AND required_role IN ({roles_str})"
+        # Step 2: Construct Parameterized RBAC Predicate
+        predicate, params = self.build_rbac_predicate(req.tenant_id, req.roles)
 
         # Step 3: Compute Prompt Lineage Hash for SOC2 Audit
         prompt_hash = hashlib.sha256(req.prompt_text.encode("utf-8")).hexdigest()
@@ -170,7 +182,8 @@ class AISecurityEngineeringPipeline:
             tenant_id=req.tenant_id,
             prompt_hash=prompt_hash,
             is_safe=is_safe,
-            rbac_filter_clause=rbac_clause,
+            rbac_predicate=predicate,
+            rbac_params=params,
             violations=violations
         )
 
@@ -194,7 +207,8 @@ if __name__ == "__main__":
     print("=== AI Security Engineering Pipeline Audit ===")
     print(f"Request ID: {audit.request_id} | Is Safe: {audit.is_safe}")
     print(f"Prompt SHA-256 Hash: {audit.prompt_hash[:16]}...")
-    print(f"Generated RLS Filter Clause: {audit.rbac_filter_clause}")
+    print(f"RBAC Predicate: {audit.rbac_predicate}")
+    print(f"RBAC Params: {audit.rbac_params}")
 
     # Output Sanitization Test
     raw_output = "Here is your API key for testing: sk-live-11223344556677889900"
@@ -217,6 +231,8 @@ Output sanitizers pass generated completion streams through regex scanners looki
 
 ---
 
+🔗 **Next Step:** You have reached the final part of this series. Revisit the [Executive Summary](/series/ai-driven-playbook/executive-summary/) or explore other series linked below.
+
 ## Internal Series Navigation
 
 Review the entire AI-Driven Playbook series covering enterprise RAG, team operating models, observability, and security.
@@ -224,4 +240,4 @@ Review the entire AI-Driven Playbook series covering enterprise RAG, team operat
 - [Executive Summary — Building an AI-Native Organization](/series/ai-driven-playbook/executive-summary/)
 - [Part 1 — Context Engineering: DDD for AI](/series/ai-driven-playbook/part-1-context-engineering-ddd/)
 - [Part 5 — Operating Model: Evolving AI-Era Operations](/series/ai-driven-playbook/part-5-operating-model/)
-- [Part 6 — AI Observability & Governance](/series/ai-driven-playbook/part-6-ai-observability-governance/)
+- [Part 6 — AI Observability & Governance](/series/ai-driven-playbook/part-6-ai-observability-governance/)

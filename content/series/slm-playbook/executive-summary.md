@@ -20,8 +20,6 @@ mermaid: true
 image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
 ---
 
-> **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for an architectural overview of the system.
-
 [← Series hub](/series/slm-playbook/)
 [Next →](/series/slm-playbook/part-2-sft-data-engineering/)
 
@@ -310,3 +308,5 @@ The Go hybrid router performs fast keyword classification and token inspection o
 Deploying an 8B model like Meta Llama 3 8B with FP16/BF16 weights or vLLM AWQ/GPTQ 4-bit quantization requires a single mid-tier GPU such as an NVIDIA L4 (24GB VRAM) or NVIDIA A10G. For 14B models like Phi-4, utilizing PagedAttention with vLLM allows high-throughput concurrent request serving on a single 24GB or dual 16GB GPU configuration.
 
 {{< author-cta >}}
+
+🔗 **Next Step:** Continue to [Part 2 — Sft Data Engineering](/series/slm-playbook/part-2-sft-data-engineering/) for the following module in the series.

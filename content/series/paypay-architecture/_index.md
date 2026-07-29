@@ -1,5 +1,6 @@
 ---
 title: "PayPay Architecture: Scaling for Planet-Scale Campaigns"
+slug: "paypay-architecture"
 date: "2026-05-05T21:00:00+07:00"
 lastmod: "2026-07-23T13:34:42+07:00"
 draft: false

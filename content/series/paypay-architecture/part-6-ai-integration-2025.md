@@ -19,7 +19,9 @@ mermaid: true
 image: "images/posts/paypay-scaling-cover.png"
 ---
 
-> **Executive Summary & Quick Answer**: Integrating AI capabilities into payment platforms involves embedding real-time LLM RAG hubs for customer support and ML fraud detection models into transaction evaluation pipelines, enforcing sub-20ms model inference SLAs.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Campaign Architecture](/series/paypay-architecture/part-5-campaign-architecture/). Review it first if the terminology in this part is unfamiliar.
+
+> **Answer-first:** Integrating AI capabilities into payment platforms involves embedding real-time LLM RAG hubs for customer support and ML fraud detection models into transaction evaluation pipelines, enforcing sub-20ms model inference SLAs.
 
 **Answer-first:** PayPay integrates AI into its transaction pipelines by streaming payment events asynchronously to machine learning scoring models. Running inference out-of-band prevents risk assessment evaluations from adding latency to the synchronous checkout flow, enabling real-time fraud detection and dynamic credit scoring.
 
@@ -256,3 +258,4 @@ PII fields are anonymized and replaced with cryptographic tokens before vector e
 
 Next step: Review the full PayPay architecture overview in [Part 1: Microservices Foundation & GitOps](/series/paypay-architecture/part-1-microservices-gitops/). For AI integration in payment workflows or LLM RAG platform engineering, consult [AI & FinTech Engineering Consultants](/hire/).
 
+🔗 **Next Step:** You have reached the final part of this series. Revisit the series index at [/series/paypay-architecture/](/series/paypay-architecture/) or explore other series linked below.

@@ -18,10 +18,9 @@ ShowToc: true
 TocOpen: true
 ---
 
-
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Review Pipeline Multi Agent](/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 5 — AI Code Security: Prompt Injection & Credentials
-
 
 When developers generate application code using AI tools (Cursor, GitHub Copilot, Claude), LLMs frequently insert plain-text synthetic API keys or sample secrets (e.g., `api_key = "sk_live_9988221100abc"`).
 
@@ -34,8 +33,6 @@ Even more dangerous is **Indirect Prompt Injection in Source Code**, where malic
 ## AI Code Security Inspection Topology
 
 Security inspection pipelines scan AI-generated diffs for embedded prompt injection attacks, hardcoded secret keys, and unvalidated external dependencies.
-
-> **Pillar Architecture Guide:** This article is part of the **[Autonomous Hybrid-AI Pipeline: Cron to State-Machine](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)** series. Please refer to the original article for a comprehensive overview of the architecture.
 
 ```mermaid
 graph TD
@@ -202,26 +199,24 @@ def get_db_connection():
 
 ---
 
-## Technical Deep-Dive: Enterprise Code Review & Vibe Coding Governance
-
+## Production Invariants & Governance
 Enterprise AI security governance mandates cryptographic signing of validated AI pull requests and automated SAST/DAST verification pipelines.
 
 DevSecOps pipelines inspecting AI-generated code must combine static credential entropy detection with comment AST parsing to defend against indirect prompt injections and leaked credentials.
 
-### System Throughput & Latency Metrics
-
+### Throughput & Latency Metrics
 - **Entropy Scanning Latency**: Evaluating string literals across multi-file diffs in sub-25ms.
 - **Comment AST Inspection**: Scanning code comments for prompt injection signatures in sub-10ms.
 - **Security Audit Throughput**: Auditing 1,000+ AI-generated commits per minute without CI build bottlenecks.
 
-### System Safety & Execution Guardrails
-
+### Execution Guardrails
 1. **Shannon Entropy Thresholds**: Flag any string literal with entropy > 4.5 as a potential plain-text secret.
 2. **Comment Injection Shields**: Intercept comments containing prompt override commands prior to passing code to LLM reviewers.
 3. **Automated Secret Rotation**: Trigger immediate credential revocation whenever a live key is detected in git diffs.
 
-
 ---
+
+🔗 **Next Step:** Continue to [Part 6 — Governance Observability Career](/series/ai-code-review-vibe-coding/part-6-governance-observability-career/) for the following module in the series.
 
 ## Internal Series Navigation
 
