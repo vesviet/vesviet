@@ -1,12 +1,12 @@
 ---
-title: "Distance Matrix Routing Guide: OSRM & GraphHopper Engine"
+title: "GraphHopper Distance Matrix API for Ecommerce Order Routing"
 slug: "part-7-distance-matrix-routing"
 date: "2026-05-06T20:30:00+07:00"
 lastmod: "2026-07-22T08:30:00+07:00"
 draft: false
 ShowToc: true
 TocOpen: true
-description: "High-performance distance matrix routing guide. Benchmark OSRM vs GraphHopper with sub-5ms matrix generation for ecommerce order allocation."
+description: "Optimize last-mile ecommerce logistics with self-hosted GraphHopper. A complete guide to building a scalable Distance Matrix routing engine."
 weight: 8
 keywords: ["graphhopper vs osrm", "distance matrix routing", "osrm distance matrix", "graphhopper distance matrix", "distance.to alternative", "google maps distance matrix alternative", "ecommerce order allocation", "or-tools vrp", "open source routing engine"]
 mermaid: true
@@ -22,7 +22,7 @@ canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/part-7-dist
 
 ## The Invisible yet Most Expensive Bottleneck in E-commerce Routing
 
-**Answer-first:** For 1 warehouse and 100 delivery stops, routing requires 10,201 pairwise distance calculations; self-hosting OSRM or GraphHopper eliminates external API costs.
+**Answer-first:** Self-hosting the GraphHopper Distance Matrix API eliminates commercial Google Maps API costs for ecommerce order allocation, generating NxN pairwise travel durations and distances in sub-5ms using Contraction Hierarchies.
 
 For any VRP (Vehicle Routing Problem) solver to find the optimal delivery route, it needs to know the exact cost between every pair of stops — this is the **distance matrix**. For 1 warehouse + 100 orders (101 points), that is `101 × 101 = 10,201` pairs. Choosing the wrong tool for this step can cost **$510/day** in API fees or cause multi-second latency spikes under load.
 

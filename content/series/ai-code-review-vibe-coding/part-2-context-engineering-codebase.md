@@ -1,5 +1,5 @@
 ---
-title: "Codebase Context Engineering for AI Code Reviewers"
+title: "Context Engineering for Codebase AI Code Review & Vibe Coding"
 slug: "part-2-context-engineering-codebase"
 date: "2026-05-26T08:00:00+07:00"
 lastmod: "2026-07-23T10:40:00+07:00"
@@ -13,14 +13,16 @@ cover:
   relative: false
 mermaid: true
 canonicalURL: "https://tanhdev.com/series/ai-code-review-vibe-coding/part-2-context-engineering-codebase/"
-description: "Comprehensive technical guide to building AST context bundlers and codebase context assembly pipelines for automated AI code review engines."
+description: "Master Context Engineering for codebase AI code review. Learn to build AST context bundlers and context assembly pipelines for AI code reviewers."
 ShowToc: true
 TocOpen: true
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Vibe Coding Non Technical](/series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical/). Review it first if the terminology in this part is unfamiliar.
 
-## Part 2 — Codebase Context Engineering for AI Reviewers
+# Context Engineering for Codebase AI Code Reviewers
+
+**Answer-first:** Context engineering for codebase AI code review extracts AST function signatures, repository rules, and model dependencies to build token-budgeted prompt contexts, reducing LLM reviewer false positives from 42% to under 4%.
 
 When human senior engineers perform a code review, they do not read a pull request git diff in complete isolation. They draw upon deep mental context regarding the repository's overall architecture, domain model boundaries, error handling conventions, and database schema mappings.
 

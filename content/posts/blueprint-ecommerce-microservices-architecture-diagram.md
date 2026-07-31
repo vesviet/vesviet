@@ -1,5 +1,5 @@
 ---
-title: "E-Commerce Microservices Architecture: 21-Service Blueprint"
+title: "Ecommerce Microservices Architecture Diagram: 21-Service Blueprint"
 slug: "blueprint-ecommerce-microservices-architecture-diagram"
 author: "Lê Tuấn Anh"
 date: "2026-04-12T08:30:00+07:00"
@@ -7,22 +7,22 @@ lastmod: "2026-07-22T08:30:00+07:00"
 draft: false
 mermaid: true
 tags: ["Architecture", "Microservices", "Mermaid", "Golang", "API Gateway", "DDD", "Dapr", "Kubernetes", "ecommerce architecture"]
-description: "Complete microservices ecommerce architecture diagram & blueprint. Build a composable commerce stack with Golang, DDD, and Dapr."
+description: "Complete ecommerce microservices architecture diagram and 21-service blueprint. Learn to build a scalable composable commerce engine with Golang and Dapr."
 categories: ["Architecture"]
 ShowToc: true
 TocOpen: true
 cover:
   image: "images/posts/ecommerce-microservices-blueprint-cover.png"
-  alt: "E-Commerce Microservices Architecture Diagram: 21-service Golang DDD blueprint for 2026"
+  alt: "ecommerce microservices architecture diagram"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/blueprint-ecommerce-microservices-architecture-diagram/"
 ---
 
-# Ecommerce Architecture: 21-Service Microservices Blueprint
+# Ecommerce Microservices Architecture Diagram: 21-Service Blueprint
 
 ## E-Commerce Architecture Patterns: Monolith vs Microservices
 
-The comparison matrix below highlights key architectural differences between unified monolithic codebases and decoupled domain-driven microservice ecosystems.
+**Answer-first:** An ecommerce microservices architecture diagram organizes system capabilities into 6 core bounded domains (Commerce Flow, Product & Content, Logistics, Post-Purchase, Identity & Access, Platform Operations), connecting 21 Golang microservices via gRPC and Dapr Pub/Sub event mesh for high-concurrency scalability.
 
 ### Monolithic vs Microservices E-Commerce Comparison
 

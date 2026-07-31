@@ -1,5 +1,5 @@
 ---
-title: "Prompt Engineering vs Fine-Tuning: 2026 AI Decision Guide"
+title: "Prompt Engineering vs Fine Tuning: 2026 AI Decision Guide"
 slug: "slm-fine-tune-vs-prompt-engineering"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
@@ -26,7 +26,7 @@ tags:
   - "vLLM"
   - "Distillation"
   - "Preference Alignment"
-description: "Prompt engineering vs fine-tuning vs RAG: Compare cost, latency, token limits, knowledge distillation (DeepSeek-R1), and DPO/GRPO preference alignment."
+description: "Prompt engineering vs fine tuning vs RAG: Complete 2026 decision guide comparing cost, latency, token limits, QLoRA fine-tuning, and DeepSeek-R1 distillation."
 ShowToc: true
 TocOpen: true
 cover:
@@ -36,11 +36,13 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/slm-fine-tune-vs-prompt-engineering/"
 ---
 
-# Prompt Engineering vs Fine-Tuning vs RAG: Complete 2026 Decision Guide
+# Prompt Engineering vs Fine Tuning vs RAG: Complete 2026 Decision Guide
 
 ---
 
-## Executive Summary & SLM Playbook Architecture
+## Prompt Engineering vs Fine Tuning: Executive Decision Framework
+
+**Answer-first:** In the prompt engineering vs fine tuning evaluation, prompt engineering offers rapid prototyping with zero setup cost, whereas fine tuning Small Language Models (SLMs) via QLoRA bakes domain knowledge into weights, reducing TTFT latency under 250ms and cutting API token spend by 90%.
 
 Small Language Models (SLMs, 1B–8B parameters) combined with fine-tuning and local inference (vLLM) rival proprietary frontier LLMs on specialized domain tasks at a fraction of the cost. The playbook below rests on three architectural choices:
 

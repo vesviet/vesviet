@@ -1,10 +1,10 @@
 ---
-title: "Ride-Hailing Dispatch Engine: Uber DISCO Architecture"
+title: "Build a Real-Time Ride-Hailing Dispatch Engine (Golang & Redis)"
 slug: "part-4-dispatch-matching-engine"
 date: "2026-05-06T20:00:00+07:00"
 lastmod: "2026-07-26T21:00:00+07:00"
 draft: false
-description: "How ride-hailing dispatch works at scale: bipartite matching in <2 seconds, Uber DISCO, Grab DispatchGym, Gojek Jaeger, and batched optimization."
+description: "Learn how to architect a high-throughput dispatch matching engine using Golang and Redis geospatial indexing for real-time ride-hailing apps."
 weight: 5
 cover:
   image: "images/posts/real-time-ride-hailing-cover.png"
@@ -19,7 +19,7 @@ image: "images/posts/real-time-ride-hailing-cover.png"
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Event Streaming Kafka](/series/ride-hailing-realtime-architecture/part-3-event-streaming-kafka/). Review it first if the terminology in this part is unfamiliar.
 
-**Answer-first:** Dispatch and matching engines resolve spatial routing in real-time by querying active drivers within localized H3 rings. By running parallel bipartite matching algorithms, the engine pairs riders and drivers to minimize pickup ETA and passenger wait times.
+**Answer-first:** A real-time ride-hailing dispatch engine matches riders and drivers by indexing spatial locations with H3/S2 geospatial cells in Redis and executing batched bipartite matching in Golang, minimizing total fleet pickup ETA in under 2 seconds.
 
 Every time you tap "Book Ride," a system makes dozens of decisions in under two seconds: Which driver? What route? What's the real ETA? This article breaks down exactly how the **dispatch algorithm** works — from the greedy approach that fails at scale, to the bipartite graphs, batched matching, and [surge pricing](/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/) mechanics that power Uber, Lyft, Grab, and Gojek today.
 
