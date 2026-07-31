@@ -47,6 +47,15 @@
   gtag('config', 'G-E87WX5RPQ4');
 </script>
 
+{{- $showAds := false -}}
+{{- if and .IsPage .File -}}
+  {{- $isAllowedSection := in (slice "posts" "radar" "series") .Section -}}
+  {{- $isExcludedPage := in (slice "privacy-policy" "reading-map" "about" "hire") .File.ContentBaseName -}}
+  {{- if and $isAllowedSection (not $isExcludedPage) -}}
+    {{- $showAds = true -}}
+  {{- end -}}
+{{- end -}}
+{{- if $showAds -}}
 <!-- Google AdSense Validation -->
 <script>
   function loadAdSense() {
@@ -64,6 +73,7 @@
   // Fallback for no interaction
   setTimeout(loadAdSense, 5000);
 </script>
+{{- end -}}
 {{ end }}
 
 <!-- Schema.org — Site-wide graph (Person + WebSite + SearchAction) -->
