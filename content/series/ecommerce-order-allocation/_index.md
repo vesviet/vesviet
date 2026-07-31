@@ -32,6 +32,7 @@ This series bridges theory and practice, covering the real-world architecture of
 - [Part 5 — Split Shipment, Consolidation & Last-Mile Delivery](/series/ecommerce-order-allocation/part-5-split-consolidation-lastmile/)
 - [Part 6 — Hands-on: Building a Mini Allocation Engine with Google OR-Tools](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/)
 - [Part 7 — Distance Matrix: Routing Distance Calculation Algorithms](/series/ecommerce-order-allocation/part-7-distance-matrix-routing/)
+- [Part 8 — Intelligent Order Release: Agentic AI Order Batching](/series/ecommerce-order-allocation/part-8-intelligent-order-release/)
 
 ## Production Case Study
 
@@ -49,6 +50,7 @@ See the full warehouse-to-last-mile pipeline in a live production context:
 | **Part 2** | Multi-Warehouse Allocation | Google OR-Tools Integer Programming | Minimum shipping cost and split shipments |
 | **Part 3** | Distance & Carrier Routing | GraphHopper, Distance Matrix API | Lowest-cost carrier selection per zip code |
 | **Part 4** | Order Fulfillment Engine | Go Microservices Engine | Sub-10ms allocation latency at 5,000 QPS |
+| **Part 8** | Intelligent Order Release | Agentic AI, Dapr Pub/Sub, OR-Tools VRPTW | Dynamic real-time order batching vs static waves |
 
 ## Target Audience & Logistics Prerequisites
 
