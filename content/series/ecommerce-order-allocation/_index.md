@@ -33,6 +33,8 @@ This series bridges theory and practice, covering the real-world architecture of
 - [Part 6 — Hands-on: Building a Mini Allocation Engine with Google OR-Tools](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/)
 - [Part 7 — Distance Matrix: Routing Distance Calculation Algorithms](/series/ecommerce-order-allocation/part-7-distance-matrix-routing/)
 - [Part 8 — Intelligent Order Release: Agentic AI Order Batching](/series/ecommerce-order-allocation/part-8-intelligent-order-release/)
+- [Part 9 — Order Splitting Algorithm: Graph Coloring & OPA in Golang](/posts/order-splitting-graph-coloring-opa/)
+- [Part 10 — Warehouse Picker Routing Optimization (GraphHopper & OR-Tools)](/posts/warehouse-picker-routing-optimization/)
 
 ## Production Case Study
 
@@ -51,6 +53,8 @@ See the full warehouse-to-last-mile pipeline in a live production context:
 | **Part 3** | Distance & Carrier Routing | GraphHopper, Distance Matrix API | Lowest-cost carrier selection per zip code |
 | **Part 4** | Order Fulfillment Engine | Go Microservices Engine | Sub-10ms allocation latency at 5,000 QPS |
 | **Part 8** | Intelligent Order Release | Agentic AI, Dapr Pub/Sub, OR-Tools VRPTW | Dynamic real-time order batching vs static waves |
+| **Part 9** | Order Splitting | Open Policy Agent, Graph Coloring, First-Fit | Microsecond bin packing for cart routing |
+| **Part 10** | Picker Routing | GraphHopper A*, Google OR-Tools (C++) | Resolving TSP for 20+ multi-tenant warehouses |
 
 ## Target Audience & Logistics Prerequisites
 

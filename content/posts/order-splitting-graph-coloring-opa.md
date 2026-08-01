@@ -6,7 +6,8 @@ date: "2026-08-01T21:00:00+07:00"
 lastmod: "2026-08-01T21:00:00+07:00"
 draft: false
 mermaid: true
-tags: ["Architecture", "Logistics", "Golang", "Algorithms", "Graph Theory", "Open Policy Agent", "ecommerce architecture"]
+series: ["E-commerce Order Allocation"]
+tags: ["Architecture", "Logistics", "Golang", "Algorithms", "Graph Coloring", "OPA", "ecommerce architecture"]
 description: "How to solve the e-commerce order splitting problem in under 50ms using Open Policy Agent (OPA), Graph Coloring heuristics in Golang, and Bin Packing."
 categories: ["Architecture"]
 ShowToc: true
@@ -138,13 +139,17 @@ The architecture strictly separates responsibilities:
 
 ## Series Navigation
 
-| Post | What it covers |
+**[E-commerce Order Allocation Architecture Systems Guide](https://tanhdev.com/series/ecommerce-order-allocation/)**
+
+| Part | What it covers |
 | :--- | :--- |
-| [E-Commerce Microservices Blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/) | Full system blueprint, domain boundaries, traffic flows |
-| [Golang DDD Deep-Dive](/posts/architecting-21-service-ecommerce-golang-ddd/) | Kratos clean arch, Saga implementation, OCC, idempotency |
-| [GitOps with ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/) | App-of-Apps, Kustomize overlays, rollback playbook |
-| **This post** | Order Splitting, Graph Coloring, OPA, Bin Packing |
-| **Part 10 (Coming Soon)** | Picker Routing Optimization (TSP/VRP) with OR-Tools |
+| [Part 1-4: Executive Summary](/posts/order-fulfillment-algorithm-warehouse-last-mile/) | Full warehouse-to-last-mile pipeline, inventory sync, multi-warehouse allocation |
+| [Part 5: Split Shipment & Consolidation](/series/ecommerce-order-allocation/part-5-split-consolidation-lastmile/) | Greedy set-covering heuristic, profitability thresholds |
+| [Part 6: Building a Mini Allocation Engine](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/) | Google OR-Tools integer programming for assignment |
+| [Part 7: Distance Matrix Routing](/series/ecommerce-order-allocation/part-7-distance-matrix-routing/) | GraphHopper distance matrix generation for VRP |
+| [Part 8: Intelligent Order Release](/series/ecommerce-order-allocation/part-8-intelligent-order-release/) | Agentic AI Order Batching & VRPTW |
+| **This post (Part 9)** | Order Splitting Algorithm, OPA & Graph Coloring |
+| [Part 10: Picker Routing Optimization](/posts/warehouse-picker-routing-optimization/) | GraphHopper A*, OR-Tools in C++ |
 
 ---
 *If you are an engineer scaling logistics platforms, how do you handle dimensional weight logic? Share your approach below.*
