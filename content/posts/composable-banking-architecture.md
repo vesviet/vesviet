@@ -1,5 +1,5 @@
 ---
-title: "Composable Banking Architecture: Monolith to Modular"
+title: "Composable Banking Architecture Pattern: Migration from Monolith"
 slug: "composable-banking-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-06-10T14:55:00+07:00"
@@ -19,7 +19,7 @@ tags:
   - "Saga Pattern"
   - "Core Banking"
   - "MACH"
-description: "How banks replace monolithic cores with composable banking using Go microservices, Saga orchestration, NewSQL ledgers, and Strangler Fig."
+description: "Discover the composable banking architecture pattern. Learn how to migrate from a monolithic core to modular Go microservices using the Strangler Fig pattern."
 ShowToc: true
 TocOpen: true
 cover:
@@ -30,6 +30,15 @@ canonicalURL: "https://tanhdev.com/posts/composable-banking-architecture/"
 ---
 
 # Composable Banking Architecture: Monolith to Modular
+
+**Answer-first:** The composable banking architecture pattern replaces monolithic core banking systems with modular, independent Packaged Business Capabilities (PBCs). By leveraging Go microservices, Saga orchestration, and the Strangler Fig migration pattern, banks can decouple their legacy ledgers without risky "Big Bang" cutovers.
+
+## Migration Path from Monolith to Composable
+
+Transitioning to a composable core requires a phased approach to mitigate operational risk:
+1. **API Gateway & Anti-Corruption Layer (ACL):** Shield the legacy core behind a gateway and translate modern API requests into legacy formats using an ACL.
+2. **Shadow Routing:** Deploy the new composable service (e.g., a new Go-based ledger) in parallel. Mirror live traffic to it and reconcile the outputs without affecting actual customer balances.
+3. **Incremental Cutover (Strangler Fig):** Once reconciliation achieves 100% parity, route read traffic to the new service, followed by write traffic, effectively "strangling" that specific domain out of the monolith.
 
 Legacy core banking systems were designed in a different era. Temenos T24, Finacle, and Flexcube shared one defining assumption: the bank's entire product catalogue — deposits, lending, payments, trade finance — would live inside a single, tightly coupled application and a single, shared database. That assumption held when banking moved at human speed. It breaks completely when product releases need to go from months to days, when a single fraud engine update must not risk a payments outage, and when engineers on a COBOL codebase are retiring faster than they can be replaced.
 

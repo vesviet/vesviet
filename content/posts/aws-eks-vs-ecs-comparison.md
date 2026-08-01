@@ -1,5 +1,5 @@
 ---
-title: "AWS EKS vs ECS: Architecture, Cost & Use Cases (2026)"
+title: "AWS ECS vs EKS for E-commerce: Architecture & Cost Comparison (2026)"
 slug: "aws-eks-vs-ecs-comparison"
 author: "Lê Tuấn Anh"
 date: "2026-06-26T21:00:00+07:00"
@@ -19,6 +19,14 @@ canonicalURL: "https://tanhdev.com/posts/aws-eks-vs-ecs-comparison/"
 ---
 
 # AWS EKS vs ECS: Architecture, Cost & Use Cases (2026)
+
+**Answer-first:** When deciding between AWS ECS and EKS, choose ECS Fargate for speed and zero control plane costs if you lack Kubernetes expertise. Choose EKS if you require the CNCF ecosystem (ArgoCD, Dapr, KEDA) and have dedicated DevOps engineers to manage the $73/month control plane fee.
+
+| Feature | AWS ECS (Elastic Container Service) | AWS EKS (Elastic Kubernetes Service) |
+| :--- | :--- | :--- |
+| **Control Plane Cost** | $0 (Free) | $73/month (~$876/year) |
+| **Scalability** | Good (ASG-based) | Excellent (Karpenter ~45s provisioning) |
+| **Complexity** | Low (AWS-native) | High (Requires Kubernetes expertise) |
 
 I've run both in production. At Vigo Retail, I architected a 21-service Go microservices platform on EKS handling **8,000 RPS peak and 25M+ requests/month**. I've also managed ECS clusters for smaller AWS-native projects. This guide is what I wish existed before I made those decisions.
 

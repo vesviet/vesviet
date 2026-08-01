@@ -1,5 +1,5 @@
 ---
-title: "Ecommerce Microservices Architecture Diagram: 21-Service Blueprint"
+title: "Blueprint: E-commerce Microservices Architecture with Golang"
 slug: "blueprint-ecommerce-microservices-architecture-diagram"
 author: "Lê Tuấn Anh"
 date: "2026-04-12T08:30:00+07:00"
@@ -7,7 +7,7 @@ lastmod: "2026-07-22T08:30:00+07:00"
 draft: false
 mermaid: true
 tags: ["Architecture", "Microservices", "Mermaid", "Golang", "API Gateway", "DDD", "Dapr", "Kubernetes", "ecommerce architecture"]
-description: "Complete ecommerce microservices architecture diagram and 21-service blueprint. Learn to build a scalable composable commerce engine with Golang and Dapr."
+description: "Deep dive into an e-commerce microservices architecture diagram using Golang and Dapr. A 21-service blueprint for building a scalable composable commerce engine."
 categories: ["Architecture"]
 ShowToc: true
 TocOpen: true
@@ -149,7 +149,7 @@ Read-heavy operations (product listing, search, user profile) resolve here with 
 
 ### Flow 2 — The Checkout Saga (Write Path)
 
-The Checkout Saga coordinates gRPC reservations with Warehouse, Payment, and Order services before publishing asynchronous events to Dapr Pub/Sub:
+The Checkout Saga coordinates gRPC reservations with Warehouse, Payment, and Order services. In 2026, raw Pub/Sub choreographies are heavily replaced by **Dapr Workflows** (a centralized Orchestrator) to guarantee robust Distributed Transactions and automated rollbacks before publishing asynchronous events:
 
 ```mermaid
 sequenceDiagram
@@ -194,6 +194,10 @@ Once `order.paid` fires into the Dapr event mesh, synchronous execution terminat
 A failure in any of these services (Notification is unreachable, Analytics is slow) does not affect the customer's checkout experience or the order record. Isolation is enforced at the infrastructure level — each service owns its own database.
 
 For the Dapr event naming conventions, Dead Letter Queue patterns, and idempotency design, see [Mastering Event-Driven Architecture with Dapr Pub/Sub](/posts/mastering-event-driven-architecture-dapr/).
+
+### Flow 4 — Distributed Tracing & Observability (OpenTelemetry)
+
+Operating 21 microservices is impossible without 100% visibility. Instead of manually injecting tracing code into every Go service, the system relies on the **Dapr Sidecar** to automatically export W3C Trace Contexts via **OpenTelemetry (OTel)**. Every gRPC call, Pub/Sub event, and database query is automatically traced and exported to Prometheus and Jaeger, ensuring you can identify latency bottlenecks across the mesh without modifying business logic.
 
 ## The CQRS Pattern for Search
 
@@ -261,4 +265,4 @@ We use a lightweight, compiled gateway like Envoy or a custom Go gateway utilizi
 We implement the Circuit Breaker and bulkhead patterns at the service boundary. In Go, libraries like `go-resiliency/breaker` or Sentinel intercept outbound HTTP/gRPC client calls. If the failure rate exceeds 50%, the breaker trips immediately, returning a cached response or an architectural fallback rather than blocking goroutines.
 
 ### Q3: How do you handle distributed checkout transactions across multiple microservices without shared SQL transactions?
-We implement the Saga Pattern orchestrated via Dapr pub/sub and Redis state stores. The Checkout service publishes events like `checkout.requested`, allowing Order, Warehouse, and Payment services to process local database transactions independently and emit compensating events if any step fails.
+We implement the Saga Pattern. While raw pub/sub choreography was common, the 2026 standard leverages **Dapr Workflows** for centralized orchestration. The Checkout Workflow coordinates the Order, Warehouse, and Payment services, processing local database transactions independently and executing compensating activities automatically if any step fails.
