@@ -247,6 +247,8 @@ For the full argument on when this complexity is justified — and when it isn't
 | [GitOps with ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/) | App-of-Apps, Kustomize overlays, rollback playbook |
 | [Magento to Microservices: Why](/posts/why-migrate-magento-to-microservices/) | Decision framework: when to migrate, when not to |
 | [Magento to Microservices: How](/posts/moving-from-magento-to-microservices/) | 3-phase Strangler Fig, Debezium CDC, bidirectional sync |
+| [Order Splitting with Graph Coloring](/posts/order-splitting-graph-coloring-opa/) | Solving CSP with OPA and Welsh-Powell |
+| [Picker Routing Optimization](/posts/warehouse-picker-routing-optimization/) | Picker Routing, GraphHopper A*, OR-Tools in C++ |
 
 ## Author & Real-World Engineering Experience / Về Tác Giả & Kinh Nghiệm Thực Tế
 
