@@ -1,27 +1,52 @@
 {{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  {{- range .Site.Pages.ByLastmod.Reverse }}
-    {{- if .Permalink }}
-      {{- $isNoIndex := or .Params.noindex .Params.robotsNoIndex }}
-      {{- $include := false }}
-      {{- if not $isNoIndex }}
-        {{- if in (slice "taxonomy" "term") .Kind }}
-          {{- $isCategory := or (eq .Section "categories") (eq .Data.Singular "category") }}
-          {{- if and $isCategory (ne .File nil) .Params.description }}
-            {{- $include = true }}
-          {{- end }}
-        {{- else }}
-          {{- $include = true }}
-        {{- end }}
-      {{- end }}
-      {{- if $include }}
+  {{- $redirectPaths := slice -}}
+  {{- $redirectsFile := "static/_redirects" -}}
+  {{- if fileExists $redirectsFile -}}
+    {{- $lines := split (readFile $redirectsFile) "\n" -}}
+    {{- range $lines -}}
+      {{- $line := trim . " \r\t" -}}
+      {{- if and $line (not (hasPrefix $line "#")) -}}
+        {{- $parts := split $line " " -}}
+        {{- if gt (len $parts) 0 -}}
+          {{- $path := index $parts 0 -}}
+          {{- $redirectPaths = $redirectPaths | append $path -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- range .Site.Pages.ByLastmod.Reverse -}}
+    {{- if .Permalink -}}
+      {{- $isNoIndex := or .Params.noindex .Params.robotsNoIndex -}}
+      {{- $hasCanonical := .Params.canonicalurl -}}
+      {{- $isRedirected := false -}}
+      
+      {{- $relPath := .RelPermalink -}}
+      {{- if in $redirectPaths $relPath -}}
+        {{- $isRedirected = true -}}
+      {{- end -}}
+
+      {{- $include := false -}}
+      {{- if and (not $isNoIndex) (not $hasCanonical) (not $isRedirected) -}}
+        {{- if in (slice "taxonomy" "term") .Kind -}}
+          {{- $isCategory := or (eq .Section "categories") (eq .Data.Singular "category") -}}
+          {{- if and $isCategory (ne .File nil) .Params.description -}}
+            {{- $include = true -}}
+          {{- end -}}
+        {{- else -}}
+          {{- $include = true -}}
+        {{- end -}}
+      {{- end -}}
+      
+      {{- if $include -}}
   <url>
     <loc>{{ .Permalink }}</loc>
     {{- if not .Lastmod.IsZero }}
     <lastmod>{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}</lastmod>
     {{- end }}
   </url>
-      {{- end }}
-    {{- end }}
-  {{- end }}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
 </urlset>

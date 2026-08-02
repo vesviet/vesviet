@@ -2,6 +2,12 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
+    // Redirect www to apex domain for SEO
+    if (url.hostname === 'www.tanhdev.com') {
+      url.hostname = 'tanhdev.com';
+      return Response.redirect(url.toString(), 301);
+    }
+
     // Xử lý OPTIONS request cho CORS (Preflight)
     if (request.method === "OPTIONS") {
       return new Response(null, {
