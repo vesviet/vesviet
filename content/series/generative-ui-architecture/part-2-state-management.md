@@ -20,7 +20,7 @@ series: ["Generative UI Architecture"]
 weight: 2
 ---
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Beyond Chatbots](/series/generative-ui-architecture/part-1-beyond-chatbots/). Review it first if the terminology in this part is unfamiliar.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Beyond Chatbots](/posts/generative-ui-with-mcp-ai-native-frontend/). Review it first if the terminology in this part is unfamiliar.
 
 > **Answer-first:** Managing client-server state in Generative UI requires choosing between Next.js React Server Components (RSC) and Astro Islands Architecture. Next.js RSC streams server action payloads directly into component trees for server-driven context binding, while Astro isolates dynamic AI rendering into client-hydrated widgets. This article evaluates state flows, optimistic updates, and hydration strategies across both meta-frameworks.
 
@@ -288,7 +288,7 @@ This section references core pillar guides on protocol specs, state models, and 
 - [AI-Native Frontend Architecture Predictions (2028)](/posts/ai-native-frontend-architecture-predictions-2028/) — Future trends in frontend state models.
 - [Autonomous Hybrid-AI Content Pipeline Guide](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/) — End-to-end pipeline implementation details.
 
-🔗 **Next Step:** Continue to [Part 3 — Component Registry](/series/generative-ui-architecture/part-3-component-registry/) for the following module in the series.
+🔗 **Next Step:** Continue to [Part 3 — Component Registry](/posts/generative-ui-with-mcp-ai-native-frontend/) for the following module in the series.
 
 ## Internal Series Navigation
 
@@ -300,4 +300,4 @@ Navigate the Generative UI Architecture series covering component registries, st
 - [Part 4 — Generative UI Security & Accessibility](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 5 — Human-in-the-Loop Workflows](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 6 — E2E Testing & Edge Performance](/posts/generative-ui-with-mcp-ai-native-frontend/)
-- [Part 7 — Reference Repo & Migration Playbook](/series/generative-ui-architecture/part-7-reference-repo-migration/)
+- [Part 7 — Reference Repo & Migration Playbook](/posts/generative-ui-with-mcp-ai-native-frontend/)

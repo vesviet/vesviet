@@ -257,7 +257,7 @@ Generative UI connects model context protocols directly to dynamic frontend comp
 - [AI-Native Frontend Architecture Predictions (2028)](/posts/ai-native-frontend-architecture-predictions-2028/) — Strategic roadmap for generative interfaces.
 - [Autonomous Hybrid-AI Content Pipeline Pillar](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/) — Core architecture driving automated UI updates.
 
-🔗 **Next Step:** Continue to [Part 2 — State Management](/series/generative-ui-architecture/part-2-state-management/) for the following module in the series.
+🔗 **Next Step:** Continue to [Part 2 — State Management](/posts/generative-ui-with-mcp-ai-native-frontend/) for the following module in the series.
 
 ## Internal Series Navigation
 
@@ -269,4 +269,4 @@ Advance to Part 2 to examine state management across Astro and Next.js RSC archi
 - [Part 4 — Generative UI Security & Accessibility](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 5 — Human-in-the-Loop Workflows](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 6 — E2E Testing & Edge Performance](/posts/generative-ui-with-mcp-ai-native-frontend/)
-- [Part 7 — Reference Repo & Migration Playbook](/series/generative-ui-architecture/part-7-reference-repo-migration/)
+- [Part 7 — Reference Repo & Migration Playbook](/posts/generative-ui-with-mcp-ai-native-frontend/)

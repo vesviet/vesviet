@@ -75,6 +75,11 @@ apple_touch_icon = "/apple-touch-icon.png"
     url = "/series/"
     weight = 12
   [[menu.main]]
+    identifier = "categories"
+    name = "Categories"
+    url = "/categories/"
+    weight = 14
+  [[menu.main]]
     identifier = "radar"
     name = "Tech Radar"
     url = "/radar/"

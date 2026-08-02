@@ -28,7 +28,7 @@ aliases:
   - /series/composable-commerce-migration/part-1-ddd-bounded-contexts/
   - /series/composable-commerce-migration/part-2-rush-monorepo/
   - /series/composable-commerce-migration/part-3-golang-kratos/
-  - /series/composable-commerce-migration/part-4-grpc-rest-gateway/
+  - /posts/ecommerce-architecture-composable-migration/
 ShowToc: true
 TocOpen: true
 cover:

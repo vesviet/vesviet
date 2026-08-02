@@ -231,13 +231,13 @@ Output sanitizers pass generated completion streams through regex scanners looki
 
 ---
 
-🔗 **Next Step:** You have reached the final part of this series. Revisit the [Executive Summary](/series/ai-driven-playbook/executive-summary/) or explore other series linked below.
+🔗 **Next Step:** You have reached the final part of this series. Revisit the [Executive Summary](/posts/ai-native-frontend-architecture-predictions-2028/) or explore other series linked below.
 
 ## Internal Series Navigation
 
 Review the entire AI-Driven Playbook series covering enterprise RAG, team operating models, observability, and security.
 
-- [Executive Summary — Building an AI-Native Organization](/series/ai-driven-playbook/executive-summary/)
-- [Part 1 — Context Engineering: DDD for AI](/series/ai-driven-playbook/part-1-context-engineering-ddd/)
+- [Executive Summary — Building an AI-Native Organization](/posts/ai-native-frontend-architecture-predictions-2028/)
+- [Part 1 — Context Engineering: DDD for AI](/posts/ai-native-frontend-architecture-predictions-2028/)
 - [Part 5 — Operating Model: Evolving AI-Era Operations](/series/ai-driven-playbook/part-5-operating-model/)
 - [Part 6 — AI Observability & Governance](/series/ai-driven-playbook/part-6-ai-observability-governance/)

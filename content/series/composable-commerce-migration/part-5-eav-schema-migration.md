@@ -21,7 +21,7 @@ cover:
 canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-5-eav-schema-migration/"
 ---
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Grpc Rest Gateway](/series/composable-commerce-migration/part-4-grpc-rest-gateway/). Review it first if the terminology in this part is unfamiliar.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Grpc Rest Gateway](/posts/ecommerce-architecture-composable-migration/). Review it first if the terminology in this part is unfamiliar.
 
 The EAV schema is why most Magento migrations fail.
 

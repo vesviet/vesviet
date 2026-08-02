@@ -18,7 +18,7 @@ canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-3a-enterprise-
 mermaid: true
 ---
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Context Engineering Ddd](/series/ai-driven-playbook/part-1-context-engineering-ddd/). Review it first if the terminology in this part is unfamiliar.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Context Engineering Ddd](/posts/ai-native-frontend-architecture-predictions-2028/). Review it first if the terminology in this part is unfamiliar.
 
 > **Answer-first:** Enterprise RAG architectures replace naive text chunking with multi-stage data pipelines combining layout-aware global scanning, hybrid dense-sparse vector search, and cross-encoder context reranking. This architecture eliminates table slicing hallucinations, enforces metadata access controls, and cuts retrieval prompt token overhead by 70% while maintaining sub-400ms end-to-end query latency.
 
@@ -234,7 +234,7 @@ An **Enterprise RAG Architecture** relies on data engineering discipline during 
 
 Once this internal "Brain" is loaded with clean, accurate, and real-time data, it is time to deploy it for operational velocity and financial return.
 
-In **[Part 3B — AI Automation for Internal Ops](/series/ai-driven-playbook/part-3b-ai-automation-internal-ops/)**, we explore how to use the AI Platform and RAG to solve operational problems: automated incident triage, dependency migrations, and internal developer support.
+In **[Part 3B — AI Automation for Internal Ops](/posts/ai-native-frontend-architecture-predictions-2028/)**, we explore how to use the AI Platform and RAG to solve operational problems: automated incident triage, dependency migrations, and internal developer support.
 
 ---
 
@@ -249,4 +249,4 @@ Dense vector search excels at semantic intent matching but struggles with exact 
 ### How does a cross-encoder reranking layer optimize token costs?
 Hybrid search retrieves a candidate set of 20-50 vector chunks, which would consume significant token budget if sent directly to an LLM. A lightweight cross-encoder model (e.g. BGE-Reranker) rescores these candidates in milliseconds, filtering them down to the top 3-5 most relevant chunks and reducing prompt tokens by 70%.
 
-🔗 **Next Step:** Continue to [Part 3B — Ai Automation Internal Ops](/series/ai-driven-playbook/part-3b-ai-automation-internal-ops/) for the following module in the series.
+🔗 **Next Step:** Continue to [Part 3B — Ai Automation Internal Ops](/posts/ai-native-frontend-architecture-predictions-2028/) for the following module in the series.

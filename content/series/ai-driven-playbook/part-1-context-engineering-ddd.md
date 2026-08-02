@@ -14,7 +14,7 @@ cover:
   relative: false
 ---
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/series/ai-driven-playbook/executive-summary/). Review it first if the terminology in this part is unfamiliar.
+> **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/posts/ai-native-frontend-architecture-predictions-2028/). Review it first if the terminology in this part is unfamiliar.
 
 > **Answer-first:** Context Engineering structures, scopes, and injects software domain knowledge into Large Language Model prompts using Domain-Driven Design principles. By organizing codebases into explicit Bounded Contexts, Abstract Syntax Tree subgraphs, and JSON-Schema contracts, engineering teams eliminate hallucinations, enforce layer boundaries, and enable autonomous coding agents to implement production-grade enterprise features.
 

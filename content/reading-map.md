@@ -197,6 +197,27 @@ For fast-moving signals, framework releases, runtime benchmarks, and daily techn
 **Next Review**: 2026-10-01
 
 ---
+
+## Browse by Category
+
+Explore deep-dive technical essays categorized by specialized engineering domains:
+- [Tech Radar](/categories/tech-radar/)
+- [AI](/categories/ai/)
+- [Architecture](/categories/architecture/)
+- [Engineering](/categories/engineering/)
+- [Fintech](/categories/fintech/)
+- [Microservices](/categories/microservices/)
+- [Payments](/categories/payments/)
+- [Backend](/categories/backend/)
+- [Kubernetes](/categories/kubernetes/)
+- [Observability](/categories/observability/)
+- [Cloudflare](/categories/cloudflare/)
+- [Golang](/categories/golang/)
+- [DevOps](/categories/devops/)
+- [E-Commerce](/categories/e-commerce/)
+- [Database](/categories/database/)
+
+---
 ## Related Architecture & Pillar Guides
 For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
 - [Engineering Leadership & Technical Advisory Services](/hire/)

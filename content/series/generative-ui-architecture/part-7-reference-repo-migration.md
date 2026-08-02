@@ -12,13 +12,13 @@ cover:
   alt: "Migration Playbook to Generative UI four phase roadmap"
   relative: false
 mermaid: true
-canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-7-reference-repo-migration/"
+canonicalURL: "/posts/generative-ui-with-mcp-ai-native-frontend/"
 description: "Production migration playbook for transitioning legacy React web applications to AI-native Generative UI streaming frontends with Astro and React."
 ShowToc: true
 TocOpen: true
 ---
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Part 6 — E2E Testing Edge](/series/generative-ui-architecture/part-6-e2e-testing-edge/). Review it first if the terminology in this part is unfamiliar.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 6 — E2E Testing Edge](/posts/generative-ui-with-mcp-ai-native-frontend/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 7 — Migration Playbook to Generative UI: Legacy to AI-Native Frontend
 

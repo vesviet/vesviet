@@ -20,7 +20,7 @@ series: ["Generative UI Architecture"]
 weight: 5
 ---
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Security A11Y](/series/generative-ui-architecture/part-4-security-a11y/). Review it first if the terminology in this part is unfamiliar.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Security A11Y](/posts/generative-ui-with-mcp-ai-native-frontend/). Review it first if the terminology in this part is unfamiliar.
 
 > **Answer-first:** Integrating Human-In-The-Loop (HITL) workflows into Generative UI systems balances autonomous AI speed with operational safety for high-risk user actions. By combining Optimistic UI rendering patterns with explicit human verification approval gates and graceful fallback error boundaries, engineering teams ensure users can review, edit, or reject AI-generated actions (such as high-value financial transfers or system configuration changes) before mutations execute on backend servers.
 
@@ -281,7 +281,7 @@ Human-in-the-loop validation bridges autonomous AI agent reasoning with determin
 - [AI-Native Frontend Architecture Predictions (2028)](/posts/ai-native-frontend-architecture-predictions-2028/) — Human-in-the-loop UI interaction patterns.
 - [Autonomous Hybrid-AI Content Pipeline Overview](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/) — Orchestrating human review stages.
 
-🔗 **Next Step:** Continue to [Part 6 — E2E Testing Edge](/series/generative-ui-architecture/part-6-e2e-testing-edge/) for the following module in the series.
+🔗 **Next Step:** Continue to [Part 6 — E2E Testing Edge](/posts/generative-ui-with-mcp-ai-native-frontend/) for the following module in the series.
 
 ## Internal Series Navigation
 
@@ -293,4 +293,4 @@ Advance to Part 6 to explore end-to-end testing, synthetic evaluation benchmarks
 - [Part 3 — Component Registry & JSON Schema Protocol](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 4 — Generative UI Security & Accessibility](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 6 — E2E Testing & Edge Performance](/posts/generative-ui-with-mcp-ai-native-frontend/)
-- [Part 7 — Reference Repo & Migration Playbook](/series/generative-ui-architecture/part-7-reference-repo-migration/)
+- [Part 7 — Reference Repo & Migration Playbook](/posts/generative-ui-with-mcp-ai-native-frontend/)

@@ -31,11 +31,11 @@ This is the **Hands-on Playbook** designed specifically for developers writing c
 
 This playbook covers production system architectures, configuration files, and operational engineering patterns distilled from enterprise environments. The playbook is divided into core architectural pillars:
 
-- **Executive Summary:** [AI Executive Summary & Enterprise Playbook](/series/ai-driven-playbook/executive-summary/)
-- **Part 1:** [Context Engineering: Domain-Driven Design for AI](/series/ai-driven-playbook/part-1-context-engineering-ddd/)
+- **Executive Summary:** [AI Executive Summary & Enterprise Playbook](/posts/ai-native-frontend-architecture-predictions-2028/)
+- **Part 1:** [Context Engineering: Domain-Driven Design for AI](/posts/ai-native-frontend-architecture-predictions-2028/)
 - **Part 2:** _AI Platform Layer: Building a Private AI Ecosystem & Architectural Freedom_ — coming soon
 - **Part 3A:** [Enterprise RAG Architecture: Building the Internal "Brain"](/series/ai-driven-playbook/part-3a-enterprise-rag-architecture/)
-- **Part 3B:** [AI Automation for Internal Ops & Proving ROI](/series/ai-driven-playbook/part-3b-ai-automation-internal-ops/)
+- **Part 3B:** [AI Automation for Internal Ops & Proving ROI](/posts/ai-native-frontend-architecture-predictions-2028/)
 - **Part 4:** _Policy-as-Code: Agentic CI/CD Guardrails_ — coming soon
 - **Part 5:** [Operating Model: Evolving AI-Era Operations](/series/ai-driven-playbook/part-5-operating-model/)
 - **Part 6:** [AI Observability & Evals: Eliminating Operational Blind Spots](/series/ai-driven-playbook/part-6-ai-observability-governance/)

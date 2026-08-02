@@ -32,7 +32,7 @@ This series addresses the biggest gap in modern AI application development: the 
 - **Part 4:** [Security & Accessibility (A11y) in GenUI](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - **Part 5:** [Building the "Human-In-The-Loop" Experience](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - **Part 6:** [E2E Testing & Performance Optimization at the Edge](/posts/generative-ui-with-mcp-ai-native-frontend/)
-- **Part 7:** [Reference Repository & Migration Strategy (Phased Rollout)](/series/generative-ui-architecture/part-7-reference-repo-migration/)
+- **Part 7:** [Reference Repository & Migration Strategy (Phased Rollout)](/posts/generative-ui-with-mcp-ai-native-frontend/)
 
 ## Companion Article: MCP in Practice
 

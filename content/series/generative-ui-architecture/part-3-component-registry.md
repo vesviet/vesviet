@@ -20,7 +20,7 @@ series: ["Generative UI Architecture"]
 weight: 3
 ---
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — State Management](/series/generative-ui-architecture/part-2-state-management/). Review it first if the terminology in this part is unfamiliar.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — State Management](/posts/generative-ui-with-mcp-ai-native-frontend/). Review it first if the terminology in this part is unfamiliar.
 
 > **Answer-first:** Connecting backend Model Context Protocol (MCP) tool execution to frontend Generative UI components requires a decoupled Component Registry layer. By mapping MCP tool call outputs directly to strongly-typed frontend component manifests using JSON-Schema contracts, developers build dynamic, secure interfaces where AI agents trigger visual client-side widgets (e.g., maps, charts, transaction tables) without writing unsafe inline scripts or raw HTML.
 
@@ -313,7 +313,7 @@ Model Context Protocol (MCP) servers stream dynamic tool call schemas to client 
 - [AI-Native Frontend Architecture Predictions](/posts/ai-native-frontend-architecture-predictions-2028/)
 - [Autonomous Hybrid-AI Content Pipeline — Pillar](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)
 
-🔗 **Next Step:** Continue to [Part 4 — Security A11Y](/series/generative-ui-architecture/part-4-security-a11y/) for the following module in the series.
+🔗 **Next Step:** Continue to [Part 4 — Security A11Y](/posts/generative-ui-with-mcp-ai-native-frontend/) for the following module in the series.
 
 ## Internal Series Navigation
 
@@ -325,4 +325,4 @@ Advance to Part 4 to explore Generative UI security, prompt injection defenses, 
 - [Part 4 — Generative UI Security & Accessibility](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 5 — Human-in-the-Loop Workflows](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 6 — E2E Testing & Edge Performance](/posts/generative-ui-with-mcp-ai-native-frontend/)
-- [Part 7 — Reference Repo & Migration Playbook](/series/generative-ui-architecture/part-7-reference-repo-migration/)
+- [Part 7 — Reference Repo & Migration Playbook](/posts/generative-ui-with-mcp-ai-native-frontend/)

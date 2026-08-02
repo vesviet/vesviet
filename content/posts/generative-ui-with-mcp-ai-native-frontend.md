@@ -19,12 +19,12 @@ tags:
   - "AI Native"
   - "Server Components"
 aliases:
-  - /series/generative-ui-architecture/part-1-beyond-chatbots/
-  - /series/generative-ui-architecture/part-2-state-management/
-  - /series/generative-ui-architecture/part-3-component-registry/
-  - /series/generative-ui-architecture/part-4-security-a11y/
-  - /series/generative-ui-architecture/part-5-human-in-the-loop/
-  - /series/generative-ui-architecture/part-6-e2e-testing-edge/
+  - /posts/generative-ui-with-mcp-ai-native-frontend/
+  - /posts/generative-ui-with-mcp-ai-native-frontend/
+  - /posts/generative-ui-with-mcp-ai-native-frontend/
+  - /posts/generative-ui-with-mcp-ai-native-frontend/
+  - /posts/generative-ui-with-mcp-ai-native-frontend/
+  - /posts/generative-ui-with-mcp-ai-native-frontend/
 description: "Architect dynamic generative UI applications with Model Context Protocol (MCP): dynamic registries, state management, and security sandboxing."
 ShowToc: true
 TocOpen: true

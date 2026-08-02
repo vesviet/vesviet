@@ -20,7 +20,7 @@ series: ["Generative UI Architecture"]
 weight: 6
 ---
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Human In The Loop](/series/generative-ui-architecture/part-5-human-in-the-loop/). Review it first if the terminology in this part is unfamiliar.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Human In The Loop](/posts/generative-ui-with-mcp-ai-native-frontend/). Review it first if the terminology in this part is unfamiliar.
 
 > **Answer-first:** Testing non-deterministic Generative UI components and optimizing their global delivery requires combining Visual Regression E2E Testing (via Playwright mock harnesses) with Semantic Edge Caching (via Cloudflare Workers or Vercel Edge Functions). By mocking LLM tool responses during CI/CD test runs and implementing vector similarity caching at the CDN edge, teams achieve 100% deterministic test coverage while reducing AI component latency from 2,500ms down to less than 45ms for cached intent patterns.
 
@@ -291,7 +291,7 @@ Testing and edge caching ensure Generative UI delivers sub-50ms latency while ma
 - [AI-Native Frontend Architecture Predictions (2028)](/posts/ai-native-frontend-architecture-predictions-2028/) — Edge deployment benchmarks and testing.
 - [Autonomous Hybrid-AI Content Pipeline Architecture](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/) — End-to-end pipeline verification.
 
-🔗 **Next Step:** Continue to [Part 7 — Reference Repo Migration](/series/generative-ui-architecture/part-7-reference-repo-migration/) for the following module in the series.
+🔗 **Next Step:** Continue to [Part 7 — Reference Repo Migration](/posts/generative-ui-with-mcp-ai-native-frontend/) for the following module in the series.
 
 ## Internal Series Navigation
 
@@ -303,4 +303,4 @@ Advance to Part 7 to access the reference repository and enterprise migration pl
 - [Part 3 — Component Registry & JSON Schema Protocol](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 4 — Generative UI Security & Accessibility](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 5 — Human-in-the-Loop Workflows](/posts/generative-ui-with-mcp-ai-native-frontend/)
-- [Part 7 — Reference Repo & Migration Playbook](/series/generative-ui-architecture/part-7-reference-repo-migration/)
+- [Part 7 — Reference Repo & Migration Playbook](/posts/generative-ui-with-mcp-ai-native-frontend/)

@@ -185,7 +185,7 @@ Operating real-time generative UI systems over Server-Sent Events (SSE) demands 
 
 ---
 
-🔗 **Next Step:** Continue to [Part 1 — Beyond Chatbots](/series/generative-ui-architecture/part-1-beyond-chatbots/) for the following module in the series.
+🔗 **Next Step:** Continue to [Part 1 — Beyond Chatbots](/posts/generative-ui-with-mcp-ai-native-frontend/) for the following module in the series.
 
 ## Internal Series Navigation
 
@@ -197,7 +197,7 @@ Explore the entire Generative UI series covering component registries, SSE strea
 - [Part 4 — Generative UI Security & Accessibility](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 5 — Human-in-the-Loop Workflows](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 6 — E2E Testing & Edge Performance](/posts/generative-ui-with-mcp-ai-native-frontend/)
-- [Part 7 — Reference Repo & Migration Playbook](/series/generative-ui-architecture/part-7-reference-repo-migration/)
+- [Part 7 — Reference Repo & Migration Playbook](/posts/generative-ui-with-mcp-ai-native-frontend/)
 
 ## Architectural Context & Pillar References
 

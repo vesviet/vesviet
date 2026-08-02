@@ -18,7 +18,7 @@ ShowToc: true
 TocOpen: true
 ---
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Part 3B — Ai Automation Internal Ops](/series/ai-driven-playbook/part-3b-ai-automation-internal-ops/). Review it first if the terminology in this part is unfamiliar.
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 3B — Ai Automation Internal Ops](/posts/ai-native-frontend-architecture-predictions-2028/). Review it first if the terminology in this part is unfamiliar.
 
 > **Answer-first:** The AI-Native Pod Operating Model replaces legacy functional silos with autonomous 3-to-4 person cross-functional squads. Led by Systems Architects and augmented by AI multi-agent swarms, these pods take end-to-end ownership of feature delivery, expanding output capacity by 4x while maintaining continuous production deployment pipelines.
 
@@ -216,8 +216,8 @@ Deploying an AI-driven engineering playbook across enterprise organizations requ
 
 Proceed to Part 6 to discover AI observability, evaluation pipelines, and production SRE monitoring.
 
-- [Executive Summary — Building an AI-Native Organization](/series/ai-driven-playbook/executive-summary/)
-- [Part 1 — Context Engineering: DDD for AI](/series/ai-driven-playbook/part-1-context-engineering-ddd/)
-- [Part 3B — AI Automation for Internal Operations](/series/ai-driven-playbook/part-3b-ai-automation-internal-ops/)
+- [Executive Summary — Building an AI-Native Organization](/posts/ai-native-frontend-architecture-predictions-2028/)
+- [Part 1 — Context Engineering: DDD for AI](/posts/ai-native-frontend-architecture-predictions-2028/)
+- [Part 3B — AI Automation for Internal Operations](/posts/ai-native-frontend-architecture-predictions-2028/)
 - [Part 7 — AI Security Engineering](/series/ai-driven-playbook/part-7-ai-security-engineering/)
 - [Part 6 — AI Observability & Governance](/series/ai-driven-playbook/part-6-ai-observability-governance/)

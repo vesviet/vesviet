@@ -321,4 +321,4 @@ AI-assisted coding relies on reactive inline code completion by individual devel
 ### What security risks are introduced by autonomous developer agents?
 Key risks include indirect prompt injection from third-party libraries, unauthorized tool execution via MCP gateways, and intellectual property contamination. Mitigating these risks requires deterministic input sanitizers, RBAC-bound tool proxies, and mandatory human approval for mutating actions.
 
-🔗 **Next Step:** Continue to [Part 1 — Context Engineering Ddd](/series/ai-driven-playbook/part-1-context-engineering-ddd/) for the following module in the series.
+🔗 **Next Step:** Continue to [Part 1 — Context Engineering Ddd](/posts/ai-native-frontend-architecture-predictions-2028/) for the following module in the series.
