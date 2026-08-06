@@ -14,7 +14,7 @@ cover:
   image: "images/tech-radar-2026-08.jpg"
   alt: "Tech Radar August 2026"
   caption: "Technology Landscape August 2026 - AI Agents, Golang Runtime & Cloud Native Ecosystem"
-  relative: true
+  relative: false
 mermaid: true
 ---
 
