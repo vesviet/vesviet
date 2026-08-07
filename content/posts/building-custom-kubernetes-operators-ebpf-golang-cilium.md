@@ -48,7 +48,7 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 cover:
-  image: "/images/posts/building-custom-kubernetes-operators-ebpf-golang-cilium.png"
+  image: "/images/posts/building-custom-kubernetes-operators-ebpf-golang-cilium.jpg"
   alt: "Building Custom Kubernetes Operators eBPF Golang Cilium"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/building-custom-kubernetes-operators-ebpf-golang-cilium/"
