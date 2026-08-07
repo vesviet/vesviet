@@ -10,7 +10,7 @@ TocOpen: true
 categories: ["Tech Radar"]
 tags: ["Tech Radar", "Cloud Native", "DevOps", "Architecture", "Engineering", "Golang", "Kubernetes"]
 cover:
-  image: "/images/posts/default-post.png"
+  image: "/images/posts/default-post.jpg"
   alt: "Tech Radar Digest April 2026: Go, K8s & AI Platform Log"
   relative: false
 aliases:

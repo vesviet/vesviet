@@ -23,7 +23,7 @@ tags:
   - "Microservices"
 mermaid: true
 cover:
-  image: "/images/posts/golang-microservices-cover.png"
+  image: "/images/posts/go-microservices-distributed-tracing-architecture.jpg"
   alt: "Go Microservices Distributed Tracing Architecture 2026: OpenTelemetry, W3C propagation, tail-based sampling"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/go-microservices-distributed-tracing-architecture/"

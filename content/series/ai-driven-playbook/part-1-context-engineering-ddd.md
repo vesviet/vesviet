@@ -9,7 +9,7 @@ tags: ["AI", "Context Engineering", "Domain-Driven Design", "Architecture", "LLM
 series: ["AI-Driven Playbook"]
 weight: 2
 cover:
-  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "/images/posts/graphrag-vs-naive-rag-cover-1.jpg"
   alt: "Context Engineering Domain-Driven Design for AI"
   relative: false
 ---

@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Vibe Coding", "Startups", "Product Management", "Python", "Architecture", "AI Agents"]
 categories: ["Engineering"]
 cover:
-  image: "/images/posts/vibe-coding-cover.png"
+  image: "/images/posts/part-1-vibe-coding-non-technical.jpg"
   alt: "Vibe Coding and Non Technical Founders sequence workflow"
   relative: false
 mermaid: true

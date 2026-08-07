@@ -12,7 +12,7 @@ categories: ["DevOps", "Architecture"]
 tags: ["OSRM", "Kubernetes", "Geospatial", "Routing", "Shared Memory", "C++", "Golang"]
 mermaid: true
 cover:
-  image: "/images/posts/osrm-k8s-cover.png"
+  image: "/images/posts/osrm-k8s-cover.jpg"
   alt: "OSRM Shared Memory Kubernetes Architecture"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/osrm-shared-memory-kubernetes-live-traffic/"

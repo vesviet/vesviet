@@ -12,7 +12,7 @@ categories: ["Engineering", "Strategy"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/laravel-ai-era-cover.png"
+  image: "/images/posts/the-future-of-laravel-development-in-ai-era.jpg"
   alt: "Laravel in the AI era: 10 predictions for 2028 — from LLM integration to AI-assisted development"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/the-future-of-laravel-development-in-ai-era/"

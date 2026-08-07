@@ -9,7 +9,7 @@ categories: ["Geospatial", "Frontend"]
 series: ["Routing & Geospatial Architecture"]
 series_order: 5
 cover:
-  image: "/images/posts/graphhopper-cover.png"
+  image: "/images/posts/graphhopper-cover-5.jpg"
   alt: "Geospatial and Routing Engine Architecture series: Go and GraphHopper for production routing"
   relative: false
 author: "Lê Tuấn Anh"
@@ -17,7 +17,7 @@ canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-5
 ShowToc: true
 TocOpen: true
 mermaid: true
-image: "/images/posts/graphhopper-cover.png"
+image: "/images/posts/graphhopper-cover-5.jpg"
 ---
 
 > **Answer-first:** High-density geospatial rendering (100,000+ telemetry vectors) requires offloading coordinate math from the browser DOM to WebGL GPU buffers via Deck.gl and Mapbox overlays. Using Deck.gl's `DataFilterExtension` updates GPU uniforms in 60 FPS requestAnimationFrame loops without mutating JavaScript heap allocations.

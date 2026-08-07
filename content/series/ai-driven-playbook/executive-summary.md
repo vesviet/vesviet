@@ -9,7 +9,7 @@ tags: ["AI", "Executive Playbook", "Context Engineering", "Architecture", "SDLC"
 series: ["AI-Driven Playbook"]
 weight: 1
 cover:
-  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "/images/posts/graphrag-vs-naive-rag-cover.jpg"
   alt: "Executive Summary Building an AI-Native Organization"
   relative: false
 ---

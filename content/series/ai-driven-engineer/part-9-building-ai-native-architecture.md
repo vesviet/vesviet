@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["AI Native", "Architecture", "Golang", "DDD", "Microservices"]
 categories: ["Engineering", "Architecture"]
 cover:
-  image: "/images/posts/ai-native-frontend-cover.png"
+  image: "/images/posts/part-9-building-ai-native-architecture.jpg"
   alt: "Building AI Native Architecture system topology diagram"
   relative: false
 mermaid: true

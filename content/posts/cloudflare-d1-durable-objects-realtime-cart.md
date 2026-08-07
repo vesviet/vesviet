@@ -22,7 +22,7 @@ description: "Build a real-time e-commerce cart with Cloudflare D1 and Durable O
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/cloudflare-edge-cover.png"
+  image: "/images/posts/cloudflare-edge-cover.jpg"
   alt: "Cloudflare D1 and Durable Objects: build a real-time cart with edge-native state and SQLite"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/cloudflare-d1-durable-objects-realtime-cart/"

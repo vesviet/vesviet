@@ -12,11 +12,11 @@ ShowToc: true
 TocOpen: true
 series: ["Architecture"]
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/10-observability-pprof-golang/"
-image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
 ---
 Go's built-in `pprof` profiler provides CPU sampling, heap allocation analysis, goroutine stack inspection, and blocking profiler — all available as HTTP endpoints in running production services with minimal overhead. Heap diff between two snapshots is the fastest way to identify memory leaks.
 

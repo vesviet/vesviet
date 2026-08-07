@@ -14,7 +14,7 @@ categories: ["Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/agentic-ecommerce-search-cover.png"
+  image: "/images/posts/part-5-critique-loop.jpg"
   alt: "Agentic E-commerce Search Engine Architecture series: vector databases, ranking, and Go"
   relative: false
 canonicalURL: "https://tanhdev.com/series/agentic-ecommerce-search/part-5-critique-loop/"

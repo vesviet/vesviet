@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Migration", "Generative UI", "React", "TypeScript", "Frontend", "Refactoring"]
 categories: ["Engineering", "Frontend"]
 cover:
-  image: "/images/posts/generative-ui-mcp-cover.png"
+  image: "/images/posts/part-7-reference-repo-migration.jpg"
   alt: "Migration Playbook to Generative UI four phase roadmap"
   relative: false
 mermaid: true

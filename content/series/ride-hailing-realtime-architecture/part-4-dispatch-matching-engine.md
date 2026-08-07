@@ -7,14 +7,14 @@ draft: false
 description: "Learn how to architect a high-throughput dispatch matching engine using Golang and Redis geospatial indexing for real-time ride-hailing apps."
 weight: 5
 cover:
-  image: "/images/posts/real-time-ride-hailing-cover.png"
+  image: "/images/posts/real-time-ride-hailing-cover.jpg"
   alt: "Real-Time Ride-Hailing Architecture series: Uber and Grab — matching, GPS, WebSocket at scale"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/part-4-dispatch-matching-engine/"
 ShowToc: true
 TocOpen: true
-image: "/images/posts/real-time-ride-hailing-cover.png"
+image: "/images/posts/real-time-ride-hailing-cover.jpg"
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Event Streaming Kafka](/series/ride-hailing-realtime-architecture/part-3-event-streaming-kafka/). Review it first if the terminology in this part is unfamiliar.

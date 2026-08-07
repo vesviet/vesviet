@@ -13,12 +13,12 @@ description: "Why local rate limiters fail in microservices and how Redis Lua sc
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/realtime-inventory-cover.png"
+  image: "/images/posts/distributed-rate-limiting-redis-gcra.jpg"
   alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/"
-image: "/images/posts/realtime-inventory-cover.png"
+image: "/images/posts/distributed-rate-limiting-redis-gcra.jpg"
 ---
 
 > **Prerequisite:** Before reading this chapter, review [Chapter 2: The 3 Caching Vulnerabilities](/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/).

@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Governance", "Compliance", "Python", "DevOps", "SOC2", "Career"]
 categories: ["Engineering", "Strategy"]
 cover:
-  image: "/images/posts/vibe-coding-cover.png"
+  image: "/images/posts/part-6-governance-observability-career.jpg"
   alt: "Enterprise AI Code Governance & Compliance architecture"
   relative: false
 mermaid: true

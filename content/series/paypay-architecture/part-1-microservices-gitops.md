@@ -6,7 +6,7 @@ draft: false
 description: "How PayPay organizes 100+ microservices using Domain-Driven Design, gRPC/Protobuf, GitOps with Argo CD, and canary deployments with Argo Rollouts."
 weight: 2
 cover:
-  image: "/images/posts/paypay-scaling-cover.png"
+  image: "/images/posts/paypay-scaling-cover.jpg"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
 categories: ["Cloud Native", "DevOps", "Architecture"]
@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-1-microservic
 ShowToc: true
 TocOpen: true
 mermaid: true
-image: "/images/posts/paypay-scaling-cover.png"
+image: "/images/posts/paypay-scaling-cover.jpg"
 ---
 
 > **Prerequisite:** This is the starting part of the series — no prior part is required. Later parts assume the concepts introduced here.

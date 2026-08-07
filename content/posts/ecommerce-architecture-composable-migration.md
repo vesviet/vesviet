@@ -32,7 +32,7 @@ aliases:
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/ecommerce-composable-cover.png"
+  image: "/images/posts/ecommerce-composable-cover.jpg"
   alt: "E-commerce composable architecture migration: from Magento monolith to MACH modular services"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/ecommerce-architecture-composable-migration/"

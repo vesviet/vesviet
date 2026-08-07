@@ -7,6 +7,10 @@ author: "Le Tuan Anh (Senior Go Engineer)"
 date: "2026-05-10"
 series: "Cornerstone Technologies"
 tags: ["Zero-Trust", "Microservices", "mTLS", "Golang", "SPIFFE", "OAuth2.1"]
+cover:
+  image: "/images/posts/zero-trust-architecture-microservices.jpg"
+  alt: "Zero-Trust Architecture for Microservices: mTLS & Production Go Guide"
+  relative: false
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Vector Database Rag Qdrant Milvus](/series/cornerstone-technologies/vector-database-rag-qdrant-milvus/). Review it first if the terminology in this part is unfamiliar.

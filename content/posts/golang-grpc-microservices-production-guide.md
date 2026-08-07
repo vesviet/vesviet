@@ -20,7 +20,7 @@ tags:
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/golang-microservices-cover.png"
+  image: "/images/posts/golang-microservices-cover.jpg"
   alt: "Golang gRPC Microservices production guide: Protobuf, mTLS, middleware, and graceful shutdown"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/golang-grpc-microservices-production-guide/"

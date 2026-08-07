@@ -11,7 +11,7 @@ TocOpen: true
 categories: ["AI", "Engineering"]
 tags: ["AI Agents", "OpenClaw", "LiteLLM", "Python", "Docker", "LLM Ops"]
 cover:
-  image: "/images/posts/openclaw-litellm-cover.png"
+  image: "/images/posts/openclaw-litellm-cover.jpg"
   alt: "Production Agentic AI Swarm: OpenClaw & LiteLLM"
   relative: false
 mermaid: true

@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Vibe Coding", "Code Review", "AI Security", "Python", "Static Analysis", "DevOps"]
 categories: ["Engineering", "AI"]
 cover:
-  image: "/images/posts/vibe-coding-cover.png"
+  image: "/images/posts/executive-summary-1.jpg"
   alt: "The Vibe Coding Revolution and Enterprise Code Review Guardrails architecture"
   relative: false
 mermaid: true

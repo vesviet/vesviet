@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Observability", "OpenTelemetry", "Golang", "Tracing", "Cost Monitoring", "DevOps"]
 categories: ["Engineering", "DevOps"]
 cover:
-  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "/images/posts/part-9-agentic-observability-monitoring.jpg"
   alt: "Agentic Observability and OpenTelemetry distributed tracing architecture"
   relative: false
 mermaid: true

@@ -7,7 +7,7 @@ draft: false
 weight: 1
 slug: "article_1_system_design"
 cover:
-  image: "/images/series/high-concurrency-systems/cover.jpg"
+  image: "/images/posts/article-1-system-design.jpg"
 ShowToc: true
 TocOpen: true
 categories: ["FinTech", "High Concurrency", "Backend"]

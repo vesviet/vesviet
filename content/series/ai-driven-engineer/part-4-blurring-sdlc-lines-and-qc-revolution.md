@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["SDLC", "Quality Assurance", "Testing", "Golang", "CI/CD", "DevOps"]
 categories: ["Engineering"]
 cover:
-  image: "/images/posts/ai-native-frontend-cover.png"
+  image: "/images/posts/part-4-blurring-sdlc-lines-and-qc-revolution.jpg"
   alt: "Blurring SDLC Lines and QC Revolution workflow architecture"
   relative: false
 mermaid: true

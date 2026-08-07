@@ -5,6 +5,10 @@ slug: temporal-workflow-go-architecture
 author: "Le Tuan Anh (Senior Go Engineer)"
 series: "Cornerstone Technologies"
 date: "2026-07-25"
+cover:
+  image: "/images/posts/temporal-workflow-go-architecture.jpg"
+  alt: "Temporal Workflow & Golang: Architecture & Production Guide"
+  relative: false
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Nats Jetstream Golang Production Guide](/series/cornerstone-technologies/nats-jetstream-golang-production-guide/). Review it first if the terminology in this part is unfamiliar.

@@ -22,7 +22,7 @@ description: "Step-by-step Go code for Orchestrated Saga using Dapr Workflow: du
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/dapr-saga-cover.png"
+  image: "/images/posts/dapr-saga-cover.jpg"
   alt: "Dapr Workflow Go tutorial: orchestrated Saga pattern with compensation and distributed transaction"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/dapr-workflow-saga-orchestration-guide/"

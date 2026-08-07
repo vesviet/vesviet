@@ -8,14 +8,14 @@ description: "How Shopee uses Apache Kafka for peak shaving traffic spikes and i
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/shopee-flash-sale-cover.png"
+  image: "/images/posts/shopee-flash-sale-cover.jpg"
   alt: "Shopee Architecture series: scaling for flash sales — rate limiting, Redis, and distributed systems"
   relative: false
 categories: ["Asynchronous Processing", "SRE", "Messaging"]
 tags: ["Shopee", "Kafka", "Peak Shaving", "Rate Limiting", "Graceful Degradation"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/03-traffic-shield/"
-image: "/images/posts/shopee-flash-sale-cover.png"
+image: "/images/posts/shopee-flash-sale-cover.jpg"
 ---
 
 > **Answer-first:** Shopee utilizes Apache Kafka queues for asynchronous peak shaving during 11.11 mega-campaigns. Decoupling order creation from database persistence guarantees sub-second API responses while downstream workers process orders at a controlled rate, protected by Sentinel adaptive load shedding and priority request classification.

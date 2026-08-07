@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["MCP Security", "Isolation", "OWASP", "Python", "Sandboxing", "Security"]
 categories: ["Engineering", "Security"]
 cover:
-  image: "/images/posts/mcp-engineering-in-production-cover.png"
+  image: "/images/posts/part-5-security.jpg"
   alt: "MCP Security Engineering and Isolation architecture"
   relative: false
 mermaid: true
@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-5-s
 description: "Technical summary and production guide for Part 5 — MCP Security Engineering, Isolation, and Defense-in-Depth for production systems."
 ShowToc: true
 TocOpen: true
-image: "/images/posts/mcp-engineering-in-production-cover.png"
+image: "/images/posts/part-5-security.jpg"
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Gateway](/series/mcp-engineering-in-production/part-4-gateway/). Review it first if the terminology in this part is unfamiliar.

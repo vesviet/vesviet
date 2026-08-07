@@ -22,7 +22,7 @@ tags:
   - "Goroutine Leak"
   - "AI Inference"
 cover:
-  image: "/images/posts/go-green-tea-gc-cover.png"
+  image: "/images/posts/go-126-green-tea-gc-cgo-performance-guide.jpg"
   alt: "Go 1.26 Green Tea GC and CGO performance: garbage collection improvements and latency reduction"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/go-126-green-tea-gc-cgo-performance-guide/"

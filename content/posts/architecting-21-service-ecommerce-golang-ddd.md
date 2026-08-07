@@ -14,7 +14,7 @@ categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
   alt: "Architecting a 21-service e-commerce platform with Golang and Domain-Driven Design"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/architecting-21-service-ecommerce-golang-ddd/"

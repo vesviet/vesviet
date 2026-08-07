@@ -9,12 +9,12 @@ description: "How Uber and Grab handle millions of GPS updates/sec: H3 geospatia
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/real-time-ride-hailing-cover.png"
+  image: "/images/posts/real-time-ride-hailing-cover.jpg"
   alt: "Real-Time Ride-Hailing Architecture series: Uber and Grab matching, GPS, and WebSocket at scale"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/"
-image: "/images/posts/real-time-ride-hailing-cover.png"
+image: "/images/posts/real-time-ride-hailing-cover.jpg"
 ---
 
 **Answer-first:** This technical series details the distributed real-time architecture powering high-concurrency ride-hailing platforms like Uber and Grab, covering 1M+ GPS/sec ingestion, Uber H3 spatial indexing, Kafka/Flink event streaming, DISCO bipartite matching, dynamic surge pricing, and gRPC/QUIC push networks.

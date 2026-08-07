@@ -22,7 +22,7 @@ description: "Step-by-step guide to deploying GraphHopper on Kubernetes with Ope
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/graphhopper-cover.png"
+  image: "/images/posts/graphhopper-cover.jpg"
   alt: "GraphHopper Kubernetes self-hosting with OpenStreetMap: deployment, data import, and scaling guide"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/graphhopper-kubernetes-self-hosting-osm/"

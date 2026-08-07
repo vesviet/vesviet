@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Golang", "Agentic Search", "E-commerce", "Concurrency", "Architecture", "AI Agents"]
 categories: ["Engineering", "AI"]
 cover:
-  image: "/images/posts/agentic-ecommerce-search-cover.png"
+  image: "/images/posts/part-1-golang-orchestration.jpg"
   alt: "Agentic Architecture and Golang Orchestration Power sequence diagram"
   relative: false
 mermaid: true

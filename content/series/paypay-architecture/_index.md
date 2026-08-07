@@ -11,12 +11,12 @@ aliases:
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/paypay-scaling-cover.png"
+  image: "/images/posts/paypay-scaling-cover.jpg"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/paypay-architecture/"
-image: "/images/posts/paypay-scaling-cover.png"
+image: "/images/posts/paypay-scaling-cover.jpg"
 ---
 
 **Answer-first:** The PayPay architecture scales to handle millions of payment transactions by isolating promotional campaign logic from the core ledger. Using a distributed SQL transactional layer (TiDB) and asynchronous event streaming via Apache Kafka, the system maintains 99.99% availability and data consistency during high-concurrency campaigns.

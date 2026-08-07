@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Human-in-the-Loop", "HITL", "Guardrails", "OWASP", "Go", "Python", "Security"]
 categories: ["Engineering", "Security"]
 cover:
-  image: "/images/posts/agentic-ai-swarm-cover.png"
+  image: "/images/posts/part-6-human-in-the-loop.jpg"
   alt: "Part 6 Human-in-the-Loop Guardrails and State Interception Architecture"
   relative: false
 mermaid: true

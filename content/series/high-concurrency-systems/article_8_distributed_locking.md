@@ -15,12 +15,12 @@ aliases:
   - "/series/high-concurrency-systems/part-1-pessimistic-locks/"
   - "/series/high-concurrency-systems/part-2-optimistic-locks/"
 cover:
-  image: "/images/posts/realtime-inventory-cover.png"
+  image: "/images/posts/distributed-locking-redlock-zookeeper.jpg"
   alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/"
-image: "/images/posts/realtime-inventory-cover.png"
+image: "/images/posts/distributed-locking-redlock-zookeeper.jpg"
 ---
 
 > **Prerequisite:** Read the previous article: [Chapter 7: Fortifying Payment Systems with Idempotent APIs](/series/high-concurrency-systems/idempotency-api-design-payments/).

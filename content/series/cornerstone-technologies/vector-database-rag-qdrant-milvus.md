@@ -7,6 +7,10 @@ author: "Le Tuan Anh (Senior Go Engineer)"
 date: "2026-05-10"
 author_profile: "/about/"
 credentials: "AI Engineering & High-Concurrency System Design Experience"
+cover:
+  image: "/images/posts/vector-database-rag-qdrant-milvus.jpg"
+  alt: "Vector Database Architecture: HNSW Indexing & RAG Pipelines with Qdrant"
+  relative: false
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Temporal Workflow Go Architecture](/series/cornerstone-technologies/temporal-workflow-go-architecture/). Review it first if the terminology in this part is unfamiliar.

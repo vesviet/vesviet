@@ -24,7 +24,7 @@ description: "How Alipay's engineering team scaled Double 11 to 544,000 payment 
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/alipay-double11-cover.png"
+  image: "/images/posts/alipay-double11-cover.jpg"
   alt: "Alipay Double 11 architecture explained: 544,000 payment TPS — distributed payment processing at scale"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/alipay-double-11-architecture-tps/"

@@ -20,7 +20,7 @@ tags:
   - "Architecture"
 mermaid: true
 cover:
-  image: "/images/posts/realtime-inventory-cover.png"
+  image: "/images/posts/realtime-inventory-cover.jpg"
   alt: "Real-time inventory architecture for e-commerce: event-driven sync, Kafka, and oversell prevention"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/real-time-inventory-ecommerce-architecture/"

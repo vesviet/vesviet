@@ -9,7 +9,7 @@ slug: "modular-monolith-architecture"
 categories: ["Software Engineering", "Backend"]
 tags: ["Modular Monolith", "Microservices", "Architecture"]
 cover:
-  image: "/images/posts/golang-microservices-cover.png"
+  image: "/images/posts/modular-monolith-architecture.jpg"
   alt: "Modular Monolith Architecture Guide & Microservices Reversal — Go, DDD, and bounded contexts"
   relative: false
 author: "Lê Tuấn Anh"
@@ -17,7 +17,7 @@ canonicalURL: "https://tanhdev.com/series/modular-monolith-architecture/"
 ShowToc: true
 mermaid: true
 TocOpen: true
-image: "/images/posts/golang-microservices-cover.png"
+image: "/images/posts/modular-monolith-architecture.jpg"
 ---
 
 > A Modular Monolith is a single-deployable application architecture structured into logically independent bounded contexts using Domain-Driven Design (DDD). It achieves the operational simplicity and zero-latency RAM data passing of monolithic software while preserving clean module isolation, enabling organizations to eliminate microservices network overhead and cut AWS egress costs by up to 90% without sacrificing architectural flexibility.

@@ -20,7 +20,7 @@ description: "How to architect a zero-ops serverless e-commerce backend using Cl
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/cloudflare-edge-cover.png"
+  image: "/images/posts/serverless-ecommerce-cloudflare-d1.jpg"
   alt: "Serverless e-commerce with Cloudflare D1: SQLite at the edge for high-performance storefronts"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/serverless-ecommerce-cloudflare-d1/"

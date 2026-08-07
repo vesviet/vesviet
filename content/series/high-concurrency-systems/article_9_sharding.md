@@ -12,12 +12,12 @@ description: "Scale relational databases horizontally using GORM dbresolver for 
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/realtime-inventory-cover.png"
+  image: "/images/posts/database-sharding-read-write-splitting.jpg"
   alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/database-sharding-read-write-splitting/"
-image: "/images/posts/realtime-inventory-cover.png"
+image: "/images/posts/database-sharding-read-write-splitting.jpg"
 ---
 
 > **Prerequisite:** Read the previous article: [Chapter 8: Distributed Locking — Redlock vs ZooKeeper](/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/).

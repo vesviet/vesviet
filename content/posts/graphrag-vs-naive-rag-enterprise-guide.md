@@ -22,7 +22,7 @@ description: "Compare Naive RAG with GraphRAG for enterprise AI pipelines: knowl
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "/images/posts/graphrag-vs-naive-rag-cover.jpg"
   alt: "GraphRAG vs Naive RAG: enterprise architecture guide — entity relationships vs flat chunk retrieval"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/graphrag-vs-naive-rag-enterprise-guide/"

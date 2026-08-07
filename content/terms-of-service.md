@@ -9,6 +9,10 @@ aliases:
 showToc: true
 TocOpen: true
 author: "Lê Tuấn Anh"
+cover:
+  image: "/images/posts/terms-of-service-cover.jpg"
+  alt: "Terms of Service"
+  relative: false
 ---
 
 > *"Clear legal terms ensure open collaboration, protect intellectual property, and define responsible usage of technical guidance."*

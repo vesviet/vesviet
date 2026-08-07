@@ -22,7 +22,7 @@ tags:
   - "VPA"
   - "K8s v1.35"
 cover:
-  image: "/images/posts/kubernetes-pod-resize-cover.png"
+  image: "/images/posts/kubernetes-pod-resize-cover.jpg"
   alt: "Kubernetes in-place pod resizing: scale CPU and memory resources without restarting pods"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/kubernetes-in-place-pod-resizing-guide/"

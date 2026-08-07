@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["AI Governance", "Security", "Privacy", "Compliance", "Python", "Executive"]
 categories: ["Engineering", "Strategy"]
 cover:
-  image: "/images/posts/ai-native-frontend-cover.png"
+  image: "/images/posts/part-5-the-bod-perspective-risk-and-privacy.jpg"
   alt: "The Boardroom Perspective AI Security and Privacy architecture"
   relative: false
 mermaid: true

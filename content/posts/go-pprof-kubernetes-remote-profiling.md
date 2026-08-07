@@ -22,7 +22,7 @@ description: "Safely profile Go microservices in Kubernetes using Go pprof and k
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/goroutine-leak-cover.png"
+  image: "/images/posts/go-pprof-kubernetes-remote-profiling.jpg"
   alt: "Go pprof Kubernetes remote profiling: kubectl port-forward, flame graphs, and production profiling"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/go-pprof-kubernetes-remote-profiling/"

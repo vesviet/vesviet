@@ -10,7 +10,7 @@ canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-fronte
 tags: ["Generative UI", "Security", "Prompt Injection", "Accessibility", "WCAG", "XSS"]
 categories: ["Engineering", "Frontend", "Security"]
 cover:
-  image: "/images/posts/generative-ui-mcp-cover.png"
+  image: "/images/posts/part-4-security-a11y.jpg"
   alt: "GenUI Security: XSS prevention and WCAG accessibility in Generative UI"
   relative: false
 mermaid: true

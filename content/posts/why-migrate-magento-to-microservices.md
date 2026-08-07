@@ -13,7 +13,7 @@ categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/golang-microservices-cover.png"
+  image: "/images/posts/why-migrate-magento-to-microservices.jpg"
   alt: "Migrating Magento to Microservices: When & Why — Architecture Decision Guide"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/why-migrate-magento-to-microservices/"

@@ -7,14 +7,14 @@ draft: false
 description: "How Uber and Grab process millions of GPS events/s with Kafka: topic design, partition strategy, Flink for surge pricing, and exactly-once semantics in Go."
 weight: 4
 cover:
-  image: "/images/posts/real-time-ride-hailing-cover.png"
+  image: "/images/posts/real-time-ride-hailing-cover.jpg"
   alt: "Real-Time Ride-Hailing Architecture series: Uber and Grab — matching, GPS, WebSocket at scale"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/part-3-event-streaming-kafka/"
 ShowToc: true
 TocOpen: true
-image: "/images/posts/real-time-ride-hailing-cover.png"
+image: "/images/posts/real-time-ride-hailing-cover.jpg"
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — Geospatial Indexing](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/). Review it first if the terminology in this part is unfamiliar.

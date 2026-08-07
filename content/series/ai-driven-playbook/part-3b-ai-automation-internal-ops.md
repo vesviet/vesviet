@@ -9,7 +9,7 @@ tags: ["AI", "Internal Operations", "DevOps", "Automation", "ROI"]
 series: ["AI-Driven Playbook"]
 weight: 3
 cover:
-  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "/images/posts/graphrag-vs-naive-rag-cover-2.jpg"
   alt: "AI Automation for Internal Operations Proving ROI"
   relative: false
 ---

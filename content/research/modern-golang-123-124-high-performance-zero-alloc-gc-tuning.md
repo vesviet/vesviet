@@ -6,6 +6,9 @@ categories: ["Engineering", "Architecture", "Backend"]
 author: "VesViet Technical Research Team"
 description: "Comprehensive deep-dive research dossier on Go 1.23 Range-Over-Func iterators, Go 1.24 string/struct interning with unique.Handle, escape analysis mechanics, multi-tiered sync.Pool memory buffers, and Kubernetes GOMEMLIMIT microsecond GC tuning."
 draft: false
+cover:
+  image: "/images/posts/modern-go-1-23-1-24-high-performance-engineering-custom-iterators-iter-seq-zero-allocation-memory-pools-and-microsecond-gc-tuning.jpg"
+
 ---
 
 # Modern Go 1.23/1.24 High-Performance Engineering: Custom Iterators (`iter.Seq`), Zero-Allocation Memory Pools, and Microsecond GC Tuning

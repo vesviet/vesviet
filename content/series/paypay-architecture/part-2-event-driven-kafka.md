@@ -6,7 +6,7 @@ draft: false
 description: "How PayPay uses Apache Kafka as a shock absorber for payment spikes, implements Outbox Pattern, and guarantees exactly-once processing."
 weight: 3
 cover:
-  image: "/images/posts/paypay-scaling-cover.png"
+  image: "/images/posts/paypay-scaling-cover.jpg"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
 categories: ["Event-Driven", "Distributed Systems", "Messaging"]
@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-2-event-drive
 ShowToc: true
 TocOpen: true
 mermaid: true
-image: "/images/posts/paypay-scaling-cover.png"
+image: "/images/posts/paypay-scaling-cover.jpg"
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Microservices Gitops](/series/paypay-architecture/part-1-microservices-gitops/). Review it first if the terminology in this part is unfamiliar.

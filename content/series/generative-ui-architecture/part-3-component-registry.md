@@ -10,7 +10,7 @@ canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-fronte
 tags: ["Generative UI", "Component Registry", "MCP", "Model Context Protocol", "Architecture"]
 categories: ["Engineering", "Frontend"]
 cover:
-  image: "/images/posts/generative-ui-mcp-cover.png"
+  image: "/images/posts/part-3-component-registry.jpg"
   alt: "Component Registry and MCP to Frontend bridge architecture for Generative UI"
   relative: false
 mermaid: true

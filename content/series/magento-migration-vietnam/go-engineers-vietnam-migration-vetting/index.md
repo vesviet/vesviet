@@ -12,13 +12,13 @@ description: "Five interview scenarios to vet Go engineers in Vietnam for Magent
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/series/go-engineers-vietnam-vetting-cover.png"
+  image: "/images/posts/go-engineers-vietnam-vetting-cover.jpg"
   alt: "Vetting Go engineers in Vietnam for Magento migration projects"
   relative: false
 canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/go-engineers-vietnam-migration-vetting/"
 noTranslation: true
 mermaid: true
-image: "/images/series/go-engineers-vietnam-vetting-cover.png"
+image: "/images/posts/go-engineers-vietnam-vetting-cover.jpg"
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Magento Migration Cost Vietnam Vs Us Eu](/series/magento-migration-vietnam/magento-migration-cost-vietnam-vs-us-eu/). Review it first if the terminology in this part is unfamiliar.

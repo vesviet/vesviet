@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Career", "Transition", "Python", "Blueprint", "Software Engineering", "Strategy"]
 categories: ["Engineering", "Strategy"]
 cover:
-  image: "/images/posts/ai-native-frontend-cover.png"
+  image: "/images/posts/bonus-transition-path.jpg"
   alt: "The 90 Day Transition Blueprint milestone roadmap"
   relative: false
 mermaid: true

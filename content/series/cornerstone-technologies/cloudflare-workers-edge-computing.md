@@ -5,6 +5,10 @@ description: "Production guide to Cloudflare Workers and Edge Computing. Deconst
 slug: "cloudflare-workers-edge-computing"
 author: "Le Tuan Anh (Senior Go Engineer)"
 date: "2026-07-25"
+cover:
+  image: "/images/posts/cloudflare-workers-edge-computing.jpg"
+  alt: "Cloudflare Workers & Edge Computing: V8 Isolates Architecture Guide"
+  relative: false
 ---
 
 > **Prerequisite:** This is the starting part of the series — no prior part is required. Later parts assume the concepts introduced here.

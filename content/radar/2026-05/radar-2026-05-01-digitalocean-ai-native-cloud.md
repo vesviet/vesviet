@@ -9,7 +9,7 @@ TocOpen: true
 categories: ["Tech Radar"]
 tags: ["DigitalOcean", "AI Infrastructure", "Inference", "RAG", "MCP", "Platform Engineering", "AI Agents"]
 cover:
-  image: "/images/posts/default-post.png"
+  image: "/images/posts/default-post-10.jpg"
   alt: "Tech Radar, May 1, 2026: DigitalOcean's AI-Native Cloud - Inference Routing, Managed Retrieval, and an Integrated Stack for Agentic Systems"
   relative: false
 mermaid: true

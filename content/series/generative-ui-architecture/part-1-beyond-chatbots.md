@@ -10,7 +10,7 @@ canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-fronte
 tags: ["Generative UI", "AI Frontend", "React", "Server-Driven UI", "Architecture"]
 categories: ["Engineering", "Frontend"]
 cover:
-  image: "/images/posts/generative-ui-mcp-cover.png"
+  image: "/images/posts/part-1-beyond-chatbots.jpg"
   alt: "Beyond Chatbots: Generative UI dynamic component rendering architecture"
   relative: false
 mermaid: true

@@ -27,37 +27,70 @@ CONTENT_DIR = os.path.join(VESVIET_DIR, "content")
 
 def run_r1_image_check(all_md_files):
     """
-    R1: Verify that 0 local image 404 errors remain due to missing leading slashes.
-    All local cover and content image paths starting with images/ or images/posts/ must have a leading /.
+    R1: Verify that 0 local image 404 errors remain due to missing leading slashes,
+    missing physical files on disk, or zero-byte image files.
+
+    All local image references must:
+    1. Have a leading '/' (e.g. /images/...).
+    2. Exist on physical disk at static_dir + image_path (os.path.exists).
+    3. Have a non-zero file size (os.path.getsize > 0).
     """
+    static_dir = os.path.join(VESVIET_DIR, "static")
     total_refs_checked = 0
     unslashed_vios = []
+    missing_file_vios = []
+    zero_size_vios = []
 
-    # Pattern for unslashed image paths (e.g. "images/posts/..." or 'images/...' without leading '/')
-    unslashed_pattern = re.compile(r'(?<![/\w\.\-])(images/(?:posts/|series/)?[a-zA-Z0-9_\-\./]+\.(?:jpg|png|webp|svg|jpeg|gif))', re.IGNORECASE)
+    # Matching pattern for image references: /?images/[a-zA-Z0-9_\-\./]+\.(?:jpg|png|webp|svg|jpeg|gif)
+    img_ref_pattern = re.compile(r'/?images/[a-zA-Z0-9_\-\./]+\.(?:jpg|png|webp|svg|jpeg|gif)', re.IGNORECASE)
 
     for fpath in all_md_files:
         rel_path = os.path.relpath(fpath, VESVIET_DIR).replace("\\", "/")
         with open(fpath, "r", encoding="utf-8", errors="ignore") as f:
             content = f.read()
 
-        # Count total image references in file
-        image_matches = re.findall(r'/(images/(?:posts/|series/)?[a-zA-Z0-9_\-\./]+\.(?:jpg|png|webp|svg|jpeg|gif))', content, re.IGNORECASE)
-        total_refs_checked += len(image_matches)
+        refs_in_file = set()
 
-        # Check for unslashed image references
-        unslashed = unslashed_pattern.findall(content)
-        if unslashed:
-            unslashed_vios.append((rel_path, unslashed))
-            total_refs_checked += len(unslashed)
+        # Check frontmatter and body
+        parts = content.split('---', 2)
+        if len(parts) >= 3:
+            fm_text = parts[1]
+            fm_matches = img_ref_pattern.findall(fm_text)
+            for m in fm_matches:
+                refs_in_file.add(m)
+            body_text = parts[2]
+            body_matches = img_ref_pattern.findall(body_text)
+            for m in body_matches:
+                refs_in_file.add(m)
+        else:
+            matches = img_ref_pattern.findall(content)
+            for m in matches:
+                refs_in_file.add(m)
 
-    passed = len(unslashed_vios) == 0
+        for ref in sorted(list(refs_in_file)):
+            total_refs_checked += 1
+            image_path = ref
+            if not image_path.startswith('/'):
+                unslashed_vios.append((rel_path, image_path))
+                image_path = '/' + image_path
+
+            disk_path = static_dir + image_path
+            if not os.path.exists(disk_path):
+                missing_file_vios.append((rel_path, image_path, disk_path))
+            elif os.path.getsize(disk_path) <= 0:
+                zero_size_vios.append((rel_path, image_path, disk_path))
+
+    passed = (len(unslashed_vios) == 0) and (len(missing_file_vios) == 0) and (len(zero_size_vios) == 0)
     return {
         "passed": passed,
         "total_files": len(all_md_files),
         "total_refs_checked": total_refs_checked,
         "unslashed_count": len(unslashed_vios),
-        "unslashed_details": unslashed_vios
+        "unslashed_details": unslashed_vios,
+        "missing_file_count": len(missing_file_vios),
+        "missing_file_details": missing_file_vios,
+        "zero_size_count": len(zero_size_vios),
+        "zero_size_details": zero_size_vios
     }
 
 
@@ -223,17 +256,29 @@ def main():
     # Run R1
     r1 = run_r1_image_check(all_md_files)
     print("-" * 80)
-    print("[R1] Local Image Path Validation (Leading Slash Check)")
+    print("[R1] Local Image Path & Physical Disk File Validation")
     print("-" * 80)
     print(f"Files Scanned               : {r1['total_files']}")
     print(f"Image References Checked    : {r1['total_refs_checked']}")
     print(f"Unslashed Local Image Paths : {r1['unslashed_count']}")
+    print(f"Missing Disk File References: {r1['missing_file_count']}")
+    print(f"Zero-Byte File References   : {r1['zero_size_count']}")
     if r1['passed']:
-        print(f"[PASS] R1 Assertion PASSED: 0 local image 404 errors remain (all {r1['total_refs_checked']} image paths have leading '/').")
+        print(f"[PASS] R1 Assertion PASSED: 0 local image 404 errors remain (all {r1['total_refs_checked']} image paths have leading '/' and exist on disk with size > 0).")
     else:
-        print(f"[FAIL] R1 Assertion FAILED: {r1['unslashed_count']} unslashed image paths detected.")
-        for f, vios in r1['unslashed_details']:
-            print(f"       - {f}: {vios}")
+        print(f"[FAIL] R1 Assertion FAILED: Image reference violations detected.")
+        if r1['unslashed_count'] > 0:
+            print(f"       - Unslashed paths ({r1['unslashed_count']}):")
+            for f, vios in r1['unslashed_details']:
+                print(f"         - {f}: {vios}")
+        if r1['missing_file_count'] > 0:
+            print(f"       - Missing disk files ({r1['missing_file_count']}):")
+            for f, img, dp in r1['missing_file_details']:
+                print(f"         - {f}: {img} (expected at {dp})")
+        if r1['zero_size_count'] > 0:
+            print(f"       - Zero-byte files ({r1['zero_size_count']}):")
+            for f, img, dp in r1['zero_size_details']:
+                print(f"         - {f}: {img} ({dp})")
 
     # Run R2
     r2 = run_r2_answer_first_check(all_md_files)

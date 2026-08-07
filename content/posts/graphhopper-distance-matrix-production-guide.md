@@ -22,7 +22,7 @@ tags:
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/graphhopper-cover.png"
+  image: "/images/posts/graphhopper-cover.jpg"
   alt: "GraphHopper distance matrix production guide: self-hosted routing with OSM data and Kubernetes"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/graphhopper-distance-matrix-production-guide/"

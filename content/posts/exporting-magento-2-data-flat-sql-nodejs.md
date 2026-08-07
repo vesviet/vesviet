@@ -12,7 +12,7 @@ categories: ["Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/magento-ai-cover.png"
+  image: "/images/posts/exporting-magento-2-data-flat-sql-nodejs.jpg"
   alt: "Exporting Magento 2 data: flatten EAV schema with SQL and Node.js for data warehouse pipelines"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/exporting-magento-2-data-flat-sql-nodejs/"

@@ -11,7 +11,7 @@ description: "Vibe coding for CEOs, PMs, BAs + AI code review for engineers. Pro
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/vibe-coding-cover.png"
+  image: "/images/posts/ai-code-review-vibe-coding.jpg"
   alt: "Vibe Coding and AI Code Review series: from prototype to production workflow"
   relative: false
 author: "Lê Tuấn Anh"

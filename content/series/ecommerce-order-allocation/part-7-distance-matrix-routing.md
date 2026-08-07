@@ -11,7 +11,7 @@ weight: 8
 keywords: ["graphhopper vs osrm", "distance matrix routing", "osrm distance matrix", "graphhopper distance matrix", "distance.to alternative", "google maps distance matrix alternative", "ecommerce order allocation", "or-tools vrp", "open source routing engine"]
 mermaid: true
 cover:
-  image: "/images/posts/order-fulfillment-cover.png"
+  image: "/images/posts/part-7-distance-matrix-routing.jpg"
   alt: "E-commerce Order Allocation Architecture series: Amazon and eBay warehouse and last-mile design"
   relative: false
 author: "Lê Tuấn Anh"

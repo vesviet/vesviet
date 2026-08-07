@@ -12,7 +12,7 @@ ShowToc: true
 mermaid: true
 TocOpen: true
 cover:
-  image: "/images/posts/hybrid-ai-pipeline-cover.png"
+  image: "/images/posts/ai-driven-playbook.jpg"
   alt: "The AI-Driven Engineer Enterprise Playbook: workflows, tooling, and autonomous pipelines"
   relative: false
 author: "Lê Tuấn Anh"

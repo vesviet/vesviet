@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["MCP Gateway", "Golang", "Reverse Proxy", "Routing", "Architecture", "Load Balancing"]
 categories: ["Engineering", "Architecture"]
 cover:
-  image: "/images/posts/mcp-engineering-in-production-cover.png"
+  image: "/images/posts/part-4-gateway.jpg"
   alt: "MCP Gateway Architecture and Routing topology diagram"
   relative: false
 mermaid: true
@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-4-g
 description: "Design a high-performance Go MCP Gateway for dynamic JSON-RPC tool routing, centralized OAuth 2.1 authentication, rate limiting, and circuit breaking."
 ShowToc: true
 TocOpen: true
-image: "/images/posts/mcp-engineering-in-production-cover.png"
+image: "/images/posts/part-4-gateway.jpg"
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Identity](/series/mcp-engineering-in-production/part-3-identity/). Review it first if the terminology in this part is unfamiliar.

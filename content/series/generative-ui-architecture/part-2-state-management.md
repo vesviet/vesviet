@@ -10,7 +10,7 @@ canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-fronte
 tags: ["Generative UI", "State Management", "Next.js", "Astro", "React Server Components"]
 categories: ["Engineering", "Frontend"]
 cover:
-  image: "/images/posts/generative-ui-mcp-cover.png"
+  image: "/images/posts/part-2-state-management.jpg"
   alt: "GenUI State Management: Astro vs Next.js RSC architecture"
   relative: false
 mermaid: true

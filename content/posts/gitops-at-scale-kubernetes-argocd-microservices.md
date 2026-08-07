@@ -12,7 +12,7 @@ categories: ["DevOps", "Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/argocd-2026-cover.png"
+  image: "/images/posts/gitops-at-scale-kubernetes-argocd-microservices.jpg"
   alt: "GitOps at scale with Kubernetes and Argo CD: multi-cluster microservices deployment architecture"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/gitops-at-scale-kubernetes-argocd-microservices/"

@@ -10,14 +10,14 @@ categories: ["Ride Hailing", "Geospatial"]
 tags: ["ride-hailing", "geospatial", "h3", "redis", "uber"]
 mermaid: true
 cover:
-  image: "/images/posts/real-time-ride-hailing-cover.png"
+  image: "/images/posts/real-time-ride-hailing-cover.jpg"
   alt: "Real-Time Ride-Hailing Architecture series: Uber and Grab — matching, GPS, WebSocket at scale"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/"
 ShowToc: true
 TocOpen: true
-image: "/images/posts/real-time-ride-hailing-cover.png"
+image: "/images/posts/real-time-ride-hailing-cover.jpg"
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Location Ingestion](/series/ride-hailing-realtime-architecture/part-1-location-ingestion/). Review it first if the terminology in this part is unfamiliar.

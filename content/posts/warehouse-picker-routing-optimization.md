@@ -12,6 +12,9 @@ description: "Solve the Traveling Salesperson Problem for warehouse pickers usin
 categories: ["Architecture"]
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/warehouse-picker-routing-optimization.jpg"
+
 ---
 
 > **Prerequisite:** Review [Part 9: Order Splitting Algorithm](/posts/order-splitting-graph-coloring-opa/) for the previous module on box estimation and graph coloring algorithms.

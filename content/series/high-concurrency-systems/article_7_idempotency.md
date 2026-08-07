@@ -12,12 +12,12 @@ description: "Prevent double-charging customers by implementing robust Idempoten
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/realtime-inventory-cover.png"
+  image: "/images/posts/idempotency-api-design-payments.jpg"
   alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/idempotency-api-design-payments/"
-image: "/images/posts/realtime-inventory-cover.png"
+image: "/images/posts/idempotency-api-design-payments.jpg"
 ---
 
 > **Prerequisite:** Read the previous article: [Chapter 6: API Gateway vs Service Mesh in Microservices Architecture](/posts/shopee-flash-sale-architecture/).

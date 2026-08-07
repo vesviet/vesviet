@@ -22,7 +22,7 @@ description: "Master Golang goroutine pool patterns using errgroup, semaphores, 
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/golang-concurrency-cover.png"
+  image: "/images/posts/golang-goroutine-pool-errgroup-worker.jpg"
   alt: "Golang Goroutine Pool and Errgroup Worker: concurrent task processing patterns in production Go"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/golang-goroutine-pool-errgroup-worker/"

@@ -14,7 +14,7 @@ series: ["Composable Commerce Migration"]
 series_order: 4
 author: "Lê Tuấn Anh"
 cover:
-  image: "/images/posts/ecommerce-composable-cover.png"
+  image: "/images/posts/ecommerce-composable-cover.jpg"
   alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
   relative: false
 mermaid: true

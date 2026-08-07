@@ -8,14 +8,14 @@ description: "Solve the high-concurrency overselling problem and handle hot cach
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/shopee-flash-sale-cover.png"
+  image: "/images/posts/shopee-flash-sale-cover.jpg"
   alt: "Shopee Architecture series: scaling for flash sales — rate limiting, Redis, and distributed systems"
   relative: false
 categories: ["Caching", "High Traffic", "FinTech"]
 tags: ["Shopee", "Flash Sale", "Redis", "Lua", "Inventory Sharding", "Hot Keys"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/02-flash-sale-engine/"
-image: "/images/posts/shopee-flash-sale-cover.png"
+image: "/images/posts/shopee-flash-sale-cover.jpg"
 ---
 
 > **Answer-first:** Shopee prevents overselling during high-concurrency flash sales by combining local memory caching, Redis inventory sharding, and atomic Lua script decrements. This multi-tier architecture isolates hot keys in Redis memory shards and evaluates stock availability in sub-milliseconds without acquiring relational database locks.

@@ -11,7 +11,7 @@ TocOpen: true
 categories: ["AI", "Vibe Coding"]
 tags: ["Vibe Coding", "AI Code Review", "Software Engineering", "Security", "OWASP", "LiteLLM", "AST"]
 cover:
-  image: "/images/posts/vibe-coding-cover.png"
+  image: "/images/posts/vibe-coding-and-ai-code-review-future.jpg"
   alt: "What is Vibe Coding? Why AI Code Review is the Future"
   relative: false
 mermaid: true

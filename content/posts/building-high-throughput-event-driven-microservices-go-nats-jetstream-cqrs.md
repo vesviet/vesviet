@@ -13,7 +13,7 @@ ShowToc: true
 TocOpen: true
 canonicalURL: "https://tanhdev.com/posts/building-high-throughput-event-driven-microservices-go-nats-jetstream-cqrs/"
 cover:
-  image: "/images/posts/nats-jetstream-cqrs-go.png"
+  image: "/images/posts/nats-jetstream-cqrs-go.jpg"
   alt: "Building High-Throughput Event-Driven Microservices in Go with NATS JetStream and CQRS Architecture Diagram"
   relative: false
 ---

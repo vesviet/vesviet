@@ -12,7 +12,7 @@ author: "Lê Tuấn Anh"
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/golang-microservices-cover.png"
+  image: "/images/posts/go-microservices.jpg"
   alt: "Go microservices architecture production guide 2026"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/go-microservices/"

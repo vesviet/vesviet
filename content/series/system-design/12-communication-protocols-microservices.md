@@ -13,11 +13,11 @@ TocOpen: true
 series: ["Architecture"]
 mermaid: true
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/12-communication-protocols-microservices/"
-image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
 ---
 Microservices communication uses gRPC for high-throughput internal RPCs via binary Protobuf serialization, REST for public HTTP APIs, and GraphQL for API Gateway aggregation. Selecting the right protocol depends on payload size, streaming requirements, and client integration needs.
 

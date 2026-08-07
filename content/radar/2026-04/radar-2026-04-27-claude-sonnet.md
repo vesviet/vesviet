@@ -9,7 +9,7 @@ TocOpen: true
 categories: ["Tech Radar"]
 tags: ["Anthropic", "Claude", "AI Agents", "Software Engineering", "Open Source", "SDK"]
 cover:
-  image: "/images/posts/default-post.png"
+  image: "/images/posts/default-post-3.jpg"
   alt: "Tech Radar, April 27, 2026: Claude Sonnet 4.5 and the Agent SDK — The Best Coding Model Just Open-Sourced Its Infrastructure"
   relative: false
 mermaid: true

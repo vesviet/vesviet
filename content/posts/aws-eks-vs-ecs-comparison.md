@@ -12,7 +12,7 @@ categories: ["DevOps", "Engineering", "AWS"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/aws-eks-vs-ecs-cover.png"
+  image: "/images/posts/aws-eks-vs-ecs-cover.jpg"
   alt: "AWS EKS vs ECS architecture comparison — tanhdev.com"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/aws-eks-vs-ecs-comparison/"

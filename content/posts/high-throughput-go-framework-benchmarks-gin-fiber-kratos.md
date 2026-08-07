@@ -12,6 +12,10 @@ categories: ["Engineering", "Backend"]
 author: "Lê Tuấn Anh"
 draft: false
 mermaid: true
+cover:
+  image: "/images/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos-cover.jpg"
+  alt: "High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos"
+  relative: false
 ---
 
 # High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos

@@ -8,7 +8,7 @@ aliases:
 description: "Lê Tuấn Anh — Senior Go Backend Architect with 17+ years building high-traffic microservices, event-driven platforms, GitOps, and cloud ecosystems."
 author: "Lê Tuấn Anh"
 cover:
-  image: "/images/posts/hire-cover.png"
+  image: "/images/posts/hire-cover.jpg"
   alt: "Lê Tuấn Anh — Senior Go Backend Architect & Consultant"
   relative: false
 ---

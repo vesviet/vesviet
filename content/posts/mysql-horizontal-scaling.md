@@ -22,7 +22,7 @@ description: "Vitess vs GORM Sharding for MySQL write scaling in Go: VTGate quer
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/mysql-scalability-cover.png"
+  image: "/images/posts/mysql-scalability-cover.jpg"
   alt: "Vitess vs GORM Sharding: MySQL horizontal write scaling patterns in Go"
   relative: false
 ---

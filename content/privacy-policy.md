@@ -9,6 +9,9 @@ aliases:
 showToc: true
 TocOpen: true
 author: "Lê Tuấn Anh"
+cover:
+  image: "/images/posts/privacy-policy.jpg"
+
 ---
 
 > *"Transparency, data minimization, and user control are fundamental to building trustworthy technical platforms."*

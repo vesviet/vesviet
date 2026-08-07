@@ -9,7 +9,7 @@ description: "Field-tested patterns for AI APIs in production: OAuth 2.1 agent i
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/production-ai-apis-cover.png"
+  image: "/images/posts/production-ai-apis-cover.jpg"
   alt: "OAuth 2.1 and Prompt Versioning for Production AI Agents — technical architecture diagram"
   relative: false
 categories:

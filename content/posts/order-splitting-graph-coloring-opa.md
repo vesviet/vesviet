@@ -12,6 +12,10 @@ description: "How to solve the e-commerce order splitting problem in under 50ms 
 categories: ["Architecture"]
 ShowToc: true
 TocOpen: true
+cover:
+  image: "/images/posts/order-splitting-graph-coloring-opa-cover.jpg"
+  alt: "Order Splitting Algorithm: Graph Coloring & OPA in Golang"
+  relative: false
 ---
 
 > **Prerequisite:** Review [Part 8: Intelligent Order Release](/series/ecommerce-order-allocation/part-8-intelligent-order-release/) for previous context on order batching and VRPTW before starting this guide.

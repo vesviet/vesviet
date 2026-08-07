@@ -13,11 +13,11 @@ TocOpen: true
 series: ["Architecture"]
 mermaid: true
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/07-idempotency-api-design-go/"
-image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
 ---
 
 > **Prerequisite:** Part 7 of the [System Design Masterclass](/series/system-design/). Read [Part 6: Distributed Locks](/series/system-design/06-distributed-locks-concurrency/) first.

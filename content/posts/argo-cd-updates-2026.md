@@ -12,7 +12,7 @@ categories: ["DevOps", "Engineering"]
 tags: ["Argo CD", "GitOps", "Kubernetes", "Kargo", "DevOps"]
 mermaid: true
 cover:
-  image: "/images/posts/argocd-2026-cover.png"
+  image: "/images/posts/argocd-2026-cover.jpg"
   alt: "Argo CD 3.4 & 3.3 Guide: GitOps Upgrades & Cluster Pause (2026)"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/argo-cd-updates-2026/"

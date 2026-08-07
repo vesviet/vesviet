@@ -6,6 +6,10 @@ draft: false
 weight: 1
 description: "In-depth technical guides (Pillar Content) on core backend engineering, edge compute, low-latency streaming, and distributed systems architecture for Senior Go Engineers."
 series: ["Cornerstone Technologies"]
+cover:
+  image: "/images/posts/cornerstone-technologies.jpg"
+  alt: "Cornerstone Technologies: Distributed Systems Architecture & Production Guide"
+  relative: false
 ---
 
 > **Prerequisite:** This is the main index for the Cornerstone Technologies series. No prior part is required.

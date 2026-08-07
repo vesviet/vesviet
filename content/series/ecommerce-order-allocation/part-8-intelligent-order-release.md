@@ -12,6 +12,10 @@ keywords: ["intelligent order release", "dynamic order release", "or-tools vrp",
 mermaid: true
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/part-8-intelligent-order-release/"
+cover:
+  image: "/images/posts/part-8-intelligent-order-release.jpg"
+  alt: "Agentic AI for Dynamic Intelligent Order Release (IOR)"
+  relative: false
 ---
 
 > **Series context:** This is Part 8 of the [E-commerce Order Allocation](/series/ecommerce-order-allocation/) series, building on the GraphHopper distance matrix routing engine from [Part 7](/series/ecommerce-order-allocation/part-7-distance-matrix-routing/) and OR-Tools VRP solver from [Part 6](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/).

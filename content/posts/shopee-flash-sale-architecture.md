@@ -28,7 +28,7 @@ description: "Flash sale architecture patterns for C10M-scale events: Kafka peak
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/shopee-flash-sale-cover.png"
+  image: "/images/posts/shopee-flash-sale-architecture.jpg"
   alt: "Shopee Flash Sale Architecture: rate limiting, Redis token bucket, and distributed queue design"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/shopee-flash-sale-architecture/"

@@ -9,7 +9,7 @@ ShowToc: true
 TocOpen: true
 weight: 50
 cover:
-  image: "/images/posts/agentic-ai-swarm-cover.png"
+  image: "/images/posts/agentic-system-architecture.jpg"
   alt: "Agentic System Architecture: multi-agent in production — orchestration, tools, and deployment"
   relative: false
 author: "Lê Tuấn Anh"

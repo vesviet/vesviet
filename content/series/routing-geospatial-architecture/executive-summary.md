@@ -9,7 +9,7 @@ tags: ["architecture", "golang", "graphhopper", "Architecture"]
 categories: ["Geospatial", "Architecture"]
 series: ["Routing & Geospatial Architecture"]
 cover:
-  image: "/images/posts/graphhopper-cover.png"
+  image: "/images/posts/graphhopper-cover.jpg"
   alt: "Geospatial and Routing Engine Architecture series: Go and GraphHopper for production routing"
   relative: false
 author: "Lê Tuấn Anh"
@@ -18,7 +18,7 @@ mermaid: true
 ShowToc: true
 TocOpen: true
 series_order: 0
-image: "/images/posts/graphhopper-cover.png"
+image: "/images/posts/graphhopper-cover.jpg"
 ---
 
 > **Prerequisite:** This is the executive summary and introductory overview of the **Routing & Geospatial Architecture** series. No prior reading is required to start here.

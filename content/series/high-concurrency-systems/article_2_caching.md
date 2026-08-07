@@ -13,12 +13,12 @@ description: "Defend Go microservices against cache penetration, avalanche, and 
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/realtime-inventory-cover.png"
+  image: "/images/posts/caching-vulnerabilities-penetration-breakdown-avalanche.jpg"
   alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/"
-image: "/images/posts/realtime-inventory-cover.png"
+image: "/images/posts/caching-vulnerabilities-penetration-breakdown-avalanche.jpg"
 ---
 
 > Multi-tier distributed caching using Redis clusters and in-memory LRU buffers prevents database thundering herd and reduces read latency to sub-millisecond ranges.

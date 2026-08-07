@@ -10,7 +10,7 @@ canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-fronte
 tags: ["Generative UI", "E2E Testing", "Playwright", "Edge Caching", "Cloudflare", "Architecture"]
 categories: ["Engineering", "Frontend", "Testing"]
 cover:
-  image: "/images/posts/generative-ui-mcp-cover.png"
+  image: "/images/posts/part-6-e2e-testing-edge.jpg"
   alt: "GenUI E2E Testing and Semantic Edge Caching on Cloudflare Workers"
   relative: false
 mermaid: true

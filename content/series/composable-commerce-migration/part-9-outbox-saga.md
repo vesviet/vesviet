@@ -15,7 +15,7 @@ series_order: 9
 ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
 cover:
-  image: "/images/posts/ecommerce-composable-cover.png"
+  image: "/images/posts/ecommerce-composable-cover.jpg"
   alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
   relative: false
 canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-9-outbox-saga/"

@@ -6,6 +6,9 @@ categories: ["Engineering", "Architecture", "AI"]
 author: "Vesviet Engineering Team"
 description: "A comprehensive technical research dossier on architecting a high-throughput, low-latency distributed Go API Gateway for vLLM inference clusters. Features PagedAttention memory internals, Prefill-Decode disaggregation over RoCE v2/NVLink, prompt prefix context-affinity routing, empirical H100 vs L40S vs H200 benchmarks, 12-month SaaS vs self-hosted TCO analysis, complete Kubernetes manifests, and GPU VRAM sizing formulas."
 draft: false
+cover:
+  image: "/images/posts/high-throughput-local-llm-infrastructure-architecting-a-distributed-go-api-gateway-for-vllm-pagedattention-clusters.jpg"
+
 ---
 
 # High-Throughput Local LLM Infrastructure: Architecting a Distributed Go API Gateway for vLLM & PagedAttention Clusters

@@ -13,7 +13,7 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 cover:
-  image: "/images/posts/laravel-vs-golang-when-to-add-features-cover.png"
+  image: "/images/posts/laravel-vs-golang-when-to-add-features-cover.jpg"
   alt: "Laravel vs Golang: when to add features in each — architecture decision framework"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/laravel-vs-golang-when-to-add-features/"

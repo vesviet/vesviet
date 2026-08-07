@@ -8,14 +8,14 @@ description: "How Shopee builds its distributed backend infrastructure with Gola
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/shopee-flash-sale-cover.png"
+  image: "/images/posts/shopee-flash-sale-cover.jpg"
   alt: "Shopee Architecture series: scaling for flash sales — rate limiting, Redis, and distributed systems"
   relative: false
 categories: ["Microservices", "Architecture", "High Concurrency"]
 tags: ["Shopee", "Golang", "gRPC", "API Gateway", "Service Mesh", "Microservices"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/01-microservices-foundation/"
-image: "/images/posts/shopee-flash-sale-cover.png"
+image: "/images/posts/shopee-flash-sale-cover.jpg"
 ---
 
 > **Answer-first:** Shopee handles millions of concurrent users by migrating from monolithic systems to high-performance Go microservices. Inter-service gRPC Protobuf communication and Istio/Envoy service mesh sidecars enforce strict SLAs and sub-millisecond RPC latencies across thousands of internal microservice nodes.

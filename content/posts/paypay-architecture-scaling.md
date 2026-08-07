@@ -22,7 +22,7 @@ description: "In-depth look at PayPay's engineering stack: handling 70M users an
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/paypay-scaling-cover.png"
+  image: "/images/posts/paypay-scaling-cover.jpg"
   alt: "PayPay architecture and scaling: distributed payment system engineering in Japan"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/paypay-architecture-scaling/"

@@ -11,13 +11,13 @@ slug: "magento-migration-vietnam"
 categories: ["Software Engineering", "Engineering Management"]
 tags: ["Magento", "Microservices", "Golang", "Vietnam", "Migration", "Ecommerce", "Cost Model", "Remote Team"]
 cover:
-  image: "/images/series/remote-team-vietnam-migration-cover.png"
+  image: "/images/posts/remote-team-vietnam-migration-cover.jpg"
   alt: "E-Commerce Re-Architecture in Vietnam: Magento to Go Microservices"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/"
 noTranslation: true
-image: "/images/series/remote-team-vietnam-migration-cover.png"
+image: "/images/posts/remote-team-vietnam-migration-cover.jpg"
 ---
 
 Your Magento platform handles 2,000 orders a day. Your engineering team spends **60–70% of every sprint on maintenance** — patches, extension conflicts, and EAV query optimization — instead of shipping features. Category pages take 4 seconds. Checkout breaks during flash sales.

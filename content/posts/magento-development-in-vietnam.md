@@ -15,7 +15,7 @@ ShowToc: true
 TocOpen: true
 canonicalURL: "https://tanhdev.com/posts/magento-development-in-vietnam/"
 cover:
-  image: "/images/posts/magento-developers-vietnam-cover.png"
+  image: "/images/posts/magento-developers-vietnam-cover.jpg"
   alt: "Magento enterprise scoping and cost matrix guide"
   relative: false
 ---

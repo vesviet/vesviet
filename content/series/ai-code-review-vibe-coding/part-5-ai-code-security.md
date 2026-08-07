@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["AI Security", "Credentials", "Prompt Injection", "Python", "Static Analysis", "DevSecOps"]
 categories: ["Engineering", "Security"]
 cover:
-  image: "/images/posts/vibe-coding-cover.png"
+  image: "/images/posts/part-5-ai-code-security.jpg"
   alt: "AI Code Security Prompt Injection and Credentials architecture"
   relative: false
 mermaid: true

@@ -19,7 +19,7 @@ tags:
   - "Profiling"
   - "Performance"
 cover:
-  image: "/images/posts/goroutine-leak-cover.png"
+  image: "/images/posts/goroutine-leak-cover.jpg"
   alt: "Go pprof profiling in Kubernetes: CPU flame graphs, heap profiling, and memory leak detection"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/golang-pprof-profiling-memory-cpu-tutorial/"

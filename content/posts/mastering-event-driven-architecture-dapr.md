@@ -12,7 +12,7 @@ categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/dapr-saga-cover.png"
+  image: "/images/posts/dapr-saga-cover.jpg"
   alt: "Mastering event-driven architecture with Dapr: pub/sub, bindings, and actor model in Go microservices"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/mastering-event-driven-architecture-dapr/"

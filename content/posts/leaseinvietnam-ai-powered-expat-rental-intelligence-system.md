@@ -23,7 +23,7 @@ description: "Build an autonomous AI pipeline that scrapes and publishes expat r
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/leaseinvietnam-cover.png"
+  image: "/images/posts/leaseinvietnam-cover.jpg"
   alt: "LeaseInVietnam: AI-powered expat rental platform and B2B lead intelligence system architecture"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/leaseinvietnam-ai-powered-expat-rental-intelligence-system/"

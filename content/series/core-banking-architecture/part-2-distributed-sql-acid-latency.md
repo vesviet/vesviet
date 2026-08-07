@@ -12,7 +12,7 @@ tags: ["TiDB", "CockroachDB", "Spanner", "Distributed SQL", "ACID", "Latency"]
 author: "Lê Tuấn Anh"
 schema: ["Article", "TechArticle", "FAQPage"]
 cover:
-  image: "/images/posts/banking-microservices-cover.png"
+  image: "/images/posts/banking-microservices-cover.jpg"
   alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
   relative: false
 canonicalURL: "https://tanhdev.com/series/core-banking-architecture/part-2-distributed-sql-acid-latency/"

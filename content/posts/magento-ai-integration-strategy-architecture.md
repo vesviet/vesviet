@@ -13,7 +13,7 @@ categories: ["Engineering", "Strategy"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/magento-ai-cover.png"
+  image: "/images/posts/magento-ai-cover.jpg"
   alt: "Magento AI integration strategy: add ML recommendations, semantic search, and chatbot without rebuilding"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/magento-ai-integration-strategy-architecture/"

@@ -22,7 +22,7 @@ description: "Deploy Astro on Cloudflare Pages with Workers SSR, D1, and KV. Zer
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/cloudflare-edge-cover.png"
+  image: "/images/posts/cloudflare-edge-cover.jpg"
   alt: "Deploying Astro on Cloudflare: full-stack edge architecture with Workers, D1, and KV"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/"

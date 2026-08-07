@@ -45,7 +45,7 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 cover:
-  image: "/images/posts/modern-golang-123-124-high-performance-zero-alloc-gc-tuning.png"
+  image: "/images/posts/modern-golang-123-124-high-performance-zero-alloc-gc-tuning.jpg"
   alt: "Modern Golang 123 124 High Performance Zero Alloc GC Tuning"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/modern-golang-123-124-high-performance-zero-alloc-gc-tuning/"

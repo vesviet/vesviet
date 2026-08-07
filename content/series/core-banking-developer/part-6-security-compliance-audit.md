@@ -6,7 +6,7 @@ draft: false
 description: "Core Banking security for developers: PCI-DSS v4.0 and AML compliance, tamper-proof audit trail design, HSM key management, and handling sensitive financial data safely."
 weight: 7
 cover:
-  image: "/images/posts/banking-microservices-cover.png"
+  image: "/images/posts/banking-microservices-cover-11.jpg"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
   relative: false
 categories: ["FinTech", "Security", "Compliance"]

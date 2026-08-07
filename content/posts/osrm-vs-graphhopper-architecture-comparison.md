@@ -19,6 +19,10 @@ description: "In-depth architectural comparison of OSRM vs GraphHopper: analyzin
 ShowToc: true
 TocOpen: true
 canonicalURL: "https://tanhdev.com/posts/osrm-vs-graphhopper-architecture-comparison/"
+cover:
+  image: "/images/posts/osrm-vs-graphhopper-architecture-comparison-cover.jpg"
+  alt: "OSRM vs GraphHopper: Routing Engine Architecture Comparison"
+  relative: false
 ---
 
 # OSRM vs GraphHopper: Routing Engine Architecture Comparison

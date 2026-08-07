@@ -6,7 +6,7 @@ draft: false
 description: "How PayPay SRE maintains 99.99% uptime: Datadog, OpenTelemetry, chaos engineering, circuit breakers, and a security posture forged by the 2018 incident."
 weight: 5
 cover:
-  image: "/images/posts/paypay-scaling-cover.png"
+  image: "/images/posts/paypay-scaling-cover.jpg"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
 categories: ["SRE", "Resilience", "Operations"]
@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-4-sre-chaos-e
 ShowToc: true
 TocOpen: true
 mermaid: true
-image: "/images/posts/paypay-scaling-cover.png"
+image: "/images/posts/paypay-scaling-cover.jpg"
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Data Layer Tidb](/series/paypay-architecture/part-3-data-layer-tidb/). Review it first if the terminology in this part is unfamiliar.

@@ -7,7 +7,7 @@ description: "Detailed historical timeline of Alipay Double 11 scaling evolution
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/alipay-double11-cover.png"
+  image: "/images/posts/alipay-double11-cover-2.jpg"
   alt: "Alipay Double 11 Architecture series: 544,000 TPS payment processing at extreme scale"
   relative: false
 categories: ["E-Commerce", "High Traffic", "Case Study"]

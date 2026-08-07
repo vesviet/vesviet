@@ -7,7 +7,7 @@ description: "Deep dive into SOFA RPC Bolt protocols, RocketMQ decoupling, Ocean
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/alipay-double11-cover.png"
+  image: "/images/posts/alipay-double11-cover.jpg"
   alt: "Alipay Double 11 Architecture series: 544,000 TPS payment processing at extreme scale"
   relative: false
 categories: ["Distributed Systems", "Cloud Native", "Database"]

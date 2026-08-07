@@ -6,14 +6,14 @@ date: "2026-06-14T22:25:00+07:00"
 lastmod: "2026-06-14T22:25:00+07:00"
 draft: false
 cover:
-  image: "/images/posts/graphhopper-cover.png"
+  image: "/images/posts/graphhopper-cover.jpg"
   alt: "Geospatial and Routing Engine Architecture series: Go and GraphHopper for production distance matrix"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/"
 ShowToc: true
 TocOpen: true
-image: "/images/posts/graphhopper-cover.png"
+image: "/images/posts/graphhopper-cover.jpg"
 ---
 
 Modern Logistics and Delivery systems rely heavily on one core capability: **Calculating distances and travel times (Distance Matrix) quickly and accurately.**

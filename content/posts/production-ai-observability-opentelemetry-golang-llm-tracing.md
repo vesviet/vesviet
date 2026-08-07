@@ -45,7 +45,7 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 cover:
-  image: "/images/posts/production-ai-observability-opentelemetry-golang-llm-tracing.png"
+  image: "/images/posts/production-ai-observability-opentelemetry-golang-llm-tracing.jpg"
   alt: "Production AI Observability OpenTelemetry Golang LLM Tracing"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/production-ai-observability-opentelemetry-golang-llm-tracing/"

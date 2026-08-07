@@ -10,7 +10,7 @@ canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-fronte
 tags: ["Generative UI", "Human-in-the-Loop", "Optimistic UI", "Error Boundaries", "Architecture"]
 categories: ["Engineering", "Frontend"]
 cover:
-  image: "/images/posts/generative-ui-mcp-cover.png"
+  image: "/images/posts/part-5-human-in-the-loop.jpg"
   alt: "Human-In-The-Loop Generative UI: optimistic rendering and approval gates"
   relative: false
 mermaid: true

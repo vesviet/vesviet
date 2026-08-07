@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Productivity", "AI", "Metrics", "Python", "Software Management", "Strategy"]
 categories: ["Engineering"]
 cover:
-  image: "/images/posts/ai-native-frontend-cover.png"
+  image: "/images/posts/part-3-the-10x-productivity-reality.jpg"
   alt: "The 10x Productivity Reality metrics comparison diagram"
   relative: false
 mermaid: true

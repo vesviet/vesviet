@@ -12,12 +12,12 @@ description: "Tune your Go *sql.DB connection pool parameters (MaxOpenConns, Max
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/realtime-inventory-cover.png"
+  image: "/images/posts/golang-database-connection-pool-optimization.jpg"
   alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/golang-database-connection-pool-optimization/"
-image: "/images/posts/realtime-inventory-cover.png"
+image: "/images/posts/golang-database-connection-pool-optimization.jpg"
 ---
 
 > **Prerequisite:** Read the previous article: [Chapter 4: Solving the Dual-Write Problem with Transactional Outbox Pattern](/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/).

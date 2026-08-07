@@ -8,7 +8,7 @@ tags: ["Case Study", "Modular Monolith", "Shopify", "Stack Overflow", "Notion", 
 categories: ["Modular Monolith", "Architecture"]
 aliases: ["/series/modular-monolith-architecture/part-8-case-study-matrix/"]
 cover:
-  image: "/images/posts/golang-microservices-cover.png"
+  image: "/images/posts/golang-microservices-cover.jpg"
   alt: "Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal"
   relative: false
 author: "Lê Tuấn Anh"
@@ -17,7 +17,7 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 draft: false
-image: "/images/posts/golang-microservices-cover.png"
+image: "/images/posts/golang-microservices-cover.jpg"
 ---
 
 > **Answer-first:** The Modular Monolith case study matrix evaluates how industry leaders—including Shopify, GitHub, Segment, Etsy, and Stack Overflow—scale core systems using monolithic architecture. These real-world production benchmarks prove that co-locating domains reduces infrastructure expenses, deployment friction, and network latency while maintaining high development velocity.

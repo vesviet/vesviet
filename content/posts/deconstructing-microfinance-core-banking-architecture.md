@@ -12,7 +12,7 @@ categories: ["FinTech", "Architecture"]
 tags: ["FinTech", "Core Banking", "Microfinance", "Golang", "PostgreSQL", "Ledger"]
 mermaid: true
 cover:
-  image: "/images/posts/microfinance-core-banking-cover.png"
+  image: "/images/posts/microfinance-core-banking-cover.jpg"
   alt: "Microfinance Core Banking Architecture & Engineering Guide"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/deconstructing-microfinance-core-banking-architecture/"

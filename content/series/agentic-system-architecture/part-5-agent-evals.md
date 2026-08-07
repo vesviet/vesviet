@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Agent Evaluation", "LLM-as-a-Judge", "Go", "Python", "Observability", "Testing"]
 categories: ["Engineering", "AI"]
 cover:
-  image: "/images/posts/agentic-ai-swarm-cover.png"
+  image: "/images/posts/part-5-agent-evals.jpg"
   alt: "Part 5 Multi-Dimensional Agent Evaluation & LLM-as-a-Judge Harnesses"
   relative: false
 mermaid: true

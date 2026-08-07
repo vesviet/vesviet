@@ -28,7 +28,7 @@ description: "Replace costly crons with an autonomous $0.05/day AI pipeline: Hyb
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/hybrid-ai-pipeline-cover.png"
+  image: "/images/posts/hybrid-ai-pipeline-cover.jpg"
   alt: "Autonomous Hybrid-AI Content Pipeline: from cron trigger to state machine with human-in-the-loop"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/"

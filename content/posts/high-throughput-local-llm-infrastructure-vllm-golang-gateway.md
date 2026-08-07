@@ -42,7 +42,7 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 cover:
-  image: "/images/posts/high-throughput-local-llm-infrastructure-vllm-golang-gateway.png"
+  image: "/images/posts/high-throughput-local-llm-infrastructure-vllm-golang-gateway.jpg"
   alt: "High Throughput Local LLM Infrastructure vLLM Golang Gateway"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/high-throughput-local-llm-infrastructure-vllm-golang-gateway/"

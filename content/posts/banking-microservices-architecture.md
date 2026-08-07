@@ -22,7 +22,7 @@ ShowToc: true
 TocOpen: true
 author: "Lê Tuấn Anh"
 cover:
-  image: "/images/posts/banking-microservices-cover.png"
+  image: "/images/posts/banking-microservices-cover.jpg"
   alt: "Banking Microservices Architecture with Go: Saga pattern, event sourcing, and distributed ledger"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/banking-microservices-architecture/"

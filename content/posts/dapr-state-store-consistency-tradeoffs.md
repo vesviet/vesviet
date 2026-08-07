@@ -11,7 +11,7 @@ TocOpen: true
 categories: ["Architecture", "Engineering"]
 tags: ["Dapr", "Distributed Systems", "State Store", "Consistency", "Go"]
 cover:
-  image: "/images/posts/dapr-saga-cover.png"
+  image: "/images/posts/dapr-saga-cover.jpg"
   alt: "Dapr State Store Consistency Trade-offs Explained"
   relative: false
 mermaid: true

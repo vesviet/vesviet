@@ -6,7 +6,7 @@ draft: false
 description: "Overview of the Core Banking Developer role: responsibilities, required skills, and why it is one of the highest-paid engineering specializations."
 weight: 1
 cover:
-  image: "/images/posts/banking-microservices-cover.png"
+  image: "/images/posts/banking-microservices-cover.jpg"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
   relative: false
 author: "Lê Tuấn Anh"

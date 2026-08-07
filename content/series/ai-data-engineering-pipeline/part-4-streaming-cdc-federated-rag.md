@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["CDC", "Kafka", "Golang", "Federated RAG", "Event Driven", "Architecture"]
 categories: ["Engineering", "Architecture"]
 cover:
-  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "/images/posts/part-4-streaming-cdc-federated-rag.jpg"
   alt: "Streaming CDC and Federated GraphRAG Architecture real-time pipeline topology"
   relative: false
 mermaid: true

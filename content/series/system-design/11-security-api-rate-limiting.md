@@ -13,11 +13,11 @@ TocOpen: true
 series: ["Architecture"]
 mermaid: true
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/11-security-api-rate-limiting/"
-image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
 ---
 
 > API rate limiting defends backend services by restricting request volume. Security requires a layered defense: Web Application Firewalls (WAF) block edge-level volumetric spikes, API Gateways manage L7 credentials and quotas, and application middleware enforces fine-grained business limits. Client identification must rely on validated, secure IP parsing (using the PROXY protocol or rightmost `X-Forwarded-For` checks).

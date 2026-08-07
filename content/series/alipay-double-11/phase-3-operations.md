@@ -7,7 +7,7 @@ description: "Operational playbook detailing Alipay capacity planning, full-link
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/alipay-double11-cover.png"
+  image: "/images/posts/alipay-double11-cover.jpg"
   alt: "Alipay Double 11 Architecture series: 544,000 TPS payment processing at extreme scale"
   relative: false
 categories: ["SRE", "Operations", "High Traffic"]

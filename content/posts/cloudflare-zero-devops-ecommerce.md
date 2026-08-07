@@ -8,7 +8,7 @@ ShowToc: true
 TocOpen: true
 slug: "cloudflare-zero-devops-ecommerce"
 author: "Lê Tuấn Anh"
-images: ["/images/default-post.png"]
+images: ["/images/posts/cloudflare-edge-cover.jpg"]
 categories:
   - "Architecture"
 tags:
@@ -17,7 +17,7 @@ tags:
   - DevOps
   - E-commerce
 cover:
-  image: "/images/posts/cloudflare-edge-cover.png"
+  image: "/images/posts/cloudflare-edge-cover.jpg"
   alt: "Zero DevOps e-commerce with Cloudflare Workers and Turborepo: edge-first architecture guide"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/cloudflare-zero-devops-ecommerce/"

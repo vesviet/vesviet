@@ -6,7 +6,7 @@ draft: false
 description: "How PayPay built its 2025 AI platform: multi-model LLM Hub, internal RAG pipeline, delinquency chatbot, and autonomous AI agents for payment operations."
 weight: 7
 cover:
-  image: "/images/posts/paypay-scaling-cover.png"
+  image: "/images/posts/paypay-scaling-cover.jpg"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
 categories: ["AI", "FinTech", "Innovation"]
@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-6-ai-integrat
 ShowToc: true
 TocOpen: true
 mermaid: true
-image: "/images/posts/paypay-scaling-cover.png"
+image: "/images/posts/paypay-scaling-cover.jpg"
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Campaign Architecture](/series/paypay-architecture/part-5-campaign-architecture/). Review it first if the terminology in this part is unfamiliar.

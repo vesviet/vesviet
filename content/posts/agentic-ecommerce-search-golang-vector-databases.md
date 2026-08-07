@@ -11,7 +11,7 @@ TocOpen: true
 categories: ["Engineering", "AI"]
 tags: ["Golang", "Vector Search", "Qdrant", "Cohere", "E-commerce", "gRPC"]
 cover:
-  image: "/images/posts/agentic-ecommerce-search-cover.png"
+  image: "/images/posts/agentic-ecommerce-search-cover.jpg"
   alt: "Architecting Agentic E-commerce Search with Golang Vector Databases"
   relative: false
 mermaid: true

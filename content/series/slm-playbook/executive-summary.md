@@ -11,13 +11,13 @@ weight: 1
 categories: ["SLM Playbook"]
 tags: ["AI", "vLLM", "Architecture", "CTO", "Architect"]
 cover:
-  image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
+  image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.jpg"
   alt: "SLM Playbook series: fine-tuning, LoRA, QLoRA, and production deployment of Small Language Models"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/slm-playbook/executive-summary/"
 mermaid: true
-image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
+image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.jpg"
 ---
 
 [← Series hub](/series/slm-playbook/)

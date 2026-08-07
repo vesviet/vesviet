@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["AI", "Engineering Management", "Architecture", "Python", "Decision Matrix", "Strategy"]
 categories: ["Engineering"]
 cover:
-  image: "/images/posts/ai-native-frontend-cover.png"
+  image: "/images/posts/part-2-man-vs-machine-boundaries.jpg"
   alt: "Man vs Machine Boundaries in Engineering task classification matrix"
   relative: false
 mermaid: true

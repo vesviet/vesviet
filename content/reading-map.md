@@ -6,7 +6,7 @@ draft: false
 description: "Curated reading map of production-grade technical essays on Go microservices, AI systems, e-commerce modernization, platform operations, and architecture."
 author: "Lê Tuấn Anh"
 cover:
-  image: "/images/posts/reading-map-cover.png"
+  image: "/images/posts/reading-map-cover.jpg"
   alt: "tanhdev Reading Map — Production Go & AI Architecture"
   relative: false
 ShowToc: true

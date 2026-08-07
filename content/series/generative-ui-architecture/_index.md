@@ -10,7 +10,7 @@ TocOpen: true
 weight: 70
 tags: ["Generative UI", "AI Frontend", "Astro", "MCP Frontend", "AI-Native"]
 cover:
-  image: "/images/posts/generative-ui-mcp-cover.png"
+  image: "/images/posts/generative-ui-architecture.jpg"
   alt: "Generative UI and AI-Native Frontend Architecture roadmap series — MCP and LLM-driven UIs"
   relative: false
 author: "Lê Tuấn Anh"

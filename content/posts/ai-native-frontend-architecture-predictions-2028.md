@@ -19,7 +19,7 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 cover:
-  image: "/images/posts/ai-native-frontend-cover.png"
+  image: "/images/posts/ai-native-frontend-cover.jpg"
   alt: "AI-Native Frontend Architecture in 2028: 10 bold predictions for the next generation of UI engineering"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/ai-native-frontend-architecture-predictions-2028/"

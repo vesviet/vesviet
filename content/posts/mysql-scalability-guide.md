@@ -21,7 +21,7 @@ tags:
   - "GORM"
   - "Golang"
 cover:
-  image: "/images/posts/mysql-scalability-cover.png"
+  image: "/images/posts/mysql-scalability-cover.jpg"
   alt: "MySQL Scalability: read replicas, sharding, and TiDB NewSQL — performance architecture guide"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/mysql-scalability-guide/"

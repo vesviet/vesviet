@@ -14,7 +14,7 @@ aliases:
 showToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/hire-cover.png"
+  image: "/images/posts/hire-cover.jpg"
   alt: "Hire Lê Tuấn Anh — Go Backend Architect & Consulting"
   relative: false
 author: "Lê Tuấn Anh"

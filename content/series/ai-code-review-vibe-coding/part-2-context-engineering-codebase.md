@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Context Engineering", "AST", "Code Review", "Python", "Developer Tools", "Architecture"]
 categories: ["Engineering"]
 cover:
-  image: "/images/posts/vibe-coding-cover.png"
+  image: "/images/posts/part-2-context-engineering-codebase.jpg"
   alt: "Codebase Context Engineering for AI Reviewers AST dependency graph"
   relative: false
 mermaid: true

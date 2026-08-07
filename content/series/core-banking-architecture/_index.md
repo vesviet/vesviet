@@ -9,7 +9,7 @@ slug: "core-banking-architecture"
 categories: ["Core Banking", "Fintech Architecture"]
 tags: ["TigerBeetle", "TiDB", "CockroachDB", "ISO 20022", "FAPI 2.0", "Apache Flink", "Event Sourcing", "Distributed SQL"]
 cover:
-  image: "/images/posts/banking-microservices-cover.png"
+  image: "/images/posts/banking-microservices-cover.jpg"
   alt: "Modern Core Banking Architecture series: from double-entry ledger to fintech microservices in Go"
   relative: false
 author: "Lê Tuấn Anh"

@@ -9,14 +9,14 @@ description: "How Shopee scaled from MySQL sharding to TiDB NewSQL: ProxySQL con
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/shopee-flash-sale-cover.png"
+  image: "/images/posts/shopee-flash-sale-cover.jpg"
   alt: "Shopee Architecture series: scaling for flash sales — rate limiting, Redis, and distributed systems"
   relative: false
 categories: ["Database", "Distributed Systems", "NewSQL"]
 tags: ["Shopee", "TiDB", "MySQL", "Sharding", "Distributed SQL", "HTAP"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/04-database-scale/"
-image: "/images/posts/shopee-flash-sale-cover.png"
+image: "/images/posts/shopee-flash-sale-cover.jpg"
 ---
 
 > **Answer-first:** Shopee scales its relational database layer past single-node MySQL limits by migrating to TiDB Distributed SQL. By separating stateless SQL compute (TiDB) from stateful key-value storage (TiKV) and columnar analytics (TiFlash), TiDB delivers transparent horizontal auto-sharding and ACID transactions without application-level sharding logic.

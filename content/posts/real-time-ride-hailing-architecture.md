@@ -23,7 +23,7 @@ description: "How Uber and Grab handle millions of GPS pings/sec: H3 geospatial 
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/real-time-ride-hailing-cover.png"
+  image: "/images/posts/real-time-ride-hailing-cover.jpg"
   alt: "Real-time ride-hailing architecture: driver-passenger matching, geospatial partitioning, and WebSocket"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/real-time-ride-hailing-architecture/"

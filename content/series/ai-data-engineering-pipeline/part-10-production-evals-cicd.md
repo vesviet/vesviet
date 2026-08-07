@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Evals", "CI/CD", "LLM-as-a-Judge", "Python", "Ragas", "DevOps"]
 categories: ["Engineering", "DevOps"]
 cover:
-  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "/images/posts/part-10-production-evals-cicd.jpg"
   alt: "Production Evals and CI/CD Guardrails pipeline architecture"
   relative: false
 mermaid: true

@@ -16,6 +16,9 @@ categories:
   - "Architecture"
   - "AI"
 description: "A complete engineering research dossier on building zero-overhead, OpenTelemetry-native LLM tracing, streaming TTFT/TPOT latency measurement, multi-agent W3C context propagation, and OTTL token cost attribution in Go."
+cover:
+  image: "/images/posts/production-ai-observability-building-zero-overhead-llm-tracing-cost-attribution-with-opentelemetry-in-go.jpg"
+
 ---
 
 # Production AI Observability: Building Zero-Overhead LLM Tracing & Cost Attribution with OpenTelemetry in Go

@@ -19,6 +19,10 @@ tags:
 categories:
   - "Architecture"
   - "Engineering"
+cover:
+  image: "/images/posts/multi-region-geo-distributed-api-routing-cover.jpg"
+  alt: "Multi-region Geo-distributed API Routing Architecture"
+  relative: false
 ---
 
 # Multi-region Geo-distributed API Routing Architecture

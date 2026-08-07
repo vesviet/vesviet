@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Architecture", "Resilience", "Golang", "Circuit Breaker", "Rate Limiting"]
 categories: ["Engineering", "Architecture"]
 cover:
-  image: "/images/posts/ai-native-frontend-cover.png"
+  image: "/images/posts/part-7-system-design-survival.jpg"
   alt: "System Design Survival Circuit Breaker state machine architecture"
   relative: false
 mermaid: true

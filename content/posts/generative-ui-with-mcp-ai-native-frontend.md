@@ -29,7 +29,7 @@ description: "Architect dynamic generative UI applications with Model Context Pr
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/generative-ui-mcp-cover.png"
+  image: "/images/posts/generative-ui-with-mcp-ai-native-frontend.jpg"
   alt: "Generative UI with MCP: AI-native frontend architecture using Model Context Protocol tool calls"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-frontend/"

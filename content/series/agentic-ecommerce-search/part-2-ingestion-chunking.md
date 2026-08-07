@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Data Ingestion", "Chunking", "E-commerce", "Python", "Vector DB", "GraphRAG", "Data Engineering"]
 categories: ["Engineering", "AI"]
 cover:
-  image: "/images/posts/agentic-ecommerce-search-cover.png"
+  image: "/images/posts/part-2-ingestion-chunking.jpg"
   alt: "Data Ingestion and Atomic Chunking Product Data catalog pipeline"
   relative: false
 mermaid: true

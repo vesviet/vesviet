@@ -18,6 +18,9 @@ categories:
   - "Architecture"
   - "DevOps"
 description: "An authoritative, production-grade research dossier on building custom Kubernetes v4 operators in Go integrated with deep eBPF kernel observability via cilium/ebpf, bpf2go, and zero-copy BPF ringbuffers."
+cover:
+  image: "/images/posts/building-custom-kubernetes-operators-in-go-with-kubebuilder-deep-ebpf-kernel-observability-using-cilium-ebpf.jpg"
+
 ---
 
 # Building Custom Kubernetes Operators in Go with `kubebuilder` & Deep eBPF Kernel Observability using `cilium/ebpf`

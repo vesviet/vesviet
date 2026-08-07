@@ -16,12 +16,12 @@ aliases:
   - "/series/high-concurrency-systems/part-5-transactional-outbox/"
   - "/series/high-concurrency-systems/part-6-saga-orchestration/"
 cover:
-  image: "/images/posts/realtime-inventory-cover.png"
+  image: "/images/posts/transactional-outbox-pattern-dual-write.jpg"
   alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/"
-image: "/images/posts/realtime-inventory-cover.png"
+image: "/images/posts/transactional-outbox-pattern-dual-write.jpg"
 ---
 
 > **Prerequisite:** Read the previous article: [Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm](/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/).

@@ -8,7 +8,7 @@ tags: ["Architecture", "Modular Monolith", "Microservices", "Stack Overflow"]
 categories: ["Modular Monolith", "Architecture"]
 aliases: ["/series/modular-monolith-architecture/part-1-decision-framework/"]
 cover:
-  image: "/images/posts/golang-microservices-cover.png"
+  image: "/images/posts/decision-framework-modular-monolith-vs-microservices.jpg"
   alt: "Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal"
   relative: false
 author: "Lê Tuấn Anh"
@@ -17,7 +17,7 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 draft: false
-image: "/images/posts/golang-microservices-cover.png"
+image: "/images/posts/decision-framework-modular-monolith-vs-microservices.jpg"
 ---
 
 > **Prerequisite:** Before reading this part, please review [Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure](/series/modular-monolith-architecture/part-0-executive-summary/).

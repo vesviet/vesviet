@@ -9,6 +9,10 @@ aliases:
 showToc: true
 TocOpen: true
 author: "Lê Tuấn Anh"
+cover:
+  image: "/images/posts/legal-notice-cover.jpg"
+  alt: "Legal Notice & Impressum"
+  relative: false
 ---
 
 > *"High-density technical content demands absolute transparency, verifiable experience, and zero fabrication."*

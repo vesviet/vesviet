@@ -3,7 +3,7 @@ title: "Software Architecture & Distributed System Design Series"
 description: "Deep dive into real-world software architecture, microservices, system design, and AI engineering with technical case studies and production guides."
 lastmod: "2026-06-01T10:00:00+07:00"
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
   alt: "Software Architecture and System Design Series — Go, microservices, AI engineering, and distributed systems"
   relative: false
 author: "Lê Tuấn Anh"

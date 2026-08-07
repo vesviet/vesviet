@@ -9,14 +9,14 @@ slug: "high-concurrency-systems"
 categories: ["Backend", "Architecture"]
 tags: ["High Concurrency", "Go", "PostgreSQL", "Architecture", "Microservices"]
 cover:
-  image: "/images/posts/realtime-inventory-cover.png"
+  image: "/images/posts/high-concurrency-systems.jpg"
   alt: "Masterclass: High Concurrency Systems and B2B Commerce — queues, caches, and distributed architecture"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/"
 ShowToc: true
 TocOpen: true
-image: "/images/posts/realtime-inventory-cover.png"
+image: "/images/posts/high-concurrency-systems.jpg"
 ---
 
 ## Masterclass: High Concurrency Systems & B2B Commerce

@@ -9,7 +9,7 @@ categories: ["Geospatial", "DevOps"]
 series: ["Routing & Geospatial Architecture"]
 series_order: 8
 cover:
-  image: "/images/posts/graphhopper-cover.png"
+  image: "/images/posts/graphhopper-cover.jpg"
   alt: "Geospatial and Routing Engine Architecture series: Go and GraphHopper for production routing"
   relative: false
 author: "Lê Tuấn Anh"
@@ -17,7 +17,7 @@ canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-8
 ShowToc: true
 TocOpen: true
 mermaid: true
-image: "/images/posts/graphhopper-cover.png"
+image: "/images/posts/graphhopper-cover.jpg"
 ---
 
 > **Answer-first:** Zero-downtime Kubernetes deployments for routing services combine Argo Rollouts canary strategies, pre-stop hook draining, and automated P99 latency validation.

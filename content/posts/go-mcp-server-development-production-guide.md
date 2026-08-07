@@ -20,7 +20,7 @@ description: "A production engineering guide to building, securing, and scaling 
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/go-mcp-server-cover.jpg"
+  image: "/images/posts/go-mcp-server-development-production-guide.jpg"
   alt: "Go MCP Server development with the official Model Context Protocol Go SDK"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/go-mcp-server-development-production-guide/"

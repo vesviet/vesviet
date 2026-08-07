@@ -27,7 +27,7 @@ description: "How e-commerce giants decide which warehouse fulfills your order. 
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/order-fulfillment-cover.png"
+  image: "/images/posts/order-fulfillment-cover.jpg"
   alt: "Order fulfillment algorithm: warehouse selection and last-mile optimization for e-commerce"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/order-fulfillment-algorithm-warehouse-last-mile/"

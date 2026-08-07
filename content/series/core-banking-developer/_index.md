@@ -9,7 +9,7 @@ description: "Developer series on core banking architecture: double-entry ledger
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/banking-microservices-cover.png"
+  image: "/images/posts/banking-microservices-cover.jpg"
   alt: "Core Banking Developer Roadmap series: architecture patterns, event sourcing, and distributed ledger"
   relative: false
 author: "Lê Tuấn Anh"

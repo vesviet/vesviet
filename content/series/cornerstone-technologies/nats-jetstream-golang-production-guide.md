@@ -5,6 +5,10 @@ description: "In-depth guide to NATS JetStream architecture for Golang engineers
 author: "Le Tuan Anh (Senior Go Engineer)"
 slug: "nats-jetstream-golang-production-guide"
 date: "2026-07-25"
+cover:
+  image: "/images/posts/nats-jetstream-golang-production-guide.jpg"
+  alt: "NATS JetStream Production Guide for Go Developers: 100k RPS Architecture"
+  relative: false
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Cloudflare Workers Edge Computing](/series/cornerstone-technologies/cloudflare-workers-edge-computing/). Review it first if the terminology in this part is unfamiliar.

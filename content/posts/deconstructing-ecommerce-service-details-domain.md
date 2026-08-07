@@ -12,7 +12,7 @@ categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
   alt: "Deconstructing E-commerce by Domain: service responsibilities, data ownership, and API contracts"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/deconstructing-ecommerce-service-details-domain/"
