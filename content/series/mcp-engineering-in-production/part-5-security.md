@@ -17,13 +17,16 @@ description: "Technical summary and production guide for Part 5 — MCP Security
 ShowToc: true
 TocOpen: true
 image: "/images/posts/part-5-security.jpg"
+series: ["mcp-engineering-in-production"]
+weight: 6
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Gateway](/series/mcp-engineering-in-production/part-4-gateway/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 5 — MCP Security Engineering & Isolation: Defense-in-Depth
 
-> **Answer-first:** Operating Model Context Protocol (MCP) servers exposes infrastructure to novel AI security risks, including Path Traversal in Resource URIs, Indirect Prompt Injections in Tool Descriptions, and Shadow Parameter Manipulation. Implementing container sandboxing, gVisor container isolation, and AST path sanitization protects enterprise backends against full system compromise.
+> **Answer-first:** Operating Model Context Protocol (MCP) servers exposes infrastructure to novel AI security risks, including Path Traversal in Resource URIs, Indirect Prompt Injections in Tool Descriptions, and Shadow Parameter Manipulation. Implementing container sandboxing, gVisor container isolation, and AST path sanitization protects enterprise backends against full system compromise. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026.
 >
 > **Key Takeaways**:
 > - **Zero Path Traversal Vulnerabilities**: Strict path sanitization blocks directory traversal (`../`) in resource URIs.
@@ -34,7 +37,7 @@ image: "/images/posts/part-5-security.jpg"
 
 Allowing an autonomous AI agent to discover and execute tools across enterprise infrastructure creates an unprecedented attack surface.
 
-The **OWASP MCP Top 10 Security Project** highlights the primary vulnerability classes threatening MCP server deployments. Security teams must implement a robust **Defense-in-Depth Security Strategy**.
+The **OWASP MCP Top 10 Security Project** highlights the primary vulnerability classes threatening MCP server deployments. Security teams must implement a resilient **Defense-in-Depth Security Strategy**.
 
 ---
 
@@ -44,13 +47,13 @@ The diagram below outlines the multi-stage security isolation pipeline, demonstr
 
 ```mermaid
 graph TD
-    ClientHost[MCP Client Host] --> Gateway[MCP Security Gateway]
+    ClientHost["MCP Client Host"] --> Gateway["MCP Security Gateway"]
     
     subgraph Multi-Layer Security Isolation
         Gateway --> InputScanner["1. Input AST & Injection Scanner"]
-        InputScanner --> PathSanitizer[2. Resource URI Path Sanitizer]
-        PathSanitizer --> ContainerSandbox[3. gVisor Container Sandbox Isolation]
-        ContainerSandbox --> RLSGuard[4. Row-Level Security Predicate Guard]
+        InputScanner --> PathSanitizer["2. Resource URI Path Sanitizer"]
+        PathSanitizer --> ContainerSandbox["3. gVisor Container Sandbox Isolation"]
+        ContainerSandbox --> RLSGuard["4. Row-Level Security Predicate Guard"]
     end
 
     RLSGuard --> IsolatedStorage[("Tenant Database / Microservice")]

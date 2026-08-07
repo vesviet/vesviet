@@ -46,14 +46,14 @@ This monthly digest consolidates 18 daily Tech Radar briefings published through
 
 ### 1. DigitalOcean Is Reframing Cloud Around Inference, Not Training
 
-The following diagram illustrates the five integrated layers of DigitalOcean's AI-Native Cloud stack, spanning core GPU infrastructure to managed agent runtimes:
+Diagram illustrates the five integrated layers of DigitalOcean's AI-Native Cloud stack, spanning core GPU infrastructure to managed agent runtimes:
 
 ```mermaid
 flowchart TD
-    APP[AI Application or Agent Workflow] --> AGENTS[Managed Agents]
-    AGENTS --> INFER[Inference Layer]
-    AGENTS --> DATA[Knowledge and Data Layer]
-    INFER --> CORE[Core Cloud Services]
+    APP["AI Application or Agent Workflow"] --> AGENTS["Managed Agents"]
+    AGENTS --> INFER["Inference Layer"]
+    AGENTS --> DATA["Knowledge and Data Layer"]
+    INFER --> CORE["Core Cloud Services"]
     DATA --> CORE
     CORE --> INFRA["GPU / CPU / Network / Storage Infrastructure"]
 ```
@@ -85,7 +85,7 @@ Three practical implications stand out for teams building software today:
 
 ### Production Implementation Blueprint
 
-The following cloud-config YAML manifest deploys a vLLM inference server hosting Mistral-7B on a DigitalOcean GPU Droplet:
+Cloud-config YAML manifest deploys a vLLM inference server hosting Mistral-7B on a DigitalOcean GPU Droplet:
 
 ```yaml
 #cloud-config
@@ -139,12 +139,12 @@ The sequence diagram below details the automated Kubernetes backup and restore w
 
 ```mermaid
 flowchart TD
-    GIT[GitOps Repository] --> ARGO[ArgoCD Desired State]
-    ARGO --> CLUSTER[Kubernetes Cluster]
+    GIT["GitOps Repository"] --> ARGO["ArgoCD Desired State"]
+    ARGO --> CLUSTER["Kubernetes Cluster"]
 
-    CLUSTER --> SERVICES[API Services and Workers]
-    CLUSTER --> STATEFUL[Persistent Volumes and Stateful Components]
-    CLUSTER --> CRDS[CRDs, RBAC, Config, Secrets References]
+    CLUSTER --> SERVICES["API Services and Workers"]
+    CLUSTER --> STATEFUL["Persistent Volumes and Stateful Components"]
+    CLUSTER --> CRDS["CRDs, RBAC, Config, Secrets References"]
 
     SERVICES --> VELERO["Velero Backup / Restore"]
     STATEFUL --> VELERO
@@ -326,19 +326,19 @@ The architecture diagram below demonstrates Dapr AI state store management paire
 graph TD
     subgraph "Application Layer"
         A["Agent SDKs / R3F Canvas"]
-        B[Business Logic]
+        B["Business Logic"]
     end
     
     subgraph "Dapr Ambient Layer (Sidecar)"
-        C[State Management]
-        D[Durable Workflows]
-        E[MCP Governance]
-        F[SPIFFE Identity]
+        C["State Management"]
+        D["Durable Workflows"]
+        E["MCP Governance"]
+        F["SPIFFE Identity"]
     end
 
-    A -->|gRPC / HTTP| C
-    A -->|gRPC / HTTP| D
-    A -.->|MCP Connection| E
+    A -->|"gRPC / HTTP"| C
+    A -->|"gRPC / HTTP"| D
+    A -.->|"MCP Connection"| E
     B --> F
 ```
 
@@ -542,11 +542,11 @@ Instead of asking the scheduler for a generic GPU (`nvidia.com/gpu: 1`), DRA all
 
 ```mermaid
 flowchart LR
-    DATA[Data Ingestion] --> K8S[Kubernetes Control Plane]
-    TRAIN[Model Training] --> K8S
-    INFER[Real-time Inference] --> K8S
+    DATA["Data Ingestion"] --> K8S["Kubernetes Control Plane"]
+    TRAIN["Model Training"] --> K8S
+    INFER["Real-time Inference"] --> K8S
     K8S --> GPU["GPU / TPU Resource Pools"]
-    K8S --> EDGE[Edge Clusters]
+    K8S --> EDGE["Edge Clusters"]
 ```
 
 **TechTask Impact:** Hardware overprovisioning is no longer acceptable. The operational task for platform teams is to rewrite legacy device plugins into DRA `ResourceClaims`. By enabling GPU sharing (MIG/MPS) natively through Kubernetes, organizations can reduce AI inference infrastructure costs by 50-70%, turning rigid hardware into "liquid" resource pools.
@@ -1464,7 +1464,7 @@ The current migration operating environment has two strategic paths:
 
 ```mermaid
 flowchart TD
-    A["Ingress NGINX EOL\n24 Mar 2026"] --> B{Migration Strategy}
+    A["Ingress NGINX EOL\n24 Mar 2026"] --> B{"Migration Strategy"}
     B --> C["Path A: Future-Proof\nKubernetes Gateway API GA"]
     B --> D["Path B: Drop-in\nTraefik v3+ / F5 NGINX"]
     C --> E["Envoy Gateway\n(Standards + Performance)"]
@@ -1873,7 +1873,7 @@ There is no interactive session or chat. This is a **delegation model**, not a c
 
 > *Pricing above is aggregated from third-party sources at the time of writing. Verify official rates at [jules.google](https://jules.google) before making budget decisions.*
 
-Paid tiers use **Gemini 3 Pro** as the underlying model. Jules also reads `AGENTS.md`—a pattern covered in the [May 16 radar](/radar/grok-build-openai-aws-multi-cloud-anthropic-wall-street-google-io-may-2026/) when Grok Build was introduced.
+Paid tiers use **Gemini 3 Pro** as the underlying model. Jules also reads `AGENTS.md`—a pattern covered in the [May 16 radar](/radar/2026-05/) when Grok Build was introduced.
 
 #### Coding Agents Comparison (Updated May 2026)
 

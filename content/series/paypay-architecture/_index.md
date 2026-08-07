@@ -79,4 +79,3 @@ Before a major promotion, PayPay's SRE team runs a capacity planning model again
 {{< /faq >}}
 
 {{< author-cta >}}
-

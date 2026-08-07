@@ -16,11 +16,18 @@ canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/executive
 description: "Comprehensive technical summary explaining why naive RAG collapses at scale and how enterprise six-layer GraphRAG pipelines solve retrieval."
 ShowToc: true
 TocOpen: true
+series: ["ai-data-engineering-pipeline"]
+weight: 1
 ---
+
+> **Prerequisite:** Review the previous module in the [ai-data-engineering-pipeline](/series/ai-data-engineering-pipeline/) series before proceeding.
+
+
+
 
 ## Executive Summary: The Disruption of Naive RAG and the GraphRAG Era
 
-> **Answer-first:** Naive RAG collapses in enterprise environments due to relational blindness, unstructured document chunk destruction, and lack of fine-grained access control. Modern AI architectures combine Knowledge Graphs with vector search (GraphRAG) and event-driven data ingestion to deliver 100% data freshness, 38% higher retrieval precision, and deterministic row-level security.
+> **Answer-first:** Naive RAG collapses in enterprise environments due to relational blindness, unstructured document chunk destruction, and lack of fine-grained access control. Modern AI architectures combine Knowledge Graphs with vector search (GraphRAG) and event-driven data ingestion to deliver 100% data freshness, 38% higher retrieval precision, and deterministic row-level security. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and.
 >
 > **Key Takeaways**:
 > - **38% Higher Precision**: GraphRAG entity-relation traversal resolves multi-hop enterprise queries where vector similarity alone fails.
@@ -214,16 +221,16 @@ Enterprise GraphRAG roadmaps prioritize graph entity extraction, late chunking, 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Dev as Engineering Team
-    participant CI as GitHub Actions CI
-    participant Graph as Neo4j Graph DB
-    participant Vector as pgvector / Qdrant
-    participant Prod as Agent Runtime
+    participant Dev as "Engineering Team"
+    participant CI as "GitHub Actions CI"
+    participant Graph as "Neo4j Graph DB"
+    participant Vector as "pgvector / Qdrant"
+    participant Prod as "Agent Runtime"
 
     Dev->>CI: Push Pipeline & Schema Update
-    CI->>CI: Run Ragas Evals (Faithfulness >= 0.85)
+    CI->>CI: Run Ragas Evals ("Faithfulness >= 0.85")
     CI-->>Prod: Deploy Microservice Containers
-    Prod->>Graph: Query Entity Subgraph (Multi-hop)
+    Prod->>Graph: Query Entity Subgraph ("Multi-hop")
     Prod->>Vector: Query Top-K Dense Vector Chunks
     Graph-->>Prod: Return Relational Triples
     Vector-->>Prod: Return Context Chunks

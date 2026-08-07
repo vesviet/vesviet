@@ -6,7 +6,7 @@ date: "2026-03-20T09:00:00+07:00"
 lastmod: "2026-07-23T10:40:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-frontend/"
+canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-3-component-registry/"
 tags: ["Generative UI", "Component Registry", "MCP", "Model Context Protocol", "Architecture"]
 categories: ["Engineering", "Frontend"]
 cover:
@@ -16,9 +16,10 @@ cover:
 mermaid: true
 ShowToc: true
 TocOpen: true
-series: ["Generative UI Architecture"]
-weight: 3
+series: ["generative-ui-architecture"]
+weight: 4
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — State Management](/posts/generative-ui-with-mcp-ai-native-frontend/). Review it first if the terminology in this part is unfamiliar.
 
@@ -34,11 +35,11 @@ However, MCP tools natively return structured text or raw JSON payloads intended
 
 ```mermaid
 graph TD
-    A[LLM Agent] -->|1. Invoke Tool| B[MCP Server - e.g. Weather Service]
-    B -->|2. Return Raw Tool Result JSON| A
-    A -->|3. Emit GenUI Schema Stream| C[Component Registry Gateway]
-    C -->|4. Validate Schema & Lookup UI Manifest| D[Client UI Renderer]
-    D -->|5. Instantiates Component| E[React WeatherCard Widget]
+    A["LLM Agent"] -->|"1. Invoke Tool"| B["MCP Server - e.g. Weather Service"]
+    B -->|"2. Return Raw Tool Result JSON"| A
+    A -->|"3. Emit GenUI Schema Stream"| C["Component Registry Gateway"]
+    C -->|"4. Validate Schema & Lookup UI Manifest"| D["Client UI Renderer"]
+    D -->|"5. Instantiates Component"| E["React WeatherCard Widget"]
 ```
 
 Without a standardized Component Registry, frontend teams must manually write custom wrappers for every new backend tool, undermining the autonomy and flexibility of Generative UI systems.
@@ -52,14 +53,14 @@ The Component Registry serves as the source of truth for all dynamic visual asse
 ```mermaid
 sequenceDiagram
     autonumber
-    participant LLM as LLM Agent Executor
-    participant Gateway as MCP UI Gateway
-    participant Registry as Component Manifest Registry
-    participant Browser as Client Browser App
+    participant LLM as "LLM Agent Executor"
+    participant Gateway as "MCP UI Gateway"
+    participant Registry as "Component Manifest Registry"
+    participant Browser as "Client Browser App"
 
     LLM->>Gateway: Output Tool Call: "render_financial_summary"
     Gateway->>Registry: Lookup Manifest for "render_financial_summary"
-    Registry-->>Gateway: Return Manifest (Zod Schema + React Component Key)
+    Registry-->>Gateway: Return Manifest ("Zod Schema + React Component Key")
     Gateway->>Gateway: Validate Tool Props against Schema
     Gateway->>Browser: Stream Hydration Payload JSON
     Browser->>Browser: Load Component Bundle & Render React View
@@ -214,9 +215,9 @@ As frontend component design systems evolve across release cycles, maintaining b
 
 ```mermaid
 graph LR
-    A[Incoming Component Request v1.0] --> B[Registry Version Adapter]
-    B -->|Detect Legacy Schema| C[Transform Props to v2.0 Contract]
-    C --> D[Render Modern React Component v2.0]
+    A["Incoming Component Request v1.0"] --> B["Registry Version Adapter"]
+    B -->|"Detect Legacy Schema"| C["Transform Props to v2.0 Contract"]
+    C --> D["Render Modern React Component v2.0"]
 ```
 
 ### Version Migration Pattern

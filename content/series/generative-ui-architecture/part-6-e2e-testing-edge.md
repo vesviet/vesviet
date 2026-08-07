@@ -6,7 +6,7 @@ date: "2026-03-23T09:00:00+07:00"
 lastmod: "2026-07-23T10:40:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-frontend/"
+canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-6-e2e-testing-edge/"
 tags: ["Generative UI", "E2E Testing", "Playwright", "Edge Caching", "Cloudflare", "Architecture"]
 categories: ["Engineering", "Frontend", "Testing"]
 cover:
@@ -16,9 +16,10 @@ cover:
 mermaid: true
 ShowToc: true
 TocOpen: true
-series: ["Generative UI Architecture"]
-weight: 6
+series: ["generative-ui-architecture"]
+weight: 7
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Human In The Loop](/posts/generative-ui-with-mcp-ai-native-frontend/). Review it first if the terminology in this part is unfamiliar.
 
@@ -35,13 +36,13 @@ weight: 6
 
 ```mermaid
 graph TD
-    A[User Intent Request] --> B[Edge CDN Node]
-    B --> C{Semantic Cache Match? >0.95 Similarity}
-    C -->|Cache Hit| D[Return Pre-compiled GenUI JSON Stream <45ms]
-    C -->|Cache Miss| E[Route to Origin LLM Agent Engine >2000ms]
-    E --> F[Generate GenUI Payload]
-    F --> G[Store Embedding & Payload in Edge Vector Cache]
-    G --> H[Render Output to Client]
+    A["User Intent Request"] --> B["Edge CDN Node"]
+    B --> C{"Semantic Cache Match? >0.95 Similarity"}
+    C -->|"Cache Hit"| D["Return Pre-compiled GenUI JSON Stream <45ms"]
+    C -->|"Cache Miss"| E["Route to Origin LLM Agent Engine >2000ms"]
+    E --> F["Generate GenUI Payload"]
+    F --> G["Store Embedding & Payload in Edge Vector Cache"]
+    G --> H["Render Output to Client"]
 ```
 
 Solving these issues requires a dual approach: **Deterministic Mock Testing in CI/CD** and **Semantic Edge Caching at the CDN Layer**.
@@ -55,15 +56,15 @@ To test Generative UI applications in CI/CD without burning API tokens or dealin
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Playwright as Playwright Test Runner
-    participant Browser as Headless Browser
-    participant MockServer as Mock AI Gateway
-    participant Component as GenUI Component Tree
+    participant Playwright as "Playwright Test Runner"
+    participant Browser as "Headless Browser"
+    participant MockServer as "Mock AI Gateway"
+    participant Component as "GenUI Component Tree"
 
     Playwright->>Browser: Navigate to GenUI App Page
     Playwright->>MockServer: Intercept SSE Endpoint ("/api/genui/stream")
     Browser->>MockServer: Dispatch User Prompt ("Show my portfolio")
-    MockServer-->>Browser: Stream Fixed Fixture Payload (StockCard JSON)
+    MockServer-->>Browser: Stream Fixed Fixture Payload ("StockCard JSON")
     Browser->>Component: Render Target Component
     Playwright->>Browser: Assert DOM Elements & Visual Screenshot
 ```
@@ -192,9 +193,9 @@ Maintaining semantic freshness at the CDN edge requires automated cache invalida
 
 ```mermaid
 graph TD
-    A[Backend Data Update / Deployment] --> B[Cache Invalidation Webhook]
-    B --> C[Purge Matching Intent Vectors from Edge KV]
-    C --> D[Next User Request Triggers Fresh Origin LLM Generation]
+    A["Backend Data Update / Deployment"] --> B["Cache Invalidation Webhook"]
+    B --> C["Purge Matching Intent Vectors from Edge KV"]
+    C --> D["Next User Request Triggers Fresh Origin LLM Generation"]
 ```
 
 ### Cache Invalidation Strategies
@@ -256,10 +257,10 @@ Before launching major product updates, production teams deploy automated traffi
 
 ```mermaid
 graph TD
-    A[Pre-Deployment CI Job] --> B[Generate Top 500 User Intent Prompts]
-    B --> C[Execute Origin LLM Inference Pipeline]
-    C --> D[Push Prompt Embeddings & GenUI JSON Streams to Edge KV]
-    D --> E[Production Traffic Reaches 99% Cache Hit Rate at Launch]
+    A["Pre-Deployment CI Job"] --> B["Generate Top 500 User Intent Prompts"]
+    B --> C["Execute Origin LLM Inference Pipeline"]
+    C --> D["Push Prompt Embeddings & GenUI JSON Streams to Edge KV"]
+    D --> E["Production Traffic Reaches 99% Cache Hit Rate at Launch"]
 ```
 
 ---

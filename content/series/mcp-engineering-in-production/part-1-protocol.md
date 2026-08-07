@@ -17,13 +17,16 @@ description: "Technical summary and production engineering guide for Part 1 — 
 ShowToc: true
 TocOpen: true
 image: "/images/posts/part-1-protocol.jpg"
+series: ["mcp-engineering-in-production"]
+weight: 2
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/series/mcp-engineering-in-production/executive-summary/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 1 — MCP Core Protocol Architecture & Transport Evolution
 
-> **Answer-first:** Model Context Protocol (MCP) relies on dual-transport abstractions (`stdio` for zero-overhead local process IPC and `SSE` for remote network RPCs) transmitting JSON-RPC 2.0 messages. Understanding the protocol state machine ensures sub-20ms message framing across distributed AI agent tool servers.
+> **Answer-first:** Model Context Protocol (MCP) relies on dual-transport abstractions (`stdio` for zero-overhead local process IPC and `SSE` for remote network RPCs) transmitting JSON-RPC 2.0 messages. Understanding the protocol state machine ensures sub-20ms message framing across distributed AI agent tool servers. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context Protocol ttlMs cache invalidation parameters.
 >
 > **Key Takeaways**:
 > - **Dual Transport Abstraction**: `stdio` provides local desktop IPC with zero network overhead; `SSE` provides HTTP network streaming.
@@ -43,20 +46,20 @@ Understanding how messages move across `stdio` pipes and Server-Sent Events (SSE
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Host as MCP Client Host (Cursor / Claude)
-    participant Transport as Transport Layer (stdio / SSE)
-    participant Server as MCP Server Engine
+    participant Host as MCP Client Host ("Cursor / Claude")
+    participant Transport as Transport Layer ("stdio / SSE")
+    participant Server as "MCP Server Engine"
 
     Host->>Transport: 1. Send 'initialize' JSON-RPC Request
     Transport->>Server: Frame Message Payload
-    Server-->>Host: 2. Return Server Capabilities (tools, resources)
+    Server-->>Host: 2. Return Server Capabilities ("tools, resources")
     Host->>Server: 3. Send 'notifications/initialized'
     
     note over Host,Server: Protocol Handshake Complete
 
-    Host->>Transport: 4. Execute 'tools/call' (Name: query_db)
+    Host->>Transport: 4. Execute 'tools/call' ("Name: query_db")
     Transport->>Server: Process JSON-RPC Request
-    Server-->>Host: 5. Stream JSON-RPC Result Payload (< 15ms)
+    Server-->>Host: 5. Stream JSON-RPC Result Payload ("< 15ms")
 ```
 
 ---

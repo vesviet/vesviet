@@ -26,7 +26,7 @@ Welcome to the comprehensive Hub: **Agentic Search Engine Architecture for E-com
 
 > **About this Masterclass**
 > 
-> This series is a practical Blueprint designed to help Backend Engineers and AI Architects break the limitations of traditional Semantic Search. We will harness the concurrent processing power of **Golang**, the robust vector engine of **Qdrant**, and the Multi-Agent orchestrator framework **Eino (CloudWeGo)**.
+> This series is a practical Blueprint designed to help Backend Engineers and AI Architects break the limitations of traditional Semantic Search. We will harness the concurrent processing power of **Golang**, the high-performance vector engine of **Qdrant**, and the Multi-Agent orchestrator framework **Eino (CloudWeGo)**.
 
 ---
 

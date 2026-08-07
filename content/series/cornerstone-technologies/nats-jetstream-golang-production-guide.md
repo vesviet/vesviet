@@ -9,7 +9,11 @@ cover:
   image: "/images/posts/nats-jetstream-golang-production-guide.jpg"
   alt: "NATS JetStream Production Guide for Go Developers: 100k RPS Architecture"
   relative: false
+series: ["cornerstone-technologies"]
+weight: 2
+canonicalURL: "https://tanhdev.com/series/cornerstone-technologies/nats-jetstream-golang-production-guide/"
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Cloudflare Workers Edge Computing](/series/cornerstone-technologies/cloudflare-workers-edge-computing/). Review it first if the terminology in this part is unfamiliar.
 
@@ -38,19 +42,19 @@ The sequence diagram below details the end-to-end execution flow of message publ
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Pub as Go Publisher
-    participant Broker as NATS JetStream Leader (LRU Deduplication Engine)
-    participant Quorum as RAFT Followers (Quorum Floor(R/2)+1)
-    participant Sub as Go Worker (Pull Consumer V2)
+    participant Pub as "Go Publisher"
+    participant Broker as NATS JetStream Leader ("LRU Deduplication Engine")
+    participant Quorum as RAFT Followers ("Quorum Floor(R/2")+1)
+    participant Sub as Go Worker ("Pull Consumer V2")
 
     Pub->>Broker: Publish Msg (Header: Nats-Msg-Id = "order-1001")
     Broker->>Broker: Check LRU Deduplication Ring Buffer
     alt Duplicate Msg Detected
-        Broker-->>Pub: Ack (Discard Duplicate, return original Ack)
+        Broker-->>Pub: Ack ("Discard Duplicate, return original Ack")
     else New Unique Msg
-        Broker->>Quorum: LogReplicate (RAFT Quorum R=3/5)
-        Quorum-->>Broker: Replicated Ack (2/3 or 3/5 nodes confirmed)
-        Broker-->>Pub: Publish Ack (Persisted to Storage Engine)
+        Broker->>Quorum: LogReplicate ("RAFT Quorum R=3/5")
+        Quorum-->>Broker: Replicated Ack ("2/3 or 3/5 nodes confirmed")
+        Broker-->>Pub: Publish Ack ("Persisted to Storage Engine")
         Sub->>Broker: Consume() / Fetch Batch
         Broker-->>Sub: Deliver Message Payload
         Sub->>Broker: msg.Ack()

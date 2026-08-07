@@ -33,8 +33,8 @@ This series bridges theory and practice, covering the real-world architecture of
 - [Part 6 — Hands-on: Building a Mini Allocation Engine with Google OR-Tools](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/)
 - [Part 7 — Distance Matrix: Routing Distance Calculation Algorithms](/series/ecommerce-order-allocation/part-7-distance-matrix-routing/)
 - [Part 8 — Intelligent Order Release: Agentic AI Order Batching](/series/ecommerce-order-allocation/part-8-intelligent-order-release/)
-- [Part 9 — Order Splitting Algorithm: Graph Coloring & OPA in Golang](/posts/order-splitting-graph-coloring-opa/)
-- [Part 10 — Warehouse Picker Routing Optimization (GraphHopper & OR-Tools)](/posts/warehouse-picker-routing-optimization/)
+- [Part 9 — Order Splitting Algorithm: Graph Coloring & OPA in Golang](/series/ecommerce-order-allocation/part-9-order-splitting-graph-coloring-opa/)
+- [Part 10 — Warehouse Picker Routing Optimization (GraphHopper & OR-Tools)](/series/ecommerce-order-allocation/part-10-warehouse-picker-routing-optimization/)
 
 ## Production Case Study
 

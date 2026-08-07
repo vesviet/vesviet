@@ -16,7 +16,10 @@ canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-5-the-bod-pers
 description: "Enterprise security guide examining C-level AI risk governance, data privacy compliance, automated audit scanners, and corporate policy enforcement."
 ShowToc: true
 TocOpen: true
+series: ["ai-driven-engineer"]
+weight: 6
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Blurring Sdlc Lines And Qc Revolution](/series/ai-driven-engineer/part-4-blurring-sdlc-lines-and-qc-revolution/). Review it first if the terminology in this part is unfamiliar.
 
@@ -36,17 +39,17 @@ Boardroom AI governance establishes policy-as-code guardrails, data privacy filt
 
 ```mermaid
 graph TD
-    UserDev["Developer / Enterprise User"] --> CorpGateway[Corporate AI Security Gateway]
+    UserDev["Developer / Enterprise User"] --> CorpGateway["Corporate AI Security Gateway"]
     
     subgraph Enterprise Zero-Trust Governance Pipeline
         CorpGateway --> PIIScanner["1. PII & Secret Redaction Engine"]
         PIIScanner --> PolicyEngine["2. Policy-as-Code & Entitlement Filter"]
-        PolicyEngine --> ZDRHeader["3. Zero Data Retention (ZDR) Enforcer"]
+        PolicyEngine --> ZDRHeader["3. Zero Data Retention ("ZDR") Enforcer"]
     end
 
     ZDRHeader --> VendorAPI["Frontier LLM Vendor: OpenAI / Anthropic / Azure"]
     
-    CorpGateway -. "Async Encrypted Audit Trace" .-> SecurityVault[("(Immutable SOC2 Audit Log Vault)")]
+    CorpGateway -. "Async Encrypted Audit Trace" .-> SecurityVault[("("Immutable SOC2 Audit Log Vault")")]
 
     VendorAPI -->|"Processed Response"| CorpGateway
     CorpGateway --> UserDev

@@ -13,11 +13,14 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/executive-summary/"
 mermaid: true
+series: ["alipay-double-11"]
+weight: 1
 ---
+
 [← Series hub](/series/alipay-double-11/)
 [Next →](/series/alipay-double-11/phase-1-timeline/)
 
-> **Answer-first:** Alipay scaled its payment engine to handle 544,000 peak TPS using Logical Data Center (LDC) unitization, OceanBase distributed Paxos storage, RocketMQ event streams, and full-link production stress testing. This design achieves 99.99% financial availability, sub-20ms latency, zero data loss (RPO=0), and sub-2-second failover (RTO<2s).
+> **Answer-first:** Alipay scaled its payment engine to handle 544,000 peak TPS using Logical Data Center (LDC) unitization, OceanBase distributed Paxos storage, RocketMQ event streams, and full-link production stress testing. This design achieves 99.99% financial availability, sub-20ms latency, zero data loss (RPO=0), and sub-2-second failover (RTO<2s). Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required.
 
 > **Prerequisite:** General understanding of global financial systems scale, high-throughput payment architectures, and transaction reliability.
 
@@ -62,20 +65,20 @@ The overall system architecture of Alipay's Double 11 solution can be visualized
 
 ```mermaid
 graph TD
-    User["User Requests"] -->|HTTP/HTTPS| Gateway[API Routing Gateway]
-    Gateway -->|User ID Hash Routing| RZone1[RZone Unit 1]
-    Gateway -->|User ID Hash Routing| RZone2[RZone Unit 2]
+    User["User Requests"] -->|"HTTP/HTTPS"| Gateway["API Routing Gateway"]
+    Gateway -->|"User ID Hash Routing"| RZone1["RZone Unit 1"]
+    Gateway -->|"User ID Hash Routing"| RZone2["RZone Unit 2"]
     
-    subgraph RZone1 [RZone 1 - Shanghai Cell]
-        App1[SOFA Application Services]
+    subgraph RZone1 ["RZone 1 - Shanghai Cell"]
+        App1["SOFA Application Services"]
         Cache1[("Local Redis Cache")]
         OB_Shard1[("OceanBase Partition 1")]
         App1 --> Cache1
         App1 --> OB_Shard1
     end
 
-    subgraph RZone2 [RZone 2 - Shenzhen Cell]
-        App2[SOFA Application Services]
+    subgraph RZone2 ["RZone 2 - Shenzhen Cell"]
+        App2["SOFA Application Services"]
         Cache2[("Local Redis Cache")]
         OB_Shard2[("OceanBase Partition 2")]
         App2 --> Cache2
@@ -86,14 +89,14 @@ graph TD
         GDB[("Global Read-Only Config DB")]
     end
 
-    RZone1 -.->|Read Configuration| GZone
-    RZone2 -.->|Read Configuration| GZone
+    RZone1 -.->|"Read Configuration"| GZone
+    RZone2 -.->|"Read Configuration"| GZone
 
-    subgraph StressTesting [Full-Link Stress Testing Engine]
-        Injector[Synthetic Traffic Injector]
-        Injector -->|Inject Header: X-Stress-Test=true| Gateway
-        OB_Shard1 -->|Detects Stress Flag| ShadowDB1[("Shadow Table / DB 1")]
-        OB_Shard2 -->|Detects Stress Flag| ShadowDB2[("Shadow Table / DB 2")]
+    subgraph StressTesting ["Full-Link Stress Testing Engine"]
+        Injector["Synthetic Traffic Injector"]
+        Injector -->|"Inject Header: X-Stress-Test=true"| Gateway
+        OB_Shard1 -->|"Detects Stress Flag"| ShadowDB1[("Shadow Table / DB 1")]
+        OB_Shard2 -->|"Detects Stress Flag"| ShadowDB2[("Shadow Table / DB 2")]
     end
 
     classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px;
@@ -192,4 +195,3 @@ Legacy relational databases suffered from high write amplification and cross-dat
 For further exploration of high-concurrency payment architectures, distributed ledger consistency, and real-world scaling playbooks, consult the following reference guides:
 - [Alipay Double 11 High-Availability Architecture](/posts/alipay-double-11-architecture-tps/)
 - [PayPay Architecture & Scaling Playbook](/posts/paypay-architecture-scaling/)
-

@@ -15,12 +15,15 @@ tags: ["Alipay", "Double 11", "Scaling", "Architecture Evolution", "High Concurr
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-1-timeline/"
 mermaid: true
+series: ["alipay-double-11"]
+weight: 2
 ---
+
 
 [← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/executive-summary/) • [Next →](/series/alipay-double-11/phase-2-architecture/)
 
-> **Answer-first:** Alipay's Double 11 engineering journey evolved over a decade from a centralized monolithic database (2009) to a planet-scale multi-active cloud-native architecture capable of processing over 544,000 TPS at peak.
+> **Answer-first:** Alipay's Double 11 engineering journey evolved over a decade from a centralized monolithic database (2009) to a planet-scale multi-active cloud-native architecture capable of processing over 544,000 TPS at peak. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
 
 > **Prerequisite:** [Executive Summary](/series/alipay-double-11/executive-summary/)
 
@@ -40,28 +43,28 @@ The decade-long journey can be divided into four distinct architectural eras, ma
 
 ```mermaid
 graph TD
-    A["Phase 1: Vertical Scaling & Heuristics <br> 2009-2012"] -->|Centralized DB Bottleneck| B["Phase 2: Horizontal Unitization - LDC <br> 2013-2014"]
-    B -->|Confidence & Validation Gap| C["Phase 3: Production Stress Testing <br> 2014-2018"]
-    C -->|Resource Cost & Prep Overhead| D["Phase 4: Cloud-Native & Elasticity <br> 2018-2020+"]
+    A["Phase 1: Vertical Scaling & Heuristics <br> 2009-2012"] -->|"Centralized DB Bottleneck"| B["Phase 2: Horizontal Unitization - LDC <br> 2013-2014"]
+    B -->|"Confidence & Validation Gap"| C["Phase 3: Production Stress Testing <br> 2014-2018"]
+    C -->|"Resource Cost & Prep Overhead"| D["Phase 4: Cloud-Native & Elasticity <br> 2018-2020+"]
 
     subgraph Phase 1
-        A1[Vertical DB Upgrades] --> A2[Connection Pool Tuning]
-        A2 --> A3[Midnight Database Lockout]
+        A1["Vertical DB Upgrades"] --> A2["Connection Pool Tuning"]
+        A2 --> A3["Midnight Database Lockout"]
     end
 
     subgraph Phase 2
-        B1["GZone/RZone Sharding"] --> B2[Cell-based Routing]
-        B2 --> B3[Read-Write Isolation]
+        B1["GZone/RZone Sharding"] --> B2["Cell-based Routing"]
+        B2 --> B3["Read-Write Isolation"]
     end
 
     subgraph Phase 3
-        C1[Automated FLST Engine] --> C2[Shadow Databases]
-        C2 --> C3[Mock Ingress Gateways]
+        C1["Automated FLST Engine"] --> C2["Shadow Databases"]
+        C2 --> C3["Mock Ingress Gateways"]
     end
 
     subgraph Phase 4
-        D1[Kubernetes Microservices] --> D2[Elastic Cloud Bursting]
-        D2 --> D3[Serverless Payments]
+        D1["Kubernetes Microservices"] --> D2["Elastic Cloud Bursting"]
+        D2 --> D3["Serverless Payments"]
     end
 
     classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px;
@@ -230,4 +233,3 @@ In the context of Phase 1 Timeline, system reliability depends on clean componen
 ## Related Architecture & Pillar Guides
 For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
 - [Alipay Double 11: 544,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/)
-

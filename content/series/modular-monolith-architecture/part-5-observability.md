@@ -6,7 +6,6 @@ description: "Comparing Distributed Tracing in Microservices with In-process Pro
 slug: "observability-in-process-modular-monolith-opentelemetry"
 tags: ["Observability", "OpenTelemetry", "Distributed Tracing", "Modular Monolith", "Profiling"]
 categories: ["Modular Monolith", "Architecture"]
-aliases: ["/series/modular-monolith-architecture/part-5-observability/"]
 cover:
   image: "/images/posts/golang-microservices-cover.jpg"
   alt: "Modular Monolith Architecture Production Guide: Go, DDD, bounded contexts, and microservices reversal"
@@ -18,9 +17,12 @@ TocOpen: true
 mermaid: true
 draft: false
 image: "/images/posts/golang-microservices-cover.jpg"
+series: ["modular-monolith-architecture"]
+weight: 6
 ---
 
-> **Answer-first:** Observability in modular monoliths leverages in-process OpenTelemetry span propagation across module boundaries without network serialization overhead. Combining in-memory context tracking with structured logging reduces telemetry ingestion costs while retaining microservice-level latency visibility.
+
+> **Answer-first:** Observability in modular monoliths leverages in-process OpenTelemetry span propagation across module boundaries without network serialization overhead. Combining in-memory context tracking with structured logging reduces telemetry ingestion costs while retaining microservice-level latency visibility. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for production-grade enterprise operations.
 
 > **Prerequisite:** Before reading this part, please review [Part 4: CI/CD Simplified](/series/modular-monolith-architecture/part-4-cicd-simplified/).
 
@@ -38,15 +40,15 @@ Conversely, the modular monolith brings debugging back to process memory: monito
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Gateway as API Gateway Handler
-    participant Orders as internal/orders
-    participant Billing as internal/billing
-    participant OTel as Local In-Memory OTel Tracer
+    participant Gateway as "API Gateway Handler"
+    participant Orders as "internal/orders"
+    participant Billing as "internal/billing"
+    participant OTel as "Local In-Memory OTel Tracer"
     
-    Gateway->>Orders: Invoke CreateOrder(ctx)
-    Orders->>OTel: Start Module Span "orders.CreateOrder" (< 1µs)
-    Orders->>Billing: Invoke ProcessPayment(ctx) in RAM
-    Billing->>OTel: Start Child Span "billing.ProcessPayment" (< 1µs)
+    Gateway->>Orders: Invoke CreateOrder("ctx")
+    Orders->>OTel: Start Module Span "orders.CreateOrder" ("< 1µs")
+    Orders->>Billing: Invoke ProcessPayment("ctx") in RAM
+    Billing->>OTel: Start Child Span "billing.ProcessPayment" ("< 1µs")
     Billing-->>Orders: Return Payment Result
     Orders-->>Gateway: Return HTTP 200 OK
 ```
@@ -85,7 +87,7 @@ Passing tracing context in-process requires passing a pointer in Go's `context.C
 
 ### B. In-Process OpenTelemetry Tracing
 
-The following Go code snippet demonstrates initiating an in-memory OpenTelemetry trace span directly using Go `context.Context` without serializing HTTP headers.
+Initiate an in-memory OpenTelemetry trace span directly using Go `context.Context` directly using Go `context.Context` without serializing HTTP headers.
 
 ```go
 // Direct in-memory span initiation without network serialization
@@ -128,7 +130,7 @@ Distributed microservices emit every HTTP span across the wire, generating netwo
 2. **Decision Engine at Endpoint Completion:** When the top-level HTTP handler returns, an in-process sampler evaluates the request outcome. If the handler returned an HTTP `5xx` error or latency exceeded a P99 threshold (e.g., 200ms), the full trace buffer flushes to the OpenTelemetry collector.
 3. **99% Low-Latency Drop:** Successful, low-latency requests drop 99% of internal module spans while keeping aggregate counters in local memory, reducing telemetry ingestion fees significantly.
 
-For rate limiting and gateway observability, see our [Distributed Rate Limiting with Redis & GCRA](/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/) guide.
+For rate limiting and gateway observability, see our [Distributed Rate Limiting with Redis & GCRA](/series/high-concurrency-systems/article_3_rate_limiting/) guide.
 
 ---
 
@@ -213,7 +215,7 @@ func (h *TraceHandler) Handle(ctx context.Context, r slog.Record) error {
 
 ### C. In-Memory Span Tracker Implementation
 
-The following Go code snippet provides a lightweight, zero-dependency in-memory span tracking pattern for internal domain packages before forwarding to OTLP collectors.
+A lightweight, zero-dependency in-memory span tracking pattern enables internal domain packages for internal domain packages before forwarding to OTLP collectors.
 
 ```go
 package main

@@ -6,7 +6,6 @@ description: "How to keep a Monolith from becoming a 'Big Ball of Mud'? A guide 
 slug: "ddd-module-boundaries-modular-monolith"
 tags: ["Domain-Driven Design", "DDD", "Modular Monolith", "Spring Modulith", "Packwerk", "Architecture"]
 categories: ["Modular Monolith", "Architecture"]
-aliases: ["/series/modular-monolith-architecture/part-3-ddd-module-boundaries/"]
 cover:
   image: "/images/posts/golang-microservices-cover.jpg"
   alt: "Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal"
@@ -18,9 +17,12 @@ TocOpen: true
 mermaid: true
 draft: false
 image: "/images/posts/golang-microservices-cover.jpg"
+series: ["modular-monolith-architecture"]
+weight: 4
 ---
 
-> **Answer-first:** A Modular Monolith prevents code degradation ("Big Ball of Mud") by applying Domain-Driven Design (DDD) Bounded Contexts, isolating database schema namespaces (e.g. `billing.payments`, `inventory.stock`), enforcing compile-time import boundaries via Go `internal` packages and `arch-go`, and using an in-memory transactional outbox pattern for asynchronous event communication.
+
+> **Answer-first:** A Modular Monolith prevents code degradation ("Big Ball of Mud") by applying Domain-Driven Design (DDD) Bounded Contexts, isolating database schema namespaces (e.g. `billing.payments`, `inventory.stock`), enforcing compile-time import boundaries via Go `internal` packages and `arch-go`, and using an in-memory transactional outbox pattern for asynchronous event communication. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines.
 
 > **Prerequisite:** Before reading this part, please review [Part 2: FinOps Cost Reality](/series/modular-monolith-architecture/part-2-finops-cost-reality/).
 
@@ -39,14 +41,14 @@ The sequence diagram below illustrates how domain events decouple bounded contex
 ```mermaid
 sequenceDiagram
     autonumber
-    participant OrderModule as Order Bounded Context
-    participant EventBus as In-Memory EventBus
-    participant BillingModule as Billing Bounded Context
+    participant OrderModule as "Order Bounded Context"
+    participant EventBus as "In-Memory EventBus"
+    participant BillingModule as "Billing Bounded Context"
     
     OrderModule->>OrderModule: Create & Commit Order
-    OrderModule->>EventBus: Publish OrderCreated Event (Go struct)
+    OrderModule->>EventBus: Publish OrderCreated Event ("Go struct")
     EventBus-->>BillingModule: Dispatch Event asynchronously
-    BillingModule->>BillingModule: Process Payment (In-Process)
+    BillingModule->>BillingModule: Process Payment ("In-Process")
 ```
 
 ## 1. Core Principle: Bounded Contexts, Aggregate Roots & Anti-Corruption Layers
@@ -175,10 +177,10 @@ The state diagram below depicts the Event Storming aggregate lifecycle, tracing 
 
 ```mermaid
 stateDiagram-v2
-    [*] --> SubmitOrder : Command
+    ["*"] --> SubmitOrder : Command
     SubmitOrder --> OrderCreated : Event
     state OrderCreated {
-        [*] --> ProcessPayment : Command
+        ["*"] --> ProcessPayment : Command
         ProcessPayment --> PaymentCaptured : Event
         ProcessPayment --> PaymentFailed : Event
     }
@@ -187,7 +189,7 @@ stateDiagram-v2
 ```
 
 ### Go Channel-Based Event Bus
-The following Go code demonstrates a thread-safe, channel-based event bus that enables decoupled modules to publish and subscribe to domain events asynchronously without external message brokers:
+This Go code demonstrates a thread-safe, channel-based event bus that enables decoupled modules to publish and subscribe to domain events asynchronously without external message brokers:
 
 ```go
 package main

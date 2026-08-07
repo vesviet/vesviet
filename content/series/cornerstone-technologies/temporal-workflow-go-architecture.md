@@ -1,15 +1,18 @@
 ---
 title: "Temporal Workflow & Golang: Architecture & Production Guide"
 description: "In-depth Temporal Workflow architecture guide for Go developers: Determinism, Event Sourcing, Temporal Nexus, and scaling Temporal Workers in production."
-slug: temporal-workflow-go-architecture
+slug: "temporal-workflow-go-architecture"
 author: "Le Tuan Anh (Senior Go Engineer)"
-series: "Cornerstone Technologies"
+series: ["cornerstone-technologies"]
 date: "2026-07-25"
 cover:
   image: "/images/posts/temporal-workflow-go-architecture.jpg"
   alt: "Temporal Workflow & Golang: Architecture & Production Guide"
   relative: false
+weight: 3
+canonicalURL: "https://tanhdev.com/series/cornerstone-technologies/temporal-workflow-go-architecture/"
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Nats Jetstream Golang Production Guide](/series/cornerstone-technologies/nats-jetstream-golang-production-guide/). Review it first if the terminology in this part is unfamiliar.
 
@@ -23,7 +26,7 @@ Temporal is an orchestration platform for microservices that employs Event Sourc
 
 How does Temporal operate under the hood? Rather than maintaining workflow state in volatile RAM—which risks data loss during unexpected crashes—Temporal adopts an Event Sourcing architecture. Every execution step (such as starting an activity, receiving a signal, or scheduling a timer) is appended as an immutable event to the backend database of the Temporal Cluster.
 
-When a Worker (the process running your Go code) crashes and restarts, Temporal does not naively re-execute the workflow from scratch. Instead, it initializes a Replay Engine that reads the complete event history from the Temporal Cluster and replays your Go code execution paths. The engine ensures the code reaches the exact state prior to the failure. This mechanism provides fault tolerance where code execution appears uninterrupted. For systems designed around [Event-Driven Architecture](/series/system-design/12-communication-protocols-microservices/), Temporal's stateful, fault-tolerant model provides robust reliability.
+When a Worker (the process running your Go code) crashes and restarts, Temporal does not naively re-execute the workflow from scratch. Instead, it initializes a Replay Engine that reads the complete event history from the Temporal Cluster and replays your Go code execution paths. The engine ensures the code reaches the exact state prior to the failure. This mechanism provides fault tolerance where code execution appears uninterrupted. For systems designed around [Event-Driven Architecture](/series/system-design/12-communication-protocols-microservices/), Temporal's stateful, fault-tolerant model provides resilient reliability.
 
 ## Temporal Nexus: Cross-Namespace & Enterprise Boundary Orchestration (2026)
 
@@ -101,8 +104,8 @@ func OrderSagaWorkflow(ctx workflow.Context, req OrderRequest) (err error) {
 		if err != nil {
 			// Execute compensation functions in reverse order (LIFO)
 			disconnectedCtx, _ := workflow.NewDisconnectedContext(ctx)
-			for i := len(compensations) - 1; i >= 0; i-- {
-				_ = compensations[i](disconnectedCtx)
+			for idx := len(compensations) - 1; idx >= 0; idx-- {
+				_ = compensations[idx](disconnectedCtx)
 			}
 		}
 	}()
@@ -205,13 +208,13 @@ func ProcessOrderStreamWorkflow(ctx workflow.Context, state StreamState) error {
 
 ## Frequently Asked Questions (FAQ)
 
-* **Can I make direct HTTP or database calls inside a Temporal Workflow in Go?**
+### Can I make direct HTTP or database calls inside a Temporal Workflow in Go?
   No, direct network or database I/O is strictly prohibited inside a Temporal Workflow definition. All non-deterministic side effects and external communications must be encapsulated within Activities. Workflow code must remain completely deterministic so that the Replay Engine can accurately reconstruct execution state from event history logs.
 
-* **How do I safely update workflow code when existing instances are running in production?**
+### How do I safely update workflow code when existing instances are running in production?
   Workflow updates must be managed using the `workflow.GetVersion()` API provided by the Temporal Go SDK. This function inspects the recorded event history to determine whether a workflow instance was created under old or new logic, enabling both code paths to co-exist safely without triggering `NonDeterministicWorkflowError` exceptions.
 
-* **How does Temporal differ from distributed message queues like Apache Kafka?**
+### How does Temporal differ from distributed message queues like Apache Kafka?
   Apache Kafka is a pub/sub event streaming platform optimized for high-throughput messaging and data ingestion. In contrast, Temporal is a durable execution engine designed to manage complex state transitions, timeouts, retries, and multi-step distributed transactions. Systems frequently combine both technologies by using Kafka for high-speed event delivery and Temporal for orchestrating complex business logic workflows.
 
 🔗 **Next Step:** Continue to [Vector Database Rag Qdrant Milvus](/series/cornerstone-technologies/vector-database-rag-qdrant-milvus/) for the following module in the series.

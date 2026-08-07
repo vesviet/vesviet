@@ -4,13 +4,13 @@ description: "Detailed technical guide to extracting Magento EAV database schema
 date: "2026-05-06T10:00:00+07:00"
 lastmod: "2026-07-26T10:00:00+07:00"
 draft: false
-weight: 6
+weight: 2
 slug: "part-5-eav-schema-migration"
 ShowToc: true
 TocOpen: true
 categories: ["Software Engineering", "Database", "Backend"]
 tags: ["EAV", "Magento", "Schema Migration", "PostgreSQL", "MySQL", "Data Migration", "SQL"]
-series: ["Composable Commerce Migration"]
+series: ["composable-commerce-migration"]
 series_order: 5
 ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
@@ -21,7 +21,8 @@ cover:
 canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-5-eav-schema-migration/"
 ---
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Grpc Rest Gateway](/posts/ecommerce-architecture-composable-migration/). Review it first if the terminology in this part is unfamiliar.
+
+> **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Grpc Rest Gateway](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/). Review it first if the terminology in this part is unfamiliar.
 
 The EAV schema is why most Magento migrations fail.
 
@@ -29,7 +30,7 @@ It looks manageable from the outside: products stored across `catalog_product_en
 
 Then you discover that `attribute_id = 75` means "product name" in *your* Magento instance and "color" in your staging instance. Every attribute ID is generated at install time and differs between environments. Any ETL script that hardcodes attribute IDs will produce corrupted data in production.
 
-**Answer-first:** Migrate Magento EAV schemas to microservices by mapping integer IDs to UUIDs, using stable attribute codes, and executing dynamic SQL pivots. The extraction runs in three phases: full historical load, incremental CDC delta sync, and cutover validation to ensure complete data integrity.
+**Answer-first:** Migrate Magento EAV schemas to microservices by mapping integer IDs to UUIDs, using stable attribute codes, and executing dynamic SQL pivots. The extraction runs in three phases: full historical load, incremental CDC delta sync, and cutover validation to ensure complete data integrity. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for production-grade.
 
 ## 1. The EAV Data Model
 

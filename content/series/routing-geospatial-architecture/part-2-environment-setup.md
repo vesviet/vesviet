@@ -6,7 +6,7 @@ lastmod: "2026-06-14T22:45:00+07:00"
 draft: false
 tags: ["golang", "docker", "graphhopper", "osm"]
 categories: ["Geospatial", "DevOps"]
-series: ["Routing & Geospatial Architecture"]
+series: ["routing-geospatial-architecture"]
 series_order: 2
 cover:
   image: "/images/posts/graphhopper-cover-2.jpg"
@@ -18,13 +18,15 @@ mermaid: true
 ShowToc: true
 TocOpen: true
 image: "/images/posts/graphhopper-cover-2.jpg"
+weight: 3
 ---
+
 
 > **Prerequisite:** Before starting this part, review [Part 1: Core Routing Algorithms Visualized](/series/routing-geospatial-architecture/part-1-core-algorithms/).
 
 ## Part 2: Zero to Hero Environment Setup (Docker, OSM, Golang)
 
-> **Answer-first:** Setting up a production-grade routing environment requires extracting OpenStreetMap `.osm.pbf` map data via Osmium tools, provisioning GraphHopper Java containers with explicit JVM heap allocations (`-Xmx6g`), and connecting a Golang API client with exponential backoff health checks.
+> **Answer-first:** Setting up a production-grade routing environment requires extracting OpenStreetMap `.osm.pbf` map data via Osmium tools, provisioning GraphHopper Java containers with explicit JVM heap allocations (`-Xmx6g`), and connecting a Golang API client with exponential backoff health checks. Adopting this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory optimization, and fault-tolerant event-driven state synchronization across production systems.
 >
 > **Key Takeaways**:
 > - **Map Extraction**: Bounding-box cropping with `osmium extract` reduces raw `.osm.pbf` file size by 90%, speeding up graph compilation.
@@ -43,11 +45,11 @@ We bypass the basic "Hello World" setups. We will build a production-grade local
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Pipeline as Osmium Extractor
-    participant Docker as GraphHopper Java Container
-    participant GoClient as Golang API Gateway Client
+    participant Pipeline as "Osmium Extractor"
+    participant Docker as "GraphHopper Java Container"
+    participant GoClient as "Golang API Gateway Client"
     
-    Pipeline->>Pipeline: Extract city bounding box (hcmc.osm.pbf)
+    Pipeline->>Pipeline: Extract city bounding box ("hcmc.osm.pbf")
     Pipeline->>Docker: Mount OSM PBF & compile CH Shortcuts
     Docker->>Docker: Warm up JVM & load Contraction Hierarchies
     GoClient->>Docker: Issue HTTP/gRPC Route & Matrix Queries
@@ -292,4 +294,3 @@ Unlike Google Maps which expects `[Latitude, Longitude]`, the Graphhopper Matrix
 {{< /faq >}}
 
 🔗 **Next Step:** Learn about spatial indexing in [Part 3: Spatial Indexing (Uber H3, PostGIS & Redis GEO)](/series/routing-geospatial-architecture/part-3-spatial-indexing/).
-

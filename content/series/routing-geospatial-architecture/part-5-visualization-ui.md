@@ -6,7 +6,7 @@ lastmod: "2026-06-14T23:05:00+07:00"
 draft: false
 tags: ["mapbox", "deck.gl", "webgl", "frontend", "geospatial", "ui"]
 categories: ["Geospatial", "Frontend"]
-series: ["Routing & Geospatial Architecture"]
+series: ["routing-geospatial-architecture"]
 series_order: 5
 cover:
   image: "/images/posts/graphhopper-cover-5.jpg"
@@ -18,9 +18,11 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 image: "/images/posts/graphhopper-cover-5.jpg"
+weight: 6
 ---
 
-> **Answer-first:** High-density geospatial rendering (100,000+ telemetry vectors) requires offloading coordinate math from the browser DOM to WebGL GPU buffers via Deck.gl and Mapbox overlays. Using Deck.gl's `DataFilterExtension` updates GPU uniforms in 60 FPS requestAnimationFrame loops without mutating JavaScript heap allocations.
+
+> **Answer-first:** High-density geospatial rendering (100,000+ telemetry vectors) requires offloading coordinate math from the browser DOM to WebGL GPU buffers via Deck.gl and Mapbox overlays. Using Deck.gl's `DataFilterExtension` updates GPU uniforms in 60 FPS requestAnimationFrame loops without mutating JavaScript heap allocations. Adopting this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory optimization, and fault-tolerant event-driven state synchronization across production systems.
 
 > **Prerequisite:** Before reading this part, review [Part 4: Golang API & Microservices Integration](/series/routing-geospatial-architecture/part-4-golang-microservices/).
 
@@ -45,16 +47,16 @@ Do not use native Mapbox GL JS to render massive, dynamic datasets. Modifying th
 ```mermaid
 sequenceDiagram
     autonumber
-    participant API as Golang API Gateway
-    participant JS as Frontend JS App
-    participant Deck as Deck.gl MapboxOverlay
-    participant GPU as WebGL Shader Pipeline
+    participant API as "Golang API Gateway"
+    participant JS as "Frontend JS App"
+    participant Deck as "Deck.gl MapboxOverlay"
+    participant GPU as "WebGL Shader Pipeline"
     
     API-->>JS: Stream Unencoded GeoJSON Path Data
     JS->>Deck: Instantiate PathLayer & H3HexagonLayer
     Deck->>GPU: Upload Binary Coordinate Buffers to GPU VRAM
-    loop RequestAnimationFrame (60 FPS)
-        JS->>GPU: Update Uniform Filter Range (Time Window)
+    loop RequestAnimationFrame ("60 FPS")
+        JS->>GPU: Update Uniform Filter Range ("Time Window")
         GPU-->>Deck: Render Triangles Directly to WebGL Context
     end
 ```
@@ -116,10 +118,10 @@ The client-server payload pipeline snaps coordinates to H3 Resolution 9 cells, q
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Client as Frontend (Mapbox + Deck.gl)
-    participant Gateway as Go API Gateway
-    participant Caching as Redis (Semantic Cache)
-    participant Router as Graphhopper Engine
+    participant Client as Frontend ("Mapbox + Deck.gl")
+    participant Gateway as "Go API Gateway"
+    participant Caching as Redis ("Semantic Cache")
+    participant Router as "Graphhopper Engine"
 
     Client->>Gateway: GET /route?start=lat,lng&end=lat,lng
     Note over Client, Gateway: Sends WGS84 coords
@@ -129,11 +131,11 @@ sequenceDiagram
         Caching-->>Gateway: Return cached route GeoJSON
     else Cache Miss
         Gateway->>Router: Forward routing request
-        Router-->>Gateway: Return calculated path (WGS84 polyline)
+        Router-->>Gateway: Return calculated path ("WGS84 polyline")
         Gateway->>Caching: Store path in Redis with TTL
     end
     Gateway-->>Client: Return compressed path GeoJSON
-    Client->>Client: WebGL Shader projection (WGS84 -> Web Mercator)
+    Client->>Client: WebGL Shader projection ("WGS84 -> Web Mercator")
     Client->>Client: Render dynamic Deck.gl PathLayer at 60 FPS
 ```
 
@@ -315,4 +317,3 @@ By default, Deck.gl `PathLayer` uses mitered line joins which can cause sharp vi
 {{< /faq >}}
 
 🔗 **Next Step:** Implement caching layers in [Part 6: Location Clustering with Uber H3 & Redis Semantic Caching](/series/routing-geospatial-architecture/part-6-redis-semantic-caching/).
-

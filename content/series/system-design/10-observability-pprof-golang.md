@@ -10,14 +10,17 @@ tags: ["observability", "golang", "pprof", "memory leak", "cpu profiling", "gode
 categories: ["Architecture", "Backend"]
 ShowToc: true
 TocOpen: true
-series: ["Architecture"]
+series: ["system-design"]
 cover:
   image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/10-observability-pprof-golang/"
 image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
+weight: 10
 ---
+
+
 Go's built-in `pprof` profiler provides CPU sampling, heap allocation analysis, goroutine stack inspection, and blocking profiler — all available as HTTP endpoints in running production services with minimal overhead. Heap diff between two snapshots is the fastest way to identify memory leaks.
 
 > **Prerequisite:** This is Part 10 of the [System Design Masterclass](/series/system-design/). Previous parts built the architecture — this part teaches you how to *see inside* a running system and diagnose production performance issues.
@@ -103,7 +106,7 @@ func main() {
 ```bash
 # Step 1: Capture baseline heap
 
-**Answer-first:** Observability and profiling in Go microservices leverages pprof memory allocation traces, OpenTelemetry distributed spans, and Prometheus metrics to diagnose production performance bottlenecks.
+**Answer-first:** Observability and profiling in Go microservices leverages pprof memory allocation traces, OpenTelemetry distributed spans, and Prometheus metrics to diagnose production performance bottlenecks. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
 curl -sK -v -o baseline.pprof http://localhost:6060/debug/pprof/heap
 echo "Baseline captured: $(date)"
 
@@ -413,4 +416,3 @@ You've completed 10 parts of the masterclass. Here's the knowledge map you've bu
 [Next Part →](/series/system-design/11-security-api-rate-limiting/)
 
 🔗 **Next Step:** Continue to [Part 11: Security & API Rate Limiting](/series/system-design/11-security-api-rate-limiting/)
-

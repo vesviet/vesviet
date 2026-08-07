@@ -3,7 +3,7 @@ title: "Layered Prompt Architecture: Building Modular Prompt Stacks"
 date: "2026-07-26T10:30:00+07:00"
 lastmod: "2026-07-26T10:30:00+07:00"
 draft: false
-weight: 30
+weight: 3
 description: "How to design microservice-inspired modular prompt stacks, enforce rule precedence layers, and compile dynamic agent contexts in production Go frameworks."
 categories: ["Engineering", "AI"]
 tags: ["prompt", "standard", "context-engineering", "agent"]
@@ -14,13 +14,15 @@ cover:
   alt: "Layered Prompt Architecture Building Modular Prompt Stacks"
   relative: false
 author: "Lê Tuấn Anh"
-canonicalURL: "https://vesviet.com/series/prompt-standard/part-3-layered-prompt-architecture/"
+canonicalURL: "https://tanhdev.com/series/prompt-standard/part-3-layered-prompt-architecture/"
 mermaid: true
+series: ["prompt-standard"]
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — The 8 Core Blocks](/series/prompt-standard/part-2-the-8-core-blocks/). Review it first if the terminology in this part is unfamiliar.
 
-**Answer-first:** Layered Prompt Architecture decouples system instructions into four distinct operational layers: Core Base (L1), Security Guardrails (L2), Workflow SOPs (L3), and Task Skills (L4). By compiling prompts dynamically at runtime, engineering teams avoid prompt duplication, enforce security precedence, and inject specialized subagent skills without degrading model accuracy.
+**Answer-first:** Layered Prompt Architecture decouples system instructions into four distinct operational layers: Core Base (L1), Security Guardrails (L2), Workflow SOPs (L3), and Task Skills (L4). By compiling prompts dynamically at runtime, engineering teams avoid prompt duplication, enforce security precedence, and inject specialized subagent skills without degrading model accuracy. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated.
 
 ---
 

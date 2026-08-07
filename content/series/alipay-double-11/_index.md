@@ -62,7 +62,7 @@ To contextualize Alipay's platform design within broader distributed systems and
 
 ## Series Module & System Internals Roadmap
 
-The following matrix outlines the modular breakdown of this technical series, mapping core architectural challenges to specific design solutions and operational milestones achieved during Double 11 peak events:
+Matrix outlines the modular breakdown of this technical series, mapping core architectural challenges to specific design solutions and operational milestones achieved during Double 11 peak events:
 
 | Phase | Focus Area | Architectural Component | Performance Milestone |
 |---|---|---|---|
@@ -96,4 +96,3 @@ Alipay relies on OceanBase, a distributed NewSQL database utilizing Multi-Paxos 
 
 ### How are asynchronous payment events processed safely during peak events?
 Transactional events are published to Apache RocketMQ, which uses two-phase commit (2PC) messaging protocols to guarantee atomic message delivery without locking database rows. Downstream Write-Behind microservices then process micro-batched inventory and balance updates asynchronously.
-

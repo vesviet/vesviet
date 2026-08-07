@@ -190,7 +190,7 @@ Currently, WasmEdge excels in CPU inference environments. CUDA/GPU ecosystem int
 
 **Answer-first:** Multi-agent swarms require zero-trust identity frameworks using SPIFFE/SPIRE SVID certificates, Envoy AI Gateway tool-filtering, and CEL parameter validation to prevent unauthorized tool execution under OWASP ASI02 risks.
 
-Building on [Cloud-Native AI Architecture](/radar/cloud-native-ai-envoy-gateway-kubernetes-dapr-agents-2026/), controlling autonomous multi-agent systems requires enforcing strict operational governance. **Zero-Trust Security for Multi-Agent Swarms** prevents unconstrained agent execution in production.
+Building on [Cloud-Native AI Architecture](/radar/2026-07/), controlling autonomous multi-agent systems requires enforcing strict operational governance. **Zero-Trust Security for Multi-Agent Swarms** prevents unconstrained agent execution in production.
 
 ### 1. Tech News Radar: Agentic Vulnerabilities and the Rise of Non-Human Identity
 
@@ -412,6 +412,6 @@ sequenceDiagram
 
 Each daily entry below is published separately with links to the primary specifications and announcements it analyses:
 
-- [Cloud-Native AI & Envoy Gateway Setup](/radar/cloud-native-ai-envoy-gateway-kubernetes-dapr-agents-2026/) (July 10)
-- [Event-Driven Agent Sagas & Dapr Go Workflows](/radar/radar-22-07-event-driven-agentic-sagas-dapr-workflows-go/) (July 22)
-- [Scaling MCP Servers in Production Kubernetes](/radar/radar-27-07-scaling-mcp-servers-kubernetes/) (July 27)
+- [Cloud-Native AI & Envoy Gateway Setup](/radar/2026-07/) (July 10)
+- [Event-Driven Agent Sagas & Dapr Go Workflows](/radar/2026-07/) (July 22)
+- [Scaling MCP Servers in Production Kubernetes](/radar/2026-07/) (July 27)

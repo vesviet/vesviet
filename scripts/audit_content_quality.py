@@ -21,6 +21,9 @@ import urllib.parse
 from collections import defaultdict
 from datetime import datetime
 
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
+
 # Root paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, ".."))
@@ -48,6 +51,7 @@ AI_BOILERPLATE_PATTERNS = [
     (r"\bin the realm of\b", "AI boilerplate fluff opener: 'in the realm of'"),
     (r"\bunleash the power\b", "AI boilerplate marketing fluff: 'unleash the power'"),
     (r"\bgame[-\s]?changer\b", "AI boilerplate filler string: 'game-changer' / 'game changer'"),
+    (r"\brobust(?:ness)?\b", "AI boilerplate word: 'robust' / 'robustness'"),
     (r"^\s*In this (?:post|guide|article),\s+we\b", "AI boilerplate intro opener: 'In this post/guide/article, we'"),
     (r"Architecting production-ready solutions for .*? within the .*? domain requires strict component separation, sub-50ms P99 latency guarantees", "AI boilerplate answer-first: 'Architecting production-ready solutions...'"),
     (r"outlines the end-to-end data flow, service boundaries, and asynchronous messaging pipelines required for enterprise-grade", "AI boilerplate duplicated sentence: 'outlines the end-to-end data flow...'"),

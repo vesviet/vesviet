@@ -15,11 +15,13 @@ canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/par
 ShowToc: true
 TocOpen: true
 image: "/images/posts/real-time-ride-hailing-cover.jpg"
+series: ["ride-hailing-realtime-architecture"]
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Pricing Surge Engine](/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/). Review it first if the terminology in this part is unfamiliar.
 
-**Answer-first:** Scaling real-time dispatch pushes requires a stateful WebSocket gateway layer that maintains millions of persistent TCP connections. Terminating mTLS at high-performance reverse proxies (Envoy) and tracking socket locations in a distributed Redis connection registry allows backend dispatchers to push targeted ride offers under 10ms.
+**Answer-first:** Scaling real-time dispatch pushes requires a stateful WebSocket gateway layer that maintains millions of persistent TCP connections. Terminating mTLS at high-performance reverse proxies (Envoy) and tracking socket locations in a distributed Redis connection registry allows backend dispatchers to push targeted ride offers under 10ms. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context.
 
 ## The Problem: Pushing Instant Notifications to Millions of Devices
 
@@ -37,7 +39,7 @@ There are two main transport patterns: **Polling** (asking continuously) and **P
 
 ### Polling (The Old Way — Inefficient)
 
-The following text diagram illustrates the high request frequency and latency delays inherent in client-side polling:
+This implementation illustrates the high request frequency and latency delays inherent in client-side polling:
 
 ```
 The Driver App asks the server every 3 seconds: "Do you have any rides for me?"
@@ -60,7 +62,7 @@ The Issues:
 
 ### Push (RAMEN — Efficient)
 
-The following text diagram demonstrates the persistent stream architecture and lower latency of push-based delivery:
+This implementation demonstrates the persistent stream architecture and lower latency of push-based delivery:
 
 ```
 The server maintains an OPEN connection with every driver app.
@@ -132,7 +134,7 @@ In 2026 architectures, gRPC streaming operates over **HTTP/3 QUIC**, utilizing 6
 
 ## Production Go Push Gateway & Connection Registry
 
-The following Go program implements a concurrent WebSocket/gRPC push gateway server that tracks active client socket connections in a thread-safe registry, executes 30-second ping-pong heartbeats, and dispatches real-time push payloads.
+This concurrent WebSocket/gRPC push gateway server tracks that tracks active client socket connections in a thread-safe registry, executes 30-second ping-pong heartbeats, and dispatches real-time push payloads.
 
 ```go
 package main

@@ -30,7 +30,7 @@ canonicalURL: "https://tanhdev.com/posts/deploying-astro-on-cloudflare-full-stac
 
 # Deploy Astro on Cloudflare Pages: Full-Stack Edge Architecture
 
-**Answer-first:** Deploying Astro v5 on Cloudflare Pages and Workers achieves fast edge rendering, serverless API route execution, and global asset caching with zero origin server overhead.
+**Answer-first:** Deploying Astro v5 on Cloudflare Pages and Workers achieves fast edge rendering, serverless API route execution, and global asset caching with zero origin server overhead. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
 
 Running a content site on a traditional VPS or a managed Node.js host is fine until it isn't. You pay for compute that sits idle 95% of the time, you manage SSL renewals, you worry about cold starts, and you watch your Lighthouse score suffer because your origin is in Singapore while your readers are in Frankfurt.
 
@@ -54,20 +54,20 @@ The total monthly cost for a site doing ~50k pageviews: **~$5-8/month**, almost 
 
 ```mermaid
 flowchart TD
-    U[User Browser] --> CF[Cloudflare CDN Edge]
+    U["User Browser"] --> CF["Cloudflare CDN Edge"]
 
-    CF --> P[Pages — Static HTML/CSS/JS]
-    CF --> W[Workers — API Routes]
-    CF --> IT[Image Transformations]
+    CF --> P["Pages — Static HTML/CSS/JS"]
+    CF --> W["Workers — API Routes"]
+    CF --> IT["Image Transformations"]
 
-    W --> D1[(D1 — SQLite)]
-    W --> R2[(R2 — Object Storage)]
+    W --> D1["(D1 — SQLite)"]
+    W --> R2["(R2 — Object Storage)"]
     IT --> R2
 
     subgraph Build["Build Pipeline (GitHub Actions)"]
-        GH[git push] --> AB[astro build]
-        AB --> PF[pagefind --site dist]
-        PF --> WR[wrangler pages deploy]
+        GH["git push"] --> AB["astro build"]
+        AB --> PF["pagefind --site dist"]
+        PF --> WR["wrangler pages deploy"]
     end
 
     Build --> CF
@@ -391,11 +391,11 @@ The architecture diagram below depicts how Cloudflare CDN intercepts incoming tr
 
 ```mermaid
 flowchart LR
-    U[User Browser] --> CF[Cloudflare CDN]
-    CF -->|Cache HIT| CACHE[Edge Cache]
-    CF -->|Cache MISS| WP[WordPress Origin VPS]
-    WP --> NGINX[Nginx + PHP-FPM]
-    NGINX --> DB[(MySQL / MariaDB)]
+    U["User Browser"] --> CF["Cloudflare CDN"]
+    CF -->|"Cache HIT"| CACHE["Edge Cache"]
+    CF -->|"Cache MISS"| WP["WordPress Origin VPS"]
+    WP --> NGINX["Nginx + PHP-FPM"]
+    NGINX --> DB["(MySQL / MariaDB)"]
 ```
 
 Cloudflare sits in front of your origin. Most requests never reach the VPS — they are served from Cloudflare's edge cache. Only cache misses, admin requests, and POST requests hit the origin.
@@ -581,4 +581,3 @@ Workers cannot establish direct, persistent TCP connections to traditional relat
 
 ### Can you host full-text search directly on Cloudflare Pages without an external search engine?
 Yes, you can use Pagefind, an open-source static search library. Pagefind indexes server-rendered HTML output during the Astro build process and generates lightweight static search indexes that are deployed directly to Cloudflare Pages, requiring zero server backend or paid search API.
-

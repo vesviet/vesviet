@@ -10,7 +10,6 @@ keywords: ["double entry ledger database schema", "TigerBeetle architecture", "p
 categories: ["FinTech", "Architecture", "Database"]
 tags: ["TigerBeetle", "PostgreSQL", "Ledger Schema", "Double-Entry", "FinTech", "Architecture"]
 author: "Lê Tuấn Anh"
-schema: ["Article", "TechArticle", "FAQPage"]
 cover:
   image: "/images/posts/banking-microservices-cover.jpg"
   alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
@@ -21,9 +20,10 @@ TocOpen: true
 mermaid: true
 ---
 
+
 > **Prerequisite:** This is the starting part of the series — no prior part is required. Later parts assume the concepts introduced here.
 
-**Answer-first:** A production-grade double-entry ledger enforces immutable, append-only transaction logs decoupled from balance state updates. By using fixed-size C-aligned memory structs or PostgreSQL check constraints and triggers, the schema guarantees strict debit-credit mathematical invariants, prevents hot-row lock contention, and eliminates double-spend risks in high-concurrency core banking architectures.
+**Answer-first:** A production-grade double-entry ledger enforces immutable, append-only transaction logs decoupled from balance state updates. By using fixed-size C-aligned memory structs or PostgreSQL check constraints and triggers, the schema guarantees strict debit-credit mathematical invariants, prevents hot-row lock contention, and eliminates double-spend risks in high-concurrency core banking architectures. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability.
 
 > **Answer-first:** Ultra-high-throughput ledger systems require specialized schema layouts like TigerBeetle's 128-byte fixed structures or PostgreSQL partition tables decoupling balance accumulation from transaction insertion. Isolating transaction logging from balance state eliminates hot-row lock contention, enabling 10,000+ TPS.
 
@@ -41,9 +41,9 @@ The following architecture diagram illustrates how high-throughput banking ledge
 
 ```mermaid
 graph TD
-    Client[Client Request] --> Router[Ledger Router]
+    Client["Client Request"] --> Router["Ledger Router"]
     Router --> TxLog[("Immutable Tx Log")]
-    Router --> BalWorker[Async Balance Accumulator]
+    Router --> BalWorker["Async Balance Accumulator"]
     BalWorker --> BalTable[("Account Balances DB")]
 ```
 
@@ -282,7 +282,7 @@ Source: [TigerBeetle Concepts](https://docs.tigerbeetle.com/concepts/performance
 
 ### PostgreSQL Pessimistic Locking (Production Pattern)
 
-The following SQL transaction block demonstrates deterministic account locking by sorting target account IDs prior to acquiring exclusive row locks:
+SQL transaction block demonstrates deterministic account locking by sorting target account IDs prior to acquiring exclusive row locks:
 
 ```sql
 BEGIN;

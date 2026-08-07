@@ -16,11 +16,14 @@ canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-7-system-desig
 description: "Engineering resilience guide demonstrating why system architecture, circuit breakers, and fault-tolerant Go design protect against AI code flaws."
 ShowToc: true
 TocOpen: true
+series: ["ai-driven-engineer"]
+weight: 8
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 6 — From Coder To Orchestrator](/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** While AI assistants excel at generating localized code functions, they remain blind to holistic distributed system failures, network partition handling, and cascading degradation. System design—encompassing Circuit Breakers, Rate Limiters, Distributed Locks, and CAP theorem trade-offs—serves as the ultimate career survival shield for software engineers.
+> **Answer-first:** While AI assistants excel at generating localized code functions, they remain blind to holistic distributed system failures, network partition handling, and cascading degradation. System design—encompassing Circuit Breakers, Rate Limiters, Distributed Locks, and CAP theorem trade-offs—serves as the ultimate career survival shield for software engineers. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context.
 
 As AI code generation models become increasingly sophisticated at writing localized function syntax, developers frequently ask: *What core engineering skills will protect my career value over the next decade?*
 
@@ -38,16 +41,16 @@ Architectural resilience shields applications from AI code defects by wrapping d
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Closed State
+    ["*"] --> Closed State
     
-    Closed State --> Closed State: Request Success (Reset Failure Counter)
-    Closed State --> Open State: Failure Rate > 50% Threshold (Tripped)
+    Closed State --> Closed State: Request Success ("Reset Failure Counter")
+    Closed State --> Open State: Failure Rate > 50% Threshold ("Tripped")
     
-    Open State --> Open State: Incoming Requests Fail Fast (Zero Downstream Load)
-    Open State --> HalfOpen State: Sleep Window Timeout Expires (e.g. 5s)
+    Open State --> Open State: Incoming Requests Fail Fast ("Zero Downstream Load")
+    Open State --> HalfOpen State: Sleep Window Timeout Expires ("e.g. 5s")
     
-    HalfOpen State --> Closed State: Probe Requests Succeed (System Recovered)
-    HalfOpen State --> Open State: Probe Request Fails (Reset Sleep Window)
+    HalfOpen State --> Closed State: Probe Requests Succeed ("System Recovered")
+    HalfOpen State --> Open State: Probe Request Fails ("Reset Sleep Window")
 ```
 
 ### Critical Distributed Resilience Patterns

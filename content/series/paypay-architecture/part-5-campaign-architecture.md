@@ -4,7 +4,7 @@ date: "2026-05-05T21:00:00+07:00"
 lastmod: "2026-05-05T21:00:00+07:00"
 draft: false
 description: "How PayPay survives billion-yen campaign traffic spikes: KEDA Cron Scaler pre-warming, priority load shedding, and Kafka buffering in production."
-weight: 6
+weight: 5
 cover:
   image: "/images/posts/paypay-scaling-cover.jpg"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
@@ -17,11 +17,13 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 image: "/images/posts/paypay-scaling-cover.jpg"
+series: ["paypay-architecture"]
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Sre Chaos Engineering](/series/paypay-architecture/part-4-sre-chaos-engineering/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Scaling for billion-yen cashback campaigns requires pre-warmed Redis cluster caching, token-bucket rate limiting at the API gateway, and async queue-based payment processing to shave peak traffic spikes.
+> **Answer-first:** Scaling for billion-yen cashback campaigns requires pre-warmed Redis cluster caching, token-bucket rate limiting at the API gateway, and async queue-based payment processing to shave peak traffic spikes. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
 
 **Answer-first:** The PayPay campaign architecture isolates high-throughput reward campaigns from core payment processing. By evaluating campaign eligibility out-of-band and writing reward points asynchronously using event queues, PayPay prevents promotional traffic spikes from impacting critical credit card processing pipelines.
 
@@ -29,10 +31,10 @@ image: "/images/posts/paypay-scaling-cover.jpg"
 
 ```mermaid
 graph TD
-    User[User Request] --> GW[API Gateway Rate Limiter]
-    GW -->|Pass| Redis[("Redis Pre-Warmed Cache")]
-    Redis -->|Quota Validated| Queue(("Kafka Async Queue"))
-    Queue --> Processor[Go Payment Workers]
+    User["User Request"] --> GW["API Gateway Rate Limiter"]
+    GW -->|"Pass"| Redis[("Redis Pre-Warmed Cache")]
+    Redis -->|"Quota Validated"| Queue(("Kafka Async Queue"))
+    Queue --> Processor["Go Payment Workers"]
 ```
 
 For most software systems, traffic grows gradually — and engineering teams have time to react. For PayPay, traffic growth is **instantaneous and scheduled**: the moment a billion-yen cashback campaign goes live at noon on a Friday, millions of Japanese users simultaneously open the app, see the promotion banner, and tap "Pay."

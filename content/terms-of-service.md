@@ -17,7 +17,7 @@ cover:
 
 > *"Clear legal terms ensure open collaboration, protect intellectual property, and define responsible usage of technical guidance."*
 
-**Answer-first:** By accessing and using **tanhdev.com** (published by Lê Tuấn Anh), you agree to these Terms of Service. Open-source code snippets are licensed under liberal terms (MIT/Apache 2.0); technical articles represent educational insights rather than binding architecture guarantees; and AI crawlers are permitted provided they respect `robots.txt` and rate limits.
+**Answer-first:** By accessing and using **tanhdev.com** (published by Lê Tuấn Anh), you agree to these Terms of Service. Open-source code snippets are licensed under liberal terms (MIT/Apache 2.0); technical articles represent educational insights rather than binding architecture guarantees; and AI crawlers are permitted provided they respect `robots.txt` and rate limits. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation,.
 
 ---
 

@@ -23,7 +23,7 @@ This series explores the core architectural patterns and technologies Shopee use
 
 ## Series Contents
 
-The following five chapters break down Shopee's high-concurrency production stack step-by-step, tracing requests from gateway routing down to storage engine persistence and observability:
+Five core chapters break down Shopee's high-concurrency production stack step-by-step, tracing requests from gateway routing down to storage engine persistence and observability:
 
 - [Chapter 1: Microservices Foundation](/series/shopee-architecture/01-microservices-foundation/)
 - [Chapter 2: Flash Sale Engine](/series/shopee-architecture/02-flash-sale-engine/)

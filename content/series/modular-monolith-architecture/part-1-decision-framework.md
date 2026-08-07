@@ -6,7 +6,6 @@ description: "Use real-world latency, performance data, and lessons from Stack O
 slug: "decision-framework-modular-monolith-vs-microservices"
 tags: ["Architecture", "Modular Monolith", "Microservices", "Stack Overflow"]
 categories: ["Modular Monolith", "Architecture"]
-aliases: ["/series/modular-monolith-architecture/part-1-decision-framework/"]
 cover:
   image: "/images/posts/decision-framework-modular-monolith-vs-microservices.jpg"
   alt: "Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal"
@@ -18,13 +17,16 @@ TocOpen: true
 mermaid: true
 draft: false
 image: "/images/posts/decision-framework-modular-monolith-vs-microservices.jpg"
+series: ["modular-monolith-architecture"]
+weight: 2
 ---
+
 
 > **Prerequisite:** Before reading this part, please review [Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure](/series/modular-monolith-architecture/part-0-executive-summary/).
 
 ## Part 1: Architectural Decision Framework
 
-> **Answer-first:** Deciding between a Modular Monolith and Microservices depends on organizational scale, transaction consistency requirements, and latency limits. Teams with under 50 developers should build a modular monolith to avoid the administrative and operational "microservice premium", using direct memory function calls to bypass network latency and complex distributed transaction protocols.
+> **Answer-first:** Deciding between a Modular Monolith and Microservices depends on organizational scale, transaction consistency requirements, and latency limits. Teams with under 50 developers should build a modular monolith to avoid the administrative and operational "microservice premium", using direct memory function calls to bypass network latency and complex distributed transaction protocols. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation,.
 >
 > **Key Takeaways**:
 > - **Latency Boundary**: In-process RAM function calls run in < 1ns, whereas gRPC loopback takes 100-500µs and HTTP/REST takes 1-50ms (a 100,000x latency gap).
@@ -75,11 +77,11 @@ The following decision flowchart maps out the architectural evaluation path, gui
 
 ```mermaid
 flowchart TD
-    A[Evaluate Architectural Need] --> B{"Team Size > 50 & Independent Deployment Required?"}
-    B -->|"No"| C[Adopt Modular Monolith Architecture]
-    B -->|"Yes"| D{High Network Latency Tolerable across Boundaries?}
-    D -->|"Yes"| E[Extract Targeted Microservices]
-    D -->|"No"| F[Keep Performance-Critical Domains In-Memory]
+    A["Evaluate Architectural Need"] --> B{"Team Size > 50 & Independent Deployment Required?"}
+    B -->|"No"| C["Adopt Modular Monolith Architecture"]
+    B -->|"Yes"| D{"High Network Latency Tolerable across Boundaries?"}
+    D -->|"Yes"| E["Extract Targeted Microservices"]
+    D -->|"No"| F["Keep Performance-Critical Domains In-Memory"]
     C --> G["Direct In-RAM Function Calls & Clean Interfaces"]
     E --> H["Network gRPC / Event Bus Boundaries"]
 ```

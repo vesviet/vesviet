@@ -16,13 +16,16 @@ canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-1-ag
 description: "In-depth technical architectural comparison of GraphRAG subgraphs versus long-context LLM windows, evaluating token costs, needle decay, and latency."
 ShowToc: true
 TocOpen: true
+series: ["ai-data-engineering-pipeline"]
+weight: 2
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/series/ai-data-engineering-pipeline/executive-summary/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 1 — Agentic GraphRAG vs. Long-Context Window: Architectural Trade-offs
 
-> **Answer-first:** Relying exclusively on 1M+ token context windows introduces quadratic latency degradation ($O(N^2)$ attention overhead), severe token cost inflation, and needle-in-a-haystack recall loss. Agentic GraphRAG extracts focused entity subgraphs to achieve 65% faster Time-To-First-Token (TTFT) at less than 10% of the inference cost.
+> **Answer-first:** Relying exclusively on 1M+ token context windows introduces quadratic latency degradation ($O(N^2)$ attention overhead), severe token cost inflation, and needle-in-a-haystack recall loss. Agentic GraphRAG extracts focused entity subgraphs to achieve 65% faster Time-To-First-Token (TTFT) at less than 10% of the inference cost. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context Protocol ttlMs.
 >
 > **Key Takeaways**:
 > - **65% Faster TTFT**: GraphRAG reduces prompt context size from 128k to 4k tokens, cutting time-to-first-token latency from 1.8s down to 320ms.
@@ -48,25 +51,25 @@ Standard Transformer self-attention computes dot-product similarity between ever
 sequenceDiagram
     autonumber
     actor User
-    participant Router as Query Router
-    participant LongLLM as 128k Context LLM
-    participant GraphEngine as Knowledge Graph
-    participant GraphLLM as 4k GraphRAG LLM
+    participant Router as "Query Router"
+    participant LongLLM as "128k Context LLM"
+    participant GraphEngine as "Knowledge Graph"
+    participant GraphLLM as "4k GraphRAG LLM"
 
-    rect rgb(255, 230, 230)
+    rect rgb("255, 230, 230")
     note right of User: Scenario A: Massive Context Injection
     User->>LongLLM: Send Query + 128k Document Context
-    LongLLM->>LongLLM: Prefill 128k Tokens (TTFT: 1,850ms, Cost: $0.38)
-    LongLLM-->>User: Return Answer (High Latency & High Cost)
+    LongLLM->>LongLLM: Prefill 128k Tokens ("TTFT: 1,850ms, Cost: $0.38")
+    LongLLM-->>User: Return Answer ("High Latency & High Cost")
     end
 
-    rect rgb(230, 255, 230)
+    rect rgb("230, 255, 230")
     note right of User: Scenario B: Agentic GraphRAG Traversal
     User->>Router: Send Query
     Router->>GraphEngine: Traverse Entity Subgraph & Extract 4k Context
     GraphEngine-->>GraphLLM: Inject 4k Extracted Subgraph
-    GraphLLM->>GraphLLM: Prefill 4k Tokens (TTFT: 310ms, Cost: $0.012)
-    GraphLLM-->>User: Return Grounded Answer (Low Latency & Minimal Cost)
+    GraphLLM->>GraphLLM: Prefill 4k Tokens ("TTFT: 310ms, Cost: $0.012")
+    GraphLLM-->>User: Return Grounded Answer ("Low Latency & Minimal Cost")
     end
 ```
 
@@ -218,7 +221,7 @@ GraphRAG uses hierarchical **Leiden community detection** algorithms to extract 
 
 ```mermaid
 graph TD
-    Root[Root Document Corpus] --> C1["Community Level 1: Global Themes"]
+    Root["Root Document Corpus"] --> C1["Community Level 1: Global Themes"]
     Root --> C2["Community Level 1: Regional Infrastructure"]
     
     C1 --> SubC1["Level 2: Compliance & EU Regulations"]
@@ -267,4 +270,4 @@ Continue to Part 2 to learn about multimodal document processing and layout-awar
 
 ## Architectural Context & Pillar References
 
-- [Exporting Magento 2 Data via Flat SQL & Node.js](/posts/exporting-magento-2-data-flat-sql-nodejs/)
+- [Exporting Magento 2 Data via Flat SQL & Node.js](/series/magento-migration-vietnam/exporting-magento-2-data-flat-sql-nodejs/)

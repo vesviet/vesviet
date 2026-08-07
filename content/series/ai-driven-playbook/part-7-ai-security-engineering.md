@@ -16,11 +16,14 @@ canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-7-ai-security-
 description: "Zero-trust security engineering playbook for implementing AI guardrails, threat modeling, prompt injection defense, and input sanitization."
 ShowToc: true
 TocOpen: true
+series: ["ai-driven-playbook"]
+weight: 7
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 6 — Ai Observability Governance](/series/ai-driven-playbook/part-6-ai-observability-governance/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** AI Security Engineering replaces traditional perimeter security with a Zero-Trust Defense-in-Depth architecture. By deploying pre-retrieval AST prompt scanners, cryptographically enforced Row-Level Security (RLS), and post-generation output sanitizers, enterprise systems neutralize indirect prompt injections and data poisoning attacks with 99.4% efficacy.
+> **Answer-first:** AI Security Engineering replaces traditional perimeter security with a Zero-Trust Defense-in-Depth architecture. By deploying pre-retrieval AST prompt scanners, cryptographically enforced Row-Level Security (RLS), and post-generation output sanitizers, enterprise systems neutralize indirect prompt injections and data poisoning attacks with 99.4% efficacy. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context Protocol ttlMs cache invalidation.
 
 **Key Takeaways**:
 - **Pre-Retrieval AST Prompt Guards**: Blocks malicious prompt injection signatures before queries reach vector database indices.
@@ -43,17 +46,17 @@ Defense-in-depth AI security pipelines enforce input sanitization, prompt inject
 
 ```mermaid
 graph TD
-    UserRequest[User Request + JWT Token] --> SecGateway[Enterprise AI Security Gateway]
+    UserRequest["User Request + JWT Token"] --> SecGateway["Enterprise AI Security Gateway"]
     
     subgraph Multi-Layer Security Guardrail Pipeline
-        SecGateway --> InputGuard[1. Pre-Retrieval Input Prompt Guard]
-        InputGuard --> RBACBinder[2. JWT RBAC Predicate Binder]
+        SecGateway --> InputGuard["1. Pre-Retrieval Input Prompt Guard"]
+        InputGuard --> RBACBinder["2. JWT RBAC Predicate Binder"]
         RBACBinder --> VectorQuery[("pgvector / Qdrant / Neo4j")]
-        VectorQuery --> OutputSanitizer[3. Post-Generation Content Output Sanitizer]
+        VectorQuery --> OutputSanitizer["3. Post-Generation Content Output Sanitizer"]
     end
 
     OutputSanitizer --> AuditVault[("4. SOC2 Cryptographic Audit Vault")]
-    AuditVault --> SecureResponse[Secure Filtered Output Stream to User]
+    AuditVault --> SecureResponse["Secure Filtered Output Stream to User"]
 ```
 
 ---

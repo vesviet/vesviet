@@ -18,14 +18,16 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/slm-playbook/part-2-sft-data-engineering/"
 mermaid: true
 image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.jpg"
+series: ["slm-playbook"]
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/series/slm-playbook/executive-summary/). Review it first if the terminology in this part is unfamiliar.
 
 [← Series hub](/series/slm-playbook/)
 [← Previous](/posts/slm-fine-tune-vs-prompt-engineering/) | [Next →](/series/slm-playbook/part-3-lora-qlora-tuning/)
 
-> **Answer-first:** Supervised Fine-Tuning (SFT) data quality determines downstream model capabilities; applying NEFTune noise injection during training improves conversational quality by up to 20%, while SemDeDup vector clustering prunes 30%–50% of redundant data to cut GPU training hours nearly in half without losing model accuracy.
+> **Answer-first:** Supervised Fine-Tuning (SFT) data quality determines downstream model capabilities; applying NEFTune noise injection during training improves conversational quality by up to 20%, while SemDeDup vector clustering prunes 30%–50% of redundant data to cut GPU training hours nearly in half without losing model accuracy. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for.
 
 In the era of modern Small Language Models (SLMs), the classic data science principle **"Garbage In, Garbage Out"** dictates model performance.
 
@@ -309,7 +311,7 @@ Compressing dataset volume mitigates representation drift and phrasing memorizat
 The answers below resolve common technical questions regarding NEFTune noise alpha tuning and SemDeDup vector clustering.
 
 ### How does NEFTune prevent overfitting during Supervised Fine-Tuning?
-NEFTune adds uniform random noise scaled by $\alpha / \sqrt{d \cdot L}$ to token embeddings exclusively during forward training passes. This random perturbation forces the model to learn robust semantic representations rather than memorizing exact phrasing or token sequences in small SFT datasets.
+NEFTune adds uniform random noise scaled by $\alpha / \sqrt{d \cdot L}$ to token embeddings exclusively during forward training passes. This random perturbation forces the model to learn resilient semantic representations rather than memorizing exact phrasing or token sequences in small SFT datasets.
 
 ### What noise alpha parameter should be used for Llama 3 8B and Phi-4 14B models?
 An alpha value of $\alpha = 5$ is optimal for Meta Llama 3 8B and Qwen 2.5 Coder, while models like Phi-4 14B typically perform best with $\alpha = 7$ to $\alpha = 10$. Setting alpha too high introduces excessive variance that destabilizes loss convergence, while setting it too low yields negligible regularization.

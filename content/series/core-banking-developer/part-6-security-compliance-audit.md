@@ -3,7 +3,7 @@ title: "Part 6: Core Banking Security, PCI-DSS & Audit Trails"
 date: "2026-05-06T18:00:00+07:00"
 lastmod: "2026-06-10T16:00:00+07:00"
 draft: false
-description: "Core Banking security for developers: PCI-DSS v4.0 and AML compliance, tamper-proof audit trail design, HSM key management, and handling sensitive financial data safely."
+description: "Core Banking security for developers: PCI-DSS v4.0 and AML compliance, tamper-proof audit trail design, HSM key management, and handling sensitive."
 weight: 7
 cover:
   image: "/images/posts/banking-microservices-cover-11.jpg"
@@ -16,9 +16,11 @@ canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-6-security
 ShowToc: true
 TocOpen: true
 mermaid: true
+series: ["core-banking-developer"]
 ---
 
-> **Answer-first:** Core banking security mandates zero-trust architecture, hardware security module (HSM) key management, mTLS 1.3, field-level AES-256-GCM encryption for customer PII, and tamper-evident append-only audit logs. Adhering to PCI-DSS v4.0 and SOC 2 Type II controls ensures transaction privacy, immutable balance records, and strict regulatory compliance without compromising transactional throughput.
+
+> **Answer-first:** Core banking security mandates zero-trust architecture, hardware security module (HSM) key management, mTLS 1.3, field-level AES-256-GCM encryption for customer PII, and tamper-evident append-only audit logs. Adhering to PCI-DSS v4.0 and SOC 2 Type II controls ensures transaction privacy, immutable balance records, and strict regulatory compliance without compromising transactional throughput. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation,.
 
 > **Prerequisite:** [Part 5: ISO 8583 & ISO 20022 Messaging](/series/core-banking-developer/part-5-iso-standards-integration/) on message translation layers.
 
@@ -40,7 +42,7 @@ The Payment Card Industry Data Security Standard (PCI-DSS) v4.0 governs any infr
 
 ### The 12 Core Requirements of PCI-DSS v4.0
 
-The following reference table outlines the technical implementation requirements specified under PCI-DSS v4.0 for cardholder data environments (CDE).
+PCI-DSS v4.0 specifies strict technical implementation requirements for cardholder data environments (CDE).
 
 | # | Requirement | Technical Implication |
 |---|---|---|
@@ -102,7 +104,7 @@ Anti-Money Laundering (AML) and Countering the Financing of Terrorism (CFT) regu
 
 ### Detection Techniques
 
-The following specification details standard transaction monitoring rules alongside the Go struct representing customer risk scoring models.
+Standard transaction monitoring rules operate alongside alongside the Go struct representing customer risk scoring models.
 
 ```
 Example Rules:
@@ -363,8 +365,8 @@ The architecture diagram below outlines the dual-path log execution pipeline rou
 
 ```mermaid
 graph LR
-    User[User Agent] --> App[Application Tier]
-    App --> Audit[Audit Logging Middleware]
+    User["User Agent"] --> App["Application Tier"]
+    App --> Audit["Audit Logging Middleware"]
     Audit --> DB[("Database System of Record")]
     Audit --> AuditLogs[("Immutable Audit Log Storage")]
 ```

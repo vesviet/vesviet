@@ -16,11 +16,14 @@ canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-9-building-ai-
 description: "Production guide to designing AI-native bounded context microservices, structured tool schemas, and resilient multi-agent backend architectures."
 ShowToc: true
 TocOpen: true
+series: ["ai-driven-engineer"]
+weight: 10
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 8 — The Junior Paradox](/series/ai-driven-engineer/part-8-the-junior-paradox/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Building an AI-Native Architecture requires refactoring traditional backend systems from static monolithic REST endpoints into modular Domain-Driven Design (DDD) bounded contexts exposed via standardized AI protocols (MCP / gRPC). This enables autonomous agents to inspect, reason over, and execute application capabilities dynamically under zero-trust security.
+> **Answer-first:** Building an AI-Native Architecture requires refactoring traditional backend systems from static monolithic REST endpoints into modular Domain-Driven Design (DDD) bounded contexts exposed via standardized AI protocols (MCP / gRPC). This enables autonomous agents to inspect, reason over, and execute application capabilities dynamically under zero-trust security. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model.
 
 **Key Takeaways**:
 - **DDD Bounded Context Isolation**: Prevents agent tool call blast radius by strictly decoupling billing, identity, and inventory domains.
@@ -46,7 +49,7 @@ graph TD
     UserClient["Human User / Web App"] --> Gateway["API & Gateway Security Plane"]
     AgentClient["Autonomous AI Agent / MCP Client"] --> Gateway
 
-    subgraph AI-Native Bounded Contexts (DDD)
+    subgraph AI-Native Bounded Contexts ("DDD")
         Gateway --> BillingService["Billing Context: gRPC + MCP Server"]
         Gateway --> InventoryService["Inventory Context: gRPC + MCP Server"]
         Gateway --> UserContext["User Profile Context: gRPC + MCP Server"]
@@ -56,7 +59,7 @@ graph TD
     InventoryService --> RedisCache[("Redis State Cache")]
     UserContext --> VectorDB[("pgvector Semantic Index")]
 
-    BillingService -->|"OTel Spans"| Collector[OpenTelemetry Collector]
+    BillingService -->|"OTel Spans"| Collector["OpenTelemetry Collector"]
     InventoryService -->|"OTel Spans"| Collector
 ```
 

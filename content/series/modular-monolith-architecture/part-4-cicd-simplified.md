@@ -6,7 +6,6 @@ description: "How to set up fast, reliable CI/CD pipelines for Go modular monore
 slug: "cicd-simplified-atomic-deployments-monolith"
 tags: ["CI/CD", "Deployments", "Shopify", "Buildkite", "Modular Monolith", "Testing"]
 categories: ["Modular Monolith", "Architecture"]
-aliases: ["/series/modular-monolith-architecture/part-4-cicd-simplified/"]
 cover:
   image: "/images/posts/golang-microservices-cover.jpg"
   alt: "Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal"
@@ -18,9 +17,12 @@ TocOpen: true
 mermaid: true
 draft: false
 image: "/images/posts/golang-microservices-cover.jpg"
+series: ["modular-monolith-architecture"]
+weight: 5
 ---
 
-> **Answer-first:** Large monoliths avoid slow CI/CD pipelines by implementing monorepo path-filtering, Go build caching, and selective test execution based on git diffs. Deploying a single-binary modular monolith enables atomic deployments where application code and schema migrations ship deterministically in a single commit release.
+
+> **Answer-first:** Large monoliths avoid slow CI/CD pipelines by implementing monorepo path-filtering, Go build caching, and selective test execution based on git diffs. Deploying a single-binary modular monolith enables atomic deployments where application code and schema migrations ship deterministically in a single commit release. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for production-grade.
 
 > **Prerequisite:** Before reading this part, please review [Part 3: DDD Module Boundaries](/series/modular-monolith-architecture/part-3-ddd-module-boundaries/).
 
@@ -41,13 +43,13 @@ The sequence diagram below illustrates the atomic CI/CD pipeline execution flow,
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Dev as Developer Pull Request
-    participant Filter as Git Diff Path Filter
-    participant GoBuild as Go Build Cache & Test Runner
-    participant Deploy as Atomic Deployment Pipeline
+    participant Dev as "Developer Pull Request"
+    participant Filter as "Git Diff Path Filter"
+    participant GoBuild as "Go Build Cache & Test Runner"
+    participant Deploy as "Atomic Deployment Pipeline"
     
-    Dev->>Filter: Push Commit Hash (Git Diff)
-    Filter->>GoBuild: Trigger Selective Test Suites (internal/billing)
+    Dev->>Filter: Push Commit Hash ("Git Diff")
+    Filter->>GoBuild: Trigger Selective Test Suites ("internal/billing")
     GoBuild->>GoBuild: Compile with $GOCACHE in parallel
     GoBuild-->>Deploy: Pass All Verification Checks
     Deploy->>Deploy: Atomic Single-Binary Container Push

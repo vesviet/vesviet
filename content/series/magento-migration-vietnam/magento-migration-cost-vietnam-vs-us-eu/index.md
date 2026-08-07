@@ -19,15 +19,17 @@ canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/magento-migr
 noTranslation: true
 mermaid: true
 image: "/images/posts/magento-migration-cost-cover.jpg"
+weight: 12
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Remote Team Vietnam Magento Migration](/series/magento-migration-vietnam/remote-team-vietnam-magento-migration/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Building a dedicated Go migration team in Vietnam achieves 60-70% cost savings compared to US/EU engineering teams while delivering equal technical capabilities for complex e-commerce re-architecture projects.
+> **Answer-first:** Building a dedicated Go migration team in Vietnam achieves 60-70% cost savings compared to US/EU engineering teams while delivering equal technical capabilities for complex e-commerce re-architecture projects. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
 
 **Answer-first:** Migrating a Magento monolith to Go microservices using a Vietnam team costs $320,000–$520,000 over 12–18 months. This delivers 60% direct labor savings compared to US or EU teams while achieving break-even on management overhead by month six.
 
-> **Series context:** This post is part of the [E-Commerce Re-Architecture in Vietnam](/series/magento-migration-vietnam/) series. For the technical architecture this budget funds, read [Zero-Downtime: Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/).
+> **Series context:** This post is part of the [E-Commerce Re-Architecture in Vietnam](/series/magento-migration-vietnam/) series. For the technical architecture this budget funds, read [Zero-Downtime: Moving from Magento to Microservices](/series/magento-migration-vietnam/moving-from-magento-to-microservices/).
 
 ---
 

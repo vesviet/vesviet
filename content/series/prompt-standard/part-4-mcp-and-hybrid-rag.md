@@ -3,7 +3,7 @@ title: "Part 4: Context Enrichment with Model Context Protocol (MCP) and Hybrid 
 date: "2026-07-26T10:30:00+07:00"
 lastmod: "2026-07-26T10:30:00+07:00"
 draft: false
-weight: 40
+weight: 4
 description: "Master 2026 context enrichment using Model Context Protocol (MCP) dynamic tool schemas, AST chunking, hybrid vector-sparse search, and cross-encoder re-ranking."
 categories: ["Engineering", "AI"]
 tags: ["prompt", "standard", "context-engineering", "agent"]
@@ -16,11 +16,13 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/prompt-standard/part-4-mcp-and-hybrid-rag/"
 mermaid: true
+series: ["prompt-standard"]
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Layered Prompt Architecture](/series/prompt-standard/part-3-layered-prompt-architecture/). Review it first if the terminology in this part is unfamiliar.
 
-**Answer-first:** Dynamic context enrichment combines Model Context Protocol (MCP) for tool schema injection with a four-stage hybrid RAG pipeline. By pairing sparse/dense vector search with cross-encoder re-ranking and AST-aware chunking, systems prune context token bloat by 70% while improving LLM retrieval accuracy and avoiding context window dilution.
+**Answer-first:** Dynamic context enrichment combines Model Context Protocol (MCP) for tool schema injection with a four-stage hybrid RAG pipeline. By pairing sparse/dense vector search with cross-encoder re-ranking and AST-aware chunking, systems prune context token bloat by 70% while improving LLM retrieval accuracy and avoiding context window dilution. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026.
 
 ---
 
@@ -34,11 +36,11 @@ The sequence diagram below demonstrates the dynamic discovery and execution prot
 
 ```mermaid
 graph TD
-    Agent[Agent Client Engine] -->|1. User Intent Analysis| Intent[Intent Classifier]
-    Intent -->|2. Semantic Search| MCPReg[MCP Server Registry]
-    MCPReg -->|3. Return Tool Subset| Agent
-    Agent -->|4. Dynamic MCP Tool Injection| LLM[LLM Context Stream]
-    LLM -->|5. JSON-RPC Call| MCPServer[MCP Server: Database / GitHub / Terminal]
+    Agent["Agent Client Engine"] -->|"1. User Intent Analysis"| Intent["Intent Classifier"]
+    Intent -->|"2. Semantic Search"| MCPReg["MCP Server Registry"]
+    MCPReg -->|"3. Return Tool Subset"| Agent
+    Agent -->|"4. Dynamic MCP Tool Injection"| LLM["LLM Context Stream"]
+    LLM -->|"5. JSON-RPC Call"| MCPServer["MCP Server: Database / GitHub / Terminal"]
 ```
 
 Under this protocol, tool schemas are transmitted over JSON-RPC channels. The payload below highlights an MCP tool declaration exposing parameter constraints to the host LLM.
@@ -68,12 +70,12 @@ The diagram below details the journey of raw source documents as they undergo AS
 
 ```mermaid
 graph LR
-    Doc[Raw Code / Docs] --> AST[1. AST & Header Chunking]
-    AST --> Index[2. Hybrid Index: Dense + Sparse]
-    Query[User Query] --> Index
-    Index -->|Top 100 Candidates| Rerank[3. Cross-Encoder Re-ranker]
-    Rerank -->|Top 5 Snippets| Comp[4. Token Compression]
-    Comp --> Context[Final LLM Prompt Context]
+    Doc["Raw Code / Docs"] --> AST["1. AST & Header Chunking"]
+    AST --> Index["2. Hybrid Index: Dense + Sparse"]
+    Query["User Query"] --> Index
+    Index -->|"Top 100 Candidates"| Rerank["3. Cross-Encoder Re-ranker"]
+    Rerank -->|"Top 5 Snippets"| Comp["4. Token Compression"]
+    Comp --> Context["Final LLM Prompt Context"]
 ```
 
 ### Stage Breakdown

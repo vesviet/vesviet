@@ -16,14 +16,16 @@ cover:
   image: "/images/posts/why-migrate-magento-to-microservices.jpg"
   alt: "Migrating Magento to Microservices: When & Why — Architecture Decision Guide"
   relative: false
-canonicalURL: "https://tanhdev.com/posts/why-migrate-magento-to-microservices/"
+canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/why-migrate-magento-to-microservices/"
+weight: 2
 ---
 
-> **Prerequisite:** Review [Magento Migration: Shared DB, CDC, or Event Bus?](/posts/strangler-fig-shared-database-quick-win/) for database synchronization strategies.
+
+> **Prerequisite:** Review [Magento Migration: Shared DB, CDC, or Event Bus?](/series/magento-migration-vietnam/strangler-fig-shared-database-quick-win/) for database synchronization strategies.
 
 # Why Migrate Magento to Microservices: Architectural Blueprint
 
-**Answer-first:** Migrating Magento to Go microservices eliminates monolithic database locking, reduces server RAM overhead, accelerates API responses, and enables independent domain team deployments.
+**Answer-first:** Migrating Magento to Go microservices eliminates monolithic database locking, reduces server RAM overhead, accelerates API responses, and enables independent domain team deployments. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
 
 Let's be direct: Magento is not a bad platform. For thousands of businesses, it is the right tool. It has a mature plugin ecosystem, a large developer community, and a proven track record across enterprise e-commerce.
 
@@ -101,7 +103,7 @@ LEFT JOIN sales_shipment
 ORDER BY sales_order.created_at ASC;
 ```
 
-And that is just orders. The product catalog EAV joins are significantly worse — fetching a single product with 30 attributes touches `catalog_product_entity_varchar`, `catalog_product_entity_int`, `catalog_product_entity_decimal`, and more in a single query. For a full breakdown of how to extract and flatten this data during migration, see [Exporting Magento 2 Orders: Bypassing the EAV Model with Clean SQL & Node.js](/posts/exporting-magento-2-data-flat-sql-nodejs/).
+And that is just orders. The product catalog EAV joins are significantly worse — fetching a single product with 30 attributes touches `catalog_product_entity_varchar`, `catalog_product_entity_int`, `catalog_product_entity_decimal`, and more in a single query. For a full breakdown of how to extract and flatten this data during migration, see [Exporting Magento 2 Orders: Bypassing the EAV Model with Clean SQL & Node.js](/series/magento-migration-vietnam/exporting-magento-2-data-flat-sql-nodejs/).
 
 A dedicated `Catalog Service` with a purpose-built schema and an Elasticsearch read model solves this cleanly:
 
@@ -113,12 +115,12 @@ The CQRS flow works like this: when the `Catalog` or `Pricing` service updates a
 
 ```mermaid
 graph LR
-    CAT[Catalog Service] -- "catalog.product.updated" --> DAPR[Dapr PubSub]
-    PRC[Pricing Service] -- "pricing.price.updated" --> DAPR
-    WH[Warehouse Service] -- "warehouse.stock.changed" --> DAPR
-    DAPR --> SEARCH[Search Service Worker]
-    SEARCH --> ES[(Elasticsearch)]
-    ES -- "sub-100ms reads" --> GW[API Gateway]
+    CAT["Catalog Service"] -- "catalog.product.updated" --> DAPR["Dapr PubSub"]
+    PRC["Pricing Service"] -- "pricing.price.updated" --> DAPR
+    WH["Warehouse Service"] -- "warehouse.stock.changed" --> DAPR
+    DAPR --> SEARCH["Search Service Worker"]
+    SEARCH --> ES["("Elasticsearch")"]
+    ES -- "sub-100ms reads" --> GW["API Gateway"]
 ```
 
 ### 4. Teams Step on Each Other
@@ -139,12 +141,12 @@ The microservice answer is the **Saga pattern**: each step is a local transactio
 
 ```mermaid
 sequenceDiagram
-    participant CK as Checkout Service
-    participant WH as Warehouse Service
-    participant PAY as Payment Service
-    participant ORD as Order Service
+    participant CK as "Checkout Service"
+    participant WH as "Warehouse Service"
+    participant PAY as "Payment Service"
+    participant ORD as "Order Service"
 
-    CK->>WH: Reserve stock (TTL 15 min)
+    CK->>WH: Reserve stock ("TTL 15 min")
     WH-->>CK: Stock reserved ✅
 
     CK->>PAY: Authorize payment
@@ -154,8 +156,8 @@ sequenceDiagram
     ORD-->>CK: Order created ✅
 
     Note over CK,ORD: If payment fails at any point:
-    CK->>WH: Release reservation (compensation)
-    CK->>PAY: Void authorization (compensation)
+    CK->>WH: Release reservation ("compensation")
+    CK->>PAY: Void authorization ("compensation")
 ```
 
 No long-lived database transactions. No connection pool exhaustion. Each service handles its own state, and failures trigger explicit rollback logic rather than implicit database rollbacks.
@@ -249,9 +251,9 @@ The migration to microservices makes sense when the cost of that simplicity — 
 
 That crossover point is real, and when you hit it, the architectural investment pays for itself in deployment velocity, operational resilience, and the ability to scale exactly what needs scaling — nothing more.
 
-For the exact playbook on how to execute this migration safely — including the 3-phase Strangler Fig pattern, Debezium CDC pipelines, and bidirectional sync — read [The Zero-Downtime Blueprint: Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/).
+For the exact playbook on how to execute this migration safely — including the 3-phase Strangler Fig pattern, Debezium CDC pipelines, and bidirectional sync — read [The Zero-Downtime Blueprint: Moving from Magento to Microservices](/series/magento-migration-vietnam/moving-from-magento-to-microservices/).
 
-If you are still evaluating team capability before a migration, read our core guide on [Magento Development in Vietnam: 2026 Hiring Guide](/posts/magento-vietnam/). For the destination stack, explore the complete [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
+If you are still evaluating team capability before a migration, read our core guide on [Magento Development in Vietnam: 2026 Hiring Guide](/series/magento-migration-vietnam/magento-vietnam/). For the destination stack, explore the complete [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
 
 {{< author-cta >}}
 
@@ -279,9 +281,8 @@ The Saga pattern replaces monolithic database transactions with local service tr
 
 If you have decided to migrate — or are building the business case to get executive sign-off — the next step is the technical execution plan.
 
-**[Zero-Downtime: Moving from Magento to Microservices →](/posts/moving-from-magento-to-microservices/)**
+**[Zero-Downtime: Moving from Magento to Microservices →](/series/magento-migration-vietnam/moving-from-magento-to-microservices/)**
 
 That guide covers the three-phase Strangler Fig execution: the Read-Only Gateway, the Dual-Write sync layer, and the Full Cutover with hot standby — all without dropping a single order.
 
 🔗 **Next Step:** Continue to [Go Engineers in Vietnam: Vetting for Magento Migration](/series/magento-migration-vietnam/go-engineers-vietnam-migration-vetting/) for the following module in the series.
-

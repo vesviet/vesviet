@@ -16,11 +16,18 @@ canonicalURL: "https://tanhdev.com/series/agentic-ecommerce-search/executive-sum
 description: "Complete technical summary and production engineering guide exploring why e-commerce platforms need agentic search over traditional keyword queries."
 ShowToc: true
 TocOpen: true
+series: ["agentic-ecommerce-search"]
+weight: 1
 ---
+
+> **Prerequisite:** Review the previous module in the [agentic-ecommerce-search](/series/agentic-ecommerce-search/) series before proceeding.
+
+
+
 
 ## Why E-commerce Needs Agentic Search? The Disruption of Keyword Queries
 
-> **Answer-first:** Traditional keyword-based e-commerce search (Elasticsearch / Solr) fails on complex, multi-attribute natural language user queries (e.g., *"waterproof trail running shoes under $150 for wide feet"*). Agentic E-commerce Search orchestrates Go microservices, hybrid vector indices, and product knowledge graphs to boost search conversion rates by 34%.
+> **Answer-first:** Traditional keyword-based e-commerce search (Elasticsearch / Solr) fails on complex, multi-attribute natural language user queries (e.g., *"waterproof trail running shoes under $150 for wide feet"*). Agentic E-commerce Search orchestrates Go microservices, hybrid vector indices, and product knowledge graphs to boost search conversion rates by 34%. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines.
 >
 > **Key Takeaways**:
 > - **34% Conversion Rate Increase**: Replaces zero-result keyword searches with semantic intent resolution and product feature extraction.
@@ -48,20 +55,20 @@ This failure mode costs e-commerce platforms millions of dollars in lost convers
 
 ```mermaid
 graph TD
-    UserQuery[Natural Language Query] --> IntentRouter["1. Golang Intent & Semantic Router"]
+    UserQuery["Natural Language Query"] --> IntentRouter["1. Golang Intent & Semantic Router"]
     
     subgraph Parallel Search Engine
         IntentRouter --> VectorSearch["2. Vector Similarity Search Qdrant / pgvector"]
         IntentRouter --> FilterEngine["3. Price & Attribute Filter Service"]
-        IntentRouter --> StockService[4. Real-Time Inventory Stock Check]
+        IntentRouter --> StockService["4. Real-Time Inventory Stock Check"]
     end
 
     VectorSearch --> Aggregator["Context Aggregator & Re-Ranker"]
     FilterEngine --> Aggregator
     StockService --> Aggregator
 
-    Aggregator --> AgentCritique[5. ReAct Agent Product Compatibility Critique]
-    AgentCritique --> RecommendedProducts[Ranked Product Results Display]
+    Aggregator --> AgentCritique["5. ReAct Agent Product Compatibility Critique"]
+    AgentCritique --> RecommendedProducts["Ranked Product Results Display"]
 ```
 
 ---

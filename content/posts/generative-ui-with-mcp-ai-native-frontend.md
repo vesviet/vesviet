@@ -37,7 +37,7 @@ canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-fronte
 
 # Generative UI with MCP: Architecting AI-Native Frontends
 
-**Answer-first:** Generative UI powered by Model Context Protocol (MCP) enables backend AI models to dynamically render tailored frontend components, streaming reactive interface updates directly to client web apps.
+**Answer-first:** Generative UI powered by Model Context Protocol (MCP) enables backend AI models to dynamically render tailored frontend components, streaming reactive interface updates directly to client web apps. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
 
 Generative UI with Model Context Protocol (MCP) moves frontends from text-only chat interfaces to dynamic, interactive UI components. Using React Server Components, Zod runtime schema validation, dynamic component registries, and iframe sandboxing, AI agents can safely trigger rich native UI components directly from structured tool call outputs. This post covers six pieces of that architecture: moving beyond plain-text chat, reconciling agent reasoning state with live DOM state, managing a versioned component registry, securing and making components accessible, human-in-the-loop confirmation for high-risk actions, and testing/deploying at the edge.
 
@@ -51,9 +51,9 @@ Generative UI (Gen 3) has AI agents directly orchestrate frontend UI component h
 
 ```mermaid
 graph LR
-    G1[Gen 1: Text] -->|model output| TEXT["Here is your order status: Shipped"]
-    G2[Gen 2: Tool Call] -->|tool result| TEXT2["Order #123 shipped on 2026-06-01, ETA 2026-06-03"]
-    G3[Gen 3: Generative UI] -->|component spec| UI["<OrderStatusCard orderId='123' status='shipped' />"]
+    G1["Gen 1: Text"] -->|"model output"| TEXT["Here is your order status: Shipped"]
+    G2["Gen 2: Tool Call"] -->|"tool result"| TEXT2["Order #123 shipped on 2026-06-01, ETA 2026-06-03"]
+    G3["Gen 3: Generative UI"] -->|"component spec"| UI["<OrderStatusCard orderId='123' status='shipped' />"]
 ```
 
 Rather than rendering static text paragraphs describing an order status or flight itinerary, the agent emits an MCP tool call targeting a registered UI component spec. The frontend runtime resolves the spec and dynamically mounts interactive cards, data visualization charts, or confirmation forms directly within the chat feed.

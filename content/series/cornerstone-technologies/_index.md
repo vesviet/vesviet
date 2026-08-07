@@ -5,7 +5,7 @@ date: "2026-07-25T09:00:00+07:00"
 draft: false
 weight: 1
 description: "In-depth technical guides (Pillar Content) on core backend engineering, edge compute, low-latency streaming, and distributed systems architecture for Senior Go Engineers."
-series: ["Cornerstone Technologies"]
+series: ["cornerstone-technologies"]
 cover:
   image: "/images/posts/cornerstone-technologies.jpg"
   alt: "Cornerstone Technologies: Distributed Systems Architecture & Production Guide"
@@ -66,4 +66,3 @@ Yes, all code snippets, configurations, benchmark parameters, and topology diagr
 Each guide in the series is fully self-contained and can be consulted independently based on immediate engineering requirements. However, when architecting a new cloud-native microservices platform from scratch, the recommended reading progression starts with NATS JetStream (Event Streaming Bus), followed by Zero-Trust Architecture (mTLS Security), Temporal Workflow (Distributed Saga Orchestration), Cloudflare Workers (Edge Gateway & Wasm), and Qdrant Vector DB (AI RAG Integration).
 
 🔗 **Next Step:** Continue to [Nats Jetstream Golang Production Guide](/series/cornerstone-technologies/nats-jetstream-golang-production-guide/) for the first module in this series.
-

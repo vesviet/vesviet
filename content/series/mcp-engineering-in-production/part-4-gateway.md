@@ -17,13 +17,16 @@ description: "Design a high-performance Go MCP Gateway for dynamic JSON-RPC tool
 ShowToc: true
 TocOpen: true
 image: "/images/posts/part-4-gateway.jpg"
+series: ["mcp-engineering-in-production"]
+weight: 5
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Identity](/series/mcp-engineering-in-production/part-3-identity/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 4 — MCP Gateway Architecture & Routing
 
-> **Answer-first:** Operating multiple independent MCP servers across an enterprise creates point-to-point management sprawl and security leaks. An **MCP Gateway** acts as a centralized reverse proxy control plane, handling dynamic tool routing, rate limiting, authentication enforcement, and circuit breaking for all downstream MCP server microservices.
+> **Answer-first:** Operating multiple independent MCP servers across an enterprise creates point-to-point management sprawl and security leaks. An **MCP Gateway** acts as a centralized reverse proxy control plane, handling dynamic tool routing, rate limiting, authentication enforcement, and circuit breaking for all downstream MCP server microservices. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context Protocol.
 >
 > **Key Takeaways**:
 > - **Centralized Control Plane**: Eliminates point-to-point connections by proxying all AI agent tool requests through a single gateway.
@@ -49,8 +52,8 @@ graph TD
 
     subgraph Centralized Gateway Services
         Gateway --> AuthGuard["1. OAuth 2.1 JWT & mTLS Guard"]
-        Gateway --> RateLimiter[2. Token Bucket Rate Limiter]
-        Gateway --> ToolAggregator[3. Unified Tool Directory Aggregator]
+        Gateway --> RateLimiter["2. Token Bucket Rate Limiter"]
+        Gateway --> ToolAggregator["3. Unified Tool Directory Aggregator"]
         Gateway --> CircuitBreaker["4. Circuit Breaker & Failover"]
     end
 
@@ -206,13 +209,13 @@ To prevent malicious or looping AI agents from exhausting backend database conne
 
 ```mermaid
 graph TD
-    A[Agent Tool Call Request] --> B[MCP Gateway Ingress]
-    B --> C{Check Token Bucket in Redis}
-    C -->|Within Rate Limit| D[Dispatch to Downstream MCP Server]
-    C -->|Rate Limit Exceeded| E[Return HTTP 429 Too Many Requests]
-    D --> F{Circuit Breaker State}
-    F -->|Closed - Healthy| G[Execute Tool Action]
-    F -->|Open - High Error Rate| H[Instant Fallback Error Response]
+    A["Agent Tool Call Request"] --> B["MCP Gateway Ingress"]
+    B --> C{"Check Token Bucket in Redis"}
+    C -->|"Within Rate Limit"| D["Dispatch to Downstream MCP Server"]
+    C -->|"Rate Limit Exceeded"| E["Return HTTP 429 Too Many Requests"]
+    D --> F{"Circuit Breaker State"}
+    F -->|"Closed - Healthy"| G["Execute Tool Action"]
+    F -->|"Open - High Error Rate"| H["Instant Fallback Error Response"]
 ```
 
 ### Go Implementation: Redis Token Bucket Middleware
@@ -269,4 +272,3 @@ func (rl *RateLimiter) Allow(ctx context.Context, clientID string, limit int, wi
 - [Part 6 — Observability & Tracing](/series/mcp-engineering-in-production/part-6-observability/)
 - [Part 7 — Enterprise MCP Strategy & Multi-Tenancy](/series/mcp-engineering-in-production/part-7-enterprise/)
 - [MCP Gateway Architecture & Masterclass](/series/mcp-engineering-in-production/)
-

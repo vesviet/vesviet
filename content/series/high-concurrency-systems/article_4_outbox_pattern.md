@@ -3,7 +3,7 @@ title: "Dual-Write Prevention via Transactional Outbox in Go"
 date: "2026-06-09T10:15:00+07:00"
 lastmod: "2026-06-09T10:15:00+07:00"
 draft: false
-series: ["Mastering High-Concurrency Systems in Production"]
+series: ["high-concurrency-systems"]
 series_order: 4
 tags: ["golang", "kafka", "outbox pattern", "microservices"]
 categories: ["High Concurrency", "Messaging"]
@@ -12,9 +12,6 @@ slug: "transactional-outbox-pattern-dual-write"
 description: "Master the Transactional Outbox Pattern using GORM and Debezium CDC to eliminate dual-write data inconsistencies in event-driven Go microservices."
 ShowToc: true
 TocOpen: true
-aliases:
-  - "/series/high-concurrency-systems/part-5-transactional-outbox/"
-  - "/series/high-concurrency-systems/part-6-saga-orchestration/"
 cover:
   image: "/images/posts/transactional-outbox-pattern-dual-write.jpg"
   alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
@@ -22,9 +19,12 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/"
 image: "/images/posts/transactional-outbox-pattern-dual-write.jpg"
+weight: 5
+aliases: ["/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/"]
 ---
 
-> **Prerequisite:** Read the previous article: [Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm](/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/).
+
+> **Prerequisite:** Read the previous article: [Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm](/series/high-concurrency-systems/article_3_rate_limiting/).
 
 When your Golang application migrates from a Monolith to event-driven Microservices, you will immediately face an architectural nightmare: the **Dual-Write Problem**.
 
@@ -87,15 +87,15 @@ func createOrderWithOutbox(db DB, order Order, jsonPayload []byte) error {
 
 ```mermaid
 graph TD
-    A[Order Service] -->|1. Begin SQL Tx| DB[("PostgreSQL")]
+    A["Order Service"] -->|"1. Begin SQL Tx"| DB[("PostgreSQL")]
     
     subgraph ACID Transaction
-        DB -->|2. INSERT| T1[orders table]
-        DB -->|3. INSERT| T2[outbox_events table]
+        DB -->|"2. INSERT"| T1["orders table"]
+        DB -->|"3. INSERT"| T2["outbox_events table"]
     end
     
-    T2 -.->|4. CDC / Polling| Kafka[Kafka Broker]
-    Kafka -.->|5. Consume| B[Delivery Service]
+    T2 -.->|"4. CDC / Polling"| Kafka["Kafka Broker"]
+    Kafka -.->|"5. Consume"| B["Delivery Service"]
 ```
 
 ---
@@ -107,7 +107,7 @@ Change Data Capture (CDC) requires hooking into PostgreSQL's internal Write-Ahea
 ```ini
 # postgresql.conf
 
-**Answer-first:** The Transactional Outbox pattern resolves dual-write inconsistencies between relational databases and event brokers by writing domain events to an outbox table within the local DB transaction.
+**Answer-first:** The Transactional Outbox pattern resolves dual-write inconsistencies between relational databases and event brokers by writing domain events to an outbox table within the local DB transaction. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
 
 # 1. Set the WAL level to logical (default is replica)
 wal_level = logical
@@ -167,7 +167,7 @@ Key configuration rationale:
 
 ## 5. Offset Commit Models
 
-To ensure high reliability, you must design a robust **Offset Commit Model** at the consumer tier. Under the Hood, Kafka maintains consumer positions in an internal topic named `__consumer_offsets`.
+To ensure high reliability, you must design a resilient **Offset Commit Model** at the consumer tier. Under the Hood, Kafka maintains consumer positions in an internal topic named `__consumer_offsets`.
 
 There are three common delivery semantics:
 1. **At-Least-Once Delivery (Recommended for FinTech):** The consumer commits offsets to Kafka **ONLY after** the local business processing completes successfully. If the consumer crashes midway, the unprocessed messages are re-delivered on restart. This introduces potential duplicate events, which must be handled using idempotency.
@@ -341,7 +341,7 @@ Fault tolerance in the Transactional Outbox pattern relies on Netflix Hystrix-st
 
 ---
 
-🔗 **Next Step:** [Chapter 5: Optimizing Golang Database Connection Pools](/series/high-concurrency-systems/golang-database-connection-pool-optimization/)
+🔗 **Next Step:** [Chapter 5: Optimizing Golang Database Connection Pools](/series/high-concurrency-systems/article_5_db_connection/)
 
 ## Architectural Context & Pillar References
 

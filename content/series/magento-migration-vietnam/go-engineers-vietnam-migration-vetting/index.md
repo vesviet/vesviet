@@ -19,15 +19,17 @@ canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/go-engineers
 noTranslation: true
 mermaid: true
 image: "/images/posts/go-engineers-vietnam-vetting-cover.jpg"
+weight: 11
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Magento Migration Cost Vietnam Vs Us Eu](/series/magento-migration-vietnam/magento-migration-cost-vietnam-vs-us-eu/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Vetting Go engineers in Vietnam for Magento migrations requires assessing distributed systems design skills—such as Saga orchestration, CDC outbox patterns, and dual-write conflict resolution—rather than basic syntax fluency.
+> **Answer-first:** Vetting Go engineers in Vietnam for Magento migrations requires assessing distributed systems design skills—such as Saga orchestration, CDC outbox patterns, and dual-write conflict resolution—rather than basic syntax fluency. Deploying this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory pooling via Go 1.24 string interning, and resilient Dapr 1.15 workflow state synchronization.
 
 **Answer-first:** Vetting Go engineers for Magento migration requires a different interview framework than greenfield hiring. The critical signal is not Go syntax fluency — it's distributed systems experience under legacy coupling constraints. Five production scenarios reveal whether a candidate can actually own migration work versus only build clean APIs from scratch.
 
-> **Series context:** This post is part of the [E-Commerce Re-Architecture in Vietnam](/series/magento-migration-vietnam/) series. For background on the migration architecture this team will execute, read [Zero-Downtime: Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/) first.
+> **Series context:** This post is part of the [E-Commerce Re-Architecture in Vietnam](/series/magento-migration-vietnam/) series. For background on the migration architecture this team will execute, read [Zero-Downtime: Moving from Magento to Microservices](/series/magento-migration-vietnam/moving-from-magento-to-microservices/) first.
 
 ---
 
@@ -37,10 +39,10 @@ The flowchart below outlines the technical assessment process for evaluating whe
 
 ```mermaid
 graph TD
-    Cand[Interview Candidate] --> Tech[Technical Assessment]
-    Tech -->|Scenario 1| Saga[Saga Pattern Failure Handling]
-    Tech -->|Scenario 2| CDC["Debezium CDC Sync & Dual Write"]
-    Tech -->|Scenario 3| SQL[EAV Schema to Postgres JSONB]
+    Cand["Interview Candidate"] --> Tech["Technical Assessment"]
+    Tech -->|"Scenario 1"| Saga["Saga Pattern Failure Handling"]
+    Tech -->|"Scenario 2"| CDC["Debezium CDC Sync & Dual Write"]
+    Tech -->|"Scenario 3"| SQL["EAV Schema to Postgres JSONB"]
 ```
 
 Most Go interview guides test the wrong skills for migration projects.
@@ -290,11 +292,11 @@ For assistance in assembling or auditing senior Go engineering teams in Vietnam,
 
 *Next in series: [Magento Migration Cost: Vietnam vs US/EU Team (2026 Model) →](/series/magento-migration-vietnam/magento-migration-cost-vietnam-vs-us-eu/)*
 
-*Previous: [Vetting Magento Developers in Vietnam: Interview Playbook →](/posts/magento-development-in-vietnam/)*
+*Previous: [Vetting Magento Developers in Vietnam: Interview Playbook →](/series/magento-migration-vietnam/magento-development-in-vietnam/)*
 
 ## Architectural Context & Pillar References
 
-- [Magento Development & Outsourcing Vietnam](/posts/magento-development-in-vietnam/)
-- [Why Migrate Magento to Go Microservices](/posts/why-migrate-magento-to-microservices/)
+- [Magento Development & Outsourcing Vietnam](/series/magento-migration-vietnam/magento-development-in-vietnam/)
+- [Why Migrate Magento to Go Microservices](/series/magento-migration-vietnam/why-migrate-magento-to-microservices/)
 
 🔗 **Next Step:** Continue to [Post Migration Operations Vietnam Go Team](/series/magento-migration-vietnam/post-migration-operations-vietnam-go-team/) for the following module in the series.

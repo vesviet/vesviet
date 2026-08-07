@@ -14,9 +14,12 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/05-observability/"
 image: "/images/posts/shopee-flash-sale-cover.jpg"
+series: ["shopee-architecture"]
+weight: 5
 ---
 
-> **Answer-first:** Shopee isolates latency bottlenecks across 30+ microservice call hops by combining OpenTelemetry distributed tracing, ClickHouse columnar log storage, and Apache Flink real-time stream processing. Injecting W3C trace contexts through gRPC headers enables SREs to reconstruct waterfall traces and diagnose microservice failures in sub-seconds.
+
+> **Answer-first:** Shopee isolates latency bottlenecks across 30+ microservice call hops by combining OpenTelemetry distributed tracing, ClickHouse columnar log storage, and Apache Flink real-time stream processing. Injecting W3C trace contexts through gRPC headers enables SREs to reconstruct waterfall traces and diagnose microservice failures in sub-seconds. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for.
 
 ## Chapter 5: Observability - Finding Bugs in the Microservices Jungle
 
@@ -174,11 +177,11 @@ The architectural diagram below traces telemetry context propagation from API Ga
 
 ```mermaid
 graph TD
-    Gateway["API Gateway<br/>Generates TraceID"] -->|Passes TraceID| Order["Order Service<br/>Span A"]
-    Order -->|Passes TraceID| Inventory["Inventory Service<br/>Span B"]
-    Order -->|Passes TraceID| Promo["Promo Service<br/>Span C"]
+    Gateway["API Gateway<br/>Generates TraceID"] -->|"Passes TraceID"| Order["Order Service<br/>Span A"]
+    Order -->|"Passes TraceID"| Inventory["Inventory Service<br/>Span B"]
+    Order -->|"Passes TraceID"| Promo["Promo Service<br/>Span C"]
     
-    Gateway -.-> OTEL[Telemetry Collector]
+    Gateway -.-> OTEL["Telemetry Collector"]
     Order -.-> OTEL
     Inventory -.-> OTEL
     Promo -.-> OTEL

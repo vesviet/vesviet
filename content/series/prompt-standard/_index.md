@@ -42,19 +42,19 @@ Standardizing prompt engineering transforms informal prompt tweaking into a stru
 ```mermaid
 graph TD
     subgraph VibePrompting [Vibe-Based Prompting]
-        A[Freeform Prompt Idea] --> B[Ad-Hoc Text Editing]
-        B --> C[Manual Model Query]
-        C --> D{Does output look okay?}
-        D -->|"Yes"| E[Deploy Raw String]
+        A["Freeform Prompt Idea"] --> B["Ad-Hoc Text Editing"]
+        B --> C["Manual Model Query"]
+        C --> D{"Does output look okay?"}
+        D -->|"Yes"| E["Deploy Raw String"]
         D -->|"No"| B
     end
 
     subgraph PromptStandard [Prompt Standard Workflow]
-        F[Define Signature & Objective] --> G[Decompose into 8 Core Blocks]
-        G --> H[Store Versioned Stack in Git]
-        H --> I[Automated Schema Validation]
-        I --> J[Run Golden Dataset Evals]
-        J --> K[Deploy to Production Gateway]
+        F["Define Signature & Objective"] --> G["Decompose into 8 Core Blocks"]
+        G --> H["Store Versioned Stack in Git"]
+        H --> I["Automated Schema Validation"]
+        I --> J["Run Golden Dataset Evals"]
+        J --> K["Deploy to Production Gateway"]
     end
 ```
 

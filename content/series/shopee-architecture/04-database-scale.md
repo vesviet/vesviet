@@ -17,9 +17,12 @@ tags: ["Shopee", "TiDB", "MySQL", "Sharding", "Distributed SQL", "HTAP"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/04-database-scale/"
 image: "/images/posts/shopee-flash-sale-cover.jpg"
+series: ["shopee-architecture"]
+weight: 4
 ---
 
-> **Answer-first:** Shopee scales its relational database layer past single-node MySQL limits by migrating to TiDB Distributed SQL. By separating stateless SQL compute (TiDB) from stateful key-value storage (TiKV) and columnar analytics (TiFlash), TiDB delivers transparent horizontal auto-sharding and ACID transactions without application-level sharding logic.
+
+> **Answer-first:** Shopee scales its relational database layer past single-node MySQL limits by migrating to TiDB Distributed SQL. By separating stateless SQL compute (TiDB) from stateful key-value storage (TiKV) and columnar analytics (TiFlash), TiDB delivers transparent horizontal auto-sharding and ACID transactions without application-level sharding logic. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for.
 
 ## Chapter 4: Database Scale - The Rise of TiDB and NewSQL
 
@@ -55,10 +58,10 @@ The architectural diagram below illustrates the separation of TiDB stateless SQL
 
 ```mermaid
 graph TD
-    App[Shopee Backend] -->|Standard MySQL Protocol| TiDB["TiDB Server<br/>(Stateless SQL Engine)"]
-    App -->|MySQL Protocol| TiDB2[TiDB Server 2]
+    App["Shopee Backend"] -->|"Standard MySQL Protocol"| TiDB["TiDB Server<br/>("Stateless SQL Engine")"]
+    App -->|"MySQL Protocol"| TiDB2["TiDB Server 2"]
     
-    subgraph "TiDB Cluster (NewSQL)"
+    subgraph "TiDB Cluster ("NewSQL")"
         TiDB --> PD["Placement Driver<br/>Routing & Metadata"]
         TiDB2 --> PD
         
@@ -69,7 +72,7 @@ graph TD
         TiDB --> TiKV1
         TiDB2 --> TiKV2
         
-        TiFlash[("TiFlash<br/>Columnar Storage for OLAP")] -.->|Raft Learner| TiKV1
+        TiFlash[("TiFlash<br/>Columnar Storage for OLAP")] -.->|"Raft Learner"| TiKV1
     end
 ```
 

@@ -17,11 +17,18 @@ description: "Exhaustive technical summary and production engineering guide for 
 ShowToc: true
 TocOpen: true
 image: "/images/posts/executive-summary-6.jpg"
+series: ["mcp-engineering-in-production"]
+weight: 1
 ---
+
+> **Prerequisite:** Review the previous module in the [mcp-engineering-in-production](/series/mcp-engineering-in-production/) series before proceeding.
+
+
+
 
 ## Executive Summary — Model Context Protocol in Production: The Control Plane of AI
 
-> **Answer-first:** Model Context Protocol (MCP) establishes an open, vendor-agnostic JSON-RPC 2.0 standard for connecting AI agents to enterprise data sources, tools, and prompts. Replacing ad-hoc custom integrations with production MCP Gateways enforces 100% data isolation, mTLS identity verification, and central telemetry auditing across enterprise microservices.
+> **Answer-first:** Model Context Protocol (MCP) establishes an open, vendor-agnostic JSON-RPC 2.0 standard for connecting AI agents to enterprise data sources, tools, and prompts. Replacing ad-hoc custom integrations with production MCP Gateways enforces 100% data isolation, mTLS identity verification, and central telemetry auditing across enterprise microservices. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context.
 >
 > **Key Takeaways**:
 > - **Unified JSON-RPC Standard**: Eliminates custom API integration glue code across LLM frameworks (Claude, Cursor, LangChain).
@@ -49,7 +56,7 @@ graph TD
     subgraph Enterprise MCP Control Plane
         MCPGateway --> IdentityAuth["1. OAuth 2.1 PKCE / mTLS Auth Guard"]
         MCPGateway --> RateLimiter["2. Rate Limiting & Token Budgeter"]
-        MCPGateway --> AuditTrace[3. OpenTelemetry Audit Logger]
+        MCPGateway --> AuditTrace["3. OpenTelemetry Audit Logger"]
     end
 
     MCPGateway -->|"JSON-RPC 2.0 ("stdio / SSE")"| Server1["MCP Server: Billing & SQL"]
@@ -57,7 +64,7 @@ graph TD
     MCPGateway -->|"JSON-RPC 2.0 ("stdio / SSE")"| Server3["MCP Server: Vector & Graph DB"]
 
     Server1 --> Postgres[("PostgreSQL OLTP")]
-    Server2 --> K8sAPI[Kubernetes Control Plane]
+    Server2 --> K8sAPI["Kubernetes Control Plane"]
     Server3 --> VectorDB[("pgvector / Neo4j")]
 ```
 
@@ -237,7 +244,7 @@ func main() {
 
 This FAQ addresses key engineering decisions around adopting JSON-RPC 2.0, enterprise Gateway security management, and core MCP server primitives (Resources, Tools, and Prompts).
 
-Model Context Protocol (MCP) implementations depend on robust SSE transport, JSON-RPC message validation, and OAuth2 authorization boundaries.
+Model Context Protocol (MCP) implementations depend on resilient SSE transport, JSON-RPC message validation, and OAuth2 authorization boundaries.
 
 ### Q1: Why did Model Context Protocol (MCP) adopt JSON-RPC 2.0 over REST or gRPC?
 MCP adopted JSON-RPC 2.0 because LLMs process and generate human-readable JSON payloads natively. Furthermore, JSON-RPC 2.0 operates identically across bi-directional streaming transport channels (`stdio` for local IPC process pipes and Server-Sent Events for network RPCs), whereas gRPC requires binary Protocol Buffer compilers and complex proxy setups for local process communication.

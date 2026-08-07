@@ -29,12 +29,12 @@ image: "/images/posts/mcp-engineering-in-production.jpg"
 
 ```mermaid
 graph TD
-    A[AI Client / Agent] -->|OAuth 2.1 Bearer Token| B[Enterprise MCP Gateway]
-    B -->|Schema Validation & Rate Limiting| C{Transport Router}
-    C -->|HTTP / SSE Stream| D[Go MCP Database Server]
-    C -->|gRPC Internal| E[Go MCP Vector Search Server]
-    D --> F[PostgreSQL / Redis]
-    E --> G[Qdrant / Milvus Vector DB]
+    A["AI Client / Agent"] -->|"OAuth 2.1 Bearer Token"| B["Enterprise MCP Gateway"]
+    B -->|"Schema Validation & Rate Limiting"| C{"Transport Router"}
+    C -->|"HTTP / SSE Stream"| D["Go MCP Database Server"]
+    C -->|"gRPC Internal"| E["Go MCP Vector Search Server"]
+    D --> F["PostgreSQL / Redis"]
+    E --> G["Qdrant / Milvus Vector DB"]
 ```
 
 The Model Context Protocol (MCP) has moved far beyond being just a tool for IDEs (like Cursor or Claude) to become the "USB-C for AI"—the mandatory communication standard for Agentic Workflows. However, elevating MCP from a local environment to Production at an Enterprise scale is an entirely different challenge.

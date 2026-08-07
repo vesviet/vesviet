@@ -16,7 +16,14 @@ canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/executive-summary/"
 description: "Executive summary of the AI-Driven Engineer masterclass, detailing SDLC transformation, multi-agent swarms, and architectural survival."
 ShowToc: true
 TocOpen: true
+series: ["ai-driven-engineer"]
+weight: 1
 ---
+
+> **Prerequisite:** Review the previous module in the [ai-driven-engineer](/series/ai-driven-engineer/) series before proceeding.
+
+
+
 
 > **Answer-first:** The commoditization of raw syntax typing by LLMs shifts software engineering value from manual coding to Systems Architecture, Context Engineering, and AI Swarm Orchestration. Utilizing tree-sitter AST validation engines and Model Context Protocol (MCP) tool integration, system orchestrators achieve 5x throughput while enforcing strict zero-trust security and sub-second code evaluation loops.
 
@@ -34,13 +41,13 @@ The engineer evolution matrix maps the career transition from manual syntax writ
 
 ```mermaid
 graph TD
-    Sub1[Pre-AI Developer Paradigm] --> |80% Effort| SyntaxTyping["Manual Syntax & Boilerplate Typing"]
-    Sub1 --> |20% Effort| SysArch1["Basic Architecture & Logic"]
+    Sub1["Pre-AI Developer Paradigm"] --> |"80% Effort"| SyntaxTyping["Manual Syntax & Boilerplate Typing"]
+    Sub1 --> |"20% Effort"| SysArch1["Basic Architecture & Logic"]
 
-    Sub2[AI-Native Developer Paradigm] --> |0% Effort| SyntaxAuto[Automated AI Code Generation]
-    Sub2 --> |40% Effort| ContextEng["Context Engineering & AST Specifications"]
-    Sub2 --> |40% Effort| SysArch2["System Architecture & Boundary Guardrails"]
-    Sub2 --> |20% Effort| QualitySafety["Safety Auditing & Continuous Evals"]
+    Sub2["AI-Native Developer Paradigm"] --> |"0% Effort"| SyntaxAuto["Automated AI Code Generation"]
+    Sub2 --> |"40% Effort"| ContextEng["Context Engineering & AST Specifications"]
+    Sub2 --> |"40% Effort"| SysArch2["System Architecture & Boundary Guardrails"]
+    Sub2 --> |"20% Effort"| QualitySafety["Safety Auditing & Continuous Evals"]
 ```
 
 ### Technical Paradigm Evolution
@@ -184,10 +191,10 @@ The 90-day transition roadmap provides a structured blueprint for mastering AI p
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Dev as Software Engineer
-    participant Month1 as Month 1: Context Engineering
-    participant Month2 as Month 2: AI Multi-Agent Swarms
-    participant Month3 as Month 3: System Design & Evals
+    participant Dev as "Software Engineer"
+    participant Month1 as "Month 1: Context Engineering"
+    participant Month2 as "Month 2: AI Multi-Agent Swarms"
+    participant Month3 as "Month 3: System Design & Evals"
 
     Dev->>Month1: Master Prompting, AST Context Windows & Schema Specs
     Month1->>Month2: Adopt MCP Servers & Multi-Agent Automated Workflows

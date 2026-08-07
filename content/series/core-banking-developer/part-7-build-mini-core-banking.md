@@ -16,8 +16,9 @@ canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-7-build-mi
 ShowToc: true
 TocOpen: true
 mermaid: true
-
+series: ["core-banking-developer"]
 ---
+
 
 # Part 7: Build a Mini Core Banking System in Go
 
@@ -44,12 +45,12 @@ The architecture sequence diagram below illustrates how an inbound fund transfer
 
 ```mermaid
 graph TD
-    Client["REST / gRPC Client"] --> Handler[Transfer Handler]
-    Handler --> Idem{Check Idempotency Key}
-    Idem -->|Cached| Return[Return Previous Result]
-    Idem -->|New| Lock[Pessimistic Row Lock Accounts]
+    Client["REST / gRPC Client"] --> Handler["Transfer Handler"]
+    Handler --> Idem{"Check Idempotency Key"}
+    Idem -->|"Cached"| Return["Return Previous Result"]
+    Idem -->|"New"| Lock["Pessimistic Row Lock Accounts"]
     Lock --> Ledger["Insert Paired Debit/Credit Entries"]
-    Ledger --> Balance[Update Account Balance]
+    Ledger --> Balance["Update Account Balance"]
     Balance --> Commit["Commit Transaction & Trigger Events"]
 ```
 

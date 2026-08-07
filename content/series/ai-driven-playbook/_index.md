@@ -48,11 +48,11 @@ This playbook covers production system architectures, configuration files, and o
 
 ```mermaid
 graph TD
-    A[Developer IDE / Agent Gateway] --> B[Context Engineering & AST Engine]
-    B --> C[Enterprise Hybrid RAG Brain]
-    C --> D[MCP Automation Sub-Agents]
-    D --> E[Zero-Trust Security & Policy Guardrails]
-    E --> F[OpenTelemetry Observability & Evals]
+    A["Developer IDE / Agent Gateway"] --> B["Context Engineering & AST Engine"]
+    B --> C["Enterprise Hybrid RAG Brain"]
+    C --> D["MCP Automation Sub-Agents"]
+    D --> E["Zero-Trust Security & Policy Guardrails"]
+    E --> F["OpenTelemetry Observability & Evals"]
 ```
 
 | Pillar | Focus | Technology & Tooling | Engineering Target |
@@ -87,4 +87,3 @@ Generic tutorials focus on simple API calls and naive character chunking over sm
 
 ### What prerequisites are needed before implementing these architecture patterns?
 Engineers should be proficient in distributed system design, container orchestration (Docker/Kubernetes), and modern programming languages such as Go 1.24+, Python 3.12+, or TypeScript. Familiarity with Pydantic v2 schemas, vector databases, and LLM orchestration proxies is recommended.
-

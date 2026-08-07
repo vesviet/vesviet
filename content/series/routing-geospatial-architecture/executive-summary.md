@@ -7,7 +7,7 @@ draft: false
 weight: 1
 tags: ["architecture", "golang", "graphhopper", "Architecture"]
 categories: ["Geospatial", "Architecture"]
-series: ["Routing & Geospatial Architecture"]
+series: ["routing-geospatial-architecture"]
 cover:
   image: "/images/posts/graphhopper-cover.jpg"
   alt: "Geospatial and Routing Engine Architecture series: Go and GraphHopper for production routing"
@@ -21,11 +21,12 @@ series_order: 0
 image: "/images/posts/graphhopper-cover.jpg"
 ---
 
+
 > **Prerequisite:** This is the executive summary and introductory overview of the **Routing & Geospatial Architecture** series. No prior reading is required to start here.
 
 ## Executive Summary: Geospatial & Routing Architecture
 
-> **Answer-first:** High-concurrency routing systems combine Java-based GraphHopper engines for Contraction Hierarchies pathfinding with a Golang API Gateway using Uber H3 hexagonal indexing and Redis semantic caching. This architecture resolves 100x100 distance matrices in under 30ms while reducing compute load by up to 95%.
+> **Answer-first:** High-concurrency routing systems combine Java-based GraphHopper engines for Contraction Hierarchies pathfinding with a Golang API Gateway using Uber H3 hexagonal indexing and Redis semantic caching. This architecture resolves 100x100 distance matrices in under 30ms while reducing compute load by up to 95%. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for production-grade.
 >
 > **Key Takeaways**:
 > - **Spatial Indexing**: Uber H3 resolution 8 cells standardize coordinates into integer-based spatial tokens, enabling sub-2ms semantic cache lookups.
@@ -52,19 +53,19 @@ The system decouples high-concurrency API requests using a Golang Gateway that i
 flowchart TB
     Client["Mobile App / Dispatcher"]
     
-    subgraph "API Gateway Layer (Golang)"
-        GoRouter[Go Routing API]
-        H3Index[Uber H3 Geospatial Indexer]
+    subgraph "API Gateway Layer ("Golang")"
+        GoRouter["Go Routing API"]
+        H3Index["Uber H3 Geospatial Indexer"]
     end
     
     subgraph "Caching Layer"
         Redis[("Redis Semantic Cache")]
     end
     
-    subgraph "Routing Engine Layer (Java)"
-        GH[Graphhopper Engine]
-        CH[Contraction Hierarchies]
-        MapMatcher[HMM Map Matcher]
+    subgraph "Routing Engine Layer ("Java")"
+        GH["Graphhopper Engine"]
+        CH["Contraction Hierarchies"]
+        MapMatcher["HMM Map Matcher"]
     end
     
     subgraph "Data Storage"

@@ -16,13 +16,16 @@ canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-6-ri
 description: "Architectural guide to transitioning from passive vector RAG to autonomous ReAct agents with Go runtimes, dynamic tools, and smart query routers."
 ShowToc: true
 TocOpen: true
+series: ["ai-data-engineering-pipeline"]
+weight: 7
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Enterprise Security Data Poisoning](/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 6 — From Passive RAG to Autonomous Agents: ReAct, Router & Tool Use
 
-> **Answer-first:** Passive RAG systems are constrained to single-shot document retrieval, leaving complex multi-step reasoning unaddressed. Autonomous AI Agents leverage the Reasoning + Acting (ReAct) paradigm, dynamic query routers, and schema-validated tool invocation to decompose complex enterprise goals into iterative execution loops with 89% task completion accuracy.
+> **Answer-first:** Passive RAG systems are constrained to single-shot document retrieval, leaving complex multi-step reasoning unaddressed. Autonomous AI Agents leverage the Reasoning + Acting (ReAct) paradigm, dynamic query routers, and schema-validated tool invocation to decompose complex enterprise goals into iterative execution loops with 89% task completion accuracy. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model.
 >
 > **Key Takeaways**:
 > - **89% Workflow Completion Rate**: ReAct state-machine loops evaluate tool outputs and critique intermediate reasoning steps dynamically.
@@ -46,7 +49,7 @@ The **ReAct (Reasoning + Acting)** framework interleaves chain-of-thought reason
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Idle
+    ["*"] --> Idle
     Idle --> UserGoal: Receive Goal Input
     UserGoal --> Reasoning: Evaluate Current State
     Reasoning --> ActionDecision: Select Tool & Arguments
@@ -55,9 +58,9 @@ stateDiagram-v2
     ToolExecution --> Observation: Capture Structured Output
     
     Observation --> Reflection: Critique Result vs Goal
-    Reflection --> Reasoning: Goal Incomplete (Iterate < Max)
+    Reflection --> Reasoning: Goal Incomplete ("Iterate < Max")
     Reflection --> FinalAnswer: Goal Satisfied
-    FinalAnswer --> [*]
+    FinalAnswer --> ["*"]
 ```
 
 ### Execution Loop Breakdown
@@ -255,4 +258,3 @@ Advance to Part 7 to discover agentic memory systems combining episodic and work
 - [Part 7 — Agentic Memory Systems: Episodic, Semantic & Working](/series/ai-data-engineering-pipeline/part-7-agentic-memory-long-term/)
 - [Part 1 — Model Context Protocol Core Architecture](/series/mcp-engineering-in-production/part-1-protocol/)
 - [Agentic Architecture & Golang Orchestration Power](/series/agentic-ecommerce-search/part-1-golang-orchestration/)
-

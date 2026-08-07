@@ -18,7 +18,9 @@ canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/par
 ShowToc: true
 TocOpen: true
 image: "/images/posts/real-time-ride-hailing-cover.jpg"
+series: ["ride-hailing-realtime-architecture"]
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Location Ingestion](/series/ride-hailing-realtime-architecture/part-1-location-ingestion/). Review it first if the terminology in this part is unfamiliar.
 
@@ -60,19 +62,19 @@ The sequence diagram below illustrates the low-latency proximity lookup flow, co
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Rider as Rider App
-    participant API as Go Proximity API
-    participant H3 as H3 Library (Res 8)
-    participant Redis as Redis Sharded SETs
+    participant Rider as "Rider App"
+    participant API as "Go Proximity API"
+    participant H3 as H3 Library ("Res 8")
+    participant Redis as "Redis Sharded SETs"
 
-    Rider->>API: Request Ride Proximity (Lat, Lng)
+    Rider->>API: Request Ride Proximity ("Lat, Lng")
     API->>H3: Convert Lat/Lng to H3 Cell Index
     H3-->>API: Return Center H3 Cell ID
-    API->>H3: GridDisk(Center Cell, K=1)
+    API->>H3: GridDisk("Center Cell, K=1")
     H3-->>API: Return 7 Hexagonal Cell IDs
     API->>Redis: Pipeline SMEMBERS drivers:h3:{CellID_1..7}
     Redis-->>API: Return Active Driver Candidate List
-    API-->>Rider: Return Nearby Drivers & ETA (< 10ms)
+    API-->>Rider: Return Nearby Drivers & ETA ("< 10ms")
 ```
 
 ---
@@ -355,4 +357,3 @@ Explore related systemic design patterns covering banking microservices, Saga or
 
 For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
 - [Banking Microservices in Go: Saga & Event Sourcing](/posts/banking-microservices-architecture/)
-

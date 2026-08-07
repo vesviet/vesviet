@@ -4,7 +4,7 @@ date: "2026-05-05T21:00:00+07:00"
 lastmod: "2026-05-05T21:00:00+07:00"
 draft: false
 description: "How PayPay organizes 100+ microservices using Domain-Driven Design, gRPC/Protobuf, GitOps with Argo CD, and canary deployments with Argo Rollouts."
-weight: 2
+weight: 1
 cover:
   image: "/images/posts/paypay-scaling-cover.jpg"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
@@ -17,11 +17,13 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 image: "/images/posts/paypay-scaling-cover.jpg"
+series: ["paypay-architecture"]
 ---
+
 
 > **Prerequisite:** This is the starting part of the series — no prior part is required. Later parts assume the concepts introduced here.
 
-> **Answer-first:** PayPay scales over 100 microservices for 60+ million users in Japan by combining Domain-Driven Design boundaries with GitOps CD automation using ArgoCD and Argo Rollouts. Automated canary deployments validate new code against live production metrics before full traffic shifting.
+> **Answer-first:** PayPay scales over 100 microservices for 60+ million users in Japan by combining Domain-Driven Design boundaries with GitOps CD automation using ArgoCD and Argo Rollouts. Automated canary deployments validate new code against live production metrics before full traffic shifting. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory management with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration.
 
 > **Answer-first:** PayPay enforces stable deployments by combining branch promotion workflows with GitOps tools like ArgoCD. Declarative configuration files in git serve as the single source of truth, allowing ArgoCD to automatically reconcile cluster state, execute canary rollouts, and enable instant rollbacks of microservices.
 
@@ -88,10 +90,10 @@ The full deployment lifecycle looks like this:
 
 ```mermaid
 graph TD
-    Git[Git Repository] --> ArgoCD[ArgoCD Controller]
-    ArgoCD --> K8s[Kubernetes Cluster]
-    K8s --> Canary[Argo Rollout Canary]
-    Canary -->|Metrics OK| Prod[100% Production Traffic]
+    Git["Git Repository"] --> ArgoCD["ArgoCD Controller"]
+    ArgoCD --> K8s["Kubernetes Cluster"]
+    K8s --> Canary["Argo Rollout Canary"]
+    Canary -->|"Metrics OK"| Prod["100% Production Traffic"]
 ```
 
 ```

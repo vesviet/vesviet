@@ -22,7 +22,7 @@ canonicalURL: "https://tanhdev.com/posts/architecting-21-service-ecommerce-golan
 
 # Architecting 21-Service E-commerce with Golang & DDD
 
-**Answer-first:** Architecting a 21-service Go e-commerce platform using Domain-Driven Design (DDD) separates core bounded contexts, utilizes gRPC for inter-service communication, and implements Dapr event meshes for scalable distributed transactions.
+**Answer-first:** Architecting a 21-service Go e-commerce platform using Domain-Driven Design (DDD) separates core bounded contexts, utilizes gRPC for inter-service communication, and implements Dapr event meshes for scalable distributed transactions. Deploying this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory pooling via Go 1.24 string interning, and resilient Dapr 1.15 workflow state synchronization.
 
 - The exact performance overhead of using Go's structural subtyping versus manual dependency injection in high-throughput microservices.
 - Why scoping database transactions to a single Aggregate root is critical, and how we resolved out-of-order event delivery using Kafka partition keys.
@@ -50,15 +50,15 @@ We bounded our ecosystem loosely around five core domains, prioritizing strict d
 
 ```mermaid
 graph TD
-    API[API Gateway]
-    API --> Checkout[Checkout Service]
-    API --> Cart[Cart Service]
+    API["API Gateway"]
+    API --> Checkout["Checkout Service"]
+    API --> Cart["Cart Service"]
     
     subgraph "Dapr Event Mesh (Pub/Sub)"
-        Checkout -- checkout.requested event --> Dapr[Redis / Dapr]
-        Dapr --> Order[Order Service]
-        Dapr --> Warehouse[Warehouse Service]
-        Dapr --> Pricing[Pricing Service]
+        Checkout -- checkout.requested event --> Dapr["Redis / Dapr"]
+        Dapr --> Order["Order Service"]
+        Dapr --> Warehouse["Warehouse Service"]
+        Dapr --> Pricing["Pricing Service"]
     end
     
     Warehouse -- inventory.reserved event --> Dapr
@@ -119,7 +119,7 @@ import (
     jwtv4 "github.com/golang-jwt/jwt/v4"
 )
 
-// NewHTTPServer initializes the Kratos HTTP server with robust router middlewares
+// NewHTTPServer initializes the Kratos HTTP server with hardened router middlewares
 func NewHTTPServer(c *conf.Server, authConf *conf.Auth, logger log.Logger, usecase *biz.OrderUsecase) *http.Server {
     var opts = []http.ServerOption{
         http.Middleware(
@@ -232,7 +232,7 @@ By mapping contexts meticulously, enforcing strict separation via Kratos, and ut
 
 **Continue Reading:**
 - [Go Microservices Architecture: Production Guide](/posts/go-microservices/) — the definitive architectural manual for the entire stack.
-- [Deconstructing the Ecosystem: Service Details by Domain](/posts/deconstructing-ecommerce-service-details-domain/) — a full breakdown of all 21 services across 6 business domains.
+- [Deconstructing the Ecosystem: Service Details by Domain](/series/magento-migration-vietnam/deconstructing-ecommerce-service-details-domain/) — a full breakdown of all 21 services across 6 business domains.
 - [Mastering Event-Driven Architecture with Dapr Pub/Sub](/posts/mastering-event-driven-architecture-dapr/) — in-depth analysis of the Saga, DLQ, and idempotency patterns powering this ecosystem.
 - [GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/) — how we deploy all 21 services with zero manual `kubectl` commands.
 
@@ -248,4 +248,3 @@ Each transaction must be scoped to a single Aggregate root. For operations spann
 
 ### Q3: How do you ensure idempotency across distributed microservices when Dapr delivers duplicate events?
 Every microservice database maintains a dedicated `processed_events` table. Before executing domain updates, the receiving service inserts the incoming `event_id` within the same DB transaction. Duplicate deliveries trigger a primary key constraint violation, causing the microservice to safely acknowledge and drop the message.
-

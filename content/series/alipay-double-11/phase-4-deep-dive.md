@@ -15,12 +15,15 @@ tags: ["Alipay", "SOFA RPC", "RocketMQ", "OceanBase", "Paxos"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-4-deep-dive/"
 mermaid: true
+series: ["alipay-double-11"]
+weight: 5
 ---
+
 
 [← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/phase-4-technology/) • [Next →](/series/alipay-double-11/modern-tech-comparison/)
 
-> **Answer-first:** Alipay's Double 11 technology deep dive reveals high-performance internals: binary Bolt RPC protocol multiplexing over single TCP streams, RocketMQ 2PC transactional messaging for async decoupling, OceanBase LSM-tree compaction tuning, and multi-zone Paxos quorum consensus to achieve 544,000 TPS payment processing.
+> **Answer-first:** Alipay's Double 11 technology deep dive reveals high-performance internals: binary Bolt RPC protocol multiplexing over single TCP streams, RocketMQ 2PC transactional messaging for async decoupling, OceanBase LSM-tree compaction tuning, and multi-zone Paxos quorum consensus to achieve 544,000 TPS payment processing. Adopting this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory optimization, and fault-tolerant event-driven state synchronization across production systems.
 
 > **Prerequisite:** [Phase 4: Technology Overview](/series/alipay-double-11/phase-4-technology/)
 
@@ -179,33 +182,33 @@ The step-by-step transaction consensus loop is illustrated in the sequence flowc
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Client as Application Client
-    participant Leader as OceanBase Leader Replica
-    participant Acc1 as Acceptor Node 1 (Local Zone)
-    participant Acc2 as Acceptor Node 2 (Local Zone)
-    participant Acc3 as Acceptor Node 3 (Remote Zone)
-    participant Storage as Log-Structured SSTable
+    participant Client as "Application Client"
+    participant Leader as "OceanBase Leader Replica"
+    participant Acc1 as Acceptor Node 1 ("Local Zone")
+    participant Acc2 as Acceptor Node 2 ("Local Zone")
+    participant Acc3 as Acceptor Node 3 ("Remote Zone")
+    participant Storage as "Log-Structured SSTable"
 
-    Client->>Leader: Start Transaction (Write request)
+    Client->>Leader: Start Transaction ("Write request")
     Leader->>Leader: Write to local MemTable & Append CLog
     
     par Replicate to local zone acceptors
-        Leader->>Acc1: Proposal: Append CLog (Log ID: 492)
-        Acc1->>Leader: Acknowledge (Log ID: 492 committed)
+        Leader->>Acc1: Proposal: Append CLog ("Log ID: 492")
+        Acc1->>Leader: Acknowledge ("Log ID: 492 committed")
     and
-        Leader->>Acc2: Proposal: Append CLog (Log ID: 492)
-        Acc2->>Leader: Acknowledge (Log ID: 492 committed)
+        Leader->>Acc2: Proposal: Append CLog ("Log ID: 492")
+        Acc2->>Leader: Acknowledge ("Log ID: 492 committed")
     and Replicate to remote zone acceptor
-        Leader->>Acc3: Proposal: Append CLog (Log ID: 492)
+        Leader->>Acc3: Proposal: Append CLog ("Log ID: 492")
         Note over Acc3: Remote link latency jitter
-        Acc3-->>Leader: Acknowledge (Arrives after quorum)
+        Acc3-->>Leader: Acknowledge ("Arrives after quorum")
     end
 
-    Note over Leader: Quorum Reached (3 of 5 nodes acknowledged)
+    Note over Leader: Quorum Reached ("3 of 5 nodes acknowledged")
     Leader->>Leader: Commit Transaction locally
-    Leader->>Client: Transaction Committed (Success)
+    Leader->>Client: Transaction Committed ("Success")
     
-    Leader->>Storage: Scheduled compaction (Major Freeze)
+    Leader->>Storage: Scheduled compaction ("Major Freeze")
 ```
 
 ### 1. Two-Phase Commit (2PC) Optimizations
@@ -253,4 +256,3 @@ Need help implementing high-scale architectures? Consult our infrastructure team
 For deep dives into distributed ledger mutations, binary RPC wire protocols, and LSM compaction tuning in production systems, consult these related engineering guides:
 - [Alipay Double 11: 544,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/)
 - [PayPay Architecture & Scaling Playbook](/posts/paypay-architecture-scaling/)
-

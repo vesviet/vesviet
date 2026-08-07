@@ -15,11 +15,13 @@ canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/par
 ShowToc: true
 TocOpen: true
 image: "/images/posts/real-time-ride-hailing-cover.jpg"
+series: ["ride-hailing-realtime-architecture"]
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Event Streaming Kafka](/series/ride-hailing-realtime-architecture/part-3-event-streaming-kafka/). Review it first if the terminology in this part is unfamiliar.
 
-**Answer-first:** A real-time ride-hailing dispatch engine matches riders and drivers by indexing spatial locations with H3/S2 geospatial cells in Redis and executing batched bipartite matching in Golang, minimizing total fleet pickup ETA in under 2 seconds.
+**Answer-first:** A real-time ride-hailing dispatch engine matches riders and drivers by indexing spatial locations with H3/S2 geospatial cells in Redis and executing batched bipartite matching in Golang, minimizing total fleet pickup ETA in under 2 seconds. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context Protocol ttlMs cache invalidation parameters.
 
 Every time you tap "Book Ride," a system makes dozens of decisions in under two seconds: Which driver? What route? What's the real ETA? This article breaks down exactly how the **dispatch algorithm** works — from the greedy approach that fails at scale, to the bipartite graphs, batched matching, and [surge pricing](/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/) mechanics that power Uber, Lyft, Grab, and Gojek today.
 
@@ -101,7 +103,7 @@ Result: System-wide optimal — not just locally optimal for each individual req
 
 ## Production Go Bipartite Matching Engine
 
-The following Go program implements a Kuhn-Munkres (Hungarian Algorithm) cost matrix solver that computes the globally optimal 1-to-1 driver-rider assignments to minimize total pickup ETA across a batch window.
+This Kuhn-Munkres cost matrix solver computes that computes the globally optimal 1-to-1 driver-rider assignments to minimize total pickup ETA across a batch window.
 
 ```go
 package main

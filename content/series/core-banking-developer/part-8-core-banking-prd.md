@@ -14,7 +14,9 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-8-core-banking-prd/"
 mermaid: true
+series: ["core-banking-developer"]
 ---
+
 
 > **Answer-first:** Writing an enterprise core banking Product Requirements Document (PRD) requires specifying double-entry journal rules, strict balance validation, ACID transaction atomicity, maker-checker dual authorization, and End-of-Day batch pipelines. Defining non-functional SLAs (99.999% uptime, 5-minute RTO, sub-100ms API latency) and ISO message schemas ensures financial consistency and compliance with banking audit standards.
 
@@ -178,8 +180,8 @@ The process flow diagram below details the End-of-Day batch processing pipeline 
 graph TD
     A["Cut-off / EOTI: End of Transaction Input"] --> B["Interest & Fee Accruals"]
     B --> C["Interest & Fee Posting"]
-    C --> D[Sub-ledger to General Ledger Reconciliation]
-    D --> E[Trial Balance Validation]
+    C --> D["Sub-ledger to General Ledger Reconciliation"]
+    D --> E["Trial Balance Validation"]
     E --> F["Date Rollover / System Date Change"]
     F --> G["BOD Initiation: Value-Dated Transactions"]
 ```

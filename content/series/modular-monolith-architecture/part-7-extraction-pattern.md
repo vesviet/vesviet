@@ -6,7 +6,6 @@ description: "Learn exactly when to extract a module from a Monolith into a Micr
 slug: "extraction-pattern-when-to-extract-microservices"
 tags: ["Microservices", "Extraction", "Sentry", "GitLab", "Modular Monolith", "Architecture"]
 categories: ["Modular Monolith", "Architecture"]
-aliases: ["/series/modular-monolith-architecture/part-7-extraction-pattern/"]
 cover:
   image: "/images/posts/golang-microservices-cover.jpg"
   alt: "Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal"
@@ -18,9 +17,12 @@ TocOpen: true
 mermaid: true
 draft: false
 image: "/images/posts/golang-microservices-cover.jpg"
+series: ["modular-monolith-architecture"]
+weight: 8
 ---
 
-> **Answer-first:** Extracting a module from a modular monolith into an independent microservice is justified only when domain isolation, asymmetric CPU/RAM scaling, or strict regulatory isolation demands it. Having pre-enforced DDD bounded contexts ensures extraction requires introducing network RPC adapters (gRPC) and Anti-Corruption Layers rather than refactoring internal core domain logic.
+
+> **Answer-first:** Extracting a module from a modular monolith into an independent microservice is justified only when domain isolation, asymmetric CPU/RAM scaling, or strict regulatory isolation demands it. Having pre-enforced DDD bounded contexts ensures extraction requires introducing network RPC adapters (gRPC) and Anti-Corruption Layers rather than refactoring internal core domain logic. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation,.
 
 > **Prerequisite:** Before reading this part, please review [Part 6: Migration Playbook](/series/modular-monolith-architecture/part-6-migration-playbook/).
 
@@ -38,10 +40,10 @@ The following architectural flowchart illustrates the decision gate and operatio
 
 ```mermaid
 flowchart TD
-    A[Modular Monolith Internal Domain] --> B{"Exhibits Asymmetric CPU/RAM or Polyglot Needs?"}
-    B -->|"No"| C[Retain In-Memory Execution in Monolith]
-    B -->|"Yes"| D[Define Go Public Interface Contract]
-    D --> E[Extract Module into Independent gRPC Microservice]
+    A["Modular Monolith Internal Domain"] --> B{"Exhibits Asymmetric CPU/RAM or Polyglot Needs?"}
+    B -->|"No"| C["Retain In-Memory Execution in Monolith"]
+    B -->|"Yes"| D["Define Go Public Interface Contract"]
+    D --> E["Extract Module into Independent gRPC Microservice"]
     E --> F["Inject Dynamic Adapter: Factory Pattern"]
 ```
 
@@ -206,13 +208,13 @@ The sequence diagram below illustrates how client-side load balancing streams co
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Monolith as Go Modular Monolith
-    participant gRPCClient as Client-Side Load Balancer Pool
-    participant Microservice as Extracted Payment Service Pods
+    participant Monolith as "Go Modular Monolith"
+    participant gRPCClient as "Client-Side Load Balancer Pool"
+    participant Microservice as "Extracted Payment Service Pods"
     
-    Monolith->>gRPCClient: Invoke Payment RPC (Stream 1)
-    Monolith->>gRPCClient: Invoke Payment RPC (Stream 2)
-    gRPCClient->>Microservice: HTTP/2 Binary Frames (Single TCP Socket)
+    Monolith->>gRPCClient: Invoke Payment RPC ("Stream 1")
+    Monolith->>gRPCClient: Invoke Payment RPC ("Stream 2")
+    gRPCClient->>Microservice: HTTP/2 Binary Frames ("Single TCP Socket")
     Microservice-->>Monolith: HTTP/2 Binary Responses
 ```
 
@@ -224,17 +226,17 @@ The sequence diagram below outlines the Transactional Outbox Pattern paired with
 ```mermaid
 sequenceDiagram
     autonumber
-    participant App as Monolith Domain Service
-    participant DB as Monolith Postgres (Outbox Table)
-    participant Relay as Debezium / CDC Relay
-    participant Kafka as Apache Kafka Cluster
-    participant Service as Extracted Satellite Microservice
+    participant App as "Monolith Domain Service"
+    participant DB as Monolith Postgres ("Outbox Table")
+    participant Relay as "Debezium / CDC Relay"
+    participant Kafka as "Apache Kafka Cluster"
+    participant Service as "Extracted Satellite Microservice"
 
-    App->>DB: BEGIN Transaction (Save Entity + Insert Outbox Event)
+    App->>DB: BEGIN Transaction ("Save Entity + Insert Outbox Event")
     DB-->>App: COMMIT Successful
-    Relay->>DB: Read Postgres WAL (Write-Ahead Log)
-    Relay->>Kafka: Publish Domain Event (JSON/Protobuf)
-    Kafka->>Service: Consume Event Stream (Async Processing)
+    Relay->>DB: Read Postgres WAL ("Write-Ahead Log")
+    Relay->>Kafka: Publish Domain Event ("JSON/Protobuf")
+    Kafka->>Service: Consume Event Stream ("Async Processing")
 ```
 
 ### Saga Pattern Orchestration vs 2-Phase Commit (2PC)

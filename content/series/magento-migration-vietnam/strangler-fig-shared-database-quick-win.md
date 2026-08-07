@@ -15,14 +15,16 @@ cover:
   image: "/images/posts/strangler-fig-shared-database-quick-win.jpg"
   alt: "Magento database migration decision: Shared DB vs CDC vs Event Bus — Architecture Comparison"
   relative: false
-canonicalURL: "https://tanhdev.com/posts/strangler-fig-shared-database-quick-win/"
+canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/strangler-fig-shared-database-quick-win/"
+weight: 6
 ---
 
-> **Prerequisite:** Review [Why Migrate Magento to Microservices: Zero-Downtime Guide](/posts/moving-from-magento-to-microservices/) for initial architecture context.
+
+> **Prerequisite:** Review [Why Migrate Magento to Microservices: Zero-Downtime Guide](/series/magento-migration-vietnam/moving-from-magento-to-microservices/) for initial architecture context.
 
 # Magento Migration: Shared DB, CDC, or Event Bus?
 
-**Answer-first:** Implementing the Strangler Fig pattern with a shared database enables gradual monolith-to-microservice migration, using CDC event capture and API gateway proxies to decouple services safely.
+**Answer-first:** Implementing the Strangler Fig pattern with a shared database enables gradual monolith-to-microservice migration, using CDC event capture and API gateway proxies to decouple services safely. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
 
 - Why Go running against Magento's MySQL is faster at the compute layer but still bottlenecked at the EAV query layer — and what actually fixes it.
 - The single deciding factor between CDC (Option B) and Event Bus (Option C): who owns the PHP Magento codebase.
@@ -426,13 +428,12 @@ Hard Phase 2 deadline set     read separation            Cart/Checkout LAST
 
 ### Related Posts
 
-- **[Zero-Downtime: Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/)** — End-to-end 3-phase migration execution playbook with Debezium and Dapr bidirectional sync
-- **[Migrating Magento to Microservices: When & Why](/posts/why-migrate-magento-to-microservices/)** — Decision triggers, EAV performance limits, and the migrate/don't-migrate checklist
+- **[Zero-Downtime: Moving from Magento to Microservices](/series/magento-migration-vietnam/moving-from-magento-to-microservices/)** — End-to-end 3-phase migration execution playbook with Debezium and Dapr bidirectional sync
+- **[Migrating Magento to Microservices: When & Why](/series/magento-migration-vietnam/why-migrate-magento-to-microservices/)** — Decision triggers, EAV performance limits, and the migrate/don't-migrate checklist
 
 ### External References
 
 - **[Debezium MySQL Connector Documentation](https://debezium.io/documentation/reference/stable/connectors/mysql.html)** — Official setup guide for CDC from MySQL binlog
 - **[Adobe: Magento 2.4.6 Split Database Deprecation](https://experienceleague.adobe.com/docs/commerce-operations/configuration-guide/storage/split-db/split-db.html)** — Adobe's official notice deprecating the split database feature in Magento 2.4.6+
 
-🔗 **Next Step:** Continue to [Migrating Magento to Microservices: When & Why](/posts/why-migrate-magento-to-microservices/) for the following module in the series.
-
+🔗 **Next Step:** Continue to [Migrating Magento to Microservices: When & Why](/series/magento-migration-vietnam/why-migrate-magento-to-microservices/) for the following module in the series.

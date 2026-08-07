@@ -4,7 +4,7 @@ date: "2026-05-05T21:00:00+07:00"
 lastmod: "2026-05-05T21:00:00+07:00"
 draft: false
 description: "Why PayPay migrated from AWS Aurora to self-hosted TiDB: analyzing Aurora bottlenecks, TiDB distributed SQL, and phased zero-downtime migration."
-weight: 4
+weight: 3
 cover:
   image: "/images/posts/paypay-scaling-cover.jpg"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
@@ -17,11 +17,13 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 image: "/images/posts/paypay-scaling-cover.jpg"
+series: ["paypay-architecture"]
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — Event Driven Kafka](/series/paypay-architecture/part-2-event-driven-kafka/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** PayPay migrated its database layer from AWS Aurora MySQL to TiDB Distributed SQL to overcome vertical scaling limitations. TiDB's Raft-based auto-sharding and horizontal compute/storage separation deliver linear scaling under billion-row transaction tables.
+> **Answer-first:** PayPay migrated its database layer from AWS Aurora MySQL to TiDB Distributed SQL to overcome vertical scaling limitations. TiDB's Raft-based auto-sharding and horizontal compute/storage separation deliver linear scaling under billion-row transaction tables. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for production-grade enterprise operations.
 
 > **Answer-first:** PayPay utilizes TiDB as its distributed SQL database to achieve horizontal scaling without manual database sharding. TiDB maintains standard MySQL protocol compatibility and strict ACID guarantees while dynamically splitting tables into regions that are distributed across a multi-node cluster.
 
@@ -29,9 +31,9 @@ image: "/images/posts/paypay-scaling-cover.jpg"
 
 ```mermaid
 graph TD
-    SQL[TiDB SQL Compute Layer] --> KV1["TiKV Storage Node 1 (Raft Leader)"]
-    SQL --> KV2["TiKV Storage Node 2 (Raft Follower)"]
-    SQL --> KV3["TiKV Storage Node 3 (Raft Follower)"]
+    SQL["TiDB SQL Compute Layer"] --> KV1["TiKV Storage Node 1 ("Raft Leader")"]
+    SQL --> KV2["TiKV Storage Node 2 ("Raft Follower")"]
+    SQL --> KV3["TiKV Storage Node 3 ("Raft Follower")"]
 ```
 
 When PayPay launched, **AWS Aurora (MySQL compatible)** was the obvious choice for the payment ledger. Aurora is managed, reliable, and well-understood. It scales read capacity easily through Read Replicas. For a startup under urgency to ship, it was the right decision.

@@ -4,8 +4,8 @@ date: 2026-08-06T00:00:00+07:00
 lastmod: 2026-08-06T00:00:00+07:00
 author: "Lê Tuấn Anh"
 slug: "tech-radar-august-2026"
-description: "The August 2026 Tech Radar synthesizes AI Agent Protocol (Go MCP SDK) trends, Go 1.26 Green Tea GC optimizations, Kubernetes Pod Resizing v1.35, and Wasm Micro-VMs SpinKube in Cloud Native infrastructure."
-categories: ["Tech Radar", "Cloud Native", "AI Architecture", "Golang"]
+description: "August 2026 Tech Radar analyzing Go MCP SDK trends, Go 1.26 Green Tea GC optimizations, Kubernetes Pod Resizing v1.35, and Wasm SpinKube micro-VMs."
+categories: ["Tech Radar", "Cloud Native", "AI", "Golang"]
 tags: ["Tech Radar 2026", "Go MCP SDK", "Go 1.26", "Green Tea GC", "Kubernetes", "SpinKube", "Argo CD", "SPIFFE/SPIRE"]
 draft: false
 ShowToc: true
@@ -18,7 +18,7 @@ cover:
 mermaid: true
 ---
 
-> **Answer-first:** The August 2026 Tech Radar highlights enterprise infrastructure shifts toward AI-Native architectures and performance-optimized Cloud Native systems. Key recommendations include **Go 1.26 Green Tea GC**, **Argo CD 3.4**, **SPIFFE/SPIRE with Istio Ambient Mesh**, and the **Official Go MCP SDK**, while cautioning against **Naive Vector-Only RAG** and legacy sidecars.
+> **Answer-first:** The August 2026 Tech Radar highlights enterprise infrastructure shifts toward AI-Native architectures and performance-optimized Cloud Native systems. Key recommendations include **Go 1.26 Green Tea GC**, **Argo CD 3.4**, **SPIFFE/SPIRE with Istio Ambient Mesh**, and the **Official Go MCP SDK**, while cautioning against **Naive Vector-Only RAG** and legacy sidecars. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and.
 
 ---
 
@@ -146,21 +146,21 @@ This enterprise architecture maps the topology from the AI Agent Client through 
 ```mermaid
 flowchart TB
     subgraph ClientLayer ["Client & Orchestration Layer"]
-        A[AI Agent Framework / LLM Client]
+        A["AI Agent Framework / LLM Client"]
     end
 
     subgraph MCPGate ["AI Agent Protocol Gateway"]
-        B[Official Go MCP Server\nmodelcontextprotocol/go-sdk]
+        B["Official Go MCP Server\nmodelcontextprotocol/go-sdk"]
     end
 
     subgraph MeshLayer ["Zero-Trust Infrastructure (Istio Ambient Mesh)"]
-        C[SPIFFE/SPIRE Agent\n/tmp/spire-agent/public/api.sock]
-        D[Node-Level L4 ztunnel]
+        C["SPIFFE/SPIRE Agent\n/tmp/spire-agent/public/api.sock"]
+        D["Node-Level L4 ztunnel"]
     end
 
     subgraph K8sCluster ["Kubernetes v1.35 Cluster Workloads"]
-        E[Go Microservice Pod 1\nIn-Place Resizing Enabled]
-        F[SpinKube Wasm Micro-VM\nWASI 0.3.0 Runtime]
+        E["Go Microservice Pod 1\nIn-Place Resizing Enabled"]
+        F["SpinKube Wasm Micro-VM\nWASI 0.3.0 Runtime"]
     end
 
     A -- "JSON-RPC 2.0 / SSE Transport" --> B
@@ -172,7 +172,7 @@ flowchart TB
 
 ### 6.2. Authentic Go MCP Server Handler Implementation
 
-The following Golang snippet demonstrates the initialization of a standardized MCP Server utilizing the `github.com/modelcontextprotocol/go-sdk` (`mcp` package) to register tools for AI Agents:
+Golang snippet demonstrates the initialization of a standardized MCP Server utilizing the `github.com/modelcontextprotocol/go-sdk` (`mcp` package) to register tools for AI Agents:
 
 ```go
 package main

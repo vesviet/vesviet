@@ -8,41 +8,24 @@ draft: false
 series: ["magento-migration-vietnam"]
 mermaid: true
 description: "Composable commerce migration lessons: Strangler Fig via Envoy, Debezium CDC double-write, Redis BFF locking, Rush monorepo, and Kratos Go architecture."
-categories:
-  - "Architecture"
-  - "E-Commerce"
-  - "Engineering"
-tags:
-  - "Composable Commerce"
-  - "MACH"
-  - "Magento"
-  - "Microservices"
-  - "Debezium"
-  - "Kafka"
-  - "Migration"
-  - "Golang"
-  - "Kratos"
-aliases:
-  - /series/composable-commerce-migration/part-0-executive-summary/
-  - /series/composable-commerce-migration/executive-summary-amazon-prime-video-monolith/
-  - /series/composable-commerce-migration/part-1-ddd-bounded-contexts/
-  - /series/composable-commerce-migration/part-2-rush-monorepo/
-  - /series/composable-commerce-migration/part-3-golang-kratos/
-  - /posts/ecommerce-architecture-composable-migration/
+categories: ["Architecture", "E-Commerce", "Engineering"]
+tags: ["Composable Commerce", "MACH", "Magento", "Microservices", "Debezium", "Kafka", "Migration", "Golang", "Kratos"]
 ShowToc: true
 TocOpen: true
 cover:
   image: "/images/posts/ecommerce-composable-cover.jpg"
   alt: "E-commerce composable architecture migration: from Magento monolith to MACH modular services"
   relative: false
-canonicalURL: "https://tanhdev.com/posts/ecommerce-architecture-composable-migration/"
+canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/"
+weight: 3
 ---
 
-> **Prerequisite:** Review [Deconstructing the Ecosystem: Service Details by Domain](/posts/deconstructing-ecommerce-service-details-domain/) for background on domain boundaries before reading this migration guide.
+
+> **Prerequisite:** Review [Deconstructing the Ecosystem: Service Details by Domain](/series/magento-migration-vietnam/deconstructing-ecommerce-service-details-domain/) for background on domain boundaries before reading this migration guide.
 
 # Composable E-Commerce Migration: Overcoming Tech Debt
 
-**Answer-first:** Migrating legacy e-commerce platforms to composable microservices requires incremental API facade routing, domain context decoupling, and zero-downtime Strangler Fig data synchronization.
+**Answer-first:** Migrating legacy e-commerce platforms to composable microservices requires incremental API facade routing, domain context decoupling, and zero-downtime Strangler Fig data synchronization. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
 
 See the [21-service e-commerce architecture blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/) for the domain boundaries this migration targets.
 
@@ -61,36 +44,36 @@ Domain-Driven Design (DDD) groups code around **business capabilities and invari
 ```mermaid
 graph TD
     subgraph Commerce Flow
-        Checkout[Checkout Service]
-        Order[Order Service]
-        Payment[Payment Service]
+        Checkout["Checkout Service"]
+        Order["Order Service"]
+        Payment["Payment Service"]
     end
     subgraph Product & Content
-        Catalog[Catalog Service]
-        Pricing[Pricing Service]
-        Promotion[Promotion Service]
-        Search[Search Service]
+        Catalog["Catalog Service"]
+        Pricing["Pricing Service"]
+        Promotion["Promotion Service"]
+        Search["Search Service"]
     end
     subgraph Identity & Access
-        Auth[Auth Service]
-        User[User Service]
-        Customer[Customer Service]
+        Auth["Auth Service"]
+        User["User Service"]
+        Customer["Customer Service"]
     end
     subgraph Logistics
-        Warehouse[Warehouse Service]
-        Fulfillment[Fulfillment Service]
-        Shipping[Shipping Service]
+        Warehouse["Warehouse Service"]
+        Fulfillment["Fulfillment Service"]
+        Shipping["Shipping Service"]
     end
     subgraph Post-Purchase
-        Return[Return Service]
-        Loyalty[Loyalty Service]
+        Return["Return Service"]
+        Loyalty["Loyalty Service"]
     end
     subgraph Platform & Operations
-        Gateway[Gateway Service]
-        Analytics[Analytics Service]
-        Review[Review Service]
-        Notification[Notification Service]
-        Location[Location Service]
+        Gateway["Gateway Service"]
+        Analytics["Analytics Service"]
+        Review["Review Service"]
+        Notification["Notification Service"]
+        Location["Location Service"]
     end
 
     Gateway --> Checkout
@@ -182,19 +165,19 @@ Avoiding application-level double writing prevents database drift, dual-phase co
 ```mermaid
 graph TD
     subgraph Monolith Legacy
-        APP[Monolith App] -->|Write Data| DB[(Legacy DB MySQL/PG)]
+        APP["Monolith App"] -->|"Write Data"| DB["("Legacy DB MySQL/PG")"]
     end
     
     subgraph CDC & Event Streaming
-        DB -.->|Read Binlog| DEB[Debezium CDC]
-        DEB -->|Publish Event| KAFKA[Kafka Event Bus]
+        DB -.->|"Read Binlog"| DEB["Debezium CDC"]
+        DEB -->|"Publish Event"| KAFKA["Kafka Event Bus"]
     end
     
     subgraph Composable Services
-        KAFKA -->|Consume| OS[Order Service]
-        KAFKA -->|Consume| INV[Inventory Service]
-        OS --> O_DB[(New Order DB)]
-        INV --> I_DB[(New Inventory DB)]
+        KAFKA -->|"Consume"| OS["Order Service"]
+        KAFKA -->|"Consume"| INV["Inventory Service"]
+        OS --> O_DB["("New Order DB")"]
+        INV --> I_DB["("New Inventory DB")"]
     end
 ```
 
@@ -206,28 +189,28 @@ Transitioning a high-volume monolithic e-commerce application to composable micr
 
 ```mermaid
 graph TD
-    Client[User Client] -->|HTTP Requests| Gateway[Ingress Gateway / Envoy]
+    Client["User Client"] -->|"HTTP Requests"| Gateway["Ingress Gateway / Envoy"]
     
     subgraph Route Evaluation
-        Gateway -->|/api/v1/cart/*<br/>(Migrated)| CartCluster[Composable Cart Service]
-        Gateway -->|/api/v1/catalog/*<br/>(Migrated)| CatalogCluster[Composable Catalog Service]
-        Gateway -->|/*<br/>(Legacy Default)| MonoCluster[Monolith Legacy Cluster]
+        Gateway -->|/api/v1/cart/*<br/>("Migrated")| CartCluster["Composable Cart Service"]
+        Gateway -->|/api/v1/catalog/*<br/>("Migrated")| CatalogCluster["Composable Catalog Service"]
+        Gateway -->|/*<br/>("Legacy Default")| MonoCluster["Monolith Legacy Cluster"]
     end
 
     subgraph Composable Layer
-        CartCluster -->|1. Write| NewCartDB[(New Cart DB)]
-        CatalogCluster -->|Read/Write| NewCatalogDB[(New Catalog DB)]
+        CartCluster -->|"1. Write"| NewCartDB["("New Cart DB")"]
+        CatalogCluster -->|"Read/Write"| NewCatalogDB["("New Catalog DB")"]
     end
 
     subgraph Legacy Layer
-        MonoCluster -->|Write| LegacyDB[(Legacy DB)]
+        MonoCluster -->|"Write"| LegacyDB["("Legacy DB")"]
     end
 
     subgraph CDC Data Synchronization
-        NewCartDB -.->|2. Capture Binlogs| CDC[Debezium CDC]
-        CDC -->|3. Publish| Kafka[[Kafka Event Bus]]
-        Kafka -->|4. Consume| SyncWorker[Go Sync Worker]
-        SyncWorker -.->|5. Replicate| LegacyDB
+        NewCartDB -.->|"2. Capture Binlogs"| CDC["Debezium CDC"]
+        CDC -->|"3. Publish"| Kafka["[Kafka Event Bus"]]
+        Kafka -->|"4. Consume"| SyncWorker["Go Sync Worker"]
+        SyncWorker -.->|"5. Replicate"| LegacyDB
     end
 
     style Gateway fill:#f9f,stroke:#333,stroke-width:2px
@@ -380,10 +363,9 @@ In production microservices, gRPC binary serialization and HTTP/2 multiplexing a
 
 ## Related Reading
 
-- [Why Migrate Magento to Microservices: Zero-Downtime Guide](/posts/moving-from-magento-to-microservices/) — the 3-phase Strangler Fig playbook in operational detail.
-- [Magento Migration: Shared DB, CDC, or Event Bus?](/posts/strangler-fig-shared-database-quick-win/) — choosing the data-sync strategy for Phase 1.
+- [Why Migrate Magento to Microservices: Zero-Downtime Guide](/series/magento-migration-vietnam/moving-from-magento-to-microservices/) — the 3-phase Strangler Fig playbook in operational detail.
+- [Magento Migration: Shared DB, CDC, or Event Bus?](/series/magento-migration-vietnam/strangler-fig-shared-database-quick-win/) — choosing the data-sync strategy for Phase 1.
 - [E-Commerce Microservices Architecture: 21-Service Blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/) — the target-state topology.
 - [Real-Time Inventory: Kafka, CDC & Redis](/posts/real-time-inventory-ecommerce-architecture/) — the CDC pipeline referenced above, in production form.
 
-🔗 **Next Step:** Continue to [Exporting Magento 2 Data: Flatten EAV with SQL & Node](/posts/exporting-magento-2-data-flat-sql-nodejs/) for the following module in the series.
-
+🔗 **Next Step:** Continue to [Exporting Magento 2 Data: Flatten EAV with SQL & Node](/series/magento-migration-vietnam/exporting-magento-2-data-flat-sql-nodejs/) for the following module in the series.

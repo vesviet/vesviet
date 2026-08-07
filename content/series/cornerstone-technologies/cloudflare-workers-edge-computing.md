@@ -9,7 +9,11 @@ cover:
   image: "/images/posts/cloudflare-workers-edge-computing.jpg"
   alt: "Cloudflare Workers & Edge Computing: V8 Isolates Architecture Guide"
   relative: false
+series: ["cornerstone-technologies"]
+weight: 1
+canonicalURL: "https://tanhdev.com/series/cornerstone-technologies/cloudflare-workers-edge-computing/"
 ---
+
 
 > **Prerequisite:** This is the starting part of the series — no prior part is required. Later parts assume the concepts introduced here.
 
@@ -37,16 +41,16 @@ To understand why Cloudflare Workers achieves sub-5ms cold starts, we must exami
 
 ```mermaid
 graph TD
-    subgraph Container_Model["AWS Lambda / Docker Container (OS-Level Isolation)"]
-        OS1["Host OS Kernel"] --> VM1["MicroVM / Container 1\n(Guest Kernel, ~100MB RAM, Cold Start 200ms-2s)"]
-        OS1 --> VM2["MicroVM / Container 2\n(Guest Kernel, ~100MB RAM, Cold Start 200ms-2s)"]
+    subgraph Container_Model["AWS Lambda / Docker Container ("OS-Level Isolation")"]
+        OS1["Host OS Kernel"] --> VM1["MicroVM / Container 1\n("Guest Kernel, ~100MB RAM, Cold Start 200ms-2s")"]
+        OS1 --> VM2["MicroVM / Container 2\n("Guest Kernel, ~100MB RAM, Cold Start 200ms-2s")"]
     end
 
-    subgraph Isolate_Model["Cloudflare Workers (V8 Isolate Shared Process)"]
-        OS2["Host OS Kernel"] --> V8Proc["Single V8 Runtime Process (~3MB per Isolate Base)"]
-        V8Proc --> Iso1["V8 Isolate 1\n(Heap Scope A, Cold Start <5ms)"]
-        V8Proc --> Iso2["V8 Isolate 2\n(Heap Scope B, Cold Start <5ms)"]
-        V8Proc --> Iso3["V8 Isolate N\n(Heap Scope N, Cold Start <5ms)"]
+    subgraph Isolate_Model["Cloudflare Workers ("V8 Isolate Shared Process")"]
+        OS2["Host OS Kernel"] --> V8Proc["Single V8 Runtime Process ("~3MB per Isolate Base")"]
+        V8Proc --> Iso1["V8 Isolate 1\n("Heap Scope A, Cold Start <5ms")"]
+        V8Proc --> Iso2["V8 Isolate 2\n("Heap Scope B, Cold Start <5ms")"]
+        V8Proc --> Iso3["V8 Isolate N\n("Heap Scope N, Cold Start <5ms")"]
     end
 ```
 

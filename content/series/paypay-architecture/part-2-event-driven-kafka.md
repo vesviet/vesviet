@@ -4,7 +4,7 @@ date: "2026-05-05T21:00:00+07:00"
 lastmod: "2026-05-05T21:00:00+07:00"
 draft: false
 description: "How PayPay uses Apache Kafka as a shock absorber for payment spikes, implements Outbox Pattern, and guarantees exactly-once processing."
-weight: 3
+weight: 2
 cover:
   image: "/images/posts/paypay-scaling-cover.jpg"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
@@ -17,11 +17,13 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 image: "/images/posts/paypay-scaling-cover.jpg"
+series: ["paypay-architecture"]
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Microservices Gitops](/series/paypay-architecture/part-1-microservices-gitops/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Managing transaction surges during PayPay's massive marketing campaigns requires event-driven architecture powered by Apache Kafka. Partition key tuning, Go consumer worker pools, and channel-based backpressure prevent message loss during peak traffic spikes.
+> **Answer-first:** Managing transaction surges during PayPay's massive marketing campaigns requires event-driven architecture powered by Apache Kafka. Partition key tuning, Go consumer worker pools, and channel-based backpressure prevent message loss during peak traffic spikes. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for production-grade enterprise operations.
 
 > **Answer-first:** PayPay builds a decoupled microservices network by streaming transactions asynchronously via Apache Kafka. To ensure financial safety, consumers process events using idempotency keys tracked in distributed caches, preventing duplicate ledger entries or double-spend occurrences in the event of retries or network partition splits.
 
@@ -29,9 +31,9 @@ image: "/images/posts/paypay-scaling-cover.jpg"
 
 ```mermaid
 graph LR
-    App[Payment API] -->|Produce| Kafka(("Kafka Cluster"))
-    Kafka -->|Partition 0..N| Pool[Go Worker Pool]
-    Pool -->|Async Batch Write| DB[("TiDB Cluster")]
+    App["Payment API"] -->|"Produce"| Kafka(("Kafka Cluster"))
+    Kafka -->|"Partition 0..N"| Pool["Go Worker Pool"]
+    Pool -->|"Async Batch Write"| DB[("TiDB Cluster")]
 ```
 
 During a massive campaign launch — a sudden 50% cashback flash event, or a billion-yen giveaway — the TPS (Transactions Per Second) can jump **100x in a matter of seconds**. Millions of users open the app simultaneously, see the promotion banner, and tap "Pay" within the same 30-second window.

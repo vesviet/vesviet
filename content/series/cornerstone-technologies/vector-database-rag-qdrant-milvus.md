@@ -1,8 +1,8 @@
 ---
 title: "Vector Database Architecture: HNSW Indexing & RAG Pipelines with Qdrant"
 mermaid: true
-description: "In-depth guide to Vector Database architecture: dissecting HNSW index algorithms, comparing Qdrant vs. Milvus vs. pgvector, and optimizing memory footprints for high-concurrency RAG pipelines."
-slug: vector-database-rag-qdrant-milvus
+description: "In-depth guide to Vector Database architecture: dissecting HNSW index algorithms, comparing Qdrant vs. Milvus vs. pgvector, and optimizing memory."
+slug: "vector-database-rag-qdrant-milvus"
 author: "Le Tuan Anh (Senior Go Engineer)"
 date: "2026-05-10"
 author_profile: "/about/"
@@ -11,7 +11,11 @@ cover:
   image: "/images/posts/vector-database-rag-qdrant-milvus.jpg"
   alt: "Vector Database Architecture: HNSW Indexing & RAG Pipelines with Qdrant"
   relative: false
+series: ["cornerstone-technologies"]
+weight: 4
+canonicalURL: "https://tanhdev.com/series/cornerstone-technologies/vector-database-rag-qdrant-milvus/"
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Temporal Workflow Go Architecture](/series/cornerstone-technologies/temporal-workflow-go-architecture/). Review it first if the terminology in this part is unfamiliar.
 
@@ -59,14 +63,14 @@ The diagram below illustrates the end-to-end query workflow of a 2026 Hybrid Sea
 
 ```mermaid
 graph TD
-    A[User Query] --> B[Sparse Encoder: BM25 / SPLADE]
-    A --> C[Dense Encoder: OpenAI / Cohere]
-    B --> D[Qdrant Sparse Vector Index]
-    C --> E[Qdrant Dense HNSW Index]
-    D --> F[Reciprocal Rank Fusion - RRF Engine]
+    A["User Query"] --> B["Sparse Encoder: BM25 / SPLADE"]
+    A --> C["Dense Encoder: OpenAI / Cohere"]
+    B --> D["Qdrant Sparse Vector Index"]
+    C --> E["Qdrant Dense HNSW Index"]
+    D --> F["Reciprocal Rank Fusion - RRF Engine"]
     E --> F
-    F --> G[Reranked Top-K Contexts]
-    G --> H[LLM Generation Prompt]
+    F --> G["Reranked Top-K Contexts"]
+    G --> H["LLM Generation Prompt"]
 ```
 
 The Reciprocal Rank Fusion (RRF) formula computes a unified score for each document $d$ across multiple retrieval models $M$:
@@ -170,13 +174,13 @@ Additionally, Qdrant supports **Memory-Mapped Files (Memmap)**, allowing vector 
 
 ## Frequently Asked Questions (FAQ)
 
-* **When should I choose pgvector over a dedicated vector database like Qdrant or Milvus?**
+### When should I choose pgvector over a dedicated vector database like Qdrant or Milvus?
   pgvector is an excellent choice if your application already uses PostgreSQL, your vector dataset remains under a few million entries, and you require direct SQL JOIN operations between relational data and embeddings. However, for enterprise workloads exceeding tens of millions of vectors demanding sub-10ms query latencies under high concurrency, dedicated vector databases like Qdrant or Milvus provide superior performance through advanced quantization and specialized graph indexing.
 
-* **How does Binary Quantization (BQ) achieve a 32x RAM reduction without severely ruining search accuracy?**
+### How does Binary Quantization (BQ) achieve a 32x RAM reduction without severely ruining search accuracy?
   Binary Quantization converts each 32-bit floating-point vector dimension down to a single bit based on its sign relative to zero, transforming high-dimensional floating-point arrays into compact bit vectors. This 32x memory reduction allows distance calculations to be executed via hardware-accelerated SIMD bitwise XOR and POPCOUNT operations (Hamming Distance), delivering massive memory savings and search speedups while maintaining high recall when combined with rescoring.
 
-* **Do modern vector databases support real-time CRUD operations like traditional databases?**
+### Do modern vector databases support real-time CRUD operations like traditional databases?
   Yes, modern vector databases like Qdrant and Milvus fully support Create, Read, Update, and Delete (CRUD) operations on both vector embeddings and metadata payloads. However, because updating or deleting vectors modifies dynamic graph connections in HNSW, high-frequency writes trigger background graph compaction and re-indexing, making vector databases best optimized for write-once, read-heavy workloads.
 
 🔗 **Next Step:** Continue to [Zero Trust Architecture Microservices](/series/cornerstone-technologies/zero-trust-architecture-microservices/) for the following module in the series.

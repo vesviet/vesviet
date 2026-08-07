@@ -6,17 +6,19 @@ description: "Technical guide to Context Engineering using Domain-Driven Design 
 date: "2026-03-16T09:00:00+07:00"
 draft: false
 tags: ["AI", "Context Engineering", "Domain-Driven Design", "Architecture", "LLM"]
-series: ["AI-Driven Playbook"]
+series: ["ai-driven-playbook"]
 weight: 2
 cover:
   image: "/images/posts/graphrag-vs-naive-rag-cover-1.jpg"
   alt: "Context Engineering Domain-Driven Design for AI"
   relative: false
+canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-1-context-engineering-ddd/"
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/posts/ai-native-frontend-architecture-predictions-2028/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Context Engineering structures, scopes, and injects software domain knowledge into Large Language Model prompts using Domain-Driven Design principles. By organizing codebases into explicit Bounded Contexts, Abstract Syntax Tree subgraphs, and JSON-Schema contracts, engineering teams eliminate hallucinations, enforce layer boundaries, and enable autonomous coding agents to implement production-grade enterprise features.
+> **Answer-first:** Context Engineering structures, scopes, and injects software domain knowledge into Large Language Model prompts using Domain-Driven Design principles. By organizing codebases into explicit Bounded Contexts, Abstract Syntax Tree subgraphs, and JSON-Schema contracts, engineering teams eliminate hallucinations, enforce layer boundaries, and enable autonomous coding agents to implement production-grade enterprise features. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic.
 
 ---
 
@@ -34,11 +36,11 @@ In practice, large context windows suffer from **attentional decay**, colloquial
 
 ```mermaid
 graph TD
-    A[Unstructured Repo Dump] --> B[LLM Context Window]
-    B --> C{Attentional Decay}
-    C -->|Layer Bleed| D[DB Queries in Controllers]
-    C -->|Ignored Rules| E[Bypassed Validation]
-    C -->|High Cost| F[Token Budget Depletion]
+    A["Unstructured Repo Dump"] --> B["LLM Context Window"]
+    B --> C{"Attentional Decay"}
+    C -->|"Layer Bleed"| D["DB Queries in Controllers"]
+    C -->|"Ignored Rules"| E["Bypassed Validation"]
+    C -->|"High Cost"| F["Token Budget Depletion"]
 ```
 
 To achieve deterministic, high-quality code generation, AI engineering teams must adopt **Context Engineering** powered by Domain-Driven Design (DDD).
@@ -54,14 +56,14 @@ Domain-Driven Design provides the perfect conceptual framework for scoping LLM c
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Dev as Engineering Agent
-    participant Map as Context Registry
-    participant AST as AST Extractor
-    participant LLM as Reasoning Engine
+    participant Dev as "Engineering Agent"
+    participant Map as "Context Registry"
+    participant AST as "AST Extractor"
+    participant LLM as "Reasoning Engine"
 
-    Dev->>Map: Query Target Module (e.g. Order Processing)
+    Dev->>Map: Query Target Module ("e.g. Order Processing")
     Map->>AST: Retrieve Bounded AST Graph & Schemas
-    AST-->>Map: Pruned Context Slice (Entities + Interfaces)
+    AST-->>Map: Pruned Context Slice ("Entities + Interfaces")
     Map->>LLM: Formatted Prompt with Enforced Constraints
     LLM-->>Dev: Clean Code adhering to DDD Layer Boundaries
 ```
@@ -90,12 +92,12 @@ A production Context Engine operates as a middleware layer between developer int
 
 ```mermaid
 graph LR
-    A[Task Description] --> B[Context Orchestrator]
-    C[AST Code Indexer] --> B
-    D[DDD Boundary Matrix] --> B
-    E[Vector DB Embeddings] --> B
-    B --> F[Pruned Context Package]
-    F --> G[LLM Agent Executor]
+    A["Task Description"] --> B["Context Orchestrator"]
+    C["AST Code Indexer"] --> B
+    D["DDD Boundary Matrix"] --> B
+    E["Vector DB Embeddings"] --> B
+    B --> F["Pruned Context Package"]
+    F --> G["LLM Agent Executor"]
 ```
 
 ### Structural Components of the Engine
@@ -234,10 +236,10 @@ A leading e-commerce platform evaluated naive prompting versus DDD-based Context
 
 ```mermaid
 pie title Defect Distribution in Generated Microservices
-    "Layer Boundary Violations (Naive)" : 45
-    "Hallucinated APIs (Naive)" : 30
-    "Compliant Microservices (Context Eng)" : 92
-    "Minor Formatting Issues (Context Eng)" : 8
+    "Layer Boundary Violations ("Naive")" : 45
+    "Hallucinated APIs ("Naive")" : 30
+    "Compliant Microservices ("Context Eng")" : 92
+    "Minor Formatting Issues ("Context Eng")" : 8
 ```
 
 - **Naive Prompting**: 75% of generated pull requests contained architectural violations, including direct SQL queries executed inside business domain models and cross-domain package cyclic dependencies.
@@ -269,11 +271,11 @@ To ensure that LLMs adhere strictly to target architectural interfaces, Context 
 
 ```mermaid
 graph TD
-    A[Raw Source File - 4,000 Tokens] --> B[AST Parser & Pruner]
-    B --> C[Strip Method Bodies & Private Helpers]
-    C --> D[Extract Public Interfaces & Docstrings]
-    D --> E[Pruned Context Header - 600 Tokens]
-    E --> F[Inject into LLM Prompt]
+    A["Raw Source File - 4,000 Tokens"] --> B["AST Parser & Pruner"]
+    B --> C["Strip Method Bodies & Private Helpers"]
+    C --> D["Extract Public Interfaces & Docstrings"]
+    D --> E["Pruned Context Header - 600 Tokens"]
+    E --> F["Inject into LLM Prompt"]
 ```
 
 **Pydantic v2 Context Compression & Validation Script:** The Python code snippet utilizes Pydantic v2 to validate context payload models, calculate compression ratios, and enforce token constraints before model injection.

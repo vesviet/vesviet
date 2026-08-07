@@ -16,7 +16,10 @@ canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/bonus-transition-pa
 description: "Actionable 90-day execution roadmap for senior engineers to transition from traditional coding to AI system orchestration and enterprise architecture."
 ShowToc: true
 TocOpen: true
+series: ["ai-driven-engineer"]
+weight: 11
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 9 — Building Ai Native Architecture](/series/ai-driven-engineer/part-9-building-ai-native-architecture/). Review it first if the terminology in this part is unfamiliar.
 
@@ -38,14 +41,14 @@ The 90-day execution plan structures engineer transition across three phases: to
 graph LR
     subgraph Month 1: Days 1-30
         M1["Context Engineering & Schemas"] --> Step1["Master JSON / Protobuf AST Schemas"]
-        M1 --> Step2[Adopt AST Prompt Context Framing]
-        M1 --> Step3[Establish Automated Test Specifications]
+        M1 --> Step2["Adopt AST Prompt Context Framing"]
+        M1 --> Step3["Establish Automated Test Specifications"]
     end
 
     subgraph Month 2: Days 31-60
         M2["Swarms & MCP Integration"] --> Step4["Build Custom Go / Python MCP Servers"]
-        M2 --> Step5[Deploy Multi-Agent Worker Swarms]
-        M2 --> Step6[Automate Local IDE Code Workflows]
+        M2 --> Step5["Deploy Multi-Agent Worker Swarms"]
+        M2 --> Step6["Automate Local IDE Code Workflows"]
     end
 
     subgraph Month 3: Days 61-90
@@ -188,7 +191,7 @@ Integrating AI-native orchestration models into enterprise software development 
 Engineers should integrate transition practices directly into daily work by adopting AST prompt framing and writing Protobuf schema definitions for current feature tasks. By replacing manual boilerplate writing with IDE AI agents, developers free up 1-2 hours daily to build custom MCP servers and configure OpenTelemetry tracing.
 
 ### Which programming languages are best suited for building enterprise Model Context Protocol (MCP) servers?
-Go and Python are the industry-standard languages for building production MCP servers due to their strong concurrency primitives and robust JSON-RPC libraries. Go provides lightweight, memory-efficient microservices with mTLS support, while Python offers extensive integrations with vector stores and LLM evaluation frameworks like Ragas.
+Go and Python are the industry-standard languages for building production MCP servers due to their strong concurrency primitives and resilient JSON-RPC libraries. Go provides lightweight, memory-efficient microservices with mTLS support, while Python offers extensive integrations with vector stores and LLM evaluation frameworks like Ragas.
 
 ### How do automated Ragas evaluation gates prevent prompt drift in CI/CD pipelines?
 Ragas evaluation gates compute continuous similarity and faithfulness metrics (target `>= 0.85`) on model responses during GitHub Action workflow runs. If an AI agent's output drifts below the faithfulness threshold, the CI pipeline automatically fails the pull request, preventing unverified or hallucinated code from entering main repository branches.

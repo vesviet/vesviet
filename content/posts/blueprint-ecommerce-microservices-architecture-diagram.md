@@ -7,7 +7,7 @@ lastmod: "2026-07-22T08:30:00+07:00"
 draft: false
 mermaid: true
 tags: ["Architecture", "Microservices", "Mermaid", "Golang", "API Gateway", "DDD", "Dapr", "Kubernetes", "ecommerce architecture"]
-description: "Deep dive into an e-commerce microservices architecture diagram using Golang and Dapr. A 21-service blueprint for building a scalable composable commerce engine."
+description: "Deep dive into an e-commerce microservices architecture diagram using Golang and Dapr. A 21-service blueprint for scalable composable commerce."
 categories: ["Architecture"]
 ShowToc: true
 TocOpen: true
@@ -22,7 +22,7 @@ canonicalURL: "https://tanhdev.com/posts/blueprint-ecommerce-microservices-archi
 
 ## E-Commerce Architecture Patterns: Monolith vs Microservices
 
-**Answer-first:** An ecommerce microservices architecture diagram organizes system capabilities into 6 core bounded domains (Commerce Flow, Product & Content, Logistics, Post-Purchase, Identity & Access, Platform Operations), connecting 21 Golang microservices via gRPC and Dapr Pub/Sub event mesh for high-concurrency scalability.
+**Answer-first:** An ecommerce microservices architecture diagram organizes system capabilities into 6 core bounded domains (Commerce Flow, Product & Content, Logistics, Post-Purchase, Identity & Access, Platform Operations), connecting 21 Golang microservices via gRPC and Dapr Pub/Sub event mesh for high-concurrency scalability. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory management with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration.
 
 ### Monolithic vs Microservices E-Commerce Comparison
 
@@ -40,7 +40,7 @@ canonicalURL: "https://tanhdev.com/posts/blueprint-ecommerce-microservices-archi
 
 When transitioning from a monolithic platform to a distributed microservice setup, the hardest question isn't "How do we write the code?" — it's "How do these moving parts talk to each other safely, and why is each boundary drawn exactly where it is?"
 
-This post is the primary architectural anchor for our composable commerce series. It presents the complete 21-service system blueprint and domain boundaries. For a practical step-by-step decoupling guide, see our sister article on [Composable E-Commerce Migration](/posts/ecommerce-architecture-composable-migration/).
+This post is the primary architectural anchor for our composable commerce series. It presents the complete 21-service system blueprint and domain boundaries. For a practical step-by-step decoupling guide, see our sister article on [Composable E-Commerce Migration](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/).
 
 ## Microservices Ecommerce Architecture: The 6 Core Business Domains
 
@@ -59,7 +59,7 @@ The 6 domains and their 21 services:
 
 The reasoning behind separating **User** from **Customer** is worth stating explicitly: internal employees and external buyers have fundamentally different access patterns, data structures, and compliance requirements. Merging them creates a schema that serves neither well and creates a security surface where an internal RBAC bug could expose customer PII.
 
-For the full breakdown of each service's responsibilities, see [Deconstructing the Ecosystem: Service Details by Domain](/posts/deconstructing-ecommerce-service-details-domain/).
+For the full breakdown of each service's responsibilities, see [Deconstructing the Ecosystem: Service Details by Domain](/series/magento-migration-vietnam/deconstructing-ecommerce-service-details-domain/).
 
 ## The High-Level Architecture
 
@@ -149,7 +149,7 @@ Read-heavy operations (product listing, search, user profile) resolve here with 
 
 ### Flow 2 — The Checkout Saga (Write Path)
 
-The Checkout Saga coordinates gRPC reservations with Warehouse, Payment, and Order services. In 2026, raw Pub/Sub choreographies are heavily replaced by **Dapr Workflows** (a centralized Orchestrator) to guarantee robust Distributed Transactions and automated rollbacks before publishing asynchronous events:
+The Checkout Saga coordinates gRPC reservations with Warehouse, Payment, and Order services. In 2026, raw Pub/Sub choreographies are heavily replaced by **Dapr Workflows** (a centralized Orchestrator) to guarantee fault-tolerant Distributed Transactions and automated rollbacks before publishing asynchronous events:
 
 ```mermaid
 sequenceDiagram
@@ -207,7 +207,7 @@ The architecture flowchart below shows the CQRS read-model synchronization pipel
 
 ```mermaid
 flowchart LR
-    CAT["Catalog Service\n(source of truth)"] -- "catalog.product.updated" --> DAPR[Dapr PubSub]
+    CAT["Catalog Service\n(source of truth)"] -- "catalog.product.updated" --> DAPR["Dapr PubSub"]
     PRC["Pricing Service"] -- "pricing.price.updated" --> DAPR
     WH["Warehouse Service"] -- "warehouse.stock.changed" --> DAPR
     DAPR --> SW["Search Worker\n(subscriber)"]
@@ -234,21 +234,21 @@ The architecture above avoids this through three hard rules:
 2. **No synchronous calls in the async event path** — once an event enters the Dapr mesh, it is processed independently. Event consumers do not call back into the producer.
 3. **No shared deployment pipelines** — each service has its own ArgoCD Application, its own container registry path, and its own release cycle. A bug in the Loyalty service cannot block a Checkout release.
 
-For the full argument on when this complexity is justified — and when it isn't — see [Why You Should Migrate from Magento to Microservices (And When You Shouldn't)](/posts/why-migrate-magento-to-microservices/).
+For the full argument on when this complexity is justified — and when it isn't — see [Why You Should Migrate from Magento to Microservices (And When You Shouldn't)](/series/magento-migration-vietnam/why-migrate-magento-to-microservices/).
 
 ## Series Navigation
 
 | Post | What it covers |
 | :--- | :--- |
 | **This post** | Full system blueprint, domain boundaries, traffic flows |
-| [Service Details by Domain](/posts/deconstructing-ecommerce-service-details-domain/) | Each service's responsibilities and ownership |
+| [Service Details by Domain](/series/magento-migration-vietnam/deconstructing-ecommerce-service-details-domain/) | Each service's responsibilities and ownership |
 | [Golang DDD Deep-Dive](/posts/architecting-21-service-ecommerce-golang-ddd/) | Kratos clean arch, Saga implementation, OCC, idempotency |
 | [Event-Driven with Dapr](/posts/mastering-event-driven-architecture-dapr/) | Naming conventions, Saga pattern, DLQ design |
 | [GitOps with ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/) | App-of-Apps, Kustomize overlays, rollback playbook |
-| [Magento to Microservices: Why](/posts/why-migrate-magento-to-microservices/) | Decision framework: when to migrate, when not to |
-| [Magento to Microservices: How](/posts/moving-from-magento-to-microservices/) | 3-phase Strangler Fig, Debezium CDC, bidirectional sync |
-| [Order Splitting with Graph Coloring](/posts/order-splitting-graph-coloring-opa/) | Solving CSP with OPA and Welsh-Powell |
-| [Picker Routing Optimization](/posts/warehouse-picker-routing-optimization/) | Picker Routing, GraphHopper A*, OR-Tools in C++ |
+| [Magento to Microservices: Why](/series/magento-migration-vietnam/why-migrate-magento-to-microservices/) | Decision framework: when to migrate, when not to |
+| [Magento to Microservices: How](/series/magento-migration-vietnam/moving-from-magento-to-microservices/) | 3-phase Strangler Fig, Debezium CDC, bidirectional sync |
+| [Order Splitting with Graph Coloring](/series/ecommerce-order-allocation/part-9-order-splitting-graph-coloring-opa/) | Solving CSP with OPA and Welsh-Powell |
+| [Picker Routing Optimization](/series/ecommerce-order-allocation/part-10-warehouse-picker-routing-optimization/) | Picker Routing, GraphHopper A*, OR-Tools in C++ |
 
 ## Author & Real-World Engineering Experience / Về Tác Giả & Kinh Nghiệm Thực Tế
 

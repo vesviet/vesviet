@@ -16,7 +16,10 @@ canonicalURL: "https://tanhdev.com/series/ai-code-review-vibe-coding/part-3-ai-b
 description: "Detailed technical guide categorizing AI-generated bugs, code hallucinations, phantom API calls, and automated AST scanners to prevent outages."
 ShowToc: true
 TocOpen: true
+series: ["ai-code-review-vibe-coding"]
+weight: 4
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — Context Engineering Codebase](/series/ai-code-review-vibe-coding/part-2-context-engineering-codebase/). Review it first if the terminology in this part is unfamiliar.
 
@@ -43,10 +46,10 @@ When an LLM generates code, it synthesizes snippets from millions of public repo
 
 ```mermaid
 graph TD
-    AIBugTaxonomy[AI Bug Taxonomy] --> Category1["1. Phantom APIs & Hallucinated Methods"]
-    AIBugTaxonomy --> Category2[2. Supply Chain Typosquatting Imports]
+    AIBugTaxonomy["AI Bug Taxonomy"] --> Category1["1. Phantom APIs & Hallucinated Methods"]
+    AIBugTaxonomy --> Category2["2. Supply Chain Typosquatting Imports"]
     AIBugTaxonomy --> Category3["3. Silent Type Coercion & Swallowed Errors"]
-    AIBugTaxonomy --> Category4[4. Non-Thread-Safe State Mutation]
+    AIBugTaxonomy --> Category4["4. Non-Thread-Safe State Mutation"]
 
     Category1 --> Ex1["Calling non-existent methods e.g. db.fetch_or_create()"]
     Category2 --> Ex2["Importing unverified packages e.g. import crypto_utils_v2"]

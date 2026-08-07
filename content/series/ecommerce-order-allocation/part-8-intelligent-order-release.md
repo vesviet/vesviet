@@ -6,8 +6,8 @@ lastmod: "2026-07-31T20:00:00+07:00"
 draft: false
 ShowToc: true
 TocOpen: true
-description: "Replace legacy static wave batching with a real-time, capacity-aware Dynamic Intelligent Order Release engine in Go using GraphHopper and Google OR-Tools over Dapr."
-weight: 9
+description: "Replace legacy static wave batching with a real-time, capacity-aware Dynamic Intelligent Order Release engine in Go using GraphHopper and Google OR-Tools."
+weight: 4
 keywords: ["intelligent order release", "dynamic order release", "or-tools vrp", "graphhopper distance matrix", "dapr pubsub golang", "ecommerce order allocation", "warehouse wave picking", "vrptw solver"]
 mermaid: true
 author: "Lê Tuấn Anh"
@@ -16,9 +16,11 @@ cover:
   image: "/images/posts/part-8-intelligent-order-release.jpg"
   alt: "Agentic AI for Dynamic Intelligent Order Release (IOR)"
   relative: false
+series: ["ecommerce-order-allocation"]
 ---
 
-> **Series context:** This is Part 8 of the [E-commerce Order Allocation](/series/ecommerce-order-allocation/) series, building on the GraphHopper distance matrix routing engine from [Part 7](/series/ecommerce-order-allocation/part-7-distance-matrix-routing/) and OR-Tools VRP solver from [Part 6](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/).
+
+> **Prerequisite:** This is Part 8 of the [E-commerce Order Allocation](/series/ecommerce-order-allocation/) series, building on the GraphHopper distance matrix routing engine from [Part 7](/series/ecommerce-order-allocation/part-7-distance-matrix-routing/) and OR-Tools VRP solver from [Part 6](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/).
 
 # Agentic AI for Dynamic Intelligent Order Release (IOR)
 
@@ -468,3 +470,5 @@ If WMS telemetry reports that a specific picking aisle or conveyor belt zone (e.
 * **Dynamic Volume Throttling:** Reduces $N_{max}$ for congested zones to prevent floor clutter.
 * **SLA Priority Re-weighting:** Increases penalty weights for express items while deferring standard ground shipments.
 * **Capacity Feedback Loop:** Prevents warehouse aisle bottlenecks while guaranteeing high-priority SLA commitments.
+
+🔗 **Next Step:** Continue exploring the complete [ecommerce-order-allocation](/series/ecommerce-order-allocation/) architecture guide.

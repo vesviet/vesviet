@@ -85,4 +85,3 @@ Enforcing double-entry bookkeeping ($\sum \text{Debits} = \sum \text{Credits}$) 
 {{< faq "How do modern core banking microservices migrate away from legacy mainframe monoliths?" >}}
 Core banking modernization relies on the Strangler Fig pattern paired with event-driven CDC (Change Data Capture) pipelines to synchronize real-time transaction events between legacy mainframes and Go microservices. This dual-write posting pattern enables gradual, zero-downtime migration of bounded contexts such as CASA deposits, loan servicing, and ISO payment gateways.
 {{< /faq >}}
-

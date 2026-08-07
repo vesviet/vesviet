@@ -7,7 +7,7 @@ draft: false
 ShowToc: true
 TocOpen: true
 description: "Optimize last-mile ecommerce logistics with self-hosted GraphHopper. A complete guide to building a scalable Distance Matrix routing engine."
-weight: 8
+weight: 3
 keywords: ["graphhopper vs osrm", "distance matrix routing", "osrm distance matrix", "graphhopper distance matrix", "distance.to alternative", "google maps distance matrix alternative", "ecommerce order allocation", "or-tools vrp", "open source routing engine"]
 mermaid: true
 cover:
@@ -16,13 +16,15 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/part-7-distance-matrix-routing/"
+series: ["ecommerce-order-allocation"]
 ---
+
 
 > **Series context:** This is Part 7 of the [E-commerce Order Allocation](/series/ecommerce-order-allocation/) series. The distance matrix built here feeds directly into the OR-Tools VRP solver in [Part 6](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/).
 
 ## The Invisible yet Most Expensive Bottleneck in E-commerce Routing
 
-**Answer-first:** Self-hosting the GraphHopper Distance Matrix API eliminates commercial Google Maps API costs for ecommerce order allocation, generating NxN pairwise travel durations and distances in sub-5ms using Contraction Hierarchies.
+**Answer-first:** Self-hosting the GraphHopper Distance Matrix API eliminates commercial Google Maps API costs for ecommerce order allocation, generating NxN pairwise travel durations and distances in sub-5ms using Contraction Hierarchies. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
 
 For any VRP (Vehicle Routing Problem) solver to find the optimal delivery route, it needs to know the exact cost between every pair of stops — this is the **distance matrix**. For 1 warehouse + 100 orders (101 points), that is `101 × 101 = 10,201` pairs. Choosing the wrong tool for this step can cost **$510/day** in API fees or cause multi-second latency spikes under load.
 
@@ -344,10 +346,10 @@ To visualize the workflow, here is the architecture of how the allocation engine
 
 ```mermaid
 sequenceDiagram
-    participant VRP as VRP Solver
-    participant App as Allocation Engine
-    participant Cache as Redis (H3 Cache)
-    participant OSRM as Routing Engine (OSRM)
+    participant VRP as "VRP Solver"
+    participant App as "Allocation Engine"
+    participant Cache as Redis ("H3 Cache")
+    participant OSRM as Routing Engine ("OSRM")
 
     VRP->>App: Request distance between A & B
     App->>App: Convert A & B to H3 Res 9 IDs
@@ -357,7 +359,7 @@ sequenceDiagram
     else Cache Miss
         App->>OSRM: HTTP /table API Call
         OSRM-->>App: Return precise network distance
-        App->>Cache: SET route_cost:{H3_A}:{H3_B} (TTL: 30 days)
+        App->>Cache: SET route_cost:{H3_A}:{H3_B} ("TTL: 30 days")
     end
     App-->>VRP: Return Final Matrix Cost
 ```

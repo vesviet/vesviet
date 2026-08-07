@@ -3,8 +3,8 @@ title: "Deconstructing the Agent Prompt: The 8 Mandatory Core Blocks"
 date: "2026-07-26T10:30:00+07:00"
 lastmod: "2026-07-26T10:30:00+07:00"
 draft: false
-weight: 20
-description: "A deep technical specification of the 8 mandatory core blocks for enterprise agent prompts, XML tag framing, preventing instruction drift, and fail-closed execution."
+weight: 2
+description: "A deep technical specification of the 8 mandatory core blocks for enterprise agent prompts, XML tag framing, preventing instruction drift, and fail-closed."
 categories: ["Engineering", "AI"]
 tags: ["prompt", "standard", "context-engineering", "agent"]
 ShowToc: true
@@ -14,13 +14,15 @@ cover:
   alt: "Deconstructing the Agent Prompt The 8 Mandatory Core Blocks"
   relative: false
 author: "Lê Tuấn Anh"
-canonicalURL: "https://vesviet.com/series/prompt-standard/part-2-the-8-core-blocks/"
+canonicalURL: "https://tanhdev.com/series/prompt-standard/part-2-the-8-core-blocks/"
 mermaid: true
+series: ["prompt-standard"]
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Context Engineering Evolution](/series/prompt-standard/part-1-context-engineering-evolution/). Review it first if the terminology in this part is unfamiliar.
 
-**Answer-first:** Production agent prompts are built using an 8-block modular schema rather than monolithic text strings. Isolating identity, mission, boundary locks, environment context, tool policies, workflows, output contracts, and uncertainty handlers stops agent drift, enforces fail-closed execution, and eliminates prompt injection vulnerabilities in automated multi-agent applications.
+**Answer-first:** Production agent prompts are built using an 8-block modular schema rather than monolithic text strings. Isolating identity, mission, boundary locks, environment context, tool policies, workflows, output contracts, and uncertainty handlers stops agent drift, enforces fail-closed execution, and eliminates prompt injection vulnerabilities in automated multi-agent applications. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines.
 
 ---
 
@@ -40,13 +42,13 @@ The diagram below maps the execution dependency graph across all eight core agen
 
 ```mermaid
 graph LR
-    B1[1. Identity & Archetype] --> B2[2. Mission & Goals]
-    B2 --> B3[3. Scope & Boundary Lock]
-    B3 --> B4[4. Context & Environment]
-    B4 --> B5[5. Tool Policy & Least Agency]
-    B5 --> B6[6. Workflow & SOP]
-    B6 --> B7[7. Output Schema Contract]
-    B7 --> B8[8. Fallback & Uncertainty Policy]
+    B1["1. Identity & Archetype"] --> B2["2. Mission & Goals"]
+    B2 --> B3["3. Scope & Boundary Lock"]
+    B3 --> B4["4. Context & Environment"]
+    B4 --> B5["5. Tool Policy & Least Agency"]
+    B5 --> B6["6. Workflow & SOP"]
+    B6 --> B7["7. Output Schema Contract"]
+    B7 --> B8["8. Fallback & Uncertainty Policy"]
 ```
 
 ---

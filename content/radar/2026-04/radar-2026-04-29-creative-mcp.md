@@ -14,7 +14,7 @@ cover:
   relative: false
 mermaid: true
 ---
-> **Answer-First:** Anthropic expands Model Context Protocol (MCP) into creative software including Adobe, Blender, and Autodesk Fusion. This integration standardizes tool discovery and execution via JSON-RPC 2.0 over `stdio` and `SSE` transports, transforming standalone creative applications into orchestrated multi-agent production pipelines.
+> **Answer-First:** Anthropic expands Model Context Protocol (MCP) into creative software including Adobe, Blender, and Autodesk Fusion. This integration standardizes tool discovery and execution via JSON-RPC 2.0 over `stdio` and `SSE` transports, transforming standalone creative applications into orchestrated multi-agent production pipelines. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context Protocol ttlMs cache invalidation parameters.
 
 ## Tech Radar, April 29, 2026: Anthropic Pushes MCP into the Creative Stack - AI Connectors Turn Creative Software into Agentic Workflows
 
@@ -43,17 +43,17 @@ The following architecture diagram illustrates how Claude and Claude Design sit 
 
 ```mermaid
 flowchart LR
-    USER[Creative or Product Team] --> CLAUDE["Claude / Claude Design"]
+    USER["Creative or Product Team"] --> CLAUDE["Claude / Claude Design"]
 
-    CLAUDE --> MCP[MCP Connector Layer]
+    CLAUDE --> MCP["MCP Connector Layer"]
 
-    MCP --> ADOBE[Adobe]
-    MCP --> BLENDER[Blender]
-    MCP --> FUSION[Autodesk Fusion]
-    MCP --> ABLETON[Ableton]
-    MCP --> SPLICE[Splice]
-    MCP --> SKETCHUP[SketchUp]
-    MCP --> OTHER[Other Creative Apps]
+    MCP --> ADOBE["Adobe"]
+    MCP --> BLENDER["Blender"]
+    MCP --> FUSION["Autodesk Fusion"]
+    MCP --> ABLETON["Ableton"]
+    MCP --> SPLICE["Splice"]
+    MCP --> SKETCHUP["SketchUp"]
+    MCP --> OTHER["Other Creative Apps"]
 
     ADOBE --> OUTPUT["Assets / Designs / Media"]
     BLENDER --> OUTPUT
@@ -96,12 +96,12 @@ The sequence below details the end-to-end flow from initial user brief to automa
 
 ```mermaid
 flowchart TD
-    IDEA["Prompt / Brief / Mockup"] --> DESIGN[Claude Design]
-    DESIGN --> CONNECT[MCP Connectors]
-    CONNECT --> TOOLS[Creative Toolchain]
+    IDEA["Prompt / Brief / Mockup"] --> DESIGN["Claude Design"]
+    DESIGN --> CONNECT["MCP Connectors"]
+    CONNECT --> TOOLS["Creative Toolchain"]
     TOOLS --> REFINE["Asset Refinement / Automation"]
     REFINE --> HANDOFF["Export / Handoff"]
-    HANDOFF --> BUILD[Engineering or Publishing Workflow]
+    HANDOFF --> BUILD["Engineering or Publishing Workflow"]
 ```
 
 For engineering teams, this is a larger shift than it first appears. The interface between design systems, media assets, automation scripts, and production code is starting to collapse into a shared agent layer.
@@ -139,7 +139,7 @@ For platform and product teams, the immediate action is to map which internal to
 
 ### Production Implementation Blueprint
 
-Below is a production FastMCP server implementation in Python demonstrating symbol search over standard I/O transport:
+A production FastMCP server implementation in Python demonstrating symbol search over standard I/O transport:
 
 ```python
 from mcp.server.fastmcp import FastMCP
@@ -166,4 +166,3 @@ MCP decouples AI models from specific tool implementations by defining a standar
 
 #### Q3: How can developers enforce authorization security on remote MCP server endpoints?
 Remote MCP servers operating over SSE enforce enterprise security by requiring OAuth2 Bearer tokens or mutual TLS (mTLS) client certificate verification prior to establishing connection sessions. Additionally, endpoints implement strict rate limiting and request payload validation to prevent unauthorized tool invocation.
-

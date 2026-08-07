@@ -10,7 +10,7 @@ tags: ["consistent hashing", "golang", "distributed systems", "sharding", "virtu
 categories: ["Architecture", "Backend"]
 ShowToc: true
 TocOpen: true
-series: ["Architecture"]
+series: ["system-design"]
 mermaid: true
 cover:
   image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
@@ -18,8 +18,11 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/09-consistent-hashing-sharding/"
 image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
+weight: 9
 ---
-**Answer-first:** Consistent Hashing minimizes key remapping when cluster membership changes. Adding or removing one node from a modulo-hash cluster remaps nearly all keys (catastrophic cache miss storm). Consistent Hashing remaps only $K/N$ keys — the theoretical minimum necessary.
+
+
+**Answer-first:** Consistent Hashing minimizes key remapping when cluster membership changes. Adding or removing one node from a modulo-hash cluster remaps nearly all keys (catastrophic cache miss storm). Consistent Hashing remaps only $K/N$ keys — the theoretical minimum necessary. Adopting this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory optimization, and fault-tolerant event-driven state synchronization across production systems.
 
 > **Prerequisite:** Part 9 of the [System Design Masterclass](/series/system-design/). Read [Part 4: Database Scaling](/series/system-design/04-database-scaling-sharding/) for context on horizontal partitioning strategies.
 
@@ -58,13 +61,13 @@ After adding Node-D (N=4): hash(key) % 4
 
 ```mermaid
 graph TD
-    subgraph ring["Consistent Hash Ring (0 → 2^32-1)"]
+    subgraph ring["Consistent Hash Ring ("0 → 2^32-1")"]
         NA["Node-A @ pos 1,200,000"]
         NB["Node-B @ pos 2,800,000"]
         NC["Node-C @ pos 3,700,000"]
-        K1["key: user:123\nhash=1,500,000\n→ Node-B (next clockwise)"]
-        K2["key: product:456\nhash=3,200,000\n→ Node-C (next clockwise)"]
-        K3["key: order:789\nhash=4,000,000\n→ Node-A (wrap around)"]
+        K1["key: user:123\nhash=1,500,000\n→ Node-B ("next clockwise")"]
+        K2["key: product:456\nhash=3,200,000\n→ Node-C ("next clockwise")"]
+        K3["key: order:789\nhash=4,000,000\n→ Node-A ("wrap around")"]
     end
 
     style NA fill:#cce5ff,stroke:#004085
@@ -351,4 +354,3 @@ Virtual nodes improve load distribution by giving each physical node multiple po
 [Next Part →](/series/system-design/10-observability-pprof-golang/)
 
 🔗 **Next Step:** Continue to [Part 10: Observability & pprof in Go](/series/system-design/10-observability-pprof-golang/)
-

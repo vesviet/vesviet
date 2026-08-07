@@ -16,9 +16,12 @@ tags: ["Shopee", "Golang", "gRPC", "API Gateway", "Service Mesh", "Microservices
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/01-microservices-foundation/"
 image: "/images/posts/shopee-flash-sale-cover.jpg"
+series: ["shopee-architecture"]
+weight: 1
 ---
 
-> **Answer-first:** Shopee handles millions of concurrent users by migrating from monolithic systems to high-performance Go microservices. Inter-service gRPC Protobuf communication and Istio/Envoy service mesh sidecars enforce strict SLAs and sub-millisecond RPC latencies across thousands of internal microservice nodes.
+
+> **Answer-first:** Shopee handles millions of concurrent users by migrating from monolithic systems to high-performance Go microservices. Inter-service gRPC Protobuf communication and Istio/Envoy service mesh sidecars enforce strict SLAs and sub-millisecond RPC latencies across thousands of internal microservice nodes. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory management with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration.
 
 ## Chapter 1: Building a Massive Foundation with Microservices, Golang, and gRPC
 
@@ -48,14 +51,14 @@ The architectural diagram below illustrates how the Go runtime scheduler maps li
 ```mermaid
 graph TD
     subgraph Go Runtime Scheduler
-        P1[Processor P1] -->|Executes| G1[Goroutine G1]
-        P1 -.->|Local Run Queue| LRQ1[G2, G3, G4]
-        P2[Processor P2] -->|Executes| G5[Goroutine G5]
-        P2 -.->|Local Run Queue| LRQ2[G6, G7]
-        GRQ[Global Run Queue]
+        P1["Processor P1"] -->|"Executes"| G1["Goroutine G1"]
+        P1 -.->|"Local Run Queue"| LRQ1["G2, G3, G4"]
+        P2["Processor P2"] -->|"Executes"| G5["Goroutine G5"]
+        P2 -.->|"Local Run Queue"| LRQ2["G6, G7"]
+        GRQ["Global Run Queue"]
     end
-    M1[OS Thread M1] <--> P1
-    M2[OS Thread M2] <--> P2
+    M1["OS Thread M1"] <--> P1
+    M2["OS Thread M2"] <--> P2
 ```
 
 The Go scheduler dynamically schedules Gs onto Ps, which are executed by Ms. If a goroutine performs a blocking system call (such as disk I/O), the scheduler detaches thread M from processor P and assigns a new thread to run remaining goroutines. Additionally, Go's **Work Stealing Algorithm** allows an idle Processor P to steal half the run queue from another busy Processor, maximizing CPU core utilization.
@@ -238,13 +241,13 @@ The structural diagram below shows how external mobile app requests pass through
 
 ```mermaid
 graph TD
-    User["Shopee App / Web"] -->|HTTPS| API_Gateway["API Gateway<br/>Rate Limiting, Auth, Routing"]
+    User["Shopee App / Web"] -->|"HTTPS"| API_Gateway["API Gateway<br/>Rate Limiting, Auth, Routing"]
     
-    subgraph "Shopee Core Backend (Golang + Service Mesh)"
-        API_Gateway -->|gRPC| OrderService[Order Service]
-        API_Gateway -->|gRPC| CatalogService[Catalog Service]
-        OrderService -.->|gRPC| InventoryService[Inventory Service]
-        OrderService -.->|gRPC| PaymentService[Payment Service]
+    subgraph "Shopee Core Backend ("Golang + Service Mesh")"
+        API_Gateway -->|"gRPC"| OrderService["Order Service"]
+        API_Gateway -->|"gRPC"| CatalogService["Catalog Service"]
+        OrderService -.->|"gRPC"| InventoryService["Inventory Service"]
+        OrderService -.->|"gRPC"| PaymentService["Payment Service"]
     end
     
     InventoryService -.-> DB[("TiDB / MySQL")]
@@ -331,7 +334,7 @@ Envoy sidecar proxies continuously track consecutive 5xx response codes and gRPC
 
 ## Architectural Context & Pillar References
 
-The following engineering references provide deep technical context on microservice domain decomposition, high-throughput RPC design, and distributed system reliability:
+These engineering references provide deep technical context on microservice domain decomposition, high-throughput RPC design, and distributed system reliability:
 
 - [Shopee Flash Sale Infrastructure Blueprint](/posts/shopee-flash-sale-architecture/)
 - [MySQL Scalability & Sharding Guide](/posts/mysql-scalability-guide/)

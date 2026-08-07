@@ -17,7 +17,9 @@ canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-3-database
 ShowToc: true
 TocOpen: true
 mermaid: true
+series: ["core-banking-developer"]
 ---
+
 
 > **Answer-first:** Enforcing ACID isolation levels in core banking prevents lost updates and dirty reads during high-concurrency transfers. Using PostgreSQL `REPEATABLE READ` or pessimistic row locking (`SELECT FOR UPDATE`) combined with Go connection pooling guarantees transactional integrity. Spanner and CockroachDB provide linearizable distributed ACID transactions across microservices using Paxos consensus and Hybrid Logical Clocks.
 
@@ -135,7 +137,7 @@ WHERE
 
 ### When to use which?
 
-The table below outlines appropriate concurrency control strategies based on transaction conflict probability and operational requirements.
+Appropriate concurrency control strategies depend on transaction conflict probability based on transaction conflict probability and operational requirements.
 
 | Scenario | Recommended Strategy |
 |---|---|
@@ -280,16 +282,16 @@ The sequence diagram below shows how PostgreSQL row locks force competing transa
 
 ```mermaid
 sequenceDiagram
-    participant Tx1 as Transaction 1
-    participant DB as database
-    participant Tx2 as Transaction 2
+    participant Tx1 as "Transaction 1"
+    participant DB as "database"
+    participant Tx2 as "Transaction 2"
     
-    Tx1->>DB: SELECT ... FOR UPDATE (Lock Account A)
+    Tx1->>DB: SELECT ... FOR UPDATE ("Lock Account A")
     DB-->>Tx1: Return Account Balance
-    Tx2->>DB: SELECT ... FOR UPDATE (Lock Account A)
+    Tx2->>DB: SELECT ... FOR UPDATE ("Lock Account A")
     Note over DB: Tx2 blocks waiting for Tx1 lock
     Tx1->>DB: UPDATE Account A Balance & COMMIT
-    DB-->>Tx1: Commit Success (Lock Released)
+    DB-->>Tx1: Commit Success ("Lock Released")
     DB-->>Tx2: Return Account Balance
     Tx2->>DB: UPDATE Account A Balance & COMMIT
 ```
@@ -516,4 +518,3 @@ In Part 3 Database Transactions Acid (Core Banking Developer), latency SLA gover
 ---
 
 [← Previous Part: Part 2: CASA & Lending Domain Logic](/series/core-banking-developer/part-2-banking-domain-casa-lending/)  |  [Next Part: Part 4: Modern Event-Driven Core Architecture](/series/core-banking-developer/part-4-modern-core-banking-architecture/)
-

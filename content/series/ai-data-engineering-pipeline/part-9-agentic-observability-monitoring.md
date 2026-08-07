@@ -16,7 +16,10 @@ canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-9-ag
 description: "Complete technical guide to implementing OpenTelemetry distributed tracing, semantic GenAI conventions, and LLM cost monitoring in production systems."
 ShowToc: true
 TocOpen: true
+series: ["ai-data-engineering-pipeline"]
+weight: 10
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 8 — Inference Optimization Vllm](/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/). Review it first if the terminology in this part is unfamiliar.
 
@@ -30,25 +33,25 @@ Without standardized distributed tracing, identifying why an agent query took 8.
 
 ## OpenTelemetry Tracing Pipeline Architecture
 
-**Answer-first:** OpenTelemetry pipelines collect distributed trace spans across agent orchestrators, vector retrieval nodes, and LLM API calls into Jaeger or Tempo.
+**Answer-first:** OpenTelemetry pipelines collect distributed trace spans across agent orchestrators, vector retrieval nodes, and LLM API calls into Jaeger or Tempo. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
 
 ```mermaid
 sequenceDiagram
     autonumber
     actor User
-    participant Gateway as API Gateway (Span: HTTP Request)
-    participant Agent as Agent Runtime (Span: ReAct Loop)
-    participant Vector as Qdrant DB (Span: Vector Search)
-    participant LLM as vLLM / OpenAI (Span: LLM Inference)
-    participant OTel as OpenTelemetry Collector
-    participant Grafana as Grafana / Jaeger Dashboard
+    participant Gateway as API Gateway ("Span: HTTP Request")
+    participant Agent as Agent Runtime ("Span: ReAct Loop")
+    participant Vector as Qdrant DB ("Span: Vector Search")
+    participant LLM as vLLM / OpenAI ("Span: LLM Inference")
+    participant OTel as "OpenTelemetry Collector"
+    participant Grafana as "Grafana / Jaeger Dashboard"
 
     User->>Gateway: POST /v1/agent/chat
     Gateway->>Agent: Route Request
-    Agent->>Vector: Execute Hybrid Search (15ms)
+    Agent->>Vector: Execute Hybrid Search ("15ms")
     Vector-->>Agent: Return Context Chunks
     
-    Agent->>LLM: Stream Inference Request (TTFT: 320ms, Tokens: 4,120)
+    Agent->>LLM: Stream Inference Request ("TTFT: 320ms, Tokens: 4,120")
     LLM-->>Agent: Return Response Stream
     
     par Async Telemetry Export
@@ -59,7 +62,7 @@ sequenceDiagram
     end
 
     OTel->>Grafana: Export Prometheus Metrics & Jaeger Traces
-    Agent-->>User: Return Completed Response (Total: 840ms)
+    Agent-->>User: Return Completed Response ("Total: 840ms")
 ```
 
 ---

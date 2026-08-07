@@ -27,7 +27,7 @@ All content is synthesized from the official engineering blogs of Uber, Grab, an
 
 ## Series Contents
 
-The following index outlines the six core architectural pillars of a high-concurrency ride-hailing platform, ordered by data flow from client ingestion to push delivery.
+Six core architectural pillars define the high-concurrency ride-hailing platform, ordered by data flow from client ingestion to push delivery.
 
 - [Executive Summary — The Big Picture of Real-time Ride-Hailing Systems](/series/ride-hailing-realtime-architecture/executive-summary/)
 - [Part 1 — Location Ingestion: Collecting Millions of GPS Coordinates Per Second](/series/ride-hailing-realtime-architecture/part-1-location-ingestion/)
@@ -77,4 +77,3 @@ Traditional SQL database spatial queries using PostGIS run $O(N)$ distance calcu
 {{< faq q="How do ride-hailing platforms handle driver network disconnections during live trips?" >}}
 Platforms use binary gRPC streams over HTTP/3 QUIC, which feature connection migration via 64-bit Connection IDs. When a driver's smartphone switches between cellular towers or Wi-Fi networks, the socket migrates without requiring a full TCP handshaking loop, while mobile clients buffer pings locally to guarantee zero lost telemetry points.
 {{< /faq >}}
-

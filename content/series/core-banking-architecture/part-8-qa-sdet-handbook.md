@@ -8,7 +8,6 @@ weight: 8
 series: ["core-banking-architecture"]
 keywords: ["core banking testing strategy", "distributed systems SDET", "split-brain simulation testing", "clock skew injection libfaketime", "fintech QA testing"]
 author: "Lê Tuấn Anh"
-schema: ["Article", "TechArticle", "HowTo", "FAQPage"]
 cover:
   image: "/images/posts/banking-microservices-cover.jpg"
   alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
@@ -19,9 +18,10 @@ TocOpen: true
 mermaid: true
 ---
 
+
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 7 — Streaming Fraud Detection](/series/core-banking-architecture/part-7-streaming-fraud-detection/). Review it first if the terminology in this part is unfamiliar.
 
-**Answer-first:** Core banking SDET testing validates financial transactions through automated double-entry invariant assertions, chaos fault injection, and split-brain partition simulation. Dedicated test suites ensure ledger immutability, zero balance drift, and deterministic recovery under peak workloads.
+**Answer-first:** Core banking SDET testing validates financial transactions through automated double-entry invariant assertions, chaos fault injection, and split-brain partition simulation. Dedicated test suites ensure ledger immutability, zero balance drift, and deterministic recovery under peak workloads. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for production-grade enterprise operations.
 
 > **Series (Part 8 of 8):** This concluding article compiles a thorough testing strategy specifically tailored for each layer of the Core Banking Architecture covered in previous parts — from ledger consistency to distributed SQL, Sagas, ISO 20022, API Security, and Streaming Fraud Detection.
 
@@ -553,18 +553,18 @@ The flowchart diagram below summarizes the complete SDET financial QA pipeline, 
 
 ```mermaid
 flowchart TD
-    subgraph TestSuite [SDET Core Banking Test Suite]
-        A[Chaos Fault Injection Libfaketime / Toxiproxy] --> B[Double-Entry Invariant Auditing]
-        B --> C[Distributed SQL Split-Brain Verification]
-        C --> D[Saga DLQ & Compensation Testing]
-        D --> E[ISO 20022 Idempotency & Security Testing]
-        E --> F[Flink Fraud Stream Testing]
+    subgraph TestSuite ["SDET Core Banking Test Suite"]
+        A["Chaos Fault Injection Libfaketime / Toxiproxy"] --> B["Double-Entry Invariant Auditing"]
+        B --> C["Distributed SQL Split-Brain Verification"]
+        C --> D["Saga DLQ & Compensation Testing"]
+        D --> E["ISO 20022 Idempotency & Security Testing"]
+        E --> F["Flink Fraud Stream Testing"]
     end
 
-    subgraph Metrics [Quality Assurance Gate]
-        F --> G{Zero Balance Drift & 100% Saga Recovery?}
-        G -- Yes --> Pass[Deploy to Production]
-        G -- No --> Fail[Block CI/CD Pipeline & Audit Alert]
+    subgraph Metrics ["Quality Assurance Gate"]
+        F --> G{"Zero Balance Drift & 100% Saga Recovery?"}
+        G -- Yes --> Pass["Deploy to Production"]
+        G -- No --> Fail["Block CI/CD Pipeline & Audit Alert"]
     end
 ```
 

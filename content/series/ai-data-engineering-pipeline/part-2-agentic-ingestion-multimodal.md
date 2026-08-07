@@ -16,13 +16,16 @@ canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-2-ag
 description: "Comprehensive guide to building agentic multimodal data ingestion pipelines that replace naive OCR with layout-aware PDF extraction engines."
 ShowToc: true
 TocOpen: true
+series: ["ai-data-engineering-pipeline"]
+weight: 3
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Agentic Graphrag Long Context](/series/ai-data-engineering-pipeline/part-1-agentic-graphrag-long-context/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 2 — Agentic Data Ingestion & Multimodal Document Processing Pipeline
 
-> **Answer-first:** Traditional text-only OCR pipelines corrupt complex PDF layouts, multi-column tables, and embedded architectural diagrams. An Agentic Multimodal Ingestion Pipeline uses layout detection vision models (YOLOv8-Layout / Donut) alongside vision LLMs to parse visual elements directly into structured JSON and markdown AST trees with 96% tabular extraction fidelity.
+> **Answer-first:** Traditional text-only OCR pipelines corrupt complex PDF layouts, multi-column tables, and embedded architectural diagrams. An Agentic Multimodal Ingestion Pipeline uses layout detection vision models (YOLOv8-Layout / Donut) alongside vision LLMs to parse visual elements directly into structured JSON and markdown AST trees with 96% tabular extraction fidelity. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and.
 >
 > **Key Takeaways**:
 > - **96% Tabular Extraction Accuracy**: Layout-aware vision OCR eliminates cross-column context shredding, preserving numerical precision across financial reports.
@@ -62,17 +65,17 @@ Agentic multimodal pipelines utilize vision LLMs and layout parsers to convert c
 
 ```mermaid
 graph LR
-    PDF[Unstructured PDF File] --> Layout["YOLOv8 / Donut Layout Analysis"]
+    PDF["Unstructured PDF File"] --> Layout["YOLOv8 / Donut Layout Analysis"]
     Layout --> BBox1["Bounding Box: Table Crop"]
     Layout --> BBox2["Bounding Box: Diagram Crop"]
     Layout --> BBox3["Bounding Box: Text Block"]
 
     BBox1 --> VisionLLM["Vision LLM Extraction GPT-4o / Claude"]
     BBox2 --> VisionLLM
-    BBox3 --> AST[Markdown AST Parser]
+    BBox3 --> AST["Markdown AST Parser"]
 
-    VisionLLM --> SchemaJSON[Structured JSON Tables]
-    AST --> MarkdownText[Contextual Text Chunks]
+    VisionLLM --> SchemaJSON["Structured JSON Tables"]
+    AST --> MarkdownText["Contextual Text Chunks"]
 
     SchemaJSON --> GraphDB[("Neo4j Knowledge Graph")]
     MarkdownText --> VectorDB[("Qdrant Vector Index")]
@@ -261,4 +264,3 @@ Advance to Part 3 to examine late chunking techniques and semantic caching with 
 - [Part 4 — Real-time Streaming CDC & Federated GraphRAG Architecture](/series/ai-data-engineering-pipeline/part-4-streaming-cdc-federated-rag/)
 - [Part 5 — Enterprise Security, RBAC & Data Poisoning Defense](/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/)
 - [Part 1 — Context Engineering: DDD for AI](/posts/ai-native-frontend-architecture-predictions-2028/)
-

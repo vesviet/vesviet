@@ -59,19 +59,19 @@ The radar takeaway is therefore straightforward:
 
 ### Architecture & Component Sequence Flow
 
-The following Mermaid diagram illustrates the continuous compilation feedback loop in Go 1.26, where Parca collects 7-day CPU profiles from running production pods and feeds `default.pgo` assets directly into `go build` to trigger hot-path inlining and stack allocation escapes:
+Mermaid diagram illustrates the continuous compilation feedback loop in Go 1.26, where Parca collects 7-day CPU profiles from running production pods and feeds `default.pgo` assets directly into `go build` to trigger hot-path inlining and stack allocation escapes:
 
 ```mermaid
 flowchart LR
-    Pod[Kubernetes Go Pod] -->|Continuous pprof| Parca["Parca / Continuous Profiler"]
-    Parca -->|Aggregate 7-Day CPU Profile| PGO[default.pgo Profile Asset]
-    PGO -->|go build -pgo=auto| Compiler[Go 1.26 Compiler]
-    Compiler -->|Inline Hot Paths & Escape Stack| Binary["Optimized Binary (-18% Alloc Rate)"]
+    Pod["Kubernetes Go Pod"] -->|"Continuous pprof"| Parca["Parca / Continuous Profiler"]
+    Parca -->|"Aggregate 7-Day CPU Profile"| PGO["default.pgo Profile Asset"]
+    PGO -->|"go build -pgo=auto"| Compiler["Go 1.26 Compiler"]
+    Compiler -->|"Inline Hot Paths & Escape Stack"| Binary["Optimized Binary (-18% Alloc Rate)"]
 ```
 
 ### Production Implementation Blueprint
 
-The following Go 1.26 blueprint demonstrates how profile-guided optimization targets hot atomic counters within worker pools, ensuring batch processing functions qualify for inline expansion without heap allocation overhead:
+Go 1.26 blueprint demonstrates how profile-guided optimization targets hot atomic counters within worker pools, ensuring batch processing functions qualify for inline expansion without heap allocation overhead:
 
 ```go
 // Go 1.26 PGO Profile Ingestion & Profile-Guided Inlining Benchmark
@@ -174,10 +174,10 @@ The following sequence diagram details the architecture flow and system componen
 
 ```mermaid
 flowchart TD
-    Q[Hybrid Vector + Scalar Query] --> Plan[PG 18 Planner]
-    Plan -->|Push Filter tenant_id| HNSW[pgvector HNSW Graph Traversal]
-    HNSW -->|ef_search=100 Candidate Evaluation| Similarity[Cosine Distance Ordering]
-    Similarity -->|Sub-10ms Output| TopK[Top-10 Cosine Match Results]
+    Q["Hybrid Vector + Scalar Query"] --> Plan["PG 18 Planner"]
+    Plan -->|"Push Filter tenant_id"| HNSW["pgvector HNSW Graph Traversal"]
+    HNSW -->|"ef_search=100 Candidate Evaluation"| Similarity["Cosine Distance Ordering"]
+    Similarity -->|"Sub-10ms Output"| TopK["Top-10 Cosine Match Results"]
 ```
 
 The SQL snippet below defines the database schema and indexing parameters required for optimized query execution:
@@ -506,11 +506,11 @@ The following sequence diagram details the architecture flow and system componen
 
 ```mermaid
 flowchart TD
-    Client[Incoming TCP Requests] --> Acceptor[Tokio TCP Listener]
-    Acceptor --> WorkerPool[Work-Stealing Thread Pool]
+    Client["Incoming TCP Requests"] --> Acceptor["Tokio TCP Listener"]
+    Acceptor --> WorkerPool["Work-Stealing Thread Pool"]
     WorkerPool --> Task1["Async Future Task 1 (~300 bytes)"]
     WorkerPool --> Task2["Async Future Task 2 (~300 bytes)"]
-    Task1 -->|Cooperative Yield| EPoll[epoll Event Reactor]
+    Task1 -->|"Cooperative Yield"| EPoll["epoll Event Reactor"]
 ```
 
 The Rust code snippet below implements high-throughput asynchronous execution handling:
@@ -893,12 +893,12 @@ The following sequence diagram details the architecture flow and system componen
 
 ```mermaid
 flowchart TD
-    User[kubectl apply -f pod.yaml] --> APIServer[K8s API Server]
-    APIServer --> Mutating[Mutating Webhook Phase]
-    Mutating --> Validating[Validating Webhook Service]
-    Validating -->|JSON AdmissionReview| WebhookPod[Go Admission Server]
-    WebhookPod -->|Allowed: true/false| APIServer
-    APIServer -->|Allowed| etcd[("etcd Data Store")]
+    User["kubectl apply -f pod.yaml"] --> APIServer["K8s API Server"]
+    APIServer --> Mutating["Mutating Webhook Phase"]
+    Mutating --> Validating["Validating Webhook Service"]
+    Validating -->|"JSON AdmissionReview"| WebhookPod["Go Admission Server"]
+    WebhookPod -->|"Allowed: true/false"| APIServer
+    APIServer -->|"Allowed"| etcd[("etcd Data Store")]
 ```
 
 #### Q1: What is the difference between Mutating and Validating Webhook Admission Controllers in Kubernetes?
@@ -1035,9 +1035,9 @@ The following sequence diagram details the architecture flow and system componen
 
 ```mermaid
 flowchart TD
-    Producer["Kafka Java Producer (acks=all)"] --> Leader[Partition Leader Broker]
-    Leader -->|KRaft Log Replication| Replica1[ISR Replica Broker 1]
-    Leader -->|KRaft Log Replication| Replica2[ISR Replica Broker 2]
+    Producer["Kafka Java Producer (acks=all)"] --> Leader["Partition Leader Broker"]
+    Leader -->|"KRaft Log Replication"| Replica1["ISR Replica Broker 1"]
+    Leader -->|"KRaft Log Replication"| Replica2["ISR Replica Broker 2"]
     Replica1 & Replica2 -->> Leader: ACK Replicated
     Leader -->> Producer: Batch Write Confirmed
 ```
@@ -1101,17 +1101,17 @@ The app's core design reflects this. Agents run in separate threads organized by
 
 ```mermaid
 flowchart TD
-    DEV[Developer] --> APP[Codex App — Command Center]
+    DEV["Developer"] --> APP["Codex App — Command Center"]
 
-    APP --> A1[Agent Thread 1 — Feature Build]
-    APP --> A2[Agent Thread 2 — Refactor]
-    APP --> A3[Agent Thread 3 — Bug Fix]
-    APP --> AUTO[Automations — Scheduled Background Tasks]
+    APP --> A1["Agent Thread 1 — Feature Build"]
+    APP --> A2["Agent Thread 2 — Refactor"]
+    APP --> A3["Agent Thread 3 — Bug Fix"]
+    APP --> AUTO["Automations — Scheduled Background Tasks"]
 
-    A1 & A2 & A3 --> WT[Git Worktrees — Isolated Copies]
-    WT --> REPO[Repository]
+    A1 & A2 & A3 --> WT["Git Worktrees — Isolated Copies"]
+    WT --> REPO["Repository"]
 
-    AUTO --> RQ[Review Queue]
+    AUTO --> RQ["Review Queue"]
     RQ --> DEV
 ```
 
@@ -1374,8 +1374,8 @@ The following sequence diagram details the architecture flow and system componen
 ```mermaid
 flowchart TD
     SubGraph1["GPU Node 1 (8x H100)"] <-->|"NVLink 900 GB/s"| SubGraph2["GPU Node 2 (8x H100)"]
-    SubGraph1 & SubGraph2 <-->|InfiniBand RDMA| NCCL[NCCL All-Reduce Quorum]
-    NCCL --> ModelWeights[Distributed Model Training Tensor Parallel]
+    SubGraph1 & SubGraph2 <-->|"InfiniBand RDMA"| NCCL["NCCL All-Reduce Quorum"]
+    NCCL --> ModelWeights["Distributed Model Training Tensor Parallel"]
 ```
 
 The Python script below provides automated orchestration and API configuration management:
@@ -1417,14 +1417,14 @@ DeepSeek-V4 introduces 1.6T parameter MoE Pro and 284B Flash models with a 1M to
 
 ### 1. The Pro and Flash Models: Architecture & Efficiency
 
-The following sequence diagram details the architecture flow and system component interactions:
+Sequence diagram details the architecture flow and system component interactions:
 
 ```mermaid
 flowchart TD
-    DEV["Developer / Agent Framework"] --> API[DeepSeek API]
+    DEV["Developer / Agent Framework"] --> API["DeepSeek API"]
     
-    API -->|High Complexity / Coding| PRO["DeepSeek-V4-Pro\n1.6T Params / 49B Active"]
-    API -->|High Volume / Real-time| FLASH["DeepSeek-V4-Flash\n284B Params / 13B Active"]
+    API -->|"High Complexity / Coding"| PRO["DeepSeek-V4-Pro\n1.6T Params / 49B Active"]
+    API -->|"High Volume / Real-time"| FLASH["DeepSeek-V4-Flash\n284B Params / 13B Active"]
     
     PRO --> OUT["Response / Action"]
     FLASH --> OUT
@@ -1485,17 +1485,17 @@ The sequence diagram below details the architecture flow and system component in
 ```mermaid
 flowchart TD
     subgraph "Sonnet 4.5 Architecture"
-        MODEL[Claude Sonnet 4.5] --> REASON[Advanced Reasoning]
-        MODEL --> CODE[Coding Excellence]
-        MODEL --> AGENT[Agent Construction]
-        MODEL --> ALIGN[Alignment Improvements]
+        MODEL["Claude Sonnet 4.5"] --> REASON["Advanced Reasoning"]
+        MODEL --> CODE["Coding Excellence"]
+        MODEL --> AGENT["Agent Construction"]
+        MODEL --> ALIGN["Alignment Improvements"]
     end
     
     subgraph "Infrastructure Layer"
-        SDK[Claude Agent SDK] --> CHECK[Checkpoint System]
-        SDK --> CONTEXT[Context Editing]
-        SDK --> MEMORY[Memory Tool]
-        SDK --> VSCode[VS Code Extension]
+        SDK["Claude Agent SDK"] --> CHECK["Checkpoint System"]
+        SDK --> CONTEXT["Context Editing"]
+        SDK --> MEMORY["Memory Tool"]
+        SDK --> VSCode["VS Code Extension"]
     end
     
     MODEL --> SDK
@@ -1511,13 +1511,13 @@ The sequence diagram below illustrates how state checkpoints enable deterministi
 
 ```mermaid
 flowchart LR
-    START[Task Start] --> CP1[Checkpoint 1]
-    CP1 --> WORK1[Agent Work Block]
-    WORK1 --> CP2[Checkpoint 2]
-    CP2 --> WORK2[Agent Work Block]
-    WORK2 --> ERROR[Error Detected]
-    ERROR --> ROLLBACK[Rollback to CP2]
-    ROLLBACK --> RECOVER[Resume from Valid State]
+    START["Task Start"] --> CP1["Checkpoint 1"]
+    CP1 --> WORK1["Agent Work Block"]
+    WORK1 --> CP2["Checkpoint 2"]
+    CP2 --> WORK2["Agent Work Block"]
+    WORK2 --> ERROR["Error Detected"]
+    ERROR --> ROLLBACK["Rollback to CP2"]
+    ROLLBACK --> RECOVER["Resume from Valid State"]
 ```
 
 ### 4. The Alignment Signal
@@ -1591,17 +1591,17 @@ Mistral Small 4 is the first model in their lineup to unify previously separate 
 ```mermaid
 flowchart TD
     subgraph "Previous Mistral Lineup"
-        MAG[Magistral] --> REASON[Deep Reasoning]
-        PIX[Pixtral] --> MULTI[Multimodal Vision]
-        DEV[Devstral] --> CODE[Agentic Coding]
+        MAG["Magistral"] --> REASON["Deep Reasoning"]
+        PIX["Pixtral"] --> MULTI["Multimodal Vision"]
+        DEV["Devstral"] --> CODE["Agentic Coding"]
     end
     
     subgraph "Small 4 Unified"
-        SMALL4[Mistral Small 4] --> MODE1["reasoning_effort=none<br/>Fast Instruct"]
+        SMALL4["Mistral Small 4"] --> MODE1["reasoning_effort=none<br/>Fast Instruct"]
         SMALL4 --> MODE2["reasoning_effort=medium<br/>Balanced"]
         SMALL4 --> MODE3["reasoning_effort=high<br/>Deep Reasoning"]
-        SMALL4 --> MULTI2[Native Multimodal]
-        SMALL4 --> CODE2[Agentic Coding]
+        SMALL4 --> MULTI2["Native Multimodal"]
+        SMALL4 --> CODE2["Agentic Coding"]
     end
 ```
 
@@ -1616,12 +1616,12 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    INPUT[User Input] --> CLASSIFY{Task Complexity}
-    CLASSIFY -->|Simple| NONE["reasoning_effort=none<br/>~100ms latency"]
-    CLASSIFY -->|Moderate| MEDIUM["reasoning_effort=medium<br/>~500ms latency"]
-    CLASSIFY -->|Complex| HIGH["reasoning_effort=high<br/>~2s latency"]
+    INPUT["User Input"] --> CLASSIFY{"Task Complexity"}
+    CLASSIFY -->|"Simple"| NONE["reasoning_effort=none<br/>~100ms latency"]
+    CLASSIFY -->|"Moderate"| MEDIUM["reasoning_effort=medium<br/>~500ms latency"]
+    CLASSIFY -->|"Complex"| HIGH["reasoning_effort=high<br/>~2s latency"]
     
-    NONE --> OUTPUT[Response]
+    NONE --> OUTPUT["Response"]
     MEDIUM --> OUTPUT
     HIGH --> OUTPUT
 ```
@@ -1633,9 +1633,9 @@ The flowchart below outlines the licensing ecosystem choices available to enterp
 ```mermaid
 flowchart TD
     subgraph "License Ecosystem April 2026"
-        PROP["Proprietary APIs<br/>OpenAI, Anthropic"] --> PAY[Pay-per-token]
-        LLAMA["Meta Llama 4<br/>Custom License"] --> RESTRICT[Commercial Restrictions]
-        DEEP["DeepSeek-V4<br/>MIT License"] --> OPEN1[Open but Chinese Originated]
+        PROP["Proprietary APIs<br/>OpenAI, Anthropic"] --> PAY["Pay-per-token"]
+        LLAMA["Meta Llama 4<br/>Custom License"] --> RESTRICT["Commercial Restrictions"]
+        DEEP["DeepSeek-V4<br/>MIT License"] --> OPEN1["Open but Chinese Originated"]
         MISTRAL["Mistral Small 4<br/>Apache 2.0"] --> OPEN2["Fully Open<br/>No Restrictions"]
     end
 ```
@@ -1718,8 +1718,8 @@ The flowchart below illustrates the architectural shift in model distribution ch
 ```mermaid
 flowchart LR
     subgraph "Before April 27, 2026"
-        O1[OpenAI Models + Products] --> M1["Microsoft / Azure Exclusive Channel"]
-        M1 --> E1[Enterprise Customers]
+        O1["OpenAI Models + Products"] --> M1["Microsoft / Azure Exclusive Channel"]
+        M1 --> E1["Enterprise Customers"]
     end
 ```
 
@@ -1731,14 +1731,14 @@ This is why the agreement reads less like a renewal and more like a controlled d
 
 ### 3. What Microsoft Still Keeps
 
-The following sequence diagram details the architecture flow and system component interactions:
+Sequence diagram details the architecture flow and system component interactions:
 
 ```mermaid
 flowchart TD
-    DEAL[Amended OpenAI-Microsoft Agreement] --> CLOUD[Azure Remains Primary Cloud]
-    DEAL --> IP[Non-Exclusive IP License Through 2032]
-    DEAL --> REV[Capped Revenue Share Through 2030]
-    DEAL --> EQUITY[Microsoft Keeps Shareholder Upside]
+    DEAL["Amended OpenAI-Microsoft Agreement"] --> CLOUD["Azure Remains Primary Cloud"]
+    DEAL --> IP["Non-Exclusive IP License Through 2032"]
+    DEAL --> REV["Capped Revenue Share Through 2030"]
+    DEAL --> EQUITY["Microsoft Keeps Shareholder Upside"]
 ```
 
 ### 4. The Real Story: Multi-Cloud AI Is Becoming the Default
@@ -1809,23 +1809,23 @@ The sequence diagram below details the architecture flow and system component in
 
 ```mermaid
 flowchart LR
-    USER[Creative or Product Team] --> CLAUDE["Claude / Claude Design"]
+    USER["Creative or Product Team"] --> CLAUDE["Claude / Claude Design"]
 
-    CLAUDE --> MCP[MCP Connector Layer]
+    CLAUDE --> MCP["MCP Connector Layer"]
 ```
 
 ### 3. Creative Software Is Becoming a Workflow Fabric, Not Just a Tool Collection
 
-The following sequence diagram details the architecture flow and system component interactions:
+Sequence diagram details the architecture flow and system component interactions:
 
 ```mermaid
 flowchart TD
-    IDEA["Prompt / Brief / Mockup"] --> DESIGN[Claude Design]
-    DESIGN --> CONNECT[MCP Connectors]
-    CONNECT --> TOOLS[Creative Toolchain]
+    IDEA["Prompt / Brief / Mockup"] --> DESIGN["Claude Design"]
+    DESIGN --> CONNECT["MCP Connectors"]
+    CONNECT --> TOOLS["Creative Toolchain"]
     TOOLS --> REFINE["Asset Refinement / Automation"]
     REFINE --> HANDOFF["Export / Handoff"]
-    HANDOFF --> BUILD[Engineering or Publishing Workflow]
+    HANDOFF --> BUILD["Engineering or Publishing Workflow"]
 ```
 
 ### 4. What This Means for Engineering Teams
@@ -1878,7 +1878,7 @@ AWS launches OpenAI models, Codex, and Bedrock Managed Agents directly within AW
 
 ### 1. What AWS Actually Launched
 
-The following sequence diagram details the architecture flow and system component interactions:
+Sequence diagram details the architecture flow and system component interactions:
 
 ```mermaid
 flowchart TD
@@ -1901,10 +1901,10 @@ That framing now connects directly to the Bedrock launches:
 
 ```mermaid
 flowchart LR
-    USER[Enterprise Team] --> MODEL[OpenAI Frontier Models]
-    USER --> CODE[Codex]
+    USER["Enterprise Team"] --> MODEL["OpenAI Frontier Models"]
+    USER --> CODE["Codex"]
 
-    MODEL --> RUNTIME[Managed Agent Runtime]
+    MODEL --> RUNTIME["Managed Agent Runtime"]
     CODE --> RUNTIME
 ```
 
@@ -1975,19 +1975,19 @@ Analysis of immediate market shifts following post-exclusivity multi-cloud distr
 
 ### 1. Multi-Cloud OpenAI Became Real Immediately
 
-The following sequence diagram details the architecture flow and system component interactions:
+Sequence diagram details the architecture flow and system component interactions:
 
 ```mermaid
 flowchart LR
-    DEAL[OpenAI ends Microsoft exclusivity] --> DIST[Multi-cloud distribution becomes possible]
-    DIST --> AWS[AWS productizes OpenAI on Bedrock]
-    DIST --> OTHERS[Other clouds now pressured to respond]
+    DEAL["OpenAI ends Microsoft exclusivity"] --> DIST["Multi-cloud distribution becomes possible"]
+    DIST --> AWS["AWS productizes OpenAI on Bedrock"]
+    DIST --> OTHERS["Other clouds now pressured to respond"]
 
-    AWS --> MODELS[OpenAI Models]
-    AWS --> CODEX[Codex]
-    AWS --> AGENTS[Managed Agents]
+    AWS --> MODELS["OpenAI Models"]
+    AWS --> CODEX["Codex"]
+    AWS --> AGENTS["Managed Agents"]
 
-    MODELS --> GOV[Governance + IAM + PrivateLink]
+    MODELS --> GOV["Governance + IAM + PrivateLink"]
     CODEX --> GOV
     AGENTS --> GOV
 ```
@@ -2074,11 +2074,11 @@ For related systemic design patterns, pillar blueprints, and curated reading pat
 
 Each daily entry below is published separately with links to the primary announcements it analyses:
 
-- [Code Evolution & Runtime Recovery — Go 1.26 `//go:fix`, Dapr, Kratos](/radar/tech-radar-code-evolution-runtime-recovery-guide/) (April 14)
-- [DeepSeek-V4: 1M Context & Agentic Focus](/radar/tech-radar-deepseek-v4-1m-context-agentic-focus/) (April 26)
-- [Claude Sonnet 4.5 & Open-Source Agent SDK](/radar/tech-radar-claude-sonnet-4.5-open-source-agent-sdk/) (April 27)
-- [Mistral Small 4: Reasoning & Agent Model](/radar/tech-radar-mistral-small-4-reasoning-agent-model/) (April 27)
-- [OpenAI & Microsoft End Exclusivity](/radar/tech-radar-openai-microsoft-multi-cloud-expansion/) (April 28)
-- [Anthropic MCP & Agentic Creative Workflows](/radar/tech-radar-anthropic-mcp-agentic-creative-workflows/) (April 29)
-- [AWS & OpenAI Bedrock Multi-Cloud Expansion](/radar/tech-radar-aws-openai-bedrock-multi-cloud-expansion/) (April 29)
-- [Post-Exclusivity AI & Multi-Cloud Agent Runtime](/radar/tech-radar-post-exclusivity-ai-multi-cloud-agent-runtime/) (April 30)
+- [Code Evolution & Runtime Recovery — Go 1.26 `//go:fix`, Dapr, Kratos](/radar/2026-04/) (April 14)
+- [DeepSeek-V4: 1M Context & Agentic Focus](/radar/2026-04/) (April 26)
+- [Claude Sonnet 4.5 & Open-Source Agent SDK](/radar/2026-04/) (April 27)
+- [Mistral Small 4: Reasoning & Agent Model](/radar/2026-04/) (April 27)
+- [OpenAI & Microsoft End Exclusivity](/radar/2026-04/) (April 28)
+- [Anthropic MCP & Agentic Creative Workflows](/radar/2026-04/) (April 29)
+- [AWS & OpenAI Bedrock Multi-Cloud Expansion](/radar/2026-04/) (April 29)
+- [Post-Exclusivity AI & Multi-Cloud Agent Runtime](/radar/2026-04/) (April 30)

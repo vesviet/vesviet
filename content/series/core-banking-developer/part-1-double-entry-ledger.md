@@ -17,9 +17,11 @@ canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-1-double-e
 ShowToc: true
 TocOpen: true
 mermaid: true
+series: ["core-banking-developer"]
 ---
 
-> **Answer-first:** Double-entry bookkeeping in core banking guarantees that every transaction records equal Debit and Credit entries across sub-ledgers. Enforcing $\sum \text{Debits} = \sum \text{Credits}$ at the database schema level via atomic PostgreSQL transactions and Go ledger validation engines prevents financial imbalance, race conditions, and audit compliance failures.
+
+> **Answer-first:** Double-entry bookkeeping in core banking guarantees that every transaction records equal Debit and Credit entries across sub-ledgers. Enforcing $\sum \text{Debits} = \sum \text{Credits}$ at the database schema level via atomic PostgreSQL transactions and Go ledger validation engines prevents financial imbalance, race conditions, and audit compliance failures. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability.
 
 > **Prerequisite:** Read the [Executive Summary](/series/core-banking-developer/executive-summary/) for the high-level roadmap of core banking evolution.
 
@@ -233,10 +235,10 @@ The diagram below outlines the double-entry transaction validation workflow from
 
 ```mermaid
 graph TD
-    UserTx[Financial Transaction] --> JE[Journal Entry Builder]
-    JE --> Validate{Imbalance = 0?}
-    Validate -->|Yes| Ledger[Write immutable ledger_entries]
-    Validate -->|No| Fail["Reject Transaction & Rollback"]
+    UserTx["Financial Transaction"] --> JE["Journal Entry Builder"]
+    JE --> Validate{"Imbalance = 0?"}
+    Validate -->|"Yes"| Ledger["Write immutable ledger_entries"]
+    Validate -->|"No"| Fail["Reject Transaction & Rollback"]
 ```
 
 ## Accounting Schema for Multi-Currency Balances
@@ -450,4 +452,3 @@ Core banking engines execute all debit and credit journal insertions inside expl
 ---
 
 Implementing double-entry ledgers demands strict ACID transactional isolation and pessimistic row locking during balance or inventory updates. Distributed Saga orchestration coordinates multi-stage rollbacks, preventing partial state writes across heterogeneous databases.
-

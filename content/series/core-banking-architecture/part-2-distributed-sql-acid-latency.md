@@ -10,7 +10,6 @@ keywords: ["distributed sql transaction latency", "TiDB percolator overhead", "S
 categories: ["FinTech", "Distributed SQL", "Database"]
 tags: ["TiDB", "CockroachDB", "Spanner", "Distributed SQL", "ACID", "Latency"]
 author: "Lê Tuấn Anh"
-schema: ["Article", "TechArticle", "FAQPage"]
 cover:
   image: "/images/posts/banking-microservices-cover.jpg"
   alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
@@ -21,9 +20,10 @@ TocOpen: true
 mermaid: true
 ---
 
+
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Double Entry Ledger Schema](/series/core-banking-architecture/part-1-double-entry-ledger-schema/). Review it first if the terminology in this part is unfamiliar.
 
-**Answer-first:** Distributed SQL engines preserve multi-region ACID serializability by combining Raft/Paxos consensus with bounded clock synchronization protocols such as Spanner TrueTime, CockroachDB HLC, or TiDB Percolator TSO. Selecting optimal commit-wait delays and timestamp allocation strategies minimizes two-phase commit overhead, achieving low transaction latencies across cross-region core banking nodes.
+**Answer-first:** Distributed SQL engines preserve multi-region ACID serializability by combining Raft/Paxos consensus with bounded clock synchronization protocols such as Spanner TrueTime, CockroachDB HLC, or TiDB Percolator TSO. Selecting optimal commit-wait delays and timestamp allocation strategies minimizes two-phase commit overhead, achieving low transaction latencies across cross-region core banking nodes. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated.
 
 > **Answer-first:** Distributed SQL engines (TiDB Percolator, CockroachDB HLC, Google Spanner TrueTime) balance multi-region ACID compliance with low-latency commitments. Understanding clock drift bounds (TrueTime 2-7ms wait) vs TSO central allocator overhead is critical for tuning financial transaction latency under cross-region replication.
 
@@ -36,10 +36,10 @@ The sequence diagram below details the multi-step network interaction during a d
 ```mermaid
 sequenceDiagram
     autonumber
-    participant App as Go Application
-    participant TSO as TiDB TSO / Clock
-    participant KV as TiKV Primary Region
-    participant Rep as TiKV Replica Region
+    participant App as "Go Application"
+    participant TSO as "TiDB TSO / Clock"
+    participant KV as "TiKV Primary Region"
+    participant Rep as "TiKV Replica Region"
     App->>TSO: Fetch Start Timestamp
     App->>KV: Prewrite Tx Mutex Keys
     KV->>Rep: Raft Quorum Commit
@@ -155,7 +155,7 @@ TiDB implements distributed transactions using the **Percolator** model (from Go
 
 ### Three-Column Logic
 
-The table below describes how TiDB maps transactional state and key locks across three distinct KV storage column families:
+Table overview describes how TiDB maps transactional state and key locks across three distinct KV storage column families:
 
 | Column | Format | Meaning |
 |--------|--------|---------|

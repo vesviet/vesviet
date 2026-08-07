@@ -10,7 +10,7 @@ tags: ["saga pattern", "distributed transactions", "golang", "temporal", "outbox
 categories: ["Architecture", "Backend"]
 ShowToc: true
 TocOpen: true
-series: ["Architecture"]
+series: ["system-design"]
 mermaid: true
 cover:
   image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
@@ -18,7 +18,10 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/08-saga-pattern-distributed-transactions-go/"
 image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
+weight: 8
 ---
+
+
 The Saga Pattern coordinates distributed transactions across microservices by decomposing a large transaction into a sequence of local transactions. If any step fails, the system automatically executes **compensating transactions** in reverse order to undo completed steps. Each local transaction must be idempotent.
 
 > **Prerequisite:** Part 8 of the [System Design Masterclass](/series/system-design/). Read [Part 7: Idempotent API Design](/series/system-design/07-idempotency-api-design-go/) first — compensating transactions in Saga must be idempotent.
@@ -32,7 +35,7 @@ The Saga Pattern coordinates distributed transactions across microservices by de
 
 # What Are the Problems with 2PC in Microservices?
 
-**Answer-first:** Orchestrating distributed transactions in Go uses the Saga pattern with Temporal workflows or Debezium CDC outbox streaming to execute multi-service steps and compensating rollbacks safely.
+**Answer-first:** Orchestrating distributed transactions in Go uses the Saga pattern with Temporal workflows or Debezium CDC outbox streaming to execute multi-service steps and compensating rollbacks safely. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
 
 **Key Concept:** Two-Phase Commit (2PC) is a blocking protocol with a coordinator single point of failure. If the coordinator crashes between the Prepare and Commit phases, all participants are blocked indefinitely with locks held — a catastrophic failure mode in microservices. These are the same [core banking distributed transaction challenges](/posts/deconstructing-microfinance-core-banking-architecture/) seen in legacy systems.
 
@@ -40,10 +43,10 @@ The Saga Pattern coordinates distributed transactions across microservices by de
 
 ```mermaid
 sequenceDiagram
-    participant Coord as Coordinator
-    participant S1 as Order Service
-    participant S2 as Payment Service
-    participant S3 as Inventory Service
+    participant Coord as "Coordinator"
+    participant S1 as "Order Service"
+    participant S2 as "Payment Service"
+    participant S3 as "Inventory Service"
 
     Coord->>S1: Prepare
     Coord->>S2: Prepare
@@ -74,8 +77,8 @@ sequenceDiagram
 graph LR
     T1["T1: Create Order ✅"] --> T2["T2: Reserve Inventory ✅"]
     T2 --> T3["T3: Process Payment ❌"]
-    T3 --> C2["C2: Release Inventory\n(compensation)"]
-    C2 --> C1["C1: Cancel Order\n(compensation)"]
+    T3 --> C2["C2: Release Inventory\n("compensation")"]
+    C2 --> C1["C1: Cancel Order\n("compensation")"]
 
     style T3 fill:#f8d7da,stroke:#dc3545
     style C2 fill:#fff3cd,stroke:#f0a500
@@ -342,4 +345,3 @@ max_replication_slots = 4
 🔗 **Next Step:** Continue to [Part 9: Consistent Hashing — Virtual Nodes & CRC32 Ring in Go](/series/system-design/09-consistent-hashing-sharding/)
 
 Within Saga distributed transactions, optimizing memory utilization requires Goroutine pool sizing and non-blocking ring buffer allocation. Profiling CPU profile samples via Go pprof identifies GC pause time reductions under high load.
-

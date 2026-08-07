@@ -16,7 +16,10 @@ canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-10-p
 description: "Production engineering guide to building Ragas evaluation pipelines, automated CI/CD quality guardrails, and scalable LLM-as-a-Judge evaluation."
 ShowToc: true
 TocOpen: true
+series: ["ai-data-engineering-pipeline"]
+weight: 11
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 9 — Agentic Observability Monitoring](/series/ai-data-engineering-pipeline/part-9-agentic-observability-monitoring/). Review it first if the terminology in this part is unfamiliar.
 
@@ -30,23 +33,23 @@ In GenAI and RAG engineering, responses are non-deterministic. A minor adjustmen
 
 ## The Ragas Evaluation Framework Architecture
 
-**Answer-first:** The Ragas evaluation framework automates LLM-as-a-Judge scoring against explicit production SLAs: Faithfulness >= 0.85, Context Precision >= 0.80, and Answer Relevance >= 0.90. It processes evaluation suites at >= 50 samples/min in CI pipelines to automatically block regressive PR builds.
+**Answer-first:** The Ragas evaluation framework automates LLM-as-a-Judge scoring against explicit production SLAs: Faithfulness >= 0.85, Context Precision >= 0.80, and Answer Relevance >= 0.90. It processes evaluation suites at >= 50 samples/min in CI pipelines to automatically block regressive PR builds. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context Protocol ttlMs cache invalidation.
 
 ```mermaid
 graph TD
-    GitPush["Developer Git Push / PR"] --> CI Pipeline[GitHub Actions CI Pipeline]
+    GitPush["Developer Git Push / PR"] --> CI Pipeline["GitHub Actions CI Pipeline"]
     
     subgraph Automated Evaluation Suite
-        CI Pipeline --> Dataset[Load Golden Evaluation Dataset]
-        Dataset --> RunRAG[Execute GraphRAG Pipeline on Test Queries]
-        RunRAG --> RagasEngine[Ragas LLM-as-a-Judge Scoring Engine]
+        CI Pipeline --> Dataset["Load Golden Evaluation Dataset"]
+        Dataset --> RunRAG["Execute GraphRAG Pipeline on Test Queries"]
+        RunRAG --> RagasEngine["Ragas LLM-as-a-Judge Scoring Engine"]
         
         RagasEngine --> Metric1["Faithfulness Metric: Factual Grounding"]
         RagasEngine --> Metric2["Context Precision: Retrieval Relevance"]
         RagasEngine --> Metric3["Answer Relevance: Intent Alignment"]
     end
 
-    Metric1 --> Check{Scores >= Threshold?}
+    Metric1 --> Check{"Scores >= Threshold?"}
     Metric2 --> Check
     Metric3 --> Check
 

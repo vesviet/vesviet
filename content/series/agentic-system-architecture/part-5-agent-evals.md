@@ -13,15 +13,17 @@ cover:
   relative: false
 mermaid: true
 canonicalURL: "https://tanhdev.com/series/agentic-system-architecture/part-5-agent-evals/"
-description: "Production architecture guide for Part 5 — Multi-dimensional agent evaluation frameworks, LLM-as-a-Judge rubrics, Go benchmark harnesses, and trajectory trace analysis."
+description: "Production architecture guide for Part 5 — Multi-dimensional agent evaluation frameworks, LLM-as-a-Judge rubrics, Go benchmark harnesses, and trajectory."
 ShowToc: true
 TocOpen: true
-weight: 55
+weight: 1
+series: ["agentic-system-architecture"]
 ---
+
 
 > **Prerequisite:** This is the starting part of the series — no prior part is required. Later parts assume the concepts introduced here.
 
-**Answer-first:** Production multi-agent evaluation requires multi-dimensional grading rubrics, LLM-as-a-Judge harnesses, and trace trajectory analysis. Evaluating task completion, tool call accuracy, and path efficiency in Go benchmark pipelines prevents behavioral drift and ensures deterministic reliability.
+**Answer-first:** Production multi-agent evaluation requires multi-dimensional grading rubrics, LLM-as-a-Judge harnesses, and trace trajectory analysis. Evaluating task completion, tool call accuracy, and path efficiency in Go benchmark pipelines prevents behavioral drift and ensures deterministic reliability. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for production-grade enterprise operations.
 
 ---
 
@@ -44,26 +46,26 @@ Evaluating agents on a single binary pass/fail score obscures critical failure m
 
 ```mermaid
 graph TD
-    SubGraphInput[Agent Trajectory Record] --> EvalEngine[Evaluation Gateway]
+    SubGraphInput["Agent Trajectory Record"] --> EvalEngine["Evaluation Gateway"]
     
     subgraph Multi-Dimensional Evaluation Framework
-        EvalEngine --> Axis1[1. Goal Completion Accuracy]
-        EvalEngine --> Axis2[2. Tool Selection & Schema Precision]
-        EvalEngine --> Axis3[3. Trajectory & Cost Efficiency]
-        EvalEngine --> Axis4[4. Safety & Policy Adherence]
+        EvalEngine --> Axis1["1. Goal Completion Accuracy"]
+        EvalEngine --> Axis2["2. Tool Selection & Schema Precision"]
+        EvalEngine --> Axis3["3. Trajectory & Cost Efficiency"]
+        EvalEngine --> Axis4["4. Safety & Policy Adherence"]
     end
 
-    Axis1 --> JudgeLLM[LLM-as-a-Judge Grading Engine]
-    Axis2 --> DeterministicValidator[JSON Schema & AST Assertion]
-    Axis3 --> TelemetryProfiler[Step Depth & Token Cost Calculator]
-    Axis4 --> SecurityScanner[Guardrail & Policy Audit Engine]
+    Axis1 --> JudgeLLM["LLM-as-a-Judge Grading Engine"]
+    Axis2 --> DeterministicValidator["JSON Schema & AST Assertion"]
+    Axis3 --> TelemetryProfiler["Step Depth & Token Cost Calculator"]
+    Axis4 --> SecurityScanner["Guardrail & Policy Audit Engine"]
 
-    JudgeLLM --> Aggregator[Multi-Metric Composite Score]
+    JudgeLLM --> Aggregator["Multi-Metric Composite Score"]
     DeterministicValidator --> Aggregator
     TelemetryProfiler --> Aggregator
     SecurityScanner --> Aggregator
 
-    Aggregator --> BenchmarkReport[CI/CD Evaluation Report]
+    Aggregator --> BenchmarkReport["CI/CD Evaluation Report"]
 ```
 
 ### Core Evaluation Metrics & Formulas
@@ -84,7 +86,7 @@ Direct LLM scoring often introduces self-enhancement bias, position bias, and sc
 
 ### Production Python Evaluation Engine
 
-The following Python module demonstrates an async evaluation engine using Pydantic and JSON Schema to score agent trajectories against defined rubrics.
+Python module demonstrates an async evaluation engine using Pydantic and JSON Schema to score agent trajectories against defined rubrics.
 
 ```python
 import os
@@ -334,11 +336,11 @@ gantt
     Retrieve Vector Embeddings :t2, 40, 110
 
     section Reasoning Loop 1
-    LLM Inference (Planner)    :crit, t3, 110, 350
+    LLM Inference ("Planner")    :crit, t3, 110, 350
     Tool Call: SearchIndex     :t4, 350, 480
 
     section Reasoning Loop 2
-    LLM Inference (Validator)  :crit, t5, 480, 720
+    LLM Inference ("Validator")  :crit, t5, 480, 720
     Tool Call: ExecuteSQL      :t6, 720, 890
 
     section Final Synthesis

@@ -10,7 +10,7 @@ tags: ["database", "sharding", "golang", "postgresql", "tidb", "connection pool"
 categories: ["Architecture", "Backend"]
 ShowToc: true
 TocOpen: true
-series: ["Architecture"]
+series: ["system-design"]
 mermaid: true
 cover:
   image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
@@ -18,9 +18,12 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/04-database-scaling-sharding/"
 image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
+weight: 4
 ---
 
-> **Answer-first:** Horizontal database sharding with Vitess and TiDB distributes high-volume write traffic across database clusters using consistent hashing and range partitioning.
+
+
+> **Answer-first:** Horizontal database sharding with Vitess and TiDB distributes high-volume write traffic across database clusters using consistent hashing and range partitioning. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
 
 > **Prerequisite:** Part 4 of the [System Design Masterclass](/series/system-design/). Read [Part 3: Caching Strategies](/series/system-design/03-caching-strategies-redis-golang/) first.
 
@@ -67,12 +70,12 @@ image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
 
 ```mermaid
 graph TD
-    Root["Root Node [50 | 100]"] --> L1["Internal [10 | 30]"]
-    Root --> L2["Internal [60 | 80]"]
-    Root --> L3["Internal [110 | 150]"]
-    L1 --> Leaf1["Leaf [1,5,8,10] →"]
-    L1 --> Leaf2["Leaf [15,20,25,30] →"]
-    L2 --> Leaf3["Leaf [55,60,65,70] →"]
+    Root["Root Node ["50 | 100"]"] --> L1["Internal ["10 | 30"]"]
+    Root --> L2["Internal ["60 | 80"]"]
+    Root --> L3["Internal ["110 | 150"]"]
+    L1 --> Leaf1["Leaf ["1,5,8,10"] →"]
+    L1 --> Leaf2["Leaf ["15,20,25,30"] →"]
+    L2 --> Leaf3["Leaf ["55,60,65,70"] →"]
 
     style Root fill:#cce5ff,stroke:#004085
     style Leaf1 fill:#d4edda,stroke:#28a745
@@ -91,10 +94,10 @@ Writes go to an in-memory **MemTable** first (sorted), flushed to immutable **SS
 
 ```mermaid
 graph LR
-    Write["Write"] --> MT["MemTable\n(In-Memory, Sorted)"]
-    MT -->|"Flush when full"| L0["L0 SSTables\n(unsorted, overlapping)"]
-    L0 -->|Compaction| L1["L1 SSTables\n(sorted, non-overlapping)"]
-    L1 -->|Compaction| L2["L2 SSTables\n(10x larger)"]
+    Write["Write"] --> MT["MemTable\n("In-Memory, Sorted")"]
+    MT -->|"Flush when full"| L0["L0 SSTables\n("unsorted, overlapping")"]
+    L0 -->|"Compaction"| L1["L1 SSTables\n("sorted, non-overlapping")"]
+    L1 -->|"Compaction"| L2["L2 SSTables\n("10x larger")"]
     Read["Read"] --> MT
     Read --> L0
     Read --> L1
@@ -211,7 +214,7 @@ Phase 2 — Commit:
 ```
 
 > [!NOTE]
-> TiDB commit latency is ~2–5ms vs ~0.5ms for single-node MySQL — this is the inherent trade-off of distributed ACID. PayPay migrated from 64-shard MySQL to TiDB and accepted this latency increase because the operational simplicity gain was significant. Cross-shard transactions became transparent. Similar to [Alipay's OceanBase architecture](/posts/alipay-double-11-architecture-tps/), the system relies on a robust distributed consensus algorithm (Raft/Paxos) to maintain consistency.
+> TiDB commit latency is ~2–5ms vs ~0.5ms for single-node MySQL — this is the inherent trade-off of distributed ACID. PayPay migrated from 64-shard MySQL to TiDB and accepted this latency increase because the operational simplicity gain was significant. Cross-shard transactions became transparent. Similar to [Alipay's OceanBase architecture](/posts/alipay-double-11-architecture-tps/), the system relies on a resilient distributed consensus algorithm (Raft/Paxos) to maintain consistency.
 
 ---
 

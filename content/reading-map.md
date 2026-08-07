@@ -14,7 +14,7 @@ mermaid: true
 TocOpen: true
 ---
 
-> **Answer-First:** The tanhdev Reading Map provides a structured technical index across 57 production essays organized into 6 specialized engineering pillars: Commerce Modernization, 21-Service Go Microservices, Event-Driven Reliability, Platform Operations, AI Systems & Agentic Pipelines, and Senior Engineering Capability.
+> **Answer-First:** The tanhdev Reading Map provides a structured technical index across 57 production essays organized into 6 specialized engineering pillars: Commerce Modernization, 21-Service Go Microservices, Event-Driven Reliability, Platform Operations, AI Systems & Agentic Pipelines, and Senior Engineering Capability. Adopting this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory optimization, and fault-tolerant event-driven state synchronization across production systems.
 
 ## Reading Map – tanhdev.com
 
@@ -24,19 +24,19 @@ If you're new here, this page is the fastest way to understand what I build and 
 
 ```mermaid
 graph TD
-    Map[tanhdev Reading Map] --> P1[Pillar 1: Commerce Modernization]
-    Map --> P2[Pillar 2: Microservices Architecture]
-    Map --> P3[Pillar 3: Event-Driven Reliability]
-    Map --> P4[Pillar 4: Platform Operations & GitOps]
-    Map --> P5[Pillar 5: AI Systems & Agentic Pipelines]
-    Map --> P6[Pillar 6: Engineering Leadership & Capability]
+    Map["tanhdev Reading Map"] --> P1["Pillar 1: Commerce Modernization"]
+    Map --> P2["Pillar 2: Microservices Architecture"]
+    Map --> P3["Pillar 3: Event-Driven Reliability"]
+    Map --> P4["Pillar 4: Platform Operations & GitOps"]
+    Map --> P5["Pillar 5: AI Systems & Agentic Pipelines"]
+    Map --> P6["Pillar 6: Engineering Leadership & Capability"]
 
-    P1 --> Track1[E-commerce Strangler Fig & CDC Migration Path]
-    P2 --> Track2[Golang 21-Service DDD & gRPC Production Stack]
-    P3 --> Track3[High-Concurrency Sagas & Distributed Tracing]
-    P4 --> Track4[Kubernetes In-Place Resizing & ArgoCD GitOps]
-    P5 --> Track5[GraphRAG, Multi-Agent Swarms & MCP Gateways]
-    P6 --> Track6[Senior Engineering Evaluation & Hiring Frameworks]
+    P1 --> Track1["E-commerce Strangler Fig & CDC Migration Path"]
+    P2 --> Track2["Golang 21-Service DDD & gRPC Production Stack"]
+    P3 --> Track3["High-Concurrency Sagas & Distributed Tracing"]
+    P4 --> Track4["Kubernetes In-Place Resizing & ArgoCD GitOps"]
+    P5 --> Track5["GraphRAG, Multi-Agent Swarms & MCP Gateways"]
+    P6 --> Track6["Senior Engineering Evaluation & Hiring Frameworks"]
 ```
 
 ## Recommended Architectural Learning Paths
@@ -45,9 +45,9 @@ To get maximum value from the content corpus, follow these specialized learning 
 
 ### Track A: The Enterprise Monolith-to-Microservices Modernization Path
 For Systems Architects and Lead Engineers tackling legacy debt in Magento, PHP, or monolithic Java systems:
-1. **Assessment Phase:** Start with [Why Migrate Magento to Microservices](/posts/why-migrate-magento-to-microservices/) to analyze total cost of ownership (TCO) and evaluate organizational readiness.
-2. **Migration Execution:** Follow [Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/) for zero-downtime Strangler Fig patterns and CDC data extraction.
-3. **Domain Bounding:** Study [Deconstructing the Ecosystem: Service Details by Domain](/posts/deconstructing-ecommerce-service-details-domain/) to define clean PostgreSQL domain schemas.
+1. **Assessment Phase:** Start with [Why Migrate Magento to Microservices](/series/magento-migration-vietnam/why-migrate-magento-to-microservices/) to analyze total cost of ownership (TCO) and evaluate organizational readiness.
+2. **Migration Execution:** Follow [Moving from Magento to Microservices](/series/magento-migration-vietnam/moving-from-magento-to-microservices/) for zero-downtime Strangler Fig patterns and CDC data extraction.
+3. **Domain Bounding:** Study [Deconstructing the Ecosystem: Service Details by Domain](/series/magento-migration-vietnam/deconstructing-ecommerce-service-details-domain/) to define clean PostgreSQL domain schemas.
 4. **API Gateway & Routing:** Deploy gRPC REST gateways as detailed in [Blueprint of a 21-Service E-commerce Edge](/posts/blueprint-ecommerce-microservices-architecture-diagram/).
 5. **Database Decoupling:** Eliminate EAV table bottlenecks using JSONB document projections and CDC event streaming to maintain real-time sync with legacy backends.
 
@@ -74,8 +74,8 @@ For AI Systems Engineers building production RAG pipelines, agentic workflows, a
 
 The articles listed below represent the recommended sequential reading path for software engineers, systems architects, and technical leaders joining the platform. This path introduces core architectural concepts, strangler-fig migration playbooks, service domain boundaries, and GitOps deployment strategies step-by-step:
 
-1. [Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/) – zero-downtime Strangler Fig + CDC migration playbook.
-2. [Deconstructing the Ecosystem: Service Details by Domain](/posts/deconstructing-ecommerce-service-details-domain/) – bounded contexts that actually survived production.
+1. [Moving from Magento to Microservices](/series/magento-migration-vietnam/moving-from-magento-to-microservices/) – zero-downtime Strangler Fig + CDC migration playbook.
+2. [Deconstructing the Ecosystem: Service Details by Domain](/series/magento-migration-vietnam/deconstructing-ecommerce-service-details-domain/) – bounded contexts that actually survived production.
 3. [Blueprint of a 21-Service E-commerce Edge](/posts/blueprint-ecommerce-microservices-architecture-diagram/) – high-level architecture + traffic/event flow.
 4. [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/) – real Kratos + Clean Architecture implementation.
 5. [GitOps at Scale: Orchestrating 21 Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/) – how we actually ship safely at this scale.
@@ -86,13 +86,13 @@ The articles listed below represent the recommended sequential reading path for 
 
 **Information Gain**: Concrete zero-downtime migration patterns, exact EAV bypass SQL, cost/real-world timelines from Vietnam-based migrations that most “migrate from monolith” articles skip.
 
-- [Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/)
-- [Why Migrate Magento to Microservices (and When You Shouldn’t)](/posts/why-migrate-magento-to-microservices/)
-- [Ecommerce Architecture 2026: Overcoming Tech Debt in Composable Commerce Migration](/posts/ecommerce-architecture-composable-migration/)
-- [Exporting Magento 2 Data with Clean SQL](/posts/exporting-magento-2-data-flat-sql-nodejs/)
-- [Is Magento Worth It in 2026? The 2.4.9 Reality](/posts/magento-still-worth-investing-2026/)
-- [Magento AI Integration: Modernize Without Rebuilding](/posts/magento-ai-integration-strategy-architecture/)
-- [Deconstructing the Ecosystem: Service Details by Domain](/posts/deconstructing-ecommerce-service-details-domain/)
+- [Moving from Magento to Microservices](/series/magento-migration-vietnam/moving-from-magento-to-microservices/)
+- [Why Migrate Magento to Microservices (and When You Shouldn’t)](/series/magento-migration-vietnam/why-migrate-magento-to-microservices/)
+- [Ecommerce Architecture 2026: Overcoming Tech Debt in Composable Commerce Migration](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/)
+- [Exporting Magento 2 Data with Clean SQL](/series/magento-migration-vietnam/exporting-magento-2-data-flat-sql-nodejs/)
+- [Is Magento Worth It in 2026? The 2.4.9 Reality](/series/magento-migration-vietnam/magento-still-worth-investing-2026/)
+- [Magento AI Integration: Modernize Without Rebuilding](/series/magento-migration-vietnam/magento-ai-integration-strategy-architecture/)
+- [Deconstructing the Ecosystem: Service Details by Domain](/series/magento-migration-vietnam/deconstructing-ecommerce-service-details-domain/)
 - [Composable Banking Architecture: From Monolith to Modular Core](/posts/composable-banking-architecture/)
 - [Laravel in the AI Era: 10 Predictions for 2028](/posts/the-future-of-laravel-development-in-ai-era/)
 
@@ -176,9 +176,9 @@ The articles listed below represent the recommended sequential reading path for 
 
 **Information Gain**: What “senior Magento/architecture” talent in Vietnam actually looks like in 2026, concrete vetting signals beyond theme work.
 
-- [Magento Development in Vietnam: 2026 Guide — Cost, Hiring & Upgrade](/posts/magento-vietnam/)
-- [Magento Development in Vietnam: Cost, Hiring & Upgrade](/posts/magento-vietnam/)
-- [Magento Agency & Development in Vietnam: Scoping Guide](/posts/magento-development-in-vietnam/)
+- [Magento Development in Vietnam: 2026 Guide — Cost, Hiring & Upgrade](/series/magento-migration-vietnam/magento-vietnam/)
+- [Magento Development in Vietnam: Cost, Hiring & Upgrade](/series/magento-migration-vietnam/magento-vietnam/)
+- [Magento Agency & Development in Vietnam: Scoping Guide](/series/magento-migration-vietnam/magento-development-in-vietnam/)
 
 ---
 

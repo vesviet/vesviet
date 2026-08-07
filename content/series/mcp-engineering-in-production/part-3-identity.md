@@ -17,13 +17,16 @@ description: "Architect Zero-Trust MCP identity propagation using OAuth 2.1 PKCE
 ShowToc: true
 TocOpen: true
 image: "/images/posts/part-3-identity.jpg"
+series: ["mcp-engineering-in-production"]
+weight: 4
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — Build](/series/mcp-engineering-in-production/part-2-build/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 3 — Identity & Authentication: OAuth2, PKCE & mTLS
 
-> **Answer-first:** Hardcoding static API keys in AI agent code creates severe security liabilities. Production MCP architectures enforce Zero Trust authentication using **OAuth 2.1 with PKCE** for user identity propagation and **SPIFFE/SPIRE mTLS X.509 certificates** for workload-to-workload identity verification across microservice meshes.
+> **Answer-first:** Hardcoding static API keys in AI agent code creates severe security liabilities. Production MCP architectures enforce Zero Trust authentication using **OAuth 2.1 with PKCE** for user identity propagation and **SPIFFE/SPIRE mTLS X.509 certificates** for workload-to-workload identity verification across microservice meshes. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context Protocol ttlMs cache invalidation.
 >
 > **Key Takeaways**:
 > - **Zero Hardcoded Secrets**: Replaces static API keys with short-lived OAuth 2.1 tokens (15-minute expiration).
@@ -45,14 +48,14 @@ The sequence diagram below details the dual-layer authentication flow, showing h
 ```mermaid
 sequenceDiagram
     autonumber
-    actor User as User / Agent Host
-    participant AuthServer as OAuth 2.1 Authorization Server
-    participant Agent as AI Agent Workload (SPIFFE ID)
-    participant Mesh as Envoy Proxy / mTLS Guard
-    participant MCPServer as Production MCP Server
+    actor User as "User / Agent Host"
+    participant AuthServer as "OAuth 2.1 Authorization Server"
+    participant Agent as AI Agent Workload ("SPIFFE ID")
+    participant Mesh as "Envoy Proxy / mTLS Guard"
+    participant MCPServer as "Production MCP Server"
 
     User->>AuthServer: Authenticate via OAuth 2.1 + PKCE
-    AuthServer-->>User: Return Short-Lived Access Token (15 min exp)
+    AuthServer-->>User: Return Short-Lived Access Token ("15 min exp")
     User->>Agent: Delegate Goal + User Bearer Token
     
     Agent->>Mesh: Initiate MCP JSON-RPC Request over SSE

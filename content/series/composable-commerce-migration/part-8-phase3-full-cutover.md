@@ -4,13 +4,13 @@ description: "Full Magento migration cutover strategy: graduated traffic ramping
 date: "2026-05-27T10:00:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
-weight: 9
+weight: 5
 slug: "part-8-phase3-full-cutover"
 ShowToc: true
 TocOpen: true
 categories: ["Software Engineering", "Backend", "Migration", "DevOps"]
 tags: ["GitOps", "ArgoCD", "Kustomize", "Zero Downtime", "Cutover", "Magento Migration", "Kubernetes"]
-series: ["Composable Commerce Migration"]
+series: ["composable-commerce-migration"]
 series_order: 8
 ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
@@ -21,13 +21,14 @@ cover:
 canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-8-phase3-full-cutover/"
 ---
 
+
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 7 — Phase2 Dual Write](/series/composable-commerce-migration/part-7-phase2-dual-write/). Review it first if the terminology in this part is unfamiliar.
 
 Phase 3 is the final act: 100% of traffic moves to microservices, Magento becomes a passive archive, and the platform runs entirely on Go microservices via GitOps. No PHP in the critical path. No Magento license renewal needed.
 
-**Answer-first:** Phase 3 cutover executes an immediate 100% traffic shift for stable read services and a graduated ramp over 10 days for transactional services. Legacy Magento remains a hot standby for 30 days while automated ArgoCD gitops pipelines handle production deployments.
+**Answer-first:** Phase 3 cutover executes an immediate 100% traffic shift for stable read services and a graduated ramp over 10 days for transactional services. Legacy Magento remains a hot standby for 30 days while automated ArgoCD gitops pipelines handle production deployments. Adopting this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory optimization, and fault-tolerant event-driven state synchronization across production systems.
 
-> **Phase 3 Cutover Spec:** Belongs to the **[Composable Commerce Monolith Migration](/posts/ecommerce-architecture-composable-migration/)** collection. Review the core pillar post for full details.
+> **Phase 3 Cutover Spec:** Belongs to the **[Composable Commerce Monolith Migration](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/)** collection. Review the core pillar post for full details.
 
 ## 1. The 6-Week Cutover Calendar
 

@@ -1,12 +1,12 @@
 ---
 title: "GenUI Human-In-The-Loop: Optimistic UI & Fallback (Part 5)"
-description: "Design human-in-the-loop validation patterns for Generative UI, enabling interactive approval workflows, user edits, and robust safety guardrails."
+description: "Design human-in-the-loop validation patterns for Generative UI, enabling interactive approval workflows, user edits, and strict safety guardrails."
 slug: "part-5-human-in-the-loop"
 date: "2026-03-22T09:00:00+07:00"
 lastmod: "2026-07-23T10:40:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-frontend/"
+canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-5-human-in-the-loop/"
 tags: ["Generative UI", "Human-in-the-Loop", "Optimistic UI", "Error Boundaries", "Architecture"]
 categories: ["Engineering", "Frontend"]
 cover:
@@ -16,13 +16,14 @@ cover:
 mermaid: true
 ShowToc: true
 TocOpen: true
-series: ["Generative UI Architecture"]
-weight: 5
+series: ["generative-ui-architecture"]
+weight: 6
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Security A11Y](/posts/generative-ui-with-mcp-ai-native-frontend/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Integrating Human-In-The-Loop (HITL) workflows into Generative UI systems balances autonomous AI speed with operational safety for high-risk user actions. By combining Optimistic UI rendering with human verification approval gates and error boundaries, engineering teams ensure users can review, edit, or reject AI-generated actions before backend mutation execution.
+> **Answer-first:** Integrating Human-In-The-Loop (HITL) workflows into Generative UI systems balances autonomous AI speed with operational safety for high-risk user actions. By combining Optimistic UI rendering with human verification approval gates and error boundaries, engineering teams ensure users can review, edit, or reject AI-generated actions before backend mutation execution. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated.
 
 ---
 
@@ -34,13 +35,13 @@ An AI model might correctly generate a complex form widget, but hallucinate crit
 
 ```mermaid
 graph TD
-    A[User Natural Language Intent] --> B[AI Model Generates Transaction UI]
-    B --> C{Action Risk Tier}
-    C -->|Low Risk - Read-Only| D[Direct Autonomous Render]
-    C -->|High Risk - Mutation| E[HITL Interception Gate]
-    E --> F[Render Interactive Approval Widget]
-    F -->|User Rejects / Modifies| G[Rollback / Regenerate Intent]
-    F -->|User Confirms| H[Execute Backend Action via Server Action]
+    A["User Natural Language Intent"] --> B["AI Model Generates Transaction UI"]
+    B --> C{"Action Risk Tier"}
+    C -->|"Low Risk - Read-Only"| D["Direct Autonomous Render"]
+    C -->|"High Risk - Mutation"| E["HITL Interception Gate"]
+    E --> F["Render Interactive Approval Widget"]
+    F -->|"User Rejects / Modifies"| G["Rollback / Regenerate Intent"]
+    F -->|"User Confirms"| H["Execute Backend Action via Server Action"]
 ```
 
 ### Core Objectives of HITL in GenUI
@@ -57,14 +58,14 @@ A resilient HITL architecture operates across three synchronized states: Pending
 ```mermaid
 sequenceDiagram
     autonumber
-    participant User as User / Client App
-    participant Stage as Optimistic UI Stage
-    participant Gate as HITL Approval Engine
-    participant Backend as Enterprise Database / API
+    participant User as "User / Client App"
+    participant Stage as "Optimistic UI Stage"
+    participant Gate as "HITL Approval Engine"
+    participant Backend as "Enterprise Database / API"
 
     User->>Stage: Submit Intent ("Transfer $5,000 to Account B")
-    Stage->>Gate: Create Staged Approval Intent (Status: PENDING)
-    Gate-->>User: Render Approval Component (Confirm / Edit / Cancel)
+    Stage->>Gate: Create Staged Approval Intent ("Status: PENDING")
+    Gate-->>User: Render Approval Component ("Confirm / Edit / Cancel")
     alt User Clicks Confirm
         User->>Gate: Submit Confirmation Signal
         Gate->>Backend: Execute Mutating Backend Transaction
@@ -195,11 +196,11 @@ In high-availability enterprise applications, AI streaming failures must never b
 
 ```mermaid
 graph LR
-    A[AI Stream Rendering Component] --> B{Error Occurs?}
-    B -->|No| C[Normal GenUI Rendering]
-    B -->|Yes - JSON Parse / Component Failure| D[Catch in React Error Boundary]
-    D --> E[Log Error to Sentry / Telemetry]
-    D --> F[Render Fallback Manual Standard Form]
+    A["AI Stream Rendering Component"] --> B{"Error Occurs?"}
+    B -->|"No"| C["Normal GenUI Rendering"]
+    B -->|"Yes - JSON Parse / Component Failure"| D["Catch in React Error Boundary"]
+    D --> E["Log Error to Sentry / Telemetry"]
+    D --> F["Render Fallback Manual Standard Form"]
 ```
 
 ### Fallback Best Practices
@@ -229,10 +230,10 @@ For high-security operations, single-user approval is insufficient, requiring mu
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Agent as AI Sub-Agent
-    participant Gate as Peer Approval Gateway
-    participant User1 as Initiating User
-    participant User2 as Secondary Peer Approver
+    participant Agent as "AI Sub-Agent"
+    participant Gate as "Peer Approval Gateway"
+    participant User1 as "Initiating User"
+    participant User2 as "Secondary Peer Approver"
 
     Agent->>Gate: Staged High-Risk Action Proposal
     Gate->>User1: Display Confirmation Card

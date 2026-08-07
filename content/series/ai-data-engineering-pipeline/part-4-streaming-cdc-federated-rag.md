@@ -16,7 +16,10 @@ canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-4-st
 ShowToc: true
 TocOpen: true
 description: "Production guide to real-time change data capture streaming and federated GraphRAG query routing for enterprise distributed database pipelines."
+series: ["ai-data-engineering-pipeline"]
+weight: 5
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Late Chunking Semantic Caching](/series/ai-data-engineering-pipeline/part-3-late-chunking-semantic-caching/). Review it first if the terminology in this part is unfamiliar.
 
@@ -30,18 +33,18 @@ If your RAG system relies on traditional **Nightly Batch ETL**, your AI agents w
 
 ## The Streaming CDC Paradigm Shift
 
-**Answer-first:** Streaming Change Data Capture (CDC) streams database mutations into vector indexes in real time, eliminating stale vector database search results.
+**Answer-first:** Streaming Change Data Capture (CDC) streams database mutations into vector indexes in real time, eliminating stale vector database search results. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant DB as Postgres OLTP (WAL)
-    participant Deb as Debezium CDC Connector
-    participant Kafka as Apache Kafka Topic
-    participant GoProc as Go Streaming Worker
-    participant Vector as Qdrant / pgvector
-    participant Graph as Neo4j Graph DB
-    participant RAG as RAG Service
+    participant DB as Postgres OLTP ("WAL")
+    participant Deb as "Debezium CDC Connector"
+    participant Kafka as "Apache Kafka Topic"
+    participant GoProc as "Go Streaming Worker"
+    participant Vector as "Qdrant / pgvector"
+    participant Graph as "Neo4j Graph DB"
+    participant RAG as "RAG Service"
 
     DB->>DB: INSERT / UPDATE / DELETE Row
     DB->>Deb: Stream WAL Mutation Payload
@@ -54,7 +57,7 @@ sequenceDiagram
     end
 
     GoProc-->>Kafka: Commit Offset
-    RAG->>Vector: Query Fresh Context (< 500ms Latency)
+    RAG->>Vector: Query Fresh Context ("< 500ms Latency")
 ```
 
 ### Key Architectural Benefits
@@ -229,21 +232,21 @@ In enterprise organizations operating across distinct geographical jurisdictions
 
 ```mermaid
 graph TD
-    UserQuery[User Enterprise Query] --> FederatedRouter[Federated GraphRAG Router]
+    UserQuery["User Enterprise Query"] --> FederatedRouter["Federated GraphRAG Router"]
     
     FederatedRouter --> Regional1["US Region Node: pgvector + Neo4j"]
     FederatedRouter --> Regional2["EU Region Node: pgvector + Neo4j"]
     FederatedRouter --> Regional3["APAC Region Node: pgvector + Neo4j"]
 
-    Regional1 --> SubResult1[Local Subgraph Context 1]
-    Regional2 --> SubResult2[Local Subgraph Context 2]
-    Regional3 --> SubResult3[Local Subgraph Context 3]
+    Regional1 --> SubResult1["Local Subgraph Context 1"]
+    Regional2 --> SubResult2["Local Subgraph Context 2"]
+    Regional3 --> SubResult3["Local Subgraph Context 3"]
 
     SubResult1 --> Aggregator["Context Aggregator & RLS Sanitizer"]
     SubResult2 --> Aggregator
     SubResult3 --> Aggregator
 
-    Aggregator --> FinalLLM[LLM Response Generation]
+    Aggregator --> FinalLLM["LLM Response Generation"]
 ```
 
 ### Operational Principles

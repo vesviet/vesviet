@@ -4,7 +4,6 @@ date: "2026-07-03T10:00:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
 description: "Discover why Amazon Prime Video cut infrastructure costs by 90% after moving from Microservices back to a Modular Monolith architecture."
 slug: "executive-summary-amazon-prime-video-monolith"
-aliases: ["/series/modular-monolith-architecture/part-0-executive-summary/"]
 tags: ["Modular Monolith", "AWS", "Serverless", "FinOps", "Amazon Prime"]
 categories: ["Modular Monolith", "Architecture"]
 cover:
@@ -18,13 +17,16 @@ TocOpen: true
 mermaid: true
 draft: false
 image: "/images/posts/executive-summary-amazon-prime-video-monolith.jpg"
+series: ["modular-monolith-architecture"]
+weight: 1
 ---
+
 
 > **Prerequisite:** This is the executive summary and introductory overview of the **Modular Monolith Architecture** series. No prior reading is required to start here.
 
 ## Part 0: Executive Summary — How Amazon Prime Video Saved 90% on Infrastructure Costs
 
-> **Answer-first:** Amazon Prime Video reduced infrastructure costs by 90% by consolidating their audio/video monitoring service from serverless AWS Lambda/Step Functions into a single modular monolith. This transition eliminated high-frequency state transition fees and S3 network egress bottlenecks, demonstrating that in-memory data processing outperforms distributed microservices for high-throughput workloads.
+> **Answer-first:** Amazon Prime Video reduced infrastructure costs by 90% by consolidating their audio/video monitoring service from serverless AWS Lambda/Step Functions into a single modular monolith. This transition eliminated high-frequency state transition fees and S3 network egress bottlenecks, demonstrating that in-memory data processing outperforms distributed microservices for high-throughput workloads. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated.
 >
 > **Key Takeaways**:
 > - **Cost Reduction**: Replaced $970,000/month Step Function state transitions with in-memory execution, reducing infrastructure bill by 90%.
@@ -69,18 +71,18 @@ The architectural comparison below illustrates the structural shift from a high-
 
 ```mermaid
 graph TD
-    subgraph Serverless Architecture (Old)
-        SF[AWS Step Functions] -->|Orchestrate| L1["AWS Lambda: Audio Ingest"]
-        SF -->|Orchestrate| L2["AWS Lambda: Video Ingest"]
-        SF -->|Orchestrate| L3["AWS Lambda: Aggregator"]
-        L1 -->|Write Video Frames| S3[("Amazon S3")]
-        L2 -->|Write Video Frames| S3
-        S3 -->|Read Video Frames| L3
+    subgraph Serverless Architecture ("Old")
+        SF["AWS Step Functions"] -->|"Orchestrate"| L1["AWS Lambda: Audio Ingest"]
+        SF -->|"Orchestrate"| L2["AWS Lambda: Video Ingest"]
+        SF -->|"Orchestrate"| L3["AWS Lambda: Aggregator"]
+        L1 -->|"Write Video Frames"| S3[("Amazon S3")]
+        L2 -->|"Write Video Frames"| S3
+        S3 -->|"Read Video Frames"| L3
     end
-    subgraph Monolithic Architecture (New)
+    subgraph Monolithic Architecture ("New")
         ECS["Amazon ECS/EC2 Container"]
-        ECS -->|In-Memory Audio/Video Processing| ECS
-        ECS -->|Direct Memory Sharing| RAM[("In-Memory Buffer")]
+        ECS -->|"In-Memory Audio/Video Processing"| ECS
+        ECS -->|"Direct Memory Sharing"| RAM[("In-Memory Buffer")]
     end
 ```
 
@@ -266,7 +268,7 @@ Go uses `sync.Pool` to reuse pre-allocated byte slices across goroutines. Pointe
 Proceed to Part 1 for the architectural decision framework or explore related guides on high-concurrency system design and distributed caching.
 
 - **Next Part:** Continue to [Part 1: Architectural Decision Framework](/series/modular-monolith-architecture/part-1-decision-framework/)
-- **Related Series:** Compare this with our [Modular Monolith Architecture](/series/modular-monolith-architecture/) and [Distributed Caching Strategies](/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/).
+- **Related Series:** Compare this with our [Modular Monolith Architecture](/series/modular-monolith-architecture/) and [Distributed Caching Strategies](/series/high-concurrency-systems/article_2_caching/).
 
 Need help implementing this architecture in your organization? [Get in touch](/hire/) or [hire our technical consulting team](/hire/) to review your system design and codebase.
 
@@ -274,7 +276,7 @@ Need help implementing this architecture in your organization? [Get in touch](/h
 
 Reference pillar architecture guides on Laravel vs Go decision frameworks and composable e-commerce migrations.
 
-- [Laravel vs Golang Decision Framework](/posts/laravel-vs-golang-when-to-add-features/)
-- [E-Commerce Composable Migration](/posts/ecommerce-architecture-composable-migration/)
+- [Laravel vs Golang Decision Framework](/series/magento-migration-vietnam/laravel-vs-golang-when-to-add-features/)
+- [E-Commerce Composable Migration](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/)
 
 🔗 **Next Step:** Continue to [Part 1 — Decision Framework](/series/modular-monolith-architecture/part-1-decision-framework/) for the following module in the series.

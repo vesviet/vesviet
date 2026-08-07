@@ -11,7 +11,9 @@ import re
 import yaml
 import argparse
 
-CONTENT_DIR = "/home/user/personalized/vesviet/content"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+VESVIET_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, ".."))
+CONTENT_DIR = os.path.join(VESVIET_DIR, "content")
 
 TAXONOMY_MAPPINGS = {
     # Rule 1: AI
@@ -164,7 +166,7 @@ def process_file_content(content):
     new_fm_str = fm_str
     field_changes = []
 
-    for key in ["categories", "tags", "series"]:
+    for key in ["categories", "tags"]:
         if key in orig_yaml:
             orig_val = orig_yaml[key]
             new_val = transform_field(orig_val, is_categories=(key == "categories"))

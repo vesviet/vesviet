@@ -16,11 +16,14 @@ canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-6-from-coder-t
 description: "Architectural guide on shifting from writing manual code to orchestrating multi-agent swarms, async task dispatchers, and Go worker workflows."
 ShowToc: true
 TocOpen: true
+series: ["ai-driven-engineer"]
+weight: 7
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — The Bod Perspective Risk And Privacy](/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** The transition from individual programmer to Systems Orchestrator requires managing multi-agent AI swarms rather than writing single-threaded code lines. By establishing event-driven agent dispatchers, specialized role handoffs (Frontend, Backend, Database, Security), and channel synchronization in Go, orchestrators achieve parallelized feature implementation with 80% lower cycle times.
+> **Answer-first:** The transition from individual programmer to Systems Orchestrator requires managing multi-agent AI swarms rather than writing single-threaded code lines. By establishing event-driven agent dispatchers, specialized role handoffs (Frontend, Backend, Database, Security), and channel synchronization in Go, orchestrators achieve parallelized feature implementation with 80% lower cycle times. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026.
 
 In early AI-assisted development, engineers interacted with a single AI chat window in a sequential dialogue loop. The developer typed a prompt, waited for code output, pasted it into their editor, and repeated the manual cycle.
 
@@ -36,7 +39,7 @@ Swarm orchestration coordinates autonomous agent workers across specialized subt
 
 ```mermaid
 graph TD
-    Human[Human Systems Orchestrator] --> TaskDispatcher["Swarm Task Dispatcher & Router"]
+    Human["Human Systems Orchestrator"] --> TaskDispatcher["Swarm Task Dispatcher & Router"]
     
     subgraph Parallel AI Sub-Agent Swarm
         TaskDispatcher --> AgentDB["Agent 1: Database Schema & Migration"]
@@ -45,7 +48,7 @@ graph TD
         TaskDispatcher --> AgentSec["Agent 4: Security & AST Audit Guard"]
     end
 
-    AgentDB --> ContractBuffer[Handoff Contract Aggregator]
+    AgentDB --> ContractBuffer["Handoff Contract Aggregator"]
     AgentAPI --> ContractBuffer
     AgentUI --> ContractBuffer
     AgentSec --> ContractBuffer

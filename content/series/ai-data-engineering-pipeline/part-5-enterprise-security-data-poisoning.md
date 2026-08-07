@@ -16,13 +16,16 @@ canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-5-en
 description: "In-depth technical guide to implementing document-level RBAC filters, prompt injection defense, and anti-data poisoning security in RAG architectures."
 ShowToc: true
 TocOpen: true
+series: ["ai-data-engineering-pipeline"]
+weight: 6
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Streaming Cdc Federated Rag](/series/ai-data-engineering-pipeline/part-4-streaming-cdc-federated-rag/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 5 — Enterprise Security, RBAC & Data Poisoning Defense in RAG
 
-> **Answer-first:** RAG applications are vulnerable to indirect prompt injection and vector store poisoning, where malicious payloads embedded in uploaded documents compromise LLM safety. Enforcing defense-in-depth requires embedding cryptographically verified JWT RBAC filters directly into vector database queries while scanning incoming context chunks for adversarial text patterns.
+> **Answer-first:** RAG applications are vulnerable to indirect prompt injection and vector store poisoning, where malicious payloads embedded in uploaded documents compromise LLM safety. Enforcing defense-in-depth requires embedding cryptographically verified JWT RBAC filters directly into vector database queries while scanning incoming context chunks for adversarial text patterns. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model.
 >
 > **Key Takeaways**:
 > - **99.1% Indirect Injection Blocking**: Pre-retrieval AST prompt scanning intercepts hidden instruction overrides inside unstructured document PDF text.
@@ -51,7 +54,7 @@ When an innocent user asks a legitimate query (*"What is the total on invoice #8
 
 ```mermaid
 graph TD
-    UserReq[User Query + JWT Token] --> Gateway["Security Gateway & Guard"]
+    UserReq["User Query + JWT Token"] --> Gateway["Security Gateway & Guard"]
     
     subgraph Defense in Depth Gateway
         Gateway --> Scanner["Prompt & AST Injection Scanner"]
@@ -61,11 +64,11 @@ graph TD
     Rewriter --> VectorStore[("Vector Store pgvector / Qdrant")]
     Rewriter --> GraphStore[("Neo4j Graph Database")]
 
-    VectorStore --> ContextFilter[Content Output Sanitizer]
+    VectorStore --> ContextFilter["Content Output Sanitizer"]
     GraphStore --> ContextFilter
 
-    ContextFilter --> LLM[LLM Execution Engine]
-    LLM --> UserResp[Secure Filtered Response]
+    ContextFilter --> LLM["LLM Execution Engine"]
+    LLM --> UserResp["Secure Filtered Response"]
 ```
 
 ### 2. Vector Data Poisoning
@@ -264,4 +267,3 @@ Continue to Part 6 to analyze the transition from passive RAG to autonomous ReAc
 - [Part 10 — Production Evals & CI/CD Guardrails](/series/ai-data-engineering-pipeline/part-10-production-evals-cicd/)
 - [Part 5 — Production Security & OWASP MCP Top 10](/series/mcp-engineering-in-production/part-5-security/)
 - [Part 7 — AI Security Engineering](/series/ai-driven-playbook/part-7-ai-security-engineering/)
-

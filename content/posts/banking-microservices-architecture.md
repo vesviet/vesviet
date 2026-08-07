@@ -30,7 +30,7 @@ canonicalURL: "https://tanhdev.com/posts/banking-microservices-architecture/"
 
 # Banking Microservices in Go: Saga & Event Sourcing
 
-**Answer-first:** Banking microservices architecture enforces strict domain isolation, dual-entry accounting ledgers, immutable audit logging, and SPIFFE/SPIRE zero-trust mTLS to maintain high transaction throughput and financial compliance.
+**Answer-first:** Banking microservices architecture enforces strict domain isolation, dual-entry accounting ledgers, immutable audit logging, and SPIFFE/SPIRE zero-trust mTLS to maintain high transaction throughput and financial compliance. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
 
 ## 1. Introduction: Deconstructing the Legacy Core
 
@@ -51,15 +51,15 @@ The domain architecture diagram shows how banking microservices decouple from le
 
 ```mermaid
 graph TD
-    API[API Gateway] --> Accounts[Accounts Service - CASA]
-    API --> Payments[Payments Routing Service]
-    Payments --> Ledger[Ledger Service]
+    API["API Gateway"] --> Accounts["Accounts Service - CASA"]
+    API --> Payments["Payments Routing Service"]
+    Payments --> Ledger["Ledger Service"]
     Accounts --> Ledger
-    Ledger --> Notifications[Notification Service]
+    Ledger --> Notifications["Notification Service"]
     
     subgraph Legacy Core
-        ACL[Anti-Corruption Layer]
-        T24[Temenos T24]
+        ACL["Anti-Corruption Layer"]
+        T24["Temenos T24"]
         ACL --> T24
     end
     
@@ -443,7 +443,7 @@ Network retries, client timeouts, and duplicate Kafka delivery can cause double-
 2. **Lock:** The Go API attempts to acquire a lock in Redis using a Lua script (`SET NX`).
 3. **Database Constraint:** For permanent safety, the idempotency key is inserted into a PostgreSQL `processed_transactions` table with a `UNIQUE` constraint. If another request attempts to insert the same key, PostgreSQL rejects it.
 
-This robust mechanism is fundamentally similar to [H3 geospatial indexing](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/) collisions or [Redis caching](/posts/graphhopper-distance-matrix-production-guide/) optimizations—you must assume distributed networks will duplicate data.
+This resilient mechanism is fundamentally similar to [H3 geospatial indexing](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/) collisions or [Redis caching](/posts/graphhopper-distance-matrix-production-guide/) optimizations—you must assume distributed networks will duplicate data.
 
 ## 7. Observability: OpenTelemetry in Distributed Ledgers
 

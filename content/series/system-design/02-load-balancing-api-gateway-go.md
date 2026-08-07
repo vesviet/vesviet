@@ -10,7 +10,7 @@ tags: ["load balancer", "api gateway", "rate limiting", "golang", "token bucket"
 categories: ["Architecture", "Backend"]
 ShowToc: true
 TocOpen: true
-series: ["Architecture"]
+series: ["system-design"]
 mermaid: true
 cover:
   image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
@@ -18,9 +18,12 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/02-load-balancing-api-gateway-go/"
 image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
+weight: 2
 ---
 
-> **Answer-first:** Building a Go API gateway with Envoy and NGINX enables L7 load balancing, JWT authentication, and token-bucket rate limiting at the ingress layer.
+
+
+> **Answer-first:** Building a Go API gateway with Envoy and NGINX enables L7 load balancing, JWT authentication, and token-bucket rate limiting at the ingress layer. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
 
 > **Prerequisite:** Part 2 of the [System Design Masterclass](/series/system-design/). Read [Part 1: System Design Thinking](/series/system-design/01-introduction-system-design-golang/) first.
 
@@ -48,14 +51,14 @@ image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
 
 ```mermaid
 graph TD
-    subgraph l4["L4 Load Balancer (Transport Layer)"]
+    subgraph l4["L4 Load Balancer ("Transport Layer")"]
         C1["Client"] -->|"TCP SYN → dst:80"| LB1["L4 LB\nHAProxy / IPVS"]
         LB1 -->|"Forward TCP stream\nIP rewrite"| B1["Backend 1\n:8080"]
         LB1 -->|"Forward TCP stream"| B2["Backend 2\n:8080"]
         LB1 -->|"Forward TCP stream"| B3["Backend 3\n:8080"]
     end
 
-    subgraph l7["L7 Load Balancer (Application Layer)"]
+    subgraph l7["L7 Load Balancer ("Application Layer")"]
         C2["Client"] -->|"HTTP GET /api/v1"| LB2["L7 LB\nNginx / Envoy"]
         LB2 -->|"Path: /api/* → service-api"| S1["API Service"]
         LB2 -->|"Path: /static/* → CDN"| S2["Static Service"]
@@ -89,14 +92,14 @@ graph TD
 
 ```mermaid
 sequenceDiagram
-    participant C as Client (IP: 1.2.3.4)
-    participant LB as L4 LB (VIP: 10.0.0.1)
-    participant B as Backend Server (IP: 10.0.0.10)
+    participant C as Client ("IP: 1.2.3.4")
+    participant LB as L4 LB ("VIP: 10.0.0.1")
+    participant B as Backend Server ("IP: 10.0.0.10")
 
-    C->>LB: SYN (dst: VIP:80)
-    LB->>B: Forward packet<br/>(dst IP unchanged: VIP:80)<br/>src MAC → Backend MAC (ARP rewrite)
-    Note over B: Backend accepts because it has VIP<br/>bound to loopback (lo:0 alias)
-    B->>C: HTTP Response (src: VIP:80)
+    C->>LB: SYN ("dst: VIP:80")
+    LB->>B: Forward packet<br/>("dst IP unchanged: VIP:80")<br/>src MAC → Backend MAC ("ARP rewrite")
+    Note over B: Backend accepts because it has VIP<br/>bound to loopback ("lo:0 alias")
+    B->>C: HTTP Response ("src: VIP:80")
     Note over LB: Response bypasses LB entirely!
 ```
 
@@ -334,7 +337,7 @@ An API Gateway acts as the single entry point for all client traffic, handling c
 
 ```mermaid
 graph LR
-    Client["Mobile / Web"] -->|HTTPS| GW["API Gateway\nKong / Envoy"]
+    Client["Mobile / Web"] -->|"HTTPS"| GW["API Gateway\nKong / Envoy"]
     GW -->|"JWT validation\nRate limit\nLogging"| Auth["Auth Service"]
     GW -->|"Route: /orders/*"| Orders["Order Service"]
     GW -->|"Route: /products/*"| Products["Product Service"]

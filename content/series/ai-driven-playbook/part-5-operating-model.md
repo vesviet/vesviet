@@ -16,11 +16,14 @@ canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-5-operating-mo
 description: "Engineering playbook for evolving software development teams into AI-native pods, defining new technical roles and team operational velocity metrics."
 ShowToc: true
 TocOpen: true
+series: ["ai-driven-playbook"]
+weight: 5
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 3B — Ai Automation Internal Ops](/posts/ai-native-frontend-architecture-predictions-2028/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** The AI-Native Pod Operating Model replaces legacy functional silos with autonomous 3-to-4 person cross-functional squads. Led by Systems Architects and augmented by AI multi-agent swarms, these pods take end-to-end ownership of feature delivery, expanding output capacity by 4x while maintaining continuous production deployment pipelines.
+> **Answer-first:** The AI-Native Pod Operating Model replaces legacy functional silos with autonomous 3-to-4 person cross-functional squads. Led by Systems Architects and augmented by AI multi-agent swarms, these pods take end-to-end ownership of feature delivery, expanding output capacity by 4x while maintaining continuous production deployment pipelines. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context.
 
 ---
 
@@ -48,10 +51,10 @@ AI-native pod operating models restructure engineering teams around multi-agent 
 ```mermaid
 graph TD
     subgraph Traditional Siloed Engineering Department
-        FE[Frontend Team] --> HandOff1[JIRA Ticket Handoffs]
-        BE[Backend Team] --> HandOff1
-        QA[QA Testing Team] --> HandOff1
-        Ops[DevOps Team] --> HandOff1
+        FE["Frontend Team"] --> HandOff1["JIRA Ticket Handoffs"]
+        BE["Backend Team"] --> HandOff1
+        QA["QA Testing Team"] --> HandOff1
+        Ops["DevOps Team"] --> HandOff1
     end
 
     subgraph AI-Native Autonomous Pod Structure
@@ -62,7 +65,7 @@ graph TD
         CorePod --> Swarm3["AI Agent Swarm: QA & Evals"]
         CorePod --> Swarm4["AI Agent Swarm: IaC & K8s Ops"]
 
-        Swarm1 --> DirectProd[Continuous Direct Production Deployment]
+        Swarm1 --> DirectProd["Continuous Direct Production Deployment"]
         Swarm2 --> DirectProd
         Swarm3 --> DirectProd
         Swarm4 --> DirectProd

@@ -4,7 +4,7 @@ description: "Deep dive into C10M high-concurrency architecture, epoll, io_uring
 date: "2026-05-10T10:00:00+07:00"
 lastmod: "2026-07-24T10:00:00+07:00"
 draft: false
-weight: 1
+weight: 2
 slug: "article_1_system_design"
 cover:
   image: "/images/posts/article-1-system-design.jpg"
@@ -12,27 +12,29 @@ ShowToc: true
 TocOpen: true
 categories: ["FinTech", "High Concurrency", "Backend"]
 tags: ["High Concurrency", "C10M", "Golang", "epoll", "io_uring", "Load Balancing", "DPDK", "Zero-Copy"]
-series: ["High Concurrency Backend Systems"]
+series: ["high-concurrency-systems"]
 series_order: 1
 author: "Lê Tuấn Anh"
 mermaid: true
+canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/article_1_system_design/"
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/series/high-concurrency-systems/executive-summary/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Handling millions of requests per second (the C10M problem) requires eliminating kernel-space context switching overhead through asynchronous event loops (epoll/kqueue) or kernel-bypass networking (DPDK, io_uring), paired with zero-copy I/O memory buffers, L4 DSR (Direct Server Return) load balancing, and lock-free concurrency structures in Go.
+> **Answer-first:** Handling millions of requests per second (the C10M problem) requires eliminating kernel-space context switching overhead through asynchronous event loops (epoll/kqueue) or kernel-bypass networking (DPDK, io_uring), paired with zero-copy I/O memory buffers, L4 DSR (Direct Server Return) load balancing, and lock-free concurrency structures in Go. Deploying this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory pooling via Go 1.24 string interning,.
 
 ```mermaid
 flowchart TD
-    Client[Client Traffic Millions req/sec] --> L4[L4 Maglev LB / DPDK DSR]
-    L4 --> L7 Envoy1[L7 Gateway / Envoy Node 1]
-    L4 --> L7 Envoy2[L7 Gateway / Envoy Node 2]
+    Client["Client Traffic Millions req/sec"] --> L4["L4 Maglev LB / DPDK DSR"]
+    L4 --> L7 Envoy1["L7 Gateway / Envoy Node 1"]
+    L4 --> L7 Envoy2["L7 Gateway / Envoy Node 2"]
     
-    subgraph Core Engine [Go High-Concurrency Engine]
-        L7 Envoy1 --> Netpoll[epoll / io_uring Event Loop]
-        Netpoll --> LockFreeQ[Lock-Free Ring Buffer Worker Pool]
-        LockFreeQ --> ZeroCopy[Zero-Copy Memory Allocator sync.Pool]
-        ZeroCopy --> DB[(TiDB / Redis Cluster)]
+    subgraph Core Engine ["Go High-Concurrency Engine"]
+        L7 Envoy1 --> Netpoll["epoll / io_uring Event Loop"]
+        Netpoll --> LockFreeQ["Lock-Free Ring Buffer Worker Pool"]
+        LockFreeQ --> ZeroCopy["Zero-Copy Memory Allocator sync.Pool"]
+        ZeroCopy --> DB["("TiDB / Redis Cluster")"]
     end
 ```
 
@@ -303,7 +305,7 @@ In a production stress test comparing traditional Go HTTP standard library (`net
 ## 7. Frequently Asked Questions (FAQ)
 
 ### Q1: Should every Go backend replace `net/http` with custom epoll engines?
-**No.** The standard `net/http` package is exceptionally robust and maintainable for 99% of business applications up to 100,000 req/sec. Custom `epoll` or `io_uring` implementations bypass standard Go HTTP middleware, requiring manual HTTP protocol parsing and risk subtle memory safety bugs. Reserve custom networking engines for edge API gateways, proxy layers, and high-frequency messaging brokers.
+**No.** The standard `net/http` package is exceptionally resilient and maintainable for 99% of business applications up to 100,000 req/sec. Custom `epoll` or `io_uring` implementations bypass standard Go HTTP middleware, requiring manual HTTP protocol parsing and risk subtle memory safety bugs. Reserve custom networking engines for edge API gateways, proxy layers, and high-frequency messaging brokers.
 
 ### Q2: How does `io_uring` compare with DPDK for C10M workloads?
 DPDK achieves lower latency by dedicating CPU cores to 100% busy-spin polling of NIC rings, but it consumes 100% CPU even when idle and requires specialized network drivers. `io_uring` offers near-DPDK performance using standard Linux networking without high idle CPU drain, making it the preferred architectural target for modern Linux-based backend servers.

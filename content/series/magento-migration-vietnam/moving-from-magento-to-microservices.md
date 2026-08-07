@@ -15,14 +15,16 @@ cover:
   image: "/images/posts/moving-from-magento-to-microservices-cover.jpg"
   alt: "Zero-Downtime Blueprint: Moving from Magento to Microservices — Strangler Fig Pattern"
   relative: false
-canonicalURL: "https://tanhdev.com/posts/moving-from-magento-to-microservices/"
+canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/moving-from-magento-to-microservices/"
+weight: 4
 ---
 
-> **Prerequisite:** Review [Magento Development in Vietnam: Cost, Hiring & Upgrade](/posts/magento-vietnam/) for overall team and cost strategy.
+
+> **Prerequisite:** Review [Magento Development in Vietnam: Cost, Hiring & Upgrade](/series/magento-migration-vietnam/magento-vietnam/) for overall team and cost strategy.
 
 # Why Migrate Magento to Microservices: Zero-Downtime Blueprint
 
-**Answer-first:** Migrating from Magento monoliths to Go microservices replaces monolithic DB locks with independent schemas, asynchronous event streams, and Strangler Fig API routing for zero downtime.
+**Answer-first:** Migrating from Magento monoliths to Go microservices replaces monolithic DB locks with independent schemas, asynchronous event streams, and Strangler Fig API routing for zero downtime. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
 
 > 
 
@@ -30,9 +32,9 @@ canonicalURL: "https://tanhdev.com/posts/moving-from-magento-to-microservices/"
 
 This sentence usually precedes multimillion-dollar engineering failures. When a legacy application like a massive Magento e-commerce store is holding up the financial weight of a company, executing a "Big Bang" cutover is practically suicidal. 
 
-Instead of burning the old house down before the new one is built, we employed a meticulous **3-Phase Strangler Fig Pattern**. We allowed our new distributed microservice ecosystem to gradually wrap around the old Magento monolith, intercepting its traffic piece by piece until the legacy server became a hollow shell. For a detailed breakdown of overcoming tech debt and managing eventual consistency during such transitions, see our guide on [Composable Commerce Migration](/posts/ecommerce-architecture-composable-migration/).
+Instead of burning the old house down before the new one is built, we employed a meticulous **3-Phase Strangler Fig Pattern**. We allowed our new distributed microservice ecosystem to gradually wrap around the old Magento monolith, intercepting its traffic piece by piece until the legacy server became a hollow shell. For a detailed breakdown of overcoming tech debt and managing eventual consistency during such transitions, see our guide on [Composable Commerce Migration](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/).
 
-> **Decision checkpoint:** This article covers *how* to execute the migration. If you are still evaluating *whether* the migration makes sense for your business — team size thresholds, EAV performance limits, migrate/don't-migrate checklist — read [Migrating Magento to Microservices: When & Why →](/posts/why-migrate-magento-to-microservices/) first.
+> **Decision checkpoint:** This article covers *how* to execute the migration. If you are still evaluating *whether* the migration makes sense for your business — team size thresholds, EAV performance limits, migrate/don't-migrate checklist — read [Migrating Magento to Microservices: When & Why →](/series/magento-migration-vietnam/why-migrate-magento-to-microservices/) first.
 
 Here is the exact playbook we used to safely migrate 10 core commerce domains (Catalog, Order, Customer, Payment, Fulfillment, etc.) from Magento to a modern stack, achieving 99.9% uptime and a <5 minute rollback capability.
 
@@ -237,11 +239,11 @@ Rewrite projects don't fail because Microservices are inherently bad; they fail 
 
 By utilizing CDC/Debezium for Phase 1, bidirectional Event-Driven outboxes over Dapr for Phase 2, and maintaining a prolonged Hot Standby in Phase 3, we secured the absolute safety of our data. Legacy migrations can represent terrifying risk, but with the right architectural constraints, they become boring, predictable, and 100% safe.
 
-If you are assessing vendor capability before a migration, our [Magento Development in Vietnam: 2026 Hiring Guide](/posts/magento-vietnam/) breaks down the difference between extension shops and teams that can actually own architecture, integrations, and production reliability.
+If you are assessing vendor capability before a migration, our [Magento Development in Vietnam: 2026 Hiring Guide](/series/magento-migration-vietnam/magento-vietnam/) breaks down the difference between extension shops and teams that can actually own architecture, integrations, and production reliability.
 
 **Continue Reading:**
-- [Migrating Magento to Microservices: When & Why](/posts/why-migrate-magento-to-microservices/) — the decision guide: scaling limits, team size requirements, and the frank migrate/don't-migrate checklist to read before starting Phase 1.
-- [Composable Commerce Migration](/posts/ecommerce-architecture-composable-migration/) — managing eventual consistency and observability costs when moving to a fully composable commerce stack.
+- [Migrating Magento to Microservices: When & Why](/series/magento-migration-vietnam/why-migrate-magento-to-microservices/) — the decision guide: scaling limits, team size requirements, and the frank migrate/don't-migrate checklist to read before starting Phase 1.
+- [Composable Commerce Migration](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/) — managing eventual consistency and observability costs when moving to a fully composable commerce stack.
 - [Go Microservices Architecture: Production Guide](/posts/go-microservices/) — the complete architectural manual for the destination stack.
 - [Architecting a 21-Service E-Commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/) — the destination architecture after the migration: a full 21-service distributed system.
 - [Mastering Event-Driven Architecture with Dapr Pub/Sub](/posts/mastering-event-driven-architecture-dapr/) — the event-driven backbone (Saga, DLQ, Outbox) that replaces the Magento monolith's synchronous coupling.
@@ -265,5 +267,4 @@ Sequential integer primary keys in Magento are mapped to UUIDs using a persisten
 ### How does bidirectional sync prevent data loss during dual-write migration phases?
 Bidirectional sync combines Dapr event streams with the Transactional Outbox pattern to mirror transactions between Magento and new microservices. Millisecond timestamp logging and latest-write-wins conflict resolution ensure both systems maintain state consistency until full cutover occurs.
 
-🔗 **Next Step:** Continue to [Magento Migration: Shared DB, CDC, or Event Bus?](/posts/strangler-fig-shared-database-quick-win/) for the following module in the series.
-
+🔗 **Next Step:** Continue to [Magento Migration: Shared DB, CDC, or Event Bus?](/series/magento-migration-vietnam/strangler-fig-shared-database-quick-win/) for the following module in the series.

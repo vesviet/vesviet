@@ -3,7 +3,7 @@ title: "Distributed Rate Limiting with Redis & GCRA in Golang"
 date: "2026-06-09T10:10:00+07:00"
 lastmod: "2026-06-09T10:10:00+07:00"
 draft: false
-series: ["Mastering High-Concurrency Systems in Production"]
+series: ["high-concurrency-systems"]
 series_order: 3
 tags: ["golang", "rate limiting", "redis", "gcra"]
 categories: ["High Concurrency", "Rate Limiting"]
@@ -19,14 +19,17 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/"
 image: "/images/posts/distributed-rate-limiting-redis-gcra.jpg"
+weight: 4
+aliases: ["/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/"]
 ---
 
-> **Prerequisite:** Before reading this chapter, review [Chapter 2: The 3 Caching Vulnerabilities](/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/).
+
+> **Prerequisite:** Before reading this chapter, review [Chapter 2: The 3 Caching Vulnerabilities](/series/high-concurrency-systems/article_2_caching/).
 
 ## Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm
 
-> **Answer-first:** Distributed rate limiting in microservice architectures requires centralized state management in Redis to avoid load-balancer bypasses. Implementing the Generic Cell Rate Algorithm (GCRA) via atomic Lua scripts tracks Theoretical Arrival Times (TAT) using a single 64-bit integer per user key, guaranteeing sub-millisecond execution.
->
+> **Answer-first:** Distributed rate limiting in microservice architectures requires centralized state management in Redis to avoid load-balancer bypasses. Implementing the Generic Cell Rate Algorithm (GCRA) via atomic Lua scripts tracks Theoretical Arrival Times (TAT) using a single 64-bit integer per user key, guaranteeing sub-millisecond execution. Deploying this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory pooling via Go 1.24 string interning, and.
+
 > **Key Takeaways**:
 > - **Local Limiter Flaws**: Local in-memory limiters fail under multi-node load balancers because traffic distribution allows clients to multiply effective throughput limits.
 > - **GCRA Efficiency**: GCRA tracks arrival time deltas rather than token counts, requiring only one Redis key lookup per request.
@@ -41,11 +44,11 @@ If caching is the shield protecting your database, **Rate Limiting** is the armo
 
 ```mermaid
 flowchart TD
-    Client[Incoming Request] --> Gateway[Go API Gateway Layer]
-    Gateway --> Lua[Execute Redis GCRA Lua Script]
-    Lua --> TAT{Is TAT <= now + Emission Interval?}
-    TAT -->|"Yes ("Allowed")"| ComputeTAT["Update TAT in Redis ZSET/Key"] --> Process[Forward Request to Microservice]
-    TAT -->|"No ("Throttled")"| CalculateDelay[Calculate Exact Retry-After Delay] --> Deny[Return HTTP 429 Too Many Requests]
+    Client["Incoming Request"] --> Gateway["Go API Gateway Layer"]
+    Gateway --> Lua["Execute Redis GCRA Lua Script"]
+    Lua --> TAT{"Is TAT <= now + Emission Interval?"}
+    TAT -->|"Yes ("Allowed")"| ComputeTAT["Update TAT in Redis ZSET/Key"] --> Process["Forward Request to Microservice"]
+    TAT -->|"No ("Throttled")"| CalculateDelay["Calculate Exact Retry-After Delay"] --> Deny["Return HTTP 429 Too Many Requests"]
 ```
 
 ## 1. Why Local Rate Limiting Fails in Microservices
@@ -78,14 +81,14 @@ GCRA (leaky bucket variant codified in ATM network standards) solves the memory 
 
 ```mermaid
 flowchart TD
-    Start["Incoming Request at Time t"] --> GetTAT[Retrieve TAT from Redis]
-    GetTAT --> CheckNull{TAT exists?}
-    CheckNull -->|"No"| InitTAT[Set TAT = t]
-    CheckNull -->|"Yes"| CalculateNewTAT["Calculate NewTAT = max(t, TAT) + EmissionInterval"]
+    Start["Incoming Request at Time t"] --> GetTAT["Retrieve TAT from Redis"]
+    GetTAT --> CheckNull{"TAT exists?"}
+    CheckNull -->|"No"| InitTAT["Set TAT = t"]
+    CheckNull -->|"Yes"| CalculateNewTAT["Calculate NewTAT = max("t, TAT") + EmissionInterval"]
     InitTAT --> Allow["Allow Request & Set Redis Key = TAT + EmissionInterval"]
-    CalculateNewTAT --> CheckLimit{NewTAT - t > BurstTolerance}
-    CheckLimit -->|"Yes"| Reject[Reject Request - 429 Too Many Requests]
-    CheckLimit -->|"No"| UpdateRedis[Update Redis Key = NewTAT]
+    CalculateNewTAT --> CheckLimit{"NewTAT - t > BurstTolerance"}
+    CheckLimit -->|"Yes"| Reject["Reject Request - 429 Too Many Requests"]
+    CheckLimit -->|"No"| UpdateRedis["Update Redis Key = NewTAT"]
     UpdateRedis --> Allow
 ```
 
@@ -294,7 +297,7 @@ Security enforcement for Article_3_Rate_Limiting integrates SPIFFE/SPIRE workloa
 
 ---
 
-🔗 **Next Step:** [Chapter 4: Solving the Dual-Write Problem with Transactional Outbox Pattern](/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/)
+🔗 **Next Step:** [Chapter 4: Solving the Dual-Write Problem with Transactional Outbox Pattern](/series/high-concurrency-systems/article_4_outbox_pattern/)
 
 ## Architectural Context & Pillar References
 

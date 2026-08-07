@@ -58,4 +58,3 @@ The radar focuses on four core technical pillars: Go 1.26 runtime optimizations 
 
 #### Q3: How do daily Tech Radar entries relate to long-form architecture pillar posts?
 Daily entries act as real-time signal logs capturing incremental framework updates, CVE mitigations, and model architecture shifts. When patterns mature across multiple radar logs, they are expanded into detailed pillar guides with deployable Go benchmarks, Kubernetes manifests, and sequence flow diagrams.
-

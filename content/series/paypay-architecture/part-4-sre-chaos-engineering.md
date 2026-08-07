@@ -4,7 +4,7 @@ date: "2026-05-05T21:00:00+07:00"
 lastmod: "2026-05-05T21:00:00+07:00"
 draft: false
 description: "How PayPay SRE maintains 99.99% uptime: Datadog, OpenTelemetry, chaos engineering, circuit breakers, and a security posture forged by the 2018 incident."
-weight: 5
+weight: 4
 cover:
   image: "/images/posts/paypay-scaling-cover.jpg"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
@@ -17,11 +17,13 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 image: "/images/posts/paypay-scaling-cover.jpg"
+series: ["paypay-architecture"]
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Data Layer Tidb](/series/paypay-architecture/part-3-data-layer-tidb/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Ensuring 99.99% availability for payment systems demands proactive SRE practices and automated Chaos Engineering. Injecting synthetic latency, pod failures, and network partitions via Chaos Mesh validates microservice circuit breakers before real production incidents occur.
+> **Answer-first:** Ensuring 99.99% availability for payment systems demands proactive SRE practices and automated Chaos Engineering. Injecting synthetic latency, pod failures, and network partitions via Chaos Mesh validates microservice circuit breakers before real production incidents occur. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for production-grade enterprise operations.
 
 **Answer-first:** PayPay ensures system resilience by executing automated chaos engineering experiments in staging environments using tools like Chaos Mesh. Injecting artificial network latency, pod failures, and disk I/O bottlenecks allows SRE teams to verify that failover protocols activate without compromising transaction consistency.
 
@@ -29,9 +31,9 @@ image: "/images/posts/paypay-scaling-cover.jpg"
 
 ```mermaid
 graph TD
-    Chaos[Chaos Mesh Injector] -->|Simulate Network Drop| Pod[Payment Microservice Pod]
-    Pod -->|Circuit Breaker Triggered| Fallback[Local Cache Fallback]
-    Prom[Prometheus Alertmanager] -->|Monitor SLI| Dashboard[SRE Operations Dashboard]
+    Chaos["Chaos Mesh Injector"] -->|"Simulate Network Drop"| Pod["Payment Microservice Pod"]
+    Pod -->|"Circuit Breaker Triggered"| Fallback["Local Cache Fallback"]
+    Prom["Prometheus Alertmanager"] -->|"Monitor SLI"| Dashboard["SRE Operations Dashboard"]
 ```
 
 At PayPay's scale — 100+ microservices, thousands of Kubernetes pods, a distributed TiDB cluster spanning three Availability Zones, Kafka clusters under constant write pressure — hardware failure, network partitions, and pod crashes are not edge cases. They are **daily operational reality**. The architecture must not merely tolerate failures; it must be designed to **embrace and absorb them** without service disruption.

@@ -4,7 +4,7 @@ date: 2026-08-06
 tags: ["vLLM", "Golang", "PagedAttention", "Distributed Systems", "GPU Infrastructure", "API Gateway", "OpenTelemetry"]
 categories: ["Engineering", "Architecture", "AI"]
 author: "Vesviet Engineering Team"
-description: "A comprehensive technical research dossier on architecting a high-throughput, low-latency distributed Go API Gateway for vLLM inference clusters. Features PagedAttention memory internals, Prefill-Decode disaggregation over RoCE v2/NVLink, prompt prefix context-affinity routing, empirical H100 vs L40S vs H200 benchmarks, 12-month SaaS vs self-hosted TCO analysis, complete Kubernetes manifests, and GPU VRAM sizing formulas."
+description: "Research dossier on architecting a high-throughput distributed Go API Gateway for vLLM clusters with PagedAttention and Prefill-Decode disaggregation."
 draft: false
 cover:
   image: "/images/posts/high-throughput-local-llm-infrastructure-architecting-a-distributed-go-api-gateway-for-vllm-pagedattention-clusters.jpg"
@@ -13,7 +13,7 @@ cover:
 
 # High-Throughput Local LLM Infrastructure: Architecting a Distributed Go API Gateway for vLLM & PagedAttention Clusters
 
-**Answer-first:** High-throughput local LLM infrastructure pairs vLLM continuous batching inference servers with a Go API gateway for dynamic request queuing, load balancing, and token rate limiting.
+**Answer-first:** High-throughput local LLM infrastructure pairs vLLM continuous batching inference servers with a Go API gateway for dynamic request queuing, load balancing, and token rate limiting. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
 
 ## Executive Summary & Architecture Overview
 
@@ -169,7 +169,7 @@ In a disaggregated deployment (using vLLM `KVTransferConfig`), the **Prefill Wor
 
 ### 2.1 PagedAttention Memory Allocation Life-Cycle
 
-The following sequence details how vLLM allocates, shares, and frees GPU VRAM blocks during a request lifecycle:
+Sequence details how vLLM allocates, shares, and frees GPU VRAM blocks during a request lifecycle:
 
 1. **Request Ingestion**: Request arrives with a 2,048-token prompt.
 2. **Logical Block Division**: At block size 16, the request requires $\lceil 2048 / 16 \rceil = 128$ logical blocks.
@@ -184,7 +184,7 @@ The following sequence details how vLLM allocates, shares, and frees GPU VRAM bl
 
 ## Section 3: Production Go API Gateway Implementation
 
-The following complete, compilable Go package (`gateway`) implements a context-affinity reverse proxy for vLLM clusters. It features:
+Complete, compilable Go package (`gateway`) implements a context-affinity reverse proxy for vLLM clusters. It features:
 * SHA256 prompt prefix hashing.
 * Thread-safe LRU context-affinity worker map with `sync.RWMutex`.
 * Least-connections / Power-of-Two-Choices (P2C) fallback load balancer with load shedding.

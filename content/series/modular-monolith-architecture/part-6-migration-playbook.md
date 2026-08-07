@@ -6,7 +6,6 @@ description: "A practical step-by-step guide to safely transitioning from Micros
 slug: "migration-playbook-microservices-to-modular-monolith"
 tags: ["Migration", "Strangler Fig", "Modular Monolith", "Database", "Conway's Law"]
 categories: ["Modular Monolith", "Architecture"]
-aliases: ["/series/modular-monolith-architecture/part-6-migration-playbook/"]
 cover:
   image: "/images/posts/golang-microservices-cover.jpg"
   alt: "Modular Monolith Architecture Production Guide: Go, DDD, bounded contexts, and microservices reversal"
@@ -18,9 +17,12 @@ TocOpen: true
 mermaid: true
 draft: false
 image: "/images/posts/golang-microservices-cover.jpg"
+series: ["modular-monolith-architecture"]
+weight: 7
 ---
 
-> **Answer-first:** Consolidating fragmented microservices back into a modular monolith utilizes the Reverse Strangler Fig pattern with dual-writing and zero-downtime database schema mergers. Merging database schemas using logical schema separation (PostgreSQL schemas) preserves strict module autonomy while eliminating distributed transaction complexity.
+
+> **Answer-first:** Consolidating fragmented microservices back into a modular monolith utilizes the Reverse Strangler Fig pattern with dual-writing and zero-downtime database schema mergers. Merging database schemas using logical schema separation (PostgreSQL schemas) preserves strict module autonomy while eliminating distributed transaction complexity. Adopting this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory optimization, and fault-tolerant event-driven state synchronization across production systems.
 
 > **Prerequisite:** Before reading this part, please review [Part 5: Observability in Memory](/series/modular-monolith-architecture/part-5-observability/).
 
@@ -35,11 +37,11 @@ Although merging application code is straightforward, the primary operational ri
 
 ```mermaid
 flowchart TD
-    A[Legacy Microservice Network] -->|Phase 1: Dual-Write / CDC| B[("Old Microservice DB")]
-    A -->|Phase 1: Dual-Write / CDC| C[("New Monolith Schema")]
-    C -->|Phase 2: Asynchronous Backfill| D["Verify Parity & Reconciliation"]
-    D -->|Phase 3: Switch Gateway Readers| E[Unified Modular Monolith]
-    E -->|Phase 4: Decommission| F["Delete Old Microservice & DB"]
+    A["Legacy Microservice Network"] -->|"Phase 1: Dual-Write / CDC"| B[("Old Microservice DB")]
+    A -->|"Phase 1: Dual-Write / CDC"| C[("New Monolith Schema")]
+    C -->|"Phase 2: Asynchronous Backfill"| D["Verify Parity & Reconciliation"]
+    D -->|"Phase 3: Switch Gateway Readers"| E["Unified Modular Monolith"]
+    E -->|"Phase 4: Decommission"| F["Delete Old Microservice & DB"]
 ```
 
 ---

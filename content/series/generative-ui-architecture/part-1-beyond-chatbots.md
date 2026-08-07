@@ -6,7 +6,7 @@ date: "2026-03-18T09:00:00+07:00"
 lastmod: "2026-07-23T10:40:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-frontend/"
+canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-1-beyond-chatbots/"
 tags: ["Generative UI", "AI Frontend", "React", "Server-Driven UI", "Architecture"]
 categories: ["Engineering", "Frontend"]
 cover:
@@ -16,13 +16,14 @@ cover:
 mermaid: true
 ShowToc: true
 TocOpen: true
-series: ["Generative UI Architecture"]
-weight: 1
+series: ["generative-ui-architecture"]
+weight: 2
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/series/generative-ui-architecture/executive-summary/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Generative UI (GenUI) is a frontend architectural pattern where Large Language Models dynamically generate structured UI components rather than plain streaming text. By coupling LLM tool-calling with a validated React component registry and Server-Driven UI protocols, GenUI delivers personalized visual interfaces while maintaining accessibility and performance.
+> **Answer-first:** Generative UI (GenUI) is a frontend architectural pattern where Large Language Models dynamically generate structured UI components rather than plain streaming text. By coupling LLM tool-calling with a validated React component registry and Server-Driven UI protocols, GenUI delivers personalized visual interfaces while maintaining accessibility and performance. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability.
 
 ---
 
@@ -36,16 +37,16 @@ weight: 1
 
 ```mermaid
 graph LR
-    SubGraph1[Gen 1: Chatbot Era] --> A[User Prompt]
-    A --> B[LLM Streaming Text]
-    B --> C[Markdown Parser]
-    C --> D[Static Text Output]
+    SubGraph1["Gen 1: Chatbot Era"] --> A["User Prompt"]
+    A --> B["LLM Streaming Text"]
+    B --> C["Markdown Parser"]
+    C --> D["Static Text Output"]
 
-    SubGraph2[Gen 2: Generative UI Era] --> E[User Prompt]
-    E --> F[LLM Tool Execution]
-    F --> G[Structured JSON UI Schema]
-    G --> H[Client Component Registry]
-    H --> I[Interactive React Widget]
+    SubGraph2["Gen 2: Generative UI Era"] --> E["User Prompt"]
+    E --> F["LLM Tool Execution"]
+    F --> G["Structured JSON UI Schema"]
+    G --> H["Client Component Registry"]
+    H --> I["Interactive React Widget"]
 ```
 
 **Generative UI (GenUI)** solves these limitations by replacing plain text streaming with **dynamic component instantiation**. Instead of asking an LLM to write "The stock price is $150 with a 5% gain", the model calls a tool returning a `{ component: "StockCard", props: { ticker: "AAPL", price: 150, change: 5.0 } }` JSON payload that immediately renders a pre-compiled, interactive React widget.
@@ -64,14 +65,14 @@ To render AI-generated interfaces reliably without crashing the client applicati
 ```mermaid
 sequenceDiagram
     autonumber
-    participant U as User
-    participant C as React Client Runtime
-    participant S as GenUI Gateway / Server
-    participant L as LLM Tool Pipeline
-    participant R as Component Registry
+    participant U as "User"
+    participant C as "React Client Runtime"
+    participant S as "GenUI Gateway / Server"
+    participant L as "LLM Tool Pipeline"
+    participant R as "Component Registry"
 
     U->>C: Submit Natural Language Query
-    C->>S: Stream Request (Server Action / SSE)
+    C->>S: Stream Request ("Server Action / SSE")
     S->>L: Invoke LLM with System Prompt & Tool Schemas
     L-->>S: Return Structured JSON Component Chunk
     S-->>C: Stream JSON UI Protocol Payload
@@ -207,11 +208,11 @@ To stream dynamic UI component payloads without TCP overheads associated with We
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Client as React Client Application
-    participant Gateway as GenUI Edge Stream Proxy
-    participant LLM as LLM Inference Gateway
+    participant Client as "React Client Application"
+    participant Gateway as "GenUI Edge Stream Proxy"
+    participant LLM as "LLM Inference Gateway"
 
-    Client->>Gateway: POST /api/genui/stream (Accept: text/event-stream)
+    Client->>Gateway: POST /api/genui/stream ("Accept: text/event-stream")
     Gateway->>LLM: Stream Tool Execution
     LLM-->>Gateway: Yield Chunk 1: { component: "StockCard", props: { symbol: "AAPL" } }
     Gateway-->>Client: event: component_start\ndata: {"id": "c1", "component": "StockCard"}\n\n

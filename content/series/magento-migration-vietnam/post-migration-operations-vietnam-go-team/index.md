@@ -19,11 +19,13 @@ canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/post-migrati
 noTranslation: true
 mermaid: true
 image: "/images/posts/post-migration-operations-vietnam-cover.jpg"
+weight: 14
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Go Engineers Vietnam Migration Vetting](/series/magento-migration-vietnam/go-engineers-vietnam-migration-vetting/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Operating production Go microservices post-migration requires establishing clear SLA/SLO metrics, 24/7 follow-the-sun on-call rotations, and structured OpenTelemetry observability dashboards managed by local engineering leads in Vietnam.
+> **Answer-first:** Operating production Go microservices post-migration requires establishing clear SLA/SLO metrics, 24/7 follow-the-sun on-call rotations, and structured OpenTelemetry observability dashboards managed by local engineering leads in Vietnam. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
 
 **Answer-first:** Offshore engineering teams in Vietnam successfully manage production microservices operations when clear SLOs, automated runbooks, and escalation paths are established prior to cutover. Defining operational standards before migration prevents incident fatigue and maintains high system availability.
 
@@ -35,10 +37,10 @@ image: "/images/posts/post-migration-operations-vietnam-cover.jpg"
 
 ```mermaid
 graph TD
-    Alert[Production Alert Triggered] --> Pager["PagerDuty / Slack"]
-    Pager --> OnCall[Vietnam On-Call Engineer]
-    OnCall -->|Investigate| Telemetry[Grafana OTel Traces]
-    OnCall -->|Fix & Deploy| GitOps[ArgoCD Pipeline]
+    Alert["Production Alert Triggered"] --> Pager["PagerDuty / Slack"]
+    Pager --> OnCall["Vietnam On-Call Engineer"]
+    OnCall -->|"Investigate"| Telemetry["Grafana OTel Traces"]
+    OnCall -->|"Fix & Deploy"| GitOps["ArgoCD Pipeline"]
 ```
 
 The moment Magento is decommissioned, the migration team becomes the operations team. The same Vietnam engineers who spent 12 months running Strangler Fig migrations are now responsible for:
@@ -364,7 +366,7 @@ func BenchmarkOTelSpanProcessor(b *testing.B) {
 BenchmarkOTelSpanProcessor-16    100000000    12.4 ns/op    0 B/op    0 allocs/op
 ```
 
-For domain context migration patterns, see [DDD Bounded Context Migration](/posts/ecommerce-architecture-composable-migration/).
+For domain context migration patterns, see [DDD Bounded Context Migration](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/).
 
 ## Frequently Asked Questions (FAQ)
 

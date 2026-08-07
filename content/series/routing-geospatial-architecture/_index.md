@@ -56,4 +56,3 @@ Practical deployment guides that extend the series into real production environm
 
 - **[Self-Hosting GraphHopper on Kubernetes with OpenStreetMap Data](/posts/graphhopper-kubernetes-self-hosting-osm/)** — Complete Helm chart walkthrough, OSM data pipeline, PVC sizing, and JVM tuning for a production GraphHopper cluster on K8s.
 - **[GraphHopper vs CARTO: Order Fulfillment Routing Engine](/posts/graphhopper-distance-matrix-production-guide/)** — Benchmark comparison of self-hosted GraphHopper against managed CARTO across 10K–1M route matrix requests. When self-hosting wins and when it doesn't.
-

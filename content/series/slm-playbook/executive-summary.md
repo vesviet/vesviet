@@ -18,12 +18,18 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/slm-playbook/executive-summary/"
 mermaid: true
 image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.jpg"
+series: ["slm-playbook"]
 ---
+
+> **Prerequisite:** Review the previous module in the [slm-playbook](/series/slm-playbook/) series before proceeding.
+
+
+
 
 [← Series hub](/series/slm-playbook/)
 [Next →](/series/slm-playbook/part-2-sft-data-engineering/)
 
-> **Answer-first:** Self-hosting Small Language Models (2B–14B) with Go hybrid routing and vLLM serving reduces enterprise API costs by up to 65%, eliminates PII privacy risks, and delivers specialized domain performance matching 100B+ models.
+> **Answer-first:** Self-hosting Small Language Models (2B–14B) with Go hybrid routing and vLLM serving reduces enterprise API costs by up to 65%, eliminates PII privacy risks, and delivers specialized domain performance matching 100B+ models. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for production-grade enterprise operations.
 
 For the past two years, enterprise AI adoption has been dominated by a singular architectural pattern: API integration with massive, closed-source models (Frontier LLMs). While this API-Centric model allows for rapid prototyping, it becomes a severe liability when scaled to production workloads handling sensitive company data.
 
@@ -57,22 +63,22 @@ The system architecture diagram below illustrates how requests flow through the 
 
 ```mermaid
 graph TD
-    User["Developer / API Client"] --> Gateway[Go Hybrid Router Gateway]
-    Gateway --> Classifier{Intent Classifier}
+    User["Developer / API Client"] --> Gateway["Go Hybrid Router Gateway"]
+    Gateway --> Classifier{"Intent Classifier"}
     
-    Classifier -->|Simple Tasks / PII Scrubbing / Autocomplete| LocalvLLM[Local vLLM Serving Cluster]
-    Classifier -->|Complex Reasoning / Multi-Step Logic| FrontierAPI["Frontier API Gateway - Claude/GPT"]
+    Classifier -->|"Simple Tasks / PII Scrubbing / Autocomplete"| LocalvLLM["Local vLLM Serving Cluster"]
+    Classifier -->|"Complex Reasoning / Multi-Step Logic"| FrontierAPI["Frontier API Gateway - Claude/GPT"]
     
     subgraph VPC Private Compute Zone
-        LocalvLLM -->|Llama-3-8B-Instruct / Qwen-2.5-Coder| LocalGPU["NVIDIA A10G GPU / vLLM"]
+        LocalvLLM -->|"Llama-3-8B-Instruct / Qwen-2.5-Coder"| LocalGPU["NVIDIA A10G GPU / vLLM"]
         LocalGPU --> Cache[("Redis Cache & Vector DB")]
     end
     
     subgraph Public Cloud API Zone
-        FrontierAPI -->|Secure HTTPS / No-Training SLA| Claude[Anthropic Claude 3.5 Sonnet API]
+        FrontierAPI -->|"Secure HTTPS / No-Training SLA"| Claude["Anthropic Claude 3.5 Sonnet API"]
     end
     
-    LocalGPU --> ResponseMerger[Response Aggregator]
+    LocalGPU --> ResponseMerger["Response Aggregator"]
     Claude --> ResponseMerger
     ResponseMerger --> User
 ```
@@ -296,7 +302,7 @@ Begin exploring the core architecture: **[Part 1 — Hybrid AI Architecture](/se
 
 ## Frequently Asked Questions
 
-The following frequently asked questions address key decision points for CTOs and architects evaluating self-hosted Small Language Models.
+Key decision points address self-hosted Small Language Models for CTOs and architects evaluating self-hosted Small Language Models.
 
 ### Why choose Small Language Models over commercial APIs like GPT-4o or Claude 3.5 Sonnet?
 Small Language Models (2B–14B parameters) running in a private VPC eliminate PII data leakage and cut operating expenses by up to 65% for high-volume routine workloads. Furthermore, fine-tuning lightweight models like Llama 3 8B or Qwen 2.5 Coder on domain-specific data yields higher accuracy on structured tasks than generalist commercial APIs.

@@ -6,7 +6,6 @@ description: "Production case study matrix evaluating real-world modular monolit
 slug: "case-study-matrix-modular-monolith-success-stories"
 tags: ["Case Study", "Modular Monolith", "Shopify", "Stack Overflow", "Notion", "GitHub", "Etsy"]
 categories: ["Modular Monolith", "Architecture"]
-aliases: ["/series/modular-monolith-architecture/part-8-case-study-matrix/"]
 cover:
   image: "/images/posts/golang-microservices-cover.jpg"
   alt: "Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal"
@@ -18,9 +17,12 @@ TocOpen: true
 mermaid: true
 draft: false
 image: "/images/posts/golang-microservices-cover.jpg"
+series: ["modular-monolith-architecture"]
+weight: 9
 ---
 
-> **Answer-first:** The Modular Monolith case study matrix evaluates how industry leaders—including Shopify, GitHub, Segment, Etsy, and Stack Overflow—scale core systems using monolithic architecture. These real-world production benchmarks prove that co-locating domains reduces infrastructure expenses, deployment friction, and network latency while maintaining high development velocity.
+
+> **Answer-first:** The Modular Monolith case study matrix evaluates how industry leaders—including Shopify, GitHub, Segment, Etsy, and Stack Overflow—scale core systems using monolithic architecture. These real-world production benchmarks prove that co-locating domains reduces infrastructure expenses, deployment friction, and network latency while maintaining high development velocity. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for.
 
 > **Prerequisite:** Before reading this part, please review [Part 7: Extraction Pattern](/series/modular-monolith-architecture/part-7-extraction-pattern/).
 

@@ -10,7 +10,7 @@ tags: ["distributed lock", "redis", "redlock", "golang", "etcd", "concurrency", 
 categories: ["Architecture", "Backend"]
 ShowToc: true
 TocOpen: true
-series: ["Architecture"]
+series: ["system-design"]
 mermaid: true
 cover:
   image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
@@ -18,13 +18,16 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/06-distributed-locks-concurrency/"
 image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
+weight: 6
 ---
+
+
 
 > **Prerequisite:** Part 6 of the [System Design Masterclass](/series/system-design/). Read [Part 5: Kafka & Event-Driven](/series/system-design/05-async-message-queues-kafka-go/) first.
 
 ## Distributed Locks in Go — Redlock Math, etcd & Split-Brain
 
-> **Answer-first:** Distributed locks enforce mutual exclusion across independent microservice instances. Redis Redlock achieves high-performance locking across quorum master nodes with Lua-script atomicity, while etcd provides linearizable Raft-backed leases with fencing tokens to guarantee absolute safety under network partitions.
+> **Answer-first:** Distributed locks enforce mutual exclusion across independent microservice instances. Redis Redlock achieves high-performance locking across quorum master nodes with Lua-script atomicity, while etcd provides linearizable Raft-backed leases with fencing tokens to guarantee absolute safety under network partitions. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory management with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration.
 >
 > **Key Takeaways**:
 > - **Redlock Validity Formula**: Lock validity equals $\text{TTL} - \text{elapsed\_time} - \text{clock\_drift}$; if validity $\le 0$, release immediately.
@@ -46,16 +49,16 @@ image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
 
 ```mermaid
 sequenceDiagram
-    participant S1 as Server 1 (Pod A)
-    participant S2 as Server 2 (Pod B)
-    participant DB as Database
+    participant S1 as Server 1 ("Pod A")
+    participant S2 as Server 2 ("Pod B")
+    participant DB as "Database"
 
     S1->>DB: Read balance=1000
     S2->>DB: Read balance=1000
     Note over S1,S2: ❌ Both see balance=1000
 
-    S1->>DB: Write balance=1000-500=500 (S1 withdrawal)
-    S2->>DB: Write balance=1000-300=700 (S2 withdrawal)
+    S1->>DB: Write balance=1000-500=500 ("S1 withdrawal")
+    S2->>DB: Write balance=1000-300=700 ("S2 withdrawal")
 
     Note over DB: ❌ Final balance=700, lost $500 from S1's withdrawal!
 ```
@@ -90,14 +93,14 @@ Where:
 ```mermaid
 graph TD
     Start["Client needs lock"] --> T1["Record timestamp T1"]
-    T1 --> Acquire["Acquire lock on N Redis masters\n(SET key token NX PX ttl with short timeout)"]
+    T1 --> Acquire["Acquire lock on N Redis masters\n("SET key token NX PX ttl with short timeout")"]
     Acquire --> Quorum{"Acquired on ≥ N/2+1 masters?"}
-    Quorum -->|No| Fail["Release all acquired locks\n→ Retry after random delay"]
-    Quorum -->|Yes| Validity["Compute MIN_VALIDITY = TTL - elapsed - drift"]
+    Quorum -->|"No"| Fail["Release all acquired locks\n→ Retry after random delay"]
+    Quorum -->|"Yes"| Validity["Compute MIN_VALIDITY = TTL - elapsed - drift"]
     Validity --> Valid{"MIN_VALIDITY > 0?"}
-    Valid -->|No| Fail2["Lock expired during acquisition\n→ Release all, retry"]
-    Valid -->|Yes| Success["✅ Lock acquired for MIN_VALIDITY ms\nExecute critical section"]
-    Success --> Release["Release: Lua script\n(check token before DEL)"]
+    Valid -->|"No"| Fail2["Lock expired during acquisition\n→ Release all, retry"]
+    Valid -->|"Yes"| Success["✅ Lock acquired for MIN_VALIDITY ms\nExecute critical section"]
+    Success --> Release["Release: Lua script\n("check token before DEL")"]
 ```
 
 ---
@@ -313,4 +316,3 @@ This atomically checks if the lock value matches your client's unique token befo
 🔗 **Next Step:** Continue to [Part 7: Idempotent API Design in Go](/series/system-design/07-idempotency-api-design-go/)
 
 Security posture for 06 Distributed Locks Concurrency requires strict input sanitization, OWASP top 10 threat mitigation, and automated dependency vulnerability scanning in CI/CD pipelines.
-

@@ -106,4 +106,3 @@ image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
 ---
 
 👉 **[Hire for architecture consulting](/hire/)** if you need to solve scale challenges, optimize database performance, or design concurrency-safe systems for your organization.
-

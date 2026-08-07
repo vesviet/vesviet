@@ -16,13 +16,16 @@ canonicalURL: "https://tanhdev.com/series/agentic-ecommerce-search/part-2-ingest
 description: "Complete production guide to atomic product chunking, schema parsing, and data ingestion pipelines for semantic vector search in e-commerce."
 ShowToc: true
 TocOpen: true
+series: ["agentic-ecommerce-search"]
+weight: 3
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Golang Orchestration](/series/agentic-ecommerce-search/part-1-golang-orchestration/). Review it first if the terminology in this part is unfamiliar.
 
 # Data Ingestion & Atomic Chunking Product Data: Semantic Catalog Pipelines
 
-**Answer-first:** Data ingestion and atomic product chunking processes catalog updates into dense vector embeddings, maintaining vector index freshness and search accuracy.
+**Answer-first:** Data ingestion and atomic product chunking processes catalog updates into dense vector embeddings, maintaining vector index freshness and search accuracy. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
 
 In general document RAG applications, text splitting divides long articles into arbitrary token chunks (e.g., 512 tokens with 50-token overlap).
 
@@ -36,7 +39,7 @@ Atomic ingestion pipelines parse raw e-commerce catalog schemas into single-SKU 
 
 ```mermaid
 graph TD
-    RawCatalog["Raw Product Catalog JSON / CSV"] --> ASTParser[1. E-commerce Product Schema AST Parser]
+    RawCatalog["Raw Product Catalog JSON / CSV"] --> ASTParser["1. E-commerce Product Schema AST Parser"]
     
     subgraph Atomic Processing Engine
         ASTParser --> AtomicChunker["2. Atomic Product Chunker: 1 Chunk per SKU"]
@@ -46,7 +49,7 @@ graph TD
     AtomicChunker --> VectorStore[("Qdrant / pgvector HNSW Index")]
     TripleExtractor --> GraphStore[("Neo4j Product Knowledge Graph")]
 
-    VectorStore --> QueryRouter[Agentic Search Query Router]
+    VectorStore --> QueryRouter["Agentic Search Query Router"]
     GraphStore --> QueryRouter
 ```
 

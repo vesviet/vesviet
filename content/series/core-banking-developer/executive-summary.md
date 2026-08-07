@@ -14,9 +14,11 @@ canonicalURL: "https://tanhdev.com/series/core-banking-developer/executive-summa
 ShowToc: true
 TocOpen: true
 mermaid: true
+series: ["core-banking-developer"]
 ---
 
-> **Answer-first:** A core banking developer designs and maintains mission-critical ledger systems, multi-currency deposit engines, ACID transaction frameworks, and regulatory reporting pipelines. Core banking software engineers ensure financial balance invariants ($\sum \text{Debits} = \sum \text{Credits}$) and zero-data-loss execution under high transaction concurrency.
+
+> **Answer-first:** A core banking developer designs and maintains mission-critical ledger systems, multi-currency deposit engines, ACID transaction frameworks, and regulatory reporting pipelines. Core banking software engineers ensure financial balance invariants ($\sum \text{Debits} = \sum \text{Credits}$) and zero-data-loss execution under high transaction concurrency. Adopting this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory optimization, and fault-tolerant event-driven state synchronization across production systems.
 
 > **Prerequisite:** Baseline understanding of retail banking operations, transactional databases, and distributed ledger systems.
 
@@ -78,7 +80,7 @@ Traditional core banking software (COBOL mainframes or monolithic Java platforms
 
 ### Popular Core Banking Systems
 
-The table below lists widely adopted enterprise core banking engines alongside modern in-house microservice implementations:
+Table overview lists widely adopted enterprise core banking engines alongside modern in-house microservice implementations:
 
 | System | Core Technology | Banking Usage Context |
 |---|---|---|
@@ -122,10 +124,10 @@ The diagram below shows how legacy core banking sub-systems are decoupled into t
 
 ```mermaid
 graph TD
-    CIF[Customer Information File Service] --> CASA[CASA Account Service]
-    CASA --> GL[General Ledger Service]
-    Lending[Lending Service] --> CASA
-    CardSwitch[Card Payment Switch] --> CASA
+    CIF["Customer Information File Service"] --> CASA["CASA Account Service"]
+    CASA --> GL["General Ledger Service"]
+    Lending["Lending Service"] --> CASA
+    CardSwitch["Card Payment Switch"] --> CASA
 ```
 
 The table below contrasts key architectural attributes of legacy mainframe core banking systems with modern event-sourced microservice architectures:
@@ -195,11 +197,11 @@ The state diagram below illustrates the multi-stage lifecycle of a high-value fi
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Pending : Maker creates proposal
+    ["*"] --> Pending : Maker creates proposal
     Pending --> Approved : Checker approves request
     Pending --> Rejected : Checker rejects request
-    Approved --> [*] : Transaction executed
-    Rejected --> [*] : Reason logged
+    Approved --> ["*"] : Transaction executed
+    Rejected --> ["*"] : Reason logged
 ```
 
 This authorization model prevents insider fraud and single-operator errors from corrupting general ledger balances. Audit logs record timestamps, cryptographically signed user tokens, and IP metadata for every state transition.
@@ -303,11 +305,11 @@ The architecture diagram below details the client request flow through the API g
 ```mermaid
 graph TD
     Client["Mobile / Web Client"] --> Ingress["API Gateway / gRPC Ingress"]
-    Ingress --> Router[Domain Routing Engine]
+    Ingress --> Router["Domain Routing Engine"]
     Router --> LedgerContext["Ledger & Balance Context"]
     Router --> CASAContext["CASA & Deposit Context"]
     Router --> LendingContext["Lending & Loan Context"]
-    Router --> PaymentContext[Payment Switch Context]
+    Router --> PaymentContext["Payment Switch Context"]
     
     LedgerContext --> PostgresLedger[("Ledger DB")]
     CASAContext --> PostgresCASA[("CASA DB")]
@@ -343,4 +345,3 @@ Implementing core banking architectures demands strict ACID transactional isolat
 ---
 
 [Next Part: Part 1: Double-Entry Ledger Schema Design](/series/core-banking-developer/part-1-double-entry-ledger/)
-

@@ -6,7 +6,6 @@ description: "Analyzing the AWS bill of distributed architectures: Hidden costs 
 slug: "finops-cost-reality-microservices-tax"
 tags: ["FinOps", "AWS", "Istio", "Cloud Cost", "Segment", "Modular Monolith"]
 categories: ["Modular Monolith", "Architecture"]
-aliases: ["/series/modular-monolith-architecture/part-2-finops-cost-reality/"]
 cover:
   image: "/images/posts/finops-cost-reality-microservices-tax.jpg"
   alt: "Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal"
@@ -18,13 +17,16 @@ TocOpen: true
 mermaid: true
 draft: false
 image: "/images/posts/finops-cost-reality-microservices-tax.jpg"
+series: ["modular-monolith-architecture"]
+weight: 3
 ---
+
 
 > **Prerequisite:** Before reading this part, please review [Part 1: Architectural Decision Framework](/series/modular-monolith-architecture/part-1-decision-framework/).
 
 ## Part 2: FinOps Cost Reality - The "Hidden Tax" of Microservices
 
-> **Answer-first:** The true cost of microservices lies in hidden infrastructure charges: sidecar proxy memory overhead, cross-AZ data transfer egress fees, NAT Gateway processing fees, and high-cardinality logging ingestion. A modular monolith co-locates processing within the same private subnet and container task, bypassing these multi-thousand-dollar cloud bills entirely.
+> **Answer-first:** The true cost of microservices lies in hidden infrastructure charges: sidecar proxy memory overhead, cross-AZ data transfer egress fees, NAT Gateway processing fees, and high-cardinality logging ingestion. A modular monolith co-locates processing within the same private subnet and container task, bypassing these multi-thousand-dollar cloud bills entirely. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability.
 >
 > **Key Takeaways**:
 > - **Proxy Overhead**: Envoy sidecars consume 50-100MB RAM per container; across 500 pods this burns 25-50GB RAM solely on proxy routing.
@@ -44,16 +46,16 @@ The architecture cost comparison diagram below contrasts the high infrastructure
 
 ```mermaid
 graph TD
-    subgraph Microservices Cloud Bill (High Tax)
+    subgraph Microservices Cloud Bill ("High Tax")
         SM["Service Mesh Envoy Sidecars: 50GB RAM"]
         AZ["Cross-AZ Egress: $0.02/GB"]
         NAT["NAT Gateway Processing: $0.045/GB"]
-        LOG[High-Cardinality Datadog Tracing]
+        LOG["High-Cardinality Datadog Tracing"]
     end
-    subgraph Modular Monolith Bill (Zero Tax)
+    subgraph Modular Monolith Bill ("Zero Tax")
         RAM["In-Memory RAM Pointers: <1ns"]
-        LOCAL[Local VPC Container Tasks]
-        PROM[Single Prometheus Exporter]
+        LOCAL["Local VPC Container Tasks"]
+        PROM["Single Prometheus Exporter"]
     end
 ```
 
@@ -86,7 +88,7 @@ Conversely, in a Microservices model, when Service A calls Service B, data is tr
 - Cross-Availability Zone data transfer fees are **$0.01 per GB** for both inbound and outbound (totaling $0.02/GB).
 - Communication via a NAT Gateway is billed per Gigabyte processed ($0.045/GB).
 
-When a complex business flow (e.g., Order Checkout) triggers dozens of REST API or gRPC calls between services scattered across multiple AZs, the organization's internal bandwidth bill can surpass the bandwidth fees for serving end-users (Internet Egress). Compare this with caching patterns in our [Caching Vulnerabilities & Singleflight Guide](/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/).
+When a complex business flow (e.g., Order Checkout) triggers dozens of REST API or gRPC calls between services scattered across multiple AZs, the organization's internal bandwidth bill can surpass the bandwidth fees for serving end-users (Internet Egress). Compare this with caching patterns in our [Caching Vulnerabilities & Singleflight Guide](/series/high-concurrency-systems/article_2_caching/).
 
 ### AWS Step Functions & S3 API Call Hidden Charges
 Beyond basic bandwidth egress, distributed microservice orchestrations accrue heavy managed service API charges:
@@ -250,7 +252,7 @@ Proceed to Part 3 for DDD module boundary design, or explore related guides on i
 
 - **Previous Part:** [Part 1: Architectural Decision Framework](/series/modular-monolith-architecture/part-1-decision-framework/)
 - **Next Part:** Continue to [Part 3: DDD Module Boundaries](/series/modular-monolith-architecture/part-3-ddd-module-boundaries/)
-- **Related Architecture Guides:** [Idempotency & API Design in Go](/series/high-concurrency-systems/idempotency-api-design-payments/) and [Distributed Rate Limiting](/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/)
+- **Related Architecture Guides:** [Idempotency & API Design in Go](/series/high-concurrency-systems/article_7_idempotency/) and [Distributed Rate Limiting](/series/high-concurrency-systems/article_3_rate_limiting/)
 
 Need help reducing your cloud infrastructure bill? [Get in touch](/hire/) or [hire our FinOps consulting team](/hire/) for an architecture and cost audit.
 

@@ -14,7 +14,7 @@ cover:
   relative: false
 mermaid: true
 ---
-> **Answer-First:** DigitalOcean launches an integrated AI-Native Cloud featuring managed Knowledge Bases, dynamic Inference Routing, and GPU Droplet hosting. This platform packages multi-model fallback, vector context retrieval (RAG), and agent execution primitives into an opinionated cloud stack, reducing operational complexity for mid-scale AI deployments.
+> **Answer-First:** DigitalOcean launches an integrated AI-Native Cloud featuring managed Knowledge Bases, dynamic Inference Routing, and GPU Droplet hosting. This platform packages multi-model fallback, vector context retrieval (RAG), and agent execution primitives into an opinionated cloud stack, reducing operational complexity for mid-scale AI deployments. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context Protocol ttlMs.
 
 ## Tech Radar, May 1, 2026: DigitalOcean's AI-Native Cloud - Inference Routing, Managed Retrieval, and an Integrated Stack for Agentic Systems
 
@@ -41,10 +41,10 @@ The architectural diagram below illustrates the five integrated layers of Digita
 
 ```mermaid
 flowchart TD
-    APP[AI Application or Agent Workflow] --> AGENTS[Managed Agents]
-    AGENTS --> INFER[Inference Layer]
-    AGENTS --> DATA[Knowledge and Data Layer]
-    INFER --> CORE[Core Cloud Services]
+    APP["AI Application or Agent Workflow"] --> AGENTS["Managed Agents"]
+    AGENTS --> INFER["Inference Layer"]
+    AGENTS --> DATA["Knowledge and Data Layer"]
+    INFER --> CORE["Core Cloud Services"]
     DATA --> CORE
     CORE --> INFRA["GPU / CPU / Network / Storage Infrastructure"]
 ```
@@ -120,7 +120,7 @@ For engineering leaders, the immediate action is to review where your current AI
 
 ### Production Implementation Blueprint
 
-The following cloud-config YAML deployment blueprint configures a DigitalOcean GPU Droplet to launch a vLLM inference server hosting Mistral-7B:
+Cloud-config YAML deployment blueprint configures a DigitalOcean GPU Droplet to launch a vLLM inference server hosting Mistral-7B:
 
 ```yaml
 #cloud-config
@@ -143,4 +143,3 @@ The NVIDIA Container Toolkit integrates with container runtimes like containerd 
 
 #### Q3: What storage configuration is recommended for loading large 50GB+ model checkpoints quickly?
 To achieve low-latency pod startups, model weights should be stored on attached High-Performance NVMe Block Storage volumes. Pre-warming these volumes prevents high-latency model downloads over public networks during auto-scaling events.
-

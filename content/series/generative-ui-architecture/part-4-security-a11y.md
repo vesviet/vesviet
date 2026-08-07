@@ -6,7 +6,7 @@ date: "2026-03-21T09:00:00+07:00"
 lastmod: "2026-07-23T10:40:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-frontend/"
+canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-4-security-a11y/"
 tags: ["Generative UI", "Security", "Prompt Injection", "Accessibility", "WCAG", "XSS"]
 categories: ["Engineering", "Frontend", "Security"]
 cover:
@@ -16,13 +16,14 @@ cover:
 mermaid: true
 ShowToc: true
 TocOpen: true
-series: ["Generative UI Architecture"]
-weight: 4
+series: ["generative-ui-architecture"]
+weight: 5
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Component Registry](/posts/generative-ui-with-mcp-ai-native-frontend/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Building secure, accessible Generative UI systems requires defensive engineering across Prompt-to-UI Injection Defenses and WCAG 2.1 AA Enforcement. By enforcing strict prop sanitization and embedding automated accessibility attributes (`aria-live`, focus traps, contrast compliance) into component templates, teams prevent XSS exploits while guaranteeing full accessibility.
+> **Answer-first:** Building secure, accessible Generative UI systems requires defensive engineering across Prompt-to-UI Injection Defenses and WCAG 2.1 AA Enforcement. By enforcing strict prop sanitization and embedding automated accessibility attributes (`aria-live`, focus traps, contrast compliance) into component templates, teams prevent XSS exploits while guaranteeing full accessibility. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required.
 
 ---
 
@@ -39,16 +40,16 @@ This creates two critical vulnerabilities:
 
 ```mermaid
 graph TD
-    A[Unsanitized Input / Poisoned Context] --> B[LLM Reasoning Engine]
-    B --> C{Attack Vectors}
-    C -->|Indirect Prompt Injection| D[Malicious Component Props]
-    C -->|Unescaped Script Strings| E[Cross-Site Scripting - XSS]
-    C -->|Dynamic UI Insertion| F[Broken Screen Reader Focus & WCAG Deficits]
+    A["Unsanitized Input / Poisoned Context"] --> B["LLM Reasoning Engine"]
+    B --> C{"Attack Vectors"}
+    C -->|"Indirect Prompt Injection"| D["Malicious Component Props"]
+    C -->|"Unescaped Script Strings"| E["Cross-Site Scripting - XSS"]
+    C -->|"Dynamic UI Insertion"| F["Broken Screen Reader Focus & WCAG Deficits"]
 
-    D --> G[Security & Accessibility Shield]
+    D --> G["Security & Accessibility Shield"]
     E --> G
     F --> G
-    G --> H[Safe, Accessible React Component]
+    G --> H["Safe, Accessible React Component"]
 ```
 
 Implementing a unified Security and Accessibility Shield ensures that every AI-generated component meets enterprise security standards and regulatory compliance requirements.
@@ -64,12 +65,12 @@ When an LLM constructs component prop payloads, security guardrails must enforce
 ```mermaid
 sequenceDiagram
     autonumber
-    participant LLM as LLM Agent Output
-    participant Sanitize as Prop Sanitizer Layer
-    participant Zod as Zod Schema Validator
-    participant DOM as Safe DOM Renderer
+    participant LLM as "LLM Agent Output"
+    participant Sanitize as "Prop Sanitizer Layer"
+    participant Zod as "Zod Schema Validator"
+    participant DOM as "Safe DOM Renderer"
 
-    LLM->>Sanitize: Send JSON Payload (e.g. { url: "javascript:alert(1)" })
+    LLM->>Sanitize: Send JSON Payload (e.g. { url: "javascript:alert("1")" })
     Sanitize->>Sanitize: Strip Disallowed Protocols & Unescaped Scripts
     Sanitize->>Zod: Pass Sanitized JSON
     alt Valid & Clean Schema
@@ -201,7 +202,7 @@ GenUI accessibility frameworks guarantee 100% WCAG 2.1 AA compliance across all 
 | **Perceivable** | Dynamic UI updates must be announced to screen reader users | Wrap dynamic component injection targets in `<div aria-live="polite">` |
 | **Operable** | All AI-generated forms and buttons must be keyboard navigable | Enforce `tabIndex={0}` and standard `Enter`/`Space` key handlers |
 | **Understandable** | Input errors in AI forms must provide clear error messages | Render explicit `aria-describedby` error associations |
-| **Robust** | Markup must parse cleanly without invalid ARIA attribute combinations | Validate ARIA attribute types using strict TypeScript interfaces |
+| **resilient** | Markup must parse cleanly without invalid ARIA attribute combinations | Validate ARIA attribute types using strict TypeScript interfaces |
 
 ---
 

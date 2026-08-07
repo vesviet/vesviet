@@ -16,7 +16,10 @@ canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-8-the-junior-p
 description: "Detailed guide solving the junior engineer career paradox through AI-assisted mentorship frameworks, interactive code reviews, and deep learning."
 ShowToc: true
 TocOpen: true
+series: ["ai-driven-engineer"]
+weight: 9
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 7 — System Design Survival](/series/ai-driven-engineer/part-7-system-design-survival/). Review it first if the terminology in this part is unfamiliar.
 
@@ -40,16 +43,16 @@ The junior paradox is resolved by using AI tools as interactive tutors, guiding 
 ```mermaid
 graph TD
     subgraph Traditional Junior Path("3 Years of Syntax Trial & Error")
-        J1[Junior Dev] --> Task1[Write Manual CRUD Syntax]
+        J1["Junior Dev"] --> Task1["Write Manual CRUD Syntax"]
         Task1 --> Task2["Manual Debugging & StackOverflow"]
-        Task2 --> Mid1[Slow Mid-Level Transition]
+        Task2 --> Mid1["Slow Mid-Level Transition"]
     end
 
-    subgraph AI-Accelerated Mentorship Path (1 Year Socratic Growth)
-        J2[AI-Native Junior Engineer] --> AITool["AI Pair Programmer & Code Reviewer"]
+    subgraph AI-Accelerated Mentorship Path ("1 Year Socratic Growth")
+        J2["AI-Native Junior Engineer"] --> AITool["AI Pair Programmer & Code Reviewer"]
         AITool --> Socratic["Socratic Code Review: Explain AST & Memory Trade-offs"]
-        Socratic --> SystemDesign[Early Exposure to Distributed System Boundaries]
-        SystemDesign --> Senior1[Accelerated Senior Architect Transition]
+        Socratic --> SystemDesign["Early Exposure to Distributed System Boundaries"]
+        SystemDesign --> Senior1["Accelerated Senior Architect Transition"]
     end
 ```
 

@@ -12,11 +12,14 @@ cover:
   alt: "Migration Playbook to Generative UI four phase roadmap"
   relative: false
 mermaid: true
-canonicalURL: "/posts/generative-ui-with-mcp-ai-native-frontend/"
+canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-7-reference-repo-migration/"
 description: "Production migration playbook for transitioning legacy React web applications to AI-native Generative UI streaming frontends with Astro and React."
 ShowToc: true
 TocOpen: true
+series: ["generative-ui-architecture"]
+weight: 8
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 6 — E2E Testing Edge](/posts/generative-ui-with-mcp-ai-native-frontend/). Review it first if the terminology in this part is unfamiliar.
 
@@ -43,23 +46,23 @@ The **Generative UI Migration Playbook** applies the proven **Strangler Fig Appl
 
 ```mermaid
 graph TD
-    subgraph Phase 1: Audit & Selection (Weeks 1-2)
-        P1[Audit React Component Tree] --> SelectCandidates["Select Candidate Components: Charts, Tables, Forms"]
+    subgraph Phase 1: Audit & Selection ("Weeks 1-2")
+        P1["Audit React Component Tree"] --> SelectCandidates["Select Candidate Components: Charts, Tables, Forms"]
     end
 
-    subgraph Phase 2: Schema Registration (Weeks 3-4)
-        SelectCandidates --> ExtractTS[Extract TypeScript Prop Interfaces]
+    subgraph Phase 2: Schema Registration ("Weeks 3-4")
+        SelectCandidates --> ExtractTS["Extract TypeScript Prop Interfaces"]
         ExtractTS --> CreateRegistry["Build Client Component Registry & Zod Schemas"]
     end
 
-    subgraph Phase 3: Edge Streaming Route (Weeks 5-6)
-        CreateRegistry --> DeployEdge[Deploy Edge SSE Stream Router]
+    subgraph Phase 3: Edge Streaming Route ("Weeks 5-6")
+        CreateRegistry --> DeployEdge["Deploy Edge SSE Stream Router"]
         DeployEdge --> SecSanitizer["Integrate Prop Sanitizer & Security Guards"]
     end
 
-    subgraph Phase 4: Incremental Rollout (Weeks 7-8)
-        SecSanitizer --> FeatureFlag[Enable Feature Flag for 10% User Traffic]
-        FeatureFlag --> FullGenUI[100% Generative UI Production Rollout]
+    subgraph Phase 4: Incremental Rollout ("Weeks 7-8")
+        SecSanitizer --> FeatureFlag["Enable Feature Flag for 10% User Traffic"]
+        FeatureFlag --> FullGenUI["100% Generative UI Production Rollout"]
     end
 ```
 

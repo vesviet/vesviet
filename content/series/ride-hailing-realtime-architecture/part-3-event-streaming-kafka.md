@@ -15,11 +15,13 @@ canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/par
 ShowToc: true
 TocOpen: true
 image: "/images/posts/real-time-ride-hailing-cover.jpg"
+series: ["ride-hailing-realtime-architecture"]
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — Geospatial Indexing](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/). Review it first if the terminology in this part is unfamiliar.
 
-**Answer-first:** Apache Kafka and Flink form the real-time event-streaming backbone for ride-hailing platforms, ingesting millions of GPS telemetry events per second. By partitioning Kafka topics by driver ID and executing sliding-window aggregations in Flink, systems achieve real-time location streaming, driver state management, and dynamic surge calculations with sub-second latency.
+**Answer-first:** Apache Kafka and Flink form the real-time event-streaming backbone for ride-hailing platforms, ingesting millions of GPS telemetry events per second. By partitioning Kafka topics by driver ID and executing sliding-window aggregations in Flink, systems achieve real-time location streaming, driver state management, and dynamic surge calculations with sub-second latency. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions,.
 
 ## Why Do We Need Event Streaming?
 
@@ -99,7 +101,7 @@ Raw streams from Kafka must be processed, enriched, and aggregated in real-time.
 
 ### Flink SQL: 5-Minute Sliding Window Aggregation
 
-The following Flink SQL query demonstrates how Flink computes real-time supply and demand counters over 5-minute sliding windows (updated every 10 seconds) for H3 spatial cells:
+This implementation demonstrates how Flink computes real-time supply and demand counters over 5-minute sliding windows (updated every 10 seconds) for H3 spatial cells:
 
 ```sql
 SELECT 
@@ -125,7 +127,7 @@ GROUP BY h3_cell_id, WINDOW_START, WINDOW_END;
 
 ## Production Go Kafka Stream Consumer
 
-The following Go program demonstrates an event streaming consumer that reads driver location updates from Kafka topic partitions, parses Protobuf frames, and updates sharded Redis H3 cell registries with exact partition ordering guarantees.
+This event streaming consumer reads driver location updates from Kafka topic partitions, parses Protobuf frames, and updates sharded Redis H3 cell registries with exact partition ordering guarantees.
 
 ```go
 package main

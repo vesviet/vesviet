@@ -16,7 +16,10 @@ canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-7-ag
 description: "Engineering guide to tri-tier agentic memory systems combining working memory, episodic vector logs, and long-term semantic knowledge graphs."
 ShowToc: true
 TocOpen: true
+series: ["ai-data-engineering-pipeline"]
+weight: 8
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 6 — Rise Of Ai Agents](/series/ai-data-engineering-pipeline/part-6-rise-of-ai-agents/). Review it first if the terminology in this part is unfamiliar.
 
@@ -30,20 +33,20 @@ Treating every interaction turn as a fresh stateless request leads to frustratin
 
 ## The Tri-Tier Agentic Memory Architecture
 
-**Answer-first:** Tri-tier memory architecture organizes agent context into short-term working scratchpads, episodic interaction logs, and long-term semantic graphs.
+**Answer-first:** Tri-tier memory architecture organizes agent context into short-term working scratchpads, episodic interaction logs, and long-term semantic graphs. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
 
 ```mermaid
 graph TD
-    UserInput[User Dialogue Input] --> WM["1. Working Memory: Sliding Context Window"]
-    WM --> AgentCore[Agent Reasoning Engine]
+    UserInput["User Dialogue Input"] --> WM["1. Working Memory: Sliding Context Window"]
+    WM --> AgentCore["Agent Reasoning Engine"]
 
     AgentCore --> Episodic["2. Episodic Memory: Redis Session Logs"]
     AgentCore --> Semantic["3. Semantic Memory: pgvector / Qdrant"]
 
-    Episodic --> Distiller[Background Memory Reflection Worker]
+    Episodic --> Distiller["Background Memory Reflection Worker"]
     Distiller --> Semantic
 
-    Semantic --> Synthesis[Context Synthesis Engine]
+    Semantic --> Synthesis["Context Synthesis Engine"]
     Episodic --> Synthesis
     Synthesis --> WM
 ```

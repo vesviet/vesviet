@@ -3,8 +3,8 @@ title: "Part 5: Declarative Prompting and Prompt Optimization with DSPy"
 date: "2026-07-26T10:30:00+07:00"
 lastmod: "2026-07-26T10:30:00+07:00"
 draft: false
-weight: 50
-description: "Transition from manual string tweaking to declarative prompt compilation using DSPy 2.5+, abstract signatures, MIPROv2 teleprompters, and automated evaluation metrics."
+weight: 5
+description: "Transition from manual string tweaking to declarative prompt compilation using DSPy 2.5+, abstract signatures, MIPROv2 teleprompters, and automated."
 categories: ["Engineering", "AI"]
 tags: ["prompt", "standard", "context-engineering", "agent"]
 ShowToc: true
@@ -16,11 +16,13 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/prompt-standard/part-5-declarative-prompting-dspy/"
 mermaid: true
+series: ["prompt-standard"]
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Mcp And Hybrid Rag](/series/prompt-standard/part-4-mcp-and-hybrid-rag/). Review it first if the terminology in this part is unfamiliar.
 
-**Answer-first:** Declarative prompting with DSPy replaces brittle manual prompt string tweaking with programmatic compiler pipelines. By defining input-output signatures and quantitative metrics, optimizers such as MIPROv2 search instruction variations and few-shot demonstrations to automatically generate high-performing, model-agnostic prompt artifacts.
+**Answer-first:** Declarative prompting with DSPy replaces brittle manual prompt string tweaking with programmatic compiler pipelines. By defining input-output signatures and quantitative metrics, optimizers such as MIPROv2 search instruction variations and few-shot demonstrations to automatically generate high-performing, model-agnostic prompt artifacts. Adopting this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory optimization, and fault-tolerant event-driven state synchronization across production systems.
 
 ---
 

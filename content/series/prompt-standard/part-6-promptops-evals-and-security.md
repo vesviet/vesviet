@@ -3,7 +3,7 @@ title: "Part 6: Production PromptOps, CI/CD Gates, and OWASP Agent Security"
 date: "2026-07-26T10:30:00+07:00"
 lastmod: "2026-07-26T10:30:00+07:00"
 draft: false
-weight: 60
+weight: 6
 description: "Implement production PromptOps lifecycles, G-Eval automated CI/CD gates, OWASP ASI 2026 security posture, and Go multi-agent contract validators."
 categories: ["Engineering", "AI"]
 tags: ["prompt", "standard", "context-engineering", "agent"]
@@ -16,11 +16,13 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/prompt-standard/part-6-promptops-evals-and-security/"
 mermaid: true
+series: ["prompt-standard"]
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Declarative Prompting Dspy](/series/prompt-standard/part-5-declarative-prompting-dspy/). Review it first if the terminology in this part is unfamiliar.
 
-**Answer-first:** Production PromptOps establishes CI/CD evaluation gates using LLM-as-a-Judge scoring against golden datasets to block regression deployments. Combined with OWASP ASI-compliant multi-agent security and Dual-LLM isolation patterns, organizations secure agents against indirect prompt injection, privilege abuse, and unauthorized tool execution.
+**Answer-first:** Production PromptOps establishes CI/CD evaluation gates using LLM-as-a-Judge scoring against golden datasets to block regression deployments. Combined with OWASP ASI-compliant multi-agent security and Dual-LLM isolation patterns, organizations secure agents against indirect prompt injection, privilege abuse, and unauthorized tool execution. Adopting this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory optimization, and fault-tolerant event-driven state synchronization across production systems.
 
 ---
 
@@ -32,14 +34,14 @@ Operating prompts in production requires continuous integration testing and auto
 
 ```mermaid
 graph LR
-    Dev[Developer / DSPy Optimizer] -->|1. Commit Prompt Spec| Git[Git Repository]
-    Git -->|2. Trigger Build| CI[CI Gate Pipeline]
-    CI -->|3. Run Golden Dataset| LLMJudge[LLM-as-a-Judge Eval]
-    LLMJudge -->|"Pass >= 95%"| Reg[Prompt Registry / Release Tag]
-    LLMJudge -->|Fail| Block[Block Deployment]
-    Reg -->|4. Deploy to Prod| Prod[Production Runtime]
-    Prod -->|5. Telemetry & Drift Monitor| Drift[Drift Alarm]
-    Drift -->|Score Degradation| Rollback[Automated Rollback]
+    Dev["Developer / DSPy Optimizer"] -->|"1. Commit Prompt Spec"| Git["Git Repository"]
+    Git -->|"2. Trigger Build"| CI["CI Gate Pipeline"]
+    CI -->|"3. Run Golden Dataset"| LLMJudge["LLM-as-a-Judge Eval"]
+    LLMJudge -->|"Pass >= 95%"| Reg["Prompt Registry / Release Tag"]
+    LLMJudge -->|"Fail"| Block["Block Deployment"]
+    Reg -->|"4. Deploy to Prod"| Prod["Production Runtime"]
+    Prod -->|"5. Telemetry & Drift Monitor"| Drift["Drift Alarm"]
+    Drift -->|"Score Degradation"| Rollback["Automated Rollback"]
 ```
 
 ---
@@ -135,10 +137,10 @@ Securing agent execution against indirect prompt injection requires separating u
 
 ```mermaid
 graph TD
-    User[Untrusted Data Stream / RAG Doc] -->|Raw Input| QuarantinedLLM[Quarantined Parser LLM]
-    QuarantinedLLM -->|Extract Raw Data Only| ExtractedData[Sanitized JSON Data]
-    ExtractedData -->|Strict Schema Payload| CoreAgentLLM[Privileged Core LLM]
-    CoreAgentLLM -->|Validated Tool Call| Action[Execution Sandbox]
+    User["Untrusted Data Stream / RAG Doc"] -->|"Raw Input"| QuarantinedLLM["Quarantined Parser LLM"]
+    QuarantinedLLM -->|"Extract Raw Data Only"| ExtractedData["Sanitized JSON Data"]
+    ExtractedData -->|"Strict Schema Payload"| CoreAgentLLM["Privileged Core LLM"]
+    CoreAgentLLM -->|"Validated Tool Call"| Action["Execution Sandbox"]
 ```
 
 Under this pattern, the Quarantined Parser LLM operates without tool privileges. It converts raw inputs into strictly typed JSON structures, stripping instruction text before passing payloads to the Privileged Core LLM.

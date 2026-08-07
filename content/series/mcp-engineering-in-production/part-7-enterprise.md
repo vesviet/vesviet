@@ -17,13 +17,16 @@ description: "Technical summary and production guide for Part 7 — Enterprise M
 ShowToc: true
 TocOpen: true
 image: "/images/posts/part-7-enterprise.jpg"
+series: ["mcp-engineering-in-production"]
+weight: 8
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 6 — Observability](/series/mcp-engineering-in-production/part-6-observability/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 7 — Enterprise MCP Strategy & Multi-Tenancy Governance
 
-> **Answer-first:** Scaling Model Context Protocol (MCP) across large enterprises requires an Enterprise Internal MCP Registry and strict Multi-Tenancy Governance. Enforcing exact semantic version pinning (`v1.4.2` over `:latest`), MCP Server Cards metadata registration, and tenant database isolation prevents Shadow MCP deployments and cross-tenant data leaks.
+> **Answer-first:** Scaling Model Context Protocol (MCP) across large enterprises requires an Enterprise Internal MCP Registry and strict Multi-Tenancy Governance. Enforcing exact semantic version pinning (`v1.4.2` over `:latest`), MCP Server Cards metadata registration, and tenant database isolation prevents Shadow MCP deployments and cross-tenant data leaks. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context Protocol.
 >
 > **Key Takeaways**:
 > - **Internal MCP Server Registry**: Centralized repository cataloging verified enterprise MCP tools, schemas, and security clearance levels.
@@ -42,7 +45,7 @@ Without central governance, organizations quickly devolve into a chaotic ecosyst
 
 ```mermaid
 graph TD
-    DevTeam[Engineering Team Deployment] --> RegistrySubmission["1. Submit MCP Server Card & Metadata"]
+    DevTeam["Engineering Team Deployment"] --> RegistrySubmission["1. Submit MCP Server Card & Metadata"]
     
     subgraph Enterprise MCP Governance Registry
         RegistrySubmission --> VersionGuard["2. Version Pin Guard: Block :latest Tags"]
@@ -51,8 +54,8 @@ graph TD
     end
 
     TenantIsolation --> VerifiedRegistry[("Approved Internal MCP Registry")]
-    VerifiedRegistry -->|"Sync Approved Routes"| MCPGateway[Enterprise MCP Gateway Router]
-    MCPGateway --> ClientHosts[Enterprise AI Agent Hosts]
+    VerifiedRegistry -->|"Sync Approved Routes"| MCPGateway["Enterprise MCP Gateway Router"]
+    MCPGateway --> ClientHosts["Enterprise AI Agent Hosts"]
 ```
 
 ---

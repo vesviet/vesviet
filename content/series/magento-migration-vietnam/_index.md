@@ -64,8 +64,8 @@ This series is built on:
 
 *Is your Magento platform actually at the ceiling, or is it an optimization problem?*
 
-- [Is Magento Worth It in 2026? The 2.4.9 Reality](/posts/magento-still-worth-investing-2026/) — Version EOL analysis, TCO breakdown, migrate vs. optimize framework
-- [Migrating Magento to Microservices: When & Why](/posts/why-migrate-magento-to-microservices/) — Performance signals, the structural wall checklist, and when Strangler Fig beats upgrade
+- [Is Magento Worth It in 2026? The 2.4.9 Reality](/series/magento-migration-vietnam/magento-still-worth-investing-2026/) — Version EOL analysis, TCO breakdown, migrate vs. optimize framework
+- [Migrating Magento to Microservices: When & Why](/series/magento-migration-vietnam/why-migrate-magento-to-microservices/) — Performance signals, the structural wall checklist, and when Strangler Fig beats upgrade
 
 ---
 
@@ -73,10 +73,10 @@ This series is built on:
 
 *The technical playbook: DDD, Strangler Fig, Debezium, Dapr, zero-downtime cutover.*
 
-- [Composable E-Commerce Migration: Overcoming Tech Debt](/posts/ecommerce-architecture-composable-migration/) — 21-service domain map, bounded context design, monolith decomposition patterns
-- [Zero-Downtime: Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/) — 3-Phase Strangler Fig, Debezium CDC, bidirectional Dapr sync, 30-day hot standby
-- [Exporting Magento 2 Data: Flatten EAV with SQL & Node](/posts/exporting-magento-2-data-flat-sql-nodejs/) — EAV extraction, `magento_id_map` UUID translation, ETL pipeline design
-- [Magento AI Integration: Modernize Without Rebuilding](/posts/magento-ai-integration-strategy-architecture/) — AI augmentation as a bridge strategy before full migration
+- [Composable E-Commerce Migration: Overcoming Tech Debt](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/) — 21-service domain map, bounded context design, monolith decomposition patterns
+- [Zero-Downtime: Moving from Magento to Microservices](/series/magento-migration-vietnam/moving-from-magento-to-microservices/) — 3-Phase Strangler Fig, Debezium CDC, bidirectional Dapr sync, 30-day hot standby
+- [Exporting Magento 2 Data: Flatten EAV with SQL & Node](/series/magento-migration-vietnam/exporting-magento-2-data-flat-sql-nodejs/) — EAV extraction, `magento_id_map` UUID translation, ETL pipeline design
+- [Magento AI Integration: Modernize Without Rebuilding](/series/magento-migration-vietnam/magento-ai-integration-strategy-architecture/) — AI augmentation as a bridge strategy before full migration
 
 ---
 
@@ -84,9 +84,9 @@ This series is built on:
 
 *How to source, vet, and budget a Vietnam Go team for migration work.*
 
-- [Magento Development in Vietnam: Cost, Hiring & Upgrade](/posts/magento-vietnam/) — Market rates, talent pool overview, engagement model comparison
-- [Magento Agency & Development in Vietnam: Scoping Guide](/posts/magento-development-in-vietnam/) — How to scope a migration engagement with a Vietnam agency
-- [Vetting Magento Developers in Vietnam: Interview Playbook](/posts/magento-development-in-vietnam/) — Technical interview framework for Magento PHP specialists
+- [Magento Development in Vietnam: Cost, Hiring & Upgrade](/series/magento-migration-vietnam/magento-vietnam/) — Market rates, talent pool overview, engagement model comparison
+- [Magento Agency & Development in Vietnam: Scoping Guide](/series/magento-migration-vietnam/magento-development-in-vietnam/) — How to scope a migration engagement with a Vietnam agency
+- [Vetting Magento Developers in Vietnam: Interview Playbook](/series/magento-migration-vietnam/magento-development-in-vietnam/) — Technical interview framework for Magento PHP specialists
 - [**Go Engineers in Vietnam: Vetting for Magento Migration**](/series/magento-migration-vietnam/go-engineers-vietnam-migration-vetting/) — 🆕 Five production-level migration scenarios, distributed systems red flags, green signals
 - [**Magento Migration Cost: Vietnam vs US/EU Team (2026 Model)**](/series/magento-migration-vietnam/magento-migration-cost-vietnam-vs-us-eu/) — 🆕 Phase-by-phase budget breakdown, Vietnam vs. US/EU rate comparison, break-even analysis
 
@@ -103,7 +103,7 @@ This series is built on:
 
 ### Module 5 — The Retrospective
 
-- [Deconstructing the Ecosystem: Service Details by Domain](/posts/deconstructing-ecommerce-service-details-domain/) — The final destination: 21 services, clean domain boundaries, full observability stack
+- [Deconstructing the Ecosystem: Service Details by Domain](/series/magento-migration-vietnam/deconstructing-ecommerce-service-details-domain/) — The final destination: 21 services, clean domain boundaries, full observability stack
 
 ---
 
@@ -134,4 +134,3 @@ A 2-week engagement delivers:
 | Enterprise migration timeline | 12–18 months (B2B complex) |
 | Productivity dip during migration | 25–40% for months 4–8 (documented) |
 | Tiki Vietnam: services on GKE | 100+ microservices (Go + Java + Kafka) |
-

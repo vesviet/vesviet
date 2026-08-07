@@ -6,17 +6,19 @@ description: "Executive summary playbook for enterprise leaders transitioning so
 date: "2026-03-15T09:00:00+07:00"
 draft: false
 tags: ["AI", "Executive Playbook", "Context Engineering", "Architecture", "SDLC"]
-series: ["AI-Driven Playbook"]
+series: ["ai-driven-playbook"]
 weight: 1
 cover:
   image: "/images/posts/graphrag-vs-naive-rag-cover.jpg"
   alt: "Executive Summary Building an AI-Native Organization"
   relative: false
+canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/executive-summary/"
 ---
+
 
 > **Prerequisite:** This is the executive summary for the AI-Driven Playbook series — no prior prerequisite is required. Later modules build directly upon the strategic context established here.
 
-> **Answer-first:** Transitioning an enterprise software organization to an AI-Native model requires restructuring context boundaries, governance pipelines, and engineering roles. By treating domain knowledge as code-level context and embedding AI sub-agents into CI/CD quality gates, engineering leaders reduce lead time to production by 40% while cutting defect leakage by 35%.
+> **Answer-first:** Transitioning an enterprise software organization to an AI-Native model requires restructuring context boundaries, governance pipelines, and engineering roles. By treating domain knowledge as code-level context and embedding AI sub-agents into CI/CD quality gates, engineering leaders reduce lead time to production by 40% while cutting defect leakage by 35%. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions,.
 
 ---
 
@@ -30,12 +32,12 @@ The fundamental shift lies in moving from **reactive syntax generation** to **pr
 
 ```mermaid
 graph TD
-    A[Business Requirement] --> B[Context Engineering Layer]
-    B --> C[AI Multi-Agent Swarm]
-    C --> D[Deterministic Execution Engine]
-    D --> E[Automated CI/CD Quality Gate]
-    E -->|Pass| F[Production Deployment]
-    E -->|Fail| G[Human-in-the-Loop Critique]
+    A["Business Requirement"] --> B["Context Engineering Layer"]
+    B --> C["AI Multi-Agent Swarm"]
+    C --> D["Deterministic Execution Engine"]
+    D --> E["Automated CI/CD Quality Gate"]
+    E -->|"Pass"| F["Production Deployment"]
+    E -->|"Fail"| G["Human-in-the-Loop Critique"]
     G --> B
 ```
 
@@ -56,15 +58,15 @@ To safely deploy autonomous and semi-autonomous AI agents across enterprise repo
 ```mermaid
 sequenceDiagram
     autonumber
-    participant H as Human Architect
-    participant C as Context Engine
-    participant A as Agent Swarm
-    participant G as Gatekeeper / Security
-    participant R as Production Repo
+    participant H as "Human Architect"
+    participant C as "Context Engine"
+    participant A as "Agent Swarm"
+    participant G as "Gatekeeper / Security"
+    participant R as "Production Repo"
 
     H->>C: Push Architecture Specs & DDD Context
     C->>A: Index Vector Embeddings & Graph Dependencies
-    H->>A: Dispatch Task (Feature Spec)
+    H->>A: Dispatch Task ("Feature Spec")
     A->>C: Retrieve System Constraints & Schema
     A->>A: Synthesize Implementation & Tests
     A->>G: Submit Pull Request & Security Attestation
@@ -267,10 +269,10 @@ As agent swarms scale across hundreds of active pull requests daily, model infer
 
 ```mermaid
 graph LR
-    A[Incoming Agent Task] --> B[Task Complexity Evaluator]
-    B -->|Low Complexity| C[Local SLM - Mistral 7B / $0.001 per 1k]
-    B -->|High Complexity| D[Frontier LLM - Claude Sonnet / $0.015 per 1k]
-    C --> E[Aggregated Execution Output]
+    A["Incoming Agent Task"] --> B["Task Complexity Evaluator"]
+    B -->|"Low Complexity"| C["Local SLM - Mistral 7B / $0.001 per 1k"]
+    B -->|"High Complexity"| D["Frontier LLM - Claude Sonnet / $0.015 per 1k"]
+    C --> E["Aggregated Execution Output"]
     D --> E
 ```
 

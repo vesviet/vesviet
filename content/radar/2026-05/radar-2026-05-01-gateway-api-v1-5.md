@@ -15,9 +15,9 @@ cover:
   relative: false
 mermaid: true
 description: "Deep-dive analysis of Kubernetes Gateway API v1.5, ListenerSet platform surfaces, TLSRoute mTLS policy, and AI Gateway Working Group routing standards."
-canonicalURL: "https://tanhdev.com/radar/radar-2026-05-01-gateway-api-v1-5/"
+canonicalURL: "https://tanhdev.com/radar/2026-05/"
 ---
-> **Answer-First:** Kubernetes Gateway API v1.5 stabilizes `ListenerSet`, `TLSRoute`, and frontend mTLS client certificate validation in the Standard channel. Combined with `Ingress2Gateway 1.0`, this release provides a modular declarative control plane that replaces annotation-heavy ingress configurations with multi-tenant listener delegation and auditable cross-namespace security policies.
+> **Answer-First:** Kubernetes Gateway API v1.5 stabilizes `ListenerSet`, `TLSRoute`, and frontend mTLS client certificate validation in the Standard channel. Combined with `Ingress2Gateway 1.0`, this release provides a modular declarative control plane that replaces annotation-heavy ingress configurations with multi-tenant listener delegation and auditable cross-namespace security policies. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for.
 
 ## Gateway API v1.5 & Ingress2Gateway: The Future of K8s Networking
 
@@ -40,16 +40,16 @@ The diagram below compares the legacy monolithic Ingress annotation pattern with
 ```mermaid
 flowchart LR
     subgraph OLD["Old Ingress / Monolithic Gateway Pattern"]
-        APP1[Team A] --> G1[One shared object]
-        APP2[Team B] --> G1
-        PL1[Platform Team] --> G1
-        G1 --> C1[Controller-specific annotations]
+        APP1["Team A"] --> G1["One shared object"]
+        APP2["Team B"] --> G1
+        PL1["Platform Team"] --> G1
+        G1 --> C1["Controller-specific annotations"]
     end
 
     subgraph NEW["Gateway API v1.5 Pattern"]
-        PL2[Platform Team] --> GW[Shared Gateway]
-        APP3[Team A] --> LS1[ListenerSet A]
-        APP4[Team B] --> LS2[ListenerSet B]
+        PL2["Platform Team"] --> GW["Shared Gateway"]
+        APP3["Team A"] --> LS1["ListenerSet A"]
+        APP4["Team B"] --> LS2["ListenerSet B"]
         LS1 --> GW
         LS2 --> GW
         GW --> ROUTES["HTTPRoute / TLSRoute / Policy"]
@@ -205,4 +205,3 @@ spec:
 ## Architectural Context & Pillar References
 
 - [Go pprof & K8s Remote Profiling](/posts/go-pprof-kubernetes-remote-profiling/)
-

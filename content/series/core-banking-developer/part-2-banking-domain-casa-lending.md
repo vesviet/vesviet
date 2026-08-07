@@ -16,9 +16,11 @@ canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-2-banking-
 ShowToc: true
 TocOpen: true
 mermaid: true
+series: ["core-banking-developer"]
 ---
 
-> **Answer-first:** Core banking domain architecture revolves around three sub-systems: Customer Information File (CIF) for identity and KYC, Current & Savings Accounts (CASA) for real-time deposit ledgers, and Lending for loan amortization. Isolating these bounded contexts in Go microservices prevents cascading database lock contention during End-of-Day interest calculation batch jobs.
+
+> **Answer-first:** Core banking domain architecture revolves around three sub-systems: Customer Information File (CIF) for identity and KYC, Current & Savings Accounts (CASA) for real-time deposit ledgers, and Lending for loan amortization. Isolating these bounded contexts in Go microservices prevents cascading database lock contention during End-of-Day interest calculation batch jobs. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions,.
 
 > **Prerequisite:** [Part 1: Double-Entry Ledger Schema Design](/series/core-banking-developer/part-1-double-entry-ledger/) on standard accounting invariants.
 
@@ -78,7 +80,7 @@ CASA modules handle demand deposits, managing available balances, hold-funds loc
 
 ### Account Classifications
 
-The following matrix compares demand deposit and term deposit structures, highlighting operational withdrawal rules and target interest yield tiers.
+Matrix compares demand deposit and term deposit structures, highlighting operational withdrawal rules and target interest yield tiers.
 
 | Type | Characteristics | Typical Interest Rate |
 |---|---|---|
@@ -159,7 +161,7 @@ The ASCII sequence diagram below illustrates the complete lifecycle stages of a 
 
 ### Mandatory Concepts to Understand
 
-The following reference table outlines the core terminology used in loan accounting, risk provisioning, and debt servicing engines.
+Reference table outlines the core terminology used in loan accounting, risk provisioning, and debt servicing engines.
 
 | Term | Meaning |
 |---|---|
@@ -281,7 +283,7 @@ The state transition diagram below details valid lifecycle paths for deposit acc
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Active
+    ["*"] --> Active
     Active --> Dormant : Inactivity > 12 Months
     Active --> Frozen : Security Lock
     Frozen --> Active : Clearance
@@ -462,4 +464,3 @@ Daily interest accrual calculates nominal interest earned every night based on d
 Security enforcement for Part 2 Banking Domain Casa Lending integrates SPIFFE/SPIRE workload identities with mutual TLS sidecar proxies. Automated JWT token validation prevents unauthorized cross-service API access.
 
 Domain-driven design in Part 2 Banking Domain Casa Lending establishes clean Bounded Context boundaries. In-process event dispatchers decouple domain entity mutations from secondary notification workers.
-

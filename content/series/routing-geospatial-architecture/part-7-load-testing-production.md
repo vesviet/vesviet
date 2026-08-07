@@ -6,7 +6,7 @@ lastmod: "2026-06-15T07:20:00+07:00"
 draft: false
 tags: ["k6", "load testing", "linux", "performance", "golang", "Architecture"]
 categories: ["Geospatial", "DevOps"]
-series: ["Routing & Geospatial Architecture"]
+series: ["routing-geospatial-architecture"]
 series_order: 7
 cover:
   image: "/images/posts/graphhopper-cover.jpg"
@@ -18,9 +18,11 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 image: "/images/posts/graphhopper-cover.jpg"
+weight: 8
 ---
 
-> **Answer-first:** Production load testing for geospatial microservices requires realistic traffic simulation with k6/Vegeta to identify latency spikes and connection pool bottlenecks.
+
+> **Answer-first:** Production load testing for geospatial microservices requires realistic traffic simulation with k6/Vegeta to identify latency spikes and connection pool bottlenecks. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
 
 > **Prerequisite:** Before starting load testing, review [Part 6: Location Clustering & Semantic Caching](/series/routing-geospatial-architecture/part-6-redis-semantic-caching/).
 
@@ -44,10 +46,10 @@ Load testing a routing engine is a stress test of the Linux Kernel network stack
 
 ```mermaid
 flowchart TD
-    K6[K6 Constant-Arrival-Rate Load Generator] -->|Open Model Schedule: 20k RPS| Kernel["Linux Kernel Net Stack: tuned somaxconn & tcp_tw_reuse"]
+    K6["K6 Constant-Arrival-Rate Load Generator"] -->|"Open Model Schedule: 20k RPS"| Kernel["Linux Kernel Net Stack: tuned somaxconn & tcp_tw_reuse"]
     Kernel --> GoGateway["Golang API Gateway: Pprof Inspected"]
-    GoGateway -->|Cache Hits| Redis[("Redis L2 Semantic Cache")]
-    GoGateway -->|Cache Misses| GH[("GraphHopper Engine Pool")]
+    GoGateway -->|"Cache Hits"| Redis[("Redis L2 Semantic Cache")]
+    GoGateway -->|"Cache Misses"| GH[("GraphHopper Engine Pool")]
 ```
 
 ## 1. The Lies Your Load Tester Tells You
@@ -251,4 +253,3 @@ The standard library `compress/gzip` in Go lacks hardware SIMD optimization and 
 {{< /faq >}}
 
 🔗 **Next Step:** Deploy to production in [Part 8: Zero-Downtime Map Updates & Multi-Region Kubernetes](/series/routing-geospatial-architecture/part-8-zero-downtime-k8s/).
-

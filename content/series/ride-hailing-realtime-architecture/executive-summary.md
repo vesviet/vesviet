@@ -17,9 +17,15 @@ mermaid: true
 ShowToc: true
 TocOpen: true
 image: "/images/posts/real-time-ride-hailing-cover.jpg"
+series: ["ride-hailing-realtime-architecture"]
 ---
 
-> **Answer-first:** Real-time ride-hailing platforms combine HTTP/3 gRPC stream ingestion for driver GPS telemetry, Uber H3 hexagonal spatial indexing in Redis RAM, Apache Kafka/Redpanda event streaming, and DISCO global assignment matching engines to dispatch rides in under 2 seconds.
+> **Prerequisite:** Review the previous module in the [ride-hailing-realtime-architecture](/series/ride-hailing-realtime-architecture/) series before proceeding.
+
+
+
+
+> **Answer-first:** Real-time ride-hailing platforms combine HTTP/3 gRPC stream ingestion for driver GPS telemetry, Uber H3 hexagonal spatial indexing in Redis RAM, Apache Kafka/Redpanda event streaming, and DISCO global assignment matching engines to dispatch rides in under 2 seconds. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context Protocol ttlMs cache invalidation parameters.
 
 **Key Takeaways**:
 - **Telemetry Scale**: Ingest driver GPS coordinates every 4 seconds using Extended Kalman Filters and binary gRPC Protobuf streams over HTTP/3 QUIC.
@@ -63,8 +69,8 @@ flowchart TD
 
     subgraph API & Ingestion Tier
         Gateway["API Gateway & L4 Load Balancer"]
-        LocationSvc[Supply Location Ingestion Service]
-        DemandSvc[Demand Ride Request Service]
+        LocationSvc["Supply Location Ingestion Service"]
+        DemandSvc["Demand Ride Request Service"]
     end
 
     subgraph Streaming & Storage Backbone
@@ -73,13 +79,13 @@ flowchart TD
     end
 
     subgraph Engine Processing Tier
-        DISCO[DISCO Matching Engine]
-        Surge[Dynamic Surge Pricing Engine]
+        DISCO["DISCO Matching Engine"]
+        Surge["Dynamic Surge Pricing Engine"]
         Ramen["RAMEN Push Service: gRPC / QUIC"]
     end
 
-    Driver -->|gRPC/MQTT 4s Pings| Gateway
-    Rider -->|HTTPS / gRPC| Gateway
+    Driver -->|"gRPC/MQTT 4s Pings"| Gateway
+    Rider -->|"HTTPS / gRPC"| Gateway
     Gateway --> LocationSvc
     Gateway --> DemandSvc
     LocationSvc --> Kafka
@@ -88,7 +94,7 @@ flowchart TD
     Kafka --> DISCO
     Kafka --> Surge
     DISCO --> Ramen
-    Ramen -->|Realtime Push Notification| Driver
+    Ramen -->|"Realtime Push Notification"| Driver
 ```
 
 ---

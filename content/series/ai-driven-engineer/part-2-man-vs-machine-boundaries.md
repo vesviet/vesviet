@@ -16,11 +16,14 @@ canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-2-man-vs-machi
 description: "Technical engineering guide establishing strategic task boundaries between human architectural reasoning and AI-automated code generation workflows."
 ShowToc: true
 TocOpen: true
+series: ["ai-driven-engineer"]
+weight: 3
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — The Death Of Code Typists](/series/ai-driven-engineer/part-1-the-death-of-code-typists/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Drawing precise operational boundaries between autonomous AI generation and mandatory human engineering oversight is essential for preventing production outages. High-risk distributed systems architecture, concurrency locks, and security compliance require human ownership, while repetitive syntax translation, test generation, and DTO mapping are delegated to AI agents.
+> **Answer-first:** Drawing precise operational boundaries between autonomous AI generation and mandatory human engineering oversight is essential for preventing production outages. High-risk distributed systems architecture, concurrency locks, and security compliance require human ownership, while repetitive syntax translation, test generation, and DTO mapping are delegated to AI agents. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model.
 
 As engineering organizations adopt AI code assistants and autonomous sub-agents, a critical governance question arises: *Where does the machine's autonomy end, and where must human engineering oversight begin?*
 
@@ -38,24 +41,24 @@ Classifying engineering tasks separates high-leverage human architectural choice
 
 ```mermaid
 graph TD
-    IncomingTask[Engineering Task] --> EvaluateRisk{"Risk & System Impact Assessment"}
+    IncomingTask["Engineering Task"] --> EvaluateRisk{"Risk & System Impact Assessment"}
     
     subgraph High Risk: Mandatory Human Ownership
-        EvaluateRisk -->|"High Blast Radius / Security / State Mutation"| HumanDomain[Human Engineering Ownership]
-        HumanDomain --> Task1[Distributed Consensus Algorithms]
+        EvaluateRisk -->|"High Blast Radius / Security / State Mutation"| HumanDomain["Human Engineering Ownership"]
+        HumanDomain --> Task1["Distributed Consensus Algorithms"]
         HumanDomain --> Task2["Database Schema & Migration Rules"]
         HumanDomain --> Task3["Zero Trust Auth & Access Boundaries"]
     end
 
     subgraph Low Risk: Delegated AI Autonomy
-        EvaluateRisk -->|"Low Blast Radius / Repetitive Syntax"| AIDomain[Delegated AI Execution]
+        EvaluateRisk -->|"Low Blast Radius / Repetitive Syntax"| AIDomain["Delegated AI Execution"]
         AIDomain --> Task4["Boilerplate DTO & Struct Mapping"]
         AIDomain --> Task5["Unit & Mock Test Suite Generation"]
         AIDomain --> Task6["Documentation & Swagger Spec Extraction"]
     end
 
-    AIDomain --> HITLGate[Human-in-the-Loop Review Gate]
-    HITLGate --> Deploy[Production Pipeline Deployment]
+    AIDomain --> HITLGate["Human-in-the-Loop Review Gate"]
+    HITLGate --> Deploy["Production Pipeline Deployment"]
 ```
 
 ---

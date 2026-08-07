@@ -100,4 +100,3 @@ Double-entry bookkeeping guarantees that every financial mutation consists of ba
 {{< faq "How do modern core banking platforms handle high-concurrency account balance updates?" >}}
 High-concurrency platforms avoid traditional database row locks by implementing single-threaded deterministic execution engines or balance sharding strategies. These patterns isolate balance mutations into partitioned structures, achieving ultra-low latency without lock contention on popular accounts.
 {{< /faq >}}
-

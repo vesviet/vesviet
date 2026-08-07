@@ -13,11 +13,14 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-5-synthesis/"
 mermaid: true
+series: ["alipay-double-11"]
+weight: 7
 ---
+
 [← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/modern-tech-comparison/) • [Next →](/posts/alipay-double-11-architecture-tps/)
 
-> **Answer-first:** This synthesis phase consolidates Alipay's decade of Double 11 scaling into core mathematical models, active-active failover topologies, cross-city fiber latency calculations, and jittered exponential backoff algorithms. It provides a blueprint for engineering teams to achieve horizontal cell scaling, RPO=0 financial durability, and deterministic production readiness.
+> **Answer-first:** This synthesis phase consolidates Alipay's decade of Double 11 scaling into core mathematical models, active-active failover topologies, cross-city fiber latency calculations, and jittered exponential backoff algorithms. It provides a blueprint for engineering teams to achieve horizontal cell scaling, RPO=0 financial durability, and deterministic production readiness. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines.
 
 > **Prerequisite:** [Modern Tech Comparison](/series/alipay-double-11/modern-tech-comparison/)
 
@@ -48,23 +51,23 @@ The active-active fallback lifecycle is illustrated in the diagram below:
 
 ```mermaid
 graph TD
-    User["User Request"] -->|1. Submit Payment| GLB[Global Load Balancer]
-    GLB -->|Route to primary cell| CellA[RZone Cell A - Shanghai]
+    User["User Request"] -->|"1. Submit Payment"| GLB["Global Load Balancer"]
+    GLB -->|"Route to primary cell"| CellA["RZone Cell A - Shanghai"]
     
-    subgraph CellA_Scope [Cell A - Primary]
-        CellA -->|2. Write transaction| DBA[("OceanBase Leader")]
-        DBA -.->|3. Fail: Connection Timeout| Fallback[Trigger Client Retry]
+    subgraph CellA_Scope ["Cell A - Primary"]
+        CellA -->|"2. Write transaction"| DBA[("OceanBase Leader")]
+        DBA -.->|"3. Fail: Connection Timeout"| Fallback["Trigger Client Retry"]
     end
 
-    Fallback -->|4. Backoff: t = min(t_max, t_base * 2^n + jitter)| RetryLoop{Retry Exhausted?}
-    RetryLoop -->|No| GLB
-    RetryLoop -->|Yes: Mark Cell A Offline| DNS["Update Ingress DNS / Router Table"]
+    Fallback -->|4. Backoff: t = min("t_max, t_base * 2^n + jitter")| RetryLoop{"Retry Exhausted?"}
+    RetryLoop -->|"No"| GLB
+    RetryLoop -->|"Yes: Mark Cell A Offline"| DNS["Update Ingress DNS / Router Table"]
     
-    DNS -->|5. Re-route Request| CellB[RZone Cell B - Shenzhen]
+    DNS -->|"5. Re-route Request"| CellB["RZone Cell B - Shenzhen"]
     
-    subgraph CellB_Scope [Cell B - Fallback]
-        CellB -->|6. Reconcile Paxos Log| DBB[("OceanBase Follower promoted to Leader")]
-        DBB -->|7. Write transaction successfully| Commit[Return Success to Client]
+    subgraph CellB_Scope ["Cell B - Fallback"]
+        CellB -->|"6. Reconcile Paxos Log"| DBB[("OceanBase Follower promoted to Leader")]
+        DBB -->|"7. Write transaction successfully"| Commit["Return Success to Client"]
     end
 
     classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px;
@@ -230,4 +233,3 @@ Mature platform teams evaluate production systems on zero data loss (RPO=0), aut
 To explore how these synthesis principles apply to real-world high-concurrency e-commerce systems and distributed ledger implementations, consult these reference guides:
 - [Alipay Double 11: 544,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/)
 - [PayPay Architecture & Scaling Playbook](/posts/paypay-architecture-scaling/)
-

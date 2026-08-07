@@ -16,13 +16,16 @@ canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-3-la
 description: "Technical guide to late chunking embeddings and Redis semantic caching to eliminate context boundary loss in enterprise vector search pipelines."
 ShowToc: true
 TocOpen: true
+series: ["ai-data-engineering-pipeline"]
+weight: 4
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — Agentic Ingestion Multimodal](/series/ai-data-engineering-pipeline/part-2-agentic-ingestion-multimodal/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 3 — Late Chunking & Contextual Retrieval: Solving Chunk Boundary Loss
 
-> **Answer-first:** Standard early chunking splits text prior to embedding, destroying long-range semantic dependencies and pronoun references across chunk boundaries. Late Chunking passes the full document through the Transformer encoder layer first, computing token-level contextual representations before applying mean pooling over chunk boundaries to boost retrieval precision by 27%.
+> **Answer-first:** Standard early chunking splits text prior to embedding, destroying long-range semantic dependencies and pronoun references across chunk boundaries. Late Chunking passes the full document through the Transformer encoder layer first, computing token-level contextual representations before applying mean pooling over chunk boundaries to boost retrieval precision by 27%. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and.
 >
 > **Key Takeaways**:
 > - **27% Retrieval Precision Gain**: Late Chunking eliminates context loss for ambiguous pronouns ("this model", "the agreement") by retaining full-document attention state.
@@ -58,16 +61,16 @@ Late chunking computes token embeddings across the entire document before mean-p
 ```mermaid
 graph TD
     subgraph Early Chunking Pipeline
-        A1[Full Document] --> B1["Split into Chunks A & B"]
+        A1["Full Document"] --> B1["Split into Chunks A & B"]
         B1 --> C1["Embed Chunk A: No Global Context"]
         B1 --> D1["Embed Chunk B: No Global Context"]
     end
 
     subgraph Late Chunking Pipeline
-        A2[Full Document] --> B2[Transformer Encoder Forward Pass]
-        B2 --> C2[Full Document Token Embeddings H_1..H_N]
-        C2 --> D2[Apply Mean Pooling over Chunk A Tokens]
-        C2 --> E2[Apply Mean Pooling over Chunk B Tokens]
+        A2["Full Document"] --> B2["Transformer Encoder Forward Pass"]
+        B2 --> C2["Full Document Token Embeddings H_1..H_N"]
+        C2 --> D2["Apply Mean Pooling over Chunk A Tokens"]
+        C2 --> E2["Apply Mean Pooling over Chunk B Tokens"]
     end
 ```
 
@@ -177,11 +180,11 @@ To reduce redundant LLM latency and expensive embedding compute for repetitive q
 
 ```mermaid
 graph LR
-    UserQuery[User Input Query] --> Embed[Query Embedding Generator]
-    Embed --> CacheLookup{Redis Vector Search}
-    CacheLookup -->|"Similarity >= 0.90"| CacheHit["Return Cached LLM Response (15ms)"]
-    CacheLookup -->|"Similarity < 0.90"| RAGPipeline["Execute Full GraphRAG Pipeline (1.2s)"]
-    RAGPipeline --> StoreCache[Store Query Vector + LLM Answer in Redis]
+    UserQuery["User Input Query"] --> Embed["Query Embedding Generator"]
+    Embed --> CacheLookup{"Redis Vector Search"}
+    CacheLookup -->|"Similarity >= 0.90"| CacheHit["Return Cached LLM Response ("15ms")"]
+    CacheLookup -->|"Similarity < 0.90"| RAGPipeline["Execute Full GraphRAG Pipeline ("1.2s")"]
+    RAGPipeline --> StoreCache["Store Query Vector + LLM Answer in Redis"]
 ```
 
 ### Redis Vector Search Index Configuration

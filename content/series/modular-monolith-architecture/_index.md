@@ -30,21 +30,21 @@ The following system architecture diagram illustrates how incoming client reques
 
 ```mermaid
 graph TD
-    Client[API Gateway / Web Client] --> Monolith[Single Binary Go Application]
-    subgraph Monolith[Modular Monolith Process Space]
-        Router[HTTP / gRPC Router] --> ACL[Anti-Corruption Layer]
-        ACL --> Billing[Billing Bounded Context]
-        ACL --> Inventory[Inventory Bounded Context]
-        ACL --> Orders[Orders Bounded Context]
+    Client["API Gateway / Web Client"] --> Monolith["Single Binary Go Application"]
+    subgraph Monolith["Modular Monolith Process Space"]
+        Router["HTTP / gRPC Router"] --> ACL["Anti-Corruption Layer"]
+        ACL --> Billing["Billing Bounded Context"]
+        ACL --> Inventory["Inventory Bounded Context"]
+        ACL --> Orders["Orders Bounded Context"]
         
-        Billing <--> EventBus[In-Memory Event Bus - Go Channels]
+        Billing <--> EventBus["In-Memory Event Bus - Go Channels"]
         Inventory <--> EventBus
         Orders <--> EventBus
     end
     
-    Billing --> DB1[(PostgreSQL Schema: billing)]
-    Inventory --> DB2[(PostgreSQL Schema: inventory)]
-    Orders --> DB3[(PostgreSQL Schema: orders)]
+    Billing --> DB1["(PostgreSQL Schema: billing)"]
+    Inventory --> DB2["(PostgreSQL Schema: inventory)"]
+    Orders --> DB3["(PostgreSQL Schema: orders)"]
 ```
 
 ### What You'll Learn
@@ -85,7 +85,7 @@ Amazon Prime Video saved 90% on operational costs by returning to a monolith. 42
    *Optimizing OpenTelemetry in-process tracing and slashing log cardinality costs.*
 
 7. **[Part 6: Migration Playbook](/series/modular-monolith-architecture/part-6-migration-playbook/)**  
-   *Reverse Strangler Fig: How to merge split databases (Dual-write) without downtime. When dealing with database locking during this phase, transactional outbox patterns become critical—see our [High Concurrency Systems](/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/) guide.*
+   *Reverse Strangler Fig: How to merge split databases (Dual-write) without downtime. When dealing with database locking during this phase, transactional outbox patterns become critical—see our [High Concurrency Systems](/series/high-concurrency-systems/article_4_outbox_pattern/) guide.*
 
 8. **[Part 7: Extraction Pattern](/series/modular-monolith-architecture/part-7-extraction-pattern/)**  
    *When does a module finally "qualify" to be extracted into an independent Microservice?*
@@ -247,4 +247,3 @@ Database isolation is achieved by allocating distinct PostgreSQL schemas (e.g., 
 ## Related Architecture & Pillar Guides
 For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
 - [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)
-

@@ -35,10 +35,10 @@ The architectural roadmap illustrates the progressive decoupling of legacy monol
 
 ```mermaid
 graph TD
-    A[Legacy Magento 2 PHP Monolith] -->|Phase 1: Debezium CDC Sync| B[MySQL Read Replica]
-    B --> C[Go Microservices API Gateway]
-    C -->|Phase 2: Dual-Write PubSub| D[Dapr Event Bus + Outbox]
-    D -->|Phase 3: Full Traffic Cutover| E[21 Decoupled Go Microservices]
+    A["Legacy Magento 2 PHP Monolith"] -->|"Phase 1: Debezium CDC Sync"| B["MySQL Read Replica"]
+    B --> C["Go Microservices API Gateway"]
+    C -->|"Phase 2: Dual-Write PubSub"| D["Dapr Event Bus + Outbox"]
+    D -->|"Phase 3: Full Traffic Cutover"| E["21 Decoupled Go Microservices"]
 ```
 
 ## 🎯 Migration Consulting
@@ -57,19 +57,19 @@ Our specialized technical architecture review covers Go 1.25 Profile-Guided Opti
 
 Magento 2's EAV schema, integer primary keys, and PHP module coupling make migration uniquely treacherous. This series gives you the complete 3-phase Strangler Fig playbook with working Go code:
 
-1. **[Part 0: Executive Summary — Why $200K/Year Is a Trap](/posts/ecommerce-architecture-composable-migration/)**
+1. **[Part 0: Executive Summary — Why $200K/Year Is a Trap](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/)**
    *The real cost of Magento Enterprise, and why the composable architecture pays for itself in Year 1.*
 
-2. **[Part 1: DDD Bounded Contexts — Decomposing Magento Modules](/posts/ecommerce-architecture-composable-migration/)**
+2. **[Part 1: DDD Bounded Contexts — Decomposing Magento Modules](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/)**
    *How to map Magento's module structure to 21 bounded contexts using Domain-Driven Design — without a Big Bang rewrite.*
 
-3. **[Part 2: Rush Monorepo — Managing 21 Go Services + 2 Frontends](/posts/ecommerce-architecture-composable-migration/)**
+3. **[Part 2: Rush Monorepo — Managing 21 Go Services + 2 Frontends](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/)**
    *Why we chose Microsoft Rush over Nx/Turborepo for a mixed Go + Next.js + React monorepo, and how to set it up.*
 
-4. **[Part 3: Golang + Kratos v2 — Microservice Framework Internals](/posts/ecommerce-architecture-composable-migration/)**
+4. **[Part 3: Golang + Kratos v2 — Microservice Framework Internals](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/)**
    *How Kratos v2 handles transport, dependency injection, and the common library pattern across 21 services.*
 
-5. **[Part 4: gRPC Internal + REST Gateway Architecture](/posts/ecommerce-architecture-composable-migration/)**
+5. **[Part 4: gRPC Internal + REST Gateway Architecture](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/)**
    *Service-to-service communication in gRPC, REST exposure via gRPC-Gateway, and the API Gateway routing strategy.*
 
 6. **[Part 5: EAV Schema Migration — Magento's Biggest Trap](/series/composable-commerce-migration/part-5-eav-schema-migration/)**
@@ -117,10 +117,10 @@ Successful platform transformation requires aligning engineering roles with spec
 
 | Your Profile | Recommended Entry Point | Why |
 |---|---|---|
-| **PM / BA / CTO** | [Part 0: Executive Summary](/posts/ecommerce-architecture-composable-migration/) | Business case, cost comparison, migration ROI |
+| **PM / BA / CTO** | [Part 0: Executive Summary](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/) | Business case, cost comparison, migration ROI |
 | **Backend engineer (Magento)** | [Part 5: EAV Schema Migration](/series/composable-commerce-migration/part-5-eav-schema-migration/) | The technical trap most teams hit first |
-| **Golang engineer** | [Part 3: Kratos v2 Internals](/posts/ecommerce-architecture-composable-migration/) | Framework deep-dive with real service code |
-| **Architect / Tech Lead** | [Part 1: DDD Bounded Contexts](/posts/ecommerce-architecture-composable-migration/) | Domain decomposition before writing a line of code |
+| **Golang engineer** | [Part 3: Kratos v2 Internals](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/) | Framework deep-dive with real service code |
+| **Architect / Tech Lead** | [Part 1: DDD Bounded Contexts](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/) | Domain decomposition before writing a line of code |
 | **DevOps / SRE** | [Part 8: Phase 3 Cutover + GitOps](/series/composable-commerce-migration/part-8-phase3-full-cutover/) | Zero-downtime cutover and ArgoCD deployment model |
 
 ---

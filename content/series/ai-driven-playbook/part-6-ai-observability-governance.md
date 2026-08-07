@@ -6,7 +6,7 @@ draft: false
 description: "Production SRE guide to implementing AI observability, OpenTelemetry semantic conventions, evaluation pipelines, and LLM cost monitoring systems."
 ShowToc: true
 TocOpen: true
-weight: 8
+weight: 6
 categories: ["Enterprise Playbook"]
 tags: ["AI", "Enterprise Architecture", "CTO", "Tech Lead"]
 cover:
@@ -16,11 +16,13 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-6-ai-observability-governance/"
 mermaid: true
+series: ["ai-driven-playbook"]
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Operating Model](/series/ai-driven-playbook/part-5-operating-model/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** AI Observability applies Site Reliability Engineering (SRE) principles to generative AI systems through OpenTelemetry `gen_ai` semantic conventions, distributed prompt tracing, and continuous evaluation pipelines. This framework detects silent model drift, monitors LLM API token expenses, and reduces failure detection time from weeks to under five minutes.
+> **Answer-first:** AI Observability applies Site Reliability Engineering (SRE) principles to generative AI systems through OpenTelemetry `gen_ai` semantic conventions, distributed prompt tracing, and continuous evaluation pipelines. This framework detects silent model drift, monitors LLM API token expenses, and reduces failure detection time from weeks to under five minutes. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026.
 
 ---
 
@@ -54,16 +56,16 @@ To prevent the disaster above, the AI Gateway (LiteLLM) we established in Part 2
 
 ```mermaid
 graph TD
-    User["Dev / Ops User"] --> Gateway[LiteLLM Gateway]
+    User["Dev / Ops User"] --> Gateway["LiteLLM Gateway"]
     Gateway --> LLM["Cloud / Local LLMs"]
     
-    Gateway -.->|Async Traces & Spans| Telemetry["Observability Platform<br/>'*Langfuse / LangSmith*'"]
+    Gateway -.->|"Async Traces & Spans"| Telemetry["Observability Platform<br/>'*Langfuse / LangSmith*'"]
     
     Telemetry --> Dash1["Cost & Latency Dashboard"]
     Telemetry --> Audit["Audit Logs & Prompt Provenance"]
     
-    subgraph "Evaluation Pipeline (Evals)"
-        Telemetry -.->|Sampled Outputs| Judge[LLM-as-a-Judge]
+    subgraph "Evaluation Pipeline ("Evals")"
+        Telemetry -.->|"Sampled Outputs"| Judge["LLM-as-a-Judge"]
         Dataset[("Golden Datasets")] --> Judge
         Judge --> Drift["Alert: Model Drift / Hallucination"]
     end
@@ -172,12 +174,12 @@ Single LLM calls are easy to trace. **Agentic loops are not.** When Agent A call
 
 ```mermaid
 graph LR
-    U[User Query] -->|Span 1: intent_parse| Router[Router Agent]
-    Router -->|Span 2: tool_call| Jira[Jira MCP Tool]
-    Jira -->|Span 3: rag_retrieve| RAG[Vector DB Lookup]
-    RAG -->|Span 4: llm_generate| LLM[Claude 3.5]
-    LLM -->|Span 5: output_validate| Guard[Dual LLM Validator]
-    Guard -->|Span 6: response| U
+    U["User Query"] -->|"Span 1: intent_parse"| Router["Router Agent"]
+    Router -->|"Span 2: tool_call"| Jira["Jira MCP Tool"]
+    Jira -->|"Span 3: rag_retrieve"| RAG["Vector DB Lookup"]
+    RAG -->|"Span 4: llm_generate"| LLM["Claude 3.5"]
+    LLM -->|"Span 5: output_validate"| Guard["Dual LLM Validator"]
+    Guard -->|"Span 6: response"| U
 
     style RAG fill:#d4efdf,stroke:#27ae60
     style Guard fill:#f9e79f,stroke:#f1c40f
@@ -198,23 +200,23 @@ To make these concepts concrete, this complete observability integration scenari
 ```mermaid
 sequenceDiagram
     participant User
-    participant Gateway as LiteLLM Gateway
-    participant Agent as Orchestrator Agent
-    participant RAG as Vector DB (Pricing Tables)
-    participant Tool as Shipping Calc Tool
-    participant OTel as Langfuse / OTel Backend
+    participant Gateway as "LiteLLM Gateway"
+    participant Agent as "Orchestrator Agent"
+    participant RAG as Vector DB ("Pricing Tables")
+    participant Tool as "Shipping Calc Tool"
+    participant OTel as "Langfuse / OTel Backend"
 
     User->>Gateway: "What's the express shipping cost for 5kg to HCMC?"
-    Gateway->>OTel: [Span Start] gen_ai.operation = chat
+    Gateway->>OTel: ["Span Start"] gen_ai.operation = chat
     Gateway->>Agent: Route query to Orchestrator
     Agent->>RAG: Retrieve: pricing_zone=HCMC, type=express
-    RAG-->>Agent: Returns rate_card chunk (score: 0.97)
+    RAG-->>Agent: Returns rate_card chunk ("score: 0.97")
     Agent->>Tool: calculate_shipping(weight=5, zone="HCMC", type="express")
     Tool-->>Agent: Returns $4.20
     Agent->>Gateway: Final answer composed
-    Gateway->>OTel: [Span End] tokens=1240, latency=2.1s, cost=$0.003
+    Gateway->>OTel: ["Span End"] tokens=1240, latency=2.1s, cost=$0.003
     Gateway-->>User: "Express shipping for 5kg to HCMC costs $4.20."
-    OTel->>OTel: Evals check: Score=0.99 [PASS] No drift detected
+    OTel->>OTel: Evals check: Score=0.99 ["PASS"] No drift detected
 ```
 
 **Monitoring outcome:** Any deviation in the rate_card retrieval score (RAG Precision) or calculation Tool latency immediately surfaces as an anomaly on the dashboard—before any customer is given a wrong price.

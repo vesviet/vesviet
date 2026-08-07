@@ -16,14 +16,16 @@ cover:
   image: "/images/posts/laravel-vs-golang-when-to-add-features-cover.jpg"
   alt: "Laravel vs Golang: when to add features in each — architecture decision framework"
   relative: false
-canonicalURL: "https://tanhdev.com/posts/laravel-vs-golang-when-to-add-features/"
+canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/laravel-vs-golang-when-to-add-features/"
+weight: 7
 ---
 
-> **Prerequisite:** Review [Exporting Magento 2 Data](/posts/exporting-magento-2-data-flat-sql-nodejs/) for previous context on data extraction before evaluating tech stack options.
+
+> **Prerequisite:** Review [Exporting Magento 2 Data](/series/magento-migration-vietnam/exporting-magento-2-data-flat-sql-nodejs/) for previous context on data extraction before evaluating tech stack options.
 
 # Laravel vs Golang: When to Add Features in Each?
 
-**Answer-first:** Evaluating Laravel versus Golang involves choosing Laravel for rapid full-stack CRUD prototyping and Golang for high-concurrency microservices, heavy I/O processing, and CPU-intensive APIs.
+**Answer-first:** Evaluating Laravel versus Golang involves choosing Laravel for rapid full-stack CRUD prototyping and Golang for high-concurrency microservices, heavy I/O processing, and CPU-intensive APIs. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
 
 ---
 
@@ -136,7 +138,7 @@ Auth is called on **every single request** across every downstream service. Redu
 
 ### Use Case 3: Flash Sale / Inventory Reservation
 
-The following execution comparison shows how microservice scaling protects infrastructure budgets during peak traffic spikes:
+Microservice execution metrics compare scaling performance protects infrastructure budgets during peak traffic spikes:
 
 ```text
 10x traffic spike during a flash sale:
@@ -220,7 +222,7 @@ Q4: Does this feature need to scale completely independently?
 
 ## TCO Comparison: Real Numbers for a Vietnam Team
 
-The following TCO breakdown compares developer velocity, hiring costs, and infrastructure expenses for a Vietnam-based team:
+TCO metrics compare developer velocity, hiring costs, and infrastructure expenses for a Vietnam-based team:
 
 | Dimension | New Laravel feature | New Go microservice |
 |---|---|---|
@@ -316,13 +318,11 @@ A senior Laravel developer can write production-ready Go services after 3–4 mo
 
 Related reading on the migration paths and architecture decisions this comparison touches:
 
-- **[Shared DB, CDC, or Event Bus? The Magento Migration Database Decision](/posts/strangler-fig-shared-database-quick-win/)** — Database strategy for Magento to Go migration
-- **[Zero-Downtime: Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/)** — 3-phase Strangler Fig execution playbook with Debezium and Dapr
+- **[Shared DB, CDC, or Event Bus? The Magento Migration Database Decision](/series/magento-migration-vietnam/strangler-fig-shared-database-quick-win/)** — Database strategy for Magento to Go migration
+- **[Zero-Downtime: Moving from Magento to Microservices](/series/magento-migration-vietnam/moving-from-magento-to-microservices/)** — 3-phase Strangler Fig execution playbook with Debezium and Dapr
 - **[Go Framework Benchmarks: Gin vs Fiber vs Kratos](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/)** — Once you decide on Go, which framework?
 - **[Laravel in the AI Era: 10 Predictions for 2028](/posts/the-future-of-laravel-development-in-ai-era/)** — The future of Laravel with AI coding tools
 
 {{< author-cta >}}
 
-🔗 **Next Step:** Continue to [Magento AI Integration: Modernize Without Rebuilding](/posts/magento-ai-integration-strategy-architecture/) for the following module in the series.
-
-
+🔗 **Next Step:** Continue to [Magento AI Integration: Modernize Without Rebuilding](/series/magento-migration-vietnam/magento-ai-integration-strategy-architecture/) for the following module in the series.

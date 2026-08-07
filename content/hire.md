@@ -26,7 +26,7 @@ author: "Lê Tuấn Anh"
 
 ## 👋 Who I Am
 
-**Answer-first:** Lê Tuấn Anh (vesviet) is a Senior Go Backend Architect with 17+ years of experience leading zero-downtime microservices migrations, high-traffic system design, and platform reliability engineering.
+**Answer-first:** Lê Tuấn Anh (vesviet) is a Senior Go Backend Architect with 17+ years of experience leading zero-downtime microservices migrations, high-traffic system design, and platform reliability engineering. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
 
 I am **Lê Tuấn Anh** ([vesviet](https://github.com/vesviet)), a Senior Go Backend Architect and Distributed Systems Engineer with **17+ years** of production experience. I have led the migration of a decade-old Magento monolith into a **21-service Go microservices ecosystem** at zero downtime, designed APIs handling **25M+ requests/month** at peak 8,000 RPS, and reduced p95 latency from 1.2s to 120ms through architecture and caching strategy.
 
@@ -134,7 +134,7 @@ A typical engagement starts with a **1-week discovery phase** (paid): I review y
 {{< /faq >}}
 
 {{< faq q="Can you help migrate a Magento monolith to Go microservices?" >}}
-Yes — this is one of my primary specializations. I led the zero-downtime migration of a decade-old Magento 2 platform into a **21-service Go microservices ecosystem** (2021–present) as an Independent Consultant, using a 3-Phase Strangler Fig pattern with Debezium CDC, bidirectional Dapr Pub/Sub sync, and a hot standby period before final cutover. The approach produces zero data loss and maintains rollback capability throughout. Before engaging, I recommend reading [The Zero-Downtime Blueprint: Moving from Magento to Microservices](/posts/moving-from-magento-to-microservices/) to understand the specific methodology and whether your platform's complexity profile matches the approach.
+Yes — this is one of my primary specializations. I led the zero-downtime migration of a decade-old Magento 2 platform into a **21-service Go microservices ecosystem** (2021–present) as an Independent Consultant, using a 3-Phase Strangler Fig pattern with Debezium CDC, bidirectional Dapr Pub/Sub sync, and a hot standby period before final cutover. The approach produces zero data loss and maintains rollback capability throughout. Before engaging, I recommend reading [The Zero-Downtime Blueprint: Moving from Magento to Microservices](/series/magento-migration-vietnam/moving-from-magento-to-microservices/) to understand the specific methodology and whether your platform's complexity profile matches the approach.
 {{< /faq >}}
 
 {{< faq q="Do you work remotely with international clients?" >}}

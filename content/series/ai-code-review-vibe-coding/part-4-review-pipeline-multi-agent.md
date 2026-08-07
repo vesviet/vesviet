@@ -16,13 +16,16 @@ canonicalURL: "https://tanhdev.com/series/ai-code-review-vibe-coding/part-4-revi
 description: "Complete guide to designing multi-agent code review pipeline architectures using Go worker engines, specialized prompt personas, and AST checks."
 ShowToc: true
 TocOpen: true
+series: ["ai-code-review-vibe-coding"]
+weight: 5
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Ai Bug Taxonomy](/series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 4 — Multi-Agent Review Pipeline Architecture
 
-> **Answer-first:** Operating a single-prompt AI code reviewer leads to context saturation and missed security vulnerabilities. A Multi-Agent Review Pipeline dispatches specialized sub-agents (Security Auditor, Performance Inspector, Syntax Linter) concurrently in Go to evaluate incoming pull requests in parallel, returning consolidated architectural code reviews in under 45 seconds.
+> **Answer-first:** Operating a single-prompt AI code reviewer leads to context saturation and missed security vulnerabilities. A Multi-Agent Review Pipeline dispatches specialized sub-agents (Security Auditor, Performance Inspector, Syntax Linter) concurrently in Go to evaluate incoming pull requests in parallel, returning consolidated architectural code reviews in under 45 seconds. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026.
 >
 > **Key Takeaways**:
 > - **Parallel Sub-Agent Execution**: Specialized reviewers audit code security, database query efficiency, and style rules simultaneously.
@@ -44,8 +47,8 @@ To achieve enterprise-grade review precision, modern CI/CD pipelines deploy a **
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Git as GitHub Webhook Event
-    participant Orch as Review Orchestrator (Go)
+    participant Git as "GitHub Webhook Event"
+    participant Orch as Review Orchestrator ("Go")
     
     par Concurrent Sub-Agent Audits
         Orch->>SecAgent: 1. Security & RLS Auditor Agent
@@ -285,4 +288,3 @@ Continue to Part 5 to learn about AI code security, prompt injection, and creden
 - [Part 3 — The AI Bug Taxonomy: Hallucinations & Phantom APIs](/series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy/)
 - [Part 5 — AI Code Security: Prompt Injection & Credentials](/series/ai-code-review-vibe-coding/part-5-ai-code-security/)
 - [Part 4 — Blurring SDLC Lines & QC Revolution](/series/ai-driven-engineer/part-4-blurring-sdlc-lines-and-qc-revolution/)
-

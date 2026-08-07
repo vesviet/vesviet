@@ -6,7 +6,7 @@ draft: false
 description: "Production engineering guide to building enterprise internal RAG brains, combining global document scanning, hybrid search, and context reranking."
 ShowToc: true
 TocOpen: true
-weight: 4
+weight: 3
 categories: ["Enterprise Playbook"]
 tags: ["AI", "Enterprise Architecture", "CTO", "Tech Lead"]
 cover:
@@ -16,11 +16,13 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-3a-enterprise-rag-architecture/"
 mermaid: true
+series: ["ai-driven-playbook"]
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Context Engineering Ddd](/posts/ai-native-frontend-architecture-predictions-2028/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Enterprise RAG architectures replace naive text chunking with multi-stage data pipelines combining layout-aware global scanning, hybrid dense-sparse vector search, and cross-encoder context reranking. This architecture eliminates table slicing hallucinations, enforces metadata access controls, and cuts retrieval prompt token overhead by 70% while maintaining sub-400ms end-to-end query latency.
+> **Answer-first:** Enterprise RAG architectures replace naive text chunking with multi-stage data pipelines combining layout-aware global scanning, hybrid dense-sparse vector search, and cross-encoder context reranking. This architecture eliminates table slicing hallucinations, enforces metadata access controls, and cuts retrieval prompt token overhead by 70% while maintaining sub-400ms end-to-end query latency. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and.
 
 ---
 
@@ -57,21 +59,21 @@ Enterprise RAG pipelines combine layout-aware document ingestion, hybrid dense-s
 
 ```mermaid
 graph TD
-    subgraph "1. Ingestion Pipeline (Offline)"
+    subgraph "1. Ingestion Pipeline ("Offline")"
         Raw["Raw Data: Jira, Confluence, PDFs"] --> Scanner["Global Scanning & Data Cleaning"]
-        Scanner --> Metadata[Metadata Extraction]
-        Metadata --> Chunk[Semantic Chunking]
-        Chunk --> Embed[Embedding Versioning]
+        Scanner --> Metadata["Metadata Extraction"]
+        Metadata --> Chunk["Semantic Chunking"]
+        Chunk --> Embed["Embedding Versioning"]
         Embed --> VectorDB[("Vector DB + Keyword DB")]
     end
 
-    subgraph "2. Retrieval Pipeline (Online)"
-        Query[User Query] --> Intent[Intent Parsing]
-        Intent --> Hybrid[Hybrid Search]
+    subgraph "2. Retrieval Pipeline ("Online")"
+        Query["User Query"] --> Intent["Intent Parsing"]
+        Intent --> Hybrid["Hybrid Search"]
         VectorDB --> Hybrid
-        Hybrid --> Ranker[Re-Ranking Layer]
-        Ranker --> Compress[Context Compression]
-        Compress --> LLM[LLM Generation]
+        Hybrid --> Ranker["Re-Ranking Layer"]
+        Ranker --> Compress["Context Compression"]
+        Compress --> LLM["LLM Generation"]
     end
 
     style VectorDB fill:#d4efdf,stroke:#27ae60,stroke-width:2px

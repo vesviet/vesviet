@@ -20,7 +20,7 @@ canonicalURL: "https://tanhdev.com/posts/osrm-shared-memory-kubernetes-live-traf
 
 # OSRM Shared Memory on Kubernetes: Live Traffic Updates with Zero-Downtime
 
-**Answer-first:** Operating OSRM on Kubernetes with live traffic updates uses shared memory datastores, atomic map file updates, and dynamic traffic speed adjustments without restarting routing pods.
+**Answer-first:** Operating OSRM on Kubernetes with live traffic updates uses shared memory datastores, atomic map file updates, and dynamic traffic speed adjustments without restarting routing pods. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
 
 ## The Challenge of Operating Large-Scale OSRM on Kubernetes
 

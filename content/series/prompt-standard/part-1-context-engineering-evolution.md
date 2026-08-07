@@ -3,8 +3,8 @@ title: "The Death of Prompt Engineering: Context Engineering in 2026"
 date: "2026-07-26T10:30:00+07:00"
 lastmod: "2026-07-26T10:30:00+07:00"
 draft: false
-weight: 10
-description: "Why static prompt engineering failed in enterprise LLM systems and how deterministic Context Engineering, token budgeting, and KV prefix caching define SOTA AI architectures in 2026."
+weight: 1
+description: "Why static prompt engineering failed in enterprise LLM systems and how deterministic Context Engineering, token budgeting, and KV prefix caching define."
 categories: ["Engineering", "AI"]
 tags: ["prompt", "standard", "context-engineering", "agent"]
 ShowToc: true
@@ -14,9 +14,11 @@ cover:
   alt: "The Death of Prompt Engineering Context Engineering in 2026"
   relative: false
 author: "Lê Tuấn Anh"
-canonicalURL: "https://vesviet.com/series/prompt-standard/part-1-context-engineering-evolution/"
+canonicalURL: "https://tanhdev.com/series/prompt-standard/part-1-context-engineering-evolution/"
 mermaid: true
+series: ["prompt-standard"]
 ---
+
 
 > **Prerequisite:** This is the starting part of the series — no prior part is required. Later parts assume the concepts introduced here.
 
@@ -110,23 +112,23 @@ The following Mermaid graph compares the legacy 2024 pipeline against the 2026 c
 ```mermaid
 graph TD
     subgraph "2024 Naive Prompting"
-        A[Raw Files / Docs] --> B[Naive Vector Search]
-        B --> C[Concatenate to Text Prompt]
-        D[Chat History] --> C
-        C --> E[LLM Direct Call]
+        A["Raw Files / Docs"] --> B["Naive Vector Search"]
+        B --> C["Concatenate to Text Prompt"]
+        D["Chat History"] --> C
+        C --> E["LLM Direct Call"]
     end
 
     subgraph "2026 Deterministic Context Engine"
-        F[Static Prompt Layer] --> G[Prefix Cache Allocator]
-        H[MCP Tools Registry] --> I[Intent Classifier]
-        I -->|Inject Filtered Schemas| G
-        J[AST Semantic Chunking] --> K[Hybrid Vector/Sparse Index]
-        K --> L[Cross-Encoder Reranker]
-        L -->|Top Reranked Context| M[Token Budget Compactor]
-        N[Memory Store] --> O[Summary Compaction Engine]
+        F["Static Prompt Layer"] --> G["Prefix Cache Allocator"]
+        H["MCP Tools Registry"] --> I["Intent Classifier"]
+        I -->|"Inject Filtered Schemas"| G
+        J["AST Semantic Chunking"] --> K["Hybrid Vector/Sparse Index"]
+        K --> L["Cross-Encoder Reranker"]
+        L -->|"Top Reranked Context"| M["Token Budget Compactor"]
+        N["Memory Store"] --> O["Summary Compaction Engine"]
         O --> M
         G --> M
-        M -->|Cache-Aligned Token Stream| P[LLM Inference Engine]
+        M -->|"Cache-Aligned Token Stream"| P["LLM Inference Engine"]
     end
 ```
 

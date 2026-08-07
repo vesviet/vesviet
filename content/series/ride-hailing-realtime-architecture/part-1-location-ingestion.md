@@ -18,13 +18,15 @@ mermaid: true
 ShowToc: true
 TocOpen: true
 image: "/images/posts/real-time-ride-hailing-cover.jpg"
+series: ["ride-hailing-realtime-architecture"]
 ---
+
 
 > **Prerequisite:** Before reading this part, review the [Executive Summary](/series/ride-hailing-realtime-architecture/executive-summary/).
 
 ## GPS Ingestion at Scale: gRPC Streaming, MQTT & Kalman Filter
 
-> **Answer-first:** High-throughput location ingestion processes over 1 million GPS updates per second by using binary gRPC streams or MQTT over persistent TCP/QUIC connections. Devices run Kalman filters and dead-reckoning interpolation to clean telemetry noise before publishing updates to Apache Kafka and Redis.
+> **Answer-first:** High-throughput location ingestion processes over 1 million GPS updates per second by using binary gRPC streams or MQTT over persistent TCP/QUIC connections. Devices run Kalman filters and dead-reckoning interpolation to clean telemetry noise before publishing updates to Apache Kafka and Redis. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context Protocol ttlMs cache.
 
 **Key Takeaways**:
 - **Protocol Overhead**: Replacing HTTP REST with gRPC Protobuf binary framing (`vtproto`) reduces packet overhead from 800 bytes to 40 bytes per GPS update.
@@ -52,16 +54,16 @@ The architecture diagram below traces the end-to-end telemetry pipeline from han
 
 ```mermaid
 flowchart TD
-    Sensor["Mobile GPS Sensor & Accelerometer"] --> Kalman[Handset Kalman Filter Noise Reduction]
-    Kalman --> Batch[Batch 3-5 Telemetry Points]
+    Sensor["Mobile GPS Sensor & Accelerometer"] --> Kalman["Handset Kalman Filter Noise Reduction"]
+    Kalman --> Batch["Batch 3-5 Telemetry Points"]
     Batch --> Stream["gRPC Stream / MQTT QoS 0"]
     Stream --> LB["Envoy / NGINX L4 Load Balancer"]
-    Gateway --> H3[Enrich Payload with H3 Cell ID]
-    Gateway[Location Ingestion Service Nodes] --> H3
+    Gateway --> H3["Enrich Payload with H3 Cell ID"]
+    Gateway["Location Ingestion Service Nodes"] --> H3
     LB --> Gateway
     H3 --> Kafka[("Apache Kafka Topic: driver.location.updates")]
     Kafka --> Redis[("Redis GEO RAM Cache")]
-    Kafka --> Flink[Apache Flink Realtime Stream Processing]
+    Kafka --> Flink["Apache Flink Realtime Stream Processing"]
 ```
 
 ---
@@ -125,9 +127,9 @@ The state diagram below illustrates the mobile cellular radio resource control (
 
 ```mermaid
 stateDiagram-v2
-    [*] --> RRC_Idle: Power Saved
-    RRC_Idle --> RRC_Connected: Telemetry Event Trigger (High Power)
-    RRC_Connected --> RRC_Tail: Tail Timer (10s Battery Drain)
+    ["*"] --> RRC_Idle: Power Saved
+    RRC_Idle --> RRC_Connected: Telemetry Event Trigger ("High Power")
+    RRC_Connected --> RRC_Tail: Tail Timer ("10s Battery Drain")
     RRC_Tail --> RRC_Idle: Idle Timeout Expired
 ```
 
@@ -153,9 +155,9 @@ The block diagram below depicts how the Extended Kalman Filter engine merges noi
 
 ```mermaid
 flowchart LR
-    GPS["Raw Sensor Lat/Lng"] --> EKF[Extended Kalman Filter Engine]
+    GPS["Raw Sensor Lat/Lng"] --> EKF["Extended Kalman Filter Engine"]
     Speed["OBD-II / Accelerometer / Gyro"] --> EKF
-    EKF --> Corrected[Smoothed True Velocity Vector]
+    EKF --> Corrected["Smoothed True Velocity Vector"]
 ```
 
 ### State-Space Matrix Formulation
@@ -336,4 +338,3 @@ Reference documentation for Apache Kafka event streaming and system design prime
 > *Next, we will explore how Uber uses the H3 algorithm to divide the map into millions of hexagons and find the closest driver in the blink of an eye. Continue reading [Part 2 — Geospatial Indexing: H3, S2 Geometry & Redis GEO](/series/ride-hailing-realtime-architecture/part-2-geospatial-indexing/).*
 
 {{< author-cta >}}
-

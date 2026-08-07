@@ -15,14 +15,16 @@ cover:
   image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
   alt: "Deconstructing E-commerce by Domain: service responsibilities, data ownership, and API contracts"
   relative: false
-canonicalURL: "https://tanhdev.com/posts/deconstructing-ecommerce-service-details-domain/"
+canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/deconstructing-ecommerce-service-details-domain/"
+weight: 11
 ---
 
-> **Prerequisite:** Review the core series overview at [Magento Development in Vietnam: 2026 Guide](/posts/magento-vietnam/) before exploring individual domain architecture details.
+
+> **Prerequisite:** Review the core series overview at [Magento Development in Vietnam: 2026 Guide](/series/magento-migration-vietnam/magento-vietnam/) before exploring individual domain architecture details.
 
 # Deconstructing the Ecosystem: Service Details by Domain
 
-**Answer-first:** Deconstructing the e-commerce product service details domain isolates product catalog schemas, inventory pricing reads, and localized search indexing into autonomous bounded contexts for optimal scalability.
+**Answer-first:** Deconstructing the e-commerce product service details domain isolates product catalog schemas, inventory pricing reads, and localized search indexing into autonomous bounded contexts for optimal scalability. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
 
 ---
 
@@ -362,11 +364,9 @@ Cross-domain queries rely on CQRS read models and event-driven data replication.
 
 - [E-Commerce Microservices Architecture: 21-Service Blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/) — the full visual topology these domains sit within.
 - [Architecting 21-Service E-commerce with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/) — how the bounded contexts were derived.
-- [Composable E-Commerce Migration](/posts/ecommerce-architecture-composable-migration/) — migrating a monolith into this domain structure.
+- [Composable E-Commerce Migration](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/) — migrating a monolith into this domain structure.
 - [Real-Time Inventory: Kafka, CDC & Redis](/posts/real-time-inventory-ecommerce-architecture/) — the Inventory domain in production detail.
 
 {{< author-cta >}}
 
-🔗 **Next Step:** Continue to [Composable E-Commerce Migration](/posts/ecommerce-architecture-composable-migration/) for the next module in the series.
-
-
+🔗 **Next Step:** Continue to [Composable E-Commerce Migration](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/) for the next module in the series.

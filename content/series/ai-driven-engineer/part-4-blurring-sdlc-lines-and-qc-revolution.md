@@ -16,11 +16,14 @@ canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/part-4-blurring-sdl
 description: "Explores the merging of development, testing, and DevOps into unified AI feedback loops and automated quality control race condition inspectors."
 ShowToc: true
 TocOpen: true
+series: ["ai-driven-engineer"]
+weight: 5
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — The 10X Productivity Reality](/series/ai-driven-engineer/part-3-the-10x-productivity-reality/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** The traditional software development lifecycle (SDLC)—characterized by strict wall-separated handoffs between Business Analysts, Developers, QA Testers, and DevOps Engineers—is obsolete. AI automation collapses these boundaries into a unified Quality Control (QC) feedback loop where developers execute real-time AI test generation, security scanning, and infrastructure synthesis during active coding.
+> **Answer-first:** The traditional software development lifecycle (SDLC)—characterized by strict wall-separated handoffs between Business Analysts, Developers, QA Testers, and DevOps Engineers—is obsolete. AI automation collapses these boundaries into a unified Quality Control (QC) feedback loop where developers execute real-time AI test generation, security scanning, and infrastructure synthesis during active coding. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions,.
 
 **Key Takeaways**:
 - **Zero Handoff Friction**: AI agents generate unit tests, end-to-end integration mocks, and terraform scripts directly alongside feature code.
@@ -48,15 +51,15 @@ AI blurs traditional SDLC boundaries by unifying code writing, unit testing, and
 ```mermaid
 graph TD
     subgraph Traditional Sequential SDLC("Siloed & Delayed")
-        Requirements1[Requirements BA] --> Coding1[Manual Coding Dev]
+        Requirements1["Requirements BA"] --> Coding1["Manual Coding Dev"]
         Coding1 --> QA1["Manual Testing QA: 3 Day Delay"]
-        QA1 --> DevOps1[Manual Deployment Ops]
+        QA1 --> DevOps1["Manual Deployment Ops"]
     end
 
     subgraph AI-Native Continuous Quality Loop("Instant & Unified")
-        FeatureSpec[Feature Specification] --> AICore[AI Agent Orchestrator]
+        FeatureSpec["Feature Specification"] --> AICore["AI Agent Orchestrator"]
         
-        AICore --> CodeGen[Feature Code Generation]
+        AICore --> CodeGen["Feature Code Generation"]
         AICore --> TestGen["Parallel Unit & E2E Test Synthesis"]
         AICore --> InfraGen["Terraform & K8s Manifest Synthesis"]
 

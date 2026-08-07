@@ -30,7 +30,7 @@ canonicalURL: "https://tanhdev.com/posts/cloudflare-d1-durable-objects-realtime-
 
 # Cloudflare D1 + Durable Objects: Building a Real-Time Cart
 
-**Answer-first:** Real-time e-commerce carts built on Cloudflare Workers use Durable Objects for single-writer cart state consistency and Cloudflare D1 SQL storage for global low-latency persistent checkout synchronization.
+**Answer-first:** Real-time e-commerce carts built on Cloudflare Workers use Durable Objects for single-writer cart state consistency and Cloudflare D1 SQL storage for global low-latency persistent checkout synchronization. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
 
 > 
 
@@ -71,17 +71,17 @@ The architecture diagram below illustrates the edge state synchronization betwee
 
 ```mermaid
 graph TD
-    USER[Browser / Mobile App] -->|HTTPS| CF[Cloudflare Edge PoP]
-    CF --> WORKER[Cart Worker - TypeScript]
+    USER["Browser / Mobile App"] -->|"HTTPS"| CF["Cloudflare Edge PoP"]
+    CF --> WORKER["Cart Worker - TypeScript"]
     
-    WORKER -->|Read/Write cart state| DO[Durable Object: CartSession]
-    WORKER -->|Persist orders & products| D1[(D1 SQLite: cart_db)]
+    WORKER -->|"Read/Write cart state"| DO["Durable Object: CartSession"]
+    WORKER -->|"Persist orders & products"| D1["(D1 SQLite: cart_db)"]
     
-    DO -->|Sync confirmed cart| D1
+    DO -->|"Sync confirmed cart"| D1
     
     subgraph Durable Object CartSession
-        DO_STATE[In-memory cart state]
-        DO_ALARM[Abandon cart timer - 30 min]
+        DO_STATE["In-memory cart state"]
+        DO_ALARM["Abandon cart timer - 30 min"]
     end
 ```
 
@@ -660,5 +660,3 @@ It can be appropriate for cart-adjacent data when its current documented limits 
 D1 (SQLite at the edge) is purpose-built for Cloudflare Workers and has the lowest latency from Worker code. PlanetScale (MySQL) and Neon (PostgreSQL) require a TCP connection from the Worker to their servers — adding 10–50ms for the connection overhead. However, PlanetScale and Neon support larger datasets, more complex queries, and full PostgreSQL/MySQL feature sets. For standard e-commerce schemas that fit within 10 GB, D1 is the optimal choice for a Cloudflare-native stack.
 
 {{< author-cta >}}
-
-

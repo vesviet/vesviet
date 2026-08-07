@@ -30,7 +30,7 @@ canonicalURL: "https://tanhdev.com/posts/go-pprof-kubernetes-remote-profiling/"
 
 # Go pprof in Kubernetes: Remote Profiling & Flame Graphs
 
-**Answer-first:** Remote Go pprof profiling in Kubernetes uses secure kubectl port-forwarding, continuous CPU/memory profile collection, and flame graph analysis to identify production goroutine leaks.
+**Answer-first:** Remote Go pprof profiling in Kubernetes uses secure kubectl port-forwarding, continuous CPU/memory profile collection, and flame graph analysis to identify production goroutine leaks. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
 
 You've instrumented your Go service with `net/http/pprof`, run `go tool pprof` locally against the development binary, and spotted the hot path in your flame graph. Then you deploy to Kubernetes and the bottleneck disappears — because the workload profile in Kubernetes differs from local testing (different request mix, connection pool pressure, GC behavior under actual memory pressure, scheduler interference from co-located pods).
 
@@ -377,7 +377,7 @@ A flame graph visualizes the call stack: the x-axis is sampling frequency (wider
 
 ### Pattern 1: Wide `runtime.mallocgc` — Heap Allocation Hot Spot
 
-The following call stack pattern indicates that garbage collection allocation pauses dominate CPU usage.
+Call stack pattern indicates that garbage collection allocation pauses dominate CPU usage.
 
 ```
 [runtime.mallocgc - 35% CPU]

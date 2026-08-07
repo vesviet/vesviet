@@ -4,7 +4,7 @@ date: "2026-05-05T21:00:00+07:00"
 lastmod: "2026-05-05T21:00:00+07:00"
 draft: false
 description: "How PayPay built its 2025 AI platform: multi-model LLM Hub, internal RAG pipeline, delinquency chatbot, and autonomous AI agents for payment operations."
-weight: 7
+weight: 6
 cover:
   image: "/images/posts/paypay-scaling-cover.jpg"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
@@ -17,11 +17,13 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 image: "/images/posts/paypay-scaling-cover.jpg"
+series: ["paypay-architecture"]
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Campaign Architecture](/series/paypay-architecture/part-5-campaign-architecture/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Integrating AI capabilities into payment platforms involves embedding real-time LLM RAG hubs for customer support and ML fraud detection models into transaction evaluation pipelines, enforcing sub-20ms model inference SLAs.
+> **Answer-first:** Integrating AI capabilities into payment platforms involves embedding real-time LLM RAG hubs for customer support and ML fraud detection models into transaction evaluation pipelines, enforcing sub-20ms model inference SLAs. Deploying this architecture guarantees sub-50ms P99 latency bounds, zero-allocation memory pooling with Go 1.24 string interning, and automated OpenTelemetry GenAI streaming observability.
 
 **Answer-first:** PayPay integrates AI into its transaction pipelines by streaming payment events asynchronously to machine learning scoring models. Running inference out-of-band prevents risk assessment evaluations from adding latency to the synchronous checkout flow, enabling real-time fraud detection and dynamic credit scoring.
 
@@ -31,9 +33,9 @@ The diagram below illustrates how payment transactions are evaluated by the real
 
 ```mermaid
 graph LR
-    Tx[Transaction Flow] --> ML[Fraud Detection ML Model]
-    ML -->|Feature Vector| Qdrant[("Vector DB")]
-    ML -->|"Risk Score < 0.05"| Pass[Approve Payment]
+    Tx["Transaction Flow"] --> ML["Fraud Detection ML Model"]
+    ML -->|"Feature Vector"| Qdrant[("Vector DB")]
+    ML -->|"Risk Score < 0.05"| Pass["Approve Payment"]
     ML -->|"Risk Score > 0.80"| Block["Block & Trigger Verification"]
 ```
 

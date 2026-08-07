@@ -13,15 +13,17 @@ cover:
   relative: false
 mermaid: true
 canonicalURL: "https://tanhdev.com/series/agentic-system-architecture/part-6-human-in-the-loop/"
-description: "Production architecture guide for Part 6 — Architectural guardrails, Human-in-the-Loop state interception, Go approval gateways, and OWASP LLM security controls."
+description: "Production architecture guide for Part 6 — Architectural guardrails, Human-in-the-Loop state interception, Go approval gateways, and OWASP LLM security."
 ShowToc: true
 TocOpen: true
-weight: 60
+weight: 2
+series: ["agentic-system-architecture"]
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Agent Evals](/series/agentic-system-architecture/part-5-agent-evals/). Review it first if the terminology in this part is unfamiliar.
 
-**Answer-first:** Enterprise agentic systems require stateful Human-in-the-Loop (HITL) interception gateways, architectural guardrails, and OWASP security controls. Suspending autonomous agent workflows before executing high-risk financial or destructive mutations guarantees regulatory compliance and mitigates prompt injection vulnerabilities.
+**Answer-first:** Enterprise agentic systems require stateful Human-in-the-Loop (HITL) interception gateways, architectural guardrails, and OWASP security controls. Suspending autonomous agent workflows before executing high-risk financial or destructive mutations guarantees regulatory compliance and mitigates prompt injection vulnerabilities. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for production-grade enterprise operations.
 
 ---
 
@@ -39,17 +41,17 @@ Relying on LLM system instructions to enforce safety rules is insufficient becau
 
 ```mermaid
 graph TD
-    UserPrompt[User Prompt / Input Event] --> InputGuard[1. Deterministic Input Guardrail]
+    UserPrompt["User Prompt / Input Event"] --> InputGuard["1. Deterministic Input Guardrail"]
     
     subgraph Multi-Layer Guardrail Perimeter
-        InputGuard --> AgentCore[2. Agent Reasoning & Tool Invocation]
-        AgentCore --> PolicyEngine[3. OPA Policy & Risk Evaluator]
+        InputGuard --> AgentCore["2. Agent Reasoning & Tool Invocation"]
+        AgentCore --> PolicyEngine["3. OPA Policy & Risk Evaluator"]
         
-        PolicyEngine -- High Risk / Privileged --> HITLGateway[4. HITL Approval Interceptor Gateway]
-        PolicyEngine -- Low Risk / Read-Only --> Sandbox[5. Sandboxed Tool Execution Environment]
+        PolicyEngine -- High Risk / Privileged --> HITLGateway["4. HITL Approval Interceptor Gateway"]
+        PolicyEngine -- Low Risk / Read-Only --> Sandbox["5. Sandboxed Tool Execution Environment"]
         
         HITLGateway -- Approved --> Sandbox
-        HITLGateway -- Rejected --> StateAborted[6. Workflow Aborted & Escalated]
+        HITLGateway -- Rejected --> StateAborted["6. Workflow Aborted & Escalated"]
     end
 
     Sandbox --> TargetService[("Enterprise Microservice / DB")]
@@ -72,26 +74,26 @@ When an agent proposes an action flagged as high-risk, the orchestrator must avo
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Agent as Autonomous Agent
-    participant Gateway as Go HITL Gateway
-    participant Store as Redis State Store
-    participant Human as Human Reviewer
-    participant API as Internal Production API
+    participant Agent as "Autonomous Agent"
+    participant Gateway as "Go HITL Gateway"
+    participant Store as "Redis State Store"
+    participant Human as "Human Reviewer"
+    participant API as "Internal Production API"
 
-    Agent->>Gateway: Propose Action (transfer_funds, $50,000)
-    Gateway->>Gateway: Evaluate Risk Policy (Risk = High)
+    Agent->>Gateway: Propose Action ("transfer_funds, $50,000")
+    Gateway->>Gateway: Evaluate Risk Policy ("Risk = High")
     Gateway->>Store: Serialize State & Create Audit Ticket
-    Gateway-->>Agent: Suspend Workflow (Status: PENDING_APPROVAL)
-    Gateway->>Human: Dispatch Approval Webhook (JWT Signed Link)
+    Gateway-->>Agent: Suspend Workflow ("Status: PENDING_APPROVAL")
+    Gateway->>Human: Dispatch Approval Webhook ("JWT Signed Link")
     
     alt Human Approves Action
-        Human->>Gateway: POST /api/v1/approve (Token + MFA)
+        Human->>Gateway: POST /api/v1/approve ("Token + MFA")
         Gateway->>Store: Rehydrate Agent Execution Graph
-        Gateway->>API: Execute Action (transfer_funds)
+        Gateway->>API: Execute Action ("transfer_funds")
         API-->>Gateway: Execution Result Success
         Gateway-->>Agent: Resume Workflow Execution
     else Human Rejects Action
-        Human->>Gateway: POST /api/v1/reject (Reason: Exceeds Limit)
+        Human->>Gateway: POST /api/v1/reject ("Reason: Exceeds Limit")
         Gateway->>Agent: Return Action Failed Error State
     end
 ```

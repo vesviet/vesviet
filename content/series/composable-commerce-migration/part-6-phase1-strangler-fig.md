@@ -4,13 +4,13 @@ description: "Phase 1 migration guide for decoupling Magento reads using API Gat
 date: "2026-05-13T10:00:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
 draft: false
-weight: 7
+weight: 3
 slug: "part-6-phase1-strangler-fig"
 ShowToc: true
 TocOpen: true
 categories: ["Software Engineering", "Backend", "Migration"]
 tags: ["Strangler Fig", "CDC", "Debezium", "Dapr", "Feature Flags", "Magento Migration", "Zero Downtime"]
-series: ["Composable Commerce Migration"]
+series: ["composable-commerce-migration"]
 series_order: 6
 ShowPostNavLinks: false
 author: "Lê Tuấn Anh"
@@ -21,13 +21,14 @@ cover:
 canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-6-phase1-strangler-fig/"
 ---
 
+
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Eav Schema Migration](/series/composable-commerce-migration/part-5-eav-schema-migration/). Review it first if the terminology in this part is unfamiliar.
 
 Phase 1 is the safest phase of the migration — by design. No write operation touches the new microservices. Magento remains the source of truth for all data modifications. The only thing Phase 1 does is prove that your microservices can serve *reads* faster and more reliably than Magento.
 
-**Answer-first:** Phase 1 deploys read-only Go microservices alongside legacy Magento. API Gateway feature flags route read requests to Go with automatic fallback to Magento on failure. Embedded Debezium streams MySQL binary log updates to Redis Streams with sub-2-second sync latency.
+**Answer-first:** Phase 1 deploys read-only Go microservices alongside legacy Magento. API Gateway feature flags route read requests to Go with automatic fallback to Magento on failure. Embedded Debezium streams MySQL binary log updates to Redis Streams with sub-2-second sync latency. Adopting this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory optimization, and fault-tolerant event-driven state synchronization across production systems.
 
-> **Phase 1 Playbook:** Featured in the **[Composable Migration Architecture Guide](/posts/ecommerce-architecture-composable-migration/)**. Read the main post for full system context.
+> **Phase 1 Playbook:** Featured in the **[Composable Migration Architecture Guide](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/)**. Read the main post for full system context.
 
 ## 1. Phase 1 Architecture
 

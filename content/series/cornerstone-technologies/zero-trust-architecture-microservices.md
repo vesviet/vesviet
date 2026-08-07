@@ -1,21 +1,24 @@
 ---
 title: "Zero-Trust Architecture for Microservices: mTLS & Production Go Guide"
 mermaid: true
-slug: zero-trust-architecture-microservices
-description: "In-depth engineering guide to Zero-Trust Architecture for microservices: implementing mTLS with SPIFFE/SPIRE, user identity propagation with OAuth 2.1, eBPF microsegmentation, and production Go code."
+slug: "zero-trust-architecture-microservices"
+description: "In-depth engineering guide to Zero-Trust Architecture for microservices: implementing mTLS with SPIFFE/SPIRE, user identity propagation with OAuth 2.1,."
 author: "Le Tuan Anh (Senior Go Engineer)"
 date: "2026-05-10"
-series: "Cornerstone Technologies"
+series: ["cornerstone-technologies"]
 tags: ["Zero-Trust", "Microservices", "mTLS", "Golang", "SPIFFE", "OAuth2.1"]
 cover:
   image: "/images/posts/zero-trust-architecture-microservices.jpg"
   alt: "Zero-Trust Architecture for Microservices: mTLS & Production Go Guide"
   relative: false
+weight: 5
+canonicalURL: "https://tanhdev.com/series/cornerstone-technologies/zero-trust-architecture-microservices/"
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Vector Database Rag Qdrant Milvus](/series/cornerstone-technologies/vector-database-rag-qdrant-milvus/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Zero-Trust Architecture (ZTA) for microservices eliminates implicit internal network trust through continuous identity verification. By coupling Workload Identity (mTLS via SPIFFE/SPIRE short-lived X.509 certificates) with User Identity (OAuth 2.1 JWT token propagation), ZTA secures distributed systems against lateral attacker movement with under 2ms of cryptographic latency overhead.
+> **Answer-first:** Zero-Trust Architecture (ZTA) for microservices eliminates implicit internal network trust through continuous identity verification. By coupling Workload Identity (mTLS via SPIFFE/SPIRE short-lived X.509 certificates) with User Identity (OAuth 2.1 JWT token propagation), ZTA secures distributed systems against lateral attacker movement with under 2ms of cryptographic latency overhead. Deploying this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory pooling via Go.
 
 As a systems engineer building high-concurrency systems in Golang, I have observed traditional internal network designs relying entirely on perimeter defenses such as VPNs or static firewalls. In cloud-native microservice environments, this perimeter model presents critical security vulnerabilities. Once an attacker breaches any single internal microservice, implicit trust between internal nodes exposes the entire service mesh to lateral movement.
 
@@ -69,18 +72,18 @@ The sequence diagram below illustrates the end-to-end authentication and token p
 ```mermaid
 sequenceDiagram
     autonumber
-    actor User as User / Client
-    participant GW as API Gateway
-    participant SvcA as Service A (BFF)
-    participant SvcB as Service B (Core API)
-    participant SPIRE as SPIRE Workload API
+    actor User as "User / Client"
+    participant GW as "API Gateway"
+    participant SvcA as Service A ("BFF")
+    participant SvcB as Service B ("Core API")
+    participant SPIRE as "SPIRE Workload API"
 
     SPIRE-->>SvcA: 1. Issue short-lived SVID X.509
     SPIRE-->>SvcB: 2. Issue short-lived SVID X.509
     User->>GW: 3. HTTPS Request + OAuth 2.1 JWT Token
-    GW->>SvcA: 4. mTLS (SPIFFE SVID) + Propagate Bearer JWT
-    SvcA->>SvcB: 5. mTLS (SPIFFE SVID) + Propagate Bearer JWT
-    SvcB-->>SvcA: 6. Verified Response (200 OK)
+    GW->>SvcA: 4. mTLS ("SPIFFE SVID") + Propagate Bearer JWT
+    SvcA->>SvcB: 5. mTLS ("SPIFFE SVID") + Propagate Bearer JWT
+    SvcB-->>SvcA: 6. Verified Response ("200 OK")
     SvcA-->>GW: 7. Aggregated Data Response
     GW-->>User: 8. Secure JSON Response
 ```
@@ -257,13 +260,13 @@ Empirical benchmarks between Go microservices running on AWS EC2 C6i / Graviton2
 
 ## Frequently Asked Questions (FAQ)
 
-* **Does implementing Zero-Trust Architecture and mTLS cause significant latency overhead in microservices?**
+### Does implementing Zero-Trust Architecture and mTLS cause significant latency overhead in microservices?
   When properly configured using modern elliptic curve cryptography (ECDSA P-256) and persistent connection pooling (HTTP Keep-Alive or HTTP/2 multiplexing), mTLS adds under 0.1ms of symmetric encryption overhead per request. The full asymmetric TLS handshake overhead (1–2ms) occurs only during initial connection setup, making Zero-Trust security overhead virtually imperceptible in production microservice architectures.
 
-* **What exact role does an API Gateway play within a Zero-Trust Architecture?**
+### What exact role does an API Gateway play within a Zero-Trust Architecture?
   In a Zero-Trust Architecture, the API Gateway functions as the edge Policy Enforcement Point (PEP) responsible for authenticating incoming client requests, enforcing rate limits, and validating OAuth 2.1 JWT tokens. Once verified, the API Gateway acts as an identity bridge, establishing mTLS sessions backed by workload certificates to forward requests and propagate user identity headers to internal downstream microservices.
 
-* **How do you handle JWT token revocation in a stateless Zero-Trust system?**
+### How do you handle JWT token revocation in a stateless Zero-Trust system?
   To revoke stateless JWTs prior to their scheduled expiration, systems pair short-lived access tokens (5 to 15 minutes) with an event-driven revocation blacklist stored in distributed in-memory caches like Redis using unique token identifiers (`jti` claims). Microservice middleware checks this local cache or Bloom filter in $O(1)$ time alongside signature verification, instantly blocking revoked tokens without creating SSO lookup bottlenecks.
 
 ---

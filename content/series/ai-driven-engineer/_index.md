@@ -6,7 +6,7 @@ lastmod: "2026-05-10T14:00:00+07:00"
 draft: false
 weight: 10
 description: "Masterclass series on evolving from a manual code typist to an AI-driven system architect, orchestrating multi-agent systems in production."
-tags: ["AI-Driven Engineering", "Career", "System Architecture", "Context Engineering", "MCP", "Software Engineering"]
+tags: ["AI-Driven Engineering", "Career", "Architecture", "Context Engineering", "MCP", "Software Engineering"]
 categories: ["AI", "Engineering"]
 ShowToc: true
 mermaid: true
@@ -32,12 +32,12 @@ The AI-Driven Engineer Masterclass provides a complete architectural roadmap for
 
 ```mermaid
 graph TD
-    A[Legacy Developer: Code Typist] -->|Synthesize Syntax Manually| B[70% Time Spent Writing Boilerplate]
-    A -->|Manual Debugging| C[Slow Feature Iteration]
+    A["Legacy Developer: Code Typist"] -->|"Synthesize Syntax Manually"| B["70% Time Spent Writing Boilerplate"]
+    A -->|"Manual Debugging"| C["Slow Feature Iteration"]
 
-    D[AI-Driven Engineer: System Architect] -->|Context Engineering| E[Define Bounded Schemas & System Rules]
-    D -->|Orchestrate Agent Swarms| F[Autonomous Code Generation & Tests]
-    D -->|System Governance| G[High-Impact System Design & ROI]
+    D["AI-Driven Engineer: System Architect"] -->|"Context Engineering"| E["Define Bounded Schemas & System Rules"]
+    D -->|"Orchestrate Agent Swarms"| F["Autonomous Code Generation & Tests"]
+    D -->|"System Governance"| G["High-Impact System Design & ROI"]
 ```
 
 ## AI-Driven Engineer: From Code Typist to Architect

@@ -17,13 +17,16 @@ description: "Build production-grade MCP servers in Go and Python with DDD domai
 ShowToc: true
 TocOpen: true
 image: "/images/posts/part-2-build.jpg"
+series: ["mcp-engineering-in-production"]
+weight: 3
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Protocol](/series/mcp-engineering-in-production/part-1-protocol/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 2 — Building Production-Grade MCP Servers in Go/Python
 
-> **Answer-first:** Building production-grade MCP servers requires adhering to Domain-Driven Design (DDD) bounded contexts, stateless scaling, and structured JSON-RPC error handling. By using Go memory buffer pools (`sync.Pool`) and context cancellation timeouts, production MCP servers process high-concurrency tool calls with sub-15ms execution latency.
+> **Answer-first:** Building production-grade MCP servers requires adhering to Domain-Driven Design (DDD) bounded contexts, stateless scaling, and structured JSON-RPC error handling. By using Go memory buffer pools (`sync.Pool`) and context cancellation timeouts, production MCP servers process high-concurrency tool calls with sub-15ms execution latency. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context Protocol ttlMs cache.
 >
 > **Key Takeaways**:
 > - **DDD Bounded Context Isolation**: Microservice MCP servers isolate domain tools (Billing, K8s, Database) to restrict security blast radius.
@@ -42,17 +45,17 @@ The architecture diagram below depicts the internal request processing pipeline 
 
 ```mermaid
 graph TD
-    ClientAgent["AI Agent / MCP Client"] --> JSONRPCRouter[1. JSON-RPC 2.0 Transport Router]
+    ClientAgent["AI Agent / MCP Client"] --> JSONRPCRouter["1. JSON-RPC 2.0 Transport Router"]
     
     subgraph Production MCP Server Engine
-        JSONRPCRouter --> BufferPool[sync.Pool Memory Buffer Manager]
-        JSONRPCRouter --> ToolRegistry[2. Bounded Context Tool Registry]
+        JSONRPCRouter --> BufferPool["sync.Pool Memory Buffer Manager"]
+        JSONRPCRouter --> ToolRegistry["2. Bounded Context Tool Registry"]
         ToolRegistry --> ErrorHandler["3. Graceful Error & IsError Handler"]
     end
 
-    ToolRegistry --> DomainService[4. Core DDD Domain Logic]
+    ToolRegistry --> DomainService["4. Core DDD Domain Logic"]
     DomainService --> ExternalDB[("PostgreSQL / Redis Storage")]
-    DomainService --> ExternalAPI[External Enterprise Microservice APIs]
+    DomainService --> ExternalAPI["External Enterprise Microservice APIs"]
 ```
 
 ### Four Production Design Rules

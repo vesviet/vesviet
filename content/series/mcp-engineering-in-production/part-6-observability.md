@@ -17,13 +17,16 @@ description: "Implement OpenTelemetry distributed tracing and Prometheus metrics
 ShowToc: true
 TocOpen: true
 image: "/images/posts/part-6-observability.jpg"
+series: ["mcp-engineering-in-production"]
+weight: 7
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Security](/series/mcp-engineering-in-production/part-5-security/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 6 — MCP Observability & Tracing: Auditing the Control Plane
 
-> **Answer-first:** Operating Model Context Protocol (MCP) servers without telemetry logging creates compliance vulnerabilities (violating OWASP MCP08: Lack of Audit & Telemetry). Instrumenting MCP servers with vendor-agnostic **OpenTelemetry (OTel)** tracing captures JSON-RPC 2.0 tool execution durations, argument metadata, and error rates in real-time Prometheus dashboards.
+> **Answer-first:** Operating Model Context Protocol (MCP) servers without telemetry logging creates compliance vulnerabilities (violating OWASP MCP08: Lack of Audit & Telemetry). Instrumenting MCP servers with vendor-agnostic **OpenTelemetry (OTel)** tracing captures JSON-RPC 2.0 tool execution durations, argument metadata, and error rates in real-time Prometheus dashboards. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context Protocol.
 >
 > **Key Takeaways**:
 > - **Compliance Audit Trail**: Logs cryptographically signed execution traces for every MCP tool call to satisfy SOC2 Type II requirements.
@@ -45,16 +48,16 @@ Production MCP observability demands dedicated, vendor-agnostic **OpenTelemetry 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Host as MCP Client Host
-    participant Gateway as MCP Gateway (Span: Gateway Proxy)
-    participant Server as Production MCP Server (Span: Tool Execution)
-    participant OTel as OpenTelemetry Collector
-    participant Grafana as Grafana / Prometheus Dashboard
+    actor Host as "MCP Client Host"
+    participant Gateway as MCP Gateway ("Span: Gateway Proxy")
+    participant Server as Production MCP Server ("Span: Tool Execution")
+    participant OTel as "OpenTelemetry Collector"
+    participant Grafana as "Grafana / Prometheus Dashboard"
 
-    Host->>Gateway: Send JSON-RPC tools/call (TraceParent Header)
+    Host->>Gateway: Send JSON-RPC tools/call ("TraceParent Header")
     Gateway->>Server: Forward Request with W3C Context
     
-    Server->>Server: Execute Domain Logic (Span: ExecuteQuery)
+    Server->>Server: Execute Domain Logic ("Span: ExecuteQuery")
     
     par Async Telemetry Export
         Gateway-->>OTel: Export Gateway Proxy Span Payload

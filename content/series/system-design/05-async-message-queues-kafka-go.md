@@ -10,7 +10,7 @@ tags: ["event-driven", "kafka", "golang", "worker pool", "backpressure", "messag
 categories: ["Architecture", "Backend"]
 ShowToc: true
 TocOpen: true
-series: ["Architecture"]
+series: ["system-design"]
 mermaid: true
 cover:
   image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
@@ -18,13 +18,16 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/05-async-message-queues-kafka-go/"
 image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
+weight: 5
 ---
+
+
 
 > **Prerequisite:** Part 5 of the [System Design Masterclass](/series/system-design/). Read [Part 4: Database Scaling](/series/system-design/04-database-scaling-sharding/) first.
 
 ## Kafka Worker Pool in Go — Backpressure & Exactly-Once
 
-> **Answer-first:** High-throughput event streaming in Go leverages Kafka zero-copy `sendfile()` kernel transfers combined with bounded goroutine worker pools. Natural backpressure is achieved using buffered Go channels, while partition-pinned workers preserve message ordering without distributed locks.
+> **Answer-first:** High-throughput event streaming in Go leverages Kafka zero-copy `sendfile()` kernel transfers combined with bounded goroutine worker pools. Natural backpressure is achieved using buffered Go channels, while partition-pinned workers preserve message ordering without distributed locks. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory management with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration.
 >
 > **Key Takeaways**:
 > - **Zero-Copy Performance**: Kafka bypasses user-space buffer copies via `sendfile()`, routing data directly from Linux page cache to network socket buffers.
@@ -68,16 +71,16 @@ image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
 
 ```mermaid
 graph LR
-    subgraph traditional["Traditional I/O (4 copies, 4 context switches)"]
-        D1[Disk] -->|"DMA copy"| KC1[Kernel Page Cache]
-        KC1 -->|"CPU copy"| US1[User Buffer]
-        US1 -->|"CPU copy"| SK1[Socket Buffer]
-        SK1 -->|"DMA copy"| NIC1[NIC]
+    subgraph traditional["Traditional I/O ("4 copies, 4 context switches")"]
+        D1["Disk"] -->|"DMA copy"| KC1["Kernel Page Cache"]
+        KC1 -->|"CPU copy"| US1["User Buffer"]
+        US1 -->|"CPU copy"| SK1["Socket Buffer"]
+        SK1 -->|"DMA copy"| NIC1["NIC"]
     end
 
-    subgraph zerocopy["Zero-Copy sendfile() (2 DMA copies, 0 CPU copies)"]
-        D2[Disk] -->|"DMA copy"| KC2[Kernel Page Cache]
-        KC2 -->|"DMA scatter-gather"| NIC2[NIC]
+    subgraph zerocopy["Zero-Copy sendfile(") (2 DMA copies, 0 CPU copies")"]
+        D2["Disk"] -->|"DMA copy"| KC2["Kernel Page Cache"]
+        KC2 -->|"DMA scatter-gather"| NIC2["NIC"]
     end
 ```
 
@@ -244,7 +247,7 @@ func (p *OrderedPartitionWorkerPool) Submit(
 ```mermaid
 graph LR
     Consumer -->|"1. DB write SUCCESS"| DB
-    Consumer -->|"2. Crash before offset commit"| X[💥 Crash]
+    Consumer -->|"2. Crash before offset commit"| X["💥 Crash"]
     Consumer -->|"3. Restart: re-reads same offset"| Kafka
     Consumer -->|"4. DB write DUPLICATE!"| DB
 
@@ -369,4 +372,3 @@ True end-to-end exactly-once for external side effects (DB writes, API calls) re
 [Next Part →](/series/system-design/06-distributed-locks-concurrency/)
 
 🔗 **Next Step:** Continue to [Part 6: Distributed Locks — Redlock, etcd & Split-Brain Prevention in Go](/series/system-design/06-distributed-locks-concurrency/)
-

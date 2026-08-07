@@ -6,7 +6,7 @@ lastmod: "2026-06-14T22:50:00+07:00"
 draft: false
 tags: ["uber h3", "postgis", "redis", "geospatial", "Architecture"]
 categories: ["Geospatial", "Database"]
-series: ["Routing & Geospatial Architecture"]
+series: ["routing-geospatial-architecture"]
 series_order: 3
 cover:
   image: "/images/posts/graphhopper-cover-3.jpg"
@@ -18,7 +18,9 @@ mermaid: true
 ShowToc: true
 TocOpen: true
 image: "/images/posts/graphhopper-cover-3.jpg"
+weight: 4
 ---
+
 
 > **Answer-first:** Spatial indexing serves as a high-performance pre-filtering layer that prevents heavy routing engines from collapsing under load. By using Uber H3 hexagonal cells and Redis GEO to narrow down 10,000 active drivers to the 50 closest candidates in RAM (<2ms), systems reduce routing engine CPU overhead by up to 95%.
 
@@ -42,7 +44,7 @@ A fatal mistake made by junior engineers building ride-hailing apps is connectin
 
 ```mermaid
 flowchart TD
-    Client[Rider Match Request] --> Gateway[Go API Gateway]
+    Client["Rider Match Request"] --> Gateway["Go API Gateway"]
     Gateway --> H3["Convert Lat/Lng to H3 Index Resolution 8"]
     H3 --> Redis["Query Redis GEO / H3 Set: Top 50 Closest Drivers in RAM"]
     Redis -->|"Sub-2ms Filtered Drivers"| GraphHopper["GraphHopper Engine: Compute Exact CH Distance Matrix"]
@@ -183,4 +185,3 @@ This is the **Antimeridian Problem** (Longitude 180). When a bounding box crosse
 {{< /faq >}}
 
 🔗 **Next Step:** Package these components in [Part 4: Golang API & Microservices Integration (Kratos & Dapr)](/series/routing-geospatial-architecture/part-4-golang-microservices/).
-

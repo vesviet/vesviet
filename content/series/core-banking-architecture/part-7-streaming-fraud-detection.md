@@ -20,7 +20,7 @@ TocOpen: true
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 6 — Fapi 2 Api Security](/series/core-banking-architecture/part-6-fapi-2-api-security/). Review it first if the terminology in this part is unfamiliar.
 
-**Answer-first:** Real-time transaction fraud detection requires streaming processing engines (Flink/Spark) to run multi-variable rule scoring under 50ms. By maintaining stateful windows of customer activity, these systems identify anomalies and block fraudulent transfers before they settle.
+**Answer-first:** Real-time transaction fraud detection requires streaming processing engines (Flink/Spark) to run multi-variable rule scoring under 50ms. By maintaining stateful windows of customer activity, these systems identify anomalies and block fraudulent transfers before they settle. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for production-grade enterprise operations.
 
 > **Series (Part 7 of 8):** The final technical article before the QA handbook. We will build a real-time fraud detection pipeline with an SLA of <100ms per score — where your latency budget is shared between CEP pattern matching, state lookups, and ML model inference.
 

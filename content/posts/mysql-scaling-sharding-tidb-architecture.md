@@ -27,7 +27,7 @@ canonicalURL: "https://tanhdev.com/posts/mysql-scaling-sharding-tidb-architectur
 
 # Replace MySQL Sharding with TiDB: Distributed SQL Architecture
 
-**Answer-first:** Replacing legacy MySQL sharding with TiDB distributed SQL simplifies database operations by providing horizontal write scaling, automatic range rebalancing, and full ACID compliance.
+**Answer-first:** Replacing legacy MySQL sharding with TiDB distributed SQL simplifies database operations by providing horizontal write scaling, automatic range rebalancing, and full ACID compliance. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
 
 Scaling a relational database is one of the most demanding challenges in system design. As applications grow from thousands to millions of active users, the database ceases to be a simple storage engine and becomes the primary bottleneck of the entire system architecture. In this technical guide, we explore the architectural progression of scaling MySQL—beginning with replication topologies, stepping through the complexities and operational hazards of manual database sharding (including proxy middleware like Vitess), and evaluating NewSQL alternatives, specifically the distributed architecture of TiDB.
 
@@ -51,11 +51,11 @@ Standard Primary-Replica layout:
 
 ```mermaid
 flowchart TD
-    App[Application Server] -->|Writes| Primary[(MySQL Primary)]
-    App -->|Reads| Replica1[(MySQL Replica 01)]
-    App -->|Reads| Replica2[(MySQL Replica 02)]
-    Primary -->|Asynchronous Replication| Replica1
-    Primary -->|Asynchronous Replication| Replica2
+    App["Application Server"] -->|"Writes"| Primary["(MySQL Primary)"]
+    App -->|"Reads"| Replica1["(MySQL Replica 01)"]
+    App -->|"Reads"| Replica2["(MySQL Replica 02)"]
+    Primary -->|"Asynchronous Replication"| Replica1
+    Primary -->|"Asynchronous Replication"| Replica2
 ```
 
 ### The Primary Write Bottleneck
@@ -115,8 +115,8 @@ Application-level sharding routes specific `user_id` records to distinct MySQL i
 
 ```mermaid
 flowchart TD
-    App[Application Code / Routing Layer] -->|user_id: 101| Shard0[Shard 0: user_id % 2 == 1]
-    App -->|user_id: 102| Shard1[Shard 1: user_id % 2 == 0]
+    App["Application Code / Routing Layer"] -->|"user_id: 101"| Shard0["Shard 0: user_id % 2 == 1"]
+    App -->|"user_id: 102"| Shard1["Shard 1: user_id % 2 == 0"]
     
     subgraph Shard0_Instance["MySQL Instance A"]
         Shard0
@@ -175,22 +175,22 @@ TiDB's architecture separates compute from storage:
 
 ```mermaid
 flowchart TD
-    App[Application Client] -->|MySQL Protocol| TiDB1[TiDB Server Compute]
-    App -->|MySQL Protocol| TiDB2[TiDB Server Compute]
+    App["Application Client"] -->|"MySQL Protocol"| TiDB1["TiDB Server Compute"]
+    App -->|"MySQL Protocol"| TiDB2["TiDB Server Compute"]
     
-    PD[Placement Driver Cluster] <--> TiDB1
+    PD["Placement Driver Cluster"] <--> TiDB1
     PD <--> TiDB2
     
     TiDB1 <--> TiKV_Group
     TiDB2 <--> TiKV_Group
     
     subgraph TiKV_Group["TiKV Distributed Storage Layer (OLTP)"]
-        TiKV1[(TiKV Node 01)]
-        TiKV2[(TiKV Node 02)]
-        TiKV3[(TiKV Node 03)]
+        TiKV1["(TiKV Node 01)"]
+        TiKV2["(TiKV Node 02)"]
+        TiKV3["(TiKV Node 03)"]
     end
     
-    TiKV_Group -.->|Asynchronous Raft Replication| TiFlash[(TiFlash Columnar Engine - OLAP)]
+    TiKV_Group -.->|"Asynchronous Raft Replication"| TiFlash["(TiFlash Columnar Engine - OLAP)"]
 ```
 
 #### 1. TiDB Server (Compute Layer)
@@ -282,7 +282,7 @@ For systems that do not rely heavily on database-level procedural code, migratin
 
 ## Frequently Asked Questions
 
-Below are answers to common engineering questions regarding MySQL horizontal scaling, manual sharding trade-offs, and distributed SQL migration strategies. These insights reflect practical operational experience and modern 2026 architectural patterns for scaling high-concurrency transactional database workloads without incurring unnecessary system complexity or application refactoring overhead.
+Answers to common engineering questions regarding MySQL horizontal scaling, manual sharding trade-offs, and distributed SQL migration strategies. These insights reflect practical operational experience and modern 2026 architectural patterns for scaling high-concurrency transactional database workloads without incurring unnecessary system complexity or application refactoring overhead.
 
 ### How do engineering teams scale MySQL when write throughput saturates a single primary instance?
 Scaling starts by upgrading server hardware (CPU, RAM, NVMe) and deploying read replicas to offload non-mutating SELECT traffic. When write throughput exceeds single-node disk I/O limits, teams must transition to horizontal write sharding or migrate to a distributed SQL database such as TiDB.

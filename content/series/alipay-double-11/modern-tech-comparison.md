@@ -13,12 +13,15 @@ cover:
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/modern-tech-comparison/"
 mermaid: true
+series: ["alipay-double-11"]
+weight: 8
 ---
+
 
 [← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/phase-4-deep-dive/) • [Next →](/series/alipay-double-11/phase-5-synthesis/)
 
-> **Answer-first:** This guide maps Alipay's proprietary Double 11 technology stack to modern open-source CNCF alternatives. Custom LDC cell unitization maps to Kubernetes multi-cluster deployments with Envoy gateways, OceanBase maps to TiDB/CockroachDB distributed SQL, RocketMQ maps to Kafka/Pulsar streaming brokers, and SOFA RPC maps to gRPC with OpenTelemetry context propagation.
+> **Answer-first:** This guide maps Alipay's proprietary Double 11 technology stack to modern open-source CNCF alternatives. Custom LDC cell unitization maps to Kubernetes multi-cluster deployments with Envoy gateways, OceanBase maps to TiDB/CockroachDB distributed SQL, RocketMQ maps to Kafka/Pulsar streaming brokers, and SOFA RPC maps to gRPC with OpenTelemetry context propagation. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and.
 
 > **Prerequisite:** [Phase 4: Deep Dive (Technology Internals)](/series/alipay-double-11/phase-4-deep-dive/)
 
@@ -40,22 +43,22 @@ The following system design diagram illustrates how a modern API Gateway and Ser
 
 ```mermaid
 graph TD
-    User["User Client"] -->|HTTPS Request| Ingress[Global Ingress API Gateway]
-    Ingress -->|Hash User ID| Cell1_Ingress[Cell 1 - K8s Ingress]
-    Ingress -->|Hash User ID| Cell2_Ingress[Cell 2 - K8s Ingress]
+    User["User Client"] -->|"HTTPS Request"| Ingress["Global Ingress API Gateway"]
+    Ingress -->|"Hash User ID"| Cell1_Ingress["Cell 1 - K8s Ingress"]
+    Ingress -->|"Hash User ID"| Cell2_Ingress["Cell 2 - K8s Ingress"]
 
-    subgraph Cluster1 [Kubernetes Cluster Cell 1 - Shanghai]
-        Cell1_Ingress -->|Route to local namespace| MeshSidecar1[Envoy Proxy Sidecar]
-        MeshSidecar1 --> AppSvc1[Payment Microservice 1]
-        MeshSidecar1 --> AppSvc2[Ledger Microservice 2]
-        AppSvc1 -.->|Allowed Link| AppSvc2
+    subgraph Cluster1 ["Kubernetes Cluster Cell 1 - Shanghai"]
+        Cell1_Ingress -->|"Route to local namespace"| MeshSidecar1["Envoy Proxy Sidecar"]
+        MeshSidecar1 --> AppSvc1["Payment Microservice 1"]
+        MeshSidecar1 --> AppSvc2["Ledger Microservice 2"]
+        AppSvc1 -.->|"Allowed Link"| AppSvc2
     end
 
-    subgraph Cluster2 [Kubernetes Cluster Cell 2 - Shenzhen]
-        Cell2_Ingress -->|Route to local namespace| MeshSidecar2[Envoy Proxy Sidecar]
-        MeshSidecar2 --> AppSvc3[Payment Microservice 3]
-        MeshSidecar2 --> AppSvc4[Ledger Microservice 4]
-        AppSvc3 -.->|Allowed Link| AppSvc4
+    subgraph Cluster2 ["Kubernetes Cluster Cell 2 - Shenzhen"]
+        Cell2_Ingress -->|"Route to local namespace"| MeshSidecar2["Envoy Proxy Sidecar"]
+        MeshSidecar2 --> AppSvc3["Payment Microservice 3"]
+        MeshSidecar2 --> AppSvc4["Ledger Microservice 4"]
+        AppSvc3 -.->|"Allowed Link"| AppSvc4
     end
 
     classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px;
@@ -302,4 +305,3 @@ Modern Go architectures utilize gRPC over HTTP/2 multiplexed connections alongsi
 To explore how these modern cloud-native comparisons translate into production benchmarks and enterprise scaling strategies, review the following guides:
 - [Alipay Double 11: 544,000 TPS Architecture Explained](/posts/alipay-double-11-architecture-tps/)
 - [PayPay Architecture & Scaling Playbook](/posts/paypay-architecture-scaling/)
-

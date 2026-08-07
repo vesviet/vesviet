@@ -6,7 +6,7 @@ date: "2026-03-19T09:00:00+07:00"
 lastmod: "2026-07-23T10:40:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-frontend/"
+canonicalURL: "https://tanhdev.com/series/generative-ui-architecture/part-2-state-management/"
 tags: ["Generative UI", "State Management", "Next.js", "Astro", "React Server Components"]
 categories: ["Engineering", "Frontend"]
 cover:
@@ -16,9 +16,10 @@ cover:
 mermaid: true
 ShowToc: true
 TocOpen: true
-series: ["Generative UI Architecture"]
-weight: 2
+series: ["generative-ui-architecture"]
+weight: 3
 ---
+
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Beyond Chatbots](/posts/generative-ui-with-mcp-ai-native-frontend/). Review it first if the terminology in this part is unfamiliar.
 
@@ -38,12 +39,12 @@ In a **Generative UI (GenUI)** application, state management becomes non-determi
 
 ```mermaid
 graph TD
-    A[User Input Mutation] --> B[Client State Store - Zustand/RSC]
-    B --> C{State Sync Strategy}
-    C -->|Optimistic UI| D[Instant Local Render]
-    C -->|Server Action| E[Stream to AI Gateway]
-    E --> F[LLM Tool Execution]
-    F --> G[New GenUI Component Payload Stream]
+    A["User Input Mutation"] --> B["Client State Store - Zustand/RSC"]
+    B --> C{"State Sync Strategy"}
+    C -->|"Optimistic UI"| D["Instant Local Render"]
+    C -->|"Server Action"| E["Stream to AI Gateway"]
+    E --> F["LLM Tool Execution"]
+    F --> G["New GenUI Component Payload Stream"]
     G --> B
 ```
 
@@ -58,16 +59,16 @@ Choosing the right meta-framework foundation directly dictates how state and UI 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Client as Browser Runtime
-    participant Framework as Meta-Framework (Next.js vs Astro)
-    participant ServerAction as AI Server Action
-    participant Stream as Streaming RSC / SSE Handler
+    participant Client as "Browser Runtime"
+    participant Framework as Meta-Framework ("Next.js vs Astro")
+    participant ServerAction as "AI Server Action"
+    participant Stream as "Streaming RSC / SSE Handler"
 
     Client->>Framework: Dispatch User Intent
-    Framework->>ServerAction: Invoke Server Action (AI Mutation)
+    Framework->>ServerAction: Invoke Server Action ("AI Mutation")
     ServerAction->>Stream: Stream UI State Payload
     alt Next.js RSC Paradigm
-        Stream-->>Client: Direct Flight Data (RSC Payload Stream)
+        Stream-->>Client: Direct Flight Data ("RSC Payload Stream")
         Client->>Client: Reconstruct Server React Component Tree
     else Astro Islands Paradigm
         Stream-->>Client: Stream Raw JSON Props via SSE
@@ -176,11 +177,11 @@ When users interact with GenUI forms, waiting for a full server round-trip cause
 
 ```mermaid
 graph TD
-    A[User Modifies AI Form Input] --> B[Trigger Local Optimistic State Update]
-    B --> C[Render UI Instantly with Pending Badge]
-    C --> D[Dispatch Async Server Action]
-    D -->|Server Approval| E[Commit Final State & Clear Pending Badge]
-    D -->|Server Error / Rejection| F[Trigger Rollback Handler & Show Toast]
+    A["User Modifies AI Form Input"] --> B["Trigger Local Optimistic State Update"]
+    B --> C["Render UI Instantly with Pending Badge"]
+    C --> D["Dispatch Async Server Action"]
+    D -->|"Server Approval"| E["Commit Final State & Clear Pending Badge"]
+    D -->|"Server Error / Rejection"| F["Trigger Rollback Handler & Show Toast"]
 ```
 
 ### React `useOptimistic` Pattern
@@ -282,7 +283,7 @@ To monitor state health across high-volume GenUI sessions, application telemetry
 
 ## Architectural Context & Pillar References
 
-This section references core pillar guides on protocol specs, state models, and autonomous hybrid pipeline architectures.
+Core references include pillar guides on protocol specs, state models, and autonomous hybrid pipeline architectures.
 
 - [Generative UI with Model Context Protocol Architecture](/posts/generative-ui-with-mcp-ai-native-frontend/) — Protocol overview for state synchronization.
 - [AI-Native Frontend Architecture Predictions (2028)](/posts/ai-native-frontend-architecture-predictions-2028/) — Future trends in frontend state models.

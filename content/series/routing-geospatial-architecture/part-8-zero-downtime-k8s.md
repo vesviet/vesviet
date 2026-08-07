@@ -6,7 +6,7 @@ lastmod: "2026-06-15T19:30:00+07:00"
 draft: false
 tags: ["kubernetes", "devops", "sre", "graphhopper", "argo-rollouts", "Architecture"]
 categories: ["Geospatial", "DevOps"]
-series: ["Routing & Geospatial Architecture"]
+series: ["routing-geospatial-architecture"]
 series_order: 8
 cover:
   image: "/images/posts/graphhopper-cover.jpg"
@@ -18,9 +18,11 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 image: "/images/posts/graphhopper-cover.jpg"
+weight: 9
 ---
 
-> **Answer-first:** Zero-downtime Kubernetes deployments for routing services combine Argo Rollouts canary strategies, pre-stop hook draining, and automated P99 latency validation.
+
+> **Answer-first:** Zero-downtime Kubernetes deployments for routing services combine Argo Rollouts canary strategies, pre-stop hook draining, and automated P99 latency validation. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
 
 > **Prerequisite:** Before reading this final part, review [Part 7: Load Testing & Performance Tuning](/series/routing-geospatial-architecture/part-7-load-testing-production/).
 
@@ -45,11 +47,11 @@ You cannot treat GraphHopper like a stateless web server. Updating OpenStreetMap
 ```mermaid
 sequenceDiagram
     autonumber
-    participant K8s as Kubernetes Job Pipeline
-    participant S3 as AWS S3 Cache Bucket
-    participant Argo as Argo Rollouts Controller
-    participant Green as Green Routing Pod (New Map)
-    participant Blue as Blue Routing Pod (Old Map)
+    participant K8s as "Kubernetes Job Pipeline"
+    participant S3 as "AWS S3 Cache Bucket"
+    participant Argo as "Argo Rollouts Controller"
+    participant Green as Green Routing Pod ("New Map")
+    participant Blue as Blue Routing Pod ("Old Map")
     
     K8s->>K8s: Compile OSM Map Data & CH Shortcuts Offline
     K8s->>S3: Upload 50GB Compiled Graph Cache

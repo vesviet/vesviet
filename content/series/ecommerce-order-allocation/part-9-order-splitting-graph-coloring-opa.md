@@ -6,7 +6,7 @@ date: "2026-08-01T21:00:00+07:00"
 lastmod: "2026-08-01T21:00:00+07:00"
 draft: false
 mermaid: true
-series: ["E-commerce Order Allocation"]
+series: ["ecommerce-order-allocation"]
 tags: ["Architecture", "Logistics", "Golang", "Algorithms", "Graph Coloring", "OPA", "ecommerce architecture"]
 description: "How to solve the e-commerce order splitting problem in under 50ms using Open Policy Agent (OPA), Graph Coloring heuristics in Golang, and Bin Packing."
 categories: ["Architecture"]
@@ -16,13 +16,16 @@ cover:
   image: "/images/posts/order-splitting-graph-coloring-opa-cover.jpg"
   alt: "Order Splitting Algorithm: Graph Coloring & OPA in Golang"
   relative: false
+weight: 5
+canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/order-splitting-graph-coloring-opa/"
 ---
+
 
 > **Prerequisite:** Review [Part 8: Intelligent Order Release](/series/ecommerce-order-allocation/part-8-intelligent-order-release/) for previous context on order batching and VRPTW before starting this guide.
 
 # Order Splitting at Scale: Graph Coloring, Bin Packing, and OPA in Go
 
-**Answer-first:** Real-time e-commerce order splitting is a Constraint Satisfaction Problem (CSP). The standard pipeline relies on **Open Policy Agent (OPA)** for dynamic rules, **Golang (`gonum`)** for Graph Coloring to resolve logical conflicts, and **First-Fit Decreasing Bin Packing** for physical constraints, executing in sub-50ms during synchronous checkout.
+**Answer-first:** Real-time e-commerce order splitting is a Constraint Satisfaction Problem (CSP). The standard pipeline relies on **Open Policy Agent (OPA)** for dynamic rules, **Golang (`gonum`)** for Graph Coloring to resolve logical conflicts, and **First-Fit Decreasing Bin Packing** for physical constraints, executing in sub-50ms during synchronous checkout. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines.
 
 ---
 
@@ -46,8 +49,8 @@ In computer science, this is a classic **Vertex Coloring** problem.
 
 ```mermaid
 graph TD
-    A(Apple) --- K(Knife)
-    A --- B(Battery)
+    A("Apple") --- K("Knife")
+    A --- B("Battery")
     
     style A fill:#4CAF50,stroke:#333,stroke-width:2px,color:#fff
     style K fill:#F44336,stroke:#333,stroke-width:2px,color:#fff
@@ -155,10 +158,9 @@ The architecture strictly separates responsibilities:
 | [Part 7: Distance Matrix Routing](/series/ecommerce-order-allocation/part-7-distance-matrix-routing/) | GraphHopper distance matrix generation for VRP |
 | [Part 8: Intelligent Order Release](/series/ecommerce-order-allocation/part-8-intelligent-order-release/) | Agentic AI Order Batching & VRPTW |
 | **This post (Part 9)** | Order Splitting Algorithm, OPA & Graph Coloring |
-| [Part 10: Picker Routing Optimization](/posts/warehouse-picker-routing-optimization/) | GraphHopper A*, OR-Tools in C++ |
+| [Part 10: Picker Routing Optimization](/series/ecommerce-order-allocation/part-10-warehouse-picker-routing-optimization/) | GraphHopper A*, OR-Tools in C++ |
 
 ---
 *If you are an engineer scaling logistics platforms, how do you handle dimensional weight logic? Share your approach below.*
 
-🔗 **Next Step:** Continue to [Part 10: Picker Routing Optimization](/posts/warehouse-picker-routing-optimization/) for the next module in this series.
-
+🔗 **Next Step:** Continue to [Part 10: Picker Routing Optimization](/series/ecommerce-order-allocation/part-10-warehouse-picker-routing-optimization/) for the next module in this series.
