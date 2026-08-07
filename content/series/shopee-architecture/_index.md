@@ -9,12 +9,12 @@ description: "Structured architectural series on how Shopee evolved its backend 
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/shopee-flash-sale-cover.png"
+  image: "/images/posts/shopee-flash-sale-cover.png"
   alt: "Shopee Architecture series: scaling for flash sales — rate limiting, Redis, and distributed systems"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/"
-image: "images/posts/shopee-flash-sale-cover.png"
+image: "/images/posts/shopee-flash-sale-cover.png"
 ---
 
 > **Answer-first:** The Shopee Architecture series details how Go microservices, Redis Lua inventory reservation, Apache Kafka peak shaving, TiDB distributed SQL, and OpenTelemetry/ClickHouse observability handle 10M+ QPS and millions of concurrent buyers during 11.11 flash sales without overselling or database connection starvation.

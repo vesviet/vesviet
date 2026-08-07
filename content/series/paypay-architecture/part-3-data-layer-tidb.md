@@ -6,7 +6,7 @@ draft: false
 description: "Why PayPay migrated from AWS Aurora to self-hosted TiDB: analyzing Aurora bottlenecks, TiDB distributed SQL, and phased zero-downtime migration."
 weight: 4
 cover:
-  image: "images/posts/paypay-scaling-cover.png"
+  image: "/images/posts/paypay-scaling-cover.png"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
 categories: ["Database", "Distributed SQL", "Scalability"]
@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-3-data-layer-
 ShowToc: true
 TocOpen: true
 mermaid: true
-image: "images/posts/paypay-scaling-cover.png"
+image: "/images/posts/paypay-scaling-cover.png"
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — Event Driven Kafka](/series/paypay-architecture/part-2-event-driven-kafka/). Review it first if the terminology in this part is unfamiliar.

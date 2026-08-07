@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Late Chunking", "Embeddings", "Semantic Cache", "Python", "Transformers", "RAG"]
 categories: ["Engineering", "AI"]
 cover:
-  image: "images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
   alt: "Late Chunking and Contextual Retrieval architecture comparing early vs late embedding pooling"
   relative: false
 mermaid: true

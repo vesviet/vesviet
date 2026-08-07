@@ -10,6 +10,8 @@ draft: false
 
 # Modern Go 1.23/1.24 High-Performance Engineering: Custom Iterators (`iter.Seq`), Zero-Allocation Memory Pools, and Microsecond GC Tuning
 
+**Answer-first:** Modern Go 1.23/1.24 performance engineering leverages profile-guided optimization (PGO), `unique` string interning, and zero-allocation memory pools to minimize GC pressure under heavy workloads.
+
 ---
 
 ## Section 1: Executive Summary & Overview

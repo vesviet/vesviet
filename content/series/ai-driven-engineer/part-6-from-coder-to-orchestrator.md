@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["AI Swarms", "Agent Orchestration", "Golang", "Architecture", "Workflows", "AI Agents"]
 categories: ["Engineering"]
 cover:
-  image: "images/posts/ai-native-frontend-cover.png"
+  image: "/images/posts/ai-native-frontend-cover.png"
   alt: "From Coder to Orchestrator multi-agent swarm workflow architecture"
   relative: false
 mermaid: true

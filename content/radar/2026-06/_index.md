@@ -10,7 +10,7 @@ TocOpen: true
 categories: ["Tech Radar"]
 tags: ["Tech Radar", "Cloud Native", "DevOps", "Architecture", "Engineering", "Golang", "Kubernetes"]
 cover:
-  image: "images/posts/default-post.png"
+  image: "/images/posts/default-post.png"
   alt: "Tech Radar Digest June 2026: K8s, Go 1.26 & Dapr Log"
   relative: false
 aliases:

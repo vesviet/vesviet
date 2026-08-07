@@ -8,7 +8,7 @@ tags: ["Microservices", "Extraction", "Sentry", "GitLab", "Modular Monolith", "A
 categories: ["Modular Monolith", "Architecture"]
 aliases: ["/series/modular-monolith-architecture/part-7-extraction-pattern/"]
 cover:
-  image: "images/posts/golang-microservices-cover.png"
+  image: "/images/posts/golang-microservices-cover.png"
   alt: "Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal"
   relative: false
 author: "Lê Tuấn Anh"
@@ -17,7 +17,7 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 draft: false
-image: "images/posts/golang-microservices-cover.png"
+image: "/images/posts/golang-microservices-cover.png"
 ---
 
 > **Answer-first:** Extracting a module from a modular monolith into an independent microservice is justified only when domain isolation, asymmetric CPU/RAM scaling, or strict regulatory isolation demands it. Having pre-enforced DDD bounded contexts ensures extraction requires introducing network RPC adapters (gRPC) and Anti-Corruption Layers rather than refactoring internal core domain logic.

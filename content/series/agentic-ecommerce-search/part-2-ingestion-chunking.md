@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Data Ingestion", "Chunking", "E-commerce", "Python", "Vector DB", "GraphRAG", "Data Engineering"]
 categories: ["Engineering", "AI"]
 cover:
-  image: "images/posts/agentic-ecommerce-search-cover.png"
+  image: "/images/posts/agentic-ecommerce-search-cover.png"
   alt: "Data Ingestion and Atomic Chunking Product Data catalog pipeline"
   relative: false
 mermaid: true
@@ -20,7 +20,9 @@ TocOpen: true
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Golang Orchestration](/series/agentic-ecommerce-search/part-1-golang-orchestration/). Review it first if the terminology in this part is unfamiliar.
 
-## Data Ingestion & Atomic Chunking Product Data: Semantic Catalog Pipelines
+# Data Ingestion & Atomic Chunking Product Data: Semantic Catalog Pipelines
+
+**Answer-first:** Data ingestion and atomic product chunking processes catalog updates into dense vector embeddings, maintaining vector index freshness and search accuracy.
 
 In general document RAG applications, text splitting divides long articles into arbitrary token chunks (e.g., 512 tokens with 50-token overlap).
 

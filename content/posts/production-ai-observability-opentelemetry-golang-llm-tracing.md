@@ -45,13 +45,15 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 cover:
-  image: "images/posts/production-ai-observability-opentelemetry-golang-llm-tracing.png"
+  image: "/images/posts/production-ai-observability-opentelemetry-golang-llm-tracing.png"
   alt: "Production AI Observability OpenTelemetry Golang LLM Tracing"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/production-ai-observability-opentelemetry-golang-llm-tracing/"
 ---
 
 # Production AI Observability: Building Zero-Overhead LLM Tracing & Cost Attribution with OpenTelemetry in Go
+
+**Answer-first:** Production AI observability instruments Go microservices with OpenTelemetry spans to capture LLM API latency, prompt token usage, cost metrics, and error rates in real-time.
 
 > **Key Takeaways**
 > - **2026 OpenTelemetry Standard**: Standardizes GenAI attributes (`gen_ai.provider.name`, `gen_ai.request.model`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`).

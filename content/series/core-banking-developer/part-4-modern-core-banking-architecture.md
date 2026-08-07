@@ -9,7 +9,7 @@ weight: 5
 keywords: ["banking microservices architecture", "core banking microservices", "event sourcing banking", "cqrs banking", "saga pattern banking", "core banking developer"]
 schema: ["Article", "FAQPage"]
 cover:
-  image: "images/posts/banking-microservices-cover.png"
+  image: "/images/posts/banking-microservices-cover.png"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
   relative: false
 categories: ["FinTech", "Architecture", "Microservices"]

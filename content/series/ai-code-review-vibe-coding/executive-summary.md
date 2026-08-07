@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Vibe Coding", "Code Review", "AI Security", "Python", "Static Analysis", "DevOps"]
 categories: ["Engineering", "AI"]
 cover:
-  image: "images/posts/vibe-coding-cover.png"
+  image: "/images/posts/vibe-coding-cover.png"
   alt: "The Vibe Coding Revolution and Enterprise Code Review Guardrails architecture"
   relative: false
 mermaid: true
@@ -18,7 +18,9 @@ ShowToc: true
 TocOpen: true
 ---
 
-## Executive Summary — The Vibe Coding Revolution & Enterprise Code Review Guardrails
+# Executive Summary — The Vibe Coding Revolution & Enterprise Code Review Guardrails
+
+**Answer-first:** The Vibe Coding Revolution shifts software engineering from manual syntax generation to AI orchestration, governed by automated AST quality gates and multi-agent review pipelines.
 
 The software development ecosystem is experiencing a seismic shift dubbed **Vibe Coding**. Coined by leading AI researchers, "Vibe Coding" describes a workflow where an author describes desired application behavior in natural language, delegating 100% of the actual syntax typing, framework boilerplate, and refactoring tasks to frontier LLMs.
 

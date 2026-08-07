@@ -13,7 +13,7 @@ author: "Lê Tuấn Anh"
 
 > *"Clear legal terms ensure open collaboration, protect intellectual property, and define responsible usage of technical guidance."*
 
-**Answer-first:** By accessing and using **tanhdev.com** (published by Lê Tuấn Anh), you agree to these Terms of Service. Open-source code snippets published here are licensed under liberal open-source terms (MIT/Apache 2.0 unless otherwise stated); technical articles represent educational insights rather than binding architecture guarantees; and AI crawlers are permitted for public indexing provided they respect `robots.txt` and system rate limits. Direct questions to **vesviet@gmail.com**.
+**Answer-first:** By accessing and using **tanhdev.com** (published by Lê Tuấn Anh), you agree to these Terms of Service. Open-source code snippets are licensed under liberal terms (MIT/Apache 2.0); technical articles represent educational insights rather than binding architecture guarantees; and AI crawlers are permitted provided they respect `robots.txt` and rate limits.
 
 ---
 

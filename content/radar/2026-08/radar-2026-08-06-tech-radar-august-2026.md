@@ -11,14 +11,14 @@ draft: false
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/tech-radar-2026-08.jpg"
+  image: "/images/tech-radar-2026-08.jpg"
   alt: "Tech Radar August 2026"
   caption: "Technology Landscape August 2026 - AI Agents, Golang Runtime & Cloud Native Ecosystem"
   relative: false
 mermaid: true
 ---
 
-> **Answer-first:** The August 2026 Tech Radar identifies a strategic shift in enterprise infrastructure toward AI-Native architectures and kernel-level performance-optimized Cloud Native systems. The **ADOPT** ring recommends upgrading to **Go 1.26 Green Tea GC** (10–40% GC CPU reduction, 30% CGO latency drop), deploying **Argo CD 3.4/3.3** (PreDelete hooks, OIDC background token refresh), and combining **SPIFFE/SPIRE with Istio Ambient Mesh** (sidecar-free mTLS via ztunnel). In the **TRIAL** ring, enterprises should pilot the **Official Go MCP SDK (`modelcontextprotocol/go-sdk`)**, **Kubernetes v1.35 In-Place Pod Resizing & DRA** (zero-downtime resource scaling), and **SpinKube Wasm Micro-VMs** (<1ms cold start). The **ASSESS** ring focuses on evaluating **Agentic GraphRAG** (LazyGraphRAG/PropertyGraphIndex) and **eBPF Tetragon**. Conversely, the **HOLD** ring warns against deploying **Naive Vector-Only RAG** and advises removing deprecated guardrail sidecars like **`protectai/llm-guard`** (archived in July 2026).
+> **Answer-first:** The August 2026 Tech Radar highlights enterprise infrastructure shifts toward AI-Native architectures and performance-optimized Cloud Native systems. Key recommendations include **Go 1.26 Green Tea GC**, **Argo CD 3.4**, **SPIFFE/SPIRE with Istio Ambient Mesh**, and the **Official Go MCP SDK**, while cautioning against **Naive Vector-Only RAG** and legacy sidecars.
 
 ---
 

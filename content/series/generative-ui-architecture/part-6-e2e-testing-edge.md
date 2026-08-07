@@ -10,7 +10,7 @@ canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-fronte
 tags: ["Generative UI", "E2E Testing", "Playwright", "Edge Caching", "Cloudflare", "Architecture"]
 categories: ["Engineering", "Frontend", "Testing"]
 cover:
-  image: "images/posts/generative-ui-mcp-cover.png"
+  image: "/images/posts/generative-ui-mcp-cover.png"
   alt: "GenUI E2E Testing and Semantic Edge Caching on Cloudflare Workers"
   relative: false
 mermaid: true
@@ -22,7 +22,7 @@ weight: 6
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Human In The Loop](/posts/generative-ui-with-mcp-ai-native-frontend/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Testing non-deterministic Generative UI components and optimizing their global delivery requires combining Visual Regression E2E Testing (via Playwright mock harnesses) with Semantic Edge Caching (via Cloudflare Workers or Vercel Edge Functions). By mocking LLM tool responses during CI/CD test runs and implementing vector similarity caching at the CDN edge, teams achieve 100% deterministic test coverage while reducing AI component latency from 2,500ms down to less than 45ms for cached intent patterns.
+> **Answer-first:** Testing non-deterministic Generative UI components and optimizing global delivery requires combining Visual Regression E2E Testing (via Playwright) with Semantic Edge Caching (via Cloudflare Workers). By mocking LLM tool responses in CI/CD and implementing vector similarity caching at the CDN edge, teams achieve deterministic test coverage while reducing AI latency to sub-45ms.
 
 ---
 

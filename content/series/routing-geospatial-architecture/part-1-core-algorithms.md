@@ -9,7 +9,7 @@ categories: ["Geospatial", "Algorithms"]
 series: ["Routing & Geospatial Architecture"]
 series_order: 1
 cover:
-  image: "images/posts/graphhopper-cover.png"
+  image: "/images/posts/graphhopper-cover.png"
   alt: "Geospatial and Routing Engine Architecture series: Go and GraphHopper for production routing"
   relative: false
 author: "Lê Tuấn Anh"
@@ -17,7 +17,7 @@ canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-1
 mermaid: true
 ShowToc: true
 TocOpen: true
-image: "images/posts/graphhopper-cover.png"
+image: "/images/posts/graphhopper-cover.png"
 ---
 
 > **Prerequisite:** This part builds on the concepts introduced in the [Executive Summary](/series/routing-geospatial-architecture/executive-summary/).

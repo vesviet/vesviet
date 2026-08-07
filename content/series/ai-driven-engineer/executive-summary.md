@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Software Engineering", "AI", "Career", "Architecture", "Engineering Leadership"]
 categories: ["Engineering", "Strategy"]
 cover:
-  image: "images/posts/ai-native-frontend-cover.png"
+  image: "/images/posts/ai-native-frontend-cover.png"
   alt: "Software Engineers in the AI Era Executive Summary diagram mapping career evolution"
   relative: false
 mermaid: true

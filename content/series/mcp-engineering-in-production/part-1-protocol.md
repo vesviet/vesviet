@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["MCP", "Protocol", "Golang", "JSON-RPC", "stdio", "SSE", "Architecture"]
 categories: ["Engineering", "Architecture"]
 cover:
-  image: "images/posts/mcp-engineering-in-production-cover.png"
+  image: "/images/posts/mcp-engineering-in-production-cover.png"
   alt: "MCP Core Protocol Architecture sequence workflow"
   relative: false
 mermaid: true
@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-1-p
 description: "Technical summary and production engineering guide for Part 1 — MCP Core Protocol Architecture and Transport Layer Evolution in Go microservices."
 ShowToc: true
 TocOpen: true
-image: "images/posts/mcp-engineering-in-production-cover.png"
+image: "/images/posts/mcp-engineering-in-production-cover.png"
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/series/mcp-engineering-in-production/executive-summary/). Review it first if the terminology in this part is unfamiliar.

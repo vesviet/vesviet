@@ -12,13 +12,17 @@ categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "Deconstructing E-commerce by Domain: service responsibilities, data ownership, and API contracts"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/deconstructing-ecommerce-service-details-domain/"
 ---
 
+> **Prerequisite:** Review the core series overview at [Magento Development in Vietnam: 2026 Guide](/posts/magento-vietnam/) before exploring individual domain architecture details.
+
 # Deconstructing the Ecosystem: Service Details by Domain
+
+**Answer-first:** Deconstructing the e-commerce product service details domain isolates product catalog schemas, inventory pricing reads, and localized search indexing into autonomous bounded contexts for optimal scalability.
 
 ---
 
@@ -362,4 +366,7 @@ Cross-domain queries rely on CQRS read models and event-driven data replication.
 - [Real-Time Inventory: Kafka, CDC & Redis](/posts/real-time-inventory-ecommerce-architecture/) — the Inventory domain in production detail.
 
 {{< author-cta >}}
+
+🔗 **Next Step:** Continue to [Composable E-Commerce Migration](/posts/ecommerce-architecture-composable-migration/) for the next module in the series.
+
 

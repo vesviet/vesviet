@@ -20,6 +20,8 @@ description: "A complete engineering research dossier on building zero-overhead,
 
 # Production AI Observability: Building Zero-Overhead LLM Tracing & Cost Attribution with OpenTelemetry in Go
 
+**Answer-first:** Production AI observability instruments Go microservices with OpenTelemetry spans to capture LLM API latency, prompt token usage, cost metrics, and error rates in real-time.
+
 ## Section 1: Executive Summary & Overview
 
 Observability for Large Language Model (LLM) applications and multi-agent systems introduces fundamentally new engineering challenges that break traditional Application Performance Monitoring (APM) assumptions. Standard microservice APMs (such as Jaeger, Datadog, or Zipkin) were architected for deterministic RPC calls—request-response pairs characterized by short execution durations (50ms–200ms), bounded payloads, and static compute costs. 

@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["E-commerce", "Agentic Search", "Golang", "Vector Search", "RAG", "Architecture"]
 categories: ["Engineering", "AI"]
 cover:
-  image: "images/posts/agentic-ecommerce-search-cover.png"
+  image: "/images/posts/agentic-ecommerce-search-cover.png"
   alt: "Why E-commerce Needs Agentic Search architectural topology"
   relative: false
 mermaid: true

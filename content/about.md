@@ -8,7 +8,7 @@ aliases:
 description: "Lê Tuấn Anh — Senior Go Backend Architect with 17+ years building high-traffic microservices, event-driven platforms, GitOps, and cloud ecosystems."
 author: "Lê Tuấn Anh"
 cover:
-  image: "images/posts/hire-cover.png"
+  image: "/images/posts/hire-cover.png"
   alt: "Lê Tuấn Anh — Senior Go Backend Architect & Consultant"
   relative: false
 ---
@@ -84,6 +84,8 @@ Whether it's discussing the nuances of Clean Architecture, plotting out high-loa
 [Email](mailto:vesviet@gmail.com) • [LinkedIn](https://www.linkedin.com/in/vesviet) • [GitHub](https://github.com/vesviet)
 
 ---
-## Related Architecture & Pillar Guides
+# Related Architecture & Pillar Guides
+
+**Answer-first:** Lê Tuấn Anh (vesviet) is a Senior Go Backend Architect with 17+ years of experience leading zero-downtime microservices migrations, high-traffic system design, and platform reliability engineering.
 For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
 - [AWS EKS vs ECS: Architecture, Cost & Use Cases](/posts/aws-eks-vs-ecs-comparison/)

@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Security", "RBAC", "Data Poisoning", "Python", "Prompt Injection", "Zero Trust"]
 categories: ["Engineering", "Security"]
 cover:
-  image: "images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
   alt: "Enterprise Security RBAC and Data Poisoning Defense in RAG Architecture"
   relative: false
 mermaid: true

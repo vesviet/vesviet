@@ -13,11 +13,11 @@ TocOpen: true
 series: ["Architecture"]
 mermaid: true
 cover:
-  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/08-saga-pattern-distributed-transactions-go/"
-image: "images/posts/ecommerce-microservices-blueprint-cover.png"
+image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
 The Saga Pattern coordinates distributed transactions across microservices by decomposing a large transaction into a sequence of local transactions. If any step fails, the system automatically executes **compensating transactions** in reverse order to undo completed steps. Each local transaction must be idempotent.
 
@@ -30,7 +30,9 @@ The Saga Pattern coordinates distributed transactions across microservices by de
 
 ---
 
-## What Are the Problems with 2PC in Microservices?
+# What Are the Problems with 2PC in Microservices?
+
+**Answer-first:** Orchestrating distributed transactions in Go uses the Saga pattern with Temporal workflows or Debezium CDC outbox streaming to execute multi-service steps and compensating rollbacks safely.
 
 **Key Concept:** Two-Phase Commit (2PC) is a blocking protocol with a coordinator single point of failure. If the coordinator crashes between the Prepare and Commit phases, all participants are blocked indefinitely with locks held — a catastrophic failure mode in microservices. These are the same [core banking distributed transaction challenges](/posts/deconstructing-microfinance-core-banking-architecture/) seen in legacy systems.
 

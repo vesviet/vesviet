@@ -12,13 +12,15 @@ categories: ["DevOps", "Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/argocd-2026-cover.png"
+  image: "/images/posts/argocd-2026-cover.png"
   alt: "GitOps at scale with Kubernetes and Argo CD: multi-cluster microservices deployment architecture"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/gitops-at-scale-kubernetes-argocd-microservices/"
 ---
 
 # GitOps at Scale: Kubernetes & ArgoCD for Microservices
+
+**Answer-first:** GitOps at scale uses ArgoCD, Helm chart templates, and automated CI/CD pipelines to manage multi-cluster Kubernetes deployments with full audit traceability and rapid rollback capabilities.
 
 Building 21 well-architected Go microservices is only half the battle. If your deployment process relies on an engineer running `kubectl apply` from their laptop on a Friday afternoon, you haven't built an enterprise platform — you've built a ticking time bomb.
 

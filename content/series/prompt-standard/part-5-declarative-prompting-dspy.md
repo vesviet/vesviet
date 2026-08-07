@@ -10,7 +10,7 @@ tags: ["prompt", "standard", "context-engineering", "agent"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/prompt-engineering-benchmark-cover.png"
+  image: "/images/posts/prompt-engineering-benchmark-cover.png"
   alt: "Part 5 Declarative Prompting and DSPy Compilation Architecture"
   relative: false
 author: "Lê Tuấn Anh"

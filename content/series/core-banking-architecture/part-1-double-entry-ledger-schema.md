@@ -12,7 +12,7 @@ tags: ["TigerBeetle", "PostgreSQL", "Ledger Schema", "Double-Entry", "FinTech", 
 author: "Lê Tuấn Anh"
 schema: ["Article", "TechArticle", "FAQPage"]
 cover:
-  image: "images/posts/banking-microservices-cover.png"
+  image: "/images/posts/banking-microservices-cover.png"
   alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
   relative: false
 canonicalURL: "https://tanhdev.com/series/core-banking-architecture/part-1-double-entry-ledger-schema/"
@@ -240,7 +240,8 @@ AFTER INSERT ON entries
 FOR EACH ROW EXECUTE FUNCTION verify_transaction_balance();
 ```
 
-> **Note:** Always use `NUMERIC(18, 4)` or `BIGINT` (for the smallest denomination, e.g., cents). **Never use `FLOAT` or `DOUBLE`** — floating-point precision errors will accumulate over millions of transactions and cause the ledger to unbalance.
+> [!NOTE]
+> Always use `NUMERIC(18, 4)` or `BIGINT` (for the smallest denomination, e.g., cents). **Never use `FLOAT` or `DOUBLE`** — floating-point precision errors will accumulate over millions of transactions and cause the ledger to unbalance.
 
 ---
 

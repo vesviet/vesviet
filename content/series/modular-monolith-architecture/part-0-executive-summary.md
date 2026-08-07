@@ -8,7 +8,7 @@ aliases: ["/series/modular-monolith-architecture/part-0-executive-summary/"]
 tags: ["Modular Monolith", "AWS", "Serverless", "FinOps", "Amazon Prime"]
 categories: ["Modular Monolith", "Architecture"]
 cover:
-  image: "images/posts/golang-microservices-cover.png"
+  image: "/images/posts/golang-microservices-cover.png"
   alt: "Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal"
   relative: false
 author: "Lê Tuấn Anh"
@@ -17,7 +17,7 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 draft: false
-image: "images/posts/golang-microservices-cover.png"
+image: "/images/posts/golang-microservices-cover.png"
 ---
 
 > **Prerequisite:** This is the executive summary and introductory overview of the **Modular Monolith Architecture** series. No prior reading is required to start here.

@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["AI Bugs", "Taxonomy", "Hallucinations", "Python", "Static Analysis", "Debugging"]
 categories: ["Engineering"]
 cover:
-  image: "images/posts/vibe-coding-cover.png"
+  image: "/images/posts/vibe-coding-cover.png"
   alt: "The AI Bug Taxonomy classification diagram"
   relative: false
 mermaid: true

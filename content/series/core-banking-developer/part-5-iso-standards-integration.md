@@ -6,7 +6,7 @@ draft: false
 description: "ISO 8583 for ATM/POS card transactions and ISO 20022 for SWIFT cross-border payments: what Core Banking Developers need to implement both standards."
 weight: 6
 cover:
-  image: "images/posts/banking-microservices-cover.png"
+  image: "/images/posts/banking-microservices-cover.png"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
   relative: false
 categories: ["FinTech", "Payments", "Integration"]

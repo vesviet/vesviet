@@ -10,7 +10,7 @@ canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-fronte
 tags: ["Generative UI", "Security", "Prompt Injection", "Accessibility", "WCAG", "XSS"]
 categories: ["Engineering", "Frontend", "Security"]
 cover:
-  image: "images/posts/generative-ui-mcp-cover.png"
+  image: "/images/posts/generative-ui-mcp-cover.png"
   alt: "GenUI Security: XSS prevention and WCAG accessibility in Generative UI"
   relative: false
 mermaid: true
@@ -22,7 +22,7 @@ weight: 4
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Component Registry](/posts/generative-ui-with-mcp-ai-native-frontend/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Building secure, accessible Generative UI systems requires defensive engineering across two critical vectors: Prompt-to-UI Injection Defenses and WCAG 2.1 AA Accessibility Enforcement. By enforcing strict prop sanitization, eliminating arbitrary HTML injection, and embedding automated accessibility attributes (`aria-live`, semantic focus traps, and contrast compliance) directly into dynamic component templates, teams prevent client-side XSS exploits while ensuring AI-generated interfaces remain fully accessible to screen readers and keyboard users.
+> **Answer-first:** Building secure, accessible Generative UI systems requires defensive engineering across Prompt-to-UI Injection Defenses and WCAG 2.1 AA Enforcement. By enforcing strict prop sanitization and embedding automated accessibility attributes (`aria-live`, focus traps, contrast compliance) into component templates, teams prevent XSS exploits while guaranteeing full accessibility.
 
 ---
 

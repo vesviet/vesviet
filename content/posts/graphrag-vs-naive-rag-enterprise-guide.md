@@ -22,13 +22,15 @@ description: "Compare Naive RAG with GraphRAG for enterprise AI pipelines: knowl
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
   alt: "GraphRAG vs Naive RAG: enterprise architecture guide — entity relationships vs flat chunk retrieval"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/graphrag-vs-naive-rag-enterprise-guide/"
 ---
 
 # GraphRAG vs Naive RAG: Enterprise Architecture Guide
+
+**Answer-first:** GraphRAG outperforms naive RAG in enterprise applications by combining knowledge graph entity extraction with vector search, resolving complex multi-hop relationship queries accurately.
 
 Most RAG (Retrieval-Augmented Generation) implementations look the same: chunk documents, embed them into vectors, store them in a vector database, retrieve by cosine similarity, and inject the top-K chunks into the LLM context. This works for simple document Q&A. It fails systematically for enterprise knowledge bases where the answer to a question depends not on a single document chunk, but on the *relationships* between dozens of interconnected entities.
 

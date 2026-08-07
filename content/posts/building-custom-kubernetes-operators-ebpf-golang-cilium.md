@@ -48,13 +48,15 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 cover:
-  image: "images/posts/building-custom-kubernetes-operators-ebpf-golang-cilium.png"
+  image: "/images/posts/building-custom-kubernetes-operators-ebpf-golang-cilium.png"
   alt: "Building Custom Kubernetes Operators eBPF Golang Cilium"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/building-custom-kubernetes-operators-ebpf-golang-cilium/"
 ---
 
 # Building Custom Kubernetes Operators in Go with `kubebuilder` & Deep eBPF Kernel Observability using `cilium/ebpf`
+
+**Answer-first:** Building custom Kubernetes operators in Go with eBPF and Cilium enables kernel-level network packet filtering, zero-overhead observability tracing, and dynamic security policy enforcement without sidecar proxy latency.
 
 > **Key Takeaways**
 > - **Sidecarless Ambient Architecture**: eBPF eliminates sidecar proxy overhead (saving 50MB–150MB RSS per pod and eliminating +1.5ms network hop latency) by tracing system calls directly inside the Linux kernel.

@@ -6,7 +6,7 @@ draft: false
 description: "Build a complete mini Core Banking system in Go: double-entry ledger, ACID transactions, CASA accounts, loan management, and REST API microservices."
 weight: 8
 cover:
-  image: "images/posts/banking-microservices-cover.png"
+  image: "/images/posts/banking-microservices-cover.png"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
   relative: false
 categories: ["FinTech", "Hands-On Guide", "Golang"]

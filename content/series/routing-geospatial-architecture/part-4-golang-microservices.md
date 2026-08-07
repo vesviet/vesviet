@@ -9,7 +9,7 @@ categories: ["Geospatial", "Microservices"]
 series: ["Routing & Geospatial Architecture"]
 series_order: 4
 cover:
-  image: "images/posts/graphhopper-cover.png"
+  image: "/images/posts/graphhopper-cover.png"
   alt: "Geospatial and Routing Engine Architecture series: Go and GraphHopper for production routing"
   relative: false
 author: "Lê Tuấn Anh"
@@ -17,7 +17,7 @@ canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-4
 mermaid: true
 ShowToc: true
 TocOpen: true
-image: "images/posts/graphhopper-cover.png"
+image: "/images/posts/graphhopper-cover.png"
 ---
 
 > **Answer-first:** High-throughput geospatial microservices in Go leverage H3 spatial indexes, concurrent goroutines, and Protobuf gRPC APIs for real-time ETA calculation.

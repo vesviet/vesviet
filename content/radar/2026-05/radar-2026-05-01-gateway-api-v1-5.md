@@ -10,7 +10,7 @@ TocOpen: true
 categories: ["Tech Radar"]
 tags: ["Tech Radar", "Architecture", "Engineering", "Cloud Native", "DevOps"]
 cover:
-  image: "images/posts/default-post.png"
+  image: "/images/posts/default-post.png"
   alt: "Tech Radar 01/05: Gateway API v1.5 ListenerSet & mTLS"
   relative: false
 mermaid: true

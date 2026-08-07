@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["MCP", "Identity", "OAuth2", "PKCE", "mTLS", "SPIFFE", "Golang", "Security"]
 categories: ["Engineering", "Security"]
 cover:
-  image: "images/posts/mcp-engineering-in-production-cover.png"
+  image: "/images/posts/mcp-engineering-in-production-cover.png"
   alt: "MCP Identity and Authentication OAuth2 and mTLS sequence workflow"
   relative: false
 mermaid: true
@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-3-i
 description: "Architect Zero-Trust MCP identity propagation using OAuth 2.1 PKCE for user binding and SPIFFE/SPIRE mTLS X.509 certificates for workloads."
 ShowToc: true
 TocOpen: true
-image: "images/posts/mcp-engineering-in-production-cover.png"
+image: "/images/posts/mcp-engineering-in-production-cover.png"
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — Build](/series/mcp-engineering-in-production/part-2-build/). Review it first if the terminology in this part is unfamiliar.

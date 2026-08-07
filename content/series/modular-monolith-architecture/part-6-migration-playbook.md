@@ -8,7 +8,7 @@ tags: ["Migration", "Strangler Fig", "Modular Monolith", "Database", "Conway's L
 categories: ["Modular Monolith", "Architecture"]
 aliases: ["/series/modular-monolith-architecture/part-6-migration-playbook/"]
 cover:
-  image: "images/posts/golang-microservices-cover.png"
+  image: "/images/posts/golang-microservices-cover.png"
   alt: "Modular Monolith Architecture Production Guide: Go, DDD, bounded contexts, and microservices reversal"
   relative: false
 author: "Lê Tuấn Anh"
@@ -17,7 +17,7 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 draft: false
-image: "images/posts/golang-microservices-cover.png"
+image: "/images/posts/golang-microservices-cover.png"
 ---
 
 > **Answer-first:** Consolidating fragmented microservices back into a modular monolith utilizes the Reverse Strangler Fig pattern with dual-writing and zero-downtime database schema mergers. Merging database schemas using logical schema separation (PostgreSQL schemas) preserves strict module autonomy while eliminating distributed transaction complexity.

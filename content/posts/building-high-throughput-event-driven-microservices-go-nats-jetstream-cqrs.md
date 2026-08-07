@@ -13,12 +13,14 @@ ShowToc: true
 TocOpen: true
 canonicalURL: "https://tanhdev.com/posts/building-high-throughput-event-driven-microservices-go-nats-jetstream-cqrs/"
 cover:
-  image: "images/posts/nats-jetstream-cqrs-go.png"
+  image: "/images/posts/nats-jetstream-cqrs-go.png"
   alt: "Building High-Throughput Event-Driven Microservices in Go with NATS JetStream and CQRS Architecture Diagram"
   relative: false
 ---
 
 # High-Throughput Event-Driven Microservices in Go with NATS JetStream & CQRS
+
+**Answer-first:** High-throughput event-driven microservices in Go leverage NATS JetStream stream persistence, CQRS command-query separation, and worker pool concurrency to process millions of async messages per second.
 
 ## Section 1: Architectural Rationale: Why Go + NATS JetStream for Event-Driven Microservices
 

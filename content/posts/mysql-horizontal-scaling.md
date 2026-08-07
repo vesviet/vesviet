@@ -22,12 +22,14 @@ description: "Vitess vs GORM Sharding for MySQL write scaling in Go: VTGate quer
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/mysql-scalability-cover.png"
+  image: "/images/posts/mysql-scalability-cover.png"
   alt: "Vitess vs GORM Sharding: MySQL horizontal write scaling patterns in Go"
   relative: false
 ---
 
 # Vitess vs GORM Sharding: MySQL Write Scaling in Go
+
+**Answer-first:** Horizontal MySQL write scaling uses Vitess proxy sharding or application-level GORM shard key routing to distribute table data across independent database master instances.
 
 When your application reaches millions of users, a single database instance will inevitably become the biggest bottleneck in your entire architecture. To solve this, **MySQL database scaling** becomes mandatory. You must [Scale DB for Microservices](/posts/banking-microservices-architecture/) using Horizontal Scaling techniques.
 

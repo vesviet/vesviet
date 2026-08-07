@@ -13,12 +13,14 @@ categories: ["Engineering", "Security"]
 tags: ["Golang", "Zero-Trust", "SPIFFE", "SPIRE", "Istio", "mTLS", "PCI-DSS", "Microservices"]
 canonicalURL: "https://tanhdev.com/posts/zero-trust-service-mesh-security-spiffe-spire-istio-golang/"
 cover:
-  image: "images/posts/zero-trust-service-mesh-security-spiffe-spire-istio-golang.jpg"
+  image: "/images/posts/zero-trust-service-mesh-security-spiffe-spire-istio-golang.jpg"
   alt: "Zero-Trust Service Mesh Security SPIFFE SPIRE Istio Golang"
   relative: false
 ---
 
 # Zero-Trust Service Mesh Security in Go: SPIFFE/SPIRE & Istio
+
+**Answer-first:** Zero-trust service mesh security in Go uses SPIFFE/SPIRE identity attestation and Istio mTLS to enforce cryptographically verified workload identities and least-privilege API access.
 
 ## Introduction: The Zero-Trust Imperative in Modern Financial Microservices
 

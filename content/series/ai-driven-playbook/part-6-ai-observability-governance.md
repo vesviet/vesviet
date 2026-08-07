@@ -10,7 +10,7 @@ weight: 8
 categories: ["Enterprise Playbook"]
 tags: ["AI", "Enterprise Architecture", "CTO", "Tech Lead"]
 cover:
-  image: "images/posts/hybrid-ai-pipeline-cover.png"
+  image: "/images/posts/hybrid-ai-pipeline-cover.png"
   alt: "AI-Driven Engineer Enterprise Playbook series: workflows, autonomous pipelines, and tooling"
   relative: false
 author: "Lê Tuấn Anh"

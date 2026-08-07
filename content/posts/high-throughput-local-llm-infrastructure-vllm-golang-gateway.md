@@ -42,13 +42,15 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 cover:
-  image: "images/posts/high-throughput-local-llm-infrastructure-vllm-golang-gateway.png"
+  image: "/images/posts/high-throughput-local-llm-infrastructure-vllm-golang-gateway.png"
   alt: "High Throughput Local LLM Infrastructure vLLM Golang Gateway"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/high-throughput-local-llm-infrastructure-vllm-golang-gateway/"
 ---
 
 # High-Throughput Local LLM Infrastructure: Architecting a Distributed Go API Gateway for vLLM & PagedAttention Clusters
+
+**Answer-first:** High-throughput local LLM infrastructure pairs vLLM continuous batching inference servers with a Go API gateway for dynamic request queuing, load balancing, and token rate limiting.
 
 > **Key Takeaways**
 > - **PagedAttention Virtual Memory**: Eliminates 60%–80% GPU VRAM KV-cache fragmentation by splitting KV blocks into non-contiguous physical pages mapped via virtual page tables.

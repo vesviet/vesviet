@@ -9,10 +9,12 @@ tags: ["AI", "Executive Playbook", "Context Engineering", "Architecture", "SDLC"
 series: ["AI-Driven Playbook"]
 weight: 1
 cover:
-  image: "images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
   alt: "Executive Summary Building an AI-Native Organization"
   relative: false
 ---
+
+> **Prerequisite:** This is the executive summary for the AI-Driven Playbook series — no prior prerequisite is required. Later modules build directly upon the strategic context established here.
 
 > **Answer-first:** Transitioning an enterprise software organization to an AI-Native model requires restructuring context boundaries, governance pipelines, and engineering roles. By treating domain knowledge as code-level context and embedding AI sub-agents into CI/CD quality gates, engineering leaders reduce lead time to production by 40% while cutting defect leakage by 35%.
 

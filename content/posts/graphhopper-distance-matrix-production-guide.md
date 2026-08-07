@@ -22,13 +22,15 @@ tags:
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/graphhopper-cover.png"
+  image: "/images/posts/graphhopper-cover.png"
   alt: "GraphHopper distance matrix production guide: self-hosted routing with OSM data and Kubernetes"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/graphhopper-distance-matrix-production-guide/"
 ---
 
 # GraphHopper Distance Matrix: Production Self-Hosting & API Guide
+
+**Answer-first:** Self-hosting GraphHopper for distance matrix calculations uses custom OSM pbf data, memory-mapped graph caches, and tuned C++ routing matrix algorithms to deliver sub-15ms response times.
 
 ## How to Call the GraphHopper Matrix API (/matrix Endpoint)
 

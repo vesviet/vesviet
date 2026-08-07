@@ -11,7 +11,7 @@ TocOpen: true
 categories: ["AI", "Vibe Coding"]
 tags: ["Vibe Coding", "AI Code Review", "Software Engineering", "Security", "OWASP", "LiteLLM", "AST"]
 cover:
-  image: "images/posts/vibe-coding-cover.png"
+  image: "/images/posts/vibe-coding-cover.png"
   alt: "What is Vibe Coding? Why AI Code Review is the Future"
   relative: false
 mermaid: true
@@ -19,6 +19,8 @@ canonicalURL: "https://vesviet.com/posts/vibe-coding-and-ai-code-review-future/"
 ---
 
 # What is Vibe Coding? Why AI Code Review is the Future
+
+**Answer-first:** Vibe coding accelerates prototype development through AI generation, shifting engineering effort toward automated AST code review, security auditing, and architectural quality governance.
 
 In February 2025, Andrej Karpathy, former Tesla AI Lead and OpenAI co-founder, tweeted a phrase that would define a new paradigm in software development: 
 

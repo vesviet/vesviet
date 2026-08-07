@@ -9,7 +9,7 @@ author: "Lê Tuấn Anh"
 tags: ["QLoRA", "Fine-Tuning", "Unsloth", "Axolotl", "Python", "PyTorch", "PEFT"]
 categories: ["SLM Playbook"]
 cover:
-  image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
+  image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
   alt: "Practical QLoRA Fine tuning Axolotl and Unsloth training pipeline"
   relative: false
 mermaid: true
@@ -17,7 +17,7 @@ canonicalURL: "https://tanhdev.com/series/slm-playbook/part-3-lora-qlora-tuning/
 description: "Technical summary and production engineering guide for Practical QLoRA Fine-tuning using Axolotl, Unsloth, and PEFT methods for SLM models."
 ShowToc: true
 TocOpen: true
-image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
+image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — Sft Data Engineering](/series/slm-playbook/part-2-sft-data-engineering/). Review it first if the terminology in this part is unfamiliar.

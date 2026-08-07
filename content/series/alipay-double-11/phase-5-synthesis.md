@@ -7,7 +7,7 @@ description: "Strategic synthesis of Double 11 scaling decisions, active-active 
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/alipay-double11-cover.png"
+  image: "/images/posts/alipay-double11-cover.png"
   alt: "Alipay Double 11 Architecture series: 544,000 TPS payment processing at extreme scale"
   relative: false
 author: "Lê Tuấn Anh"

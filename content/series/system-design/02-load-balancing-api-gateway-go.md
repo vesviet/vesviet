@@ -13,11 +13,11 @@ TocOpen: true
 series: ["Architecture"]
 mermaid: true
 cover:
-  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/02-load-balancing-api-gateway-go/"
-image: "images/posts/ecommerce-microservices-blueprint-cover.png"
+image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
 
 > **Answer-first:** Building a Go API gateway with Envoy and NGINX enables L7 load balancing, JWT authentication, and token-bucket rate limiting at the ingress layer.

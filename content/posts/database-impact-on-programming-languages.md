@@ -11,7 +11,7 @@ TocOpen: true
 categories: ["Engineering", "Architecture"]
 tags: ["Golang", "PHP", "Node.js", "Rust", "Database", "PostgreSQL"]
 cover:
-  image: "images/posts/database-programming-languages-cover.jpg"
+  image: "/images/posts/database-programming-languages-cover.jpg"
   alt: "How Databases Shaped Go, PHP, Node.js, and Rust"
   relative: false
 mermaid: true
@@ -19,6 +19,8 @@ canonicalURL: "https://tanhdev.com/posts/database-impact-on-programming-language
 ---
 
 # How Databases Shaped Go, PHP, Node.js, and Rust
+
+**Answer-first:** Database paradigms directly shape programming language design, driving memory allocation models, asynchronous I/O frameworks, ORM abstractions, and connection pool patterns across modern systems.
 
 Databases are the most critical I/O bottleneck in backend systems. Over the past 20 years, network latency, connection limits, and transaction safety have forced programming languages to rethink their concurrency models, evolve new syntaxes, and invent smarter ORMs.
 

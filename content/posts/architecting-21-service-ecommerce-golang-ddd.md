@@ -14,13 +14,15 @@ categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "Architecting a 21-service e-commerce platform with Golang and Domain-Driven Design"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/architecting-21-service-ecommerce-golang-ddd/"
 ---
 
 # Architecting 21-Service E-commerce with Golang & DDD
+
+**Answer-first:** Architecting a 21-service Go e-commerce platform using Domain-Driven Design (DDD) separates core bounded contexts, utilizes gRPC for inter-service communication, and implements Dapr event meshes for scalable distributed transactions.
 
 - The exact performance overhead of using Go's structural subtyping versus manual dependency injection in high-throughput microservices.
 - Why scoping database transactions to a single Aggregate root is critical, and how we resolved out-of-order event delivery using Kafka partition keys.

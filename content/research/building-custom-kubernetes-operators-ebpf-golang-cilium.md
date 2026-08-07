@@ -22,6 +22,8 @@ description: "An authoritative, production-grade research dossier on building cu
 
 # Building Custom Kubernetes Operators in Go with `kubebuilder` & Deep eBPF Kernel Observability using `cilium/ebpf`
 
+**Answer-first:** Building custom Kubernetes operators in Go with eBPF and Cilium enables kernel-level network packet filtering, zero-overhead observability tracing, and dynamic security policy enforcement.
+
 ## Section 1: Executive Summary & Overview
 
 Modern Cloud-Native platform engineering is undergoing a foundational paradigm shift. Over the past decade, microservice telemetry and service mesh architectures relied heavily on the **sidecar proxy pattern** (popularized by Envoy, Linkerd, and Istio classic). In sidecar architectures, every application Pod is injected with an adjacent container that intercepts network traffic via `iptables` or `nftables` redirect rules. While this model successfully decouples operational traffic management from application code, it introduces substantial CPU and memory overhead, increases latency through multiple user-space/kernel-space context switches, and creates significant operational friction at scale (e.g., lifecycle management, pod initialization ordering, and memory over-allocation across thousands of microservice instances).

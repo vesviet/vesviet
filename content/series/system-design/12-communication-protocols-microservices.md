@@ -13,11 +13,11 @@ TocOpen: true
 series: ["Architecture"]
 mermaid: true
 cover:
-  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/12-communication-protocols-microservices/"
-image: "images/posts/ecommerce-microservices-blueprint-cover.png"
+image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
 Microservices communication uses gRPC for high-throughput internal RPCs via binary Protobuf serialization, REST for public HTTP APIs, and GraphQL for API Gateway aggregation. Selecting the right protocol depends on payload size, streaming requirements, and client integration needs.
 
@@ -30,7 +30,9 @@ Microservices communication uses gRPC for high-throughput internal RPCs via bina
 
 ---
 
-## Overview of Communication Protocols
+# Overview of Communication Protocols
+
+**Answer-first:** Comparing gRPC, REST, and GraphQL in Go microservices evaluates binary Protobuf serialization efficiency, HTTP JSON endpoint accessibility, and API gateway schema aggregation trade-offs.
 
 **Key Concept:** gRPC, REST, and GraphQL operate on different layers of serialization, schema safety, and client-server coordination. gRPC enforces strict API contract schemas at compile time; REST provides loose, flexible JSON responses over standard HTTP semantics; GraphQL relies on schema-based graph models, allowing clients to fetch customized fields in a single query round trip.
 

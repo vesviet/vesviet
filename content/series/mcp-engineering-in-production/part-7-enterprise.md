@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Enterprise MCP", "Multi-Tenancy", "Governance", "Python", "Architecture", "Registry"]
 categories: ["Engineering", "Strategy"]
 cover:
-  image: "images/posts/mcp-engineering-in-production-cover.png"
+  image: "/images/posts/mcp-engineering-in-production-cover.png"
   alt: "Enterprise MCP Strategy and Multi-Tenancy governance architecture"
   relative: false
 mermaid: true
@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-7-e
 description: "Technical summary and production guide for Part 7 — Enterprise MCP Strategy and Multi-Tenancy Governance Models for production scale."
 ShowToc: true
 TocOpen: true
-image: "images/posts/mcp-engineering-in-production-cover.png"
+image: "/images/posts/mcp-engineering-in-production-cover.png"
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 6 — Observability](/series/mcp-engineering-in-production/part-6-observability/). Review it first if the terminology in this part is unfamiliar.

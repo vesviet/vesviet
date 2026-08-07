@@ -12,13 +12,15 @@ categories: ["DevOps", "Architecture"]
 tags: ["OSRM", "Kubernetes", "Geospatial", "Routing", "Shared Memory", "C++", "Golang"]
 mermaid: true
 cover:
-  image: "images/posts/osrm-k8s-cover.png"
+  image: "/images/posts/osrm-k8s-cover.png"
   alt: "OSRM Shared Memory Kubernetes Architecture"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/osrm-shared-memory-kubernetes-live-traffic/"
 ---
 
 # OSRM Shared Memory on Kubernetes: Live Traffic Updates with Zero-Downtime
+
+**Answer-first:** Operating OSRM on Kubernetes with live traffic updates uses shared memory datastores, atomic map file updates, and dynamic traffic speed adjustments without restarting routing pods.
 
 ## The Challenge of Operating Large-Scale OSRM on Kubernetes
 

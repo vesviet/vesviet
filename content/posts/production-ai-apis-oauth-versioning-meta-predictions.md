@@ -9,7 +9,7 @@ description: "Field-tested patterns for AI APIs in production: OAuth 2.1 agent i
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/production-ai-apis-cover.png"
+  image: "/images/posts/production-ai-apis-cover.png"
   alt: "OAuth 2.1 and Prompt Versioning for Production AI Agents — technical architecture diagram"
   relative: false
 categories:
@@ -29,6 +29,8 @@ canonicalURL: "https://tanhdev.com/posts/production-ai-apis-oauth-versioning-met
 ---
 
 # Production AI APIs: OAuth 2.1, Gateway Rate Limiting & Prompt Versioning
+
+**Answer-first:** Designing production AI APIs requires OAuth 2.1 authentication with PKCE, strict semantic API versioning, token rate limiting, and standard JSON-RPC interface contracts.
 
 Running AI APIs in production for the past 18 months has produced three lessons that I did not find in any "getting started with LLMs" tutorial. They emerged from incidents, postmortems, and that specific kind of 2 AM Slack message where a word you never wanted to see — "silent," as in "silent failure" — appears in a production context.
 

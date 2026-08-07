@@ -22,13 +22,15 @@ description: "Step-by-step guide to deploying GraphHopper on Kubernetes with Ope
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/graphhopper-cover.png"
+  image: "/images/posts/graphhopper-cover.png"
   alt: "GraphHopper Kubernetes self-hosting with OpenStreetMap: deployment, data import, and scaling guide"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/graphhopper-kubernetes-self-hosting-osm/"
 ---
 
 # Self-Hosting GraphHopper on Kubernetes with OSM Data
+
+**Answer-first:** Self-hosting GraphHopper routing engines on Kubernetes uses initContainers for S3 graph cache hydration, JVM heap tuning, and HPA auto-scaling to process heavy routing traffic.
 
 GraphHopper is arguably the most capable open-source routing engine available — it supports Contraction Hierarchies (CH) for sub-millisecond route queries, custom vehicle profiles, turn restrictions, and the full OpenStreetMap road network. The problem most teams encounter is not the algorithm; it is the operational challenge of running it in Kubernetes: loading a large OSM PBF file, sizing JVM memory correctly, handling the long CH pre-processing startup time, and updating map data without downtime.
 

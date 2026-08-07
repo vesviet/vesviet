@@ -13,12 +13,14 @@ categories: ["Engineering", "Distributed Systems"]
 tags: ["Golang", "Temporal", "Distributed Transactions", "Saga Pattern", "FinTech", "Microservices"]
 canonicalURL: "https://tanhdev.com/posts/temporal-saga-pattern-golang-distributed-transactions-guide/"
 cover:
-  image: "images/posts/temporal-saga-pattern-golang-distributed-transactions-guide.jpg"
+  image: "/images/posts/temporal-saga-pattern-golang-distributed-transactions-guide.jpg"
   alt: "Temporal Saga Pattern in Golang Distributed Transactions"
   relative: false
 ---
 
 # Distributed Transactions in Go with Temporal Saga Pattern
+
+**Answer-first:** Implementing distributed transactions in Go with Temporal Saga orchestrates multi-service workflows, manages deterministic state replays, and executes compensating actions upon failure.
 
 Distributed transactions in Go microservices are commonly implemented using the Temporal Saga pattern: replacing blocking Two-Phase Commit (2PC) locks with imperative workflow orchestration, dynamic reverse compensations (`saga.AddCompensation`), and PostgreSQL idempotency tables to keep financial event consistency during network partitions. This guide covers:
 

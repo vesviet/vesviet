@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Data Engineering", "GraphRAG", "LLM", "Architecture", "Vector Database", "RAG Pipeline"]
 categories: ["Engineering", "AI"]
 cover:
-  image: "images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
   alt: "Enterprise AI Data Pipeline and GraphRAG Architecture series: graph-based retrieval at scale"
   relative: false
 mermaid: true

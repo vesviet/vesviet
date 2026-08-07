@@ -10,7 +10,7 @@ keywords: ["core banking testing strategy", "distributed systems SDET", "split-b
 author: "Lê Tuấn Anh"
 schema: ["Article", "TechArticle", "HowTo", "FAQPage"]
 cover:
-  image: "images/posts/banking-microservices-cover.png"
+  image: "/images/posts/banking-microservices-cover.png"
   alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
   relative: false
 canonicalURL: "https://tanhdev.com/series/core-banking-architecture/part-8-qa-sdet-handbook/"

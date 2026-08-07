@@ -9,7 +9,7 @@ description: "An in-depth series on the order allocation problem — from Amazon
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/order-fulfillment-cover.png"
+  image: "/images/posts/order-fulfillment-cover.png"
   alt: "E-commerce Order Allocation Architecture series: Amazon and eBay warehouse and fulfillment design"
   relative: false
 author: "Lê Tuấn Anh"

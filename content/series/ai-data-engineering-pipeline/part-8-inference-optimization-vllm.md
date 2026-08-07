@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["vLLM", "PagedAttention", "Inference", "Python", "GPU", "Performance"]
 categories: ["Engineering", "AI"]
 cover:
-  image: "images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
   alt: "vLLM PagedAttention virtual memory allocation architecture"
   relative: false
 mermaid: true

@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Multi Agent", "Code Review", "Golang", "Architecture", "CI/CD", "DevOps"]
 categories: ["Engineering"]
 cover:
-  image: "images/posts/vibe-coding-cover.png"
+  image: "/images/posts/vibe-coding-cover.png"
   alt: "Multi-Agent Review Pipeline Architecture sequence workflow"
   relative: false
 mermaid: true

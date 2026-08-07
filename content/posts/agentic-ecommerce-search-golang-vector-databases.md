@@ -11,7 +11,7 @@ TocOpen: true
 categories: ["Engineering", "AI"]
 tags: ["Golang", "Vector Search", "Qdrant", "Cohere", "E-commerce", "gRPC"]
 cover:
-  image: "images/posts/agentic-ecommerce-search-cover.png"
+  image: "/images/posts/agentic-ecommerce-search-cover.png"
   alt: "Architecting Agentic E-commerce Search with Golang Vector Databases"
   relative: false
 mermaid: true
@@ -19,6 +19,8 @@ canonicalURL: "https://tanhdev.com/posts/agentic-ecommerce-search-golang-vector-
 ---
 
 # Architecting Agentic E-commerce Search with Golang
+
+**Answer-first:** Agentic e-commerce search combines Golang orchestration with Qdrant vector databases, multi-stage hybrid search reranking, and semantic caching to lower search query latency below 50ms while increasing search conversion rates.
 
 - Practical strategies for tuning vector search precision without bloating RAM.
 - How to coordinate multiple AI search agents to prevent search query latency spikes.

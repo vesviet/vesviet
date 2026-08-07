@@ -11,7 +11,7 @@ TocOpen: true
 categories: ["Architecture", "Engineering"]
 tags: ["Surge Pricing", "Uber H3", "Redis", "Geospatial", "Golang", "Architecture"]
 cover:
-  image: "images/posts/surge-pricing-cover.png"
+  image: "/images/posts/surge-pricing-cover.png"
   alt: "Surge Pricing Algorithm & Spatial Indexing Architecture"
   relative: false
 mermaid: true
@@ -19,6 +19,8 @@ canonicalURL: "https://tanhdev.com/posts/surge-pricing-optimization-architecture
 ---
 
 # Surge Pricing Algorithm & Spatial Indexing Architecture
+
+**Answer-first:** Surge pricing optimization algorithms process real-time demand-supply metrics across Uber H3 spatial cells, dynamically updating price multipliers with low calculation latency.
 
 Why is it that every time it rains, ride-hailing fares double, or even triple? It's not a human operator manually adjusting the prices behind a desk. Rather, it's the result of an incredibly sophisticated Stream Processing engine running in the background executing the **surge pricing algorithm**.
 

@@ -20,12 +20,14 @@ description: "How to replace MySQL manual sharding with TiDB. Distributed SQL ar
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/mysql-scalability-cover.png"
+  image: "/images/posts/mysql-scalability-cover.png"
   alt: "Replace MySQL Sharding with TiDB: distributed SQL migration guide for Go engineers"
 canonicalURL: "https://tanhdev.com/posts/mysql-scaling-sharding-tidb-architecture/"
 ---
 
 # Replace MySQL Sharding with TiDB: Distributed SQL Architecture
+
+**Answer-first:** Replacing legacy MySQL sharding with TiDB distributed SQL simplifies database operations by providing horizontal write scaling, automatic range rebalancing, and full ACID compliance.
 
 Scaling a relational database is one of the most demanding challenges in system design. As applications grow from thousands to millions of active users, the database ceases to be a simple storage engine and becomes the primary bottleneck of the entire system architecture. In this technical guide, we explore the architectural progression of scaling MySQL—beginning with replication topologies, stepping through the complexities and operational hazards of manual database sharding (including proxy middleware like Vitess), and evaluating NewSQL alternatives, specifically the distributed architecture of TiDB.
 

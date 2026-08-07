@@ -21,13 +21,15 @@ description: "Learn how to detect, diagnose, and fix goroutine leaks in producti
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/goroutine-leak-cover.png"
+  image: "/images/posts/goroutine-leak-cover.png"
   alt: "Goroutine Leak Detection and Fix in Production Go Services — pprof, goleak, synctest"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/goroutine-leak-detection-production-golang/"
 ---
 
 # Goroutine Leak Detection and Fix in Production Go Services
+
+**Answer-first:** Detecting goroutine leaks in production Go applications relies on `goleak` unit testing, `pprof/goroutine` stack inspections, and context cancellation hygiene to prevent RAM exhaustion.
 
 - Writing automated test cases that detect goroutine leaks before deploying.
 - Analyzing production runtime stack traces to locate orphaned channels.

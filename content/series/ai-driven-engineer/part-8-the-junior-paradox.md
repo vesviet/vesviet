@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Junior Engineers", "Career", "Mentorship", "Python", "Upskilling", "Software Engineering"]
 categories: ["Engineering", "Strategy"]
 cover:
-  image: "images/posts/ai-native-frontend-cover.png"
+  image: "/images/posts/ai-native-frontend-cover.png"
   alt: "The Junior Engineer Paradox growth trajectory diagram"
   relative: false
 mermaid: true

@@ -13,11 +13,11 @@ TocOpen: true
 series: ["Architecture"]
 mermaid: true
 cover:
-  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/11-security-api-rate-limiting/"
-image: "images/posts/ecommerce-microservices-blueprint-cover.png"
+image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
 
 > API rate limiting defends backend services by restricting request volume. Security requires a layered defense: Web Application Firewalls (WAF) block edge-level volumetric spikes, API Gateways manage L7 credentials and quotas, and application middleware enforces fine-grained business limits. Client identification must rely on validated, secure IP parsing (using the PROXY protocol or rightmost `X-Forwarded-For` checks).
@@ -31,7 +31,9 @@ image: "images/posts/ecommerce-microservices-blueprint-cover.png"
 
 ---
 
-## Layered Rate Limiting Architecture & IP Spoofing Prevention
+# Layered Rate Limiting Architecture & IP Spoofing Prevention
+
+**Answer-first:** Securing Go APIs with rate limiting uses Redis Lua token buckets, sliding window counters, and IP header sanitization middleware to defend against volumetric traffic spikes.
 
 **Key Concept:** Secure rate limiting requires a tiered approach, deploying quick-reject rules at the edge WAF, routing quotas at the L7 gateway, and business-level limits in application middleware. To prevent client IP spoofing, proxies must strip client-supplied `X-Forwarded-For` headers, trust only verified internal proxy IPs, or use the PROXY protocol at the TCP layer.
 

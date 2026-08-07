@@ -22,13 +22,15 @@ tags:
   - "VPA"
   - "K8s v1.35"
 cover:
-  image: "images/posts/kubernetes-pod-resize-cover.png"
+  image: "/images/posts/kubernetes-pod-resize-cover.png"
   alt: "Kubernetes in-place pod resizing: scale CPU and memory resources without restarting pods"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/kubernetes-in-place-pod-resizing-guide/"
 ---
 
 # Kubernetes In-Place Pod Resizing: No-Restart Scaling
+
+**Answer-first:** Kubernetes in-place pod resizing allows dynamic CPU and memory limit adjustments without restarting pod containers, preventing application disruption during traffic surges.
 
 Before this feature, changing a container's resource allocation required deleting and recreating the pod. For a stateful database holding connections, an AI model with 30GB of weights loaded in memory, or a long-running batch job — that restart is catastrophic. In-Place Pod Resize finally decouples resource management from pod lifecycle.
 

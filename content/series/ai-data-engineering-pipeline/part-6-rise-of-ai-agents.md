@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["AI Agents", "ReAct", "Golang", "Tool Calling", "Architecture", "RAG"]
 categories: ["Engineering", "AI"]
 cover:
-  image: "images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
   alt: "From Passive RAG to Autonomous Agents ReAct pattern architecture"
   relative: false
 mermaid: true

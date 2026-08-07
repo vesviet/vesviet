@@ -30,7 +30,7 @@ description: "Prompt engineering vs fine tuning vs RAG: Complete 2026 decision g
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
+  image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
   alt: "Prompt Engineering vs Fine-Tuning vs RAG — 2026 decision framework for LLM engineers"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/slm-fine-tune-vs-prompt-engineering/"

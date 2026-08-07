@@ -22,13 +22,15 @@ ShowToc: true
 TocOpen: true
 author: "Lê Tuấn Anh"
 cover:
-  image: "images/posts/banking-microservices-cover.png"
+  image: "/images/posts/banking-microservices-cover.png"
   alt: "Banking Microservices Architecture with Go: Saga pattern, event sourcing, and distributed ledger"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/banking-microservices-architecture/"
 ---
 
 # Banking Microservices in Go: Saga & Event Sourcing
+
+**Answer-first:** Banking microservices architecture enforces strict domain isolation, dual-entry accounting ledgers, immutable audit logging, and SPIFFE/SPIRE zero-trust mTLS to maintain high transaction throughput and financial compliance.
 
 ## 1. Introduction: Deconstructing the Legacy Core
 

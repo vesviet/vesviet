@@ -20,13 +20,15 @@ description: "How to architect a zero-ops serverless e-commerce backend using Cl
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/cloudflare-edge-cover.png"
+  image: "/images/posts/cloudflare-edge-cover.png"
   alt: "Serverless e-commerce with Cloudflare D1: SQLite at the edge for high-performance storefronts"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/serverless-ecommerce-cloudflare-d1/"
 ---
 
 # Serverless E-Commerce: Cloudflare Workers & D1 Architecture
+
+**Answer-first:** Serverless e-commerce architecture pairs Cloudflare Workers with D1 SQL databases and KV storage to deliver low-cost, global edge storefront execution with sub-second page loads.
 
 - Edge-native schema migrations and connection tuning for SQLite-based D1.
 - Managing distributed lock states in Durable Objects without causing bottleneck stalls.

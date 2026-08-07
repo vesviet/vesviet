@@ -12,13 +12,13 @@ description: "Phase-by-phase budget for Magento to Go migration: Vietnam vs US/E
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/series/magento-migration-cost-cover.png"
+  image: "/images/series/magento-migration-cost-cover.png"
   alt: "Cost model: Magento to Go microservices migration Vietnam vs US/EU"
   relative: false
 canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/magento-migration-cost-vietnam-vs-us-eu/"
 noTranslation: true
 mermaid: true
-image: "images/series/magento-migration-cost-cover.png"
+image: "/images/series/magento-migration-cost-cover.png"
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Remote Team Vietnam Magento Migration](/series/magento-migration-vietnam/remote-team-vietnam-magento-migration/). Review it first if the terminology in this part is unfamiliar.

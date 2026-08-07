@@ -12,13 +12,13 @@ description: "How a Vietnam Go team owns production after Magento migration — 
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/series/post-migration-operations-vietnam-cover.png"
+  image: "/images/series/post-migration-operations-vietnam-cover.png"
   alt: "Post-migration operations with a Vietnam Go team: SLO, on-call, observability"
   relative: false
 canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/post-migration-operations-vietnam-go-team/"
 noTranslation: true
 mermaid: true
-image: "images/series/post-migration-operations-vietnam-cover.png"
+image: "/images/series/post-migration-operations-vietnam-cover.png"
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Go Engineers Vietnam Migration Vetting](/series/magento-migration-vietnam/go-engineers-vietnam-migration-vetting/). Review it first if the terminology in this part is unfamiliar.

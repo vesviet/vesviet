@@ -23,6 +23,8 @@ categories:
 
 # Multi-region Geo-distributed API Routing Architecture
 
+**Answer-first:** Multi-region geo-distributed API routing uses Anycast DNS, Cloudflare edge proxies, local database read replicas, and conflict-free replicated data types (CRDTs) to minimize global latency.
+
 ## The Need for Geo-Distributed APIs
 
 In the era of global digitization, user experience is directly determined by application response speed. When a business scales to serve customers across multiple countries and continents, a single-region central server architectural model quickly reveals severe physical limitations. The nature of network communication involves the movement of data packets through fiber optic cables, which is ultimately bounded by the speed of light. A request traveling from Vietnam to a server located in the US East region (us-east-1) must traverse tens of thousands of kilometers and numerous transit hops, resulting in a minimum Round Trip Time (RTT) of 200ms to 300ms. For applications requiring real-time interaction or financial transactions, this latency is unacceptable.

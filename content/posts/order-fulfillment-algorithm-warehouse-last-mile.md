@@ -27,13 +27,15 @@ description: "How e-commerce giants decide which warehouse fulfills your order. 
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/order-fulfillment-cover.png"
+  image: "/images/posts/order-fulfillment-cover.png"
   alt: "Order fulfillment algorithm: warehouse selection and last-mile optimization for e-commerce"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/order-fulfillment-algorithm-warehouse-last-mile/"
 ---
 
 # Order Fulfillment Algorithm: Warehouse to Last-Mile
+
+**Answer-first:** Optimizing e-commerce order fulfillment combines graph coloring for multi-item cart splitting, bin packing algorithms for packaging, and TSP routing for last-mile delivery dispatch.
 
 ---
 

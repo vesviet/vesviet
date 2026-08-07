@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["AI Security", "Zero Trust", "DevSecOps", "Python", "RBAC", "Threat Modeling", "Security"]
 categories: ["Engineering", "Security"]
 cover:
-  image: "images/posts/hybrid-ai-pipeline-cover.png"
+  image: "/images/posts/hybrid-ai-pipeline-cover.png"
   alt: "AI Security Engineering Architecture threat modeling topology"
   relative: false
 mermaid: true

@@ -12,13 +12,17 @@ categories: ["Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/magento-ai-cover.png"
+  image: "/images/posts/magento-ai-cover.png"
   alt: "Exporting Magento 2 data: flatten EAV schema with SQL and Node.js for data warehouse pipelines"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/exporting-magento-2-data-flat-sql-nodejs/"
 ---
 
+> **Prerequisite:** Review [Composable E-Commerce Migration](/posts/ecommerce-architecture-composable-migration/) for overview context on schema decomposition.
+
 # Exporting Magento 2 Data: Flatten EAV with SQL & Node
+
+**Answer-first:** Exporting Magento 2 EAV data models into flat SQL tables via Node.js stream processing accelerates database ETL migrations and boosts catalog sync speed for downstream microservices.
 
 - How to optimize complex EAV joins in MySQL using index hints to prevent full table scans on catalogs exceeding 1 million SKUs.
 - Complete Node.js stream backpressure implementations that keep memory usage under 100MB while processing millions of records.
@@ -533,4 +537,7 @@ Instead of loading millions of database rows into memory at once, we use cursor-
 
 ### How do you handle store-scope inheritance when exporting Magento 2 product attributes via SQL?
 Magento attributes inherit values from the default store scope (store_id = 0) unless overridden at a specific store view. SQL queries must perform `LEFT JOIN` operations against both store_id = 0 and the target store_id, using `COALESCE(store_val.value, default_val.value)` to fall back gracefully to the default attribute value.
+
+🔗 **Next Step:** Continue to [Laravel vs Golang: When to Add Features in Each?](/posts/laravel-vs-golang-when-to-add-features/) for the following module in the series.
+
 

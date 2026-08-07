@@ -12,13 +12,15 @@ author: "Lê Tuấn Anh"
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/golang-microservices-cover.png"
+  image: "/images/posts/golang-microservices-cover.png"
   alt: "Go microservices architecture production guide 2026"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/go-microservices/"
 ---
 
 # Go Microservices Architecture: Production Guide
+
+**Answer-first:** Building production Go microservices requires Clean Architecture context separation, gRPC transport channels, central structured logging, metrics instrumentation, and resilient circuit breaking.
 
 - Tuning goroutine schedulers for latency-sensitive microservices.
 - Why standard HTTP/1.1 pools are a bottleneck compared to HTTP/2 and gRPC transport.

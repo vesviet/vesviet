@@ -13,11 +13,11 @@ TocOpen: true
 series: ["Architecture"]
 mermaid: true
 cover:
-  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/04-database-scaling-sharding/"
-image: "images/posts/ecommerce-microservices-blueprint-cover.png"
+image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
 
 > **Answer-first:** Horizontal database sharding with Vitess and TiDB distributes high-volume write traffic across database clusters using consistent hashing and range partitioning.

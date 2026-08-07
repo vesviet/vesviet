@@ -15,12 +15,12 @@ aliases:
   - "/series/high-concurrency-systems/part-1-pessimistic-locks/"
   - "/series/high-concurrency-systems/part-2-optimistic-locks/"
 cover:
-  image: "images/posts/realtime-inventory-cover.png"
+  image: "/images/posts/realtime-inventory-cover.png"
   alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/"
-image: "images/posts/realtime-inventory-cover.png"
+image: "/images/posts/realtime-inventory-cover.png"
 ---
 
 > **Prerequisite:** Read the previous article: [Chapter 7: Fortifying Payment Systems with Idempotent APIs](/series/high-concurrency-systems/idempotency-api-design-payments/).
@@ -29,7 +29,9 @@ In a standalone Go application, preventing two Goroutines from overwriting the s
 
 ---
 
-## 1. Basic Redis Locks
+# 1. Basic Redis Locks
+
+**Answer-first:** Distributed locking in Go uses Redis Redlock or etcd Raft leases with fencing tokens to guarantee mutual exclusion across distributed microservices under network partitions.
 
 A basic Redis lock utilizes `SET resource id NX PX ttl`. It works for simple caching but suffers from Single Point of Failure vulnerabilities if the Redis Master crashes before syncing.
 

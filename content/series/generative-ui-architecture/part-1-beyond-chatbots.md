@@ -10,7 +10,7 @@ canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-fronte
 tags: ["Generative UI", "AI Frontend", "React", "Server-Driven UI", "Architecture"]
 categories: ["Engineering", "Frontend"]
 cover:
-  image: "images/posts/generative-ui-mcp-cover.png"
+  image: "/images/posts/generative-ui-mcp-cover.png"
   alt: "Beyond Chatbots: Generative UI dynamic component rendering architecture"
   relative: false
 mermaid: true
@@ -22,7 +22,7 @@ weight: 1
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/series/generative-ui-architecture/executive-summary/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Generative UI (GenUI) is a frontend architectural pattern where Large Language Models dynamically generate structured UI components (such as interactive forms, charts, and data tables) rather than plain streaming Markdown text. By coupling LLM tool-calling output with a validated client-side React component registry and Server-Driven UI (SDUI) protocols, GenUI delivers personalized, deterministic visual interfaces in real time while maintaining strict accessibility, security, and rendering performance.
+> **Answer-first:** Generative UI (GenUI) is a frontend architectural pattern where Large Language Models dynamically generate structured UI components rather than plain streaming text. By coupling LLM tool-calling with a validated React component registry and Server-Driven UI protocols, GenUI delivers personalized visual interfaces while maintaining accessibility and performance.
 
 ---
 

@@ -6,7 +6,7 @@ draft: false
 description: "How PayPay survives billion-yen campaign traffic spikes: KEDA Cron Scaler pre-warming, priority load shedding, and Kafka buffering in production."
 weight: 6
 cover:
-  image: "images/posts/paypay-scaling-cover.png"
+  image: "/images/posts/paypay-scaling-cover.png"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
 categories: ["High Traffic", "Architecture", "FinTech"]
@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-5-campaign-ar
 ShowToc: true
 TocOpen: true
 mermaid: true
-image: "images/posts/paypay-scaling-cover.png"
+image: "/images/posts/paypay-scaling-cover.png"
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Sre Chaos Engineering](/series/paypay-architecture/part-4-sre-chaos-engineering/). Review it first if the terminology in this part is unfamiliar.

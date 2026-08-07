@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Agent Memory", "Redis", "Vector DB", "Python", "Architecture", "AI Agents"]
 categories: ["Engineering", "AI"]
 cover:
-  image: "images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
   alt: "Agentic Memory Systems tri-tier memory architecture topology"
   relative: false
 mermaid: true

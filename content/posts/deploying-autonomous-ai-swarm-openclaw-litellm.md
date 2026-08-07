@@ -11,7 +11,7 @@ TocOpen: true
 categories: ["AI", "Engineering"]
 tags: ["AI Agents", "OpenClaw", "LiteLLM", "Python", "Docker", "LLM Ops"]
 cover:
-  image: "images/posts/openclaw-litellm-cover.png"
+  image: "/images/posts/openclaw-litellm-cover.png"
   alt: "Production Agentic AI Swarm: OpenClaw & LiteLLM"
   relative: false
 mermaid: true
@@ -19,6 +19,8 @@ canonicalURL: "https://tanhdev.com/posts/deploying-autonomous-ai-swarm-openclaw-
 ---
 
 # Production Agentic AI Swarm: OpenClaw & LiteLLM
+
+**Answer-first:** Deploying autonomous AI agent swarms using OpenClaw and LiteLLM gateway balances LLM API rate limits, model fallback routing, context window pruning, and cost-effective multi-agent orchestration.
 
 - Docker cap-drop security patterns that protect local credentials from AI agents.
 - Setting up model fallbacks and pool-key routing in LiteLLM to bypass API rate limits.

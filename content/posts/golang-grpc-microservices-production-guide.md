@@ -20,13 +20,15 @@ tags:
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/golang-microservices-cover.png"
+  image: "/images/posts/golang-microservices-cover.png"
   alt: "Golang gRPC Microservices production guide: Protobuf, mTLS, middleware, and graceful shutdown"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/golang-grpc-microservices-production-guide/"
 ---
 
 # Golang gRPC Microservices: Protobuf, TLS & Middleware
+
+**Answer-first:** Production Go gRPC microservices combine Protobuf binary serialization, mTLS transport encryption, interceptor middleware logging, and gRPC-Health checking for high-throughput RPC performance.
 
 ## Why gRPC for Go Microservices?
 

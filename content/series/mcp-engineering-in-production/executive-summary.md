@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["MCP", "Model Context Protocol", "Golang", "Architecture", "AI Agents", "JSON-RPC"]
 categories: ["Engineering", "Architecture"]
 cover:
-  image: "images/posts/mcp-engineering-in-production-cover.png"
+  image: "/images/posts/mcp-engineering-in-production-cover.png"
   alt: "Model Context Protocol in Production executive summary architecture"
   relative: false
 mermaid: true
@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/executiv
 description: "Exhaustive technical summary and production engineering guide for Executive Summary — Model Context Protocol in Production: The Control Plane of AI."
 ShowToc: true
 TocOpen: true
-image: "images/posts/mcp-engineering-in-production-cover.png"
+image: "/images/posts/mcp-engineering-in-production-cover.png"
 ---
 
 ## Executive Summary — Model Context Protocol in Production: The Control Plane of AI

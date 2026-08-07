@@ -12,13 +12,15 @@ categories: ["FinTech", "Architecture"]
 tags: ["FinTech", "Core Banking", "Microfinance", "Golang", "PostgreSQL", "Ledger"]
 mermaid: true
 cover:
-  image: "images/posts/microfinance-core-banking-cover.png"
+  image: "/images/posts/microfinance-core-banking-cover.png"
   alt: "Microfinance Core Banking Architecture & Engineering Guide"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/deconstructing-microfinance-core-banking-architecture/"
 ---
 
 # Microfinance Core Banking: Architecture & Engineering Guide
+
+**Answer-first:** Deconstructing microfinance core banking architecture decouples interest calculation engines, double-entry ledgers, and loan disbursement pipelines into event-driven Go microservices.
 
 Building a Core Banking System (CBS) for a Microfinance Institution (MFI) presents a radically different set of engineering challenges compared to traditional retail banking. While commercial banks focus heavily on individual credit scores and card networks, microfinance operates on high-frequency, low-value transactions, group-based lending, and offline field collections. 
 

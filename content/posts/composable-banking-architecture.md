@@ -23,7 +23,7 @@ description: "Discover the composable banking architecture pattern. Learn how to
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/banking-microservices-cover.png"
+  image: "/images/posts/banking-microservices-cover.png"
   alt: "Composable Banking Architecture: from monolith to modular core banking services"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/composable-banking-architecture/"

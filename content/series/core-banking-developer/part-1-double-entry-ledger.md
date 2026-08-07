@@ -7,7 +7,7 @@ draft: false
 description: "Double-entry bookkeeping for engineers: debit/credit rules, T-accounts, balance constraints, and how core banking systems enforce ACID at the ledger layer."
 weight: 2
 cover:
-  image: "images/posts/banking-microservices-cover.png"
+  image: "/images/posts/banking-microservices-cover.png"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
   relative: false
 categories: ["FinTech", "Core Banking", "Backend"]

@@ -20,13 +20,15 @@ tags:
   - "Architecture"
 mermaid: true
 cover:
-  image: "images/posts/realtime-inventory-cover.png"
+  image: "/images/posts/realtime-inventory-cover.png"
   alt: "Real-time inventory architecture for e-commerce: event-driven sync, Kafka, and oversell prevention"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/real-time-inventory-ecommerce-architecture/"
 ---
 
 # Real-Time Inventory Topology: CDC, Kafka, and Redis
+
+**Answer-first:** Real-time e-commerce inventory management uses Debezium CDC event streams, Kafka topic partitioning, and Redis memory caches to prevent stock over-selling during peak flash sales.
 
 **Real-time inventory synchronization** is the process of propagating stock count changes from the system of record (database) to all sales channels — web storefront, mobile app, WMS, ERP — in sub-second time. Instead of batch ETL jobs that run every hour, a CDC + Kafka pipeline streams every committed stock change as an event, eliminating overselling and stale stock displays.
 

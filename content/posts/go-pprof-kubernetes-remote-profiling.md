@@ -22,13 +22,15 @@ description: "Safely profile Go microservices in Kubernetes using Go pprof and k
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/goroutine-leak-cover.png"
+  image: "/images/posts/goroutine-leak-cover.png"
   alt: "Go pprof Kubernetes remote profiling: kubectl port-forward, flame graphs, and production profiling"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/go-pprof-kubernetes-remote-profiling/"
 ---
 
 # Go pprof in Kubernetes: Remote Profiling & Flame Graphs
+
+**Answer-first:** Remote Go pprof profiling in Kubernetes uses secure kubectl port-forwarding, continuous CPU/memory profile collection, and flame graph analysis to identify production goroutine leaks.
 
 You've instrumented your Go service with `net/http/pprof`, run `go tool pprof` locally against the development binary, and spotted the hot path in your flame graph. Then you deploy to Kubernetes and the bottleneck disappears — because the workload profile in Kubernetes differs from local testing (different request mix, connection pool pressure, GC behavior under actual memory pressure, scheduler interference from co-located pods).
 

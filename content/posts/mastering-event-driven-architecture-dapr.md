@@ -12,13 +12,15 @@ categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/dapr-saga-cover.png"
+  image: "/images/posts/dapr-saga-cover.png"
   alt: "Mastering event-driven architecture with Dapr: pub/sub, bindings, and actor model in Go microservices"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/mastering-event-driven-architecture-dapr/"
 ---
 
 # Mastering Event-Driven Architecture with Dapr Pub/Sub in Go
+
+**Answer-first:** Mastering event-driven architecture with Dapr Pub/Sub decouples publisher and subscriber microservices, guarantees at-least-once message delivery, and simplifies event broker migrations.
 
 In my previous post, we explored how abandoning monolithic architecture in favor of strict **Domain-Driven Design (DDD)** bounded contexts allowed an e-commerce platform to scale beyond 10,000+ orders per day. However, splitting one big database into 20+ isolated Postgres databases introduces a terrifying new problem: **How do we maintain data consistency across disconnected services?**
 
@@ -65,7 +67,8 @@ This is the question every Go team asks. They are not competing technologies —
 
 The Dapr sidecar adds approximately **sub-millisecond to ~1ms latency per hop** via the localhost loopback. For the vast majority of e-commerce and fintech workloads, this is an acceptable tradeoff for the developer velocity gains.
 
-> **Note:** Do not run Dapr and Istio mTLS simultaneously without disabling one of them — the double sidecar overhead compounds and you end up with redundant mTLS on the same traffic path.
+> [!NOTE]
+> Do not run Dapr and Istio mTLS simultaneously without disabling one of them — the double sidecar overhead compounds and you end up with redundant mTLS on the same traffic path.
 
 ---
 

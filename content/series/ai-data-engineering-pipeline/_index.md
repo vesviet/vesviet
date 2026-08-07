@@ -11,7 +11,7 @@ categories: ["Data Engineering", "AI"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
   alt: "Enterprise AI Data Pipeline and GraphRAG Architecture series — graph-based retrieval at scale"
   relative: false
 author: "Lê Tuấn Anh"

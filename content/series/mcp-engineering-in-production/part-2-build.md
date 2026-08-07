@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["MCP Server", "Golang", "Python", "JSON-RPC", "Architecture", "Microservices"]
 categories: ["Engineering", "Architecture"]
 cover:
-  image: "images/posts/mcp-engineering-in-production-cover.png"
+  image: "/images/posts/mcp-engineering-in-production-cover.png"
   alt: "Building Production Grade MCP Servers system architecture"
   relative: false
 mermaid: true
@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-2-b
 description: "Build production-grade MCP servers in Go and Python with DDD domain isolation, sync.Pool memory buffers, context timeouts, and stateless scaling."
 ShowToc: true
 TocOpen: true
-image: "images/posts/mcp-engineering-in-production-cover.png"
+image: "/images/posts/mcp-engineering-in-production-cover.png"
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Protocol](/series/mcp-engineering-in-production/part-1-protocol/). Review it first if the terminology in this part is unfamiliar.

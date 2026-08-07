@@ -13,12 +13,12 @@ description: "Defend Go microservices against cache penetration, avalanche, and 
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/realtime-inventory-cover.png"
+  image: "/images/posts/realtime-inventory-cover.png"
   alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/"
-image: "images/posts/realtime-inventory-cover.png"
+image: "/images/posts/realtime-inventory-cover.png"
 ---
 
 > Multi-tier distributed caching using Redis clusters and in-memory LRU buffers prevents database thundering herd and reduces read latency to sub-millisecond ranges.
@@ -44,7 +44,9 @@ flowchart TD
     CacheWrite --> Return
 ```
 
-## 1. Cache Penetration & Bloom Filter Mathematics
+# 1. Cache Penetration & Bloom Filter Mathematics
+
+**Answer-first:** Multi-tier distributed caching with Redis clusters and in-memory LRU buffers prevents database thundering herd problems and reduces read latency to sub-millisecond ranges.
 
 Cache penetration occurs when attackers query non-existent IDs, bypassing the cache entirely. Defend against it by caching `NULL` values or utilizing Bloom Filters at the memory level.
 

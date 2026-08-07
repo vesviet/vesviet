@@ -11,13 +11,13 @@ description: "A practical guide to selecting, fine-tuning (PEFT), aligning (DPO/
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
+  image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
   alt: "The SLM Playbook: fine-tuning and model distillation series for production AI engineers"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/slm-playbook/"
 mermaid: false
-image: "images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
+image: "/images/posts/slm-fine-tune-vs-prompt-engineering-cover.png"
 ---
 
 > **Answer-first:** The SLM Playbook is a six-part engineering blueprint for fine-tuning, aligning, distilling, and serving Small Language Models (SLMs) in production. It covers data deduplication (SemDeDup), QLoRA training (Axolotl/Unsloth), knowledge distillation, preference alignment (DPO/GRPO), high-throughput vLLM serving, AWQ quantization, and WasmEdge edge deployment on enterprise GPU and ARM64 infrastructure.

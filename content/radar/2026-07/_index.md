@@ -10,7 +10,7 @@ TocOpen: true
 categories: ["Tech Radar"]
 tags: ["Tech Radar", "Cloud Native", "DevOps", "Architecture", "Engineering", "Golang", "Kubernetes"]
 cover:
-  image: "images/posts/default-post.png"
+  image: "/images/posts/default-post.png"
   alt: "Tech Radar Digest July 2026: AI Swarms & Edge K8s Log"
   relative: false
 aliases:

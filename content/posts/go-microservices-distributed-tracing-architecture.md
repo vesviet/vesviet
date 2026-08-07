@@ -23,13 +23,15 @@ tags:
   - "Microservices"
 mermaid: true
 cover:
-  image: "images/posts/golang-microservices-cover.png"
+  image: "/images/posts/golang-microservices-cover.png"
   alt: "Go Microservices Distributed Tracing Architecture 2026: OpenTelemetry, W3C propagation, tail-based sampling"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/go-microservices-distributed-tracing-architecture/"
 ---
 
 # Go Microservices Distributed Tracing Architecture (2026)
+
+**Answer-first:** Distributed tracing in Go microservices uses OpenTelemetry context propagation, W3C trace headers, Jaeger collection, and low-overhead span sampling to diagnose microservice latency bottlenecks.
 
 > 
 

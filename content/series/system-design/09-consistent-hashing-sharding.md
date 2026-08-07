@@ -13,11 +13,11 @@ TocOpen: true
 series: ["Architecture"]
 mermaid: true
 cover:
-  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/09-consistent-hashing-sharding/"
-image: "images/posts/ecommerce-microservices-blueprint-cover.png"
+image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
 **Answer-first:** Consistent Hashing minimizes key remapping when cluster membership changes. Adding or removing one node from a modulo-hash cluster remaps nearly all keys (catastrophic cache miss storm). Consistent Hashing remaps only $K/N$ keys — the theoretical minimum necessary.
 

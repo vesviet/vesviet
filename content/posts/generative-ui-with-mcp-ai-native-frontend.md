@@ -29,13 +29,15 @@ description: "Architect dynamic generative UI applications with Model Context Pr
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/generative-ui-mcp-cover.png"
+  image: "/images/posts/generative-ui-mcp-cover.png"
   alt: "Generative UI with MCP: AI-native frontend architecture using Model Context Protocol tool calls"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-frontend/"
 ---
 
 # Generative UI with MCP: Architecting AI-Native Frontends
+
+**Answer-first:** Generative UI powered by Model Context Protocol (MCP) enables backend AI models to dynamically render tailored frontend components, streaming reactive interface updates directly to client web apps.
 
 Generative UI with Model Context Protocol (MCP) moves frontends from text-only chat interfaces to dynamic, interactive UI components. Using React Server Components, Zod runtime schema validation, dynamic component registries, and iframe sandboxing, AI agents can safely trigger rich native UI components directly from structured tool call outputs. This post covers six pieces of that architecture: moving beyond plain-text chat, reconciling agent reasoning state with live DOM state, managing a versioned component registry, securing and making components accessible, human-in-the-loop confirmation for high-risk actions, and testing/deploying at the edge.
 

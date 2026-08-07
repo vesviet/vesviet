@@ -12,13 +12,17 @@ categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/strangler-fig-shared-database-quick-win-cover.png"
+  image: "/images/posts/strangler-fig-shared-database-quick-win-cover.png"
   alt: "Magento database migration decision: Shared DB vs CDC vs Event Bus — Architecture Comparison"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/strangler-fig-shared-database-quick-win/"
 ---
 
+> **Prerequisite:** Review [Why Migrate Magento to Microservices: Zero-Downtime Guide](/posts/moving-from-magento-to-microservices/) for initial architecture context.
+
 # Magento Migration: Shared DB, CDC, or Event Bus?
+
+**Answer-first:** Implementing the Strangler Fig pattern with a shared database enables gradual monolith-to-microservice migration, using CDC event capture and API gateway proxies to decouple services safely.
 
 - Why Go running against Magento's MySQL is faster at the compute layer but still bottlenecked at the EAV query layer — and what actually fixes it.
 - The single deciding factor between CDC (Option B) and Event Bus (Option C): who owns the PHP Magento codebase.
@@ -429,3 +433,6 @@ Hard Phase 2 deadline set     read separation            Cart/Checkout LAST
 
 - **[Debezium MySQL Connector Documentation](https://debezium.io/documentation/reference/stable/connectors/mysql.html)** — Official setup guide for CDC from MySQL binlog
 - **[Adobe: Magento 2.4.6 Split Database Deprecation](https://experienceleague.adobe.com/docs/commerce-operations/configuration-guide/storage/split-db/split-db.html)** — Adobe's official notice deprecating the split database feature in Magento 2.4.6+
+
+🔗 **Next Step:** Continue to [Migrating Magento to Microservices: When & Why](/posts/why-migrate-magento-to-microservices/) for the following module in the series.
+

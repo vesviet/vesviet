@@ -45,13 +45,15 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 cover:
-  image: "images/posts/modern-golang-123-124-high-performance-zero-alloc-gc-tuning.png"
+  image: "/images/posts/modern-golang-123-124-high-performance-zero-alloc-gc-tuning.png"
   alt: "Modern Golang 123 124 High Performance Zero Alloc GC Tuning"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/modern-golang-123-124-high-performance-zero-alloc-gc-tuning/"
 ---
 
 # Modern Go 1.23/1.24 High-Performance Engineering: Custom Iterators (`iter.Seq`), Zero-Allocation Memory Pools, and Microsecond GC Tuning
+
+**Answer-first:** Modern Go 1.23/1.24 performance engineering leverages profile-guided optimization (PGO), `unique` string interning, and zero-allocation memory pools to minimize GC pressure under heavy workloads.
 
 > **Key Takeaways**
 > - **Go 1.23 Range-Over-Func Iterators**: `iter.Seq` and `iter.Seq2` enable zero-allocation (`0 B/op`, `0 allocs/op`) traversal APIs, achieving a **76.9% latency reduction** over legacy slice returns and eliminating channel streaming lock contention.

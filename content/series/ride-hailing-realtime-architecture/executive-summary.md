@@ -8,7 +8,7 @@ weight: 1
 tags: ["ride-hailing", "geospatial", "architecture", "Architecture", "uber"]
 categories: ["Ride Hailing", "Architecture"]
 cover:
-  image: "images/posts/real-time-ride-hailing-cover.png"
+  image: "/images/posts/real-time-ride-hailing-cover.png"
   alt: "Real-Time Ride-Hailing Architecture series: Uber and Grab — matching, GPS, WebSocket at scale"
   relative: false
 author: "Lê Tuấn Anh"
@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/exe
 mermaid: true
 ShowToc: true
 TocOpen: true
-image: "images/posts/real-time-ride-hailing-cover.png"
+image: "/images/posts/real-time-ride-hailing-cover.png"
 ---
 
 > **Answer-first:** Real-time ride-hailing platforms combine HTTP/3 gRPC stream ingestion for driver GPS telemetry, Uber H3 hexagonal spatial indexing in Redis RAM, Apache Kafka/Redpanda event streaming, and DISCO global assignment matching engines to dispatch rides in under 2 seconds.

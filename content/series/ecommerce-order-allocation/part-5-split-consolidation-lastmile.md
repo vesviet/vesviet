@@ -8,7 +8,7 @@ weight: 6
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/order-fulfillment-cover.png"
+  image: "/images/posts/order-fulfillment-cover.png"
   alt: "E-commerce Order Allocation Architecture series: Amazon and eBay warehouse and last-mile design"
   relative: false
 author: "Lê Tuấn Anh"

@@ -10,12 +10,12 @@ mermaid: true
 TocOpen: true
 weight: 60
 cover:
-  image: "images/posts/mcp-engineering-in-production-cover.png"
+  image: "/images/posts/mcp-engineering-in-production-cover.png"
   alt: "MCP Engineering in Production series: Go SDK to enterprise Model Context Protocol deployment"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/"
-image: "images/posts/mcp-engineering-in-production-cover.png"
+image: "/images/posts/mcp-engineering-in-production-cover.png"
 ---
 
 > **Answer-first:** Operating Model Context Protocol (MCP) servers in enterprise production requires replacing local `stdio` streams with high-concurrency HTTP/SSE gateways, enforcing OAuth 2.1 identity controls, and deploying zero-trust AST parameter sanitization. This masterclass provides production Go SDK blueprints for building scalable MCP gateways, mitigating OWASP MCP top security risks, and maintaining real-time OpenTelemetry observability across multi-agent workflows.

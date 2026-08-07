@@ -16,12 +16,12 @@ aliases:
   - "/series/high-concurrency-systems/part-5-transactional-outbox/"
   - "/series/high-concurrency-systems/part-6-saga-orchestration/"
 cover:
-  image: "images/posts/realtime-inventory-cover.png"
+  image: "/images/posts/realtime-inventory-cover.png"
   alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/"
-image: "images/posts/realtime-inventory-cover.png"
+image: "/images/posts/realtime-inventory-cover.png"
 ---
 
 > **Prerequisite:** Read the previous article: [Chapter 3: Distributed Rate Limiting with Redis & GCRA Algorithm](/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/).
@@ -106,6 +106,8 @@ Change Data Capture (CDC) requires hooking into PostgreSQL's internal Write-Ahea
 
 ```ini
 # postgresql.conf
+
+**Answer-first:** The Transactional Outbox pattern resolves dual-write inconsistencies between relational databases and event brokers by writing domain events to an outbox table within the local DB transaction.
 
 # 1. Set the WAL level to logical (default is replica)
 wal_level = logical

@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Governance", "Compliance", "Python", "DevOps", "SOC2", "Career"]
 categories: ["Engineering", "Strategy"]
 cover:
-  image: "images/posts/vibe-coding-cover.png"
+  image: "/images/posts/vibe-coding-cover.png"
   alt: "Enterprise AI Code Governance & Compliance architecture"
   relative: false
 mermaid: true
@@ -20,7 +20,9 @@ TocOpen: true
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Ai Code Security](/series/ai-code-review-vibe-coding/part-5-ai-code-security/). Review it first if the terminology in this part is unfamiliar.
 
-## Part 6 — Enterprise AI Code Governance & Compliance
+# Part 6 — Enterprise AI Code Governance & Compliance
+
+**Answer-first:** Enterprise AI code governance establishes telemetry auditing, license compliance checking, security scanning, and career path evolutions for developers managing AI coding tools.
 
 As engineering organizations scale their use of AI code assistants (Cursor, Copilot, Claude Dev) across hundreds of developers, chief technology officers (CTOs) and compliance officers must establish **Enterprise AI Code Governance**.
 

@@ -32,13 +32,17 @@ aliases:
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/ecommerce-composable-cover.png"
+  image: "/images/posts/ecommerce-composable-cover.png"
   alt: "E-commerce composable architecture migration: from Magento monolith to MACH modular services"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/ecommerce-architecture-composable-migration/"
 ---
 
+> **Prerequisite:** Review [Deconstructing the Ecosystem: Service Details by Domain](/posts/deconstructing-ecommerce-service-details-domain/) for background on domain boundaries before reading this migration guide.
+
 # Composable E-Commerce Migration: Overcoming Tech Debt
+
+**Answer-first:** Migrating legacy e-commerce platforms to composable microservices requires incremental API facade routing, domain context decoupling, and zero-downtime Strangler Fig data synchronization.
 
 See the [21-service e-commerce architecture blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/) for the domain boundaries this migration targets.
 
@@ -380,3 +384,6 @@ In production microservices, gRPC binary serialization and HTTP/2 multiplexing a
 - [Magento Migration: Shared DB, CDC, or Event Bus?](/posts/strangler-fig-shared-database-quick-win/) — choosing the data-sync strategy for Phase 1.
 - [E-Commerce Microservices Architecture: 21-Service Blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/) — the target-state topology.
 - [Real-Time Inventory: Kafka, CDC & Redis](/posts/real-time-inventory-ecommerce-architecture/) — the CDC pipeline referenced above, in production form.
+
+🔗 **Next Step:** Continue to [Exporting Magento 2 Data: Flatten EAV with SQL & Node](/posts/exporting-magento-2-data-flat-sql-nodejs/) for the following module in the series.
+

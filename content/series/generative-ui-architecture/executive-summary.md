@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Generative UI", "React", "TypeScript", "Frontend", "JSON Schema", "Architecture"]
 categories: ["Engineering", "Frontend"]
 cover:
-  image: "images/posts/generative-ui-mcp-cover.png"
+  image: "/images/posts/generative-ui-mcp-cover.png"
   alt: "The Dawn of Generative UI and Dynamic Component Rendering architecture"
   relative: false
 mermaid: true

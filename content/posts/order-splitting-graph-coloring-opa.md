@@ -14,9 +14,11 @@ ShowToc: true
 TocOpen: true
 ---
 
+> **Prerequisite:** Review [Part 8: Intelligent Order Release](/series/ecommerce-order-allocation/part-8-intelligent-order-release/) for previous context on order batching and VRPTW before starting this guide.
+
 # Order Splitting at Scale: Graph Coloring, Bin Packing, and OPA in Go
 
-**Answer-first:** Real-time e-commerce order splitting is a Constraint Satisfaction Problem (CSP). To determine the absolute minimum number of cardboard boxes required for a complex cart without violating safety rules or physical dimensions, the 2026 standard pipeline relies on **Open Policy Agent (OPA)** for dynamic business rules, **Golang (`gonum`)** for Graph Coloring (Welsh-Powell) to resolve logical conflicts, and **First-Fit Decreasing Bin Packing** to resolve physical constraints. This pipeline executes in under 50ms during synchronous checkout, deferring heavy Multi-Warehouse routing to async workers.
+**Answer-first:** Real-time e-commerce order splitting is a Constraint Satisfaction Problem (CSP). The standard pipeline relies on **Open Policy Agent (OPA)** for dynamic rules, **Golang (`gonum`)** for Graph Coloring to resolve logical conflicts, and **First-Fit Decreasing Bin Packing** for physical constraints, executing in sub-50ms during synchronous checkout.
 
 ---
 
@@ -153,3 +155,6 @@ The architecture strictly separates responsibilities:
 
 ---
 *If you are an engineer scaling logistics platforms, how do you handle dimensional weight logic? Share your approach below.*
+
+🔗 **Next Step:** Continue to [Part 10: Picker Routing Optimization](/posts/warehouse-picker-routing-optimization/) for the next module in this series.
+

@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["MCP", "Observability", "OpenTelemetry", "Golang", "Tracing", "Prometheus", "DevOps"]
 categories: ["Engineering", "DevOps"]
 cover:
-  image: "images/posts/mcp-engineering-in-production-cover.png"
+  image: "/images/posts/mcp-engineering-in-production-cover.png"
   alt: "MCP Observability and Tracing OpenTelemetry telemetry flow"
   relative: false
 mermaid: true
@@ -16,7 +16,7 @@ canonicalURL: "https://tanhdev.com/series/mcp-engineering-in-production/part-6-o
 description: "Implement OpenTelemetry distributed tracing and Prometheus metrics for MCP servers to audit tool calls, track latency SLAs, and maintain SOC2 compliance."
 ShowToc: true
 TocOpen: true
-image: "images/posts/mcp-engineering-in-production-cover.png"
+image: "/images/posts/mcp-engineering-in-production-cover.png"
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Security](/series/mcp-engineering-in-production/part-5-security/). Review it first if the terminology in this part is unfamiliar.

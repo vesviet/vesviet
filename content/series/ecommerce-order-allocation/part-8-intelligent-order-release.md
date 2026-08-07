@@ -18,7 +18,7 @@ canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/part-8-inte
 
 # Agentic AI for Dynamic Intelligent Order Release (IOR)
 
-**Answer-first:** Dynamic Intelligent Order Release (IOR) replaces rigid warehouse wave batching with continuous, event-driven micro-batch optimization. Operating in Go, the engine ingests real-time order streams, queries a self-hosted GraphHopper Distance Matrix API for sub-5ms travel durations, dispatches optimization events over Dapr Pub/Sub, and invokes Google OR-Tools VRPTW solvers to dynamically release pick waves while respecting carrier departure cutoffs and picker capacity limits.
+**Answer-first:** Dynamic Intelligent Order Release (IOR) replaces rigid warehouse wave batching with continuous, event-driven micro-batch optimization. Operating in Go, the engine ingests order streams, queries a self-hosted GraphHopper Distance Matrix API, dispatches events over Dapr Pub/Sub, and invokes Google OR-Tools VRPTW solvers to release pick waves respecting carrier cutoffs and picker capacity.
 
 ---
 

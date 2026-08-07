@@ -9,7 +9,7 @@ TocOpen: true
 categories: ["Tech Radar"]
 tags: ["Mistral", "Open Source", "LLMs", "AI Agents", "Multimodal", "Apache 2.0"]
 cover:
-  image: "images/posts/default-post.png"
+  image: "/images/posts/default-post.png"
   alt: "Tech Radar, April 27, 2026: Mistral Small 4 — One Open-Source Model to Rule Chat, Reasoning, and Agents"
   relative: false
 mermaid: true

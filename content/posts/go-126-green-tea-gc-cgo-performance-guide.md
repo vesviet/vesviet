@@ -22,13 +22,15 @@ tags:
   - "Goroutine Leak"
   - "AI Inference"
 cover:
-  image: "images/posts/go-green-tea-gc-cover.png"
+  image: "/images/posts/go-green-tea-gc-cover.png"
   alt: "Go 1.26 Green Tea GC and CGO performance: garbage collection improvements and latency reduction"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/go-126-green-tea-gc-cgo-performance-guide/"
 ---
 
 # Go 1.26: Green Tea GC, Faster CGO & Goroutine Leak Detection
+
+**Answer-first:** Go 1.26 Green Tea GC optimizations cut garbage collection pause times by 40% and eliminate CGO call overhead, boosting high-throughput backend API performance and zero-alloc memory efficiency.
 
 Released in February 2026, Go 1.26 is not a routine patch release. It fundamentally changes how the Go runtime manages memory, interacts with C code, and surfaces concurrency bugs. For teams running [Golang microservices at scale](/posts/architecting-21-service-ecommerce-golang-ddd/), these improvements compound across a fleet — zero code changes required.
 

@@ -22,13 +22,15 @@ description: "Master Golang goroutine pool patterns using errgroup, semaphores, 
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/golang-concurrency-cover.png"
+  image: "/images/posts/golang-concurrency-cover.png"
   alt: "Golang Goroutine Pool and Errgroup Worker: concurrent task processing patterns in production Go"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/golang-goroutine-pool-errgroup-worker/"
 ---
 
 # Golang Goroutine Pool Patterns: errgroup & Backpressure
+
+**Answer-first:** Golang goroutine pool patterns using `golang.org/x/sync/errgroup` and bounded channels limit memory allocation, prevent unhandled panic crashes, and manage worker concurrency safely.
 
 - Preventing goroutine leaks in high-concurrency worker pools using errgroup.
 - Writing robust worker pools that propagate context cancellation to all active goroutines.

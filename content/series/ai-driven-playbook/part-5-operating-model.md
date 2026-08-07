@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Operating Model", "Team Structure", "Leadership", "Python", "Strategy", "Management"]
 categories: ["Engineering", "Strategy"]
 cover:
-  image: "images/posts/hybrid-ai-pipeline-cover.png"
+  image: "/images/posts/hybrid-ai-pipeline-cover.png"
   alt: "Operating Model Evolving Your Team pod structure diagram"
   relative: false
 mermaid: true

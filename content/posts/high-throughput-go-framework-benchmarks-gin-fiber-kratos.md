@@ -16,6 +16,8 @@ mermaid: true
 
 # High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos
 
+**Answer-first:** High-throughput Go web framework benchmarks show Fiber leading in zero-alloc HTTP routing speed, Gin excelling in ecosystem maturity, and Kratos providing robust enterprise microservice abstractions.
+
 ## The Testing Methodology (Beyond Hello World)
 
 We set up our benchmark tests on standard AWS hardware using a `c6i.2xlarge` instance (8 vCPUs, 16 GiB RAM) running Ubuntu 22.04 LTS. Both the testing client and the server running the Go application were placed in the same VPC to completely minimize any margin of error caused by physical network latency.

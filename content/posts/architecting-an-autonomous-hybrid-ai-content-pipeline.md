@@ -28,13 +28,15 @@ description: "Replace costly crons with an autonomous $0.05/day AI pipeline: Hyb
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/hybrid-ai-pipeline-cover.png"
+  image: "/images/posts/hybrid-ai-pipeline-cover.png"
   alt: "Autonomous Hybrid-AI Content Pipeline: from cron trigger to state machine with human-in-the-loop"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/"
 ---
 
 # Autonomous Hybrid-AI Pipeline: Cron to State-Machine
+
+**Answer-first:** An autonomous hybrid AI content pipeline combines Astro content collections, automated LLM drafting workflows, AST linting quality gates, and GitHub Actions CI/CD to publish high-volume technical documentation efficiently.
 
 Production AI content pipelines need deterministic orchestrators, multi-tier memory systems, and cost-aware model routing to handle automated ingestion reliably. Replacing monolithic background jobs with event-driven agents gives resilient execution, zero-idle resource usage, and stricter output verification. This post covers four pieces of that architecture:
 

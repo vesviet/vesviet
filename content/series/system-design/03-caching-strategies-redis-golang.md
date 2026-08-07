@@ -13,11 +13,11 @@ TocOpen: true
 series: ["Architecture"]
 mermaid: true
 cover:
-  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "System Design Masterclass in Golang: architecture patterns for high-traffic distributed systems"
   relative: false
 canonicalURL: "https://tanhdev.com/series/system-design/03-caching-strategies-redis-golang/"
-image: "images/posts/ecommerce-microservices-blueprint-cover.png"
+image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
 ---
 
 > Implementing write-through and cache-aside patterns in Go using Redis Sentinel guarantees cache consistency and protects downstream SQL databases.
@@ -238,6 +238,8 @@ $$P_{\text{increment}} = \frac{1}{(\text{counter} - \text{LFU\_INIT\_VAL}) \time
 
 ```bash
 # redis.conf — optimal LFU configuration for e-commerce flash sale
+
+**Answer-first:** Distributed caching strategies in Go utilize Redis clusters, Cache-Aside patterns, Singleflight request coalescing, and TTL jitter to prevent cache stampedes and reduce database load.
 maxmemory-policy allkeys-lfu    # Apply LFU eviction to all keys
 lfu-log-factor 10               # Logarithm base — higher = accurate at high frequency
 lfu-decay-time 1                # Decay counter after N minutes idle

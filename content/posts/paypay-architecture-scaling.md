@@ -22,13 +22,15 @@ description: "In-depth look at PayPay's engineering stack: handling 70M users an
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/paypay-scaling-cover.png"
+  image: "/images/posts/paypay-scaling-cover.png"
   alt: "PayPay architecture and scaling: distributed payment system engineering in Japan"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/paypay-architecture-scaling/"
 ---
 
 # PayPay Architecture: Scaling to 70M Users & 100k Peak TPS
+
+**Answer-first:** PayPay's payment architecture scales to 70M users and 100k TPS using microservice domain isolation, distributed transaction Saga patterns, and multi-region database sharding.
 
 PayPay launched in October 2018 and grew to 10 million users in just 3 months — a growth rate that no Japanese fintech had ever seen. By 2025, the platform had crossed 70 million registered users and processed 7.8 billion payments per year. Behind this growth is an engineering team that has had to scale not just their infrastructure, but their entire engineering culture: from service standardization and GitOps-driven deployments to chaos engineering and AI-powered fraud detection.
 

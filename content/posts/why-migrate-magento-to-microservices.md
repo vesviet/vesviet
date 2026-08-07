@@ -13,13 +13,17 @@ categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/golang-microservices-cover.png"
+  image: "/images/posts/golang-microservices-cover.png"
   alt: "Migrating Magento to Microservices: When & Why — Architecture Decision Guide"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/why-migrate-magento-to-microservices/"
 ---
 
+> **Prerequisite:** Review [Magento Migration: Shared DB, CDC, or Event Bus?](/posts/strangler-fig-shared-database-quick-win/) for database synchronization strategies.
+
 # Why Migrate Magento to Microservices: Architectural Blueprint
+
+**Answer-first:** Migrating Magento to Go microservices eliminates monolithic database locking, reduces server RAM overhead, accelerates API responses, and enables independent domain team deployments.
 
 Let's be direct: Magento is not a bad platform. For thousands of businesses, it is the right tool. It has a mature plugin ecosystem, a large developer community, and a proven track record across enterprise e-commerce.
 
@@ -278,3 +282,6 @@ If you have decided to migrate — or are building the business case to get exec
 **[Zero-Downtime: Moving from Magento to Microservices →](/posts/moving-from-magento-to-microservices/)**
 
 That guide covers the three-phase Strangler Fig execution: the Read-Only Gateway, the Dual-Write sync layer, and the Full Cutover with hot standby — all without dropping a single order.
+
+🔗 **Next Step:** Continue to [Go Engineers in Vietnam: Vetting for Magento Migration](/series/magento-migration-vietnam/go-engineers-vietnam-migration-vetting/) for the following module in the series.
+

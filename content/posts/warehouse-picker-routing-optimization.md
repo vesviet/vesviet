@@ -14,6 +14,8 @@ ShowToc: true
 TocOpen: true
 ---
 
+> **Prerequisite:** Review [Part 9: Order Splitting Algorithm](/posts/order-splitting-graph-coloring-opa/) for the previous module on box estimation and graph coloring algorithms.
+
 # Warehouse Picker Routing Optimization (GraphHopper & OR-Tools)
 
 **Answer-first:** Minimizing walking distance for warehouse pickers requires solving the Traveling Salesperson Problem (TSP) inside a physical building. The 2026 standard architecture uses a **Java-based Indoor GraphHopper** instance to generate a 100x100 Distance Matrix from custom OpenStreetMap (OSM) data, which is then fed into a **C++ Google OR-Tools gRPC Microservice** to calculate the absolute optimal pick sequence in under 15 milliseconds. 
@@ -105,3 +107,6 @@ However, this introduces a severe DevOps trap. If this Java service runs inside 
 | [Part 8: Intelligent Order Release](/series/ecommerce-order-allocation/part-8-intelligent-order-release/) | Agentic AI Order Batching & VRPTW |
 | [Part 9: Order Splitting Algorithm](/posts/order-splitting-graph-coloring-opa/) | Order Splitting, OPA & Graph Coloring |
 | **This post (Part 10)** | Picker Routing, GraphHopper A*, OR-Tools in C++ |
+
+🔗 **Next Step:** You have reached the final part of this series. Revisit the series index at [/series/ecommerce-order-allocation/](/series/ecommerce-order-allocation/) or explore other backend architecture series linked below.
+

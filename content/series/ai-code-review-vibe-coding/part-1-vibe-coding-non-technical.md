@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Vibe Coding", "Startups", "Product Management", "Python", "Architecture", "AI Agents"]
 categories: ["Engineering"]
 cover:
-  image: "images/posts/vibe-coding-cover.png"
+  image: "/images/posts/vibe-coding-cover.png"
   alt: "Vibe Coding and Non Technical Founders sequence workflow"
   relative: false
 mermaid: true
@@ -20,7 +20,9 @@ TocOpen: true
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/series/ai-code-review-vibe-coding/executive-summary/). Review it first if the terminology in this part is unfamiliar.
 
-## Part 1 — Vibe Coding & Non-Technical Founders: Demystifying the Magic
+# Part 1 — Vibe Coding & Non-Technical Founders: Demystifying the Magic
+
+**Answer-first:** Vibe coding empowers non-technical founders to rapidly prototype complex applications, while requiring strict architectural guardrails and code review pipelines before production launch.
 
 For decades, the highest barrier to launching a software startup was the **Engineering Talent Bottleneck**. Non-technical founders with ground-breaking domain insights were forced to spend months raising capital or searching for technical co-founders before writing a single line of code.
 

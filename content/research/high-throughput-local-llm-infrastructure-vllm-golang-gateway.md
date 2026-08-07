@@ -10,6 +10,8 @@ draft: false
 
 # High-Throughput Local LLM Infrastructure: Architecting a Distributed Go API Gateway for vLLM & PagedAttention Clusters
 
+**Answer-first:** High-throughput local LLM infrastructure pairs vLLM continuous batching inference servers with a Go API gateway for dynamic request queuing, load balancing, and token rate limiting.
+
 ## Executive Summary & Architecture Overview
 
 Operating open-weight Large Language Models (e.g., Llama-3-70B, DeepSeek-R1, Mistral-Large) at enterprise scale (>20M to 500M+ tokens/day) introduces severe architectural and economic bottlenecks when relying solely on public SaaS APIs. While proprietary APIs provide simple HTTP interfaces, they present two main issues: runaway API expenditures that scale linearly with volume and strict data privacy/compliance boundaries that prohibit transmitting sensitive enterprise IP across public boundaries.

@@ -21,13 +21,15 @@ tags:
   - "GORM"
   - "Golang"
 cover:
-  image: "images/posts/mysql-scalability-cover.png"
+  image: "/images/posts/mysql-scalability-cover.png"
   alt: "MySQL Scalability: read replicas, sharding, and TiDB NewSQL — performance architecture guide"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/mysql-scalability-guide/"
 ---
 
 # MySQL Scalability Guide: Read Replicas, Sharding, and Distributed SQL
+
+**Answer-first:** Scaling MySQL for high-traffic applications involves read replica load balancing, indexed query optimization, Redis caching layers, and eventual horizontal table sharding.
 
 MySQL scalability is the ability to increase database throughput — reads per second, writes per second, or data volume — without rewriting your application. The critical distinction: **read scaling** (adding replicas) and **write scaling** (sharding or distributed SQL) require completely different architectural approaches. Choosing the wrong path creates technical debt that takes months to unwind.
 

@@ -12,7 +12,7 @@ categories: ["Engineering", "Strategy"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/laravel-ai-era-cover.png"
+  image: "/images/posts/laravel-ai-era-cover.png"
   alt: "Laravel in the AI era: 10 predictions for 2028 — from LLM integration to AI-assisted development"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/the-future-of-laravel-development-in-ai-era/"
@@ -20,6 +20,8 @@ mermaid: true
 ---
 
 # Laravel in the AI Era: 10 Predictions for 2028
+
+**Answer-first:** The future of Laravel development combines traditional rapid web scaffolding with AI code generation, automated test writing, and microservice extraction as applications scale.
 
 The moment I realized the Laravel ecosystem was fundamentally changing wasn't when an AI wrote a clever algorithm. It was when I watched Claude 3.5 Sonnet scaffold a complete multi-tenant invoicing module — Migrations, Eloquent Models with relationships, Form Requests, Controllers, and Blade views — without a single syntax error, in under 45 seconds.
 

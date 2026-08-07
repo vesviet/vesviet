@@ -20,7 +20,7 @@ description: "A production engineering guide to building, securing, and scaling 
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/go-mcp-server-cover.jpg"
+  image: "/images/posts/go-mcp-server-cover.jpg"
   alt: "Go MCP Server development with the official Model Context Protocol Go SDK"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/go-mcp-server-development-production-guide/"
@@ -28,6 +28,8 @@ noTranslation: true
 ---
 
 # Build Production Go MCP Servers: The Definitive Guide
+
+**Answer-first:** Developing production-grade Go Model Context Protocol (MCP) servers requires structured JSON-RPC handlers, SSE transport gateways, OAuth 2.1 authentication, and gVisor container sandboxing.
 
 ---
 

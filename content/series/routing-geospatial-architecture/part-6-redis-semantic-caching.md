@@ -9,7 +9,7 @@ categories: ["Geospatial", "Caching"]
 series: ["Routing & Geospatial Architecture"]
 series_order: 6
 cover:
-  image: "images/posts/graphhopper-cover.png"
+  image: "/images/posts/graphhopper-cover.png"
   alt: "Geospatial and Routing Engine Architecture series: Go and GraphHopper for production routing"
   relative: false
 author: "Lê Tuấn Anh"
@@ -17,7 +17,7 @@ canonicalURL: "https://tanhdev.com/series/routing-geospatial-architecture/part-6
 ShowToc: true
 TocOpen: true
 mermaid: true
-image: "images/posts/graphhopper-cover.png"
+image: "/images/posts/graphhopper-cover.png"
 ---
 
 > **Answer-first:** Redis semantic caching for routing queries utilizes geo-hash indexing and embedding similarity vectors to serve frequent route lookups with sub-5ms latency.

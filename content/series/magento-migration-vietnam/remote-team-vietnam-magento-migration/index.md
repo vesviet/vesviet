@@ -12,13 +12,13 @@ description: "Complete guide to hiring, onboarding, and managing a remote Go eng
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/series/remote-team-vietnam-migration-cover.png"
+  image: "/images/series/remote-team-vietnam-migration-cover.png"
   alt: "Remote team playbook: Vietnam engineers through a Magento migration"
   relative: false
 canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/remote-team-vietnam-magento-migration/"
 noTranslation: true
 mermaid: true
-image: "images/series/remote-team-vietnam-migration-cover.png"
+image: "/images/series/remote-team-vietnam-migration-cover.png"
 ---
 
 > **Prerequisite:** This is the starting part of the series — no prior part is required. Later parts assume the concepts introduced here.

@@ -12,12 +12,12 @@ description: "Scale relational databases horizontally using GORM dbresolver for 
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/realtime-inventory-cover.png"
+  image: "/images/posts/realtime-inventory-cover.png"
   alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/database-sharding-read-write-splitting/"
-image: "images/posts/realtime-inventory-cover.png"
+image: "/images/posts/realtime-inventory-cover.png"
 ---
 
 > **Prerequisite:** Read the previous article: [Chapter 8: Distributed Locking — Redlock vs ZooKeeper](/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/).
@@ -26,7 +26,9 @@ When your application reaches tens of millions of users, the Database becomes th
 
 ---
 
-## 1. Read/Write Splitting
+# 1. Read/Write Splitting
+
+**Answer-first:** Database sharding and read/write splitting separate database workloads across master write instances and slave read replicas, scaling throughput beyond single-node hardware limits.
 
 Because 80% of traffic is Read-only, separate your DB into a Write Master and Read Slaves. Use GORM's `dbresolver` plugin to route queries automatically without altering business logic.
 

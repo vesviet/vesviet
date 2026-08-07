@@ -8,7 +8,7 @@ tags: ["Domain-Driven Design", "DDD", "Modular Monolith", "Spring Modulith", "Pa
 categories: ["Modular Monolith", "Architecture"]
 aliases: ["/series/modular-monolith-architecture/part-3-ddd-module-boundaries/"]
 cover:
-  image: "images/posts/golang-microservices-cover.png"
+  image: "/images/posts/golang-microservices-cover.png"
   alt: "Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal"
   relative: false
 author: "Lê Tuấn Anh"
@@ -17,7 +17,7 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 draft: false
-image: "images/posts/golang-microservices-cover.png"
+image: "/images/posts/golang-microservices-cover.png"
 ---
 
 > **Answer-first:** A Modular Monolith prevents code degradation ("Big Ball of Mud") by applying Domain-Driven Design (DDD) Bounded Contexts, isolating database schema namespaces (e.g. `billing.payments`, `inventory.stock`), enforcing compile-time import boundaries via Go `internal` packages and `arch-go`, and using an in-memory transactional outbox pattern for asynchronous event communication.

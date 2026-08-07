@@ -12,7 +12,7 @@ categories: ["Architecture"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/ecommerce-microservices-blueprint-cover.png"
+  image: "/images/posts/ecommerce-microservices-blueprint-cover.png"
   alt: "ecommerce microservices architecture diagram"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/blueprint-ecommerce-microservices-architecture-diagram/"

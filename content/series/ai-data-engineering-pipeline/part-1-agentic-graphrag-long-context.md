@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["GraphRAG", "Long Context", "LLM Cost", "Benchmark", "Architecture", "Python"]
 categories: ["Engineering", "AI"]
 cover:
-  image: "images/posts/graphrag-vs-naive-rag-cover.png"
+  image: "/images/posts/graphrag-vs-naive-rag-cover.png"
   alt: "Agentic GraphRAG vs Long Context Window performance comparison and benchmark architecture"
   relative: false
 mermaid: true

@@ -28,13 +28,15 @@ description: "Flash sale architecture patterns for C10M-scale events: Kafka peak
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/shopee-flash-sale-cover.png"
+  image: "/images/posts/shopee-flash-sale-cover.png"
   alt: "Shopee Flash Sale Architecture: rate limiting, Redis token bucket, and distributed queue design"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/shopee-flash-sale-architecture/"
 ---
 
 # Flash Sale Architecture: Rate Limiting & Redis
+
+**Answer-first:** Shopee flash sale architecture handles millions of concurrent requests using Redis Lua token buckets, local memory caches, queue-based order throttling, and optimistic DB updates.
 
 > [!NOTE]
 > **On sourcing:** This article describes flash-sale architecture *patterns* for C10M-scale events; it is not a disclosure of Shopee's internal systems, and the figures here are engineering targets rather than published Shopee metrics. Shopee has not publicly documented its flash-sale internals in detail. What *is* public is its database platform choice — Shopee's adoption of TiDB is documented in PingCAP's case studies ([How Shopee Chose the Right Database](https://www.pingcap.com/case-study/choosing-right-database-for-your-applications/), [Shopping on Shopee, the TiDB Way](https://pingcap.medium.com/shopping-on-shopee-the-tidb-way-2bc3b8ab3b15)). Treat everything else as a reference pattern to validate against your own workload.

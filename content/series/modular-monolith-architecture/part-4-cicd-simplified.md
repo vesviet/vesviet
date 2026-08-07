@@ -8,7 +8,7 @@ tags: ["CI/CD", "Deployments", "Shopify", "Buildkite", "Modular Monolith", "Test
 categories: ["Modular Monolith", "Architecture"]
 aliases: ["/series/modular-monolith-architecture/part-4-cicd-simplified/"]
 cover:
-  image: "images/posts/golang-microservices-cover.png"
+  image: "/images/posts/golang-microservices-cover.png"
   alt: "Modular Monolith Architecture Guide: Go, DDD, bounded contexts, and microservices reversal"
   relative: false
 author: "Lê Tuấn Anh"
@@ -17,7 +17,7 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 draft: false
-image: "images/posts/golang-microservices-cover.png"
+image: "/images/posts/golang-microservices-cover.png"
 ---
 
 > **Answer-first:** Large monoliths avoid slow CI/CD pipelines by implementing monorepo path-filtering, Go build caching, and selective test execution based on git diffs. Deploying a single-binary modular monolith enables atomic deployments where application code and schema migrations ship deterministically in a single commit release.

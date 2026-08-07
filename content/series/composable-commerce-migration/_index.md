@@ -10,7 +10,7 @@ slug: "composable-commerce-migration"
 categories: ["Software Engineering", "Backend"]
 tags: ["Magento", "Microservices", "Golang", "DDD", "Strangler Fig", "Rush Monorepo", "Dapr", "Kratos"]
 cover:
-  image: "images/posts/ecommerce-composable-cover.png"
+  image: "/images/posts/ecommerce-composable-cover.png"
   alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
   relative: false
 author: "Lê Tuấn Anh"

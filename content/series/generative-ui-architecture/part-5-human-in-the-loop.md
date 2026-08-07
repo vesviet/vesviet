@@ -10,7 +10,7 @@ canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-fronte
 tags: ["Generative UI", "Human-in-the-Loop", "Optimistic UI", "Error Boundaries", "Architecture"]
 categories: ["Engineering", "Frontend"]
 cover:
-  image: "images/posts/generative-ui-mcp-cover.png"
+  image: "/images/posts/generative-ui-mcp-cover.png"
   alt: "Human-In-The-Loop Generative UI: optimistic rendering and approval gates"
   relative: false
 mermaid: true
@@ -22,7 +22,7 @@ weight: 5
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Security A11Y](/posts/generative-ui-with-mcp-ai-native-frontend/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Integrating Human-In-The-Loop (HITL) workflows into Generative UI systems balances autonomous AI speed with operational safety for high-risk user actions. By combining Optimistic UI rendering patterns with explicit human verification approval gates and graceful fallback error boundaries, engineering teams ensure users can review, edit, or reject AI-generated actions (such as high-value financial transfers or system configuration changes) before mutations execute on backend servers.
+> **Answer-first:** Integrating Human-In-The-Loop (HITL) workflows into Generative UI systems balances autonomous AI speed with operational safety for high-risk user actions. By combining Optimistic UI rendering with human verification approval gates and error boundaries, engineering teams ensure users can review, edit, or reject AI-generated actions before backend mutation execution.
 
 ---
 

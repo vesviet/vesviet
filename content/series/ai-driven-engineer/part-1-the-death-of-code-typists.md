@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["AI", "Architecture", "Career", "Golang", "Software Engineering"]
 categories: ["Engineering"]
 cover:
-  image: "images/posts/ai-native-frontend-cover.png"
+  image: "/images/posts/ai-native-frontend-cover.png"
   alt: "The Death of Code Typists evolution timeline diagram"
   relative: false
 mermaid: true

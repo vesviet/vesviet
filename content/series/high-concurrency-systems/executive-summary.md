@@ -11,7 +11,7 @@ weight: 0
 categories: ["High Concurrency", "Backend"]
 tags: ["Golang", "Architecture", "Microservices", "Executive Summary", "Scalability"]
 cover:
-  image: "images/posts/realtime-inventory-cover.png"
+  image: "/images/posts/realtime-inventory-cover.png"
   alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
   relative: false
 author: "Lê Tuấn Anh"
@@ -19,7 +19,7 @@ canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/executive-sum
 series: ["Mastering High-Concurrency Systems in Production"]
 series_order: 0
 mermaid: true
-image: "images/posts/realtime-inventory-cover.png"
+image: "/images/posts/realtime-inventory-cover.png"
 ---
 
 > **Answer-first:** High-concurrency B2B commerce platforms achieve 25M monthly throughput by coupling Go microservices, distributed queues, and resilient database connection pooling.

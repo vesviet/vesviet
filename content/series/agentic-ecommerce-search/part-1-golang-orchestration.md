@@ -8,7 +8,7 @@ author: "Lê Tuấn Anh"
 tags: ["Golang", "Agentic Search", "E-commerce", "Concurrency", "Architecture", "AI Agents"]
 categories: ["Engineering", "AI"]
 cover:
-  image: "images/posts/agentic-ecommerce-search-cover.png"
+  image: "/images/posts/agentic-ecommerce-search-cover.png"
   alt: "Agentic Architecture and Golang Orchestration Power sequence diagram"
   relative: false
 mermaid: true
@@ -20,7 +20,9 @@ TocOpen: true
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/series/agentic-ecommerce-search/executive-summary/). Review it first if the terminology in this part is unfamiliar.
 
-## Agentic Architecture & Golang Orchestration Power
+# Agentic Architecture & Golang Orchestration Power
+
+**Answer-first:** Agentic e-commerce search orchestrates LLM query parsing, hybrid vector retrieval, and reranking pipelines in Go to deliver relevant product search results in sub-50ms.
 
 Building agentic search systems in Python works well for offline evaluation or low-throughput prototypes. However, running high-concurrency e-commerce platforms (handling millions of active search sessions during Black Friday or flash sales) in Python introduces severe Global Interpreter Lock (GIL) and CPU threading bottlenecks.
 

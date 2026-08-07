@@ -10,7 +10,7 @@ tags: ["prompt", "standard", "context-engineering", "agent"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/prompt-engineering-benchmark-cover.png"
+  image: "/images/posts/prompt-engineering-benchmark-cover.png"
   alt: "The Death of Prompt Engineering Context Engineering in 2026"
   relative: false
 author: "Lê Tuấn Anh"

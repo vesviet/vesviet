@@ -8,7 +8,7 @@ tags: ["Observability", "OpenTelemetry", "Distributed Tracing", "Modular Monolit
 categories: ["Modular Monolith", "Architecture"]
 aliases: ["/series/modular-monolith-architecture/part-5-observability/"]
 cover:
-  image: "images/posts/golang-microservices-cover.png"
+  image: "/images/posts/golang-microservices-cover.png"
   alt: "Modular Monolith Architecture Production Guide: Go, DDD, bounded contexts, and microservices reversal"
   relative: false
 author: "Lê Tuấn Anh"
@@ -17,7 +17,7 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 draft: false
-image: "images/posts/golang-microservices-cover.png"
+image: "/images/posts/golang-microservices-cover.png"
 ---
 
 > **Answer-first:** Observability in modular monoliths leverages in-process OpenTelemetry span propagation across module boundaries without network serialization overhead. Combining in-memory context tracking with structured logging reduces telemetry ingestion costs while retaining microservice-level latency visibility.

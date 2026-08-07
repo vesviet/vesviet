@@ -12,13 +12,17 @@ categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/moving-from-magento-to-microservices-cover.png"
+  image: "/images/posts/moving-from-magento-to-microservices-cover.png"
   alt: "Zero-Downtime Blueprint: Moving from Magento to Microservices — Strangler Fig Pattern"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/moving-from-magento-to-microservices/"
 ---
 
+> **Prerequisite:** Review [Magento Development in Vietnam: Cost, Hiring & Upgrade](/posts/magento-vietnam/) for overall team and cost strategy.
+
 # Why Migrate Magento to Microservices: Zero-Downtime Blueprint
+
+**Answer-first:** Migrating from Magento monoliths to Go microservices replaces monolithic DB locks with independent schemas, asynchronous event streams, and Strangler Fig API routing for zero downtime.
 
 > 
 
@@ -260,3 +264,6 @@ Sequential integer primary keys in Magento are mapped to UUIDs using a persisten
 
 ### How does bidirectional sync prevent data loss during dual-write migration phases?
 Bidirectional sync combines Dapr event streams with the Transactional Outbox pattern to mirror transactions between Magento and new microservices. Millisecond timestamp logging and latest-write-wins conflict resolution ensure both systems maintain state consistency until full cutover occurs.
+
+🔗 **Next Step:** Continue to [Magento Migration: Shared DB, CDC, or Event Bus?](/posts/strangler-fig-shared-database-quick-win/) for the following module in the series.
+

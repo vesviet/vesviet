@@ -7,7 +7,7 @@ draft: false
 description: "ACID transactions in core banking: PostgreSQL isolation levels, row-level locking vs optimistic concurrency, preventing dirty reads in financial systems."
 weight: 4
 cover:
-  image: "images/posts/banking-microservices-cover.png"
+  image: "/images/posts/banking-microservices-cover.png"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
   relative: false
 categories: ["FinTech", "Database", "Backend"]

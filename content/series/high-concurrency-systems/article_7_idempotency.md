@@ -12,12 +12,12 @@ description: "Prevent double-charging customers by implementing robust Idempoten
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/realtime-inventory-cover.png"
+  image: "/images/posts/realtime-inventory-cover.png"
   alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/idempotency-api-design-payments/"
-image: "images/posts/realtime-inventory-cover.png"
+image: "/images/posts/realtime-inventory-cover.png"
 ---
 
 > **Prerequisite:** Read the previous article: [Chapter 6: API Gateway vs Service Mesh in Microservices Architecture](/posts/shopee-flash-sale-architecture/).
@@ -28,7 +28,9 @@ The mandatory solution for any transactional API (Payment/Order) is **Idempotenc
 
 ---
 
-## 1. What is Idempotency?
+# 1. What is Idempotency?
+
+**Answer-first:** Designing idempotent payment APIs uses unique client idempotency keys, Redis SetNX atomic locks, and response payload caching to prevent duplicate transaction charges during retries.
 
 An operation is idempotent if executing it once or N times yields the exact same system state and outcome. While GET and PUT are natively idempotent, POST requires explicit engineering.
 

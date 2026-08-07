@@ -12,7 +12,7 @@ ShowToc: true
 mermaid: true
 TocOpen: true
 cover:
-  image: "images/posts/ai-native-frontend-cover.png"
+  image: "/images/posts/ai-native-frontend-cover.png"
   alt: "AI-Driven Engineer series: from code typist to AI-native software architect"
   relative: false
 author: "Lê Tuấn Anh"

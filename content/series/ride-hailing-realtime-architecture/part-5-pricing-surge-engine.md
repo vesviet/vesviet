@@ -7,14 +7,14 @@ draft: false
 description: "How surge pricing works: H3 geofencing, Kafka + Flink supply-demand aggregation, Redis TTL, and ML-based multiplier calculation — with production Go code."
 weight: 6
 cover:
-  image: "images/posts/real-time-ride-hailing-cover.png"
+  image: "/images/posts/real-time-ride-hailing-cover.png"
   alt: "Real-Time Ride-Hailing Architecture series: Uber and Grab — matching, GPS, WebSocket at scale"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/part-5-pricing-surge-engine/"
 ShowToc: true
 TocOpen: true
-image: "images/posts/real-time-ride-hailing-cover.png"
+image: "/images/posts/real-time-ride-hailing-cover.png"
 ---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Dispatch Matching Engine](/series/ride-hailing-realtime-architecture/part-4-dispatch-matching-engine/). Review it first if the terminology in this part is unfamiliar.

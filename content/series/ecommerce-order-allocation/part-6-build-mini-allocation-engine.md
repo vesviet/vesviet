@@ -9,7 +9,7 @@ TocOpen: true
 description: "Build a delivery allocation engine with Google OR-Tools in Python: VRP with capacity constraints, EXPRESS order priority, and FastAPI microservice."
 weight: 7
 cover:
-  image: "images/posts/order-fulfillment-cover.png"
+  image: "/images/posts/order-fulfillment-cover.png"
   alt: "E-commerce Order Allocation Architecture series: Amazon and eBay warehouse and last-mile design"
   relative: false
 author: "Lê Tuấn Anh"

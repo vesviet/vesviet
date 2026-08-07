@@ -13,12 +13,14 @@ categories: ["Engineering", "AI"]
 tags: ["Golang", "Vector Search", "HNSW", "SIMD", "Product Quantization", "mmap", "Systems Engineering"]
 canonicalURL: "https://tanhdev.com/posts/building-custom-golang-vector-database-engine-hnsw/"
 cover:
-  image: "images/posts/building-custom-golang-vector-database-engine-hnsw.jpg"
+  image: "/images/posts/building-custom-golang-vector-database-engine-hnsw.jpg"
   alt: "Building Custom Golang Vector Database Engine HNSW"
   relative: false
 ---
 
 # Building a Custom Golang Vector Database Engine with HNSW
+
+**Answer-first:** Building a custom Go vector database engine with Hierarchical Navigable Small World (HNSW) graphs enables high-throughput vector similarity indexing, memory-mapped SIMD distance calculations, and fast ANN retrieval.
 
 Building a custom Go vector database engine with HNSW combines 256-bit SIMD AVX2 loop unrolling, off-heap `mmap` zero-GC slab memory, and Product Quantization (PQ-32) to get high recall at low latency while cutting vector RAM footprint dramatically. This post covers:
 

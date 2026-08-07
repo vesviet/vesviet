@@ -5,7 +5,7 @@ description: "Daily curated tech intelligence covering Go, Kubernetes, AI/ML, cl
 ShowToc: false
 author: "Lê Tuấn Anh"
 cover:
-  image: "images/posts/default-post.png"
+  image: "/images/posts/default-post.png"
   alt: "Tech Radar — Daily Go, K8s & AI Systems Engineering"
   relative: false
 canonicalURL: "https://tanhdev.com/radar/"

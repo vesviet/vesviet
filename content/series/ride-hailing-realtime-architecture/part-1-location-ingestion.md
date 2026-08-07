@@ -9,7 +9,7 @@ weight: 2
 tags: ["ride-hailing", "geospatial", "grpc", "mqtt", "kafka"]
 categories: ["Ride Hailing", "Geospatial"]
 cover:
-  image: "images/posts/real-time-ride-hailing-cover.png"
+  image: "/images/posts/real-time-ride-hailing-cover.png"
   alt: "Real-Time Ride-Hailing Architecture series: Uber and Grab — matching, GPS, WebSocket at scale"
   relative: false
 author: "Lê Tuấn Anh"
@@ -17,7 +17,7 @@ canonicalURL: "https://tanhdev.com/series/ride-hailing-realtime-architecture/par
 mermaid: true
 ShowToc: true
 TocOpen: true
-image: "images/posts/real-time-ride-hailing-cover.png"
+image: "/images/posts/real-time-ride-hailing-cover.png"
 ---
 
 > **Prerequisite:** Before reading this part, review the [Executive Summary](/series/ride-hailing-realtime-architecture/executive-summary/).

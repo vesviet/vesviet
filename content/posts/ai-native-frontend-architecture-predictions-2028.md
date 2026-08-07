@@ -19,13 +19,15 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 cover:
-  image: "images/posts/ai-native-frontend-cover.png"
+  image: "/images/posts/ai-native-frontend-cover.png"
   alt: "AI-Native Frontend Architecture in 2028: 10 bold predictions for the next generation of UI engineering"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/ai-native-frontend-architecture-predictions-2028/"
 ---
 
 # AI-Native Frontend in 2028: 10 Architecture Predictions
+
+**Answer-first:** AI-native frontend architecture transitions traditional web UIs toward dynamic Model Context Protocol (MCP) stream rendering, server-driven Generative UI components, and real-time client-side intent prediction by 2028.
 
 ## Executive Summary & AI Playbook Baseline
 

@@ -8,7 +8,7 @@ weight: 9
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/banking-microservices-cover.png"
+  image: "/images/posts/banking-microservices-cover.png"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
   relative: false
 author: "Lê Tuấn Anh"

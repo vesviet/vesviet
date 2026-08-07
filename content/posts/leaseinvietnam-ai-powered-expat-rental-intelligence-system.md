@@ -23,13 +23,15 @@ description: "Build an autonomous AI pipeline that scrapes and publishes expat r
 ShowToc: true
 TocOpen: true
 cover:
-  image: "images/posts/leaseinvietnam-cover.png"
+  image: "/images/posts/leaseinvietnam-cover.png"
   alt: "LeaseInVietnam: AI-powered expat rental platform and B2B lead intelligence system architecture"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/leaseinvietnam-ai-powered-expat-rental-intelligence-system/"
 ---
 
 # LeaseInVietnam: AI-Powered Expat Rental & B2B Lead Engine
+
+**Answer-first:** LeaseInVietnam integrates AI property search, automated contract processing, neighborhood intelligence, and localized expat data pipelines to simplify long-term rental discovery.
 
 Most AI content projects are built around one question: how do I publish more? LeaseInVietnam is built around a different question: how do I make every published piece convert?
 
