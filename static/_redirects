@@ -123,3 +123,85 @@
 /series/generative-ui-architecture/part-5-human-in-the-loop/ /posts/generative-ui-with-mcp-ai-native-frontend/ 301
 /series/generative-ui-architecture/part-6-e2e-testing-edge/ /posts/generative-ui-with-mcp-ai-native-frontend/ 301
 /newsletter/ /hire/ 301
+
+# Sprint 3 GSC 404 cleanup (issues reported 2026-08-10)
+/category/development/ /posts/ 301
+/wp-content/uploads/2022/12/LE-TUAN-ANH-151639.pdf /Le-Tuan-Anh-Resume.pdf 301
+/series/high-concurrency-systems/article_6_rate_limiting/ /posts/shopee-flash-sale-architecture/ 301
+/series/mcp-engineering-in-production/part-2-authentication/ /series/mcp-engineering-in-production/ 301
+/series/ai-driven-playbook/part-0-executive-summary/ /posts/ai-native-frontend-architecture-predictions-2028/ 301
+/posts/interview-with-nguyen-van-adapter-founders/ /posts/ 301
+# GSC 404 cleanup — tags (taxonomy present on production index only)
+/tags/claude.md/ /tags/ 301
+/tags/qa/ /tags/ 301
+/tags/lovable/ /tags/ 301
+# GSC 404 cleanup — radar slugs changed/renamed
+/radar/tech-radar-april-18-2026-argo-cd-turns-gitops-into-a-full-lifecycle-discipline/ /radar/2026-04/ 301
+/radar/gateway-api-v1.5-ingress2gateway-the-future-of-k8s-networking/ /radar/radar-2026-05-01-gateway-api-v1-5/ 301
+# GSC 404 cleanup — posts permalink mismatch
+/posts/architecting-a-21-service-e-commerce-ecosystem-with-golang-ddd/ /posts/architecting-21-service-ecommerce-golang-ddd/ 301
+/posts/magento-development-in-vietnam-how-to-scope-estimate-and-evaluate-a-project/ /posts/magento-development-in-vietnam/ 301
+/posts/magento-developers-in-vietnam-a-technical-hiring-and-vetting-guide/ /posts/magento-developers-in-vietnam/ 301
+/posts/the-future-of-frontend-development-in-the-ai-era-10-predictions-for-2028/ /posts/ai-native-frontend-architecture-predictions-2028/ 301
+# GSC 404 cleanup — series slugs/placeholder page
+/series/modular-monolith-architecture-hub/ /series/modular-monolith-architecture/ 301
+/series/phase3-series-audit-upgrade-summary/ /series/ 301
+/series/phase4-series-audit-upgrade-summary/ /series/ 301
+/series/series-audit-upgrade-summary/ /series/ 301
+/series/task/ /series/ 301
+# GSC 404 cleanup — series ai-driven-playbook old slugs
+/series/ai-driven-playbook/part-1-paradigm-shift-ai-first-sdlc/ /series/ai-driven-playbook/part-1-context-engineering-ddd/ 301
+/series/ai-driven-playbook/part-2-modern-ai-engineering-stack/ /series/ai-driven-playbook/part-2-ai-platform-layer/ 301
+/series/ai-driven-playbook/part-3a-context-engineering-cursor-rules/ /series/ai-driven-playbook/part-3a-enterprise-rag-architecture/ 301
+/series/ai-driven-playbook/part-3b-ai-code-review-quality-gates/ /series/ai-driven-playbook/part-3b-ai-automation-internal-ops/ 301
+/series/ai-driven-playbook/part-4-ai-assisted-refactoring-legacy-code/ /series/ai-driven-playbook/part-4-policy-as-code-agentic-cicd/ 301
+/series/ai-driven-playbook/part-5-autonomous-testing-qa-automation/ /series/ai-driven-playbook/part-5-operating-model/ 301
+# GSC 404 cleanup — radar short or date-based slugs
+/radar/radar-2026-04-23/ /radar/2026-04/ 301
+/radar/radar-2026-05-09/ /radar/2026-05/ 301
+/radar/radar-2026-05-15/ /radar/2026-05/ 301
+/radar/radar-2026-05-12/ /radar/2026-05/ 301
+/radar/radar-2026-05-10/ /radar/2026-05/ 301
+/radar/radar-2026-05-13/ /radar/2026-05/ 301
+/radar/radar-2026-05-14/ /radar/2026-05/ 301
+/radar/radar-2026-05-30-illinois-ai-bill-dell-servers-gstar-hcmc/ /radar/2026-05/ 301
+/radar/radar-2026-05-03/ /radar/2026-05/ 301
+/radar/radar-2026-05-05/ /radar/2026-05/ 301
+/radar/radar-2026-05-02-techtask-commerce-platform/ /radar/2026-05/ 301
+/radar/radar-2026-04-29/ /radar/2026-04/ 301
+/radar/radar-2026-04-15/ /radar/2026-04/ 301
+/radar/radar-2026-04-16/ /radar/2026-04/ 301
+/radar/radar-2026-04-17/ /radar/2026-04/ 301
+/radar/radar-2026-04-30/ /radar/2026-04/ 301
+/radar/radar-2026-04-18/ /radar/2026-04/ 301
+/radar/radar-2026-04-27-a/ /radar/2026-04/ 301
+/radar/radar-2026-04-27-b/ /radar/2026-04/ 301
+/radar/tech-radar-may-10-2026-go-1.26-green-tea-gc-kubernetes-as-ai-os-and-agentic-engineering/ /radar/2026-05/ 301
+/radar/tech-radar-may-14-2026-claude-dethrones-gpt-openais-cyber-counterstrike-k8s-says-goodbye-to-ingress-nginx-and-5-days-to-google-i/o/ /radar/2026-05/ 301
+/radar/tech-radar-may-3-2026-dapr-ai-r3f-webgpu-and-argo-cd-3.4/ /radar/2026-05/ 301
+/radar/tech-radar-july-03-2026-autonomous-ai-swarms-openclaw-kubernetes/ /radar/2026-07/ 301
+/radar/tech-radar-april-26-2026-deepseek-v4-series-released-1m-context-agentic-focus-and-open-source-efficiency/ /radar/2026-04/ 301
+/radar/tech-radar-april-15-2026-gitlabs-bet-on-lifecycle-ai-enterprise-governance-and-devsecops-consolidation/ /radar/2026-04/ 301
+/radar/tech-radar-may-12-2026-the-token-economy-google-i/o-countdown-claude-mythos-and-the-agent-identity-crisis/ /radar/2026-05/ 301
+/radar/tech-radar-may-1-2026-digitaloceans-ai-native-cloud-inference-routing-managed-retrieval-and-an-integrated-stack-for-agentic-systems/ /radar/2026-05/ 301
+/radar/tech-radar-may-15-2026-anthropics-200m-moral-play-the-agentic-cost-crisis-codex-goes-mobile-and-t-4-to-google-i/o/ /radar/2026-05/ 301
+/radar/tech-radar-may-19-2026-google-i/o-gemini-intelligence-firebase-rebuilt-jules-ships-and-openai-anthropic-strategic-moves/ /radar/2026-05/ 301
+/radar/tech-radar-april-29-2026-aws-and-openai-expand-bedrock-models-codex-and-managed-agents-turn-multi-cloud-into-a-product/ /radar/2026-04/ 301
+/radar/tech-radar-may-28-openai-deployco-apple-gemini/ /radar/2026-05/ 301
+/radar/tech-radar-july-06-2026-edge-ai-liquid-neural-networks-wasmedge-k3s/ /radar/2026-07/ 301
+/radar/tech-radar-july-14-2026-zero-trust-ai-swarms-mcp-authorization/ /radar/2026-07/ 301
+/radar/tech-radar-june-11-2026-k8s-pod-resizing-agentic-go-126/ /radar/2026-06/ 301
+/radar/tech-radar-april-17-2026-gitlab-pushes-agentic-devsecops-toward-operability-cost-control-and-stronger-reasoning/ /radar/2026-04/ 301
+/radar/tech-radar-april-14-2026-safer-code-evolution-runtime-recovery-and-framework-hardening/ /radar/2026-04/ 301
+/radar/tech-radar-april-16-2026-gitlab-tightens-upgrade-governance-connects-test-execution-to-systems-of-record-and-pushes-ai-into-planning/ /radar/2026-04/ 301
+/radar/tech-radar-april-27-2026-mistral-small-4-one-open-source-model-to-rule-chat-reasoning-and-agents/ /radar/2026-04/ 301
+/radar/tech-radar-april-27-2026-claude-sonnet-4.5-and-the-agent-sdk-the-best-coding-model-just-open-sourced-its-infrastructure/ /radar/2026-04/ 301
+/radar/tech-radar-april-25-2026-openai-ships-the-codex-app-and-gpt-5.2-codex-agentic-coding-becomes-a-command-center/ /radar/2026-04/ 301
+/radar/tech-radar-april-28-2026-openai-and-microsoft-end-exclusivity-the-cloud-war-enters-its-multi-cloud-phase/ /radar/2026-04/ 301
+/radar/tech-radar-april-29-2026-anthropic-pushes-mcp-into-the-creative-stack-ai-connectors-turn-creative-software-into-agentic-workflows/ /radar/2026-04/ 301
+/radar/radar-20-07-agentic-governance-aws-loom-aios/ /radar/2026-07/ 301
+# GSC 404 cleanup — taxonomy/rss endpoints no longer produced
+/tags/index.xml /tags/ 301
+/tags/microservices/index.xml /tags/microservices/ 301
+/category/development/ /posts/ 301
+# GSC 404 cleanup — legacy wp content already covered by /about-me/, /professional-services/, /portfolio/seo-marketing/, /contact/, /category/e-commerce/ (previous rules)
