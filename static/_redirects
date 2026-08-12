@@ -125,7 +125,6 @@
 /newsletter/ /hire/ 301
 
 # Sprint 3 GSC 404 cleanup (issues reported 2026-08-10)
-/category/development/ /posts/ 301
 /wp-content/uploads/2022/12/LE-TUAN-ANH-151639.pdf /Le-Tuan-Anh-Resume.pdf 301
 /series/high-concurrency-systems/article_6_rate_limiting/ /posts/shopee-flash-sale-architecture/ 301
 /series/mcp-engineering-in-production/part-2-authentication/ /series/mcp-engineering-in-production/ 301
@@ -202,6 +201,4 @@
 /radar/radar-20-07-agentic-governance-aws-loom-aios/ /radar/2026-07/ 301
 # GSC 404 cleanup — taxonomy/rss endpoints no longer produced
 /tags/index.xml /tags/ 301
-/tags/microservices/index.xml /tags/microservices/ 301
-/category/development/ /posts/ 301
 # GSC 404 cleanup — legacy wp content already covered by /about-me/, /professional-services/, /portfolio/seo-marketing/, /contact/, /category/e-commerce/ (previous rules)
