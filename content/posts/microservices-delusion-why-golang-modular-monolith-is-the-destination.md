@@ -21,7 +21,7 @@ series: ["Architectural Anti-Patterns"]
 
 For years, the software industry has been brainwashed by a pervasive mindset: *"A Modular Monolith is just a weak stepping stone before the system gets big enough to graduate to Microservices."* Countless companies, even those with engineering teams you can count on two hands, rushed to dismantle their monoliths to chase the distributed "cloud" dream.
 
-They called it the Future. Architect Rico Fritzsche calls it **"CV-Driven Development"**. And the hard data from 2025 is proving Rico right.
+They called it the Future. Architect Rico Fritzsche calls it **"CV-Driven Development"** [in his famous GitConnected article](https://medium.com/gitconnected/microservices-are-not-the-next-step-after-a-modular-monolith-01287f0fde4e). And the hard data from 2025 is proving Rico right.
 
 ---
 
@@ -92,7 +92,7 @@ project-root/
 ```
 
 ### In-Memory Communication
-Instead of `Order` firing an HTTP request to `Payment`, they communicate via **Interfaces** (Dependency Injection) or by passing Events through **Go Channels**. Everything happens inside a single OS Process, within shared RAM. The speed is measured in nanoseconds.
+Instead of `Order` firing an HTTP request to `Payment`, they communicate via **Interfaces** (Dependency Injection) or by passing Events through **Go Channels**. Everything happens inside a single OS Process, within shared RAM. The speed is measured in nanoseconds. Even if you eventually need to decouple, refer to [Building Event-Driven Microservices with NATS](/posts/building-high-throughput-event-driven-microservices-go-nats-jetstream-cqrs/) to avoid synchronous HTTP calls.
 
 ---
 
