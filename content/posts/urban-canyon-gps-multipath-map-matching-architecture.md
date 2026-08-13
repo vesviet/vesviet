@@ -72,23 +72,23 @@ Finally, the **Viterbi Algorithm** (dynamic programming) decodes this probabilit
 
 ```mermaid
 graph LR
-  subgraph Observed States (Raw GPS)
+  subgraph Observed_States ["Observed States (Raw GPS)"]
     G1((GPS t=1))
     G2((GPS t=2))
     G3((GPS t=3))
   end
 
-  subgraph Hidden States (Road Candidates)
-    R1A[Ton Duc Thang St]
-    R1B[Bach Dang Wharf]
-    R2A[Nguyen Huu Canh St]
-    R2B[Saigon River]
+  subgraph Hidden_States ["Hidden States (Road Candidates)"]
+    R1A["Ton Duc Thang St"]
+    R1B["Bach Dang Wharf"]
+    R2A["Nguyen Huu Canh St"]
+    R2B["Saigon River"]
   end
 
   G1 -. Emission .-> R1A
   G1 -. Emission .-> R1B
   
-  R1A -- Transition (Shortest Path) --> R2A
+  R1A -- "Transition (Shortest Path)" --> R2A
   R1B -- Transition --> R2B
   
   G2 -. Emission .-> R2A
