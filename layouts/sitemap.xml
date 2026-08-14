@@ -28,7 +28,7 @@
       {{- end -}}
 
       {{- $include := false -}}
-      {{- if and (not $isNoIndex) (not $hasCanonical) (not $isRedirected) -}}
+      {{- if and (not $isNoIndex) (not $isRedirected) -}}
         {{- if in (slice "taxonomy" "term") .Kind -}}
           {{- $isCategory := or (eq .Section "categories") (eq .Data.Singular "category") -}}
           {{- if and $isCategory (ne .File nil) .Params.description -}}
