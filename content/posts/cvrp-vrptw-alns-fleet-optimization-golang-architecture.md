@@ -50,11 +50,11 @@ Before writing a single line of optimization code, systems architects must class
 
 ```mermaid
 flowchart TD
-    TSP["TSP: 1 Vehicle, N Stops, Single Objective"] --> CVRP["CVRP: K Vehicles, Capacity Limits (Q)"]
-    CVRP --> VRPTW["VRPTW: Hard/Soft Time Windows [e_i, l_i]"]
-    VRPTW --> PDPTW["PDPTW: Pickup & Delivery Precedence (p_i ≺ d_i)"]
-    PDPTW --> MDVRPTW["MDVRPTW: Multi-Depot + Heterogeneous Fleet"]
-    MDVRPTW --> DynamicVRP["Dynamic VRP: Real-time Traffic + In-flight Re-routing"]
+    TSP["TSP: 1 Vehicle, N Stops, Single Objective"] --> CVRP["CVRP: K Vehicles, Capacity Limits"]
+    CVRP --> VRPTW["VRPTW: Time Windows Constraints"]
+    VRPTW --> PDPTW["PDPTW: Pickup and Delivery Precedence"]
+    PDPTW --> MDVRPTW["MDVRPTW: Multi-Depot and Fleet Mix"]
+    MDVRPTW --> DynamicVRP["Dynamic VRP: Real-time Traffic and Re-routing"]
 ```
 
 ### 1.1. Core Operational Constraints & The Subtour Dilemma
@@ -87,29 +87,29 @@ Formalized by Stefan Ropke and David Pisinger (2006), **ALNS** is an evolutionar
 sequenceDiagram
     autonumber
     participant Engine as ALNS Controller
-    participant Destroy as Destroy Operators (Shaw / Worst / Random)
-    participant Repair as Repair Operators (Regret-k / Greedy)
-    participant SA as Simulated Annealing Acceptance
+    participant Destroy as Destroy Operators
+    participant Repair as Repair Operators
+    participant SA as Simulated Annealing
     participant Tracker as Adaptive Weight Manager
 
-    Engine->>Destroy: Select Operator via Roulette Wheel (Probabilities P_i)
-    Destroy-->>Engine: Return Partial Solution (Unassigned Pool: L)
-    Engine->>Repair: Select Operator via Roulette Wheel (Probabilities P_j)
-    Repair-->>Engine: Return Reconstructed Solution (Candidate: S')
-    Engine->>SA: Evaluate ΔCost = Cost(S') - Cost(S_current)
-    alt S' is Globally Best
-        SA-->>Tracker: Reward σ_1 (e.g., +33 points)
-        SA-->>Engine: Accept S' as Global & Current Best
-    else S' is Better than S_current
-        SA-->>Tracker: Reward σ_2 (e.g., +15 points)
-        SA-->>Engine: Accept S' as Current Best
-    else S' is Worse but meets e^(-Δ/T) threshold
-        SA-->>Tracker: Reward σ_3 (e.g., +5 points)
-        SA-->>Engine: Accept S' (Diversification / Escape Local Minima)
+    Engine->>Destroy: Select Operator via Roulette Wheel
+    Destroy-->>Engine: Return Partial Solution with Unassigned Pool
+    Engine->>Repair: Select Repair Operator
+    Repair-->>Engine: Return Candidate Solution S_new
+    Engine->>SA: Evaluate Cost Delta
+    alt S_new is Global Best
+        SA-->>Tracker: Reward Weight Sigma 1
+        SA-->>Engine: Accept as Global Best
+    else S_new is Better than Current
+        SA-->>Tracker: Reward Weight Sigma 2
+        SA-->>Engine: Accept as Current Best
+    else S_new meets Annealing Probability
+        SA-->>Tracker: Reward Weight Sigma 3
+        SA-->>Engine: Accept to Escape Local Minima
     else Rejected
-        SA-->>Engine: Revert to S_current
+        SA-->>Engine: Revert to Current Solution
     end
-    Engine->>Tracker: Decay Temperature T = T * α; Update Weight Vectors
+    Engine->>Tracker: Decay Temperature and Update Operator Weights
 ```
 
 ### 2.1. Destroy Operators: Strategic Neighborhood Pruning
@@ -117,7 +117,7 @@ sequenceDiagram
 1. **Shaw Removal (Similarity-Based Destruction):**
    Removes a cluster of stops that share geographic proximity, temporal alignment, and similar load demands.
    - **Relatedness Metric:**
-     $$\text{Relatedness}(A, B) = \phi \cdot \text{NormDistance}(A, B) + \chi \cdot |\text{TimeStart}_A - \text{TimeStart}_B| + \psi \cdot |\text{Demand}_A - \Demand_B|$$
+     $$\text{Relatedness}(A, B) = \phi \cdot \text{NormDistance}(A, B) + \chi \cdot |\text{TimeStart}_A - \text{TimeStart}_B| + \psi \cdot |\text{Demand}_A - \text{Demand}_B|$$
    - Stops with high relatedness are removed together so the repair operator can shuffle them into a globally superior sequence.
 2. **Worst-Cost Removal:**
    Calculates the cost reduction achieved by removing each stop. The algorithm strips out the stops causing the most expensive detours:
@@ -140,7 +140,7 @@ A production logistics engine must decouple geographic spatial analysis from com
 
 ```mermaid
 flowchart TD
-    subgraph ClientLayer ["Client & Ingestion Tier"]
+    subgraph ClientLayer ["Client and Ingestion Tier"]
         OrderStream["Order Stream / ERP Ingestion"] --> IngestionSvc["Go Ingestion Microservice"]
         IngestionSvc --> H3Partition["Spatial Partitioner (Uber H3 Index)"]
     end
@@ -148,7 +148,7 @@ flowchart TD
     subgraph MatrixLayer ["High-Throughput Topology Tier"]
         H3Partition --> MatrixRouter["Distance Matrix Router"]
         MatrixRouter --> OSRMCluster["OSRM In-Memory Pods (RAM-Optimized)"]
-        OSRMCluster --> FlatMatrix["Contiguous 1D Cost Matrix (NxN)"]
+        OSRMCluster --> FlatMatrix["Contiguous 1D Cost Matrix NxN"]
     end
 
     subgraph SolverLayer ["Golang ALNS Optimization Core"]
@@ -158,9 +158,9 @@ flowchart TD
         ALNSLoop --> MemPool["Zero-Alloc State Management (sync.Pool)"]
     end
 
-    subgraph DispatchLayer ["Event Streaming & Telemetry"]
-        ALNSLoop --> DispatchSvc["Dispatch & Telemetry Publisher"]
-        DispatchSvc --> KafkaBus["Kafka Event Bus (Cluster / Routing Topic)"]
+    subgraph DispatchLayer ["Event Streaming and Telemetry"]
+        ALNSLoop --> DispatchSvc["Dispatch and Telemetry Publisher"]
+        DispatchSvc --> KafkaBus["Kafka Event Bus (Cluster Routing Topic)"]
         KafkaBus --> DriverApp["Driver Mobile Gateway / Real-time Push"]
     end
 ```
@@ -468,16 +468,16 @@ When architecting a production routing platform, engineering leads must evaluate
 ```mermaid
 quadrantChart
     title Routing Engine Architectural Decision Matrix
-    x-axis Low Extensibility & Custom Logic --> High Extensibility & Domain Modeling
-    y-axis High Memory & IPC Latency --> Sub-Millisecond & Zero-Allocation
-    quadrant-1 Pure Go ALNS (Custom Engine)
-    quadrant-2 VROOM (C++ REST Sidecar)
-    quadrant-3 Python OR-Tools (High Latency)
-    quadrant-4 Google OR-Tools C++ (Complex Build)
-    "Pure Go ALNS Engine": [0.88, 0.90]
-    "VROOM C++ Engine": [0.35, 0.88]
-    "Google OR-Tools (C++)": [0.75, 0.45]
-    "Python PuLP / OR-Tools": [0.60, 0.15]
+    x-axis Low Extensibility --> High Extensibility
+    y-axis High Memory and IPC Latency --> Sub-Millisecond and Zero-Allocation
+    quadrant-1 Pure Go ALNS
+    quadrant-2 VROOM Sidecar
+    quadrant-3 Python OR-Tools
+    quadrant-4 Google OR-Tools C++
+    Pure Go ALNS Engine: [0.88, 0.90]
+    VROOM C++ Engine: [0.35, 0.88]
+    Google OR-Tools C++: [0.75, 0.45]
+    Python Solvers: [0.60, 0.15]
 ```
 
 | Engine | Language & Runtime | Solving Paradigm | P99 Latency (100 Stops) | Best Architectural Fit |
@@ -495,20 +495,20 @@ In high-density food delivery and ride-pooling networks, routing schedules are i
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Kafka as Kafka Event Topic (order.cancelled)
-    participant Worker as Dynamic Re-route Worker (Go)
-    participant State as Fleet State Store (Redis Cluster)
+    participant Kafka as Kafka Event Topic
+    participant Worker as Dynamic Re-route Worker
+    participant State as Fleet State Store
     participant Solver as Incremental ALNS Engine
-    participant Push as WebSocket Notification Gateway
+    participant Push as WebSocket Gateway
 
-    Kafka->>Worker: Consume OrderCancellationEvent(OrderID: 4892)
-    Worker->>State: Fetch Active Route for Driver (VehicleID: 14)
-    State-->>Worker: Return Current Route: [Depot -> 101 -> 4892 -> 304 -> Depot]
-    Note over Worker,Solver: Lock Active Leg & Slice Out Cancelled Stop
-    Worker->>Solver: Trigger Local Improvement on Remaining Sequence [101 -> 304]
-    Solver-->>Worker: Optimized Leg Sequence & Updated ETAs
-    Worker->>State: Atomic Compare-And-Swap (CAS) Update
-    Worker->>Push: Push Re-routed Polyline to Driver Mobile Device (< 200ms)
+    Kafka->>Worker: Consume Order Cancellation Event
+    Worker->>State: Fetch Active Route for Driver
+    State-->>Worker: Return Active Waypoints
+    Note over Worker,Solver: Lock Active Leg and Remove Cancelled Stop
+    Worker->>Solver: Trigger Local Improvement on Remaining Sequence
+    Solver-->>Worker: Return Optimized Sequence and ETAs
+    Worker->>State: Atomic CAS State Update
+    Worker->>Push: Push Updated Route to Driver App
 ```
 
 ### Incremental Re-Optimization Rules
@@ -522,10 +522,10 @@ sequenceDiagram
 Deploying a self-hosted Go ALNS + OSRM routing architecture yields immediate bottom-line cost savings across both infrastructure and real-world fleet logistics.
 
 ```mermaid
-pie title Monthly Routing Cost Breakdown (500k Orders/Month)
-    "Google Maps Matrix API ($0.005/element)": 85
-    "Cloud Server Compute (AWS EKS EC2)": 12
-    "Maintenance & Telemetry Monitoring": 3
+pie title Monthly Routing Cost Breakdown
+    "Google Maps Matrix API": 85
+    "Cloud Server Compute (AWS EKS)": 12
+    "Maintenance and Monitoring": 3
 ```
 
 ### 7.1. Infrastructure Cost Analysis
