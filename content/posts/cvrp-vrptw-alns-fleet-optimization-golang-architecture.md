@@ -84,32 +84,25 @@ In high-concurrency production engines, we bypass these matrix equations entirel
 Formalized by Stefan Ropke and David Pisinger (2006), **ALNS** is an evolutionary metaheuristic that iteratively tears apart (**Destroys**) portions of a routing solution and reconstructs (**Repairs**) them with targeted heuristics, adapting operator selection probabilities based on historical success.
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    participant Engine as ALNS Controller
-    participant Destroy as Destroy Operators
-    participant Repair as Repair Operators
-    participant SA as Simulated Annealing
-    participant Tracker as Adaptive Weight Manager
-
-    Engine->>Destroy: Select Operator via Roulette Wheel
-    Destroy-->>Engine: Return Partial Solution with Unassigned Pool
-    Engine->>Repair: Select Repair Operator
-    Repair-->>Engine: Return Candidate Solution S_new
-    Engine->>SA: Evaluate Cost Delta
-    alt S_new is Global Best
-        SA-->>Tracker: Reward Weight Sigma 1
-        SA-->>Engine: Accept as Global Best
-    else S_new is Better than Current
-        SA-->>Tracker: Reward Weight Sigma 2
-        SA-->>Engine: Accept as Current Best
-    else S_new meets Annealing Probability
-        SA-->>Tracker: Reward Weight Sigma 3
-        SA-->>Engine: Accept to Escape Local Minima
-    else Rejected
-        SA-->>Engine: Revert to Current Solution
-    end
-    Engine->>Tracker: Decay Temperature and Update Operator Weights
+flowchart TD
+    Start(["Initial Solution S"]) --> Destroy["Destroy Operator (Shaw / Worst / Random)"]
+    Destroy --> Unassigned["Partial Solution + Unassigned Stop Pool"]
+    Unassigned --> Repair["Repair Operator (Regret-k / Greedy)"]
+    Repair --> Candidate["Candidate Solution S'"]
+    Candidate --> Check{"Simulated Annealing Evaluation"}
+    
+    Check -- "New Global Best" --> Global["Update Global Best (+33 pts)"]
+    Check -- "Better than Current" --> Better["Update Current Best (+15 pts)"]
+    Check -- "Accept via Probability" --> Accept["Accept S' to Escape Local Minima (+5 pts)"]
+    Check -- "Rejected" --> Reject["Revert to Current Solution (0 pts)"]
+    
+    Global --> Update["Cool Temperature (T = T * alpha) & Update Weights"]
+    Better --> Update
+    Accept --> Update
+    Reject --> Update
+    Update --> NextLoop{"Remaining Iterations?"}
+    NextLoop -- "Yes" --> Destroy
+    NextLoop -- "No" --> Done(["Return Best Solution"])
 ```
 
 ### 2.1. Destroy Operators: Strategic Neighborhood Pruning
@@ -464,18 +457,11 @@ func (s *ALNSSolver) cloneRoutes(routes []VehicleRoute) []VehicleRoute {
 When architecting a production routing platform, engineering leads must evaluate whether to build a pure Go solver, bind to C++ engines via CGO, or integrate sidecar microservices over HTTP.
 
 ```mermaid
-quadrantChart
-    title Routing Engine Architectural Decision Matrix
-    x-axis Low Extensibility --> High Extensibility
-    y-axis High Memory and IPC Latency --> Sub-Millisecond and Zero-Allocation
-    quadrant-1 Pure Go ALNS
-    quadrant-2 VROOM Sidecar
-    quadrant-3 Python OR-Tools
-    quadrant-4 Google OR-Tools C++
-    Pure Go ALNS Engine: [0.88, 0.90]
-    VROOM C++ Engine: [0.35, 0.88]
-    Google OR-Tools C++: [0.75, 0.45]
-    Python Solvers: [0.60, 0.15]
+flowchart LR
+    Req{"Routing Engine Architecture"}
+    Req -->|"Sub-second & Kubernetes Native"| GoEngine["Pure Go ALNS Engine<br/>• 45-120ms P99<br/>• Zero-CGO & Memory Pooled"]
+    Req -->|"Standard Fixed Batch"| Vroom["VROOM Engine (C++17)<br/>• 20-60ms P99<br/>• HTTP Sidecar Architecture"]
+    Req -->|"Complex Industrial Scheduling"| ORTools["Google OR-Tools (C++)<br/>• 200-1500ms P99<br/>• Constraint Programming"]
 ```
 
 | Engine | Language & Runtime | Solving Paradigm | P99 Latency (100 Stops) | Best Architectural Fit |
@@ -521,9 +507,9 @@ Deploying a self-hosted Go ALNS + OSRM routing architecture yields immediate bot
 
 ```mermaid
 pie title Monthly Routing Cost Breakdown
-    "Google Maps Matrix API": 85
-    "Cloud Server Compute (AWS EKS)": 12
-    "Maintenance and Monitoring": 3
+    "Google Maps Matrix API" : 85
+    "Cloud Server Compute (AWS EKS)" : 12
+    "Maintenance and Monitoring" : 3
 ```
 
 ### 7.1. Infrastructure Cost Analysis
