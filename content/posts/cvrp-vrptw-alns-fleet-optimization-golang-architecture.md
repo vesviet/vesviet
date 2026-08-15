@@ -37,10 +37,10 @@ weight: 1
 
 ## Key Architectural Takeaways
 
-- **NP-Hard Complexity Separation:** Point-to-point routing (A*, Dijkstra, Contraction Hierarchies) solves the shortest path between 2 physical nodes ($O(E + V \log V)$). Combinatorial vehicle routing (CVRP/VRPTW) optimizes the permutation of $N$ stops across $K$ heterogeneous vehicles ($O(K \cdot N!)$). Combining them into a single monolithic loop causes catastrophic CPU bottlenecks.
-- **ALNS as the Industry Gold Standard:** Exact solvers (Branch-and-Cut, Mixed Integer Linear Programming) fail when $N > 40$. Adaptive Large Neighborhood Search (ALNS) dynamically orchestrates coupled **Destroy** (Shaw, Worst, Random) and **Repair** (Regret-k, Greedy) heuristics with Simulated Annealing cooling, converging to within 1–3% of the theoretical global optimum.
-- **Zero-Allocation Memory Topology:** High-frequency solver loops incur severe Garbage Collection (GC) pauses when using nested slices (`[][]float64`). Laying out $N \times N$ cost matrices into single contiguous 1D arrays (`[from * N + to]`) and recycling candidate states via `sync.Pool` maximizes CPU L1/L2 cache line hits (64 bytes) and sustains sub-millisecond execution.
-- **FinOps ROI:** Self-hosting an in-memory OSRM Table cluster paired with a Go ALNS microservice reduces fleet mileage by 15%–25% and saves tens of thousands of dollars monthly compared to quadratic ($O(N^2)$) billing on Google Routes Matrix APIs.
+- **NP-Hard Complexity Separation:** Point-to-point routing (A*, Dijkstra, Contraction Hierarchies) solves the shortest path between 2 physical nodes in `O(E + V log V)` time. Combinatorial vehicle routing (CVRP/VRPTW) optimizes the permutation of `N` stops across `K` heterogeneous vehicles in `O(K * N!)` search space. Combining them into a single monolithic loop causes catastrophic CPU bottlenecks.
+- **ALNS as the Industry Gold Standard:** Exact solvers (Branch-and-Cut, Mixed Integer Linear Programming) fail when `N > 40`. Adaptive Large Neighborhood Search (ALNS) dynamically orchestrates coupled **Destroy** (Shaw, Worst, Random) and **Repair** (Regret-k, Greedy) heuristics with Simulated Annealing cooling, converging to within 1% to 3% of the theoretical global optimum.
+- **Zero-Allocation Memory Topology:** High-frequency solver loops incur severe Garbage Collection (GC) pauses when using nested slices (`[][]float64`). Laying out `N x N` cost matrices into single contiguous 1D arrays (`[from * N + to]`) and recycling candidate states via `sync.Pool` maximizes CPU L1/L2 cache line hits (64 bytes) and sustains sub-millisecond execution.
+- **FinOps ROI:** Self-hosting an in-memory OSRM Table cluster paired with a Go ALNS microservice reduces fleet mileage by 15% to 25% and saves tens of thousands of dollars monthly compared to quadratic `O(N^2)` billing on Google Routes Matrix APIs.
 
 ---
 
@@ -59,23 +59,23 @@ flowchart TD
 
 ### 1.1. Core Operational Constraints & The Subtour Dilemma
 
-Instead of dense academic notation, real-world **Capacitated Vehicle Routing with Time Windows (VRPTW)** is defined by five foundational engineering constraints:
+Instead of dense academic formulas, real-world **Capacitated Vehicle Routing with Time Windows (VRPTW)** is defined by five foundational engineering constraints:
 
 | Constraint Dimension | Real-World Logistics Rule | System Rule & Data Structure |
 | :--- | :--- | :--- |
-| **Depot & Fleet Lifecycle** | All $K$ vehicles depart from the Central Depot (Node `0`) and must terminate back at the Depot. | `Route = [Depot, Stop_1, Stop_2, ..., Depot]` |
+| **Depot & Fleet Lifecycle** | All vehicles depart from the Central Depot (Node `0`) and must terminate back at the Depot. | `Route = [Depot, Stop_1, Stop_2, ..., Depot]` |
 | **Single Visit Invariant** | Every customer delivery stop is visited exactly once by exactly one vehicle. | `VisitedCount[stop] == 1` |
-| **Vehicle Payload Capacity** | Total weight/volume of packages on any vehicle cannot exceed maximum payload ($Q$). | `Sum(Demand[stop]) <= MaxCapacity` |
-| **Delivery Time Window** | Vehicle must arrive within `[Earliest, Latest]`. Early arrivals must wait; late arrivals violate SLA. | `Earliest <= ArrivalTime <= Latest` |
-| **Service Duration** | Package handoff and unloading takes time ($S_i$) before the driver can depart to the next stop. | `DepartureTime = ArrivalTime + ServiceDuration` |
+| **Vehicle Payload Capacity** | Total weight/volume of packages on any vehicle cannot exceed maximum payload capacity. | `Sum(Demand[stop]) <= MaxCapacity` |
+| **Delivery Time Window** | Vehicle must arrive within `[EarliestTime, LatestTime]`. Early arrivals must wait; late arrivals violate SLA. | `Earliest <= ArrivalTime <= Latest` |
+| **Service Duration** | Package handoff and unloading takes fixed time before the driver can depart to the next stop. | `DepartureTime = ArrivalTime + ServiceDuration` |
 
 #### The Subtour Elimination Dilemma
 A naive optimization solver might produce "ghost loops"—isolated cyclic routes where vehicles loop between customers without ever visiting the depot.
 
-- **DFJ (Dantzig-Fulkerson-Johnson):** Prevents subtours by forbidding all possible subsets of stops. Mathematically exact, but generates $O(2^N)$ exponential constraints, requiring complex Branch-and-Cut solvers.
-- **MTZ (Miller-Tucker-Zemlin):** Eliminates subtours using an incremental sequence counter (`Sequence[j] >= Sequence[i] + 1`). Scales as $O(N^2)$ polynomial constraints, but becomes sluggish when $N > 35$.
+- **DFJ (Dantzig-Fulkerson-Johnson):** Prevents subtours by forbidding all possible subsets of stops. Mathematically exact, but generates exponential `O(2^N)` constraints, requiring complex Branch-and-Cut solvers.
+- **MTZ (Miller-Tucker-Zemlin):** Eliminates subtours using an incremental sequence counter (`Sequence[j] >= Sequence[i] + 1`). Scales as polynomial `O(N^2)` constraints, but becomes sluggish when `N > 35`.
 
-In high-concurrency production engines, we bypass these matrix constraints entirely by enforcing capacity, time windows, and subtour prevention directly within our heuristic search operators.
+In high-concurrency production engines, we bypass these matrix equations entirely by enforcing capacity, time windows, and subtour prevention directly within our heuristic search operators.
 
 ---
 
@@ -117,19 +117,19 @@ sequenceDiagram
 1. **Shaw Removal (Similarity-Based Destruction):**
    Removes a cluster of stops that share geographic proximity, temporal alignment, and similar load demands.
    - **Relatedness Metric:**
-     $$\text{Relatedness}(A, B) = \phi \cdot \text{NormDistance}(A, B) + \chi \cdot |\text{TimeStart}_A - \text{TimeStart}_B| + \psi \cdot |\text{Demand}_A - \text{Demand}_B|$$
-   - Stops with high relatedness are removed together so the repair operator can shuffle them into a globally superior sequence.
+     `Relatedness(A, B) = w_dist * Distance(A, B) + w_time * |TimeStart(A) - TimeStart(B)| + w_load * |Demand(A) - Demand(B)|`
+   - Stops with high relatedness are unassigned together so the repair operator can shuffle them into a globally superior sequence.
 2. **Worst-Cost Removal:**
    Calculates the cost reduction achieved by removing each stop. The algorithm strips out the stops causing the most expensive detours:
-   $$\text{Savings}(A) = \text{RouteCostWith}(A) - \text{RouteCostWithout}(A)$$
+   `Savings(A) = RouteCostWith(A) - RouteCostWithout(A)`
 3. **Random Removal:**
-   Uniformly extracts $p$ random stops to maintain stochastic diversity and escape local minimum traps.
+   Uniformly extracts random stops to maintain stochastic diversity and escape local minimum traps.
 
 ### 2.2. Repair Operators: Regret-k vs. Greedy Insertion
 
 - **Greedy Insertion:** Places an unassigned stop into the cheapest available position across all routes. *Flaw:* Frequently starves isolated stops, forcing expensive single-stop vehicles at the end of the iteration.
-- **Regret-k Insertion:** Evaluates the opportunity cost ("regret") if a stop is **NOT** inserted into its #1 optimal route:
-  $$\text{Regret}_k(A) = \sum_{j=2}^{k} \big(\text{CostInRoute}_j(A) - \text{CostInRoute}_1(A)\big)$$
+- **Regret-k Insertion:** Evaluates the opportunity cost ("regret penalty") if a stop is **NOT** inserted into its #1 optimal route:
+  `Regret_k(A) = Sum(CostInRoute_j(A) - CostInRoute_1(A)) for j = 2 to k`
   Stops with the highest regret score are prioritized first, ensuring that narrow time-window deliveries claim their optimal slots before vehicle capacity fills up.
 
 ---
@@ -166,10 +166,10 @@ flowchart TD
 ```
 
 ### 3.1. Spatial Partitioning with Uber H3
-Rather than passing an entire metropolitan area ($N = 10,000$) to a single VRP solver—which results in an insurmountable state space—the ingestion service maps coordinate pairs to **Uber H3 hexagonal hierarchical spatial indexes** (`uint64`).
+Rather than passing an entire metropolitan area (`N = 10,000`) to a single VRP solver—which results in an insurmountable state space—the ingestion service maps coordinate pairs to **Uber H3 hexagonal hierarchical spatial indexes** (`uint64`).
 
 - Orders within contiguous **H3 Resolution 7 cells** (~5 km edge length) are batched into localized delivery zones.
-- Border-crossing packages are routed via an inter-cluster transit hub layer, transforming a massive global NP-hard problem into $M$ independent, parallel sub-problems solved concurrently across Go worker pools.
+- Border-crossing packages are routed via an inter-cluster transit hub layer, transforming a massive global NP-hard problem into independent, parallel sub-problems solved concurrently across Go worker pools.
 
 ---
 
@@ -186,7 +186,6 @@ package solver
 
 import (
 	"errors"
-	"math"
 )
 
 // CostMatrix stores pairwise durations and distances in a contiguous flat array.
@@ -233,7 +232,6 @@ import (
 	"math"
 	"math/rand/v2"
 	"sync"
-	"time"
 )
 
 // DeliveryStop models the customer constraints.
@@ -512,7 +510,7 @@ sequenceDiagram
 ```
 
 ### Incremental Re-Optimization Rules
-1. **The Frozen Anchor Principle:** The current road segment between the driver’s live GPS location and their immediate next waypoint is **immutable** (Frozen Leg). The solver is strictly forbidden from modifying node $i+1$ if the vehicle has already initiated deceleration or entered the target geofence.
+1. **The Frozen Anchor Principle:** The current road segment between the driver’s live GPS location and their immediate next waypoint is **immutable** (Frozen Leg). The solver is strictly forbidden from modifying node `i+1` if the vehicle has already initiated deceleration or entered the target geofence.
 2. **Local Neighborhood Insertion:** When an on-demand order arrives, rather than recalculating the entire city grid, the engine queries the **Uber H3 spatial index** to identify the 5 closest active vehicles with spare capacity. It runs a single-iteration **Regret-2 insertion** over those 5 candidate routes, selecting the vehicle that minimizes marginal delay in under **15ms**.
 
 ---
@@ -529,9 +527,9 @@ pie title Monthly Routing Cost Breakdown
 ```
 
 ### 7.1. Infrastructure Cost Analysis
-Calculating distance matrices for $1,000$ stops requires $1,000 \times 1,000 = 1,000,000$ elements.
-- **Commercial API Tier (Google Distance Matrix):** At \$5.00 per 1,000 elements, a single large batch matrix computation costs **\$5,000.00**. Running 10 dispatch iterations daily results in over **\$150,000/month** in third-party API expenses.
-- **Self-Hosted Go + OSRM Architecture:** Deployed on two memory-optimized AWS EC2 instances (`r6i.xlarge`, 32GB RAM) running in-memory Contraction Hierarchies, the total monthly infrastructure expenditure is **under \$350.00/month**—a **99.7% cost reduction**.
+Calculating distance matrices for 1,000 stops requires 1,000 x 1,000 = 1,000,000 elements.
+- **Commercial API Tier (Google Distance Matrix):** At $5.00 per 1,000 elements, a single large batch matrix computation costs **$5,000.00**. Running 10 dispatch iterations daily results in over **$150,000/month** in third-party API expenses.
+- **Self-Hosted Go + OSRM Architecture:** Deployed on two memory-optimized AWS EC2 instances (`r6i.xlarge`, 32GB RAM) running in-memory Contraction Hierarchies, the total monthly infrastructure expenditure is **under $350.00/month**—a **99.7% cost reduction**.
 
 ### 7.2. Fleet Mileage & Fuel Efficiency
 Applying the ALNS combinatorial solver against academic **Solomon VRPTW benchmarks** (Classes C1, R1, RC1) and production last-mile operations demonstrates:
