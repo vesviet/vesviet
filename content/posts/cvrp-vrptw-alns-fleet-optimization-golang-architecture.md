@@ -57,45 +57,31 @@ flowchart TD
     MDVRPTW --> DynamicVRP["Dynamic VRP: Real-time Traffic + In-flight Re-routing"]
 ```
 
-### 1.1. Mathematical Formulation & The Subtour Elimination Dilemma
+### 1.1. Core Operational Constraints & The Subtour Dilemma
 
-In the standard **Capacitated Vehicle Routing Problem with Time Windows (VRPTW)**, we are given a complete directed graph $G = (V, A)$, where:
-- $V = \{0, 1, \dots, n, n+1\}$: Node $0$ represents the starting depot, nodes $1 \dots n$ represent delivery customers, and node $n+1$ represents the terminating depot.
-- $A = \{(i, j) : i, j \in V, i \neq j\}$: The set of traversable arcs.
-- $c_{ij}$ and $t_{ij}$: The travel cost and travel time from node $i$ to node $j$.
-- $q_i$: The package demand/weight at node $i$ ($q_0 = q_{n+1} = 0$).
-- $[e_i, l_i]$: The customer's time window where service must begin.
-- $s_i$: The service duration (unloading time) at node $i$.
-- $K$: The fleet of homogeneous vehicles, each with maximum payload capacity $Q$.
+Instead of dense academic notation, real-world **Capacitated Vehicle Routing with Time Windows (VRPTW)** is defined by five foundational engineering constraints:
 
-The objective function minimizes total travel cost and vehicle activation overhead:
+| Constraint Dimension | Real-World Logistics Rule | System Rule & Data Structure |
+| :--- | :--- | :--- |
+| **Depot & Fleet Lifecycle** | All $K$ vehicles depart from the Central Depot (Node `0`) and must terminate back at the Depot. | `Route = [Depot, Stop_1, Stop_2, ..., Depot]` |
+| **Single Visit Invariant** | Every customer delivery stop is visited exactly once by exactly one vehicle. | `VisitedCount[stop] == 1` |
+| **Vehicle Payload Capacity** | Total weight/volume of packages on any vehicle cannot exceed maximum payload ($Q$). | `Sum(Demand[stop]) <= MaxCapacity` |
+| **Delivery Time Window** | Vehicle must arrive within `[Earliest, Latest]`. Early arrivals must wait; late arrivals violate SLA. | `Earliest <= ArrivalTime <= Latest` |
+| **Service Duration** | Package handoff and unloading takes time ($S_i$) before the driver can depart to the next stop. | `DepartureTime = ArrivalTime + ServiceDuration` |
 
-$$\min \sum_{k=1}^{K} \sum_{i \in V} \sum_{j \in V} c_{ij} x_{ijk} + \sum_{k=1}^{K} f_k \sum_{j \in V \setminus \{0\}} x_{0jk}$$
+#### The Subtour Elimination Dilemma
+A naive optimization solver might produce "ghost loops"—isolated cyclic routes where vehicles loop between customers without ever visiting the depot.
 
-Subject to:
-1. **Flow Conservation:** Every customer is visited exactly once by exactly one vehicle:
-   $$\sum_{k=1}^{K} \sum_{j \in V, j \neq i} x_{ijk} = 1 \quad \forall i \in \{1, \dots, n\}$$
-2. **Vehicle Capacity (Load Feasibility):**
-   $$\sum_{i=1}^{n} q_i \sum_{j \in V} x_{ijk} \leq Q \quad \forall k \in \{1, \dots, K\}$$
-3. **Time Window & Schedule Propagation:**
-   $$S_{ik} + s_i + t_{ij} - M(1 - x_{ijk}) \leq S_{jk} \quad \forall i, j \in V, \forall k$$
-   $$e_i \leq S_{ik} \leq l_i \quad \forall i \in V, \forall k$$
+- **DFJ (Dantzig-Fulkerson-Johnson):** Prevents subtours by forbidding all possible subsets of stops. Mathematically exact, but generates $O(2^N)$ exponential constraints, requiring complex Branch-and-Cut solvers.
+- **MTZ (Miller-Tucker-Zemlin):** Eliminates subtours using an incremental sequence counter (`Sequence[j] >= Sequence[i] + 1`). Scales as $O(N^2)$ polynomial constraints, but becomes sluggish when $N > 35$.
 
-#### MTZ vs. DFJ Subtour Elimination Formulations
-A critical design choice when constructing integer linear models is how to prevent disjoint, illegal sub-tours that do not pass through the depot:
-
-| Formulation | Constraint Count | Mathematical Tightness | Engineering Implementation |
-| :--- | :--- | :--- | :--- |
-| **Dantzig-Fulkerson-Johnson (DFJ)** | Exponential ($O(2^n)$) | Extremely Tight (Small LP integrality gap) | Requires dynamic cut generation (Lazy Constraints) via Branch-and-Cut solvers (e.g., Gurobi, SCIP). |
-| **Miller-Tucker-Zemlin (MTZ)** | Polynomial ($O(n^2)$) | Weaker (Loose LP relaxation bound) | Uses auxiliary continuous variables ($u_i$). Easy to implement in general MILP solvers but scales poorly for $n > 35$. |
-
-In high-concurrency production systems, neither exact formulation is fast enough for real-time dispatching. We must transition to metaheuristics.
+In high-concurrency production engines, we bypass these matrix constraints entirely by enforcing capacity, time windows, and subtour prevention directly within our heuristic search operators.
 
 ---
 
 ## 2. The Algorithmic Engine: Adaptive Large Neighborhood Search (ALNS)
 
-Formalized by Stefan Ropke and David Pisinger (2006), **ALNS** is an evolutionary metaheuristic that iteratively tears apart (Destroys) portions of a routing solution and reconstructs (Repairs) them with targeted heuristics, adapting operator selection probabilities based on historical success.
+Formalized by Stefan Ropke and David Pisinger (2006), **ALNS** is an evolutionary metaheuristic that iteratively tears apart (**Destroys**) portions of a routing solution and reconstructs (**Repairs**) them with targeted heuristics, adapting operator selection probabilities based on historical success.
 
 ```mermaid
 sequenceDiagram
@@ -129,23 +115,22 @@ sequenceDiagram
 ### 2.1. Destroy Operators: Strategic Neighborhood Pruning
 
 1. **Shaw Removal (Similarity-Based Destruction):**
-   Removes a cluster of stops that share geographic proximity, temporal alignment, and similar load demands. The relatedness metric $R(i, j)$ between stops $i$ and $j$ is computed as:
-   $$R(i, j) = \phi \frac{d_{ij}}{\max(d)} + \chi \frac{|e_i - e_j|}{\max(e)} + \psi \frac{|q_i - q_j|}{\max(q)}$$
-   Where $\phi, \chi, \psi$ are tuning weights normalizing distance, time window overlap, and capacity variance.
+   Removes a cluster of stops that share geographic proximity, temporal alignment, and similar load demands.
+   - **Relatedness Metric:**
+     $$\text{Relatedness}(A, B) = \phi \cdot \text{NormDistance}(A, B) + \chi \cdot |\text{TimeStart}_A - \text{TimeStart}_B| + \psi \cdot |\text{Demand}_A - \Demand_B|$$
+   - Stops with high relatedness are removed together so the repair operator can shuffle them into a globally superior sequence.
 2. **Worst-Cost Removal:**
-   Calculates the cost reduction $\Delta C_i = \text{Cost}(S) - \text{Cost}(S \setminus \{i\})$ for every stop $i$. The algorithm iteratively removes stops with the highest marginal penalty, targeting sub-optimal routing detours.
+   Calculates the cost reduction achieved by removing each stop. The algorithm strips out the stops causing the most expensive detours:
+   $$\text{Savings}(A) = \text{RouteCostWith}(A) - \text{RouteCostWithout}(A)$$
 3. **Random Removal:**
-   Uniformly extracts $p$ stops to maintain stochastic diversity and escape stubborn local basins of attraction.
+   Uniformly extracts $p$ random stops to maintain stochastic diversity and escape local minimum traps.
 
 ### 2.2. Repair Operators: Regret-k vs. Greedy Insertion
 
-While **Greedy Insertion** places an unassigned stop into the cheapest feasible route position, it frequently starves constrained stops, forcing them into expensive, dedicated single-stop vehicles later in the iteration.
-
-**Regret-k Insertion** fixes this by prioritizing stops that have the highest "regret" if they are not inserted into their best possible vehicle. Let $\Delta c_{i, 1}$ be the cost of inserting stop $i$ into its best route, and $\Delta c_{i, k}$ be the cost in its $k$-th best route:
-
-$$\text{Regret}_k(i) = \sum_{j=2}^{k} (\Delta c_{i, j} - \Delta c_{i, 1})$$
-
-The stop with the maximum $\text{Regret}_k$ score is always inserted first, guaranteeing that geographically isolated or narrow time-window deliveries claim their optimal slots before capacity fills up.
+- **Greedy Insertion:** Places an unassigned stop into the cheapest available position across all routes. *Flaw:* Frequently starves isolated stops, forcing expensive single-stop vehicles at the end of the iteration.
+- **Regret-k Insertion:** Evaluates the opportunity cost ("regret") if a stop is **NOT** inserted into its #1 optimal route:
+  $$\text{Regret}_k(A) = \sum_{j=2}^{k} \big(\text{CostInRoute}_j(A) - \text{CostInRoute}_1(A)\big)$$
+  Stops with the highest regret score are prioritized first, ensuring that narrow time-window deliveries claim their optimal slots before vehicle capacity fills up.
 
 ---
 
