@@ -44,21 +44,21 @@ To resolve these failure modes, modern distributed architectures converge on thr
 
 ```mermaid
 flowchart TD
-    subgraph ClientTier["Application & Client Tier"]
-        C1["<b>Mobile / SPA Client</b><br/>Offline-first generation"]
-        S1["<b>Microservice Pod A</b><br/>Node ID: 101"]
-        S2["<b>Microservice Pod B</b><br/>Node ID: 102"]
+    subgraph ClientTier ["Application & Client Tier"]
+        C1["Mobile or SPA Client<br/>Offline-first generation"]
+        S1["Microservice Pod A<br/>Node ID: 101"]
+        S2["Microservice Pod B<br/>Node ID: 102"]
     end
 
-    subgraph GenStrategies["Identifier Generation Archetypes"]
-        G1["<b>UUIDv7 (RFC 9562)</b><br/>128-Bit Time-Ordered<br/>Zero Coordination"]
-        G2["<b>Snowflake Generator</b><br/>64-Bit Bit-Packed<br/>Local Worker State"]
-        G3["<b>Centralized Sequence</b><br/>64-Bit BIGINT<br/>DB Master Mutex Lock"]
+    subgraph GenStrategies ["Identifier Generation Archetypes"]
+        G1["UUIDv7 RFC 9562<br/>128-Bit Time-Ordered<br/>Zero Coordination"]
+        G2["Snowflake Generator<br/>64-Bit Bit-Packed<br/>Local Worker State"]
+        G3["Centralized Sequence<br/>64-Bit BIGINT<br/>DB Master Mutex Lock"]
     end
 
-    subgraph StorageEngines["Database Storage Internals"]
-        M1["<b>MySQL / InnoDB</b><br/>Clustered Index (B+ Tree)<br/>PK Stored in Every Secondary Index"]
-        P1["<b>PostgreSQL</b><br/>Heap Tables + 6B ctid<br/>Secondary Indexes Point to ctid"]
+    subgraph StorageEngines ["Database Storage Internals"]
+        M1["MySQL / InnoDB<br/>Clustered Index B+ Tree<br/>PK Stored in Every Secondary Index"]
+        P1["PostgreSQL<br/>Heap Tables with 6B ctid<br/>Secondary Indexes Point to ctid"]
     end
 
     C1 -->|Coordinate-Free| G1
@@ -83,13 +83,13 @@ Evaluating primary key strategies requires analyzing how byte layouts interact w
 
 ```mermaid
 flowchart LR
-    D1["<b>Dim 1: InnoDB Multiplier Tax</b><br/>S_total = N × S_PK × (1 + K)"]
-    D2["<b>Dim 2: PostgreSQL ctid Model</b><br/>Zero Secondary Index Bloat"]
-    D3["<b>Dim 3: Yao's Theorem</b><br/>69.3% Fill Factor Bloat"]
-    D4["<b>Dim 4: CPU Cache Lines</b><br/>8 vs 4 IDs per 64B Line"]
-    D5["<b>Dim 5: Buffer Pool Eviction</b><br/>Working Set > RAM IOPS Cliff"]
+    D1["Dim 1: InnoDB Multiplier Tax<br/>S_total = N × S_PK × 1 + K"]
+    D2["Dim 2: PostgreSQL ctid Model<br/>Zero Secondary Index Bloat"]
+    D3["Dim 3: Yao's Theorem<br/>69.3% Fill Factor Bloat"]
+    D4["Dim 4: CPU Cache Lines<br/>8 vs 4 IDs per 64B Line"]
+    D5["Dim 5: Buffer Pool Eviction<br/>Working Set exceeds RAM IOPS Cliff"]
 
-    D1 --> Analysis["<b>Architectural Strategy Matrix</b>"]
+    D1 --> Analysis["Architectural Strategy Matrix"]
     D2 --> Analysis
     D3 --> Analysis
     D4 --> Analysis
@@ -111,15 +111,15 @@ Every secondary index lookup follows a two-step traversal:
 
 ```mermaid
 flowchart TD
-    subgraph SecondaryIndex["Secondary Index (idx_merchant_id)"]
+    subgraph SecondaryIndex ["Secondary Index: idx_merchant_id"]
         SI_Root["Root Page"] --> SI_Leaf["Leaf Page"]
-        SI_Leaf -->|Payload: merchant_id + PK Bookmark| Bookmark["merchant_id: 8821<br/><b>PK Bookmark: 018db264...</b>"]
+        SI_Leaf -->|Payload: merchant_id + PK Bookmark| Bookmark["merchant_id: 8821<br/>PK Bookmark: 018db264..."]
     end
 
-    subgraph ClusteredIndex["Clustered Index (PRIMARY)"]
+    subgraph ClusteredIndex ["Clustered Index: PRIMARY"]
         CI_Root["Root Page"] --> CI_Branch["Branch Page"]
-        CI_Branch --> CI_Leaf["Leaf Page (16KB)"]
-        CI_Leaf -->|Contains Entire Row Payload| Row["PK: 018db264...<br/>user_id: 1042<br/>amount: $249.00<br/>status: PAID"]
+        CI_Branch --> CI_Leaf["Leaf Page 16KB"]
+        CI_Leaf -->|Contains Entire Row Payload| Row["PK: 018db264...<br/>user_id: 1042<br/>amount: 249 USD<br/>status: PAID"]
     end
 
     Bookmark -->|Bookmark Lookup Traversal| CI_Root
@@ -187,15 +187,15 @@ ctid = (BlockNumber: 4 bytes, OffsetNumber: 2 bytes)
 
 ```mermaid
 flowchart TD
-    subgraph PostgresHeap["PostgreSQL 8KB Heap Pages"]
-        Page1["Heap Block 0042"] --> Tuple1["Tuple at Offset 1<br/>ctid: (42, 1)"]
-        Page1 --> Tuple2["Tuple at Offset 2<br/>ctid: (42, 2)"]
+    subgraph PostgresHeap ["PostgreSQL 8KB Heap Pages"]
+        Page1["Heap Block 0042"] --> Tuple1["Tuple at Offset 1<br/>ctid: Block 42, Offset 1"]
+        Page1 --> Tuple2["Tuple at Offset 2<br/>ctid: Block 42, Offset 2"]
     end
 
-    subgraph PostgresIndexes["PostgreSQL Secondary & Primary Indexes"]
-        PK_Index["Primary Key Index (UUIDv7)"] -->|Points directly to ctid| Tuple1
-        Idx_User["idx_orders_user_id"] -->|Points directly to ctid (6B)| Tuple1
-        Idx_Merchant["idx_orders_merchant_id"] -->|Points directly to ctid (6B)| Tuple1
+    subgraph PostgresIndexes ["PostgreSQL Secondary and Primary Indexes"]
+        PK_Index["Primary Key Index UUIDv7"] -->|Points directly to ctid| Tuple1
+        Idx_User["idx_orders_user_id"] -->|Points directly to 6B ctid| Tuple1
+        Idx_Merchant["idx_orders_merchant_id"] -->|Points directly to 6B ctid| Tuple1
     end
 ```
 
@@ -298,15 +298,15 @@ Let:
 
 ```mermaid
 flowchart TD
-    subgraph MonotonicWrite["Monotonic PK (UUIDv7 / Snowflake / BIGINT)"]
+    subgraph MonotonicWrite ["Monotonic PK: UUIDv7 / Snowflake / BIGINT"]
         W1["Working Set: 200 MB (Rightmost Pages)"] --> BP1["Buffer Pool: 64 GB"]
-        BP1 -->|Hit Ratio: >99.99%| D1["Disk: Pure Sequential WAL Append (0 Random Reads)"]
+        BP1 -->|Hit Ratio: 99.99%| D1["Disk: Pure Sequential WAL Append (0 Random Reads)"]
     end
 
-    subgraph RandomWrite["Random PK (UUIDv4)"]
+    subgraph RandomWrite ["Random PK: UUIDv4"]
         W2["Working Set: 200 GB (Entire Tree)"] --> BP2["Buffer Pool: 64 GB"]
         BP2 -->|Miss Ratio: 68%| D2["Disk: 34,000 Random Read IOPS (EBS gp3 Throttled)"]
-        D2 --> Outage["<b>Cascading Connection Pool Exhaustion & HTTP 504</b>"]
+        D2 --> Outage["Cascading Connection Pool Exhaustion and HTTP 504"]
     end
 ```
 
@@ -515,13 +515,13 @@ Migrating a legacy primary key (such as an auto-increment `BIGINT`) to a distrib
 
 ```mermaid
 flowchart TD
-    P1["<b>Phase 1: Dual-Column Schema Expansion</b><br/>Add nullable public_id (UUID / INT8) via metadata DDL"]
-    P2["<b>Phase 2: Application Dual-Write</b><br/>Microservices generate and persist both ID fields"]
-    P3["<b>Phase 3: Throttled Cursor Backfill</b><br/>Async background workers populate historical records"]
-    P4["<b>Phase 4: Shadow Read Verification</b><br/>Envoy/middleware validates 100% parity across lookups"]
-    P5["<b>Phase 5: Online Non-Blocking Indexing</b><br/>Build UNIQUE INDEX CONCURRENTLY and cut over read traffic"]
-    P6["<b>Phase 6: Foreign Key & Constraint Swap</b><br/>Promote public_id to canonical ID across child tables"]
-    P7["<b>Phase 7: Contraction & Space Reclamation</b><br/>Drop legacy column and compact storage via pg_repack / gh-ost"]
+    P1["Phase 1: Dual-Column Schema Expansion<br/>Add nullable public_id via metadata DDL"]
+    P2["Phase 2: Application Dual-Write<br/>Microservices generate and persist both ID fields"]
+    P3["Phase 3: Throttled Cursor Backfill<br/>Async background workers populate historical records"]
+    P4["Phase 4: Shadow Read Verification<br/>Envoy or middleware validates 100% parity"]
+    P5["Phase 5: Online Non-Blocking Indexing<br/>Build UNIQUE INDEX CONCURRENTLY and cut over reads"]
+    P6["Phase 6: Foreign Key and Constraint Swap<br/>Promote public_id to canonical ID across child tables"]
+    P7["Phase 7: Contraction and Space Reclamation<br/>Drop legacy column and compact storage via gh-ost"]
 
     P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7
 ```
@@ -639,16 +639,17 @@ Reclaim fragmented disk pages:
 
 ```mermaid
 flowchart TD
-    Start["<b>Primary Key Selection Decision</b>"] --> Q1{"Is system single-node monolith with zero sharding plans?"}
-    Q1 -- Yes --> BigInt["<b>Choose Auto-Increment BIGINT</b><br/>Simplest operations, zero coordination overhead"]
-    Q1 -- No --> Q2{"Is target database MySQL / InnoDB with heavy secondary indexes?"}
+    Start["Primary Key Selection Decision"] --> Q1{"Is system single-node monolith with zero sharding plans?"}
+    Q1 -->|Yes| BigInt["Choose Auto-Increment BIGINT<br/>Simplest operations, zero coordination overhead"]
+    Q1 -->|No| Q2{"Is target database MySQL / InnoDB with heavy secondary indexes?"}
     
-    Q2 -- Yes --> Q3{"Can backend manage Worker Node IDs without clock drift risk?"}
-    Q3 -- Yes --> Snowflake["<b>Choose Snowflake ID (64-bit)</b><br/>Avoids 50% InnoDB secondary index tax, 8B cache line density"]
-    Q3 -- No --> UUID7_MySQL["<b>Choose UUIDv7 (BINARY(16))</b><br/>Accept 16B storage footprint to eliminate worker coordination"]
+    Q2 -->|Yes| Q3{"Can backend manage Worker Node IDs without clock drift risk?"}
+    Q3 -->|Yes| Snowflake["Choose Snowflake ID 64-bit<br/>Avoids 50% InnoDB secondary index tax, 8B cache density"]
+    Q3 -->|No| UUID7_MySQL["Choose UUIDv7 BINARY(16)<br/>Accept 16B storage footprint to eliminate worker coordination"]
     
-    Q2 -- No --> Q4{"Is target database PostgreSQL or distributed NewSQL (TiDB/CockroachDB)?"}
-    Q4 -- Yes --> UUID7_PG["<b>Choose UUIDv7 (RFC 9562)</b><br/>Zero secondary index multiplier tax via ctid, client-side generation"]
+    Q2 -->|No| Q4{"Is target database PostgreSQL or distributed NewSQL?"}
+    Q4 -->|Yes| UUID7_PG["Choose UUIDv7 RFC 9562<br/>Zero secondary index multiplier tax via ctid, client-side generation"]
+    Q4 -->|No| UUID7_Default["Choose UUIDv7 RFC 9562<br/>Default modern distributed standard"]
 ```
 
 ### Strategic Architectural Recommendations
