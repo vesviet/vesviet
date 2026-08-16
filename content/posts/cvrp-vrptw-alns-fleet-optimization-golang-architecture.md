@@ -1,5 +1,5 @@
 ---
-title: "CVRP, VRPTW, and ALNS Fleet Optimization: High-Scale Routing Architecture in Golang"
+title: "CVRP & VRPTW Fleet Optimization: Go ALNS Routing Engine"
 slug: "cvrp-vrptw-alns-fleet-optimization-golang-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-08-15T08:00:00+07:00"
@@ -19,7 +19,7 @@ categories:
   - "Engineering"
   - "Algorithms"
   - "Geospatial"
-description: "A comprehensive masterclass on solving Capacitated Vehicle Routing (CVRP) and Time-Window (VRPTW) problems at scale using Adaptive Large Neighborhood Search (ALNS) and a high-throughput, zero-allocation Golang engine."
+description: "Solve CVRP/VRPTW at scale in Go 1.24. Decouple OSRM/GraphHopper distance matrices from ALNS heuristics to route 500+ stops under 800ms with zero allocations."
 cover:
   image: "/images/posts/graphhopper-cover-1.jpg"
   alt: "CVRP VRPTW and ALNS Fleet Optimization Architecture in Golang"
@@ -163,6 +163,11 @@ Rather than passing an entire metropolitan area (`N = 10,000`) to a single VRP s
 
 - Orders within contiguous **H3 Resolution 7 cells** (~5 km edge length) are batched into localized delivery zones.
 - Border-crossing packages are routed via an inter-cluster transit hub layer, transforming a massive global NP-hard problem into independent, parallel sub-problems solved concurrently across Go worker pools.
+
+### 3.2. Distance Matrix Calculation Tier (OSRM & GraphHopper)
+Decoupling the distance matrix computation from the ALNS heuristic solver is essential for scalability. The solver operates on an abstract $N \times N$ duration/distance cost matrix, agnostic of how the physical road-network topology was resolved:
+- **OSRM In-Memory Pods:** Used for single-profile vehicle routing where sub-millisecond query speed and shared-memory efficiency are paramount.
+- **GraphHopper Custom Models:** Utilized when heterogeneous vehicle fleets (truck weight limits, motorcycle alleyways) require dynamic runtime constraints. For a complete deployment and caching guide, see our [GraphHopper Distance Matrix: Self-Hosted Routing & API Guide](/posts/graphhopper-distance-matrix-production-guide/) and our architectural showdown [OSRM vs GraphHopper Architecture Comparison](/posts/osrm-vs-graphhopper-architecture-comparison/).
 
 ---
 
@@ -525,9 +530,34 @@ Applying the ALNS combinatorial solver against academic **Solomon VRPTW benchmar
 
 ---
 
-## Related Engineering Resources
+## Frequently Asked Questions
+
+{{< faq q="What is the difference between point-to-point routing and CVRP/VRPTW?" >}}
+Point-to-point routing (Dijkstra, A*, Contraction Hierarchies) solves the shortest path between 2 physical nodes on a road graph in $O(E + V \log V)$ time. CVRP/VRPTW is an NP-hard combinatorial optimization problem that finds the optimal sequence and partition of $N$ stops across $K$ capacity-constrained vehicles within strict time windows in $O(K \cdot N!)$ search space.
+{{< /faq >}}
+
+{{< faq q="How does ALNS solve vehicle routing problems faster than exact MILP solvers?" >}}
+Exact solvers (Branch-and-Cut, Integer Programming) experience exponential runtimes when $N > 40$ stops. Adaptive Large Neighborhood Search (ALNS) dynamically selects Destroy (Shaw, Worst, Random) and Repair (Regret-k, Greedy) heuristics weighted by past performance, converging to within 1% to 3% of the theoretical optimum for 500+ stops in under 800ms.
+{{< /faq >}}
+
+{{< faq q="Why is decoupling distance matrix calculation from the combinatorial solver essential?" >}}
+Decoupling isolates graph-traversal computation (OSRM or GraphHopper) from combinatorial search heuristics (Go ALNS). The solver operates on an in-memory $N \times N$ cost matrix, allowing parallel evaluation of thousands of candidate route permutations without re-querying the physical road network.
+{{< /faq >}}
+
+{{< faq q="How does zero-allocation memory pooling benefit Go routing algorithms?" >}}
+High-frequency solver loops iterating 10,000+ times per second create extreme heap churn with dynamic slice allocations, triggering Stop-The-World garbage collection pauses. Flattening matrices to 1D contiguous arrays and recycling route candidate structures via `sync.Pool` maximizes L1/L2 CPU cache hits and delivers deterministic sub-millisecond execution.
+{{< /faq >}}
+
+---
+
+## Related Engineering Resources & Topic Cluster
 
 To explore how low-level road network algorithms interface with high-level logistics systems, read our companion masterclasses:
-- [Part 1: Core Routing Algorithms — A* & Dijkstra Visualized](/series/routing-geospatial-architecture/part-1-core-algorithms/)
-- [Part 4: Golang Microservices & GraphHopper Engine Architecture](/series/routing-geospatial-architecture/part-4-golang-microservices/)
-- [Ecommerce Order Allocation: Distributed Sourcing & Warehouse Optimization](/series/ecommerce-order-allocation/executive-summary/)
+- **Pillar Hub:** [Geospatial & Routing Engine Architecture Masterclass](/series/routing-geospatial-architecture/) (8-Part Series).
+- **Matrix Generation:** [GraphHopper Distance Matrix: Self-Hosted Routing & API Guide](/posts/graphhopper-distance-matrix-production-guide/).
+- **Engine Showdown:** [OSRM vs GraphHopper: Routing Engine Architecture Comparison](/posts/osrm-vs-graphhopper-architecture-comparison/).
+- **Algorithm Internals:** [Part 1: Core Routing Algorithms — A* & Dijkstra Visualized](/series/routing-geospatial-architecture/part-1-core-algorithms/).
+- **Microservices Deployment:** [Part 4: Golang Microservices & GraphHopper Engine Architecture](/series/routing-geospatial-architecture/part-4-golang-microservices/).
+- **Order Allocation:** [Ecommerce Order Allocation: Distributed Sourcing & Warehouse Optimization](/series/ecommerce-order-allocation/executive-summary/).
+
+{{< author-cta >}}

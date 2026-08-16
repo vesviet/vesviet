@@ -13,7 +13,7 @@
     "business_outcome": "Build topical authority in high-performance Go backend engineering and capture senior developer traffic.",
     "audience": "Senior Go backend engineers and software architects migrating from Kafka or RabbitMQ.",
     "ymyl_adjacent": false,
-    "locale": "vi-VN",
+    "locale": "en-US",
     "content_length_target": 2500
   },
   "topical_authority": {
@@ -43,111 +43,111 @@
     "serp_notes": "Top results usually focus on basic NATS pub/sub. Few deep dives into JetStream persistence and consumer patterns using Go."
   },
   "geo_aeo": {
-    "answer_first_block": "NATS JetStream là một event streaming engine siêu nhẹ và hiệu năng cao được viết bằng Go, thường được sử dụng làm giải pháp thay thế Kafka nhờ khả năng cung cấp persistence, Exactly-Once delivery và kiến trúc multi-tenant mà không cần ZooKeeper hay JVM.",
+    "answer_first_block": "NATS JetStream is a lightweight, ultra-high-performance event streaming engine written natively in Go. It serves as a compelling Kafka alternative by providing built-in persistence, Exactly-Once delivery guarantees, and multi-tenancy without JVM or ZooKeeper operational dependencies.",
     "query_fan_out": [
-      "NATS JetStream khác gì so với Kafka?",
-      "Làm sao để triển khai NATS JetStream với Golang?",
-      "NATS JetStream có hỗ trợ Exactly-Once delivery không?",
-      "Khi nào nên dùng NATS JetStream thay vì RabbitMQ?"
+      "How does NATS JetStream compare to Apache Kafka?",
+      "How do you implement NATS JetStream consumers in Go?",
+      "Does NATS JetStream support Exactly-Once delivery semantics?",
+      "When should you choose NATS JetStream over RabbitMQ?"
     ],
     "answer_format_per_section": [
       {
-        "h2_heading": "NATS JetStream là gì? Tại sao Go Engineer nên quan tâm?",
+        "h2_heading": "What is NATS JetStream? Why Go Engineers Should Care",
         "format": "definition"
       },
       {
-        "h2_heading": "Kiến trúc NATS JetStream vs Kafka vs RabbitMQ",
+        "h2_heading": "Architectural Comparison: NATS JetStream vs Kafka vs RabbitMQ",
         "format": "comparison_table"
       },
       {
-        "h2_heading": "Các Pattern xử lý Message: Pub/Sub, WorkQueue và KV Store",
+        "h2_heading": "Message Processing Patterns: Pub/Sub, WorkQueue, and Key-Value",
         "format": "bullet_list"
       },
       {
-        "h2_heading": "Triển khai NATS JetStream trong Go (Production-Ready Code)",
+        "h2_heading": "Implementing NATS JetStream in Go (Production-Ready Code)",
         "format": "numbered_steps"
       },
       {
-        "h2_heading": "Benchmark Thực tế: Đạt 100k RPS với NATS",
+        "h2_heading": "Production Benchmarks: Achieving 100k RPS with NATS in Go",
         "format": "bullet_list"
       },
       {
-        "h2_heading": "FAQ: Câu hỏi thường gặp về NATS JetStream",
+        "h2_heading": "Frequently Asked Questions about NATS JetStream",
         "format": "bullet_list"
       }
     ],
-    "fact_density_target": "Ít nhất 4 data points/benchmark (ví dụ: ms latency, throughput MB/s, memory footprint) để chứng minh hiệu năng của NATS so với Kafka.",
+    "fact_density_target": "At least 4 data points/benchmarks (e.g., latency ms, throughput MB/s, memory footprint) proving NATS performance advantages over Kafka.",
     "ai_overview_presence": "not_checked",
-    "perplexity_citation_patterns": "Thường trích dẫn từ NATS Documentation chính thức và các blog kỹ thuật Medium.",
+    "perplexity_citation_patterns": "Usually cites official NATS Documentation and engineering blogs.",
     "ai_bot_crawlability": {
       "status": "not_checked",
-      "notes": "Đảm bảo robots.txt cho phép OAI-SearchBot và PerplexityBot."
+      "notes": "Ensure robots.txt allows OAI-SearchBot and PerplexityBot."
     }
   },
   "on_page_plan": {
     "title_options": [
       {
-        "title": "NATS JetStream & Golang: Kiến trúc & Hướng dẫn Production",
-        "char_count": 58
+        "title": "NATS JetStream & Go: Architecture & Production Guide",
+        "char_count": 52
       },
       {
-        "title": "Toàn tập NATS JetStream cho Go Developer | Benchmark 100k RPS",
-        "char_count": 62
+        "title": "NATS JetStream Guide for Go: 100k RPS Benchmarks",
+        "char_count": 48
       }
     ],
     "meta_options": [
       {
-        "meta": "Hướng dẫn chuyên sâu về kiến trúc NATS JetStream dành cho Golang. So sánh NATS vs Kafka, code Go production-ready và benchmark đạt 100k RPS thực tế.",
+        "meta": "In-depth guide to NATS JetStream for Go engineers. Compare NATS vs Kafka, deploy production-ready Go consumers, and review real-world 100k RPS benchmarks.",
         "char_count": 154
       }
     ],
     "slug_recommendation": "nats-jetstream-golang-production-guide",
     "h2_outline": [
       {
-        "h2": "NATS JetStream là gì? Tại sao Go Engineer nên quan tâm?"
+        "h2": "What is NATS JetStream? Why Go Engineers Should Care"
       },
       {
-        "h2": "Kiến trúc NATS JetStream vs Kafka vs RabbitMQ"
+        "h2": "Architectural Comparison: NATS JetStream vs Kafka vs RabbitMQ"
       },
       {
-        "h2": "Các Pattern xử lý Message: Pub/Sub, WorkQueue và KV Store"
+        "h2": "Message Processing Patterns: Pub/Sub, WorkQueue, and Key-Value"
       },
       {
-        "h2": "Triển khai NATS JetStream trong Go (Production-Ready Code)"
+        "h2": "Implementing NATS JetStream in Go (Production-Ready Code)"
       },
       {
-        "h2": "Benchmark Thực tế: Đạt 100k RPS với NATS"
+        "h2": "Production Benchmarks: Achieving 100k RPS with NATS in Go"
       },
       {
-        "h2": "FAQ: Câu hỏi thường gặp về NATS JetStream"
+        "h2": "Frequently Asked Questions about NATS JetStream"
       }
     ],
     "faq_included": true,
     "faq_questions": [
-      "NATS JetStream khác gì so với NATS Core?",
-      "NATS JetStream có phù hợp cho hệ thống ngân hàng (Core Banking) không?",
-      "Làm sao để đảm bảo Exactly-Once delivery trong NATS JetStream?"
+      "How does NATS JetStream differ from Core NATS?",
+      "Is NATS JetStream suitable for mission-critical Core Banking ledgers?",
+      "How do you ensure Exactly-Once delivery in NATS JetStream?"
     ],
     "out_of_scope": [
-      "Hướng dẫn cài đặt K3s/Kubernetes cho NATS",
-      "Chi tiết về NATS Service Mesh"
+      "Detailed K3s/Kubernetes cluster installation walkthroughs.",
+      "Deep dive into NATS Service Mesh features."
     ]
   },
   "eeat_gates": {
     "experience_proof_required": "firsthand_account",
-    "experience_proof_notes": "Yêu cầu chia sẻ kinh nghiệm thực tế khi vận hành NATS JetStream, các lỗi thường gặp (ví dụ: Slow Consumer) và cách khắc phục bằng code Go.",
+    "experience_proof_notes": "Share firsthand operational experience running NATS JetStream, handling slow consumers, and tuning Go connection pools.",
     "author_entity": {
       "required": true,
       "author_name": "Lê Tuấn Anh (Senior Go Engineer)",
       "profile_url": "/about/",
-      "credentials": "Kinh nghiệm thiết kế hệ thống High-Concurrency bằng Golang"
+      "credentials": "Extensive experience designing High-Concurrency systems in Golang"
     },
     "trust_signals": [
       "source_citations",
       "verifiable_claims",
       "expert_quotes"
     ],
-    "claim_policy": "Mọi benchmark throughput và latency phải ghi rõ cấu hình phần cứng thử nghiệm (ví dụ: 4 vCPU, 8GB RAM)."
+    "claim_policy": "All throughput and latency benchmarks must document explicit hardware configurations (e.g., 4 vCPUs, 8GB RAM)."
   },
   "schema_requirements": {
     "schema_types": [
@@ -157,30 +157,30 @@
     ],
     "author_schema_required": true,
     "faq_schema_required": true,
-    "entity_id_strategy": "https://vesviet.com/#organization",
-    "technical_seo_ticket": "Triển khai Article schema, lồng ghép FAQPage schema cho phần FAQ cuối bài và Person schema cho tác giả."
+    "entity_id_strategy": "https://tanhdev.com/#organization",
+    "technical_seo_ticket": "Implement Article schema, FAQPage schema, and Person schema."
   },
   "internal_links": [
     {
-      "anchor": "ứng dụng trong Core Banking",
+      "anchor": "Core Banking Architecture with event streams",
       "target": "/series/core-banking-developer/part-4-modern-core-banking-architecture/",
-      "rationale": "Liên kết đến series Core Banking đã nhắc đến NATS JetStream."
+      "rationale": "Link to Core Banking series mentioning NATS JetStream."
     },
     {
-      "anchor": "xử lý tải cao như Alipay",
+      "anchor": "Alipay high-concurrency payment architecture",
       "target": "/series/alipay-double-11/",
-      "rationale": "Trích dẫn use case chịu tải cao."
+      "rationale": "Cite high-throughput distributed messaging case study."
     },
     {
       "anchor": "Cornerstone Technologies",
       "target": "/series/cornerstone-technologies/",
-      "rationale": "Liên kết về trang index của series Pillar."
+      "rationale": "Link to pillar series index."
     }
   ],
   "handoff": {
     "next_role": "content-writer",
     "status": "ready_for_content_writer",
-    "notes": "SEO Brief hoàn thiện cho NATS JetStream. Yêu cầu Content Writer bám sát persona Senior Go Engineer.",
+    "notes": "SEO Brief complete for NATS JetStream. Focus on Senior Go Engineer persona.",
     "contracts": [
       "contracts/schemas/seo-content-brief.json"
     ]

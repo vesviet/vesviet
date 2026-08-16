@@ -1,6 +1,6 @@
 ---
 title: "Engineering"
-description: "Tổng hợp bài viết chuyên sâu về kỹ thuật phần mềm, thiết kế hệ thống và thực tiễn phát triển ứng dụng bởi Lê Tuấn Anh."
+description: "Advanced software engineering practices, clean architecture, performance optimization, and system resilience by Lê Tuấn Anh."
 cover:
   image: "/images/posts/engineering.jpg"
 ---

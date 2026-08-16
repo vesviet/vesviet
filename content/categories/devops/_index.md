@@ -1,6 +1,6 @@
 ---
 title: "DevOps"
-description: "Quy trình CI/CD, tự động hóa hạ tầng, GitOps và quản trị hệ thống phân tán bởi Lê Tuấn Anh."
+description: "GitOps automation with ArgoCD, Kubernetes platform engineering, CI/CD pipelines, and cloud infrastructure by Lê Tuấn Anh."
 cover:
   image: "/images/posts/devops.jpg"
 ---

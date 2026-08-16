@@ -13,7 +13,7 @@
     "business_outcome": "Establish topical authority in distributed systems and microservices orchestration for Go developers.",
     "audience": "Senior Backend Engineers scaling microservices and dealing with complex distributed transactions/Sagas.",
     "ymyl_adjacent": false,
-    "locale": "vi-VN",
+    "locale": "en-US",
     "content_length_target": 2500
   },
   "topical_authority": {
@@ -40,15 +40,15 @@
       "temporal determinism"
     ],
     "cannibalization_check": "Distinct from '08-saga-pattern-distributed-transactions-go.md' which focuses entirely on the Saga pattern rather than Temporal's internal engine architecture.",
-    "serp_notes": "Top results are Temporal's official docs. Lacks deep, experience-based production guides in Vietnamese for Go."
+    "serp_notes": "Top results are Temporal's official docs. Lacks deep, experience-based production guides for Go developers."
   },
   "geo_aeo": {
-    "answer_first_block": "Temporal là một nền tảng orchestration cho microservices sử dụng mô hình Event Sourcing để đảm bảo workflow của bạn có thể phục hồi trạng thái sau khi crash. Trong Go, Temporal Workflow yêu cầu tính Determinism tuyệt đối (không dùng goroutine, rand, hay time native) để engine có thể replay lại chính xác trạng thái thực thi.",
+    "answer_first_block": "Temporal is an orchestration platform for microservices utilizing an Event Sourcing replay model to ensure workflows recover state seamlessly after system crashes. In Go, Temporal Workflows mandate absolute determinism (no unmanaged goroutines, native random calls, or system clocks) to enable accurate state reconstruction.",
     "query_fan_out": [
-      "Temporal Workflow hoạt động như thế nào?",
-      "Determinism trong Temporal là gì và tại sao lại quan trọng?",
-      "Cách viết Temporal Workflow bằng Go SDK?",
-      "Sự khác biệt giữa Temporal Workflow và Activity?"
+      "How does Temporal Workflow work under the hood?",
+      "What is workflow determinism in Temporal and why does it matter?",
+      "How do you write a Temporal Workflow using the Go SDK?",
+      "What is the difference between a Temporal Workflow and an Activity?"
     ],
     "answer_format_per_section": [
       {
@@ -56,27 +56,27 @@
         "format": "definition"
       },
       {
-        "h2_heading": "Quy tắc sống còn: Workflow Determinism trong Golang",
+        "h2_heading": "Crucial Rule: Workflow Determinism in Golang",
         "format": "bullet_list"
       },
       {
-        "h2_heading": "Phân biệt Workflow vs Activity",
+        "h2_heading": "Workflow vs Activity Breakdown",
         "format": "comparison_table"
       },
       {
-        "h2_heading": "Triển khai Temporal Worker & Scale out trong Production",
+        "h2_heading": "Deploying & Scaling Temporal Workers in Production",
         "format": "numbered_steps"
       },
       {
-        "h2_heading": "Benchmark Thực tế & Các lỗi thường gặp",
+        "h2_heading": "Production Benchmarks & Common Anti-Patterns",
         "format": "bullet_list"
       },
       {
-        "h2_heading": "FAQ: Câu hỏi thường gặp về Temporal",
+        "h2_heading": "Frequently Asked Questions about Temporal",
         "format": "bullet_list"
       }
     ],
-    "fact_density_target": "Tối thiểu 3 benchmark/best-practice configurations về timeouts (ScheduleToClose, StartToClose) và worker tuning.",
+    "fact_density_target": "Minimum 3 benchmark and best-practice configurations for timeouts (ScheduleToClose, StartToClose) and worker tuning.",
     "ai_overview_presence": "not_checked",
     "perplexity_citation_patterns": "Citations usually point to docs.temporal.io and GitHub repos.",
     "ai_bot_crawlability": {
@@ -87,18 +87,18 @@
   "on_page_plan": {
     "title_options": [
       {
-        "title": "Temporal Workflow & Golang: Kiến trúc & Production Guide",
-        "char_count": 56
+        "title": "Temporal Workflow with Go: Architecture & Production Guide",
+        "char_count": 57
       },
       {
-        "title": "Toàn tập Temporal Workflow cho Go: Event Sourcing & Scale Worker",
-        "char_count": 64
+        "title": "Mastering Temporal in Go: Event Sourcing & Worker Scaling",
+        "char_count": 56
       }
     ],
     "meta_options": [
       {
-        "meta": "Hướng dẫn chuyên sâu kiến trúc Temporal Workflow dành cho Go Developer. Giải thích Determinism, Event Sourcing, và cách scale Temporal Worker trên Production.",
-        "char_count": 160
+        "meta": "In-depth architectural guide to Temporal Workflows in Go. Explore Event Sourcing, strict determinism rules, Activity patterns, and worker production scaling.",
+        "char_count": 157
       }
     ],
     "slug_recommendation": "temporal-workflow-go-architecture",
@@ -107,47 +107,47 @@
         "h2": "Temporal Architecture: Event Sourcing & Replay Engine"
       },
       {
-        "h2": "Quy tắc sống còn: Workflow Determinism trong Golang"
+        "h2": "Crucial Rule: Workflow Determinism in Golang"
       },
       {
-        "h2": "Phân biệt Workflow vs Activity"
+        "h2": "Workflow vs Activity Breakdown"
       },
       {
-        "h2": "Triển khai Temporal Worker & Scale out trong Production"
+        "h2": "Deploying & Scaling Temporal Workers in Production"
       },
       {
-        "h2": "Benchmark Thực tế & Các lỗi thường gặp"
+        "h2": "Production Benchmarks & Common Anti-Patterns"
       },
       {
-        "h2": "FAQ: Câu hỏi thường gặp về Temporal"
+        "h2": "Frequently Asked Questions about Temporal"
       }
     ],
     "faq_included": true,
     "faq_questions": [
-      "Tôi có thể gọi API trực tiếp bên trong Temporal Workflow không?",
-      "Làm sao để handle versioning khi update code của Temporal Workflow?",
-      "Temporal có thay thế Kafka được không?"
+      "Can I call external HTTP APIs directly inside a Temporal Workflow?",
+      "How do I handle workflow versioning when deploying updated code?",
+      "Does Temporal replace Apache Kafka in event-driven systems?"
     ],
     "out_of_scope": [
-      "Cài đặt self-hosted Temporal Cluster với Cassandra/PostgreSQL",
-      "Temporal SDK cho Java/TypeScript"
+      "Deploying self-hosted Temporal Clusters with Cassandra or PostgreSQL storage.",
+      "Temporal SDK walkthroughs for Java or TypeScript."
     ]
   },
   "eeat_gates": {
     "experience_proof_required": "firsthand_account",
-    "experience_proof_notes": "Chia sẻ case study thực tế khi thiết kế Temporal Activity retry policies và lỗi Non-Deterministic Error kinh điển trong Go.",
+    "experience_proof_notes": "Share production experience on Activity retry policies and classic Non-Deterministic errors in Go.",
     "author_entity": {
       "required": true,
       "author_name": "Lê Tuấn Anh (Senior Go Engineer)",
       "profile_url": "/about/",
-      "credentials": "Kinh nghiệm thiết kế hệ thống High-Concurrency bằng Golang"
+      "credentials": "Extensive experience designing high-concurrency systems in Golang"
     },
     "trust_signals": [
       "source_citations",
       "verifiable_claims",
       "expert_quotes"
     ],
-    "claim_policy": "Mọi ví dụ code Go phải đảm bảo tuân thủ strict determinism rules của Temporal."
+    "claim_policy": "All Go code examples must strictly adhere to Temporal deterministic execution rules."
   },
   "schema_requirements": {
     "schema_types": [
@@ -157,12 +157,12 @@
     ],
     "author_schema_required": true,
     "faq_schema_required": true,
-    "entity_id_strategy": "https://vesviet.com/#organization",
-    "technical_seo_ticket": "Triển khai Article, FAQPage, và Person schema."
+    "entity_id_strategy": "https://tanhdev.com/#organization",
+    "technical_seo_ticket": "Implement Article, FAQPage, and Person schema."
   },
   "internal_links": [
     {
-      "anchor": "ứng dụng Saga Pattern bằng Temporal",
+      "anchor": "Saga pattern orchestration with Temporal",
       "target": "/series/system-design/08-saga-pattern-distributed-transactions-go/",
       "rationale": "Link to the Saga pattern guide."
     },
@@ -180,7 +180,7 @@
   "handoff": {
     "next_role": "content-writer",
     "status": "ready_for_content_writer",
-    "notes": "SEO Brief hoàn thiện cho Temporal Workflow. Yêu cầu viết chặt chẽ về khái niệm Determinism.",
+    "notes": "SEO Brief complete for Temporal Workflow. Maintain rigorous focus on determinism.",
     "contracts": [
       "contracts/schemas/seo-content-brief.json"
     ]

@@ -30,7 +30,7 @@ canonicalURL: "https://tanhdev.com/posts/graphhopper-kubernetes-self-hosting-osm
 
 # Self-Hosting GraphHopper on Kubernetes with OSM Data
 
-**Answer-first:** Self-hosting GraphHopper routing engines on Kubernetes uses initContainers for S3 graph cache hydration, JVM heap tuning, and HPA auto-scaling to process heavy routing traffic. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+> **Answer-first:** Self-hosting GraphHopper routing engines on Kubernetes uses initContainers for S3 graph cache hydration, JVM heap tuning, and HPA auto-scaling to process heavy routing traffic. Sizing pods with 4GB off-heap memory and 1GB JVM heap for country-level OpenStreetMap data achieves sub-50ms routing queries while cutting commercial map API costs by over 95%.
 
 GraphHopper is arguably the most capable open-source routing engine available — it supports Contraction Hierarchies (CH) for sub-millisecond route queries, custom vehicle profiles, turn restrictions, and the full OpenStreetMap road network. The problem most teams encounter is not the algorithm; it is the operational challenge of running it in Kubernetes: loading a large OSM PBF file, sizing JVM memory correctly, handling the long CH pre-processing startup time, and updating map data without downtime.
 
@@ -449,17 +449,26 @@ Integrate these dashboards with the broader Kubernetes observability stack descr
 
 ## Frequently Asked Questions
 
-### How much RAM does GraphHopper need to serve Vietnam's road network?
+{{< faq q="How much RAM does GraphHopper need to serve Vietnam's road network?" >}}
 For Vietnam with car + motorcycle + bike CH profiles: approximately 3–4 GB of memory-mapped off-heap memory for the graph files, plus 512MB–1GB JVM heap. Set your Kubernetes memory limit to 5 GB to provide adequate buffer. Southeast Asia region (including Thailand, Indonesia, Philippines) requires approximately 15–20 GB.
+{{< /faq >}}
 
-### Can I run GraphHopper on Kubernetes with multiple replicas?
+{{< faq q="Can I run GraphHopper on Kubernetes with multiple replicas?" >}}
 Yes, but with constraints. `ReadWriteOnce` PVCs (standard SSD storage) only support a single writer — you cannot mount the same PVC to two pods simultaneously. For multi-replica serving, use `ReadWriteMany` storage (NFS or Ceph RBD) and a Deployment instead of StatefulSet. Alternatively, run separate StatefulSets per region, each with their own PVC, and route requests by geography.
+{{< /faq >}}
 
-### How do I update the OSM map data without downtime?
+{{< faq q="How do I update the OSM map data without downtime?" >}}
 Use the blue-green graph update pattern: maintain two StatefulSets (active and standby), update the OSM file and regenerate the graph on the standby, then switch the Kubernetes Service selector to the newly ready standby. This eliminates downtime at the cost of double the storage and compute during the update window.
+{{< /faq >}}
 
 ---
 
-**Related Reading:** Once GraphHopper is running in production, see [Go pprof in Kubernetes: Remote Profiling & Flame Graphs](/posts/go-pprof-kubernetes-remote-profiling/) to profile your routing service and identify JVM/Go performance bottlenecks. For the business use case driving this infrastructure, see [GraphHopper vs CARTO: Order Fulfillment Routing Engine](/posts/graphhopper-distance-matrix-production-guide/) and the [Geospatial & Routing Engine Architecture series](/series/routing-geospatial-architecture/).
+## Related Guides & Topic Cluster
+
+- **Distance Matrix Production Guide:** Deploy and benchmark `/matrix` queries with Redis H3 caching in [GraphHopper Distance Matrix: Self-Hosted Routing & API Guide](/posts/graphhopper-distance-matrix-production-guide/).
+- **Fleet Optimization Solver:** Feed distance matrices into a Go ALNS solver in [CVRP & VRPTW Fleet Optimization: Go ALNS Routing Engine](/posts/cvrp-vrptw-alns-fleet-optimization-golang-architecture/).
+- **Engine Showdown:** Compare OSRM and GraphHopper architectures in [OSRM vs GraphHopper Architecture Comparison](/posts/osrm-vs-graphhopper-architecture-comparison/).
+- **Pillar Hub:** Explore the full 8-part masterclass in [Geospatial & Routing Engine Architecture](/series/routing-geospatial-architecture/).
+- **Performance Profiling:** Trace Go and JVM bottlenecks in [Go pprof in Kubernetes: Remote Profiling & Flame Graphs](/posts/go-pprof-kubernetes-remote-profiling/).
 
 {{< author-cta >}}

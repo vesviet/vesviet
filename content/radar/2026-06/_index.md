@@ -284,7 +284,7 @@ This is not a stylistic choice. It is a hard constraint baked into the [kratos-l
 | Layer | Responsibility | What It MUST NOT Touch |
 |-------|---------------|------------------------|
 | `api` | Protobuf definitions — generates HTTP & gRPC code | Business logic, DB |
-| `service` | Adapter — maps DTO â†” Domain Model, calls `biz` | `*gorm.DB`, Redis |
+| `service` | Adapter — maps DTO ↔ Domain Model, calls `biz` | `*gorm.DB`, Redis |
 | `biz` | Domain Models, Usecases, Repository **interfaces** | Any concrete DB driver |
 | `data` | Implements `biz` interfaces — GORM, Redis, Dapr SDK | Business rules |
 

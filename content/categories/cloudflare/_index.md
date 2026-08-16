@@ -1,6 +1,6 @@
 ---
 title: "Cloudflare"
-description: "Ứng dụng Cloudflare Workers, D1 database, Durable Objects và giải pháp Zero DevOps tại Edge bởi Lê Tuấn Anh."
+description: "Cloudflare Workers, D1 distributed SQL, Durable Objects, and Zero-DevOps edge computing architectures by Lê Tuấn Anh."
 cover:
   image: "/images/posts/cloudflare.jpg"
 ---

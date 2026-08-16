@@ -29,7 +29,7 @@ canonicalURL: "https://tanhdev.com/posts/mysql-scalability-guide/"
 
 # MySQL Scalability Guide: Read Replicas, Sharding, and Distributed SQL
 
-**Answer-first:** Scaling MySQL for high-traffic applications involves read replica load balancing, indexed query optimization, Redis caching layers, and eventual horizontal table sharding. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+> **Answer-first:** Scaling MySQL for high-traffic applications involves a phased progression: tuning InnoDB buffer pools and slow queries (0–500 TPS), offloading reads via ProxySQL and read replicas (500–3,000 TPS), and adopting horizontal write scaling (3,000+ TPS) via Vitess sharding or TiDB Distributed SQL to maintain sub-50ms P99 query latencies.
 
 MySQL scalability is the ability to increase database throughput — reads per second, writes per second, or data volume — without rewriting your application. The critical distinction: **read scaling** (adding replicas) and **write scaling** (sharding or distributed SQL) require completely different architectural approaches. Choosing the wrong path creates technical debt that takes months to unwind.
 
@@ -472,24 +472,38 @@ SET GLOBAL innodb_print_all_deadlocks = OFF;
 
 ## Frequently Asked Questions
 
-Addressing key database architecture and operational scaling questions clarifies performance tuning options across MySQL deployment phases. The following answers cover TPS throughput thresholds, read replica configurations, Vitess versus TiDB selection criteria, primary key collision resolution strategies, and MySQL 8.4 LTS parallel replication performance enhancements.
-
-### Is MySQL fundamentally scalable for enterprise workloads?
+{{< faq q="Is MySQL fundamentally scalable for enterprise workloads?" >}}
 MySQL scales effectively to billions of rows and tens of thousands of transactions per second when properly architected. The primary limit is not row count but operational friction during schema migrations on massive tables, which can be mitigated through sharding or distributed NewSQL databases like TiDB.
+{{< /faq >}}
 
-### What are the operational TPS thresholds across MySQL scaling phases?
+{{< faq q="What are the operational TPS thresholds across MySQL scaling phases?" >}}
 A single tuned MySQL primary handles 100–500 transactions per second at baseline. Performance expands through query optimization (500–1,500 TPS), connection pooling via ProxySQL (1,500–3,000 TPS), and horizontal read replication or sharding for workloads exceeding 6,000 TPS.
+{{< /faq >}}
 
-### What is the most effective MySQL sharding alternative for high-write platforms?
+{{< faq q="What is the most effective MySQL sharding alternative for high-write platforms?" >}}
 TiDB is the leading MySQL-compatible distributed SQL alternative for high-throughput write workloads. It maintains full MySQL protocol compatibility while automatically partitioning data across distributed storage nodes, eliminating manual application-level sharding logic.
+{{< /faq >}}
 
-### When should an architecture team choose Vitess over TiDB?
+{{< faq q="When should an architecture team choose Vitess over TiDB?" >}}
 Vitess is preferred when teams wish to retain standard MySQL storage nodes and already have dedicated SRE resources to manage VSchema and VReplication workflows. TiDB is recommended when applications require transparent ACID transactions across nodes, automatic region rebalancing, or hybrid operational/analytical processing (HTAP).
+{{< /faq >}}
 
-### How do engineering teams migrate from MySQL sharding to TiDB without ID collisions?
+{{< faq q="How do engineering teams migrate from MySQL sharding to TiDB without ID collisions?" >}}
 Primary key collisions during shard consolidation are resolved by migrating auto-incrementing integers to 128-bit UUIDs stored as `BINARY(16)`. Alternatively, teams can configure composite primary keys incorporating the source shard identifier before running TiDB Data Migration (DM) tools.
+{{< /faq >}}
 
-### What performance improvements does MySQL 8.4 LTS introduce for scalability?
+{{< faq q="What performance improvements does MySQL 8.4 LTS introduce for scalability?" >}}
 MySQL 8.4 LTS makes WRITESET parallel replication the default setting, significantly accelerating replica synchronization for write-heavy workloads. It also enhances InnoDB buffer pool management and updates security defaults to support long-term enterprise deployments through 2032.
+{{< /faq >}}
 
-Once your database layer scales, the next bottleneck is inventory synchronization across services. For how e-commerce teams combine Debezium CDC, Kafka partition keying, and idempotent Redis Lua scripts to prevent overselling at scale, see [Real-Time Inventory Synchronization: Kafka, CDC & Redis](/posts/real-time-inventory-ecommerce-architecture/). For a production case study of MySQL sharding at 10M+ users — including Shopee's ProxySQL connection pooling, read replica architecture, and TiDB migration — see [Shopee Architecture: Database Scaling](/series/shopee-architecture/04-database-scale/). For a complete view of how multiple scaled databases interact in a distributed ecosystem, see the [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
+---
+
+## Related Database & Scalability Resources
+
+- **Distributed SQL Migration:** Learn how to replace manual sharding with Distributed SQL in [MySQL Sharding Alternatives: Replace Sharding with TiDB](/posts/mysql-scaling-sharding-tidb-architecture/).
+- **Vitess Implementation:** Explore query routing and Go AST parsing in [Vitess vs GORM Sharding: MySQL Write Scaling in Go](/posts/mysql-horizontal-scaling/).
+- **Inventory Synchronization:** Combine CDC, Kafka, and Redis in [Real-Time Inventory Synchronization: Kafka, CDC & Redis](/posts/real-time-inventory-ecommerce-architecture/).
+- **High-Concurrency Case Study:** Review 10M+ user database architectures in [Shopee Architecture: Database Scaling](/series/shopee-architecture/04-database-scale/).
+- **Microservices Guide:** Connect distributed database topologies across services in [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
+
+{{< author-cta >}}

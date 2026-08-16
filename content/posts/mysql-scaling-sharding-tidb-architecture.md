@@ -1,5 +1,5 @@
 ---
-title: "Replace MySQL Sharding with TiDB: Architecture Guide"
+title: "MySQL Sharding Alternatives: Replace Sharding with TiDB"
 slug: "mysql-scaling-sharding-tidb-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-05-26T14:00:00+07:00"
@@ -16,7 +16,7 @@ tags:
   - "TiDB"
   - "Sharding"
   - "NewSQL"
-description: "How to replace MySQL manual sharding with TiDB. Distributed SQL architecture, TiKV Raft consensus, TiFlash HTAP, and zero-downtime DM migration."
+description: "Explore MySQL sharding alternatives. Replace complex Vitess/manual sharding with TiDB Distributed SQL: Raft consensus, ACID transactions, and zero-downtime DM."
 ShowToc: true
 TocOpen: true
 cover:
@@ -27,7 +27,7 @@ canonicalURL: "https://tanhdev.com/posts/mysql-scaling-sharding-tidb-architectur
 
 # Replace MySQL Sharding with TiDB: Distributed SQL Architecture
 
-**Answer-first:** Replacing legacy MySQL sharding with TiDB distributed SQL simplifies database operations by providing horizontal write scaling, automatic range rebalancing, and full ACID compliance. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+> **Answer-first:** TiDB is the leading open-source MySQL sharding alternative, replacing fragile application-level sharding logic (Vitess, GORM Sharding) with an auto-partitioned Distributed SQL architecture. By distributing 96MB Raft Regions across TiKV storage nodes and utilizing the Percolator distributed transaction protocol, TiDB delivers horizontal write scaling, cross-node ACID transactions, and zero-downtime online DDL while maintaining 100% MySQL wire compatibility.
 
 Scaling a relational database is one of the most demanding challenges in system design. As applications grow from thousands to millions of active users, the database ceases to be a simple storage engine and becomes the primary bottleneck of the entire system architecture. In this technical guide, we explore the architectural progression of scaling MySQL—beginning with replication topologies, stepping through the complexities and operational hazards of manual database sharding (including proxy middleware like Vitess), and evaluating NewSQL alternatives, specifically the distributed architecture of TiDB.
 
@@ -282,23 +282,25 @@ For systems that do not rely heavily on database-level procedural code, migratin
 
 ## Frequently Asked Questions
 
-Answers to common engineering questions regarding MySQL horizontal scaling, manual sharding trade-offs, and distributed SQL migration strategies. These insights reflect practical operational experience and modern 2026 architectural patterns for scaling high-concurrency transactional database workloads without incurring unnecessary system complexity or application refactoring overhead.
-
-### How do engineering teams scale MySQL when write throughput saturates a single primary instance?
+{{< faq q="How do engineering teams scale MySQL when write throughput saturates a single primary instance?" >}}
 Scaling starts by upgrading server hardware (CPU, RAM, NVMe) and deploying read replicas to offload non-mutating SELECT traffic. When write throughput exceeds single-node disk I/O limits, teams must transition to horizontal write sharding or migrate to a distributed SQL database such as TiDB.
+{{< /faq >}}
 
-### What is the core difference between MySQL table partitioning and horizontal database sharding?
+{{< faq q="What is the core difference between MySQL table partitioning and horizontal database sharding?" >}}
 Table partitioning divides a single large table into smaller physical segments within the same MySQL instance, maintaining zero application changes. Horizontal sharding splits data rows across multiple independent database instances, requiring application-level query routing or dedicated proxy middleware.
+{{< /faq >}}
 
-### Why is TiDB considered an effective replacement for manual MySQL database sharding?
+{{< faq q="Why is TiDB considered an effective replacement for manual MySQL database sharding?" >}}
 TiDB delivers horizontal write scaling without forcing developers to rewrite queries or design manual shard keys. It automatically partitions datasets into 96MB Raft Regions, handles cross-node query distribution, and supports full ACID transactions using the Percolator protocol.
+{{< /faq >}}
 
 ---
 
-🔗 **Next Step:** To see how database scaling and high-availability topologies fit into broader cloud infrastructure designs, read our guide on [architecting large-scale systems](/series/agentic-system-architecture/) and contrast traditional regional database systems with modern [edge computing databases](/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/).
+## Related Database & Scalability Guides
 
-**Continue Reading:** [Financial Microservices Architecture: Saga & Double-Entry Ledger](/posts/banking-microservices-architecture/) — how the database layer covered here supports ACID-compliant financial transaction processing in a distributed system.
-
-🔗 **Real-World Case Study:** See how Shopee scaled their database architecture to handle flash sales at 10M+ concurrent users, including their MySQL sharding evolution and TiDB adoption: [Shopee Architecture: Database Scaling at Scale](/series/shopee-architecture/04-database-scale/).
+- **Database Scaling Framework:** Explore read replicas, connection pooling, and sharding trade-offs in [MySQL Scalability: Read Replicas, Sharding & TiDB](/posts/mysql-scalability-guide/).
+- **Vitess vs GORM Sharding:** Deep dive into VTGate query routing and Go implementation pitfalls in [Vitess vs GORM Sharding: MySQL Write Scaling in Go](/posts/mysql-horizontal-scaling/).
+- **Financial Microservices:** See how distributed ACID databases power ledger systems in [Financial Microservices Architecture: Saga & Double-Entry Ledger](/posts/banking-microservices-architecture/).
+- **High-Concurrency Case Study:** Review Shopee's database architecture scaling to 10M+ concurrent users in [Shopee Architecture: Database Scaling at Scale](/series/shopee-architecture/04-database-scale/).
 
 {{< author-cta >}}

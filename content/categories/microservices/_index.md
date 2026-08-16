@@ -1,6 +1,6 @@
 ---
 title: "Microservices"
-description: "Chiến lược chuyển đổi monolith sang microservices, phân tách domain, Dapr Pub/Sub và gRPC integration bởi Lê Tuấn Anh."
+description: "Microservices design patterns, Domain-Driven Design, Dapr event mesh, Saga orchestration, and gRPC by Lê Tuấn Anh."
 cover:
   image: "/images/posts/microservices.jpg"
 ---

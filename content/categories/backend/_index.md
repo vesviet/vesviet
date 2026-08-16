@@ -1,6 +1,6 @@
 ---
 title: "Backend"
-description: "Tổng hợp các mẫu thiết kế backend, API Gateway, REST, gRPC và phát triển dịch vụ chịu tải bởi Lê Tuấn Anh."
+description: "Comprehensive backend architecture patterns, API gateways, REST, gRPC, and high-concurrency Go services by Lê Tuấn Anh."
 cover:
   image: "/images/posts/backend.jpg"
 ---

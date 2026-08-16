@@ -1,5 +1,5 @@
 ---
-title: "Composable Banking Architecture Pattern: Migration from Monolith"
+title: "Composable Banking Architecture: Monolith to Modular Go"
 slug: "composable-banking-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-06-10T14:55:00+07:00"
@@ -19,7 +19,7 @@ tags:
   - "Saga Pattern"
   - "Core Banking"
   - "MACH"
-description: "Discover the composable banking architecture pattern. Learn how to migrate from a monolithic core to modular Go microservices using the Strangler Fig pattern."
+description: "Master the composable banking architecture pattern. Migrate from legacy monolithic cores to modular Go microservices using Strangler Fig, Sagas, and ISO 20022."
 ShowToc: true
 TocOpen: true
 cover:
@@ -31,7 +31,7 @@ canonicalURL: "https://tanhdev.com/posts/composable-banking-architecture/"
 
 # Composable Banking Architecture: Monolith to Modular
 
-**Answer-first:** The composable banking architecture pattern replaces monolithic core banking systems with modular, independent Packaged Business Capabilities (PBCs). By leveraging Go microservices, Saga orchestration, and the Strangler Fig migration pattern, banks can decouple their legacy ledgers without risky "Big Bang" cutovers. Adopting this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory optimization, and fault-tolerant event-driven state synchronization across production systems.
+> **Answer-first:** Composable banking architecture replaces rigid monolithic core banking suites with independent Packaged Business Capabilities (PBCs) aligned to BIAN domain standards. By combining Go microservices, double-entry ledger event sourcing, Temporal/Dapr Saga orchestration, and Strangler Fig proxy cutovers, financial institutions achieve sub-10ms transaction settlement without risking high-stakes "Big Bang" migration outages.
 
 ## Migration Path from Monolith to Composable
 
@@ -581,24 +581,28 @@ For teams evaluating off-the-shelf composable cores before building in-house, th
 
 ## Frequently Asked Questions
 
-Addressing technical questions regarding composable architecture topologies, Strangler Fig migration strategies, Saga orchestration, and BaaS API security helps financial engineering teams modernize legacy core systems safely. The following detailed Q&A pairs detail essential operational principles for building scalable, compliant, and modular banking platforms.
-
-### Q1: What is composable banking architecture?
+{{< faq q="What is composable banking architecture?" >}}
 Composable banking architecture replaces a monolithic core banking system with a network of independent, domain-specific Packaged Business Capabilities (PBCs). Each PBC owns its own database, deployment pipeline, and API surface. The system is governed by MACH principles (Microservices, API-first, Cloud-native, Headless) and typically aligns service boundaries with BIAN industry-standard Service Domains.
+{{< /faq >}}
 
-### Q2: Why are banks migrating away from monolithic core banking systems?
+{{< faq q="Why are banks migrating away from monolithic core banking systems?" >}}
 Three common pressures are cost, talent concentration, and delivery speed. Their size and remediation depend on the institution; use a measured baseline and a regulated change plan before committing to a modernization program.
+{{< /faq >}}
 
-### Q3: What is the Strangler Fig pattern in core banking migration?
+{{< faq q="What is the Strangler Fig pattern in core banking migration?" >}}
 The Strangler Fig pattern migrates a monolithic system domain-by-domain without a "Big Bang" cutover. An API Gateway routes traffic, initially forwarding everything to the legacy system. New microservices intercept individual domains (e.g., cards, deposits) as they become production-ready. An Anti-Corruption Layer translates between modern domain models and legacy data formats. Shadow routing validates the new service against the legacy system before any live traffic shifts.
+{{< /faq >}}
 
-### Q4: What is the difference between Temporal and Dapr Workflow for banking Sagas?
+{{< faq q="What is the difference between Temporal and Dapr Workflow for banking Sagas?" >}}
 Both implement Orchestrated Sagas using Event Sourcing Replay for crash recovery. Temporal is preferred for complex, long-running workflows requiring advanced versioning, custom search attributes, and high workflow throughput at scale. Dapr Workflow is lighter and integrates natively with the broader Dapr sidecar ecosystem (Pub/Sub, State, Bindings), making it the better fit for teams already using Dapr for other microservice concerns.
+{{< /faq >}}
 
-### Q5: What is RFC 8705 and why does it matter for BaaS APIs?
+{{< faq q="What is RFC 8705 and why does it matter for BaaS APIs?" >}}
 RFC 8705 defines Mutual-TLS Client Certificate-Bound Access Tokens for OAuth 2.0. The Authorization Server binds the access token to the client's X.509 certificate by embedding the certificate's SHA-256 thumbprint in the token's `cnf.x5t#S256` claim. The API Gateway validates that the token thumbprint matches the certificate presented in the current mTLS connection, making stolen tokens unusable without the corresponding private key. This is mandatory for Financial-grade API (FAPI) 1.0 Advanced compliance.
+{{< /faq >}}
 
-### Q6: What does DORA require for banks running composable banking systems?
+{{< faq q="What does DORA require for banks running composable banking systems?" >}}
 DORA (Digital Operational Resilience Act, enforceable January 2025) requires significant EU financial institutions to conduct Threat-Led Penetration Testing (TLPT) at least every three years. TLPT follows the TIBER-EU framework, mimicking real adversary TTPs against all critical ICT functions — including the API Gateway, event bus, orchestration layer, and third-party SaaS core banking platforms. A single TLPT exercise typically spans 6-12 months.
+{{< /faq >}}
 
 {{< author-cta >}}

@@ -117,11 +117,11 @@ I read every message and respond within 48 hours on business days.
 
 ### 📬 Newsletter
 
-Đăng ký nhận bản tin hàng tuần về kiến trúc phần mềm, Go, AI Engineering và các công nghệ mới nhất từ Lê Tuấn Anh.
+Subscribe to my newsletter for weekly deep dives on software architecture, Go microservices, AI engineering, and distributed systems from Lê Tuấn Anh.
 
-*Tính năng Newsletter trực tiếp qua email đang được hoàn thiện.* Bạn có thể theo dõi các bài viết mới nhất tại trang chủ hoặc kết nối qua [LinkedIn](https://www.linkedin.com/in/vesviet) & [GitHub](https://github.com/vesviet).
+*Direct email newsletter delivery is rolling out soon.* In the meantime, explore the latest guides on the homepage or connect via [LinkedIn](https://www.linkedin.com/in/vesviet) & [GitHub](https://github.com/vesviet).
 
-👉 **[Xem tất cả bài viết](/reading-map/)** | **[Xem các series](/series/)**
+👉 **[Explore the Reading Map](/reading-map/)** | **[Browse All Series](/series/)**
 
 ---
 

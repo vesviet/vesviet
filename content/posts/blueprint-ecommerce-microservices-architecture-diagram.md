@@ -1,5 +1,5 @@
 ---
-title: "Blueprint: E-commerce Microservices Architecture with Golang"
+title: "Ecommerce Microservices Architecture Diagram: 21-Service Go"
 slug: "blueprint-ecommerce-microservices-architecture-diagram"
 author: "Lê Tuấn Anh"
 date: "2026-04-12T08:30:00+07:00"
@@ -7,7 +7,7 @@ lastmod: "2026-07-22T08:30:00+07:00"
 draft: false
 mermaid: true
 tags: ["Architecture", "Microservices", "Mermaid", "Golang", "API Gateway", "DDD", "Dapr", "Kubernetes", "ecommerce architecture"]
-description: "Deep dive into an e-commerce microservices architecture diagram using Golang and Dapr. A 21-service blueprint for scalable composable commerce."
+description: "Complete ecommerce microservices architecture diagram in Go: 21 services, 6 bounded DDD domains, gRPC gateway, Dapr Pub/Sub event mesh, and Saga checkout."
 categories: ["Architecture"]
 ShowToc: true
 TocOpen: true
@@ -22,7 +22,7 @@ canonicalURL: "https://tanhdev.com/posts/blueprint-ecommerce-microservices-archi
 
 ## E-Commerce Architecture Patterns: Monolith vs Microservices
 
-**Answer-first:** An ecommerce microservices architecture diagram organizes system capabilities into 6 core bounded domains (Commerce Flow, Product & Content, Logistics, Post-Purchase, Identity & Access, Platform Operations), connecting 21 Golang microservices via gRPC and Dapr Pub/Sub event mesh for high-concurrency scalability. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory management with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration.
+> **Answer-first:** An ecommerce microservices architecture diagram organizes enterprise capabilities into 6 core bounded domains (Commerce Flow, Product & Content, Logistics, Post-Purchase, Identity & Access, Platform Operations), orchestrating 21 Go microservices via gRPC and Dapr Pub/Sub event mesh. This architecture achieves sub-50ms P99 latency, isolates database-per-service failures, and guarantees reliable checkout rollbacks using distributed Saga workflows.
 
 ### Monolithic vs Microservices E-Commerce Comparison
 
@@ -250,7 +250,7 @@ For the full argument on when this complexity is justified — and when it isn't
 | [Order Splitting with Graph Coloring](/series/ecommerce-order-allocation/part-9-order-splitting-graph-coloring-opa/) | Solving CSP with OPA and Welsh-Powell |
 | [Picker Routing Optimization](/series/ecommerce-order-allocation/part-10-warehouse-picker-routing-optimization/) | Picker Routing, GraphHopper A*, OR-Tools in C++ |
 
-## Author & Real-World Engineering Experience / Về Tác Giả & Kinh Nghiệm Thực Tế
+## Author & Real-World Engineering Experience
 
 - **Core Engineering Expertise**: Domain-Driven Design (DDD), Clean Architecture, and microservice micro-frameworks in **Go 1.25+ (Golang)** using **Kratos v2**, **GORM**, and **Dapr (Distributed Application Runtime)**.
 - **Production Benchmarks**: Real-world experience building 21+ distributed microservices handling 100k+ concurrent connections, sub-50ms p99 latencies, distributed Saga transactions, and GitOps deployments on Kubernetes.
@@ -260,11 +260,14 @@ For the full argument on when this complexity is justified — and when it isn't
 
 ## Frequently Asked Questions
 
-### Q1: How does the API Gateway route traffic to 21+ backend services without becoming a bottleneck?
+{{< faq q="How does the API Gateway route traffic to 21+ backend services without becoming a bottleneck?" >}}
 We use a lightweight, compiled gateway like Envoy or a custom Go gateway utilizing `net/http` reverse proxies. Path-based routing and JWT token verification are handled at the edge, while service-to-service communication is offloaded to a gRPC mesh (using Linkerd or Consul) for low-latency, mTLS-secured transport.
+{{< /faq >}}
 
-### Q2: What strategies prevent cascading failures when a downstream microservice experiences latency spikes?
+{{< faq q="What strategies prevent cascading failures when a downstream microservice experiences latency spikes?" >}}
 We implement the Circuit Breaker and bulkhead patterns at the service boundary. In Go, libraries like `go-resiliency/breaker` or Sentinel intercept outbound HTTP/gRPC client calls. If the failure rate exceeds 50%, the breaker trips immediately, returning a cached response or an architectural fallback rather than blocking goroutines.
+{{< /faq >}}
 
-### Q3: How do you handle distributed checkout transactions across multiple microservices without shared SQL transactions?
+{{< faq q="How do you handle distributed checkout transactions across multiple microservices without shared SQL transactions?" >}}
 We implement the Saga Pattern. While raw pub/sub choreography was common, the 2026 standard leverages **Dapr Workflows** for centralized orchestration. The Checkout Workflow coordinates the Order, Warehouse, and Payment services, processing local database transactions independently and executing compensating activities automatically if any step fails.
+{{< /faq >}}

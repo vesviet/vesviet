@@ -50,7 +50,7 @@ Financial systems demand the highest levels of data integrity, ACID compliance, 
 
 - **[PayPay Architecture: Scaling for Planet-Scale Campaigns](/series/paypay-architecture/)** — How PayPay scales for 70M users and 7.8B annual transactions: microservices, Kafka idempotency, TiDB migration, SRE chaos engineering, campaign pre-scaling, and AI-native architecture. See also: [PayPay architecture deep-dive post](/posts/paypay-architecture-scaling/).
 
-- **[Core Banking Architecture](/series/core-banking-architecture/)** — Kiến trúc Core Banking hiện đại: từ nguyên lý Double-Entry Ledger, ACID transactions, và tích hợp ISO 20022 đến triển khai Microservices-based Core Banking trên cloud. Đọc thêm về [microfinance core banking architecture](/posts/deconstructing-microfinance-core-banking-architecture/).
+- **[Core Banking Architecture](/series/core-banking-architecture/)** — Modern Core Banking Architecture: from Double-Entry Ledger fundamentals, ACID transactions, and ISO 20022 messaging to cloud-native microservices deployment. Read more on [microfinance core banking architecture](/posts/deconstructing-microfinance-core-banking-architecture/).
 
 ---
 

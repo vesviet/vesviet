@@ -1,6 +1,6 @@
 ---
 title: "FinTech"
-description: "Kiến trúc hệ thống tài chính ngân hàng, Saga pattern, giao dịch phân tán và xử lý thanh toán bởi Lê Tuấn Anh."
+description: "Financial technology architecture, core banking design, distributed Saga transactions, and double-entry ledgers by Lê Tuấn Anh."
 cover:
   image: "/images/posts/fintech.jpg"
 ---

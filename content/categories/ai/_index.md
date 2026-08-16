@@ -1,6 +1,6 @@
 ---
 title: "AI"
-description: "Khám phá các bài viết về AI Engineering, RAG architecture, Agentic workflows và ứng dụng AI thực tế bởi Lê Tuấn Anh."
+description: "Explore deep-dive guides on AI Engineering, RAG architecture, agentic workflows, and production LLM gateways by Lê Tuấn Anh."
 cover:
   image: "/images/posts/ai.jpg"
 ---

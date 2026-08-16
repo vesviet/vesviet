@@ -13,7 +13,7 @@
     "business_outcome": "Build topical authority in backend security and infrastructure engineering.",
     "audience": "Senior Backend Engineers, DevOps, and Security Architects designing secure microservices.",
     "ymyl_adjacent": true,
-    "locale": "vi-VN",
+    "locale": "en-US",
     "content_length_target": 2500
   },
   "topical_authority": {
@@ -43,40 +43,40 @@
     "serp_notes": "Top results are highly theoretical (NIST definitions). Lacks practical code-level implementations for backend engineers."
   },
   "geo_aeo": {
-    "answer_first_block": "Zero-Trust Architecture (ZTA) trong Microservices là mô hình bảo mật loại bỏ niềm tin mặc định vào mạng nội bộ. Mọi service-to-service communication đều phải được xác thực liên tục thông qua mTLS (workload identity) và user token (identity propagation) thay vì dùng API keys tĩnh.",
+    "answer_first_block": "Zero-Trust Architecture (ZTA) in Microservices eliminates implicit trust within internal networks. Every service-to-service communication is continuously verified via mTLS (workload identity) and user token propagation rather than static API keys.",
     "query_fan_out": [
-      "Zero-Trust Architecture là gì?",
-      "Làm sao để triển khai mTLS cho Microservices?",
-      "SPIFFE/SPIRE hoạt động như thế nào trong Zero-Trust?",
-      "Identity Propagation khác gì với Service Authentication?"
+      "What is Zero-Trust Architecture in microservices?",
+      "How do you implement mTLS for Go microservices?",
+      "How does SPIFFE/SPIRE work in a Zero-Trust setup?",
+      "How does user identity propagation differ from service authentication?"
     ],
     "answer_format_per_section": [
       {
-        "h2_heading": "Zero-Trust Architecture (ZTA) là gì? Chấm dứt kỷ nguyên VPN",
+        "h2_heading": "Zero-Trust Architecture (ZTA): Beyond Perimeter Security",
         "format": "definition"
       },
       {
-        "h2_heading": "Kiến trúc 2 tầng Identity trong Zero-Trust",
+        "h2_heading": "Two-Tier Identity Architecture in Zero-Trust",
         "format": "bullet_list"
       },
       {
-        "h2_heading": "Triển khai mTLS Workload Identity với SPIFFE/SPIRE",
+        "h2_heading": "Deploying mTLS Workload Identity with SPIFFE/SPIRE",
         "format": "numbered_steps"
       },
       {
-        "h2_heading": "User Identity Propagation với OAuth 2.1 và JWT trong Go",
+        "h2_heading": "User Identity Propagation with OAuth 2.1 and JWT in Go",
         "format": "numbered_steps"
       },
       {
-        "h2_heading": "Case Study & Benchmark: Độ trễ (Latency) của mTLS",
+        "h2_heading": "Case Study & Benchmarks: mTLS Overhead and Handshake Latency",
         "format": "bullet_list"
       },
       {
-        "h2_heading": "FAQ: Câu hỏi thường gặp về Zero-Trust",
+        "h2_heading": "Frequently Asked Questions about Zero-Trust",
         "format": "bullet_list"
       }
     ],
-    "fact_density_target": "Tối thiểu 3 benchmark thực tế (ví dụ: mTLS overhead latency <2ms, RSA vs ECDSA performance).",
+    "fact_density_target": "Minimum 3 verifiable benchmarks (e.g., mTLS overhead latency <2ms, RSA vs ECDSA cryptographic throughput).",
     "ai_overview_presence": "yes",
     "perplexity_citation_patterns": "Citations usually point to Cloudflare, NIST, and HashiCorp documentation.",
     "ai_bot_crawlability": {
@@ -87,67 +87,67 @@
   "on_page_plan": {
     "title_options": [
       {
-        "title": "Zero-Trust Architecture cho Microservices: Toàn tập mTLS & Go",
-        "char_count": 61
+        "title": "Zero-Trust Microservices Architecture: mTLS & Go Guide",
+        "char_count": 55
       },
       {
-        "title": "Kiến trúc Zero-Trust: Triển khai SPIFFE/SPIRE & OAuth 2.1",
-        "char_count": 57
+        "title": "Zero-Trust Security in Go: SPIFFE/SPIRE & OAuth 2.1",
+        "char_count": 50
       }
     ],
     "meta_options": [
       {
-        "meta": "Hướng dẫn thiết kế Zero-Trust Architecture cho Microservices. Triển khai mTLS với SPIFFE/SPIRE, Identity Propagation, OAuth 2.1 và code Go production.",
-        "char_count": 154
+        "meta": "Master Zero-Trust Architecture for Go microservices: deploy mTLS with SPIFFE/SPIRE, user identity propagation, OAuth 2.1, and sub-2ms latency tuning.",
+        "char_count": 151
       }
     ],
     "slug_recommendation": "zero-trust-architecture-microservices",
     "h2_outline": [
       {
-        "h2": "Zero-Trust Architecture (ZTA) là gì? Chấm dứt kỷ nguyên VPN"
+        "h2": "Zero-Trust Architecture (ZTA): Beyond Perimeter Security"
       },
       {
-        "h2": "Kiến trúc 2 tầng Identity trong Zero-Trust"
+        "h2": "Two-Tier Identity Architecture in Zero-Trust"
       },
       {
-        "h2": "Triển khai mTLS Workload Identity với SPIFFE/SPIRE"
+        "h2": "Deploying mTLS Workload Identity with SPIFFE/SPIRE"
       },
       {
-        "h2": "User Identity Propagation với OAuth 2.1 và JWT trong Go"
+        "h2": "User Identity Propagation with OAuth 2.1 and JWT in Go"
       },
       {
-        "h2": "Case Study & Benchmark: Độ trễ (Latency) của mTLS"
+        "h2": "Case Study & Benchmarks: mTLS Overhead and Handshake Latency"
       },
       {
-        "h2": "FAQ: Câu hỏi thường gặp về Zero-Trust"
+        "h2": "Frequently Asked Questions about Zero-Trust"
       }
     ],
     "faq_included": true,
     "faq_questions": [
-      "Zero-Trust có làm chậm hệ thống không?",
-      "API Gateway đóng vai trò gì trong kiến trúc Zero-Trust?",
-      "Làm sao để handle bài toán Revoke JWT Token?"
+      "Does Zero-Trust mTLS significantly degrade microservices latency?",
+      "What role does the API Gateway play in Zero-Trust identity propagation?",
+      "How do you handle JWT token revocation in a distributed architecture?"
     ],
     "out_of_scope": [
-      "Zero-Trust Network Access (ZTNA) cho user endpoint (nhân viên văn phòng).",
-      "Cấu hình firewall phần cứng."
+      "Zero-Trust Network Access (ZTNA) for corporate employee endpoints.",
+      "Hardware firewall appliance configuration."
     ]
   },
   "eeat_gates": {
     "experience_proof_required": "firsthand_account",
-    "experience_proof_notes": "Cung cấp kinh nghiệm thực tế về overhead của mTLS handshake, cách rotate certificate không gây downtime.",
+    "experience_proof_notes": "Provide firsthand experience on mTLS handshake overhead and zero-downtime certificate rotation.",
     "author_entity": {
       "required": true,
       "author_name": "Lê Tuấn Anh (Senior Go Engineer)",
       "profile_url": "/about/",
-      "credentials": "Kinh nghiệm thiết kế hệ thống High-Concurrency bằng Golang"
+      "credentials": "Extensive experience designing secure high-concurrency systems in Golang"
     },
     "trust_signals": [
       "source_citations",
       "verifiable_claims",
       "expert_quotes"
     ],
-    "claim_policy": "Nghiêm ngặt với các thuật ngữ bảo mật, phải link tới chuẩn NIST hoặc IETF (OAuth 2.1)."
+    "claim_policy": "Strict cryptographic accuracy; link directly to NIST or IETF (OAuth 2.1) standards."
   },
   "schema_requirements": {
     "schema_types": [
@@ -157,12 +157,12 @@
     ],
     "author_schema_required": true,
     "faq_schema_required": true,
-    "entity_id_strategy": "https://vesviet.com/#organization",
-    "technical_seo_ticket": "Triển khai Article, FAQPage, và Person schema."
+    "entity_id_strategy": "https://tanhdev.com/#organization",
+    "technical_seo_ticket": "Implement Article, FAQPage, and Person schema."
   },
   "internal_links": [
     {
-      "anchor": "bảo mật MCP bằng Zero-Trust",
+      "anchor": "securing MCP with Zero-Trust",
       "target": "/series/mcp-engineering-in-production/part-3-identity/",
       "rationale": "Link to MCP identity architecture."
     },
@@ -180,7 +180,7 @@
   "handoff": {
     "next_role": "content-writer",
     "status": "ready_for_content_writer",
-    "notes": "SEO Brief hoàn thiện cho Zero-Trust Architecture. Nội dung nhạy cảm YMYL, yêu cầu chính xác tuyệt đối về mật mã học.",
+    "notes": "SEO Brief complete for Zero-Trust Architecture. YMYL-adjacent topic, require exact cryptographic standards.",
     "contracts": [
       "contracts/schemas/seo-content-brief.json"
     ]

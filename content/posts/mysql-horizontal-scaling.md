@@ -29,7 +29,7 @@ cover:
 
 # Vitess vs GORM Sharding: MySQL Write Scaling in Go
 
-**Answer-first:** Horizontal MySQL write scaling uses Vitess proxy sharding or application-level GORM shard key routing to distribute table data across independent database master instances. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+> **Answer-first:** Horizontal MySQL write scaling uses Vitess proxy sharding or application-level GORM shard key routing to distribute table data across independent database master instances. While Vitess provides transparent VTGate query routing and zero-downtime resharding for large teams, GORM Sharding offers a lightweight Go-native AST-parsing solution for single-service architectures.
 
 When your application reaches millions of users, a single database instance will inevitably become the biggest bottleneck in your entire architecture. To solve this, **MySQL database scaling** becomes mandatory. You must [Scale DB for Microservices](/posts/banking-microservices-architecture/) using Horizontal Scaling techniques.
 
@@ -188,11 +188,24 @@ If your project is written exclusively in Go and only has one or two historical 
 
 ## Frequently Asked Questions
 
-### What is MySQL horizontal scaling and how does write sharding work?
+{{< faq q="What is MySQL horizontal scaling and how does write sharding work?" >}}
 MySQL horizontal scaling distributes data rows across multiple independent database instances to overcome single-node write IOPS and CPU constraints. Unlike read replicas that mirror data, write sharding partitions tables based on a defined sharding key to distribute transactional write traffic across cluster nodes.
+{{< /faq >}}
 
-### When should an engineering team select Vitess over GORM application-level sharding?
+{{< faq q="When should an engineering team select Vitess over GORM application-level sharding?" >}}
 Teams should choose Vitess when managing large polyglot microservice ecosystems that require transparent query routing and zero-downtime dynamic resharding. Conversely, GORM Sharding is ideal for Go-native services with limited tables to shard and minimal operational resources.
+{{< /faq >}}
 
-### What happens if a database query omits the designated sharding key in GORM Sharding?
+{{< faq q="What happens if a database query omits the designated sharding key in GORM Sharding?" >}}
 Omitting the sharding key in GORM Sharding causes the middleware to return an `ErrMissingShardingKey` error. If fallback behavior is enabled, the query executes a scatter-gather operation across all shards, consuming excessive database memory and CPU resources.
+{{< /faq >}}
+
+---
+
+## Related Database & Scalability Resources
+
+- **Distributed SQL Alternative:** Discover how TiDB eliminates application-level sharding in [MySQL Sharding Alternatives: Replace Sharding with TiDB](/posts/mysql-scaling-sharding-tidb-architecture/).
+- **Scalability Framework:** Review the 6-stage database scaling ladder in [MySQL Scalability: Read Replicas, Sharding & TiDB](/posts/mysql-scalability-guide/).
+- **Financial Architecture:** See how financial microservices manage database state in [Financial Microservices Architecture: Saga & Double-Entry Ledger](/posts/banking-microservices-architecture/).
+
+{{< author-cta >}}

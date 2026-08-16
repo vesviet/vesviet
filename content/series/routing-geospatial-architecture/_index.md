@@ -16,6 +16,8 @@ TocOpen: true
 image: "/images/posts/graphhopper-cover.jpg"
 ---
 
+> **Answer-first:** Geospatial routing and distance matrix architecture at scale requires combining fast graph-traversal engines (GraphHopper, OSRM) with spatial indexing (Uber H3) and high-concurrency Go microservices. This 8-part masterclass demonstrates how to build, deploy on Kubernetes, and benchmark an in-memory routing cluster delivering sub-50ms distance matrices and 99.7% cost savings over commercial map APIs.
+
 Modern Logistics and Delivery systems rely heavily on one core capability: **Calculating distances and travel times (Distance Matrix) quickly and accurately.**
 
 How does Grab dispatch millions of drivers every second? How does ShopeeXpress optimize delivery routes for tens of thousands of couriers simultaneously? The secret lies in Routing Engine and Geospatial Indexing architecture.
@@ -50,9 +52,12 @@ Golang provides excellent concurrency and a small footprint, making it ideal as 
 Yes. The entire source code, Docker Compose configuration, sample OpenStreetMap data files, and K6/JMeter test scripts will be publicly available on a companion GitHub repository.
 {{< /faq >}}
 
-## Related Posts: GraphHopper in Production
+## Related Posts & Topic Cluster Guides
 
-Practical deployment guides that extend the series into real production environments:
+Practical deployment guides and companion architectures that extend this series into production:
 
+- **[CVRP & VRPTW Fleet Optimization: Go ALNS Routing Engine](/posts/cvrp-vrptw-alns-fleet-optimization-golang-architecture/)** — Masterclass on solving Capacitated Vehicle Routing and Time Windows using Go 1.24, ALNS heuristics, and decoupled distance matrices.
+- **[GraphHopper Distance Matrix: Self-Hosted Routing & API Guide](/posts/graphhopper-distance-matrix-production-guide/)** — Complete Docker setup, `/matrix` API benchmarks, and Redis H3 caching strategies.
+- **[OSRM vs GraphHopper: Routing Engine Architecture Comparison](/posts/osrm-vs-graphhopper-architecture-comparison/)** — Architectural comparison of C++ Contraction Hierarchies vs Java Custom Models, memory footprints, and multi-profile trade-offs.
 - **[Self-Hosting GraphHopper on Kubernetes with OpenStreetMap Data](/posts/graphhopper-kubernetes-self-hosting-osm/)** — Complete Helm chart walkthrough, OSM data pipeline, PVC sizing, and JVM tuning for a production GraphHopper cluster on K8s.
-- **[GraphHopper vs CARTO: Order Fulfillment Routing Engine](/posts/graphhopper-distance-matrix-production-guide/)** — Benchmark comparison of self-hosted GraphHopper against managed CARTO across 10K–1M route matrix requests. When self-hosting wins and when it doesn't.
+- **[OSRM Shared Memory on Kubernetes for Live Traffic](/posts/osrm-shared-memory-kubernetes-live-traffic/)** — Zero-downtime traffic updates and POSIX shared-memory architecture on Kubernetes.

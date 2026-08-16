@@ -15,7 +15,7 @@ tags:
   - "GraphHopper"
   - "Routing Engine"
   - "Logistics"
-description: "In-depth architectural comparison of OSRM vs GraphHopper: analyzing Contraction Hierarchies, MLD, LM algorithms, and custom routing profiles in Go."
+description: "In-depth architectural comparison of OSRM vs GraphHopper: Contraction Hierarchies, MLD, LM algorithms, memory footprint, and custom routing profiles in Go."
 ShowToc: true
 TocOpen: true
 canonicalURL: "https://tanhdev.com/posts/osrm-vs-graphhopper-architecture-comparison/"
@@ -27,7 +27,7 @@ cover:
 
 # OSRM vs GraphHopper: Routing Engine Architecture Comparison
 
-**Answer-first:** Comparing OSRM and GraphHopper shows OSRM excelling in ultra-fast C++ Contraction Hierarchies routing, while GraphHopper provides flexible Java-based turn-cost routing and customizable distance matrices. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+> **Answer-first:** Comparing OSRM and GraphHopper shows OSRM excelling in raw speed (<2ms single queries, <20ms 100x100 matrix) via C++ Contraction Hierarchies and Linux POSIX shared memory (`mmap`), while GraphHopper provides flexible Java-based runtime Custom Models, turn restrictions, and multi-profile vehicle fleets. For static ride-hailing matrices, choose OSRM; for heterogeneous delivery fleets with weight/height limits, choose GraphHopper.
 
 ## Introduction: When Do You Outgrow Cloud Route APIs?
 
@@ -152,11 +152,25 @@ In Vietnam, two-wheel vehicles handle over 90% of last-mile deliveries. Their ro
 
 ## Frequently Asked Questions
 
-### When should I choose OSRM over GraphHopper for routing infrastructure?
-Choose OSRM when you need sub-millisecond query latencies (< 2ms), massive static distance matrix calculations (such as 1000x1000 matrices for driver dispatching), and single-vehicle profiles (like ride-hailing cars). OSRM uses shared memory (`mmap`) across worker processes to minimize RAM footprint.
+{{< faq q="When should I choose OSRM over GraphHopper for routing infrastructure?" >}}
+Choose OSRM when you need sub-millisecond query latencies (<2ms), massive static distance matrix calculations (such as 1000x1000 matrices for driver dispatching), and single-vehicle profiles (like ride-hailing cars). OSRM uses shared memory (`mmap`) across worker processes to minimize RAM footprint.
+{{< /faq >}}
 
-### How does GraphHopper handle dynamic vehicle restrictions without recompiling graph datasets?
+{{< faq q="How does GraphHopper handle dynamic vehicle restrictions without recompiling graph datasets?" >}}
 GraphHopper leverages Customizable Contraction Hierarchies (CCH) and Landmark (LM) algorithms paired with Custom Models. This allows developers to dynamically inject runtime weight, height, turn, and time-based penalties per request without executing multi-hour graph pre-processing steps.
+{{< /faq >}}
 
-### Can OSRM and GraphHopper route motorcycle fleets through narrow urban alleyways (hems)?
+{{< faq q="Can OSRM and GraphHopper route motorcycle fleets through narrow urban alleyways (hems)?" >}}
 Both engines parse custom OpenStreetMap (OSM) tags, but GraphHopper allows dynamic profile switching for motorcycle alleyway navigation versus truck weight limits per query. OSRM requires separate, static pre-processed graph profiles compiled in advance for each vehicle type.
+{{< /faq >}}
+
+---
+
+## Related Guides & Topic Cluster
+
+- **Distance Matrix Production Setup:** Learn how to deploy and cache distance calculations in our [GraphHopper Distance Matrix: Self-Hosted Routing & API Guide](/posts/graphhopper-distance-matrix-production-guide/).
+- **Fleet Optimization Solver:** See how matrix calculations feed a Go routing solver in [CVRP & VRPTW Fleet Optimization: Go ALNS Routing Engine](/posts/cvrp-vrptw-alns-fleet-optimization-golang-architecture/).
+- **Geospatial Series Hub:** Explore the full 8-part masterclass in [Geospatial & Routing Engine Architecture](/series/routing-geospatial-architecture/).
+- **Live Traffic with OSRM:** Scale live traffic updates with zero downtime in [OSRM Shared Memory on Kubernetes for Live Traffic](/posts/osrm-shared-memory-kubernetes-live-traffic/).
+
+{{< author-cta >}}

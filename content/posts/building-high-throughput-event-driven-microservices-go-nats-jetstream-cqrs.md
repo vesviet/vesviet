@@ -60,7 +60,7 @@ Selecting the appropriate event stream engine matters for high-throughput micros
 3. **Sub-Millisecond Tail Latency:** Due to its direct epoll multiplexing network engine and lock-free ring buffers, NATS JetStream routinely achieves p99 pub/sub latencies below 0.8 milliseconds under sustained load, whereas Kafka tail latencies often hover between 10ms and 20ms due to JVM garbage collection sweeps and OS page cache flushes.
 4. **Built-in Key-Value & Object Storage:** JetStream embeds native KV and Object stores directly into the messaging layer, enabling microservices to manage state flags, deduplication windows, and dynamic configuration schemas without deploying additional infrastructure dependencies like Redis.
 
-For a deeper analysis into foundational microservices patterns, explore our [kiến trúc Go microservices tổng quan](/posts/go-microservices/) and review our [chuỗi bài kiến trúc hệ thống high concurrency](/series/high-concurrency-systems/).
+For a deeper analysis into foundational microservices patterns, explore our [Go microservices architecture overview](/posts/go-microservices/) and review our [high-concurrency systems series](/series/high-concurrency-systems/).
 
 ---
 
@@ -329,7 +329,7 @@ func (h *OrderCommandHandler) HandleCreateOrder(ctx context.Context, cmd CreateO
 
 ### Transactional Outbox Pattern vs. Direct JetStream Publishing
 
-In critical enterprise domains, such as a [hệ thống Core Banking hiện đại](/series/core-banking-architecture/), directly publishing events after database transaction commits introduces a subtle race condition: if the process crashes immediately after `tx.Commit()` but before `js.PublishMsg()`, the database record is updated, but no event is emitted to JetStream. 
+In critical enterprise domains, such as a [modern Core Banking architecture](/series/core-banking-architecture/), directly publishing events after database transaction commits introduces a subtle race condition: if the process crashes immediately after `tx.Commit()` but before `js.PublishMsg()`, the database record is updated, but no event is emitted to JetStream. 
 
 To achieve 100% atomicity between database updates and event publishing, teams implement the **Transactional Outbox Pattern**: domain events are written to an `outbox` table within the same database transaction. A separate Outbox CDC (Change Data Capture) publisher service reads outbox entries and relays them to NATS JetStream with `Nats-Msg-Id` deduplication headers.
 
@@ -460,7 +460,7 @@ func (w *ReadProjectionWorker) processMessage(ctx context.Context, msg *nats.Msg
 }
 ```
 
-For alternative event bus abstractions and sidecar deployment models, compare this approach with our analysis of [phương pháp Event-Driven Architecture với Dapr](/posts/mastering-event-driven-architecture-dapr/).
+For alternative event bus abstractions and sidecar deployment models, compare this approach with our analysis of [Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr/).
 
 ---
 
