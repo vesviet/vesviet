@@ -104,9 +104,11 @@ The frontend is no longer just a rendering layer — it's becoming an AI-native 
 
 ---
 
-## 🗂️ System Design Fundamentals
+## 🗂️ System Design Fundamentals & Architectural Trade-offs
 
-Core architectural reference patterns for engineers building foundational knowledge before exploring domain-specific series.
+Core architectural reference patterns and technological showdowns for engineers evaluating production trade-offs before committing to an ecosystem.
+
+- **[Architectural Trade-offs & Tech Showdowns](/series/architectural-tradeoffs-showdowns/)** — Living masterclass comparing conflicting backend paradigms: HTTP vs gRPC wire formats, Golang vs PHP/Laravel in high-concurrency e-commerce, Apache Kafka vs NATS JetStream, and TiDB vs Sharded RDBMS.
 
 - **[System Design Masterclass](/series/system-design/)** — Deep-dive into system design patterns, distributed systems, and scalable architecture — from fundamentals to production-grade implementations. The essential foundation before tackling advanced series like [High-Concurrency Systems](/series/high-concurrency-systems/) or [Core Banking Architecture](/series/core-banking-architecture/).
 
