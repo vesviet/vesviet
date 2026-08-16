@@ -54,10 +54,10 @@ flowchart TD
 
 ### 🚀 Wave 1 (Active Releases)
 
-- **[Part 1: HTTP/REST (JSON) vs. gRPC (Protobuf): Wire Serialization, HTTP/2 Multiplexing & Microservices Translation Tax](/posts/http-rest-json-vs-grpc-protobuf-architectural-tradeoffs/)**  
+- **[Part 1: HTTP/REST (JSON) vs. gRPC (Protobuf): Wire Serialization, HTTP/2 Multiplexing & Microservices Translation Tax](/series/architectural-tradeoffs-showdowns/01-http-rest-json-vs-grpc-protobuf/)**  
   *Deep-dive into byte serialization efficiency, HTTP/2 streaming vs HTTP/3 QUIC, CPU cycles spent on JSON unmarshaling, and when dual-protocol Kratos gateways beat pure gRPC.*
 
-- **[Part 2: Golang vs. PHP/Laravel in High-Concurrency E-Commerce: Memory Footprint, Event Loops & Architecture Lifecycle](/posts/golang-vs-php-laravel-ecommerce-high-concurrency/)**  
+- **[Part 2: Golang vs. PHP/Laravel in High-Concurrency E-Commerce: Memory Footprint, Event Loops & Architecture Lifecycle](/series/architectural-tradeoffs-showdowns/02-golang-vs-php-laravel-ecommerce/)**  
   *Rigorous comparison between PHP-FPM process isolation and Go goroutine multiplexing under 50k RPS flash-sale conditions, hybrid co-existence architectures, and FinOps cloud spend.*
 
 ### 🔮 Wave 2 & Wave 3 (Upcoming Showdowns)

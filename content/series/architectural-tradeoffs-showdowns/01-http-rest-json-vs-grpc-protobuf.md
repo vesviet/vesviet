@@ -1,10 +1,12 @@
 ---
-title: "HTTP/REST vs. gRPC Protobuf: Architectural Trade-offs in High-Concurrency Distributed Systems"
-slug: "http-rest-json-vs-grpc-protobuf-architectural-tradeoffs"
+title: "Part 1: HTTP/REST vs. gRPC Protobuf: Architectural Trade-offs in High-Concurrency Distributed Systems"
+slug: "01-http-rest-json-vs-grpc-protobuf"
 author: "Lê Tuấn Anh"
 date: "2026-08-16T10:00:00+07:00"
 lastmod: "2026-08-16T10:00:00+07:00"
 draft: false
+series: ["architectural-tradeoffs-showdowns"]
+weight: 1
 description: "Comprehensive architectural analysis of HTTP/REST (JSON) vs. gRPC (Protobuf v3): wire serialization internals, HTTP/2 vs HTTP/3 QUIC multiplexing, 50k RPS failure modes, and Go Kratos dual-protocol gateway blueprints."
 categories:
   - "Architecture"
@@ -27,8 +29,12 @@ cover:
   image: "/images/posts/golang-microservices-cover.jpg"
   alt: "HTTP/REST vs gRPC Protobuf Architectural Trade-offs in High-Concurrency Systems"
   relative: false
-canonicalURL: "https://tanhdev.com/posts/http-rest-json-vs-grpc-protobuf-architectural-tradeoffs/"
+canonicalURL: "https://tanhdev.com/series/architectural-tradeoffs-showdowns/01-http-rest-json-vs-grpc-protobuf/"
+aliases:
+  - "/posts/http-rest-json-vs-grpc-protobuf-architectural-tradeoffs/"
 ---
+
+[← Series hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 2 — Golang vs. PHP/Laravel →](/series/architectural-tradeoffs-showdowns/02-golang-vs-php-laravel-ecommerce/)
 
 > **Answer-first:** For internal East-West microservices operating at scale, **gRPC over HTTP/2 with Protobuf is non-negotiable**, delivering 31x faster serialization, 68.8% lower egress bandwidth, and zero-allocation memory pooling. For external North-South traffic, deploy **Go Kratos v2.9.1 dual-protocol servers** to expose REST/JSON to web browsers while preserving high-throughput gRPC internally without intermediate proxy network hops.
 

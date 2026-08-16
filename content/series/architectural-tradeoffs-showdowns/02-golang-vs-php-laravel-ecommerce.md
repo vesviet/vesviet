@@ -1,10 +1,14 @@
 ---
-title: "Golang vs. PHP/Laravel in High-Concurrency E-Commerce: Architectural Trade-Offs, 50k RPS Benchmarks, and Zero-Downtime Strangler-Fig Blueprint"
+title: "Part 2: Golang vs. PHP/Laravel in High-Concurrency E-Commerce: Architectural Trade-Offs, 50k RPS Benchmarks, and Zero-Downtime Strangler-Fig Blueprint"
 description: "An exhaustive architectural showdown between Golang (Kratos) and PHP/Laravel (FPM & Octane) under 50,000 RPS flash-sale loads. Covers Zend Engine vs M:N runtime physics, Go 1.26 Green Tea GC 8 KiB page locality, AWS Graviton3 FinOps ($189k/yr savings), production failure modes, and a complete Strangler-Fig hybrid migration blueprint."
 date: "2026-08-16T10:00:00+07:00"
 lastmod: "2026-08-16T10:00:00+07:00"
-slug: "golang-vs-php-laravel-ecommerce-high-concurrency"
-canonicalURL: "/posts/golang-vs-php-laravel-ecommerce-high-concurrency"
+slug: "02-golang-vs-php-laravel-ecommerce"
+series: ["architectural-tradeoffs-showdowns"]
+weight: 2
+canonicalURL: "https://tanhdev.com/series/architectural-tradeoffs-showdowns/02-golang-vs-php-laravel-ecommerce/"
+aliases:
+  - "/posts/golang-vs-php-laravel-ecommerce-high-concurrency/"
 ShowToc: true
 TocOpen: true
 tags: ["Golang", "PHP", "Laravel", "High Concurrency", "E-Commerce", "Microservices", "Architecture", "FinOps", "Benchmarks", "Kratos", "Swoole"]
@@ -18,7 +22,7 @@ cover:
   relative: false
 ---
 
-# Golang vs. PHP/Laravel in High-Concurrency E-Commerce: Architectural Trade-Offs, 50k RPS Benchmarks, and Zero-Downtime Strangler-Fig Blueprint
+[← Previous Chapter: Part 1 — HTTP/REST vs. gRPC](/series/architectural-tradeoffs-showdowns/01-http-rest-json-vs-grpc-protobuf/) | [Series hub](/series/architectural-tradeoffs-showdowns/)
 
 > **Answer-first:** For transactional hotspots (>=5,000 RPS flash-sale checkout, inventory locks), **Golang is mandatory**, delivering **86.3% lower AWS compute costs ($189,411.48/yr savings at 50,000 RPS)** with sub-5ms P99 latency. For backoffice CRM, catalog, and ERP workflows, **Laravel 11 with Filament** remains vastly superior, making the **Strangler-Fig Hybrid Architecture** the optimal enterprise design.
 
