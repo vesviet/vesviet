@@ -1,6 +1,6 @@
 ---
 title: "Architectural Trade-offs & Tech Showdowns"
-description: "Living masterclass on system design trade-offs: HTTP vs gRPC, Go vs PHP in high-concurrency e-commerce, Kafka vs NATS, and NewSQL vs Sharded RDBMS."
+description: "Living masterclass on system design trade-offs: HTTP vs gRPC, Go vs PHP in high-concurrency e-commerce, UUIDv7 vs Snowflake vs BIGINT, Kafka vs NATS, and NewSQL vs Sharded RDBMS."
 slug: "architectural-tradeoffs-showdowns"
 date: "2026-08-16T10:30:00+07:00"
 lastmod: "2026-08-16T10:30:00+07:00"
@@ -40,19 +40,20 @@ flowchart TD
         P1["<b>Part 1: HTTP/REST (JSON) vs. gRPC (Protobuf)</b><br/>Wire Serialization, Multiplexing & Microservices Translation Tax"]
         P2["<b>Part 2: Golang vs. PHP/Laravel in E-Commerce</b><br/>Concurrency Models, Memory Footprints & High-Load Architecture"]
     end
-    subgraph Wave2 ["Wave 2: Event Streaming & Data Layers"]
-        P3["<b>Part 3: Apache Kafka vs. NATS JetStream</b><br/>Event-Driven Throughput, Partitioning & Operational Overhead"]
+    subgraph Wave2 ["Wave 2: Database & Storage Tier"]
+        P3["<b>Part 3: UUIDv7 vs. Snowflake ID vs. BIGINT</b><br/>B-Tree Fragmentation, Multiplier Tax & Distributed Primary Keys"]
         P4["<b>Part 4: Sharded MySQL/PostgreSQL vs. TiDB NewSQL</b><br/>Distributed ACID Transactions, Scale-Out Latency & FinOps"]
     end
-    subgraph Wave3 ["Wave 3: Application Topology & State"]
-        P5["<b>Part 5: Modular Monolith vs. Microservices vs. Wasm</b><br/>Network Taxes, Failure Domain Isolation & Team Topologies"]
-        P6["<b>Part 6: In-Memory Redis vs. Dapr Virtual Actors</b><br/>State Persistence, Distributed Concurrency & Context Caching"]
+    subgraph Wave3 ["Wave 3: Event Streaming & State Management"]
+        P5["<b>Part 5: Apache Kafka vs. NATS JetStream</b><br/>Event-Driven Throughput, Partitioning & Operational Overhead"]
+        P6["<b>Part 6: Modular Monolith vs. Microservices vs. Wasm</b><br/>Network Taxes, Failure Domain Isolation & Team Topologies"]
+        P7["<b>Part 7: In-Memory Redis vs. Dapr Virtual Actors</b><br/>State Persistence, Distributed Concurrency & Context Caching"]
     end
 
-    P1 --> P2 --> P3 --> P4 --> P5 --> P6
+    P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7
 ```
 
-### 🚀 Wave 1 (Active Releases)
+### 🚀 Wave 1 & Wave 2 (Active Releases)
 
 - **[Part 1: HTTP/REST (JSON) vs. gRPC (Protobuf): Wire Serialization, HTTP/2 Multiplexing & Microservices Translation Tax](/series/architectural-tradeoffs-showdowns/01-http-rest-json-vs-grpc-protobuf/)**  
   *Deep-dive into byte serialization efficiency, HTTP/2 streaming vs HTTP/3 QUIC, CPU cycles spent on JSON unmarshaling, and when dual-protocol Kratos gateways beat pure gRPC.*
@@ -60,12 +61,15 @@ flowchart TD
 - **[Part 2: Golang vs. PHP/Laravel in High-Concurrency E-Commerce: Memory Footprint, Event Loops & Architecture Lifecycle](/series/architectural-tradeoffs-showdowns/02-golang-vs-php-laravel-ecommerce/)**  
   *Rigorous comparison between PHP-FPM process isolation and Go goroutine multiplexing under 50k RPS flash-sale conditions, hybrid co-existence architectures, and FinOps cloud spend.*
 
+- **[Part 3: Primary Key Showdown: UUIDv7 vs. Snowflake ID vs. BIGINT in High-Throughput Distributed Systems](/series/architectural-tradeoffs-showdowns/03-primary-key-showdown-uuidv7-vs-snowflake-vs-bigint/)**  
+  *Byte-level disassembly of primary key strategies under 100k writes/sec: InnoDB B-tree page splits, Yao's Theorem fill factor, PostgreSQL heap ctid packing, 64-byte CPU cache lines, clock-drift-safe Go 1.25+ Snowflake generators, and a 7-phase zero-downtime dual-write migration playbook.*
+
 ### 🔮 Wave 2 & Wave 3 (Upcoming Showdowns)
 
-- **Part 3: Apache Kafka vs. NATS JetStream: Event Streaming, Partition Ordering & Operational Overhead**
 - **Part 4: Sharded MySQL/PostgreSQL vs. TiDB NewSQL: Distributed ACID, Scale-Out Limits & Latency Penalties**
-- **Part 5: Modular Monolith vs. Microservices vs. SpinKube Wasm: The True Cost of Distributed Boundaries**
-- **Part 6: Redis In-Memory State vs. Dapr Virtual Actors: Concurrency Locking & Long-Lived Agent Context**
+- **Part 5: Apache Kafka vs. NATS JetStream: Event Streaming, Partition Ordering & Operational Overhead**
+- **Part 6: Modular Monolith vs. Microservices vs. SpinKube Wasm: The True Cost of Distributed Boundaries**
+- **Part 7: Redis In-Memory State vs. Dapr Virtual Actors: Concurrency Locking & Long-Lived Agent Context**
 
 ---
 
@@ -75,6 +79,7 @@ flowchart TD
 | :--- | :--- | :--- | :--- |
 | **Inter-Service Transport** | **HTTP/REST (JSON)** | **gRPC (Protobuf)** | Use gRPC for high-frequency internal microservice mesh; use HTTP/REST for public edge APIs and third-party webhooks. |
 | **E-Commerce Engine** | **PHP / Laravel** | **Golang** | Use PHP/Laravel for rapid domain modeling and admin portals; extract checkout, inventory locking, and order allocation to Golang. |
+| **Primary Key Strategy** | **UUIDv7 / Snowflake ID** | **Auto-Increment BIGINT** | Use BIGINT for single-node internal tables; use UUIDv7 for client-side generation and uncoordinated distributed systems; use Snowflake for 64-bit compact B-tree index density on MySQL InnoDB. |
 | **Event Streaming** | **Apache Kafka** | **NATS JetStream** | Use Kafka for long-retention analytics & event replay; use NATS JetStream for lightweight, ultra-low latency agent messaging and RPC. |
 | **Relational Storage** | **Sharded PostgreSQL** | **TiDB (NewSQL)** | Use Sharded PG when data models cleanly partition by tenant/org; use TiDB when cross-node distributed joins and global queries dominate. |
 

@@ -22,7 +22,7 @@ cover:
   relative: false
 ---
 
-[← Previous Chapter: Part 1 — HTTP/REST vs. gRPC](/series/architectural-tradeoffs-showdowns/01-http-rest-json-vs-grpc-protobuf/) | [Series hub](/series/architectural-tradeoffs-showdowns/)
+[← Previous Chapter: Part 1 — HTTP/REST vs. gRPC](/series/architectural-tradeoffs-showdowns/01-http-rest-json-vs-grpc-protobuf/) | [Series hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 3 — Primary Key Showdown: UUIDv7 vs. Snowflake vs. BIGINT →](/series/architectural-tradeoffs-showdowns/03-primary-key-showdown-uuidv7-vs-snowflake-vs-bigint/)
 
 > **Answer-first:** For transactional hotspots (>=5,000 RPS flash-sale checkout, inventory locks), **Golang is mandatory**, delivering **86.3% lower AWS compute costs ($189,411.48/yr savings at 50,000 RPS)** with sub-5ms P99 latency. For backoffice CRM, catalog, and ERP workflows, **Laravel 11 with Filament** remains vastly superior, making the **Strangler-Fig Hybrid Architecture** the optimal enterprise design.
 
@@ -891,3 +891,7 @@ static_resources:
 - [Go Microservices Architecture: Distributed Tracing, Zero-Allocations, and Production Design](/posts/go-microservices/)
 - [High-Throughput Go Framework Benchmarks: Gin, Fiber, Kratos](/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/)
 - [Go 1.26 Green Tea GC & Cgo Performance Engineering Guide](/posts/go-126-green-tea-gc-cgo-performance-guide/)
+
+---
+
+[← Previous Chapter: Part 1 — HTTP/REST vs. gRPC](/series/architectural-tradeoffs-showdowns/01-http-rest-json-vs-grpc-protobuf/) | [Series hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 3 — Primary Key Showdown: UUIDv7 vs. Snowflake vs. BIGINT →](/series/architectural-tradeoffs-showdowns/03-primary-key-showdown-uuidv7-vs-snowflake-vs-bigint/)
