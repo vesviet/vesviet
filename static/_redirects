@@ -112,19 +112,6 @@
 /tags/microservices/index.xml /tags/microservices/ 301
 /tags/index.xml /tags/ 301
 
-# Obsolete / Phantom Dynamic Endpoints (410 Gone)
-/ping /ping 410
-/ws /ws 410
-/sse /sse 410
-/message /message 410
-/service /service 410
-/data /data 410
-/data/order_read /data/order_read 410
-/data/customer_read /data/customer_read 410
-/config/graphhopper.yml /config/graphhopper.yml 410
-/api/v1/orders/webhook /api/v1/orders/webhook 410
-/dw.tanhdev.com/admin/ /dw.tanhdev.com/admin/ 410
-
 # Radar Consolidated Month Hubs & Slug Normalization (Direct 1-Hop)
 /radar/2026-04/radar-2026-04-14/ /radar/2026-04/ 301
 /radar/2026-04/radar-2026-04-15/ /radar/2026-04/ 301

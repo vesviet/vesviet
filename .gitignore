@@ -14,3 +14,5 @@ contracts/
 # Internal working docs (not public site content)
 _internal/
 .agents/
+__pycache__/
+*.pyc
