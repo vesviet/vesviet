@@ -19,7 +19,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/database-sharding-read-write-splitting/"
 image: "/images/posts/database-sharding-read-write-splitting.jpg"
 weight: 9
-aliases: ["/series/high-concurrency-systems/database-sharding-read-write-splitting/"]
+aliases: ["/series/high-concurrency-systems/article_9_sharding/"]
 ---
 
 

@@ -18,6 +18,8 @@ cover:
   alt: "Magento development Vietnam hiring guide 2026"
   relative: false
 weight: 9
+aliases:
+  - /posts/magento-developers-in-vietnam/
 ---
 
 

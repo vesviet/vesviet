@@ -3,8 +3,8 @@ title: "Go Microservices Distributed Tracing Architecture (2026)"
 slug: "go-microservices-distributed-tracing-architecture"
 author: "Lê Tuấn Anh"
 aliases:
-  - /posts/opentelemetry-golang-distributed-tracing-microservices/
   - /posts/circuit-breaker-retry-golang-resilience/
+  - /posts/opentelemetry-golang-distributed-tracing-microservices/
 date: "2026-06-08T14:30:00+07:00"
 lastmod: "2026-07-03T00:00:00+07:00"
 draft: false

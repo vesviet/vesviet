@@ -3,8 +3,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 {{- $isProduction := or hugo.IsProduction (eq site.Params.env "production") }}
 {{- $isNoIndexParam := or .Params.noindex .Params.robotsNoIndex }}
-{{- $isTags := eq .Section "tags" }}
-{{- $isCategory := or (eq .Section "categories") (eq .Data.Singular "category") }}
+{{- if .Params.robots }}
+  {{- if or (eq .Params.robots "noindex") (strings.Contains (printf "%v" .Params.robots) "noindex") }}
+    {{- $isNoIndexParam = true }}
+  {{- end }}
+{{- end }}
+{{- $isTags := or (eq .Section "tags") (eq .Data.Singular "tag") (eq .Data.Plural "tags") }}
+{{- $isCategory := or (eq .Section "categories") (eq .Data.Singular "category") (eq .Data.Plural "categories") }}
 
 {{- $isCuratedCategory := false }}
 {{- if $isCategory }}

@@ -20,7 +20,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/"
 image: "/images/posts/transactional-outbox-pattern-dual-write.jpg"
 weight: 5
-aliases: ["/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/"]
+aliases: ["/series/high-concurrency-systems/article_4_outbox_pattern/"]
 ---
 
 

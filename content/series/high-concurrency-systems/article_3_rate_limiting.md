@@ -20,7 +20,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/"
 image: "/images/posts/distributed-rate-limiting-redis-gcra.jpg"
 weight: 4
-aliases: ["/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/"]
+aliases: ["/series/high-concurrency-systems/article_3_rate_limiting/"]
 ---
 
 

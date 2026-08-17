@@ -13,6 +13,9 @@ cover:
   alt: "Tech Radar, April 27, 2026: Claude Sonnet 4.5 and the Agent SDK — The Best Coding Model Just Open-Sourced Its Infrastructure"
   relative: false
 mermaid: true
+aliases:
+  - /radar/radar-2026-04-27-a/
+  - /radar/tech-radar-april-27-2026-claude-sonnet-4.5-and-the-agent-sdk-the-best-coding-model-just-open-sourced-its-infrastructure/
 ---
 > **Answer-First:** Anthropic released Claude Sonnet 4.5 along with open-sourcing the Agent SDK infrastructure, setting a new benchmark for autonomous coding agents and context-managed execution. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
 

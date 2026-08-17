@@ -20,6 +20,8 @@ noTranslation: true
 mermaid: true
 image: "/images/posts/go-engineers-vietnam-vetting-cover.jpg"
 weight: 11
+aliases:
+  - /posts/magento-developers-in-vietnam-a-technical-hiring-and-vetting-guide/
 ---
 
 

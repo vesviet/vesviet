@@ -17,6 +17,8 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-3-operations/"
 mermaid: true
 series: ["alipay-double-11"]
 weight: 4
+aliases:
+  - /posts/alipay-phase3-operations
 ---
 
 

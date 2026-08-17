@@ -13,6 +13,8 @@ cover:
   alt: "Tech Radar, April 29, 2026: Anthropic Pushes MCP into the Creative Stack - AI Connectors Turn Creative Software into Agentic Workflows"
   relative: false
 mermaid: true
+aliases:
+  - /radar/tech-radar-april-29-2026-anthropic-pushes-mcp-into-the-creative-stack-ai-connectors-turn-creative-software-into-agentic-workflows/
 ---
 > **Answer-First:** Anthropic expands Model Context Protocol (MCP) into creative software including Adobe, Blender, and Autodesk Fusion. This integration standardizes tool discovery and execution via JSON-RPC 2.0 over `stdio` and `SSE` transports, transforming standalone creative applications into orchestrated multi-agent production pipelines. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context Protocol ttlMs cache invalidation parameters.
 

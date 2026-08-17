@@ -19,7 +19,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/"
 image: "/images/posts/distributed-locking-redlock-zookeeper.jpg"
 weight: 8
-aliases: ["/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/"]
+aliases: ["/series/high-concurrency-systems/article_8_distributed_locking/"]
 ---
 
 

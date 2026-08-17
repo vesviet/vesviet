@@ -100,6 +100,12 @@ apple_touch_icon = "/apple-touch-icon.png"
     weight = 30
   [[menu.main]]
     parent = "external"
+    identifier = "learn"
+    name = "Engineering Playbook (VI)"
+    url = "https://learn.tanhdev.com/"
+    weight = 5
+  [[menu.main]]
+    parent = "external"
     identifier = "tools"
     name = "Dev Tools"
     url = "https://it-tools.tanhdev.com/"
@@ -146,6 +152,6 @@ apple_touch_icon = "/apple-touch-icon.png"
 [outputs]
   home = ["HTML", "RSS", "llms", "llms-full"]
   page = ["HTML"]
-  section = ["HTML", "RSS"]
+  section = ["HTML"]
   taxonomy = ["HTML"]
   term = ["HTML"]

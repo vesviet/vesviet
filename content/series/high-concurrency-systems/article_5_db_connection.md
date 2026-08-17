@@ -19,7 +19,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/golang-database-connection-pool-optimization/"
 image: "/images/posts/golang-database-connection-pool-optimization.jpg"
 weight: 6
-aliases: ["/series/high-concurrency-systems/golang-database-connection-pool-optimization/"]
+aliases: ["/series/high-concurrency-systems/article_5_db_connection/"]
 ---
 
 

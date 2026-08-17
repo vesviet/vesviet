@@ -4,7 +4,7 @@ description: "A guide to building a multi-region API architecture. Comparing Any
 date: "2026-07-17T09:12:00+07:00"
 lastmod: "2026-07-17T09:12:00+07:00"
 slug: "multi-region-geo-distributed-api-routing"
-canonicalURL: "/posts/multi-region-geo-distributed-api-routing"
+canonicalURL: "https://tanhdev.com/posts/multi-region-geo-distributed-api-routing/"
 ShowToc: true
 TocOpen: true
 author: "Lê Tuấn Anh"

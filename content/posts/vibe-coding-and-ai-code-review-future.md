@@ -15,7 +15,7 @@ cover:
   alt: "What is Vibe Coding? Why AI Code Review is the Future"
   relative: false
 mermaid: true
-canonicalURL: "https://vesviet.com/posts/vibe-coding-and-ai-code-review-future/"
+canonicalURL: "https://tanhdev.com/posts/vibe-coding-and-ai-code-review-future/"
 ---
 
 # What is Vibe Coding? Why AI Code Review is the Future

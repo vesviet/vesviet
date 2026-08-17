@@ -17,6 +17,9 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-2-architecture/
 mermaid: true
 series: ["alipay-double-11"]
 weight: 3
+aliases:
+  - /posts/alipay-phase2-architecture
+  - /series/alipay-double-11/alipay-phase2-architecture/
 ---
 
 [← Series hub](/series/alipay-double-11/)

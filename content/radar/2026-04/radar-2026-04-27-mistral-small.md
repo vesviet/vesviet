@@ -13,6 +13,9 @@ cover:
   alt: "Tech Radar, April 27, 2026: Mistral Small 4 — One Open-Source Model to Rule Chat, Reasoning, and Agents"
   relative: false
 mermaid: true
+aliases:
+  - /radar/radar-2026-04-27-b/
+  - /radar/tech-radar-april-27-2026-mistral-small-4-one-open-source-model-to-rule-chat-reasoning-and-agents/
 ---
 > **Answer-First:** Mistral Small 4 unifies chat, multi-step reasoning, and agentic function calling into a lightweight open-weights model optimized for edge deployment and local hardware. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
 

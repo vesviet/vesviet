@@ -18,6 +18,8 @@ ShowToc: true
 mermaid: true
 TocOpen: true
 image: "/images/posts/modular-monolith-architecture.jpg"
+aliases:
+  - /series/modular-monolith-architecture-hub/
 ---
 
 > A Modular Monolith is a single-deployable application architecture structured into logically independent bounded contexts using Domain-Driven Design (DDD). It achieves the operational simplicity and zero-latency RAM data passing of monolithic software while preserving clean module isolation, enabling organizations to eliminate microservices network overhead and cut AWS egress costs by up to 90% without sacrificing architectural flexibility.

@@ -20,7 +20,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/"
 image: "/images/posts/caching-vulnerabilities-penetration-breakdown-avalanche.jpg"
 weight: 3
-aliases: ["/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/"]
+aliases: ["/series/high-concurrency-systems/article_2_caching/"]
 ---
 
 

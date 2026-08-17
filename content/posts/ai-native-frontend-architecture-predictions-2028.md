@@ -9,10 +9,8 @@ tags: ["AI Frontend", "Generative UI", "Astro", "MCP", "Prediction", "Architectu
 description: "10 predictions and architectural blueprint for AI-Native Frontend & System Architecture by 2028: Component Registries, MCP contracts, and Generative UI."
 categories: ["Engineering", "Strategy"]
 aliases:
-  - /posts/ai-native-frontend-architecture-predictions-2028/
-  - /posts/ai-native-frontend-architecture-predictions-2028/
+  - /posts/the-future-of-frontend-development-in-the-ai-era-10-predictions-for-2028/
   - /series/ai-driven-playbook/part-2-ai-platform-layer/
-  - /posts/ai-native-frontend-architecture-predictions-2028/
   - /series/ai-driven-playbook/part-4-policy-as-code-agentic-cicd/
   - /series/ai-driven-playbook/part-8-ai-native-system-architecture/
 ShowToc: true

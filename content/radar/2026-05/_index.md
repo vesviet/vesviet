@@ -32,6 +32,8 @@ aliases:
   - /radar/2026-05/radar-2026-05-26/
   - /radar/2026-05/radar-2026-05-28-openai-deployco-apple-gemini/
   - /radar/2026-05/radar-2026-05-30-illinois-ai-bill-dell-servers-gstar-hcmc/
+  - /radar/radar-2026-05-30-illinois-ai-bill-dell-servers-gstar-hcmc/
+  - /radar/tech-radar-may-30-illinois-ai-bill-dell-server-surge/
 description: "Curated May 2026 Tech Radar digest covering DigitalOcean AI cloud, Dapr AI, Argo CD 3.4, Go 1.26 Green Tea GC, and enterprise agentic security protocols."
 ---
 > **Answer-first:** Tech Radar Digest for May 2026 aggregates 18 daily engineering briefings analyzing AI-native cloud infrastructure, e-commerce platform microservices, OpenAI deployments, and enterprise backend architectures. Key takeaways highlight distributed state management, low-latency API gateways, and production-grade resilience strategies across multi-cloud environments.

@@ -19,7 +19,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/idempotency-api-design-payments/"
 image: "/images/posts/idempotency-api-design-payments.jpg"
 weight: 7
-aliases: ["/series/high-concurrency-systems/idempotency-api-design-payments/"]
+aliases: ["/series/high-concurrency-systems/article_7_idempotency/"]
 ---
 
 

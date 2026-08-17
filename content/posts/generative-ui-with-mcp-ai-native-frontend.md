@@ -18,13 +18,6 @@ tags:
   - "Next.js"
   - "AI Native"
   - "Server Components"
-aliases:
-  - /posts/generative-ui-with-mcp-ai-native-frontend/
-  - /posts/generative-ui-with-mcp-ai-native-frontend/
-  - /posts/generative-ui-with-mcp-ai-native-frontend/
-  - /posts/generative-ui-with-mcp-ai-native-frontend/
-  - /posts/generative-ui-with-mcp-ai-native-frontend/
-  - /posts/generative-ui-with-mcp-ai-native-frontend/
 description: "Architect dynamic generative UI applications with Model Context Protocol (MCP): dynamic registries, state management, and security sandboxing."
 ShowToc: true
 TocOpen: true

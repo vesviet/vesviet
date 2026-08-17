@@ -1,5 +1,6 @@
 {{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  {{- /* 1. Load and parse static/_redirects with trailing-slash normalization */ -}}
   {{- $redirectPaths := slice -}}
   {{- $redirectsFile := "static/_redirects" -}}
   {{- if fileExists $redirectsFile -}}
@@ -9,37 +10,61 @@
       {{- if and $line (not (hasPrefix $line "#")) -}}
         {{- $parts := split $line " " -}}
         {{- if gt (len $parts) 0 -}}
-          {{- $path := index $parts 0 -}}
-          {{- $redirectPaths = $redirectPaths | append $path -}}
+          {{- $path := trim (index $parts 0) " \r\t" -}}
+          {{- if $path -}}
+            {{- $pathTrim := strings.TrimRight "/" $path -}}
+            {{- $redirectPaths = $redirectPaths | append $path | append $pathTrim | append (printf "%s/" $pathTrim) -}}
+          {{- end -}}
         {{- end -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}
 
+  {{- /* 2. Track emitted URLs for deduplication */ -}}
+  {{- $seenUrls := slice -}}
+
+  {{- /* 3. Iterate all site pages chronologically */ -}}
   {{- range .Site.Pages.ByLastmod.Reverse -}}
-    {{- if .Permalink -}}
-      {{- $isNoIndex := or .Params.noindex .Params.robotsNoIndex -}}
-      {{- $hasCanonical := .Params.canonicalurl -}}
-      {{- $isRedirected := false -}}
-      
-      {{- $relPath := .RelPermalink -}}
-      {{- if in $redirectPaths $relPath -}}
-        {{- $isRedirected = true -}}
+    {{- if and .Permalink (ne (trim .Permalink " \t\r\n") "") -}}
+      {{- /* Check noindex parameters */ -}}
+      {{- $isNoIndex := false -}}
+      {{- if or .Params.noindex .Params.robotsNoIndex .Draft -}}
+        {{- $isNoIndex = true -}}
+      {{- else if .Params.robots -}}
+        {{- if or (eq .Params.robots "noindex") (strings.Contains (printf "%v" .Params.robots) "noindex") -}}
+          {{- $isNoIndex = true -}}
+        {{- end -}}
       {{- end -}}
 
+      {{- /* Check if page URL is redirected */ -}}
+      {{- $relPath := .RelPermalink -}}
+      {{- $relPathTrim := strings.TrimRight "/" $relPath -}}
+      {{- $isRedirected := or (in $redirectPaths $relPath) (in $redirectPaths $relPathTrim) -}}
+
+      {{- /* Evaluate inclusion gate */ -}}
       {{- $include := false -}}
       {{- if and (not $isNoIndex) (not $isRedirected) -}}
         {{- if in (slice "taxonomy" "term") .Kind -}}
-          {{- $isCategory := or (eq .Section "categories") (eq .Data.Singular "category") -}}
-          {{- if and $isCategory (ne .File nil) .Params.description -}}
+          {{- /* Taxonomy terms: strictly exclude tags, include only curated categories */ -}}
+          {{- $isTag := or (eq .Section "tags") (eq .Data.Singular "tag") (eq .Data.Plural "tags") -}}
+          {{- $isCategory := or (eq .Section "categories") (eq .Data.Singular "category") (eq .Data.Plural "categories") -}}
+          {{- if and (not $isTag) $isCategory (ne .File nil) .Params.description -}}
+            {{- $include = true -}}
+          {{- end -}}
+        {{- else if eq .Kind "page" -}}
+          {{- /* Regular content pages: require valid non-empty title */ -}}
+          {{- if ne (trim .Title " \t\r\n") "" -}}
             {{- $include = true -}}
           {{- end -}}
         {{- else -}}
+          {{- /* Section hubs and home */ -}}
           {{- $include = true -}}
         {{- end -}}
       {{- end -}}
-      
-      {{- if $include -}}
+
+      {{- /* Emit valid XML <url> element with deduplication */ -}}
+      {{- if and $include (not (in $seenUrls .Permalink)) -}}
+        {{- $seenUrls = $seenUrls | append .Permalink -}}
   <url>
     <loc>{{ .Permalink }}</loc>
     {{- if not .Lastmod.IsZero }}

@@ -2,10 +2,28 @@
 # Default: allow all crawlers (including Googlebot, Bingbot, etc.)
 # ──────────────────────────────────────────────
 User-agent: *
+Disallow: /tags/
+Disallow: /*/index.xml$
+Disallow: /portfolio/
+Disallow: /wp-content/
+Disallow: /api/
+Disallow: /config/
+Disallow: /data/
+Disallow: /data$
+Disallow: /sse
+Disallow: /sse$
+Disallow: /ws
+Disallow: /ws$
+Disallow: /message
+Disallow: /message$
+Disallow: /ping
+Disallow: /ping$
+Disallow: /service
+Disallow: /service$
 Allow: /
-# Content-Signal: ai-train=no, search=yes, ai-input=no
 Allow: /sitemap.xml
-Allow: /index.xml
+Allow: /llms.txt
+Allow: /llms-full.txt
 
 # ──────────────────────────────────────────────
 # Allowed AI Bots
@@ -62,8 +80,7 @@ User-agent: Amazonbot
 Disallow: /
 
 # ──────────────────────────────────────────────
-# Sitemaps
+# Sitemaps & LLM Context
 # ──────────────────────────────────────────────
 Sitemap: https://tanhdev.com/sitemap.xml
-# Agentic SEO Discoverability
 # llms.txt: https://tanhdev.com/llms.txt

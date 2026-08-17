@@ -17,6 +17,8 @@ cover:
   alt: "Magento enterprise scoping and cost matrix guide"
   relative: false
 weight: 10
+aliases:
+  - /posts/magento-development-in-vietnam-how-to-scope-estimate-and-evaluate-a-project/
 ---
 
 

@@ -10,6 +10,12 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/"
 ShowToc: true
 TocOpen: true
+aliases:
+  - /series/page/2/
+  - /series/phase3-series-audit-upgrade-summary/
+  - /series/phase4-series-audit-upgrade-summary/
+  - /series/series-audit-upgrade-summary/
+  - /series/task/
 ---
 
 Welcome to the definitive hub for system design case studies and software architecture deep dives. Drawing from over 17 years of experience in backend engineering and building resilient platforms, these **24 in-depth series** break down complex [distributed systems](/posts/mastering-event-driven-architecture-dapr/) into digestible, actionable lessons — from e-commerce flash sales to core banking, from ride-hailing real-time systems to production AI agents.

@@ -30,6 +30,9 @@ aliases:
   - /radar/2026-04/radar-2026-04-29-creative-mcp/
   - /radar/2026-04/radar-2026-04-29/
   - /radar/2026-04/radar-2026-04-30/
+  - /radar/radar-2026-04-14/
+  - /radar/radar-2026-04-29/
+  - /radar/radar-2026-04-30/
 description: "Curated April 2026 Tech Radar digest analyzing Go 1.26 PGO, Dapr sidecar streaming recovery, Kratos framework hardening, and enterprise AI orchestration."
 canonicalURL: "https://tanhdev.com/radar/2026-04/"
 ---

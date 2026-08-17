@@ -4,7 +4,7 @@ description: "Performance benchmark comparing Go web frameworks: Gin, Fiber, and
 date: "2026-07-17T09:14:00+07:00"
 lastmod: "2026-07-17T09:14:00+07:00"
 slug: "high-throughput-go-framework-benchmarks-gin-fiber-kratos"
-canonicalURL: "/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos"
+canonicalURL: "https://tanhdev.com/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/"
 ShowToc: true
 TocOpen: true
 tags: ["Golang", "Benchmarks", "Gin", "Fiber", "Kratos", "Microservices"]

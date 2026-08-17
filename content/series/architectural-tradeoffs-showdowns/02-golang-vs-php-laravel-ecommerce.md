@@ -17,7 +17,7 @@ author: "Lê Tuấn Anh"
 draft: false
 mermaid: true
 cover:
-  image: "/images/posts/golang-vs-php-laravel-ecommerce-high-concurrency-cover.jpg"
+  image: "/images/posts/laravel-vs-golang-when-to-add-features-cover.jpg"
   alt: "Golang vs PHP Laravel High Concurrency E-Commerce Architecture"
   relative: false
 ---
