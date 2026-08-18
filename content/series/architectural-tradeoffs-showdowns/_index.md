@@ -42,15 +42,16 @@ flowchart TD
     end
     subgraph Wave2 ["Wave 2: Database & Storage Tier"]
         P3["<b>Part 3: UUIDv7 vs. Snowflake ID vs. BIGINT</b><br/>B-Tree Fragmentation, Multiplier Tax & Distributed Primary Keys"]
-        P4["<b>Part 4: Sharded MySQL/PostgreSQL vs. TiDB NewSQL</b><br/>Distributed ACID Transactions, Scale-Out Latency & FinOps"]
+        P4["<b>Part 4: MariaDB vs. MySQL 8.4/9.0</b><br/>Pluggable Storage Engines, Native ThreadPool & Cloud-Native Trade-offs"]
     end
-    subgraph Wave3 ["Wave 3: Event Streaming & State Management"]
-        P5["<b>Part 5: Apache Kafka vs. NATS JetStream</b><br/>Event-Driven Throughput, Partitioning & Operational Overhead"]
-        P6["<b>Part 6: Modular Monolith vs. Microservices vs. Wasm</b><br/>Network Taxes, Failure Domain Isolation & Team Topologies"]
-        P7["<b>Part 7: In-Memory Redis vs. Dapr Virtual Actors</b><br/>State Persistence, Distributed Concurrency & Context Caching"]
+    subgraph Wave3 ["Wave 3: Distributed Database & Event Streaming"]
+        P5["<b>Part 5: Sharded MySQL/PostgreSQL vs. TiDB NewSQL</b><br/>Distributed ACID Transactions, Scale-Out Latency & FinOps"]
+        P6["<b>Part 6: Apache Kafka vs. NATS JetStream</b><br/>Event-Driven Throughput, Partitioning & Operational Overhead"]
+        P7["<b>Part 7: Modular Monolith vs. Microservices vs. Wasm</b><br/>Network Taxes, Failure Domain Isolation & Team Topologies"]
+        P8["<b>Part 8: In-Memory Redis vs. Dapr Virtual Actors</b><br/>State Persistence, Distributed Concurrency & Context Caching"]
     end
 
-    P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7
+    P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7 --> P8
 ```
 
 ### 🚀 Wave 1 & Wave 2 (Active Releases)
@@ -64,12 +65,15 @@ flowchart TD
 - **[Part 3: Primary Key Showdown: UUIDv7 vs. Snowflake ID vs. BIGINT in High-Throughput Distributed Systems](/series/architectural-tradeoffs-showdowns/03-primary-key-showdown-uuidv7-vs-snowflake-vs-bigint/)**  
   *Byte-level disassembly of primary key strategies under 100k writes/sec: InnoDB B-tree page splits, Yao's Theorem fill factor, PostgreSQL heap ctid packing, 64-byte CPU cache lines, clock-drift-safe Go 1.25+ Snowflake generators, and a 7-phase zero-downtime dual-write migration playbook.*
 
-### 🔮 Wave 2 & Wave 3 (Upcoming Showdowns)
+- **[Part 4: MariaDB vs. MySQL: Architectural Divergence, Pluggable Storage Engines & Thread Pool Showdown](/series/architectural-tradeoffs-showdowns/04-mariadb-vs-mysql-storage-engines-threadpool/)**  
+  *Deep architectural showdown of MySQL 8.4/9.0 (InnoDB monoculture, Binary JSONB, native Vector AI) vs. MariaDB 11.x (Open-Source ThreadPool 50k conns, MyRocks LSM 70% disk compression, Galera Multi-Master zero-lag).*
 
-- **Part 4: Sharded MySQL/PostgreSQL vs. TiDB NewSQL: Distributed ACID, Scale-Out Limits & Latency Penalties**
-- **Part 5: Apache Kafka vs. NATS JetStream: Event Streaming, Partition Ordering & Operational Overhead**
-- **Part 6: Modular Monolith vs. Microservices vs. SpinKube Wasm: The True Cost of Distributed Boundaries**
-- **Part 7: Redis In-Memory State vs. Dapr Virtual Actors: Concurrency Locking & Long-Lived Agent Context**
+### 🔮 Wave 3 (Upcoming Showdowns)
+
+- **Part 5: Sharded MySQL/PostgreSQL vs. TiDB NewSQL: Distributed ACID, Scale-Out Limits & Latency Penalties**
+- **Part 6: Apache Kafka vs. NATS JetStream: Event Streaming, Partition Ordering & Operational Overhead**
+- **Part 7: Modular Monolith vs. Microservices vs. SpinKube Wasm: The True Cost of Distributed Boundaries**
+- **Part 8: Redis In-Memory State vs. Dapr Virtual Actors: Concurrency Locking & Long-Lived Agent Context**
 
 ---
 
@@ -80,8 +84,9 @@ flowchart TD
 | **Inter-Service Transport** | **HTTP/REST (JSON)** | **gRPC (Protobuf)** | Use gRPC for high-frequency internal microservice mesh; use HTTP/REST for public edge APIs and third-party webhooks. |
 | **E-Commerce Engine** | **PHP / Laravel** | **Golang** | Use PHP/Laravel for rapid domain modeling and admin portals; extract checkout, inventory locking, and order allocation to Golang. |
 | **Primary Key Strategy** | **UUIDv7 / Snowflake ID** | **Auto-Increment BIGINT** | Use BIGINT for single-node internal tables; use UUIDv7 for client-side generation and uncoordinated distributed systems; use Snowflake for 64-bit compact B-tree index density on MySQL InnoDB. |
+| **Relational Database** | **MySQL 8.4 / 9.0** | **MariaDB 11.4 LTS** | Use MySQL for AWS Aurora cloud-native scaling, in-place JSONB mutations, and Vector AI; use MariaDB for bare-metal K8s with free ThreadPool, Galera Multi-Master, and MyRocks LSM 70% storage savings. |
 | **Event Streaming** | **Apache Kafka** | **NATS JetStream** | Use Kafka for long-retention analytics & event replay; use NATS JetStream for lightweight, ultra-low latency agent messaging and RPC. |
-| **Relational Storage** | **Sharded PostgreSQL** | **TiDB (NewSQL)** | Use Sharded PG when data models cleanly partition by tenant/org; use TiDB when cross-node distributed joins and global queries dominate. |
+| **Distributed Storage** | **Sharded PostgreSQL** | **TiDB (NewSQL)** | Use Sharded PG when data models cleanly partition by tenant/org; use TiDB when cross-node distributed joins and global queries dominate. |
 
 ---
 

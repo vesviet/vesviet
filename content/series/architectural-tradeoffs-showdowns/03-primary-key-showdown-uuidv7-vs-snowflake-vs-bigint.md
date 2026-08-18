@@ -20,7 +20,7 @@ cover:
   relative: false
 ---
 
-[← Previous Chapter: Part 2 — Golang vs. PHP/Laravel](/series/architectural-tradeoffs-showdowns/02-golang-vs-php-laravel-ecommerce/) | [Series hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 4 — Apache Kafka vs. NATS JetStream →](/series/architectural-tradeoffs-showdowns/04-kafka-vs-nats-jetstream/)
+[← Previous Chapter: Part 2 — Golang vs. PHP/Laravel](/series/architectural-tradeoffs-showdowns/02-golang-vs-php-laravel-ecommerce/) | [Series hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 4 — MariaDB vs. MySQL →](/series/architectural-tradeoffs-showdowns/04-mariadb-vs-mysql-storage-engines-threadpool/)
 
 > **Answer-first:** For distributed write-heavy architectures (≥10,000 writes/s) on MySQL/InnoDB, **Snowflake ID (64-bit)** is optimal, eliminating the 50% secondary index multiplier tax while preserving B-tree locality. For PostgreSQL, client-generated keys, or coordinate-free distributed topologies, **UUIDv7 (RFC 9562)** delivers 98% sequential page packing without dedicated coordinator nodes, overcoming random UUIDv4 page thrashing and IOPS cliff failures.
 
