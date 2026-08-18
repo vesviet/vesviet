@@ -224,3 +224,8 @@
 /radar/radar-2026-05-28-openai-deployco-apple-gemini/ /radar/2026-05/ 301
 /radar/radar-2026-05-19/ /radar/2026-05/ 301
 /radar/tech-radar-may-13-2026-agentops-meets-kubernetes-vm/k8s-convergence-and-routine-patching/ /radar/2026-05/ 301
+/radar/2026-08/stateless-mcp-k8s-gateway/ /radar/2026-08/ 301
+/radar/2026-08/go-synctest-concurrency/ /radar/2026-08/ 301
+/radar/2026-08/vllm-context-routing-mla/ /radar/2026-08/ 301
+/radar/2026-08/ebpf-tetragon-ai-agent-security/ /radar/2026-08/ 301
+
