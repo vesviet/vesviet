@@ -7,6 +7,7 @@ draft: false
 ShowToc: true
 TocOpen: true
 categories: ["Tech Radar"]
+ring: "TRIAL"
 tags: ["Anthropic", "Claude", "AI Agents", "Software Engineering", "Open Source", "SDK"]
 cover:
   image: "/images/posts/default-post-3.jpg"

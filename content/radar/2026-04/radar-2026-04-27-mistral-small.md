@@ -7,6 +7,7 @@ draft: false
 ShowToc: true
 TocOpen: true
 categories: ["Tech Radar"]
+ring: "TRIAL"
 tags: ["Mistral", "Open Source", "LLMs", "AI Agents", "Multimodal", "Apache 2.0"]
 cover:
   image: "/images/posts/default-post-4.jpg"

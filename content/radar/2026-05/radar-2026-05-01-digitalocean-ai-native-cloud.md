@@ -7,6 +7,7 @@ draft: false
 ShowToc: true
 TocOpen: true
 categories: ["Tech Radar"]
+ring: "TRIAL"
 tags: ["DigitalOcean", "AI Infrastructure", "Inference", "RAG", "MCP", "Platform Engineering", "AI Agents"]
 cover:
   image: "/images/posts/default-post-10.jpg"

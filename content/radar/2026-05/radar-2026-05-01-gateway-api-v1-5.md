@@ -8,6 +8,7 @@ draft: false
 ShowToc: true
 TocOpen: true
 categories: ["Tech Radar"]
+ring: "ADOPT"
 tags: ["Tech Radar", "Architecture", "Engineering", "Cloud Native", "DevOps"]
 cover:
   image: "/images/posts/radar-2026-05-01-gateway-api-v1-5.jpg"

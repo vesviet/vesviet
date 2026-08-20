@@ -6,6 +6,7 @@ author: "Lê Tuấn Anh"
 slug: "tech-radar-august-2026"
 description: "August 2026 Tech Radar analyzing Go MCP SDK trends, Go 1.26 Green Tea GC optimizations, Kubernetes Pod Resizing v1.35, and Wasm SpinKube micro-VMs."
 categories: ["Tech Radar", "Cloud Native", "AI", "Golang"]
+ring: "ADOPT"
 tags: ["Tech Radar 2026", "Go MCP SDK", "Go 1.26", "Green Tea GC", "Kubernetes", "SpinKube", "Argo CD", "SPIFFE/SPIRE"]
 draft: false
 ShowToc: true

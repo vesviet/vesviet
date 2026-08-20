@@ -7,6 +7,7 @@ draft: false
 ShowToc: true
 TocOpen: true
 categories: ["Tech Radar"]
+ring: "TRIAL"
 tags: ["Anthropic", "MCP", "Creative Tools", "Adobe", "Blender", "Autodesk", "AI Workflows"]
 cover:
   image: "/images/posts/default-post-6.jpg"
