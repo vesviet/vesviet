@@ -35,3 +35,14 @@
 
 /vesviet.png
   Cache-Control: public, max-age=31536000, immutable
+
+# SEO Bot & Feed Indexing Controls
+/tags/*
+  X-Robots-Tag: noindex, follow
+
+/*/index.xml
+  X-Robots-Tag: noindex
+
+/index.xml
+  X-Robots-Tag: noindex
+

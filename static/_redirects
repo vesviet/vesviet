@@ -15,6 +15,8 @@
 /professional-services/ / 301
 /category/development/ /posts/ 301
 /category/e-commerce/ /tags/e-commerce/ 301
+/bauxeo / 301
+/bauxeo* / 301
 
 # Legacy Static Assets
 /wp-content/uploads/2022/12/LE-TUAN-ANH-151639.pdf /Le-Tuan-Anh-Resume.pdf 301

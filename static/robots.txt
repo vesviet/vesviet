@@ -2,7 +2,6 @@
 # Default: allow all crawlers (including Googlebot, Bingbot, etc.)
 # ──────────────────────────────────────────────
 User-agent: *
-Disallow: /tags/
 Disallow: /*/index.xml$
 Disallow: /portfolio/
 Disallow: /wp-content/
