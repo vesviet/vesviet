@@ -1,7 +1,7 @@
 ---
-title: "Tech Radar Digest August 2026: Stateless MCP 2.0, Go synctest, vLLM MLA & eBPF Zero Trust"
+title: "Tech Radar August 2026: MCP 2.0, Go synctest & vLLM MLA"
 date: "2026-08-06T00:00:00+07:00"
-lastmod: "2026-08-20T08:30:00+07:00"
+lastmod: "2026-08-23T08:30:00+07:00"
 author: "Lê Tuấn Anh"
 draft: false
 mermaid: true
@@ -16,7 +16,7 @@ cover:
 aliases:
   - /radar/2026-08/tech-radar-august-2026-digest/
   - /radar/2026-08/tech-radar-digest-august-2026/
-description: "Tech Radar Digest August 2026: Architectural analysis of Stateless Model Context Protocol (MCP 2.0), deterministic concurrency testing with Go 1.26 synctest, vLLM Multi-Head Latent Attention (MLA) KV cache optimization, and Linux kernel zero-trust defense with eBPF Tetragon 1.4."
+description: "August 2026 Tech Radar: Stateless MCP 2.0, Go 1.26 synctest, vLLM MLA KV cache, and Linux kernel zero-trust security with Cilium Tetragon 1.4."
 ---
 
 # Tech Radar Digest August 2026: Stateless MCP 2.0, Go synctest, vLLM MLA & eBPF Zero Trust
@@ -105,6 +105,7 @@ Granting autonomous agents execution access to bash terminals, local filesystems
 
 - **8 KiB Page Locality Allocator:** Groups objects with shared lifecycles into contiguous physical memory pages, reducing GC mark/sweep scan durations by 10%–40% in microservices handling > 50,000 req/s.
 - **CGO FFI Inlining:** Reduces C/C++ foreign function interface context-switch overhead by 30%, drastically accelerating native bindings for OpenSSL, ONNX Runtime, and SQLite.
+- **Deep Dive & Implementation:** Read the full technical briefing at [`Tech Radar August 2026: Go MCP SDK, Green Tea GC & Wasm SpinKube`](/radar/tech-radar-august-2026/).
 
 ---
 
@@ -112,6 +113,7 @@ Granting autonomous agents execution access to bash terminals, local filesystems
 
 - **Multi-Provider Frameworks (LangGraph, AutoGen 0.4):** Recommended for complex, cyclic, stateful workflows requiring Human-in-the-Loop approval gates and persistent state snapshotting (PostgreSQL/Redis).
 - **Vendor SDKs (Claude SDK, OpenAI Agents SDK):** Recommended for high-frequency, low-latency pipelines (< 5ms overhead) that benefit directly from native prompt caching (up to 90% cost reduction on input tokens).
+- **Deep Dive & Implementation:** Read the full technical briefing at [`Tech Radar: Agent Orchestration Frameworks vs. Vendor-Specific Agent SDKs`](/radar/agentic-frameworks-vs-vendor-sdks/).
 
 ---
 
@@ -137,7 +139,21 @@ Explore the complete, unabridged technical reports published in this cycle:
 
 ---
 
-## 4. Architectural Frequently Asked Questions (FAQ)
+## 4. Architecture Pillar Deep Dives & System Blueprints
+
+The August 2026 radar signals directly connect with our foundational enterprise architecture pillars. For production-grade implementations, domain boundary patterns, and live benchmarks, explore the core guides:
+
+| Architecture Pillar | Core Domain & Focus | Key Protocols & Technologies | Deep-Dive Reference |
+| :--- | :--- | :--- | :--- |
+| **Go Microservices Production Guide** | Clean Architecture, DDD, Event Sourcing | Go 1.26, Kratos v2.9, Wire, GORM, Dapr | [Read Architecture Pillar](/posts/go-microservices/) |
+| **Zero-Trust Service Mesh Security** | Cryptographic Workload Attestation, mTLS | SPIFFE/SPIRE, Istio Ambient, eBPF | [Read Security Guide](/posts/zero-trust-service-mesh-security-spiffe-spire-istio-golang/) |
+| **High-Throughput Local LLM Infrastructure** | Disaggregated Prefill-Decode, MLA KV-Cache | vLLM, RoCE v2, NVLink, Go API Gateway | [Read LLM Infra Blueprint](/posts/high-throughput-local-llm-infrastructure-vllm-golang-gateway/) |
+| **Composable Banking Architecture** | Core Banking, Modular Monolith vs Microservices | Temporal Sagas, Kafka Event Streaming, BIAN | [Read Banking Architecture](/posts/composable-banking-architecture/) |
+| **21-Service Go Microservices Blueprint** | Complete E-Commerce Distributed Topology | 6 DDD Domains, gRPC Gateway, Dapr Pub/Sub | [Read 21-Service Blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/) |
+
+---
+
+## 5. Architectural Frequently Asked Questions (FAQ)
 
 ### Q1: Why is Stateless MCP 2.0 a mandatory migration from MCP 1.0?
 Stateless MCP 2.0 decouples tool execution from stateful server-side memory sessions. By transitioning to standard HTTP POST requests with client-held authentication tokens, Kubernetes load balancers can distribute tool calls evenly across worker pools via round-robin, eliminating connection hotspotting and enabling seamless horizontal pod autoscaling.

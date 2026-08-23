@@ -1,11 +1,11 @@
 ---
-title: "MySQL Scalability & Sharding Alternatives: Vitess, TiDB & Read Replicas"
+title: "MySQL Scalability & Sharding: Vitess vs TiDB (10k+ TPS)"
 slug: "mysql-scalability-guide"
 author: "Lê Tuấn Anh"
 date: "2026-06-10T14:30:00+07:00"
 lastmod: "2026-08-23T08:30:00+07:00"
 draft: false
-description: "Comprehensive guide to MySQL scalability: buffer pool tuning, ProxySQL pooling, Vitess sharding, and TiDB Distributed SQL migration for 10k+ TPS."
+description: "Comprehensive guide to scaling MySQL: InnoDB buffer pool tuning, ProxySQL pooling, Vitess middleware sharding, and zero-downtime TiDB NewSQL migration."
 ShowToc: true
 TocOpen: true
 categories:
@@ -27,7 +27,7 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/mysql-scalability-guide/"
 ---
 
-# MySQL Scalability Guide: Read Replicas, Sharding, and Distributed SQL
+# MySQL Scalability & Sharding: Vitess vs TiDB (10k+ TPS)
 
 > **Answer-first:** Scaling MySQL for high-traffic applications involves a phased progression: tuning InnoDB buffer pools and slow queries (0–500 TPS), offloading reads via ProxySQL and read replicas (500–3,000 TPS), and adopting horizontal write scaling (3,000+ TPS) via Vitess sharding or TiDB Distributed SQL to maintain sub-50ms P99 query latencies.
 

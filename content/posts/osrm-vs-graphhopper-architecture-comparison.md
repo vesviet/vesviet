@@ -1,5 +1,5 @@
 ---
-title: "OSRM vs GraphHopper: Routing Engine Architecture & Benchmark Comparison"
+title: "OSRM vs GraphHopper: Routing Engine Benchmarks & RAM"
 slug: "osrm-vs-graphhopper-architecture-comparison"
 author: "Lê Tuấn Anh"
 date: "2026-07-17T14:00:00+07:00"
@@ -15,17 +15,17 @@ tags:
   - "GraphHopper"
   - "Routing Engine"
   - "Logistics"
-description: "Architectural comparison of OSRM vs GraphHopper: Contraction Hierarchies, MLD, Custom Models, memory footprint benchmarks, and Go routing engines."
+description: "Deep architectural comparison of OSRM vs GraphHopper: Contraction Hierarchies, MLD, RAM footprint benchmarks, Custom Models, and Go matrix clients."
 ShowToc: true
 TocOpen: true
 canonicalURL: "https://tanhdev.com/posts/osrm-vs-graphhopper-architecture-comparison/"
 cover:
   image: "/images/posts/osrm-vs-graphhopper-architecture-comparison-cover.jpg"
-  alt: "OSRM vs GraphHopper: Routing Engine Architecture and Benchmark Comparison"
+  alt: "OSRM vs GraphHopper: Routing Engine Benchmarks & RAM"
   relative: false
 ---
 
-# OSRM vs GraphHopper: Routing Engine Architecture Comparison
+# OSRM vs GraphHopper: Routing Engine Benchmarks & RAM
 
 > **Answer-first:** Comparing OSRM and GraphHopper shows OSRM excelling in raw speed (<2ms single queries, <20ms 100x100 matrix) via C++ Contraction Hierarchies and Linux POSIX shared memory (`mmap`), while GraphHopper provides flexible Java-based runtime Custom Models, turn restrictions, and multi-profile vehicle fleets. For static ride-hailing matrices, choose OSRM; for heterogeneous delivery fleets with weight/height limits, choose GraphHopper.
 

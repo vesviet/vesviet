@@ -1,4 +1,4 @@
-{{- $question := .Get "q" | default (.Get 0) -}}
+{{- $question := .Get "q" | default (.Get "question") | default (.Get 0) -}}
 {{- $answer := .Inner | markdownify -}}
 <div class="faq-item" style="margin-bottom: 1.5rem;">
   <h3 id="{{ $question | anchorize }}" class="faq-question">{{ $question }}</h3>

@@ -1,10 +1,10 @@
 ---
-title: "Tech Radar: Deterministic Concurrency Testing with Go 1.26 testing/synctest"
+title: "Deterministic Concurrency Testing with Go 1.26 synctest"
 date: "2026-08-23T08:30:00+07:00"
 lastmod: "2026-08-23T08:30:00+07:00"
 author: "Lê Tuấn Anh"
 slug: "go-synctest-concurrency"
-description: "Deterministic concurrency testing in Go 1.25/1.26 using testing/synctest, eliminating flaky tests caused by time.Sleep in distributed microservices."
+description: "Deterministic concurrency testing in Go 1.26 testing/synctest: fake clock advancement, goroutine bubble isolation, and flake-free distributed systems."
 categories: ["Tech Radar", "Golang", "Software Engineering"]
 ring: "ADOPT"
 tags: ["Golang", "Go 1.26", "testing/synctest", "Concurrency", "Microservices", "Dapr", "Distributed Systems"]
@@ -160,3 +160,16 @@ Evaluating a suite of 100 complex concurrency test cases (including distributed 
 1. **Radar Ring Verdict: `ADOPT`** immediately for all asynchronous, actor, and distributed workflow test suites in Go.
 2. **Deprecate (`HOLD`):** Prohibit `time.Sleep()` in all newly authored unit tests via custom linter rules (`golangci-lint`).
 3. **External I/O Boundary Rule:** `testing/synctest` virtualizes time only for in-bubble goroutines. If a test blocks on a real OS file handle or network socket, the bubble triggers a `deadlock` panic because external resources cannot be controlled by the virtual clock. Use in-memory mocks for database and gRPC transports.
+
+---
+
+## Related Architecture Pillars & Radar Briefings
+
+This technical briefing is part of the **[August 2026 Tech Radar Digest](/radar/2026-08/)**. For resilient Go concurrency patterns, distributed sagas, and event-driven architectures, explore our core pillar guides:
+
+- 📡 **Parent Radar Digest**: [Tech Radar Digest August 2026: Stateless MCP 2.0, Go synctest, vLLM MLA & eBPF Zero Trust](/radar/2026-08/)
+- 🏛️ **Architecture Pillar**: [Go Microservices Architecture: Production Engineering Guide](/posts/go-microservices/)
+- ⚡ **Distributed Sagas**: [Dapr Workflow Saga Orchestration: Complete Go Tutorial](/posts/dapr-workflow-saga-orchestration-guide/)
+- 📨 **Event-Driven Streaming**: [High-Throughput Event-Driven Microservices in Go with NATS JetStream & CQRS](/posts/building-high-throughput-event-driven-microservices-go-nats-jetstream-cqrs/)
+- 📐 **System Blueprint**: [21-Service Go Microservices Architecture Diagram & Blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/)
+- 🌐 **Related Radar Signal**: [Tech Radar August 2026: Official Go MCP SDK, Green Tea GC & Wasm SpinKube](/radar/tech-radar-august-2026/)

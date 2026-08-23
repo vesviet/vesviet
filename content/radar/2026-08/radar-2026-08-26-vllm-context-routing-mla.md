@@ -1,10 +1,10 @@
 ---
-title: "Tech Radar: vLLM Context-Aware Routing & MLA KV Cache Architecture"
+title: "vLLM Context-Aware Routing & MLA KV Cache Architecture"
 date: "2026-08-26T08:30:00+07:00"
 lastmod: "2026-08-26T08:30:00+07:00"
 author: "Lê Tuấn Anh"
 slug: "vllm-context-routing-mla"
-description: "Context-aware routing in vLLM combined with Multi-Head Latent Attention (MLA), compressing GPU VRAM by 75% and cutting TTFT latency by 65% for multi-turn AI agents."
+description: "Context-aware routing in vLLM with MLA, compressing GPU VRAM by 75% and cutting TTFT latency by 65% for multi-turn AI agents in production."
 categories: ["Tech Radar", "AI Infrastructure", "LLMOps"]
 ring: "TRIAL"
 tags: ["vLLM", "Inference Optimization", "Multi-Head Latent Attention", "KV Cache", "Kubernetes", "AI Agents", "GPU Infrastructure"]
@@ -128,3 +128,16 @@ Benchmarking 500 AI Coding Agents performing multi-file refactoring (average 16,
 1. **Radar Ring Verdict: `TRIAL`** for enabling Context-Aware Prefix Routing across all self-hosted vLLM inference clusters serving agentic workloads.
 2. **Prioritize Native MLA Architectures:** When selecting self-hosted foundation models for coding and reasoning agents, favor models with native MLA support (or MLA-distilled checkpoints) to optimize GPU infrastructure costs.
 3. **Maintain Static System Prompt Prefixes:** Avoid prepending dynamic tokens (such as timestamps or nonces) to the beginning of system prompts, which destroys prefix hashing at the gateway layer.
+
+---
+
+## Related Architecture Pillars & Radar Briefings
+
+This technical briefing is part of the **[August 2026 Tech Radar Digest](/radar/2026-08/)**. For complete LLM gateway implementations, GPU cluster sizing, and AI observability architectures, explore our pillar guides:
+
+- 📡 **Parent Radar Digest**: [Tech Radar Digest August 2026: Stateless MCP 2.0, Go synctest, vLLM MLA & eBPF Zero Trust](/radar/2026-08/)
+- ⚡ **Architecture Pillar**: [High-Throughput Local LLM Infrastructure: Distributed Go API Gateway for vLLM](/posts/high-throughput-local-llm-infrastructure-vllm-golang-gateway/)
+- 📊 **AI Observability**: [Production AI Observability with OpenTelemetry: Go LLM Tracing & Metrics](/posts/production-ai-observability-opentelemetry-golang-llm-tracing/)
+- 🔍 **Vector DB Architecture**: [Building a Custom Golang Vector Database Engine with HNSW](/posts/building-custom-golang-vector-database-engine-hnsw/)
+- 🌐 **Related Radar Signal**: [Stateless MCP 2.0 & Kubernetes Gateway API Architecture](/radar/stateless-mcp-k8s-gateway/)
+- 🤖 **Agent Framework Analysis**: [Agent Orchestration Frameworks vs. Vendor-Specific Agent SDKs](/radar/agentic-frameworks-vs-vendor-sdks/)

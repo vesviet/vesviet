@@ -1,11 +1,11 @@
 ---
-title: "Production AI Observability: Building Zero-Overhead LLM Tracing & Cost Attribution with OpenTelemetry in Go"
+title: "Production AI Observability: Go LLM Tracing with OTel"
 slug: "production-ai-observability-opentelemetry-golang-llm-tracing"
 author: "Tuấn Anh"
 date: "2026-08-06T08:00:00+07:00"
-lastmod: "2026-08-06T08:00:00+07:00"
+lastmod: "2026-08-23T08:30:00+07:00"
 draft: false
-description: "Complete engineering guide on building zero-overhead, OpenTelemetry-native LLM tracing, streaming TTFT/TPOT metrics, and W3C context propagation in Go."
+description: "Build zero-overhead LLM tracing in Go with OpenTelemetry: stream TTFT/TPOT metrics, token cost attribution, and GenAI semantic conventions."
 summary: "Production AI observability harness in Go leveraging OpenTelemetry GenAI Semantic Conventions (v1.42.0+). Features zero-allocation streaming LLM channel tracing with context.WithoutCancel, W3C context propagation, OTTL token cost attribution in OTel Collector, and low-cardinality Prometheus metric conversion."
 keywords:
   - "OpenTelemetry"
@@ -46,12 +46,12 @@ TocOpen: true
 mermaid: true
 cover:
   image: "/images/posts/production-ai-observability-opentelemetry-golang-llm-tracing.jpg"
-  alt: "Production AI Observability OpenTelemetry Golang LLM Tracing"
+  alt: "Production AI Observability: Go LLM Tracing with OTel"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/production-ai-observability-opentelemetry-golang-llm-tracing/"
 ---
 
-# Production AI Observability: Building Zero-Overhead LLM Tracing & Cost Attribution with OpenTelemetry in Go
+# Production AI Observability: Go LLM Tracing with OTel
 
 **Answer-first:** Production AI observability instruments Go microservices with OpenTelemetry spans to capture LLM API latency, prompt token usage, cost metrics, and error rates in real-time. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
 
@@ -895,7 +895,25 @@ spec:
 - [x] **Context Propagation**: Validated W3C `traceparent` propagation across tool-calling boundaries.
 - [x] **Collector Cost Attribution**: Configured OTTL statements for dynamic USD token cost calculation.
 - [x] **Prometheus Metric Decoupling**: Filtered high-cardinality attributes prior to metric exporting.
-- [x] **Alerting Setup**: Prometheus rules configured for TTFT P95 (>500ms), TPOT P95 (>50ms), and cost spikes.
+---
+
+## Frequently Asked Questions
+
+{{< faq q="What are the OpenTelemetry GenAI Semantic Conventions for LLM tracing?" >}}
+The OpenTelemetry GenAI Semantic Conventions (v1.42.0+) standardize telemetry attribute names across LLM providers: `gen_ai.provider.name` (e.g. openai, vllm, anthropic), `gen_ai.request.model`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`, and `gen_ai.response.finish_reasons`.
+{{< /faq >}}
+
+{{< faq q="Why measure Time-To-First-Token (TTFT) separately from Time-Per-Output-Token (TPOT)?" >}}
+TTFT measures the prompt prefill phase (dependent on prompt token length and GPU FLOPS capacity), while TPOT measures the autoregressive token decoding throughput (bound by memory bandwidth and KV-cache access). Tracking both independently isolates prompt bloat from GPU hardware starvation.
+{{< /faq >}}
+
+{{< faq q="How does context.WithoutCancel prevent dangling OpenTelemetry spans in Go?" >}}
+When a client aborts an HTTP request mid-stream, standard context cancellation immediately kills child spans. Wrapping the tracing context with `context.WithoutCancel(parentCtx)` in an asynchronous goroutine ensures that terminal LLM telemetry events and span completions are cleanly exported to the OTel Collector.
+{{< /faq >}}
+
+{{< faq q="How does OTTL in the OpenTelemetry Collector calculate token costs dynamically?" >}}
+OpenTelemetry Transformation Language (OTTL) executes transform processor rules on incoming spans inside the OTel Collector. By multiplying `attributes["gen_ai.usage.input_tokens"]` and `output_tokens` by model-specific unit prices, it computes and attaches exact USD financial attributes (`gen_ai.usage.cost_usd`) without modifying application Go code.
+{{< /faq >}}
 
 ---
 

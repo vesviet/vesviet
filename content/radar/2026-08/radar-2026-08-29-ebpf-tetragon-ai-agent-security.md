@@ -1,10 +1,10 @@
 ---
-title: "Tech Radar: eBPF Zero-Trust Security for AI Agents with Tetragon 1.4"
+title: "eBPF Zero-Trust Security for AI Agents: Tetragon 1.4"
 date: "2026-08-29T08:30:00+07:00"
 lastmod: "2026-08-29T08:30:00+07:00"
 author: "Lê Tuấn Anh"
 slug: "ebpf-tetragon-ai-agent-security"
-description: "Kernel-level Zero-Trust security with Cilium Tetragon 1.4, preventing Prompt Injection RCE and enforcing syscall boundaries for AI agent swarms in Kubernetes."
+description: "Kernel-level Zero-Trust security with Cilium Tetragon 1.4, preventing Prompt Injection RCE and enforcing syscall boundaries for AI agents in K8s."
 categories: ["Tech Radar", "Cloud Native", "Security", "AI Security"]
 ring: "TRIAL"
 tags: ["eBPF", "Cilium Tetragon", "Zero Trust", "AI Agents", "Kubernetes", "Prompt Injection", "OWASP LLM"]
@@ -170,3 +170,16 @@ When a prompt injection payload attempts to launch an unauthorized binary, Tetra
 1. **Radar Ring Verdict: `TRIAL`** for deploying Cilium Tetragon across all Kubernetes clusters hosting agentic tool-execution workloads.
 2. **Deprecate (`HOLD`):** Stop relying exclusively on userspace sidecar guardrails for runtime security enforcement.
 3. **Enforce Least Privilege Networking:** Isolate agent execution sandboxes with strict Cilium Network Policies allowing outbound egress only to verified internal endpoints.
+
+---
+
+## Related Architecture Pillars & Radar Briefings
+
+This technical briefing is part of the **[August 2026 Tech Radar Digest](/radar/2026-08/)**. For deep dives into Linux kernel eBPF programming, Kubernetes operators, and Zero-Trust service mesh security, explore our core pillar guides:
+
+- 📡 **Parent Radar Digest**: [Tech Radar Digest August 2026: Stateless MCP 2.0, Go synctest, vLLM MLA & eBPF Zero Trust](/radar/2026-08/)
+- ⚓ **Architecture Pillar**: [Building Custom Kubernetes Operators with eBPF & Cilium in Go](/posts/building-custom-kubernetes-operators-ebpf-golang-cilium/)
+- 🛡️ **Zero-Trust Security**: [Zero-Trust Service Mesh Security in Go: SPIFFE/SPIRE & Istio](/posts/zero-trust-service-mesh-security-spiffe-spire-istio-golang/)
+- 🌐 **Related Radar Signal**: [NIST AI 600-1 & OWASP ASI01–ASI10: Hardening Enterprise Agent Gateways](/radar/owasp-nist-ai-agent-gateway/)
+- 🔌 **Stateless Tool Gateways**: [Stateless MCP 2.0 & Kubernetes Gateway API Architecture](/radar/stateless-mcp-k8s-gateway/)
+- 🏛️ **Microservices Architecture**: [Go Microservices Production Guide (Clean Architecture & Dapr)](/posts/go-microservices/)

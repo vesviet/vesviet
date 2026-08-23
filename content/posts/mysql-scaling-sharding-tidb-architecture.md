@@ -1,9 +1,9 @@
 ---
-title: "MySQL Sharding Alternatives: Replace Sharding with TiDB"
+title: "MySQL Sharding Alternatives: Vitess vs TiDB Guide"
 slug: "mysql-scaling-sharding-tidb-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-05-26T14:00:00+07:00"
-lastmod: "2026-07-21T22:04:45+07:00"
+lastmod: "2026-08-23T08:30:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -16,7 +16,7 @@ tags:
   - "TiDB"
   - "Sharding"
   - "NewSQL"
-description: "Explore MySQL sharding alternatives. Replace complex Vitess/manual sharding with TiDB Distributed SQL: Raft consensus, ACID transactions, and zero-downtime DM."
+description: "Explore MySQL sharding alternatives: replace complex Vitess sharding with TiDB Distributed SQL: Raft consensus, ACID transactions, and zero downtime."
 ShowToc: true
 TocOpen: true
 cover:
@@ -25,7 +25,7 @@ cover:
 canonicalURL: "https://tanhdev.com/posts/mysql-scaling-sharding-tidb-architecture/"
 ---
 
-# Replace MySQL Sharding with TiDB: Distributed SQL Architecture
+# MySQL Sharding Alternatives: Vitess vs TiDB Guide
 
 > **Answer-first:** TiDB is the leading open-source MySQL sharding alternative, replacing fragile application-level sharding logic (Vitess, GORM Sharding) with an auto-partitioned Distributed SQL architecture. By distributing 96MB Raft Regions across TiKV storage nodes and utilizing the Percolator distributed transaction protocol, TiDB delivers horizontal write scaling, cross-node ACID transactions, and zero-downtime online DDL while maintaining 100% MySQL wire compatibility.
 

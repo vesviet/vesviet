@@ -1,9 +1,9 @@
 ---
-title: "\"The Truck in the Saigon River\": Architecting Map Matching Systems for GPS Urban Canyon Noise"
+title: "GPS Map Matching for Urban Canyon Noise: HMM & Kafka"
 slug: "urban-canyon-gps-multipath-map-matching-architecture"
 author: "Tuan Anh"
 date: "2026-08-12T20:30:00+07:00"
-lastmod: "2026-08-12T20:30:00+07:00"
+lastmod: "2026-08-23T08:30:00+07:00"
 draft: false
 categories:
   - "Architecture"
@@ -16,11 +16,13 @@ tags:
   - "Golang"
   - "Dapr"
   - "Logistics"
-description: "Analyzing the Urban Canyon effect on GPS accuracy, Hidden Markov Model (HMM) filtering, and streaming architecture with Kafka and OSRM/GraphHopper for 10M daily requests."
+description: "Fix GPS urban canyon multipath noise with Hidden Markov Models (HMM), Viterbi filtering, and real-time Kafka streaming with OSRM and GraphHopper in Go."
 ShowToc: true
 TocOpen: true
 series: ["Logistics Operations Systems"]
 ---
+
+# GPS Map Matching for Urban Canyon Noise: HMM & Kafka
 
 **Answer-first:** Raw GPS data from IoT devices in dense urban environments suffers severe degradation due to the Urban Canyon effect. Traditional filters like Kalman fail because they lack spatial awareness (topology). The standard architectural solution is a **Streaming Pipeline** (using Kafka for backpressure) paired with a **Map Matching Engine** (OSRM or GraphHopper) powered by a Hidden Markov Model (HMM) to snap coordinates back to the road network at sub-50ms latency.
 
@@ -192,6 +194,24 @@ This architecture enforces **Zero-allocation/Memory pooling** (by reusing slices
 
 The "truck in the river" incident is a textbook lesson on establishing **Trust Boundaries**. In IoT, hardware isn't "wrong"—it merely reports what its sensors measure. The Software Architect's job is to build algorithmic filters (the Software Validation Layer) to protect core business logic from physical-world noise.
 
-Looking ahead, as Edge Routers on vehicles grow more powerful (ARM/Linux-based), executing Map Matching models (like a streamlined OSRM binary) locally on the vehicle is becoming viable (**Edge Inference**). This slashes 4G bandwidth costs and enforces Privacy-by-design, as raw location data never has to leave the truck.
+## Frequently Asked Questions
+
+{{< faq q="What causes GPS multipath noise and drift in urban canyons?" >}}
+In dense urban canyons surrounded by high-rise glass and concrete buildings, direct line-of-sight satellite signals are blocked. Reflected multipath signals arrive with microsecond delays, misleading GPS receivers into computing erroneously long pseudo-ranges that push coordinates tens of meters off-road into rivers or adjacent city blocks.
+{{< /faq >}}
+
+{{< faq q="Why do Kalman filters fail to snap GPS coordinates to road networks?" >}}
+Kalman filters treat GPS data strictly as mathematical time-series coordinates without geographic awareness. While effective for smoothing Gaussian noise, they are blind to road topology and will smoothly interpolate paths through buildings or waterways instead of aligning to valid road segments.
+{{< /faq >}}
+
+{{< faq q="How does the Hidden Markov Model (HMM) solve map matching in logistics?" >}}
+The Hidden Markov Model treats actual road segments as hidden states and noisy GPS fixes as observations. Using emission probabilities (spatial distance from road) and transition probabilities (network shortest path distance versus Euclidean distance), the Viterbi algorithm computes the globally most probable continuous sequence of road edges traversed.
+{{< /faq >}}
+
+{{< faq q="When should you choose OSRM match API over GraphHopper for GPS map matching?" >}}
+Choose OSRM's `/match` API in C++ for maximum throughput and sub-5ms batch matching across large single-vehicle fleets. Choose GraphHopper's Map Matching API when matching trajectories for mixed fleets (motorcycles, heavy trucks with axle constraints) that require dynamic custom routing models and turn restrictions at runtime.
+{{< /faq >}}
+
+---
 
 *Have you ever battled drifting GPS coordinates in your IoT projects? Share your team's approach in the comments!*

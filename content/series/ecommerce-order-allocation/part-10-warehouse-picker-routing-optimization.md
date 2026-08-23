@@ -1,6 +1,8 @@
 ---
 title: "Warehouse Picker Routing: GraphHopper, OR-Tools & C++"
 slug: "warehouse-picker-routing-optimization"
+aliases:
+  - "/series/ecommerce-order-allocation/part-10-warehouse-picker-routing-optimization/"
 author: "Lê Tuấn Anh"
 date: "2026-08-01T21:30:00+07:00"
 lastmod: "2026-08-01T21:30:00+07:00"

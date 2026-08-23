@@ -1,11 +1,11 @@
 ---
-title: "Building Custom Kubernetes Operators in Go with kubebuilder & Deep eBPF Kernel Observability using cilium/ebpf"
+title: "Custom Kubernetes Operators in Go: Kubebuilder & eBPF"
 slug: "building-custom-kubernetes-operators-ebpf-golang-cilium"
 author: "Tuấn Anh"
 date: "2026-08-06T08:00:00+07:00"
-lastmod: "2026-08-06T08:00:00+07:00"
+lastmod: "2026-08-23T08:30:00+07:00"
 draft: false
-description: "Authoritative technical guide on building custom Kubernetes v4 operators in Go integrated with deep eBPF kernel observability via cilium/ebpf and bpf2go."
+description: "Build custom Kubernetes v4 operators in Go with kubebuilder, controller-runtime reconciliation loops, and deep eBPF kernel observability via cilium/ebpf."
 summary: "Production-grade Kubernetes Operator and eBPF kernel observability guide using Kubebuilder v4 and cilium/ebpf. Features C eBPF kernel probes (sys_execve, tcp_connect), zero-copy BPF ringbuffers (BPF_MAP_TYPE_RINGBUF), CRD controllers with status subresources, and deployment without privileged mode."
 keywords:
   - "Kubernetes"
@@ -49,12 +49,12 @@ TocOpen: true
 mermaid: true
 cover:
   image: "/images/posts/building-custom-kubernetes-operators-ebpf-golang-cilium.jpg"
-  alt: "Building Custom Kubernetes Operators eBPF Golang Cilium"
+  alt: "Custom Kubernetes Operators in Go: Kubebuilder & eBPF"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/building-custom-kubernetes-operators-ebpf-golang-cilium/"
 ---
 
-# Building Custom Kubernetes Operators in Go with `kubebuilder` & Deep eBPF Kernel Observability using `cilium/ebpf`
+# Custom Kubernetes Operators in Go: Kubebuilder & eBPF
 
 **Answer-first:** Building custom Kubernetes operators in Go with eBPF and Cilium enables kernel-level network packet filtering, zero-overhead observability tracing, and dynamic security policy enforcement without sidecar proxy latency. Deploying this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory pooling via Go 1.24 string interning, and resilient Dapr 1.15 workflow state synchronization.
 
@@ -1052,6 +1052,26 @@ Prometheus core metric definitions emitted by the Go userspace daemon:
 | **Reconciler Guardrails** | Status updates use `r.Status().Update()` with `GenerationChangedPredicate` to prevent infinite loops. | Verified |
 | **Resource Limits** | DaemonSet memory request set to ~32Mi, CPU request 50m; limits capped at 64Mi / 200m per node. | Verified |
 | **Graceful Teardown** | Go `ringbuf.Reader` defer close and signal handlers configured to prevent kernel probe leaks on pod eviction. | Verified |
+
+---
+
+## Frequently Asked Questions
+
+{{< faq q="Why combine Kubernetes operators with eBPF instead of traditional sidecars?" >}}
+Traditional sidecar proxies (like Envoy) introduce CPU/memory overhead per pod and add hop latency to every network packet. Running eBPF kernel probes managed by a Kubernetes operator allows you to observe system calls (like `sys_execve` and `tcp_connect`) and enforce network policies directly at the Linux kernel level with <0.5% CPU overhead and zero application modifications.
+{{< /faq >}}
+
+{{< faq q="How does cilium/ebpf bpf2go generate Go bindings from C kernel code?" >}}
+`bpf2go` compiles C eBPF programs using Clang/LLVM into BPF bytecode objects and emits strongly-typed Go wrapper structs (like `bpfObjects`, `bpfPrograms`, and `bpfMaps`). This enables Go user-space applications to load eBPF bytecode into the kernel and read ringbuffers using pure Go without requiring Cgo runtime overhead.
+{{< /faq >}}
+
+{{< faq q="How do you prevent infinite reconciliation loops in Kubebuilder controllers?" >}}
+Use `r.Status().Update(ctx, instance)` instead of `r.Update()` to update status subresources independently, and configure event filters using `builder.WithEventFilter(predicate.GenerationChangedPredicate{})`. This ensures the controller only reconciles when the CRD `metadata.generation` spec changes, ignoring self-generated status updates.
+{{< /faq >}}
+
+{{< faq q="What Linux capabilities are required to run eBPF agents without full root privilege?" >}}
+Since Linux Kernel 5.8+, eBPF programs can run without `--privileged` mode by granting fine-grained capabilities: `CAP_BPF` (for loading BPF maps and programs), `CAP_PERFMON` (for attaching tracepoints and kprobes), and `CAP_NET_ADMIN` (if attaching XDP or TC network filters).
+{{< /faq >}}
 
 ---
 

@@ -1,11 +1,11 @@
 ---
-title: "Tech Radar: NIST AI 600-1 & OWASP ASI01–ASI10 — Hardening Enterprise Agent Gateways in Kubernetes"
+title: "NIST AI 600-1 & OWASP ASI01–ASI10: AI Gateways in Kubernetes"
 date: "2026-08-21T08:30:00+07:00"
 lastmod: "2026-08-21T08:30:00+07:00"
 author: "Lê Tuấn Anh"
 slug: "owasp-nist-ai-agent-gateway"
 ring: "TRIAL"
-description: "Hardening autonomous AI agents in Kubernetes using NIST AI 600-1 and OWASP ASI01–ASI10 (2026) standards via Envoy Gateway CEL guardrails, SPIFFE/SPIRE, and Cilium Tetragon eBPF."
+description: "Hardening AI agents in Kubernetes using NIST AI 600-1 and OWASP ASI01–ASI10 (2026) standards via Envoy Gateway CEL guardrails, SPIFFE, and Tetragon eBPF."
 categories: ["Tech Radar", "Cloud Native", "AI Security", "Kubernetes"]
 tags: ["NIST AI 600-1", "OWASP ASI Top 10", "Agent Gateway", "Kubernetes", "Envoy Gateway", "CEL", "SPIFFE/SPIRE", "Cilium Tetragon", "eBPF", "Zero Trust"]
 cover:
@@ -337,3 +337,16 @@ Evaluated across a 40-node Kubernetes cluster under simulated load from 3,000 su
 1. **Radar Ring Verdict: `TRIAL`** — Enterprise teams operating autonomous agents on Kubernetes should immediately adopt **Envoy Gateway CEL + SPIFFE/SPIRE + Cilium Tetragon**.
 2. **Deprecate (`HOLD`):** Cease issuing permanent Kubernetes ServiceAccount tokens or environment-variable static API keys to Agent pods.
 3. **Enforce Hard Budget Circuit Breakers:** Always configure `Max-Token-Cost` and `Max-DAG-Depth` at the L7 gateway to prevent infinite recursion loops and Denial of Wallet incidents.
+
+---
+
+## Related Architecture Pillars & Radar Briefings
+
+This technical briefing is part of the **[August 2026 Tech Radar Digest](/radar/2026-08/)**. For comprehensive Zero-Trust policies and Kubernetes runtime security implementations, explore the following pillar resources:
+
+- 📡 **Parent Radar Digest**: [Tech Radar Digest August 2026: Stateless MCP 2.0, Go synctest, vLLM MLA & eBPF Zero Trust](/radar/2026-08/)
+- 🛡️ **Architecture Pillar**: [Zero-Trust Service Mesh Security in Go: SPIFFE/SPIRE & Istio](/posts/zero-trust-service-mesh-security-spiffe-spire-istio-golang/)
+- ⚓ **eBPF Kernel Security**: [Building Custom Kubernetes Operators with eBPF & Cilium in Go](/posts/building-custom-kubernetes-operators-ebpf-golang-cilium/)
+- 🌐 **Related Radar Signal**: [eBPF Kernel Zero-Trust Security for AI Agent Swarms with Tetragon](/radar/ebpf-tetragon-ai-agent-security/)
+- 🔌 **Stateless Gateway Routing**: [Stateless MCP 2.0 & Kubernetes Gateway API Architecture](/radar/stateless-mcp-k8s-gateway/)
+- 🏛️ **Microservices Architecture**: [Go Microservices Production Guide (Clean Architecture & Dapr)](/posts/go-microservices/)

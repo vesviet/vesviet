@@ -1,10 +1,10 @@
 ---
-title: "Tech Radar: Stateless MCP 2.0 & Kubernetes Gateway API Architecture"
+title: "Stateless MCP 2.0 & Kubernetes Gateway API Architecture"
 date: "2026-08-20T08:30:00+07:00"
 lastmod: "2026-08-20T08:30:00+07:00"
 author: "Lê Tuấn Anh"
 slug: "stateless-mcp-k8s-gateway"
-description: "Architectural deep dive into Stateless Model Context Protocol (MCP 2.0), L7 routing via Kubernetes Gateway API, and SPIFFE/mTLS authentication for autonomous AI agent swarms."
+description: "Stateless Model Context Protocol (MCP 2.0), L7 routing with Kubernetes Gateway API, and SPIFFE/mTLS authentication for autonomous AI agent swarms."
 categories: ["Tech Radar", "AI Infrastructure", "Cloud Native"]
 ring: "TRIAL"
 tags: ["Model Context Protocol", "MCP 2.0", "Kubernetes", "Gateway API", "SPIFFE/SPIRE", "Golang", "Agentic Systems"]
@@ -244,3 +244,16 @@ Benchmark conducted on a 30-node Kubernetes cluster under simulated load from 2,
 1. **Radar Ring Verdict: `ADOPT`** for Stateless MCP 2.0 across all newly provisioned tool server microservices.
 2. **Deprecate (`HOLD`):** Prohibit long-lived WebSocket sessions for short-lived transactional tool execution.
 3. **Gateway-First Ingress Architecture:** Deploy Cilium Gateway or Envoy Gateway to terminate TLS and validate SPIFFE SVIDs before requests hit application pods.
+
+---
+
+## Related Architecture Pillars & Radar Briefings
+
+This technical briefing is part of the **[August 2026 Tech Radar Digest](/radar/2026-08/)**. For complete system implementations and architectural patterns, explore the related resources:
+
+- 📡 **Parent Radar Digest**: [Tech Radar Digest August 2026: Stateless MCP 2.0, Go synctest, vLLM MLA & eBPF Zero Trust](/radar/2026-08/)
+- 🏛️ **Architecture Pillar**: [Go MCP Server Development: Complete Production Guide](/posts/go-mcp-server-development-production-guide/)
+- 🛡️ **Zero-Trust Security**: [Zero-Trust Service Mesh Security in Go: SPIFFE/SPIRE & Istio](/posts/zero-trust-service-mesh-security-spiffe-spire-istio-golang/)
+- ⚡ **LLM Gateway Infrastructure**: [High-Throughput Local LLM Infrastructure: Distributed Go API Gateway for vLLM](/posts/high-throughput-local-llm-infrastructure-vllm-golang-gateway/)
+- 🌐 **Related Radar Signal**: [NIST AI 600-1 & OWASP ASI01–ASI10: Hardening Enterprise Agent Gateways](/radar/owasp-nist-ai-agent-gateway/)
+- 🏗️ **Core Microservices Pillar**: [Go Microservices Production Guide (Clean Architecture & Dapr)](/posts/go-microservices/)

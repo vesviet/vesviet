@@ -1,10 +1,10 @@
 ---
-title: "Tech Radar August 2026: Official Go MCP SDK, Go 1.26 Green Tea GC & Wasm Micro-VMs SpinKube"
+title: "Tech Radar August 2026: Go MCP SDK & Green Tea GC Tuning"
 date: 2026-08-06T00:00:00+07:00
 lastmod: 2026-08-06T00:00:00+07:00
 author: "Lê Tuấn Anh"
 slug: "tech-radar-august-2026"
-description: "August 2026 Tech Radar analyzing Go MCP SDK trends, Go 1.26 Green Tea GC optimizations, Kubernetes Pod Resizing v1.35, and Wasm SpinKube micro-VMs."
+description: "Official Go MCP SDK, Go 1.26 Green Tea GC throughput optimization, and WebAssembly micro-VM deployments with SpinKube on Kubernetes clusters."
 categories: ["Tech Radar", "Cloud Native", "AI", "Golang"]
 ring: "ADOPT"
 tags: ["Tech Radar 2026", "Go MCP SDK", "Go 1.26", "Green Tea GC", "Kubernetes", "SpinKube", "Argo CD", "SPIFFE/SPIRE"]
@@ -319,5 +319,20 @@ The cluster must operate on Control Plane and Worker Nodes running v1.35+, paire
 {{< faq q="When should an enterprise transition from Naive Vector RAG to Agentic GraphRAG?" >}}
 Enterprises should pivot when the existing RAG pipeline encounters: (1) Inaccurate responses concerning cross-document or cross-entity relationships, (2) Poor performance when querying tabular or schema-driven data, or (3) A sharp spike in hallucination rates as the knowledge corpus exceeds 100,000 documents.
 {{< /faq >}}
+
+---
+
+## Related Architecture Pillars & Radar Briefings
+
+This technical overview is part of the **[August 2026 Tech Radar Digest](/radar/2026-08/)**. For complete system implementations, consult the corresponding architecture pillars:
+
+- 📡 **Parent Radar Digest**: [Tech Radar Digest August 2026: Stateless MCP 2.0, Go synctest, vLLM MLA & eBPF Zero Trust](/radar/2026-08/)
+- 🏛️ **Architecture Pillar**: [Go Microservices Architecture: Production Engineering Guide](/posts/go-microservices/)
+- 🛡️ **Zero-Trust Security**: [Zero-Trust Service Mesh Security in Go: SPIFFE/SPIRE & Istio](/posts/zero-trust-service-mesh-security-spiffe-spire-istio-golang/)
+- 🔌 **Go MCP Server Guide**: [Go MCP Server Development: Complete Production Guide](/posts/go-mcp-server-development-production-guide/)
+- 🚀 **GitOps at Scale**: [GitOps at Scale with Kubernetes & Argo CD for Go Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/)
+- 🌐 **Deep-Dive Radar Signals**:
+  - [Stateless MCP 2.0 & Kubernetes Gateway API Architecture](/radar/stateless-mcp-k8s-gateway/)
+  - [Deterministic Concurrency Testing with Go 1.26 testing/synctest](/radar/go-synctest-concurrency/)
 
 {{< author-cta >}}

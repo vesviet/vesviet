@@ -1,9 +1,9 @@
 ---
-title: "High-Throughput Local LLM Infrastructure: Architecting a Distributed Go API Gateway for vLLM & PagedAttention Clusters"
+title: "High-Throughput Local LLM Gateway: Go & vLLM Blueprint"
 slug: "high-throughput-local-llm-infrastructure-vllm-golang-gateway"
 author: "Tuấn Anh"
 date: "2026-08-06T08:00:00+07:00"
-lastmod: "2026-08-06T08:00:00+07:00"
+lastmod: "2026-08-23T08:30:00+07:00"
 draft: false
 description: "Architect a high-throughput distributed Go API Gateway for vLLM clusters with PagedAttention, Prefill-Decode disaggregation, and GPU VRAM sizing formulas."
 summary: "High-throughput local LLM architecture guide combining vLLM PagedAttention virtual memory, Prefill-Decode disaggregation over RoCE v2/NVLink, and a custom Go API Gateway with SHA256 prompt prefix context-affinity routing, zero-allocation SSE streaming, and 71% cost savings over SaaS APIs."
@@ -43,12 +43,12 @@ TocOpen: true
 mermaid: true
 cover:
   image: "/images/posts/high-throughput-local-llm-infrastructure-vllm-golang-gateway.jpg"
-  alt: "High Throughput Local LLM Infrastructure vLLM Golang Gateway"
+  alt: "High-Throughput Local LLM Gateway: Go & vLLM Blueprint"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/high-throughput-local-llm-infrastructure-vllm-golang-gateway/"
 ---
 
-# High-Throughput Local LLM Infrastructure: Architecting a Distributed Go API Gateway for vLLM & PagedAttention Clusters
+# High-Throughput Local LLM Gateway: Go & vLLM Blueprint
 
 **Answer-first:** High-throughput local LLM infrastructure pairs vLLM continuous batching inference servers with a Go API gateway for dynamic request queuing, load balancing, and token rate limiting. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
 
@@ -838,6 +838,26 @@ When managing distributed vLLM clusters with the Go API Gateway, monitor the fol
 | `gateway_request_duration_seconds` | Histogram | Latency histogram (P50, P95, P99) of Time-to-First-Token (TTFT). |
 | `vllm:avg_prompt_throughput_tok_per_s` | Gauge | Aggregate prefill throughput across cluster nodes. |
 | `vllm:avg_generation_throughput_tok_per_s` | Gauge | Aggregate decode generation throughput across cluster nodes. |
+
+---
+
+## Frequently Asked Questions
+
+{{< faq q="How does PagedAttention eliminate GPU VRAM fragmentation in LLM serving?" >}}
+PagedAttention applies virtual memory paging principles to transformer Key-Value (KV) caches. Instead of allocating contiguous VRAM blocks for the maximum possible sequence length, it partitions KV-cache tensors into fixed-size physical memory pages mapped through virtual page tables, reducing GPU memory waste from 60%–80% down to under 4%.
+{{< /faq >}}
+
+{{< faq q="What is Prefill-Decode (P/D) disaggregation in distributed vLLM clusters?" >}}
+P/D disaggregation separates the compute-bound prompt prefill phase (which benefits from high FLOPS compute engines like NVIDIA H100) from the memory-bandwidth-bound autoregressive token decoding phase (which thrives on high-capacity memory like NVIDIA L40S or H200), transmitting intermediate KV blocks across nodes over 400Gbps RoCE v2 or NVLink networks.
+{{< /faq >}}
+
+{{< faq q="How does prefix-caching affinity routing in the Go API Gateway improve TTFT?" >}}
+By hashing prompt prefixes (such as system instructions and few-shot examples) using SHA-256 and maintaining an affinity routing table, the Go API Gateway routes requests with matching prefixes to the specific vLLM worker node that already holds those KV-cache blocks in GPU memory, cutting Time-to-First-Token (TTFT) by up to 4.1x.
+{{< /faq >}}
+
+{{< faq q="How do you configure Go reverse proxies for zero-latency Server-Sent Events (SSE) streaming?" >}}
+Configure Go's `httputil.ReverseProxy` with `FlushInterval: -1` (or a negative duration) and set `DisableCompression: true` on the HTTP transport. This disables internal buffer accumulation and gzip compression, ensuring that each generated token chunk is immediately flushed to the client without buffering latency.
+{{< /faq >}}
 
 ---
 

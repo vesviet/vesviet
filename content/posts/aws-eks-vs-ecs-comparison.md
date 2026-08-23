@@ -1,5 +1,5 @@
 ---
-title: "EKS vs ECS: Architecture, Cost Calculator & Production Guide (2026)"
+title: "AWS EKS vs ECS: Architecture, Real Costs & 2026 Guide"
 slug: "aws-eks-vs-ecs-comparison"
 author: "Lê Tuấn Anh"
 date: "2026-06-26T21:00:00+07:00"
@@ -7,18 +7,18 @@ lastmod: "2026-08-23T08:30:00+07:00"
 draft: false
 mermaid: true
 tags: ["AWS", "EKS", "ECS", "Kubernetes", "Container Orchestration", "DevOps", "Go", "Microservices", "Fargate"]
-description: "EKS vs ECS comparison for containerized workloads: control plane pricing, Fargate tradeoffs, Karpenter autoscaling, and production decision matrix."
+description: "EKS vs ECS comparison for container workloads: control plane pricing, Fargate cost formulas, Karpenter autoscaling, GitOps support, and decision matrix."
 categories: ["DevOps", "Engineering", "AWS"]
 ShowToc: true
 TocOpen: true
 cover:
   image: "/images/posts/aws-eks-vs-ecs-cover.jpg"
-  alt: "AWS EKS vs ECS architecture and cost comparison guide"
+  alt: "AWS EKS vs ECS Architecture and Real Costs Guide 2026"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/aws-eks-vs-ecs-comparison/"
 ---
 
-# EKS vs ECS: Architecture, Cost & Production Guide (2026)
+# AWS EKS vs ECS: Architecture, Real Costs & 2026 Guide
 
 **Answer-first:** When deciding between AWS ECS and EKS, choose ECS Fargate for speed and zero control plane costs if you lack Kubernetes expertise. Choose EKS if you require the CNCF ecosystem (ArgoCD, Dapr, KEDA) and have dedicated DevOps engineers to manage the $73/month control plane fee. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines.
 
@@ -514,25 +514,25 @@ flowchart TD
 
 ## Frequently Asked Questions
 
-Addressing common architectural questions regarding AWS EKS versus ECS pricing, operational complexity, auto-mode capabilities, and ecosystem compatibility helps platform teams make informed decisions. The following detailed answers address key trade-offs encountered when selecting container orchestration engines for production cloud environments.
+{{< faq q="Is EKS better than ECS for production container orchestration?" >}}
+Neither is universally better. EKS gives you the full CNCF ecosystem (ArgoCD GitOps, Dapr operators, KEDA autoscaling, Cilium eBPF) at the cost of higher operational complexity and a $73/month control plane fee per cluster. ECS gives you AWS-native simplicity with zero control plane cost. Choose ECS for AWS-centric teams without dedicated DevOps administrators, and EKS when you require advanced GitOps workflows or multi-cloud workload portability.
+{{< /faq >}}
 
-### Q1: Is EKS better than ECS?
-Neither is universally better. EKS gives you the Kubernetes ecosystem (ArgoCD, Dapr, KEDA, Helm) at the cost of higher operational complexity and $73/month per cluster. ECS gives you AWS-native simplicity with zero control plane cost. Choose based on your team's expertise and what ecosystem tools you actually need.
+{{< faq q="What does EKS Auto Mode actually automate in 2026?" >}}
+EKS Auto Mode automates node provisioning via managed Karpenter, OS security patching via Bottlerocket, and core add-ons (VPC CNI, AWS Load Balancer Controller, EBS CSI). While it removes low-level EC2 node management toil, platform teams still write Kubernetes manifests and manage RBAC, namespace boundaries, ingress routing, and application-level tooling like ArgoCD and Helm charts.
+{{< /faq >}}
 
-### Q2: What does EKS Auto Mode actually do?
-EKS Auto Mode (GA since re:Invent 2024) automates node provisioning via managed Karpenter, OS patching via Bottlerocket, and core add-ons (VPC CNI, Load Balancer Controller, EBS CSI). You still write Kubernetes manifests and manage RBAC, namespaces, and application-level tools like ArgoCD and Dapr.
+{{< faq q="What is the real cost difference between ECS Fargate and EKS Fargate?" >}}
+The underlying compute pricing is identical ($0.04048 per vCPU-hour and $0.004445 per GB-hour in us-east-1). However, ECS Fargate has zero control plane fees, while EKS Fargate incurs a baseline $73/month ($876/year) control plane charge per cluster. Furthermore, EKS clusters falling into Extended Support cost $438/month (~$5,256/year) per cluster.
+{{< /faq >}}
 
-### Q3: What's the difference between ECS Fargate and EKS Fargate?
-The compute layer is identical: same Fargate pricing ($0.04048/vCPU-hr, $0.004445/GB-hr in US-East-1). The difference is the orchestration layer: ECS Fargate has no control plane fee and no Kubernetes API. EKS Fargate costs $73/month for the control plane but gives you full Kubernetes APIs, Helm, and CNCF tooling.
+{{< faq q="Can you use ArgoCD GitOps pipelines with AWS ECS?" >}}
+No. ArgoCD is strictly built for Kubernetes—it reconciles declarative Kubernetes Custom Resource Definitions (CRDs) against Git repositories. ECS does not expose a Kubernetes API. Teams deploying to ECS using GitOps-style workflows must rely on tools like GitHub Actions + ecspresso, AWS CodePipeline, or Terraform.
+{{< /faq >}}
 
-### Q4: How much does EKS actually cost?
-Minimum: $73/month (control plane) + compute. If you fall behind on Kubernetes version upgrades, Extended Support kicks in at $438/month per cluster (~6× more). At 3 clusters in Extended Support, that's **$15,768/year in control plane fees** — before a single container runs.
-
-### Q5: Can you use ArgoCD with ECS?
-No. ArgoCD is Kubernetes-only — it reconciles Kubernetes resources to Git state. ECS has no Kubernetes resources. Teams deploying ECS via GitOps-style workflows typically use GitHub Actions + ecspresso or AWS CodePipeline + CodeDeploy.
-
-### Q6: Should a startup choose ECS or EKS?
-ECS Fargate for the first 12–18 months. Zero control plane cost, ships fast, minimal ops overhead. When you need ArgoCD, Dapr, or KEDA — or when you hire a platform engineer — evaluate EKS.
+{{< faq q="How does Karpenter on EKS reduce cloud compute spend compared to ECS Auto Scaling?" >}}
+Karpenter v1.x evaluates pending pod resource requests directly and provisions right-sized, heterogeneous EC2 and Spot instances in 45–60 seconds, bypassing EC2 Auto Scaling Group launch delays. This dynamic bin-packing and automatic consolidation typically reduces AWS EC2 infrastructure costs by 30–50% compared to standard ECS EC2 autoscaling.
+{{< /faq >}}
 
 ---
 

@@ -77,355 +77,384 @@
 {{ end }}
 
 <!-- Schema.org — Site-wide graph (Person + WebSite + SearchAction) -->
+{{- $website := dict
+  "@type" "WebSite"
+  "@id" (printf "%s#website" .Site.BaseURL)
+  "url" .Site.BaseURL
+  "name" .Site.Title
+  "description" .Site.Params.description
+  "publisher" (dict
+    "@type" "Person"
+    "@id" (printf "%s#person" .Site.BaseURL)
+  )
+  "potentialAction" (dict
+    "@type" "SearchAction"
+    "target" (dict
+      "@type" "EntryPoint"
+      "urlTemplate" (printf "%sposts/?q={search_term_string}" .Site.BaseURL)
+    )
+    "query-input" "required name=search_term_string"
+  )
+-}}
+{{- $person := dict
+  "@type" "Person"
+  "@id" (printf "%s#person" .Site.BaseURL)
+  "name" "Lê Tuấn Anh"
+  "alternateName" (slice "vesviet" "Le Tuan Anh" "Tuan Anh Le")
+  "url" (printf "%sabout/" .Site.BaseURL)
+  "image" (dict
+    "@type" "ImageObject"
+    "url" "https://tanhdev.com/vesviet.png"
+    "width" 240
+    "height" 240
+  )
+  "jobTitle" "Senior Go Backend Architect & Distributed Systems Engineer"
+  "description" "Senior Go & Microservices Engineer with 17+ years building high-traffic e-commerce platforms. Specializes in backend architecture, distributed systems and GitOps."
+  "knowsAbout" (slice
+    "Go (Golang)"
+    "Microservices Architecture"
+    "Distributed Systems"
+    "Kubernetes"
+    "ArgoCD"
+    "GitOps"
+    "Dapr"
+    "Event-Driven Architecture"
+    "Saga Pattern"
+    "Domain-Driven Design"
+    "Magento"
+    "E-commerce Platform Engineering"
+    "Backend Architecture"
+    "gRPC"
+    "PostgreSQL"
+    "Redis"
+    "AI Engineering"
+  )
+  "worksFor" (dict
+    "@type" "Organization"
+    "name" "Independent Consultant"
+  )
+  "homeLocation" (dict
+    "@type" "Place"
+    "name" "Vietnam"
+  )
+  "email" "mailto:vesviet@gmail.com"
+  "sameAs" (slice
+    "https://www.linkedin.com/in/vesviet"
+    "https://github.com/vesviet"
+    "https://dev.to/vesviet"
+  )
+-}}
+{{- $siteGraph := dict
+  "@context" "https://schema.org"
+  "@graph" (slice $website $person)
+-}}
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebSite",
-      "@id": "{{ .Site.BaseURL }}#website",
-      "url": "{{ .Site.BaseURL }}",
-      "name": "{{ .Site.Title }}",
-      "description": "{{ .Site.Params.description }}",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "https://tanhdev.com/posts/?q={search_term_string}"
-        },
-        "query-input": "required name=search_term_string"
-      }
-    },
-    {
-      "@type": "Person",
-      "@id": "{{ .Site.BaseURL }}#person",
-      "name": "Lê Tuấn Anh",
-      "alternateName": ["vesviet", "Le Tuan Anh", "Tuan Anh Le"],
-      "url": "{{ .Site.BaseURL }}about/",
-      "image": {
-        "@type": "ImageObject",
-        "url": "https://tanhdev.com/vesviet.png",
-        "width": 240,
-        "height": 240
-      },
-      "jobTitle": "Senior Go Backend Architect & Distributed Systems Engineer",
-      "description": "Senior Go & Microservices Engineer with 17+ years building high-traffic e-commerce platforms. Specializes in backend architecture, distributed systems and GitOps.",
-      "knowsAbout": [
-        "Go (Golang)",
-        "Microservices Architecture",
-        "Distributed Systems",
-        "Kubernetes",
-        "ArgoCD",
-        "GitOps",
-        "Dapr",
-        "Event-Driven Architecture",
-        "Saga Pattern",
-        "Domain-Driven Design",
-        "Magento",
-        "E-commerce Platform Engineering",
-        "Backend Architecture",
-        "gRPC",
-        "PostgreSQL",
-        "Redis",
-        "AI Engineering"
-      ],
-      "worksFor": {
-        "@type": "Organization",
-        "name": "Independent Consultant"
-      },
-      "homeLocation": {
-        "@type": "Place",
-        "name": "Vietnam"
-      },
-      "email": "mailto:vesviet@gmail.com",
-      "sameAs": [
-        "https://www.linkedin.com/in/vesviet",
-        "https://github.com/vesviet",
-        "https://dev.to/vesviet"
-      ]
-    }
-  ]
-}
+{{ $siteGraph | jsonify (dict "indent" "  ") | safeJS }}
 </script>
 
 {{- if and .IsSection (eq .Section "series") }}
 <!-- Schema.org — ItemList for series hub pages (_index.md) -->
+{{- $items := slice -}}
+{{- range $i, $page := .Pages.ByWeight -}}
+  {{- $items = $items | append (dict
+    "@type" "ListItem"
+    "position" (add $i 1)
+    "name" $page.Title
+    "url" $page.Permalink
+  ) -}}
+{{- end -}}
+{{- $itemListDict := dict
+  "@context" "https://schema.org"
+  "@type" "ItemList"
+  "name" .Title
+  "description" .Description
+  "url" .Permalink
+  "author" (dict
+    "@type" "Person"
+    "@id" (printf "%s#person" .Site.BaseURL)
+  )
+  "itemListElement" $items
+-}}
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": {{ .Title | jsonify }},
-  "description": {{ .Description | jsonify }},
-  "url": "{{ .Permalink }}",
-  "author": {
-    "@type": "Person",
-    "@id": "{{ .Site.BaseURL }}#person"
-  },
-  "itemListElement": [
-    {{- range $i, $page := .Pages.ByWeight }}
-    {{- if $i }},{{ end }}
-    {
-      "@type": "ListItem",
-      "position": {{ add $i 1 }},
-      "name": {{ $page.Title | jsonify }},
-      "url": "{{ $page.Permalink }}"
-    }
-    {{- end }}
-  ]
-}
+{{ $itemListDict | jsonify (dict "indent" "  ") | safeJS }}
 </script>
 {{- end }}
+
 {{- if and .IsPage .File (or (eq .File.ContentBaseName "about") (eq .File.ContentBaseName "hire")) }}
 <!-- Schema.org — ProfilePage for /about/ and /hire/ -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ProfilePage",
-  "@id": "{{ .Permalink }}",
-  "url": "{{ .Permalink }}",
-  "name": {{ .Title | jsonify }},
-  "description": {{ .Description | jsonify }},
-  "datePublished": "{{ .Date.Format `2006-01-02T15:04:05Z07:00` }}",
-  "dateModified": "{{ .Lastmod.Format `2006-01-02T15:04:05Z07:00` }}",
-  "mainEntity": {
-    "@type": "Person",
-    "@id": "https://tanhdev.com/#person",
-    "name": "Lê Tuấn Anh",
-    "alternateName": ["vesviet", "Le Tuan Anh"],
-    "image": {
-      "@type": "ImageObject",
-      "url": "https://tanhdev.com/vesviet.png"
-    },
-    "jobTitle": "Senior Go Backend Architect & Distributed Systems Engineer",
-    "worksFor": {
-      "@type": "Organization",
-      "name": "Independent Consultant"
-    },
-    "knowsAbout": [
-      "Go (Golang)",
-      "Microservices Architecture",
-      "Distributed Systems",
-      "Kubernetes",
-      "GitOps",
+{{- $profilePageDict := dict
+  "@context" "https://schema.org"
+  "@type" "ProfilePage"
+  "@id" .Permalink
+  "url" .Permalink
+  "name" .Title
+  "description" .Description
+  "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00")
+  "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")
+  "mainEntity" (dict
+    "@type" "Person"
+    "@id" (printf "%s#person" .Site.BaseURL)
+    "name" "Lê Tuấn Anh"
+    "alternateName" (slice "vesviet" "Le Tuan Anh")
+    "image" (dict
+      "@type" "ImageObject"
+      "url" "https://tanhdev.com/vesviet.png"
+    )
+    "jobTitle" "Senior Go Backend Architect & Distributed Systems Engineer"
+    "worksFor" (dict
+      "@type" "Organization"
+      "name" "Independent Consultant"
+    )
+    "knowsAbout" (slice
+      "Go (Golang)"
+      "Microservices Architecture"
+      "Distributed Systems"
+      "Kubernetes"
+      "GitOps"
       "System Design"
-    ],
-    "sameAs": [
-      "https://www.linkedin.com/in/vesviet",
+    )
+    "sameAs" (slice
+      "https://www.linkedin.com/in/vesviet"
       "https://github.com/vesviet"
-    ]
-  },
-  "isPartOf": {
-    "@type": "WebSite",
-    "@id": "{{ .Site.BaseURL }}#website"
-  }
-}
+    )
+  )
+  "isPartOf" (dict
+    "@type" "WebSite"
+    "@id" (printf "%s#website" .Site.BaseURL)
+  )
+-}}
+<script type="application/ld+json">
+{{ $profilePageDict | jsonify (dict "indent" "  ") | safeJS }}
 </script>
 {{- end }}
 
 {{- if and .IsPage .File (eq .File.ContentBaseName "hire") }}
 <!-- Schema.org — ProfessionalService for /hire/ (rich result for consulting services) -->
+{{- $serviceDict := dict
+  "@context" "https://schema.org"
+  "@type" "ProfessionalService"
+  "@id" (printf "%s#service" .Permalink)
+  "name" "Lê Tuấn Anh — Go Backend Architecture Consulting"
+  "url" .Permalink
+  "description" "Senior Go Backend Architect offering architecture reviews, advisory retainers, and hands-on consulting for microservices migrations and high-traffic platform scaling."
+  "provider" (dict
+    "@type" "Person"
+    "@id" (printf "%s#person" .Site.BaseURL)
+    "name" "Lê Tuấn Anh"
+  )
+  "areaServed" "Worldwide"
+  "priceRange" "$$"
+  "availableChannel" (dict
+    "@type" "ServiceChannel"
+    "serviceUrl" .Permalink
+    "servicePhone" "+84"
+    "availableLanguage" (slice "English" "Vietnamese")
+  )
+  "hasOfferCatalog" (dict
+    "@type" "OfferCatalog"
+    "name" "Consulting Engagements"
+    "itemListElement" (slice
+      (dict
+        "@type" "Offer"
+        "name" "Architecture Review"
+        "description" "Deep review of current system, migration plan, or scaling strategy. Produces a written Technical Assessment with prioritized roadmap."
+        "eligibleDuration" (dict
+          "@type" "QuantitativeValue"
+          "value" "1-2"
+          "unitCode" "WEE"
+        )
+      )
+      (dict
+        "@type" "Offer"
+        "name" "Advisory Retainer"
+        "description" "Ongoing monthly technical guidance, code review, and escalation support for your engineering team."
+        "eligibleDuration" (dict
+          "@type" "QuantitativeValue"
+          "value" "1"
+          "unitCode" "MON"
+        )
+      )
+      (dict
+        "@type" "Offer"
+        "name" "Hands-On Consulting"
+        "description" "Direct implementation or lead engineering on microservices migration, scaling, or performance problems."
+      )
+    )
+  )
+-}}
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "@id": "{{ .Permalink }}#service",
-  "name": "Lê Tuấn Anh — Go Backend Architecture Consulting",
-  "url": "{{ .Permalink }}",
-  "description": "Senior Go Backend Architect offering architecture reviews, advisory retainers, and hands-on consulting for microservices migrations and high-traffic platform scaling.",
-  "provider": {
-    "@type": "Person",
-    "@id": "{{ .Site.BaseURL }}#person",
-    "name": "Lê Tuấn Anh"
-  },
-  "areaServed": "Worldwide",
-  "priceRange": "$$",
-  "availableChannel": {
-    "@type": "ServiceChannel",
-    "serviceUrl": "{{ .Permalink }}",
-    "servicePhone": "+84",
-    "availableLanguage": ["English", "Vietnamese"]
-  },
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "Consulting Engagements",
-    "itemListElement": [
-      {
-        "@type": "Offer",
-        "name": "Architecture Review",
-        "description": "Deep review of current system, migration plan, or scaling strategy. Produces a written Technical Assessment with prioritized roadmap.",
-        "eligibleDuration": {
-          "@type": "QuantitativeValue",
-          "value": "1-2",
-          "unitCode": "WEE"
-        }
-      },
-      {
-        "@type": "Offer",
-        "name": "Advisory Retainer",
-        "description": "Ongoing monthly technical guidance, code review, and escalation support for your engineering team.",
-        "eligibleDuration": {
-          "@type": "QuantitativeValue",
-          "value": "1",
-          "unitCode": "MON"
-        }
-      },
-      {
-        "@type": "Offer",
-        "name": "Hands-On Consulting",
-        "description": "Direct implementation or lead engineering on microservices migration, scaling, or performance problems."
-      }
-    ]
-  }
-}
+{{ $serviceDict | jsonify (dict "indent" "  ") | safeJS }}
 </script>
 {{- end }}
 
 {{- if and .IsPage .File (or (eq .Section "posts") (eq .Section "series") (eq .Section "radar")) }}
 {{- $isTech := or (intersect .Params.categories (slice "Architecture" "Backend" "Engineering" "DevOps" "System Design" "Machine Learning" "AI")) (findRE "(?i)(vs|comparison|benchmark|architecture|guide|blueprint)" .Title) -}}
 <!-- Schema.org — Article / TechArticle for /posts/*, /series/*/part-*, /radar/* (E-E-A-T + Rich Results) -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": {{ if $isTech }}["TechArticle", "Article"]{{ else }}"Article"{{ end }},
-  {{- if $isTech }}
-  "proficiencyLevel": "Expert",
-  {{ with .Params.tags }}"dependencies": {{ . | jsonify }},{{ end }}
-  {{- end }}
-  "@id": "{{ .Permalink }}#article",
-  "headline": {{ .Title | jsonify }},
-  "description": {{ with .Description }}{{ . | jsonify }}{{ else }}{{ .Summary | jsonify }}{{ end }},
-  "url": "{{ .Permalink }}",
-  "datePublished": "{{ .Date.Format `2006-01-02T15:04:05Z07:00` }}",
-  "dateModified": "{{ .Lastmod.Format `2006-01-02T15:04:05Z07:00` }}",
-  "author": {
-    "@type": "Person",
-    "@id": "{{ .Site.BaseURL }}#person",
-    "name": "Lê Tuấn Anh",
-    "url": "{{ .Site.BaseURL }}about/",
-    "sameAs": [
-      "https://www.linkedin.com/in/vesviet",
-      "https://github.com/vesviet",
+{{- $imgUrl := "https://tanhdev.com/vesviet.png" -}}
+{{- with .Params.cover.image -}}
+  {{- if (urls.Parse .).IsAbs -}}
+    {{- $imgUrl = . -}}
+  {{- else -}}
+    {{- $imgUrl = . | absURL -}}
+  {{- end -}}
+{{- end -}}
+{{- $articleType := "Article" -}}
+{{- if $isTech -}}
+  {{- $articleType = slice "TechArticle" "Article" -}}
+{{- end -}}
+{{- $articleDesc := .Summary -}}
+{{- with .Description -}}
+  {{- $articleDesc = . -}}
+{{- end -}}
+{{- $articleDict := dict
+  "@context" "https://schema.org"
+  "@type" $articleType
+  "@id" (printf "%s#article" .Permalink)
+  "headline" .Title
+  "description" $articleDesc
+  "url" .Permalink
+  "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00")
+  "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")
+  "author" (dict
+    "@type" "Person"
+    "@id" (printf "%s#person" .Site.BaseURL)
+    "name" "Lê Tuấn Anh"
+    "url" (printf "%sabout/" .Site.BaseURL)
+    "sameAs" (slice
+      "https://www.linkedin.com/in/vesviet"
+      "https://github.com/vesviet"
       "https://dev.to/vesviet"
-    ]
-  },
-  "publisher": {
-    "@type": "Person",
-    "@id": "{{ .Site.BaseURL }}#person",
-    "name": "Lê Tuấn Anh"
-  },
-  "image": {
-    "@type": "ImageObject",
-    "url": {{ with .Params.cover.image }}{{ if (urls.Parse .).IsAbs }}{{ . | jsonify }}{{ else }}{{ . | absURL | jsonify }}{{ end }}{{ else }}"https://tanhdev.com/vesviet.png"{{ end }},
-    "width": 1200,
-    "height": 630
-  },
-  "isPartOf": {
-    "@type": "WebSite",
-    "@id": "{{ .Site.BaseURL }}#website"
-  },
-  "inLanguage": "en-US",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "{{ .Permalink }}"
-  }
-}
+    )
+  )
+  "publisher" (dict
+    "@type" "Person"
+    "@id" (printf "%s#person" .Site.BaseURL)
+    "name" "Lê Tuấn Anh"
+  )
+  "image" (dict
+    "@type" "ImageObject"
+    "url" $imgUrl
+    "width" 1200
+    "height" 630
+  )
+  "isPartOf" (dict
+    "@type" "WebSite"
+    "@id" (printf "%s#website" .Site.BaseURL)
+  )
+  "inLanguage" "en-US"
+  "mainEntityOfPage" (dict
+    "@type" "WebPage"
+    "@id" .Permalink
+  )
+-}}
+{{- if $isTech -}}
+  {{- $articleDict = merge $articleDict (dict "proficiencyLevel" "Expert") -}}
+  {{- with .Params.tags -}}
+    {{- $articleDict = merge $articleDict (dict "dependencies" .) -}}
+  {{- end -}}
+{{- end -}}
+<script type="application/ld+json">
+{{ $articleDict | jsonify (dict "indent" "  ") | safeJS }}
 </script>
 
 {{- if eq .Section "posts" }}
 <!-- Schema.org — BreadcrumbList for /posts/* pages -->
+{{- $bcList := dict
+  "@context" "https://schema.org"
+  "@type" "BreadcrumbList"
+  "itemListElement" (slice
+    (dict
+      "@type" "ListItem"
+      "position" 1
+      "name" "Home"
+      "item" .Site.BaseURL
+    )
+    (dict
+      "@type" "ListItem"
+      "position" 2
+      "name" "Blog"
+      "item" (printf "%sposts/" .Site.BaseURL)
+    )
+    (dict
+      "@type" "ListItem"
+      "position" 3
+      "name" .Title
+      "item" .Permalink
+    )
+  )
+-}}
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "{{ .Site.BaseURL }}"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Blog",
-      "item": "{{ .Site.BaseURL }}posts/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": {{ .Title | jsonify }},
-      "item": "{{ .Permalink }}"
-    }
-  ]
-}
+{{ $bcList | jsonify (dict "indent" "  ") | safeJS }}
 </script>
 {{- else if eq .Section "series" }}
 <!-- Schema.org — BreadcrumbList for /series/*/* pages (Home → Series Hub → Part) -->
+{{- $bcItems := slice
+  (dict
+    "@type" "ListItem"
+    "position" 1
+    "name" "Home"
+    "item" .Site.BaseURL
+  )
+  (dict
+    "@type" "ListItem"
+    "position" 2
+    "name" "Series"
+    "item" (printf "%sseries/" .Site.BaseURL)
+  )
+-}}
+{{- with .Parent -}}
+  {{- $bcItems = $bcItems | append (dict
+    "@type" "ListItem"
+    "position" 3
+    "name" .Title
+    "item" .Permalink
+  ) -}}
+{{- end -}}
+{{- $bcItems = $bcItems | append (dict
+  "@type" "ListItem"
+  "position" (add (len $bcItems) 1)
+  "name" .Title
+  "item" .Permalink
+) -}}
+{{- $bcList := dict
+  "@context" "https://schema.org"
+  "@type" "BreadcrumbList"
+  "itemListElement" $bcItems
+-}}
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "{{ .Site.BaseURL }}"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Series",
-      "item": "{{ .Site.BaseURL }}series/"
-    },
-    {{- with .Parent }}
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": {{ .Title | jsonify }},
-      "item": "{{ .Permalink }}"
-    },
-    {{- end }}
-    {
-      "@type": "ListItem",
-      "position": 4,
-      "name": {{ .Title | jsonify }},
-      "item": "{{ .Permalink }}"
-    }
-  ]
-}
+{{ $bcList | jsonify (dict "indent" "  ") | safeJS }}
 </script>
 {{- else if eq .Section "radar" }}
 <!-- Schema.org — BreadcrumbList for /radar/* pages -->
+{{- $bcList := dict
+  "@context" "https://schema.org"
+  "@type" "BreadcrumbList"
+  "itemListElement" (slice
+    (dict
+      "@type" "ListItem"
+      "position" 1
+      "name" "Home"
+      "item" .Site.BaseURL
+    )
+    (dict
+      "@type" "ListItem"
+      "position" 2
+      "name" "Tech Radar"
+      "item" (printf "%sradar/" .Site.BaseURL)
+    )
+    (dict
+      "@type" "ListItem"
+      "position" 3
+      "name" .Title
+      "item" .Permalink
+    )
+  )
+-}}
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "{{ .Site.BaseURL }}"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tech Radar",
-      "item": "{{ .Site.BaseURL }}radar/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": {{ .Title | jsonify }},
-      "item": "{{ .Permalink }}"
-    }
-  ]
-}
+{{ $bcList | jsonify (dict "indent" "  ") | safeJS }}
 </script>
 {{- end }}
 {{- end }}
-
 
 {{- $dummy := .Content -}}
 {{- $faqs := .Page.Store.Get "faqs" }}
@@ -433,7 +462,7 @@
 {{- if not $faqs }}
   {{- $raw := .RawContent -}}
   {{- $parsedFaqs := slice -}}
-  {{- $faqMatches := findRESubmatch `(?ms)^## (?:FAQ|Frequently Asked Questions)\s*$(.*?)(?:^## |\z)` $raw 1 -}}
+  {{- $faqMatches := findRESubmatch `(?ms)^## (?:FAQ|Frequently Asked Questions|Câu Hỏi Thường Gặp|Các Câu Hỏi Thường Gặp)\s*$(.*?)(?:^## |\z)` $raw 1 -}}
   {{- if gt (len $faqMatches) 0 -}}
     {{- $faqSection := index $faqMatches 0 -}}
     {{- $faqContent := index $faqSection 1 -}}
@@ -462,46 +491,47 @@
 {{- end }}
 {{- if $faqs }}
 <!-- Schema.org — FAQPage -->
+{{- $faqEntities := slice -}}
+{{- range $faq := $faqs -}}
+  {{- $faqEntities = $faqEntities | append (dict
+    "@type" "Question"
+    "name" $faq.question
+    "acceptedAnswer" (dict
+      "@type" "Answer"
+      "text" $faq.answer
+    )
+  ) -}}
+{{- end -}}
+{{- $faqPageDict := dict
+  "@context" "https://schema.org"
+  "@type" "FAQPage"
+  "mainEntity" $faqEntities
+-}}
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {{- range $i, $faq := $faqs }}
-    {{- if $i }},{{ end }}
-    {
-      "@type": "Question",
-      "name": {{ $faq.question | jsonify }},
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": {{ $faq.answer | jsonify }}
-      }
-    }
-    {{- end }}
-  ]
-}
+{{ $faqPageDict | jsonify (dict "indent" "  ") | safeJS }}
 </script>
 {{- end }}
+
 {{- $howtoSteps := .Page.Store.Get "howto_steps" }}
 {{- if $howtoSteps }}
 <!-- Schema.org — HowTo -->
+{{- $stepEntities := slice -}}
+{{- range $step := $howtoSteps -}}
+  {{- $stepEntities = $stepEntities | append (dict
+    "@type" "HowToStep"
+    "name" $step.name
+    "text" $step.text
+  ) -}}
+{{- end -}}
+{{- $howToDict := dict
+  "@context" "https://schema.org"
+  "@type" "HowTo"
+  "name" .Title
+  "description" .Description
+  "step" $stepEntities
+-}}
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "HowTo",
-  "name": {{ .Title | jsonify }},
-  "description": {{ .Description | jsonify }},
-  "step": [
-    {{- range $i, $step := $howtoSteps }}
-    {{- if $i }},{{ end }}
-    {
-      "@type": "HowToStep",
-      "name": {{ $step.name | jsonify }},
-      "text": {{ $step.text | jsonify }}
-    }
-    {{- end }}
-  ]
-}
+{{ $howToDict | jsonify (dict "indent" "  ") | safeJS }}
 </script>
 {{- end }}
 
@@ -542,41 +572,3 @@
     {{- end }}
   {{- end }}
 {{- end }}
-
-{{ if .IsHome }}
-<!-- Schema.org — Person & WebSite for Homepage E-E-A-T -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebSite",
-      "@id": "{{ .Site.BaseURL }}#website",
-      "url": "{{ .Site.BaseURL }}",
-      "name": "{{ .Site.Title }}",
-      "description": "{{ .Site.Params.description }}",
-      "publisher": {
-        "@id": "{{ .Site.BaseURL }}#person"
-      }
-    },
-    {
-      "@type": "Person",
-      "@id": "{{ .Site.BaseURL }}#person",
-      "name": "Lê Tuấn Anh",
-      "url": "{{ .Site.BaseURL }}",
-      "image": "{{ .Site.BaseURL }}vesviet.png",
-      "jobTitle": "Senior Go Backend Architect & Distributed Systems Engineer",
-      "worksFor": {
-        "@type": "Organization",
-        "name": "Independent Consultant"
-      },
-      "knowsAbout": ["Go (Programming Language)", "Microservices", "Distributed Systems", "System Architecture", "Software Engineering", "Kubernetes"],
-      "sameAs": [
-        "https://www.linkedin.com/in/vesviet",
-        "https://github.com/vesviet"
-      ]
-    }
-  ]
-}
-</script>
-{{ end }}

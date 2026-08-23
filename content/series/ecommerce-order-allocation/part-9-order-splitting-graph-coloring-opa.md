@@ -1,6 +1,8 @@
 ---
 title: "Order Splitting Algorithm: Graph Coloring & OPA in Golang"
 slug: "order-splitting-graph-coloring-opa"
+aliases:
+  - "/series/ecommerce-order-allocation/part-9-order-splitting-graph-coloring-opa/"
 author: "Lê Tuấn Anh"
 date: "2026-08-01T21:00:00+07:00"
 lastmod: "2026-08-01T21:00:00+07:00"

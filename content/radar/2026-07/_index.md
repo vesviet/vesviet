@@ -87,39 +87,6 @@ When a transient network error occurs, thousands of agents might retry a vector 
 #### How do we manage agent memory for SOC2 compliance?
 Vector databases (like Milvus or Qdrant) must have strict lifecycle policies. Use Milvus TTL (`collection.ttl.seconds`) to automatically purge hot memory, and archive critical agent decision logs to encrypted cold storage.
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How do we handle LLM API rate limits?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Centralize all outbound LLM traffic through a proxy like LiteLLM or Kong AI Gateway. These proxies use Power of Two Choices (P2C) load balancing and automatically fall back to secondary providers when encountering HTTP 429 errors."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the \"Thundering Herd\" problem in AI swarms?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "When a transient network error occurs, thousands of agents might retry a vector database query simultaneously, crashing the DB. Implement Exponential Backoff with Jitter and prioritize P2C routing to mitigate this."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How do we manage agent memory for SOC2 compliance?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Vector databases (like Milvus or Qdrant) must have strict lifecycle policies. Use Milvus TTL (`collection.ttl.seconds`) to automatically purge hot memory, and archive critical agent decision logs to encrypted cold storage."
-      }
-    }
-  ]
-}
-</script>
-
 ---
 
 ## Tech Radar 06/07: Edge AI, Liquid Neural Networks & WasmEdge on K3s
@@ -158,31 +125,6 @@ Not entirely. LNNs are purpose-built for processing continuous time-series data 
 #### Does WasmEdge support GPUs?
 
 Currently, WasmEdge excels in CPU inference environments. CUDA/GPU ecosystem integration is still under development and is not yet as mature as the traditional Docker/Python runtime.
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Can LNN replace LLMs at the Edge?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Not entirely. LNNs are purpose-built for processing continuous time-series data streams — IoT sensors, radar, video feeds — to make physical decisions. They are not designed for chat or text generation like LLMs."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Does WasmEdge support GPUs?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Currently, WasmEdge excels in CPU inference environments. CUDA/GPU ecosystem integration is still under development and is not yet as mature as the traditional Docker/Python runtime."
-      }
-    }
-  ]
-}
-</script>
 
 ---
 
