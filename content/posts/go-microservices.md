@@ -1,11 +1,11 @@
 ---
-title: "Go Microservices Architecture: Production Guide"
+title: "Go Microservices Architecture: Production Guide (2026)"
 slug: "go-microservices"
 date: "2026-06-12T00:00:00+07:00"
-lastmod: "2026-07-03T00:00:00+07:00"
+lastmod: "2026-08-23T08:30:00+07:00"
 draft: false
 summary: "Go microservices from domain design to Kubernetes deployment — gRPC, Dapr, OpenTelemetry, and GitOps patterns with explicit operational trade-offs."
-description: "Architecture guide to Go microservices: domain design, gRPC, Dapr, OpenTelemetry tracing, and GitOps on Kubernetes with measurement guidance."
+description: "Production architecture guide to Go microservices: Clean Architecture, gRPC protobuf contracts, Dapr Pub/Sub, OpenTelemetry tracing, and Kubernetes GitOps."
 tags: ["Golang", "Microservices", "Architecture", "Dapr", "Kubernetes"]
 categories: ["Architecture", "Engineering"]
 author: "Lê Tuấn Anh"

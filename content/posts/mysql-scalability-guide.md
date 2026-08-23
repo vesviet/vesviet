@@ -1,11 +1,11 @@
 ---
-title: "MySQL Scalability: Read Replicas, Sharding & TiDB"
+title: "MySQL Scalability & Sharding Alternatives: Vitess, TiDB & Read Replicas"
 slug: "mysql-scalability-guide"
 author: "Lê Tuấn Anh"
 date: "2026-06-10T14:30:00+07:00"
-lastmod: "2026-07-03T15:22:00+07:00"
+lastmod: "2026-08-23T08:30:00+07:00"
 draft: false
-description: "MySQL scalability: read replicas, GORM/Vitess sharding, or TiDB NewSQL? Includes buffer pool tuning, ProxySQL pooling, and a 6-step decision framework."
+description: "Comprehensive guide to MySQL scalability: buffer pool tuning, ProxySQL pooling, Vitess sharding, and TiDB Distributed SQL migration for 10k+ TPS."
 ShowToc: true
 TocOpen: true
 categories:
@@ -22,7 +22,7 @@ tags:
   - "Golang"
 cover:
   image: "/images/posts/mysql-scalability-cover.jpg"
-  alt: "MySQL Scalability: read replicas, sharding, and TiDB NewSQL — performance architecture guide"
+  alt: "MySQL Scalability & Sharding Alternatives: read replicas, Vitess, and TiDB NewSQL"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/mysql-scalability-guide/"
 ---

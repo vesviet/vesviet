@@ -1,11 +1,11 @@
 ---
-title: "GraphHopper Distance Matrix: Self-Hosted Routing & API Guide"
+title: "GraphHopper Distance Matrix: Production API & OSM Self-Hosting Guide"
 slug: "graphhopper-distance-matrix-production-guide"
 author: "Lê Tuấn Anh"
 date: "2026-06-11T20:00:00+07:00"
-lastmod: "2026-07-21T22:04:45+07:00"
+lastmod: "2026-08-23T08:30:00+07:00"
 draft: false
-description: "Self-host GraphHopper distance matrix with OpenStreetMap data. Complete Docker setup, /matrix API guide, H3 Redis caching, and 99% savings over Google Maps."
+description: "Self-host GraphHopper distance matrix with OpenStreetMap data: /matrix API guide, 1000x1000 routing benchmarks, H3 Redis caching, and 99% cost savings."
 categories:
   - "Architecture"
   - "Engineering"
@@ -23,12 +23,12 @@ ShowToc: true
 TocOpen: true
 cover:
   image: "/images/posts/graphhopper-cover.jpg"
-  alt: "GraphHopper distance matrix production guide: self-hosted routing with OSM data and Kubernetes"
+  alt: "GraphHopper distance matrix production API guide with OpenStreetMap and Docker"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/graphhopper-distance-matrix-production-guide/"
 ---
 
-# GraphHopper Distance Matrix: Production Self-Hosting & API Guide
+# GraphHopper Distance Matrix: Production API & OSM Self-Hosting Guide
 
 > **Answer-first:** Self-hosting GraphHopper for distance matrix calculations leverages OpenStreetMap (OSM) PBF data, memory-mapped graph caches, and Java Contraction Hierarchies (CH) to compute 100x100 matrix queries in under 50ms at zero API cost (99.7% cost savings over Google Maps API). Pairing GraphHopper with H3 hexagonal spatial indexing and Redis semantic caching offloads 85%+ of repetitive route calculations in high-scale logistics and fleet dispatch systems.
 

@@ -1,9 +1,9 @@
 ---
-title: "OSRM vs GraphHopper: Routing Engine Architecture Comparison"
+title: "OSRM vs GraphHopper: Routing Engine Architecture & Benchmark Comparison"
 slug: "osrm-vs-graphhopper-architecture-comparison"
 author: "Lê Tuấn Anh"
 date: "2026-07-17T14:00:00+07:00"
-lastmod: "2026-07-18T08:00:00+07:00"
+lastmod: "2026-08-23T08:30:00+07:00"
 draft: false
 aliases:
   - "/posts/graphhopper-distance-matrix-routing/"
@@ -15,13 +15,13 @@ tags:
   - "GraphHopper"
   - "Routing Engine"
   - "Logistics"
-description: "In-depth architectural comparison of OSRM vs GraphHopper: Contraction Hierarchies, MLD, LM algorithms, memory footprint, and custom routing profiles in Go."
+description: "Architectural comparison of OSRM vs GraphHopper: Contraction Hierarchies, MLD, Custom Models, memory footprint benchmarks, and Go routing engines."
 ShowToc: true
 TocOpen: true
 canonicalURL: "https://tanhdev.com/posts/osrm-vs-graphhopper-architecture-comparison/"
 cover:
   image: "/images/posts/osrm-vs-graphhopper-architecture-comparison-cover.jpg"
-  alt: "OSRM vs GraphHopper: Routing Engine Architecture Comparison"
+  alt: "OSRM vs GraphHopper: Routing Engine Architecture and Benchmark Comparison"
   relative: false
 ---
 

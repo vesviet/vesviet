@@ -1,9 +1,9 @@
 ---
-title: "Deploy Astro on Cloudflare Pages: Full-Stack Edge Guide"
+title: "Deploy Astro on Cloudflare Pages: Full-Stack Edge Architecture Guide (2026)"
 slug: "deploying-astro-on-cloudflare-full-stack-edge-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-04-24T14:00:00+07:00"
-lastmod: "2026-07-21T22:04:45+07:00"
+lastmod: "2026-08-23T08:30:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -18,7 +18,7 @@ tags:
   - Architecture
   - DevOps
   - Performance
-description: "Deploy Astro on Cloudflare Pages with Workers SSR, D1, and KV. Zero cold-start full-stack edge architecture step-by-step tutorial."
+description: "Step-by-step guide to deploying Astro on Cloudflare Pages: SSR Workers adapter, D1 SQLite database, KV caching, R2 asset storage, and zero cold starts."
 ShowToc: true
 TocOpen: true
 cover:

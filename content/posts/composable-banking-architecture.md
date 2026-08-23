@@ -1,9 +1,9 @@
 ---
-title: "Composable Banking Architecture: Monolith to Modular Go"
+title: "Composable Banking Architecture: Core Banking vs Modular Monolith"
 slug: "composable-banking-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-06-10T14:55:00+07:00"
-lastmod: "2026-07-18T07:43:55+07:00"
+lastmod: "2026-08-23T08:30:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -19,17 +19,17 @@ tags:
   - "Saga Pattern"
   - "Core Banking"
   - "MACH"
-description: "Master the composable banking architecture pattern. Migrate from legacy monolithic cores to modular Go microservices using Strangler Fig, Sagas, and ISO 20022."
+description: "Complete composable banking architecture blueprint in Go: BIAN domain models, double-entry ledger event sourcing, Temporal/Dapr Sagas, and ISO 20022 messaging."
 ShowToc: true
 TocOpen: true
 cover:
   image: "/images/posts/banking-microservices-cover.jpg"
-  alt: "Composable Banking Architecture: from monolith to modular core banking services"
+  alt: "Composable Banking Architecture: core banking vs modular microservices"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/composable-banking-architecture/"
 ---
 
-# Composable Banking Architecture: Monolith to Modular
+# Composable Banking Architecture: Core Banking vs Modular Monolith
 
 > **Answer-first:** Composable banking architecture replaces rigid monolithic core banking suites with independent Packaged Business Capabilities (PBCs) aligned to BIAN domain standards. By combining Go microservices, double-entry ledger event sourcing, Temporal/Dapr Saga orchestration, and Strangler Fig proxy cutovers, financial institutions achieve sub-10ms transaction settlement without risking high-stakes "Big Bang" migration outages.
 
