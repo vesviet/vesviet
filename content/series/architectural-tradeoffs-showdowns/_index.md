@@ -68,9 +68,11 @@ flowchart TD
 - **[Part 4: MariaDB vs. MySQL: Architectural Divergence, Pluggable Storage Engines & Thread Pool Showdown](/series/architectural-tradeoffs-showdowns/04-mariadb-vs-mysql-storage-engines-threadpool/)**  
   *Deep architectural showdown of MySQL 8.4/9.0 (InnoDB monoculture, Binary JSONB, native Vector AI) vs. MariaDB 11.x (Open-Source ThreadPool 50k conns, MyRocks LSM 70% disk compression, Galera Multi-Master zero-lag).*
 
+- **[Part 5: Sharded MySQL (Vitess) vs. TiDB NewSQL Showdown](/series/architectural-tradeoffs-showdowns/05-sharded-mysql-vs-tidb-newsql/)**  
+  *In-depth architectural showdown of Sharded MySQL (Vitess sub-2ms local ACID, blast radius isolation) vs. TiDB NewSQL (Percolator 2PC 8-15ms latency floor, 96MB region auto-splits, HTAP TiFlash).*
+
 ### 🔮 Wave 3 (Upcoming Showdowns)
 
-- **Part 5: Sharded MySQL/PostgreSQL vs. TiDB NewSQL: Distributed ACID, Scale-Out Limits & Latency Penalties**
 - **Part 6: Apache Kafka vs. NATS JetStream: Event Streaming, Partition Ordering & Operational Overhead**
 - **Part 7: Modular Monolith vs. Microservices vs. SpinKube Wasm: The True Cost of Distributed Boundaries**
 - **Part 8: Redis In-Memory State vs. Dapr Virtual Actors: Concurrency Locking & Long-Lived Agent Context**

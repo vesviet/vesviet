@@ -33,7 +33,9 @@ cover:
 keywords: ["mariadb vs mysql", "mariadb threadpool vs mysql", "innodb vs myrocks", "binary json mysql vs mariadb", "galera cluster vs group replication", "database architectural tradeoffs"]
 ---
 
-[← Previous Chapter: Part 3 — Primary Key Showdown: UUIDv7 vs. Snowflake](/series/architectural-tradeoffs-showdowns/03-primary-key-showdown-uuidv7-vs-snowflake-vs-bigint/) | [Series Hub](/series/architectural-tradeoffs-showdowns/)
+[← Previous Chapter: Part 3 — Primary Key Showdown: UUIDv7 vs. Snowflake](/series/architectural-tradeoffs-showdowns/03-primary-key-showdown-uuidv7-vs-snowflake-vs-bigint/) | [Series Hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 5 — Sharded MySQL vs. TiDB NewSQL →](/series/architectural-tradeoffs-showdowns/05-sharded-mysql-vs-tidb-newsql/)
+
+# Part 4: MariaDB vs. MySQL: Storage Engines & Thread Pool Showdown
 
 ---
 
@@ -129,7 +131,7 @@ MariaDB allows architects to mix and match specialized storage engines within a 
 
 ## 3. Concurrency Model: One-Thread-Per-Connection vs. Native Async ThreadPool
 
-```
+```text
 [MySQL Community: One-Thread-Per-Connection]
 Pod 1 (100 conns)  ──┐
 Pod 2 (100 conns)  ──┼──> 5,000 Connections ──> 5,000 OS Threads ──> CPU Thrashing & Context Switch Loss
@@ -168,7 +170,7 @@ Measured under `sysbench-tpcc` on 32 vCPUs, 64GB RAM, NVMe SSD storage with 10,0
 
 ## 5. JSON, Advanced SQL & AI Vector Embeddings
 
-```
+```text
 [MySQL 8.x Binary JSON Layout (JSONB)]
 ┌────────────┬──────────────┬───────────────┬───────────────────────────────┐
 │ Header     │ Key Offset 1 │ Key Offset 2  │ Value Pointer (Direct Seek)   │
@@ -188,7 +190,7 @@ Measured under `sysbench-tpcc` on 32 vCPUs, 64GB RAM, NVMe SSD storage with 10,0
 - **SQL:2011 System-Versioned Temporal Tables:**
   - **MariaDB:** Native `WITH SYSTEM VERSIONING` enables instant point-in-time time-travel queries (`FOR SYSTEM_TIME AS OF '2026-01-01'`) for financial audit compliance with zero application code.
 - **MySQL 9.0 AI Vector Search:**
-  - Introduces native `VECTOR(dim)` data types with cosine and dot-product distance functions (`VECTOR_DISTANCE`) for generative AI agent retrieval pipelines.
+  - Native `VECTOR(1536)` column type and `VECTOR_DISTANCE()` indexing for production Retrieval-Augmented Generation (RAG).
 
 ---
 
@@ -248,11 +250,11 @@ flowchart TD
 
 ## 9. Frequently Asked Questions (FAQ)
 
-#### Q1: Can I migrate from MySQL 8.0 to MariaDB 11.x using live replication?
-No. MySQL 8.0+ tablespace formats, system data dictionaries, and GTID protocols have completely diverged. Migration requires a full logical dump (`mydumper` / `myloader`) and re-ingestion.
+### Q1: Can I migrate from MySQL 8.0 to MariaDB 11.x using live replication?
+**No.** Data dictionary formats, binary log events, and Global Transaction Identifiers (GTID) have completely diverged. Migration requires logical export/import via `mydumper` / `myloader`.
 
-#### Q2: Why is MyRocks engine preferred over InnoDB for event logging?
-MyRocks utilizes an LSM-Tree architecture that writes sequentially to memory buffers before flushing compressed SSTables to disk, reducing write amplification by up to 80% and disk space consumption by 70% compared to InnoDB B+ Trees.
+### Q2: Why is MyRocks engine preferred over InnoDB for event logging?
+MyRocks utilizes an LSM-tree (Log-Structured Merge-tree) with Zstandard block compression. It turns random writes into sequential memory appends, reducing SSD write amplification from 25x to 3x and slashing storage footprints by 70%.
 
-#### Q3: How does MariaDB ThreadPool eliminate CPU context-switch thrashing?
-By routing tens of thousands of incoming connections through an `epoll` multiplexer into a fixed worker pool matching CPU cores, MariaDB avoids creating an OS thread per connection, preserving CPU cycles purely for query execution.
+### Q3: How does MariaDB ThreadPool eliminate CPU context-switch thrashing?
+Unlike MySQL Community's thread-per-connection model, MariaDB uses Linux `epoll` to multiplex thousands of client connections across a fixed worker pool matching physical CPU cores, preventing thread stack bloat and scheduler thrashing.
