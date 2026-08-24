@@ -32,7 +32,7 @@ cover:
 keywords: ["kafka vs nats", "nats jetstream vs kafka", "kraft vs embedded raft", "event streaming architecture", "kafka partition ordering", "messaging architectural tradeoffs"]
 ---
 
-[← Previous Chapter: Part 5 — Sharded MySQL vs. TiDB](/series/architectural-tradeoffs-showdowns/05-sharded-mysql-vs-tidb-newsql/) | [Series Hub](/series/architectural-tradeoffs-showdowns/)
+[← Previous Chapter: Part 5 — Sharded MySQL vs. TiDB](/series/architectural-tradeoffs-showdowns/05-sharded-mysql-vs-tidb-newsql/) | [Series Hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 7 — Modular Monolith vs. Microservices vs. SpinKube Wasm →](/series/architectural-tradeoffs-showdowns/07-modular-monolith-vs-microservices-vs-spinkube-wasm/)
 
 # Part 6: Apache Kafka vs. NATS JetStream: Event Streaming Showdown
 
@@ -638,4 +638,4 @@ Yes. A proven hybrid architecture deploys **NATS JetStream at the edge and inter
 
 ---
 
-[← Previous Chapter: Part 5 — Sharded MySQL vs. TiDB](/series/architectural-tradeoffs-showdowns/05-sharded-mysql-vs-tidb-newsql/) | [Series Hub](/series/architectural-tradeoffs-showdowns/)
+[← Previous Chapter: Part 5 — Sharded MySQL vs. TiDB](/series/architectural-tradeoffs-showdowns/05-sharded-mysql-vs-tidb-newsql/) | [Series Hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 7 — Modular Monolith vs. Microservices vs. SpinKube Wasm →](/series/architectural-tradeoffs-showdowns/07-modular-monolith-vs-microservices-vs-spinkube-wasm/)

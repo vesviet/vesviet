@@ -3,7 +3,7 @@ title: "Architectural Trade-offs & Tech Showdowns"
 description: "Living masterclass on system design trade-offs: HTTP vs gRPC, Go vs PHP in high-concurrency e-commerce, UUIDv7 vs Snowflake vs BIGINT, Kafka vs NATS, and NewSQL vs Sharded RDBMS."
 slug: "architectural-tradeoffs-showdowns"
 date: "2026-08-16T10:30:00+07:00"
-lastmod: "2026-08-24T11:45:00+07:00"
+lastmod: "2026-08-24T13:30:00+07:00"
 draft: false
 cover:
   image: "/images/posts/default-post-14.jpg"
@@ -74,9 +74,11 @@ flowchart TD
 - **[Part 6: Apache Kafka vs. NATS JetStream: Event Streaming, Partition Ordering & Operational Overhead](/series/architectural-tradeoffs-showdowns/06-apache-kafka-vs-nats-jetstream/)**  
   *Deep architectural showdown of Apache Kafka 3.8+ KRaft (OS page cache zero-copy sendfile, Murmur2 partition hashing, petabyte event lake retention) vs. NATS JetStream 2.10+ (pure Go embedded Raft, sub-millisecond P99 latency, subject-based wildcard streams, 75% compute FinOps savings).*
 
+- **[Part 7: Modular Monolith vs. Microservices vs. SpinKube Wasm Showdown](/series/architectural-tradeoffs-showdowns/07-modular-monolith-vs-microservices-vs-spinkube-wasm/)**  
+  *Deep architectural showdown of Modular Monolith (in-memory pointer dereference ~0.5ns, single shared heap, local ACID transactions) vs. Containerized Microservices (gRPC network serialization tax, database-per-service Sagas) vs. SpinKube WebAssembly (WASI 0.2 Component Model, sub-millisecond cold start, 100x container density, 75% FinOps savings).*
+
 ### 🔮 Remaining Wave 3 (Upcoming Showdowns)
 
-- **Part 7: Modular Monolith vs. Microservices vs. SpinKube Wasm: The True Cost of Distributed Boundaries**
 - **Part 8: Redis In-Memory State vs. Dapr Virtual Actors: Concurrency Locking & Long-Lived Agent Context**
 
 ---
@@ -91,6 +93,7 @@ flowchart TD
 | **Relational Database** | **MySQL 8.4 / 9.0** | **MariaDB 11.4 LTS** | Use MySQL for AWS Aurora cloud-native scaling, in-place JSONB mutations, and Vector AI; use MariaDB for bare-metal K8s with free ThreadPool, Galera Multi-Master, and MyRocks LSM 70% storage savings. |
 | **Event Streaming** | **Apache Kafka** | **NATS JetStream** | Use Kafka for long-retention analytics & event replay; use NATS JetStream for lightweight, ultra-low latency agent messaging and RPC. |
 | **Distributed Storage** | **Sharded PostgreSQL** | **TiDB (NewSQL)** | Use Sharded PG when data models cleanly partition by tenant/org; use TiDB when cross-node distributed joins and global queries dominate. |
+| **Execution Architecture** | **Modular Monolith** | **Microservices vs. SpinKube Wasm** | Use Modular Monolith for teams under 50 engineers needing local ACID and rapid velocity; use Container Microservices for 500+ orgs needing decoupled CI/CD; use SpinKube Wasm for bursty event micro-functions and AI agent tool sandboxes. |
 
 ---
 
