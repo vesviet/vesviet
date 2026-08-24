@@ -20,7 +20,7 @@
 /wp-content/uploads/2022/12/LE-TUAN-ANH-151639.pdf /Le-Tuan-Anh-Resume.pdf 301
 
 # Flagship Post Permalinks & Consolidations (Direct 1-Hop)
-/posts/deploying-on-cloudflare-astro-full-stack-edge-architecture-and-wordpress-behind-the-cdn/ /posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/ 301
+/posts/deploying-on-cloudflare-astro-full-stack-edge-architecture-and-wordpress-behind-the-cdn/ https://learn.tanhdev.com/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/ 301
 /posts/leaseinvietnam-building-an-ai-powered-expat-relocation-hub-with-a-b2b-lead-engine/ /posts/leaseinvietnam-ai-powered-expat-rental-intelligence-system/ 301
 /posts/architecting-an-autonomous-hybrid-ai-pipeline-from-hobby-cron-to-production-state-machine/ /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
 /posts/architecting-a-21-service-e-commerce-ecosystem-with-golang-ddd/ /posts/architecting-21-service-ecommerce-golang-ddd/ 301
@@ -52,11 +52,13 @@
 /series/composable-commerce-migration/part-3-golang-kratos/ /series/magento-migration-vietnam/ecommerce-architecture-composable-migration/ 301
 
 # AI-Driven Playbook Series
+/series/ai-driven-playbook/executive-summary/ https://learn.tanhdev.com/series/ai-driven-playbook/executive-summary/ 301
+/series/ai-driven-playbook/part-3a-context-engineering-cursor-rules/ https://learn.tanhdev.com/series/ai-driven-playbook/part-3a-context-engineering-cursor-rules/ 301
 /series/ai-driven-playbook/part-0-executive-summary/ /posts/ai-native-frontend-architecture-predictions-2028/ 301
 /series/ai-driven-playbook/part-1-paradigm-shift-ai-first-sdlc/ /posts/ai-native-frontend-architecture-predictions-2028/ 301
 /series/ai-driven-playbook/part-2-modern-ai-engineering-stack/ /posts/ai-native-frontend-architecture-predictions-2028/ 301
 /series/ai-driven-playbook/part-2-ai-platform-layer/ /posts/ai-native-frontend-architecture-predictions-2028/ 301
-/series/ai-driven-playbook/part-3a-context-engineering-cursor-rules/ /series/ai-driven-playbook/part-3a-enterprise-rag-architecture/ 301
+/series/ai-driven-playbook/part-3b-ai-code-review-quality-gates/ /posts/ai-native-frontend-architecture-predictions-2028/ 301
 /series/ai-driven-playbook/part-3b-ai-code-review-quality-gates/ /posts/ai-native-frontend-architecture-predictions-2028/ 301
 /series/ai-driven-playbook/part-4-ai-assisted-refactoring-legacy-code/ /posts/ai-native-frontend-architecture-predictions-2028/ 301
 /series/ai-driven-playbook/part-4-policy-as-code-agentic-cicd/ /posts/ai-native-frontend-architecture-predictions-2028/ 301
@@ -64,8 +66,8 @@
 /series/ai-driven-playbook/part-8-ai-native-system-architecture/ /posts/ai-native-frontend-architecture-predictions-2028/ 301
 
 # Other Merged Series to Flagship Guides
-/series/agentic-system-architecture/executive-summary/ /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
-/series/agentic-system-architecture/part-1-topology/ /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
+/series/agentic-system-architecture/executive-summary/ https://learn.tanhdev.com/series/agentic-system-architecture/executive-summary/ 301
+/series/agentic-system-architecture/part-1-topology/ https://learn.tanhdev.com/series/agentic-system-architecture/part-1-topology/ 301
 /series/agentic-system-architecture/part-2-memory/ /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
 /series/agentic-system-architecture/part-3-tool-calling/ /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
 /series/agentic-system-architecture/part-4-agentops/ /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
@@ -95,3 +97,7 @@
 /series/prompt-standard/part-6-context-engineering/ /series/prompt-standard/ 301
 /series/prompt-standard/part-7-declarative-prompting-dspy/ /series/prompt-standard/ 301
 /series/prompt-standard/part-8-production-promptops/ /series/prompt-standard/ 301
+
+# Radar Migrations (To Learn)
+/radar/tech-radar-april-28-2026-openai-and-microsoft-end-exclusivity-the-cloud-war-enters-its-multi-cloud-phase/ https://learn.tanhdev.com/radar/radar-2026-04-28/ 301
+/radar/tech-radar-april-29-2026-aws-and-openai-expand-bedrock-models-codex-and-managed-agents-turn-multi-cloud-into-a-product/ https://learn.tanhdev.com/radar/radar-2026-04-29/ 301
