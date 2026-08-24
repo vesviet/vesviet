@@ -33,7 +33,7 @@ cover:
 keywords: ["sharded mysql vs tidb", "vitess vs tidb", "percolator 2pc latency", "distributed acid transactions", "tidb region auto split", "database architectural tradeoffs"]
 ---
 
-[← Previous Chapter: Part 4 — MariaDB vs. MySQL](/series/architectural-tradeoffs-showdowns/04-mariadb-vs-mysql-storage-engines-threadpool/) | [Series Hub](/series/architectural-tradeoffs-showdowns/)
+[← Previous Chapter: Part 4 — MariaDB vs. MySQL](/series/architectural-tradeoffs-showdowns/04-mariadb-vs-mysql-storage-engines-threadpool/) | [Series Hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 6 — Apache Kafka vs. NATS JetStream →](/series/architectural-tradeoffs-showdowns/06-apache-kafka-vs-nats-jetstream/)
 
 # Part 5: Sharded MySQL (Vitess) vs. TiDB NewSQL: Distributed ACID, Scale-Out Limits & Latency Penalties
 
@@ -225,3 +225,7 @@ Each Vitess shard runs as an autonomous MySQL instance with dedicated memory, CP
 
 ### Q3: What is the optimal hybrid tiered architecture for massive enterprises?
 Deploy **Sharded MySQL (Vitess)** as the high-throughput, low-latency Hot OLTP tier (sub-2ms writes), and stream real-time change data via **CDC (Debezium / Kafka / TiCDC)** to **TiDB + TiFlash** as the global analytical and cross-domain reporting tier.
+
+---
+
+[← Previous Chapter: Part 4 — MariaDB vs. MySQL](/series/architectural-tradeoffs-showdowns/04-mariadb-vs-mysql-storage-engines-threadpool/) | [Series Hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 6 — Apache Kafka vs. NATS JetStream →](/series/architectural-tradeoffs-showdowns/06-apache-kafka-vs-nats-jetstream/)

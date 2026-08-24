@@ -3,7 +3,7 @@ title: "Architectural Trade-offs & Tech Showdowns"
 description: "Living masterclass on system design trade-offs: HTTP vs gRPC, Go vs PHP in high-concurrency e-commerce, UUIDv7 vs Snowflake vs BIGINT, Kafka vs NATS, and NewSQL vs Sharded RDBMS."
 slug: "architectural-tradeoffs-showdowns"
 date: "2026-08-16T10:30:00+07:00"
-lastmod: "2026-08-16T10:30:00+07:00"
+lastmod: "2026-08-24T11:45:00+07:00"
 draft: false
 cover:
   image: "/images/posts/default-post-14.jpg"
@@ -54,7 +54,7 @@ flowchart TD
     P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7 --> P8
 ```
 
-### 🚀 Wave 1 & Wave 2 (Active Releases)
+### 🚀 Wave 1, Wave 2 & Wave 3 (Active Releases)
 
 - **[Part 1: HTTP/REST (JSON) vs. gRPC (Protobuf): Wire Serialization, HTTP/2 Multiplexing & Microservices Translation Tax](/series/architectural-tradeoffs-showdowns/01-http-rest-json-vs-grpc-protobuf/)**  
   *Deep-dive into byte serialization efficiency, HTTP/2 streaming vs HTTP/3 QUIC, CPU cycles spent on JSON unmarshaling, and when dual-protocol Kratos gateways beat pure gRPC.*
@@ -71,9 +71,11 @@ flowchart TD
 - **[Part 5: Sharded MySQL (Vitess) vs. TiDB NewSQL Showdown](/series/architectural-tradeoffs-showdowns/05-sharded-mysql-vs-tidb-newsql/)**  
   *In-depth architectural showdown of Sharded MySQL (Vitess sub-2ms local ACID, blast radius isolation) vs. TiDB NewSQL (Percolator 2PC 8-15ms latency floor, 96MB region auto-splits, HTAP TiFlash).*
 
-### 🔮 Wave 3 (Upcoming Showdowns)
+- **[Part 6: Apache Kafka vs. NATS JetStream: Event Streaming, Partition Ordering & Operational Overhead](/series/architectural-tradeoffs-showdowns/06-apache-kafka-vs-nats-jetstream/)**  
+  *Deep architectural showdown of Apache Kafka 3.8+ KRaft (OS page cache zero-copy sendfile, Murmur2 partition hashing, petabyte event lake retention) vs. NATS JetStream 2.10+ (pure Go embedded Raft, sub-millisecond P99 latency, subject-based wildcard streams, 75% compute FinOps savings).*
 
-- **Part 6: Apache Kafka vs. NATS JetStream: Event Streaming, Partition Ordering & Operational Overhead**
+### 🔮 Remaining Wave 3 (Upcoming Showdowns)
+
 - **Part 7: Modular Monolith vs. Microservices vs. SpinKube Wasm: The True Cost of Distributed Boundaries**
 - **Part 8: Redis In-Memory State vs. Dapr Virtual Actors: Concurrency Locking & Long-Lived Agent Context**
 
