@@ -3,7 +3,7 @@ title: "Architectural Trade-offs & Tech Showdowns"
 description: "Living masterclass on system design trade-offs: HTTP vs gRPC, Go vs PHP in high-concurrency e-commerce, UUIDv7 vs Snowflake vs BIGINT, Kafka vs NATS, and NewSQL vs Sharded RDBMS."
 slug: "architectural-tradeoffs-showdowns"
 date: "2026-08-16T10:30:00+07:00"
-lastmod: "2026-08-24T13:30:00+07:00"
+lastmod: "2026-08-24T14:15:04+07:00"
 draft: false
 cover:
   image: "/images/posts/default-post-14.jpg"
@@ -77,9 +77,8 @@ flowchart TD
 - **[Part 7: Modular Monolith vs. Microservices vs. SpinKube Wasm Showdown](/series/architectural-tradeoffs-showdowns/07-modular-monolith-vs-microservices-vs-spinkube-wasm/)**  
   *Deep architectural showdown of Modular Monolith (in-memory pointer dereference ~0.5ns, single shared heap, local ACID transactions) vs. Containerized Microservices (gRPC network serialization tax, database-per-service Sagas) vs. SpinKube WebAssembly (WASI 0.2 Component Model, sub-millisecond cold start, 100x container density, 75% FinOps savings).*
 
-### 🔮 Remaining Wave 3 (Upcoming Showdowns)
-
-- **Part 8: Redis In-Memory State vs. Dapr Virtual Actors: Concurrency Locking & Long-Lived Agent Context**
+- **[Part 8: Redis Distributed State vs. Dapr Virtual Actors Showdown](/series/architectural-tradeoffs-showdowns/08-redis-state-vs-dapr-virtual-actors/)**  
+  *Deep architectural showdown of Redis in-memory state (Redlock 5-node consensus, clock drift pitfalls, Lua atomic scripts, Vector RAG) vs. Dapr Virtual Actors (turn-based single-threaded mailbox, zero-lock concurrency, automatic state hydration/passivation, Raft-backed durable reminders, 51% FinOps savings).*
 
 ---
 
@@ -94,6 +93,7 @@ flowchart TD
 | **Event Streaming** | **Apache Kafka** | **NATS JetStream** | Use Kafka for long-retention analytics & event replay; use NATS JetStream for lightweight, ultra-low latency agent messaging and RPC. |
 | **Distributed Storage** | **Sharded PostgreSQL** | **TiDB (NewSQL)** | Use Sharded PG when data models cleanly partition by tenant/org; use TiDB when cross-node distributed joins and global queries dominate. |
 | **Execution Architecture** | **Modular Monolith** | **Microservices vs. SpinKube Wasm** | Use Modular Monolith for teams under 50 engineers needing local ACID and rapid velocity; use Container Microservices for 500+ orgs needing decoupled CI/CD; use SpinKube Wasm for bursty event micro-functions and AI agent tool sandboxes. |
+| **State & Concurrency** | **Redis In-Memory** | **Dapr Virtual Actors** | Use Redis for high-throughput (>100k QPS) ephemeral caching, GCRA rate limiting, and vector RAG; use Dapr Virtual Actors for complex state machines, turn-based single-threaded concurrency, and long-lived autonomous AI agent context with durable reminders. |
 
 ---
 

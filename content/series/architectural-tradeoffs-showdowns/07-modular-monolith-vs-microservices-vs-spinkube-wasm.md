@@ -34,7 +34,7 @@ cover:
 keywords: ["modular monolith vs microservices", "spinkube wasm", "wasmtime kubernetes", "wasi component model", "microservices finops", "distributed transaction taxes"]
 ---
 
-[← Previous Chapter: Part 6 — Apache Kafka vs. NATS JetStream](/series/architectural-tradeoffs-showdowns/06-apache-kafka-vs-nats-jetstream/) | [Series Hub](/series/architectural-tradeoffs-showdowns/)
+[← Previous Chapter: Part 6 — Apache Kafka vs. NATS JetStream](/series/architectural-tradeoffs-showdowns/06-apache-kafka-vs-nats-jetstream/) | [Series Hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 8 — Redis Distributed State vs. Dapr Virtual Actors →](/series/architectural-tradeoffs-showdowns/08-redis-state-vs-dapr-virtual-actors/)
 
 # Part 7: Modular Monolith vs. Microservices vs. SpinKube Wasm Showdown
 
@@ -815,4 +815,4 @@ Because SpinKube Wasm instances instantiate and terminate rapidly under burst tr
 
 ---
 
-[← Previous Chapter: Part 6 — Apache Kafka vs. NATS JetStream](/series/architectural-tradeoffs-showdowns/06-apache-kafka-vs-nats-jetstream/) | [Series Hub](/series/architectural-tradeoffs-showdowns/)
+[← Previous Chapter: Part 6 — Apache Kafka vs. NATS JetStream](/series/architectural-tradeoffs-showdowns/06-apache-kafka-vs-nats-jetstream/) | [Series Hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 8 — Redis Distributed State vs. Dapr Virtual Actors →](/series/architectural-tradeoffs-showdowns/08-redis-state-vs-dapr-virtual-actors/)
