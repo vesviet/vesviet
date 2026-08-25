@@ -3,7 +3,7 @@ title: "Magento Enterprise Project Scoping & Agency Cost Matrix"
 slug: "magento-development-in-vietnam"
 author: "Lê Tuấn Anh"
 date: "2026-04-30T09:10:00+07:00"
-lastmod: "2026-07-18T08:00:00+07:00"
+lastmod: "2026-08-24T21:24:00+07:00"
 draft: false
 series: ["magento-migration-vietnam"]
 tags: ["Magento", "Vietnam", "E-commerce", "Project Management", "Architecture", "Scoping"]
@@ -154,6 +154,16 @@ The answer should include specific tools (k6, Locust, or similar) and specific m
 
 **On post-launch:**
 > "What does your post-launch hypercare look like, and what's the SLA for production incidents in the first 30 days?"
+
+### Technical Vetting: AOP/Interceptor Mindset vs. Traditional MVC
+
+When vetting technical leads or senior developers, test their understanding of Magento's **Aspect-Oriented Programming (AOP)** foundation. Developers treating Magento like a standard MVC framework (like basic Laravel/Symfony) introduce systemic performance flaws:
+
+1. **Ask about Plugin Strategy:** *"When should you strictly avoid `around` plugins?"*
+   - *Strong answer:* "`around` plugins wrap execution in nested closures (`$proceed()`), increasing memory overhead, obscuring call stacks, and preventing compiler inlining. Use `before` to modify arguments and `after` to mutate output; reserve `around` solely for transaction wrappers or profiling."
+2. **Ask about Event Observers:** *"Where should heavy third-party API calls (e.g., ERP or Loyalty points) live?"*
+   - *Strong answer:* "Never in synchronous `*_save_after` observers. Observers hold open MySQL InnoDB row locks during execution. Heavy integrations must push messages to RabbitMQ/consumers for asynchronous processing."
+3. **Agentic AI Acceleration & Senior Gating:** In 2026, top-tier engineering teams leverage AI coding assistants to scaffold repetitive XML `di.xml` configurations, DTOs, and unit test suites 3x faster. However, senior architects must rigorously gate business boundaries, security scopes, and database transaction scopes.
 
 ---
 

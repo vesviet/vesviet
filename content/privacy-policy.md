@@ -135,3 +135,14 @@ For privacy queries, data requests, or compliance feedback:
 - **Publisher:** Lê Tuấn Anh
 - **Email:** [vesviet@gmail.com](mailto:vesviet@gmail.com)
 - **Website:** [https://tanhdev.com/privacy-policy/](https://tanhdev.com/privacy-policy/)
+
+---
+
+## 9. Browser Extensions (MarkPDF)
+
+**Answer-first:** For users of our browser extensions (such as **MarkPDF - PDF to Markdown Converter** for Microsoft Edge and Google Chrome), we enforce a strict offline-first, zero-telemetry policy.
+
+- **100% Client-Side Conversion**: All PDF document parsing and text extractions are executed locally within your browser. No document content is transmitted to our servers.
+- **API Key Storage (BYOK)**: If you use optional AI capabilities (Google Gemini), your API key is stored strictly on your local device via `chrome.storage.local`.
+- **Zero Tracking**: We do not collect, monitor, or profile your browsing activity or document data.
+- **Dedicated Extension Policy:** For full technical details and permissions justification, please refer to our dedicated [Privacy Policy for MarkPDF](https://tanhdev.com/privacy-policy/markpdf/).
