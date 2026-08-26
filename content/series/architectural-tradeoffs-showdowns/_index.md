@@ -49,9 +49,10 @@ flowchart TD
         P6["<b>Part 6: Apache Kafka vs. NATS JetStream</b><br/>Event-Driven Throughput, Partitioning & Operational Overhead"]
         P7["<b>Part 7: Modular Monolith vs. Microservices vs. Wasm</b><br/>Network Taxes, Failure Domain Isolation & Team Topologies"]
         P8["<b>Part 8: In-Memory Redis vs. Dapr Virtual Actors</b><br/>State Persistence, Distributed Concurrency & Context Caching"]
+        P9["<b>Part 9: Cookie vs. SessionStorage vs. LocalStorage</b><br/>Network Headers Tax, Tab Isolation & Token Storage Architecture"]
     end
 
-    P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7 --> P8
+    P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7 --> P8 --> P9
 ```
 
 ### 🚀 Wave 1, Wave 2 & Wave 3 (Active Releases)
@@ -77,7 +78,11 @@ flowchart TD
 - **[Part 7: Modular Monolith vs. Microservices vs. SpinKube Wasm Showdown](/series/architectural-tradeoffs-showdowns/07-modular-monolith-vs-microservices-vs-spinkube-wasm/)**  
   *Deep architectural showdown of Modular Monolith (in-memory pointer dereference ~0.5ns, single shared heap, local ACID transactions) vs. Containerized Microservices (gRPC network serialization tax, database-per-service Sagas) vs. SpinKube WebAssembly (WASI 0.2 Component Model, sub-millisecond cold start, 100x container density, 75% FinOps savings).*
 
-- **[Part 8: Redis Distributed State vs. Dapr Virtual Actors Showdown](/series/architectural-tradeoffs-showdowns/08-redis-state-vs-dapr-virtual-actors/)**  
+- **[Part 8: Redis Distributed State vs. Dapr Virtual Actors Showdown](/series/architectural-tradeoffs-showdowns/08-redis-state-vs-dapr-virtual-actors/)*
+
+- **[Part 9: Cookie vs. SessionStorage vs. LocalStorage: Network Headers Tax, Tab Isolation & Token Storage Architecture](/series/architectural-tradeoffs-showdowns/09-cookie-vs-sessionstorage-vs-localstorage/)**  
+  *Architectural showdown on client-side state boundaries: 4KB HTTP header upload penalties, synchronous main-thread I/O blocking destroying INP, XSS vs CSRF threat models, Safari ITP 7-day storage purge, and modern BFF token rotation on Cloudflare Edge.*
+*  
   *Deep architectural showdown of Redis in-memory state (Redlock 5-node consensus, clock drift pitfalls, Lua atomic scripts, Vector RAG) vs. Dapr Virtual Actors (turn-based single-threaded mailbox, zero-lock concurrency, automatic state hydration/passivation, Raft-backed durable reminders, 51% FinOps savings).*
 
 ---

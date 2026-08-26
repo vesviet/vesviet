@@ -77,7 +77,7 @@ Thay vì lưu các file `.cursorrules` phẳng khổng lồ ở thư mục gốc
 
 Hãy xem cấu trúc chuẩn của một file `.mdc` cho lớp Domain Service:
 
-```markdown
+````markdown
 ---
 description: "Quy chuẩn thiết kế Domain Service & Entity theo Domain-Driven Design (DDD)"
 globs: ["src/domain/**/*.ts", "internal/domain/**/*.go"]
