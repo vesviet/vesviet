@@ -169,10 +169,6 @@
   "name" .Title
   "description" .Description
   "url" .Permalink
-  "author" (dict
-    "@type" "Person"
-    "@id" (printf "%s#person" .Site.BaseURL)
-  )
   "itemListElement" $items
 -}}
 <script type="application/ld+json">
@@ -237,19 +233,13 @@
   "name" "Lê Tuấn Anh — Go Backend Architecture Consulting"
   "url" .Permalink
   "description" "Senior Go Backend Architect offering architecture reviews, advisory retainers, and hands-on consulting for microservices migrations and high-traffic platform scaling."
-  "provider" (dict
-    "@type" "Person"
-    "@id" (printf "%s#person" .Site.BaseURL)
-    "name" "Lê Tuấn Anh"
+  "address" (dict
+    "@type" "PostalAddress"
+    "addressLocality" "Ho Chi Minh City"
+    "addressCountry" "VN"
   )
   "areaServed" "Worldwide"
   "priceRange" "$$"
-  "availableChannel" (dict
-    "@type" "ServiceChannel"
-    "serviceUrl" .Permalink
-    "servicePhone" "+84"
-    "availableLanguage" (slice "English" "Vietnamese")
-  )
   "hasOfferCatalog" (dict
     "@type" "OfferCatalog"
     "name" "Consulting Engagements"
