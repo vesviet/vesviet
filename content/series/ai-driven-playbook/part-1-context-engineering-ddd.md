@@ -1,97 +1,99 @@
 ---
-title: "Part 1 — Context Engineering: Domain-Driven Design for AI"
-mermaid: true
+title: "Phần 1: Context Engineering: Domain-Driven Design Cho AI"
+date: 2026-05-13T08:00:00+07:00
+lastmod: 2026-08-16T12:00:00+07:00
 author: "Lê Tuấn Anh"
-description: "Technical guide to Context Engineering using Domain-Driven Design (DDD) to scope LLM prompts, eliminate hallucinations, and enforce AST boundaries."
-date: "2026-03-16T09:00:00+07:00"
-draft: false
-tags: ["AI", "Context Engineering", "Domain-Driven Design", "Architecture", "LLM"]
+description: "Ứng dụng Domain-Driven Design vào Context Engineering để khoanh vùng Bounded Contexts, xây dựng subgraphs AST và triệt tiêu hallucination cho AI coding agents."
+categories: ["Series", "Sổ Tay Thực Chiến", "AI Engineering"]
+tags: ["AI", "Context Engineering", "Domain-Driven Design", "Bounded Context", "Microservices", "Tech Lead"]
 series: ["ai-driven-playbook"]
 weight: 2
-cover:
-  image: "/images/posts/graphrag-vs-naive-rag-cover-1.jpg"
-  alt: "Context Engineering Domain-Driven Design for AI"
-  relative: false
+slug: "part-1-context-engineering-ddd"
 canonicalURL: "https://tanhdev.com/series/ai-driven-playbook/part-1-context-engineering-ddd/"
+ShowToc: true
+TocOpen: true
+draft: false
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Phần 1: Context Engineering: Domain-Driven Design Cho AI"
+  relative: false
+keywords: ["context engineering ddd", "bounded context ai", "ast subgraphs", "ai code generation", "anti hallucination", "ai driven playbook"]
 ---
 
-
-> **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/posts/ai-native-frontend-architecture-predictions-2028/). Review it first if the terminology in this part is unfamiliar.
-
-> **Answer-first:** Context Engineering structures, scopes, and injects software domain knowledge into Large Language Model prompts using Domain-Driven Design principles. By organizing codebases into explicit Bounded Contexts, Abstract Syntax Tree subgraphs, and JSON-Schema contracts, engineering teams eliminate hallucinations, enforce layer boundaries, and enable autonomous coding agents to implement production-grade enterprise features. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic.
+[← Chương trước: Executive Summary](/series/ai-driven-playbook/executive-summary/) | [Mục lục Series](/series/ai-driven-playbook/) | [Chương tiếp theo: Phần 1: AI-First SDLC Paradigm Shift →](/series/ai-driven-playbook/part-1-paradigm-shift-ai-first-sdlc/)
 
 ---
 
-## 1. The Fundamental Problem with Naive Context Windows
+> **Answer-first:** Ứng dụng Domain-Driven Design vào Context Engineering giúp chia nhỏ codebase thành các Bounded Contexts độc lập, giảm thiểu hiện tượng ảo giác (hallucination) của AI Coding Agents nhờ giới hạn phạm vi truy xuất AST và sơ đồ phụ thuộc (subgraphs), nâng cao độ chính xác khi sinh mã microservices.
 
-As context windows expanded from 8,000 to over 1,000,000 tokens, a common enterprise misconception emerged: the belief that developers could simply dump an entire repository into an LLM context window and expect flawless code synthesis.
+---
 
-In practice, large context windows suffer from **attentional decay**, colloquially known as the "Lost in the Middle" phenomenon. When an LLM processes massive, unstructured code dumps:
+## 1. Vấn đề cốt lõi với các Context Windows ngây ngô (Naive Context Windows)
 
-1. **Instruction Degradation**: Core architectural rules buried deep in context are ignored in favor of dominant statistical patterns in training data.
-2. **Layer Bleed**: The model creates direct database calls inside UI controllers or imports infrastructure packages into domain entities, violating clean architecture rules.
-3. **Token Inefficiency**: Costs scale linearly or quadratically with context length, destroying the financial feasibility of continuous agentic pipelines.
+Khi các context window được mở rộng từ 8,000 lên hơn 1,000,000 tokens, một quan niệm sai lầm phổ biến ở cấp doanh nghiệp đã xuất hiện: niềm tin rằng các lập trình viên chỉ việc ném toàn bộ một repository vào context window của LLM và mong đợi việc tổng hợp code (code synthesis) hoàn hảo.
 
-**[Context Pipeline Topology] [Diagram]:** This flowchart details the attentional decay, instruction degradation, and layer bleed that occur when an unstructured codebase dump is fed into an LLM context window.
+Trong thực tế, các context window lớn gặp phải tình trạng **suy giảm sự chú ý (attentional decay)**, thường được biết đến qua hiện tượng "Lost in the Middle" (lạc lối giữa chừng). Khi một LLM xử lý những khối lượng code đồ sộ, không có cấu trúc:
+
+1. **Sự suy thoái chỉ thị (Instruction Degradation)**: Các quy tắc kiến trúc cốt lõi bị chôn vùi sâu trong context sẽ bị bỏ qua và nhường chỗ cho các khuôn mẫu thống kê chiếm ưu thế trong dữ liệu huấn luyện.
+2. **Xuyên thủng ranh giới (Layer Bleed)**: Model tạo ra các truy vấn database trực tiếp bên trong các UI controller hoặc import các infrastructure package vào các domain entity, vi phạm các quy tắc kiến trúc sạch (clean architecture).
+3. **Hiệu suất Token kém (Token Inefficiency)**: Chi phí tăng tuyến tính hoặc theo hàm bậc hai với chiều dài của context, phá hủy tính khả thi về mặt tài chính của các agentic pipelines hoạt động liên tục.
+
+**[Context Pipeline Topology] [Diagram]:** Sơ đồ khối (flowchart) này chi tiết quá trình attentional decay, instruction degradation và layer bleed xảy ra khi ném một codebase không cấu trúc vào LLM context window.
 
 ```mermaid
-graph TD
+flowchart TD
     A["Unstructured Repo Dump"] --> B["LLM Context Window"]
     B --> C{"Attentional Decay"}
-    C -->|"Layer Bleed"| D["DB Queries in Controllers"]
-    C -->|"Ignored Rules"| E["Bypassed Validation"]
-    C -->|"High Cost"| F["Token Budget Depletion"]
+    C -->|Layer Bleed| D["DB Queries in Controllers"]
+    C -->|Ignored Rules| E["Bypassed Validation"]
+    C -->|High Cost| F["Token Budget Depletion"]
 ```
 
-To achieve deterministic, high-quality code generation, AI engineering teams must adopt **Context Engineering** powered by Domain-Driven Design (DDD).
+Để đạt được code generation chất lượng cao và có tính tất định (deterministic), đội ngũ kỹ sư AI cần áp dụng **Context Engineering** được hỗ trợ bởi Domain-Driven Design (DDD).
 
 ---
 
-## 2. Applying Domain-Driven Design (DDD) to AI Context
+## 2. Áp dụng Domain-Driven Design (DDD) vào AI Context
 
-Domain-Driven Design provides the perfect conceptual framework for scoping LLM context. By treating the AI agent as a developer operating within a specific business domain, we apply three core DDD primitives to context construction:
+Domain-Driven Design mang đến một framework ý niệm hoàn hảo để xác định phạm vi (scoping) context cho LLM. Bằng cách đối xử với AI agent như một developer hoạt động bên trong một business domain cụ thể, chúng ta áp dụng ba thành phần cơ bản (primitives) của DDD vào việc xây dựng context:
 
-**Context Engineering Execution Protocol:** This sequence diagram details how the engineering agent queries the context registry to fetch pruned AST graphs before dispatching formatted prompts to the reasoning engine.
+**Context Engineering Execution Protocol:** Sơ đồ tuần tự (sequence diagram) này mô tả cách engineering agent truy vấn vào context registry để lấy ra các đồ thị AST đã được cắt tỉa (pruned AST graphs) trước khi gửi đi các prompt đã được định dạng tới reasoning engine.
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    participant Dev as "Engineering Agent"
-    participant Map as "Context Registry"
-    participant AST as "AST Extractor"
-    participant LLM as "Reasoning Engine"
-
-    Dev->>Map: Query Target Module ("e.g. Order Processing")
-    Map->>AST: Retrieve Bounded AST Graph & Schemas
-    AST-->>Map: Pruned Context Slice ("Entities + Interfaces")
-    Map->>LLM: Formatted Prompt with Enforced Constraints
-    LLM-->>Dev: Clean Code adhering to DDD Layer Boundaries
+flowchart TD
+    Dev["Developer / Prompt"] -->|"Gửi Task + Metadata (Task Type, LOC)"| Router["Model Router (LiteLLM / Custom Gateway)"]
+    
+    Router -->|"Task: Boilerplate / CRUD / Unit Tests"| Local["Local SLM Engine<br/>(DeepSeek-R1-Distill 8B / $0 Cost)"]
+    Router -->|"Task: Architecture / Concurrency / Security"| Frontier["Frontier Cloud Model<br/>(Claude 3.7 Sonnet / DeepSeek-V3)"]
+    
+    Local -->|"Trả về Code hoàn chỉnh (80 TPS)"| Dev
+    Frontier -->|"Trả về Deep Analysis & Refactored Patch"| Dev
 ```
 
-### 1. Bounded Context Isolation
-Every service or module in an enterprise application belongs to a distinct Bounded Context (e.g., `Inventory`, `PaymentProcessing`, `CustomerIdentity`). When an agent is tasked with modifying `PaymentProcessing`:
-- The context engine suppresses internal implementation details of `Inventory`.
-- Only public interface contracts (gRPC protobufs, OpenAPI schemas, Go interfaces) of adjacent bounded contexts are injected.
+### 1. Cách ly bằng Bounded Context
+Mỗi service hoặc module trong một ứng dụng doanh nghiệp thuộc về một Bounded Context riêng biệt (ví dụ: `Inventory`, `PaymentProcessing`, `CustomerIdentity`). Khi agent được giao nhiệm vụ chỉnh sửa `PaymentProcessing`:
+- Context engine sẽ ẩn đi các chi tiết triển khai bên trong của `Inventory`.
+- Chỉ những interface contracts công khai (gRPC protobufs, OpenAPI schemas, Go interfaces) của các bounded context lân cận được nhúng vào (injected).
 
-### 2. Ubiquitous Language Mapping
-LLMs often use generic variable names or mismatched terminology (e.g., mixing `User`, `Account`, and `Customer`). A Context Engineering pipeline injects a domain dictionary defining strict entity naming rules:
-- `Order` is an Immutable Aggregate Root.
-- `LineItem` is a Value Object inside `Order`.
-- `Price` must always include a currency ISO code.
+### 2. Ánh xạ Ubiquitous Language (Ngôn ngữ đồng nhất)
+LLM thường sử dụng tên biến chung chung hoặc thuật ngữ không nhất quán (ví dụ, dùng lẫn lộn giữa `User`, `Account`, và `Customer`). Một pipeline Context Engineering sẽ tiêm (inject) vào một từ điển domain nhằm định nghĩa các quy tắc đặt tên thực thể (entity) nghiêm ngặt:
+- `Order` là một Aggregate Root bất biến (Immutable Aggregate Root).
+- `LineItem` là một Value Object bên trong `Order`.
+- `Price` phải luôn đi kèm với mã tiền tệ ISO (currency ISO code).
 
-### 3. Entity vs Infrastructure Separation
-The prompt layout forces a strict separation between core business logic (Domain Entities) and system mechanics (Database Adapters, HTTP Handlers, Message Brokers).
+### 3. Phân tách Entity và Infrastructure
+Cấu trúc prompt ép buộc sự phân tách nghiêm ngặt giữa core business logic (Domain Entities) và system mechanics (Database Adapters, HTTP Handlers, Message Brokers).
 
 ---
 
-## 3. The Architecture of a Enterprise Context Engine
+## 3. Kiến trúc của một Enterprise Context Engine
 
-A production Context Engine operates as a middleware layer between developer intent (task specifications) and LLM invocation.
+Một Context Engine trên môi trường production hoạt động như một tầng middleware nằm giữa ý định của developer (task specifications) và quá trình gọi LLM (LLM invocation).
 
-**Enterprise Context Engine Architecture:** The block diagram illustrates the orchestration layer combining AST code indexing, DDD boundary matrices, and vector DB embeddings into a pruned context package.
+**Enterprise Context Engine Architecture:** Sơ đồ khối minh họa cho tầng điều phối (orchestration layer) kết hợp quá trình AST code indexing, DDD boundary matrices, và vector DB embeddings để tạo ra một pruned context package.
 
 ```mermaid
-graph LR
+flowchart LR
     A["Task Description"] --> B["Context Orchestrator"]
     C["AST Code Indexer"] --> B
     D["DDD Boundary Matrix"] --> B
@@ -100,19 +102,19 @@ graph LR
     F --> G["LLM Agent Executor"]
 ```
 
-### Structural Components of the Engine
+### Các thành phần cấu trúc của Engine
 
-1. **AST Indexer & Dependency Graph**: Scans the codebase to construct an Abstract Syntax Tree graph. It identifies all caller-callee relationships, interface implementations, and type definitions.
-2. **Pruning Algorithm**: Extracts only the top-K relevant nodes in the AST graph needed for the specific task, discarding unused method bodies to preserve token budget.
-3. **System Constraint Injector**: Automatically prepends global non-functional requirements (e.g., "All Go code must use `context.Context` as first parameter", "No panic in production handlers").
+1. **AST Indexer & Dependency Graph**: Quét (scan) codebase để xây dựng một đồ thị Abstract Syntax Tree. Nó nhận dạng tất cả mối quan hệ caller-callee, các interface implementations, và type definitions.
+2. **Pruning Algorithm (Thuật toán cắt tỉa)**: Chỉ trích xuất top-K các node liên quan nhất trong đồ thị AST cần thiết cho một task cụ thể, loại bỏ những phần thân hàm (method bodies) không được sử dụng để tiết kiệm ngân sách token (token budget).
+3. **System Constraint Injector**: Tự động chèn lên đầu các yêu cầu phi chức năng ở mức toàn cục (ví dụ: "Tất cả Go code phải sử dụng `context.Context` làm tham số đầu tiên", "Không được panic trong các production handlers").
 
 ---
 
-## 4. Practical Implementation: AST-Aware Context Extractor
+## 4. Triển khai thực tế: AST-Aware Context Extractor
 
-Python AST context extractors parse codebase structures, extract class interfaces, and strip internal method bodies to minimize token usage.
+Các trình trích xuất AST context của Python có khả năng phân tích (parse) cấu trúc codebase, lấy ra các class interface, và cắt bỏ các internal method bodies (phần thân hàm nội bộ) để tối thiểu hóa lượng token sử dụng.
 
-**AST Context Extractor Implementation:** The `ContextEngineeringParser` class parses Python source code ASTs to extract class signatures, public interfaces, and docstrings while stripping private method bodies.
+**AST Context Extractor Implementation:** Class `ContextEngineeringParser` sẽ phân tích các AST source code Python để trích xuất chữ ký của class (class signatures), public interfaces, và docstrings trong khi loại bỏ đi các thân phương thức private (private method bodies).
 
 ```python
 import ast
@@ -190,19 +192,19 @@ class PaymentAggregate:
 
 ---
 
-## 5. System Prompt Layout & Schema Design
+## 5. Bố cục System Prompt & Thiết kế Schema
 
-**[DDD Prompt Schema] [Specification]:** This matrix details the structural section delimiters and prompt organization strategy for context-engineered agent runs.
+**[DDD Prompt Schema] [Specification]:** Ma trận (matrix) này chi tiết về các bộ phân tách phần cấu trúc (structural section delimiters) và chiến lược tổ chức prompt cho các lần chạy agent có sử dụng context engineering.
 
 | Section | Role & Purpose | Content Strategy |
 |---|---|---|
-| `## SYSTEM BOUNDARIES` | Defines non-negotiable rules | List explicit negative constraints ("DO NOT import package X") |
-| `## DOMAIN DICTIONARY` | Standardizes terminology | Key-value mapping of ubiquitous language terms |
-| `## TARGET AST INTERFACES` | Injects type definitions | Pruned JSON or stubbed signatures of target dependencies |
-| `## EXECUTION TASK` | Specific user requirement | Step-by-step modification request |
-| `## RESPONSE FORMAT` | Guarantees code parseability | Strict markdown fenced code block specifications |
+| `## SYSTEM BOUNDARIES` | Định nghĩa các quy tắc không thể thương lượng | Danh sách các rào cản phủ định rõ ràng ("DO NOT import package X") |
+| `## DOMAIN DICTIONARY` | Chuẩn hóa thuật ngữ | Cặp key-value map các thuật ngữ của ubiquitous language |
+| `## TARGET AST INTERFACES` | Tiêm vào các định nghĩa kiểu dữ liệu (type definitions) | Dữ liệu JSON đã cắt tỉa hoặc stubbed signatures của các dependency mục tiêu |
+| `## EXECUTION TASK` | Yêu cầu cụ thể từ người dùng | Yêu cầu thay đổi theo từng bước |
+| `## RESPONSE FORMAT` | Đảm bảo code có thể parse được | Đặc tả strict markdown fenced code block |
 
-**System Prompt Markdown Template:** The markdown layout template illustrates the explicit section delimiters and schema contracts injected into agent execution runs.
+**System Prompt Markdown Template:** Markdown layout template minh họa các section delimiters rõ ràng và schema contracts được nhúng vào trong các lần chạy thực thi của agent.
 
 ```markdown
 <system_boundaries>
@@ -226,51 +228,53 @@ class PaymentAggregate:
 
 ---
 
-## 6. Real-World Case Study: Microservices Refactoring
+## 6. Case Study Thực Tế: Refactor các Microservices
 
-A leading e-commerce platform evaluated naive prompting versus DDD-based Context Engineering when tasking an agentic pipeline with refactoring a monolithic Go checkout service into isolated microservices.
+Một nền tảng thương mại điện tử hàng đầu đã đánh giá sự khác biệt giữa naive prompting so với Context Engineering dựa trên DDD khi giao cho một agentic pipeline nhiệm vụ refactor một Go checkout service (monolithic) thành các microservice biệt lập.
 
-### Comparison Results
+### Kết quả so sánh
 
-**Defect Distribution Comparison:** The pie chart illustrates the sharp decrease in layer boundary violations and API hallucinations when comparing naive context dumping against DDD-based Context Engineering.
+**Defect Distribution Comparison:** Biểu đồ tròn minh họa sự sụt giảm mạnh số lượng vi phạm layer boundary và hallucination API khi so sánh naive context dumping với Context Engineering dựa trên DDD.
 
 ```mermaid
-pie title Defect Distribution in Generated Microservices
-    "Layer Boundary Violations ("Naive")" : 45
-    "Hallucinated APIs ("Naive")" : 30
-    "Compliant Microservices ("Context Eng")" : 92
-    "Minor Formatting Issues ("Context Eng")" : 8
+flowchart TD
+    subgraph Token_Breakdown["Phân Bổ Token & Chi Phí trong AI SDLC"]
+        C1["Drafting & Code Generation: 20%"]
+        C2["Context Pruning & AST Slicing: 15%"]
+        C3["Reasoning & Self-Correction (DeepSeek-R1): 45%"]
+        C4["Automated Evals & Quality Gates: 20%"]
+    end
 ```
 
-- **Naive Prompting**: 75% of generated pull requests contained architectural violations, including direct SQL queries executed inside business domain models and cross-domain package cyclic dependencies.
-- **Context-Engineered Pipeline**: 92% of generated pull requests passed automated CI/CD static checks on the first attempt, reducing developer review effort by 4x.
+- **Naive Prompting**: 75% các pull request được sinh ra chứa vi phạm về kiến trúc, bao gồm việc thực thi SQL queries trực tiếp bên trong business domain models và các phụ thuộc vòng (cyclic dependencies) chéo giữa các domain package.
+- **Context-Engineered Pipeline**: 92% các pull request sinh ra đã vượt qua khâu automated CI/CD static checks ngay lần thử đầu tiên, làm giảm 4 lần công sức review của lập trình viên.
 
 ---
 
-## 7. Strategic Recommendations & Best Practices
+## 7. Các Khuyến nghị Chiến lược & Best Practices
 
-Automate AST context extraction via CLI tools, cap token budgets per sub-agent step, and version control domain context schemas in git repositories.
+Hãy tự động hóa quá trình trích xuất AST context qua các công cụ CLI, giới hạn token budget cho mỗi bước của sub-agent, và version control các domain context schema trực tiếp trong git repository.
 
-1. **Automate AST Context Extraction**: Never require developers to manually assemble prompt context. Build automated CLI plugins (e.g., Git hooks or IDE extensions) that query AST graphs.
-2. **Enforce Token Budget Limits**: Cap context payload sizes at 16,000 tokens per sub-agent step to maintain optimal attentional density.
-3. **Version Control Context Schemas**: Store domain dictionary definitions and architectural constraint matrices directly in repository root configuration files (`.context/domain.json`).
+1. **Tự động hóa AST Context Extraction**: Không bao giờ yêu cầu các lập trình viên lắp ráp thủ công prompt context. Hãy xây dựng các CLI plugins tự động (như Git hooks hay IDE extensions) để truy vấn vào đồ thị AST.
+2. **Thực thi Token Budget Limits**: Giới hạn kích thước payload context ở mức 16,000 token cho mỗi sub-agent step nhằm duy trì mật độ chú ý (attentional density) tối ưu.
+3. **Version Control Context Schemas**: Lưu trữ các định nghĩa domain dictionary và các ma trận kiến trúc ràng buộc trực tiếp trong thư mục gốc của repo (`.context/domain.json`).
 
 ---
 
-## 8. Dynamic Schema Validation & Context Compression Protocols
+## 8. Dynamic Schema Validation & Các Giao thức Nén Context
 
-To ensure that LLMs adhere strictly to target architectural interfaces, Context Engines deploy dynamic JSON-Schema validators that filter model context both pre-prompt injection and post-code generation.
+Để đảm bảo rằng các LLMs luôn tuân thủ nghiêm ngặt các target architectural interfaces (giao diện kiến trúc mục tiêu), các Context Engine triển khai các bộ validate JSON-Schema động (dynamic JSON-Schema validators), giúp lọc model context ở cả bước trước khi đưa vào prompt và sau khi sinh code.
 
-### Context Compression Pipeline
+### Pipeline Nén Context (Context Compression Pipeline)
 
-1. **Dead Code Elimination**: Strip unused internal function definitions, local helper structures, and legacy inline comments from context payloads.
-2. **Interface Stubbing**: Replace full method implementations with minimal interface declarations and docstring annotations.
-3. **Type Alias Resolution**: Automatically resolve nested type definitions across imported packages into a single unified type context header.
+1. **Dead Code Elimination**: Bỏ đi những định nghĩa internal function không sử dụng, các cấu trúc helper nội bộ, và các dòng comment inline từ xa xưa ra khỏi context payload.
+2. **Interface Stubbing**: Thay thế các method implementations đồ sộ bằng các interface declarations tối thiểu và docstring annotations.
+3. **Type Alias Resolution**: Tự động giải mã (resolve) các type definitions lồng nhau xuyên suốt các package đã import thành một type context header duy nhất.
 
-**Context Compression Workflow:** The diagram maps the multi-stage token reduction pipeline from raw 4,000-token source files down to a 600-token pruned context header.
+**Context Compression Workflow:** Sơ đồ này vẽ ra pipeline giảm token qua nhiều giai đoạn từ các file source gốc nặng 4,000 token xuống thành một pruned context header gói gọn trong 600 token.
 
 ```mermaid
-graph TD
+flowchart TD
     A["Raw Source File - 4,000 Tokens"] --> B["AST Parser & Pruner"]
     B --> C["Strip Method Bodies & Private Helpers"]
     C --> D["Extract Public Interfaces & Docstrings"]
@@ -278,7 +282,7 @@ graph TD
     E --> F["Inject into LLM Prompt"]
 ```
 
-**Pydantic v2 Context Compression & Validation Script:** The Python code snippet utilizes Pydantic v2 to validate context payload models, calculate compression ratios, and enforce token constraints before model injection.
+**Pydantic v2 Context Compression & Validation Script:** Đoạn code Python này sử dụng Pydantic v2 để validate (kiểm tra tính hợp lệ) các context payload models, tính toán tỷ lệ nén, và áp đặt giới hạn token trước khi nhúng vào model.
 
 ```python
 from typing import List, Optional
@@ -313,27 +317,49 @@ def compress_payload(payload: ContextPayloadModel) -> str:
 
 ---
 
-## 9. Context Lifecycle & Real-Time Invalidation Strategies
+## 9. Vòng Đời Context & Chiến lược Xóa Bỏ Context Real-Time
 
-In rapidly evolving codebases where multiple agents and human developers merge pull requests continuously, stale context represents a critical point of failure.
+Trong các codebase phát triển nhanh chóng nơi nhiều agent và human developer cùng kết hợp các pull request liên tục, context bị cũ (stale context) đại diện cho một điểm lỗi nghiêm trọng (critical point of failure).
 
-### Invalidation Triggers
+### Triggers để Xóa bỏ (Invalidation Triggers)
 
-- **Git Commit Webhooks**: Whenever a merge event occurs on the `main` branch, the AST indexer invalidates modified module subgraphs in the vector store.
-- **Dependency Map Recalculation**: Automated weekly sweeps re-calculate package dependency distance matrices to reflect new domain boundaries.
-- **TTL Cache Policies**: Set maximum Time-To-Live (TTL) limits (e.g., 2 hours) on transient context embeddings generated during interactive developer pairing sessions.
+- **Git Commit Webhooks**: Bất cứ khi nào có một sự kiện merge xảy ra trên branch `main`, AST indexer sẽ invalidate (vô hiệu hóa) những module subgraph đã thay đổi trong vector store.
+- **Dependency Map Recalculation**: Các đợt càn quét (sweeps) hàng tuần tự động sẽ tính toán lại ma trận khoảng cách package dependency để phản ánh các boundary mới của domain.
+- **TTL Cache Policies**: Thiết lập giới hạn Time-To-Live (TTL) cao nhất (ví dụ: 2 giờ) cho các context embeddings tạm thời được sinh ra trong các phiên pair-programming tương tác (interactive developer pairing sessions).
 
 ---
 
-## Frequently Asked Questions
+## Các Câu Hỏi Thường Gặp (FAQ)
 
-### Why do large context windows suffer from "attentional decay"?
-Large context windows process input tokens probabilistically, causing LLMs to prioritize dominant training patterns over instructions buried in long prompts. This leads to "Lost in the Middle" syndrome, where architectural rules and domain boundaries are ignored during code synthesis.
+### Tại sao các context window lớn lại mắc phải "attentional decay"?
+Các context window lớn xử lý các input token theo xác suất, dẫn đến việc LLM ưu tiên các mẫu dữ liệu huấn luyện chiếm ưu thế hơn là các hướng dẫn bị kẹp giữa những đoạn prompt quá dài. Điều này tạo ra hội chứng "Lost in the Middle" (lạc lối giữa chừng), nơi các quy tắc kiến trúc và các boundary của domain bị phớt lờ hoàn toàn trong suốt quá trình code synthesis (tổng hợp mã).
 
-### How does Domain-Driven Design (DDD) solve context bloat?
-DDD organizes codebases into explicit Bounded Contexts and Ubiquitous Language mappings. By extracting only relevant AST subgraphs and interface signatures, Context Engineering supplies the LLM with focused prompt payloads under 1,000 tokens while maintaining clean architecture layer boundaries.
+### Domain-Driven Design (DDD) giải quyết vấn đề context bloat (phình to context) ra sao?
+DDD tổ chức codebase thành các Bounded Contexts (ngữ cảnh giới hạn) và các phép ánh xạ Ubiquitous Language (ngôn ngữ đồng nhất) cụ thể. Bằng cách chỉ lấy ra những subgraph AST và các interface signatures có liên quan, Context Engineering sẽ cấp cho LLM các phần nội dung prompt tập trung, dung lượng dưới 1,000 token, mà vẫn giữ được ranh giới rõ ràng của các tầng kiến trúc sạch (clean architecture layer boundaries).
 
-### What is the difference between AST pruning and standard RAG chunking?
-Standard RAG chunking splits files by character count or paragraph breaks, frequently severing code signatures and table definitions. AST pruning parses the programming language's syntax tree directly, stripping method implementations while retaining public interfaces, type definitions, and caller hierarchies.
+### Sự khác biệt giữa AST pruning (cắt tỉa AST) và RAG chunking thông thường là gì?
+Phương pháp RAG chunking tiêu chuẩn sẽ chia (split) file thông qua lượng ký tự (character count) hoặc qua các dấu ngắt đoạn, điều này thường làm đứt đoạn các chữ ký code và định nghĩa bảng. AST pruning tiến hành parser (phân tích) trực tiếp cây cú pháp (syntax tree) của ngôn ngữ lập trình, loại bỏ đi những code triển khai bên trong method nhưng vẫn giữ lại các public interfaces, type definitions và phân cấp các lời gọi hàm (caller hierarchies).
 
-🔗 **Next Step:** Continue to [Part 3A — Enterprise Rag Architecture](/series/ai-driven-playbook/part-3a-enterprise-rag-architecture/) for the following module in the series.
+🔗 **Bước tiếp theo:** Hãy chuyển tới [Phần 3A — Enterprise Rag Architecture](/series/ai-driven-playbook/part-3a-enterprise-rag-architecture/) cho học phần tiếp theo trong series này.
+
+---
+
+---
+
+---
+
+[← Chương trước: Executive Summary](/series/ai-driven-playbook/executive-summary/) | [Mục lục Series](/series/ai-driven-playbook/) | [Chương tiếp theo: Phần 1: AI-First SDLC Paradigm Shift →](/series/ai-driven-playbook/part-1-paradigm-shift-ai-first-sdlc/)
+
+
+---
+
+## ❓ Câu Hỏi Thường Gặp (FAQ)
+
+### Q1: Context Engineering: Domain-Driven Design Cho AI giải quyết vấn đề cốt lõi nào trong kiến trúc hệ thống?
+Ứng dụng Domain-Driven Design vào Context Engineering để khoanh vùng Bounded Contexts, xây dựng subgraphs AST và triệt tiêu hallucination cho AI coding agents.
+
+### Q2: Những lưu ý quan trọng nhất khi triển khai thực tế là gì?
+Cần chú trọng phân tầng ranh giới trách nhiệm (bounded context), thiết lập cơ chế fallback dự phòng, và giám sát chặt chẽ qua metrics OpenTelemetry để phát hiện sớm các điểm nghẽn.
+
+### Q3: Làm sao để kiểm thử và đánh giá hiệu quả sau khi áp dụng?
+Áp dụng kiểm thử tải (load test), benchmark độ trễ P95/P99 trước và sau triển khai, kết hợp tracing phân tán để xác minh tính ổn định dưới tải cao.

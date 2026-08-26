@@ -258,3 +258,17 @@ MyRocks utilizes an LSM-tree (Log-Structured Merge-tree) with Zstandard block co
 
 ### Q3: How does MariaDB ThreadPool eliminate CPU context-switch thrashing?
 Unlike MySQL Community's thread-per-connection model, MariaDB uses Linux `epoll` to multiplex thousands of client connections across a fixed worker pool matching physical CPU cores, preventing thread stack bloat and scheduler thrashing.
+
+
+---
+
+## Frequently Asked Questions
+
+### Q1: What core challenge does MariaDB vs. MySQL: Storage Engines & Thread Pool Showdown address in production architecture?
+Showdown of MariaDB 11.x vs. MySQL 8.4/9.0: InnoDB vs. MyRocks/ColumnStore, Native ThreadPool, Binary JSONB O(1) updates, Galera Multi-Master, and FinOps.
+
+### Q2: What are the critical operational pitfalls to avoid during rollout?
+Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+
+### Q3: How do we benchmark and validate performance after implementation?
+Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

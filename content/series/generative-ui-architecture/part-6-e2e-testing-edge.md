@@ -305,3 +305,17 @@ Advance to Part 7 to access the reference repository and enterprise migration pl
 - [Part 4 — Generative UI Security & Accessibility](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 5 — Human-in-the-Loop Workflows](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 7 — Reference Repo & Migration Playbook](/posts/generative-ui-with-mcp-ai-native-frontend/)
+
+
+---
+
+## Frequently Asked Questions
+
+### Q1: What core challenge does Testing GenUI & Semantic Edge Caching — AI Part 6 address in production architecture?
+Architect end-to-end testing strategies and edge deployments for Generative UI applications, combining visual regression and edge latency optimization.
+
+### Q2: What are the critical operational pitfalls to avoid during rollout?
+Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+
+### Q3: How do we benchmark and validate performance after implementation?
+Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

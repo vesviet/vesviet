@@ -1,91 +1,79 @@
 ---
-title: "Phase 3 Full Traffic Cutover & ArgoCD GitOps Guide"
-description: "Full Magento migration cutover strategy: graduated traffic ramping, 30-day rollback window, data archiving, and ArgoCD Kustomize GitOps pipelines."
-date: "2026-05-27T10:00:00+07:00"
-lastmod: "2026-07-03T15:41:55+07:00"
-draft: false
-weight: 5
+title: "Phần 8: Giai đoạn 3 — Chuyển Đổi Hoàn Toàn (Full Cutover): Zero Downtime"
+date: 2026-05-27T10:00:00+07:00
+lastmod: 2026-08-16T12:00:00+07:00
+author: "Lê Tuấn Anh"
+description: "Hoàn tất di dời Magento: chuyển traffic 25%→100% cho Order Service, giữ hot standby 30 ngày để dự phòng rollback, và áp dụng ArgoCD GitOps."
+categories: ["Series", "Software Engineering", "Backend Architecture"]
+tags: ["Full Cutover", "Zero Downtime", "GitOps", "ArgoCD", "Traffic Shifting", "Rollback Plan"]
+series: ["composable-commerce-migration"]
+weight: 9
 slug: "part-8-phase3-full-cutover"
+canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-8-phase3-full-cutover/"
 ShowToc: true
 TocOpen: true
-categories: ["Software Engineering", "Backend", "Migration", "DevOps"]
-tags: ["GitOps", "ArgoCD", "Kustomize", "Zero Downtime", "Cutover", "Magento Migration", "Kubernetes"]
-series: ["composable-commerce-migration"]
-series_order: 8
-ShowPostNavLinks: false
-author: "Lê Tuấn Anh"
+draft: false
 cover:
-  image: "/images/posts/ecommerce-composable-cover.jpg"
-  alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
+  image: "/images/posts/default-post.png"
+  alt: "Phần 8: Giai đoạn 3 — Chuyển Đổi Hoàn Toàn (Full Cutover): Zero Downtime"
   relative: false
-canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-8-phase3-full-cutover/"
+keywords: ["full cutover phase 3", "traffic shifting 100%", "argocd gitops cutover", "magento hot standby rollback"]
 ---
 
+[← Chương trước: Phần 7: Giai Đoạn 2 — Dual-Write Dapr PubSub](/series/composable-commerce-migration/part-7-phase2-dual-write/) | [Mục lục Series](/series/composable-commerce-migration/) | [Chương tiếp theo: Phần 9: Transactional Outbox & Saga Pattern →](/series/composable-commerce-migration/part-9-outbox-saga/)
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Part 7 — Phase2 Dual Write](/series/composable-commerce-migration/part-7-phase2-dual-write/). Review it first if the terminology in this part is unfamiliar.
+---
 
-Phase 3 is the final act: 100% of traffic moves to microservices, Magento becomes a passive archive, and the platform runs entirely on Go microservices via GitOps. No PHP in the critical path. No Magento license renewal needed.
+> **Answer-first:** Giai đoạn 3 hoàn tất quá trình chuyển dịch: điều hướng 100% traffic thanh toán và đơn hàng sang Go microservices, duy trì Magento ở chế độ hot-standby trong 30 ngày để dự phòng rollback tức thì và tự động hóa triển khai qua GitOps ArgoCD.
 
-**Answer-first:** Phase 3 cutover executes an immediate 100% traffic shift for stable read services and a graduated ramp over 10 days for transactional services. Legacy Magento remains a hot standby for 30 days while automated ArgoCD gitops pipelines handle production deployments. Adopting this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory optimization, and fault-tolerant event-driven state synchronization across production systems.
+---
 
-> **Phase 3 Cutover Spec:** Belongs to the **[Composable Commerce Monolith Migration](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/)** collection. Review the core pillar post for full details.
+Giai đoạn 3 (Phase 3) là hồi kết: 100% traffic chuyển hẳn sang hệ thống microservice, Magento chính thức lùi về làm một kho lưu trữ thụ động (passive archive), và toàn bộ nền tảng vận hành hoàn toàn trên các microservice Go thông qua quy trình GitOps. Sẽ không còn bóng dáng của PHP trong những luồng request quan trọng nữa. Và cũng chấm dứt luôn chuỗi ngày phải chi trả chi phí gia hạn giấy phép (license) cho Magento.
 
-## 1. The 6-Week Cutover Calendar
+**Answer-first:** Cắt luồng theo mô hình GitOps (GitOps-driven Cutover) với ArgoCD và Kustomize là best practice của năm 2026 để đảm bảo zero-downtime. Tránh xa cạm bẫy "Big Bang migration", Customer Service và Catalog Service sẽ được cắt luồng 100% trước tiên. Riêng Order Service sẽ được nâng dần theo từng bậc (shadow adoption/graduated ramp) 25%→50%→75%→100% trong vòng 10 ngày, với các chốt chặn theo dõi nghiêm ngặt. Magento vẫn được giữ ở chế độ chờ nóng (hot standby) trong 30 ngày, sử dụng `archive-service` đồng bộ một chiều. Toàn bộ thao tác deploy và quản lý cấu hình đều nằm trong Git repository (single source of truth); ArgoCD (kết hợp Sync Waves và Hooks) tự động cưỡng chế trạng thái kỳ vọng lên cluster, ngăn chặn hoàn toàn hiện tượng cấu hình trôi dạt (configuration drift).
 
-The 6-week cutover calendar structures final traffic migration, starting with low-risk staging and graduating to 100% production traffic.
-
-The 6-week cutover schedule structures the orderly transfer of live production traffic from legacy Magento to the Go microservice platform while establishing strict operational change-freeze windows and risk mitigation buffers:
+## 1. Lịch Trình Chuyển Đổi 6 Tuần (Cutover Calendar)
 
 ```
-Week 1–2: Customer Service → 100% microservices
-Week 3–4: Catalog Service → 100% microservices
-Week 5–6: Order Service → 25% → 50% → 75% → 100%
-Week 7+:  Magento hot standby (event bus stops, archive-service runs hourly)
-Week 11:  Magento decommissioned (Day 30 of hot standby)
+Tuần 1–2: Customer Service → 100% đẩy vào microservices
+Tuần 3–4: Catalog Service → 100% đẩy vào microservices
+Tuần 5–6: Order Service → Rải từ từ 25% → 50% → 75% → 100%
+Tuần 7+:  Magento chuyển sang hot standby (tắt event bus, chạy archive-service mỗi giờ)
+Tuần 11:  Chính thức rút ống thở (decommission) Magento (Ngày thứ 30 của quá trình hot standby)
 ```
 
-By Week 5, Customer and Catalog services run completely on microservices and have sustained production workloads for 3+ weeks. Debezium binlog reverse sync for these domains is deactivated. Microservices operate as the single source of truth. Only Order Service undergoes a multi-step graduated ramp because order mutations dictate real-time financial ledgers and payment gateway authorizations.
+Đến Tuần thứ 5, Customer và Catalog đã được di dời trọn vẹn và đã có 3+ tuần chạy cọ xát trên môi trường production. Cái đường ống đồng bộ Debezium đã được tắt bỏ hoàn toàn cho hai domain này (hiện tại microservice đã lên nắm quyền làm nguồn sự thật duy nhất, không còn là kẻ bám đuôi nữa). Chỉ duy nhất Order Service là vẫn phải cẩn thận đi từng bước (graduated ramp) bởi vì đơn hàng là những giao dịch tài chính liên quan tới tiền bạc, sai một ly là đi một dặm.
 
-## 2. Customer + Catalog: Immediate 100% Cutover
-
-Customer and catalog domains undergo immediate 100% traffic cutover after Phase 1 and 2 dual-write synchronization validation.
-
-In 2026 production cutovers, edge network routing utilizes Anycast BGP IP routing and Cloudflare / AWS Route53 weighted DNS records with 5-second Time-to-Live (TTL) values. TLS 1.3 0-RTT session resumption eliminates connection handshake latency, while automated API Gateway cache invalidation purges legacy monolith cache entries instantly.
-
-The shell script below executes the 100% cutover for Customer Service, disabling reverse sync and launching the read-only archive pipeline:
+## 2. Customer + Catalog: Cắt Cái Rụp 100% (Immediate Cutover)
 
 ```bash
 #!/bin/bash
 # week-1-customer-cutover.sh
 
-echo "Week 1: Customer Service Full Cutover"
+echo "Tuần 1: Cắt luồng hoàn toàn (Full Cutover) cho Customer Service"
 
-# Disable dual-write reverse sync for customer
+# Tắt cờ đồng bộ ngược (reverse sync) của cơ chế ghi kép
 kubectl patch configmap feature-flags -n production \
   --patch '{"data": {"customer_magento_sync": "false"}}'
 
-# Route 100% customer traffic to microservices
+# Điều hướng 100% traffic của customer vào microservices
 kubectl patch configmap feature-flags -n production \
   --patch '{"data": {"customer_write": "true", "customer_read": "true", "customer_cutover": "true"}}'
 
-# Start customer archive (hourly sync to Magento for 30 days)
+# Khởi động dịch vụ lưu trữ (archive) cho customer (Đồng bộ mỗi giờ một lần sang Magento trong vòng 30 ngày)
 curl -X POST "http://archive-service:8080/api/v1/start-archive" \
   -d '{"domain": "customer", "interval_seconds": 3600}'
 
-# Monitor for 7 days
+# Theo dõi sát sao trong 7 ngày
 ./scripts/monitor-cutover.sh --service=customer --duration=604800
-echo "Customer Service cutover complete. Monitoring for 7 days."
+echo "Quá trình cutover Customer Service đã hoàn tất. Đang bước vào 7 ngày theo dõi."
 ```
 
-The archive service performs a one-way, read-only sync from microservice PostgreSQL to legacy Magento. Magento is rendered read-only, serving as a warm backup while fulfilling corporate audit compliance requirements.
+Cái archive service (lính mới xuất hiện ở Giai đoạn 3) làm nhiệm vụ vác dữ liệu từ microservice → ghi vào Magento theo lịch mỗi tiếng một lần. Đây là một cơ chế **đồng bộ một chiều, chỉ-đọc (one-way, read-only sync)** — Magento đã bị tước quyền ghi ngược lại. Nó đóng vai trò như một bản backup nóng và đáp ứng các yêu cầu kiểm toán/tuân thủ (regulatory requirements) buộc phải lưu trữ dữ liệu trên hệ thống cũ thêm một thời gian nhất định.
 
-## 3. Order Service: Graduated Traffic Ramp
+## 3. Order Service: Nâng Dần Traffic Theo Từng Bậc (Graduated Traffic Ramp)
 
-Order Service traffic ramps incrementally from 10% to 25%, 50%, and 100% over four weeks to monitor payment processing stability.
-
-Order Service cutover employs Argo Rollouts traffic management integrated with Prometheus metrics. If p99 latencies breach 200ms or 5xx HTTP error rates exceed 0.05% across a 2-minute window, automated circuit breaker rollbacks immediately restore traffic to previous stable revisions.
-
-The Go gateway router snippet below demonstrates how request traffic is partitioned deterministically using consistent customer ID hashing:
+Order Service được hưởng chế độ chăm sóc đặc biệt bởi vì đơn hàng là thứ dính líu trực tiếp tới tiền tươi thóc thật. Cái cờ tính năng `order_cutover` sẽ nhận thêm một tham số `percentage` (phần trăm) để kiểm soát xem bao nhiêu phần (fraction) số đơn hàng mới sẽ được ném sang cho microservice xử lý:
 
 ```go
 // gateway-service/internal/router/order_router.go
@@ -94,50 +82,46 @@ func routeOrderRequest(c *gin.Context, clients *ServiceClients, flags *FlagStore
     flag := flags.Get("order_cutover")
 
     if !flag.Enabled || flag.Percentage == 0 {
-        // Phase 2 mode: all orders to Order Service with Magento sync
+        // Chế độ của Giai đoạn 2: toàn bộ đơn hàng đều vào Order Service và đồng bộ ngược về Magento
         handleOrderViaMicroservice(c, clients.Order, true /* syncToMagento */)
         return
     }
 
-    // Graduated ramp: hash customer ID to determine routing
-    // (same customer always goes to same system during transition)
+    // Nâng theo bậc: băm (hash) cái customer ID ra để quyết định xem rẽ hướng nào
+    // (cùng một người mua thì lúc nào cũng phải chui vào cùng một hệ thống trong suốt thời gian chuyển đổi)
     customerID := c.GetHeader("X-Customer-ID")
     hash := fnv.New32a()
     hash.Write([]byte(customerID))
     bucket := hash.Sum32() % 100
 
     if bucket < uint32(flag.Percentage) {
-        // This customer's orders go to microservice (no Magento sync)
+        // Đơn hàng của khách hàng này sẽ được đẩy sang microservice (KHÔNG ĐỒNG BỘ về Magento nữa)
         handleOrderViaMicroservice(c, clients.Order, false /* cutover: no sync */)
     } else {
-        // Still routing to Magento for this customer
+        // Vẫn điều hướng về Magento đối với khách hàng này
         proxyToMagento(c)
     }
 }
 ```
 
-Consistent customer ID hashing prevents session fragmentation—ensuring all checkout requests from a specific customer route to a single authoritative backend throughout the migration window.
+Sử dụng cơ chế băm (hash) ID khách hàng (thay vì random ngẫu nhiên) sẽ đảm bảo rằng các đơn hàng của một người không bị xé lẻ ném đi hai nơi khác nhau — toàn bộ các đơn hàng xuất phát từ `customer_id=X` sẽ luôn luôn được gom về cùng một hệ thống duy nhất trong suốt quãng thời gian nâng bậc.
 
-**The ramp schedule for Order Service (Week 5–6):**
+**Lịch trình nâng bậc cho Order Service (Tuần 5–6):**
 
-| Day | Cutover % | Action on each step |
+| Ngày | % Cắt Luồng | Hành động cần làm ở mỗi bậc |
 |---|---|---|
-| Day 1 (Monday) | 25% | Enable flag, monitor for 3 days |
-| Day 4 (Thursday) | 50% | Validate consistency, check DLQ=0, increment |
-| Day 7 (Sunday) | 75% | Validate, check payment reconciliation |
-| Day 10 (Wednesday) | 100% | Final cutover, disable Magento routing |
+| Ngày 1 (Thứ Hai) | 25% | Bật cờ, dán mắt theo dõi trong 3 ngày |
+| Ngày 4 (Thứ Năm) | 50% | Validate tính nhất quán dữ liệu, check DLQ=0, nâng số |
+| Ngày 7 (Chủ Nhật) | 75% | Validate, check đối soát thanh toán (payment reconciliation) |
+| Ngày 10 (Thứ Tư) | 100% | Cắt luồng hoàn toàn (Final cutover), tắt luôn cổng điều hướng về Magento |
 
-At each ramp milestone, four mandatory gate criteria must be satisfied:
-1. DLQ message count = 0 (zero unhandled events)
-2. p99 write latency < 200ms (Phase 3 SLA target)
-3. Payment reconciliation: zero discrepancy between microservice DB and payment gateway ledgers
-4. Zero customer complaints or failed checkout sessions
+Ở mỗi bậc, bắt buộc phải thỏa mãn các điều kiện sau đây mới được phép nâng lên bậc tiếp theo:
+1. Số lượng tin nhắn kẹt trong DLQ = 0 (không có cái event nào bị xịt)
+2. Độ trễ ghi (write latency) p99 < 200ms (Đây là SLA của Phase 3, gắt hơn cái mức 500ms hồi Phase 2)
+3. Đối soát thanh toán: tổng doanh thu (total revenue) trong database microservice phải khớp từng cắc với Magento
+4. Không có bất kỳ khiếu nại (complaints) nào của khách hàng liên quan tới việc tạo đơn hàng
 
-## 4. The Archive Service
-
-The archive service extracts historical Magento order logs into read-only PostgreSQL data lakes for long-term audit compliance.
-
-To guarantee legacy Magento state is preserved without accepting new mutations, legacy MySQL instances are placed into strict read-only mode via `SET GLOBAL super_read_only = ON;`. The Kubernetes manifest below deploys the archive service to execute hourly state snapshots:
+## 4. Archive Service (Dịch Vụ Lưu Trữ)
 
 ```yaml
 # k8s/archive-service.yaml
@@ -160,74 +144,66 @@ spec:
         - name: MAGENTO_DB_HOST
           value: "magento-db.production.svc.cluster.local"
         - name: ARCHIVE_INTERVAL
-          value: "3600"   # 1 hour
+          value: "3600"   # 1 giờ
         - name: ARCHIVE_DOMAINS
           value: "customer,catalog,order,inventory"
 ```
 
-Archive service behavior:
-- Runs once per hour
-- Reads from microservice PostgreSQL (authoritative)
-- Writes to Magento MySQL (archive only, Magento writes disabled)
-- Compresses data (JSON → gzip) for long-term storage
-- Stops automatically after 30 days (Day 30 = Magento decommission)
+Hành vi của Archive service:
+- Chạy theo lịch trình mỗi giờ một lần
+- Đọc dữ liệu từ PostgreSQL của microservice (nguồn nắm quyền)
+- Ghi dữ liệu vào MySQL của Magento (chỉ nhằm mục đích lưu trữ archive, quyền tự ghi của Magento đã bị tước)
+- Nén dữ liệu lại (từ JSON → gzip) để cất giữ dài hạn
+- Tự động dừng hoạt động sau 30 ngày (Ngày thứ 30 = chính thức rút ống thở Magento)
 
-## 5. ArgoCD GitOps: The Deployment Model After Migration
+## 5. ArgoCD GitOps: Mô Hình Triển Khai Hậu Di Dời
 
-ArgoCD GitOps continuously synchronizes Kubernetes cluster state with Git repositories, automating deployments and drift detection.
-
-With legacy Magento decommissioned, production deployment management shifts entirely to ArgoCD GitOps. In modern cloud environments, GitOps establishes Git repositories as the immutable single source of truth for all Kubernetes cluster state, providing automated drift detection, automated reconciliation, and audit logs.
-
-The complete automated delivery pipeline flow for microservice releases operates as follows:
+Khi bóng dáng Magento đã lùi vào dĩ vãng, toàn bộ các luồng triển khai (deployments) về sau này đều sẽ tuân theo mô hình GitOps của ArgoCD. Luồng chảy trọn vẹn của một dòng code thay đổi:
 
 ```
-1. Developer: git push to feature branch
+1. Developer: git push code lên nhánh feature
 2. GitLab CI:
-    a. Run unit tests + integration tests
-    b. Build Docker image → push to registry
-    c. Open MR → code review
-3. MR merged to main:
-    a. CI runs full test suite
-    b. Builds image: order-service:v1.2.3
-    c. Updates GitOps repo:
+    a. Chạy đống unit tests + integration tests
+    b. Build file Docker image → push lên registry
+    c. Mở MR (Merge Request) → team vào review code
+3. MR được merge vào nhánh main:
+    a. CI chạy lại toàn bộ test suite một lần nữa
+    b. Build image chốt hạ: order-service:v1.2.3
+    c. Cập nhật vào repo GitOps:
        git commit -m "Update order-service to v1.2.3"
-       # Changes: gitops/apps/order-service/overlays/production/kustomization.yaml
-       # From: newTag: v1.2.2
-       # To:   newTag: v1.2.3
-4. ArgoCD detects change in GitOps repo:
-    a. Kustomize build: base + production overlay
-    b. kubectl apply to production cluster
-    c. Rolling update: 1 pod at a time, health check between each
-5. ArgoCD rollback if unhealthy:
-    git revert HEAD  # Reverts the image tag in GitOps repo
-    ArgoCD detects revert → rolls back deployment automatically
+       # Nội dung file thay đổi: gitops/apps/order-service/overlays/production/kustomization.yaml
+       # Từ: newTag: v1.2.2
+       # Thành: newTag: v1.2.3
+4. ArgoCD đánh hơi thấy có sự thay đổi trong repo GitOps:
+    a. Chạy Kustomize build: trộn base + production overlay
+    b. Chạy lệnh kubectl apply đập vào cluster production
+    c. Cập nhật cuốn chiếu (Rolling update): cứ update xong 1 pod, đứng test sức khỏe ok rồi mới update pod tiếp theo
+5. ArgoCD tự động rollback nếu thấy có biến (unhealthy):
+    git revert HEAD  # Undo cái commit cập nhật image tag trong repo GitOps
+    ArgoCD nhìn thấy có revert → tự động khôi phục deployment về bản cũ
 ```
 
-No manual `kubectl apply` commands or SSH access to production nodes are permitted. Every production configuration state change is backed by an audited, signed Git commit.
+Không còn cảnh SSH gõ phím cạch cạch trên server production. Không còn lệnh `kubectl apply` chạy bằng cơm. Khái niệm "ơ máy em chạy ngon mà" đã bị xóa sổ vĩnh viễn khỏi các pha deploy. **Mọi thay đổi trên production đều có thể truy vết ngược (traceable) chính xác tới từng dòng Git commit.**
 
-## 6. Kustomize: Base + Overlays Pattern
+## 6. Kustomize: Bức Tranh Base + Overlays
 
-Kustomize base and overlay configurations manage environment-specific parameters across development, staging, and production clusters.
-
-To maintain environment consistency across development, staging, and production clusters without template bloat, services organize manifests into base and overlay layers:
+Mỗi một service đều có những file ghi đè (overlays) dành riêng cho từng môi trường:
 
 ```
 gitops/apps/order-service/
 ├── base/
-│   ├── deployment.yaml          ← Common: service definition, port, probes
+│   ├── deployment.yaml          ← Những thứ xài chung: định nghĩa service, cổng (port), mấy cục thăm dò sức khỏe (probes)
 │   ├── service.yaml
-│   ├── configmap.yaml           ← Non-secret config
+│   ├── configmap.yaml           ← Các config không chứa thông tin nhạy cảm
 │   └── kustomization.yaml
 └── overlays/
     ├── dev/
     │   ├── kustomization.yaml
-    │   └── patch-replicas.yaml  ← replicas: 1, resources: small
+    │   └── patch-replicas.yaml  ← Chỉ chạy 1 replicas, cấu hình resources siêu nhỏ nhắn
     └── production/
         ├── kustomization.yaml
-        └── patch-replicas.yaml  ← replicas: 3, resources: production-sized
+        └── patch-replicas.yaml  ← Chạy 3 replicas, cấu hình resources hầm hố chuẩn production
 ```
-
-The production overlay `kustomization.yaml` manifest configures production container image tags, replica patches, and ConfigMap/Secret generator hash suffixes:
 
 ```yaml
 # gitops/apps/order-service/overlays/production/kustomization.yaml
@@ -239,23 +215,17 @@ patches:
   - path: patch-replicas.yaml
 images:
   - name: order-service
-    newTag: v1.2.3                 ← Updated by CI on every release
+    newTag: v1.2.3                 ← CI sẽ tự động cập nhật cục này mỗi khi có bản release mới
 ```
-
-The base `deployment.yaml` manifest defines standardized container ports, readiness/liveness health probes, and CPU/memory resource allocations:
 
 ```yaml
 # gitops/apps/order-service/base/deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: order-service
 spec:
   template:
     spec:
       containers:
       - name: order-service
-        image: order-service           # Tag set by overlay
+        image: order-service           # Phần Tag đã được cái file overlay ở trên lo liệu
         ports:
         - containerPort: 8001          # HTTP
         - containerPort: 9001          # gRPC
@@ -279,36 +249,32 @@ spec:
             cpu: "500m"
 ```
 
-## 7. Sync Waves: Ordered Deployment
+## 7. Sync Waves: Khởi Động Theo Thứ Tự
 
-ArgoCD sync waves enforce strict deployment order, starting database migrations before rolling out dependent microservice pods.
-
-ArgoCD Sync Waves assign explicit numeric priorities to Kubernetes manifests, ensuring database schema migrations and messaging middleware components achieve readiness before application service pods begin rolling update deployments:
+ArgoCD Sync Waves là thứ đứng ra bảo kê đảm bảo rằng các cụm cơ sở hạ tầng (infrastructure components) phải được khởi động trước tiên rồi mới tới lượt các service nhảy vào:
 
 ```yaml
 # gitops/apps/order-service/base/deployment.yaml
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: "2"   # Wave 2: services start after wave 1
-
+    argocd.argoproj.io/sync-wave: "2"   # Làn sóng (Wave) 2: các service sẽ khởi động sau khi wave 1 xong
+---
 # gitops/infrastructure/databases/postgresql.yaml
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: "0"   # Wave 0: databases first
-
+    argocd.argoproj.io/sync-wave: "0"   # Làn sóng 0: Database phải dậy đầu tiên
+---
 # gitops/infrastructure/dapr-components.yaml
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: "1"   # Wave 1: Dapr before services
+    argocd.argoproj.io/sync-wave: "1"   # Làn sóng 1: Dapr phải sống trước đám services
 ```
 
-Sync wave progression follows: `Databases & Schema Migrations (Wave 0) → PubSub & Dapr Components (Wave 1) → Microservices (Wave 2) → API Gateway (Wave 3)`.
+Thứ tự khởi động (Sync wave order): `Database (0) → Các cục Dapr (1) → Services (2) → Gateway (3)`
 
-## 8. Performance Validation: The 10× Load Test
+## 8. Nghiệm Thu Hiệu Năng: Bài Test Ép Tải X10 (10× Load Test)
 
-Performance validation subjects the new Go microservice architecture to 10x peak load tests, verifying sub-50ms checkout response times.
-
-Prior to declaring Phase 3 final cutover complete, the microservice architecture must sustain 10× historical peak traffic during distributed stress testing. The K6 stress test script below simulates high-concurrency order creation workloads to validate p99 latency SLAs:
+Tiêu chí để qua ải Giai đoạn 3: *"Phải gánh được khối lượng tải gấp 10 lần production hiện tại (Handle 10× current production load)."* Đoạn kịch bản ép tải K6 này sẽ được thả xích vào giờ thấp điểm (off-peak hours) trước khi hùng hồn tuyên bố Giai đoạn 3 kết thúc:
 
 ```javascript
 // tests/load/phase3-validation.js
@@ -317,18 +283,18 @@ import { check } from 'k6';
 
 export const options = {
     stages: [
-        { duration: '5m', target: 100 },   // Ramp up
-        { duration: '10m', target: 1000 }, // 10× normal load
-        { duration: '5m', target: 0 },     // Ramp down
+        { duration: '5m', target: 100 },   // Lấy đà (Ramp up)
+        { duration: '10m', target: 1000 }, // Đập tải gấp 10 lần bình thường (10× normal load)
+        { duration: '5m', target: 0 },     // Thả trôi (Ramp down)
     ],
     thresholds: {
-        'http_req_duration': ['p99<200'],  // 200ms p99 SLA
-        'http_req_failed': ['rate<0.001'], // < 0.1% error rate
+        'http_req_duration': ['p99<200'],  // SLA yêu cầu p99 phải < 200ms
+        'http_req_failed': ['rate<0.001'], // Tỷ lệ lỗi (error rate) phải < 0.1%
     },
 };
 
 export default function() {
-    // Test Order creation (the highest-risk endpoint)
+    // Ép tải khâu tạo Đơn hàng (Cái endpoint nguy hiểm và mong manh nhất)
     const res = http.post('https://api.platform.com/api/v1/orders', JSON.stringify({
         customer_id: randomCustomerID(),
         items: [{ product_id: randomProductID(), quantity: 1 }],
@@ -340,96 +306,97 @@ export default function() {
 }
 ```
 
-## 9. Magento Decommission: Day 30
+## 9. Rút Ống Thở Magento (Magento Decommission): Ngày 30
 
-Magento decommissioning takes place on Day 30 post-cutover, shutting down legacy PHP app servers and archiving old MySQL instances.
-
-After maintaining 30 continuous days of zero-rollback production execution on Go microservices, legacy monolith decommissioning commences. Final database dumps (gzip SQL / compressed Parquet format) are uploaded to Amazon S3 Glacier with Object Lock compliance enabled, guaranteeing 7-year immutable data retention for regulatory compliance.
-
-The shell script below executes final decommissioning, teardown of legacy Kubernetes namespaces, tombstoning of legacy DNS entries, and cleanup of gateway feature flag definitions:
+Sau 30 ngày kiên trì chạy hot standby mà không hề phải xài tới con bài rollback (quay xe) nào:
 
 ```bash
 #!/bin/bash
 # day-30-decommission.sh
 
-echo "Day 30: Decommissioning Magento hot standby"
+echo "Ngày 30: Đang tiến hành rút ống thở cụ Magento hot standby"
 
-# Step 1: Stop archive service
+# Bước 1: Dừng cái archive service lại
 kubectl delete deployment archive-service -n production
 
-# Step 2: Stop Debezium connector (if still running for any domain)
+# Bước 2: Tắt luôn connector Debezium (nếu vẫn còn đang chạy lay lắt cho domain nào đó)
 kubectl delete deployment sync-service -n migration
 
-# Step 3: Export final Magento database backup
-mysqldump --all-databases | gzip > /backup/magento-final-$(date +%Y%m%d).sql.gz
+# Bước 3: Đóng gói (Export) bản backup database Magento cuối cùng của cuộc đời nó
+mysqldump --all-databases > /backup/magento-final-$(date +%Y%m%d).sql.gz
 
-# Step 4: Shut down Magento application servers
+# Bước 4: Khai tử (Shut down) luôn dàn server application của Magento
 kubectl delete namespace magento
 
-# Step 5: Remove Magento feature flags from Gateway
+# Bước 5: Tháo tung mấy cái cờ tính năng tàn dư của Magento khỏi Gateway
 kubectl patch configmap feature-flags -n production \
   --type=json \
   -p='[{"op": "remove", "path": "/data/catalog_read"},
        {"op": "remove", "path": "/data/customer_read"},
        {"op": "remove", "path": "/data/order_read"}]'
 
-echo "✅ Magento decommissioned. Platform running 100% on microservices."
-echo "💰 License savings: starting from next renewal cycle"
+echo "✅ Đã rút ống thở Magento thành công. Nền tảng lúc này đang chạy 100% bằng hệ thống microservices."
+echo "💰 Chi phí license tiết kiệm được: sẽ bắt đầu phát huy tác dụng từ kỳ gia hạn tiếp theo"
 ```
 
-## Phase 3 Completion Checklist
+## Danh Sách Kiểm Tra Hoàn Tất Giai Đoạn 3
 
-The completion checklist verifies 100% traffic routing to Go services, ArgoCD sync green status, and Magento server shutdown.
+**Tuần 5 (Kết thúc quá trình cutover của Order Service):**
+- [ ] Chạy êm ru 10 ngày liên tiếp ở mức 100% không dính auto-rollback lần nào
+- [ ] Đối soát thanh toán: con số ghi trong sổ cái (ledger) của microservice và Magento phải khớp nhau 100%, không lệch một đồng
+- [ ] Số tin nhắn trong DLQ: = 0 trong suốt cả Tuần 5
 
-**Week 5 (Order Service cutover complete):**
-- [ ] 10 consecutive days at 100% without auto-rollback
-- [ ] Payment reconciliation: zero discrepancy between microservice and Magento ledgers
-- [ ] DLQ message count: 0 throughout Week 5
+**Tuần 7 (Sát giờ rút ống thở):**
+- [ ] Archive service miệt mài chạy đủ 30 ngày không ném ra một cái lỗi nào
+- [ ] Chốt hạ bài ép tải (load test): gấp 10 lần tải production, p99 < 200ms, tỷ lệ lỗi < 0.1%
+- [ ] Toàn bộ các team phụ trách domain hân hoan ký tên xác nhận migration đã hoàn tất
 
-**Week 7 (Pre-decommission):**
-- [ ] Archive service running for 30 days without error
-- [ ] Final load test: 10× production load, p99 < 200ms, error rate < 0.1%
-- [ ] All domain teams sign off on migration completion
+**Ngày 30 (Rút ống thở - Decommission):**
+- [ ] Bản sao lưu (backup) DB Magento cuối cùng đã được bọc kỹ tống vào kho lạnh (long-term storage)
+- [ ] Sập cầu dao toàn bộ hạ tầng (infrastructure) của Magento
+- [ ] Quét dọn mớ cấu hình cờ tính năng trên Gateway cho gọn gàng
+- [ ] Nhấc máy lên gọi điện hủy luôn cái thông báo gia hạn bản quyền (license renewal) của platform cũ
 
-**Day 30 (Decommission):**
-- [ ] Final Magento DB backup stored in long-term storage
-- [ ] Magento infrastructure shutdown
-- [ ] Feature flag Gateway config simplified
-- [ ] Platform license renewal notification cancelled
+## Thành Quả Bạn Vừa Xây Dựng
 
-## What You've Built
+Hậu Giai đoạn 3, hệ thống của bạn trông sẽ thế này:
+- **21 con microservice viết bằng Go** tung hoành trên Kubernetes, được deploy rần rần qua ArgoCD GitOps
+- **Zero PHP** trong các luồng request quan trọng
+- **Zero tiền mua license Magento** kể từ kỳ gia hạn tiếp theo
+- **Khả năng phình to độc lập (Independent scaling)**: Order Service có thể tự bành trướng quy mô riêng rẽ mỗi khi có săn sale (flash sales)
+- Độ trễ phản hồi **< 200ms p99** cho toàn bộ các endpoint quan trọng nhất
+- **Có sẵn cơ chế rollback xoay tua 30 ngày** → nhưng quan trọng là: ta đã chứng minh được chả bao giờ thèm xài tới nó
 
-You have successfully transformed a legacy monolithic Magento installation into 21 resilient, high-performance Go microservices.
-
-After Phase 3, the platform is:
-- **21 Go microservices** on Kubernetes, deployed via ArgoCD GitOps
-- **Zero PHP** in the critical request path
-- **Zero Magento license cost** starting next renewal
-- **Independent scaling**: Order Service scales independently during flash sales
-- **< 200ms p99** response time on all critical endpoints
-- **30-day rollback capability** → proven that rollback was never needed
-
-[Part 9](/series/composable-commerce-migration/part-9-outbox-saga/) dives into the event reliability mechanism that made this migration possible without data loss: the Transactional Outbox + Saga pattern that guarantees every order event is delivered exactly once, and every failed transaction has a compensating action.
+[Phần 9](/series/composable-commerce-migration/part-9-outbox-saga/) sẽ đi sâu mổ xẻ cái cơ chế đảm bảo độ tin cậy của sự kiện (event reliability mechanism) — thứ vũ khí bí mật đã chắp cánh cho cuộc di dời này thành công mỹ mãn mà không làm rớt mất một mẩu dữ liệu nào: Transactional Outbox + Saga pattern, con bài mang lại lời thề vàng ngọc (guarantees) rằng mọi sự kiện đơn hàng đều sẽ được giao đi "không thừa không thiếu một lần" (exactly once), và mọi giao dịch xịt đều sẽ được cấp cho một liều thuốc giải độc tương xứng (compensating action).
 
 ---
 
-*If you're exploring similar distributed systems patterns, the [Shopee Architecture Series](/series/shopee-architecture/) documents how a regional super-app handles 10M+ concurrent users with a comparable microservices decomposition — useful reference for sizing and SLO decisions.*
+*Nếu bạn đang hứng thú khám phá những mảng miếng (patterns) thiết kế hệ thống phân tán (distributed systems) tương tự, hãy nghía qua [Series Kiến Trúc Shopee](/series/shopee-architecture/) — nơi ghi lại cách một siêu ứng dụng (super-app) cấp độ khu vực gồng gánh 10 triệu người dùng đồng thời (10M+ concurrent users) bằng một mô hình chẻ nhỏ microservice (microservices decomposition) có nhiều nét tương đồng — một nguồn tham khảo cực kỳ đáng giá cho các quyết định về định cỡ hệ thống (sizing) và thiết lập chỉ tiêu SLO (SLO decisions).*
 
-## FAQ
+## Câu Hỏi Thường Gặp (FAQ)
 
-Graduated traffic ramping during Phase 3 cutover minimizes operational risk when shifting live order processing to new Go microservices.
+### Tại sao lại xài ArgoCD GitOps thay vì phang thẳng lệnh kubectl hay xài Helm cho lẹ?
 
-{{< faq q="Why use ArgoCD GitOps instead of deploying directly with kubectl or Helm?" >}}
-Direct kubectl applies are manual, error-prone, and leave no audit trail. Helm works for templating but doesn't enforce the target state continuously. ArgoCD enforces **desired state = actual state** at every reconciliation cycle (default: 3 minutes). If a pod crashes and restarts with a different image tag (e.g., from a hotfix applied manually), ArgoCD detects the drift and restores the committed state. During a high-stakes cutover, this continuous enforcement is the difference between a reproducible rollback and a "it was working but now it's different" incident.
-{{< /faq >}}
+Phang thẳng `kubectl apply` bằng cơm là trò chơi mạo hiểm, vi phạm nghiêm trọng nguyên tắc phân quyền (separation of concerns) trong tiêu chuẩn bảo mật 2026. Helm thì tuyệt trong việc tạo ra khuôn mẫu (templating), nhưng nó không tự động cưỡng chế trạng thái kỳ vọng (target state). Ngược lại, ArgoCD hoạt động như một gã cảnh sát mẫn cán, luôn duy trì luật **trạng thái kỳ vọng = trạng thái thực tế (desired state = actual state)** ở mỗi chu kỳ rà soát (thường là 3 phút). Đặc biệt, trong môi trường Cloud Native 2026, ArgoCD kết hợp với Sealed Secrets / External Secrets Operator xử lý bài toán tiêm mã bí mật (secret injection) an toàn. Nếu một pod bị ai đó tiêm image tag lạ (hotfix tay), ArgoCD sẽ ngửi thấy mùi sai lệch (drift) và tự động ghi đè khôi phục (self-heal). Sự bảo kê này là ranh giới mong manh giữa một ca quay xe có kiểm soát (reproducible rollback) và một thảm họa hệ thống lúc cutover.
 
-{{< faq q="What does \"zero-downtime cutover\" actually guarantee?" >}}
-Zero-downtime means: **no HTTP 5xx errors during the traffic shift, no queued or dropped user requests, no maintenance page**. It does not mean "no latency increase" — the first requests after a traffic shift typically see 10–20% higher p99 latency as new pods warm up their connection pools. The warm-up period is why the platform pre-warms instances 5 minutes before each traffic increment. After the warm-up period (typically 2–5 minutes), latency returns to baseline.
-{{< /faq >}}
+### Cái khái niệm "chuyển đổi không thời gian chết" (zero-downtime cutover) rút cục là nó hứa hẹn (guarantee) cái gì?
 
-{{< faq q="How long should Magento run as a hot standby after cutover?" >}}
-A minimum of **30 days** in read-only archive mode. This covers: (1) billing cycles that reference Magento order IDs, (2) customer service escalations about historical orders, (3) the window to detect any edge-case data missing from the migration. After 30 days, shut down Magento's application tier but keep the database snapshot for an additional 90 days in cold storage before permanent deletion.
+Zero-downtime mang ý nghĩa: **tuyệt đối không để văng ra lỗi HTTP 5xx trong lúc đang đảo luồng (traffic shift), tuyệt đối không giam lỏng (queued) hay đánh rơi (dropped) bất kỳ request nào của người dùng, và tuyệt đối không trưng ra cái trang bảo trì (maintenance page) ngứa mắt**. Nhưng hãy nhớ kỹ, nó KHÔNG ĐỒNG NGHĨA với "không bị giật lag" (no latency increase) — những cú request mở bát ngay sau lúc đảo luồng thường sẽ dính độ trễ (latency) p99 cao hơn khoảng 10–20% do đám pod mới đang lạch cạch tự làm nóng (warm up) đống connection pool của chúng. Cái khoảng thời gian làm nóng (warm-up period) ất ơ này chính là lý do tại sao hệ thống nền tảng bắt buộc phải có bước mồi (pre-warms) trước 5 phút cho mỗi nhịp tăng traffic. Lết qua được vài phút mồi máy đó (thường là 2-5 phút), latency sẽ lập tức vút về lại ngưỡng lý tưởng.
 
-{{< /faq >}}
+### Magento nên được giữ lại bao lâu dưới dạng hot standby (chờ nóng) sau khi đã cutover xong?
 
-🔗 **Next Step:** Continue to [Part 9 — Outbox Saga](/series/composable-commerce-migration/part-9-outbox-saga/) for the following module in the series.
+Con số an toàn tối thiểu là **30 ngày** ở trạng thái chỉ-đọc (read-only archive mode). Quãng thời gian này sinh ra để bao biện cho ba chuyện: (1) Chu kỳ chốt sổ thanh toán (billing cycles) thường xuyên réo tên mấy cái mã order ID cũ kỹ của Magento, (2) Đám chăm sóc khách hàng (customer service) hay có trò đào mồ sống dậy kêu ca mấy cái đơn hàng từ thời đồ đá, (3) Đó là khung thời gian vàng để bắt quả tang (detect) mấy dữ liệu oái oăm lọt lưới (edge-case data missing) của quá trình migration. Vượt qua cửa ải 30 ngày, cứ tự tin mà giật sập dàn máy chủ ứng dụng (application tier) của Magento, nhưng chớ có dại mà xóa luôn; hãy bê nguyên cái snapshot của database nhét vào kho lạnh (cold storage) thêm 90 ngày nữa rồi hẵng phi tang vĩnh viễn (permanent deletion).
+
+---
+
+*Bài viết này nằm trong **[Series Chuyển đổi sang Composable Commerce](/series/composable-commerce-migration/)**. Hãy xem toàn bộ mục lục để nắm bắt ngữ cảnh kiến trúc đầy đủ nhất.*
+
+*Bạn cần hỗ trợ đánh giá rủi ro cho đợt chuyển đổi nền tảng sắp tới? â†’ [Đặt lịch Tư vấn Kiến trúc 1:1](/hire/)*
+
+---
+
+---
+
+---
+
+[← Chương trước: Phần 7: Giai Đoạn 2 — Dual-Write Dapr PubSub](/series/composable-commerce-migration/part-7-phase2-dual-write/) | [Mục lục Series](/series/composable-commerce-migration/) | [Chương tiếp theo: Phần 9: Transactional Outbox & Saga Pattern →](/series/composable-commerce-migration/part-9-outbox-saga/)

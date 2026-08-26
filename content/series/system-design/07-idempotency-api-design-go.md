@@ -420,3 +420,17 @@ func RetryWithIdempotency(
 🔗 **Next Step:** Continue to [Part 8: Saga Pattern & Distributed Transactions in Go](/series/system-design/08-saga-pattern-distributed-transactions-go/)
 
 Load balancing in idempotent API middleware employs least-connections algorithm routing with HTTP/2 multiplexed streams. Connection keep-alive timeouts maintain efficient socket utilization.
+
+
+---
+
+## Frequently Asked Questions
+
+### Q1: What core challenge does Idempotent API Design in Go — Idempotency Key & Redis SetNX address in production architecture?
+Learn idempotent API design in Go with Redis SetNX middleware, response recording, SHA-256 payload hashing, and Stripe idempotency patterns.
+
+### Q2: What are the critical operational pitfalls to avoid during rollout?
+Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+
+### Q3: How do we benchmark and validate performance after implementation?
+Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

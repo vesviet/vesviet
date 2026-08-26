@@ -416,3 +416,17 @@ You've completed 10 parts of the masterclass. Here's the knowledge map you've bu
 [Next Part →](/series/system-design/11-security-api-rate-limiting/)
 
 🔗 **Next Step:** Continue to [Part 11: Security & API Rate Limiting](/series/system-design/11-security-api-rate-limiting/)
+
+
+---
+
+## Frequently Asked Questions
+
+### Q1: What core challenge does Go Observability & pprof: Memory Leaks & Tracing Guide address in production architecture?
+Go pprof guide: heap diff memory leak diagnosis, goroutine leak detection, CPU flame graphs, GODEBUG gctrace, and Four Golden Signals in production.
+
+### Q2: What are the critical operational pitfalls to avoid during rollout?
+Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+
+### Q3: How do we benchmark and validate performance after implementation?
+Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

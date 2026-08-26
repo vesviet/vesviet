@@ -252,3 +252,17 @@ Our Vector Database and Hybrid Search system are now capable of extremely accura
 In **[Part 4: Active RAG & Strict Tool Calling: Connecting LLMs to Real-time APIs](/series/agentic-ecommerce-search/part-4-active-rag-tool-calling/)**, we will proceed to program AI Agent orchestration using the **Eino (CloudWeGo)** framework to connect LLMs directly with Go microservices via type-safe Function Calling mechanisms.
 
 🔗 **Next Step:** Continue to [Part 4 — Active Rag Tool Calling](/series/agentic-ecommerce-search/part-4-active-rag-tool-calling/) for the following module in the series.
+
+
+---
+
+## Frequently Asked Questions
+
+### Q1: What core challenge does Qdrant Hybrid Search: Solving Semantic and Hard Filters address in production architecture?
+Configure Qdrant Hybrid Search combining dense vectors and BM25 sparse vectors with Reciprocal Rank Fusion and payload filters in Go microservices.
+
+### Q2: What are the critical operational pitfalls to avoid during rollout?
+Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+
+### Q3: How do we benchmark and validate performance after implementation?
+Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

@@ -1,40 +1,38 @@
 ---
-title: "Strangler Fig Read-Only Migration with Debezium CDC"
-description: "Phase 1 migration guide for decoupling Magento reads using API Gateway routing, Debezium CDC event streams, and Dapr pub/sub event pipelines."
-date: "2026-05-13T10:00:00+07:00"
-lastmod: "2026-07-03T15:41:55+07:00"
-draft: false
-weight: 3
+title: "Phần 6: Giai đoạn 1 — Strangler Fig: Di dời Chỉ-đọc (Read-Only)"
+date: 2026-05-13T10:00:00+07:00
+lastmod: 2026-08-16T12:00:00+07:00
+author: "Lê Tuấn Anh"
+description: "Di dời Magento GĐ 1 (Strangler Fig): Go microservices chế độ read-only, Debezium CDC đồng bộ MySQL không cần Kafka, feature flags và fallback an toàn."
+categories: ["Series", "Software Engineering", "Backend Architecture"]
+tags: ["Strangler Fig", "Debezium", "CDC", "MySQL", "Read-Only Migration", "Feature Flags"]
+series: ["composable-commerce-migration"]
+weight: 7
 slug: "part-6-phase1-strangler-fig"
+canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-6-phase1-strangler-fig/"
 ShowToc: true
 TocOpen: true
-categories: ["Software Engineering", "Backend", "Migration"]
-tags: ["Strangler Fig", "CDC", "Debezium", "Dapr", "Feature Flags", "Magento Migration", "Zero Downtime"]
-series: ["composable-commerce-migration"]
-series_order: 6
-ShowPostNavLinks: false
-author: "Lê Tuấn Anh"
+draft: false
 cover:
-  image: "/images/posts/ecommerce-composable-cover.jpg"
-  alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
+  image: "/images/posts/default-post.png"
+  alt: "Phần 6: Giai đoạn 1 — Strangler Fig: Di dời Chỉ-đọc (Read-Only)"
   relative: false
-canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-6-phase1-strangler-fig/"
+keywords: ["strangler fig phase 1", "debezium cdc magento", "read-only microservices", "zero downtime migration"]
 ---
 
+[← Chương trước: Phần 5: Chuyển Đổi Schema EAV Magento](/series/composable-commerce-migration/part-5-eav-schema-migration/) | [Mục lục Series](/series/composable-commerce-migration/) | [Chương tiếp theo: Phần 7: Giai Đoạn 2 — Dual-Write Dapr PubSub →](/series/composable-commerce-migration/part-7-phase2-dual-write/)
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Eav Schema Migration](/series/composable-commerce-migration/part-5-eav-schema-migration/). Review it first if the terminology in this part is unfamiliar.
+---
 
-Phase 1 is the safest phase of the migration — by design. No write operation touches the new microservices. Magento remains the source of truth for all data modifications. The only thing Phase 1 does is prove that your microservices can serve *reads* faster and more reliably than Magento.
+> **Answer-first:** Giai đoạn 1 của mô hình Strangler Fig chỉ di dời luồng truy vấn đọc (Catalog, Search) sang Go microservices, sử dụng Change Data Capture (Debezium CDC) để đồng bộ dữ liệu từ MySQL Magento theo thời gian thực mà không làm gián đoạn luồng ghi nghiệp vụ.
 
-**Answer-first:** Phase 1 deploys read-only Go microservices alongside legacy Magento. API Gateway feature flags route read requests to Go with automatic fallback to Magento on failure. Embedded Debezium streams MySQL binary log updates to Redis Streams with sub-2-second sync latency. Adopting this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory optimization, and fault-tolerant event-driven state synchronization across production systems.
+---
 
-> **Phase 1 Playbook:** Featured in the **[Composable Migration Architecture Guide](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/)**. Read the main post for full system context.
+Giai đoạn 1 (Phase 1) là giai đoạn an toàn nhất trong toàn bộ cuộc di dời — đó là chủ ý thiết kế (by design). Sẽ không có bất kỳ thao tác ghi (write) dữ liệu nào chạm tới hệ thống microservice mới. Magento vẫn là nguồn sự thật duy nhất (source of truth) cho mọi sửa đổi dữ liệu. Việc duy nhất mà Giai đoạn 1 làm, đó là chứng minh rằng đống microservice của bạn có thể phục vụ các thao tác *đọc (read)* với tốc độ nhanh hơn và độ ổn định cao hơn Magento.
 
-## 1. Phase 1 Architecture
+**Answer-first:** Strangler Fig pattern vẫn là tiêu chuẩn vàng của ngành công nghiệp trong việc giảm thiểu rủi ro khi migrate hệ thống nguyên khối trong năm 2026. Ở Giai đoạn 1, chúng ta sẽ triển khai các microservice Go ở chế độ chỉ-đọc (read-only), điều hướng các request dạng GET vào đó thông qua các cờ tính năng (feature flags) phân rã theo từng domain (lĩnh vực) nằm trên API Gateway (kèm theo cơ chế tự động xả ngược - fallback về Magento). Trái tim của giải pháp tách rời dữ liệu (data decomposition) là công cụ Change Data Capture (CDC) Debezium — chạy dưới dạng embedded engine để stream các thay đổi từ MySQL của Magento sang microservice thông qua Dapr PubSub (không cần Kafka cồng kềnh). Mọi thao tác ghi (write) vẫn tiếp tục đâm thẳng vào Magento, với các consumer được thiết kế bắt buộc theo cơ chế lũy đẳng (idempotent). Mục tiêu độ trễ dữ liệu: < 2 giây.
 
-Phase 1 architecture deploys read-only Go microservices behind an API Gateway, keeping Magento as the write master while decoupling reads.
-
-The architectural topology below demonstrates how incoming client HTTP traffic is intercepted by the API Gateway layer, dynamically routing read-only requests to high-performance Go microservices while strictly keeping legacy Magento as the authoritative write master.
+## 1. Kiến trúc Giai đoạn 1
 
 ```
 Client App (browser/mobile)
@@ -46,14 +44,14 @@ Client App (browser/mobile)
 │  GET /products/* ──► feature_flag   │
 │                    [catalog_read]?   │
 │           ┌─────────────────────┐    │
-│           │ Enabled + Healthy?  │    │
+│           │ Bật cờ + Khỏe mạnh?  │    │
 │           └─────────────────────┘    │
 │               │           │          │
 │               ▼           ▼          │
 │      Catalog Service  Magento API   │
 │          :8005        (fallback)    │
 │                                      │
-│  POST/PUT/DELETE /* ──► Magento API │  ← ALL writes go to Magento
+│  POST/PUT/DELETE /* ──► Magento API │  ← TOÀN BỘ request Ghi đều đẩy về Magento
 └─────────────────────────────────────┘
          │                │
          ▼                ▼
@@ -61,85 +59,75 @@ Client App (browser/mobile)
   (read replica)     (source of truth)
          ▲
          │ Debezium CDC + Dapr PubSub
-         │ (every row change in Magento → published to microservices)
+         │ (mỗi dòng bị thay đổi trong Magento → đẩy (publish) sang microservices)
          └──────────────────────────────
 ```
 
-The core constraint during Phase 1 is absolute write isolation: **no write path reaches the microservices**. The API Gateway forces all POST, PUT, and DELETE mutations to legacy Magento regardless of flag states.
+Chỉ thị quan trọng nhất (The key constraint): **tuyệt đối không để bất kỳ đường ghi (write path) nào lọt tới các microservice trong Phase 1**. Thằng Gateway sẽ tống cổ mọi lệnh POST/PUT/DELETE về Magento, bất chấp cờ tính năng đang bật hay tắt.
 
-In modern 2026 cloud-native architecture, this gateway layer is powered by either Envoy Proxy or YARP (Yet Another Reverse Proxy):
-- **Envoy Proxy**: Standard for Kubernetes ingress and sidecar meshes. Envoy uses dynamic xDS APIs (Route Discovery Service - RDS, Cluster Discovery Service - CDS) to update routing rules in memory without process restarts or dropping active TCP connections.
-- **YARP Reverse Proxy**: Ideal for .NET / C# enterprise ecosystems or Windows/Linux hybrid stacks, delivering high-throughput HTTP route matching, destination health probing, and custom middleware request transformation.
-- **Zero-Downtime Decoupling**: Persistent connection keep-alives, HTTP/2 multiplexing, and graceful connection draining (`drain_time_ms: 15000`) prevent HTTP 502 Bad Gateway errors when shifting traffic dynamically between Magento and Go services.
+## 2. Tại Sao Không Dùng Polling Theo Cột `updated_at` Cho Nhanh?
 
-## 2. Why Not Just Use `updated_at` Polling?
-
-Polling `updated_at` fields misses hard deletes and causes severe database CPU spikes, whereas Debezium CDC streams binary log events in real time.
-
-The conventional approach for database synchronization relies on timestamp queries. The following SQL snippet illustrates the typical `updated_at` polling query pattern that fails under high-throughput production workloads:
+Bản năng đầu tiên của mọi người khi phải đồng bộ dữ liệu Magento là viết một vòng lặp quét (polling) cái cột `updated_at`:
 
 ```sql
--- ❌ Polling: misses DELETEs, vulnerable to timestamp skew
+-- ❌ Polling: mù tịt trước các lệnh DELETE, chết ngắc nếu server bị lệch giờ
 SELECT entity_id FROM catalog_product_entity
 WHERE updated_at > :last_check_time
 ORDER BY updated_at ASC
 LIMIT 1000;
 ```
 
-This polling pattern fails fundamentally in enterprise e-commerce environments for four critical technical reasons:
-1. **DELETE operations are invisible**: When a merchant deletes a product or order line, the physical row is deleted. There is no updated timestamp row left behind to signal the change to downstream services.
-2. **Transaction rollbacks & uncommitted reads**: If a long-running transaction updates `updated_at` to `10:00:01` but commits at `10:00:05`, a polling query running at `10:00:03` will skip that record permanently.
-3. **Clock skew & timestamp collisions**: NTP drift between application hosts and database servers causes windowing gaps, while sub-second batch writes share identical timestamps.
-4. **Database contention & index fragmentation**: Repeatedly executing windowed range queries over indexed timestamp columns causes lock escalation, buffer pool eviction, and severe MySQL CPU saturation during peak traffic.
+Cách làm này sẽ sụp đổ theo ba cách:
+1. **Các lệnh DELETE sẽ vô hình**: Một sản phẩm bị xóa sẽ không để lại dấu vết gì ở cột `updated_at` — nó đơn giản là bốc hơi khỏi cái bảng đó luôn.
+2. **Lệch đồng hồ (Clock skew)**: Nếu con MySQL của Magento nằm ở một server khác có cái đồng hồ chạy lệch đi một tí tẹo, các bản ghi có thể bị rơi tõm vào khoảng trống giữa các lần quét.
+3. **Tải đè lên database (High database load)**: Liên tục thực hiện quét toàn bảng (full-table scans) theo timestamp trên một con database e-commerce đang chạy production sẽ gây ra hiện tượng tắc nghẽn (contention).
 
-By contrast, Debezium CDC attaches directly to MySQL's binary logging engine. As documented in the architecture specification:
+Đây là giải pháp trích từ `sync-service-implementation.md`:
 
-> *"Why Debezium instead of `updated_at` polling? Polling on `updated_at` misses DELETE operations entirely and is vulnerable to clock skew and timestamp collisions. Debezium reads MySQL binary logs with GTID auto-positioning, capturing every row-level change reliably with exact before/after state and sub-2-second sync latency."*
+> *"Tại sao lại chọn Debezium thay vì dùng polling `updated_at`? Kỹ thuật polling vào cột `updated_at` sẽ bỏ lọt hoàn toàn các thao tác DELETE và cực kỳ dễ gãy khi đồng hồ bị lệch hoặc trùng timestamp. Debezium đọc thẳng vào binary logs của MySQL, bắt trọn từng thay đổi ở cấp độ dòng (row-level) cực kỳ cẩn mật với dữ liệu chuẩn xác trước/sau (before/after state)."*
 
-## 3. Debezium CDC Setup
+## 3. Cài đặt Debezium CDC
 
-Debezium CDC monitors Magento MySQL binlogs, streaming insert, update, and delete events into Kafka/Dapr without touching application code.
+Debezium đọc file binary log (binlog) của MySQL — chính là cái file log dạng chỉ-thêm-vào (append-only) mà cơ chế replication (nhân bản) của MySQL sử dụng. Mỗi một thao tác INSERT, UPDATE, và DELETE nã vào bất kỳ bảng nào đang được theo dõi cũng sẽ đẻ ra một sự kiện thay đổi (change event).
 
-Debezium reads MySQL's binary log (binlog) — the same append-only log that MySQL replication uses. Every INSERT, UPDATE, and DELETE on any tracked table produces a change event.
+### Bước 1: Bật MySQL Binlog trên DB Magento
 
-### Step 1: Enable MySQL Binlog on Magento DB
-
-Add to `/etc/mysql/conf.d/binlog.cnf` on the Magento MySQL server:
+Thêm đoạn này vào file `/etc/mysql/conf.d/binlog.cnf` trên con server MySQL của Magento:
 
 ```ini
 [mysqld]
 log_bin           = mysql-bin
-binlog_format     = ROW           # Must be ROW — captures exact before/after values
-binlog_row_image  = FULL          # Capture complete row state, not just changed columns
+binlog_format     = ROW           # Bắt buộc phải là ROW — để bắt được chính xác giá trị before/after
+binlog_row_image  = FULL          # Chụp lại toàn bộ dòng dữ liệu, không chỉ lấy mấy cột bị đổi
 expire_logs_days  = 7
-server_id         = 1             # Must be unique across your MySQL replica set
+server_id         = 1             # Bắt buộc phải độc nhất vô nhị trong toàn cụm MySQL replica của bạn
 ```
 
-Create the Debezium replication user:
+Tạo một user chuyên dùng cho Debezium replication:
 
 ```sql
--- Run on Magento MySQL
+-- Chạy câu này trên MySQL của Magento
 CREATE USER 'debezium'@'%' IDENTIFIED BY '${DEBEZIUM_PASSWORD}';
 GRANT SELECT, RELOAD, SHOW DATABASES, REPLICATION SLAVE, REPLICATION CLIENT
   ON *.* TO 'debezium'@'%';
 FLUSH PRIVILEGES;
 ```
 
-Verify binlog is enabled:
+Kiểm tra xem binlog đã lên chưa:
 
 ```sql
 SHOW VARIABLES LIKE 'log_bin';
--- Expected: log_bin = ON
+-- Kết quả kỳ vọng: log_bin = ON
 SHOW VARIABLES LIKE 'binlog_format';
--- Expected: binlog_format = ROW
+-- Kết quả kỳ vọng: binlog_format = ROW
 ```
 
-### Step 2: Debezium Connector Configuration
+### Bước 2: Cấu hình Connector cho Debezium
 
-The platform runs Debezium in **embedded engine mode** — no standalone Kafka Connect cluster required. The connector runs as a sidecar to the sync consumer service:
+Nền tảng của chúng ta chạy Debezium ở **chế độ embedded engine** — không cần phải chăn dắt cả một cụm Kafka Connect độc lập. Cái connector này sẽ chạy ké dưới dạng một sidecar bám theo cái sync consumer service:
 
 ```yaml
-# configs/debezium-connector.json — loaded by the sync consumer at startup
+# configs/debezium-connector.json — được cái sync consumer load lên lúc khởi động
 {
   "connector.class": "io.debezium.connector.mysql.MySqlConnector",
   "database.hostname": "${MAGENTO_DB_HOST}",
@@ -161,50 +149,44 @@ The platform runs Debezium in **embedded engine mode** — no standalone Kafka C
     "${MAGENTO_DB_NAME}.cataloginventory_stock_item"
   ],
 
-  "snapshot.mode": "initial",           // Full snapshot on first run, then incremental
+  "snapshot.mode": "initial",           // Snapshot toàn bộ vào lần chạy đầu tiên, sau đó sẽ chuyển sang incremental (tăng dần)
   "include.schema.changes": "false",
 
-  // Offset storage: remembers binlog position for resume after restart
+  // Lưu trữ Offset: ghi nhớ vị trí binlog để có thể resume lại sau khi khởi động lại
   "offset.storage": "org.apache.kafka.connect.storage.FileOffsetBackingStore",
   "offset.storage.file.filename": "/var/debezium/offsets/offsets.dat",
   "offset.flush.interval.ms": "1000"
 }
 ```
 
-**Critical note on `snapshot.mode: initial`**: On first startup, Debezium takes a full snapshot of all rows in the tracked tables before switching to binlog streaming. This initial snapshot can take 15–60 minutes for a Magento database with millions of products. Plan Phase 1 deployment accordingly.
+**Lưu ý sinh tử về `snapshot.mode: initial`**: Vào lần khởi động đầu tiên, Debezium sẽ chụp một bản snapshot (bản sao toàn bộ) của TẤT CẢ các dòng nằm trong các bảng được theo dõi trước khi nó chuyển sang chế độ stream binlog. Cú snapshot đầu đời này có thể ngốn từ 15–60 phút đối với một database Magento chứa hàng triệu sản phẩm. Hãy tính toán kế hoạch deploy Phase 1 cẩn thận dựa trên con số này.
 
-## 4. The CDC → Dapr Pipeline
+## 4. Đường ống CDC → Dapr
 
-The CDC-to-Dapr pipeline converts raw MySQL row mutations into structured CloudEvents, updating Go microservice read replicas instantaneously.
-
-Rather than deploying complex, multi-node Kafka Connect clusters common in legacy tutorials, modern 2026 architectures adopt lightweight streaming streams using Debezium embedded engine or Debezium Server streaming directly into high-throughput brokers such as Redpanda (C++ Kafka API replacement) or NATS JetStream. 
-
-The data pipeline architecture below illustrates the stream transformation sequence from raw MySQL binary log events down to microservice read store ingestion:
+Thay vì dùng cái đường ống cồng kềnh lấy Kafka làm trung tâm (Kafka-based) nhan nhản trong các bài tutorial trên mạng, nền tảng của chúng ta dùng:
 
 ```
-Magento MySQL binlog
-    ↓ Debezium embedded engine (no Kafka Connect cluster)
-Sync Consumer Service (Go)
-    ↓ Integer → UUID translation via magento_id_map
-    ↓ EAV flattening (varchar + int + decimal → single product record)
+Binlog của Magento MySQL
+    ↓ Debezium embedded engine (Không cần cụm Kafka Connect)
+Sync Consumer Service (viết bằng Go)
+    ↓ Dịch số nguyên → UUID qua bảng magento_id_map
+    ↓ Dát phẳng EAV (gom varchar + int + decimal → thành 1 bản ghi sản phẩm duy nhất)
 Dapr PubSub Publisher
-    ↓ Redis Streams / NATS JetStream (sub-5ms event propagation)
-Microservice Read Replicas
+    ↓ Redis Streams (hạ tầng event có sẵn của nền tảng)
+Microservice Consumers
 ```
 
-Standardized CloudEvent envelopes wrap each domain mutation, specifying event versioning (`v1.0.0`), event source (`magento.cdc.catalog`), and schema payload structure.
+Các topic sự kiện (event) phục vụ cho migration (đã được xác thực trong `sync-service-implementation.md`):
 
-Migration event topics (verified in `sync-service-implementation.md`):
-
-| Topic | Published By | Consumed By |
+| Topic | Người Đẩy (Publisher) | Người Hứng (Consumer) |
 |---|---|---|
 | `migration.customer.changed` | Sync Service | Customer Service |
 | `migration.product.changed` | Sync Service | Catalog Service |
 | `migration.order.changed` | Sync Service | Order Service |
 | `migration.stock.changed` | Sync Service | Warehouse Service |
-| `migration.dlq` | Dapr (auto) | Ops team via DLQ handler |
+| `migration.dlq` | Dapr (tự động) | Đội Ops qua DLQ handler |
 
-The Go implementation of the sync consumer handles integer-to-UUID translation, pivots fragmented Magento EAV tables (`catalog_product_entity_varchar`, `int`, `decimal`) into unified JSON models, and dispatches events to Dapr:
+Đoạn code của sync consumer gánh đường ống sản phẩm:
 
 ```go
 // sync-service/internal/consumer/product_consumer.go
@@ -214,62 +196,58 @@ func (c *ProductConsumer) HandleChange(ctx context.Context, event debezium.Chang
         return nil
     }
 
-    // Step 1: Translate Magento integer ID → UUID
+    // Bước 1: Phiên dịch Magento integer ID → UUID
     magentoID := event.After["entity_id"].(int64)
     uuid, err := c.idMapper.GetOrCreate(ctx, "product", magentoID)
     if err != nil {
         return fmt.Errorf("id mapping failed for product %d: %w", magentoID, err)
     }
 
-    // Step 2: Fetch full product data (EAV pivot query)
+    // Bước 2: Bốc toàn bộ dữ liệu sản phẩm (chạy câu EAV pivot query)
     product, err := c.extractor.ExtractProduct(ctx, magentoID)
     if err != nil {
         return fmt.Errorf("EAV extraction failed for product %d: %w", magentoID, err)
     }
     product.ID = uuid
 
-    // Step 3: Publish to Dapr PubSub
+    // Bước 3: Publish vào Dapr PubSub
     payload, _ := json.Marshal(product)
     return c.daprClient.PublishEvent(ctx, "pubsub", "migration.product.changed", payload)
 }
 ```
 
-## 5. Feature Flag Routing
+## 5. Điều hướng bằng Cờ Tính Năng (Feature Flag Routing)
 
-API Gateway feature flags dynamically route catalog read requests between legacy Magento and Go microservices, enabling instant traffic shifting and immediate rollback capability during migration testing.
-
-The Gateway layer utilizes path-based and header-based canary evaluation. In 2026 architectures, routing controls leverage Envoy dynamic Route Discovery Service (RDS) or YARP HTTP matching rules, allowing header-based canary inspection (`X-Canary-User: true`) and weighted cluster shifts (e.g. 95% traffic to Magento monolith, 5% to Go catalog microservice).
-
-The Go HTTP middleware below inspects active feature flags and target service health before routing incoming requests:
+Thằng Gateway Service sẽ làm nhiệm vụ điều hướng traffic dựa vào các cờ tính năng (feature flags) gắn theo từng domain, được lôi ra đánh giá ở MỖI request:
 
 ```go
 // gateway-service/internal/middleware/feature_flag.go
 
 func FeatureFlagMiddleware(flagStore FlagStore) gin.HandlerFunc {
     return func(c *gin.Context) {
-        // Determine which domain this request belongs to
+        // Lấy domain của request này
         domain := extractDomain(c.Request.URL.Path)
 
         flag, err := flagStore.Get(c, fmt.Sprintf("%s_read", domain))
         if err != nil || !flag.Enabled {
-            // Flag not found or disabled → proxy to Magento
+            // Không tìm thấy cờ hoặc cờ đang tắt → proxy vứt thẳng sang Magento
             proxyToMagento(c)
             return
         }
 
-        // Check if the target microservice is healthy
+        // Kiểm tra xem microservice mục tiêu có đang thở không (healthy)
         if !isHealthy(domain) {
-            // Service unhealthy → automatic fallback
+            // Service đang ngỏm → tự động fallback
             proxyToMagento(c)
             return
         }
 
-        c.Next() // Forward to microservice handler
+        c.Next() // Cho đi tiếp vào microservice handler
     }
 }
 ```
 
-Feature flag definitions are encapsulated inside a Kubernetes ConfigMap, enabling zero-downtime, sub-30-second hot-reloads across API Gateway pod replicas without requiring binary re-deployments:
+Tính năng Feature flags được lưu trữ trong Kubernetes ConfigMap và hỗ trợ hot-reload (cập nhật không cần khởi động lại):
 
 ```yaml
 # configmap/feature-flags.yaml
@@ -279,93 +257,70 @@ metadata:
   name: feature-flags
   namespace: production
 data:
-  catalog_read: "true"     # Route GET /products/* to Catalog Service
-  customer_read: "false"   # Still routing to Magento (not ready yet)
-  order_read: "false"      # Still routing to Magento
+  catalog_read: "true"     # Đẩy GET /products/* sang Catalog Service
+  customer_read: "false"   # Vẫn đẩy về Magento (chưa hòm hòm)
+  order_read: "false"      # Vẫn đẩy về Magento
 ```
 
-Enabling a flag for a domain takes effect dynamically within seconds across all gateway instances. If anomalies occur during testing, flipping `catalog_read` back to `"false"` instantly restores 100% traffic flow to Magento monolith without dropping connected user sessions.
+Việc bật cờ cho một domain sẽ có tác dụng trong vòng 30 giây (khoảng thời gian refresh của ConfigMap) — tuyệt đối không cần tới một thao tác deployment nào.
 
-To prevent cascading failures and guarantee high availability, the API Gateway incorporates circuit breaker patterns and automated outlier detection. In 2026 Envoy deployments, passive health checking ejection combined with active gRPC/HTTP health checking automatically ejects failing microservice instances from upstream clusters.
+## 6. Tự Động Fallback: Khả Năng Tự Phục Hồi Của Gateway
 
-The Go health monitoring component below tracks consecutive upstream failure counters and automatically trips feature flags back to Magento fallback routing when error rates exceed threshold limits:
+Thằng Gateway được cài một bộ đếm để tự xả kèo (fallback) sau 3 lần xịt:
 
 ```go
-// gateway-service/internal/middleware/health_monitor.go
-
-type DomainHealth struct {
-    failures atomic.Uint64
-}
+// gateway-service/internal/health/monitor.go
 
 type HealthMonitor struct {
-    mu        sync.RWMutex
-    domains   map[string]*DomainHealth
-    flagStore FlagStore
-}
-
-func NewHealthMonitor(flagStore FlagStore) *HealthMonitor {
-    return &HealthMonitor{
-        domains:   make(map[string]*DomainHealth),
-        flagStore: flagStore,
-    }
+    failureCounts sync.Map  // domain → số lần xịt liên tiếp
+    flagStore     FlagStore
 }
 
 func (m *HealthMonitor) RecordFailure(domain string) {
-    m.mu.Lock()
-    dh, exists := m.domains[domain]
-    if !exists {
-        dh = &DomainHealth{}
-        m.domains[domain] = dh
-    }
-    m.mu.Unlock()
+    count, _ := m.failureCounts.LoadOrStore(domain, int64(0))
+    newCount := count.(int64) + 1
+    m.failureCounts.Store(domain, newCount)
 
-    newCount := dh.failures.Add(1)
     if newCount >= 3 {
-        // 3 consecutive failures → auto-disable feature flag
+        // Xịt 3 phát liên tiếp → tự động tắt cờ tính năng
         m.flagStore.Disable(domain + "_read")
-        log.Warnf("Auto-disabled %s_read after %d consecutive failures", domain, newCount)
-        alert.Send(fmt.Sprintf("⚠️ %s_read auto-disabled — check service health", domain))
+        log.Warnf("Đã tự động tắt cờ %s_read sau %d lần xịt liên tiếp", domain, newCount)
+        // Bắn alert vào kênh Slack #migration-issues
+        alert.Send(fmt.Sprintf("⚠️ %s_read đã bị tự động tắt — yêu cầu check sức khỏe của service", domain))
     }
 }
 
 func (m *HealthMonitor) RecordSuccess(domain string) {
-    m.mu.RLock()
-    dh, exists := m.domains[domain]
-    m.mu.RUnlock()
-    if exists {
-        dh.failures.Store(0)
-    }
+    m.failureCounts.Store(domain, int64(0))
 }
 ```
 
-When a circuit breaker trips, requests are transparently rerouted to legacy Magento. Re-enabling the feature flag requires explicit operator intervention after checking service logs and telemetry dashboard metrics, preventing service flapping.
+Một khi cờ đã bị tắt bởi hệ thống tự động, việc bật nó lên lại đòi hỏi phải có bàn tay can thiệp của con người (đọc log, xác minh service đã khỏe mạnh trở lại, sau đó sửa tay cái file ConfigMap). Cơ chế này chặn đứng tình trạng một con service đang chết ngắc ngoải (flapping) cứ tự động bật cờ lên rồi lại kéo nhau chết chùm.
 
-## 7. Phase 1 Success Criteria
+## 7. Tiêu Chí Nghiệm Thu Giai Đoạn 1
 
-Phase 1 success criteria require offloading 80% of catalog read traffic to Go microservices while maintaining zero write inconsistencies.
+Trước khi có thể hùng hồn tuyên bố Giai đoạn 1 đã xong và rục rịch sang Giai đoạn 2:
 
-Before declaring Phase 1 complete and transitioning to Phase 2 dual-write synchronization, the deployment must meet strict operational SLAs tracked via Prometheus metrics and automated validation tools:
-
-| Metric | Target | How to Measure |
+| Chỉ Số (Metric) | Mục Tiêu (Target) | Cách Đo |
 |---|---|---|
-| Data sync latency | < 2 seconds | `check-data-consistency.sh catalog 100` |
-| Fallback time | < 5 seconds | Disable service pod, measure time to Magento fallback |
-| Read operation success rate | > 99.9% | Prometheus `http_request_duration_seconds` |
-| Zero write errors | 0 | All POSTs returning 2xx from Magento |
-| 7-day monitoring period | Zero auto-disables | Review flag history in ConfigMap events |
+| Độ trễ đồng bộ (Data sync latency) | < 2 giây | `check-data-consistency.sh catalog 100` |
+| Thời gian Fallback | < 5 giây | Tắt mẹ cái service pod đi, đo xem mất bao lâu để nó tự nhảy về Magento |
+| Tỷ lệ thành công (Success rate) của lệnh đọc | > 99.9% | Prometheus `http_request_duration_seconds` |
+| Số lỗi liên quan tới ghi (Zero write errors) | 0 | Đảm bảo mọi lệnh POST đổ về Magento đều trả về 2xx |
+| Theo dõi suốt 7 ngày | Không bị tự động tắt cờ lần nào | Lục lại lịch sử đổi cờ trong ConfigMap events |
 
-Automated data consistency validation runs continuously via Kubernetes CronJob. The shell script below performs randomized sample verification comparing primary key records between legacy MySQL and microservice PostgreSQL:
+Kịch bản (script) để thẩm định độ nhất quán dữ liệu (data consistency) (được cài chạy cronjob mỗi 15 phút một lần suốt Giai đoạn 1):
 
 ```bash
 #!/bin/bash
 # scripts/check-data-consistency.sh
 
-SERVICE=$1       # e.g., "catalog"
-SAMPLE_SIZE=$2   # e.g., 100
+SERVICE=$1       # ví dụ: "catalog"
+SAMPLE_SIZE=$2   # ví dụ: 100
 
-echo "Checking $SERVICE data consistency ($SAMPLE_SIZE samples)..."
+echo "Đang kiểm tra độ nhất quán dữ liệu của $SERVICE ($SAMPLE_SIZE mẫu)..."
 
-# Get sample record IDs from Magento
+# Lấy ID của các bản ghi mẫu từ Magento
 MAGENTO_IDS=$(mysql -h $MAGENTO_DB -e "
     SELECT entity_id FROM catalog_product_entity
     ORDER BY RAND() LIMIT $SAMPLE_SIZE
@@ -374,13 +329,13 @@ MAGENTO_IDS=$(mysql -h $MAGENTO_DB -e "
 MISMATCH_COUNT=0
 
 while IFS= read -r magento_id; do
-    # Get UUID from magento_id_map
+    # Bốc UUID từ magento_id_map
     UUID=$(psql $PLATFORM_DB -t -c "
         SELECT platform_uuid FROM magento_id_map
         WHERE entity_type = '${SERVICE}' AND magento_id = $magento_id
     ")
 
-    # Compare updated_at timestamps (must be within 2 seconds)
+    # Đem hai cái updated_at timestamp ra đọ (phải lệch nhau dưới 2 giây)
     MAGENTO_TS=$(mysql -h $MAGENTO_DB -e "
         SELECT UNIX_TIMESTAMP(updated_at) FROM catalog_product_entity
         WHERE entity_id = $magento_id
@@ -393,61 +348,68 @@ while IFS= read -r magento_id; do
     LAG=$(echo "$PLATFORM_TS - $MAGENTO_TS" | bc | tr -d '-')
 
     if (( $(echo "$LAG > 2" | bc -l) )); then
-        echo "⚠️  Product $magento_id lag: ${LAG}s"
+        echo "⚠️  Sản phẩm $magento_id bị trễ mất: ${LAG}s"
         ((MISMATCH_COUNT++))
     fi
 done <<< "$MAGENTO_IDS"
 
-echo "Validation complete. Mismatches: $MISMATCH_COUNT / $SAMPLE_SIZE"
-[ $MISMATCH_COUNT -eq 0 ] && echo "✅ All samples within 2s SLA"
+echo "Đã kiểm tra xong. Số mẫu bị lỗi: $MISMATCH_COUNT / $SAMPLE_SIZE"
+[ $MISMATCH_COUNT -eq 0 ] && echo "✅ Toàn bộ mẫu đều đạt chuẩn SLA < 2s"
 ```
 
-## 8. Deployment Checklist
+## 8. Danh Sách Kiểm Tra Khi Triển Khai (Deployment Checklist)
 
-The Phase 1 deployment checklist verifies Debezium connector stability, Dapr PubSub topics, API Gateway feature flags, and health probes.
+**Trước khi deploy (1–2 tuần trước lúc go-live Phase 1):**
+- [ ] Bật MySQL binlog cho Magento (`log_bin = ON`, `binlog_format = ROW`)
+- [ ] Tạo user cho Debezium replication, cấp đủ quyền (grants)
+- [ ] Bơm đầy `magento_id_map` (kiểm tra lại số đếm có khớp với entity count bên Magento không)
+- [ ] Chạy trích xuất (extraction) toàn bộ EAV và nghiệm thu thành công (count match)
+- [ ] Deploy Sync Consumer Service, chạy snapshot cày dữ liệu lần đầu
+- [ ] Check lại toàn bộ Dapr topic dành cho việc migration xem đã nhận được sự kiện chưa
+- [ ] Tạo PersistentVolumeClaim trên Kubernetes để chứa cái offset file của Debezium
 
-**Pre-deployment (1–2 weeks before Phase 1 go-live):**
-- [ ] Magento MySQL binlog enabled (`log_bin = ON`, `binlog_format = ROW`)
-- [ ] Debezium replication user created with correct grants
-- [ ] `magento_id_map` populated (count matches Magento entity count)
-- [ ] Full EAV extraction completed and validated (count match)
-- [ ] Sync Consumer Service deployed, initial snapshot complete
-- [ ] All migration Dapr topics confirmed receiving events
-- [ ] Kubernetes PersistentVolumeClaim for Debezium offset file created
+**Go-live Phase 1:**
+- [ ] Feature flags: Mặc định tắt hết `"false"` (chạy mượt qua Magento)
+- [ ] Bật `catalog_read: "true"` cho 10% quân số trong team test thử
+- [ ] Chăm chú theo dõi trong 24h: cờ không bị tự động tắt, latency < 2s
+- [ ] Bật cờ hứng 100% traffic
+- [ ] Lên bảng dashboard monitoring hứng số liệu cho Phase 1
 
-**Phase 1 go-live:**
-- [ ] Feature flags: all set to `"false"` (Magento routing)
-- [ ] Enable `catalog_read: "true"` for 10% of team to verify
-- [ ] Monitor for 24 hours: no auto-disables, latency < 2s
-- [ ] Enable for 100% traffic
-- [ ] Set up monitoring dashboard for Phase 1 metrics
+**Kết thúc Phase 1 (Đạt đủ tiêu chuẩn nhảy sang Phase 2):**
+- [ ] Tất cả các domain đã được bật: chạy thông đồng 7 ngày liền không bị tự động tắt cờ
+- [ ] Thẩm định độ nhất quán dữ liệu: quét ngẫu nhiên 1000 mẫu trả về 0 lỗi
+- [ ] Hiệu năng: p99 latency < 200ms cho toàn bộ các endpoint đọc
 
-**Phase 1 complete (prerequisites for Phase 2):**
-- [ ] All enabled domains: 7 consecutive days without auto-disable
-- [ ] Data consistency validation: 0 mismatches on 1000-sample check
-- [ ] Performance: p99 latency < 200ms for all read endpoints
+## Bước Tiếp Theo
 
-## What's Next
+Giai đoạn 1 đang chạy rầm rập. Microservice đã gánh được phần đọc (read). Magento vẫn nắm quyền sinh sát phần ghi (write). Sang tới [Phần 7: Giai đoạn 2 — Ghi Kép (Dual-Write)](/series/composable-commerce-migration/part-7-phase2-dual-write/), chúng ta sẽ bắt đầu bật tính năng ghi dữ liệu trên các microservice — mở hàng với Customer Service (rủi ro thấp nhất) và khép lại bằng Order Service (rủi ro ngập mặt). Thách thức đắt giá: cả Magento lẫn microservice giờ đây sẽ lao vào sửa cùng một khối dữ liệu cùng một lúc (concurrently). Chúng ta sẽ mổ xẻ cái chiến thuật phân xử xung đột (conflict resolution strategy) để xử lý mớ bòng bong này mà không làm mất một bit dữ liệu nào.
 
-Phase 2 advances from read-only migration to event-driven dual-write sync for order processing and customer state mutations.
+## Câu Hỏi Thường Gặp (FAQ)
 
-Phase 1 is running. Reads are served by microservices. Magento still owns all writes. In [Part 7: Phase 2 — Dual-Write](/series/composable-commerce-migration/part-7-phase2-dual-write/), we enable write operations on microservices — starting with Customer Service (lowest risk) and ending with Order Service (highest risk). The challenge: both Magento and microservices can now mutate the same data concurrently. We'll cover the conflict resolution strategy that handles it without data loss.
+### Debezium khác quái gì so với Kafka Connect?
 
-## FAQ
+Debezium là một **thư viện CDC connector** — nó bới móc mớ log thay đổi của database (MySQL binlog, PostgreSQL WAL, v.v.) và sản sinh ra các sự kiện thay đổi theo cơ chế log-based CDC. Còn Kafka Connect là một **framework dùng để chạy mấy cái connector đó**, thường được xài để rải Debezium ở quy mô lớn với đầy đủ món ăn chơi như tự động khắc phục sự cố, dải worker phân tán, và REST API. 
 
-Strangler Fig read-only migration reduces legacy monolith load immediately without risking checkout or payment write integrity.
+*Góc nhìn vận hành 2026 (E-E-A-T Context): CDC hiện nay được coi là một kỷ luật hạ tầng doanh nghiệp chứ không chỉ là công cụ copy dữ liệu. Nền tảng của chúng ta chọn chạy Debezium ở **chế độ embedded engine** — cái connector này chạy cắm rễ bên trong cái process Go của con sync-consumer, đá văng nhu cầu vận hành cụm Kafka Connect. Sự đánh đổi là fault tolerance thấp hơn (do chạy 1 process), nhưng bù lại dễ vận hành hơn cả tỷ lần. Lưu ý rằng do việc đồng bộ CDC mang tính chất "at-least-once" (ít nhất một lần), mọi hàm xử lý (consumer) tại các microservice mục tiêu bắt buộc phải được thiết kế dạng lũy đẳng (idempotency) kết hợp với các vòng lặp đối chiếu (reconciliation loops) để đảm bảo dữ liệu không bị hỏng hóc hoặc lặp lại.*
 
-{{< faq q="What is the difference between Debezium and Kafka Connect?" >}}
-Debezium is a **CDC connector library** — it reads database change logs (MySQL binlog, PostgreSQL WAL, etc.) and produces change events. Kafka Connect is a **framework for running connectors**, typically used to deploy Debezium at scale with full fault-tolerance, distributed workers, and REST management API. This platform runs Debezium in **embedded engine mode** — the connector runs inside the sync-consumer Go service process, eliminating the need to operate a Kafka Connect cluster. The trade-off: embedded mode has lower fault tolerance (single process), but is significantly simpler to operate for a team that doesn't already run Kafka infrastructure.
-{{< /faq >}}
+### Pattern Strangler Fig (Cây siết cổ) giúp né downtime khi migration kiểu gì?
 
-{{< faq q="How does the Strangler Fig pattern avoid downtime during migration?" >}}
-The Strangler Fig works by routing traffic at the proxy/gateway layer — not by switching systems. During Phase 1, the same domain name responds to all traffic. The CDN or API Gateway inspects each request: if the feature flag is enabled and the target service is healthy, the request goes to microservices; otherwise it falls through to Magento. There is no DNS switch, no maintenance window, and no user-visible disruption. The migration happens behind the routing layer over weeks, not hours.
-{{< /faq >}}
+Strangler Fig vận hành bằng cách luân chuyển dòng chảy traffic ngay tại tầng proxy/gateway — chứ không phải bằng cách tắt hệ thống này bật hệ thống kia lên. Suốt quá trình Phase 1, cùng một cái tên miền đó sẽ đứng ra hứng toàn bộ traffic. CDN hoặc API Gateway sẽ phân tích từng request một: nếu thấy cờ tính năng bật và cái service mục tiêu còn đang thở (healthy), nó sẽ ném request qua cho microservice; còn không, nó sẽ buông tay xả cho rớt xuống Magento. Hoàn toàn không có chuyện trỏ lại DNS (DNS switch), không có bảo trì hệ thống định kỳ (maintenance window), và không có lấy một khoảnh khắc gián đoạn nào mà người dùng có thể thấy được. Cuộc di dời này âm thầm diễn ra phía sau lớp routing suốt nhiều tuần liền, chứ không phải diễn ra chớp nhoáng trong vài tiếng đồng hồ.
 
-{{< faq q="How do you handle the initial Debezium snapshot without blocking production MySQL?" >}}
-Debezium's `snapshot.mode: initial` reads all rows using a consistent snapshot — it uses MySQL's `REPEATABLE READ` isolation level, which means it doesn't lock the table. However, it does consume significant I/O bandwidth during the snapshot phase (reading millions of rows sequentially). Best practice: run the initial snapshot during off-peak hours, monitor MySQL I/O metrics, and configure Debezium's `max.batch.size` to throttle the read rate if needed.
+### Làm thế nào để giải quyết vụ Debezium chạy snapshot lần đầu mà không block (khóa) luôn con MySQL đang chạy production?
 
-{{< /faq >}}
+Cái lệnh `snapshot.mode: initial` của Debezium sẽ đọc toàn bộ dữ liệu bằng một bản snapshot đồng nhất (consistent snapshot) — nó xài cái cấp độ cô lập (isolation level) `REPEATABLE READ` của MySQL, nghĩa là nó **không** lock (khóa) cái bảng đó lại. Tuy nhiên, nó lại ngốn cực kỳ nhiều băng thông I/O suốt quãng thời gian snapshot (do nó phải tuần tự nhai hết hàng triệu dòng). Best practice ở đây là: hãy chạy cái initial snapshot này vào giờ thấp điểm (off-peak hours), dán mắt vào các chỉ số MySQL I/O metrics, và vặn cái cấu hình `max.batch.size` của Debezium để hãm bớt tốc độ đọc lại nếu thấy cần.
 
-🔗 **Next Step:** Continue to [Part 7 — Phase2 Dual Write](/series/composable-commerce-migration/part-7-phase2-dual-write/) for the following module in the series.
+---
+
+*Bài viết này nằm trong **[Series Chuyển đổi sang Composable Commerce](/series/composable-commerce-migration/)**. Hãy xem toàn bộ mục lục để nắm bắt ngữ cảnh kiến trúc đầy đủ nhất.*
+
+*Bạn cần hỗ trợ đánh giá rủi ro cho đợt chuyển đổi nền tảng sắp tới? â†’ [Đặt lịch Tư vấn Kiến trúc 1:1](/hire/)*
+
+---
+
+---
+
+---
+
+[← Chương trước: Phần 5: Chuyển Đổi Schema EAV Magento](/series/composable-commerce-migration/part-5-eav-schema-migration/) | [Mục lục Series](/series/composable-commerce-migration/) | [Chương tiếp theo: Phần 7: Giai Đoạn 2 — Dual-Write Dapr PubSub →](/series/composable-commerce-migration/part-7-phase2-dual-write/)

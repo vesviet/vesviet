@@ -1,89 +1,79 @@
 ---
-title: "Agentic System Architecture: Multi-Agent in Production"
+title: "Series: Agentic System Architecture"
 slug: "agentic-system-architecture"
-date: "2026-05-14T08:00:00+07:00"
-lastmod: "2026-06-16T08:00:00+07:00"
+description: "Phân tích chuyên sâu thiết kế, xây dựng và vận hành các hệ thống Multi-Agent trên môi trường production thực tế."
+date: 2026-05-14T08:00:00+07:00
+lastmod: 2026-08-16T12:00:00+07:00
+author: "Lê Tuấn Anh"
 draft: false
-description: "Design and operate multi-agent systems in production: topology, memory management, secure tool calling, guardrails, and AgentOps observability with Go."
+weight: 50
 ShowToc: true
 TocOpen: true
-weight: 50
-cover:
-  image: "/images/posts/agentic-system-architecture.jpg"
-  alt: "Agentic System Architecture: multi-agent in production — orchestration, tools, and deployment"
-  relative: false
-author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/agentic-system-architecture/"
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Series: Agentic System Architecture"
+  relative: false
+categories: ['Series', 'AI Engineering', 'Multi-Agent Systems']
+tags: ['AI Agents', 'Multi-Agent', 'MCP', 'AgentOps', 'LangGraph', 'Architecture']
 ---
 
-**Answer-first:** Production multi-agent architectures transition prompt-based workflows into resilient distributed systems using hierarchical orchestration topologies, persistent memory graphs, Model Context Protocol (MCP) tool gateways, automated evaluations, and OpenTelemetry observability.
+> **Answer-first:** Series Agentic System Architecture cung cấp blueprint kỹ thuật chuẩn production để thiết kế hệ thống Multi-Agent: phân loại topology điều phối, quản trị bộ nhớ đa tầng (episodes, graphs, context windows), bảo mật tool calling qua MCP 1.x, thiết lập OpenTelemetry AgentOps và xây dựng rào chắn Human-in-the-loop cho autonomous swarms.
 
-## Agentic System Architecture: Multi-Agent in Production
+Chào mừng bạn đến với Series **Agentic System Architecture** - một tài liệu kỹ thuật chuyên sâu dành cho Senior Backend Engineer, System Architect, và AI Engineer. Cập nhật mới nhất 2026: Kiến trúc hệ thống giờ đây xoay quanh các chuẩn Model Context Protocol (MCP) và orchestration dựa trên LangGraph.
 
-Multi-agent architectures decompose enterprise monolithic AI tasks into autonomous micro-agents with clear responsibility boundaries, event-driven state transitions, and deterministic execution contracts.
+Trước khi bắt đầu, nếu bạn chưa quen với khái niệm AI-Native System hoặc Model Context Protocol, chúng tôi **đặc biệt khuyến nghị** bạn đọc qua bài viết tiền đề: [Kiến Trúc Hệ Thống AI-Native Toàn Diện (Playbook Phần 8)](/series/ai-driven-playbook/part-8-ai-native-system-architecture/).
 
-Senior backend engineers and system architects are moving beyond basic single-prompt chains to production-grade distributed agent systems. In modern enterprise environments, agentic architectures run high-concurrency Go orchestrators, stateful Redis and vector memory layers, and secure Model Context Protocol (MCP) gateways to execute multi-step workflows.
-
-> **About this Masterclass**
-> 
-> This series distills practical engineering experience from deploying autonomous AI Agent topologies in production. We cover topological patterns (Hierarchical, Router, Evaluator-Optimizer, Swarm), state management, prompt injection defense, agent evaluation suites, and distributed OpenTelemetry tracing.
-
----
-
-## 🎯 Multi-Agent Architecture Consulting (Hire Me)
-
-Independent architecture consulting specializing in high-concurrency multi-agent systems, Go orchestrators, secure tool calling, and production AgentOps telemetry.
-
-Building scalable agentic infrastructure requires rigorous topology design, typed tool schemas, rate-limited gateway proxies, and real-time observability. Whether designing autonomous agent swarms or auditing prompt security guardrails, targeted architectural guidance ensures high system reliability and zero unauthorized API access.
-
-👉 **[Book a 1:1 Architecture Consultation today](/hire/)** to receive a custom Agentic System blueprint tailored for your enterprise.
+Trong series này, chúng ta sẽ chuyển từ việc "Sử dụng AI để viết code" sang **"Thiết kế kiến trúc hệ thống nơi AI Agent giao tiếp với nhau để tự động hoá quy trình"**. Từ Topology, Memory, Guardrails, cho đến Production Observability.
 
 ---
 
-## 💡 What is Agentic System Architecture?
+## 📚 Mục Lục Series (Chapter Roadmap)
 
-Agentic system architecture decouples complex business goals into specialized autonomous agents coordinated by stateful orchestrators, tool gateways, and guardrails.
+- **[Executive Summary: Chuyển dịch sang kiến trúc Agentic](/series/agentic-system-architecture/executive-summary/)**  
+  *Bức tranh toàn cảnh về sự chuyển đổi từ Prompt Chains đơn lẻ sang Multi-Agent Swarms tự trị, đánh giá ROI và rủi ro kiến trúc.*
 
-Unlike traditional linear pipelines or single-turn conversational bots, agentic system architecture structures AI models into autonomous execution nodes. Each agent operates within a defined scope, utilizing tools via structured JSON schemas, maintaining state across reasoning cycles, and handing off control via deterministic state machines or dynamic router nodes.
+- **[Phần 1: Agent Topology & Orchestration](/series/agentic-system-architecture/part-1-topology/)**  
+  *Các mô hình giao tiếp (Hierarchical, Peer-to-Peer, Router-Worker), cơ chế định tuyến tác vụ và cách xây dựng Orchestrator an toàn.*
 
-### Core Architectural Pillars
-- **Agent Topologies:** Hierarchical control trees, dynamic router graphs, and peer-to-peer swarms configured for domain-specific subtasks.
-- **State & Context Engine:** Epistemic vector storage combined with transactional Redis key-value stores for long-term memory retrieval and sliding window context compression.
-- **Tool Protocol Gateways:** Zero-trust tool execution proxies implementing Model Context Protocol (MCP) with OAuth 2.1 authentication and schema validation.
-- **Production Guardrails:** Inline moderation layers enforcing input sanitization, output structural verification, and maximum token/depth budgets.
+- **[Phần 2: State, Memory & Context Management](/series/agentic-system-architecture/part-2-memory/)**  
+  *Giải bài toán Context Window, phân tầng bộ nhớ Short-term, Long-term, Episodic Memory và tích hợp Entity Knowledge Graph.*
+
+- **[Phần 3: Secure Tool Calling & Guardrails](/series/agentic-system-architecture/part-3-tool-calling/)**  
+  *Bảo vệ hệ thống khỏi Prompt Injection, giới hạn quyền thực thi (Least Privilege), tích hợp MCP 1.x và sandbox container.*
+
+- **[Phần 4: AgentOps & Production Observability](/series/agentic-system-architecture/part-4-agentops/)**  
+  *Giám sát Agentic Systems bằng OpenTelemetry GenAI semantics, truy vết LLM spans, phát hiện Agent drift và phòng chống infinite loops.*
+
+- **[Phần 5: Đánh Giá AI Agent (Agent Evals)](/series/agentic-system-architecture/part-5-agent-evals/)**  
+  *Khung kiểm thử Benchmark, đo lường tỷ lệ thành công của trajectory, đánh giá LLM-as-a-Judge và tự động hóa regression test trong CI/CD.*
+
+- **[Phần 6: Kiến Trúc Human-in-the-Loop (HITL)](/series/agentic-system-architecture/part-6-human-in-the-loop/)**  
+  *Thiết kế các điểm phê duyệt then chốt (approval gates), cơ chế chuyển giao con người (fallback handover) và can thiệp thời gian thực cho autonomous swarms.*
 
 ---
 
-## ❓ Frequently Asked Questions (FAQ)
+## ❓ Câu Hỏi Thường Gặp (FAQ)
 
-Production multi-agent architectures solve complex enterprise workflows by enforcing strict state management, typed tool contracts, and distributed telemetry.
-
-{{< faq q="What is the difference between traditional RAG and Agentic RAG?" >}}
-Traditional RAG is a linear process: receive a query, run vector retrieval, and synthesize a single answer. Agentic RAG introduces iterative reasoning loops where autonomous agents evaluate retrieved context sufficiency, formulate secondary search queries, query external APIs via tool calling, and cross-examine facts before generating a response.
+{{< faq q="Tại sao nên chọn kiến trúc Multi-Agent thay vì một Single Agent lớn với prompt dài?" >}}
+Single Agent với prompt dài dễ gặp hiện tượng suy giảm chú ý (attention dilution), giới hạn ngữ cảnh và khó kiểm soát quyền hạn. Multi-Agent phân rã bài toán thành các Bounded Contexts chuyên biệt (như Specialist Agents), cho phép áp dụng Least Privilege Tool Calling, tối ưu chi phí token qua việc chọn model phù hợp cho từng task, và dễ dàng cô lập lỗi khi một agent thất bại.
 {{< /faq >}}
 
-{{< faq q="How do you control the risk of Poisoning in a Multi-Agent system?" >}}
-Indirect prompt injection risks are mitigated by deploying zero-trust guardrails between external data sources and internal LLM context windows. Architectures enforce least-privilege tool execution, AST parameter sanitization, static schema validation, and isolated execution sandboxes for untrusted data payloads.
+{{< faq q="Làm thế nào để phát hiện và ngăn chặn vòng lặp vô tận (Infinite Loops) giữa các Agents?" >}}
+Để phòng chống infinite loops trong production, hệ thống cần áp dụng 3 lớp bảo vệ: (1) Execution Step Limit (hard cap số bước tối đa cho mỗi plan), (2) Graph State Hashing để phát hiện trạng thái lặp lại liên tiếp, và (3) OpenTelemetry Distributed Tracing kết hợp AgentOps alert để tự động ngắt session và kích hoạt Human-in-the-loop fallback.
 {{< /faq >}}
 
-{{< faq q="How do you evaluate and benchmark non-deterministic multi-agent workflows in CI/CD?" >}}
-Evaluating multi-agent workflows requires synthetic scenario generation, LLM-as-a-Judge grading rubrics, and regression test suites executed inside isolated CI/CD pipelines. By tracking trajectory pass rates, cost per task, and latency percentiles alongside exact match assertions, engineering teams maintain deterministic reliability across non-deterministic agent executions.
+{{< faq q="Model Context Protocol (MCP) đóng vai trò gì trong kiến trúc Agentic 2026?" >}}
+MCP đóng vai trò như lớp chuẩn hóa giao tiếp (USB-C cho AI) giữa Agent Orchestrator và các tài nguyên bên ngoài (Databases, Git, APIs, File Systems). Thay vì mỗi agent phải tự cài đặt driver riêng lẻ, MCP cung cấp giao thức JSON-RPC chuẩn hóa với khả năng discovery tool schemas, quản lý xác thực OAuth 2.1 và thực thi chính sách bảo mật tập trung.
 {{< /faq >}}
 
 ---
 
-## 📚 Core Curriculum
+## 🔗 Series Liên Quan & Hệ Sinh Thái AI-Native
 
-The agentic architecture curriculum covers topology design, memory management, tool calling security, evaluation pipelines, production observability, benchmark suites, and governance guardrails across 6+ parts.
+- **[MCP Engineering In Production](/series/mcp-engineering-in-production/)** — Cẩm nang xây dựng và mở rộng hạ tầng Model Context Protocol chuẩn doanh nghiệp bằng Go.
+- **[Sổ Tay: The AI-Driven Playbook](/series/ai-driven-playbook/)** — Cẩm nang thực chiến triển khai AI-First SDLC, Context Engineering và Quality Gates.
+- **[The AI-Driven Engineer](/series/ai-driven-engineer/)** — Lộ trình chuyển đổi sự nghiệp từ lập trình viên sang AI System Orchestrator.
+- **[Generative UI & AI-Native Frontend Architecture](/series/generative-ui-architecture/)** — Thiết kế giao diện động Generative UI kết nối trực tiếp với Multi-Agent Swarms.
+- **[Vibe Coding & AI Code Review](/series/ai-code-review-vibe-coding/)** — Quy trình audit mã nguồn do AI sinh ra và phòng ngừa rủi ro bảo mật OWASP LLM.
 
-The journey of building a Multi-Agent system from scratch:
-
-1. **Executive Summary:** [The Shift to Agentic Architectures](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)
-2. **Part 1:** [Agent Topology & Orchestration](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)
-3. **Part 2:** [State, Memory & Context Management](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)
-4. **Part 3:** [Secure Tool Calling & Guardrails](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/) (To securely expose internal enterprise APIs to your Agents without writing hardcoded integrations, we implement the [Model Context Protocol (MCP)](/series/mcp-engineering-in-production/) layer here).
-5. **Part 4:** [AgentOps & Production Observability](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/)
-6. **Part 5:** [Agent Evals, Benchmarking & Continuous Optimization](/series/agentic-system-architecture/part-5-agent-evals/)
-7. **Part 6:** [Human-in-the-Loop, Guardrails & Production Governance](/series/agentic-system-architecture/part-6-human-in-the-loop/)
-
-*(Note: A prime example of Agentic orchestration applied to a specific domain is building a reasoning-based [Agentic E-commerce Search Engine](/series/agentic-ecommerce-search/).)*

@@ -639,3 +639,17 @@ Yes. A proven hybrid architecture deploys **NATS JetStream at the edge and inter
 ---
 
 [← Previous Chapter: Part 5 — Sharded MySQL vs. TiDB](/series/architectural-tradeoffs-showdowns/05-sharded-mysql-vs-tidb-newsql/) | [Series Hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 7 — Modular Monolith vs. Microservices vs. SpinKube Wasm →](/series/architectural-tradeoffs-showdowns/07-modular-monolith-vs-microservices-vs-spinkube-wasm/)
+
+
+---
+
+## Frequently Asked Questions
+
+### Q1: What core challenge does Apache Kafka vs. NATS JetStream: Event Streaming Showdown address in production architecture?
+Showdown of Apache Kafka (KRaft) vs. NATS JetStream: partition ordering, storage engine I/O, consumer group concurrency, consensus models, and FinOps.
+
+### Q2: What are the critical operational pitfalls to avoid during rollout?
+Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+
+### Q3: How do we benchmark and validate performance after implementation?
+Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

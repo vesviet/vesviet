@@ -1,86 +1,77 @@
 ---
-title: "Phase 2 Dual-Write Sync & Dapr Conflict Resolution"
-description: "Phase 2 Magento migration strategy implementing Dapr PubSub dual-write event synchronization, 5-policy conflict resolution, and DLQ monitoring."
-date: "2026-05-20T10:00:00+07:00"
-lastmod: "2026-07-03T15:41:55+07:00"
-draft: false
-weight: 4
+title: "Phần 7: Giai đoạn 2 — Ghi Kép (Dual-Write): Dapr PubSub + Xử lý"
+date: 2026-05-20T10:00:00+07:00
+lastmod: 2026-08-16T12:00:00+07:00
+author: "Lê Tuấn Anh"
+description: "Kích hoạt API ghi trên Go microservice khi Magento vẫn chạy live: kỹ thuật dual-write event-driven qua Dapr PubSub, phân xử xung đột và magento-sync."
+categories: ["Series", "Software Engineering", "Backend Architecture"]
+tags: ["Dual-Write", "Dapr", "PubSub", "Transactional Outbox", "Event-Driven", "Conflict Resolution"]
+series: ["composable-commerce-migration"]
+weight: 8
 slug: "part-7-phase2-dual-write"
+canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-7-phase2-dual-write/"
 ShowToc: true
 TocOpen: true
-categories: ["Software Engineering", "Backend", "Migration"]
-tags: ["Dual Write", "Dapr", "PubSub", "Conflict Resolution", "Feature Flags", "Magento Migration", "Event-Driven"]
-series: ["composable-commerce-migration"]
-series_order: 7
-ShowPostNavLinks: false
-author: "Lê Tuấn Anh"
+draft: false
 cover:
-  image: "/images/posts/ecommerce-composable-cover.jpg"
-  alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
+  image: "/images/posts/default-post.png"
+  alt: "Phần 7: Giai đoạn 2 — Ghi Kép (Dual-Write): Dapr PubSub + Xử lý"
   relative: false
-canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-7-phase2-dual-write/"
+keywords: ["dual-write migration", "dapr pubsub", "magento sync worker", "conflict resolution dual write"]
 ---
 
+[← Chương trước: Phần 6: Giai Đoạn 1 — Strangler Fig Read-Only](/series/composable-commerce-migration/part-6-phase1-strangler-fig/) | [Mục lục Series](/series/composable-commerce-migration/) | [Chương tiếp theo: Phần 8: Giai Đoạn 3 — Full Cutover Zero Downtime →](/series/composable-commerce-migration/part-8-phase3-full-cutover/)
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Part 6 — Phase1 Strangler Fig](/series/composable-commerce-migration/part-6-phase1-strangler-fig/). Review it first if the terminology in this part is unfamiliar.
+---
 
-In Phase 1, both systems existed but only one wrote data: Magento. In Phase 2, both systems write data simultaneously. This is the most technically complex phase — and the one where most migrations introduce data corruption if they don't have an explicit conflict resolution strategy.
+> **Answer-first:** Giai đoạn 2 kích hoạt API ghi trên hệ thống Go microservice song song với Magento nhờ cơ chế Dual-Write bất đồng bộ qua Dapr Pub/Sub và Transactional Outbox, có cờ tính năng (feature flags) và phân xử xung đột dữ liệu tự động.
 
-**Answer-first:** Phase 2 implements event-driven dual-write where microservices update PostgreSQL and publish domain events to Dapr PubSub. The sync adapter service updates legacy Magento asynchronously. Concurrent write conflicts are resolved through deterministic conflict resolution policies tailored to specific domain data types. Adopting this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory optimization, and fault-tolerant event-driven state synchronization across production systems.
+---
 
-> **Phase 2 Technical Guide:** For the full end-to-end migration architecture and topology, see [Migrating Monoliths to Microservices](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/).
+Ở Giai đoạn 1, cả hai hệ thống đều tồn tại song song nhưng chỉ có duy nhất một thằng được phép ghi dữ liệu: Magento. Sang Giai đoạn 2, cả hai hệ thống sẽ cùng thi nhau ghi dữ liệu cùng một lúc (simultaneously). Đây là giai đoạn phức tạp nhất về mặt kỹ thuật — và cũng là nơi mà phần lớn các dự án di dời tự tay làm hỏng (corrupt) dữ liệu của chính mình nếu họ không chuẩn bị sẵn một chiến lược phân xử xung đột (conflict resolution strategy) rõ ràng sòng phẳng.
 
-## 1. Why Not Raw Dual Write?
+**Answer-first:** Theo tiêu chuẩn kiến trúc hướng sự kiện năm 2026, Giai đoạn 2 sử dụng kỹ thuật **ghi kép hướng sự kiện (event-driven dual-write)** thông qua Transactional Outbox — tuyệt đối tránh kiểu ghi kép thô (raw dual-write) dễ gây sai lệch (silent inconsistency). Các microservice sẽ ghi vào PostgreSQL của nó trước, sau đó bắn (publish) một domain event vào Dapr PubSub một cách nguyên tử (atomically). Một service có tên `magento-sync-adapter` sẽ đăng ký nghe (subscribe) các event đó và ghi ngược trở lại vào Magento, đảm bảo tính nhất quán sau cùng (eventual consistency). Những ca xung đột (khi cả hai hệ thống cùng xúm vào sửa một bản ghi cùng một lúc) sẽ được phân xử bởi một ma trận gồm 5 chính sách (policy): so kè timestamp cho hồ sơ khách hàng, microservices-mặc-định-thắng cho trạng thái đơn hàng, và cộng dồn đối soát cho số lượt sử dụng mã giảm giá. Kinh nghiệm từ các ca chuyển đổi quy mô lớn cho thấy, việc thiết kế các consumer có tính lũy đẳng (idempotent) là chìa khóa sống còn ở giai đoạn này.
 
-Raw application-level dual writing causes data drift and distributed deadlock during network partition failures; event-driven sync is mandatory.
+## 1. Tại Sao Không Dùng "Ghi Kép Thô" (Raw Dual Write)?
 
-Raw dual write attempts to mutate both legacy MySQL and microservice PostgreSQL directly within a single application HTTP request handler:
+Ghi kép thô (Raw dual write) nghĩa là: gọi lệnh ghi thẳng vào cả hai database ngay trong cùng một request handler:
 
 ```go
-// ❌ WRONG: Raw dual write — partial failure corrupts state
+// ❌ SAI BÉT: Ghi kép thô — chỉ cần xịt một nửa là dữ liệu hỏng bét
 func (h *CustomerHandler) CreateCustomer(ctx context.Context, req *Request) (*Response, error) {
-    // Write 1: Microservice PostgreSQL
+    // Ghi phát 1: Vào PostgreSQL của Microservice
     customer, err := h.customerRepo.Create(ctx, req)
     if err != nil { return nil, err }
 
-    // Write 2: Magento API (called synchronously)
+    // Ghi phát 2: Vào Magento API (gọi đồng bộ - synchronous)
     _, err = h.magentoClient.CreateCustomer(ctx, customer)
     if err != nil {
-        // Magento call failed — but customer ALREADY exists in microservice DB
-        // State is now inconsistent. No recovery path.
+        // Cuộc gọi sang Magento bị tạch — NHƯNG khách hàng ĐÃ ĐƯỢC LƯU vào DB của microservice rồi
+        // Trạng thái dữ liệu lúc này đã bị vênh (inconsistent). Không có cách nào cứu vãn (recovery path).
         return nil, err
     }
     return customer, nil
 }
 ```
 
-This pattern introduces catastrophic state corruption in distributed architectures for three fundamental reasons:
-1. **Lack of Distributed Atomicity**: Two-Phase Commit (2PC) protocols across heterogeneous HTTP APIs create blocking locks, extreme latency spikes, and low availability.
-2. **Network Partitions & Split-Brain**: If the legacy Magento API suffers transient timeouts (e.g. 500ms GC pause), the microservice transaction commits while the monolith write fails, leaving system state permanently desynchronized.
-3. **Unbounded Retry Failure**: Retrying failed synchronous writes in the HTTP request thread exhausts gateway connection pools and triggers cascading backend outages.
+Cách làm này sẽ toang vì không có bất kỳ một giao dịch nguyên tử (atomic transaction) nào có khả năng vắt ngang qua hai hệ thống độc lập cả. Giả sử API của Magento bị khựng lại (down) tầm 200ms đúng lúc đang gọi (lỗi timeout diễn ra như cơm bữa), bạn sẽ đẻ ra một khách hàng nằm chình ình trong database của microservice nhưng lại hoàn toàn vô hình trong Magento. Sự sai lệch này diễn ra trong câm lặng (silent inconsistency) — microservice không hề ném ra lỗi nào trong response, và tài khoản của khách hàng đó có vẻ như vẫn hoạt động bình thường cho đến khi họ thử làm một thao tác nào đó đòi hỏi Magento phải biết tới sự tồn tại của họ.
 
-## 2. Event-Driven Dual Write: The Safe Pattern
+## 2. Ghi Kép Hướng Sự Kiện: Design Pattern An Toàn
 
-Event-driven dual write uses asynchronous Dapr PubSub channels and transactional outbox logs to synchronize state changes safely.
-
-To guarantee zero data loss during dual-write operation, the architecture splits mutation handling into three asynchronous, isolated stages. The ASCII sequence diagram below illustrates the decoupled event lifecycle:
+Giai đoạn 2 sử dụng một quy trình ba bước:
 
 ```
-Step 1: Client → Gateway → Customer Service
-Step 2: Customer Service:
-    a. Write to PostgreSQL (primary — microservice is authoritative)
-    b. Publish "customer.updated" event to Dapr PubSub (in outbox transaction)
-Step 3: magento-sync-adapter:
-    a. Subscribes to "customer.updated"
-    b. Writes to Magento REST API
-    c. On failure → DLQ → manual review
+Bước 1: Client → Gateway → Customer Service
+Bước 2: Customer Service:
+    a. Ghi vào PostgreSQL (dữ liệu gốc — microservice giờ là bên nắm quyền sinh sát)
+    b. Bắn (Publish) sự kiện "customer.updated" vào Dapr PubSub (nằm gói trong một outbox transaction)
+Bước 3: magento-sync-adapter:
+    a. Đăng ký nghe (Subscribes) sự kiện "customer.updated"
+    b. Ghi ngược vào REST API của Magento
+    c. Nếu tạch → Ném vào DLQ → chờ người vào xử lý bằng tay (manual review)
 ```
 
-In 2026 architectures, Step 2 is backed by Change Data Capture (CDC) utilizing Debezium Server streaming to lightweight event brokers like Redpanda or NATS JetStream. Using the Debezium Outbox Single Message Transform (SMT), database outbox table inserts are transformed directly into structured CloudEvents without requiring manual outbox polling loops.
-
-Additionally, production validation leverages **Shadow Traffic Verification (Dark Traffic)**: production write traffic payloads are cloned asynchronously to test microservice environments to compare state mutations against legacy outputs prior to enabling live dual-write flags.
-
-The Go application code below demonstrates how domain updates and outbox records commit within a single local database transaction:
+Design pattern Outbox ở Bước 2 (được giải ngố ở [Phần 9](/series/composable-commerce-migration/part-9-outbox-saga/)) gửi gắm một lời thề sắt đá (guarantees): nếu transaction trên PostgreSQL commit thành công, cái sự kiện kia CHẮC CHẮN sớm muộn gì cũng sẽ được gửi đi (eventually published). Còn nếu transaction bị rollback (hủy), sẽ không có bất kỳ sự kiện nào bị tuột ra ngoài.
 
 ```go
 // customer-service/internal/biz/customer_usecase.go
@@ -88,13 +79,13 @@ The Go application code below demonstrates how domain updates and outbox records
 func (uc *CustomerUseCase) CreateCustomer(ctx context.Context, c *Customer) (*Customer, error) {
     var created *Customer
 
-    // Transactional: write customer + outbox event in same transaction
+    // Transactional: ghi customer + nhét event vào outbox chung trong MỘT transaction duy nhất
     err := uc.tx.Execute(ctx, func(tx *sql.Tx) error {
         var err error
         created, err = uc.repo.CreateWithTx(ctx, tx, c)
         if err != nil { return err }
 
-        // Insert outbox event — captured by Debezium Outbox SMT / OutboxProcessor
+        // Nhét outbox event — thằng này sẽ được con worker OutboxProcessor bốc đi gửi sau
         return uc.outbox.InsertWithTx(ctx, tx, events.OutboxEvent{
             Topic:   "customer.updated",
             Payload: marshalCustomer(created),
@@ -107,13 +98,9 @@ func (uc *CustomerUseCase) CreateCustomer(ctx context.Context, c *Customer) (*Cu
 }
 ```
 
-## 3. The magento-sync-adapter
+## 3. Service magento-sync-adapter
 
-The `magento-sync-adapter` Go service listens to Dapr event channels, translating microservice domain events back into Magento REST API calls.
-
-The `magento-sync-adapter` operates as a dedicated bridge service between Dapr PubSub channels and legacy Magento REST endpoints. To protect Magento from REST API rate-limiting and connection saturation, the adapter implements client-side rate limiting (100 req/sec bucket), exponential backoff retries with jitter, and circuit breaker isolation.
-
-The Kubernetes deployment manifest below configures the adapter service alongside Dapr sidecar annotations and environment credentials:
+Đây là một service hoàn toàn mới, chuyên làm nhiệm vụ ngồi rình (subscribe) các domain event từ microservice và đồng bộ (sync) chúng ngược trở lại Magento:
 
 ```yaml
 # k8s/magento-sync-adapter.yaml
@@ -143,10 +130,10 @@ spec:
               name: magento-api-creds
               key: token
         - name: CONFLICT_RESOLUTION_MODE
-          value: "timestamp"   # Options: timestamp | microservices-wins | magento-wins
+          value: "timestamp"   # Các chế độ: timestamp | microservices-wins | magento-wins
 ```
 
-Dapr subscription CRDs bind domain event topics to specific adapter HTTP handler endpoints:
+Cấu hình đăng ký (subscription) của Dapr:
 
 ```yaml
 # dapr-subscriptions.yaml
@@ -159,7 +146,7 @@ spec:
   pubsubname: pubsub
   topic: customer.updated
   route: /reverse-sync/customer
-  deadLetterTopic: migration.dlq    # Failed syncs land here for manual review
+  deadLetterTopic: migration.dlq    # Các ca đồng bộ tạch sẽ hạ cánh ở đây chờ người tới khám (manual review)
 ---
 apiVersion: dapr.io/v1alpha1
 kind: Subscription
@@ -173,35 +160,31 @@ spec:
   deadLetterTopic: migration.dlq
 ```
 
-## 4. The Conflict Resolution Matrix
+## 4. Ma Trận Phân Xử Xung Đột (Conflict Resolution Matrix)
 
-The conflict resolution matrix defines 5 deterministic policies (e.g. timestamp priority, authority tier) to resolve concurrent state updates.
+Trong suốt Giai đoạn 2, cả Magento lẫn microservices đều có quyền sửa chung một bản ghi. Bộ phân xử xung đột (conflict resolver) sẽ dọn dẹp bãi chiến trường này tùy theo từng loại dữ liệu:
 
-When dual-writing across legacy monoliths and microservices, state mutations can collide. Modern 2026 architectures replace raw NTP timestamps with **Hybrid Logical Clocks (HLC)** to guarantee causality ordering despite physical clock drift. Background reconciliation processes periodically calculate Merkle tree / SHA256 checksums between MySQL and PostgreSQL tables to catch and repair silent state drift automatically.
-
-| Entity | Conflict Policy | Rationale |
+| Thực thể (Entity) | Chính sách Phân xử (Conflict Policy) | Lý do (Rationale) |
 |---|---|---|
-| **Customer profile** (name, email, phone) | Timestamp-based (HLC): newer write wins | Both systems can legitimately update customer data |
-| **Order status** | Microservices wins | Order state machine lives entirely in Order Service |
-| **Inventory / stock quantity** | Microservices wins | Real-time reservations managed by Warehouse Service |
-| **Product price** | Admin decision (Pricing Service) | Prices are only written from Seller Centre via Pricing Service |
-| **Coupon usage count** | Sum + reconcile (CRDT Max) | Both systems may increment the count concurrently |
+| **Hồ sơ khách hàng** (tên, email, số điện thoại) | Dựa trên Timestamp: thằng nào ghi sau thằng đó thắng | Cả hai hệ thống đều có lý do chính đáng để cập nhật dữ liệu khách hàng |
+| **Trạng thái đơn hàng** | Microservices thắng | Toàn bộ cỗ máy trạng thái (state machine) của đơn hàng đã được bứng sang sống trong Order Service rồi |
+| **Số lượng Tồn kho** | Microservices thắng | Tồn kho giữ chỗ theo thời gian thực (Real-time reservations) nay do Warehouse Service nắm trùm |
+| **Giá sản phẩm** | Quyết định của Admin (Pricing Service) | Giá rổ giờ chỉ được phép sửa từ Seller Centre thông qua Pricing Service |
+| **Lượt dùng mã giảm giá** | Cộng dồn + đối soát (Sum + reconcile) | Cả hai hệ thống đều có quyền cộng dồn (increment) biến đếm này cùng một lúc |
 
-### Timestamp-Based Resolution (Customer Profile)
-
-The Go conflict resolver below evaluates incoming event timestamps against stored entity state, determining whether to update the local microservice repository or trigger a reverse update back to Magento:
+### Phân xử bằng Timestamp (Dành cho Hồ sơ khách hàng)
 
 ```go
 // magento-sync-adapter/internal/resolver/customer_resolver.go
 
 func (r *ConflictResolver) ResolveCustomerChange(ctx context.Context, event MigrationEvent) error {
-    // Fetch current state from microservice DB
+    // Móc trạng thái hiện tại (current state) từ DB của microservice lên
     current, err := r.customerRepo.FindByMagentoID(ctx, event.MagentoID)
     if err != nil && !errors.Is(err, ErrNotFound) {
         return fmt.Errorf("fetching current customer: %w", err)
     }
 
-    // No conflict: new record
+    // Không có xung đột: đây là bản ghi mới toanh
     if current == nil {
         return r.customerRepo.UpsertFromEvent(ctx, event)
     }
@@ -211,23 +194,21 @@ func (r *ConflictResolver) ResolveCustomerChange(ctx context.Context, event Migr
 
     switch {
     case magentoUpdatedAt.After(microUpdatedAt):
-        // Magento change is newer → apply Magento data to microservice
+        // Thay đổi bên Magento diễn ra sau (newer) → đè dữ liệu từ Magento sang microservice
         return r.customerRepo.UpsertFromEvent(ctx, event)
 
     case microUpdatedAt.After(magentoUpdatedAt):
-        // Microservice change is newer → push micro data back to Magento
+        // Thay đổi bên Microservice diễn ra sau (newer) → đẩy dữ liệu microservice ngược lại Magento
         return r.magentoAdapter.UpdateCustomer(ctx, current)
 
     default:
-        // Equal timestamps → idempotent, both systems agree
+        // Timestamp bằng nhau y xì → Lũy đẳng (idempotent), hai bên đã đồng bộ, khỏi làm gì cả
         return nil
     }
 }
 ```
 
-### Coupon Usage Reconciliation
-
-For shared counter aggregations like promo coupon redemption limits, neither system's counter is strictly authoritative. The Go implementation below applies maximum-value convergence to ensure coupon quotas are strictly respected across environments:
+### Đối soát Số lượt Dùng Mã giảm giá (Coupon Usage)
 
 ```go
 // magento-sync-adapter/internal/resolver/coupon_resolver.go
@@ -237,8 +218,8 @@ func (r *ConflictResolver) ResolveCouponUsage(ctx context.Context, event Migrati
     microCount, err := r.promotionRepo.GetUsageCount(ctx, event.CouponCode)
     if err != nil { return err }
 
-    // Neither system's count is authoritative — take the maximum
-    // (safer: prevents over-redeeming; slightly over-reports if there's a lag)
+    // Không có con số của bên nào là chân lý tuyệt đối cả — cứ lấy số lớn nhất (max)
+    // (Làm vậy cho an toàn: ngăn chặn tình trạng xài lố (over-redeeming); có thể hơi báo khống một chút nếu bị trễ nhịp đồng bộ)
     maxCount := max(magentoCount, microCount)
 
     if err := r.promotionRepo.SetUsageCount(ctx, event.CouponCode, maxCount); err != nil {
@@ -249,36 +230,32 @@ func (r *ConflictResolver) ResolveCouponUsage(ctx context.Context, event Migrati
 }
 ```
 
-## 5. Per-Service Migration Sequence
+## 5. Trình Tự Di Dời Theo Từng Service
 
-Per-service migration sequences order domain transitions logically: Catalog first, Customer second, Cart third, and Checkout last.
+Giai đoạn 2 không bật cờ ghi dữ liệu (write flags) một lượt mà làm theo thứ tự rủi ro tăng dần:
 
-Enabling dual-write mode proceeds incrementally following a strict domain dependency tree. Low-risk peripheral services transition first, allowing engineering teams to validate outbox event propagation before enabling mission-critical transactional domains.
-
-### Step 1: Customer Service (Lowest Risk)
-
-The shell script below patches the production ConfigMap to activate customer domain writes and kicks off real-time validation monitoring:
+### Bước 1: Customer Service (Rủi ro Thấp Nhất)
 
 ```bash
 #!/bin/bash
-# Enable customer writes on microservice
+# Kích hoạt quyền ghi (write) cho customer trên microservice
 
-# Enable write flag
+# Bật cờ tính năng write
 kubectl patch configmap feature-flags -n production \
   --patch '{"data": {"customer_write": "true"}}'
 
-# Monitor for 30 minutes
+# Dán mắt theo dõi trong 30 phút
 ./scripts/monitor-dual-write.sh --service=customer --duration=1800
 
-# Validate: sample 1000 records for consistency
+# Nghiệm thu: lấy 1000 mẫu ngẫu nhiên để đối chiếu độ nhất quán
 ./scripts/validate-dual-write.sh --service=customer --sample=1000
 ```
 
-Monitoring inspects three vital metrics: p99 write latency (< 500ms SLA), data consistency lag (< 5s between PostgreSQL and MySQL), and zero accumulated messages in `migration.dlq`.
+Phần theo dõi (Monitoring) sẽ rình rập các lỗi: độ trễ ghi (write latency) > 500ms (vi phạm SLA), độ trễ đồng bộ dữ liệu (data consistency lag) > 5s, số tin nhắn kẹt trong `migration.dlq` > 0 (bất kỳ cú sync nào xịt cũng cần phải lôi ra điều tra trước khi được phép đi tiếp).
 
-### Step 2: Catalog Service (Medium Risk)
+### Bước 2: Catalog Service (Rủi ro Trung Bình)
 
-Catalog write migration initiates after Customer Service maintains 72 consecutive hours of zero-drift dual-write execution. The command snippet below patches the catalog write feature flag:
+Chỉ được chạy sau khi Customer Service đã êm ru (stable) trong suốt 72 giờ:
 
 ```bash
 kubectl patch configmap feature-flags -n production \
@@ -288,21 +265,21 @@ kubectl patch configmap feature-flags -n production \
 ./scripts/validate-dual-write.sh --service=catalog --sample=500
 ```
 
-Catalog is medium risk because product metadata changes (e.g. title updates, category assignments) affect store presentation but do not directly mutate active financial ledger entries.
+Catalog nằm ở nhóm rủi ro trung bình vì dữ liệu sản phẩm ít nhạy cảm hơn dữ liệu đơn hàng — một mô tả sản phẩm bị lệch lạc trong thoáng chốc có thể gây ngứa mắt, nhưng không gây thiệt hại về mặt tài chính (financially damaging).
 
-### Step 3: Order Service (Highest Risk)
+### Bước 3: Order Service (Rủi ro Chạm Nóc)
 
-Order Service dual-write represents the highest operational risk. The activation script below mandates fresh database backups and interactive engineering sign-off prior to flag enablement:
+Để di dời Order Service, bạn bắt buộc phải có một bản backup database (sao lưu) rõ ràng trước khi bấm nút bật:
 
 ```bash
 #!/bin/bash
-# HIGH RISK — requires CTO/Engineering Lead sign-off
+# RỦI RO CAO — Yêu cầu chữ ký xác nhận của CTO hoặc Tech Lead
 
-echo "⚠️  Order Service dual-write requires manual approval"
-read -p "Have you taken a Magento DB backup in the last 30 minutes? [yes/no]: " CONFIRM
-[ "$CONFIRM" != "yes" ] && echo "Aborting. Take backup first." && exit 1
+echo "⚠️  Tính năng Ghi Kép (Dual-write) cho Order Service yêu cầu phải phê duyệt bằng tay"
+read -p "Bạn đã tạo bản backup DB cho Magento trong vòng 30 phút đổ lại đây chưa? [yes/no]: " CONFIRM
+[ "$CONFIRM" != "yes" ] && echo "Hủy lệnh. Đi backup đi đã." && exit 1
 
-# Stricter feature flag: 10-second health check interval, strict validation
+# Bật cờ với chế độ gắt gao (Stricter): cứ 10s check sức khỏe một lần, validate khắt khe
 kubectl patch configmap feature-flags -n production \
   --patch '{
     "data": {
@@ -312,69 +289,66 @@ kubectl patch configmap feature-flags -n production \
     }
   }'
 
-# Extended monitoring: 1 hour instead of 30 minutes
+# Thời gian theo dõi kéo dài ra: 1 tiếng thay vì 30 phút
 ./scripts/monitor-dual-write.sh --service=order --duration=3600
 ./scripts/validate-dual-write.sh --service=order --sample=1000
 ```
 
-Setting a 10-second health check probe interval ensures the API Gateway trips automatic fallback within 10 seconds of any upstream anomaly, protecting live customer checkout flows.
+Khoảng thời gian kiểm tra sức khỏe rụt lại còn 10 giây (so với 30 giây của Customer) có nghĩa là cơ chế tự động xả kèo (automatic fallback) của Order Service sẽ nhạy cò và kích hoạt nhanh hơn hẳn — yếu tố sống còn vì làm rơi mất một cái đơn hàng đồng nghĩa với việc khách hàng nổi điên và nguy cơ phải ói tiền ra hoàn trả (refund).
 
-## 6. DLQ Monitoring: Your Early Warning System
+## 6. Theo dõi DLQ: Hệ Thống Cảnh Báo Sớm Của Bạn
 
-Dead-letter queue (DLQ) monitoring alerts engineering teams to failed event sync attempts, providing manual retry interfaces and payload inspection.
-
-Events failing serialization or encountering persistent Magento API errors land in `migration.dlq`. During Phase 2, DLQ depth must be strictly enforced as zero. Accumulated DLQ messages indicate active data drift between microservice PostgreSQL and legacy MySQL.
-
-Operators execute the following command script to query active DLQ queue metrics across pub/sub channels:
+Bất kỳ sự kiện (event) nào không thể đồng bộ sang Magento sẽ đều hạ cánh ở `migration.dlq`. Suốt Giai đoạn 2, cái DLQ này phải được coi là **vùng cấm không khoan nhượng (zero-tolerance)**. Nếu DLQ khác rỗng (non-empty), nghĩa là dữ liệu của bạn đã bị lệch (data inconsistency):
 
 ```bash
-# Check DLQ message count (run as pre-shift check)
+# Kiểm tra số lượng tin nhắn trong DLQ (Nên chạy kiểm tra vào đầu mỗi ca trực)
 dapr publish --publish-app-id ops-tool --pubsub pubsub \
   --topic migration.dlq.stats --data '{}'
 
-# Expected: 0 messages
-# If > 0: investigate before enabling next service's write flag
+# Kết quả kỳ vọng: 0 messages
+# Nếu > 0: đình chỉ mọi hoạt động, lôi ra điều tra bằng được trước khi cho phép bật cờ write của service tiếp theo
 ```
 
-A dedicated DLQ handler worker service parses unroutable CloudEvents, formats structured alert payloads, and triggers high-priority alerts to operational channels with event context and stack traces. Automated replay tooling allows engineers to re-inject fixed events into Dapr PubSub channels once underlying API issues are resolved.
+Một service DLQ handler sẽ đứng ra nhận nhiệm vụ xử lý các sự kiện bị xịt (failed events) và hú còi ầm ĩ (alerts) vào kênh Slack `#migration-issues`, đính kèm luôn nội dung của sự kiện đó (payload) và thông báo lỗi.
 
-## 7. Phase 2 Success Criteria
+## 7. Tiêu Chí Nghiệm Thu Giai Đoạn 2
 
-Phase 2 success requires zero un-reconciled data drift across dual-written domains over a continuous 14-day operational window.
-
-Before advancing to Phase 3 full traffic cutover, the architecture must maintain absolute stability across all dual-written domains according to the following metric SLAs:
-
-| Metric | Target | When to Measure |
+| Chỉ Số (Metric) | Mục Tiêu (Target) | Thời điểm Đo |
 |---|---|---|
-| Write performance | < 500ms p99 | Continuously via Prometheus |
-| Data consistency lag | < 5 seconds for critical data | Every 15 minutes via consistency check |
-| DLQ message count | 0 | Before enabling each service's write flag |
-| Automatic rollback time | < 10 seconds to fallback | Tested during deployment rehearsal |
-| Zero downtime | 0 errors on any write operation | Throughout Phase 2 |
+| Hiệu năng Ghi (Write performance) | < 500ms p99 | Theo dõi liên tục trên Prometheus |
+| Độ trễ đồng bộ dữ liệu | < 5 giây đối với dữ liệu quan trọng | Cứ 15 phút check một lần bằng script consistency check |
+| Số lượng tin nhắn trong DLQ | 0 | Phải check trước khi bật cờ write cho mỗi service |
+| Thời gian tự động rollback | < 10 giây để xả về fallback | Được test thật kỹ trong các buổi diễn tập deploy (rehearsal) |
+| Thời gian chết (Zero downtime) | 0 lỗi trên bất kỳ thao tác ghi nào | Xuyên suốt toàn bộ Giai đoạn 2 |
 
-## What's Next
+## Bước Tiếp Theo
 
-Phase 3 completes the migration by executing full traffic cutover and decommissioning legacy Magento infrastructure.
+Với Giai đoạn 2 đã hòm hòm, toàn bộ lệnh ghi (write) đều đâm thẳng vào microservice trước, sau đó mới đồng bộ ngược (sync back) lại Magento. Magento giờ đây đã chính thức giáng cấp xuống làm kẻ bám đuôi (follower), không còn là nguồn sự thật duy nhất (source of truth) nữa. Ở [Phần 8: Giai đoạn 3 — Chuyển Đổi Hoàn Toàn (Full Cutover)](/series/composable-commerce-migration/part-8-phase3-full-cutover/), chúng ta sẽ dập cầu dao tắt luôn cái luồng đồng bộ ngược (reverse sync), bẻ lái 100% traffic đổ xô vào microservice trong khi dựng Magento đứng ngó ở chế độ chờ nóng (hot standby), và hoàn tất việc rút ống thở (decommission) thông qua kỹ thuật ArgoCD GitOps.
 
-With Phase 2 complete, all writes go to microservices first, then sync back to Magento. Magento is now a follower, not the source of truth. [Part 8: Phase 3 — Full Cutover](/series/composable-commerce-migration/part-8-phase3-full-cutover/) disables the reverse sync, shifts 100% of traffic to microservices with Magento on hot standby, and completes the decommission using ArgoCD GitOps.
+## Câu Hỏi Thường Gặp (FAQ)
 
-## FAQ
+### Rủi ro lớn nhất của ghi kép (dual-write) là gì và cách tiếp cận này giải quyết nó ra sao?
 
-Event-driven dual write enables safe multi-phase migration by ensuring eventual consistency between legacy monoliths and new Go microservices.
+Rủi ro lớn nhất chính là **thất bại cục bộ (partial failure)**: microservice ghi xong ngon ơ nhưng cái luồng sync sang Magento lại đứt gánh giữa đường, bỏ mặc dữ liệu hai bên vênh nhau móm mém. Mẫu thiết kế (pattern) hướng sự kiện (event-driven) giải bài toán này bằng kỹ thuật Transactional Outbox: cái sự kiện (event) nằm trong outbox được ghi vào database CÙNG CHUNG một giao dịch (transaction) với sự kiện biến đổi nghiệp vụ (business change). Trượt chân một cái là cả hai cùng xịt — xịt một cách đồng bộ (atomically). Sau đó, thằng `magento-sync-adapter` sẽ lầm lũi (asynchronously) gõ cửa thử lại (retries) cú sync đó với khoảng thời gian dãn cách tăng dần (exponential backoff), và những event bướng bỉnh vẫn xịt sẽ bị gắp bỏ vào DLQ chờ con người tới điều tra, chứ tuyệt đối không bao giờ có chuyện bị thất lạc trong im lặng (silently lost).
 
-{{< faq q="What is the main risk of dual-write and how does this approach mitigate it?" >}}
-The main risk is **partial failure**: microservice writes succeed but the Magento sync fails, leaving data inconsistent between systems. The event-driven pattern mitigates this with the Transactional Outbox: the outbox event is written in the same database transaction as the business change. If either fails, both fail — atomically. The `magento-sync-adapter` then retries the sync asynchronously with exponential backoff, and failed events land in the DLQ for investigation rather than being silently lost.
-{{< /faq >}}
+### Tại sao chính sách phân xử xung đột của Customer data lại khác với Order data?
 
-{{< faq q="Why is the conflict resolution policy different for customer data vs order data?" >}}
-Customer data can legitimately be updated by both systems concurrently — a customer might update their address on the Magento storefront while a microservice API updates their phone number. Timestamp-based resolution handles this safely: whichever update is more recent wins. Order data is different: once an order is created in the microservice, Magento should never override its status because the microservice's state machine is the authoritative source of order lifecycle events. That's why Order status uses microservices-wins policy regardless of timestamps.
-{{< /faq >}}
+Dữ liệu khách hàng (Customer data) có quyền được sửa chữa bởi cả hai hệ thống cùng một lúc (concurrently) một cách hoàn toàn hợp pháp — một khách hàng có thể lên storefront của Magento cập nhật địa chỉ nhà, trong khi cùng lúc đó một lệnh gọi API microservice lại đè sdt mới vào tài khoản của họ. Kiểu phân xử dựa trên Timestamp (Timestamp-based resolution) giải quyết ca này êm ru: cái update nào đến sau thì cái đó ăn. Dữ liệu Đơn hàng (Order data) thì lại là một phạm trù khác: một khi đơn hàng đã được đẻ ra trên microservice, Magento tuyệt đối KHÔNG ĐƯỢC PHÉP thò tay vào sửa trạng thái của nó nữa, bởi vì cỗ máy trạng thái (state machine) của microservice mới chính là nguồn sự thật duy nhất (authoritative source) cho vòng đời của đơn hàng. Đó là lý do tại sao trạng thái Đơn hàng lại xài cái chính sách microservices-thắng-chặt bất chấp timestamp.
 
-{{< faq q="How long does Phase 2 typically take?" >}}
-The minimum safe timeline is **3–4 weeks** when each service gets proper monitoring time: Customer Service (1 week stabilization), Catalog Service (1 week), and Order Service (10 days graduated ramp). Teams that try to compress Phase 2 into days tend to miss edge cases in the conflict resolver — particularly for coupon usage counts and inventory levels during concurrent updates. The extended timeline is not bureaucracy; it is the minimum observation window needed to catch anomalies before they compound.
+### Giai đoạn 2 này thường kéo dài bao lâu?
 
-{{< /faq >}}
+Quỹ thời gian an toàn tối thiểu là **3–4 tuần** nếu bạn muốn mỗi service đều có đủ thời gian ngâm (monitoring time): Customer Service (1 tuần để êm), Catalog Service (1 tuần), và Order Service (10 ngày nhích từng tí một). Bất kỳ team nào ảo tưởng đòi dồn cục Phase 2 vào giải quyết trong vài ngày thường sẽ ăn đủ hành ngập mặt với mấy cái edge case (trường hợp hi hữu) lọt lưới bộ conflict resolver — nhất là mấy ca đếm số lượt xài coupon (usage counts) hay kẹt số lượng tồn kho (inventory levels) lúc bị gọi cập nhật đồng thời (concurrent updates). Kéo dài thời gian ra không phải là biểu hiện của căn bệnh quan liêu (bureaucracy); đó là khoảng thời gian quan sát (observation window) tối thiểu bắt buộc phải có để tóm cổ các dị thường (anomalies) trước khi chúng kịp phình to (compound) thành thảm họa.
 
 ---
 
-🔗 **Next Step:** Continue to [Part 8 — Phase3 Full Cutover](/series/composable-commerce-migration/part-8-phase3-full-cutover/) for the following module in the series.
+*Bài viết này nằm trong **[Series Chuyển đổi sang Composable Commerce](/series/composable-commerce-migration/)**. Hãy xem toàn bộ mục lục để nắm bắt ngữ cảnh kiến trúc đầy đủ nhất.*
+
+*Bạn cần hỗ trợ đánh giá rủi ro cho đợt chuyển đổi nền tảng sắp tới? â†’ [Đặt lịch Tư vấn Kiến trúc 1:1](/hire/)*
+
+---
+
+---
+
+---
+
+[← Chương trước: Phần 6: Giai Đoạn 1 — Strangler Fig Read-Only](/series/composable-commerce-migration/part-6-phase1-strangler-fig/) | [Mục lục Series](/series/composable-commerce-migration/) | [Chương tiếp theo: Phần 8: Giai Đoạn 3 — Full Cutover Zero Downtime →](/series/composable-commerce-migration/part-8-phase3-full-cutover/)

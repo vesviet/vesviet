@@ -201,3 +201,17 @@ Review adjacent articles in the agentic search series covering Golang orchestrat
 - [Part 1 — Agentic Architecture & Golang Orchestration Power](/series/agentic-ecommerce-search/part-1-golang-orchestration/)
 - [Part 2 — Agentic Data Ingestion & Multimodal Document Processing](/series/ai-data-engineering-pipeline/part-2-agentic-ingestion-multimodal/)
 - [Part 3 — Late Chunking & Contextual Retrieval](/series/ai-data-engineering-pipeline/part-3-late-chunking-semantic-caching/)
+
+
+---
+
+## Frequently Asked Questions
+
+### Q1: What core challenge does E-commerce Data Ingestion & Atomic Chunking Pipelines address in production architecture?
+Complete production guide to atomic product chunking, schema parsing, and data ingestion pipelines for semantic vector search in e-commerce.
+
+### Q2: What are the critical operational pitfalls to avoid during rollout?
+Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+
+### Q3: How do we benchmark and validate performance after implementation?
+Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

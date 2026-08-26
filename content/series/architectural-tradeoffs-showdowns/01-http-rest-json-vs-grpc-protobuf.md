@@ -1093,3 +1093,17 @@ To independently reproduce and verify all benchmark data, bitwise traces, and ar
    buf lint
    buf breaking --against '.git#branch=main'
    ```
+
+
+---
+
+## Frequently Asked Questions
+
+### Q1: What core challenge does HTTP/REST vs. gRPC Protobuf: Architectural Trade-offs in High-Concurrency Distributed Systems address in production architecture?
+Comprehensive architectural analysis of HTTP/REST (JSON) vs. gRPC (Protobuf v3): wire serialization internals, HTTP/2 vs HTTP/3 QUIC multiplexing, 50k RPS failure modes, and Go Kratos dual-protocol gateway blueprints.
+
+### Q2: What are the critical operational pitfalls to avoid during rollout?
+Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+
+### Q3: How do we benchmark and validate performance after implementation?
+Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

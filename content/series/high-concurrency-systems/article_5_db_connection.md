@@ -272,3 +272,17 @@ Tuning your connection pool parameters and routing database traffic through PgBo
 ## Related Architecture & Pillar Guides
 For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
 - [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)
+
+
+---
+
+## Frequently Asked Questions
+
+### Q1: What core challenge does Chapter 5: Optimizing Golang Database Connection Pools address in production architecture?
+Tune your Go *sql.DB connection pool parameters (MaxOpenConns, MaxIdleConns) and implement PgBouncer to maximize database performance in production.
+
+### Q2: What are the critical operational pitfalls to avoid during rollout?
+Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+
+### Q3: How do we benchmark and validate performance after implementation?
+Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

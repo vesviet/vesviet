@@ -361,3 +361,17 @@ func (rl *RedisRateLimiter) Middleware(next http.Handler) http.Handler {
 🔗 **Next Step:** Continue to [Part 12: Communication Protocols — gRPC vs REST vs GraphQL in Go Microservices](/series/system-design/12-communication-protocols-microservices/)
 
 Fault tolerance in API rate limiting systems relies on Netflix Hystrix-style circuit breaker state machines. Consecutive downstream errors trigger Open state fallback handlers instantly.
+
+
+---
+
+## Frequently Asked Questions
+
+### Q1: What core challenge does Go API Rate Limiting: Token Bucket & Redis Lua Algorithms address in production architecture?
+Advanced API rate limiting in Go: Token Bucket vs Leaky Bucket algorithms, distributed sliding window with Redis Lua, and IP anti-spoofing techniques.
+
+### Q2: What are the critical operational pitfalls to avoid during rollout?
+Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+
+### Q3: How do we benchmark and validate performance after implementation?
+Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

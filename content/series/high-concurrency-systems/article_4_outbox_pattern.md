@@ -351,3 +351,17 @@ Data pipeline orchestration in the Transactional Outbox pattern utilizes Apache 
 ## Related Architecture & Pillar Guides
 For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
 - [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)
+
+
+---
+
+## Frequently Asked Questions
+
+### Q1: What core challenge does Dual-Write Prevention via Transactional Outbox in Go address in production architecture?
+Master the Transactional Outbox Pattern using GORM and Debezium CDC to eliminate dual-write data inconsistencies in event-driven Go microservices.
+
+### Q2: What are the critical operational pitfalls to avoid during rollout?
+Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+
+### Q3: How do we benchmark and validate performance after implementation?
+Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

@@ -288,3 +288,17 @@ However, what if the LLM still answers incorrectly due to an internal logic erro
 In **[Part 5: Critique Loop: Preventing LLM Hallucination](/series/agentic-ecommerce-search/part-5-critique-loop/)**, we will set up an independent "Retrieve-Critique-Regenerate" Loop in Eino to guarantee output quality reaches absolute perfection before displaying it to the end user.
 
 🔗 **Next Step:** Continue to [Part 5 — Critique Loop](/series/agentic-ecommerce-search/part-5-critique-loop/) for the following module in the series.
+
+
+---
+
+## Frequently Asked Questions
+
+### Q1: What core challenge does Active RAG & Strict Tool Calling With Real-time APIs address in production architecture?
+Orchestrate production AI agents using CloudWeGo Eino to connect LLMs with real-time e-commerce APIs via strict tool calling and Go type safety.
+
+### Q2: What are the critical operational pitfalls to avoid during rollout?
+Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+
+### Q3: How do we benchmark and validate performance after implementation?
+Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

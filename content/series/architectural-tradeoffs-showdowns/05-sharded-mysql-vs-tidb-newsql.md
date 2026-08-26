@@ -229,3 +229,17 @@ Deploy **Sharded MySQL (Vitess)** as the high-throughput, low-latency Hot OLTP t
 ---
 
 [← Previous Chapter: Part 4 — MariaDB vs. MySQL](/series/architectural-tradeoffs-showdowns/04-mariadb-vs-mysql-storage-engines-threadpool/) | [Series Hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 6 — Apache Kafka vs. NATS JetStream →](/series/architectural-tradeoffs-showdowns/06-apache-kafka-vs-nats-jetstream/)
+
+
+---
+
+## Frequently Asked Questions
+
+### Q1: What core challenge does Sharded MySQL (Vitess) vs. TiDB NewSQL Showdown address in production architecture?
+Showdown of Sharded MySQL (Vitess) vs. TiDB NewSQL: Percolator 2PC latency tax, sub-2ms local ACID writes, 96MB region auto-splits, blast radius, and FinOps.
+
+### Q2: What are the critical operational pitfalls to avoid during rollout?
+Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+
+### Q3: How do we benchmark and validate performance after implementation?
+Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

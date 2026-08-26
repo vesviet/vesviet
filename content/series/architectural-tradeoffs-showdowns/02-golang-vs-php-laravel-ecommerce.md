@@ -895,3 +895,17 @@ static_resources:
 ---
 
 [← Previous Chapter: Part 1 — HTTP/REST vs. gRPC](/series/architectural-tradeoffs-showdowns/01-http-rest-json-vs-grpc-protobuf/) | [Series hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 3 — Primary Key Showdown: UUIDv7 vs. Snowflake vs. BIGINT →](/series/architectural-tradeoffs-showdowns/03-primary-key-showdown-uuidv7-vs-snowflake-vs-bigint/)
+
+
+---
+
+## Frequently Asked Questions
+
+### Q1: What core challenge does Golang vs. PHP/Laravel in High-Concurrency E-Commerce: Architectural Trade-Offs, 50k RPS Benchmarks, and Zero-Downtime Strangler-Fig Blueprint address in production architecture?
+An exhaustive architectural showdown between Golang (Kratos) and PHP/Laravel (FPM & Octane) under 50,000 RPS flash-sale loads. Covers Zend Engine vs M:N runtime physics, Go 1.26 Green Tea GC 8 KiB page locality, AWS Graviton3 FinOps ($189k/yr savings), production failure modes, and a complete Strangler-Fig hybrid migration blueprint.
+
+### Q2: What are the critical operational pitfalls to avoid during rollout?
+Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+
+### Q3: How do we benchmark and validate performance after implementation?
+Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

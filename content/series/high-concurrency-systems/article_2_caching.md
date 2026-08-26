@@ -309,3 +309,17 @@ If your enterprise e-commerce or B2B platform is struggling with slow database q
 ## Architectural Context & Pillar References
 
 - [Architecting 21-Service E-commerce Golang DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)
+
+
+---
+
+## Frequently Asked Questions
+
+### Q1: What core challenge does Go Cache Defenses: Stampede, Avalanche & Singleflight address in production architecture?
+Defend Go microservices against cache penetration, avalanche, and breakdown using Bloom Filters, TTL jittering, and singleflight concurrency control.
+
+### Q2: What are the critical operational pitfalls to avoid during rollout?
+Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+
+### Q3: How do we benchmark and validate performance after implementation?
+Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

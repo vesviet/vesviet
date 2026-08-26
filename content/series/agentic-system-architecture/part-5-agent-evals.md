@@ -1,29 +1,42 @@
 ---
-title: "Part 5: Multi-Dimensional Agent Evaluation & LLM-as-a-Judge Harnesses"
-slug: "part-5-agent-evals"
-date: "2026-06-18T08:00:00+07:00"
-lastmod: "2026-07-26T08:00:00+07:00"
-draft: false
+title: "Phần 5: Đánh Giá AI Agent (Agent Evals): Khung Benchmark & Đo Lường Sản Xuất"
+date: 2026-06-18T08:00:00+07:00
+lastmod: 2026-07-28T18:23:00+07:00
 author: "Lê Tuấn Anh"
-tags: ["Agent Evaluation", "LLM-as-a-Judge", "Go", "Python", "Observability", "Testing"]
-categories: ["Engineering", "AI"]
-cover:
-  image: "/images/posts/part-5-agent-evals.jpg"
-  alt: "Part 5 Multi-Dimensional Agent Evaluation & LLM-as-a-Judge Harnesses"
-  relative: false
-mermaid: true
+description: "Hướng dẫn chi tiết xây dựng hệ thống đánh giá AI Agent (Agent Evals), khung kiểm thử Benchmark, đo lường độ chính xác và an toàn cho Agentic Systems trong Production."
+categories:
+  - "Engineering"
+  - "AI Architecture"
+tags:
+  - "Agent Evaluation"
+  - "LLM-as-a-Judge"
+  - "Go"
+  - "Python"
+  - "Observability"
+  - "Testing"
+series:
+  - "agentic-system-architecture"
+weight: 6
+slug: "part-5-agent-evals"
 canonicalURL: "https://tanhdev.com/series/agentic-system-architecture/part-5-agent-evals/"
-description: "Production architecture guide for Part 5 — Multi-dimensional agent evaluation frameworks, LLM-as-a-Judge rubrics, Go benchmark harnesses, and trajectory."
 ShowToc: true
 TocOpen: true
-weight: 1
-series: ["agentic-system-architecture"]
+draft: false
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Phần 5: Đánh Giá AI Agent (Agent Evals): Khung Benchmark & Đo Lường Sản Xuất"
+  relative: false
 ---
 
+[← Chương trước: Phần 4: AgentOps & Production Observability](/series/agentic-system-architecture/part-4-agentops/) | [Mục lục Series](/series/agentic-system-architecture/) | [Chương tiếp theo: Phần 6: Kiến Trúc Human-in-the-Loop (HITL) →](/series/agentic-system-architecture/part-6-human-in-the-loop/)
 
-> **Prerequisite:** This is the starting part of the series — no prior part is required. Later parts assume the concepts introduced here.
+> **Answer-first:** Agent Evals thiết lập khung đo lường đa chiều bao gồm độ hoàn thành mục tiêu (Pass@k), độ chính xác gọi Tool, và hiệu suất số bước thực thi. Kết hợp LLM-as-a-Judge có rubric phân cấp và kiểm tra tự động xác định giúp đánh giá chính xác độ tin cậy của Agent trước khi phát hành.
 
-**Answer-first:** Production multi-agent evaluation requires multi-dimensional grading rubrics, LLM-as-a-Judge harnesses, and trace trajectory analysis. Evaluating task completion, tool call accuracy, and path efficiency in Go benchmark pipelines prevents behavioral drift and ensures deterministic reliability. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for production-grade enterprise operations.
+---
+
+## Part 5: Multi-Dimensional Agent Evaluation & LLM-as-a-Judge Harnesses
+
+**Answer-First:** Production multi-agent evaluation requires multi-dimensional grading rubrics, LLM-as-a-Judge harnesses, and trace trajectory analysis. Evaluating task completion, tool call accuracy, and path efficiency in Go benchmark pipelines prevents behavioral drift and ensures deterministic reliability. (Ở thời điểm 2026, các nền tảng Agent Evals đã chuyển từ kiểm thử tĩnh sang việc phân tích tự động các trace trajectory dựa trên Model Context Protocol).
 
 ---
 
@@ -45,10 +58,10 @@ Evaluating agents on a single binary pass/fail score obscures critical failure m
 4. **Safety & Policy Adherence (SPA)**: Validates that the agent adhered to security guardrails, refrained from executing unauthorized mutations, and prevented data leakage.
 
 ```mermaid
-graph TD
+flowchart TD
     SubGraphInput["Agent Trajectory Record"] --> EvalEngine["Evaluation Gateway"]
     
-    subgraph Multi-Dimensional Evaluation Framework
+    subgraph MultiDimensionalEvaluationFramework["Multi-Dimensional Evaluation Framework"]
         EvalEngine --> Axis1["1. Goal Completion Accuracy"]
         EvalEngine --> Axis2["2. Tool Selection & Schema Precision"]
         EvalEngine --> Axis3["3. Trajectory & Cost Efficiency"]
@@ -70,11 +83,15 @@ graph TD
 
 ### Core Evaluation Metrics & Formulas
 
-- **Pass@k Execution Rate**: Percentage of test runs where the agent reaches a successful state within $k$ maximum attempts.
+- **Pass@k Execution Rate**: Percentage of test runs where the agent reaches a successful state within `k` maximum attempts.
 - **Tool Precision Ratio**: Ratio of valid, necessary tool calls to total tool calls:
-  $$\text{Tool Precision} = \frac{\text{Necessary Tool Calls}}{\text{Total Tool Calls Invoiced}}$$
+  ```text
+Tool Precision = (Necessary Tool Calls) / (Total Tool Calls Invoiced)
+```
 - **Step Efficiency Index**: Ratio of theoretical minimal trajectory steps to actual executed steps:
-  $$\text{Step Efficiency} = \frac{N_{\text{optimal}}}{N_{\text{actual}}}$$
+  ```text
+Step Efficiency = N_optimal / N_actual
+```
 
 ---
 
@@ -86,7 +103,7 @@ Direct LLM scoring often introduces self-enhancement bias, position bias, and sc
 
 ### Production Python Evaluation Engine
 
-Python module demonstrates an async evaluation engine using Pydantic and JSON Schema to score agent trajectories against defined rubrics.
+The following Python module demonstrates an async evaluation engine using Pydantic and JSON Schema to score agent trajectories against defined rubrics.
 
 ```python
 import os
@@ -95,10 +112,12 @@ import asyncio
 from typing import List, Dict, Any, Optional
 from pydantic import BaseModel, Field
 
+
 class EvaluationRubric(BaseModel):
     correctness_weight: float = 0.4
     tool_accuracy_weight: float = 0.3
     efficiency_weight: float = 0.3
+
 
 class JudgeScoreOutput(BaseModel):
     thought_process: str = Field(description="Step-by-step reasoning for assigned scores")
@@ -107,6 +126,7 @@ class JudgeScoreOutput(BaseModel):
     efficiency_score: float = Field(ge=0.0, le=1.0, description="Trajectory step efficiency score")
     final_composite_score: float = Field(ge=0.0, le=1.0, description="Weighted composite score")
     hallucination_detected: bool = Field(description="Flag indicating fabricated facts")
+
 
 class AgentTrajectoryEvaluator:
     def __init__(self, judge_model_name: str, rubric: Optional[EvaluationRubric] = None):
@@ -161,6 +181,7 @@ Provide your evaluation as a JSON object strictly adhering to the schema."""
             final_composite_score=round(composite, 2),
             hallucination_detected=False
         )
+
 
 if __name__ == "__main__":
     evaluator = AgentTrajectoryEvaluator(judge_model_name="gpt-4o")
@@ -326,25 +347,24 @@ Analyzing agent failure modes requires capturing distributed traces that map pro
 When an agent enters an infinite loop or calls incorrect tools, examining intermediate log outputs is insufficient. Distributed tracing with OpenTelemetry standardizes telemetry collection across multi-agent environments. Engineering teams can replay recorded trajectories to isolate where reasoning degraded.
 
 ```mermaid
-gantt
-    title Agent Trajectory Execution Trace Timeline
-    dateFormat  X
-    axisFormat %s ms
+flowchart LR
+    subgraph Phase1["1. Unit Evals (Pre-Commit)"]
+        U1["Deterministic Checks<br/>& Output Assertions"]
+    end
 
-    section Context Setup
-    Load Conversation State    :active, t1, 0, 40
-    Retrieve Vector Embeddings :t2, 40, 110
+    subgraph Phase2["2. Synthetic Evals (CI/CD)"]
+        S1["Ragas & TruLens<br/>Evaluation Pipeline"]
+    end
 
-    section Reasoning Loop 1
-    LLM Inference ("Planner")    :crit, t3, 110, 350
-    Tool Call: SearchIndex     :t4, 350, 480
+    subgraph Phase3["3. Human-in-the-Loop"]
+        H1["Red-Teaming &<br/>Golden Dataset Review"]
+    end
 
-    section Reasoning Loop 2
-    LLM Inference ("Validator")  :crit, t5, 480, 720
-    Tool Call: ExecuteSQL      :t6, 720, 890
+    subgraph Phase4["4. Production Monitoring"]
+        P1["Telemetry Tracing &<br/>Real-Time Drift Detection"]
+    end
 
-    section Final Synthesis
-    LLM Output Generation      :active, t7, 890, 1150
+    Phase1 --> Phase2 --> Phase3 --> Phase4
 ```
 
 ### Key Diagnostic Telemetry Indicators
@@ -389,9 +409,20 @@ Synthetic evaluation suites should run on every pull request that modifies agent
 
 ---
 
-## System Invariants & SLA Metrics
+## Technical Deep-Dive: System Invariants & SLA Metrics
+
 - **Maximum Acceptable Trajectory Drift**: < 2.5% variation in composite benchmark scores across consecutive production release candidates.
 - **Evaluation Worker Pool Throughput**: Minimum 50 concurrent trajectory runs per minute in production Go benchmark harnesses.
 - **Judge Inference Latency Overhead**: Sub-300ms score generation per trajectory using lightweight structured evaluators.
 
-🔗 **Next Step:** Continue to [Part 6 — Human In The Loop](/series/agentic-system-architecture/part-6-human-in-the-loop/) for the following module in the series.
+
+---
+
+### 🔗 Đọc thêm các chuyên đề liên quan:
+- [Thiết kế Kiến trúc Microservices trong Go](/posts/golang-microservices/)
+- [Xây dựng Custom Vector Database Engine trong Go](/posts/building-custom-golang-vector-database-engine-hnsw/)
+- [Cẩm nang Zero-Trust Service Mesh Security](/posts/zero-trust-service-mesh-security-spiffe-spire-istio-golang/)
+
+---
+
+[← Chương trước: Phần 4: AgentOps & Production Observability](/series/agentic-system-architecture/part-4-agentops/) | [Mục lục Series](/series/agentic-system-architecture/) | [Chương tiếp theo: Phần 6: Kiến Trúc Human-in-the-Loop (HITL) →](/series/agentic-system-architecture/part-6-human-in-the-loop/)

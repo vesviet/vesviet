@@ -297,3 +297,17 @@ With a resilient self-auditing mechanism in place, how do we push this RAG Agent
 Join us in **[Part 6: Production Agentic Search Optimization in Go](/series/agentic-ecommerce-search/part-6-production-operations/)** to complete the final practical operational puzzle piece for your Agentic Search system!
 
 🔗 **Next Step:** Continue to [Part 6 — Production Operations](/series/agentic-ecommerce-search/part-6-production-operations/) for the following module in the series.
+
+
+---
+
+## Frequently Asked Questions
+
+### Q1: What core challenge does Critique Loop Architecture: Preventing LLM Hallucination address in production architecture?
+Comprehensive production guide to setting up a self-reflection critique loop in CloudWeGo Eino to audit LLM responses and prevent search hallucinations.
+
+### Q2: What are the critical operational pitfalls to avoid during rollout?
+Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+
+### Q3: How do we benchmark and validate performance after implementation?
+Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

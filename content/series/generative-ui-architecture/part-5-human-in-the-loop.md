@@ -295,3 +295,17 @@ Advance to Part 6 to explore end-to-end testing, synthetic evaluation benchmarks
 - [Part 4 — Generative UI Security & Accessibility](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 6 — E2E Testing & Edge Performance](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 7 — Reference Repo & Migration Playbook](/posts/generative-ui-with-mcp-ai-native-frontend/)
+
+
+---
+
+## Frequently Asked Questions
+
+### Q1: What core challenge does GenUI Human-In-The-Loop: Optimistic UI & Fallback (Part 5) address in production architecture?
+Design human-in-the-loop validation patterns for Generative UI, enabling interactive approval workflows, user edits, and strict safety guardrails.
+
+### Q2: What are the critical operational pitfalls to avoid during rollout?
+Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+
+### Q3: How do we benchmark and validate performance after implementation?
+Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

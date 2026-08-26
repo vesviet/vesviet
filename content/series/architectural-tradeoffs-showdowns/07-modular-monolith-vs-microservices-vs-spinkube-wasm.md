@@ -816,3 +816,17 @@ Because SpinKube Wasm instances instantiate and terminate rapidly under burst tr
 ---
 
 [← Previous Chapter: Part 6 — Apache Kafka vs. NATS JetStream](/series/architectural-tradeoffs-showdowns/06-apache-kafka-vs-nats-jetstream/) | [Series Hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 8 — Redis Distributed State vs. Dapr Virtual Actors →](/series/architectural-tradeoffs-showdowns/08-redis-state-vs-dapr-virtual-actors/)
+
+
+---
+
+## Frequently Asked Questions
+
+### Q1: What core challenge does Modular Monolith vs. Microservices vs. SpinKube Wasm Showdown address in production architecture?
+Showdown of Modular Monolith vs Microservices vs SpinKube Wasm: invocation overhead, pod memory density, sub-ms cold-start, distributed ACID, and FinOps.
+
+### Q2: What are the critical operational pitfalls to avoid during rollout?
+Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+
+### Q3: How do we benchmark and validate performance after implementation?
+Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

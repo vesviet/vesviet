@@ -345,3 +345,17 @@ max_replication_slots = 4
 🔗 **Next Step:** Continue to [Part 9: Consistent Hashing — Virtual Nodes & CRC32 Ring in Go](/series/system-design/09-consistent-hashing-sharding/)
 
 Within Saga distributed transactions, optimizing memory utilization requires Goroutine pool sizing and non-blocking ring buffer allocation. Profiling CPU profile samples via Go pprof identifies GC pause time reductions under high load.
+
+
+---
+
+## Frequently Asked Questions
+
+### Q1: What core challenge does Saga Pattern in Go — Temporal, Outbox Pattern & Debezium address in production architecture?
+Replace 2PC with Saga in Go: Temporal SDK LIFO compensation mechanisms, Transactional Outbox pattern, and Debezium CDC EventRouter setup in production.
+
+### Q2: What are the critical operational pitfalls to avoid during rollout?
+Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+
+### Q3: How do we benchmark and validate performance after implementation?
+Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

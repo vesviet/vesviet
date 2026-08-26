@@ -327,3 +327,17 @@ Advance to Part 4 to explore Generative UI security, prompt injection defenses, 
 - [Part 5 — Human-in-the-Loop Workflows](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 6 — E2E Testing & Edge Performance](/posts/generative-ui-with-mcp-ai-native-frontend/)
 - [Part 7 — Reference Repo & Migration Playbook](/posts/generative-ui-with-mcp-ai-native-frontend/)
+
+
+---
+
+## Frequently Asked Questions
+
+### Q1: What core challenge does Component Registry & MCP to Frontend — GenUI (Part 3) address in production architecture?
+Build a production component registry for Generative UI, focusing on dynamic manifest registration, versioning, and type-safe UI component hydration.
+
+### Q2: What are the critical operational pitfalls to avoid during rollout?
+Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+
+### Q3: How do we benchmark and validate performance after implementation?
+Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

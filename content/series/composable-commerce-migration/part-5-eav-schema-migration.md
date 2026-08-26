@@ -1,50 +1,52 @@
 ---
-title: "Magento EAV Schema Migration & UUID Identity Mapping"
-description: "Detailed technical guide to extracting Magento EAV database schemas, mapping integer IDs to UUIDs, and dynamic SQL pivots for Go migration pipelines."
-date: "2026-05-06T10:00:00+07:00"
-lastmod: "2026-07-26T10:00:00+07:00"
-draft: false
-weight: 2
+title: "Phần 5: Chuyển đổi Schema EAV — Cái bẫy lớn nhất của Magento"
+date: 2026-05-06T10:00:00+07:00
+lastmod: 2026-08-16T12:00:00+07:00
+author: "Lê Tuấn Anh"
+description: "Trích xuất schema EAV của Magento: ánh xạ định danh int sang UUID, không hardcode ID thuộc tính, dùng pivot SQL động và mẫu truy vấn SQL chạy thực tế."
+categories: ["Series", "Software Engineering", "Backend Architecture"]
+tags: ["Magento", "EAV", "Database Migration", "PostgreSQL", "SQL Pivot", "Schema Design"]
+series: ["composable-commerce-migration"]
+weight: 6
 slug: "part-5-eav-schema-migration"
+canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-5-eav-schema-migration/"
 ShowToc: true
 TocOpen: true
-categories: ["Software Engineering", "Database", "Backend"]
-tags: ["EAV", "Magento", "Schema Migration", "PostgreSQL", "MySQL", "Data Migration", "SQL"]
-series: ["composable-commerce-migration"]
-series_order: 5
-ShowPostNavLinks: false
-author: "Lê Tuấn Anh"
+draft: false
 cover:
-  image: "/images/posts/ecommerce-composable-cover.jpg"
-  alt: "Composable Commerce Migration series: Magento 2 to microservices Golang step-by-step"
+  image: "/images/posts/default-post.png"
+  alt: "Phần 5: Chuyển đổi Schema EAV — Cái bẫy lớn nhất của Magento"
   relative: false
-canonicalURL: "https://tanhdev.com/series/composable-commerce-migration/part-5-eav-schema-migration/"
+keywords: ["magento eav extraction", "eav to relational", "int to uuid migration", "dynamic sql pivot eav"]
 ---
 
+[← Chương trước: Phần 4: gRPC Internal + REST Gateway](/series/composable-commerce-migration/part-4-grpc-rest-gateway/) | [Mục lục Series](/series/composable-commerce-migration/) | [Chương tiếp theo: Phần 6: Giai Đoạn 1 — Strangler Fig Read-Only →](/series/composable-commerce-migration/part-6-phase1-strangler-fig/)
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Grpc Rest Gateway](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/). Review it first if the terminology in this part is unfamiliar.
+---
 
-The EAV schema is why most Magento migrations fail.
+> **Answer-first:** Thoát khỏi cấu trúc Entity-Attribute-Value (EAV) phức tạp của Magento đòi hỏi trích xuất dữ liệu qua các câu lệnh pivot SQL động, ánh xạ ID số nguyên sang UUID và tái cấu trúc sang schema quan hệ chuẩn hóa trong PostgreSQL nhằm tối ưu hiệu năng truy vấn.
 
-It looks manageable from the outside: products stored across `catalog_product_entity`, `catalog_product_entity_varchar`, `catalog_product_entity_int`, `catalog_product_entity_decimal`, `catalog_product_entity_datetime`, and `catalog_product_entity_text`. Six tables, straightforward ETL job, done in a weekend.
+---
 
-Then you discover that `attribute_id = 75` means "product name" in *your* Magento instance and "color" in your staging instance. Every attribute ID is generated at install time and differs between environments. Any ETL script that hardcodes attribute IDs will produce corrupted data in production.
+Cấu trúc EAV schema chính là lý do khiến phần lớn các dự án chuyển đổi khỏi Magento chuốc lấy thất bại.
 
-**Answer-first:** Migrate Magento EAV schemas to microservices by mapping integer IDs to UUIDs, using stable attribute codes, and executing dynamic SQL pivots. The extraction runs in three phases: full historical load, incremental CDC delta sync, and cutover validation to ensure complete data integrity. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for production-grade.
+Nhìn từ bên ngoài, nó có vẻ dễ xơi: dữ liệu của sản phẩm bị băm ra rải rác ở `catalog_product_entity`, `catalog_product_entity_varchar`, `catalog_product_entity_int`, `catalog_product_entity_decimal`, `catalog_product_entity_datetime`, và `catalog_product_entity_text`. Sáu cái bảng, viết một cái job ETL đơn giản, làm một cuối tuần là xong.
 
-## 1. The EAV Data Model
+Nhưng rồi bạn phát hiện ra rằng `attribute_id = 75` mang ý nghĩa "tên sản phẩm" (product name) trong cái database *của bạn*, nhưng nó lại mang nghĩa "màu sắc" (color) trong cái database trên môi trường staging. Mỗi một mã ID thuộc tính (attribute ID) được sinh ra tự động ngay tại thời điểm cài đặt (install time) và nó hoàn toàn khác biệt giữa các môi trường với nhau. Bất kỳ script ETL nào dám cả gan gán cứng (hardcode) các mã attribute ID này sẽ lập tức đẻ ra một đống dữ liệu rác bẹp dí (corrupted data) khi mang lên chạy ở production.
 
-Magento Entity-Attribute-Value (EAV) data model spreads catalog data across multiple normalized tables, causing slow JOIN queries at scale.
+**Answer-first:** Chuyển đổi (migration) kiến trúc EAV phức tạp của Magento sang một database quan hệ phẳng (PostgreSQL) không thể sử dụng phương pháp 1-1 vì tính đến 2026, Magento vẫn không hỗ trợ native PostgreSQL. Để migrate EAV thành công sang hệ thống microservices, hãy làm theo các bước: (1) xây dựng một bảng `magento_id_map` để phiên dịch các ID số nguyên của Magento sang UUID, (2) dùng `eav_attribute.attribute_code` (chứ tuyệt đối không dùng `attribute_id`) làm khóa dò tìm (lookup key) bất di bất dịch, (3) áp dụng kỹ thuật SQL pivot động (dynamic SQL pivot) để chuyển đổi cấu trúc (flatten/normalize) thành dữ liệu JSONB hoặc cột phẳng ở thời gian chạy (runtime) thay vì gán cứng, và (4) chạy quá trình trích xuất dữ liệu qua ba giai đoạn: Tải toàn bộ lần đầu (initial full load) qua ETL pipeline → Đồng bộ độ lệch tăng dần (incremental delta) → Đánh giá trước khi chốt hạ (cutover validation). 
 
-A Magento product with SKU `MSH-BLK-L` (Men's Black Shirt, Large) is stored like this:
+## 1. Mô hình Dữ liệu EAV
 
-**`catalog_product_entity`** (the entity table):
+Một sản phẩm Magento có SKU là `MSH-BLK-L` (Áo sơ mi nam đen, size L) được lưu trữ như thế này:
+
+**`catalog_product_entity`** (bảng chứa thực thể gốc):
 ```
 entity_id | sku           | entity_type_id | attribute_set_id
 2841      | MSH-BLK-L     | 4              | 9
 ```
 
-**`catalog_product_entity_varchar`** (string attributes):
+**`catalog_product_entity_varchar`** (chứa các thuộc tính kiểu chuỗi):
 ```
 entity_id | attribute_id | store_id | value
 2841      | 75           | 0        | Men's Black Shirt
@@ -52,31 +54,29 @@ entity_id | attribute_id | store_id | value
 2841      | 97           | 0        | Men's Shirts
 ```
 
-**`catalog_product_entity_int`** (integer attributes):
+**`catalog_product_entity_int`** (chứa các thuộc tính kiểu số nguyên):
 ```
-2841      | 80           | 0        | 8                ← status: 1=Enabled, 2=Disabled
-2841      | 81           | 0        | 4                ← visibility
-2841      | 134          | 0        | 2                ← tax_class_id
-```
-
-**`catalog_product_entity_decimal`** (decimal attributes):
-```
-2841      | 77           | 0        | 299000.0000     ← price
-2841      | 78           | 0        | 0.0000          ← special_price
+entity_id | attribute_id | store_id | value
+2841      | 80           | 0        | 8                ← status (trạng thái): 1=Enabled, 2=Disabled
+2841      | 81           | 0        | 4                ← visibility (hiển thị)
+2841      | 134          | 0        | 2                ← tax_class_id (nhóm thuế)
 ```
 
-The problem: `attribute_id = 75` means "name" in this database. In your staging database (set up from a fresh Magento install), `attribute_id = 75` might mean "color". **Attribute IDs are instance-specific, generated by `AUTO_INCREMENT` during Magento installation**.
+**`catalog_product_entity_decimal`** (chứa các thuộc tính kiểu số thập phân):
+```
+entity_id | attribute_id | store_id | value
+2841      | 77           | 0        | 299000.0000     ← price (giá)
+2841      | 78           | 0        | 0.0000          ← special_price (giá khuyến mãi)
+```
 
-## 2. The Trap: Hardcoded Attribute IDs
+Vấn đề nằm ở đây: `attribute_id = 75` mang nghĩa "name" (tên) trong cái database này. Nhưng ở database trên môi trường staging của bạn (vốn được dựng từ một bản cài đặt Magento mới tinh), `attribute_id = 75` hoàn toàn có thể mang nghĩa là "color" (màu sắc). **Các Attribute ID mang tính đặc thù cho từng bản cài đặt (instance-specific), chúng được sinh ra thông qua cơ chế `AUTO_INCREMENT` trong suốt quá trình cài đặt Magento**.
 
-Relying on hardcoded attribute IDs risks data corruption across environments; migration scripts must query attribute codes dynamically.
+## 2. Cái Bẫy: Gán cứng (Hardcoded) Attribute IDs
 
-Hardcoding attribute numbers directly in SQL statements creates hidden environment fragility. Because attribute IDs drift whenever modules are installed or re-indexed in different order across dev, staging, and production environments, hardcoded queries fail silently by mapping incorrect column values to entity records.
-
-The naive migration approach, copied from legacy ETL scripts:
+Đây là cách tiếp cận ngây ngô nhất, được copy từ vô số câu trả lời trên Stack Overflow:
 
 ```sql
--- ❌ WRONG: Hardcoded attribute IDs break in production
+-- ❌ SAI BÉT: Gán cứng attribute ID sẽ làm nổ tung production
 SELECT
     e.entity_id,
     e.sku,
@@ -84,80 +84,66 @@ SELECT
     d_price.value AS price
 FROM catalog_product_entity e
 LEFT JOIN catalog_product_entity_varchar v_name
-    ON v_name.entity_id = e.entity_id AND v_name.attribute_id = 75  -- "name" hardcoded!
+    ON v_name.entity_id = e.entity_id AND v_name.attribute_id = 75  -- gán cứng "name"!
 LEFT JOIN catalog_product_entity_decimal d_price
-    ON d_price.entity_id = e.entity_id AND d_price.attribute_id = 77  -- "price" hardcoded!
+    ON d_price.entity_id = e.entity_id AND d_price.attribute_id = 77  -- gán cứng "price"!
 WHERE v_name.store_id = 0
 ```
 
-This query will produce correct results in your development environment, possibly incorrect results in staging, and silently wrong results in production if anyone ran a Magento re-index or added attributes in a different order.
+Câu query này sẽ chạy ra kết quả đúng mười mươi ở môi trường phát triển (dev) của bạn, có khả năng chạy ra kết quả sai lệch ở staging, và sẽ âm thầm trả ra dữ liệu sai bét nhè khi lên production nếu trước đó có ai lỡ chạy lại lệnh re-index của Magento hoặc thêm mới các thuộc tính theo một thứ tự khác.
 
-## 3. The Fix: Lookup by Attribute Code
-
-Dynamic attribute code lookups retrieve metadata definitions at runtime, ensuring production-grade SQL extraction queries across staging and production.
-
-To eliminate attribute ID ambiguity, extraction scripts must resolve system metadata dynamically from the `eav_attribute` table using human-readable `attribute_code` strings. Standard codes like `name`, `price`, `sku`, `status`, and `visibility` remain constant across every Magento deployment.
-
-The SQL statement below resolves target attribute IDs dynamically before querying value tables:
+## 3. Lời Giải: Dò tìm bằng Mã Thuộc tính (Attribute Code)
 
 ```sql
--- ✅ CORRECT: Resolve attribute IDs dynamically from eav_attribute
+-- ✅ CHUẨN XÁC: Dò tìm linh động các attribute ID thông qua bảng eav_attribute
 SELECT attr.attribute_id
 FROM eav_attribute attr
 JOIN eav_entity_type et ON et.entity_type_id = attr.entity_type_id
 WHERE et.entity_type_code = 'catalog_product'
-  AND attr.attribute_code = 'name';      -- 'name' is stable, 'attribute_id' is not
+  AND attr.attribute_code = 'name';      -- 'name' thì không bao giờ đổi, còn 'attribute_id' thì có
 ```
 
-The `attribute_code` column is stable across instances. `name`, `price`, `sku`, `status`, `visibility` — these codes are defined by Magento core and don't change between installs. **Always look up attribute IDs from `eav_attribute` at runtime. Never hardcode them.**
+Cái cột `attribute_code` là thứ duy nhất bất di bất dịch xuyên suốt mọi instance. `name`, `price`, `sku`, `status`, `visibility` — những cái mã này đã được định nghĩa cứng trong lõi (core) của Magento và không bao giờ thay đổi giữa các bản cài đặt. **Luôn luôn dò tìm các attribute ID từ bảng `eav_attribute` ở thời điểm chạy (runtime). Tuyệt đối không bao giờ được gán cứng chúng.**
 
-## 4. The magento_id_map: Integer → UUID Translation
+## 4. Bảng magento_id_map: Ánh xạ từ Số nguyên → UUID
 
-The `magento_id_map` translation table maps legacy Magento auto-increment integer IDs to microservice UUID primary keys reliably.
-
-Legacy Magento MySQL databases rely on sequential 32-bit or 64-bit `AUTO_INCREMENT` integer primary keys, which create tight coupling and security vulnerabilities when exposed via public APIs. Modern Go microservices use globally unique UUIDs for entity primary keys. In 2026 PostgreSQL 16/17 architectures, **UUID v7** (time-ordered UUIDs) is standard for primary keys, replacing random UUID v4 to eliminate B-tree index page splitting and increase bulk INSERT throughput by 25–40%.
-
-The table definition and initialization script below establishes the identity cross-reference mapping:
+Mỗi một bản ghi trong Magento đều sử dụng các khóa chính (primary keys) dạng số nguyên sinh tự động `AUTO_INCREMENT` của MySQL. Mọi bản ghi trong nền tảng microservice mới đều sử dụng UUID. Quá trình chuyển đổi (migration) phải bắt đầu bằng việc tạo ra một bảng đối chiếu chéo (cross-reference table) làm bước đi đầu tiên:
 
 ```sql
--- Migration step 1: Create the identity map
+-- Bước Migration 1: Tạo bản đồ định danh (identity map)
 CREATE TABLE magento_id_map (
     id              BIGSERIAL PRIMARY KEY,
     entity_type     VARCHAR(64) NOT NULL,    -- 'product', 'customer', 'order'
-    magento_id      BIGINT NOT NULL,         -- Original Magento AUTO_INCREMENT ID
+    magento_id      BIGINT NOT NULL,         -- ID gốc dạng AUTO_INCREMENT của Magento
     platform_uuid   UUID NOT NULL DEFAULT gen_random_uuid(),
     migrated_at     TIMESTAMPTZ DEFAULT NOW(),
     UNIQUE(entity_type, magento_id)
 );
 
--- Populate for all products
+-- Bơm dữ liệu cho toàn bộ sản phẩm
 INSERT INTO magento_id_map (entity_type, magento_id)
 SELECT 'product', entity_id
 FROM catalog_product_entity
 ON CONFLICT (entity_type, magento_id) DO NOTHING;
 
--- Verify: every product has a UUID
+-- Nghiệm thu: đảm bảo mọi sản phẩm đều đã được cấp UUID
 SELECT COUNT(*) AS total_products,
        COUNT(platform_uuid) AS mapped_products
 FROM magento_id_map
 WHERE entity_type = 'product';
--- Expected: total_products = mapped_products
+-- Kết quả kỳ vọng: total_products = mapped_products
 ```
 
-After this step, the Debezium CDC sync service (described in [Part 6](/series/composable-commerce-migration/part-6-phase1-strangler-fig/)) uses `magento_id_map` to translate every `entity_id` in CDC events to its corresponding UUID before publishing to Dapr PubSub.
+Sau khi hoàn tất bước này, dịch vụ đồng bộ Debezium CDC (sẽ được mô tả ở [Phần 6](/series/composable-commerce-migration/part-6-phase1-strangler-fig/)) sẽ dùng cái bảng `magento_id_map` này để phiên dịch mọi cái `entity_id` xuất hiện trong các event CDC thành UUID tương ứng của nó trước khi tiến hành đẩy (publish) vào Dapr PubSub.
 
-## 5. Dynamic SQL Pivot: Reading at Runtime
+## 5. SQL Pivot Động: Đọc dữ liệu ở Runtime
 
-Dynamic SQL pivot queries flatten complex EAV entity tables into single-row JSON representations ready for Go domain struct unmarshaling.
-
-The extraction query uses a Common Table Expression (CTE) named `attr_ids` to pre-fetch and map attribute codes to IDs for the active instance. It then joins `catalog_product_entity` against type-specific value tables (`varchar`, `int`, `decimal`, `text`) using filtered `LEFT JOIN` operations, aggregating values per entity using `MAX(CASE ...)` conditional expressions.
-
-The complete CTE dynamic pivot query below extracts flattened product records:
+Khi các attribute ID đã được dò tìm một cách linh động (dynamically), câu query trích xuất (extraction) sẽ biến thành một trục xoay (pivot) có khả năng chạy mượt mà trên bất kỳ instance Magento nào:
 
 ```sql
--- EAV extraction with dynamic attribute ID resolution
+-- Trích xuất EAV bằng cơ chế dò tìm attribute ID linh động
 WITH attr_ids AS (
-    -- Resolve all attribute codes to IDs for this Magento instance
+    -- Dò tìm toàn bộ attribute code ra attribute ID tương ứng của instance Magento NÀY
     SELECT
         attribute_id,
         attribute_code,
@@ -195,24 +181,24 @@ FROM catalog_product_entity e
 JOIN magento_id_map idmap
     ON idmap.entity_type = 'product' AND idmap.magento_id = e.entity_id
 
--- Varchar attributes (name, manufacturer, etc.)
+-- Các thuộc tính Varchar (name, manufacturer, v.v.)
 LEFT JOIN catalog_product_entity_varchar v
     ON v.entity_id = e.entity_id AND v.store_id = 0
     AND v.attribute_id IN (SELECT attribute_id FROM attr_ids WHERE backend_type = 'varchar')
 LEFT JOIN attr_ids a_v ON a_v.attribute_id = v.attribute_id
 
--- Text attributes (description, short_description)
+-- Các thuộc tính Text (description, short_description)
 LEFT JOIN catalog_product_entity_text t
     ON t.entity_id = e.entity_id AND t.store_id = 0
     AND t.attribute_id IN (SELECT attribute_id FROM attr_ids WHERE backend_type = 'text')
-LEFT JOIN attr_ids a_t ON a_t.attribute_id = t.attribute_id
+LEFT JOIN attr_ids a_t ON a_t.attribute_id = t.attribute_id AND a_t = a_v
 
--- Integer attributes (status, visibility, tax_class_id)
+-- Các thuộc tính số nguyên (status, visibility, tax_class_id)
 LEFT JOIN catalog_product_entity_int i
     ON i.entity_id = e.entity_id AND i.store_id = 0
     AND i.attribute_id IN (SELECT attribute_id FROM attr_ids WHERE backend_type = 'int')
 
--- Decimal attributes (price, special_price, weight)
+-- Các thuộc tính số thập phân (price, special_price, weight)
 LEFT JOIN catalog_product_entity_decimal d
     ON d.entity_id = e.entity_id AND d.store_id = 0
     AND d.attribute_id = (SELECT attribute_id FROM attr_ids WHERE attribute_code = 'price')
@@ -227,15 +213,11 @@ GROUP BY e.entity_id, e.sku, e.attribute_set_id, idmap.platform_uuid, e.created_
 ORDER BY e.entity_id;
 ```
 
-This query is the safe, production-ready version. The `WITH attr_ids AS (...)` CTE runs once at query start and resolves all attribute IDs from the current database state — no hardcoding, no environment-specific constants.
+Đây là phiên bản query an toàn, đủ tiêu chuẩn chạy production. Phân đoạn CTE `WITH attr_ids AS (...)` chỉ chạy đúng một lần lúc bắt đầu truy vấn để giải mã toàn bộ attribute ID từ trạng thái hiện tại của database — tuyệt đối không có sự gán cứng nào, cũng không có hằng số (constants) nào mang tính đặc thù cho từng môi trường cả.
 
-## 6. The Go Transformation Layer & PostgreSQL JSONB Hybrid Storage
+## 6. Lớp Chuyển đổi Dữ liệu bằng Go (Transformation Layer)
 
-Go transformation layers unmarshal SQL pivot JSON outputs into strongly typed domain models, storing dynamic attributes in PostgreSQL JSONB with GIN indexing.
-
-Rather than replicating Magento's complex EAV tables in PostgreSQL, the target Go Catalog microservice adopts a **Hybrid Relational + JSONB** storage model. Core domain attributes (`id`, `sku`, `name`, `price_cents`, `status`, `uuid`) are stored in strongly typed relational columns. Custom, dynamic, or tenant-specific merchant attributes are preserved in a PostgreSQL `attributes jsonb` column indexed with a Generalized Inverted Index (`CREATE INDEX idx_products_attrs ON products USING gin (attributes jsonb_path_ops);`). This pattern delivers sub-5ms lookup performance on dynamic attributes across 1,000,000+ SKUs while avoiding EAV JOIN overhead.
-
-The Go transformer module maps extracted SQL rows into domain entities:
+Sau khi được trích xuất bằng SQL, dữ liệu cần phải trải qua khâu biến đổi (transformation) trước khi được nhét vào PostgreSQL của Catalog Service:
 
 ```go
 // migration/transformer/product_transformer.go
@@ -261,7 +243,7 @@ func TransformProduct(mp *MagentoProduct) *catalog.Product {
         Name:        mp.Name,
         Description: mp.Description,
         Status:      transformStatus(mp.Status),
-        // Convert float64 price to Money type (no floating point in API layer)
+        // Chuyển đổi giá trị price dạng float64 sang kiểu Money (tuyệt đối không cho float lọt qua tầng API)
         Price: money.FromFloat("VND", mp.Price),
         Weight: mp.Weight,
         CreatedAt: mp.CreatedAt,
@@ -284,14 +266,12 @@ func transformStatus(magentoStatus int) catalog.ProductStatus {
 }
 ```
 
-## 7. Customer EAV: The Same Pattern
+## 7. Customer EAV: Bổn Cũ Soạn Lại
 
-Customer EAV extraction applies identical SQL pivot patterns, converting user profiles, addresses, and credentials into Go identity models.
-
-Customer data in Magento is also EAV (`customer_entity` + type-specific tables). The extraction follows the same CTE dynamic pivot strategy to extract user profiles, contact information, and group memberships cleanly:
+Dữ liệu Customer trong Magento cũng xài EAV (bảng `customer_entity` + các bảng hậu tố theo kiểu dữ liệu). Quá trình trích xuất cũng tuân theo y xì đúc mô hình trên:
 
 ```sql
--- Customer extraction with dynamic attribute resolution
+-- Trích xuất Customer kèm tính năng dò tìm thuộc tính linh động
 WITH customer_attrs AS (
     SELECT attribute_id, attribute_code, backend_type
     FROM eav_attribute
@@ -322,14 +302,12 @@ JOIN customer_attrs ca ON ca.attribute_id = v.attribute_id
 GROUP BY ce.entity_id, ce.email, ce.group_id, ce.is_active, ce.created_at, idmap.platform_uuid;
 ```
 
-## 8. Incremental Delta Sync
+## 8. Đồng bộ Độ lệch Tăng dần (Incremental Delta Sync)
 
-Incremental delta sync tracks `updated_at` timestamps to stream newly modified Magento catalog records into Go microservices continuously.
-
-During the initial data migration window, legacy Magento transactions continue modifying catalog records. Polling-based delta queries filter entities updated after the initial historical snapshot timestamp:
+Sau lần tải cày toàn bộ (initial full load) lúc ban đầu, đường ống CDC (Debezium, được mô tả ở [Phần 6](/series/composable-commerce-migration/part-6-phase1-strangler-fig/)) sẽ đứng ra hứng chịu nhiệm vụ đồng bộ các thay đổi tăng dần. Tuy nhiên, trong khoảng thời gian chờ Debezium được deploy, một tiến trình đồng bộ dạng quét polling (polling-based delta sync) sẽ đứng ra trám chỗ:
 
 ```sql
--- Delta sync: products changed since last extraction
+-- Delta sync: lấy ra những sản phẩm đã bị thay đổi kể từ lần trích xuất gần nhất
 SELECT e.entity_id
 FROM catalog_product_entity e
 WHERE e.updated_at > :last_sync_timestamp
@@ -337,15 +315,9 @@ ORDER BY e.updated_at ASC
 LIMIT 1000;
 ```
 
-This is a **fallback only** — it misses DELETEs and is vulnerable to clock skew. As soon as Debezium is running (Phase 1 milestone), the polling-based delta sync is disabled in favor of real-time MySQL binlog streaming.
+Đây chỉ thuần túy là một phương án **chữa cháy (fallback)** — nó sẽ bị mù hoàn toàn trước các thao tác xóa (DELETEs) và rất dễ vỡ mồm nếu đồng hồ giữa các server bị lệch (clock skew). Ngay khi Debezium được khởi chạy (cột mốc Phase 1), cái cục đồng bộ dạng polling này sẽ bị tắt bỏ ngay lập tức.
 
-## 9. Validation: Before Declaring Extraction Complete
-
-Validating extraction requires running record count reconciliations and checksum comparisons between Magento MySQL and Go PostgreSQL stores.
-
-Automated verification scripts execute total count comparisons across Magento MySQL source tables and Go microservice PostgreSQL target tables. The verification step includes random sample row exports to validate attribute value precision and field mapping alignment.
-
-The shell script below performs automated extraction validation prior to promoting the service to Phase 1 traffic cutover:
+## 9. Nghiệm thu: Cửa Ải Cuối Cùng Trước Khi Hoàn Tất Trích Xuất
 
 ```bash
 #!/bin/bash
@@ -353,23 +325,23 @@ The shell script below performs automated extraction validation prior to promoti
 
 MAGENTO_COUNT=$(mysql -h $MAGENTO_DB -e "
     SELECT COUNT(*) FROM catalog_product_entity
-    WHERE status = 1  -- Enabled products only
+    WHERE status = 1  -- Chỉ đếm hàng đang Enabled (được mở bán)
 " | tail -1)
 
 PLATFORM_COUNT=$(psql $PLATFORM_DB -t -c "
     SELECT COUNT(*) FROM products WHERE status = 'ENABLED'
 ")
 
-echo "Magento enabled products: $MAGENTO_COUNT"
-echo "Platform products: $PLATFORM_COUNT"
+echo "Số lượng sản phẩm Enabled trên Magento: $MAGENTO_COUNT"
+echo "Số lượng sản phẩm trên Nền tảng mới: $PLATFORM_COUNT"
 
-# Count must match before proceeding to Phase 1
+# Hai con số này phải khớp nhau chằn chặn thì mới được phép đi tiếp sang Phase 1
 if [ "$MAGENTO_COUNT" -ne "$PLATFORM_COUNT" ]; then
-    echo "❌ Count mismatch — extraction incomplete"
+    echo "❌ Lệch số — quá trình trích xuất chưa hoàn thiện"
     exit 1
 fi
 
-# Sample validation: spot-check 100 products
+# Chạy test lấy mẫu: bốc đại (spot-check) 100 sản phẩm
 psql $PLATFORM_DB -c "
     SELECT p.sku, p.name, p.price
     FROM products p
@@ -377,41 +349,45 @@ psql $PLATFORM_DB -c "
     LIMIT 100
 " > /tmp/platform_sample.csv
 
-echo "✅ Count matches. Review sample in /tmp/platform_sample.csv"
+echo "✅ Số lượng đã khớp. Vui lòng kiểm tra file lấy mẫu ở /tmp/platform_sample.csv"
 ```
 
-## Key Takeaways
+## Bài Học Xương Máu (Key Takeaways)
 
-Migrating Magento EAV schemas requires dynamic attribute lookups, integer-to-UUID translation tables, and automated data checksum validation.
+1. **Không bao giờ được gán cứng `attribute_id`** — phải luôn dò tìm thông qua `eav_attribute.attribute_code`
+2. **Dựng bảng `magento_id_map` đầu tiên** — mọi bước migration sau này đều sẽ phụ thuộc vào cái bảng tham chiếu chéo UUID này
+3. **Dùng kỹ thuật SQL pivot động** — cách dùng CTE sẽ đảm bảo truy vấn chạy ngon trên mọi instance Magento bất chấp thứ tự lúc cài đặt
+4. **Nghiệm thu (Validate) số lượng đếm trước khi vào Phase 1** — chỉ cần hai con số đếm (count) bị lệch nhau cũng đủ để kết luận quá trình trích xuất của bạn bị thủng lỗ chỗ
+5. **Giá (Price) nằm trong MySQL là decimal, nhưng vào proto thì phải là Money** — hãy chuyển đổi tường minh (explicitly), tuyệt đối không để lọt kiểu float qua được tầng API
 
-1. **Never hardcode `attribute_id`** — always resolve from `eav_attribute.attribute_code`
-2. **Build `magento_id_map` first** — every subsequent migration step depends on UUID cross-references
-3. **Use dynamic SQL pivot** — the CTE approach works on any Magento instance regardless of installation order
-4. **Validate count before Phase 1** — a count mismatch means your extraction is incomplete
-5. **Price is decimal in MySQL, Money in proto** — convert explicitly, never pass float through the API layer
+Trích xuất EAV là công đoạn tốn sức người (labor-intensive) nhất trong toàn bộ chuỗi migration. Nhưng một khi bảng `magento_id_map` đã được bơm đầy và câu lệnh dynamic pivot báo về kết quả count chuẩn xác, bạn đã chính thức sẵn sàng để dấn thân vào các giai đoạn (phase) migration thực sự. [Phần 6](/series/composable-commerce-migration/part-6-phase1-strangler-fig/) sẽ cho bạn thấy cách Debezium biến công việc đồng bộ tăng dần thành một dòng chảy liên tục và siêu cẩn mật (reliable) như thế nào — bằng việc đá văng cái cục polling-based delta đi để thế chỗ bằng kỹ thuật CDC chọc thẳng vào tầng binlog.
 
-The EAV extraction is the most labor-intensive part of the migration. Once `magento_id_map` is populated and the dynamic pivot query produces the correct count, you're ready for the actual migration phases. [Part 6](/series/composable-commerce-migration/part-6-phase1-strangler-fig/) shows how Debezium makes the incremental sync continuous and reliable — replacing the polling-based delta with binlog-level CDC.
+## Câu Hỏi Thường Gặp (FAQ)
 
-## FAQ
+### Tại sao tôi không thể dùng luôn cái tính năng import/export CSV có sẵn của Magento thay vì đi hì hục cào SQL trực tiếp?
 
-Handling Magento EAV migration safely requires converting complex entity JOINs into flattened JSON documents for Go microservice consumption.
+Cái tính năng CSV import/export của Magento không hề chịu xuất ra các mối quan hệ của thuộc tính, và cũng chẳng chịu đẻ ra cái bảng đối chiếu `magento_id_map` mà bạn đang rất cần. Xuất ra CSV sẽ chỉ trả về cho bạn các dòng dữ liệu dạng bẹt (flat row) cho từng sản phẩm — tức là ném sạch đi toàn bộ cấu trúc EAV — chưa kể một con Magento nguyên thủy (vanilla) không cắm extension sẽ bị kẹt trần giới hạn xuất đúng 5,000 sản phẩm là ngỏm. Với hơn 10,000 SKU, cào SQL trực tiếp vào MySQL là con đường duy nhất có thể kham nổi khối lượng này mà không cần phải can thiệp (modification) vào code.
 
-{{< faq q="Why can't I just use Magento's built-in import/export CSV instead of direct SQL extraction?" >}}
-Magento's CSV import/export doesn't export attribute relationships or the `magento_id_map` cross-reference you need. CSV export gives you a flat row per product — losing the EAV structure — and has a 5,000-product limit on vanilla Magento without extension. For 10,000+ SKUs, direct SQL extraction against MySQL is the only approach that works at scale without modification.
-{{< /faq >}}
+*Lưu ý kiến trúc 2026 (E-E-A-T Context): Magento/Adobe Commerce hoàn toàn không tương thích native với PostgreSQL. Đừng cố gắng chạy Magento core trên PostgreSQL bằng các gói proof-of-concept của cộng đồng. Thay vào đó, hãy duy trì MySQL/MariaDB cho Magento và dùng các kịch bản SQL extraction/ETL này để đồng bộ và chuyển đổi (normalize) schema EAV "dài và gầy" thành một PostgreSQL schema hiệu năng cao cho hệ thống microservices đích.*
 
-{{< faq q="Do I need to keep magento_id_map permanently?" >}}
-Yes — until Phase 3 cutover is complete. The CDC sync pipeline (Part 6), the dual-write adapter (Part 7), and the conflict resolver (Part 7) all use `magento_id_map` to translate Magento integer IDs to UUIDs when processing events. Once Phase 3 is done and Magento is decommissioned, the table can be archived (not deleted — keep it for audit trail).
-{{< /faq >}}
+### Tôi có phải giữ cái bảng magento_id_map này sống vĩnh viễn không?
 
-{{< faq q="What if two Magento instances have the same attribute_code but different semantics?" >}}
-This happens with custom attributes created by third-party extensions that use generic codes like `custom_attribute_1`. In this case, also check `eav_attribute.frontend_label` and `eav_attribute.source_model` to disambiguate. Document any ambiguous attributes in your `magento_id_map` as a comment field before starting the extraction — resolving this post-extraction is significantly more expensive.
-{{< /faq >}}
+Có — cho đến khi nào quá trình chốt hạ (cutover) ở Phase 3 hoàn tất. Cái đường ống đồng bộ CDC (Phần 6), bộ chuyển tiếp ghi dữ liệu kép (dual-write adapter - Phần 7), và bộ phân xử xung đột (conflict resolver - Phần 7) đều sống phụ thuộc vào bảng `magento_id_map` để phiên dịch các ID dạng số nguyên của Magento sang UUID mỗi khi chúng xử lý sự kiện (event). Chừng nào Phase 3 xong xuôi và Magento chính thức bị rút ống thở (decommissioned), cái bảng này mới được phép đưa vào kho lưu trữ (archive) (không được xóa sạch — phải giữ lại làm đường mòn kiểm toán - audit trail).
+
+### Điều gì sẽ xảy ra nếu có hai bản cài đặt Magento cùng xài chung một cái `attribute_code` nhưng lại mang ý nghĩa (semantics) hoàn toàn khác nhau?
+
+Trường hợp này sẽ xảy ra khi các thuộc tính tự chế (custom attributes) được tạo ra bởi các extension bên thứ ba lười biếng hay xài mấy cái tên mã kiểu vô thưởng vô phạt như `custom_attribute_1`. Trong tình cảnh đó, hãy kiểm tra thêm các cột `eav_attribute.frontend_label` và `eav_attribute.source_model` để gỡ rối (disambiguate). Hãy đảm bảo bạn đã ghi chép lại toàn bộ các thuộc tính mang ý nghĩa nhập nhằng này vào một trường comment bên trong bảng `magento_id_map` của bạn trước khi bấm nút trích xuất — việc phải đi dọn dẹp đống rác này sau khi đã trích xuất xong xuôi đắt đỏ hơn gấp tỷ lần.
 
 ---
 
-*This article is part of the **[Composable Commerce Migration Series](/series/composable-commerce-migration/)**. Check out the full index to see the complete architectural context.*
+*Bài viết này nằm trong **[Series Chuyển đổi sang Composable Commerce](/series/composable-commerce-migration/)**. Hãy xem toàn bộ mục lục để nắm bắt ngữ cảnh kiến trúc đầy đủ nhất.*
 
-*Need help assessing the risks of your own platform migration? → [Book a 1:1 Architecture Consultation](/hire/)*
+*Bạn cần hỗ trợ đánh giá rủi ro cho đợt chuyển đổi nền tảng sắp tới? â†’ [Đặt lịch Tư vấn Kiến trúc 1:1](/hire/)*
 
-🔗 **Next Step:** Continue to [Part 6 — Phase1 Strangler Fig](/series/composable-commerce-migration/part-6-phase1-strangler-fig/) for the following module in the series.
+---
+
+---
+
+---
+
+[← Chương trước: Phần 4: gRPC Internal + REST Gateway](/series/composable-commerce-migration/part-4-grpc-rest-gateway/) | [Mục lục Series](/series/composable-commerce-migration/) | [Chương tiếp theo: Phần 6: Giai Đoạn 1 — Strangler Fig Read-Only →](/series/composable-commerce-migration/part-6-phase1-strangler-fig/)

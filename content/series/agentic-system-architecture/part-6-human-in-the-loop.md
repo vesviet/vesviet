@@ -1,29 +1,43 @@
 ---
-title: "Part 6: Human-in-the-Loop (HITL) Guardrails & State Interception"
-slug: "part-6-human-in-the-loop"
-date: "2026-06-25T08:00:00+07:00"
-lastmod: "2026-07-26T08:00:00+07:00"
-draft: false
+title: "Phần 6: Kiến Trúc Human-in-the-Loop (HITL): Cơ Chế Can Thiệp Con Người Cho AI Swarms"
+date: 2026-06-25T08:00:00+07:00
+lastmod: 2026-07-28T18:23:00+07:00
 author: "Lê Tuấn Anh"
-tags: ["Human-in-the-Loop", "HITL", "Guardrails", "OWASP", "Go", "Python", "Security"]
-categories: ["Engineering", "Security"]
-cover:
-  image: "/images/posts/part-6-human-in-the-loop.jpg"
-  alt: "Part 6 Human-in-the-Loop Guardrails and State Interception Architecture"
-  relative: false
-mermaid: true
+description: "Thiết kế hệ thống Can thiệp Con người (Human-in-the-Loop) giúp kiểm soát rủi ro, phê duyệt giao dịch và đảm bảo an toàn tuyệt đối cho Autonomous AI Swarms."
+categories:
+  - "Engineering"
+  - "Security"
+tags:
+  - "Human-in-the-Loop"
+  - "HITL"
+  - "Guardrails"
+  - "OWASP"
+  - "Go"
+  - "Python"
+  - "Security"
+series:
+  - "agentic-system-architecture"
+weight: 7
+slug: "part-6-human-in-the-loop"
 canonicalURL: "https://tanhdev.com/series/agentic-system-architecture/part-6-human-in-the-loop/"
-description: "Production architecture guide for Part 6 — Architectural guardrails, Human-in-the-Loop state interception, Go approval gateways, and OWASP LLM security."
 ShowToc: true
 TocOpen: true
-weight: 2
-series: ["agentic-system-architecture"]
+draft: false
+cover:
+  image: "/images/posts/default-post.png"
+  alt: "Phần 6: Kiến Trúc Human-in-the-Loop (HITL): Cơ Chế Can Thiệp Con Người Cho AI Swarms"
+  relative: false
 ---
 
+[← Chương trước: Phần 5: Đánh Giá AI Agent (Agent Evals)](/series/agentic-system-architecture/part-5-agent-evals/) | [Mục lục Series](/series/agentic-system-architecture/)
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — Agent Evals](/series/agentic-system-architecture/part-5-agent-evals/). Review it first if the terminology in this part is unfamiliar.
+> **Answer-first:** Kiến trúc Human-in-the-Loop (HITL) tích hợp chốt chặn con người vào các hành động rủi ro cao như giao dịch tài chính hay sửa đổi dữ liệu. Sử dụng cơ chế Interruptible Workflows và Webhook phê duyệt bất đồng bộ giúp AI Agent tự trị nhưng luôn nằm trong tầm kiểm soát an toàn.
 
-**Answer-first:** Enterprise agentic systems require stateful Human-in-the-Loop (HITL) interception gateways, architectural guardrails, and OWASP security controls. Suspending autonomous agent workflows before executing high-risk financial or destructive mutations guarantees regulatory compliance and mitigates prompt injection vulnerabilities. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for production-grade enterprise operations.
+---
+
+## Part 6: Human-in-the-Loop (HITL) Guardrails & State Interception
+
+**Answer-First:** Enterprise agentic systems require stateful Human-in-the-Loop (HITL) interception gateways, architectural guardrails, and OWASP security controls. Suspending autonomous agent workflows before executing high-risk financial or destructive mutations guarantees regulatory compliance and mitigates prompt injection vulnerabilities. (Tính năng HITL trong môi trường công nghệ 2026 không còn là workaround mà là architectural core, tích hợp sâu vào các graph orchestration như LangGraph).
 
 ---
 
@@ -40,10 +54,10 @@ Securing agentic workflows begins with establishing multi-layered policy boundar
 Relying on LLM system instructions to enforce safety rules is insufficient because prompt injection attacks can bypass text instructions. Production guardrails enforce security deterministically outside the LLM context using Abstract Syntax Tree (AST) analyzers, regex policy validators, and Open Policy Agent (OPA) engines.
 
 ```mermaid
-graph TD
+flowchart TD
     UserPrompt["User Prompt / Input Event"] --> InputGuard["1. Deterministic Input Guardrail"]
     
-    subgraph Multi-Layer Guardrail Perimeter
+    subgraph MultiLayerGuardrailPerimeter["Multi-Layer Guardrail Perimeter"]
         InputGuard --> AgentCore["2. Agent Reasoning & Tool Invocation"]
         AgentCore --> PolicyEngine["3. OPA Policy & Risk Evaluator"]
         
@@ -72,30 +86,22 @@ Stateful interception requires pausing the execution graph of an agent, persisti
 When an agent proposes an action flagged as high-risk, the orchestrator must avoid blocking system threads or dropping context state. The HITL gateway captures the current execution graph, serializes the context into Redis or PostgreSQL, dispatches an approval event via webhooks or Slack, and suspends execution until a signed decision signal arrives.
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    participant Agent as "Autonomous Agent"
-    participant Gateway as "Go HITL Gateway"
-    participant Store as "Redis State Store"
-    participant Human as "Human Reviewer"
-    participant API as "Internal Production API"
-
-    Agent->>Gateway: Propose Action ("transfer_funds, $50,000")
-    Gateway->>Gateway: Evaluate Risk Policy ("Risk = High")
-    Gateway->>Store: Serialize State & Create Audit Ticket
-    Gateway-->>Agent: Suspend Workflow ("Status: PENDING_APPROVAL")
-    Gateway->>Human: Dispatch Approval Webhook ("JWT Signed Link")
+flowchart TD
+    User["Người Dùng"] -->|"Yêu cầu: 'Xóa bản ghi khách hàng A'"| Agent["AI Agent Controller"]
+    Agent -->|"1. Đánh giá rủi ro hành động"| Engine["Policy Guardrails Engine"]
     
-    alt Human Approves Action
-        Human->>Gateway: POST /api/v1/approve ("Token + MFA")
-        Gateway->>Store: Rehydrate Agent Execution Graph
-        Gateway->>API: Execute Action ("transfer_funds")
-        API-->>Gateway: Execution Result Success
-        Gateway-->>Agent: Resume Workflow Execution
-    else Human Rejects Action
-        Human->>Gateway: POST /api/v1/reject ("Reason: Exceeds Limit")
-        Gateway->>Agent: Return Action Failed Error State
-    end
+    Engine -->|"Phân loại rủi ro: CRITICAL"| Gate{"Hành động nhạy cảm?"}
+    Gate -->|"Rủi ro cao"| Admin["Nhân Viên Duyệt (Admin / Slack Webhook)"]
+    
+    Admin -->|"3a. Phê duyệt (Approve)"| Execute["4a. Thực thi lệnh xóa lên Hệ Thống Đích"]
+    Admin -->|"3b. Từ chối (Reject)"| Reject["4b. Hủy tác vụ an toàn"]
+    
+    Execute --> Target["Hệ Thống Đích (DB / Cloud API)"]
+    Target -->|"Xác nhận thành công"| NotifyUserSuccess["Agent: Hoàn thành sau khi được duyệt"]
+    Reject --> NotifyUserFail["Agent: Yêu cầu bị từ chối bởi Quản trị viên"]
+    
+    NotifyUserSuccess --> User
+    NotifyUserFail --> User
 ```
 
 ---
@@ -273,11 +279,13 @@ from pydantic import BaseModel, Field
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("OWASPGuardrail")
 
+
 class ActionSecurityContext(BaseModel):
     agent_id: str
     tool_name: str
     arguments: Dict[str, Any]
     user_role: str
+
 
 class OWASPGuardrailEngine:
     INJECTION_PATTERNS = [
@@ -311,6 +319,7 @@ class OWASPGuardrailEngine:
             return False, f"OWASP LLM02: Excessive Agency. Role '{context.user_role}' cannot invoke '{context.tool_name}'."
 
         return True, "Security inspection passed."
+
 
 if __name__ == "__main__":
     engine = OWASPGuardrailEngine()
@@ -362,9 +371,20 @@ When approval timeouts expire, the HITL gateway triggers an automated fallback s
 
 ---
 
-## System Security Invariants & Compliance Rules
+## Technical Deep-Dive: System Security Invariants & Compliance Rules
+
 - **Maximum HITL Interception Latency**: Interception and state serialization completes in < 15ms in Go Redis gateways.
 - **Token Signature Expiration**: Approval JWT tokens strictly expire after 15 minutes to prevent replay attacks.
 - **Zero Bypass Enforcement**: All tool execution gateways enforce OPA policy evaluations with deny-by-default fallbacks.
 
-🔗 **Next Step:** You have reached the final part of this series. Revisit the series index at [/series/agentic-system-architecture/](/series/agentic-system-architecture/) or explore other series linked below.
+
+---
+
+### 🔗 Đọc thêm các chuyên đề liên quan:
+- [Thiết kế Kiến trúc Microservices trong Go](/posts/golang-microservices/)
+- [Xây dựng Custom Vector Database Engine trong Go](/posts/building-custom-golang-vector-database-engine-hnsw/)
+- [Cẩm nang Zero-Trust Service Mesh Security](/posts/zero-trust-service-mesh-security-spiffe-spire-istio-golang/)
+
+---
+
+[← Chương trước: Phần 5: Đánh Giá AI Agent (Agent Evals)](/series/agentic-system-architecture/part-5-agent-evals/) | [Mục lục Series](/series/agentic-system-architecture/)
