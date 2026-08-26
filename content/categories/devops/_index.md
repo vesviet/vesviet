@@ -5,12 +5,12 @@ cover:
   image: "/images/posts/devops.jpg"
 ---
 
-> **Answer-first:** Category DevOps tập trung vào kinh nghiệm thực chiến xây dựng nền tảng (platform engineering) với Kubernetes, GitOps qua ArgoCD và CI/CD tự động hóa. Góc nhìn ở đây đúc kết từ quá trình vận hành hệ thống thực tế chịu tải cao, không phải các định nghĩa lý thuyết về văn hóa DevOps.
+> **Answer-first:** The DevOps category focuses on battle-tested platform engineering with Kubernetes, GitOps automation via ArgoCD, and resilient CI/CD delivery pipelines. Insights here are distilled from operating high-concurrency production systems, not theoretical DevOps culture definitions.
 
-DevOps không chỉ là một khái niệm văn hóa, mà là các quyết định kiến trúc và công cụ đo lường được. Các bài viết trong chuyên mục này phản ánh trực tiếp kinh nghiệm triển khai kiến trúc microservices và tự động hóa quy trình phát hành của tôi, đặc biệt nhấn mạnh vào tính ổn định và khả năng phục hồi (resilience) của hệ thống.
+DevOps is more than a cultural concept—it is a concrete set of measurable architectural and tooling decisions. Articles in this section directly reflect production lessons learned from microservice deployments, infrastructure-as-code automation, and site reliability engineering (SRE).
 
-## Các Chủ Đề Cốt Lõi
+## Core Focus Areas
 
-- **Kubernetes & Container Orchestration:** Quản lý stateful workloads, ingress, và tối ưu hóa tài nguyên.
-- **GitOps & Continuous Delivery:** Triển khai hạ tầng dưới dạng mã (IaC) và quy trình đồng bộ tự động với ArgoCD.
-- **Platform Engineering:** Tự động hóa trải nghiệm nhà phát triển (developer experience) và giảm thiểu ma sát trong CI/CD.
+- **Kubernetes & Container Orchestration:** Managing stateful workloads, ingress topologies, and resource optimization under high traffic.
+- **GitOps & Continuous Delivery:** Infrastructure-as-code (IaC) governance and automated sync workflows with ArgoCD.
+- **Platform Engineering:** Internal developer platforms (IDP), developer experience (DevEx), and zero-friction CI/CD delivery.

@@ -5,12 +5,12 @@ cover:
   image: "/images/posts/e-commerce.jpg"
 ---
 
-> **Answer-first:** Category E-Commerce phân tích sâu về kiến trúc thương mại điện tử linh hoạt (composable architecture), hành trình chuyển đổi từ monolith sang microservices, thuật toán điều phối đơn hàng (order routing) và hệ thống quản lý tồn kho (inventory). Các bài viết tập trung vào bài toán mở rộng quy mô (scale) trong thực tế.
+> **Answer-first:** The E-Commerce category deep-dives into composable architectures, monolith-to-microservices migrations, order routing algorithms, and real-time inventory management. These articles focus on the engineering realities of scaling transactional systems in production.
 
-Thiết kế hệ thống thương mại điện tử đòi hỏi sự cân bằng giữa tốc độ xử lý giao dịch và tính nhất quán dữ liệu. Những bài viết tại đây không bàn về lý thuyết bán hàng trực tuyến, mà mổ xẻ các quyết định kỹ thuật cốt lõi: làm sao để xử lý hàng triệu sản phẩm, đồng bộ kho theo thời gian thực và định tuyến đơn hàng thông minh (picker routing) giúp tối ưu hóa vận hành logistics.
+Designing e-commerce platforms requires a strict balance between transaction speed and data consistency. Rather than discussing generic online retail theories, the content here dissects core technical decisions: handling millions of SKUs, achieving real-time distributed inventory sync, and implementing intelligent picker routing to optimize warehouse logistics.
 
-## Các Chủ Đề Cốt Lõi
+## Core Focus Areas
 
-- **Composable Architecture & Microservices:** Bóc tách hệ thống nguyên khối, thiết kế các service độc lập cho Giỏ hàng, Thanh toán và Sản phẩm.
-- **Order Routing & Logistics:** Thuật toán phân bổ đơn hàng, tối ưu hóa đường đi lấy hàng (picker routing) trong kho.
-- **Inventory & Catalog Management:** Xử lý bài toán tồn kho phân tán, đồng bộ hóa dữ liệu thời gian thực cho hàng triệu SKU.
+- **Composable Architecture & Microservices:** Strangling the monolith and designing decoupled services for Cart, Checkout, and Catalog.
+- **Order Routing & Logistics:** Advanced allocation algorithms and warehouse picker routing optimizations.
+- **Inventory & Catalog Management:** Solving distributed inventory challenges and real-time data sync for massive product catalogs.
