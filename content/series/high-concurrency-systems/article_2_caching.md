@@ -23,8 +23,7 @@ weight: 3
 aliases: ["/series/high-concurrency-systems/article_2_caching/"]
 ---
 
-
-> Multi-tier distributed caching using Redis clusters and in-memory LRU buffers prevents database thundering herd and reduces read latency to sub-millisecond ranges.
+> **Answer-first:** A **cache stampede** (thundering herd) occurs when a single heavily accessed hot key expires, causing thousands of concurrent requests to overwhelm the database simultaneously. A **cache avalanche** occurs when many keys expire at the exact same moment or the cache cluster crashes. Stampedes require Go singleflight deduplication; avalanches require TTL jittering.
 
 > **Prerequisite:** Before reading this chapter, review [Chapter 1: How Systems Handle Millions of Requests/s](/posts/shopee-flash-sale-architecture/).
 
@@ -48,8 +47,6 @@ flowchart TD
 ```
 
 # 1. Cache Penetration & Bloom Filter Mathematics
-
-**Answer-first:** Multi-tier distributed caching with Redis clusters and in-memory LRU buffers prevents database thundering herd problems and reduces read latency to sub-millisecond ranges. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
 
 Cache penetration occurs when attackers query non-existent IDs, bypassing the cache entirely. Defend against it by caching `NULL` values or utilizing Bloom Filters at the memory level.
 
@@ -315,11 +312,20 @@ If your enterprise e-commerce or B2B platform is struggling with slow database q
 
 ## Frequently Asked Questions
 
-### Q1: What core challenge does Go Cache Defenses: Stampede, Avalanche & Singleflight address in production architecture?
-Defend Go microservices against cache penetration, avalanche, and breakdown using Bloom Filters, TTL jittering, and singleflight concurrency control.
+{{< faq q="What is the difference between a cache stampede and a cache avalanche?" >}}
+A cache stampede (thundering herd) occurs when a single ultra-hot key expires under heavy concurrency, causing thousands of requests to overwhelm the database simultaneously. A cache avalanche occurs when hundreds of thousands of keys expire at the exact same second or the cache cluster crashes entirely. Stampedes are mitigated with Go `singleflight`; avalanches are prevented with randomized TTL jittering.
+{{< /faq >}}
 
-### Q2: What are the critical operational pitfalls to avoid during rollout?
-Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+{{< faq q="How does Go singleflight prevent cache breakdown on hot keys?" >}}
+`golang.org/x/sync/singleflight` deduplicates concurrent function executions for the same key. When 50,000 concurrent requests arrive for an expired hot product key, `singleflight.Group.Do()` executes exactly 1 database query with the leading goroutine while blocking the remaining 49,999 callers, sharing the single result across all requests once complete.
+{{< /faq >}}
 
-### Q3: How do we benchmark and validate performance after implementation?
-Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.
+{{< faq q="How do Bloom filters prevent cache penetration attacks?" >}}
+Cache penetration occurs when attackers query non-existent IDs that never exist in the database, bypassing the cache on every request. An in-memory Bloom filter tests set membership with negligible RAM overhead; if the filter indicates an ID does not exist, the request is rejected immediately at the application boundary without querying Redis or PostgreSQL.
+{{< /faq >}}
+
+{{< faq q="How does probabilistic early expiration (XFetch) protect distributed cache clusters?" >}}
+The XFetch algorithm probabilistically triggers background cache recomputation before the hard TTL expires as request volume increases. By computing delta * beta * ln(rand()), requests arriving near the expiration window asynchronously refresh the cache in the background, guaranteeing that users always hit fresh in-memory data without experiencing synchronous cache misses.
+{{< /faq >}}
+
+{{< author-cta >}}

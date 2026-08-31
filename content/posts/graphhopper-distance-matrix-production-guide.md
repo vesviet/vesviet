@@ -30,7 +30,7 @@ canonicalURL: "https://tanhdev.com/posts/graphhopper-distance-matrix-production-
 
 # GraphHopper Distance Matrix: API & OSM Hosting Guide
 
-> **Answer-first:** Self-hosting GraphHopper for distance matrix calculations leverages OpenStreetMap (OSM) PBF data, memory-mapped graph caches, and Java Contraction Hierarchies (CH) to compute 100x100 matrix queries in under 50ms at zero API cost (99.7% cost savings over Google Maps API). Pairing GraphHopper with H3 hexagonal spatial indexing and Redis semantic caching offloads 85%+ of repetitive route calculations in high-scale logistics and fleet dispatch systems.
+> **Answer-first:** GraphHopper distance matrix is a high-performance open-source routing engine endpoint that calculates travel times and road distances for N×M origin-destination coordinate pairs using OpenStreetMap data. By utilizing Contraction Hierarchies and memory-mapped graphs, self-hosted GraphHopper evaluates a 100×100 matrix in under 52ms, providing 99.7% cost savings over commercial APIs with runtime vehicle customization.
 
 ## How to Call the GraphHopper Matrix API (/matrix Endpoint)
 

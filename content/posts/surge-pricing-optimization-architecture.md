@@ -20,7 +20,7 @@ canonicalURL: "https://tanhdev.com/posts/surge-pricing-optimization-architecture
 
 # Surge Pricing Algorithm & Spatial Indexing Architecture
 
-**Answer-first:** Surge pricing optimization algorithms process real-time demand-supply metrics across Uber H3 spatial cells, dynamically updating price multipliers with low calculation latency. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+> **Answer-first:** A **surge multiplier** is a dynamic pricing coefficient (e.g., 1.5x, 2.0x) applied to baseline fares in ride-hailing and logistics marketplaces when real-time demand exceeds available driver supply within a geospatial zone (such as an Uber H3 hexagonal cell). It restores marketplace equilibrium by attracting drivers and filtering price-sensitive requests.
 
 Why is it that every time it rains, ride-hailing fares double, or even triple? It's not a human operator manually adjusting the prices behind a desk. Rather, it's the result of an incredibly sophisticated Stream Processing engine running in the background executing the **surge pricing algorithm**.
 
@@ -198,14 +198,20 @@ Running real-time surge pricing engines means balancing computational latency ag
 
 ## Frequently Asked Questions
 
-### Why use Uber H3 hexagonal spatial indexing instead of rectangular GeoHashes?
+{{< faq q="What is the meaning and role of a surge multiplier in ride-hailing platforms?" >}}
+A surge multiplier is a real-time dynamic pricing factor applied to base fares when ride demand exceeds online driver supply within a specific geospatial zone. Its economic purpose is twofold: incentivizing offline drivers to enter high-demand zones while filtering out price-sensitive requests to restore marketplace equilibrium.
+{{< /faq >}}
 
+{{< faq q="Why use Uber H3 hexagonal spatial indexing instead of rectangular GeoHashes?" >}}
 H3 hexagons maintain uniform distances between neighboring cell centroids, preventing distortion artifacts and making spatial smoothing algorithms across neighboring cells mathematically consistent. This uniform adjacency ensures that radius searches for nearby drivers yield equal-distance candidates regardless of heading or direction.
+{{< /faq >}}
 
-### How do you prevent drivers from gaming surge pricing boundaries?
-
+{{< faq q="How do you prevent drivers from gaming surge pricing boundaries?" >}}
 Implement spatial boundary blurring by computing surge multipliers as a weighted average across a driver's current H3 cell and all 6 immediate ring-1 neighbor cells. Blending regional cell weights eliminates abrupt pricing cliffs, preventing riders from walking short distances across cell boundaries to bypass surge rates.
+{{< /faq >}}
 
-### What Redis data structure is optimal for tracking real-time demand sliding windows?
-
+{{< faq q="What Redis data structure is optimal for tracking real-time demand sliding windows?" >}}
 Redis Sorted Sets (`ZSET`) storing timestamps as scores allow atomic removal of requests older than N minutes (`ZREMRANGEBYSCORE`) and fast counting (`ZCARD`) within 2ms. This sliding window structure maintains precise event density calculations without requiring heavy persistent database reads.
+{{< /faq >}}
+
+{{< author-cta >}}

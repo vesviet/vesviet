@@ -31,7 +31,7 @@ canonicalURL: "https://tanhdev.com/posts/composable-banking-architecture/"
 
 # Composable Banking Architecture: Go & BIAN Blueprint
 
-> **Answer-first:** Composable banking architecture replaces rigid monolithic core banking suites with independent Packaged Business Capabilities (PBCs) aligned to BIAN domain standards. By combining Go microservices, double-entry ledger event sourcing, Temporal/Dapr Saga orchestration, and Strangler Fig proxy cutovers, financial institutions achieve sub-10ms transaction settlement without risking high-stakes "Big Bang" migration outages.
+> **Answer-first:** Composable banking architecture replaces monolithic core banking software with modular, independent Packaged Business Capabilities (PBCs) aligned to BIAN standards. Connected via Go microservices, event streams (Kafka), and Temporal Saga orchestrators, composable banking enables financial institutions to deploy new financial products in days, achieve sub-10ms ledger settlement, and eliminate high-risk "Big Bang" migration outages.
 
 ## Migration Path from Monolith to Composable
 
@@ -587,6 +587,10 @@ Composable banking is a modular banking architecture where financial institution
 
 {{< faq q="Monolithic core banking vs Composable banking: what are the key differences?" >}}
 Monolithic core banking systems (such as legacy Oracle Flexcube or Temenos T24) store all financial products in a single tightly coupled codebase and shared database, requiring risky "Big Bang" releases and slow upgrade cycles. In contrast, composable banking decouples capabilities into independent Go microservices aligned with BIAN standards, allowing banks to upgrade payment gateways, change lending workflows, or scale ledger partitions in sub-milliseconds without downtime or full-system deployments.
+{{< /faq >}}
+
+{{< faq q="How is the BIAN standard implemented in Go banking microservices?" >}}
+BIAN (Banking Industry Architecture Network) standardizes ~300 discrete Service Domains (such as Current Account, Payment Execution, and Position Keeping). In Go microservices, each BIAN Service Domain maps to an isolated Domain-Driven Design (DDD) bounded context with explicit Protobuf/gRPC contracts, dedicated database schemas, and ISO 20022 domain event streaming via Kafka.
 {{< /faq >}}
 
 {{< faq q="Why are banks migrating away from monolithic core banking systems?" >}}

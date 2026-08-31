@@ -118,7 +118,7 @@ GraphHopper elegantly tackles this using `RAMDirectory` backed by Java's `Direct
 - You require the immense flexibility to inject dynamic priority weights per individual delivery request using Custom Models without recompiling the graph.
 - Your developers are primarily familiar with the Java ecosystem and prefer an engine that is easier to extend programmatically through Java APIs rather than C++.
 
-Both engines represent the pinnacle of open-source geospatial engineering. Evaluate your requirements against their architectural trade-offs to make the right call for your infrastructure.
+Both engines represent the pinnacle of open-source geospatial engineering. For practical integration into order fulfillment workflows, check out our guide on [distance matrix routing for order allocation](/series/ecommerce-order-allocation/part-7-distance-matrix-routing/) and our comprehensive [GraphHopper Distance Matrix production guide](/posts/graphhopper-distance-matrix-production-guide/) covering Docker deployments, memory sizing, and Redis H3 spatial caching. Evaluate your requirements against their architectural trade-offs to make the right call for your infrastructure.
 
 ## SME Field Notes: Urban Routing Realities in Ho Chi Minh City
 
@@ -168,7 +168,8 @@ Both engines parse custom OpenStreetMap (OSM) tags, but GraphHopper allows dynam
 
 ## Related Guides & Topic Cluster
 
-- **Distance Matrix Production Setup:** Learn how to deploy and cache distance calculations in our [GraphHopper Distance Matrix: Self-Hosted Routing & API Guide](/posts/graphhopper-distance-matrix-production-guide/).
+- **Distance Matrix for Order Allocation:** See how matrix calculations power VRP solvers in [Distance Matrix Routing for Order Allocation](/series/ecommerce-order-allocation/part-7-distance-matrix-routing/).
+- **Distance Matrix Production Setup:** Learn how to deploy and cache distance calculations in our [GraphHopper Distance Matrix production guide](/posts/graphhopper-distance-matrix-production-guide/).
 - **Fleet Optimization Solver:** See how matrix calculations feed a Go routing solver in [CVRP & VRPTW Fleet Optimization: Go ALNS Routing Engine](/posts/cvrp-vrptw-alns-fleet-optimization-golang-architecture/).
 - **Geospatial Series Hub:** Explore the full 8-part masterclass in [Geospatial & Routing Engine Architecture](/series/routing-geospatial-architecture/).
 - **Live Traffic with OSRM:** Scale live traffic updates with zero downtime in [OSRM Shared Memory on Kubernetes for Live Traffic](/posts/osrm-shared-memory-kubernetes-live-traffic/).

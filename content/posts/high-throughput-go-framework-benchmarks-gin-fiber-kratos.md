@@ -20,7 +20,7 @@ cover:
 
 # High-throughput Go Framework Benchmarks: Gin, Fiber, Kratos
 
-**Answer-first:** High-throughput Go web framework benchmarks show Fiber leading in zero-alloc HTTP routing speed, Gin excelling in ecosystem maturity, and Kratos providing production-grade enterprise microservice abstractions. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
+> **Answer-first:** Fiber and Gin are high-performance Go web frameworks with distinct architectures: Fiber uses `fasthttp` and `sync.Pool` memory pooling to achieve zero-allocation HTTP throughput (85,200 TPS), while Gin uses standard `net/http` (42,500 TPS) for complete ecosystem compatibility, native HTTP/2, and standard Go context safety without concurrent buffer reuse risks.
 
 ## The Testing Methodology (Beyond Hello World)
 
@@ -358,21 +358,21 @@ Kratos was born for Enterprise-grade large systems:
 
 ## Frequently Asked Questions
 
-### Why is Fiber faster than Gin in basic benchmark tests?
+{{< faq q="Fiber vs Gin: what are the key performance and architectural differences in Go?" >}}
+Fiber is built on `fasthttp` and uses `sync.Pool` object pooling to achieve zero-allocation request processing, yielding 85,200 TPS in benchmarks. Gin is built on the Go standard library `net/http`, delivering 42,500 TPS with full standard library ecosystem compatibility, native HTTP/2 support, and complete context safety across asynchronous goroutines.
+{{< /faq >}}
 
-The core difference lies in the underlying HTTP library:
-- **Fiber** is built on **`fasthttp`**. It achieves ultra-fast speeds by reusing objects via `sync.Pool`, minimizing memory allocation (Zero Allocation), and avoiding triggering Go's Garbage Collection (GC). Consequently, Fiber always leads in micro-benchmarks (very high TPS).
-- **Gin** is built on the standard **`net/http`** library. Although `net/http` is slower because it allocates new memory for every request, it is safer, strictly complies with HTTP/2 standards, and is compatible with 99% of Golang's middleware/library ecosystem. In a real-world Production setting, the bottleneck is usually the Database, not the framework overhead.
+{{< faq q="Why is fasthttp memory pooling in Fiber risky when spawning background goroutines?" >}}
+In Fiber/fasthttp, request context objects (`*fiber.Ctx`) are returned to the `sync.Pool` immediately when the HTTP handler finishes. If an uncopied context reference is accessed inside an asynchronous `go func()`, subsequent incoming requests will overwrite the memory buffer, leading to silent data corruption and concurrent race conditions.
+{{< /faq >}}
 
-### Is Kratos suitable for small projects?
-
-**Kratos** is a framework designed by Bilibili to solve massive Microservices challenges. It employs an "API-first" approach with Protobuf and gRPC at its core.
-- **Small projects:** Will find Kratos too "bulky" (Over-engineering). The biggest hurdle is the Learning Curve; you must learn how to organize multi-layered Clean Architecture, learn Protobuf, and how to generate code via Kratos CLI.
-- **Enterprise / Microservices projects:** This is where Kratos shines. It forces the Dev team to adhere to communication standards and provides built-in tools for Tracing, Metrics, Load Balancing, and Circuit Breakers. If you are designing a large system divided into many services, Kratos is the safest choice and offers the cleanest architecture.
-
-### How do GOMEMLIMIT and GOGC prevent OOM kills in high-throughput Go web applications?
-
+{{< faq q="How do GOMEMLIMIT and GOGC prevent OOM kills in high-throughput Go web applications?" >}}
 Setting `GOMEMLIMIT` establishes a soft memory target that forces the Go garbage collector to run before container RAM limits are breached. When paired with `GOGC`, this prevents memory spikes during heavy traffic bursts while maximizing memory utilization without triggering OOM exit code 137.
+{{< /faq >}}
+
+{{< faq q="When should an engineering team choose Kratos over Gin or Fiber?" >}}
+Kratos is designed for enterprise microservices requiring strict Clean Architecture (separating Transport, Service, Biz, and Data layers). It provides native gRPC/Protobuf contracts, automated client code generation, and built-in OpenTelemetry tracing, circuit breaking, and load balancing across distributed service meshes.
+{{< /faq >}}
 
 ## Related Reading
 

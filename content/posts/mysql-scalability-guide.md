@@ -29,7 +29,7 @@ canonicalURL: "https://tanhdev.com/posts/mysql-scalability-guide/"
 
 # MySQL Scalability & Sharding: Vitess vs TiDB (10k+ TPS)
 
-> **Answer-first:** Scaling MySQL for high-traffic applications involves a phased progression: tuning InnoDB buffer pools and slow queries (0–500 TPS), offloading reads via ProxySQL and read replicas (500–3,000 TPS), and adopting horizontal write scaling (3,000+ TPS) via Vitess sharding or TiDB Distributed SQL to maintain sub-50ms P99 query latencies.
+> **Answer-first:** Scaling MySQL requires a phased architectural progression: optimizing InnoDB buffer pools (100–500 TPS), implementing ProxySQL read/write splitting (500–3,000 TPS), and migrating to horizontal sharding or TiDB Distributed SQL (3,000–10,000+ TPS). TiDB serves as the premier MySQL sharding alternative, eliminating manual application-level partitioning through stateless SQL compute nodes and Raft-replicated distributed TiKV storage.
 
 MySQL scalability is the ability to increase database throughput — reads per second, writes per second, or data volume — without rewriting your application. The critical distinction: **read scaling** (adding replicas) and **write scaling** (sharding or distributed SQL) require completely different architectural approaches. Choosing the wrong path creates technical debt that takes months to unwind.
 
@@ -486,6 +486,10 @@ TiDB is the leading MySQL-compatible distributed SQL alternative for high-throug
 
 {{< faq q="When should an architecture team choose Vitess over TiDB?" >}}
 Vitess is preferred when teams wish to retain standard MySQL storage nodes and already have dedicated SRE resources to manage VSchema and VReplication workflows. TiDB is recommended when applications require transparent ACID transactions across nodes, automatic region rebalancing, or hybrid operational/analytical processing (HTAP).
+{{< /faq >}}
+
+{{< faq q="Why does ProxySQL read/write splitting require transaction_persistent = 1?" >}}
+Without `transaction_persistent = 1` in ProxySQL user configurations, a `SELECT` executed inside an open transaction can be routed to an asynchronous read replica, reading stale data committed moments prior. Enabling `transaction_persistent = 1` forces all statements within an active transaction to remain pinned to the primary database.
 {{< /faq >}}
 
 {{< faq q="How do engineering teams migrate from MySQL sharding to TiDB without ID collisions?" >}}

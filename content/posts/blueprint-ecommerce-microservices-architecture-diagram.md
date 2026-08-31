@@ -22,7 +22,7 @@ canonicalURL: "https://tanhdev.com/posts/blueprint-ecommerce-microservices-archi
 
 ## E-Commerce Architecture Patterns: Monolith vs Microservices
 
-> **Answer-first:** An ecommerce microservices architecture diagram organizes enterprise capabilities into 6 core bounded domains (Commerce Flow, Product & Content, Logistics, Post-Purchase, Identity & Access, Platform Operations), orchestrating 21 Go microservices via gRPC and Dapr Pub/Sub event mesh. This architecture achieves sub-50ms P99 latency, isolates database-per-service failures, and guarantees reliable checkout rollbacks using distributed Saga workflows.
+> **Answer-first:** An ecommerce microservices architecture diagram structures enterprise retail platforms into 6 bounded domains—Commerce Flow, Product & Content, Logistics, Post-Purchase, Identity & Access, and Platform Operations—powering 21 Go microservices. Orchestrated via gRPC contracts and Dapr Pub/Sub event meshes, this design delivers sub-50ms P99 latency, isolates database-per-service failures, and automates rollbacks via distributed Saga workflows.
 
 ### Monolithic vs Microservices E-Commerce Comparison
 
@@ -278,6 +278,10 @@ The 6 bounded domains are: (1) Commerce Flow (Checkout, Order, Payment), (2) Pro
 
 {{< faq q="Why use Go and Dapr for e-commerce microservices instead of Node.js or Java Spring Boot?" >}}
 Go provides sub-millisecond memory allocation, minimal Docker image footprint (~20MB vs ~400MB for JVM), and native goroutines for high-concurrency I/O. Dapr abstracts distributed state management, pub/sub, and secrets via sidecars, eliminating heavy framework lock-in and standardizing telemetry across all 21 services.
+{{< /faq >}}
+
+{{< faq q="How does CQRS read model projection with Elasticsearch maintain sub-50ms catalog search latency?" >}}
+Instead of executing expensive SQL table joins across product, price, and inventory tables, the Search Service subscribes to domain events (e.g., `catalog.product.updated`) via Dapr Pub/Sub. A dedicated worker denormalizes these changes into a flat Elasticsearch document, enabling sub-50ms faceted search queries directly from the API gateway.
 {{< /faq >}}
 
 {{< faq q="When is the right time to decompose a monolith into 21 microservices?" >}}
