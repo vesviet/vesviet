@@ -151,3 +151,10 @@ They operate in complementary layers: Kubernetes NetworkPolicies enforce L3/L4 n
 * 📖 [Tech Radar: vLLM Context-Aware Routing & MLA Cache](/radar/2026-08/vllm-context-routing-mla/)
 * 🚀 [Part 7: Modular Monolith vs. Microservices vs. SpinKube Wasm](/series/architectural-tradeoffs-showdowns/07-modular-monolith-vs-microservices-vs-spinkube-wasm/)
 * 💼 [Zero-Trust Security & Cloud-Native Advisory Services](/hire/)
+
+---
+
+## Related Architecture Deep Dives
+
+- [Building Custom Kubernetes Operators with eBPF & Cilium in Go](/posts/building-custom-kubernetes-operators-ebpf-golang-cilium/)
+- [Production AI Observability: OpenTelemetry & LLM Tracing](/posts/production-ai-observability-opentelemetry-golang-llm-tracing/)

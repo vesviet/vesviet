@@ -29,7 +29,7 @@ weight: 2
 
 > **Prerequisite:** Read the previous article: Chapter 1: Microservices Foundation - The Power of Go, gRPC, and API Gateway.
 
-Flash Sale events represent an extreme stress test for backend system architecture. When a high-demand item is heavily discounted, millions of buyers trigger simultaneous checkout requests in the exact same millisecond. If traffic hits a MySQL database directly, row locks and deadlocks cause immediate system collapse.
+Flash Sale events represent an extreme stress test for backend system architecture. When a high-demand item is heavily discounted, millions of buyers trigger simultaneous checkout requests in the exact same millisecond. If traffic hits a MySQL database directly, row locks and deadlocks cause immediate system collapse—requiring teams to implement the techniques covered in our [MySQL scalability guide](/posts/mysql-scalability-guide/) and evaluate modern [MySQL sharding alternative](/posts/mysql-scalability-guide/) architectures before peak season.
 
 ---
 
@@ -242,7 +242,7 @@ If a specific shard exhausts inventory while adjacent shards hold stock, an auto
 ---
 
 ## Developer Takeaways
-Building a resilient flash sale engine requires combining **in-memory local caching**, **sliding window rate limiting**, **atomic Lua inventory reservation**, and **Redis inventory sharding**. By validating stock in memory and offloading write persistence to asynchronous workers, backend services process extreme traffic spikes with zero inventory overselling.
+Building a resilient flash sale engine requires combining **in-memory local caching**, **sliding window rate limiting**, **atomic Lua inventory reservation**, and **Redis inventory sharding**. By validating stock in memory and offloading write persistence to asynchronous workers, backend services process extreme traffic spikes with zero inventory overselling. In enterprise retail, this inventory engine is an essential component of a broader [ecommerce microservices architecture blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/), coordinating order allocations and fund settlements through an [event-driven ledger](/posts/composable-banking-architecture/) under a modern [composable banking architecture](/posts/composable-banking-architecture/).
 
 ## Redis Lua Script Performance Benchmarks
 
@@ -299,6 +299,10 @@ Redis runs Lua scripts sequentially in a single-threaded engine, ensuring atomic
 Local in-memory caches on Go application pods intercept sold-out item queries locally without triggering network socket calls to Redis. This protects Redis cluster instances from network interface card saturation when millions of users query sold-out flash sale items.
 {{< /faq >}}
 
+{{< faq "What is the difference between Cache Stampede and Cache Avalanche?" >}}
+A **Cache Stampede** (also known as the thundering herd problem) occurs when a single extremely hot cache key expires, causing hundreds of concurrent worker threads to query the underlying database simultaneously. A **Cache Avalanche** happens when multiple keys expire at the exact same moment (e.g., due to identical TTLs) or the entire cache server crashes, overwhelming the database with millions of uncached requests. Mitigate stampedes using Go `singleflight.Group` and distributed mutexes; mitigate avalanches by adding jitter (randomized offsets of ±10–20%) to cache TTLs.
+{{< /faq >}}
+
 {{< faq "What happens when an individual Redis inventory shard runs out of stock?" >}}
 When a specific inventory shard reaches zero, the application server attempts stock reservation on adjacent shards via consistent hash fallback. Simultaneously, a background inventory worker executes automated shard rebalancing to transfer remaining stock from underutilized shards.
 {{< /faq >}}
@@ -322,4 +326,7 @@ When a specific inventory shard reaches zero, the application server attempts st
 
 These architectural guides detail high-concurrency domain modeling and scalable inventory management strategies:
 
-- [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)
+- [21-Service Go Microservices Architecture Diagram & Blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/) — Complete 21-service microservices topology across 6 DDD bounded contexts.
+- [MySQL Scalability & Sharding Alternatives: Vitess, TiDB & Read Replicas](/posts/mysql-scalability-guide/) — Database scaling, connection pooling, and distributed SQL migration patterns.
+- [Composable Banking Architecture: Core Banking vs Modular Monolith](/posts/composable-banking-architecture/) — Double-entry ledger event sourcing, Saga orchestration, and BIAN domain standards.
+- [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/) — Domain-Driven Design in Go with Kratos and Dapr.

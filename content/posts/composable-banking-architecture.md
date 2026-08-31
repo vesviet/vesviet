@@ -581,12 +581,16 @@ For teams evaluating off-the-shelf composable cores before building in-house, th
 
 ## Frequently Asked Questions
 
-{{< faq q="What is composable banking architecture?" >}}
-Composable banking architecture replaces a monolithic core banking system with a network of independent, domain-specific Packaged Business Capabilities (PBCs). Each PBC owns its own database, deployment pipeline, and API surface. The system is governed by MACH principles (Microservices, API-first, Cloud-native, Headless) and typically aligns service boundaries with BIAN industry-standard Service Domains.
+{{< faq q="What is composable banking?" >}}
+Composable banking is a modular banking architecture where financial institutions assemble independent, cloud-native Packaged Business Capabilities (PBCs) — such as deposit engines, payment processors, loan origination systems, and double-entry ledgers — into a flexible ecosystem connected via open APIs, event streams (Kafka), and Saga orchestrators (Temporal/Dapr), instead of relying on a monolithic core banking software suite.
+{{< /faq >}}
+
+{{< faq q="Monolithic core banking vs Composable banking: what are the key differences?" >}}
+Monolithic core banking systems (such as legacy Oracle Flexcube or Temenos T24) store all financial products in a single tightly coupled codebase and shared database, requiring risky "Big Bang" releases and slow upgrade cycles. In contrast, composable banking decouples capabilities into independent Go microservices aligned with BIAN standards, allowing banks to upgrade payment gateways, change lending workflows, or scale ledger partitions in sub-milliseconds without downtime or full-system deployments.
 {{< /faq >}}
 
 {{< faq q="Why are banks migrating away from monolithic core banking systems?" >}}
-Three common pressures are cost, talent concentration, and delivery speed. Their size and remediation depend on the institution; use a measured baseline and a regulated change plan before committing to a modernization program.
+Three primary pressures drive migration: high maintenance costs of legacy mainframe/COBOL stacks, acute developer talent shortages, and slow time-to-market for embedded finance products. Composable banking enables rapid product launch in days rather than quarters using cloud-native Go microservices and event-driven architectures.
 {{< /faq >}}
 
 {{< faq q="What is the Strangler Fig pattern in core banking migration?" >}}

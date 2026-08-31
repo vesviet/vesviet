@@ -117,7 +117,7 @@ Simulating peak load in a staging environment is fundamentally flawed; staging e
 - **Data Isolation (Shadow DB)**: When a database driver or middleware intercepts a request with the stress-test flag, it reroutes the read/write query to a designated "shadow table" or "shadow database" (e.g., `db_shadow`). This guarantees that synthetic load does not pollute real financial ledgers or mess up accounting records.
 
 ### Pillar 3: Financial-Grade Distributed Database (OceanBase)
-Before 2013, scaling relational databases meant sharding MySQL or Oracle manually, which introduced massive complexity in managing distributed transactions and maintaining consistency. Alipay replaced these legacy databases with **OceanBase**, a distributed relational database built from scratch:
+Before 2013, scaling relational databases meant sharding MySQL or Oracle manually—a bottleneck analyzed in our [MySQL scalability guide](/posts/mysql-scalability-guide/) and [MySQL sharding alternative](/posts/mysql-scalability-guide/) deep dive—which introduced massive complexity in managing distributed transactions and maintaining consistency. Alipay replaced these legacy databases with **OceanBase**, a distributed relational database built from scratch:
 - **Paxos Consensus**: OceanBase uses the Multi-Paxos protocol to replicate transaction logs across five data centers in three regions (3-site-5-datacenter). If a primary node fails, a new leader is elected in seconds, ensuring RTO < 30 seconds and RPO = 0.
 - **LSM-Tree Storage Engine**: Traditional databases use B+ Trees, which lead to high write amplification and random disk I/O under heavy load. OceanBase uses a Log-Structured Merge-tree (LSM-tree) where all writes are buffered in memory (MemTable) and written sequentially to disk (SSTable) during a scheduled background freeze/compaction process, eliminating disk bottlenecks at midnight.
 
@@ -168,10 +168,10 @@ Architectural takeaways emphasize partitioning data into independent cells, runn
 
 If you are tasked with scaling a high-throughput transaction system today, you do not need to replicate Alipay's internal codebase. Instead, you should implement their architectural patterns:
 
-1. **Partition State at the Edge**: Don't try to build a faster database cluster. Instead, route requests to self-contained application and storage units (cells) as close to the ingress as possible.
+1. **Partition State at the Edge**: Don't try to build a faster database cluster. Instead, route requests to self-contained application and storage units (cells) as close to the ingress as possible. For enterprise commerce, see how this maps into a 21-service [ecommerce microservices architecture blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/).
 2. **Conduct Production Load Drills**: If you haven't run a load test on your production environment using shadow databases, you do not know if your system will survive a peak event.
 3. **Establish Hard Degrade Paths**: Define explicit, automated toggles that disable non-critical features (like recommended items, activity logs, and email notifications) when the core database latency increases past a specific millisecond threshold.
-4. **Design for Write Buffering**: Use LSM-tree database structures or message queues to convert random disk write spikes into sequential logs or buffered streams.
+4. **Design for Write Buffering**: Use LSM-tree database structures or message queues to convert random disk write spikes into sequential logs or buffered streams, similar to how modern [event-driven ledger](/posts/composable-banking-architecture/) systems operate in [composable banking architecture](/posts/composable-banking-architecture/).
 
 ---
 
@@ -181,17 +181,24 @@ Need help implementing high-scale architectures? Feel free to [Get in touch](/hi
 
 ## Frequently Asked Questions
 
-### What core design principle allowed Alipay to scale from 100 TPS to 544,000 TPS?
+{{< faq q="What core design principle allowed Alipay to scale from 100 TPS to 544,000 TPS?" >}}
 Alipay adopted Logical Data Center (LDC) cell-based unitization, which partitions database tables and application services into independent RZone units by user ID hash. This strategy eliminates centralized database lock contention and allows horizontal capacity expansion across multiple data centers.
+{{< /faq >}}
 
-### How does Full-Link Stress Testing prevent production outages during Double 11?
+{{< faq q="How does Full-Link Stress Testing prevent production outages during Double 11?" >}}
 Synthetic traffic injectors simulate peak Double 11 payment volume directly in production environments off-peak using special HTTP header markers (`X-Stress-Test: true`). Middleware and database drivers route marked queries to isolated shadow databases, ensuring zero contamination of actual financial accounts while validating system capacity.
+{{< /faq >}}
 
-### Why did Alipay replace traditional MySQL/Oracle clusters with OceanBase?
+{{< faq q="Why did Alipay replace traditional MySQL/Oracle clusters with OceanBase?" >}}
 Legacy relational databases suffered from high write amplification and cross-datacenter locking under burst traffic. OceanBase uses LSM-tree storage to buffer random writes into memory before sequential disk flushing, while Multi-Paxos consensus guarantees zero data loss (RPO=0) and sub-2-second recovery (RTO<2s).
+{{< /faq >}}
 
 ## Architectural Context & Pillar References
 
 For further exploration of high-concurrency payment architectures, distributed ledger consistency, and real-world scaling playbooks, consult the following reference guides:
+- [21-Service Go Microservices Architecture Diagram & Blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/) — Complete 21-service microservices topology across 6 DDD bounded contexts.
+- [Composable Banking Architecture: Core Banking vs Modular Monolith](/posts/composable-banking-architecture/) — Core banking modernization, double-entry ledger event sourcing, and Temporal/Dapr Saga orchestration.
+- [MySQL Scalability & Sharding Alternatives: Vitess, TiDB & Read Replicas](/posts/mysql-scalability-guide/) — Database scaling, connection pooling with ProxySQL, and distributed SQL migration.
+- [MySQL Sharding Alternatives: Replace Sharding with TiDB](/posts/mysql-scaling-sharding-tidb-architecture/) — Replace complex manual sharding with TiDB Distributed SQL.
 - [Alipay Double 11 High-Availability Architecture](/posts/alipay-double-11-architecture-tps/)
 - [PayPay Architecture & Scaling Playbook](/posts/paypay-architecture-scaling/)

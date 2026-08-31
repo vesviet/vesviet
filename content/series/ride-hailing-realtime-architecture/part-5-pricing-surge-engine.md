@@ -278,6 +278,10 @@ When deploying a dynamic pricing engine in a newly launched city, historical sup
 
 This FAQ addresses key surge pricing questions: dynamic multiplier calculation formulas, marketplace equilibrium mechanics, EWMA price smoothing, and cold-start strategies.
 
+{{< faq q="What is the meaning of a surge multiplier?" >}}
+A surge multiplier (or surge rate) is a dynamic price factor (e.g., 1.5×, 2.0×, 3.0×) automatically applied by ride-hailing platforms like Uber and Grab when real-time passenger demand exceeds available driver supply in a specific H3 hexagon zone. It incentivizes more drivers to enter the area while filtering non-urgent ride requests to restore market equilibrium.
+{{< /faq >}}
+
 {{< faq q="How does a surge pricing engine calculate the dynamic multiplier?" >}}
 The surge pricing engine calculates the dynamic multiplier by evaluating the ratio of active ride requests (demand) to available idle drivers (supply) within an H3 Resolution 7 hexagon over a rolling 5-minute window. This ratio is smoothed via Exponentially Weighted Moving Average (EWMA) and mapped to a multiplier curve capped at a maximum threshold (e.g., 5.0x).
 {{< /faq >}}

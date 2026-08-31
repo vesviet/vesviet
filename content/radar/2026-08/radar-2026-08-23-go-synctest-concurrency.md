@@ -1,5 +1,5 @@
 ---
-title: "Deterministic Concurrency Testing with Go 1.25 testing/synctest"
+title: "Deterministic Concurrency Testing: Go 1.25 synctest"
 date: "2026-08-23T08:30:00+07:00"
 lastmod: "2026-08-26T14:00:00+07:00"
 author: "Lê Tuấn Anh"
@@ -43,7 +43,8 @@ assert.True(t, worker.IsFailed())
 ```
 
 ### Why Heuristic Delays Fail in Production CI/CD:
-1. **CPU Load Sensitivity:** A `100ms` sleep works locally on an unloaded workstation, but fails intermittently on high-concurrency CI runners when the OS scheduler delays goroutine execution $ightarrow$ **Random Test Failures**.
+1. **CPU Load Sensitivity:** A `100ms` sleep works locally on an unloaded workstation, but fails intermittently on high-concurrency CI runners when the OS scheduler delays goroutine execution $
+ightarrow$ **Random Test Failures**.
 2. **Bloated Build Times:** In a suite with 500 concurrency tests, spending 200ms–2s per test on idle sleep delays inflates CI execution times by 15–20 minutes.
 3. **Inability to Test Sub-Millisecond Edge Cases:** Cannot deterministically test race conditions where Goroutine A releases a lock 1 nanosecond before Goroutine B triggers a timeout.
 
@@ -174,3 +175,10 @@ By design, Go's synctest runtime restricts channel communications and synchroniz
 * 📖 [Tech Radar August 2026: Go MCP SDK & Green Tea GC](/radar/2026-08/tech-radar-august-2026/)
 * 🚀 [Part 8: Redis Distributed State vs. Dapr Virtual Actors](/series/architectural-tradeoffs-showdowns/08-redis-state-vs-dapr-virtual-actors/)
 * 💼 [Architecture & High-Concurrency Systems Consulting](/hire/)
+
+---
+
+## Related Architecture Deep Dives
+
+- [Modern Golang 1.24 High-Performance & Zero-Alloc GC Tuning](/posts/modern-golang-123-124-high-performance-zero-alloc-gc-tuning/)
+- [Microservices Delusion: Why Modular Monolith in Go is the Destination](/posts/microservices-delusion-why-golang-modular-monolith-is-the-destination/)

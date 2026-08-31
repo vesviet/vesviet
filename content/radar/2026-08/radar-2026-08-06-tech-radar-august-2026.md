@@ -336,3 +336,10 @@ This technical overview is part of the **[August 2026 Tech Radar Digest](/radar/
   - [Deterministic Concurrency Testing with Go 1.26 testing/synctest](/radar/go-synctest-concurrency/)
 
 {{< author-cta >}}
+
+---
+
+## Related Architecture Deep Dives
+
+- [Modern Golang 1.24 High-Performance & Zero-Alloc GC Tuning](/posts/modern-golang-123-124-high-performance-zero-alloc-gc-tuning/)
+- [Go Microservices Architecture: Production Guide](/posts/go-microservices/)

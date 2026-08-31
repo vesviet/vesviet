@@ -628,6 +628,10 @@ OSRM is faster (21ms vs. 52ms for a 100×100 matrix) because it is written in C+
 Use GraphHopper (self-hosted) for static delivery routing from fixed warehouses to customers. It handles 10,000 pairs for free in 50ms (99.7% cost savings over commercial APIs). Use Google Maps for real-time ride-hailing or last-mile routing where live traffic data materially changes the ETA. For 10,000 pairs, Google Maps costs $51 per request vs. $0 for self-hosted GraphHopper.
 {{< /faq >}}
 
+{{< faq q="What are the best open-source alternatives to GraphHopper distance matrix?" >}}
+The leading open-source alternatives are **OSRM (Open Source Routing Machine)**, **Valhalla**, and **pgRouting**. OSRM (C++) is the fastest choice for single-vehicle distance matrices (20ms for 100x100); Valhalla excels at dynamic turn-by-turn multi-modal routing and dynamic costing; pgRouting integrates directly within PostgreSQL/PostGIS for GIS queries. GraphHopper remains the top choice for Java/Go backends requiring runtime vehicle weight/height constraints without full graph re-indexing.
+{{< /faq >}}
+
 {{< faq q="What OSM data format does GraphHopper use?" >}}
 GraphHopper uses OpenStreetMap `.osm.pbf` binary format. You can download regional extracts for free from Geofabrik (geofabrik.de). For Vietnam: `https://download.geofabrik.de/asia/vietnam-latest.osm.pbf`. GraphHopper can also download the file automatically on first start if you pass the `--url` flag.
 {{< /faq >}}

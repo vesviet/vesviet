@@ -154,3 +154,10 @@ No. Prefix routing in vLLM calculates the cryptographic hash over `(Tenant_ID + 
 * 📖 [Tech Radar: eBPF Zero-Trust Security for AI Agents](/radar/2026-08/ebpf-tetragon-ai-agent-security/)
 * 🚀 [Part 1: HTTP/REST (JSON) vs. gRPC (Protobuf) Showdown](/series/architectural-tradeoffs-showdowns/01-http-rest-json-vs-grpc-protobuf/)
 * 💼 [AI Infrastructure & LLMOps Architecture Advisory](/hire/)
+
+---
+
+## Related Architecture Deep Dives
+
+- [High-Throughput Local LLM Infrastructure: vLLM & Golang Gateway](/posts/high-throughput-local-llm-infrastructure-vllm-golang-gateway/)
+- [Production AI Observability: OpenTelemetry & LLM Tracing](/posts/production-ai-observability-opentelemetry-golang-llm-tracing/)
