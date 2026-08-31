@@ -19,6 +19,8 @@ draft: false
 image: "/images/posts/finops-cost-reality-microservices-tax.jpg"
 series: ["modular-monolith-architecture"]
 weight: 3
+aliases:
+  - /series/modular-monolith-architecture/part-2-finops-cost-reality/
 ---
 
 

@@ -17,6 +17,8 @@ cover:
   caption: "Technology Landscape August 2026 - AI Agents, Golang Runtime & Cloud Native Ecosystem"
   relative: false
 mermaid: true
+aliases:
+  - /radar/2026-08/tech-radar-august-2026/
 ---
 
 > **Answer-first:** The August 2026 Tech Radar highlights enterprise infrastructure shifts toward AI-Native architectures and performance-optimized Cloud Native systems. Key recommendations include **Go 1.26 Green Tea GC**, **Argo CD 3.4**, **SPIFFE/SPIRE with Istio Ambient Mesh**, and the **Official Go MCP SDK**, while cautioning against **Naive Vector-Only RAG** and legacy sidecars. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and.

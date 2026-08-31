@@ -690,7 +690,7 @@ Snowflake IDs are 64-bit unsigned/signed integers that can reach values up to 2^
 
 ---
 
-[← Previous Chapter: Part 2 — Golang vs. PHP/Laravel](/series/architectural-tradeoffs-showdowns/02-golang-vs-php-laravel-ecommerce/) | [Series hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 4 — Apache Kafka vs. NATS JetStream →](/series/architectural-tradeoffs-showdowns/04-kafka-vs-nats-jetstream/)
+[← Previous Chapter: Part 2 — Golang vs. PHP/Laravel](/series/architectural-tradeoffs-showdowns/02-golang-vs-php-laravel-ecommerce/) | [Series hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 4 — MariaDB vs. MySQL →](/series/architectural-tradeoffs-showdowns/04-mariadb-vs-mysql-storage-engines-threadpool/)
 
 {{< author-cta >}}
 

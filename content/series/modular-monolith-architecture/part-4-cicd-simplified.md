@@ -19,6 +19,8 @@ draft: false
 image: "/images/posts/golang-microservices-cover.jpg"
 series: ["modular-monolith-architecture"]
 weight: 5
+aliases:
+  - /series/modular-monolith-architecture/part-4-cicd-simplified/
 ---
 
 

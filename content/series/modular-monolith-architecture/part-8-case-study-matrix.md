@@ -19,6 +19,8 @@ draft: false
 image: "/images/posts/golang-microservices-cover.jpg"
 series: ["modular-monolith-architecture"]
 weight: 9
+aliases:
+  - /series/modular-monolith-architecture/part-8-case-study-matrix/
 ---
 
 

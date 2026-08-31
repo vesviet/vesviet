@@ -19,6 +19,8 @@ draft: false
 image: "/images/posts/executive-summary-amazon-prime-video-monolith.jpg"
 series: ["modular-monolith-architecture"]
 weight: 1
+aliases:
+  - /series/modular-monolith-architecture/part-0-executive-summary/
 ---
 
 

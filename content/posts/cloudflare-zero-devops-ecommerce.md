@@ -21,6 +21,8 @@ cover:
   alt: "Zero DevOps e-commerce with Cloudflare Workers and Turborepo: edge-first architecture guide"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/cloudflare-zero-devops-ecommerce/"
+aliases:
+  - /posts/cloudflare-zero-devops-ecommerce-architecture/
 ---
 
 # Zero DevOps E-commerce with Cloudflare Workers & Turborepo

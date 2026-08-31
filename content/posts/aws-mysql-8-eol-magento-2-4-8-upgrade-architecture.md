@@ -131,6 +131,6 @@ A medium-scale upgrade project (approximately 20 - 30 Custom Extensions) to vers
 Upgrading to Magento 2.4.8 LTS is not a "Nice-to-have" initiative. It is a Survival Mandate for e-commerce systems as the countdown clock for AWS RDS MySQL 8.0 EoSS ticks toward zero. By recognizing this as a holistic infrastructure migration and deploying a Blue/Green strategy, Tech Leads can defuse this "Technical Debt" bomb with surgical precision.
 
 *(This article is part of our E-commerce System Architecture series. Explore further strategic perspectives below):*
-- *[Is Magento Still Worth Investing In For 2026?](/posts/magento-still-worth-investing-2026/)*
-- *[Why Migrate from Magento to Microservices?](/posts/why-migrate-magento-to-microservices/)*
+- *[Is Magento Still Worth Investing In For 2026?](/series/magento-migration-vietnam/magento-still-worth-investing-2026/)*
+- *[Why Migrate from Magento to Microservices?](/series/magento-migration-vietnam/why-migrate-magento-to-microservices/)*
 - *[Architecting Event-Driven Order Splitting](/posts/architecting-21-service-ecommerce-golang-ddd/)*

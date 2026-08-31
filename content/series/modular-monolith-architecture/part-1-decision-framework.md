@@ -19,6 +19,8 @@ draft: false
 image: "/images/posts/decision-framework-modular-monolith-vs-microservices.jpg"
 series: ["modular-monolith-architecture"]
 weight: 2
+aliases:
+  - /series/modular-monolith-architecture/part-1-decision-framework/
 ---
 
 

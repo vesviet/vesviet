@@ -66,12 +66,12 @@ The Prompt Standard series covers the full lifecycle of context engineering, dec
 
 | Part | Title & Summary Link | Key Highlights & Code Artifacts |
 | :--- | :--- | :--- |
-| **Part 1** | [*What Is Prompt Standard and Why Should Your Team Care?*](./part-1-context-engineering-evolution/) | Context window limits, token budget allocation formula, KV-cache prefix alignment, and Go `ContextAssembler`. |
-| **Part 2** | [*The 8 Core Blocks of an Agent Prompt*](./part-2-the-8-core-blocks/) | The mandatory 8-block prompt layout, boundary lock rules, XML framing, and Go `CorePrompt` structural definition. |
-| **Part 3** | [*Layered Prompt Architecture: Building Modular Prompt Stacks*](./part-3-layered-prompt-architecture/) | Decoupling roles, security guardrails, SOP workflows, and JIT skills; layer precedence; Go `PromptStack` compiler. |
-| **Part 4** | [*Context Enrichment with MCP and Hybrid RAG*](./part-4-mcp-and-hybrid-rag/) | Model Context Protocol 2026 JSON-RPC schemas, AST chunking, cross-encoder re-ranking, Python `MCPContextPipeline`. |
-| **Part 5** | [*Declarative Prompting and Prompt Optimization with DSPy*](./part-5-declarative-prompting-dspy/) | Declarative Signatures, Modules, MIPROv2 Bayesian teleprompters, Python DSPy compilation script, and JSON artifacts. |
-| **Part 6** | [*Production PromptOps, CI/CD Gates, and OWASP Agent Security*](./part-6-promptops-evals-and-security/) | G-Eval LLM-as-a-Judge gates, Python CI gate runner, OWASP ASI Top 10 2026, Dual-LLM pattern, Go handoff validator. |
+| **Part 1** | [*What Is Prompt Standard and Why Should Your Team Care?*](/series/prompt-standard/part-1-context-engineering-evolution/) | Context window limits, token budget allocation formula, KV-cache prefix alignment, and Go `ContextAssembler`. |
+| **Part 2** | [*The 8 Core Blocks of an Agent Prompt*](/series/prompt-standard/part-2-the-8-core-blocks/) | The mandatory 8-block prompt layout, boundary lock rules, XML framing, and Go `CorePrompt` structural definition. |
+| **Part 3** | [*Layered Prompt Architecture: Building Modular Prompt Stacks*](/series/prompt-standard/part-3-layered-prompt-architecture/) | Decoupling roles, security guardrails, SOP workflows, and JIT skills; layer precedence; Go `PromptStack` compiler. |
+| **Part 4** | [*Context Enrichment with MCP and Hybrid RAG*](/series/prompt-standard/part-4-mcp-and-hybrid-rag/) | Model Context Protocol 2026 JSON-RPC schemas, AST chunking, cross-encoder re-ranking, Python `MCPContextPipeline`. |
+| **Part 5** | [*Declarative Prompting and Prompt Optimization with DSPy*](/series/prompt-standard/part-5-declarative-prompting-dspy/) | Declarative Signatures, Modules, MIPROv2 Bayesian teleprompters, Python DSPy compilation script, and JSON artifacts. |
+| **Part 6** | [*Production PromptOps, CI/CD Gates, and OWASP Agent Security*](/series/prompt-standard/part-6-promptops-evals-and-security/) | G-Eval LLM-as-a-Judge gates, Python CI gate runner, OWASP ASI Top 10 2026, Dual-LLM pattern, Go handoff validator. |
 
 ---
 

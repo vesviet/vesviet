@@ -19,6 +19,8 @@ draft: false
 image: "/images/posts/golang-microservices-cover.jpg"
 series: ["modular-monolith-architecture"]
 weight: 6
+aliases:
+  - /series/modular-monolith-architecture/part-5-observability/
 ---
 
 
