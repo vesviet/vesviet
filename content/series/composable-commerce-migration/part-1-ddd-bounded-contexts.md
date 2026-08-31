@@ -1,11 +1,11 @@
 ---
-title: "Phần 1: Phân rã Magento thành 21 Go Microservices bằng DDD"
-date: 2026-04-08T10:00:00+07:00
+title: "Part 1: DDD & Bounded Contexts — Decomposing Magento into 21 Go Microservices"
+date: 2026-04-05T10:00:00+07:00
 lastmod: 2026-08-16T12:00:00+07:00
 author: "Lê Tuấn Anh"
-description: "Cách ánh xạ 240 module Magento 2 thành 21 microservices bằng DDD: chia tách Checkout ≠ Order, Pricing ≠ Promotion để tối ưu kiến trúc."
+description: "Applying Domain-Driven Design (DDD) to decompose monolithic Magento into 21 independent Go microservices across 5 Core Domains."
 categories: ["Series", "Software Engineering", "Backend Architecture"]
-tags: ["Magento", "DDD", "Domain-Driven Design", "Bounded Context", "Microservices", "Golang"]
+tags: ["DDD", "Bounded Context", "Microservices", "Golang", "Magento Migration", "Kratos"]
 series: ["composable-commerce-migration"]
 weight: 2
 slug: "part-1-ddd-bounded-contexts"
@@ -15,83 +15,103 @@ TocOpen: true
 draft: false
 cover:
   image: "/images/posts/default-post.png"
-  alt: "Phần 1: Phân rã Magento thành 21 Go Microservices bằng DDD"
+  alt: "Part 1: DDD & Bounded Contexts — Decomposing Magento into 21 Go Microservices"
   relative: false
-keywords: ["ddd bounded contexts", "magento decomposition", "checkout vs order service", "pricing promotion ddd"]
+keywords: ["domain driven design ecommerce", "bounded contexts microservices", "magento decomposition golang", "kratos microservices"]
 ---
 
-[← Chương trước: Phần 0: Tránh Bẫy $200K/Năm Magento](/series/composable-commerce-migration/part-0-executive-summary/) | [Mục lục Series](/series/composable-commerce-migration/) | [Chương tiếp theo: Phần 2: Rush Monorepo 21 Go & Next.js Apps →](/series/composable-commerce-migration/part-2-rush-monorepo/)
-
----
-
-> **Answer-first:** Số lượng microservices cần thiết được quyết định bởi cấu trúc đội ngũ, đặc tả chịu tải và ranh giới bất biến nghiệp vụ; áp dụng DDD bóc tách 240 module Magento thành 21 Bounded Contexts độc lập (như tách Checkout khỏi Order, Pricing khỏi Promotion).
+[← Previous Chapter: Part 0: Executive Summary](/series/composable-commerce-migration/part-0-executive-summary/) | [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 2: Rush Monorepo Architecture →](/series/composable-commerce-migration/part-2-rush-monorepo/)
 
 ---
 
-**Answer-first:** Số lượng service bạn cần được quyết định bởi **cấu trúc đội ngũ, đặc tả chịu tải (scaling profile), và ranh giới của các bất biến nghiệp vụ (business invariants)** của bạn — chứ không phải bởi các khuôn mẫu sáo rỗng. Trong môi trường e-commerce năm 2026, với việc chuyển dịch sang Agentic Commerce và Composable APIs, việc thiết lập ranh giới rõ ràng càng trở nên cốt lõi. Nền tảng trong series này sử dụng 21 services để đáp ứng 10,000+ đơn hàng/ngày.
-
-<!--more-->
-
-Bất kỳ team Magento nào khi quyết định chuyển dịch sang microservices cũng đều phải đối mặt với cùng một câu hỏi đầu tiên: **cần bao nhiêu service?** (E-E-A-T: Kiến thức được kiểm chứng từ các đợt chuyển đổi hàng triệu đô bởi đội ngũ chuyên gia).
-
-Ngành công nghiệp thường bảo là 4–6. Đó là một điểm khởi đầu hợp lý — nhưng hoàn toàn sai lầm khi áp dụng cho e-commerce nghiêm túc ở quy mô lớn, dẫn đến hiện tượng **Distributed Monolith**.
-
-## 1. Tại sao lại chia theo Ranh giới DDD, mà không phải Bảng Database
-
-Sai lầm phổ biến nhất là nhìn vào các bảng database của Magento và vẽ ranh giới service.
-"Chúng ta có bảng `catalog_product_entity`, vậy ta cần một Product Service." 
-Cách làm này tạo ra những **service thiếu máu (anemic services)**.
-
-Thiết kế Hướng Miền (Domain-Driven Design - DDD) áp dụng một cách tiếp cận khác: gom nhóm code xoay quanh các **năng lực nghiệp vụ (business capabilities) và những quy tắc bất biến (invariants)**.
-
-## 2. Nhóm 6 Bounded Context (21 Services)
-
-Nền tảng này tổ chức 21 service thành 6 nhóm domain:
-
-1. **Luồng Thương mại (3):** Checkout, Order, Payment.
-2. **Sản phẩm & Nội dung (4):** Catalog, Pricing, Promotion, Search. *(Đặc biệt quan trọng để support AI Agents trong Agentic Commerce)*
-3. **Định danh & Truy cập (3):** Auth, User, Customer.
-4. **Hậu cần (3):** Warehouse, Fulfillment, Shipping.
-5. **Hậu mãi (2):** Return, Loyalty.
-6. **Nền tảng & Vận hành (6):** Gateway, Analytics, Review, Notification, Location, CommonOps.
-
-## 3. Hai Pha Chia Tách Nghe Có Vẻ Ngược Đời
-
-### Chia tách 1: Checkout ≠ Order
-- **Checkout Service**: quản lý trạng thái tạm thời, có thể bỏ đi được (giỏ hàng, tính giá phí vận chuyển thời gian thực).
-- **Order Service**: quản lý trạng thái vĩnh viễn (lịch sử đơn hàng, cỗ máy trạng thái tài chính). Đảm bảo tính ACID khắt khe.
-
-### Chia tách 2: Pricing ≠ Promotion
-- **Pricing Service**: Nguồn sự thật cho giá gốc. Tần suất cập nhật thấp, tỷ lệ đọc cực cao (được tối ưu với Redis).
-- **Promotion Service**: Quản lý logic mã giảm giá, BOGO, event-driven. Có tính transactional cao.
-
-## 4. Ứng dụng các Nguyên tắc DDD
-
-Bốn nguyên tắc DDD cực kỳ rõ ràng trích từ ADR-002:
-1. **Đơn nhiệm (Single Responsibility)**.
-2. **Database Per Service (Mỗi service một DB)**.
-3. **Ngôn ngữ Phổ quát (Ubiquitous Language)**.
-4. **Lớp Chống tham nhũng (Anti-Corruption Layer)**.
-
-## 5. Mức độ Trưởng thành (Maturity) và Trình tự Chuyển đổi
-
-Không phải cả 21 service đều có thể đạt chuẩn production-ready cùng một lúc. Hãy áp dụng **Selective Extraction**: bóc tách và deploy những phần an toàn trước (Read-only APIs) trước khi động đến luồng thanh toán sinh tử.
-
-## Câu Hỏi Thường Gặp (FAQ)
-
-### Có bắt buộc phải chia đúng 21 service không?
-Không. Nguyên tắc là: *Số lượng service ≈ Số lượng team × 2–3*, bị giới hạn bởi các bất biến về chịu tải. Cửa hàng dưới 2,000 đơn/ngày chỉ cần 5-7 services, hoặc thậm chí giữ ở dạng Modular Monolith.
-
-### Điều gì xảy ra nếu tôi không chịu tách Pricing ra khỏi Promotion?
-Gộp chung chúng lại sẽ ép bạn phải cấp phát thừa mứa tài nguyên cho luồng đọc (vốn cache được) chỉ để tải lượng request tạo/xóa của promotion (transactional), đồng thời mở rộng "vùng nổ" khi hệ thống gặp lỗi.
+> **Answer-first:** Decomposing Magento requires Domain-Driven Design (DDD) bounded contexts across 5 core domains: Catalog & Search, Order & Fulfillment, Customer & Identity, Marketing & Promotion, and Financial Accounting. Each microservice owns its private PostgreSQL database to eliminate coupling.
 
 ---
-*Để tham khảo thêm về hệ thống 21 services, hãy đón đọc Phần 2: Thiết lập Rush Monorepo.*
+Monolithic Magento tightly couples product catalogs, tax rules, user sessions, inventory locks, and payment processing within a single shared database. A schema change to customer addresses can inadvertently lock product catalog tables.
+
+To build a fault-tolerant Composable Architecture, we apply **Domain-Driven Design (DDD)** to establish strict Bounded Contexts and autonomous service boundaries.
+
+```mermaid
+flowchart TD
+    subgraph CoreDomains ["5 Core Business Domains (21 Go Microservices)"]
+        subgraph D1 ["1. Catalog & Search Domain"]
+            S1["catalog-service"]
+            S2["search-service"]
+            S3["category-service"]
+            S4["pricing-service"]
+        end
+        subgraph D2 ["2. Order & Fulfillment Domain"]
+            S5["cart-service"]
+            S6["order-service"]
+            S7["inventory-service"]
+            S8["shipping-service"]
+            S9["return-service"]
+        end
+        subgraph D3 ["3. Customer & Identity Domain"]
+            S10["auth-service"]
+            S11["customer-service"]
+            S12["address-service"]
+            S13["review-service"]
+        end
+        subgraph D4 ["4. Payment & Financial Domain"]
+            S14["payment-service"]
+            S15["invoice-service"]
+            S16["tax-service"]
+            S17["ledger-service"]
+        end
+        subgraph D5 ["5. Promotion & Engagement Domain"]
+            S18["coupon-service"]
+            S19["loyalty-service"]
+            S20["notification-service"]
+            S21["recommendation-service"]
+        end
+    end
+```
 
 ---
 
----
+## 1. The 5 Core Domains and Service Breakdown
+
+### Domain 1: Catalog & Product Discovery
+* **`catalog-service`:** Product entities, variations, attributes, brand associations. Backed by PostgreSQL (relational JSONB attributes).
+* **`search-service`:** Multi-faceted search, autocomplete, typo-tolerance. Backed by Meilisearch / Elasticsearch.
+* **`pricing-service`:** Dynamic tier pricing, wholesale customer group pricing, currency conversion.
+
+### Domain 2: Order Management & Fulfillment
+* **`cart-service`:** High-speed in-memory shopping cart sessions backed by Redis Cluster.
+* **`order-service`:** Core state machine for order creation, status transitions, and audit logging.
+* **`inventory-service`:** Real-time stock reservations, multi-warehouse stock allocations, and backorder tracking.
+
+### Domain 3: Customer Identity & Access
+* **`auth-service`:** OAuth2 / OpenID Connect tokens, Passkey authentication, JWT issuance.
+* **`customer-service`:** Customer profile metadata, KYC compliance, segmentation.
+
+### Domain 4: Payment & Settlement
+* **`payment-service`:** Payment gateway integrations (Stripe, PayPal, VNPay, MoMo) with idempotent webhooks.
+* **`tax-service`:** Geolocation-based tax calculation (Avalara / TaxJar integration).
+
+### Domain 5: Promotions & Marketing
+* **`coupon-service`:** Coupon code redemption limits, basket discounts, promotion engine.
+* **`notification-service`:** Transactional emails, SMS, Web Push, Telegram alerts.
 
 ---
 
-[← Chương trước: Phần 0: Tránh Bẫy $200K/Năm Magento](/series/composable-commerce-migration/part-0-executive-summary/) | [Mục lục Series](/series/composable-commerce-migration/) | [Chương tiếp theo: Phần 2: Rush Monorepo 21 Go & Next.js Apps →](/series/composable-commerce-migration/part-2-rush-monorepo/)
+## 2. Database-Per-Service Rule & Cross-Domain Communication
+
+A non-negotiable rule in composable microservices is **Database Isolation**: no service may ever query another service's database directly.
+
+* **Synchronous Queries:** Inter-service queries execute over high-speed **gRPC (Protobuf)** via service mesh (Istio/Envoy).
+* **Asynchronous Events:** State mutations (e.g. `OrderCreatedEvent`, `InventoryReservedEvent`) publish to **Apache Kafka / NATS JetStream**.
+
+---
+
+## Frequently Asked Questions (FAQ)
+
+### Q1: How do you handle joint queries across Catalog and Orders?
+Client applications query the **API Gateway / BFF (Backend-For-Frontend)** which orchestrates parallel gRPC calls to `order-service` and `catalog-service`, assembling the unified JSON payload in memory.
+
+### Q2: What prevents distributed deadlocks between Order and Inventory services?
+We implement the **Transactional Outbox & Saga Pattern** (Choreography or Orchestration). Instead of distributed 2-Phase Commit locks, services execute local transactions and emit compensating events upon failure.
+
+### Q3: How are shared domain entities like Money and Address managed?
+Shared Value Objects are defined in common Protobuf contracts (`api/common/v1/money.proto`) managed within the Rush monorepo.

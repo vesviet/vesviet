@@ -1,79 +1,66 @@
 ---
-title: "Series: Agentic System Architecture"
-slug: "agentic-system-architecture"
-description: "Phân tích chuyên sâu thiết kế, xây dựng và vận hành các hệ thống Multi-Agent trên môi trường production thực tế."
-date: 2026-05-14T08:00:00+07:00
-lastmod: 2026-08-16T12:00:00+07:00
+title: "Agentic System Architecture: Engineering Multi-Agent Swarms for Production"
+date: 2026-08-16T10:00:00+07:00
+lastmod: 2026-08-24T14:00:00+07:00
 author: "Lê Tuấn Anh"
-draft: false
-weight: 50
+description: "Production architectural guide to multi-agent swarms: actor topology, hierarchical memory management, resilient tool execution, AgentOps, evals, and Human-in-the-Loop."
+categories: ["Series", "AI Infrastructure", "Distributed Systems", "Software Engineering"]
+tags: ["AI Agents", "Multi-Agent Systems", "AgentOps", "Tool Calling", "Memory Management", "Human-in-the-Loop", "Dapr Actors", "LangGraph"]
+series: ["agentic-system-architecture"]
+weight: 1
+slug: "agentic-system-architecture"
+canonicalURL: "https://tanhdev.com/series/agentic-system-architecture/"
 ShowToc: true
 TocOpen: true
-canonicalURL: "https://tanhdev.com/series/agentic-system-architecture/"
+draft: false
 cover:
   image: "/images/posts/default-post.png"
-  alt: "Series: Agentic System Architecture"
+  alt: "Agentic System Architecture Series Hub"
   relative: false
-categories: ['Series', 'AI Engineering', 'Multi-Agent Systems']
-tags: ['AI Agents', 'Multi-Agent', 'MCP', 'AgentOps', 'LangGraph', 'Architecture']
+keywords: ["agentic system architecture", "multi agent systems production", "agent memory hierarchy", "agentops observability", "human in the loop ai"]
 ---
 
-> **Answer-first:** Series Agentic System Architecture cung cấp blueprint kỹ thuật chuẩn production để thiết kế hệ thống Multi-Agent: phân loại topology điều phối, quản trị bộ nhớ đa tầng (episodes, graphs, context windows), bảo mật tool calling qua MCP 1.x, thiết lập OpenTelemetry AgentOps và xây dựng rào chắn Human-in-the-loop cho autonomous swarms.
-
-Chào mừng bạn đến với Series **Agentic System Architecture** - một tài liệu kỹ thuật chuyên sâu dành cho Senior Backend Engineer, System Architect, và AI Engineer. Cập nhật mới nhất 2026: Kiến trúc hệ thống giờ đây xoay quanh các chuẩn Model Context Protocol (MCP) và orchestration dựa trên LangGraph.
-
-Trước khi bắt đầu, nếu bạn chưa quen với khái niệm AI-Native System hoặc Model Context Protocol, chúng tôi **đặc biệt khuyến nghị** bạn đọc qua bài viết tiền đề: [Kiến Trúc Hệ Thống AI-Native Toàn Diện (Playbook Phần 8)](/series/ai-driven-playbook/part-8-ai-native-system-architecture/).
-
-Trong series này, chúng ta sẽ chuyển từ việc "Sử dụng AI để viết code" sang **"Thiết kế kiến trúc hệ thống nơi AI Agent giao tiếp với nhau để tự động hoá quy trình"**. Từ Topology, Memory, Guardrails, cho đến Production Observability.
+> **Answer-first:** Moving AI agents from toy demos to enterprise production requires treating them as **Stateful Distributed Systems**. This series documents the 6 core pillars of production agentic architecture: Swarm Topology (Router/Worker vs Shared Blackboards), Hierarchical Memory Management, Resilient Tool-Calling Protocols, AgentOps Observability, Automated Evals, and Human-in-the-Loop (HITL) Gateways.
 
 ---
+## 🎯 The Architectural Challenge of Autonomous Agents
 
-## 📚 Mục Lục Series (Chapter Roadmap)
+Building production-ready AI agents is fundamentally a distributed systems engineering challenge, not a prompt engineering trick:
+* **Hallucination Cascades:** A single erroneous tool output in Step 2 propagates and corrupts decisions in Step 10.
+* **State Loss & Memory Bloat:** Multi-turn dialogue context quickly overflows LLM context windows, degrading retrieval precision.
+* **Runaway Agent Costs & Infinite Loops:** Poorly bounded agent swarms can burn thousands of API tokens in recursive loops.
 
-- **[Executive Summary: Chuyển dịch sang kiến trúc Agentic](/series/agentic-system-architecture/executive-summary/)**  
-  *Bức tranh toàn cảnh về sự chuyển đổi từ Prompt Chains đơn lẻ sang Multi-Agent Swarms tự trị, đánh giá ROI và rủi ro kiến trúc.*
+```mermaid
+flowchart TD
+    subgraph SwarmArchitecture ["Production Multi-Agent Topology"]
+        Router["Orchestrator / Planning Agent"]
+        Worker1["Code Review Worker"]
+        Worker2["Database Migration Worker"]
+        Worker3["Security Audit Worker"]
+        Memory[("Hierarchical Memory Store<br/>(Short-Term KV + Long-Term GraphRAG)")]
+        HITL["Human-in-the-Loop Gateway (Approval Gates)"]
+    end
 
-- **[Phần 1: Agent Topology & Orchestration](/series/agentic-system-architecture/part-1-topology/)**  
-  *Các mô hình giao tiếp (Hierarchical, Peer-to-Peer, Router-Worker), cơ chế định tuyến tác vụ và cách xây dựng Orchestrator an toàn.*
-
-- **[Phần 2: State, Memory & Context Management](/series/agentic-system-architecture/part-2-memory/)**  
-  *Giải bài toán Context Window, phân tầng bộ nhớ Short-term, Long-term, Episodic Memory và tích hợp Entity Knowledge Graph.*
-
-- **[Phần 3: Secure Tool Calling & Guardrails](/series/agentic-system-architecture/part-3-tool-calling/)**  
-  *Bảo vệ hệ thống khỏi Prompt Injection, giới hạn quyền thực thi (Least Privilege), tích hợp MCP 1.x và sandbox container.*
-
-- **[Phần 4: AgentOps & Production Observability](/series/agentic-system-architecture/part-4-agentops/)**  
-  *Giám sát Agentic Systems bằng OpenTelemetry GenAI semantics, truy vết LLM spans, phát hiện Agent drift và phòng chống infinite loops.*
-
-- **[Phần 5: Đánh Giá AI Agent (Agent Evals)](/series/agentic-system-architecture/part-5-agent-evals/)**  
-  *Khung kiểm thử Benchmark, đo lường tỷ lệ thành công của trajectory, đánh giá LLM-as-a-Judge và tự động hóa regression test trong CI/CD.*
-
-- **[Phần 6: Kiến Trúc Human-in-the-Loop (HITL)](/series/agentic-system-architecture/part-6-human-in-the-loop/)**  
-  *Thiết kế các điểm phê duyệt then chốt (approval gates), cơ chế chuyển giao con người (fallback handover) và can thiệp thời gian thực cho autonomous swarms.*
+    Router --> Worker1 & Worker2 & Worker3
+    Worker1 & Worker2 & Worker3 <--> Memory
+    Worker1 & Worker2 & Worker3 -->|High-Risk Operations| HITL
+```
 
 ---
 
-## ❓ Câu Hỏi Thường Gặp (FAQ)
+## 🗺️ Masterclass Chapters
 
-{{< faq q="Tại sao nên chọn kiến trúc Multi-Agent thay vì một Single Agent lớn với prompt dài?" >}}
-Single Agent với prompt dài dễ gặp hiện tượng suy giảm chú ý (attention dilution), giới hạn ngữ cảnh và khó kiểm soát quyền hạn. Multi-Agent phân rã bài toán thành các Bounded Contexts chuyên biệt (như Specialist Agents), cho phép áp dụng Least Privilege Tool Calling, tối ưu chi phí token qua việc chọn model phù hợp cho từng task, và dễ dàng cô lập lỗi khi một agent thất bại.
-{{< /faq >}}
-
-{{< faq q="Làm thế nào để phát hiện và ngăn chặn vòng lặp vô tận (Infinite Loops) giữa các Agents?" >}}
-Để phòng chống infinite loops trong production, hệ thống cần áp dụng 3 lớp bảo vệ: (1) Execution Step Limit (hard cap số bước tối đa cho mỗi plan), (2) Graph State Hashing để phát hiện trạng thái lặp lại liên tiếp, và (3) OpenTelemetry Distributed Tracing kết hợp AgentOps alert để tự động ngắt session và kích hoạt Human-in-the-loop fallback.
-{{< /faq >}}
-
-{{< faq q="Model Context Protocol (MCP) đóng vai trò gì trong kiến trúc Agentic 2026?" >}}
-MCP đóng vai trò như lớp chuẩn hóa giao tiếp (USB-C cho AI) giữa Agent Orchestrator và các tài nguyên bên ngoài (Databases, Git, APIs, File Systems). Thay vì mỗi agent phải tự cài đặt driver riêng lẻ, MCP cung cấp giao thức JSON-RPC chuẩn hóa với khả năng discovery tool schemas, quản lý xác thực OAuth 2.1 và thực thi chính sách bảo mật tập trung.
-{{< /faq >}}
-
----
-
-## 🔗 Series Liên Quan & Hệ Sinh Thái AI-Native
-
-- **[MCP Engineering In Production](/series/mcp-engineering-in-production/)** — Cẩm nang xây dựng và mở rộng hạ tầng Model Context Protocol chuẩn doanh nghiệp bằng Go.
-- **[Sổ Tay: The AI-Driven Playbook](/series/ai-driven-playbook/)** — Cẩm nang thực chiến triển khai AI-First SDLC, Context Engineering và Quality Gates.
-- **[The AI-Driven Engineer](/series/ai-driven-engineer/)** — Lộ trình chuyển đổi sự nghiệp từ lập trình viên sang AI System Orchestrator.
-- **[Generative UI & AI-Native Frontend Architecture](/series/generative-ui-architecture/)** — Thiết kế giao diện động Generative UI kết nối trực tiếp với Multi-Agent Swarms.
-- **[Vibe Coding & AI Code Review](/series/ai-code-review-vibe-coding/)** — Quy trình audit mã nguồn do AI sinh ra và phòng ngừa rủi ro bảo mật OWASP LLM.
-
+- **[Executive Summary: The 6 Pillars of Production Agentic Systems](/series/agentic-system-architecture/executive-summary/)**  
+  *High-level blueprint, failure mode taxonomy, and architectural boundaries.*
+- **[Part 1: Swarm Topologies — Hierarchical Routers vs. Shared Blackboards](/series/agentic-system-architecture/part-1-topology/)**  
+  *Comparing orchestrator-worker, peer-to-peer swarms, and actor mailbox models.*
+- **[Part 2: Hierarchical Memory — Episodic, Semantic & Temporal Graphs](/series/agentic-system-architecture/part-2-memory/)**  
+  *Solving the context window problem with working memory buffers, vector retrieval, and knowledge graphs.*
+- **[Part 3: Resilient Tool Calling — Model Context Protocol (MCP) & Sandboxing](/series/agentic-system-architecture/part-3-tool-calling/)**  
+  *Schema validation, rate-limiting, idempotent retries, and kernel-level sandboxing.*
+- **[Part 4: AgentOps — Tracing, Token FinOps & Deadlock Detection](/series/agentic-system-architecture/part-4-agentops/)**  
+  *OpenTelemetry semantic conventions for AI agents, distributed tracing, and loop break circuits.*
+- **[Part 5: Agent Evals — Automated Benchmarking & Trajectory Validation](/series/agentic-system-architecture/part-5-agent-evals/)**  
+  *LLM-as-a-judge trajectory grading, tool invocation accuracy, and regression testing.*
+- **[Part 6: Human-in-the-Loop (HITL) Gateways & Security Boundaries](/series/agentic-system-architecture/part-6-human-in-the-loop/)**  
+  *Async approval workflows, state pausing, privilege escalation controls, and audit trails.*

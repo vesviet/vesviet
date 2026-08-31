@@ -468,32 +468,32 @@ flowchart TD
 
 ---
 
-## Câu Hỏi Thường Gặp (FAQ)
+## Frequently Asked Questions (FAQ)
 
 <details class="faq-item">
-<summary><strong>Q1: Tại sao tuyệt đối không nên lưu trữ JWT Access Token trong LocalStorage?</strong></summary>
+<summary><strong>Q1: Why should JWT Access Tokens never be stored in LocalStorage?</strong></summary>
 
-Bởi vì `localStorage` hoàn toàn không có cơ chế bảo vệ trước mã độc JavaScript. Nếu trang web dính bất kỳ lỗ hổng XSS nào (từ thư viện bên thứ 3, SDK quảng cáo, hoặc npm dependency bị tấn công chuỗi cung ứng), kẻ tấn công chỉ cần 1 dòng lệnh `localStorage.getItem()` là có thể đánh cắp vĩnh viễn token của người dùng. Giải pháp an toàn là áp dụng kiến trúc **BFF (Backend-For-Frontend)**: lưu Refresh Token trong Cookie `HttpOnly; Secure; SameSite=Strict` và giữ Access Token thuần túy trong bộ nhớ biến JavaScript (In-Memory).
+Because `localStorage` provides zero isolation against client-side JavaScript execution. If the application suffers any Cross-Site Scripting (XSS) vulnerability (via compromised third-party analytics tags, chat widgets, or poisoned npm dependencies), an attacker can exfiltrate all tenant tokens with a single `localStorage.getItem()` call. The enterprise-grade mitigation is the **Backend-For-Frontend (BFF)** pattern: storing Refresh Tokens in `__Host-` prefixed `HttpOnly; Secure; SameSite=Strict` cookies while retaining Access Tokens strictly in ephemeral JavaScript memory.
 </details>
 
 <details class="faq-item">
-<summary><strong>Q2: SessionStorage có chia sẻ dữ liệu khi người dùng mở Duplicate Tab hoặc chuột phải chọn "Open link in new tab" không?</strong></summary>
+<summary><strong>Q2: Does SessionStorage share state when duplicating a tab or clicking "Open in New Tab"?</strong></summary>
 
-Theo chuẩn HTML Living Standard, khi mở một tab mới qua liên kết (`target="_blank"`), trình duyệt có thể sao chép dữ liệu của `sessionStorage` từ tab cha sang tab con tại thời điểm khởi tạo, nhưng **ngay sau đó hai tab hoàn toàn độc lập**. Bất kỳ thao tác thay đổi hay xóa dữ liệu trên Tab A sẽ không phản ánh sang Tab B. Nếu người dùng mở tab mới bằng cách gõ URL trực tiếp, `sessionStorage` của tab đó sẽ hoàn toàn trống rỗng (empty).
+Under the HTML Living Standard, opening a new tab via a link (`target="_blank"`) creates a shallow clone of the parent tab's `sessionStorage` at initialization time, but **the two tabs immediately become completely independent**. Subsequent state mutations or deletions in Tab A do not propagate to Tab B. If a user opens a new tab by typing the URL directly, `sessionStorage` initializes completely empty.
 </details>
 
 <details class="faq-item">
-<summary><strong>Q3: Khi nào đội ngũ kỹ sư bắt buộc phải chuyển từ LocalStorage sang IndexedDB?</strong></summary>
+<summary><strong>Q3: When must an engineering team migrate from LocalStorage to IndexedDB?</strong></summary>
 
-Cần chuyển đổi sang IndexedDB ngay khi: (1) Dữ liệu lưu trữ vượt quá **50 KB** (tránh nghẽn Main Thread Event Loop gây rớt khung hình và phá vỡ chỉ số INP); (2) Cần thực hiện truy vấn phức tạp (indexing, key range scan); (3) Cần lưu trữ dữ liệu nhị phân (Blob, ArrayBuffer, File offline); (4) Dữ liệu cần được truy xuất từ **Web Workers hoặc Service Workers** trong các ứng dụng Offline-first PWA.
+Teams must migrate to IndexedDB when: (1) Data volume exceeds **50 KB** (preventing synchronous main-thread Event Loop blocking that destroys Interaction to Next Paint - INP); (2) Rich multi-field indexing or key-range queries are required; (3) Storing binary objects (Blobs, ArrayBuffers, offline images); or (4) Data must be accessible from **Dedicated Web Workers or Service Workers** in offline-first Progressive Web Apps.
 </details>
 
 ---
 
 ## 🔗 Next Step & Masterclass Navigation
 
-* 🚀 **Tiếp tục nghiên cứu kiến trúc Edge & Frontend:**
-  * Khám phá cách Cloudflare Edge xử lý Cookie và SSR tại: [Deploying Astro on Cloudflare: Full-Stack Edge Architecture](/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/)
-  * Tìm hiểu cách kiến trúc AI-Native quản lý trạng thái động tại: [Generative UI with Model Context Protocol (MCP)](/posts/generative-ui-with-mcp-ai-native-frontend/)
-* 💼 **Tư vấn kiến trúc hệ thống chuyên sâu:**
-  * Tham khảo dịch vụ cố vấn kiến trúc phân tán & bảo mật tại: [Lê Tuấn Anh — Architecture Consulting & Engineering](/hire/)
+* 🚀 **Explore Cloudflare Edge & Frontend State:**
+  * Master Edge SSR and Cookie handling at: [Deploying Astro on Cloudflare: Full-Stack Edge Architecture](/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/)
+  * Discover dynamic client-state in AI-Native architectures at: [Generative UI with Model Context Protocol (MCP)](/posts/generative-ui-with-mcp-ai-native-frontend/)
+* 💼 **Enterprise Systems Advisory:**
+  * Schedule high-concurrency architecture consulting at: [Lê Tuấn Anh — Architecture Consulting & Engineering](/hire/)

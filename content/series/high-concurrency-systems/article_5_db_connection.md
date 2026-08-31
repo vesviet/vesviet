@@ -264,8 +264,6 @@ Tuning your connection pool parameters and routing database traffic through PgBo
 
 ---
 
----
-
 🔗 **Next Step:** [Chapter 6: API Gateway vs Service Mesh in Microservices Architecture](/posts/shopee-flash-sale-architecture/)
 
 ---
