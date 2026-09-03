@@ -51,8 +51,11 @@ flowchart TD
         P8["<b>Part 8: In-Memory Redis vs. Dapr Virtual Actors</b><br/>State Persistence, Distributed Concurrency & Context Caching"]
         P9["<b>Part 9: Cookie vs. SessionStorage vs. LocalStorage</b><br/>Network Headers Tax, Tab Isolation & Token Storage Architecture"]
     end
+    subgraph Wave4 ["Wave 4: Cloud-Native Networking & Service Mesh"]
+        P10["<b>Part 10: Envoy Gateway vs. Cilium eBPF Mesh</b><br/>In-Kernel Socket Redirection, L7 Trapdoor & FinOps"]
+    end
 
-    P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7 --> P8 --> P9
+    P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7 --> P8 --> P9 --> P10
 ```
 
 ### 🚀 Wave 1, Wave 2 & Wave 3 (Active Releases)
@@ -78,12 +81,16 @@ flowchart TD
 - **[Part 7: Modular Monolith vs. Microservices vs. SpinKube Wasm Showdown](/series/architectural-tradeoffs-showdowns/07-modular-monolith-vs-microservices-vs-spinkube-wasm/)**  
   *Deep architectural showdown of Modular Monolith (in-memory pointer dereference ~0.5ns, single shared heap, local ACID transactions) vs. Containerized Microservices (gRPC network serialization tax, database-per-service Sagas) vs. SpinKube WebAssembly (WASI 0.2 Component Model, sub-millisecond cold start, 100x container density, 75% FinOps savings).*
 
-- **[Part 8: Redis Distributed State vs. Dapr Virtual Actors Showdown](/series/architectural-tradeoffs-showdowns/08-redis-state-vs-dapr-virtual-actors/)*
+- **[Part 8: Redis Distributed State vs. Dapr Virtual Actors Showdown](/series/architectural-tradeoffs-showdowns/08-redis-state-vs-dapr-virtual-actors/)**  
+  *Deep architectural showdown of Redis in-memory state (Redlock 5-node consensus, clock drift pitfalls, Lua atomic scripts, Vector RAG) vs. Dapr Virtual Actors (turn-based single-threaded mailbox, zero-lock concurrency, automatic state hydration/passivation, Raft-backed durable reminders, 51% FinOps savings).*
 
 - **[Part 9: Cookie vs. SessionStorage vs. LocalStorage: Network Headers Tax, Tab Isolation & Token Storage Architecture](/series/architectural-tradeoffs-showdowns/09-cookie-vs-sessionstorage-vs-localstorage/)**  
   *Architectural showdown on client-side state boundaries: 4KB HTTP header upload penalties, synchronous main-thread I/O blocking destroying INP, XSS vs CSRF threat models, Safari ITP 7-day storage purge, and modern BFF token rotation on Cloudflare Edge.*
-*  
-  *Deep architectural showdown of Redis in-memory state (Redlock 5-node consensus, clock drift pitfalls, Lua atomic scripts, Vector RAG) vs. Dapr Virtual Actors (turn-based single-threaded mailbox, zero-lock concurrency, automatic state hydration/passivation, Raft-backed durable reminders, 51% FinOps savings).*
+
+### 🚀 Wave 4 (Active Launch: Cloud-Native Networking & Service Mesh)
+
+- **[Part 10: Envoy Gateway vs. Cilium eBPF Service Mesh: Kernel Performance & Layer 7 Governance Showdown](/series/architectural-tradeoffs-showdowns/10-envoy-gateway-vs-cilium-ebpf-service-mesh/)**  
+  *Deep architectural showdown of Envoy Gateway (dedicated Ingress proxy, Gateway API v1.x, WAF, JWT, AI Token Quota) vs. Cilium Service Mesh (eBPF in-kernel socket redirection sockops + per-node Envoy DaemonSet, decoupled mTLS WireGuard, and 92% RAM FinOps reduction at 50,000 RPS).*
 
 ---
 
@@ -99,6 +106,7 @@ flowchart TD
 | **Distributed Storage** | **Sharded PostgreSQL** | **TiDB (NewSQL)** | Use Sharded PG when data models cleanly partition by tenant/org; use TiDB when cross-node distributed joins and global queries dominate. |
 | **Execution Architecture** | **Modular Monolith** | **Microservices vs. SpinKube Wasm** | Use Modular Monolith for teams under 50 engineers needing local ACID and rapid velocity; use Container Microservices for 500+ orgs needing decoupled CI/CD; use SpinKube Wasm for bursty event micro-functions and AI agent tool sandboxes. |
 | **State & Concurrency** | **Redis In-Memory** | **Dapr Virtual Actors** | Use Redis for high-throughput (>100k QPS) ephemeral caching, GCRA rate limiting, and vector RAG; use Dapr Virtual Actors for complex state machines, turn-based single-threaded concurrency, and long-lived autonomous AI agent context with durable reminders. |
+| **Network & Service Mesh** | **Envoy Gateway (Ingress)** | **Cilium eBPF Service Mesh** | Use Envoy Gateway for edge ingress and API gateway governance with WAF, JWT, and AI token quotas; Use Cilium eBPF for intra-cluster CNI and East-West service mesh delivering sub-millisecond socket-level redirection and 92% RAM savings. |
 
 ---
 

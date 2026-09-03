@@ -16,6 +16,9 @@ cover:
   alt: "Go microservices architecture production guide 2026"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/go-microservices/"
+aliases:
+  - /posts/golang-microservices/
+  - /posts/golang-microservices
 ---
 
 # Go Microservices Architecture: Production Guide

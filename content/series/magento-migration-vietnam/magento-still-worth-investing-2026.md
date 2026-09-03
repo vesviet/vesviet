@@ -17,6 +17,11 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/magento-still-worth-investing-2026/"
 weight: 1
+aliases:
+  - /posts/is-magento-still-worth-investing-in-2026-a-practical-take-on-2.4.9-beta1-vs-2.4.8/
+  - /posts/is-magento-still-worth-investing-in-2026-a-practical-take-on-2.4.9-beta1-vs-2.4.8
+  - /posts/magento-still-worth-investing-2026/
+  - /posts/magento-still-worth-investing-2026
 ---
 
 

@@ -12,6 +12,9 @@ mermaid: true
 categories: ["Engineering", "Distributed Systems"]
 tags: ["Golang", "Temporal", "Distributed Transactions", "Saga Pattern", "FinTech", "Microservices"]
 canonicalURL: "https://tanhdev.com/posts/temporal-saga-pattern-golang-distributed-transactions-guide/"
+aliases:
+  - /posts/temporal-saga-pattern-golang-distributed-transactions/
+  - /posts/temporal-saga-pattern-golang-distributed-transactions
 cover:
   image: "/images/posts/temporal-saga-pattern-golang-distributed-transactions-guide.jpg"
   alt: "Temporal Saga Pattern in Golang Distributed Transactions"

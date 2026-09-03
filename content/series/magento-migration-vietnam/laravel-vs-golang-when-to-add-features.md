@@ -18,6 +18,9 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/laravel-vs-golang-when-to-add-features/"
 weight: 7
+aliases:
+  - /posts/laravel-vs-golang-when-to-add-features/
+  - /posts/laravel-vs-golang-when-to-add-features
 ---
 
 
