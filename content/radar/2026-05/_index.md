@@ -14,7 +14,6 @@ cover:
   alt: "Tech Radar Digest May 2026: Go, K8s & AI Systems Log"
   relative: false
 aliases:
-  - /radar/2026-05/radar-2026-05-01-digitalocean-ai-native-cloud/
   - /radar/2026-05/radar-2026-05-02-techtask-commerce-platform/
   - /radar/2026-05/radar-2026-05-03/
   - /radar/2026-05/radar-2026-05-05/

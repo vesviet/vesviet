@@ -30,7 +30,7 @@ canonicalURL: "https://tanhdev.com/posts/cloudflare-d1-durable-objects-realtime-
 
 # Cloudflare D1 + Durable Objects: Building a Real-Time Cart
 
-**Answer-first:** Real-time e-commerce carts built on Cloudflare Workers use Durable Objects for single-writer cart state consistency and Cloudflare D1 SQL storage for global low-latency persistent checkout synchronization. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
+**Answer-first:** Real-time e-commerce carts built on Cloudflare Workers use Durable Objects for single-writer cart state consistency and Cloudflare D1 SQL storage for global low-latency persistent checkout synchronization. 
 
 > 
 

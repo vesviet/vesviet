@@ -28,7 +28,7 @@ canonicalURL: "https://tanhdev.com/posts/serverless-ecommerce-cloudflare-d1/"
 
 # Serverless E-Commerce: Cloudflare Workers & D1 Architecture
 
-**Answer-first:** Serverless e-commerce architecture pairs Cloudflare Workers with D1 SQL databases and KV storage to deliver low-cost, global edge storefront execution with sub-second page loads. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+**Answer-first:** Serverless e-commerce architecture pairs Cloudflare Workers with D1 SQL databases and KV storage to deliver low-cost, global edge storefront execution with sub-second page loads. 
 
 - Edge-native schema migrations and connection tuning for SQLite-based D1.
 - Managing distributed lock states in Durable Objects without causing bottleneck stalls.

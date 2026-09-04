@@ -31,7 +31,7 @@ canonicalURL: "https://tanhdev.com/posts/leaseinvietnam-ai-powered-expat-rental-
 
 # LeaseInVietnam: AI-Powered Expat Rental & B2B Lead Engine
 
-**Answer-first:** LeaseInVietnam integrates AI property search, automated contract processing, neighborhood intelligence, and localized expat data pipelines to simplify long-term rental discovery. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+**Answer-first:** LeaseInVietnam integrates AI property search, automated contract processing, neighborhood intelligence, and localized expat data pipelines to simplify long-term rental discovery. 
 
 Most AI content projects are built around one question: how do I publish more? LeaseInVietnam is built around a different question: how do I make every published piece convert?
 

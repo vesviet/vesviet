@@ -20,7 +20,7 @@ canonicalURL: "https://tanhdev.com/posts/agentic-ecommerce-search-golang-vector-
 
 # Architecting Agentic E-commerce Search with Golang
 
-**Answer-first:** Agentic e-commerce search combines Golang orchestration with Qdrant vector databases, multi-stage hybrid search reranking, and semantic caching to lower search query latency below 50ms while increasing search conversion rates. Deploying this architecture guarantees sub-50ms P99 latency bounds, zero-allocation memory pooling with Go 1.24 string interning, and automated OpenTelemetry GenAI streaming observability.
+**Answer-first:** Agentic e-commerce search combines Golang orchestration with Qdrant vector databases, multi-stage hybrid search reranking, and semantic caching to lower search query latency below 50ms while increasing search conversion rates. Production deployments achieve sub-45ms P99 vector similarity lookups through HNSW scalar quantization, fuse lexical BM25 matches with dense embeddings via weighted score interpolation, and delegate real-time inventory queries to asynchronous Go worker pools.
 
 - Practical strategies for tuning vector search precision without bloating RAM.
 - How to coordinate multiple AI search agents to prevent search query latency spikes.

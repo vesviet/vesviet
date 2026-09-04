@@ -37,6 +37,13 @@
       'ad_personalization': 'granted',
       'analytics_storage': 'granted'
     });
+  } else if (saved === 'declined') {
+    gtag('consent', 'update', {
+      'ad_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'analytics_storage': 'denied'
+    });
   }
 </script>
 
@@ -79,13 +86,13 @@
 <!-- Schema.org — Site-wide graph (Person + WebSite + SearchAction) -->
 {{- $website := dict
   "@type" "WebSite"
-  "@id" (printf "%s#website" .Site.BaseURL)
-  "url" .Site.BaseURL
+  "@id" "https://tanhdev.com/#website"
+  "url" "https://tanhdev.com/"
   "name" .Site.Title
   "description" .Site.Params.description
   "publisher" (dict
     "@type" "Person"
-    "@id" (printf "%s#person" .Site.BaseURL)
+    "@id" "https://tanhdev.com/#person"
   )
   "potentialAction" (dict
     "@type" "SearchAction"
@@ -98,10 +105,10 @@
 -}}
 {{- $person := dict
   "@type" "Person"
-  "@id" (printf "%s#person" .Site.BaseURL)
+  "@id" "https://tanhdev.com/#person"
   "name" "Lê Tuấn Anh"
-  "alternateName" (slice "vesviet" "Le Tuan Anh" "Tuan Anh Le")
-  "url" (printf "%sabout/" .Site.BaseURL)
+  "alternateName" (slice "vesviet" "Le Tuan Anh" "Tanh Le")
+  "url" "https://tanhdev.com/about/"
   "image" (dict
     "@type" "ImageObject"
     "url" "https://tanhdev.com/vesviet.png"
@@ -142,6 +149,10 @@
     "https://www.linkedin.com/in/vesviet"
     "https://github.com/vesviet"
     "https://dev.to/vesviet"
+    "https://tanhdev.com/about/"
+    "https://learn.tanhdev.com/about/"
+    "https://tanhdev.com"
+    "https://learn.tanhdev.com"
   )
 -}}
 {{- $siteGraph := dict
@@ -169,6 +180,10 @@
   "name" .Title
   "description" .Description
   "url" .Permalink
+  "author" (dict
+    "@type" "Person"
+    "@id" "https://tanhdev.com/#person"
+  )
   "itemListElement" $items
 -}}
 <script type="application/ld+json">
@@ -185,13 +200,14 @@
   "url" .Permalink
   "name" .Title
   "description" .Description
+  "inLanguage" "en-US"
   "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00")
   "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")
   "mainEntity" (dict
     "@type" "Person"
-    "@id" (printf "%s#person" .Site.BaseURL)
+    "@id" "https://tanhdev.com/#person"
     "name" "Lê Tuấn Anh"
-    "alternateName" (slice "vesviet" "Le Tuan Anh")
+    "alternateName" (slice "vesviet" "Le Tuan Anh" "Tanh Le")
     "image" (dict
       "@type" "ImageObject"
       "url" "https://tanhdev.com/vesviet.png"
@@ -212,11 +228,16 @@
     "sameAs" (slice
       "https://www.linkedin.com/in/vesviet"
       "https://github.com/vesviet"
+      "https://dev.to/vesviet"
+      "https://tanhdev.com/about/"
+      "https://learn.tanhdev.com/about/"
+      "https://tanhdev.com"
+      "https://learn.tanhdev.com"
     )
   )
   "isPartOf" (dict
     "@type" "WebSite"
-    "@id" (printf "%s#website" .Site.BaseURL)
+    "@id" "https://tanhdev.com/#website"
   )
 -}}
 <script type="application/ld+json">
@@ -233,6 +254,10 @@
   "name" "Lê Tuấn Anh — Go Backend Architecture Consulting"
   "url" .Permalink
   "description" "Senior Go Backend Architect offering architecture reviews, advisory retainers, and hands-on consulting for microservices migrations and high-traffic platform scaling."
+  "provider" (dict
+    "@type" "Person"
+    "@id" "https://tanhdev.com/#person"
+  )
   "address" (dict
     "@type" "PostalAddress"
     "addressLocality" "Ho Chi Minh City"
@@ -278,7 +303,7 @@
 {{- end }}
 
 {{- if and .IsPage .File (or (eq .Section "posts") (eq .Section "series") (eq .Section "radar")) }}
-{{- $isTech := or (intersect .Params.categories (slice "Architecture" "Backend" "Engineering" "DevOps" "System Design" "Machine Learning" "AI")) (findRE "(?i)(vs|comparison|benchmark|architecture|guide|blueprint)" .Title) -}}
+{{- $isTech := or (intersect .Params.categories (slice "Architecture" "Backend" "Engineering" "DevOps" "System Design" "Machine Learning" "AI" "Golang" "Microservices" "Distributed Systems")) (findRE "(?i)(vs|comparison|benchmark|architecture|guide|blueprint)" .Title) -}}
 <!-- Schema.org — Article / TechArticle for /posts/*, /series/*/part-*, /radar/* (E-E-A-T + Rich Results) -->
 {{- $imgUrl := "https://tanhdev.com/vesviet.png" -}}
 {{- with .Params.cover.image -}}
@@ -290,7 +315,7 @@
 {{- end -}}
 {{- $articleType := "Article" -}}
 {{- if $isTech -}}
-  {{- $articleType = slice "TechArticle" "Article" -}}
+  {{- $articleType = "TechArticle" -}}
 {{- end -}}
 {{- $articleDesc := .Summary -}}
 {{- with .Description -}}
@@ -307,18 +332,22 @@
   "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")
   "author" (dict
     "@type" "Person"
-    "@id" (printf "%s#person" .Site.BaseURL)
+    "@id" "https://tanhdev.com/#person"
     "name" "Lê Tuấn Anh"
-    "url" (printf "%sabout/" .Site.BaseURL)
+    "url" "https://tanhdev.com/about/"
     "sameAs" (slice
       "https://www.linkedin.com/in/vesviet"
       "https://github.com/vesviet"
       "https://dev.to/vesviet"
+      "https://tanhdev.com/about/"
+      "https://learn.tanhdev.com/about/"
+      "https://tanhdev.com"
+      "https://learn.tanhdev.com"
     )
   )
   "publisher" (dict
     "@type" "Person"
-    "@id" (printf "%s#person" .Site.BaseURL)
+    "@id" "https://tanhdev.com/#person"
     "name" "Lê Tuấn Anh"
   )
   "image" (dict
@@ -329,7 +358,7 @@
   )
   "isPartOf" (dict
     "@type" "WebSite"
-    "@id" (printf "%s#website" .Site.BaseURL)
+    "@id" "https://tanhdev.com/#website"
   )
   "inLanguage" "en-US"
   "mainEntityOfPage" (dict
@@ -343,6 +372,37 @@
     {{- $articleDict = merge $articleDict (dict "dependencies" .) -}}
   {{- end -}}
 {{- end -}}
+
+{{- /* Schema.org translation pairing: workTranslation pointing to Vietnamese counterpart */ -}}
+{{- $hasViPair := and (not .Params.noTranslation) (not .Params.noindex) (not .Params.robotsNoIndex) -}}
+{{- if .Params.robots -}}
+  {{- if strings.Contains (printf "%v" .Params.robots) "noindex" -}}
+    {{- $hasViPair = false -}}
+  {{- end -}}
+{{- end -}}
+{{- if $hasViPair -}}
+  {{- $viRelPath := .RelPermalink -}}
+  {{- with .Params.translationURL -}}
+    {{- $viRelPath = . -}}
+  {{- end -}}
+  {{- $viUrl := "" -}}
+  {{- if (urls.Parse $viRelPath).IsAbs -}}
+    {{- $viUrl = $viRelPath -}}
+  {{- else -}}
+    {{- if not (strings.HasSuffix $viRelPath "/") -}}
+      {{- $viRelPath = printf "%s/" $viRelPath -}}
+    {{- end -}}
+    {{- $viUrl = printf "https://learn.tanhdev.com%s" $viRelPath -}}
+  {{- end -}}
+  {{- $workTranslation := dict
+    "@type" $articleType
+    "@id" (printf "%s#article" $viUrl)
+    "url" $viUrl
+    "inLanguage" "vi-VN"
+  -}}
+  {{- $articleDict = merge $articleDict (dict "workTranslation" $workTranslation) -}}
+{{- end -}}
+
 <script type="application/ld+json">
 {{ $articleDict | jsonify (dict "indent" "  ") | safeJS }}
 </script>

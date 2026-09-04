@@ -1,0 +1,24 @@
+{{- /*
+  Author Byline Partial Override (Single-Author E-E-A-T)
+  Emits accessible author link with rel="author" pointing to /about/.
+  Suppresses personal bylines on publisher legal pages (privacy-policy, terms-of-service, legal-notice).
+*/ -}}
+{{- $legalSlugs := slice "privacy-policy" "terms-of-service" "legal-notice" "privacy" "terms" "impressum" "privacy-policy-markpdf" -}}
+{{- $isLegal := or (in $legalSlugs .Slug) (in .RelPermalink "/privacy-policy/") (in .RelPermalink "/terms-of-service/") (in .RelPermalink "/legal-notice/") (.Param "hideAuthor") (.Param "isLegal") -}}
+{{- if not $isLegal -}}
+  {{- if or .Params.author site.Params.author -}}
+    {{- $rawAuthor := (.Params.author | default site.Params.author) -}}
+    {{- $authorType := (printf "%T" $rawAuthor) -}}
+    {{- $authorName := "Lê Tuấn Anh" -}}
+    {{- if eq $rawAuthor "Tanh Le" -}}
+      {{- $authorName = "Tanh Le" -}}
+    {{- else if and (ne $rawAuthor "") (ne $rawAuthor "Tuan Anh") (ne $rawAuthor "Tuấn Anh") (ne $rawAuthor "Le Tuan Anh (Senior Go Engineer)") -}}
+      {{- if or (eq $authorType "[]string") (eq $authorType "[]interface {}") -}}
+        {{- $authorName = (delimit $rawAuthor ", ") -}}
+      {{- else -}}
+        {{- $authorName = $rawAuthor -}}
+      {{- end -}}
+    {{- end -}}
+    <a href="/about/" rel="author me" class="post-author-link">{{ $authorName }}</a>
+  {{- end -}}
+{{- end -}}

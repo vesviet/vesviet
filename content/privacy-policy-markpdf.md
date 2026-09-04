@@ -10,6 +10,7 @@ author: "Lê Tuấn Anh"
 cover:
   image: "/images/posts/privacy-policy.jpg"
   alt: "Privacy Policy for MarkPDF"
+noTranslation: true
 ---
 
 > *"Transparency, data minimization, and user sovereignty are fundamental principles of our engineering software."*

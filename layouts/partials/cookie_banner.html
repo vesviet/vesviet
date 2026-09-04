@@ -48,7 +48,7 @@
 }
 </style>
 
-<div id="cookie-banner" class="cookie-banner">
+<div id="cookie-banner" class="cookie-banner" role="dialog" aria-modal="false" aria-label="Cookie Consent Banner">
     <p>
         We use cookies to analyze site traffic and enhance your browsing experience. By clicking "Accept", you agree to our use of cookies under Consent Mode. <a href="/privacy-policy/">Privacy Policy</a>.
     </p>
@@ -72,13 +72,22 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('cookie-consent', value);
         banner.style.display = 'none';
         
-        if (value === 'accepted' && typeof window.gtag === 'function') {
-            window.gtag('consent', 'update', {
-                'ad_storage': 'granted',
-                'ad_user_data': 'granted',
-                'ad_personalization': 'granted',
-                'analytics_storage': 'granted'
-            });
+        if (typeof window.gtag === 'function') {
+            if (value === 'accepted') {
+                window.gtag('consent', 'update', {
+                    'ad_storage': 'granted',
+                    'ad_user_data': 'granted',
+                    'ad_personalization': 'granted',
+                    'analytics_storage': 'granted'
+                });
+            } else if (value === 'declined') {
+                window.gtag('consent', 'update', {
+                    'ad_storage': 'denied',
+                    'ad_user_data': 'denied',
+                    'ad_personalization': 'denied',
+                    'analytics_storage': 'denied'
+                });
+            }
         }
     };
 

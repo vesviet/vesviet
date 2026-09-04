@@ -17,7 +17,7 @@ cover:
 
 > *"Clear legal terms ensure open collaboration, protect intellectual property, and define responsible usage of technical guidance."*
 
-**Answer-first:** By accessing and using **tanhdev.com** (published by Lê Tuấn Anh), you agree to these Terms of Service. Open-source code snippets are licensed under liberal terms (MIT/Apache 2.0); technical articles represent educational insights rather than binding architecture guarantees; and AI crawlers are permitted provided they respect `robots.txt` and rate limits. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation,.
+**Answer-first:** By accessing and using **tanhdev.com** (published by Lê Tuấn Anh), you agree to these Terms of Service. Open-source code snippets are licensed under liberal terms (MIT/Apache 2.0); technical articles represent educational insights rather than binding architecture guarantees; and AI crawlers are permitted provided they respect `robots.txt` and rate limits.
 
 ---
 
@@ -49,7 +49,7 @@ If you do not agree to these terms, you should discontinue using the website and
 **Answer-first:** Articles, benchmark figures, architecture blueprints, and code samples published on `tanhdev.com` are for informational and educational purposes only and do not constitute formal architectural consulting.
 
 ### Nature of Content
-- **Case Studies & Educational Material:** Guides covering Golang microservices, Strangler Fig migrations, Kubernetes GitOps, Dapr Pub/Sub, and database latency optimizations reflect technical patterns tested under specific production environments.
+- **Case Studies & Educational Material:** Guides covering Golang microservices, Strangler Fig migrations, Kubernetes GitOps, event-driven messaging architectures, and database latency optimizations reflect technical patterns tested under specific production environments.
 - **No Binding Advice:** Content published on `tanhdev.com` does not constitute binding technical advice, formal code auditing, or guaranteed performance outcomes for your specific business infrastructure.
 - **Consulting Engagements:** Formal architectural advisory and engineering consulting services are governed exclusively by separate, written consulting contracts executed between Lê Tuấn Anh and the client (see [Hire / Consulting](/hire/)).
 

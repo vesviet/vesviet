@@ -17,7 +17,7 @@ cover:
 
 > *"High-density technical content demands absolute transparency, verifiable experience, and zero fabrication."*
 
-**Answer-first:** This Legal Notice and Impressum identifies **Lê Tuấn Anh** as the publisher of **tanhdev.com**, detailing our editorial E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) commitment, technical benchmark verification protocols, copyright terms, and direct contact details via **vesviet@gmail.com**. Adopting this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory optimization, and fault-tolerant event-driven state synchronization across production systems.
+**Answer-first:** This Legal Notice and Impressum identifies **Lê Tuấn Anh** as the publisher of **tanhdev.com**, detailing our editorial E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) commitment, technical benchmark verification protocols, copyright terms, and direct contact details via **vesviet@gmail.com**.
 
 ---
 
@@ -46,7 +46,7 @@ cover:
 - **Production Track Record:** Content draws from documented production achievements, including migrating a 10-year-old Magento monolith to a 21-service Go microservices ecosystem, operating APIs handling ~25M+ requests/month at 8,000 RPS peak, and optimizing p95 database latency from 1.2s to 120ms.
 
 ### Editorial Independence & Transparency
-- **Unbiased Analysis:** Our technical comparisons (e.g., AWS EKS vs ECS, Gin vs Fiber vs Kratos, Dapr vs NATS JetStream) are published without financial compensation from cloud providers or software vendors.
+- **Unbiased Analysis:** Our technical comparisons (e.g., AWS EKS vs ECS, Gin vs Fiber vs Kratos, Kafka vs NATS JetStream) are published without financial compensation from cloud providers or software vendors.
 - **Affiliation Disclosures:** Any sponsored tools, consulting clients, or affiliate partnerships will always be disclosed explicitly within the article body.
 
 ### Human Editorial Oversight

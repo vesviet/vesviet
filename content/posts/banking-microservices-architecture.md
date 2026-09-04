@@ -30,7 +30,7 @@ canonicalURL: "https://tanhdev.com/posts/banking-microservices-architecture/"
 
 # Banking Microservices in Go: Saga & Event Sourcing
 
-**Answer-first:** Banking microservices architecture enforces strict domain isolation, dual-entry accounting ledgers, immutable audit logging, and SPIFFE/SPIRE zero-trust mTLS to maintain high transaction throughput and financial compliance. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
+**Answer-first:** Banking microservices architecture enforces strict domain isolation, dual-entry accounting ledgers, immutable audit logging, and SPIFFE/SPIRE zero-trust mTLS to maintain high transaction throughput and financial compliance. 
 
 ## 1. Introduction: Deconstructing the Legacy Core
 

@@ -8,7 +8,7 @@ ShowToc: true
 TocOpen: true
 slug: "cloudflare-zero-devops-ecommerce"
 author: "Lê Tuấn Anh"
-images: ["/images/posts/cloudflare-edge-cover.jpg"]
+images: ["/images/posts/cloudflare.jpg"]
 categories:
   - "Architecture"
 tags:
@@ -17,7 +17,7 @@ tags:
   - DevOps
   - E-commerce
 cover:
-  image: "/images/posts/cloudflare-edge-cover.jpg"
+  image: "/images/posts/cloudflare.jpg"
   alt: "Zero DevOps e-commerce with Cloudflare Workers and Turborepo: edge-first architecture guide"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/cloudflare-zero-devops-ecommerce/"
@@ -27,7 +27,7 @@ aliases:
 
 # Zero DevOps E-commerce with Cloudflare Workers & Turborepo
 
-**Answer-first:** Cloudflare Zero DevOps architecture deploys e-commerce storefronts on edge Workers, D1 SQL, and KV caches, bypassing traditional server provisioning while achieving sub-50ms global response times. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
+**Answer-first:** Cloudflare Zero DevOps architecture deploys e-commerce storefronts on edge Workers, D1 SQL, and KV caches, bypassing traditional server provisioning while achieving sub-50ms global response times. 
 
 For a stateful edge checkout pattern, pair it with [Cloudflare D1 and Durable Objects for real-time carts](/posts/cloudflare-d1-durable-objects-realtime-cart/).
 

@@ -12,7 +12,7 @@ categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/dapr-saga-cover.jpg"
+  image: "/images/posts/radar-22-07-event-driven-agentic-sagas-dapr-workflows-go.jpg"
   alt: "Mastering event-driven architecture with Dapr: pub/sub, bindings, and actor model in Go microservices"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/mastering-event-driven-architecture-dapr/"
@@ -20,7 +20,7 @@ canonicalURL: "https://tanhdev.com/posts/mastering-event-driven-architecture-dap
 
 # Mastering Event-Driven Architecture with Dapr Pub/Sub in Go
 
-**Answer-first:** Mastering event-driven architecture with Dapr Pub/Sub decouples publisher and subscriber microservices, guarantees at-least-once message delivery, and simplifies event broker migrations. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+**Answer-first:** Mastering event-driven architecture with Dapr Pub/Sub decouples publisher and subscriber microservices, guarantees at-least-once message delivery, and simplifies event broker migrations. 
 
 In my previous post, we explored how abandoning monolithic architecture in favor of strict **Domain-Driven Design (DDD)** bounded contexts allowed an e-commerce platform to scale beyond 10,000+ orders per day. However, splitting one big database into 20+ isolated Postgres databases introduces a terrifying new problem: **How do we maintain data consistency across disconnected services?**
 

@@ -22,7 +22,7 @@ description: "Step-by-step Go code for Orchestrated Saga using Dapr Workflow: du
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/dapr-saga-cover.jpg"
+  image: "/images/posts/temporal-workflow-go-architecture.jpg"
   alt: "Dapr Workflow Go tutorial: orchestrated Saga pattern with compensation and distributed transaction"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/dapr-workflow-saga-orchestration-guide/"
@@ -30,7 +30,7 @@ canonicalURL: "https://tanhdev.com/posts/dapr-workflow-saga-orchestration-guide/
 
 # Dapr Workflow Go Tutorial: Orchestrated Saga Pattern
 
-**Answer-first:** Dapr Workflow simplifies Saga orchestration in Go by maintaining deterministic state transitions, automated retry policies, and compensating transaction execution for long-running microservice workflows. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+**Answer-first:** Dapr Workflow simplifies Saga orchestration in Go by maintaining deterministic state transitions, automated retry policies, and compensating transaction execution for long-running microservice workflows. 
 
 - Compensation handlers configuration in Dapr to guarantee atomic rollback.
 - How to handle transient workflows when the orchestrator instance restarts mid-transaction.

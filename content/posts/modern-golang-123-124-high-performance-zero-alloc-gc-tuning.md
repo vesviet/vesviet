@@ -53,7 +53,7 @@ canonicalURL: "https://tanhdev.com/posts/modern-golang-123-124-high-performance-
 
 # Go 1.24 High-Performance: Zero-Alloc & GC Tuning Guide
 
-**Answer-first:** Modern Go 1.23/1.24 performance engineering leverages profile-guided optimization (PGO), `unique` string interning, and zero-allocation memory pools to minimize GC pressure under heavy workloads. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+**Answer-first:** Modern Go 1.23/1.24 performance engineering leverages profile-guided optimization (PGO), `unique` string interning, and zero-allocation memory pools to minimize GC pressure under heavy workloads. 
 
 > **Key Takeaways**
 > - **Go 1.23 Range-Over-Func Iterators**: `iter.Seq` and `iter.Seq2` enable zero-allocation (`0 B/op`, `0 allocs/op`) traversal APIs, achieving a **76.9% latency reduction** over legacy slice returns and eliminating channel streaming lock contention.

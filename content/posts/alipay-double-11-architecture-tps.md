@@ -32,7 +32,7 @@ canonicalURL: "https://tanhdev.com/posts/alipay-double-11-architecture-tps/"
 
 # Alipay Double 11: 544,000 TPS Architecture Explained
 
-**Answer-first:** Alipay's Double 11 payment architecture handles 610,000 peak TPS using OceanBase distributed database sharding, multi-level memory caching, asynchronous event queues, and automated cell-based disaster failover. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
+**Answer-first:** Alipay's Double 11 payment architecture handles 610,000 peak TPS using OceanBase distributed database sharding, multi-level memory caching, asynchronous event queues, and automated cell-based disaster failover. 
 
 ## Research Baseline
 

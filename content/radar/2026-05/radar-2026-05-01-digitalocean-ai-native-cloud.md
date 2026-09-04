@@ -1,5 +1,6 @@
 ---
 title: "Tech Radar: DigitalOcean AI-Native Cloud & Inference Routing"
+slug: "radar-2026-05-01-digitalocean-ai-native-cloud"
 description: "Analyze DigitalOcean's AI-Native Cloud launch: managed context retrieval, intelligent inference routing, and cost-effective hosting for agentic systems."
 author: "Lê Tuấn Anh"
 date: "2026-05-01T07:30:00+07:00"
@@ -14,6 +15,8 @@ cover:
   alt: "Tech Radar, May 1, 2026: DigitalOcean's AI-Native Cloud - Inference Routing, Managed Retrieval, and an Integrated Stack for Agentic Systems"
   relative: false
 mermaid: true
+aliases:
+  - /radar/2026-05/tech-radar-digitalocean-ai-native-cloud-inference-routing/
 ---
 > **Answer-First:** DigitalOcean launches an integrated AI-Native Cloud featuring managed Knowledge Bases, dynamic Inference Routing, and GPU Droplet hosting. This platform packages multi-model fallback, vector context retrieval (RAG), and agent execution primitives into an opinionated cloud stack, reducing operational complexity for mid-scale AI deployments. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context Protocol ttlMs.
 

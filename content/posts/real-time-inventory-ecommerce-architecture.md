@@ -28,7 +28,7 @@ canonicalURL: "https://tanhdev.com/posts/real-time-inventory-ecommerce-architect
 
 # Real-Time Inventory Topology: CDC, Kafka, and Redis
 
-**Answer-first:** Real-time e-commerce inventory management uses Debezium CDC event streams, Kafka topic partitioning, and Redis memory caches to prevent stock over-selling during peak flash sales. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+**Answer-first:** Real-time e-commerce inventory management uses Debezium CDC event streams, Kafka topic partitioning, and Redis memory caches to prevent stock over-selling during peak flash sales. 
 
 **Real-time inventory synchronization** is the process of propagating stock count changes from the system of record (database) to all sales channels — web storefront, mobile app, WMS, ERP — in sub-second time. Instead of batch ETL jobs that run every hour, a CDC + Kafka pipeline streams every committed stock change as an event, eliminating overselling and stale stock displays.
 

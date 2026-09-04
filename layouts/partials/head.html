@@ -50,13 +50,16 @@
     {{- .Summary | default (printf "%s - %s" .Title site.Title) }}{{- else if or (eq .Kind "term") (eq .Kind "taxonomy") }}
     {{- printf "Explore in-depth technical guides and architectures on %s by Lê Tuấn Anh." .Title }}{{- else }}
     {{- with site.Params.description }}{{ . }}{{- end }}{{- end }}{{- end -}}">
-<meta name="author" content="{{ (partial "author.html" . ) }}">
-<link rel="canonical" href="{{ if .Params.canonicalURL -}} {{ trim .Params.canonicalURL " " }} {{- else -}} {{ .Permalink }} {{- end }}">
-{{- if .Params.series }}
-<link rel="alternate" hreflang="vi" href="https://learn.tanhdev.com{{ .RelPermalink }}">
-<link rel="alternate" hreflang="en" href="https://tanhdev.com{{ .RelPermalink }}">
-<link rel="alternate" hreflang="x-default" href="https://tanhdev.com{{ .RelPermalink }}">
-{{- end }}
+<meta name="author" content="{{ (partial "author.html" . ) | plainify }}">
+{{- $canonicalURL := .Permalink -}}
+{{- with .Params.canonicalURL -}}
+  {{- $trimmed := trim . " " -}}
+  {{- if $trimmed -}}
+    {{- $canonicalURL = $trimmed | absURL -}}
+  {{- end -}}
+{{- end -}}
+<link rel="canonical" href="{{ $canonicalURL }}">
+{{- partial "hreflang.html" . -}}
 {{- if site.Params.analytics.google.SiteVerificationTag }}
 <meta name="google-site-verification" content="{{ site.Params.analytics.google.SiteVerificationTag }}">
 {{- end }}
@@ -131,9 +134,7 @@
 {{ range .AlternativeOutputFormats -}}
 <link rel="{{ .Rel }}" type="{{ .MediaType.Type | html }}" href="{{ .Permalink | safeURL }}" title="{{ .Name }}">
 {{ end -}}
-{{- range .AllTranslations -}}
-<link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}">
-{{ end -}}
+
 
 <noscript>
     <style>

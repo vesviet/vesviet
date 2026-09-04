@@ -31,7 +31,7 @@ canonicalURL: "https://tanhdev.com/posts/real-time-ride-hailing-architecture/"
 
 # Real-Time Ride-Hailing Architecture: Matching, Spatial Indexing & Websockets
 
-**Answer-first:** Real-time ride-hailing architecture uses Uber H3 spatial indexing, WebSocket persistent connections, Kafka event streaming, and Go matching engines to process driver dispatch requests. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+**Answer-first:** Real-time ride-hailing architecture uses Uber H3 spatial indexing, WebSocket persistent connections, Kafka event streaming, and Go matching engines to process driver dispatch requests. 
 
 The moment you open the Uber or Grab app, a cascade of real-time systems activates simultaneously: your phone begins transmitting GPS coordinates, a geospatial index updates your location, a matching engine re-evaluates nearby driver availability, a pricing model recalculates the fare based on supply-demand ratios, and a push notification pipeline prepares to deliver your match confirmation in under 3 seconds.
 

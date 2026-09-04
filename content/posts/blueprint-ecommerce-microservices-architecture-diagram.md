@@ -61,6 +61,34 @@ The reasoning behind separating **User** from **Customer** is worth stating expl
 
 For the full breakdown of each service's responsibilities, see [Deconstructing the Ecosystem: Service Details by Domain](/series/magento-migration-vietnam/deconstructing-ecommerce-service-details-domain/).
 
+### 2.1 21 Microservices Port, Protocol & Data Store Contract Matrix
+
+The following matrix defines the authoritative communication contracts, network endpoints, and data ownership across all 21 microservices:
+
+| Service Name | Bounded Domain | Ingress Port | Protocol | Primary Data Store | Pub/Sub Topic Emitted |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **API Gateway** | Platform Operations | `:8080 / :8443` | HTTPS / gRPC | Redis (Rate Limiting) | `audit.traffic.ingress` |
+| **Auth Service** | Identity & Access | `:50051` | gRPC / HTTP | PostgreSQL | `auth.token.revoked` |
+| **User Service** | Identity & Access | `:50052` | gRPC | PostgreSQL | `user.profile.updated` |
+| **Customer Profile** | Identity & Access | `:50053` | gRPC | MongoDB | `customer.tier.changed` |
+| **Catalog (PIM)** | Product & Content | `:50054` | gRPC | PostgreSQL | `catalog.product.published` |
+| **Pricing Service** | Product & Content | `:50055` | gRPC | Redis + PostgreSQL | `pricing.rule.updated` |
+| **Promotions** | Product & Content | `:50056` | gRPC | PostgreSQL | `promo.coupon.applied` |
+| **Search Service** | Product & Content | `:50057` | gRPC / HTTP | Elasticsearch / Qdrant| `search.index.synced` |
+| **Cart Service** | Commerce Flow | `:50058` | gRPC | Redis (Cluster) | `cart.item.added` |
+| **Checkout Orchestrator**| Commerce Flow | `:50059` | gRPC | Redis (Dapr State) | `checkout.saga.started` |
+| **Order Service** | Commerce Flow | `:50060` | gRPC | PostgreSQL (Outbox) | `order.created`, `order.paid` |
+| **Payment Service**| Commerce Flow | `:50061` | gRPC | PostgreSQL (Encrypted)| `payment.authorized`, `payment.failed` |
+| **Warehouse (WMS)**| Logistics | `:50062` | gRPC | PostgreSQL | `stock.reserved`, `stock.depleted` |
+| **Fulfillment** | Logistics | `:50063` | gRPC | PostgreSQL | `fulfillment.dispatched` |
+| **Shipping Hub** | Logistics | `:50064` | gRPC | PostgreSQL | `shipping.carrier.booked` |
+| **Returns (RMA)** | Post-Purchase | `:50065` | gRPC | PostgreSQL | `return.approved`, `refund.queued` |
+| **Loyalty & Points**| Post-Purchase | `:50066` | gRPC | PostgreSQL | `loyalty.points.accrued` |
+| **Customer Support**| Post-Purchase | `:50067` | gRPC | PostgreSQL | `ticket.escalated` |
+| **Analytics Engine**| Platform Operations | `:50068` | gRPC / Kafka | ClickHouse | `analytics.metric.aggregated` |
+| **Notification Hub**| Platform Operations | `:50069` | gRPC | Redis | `notification.sent` |
+| **Configuration Hub**| Platform Operations| `:50070` | gRPC | etcd | `config.cluster.reloaded` |
+
 ## The High-Level Architecture
 
 The system architecture diagram below illustrates the 21-service e-commerce ecosystem across its 6 core business domains. It details the synchronous HTTP/gRPC ingress boundaries and the asynchronous Dapr Pub/Sub event mesh connecting downstream logistics and analytics services:

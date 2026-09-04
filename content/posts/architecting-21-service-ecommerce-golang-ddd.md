@@ -4,7 +4,6 @@ slug: "architecting-21-service-ecommerce-golang-ddd"
 author: "Lê Tuấn Anh"
 aliases:
   - /posts/architecting-a-21-service-e-commerce-ecosystem-with-golang-ddd/
-  - /posts/golang-microservices/
 date: "2026-04-12T10:00:00+07:00"
 lastmod: "2026-07-03T00:00:00+07:00"
 draft: false
@@ -15,7 +14,7 @@ categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"
+  image: "/images/posts/ecommerce-composable-cover.jpg"
   alt: "Architecting a 21-service e-commerce platform with Golang and Domain-Driven Design"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/architecting-21-service-ecommerce-golang-ddd/"
@@ -23,7 +22,7 @@ canonicalURL: "https://tanhdev.com/posts/architecting-21-service-ecommerce-golan
 
 # Architecting 21-Service E-commerce with Golang & DDD
 
-**Answer-first:** Architecting a 21-service Go e-commerce platform using Domain-Driven Design (DDD) separates core bounded contexts, utilizes gRPC for inter-service communication, and implements Dapr event meshes for scalable distributed transactions. Deploying this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory pooling via Go 1.24 string interning, and resilient Dapr 1.15 workflow state synchronization.
+**Answer-first:** Architecting a 21-service Go e-commerce platform using Domain-Driven Design (DDD) separates core bounded contexts, utilizes gRPC for inter-service communication, and implements Dapr event meshes for scalable distributed transactions. Deploying this pattern enforces strict bounded context separation, eliminates cross-domain database coupling, and ensures reliable distributed transaction compensation via asynchronous Sagas.
 
 - The exact performance overhead of using Go's structural subtyping versus manual dependency injection in high-throughput microservices.
 - Why scoping database transactions to a single Aggregate root is critical, and how we resolved out-of-order event delivery using Kafka partition keys.

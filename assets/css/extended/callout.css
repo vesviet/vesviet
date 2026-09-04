@@ -1,0 +1,60 @@
+/* ==========================================================================
+   Cross-Lingual Reciprocal Callout Banner
+   PaperMod Theme Variables & Mobile-Responsive Design
+   ========================================================================== */
+
+.cross-lingual-notice {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    margin: 20px 0 24px 0;
+    border-radius: var(--radius);
+    background: var(--entry);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--content);
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.cross-lingual-notice .notice-icon {
+    font-size: 20px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.cross-lingual-notice .notice-body {
+    flex-grow: 1;
+}
+
+.cross-lingual-notice .notice-badge {
+    font-weight: 700;
+    color: var(--primary);
+    margin-right: 4px;
+}
+
+.cross-lingual-notice .notice-link {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.15s ease;
+}
+
+.cross-lingual-notice .notice-link:hover {
+    color: var(--secondary);
+    text-decoration: none;
+}
+
+@media (max-width: 600px) {
+    .cross-lingual-notice {
+        padding: 10px 14px;
+        font-size: 13.5px;
+        gap: 10px;
+    }
+    .cross-lingual-notice .notice-icon {
+        font-size: 18px;
+    }
+}

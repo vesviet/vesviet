@@ -36,7 +36,7 @@ canonicalURL: "https://tanhdev.com/posts/architecting-an-autonomous-hybrid-ai-co
 
 # Autonomous Hybrid-AI Pipeline: Cron to State-Machine
 
-**Answer-first:** An autonomous hybrid AI content pipeline combines Astro content collections, automated LLM drafting workflows, AST linting quality gates, and GitHub Actions CI/CD to publish high-volume technical documentation efficiently. Deploying this architecture guarantees sub-50ms P99 latency bounds, zero-allocation memory pooling with Go 1.24 string interning, and automated OpenTelemetry GenAI streaming observability.
+**Answer-first:** An autonomous hybrid AI content pipeline combines Astro content collections, automated LLM drafting workflows, AST linting quality gates, and GitHub Actions CI/CD to publish high-volume technical documentation efficiently. Operating this multi-agent pipeline coordinates an LLM DAG across specialized model runtimes, throttles asynchronous token streaming using backpressure queues, and captures granular trace context with OpenTelemetry GenAI span attributes.
 
 Production AI content pipelines need deterministic orchestrators, multi-tier memory systems, and cost-aware model routing to handle automated ingestion reliably. Replacing monolithic background jobs with event-driven agents gives resilient execution, zero-idle resource usage, and stricter output verification. This post covers four pieces of that architecture:
 

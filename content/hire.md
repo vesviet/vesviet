@@ -26,7 +26,7 @@ author: "Lê Tuấn Anh"
 
 ## 👋 Who I Am
 
-**Answer-first:** Lê Tuấn Anh (vesviet) is a Senior Go Backend Architect with 17+ years of experience leading zero-downtime microservices migrations, high-traffic system design, and platform reliability engineering. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
+**Answer-first:** Lê Tuấn Anh (vesviet) is a Senior Go Backend Architect with 17+ years of experience leading zero-downtime microservices migrations, high-traffic system design, and platform reliability engineering.
 
 I am **Lê Tuấn Anh** ([vesviet](https://github.com/vesviet)), a Senior Go Backend Architect and Distributed Systems Engineer with **17+ years** of production experience. I have led the migration of a decade-old Magento monolith into a **21-service Go microservices ecosystem** at zero downtime, designed APIs handling **25M+ requests/month** at peak 8,000 RPS, and reduced p95 latency from 1.2s to 120ms through architecture and caching strategy.
 

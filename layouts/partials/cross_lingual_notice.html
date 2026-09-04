@@ -1,0 +1,58 @@
+{{- /* layouts/partials/cross_lingual_notice.html */ -}}
+{{- /* Automated reciprocal cross-lingual callout notice for paired posts, series, radar */ -}}
+
+{{- if .IsPage -}}
+  {{- $isBilingualSection := in (slice "posts" "series" "radar") .Section -}}
+  {{- if $isBilingualSection -}}
+
+    {{- /* Check suppression criteria */ -}}
+    {{- $suppress := false -}}
+    {{- if .Params.noTranslation -}}
+      {{- $suppress = true -}}
+    {{- end -}}
+    {{- if or .Params.noindex .Params.robotsNoIndex -}}
+      {{- $suppress = true -}}
+    {{- end -}}
+    {{- if .Params.robots -}}
+      {{- if strings.Contains (printf "%v" .Params.robots) "noindex" -}}
+        {{- $suppress = true -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if .Draft -}}
+      {{- $suppress = true -}}
+    {{- end -}}
+
+    {{- if not $suppress -}}
+      {{- $isVesviet := hasPrefix site.BaseURL "https://tanhdev.com" -}}
+      {{- $targetDomain := cond $isVesviet "https://learn.tanhdev.com" "https://tanhdev.com" -}}
+
+      {{- /* Resolve counterpart target URL */ -}}
+      {{- $targetURL := "" -}}
+      {{- if .Params.translationURL -}}
+        {{- $targetURL = .Params.translationURL -}}
+      {{- else -}}
+        {{- $relPath := .RelPermalink -}}
+        {{- if not (strings.HasSuffix $relPath "/") -}}
+          {{- $relPath = printf "%s/" $relPath -}}
+        {{- end -}}
+        {{- $targetURL = printf "%s%s" $targetDomain $relPath -}}
+      {{- end -}}
+
+      {{- if ne $targetURL "" -}}
+        <aside class="cross-lingual-notice" aria-label="{{ cond $isVesviet "Bản dịch tiếng Việt" "English edition" }}">
+          <div class="notice-icon" aria-hidden="true">
+            {{- if $isVesviet }}🇻🇳{{ else }}🇬🇧{{ end -}}
+          </div>
+          <div class="notice-body">
+            {{- if $isVesviet -}}
+              <span class="notice-badge">Bản tiếng Việt:</span> Bài viết này đã có bản dịch tiếng Việt đầy đủ tại <a href="{{ $targetURL }}" class="notice-link">learn.tanhdev.com</a>.
+            {{- else -}}
+              <span class="notice-badge">English Edition:</span> Read the original English architecture blueprint at <a href="{{ $targetURL }}" class="notice-link">tanhdev.com</a>.
+            {{- end -}}
+          </div>
+        </aside>
+      {{- end -}}
+    {{- end -}}
+
+  {{- end -}}
+{{- end -}}

@@ -50,7 +50,7 @@ canonicalURL: "https://tanhdev.com/posts/high-throughput-local-llm-infrastructur
 
 # High-Throughput Local LLM Gateway: Go & vLLM Blueprint
 
-**Answer-first:** High-throughput local LLM infrastructure pairs vLLM continuous batching inference servers with a Go API gateway for dynamic request queuing, load balancing, and token rate limiting. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
+**Answer-first:** High-throughput local LLM infrastructure pairs vLLM continuous batching inference servers with a Go API gateway for dynamic request queuing, load balancing, and token rate limiting. 
 
 > **Key Takeaways**
 > - **PagedAttention Virtual Memory**: Eliminates 60%–80% GPU VRAM KV-cache fragmentation by splitting KV blocks into non-contiguous physical pages mapped via virtual page tables.

@@ -30,7 +30,7 @@ canonicalURL: "https://tanhdev.com/posts/kubernetes-in-place-pod-resizing-guide/
 
 # Kubernetes In-Place Pod Resizing: No-Restart Scaling
 
-**Answer-first:** Kubernetes in-place pod resizing allows dynamic CPU and memory limit adjustments without restarting pod containers, preventing application disruption during traffic surges. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+**Answer-first:** Kubernetes in-place pod resizing allows dynamic CPU and memory limit adjustments without restarting pod containers, preventing application disruption during traffic surges. 
 
 Before this feature, changing a container's resource allocation required deleting and recreating the pod. For a stateful database holding connections, an AI model with 30GB of weights loaded in memory, or a long-running batch job — that restart is catastrophic. In-Place Pod Resize finally decouples resource management from pod lifecycle.
 

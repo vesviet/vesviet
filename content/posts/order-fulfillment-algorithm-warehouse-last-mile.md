@@ -35,7 +35,7 @@ canonicalURL: "https://tanhdev.com/posts/order-fulfillment-algorithm-warehouse-l
 
 # Order Fulfillment Algorithm: Warehouse to Last-Mile
 
-**Answer-first:** Optimizing e-commerce order fulfillment combines graph coloring for multi-item cart splitting, bin packing algorithms for packaging, and TSP routing for last-mile delivery dispatch. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+**Answer-first:** Optimizing e-commerce order fulfillment combines graph coloring for multi-item cart splitting, bin packing algorithms for packaging, and TSP routing for last-mile delivery dispatch. 
 
 ---
 

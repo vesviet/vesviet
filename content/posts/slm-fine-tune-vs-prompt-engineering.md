@@ -42,7 +42,7 @@ canonicalURL: "https://tanhdev.com/posts/slm-fine-tune-vs-prompt-engineering/"
 
 ## Prompt Engineering vs Fine Tuning: Executive Decision Framework
 
-**Answer-first:** In the prompt engineering vs fine tuning evaluation, prompt engineering offers rapid prototyping with zero setup cost, whereas fine tuning Small Language Models (SLMs) via QLoRA bakes domain knowledge into weights, reducing TTFT latency under 250ms and cutting API token spend by 90%. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for.
+**Answer-first:** In the prompt engineering vs fine tuning evaluation, prompt engineering offers rapid prototyping with zero setup cost, whereas fine tuning Small Language Models (SLMs) via QLoRA bakes domain knowledge into weights, reducing TTFT latency under 250ms and cutting API token spend by 90%.
 
 Small Language Models (SLMs, 1B–8B parameters) combined with fine-tuning and local inference (vLLM) rival proprietary frontier LLMs on specialized domain tasks at a fraction of the cost. The playbook below rests on three architectural choices:
 

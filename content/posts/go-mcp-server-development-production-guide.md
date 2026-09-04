@@ -24,12 +24,11 @@ cover:
   alt: "Go MCP Server development with the official Model Context Protocol Go SDK"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/go-mcp-server-development-production-guide/"
-noTranslation: true
 ---
 
 # Build Production Go MCP Servers: The Definitive Guide
 
-**Answer-first:** Developing production-grade Go Model Context Protocol (MCP) servers requires structured JSON-RPC handlers, SSE transport gateways, OAuth 2.1 authentication, and gVisor container sandboxing. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+**Answer-first:** Developing production-grade Go Model Context Protocol (MCP) servers requires structured JSON-RPC handlers, SSE transport gateways, OAuth 2.1 authentication, and gVisor container sandboxing. 
 
 ---
 

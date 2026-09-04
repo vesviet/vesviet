@@ -53,7 +53,7 @@ canonicalURL: "https://tanhdev.com/posts/production-ai-observability-opentelemet
 
 # Production AI Observability: Go LLM Tracing with OTel
 
-**Answer-first:** Production AI observability instruments Go microservices with OpenTelemetry spans to capture LLM API latency, prompt token usage, cost metrics, and error rates in real-time. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+**Answer-first:** Production AI observability instruments Go microservices with OpenTelemetry spans to capture LLM API latency, prompt token usage, cost metrics, and error rates in real-time. 
 
 > **Key Takeaways**
 > - **2026 OpenTelemetry Standard**: Standardizes GenAI attributes (`gen_ai.provider.name`, `gen_ai.request.model`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`).

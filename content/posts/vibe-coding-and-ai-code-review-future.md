@@ -20,7 +20,7 @@ canonicalURL: "https://tanhdev.com/posts/vibe-coding-and-ai-code-review-future/"
 
 # What is Vibe Coding? Why AI Code Review is the Future
 
-**Answer-first:** Vibe coding accelerates prototype development through AI generation, shifting engineering effort toward automated AST code review, security auditing, and architectural quality governance. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+**Answer-first:** Vibe coding accelerates prototype development through AI generation, shifting engineering effort toward automated AST code review, security auditing, and architectural quality governance. 
 
 In February 2025, Andrej Karpathy, former Tesla AI Lead and OpenAI co-founder, tweeted a phrase that would define a new paradigm in software development: 
 

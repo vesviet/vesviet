@@ -27,7 +27,7 @@ cover:
 
 # Multi-region Geo-distributed API Routing Architecture
 
-**Answer-first:** Multi-region geo-distributed API routing uses Anycast DNS, Cloudflare edge proxies, local database read replicas, and conflict-free replicated data types (CRDTs) to minimize global latency. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+**Answer-first:** Multi-region geo-distributed API routing uses Anycast DNS, Cloudflare edge proxies, local database read replicas, and conflict-free replicated data types (CRDTs) to minimize global latency. 
 
 ## The Need for Geo-Distributed APIs
 

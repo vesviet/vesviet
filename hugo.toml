@@ -22,7 +22,7 @@ apple_touch_icon = "/apple-touch-icon.png"
 
 [permalinks]
   posts = "/posts/:slug/"
-  radar = "/radar/:slug/"
+  radar = "/radar/:sections[1]/:slug/"
 
 [params]
   env = "production"

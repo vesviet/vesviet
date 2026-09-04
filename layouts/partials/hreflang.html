@@ -1,0 +1,79 @@
+{{- /* layouts/partials/hreflang.html */ -}}
+{{- /* Authoritative partial for bidirectional hreflang synchronization */ -}}
+
+{{- $isVesviet := hasPrefix site.BaseURL "https://tanhdev.com" -}}
+{{- $selfLang := cond $isVesviet "en" "vi" -}}
+{{- $targetLang := cond $isVesviet "vi" "en" -}}
+{{- $selfDomain := cond $isVesviet "https://tanhdev.com" "https://learn.tanhdev.com" -}}
+{{- $targetDomain := cond $isVesviet "https://learn.tanhdev.com" "https://tanhdev.com" -}}
+
+{{- /* Suppress all hreflangs on 404 pages */ -}}
+{{- $is404 := or (eq .Kind "404") (eq .RelPermalink "/404.html") (eq .RelPermalink "/404.html/") (strings.HasSuffix .RelPermalink "404.html") -}}
+
+{{- /* Suppress all hreflangs on paginated list pages (page > 1) */ -}}
+{{- $isPaginated := false -}}
+{{- if and .IsNode .Paginator -}}
+  {{- if gt .Paginator.PageNumber 1 -}}
+    {{- $isPaginated = true -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if not (or $is404 $isPaginated) -}}
+
+  {{- /* Determine if counterpart translations should be suppressed */ -}}
+  {{- $suppress := false -}}
+  {{- if .Params.noTranslation -}}
+    {{- $suppress = true -}}
+  {{- end -}}
+  {{- if or .Params.noindex .Params.robotsNoIndex -}}
+    {{- $suppress = true -}}
+  {{- end -}}
+  {{- if .Params.robots -}}
+    {{- if strings.Contains (printf "%v" .Params.robots) "noindex" -}}
+      {{- $suppress = true -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $isTaxonomy := or (eq .Kind "taxonomy") (eq .Kind "term") (in (slice "tags" "categories") .Section) -}}
+  {{- if $isTaxonomy -}}
+    {{- $suppress = true -}}
+  {{- end -}}
+
+  {{- /* Check if current section/page is part of bilingual publishing scope */ -}}
+  {{- $isBilingualScope := false -}}
+  {{- if or .IsHome (in (slice "posts" "series" "radar") .Section) -}}
+    {{- $isBilingualScope = true -}}
+  {{- else if and .IsPage .File (in (slice "about" "hire" "legal-notice" "privacy-policy" "terms-of-service" "reading-map") .File.ContentBaseName) -}}
+    {{- $isBilingualScope = true -}}
+  {{- end -}}
+
+  {{- /* Ensure self URL has trailing slash */ -}}
+  {{- $selfURL := .Permalink -}}
+  {{- if not (strings.HasSuffix $selfURL "/") -}}
+    {{- $selfURL = printf "%s/" $selfURL -}}
+  {{- end -}}
+
+  {{- /* Resolve counterpart target URL */ -}}
+  {{- $targetURL := "" -}}
+  {{- if and (not $suppress) $isBilingualScope -}}
+    {{- if .Params.translationURL -}}
+      {{- $targetURL = .Params.translationURL -}}
+    {{- else -}}
+      {{- $relPath := .RelPermalink -}}
+      {{- if not (strings.HasSuffix $relPath "/") -}}
+        {{- $relPath = printf "%s/" $relPath -}}
+      {{- end -}}
+      {{- $targetURL = printf "%s%s" $targetDomain $relPath -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- /* Emit Self Alternate Tag */ -}}
+  <link rel="alternate" hreflang="{{ $selfLang }}" href="{{ $selfURL }}">
+
+  {{- /* Emit Counterpart and x-default Alternate Tags */ -}}
+  {{- if and (not $suppress) (ne $targetURL "") -}}
+  <link rel="alternate" hreflang="{{ $targetLang }}" href="{{ $targetURL }}">
+  {{- $xDefaultURL := cond $isVesviet $selfURL $targetURL -}}
+  <link rel="alternate" hreflang="x-default" href="{{ $xDefaultURL }}">
+  {{- end -}}
+
+{{- end -}}

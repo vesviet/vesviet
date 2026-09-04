@@ -5,7 +5,9 @@ date: "2026-05-10T10:00:00+07:00"
 lastmod: "2026-07-24T10:00:00+07:00"
 draft: false
 weight: 2
-slug: "article_1_system_design"
+slug: "how-systems-handle-c10m"
+aliases:
+  - /series/high-concurrency-systems/article_1_system_design/
 cover:
   image: "/images/posts/article-1-system-design.jpg"
 ShowToc: true
@@ -16,7 +18,7 @@ series: ["high-concurrency-systems"]
 series_order: 1
 author: "Lê Tuấn Anh"
 mermaid: true
-canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/article_1_system_design/"
+canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/how-systems-handle-c10m/"
 ---
 
 

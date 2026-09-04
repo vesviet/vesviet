@@ -23,7 +23,7 @@ description: "Complete composable banking blueprint in Go: BIAN domain models, d
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/banking-microservices-cover.jpg"
+  image: "/images/posts/part-4-modern-core-banking-architecture.jpg"
   alt: "Composable Banking Architecture: Go & BIAN Blueprint"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/composable-banking-architecture/"

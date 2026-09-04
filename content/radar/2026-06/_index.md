@@ -18,13 +18,11 @@ aliases:
   - /radar/2026-06/tech-radar-june-13-2026-go-1-26-gc-k8s-pod-resizing-ai-native/
   - /radar/2026-06/tech-radar-june-14-2026-kratos-dapr-integration/
   - /radar/2026-06/tech-radar-june-17-2026-kratos-clean-architecture-dapr-pubsub/
-  - /radar/2026-06/tech-radar-june-22-2026-dapr-workflow-kratos-clean-architecture/
   - /radar/2026-06/tech-radar-june-24-2026-kubernetes-ai-os-gke-hypercluster-golang/
   - /radar/2026-06/radar-2026-06-11/
   - /radar/2026-06/radar-2026-06-13/
   - /radar/2026-06/radar-2026-06-14/
   - /radar/2026-06/radar-2026-06-17/
-  - /radar/2026-06/radar-2026-06-22/
   - /radar/2026-06/radar-2026-06-24/
 description: "Curated June 2026 Tech Radar digest analyzing Kubernetes in-place pod resizing, Go 1.26 GC performance, Dapr v1.18, and Kratos Clean Architecture design."
 ---

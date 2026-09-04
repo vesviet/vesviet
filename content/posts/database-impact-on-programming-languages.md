@@ -20,7 +20,7 @@ canonicalURL: "https://tanhdev.com/posts/database-impact-on-programming-language
 
 # How Databases Shaped Go, PHP, Node.js, and Rust
 
-**Answer-first:** Database paradigms directly shape programming language design, driving memory allocation models, asynchronous I/O frameworks, ORM abstractions, and connection pool patterns across modern systems. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+**Answer-first:** Database paradigms directly shape programming language design, driving memory allocation models, asynchronous I/O frameworks, ORM abstractions, and connection pool patterns across modern systems. 
 
 Databases are the most critical I/O bottleneck in backend systems. Over the past 20 years, network latency, connection limits, and transaction safety have forced programming languages to rethink their concurrency models, evolve new syntaxes, and invent smarter ORMs.
 

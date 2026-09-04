@@ -31,7 +31,7 @@ canonicalURL: "https://tanhdev.com/posts/go-microservices-distributed-tracing-ar
 
 # Go Microservices Distributed Tracing Architecture (2026)
 
-**Answer-first:** Distributed tracing in Go microservices uses OpenTelemetry context propagation, W3C trace headers, Jaeger collection, and low-overhead span sampling to diagnose microservice latency bottlenecks. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+**Answer-first:** Distributed tracing in Go microservices uses OpenTelemetry context propagation, W3C trace headers, Jaeger collection, and low-overhead span sampling to diagnose microservice latency bottlenecks. 
 
 > 
 

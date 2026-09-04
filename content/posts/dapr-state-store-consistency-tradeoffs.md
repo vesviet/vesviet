@@ -20,7 +20,7 @@ canonicalURL: "https://tanhdev.com/posts/dapr-state-store-consistency-tradeoffs/
 
 # Dapr State Store Consistency Trade-offs Explained
 
-**Answer-first:** Dapr state stores balance strong versus eventual consistency using optimistic concurrency control (ETags) and transactional write boundary choices to prevent race conditions across distributed microservices. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
+**Answer-first:** Dapr state stores balance strong versus eventual consistency using optimistic concurrency control (ETags) and transactional write boundary choices to prevent race conditions across distributed microservices. 
 
 ## Dapr State Store Architecture & Consistency Models
 

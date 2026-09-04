@@ -19,7 +19,7 @@ tags:
   - "Profiling"
   - "Performance"
 cover:
-  image: "/images/posts/goroutine-leak-cover.jpg"
+  image: "/images/posts/observability.jpg"
   alt: "Go pprof profiling in Kubernetes: CPU flame graphs, heap profiling, and memory leak detection"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/golang-pprof-profiling-memory-cpu-tutorial/"
@@ -27,7 +27,7 @@ canonicalURL: "https://tanhdev.com/posts/golang-pprof-profiling-memory-cpu-tutor
 
 # Go pprof CPU & Memory Profiling: Production Tutorial
 
-**Answer-first:** Go pprof CPU and memory profiling identifies heap memory leaks, unnecessary allocations, lock contention, and CPU hot spots to optimize production application throughput. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+**Answer-first:** Go pprof CPU and memory profiling identifies heap memory leaks, unnecessary allocations, lock contention, and CPU hot spots to optimize production application throughput. 
 
 > **Prerequisite:** This guide covers how to profile and diagnose complex performance issues in production. If you are specifically dealing with unbounded goroutine growth, ensure you first understand the foundational concepts in [Goroutine Leak Detection and Fix in Production Go Services](/posts/goroutine-leak-detection-production-golang/).
 

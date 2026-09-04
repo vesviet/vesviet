@@ -22,7 +22,7 @@ description: "Step-by-step guide to deploying Astro on Cloudflare Pages: SSR Wor
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/cloudflare-edge-cover.jpg"
+  image: "/images/posts/cloudflare-workers-edge-computing.jpg"
   alt: "Deploying Astro on Cloudflare: full-stack edge architecture with Workers, D1, and KV"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/"
@@ -30,7 +30,7 @@ canonicalURL: "https://tanhdev.com/posts/deploying-astro-on-cloudflare-full-stac
 
 # Deploy Astro on Cloudflare Pages: Full-Stack Edge Architecture
 
-**Answer-first:** Deploying Astro v5 on Cloudflare Pages and Workers achieves fast edge rendering, serverless API route execution, and global asset caching with zero origin server overhead. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
+**Answer-first:** Deploying Astro v5 on Cloudflare Pages and Workers achieves fast edge rendering, serverless API route execution, and global asset caching with zero origin server overhead. 
 
 Running a content site on a traditional VPS or a managed Node.js host is fine until it isn't. You pay for compute that sits idle 95% of the time, you manage SSL renewals, you worry about cold starts, and you watch your Lighthouse score suffer because your origin is in Singapore while your readers are in Frankfurt.
 

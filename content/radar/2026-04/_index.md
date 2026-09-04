@@ -14,7 +14,6 @@ cover:
   alt: "Tech Radar Digest April 2026: Go, K8s & AI Platform Log"
   relative: false
 aliases:
-  - /radar/2026-04/radar-2026-04-14/
   - /radar/2026-04/radar-2026-04-15/
   - /radar/2026-04/radar-2026-04-16/
   - /radar/2026-04/radar-2026-04-17/
@@ -23,16 +22,6 @@ aliases:
   - /radar/2026-04/radar-2026-04-24/
   - /radar/2026-04/radar-2026-04-25/
   - /radar/2026-04/radar-2026-04-26-anthropic-compute/
-  - /radar/2026-04/radar-2026-04-26/
-  - /radar/2026-04/radar-2026-04-27-claude-sonnet/
-  - /radar/2026-04/radar-2026-04-27-mistral-small/
-  - /radar/2026-04/radar-2026-04-28/
-  - /radar/2026-04/radar-2026-04-29-creative-mcp/
-  - /radar/2026-04/radar-2026-04-29/
-  - /radar/2026-04/radar-2026-04-30/
-  - /radar/radar-2026-04-14/
-  - /radar/radar-2026-04-29/
-  - /radar/radar-2026-04-30/
 description: "Curated April 2026 Tech Radar digest analyzing Go 1.26 PGO, Dapr sidecar streaming recovery, Kratos framework hardening, and enterprise AI orchestration."
 canonicalURL: "https://tanhdev.com/radar/2026-04/"
 ---
