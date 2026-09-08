@@ -243,7 +243,7 @@ The structural diagram below shows how external mobile app requests pass through
 graph TD
     User["Shopee App / Web"] -->|"HTTPS"| API_Gateway["API Gateway<br/>Rate Limiting, Auth, Routing"]
     
-    subgraph "Shopee Core Backend ("Golang + Service Mesh")"
+    subgraph Shopee_Core_Backend__Golang_Service_Mesh ["Shopee Core Backend  (Golang + Service Mesh)"]
         API_Gateway -->|"gRPC"| OrderService["Order Service"]
         API_Gateway -->|"gRPC"| CatalogService["Catalog Service"]
         OrderService -.->|"gRPC"| InventoryService["Inventory Service"]

@@ -287,9 +287,9 @@ func (m *MockUserRepo) FindByID(id string) (*domain.User, error) {
 
 ```mermaid
 graph LR
-    Handler["Handler\n("HTTP/gRPC")"] -->|"calls"| UseCase["UseCase\n("Application Logic")"]
-    UseCase -->|"depends on interface"| Port["UserRepository\nInterface ("Port")"]
-    Port -.->|"implemented by"| Adapter["PostgresUserRepository\n("Adapter")"]
+    Handler["Handler\n(HTTP/gRPC)"] -->|"calls"| UseCase["UseCase\n(Application Logic)"]
+    UseCase -->|"depends on interface"| Port["UserRepository\nInterface (Port)"]
+    Port -.->|"implemented by"| Adapter["PostgresUserRepository\n(Adapter)"]
     Adapter -->|"SQL queries"| DB[("PostgreSQL")]
 
     style Port fill:#f0f4ff,stroke:#4a6cf7

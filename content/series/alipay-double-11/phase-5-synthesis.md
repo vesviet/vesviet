@@ -59,7 +59,7 @@ graph TD
         DBA -.->|"3. Fail: Connection Timeout"| Fallback["Trigger Client Retry"]
     end
 
-    Fallback -->|4. Backoff: t = min("t_max, t_base * 2^n + jitter")| RetryLoop{"Retry Exhausted?"}
+    Fallback -->|"4. Backoff: t = min(t_max, t_base * 2^n + jitter)"| RetryLoop{"Retry Exhausted?"}
     RetryLoop -->|"No"| GLB
     RetryLoop -->|"Yes: Mark Cell A Offline"| DNS["Update Ingress DNS / Router Table"]
     

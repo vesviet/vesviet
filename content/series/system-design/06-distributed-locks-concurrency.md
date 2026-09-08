@@ -93,14 +93,14 @@ Where:
 ```mermaid
 graph TD
     Start["Client needs lock"] --> T1["Record timestamp T1"]
-    T1 --> Acquire["Acquire lock on N Redis masters\n("SET key token NX PX ttl with short timeout")"]
+    T1 --> Acquire["Acquire lock on N Redis masters\n(SET key token NX PX ttl with short timeout)"]
     Acquire --> Quorum{"Acquired on ≥ N/2+1 masters?"}
     Quorum -->|"No"| Fail["Release all acquired locks\n→ Retry after random delay"]
     Quorum -->|"Yes"| Validity["Compute MIN_VALIDITY = TTL - elapsed - drift"]
     Validity --> Valid{"MIN_VALIDITY > 0?"}
     Valid -->|"No"| Fail2["Lock expired during acquisition\n→ Release all, retry"]
     Valid -->|"Yes"| Success["✅ Lock acquired for MIN_VALIDITY ms\nExecute critical section"]
-    Success --> Release["Release: Lua script\n("check token before DEL")"]
+    Success --> Release["Release: Lua script\n(check token before DEL)"]
 ```
 
 ---

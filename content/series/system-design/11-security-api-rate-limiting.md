@@ -56,8 +56,8 @@ The architecture diagram below illustrates the multi-tiered rate limiting pipeli
 graph TD
     Client["Internet Traffic"] -->|"DDoS / Bot Blocking\nLayer 3/4"| WAF["☁️ Edge WAF\nCloudflare WAF / AWS WAF"]
     WAF -->|"Volumetric threats blocked\nClean traffic passes"| GW["🔀 API Gateway / Reverse Proxy\nKong / Envoy / Traefik"]
-    GW -->|"JWT / API Key quotas\nTenant-level routing limits"| App["⚙️ Go Application Middleware\n("Redis + Business Context")"]
-    App -->|"Granular rules:\nuser action limits, payment retries"| Svc["🗄️ Upstream Services\n("DB, Queue, Cache")"]
+    GW -->|"JWT / API Key quotas\nTenant-level routing limits"| App["⚙️ Go Application Middleware\n(Redis + Business Context)"]
+    App -->|"Granular rules:\nuser action limits, payment retries"| Svc["🗄️ Upstream Services\n(DB, Queue, Cache)"]
 
     style WAF fill:#ff6b6b,color:#fff
     style GW fill:#4a6cf7,color:#fff

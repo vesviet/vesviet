@@ -182,7 +182,7 @@ sequenceDiagram
     actor Client2 as Concurrent Client 2
     participant Daprd as Target Node daprd Sidecar
     participant Mailbox as Actor Mailbox Queue
-    participant Actor as AgentActor Instance (Heap)
+    participant ActorInst as AgentActor Instance (Heap)
     participant Store as State Store (DB)
 
     Client1->>Daprd: InvokeMethod("ExecuteTurn", payload1)
@@ -191,19 +191,19 @@ sequenceDiagram
     Daprd->>Mailbox: Enqueue Turn 1
     Daprd->>Mailbox: Enqueue Turn 2 (Buffered in Memory)
     
-    Mailbox->>Actor: Dispatch Turn 1
-    Actor->>Actor: Mutate Internal Agent Context
-    Actor->>Store: SaveStateTransactionally()
-    Store-->>Actor: ACK
-    Actor-->>Daprd: Turn 1 Response
+    Mailbox->>ActorInst: Dispatch Turn 1
+    ActorInst->>ActorInst: Mutate Internal Agent Context
+    ActorInst->>Store: SaveStateTransactionally()
+    Store-->>ActorInst: ACK
+    ActorInst-->>Daprd: Turn 1 Response
     Daprd-->>Client1: HTTP 200 OK
     
-    Note over Mailbox,Actor: Turn 1 Complete -> Next Message Dispatched
-    Mailbox->>Actor: Dispatch Turn 2
-    Actor->>Actor: Mutate Internal Agent Context
-    Actor->>Store: SaveStateTransactionally()
-    Store-->>Actor: ACK
-    Actor-->>Daprd: Turn 2 Response
+    Note over Mailbox,ActorInst: Turn 1 Complete -> Next Message Dispatched
+    Mailbox->>ActorInst: Dispatch Turn 2
+    ActorInst->>ActorInst: Mutate Internal Agent Context
+    ActorInst->>Store: SaveStateTransactionally()
+    Store-->>ActorInst: ACK
+    ActorInst-->>Daprd: Turn 2 Response
     Daprd-->>Client2: HTTP 200 OK
 ```
 

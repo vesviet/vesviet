@@ -38,11 +38,11 @@ Ratified in mid-2026, **WASI 0.3** introduces **Native Async Primitives** direct
 ```mermaid
 flowchart LR
     subgraph TraditionalMicroservices ["Traditional Microservices (Container IPC)"]
-        S1["Go Service Pod"] -->|TCP Socket / gRPC Protobuf<br/><b>(1.5ms - 5ms Latency | Kernel Context Switches)</b>| S2["Rust Service Pod"]
+        S1["Go Service Pod"] -->|"TCP Socket / gRPC Protobuf<br/><b>(1.5ms - 5ms Latency  -  Kernel Context Switches)</b>"| S2["Rust Service Pod"]
     end
 
     subgraph WasmComponentModel ["WASI 0.3 Component Model (Single Wasmtime Runtime)"]
-        C1["Go Component (WIT Contract)"] -->|Native async stream<T><br/><b>(15ns - 50ns Latency | Zero Kernel Switches)</b>| C2["Rust Component (WIT Contract)"]
+        C1["Go Component (WIT Contract)"] -->|"Native async stream<T><br/><b>(15ns - 50ns Latency  -  Zero Kernel Switches)</b>"| C2["Rust Component (WIT Contract)"]
     end
 ```
 

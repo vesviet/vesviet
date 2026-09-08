@@ -77,7 +77,7 @@ flowchart TD
     Timer --> Signal
     Signal --> MHandler
     MHandler -->|Interrupts| WorkerG
-    WorkerG -.->|Current Program Counter (PC)| Unwind
+    WorkerG -.->|"Current Program Counter (PC)"| Unwind
     Unwind --> HashBucket
 
     AllocHeap --> MemSample
@@ -358,9 +358,9 @@ flowchart LR
         Grafana["Grafana Dashboards (Unified Traces + Flame Graphs)"]
     end
 
-    Pod1 -->|gRPC / HTTP Push (10s Intervals)| Pyroscope
-    Pod2 -->|gRPC / HTTP Push (10s Intervals)| Pyroscope
-    Pod3 -->|gRPC / HTTP Push (10s Intervals)| Pyroscope
+    Pod1 -->|"gRPC / HTTP Push (10s Intervals)"| Pyroscope
+    Pod2 -->|"gRPC / HTTP Push (10s Intervals)"| Pyroscope
+    Pod3 -->|"gRPC / HTTP Push (10s Intervals)"| Pyroscope
     Pyroscope --> Grafana
 ```
 

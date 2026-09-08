@@ -29,14 +29,14 @@ canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/how-systems-h
 ```mermaid
 flowchart TD
     Client["Client Traffic Millions req/sec"] --> L4["L4 Maglev LB / DPDK DSR"]
-    L4 --> L7 Envoy1["L7 Gateway / Envoy Node 1"]
-    L4 --> L7 Envoy2["L7 Gateway / Envoy Node 2"]
+    L4 --> L7_Envoy1["L7 Gateway / Envoy Node 1"]
+    L4 --> L7_Envoy2["L7 Gateway / Envoy Node 2"]
     
-    subgraph Core Engine ["Go High-Concurrency Engine"]
-        L7 Envoy1 --> Netpoll["epoll / io_uring Event Loop"]
+    subgraph Core_Engine ["Go High-Concurrency Engine"]
+        L7_Envoy1 --> Netpoll["epoll / io_uring Event Loop"]
         Netpoll --> LockFreeQ["Lock-Free Ring Buffer Worker Pool"]
         LockFreeQ --> ZeroCopy["Zero-Copy Memory Allocator sync.Pool"]
-        ZeroCopy --> DB["("TiDB / Redis Cluster")"]
+        ZeroCopy --> DB["(TiDB / Redis Cluster)"]
     end
 ```
 

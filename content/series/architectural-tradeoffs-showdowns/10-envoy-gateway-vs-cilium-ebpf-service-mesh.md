@@ -98,7 +98,7 @@ flowchart TD
             PodBackend -.->|"L7 Trapdoor"| NodeEnvoyB
         end
 
-        NodeA ==="Kernel WireGuard / IPsec Tunnel (Wire Encryption)"=== NodeB
+        NodeA == "Kernel WireGuard / IPsec Tunnel (Wire Encryption)" === NodeB
     end
 ```
 

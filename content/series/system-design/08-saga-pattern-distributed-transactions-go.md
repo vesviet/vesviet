@@ -77,8 +77,8 @@ sequenceDiagram
 graph LR
     T1["T1: Create Order ✅"] --> T2["T2: Reserve Inventory ✅"]
     T2 --> T3["T3: Process Payment ❌"]
-    T3 --> C2["C2: Release Inventory\n("compensation")"]
-    C2 --> C1["C1: Cancel Order\n("compensation")"]
+    T3 --> C2["C2: Release Inventory\n(compensation)"]
+    C2 --> C1["C1: Cancel Order\n(compensation)"]
 
     style T3 fill:#f8d7da,stroke:#dc3545
     style C2 fill:#fff3cd,stroke:#f0a500

@@ -42,10 +42,10 @@ graph LR
         B1 --> C1["Wasted Unused VRAM Fragmentation 51..2048"]
     end
 
-    subgraph vLLM PagedAttention Allocation
-        A2["Virtual Memory Block Table"] --> Page1["Physical GPU Page 0xAF ("Tokens 1..16")"]
-        A2 --> Page2["Physical GPU Page 0xB2 ("Tokens 17..32")"]
-        A2 --> Page3["Physical GPU Page 0xCC ("Tokens 33..48")"]
+    subgraph vLLM_PagedAttention_Allocation ["vLLM PagedAttention Allocation"]
+        A2["Virtual Memory Block Table"] --> Page1["Physical GPU Page 0xAF (Tokens 1..16)"]
+        A2 --> Page2["Physical GPU Page 0xB2 (Tokens 17..32)"]
+        A2 --> Page3["Physical GPU Page 0xCC (Tokens 33..48)"]
     end
 ```
 

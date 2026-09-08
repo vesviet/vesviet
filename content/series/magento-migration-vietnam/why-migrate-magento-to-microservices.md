@@ -119,7 +119,7 @@ graph LR
     PRC["Pricing Service"] -- "pricing.price.updated" --> DAPR
     WH["Warehouse Service"] -- "warehouse.stock.changed" --> DAPR
     DAPR --> SEARCH["Search Service Worker"]
-    SEARCH --> ES["("Elasticsearch")"]
+    SEARCH --> ES["(Elasticsearch)"]
     ES -- "sub-100ms reads" --> GW["API Gateway"]
 ```
 

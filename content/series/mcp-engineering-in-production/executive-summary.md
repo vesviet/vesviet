@@ -59,9 +59,9 @@ graph TD
         MCPGateway --> AuditTrace["3. OpenTelemetry Audit Logger"]
     end
 
-    MCPGateway -->|"JSON-RPC 2.0 ("stdio / SSE")"| Server1["MCP Server: Billing & SQL"]
-    MCPGateway -->|"JSON-RPC 2.0 ("stdio / SSE")"| Server2["MCP Server: Kubernetes Cluster"]
-    MCPGateway -->|"JSON-RPC 2.0 ("stdio / SSE")"| Server3["MCP Server: Vector & Graph DB"]
+    MCPGateway -->|"JSON-RPC 2.0 (stdio / SSE)"| Server1["MCP Server: Billing & SQL"]
+    MCPGateway -->|"JSON-RPC 2.0 (stdio / SSE)"| Server2["MCP Server: Kubernetes Cluster"]
+    MCPGateway -->|"JSON-RPC 2.0 (stdio / SSE)"| Server3["MCP Server: Vector & Graph DB"]
 
     Server1 --> Postgres[("PostgreSQL OLTP")]
     Server2 --> K8sAPI["Kubernetes Control Plane"]

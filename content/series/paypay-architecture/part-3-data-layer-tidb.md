@@ -31,9 +31,9 @@ series: ["paypay-architecture"]
 
 ```mermaid
 graph TD
-    SQL["TiDB SQL Compute Layer"] --> KV1["TiKV Storage Node 1 ("Raft Leader")"]
-    SQL --> KV2["TiKV Storage Node 2 ("Raft Follower")"]
-    SQL --> KV3["TiKV Storage Node 3 ("Raft Follower")"]
+    SQL["TiDB SQL Compute Layer"] --> KV1["TiKV Storage Node 1 (Raft Leader)"]
+    SQL --> KV2["TiKV Storage Node 2 (Raft Follower)"]
+    SQL --> KV3["TiKV Storage Node 3 (Raft Follower)"]
 ```
 
 When PayPay launched, **AWS Aurora (MySQL compatible)** was the obvious choice for the payment ledger. Aurora is managed, reliable, and well-understood. It scales read capacity easily through Read Replicas. For a startup under urgency to ship, it was the right decision.

@@ -135,7 +135,7 @@ flowchart LR
     RedisHNSW -->|Top-10 Dark Store SKUs| vLLM
     vLLM -->|Intent JSON| MCPServer
     MCPServer --> UIComp
-    UIComp -->|Protobuf Patch (Diff)| App
+    UIComp -->|"Protobuf Patch (Diff)"| App
 ```
 
 ---

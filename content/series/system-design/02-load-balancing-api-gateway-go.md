@@ -51,14 +51,14 @@ weight: 2
 
 ```mermaid
 graph TD
-    subgraph l4["L4 Load Balancer ("Transport Layer")"]
+    subgraph l4 ["L4 Load Balancer (Transport Layer)"]
         C1["Client"] -->|"TCP SYN → dst:80"| LB1["L4 LB\nHAProxy / IPVS"]
         LB1 -->|"Forward TCP stream\nIP rewrite"| B1["Backend 1\n:8080"]
         LB1 -->|"Forward TCP stream"| B2["Backend 2\n:8080"]
         LB1 -->|"Forward TCP stream"| B3["Backend 3\n:8080"]
     end
 
-    subgraph l7["L7 Load Balancer ("Application Layer")"]
+    subgraph l7 ["L7 Load Balancer (Application Layer)"]
         C2["Client"] -->|"HTTP GET /api/v1"| LB2["L7 LB\nNginx / Envoy"]
         LB2 -->|"Path: /api/* → service-api"| S1["API Service"]
         LB2 -->|"Path: /static/* → CDN"| S2["Static Service"]

@@ -61,13 +61,13 @@ After adding Node-D (N=4): hash(key) % 4
 
 ```mermaid
 graph TD
-    subgraph ring["Consistent Hash Ring ("0 → 2^32-1")"]
+    subgraph ring ["Consistent Hash Ring (0 → 2^32-1)"]
         NA["Node-A @ pos 1,200,000"]
         NB["Node-B @ pos 2,800,000"]
         NC["Node-C @ pos 3,700,000"]
-        K1["key: user:123\nhash=1,500,000\n→ Node-B ("next clockwise")"]
-        K2["key: product:456\nhash=3,200,000\n→ Node-C ("next clockwise")"]
-        K3["key: order:789\nhash=4,000,000\n→ Node-A ("wrap around")"]
+        K1["key: user:123\nhash=1,500,000\n→ Node-B (next clockwise)"]
+        K2["key: product:456\nhash=3,200,000\n→ Node-C (next clockwise)"]
+        K3["key: order:789\nhash=4,000,000\n→ Node-A (wrap around)"]
     end
 
     style NA fill:#cce5ff,stroke:#004085

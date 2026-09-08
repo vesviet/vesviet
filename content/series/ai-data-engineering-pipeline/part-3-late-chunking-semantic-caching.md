@@ -182,8 +182,8 @@ To reduce redundant LLM latency and expensive embedding compute for repetitive q
 graph LR
     UserQuery["User Input Query"] --> Embed["Query Embedding Generator"]
     Embed --> CacheLookup{"Redis Vector Search"}
-    CacheLookup -->|"Similarity >= 0.90"| CacheHit["Return Cached LLM Response ("15ms")"]
-    CacheLookup -->|"Similarity < 0.90"| RAGPipeline["Execute Full GraphRAG Pipeline ("1.2s")"]
+    CacheLookup -->|"Similarity >= 0.90"| CacheHit["Return Cached LLM Response (15ms)"]
+    CacheLookup -->|"Similarity < 0.90"| RAGPipeline["Execute Full GraphRAG Pipeline (1.2s)"]
     RAGPipeline --> StoreCache["Store Query Vector + LLM Answer in Redis"]
 ```
 

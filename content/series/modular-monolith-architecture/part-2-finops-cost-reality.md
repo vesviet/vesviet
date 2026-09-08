@@ -48,13 +48,13 @@ The architecture cost comparison diagram below contrasts the high infrastructure
 
 ```mermaid
 graph TD
-    subgraph Microservices Cloud Bill ("High Tax")
+    subgraph Microservices_Cloud_Bill_High_Tax ["Microservices Cloud Bill (High Tax)"]
         SM["Service Mesh Envoy Sidecars: 50GB RAM"]
         AZ["Cross-AZ Egress: $0.02/GB"]
         NAT["NAT Gateway Processing: $0.045/GB"]
         LOG["High-Cardinality Datadog Tracing"]
     end
-    subgraph Modular Monolith Bill ("Zero Tax")
+    subgraph Modular_Monolith_Bill_Zero_Tax ["Modular Monolith Bill (Zero Tax)"]
         RAM["In-Memory RAM Pointers: <1ns"]
         LOCAL["Local VPC Container Tasks"]
         PROM["Single Prometheus Exporter"]

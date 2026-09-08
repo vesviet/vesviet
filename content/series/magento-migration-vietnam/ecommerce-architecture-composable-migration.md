@@ -164,8 +164,8 @@ Avoiding application-level double writing prevents database drift, dual-phase co
 
 ```mermaid
 graph TD
-    subgraph Monolith Legacy
-        APP["Monolith App"] -->|"Write Data"| DB["("Legacy DB MySQL/PG")"]
+    subgraph Monolith_Legacy ["Monolith Legacy"]
+        APP["Monolith App"] -->|"Write Data"| DB["(Legacy DB MySQL/PG)"]
     end
     
     subgraph CDC & Event Streaming
@@ -173,11 +173,11 @@ graph TD
         DEB -->|"Publish Event"| KAFKA["Kafka Event Bus"]
     end
     
-    subgraph Composable Services
+    subgraph Composable_Services ["Composable Services"]
         KAFKA -->|"Consume"| OS["Order Service"]
         KAFKA -->|"Consume"| INV["Inventory Service"]
-        OS --> O_DB["("New Order DB")"]
-        INV --> I_DB["("New Inventory DB")"]
+        OS --> O_DB["(New Order DB)"]
+        INV --> I_DB["(New Inventory DB)"]
     end
 ```
 
@@ -191,24 +191,24 @@ Transitioning a high-volume monolithic e-commerce application to composable micr
 graph TD
     Client["User Client"] -->|"HTTP Requests"| Gateway["Ingress Gateway / Envoy"]
     
-    subgraph Route Evaluation
-        Gateway -->|/api/v1/cart/*<br/>("Migrated")| CartCluster["Composable Cart Service"]
-        Gateway -->|/api/v1/catalog/*<br/>("Migrated")| CatalogCluster["Composable Catalog Service"]
-        Gateway -->|/*<br/>("Legacy Default")| MonoCluster["Monolith Legacy Cluster"]
+    subgraph Route_Evaluation ["Route Evaluation"]
+        Gateway -->|"/api/v1/cart/*<br/>(Migrated)"| CartCluster["Composable Cart Service"]
+        Gateway -->|"/api/v1/catalog/*<br/>(Migrated)"| CatalogCluster["Composable Catalog Service"]
+        Gateway -->|"/*<br/>(Legacy Default)"| MonoCluster["Monolith Legacy Cluster"]
     end
 
-    subgraph Composable Layer
-        CartCluster -->|"1. Write"| NewCartDB["("New Cart DB")"]
-        CatalogCluster -->|"Read/Write"| NewCatalogDB["("New Catalog DB")"]
+    subgraph Composable_Layer ["Composable Layer"]
+        CartCluster -->|"1. Write"| NewCartDB["(New Cart DB)"]
+        CatalogCluster -->|"Read/Write"| NewCatalogDB["(New Catalog DB)"]
     end
 
-    subgraph Legacy Layer
-        MonoCluster -->|"Write"| LegacyDB["("Legacy DB")"]
+    subgraph Legacy_Layer ["Legacy Layer"]
+        MonoCluster -->|"Write"| LegacyDB["(Legacy DB)"]
     end
 
-    subgraph CDC Data Synchronization
+    subgraph CDC_Data_Synchronization ["CDC Data Synchronization"]
         NewCartDB -.->|"2. Capture Binlogs"| CDC["Debezium CDC"]
-        CDC -->|"3. Publish"| Kafka["[Kafka Event Bus"]]
+        CDC -->|"3. Publish"| Kafka["Kafka Event Bus"]
         Kafka -->|"4. Consume"| SyncWorker["Go Sync Worker"]
         SyncWorker -.->|"5. Replicate"| LegacyDB
     end

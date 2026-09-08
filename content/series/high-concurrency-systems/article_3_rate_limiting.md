@@ -47,8 +47,8 @@ flowchart TD
     Client["Incoming Request"] --> Gateway["Go API Gateway Layer"]
     Gateway --> Lua["Execute Redis GCRA Lua Script"]
     Lua --> TAT{"Is TAT <= now + Emission Interval?"}
-    TAT -->|"Yes ("Allowed")"| ComputeTAT["Update TAT in Redis ZSET/Key"] --> Process["Forward Request to Microservice"]
-    TAT -->|"No ("Throttled")"| CalculateDelay["Calculate Exact Retry-After Delay"] --> Deny["Return HTTP 429 Too Many Requests"]
+    TAT -->|"Yes (Allowed)"| ComputeTAT["Update TAT in Redis ZSET/Key"] --> Process["Forward Request to Microservice"]
+    TAT -->|"No (Throttled)"| CalculateDelay["Calculate Exact Retry-After Delay"] --> Deny["Return HTTP 429 Too Many Requests"]
 ```
 
 ## 1. Why Local Rate Limiting Fails in Microservices
@@ -84,7 +84,7 @@ flowchart TD
     Start["Incoming Request at Time t"] --> GetTAT["Retrieve TAT from Redis"]
     GetTAT --> CheckNull{"TAT exists?"}
     CheckNull -->|"No"| InitTAT["Set TAT = t"]
-    CheckNull -->|"Yes"| CalculateNewTAT["Calculate NewTAT = max("t, TAT") + EmissionInterval"]
+    CheckNull -->|"Yes"| CalculateNewTAT["Calculate NewTAT = max(t, TAT) + EmissionInterval"]
     InitTAT --> Allow["Allow Request & Set Redis Key = TAT + EmissionInterval"]
     CalculateNewTAT --> CheckLimit{"NewTAT - t > BurstTolerance"}
     CheckLimit -->|"Yes"| Reject["Reject Request - 429 Too Many Requests"]

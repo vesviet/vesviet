@@ -50,13 +50,13 @@ AI blurs traditional SDLC boundaries by unifying code writing, unit testing, and
 
 ```mermaid
 graph TD
-    subgraph Traditional Sequential SDLC("Siloed & Delayed")
+    subgraph Traditional_Sequential_SDLC_Siloed_Delayed ["Traditional Sequential SDLC (Siloed & Delayed)"]
         Requirements1["Requirements BA"] --> Coding1["Manual Coding Dev"]
         Coding1 --> QA1["Manual Testing QA: 3 Day Delay"]
         QA1 --> DevOps1["Manual Deployment Ops"]
     end
 
-    subgraph AI-Native Continuous Quality Loop("Instant & Unified")
+    subgraph AI_Native_Continuous_Quality_Loop_Instant_Unified ["AI-Native Continuous Quality Loop (Instant & Unified)"]
         FeatureSpec["Feature Specification"] --> AICore["AI Agent Orchestrator"]
         
         AICore --> CodeGen["Feature Code Generation"]

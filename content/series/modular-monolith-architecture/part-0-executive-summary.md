@@ -73,7 +73,7 @@ The architectural comparison below illustrates the structural shift from a high-
 
 ```mermaid
 graph TD
-    subgraph Serverless Architecture ("Old")
+    subgraph Serverless_Architecture_Old ["Serverless Architecture (Old)"]
         SF["AWS Step Functions"] -->|"Orchestrate"| L1["AWS Lambda: Audio Ingest"]
         SF -->|"Orchestrate"| L2["AWS Lambda: Video Ingest"]
         SF -->|"Orchestrate"| L3["AWS Lambda: Aggregator"]
@@ -81,7 +81,7 @@ graph TD
         L2 -->|"Write Video Frames"| S3
         S3 -->|"Read Video Frames"| L3
     end
-    subgraph Monolithic Architecture ("New")
+    subgraph Monolithic_Architecture_New ["Monolithic Architecture (New)"]
         ECS["Amazon ECS/EC2 Container"]
         ECS -->|"In-Memory Audio/Video Processing"| ECS
         ECS -->|"Direct Memory Sharing"| RAM[("In-Memory Buffer")]

@@ -42,13 +42,13 @@ The junior paradox is resolved by using AI tools as interactive tutors, guiding 
 
 ```mermaid
 graph TD
-    subgraph Traditional Junior Path("3 Years of Syntax Trial & Error")
+    subgraph Traditional_Junior_Path_3_Years_of_Syntax_Trial_Error ["Traditional Junior Path (3 Years of Syntax Trial & Error)"]
         J1["Junior Dev"] --> Task1["Write Manual CRUD Syntax"]
         Task1 --> Task2["Manual Debugging & StackOverflow"]
         Task2 --> Mid1["Slow Mid-Level Transition"]
     end
 
-    subgraph AI-Accelerated Mentorship Path ("1 Year Socratic Growth")
+    subgraph AI_Accelerated_Mentorship_Path_1_Year_Socratic_Growth ["AI-Accelerated Mentorship Path (1 Year Socratic Growth)"]
         J2["AI-Native Junior Engineer"] --> AITool["AI Pair Programmer & Code Reviewer"]
         AITool --> Socratic["Socratic Code Review: Explain AST & Memory Trade-offs"]
         Socratic --> SystemDesign["Early Exposure to Distributed System Boundaries"]

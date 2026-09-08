@@ -56,7 +56,7 @@ The state diagram traces the pipeline lifecycle from hardware boot through scrap
 ```mermaid
 stateDiagram-v2
     [*] --> IDLE
-    IDLE --> WAKING: Scheduled trigger (03:00 AM)
+    IDLE --> WAKING: Scheduled trigger (03h00 AM)
     WAKING --> FETCHING: Worker heartbeat confirmed
     FETCHING --> DEDUPLICATING: Scraper swarm complete
     DEDUPLICATING --> SCORING: New items identified

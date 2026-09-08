@@ -65,8 +65,8 @@ flowchart LR
         L0["Licensing: $0 (Open Source)"]
         AWS2["K8s Compute: $14k/yr"]
     end
-    MonolithCosts -->|$260k/yr Total| MonolithCosts
-    ComposableCosts -->|$14k/yr Total (94% Cost Reduction)| ComposableCosts
+    MonolithCosts -->|"$260k/yr Total"| MonolithCosts
+    ComposableCosts -->|"$14k/yr Total (94% Cost Reduction)"| ComposableCosts
 ```
 
 ---

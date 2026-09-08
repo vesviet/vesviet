@@ -77,11 +77,11 @@ If your database server has 8 CPU cores, and you establish 1,000 active connecti
 
 ```mermaid
 graph TD
-    subgraph "High Connection Clutter ("1,000 Connections")"
+    subgraph High_Connection_Clutter__1_000_Connections ["High Connection Clutter  (1,000 Connections)"]
         CPU_Overload["8 CPU Cores"] -->|"80% CPU wasted"| ContextSwitch["OS Context Switching & Process Scheduling"]
         CPU_Overload -->|"20% CPU used"| QueryExecution["Actual SQL Query Execution"]
     end
-    subgraph "Optimized Sizing ("Connections matched to Hardware")"
+    subgraph Optimized_Sizing__Connections_matched_to_Hardware ["Optimized Sizing  (Connections matched to Hardware)"]
         CPU_Optimized["8 CPU Cores"] -->|"5% CPU wasted"| ContextSwitch_Opt["Minimal Scheduling Overhead"]
         CPU_Optimized -->|"95% CPU used"| QueryExecution_Opt["High-Throughput SQL Execution"]
     end

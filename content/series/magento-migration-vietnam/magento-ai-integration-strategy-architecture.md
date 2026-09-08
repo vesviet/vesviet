@@ -89,14 +89,14 @@ The decoupled architecture consists of three components:
 
 ```mermaid
 graph LR
-    subgraph Transactional Core
-        A["("Magento MySQL")"]
+    subgraph Transactional_Core ["Transactional Core"]
+        A["(Magento MySQL)"]
     end
     
-    subgraph Async Pipeline
+    subgraph Async_Pipeline ["Async Pipeline"]
         A -->|"Debezium CDC"| B["Kafka Broker"]
         B --> C["AI Sync Service"]
-        C -->|"Embeddings"| D["("Vector DB")"]
+        C -->|"Embeddings"| D["(Vector DB)"]
     end
     
     subgraph Storefront

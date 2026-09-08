@@ -39,14 +39,14 @@ AI speeds up syntax generation, but system productivity remains bounded by code 
 
 ```mermaid
 graph LR
-    subgraph Naive AI Deployment ("The 10x Myth")
+    subgraph Naive_AI_Deployment_The_10x_Myth ["Naive AI Deployment (The 10x Myth)"]
         A1["Fast AI Code Generation: +300%"] --> B1["Massive Code Volume Flood"]
         B1 --> C1["Code Review Bottleneck: -50% Speed"]
         C1 --> D1["Subtle Bug & Hallucination Injections"]
         D1 --> E1["Production Hotfix Cycles: Net +25% Speed"]
     end
 
-    subgraph Engineered AI Deployment ("Empirical Reality")
+    subgraph Engineered_AI_Deployment_Empirical_Reality ["Engineered AI Deployment (Empirical Reality)"]
         A2["Context-Framed AI Generation"] --> B2["Automated AST & Test Verification"]
         B2 --> C2["Streamlined Micro-PR Reviews"]
         C2 --> D2["Continuous Evals & Guardrails"]

@@ -82,7 +82,7 @@ graph TD
     Sat2 -.->|Blocked LOS| TowerA
     Sat3 -->|Specular Reflection| TowerB
     TowerB -->|Delayed Path +120m| Truck
-    Truck -.->|Drifted False Fix (HDOP > 4.5)| River
+    Truck -.->|"Drifted False Fix (HDOP > 4.5)"| River
 
     style River fill:#7bf,stroke:#333
     style Truck fill:#f96,stroke:#333
@@ -170,7 +170,7 @@ graph TB
     Z3 -. "Emission" .-> R3B
 
     R1A ==>|High Transition Prob| R2A
-    R1A -.->|Low Transition Prob (Bridge Gap)| R2B
+    R1A -.->|"Low Transition Prob (Bridge Gap)"| R2B
     R1B -.-> R2A
     R1B -.-> R2B
 
@@ -444,13 +444,13 @@ flowchart LR
         LiveMap["Real-Time Dispatch Map"]
     end
 
-    TruckA -->|MQTT / TLS 8883| Broker
-    TruckB -->|MQTT / TLS 8883| Broker
+    TruckA -->|"MQTT / TLS 8883"| Broker
+    TruckB -->|"MQTT / TLS 8883"| Broker
     Broker --> Partition
     Partition --> W1
     Partition --> W2
     W1 <--> StateStore
-    W1 -->|Sliding Batch (30 pts)| OSRM
+    W1 -->|"Sliding Batch (30 pts)"| OSRM
     W2 -->|Daily Batch| GH
     OSRM --> CleanTopic
     CleanTopic --> Billing

@@ -37,10 +37,10 @@ In GenAI and RAG engineering, responses are non-deterministic. A minor adjustmen
 
 ```mermaid
 graph TD
-    GitPush["Developer Git Push / PR"] --> CI Pipeline["GitHub Actions CI Pipeline"]
+    GitPush["Developer Git Push / PR"] --> CI_Pipeline["GitHub Actions CI_Pipeline"]
     
-    subgraph Automated Evaluation Suite
-        CI Pipeline --> Dataset["Load Golden Evaluation Dataset"]
+    subgraph Automated_Evaluation_Suite ["Automated Evaluation Suite"]
+        CI_Pipeline --> Dataset["Load Golden Evaluation Dataset"]
         Dataset --> RunRAG["Execute GraphRAG Pipeline on Test Queries"]
         RunRAG --> RagasEngine["Ragas LLM-as-a-Judge Scoring Engine"]
         
@@ -53,8 +53,8 @@ graph TD
     Metric2 --> Check
     Metric3 --> Check
 
-    Check -->|"Pass ("Faithfulness >= 0.85")"| Merge["Approve Pull Request & Deploy"]
-    Check -->|"Fail ("Faithfulness < 0.85")"| Block["Block CI Build & Notify Developer"]
+    Check -->|"Pass (Faithfulness >= 0.85)"| Merge["Approve Pull Request & Deploy"]
+    Check -->|"Fail (Faithfulness < 0.85)"| Block["Block CI Build & Notify Developer"]
 ```
 
 ### Tri-Metric Evaluation Mechanics

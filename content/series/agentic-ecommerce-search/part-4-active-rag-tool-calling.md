@@ -43,7 +43,7 @@ The architectural boundaries between Passive RAG and Active RAG are defined as f
 
 ```mermaid
 graph TD
-    subgraph Passive["Passive RAG ("Static - Unidirectional")"]
+    subgraph Passive ["Passive RAG (Static - Unidirectional)"]
         direction LR
         Q1["Query"] --> VS["Vector Search"]
         VS --> CQ["Context + Query"]
@@ -51,7 +51,7 @@ graph TD
         LLM1 --> R1["Response"]
     end
 
-    subgraph Active["Active RAG ("Dynamic - Cyclic Loop")"]
+    subgraph Active ["Active RAG (Dynamic - Cyclic Loop)"]
         direction LR
         Q2["Query"] --> LLM2["LLM Reasoning"]
         LLM2 -->|"Decides to call Tool"| API["Execute Go API"]

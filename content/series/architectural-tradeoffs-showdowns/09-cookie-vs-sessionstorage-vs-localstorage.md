@@ -78,12 +78,12 @@ flowchart TD
 
         DOM1 <-->|Exclusive Tab Access| SS1
         DOM2 <-->|Exclusive Tab Access| SS2
-        DOM1 <-->|Sync Blocking I/O| LS
-        DOM2 <-->|Sync Blocking I/O| LS
+        DOM1 <-->|"Sync Blocking I/O"| LS
+        DOM2 <-->|"Sync Blocking I/O"| LS
         DOM1 <-->|Async Non-Blocking| IDB
         DOM2 <-->|Async Non-Blocking| IDB
-        DOM1 -.->|JS Read/Write (if !HttpOnly)| CK
-        DOM2 -.->|JS Read/Write (if !HttpOnly)| CK
+        DOM1 -.->|"JS Read/Write (if !HttpOnly)"| CK
+        DOM2 -.->|"JS Read/Write (if !HttpOnly)"| CK
     end
 
     subgraph NetworkEdge ["Transport & Cloudflare Edge Layer"]
@@ -93,8 +93,8 @@ flowchart TD
     end
 
     CK ==>|AUTOMATICALLY injected into EVERY request| HTTPHeader --> EdgeWorker --> OriginAPI
-    LS -.x|ZERO network overhead (Client-Only)| HTTPHeader
-    SS1 -.x|ZERO network overhead (Client-Only)| HTTPHeader
+    LS -.->|"ZERO network overhead (Client-Only)"| HTTPHeader
+    SS1 -.->|"ZERO network overhead (Client-Only)"| HTTPHeader
 ```
 
 ---
@@ -316,11 +316,11 @@ sequenceDiagram
     User->>Edge: POST /api/auth/login (username, password)
     Edge->>IdP: Authenticate Credentials
     IdP-->>Edge: Return Refresh Token (Long-Lived) + Access Token (JWT 15m)
-    Edge-->>User: Set-Cookie: __Host-RefreshToken=XYZ...; HttpOnly; Secure; SameSite=Strict; Path=/api/auth<br/>Response Body: { accessToken: "eyJ...", expiresIn: 900 }
+    Edge-->>User: Set-Cookie: __Host-RefreshToken=XYZ..., HttpOnly, Secure, SameSite=Strict, Path=/api/auth - Response Body: { accessToken: "eyJ...", expiresIn: 900 }
     Note over User: Access Token stored ONLY in JS Memory (Closure Variable)
 
     Note over User,API: Subsequent API Request Flow
-    User->>Edge: GET /api/v1/orders (Authorization: Bearer <MemoryToken>)
+    User->>Edge: GET /api/v1/orders (Authorization: Bearer [MemoryToken])
     Edge->>API: Forward Authorized Request
     API-->>Edge: Order Data JSON
     Edge-->>User: 200 OK (Data)
@@ -329,7 +329,7 @@ sequenceDiagram
     User->>Edge: POST /api/auth/refresh (Cookie automatically included)
     Edge->>IdP: Rotate Refresh Token
     IdP-->>Edge: New Refresh Token + New Access Token
-    Edge-->>User: Set-Cookie: New Refresh Token<br/>Response Body: { accessToken: "eyJ..." }
+    Edge-->>User: Set-Cookie: New Refresh Token - Response Body: { accessToken: "eyJ..." }
 ```
 
 ### Production Edge Worker Implementation (TypeScript)

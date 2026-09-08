@@ -49,7 +49,7 @@ graph TD
     UserClient["Human User / Web App"] --> Gateway["API & Gateway Security Plane"]
     AgentClient["Autonomous AI Agent / MCP Client"] --> Gateway
 
-    subgraph AI-Native Bounded Contexts ("DDD")
+    subgraph AI_Native_Bounded_Contexts_DDD ["AI-Native Bounded Contexts (DDD)"]
         Gateway --> BillingService["Billing Context: gRPC + MCP Server"]
         Gateway --> InventoryService["Inventory Context: gRPC + MCP Server"]
         Gateway --> UserContext["User Profile Context: gRPC + MCP Server"]

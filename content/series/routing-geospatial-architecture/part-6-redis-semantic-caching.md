@@ -49,9 +49,9 @@ flowchart TD
     Req["Incoming Distance Matrix Pair"] --> H3["Calculate H3 Resolution 8 Keys"]
     H3 --> CacheKey["Format Key: route:v2:{h3_origin}:{h3_dest}"]
     CacheKey --> Redis{"Check Redis MGET Pipeline"}
-    Redis -->|"Cache Hit ("< 2ms")"| Return["Return Cached Distance & Travel Time"]
+    Redis -->|"Cache Hit (< 2ms)"| Return["Return Cached Distance & Travel Time"]
     Redis -->|"Cache Miss"| XFetch{"Is TTL Near Expiry?"}
-    XFetch -->|"Yes ("Probabilistic")"| BGCompute["Trigger Asynchronous Background GraphHopper Query"]
+    XFetch -->|"Yes (Probabilistic)"| BGCompute["Trigger Asynchronous Background GraphHopper Query"]
     XFetch -->|"No"| DirectCompute["Compute GraphHopper Route & SETEX Redis"]
     BGCompute --> Return
     DirectCompute --> Return

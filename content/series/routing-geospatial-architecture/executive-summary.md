@@ -53,22 +53,22 @@ The system decouples high-concurrency API requests using a Golang Gateway that i
 flowchart TB
     Client["Mobile App / Dispatcher"]
     
-    subgraph "API Gateway Layer ("Golang")"
+    subgraph API_Gateway_Layer__Golang ["API Gateway Layer  (Golang)"]
         GoRouter["Go Routing API"]
         H3Index["Uber H3 Geospatial Indexer"]
     end
     
-    subgraph "Caching Layer"
+    subgraph Caching_Layer ["Caching Layer"]
         Redis[("Redis Semantic Cache")]
     end
     
-    subgraph "Routing Engine Layer ("Java")"
+    subgraph Routing_Engine_Layer__Java ["Routing Engine Layer  (Java)"]
         GH["Graphhopper Engine"]
         CH["Contraction Hierarchies"]
         MapMatcher["HMM Map Matcher"]
     end
     
-    subgraph "Data Storage"
+    subgraph Data_Storage ["Data Storage"]
         OSM[("OpenStreetMap Data")]
         Traffic[("Live Traffic Feed")]
     end
@@ -77,7 +77,7 @@ flowchart TB
     Client -->|"HTTP/gRPC Matrix Request"| GoRouter
     GoRouter -->|"Check proximity"| H3Index
     GoRouter -->|"1. Cache hit?"| Redis
-    GoRouter -->|"2. Cache miss ("Matrix Req")"| GH
+    GoRouter -->|"2. Cache miss (Matrix Req)"| GH
     
     GH -->|"Load Topology"| OSM
     GH -->|"Update Weights"| Traffic

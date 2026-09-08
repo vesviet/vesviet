@@ -46,21 +46,21 @@ The **Generative UI Migration Playbook** applies the proven **Strangler Fig Appl
 
 ```mermaid
 graph TD
-    subgraph Phase 1: Audit & Selection ("Weeks 1-2")
+    subgraph Phase_1 ["Phase 1: Audit & Selection  (Weeks 1-2)"]
         P1["Audit React Component Tree"] --> SelectCandidates["Select Candidate Components: Charts, Tables, Forms"]
     end
 
-    subgraph Phase 2: Schema Registration ("Weeks 3-4")
+    subgraph Phase_2 ["Phase 2: Schema Registration  (Weeks 3-4)"]
         SelectCandidates --> ExtractTS["Extract TypeScript Prop Interfaces"]
         ExtractTS --> CreateRegistry["Build Client Component Registry & Zod Schemas"]
     end
 
-    subgraph Phase 3: Edge Streaming Route ("Weeks 5-6")
+    subgraph Phase_3 ["Phase 3: Edge Streaming Route  (Weeks 5-6)"]
         CreateRegistry --> DeployEdge["Deploy Edge SSE Stream Router"]
         DeployEdge --> SecSanitizer["Integrate Prop Sanitizer & Security Guards"]
     end
 
-    subgraph Phase 4: Incremental Rollout ("Weeks 7-8")
+    subgraph Phase_4 ["Phase 4: Incremental Rollout  (Weeks 7-8)"]
         SecSanitizer --> FeatureFlag["Enable Feature Flag for 10% User Traffic"]
         FeatureFlag --> FullGenUI["100% Generative UI Production Rollout"]
     end

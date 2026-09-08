@@ -1030,8 +1030,8 @@ flowchart TD
     Producer["Kafka Java Producer (acks=all)"] --> Leader["Partition Leader Broker"]
     Leader -->|"KRaft Log Replication"| Replica1["ISR Replica Broker 1"]
     Leader -->|"KRaft Log Replication"| Replica2["ISR Replica Broker 2"]
-    Replica1 & Replica2 -->> Leader: ACK Replicated
-    Leader -->> Producer: Batch Write Confirmed
+    Replica1 & Replica2 -->|"ACK Replicated"| Leader
+    Leader -->|"Batch Write Confirmed"| Producer
 ```
 
 The Java class definition below configures resilient client connections with exponential backoff retries:

@@ -44,12 +44,12 @@ graph TD
     subgraph Enterprise Zero-Trust Governance Pipeline
         CorpGateway --> PIIScanner["1. PII & Secret Redaction Engine"]
         PIIScanner --> PolicyEngine["2. Policy-as-Code & Entitlement Filter"]
-        PolicyEngine --> ZDRHeader["3. Zero Data Retention ("ZDR") Enforcer"]
+        PolicyEngine --> ZDRHeader["3. Zero Data Retention (ZDR) Enforcer"]
     end
 
     ZDRHeader --> VendorAPI["Frontier LLM Vendor: OpenAI / Anthropic / Azure"]
     
-    CorpGateway -. "Async Encrypted Audit Trace" .-> SecurityVault[("("Immutable SOC2 Audit Log Vault")")]
+    CorpGateway -. "Async Encrypted Audit Trace" .-> SecurityVault[("Immutable SOC2 Audit Log Vault")]
 
     VendorAPI -->|"Processed Response"| CorpGateway
     CorpGateway --> UserDev

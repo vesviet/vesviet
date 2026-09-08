@@ -182,7 +182,7 @@ The diagram below contrasts HTTP/2 TCP multiplexing with HTTP/3 QUIC UDP stream 
 
 ```mermaid
 graph LR
-    subgraph h2["HTTP/2 — TCP ("Head-of-Line Blocking")"]
+    subgraph h2 ["HTTP/2 — TCP (Head-of-Line Blocking)"]
         direction LR
         C1["Client"] -->|"Single TCP Connection"| M1["Multiplexer"]
         M1 --> S1a["Stream 1"]
@@ -191,9 +191,9 @@ graph LR
         LOSS1["❌ Packet Loss"] -.->|"Blocks ALL streams"| M1
     end
 
-    subgraph h3["HTTP/3 — QUIC/UDP ("Independent Streams")"]
+    subgraph h3 ["HTTP/3 — QUIC/UDP (Independent Streams)"]
         direction LR
-        C2["Client"] -->|"QUIC Streams ("'UDP'")"| S2a["Stream 1"]
+        C2["Client"] -->|"QUIC Streams ('UDP')"| S2a["Stream 1"]
         C2 --> S2b["Stream 2"]
         C2 --> S2c["Stream 3"]
         LOSS2["❌ Packet Loss"] -.->|"Blocks ONLY Stream 2"| S2b

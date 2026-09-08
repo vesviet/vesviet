@@ -70,12 +70,12 @@ weight: 4
 
 ```mermaid
 graph TD
-    Root["Root Node ["50 | 100"]"] --> L1["Internal ["10 | 30"]"]
-    Root --> L2["Internal ["60 | 80"]"]
-    Root --> L3["Internal ["110 | 150"]"]
-    L1 --> Leaf1["Leaf ["1,5,8,10"] →"]
-    L1 --> Leaf2["Leaf ["15,20,25,30"] →"]
-    L2 --> Leaf3["Leaf ["55,60,65,70"] →"]
+    Root["Root Node (50 / 100)"] --> L1["Internal (10 / 30)"]
+    Root --> L2["Internal (60 / 80)"]
+    Root --> L3["Internal (110 / 150)"]
+    L1 --> Leaf1["Leaf (1,5,8,10) →"]
+    L1 --> Leaf2["Leaf (15,20,25,30) →"]
+    L2 --> Leaf3["Leaf (55,60,65,70) →"]
 
     style Root fill:#cce5ff,stroke:#004085
     style Leaf1 fill:#d4edda,stroke:#28a745
@@ -94,10 +94,10 @@ Writes go to an in-memory **MemTable** first (sorted), flushed to immutable **SS
 
 ```mermaid
 graph LR
-    Write["Write"] --> MT["MemTable\n("In-Memory, Sorted")"]
-    MT -->|"Flush when full"| L0["L0 SSTables\n("unsorted, overlapping")"]
-    L0 -->|"Compaction"| L1["L1 SSTables\n("sorted, non-overlapping")"]
-    L1 -->|"Compaction"| L2["L2 SSTables\n("10x larger")"]
+    Write["Write"] --> MT["MemTable\n(In-Memory, Sorted)"]
+    MT -->|"Flush when full"| L0["L0 SSTables\n(unsorted, overlapping)"]
+    L0 -->|"Compaction"| L1["L1 SSTables\n(sorted, non-overlapping)"]
+    L1 -->|"Compaction"| L2["L2 SSTables\n(10x larger)"]
     Read["Read"] --> MT
     Read --> L0
     Read --> L1

@@ -71,14 +71,14 @@ weight: 5
 
 ```mermaid
 graph LR
-    subgraph traditional["Traditional I/O ("4 copies, 4 context switches")"]
+    subgraph traditional ["Traditional I/O (4 copies, 4 context switches)"]
         D1["Disk"] -->|"DMA copy"| KC1["Kernel Page Cache"]
         KC1 -->|"CPU copy"| US1["User Buffer"]
         US1 -->|"CPU copy"| SK1["Socket Buffer"]
         SK1 -->|"DMA copy"| NIC1["NIC"]
     end
 
-    subgraph zerocopy["Zero-Copy sendfile(") (2 DMA copies, 0 CPU copies")"]
+    subgraph zerocopy ["Zero-Copy sendfile() (2 DMA copies, 0 CPU copies)"]
         D2["Disk"] -->|"DMA copy"| KC2["Kernel Page Cache"]
         KC2 -->|"DMA scatter-gather"| NIC2["NIC"]
     end

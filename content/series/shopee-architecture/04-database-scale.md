@@ -58,10 +58,10 @@ The architectural diagram below illustrates the separation of TiDB stateless SQL
 
 ```mermaid
 graph TD
-    App["Shopee Backend"] -->|"Standard MySQL Protocol"| TiDB["TiDB Server<br/>("Stateless SQL Engine")"]
+    App["Shopee Backend"] -->|"Standard MySQL Protocol"| TiDB["TiDB Server<br/>(Stateless SQL Engine)"]
     App -->|"MySQL Protocol"| TiDB2["TiDB Server 2"]
     
-    subgraph "TiDB Cluster ("NewSQL")"
+    subgraph TiDB_Cluster__NewSQL ["TiDB Cluster  (NewSQL)"]
         TiDB --> PD["Placement Driver<br/>Routing & Metadata"]
         TiDB2 --> PD
         

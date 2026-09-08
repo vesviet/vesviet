@@ -52,7 +52,7 @@ graph TD
     
     subgraph Generative UI Stream Server
         LLMServer --> SchemaValidator["1. Component JSON Schema Validator"]
-        SchemaValidator --> SSEEncoder["2. Server-Sent Events ("SSE") Streamer"]
+        SchemaValidator --> SSEEncoder["2. Server-Sent Events (SSE) Streamer"]
     end
 
     SSEEncoder -->|"event: component_stream payload: JSON Props"| ClientApp["Client React / Next.js Web App"]
