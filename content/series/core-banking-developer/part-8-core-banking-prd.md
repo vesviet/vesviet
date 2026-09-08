@@ -1,277 +1,113 @@
 ---
 title: "Writing a Core Banking PRD: Developer & PM Handbook"
-date: "2026-05-27T07:10:00+07:00"
-lastmod: "2026-06-10T16:00:00+07:00"
+slug: "part-8-core-banking-prd"
+date: "2026-05-06T18:00:00+07:00"
+lastmod: "2027-03-30T09:00:00+07:00"
 draft: false
-description: "How to write a Core Banking PRD: structuring business rules, accounting logic, and distributed systems requirements for product managers and developers."
+description: "How to write a production-grade Core Banking PRD: double-entry invariants, Maker-Checker authorization, End-of-Day batch processing, and Five Nines SRE requirements."
 weight: 9
-ShowToc: true
-TocOpen: true
+categories: ["FinTech", "Product Management", "Architecture"]
+tags: ["PRD", "Core Banking", "Fintech", "Product Management", "SRE", "EOD Batch"]
 cover:
-  image: "/images/posts/banking-microservices-cover-13.jpg"
+  image: "/images/posts/part-8-core-banking-prd.jpg"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-developer/part-8-core-banking-prd/"
+ShowToc: true
+TocOpen: true
 mermaid: true
 series: ["core-banking-developer"]
 ---
 
-
-> **Answer-first:** Writing an enterprise core banking Product Requirements Document (PRD) requires specifying double-entry journal rules, strict balance validation, ACID transaction atomicity, maker-checker dual authorization, and End-of-Day batch pipelines. Defining non-functional SLAs (99.999% uptime, 5-minute RTO, sub-100ms API latency) and ISO message schemas ensures financial consistency and compliance with banking audit standards.
-
-> **Prerequisite:** [Part 7: Build a Mini Core Banking System in Go](/series/core-banking-developer/part-7-build-mini-core-banking/) on core ledger code.
-
-In Core Banking System (CBS) engineering, the Product Requirements Document (PRD) differs fundamental from standard consumer SaaS specifications. While SaaS PRDs prioritize front-end user experience, growth metrics, and rapid feature iteration, a Core Banking PRD establishes non-negotiable standards for **financial integrity, transactional consistency, auditability, and regulatory compliance**.
-
-An ambiguous core banking requirement does not merely degrade user experience; it causes General Ledger imbalances, regulatory fines, and millions of dollars in direct financial loss. This handbook provides an industry-standard template for structuring Core Banking PRDs across critical domain modules, including Customer Information Files (CIF), Current and Savings Accounts (CASA), and the General Ledger (GL).
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/core-banking-developer/part-8-core-banking-prd/)
 
 ---
 
-## 1. Why Core Banking PRDs Are Different
+> **Prerequisite:** Read [Part 7: Build a Mini Core Banking System](/series/core-banking-developer/part-7-build-mini-core-banking/) for ledger engine mechanics.
 
-> **Answer-first:** Core banking PRDs differ from standard web specs by requiring explicit accounting journal rules, ACID transaction isolation, and regulatory compliance.
+# Writing a Core Banking PRD: Developer & PM Handbook
 
-A Core Banking System serves as the definitive financial system of record for a banking institution. Product Managers (PMs) and Business Analysts (BAs) must design specifications with a distributed systems engineering discipline.
-
-The reference table below contrasts core architectural differences between conventional SaaS PRDs and Core Banking PRDs.
-
-| SaaS PRD | Core Banking PRD |
-| :--- | :--- |
-| **Focus:** User growth, engagement, UI/UX, and fast onboarding. | **Focus:** Data integrity, transaction atomicity, ledger balance, and auditing. |
-| **Design:** Optimistic UI, eventual consistency, simple API contracts. | **Design:** Strong consistency, ACID properties, double-entry bookkeeping, strict state machines. |
-| **Failures:** Annoying to users, minor bugs can be hotfixed. | **Failures:** Catastrophic (unbalanced GL, double-spend, compliance breaches). |
+**Answer-first:** Writing an enterprise Core Banking Product Requirements Document (PRD) requires defining explicit mathematical balance invariants ($\sum \text{Debits} = \sum \text{Credits}$), cryptographic audit trail specifications, Maker-Checker dual authorization matrices, and End-of-Day (EOD) batch processing SLAs. Codifying non-functional availability constraints (Five Nines 99.999%, RPO = 0, RTO < 30s) and ISO 20022 message mappings ensures seamless alignment between product managers, software architects, compliance officers, and regulatory central bank auditors.
 
 ---
 
-## 2. Core Banking PRD Structure
+## 1. Core Banking PRD Architectural Specification Framework
 
-**Answer-first:** A complete core banking PRD structures Functional Scope, Accounting Entries, Exception Flows, Non-Functional Requirements, and Audit Controls.
-
-A production-grade Core Banking PRD must be partitioned into discrete, independently testable sections:
-
-### Section A: Domain & Scope Definition
-Every core module (CIF, CASA, GL, Loans, payments) requires explicit functional boundary definitions:
-- **In-Scope Modules:** E.g., "This PRD defines current account creation, maintenance fee accruals, and monthly interest posting rules."
-- **Out-of-Scope Modules:** E.g., "Card issuance, payment gateways, and foreign exchange (FX) settlement are handled by dedicated peripheral microservices."
-
-### Section B: Customer Information File (CIF) & KYC
-The CIF serves as the party-master store for all customer relationship records:
-- **Party-Centric Model:** Maps static customer profile data (names, tax identifiers, corporate structures) to associated deposit and loan accounts.
-- **KYC/AML Lifecycle States:** `Prospect` $\rightarrow$ `Pending` $\rightarrow$ `Approved` $\rightarrow$ `Expired` $\rightarrow$ `Restricted`.
-- **Deduplication Logic:** Enforces strict multi-field matching (tax identification number, national identity card hash, biometric hashes) to block duplicate CIF generation.
-
-### Section C: Account Management (CASA)
-Current Accounts and Savings Accounts represent the primary liability engine of a bank:
-- **Account State Machine:** Defines transitions between `Active`, `Dormant`, `Frozen`, `Restricted`, and `Closed` statuses.
-- **Interest Engine Rules:** Specifies daily balance calculation conventions (e.g., Act/365 or Act/360) and distinguishes daily accruals from monthly journal postings.
-- **Overdraft (OD) Logic:** Validates all debit attempts against the **Available Balance** (Ledger Balance minus active Holds and pending auths) to eliminate Authorize Positive, Settle Negative (APSN) vulnerabilities.
-
-### Section D: Transaction Processing & Double-Entry Accounting
-Core banking ledger updates must adhere to double-entry bookkeeping invariants:
-- **Double-Entry Equality:** Every financial transaction must contain at least two entries: a **Debit** leg and a **Credit** leg, satisfying:
-  $$\sum \text{Debits} = \sum \text{Credits}$$
-- **Ledger Immutability:** Prohibits raw database SQL updates or deletes on historical transaction rows. Discrepancies must be corrected via offsetting Reversal entries.
-- **Idempotency Control:** Mandates client-supplied unique `Idempotency-Key` headers on all financial POST requests.
-
-### Section E: Maker-Checker (4-Eyes Principle)
-To mitigate insider threat risks and operational errors, high-value transfer executions and parameter updates require dual authorization.
-
-#### Maker-Checker Database Schema (PostgreSQL DDL)
-
-The PostgreSQL DDL specification below establishes a dedicated pending request queue table for maker-checker approval workflows.
-
-```sql
-CREATE TABLE maker_checker_requests (
-    id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    action_type   VARCHAR(50) NOT NULL, -- e.g., 'CREATE_CASA_ACCOUNT', 'APPROVE_LOAN'
-    payload       JSONB NOT NULL,       -- Complete JSON data for execution
-    maker_id      VARCHAR(50) NOT NULL,
-    status        VARCHAR(20) NOT NULL DEFAULT 'PENDING' CHECK (status IN ('PENDING', 'APPROVED', 'REJECTED')),
-    checker_id    VARCHAR(50),
-    rejection_reason TEXT,
-    created_at    TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at    TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
--- Indexing for quick queue lookups
-CREATE INDEX idx_maker_checker_pending ON maker_checker_requests(status) WHERE status = 'PENDING';
-```
-
-#### Go Implementation: Enforcing Segregation of Duties
-
-The Go service logic below demonstrates programmatically blocking self-approval by verifying that the approving user (checker) differs from the initiating user (maker).
-
-```go
-package prd
-
-import (
-	"context"
-	"database/sql"
-	"errors"
-	"fmt"
-)
-
-type ApprovalService struct {
-	db *sql.DB
-}
-
-// ApproveRequest processes the checker approval step of a maker-checker request
-func (s *ApprovalService) ApproveRequest(ctx context.Context, requestID string, checkerID string) error {
-	tx, err := s.db.BeginTx(ctx, nil)
-	if err != nil {
-		return err
-	}
-	defer tx.Rollback()
-
-	// 1. Fetch Request
-	var makerID string
-	var status string
-	query := "SELECT maker_id, status FROM maker_checker_requests WHERE id = $1 FOR UPDATE"
-	err = tx.QueryRowContext(ctx, query, requestID).Scan(&makerID, &status)
-	if err != nil {
-		return fmt.Errorf("failed to retrieve request: %w", err)
-	}
-
-	// 2. Validate current status
-	if status != "PENDING" {
-		return fmt.Errorf("request cannot be approved: current status is %s", status)
-	}
-
-	// 3. Enforce 4-Eyes Invariant (Segregation of Duties)
-	if makerID == checkerID {
-		return errors.New("security violation: checker cannot be the same user as the maker")
-	}
-
-	// 4. Update status and record checker
-	updateQuery := "UPDATE maker_checker_requests SET status = 'APPROVED', checker_id = $1, updated_at = NOW() WHERE id = $2"
-	_, err = tx.ExecContext(ctx, updateQuery, checkerID, requestID)
-	if err != nil {
-		return fmt.Errorf("failed to update request status: %w", err)
-	}
-
-	// Payload execution is performed within this atomic transaction boundary.
-
-	return tx.Commit()
-}
-```
-
-- **Queue-Based Centralized Approval:** Maker submits action $\rightarrow$ Payload is written to queue $\rightarrow$ Checker approves or rejects payload $\rightarrow$ Transaction executes.
-- **Segregation of Duties:** Software logic guarantees that a user acting as Maker cannot act as Checker for the same request.
-
-### Section F: Non-Functional Requirements (NFRs)
-NFRs in Core Banking PRDs specify quantitative system SLA targets:
-- **Availability:** 99.999% uptime SLA with a maximum Recovery Time Objective (RTO) of 5 minutes and Recovery Point Objective (RPO) of 0 seconds.
-- **Data Integrity:** Strict ACID database compliance for all ledger transactions.
-- **Performance:** Sustained throughput of 5,000 Transactions Per Second (TPS) with latency below 100ms at p99.
-- **Audit Trail:** Detailed before-and-after change capture for all data mutations and system configurations.
-
----
-
-## 3. End-of-Day (EOD) and Begin-of-Day (BOD) Batches
-
-Specifying EOD/BOD batches in PRDs requires defining interest accrual formulas, trial balance validation rules, and system lock schedules.
-
-Unlike stateless SaaS platforms, core banking systems process batch runs to finalize financial business dates. The PRD must map out the sequential EOD/BOD pipeline.
-
-The process flow diagram below details the End-of-Day batch processing pipeline stages leading to business date rollover.
+Unlike consumer application PRDs that emphasize UI mockups and user growth loops, a core banking PRD is a technical legal contract specifying accounting equations, concurrency locks, and failure recovery protocols:
 
 ```mermaid
-graph TD
-    A["Cut-off / EOTI: End of Transaction Input"] --> B["Interest & Fee Accruals"]
-    B --> C["Interest & Fee Posting"]
-    C --> D["Sub-ledger to General Ledger Reconciliation"]
-    D --> E["Trial Balance Validation"]
-    E --> F["Date Rollover / System Date Change"]
-    F --> G["BOD Initiation: Value-Dated Transactions"]
+flowchart TD
+    subgraph PRD_Framework ["Core Banking PRD Architectural Framework"]
+        Math["1. Mathematical & Accounting Invariants<br/>(GL Double-Entry Postings & Rounding Rules)"]
+        Security["2. Security & Maker-Checker Matrix<br/>(Dual Custody, RBAC, HSM & PIN Blocks)"]
+        Batch["3. End-of-Day (EOD) Batch Specifications<br/>(Interest Accrual, Cutoff & 3-Way Reconciliation)"]
+        SRE["4. SRE & Non-Functional Requirements<br/>(99.999% Uptime, RPO=0, Sub-50ms P99 Latency)"]
+    end
+
+    Math --> Security
+    Security --> Batch
+    Batch --> SRE
 ```
 
-### Key Considerations for Batch Processing:
-1. **System Business Date vs. Physical Date:** 24/7 online transaction channels post incoming requests to the new *System Business Date* while EOD batch processing runs against the prior date.
-2. **Batch Restartability:** If a batch step fails (e.g. database timeout), the job runner must resume from checkpoint saved states without re-applying financial postings.
-
 ---
 
-## 4. Integration Standards: ISO 8583 vs. ISO 20022
+## 2. End-of-Day (EOD) Batch Orchestration & Reconciliation Flow
 
-Integration sections in banking PRDs define message schemas for ISO 8583 card switches and ISO 20022 XML payment clearing networks.
+The End-of-Day batch processing pipeline represents the financial closing of the bank's operational day, executing sequenced ledger calculations before opening the next business date:
 
-A core banking PRD must specify message translation mappings between internal ledger payloads and external payment network standards:
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Scheduler as EOD Batch Orchestrator (Go / Temporal)
+    participant CoreDB as Core Banking Ledger DB
+    participant SwitchLog as External Switch Settlement Files
+    participant Recon as 3-Way Reconciliation Engine
+    participant GL as General Ledger Trial Balance
 
-- **ISO 8583 (Card Processing):** Compact binary/bitmap protocol optimized for high-volume POS and ATM network authorization.
-- **ISO 20022 (Modern Payments):** Rich XML/JSON schema supporting detailed remittance metadata for cross-border wires (SWIFT) and real-time payment networks (FedNow, SEPA).
+    Scheduler->>CoreDB: 1. Trigger Midnight Transaction Cutoff
+    Scheduler->>CoreDB: 2. Calculate Daily Interest Accruals (CASA & Lending)
+    Scheduler->>CoreDB: 3. Post System Maintenance Fees & Taxes
+    
+    Scheduler->>SwitchLog: 4. Ingest External Clearing Settlement Files (NAPAS / Visa)
+    Scheduler->>Recon: 5. Execute 3-Way Transaction Reconciliation
+    
+    alt Discrepancy Found (Un-reconciled Breaks)
+        Recon-->>Scheduler: Raise Accounting Exception Ticket (Manual Review)
+    else Perfect Reconciliation (0 Breaks)
+        Recon-->>Scheduler: Reconciliation 100% Verified
+    end
 
----
-
-## Summary Checklist for a Core Banking PRD
-
-The PRD summary checklist verifies accounting balance equations, error handling codes, idempotency keys, and security compliance requirements.
-
-When evaluating a Core Banking PRD specification, verify that all checklist items are satisfied:
-
-- [ ] **Ledger Rules:** Are double-entry balances ($\sum \text{Debits} = \sum \text{Credits}$) enforced prior to transaction commits?
-- [ ] **Balance Validation:** Are balance checks executed against *Available Balance* instead of raw *Ledger Balance*?
-- [ ] **Immutability:** Are SQL `UPDATE` and `DELETE` actions explicitly prohibited on ledger tables?
-- [ ] **Batch Recovery:** Does the EOD batch workflow support checkpoint resumption after failure?
-- [ ] **Maker-Checker Queue:** Is dual authorization modeled as a centralized database queue rather than simple boolean columns?
-- [ ] **Idempotency:** Are all financial endpoints guarded by mandatory client-side idempotency keys?
-
----
-
-## Non-Repudiation Security Framework
-
-Non-repudiation security frameworks mandate digital signatures and cryptographic audit logs for high-value financial transaction approvals.
-
-To prevent fraud disputes, the PRD mandates that high-value transfer requests carry an asymmetric cryptographic signature generated by the client's private key.
-
-The Go implementation below illustrates RSA PKCS#1 v1.5 signature verification for inbound financial payload authentication.
-
-```go
-package prd
-
-import (
-	"crypto"
-	"crypto/rsa"
-	"crypto/sha256"
-	"errors"
-)
-
-type SignatureVerifier struct {
-	PublicKey *rsa.PublicKey
-}
-
-func (sv *SignatureVerifier) Verify(payload []byte, signature []byte) error {
-	hashed := sha256.Sum256(payload)
-	err := rsa.VerifyPKCS1v15(sv.PublicKey, crypto.SHA256, hashed[:], signature)
-	if err != nil {
-		return errors.New("cryptographic validation failed: invalid signature payload")
-	}
-	return nil
-}
+    Scheduler->>GL: 6. Generate Trial Balance & Balance Sheet
+    GL-->>Scheduler: Trial Balance Confirmed: Assets == Liabilities + Equity
+    Scheduler->>CoreDB: 7. Advance System Date to Next Business Day (BOD)
 ```
 
-This security mechanism guarantees non-repudiation, ensuring that committed financial requests cannot be denied or altered post-execution.
+---
+
+## 3. Core Banking PRD Checklist & Engineering Contract
+
+Before engineering begins implementation on any core banking feature, the specification must satisfy this mandatory checklist:
+
+| Dimension | Mandatory Requirement in Banking PRD | Verification Mechanism |
+| :--- | :--- | :--- |
+| **Accounting Invariant** | Must document every affected GL account (Asset, Liability, Equity, Revenue, Expense) with exact Debit/Credit legs. | Invariant unit tests asserting $\Delta \text{Assets} = \Delta \text{Liabilities} + \Delta \text{Equity}$. |
+| **Maker-Checker Matrix** | Financial transactions exceeding regulatory thresholds (e.g. > $5,000) require two distinct authorized users (Maker creates, Checker approves). | API tests verifying Maker cannot approve their own submission. |
+| **Idempotency Standard** | All mutation endpoints must mandate an `Idempotency-Key` header with a 24-hour persistence window. | Automated retry tests simulating duplicate requests with zero side-effects. |
+| **Failure Recovery** | Every forward step must define an exact compensating transaction (e.g. reversal reasons, fees handling). | Chaos engineering drills verifying automatic rollback on timeout. |
+| **SRE Performance SLAs** | P99 latency < 50ms at 5,000 TPS; Availability = 99.999%; RPO = 0; RTO < 30s. | Distributed k6 load tests and automated disaster recovery GameDays. |
 
 ---
 
-## Frequently Asked Questions (FAQ)
+## Frequently Asked Questions
 
-Writing a core banking PRD requires specifying accounting ledger rules, maker-checker authorization workflows, and End-of-Day batch pipeline sequences.
-
-{{< faq "Why must a core banking PRD explicitly define available balance versus ledger balance?" >}}
-Available balance accounts for pending holds and uncleared deposits, whereas ledger balance represents posted transactions. Validating transactions against available balance prevents Authorize Positive, Settle Negative (APSN) fraud and uncollectible overdraft liabilities.
+{{< faq q="Why do Core Banking PRDs require explicit mathematical invariant tables unlike standard SaaS PRDs?" >}}
+In consumer SaaS applications, minor state inconsistencies can be resolved asynchronously via customer support tickets. In a core banking engine, a single transaction that posts an unbalanced ledger entry ($\text{Debits} \neq \text{Credits}$) breaks the entire bank's balance sheet, corrupts regulatory capital reporting, and triggers immediate central bank audits. An invariant table explicitly defines the mathematical equations that code must guarantee at compile time and runtime.
 {{< /faq >}}
 
-{{< faq "How is the 4-eyes principle enforced programmatically in a banking PRD?" >}}
-The maker-checker framework stores authorization requests in a dedicated database queue table with pending status flags. Service layer validation checks that the authenticating user (checker) does not match the initiating user (maker), blocking self-approval of high-value transfer requests.
+{{< faq q="What is Maker-Checker authorization and how is it implemented at the API and database levels?" >}}
+Maker-Checker (Dual Custody) is an internal fraud prevention standard requiring two distinct individuals to complete a sensitive operation (e.g. issuing a loan, adjusting an account balance, or executing a high-value wire). In the database, the transaction is created in a `PENDING_APPROVAL` state with `maker_user_id` populated. The API rejects any approval request where `checker_user_id == maker_user_id`, requiring an authenticated cryptographic signature from a second officer with supervisory roles.
 {{< /faq >}}
-
-{{< faq "What is the function of the End-of-Day (EOD) batch processing pipeline?" >}}
-The EOD batch locks the business date, calculates daily interest accruals for CASA and loan accounts, posts scheduled fee entries, and reconciles sub-ledger postings to General Ledger trial balances. Once trial balance invariants pass validation, the batch processor increments the system business date to initiate Begin-of-Day operations.
+{{< faq q="How are End-of-Day (EOD) batch processing windows optimized from 6 hours down to 20 minutes?" >}}
+Legacy banks ran single-threaded sequential batch jobs on monolithic mainframes, requiring digital channels to be disabled overnight. Modern cloud-native banking engines optimize EOD through: (1) **Read-Only Snapshotting**: snapshotting account balances at midnight so real-time transactions continue uninterrupted; (2) **Partitioned Parallel Workers**: distributing interest calculations across hundreds of ephemeral Kubernetes pods partitioned by account hash; and (3) **Stream-Based Reconciliation**: matching external clearing files continuously throughout the day rather than in a single midnight batch.
 {{< /faq >}}
-
-🔗 **Next Step:** Explore the full curriculum of this series in the [Core Banking Developer Series](/series/core-banking-developer/).
-
----
-
-[← Previous Part: Part 7: Build a Mini Core Banking System in Go](/series/core-banking-developer/part-7-build-mini-core-banking/)

@@ -2,7 +2,7 @@
 title: "Magento to Go Microservices: Vietnam Migration Series"
 description: "The CTO playbook for migrating Magento to Go microservices with a Vietnam engineering team — cost models, vetting, remote ops, and strategy."
 date: "2026-07-08T19:00:00+07:00"
-lastmod: "2026-07-08T19:00:00+07:00"
+lastmod: "2027-03-30T09:00:00+07:00"
 draft: false
 ShowToc: true
 TocOpen: true
@@ -16,121 +16,125 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/"
-noTranslation: true
-image: "/images/posts/remote-team-vietnam-migration-cover.jpg"
+mermaid: true
 ---
 
-Your Magento platform handles 2,000 orders a day. Your engineering team spends **60–70% of every sprint on maintenance** — patches, extension conflicts, and EAV query optimization — instead of shipping features. Category pages take 4 seconds. Checkout breaks during flash sales.
-
-Adobe Commerce 2.4.5 and 2.4.6 lose security support on **August 11, 2026**. You're not just facing a performance problem. You're facing a compliance deadline.
-
-This series answers the question every CTO in your situation eventually asks:
-
-> *"Can I migrate this thing without burning the company down — and can a Vietnam engineering team do it for a fraction of what US/EU agencies quote?"*
-
-Yes. Here's exactly how.
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/magento-migration-vietnam/)
 
 ---
 
-## 🎯 Who This Series Is For
+Your enterprise Magento 2 platform processes thousands of orders daily, but your engineering team spends **60% to 70% of every sprint cycle fighting technical debt**—patching core vulnerabilities, resolving third-party module conflicts, and firefighting database table locks on EAV schemas. Category catalog pages take upwards of 3.5 seconds to render, and checkouts risk deadlocking under flash sale concurrency.
 
-You are running a B2B or B2C e-commerce platform on Magento 2.
+With Adobe Commerce 2.4.5 and 2.4.6 officially reaching end-of-life (EOL) and strict security requirements mandated by **PCI-DSS v4.0**, engineering leaders face a strategic crossroad:
 
-Your store has: - **50,000+ SKUs** with custom attribute sets or complex pricing rules - **2,000+ orders/day** at baseline, with seasonal peaks 3–5× that - **Multiple custom extensions** built over 5+ years by multiple teams - A development team spending more time on Magento firefighting than on product work
+> *"Can we systematically decouple our mission-critical e-commerce platform into high-performance Go microservices without downtime—and can an elite, dedicated engineering squad in Vietnam deliver this for 70% less than onshore US/EU agencies?"*
 
-You've evaluated MACH architectures, read about Strangler Fig patterns, and know Go is the right technology. What you don't have is a **concrete execution model** — one that accounts for real B2B complexity, real Vietnam team dynamics, and real budget constraints.
-
-That's what this series delivers.
+Yes. This 16-part technical and operational masterclass provides the exact blueprint.
 
 ---
 
-## 🚀 What Makes This Series Different
+## 1. The 5-Stage Migration Lifecycle
 
-Every other Magento migration guide is either:
-- **Too generic** ("use microservices!") without touching B2B pricing, quote negotiation, or approval workflows
-- **US/EU-centric** with no acknowledgment that senior Go architects exist in Vietnam at 60–70% lower cost
-- **Theory-only** without addressing how you actually run a distributed team through a high-risk migration
+Migrating from a monolithic PHP e-commerce platform to distributed Golang microservices requires a disciplined phased Strangler Fig strategy rather than a perilous big-bang rewrite:
 
-This series is built on:
-- A **production migration** of 10 commerce domains from Magento to Go
-- **3 sessions of deep research** covering Tiki, ZaloPay, Shopify architecture decisions, and Vietnam Go hiring data
-- **Vietnam-specific data** from ITviec salary surveys, itviec.com Go job postings, and ZaloPay engineering OSS
+```mermaid
+flowchart TD
+    subgraph Stage1 ["Stage 1: Architecture & Discovery (Months 1-2)"]
+        S1["Audit EAV Bottlenecks & TCO"] --> S2["Establish Domain Bounded Contexts"]
+        S2 --> S3["Source & Vet Vietnam Senior Go Team"]
+    end
 
----
+    subgraph Stage2 ["Stage 2: Foundation & Edge Routing (Months 3-4)"]
+        S4["Deploy Envoy Gateway & OpenTelemetry"] --> S5["Debezium CDC & Kafka Event Streaming"]
+        S5 --> S6["Deploy Redis JWT Session Bridge"]
+    end
 
-## 📚 Series Curriculum
+    subgraph Stage3 ["Stage 3: High-Value Domain Extraction (Months 5-8)"]
+        S7["Extract Catalog & Vector Search"] --> S8["Extract Cart & Pricing Engine (Go)"]
+        S8 --> S9["Extract Checkout & Order Services (PostgreSQL)"]
+    end
 
-### Module 1 — The Decision
+    subgraph Stage4 ["Stage 4: Shadow Traffic & Dual-Run (Months 9-10)"]
+        S10["Shadow Traffic Mirroring (100% Parity)"] --> S11["Canary Traffic Shift (1% -> 25% -> 100%)"]
+    end
 
-*Is your Magento platform actually at the ceiling, or is it an optimization problem?*
+    subgraph Stage5 ["Stage 5: Cutover & Day-2 SRE (Months 11-12)"]
+        S12["Zero-Downtime DNS Cutover"] --> S13["30-Day Hot Standby & Monolith Decommission"]
+        S13 --> S14["Follow-The-Sun SRE Ops with Vietnam Team"]
+    end
 
-- [Is Magento Worth It in 2026? The 2.4.9 Reality](/series/magento-migration-vietnam/magento-still-worth-investing-2026/) — Version EOL analysis, TCO breakdown, migrate vs. optimize framework
-- [Migrating Magento to Microservices: When & Why](/series/magento-migration-vietnam/why-migrate-magento-to-microservices/) — Performance signals, the structural wall checklist, and when Strangler Fig beats upgrade
-
----
-
-### Module 2 — Architecture & Execution
-
-*The technical playbook: DDD, Strangler Fig, Debezium, Dapr, zero-downtime cutover.*
-
-- [Composable E-Commerce Migration: Overcoming Tech Debt](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/) — 21-service domain map, bounded context design, monolith decomposition patterns
-- [Zero-Downtime: Moving from Magento to Microservices](/series/magento-migration-vietnam/moving-from-magento-to-microservices/) — 3-Phase Strangler Fig, Debezium CDC, bidirectional Dapr sync, 30-day hot standby
-- [Exporting Magento 2 Data: Flatten EAV with SQL & Node](/series/magento-migration-vietnam/exporting-magento-2-data-flat-sql-nodejs/) — EAV extraction, `magento_id_map` UUID translation, ETL pipeline design
-- [Magento AI Integration: Modernize Without Rebuilding](/series/magento-migration-vietnam/magento-ai-integration-strategy-architecture/) — AI augmentation as a bridge strategy before full migration
-
----
-
-### Module 3 — The Vietnam Execution Option
-
-*How to source, vet, and budget a Vietnam Go team for migration work.*
-
-- [Magento Development in Vietnam: Cost, Hiring & Upgrade](/series/magento-migration-vietnam/magento-vietnam/) — Market rates, talent pool overview, engagement model comparison
-- [Magento Agency & Development in Vietnam: Scoping Guide](/series/magento-migration-vietnam/magento-development-in-vietnam/) — How to scope a migration engagement with a Vietnam agency
-- [Vetting Magento Developers in Vietnam: Interview Playbook](/series/magento-migration-vietnam/magento-development-in-vietnam/) — Technical interview framework for Magento PHP specialists
-- [**Go Engineers in Vietnam: Vetting for Magento Migration**](/series/magento-migration-vietnam/go-engineers-vietnam-migration-vetting/) — 🆕 Five production-level migration scenarios, distributed systems red flags, green signals
-- [**Magento Migration Cost: Vietnam vs US/EU Team (2026 Model)**](/series/magento-migration-vietnam/magento-migration-cost-vietnam-vs-us-eu/) — 🆕 Phase-by-phase budget breakdown, Vietnam vs. US/EU rate comparison, break-even analysis
+    Stage1 --> Stage2
+    Stage2 --> Stage3
+    Stage3 --> Stage4
+    Stage4 --> Stage5
+```
 
 ---
 
-### Module 4 — Managing the Migration
+## 2. Monolith vs Composable Microservices Architecture
 
-*What actually breaks when you run a high-risk migration with a remote team.*
+The target architecture replaces shared database locking with autonomous, event-driven Go microservices running across Kubernetes:
 
-- [**Managing Vietnam Engineers Through a Magento Migration**](/series/magento-migration-vietnam/remote-team-vietnam-magento-migration/) — 🆕 Timezone strategy, incident response, go/no-go gates, async-first coordination
-- [**Post-Magento Operations: Running a Vietnam Go Team in Production**](/series/magento-migration-vietnam/post-migration-operations-vietnam-go-team/) — 🆕 On-call rotation design, SLO definition, runbook ownership, error budget tracking
+```mermaid
+graph LR
+    subgraph Monolith_Old ["Legacy Magento 2 Monolith"]
+        M_PHP["PHP-FPM Monolith<br/>(Catalog, Cart, Checkout, Admin)"]
+        M_DB[("Single MySQL Shared DB<br/>(EAV Tables & Lock Contention)")]
+        M_PHP --> M_DB
+    end
+
+    subgraph Composable_New ["Modern Composable Stack"]
+        Gateway["Envoy API Gateway / BFF"]
+        S_Cat["Catalog Service (Go + LanceDB)"]
+        S_Cart["Cart Service (Go + Redis)"]
+        S_Order["Order Service (Go + PostgreSQL)"]
+        Kafka["Apache Kafka Event Bus"]
+
+        Gateway --> S_Cat
+        Gateway --> S_Cart
+        Gateway --> S_Order
+        S_Order -. Events .-> Kafka
+        Kafka -. Sync .-> S_Cat
+    end
+```
 
 ---
 
-### Module 5 — The Retrospective
+## 3. Complete Series Curriculum (16 Modules)
 
-- [Deconstructing the Ecosystem: Service Details by Domain](/series/magento-migration-vietnam/deconstructing-ecommerce-service-details-domain/) — The final destination: 21 services, clean domain boundaries, full observability stack
+### Module 1: The Strategic Decision Framework
+1. **[Is Magento Worth It in 2026? The 2.4.9 Reality](/series/magento-migration-vietnam/magento-still-worth-investing-2026/)** — Platform lifecycle, PHP 8.4/8.5 compatibility, and TCO.
+2. **[Migrating Magento to Microservices: When & Why](/series/magento-migration-vietnam/why-migrate-magento-to-microservices/)** — Monolithic database contention, Saga patterns, and decision checklists.
+3. **[Composable E-Commerce Migration: Overcoming Tech Debt](/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/)** — 21-service MACH decomposition, gRPC contracts, and bounded contexts.
+
+### Module 2: Technical Execution & Strangler Fig
+4. **[Why Migrate Magento to Microservices: Zero-Downtime Guide](/series/magento-migration-vietnam/moving-from-magento-to-microservices/)** — 3-phase Strangler Fig, Envoy shadow traffic, and hot standby cutover.
+5. **[Exporting Magento 2 Data: Flatten EAV with SQL & Node.js](/series/magento-migration-vietnam/exporting-magento-2-data-flat-sql-nodejs/)** — Unpivoting EAV attributes, streaming ETL, and UUID re-keying.
+6. **[Magento Migration: Shared DB, CDC, or Event Bus?](/series/magento-migration-vietnam/strangler-fig-shared-database-quick-win/)** — Anti-corruption layers, Debezium CDC, and outbox patterns.
+7. **[Laravel vs Golang: When to Add Features in Each?](/series/magento-migration-vietnam/laravel-vs-golang-when-to-add-features.md)** — Decision matrices, gRPC hybrid gateways, and developer velocity.
+8. **[Magento AI Integration: Modernize Without Rebuilding](/series/magento-migration-vietnam/magento-ai-integration-strategy-architecture/)** — Vector search, LanceDB hybrid retrieval, and AI shopping assistants.
+
+### Module 3: Team Building, Cost Models & Day-2 Operations
+9. **[Magento Development in Vietnam: Cost, Hiring & Upgrade](/series/magento-migration-vietnam/magento-vietnam/)** — Ecosystem tiers, compensation matrices, and engagement models.
+10. **[Magento Enterprise Project Scoping & Agency Cost Matrix](/series/magento-migration-vietnam/magento-development-in-vietnam/)** — Story point scoping, agency red flags, and milestone gates.
+11. **[Deconstructing the Ecosystem: Service Details by Domain](/series/magento-migration-vietnam/deconstructing-ecommerce-service-details-domain/)** — 8 Core domain specifications, gRPC contracts, and inventory locking.
+12. **[Go Engineers in Vietnam: Vetting for Magento Migration](/series/magento-migration-vietnam/go-engineers-vietnam-migration-vetting/)** — 5 Real-world production screening scenarios and coding benchmarks.
+13. **[Magento Migration Cost: Vietnam vs US/EU Team](/series/magento-migration-vietnam/magento-migration-cost-vietnam-vs-us-eu/)** — Financial model, dual-run cloud budgets, and break-even analysis.
+14. **[Managing Vietnam Engineers Through a Magento Migration](/series/magento-migration-vietnam/remote-team-vietnam-magento-migration/)** — Asynchronous governance, 12h timezone inversion, and cutover protocols.
+15. **[Post-Migration Operations: Managing Vietnam Go Team](/series/magento-migration-vietnam/post-migration-operations-vietnam-go-team/)** — Day-2 SRE playbook, Kubernetes observability, and on-call runbooks.
 
 ---
 
-## 🏗️ Architecture Consulting
+## Frequently Asked Questions
 
-**Planning a Magento migration?** Before committing to a vendor or timeline, get an independent architecture review.
+{{< faq q="Why migrate from Magento to Go microservices instead of upgrading to Magento 2.4.9?" >}}
+While Magento 2.4.9 updates PHP compatibility, it does not solve the fundamental architectural limits of MySQL EAV locking during high-concurrency checkouts. Migrating performance-critical domains (checkout, cart, pricing) to compiled Go microservices delivers sub-45ms P99 latencies, cuts infrastructure hosting costs by over 70%, and enables independent team deployments without risking full-site outages.
+{{< /faq >}}
 
-A 2-week engagement delivers:
-- Migration readiness report (what can be extracted immediately vs. must wait)
-- Extension audit (Replace / Rebuild / Retire classification for every module)
-- Team sizing and Vietnam sourcing recommendation
-- Phase 1 technical specification with risk log
+{{< faq q="Why hire a dedicated engineering team in Vietnam rather than local US/EU agencies?" >}}
+Vietnam boasts one of the world's most dynamic software engineering ecosystems, with senior Golang and cloud-native architects billing at $38–$52/hour compared to $180–$240/hour in the US. This enables brands to field an elite 5-person dedicated squad for approximately $280,000 annually, yielding a 70%+ capital saving while securing dedicated, long-term domain retention.
+{{< /faq >}}
 
-👉 **[Book a Migration Architecture Review](/hire/)** — Lê Tuấn Anh, 17+ years in enterprise e-commerce across Vietnam and SEA.
-
----
-
-## Key Data Points From This Series
-
-| Metric | Data |
-|--------|------|
-| Active Magento stores (early 2026) | ~110,000–111,500 (Storeleads.app) |
-| Adobe Commerce 2.4.5/2.4.6 EOL | **August 11, 2026** |
-| PHP-FPM memory per worker | 30–60 MB |
-| Go goroutine starting stack | 2–8 KB (5,000× more efficient) |
-| Vietnam senior Go architect rate | $3,000–$4,500/month |
-| US equivalent senior Go architect | $18,000–$25,000/month |
-| Enterprise migration timeline | 12–18 months (B2B complex) |
-| Productivity dip during migration | 25–40% for months 4–8 (documented) |
-| Tiki Vietnam: services on GKE | 100+ microservices (Go + Java + Kafka) |
+{{< faq q="How does the Strangler Fig pattern guarantee zero downtime during cutover?" >}}
+The Strangler Fig pattern places an API reverse proxy (such as Envoy Gateway) in front of Magento. Traffic is initially 100% routed to the monolith. Extracted Go services are deployed alongside Magento and validated using shadow traffic mirroring. Once data parity reaches 100%, traffic is incrementally shifted (1% -> 10% -> 50% -> 100%) with automated rollback triggers, ensuring zero disruption to live shoppers.
+{{< /faq >}}

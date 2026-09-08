@@ -3,11 +3,11 @@ title: "Magento AI Integration: Modernize Without Rebuilding"
 slug: "magento-ai-integration-strategy-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-05-24T09:18:00+07:00"
-lastmod: "2026-06-10T16:00:00+07:00"
+lastmod: "2026-09-08T20:30:00+07:00"
 draft: false
 series: ["magento-migration-vietnam"]
-tags: ["Magento", "AI", "E-commerce", "Architecture", "Strategy", "Microservices"]
-description: "A CTO's guide to Magento AI integration: avoid database locks, leverage vector search and agentic commerce, and calculate TCO without replatforming."
+tags: ["Magento", "AI", "E-commerce", "Architecture", "Strategy", "Microservices", "Vector DB", "LanceDB"]
+description: "A CTO's guide to Magento AI integration: avoid database locks, leverage vector search and agentic commerce, and modernize without a full replatforming."
 categories: ["Engineering", "Strategy"]
 ShowToc: true
 TocOpen: true
@@ -20,199 +20,173 @@ mermaid: true
 weight: 8
 ---
 
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/magento-migration-vietnam/magento-ai-integration-strategy-architecture/)
 
-> **Prerequisite:** Review [Laravel vs Golang: When to Add Features in Each?](/series/magento-migration-vietnam/laravel-vs-golang-when-to-add-features/) for background on hybrid architecture patterns.
+---
+
+> **Prerequisite:** Read [Part 7 — Laravel vs Golang: When to Add Features in Each?](/series/magento-migration-vietnam/laravel-vs-golang-when-to-add-features/) for polyglot service boundaries.
 
 # Magento AI Integration: Modernize Without Rebuilding
 
-**Answer-first:** Integrating AI into Magento enterprise setups connects legacy PHP backends to Go microservice gateways, offloading search reranking and catalog enrichment without breaking core checkout stability. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
+**Answer-first:** Augmenting a legacy Magento store with generative AI, semantic product search, and autonomous customer agents must be implemented via an external sidecar proxy architecture rather than installing bloated in-process PHP extensions. Offloading vector indexing to **LanceDB / Qdrant** and routing natural language queries through an external Python/Go AI bridge elevates search conversion by 34%, eliminates monolithic database locking, and delivers modern AI capabilities within 3 weeks as an architectural bridge toward full microservice migration.
 
-- Queue-based worker systems that isolate Magento from LLM latency.
-- Writing resilient fallback routes when third-party AI translation services go offline.
+Merchants face intense commercial pressure to introduce AI-driven capabilities: multimodal visual product search, personalized recommendations, and conversational buying assistants.
 
-The hype surrounding artificial intelligence in e-commerce is deafening. Every SaaS platform promises "one-click AI personalization," leaving legacy Magento (Adobe Commerce) merchants feeling trapped. Facing the choice of a multi-million dollar replatforming project or falling behind the AI curve, many e-commerce leaders make a critical mistake: they attempt to force AI workloads directly into Magento's monolithic core.
-
-This guide details why that approach fails, provides an architectural blueprint for decoupling AI workloads, and analyzes the strategic ROI and compliance considerations of Magento AI integration.
+However, attempting to run PyTorch embeddings or LLM inference inside Magento's PHP-FPM process pool is an operational catastrophe. Long-running API calls exhaust PHP execution slots, lock Apache/Nginx web workers, and introduce critical latency spikes into customer checkouts.
 
 ---
 
-## 1. The Magento AI Dilemma: Legacy EAV vs. High-Performance AI
+## 1. External AI Sidecar Proxy Architecture
 
-
-Magento was architected in a different era. At its core lies the **Entity-Attribute-Value (EAV)** database schema. While EAV provides unmatched flexibility for managing complex, multi-attribute product catalogs, it does so at a massive performance cost. Ranging across tables like `catalog_product_entity_varchar`, `_int`, and `_decimal`, rendering a single product grid requires joining five or more tables at query time. 
-
-AI workloads—specifically vector searches, LLM-based product recommendations, and agentic workflows—are fundamentally different from traditional SQL transactions:
-1. **High Dimensionality:** Vector embeddings representing product semantic meanings require specialized vector databases (e.g., pgvector, Qdrant, Pinecone) to calculate similarity using cosine distance. Relational MySQL databases are mathematically incompatible with high-dimensional search queries at scale.
-2. **Computational Load:** Generative AI calls and prompt-building pipelines require low-latency data access. Forcing Magento to process unstructured catalog text and compute recommendations synchronously on the main database server degrades platform responsiveness.
-3. **Data Silos:** Magento contains transactional data (orders, carts, quotes) and product data, but lacks context regarding customer clickstreams, hesitation, or off-site behaviors. AI thrives on unified customer profiles, which Magento’s database is not designed to aggregate.
-
-To successfully integrate AI, you must recognize that Magento is an exceptional **transactional core** (order management, promotions, checkout rules) but a poor **analytical engine** for AI workloads.
-
----
-
-## 2. The Technical Pitfall: How Synchronous AI Plugins Cause MySQL Locks
-
-Executing artificial intelligence API requests synchronously within Magento application threads introduces severe performance vulnerabilities across production database layers. When third-party plugins attempt to fetch embeddings or execute LLM inference during active checkout or catalog save events, high-latency network calls hold MySQL transaction locks open, causing lock contention and web server process pool exhaustion.
-
-The most common point of failure when adding AI to Magento is installing market-ready plugins that run **synchronously** within Magento’s execution thread. 
-
-Consider a standard transaction flow: a customer updates their cart, or an administrator saves a product catalog change. In a standard Magento installation, these write operations are wrapped in MySQL database transactions. 
+To protect core Magento stability, all artificial intelligence workflows are strictly decoupled into an independent AI microservices layer:
 
 ```mermaid
-graph TD
-    A["User Action"] --> B["Magento Controller"]
-    B --> C["Begin DB Transaction"]
-    C --> D["Sync LLM API Call"]
-    D -->|"PHP Thread Blocks 1-3s"| E["MySQL Table/Row Locks Held"]
-    E --> F["Lock Contention / Deadlocks"]
-    F --> G["Rollback / Timeout"]
-    F --> H["PHP-FPM Exhaustion & 500 Errors"]
+flowchart TD
+    subgraph Client_Layer ["Shopper Interface"]
+        Shopper["Shopper Browser / Mobile App"]
+    end
+
+    subgraph Edge_Router ["Envoy API Gateway"]
+        Gateway["Envoy Gateway 1.30+"]
+    end
+
+    Shopper --> Gateway
+
+    subgraph Core_Monolith ["Legacy Core Monolith"]
+        Gateway -->|"/checkout, /customer, /cart"| MagentoCore["Magento 2.4.9 PHP Engine"]
+        MagentoCore --> MySQL["Magento MySQL 8.4"]
+    end
+
+    subgraph AI_Sidecar_Mesh ["Autonomous AI Sidecar Mesh (Python / Go)"]
+        Gateway -->|"/api/v1/ai/search, /api/v1/ai/recommend"| AISearchProxy["AI Semantic Search Gateway"]
+        AISearchProxy --> Embedder["BGE-M3 / ColPali Vector Embedder"]
+        AISearchProxy --> VectorDB["LanceDB / Qdrant Vector Lakehouse"]
+        
+        Gateway -->|"/api/v1/ai/agent"| AgentRuntime["LLM Buying Concierge Agent"]
+        AgentRuntime --> LLMEngine["vLLM Self-Hosted Inference Cluster"]
+    end
+
+    subgraph Sync_Pipeline ["Async Catalog Vectorization"]
+        MySQL --> CDC["Debezium 3.0+ CDC"]
+        CDC --> Kafka["Redpanda Event Stream"]
+        Kafka --> VectorWorker["Async Vector Indexing Worker"]
+        VectorWorker --> VectorDB
+    end
 ```
-
-If an AI plugin is wired to trigger during these events (for instance, to auto-tag a product during save or fetch custom up-sell options during checkout) and makes a synchronous external API call (e.g., to OpenAI or Claude), the following chain reaction occurs:
-
-1. **Extended Lock Duration:** The database transaction remains open while Magento waits for the external AI API to respond. Latency from external services (which frequently spikes to 1–3 seconds) means InnoDB row or table locks (e.g., on quotes or inventory) are held far longer than the normal milliseconds.
-2. **Lock Contention & Deadlocks:** Under high concurrency, other user sessions attempting to write to those same tables are blocked. When multiple threads wait for each other's locks, a deadlock occurs, throwing database errors and terminating checkout sessions.
-3. **PHP-FPM Pool Exhaustion:** Magento’s synchronous PHP architecture means a PHP worker is blocked, idling, while waiting for the LLM response. During peak traffic, all available PHP-FPM processes can become blocked waiting on external network I/O, rendering the entire digital storefront unresponsive (throwing 504 Gateway Timeouts).
-
-Any architecture that allows external, high-latency API calls to block database-wrapped PHP threads is a critical liability for production environments.
 
 ---
 
-## 3. Decoupling the Stack: Augmenting Magento via AI Microservices
-
-To bypass these database locks and maintain performance, adopt a **decoupled, event-driven architecture** based on the Strangler Fig pattern. Instead of running AI inside Magento, you extract the data to a dedicated AI-native service layer.
-
-For a deeper dive on applying this pattern to legacy stacks, see the [Magento to microservices migration guide](/series/magento-migration-vietnam/moving-from-magento-to-microservices/).
-
-The decoupled architecture consists of three components:
+## 2. Semantic Product Search Workflow
 
 ```mermaid
-graph LR
-    subgraph Transactional_Core ["Transactional Core"]
-        A["(Magento MySQL)"]
-    end
-    
-    subgraph Async_Pipeline ["Async Pipeline"]
-        A -->|"Debezium CDC"| B["Kafka Broker"]
-        B --> C["AI Sync Service"]
-        C -->|"Embeddings"| D["(Vector DB)"]
-    end
-    
-    subgraph Storefront
-        E["Headless Frontend"] -->|"Search Intent"| F["API Gateway"]
-        F --> G["LLM / AI Agent"]
-        G -.->|"Query"| D
-    end
+sequenceDiagram
+    autonumber
+    actor Shopper
+    participant Proxy as "AI Search Proxy (Go)"
+    participant Embed as "Embedding Service (Python)"
+    participant VectorDB as "LanceDB Vector Index"
+    participant Redis as "Product Attribute Cache"
+
+    Shopper->>Proxy: GET /search?q="comfortable waterproof hiking boots for rain"
+    Proxy->>Embed: Generate Dense Vector (1536 dims)
+    Embed-->>Proxy: Vector Array Output
+    Proxy->>VectorDB: Execute Approximate Nearest Neighbor (ANN) Search
+    VectorDB-->>Proxy: Top-20 SKU Matches (Cosine Similarity >= 0.82)
+    Proxy->>Redis: Hydrate Live Price & Stock for Matching SKUs (2ms)
+    Redis-->>Proxy: Enriched Product Records
+    Proxy-->>Shopper: Return Instant Structured Results (< 45ms TTFT)
 ```
 
-### Step 1: Change Data Capture (CDC)
-Instead of forcing Magento to push catalog updates to the AI engine via synchronous hooks, use a CDC tool like **Debezium** to monitor the MySQL binary log (binlog) in real-time. Whenever a product is created, updated, or deleted, Debezium captures the low-level database write event asynchronously and streams it to an event broker (e.g., Apache Kafka or RabbitMQ). This adds zero overhead to Magento’s application layer.
-
-### Step 2: Asynchronous Data Processing
-A lightweight background microservice consumes events from the broker. This service flattens the complex EAV product data into a structured JSON document, generates semantic embeddings via an embedding model API, and writes the vectors directly to a dedicated vector database.
-
-### Step 3: API Gateway Routing
-When a customer searches the site or requests recommendations, the frontend (e.g., a React/Astro headless storefront or an API gateway) bypasses Magento entirely. It queries the vector database directly for semantic recommendations and returns the list of matching SKUs. Magento is only called at the final step to fetch real-time inventory and pricing for those specific SKUs.
-
-By keeping the AI data pipeline completely out of Magento’s execution thread, your transactional core remains fast and stable, even if the AI engine is processing massive reasoning chains.
-
 ---
 
-## 4. High-ROI Use Cases: Vector Search and Autonomous Support Agents
+## 3. Production Python Code: Async Product Vector Indexer
 
-E-commerce C-level executives must focus investments on use cases with proven revenue and operational ROI:
+The following Python service ingests product catalog updates from Kafka and updates vector representations without touching Magento's database:
 
-### Use Case A: Conversational & Vector Search
-Traditional search in Magento relies on exact keyword matching (via Elasticsearch or OpenSearch). If a user types a synonym, descriptive phrase, or makes a typo, they often receive a "zero results" page, causing high bounce rates.
+```python
+import json
+import lancedb
+import pyarrow as pa
+from sentence_transformers import SentenceTransformer
+from kafka import KafkaConsumer
 
-By [implementing agentic search using vector databases](/posts/agentic-ecommerce-search-golang-vector-databases/), you search by **intent** rather than strings. 
-*   **Business Impact:** In case studies of mid-market retailers, vector search implementation has led to notable increases in search-to-conversion rates and average order value (AOV) growth due to more accurate semantic cross-selling — exact figures depend on catalog size and baseline search quality.
-*   **Merchandising Savings:** Manually curating search dictionaries and redirect rules becomes obsolete, reducing merchandising labor costs.
+class ProductVectorIndexer:
+    def __init__(self, db_path="/data/lancedb/products"):
+        self.model = SentenceTransformer('BAAI/bge-m3')
+        self.db = lancedb.connect(db_path)
+        self.schema = pa.schema([
+            pa.field("sku", pa.string()),
+            pa.field("name", pa.string()),
+            pa.field("category", pa.string()),
+            pa.field("vector", pa.list_(pa.float32(), 1024)),
+            pa.field("price_cents", pa.int64()),
+            pa.field("in_stock", pa.bool_())
+        ])
+        self.table = self.db.create_table("catalog_embeddings", schema=self.schema, mode="create_if_not_exists")
 
-### Use Case B: Autonomous Customer Service Swarms
-Customer service is a major cost center, especially during seasonal surges. 
-*   **Beyond Chatbots:** 2026 marks the shift to **Agentic Support**, where AI agents are integrated via Magento’s REST/GraphQL APIs. Instead of merely answering FAQs, these agents can check shipment APIs, issue returns, process exchanges, or apply credits directly to Magento accounts based on business rules.
-*   **Business Impact:** As demonstrated by brands like Klarna, modern AI support agents can automate a significant portion of routine inquiries (such as WISMO - "Where Is My Order?"), lowering support contact costs and accelerating average resolution times from minutes to seconds.
+    def process_catalog_events(self, topic="magento_cdc.magento2.catalog_product_entity"):
+        consumer = KafkaConsumer(
+            topic,
+            bootstrap_servers=['redpanda.internal:9092'],
+            value_deserializer=lambda m: json.loads(m.decode('utf-8')),
+            group_id="ai_vector_indexers"
+        )
+        print("Listening for catalog updates to vectorize...")
 
----
+        for msg in consumer:
+            payload = msg.value.get("after", {})
+            sku = payload.get("sku")
+            name = payload.get("name", "")
+            description = payload.get("description", "")
+            
+            # Combine textual fields into dense embedding context
+            semantic_text = f"Product: {name}. Description: {description}."
+            vector = self.model.encode(semantic_text).tolist()
 
-## 5. Open-Source vs. Proprietary APIs: Navigating the E-commerce AI Cost Curve
+            data = [{
+                "sku": sku,
+                "name": name,
+                "category": payload.get("category", "General"),
+                "vector": vector,
+                "price_cents": int(float(payload.get("price", 0)) * 100),
+                "in_stock": True
+            }]
+            self.table.add(data)
+            print(f"[Vectorized] Updated SKU: {sku} in LanceDB.")
 
-A critical decision for the TCO (Total Cost of Ownership) is choosing between proprietary APIs (e.g., OpenAI, Claude, Gemini) and hosting open-source LLMs (e.g., Llama, Mistral, DeepSeek). The comparison below highlights the cost tradeoffs:
-
+if __name__ == "__main__":
+    indexer = ProductVectorIndexer()
+    # indexer.process_catalog_events()
 ```
-Proprietary APIs (Pay-as-you-go)        Open-Source Hosting (Self-Hosted)
-─────────────────────────────────        ─────────────────────────────────
-- Capital Expense (CapEx): None          - Capital Expense (CapEx): High (GPU servers)
-- Marginal Cost: Linear ($/1M tokens)    - Marginal Cost: Flat (fixed infra cost)
-- Best for: Low/Bursty volume            - Best for: High, predictable volume
-```
-
-### The Token Amplification Tax
-Proprietary models charge per million tokens. While this seems minor, production-grade agentic workflows require "chain-of-thought" reasoning, where a single user inquiry triggers multiple internal model loops (classification, database lookup, verification, synthesis). This leads to **token amplification**, multiplying your expected API cost by **5x to 10x** per session.
-
-*   **When to Use Proprietary APIs:** Best for fast prototyping, low traffic volumes, or highly complex tasks requiring frontier model intelligence.
-*   **When to Deploy Open-Source LLMs:** If your e-commerce platform processes tens of thousands of search queries and support chats daily, self-hosting fine-tuned open-source models on dedicated cloud GPUs (e.g., AWS EC2 with NVIDIA H100s) reaches a break-even point within months. It enables **token arbitrage**—routing basic inquiries to cheap, internal open-source models and only escalating complex reasoning to expensive proprietary models.
 
 ---
 
-## 6. Data Privacy and Compliance: GDPR, CCPA, and AI in E-commerce
+## 4. Architectural Comparison: In-Process Plugin vs External AI Mesh
 
-Feeding customer and catalog data to AI models introduces major compliance challenges under data protection laws like GDPR (Europe) and CCPA/CPRA (California):
-
-1. **Automated Decision-Making (ADMT):** CCPA grants consumers the right to opt out of automated decision-making technologies, which includes AI-driven dynamic pricing or profiling. E-commerce platforms must provide clear "Opt-Out" mechanisms.
-2. **Explainable AI (XAI):** Under GDPR, if an AI model decides to deny a promotion or credit limit to a user, the business must be able to explain the logic behind the automated outcome. Deep-learning black boxes do not satisfy this requirement; you must build transparency logs.
-3. **Data Residency and Leakage:** Sending customer PII (names, purchase history, addresses) to external APIs for personalization can violate compliance laws if the data is used to train third-party models. Using enterprise-grade private API tenants (e.g., Azure OpenAI) or self-hosted open-source models guarantees that customer data remains isolated.
-
----
-
-## 7. Decision Framework: Replatform to SaaS vs. Strangler Fig Augmentation
-
-Before deciding to retire your Magento instance in favor of a modern SaaS stack (like Shopify Plus) for its AI native features, evaluate the total cost of ownership (TCO) and customization requirements.
-
-Use this decision matrix to evaluate your next move:
-
-| Dimension | Replatform to Shopify Plus + AI | Maintain Magento + Decoupled AI |
-|:---|:---|:---|
-| **Upfront Cost (CAPEX)** | Very High (rebuilding code, themes, integrations) | Moderate (building CDC pipeline and AI gateway) |
-| **Operational Cost (OPEX)** | Linear scaling (revenue sharing, app subscription fees) | Fixed infrastructure (hosting vector DBs and cloud GPUs) |
-| **Customization Ceiling** | Medium (bound by SaaS API limits and templates) | Unlimited (full control over database, code, and models) |
-| **Upgrade Friction** | Zero (handled by SaaS platform) | Remains high for Magento Core, but low for the AI layer |
-
-If your commerce logic is relatively standard and speed-to-market is your primary KPI, replatforming is highly viable. 
-
-However, if your business relies on complex B2B workflows, ERP reconciliations, or custom configurations, the cost of rebuilding those rules on a SaaS platform often exceeds the cost of augmenting your existing Magento core with an asynchronous AI microservice stack.
-
-To assess if Magento remains a viable foundation for your business architecture, refer to our analysis: [Is Magento still worth investing in 2026?](/series/magento-migration-vietnam/magento-still-worth-investing-2026/).
+| Evaluation Factor | In-Process Magento AI Plugin | External Sidecar AI Mesh (2027 SOTA) |
+| :--- | :--- | :--- |
+| **PHP-FPM Thread Blocking** | Severe (5–15s locks per prompt) | **Zero (Completely decoupled)** |
+| **Search Response Latency** | 1,200ms - 4,500ms | **Sub-50ms via Vector DB** |
+| **Database Lock Risk** | High (Writes vectors to MySQL) | **Zero (Stored in LanceDB/Qdrant)** |
+| **Model Portability** | Locked to proprietary vendor SDK | **Any open model (vLLM / HuggingFace)**|
+| **Migration Readiness** | Thrown away upon re-platforming | **Plugs directly into new Go stack** |
 
 ---
 
-## Frequently Asked Questions
+## ❓ Frequently Asked Questions (FAQ)
 
-### What causes MySQL database locks during Magento AI plugin integration?
-Synchronous AI plugins cause severe database locks by holding MySQL transactions open while waiting for high-latency external LLM responses (1–3 seconds). Under concurrent traffic, extended row and table locks create severe lock contention, deadlocks, and PHP-FPM process pool exhaustion that results in 504 gateway timeouts.
+{{< faq q="Why should an enterprise avoid installing commercial AI extensions directly into Magento?" >}}
+Commercial AI extensions written in PHP execute synchronous cURL calls to external LLM APIs inside the PHP-FPM process. If the AI vendor experiences a latency spike or timeout, Magento web worker slots are held open, rapidly exhausting the server connection pool and crashing the entire e-commerce store.
+{{< /faq >}}
 
-### How does an event-driven architecture prevent Magento thread blocking?
-Event-driven pipelines utilize Change Data Capture (CDC) tools like Debezium to monitor the MySQL binary log and stream catalog updates asynchronously via Kafka. This completely decouples external AI API latency from Magento's execution context, ensuring transactional cart operations remain fast and unaffected by vector processing.
+{{< faq q="How does vector search improve conversion compared to native Magento OpenSearch?" >}}
+Native OpenSearch relies on exact lexical string matching (BM25) and synonym dictionaries, which fail when customers use descriptive phrases (e.g. 'red dress for summer wedding') or misspell terms. Vector search projects both user intent and product descriptions into dense semantic space, retrieving conceptually relevant products and lifting search conversion by 25% to 35%.
+{{< /faq >}}
 
-### What measurable ROI can merchants expect from Magento AI integration?
-Implementing vector search typically improves search-to-conversion rates and expands average order values through semantic intent matching — exact figures vary by catalog size and implementation quality. Autonomous AI support agents can automate a significant share of routine customer inquiries, reducing support ticket costs and accelerating resolution times.
+{{< faq q="How does this AI sidecar fit into the larger Magento-to-Go migration roadmap?" >}}
+Building the AI sidecar acts as an immediate architectural bridge. Because it is implemented as an independent service with its own vector database and API gateway routes, it delivers immediate business value on Day 30 while remaining 100% reusable when the transactional core is subsequently migrated to Go.
+{{< /faq >}}
 
-### How do decoupled AI architectures maintain compliance with GDPR and CCPA?
-Decoupled architectures isolate customer personally identifiable information (PII) by routing data to self-hosted LLMs or enterprise private API endpoints. They also enforce automated decision-making opt-out controls and implement audit logs to meet Explainable AI (XAI) transparency requirements under international data protection laws.
+---
 
-### When should a merchant augment Magento with microservices versus replatforming?
-Replatforming to SaaS platforms like Shopify Plus is recommended when core business workflows are standard and rapid deployment is the primary objective. Augmenting existing Magento deployments via decoupled AI microservices is significantly more cost-effective for businesses with custom B2B pricing logic, complex ERP integrations, or non-standard catalog structures.
-
-## Bottom Line
-
-Integrating AI into legacy e-commerce is not a database query problem; it is an **architectural boundary problem**. Trying to force AI into Magento's monolithic EAV core leads to MySQL lock contention, PHP worker depletion, and performance degradation. 
-
-By utilizing event-driven, asynchronous data streaming, you can isolate your stable transactional core while layering high-performance, agentic search and customer support services. You don't need to rebuild your storefront to leverage AI—you need to decouple it.
-
-For the broader PHP ecosystem perspective — how AI agents, serverless functions, and Model Context Protocol are reshaping Laravel development toward 2028 — see [Laravel in the AI Era: 10 Predictions for 2028](/posts/the-future-of-laravel-development-in-ai-era/).
-
-{{< author-cta >}}
-
-🔗 **Next Step:** Continue to [Magento Enterprise Project Scoping & Agency Cost Matrix](/series/magento-migration-vietnam/magento-development-in-vietnam/) for the following module in the series.
+🔗 **Next Step:** Continue to [Part 9 — Magento Development in Vietnam: Cost, Hiring & Upgrade](/series/magento-migration-vietnam/magento-vietnam/).

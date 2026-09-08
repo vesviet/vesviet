@@ -3,12 +3,12 @@ title: "Go Engineers in Vietnam: Vetting for Magento Migration"
 slug: "go-engineers-vietnam-migration-vetting"
 author: "Lê Tuấn Anh"
 date: "2026-07-08T19:30:00+07:00"
-lastmod: "2026-07-08T19:30:00+07:00"
+lastmod: "2026-09-08T20:30:00+07:00"
 draft: false
 series: ["magento-migration-vietnam"]
-tags: ["Golang", "Vietnam", "Hiring", "Microservices", "Migration", "Interview", "Magento"]
+tags: ["Golang", "Vietnam", "Hiring", "Microservices", "Migration", "Interview", "Magento", "Distributed Systems"]
 categories: ["Engineering Management", "Hiring"]
-description: "Five interview scenarios to vet Go engineers in Vietnam for Magento migration — not greenfield skills. Covers Saga, CDC, dual-write, UUID mapping."
+description: "Five production interview scenarios to vet Go engineers in Vietnam for Magento migration: Saga coordination, Debezium CDC, dual-write, and distributed locking."
 ShowToc: true
 TocOpen: true
 cover:
@@ -16,289 +16,154 @@ cover:
   alt: "Vetting Go engineers in Vietnam for Magento migration projects"
   relative: false
 canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/go-engineers-vietnam-migration-vetting/"
-noTranslation: true
 mermaid: true
-image: "/images/posts/go-engineers-vietnam-vetting-cover.jpg"
-weight: 11
+weight: 12
 aliases:
   - /posts/magento-developers-in-vietnam-a-technical-hiring-and-vetting-guide/
 ---
 
-
-> **Prerequisite:** Familiarity with the concepts introduced in [Magento Migration Cost Vietnam Vs Us Eu](/series/magento-migration-vietnam/magento-migration-cost-vietnam-vs-us-eu/). Review it first if the terminology in this part is unfamiliar.
-
-> **Answer-first:** Vetting Go engineers in Vietnam for Magento migrations requires assessing distributed systems design skills—such as Saga orchestration, CDC outbox patterns, and dual-write conflict resolution—rather than basic syntax fluency. Deploying this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory pooling via Go 1.24 string interning, and resilient Dapr 1.15 workflow state synchronization.
-
-**Answer-first:** Vetting Go engineers for Magento migration requires a different interview framework than greenfield hiring. The critical signal is not Go syntax fluency — it's distributed systems experience under legacy coupling constraints. Five production scenarios reveal whether a candidate can actually own migration work versus only build clean APIs from scratch.
-
-> **Series context:** This post is part of the [E-Commerce Re-Architecture in Vietnam](/series/magento-migration-vietnam/) series. For background on the migration architecture this team will execute, read [Zero-Downtime: Moving from Magento to Microservices](/series/magento-migration-vietnam/moving-from-magento-to-microservices/) first.
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/magento-migration-vietnam/go-engineers-vietnam-migration-vetting/)
 
 ---
 
-## Why Generic Go Interviews Fail for Migration Work
+> **Prerequisite:** Read [Part 11 — Deconstructing the Ecosystem by Domain](/series/magento-migration-vietnam/deconstructing-ecommerce-service-details-domain/) for service boundaries.
 
-The flowchart below outlines the technical assessment process for evaluating whether a Go candidate possesses critical migration capabilities, including Saga orchestration, Debezium CDC synchronization, and EAV database decomposition.
+# Vetting Go Engineers in Vietnam: 5 Production Migration Scenarios
+
+**Answer-first:** Vetting senior Go engineers for a Magento re-architecture project requires evaluating **distributed systems migration competency** rather than basic greenfield syntax or algorithmic trivia. Technical interview scorecards must stress-test five concrete production scenarios: **1) Distributed Saga Rollbacks** during gateway failures, **2) Debezium CDC Event Deduplication**, **3) Zero-Downtime Dual-Write Identity Mapping (`magento_id_map`)**, **4) Redis Distributed Locking against Flash Sale Overselling**, and **5) Zero-Allocation Memory Pooling** under 10,000 concurrent goroutines.
+
+A developer who can write a clean Go REST API from scratch is not necessarily qualified to dismantle a live, high-volume Magento monolith.
+
+Migration engineering is significantly harder than greenfield development: it requires operating inside messy legacy constraints, synchronizing databases asynchronously, and designing for graceful degradation during multi-month cutovers.
+
+---
+
+## 1. Technical Vetting Funnel Topology
 
 ```mermaid
-graph TD
-    Cand["Interview Candidate"] --> Tech["Technical Assessment"]
-    Tech -->|"Scenario 1"| Saga["Saga Pattern Failure Handling"]
-    Tech -->|"Scenario 2"| CDC["Debezium CDC Sync & Dual Write"]
-    Tech -->|"Scenario 3"| SQL["EAV Schema to Postgres JSONB"]
+flowchart TD
+    Candidate["Candidate Pipeline (Senior Go Vietnam)"] --> Stage1["1. Architecture Screening (45 Min)<br/>DDD boundaries & Strangler Fig concepts"]
+    
+    Stage1 --> Stage2["2. Live Coding: Concurrency & Goroutine Safety (60 Min)<br/>Worker pools, context cancellation, sync.Pool"]
+    
+    Stage2 --> Stage3["3. System Design: 5 Migration Scenarios (90 Min)<br/>Debezium CDC, Saga rollback, distributed locks"]
+    
+    Stage3 --> Stage4["4. Cultural & Asynchronous Communication Check (30 Min)<br/>Loom review, RFC writing, English precision"]
+    
+    Stage4 --> Decision{"Hiring Decision"}
+    Decision -->|"Pass All 5 Gates"| Offer["Extend Senior / Lead Offer ($3,500 - $5,500/mo)"]
+    Decision -->|"Fails Distributed Scenarios"| Reject["Reject Candidate"]
 ```
 
-Most Go interview guides test the wrong skills for migration projects.
+---
 
-They evaluate goroutine syntax, channel patterns, and clean API design — all relevant for greenfield services. But a Magento→Go migration engineer's job in months 1–6 is not building clean services. It's running two systems simultaneously without losing orders.
+## 2. Five Production Migration Interview Scenarios
 
-The failure profile looks like this: a candidate passes every standard Go interview. They join the migration team. In week 3, they try to replace Magento's `quote` table logic with a direct service cutover — not understanding that `quote` is coupled to 6 extensions, 2 payment gateways, and 15 Magento observers. The team loses 3 weeks recovering from a bad dual-write setup.
+```mermaid
+flowchart LR
+    Scenario1["Scenario 1:<br/>Saga Rollback Failure"] --> Test1["Can they design compensating transactions with idempotency?"]
+    Scenario2["Scenario 2:<br/>Debezium Binlog Outage"] --> Test2["Do they understand Kafka offsets and outbox deduplication?"]
+    Scenario3["Scenario 3:<br/>Flash Sale Lock Spikes"] --> Test3["Can they implement Redlock with lease expiration?"]
+    Scenario4["Scenario 4:<br/>Goroutine Memory Leak"] --> Test4["Do they master context propagation and sync.Pool allocation?"]
+    Scenario5["Scenario 5:<br/>EAV UUID Mapping"] --> Test5["Can they handle dual-write primary key translation?"]
+```
 
-The skills that prevent this failure are not taught in Go courses. They come from experience with: Saga patterns, CDC (Change Data Capture), dual-write consistency, and legacy data mapping.
+### Scenario Breakdown & Evaluation Criteria
 
-Here are the five interview scenarios that surface these skills — or their absence.
+1. **Scenario 1: Distributed Saga Compensation**: Ask the candidate to write an order coordinator where Step 1 (Inventory Reserve) succeeds, Step 2 (Payment Authorize) fails, and the network crashes while attempting the compensation step. *Green Signal*: Candidate implements persistent outbox retries with exponential backoff and idempotency keys.
+2. **Scenario 2: CDC Event Ordering & Deduplication**: Ask how they prevent duplicate order event processing when Debezium crashes and replays 5 minutes of binlog events from its last checkpoint. *Green Signal*: Candidate utilizes Redis bloom filters or database unique constraints rather than relying on Kafka partition ordering alone.
+3. **Scenario 3: Flash Sale Distributed Locking**: Ask them to prevent 2,000 concurrent goroutines from overselling 10 remaining items in stock. *Green Signal*: Candidate rejects raw MySQL `SELECT FOR UPDATE` and implements Redis atomic decrements (`DECRBY`) or Redlock with explicit TTLs.
+4. **Scenario 4: High-Concurrency Goroutine Leak Prevention**: Provide code containing an unbuffered channel and an un-cancelled context causing thousands of goroutines to leak during HTTP timeouts. *Green Signal*: Candidate identifies leak within 3 minutes and instruments `pprof` goroutine stack traces.
+5. **Scenario 5: Legacy Integer to UUIDv7 Translation**: Ask how they bridge Magento's 32-bit integer auto-increments with microservice UUIDv7 identifiers during a 6-month dual-write window. *Green Signal*: Candidate designs an immutable bidirectional lookup table with local LRU caching.
 
 ---
 
-## The Vetting Framework: What Migration Engineers Actually Do
+## 3. Production Code Challenge: Goroutine Worker Pool with Context Cancellation
 
-Before the scenarios, understand the three phases of a Strangler Fig migration and which engineer skills each phase requires:
-
-| Phase | Duration | Critical Skills |
-|-------|----------|----------------|
-| **Phase 1:** Dual-read setup | Weeks 1–6 | Debezium CDC, event schemas, read routing |
-| **Phase 2:** Dual-write + validation | Weeks 7–16 | Saga orchestration, idempotency, reconciliation workers |
-| **Phase 3:** Cutover + hot standby | Weeks 17–24 | Feature flags, traffic splitting, rollback readiness |
-
-An engineer who can only do Phase 3 is a deployment engineer, not a migration architect. The value is in Phases 1 and 2.
-
----
-
-## Scenario 1: Decomposing the `sales_order` EAV Table
-
-**The question:**
-
-> "Our Magento `sales_order` table has 90+ columns. In addition, order attributes are spread across `sales_order_varchar`, `sales_order_int`, `sales_order_decimal`, and `sales_order_text`. How do you decompose this into bounded contexts in your Go service design? What are the first 3 data modeling decisions you make?"
-
-**What a strong answer looks like:**
-
-- Identifies that `sales_order` is NOT one bounded context — it contains Order (business contract), Fulfillment (logistics state), Payment (financial record), and Customer Reference (identity link) as separate domains
-- Immediately surfaces the EAV-to-flat-model problem: EAV joins require 10–15 JOINs per product query; the first migration step is building a projection (materialized view) in a flat Postgres table
-- Asks: "Which attributes are core order data versus which are extension-injected?" — because Magento extensions inject attributes into the EAV tables, and these must be audited separately
-- Proposes an `order_id` bridge: keeps Magento's integer `entity_id` mapped to new UUID via an `order_id_map` table during dual-write phase
-
-**Red flags:**
-- "We'd just SELECT * from sales_order and map to a Go struct" — shows no understanding of EAV structure
-- No mention of extension-injected attributes — will discover them in production
-- Proposes creating the UUID schema immediately without addressing the `magento_id_map` bridge
-
-**The EAV problem in numbers:** Magento's EAV model joins 10–15 tables per product query. One category page load triggers 200–500 SQL queries on an unoptimized store. The first migration deliverable is eliminating this overhead via a flat Postgres projection.
-
----
-
-## Scenario 2: The Integer-to-UUID Translation Problem
-
-**The question:**
-
-> "Magento uses sequential integer `entity_id` values across all core tables. Your new Go microservices use UUID v4. You're in a dual-write phase where both systems process orders simultaneously. How do you design the ID translation layer, and where does it live?"
-
-- Proposes a dedicated `magento_id_map` table (or service) that maps every Magento integer ID to its corresponding UUID — not embedded logic in individual services
-- Understands the write-order problem: when a new order is created, which system generates the canonical ID? (Answer: during migration, Magento generates the integer ID first; the new service assigns UUID and registers the mapping atomically)
-- Handles the "gap" problem: Magento's auto-increment IDs can have gaps (failed transactions, deleted records). The migration worker must account for these without treating them as missing records
-- Discusses what happens at cutover: once Magento is decommissioned, the `magento_id_map` becomes read-only historical reference for order history lookups
-
-**Red flags:**
-- "We'd use the Magento integer ID as the UUID" — not a UUID, breaks distributed ID generation assumptions
-- No mention of atomicity during mapping registration — creates race conditions under dual-write
-- No plan for historical order lookups post-cutover
-
-**Why this matters:** A system without a clean ID translation layer creates silent data corruption during dual-write. Orders appear in one system but not the other. Support tickets spike. The rollback happens in production.
-
----
-
-## Scenario 3: Debezium CDC vs. Polling — When and Why
-
-**The question:**
-
-> "We're evaluating how to sync Magento MySQL updates to our Go inventory service during dual-write. Should we use Debezium CDC (MySQL binlog streaming) or a polling worker that queries `updated_at > last_checked`? Make the call and justify it."
-
-- Chooses Debezium CDC for the inventory sync specifically — because inventory changes happen at high frequency during flash sales (stock reservations, releases, adjustments), and polling on `updated_at` misses rapid successive updates that overwrite each other within one polling interval
-- Articulates the binlog advantage: Debezium captures every row-level change, not just the last state — critical for inventory where a stock reservation followed immediately by a release looks like "no change" to a polling worker
-- Identifies where polling is acceptable: low-frequency, low-risk data like product descriptions, category assignments, customer profile updates
-- Discusses the operational cost: Debezium requires MySQL binlog enabled, Kafka as the event backbone, schema registry for CDC event schemas — not free to operate, justified only for high-frequency or high-criticality data
-
-**Red flags:**
-- "Polling is simpler, let's start there for everything" — will lose inventory events under load
-- No awareness of Debezium's binlog prerequisites
-- Treats CDC as always the right answer without knowing the operational cost
-
-**Tiki Vietnam uses this stack:** Tiki's engineering team runs Kafka for event-driven async workflows between services — the same architectural pattern Debezium feeds. This is not theoretical; it's the production standard for Vietnam's top e-commerce platform.
-
----
-
-## Scenario 4: Saga Compensation vs. Database Rollback
-
-**The question:**
-
-> "A customer places an order. Your Order service creates the order (Go). The Inventory service reserves stock (Go). The Payment service charges the card (Go). The Payment charge fails. How do you roll back the inventory reservation? Walk me through exactly how you implement this."
-
-- Correctly identifies this as a Saga pattern scenario — specifically the **Choreography Saga** for simpler flows or **Orchestration Saga** for complex ones
-- For inventory rollback: the Payment service publishes a `payment.failed` event to Kafka; the Inventory service subscribes and executes a compensating transaction (`ReleaseStockReservation`) with the original `reservation_id`
-- Emphasizes idempotency: the compensating transaction must be safe to execute multiple times (at-least-once delivery from Kafka means duplicates happen). The `reservation_id` is the idempotency key
-- Discusses what happens if the compensating transaction itself fails: dead-letter queue, manual intervention runbook, and Slack alert to the on-call engineer
-- Does NOT suggest database-level 2PC (two-phase commit) — correctly identifies that distributed 2PC across Go microservices is impractical and breaks service isolation
-
-**Red flags:**
-- "We'd use a database transaction that spans both services" — 2PC in distributed systems, shows monolith thinking
-- No mention of idempotency — will create double-compensations under message redelivery
-- No plan for compensation failure — assumes compensating transactions always succeed
-
-**The consultant's take:** In practice, most teams underestimate Saga complexity by 40–60% during scoping. The rollback logic alone for a 4-service checkout requires 8 compensating transactions, each with its own idempotency mechanism. Budget for this explicitly.
-
----
-
-## Scenario 5: Strangler Fig Feature Flag Architecture
-
-**The question:**
-
-> "You're running Magento and Go checkout in parallel. You need to route 5% of checkout traffic to the new Go service for validation, then ramp to 50%, then 100% over 6 weeks. How do you implement this without modifying the frontend? Where does the routing logic live?"
-
-- Routes at the **API gateway layer** (Kong, Nginx, or AWS ALB) — not in the frontend, not in either backend service. This keeps both services unaware of the split
-- Uses a **session-stable hash** (e.g., hash of `customer_id mod 100 < 5`) rather than random routing — ensures a customer who starts checkout on the Go service completes it there, not mid-flow on Magento
-- Builds a **shadow mode** capability: Go service receives all requests but only writes to its own database when the customer is in the target percentage; otherwise processes but discards the result. This allows validation without write risk
-- Defines **graduation criteria** before starting traffic ramp: error budget < 0.1%, P99 latency < 200ms, at least 7 days at each traffic level before advancing
-- Plans the **kill switch**: a single feature flag toggle that routes 100% back to Magento within 30 seconds if error budget burns
-
-**Red flags:**
-- Routing logic in the frontend ("we'd add a JavaScript A/B flag") — creates visible flicker and can't easily be killed
-- No session stability — customers mid-checkout get randomly routed between systems
-- No graduation criteria — "we'll just watch it and increase traffic when it seems okay"
-
----
-
-## The Vietnamese Go Ecosystem: Why This Pool Exists
-
-There is a common assumption that Vietnam engineers are primarily strong in Java/PHP and weak in Go. The data contradicts this for senior-level talent.
-
-**Evidence of Vietnam Go production maturity:**
-- **ZaloPay** — Vietnam's leading digital payment app — maintains a public Go OSS library covering distributed transactions, circuit breakers, and fault tolerance patterns (confirmed via github.com)
-- **Tiki** — Vietnam's #2 e-commerce platform — runs Go microservices on GKE, confirmed via multiple sources including tiki.vn engineering job postings
-- **200lab.io** — Vietnam-based Go + microservices training platform actively training the pipeline
-- **ITviec Go job postings** — Companies actively hiring senior Go engineers include Tiki, Sendo, ZaloPay, MoMo, One Mount Group, Kyanon Digital, and Dwarves Foundation
-
-The engineer who has built production Go services at Tiki or ZaloPay has solved the exact same distributed transaction problems you need for a Magento migration. The salary difference is not a quality difference — it's a market difference.
-
----
-
-## Green Signals and Red Flags Summary
-
-**Green signals — hire for migration:**
-
-| Signal | Why it matters |
-|--------|---------------|
-| Can describe a Saga they implemented, with compensation failure handling | Production Saga experience, not textbook |
-| Has worked on a "strangler fig" or incremental service extraction (any language) | Understands the dual-system operational overhead |
-| Understands idempotency and can give a concrete implementation | Critical for dual-write correctness |
-| Can explain why 2PC doesn't work across microservices | Distributed systems thinking, not monolith thinking |
-| Has production Kafka/Debezium experience | Will not underestimate CDC operational cost |
-| Can describe a production incident they diagnosed with distributed tracing | Real production debugging experience |
-
-**Red flags — do not hire for migration:**
-
-| Red Flag | Risk |
-|----------|------|
-| "We'd just SELECT * from the Magento table" | Will miss EAV complexity entirely |
-| Only Gin CRUD API experience | No distributed systems exposure |
-| "Yes" to every requirement in the first call | Saving-face response — needs probing |
-| Cannot explain goroutine scheduler basics | Greenfield-only; won't debug concurrency in production |
-| Never used `go race` or pprof | No production debugging tools experience |
-| No experience with message queues | Cannot implement event-driven migration sync |
-
----
-
-## Practical Hiring Process
-
-**Step 1 — Technical screen (1 hour):**
-Use Scenarios 2 and 4 above. These are the quickest signal: ID translation reveals data modeling maturity; Saga compensation reveals distributed systems depth.
-
-**Step 2 — Architecture review (2 hours):**
-Ask the candidate to design a dual-write sync architecture for inventory, starting from a whiteboard. Evaluate their identification of failure modes, not just the happy path.
-
-**Step 3 — Code review (take-home, 48 hours):**
-Provide a simplified Magento `sales_order` table schema. Ask them to write a Go CDC event handler that processes `order.updated` events idempotently and updates a flat Postgres projection. Evaluate: idempotency key design, error handling, context propagation.
-
-**Step 4 — Reference check:**
-Ask specifically: "Did this engineer work on a migration or refactoring project, or only on greenfield services?" Past migration experience is the single best predictor of success on your project.
-
----
-
-## Migration Event Handler Benchmarks
-
-Evaluating Go event handler throughput during dual-write CDC replication demonstrates high efficiency under load:
+A standard technical screening task evaluating concurrency control, graceful termination, and backpressure:
 
 ```go
 package main
 
 import (
+	"context"
 	"fmt"
-	"testing"
+	"sync"
+	"time"
 )
 
-type MigrationEventHandler struct {
-	processed map[string]bool
+type Job struct {
+	ID    int
+	SKU   string
+	Price float64
 }
 
-func (h *MigrationEventHandler) ProcessEvent(eventID string) bool {
-	if h.processed[eventID] {
-		return false
+func WorkerPool(ctx context.Context, numWorkers int, jobs <-chan Job) <-chan string {
+	results := make(chan string, numWorkers*2)
+	var wg sync.WaitGroup
+
+	for i := 0; i < numWorkers; i++ {
+		wg.Add(1)
+		go func(workerID int) {
+			defer wg.Done()
+			for {
+				select {
+				case <-ctx.Done():
+					fmt.Printf("[Worker %d] Context cancelled, shutting down gracefully.\n", workerID)
+					return
+				case job, ok := <-jobs:
+					if !ok {
+						return
+					}
+					// Process item simulation
+					res := fmt.Sprintf("Worker %d processed SKU %s at $%.2f", workerID, job.SKU, job.Price)
+					select {
+					case results <- res:
+					case <-ctx.Done():
+						return
+					}
+				}
+			}
+		}(i)
 	}
-	h.processed[eventID] = true
-	return true
-}
 
-// BenchmarkMigrationEventHandler measures Go event handler idempotency check and database write latency.
-func BenchmarkMigrationEventHandler(b *testing.B) {
-	handler := &MigrationEventHandler{processed: make(map[string]bool)}
-	eventID := "EVT-99201"
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		key := fmt.Sprintf("%s-%d", eventID, i%1000)
-		handler.ProcessEvent(key)
-	}
+	go func() {
+		wg.Wait()
+		close(results)
+	}()
+
+	return results
 }
 ```
-
-```
-BenchmarkMigrationEventHandler-16    50000000    35.1 ns/op    0 B/op    0 allocs/op
-```
-
-## Frequently Asked Questions (FAQ)
-
-Executing zero-downtime Magento-to-Go platform migrations requires adhering to core architectural guidelines and engineering team standards.
-
-{{< faq "What key skills differentiate senior Go migration engineers?" >}}
-Senior migration engineers understand legacy database coupling, zero-downtime dual-write strategies, and distributed transaction compensation.
-{{< /faq >}}
-
-{{< faq "Why test candidates on CDC and Saga patterns?" >}}
-Magento migrations require extracting monolithic modules into Go microservices while maintaining real-time data synchronization with legacy systems.
-{{< /faq >}}
-
-{{< faq "How many senior Go engineers with migration experience exist in Vietnam?" >}}
-Estimate 200–400 senior engineers in Ho Chi Minh City and Hanoi with both Go production experience and distributed systems depth appropriate for migration work.
-{{< /faq >}}
-
-For assistance in assembling or auditing senior Go engineering teams in Vietnam, contact our technical leadership via [Vietnam Developer Vetting & Hiring Services](/hire/).
 
 ---
 
-*Next in series: [Magento Migration Cost: Vietnam vs US/EU Team (2026 Model) →](/series/magento-migration-vietnam/magento-migration-cost-vietnam-vs-us-eu/)*
+## 4. Candidate Scoring Matrix: Greenfield vs Migration Engineers
 
-*Previous: [Vetting Magento Developers in Vietnam: Interview Playbook →](/series/magento-migration-vietnam/magento-development-in-vietnam/)*
+| Competency Area | Junior / Mid Candidate | Senior Migration Engineer (Hire Signal) |
+| :--- | :--- | :--- |
+| **Concurrency Mastery** | Uses `time.Sleep` to avoid race conditions | Uses `sync.Mutex`, channels, and `errgroup` |
+| **Error Handling** | Ignores errors or prints to stdout | Implements custom domain errors and telemetry spans |
+| **Distributed Transactions** | Assumes network calls never fail | Designs compensating sagas and outbox queues |
+| **Database Knowledge** | Relies entirely on ORM abstractions (GORM)| Writes optimized raw SQL, understands isolation levels |
+| **Legacy Code Attitude** | Refuses to inspect PHP; demands greenfield | Analyzes legacy PHP logic to extract true business rules |
 
-## Architectural Context & Pillar References
+---
 
-- [Magento Development & Outsourcing Vietnam](/series/magento-migration-vietnam/magento-development-in-vietnam/)
-- [Why Migrate Magento to Go Microservices](/series/magento-migration-vietnam/why-migrate-magento-to-microservices/)
+## ❓ Frequently Asked Questions (FAQ)
 
-🔗 **Next Step:** Continue to [Post Migration Operations Vietnam Go Team](/series/magento-migration-vietnam/post-migration-operations-vietnam-go-team/) for the following module in the series.
+{{< faq q="Why is evaluating algorithmic LeetCode questions ineffective for hiring migration engineers?" >}}
+LeetCode puzzles measure memorized binary tree algorithms, which have zero correlation with real-world migration challenges. A migration engineer's daily reality consists of debugging MySQL deadlock traces, handling network timeouts between PHP and Go, structuring Kafka consumer consumer groups, and designing resilient rollback playbooks.
+{{< /faq >}}
+
+{{< faq q="What salary range should a US/EU company expect to pay a senior Go migration lead in Vietnam?" >}}
+A top-tier Senior Go Engineer with 6–8 years of experience capable of driving an enterprise migration commands between $3,200 and $4,800 USD per month ($38,000–$58,000/year). A Principal Distributed Systems Architect ranges from $4,800 to $6,500 USD per month. This represents an 70% savings compared to equivalent US talent ($180,000–$250,000/year).
+{{< /faq >}}
+
+{{< faq q="How do you assess a candidate's readiness for asynchronous remote work?" >}}
+Assign a take-home architectural review task: provide a 2-page specification of an existing Magento checkout bottleneck and ask the candidate to record a 5-minute Loom walkthrough and write an architectural decision record (ADR). This immediately evaluates their English technical clarity, architectural depth, and asynchronous communication discipline.
+{{< /faq >}}
+
+---
+
+🔗 **Next Step:** Continue to [Part 13 — Magento Migration Cost: Vietnam vs US/EU Team (2026 Model)](/series/magento-migration-vietnam/magento-migration-cost-vietnam-vs-us-eu/).
