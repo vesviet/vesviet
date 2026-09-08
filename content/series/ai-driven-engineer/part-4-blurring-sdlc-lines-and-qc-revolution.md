@@ -20,10 +20,13 @@ series: ["ai-driven-engineer"]
 weight: 5
 ---
 
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/part-4-blurring-sdlc-lines-and-qc-revolution/)
+
+---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — The 10X Productivity Reality](/series/ai-driven-engineer/part-3-the-10x-productivity-reality/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** The traditional software development lifecycle (SDLC)—characterized by strict wall-separated handoffs between Business Analysts, Developers, QA Testers, and DevOps Engineers—is obsolete. AI automation collapses these boundaries into a unified Quality Control (QC) feedback loop where developers execute real-time AI test generation, security scanning, and infrastructure synthesis during active coding. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions,.
+> **Answer-first:** The traditional software development lifecycle (SDLC)—characterized by strict wall-separated handoffs between Business Analysts, Developers, QA Testers, and DevOps Engineers—is obsolete. AI automation collapses these boundaries into a unified Quality Control (QC) feedback loop where developers execute real-time AI test generation, security scanning, and infrastructure synthesis during active coding. Modern quality engineering replaces brittle manual testing with automated Mutation Testing, property-based invariants, and vision-guided browser agents that catch regressions during the active authoring cycle.
 
 **Key Takeaways**:
 - **Zero Handoff Friction**: AI agents generate unit tests, end-to-end integration mocks, and terraform scripts directly alongside feature code.
@@ -34,8 +37,24 @@ weight: 5
 
 **[Quality Control Pipeline Topology] [Architecture Diagram]:** Historically, the Software Development Lifecycle (SDLC) operated as a sequential assembly line:
 
-```text
-Product Requirement (BA) -> Code Typing (Dev) -> Manual Testing (QA) -> Deployment (DevOps)
+```mermaid
+flowchart LR
+    subgraph LegacySDLC ["Legacy SDLC: Sequential Handoff Bottlenecks"]
+        L1["BA: Requirements"] --> L2["Dev: Manual Coding"]
+        L2 --> L3["QA: Manual Testing"]
+        L3 --> L4["DevOps: Deployment"]
+    end
+
+    subgraph ModernQC ["AI-Native SDLC: Continuous Shift-Left QC Mesh"]
+        M1["Architect: Spec Contract"] --> M2["AI Agent: Code + Test Synthesis"]
+        M2 --> M3["CI/CD: Mutation Testing & SARIF Review"]
+        M3 --> M4["Continuous Auto-Deploy"]
+    end
+
+    LegacySDLC -.->|"Replaced By"| ModernQC
+
+    style LegacySDLC fill:#fadbd8,stroke:#e74c3c,stroke-width:2px
+    style ModernQC fill:#d5f5e3,stroke:#27ae60,stroke-width:2px
 ```
 
 This rigid isolation created massive feedback delays. A bug introduced by a developer on Monday might not be flagged by QA until Thursday, forcing the developer to drop their current work, context-switch back to the old codebase, and apply a hotfix.
@@ -289,3 +308,19 @@ The primary risk is deploying code with undetected logical flaw loops or securit
 - [Part 6 — From Coder to Orchestrator: Swarms & Workflows](/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/)
 - [Part 9 — Building AI-Native Architecture](/series/ai-driven-engineer/part-9-building-ai-native-architecture/)
 - [Part 10 — Production Evals & CI/CD Guardrails](/series/ai-data-engineering-pipeline/part-10-production-evals-cicd/)
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+{{< faq q="What critical testing flaw does Mutation Testing expose in AI-generated test suites?" >}}
+AI models frequently generate unit test suites that boast 100% line coverage while containing vacuous or missing assertions. Mutation testing introduces synthetic defects (mutants) into the source code; if the test suite continues to pass without failing, the tests are ineffective. A Mutation Score exceeding 80% is required for verified quality.
+{{< /faq >}}
+
+{{< faq q="How does the role of a Quality Assurance (QA) engineer evolve in 2026?" >}}
+QA engineers transition into Quality & Evaluation Engineers. Instead of manually clicking buttons or writing brittle Selenium scripts, they curate golden benchmark datasets, build automated evaluation pipelines using Playwright MCP servers, and audit system-wide reliability metrics.
+{{< /faq >}}
+
+{{< faq q="How do Multimodal Vision Agents verify complex user interface workflows?" >}}
+Vision agents process live browser screenshots directly through multimodal LLMs, verifying that UI elements render without layout shifts, visual overlapping, or CSS breakages. They autonomously navigate dynamic single-page applications without relying on brittle DOM selectors.
+{{< /faq >}}

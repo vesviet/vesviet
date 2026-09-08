@@ -20,10 +20,13 @@ series: ["ai-driven-engineer"]
 weight: 3
 ---
 
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/part-2-man-vs-machine-boundaries/)
+
+---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — The Death Of Code Typists](/series/ai-driven-engineer/part-1-the-death-of-code-typists/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Drawing precise operational boundaries between autonomous AI generation and mandatory human engineering oversight is essential for preventing production outages. High-risk distributed systems architecture, concurrency locks, and security compliance require human ownership, while repetitive syntax translation, test generation, and DTO mapping are delegated to AI agents. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model.
+> **Answer-first:** Drawing precise operational boundaries between autonomous AI generation and mandatory human engineering oversight is essential for preventing production outages. High-risk distributed systems architecture, concurrency locks, and security compliance require human ownership, while repetitive syntax translation, test generation, and DTO mapping are delegated to AI agents. Establishing rigorous task boundaries prevents catastrophic production failures: high-blast-radius system trade-offs remain under human ownership, while deterministic boilerplate generation is delegated to autonomous agent pipelines.
 
 As engineering organizations adopt AI code assistants and autonomous sub-agents, a critical governance question arises: *Where does the machine's autonomy end, and where must human engineering oversight begin?*
 
@@ -211,3 +214,19 @@ Proceed to Part 3 to analyze the 10x productivity myth and real engineering bott
 - [Part 5 — The Boardroom Perspective: AI Security & Privacy](/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/)
 - [Part 7 — System Design Survival: Architectural Shield](/series/ai-driven-engineer/part-7-system-design-survival/)
 - [Human-in-the-Loop Workflows & Approvals](/posts/generative-ui-with-mcp-ai-native-frontend/)
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+{{< faq q="Which software engineering tasks must never be fully delegated to autonomous AI agents?" >}}
+Tasks involving distributed data partitioning, CAP theorem consistency trade-offs, cryptographic key management, authentication boundary definition, and destructive database schema migrations must always require mandatory human architectural design and sign-off.
+{{< /faq >}}
+
+{{< faq q="How does context window degradation ('Lost in the Middle') harm software architecture?" >}}
+When massive, unindexed codebases are dumped into large context windows (200k+ tokens), the attention mechanism dilutes key architectural constraints located in the middle of the prompt. This causes the model to hallucinate non-existent internal methods or bypass security filters.
+{{< /faq >}}
+
+{{< faq q="How do engineering teams technically enforce bounded context isolation on AI coding agents?" >}}
+Teams configure root-level AGENTS.md files alongside glob-scoped .cursor/rules/*.mdc configuration rules. These configuration files restrict the agent's file discovery tools strictly to the target service directory and public upstream interface definitions.
+{{< /faq >}}

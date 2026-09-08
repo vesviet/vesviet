@@ -20,10 +20,13 @@ series: ["ai-driven-engineer"]
 weight: 4
 ---
 
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/part-3-the-10x-productivity-reality/)
+
+---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — Man Vs Machine Boundaries](/series/ai-driven-engineer/part-2-man-vs-machine-boundaries/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Claims of unconditional "10x productivity gains" from AI code assistants collapse under empirical scrutiny when teams measure end-to-end SDLC output. While AI accelerates initial code generation by 3x, it creates downstream code review bottlenecks and subtle bug injections unless paired with automated context engineering and rigorous CI/CD evals. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions,.
+> **Answer-first:** Claims of unconditional "10x productivity gains" from AI code assistants collapse under empirical scrutiny when teams measure end-to-end SDLC output. While AI accelerates initial code generation by 3x, it creates downstream code review bottlenecks and subtle bug injections unless paired with automated context engineering and rigorous CI/CD evals. Achieving genuine 10x engineering velocity requires shifting focus from raw code generation volume to continuous verification throughput, prompt prefix caching, and automated LLM-as-a-Judge review gates.
 
 Tech media headlines and marketing campaigns frequently promise that AI code assistants will instantly transform every software developer into a "10x Engineer."
 
@@ -190,3 +193,19 @@ Move to Part 4 to discover how AI merges traditional SDLC roles into unified qua
 - [Part 4 — Blurring SDLC Lines & QC Revolution](/series/ai-driven-engineer/part-4-blurring-sdlc-lines-and-qc-revolution/)
 - [Part 8 — The Junior Engineer Paradox: Upskilling in AI Era](/series/ai-driven-engineer/part-8-the-junior-paradox/)
 - [Part 10 — Production Evals & CI/CD Guardrails](/series/ai-data-engineering-pipeline/part-10-production-evals-cicd/)
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+{{< faq q="Why does unconstrained AI code generation create pull request review gridlocks?" >}}
+When individual developers generate 3x–5x more lines of code without architectural filtering, human code reviewers are overwhelmed by massive pull requests. Because manual line-by-line reading speed remains fixed at ~250 words per minute, review latency increases exponentially, creating an organizational bottleneck.
+{{< /faq >}}
+
+{{< faq q="How does Prompt Prefix Caching impact enterprise AI token FinOps?" >}}
+Prefix caching stores static repository schemas, architectural rules (AGENTS.md), and system prompts in model accelerator memory. Cache hits yield a 90% to 95% latency reduction (sub-100ms Time-to-First-Token) and an 80% to 90% cost reduction on cached prompt tokens, drastically slashing monthly API expenses.
+{{< /faq >}}
+
+{{< faq q="What are the best metrics to measure true AI engineering productivity instead of lines of code?" >}}
+Elite engineering teams rely on DORA metrics: Deployment Frequency, Lead Time for Changes, Change Failure Rate, and Mean Time to Recovery (MTTR), augmented by Code Churn percentage and Mutation Score. Measuring raw lines of code incentivizes boilerplate bloat.
+{{< /faq >}}

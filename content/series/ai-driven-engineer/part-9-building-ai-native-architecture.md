@@ -20,10 +20,13 @@ series: ["ai-driven-engineer"]
 weight: 10
 ---
 
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/part-9-building-ai-native-architecture/)
+
+---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 8 — The Junior Paradox](/series/ai-driven-engineer/part-8-the-junior-paradox/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** Building an AI-Native Architecture requires refactoring traditional backend systems from static monolithic REST endpoints into modular Domain-Driven Design (DDD) bounded contexts exposed via standardized AI protocols (MCP / gRPC). This enables autonomous agents to inspect, reason over, and execute application capabilities dynamically under zero-trust security. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model.
+> **Answer-first:** Building an AI-Native Architecture requires refactoring traditional backend systems from static monolithic REST endpoints into modular Domain-Driven Design (DDD) bounded contexts exposed via standardized AI protocols (MCP / gRPC). This enables autonomous agents to inspect, reason over, and execute application capabilities dynamically under zero-trust security. Architecting AI-native platforms requires structuring backend microservices as machine-actionable domain bounded contexts exposed via standardized Model Context Protocol (MCP 2.0) interfaces and distributed semantic caches.
 
 **Key Takeaways**:
 - **DDD Bounded Context Isolation**: Prevents agent tool call blast radius by strictly decoupling billing, identity, and inventory domains.
@@ -295,3 +298,19 @@ AI-native architectures enforce Zero-Trust by requiring AI agents to attach the 
 - [Bonus — The 90-Day Transition Blueprint](/series/ai-driven-engineer/bonus-transition-path/)
 - [Part 2 — Building Production-Grade MCP Servers in Go/Python](/series/mcp-engineering-in-production/part-2-build/)
 - [Part 1 — Context Engineering: DDD for AI](/posts/ai-native-frontend-architecture-predictions-2028/)
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+{{< faq q="What are the Four Pillars of AI-Native System Architecture in 2026?" >}}
+The Four Pillars comprise: (1) The Cognitive Intelligence Plane for model routing and semantic caching; (2) The Memory and Knowledge Mesh for codebase AST indexing and hybrid RAG; (3) The Tool Integration Mesh standardizing tool calls via MCP 2.0; and (4) Continuous Evaluation and Observability capturing OpenTelemetry GenAI semantic conventions.
+{{< /faq >}}
+
+{{< faq q="How does Semantic Caching with vector cosine distance reduce API expenditure by 70%?" >}}
+Incoming prompts are vectorized using high-speed embedding models. If the cosine distance between the incoming query and a cached vector in Redis is below 0.05 (signifying 95%+ semantic equivalence), the gateway immediately returns the cached completion in under 15ms without querying upstream foundation models.
+{{< /faq >}}
+
+{{< faq q="How does an Agentic Memory Mesh differ from traditional single-shot RAG?" >}}
+Traditional RAG executes a single vector retrieval step prior to generating a response. An Agentic Memory Mesh maintains multi-turn conversation memory, reflects on prior execution errors, dynamically invokes domain-specific tool endpoints, and continuously updates persistent knowledge graphs during multi-step reasoning.
+{{< /faq >}}

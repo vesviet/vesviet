@@ -20,6 +20,9 @@ series: ["ai-driven-engineer"]
 weight: 11
 ---
 
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/bonus-transition-path/)
+
+---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 9 — Building Ai Native Architecture](/series/ai-driven-engineer/part-9-building-ai-native-architecture/). Review it first if the terminology in this part is unfamiliar.
 
@@ -209,3 +212,19 @@ Review the complete AI-Driven Engineer series modules covering system design sur
 - [Part 7 — System Design Survival: Architectural Shield](/series/ai-driven-engineer/part-7-system-design-survival/)
 - [Part 9 — Building AI-Native Architecture](/series/ai-driven-engineer/part-9-building-ai-native-architecture/)
 - [Executive Summary: The Disruption of Naive RAG](/series/ai-data-engineering-pipeline/executive-summary/)
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+{{< faq q="What is the primary milestone of the first 30 days in the transition roadmap?" >}}
+Mastering personal development velocity: establishing an optimized AI IDE workflow (Cursor / Claude Code CLI), creating repo-level .cursor/rules/*.mdc configuration standards, and abandoning sequential manual typing in favor of Skeleton-First AST specifications.
+{{< /faq >}}
+
+{{< faq q="How do engineers scale AI-native practices across their team during Month 2?" >}}
+By formalizing repository architecture guidelines in AGENTS.md, deploying automated SARIF multi-agent review bots in GitHub Actions pull requests, and integrating Mutation Testing into CI to ensure test suites catch semantic logic regressions.
+{{< /faq >}}
+
+{{< faq q="What system architecture skills validate readiness for an AI System Architect role after 90 days?" >}}
+Deploying and managing enterprise Private AI Gateways, architecting event-driven multi-agent systems over asynchronous message brokers (NATS JetStream), implementing OpenTelemetry GenAI semantic tracing, and proving positive FinOps ROI to executive leadership.
+{{< /faq >}}

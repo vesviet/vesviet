@@ -20,10 +20,13 @@ series: ["ai-driven-engineer"]
 weight: 2
 ---
 
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/part-1-the-death-of-code-typists/)
+
+---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/series/ai-driven-engineer/executive-summary/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** The economic value of manually typing programming syntax has collapsed to zero. Modern software engineering rewards developers who design resilient system architectures, curate context windows, and enforce strict domain boundaries, replacing manual boilerplate typing with automated AI code synthesis. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context Protocol ttlMs cache invalidation parameters.
+> **Answer-first:** The economic value of manually typing programming syntax has collapsed to zero. Modern software engineering rewards developers who design resilient system architectures, curate context windows, and enforce strict domain boundaries, replacing manual boilerplate typing with automated AI code synthesis. Software engineering value has decoupled from typing speed: value is now defined by the precision of domain specifications, abstract syntax tree (AST) constraints, and architectural verification gates.
 
 For decades, software development bootcamps and university CS programs trained engineers to memorize language syntax, master IDE keyboard shortcuts, and type out repetitive boilerplate code line by line.
 
@@ -254,3 +257,19 @@ Advance to Part 2 to establish clear task boundaries between human engineers and
 - [Part 3 — The 10x Productivity Reality: Debunking the Myth](/series/ai-driven-engineer/part-3-the-10x-productivity-reality/)
 - [Part 6 — From Coder to Orchestrator: Swarms & Workflows](/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/)
 - [Part 1 — Context Engineering: DDD for AI](/posts/ai-native-frontend-architecture-predictions-2028/)
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+{{< faq q="Is learning programming language syntax still necessary for aspiring software engineers?" >}}
+While memorizing syntax quirks is no longer a career differentiator, understanding language execution fundamentals (memory allocation, thread synchronization, call stacks, and type systems) remains critical. Without these foundational mental models, an engineer cannot critically evaluate, debug, or verify AI-generated code.
+{{< /faq >}}
+
+{{< faq q="How does an AST specification differ from natural language prompting?" >}}
+Natural language prompts are inherently ambiguous, allowing the LLM to make probabilistic assumptions that frequently lead to hallucinated paths or subtle bugs. An AST specification provides formal type definitions, invariant pre-conditions, and strict interface contracts, constraining the model's solution space to provably correct implementations.
+{{< /faq >}}
+
+{{< faq q="Why has manual code writing become the cheapest phase of the modern SDLC?" >}}
+Generative reasoning models produce syntactically correct code at over 120 tokens per second for pennies per thousand lines. The true operational expense in software development lies in defining the correct business problem, ensuring distributed fault tolerance, preventing data corruption, and maintaining long-term architectural health.
+{{< /faq >}}

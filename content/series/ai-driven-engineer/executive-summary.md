@@ -20,6 +20,10 @@ series: ["ai-driven-engineer"]
 weight: 1
 ---
 
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/executive-summary/)
+
+---
+
 > **Prerequisite:** Review the previous module in the [ai-driven-engineer](/series/ai-driven-engineer/) series before proceeding.
 
 
@@ -72,6 +76,46 @@ Traditional developers spend 70% of time typing code, while AI-native system orc
 | **Core Competency** | Language-specific syntax mastery | Domain-Driven Design (DDD) & Distributed Systems |
 
 ---
+
+
+---
+
+## The 2026 AI-Native SDLC Architecture Stack
+
+To realize the productivity promise of generative AI without compromising codebase integrity, engineering organizations deploy a layered four-tier control plane:
+
+```mermaid
+flowchart TD
+    subgraph Layer1 ["Tier 1: Cognitive Intelligence & Reasoning Models"]
+        M1["Frontier Cloud Models: Claude 3.7 Sonnet / DeepSeek-R1"]
+        M2["On-Prem / Local Models: Qwen 2.5 Coder 32B (Ollama / vLLM)"]
+    end
+
+    subgraph Layer2 ["Tier 2: Governance & Protocol Control Plane"]
+        P1["Private AI Gateway (LiteLLM / Envoy AI Gateway)"]
+        P2["Model Context Protocol (MCP 2.0) Distributed Mesh"]
+        P3["Repository Governance: AGENTS.md & .cursor/rules/*.mdc"]
+    end
+
+    subgraph Layer3 ["Tier 3: Autonomous Execution & Context Engine"]
+        A1["Developer IDEs: Cursor / Windsurf / Claude Code CLI"]
+        A2["Tree-sitter AST Context Extractor & Semantic Index"]
+    end
+
+    subgraph Layer4 ["Tier 4: Verification & Quality Gates"]
+        V1["SARIF v2.1 Multi-Agent CI/CD Review Gates"]
+        V2["Mutation Testing & Playwright Agentic QA"]
+        V3["OpenTelemetry GenAI v1.30+ Tracing & Cost Breakers"]
+    end
+
+    Layer1 --> Layer2 --> Layer3 --> Layer4
+    Layer4 --> Production["Resilient Production Release"]
+
+    style Layer1 fill:#e8f8f5,stroke:#1abc9c,stroke-width:2px
+    style Layer2 fill:#fef9e7,stroke:#f1c40f,stroke-width:2px
+    style Layer3 fill:#f4ecf7,stroke:#8e44ad,stroke-width:2px
+    style Layer4 fill:#d5f5e3,stroke:#27ae60,stroke-width:2px
+```
 
 ## Production Go System Architecture Validator
 
@@ -232,3 +276,19 @@ Navigate through all nine modules of the AI-Driven Engineer series exploring pro
 - [Part 6 — From Coder to Orchestrator: Swarms & Workflows](/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/)
 - [Part 7 — System Design Survival: Architectural Shield](/series/ai-driven-engineer/part-7-system-design-survival/)
 - [Executive Summary: The Disruption of Naive RAG](/series/ai-data-engineering-pipeline/executive-summary/)
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+{{< faq q="What does SWE-bench Verified reflect regarding real-world AI capabilities in 2026?" >}}
+SWE-bench Verified evaluates autonomous agents against real, complex GitHub pull requests from high-traffic production repositories. Scores exceeding 70% prove that modern frontier models (DeepSeek-R1, Claude 3.7 Sonnet) can independently understand multi-file repository contexts, diagnose complex architectural bugs, and formulate verified multi-line code patches.
+{{< /faq >}}
+
+{{< faq q="Why does unguided AI code generation increase Code Churn by up to 350%?" >}}
+When developers blindly accept AI autocomplete without understanding architectural invariants, duplicate implementations of core business logic proliferate across the codebase. These fragmented implementations cause subtle integration regressions, requiring continuous rewrites and refactors that dramatically elevate team-wide code churn.
+{{< /faq >}}
+
+{{< faq q="How do enterprise engineering teams optimize token economics between cloud and open-source models?" >}}
+Enterprises implement an intelligent AI Gateway routing matrix: high-volume, repetitive boilerplate tasks (linting, DTO mappings, unit test drafting) are routed to self-hosted open-source models (e.g., Qwen 2.5 Coder 32B) at zero marginal token cost, while high-complexity architectural design and domain modeling are routed to frontier reasoning cloud models under Zero Data Retention (ZDR) agreements.
+{{< /faq >}}

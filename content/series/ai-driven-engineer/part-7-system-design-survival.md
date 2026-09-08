@@ -20,10 +20,13 @@ series: ["ai-driven-engineer"]
 weight: 8
 ---
 
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/part-7-system-design-survival/)
+
+---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 6 — From Coder To Orchestrator](/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** While AI assistants excel at generating localized code functions, they remain blind to holistic distributed system failures, network partition handling, and cascading degradation. System design—encompassing Circuit Breakers, Rate Limiters, Distributed Locks, and CAP theorem trade-offs—serves as the ultimate career survival shield for software engineers. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context.
+> **Answer-first:** While AI assistants excel at generating localized code functions, they remain blind to holistic distributed system failures, network partition handling, and cascading degradation. System design—encompassing Circuit Breakers, Rate Limiters, Distributed Locks, and CAP theorem trade-offs—serves as the ultimate career survival shield for software engineers. Mastering distributed resilience primitives—Circuit Breakers, Sliding-Window Rate Limiters, Distributed Mutexes, and CAP theorem consistency boundaries—protects production platforms against probabilistic AI hallucination failures.
 
 As AI code generation models become increasingly sophisticated at writing localized function syntax, developers frequently ask: *What core engineering skills will protect my career value over the next decade?*
 
@@ -41,16 +44,16 @@ Architectural resilience shields applications from AI code defects by wrapping d
 
 ```mermaid
 stateDiagram-v2
-    ["*"] --> Closed State
+    [*] --> Closed
     
-    Closed State --> Closed State: Request Success ("Reset Failure Counter")
-    Closed State --> Open State: Failure Rate > 50% Threshold ("Tripped")
+    Closed --> Closed: Request Success (Reset Failure Counter)
+    Closed --> Open: Error Rate > 50% Threshold (Tripped)
     
-    Open State --> Open State: Incoming Requests Fail Fast ("Zero Downstream Load")
-    Open State --> HalfOpen State: Sleep Window Timeout Expires ("e.g. 5s")
+    Open --> Open: Incoming Requests Fail Fast (Zero Downstream Load)
+    Open --> HalfOpen: Sleep Window Timeout Expires (e.g. 5s)
     
-    HalfOpen State --> Closed State: Probe Requests Succeed ("System Recovered")
-    HalfOpen State --> Open State: Probe Request Fails ("Reset Sleep Window")
+    HalfOpen --> Closed: Probe Requests Succeed (System Recovered)
+    HalfOpen --> Open: Probe Request Fails (Reset Sleep Window)
 ```
 
 ### Critical Distributed Resilience Patterns
@@ -234,3 +237,19 @@ Move to Part 8 to explore how junior engineers can upskill rapidly using AI ment
 - [Part 8 — The Junior Engineer Paradox: Upskilling in AI Era](/series/ai-driven-engineer/part-8-the-junior-paradox/)
 - [Part 9 — Building AI-Native Architecture](/series/ai-driven-engineer/part-9-building-ai-native-architecture/)
 - [Load Balancing & API Gateway in Go](/series/system-design/02-load-balancing-api-gateway-go/)
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+{{< faq q="Why is the Circuit Breaker pattern the primary defense against AI code flaws?" >}}
+AI models excel at generating localized business logic but lack awareness of holistic network topologies. If a downstream microservice experiences latency degradation, unshielded AI-generated code will continue firing requests, exhausting connection pools and causing cascading cluster collapse. Circuit breakers isolate failing dependencies immediately.
+{{< /faq >}}
+
+{{< faq q="How do Token Bucket and Leaky Bucket algorithms differ in distributed rate limiting?" >}}
+The Token Bucket algorithm allows sudden bursts of legitimate traffic up to the bucket's maximum capacity while maintaining a steady average refill rate, making it ideal for standard web APIs. The Leaky Bucket algorithm outputs requests at a strictly constant rate, smoothing traffic spikes for sensitive downstream queues.
+{{< /faq >}}
+
+{{< faq q="When navigating CAP theorem trade-offs, should AI-driven systems prioritize Consistency or Availability?" >}}
+Priority depends strictly on Domain-Driven Bounded Contexts. Financial ledgers, user authentication, and inventory allocation aggregates require strict linearizable Consistency (CP), whereas semantic search queries, user recommendation feeds, and OpenTelemetry logging pipelines prioritize high Availability (AP).
+{{< /faq >}}

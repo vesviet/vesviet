@@ -20,10 +20,13 @@ series: ["ai-driven-engineer"]
 weight: 7
 ---
 
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/)
+
+---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 5 — The Bod Perspective Risk And Privacy](/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/). Review it first if the terminology in this part is unfamiliar.
 
-> **Answer-first:** The transition from individual programmer to Systems Orchestrator requires managing multi-agent AI swarms rather than writing single-threaded code lines. By establishing event-driven agent dispatchers, specialized role handoffs (Frontend, Backend, Database, Security), and channel synchronization in Go, orchestrators achieve parallelized feature implementation with 80% lower cycle times. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026.
+> **Answer-first:** The transition from individual programmer to Systems Orchestrator requires managing multi-agent AI swarms rather than writing single-threaded code lines. By establishing event-driven agent dispatchers, specialized role handoffs (Frontend, Backend, Database, Security), and channel synchronization in Go, orchestrators achieve parallelized feature implementation with 80% lower cycle times. Orchestrating specialized multi-agent swarms via asynchronous event-driven message brokers prevents circular deadlocks and compounding latency while unlocking parallelized development speed.
 
 In early AI-assisted development, engineers interacted with a single AI chat window in a sequential dialogue loop. The developer typed a prompt, waited for code output, pasted it into their editor, and repeated the manual cycle.
 
@@ -248,3 +251,19 @@ Proceed to Part 7 to examine system design survival techniques and resilience ar
 - [Part 7 — System Design Survival: Architectural Shield](/series/ai-driven-engineer/part-7-system-design-survival/)
 - [Part 9 — Building AI-Native Architecture](/series/ai-driven-engineer/part-9-building-ai-native-architecture/)
 - [Part 6 — From Passive RAG to Autonomous Agents](/series/ai-data-engineering-pipeline/part-6-rise-of-ai-agents/)
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+{{< faq q="Why is asynchronous event-driven choreography superior to synchronous REST chaining for AI agents?" >}}
+Synchronous REST chains suffer from compounding latency (each reasoning turn takes 3–5 seconds) and are vulnerable to circular deadlocks if Agent A waits for Agent B while Agent B queries Agent A. Event-driven message brokers (NATS JetStream) decouple agent executions, support retry semantics, and isolate failure blast radiuses.
+{{< /faq >}}
+
+{{< faq q="How do systems orchestrators prevent runaway recursive agent execution loops?" >}}
+Orchestrators inject unique trace IDs and immutable hop counters into every message header. If a message exceeds a predefined hop threshold (e.g., 8 hops) or exceeds an allocated cost envelope (e.g., $4.00), the message broker automatically aborts execution and dispatches the task to a human dead-letter queue.
+{{< /faq >}}
+
+{{< faq q="What role does Model Context Protocol (MCP 2.0) play in multi-agent swarms?" >}}
+MCP 2.0 provides standard JSON-RPC interfaces for tool discovery, execution, and security attestation. Rather than writing brittle custom glue code for every tool, any sub-agent can dynamically discover and execute sandboxed database queries, git operations, or telemetry searches through universal MCP endpoints.
+{{< /faq >}}

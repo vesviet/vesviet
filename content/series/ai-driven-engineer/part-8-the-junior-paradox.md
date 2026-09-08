@@ -20,6 +20,9 @@ series: ["ai-driven-engineer"]
 weight: 9
 ---
 
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/part-8-the-junior-paradox/)
+
+---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 7 — System Design Survival](/series/ai-driven-engineer/part-7-system-design-survival/). Review it first if the terminology in this part is unfamiliar.
 
@@ -189,3 +192,19 @@ Continue to Part 9 to master building AI-native architecture and bounded context
 - [Part 3 — The 10x Productivity Reality: Debunking the Myth](/series/ai-driven-engineer/part-3-the-10x-productivity-reality/)
 - [Part 7 — System Design Survival: Architectural Shield](/series/ai-driven-engineer/part-7-system-design-survival/)
 - [Bonus — The 90-Day Transition Blueprint](/series/ai-driven-engineer/bonus-transition-path/)
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+{{< faq q="What is the 'Junior Engineer Paradox' and why is it dangerous for the tech industry?" >}}
+The paradox arises when enterprises automate entry-level CRUD coding with AI and stop hiring junior engineers. Without entry-level roles, the apprenticeship pipeline collapses, leaving organizations with no mechanism to cultivate senior systems architects. Furthermore, juniors who rely entirely on autocomplete suffer cognitive atrophy and fail to develop debugging intuition.
+{{< /faq >}}
+
+{{< faq q="How does Socratic AI Mentorship accelerate junior developer upskilling?" >}}
+Instead of generating ready-to-paste code, a Socratic AI mentor is configured to prompt the engineer with architectural questions, highlight unhandled boundary conditions, and challenge design assumptions. This active recall method builds deep conceptual understanding 3x faster than traditional passive coding.
+{{< /faq >}}
+
+{{< faq q="What foundational engineering disciplines remain permanent invariants despite AI advancements?" >}}
+Data structures and algorithmic complexity (Big-O), memory layouts (Stack vs Heap, pointer arithmetic), operating systems internals (syscalls, file descriptors, virtual memory), networking fundamentals (TCP/IP, HTTP/3, TLS handshakes), and concurrency primitives (race conditions, deadlocks, atomic operations).
+{{< /faq >}}

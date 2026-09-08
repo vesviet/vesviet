@@ -20,6 +20,9 @@ series: ["ai-driven-engineer"]
 weight: 6
 ---
 
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/)
+
+---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Blurring Sdlc Lines And Qc Revolution](/series/ai-driven-engineer/part-4-blurring-sdlc-lines-and-qc-revolution/). Review it first if the terminology in this part is unfamiliar.
 
@@ -180,3 +183,19 @@ Advance to Part 6 to learn how to transition from individual coding to multi-age
 - [Part 7 — System Design Survival: Architectural Shield](/series/ai-driven-engineer/part-7-system-design-survival/)
 - [Part 5 — Enterprise Security, RBAC & Data Poisoning Defense](/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/)
 - [Part 7 — AI Security Engineering](/series/ai-driven-playbook/part-7-ai-security-engineering/)
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+{{< faq q="What legal and compliance protections does Zero Data Retention (ZDR) provide?" >}}
+A Zero Data Retention agreement is a legally binding contract ensuring that frontier AI vendors process prompt payloads solely in transient RAM and never persist customer data to disk, write telemetry traces containing prompt text, or use corporate data to train future foundation models.
+{{< /faq >}}
+
+{{< faq q="How do enterprise edge scrubbers prevent API key and secret leakage?" >}}
+Edge scrubbers intercept all outbound prompt traffic before it leaves the corporate perimeter, applying high-speed regular expression scanners and Named Entity Recognition (NER) models to automatically detect and redact AWS tokens, private keys, passwords, and customer PII.
+{{< /faq >}}
+
+{{< faq q="When should an enterprise choose self-hosted open-source models over cloud APIs?" >}}
+Self-hosting (via Ollama, vLLM, or dedicated GPU clusters) is ideal when processing strictly regulated data (HIPAA, banking records, defense software) where data sovereignty laws prohibit external egress, or when monthly cloud token bills exceed on-premise hardware amortization.
+{{< /faq >}}

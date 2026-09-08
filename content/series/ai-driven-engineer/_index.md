@@ -19,6 +19,10 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/"
 ---
 
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/)
+
+---
+
 > **Answer-first:** The AI-Driven Engineer Masterclass provides an architectural roadmap for software developers transitioning from legacy syntax writing to AI-native system orchestration. Operating via Context Engineering, Model Context Protocol (MCP) tool integration, and automated AST quality gates, it enables engineers to build resilient multi-agent platforms while reducing feature delivery cycle times by 65%.
 
 The AI-Driven Engineer Masterclass provides a complete architectural roadmap for software developers transitioning from legacy code syntax implementation to AI-native system orchestration. By mastering Context Engineering, Model Context Protocol (MCP) tooling, and automated quality gates, engineers evolve from code typists into high-value system architects capable of designing resilient multi-agent software platforms.
@@ -198,3 +202,19 @@ The series uses Go and Python as primary implementation languages for microservi
 
 ### How do enterprise engineering teams validate the ROI of transitioning to AI-native architecture?
 ROI is measured by tracking feature delivery lead times, pull request review turnaround speeds, and mutation testing coverage rather than raw lines of code (LOC). Enterprise teams implementing this masterclass framework report a 60% reduction in pull request review latency and a 95% reduction in token waste through context window optimization.
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+{{< faq q="How does an AI-Driven Engineer differ from a prompt engineer?" >}}
+Prompt engineering focuses primarily on tweaking natural language queries in web chat interfaces. An AI-Driven Engineer is a system architect who configures machine-actionable repository contracts (AGENTS.md, .cursor/rules/*.mdc), manages AST context boundaries via Tree-sitter, integrates Model Context Protocol (MCP 2.0) tool meshes, and enforces automated verification gates in CI/CD pipelines.
+{{< /faq >}}
+
+{{< faq q="Why is syntax typing considered economically obsolete in 2026?" >}}
+With frontier reasoning models (DeepSeek-R1, Claude 3.7 Sonnet Hybrid) achieving 70%+ pass rates on SWE-bench Verified, the marginal cost of synthesizing syntax has collapsed to fractions of a cent per thousand lines. Value has completely shifted upstream to defining invariant domain boundaries, distributed consensus, and automated quality control.
+{{< /faq >}}
+
+{{< faq q="How can junior developers navigate the career paradox where AI automates entry-level tasks?" >}}
+Junior developers must move from passive copy-pasting to active Socratic verification. By forcing AI models to act as interactive mentors, reading and auditing generated code line-by-line, writing mutation tests, and mastering distributed fundamentals (memory layouts, networking, concurrency, storage engines), juniors build deep engineering intuition faster than ever before.
+{{< /faq >}}
