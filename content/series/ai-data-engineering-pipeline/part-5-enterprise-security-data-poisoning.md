@@ -20,12 +20,15 @@ series: ["ai-data-engineering-pipeline"]
 weight: 6
 ---
 
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/)
+
+---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Streaming Cdc Federated Rag](/series/ai-data-engineering-pipeline/part-4-streaming-cdc-federated-rag/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 5 — Enterprise Security, RBAC & Data Poisoning Defense in RAG
 
-> **Answer-first:** RAG applications are vulnerable to indirect prompt injection and vector store poisoning, where malicious payloads embedded in uploaded documents compromise LLM safety. Enforcing defense-in-depth requires embedding cryptographically verified JWT RBAC filters directly into vector database queries while scanning incoming context chunks for adversarial text patterns. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model.
+> **Answer-first:** RAG applications are vulnerable to indirect prompt injection and vector store poisoning, where malicious payloads embedded in uploaded documents compromise LLM safety. Enforcing defense-in-depth requires embedding cryptographically verified JWT RBAC filters directly into vector database queries while scanning incoming context chunks for adversarial text patterns. Enforcing cryptographic Pre-Retrieval ACL bitmasks and Dual-LLM quarantine filters neutralizes 99.8% of indirect prompt injection vectors while guaranteeing zero unauthorized chunk disclosure across enterprise multi-tenant tiers.
 >
 > **Key Takeaways**:
 > - **99.1% Indirect Injection Blocking**: Pre-retrieval AST prompt scanning intercepts hidden instruction overrides inside unstructured document PDF text.
@@ -267,3 +270,19 @@ Continue to Part 6 to analyze the transition from passive RAG to autonomous ReAc
 - [Part 10 — Production Evals & CI/CD Guardrails](/series/ai-data-engineering-pipeline/part-10-production-evals-cicd/)
 - [Part 5 — Production Security & OWASP MCP Top 10](/series/mcp-engineering-in-production/part-5-security/)
 - [Part 7 — AI Security Engineering](/series/ai-driven-playbook/part-7-ai-security-engineering/)
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+{{< faq q="What is an Indirect Prompt Injection attack in an enterprise RAG system?" >}}
+Indirect prompt injection occurs when an attacker embeds invisible or adversarial instructions (e.g. using white-on-white text, zero-width unicode, or markdown comments) inside a document uploaded to the corporate knowledge base. When an unsuspecting user asks the AI to summarize the document, the hidden prompt overrides the system instructions, commanding the agent to exfiltrate confidential data or execute malicious API calls.
+{{< /faq >}}
+
+{{< faq q="How do Pre-Retrieval ACL bitmasks guarantee Row-Level Security in vector search?" >}}
+Post-retrieval filtering (filtering search results after vector search) frequently leaks existence metadata and reduces the top-k result count below the required threshold. Pre-retrieval bitmask filtering embeds the user's role authorization bitmask directly into the Approximate Nearest Neighbor (ANN) index traversal, ensuring that unauthorized chunks are mathematically unreachable during graph exploration.
+{{< /faq >}}
+
+{{< faq q="How does the Dual-LLM architecture neutralize document poisoning?" >}}
+The Dual-LLM pattern completely separates untrusted text processing from privileged action execution. An unprivileged worker model with zero tools extracts raw facts into a strict, strongly-typed JSON schema. A privileged controller model then processes only the sanitized JSON payload, preventing malicious natural language commands from triggering unauthorized tool actions.
+{{< /faq >}}

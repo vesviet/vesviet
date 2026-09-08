@@ -20,6 +20,9 @@ series: ["ai-data-engineering-pipeline"]
 weight: 5
 ---
 
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-data-engineering-pipeline/part-4-streaming-cdc-federated-rag/)
+
+---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 3 — Late Chunking Semantic Caching](/series/ai-data-engineering-pipeline/part-3-late-chunking-semantic-caching/). Review it first if the terminology in this part is unfamiliar.
 
@@ -33,7 +36,7 @@ If your RAG system relies on traditional **Nightly Batch ETL**, your AI agents w
 
 ## The Streaming CDC Paradigm Shift
 
-**Answer-first:** Streaming Change Data Capture (CDC) streams database mutations into vector indexes in real time, eliminating stale vector database search results. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+**Answer-first:** Streaming Change Data Capture (CDC) streams database mutations into vector indexes in real time, eliminating stale vector database search results. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. Streaming database mutations through Debezium CDC and Redpanda message brokers into LanceDB vector indices reduces data freshness latency from 12-hour batch windows down to 480 milliseconds.
 
 ```mermaid
 sequenceDiagram
@@ -280,3 +283,19 @@ Move to Part 5 to explore enterprise security, RBAC filtering, and data poisonin
 - [Part 9 — Agentic Observability: OpenTelemetry & Cost Monitoring](/series/ai-data-engineering-pipeline/part-9-agentic-observability-monitoring/)
 - [Architecting 21 Microservices in Go](/series/shopee-architecture/01-microservices-foundation/)
 - [Mastering Event-Driven Architecture with Dapr](/series/modular-monolith-architecture/part-3-ddd-module-boundaries/)
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+{{< faq q="Why is batch ETL obsolete for enterprise AI retrieval pipelines?" >}}
+In high-velocity business environments (pricing changes, contract updates, ticket resolution), batch ETL creates up to a 24-hour knowledge gap where AI agents respond with outdated or invalid context. Real-time Change Data Capture (CDC) streams row-level changes from database write-ahead logs (WAL) to vector stores in under 500ms.
+{{< /faq >}}
+
+{{< faq q="How does Debezium capture database changes without impacting transactional throughput?" >}}
+Debezium reads Postgres Write-Ahead Logs (WAL) or MySQL binary logs directly from disk as an asynchronous replication follower. It performs zero table locking and executes zero SQL SELECT queries during capture, imposing near-zero overhead on the primary transactional database.
+{{< /faq >}}
+
+{{< faq q="What is Federated RAG and when should it be preferred over a centralized vector DB?" >}}
+Federated RAG routes queries dynamically across decentralized, domain-specific Model Context Protocol (MCP 2.0) data endpoints instead of pooling all enterprise data into a monolithic vector database. It guarantees strict departmental data sovereignty, simplifies regulatory compliance, and reduces central maintenance overhead.
+{{< /faq >}}

@@ -20,12 +20,15 @@ series: ["ai-data-engineering-pipeline"]
 weight: 3
 ---
 
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-data-engineering-pipeline/part-2-agentic-ingestion-multimodal/)
+
+---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Agentic Graphrag Long Context](/series/ai-data-engineering-pipeline/part-1-agentic-graphrag-long-context/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 2 — Agentic Data Ingestion & Multimodal Document Processing Pipeline
 
-> **Answer-first:** Traditional text-only OCR pipelines corrupt complex PDF layouts, multi-column tables, and embedded architectural diagrams. An Agentic Multimodal Ingestion Pipeline uses layout detection vision models (YOLOv8-Layout / Donut) alongside vision LLMs to parse visual elements directly into structured JSON and markdown AST trees with 96% tabular extraction fidelity. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and.
+> **Answer-first:** Traditional text-only OCR pipelines corrupt complex PDF layouts, multi-column tables, and embedded architectural diagrams. An Agentic Multimodal Ingestion Pipeline uses layout detection vision models (YOLOv8-Layout / Donut) alongside vision LLMs to parse visual elements directly into structured JSON and markdown AST trees with 96% tabular extraction fidelity. By deploying ColPali visual patch embeddings directly over document page images, modern ingestion pipelines eliminate brittle text-only OCR errors, preserving financial tables, multi-column schematics, and cross-page structural layouts.
 >
 > **Key Takeaways**:
 > - **96% Tabular Extraction Accuracy**: Layout-aware vision OCR eliminates cross-column context shredding, preserving numerical precision across financial reports.
@@ -42,12 +45,27 @@ In enterprise AI data engineering, the quality of your retrieval pipeline is bou
 
 **Answer-first:** Traditional OCR strips structural layout, table boundaries, and chart imagery, corrupting complex technical document context during vector ingestion.
 
-```text
-[Raw PDF Layout]                          [Naive OCR Output]
-+-------------------+-------------------+  Revenue EMEA Q3 Q4 YoY Growth 14%
-| Revenue EMEA     | Revenue APAC      |  Revenue APAC 12% 18% 22% 41.2M 58.4M
-| Q3: 14% Q4: 18%   | Q3: 12% Q4: 22%   |  18% Q3 Q4 (Context Shredded!)
-+-------------------+-------------------+
+```mermaid
+flowchart TD
+    Doc["Enterprise Document (PDF / Schematic / Balance Sheet)"] --> IngestionRouter{"Document Type Analysis"}
+    
+    subgraph LegacyPath ["Legacy OCR Failure Path"]
+        IngestionRouter -->|"Linear Text OCR"| Tesseract["Tesseract / pypdf Parser"]
+        Tesseract --> Shredded["Shredded Multi-Column Text & Disconnected Table Cells"]
+        Shredded --> Hallucination["Model Hallucination on Financial Figures"]
+    end
+
+    subgraph ColPaliPath ["2027 SOTA: ColPali Vision-Patch Vector Lakehouse"]
+        IngestionRouter -->|"Vision Page Render"| ColPali["ColPali (PaliGemma-3B Vision Patch Embedder)"]
+        ColPali --> MultiVector["1,024 Multi-Vector Patch Embeddings per Page"]
+        MultiVector --> LanceDB[("LanceDB Zero-Copy Vector Lakehouse")]
+        LanceDB --> MaxSim["Late Interaction MaxSim Operator (<18ms)"]
+        MaxSim --> HighPrecision["100% Preserved Table Borders & Visual Context"]
+    end
+
+    style LegacyPath fill:#fadbd8,stroke:#e74c3c,stroke-width:2px
+    style ColPaliPath fill:#d5f5e3,stroke:#27ae60,stroke-width:2px
+    style LanceDB fill:#fef9e7,stroke:#f1c40f,stroke-width:2px
 ```
 
 When a traditional text parser reads a two-column financial statement or a complex multi-row matrix, it extracts characters sequentially from left to right across the page width. This merges text across independent column boundaries, yielding scrambled data where financial metrics are linked to incorrect product headers.
@@ -264,3 +282,19 @@ Advance to Part 3 to examine late chunking techniques and semantic caching with 
 - [Part 4 — Real-time Streaming CDC & Federated GraphRAG Architecture](/series/ai-data-engineering-pipeline/part-4-streaming-cdc-federated-rag/)
 - [Part 5 — Enterprise Security, RBAC & Data Poisoning Defense](/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/)
 - [Part 1 — Context Engineering: DDD for AI](/posts/ai-native-frontend-architecture-predictions-2028/)
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+{{< faq q="How does ColPali differ fundamentally from traditional OCR chunking?" >}}
+Traditional OCR attempts to translate complex 2D visual layouts into linear 1D text streams, irreversibly losing table borders, font hierarchies, and cross-column alignments. ColPali treats document pages as images, passing high-resolution patches through a Vision-Language Model (PaliGemma-3B) to generate multi-vector patch embeddings that preserve full spatial layout.
+{{< /faq >}}
+
+{{< faq q="How does the Late Interaction MaxSim operator maintain sub-20ms latency?" >}}
+Rather than compressing an entire page into a single dense vector, ColPali generates token embeddings for query terms and patch vectors for document pages. The MaxSim operator computes the maximum cosine similarity between each query token and all document patches, executed via SIMD-accelerated AVX-512 matrix operations in LanceDB within 15–20 milliseconds.
+{{< /faq >}}
+
+{{< faq q="What is a Multimodal Multilayer Knowledge Graph (M³KG)?" >}}
+An M³KG links heterogeneous enterprise data across multiple modalities: text entities (Companies, Products), visual image nodes (Schematics, Architecture Diagrams), and tabular relation records. This graph architecture enables an autonomous agent to cross-reference a numerical cell in a financial PDF directly against a technical CAD drawing.
+{{< /faq >}}

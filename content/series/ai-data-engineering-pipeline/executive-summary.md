@@ -20,6 +20,10 @@ series: ["ai-data-engineering-pipeline"]
 weight: 1
 ---
 
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-data-engineering-pipeline/executive-summary/)
+
+---
+
 > **Prerequisite:** Review the previous module in the [ai-data-engineering-pipeline](/series/ai-data-engineering-pipeline/) series before proceeding.
 
 
@@ -27,7 +31,7 @@ weight: 1
 
 ## Executive Summary: The Disruption of Naive RAG and the GraphRAG Era
 
-> **Answer-first:** Naive RAG collapses in enterprise environments due to relational blindness, unstructured document chunk destruction, and lack of fine-grained access control. Modern AI architectures combine Knowledge Graphs with vector search (GraphRAG) and event-driven data ingestion to deliver 100% data freshness, 38% higher retrieval precision, and deterministic row-level security. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and.
+> **Answer-first:** Naive RAG collapses in enterprise environments due to relational blindness, unstructured document chunk destruction, and lack of fine-grained access control. Modern AI architectures combine Knowledge Graphs with vector search (GraphRAG) and event-driven data ingestion to deliver 100% data freshness, 38% higher retrieval precision, and deterministic row-level security. Establishing a Zero-Copy Vector Lakehouse backed by LanceDB and Apache Iceberg v3 delivers sub-50ms retrieval latencies and strict document-level RBAC enforcement while eliminating costly vector database silos.
 >
 > **Key Takeaways**:
 > - **38% Higher Precision**: GraphRAG entity-relation traversal resolves multi-hop enterprise queries where vector similarity alone fails.
@@ -288,3 +292,19 @@ Navigate through the AI Data Engineering Pipeline series covering multimodal ing
 - [Part 3 — Late Chunking & Contextual Retrieval](/series/ai-data-engineering-pipeline/part-3-late-chunking-semantic-caching/)
 - [Part 8 — Inference Optimization: vLLM & PagedAttention](/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/)
 - [Part 10 — Production Evals & CI/CD Guardrails](/series/ai-data-engineering-pipeline/part-10-production-evals-cicd/)
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+{{< faq q="How does GraphRAG resolve the 'Relational Blindness' inherent in dense vector search?" >}}
+Dense vector search projects isolated text chunks into continuous embedding space, measuring geometric cosine similarity without modeling explicit entities or directional connections. GraphRAG constructs a connected property knowledge graph (Entities, Attributes, Relationships) and computes hierarchical community summaries, allowing LLM agents to execute multi-hop Cypher queries and summarize themes across thousands of documents.
+{{< /faq >}}
+
+{{< faq q="How do Zero-Copy Vector Lakehouses eliminate the need for specialized vector DB clusters?" >}}
+Legacy architectures duplicate raw source documents from enterprise data lakes into independent vector databases (e.g. Pinecone, Milvus), causing synchronization lag and double storage bills. Zero-Copy Vector Lakehouses use the Apache Arrow-native Lance format alongside Apache Iceberg v3 table catalogs, allowing vector nearest-neighbor searches and relational SQL queries to run directly on the same object storage bucket.
+{{< /faq >}}
+
+{{< faq q="What continuous evaluation metrics are mandatory before deploying an enterprise RAG pipeline?" >}}
+Enterprise CI/CD pipelines enforce automated evaluation of the **RAG Triad**: (1) **Context Relevance** (ensuring retrieved chunks contain minimal irrelevant noise), (2) **Faithfulness / Groundedness** (verifying every generated claim is backed by retrieved source context), and (3) **Answer Relevance** (confirming the response directly resolves the user's inquiry).
+{{< /faq >}}

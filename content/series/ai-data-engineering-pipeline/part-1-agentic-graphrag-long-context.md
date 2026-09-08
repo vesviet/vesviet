@@ -20,12 +20,15 @@ series: ["ai-data-engineering-pipeline"]
 weight: 2
 ---
 
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-data-engineering-pipeline/part-1-agentic-graphrag-long-context/)
+
+---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/series/ai-data-engineering-pipeline/executive-summary/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 1 — Agentic GraphRAG vs. Long-Context Window: Architectural Trade-offs
 
-> **Answer-first:** Relying exclusively on 1M+ token context windows introduces quadratic latency degradation ($O(N^2)$ attention overhead), severe token cost inflation, and needle-in-a-haystack recall loss. Agentic GraphRAG extracts focused entity subgraphs to achieve 65% faster Time-To-First-Token (TTFT) at less than 10% of the inference cost. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and 2026 Model Context Protocol ttlMs.
+> **Answer-first:** Relying exclusively on 1M+ token context windows introduces quadratic latency degradation ($O(N^2)$ attention overhead), severe token cost inflation, and needle-in-a-haystack recall loss. Agentic GraphRAG extracts focused entity subgraphs to achieve 65% faster Time-To-First-Token (TTFT) at less than 10% of the inference cost. By deploying Hierarchical GraphRAG with Leiden community detection, enterprises achieve 65% faster Time-To-First-Token (TTFT) and eliminate the multi-dollar token penalties of 1M+ context window prefill while preserving cross-document multi-hop reasoning.
 >
 > **Key Takeaways**:
 > - **65% Faster TTFT**: GraphRAG reduces prompt context size from 128k to 4k tokens, cutting time-to-first-token latency from 1.8s down to 320ms.
@@ -271,3 +274,19 @@ Continue to Part 2 to learn about multimodal document processing and layout-awar
 ## Architectural Context & Pillar References
 
 - [Exporting Magento 2 Data via Flat SQL & Node.js](/series/magento-migration-vietnam/exporting-magento-2-data-flat-sql-nodejs/)
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+{{< faq q="Why does passing entire documents into 1M+ token context windows fail in production?" >}}
+While large context windows can ingest 1M+ tokens, quadratic attention compute mechanisms lead to multi-second prefill latencies ($O(N^2)$ TTFT) and massive API token costs ($1.50+ per query). More critically, empirical evaluations reveal 'Lost in the Middle' attention degradation, where needle retrieval accuracy drops below 65% in middle context positions.
+{{< /faq >}}
+
+{{< faq q="How does Leiden community detection in GraphRAG enable global macro summarization?" >}}
+Leiden community detection partitions the enterprise knowledge graph into hierarchical semantic clusters (communities). The pipeline pre-computes summarizations for each community level at ingestion time. When a macro question arrives ('What systemic supply chain risks are shared across European vendors?'), the agent summarizes pre-computed community rollups in <500ms without scanning raw text chunks.
+{{< /faq >}}
+
+{{< faq q="What is the optimal hybrid search configuration between vector similarity and graph Cypher queries?" >}}
+High-performance systems use Reciprocal Rank Fusion (RRF with k=60) combining: (1) Dense vector cosine scores (BGE-M3), (2) Sparse lexical BM25/SPLADE scores for exact acronym matching, and (3) Subgraph entity neighbor degree centrality from graph engines, followed by a Cross-Encoder reranker capped at the top 50 candidates.
+{{< /faq >}}

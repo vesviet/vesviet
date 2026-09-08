@@ -20,12 +20,15 @@ series: ["ai-data-engineering-pipeline"]
 weight: 4
 ---
 
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-data-engineering-pipeline/part-3-late-chunking-semantic-caching/)
+
+---
 
 > **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — Agentic Ingestion Multimodal](/series/ai-data-engineering-pipeline/part-2-agentic-ingestion-multimodal/). Review it first if the terminology in this part is unfamiliar.
 
 ## Part 3 — Late Chunking & Contextual Retrieval: Solving Chunk Boundary Loss
 
-> **Answer-first:** Standard early chunking splits text prior to embedding, destroying long-range semantic dependencies and pronoun references across chunk boundaries. Late Chunking passes the full document through the Transformer encoder layer first, computing token-level contextual representations before applying mean pooling over chunk boundaries to boost retrieval precision by 27%. Architecting this pipeline enforces sub-50ms P99 latency guarantees, OpenTelemetry GenAI semantic conventions, and.
+> **Answer-first:** Standard early chunking splits text prior to embedding, destroying long-range semantic dependencies and pronoun references across chunk boundaries. Late Chunking passes the full document through the Transformer encoder layer first, computing token-level contextual representations before applying mean pooling over chunk boundaries to boost retrieval precision by 27%. Late Chunking maintains full-document cross-attention states before pooling token spans, which when combined with two-tier Binary Quantization in Redis, delivers 27% higher retrieval precision and sub-15ms semantic cache hits.
 >
 > **Key Takeaways**:
 > - **27% Retrieval Precision Gain**: Late Chunking eliminates context loss for ambiguous pronouns ("this model", "the agreement") by retaining full-document attention state.
@@ -258,3 +261,19 @@ Proceed to Part 4 to learn about real-time streaming CDC and federated GraphRAG 
 ## Architectural Context & Pillar References
 
 Late chunking preserves full-document attention context during token embedding, serving as the foundational retrieval optimization for enterprise RAG architectures.
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+{{< faq q="How does Late Chunking mathematically differ from traditional sentence splitting?" >}}
+Traditional chunking cuts raw text strings into isolated 512-token segments before passing them through the embedding model encoder, causing the self-attention mechanism to operate only within each fragment. Late Chunking passes the entire 8,192-token document through the encoder first, allowing bidirectional cross-attention across all tokens. Chunk vectors are created post-encoder via mean pooling over token span indices, preserving global context.
+{{< /faq >}}
+
+{{< faq q="How does Binary Quantization (BQ) reduce Redis cache memory footprint by 32x?" >}}
+Standard dense vectors store float32 numbers (4 bytes per dimension, requiring 6,144 bytes for a 1,536-dim vector). Binary Quantization converts each dimension to a single bit (1 if >0, 0 if <=0), reducing the vector to 192 bytes (a 32x reduction). In-memory Hamming distance bit-popcount operations execute in sub-microsecond CPU cycles.
+{{< /faq >}}
+
+{{< faq q="What is the optimal semantic cache cosine similarity threshold?" >}}
+Production benchmarks indicate an optimal cosine threshold between 0.88 and 0.92 for high-stakes enterprise applications. Setting the threshold below 0.85 risks serving semantically mismatched answers, while setting it above 0.95 drops cache hit rates below 10%.
+{{< /faq >}}

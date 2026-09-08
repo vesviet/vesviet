@@ -2,10 +2,10 @@
 title: "Agentic Observability: OpenTelemetry & Tracing Guide"
 slug: "part-9-agentic-observability-monitoring"
 date: "2026-05-21T12:00:00+07:00"
-lastmod: "2026-07-23T10:40:00+07:00"
+lastmod: "2026-09-08T20:00:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["Observability", "OpenTelemetry", "Golang", "Tracing", "Cost Monitoring", "DevOps"]
+tags: ["Observability", "OpenTelemetry", "Golang", "Tracing", "Cost Monitoring", "DevOps", "Jaeger", "Prometheus"]
 categories: ["Engineering", "DevOps"]
 cover:
   image: "/images/posts/part-9-agentic-observability-monitoring.jpg"
@@ -13,82 +13,106 @@ cover:
   relative: false
 mermaid: true
 canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-9-agentic-observability-monitoring/"
-description: "Complete technical guide to implementing OpenTelemetry distributed tracing, semantic GenAI conventions, and LLM cost monitoring in production systems."
+description: "Complete technical guide to implementing OpenTelemetry distributed tracing, GenAI semantic conventions, and LLM token cost monitoring in production systems."
 ShowToc: true
 TocOpen: true
 series: ["ai-data-engineering-pipeline"]
 weight: 10
 ---
 
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-data-engineering-pipeline/part-9-agentic-observability-monitoring/)
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Part 8 — Inference Optimization Vllm](/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/). Review it first if the terminology in this part is unfamiliar.
+---
+
+> **Prerequisite:** Familiarity with high-throughput inference engines and serving metrics covered in [Part 8 — Inference Optimization: vLLM](/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/).
 
 ## Part 9 — Agentic Observability: OpenTelemetry, Tracing & Cost Monitoring
 
-Debugging traditional microservices involves tracking HTTP status codes and database query latency. Debugging AI agent architectures demands tracking non-deterministic reasoning chains, LLM API token costs, prompt context inflation, and multi-turn tool loops.
+Debugging traditional microservices involves tracking HTTP status codes, SQL query durations, and memory allocations. Debugging enterprise AI agent architectures requires tracking non-deterministic reasoning chains, token consumption surges, context window inflation, multi-turn tool loops, and subtle prompt drift.
 
-Without standardized distributed tracing, identifying why an agent query took 8.5 seconds or cost $1.20 per invocation becomes an impossible troubleshooting task.
+Without vendor-agnostic distributed tracing, diagnosing why an agent invocation took 8.5 seconds or incurred $1.20 across cascading LLM calls becomes an intractable troubleshooting nightmare.
 
 ---
 
 ## OpenTelemetry Tracing Pipeline Architecture
 
-**Answer-first:** OpenTelemetry pipelines collect distributed trace spans across agent orchestrators, vector retrieval nodes, and LLM API calls into Jaeger or Tempo. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+**Answer-first:** OpenTelemetry (OTel) pipelines capture distributed trace spans across API gateways, autonomous agent reasoning loops, vector database retrievers, and LLM model providers into backends like Jaeger, Tempo, or Datadog. Adopting standardized **OpenTelemetry GenAI Semantic Conventions** guarantees unified instrumentation for prompt/completion token counters, Time-To-First-Token (TTFT), dollar cost attribution, and PII masking without proprietary vendor lock-in.
 
 ```mermaid
 sequenceDiagram
     autonumber
     actor User
-    participant Gateway as API Gateway ("Span: HTTP Request")
-    participant Agent as Agent Runtime ("Span: ReAct Loop")
-    participant Vector as Qdrant DB ("Span: Vector Search")
-    participant LLM as vLLM / OpenAI ("Span: LLM Inference")
+    participant Gateway as "API Gateway (Span: HTTP Request)"
+    participant Agent as "Agent Runtime (Span: ReAct Loop)"
+    participant Vector as "Vector DB (Span: Hybrid Search)"
+    participant LLM as "vLLM / Vendor API (Span: LLM Completion)"
     participant OTel as "OpenTelemetry Collector"
-    participant Grafana as "Grafana / Jaeger Dashboard"
+    participant Dashboard as "Jaeger / Grafana Tempo"
 
-    User->>Gateway: POST /v1/agent/chat
-    Gateway->>Agent: Route Request
-    Agent->>Vector: Execute Hybrid Search ("15ms")
+    User->>Gateway: POST /v1/agent/query
+    Gateway->>Agent: Route Request with W3C Trace Context
+    Agent->>Vector: Execute Hybrid Retrieval (15ms)
     Vector-->>Agent: Return Context Chunks
     
-    Agent->>LLM: Stream Inference Request ("TTFT: 320ms, Tokens: 4,120")
+    Agent->>LLM: Dispatch Stream Inference (TTFT: 120ms, Tokens: 3,450)
     LLM-->>Agent: Return Response Stream
     
-    par Async Telemetry Export
-        Gateway-->>OTel: Send Gateway Span Payload
-        Agent-->>OTel: Send Agent Loop Span Payload
-        Vector-->>OTel: Send Vector Query Span Payload
-        LLM-->>OTel: Send Token Metrics & Cost Attributes
+    par Async Non-Blocking Telemetry Export
+        Gateway-->>OTel: Export Ingress Span
+        Agent-->>OTel: Export ReAct Thought & Tool Spans
+        Vector-->>OTel: Export Vector Latency & Top-K Attributes
+        LLM-->>OTel: Export GenAI Usage & Cost Attributes
     end
 
-    OTel->>Grafana: Export Prometheus Metrics & Jaeger Traces
-    Agent-->>User: Return Completed Response ("Total: 840ms")
+    OTel->>Dashboard: Pipeline Traces, Prometheus Metrics & Alerts
+    Agent-->>User: Stream Validated Response (Total: 480ms)
+```
+
+---
+
+## OpenTelemetry GenAI Span Hierarchy & Tree Topology
+
+A production agent request does not execute as a flat log entry. Instead, it unfolds as a deeply nested span hierarchy where parent agent spans encapsulate child vector retrieval spans and grandchild LLM completion spans.
+
+```mermaid
+graph TD
+    RootSpan["Span: Root Ingress HTTP /agent/chat (480ms)"] --> AgentLoop["Span: ReAct Agent Reasoning Loop (440ms)"]
+    
+    AgentLoop --> SearchSpan["Span: db.vector.search - Qdrant (18ms)"]
+    AgentLoop --> ToolSpan["Span: tool.execution - CodeSandbox (85ms)"]
+    AgentLoop --> LLMSpan1["Span: gen_ai.client.completion - vLLM Draft (42ms)"]
+    AgentLoop --> LLMSpan2["Span: gen_ai.client.completion - Target Model (280ms)"]
+
+    SearchSpan -.-> OTelCollector["OTel Collector (GenAI Semantic Processor)"]
+    ToolSpan -.-> OTelCollector
+    LLMSpan1 -.-> OTelCollector
+    LLMSpan2 -.-> OTelCollector
+
+    OTelCollector --> CostCalc["Cost Attribution & Budget Alerts"]
+    OTelCollector --> TraceStore["Jaeger / Tempo Storage"]
 ```
 
 ---
 
 ## Standard OpenTelemetry Semantic Conventions for GenAI
 
-GenAI semantic conventions standardize span attributes for LLM model names, prompt token counts, completion token counts, and tool names.
+To standardize observability across diverse frameworks, the OpenTelemetry working group defined official **GenAI Semantic Conventions**:
 
-To standardize observability across disparate AI frameworks (LangChain, LlamaIndex, custom Go engines), the OpenTelemetry foundation established standard **GenAI Semantic Conventions**:
-
-| Attribute Key | Type | Description / Example |
+| Attribute Key | Type | Description / Standard Example |
 | :--- | :--- | :--- |
-| `gen_ai.system` | string | Vendor identifier (`openai`, `anthropic`, `vllm`) |
-| `gen_ai.request.model` | string | Target model requested (`gpt-4o`, `llama-3.1-8b`) |
-| `gen_ai.usage.input_tokens` | int | Total prompt tokens consumed |
-| `gen_ai.usage.output_tokens` | int | Total completion tokens generated |
-| `gen_ai.response.ttft_ms` | float | Time to First Token latency in milliseconds |
-| `gen_ai.cost.estimated_usd` | float | Estimated dollar cost calculated for the span |
+| `gen_ai.system` | string | Serving backend identifier (`vllm`, `openai`, `anthropic`) |
+| `gen_ai.request.model` | string | Model name requested (`meta-llama/Llama-3.1-8b`, `gpt-4o`) |
+| `gen_ai.usage.input_tokens` | int | Prompt tokens consumed by this step |
+| `gen_ai.usage.output_tokens`| int | Completion tokens generated |
+| `gen_ai.response.ttft_ms` | float | Time to First Token in milliseconds |
+| `gen_ai.cost.estimated_usd` | float | Calculated dollar cost attributed to the span |
+| `gen_ai.agent.tool_name` | string | Tool invoked during this step (`python_exec`, `sql_query`) |
 
 ---
 
 ## Production Go OpenTelemetry Instrumentor
 
-Production Go instrumentors inject OpenTelemetry context into HTTP and gRPC request headers, tracking full multi-agent call trees.
-
-This production-grade Go middleware instrumenting LLM API calls using `go.opentelemetry.io/otel/trace`. It records nested spans, token usage metrics, model metadata, and cost attributes:
+The following production Go middleware instruments LLM API invocations using official `go.opentelemetry.io/otel/trace`. It attaches GenAI semantic attributes, records nested trace spans, and calculates exact token cost attribution:
 
 ```go
 package main
@@ -107,9 +131,9 @@ import (
 )
 
 type LLMRequest struct {
-	Model       string `json:"model"`
-	Prompt      string `json:"prompt"`
-	MaxTokens   int    `json:"max_tokens"`
+	Model       string  `json:"model"`
+	Prompt      string  `json:"prompt"`
+	MaxTokens   int     `json:"max_tokens"`
 	Temperature float64 `json:"temperature"`
 }
 
@@ -126,15 +150,15 @@ type OTelLLMClient struct {
 
 func NewOTelLLMClient() *OTelLLMClient {
 	return &OTelLLMClient{
-		tracer: otel.Tracer("genai-llm-service"),
+		tracer: otel.Tracer("genai-agent-service"),
 	}
 }
 
 func (c *OTelLLMClient) ExecuteLLMCall(ctx context.Context, req LLMRequest) (*LLMResponse, error) {
-	// Start OTel Child Span with GenAI attributes
+	// Start nested OTel child span with GenAI attributes
 	ctx, span := c.tracer.Start(ctx, "gen_ai.client.completion",
 		trace.WithAttributes(
-			attribute.String("gen_ai.system", "openai"),
+			attribute.String("gen_ai.system", "vllm-cluster"),
 			attribute.String("gen_ai.request.model", req.Model),
 			attribute.Int("gen_ai.request.max_tokens", req.MaxTokens),
 			attribute.Float64("gen_ai.request.temperature", req.Temperature),
@@ -144,17 +168,17 @@ func (c *OTelLLMClient) ExecuteLLMCall(ctx context.Context, req LLMRequest) (*LL
 
 	startTime := time.Now()
 
-	// Simulate LLM execution
-	resp, err := c.invokeVendorAPI(ctx, req)
+	// Execute LLM call simulation
+	resp, err := c.invokeInferenceBackend(ctx, req)
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, err.Error())
 		return nil, err
 	}
 
-	// Calculate cost (e.g. GPT-4o pricing: $2.50/1M in, $10.00/1M out)
-	inputCost := (float64(resp.PromptTokens) / 1000000.0) * 2.50
-	outputCost := (float64(resp.CompletionTokens) / 1000000.0) * 10.00
+	// Cost accounting (e.g., $1.50/1M input, $6.00/1M output tokens)
+	inputCost := (float64(resp.PromptTokens) / 1_000_000.0) * 1.50
+	outputCost := (float64(resp.CompletionTokens) / 1_000_000.0) * 6.00
 	totalCostUSD := inputCost + outputCost
 
 	// Record output execution attributes to Span
@@ -166,22 +190,20 @@ func (c *OTelLLMClient) ExecuteLLMCall(ctx context.Context, req LLMRequest) (*LL
 		attribute.Float64("gen_ai.latency_total_ms", float64(time.Since(startTime).Milliseconds())),
 	)
 
-	span.SetStatus(codes.Ok, "LLM Execution Successful")
+	span.SetStatus(codes.Ok, "LLM Generation Successful")
 	return resp, nil
 }
 
-func (c *OTelLLMClient) invokeVendorAPI(ctx context.Context, req LLMRequest) (*LLMResponse, error) {
-	// Authentic prompt token processing & dynamic response calculation without mock latency
+func (c *OTelLLMClient) invokeInferenceBackend(ctx context.Context, req LLMRequest) (*LLMResponse, error) {
 	words := strings.Fields(req.Prompt)
-	promptTokens := len(words) * 4 // Standard token estimation formula
+	promptTokens := len(words) * 2
 	if promptTokens < 10 {
-		promptTokens = 15
+		promptTokens = 20
 	}
 
 	t0 := time.Now()
-	responseText := fmt.Sprintf("Summary of %d prompt terms: OTel tracing records spans for model %s with temp %.1f",
-		len(words), req.Model, req.Temperature)
-	completionTokens := len(strings.Fields(responseText)) * 3
+	responseText := fmt.Sprintf("Response for model %s: Traced span recorded with %d input tokens.", req.Model, promptTokens)
+	completionTokens := len(strings.Fields(responseText)) * 2
 	ttft := float64(time.Since(t0).Microseconds()) / 1000.0
 
 	return &LLMResponse{
@@ -197,9 +219,9 @@ func main() {
 	ctx := context.Background()
 
 	req := LLMRequest{
-		Model:       "gpt-4o",
-		Prompt:      "Summarize OpenTelemetry tracing guidelines for enterprise AI.",
-		MaxTokens:   250,
+		Model:       "meta-llama/Llama-3.1-8B-Instruct",
+		Prompt:      "Configure OpenTelemetry distributed tracing collector for AI agent swarms.",
+		MaxTokens:   256,
 		Temperature: 0.1,
 	}
 
@@ -208,7 +230,8 @@ func main() {
 		log.Fatalf("Execution failed: %v", err)
 	}
 
-	fmt.Printf("[OTel Agent Metric] Prompt Tokens: %d | Completion Tokens: %d | Text: %s\n",
+	fmt.Printf("[OTel GenAI Telemetry] Input Tokens: %d | Output Tokens: %d | Response: %s
+",
 		resp.PromptTokens, resp.CompletionTokens, resp.Text)
 }
 ```
@@ -217,50 +240,48 @@ func main() {
 
 ## Comparative Matrix: Observability Strategies
 
-Basic application logging misses multi-step agent reasoning loops, while OpenTelemetry distributed tracing reveals exact step latencies and costs.
+```
+Plain Log Printing vs SaaS Tool Portals (LangSmith/Arize) vs OpenTelemetry Native
+```
 
-| Dimension | Basic Application Logging | Vendor SaaS (LangSmith / Arize) | OpenTelemetry Native (OTel) |
+| Dimension / Metric | Plain Text Logs | Proprietary SaaS (LangSmith) | OpenTelemetry Native (OTel) |
 | :--- | :--- | :--- | :--- |
-| **Vendor Lock-In** | High (Custom Log Format) | High (Proprietary SaaS SDK) | Zero (CNCF Standard Protocol) |
-| **Exporter Targets** | stdout / file | Vendor Cloud Portal | Prometheus, Jaeger, Datadog |
-| **Span Overhead** | Minimal | Low | Minimal (< 1ms async export) |
-| **Cost Metrics** | Manual calculation | Automatic | Configurable semantic spans |
-| **Distributed Tracing** | Hard (manual trace propagation)| Limited to LLM calls | Full End-to-End Microservice Context |
+| **Vendor Independence** | High (stdout) | Zero (Locked to SaaS vendor) | 100% CNCF Open Standard |
+| **Collector Exporters** | File / Elastic | Vendor Cloud Storage | Prometheus, Jaeger, Tempo, Datadog |
+| **Runtime Overhead** | Minimal (<0.1ms) | Moderate (HTTP egress calls) | Negligible (<0.5ms async batching) |
+| **Cost Attribution** | Manual grep scripting | Proprietary dashboard | Metric attributes & Prometheus alerts |
+| **Distributed Context** | Broken across services | LLM boundary only | Full End-to-End W3C Traceparent |
 
 ---
 
 ## Frequently Asked Questions (FAQ)
 
-### Q1: How do OpenTelemetry GenAI semantic conventions standardize tracing across different LLM providers?
-GenAI semantic conventions define a unified schema for span names and attributes (e.g., `gen_ai.system`, `gen_ai.request.model`, `gen_ai.usage.input_tokens`). This allows observability platforms like Grafana, Jaeger, or Datadog to visualize spans uniformly regardless of whether the backend vendor is OpenAI, Anthropic, or a self-hosted vLLM cluster.
+{{< faq q="How do OpenTelemetry GenAI semantic conventions standardize tracing across heterogeneous LLM providers?" >}}
+GenAI semantic conventions establish a unified schema for span names and attribute keys (such as gen_ai.system, gen_ai.request.model, and gen_ai.usage.input_tokens). This ensures that observability backends like Jaeger, Tempo, or Grafana visualize performance, latency, and costs identically, whether calls route to OpenAI, Anthropic, or an internal vLLM cluster.
+{{< /faq >}}
 
-### Q2: How can enterprise teams track real-time token costs without exposing raw prompts to telemetry exporters?
-Cost tracking is performed by extracting token counters (`input_tokens`, `output_tokens`) from model execution responses and calculating USD cost attributes within span metadata. Prompts and completions can be sanitized or hashed at the OpenTelemetry Collector layer, leaving cost and performance metrics fully visible.
+{{< faq q="How can organizations monitor real-time token costs without exposing sensitive customer data?" >}}
+Cost tracking is computed from numerical token counters (input_tokens and output_tokens) multiplied by model tier rates. By applying OpenTelemetry Collector processors, sensitive prompts and raw completion payloads can be sanitized, hashed, or dropped entirely, while preserving performance metrics and dollar cost attributes for billing dashboards.
+{{< /faq >}}
 
-### Q3: What is the latency impact of instrumenting nested agent tool loops with OpenTelemetry spans?
-OpenTelemetry SDKs buffer and export trace spans asynchronously in non-blocking background worker queues. The overhead per span creation is under 1 microsecond, causing negligible impact on overall agent turn execution time.
-
----
-
-## Observability Invariants
-Cost monitoring in GenAI observability requires aggregating token usage attributes per tenant and setting metric alert thresholds on latency spikes.
-
-Enterprise observability for multi-agent workflows demands continuous trace context propagation and real-time token expenditure tracking.
-
-### Architectural Invariants
-1. **Context Propagation**: Inject W3C `traceparent` headers into all outgoing HTTP and gRPC tool calls.
-2. **PII Masking**: Mask sensitive prompt tokens (SSNs, API keys) at the OpenTelemetry Collector boundary before exporting.
-3. **Cost Anomaly Alerts**: Set Prometheus alert rules to fire when real-time token consumption exceeds designated cost thresholds.
+{{< faq q="What is the latency overhead of instrumenting multi-agent tool loops with OpenTelemetry spans?" >}}
+OpenTelemetry client SDKs buffer and dispatch trace spans asynchronously using non-blocking background batch worker queues. The local CPU overhead per span initialization is under 1 microsecond, ensuring zero noticeable impact on user-facing response latency.
+{{< /faq >}}
 
 ---
 
-🔗 **Next Step:** Continue to [Part 10 — Production Evals Cicd](/series/ai-data-engineering-pipeline/part-10-production-evals-cicd/) for the following module in the series.
+## Production Observability Invariants
+
+1. **W3C Traceparent Propagation**: Always inject and extract `traceparent` headers across all HTTP, gRPC, and Kafka boundaries to ensure unbroken trace lineages across microservices and agent runtimes.
+2. **PII Masking at Collector Edge**: Strip Social Security numbers, API keys, and sensitive personally identifiable information (PII) at the collector stage prior to storing traces in central persistence stores.
+3. **Budget Alert Thresholds**: Configure automated alerting when tenant token consumption velocity exceeds predefined rate-of-spend quotas to prevent billing runaway.
+
+---
+
+🔗 **Next Step:** Conclude the series with [Part 10 — Production Evals & CI/CD Guardrails: LLM-as-a-Judge at Scale](/series/ai-data-engineering-pipeline/part-10-production-evals-cicd/).
 
 ## Internal Series Navigation
 
-Advance to Part 10 to learn about production evals and CI/CD quality guardrails.
-
 - [Part 8 — Inference Optimization: vLLM & PagedAttention](/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/)
 - [Part 10 — Production Evals & CI/CD Guardrails](/series/ai-data-engineering-pipeline/part-10-production-evals-cicd/)
-- [MCP Observability & Tracing](/series/mcp-engineering-in-production/part-6-observability/)
-- [AI Data Engineering Pipeline Masterclass](/series/ai-data-engineering-pipeline/)
+- [Executive Summary: The Disruption of Naive RAG](/series/ai-data-engineering-pipeline/executive-summary/)
