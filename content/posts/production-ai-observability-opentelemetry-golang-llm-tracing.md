@@ -43,7 +43,6 @@ tags:
   - "Langfuse"
 ShowToc: true
 TocOpen: true
-mermaid: true
 cover:
   image: "/images/posts/production-ai-observability-opentelemetry-golang-llm-tracing.jpg"
   alt: "Production AI Observability: Go LLM Tracing with OTel"

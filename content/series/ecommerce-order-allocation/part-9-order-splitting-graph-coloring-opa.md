@@ -18,6 +18,7 @@ cover:
   alt: "Part 9: Order Splitting via Graph Coloring"
   relative: false
 keywords: ["graph coloring order splitting", "opa policy fulfillment", "hazmat shipping constraints"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 8: Intelligent Order Release](/series/ecommerce-order-allocation/part-8-intelligent-order-release/) | [Series Hub](/series/ecommerce-order-allocation/) | [Next Chapter: Part 10: Warehouse Picker Optimization →](/series/ecommerce-order-allocation/part-10-warehouse-picker-routing-optimization/)

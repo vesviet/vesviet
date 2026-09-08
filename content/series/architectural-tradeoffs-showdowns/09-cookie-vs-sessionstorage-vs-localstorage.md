@@ -36,6 +36,7 @@ cover:
   alt: "Cookie vs SessionStorage vs LocalStorage Architectural Showdown"
   relative: false
 keywords: ["cookie vs localstorage vs sessionstorage", "jwt token storage security", "httponly cookie xss csrf", "localstorage main thread blocking inp", "cross tab synchronization broadcastchannel"]
+mermaid: true
 ---
 
 > 📖 **Series Navigation**: [← Previous Chapter: Redis Distributed State vs. Dapr Virtual Actors](/series/architectural-tradeoffs-showdowns/08-redis-state-vs-dapr-virtual-actors/) | [Series Hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 10 — Envoy Gateway vs. Cilium eBPF Service Mesh →](/series/architectural-tradeoffs-showdowns/10-envoy-gateway-vs-cilium-ebpf-service-mesh/)

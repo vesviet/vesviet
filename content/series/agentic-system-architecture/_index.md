@@ -18,6 +18,7 @@ cover:
   alt: "Agentic System Architecture Series Hub"
   relative: false
 keywords: ["agentic system architecture", "multi agent systems production", "agent memory hierarchy", "agentops observability", "human in the loop ai"]
+mermaid: true
 ---
 
 > **Answer-first:** Moving AI agents from toy demos to enterprise production requires treating them as **Stateful Distributed Systems**. This series documents the 6 core pillars of production agentic architecture: Swarm Topology (Router/Worker vs Shared Blackboards), Hierarchical Memory Management, Resilient Tool-Calling Protocols, AgentOps Observability, Automated Evals, and Human-in-the-Loop (HITL) Gateways.

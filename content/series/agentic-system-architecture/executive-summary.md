@@ -18,6 +18,7 @@ cover:
   alt: "Executive Summary: The 6 Pillars of Production Agentic Systems"
   relative: false
 keywords: ["agentic architecture executive summary", "enterprise ai agents pillars", "autonomous agent system design"]
+noindex: true
 ---
 
 [← Series Hub](/series/agentic-system-architecture/) | [Next Chapter: Part 1: Swarm Topologies →](/series/agentic-system-architecture/part-1-topology/)

@@ -18,6 +18,8 @@ cover:
   alt: "Part 6: Phase 1 — Strangler Fig: Offloading the Product Catalog"
   relative: false
 keywords: ["strangler fig pattern ecommerce", "cloudflare edge routing microservices", "catalog offloading magento", "zero downtime migration"]
+mermaid: true
+noindex: true
 ---
 
 [← Previous Chapter: Part 5: Migrating Magento EAV Schema](/series/composable-commerce-migration/part-5-eav-schema-migration/) | [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 7: Phase 2 — Dual-Write CDC →](/series/composable-commerce-migration/part-7-phase2-dual-write/)

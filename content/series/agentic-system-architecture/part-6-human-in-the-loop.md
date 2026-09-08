@@ -18,6 +18,7 @@ cover:
   alt: "Part 6: Human-in-the-Loop (HITL) Gateways & Security Boundaries"
   relative: false
 keywords: ["human in the loop architecture", "hitl approval gateway", "agent state pausing temporal"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 5: Agent Evals](/series/agentic-system-architecture/part-5-agent-evals/) | [Series Hub](/series/agentic-system-architecture/)

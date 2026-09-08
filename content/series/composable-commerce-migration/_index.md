@@ -18,6 +18,7 @@ cover:
   alt: "Composable Commerce Migration Series Hub"
   relative: false
 keywords: ["composable commerce migration", "magento monolith to go microservices", "kratos v2 golang architecture", "strangler fig cutover", "eav schema migration"]
+mermaid: true
 ---
 
 > **Answer-first:** Decomposing a monolithic Magento deployment into 21 independent Go microservices reduces AWS infrastructure hosting costs from $200k/year to under $18k/year, eliminates EAV relational bottlenecks, and scales checkout throughput to 50,000+ RPS. This living playbook documents every architecture decision record (ADR), schema migration script, gRPC gateway pipeline, and zero-downtime Strangler Fig phase.

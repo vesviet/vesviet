@@ -18,6 +18,7 @@ cover:
   alt: "E-Commerce Order Allocation Series Hub"
   relative: false
 keywords: ["order allocation ecommerce", "multi warehouse routing algorithms", "split shipment minimization", "amazon condor shipping", "warehouse picker optimization"]
+mermaid: true
 ---
 
 > **Answer-first:** High-volume e-commerce fulfillment requires solving the NP-hard **Order Allocation & Split-Shipment Minimization Problem** in sub-100ms latencies. This 10-part masterclass covers real-time inventory reservation, Mixed-Integer Linear Programming (MILP), Amazon CONDOR anticipatory shipping, Distance Matrix routing, and warehouse picker path algorithms.

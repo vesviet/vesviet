@@ -18,6 +18,7 @@ cover:
   alt: "Part 6: Agentic DevOps"
   relative: false
 keywords: ["agentic devops kubernetes", "mcp server deployment", "ai governance finops"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 5: Operating Models](/series/ai-driven-playbook/part-5-operating-model/) | [Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 7: AI Security Engineering →](/series/ai-driven-playbook/part-7-ai-security-engineering/)

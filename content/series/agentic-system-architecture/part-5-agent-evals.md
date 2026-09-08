@@ -18,6 +18,7 @@ cover:
   alt: "Part 5: Agent Evals: Trajectory Validation & Automated Benchmarking"
   relative: false
 keywords: ["agent evaluation framework", "llm as a judge trajectory", "ai agent quality gates"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 4: AgentOps](/series/agentic-system-architecture/part-4-agentops/) | [Series Hub](/series/agentic-system-architecture/) | [Next Chapter: Part 6: Human-in-the-Loop Gateways →](/series/agentic-system-architecture/part-6-human-in-the-loop/)

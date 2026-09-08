@@ -18,6 +18,7 @@ cover:
   alt: "Part 3: QLoRA & Axolotl Fine-Tuning on Commodity GPUs"
   relative: false
 keywords: ["qlora fine tuning axolotl", "train slm 24gb gpu", "lora rank alpha target modules"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 2: SFT Data Engineering](/series/slm-playbook/part-2-sft-data-engineering/) | [Series Hub](/series/slm-playbook/) | [Next Chapter: Part 4: Knowledge Distillation →](/series/slm-playbook/part-4-knowledge-distillation-r1/)

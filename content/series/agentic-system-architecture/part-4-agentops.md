@@ -18,6 +18,7 @@ cover:
   alt: "Part 4: AgentOps & Production Observability"
   relative: false
 keywords: ["agentops observability", "opentelemetry ai agents", "token cost tracking agentops"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 3: Resilient Tool Calling](/series/agentic-system-architecture/part-3-tool-calling/) | [Series Hub](/series/agentic-system-architecture/) | [Next Chapter: Part 5: Agent Evals →](/series/agentic-system-architecture/part-5-agent-evals/)

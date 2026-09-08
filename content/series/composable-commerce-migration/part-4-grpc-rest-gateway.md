@@ -18,6 +18,8 @@ cover:
   alt: "Part 4: gRPC Internal + REST Gateway — The API Contract Lifecycle"
   relative: false
 keywords: ["grpc gateway", "protobuf contract lifecycle", "money pattern protobuf", "cursor pagination grpc"]
+mermaid: true
+noindex: true
 ---
 
 [← Previous Chapter: Part 3: Go + Kratos v2 Framework Deep Dive](/series/composable-commerce-migration/part-3-golang-kratos/) | [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 5: Migrating Magento EAV Schema to PostgreSQL →](/series/composable-commerce-migration/part-5-eav-schema-migration/)

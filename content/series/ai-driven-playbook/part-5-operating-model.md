@@ -18,6 +18,7 @@ cover:
   alt: "Part 5: Engineering Operating Models"
   relative: false
 keywords: ["team topologies ai era", "context engineer role", "engineering operating model 2026"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 5: Autonomous Testing](/series/ai-driven-playbook/part-5-autonomous-testing-qa-automation/) | [Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 6: Agentic DevOps →](/series/ai-driven-playbook/part-6-ai-observability-governance/)

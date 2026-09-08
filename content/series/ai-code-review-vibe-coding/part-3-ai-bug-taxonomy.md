@@ -18,6 +18,7 @@ cover:
   alt: "Part 3: The AI Bug Taxonomy"
   relative: false
 keywords: ["ai code bugs taxonomy", "phantom dependencies llm", "ai generated code vulnerabilities"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 2: Context Engineering](/series/ai-code-review-vibe-coding/part-2-context-engineering-codebase/) | [Series Hub](/series/ai-code-review-vibe-coding/) | [Next Chapter: Part 4: Multi-Agent Review Pipelines →](/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent/)

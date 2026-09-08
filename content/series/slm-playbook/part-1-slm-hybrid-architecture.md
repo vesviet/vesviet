@@ -18,6 +18,7 @@ cover:
   alt: "Part 1: Hybrid AI Architecture & Self-Hosting vLLM"
   relative: false
 keywords: ["hybrid ai routing", "self hosting vllm slm", "model cascade architecture"]
+noindex: true
 ---
 
 [← Previous Chapter: Executive Summary](/series/slm-playbook/executive-summary/) | [Series Hub](/series/slm-playbook/) | [Next Chapter: Part 2: SFT Data Engineering →](/series/slm-playbook/part-2-sft-data-engineering/)

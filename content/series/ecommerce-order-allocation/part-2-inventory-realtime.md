@@ -18,6 +18,7 @@ cover:
   alt: "Part 2: Real-Time Multi-Warehouse Inventory Management"
   relative: false
 keywords: ["real time inventory redis lua", "multi warehouse stock reservation", "prevent overselling ecommerce"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 1: Order Fulfillment Fundamentals](/series/ecommerce-order-allocation/part-1-order-fulfillment-fundamentals/) | [Series Hub](/series/ecommerce-order-allocation/) | [Next Chapter: Part 3: Allocation Algorithms →](/series/ecommerce-order-allocation/part-3-allocation-algorithms/)

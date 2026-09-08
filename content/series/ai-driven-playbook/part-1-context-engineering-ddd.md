@@ -18,6 +18,7 @@ cover:
   alt: "Part 1: Context Engineering with DDD"
   relative: false
 keywords: ["domain driven design ai", "context engineering ddd", "bounded contexts cursor"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 1: Paradigm Shift](/series/ai-driven-playbook/part-1-paradigm-shift-ai-first-sdlc/) | [Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 2: Modern AI Stack →](/series/ai-driven-playbook/part-2-modern-ai-engineering-stack/)

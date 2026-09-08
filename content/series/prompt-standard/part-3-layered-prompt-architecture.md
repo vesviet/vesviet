@@ -15,7 +15,6 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/prompt-standard/part-3-layered-prompt-architecture/"
-mermaid: true
 series: ["prompt-standard"]
 ---
 

@@ -18,6 +18,7 @@ cover:
   alt: "Part 4: Building a Multi-Agent AI Code Review Pipeline"
   relative: false
 keywords: ["multi agent code review ci cd", "automated pr review ai", "github actions ai code review"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 3: The AI Bug Taxonomy](/series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy/) | [Series Hub](/series/ai-code-review-vibe-coding/) | [Next Chapter: Part 5: AI Code Security →](/series/ai-code-review-vibe-coding/part-5-ai-code-security/)

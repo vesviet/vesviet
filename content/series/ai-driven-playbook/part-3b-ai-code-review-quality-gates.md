@@ -18,6 +18,7 @@ cover:
   alt: "Part 3B: AI Code Review"
   relative: false
 keywords: ["ai quality gates ci cd", "automated code review github actions", "pr quality scorecards"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 3B: AI Automation for Internal Ops](/series/ai-driven-playbook/part-3b-ai-automation-internal-ops/) | [Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 4: Legacy Refactoring →](/series/ai-driven-playbook/part-4-ai-assisted-refactoring-legacy-code/)

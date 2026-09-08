@@ -18,6 +18,7 @@ cover:
   alt: "Part 2: SFT Data Engineering — NEFTune & Synthetic Data Curation"
   relative: false
 keywords: ["sft data curation", "neftune embedding noise", "synthetic data generation llm"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 1: Hybrid AI Architecture](/series/slm-playbook/part-1-slm-hybrid-architecture/) | [Series Hub](/series/slm-playbook/) | [Next Chapter: Part 3: QLoRA & Axolotl Fine-Tuning →](/series/slm-playbook/part-3-lora-qlora-tuning/)

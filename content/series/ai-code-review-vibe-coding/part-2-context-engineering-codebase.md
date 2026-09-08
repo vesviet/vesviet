@@ -18,6 +18,7 @@ cover:
   alt: "Part 2: Context Engineering"
   relative: false
 keywords: ["context engineering cursor", "modular cursor rules", "ai friendly codebase architecture"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 1: Vibe Coding for Leaders](/series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical/) | [Series Hub](/series/ai-code-review-vibe-coding/) | [Next Chapter: Part 3: The AI Bug Taxonomy →](/series/ai-code-review-vibe-coding/part-3-ai-bug-taxonomy/)

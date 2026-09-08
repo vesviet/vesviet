@@ -18,6 +18,7 @@ cover:
   alt: "Part 3A: Advanced Context Engineering"
   relative: false
 keywords: ["modular cursor rules mdc", "glob matching cursor rules", "context engineering best practices"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 2: Modern AI Stack](/series/ai-driven-playbook/part-2-modern-ai-engineering-stack/) | [Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 3A: Enterprise RAG →](/series/ai-driven-playbook/part-3a-enterprise-rag-architecture/)

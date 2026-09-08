@@ -18,6 +18,7 @@ cover:
   alt: "Part 4: AI-Assisted Legacy Refactoring"
   relative: false
 keywords: ["legacy code modernization ai", "characterization tests refactoring", "strangler refactoring ai"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 3B: AI Code Review](/series/ai-driven-playbook/part-3b-ai-code-review-quality-gates/) | [Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 5: Autonomous Testing →](/series/ai-driven-playbook/part-5-autonomous-testing-qa-automation/)

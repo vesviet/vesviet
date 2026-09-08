@@ -18,6 +18,7 @@ cover:
   alt: "Executive Summary: Order Allocation"
   relative: false
 keywords: ["order allocation cost function", "split shipment optimization", "ecommerce fulfillment math"]
+noindex: true
 ---
 
 [← Series Hub](/series/ecommerce-order-allocation/) | [Next Chapter: Part 1: Order Fulfillment Fundamentals →](/series/ecommerce-order-allocation/part-1-order-fulfillment-fundamentals/)

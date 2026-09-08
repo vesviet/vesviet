@@ -18,6 +18,7 @@ cover:
   alt: "Part 5: Autonomous Testing"
   relative: false
 keywords: ["autonomous qa testing ai", "self healing playwright tests", "property based testing ai"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 4: Legacy Refactoring](/series/ai-driven-playbook/part-4-ai-assisted-refactoring-legacy-code/) | [Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 5: Operating Models →](/series/ai-driven-playbook/part-5-operating-model/)

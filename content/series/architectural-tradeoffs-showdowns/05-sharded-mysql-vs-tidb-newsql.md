@@ -31,6 +31,7 @@ cover:
   alt: "Sharded MySQL Vitess vs TiDB NewSQL Architectural Showdown"
   relative: false
 keywords: ["sharded mysql vs tidb", "vitess vs tidb", "percolator 2pc latency", "distributed acid transactions", "tidb region auto split", "database architectural tradeoffs"]
+mermaid: true
 ---
 
 [← Previous Chapter: Part 4 — MariaDB vs. MySQL](/series/architectural-tradeoffs-showdowns/04-mariadb-vs-mysql-storage-engines-threadpool/) | [Series Hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 6 — Apache Kafka vs. NATS JetStream →](/series/architectural-tradeoffs-showdowns/06-apache-kafka-vs-nats-jetstream/)

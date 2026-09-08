@@ -18,6 +18,8 @@ cover:
   alt: "Part 1: DDD & Bounded Contexts — Decomposing Magento into 21 Go Microservices"
   relative: false
 keywords: ["domain driven design ecommerce", "bounded contexts microservices", "magento decomposition golang", "kratos microservices"]
+mermaid: true
+noindex: true
 ---
 
 [← Previous Chapter: Part 0: Executive Summary](/series/composable-commerce-migration/part-0-executive-summary/) | [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 2: Rush Monorepo Architecture →](/series/composable-commerce-migration/part-2-rush-monorepo/)

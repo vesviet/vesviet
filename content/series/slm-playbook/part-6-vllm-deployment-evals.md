@@ -18,6 +18,7 @@ cover:
   alt: "Part 6: Enterprise vLLM Deployment, Quantization & Automated Evals"
   relative: false
 keywords: ["vllm production deployment", "awq quantization vllm", "llm automated evaluation pipeline"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 5: Preference Alignment](/series/slm-playbook/part-5-preference-alignment/) | [Series Hub](/series/slm-playbook/)

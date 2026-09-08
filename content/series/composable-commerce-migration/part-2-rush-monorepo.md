@@ -18,6 +18,8 @@ cover:
   alt: "Part 2: Rush Monorepo — Managing 21 Go & 2 Next.js Microservices"
   relative: false
 keywords: ["rush monorepo golang", "polyglot monorepo pnpm", "buf protobuf monorepo", "composable commerce rush"]
+mermaid: true
+noindex: true
 ---
 
 [← Previous Chapter: Part 1: DDD & Bounded Contexts](/series/composable-commerce-migration/part-1-ddd-bounded-contexts/) | [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 3: Go + Kratos v2 Framework Deep Dive →](/series/composable-commerce-migration/part-3-golang-kratos/)

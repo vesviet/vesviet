@@ -18,6 +18,7 @@ cover:
   alt: "Part 4: Anticipatory Shipping"
   relative: false
 keywords: ["amazon condor predictive shipping", "anticipatory inventory allocation", "machine learning logistics"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 3: Allocation Algorithms](/series/ecommerce-order-allocation/part-3-allocation-algorithms/) | [Series Hub](/series/ecommerce-order-allocation/) | [Next Chapter: Part 5: Split Shipment & Last Mile →](/series/ecommerce-order-allocation/part-5-split-consolidation-lastmile/)

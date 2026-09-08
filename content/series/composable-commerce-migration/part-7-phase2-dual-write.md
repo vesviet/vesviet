@@ -18,6 +18,8 @@ cover:
   alt: "Part 7: Phase 2 — Dual-Write: CDC & Kafka Synchronization"
   relative: false
 keywords: ["change data capture debezium", "kafka dual write ecommerce", "data reconciliation microservices", "zero data loss migration"]
+mermaid: true
+noindex: true
 ---
 
 [← Previous Chapter: Part 6: Phase 1 — Strangler Fig](/series/composable-commerce-migration/part-6-phase1-strangler-fig/) | [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 8: Phase 3 — Full Cutover →](/series/composable-commerce-migration/part-8-phase3-full-cutover/)

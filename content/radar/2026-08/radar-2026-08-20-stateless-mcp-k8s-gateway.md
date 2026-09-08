@@ -14,7 +14,7 @@ cover:
   relative: false
 mermaid: true
 aliases:
-  - /radar/2026-08/stateless-mcp-k8s-gateway/
+  - /radar/stateless-mcp-k8s-gateway/
 ---
 
 # Tech Radar: Stateless MCP 2.0 & Kubernetes Gateway API Architecture

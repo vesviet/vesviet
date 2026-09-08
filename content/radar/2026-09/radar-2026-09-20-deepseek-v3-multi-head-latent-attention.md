@@ -17,6 +17,7 @@ ShowToc: true
 TocOpen: true
 draft: false
 keywords: ["deepseek v3 multi head latent attention", "mla kv cache compression", "low rank key value projection", "decoupled rope attention", "llm inference vram optimization"]
+noindex: true
 ---
 
 # Tech Radar: DeepSeek-V3 Multi-Head Latent Attention (MLA) Architecture & KV Cache Compression

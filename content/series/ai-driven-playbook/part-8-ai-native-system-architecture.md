@@ -18,6 +18,7 @@ cover:
   alt: "Part 8: Grand Finale — AI-Native Architecture"
   relative: false
 keywords: ["ai native system architecture", "enterprise agentic architecture blueprint", "grand finale ai playbook"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 7: AI Security Engineering](/series/ai-driven-playbook/part-7-ai-security-engineering/) | [Series Hub](/series/ai-driven-playbook/)

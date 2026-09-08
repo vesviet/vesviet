@@ -1,6 +1,6 @@
 {{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  {{- /* 1. Load and parse static/_redirects with trailing-slash normalization */ -}}
+  {{- /* 1. Load and parse static/_redirects + all page aliases with trailing-slash normalization */ -}}
   {{- $redirectPaths := slice -}}
   {{- $redirectsFile := "static/_redirects" -}}
   {{- if fileExists $redirectsFile -}}
@@ -8,13 +8,34 @@
     {{- range $lines -}}
       {{- $line := trim . " \r\t" -}}
       {{- if and $line (not (hasPrefix $line "#")) -}}
-        {{- $parts := split $line " " -}}
+        {{- $normalized := replaceRE `\s+` " " $line -}}
+        {{- $parts := split $normalized " " -}}
         {{- if gt (len $parts) 0 -}}
           {{- $path := trim (index $parts 0) " \r\t" -}}
           {{- if $path -}}
+            {{- $target := "" -}}
+            {{- if gt (len $parts) 1 -}}
+              {{- $target = trim (index $parts 1) " \r\t" -}}
+            {{- end -}}
             {{- $pathTrim := strings.TrimRight "/" $path -}}
-            {{- $redirectPaths = $redirectPaths | append $path | append $pathTrim | append (printf "%s/" $pathTrim) -}}
+            {{- if eq (printf "%s/" $pathTrim) $target -}}
+              {{- /* Normalization rule: unslashed redirects to canonical slashed. Do not exclude canonical! */ -}}
+            {{- else -}}
+              {{- $redirectPaths = $redirectPaths | append $path | append $pathTrim | append (printf "%s/" $pathTrim) -}}
+            {{- end -}}
           {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- /* Also append all frontmatter aliases from across the site */ -}}
+  {{- range .Site.Pages -}}
+    {{- with .Params.aliases -}}
+      {{- range . -}}
+        {{- $a := trim . " \r\t" -}}
+        {{- if $a -}}
+          {{- $aTrim := strings.TrimRight "/" $a -}}
+          {{- $redirectPaths = $redirectPaths | append $a | append $aTrim | append (printf "%s/" $aTrim) -}}
         {{- end -}}
       {{- end -}}
     {{- end -}}
@@ -36,6 +57,16 @@
         {{- end -}}
       {{- end -}}
 
+      {{- /* Check canonical URL: exclude if canonical points to a different URL */ -}}
+      {{- $canonicalURL := .Permalink -}}
+      {{- with .Params.canonicalURL -}}
+        {{- $trimmed := trim . " " -}}
+        {{- if $trimmed -}}
+          {{- $canonicalURL = $trimmed | absURL -}}
+        {{- end -}}
+      {{- end -}}
+      {{- $isAlternateCanonical := and (ne .Params.canonicalURL nil) (ne $canonicalURL .Permalink) -}}
+
       {{- /* Check if page URL is redirected */ -}}
       {{- $relPath := .RelPermalink -}}
       {{- $relPathTrim := strings.TrimRight "/" $relPath -}}
@@ -43,13 +74,17 @@
 
       {{- /* Evaluate inclusion gate */ -}}
       {{- $include := false -}}
-      {{- if and (not $isNoIndex) (not $isRedirected) -}}
+      {{- if and (not $isNoIndex) (not $isRedirected) (not $isAlternateCanonical) -}}
         {{- if in (slice "taxonomy" "term") .Kind -}}
           {{- /* Taxonomy terms: strictly exclude tags, include only curated categories */ -}}
           {{- $isTag := or (eq .Section "tags") (eq .Data.Singular "tag") (eq .Data.Plural "tags") -}}
           {{- $isCategory := or (eq .Section "categories") (eq .Data.Singular "category") (eq .Data.Plural "categories") -}}
-          {{- if and (not $isTag) $isCategory (ne .File nil) .Params.description -}}
-            {{- $include = true -}}
+          {{- if and (not $isTag) $isCategory -}}
+            {{- if eq .Kind "taxonomy" -}}
+              {{- $include = true -}}
+            {{- else if and (ne .File nil) .Params.description (gt (len .Pages) 0) -}}
+              {{- $include = true -}}
+            {{- end -}}
           {{- end -}}
         {{- else if eq .Kind "page" -}}
           {{- /* Regular content pages: require valid non-empty title */ -}}

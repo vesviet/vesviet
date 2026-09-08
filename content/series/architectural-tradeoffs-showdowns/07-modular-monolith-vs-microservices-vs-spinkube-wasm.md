@@ -32,6 +32,7 @@ cover:
   alt: "Modular Monolith vs Microservices vs SpinKube Wasm Showdown"
   relative: false
 keywords: ["modular monolith vs microservices", "spinkube wasm", "wasmtime kubernetes", "wasi component model", "microservices finops", "distributed transaction taxes"]
+mermaid: true
 ---
 
 [← Previous Chapter: Part 6 — Apache Kafka vs. NATS JetStream](/series/architectural-tradeoffs-showdowns/06-apache-kafka-vs-nats-jetstream/) | [Series Hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 8 — Redis Distributed State vs. Dapr Virtual Actors →](/series/architectural-tradeoffs-showdowns/08-redis-state-vs-dapr-virtual-actors/)

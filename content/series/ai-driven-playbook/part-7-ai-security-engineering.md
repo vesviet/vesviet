@@ -18,6 +18,7 @@ cover:
   alt: "Part 7: AI Security Engineering"
   relative: false
 keywords: ["ai security engineering", "prompt injection defense", "zero trust ai guardrails"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 6: Agentic DevOps](/series/ai-driven-playbook/part-6-ai-observability-governance/) | [Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 8: Grand Finale →](/series/ai-driven-playbook/part-8-ai-native-system-architecture/)

@@ -2,7 +2,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 {{- $isProduction := or hugo.IsProduction (eq site.Params.env "production") }}
-{{- $isNoIndexParam := or .Params.noindex .Params.robotsNoIndex }}
+{{- $isNoIndexParam := or .Params.noindex .Params.robotsNoIndex .Draft }}
 {{- if .Params.robots }}
   {{- if or (eq .Params.robots "noindex") (strings.Contains (printf "%v" .Params.robots) "noindex") }}
     {{- $isNoIndexParam = true }}
@@ -13,17 +13,30 @@
 
 {{- $isCuratedCategory := false }}
 {{- if $isCategory }}
-  {{- if and (ne .File nil) .Params.description }}
+  {{- if eq .Kind "taxonomy" }}
+    {{- $isCuratedCategory = true }}
+  {{- else if and (ne .File nil) .Params.description (gt (len .Pages) 0) }}
     {{- $isCuratedCategory = true }}
   {{- end }}
 {{- end }}
 
+{{- $is404 := or (eq .Kind "404") (eq .Layout "404") (eq .RelPermalink "/404.html") (eq .RelPermalink "/404.html/") (strings.HasSuffix .RelPermalink "404.html") }}
+{{- $isPaginated := false }}
+{{- if and .IsNode .Paginator }}
+  {{- if gt .Paginator.PageNumber 1 }}
+    {{- $isPaginated = true }}
+  {{- end }}
+{{- end }}
+
 {{- $shouldIndex := false }}
-{{- if and $isProduction (not $isNoIndexParam) (not $isTags) }}
+{{- if and $isProduction (not $isNoIndexParam) (not $isTags) (not $is404) (not $isPaginated) }}
   {{- if $isCategory }}
     {{- if $isCuratedCategory }}
       {{- $shouldIndex = true }}
     {{- end }}
+  {{- else if in (slice "taxonomy" "term") .Kind }}
+    {{- /* Exclude any non-category uncurated taxonomy terms */ -}}
+    {{- $shouldIndex = false }}
   {{- else }}
     {{- $shouldIndex = true }}
   {{- end }}
@@ -56,6 +69,10 @@
   {{- $trimmed := trim . " " -}}
   {{- if $trimmed -}}
     {{- $canonicalURL = $trimmed | absURL -}}
+  {{- end -}}
+{{- else -}}
+  {{- if $isPaginated -}}
+    {{- $canonicalURL = .Paginator.URL | absURL -}}
   {{- end -}}
 {{- end -}}
 <link rel="canonical" href="{{ $canonicalURL }}">

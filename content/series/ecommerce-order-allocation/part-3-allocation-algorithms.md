@@ -18,6 +18,7 @@ cover:
   alt: "Part 3: Allocation Algorithms"
   relative: false
 keywords: ["order allocation algorithms", "milp optimization ecommerce", "greedy order routing"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 2: Real-Time Inventory](/series/ecommerce-order-allocation/part-2-inventory-realtime/) | [Series Hub](/series/ecommerce-order-allocation/) | [Next Chapter: Part 4: Anticipatory Shipping →](/series/ecommerce-order-allocation/part-4-amazon-condor-anticipatory/)

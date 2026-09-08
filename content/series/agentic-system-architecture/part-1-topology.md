@@ -18,6 +18,7 @@ cover:
   alt: "Part 1: Swarm Topologies — Hierarchical Routers vs. Shared Blackboards"
   relative: false
 keywords: ["multi agent topology", "hierarchical agent router", "blackboard pattern ai agents"]
+noindex: true
 ---
 
 [← Previous Chapter: Executive Summary](/series/agentic-system-architecture/executive-summary/) | [Series Hub](/series/agentic-system-architecture/) | [Next Chapter: Part 2: Hierarchical Memory →](/series/agentic-system-architecture/part-2-memory/)

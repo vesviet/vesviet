@@ -34,6 +34,7 @@ cover:
   alt: "Redis Distributed State vs Dapr Virtual Actors Showdown"
   relative: false
 keywords: ["redis vs dapr", "dapr virtual actors", "redlock vs actors", "ai agent state management", "redis distributed locks", "consistent hashing placement"]
+mermaid: true
 ---
 
 > 📖 **Series Navigation**: [← Previous Chapter: Modular Monolith vs Microservices vs SpinKube Wasm](/series/architectural-tradeoffs-showdowns/07-modular-monolith-vs-microservices-vs-spinkube-wasm/) | [Series Hub](/series/architectural-tradeoffs-showdowns/)

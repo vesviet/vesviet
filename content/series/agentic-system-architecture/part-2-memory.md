@@ -18,6 +18,7 @@ cover:
   alt: "Part 2: Hierarchical Memory — Episodic, Semantic & Temporal Graphs"
   relative: false
 keywords: ["agent memory hierarchy", "episodic memory ai agents", "temporal graphrag memory"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 1: Swarm Topologies](/series/agentic-system-architecture/part-1-topology/) | [Series Hub](/series/agentic-system-architecture/) | [Next Chapter: Part 3: Resilient Tool Calling →](/series/agentic-system-architecture/part-3-tool-calling/)

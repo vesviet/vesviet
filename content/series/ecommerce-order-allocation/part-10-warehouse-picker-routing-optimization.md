@@ -18,6 +18,7 @@ cover:
   alt: "Part 10: Warehouse Picker Routing"
   relative: false
 keywords: ["warehouse picker routing tsp", "s-shape picking heuristic", "wms picker trajectory optimization"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 9: Order Splitting via Graph Coloring](/series/ecommerce-order-allocation/part-9-order-splitting-graph-coloring-opa/) | [Series Hub](/series/ecommerce-order-allocation/)

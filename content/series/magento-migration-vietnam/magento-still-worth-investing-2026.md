@@ -22,6 +22,7 @@ aliases:
   - /posts/is-magento-still-worth-investing-in-2026-a-practical-take-on-2.4.9-beta1-vs-2.4.8
   - /posts/magento-still-worth-investing-2026/
   - /posts/magento-still-worth-investing-2026
+mermaid: true
 ---
 
 

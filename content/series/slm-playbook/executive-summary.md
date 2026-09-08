@@ -18,6 +18,7 @@ cover:
   alt: "Executive Summary: The Rise of Specialized Small Language Models"
   relative: false
 keywords: ["slm vs llm enterprise", "ai economics small language models", "hybrid ai routing architecture"]
+noindex: true
 ---
 
 [← Series Hub](/series/slm-playbook/) | [Next Chapter: Part 1: Hybrid AI Architecture →](/series/slm-playbook/part-1-slm-hybrid-architecture/)

@@ -13,6 +13,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/architectural-tradeoffs-showdowns/"
 ShowToc: true
 TocOpen: true
+mermaid: true
 ---
 
 > **Answer-first:** "There are no solutions in software architecture, only trade-offs." The **Architectural Trade-offs & Tech Showdowns** series provides an open-ended, practitioner-led engineering framework comparing conflicting technical stacks, transport protocols, and data layers. Each showdown evaluates memory allocations, wire formats, P99 latency benchmarks, cloud FinOps, and production failure modes under sustained 50,000+ RPS loads.

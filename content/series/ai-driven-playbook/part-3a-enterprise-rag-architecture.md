@@ -18,6 +18,7 @@ cover:
   alt: "Part 3A: Enterprise RAG Architecture"
   relative: false
 keywords: ["enterprise rag codebase", "ast code chunking rag", "hybrid search vector bm25"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 3A: Cursor Rules](/series/ai-driven-playbook/part-3a-context-engineering-cursor-rules/) | [Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 3B: AI Automation for Internal Ops →](/series/ai-driven-playbook/part-3b-ai-automation-internal-ops/)

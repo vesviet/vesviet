@@ -18,6 +18,7 @@ cover:
   alt: "Part 3: Resilient Tool Calling — Model Context Protocol (MCP) & Sandboxing"
   relative: false
 keywords: ["model context protocol mcp", "agent tool calling resilience", "wasm tool sandbox"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 2: Hierarchical Memory](/series/agentic-system-architecture/part-2-memory/) | [Series Hub](/series/agentic-system-architecture/) | [Next Chapter: Part 4: AgentOps & Observability →](/series/agentic-system-architecture/part-4-agentops/)

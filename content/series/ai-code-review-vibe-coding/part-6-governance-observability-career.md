@@ -18,6 +18,7 @@ cover:
   alt: "Part 6: Governance, Observability & The Future of Engineering Careers"
   relative: false
 keywords: ["ai engineering governance", "dora metrics ai coding", "future of software engineering career"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 5: AI Code Security](/series/ai-code-review-vibe-coding/part-5-ai-code-security/) | [Series Hub](/series/ai-code-review-vibe-coding/)

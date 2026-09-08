@@ -40,7 +40,6 @@ tags:
   - "OpenTelemetry"
 ShowToc: true
 TocOpen: true
-mermaid: true
 cover:
   image: "/images/posts/high-throughput-local-llm-infrastructure-vllm-golang-gateway.jpg"
   alt: "High-Throughput Local LLM Gateway: Go & vLLM Blueprint"

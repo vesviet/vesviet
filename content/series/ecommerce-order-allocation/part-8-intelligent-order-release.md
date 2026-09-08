@@ -18,6 +18,7 @@ cover:
   alt: "Part 8: Intelligent Order Release"
   relative: false
 keywords: ["intelligent order release ai", "dynamic wave picking ai", "warehouse workload balancing"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 7: Distance Matrix Routing](/series/ecommerce-order-allocation/part-7-distance-matrix-routing/) | [Series Hub](/series/ecommerce-order-allocation/) | [Next Chapter: Part 9: Order Splitting via Graph Coloring →](/series/ecommerce-order-allocation/part-9-order-splitting-graph-coloring-opa/)

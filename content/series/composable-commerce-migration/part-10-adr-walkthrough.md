@@ -18,6 +18,7 @@ cover:
   alt: "Part 10: ADR Walkthrough — 24 Architecture Decisions Decoded"
   relative: false
 keywords: ["architecture decision records ecommerce", "adr walkthrough golang", "system design composable commerce", "microservices adr"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 9: Transactional Outbox & Sagas](/series/composable-commerce-migration/part-9-outbox-saga/) | [Series Hub](/series/composable-commerce-migration/)

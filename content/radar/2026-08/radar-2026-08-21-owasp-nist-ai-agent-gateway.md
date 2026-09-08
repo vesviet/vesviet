@@ -14,7 +14,7 @@ cover:
   relative: false
 mermaid: true
 aliases:
-  - /radar/2026-08/owasp-nist-ai-agent-gateway/
+  - /radar/owasp-nist-ai-agent-gateway/
 ---
 
 # Tech Radar: NIST AI 600-1 & OWASP ASI01–ASI10 — Hardening Enterprise Agent Gateways in Kubernetes

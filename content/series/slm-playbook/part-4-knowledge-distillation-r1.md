@@ -18,6 +18,7 @@ cover:
   alt: "Part 4: Knowledge Distillation from DeepSeek-R1 & Frontier Teachers"
   relative: false
 keywords: ["knowledge distillation deepseek r1", "distill chain of thought slm", "reasoning student model"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 3: QLoRA & Axolotl](/series/slm-playbook/part-3-lora-qlora-tuning/) | [Series Hub](/series/slm-playbook/) | [Next Chapter: Part 5: Preference Alignment with DPO →](/series/slm-playbook/part-5-preference-alignment/)

@@ -18,6 +18,7 @@ cover:
   alt: "Part 3B: AI Automation for Internal Ops"
   relative: false
 keywords: ["ai internal operations", "automated incident response ai", "slackops ai agents"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 3A: Enterprise RAG](/series/ai-driven-playbook/part-3a-enterprise-rag-architecture/) | [Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 3B: AI Code Review →](/series/ai-driven-playbook/part-3b-ai-code-review-quality-gates/)

@@ -18,6 +18,7 @@ cover:
   alt: "Part 1: Order Fulfillment Fundamentals"
   relative: false
 keywords: ["oms wms tms integration", "order fulfillment lifecycle", "ecommerce supply chain architecture"]
+noindex: true
 ---
 
 [← Previous Chapter: Executive Summary](/series/ecommerce-order-allocation/executive-summary/) | [Series Hub](/series/ecommerce-order-allocation/) | [Next Chapter: Part 2: Real-Time Inventory →](/series/ecommerce-order-allocation/part-2-inventory-realtime/)

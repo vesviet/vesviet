@@ -18,6 +18,8 @@ cover:
   alt: "Part 9: Transactional Outbox & Distributed Sagas in Composable Commerce"
   relative: false
 keywords: ["transactional outbox pattern", "orchestrated saga ecommerce", "distributed transactions golang", "kafka outbox"]
+mermaid: true
+noindex: true
 ---
 
 [← Previous Chapter: Part 8: Phase 3 — Full Cutover](/series/composable-commerce-migration/part-8-phase3-full-cutover/) | [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 10: ADR Walkthrough — 24 Architecture Decisions →](/series/composable-commerce-migration/part-10-adr-walkthrough/)

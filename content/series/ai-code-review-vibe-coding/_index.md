@@ -18,6 +18,7 @@ cover:
   alt: "Vibe Coding & AI Code Review Series Hub"
   relative: false
 keywords: ["vibe coding enterprise", "ai code review pipeline", "cursor rules context engineering", "prevent ai hallucinations code"]
+mermaid: true
 ---
 
 > **Answer-first:** "Vibe Coding" accelerates initial prototyping by 10x, but without rigorous **Context Engineering** and **Automated AI Code Review Pipelines**, it introduces severe technical debt, security vulnerabilities (OWASP LLM Top 10), and subtle logic bugs. This series provides an engineering framework to transform rapid AI code generation into verifiable, production-ready enterprise software.

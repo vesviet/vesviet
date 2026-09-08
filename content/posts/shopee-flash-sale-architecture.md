@@ -22,7 +22,6 @@ tags:
   - "API Gateway"
 aliases:
   - /series/high-concurrency-systems/article_6_api_gateway/
-  - /series/high-concurrency-systems/how-systems-handle-c10m/
   - /series/high-concurrency-systems/api-gateway-vs-service-mesh/
 description: "Flash sale architecture patterns for C10M-scale events: multi-tier traffic shedding, Redis Cluster Lua inventory reservations, hotkey splitting, and partitioned Kafka queue batching."
 ShowToc: true

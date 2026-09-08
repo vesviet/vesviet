@@ -18,6 +18,7 @@ cover:
   alt: "Part 5: Split Shipment"
   relative: false
 keywords: ["split shipment minimization", "hub consolidation logistics", "carrier rate shopping api"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 4: Anticipatory Shipping](/series/ecommerce-order-allocation/part-4-amazon-condor-anticipatory/) | [Series Hub](/series/ecommerce-order-allocation/) | [Next Chapter: Part 6: Building a Mini Engine in Go →](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/)

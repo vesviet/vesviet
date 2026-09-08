@@ -18,6 +18,7 @@ cover:
   alt: "Part 6: Building a Mini Allocation Engine in Go"
   relative: false
 keywords: ["golang allocation engine", "order routing service go", "build allocation engine"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 5: Split Shipment](/series/ecommerce-order-allocation/part-5-split-consolidation-lastmile/) | [Series Hub](/series/ecommerce-order-allocation/) | [Next Chapter: Part 7: Distance Matrix Routing →](/series/ecommerce-order-allocation/part-7-distance-matrix-routing/)

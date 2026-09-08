@@ -31,6 +31,7 @@ cover:
   alt: "MariaDB vs MySQL Architectural Divergence and Storage Engine Showdown"
   relative: false
 keywords: ["mariadb vs mysql", "mariadb threadpool vs mysql", "innodb vs myrocks", "binary json mysql vs mariadb", "galera cluster vs group replication", "database architectural tradeoffs"]
+mermaid: true
 ---
 
 [← Previous Chapter: Part 3 — Primary Key Showdown: UUIDv7 vs. Snowflake](/series/architectural-tradeoffs-showdowns/03-primary-key-showdown-uuidv7-vs-snowflake-vs-bigint/) | [Series Hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 5 — Sharded MySQL vs. TiDB NewSQL →](/series/architectural-tradeoffs-showdowns/05-sharded-mysql-vs-tidb-newsql/)

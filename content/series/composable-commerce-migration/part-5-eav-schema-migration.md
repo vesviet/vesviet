@@ -18,6 +18,8 @@ cover:
   alt: "Part 5: Migrating Magento EAV Schema to Clean Relational PostgreSQL"
   relative: false
 keywords: ["magento eav migration", "eav to jsonb postgresql", "gin indexing postgresql", "database decomposition ecommerce"]
+mermaid: true
+noindex: true
 ---
 
 [← Previous Chapter: Part 4: gRPC Internal + REST Gateway](/series/composable-commerce-migration/part-4-grpc-rest-gateway/) | [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 6: Phase 1 — Strangler Fig →](/series/composable-commerce-migration/part-6-phase1-strangler-fig/)

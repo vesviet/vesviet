@@ -18,6 +18,7 @@ cover:
   alt: "Part 5: AI Code Security"
   relative: false
 keywords: ["owasp llm security", "ai code supply chain hardening", "hallucinated package takeover"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 4: Multi-Agent Review Pipelines](/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent/) | [Series Hub](/series/ai-code-review-vibe-coding/) | [Next Chapter: Part 6: Governance & Careers →](/series/ai-code-review-vibe-coding/part-6-governance-observability-career/)

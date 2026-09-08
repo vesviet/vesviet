@@ -18,6 +18,7 @@ cover:
   alt: "The SLM Playbook Series Hub"
   relative: false
 keywords: ["slm fine tuning playbook", "qlora axolotl production", "knowledge distillation deepseek r1", "vllm slm serving", "dpo alignment slm"]
+mermaid: true
 ---
 
 > **Answer-first:** For 80% of domain-specific enterprise tasks (classification, SQL generation, JSON extraction, code triage), fine-tuned Small Language Models (1B–8B parameters) match or exceed frontier model performance at **1/50th of the inference cost** and **sub-50ms latency**. This playbook documents the full production pipeline: synthetic data generation, QLoRA fine-tuning with Axolotl, distillation from DeepSeek-R1, DPO alignment, and vLLM serving.

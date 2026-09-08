@@ -18,6 +18,7 @@ cover:
   alt: "Part 5: Preference Alignment with DPO"
   relative: false
 keywords: ["direct preference optimization dpo", "slm alignment dpo", "json format enforcement llm"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 4: Knowledge Distillation](/series/slm-playbook/part-4-knowledge-distillation-r1/) | [Series Hub](/series/slm-playbook/) | [Next Chapter: Part 6: Enterprise vLLM Deployment →](/series/slm-playbook/part-6-vllm-deployment-evals/)

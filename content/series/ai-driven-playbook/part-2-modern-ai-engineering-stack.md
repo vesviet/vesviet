@@ -18,6 +18,7 @@ cover:
   alt: "Part 2: Modern AI Engineering Stack"
   relative: false
 keywords: ["modern ai engineering stack 2026", "mcp tooling stack", "cursor litellm enterprise"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 1: Context Engineering with DDD](/series/ai-driven-playbook/part-1-context-engineering-ddd/) | [Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 3A: Cursor Rules →](/series/ai-driven-playbook/part-3a-context-engineering-cursor-rules/)

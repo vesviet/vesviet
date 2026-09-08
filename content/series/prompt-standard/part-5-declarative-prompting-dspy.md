@@ -15,7 +15,6 @@ cover:
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/prompt-standard/part-5-declarative-prompting-dspy/"
-mermaid: true
 series: ["prompt-standard"]
 ---
 

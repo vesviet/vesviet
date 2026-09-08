@@ -18,6 +18,7 @@ cover:
   alt: "Executive Summary: What is Vibe Coding"
   relative: false
 keywords: ["vibe coding summary", "ai programming shift", "senior engineer vibe coding"]
+noindex: true
 ---
 
 [← Series Hub](/series/ai-code-review-vibe-coding/) | [Next Chapter: Part 1: Vibe Coding for Leaders →](/series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical/)

@@ -155,3 +155,13 @@ apple_touch_icon = "/apple-touch-icon.png"
   section = ["HTML"]
   taxonomy = ["HTML"]
   term = ["HTML"]
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
+[sitemap]
+  changefreq = "weekly"
+  priority = 0.8
+  filename = "sitemap.xml"
+

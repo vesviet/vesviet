@@ -36,6 +36,7 @@ cover:
   alt: "Envoy Gateway vs Cilium eBPF Service Mesh Architectural Showdown"
   relative: false
 keywords: ["envoy gateway vs cilium service mesh", "ebpf sockops socket redirection", "sidecarless service mesh kubernetes", "gateway api gamma envoy cilium", "cilium envoy daemonset performance"]
+mermaid: true
 ---
 
 > 📖 **Series Navigation**: [← Previous Chapter: Part 9 — Cookie vs. SessionStorage vs. LocalStorage](/series/architectural-tradeoffs-showdowns/09-cookie-vs-sessionstorage-vs-localstorage/) | [Series Hub](/series/architectural-tradeoffs-showdowns/)

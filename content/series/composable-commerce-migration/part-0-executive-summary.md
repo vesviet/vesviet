@@ -18,6 +18,8 @@ cover:
   alt: "Part 0: Executive Summary — Why You Can Avoid the $200k/Year Magento Trap"
   relative: false
 keywords: ["magento migration", "composable commerce", "magento enterprise cost", "ecommerce architecture 2026"]
+mermaid: true
+noindex: true
 ---
 
 [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 1: DDD & Bounded Contexts Decomposing Magento into 21 Services →](/series/composable-commerce-migration/part-1-ddd-bounded-contexts/)

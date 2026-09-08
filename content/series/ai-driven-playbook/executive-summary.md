@@ -18,6 +18,7 @@ cover:
   alt: "Executive Summary: AI-Native Engineering"
   relative: false
 keywords: ["ai native engineering team", "ai software delivery velocity", "engineering leadership ai"]
+noindex: true
 ---
 
 [← Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 1: Paradigm Shift →](/series/ai-driven-playbook/part-1-paradigm-shift-ai-first-sdlc/)

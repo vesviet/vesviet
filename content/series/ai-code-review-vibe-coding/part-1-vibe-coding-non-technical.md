@@ -18,6 +18,7 @@ cover:
   alt: "Part 1: Vibe Coding for Leaders"
   relative: false
 keywords: ["vibe coding leaders", "product manager ai coding", "rapid prototyping ai"]
+noindex: true
 ---
 
 [← Previous Chapter: Executive Summary](/series/ai-code-review-vibe-coding/executive-summary/) | [Series Hub](/series/ai-code-review-vibe-coding/) | [Next Chapter: Part 2: Context Engineering →](/series/ai-code-review-vibe-coding/part-2-context-engineering-codebase/)

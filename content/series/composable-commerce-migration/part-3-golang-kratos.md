@@ -18,6 +18,8 @@ cover:
   alt: "Part 3: Go + Kratos v2 Framework Deep Dive: Microservice Anatomy"
   relative: false
 keywords: ["golang kratos v2", "clean architecture golang", "google wire dependency injection", "kratos microservices"]
+mermaid: true
+noindex: true
 ---
 
 [← Previous Chapter: Part 2: Rush Monorepo](/series/composable-commerce-migration/part-2-rush-monorepo/) | [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 4: gRPC Internal + REST Gateway →](/series/composable-commerce-migration/part-4-grpc-rest-gateway/)

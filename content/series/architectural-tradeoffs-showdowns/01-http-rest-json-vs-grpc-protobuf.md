@@ -32,6 +32,7 @@ cover:
 canonicalURL: "https://tanhdev.com/series/architectural-tradeoffs-showdowns/01-http-rest-json-vs-grpc-protobuf/"
 aliases:
   - "/posts/http-rest-json-vs-grpc-protobuf-architectural-tradeoffs/"
+mermaid: true
 ---
 
 [← Series hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 2 — Golang vs. PHP/Laravel →](/series/architectural-tradeoffs-showdowns/02-golang-vs-php-laravel-ecommerce/)

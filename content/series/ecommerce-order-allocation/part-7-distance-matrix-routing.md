@@ -26,6 +26,7 @@ cover:
   image: "/images/posts/default-post.png"
   alt: "Distance Matrix Computation and Dynamic Geo-Routing Architecture"
   relative: false
+mermaid: true
 ---
 
 [← Previous Chapter: Part 6 — Building a Mini Engine in Go](/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/) | [Series Hub](/series/ecommerce-order-allocation/) | [Next Chapter: Part 8 — Intelligent Order Release →](/series/ecommerce-order-allocation/part-8-intelligent-order-release/)

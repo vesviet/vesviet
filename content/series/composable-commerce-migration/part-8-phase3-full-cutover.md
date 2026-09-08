@@ -18,6 +18,7 @@ cover:
   alt: "Part 8: Phase 3 — Full Cutover & Decommissioning the Monolith"
   relative: false
 keywords: ["monolith decommissioning", "cutover runbook ecommerce", "zero downtime cutover", "magento sunset"]
+noindex: true
 ---
 
 [← Previous Chapter: Part 7: Phase 2 — Dual-Write](/series/composable-commerce-migration/part-7-phase2-dual-write/) | [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 9: Transactional Outbox & Sagas →](/series/composable-commerce-migration/part-9-outbox-saga/)

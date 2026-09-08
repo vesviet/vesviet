@@ -46,7 +46,6 @@ tags:
   - "Cloud Native"
 ShowToc: true
 TocOpen: true
-mermaid: true
 cover:
   image: "/images/posts/building-custom-kubernetes-operators-ebpf-golang-cilium.jpg"
   alt: "Custom Kubernetes Operators in Go: Kubebuilder & eBPF"
