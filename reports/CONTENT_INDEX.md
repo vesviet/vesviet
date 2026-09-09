@@ -46,7 +46,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 | `modular-monolith-architecture` | 9 | Modular monolith |
 | `high-concurrency-systems` | 9 | High-concurrency patterns |
 | `core-banking-developer` | 9 | Core banking engineering (2027 SOTA) |
-| `mcp-engineering-in-production` | 8 | MCP production engineering |
+| `mcp-engineering-in-production` | 8 | MCP production engineering (2027 SOTA Masterclass, 8 parts + hub) |
 | `generative-ui-architecture` | 8 | Generative UI + MCP |
 | `core-banking-architecture` | 8 | Core banking DDD/BIAN |
 | `alipay-double-11` | 8 | High-TPS fintech case study |
@@ -88,7 +88,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 
 ## Masterclass Twin Mapping (learn ⇄ vesviet)
 
-Each flagship topic exists as a Vietnamese twin on `learn` (canonical there for notes) and an expanded English masterclass on `vesviet` (authority site). Batch 6 / 2027 SOTA wave synchronized on both repos: `ai-driven-playbook` (14–15 parts), `ai-driven-engineer` (11–12 parts), `ai-data-engineering-pipeline` (11 parts), `core-banking-developer` (9–10 parts), `magento-migration-vietnam` (15 parts each side), `slm-playbook` (7 parts), `system-design` (12 parts), plus `radar-2026-09-08-mcp-20-agentic-mesh` twin. Earlier Batch 5 flagships: Alipay TPS, banking microservices, composable banking, Dapr saga, NATS JetStream CQRS, strangler fig, gRPC production, SPIFFE/SPIRE zero-trust, K8s operators/eBPF/Cilium, pprof remote, D1 durable objects cart, Astro edge, Go 1.26 GC, zero-alloc tuning, goroutine leaks, framework benchmarks, vector DB HNSW, MCP servers, generative UI, GraphRAG.
+Each flagship topic exists as a Vietnamese twin on `learn` (canonical there for notes) and an expanded English masterclass on `vesviet` (authority site). Batch 6 / 2027 SOTA wave synchronized on both repos: `ai-driven-playbook` (14–15 parts), `ai-driven-engineer` (11–12 parts), `ai-data-engineering-pipeline` (11 parts), `core-banking-developer` (9–10 parts), `magento-migration-vietnam` (15 parts each side), `slm-playbook` (7 parts), `system-design` (12 parts), `mcp-engineering-in-production` (8 parts + hub), plus `radar-2026-09-08-mcp-20-agentic-mesh` twin. Earlier Batch 5 flagships: Alipay TPS, banking microservices, composable banking, Dapr saga, NATS JetStream CQRS, strangler fig, gRPC production, SPIFFE/SPIRE zero-trust, K8s operators/eBPF/Cilium, pprof remote, D1 durable objects cart, Astro edge, Go 1.26 GC, zero-alloc tuning, goroutine leaks, framework benchmarks, vector DB HNSW, MCP servers, generative UI, GraphRAG.
 
 ## Cross-Language Navigation (policy update)
 
@@ -104,7 +104,7 @@ Each flagship topic exists as a Vietnamese twin on `learn` (canonical there for 
 | Word depth | Flagships 4,600+ words post-upgrade |
 | Mermaid (fenced blocks) | 52 posts, 174 series files; repo-wide mermaid syntax 100% pass (commit `2498d59`) |
 | Orphan policy | 0 orphans per latest crawls; `reading-map.md` curates 6 learning pillars |
-| New twin coverage | `core-banking-developer`, `magento-migration-vietnam`, `ai-data-engineering-pipeline`, `ai-driven-engineer`, `ai-driven-playbook`, `slm-playbook`, `system-design` fully 2027-SOTA on both sites |
+| New twin coverage | `core-banking-developer`, `magento-migration-vietnam`, `ai-data-engineering-pipeline`, `ai-driven-engineer`, `ai-driven-playbook`, `slm-playbook`, `system-design`, `mcp-engineering-in-production` fully 2027-SOTA on both sites |
 
 ## Known Gaps (next sprint candidates)
 
@@ -112,5 +112,6 @@ Each flagship topic exists as a Vietnamese twin on `learn` (canonical there for 
 2. `prompt-standard` series has 6 English parts vs 15 Vietnamese — **campaign active** via `series-sync-upgrade` workflow; baseline and targets in [`reports/prompt-standard-content-index.md`](prompt-standard-content-index.md).
 3. `slm-playbook` series (7 chapters + hub) upgraded to 2027 SOTA standard with 24 Mermaid diagrams, 24 FAQ components, >2,600 words per chapter, and 700 research rounds (**campaign complete**; full audit sign-off in [`reports/slm-playbook-content-index.md`](slm-playbook-content-index.md)).
 4. `system-design` series (12 chapters + hub) upgraded to 2027 SOTA standard with 84 Mermaid diagrams, 45 FAQ components, >2,500 words per chapter, and 1,200 research rounds (**campaign complete**; full audit sign-off in [`reports/system-design-content-index.md`](system-design-content-index.md)).
-5. Radar pre-2026-08 editions lack Answer-first (acceptable per radar format) but check `mermaid`/frontmatter consistency.
-6. Rerun `reports/check_posts.py` full scan — last full audit predates the 2027 SOTA wave (~275 files vs 369 now).
+5. `mcp-engineering-in-production` series (8 chapters + hub) upgraded to 2027 SOTA standard with 39 Mermaid diagrams, 27 FAQ components, >2,500 words per chapter, and 800 research rounds (**campaign complete**; full audit sign-off in [`reports/mcp-engineering-in-production-content-index.md`](mcp-engineering-in-production-content-index.md)).
+6. Radar pre-2026-08 editions lack Answer-first (acceptable per radar format) but check `mermaid`/frontmatter consistency.
+7. Rerun `reports/check_posts.py` full scan — last full audit predates the 2027 SOTA wave (~275 files vs 369 now).
