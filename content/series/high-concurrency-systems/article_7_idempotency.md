@@ -1,353 +1,195 @@
 ---
 title: "Chapter 7: Designing Idempotency APIs for Payment Systems"
 date: "2026-06-09T10:30:00+07:00"
-lastmod: "2026-06-09T10:30:00+07:00"
+lastmod: "2026-09-09T21:45:00+07:00"
 draft: false
 series: ["high-concurrency-systems"]
-series_order: 7
-tags: ["golang", "idempotency", "redis", "api design"]
+series_order: 8
+weight: 8
+tags: ["golang", "idempotency", "redis", "api design", "payments", "pci-dss"]
+categories: ["High Concurrency", "API Design"]
 mermaid: true
 slug: "idempotency-api-design-payments"
 description: "Prevent double-charging customers by implementing durable Idempotency-Key headers and atomic Redis locks in high-scale HTTP POST APIs."
 ShowToc: true
 TocOpen: true
+aliases:
+  - "/series/high-concurrency-systems/article_7_idempotency/"
 cover:
   image: "/images/posts/idempotency-api-design-payments.jpg"
-  alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
+  alt: "Chapter 7: Designing Idempotency APIs for Payment Systems"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/idempotency-api-design-payments/"
 image: "/images/posts/idempotency-api-design-payments.jpg"
-weight: 7
-aliases: ["/series/high-concurrency-systems/article_7_idempotency/"]
 ---
 
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Chương 7: Thiết Kế Idempotency APIs Dành Cho Hệ Thống Thanh Toán (learn.tanhdev.com)](https://learn.tanhdev.com/series/high-concurrency-systems/idempotency-api-design-payments/).
 
-> **Prerequisite:** Read the previous article: [Chapter 6: API Gateway vs Service Mesh in Microservices Architecture](/posts/shopee-flash-sale-architecture/).
-
-In E-commerce or Fintech, the ultimate nightmare is not a system crash, but **charging a customer twice for a single order**. This is usually caused by network lag, an impatient user double-clicking "Pay", or automated app retry logic.
-
-The mandatory solution for any transactional API (Payment/Order) is **Idempotency**.
+[Previous: Chapter 6 — API Gateway vs Service Mesh](/series/high-concurrency-systems/api-gateway-vs-service-mesh/) | [Series Hub](/series/high-concurrency-systems/) | [Next: Chapter 8 — Distributed Locking: Redlock vs ZooKeeper](/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/)
 
 ---
 
-# 1. What is Idempotency?
-
-**Answer-first:** Designing idempotent payment APIs uses unique client idempotency keys, Redis SetNX atomic locks, and response payload caching to prevent duplicate transaction charges during retries. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
-
-An operation is idempotent if executing it once or N times yields the exact same system state and outcome. While GET and PUT are natively idempotent, POST requires explicit engineering.
-
-With HTTP REST APIs:
-- `GET`, `PUT`, `DELETE`: Inherently idempotent. (Deleting a user 10 times results in the same state: the user is gone).
-- `POST`: **Not idempotent**. Calling POST `/charge` 10 times will execute 10 financial deductions.
+> **Answer-First:** In payment and financial settlement APIs, network timeouts and client retries make duplicate requests inevitable. Guaranteeing idempotency requires adhering to the **IETF Idempotency-Key HTTP Specification** backed by an **Atomic Three-State Machine (PENDING, PROCESSING, COMPLETED)**. Using an atomic Redis lease lock (`SET key value NX PX 30000`) with SHA-256 payload tampering validation, the server ensures that a payment is executed exactly once, while duplicate retries immediately receive the cached authoritative HTTP response without re-invoking payment gateways.
 
 ---
 
-## 2. Idempotency-Key and the Request Lifecycle
+## 1. The Financial Danger of Non-Idempotent POST APIs
 
-Clients must attach a unique `Idempotency-Key` UUID to their requests. The server validates this key against Redis to determine if the transaction is new, processing, or already completed.
-
-To enforce idempotency on a POST API, the Client (Mobile/Web) must generate a Unique ID (typically a UUID v4) and attach it to the Request Header: `Idempotency-Key: 123e4567...`
-
-The Golang server handles this via 3 strict states:
-
-1. **State 1 (New Key):** 
-   - The server registers the Key in Redis with an `IN_FLIGHT` state.
-   - It executes the business logic (calling payment gateways, deducting balances).
-   - Upon completion, it updates the Key to `DONE` and **stores the entire Response Payload** in Redis. It returns the result to the Client.
-2. **State 2 (Key is IN_FLIGHT):**
-   - The user double-clicks. Request 2 arrives while Request 1 is still processing.
-   - The server checks Redis, sees `IN_FLIGHT`, instantly blocks Request 2, and returns an `HTTP 409 Conflict` (or 423 Locked) error.
-3. **State 3 (Key is DONE):**
-   - The user drops connection after Request 1 finishes, missing the response. The user retries the request with the identical Key.
-   - The server checks Redis, sees `DONE`. The server **DOES NOT** re-run the deduction logic. Instead, it pulls the cached Response Payload from Redis and returns it immediately. The user receives the exact success payload they missed.
+In standard HTTP semantics, `GET`, `PUT`, and `DELETE` are naturally idempotent, while `POST` is not. In mobile commerce, if a user taps "Pay Now" and experiences an intermittent 4G connection timeout, the mobile app automatically retries the request. Without an idempotency layer, this results in **double charging the customer**.
 
 ```mermaid
 stateDiagram-v2
-    ["*"] --> NewRequest
-    NewRequest --> CheckRedis: Header contains Idempotency-Key
-    
-    CheckRedis --> IN_FLIGHT: Key Not Exists ("SET NX")
-    CheckRedis --> CONFLICT: Key == IN_FLIGHT
-    CheckRedis --> DONE: Key == DONE
-    
-    IN_FLIGHT --> ExecuteLogic: Process Payment
-    ExecuteLogic --> SaveResponse: Update Key to DONE
-    SaveResponse --> ReturnNewResponse
-    
-    CONFLICT --> Return409Error: "Processing"
-    
-    DONE --> ReturnCachedResponse: Return old payload
+    [*] --> PENDING: Client submits Idempotency-Key
+    PENDING --> PROCESSING: Atomic Redis Lock Acquired (SET NX PX)
+    PROCESSING --> COMPLETED: Payment Committed & Response Cached (TTL: 24h)
+    PROCESSING --> FAILED: Payment Error / Gateway Rejection
+    FAILED --> [*]: Release Lock & Allow Safe Retry
+    COMPLETED --> [*]: Identical Retries Return Cached Response
 ```
 
 ---
 
-## 3. Idempotency State Machine: Hardening with Retriability
+## 2. End-to-End Idempotent Request Execution Pipeline
 
-To build a production-grade billing system, the idempotency engine must support transient failure retries. This is handled by modeling explicit state transitions:
+When a mutating financial request arrives, the application must execute a strict multi-step validation pipeline:
 
 ```mermaid
-stateDiagram-v2
-    ["*"] --> IN_FLIGHT : Client submits Request ("SET NX")
-    IN_FLIGHT --> DONE : Processing Succeeds
-    IN_FLIGHT --> RETRIABLE_FAIL : Transient Failure ("e.g., Timeout")
-    IN_FLIGHT --> NON_RETRIABLE_FAIL : Hard Business Error ("e.g., Insufficient Balance")
-    RETRIABLE_FAIL --> IN_FLIGHT : Client Retries Request
-    NON_RETRIABLE_FAIL --> ["*"] : Key Locked ("Cannot retry")
+sequenceDiagram
+    autonumber
+    actor Client as Mobile Client
+    participant GW as API Gateway / Go Middleware
+    participant Redis as Redis Cache (Idempotency Store)
+    participant Core as Core Banking Engine
+    participant DB as PostgreSQL Database
+
+    Client->>GW: POST /api/v1/charge (Idempotency-Key: uuid-99)
+    GW->>GW: Compute SHA-256(Payload + Path)
+    GW->>Redis: GET "idemp:uuid-99"
+    alt Key Found & Status == COMPLETED
+        Redis-->>GW: Return Cached Response (Code: 200, Body)
+        GW-->>Client: Return Cached Response (HTTP 200)
+    else Key Found & Status == PROCESSING
+        GW-->>Client: HTTP 409 Conflict / HTTP 202 In-Flight
+    else Key Not Found
+        GW->>Redis: SET "idemp:uuid-99" {status: PROCESSING, hash} NX PX 30000
+        GW->>Core: Process Payment Transaction
+        Core->>DB: Deduct Balance & Insert Ledger Entry
+        DB-->>Core: Transaction Committed
+        Core-->>GW: Payment Completed
+        GW->>Redis: SET "idemp:uuid-99" {status: COMPLETED, body} PX 86400000
+        GW-->>Client: HTTP 201 Created (Receipt Payload)
+    end
 ```
 
-- **`RETRIABLE_FAIL`**: If the downstream payment gateway returns a timeout (HTTP 504), the transaction is incomplete. The idempotency engine deletes the key or marks it as `RETRIABLE`. This allows the client to submit another request with the exact same key.
-- **`NON_RETRIABLE_FAIL`**: If the transaction fails due to a validation error (e.g., product out of stock), the state transitions to `DONE` with the failed response cached. Any retry with the same key returns the cached failure payload immediately without re-checking inventory.
-
----
-
-## 4. PostgreSQL Unique Index Locks
-
-In Core Banking and high-value payments, relying solely on in-memory systems like Redis is a security risk. If Redis restarts or evicts keys under memory pressure, the system could allow duplicate transactions. Therefore, financial systems implement **distributed transactional deduplication** using the relational database.
-
-This is achieved by maintaining an `idempotency_keys` table inside PostgreSQL with a `UNIQUE` constraint:
-
-```sql
-CREATE TABLE idempotency_keys (
-    key_id VARCHAR(255) PRIMARY KEY,
-    request_hash CHAR(64) NOT NULL,
-    status VARCHAR(50) NOT NULL,
-    response_code INT NOT NULL,
-    response_body TEXT NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW()
-);
-```
-
-### The Database Lock Flow
-When two concurrent requests attempt to insert the same key, PostgreSQL handles the synchronization at the database level:
-1. **Transaction 1** executes: `INSERT INTO idempotency_keys (key_id, ...) VALUES ('key_abc', ...)`
-2. PostgreSQL acquires an exclusive write lock on the index leaf node for `'key_abc'`.
-3. **Transaction 2** attempts to insert the same key. Because of the `UNIQUE` constraint, Transaction 2 blocks, waiting for Transaction 1 to complete.
-4. If Transaction 1 commits, Transaction 2 instantly fails with a unique constraint violation error (PostgreSQL error code `23505`).
-5. If Transaction 1 aborts (rolls back), the lock is released, and Transaction 2 proceeds to insert the key.
-
-To prevent thread pool exhaustion on the application side while waiting for locks to release, you should set a strict lock timeout inside your database session:
-```sql
-SET lock_timeout = '2000'; -- 2 seconds max wait
-```
-
----
-
-## 5. High-Security Edge Case: Payload Hashing
-
-Malicious clients can exploit idempotency by reusing an old Key with a new, expensive payload. Counter this by storing a SHA256 Hash of the Request Body alongside the Idempotency Key.
-
-A common exploit involves a malicious client reusing an old `DONE` `Idempotency-Key` but transmitting a new payload (e.g., purchasing an expensive TV). If the system only checks the Key, it will return the old success response (for a cheap item) while ignoring the new payload entirely!
-
-**The Defense:** Hash (e.g., SHA256) the entire Request Body. Store this Hash value alongside the `Idempotency-Key` in Redis or PostgreSQL. If a duplicate Key arrives but the Body Hash differs, block it instantly and return `HTTP 400 Bad Request`.
-
----
-
-## Go Implementation: Resilient Database Deduplication Middleware
-
-Architecting API idempotency middleware requires PostgreSQL unique constraints and request body SHA256 hashing to guarantee transactional deduplication.
+### Go Idempotency Middleware Implementation
 
 ```go
-package main
+package middleware
 
 import (
 	"context"
 	"crypto/sha256"
-	"database/sql"
 	"encoding/hex"
 	"encoding/json"
-	"errors"
-	"fmt"
-	"io"
 	"net/http"
 	"time"
 
-	"github.com/jackc/pgconn"
-	_ "github.com/jackc/pgx/v4/stdlib"
+	"github.com/gin-gonic/gin"
+	"github.com/redis/go-redis/v9"
 )
 
-// IdempotencyRecord maps to the DB schema.
 type IdempotencyRecord struct {
-	KeyId        string
-	RequestHash  string
-	Status       string
-	ResponseCode int
-	ResponseBody string
+	Status      string `json:"status"` // PROCESSING, COMPLETED
+	PayloadHash string `json:"payload_hash"`
+	StatusCode  int    `json:"status_code"`
+	Body        string `json:"body"`
 }
 
-type PaymentHandler struct {
-	db *sql.DB
-}
-
-// ComputeHash computes the SHA256 hash of the request body.
-func ComputeHash(body []byte) string {
-	hash := sha256.Sum256(body)
-	return hex.EncodeToString(hash[:])
-}
-
-// HandlePayment processes payments with database deduplication.
-func (h *PaymentHandler) HandlePayment(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
-	idemKey := r.Header.Get("Idempotency-Key")
-	if idemKey == "" {
-		http.Error(w, "Missing Idempotency-Key header", http.StatusBadRequest)
-		return
-	}
-
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		http.Error(w, "Bad Request", http.StatusBadRequest)
-		return
-	}
-	reqHash := ComputeHash(body)
-
-	ctx := r.Context()
-
-	// 1. Attempt to insert IN_FLIGHT status to claim ownership of the key
-	tx, err := h.db.BeginTx(ctx, &sql.TxOptions{Isolation: sql.LevelReadCommitted})
-	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
-	defer tx.Rollback()
-
-	// Set session-level lock timeout to protect connection pool
-	_, _ = tx.ExecContext(ctx, "SET LOCAL lock_timeout = '1500'")
-
-	query := `INSERT INTO idempotency_keys (key_id, request_hash, status, response_code, response_body) 
-	          VALUES ($1, $2, 'IN_FLIGHT', 0, '')`
-	_, err = tx.ExecContext(ctx, query, idemKey, reqHash)
-
-	if err != nil {
-		var pgErr *pgconn.PgError
-		if errors.As(err, &pgErr) && pgErr.Code == "23505" { // Unique Constraint Violation
-			// 2. Key exists, fetch current status and response
-			record, fetchErr := h.fetchIdempotencyRecord(ctx, idemKey)
-			if fetchErr != nil {
-				return
-			}
-
-			// Validate if the request body matches the original request
-			if record.RequestHash != reqHash {
-				http.Error(w, "Idempotency Key reused with different payload", http.StatusBadRequest)
-				return
-			}
-
-			if record.Status == "IN_FLIGHT" {
-				// Request is still processing in another thread
-				w.Header().Set("Retry-After", "2")
-				http.Error(w, "Concurrent request processing", http.StatusConflict)
-				return
-			}
-
-			// Return the cached response
-			w.Header().Set("Content-Type", "application/json")
-			w.Header().Set("X-Cache-Lookup", "HIT - Idempotent Response")
-			w.WriteHeader(record.ResponseCode)
-			_, _ = w.Write([]byte(record.ResponseBody))
+func IdempotencyMiddleware(rdb redis.UniversalClient) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		key := c.GetHeader("Idempotency-Key")
+		if key == "" {
+			c.Next()
 			return
 		}
 
-		http.Error(w, "Database Lock Timeout / Error", http.StatusGatewayTimeout)
-		return
+		redisKey := "idemp:" + key
+		ctx := c.Request.Context()
+
+		// 1. Read request body and hash it
+		bodyBytes, _ := c.GetRawData()
+		hash := sha256.Sum256(bodyBytes)
+		hashStr := hex.EncodeToString(hash[:])
+
+		// 2. Atomic acquire lease
+		acquired, err := rdb.SetNX(ctx, redisKey, "PROCESSING:"+hashStr, 30*time.Second).Result()
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "idempotency store error"})
+			return
+		}
+
+		if !acquired {
+			// Key already exists: fetch current state
+			val, _ := rdb.Get(ctx, redisKey).Result()
+			var record IdempotencyRecord
+			if err := json.Unmarshal([]byte(val), &record); err == nil && record.Status == "COMPLETED" {
+				if record.PayloadHash != hashStr {
+					c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{"error": "payload mismatch for idempotency key"})
+					return
+				}
+				c.Data(record.StatusCode, "application/json", []byte(record.Body))
+				c.Abort()
+				return
+			}
+
+			c.AbortWithStatusJSON(http.StatusConflict, gin.H{"error": "request currently in progress"})
+			return
+		}
+
+		// Proceed to handler
+		c.Next()
 	}
-
-	// Commit claiming the key
-	if err := tx.Commit(); err != nil {
-		return
-	}
-
-	// 3. Execute the actual payment transaction
-	code, respPayload := h.executePayment()
-
-	// 4. Update the key to DONE along with response payload
-	updateQuery := `UPDATE idempotency_keys 
-	                SET status = 'DONE', response_code = $1, response_body = $2 
-	                WHERE key_id = $3`
-	_, err = h.db.ExecContext(ctx, updateQuery, code, respPayload, idemKey)
-	if err != nil {
-		fmt.Printf("Failed to update idempotency key: %v\n", err)
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(code)
-	_, _ = w.Write([]byte(respPayload))
-}
-
-func (h *PaymentHandler) fetchIdempotencyRecord(ctx context.Context, key string) (*IdempotencyRecord, error) {
-	var record IdempotencyRecord
-	query := "SELECT key_id, request_hash, status, response_code, response_body FROM idempotency_keys WHERE key_id = $1"
-	err := h.db.QueryRowContext(ctx, query, key).Scan(
-		&record.KeyId, &record.RequestHash, &record.Status, &record.ResponseCode, &record.ResponseBody,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &record, nil
-}
-
-func (h *PaymentHandler) executePayment() (int, string) {
-	// Simulate billing processing time
-	time.Sleep(200 * time.Millisecond)
-	resp := map[string]interface{}{
-		"transaction_id": "tx_99281729",
-		"status":         "SUCCESS",
-		"billed_at":      time.Now().Format(time.RFC3339),
-	}
-	payload, _ := json.Marshal(resp)
-	return http.StatusOK, string(payload)
-}
-
-func main() {
-	db, err := sql.Open("pgx", "postgres://user:pass@localhost:5432/payment_db?sslmode=disable")
-	if err != nil {
-		panic(err)
-	}
-	defer db.Close()
-
-	handler := &PaymentHandler{db: db}
-	http.HandleFunc("/charge", handler.HandlePayment)
-	_ = http.ListenAndServe(":8080", nil)
 }
 ```
 
-This database-backed idempotency mechanism guarantees absolute consistency, preventing duplicate charges even during concurrent network retries.
+---
+
+## 3. Defense-in-Depth: Database Unique Constraints
+
+In-memory Redis locks can theoretically expire if a downstream payment gateway takes longer than 30 seconds to answer. To provide mathematical 100% safety, the database must enforce a unique composite constraint:
+
+```sql
+CREATE TABLE payments (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    account_id UUID NOT NULL,
+    idempotency_key VARCHAR(128) NOT NULL,
+    amount NUMERIC(18, 4) NOT NULL,
+    status VARCHAR(32) NOT NULL,
+    CONSTRAINT uq_account_idempotency UNIQUE (account_id, idempotency_key)
+);
+```
+
+If a duplicate transaction slips past the cache layer due to lock expiration, PostgreSQL will abort the transaction with a `23505 unique_violation` error, guaranteeing that double charges are **physically impossible**.
 
 ---
 
-## 🎯 Architecture Review & Consulting (Hire Me)
+## Frequently Asked Questions (FAQ)
 
-In Article_7_Idempotency (High Concurrency Systems), latency SLA governance requires sub-20ms P99 targets across microservice calls. Instrumenting gRPC client deadlines alongside distributed OpenTelemetry trace propagation ensures early bottleneck isolation.In Article_7_Idempotency (High Concurrency Systems), latency SLA governance requires sub-20ms P99 targets across microservice calls. Instrumenting gRPC client deadlines alongside distributed OpenTelemetry trace propagation ensures early bottleneck isolation.
+{{< faq q="What should an API return if a duplicate request arrives while the first request is still PROCESSING?" >}}
+According to the IETF Idempotency-Key draft specification, the server should return **HTTP 409 Conflict** with an error message indicating that a mutation with that idempotency key is actively executing. Alternatively, in asynchronous payment environments, the server can return **HTTP 202 Accepted** with a polling status endpoint URL (`Location: /api/v1/payments/uuid-99/status`).
+{{< /faq >}}
 
-Frontend state synchronization in Article_7_Idempotency uses Server-Sent Events (SSE) streaming JSON patch updates to client Zustand stores. Optimistic UI updates provide immediate feedback before server ACK.
+{{< faq q="What is Payload Tampering and how does hashing the request prevent it?" >}}
+Payload tampering occurs when an attacker or buggy client submits a request with an existing `Idempotency-Key`, but changes the payment amount from \$10 to \$1,000. By storing a cryptographic SHA-256 hash of the request body alongside the idempotency record, the server immediately detects any payload discrepancy and returns **HTTP 422 Unprocessable Entity**, rejecting the compromised request.
+{{< /faq >}}
 
----
-
-🔗 **Next Step:** [Chapter 8: Distributed Locking — Redlock vs ZooKeeper](/series/high-concurrency-systems/article_8_distributed_locking/)
-
-## Architectural Context & Pillar References
-
-Architecting resilient systems for Article_7_Idempotency demands strict rate limiting via Token Bucket algorithms at the edge API gateway. Dynamic concurrency limits prevent node resource exhaustion during unplanned traffic spikes.
-
----
-## Related Architecture & Pillar Guides
-For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
-- [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)
-
+{{< faq q="How long should Idempotency records be retained in production?" >}}
+For financial transactions, the recommended TTL in fast memory (Redis) is **24 to 48 hours**, covering the vast majority of mobile client retries. For compliance and dispute resolution, the database record linking the `idempotency_key` with the resulting transaction ledger ID is retained **permanently** in cold storage for regulatory audits.
+{{< /faq >}}
 
 ---
 
-## Frequently Asked Questions
+## Next Steps
 
-### Q1: What core challenge does Chapter 7: Designing Idempotency APIs for Payment Systems address in production architecture?
-Prevent double-charging customers by implementing durable Idempotency-Key headers and atomic Redis locks in high-scale HTTP POST APIs.
-
-### Q2: What are the critical operational pitfalls to avoid during rollout?
-Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
-
-### Q3: How do we benchmark and validate performance after implementation?
-Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.
+Proceed to [Chapter 8: Distributed Locking — Redlock vs ZooKeeper](/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/) to master distributed consensus and synchronization primitives.

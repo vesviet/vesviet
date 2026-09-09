@@ -1,334 +1,173 @@
 ---
-title: "High Concurrency System Design Architecture in Go"
-description: "Deep dive into C10M high-concurrency architecture, epoll, io_uring, DPDK kernel bypass, L4/L7 load balancing, and zero-copy Go memory management."
-date: "2026-05-10T10:00:00+07:00"
-lastmod: "2026-07-24T10:00:00+07:00"
+title: "Chapter 1: High Concurrency System Design Architecture in Go (C10M Scale)"
+date: "2026-06-09T10:00:00+07:00"
+lastmod: "2026-09-09T21:45:00+07:00"
 draft: false
+series: ["Mastering High-Concurrency Systems in Production"]
+series_order: 2
 weight: 2
+tags: ["system design", "golang", "c10m", "io_uring", "epoll", "ebpf"]
+mermaid: true
 slug: "how-systems-handle-c10m"
-aliases:
-  - /series/high-concurrency-systems/article_1_system_design/
-cover:
-  image: "/images/posts/article-1-system-design.jpg"
+description: "Master C10M architecture in Go: Linux epoll vs io_uring, eBPF/XDP kernel bypass, netpoller M:N scheduling, and zero-GC memory pipelines."
 ShowToc: true
 TocOpen: true
-categories: ["FinTech", "High Concurrency", "Backend"]
-tags: ["High Concurrency", "C10M", "Golang", "epoll", "io_uring", "Load Balancing", "DPDK", "Zero-Copy"]
-series: ["high-concurrency-systems"]
-series_order: 1
+aliases:
+  - "/series/high-concurrency-systems/article_1_system_design/"
+cover:
+  image: "/images/posts/high-concurrency-systems.jpg"
+  alt: "Chapter 1: High Concurrency System Design Architecture in Go"
+  relative: false
 author: "Lê Tuấn Anh"
-mermaid: true
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/how-systems-handle-c10m/"
 ---
 
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Chương 1: Các Hệ Thống Xử Lý Hàng Triệu Requests/s Ra Sao? (learn.tanhdev.com)](https://learn.tanhdev.com/series/high-concurrency-systems/how-systems-handle-c10m/).
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Executive Summary](/series/high-concurrency-systems/executive-summary/). Review it first if the terminology in this part is unfamiliar.
+[Previous: Executive Summary](/series/high-concurrency-systems/executive-summary/) | [Series Hub](/series/high-concurrency-systems/) | [Next: Chapter 2 — Caching Vulnerabilities & Go Singleflight](/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/)
 
-> **Answer-first:** Handling millions of requests per second (the C10M problem) requires eliminating kernel-space context switching overhead through asynchronous event loops (epoll/kqueue) or kernel-bypass networking (DPDK, io_uring), paired with zero-copy I/O memory buffers, L4 DSR (Direct Server Return) load balancing, and lock-free concurrency structures in Go. Deploying this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory pooling via Go 1.24 string interning,.
+---
+
+> **Answer-First:** Building a C10M-capable Golang backend requires bypassing OS kernel bottlenecks through three core design shifts: (1) Replacing standard blocking network stacks with **io_uring** and **eBPF/XDP**, (2) Utilizing the Go runtime's **Netpoller** with custom worker pools to eliminate unbounded goroutine scheduling overhead, and (3) Pre-allocating zero-allocation memory slabs via `sync.Pool` to keep GC stop-the-world pauses below 300 microseconds.
+
+---
+
+## 1. The I/O Evolution: From Epoll to Linux io_uring
+
+When handling 10 million concurrent TCP sockets, the Linux operating system spends the vast majority of its compute cycles on system calls (`syscall`), page table updates, and context switches between User Space and Kernel Space.
+
+While `epoll` revolutionized high-concurrency by replacing `select` and `poll` (transforming \(O(N)\) socket iteration into \(O(1)\) event notifications), it still requires an explicit system call (`epoll_wait`, `read`, `write`) for every batch of I/O events. At 500,000 requests per second, syscall overhead consumes up to 45% of total CPU cycles.
 
 ```mermaid
 flowchart TD
-    Client["Client Traffic Millions req/sec"] --> L4["L4 Maglev LB / DPDK DSR"]
-    L4 --> L7_Envoy1["L7 Gateway / Envoy Node 1"]
-    L4 --> L7_Envoy2["L7 Gateway / Envoy Node 2"]
-    
-    subgraph Core_Engine ["Go High-Concurrency Engine"]
-        L7_Envoy1 --> Netpoll["epoll / io_uring Event Loop"]
-        Netpoll --> LockFreeQ["Lock-Free Ring Buffer Worker Pool"]
-        LockFreeQ --> ZeroCopy["Zero-Copy Memory Allocator sync.Pool"]
-        ZeroCopy --> DB["(TiDB / Redis Cluster)"]
+    subgraph TraditionalEpoll ["Traditional Linux Epoll Model"]
+        E1["User Space Process"] -->|syscall: epoll_wait| K1["Kernel Space"]
+        K1 -->|Context Switch| E1
+        E1 -->|syscall: read / write| K2["Kernel Space Socket Buffers"]
+        K2 -->|Memory Copy| E1
     end
+
+    subgraph LinuxIoUring ["Modern Linux io_uring (2027 SOTA)"]
+        U1["User Space Ring Buffer"] <-->|Zero-Syscall Shared Memory| K3["Kernel Submission Queue (SQ)"]
+        K3 -->|Kernel Worker Async I/O| K4["NIC / NVMe Ring"]
+        K4 -->|Zero-Copy Completion| K5["Kernel Completion Queue (CQ)"]
+        K5 <-->|Zero-Syscall Shared Memory| U1
+    end
+
+    classDef legacy fill:#ffebee,stroke:#c62828,stroke-width:2px;
+    classDef sota fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    class TraditionalEpoll legacy;
+    class LinuxIoUring sota;
+```
+
+With **Linux io_uring**, User Space and Kernel Space share two lock-free ring buffers: the **Submission Queue (SQ)** and the **Completion Queue (CQ)**. Applications submit I/O requests directly into memory without issuing a single trap or context switch. The kernel processes requests asynchronously and writes completions directly to the CQ, achieving near-hardware wire-speed throughput.
+
+---
+
+## 2. Go Runtime Netpoller & M:N Scheduling Internals
+
+Go manages concurrency via its **M:N scheduler** (\(M\) OS threads multiplexing \(N\) Goroutines across \(P\) logical processors). The secret weapon behind Go's network performance is the **Netpoller**.
+
+When a Goroutine performs a network read on a non-blocking socket (`net.Conn`), the Go runtime parks the goroutine if data is not immediately ready. Instead of blocking an OS thread, the Netpoller registers the socket's file descriptor with the OS event notification system (`epoll` on Linux, `kqueue` on macOS).
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client as Remote Client
+    participant Net as Network Interface (NIC)
+    participant Poller as Go Netpoller (epoll / io_uring)
+    participant Sched as Go M:N Scheduler (P/M)
+    participant G as Goroutine Worker
+
+    Client->>Net: Inbound TCP Packet Arrives
+    Net->>Poller: Edge-Triggered Event Fired
+    G->>Poller: Read(conn) -> Returns EAGAIN (Data not ready)
+    Poller->>Sched: Park Goroutine G (State: _Gwaiting)
+    Sched->>Sched: Thread M executes another runnable Goroutine
+    Note over Poller,Sched: No OS Thread is blocked!
+    Poller->>Sched: Notification: Socket has data ready!
+    Sched->>G: Unpark Goroutine G (State: _Grunnable)
+    G->>Net: Zero-copy read from buffer into allocated slab
+```
+
+### Essential Kernel Sysctl Configuration for C10M
+
+To allow Linux to accept and maintain 10 million concurrent sockets without dropping packets:
+
+```bash
+# /etc/sysctl.d/99-c10m.conf
+# Maximum open file descriptors across the OS
+fs.file-max = 20971520
+fs.nr_open = 20971520
+
+# Socket memory bounds: min, default, max (Bytes)
+# Keeps minimum buffer to 4KB so 10M sockets fit in 48GB RAM
+net.ipv4.tcp_rmem = 4096 87380 16777216
+net.ipv4.tcp_wmem = 4096 65536 16777216
+
+# Connection queue backlog
+net.core.somaxconn = 65535
+net.ipv4.tcp_max_syn_backlog = 65535
+
+# Enable TCP BBR congestion control
+net.core.default_qdisc = fq
+net.ipv4.tcp_congestion_control = bbr
+
+# Socket reuse and fast recycling
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_fin_timeout = 15
 ```
 
 ---
 
-## 1. The Physics of High Concurrency: Beyond C10K to C10M
+## 3. Zero-Allocation Memory Management with `sync.Pool`
 
-When modern e-commerce platforms like Shopee run Flash Sales or fintech engines like Alipay process Double 11 peak traffic, request rates spike from normal operations (50,000 req/sec) to over **10,000,000 requests per second** within milliseconds. 
-
-At this magnitude, traditional operating system abstractions collapse. The classic thread-per-request model (where each HTTP connection maps to an OS thread consuming 1MB to 8MB of stack space) fails due to catastrophic RAM exhaustion and thread scheduling overhead. 
-
-```
-Memory Overhead per 10,000,000 Concurrent Connections:
-- OS Thread Per Request (2MB Stack):  10,000,000 * 2MB = 20,000 GB RAM (Impossible)
-- Go Goroutine Model (2KB Stack):     10,000,000 * 2KB = 20 GB RAM     (Feasible)
-```
-
-However, simply switching to Go goroutines is not sufficient to reach C10M. At 10 million concurrent connections, the primary bottleneck shifts from user-space thread memory to kernel-space packet processing: CPU context switches between Kernel Mode and User Mode, Linux network stack socket lock contention, and cache line invalidation.
-
----
-
-## 2. Kernel Bottlenecks & Network I/O Multiplexing
-
-### The Evolution of I/O Models
-
-To process high-throughput network events, systems engineering evolved through four distinct generations:
-
-1. **Select / Poll (O(N) Complexity)**: Iterates over the entire file descriptor set on every event check. Unscalable above 1,024 sockets.
-2. **Epoll / Kqueue (O(1) Event Notification)**: The Linux kernel registers active file descriptors in a red-black tree and returns only ready sockets via a read-only ring buffer.
-3. **io_uring (Asynchronous Submission Ring)**: Introduced in Linux 5.1+, `io_uring` uses shared memory kernel/user submission and completion rings, eliminating `syscall` context switches altogether during active I/O.
-4. **Kernel Bypass / DPDK (Data Plane Development Kit)**: Bypasses the Linux kernel TCP/IP stack completely. Drivers bind directly to NIC hardware, polling packet rings directly in user space.
-
-```
-+-------------------------------------------------------------------------+
-|                              User Space                                 |
-|  +-------------------+   +--------------------+   +------------------+  |
-|  |   Go Application  |   |   DPDK Core Loop   |   | io_uring Rings   |  |
-|  +---------+---------+   +---------+----------+   +--------+---------+  |
-+------------|-----------------------|-----------------------|------------+
-|            | Syscall Overhead      | Direct PCIe Ring      | Shared Mem |
-+------------v-----------------------v-----------------------v------------+
-|  +-------------------+   +--------------------+   +------------------+  |
-|  | Linux TCP/IP Stack|   | Bypassed Hardware  |   | Kernel Ring Buff |  |
-|  | (Socket Locks)    |   | NIC Driver (PMD)   |   | (Zero Syscall)   |  |
-|                              Kernel Space                               |
-+-------------------------------------------------------------------------+
-```
-
-### Go Netpoll Integration
-
-Go abstracts `epoll` inside its runtime network poller (`netpoll`). When a goroutine performs a socket read `conn.Read()`, if no data is available, the runtime places the goroutine into `waiting` state (`gopark`) and registers the socket fd with `epoll_ctl`. The OS thread (`M`) is freed to execute other ready goroutines (`G`), achieving non-blocking execution without complex callback chains.
+Under high RPS, allocating request objects and byte buffers on the Go heap causes severe GC stop-the-world pauses. Implementing an efficient `sync.Pool` pattern recycles pre-allocated buffers across request lifecycles:
 
 ```go
-// Production-grade epoll listener snippet for raw TCP high-throughput worker
-package main
+package bufferpool
 
 import (
-	"fmt"
-	"net"
-	"os"
+	"bytes"
 	"sync"
-	"syscall"
 )
 
-type EventLoop struct {
-	epollFd int
-	eventFd int
-	workers sync.WaitGroup
+var packetPool = sync.Pool{
+	New: func() any {
+		// Pre-allocate 4KB buffer matching MTU/TCP window
+		b := make([]byte, 4096)
+		return bytes.NewBuffer(b[:0])
+	},
 }
 
-func NewEventLoop() (*EventLoop, error) {
-	fd, err := syscall.EpollCreate1(0)
-	if err != nil {
-		return nil, err
-	}
-	return &EventLoop{epollFd: fd}, nil
+func AcquireBuffer() *bytes.Buffer {
+	return packetPool.Get().(*bytes.Buffer)
 }
 
-func (el *EventLoop) AddFD(fd int) error {
-	var event syscall.EpollEvent
-	event.Events = syscall.EPOLLIN | syscall.EPOLLET // Edge-Triggered for maximum throughput
-	event.Fd = int32(fd)
-	return syscall.EpollCtl(el.epollFd, syscall.EPOLL_CTL_ADD, fd, &event)
+func ReleaseBuffer(b *bytes.Buffer) {
+	b.Reset()
+	packetPool.Put(b)
 }
 ```
 
 ---
 
-## 3. Zero-Copy I/O & Memory Allocation Optimization
+## Frequently Asked Questions (FAQ)
 
-### The Cost of Memory Copies
+{{< faq q="How does io_uring fundamentally improve on epoll for high-concurrency Go servers?" >}}
+While epoll requires the Go runtime to issue an `epoll_wait` system call to discover readiness, followed by separate `read` or `write` system calls for each socket, Linux io_uring uses lock-free shared memory ring buffers. A Go worker can queue hundreds of asynchronous read/write operations without executing a single kernel transition or system call. This slashes CPU context switching by up to 50% under 500k+ RPS.
+{{< /faq >}}
 
-In standard HTTP handlers, processing a request involves multiple memory transfers:
+{{< faq q="What happens if a Go server spawns 1,000,000 unmanaged goroutines simultaneously?" >}}
+Each goroutine begins with a minimum 2KB stack. One million goroutines require 2GB of RAM merely for stack frames. As these goroutines perform work and expand their stacks (up to 1GB max per goroutine), physical RAM is quickly exhausted. Furthermore, the Go runtime's work-stealing scheduler must iterate and balance runnable queues across P processors, resulting in massive scheduler overhead and catastrophic GC scan durations.
+{{< /faq >}}
 
-```
-NIC DMA -> Kernel Socket Buffer -> User Space Buffer -> Encoding Buffer -> Kernel Output -> NIC DMA
-```
-
-Each copy consumes memory bandwidth (up to 40 GB/s on modern DDR5 channels), quickly bottlenecking CPU cache controllers. Zero-Copy I/O techniques (such as Linux `sendfile`, `splice`, or Go `net.Buffers`) pass memory pointers directly between network interface DMA rings and kernel buffers.
-
-### Mitigating Go GC Latency with Lock-Free Allocation
-
-At 10,000,000 requests per second, allocating temporary `struct` or `[]byte` objects on the heap creates immense Garbage Collection (GC) pressure, triggering `STW` (Stop-The-World) pauses exceeding 50ms. 
-
-To achieve sub-millisecond p99 latency:
-1. **Reuse Byte Slices**: Utilize thread-safe `sync.Pool` structures for temporary buffers.
-2. **Pre-allocate Ring Buffers**: Allocate fixed-size ring buffers at initialization time.
-3. **Avoid Escape Analysis Triggers**: Pass value types or fixed array slices to avoid heap allocation.
-
-```go
-// Zero-allocation buffer pool for extreme throughput APIs
-package main
-
-import (
-	"sync"
-	"sync/atomic"
-)
-
-type BytePool struct {
-	pool    sync.Pool
-	allocs  uint64
-	reused  uint64
-}
-
-func NewBytePool(bufferSize int) *BytePool {
-	return &BytePool{
-		pool: sync.Pool{
-			New: func() any {
-				b := make([]byte, bufferSize)
-				return &b
-			},
-		},
-	}
-}
-
-func (p *BytePool) Get() *[]byte {
-	atomic.AddUint64(&p.reused, 1)
-	return p.pool.Get().(*[]byte)
-}
-
-func (p *BytePool) Put(b *[]byte) {
-	// Reset length before returning to pool
-	*b = (*b)[:0]
-	p.pool.Put(b)
-}
-```
+{{< faq q="How does eBPF/XDP protect high-concurrency Go backends from malicious traffic?" >}}
+eBPF with XDP (eXpress Data Path) executes verified byte-code programs directly inside the network card driver before Linux allocates the `sk_buff` kernel structure. Malicious packets, SYN floods, or rate-limited IP ranges can be dropped at wire speed (processing over 20 million packets per second per server), completely shielding the Go application and OS networking stack from volumetric denial-of-service storms.
+{{< /faq >}}
 
 ---
 
-## 4. Multi-Tier Load Balancing Architecture (L4 DSR + L7 Envoy)
+## Next Steps
 
-To route millions of incoming requests without creating a single load-balancer bottleneck, top-tier engineering organizations deploy a two-tier load balancing mesh:
-
-```
-                  +--------------------------+
-                  |  BGP Anycast Routers     |
-                  +------------+-------------+
-                               |
-               +---------------+---------------+
-               |                               |
-    +----------v----------+         +----------v----------+
-    |  L4 Maglev (DPDK)   |         |  L4 Maglev (DPDK)   |
-    |  Direct Server Ret. |         |  Direct Server Ret. |
-    +----------+----------+         +----------+----------+
-               |                               |
-        +------+-------------------------------+------+
-        |                                             |
-+-------v-------+                             +-------v-------+
-| L7 Envoy Node |                             | L7 Envoy Node |
-| (gRPC/HTTP2)  |                             | (gRPC/HTTP2)  |
-+-------+-------+                             +-------+-------+
-        |                                             |
-+-------v---------------------------------------------v-------+
-|                   Backend Worker Service Cluster            |
-+-------------------------------------------------------------+
-```
-
-### Tier 1: L4 Load Balancing with DSR (Direct Server Return)
-- **DPDK / Maglev Hashing**: L4 balancers compute a 5-tuple hash `(src_ip, src_port, dst_ip, dst_port, proto)` to distribute packets across nodes in $O(1)$ time.
-- **Direct Server Return (DSR)**: Incoming requests pass through the L4 balancer, but outgoing responses flow **directly from the backend server to the client router**, bypassing the balancer. Because outbound web traffic is typically 10x-50x larger than inbound request traffic, DSR scales load balancer throughput by 50x.
-
-### Tier 2: L7 Application Routing (Envoy Proxy)
-- Performs TLS Termination, HTTP/2 multiplexing, JWT authentication, rate limiting, and gRPC payload routing before forwarding requests to local Go worker pools.
-
----
-
-## 5. Concurrency Patterns & Lock-Free Ring Buffers
-
-Under high contention, mutexes (`sync.Mutex`) suffer from kernel thread context switching when thread parking occurs. High-concurrency engines replace locks with **Atomic CAS (Compare-And-Swap)** ring buffers (Disruptor Pattern).
-
-```go
-// Lock-free Single-Producer Single-Consumer (SPSC) Ring Buffer
-package main
-
-import (
-	"sync/atomic"
-	"unsafe"
-)
-
-type LockFreeRingBuffer struct {
-	capacity uint64
-	mask     uint64
-	head     uint64
-	tail     uint64
-	buffer   []unsafe.Pointer
-}
-
-func NewLockFreeRingBuffer(capacity uint64) *LockFreeRingBuffer {
-	// Capacity must be power of 2
-	return &LockFreeRingBuffer{
-		capacity: capacity,
-		mask:     capacity - 1,
-		buffer:   make([]unsafe.Pointer, capacity),
-	}
-}
-
-func (rb *LockFreeRingBuffer) Offer(item unsafe.Pointer) bool {
-	head := atomic.LoadUint64(&rb.head)
-	tail := atomic.LoadUint64(&rb.tail)
-
-	if tail-head >= rb.capacity {
-		return false // Buffer full
-	}
-
-	index := tail & rb.mask
-	atomic.StorePointer(&rb.buffer[index], item)
-	atomic.AddUint64(&rb.tail, 1)
-	return true
-}
-
-func (rb *LockFreeRingBuffer) Poll() unsafe.Pointer {
-	head := atomic.LoadUint64(&rb.head)
-	tail := atomic.LoadUint64(&rb.tail)
-
-	if head == tail {
-		return nil // Buffer empty
-	}
-
-	index := head & rb.mask
-	item := atomic.LoadPointer(&rb.buffer[index])
-	if item != nil {
-		atomic.StorePointer(&rb.buffer[index], nil)
-		atomic.AddUint64(&rb.head, 1)
-	}
-	return item
-}
-```
-
----
-
-## 6. Real-World Benchmark & Production Case Study
-
-In a production stress test comparing traditional Go HTTP standard library (`net/http`) against an optimized `epoll` + `sync.Pool` zero-copy architecture under 100,000 active concurrent connections on a 64-core AMD EPYC server:
-
-| Architectural Strategy | Throughput (req/sec) | p99 Latency | GC Pause Time | Peak CPU Memory |
-|------------------------|----------------------|-------------|---------------|-----------------|
-| Standard `net/http` | 420,000 | 48.5 ms | 28.2 ms | 14.8 GB |
-| `fasthttp` (Worker Pool) | 1,850,000 | 4.2 ms | 3.1 ms | 3.2 GB |
-| Custom Epoll + `io_uring` + `sync.Pool` | **4,920,000** | **0.85 ms** | **0.2 ms** | **1.1 GB** |
-
-### Key Production Lessons
-1. **Avoid Channel Bottlenecks**: High-frequency Go channels utilize internal mutexes. Under extreme concurrency, atomic ring buffers outperform channels by 4x.
-2. **CPU Affinity (Thread Pinning)**: Pinning network worker threads to dedicated CPU cores (`runtime.LockOSThread()`) prevents L1/L2 CPU cache invalidation.
-3. **TCP Socket Tuning**: Set `SO_REUSEPORT`, increase `somaxconn` to 65535, and tune `tcp_rmem` / `tcp_wmem` to prevent kernel buffer drops.
-
----
-
-## 7. Frequently Asked Questions (FAQ)
-
-### Q1: Should every Go backend replace `net/http` with custom epoll engines?
-**No.** The standard `net/http` package is exceptionally resilient and maintainable for 99% of business applications up to 100,000 req/sec. Custom `epoll` or `io_uring` implementations bypass standard Go HTTP middleware, requiring manual HTTP protocol parsing and risk subtle memory safety bugs. Reserve custom networking engines for edge API gateways, proxy layers, and high-frequency messaging brokers.
-
-### Q2: How does `io_uring` compare with DPDK for C10M workloads?
-DPDK achieves lower latency by dedicating CPU cores to 100% busy-spin polling of NIC rings, but it consumes 100% CPU even when idle and requires specialized network drivers. `io_uring` offers near-DPDK performance using standard Linux networking without high idle CPU drain, making it the preferred architectural target for modern Linux-based backend servers.
-
-## Architectural Context & Pillar References
-
-- [Architecting 21-Service E-commerce Golang DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)
-- [Shopee Flash Sale Infrastructure Blueprint](/posts/shopee-flash-sale-architecture/)
-
-🔗 **Next Step:** Continue to [Part 2 — Caching](/series/high-concurrency-systems/article_2_caching/) for the following module in the series.
-
-
----
-
-## Frequently Asked Questions
-
-### Q1: What core challenge does High Concurrency System Design Architecture in Go address in production architecture?
-Deep dive into C10M high-concurrency architecture, epoll, io_uring, DPDK kernel bypass, L4/L7 load balancing, and zero-copy Go memory management.
-
-### Q2: What are the critical operational pitfalls to avoid during rollout?
-Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
-
-### Q3: How do we benchmark and validate performance after implementation?
-Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.
+Continue to [Chapter 2: The 3 Caching Vulnerabilities & Go Singleflight](/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/) to master multi-tiered cache protection and stampede mitigation.

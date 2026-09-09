@@ -1,281 +1,157 @@
 ---
 title: "Chapter 8: Distributed Locking — Redlock vs ZooKeeper"
 date: "2026-06-09T10:35:00+07:00"
-lastmod: "2026-06-09T10:35:00+07:00"
+lastmod: "2026-09-09T21:45:00+07:00"
 draft: false
 series: ["high-concurrency-systems"]
-series_order: 8
-tags: ["golang", "distributed lock", "redis", "redlock", "zookeeper"]
+series_order: 9
+weight: 9
+tags: ["golang", "distributed lock", "redis", "redlock", "zookeeper", "etcd", "consensus"]
+categories: ["High Concurrency", "Distributed Systems"]
 mermaid: true
 slug: "distributed-locking-redlock-zookeeper"
 description: "Master distributed synchronization in Go by comparing Redis Redlock algorithms against strongly consistent Apache ZooKeeper lease locks."
 ShowToc: true
 TocOpen: true
+aliases:
+  - "/series/high-concurrency-systems/article_8_distributed_locking/"
 cover:
   image: "/images/posts/distributed-locking-redlock-zookeeper.jpg"
-  alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
+  alt: "Chapter 8: Distributed Locking — Redlock vs ZooKeeper"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/"
 image: "/images/posts/distributed-locking-redlock-zookeeper.jpg"
-weight: 8
-aliases: ["/series/high-concurrency-systems/article_8_distributed_locking/"]
 ---
 
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Chương 8: Distributed Locking Xử Lý Tranh Chấp Race Conditions: Redlock Đấu Với ZooKeeper (learn.tanhdev.com)](https://learn.tanhdev.com/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/).
 
-> **Prerequisite:** Read the previous article: [Chapter 7: Fortifying Payment Systems with Idempotent APIs](/series/high-concurrency-systems/article_7_idempotency/).
-
-In a standalone Go application, preventing two Goroutines from overwriting the same data (Race Condition) is achieved via `sync.Mutex`. However, when your system scales out to 10 servers behind a Load Balancer, `sync.Mutex` is useless because it only locks local RAM. You need a **Distributed Lock**.
+[Previous: Chapter 7 — Designing Idempotency APIs for Payment Systems](/series/high-concurrency-systems/idempotency-api-design-payments/) | [Series Hub](/series/high-concurrency-systems/) | [Next: Chapter 9 — Database Sharding & Read/Write Splitting](/series/high-concurrency-systems/database-sharding-read-write-splitting/)
 
 ---
 
-# 1. Basic Redis Locks
-
-**Answer-first:** Distributed locking in Go uses Redis Redlock or etcd Raft leases with fencing tokens to guarantee mutual exclusion across distributed microservices under network partitions. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
-
-A basic Redis lock utilizes `SET resource id NX PX ttl`. It works for simple caching but suffers from Single Point of Failure vulnerabilities if the Redis Master crashes before syncing.
-
-The simplest distributed lock uses a single Redis node with an atomic command:
-`SET resource_name my_unique_id NX PX 30000`
-
-- **`NX`**: Ensures only the first requester succeeds (acquires the lock).
-- **`PX 30000`**: The lock auto-expires after 30 seconds (Lease Expiration) preventing Deadlocks if the lock-holding server crashes.
-
-**The Flaw:** What if this Redis node crashes right after granting the lock to Server A, but before replicating to the Slave? The Slave promotes itself to Master without knowing Server A holds the lock. Server B requests a lock, and the new Master grants it. Two servers now hold the lock simultaneously, leading to data corruption.
+> **Answer-First:** When coordinating concurrent operations across distributed nodes, choosing between Redis **Redlock** and consensus-backed systems (**Apache ZooKeeper** or **Etcd**) comes down to the fundamental trade-off between **Latency vs. Correctness**: (1) Redis Redlock is high-throughput and sub-millisecond, making it ideal for non-critical efficiency locks (e.g., preventing duplicate background job execution); (2) However, as proven by distributed systems researcher Martin Kleppmann, Redlock is mathematically unsafe for mutual exclusion when processes experience GC pauses or system clock drifts. For financial ledger mutations and correctness-critical resources, architectures must use consensus-backed locks (ZooKeeper ZAB or Etcd Raft) paired with **Monotonic Fencing Tokens**, or eliminate locks entirely using database-level **Optimistic Concurrency Control (OCC)**.
 
 ---
 
-## 2. The Redlock Algorithm
+## 1. Martin Kleppmann's Critique: Why Redlock Fails Under Real-World Failures
 
-Redlock eliminates Redis Single Point of Failure by querying multiple independent Redis Masters. A lock is only acquired if a quorum (majority) of nodes grant it successfully.
+A common assumption among backend developers is that setting a Redis lease (`SET lock_key client_id NX PX 10000`) guarantees mutual exclusion.
 
-To resolve Redis replication flaws, Salvatore Sanfilippo (creator of Redis) introduced the **Redlock** algorithm. Redlock utilizes a cluster of $N$ (usually 5) independent Redis Masters.
-
-To acquire a lock, your Go Server must:
-1. Retrieve the current time in milliseconds.
-2. Sequentially request the lock on all 5 nodes using the same key, value, and a small acquisition timeout. The acquisition timeout prevents locking up the client if a Redis node is down.
-3. Calculate the time elapsed to acquire the lock. If it successfully acquires the lock on a majority (**Quorum**: $\ge 3/5$ nodes) **AND** the elapsed time is less than the lock validity time, the lock is officially granted.
-4. If the lock is acquired, its validity time is the original validity time minus the elapsed acquisition time.
-5. If it fails the quorum or times out, it must rapidly execute a delete (via Lua script) across all 5 nodes to clean up partial states.
-
----
-
-## 3. ZooKeeper / etcd Locks: The Performance Trade-off
-
-While Redlock is fast, it is vulnerable to Clock Drift. Financial systems requiring absolute Strong Consistency use Apache ZooKeeper or etcd for reliable, event-driven locking.
-
-Despite Redlock's popularity, distributed systems experts (like Martin Kleppmann) note its heavy reliance on synchronized physical clocks. If a server experiences Clock Drift, locks can expire unpredictably.
-
-For Core Banking systems demanding absolute Strong Consistency, engineers deploy **Apache ZooKeeper** or **etcd** (which uses the Raft consensus algorithm).
-
-### ZooKeeper Ephemeral Sequential Lock Watcher Flowchart
-
-ZooKeeper lock acquisition leverages ephemeral sequential nodes and watch triggers to eliminate CPU-wasting polling loops:
-
-```mermaid
-flowchart TD
-    Start["Request Lock"] --> CreateNode["Create Ephemeral Sequential Node: /locks/lock-"]
-    CreateNode --> GetChildren["Get all Children of /locks & Sort Chronologically"]
-    GetChildren --> CheckLowest{"Is our Node the lowest sequence?"}
-    CheckLowest -->|"Yes"| LockAcquired["Lock Acquired - Execute Business Logic"]
-    CheckLowest -->|"No"| FindPredecessor["Identify Preceding Node in List"]
-    FindPredecessor --> WatchNode["Register Watcher on Preceding Node"]
-    WatchNode --> Block["Block and Wait for Node Deletion Event"]
-    Block --> ReceiveEvent{"Watcher triggered?"}
-    ReceiveEvent -->|"Yes"| GetChildren
-```
-
-In ZooKeeper:
-- **Ephemeral Nodes**: Automatically deleted if the client session terminates (e.g. if the client crashes), preventing deadlocks.
-- **Sequential Nodes**: ZK appends a monotonic sequence number to the node name, ensuring fair lock queueing.
-- **Watchers**: Eliminates network loops. Clients do not poll; they block until ZooKeeper pushes a deletion event for the preceding node.
-
----
-
-## 4. The Hidden Threat: Clock Drift & Garbage Collection (GC) Pauses
-
-A major challenge with distributed locks is the interaction between leases (TTLs) and client-side processing pauses.
-
-### Martin Kleppmann's Critique: The GC Pause Problem
-Suppose Server A acquires a Redis lock with a 10-second TTL. Immediately after acquiring the lock, Server A enters a long Garbage Collection (GC) pause or experiences hypervisor CPU starvation lasting 11 seconds.
-
-During this pause, Server A's execution is halted. The Redis lock TTL expires. Redis deletes the key. Server B requests and successfully acquires the lock. Server B starts writing to the database.
-
-Server A's GC pause ends. Server A awakens, unaware that the lock expired, and executes its pending write to the database. Both servers write concurrently, violating the mutual exclusion invariant and corrupting the database.
+However, in real-world distributed systems, processes experience **Stop-The-World (STW) Garbage Collection pauses**, asynchronous I/O delays, and OS page swapping. If Client 1 acquires a 10-second lock, undergoes an 11-second GC pause, its lock expires in Redis. Client 2 acquires the new lock. When Client 1 resumes, **both clients believe they own the lock simultaneously**, corrupting shared storage!
 
 ```mermaid
 sequenceDiagram
-    participant Client_A as "Go Client A"
-    participant Redis as "Redis Cluster"
-    participant Client_B as "Go Client B"
-    participant DB as "PostgreSQL DB"
+    autonumber
+    actor C1 as Client 1 (Go Pod A)
+    participant Redis as Redis Cluster (Redlock)
+    actor C2 as Client 2 (Go Pod B)
+    participant Storage as Shared Storage / DB
 
-    Client_A->>Redis: Acquire Lock ("10s TTL")
-    Redis-->>Client_A: Lock Granted
-    Note over Client_A: Client A enters long GC Pause ("11s")
-    Note over Redis: Lock Expires after 10s
-    Client_B->>Redis: Acquire Lock ("10s TTL")
-    Redis-->>Client_B: Lock Granted
-    Client_B->>DB: Write State ("Secure")
-    Note over Client_A: Client A resumes from GC Pause
-    Client_A->>DB: Write State ("Race Condition - Corrupts DB")
+    C1->>Redis: Acquire Lock (Lease: 10s) -> Granted!
+    Note over C1: Client 1 enters Stop-The-World GC Pause! (Duration: 12s)
+    Note over Redis: 10s elapsed: Redis expires C1's lock automatically
+    C2->>Redis: Acquire Lock -> Granted!
+    C2->>Storage: Write data under valid lock!
+    Note over C1: Client 1 wakes up from GC pause (unaware lock expired)
+    C1->>Storage: Write data under stale lock!
+    Note over Storage: DATA CORRUPTION! Both clients wrote concurrently!
 ```
-
-### The Solution: Fencing Tokens
-To solve the GC lease expiration problem, you must implement **Fencing Tokens**.
-
-A fencing token is a monotonically increasing number generated by the lock manager (like ZooKeeper's `zxid` or etcd's `revision`) every time a lock is acquired.
-1. When Client A acquires the lock, it receives fencing token `33`.
-2. When Client B acquires the lock, it receives fencing token `34`.
-3. Client B writes to the database first, passing token `34`. The database records the highest seen token as `34`.
-4. When Client A awakens and attempts to write passing token `33`, the database checks the token:
-   $$\text{If } \text{token}_{\text{incoming}} < \text{token}_{\text{db\_max}} \implies \text{Reject Transaction}$$
-   Since `33 < 34`, the database rejects Client A's write, preventing data corruption.
 
 ---
 
-## Go Implementation: Redlock Client with Automated Lease Renewal (Watchdog)
+## 2. The Universal Remedy: Monotonic Fencing Tokens
 
-Building a fault-tolerant distributed lock client with `github.com/go-redsync/redsync/v4` requires an automated background **Watchdog** routine to dynamically extend Redis lock leases during active processing, preventing premature lock expiration.
+To guarantee absolute safety against stale lock holders, every lock grant must return a strictly increasing **Fencing Token** (monotonically incrementing integer).
+
+When a client writes to the underlying storage engine, the storage layer rejects any write whose fencing token is smaller than the highest token previously processed.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor C1 as Client 1 (Stale Lock Holder)
+    participant LockSvc as Consensus Lock (ZooKeeper / Etcd)
+    actor C2 as Client 2 (Active Lock Holder)
+    participant DB as PostgreSQL (Fencing Enforced)
+
+    C1->>LockSvc: Acquire Lock -> Granted (Token: 33)
+    Note over C1: Client 1 pauses (GC / Network lag)
+    Note over LockSvc: Lease expires
+    C2->>LockSvc: Acquire Lock -> Granted (Token: 34)
+    C2->>DB: Write data (Fencing Token = 34)
+    Note over DB: Current DB Max Token = 34. Write Accepted!
+    Note over C1: Client 1 awakens and attempts write
+    C1->>DB: Write data (Fencing Token = 33)
+    Note over DB: Rejected! Token 33 < Max Token 34!
+    DB-->>C1: Error: Fencing Token Outdated (Stale Write Blocked)
+```
+
+---
+
+## 3. ZooKeeper Ephemeral Sequential Nodes
+
+Apache ZooKeeper achieves rock-solid distributed mutual exclusion via **ZAB (ZooKeeper Atomic Broadcast)** consensus:
+1. Each client attempts to create an ephemeral sequential znode under `/locks/resource_name/lock-`.
+2. ZooKeeper appends a strictly increasing monotonic sequence number (e.g., `lock-00000001`, `lock-00000002`).
+3. The client with the lowest sequence number owns the lock.
+4. All other clients place a **Watcher** only on the sequence node directly preceding their own, preventing the **Thundering Herd** problem when a lock is released.
+
+### Go Implementation with Optimistic Concurrency Control (Lock-Free Alternative)
+
+In high-concurrency e-commerce systems, avoiding distributed locks entirely yields 10x higher throughput:
 
 ```go
-package main
+package inventory
 
 import (
 	"context"
-	"fmt"
-	"sync"
-	"time"
-
-	"github.com/go-redsync/redsync/v4"
-	"github.com/go-redsync/redsync/v4/redis/goredis/v8"
-	goredislib "github.com/go-redis/redis/v8"
+	"errors"
+	"gorm.io/gorm"
 )
 
-type RedlockManager struct {
-	rs *redsync.Redsync
-}
+var ErrStockInsufficientOrConcurrentConflict = errors.New("insufficient stock or version conflict")
 
-func NewRedlockManager(addrs []string) *RedlockManager {
-	var pools []redsync.Pool
-	for _, addr := range addrs {
-		client := goredislib.NewClient(&goredislib.Options{
-			Addr: addr,
-		})
-		pools = append(pools, goredis.NewPool(client))
-	}
-	
-	// Initialize redsync wrapping the multi-node connection pools
-	return &RedlockManager{
-		rs: redsync.New(pools...),
-	}
-}
+// DeductStockOCC executes atomic deduction without distributed locks
+func DeductStockOCC(ctx context.Context, db *gorm.DB, skuID int64, qty int, currentVersion int) error {
+	result := db.WithContext(ctx).Exec(`
+		UPDATE inventory
+		SET stock = stock - ?,
+		    version = version + 1
+		WHERE sku_id = ?
+		  AND stock >= ?
+		  AND version = ?
+	`, qty, skuID, qty, currentVersion)
 
-// ExecuteWithLock runs the task under a distributed lock with a background watchdog.
-func (rm *RedlockManager) ExecuteWithLock(ctx context.Context, resource string, leaseDuration time.Duration, task func() error) error {
-	mutex := rm.rs.NewMutex(resource, redsync.WithExpiry(leaseDuration))
-
-	// 1. Acquire the distributed lock
-	if err := mutex.LockContext(ctx); err != nil {
-		return fmt.Errorf("failed to acquire lock for %s: %w", resource, err)
+	if result.Error != nil {
+		return result.Error
 	}
 
-	// Ensure lock is released upon exit
-	defer func() {
-		if _, err := mutex.UnlockContext(context.Background()); err != nil {
-			fmt.Printf("Error releasing lock: %v\n", err)
-		}
-	}()
-
-	// 2. Spin up the background Watchdog goroutine
-	watchdogCtx, cancelWatchdog := context.WithCancel(ctx)
-	defer cancelWatchdog()
-	
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		// Ticker to renew at 50% of the lease duration to guarantee safety margin
-		ticker := time.NewTicker(leaseDuration / 2)
-		defer ticker.Stop()
-
-		for {
-			select {
-			case <-watchdogCtx.Done():
-				return
-			case <-ticker.C:
-				ok, err := mutex.ExtendContext(watchdogCtx)
-				if err != nil || !ok {
-					fmt.Printf("[Watchdog Warning] Failed to extend lock: %v (extend_success=%t)\n", err, ok)
-					return // Stop watchdog if lock is lost
-				}
-				fmt.Printf("[Watchdog] Extended lease for key: %s\n", resource)
-			}
-		}
-	}()
-
-	// 3. Execute the business task
-	err := task()
-	
-	// Terminate watchdog before defer triggers lock release
-	cancelWatchdog()
-	wg.Wait()
-
-	return err
-}
-
-func main() {
-	// Connect to 3 independent Redis instances for Redlock consensus
-	redisAddresses := []string{
-		"localhost:6379",
-		"localhost:6380",
-		"localhost:6381",
+	if result.RowsAffected == 0 {
+		return ErrStockInsufficientOrConcurrentConflict
 	}
 
-	manager := NewRedlockManager(redisAddresses)
-	ctx := context.Background()
-
-	err := manager.ExecuteWithLock(ctx, "inventory_lock_sku_772", 4*time.Second, func() error {
-		// Simulate a slow database inventory update
-		fmt.Println("Lock acquired! Processing database update...")
-		time.Sleep(7 * time.Second) // Intentionally longer than the 4s lease duration
-		fmt.Println("Database update completed.")
-		return nil
-	})
-
-	if err != nil {
-		fmt.Printf("Lock execution failed: %v\n", err)
-	} else {
-		fmt.Println("Distributed transaction executed safely.")
-	}
+	return nil
 }
 ```
 
-This watchdog implementation ensures that your distributed lock lease is dynamically extended while processing is ongoing, protecting your system from race conditions during unexpected latency spikes.
+---
+
+## Frequently Asked Questions (FAQ)
+
+{{< faq q="When is Redis Redlock acceptable to use in production?" >}}
+Redis Redlock is suitable for **efficiency optimization** rather than **correctness-critical transactions**. Examples include preventing two background workers from generating the same daily analytical report, or deduplicating outgoing non-critical emails. In these scenarios, a rare lock violation merely wastes compute resources; it does not corrupt financial account balances or legal audit records.
+{{< /faq >}}
+
+{{< faq q="Why do Etcd and ZooKeeper guarantee strict mutual exclusion when Redis cannot?" >}}
+Etcd and ZooKeeper rely on formal consensus algorithms (**Raft** and **ZAB**) that maintain a strongly consistent, replicated state machine with quorum-based lease renewal and monotonic term/revision numbers. In contrast, Redis Redlock relies on unsynchronized local system clocks across independent master nodes. If system clocks drift or an NTP synchronization jump occurs, Redlock's timeout validity calculations break down completely.
+{{< /faq >}}
+
+{{< faq q="How does Optimistic Concurrency Control (OCC) outperform Distributed Locking during a Flash Sale?" >}}
+Acquiring and releasing a distributed lock requires at least two network round trips per request, serializing thousands of concurrent purchase attempts into a single-file queue. In contrast, database OCC uses atomic SQL conditional decrements (`WHERE stock >= qty AND version = current_version`). Transactions execute in parallel; winners succeed immediately, and losers fail fast or retry with jitter, sustaining tens of thousands of purchases per second.
+{{< /faq >}}
 
 ---
 
-## 🎯 Architecture Review & Consulting (Hire Me)
+## Next Steps
 
----
-
-🔗 **Next Step:** [Chapter 9: Database Sharding & Read/Write Splitting](/series/high-concurrency-systems/article_9_sharding/)
-
----
-## Related Architecture & Pillar Guides
-For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
-- [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)
-
-
----
-
-## Frequently Asked Questions
-
-### Q1: What core challenge does Chapter 8: Distributed Locking — Redlock vs ZooKeeper address in production architecture?
-Master distributed synchronization in Go by comparing Redis Redlock algorithms against strongly consistent Apache ZooKeeper lease locks.
-
-### Q2: What are the critical operational pitfalls to avoid during rollout?
-Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
-
-### Q3: How do we benchmark and validate performance after implementation?
-Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.
+Proceed to [Chapter 9: Database Sharding & Read/Write Splitting](/series/high-concurrency-systems/database-sharding-read-write-splitting/) to scale relational databases horizontally across billions of records.

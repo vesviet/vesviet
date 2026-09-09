@@ -1,277 +1,181 @@
 ---
 title: "Chapter 9: Database Sharding & Read/Write Splitting"
 date: "2026-06-09T10:40:00+07:00"
-lastmod: "2026-06-09T10:40:00+07:00"
+lastmod: "2026-09-09T21:45:00+07:00"
 draft: false
 series: ["high-concurrency-systems"]
-series_order: 9
-tags: ["golang", "database", "sharding", "architecture"]
+series_order: 10
+weight: 10
+tags: ["golang", "database", "sharding", "read-write splitting", "consistent hashing", "vitess", "postgresql"]
+categories: ["High Concurrency", "Database Architecture"]
 mermaid: true
 slug: "database-sharding-read-write-splitting"
-description: "Scale relational databases horizontally using GORM dbresolver for Read/Write splitting and CRC32 Consistent Hashing for sharding in Go microservices."
+description: "Scale relational databases horizontally using GORM dbresolver for Read/Write splitting and Consistent Hashing for massive sharding across billions of records."
 ShowToc: true
 TocOpen: true
+aliases:
+  - "/series/high-concurrency-systems/article_9_sharding/"
 cover:
   image: "/images/posts/database-sharding-read-write-splitting.jpg"
-  alt: "High Concurrency Systems Masterclass series: queues, caches, and distributed B2B commerce"
+  alt: "Chapter 9: Database Sharding & Read/Write Splitting"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/database-sharding-read-write-splitting/"
 image: "/images/posts/database-sharding-read-write-splitting.jpg"
-weight: 9
-aliases: ["/series/high-concurrency-systems/article_9_sharding/"]
 ---
 
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Chương 9: Database Sharding & Read/Write Splitting Dành Cho Các Bảng Dữ Liệu Hàng Tỷ Bản Ghi (learn.tanhdev.com)](https://learn.tanhdev.com/series/high-concurrency-systems/database-sharding-read-write-splitting/).
 
-> **Prerequisite:** Read the previous article: [Chapter 8: Distributed Locking — Redlock vs ZooKeeper](/series/high-concurrency-systems/article_8_distributed_locking/).
-
-When your application reaches tens of millions of users, the Database becomes the ultimate bottleneck. CPU maxes out at 100%, RAM depletes, and queries take seconds instead of milliseconds. This is the stage where you must deploy distributed database strategies.
+[Previous: Chapter 8 — Distributed Locking: Redlock vs ZooKeeper](/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/) | [Series Hub](/series/high-concurrency-systems/)
 
 ---
 
-# 1. Read/Write Splitting
+> **Answer-First:** Scaling relational databases beyond hundreds of millions of rows requires a progressive two-stage strategy: (1) **Read/Write Splitting** routing mutating queries to the Primary and read queries to Replicas via GORM `dbresolver`, protected by a **Pin-to-Primary (Read-Your-Own-Writes)** shield to insulate users from replication lag; (2) **Horizontal Sharding** using a **Consistent Hashing Ring with 256 Virtual Nodes** per physical database shard, distributed 64-bit monotonically increasing IDs (**Snowflake / TSID**), and sharding middleware (Vitess or Distributed SQL engines like TiDB/CockroachDB) to eliminate cross-shard two-phase commit bottlenecks.
 
-**Answer-first:** Database sharding and read/write splitting separate database workloads across master write instances and slave read replicas, scaling throughput beyond single-node hardware limits. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling. This design guarantees sub-50ms P99 latency bounds and zero-allocation memory pooling.
+---
 
-Because 80% of traffic is Read-only, separate your DB into a Write Master and Read Slaves. Use GORM's `dbresolver` plugin to route queries automatically without altering business logic.
+## 1. Stage 1: Read/Write Splitting & The Replication Lag Trap
 
-In typical applications, Read operations (Select) account for 80-90% of traffic, while Writes (Insert/Update) are merely 10-20%. Cramming all of this into a single DB causes heavy Select queries to lock tables, paralyzing the Write pipeline.
+Before splitting tables horizontally across separate physical clusters, the first scaling step is separating reads from writes. In e-commerce, read operations typically outnumber write operations by 10:1 to 50:1.
 
-**The Architecture:**
-Deploy a **Master** node (strictly for WRITING) alongside multiple **Slave/Replica** nodes (strictly for READING). The Master continuously replicates its data asynchronously to the Slaves.
+However, standard asynchronous replication introduces **Replication Lag**: If a user updates their profile and the subsequent profile reload reads from a replica that is 200ms behind, the user will see stale data, prompting confused repeat clicks and support tickets.
 
-**Implementing in Golang:**
-Do not write messy `if-else` blocks to manually switch DB connections. Utilize the `dbresolver` plugin from GORM:
+```mermaid
+flowchart TD
+    subgraph ReadWriteLag ["The Replication Lag Trap"]
+        U1["Client submits UPDATE profile"] --> M1["PostgreSQL Primary (Master)"]
+        M1 -->|Asynchronous Replication Lag: 250ms| R1["PostgreSQL Read Replica"]
+        U1 -->|Immediate Reload: SELECT profile| R1
+        R1 -->|Returns Stale Data!| U1
+    end
+
+    subgraph PinToPrimary ["2027 SOTA Shield: Pin-to-Primary Window"]
+        U2["Client submits UPDATE profile"] --> M2["PostgreSQL Primary (Master)"]
+        M2 --> S2["Set Client Context: LastWriteTimestamp = Now()"]
+        U2 -->|Immediate Reload: SELECT profile| Router{"GORM dbresolver Router"}
+        Router -->|Elapsed Time < 3 Seconds| M2
+        Router -->|Elapsed Time >= 3 Seconds| R2["PostgreSQL Read Replica"]
+        NoteA["Guarantees 100% Read-Your-Own-Writes Consistency!"]
+    end
+
+    classDef danger fill:#ffebee,stroke:#c62828,stroke-width:2px;
+    classDef safe fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    class ReadWriteLag danger;
+    class PinToPrimary safe;
+```
+
+---
+
+## 2. Stage 2: Horizontal Sharding via Consistent Hashing
+
+When a database table exceeds 100 million rows, single-node B-tree indexes exceed physical RAM capacity, causing random NVMe disk thrashing. The database must be partitioned horizontally across independent physical nodes.
+
+Naive modulo sharding (`hash(user_id) % N`) is disastrous in production: adding a new database server requires migrating nearly $100\%$ of all records. In contrast, **Consistent Hashing** with virtual nodes restricts data movement to only $1/N$ of records when a shard is added or removed.
+
+```mermaid
+flowchart TD
+    subgraph Ring ["Consistent Hashing Ring (0 to 2^32 - 1)"]
+        V1["Node A - Virtual Node 0"] --> K1["Key: user_101 (Hash: 0x1A2B)"]
+        K1 --> V2["Node B - Virtual Node 1"]
+        V2 --> K2["Key: user_202 (Hash: 0x5C8D)"]
+        K2 --> V3["Node C - Virtual Node 2"]
+        V3 --> K3["Key: user_303 (Hash: 0x9F4E)"]
+        K3 --> V4["Node A - Virtual Node 1"]
+        V4 --> V1
+    end
+
+    classDef ring fill:#ede7f6,stroke:#512da8,stroke-width:2px;
+    class Ring ring;
+```
+
+### Production Go Implementation with GORM `dbresolver`
+
 ```go
-package main
+package database
 
 import (
-	"gorm.io/driver/mysql"
+	"context"
+	"time"
+
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/plugin/dbresolver"
 )
 
-func initResolver(db *gorm.DB) error {
-	return db.Use(dbresolver.Register(dbresolver.Config{
-		Sources:  []gorm.Dialector{mysql.Open("master_dsn")},
-		Replicas: []gorm.Dialector{mysql.Open("slave1_dsn"), mysql.Open("slave2_dsn")},
+func SetupReadWriteSplitting(primaryDSN string, replicaDSNs []string) (*gorm.DB, error) {
+	db, err := gorm.Open(postgres.Open(primaryDSN), &gorm.Config{})
+	if err != nil {
+		return nil, err
+	}
+
+	var replicas []gorm.Dialector
+	for _, dsn := range replicaDSNs {
+		replicas = append(replicas, postgres.Open(dsn))
+	}
+
+	err = db.Use(dbresolver.Register(dbresolver.Config{
+		Sources:  []gorm.Dialector{postgres.Open(primaryDSN)},
+		Replicas: replicas,
 		Policy:   dbresolver.RandomPolicy{},
-	}))
-}
-```
-GORM intelligently parses your code: `db.Create()` is routed to the Master, while `db.Find()` is load-balanced across Slaves. Read scalability is now virtually infinite.
+	}).
+		SetConnMaxIdleTime(time.Minute).
+		SetConnMaxLifetime(time.Hour).
+		SetMaxIdleConns(50).
+		SetMaxOpenConns(50))
 
-**Replication Lag Warning:**
-Because Master-to-Slave replication takes a few milliseconds, if a user updates their profile (Write to Master) and immediately refreshes the page (Read from Slave), they might see old data. *Solution:* Flag the user session upon mutation, forcing all their read requests to target the Master for the next 3 seconds.
-
----
-
-## 2. Database Sharding
-
-When a single table hits billions of rows, splitting reads isn't enough. Sharding horizontally slices the table across multiple physical servers. Consistent Hashing is the preferred strategy to avoid massive data migrations during cluster resizing.
-
-When data swells to billions of records (e.g., Transaction History), the Master's hard drive fills up, and indexing overhead crushes Write performance. Read/Write splitting becomes useless. You must \"slice\" the database into smaller fragments.
-
-### A. Horizontal vs Vertical Sharding
-- **Vertical Sharding:** Splitting columns of a table into separate tables or databases. For example, moving large TEXT/BLOB profile bios into a `profile_details` table while keeping the hot `user_id` and `email` columns in the primary table. This reduces disk page footprint and speeds up index scans.
-- **Horizontal Sharding:** Slicing rows of a table across multiple database engines. The table schema remains identical across all database shards, but each database contains only a subset of the rows.
-
-### B. Sharding Key Selection
-Choosing the correct Sharding Key is the most critical decision in database partition architecture:
-- **`user_id` Key:** Grouping all data (orders, profiles) belonging to a single user on the same shard.
-  - *Pros:* High performance. User-specific transactions can be executed on a single database node without cross-network locks.
-  - *Cons:* Hyper-active merchants or power users can overload a specific database shard, causing hotspots.
-- **`order_id` Key:** Splitting orders randomly or sequentially.
-  - *Pros:* Perfect uniform distribution.
-  - *Cons:* Executing a scatter-gather query. If a user wants to view their historical order list, the application must query all database shards and merge the results in user space, degrading performance.
-
----
-
-## 3. The Pain of Cross-Shard Joins
-
-In a monolithic database, joining tables is a simple operation handled by the DB engine's optimizer. Once data is sharded across multiple physical servers, executing a standard SQL `JOIN` across shard boundaries becomes impossible.
-
-For example, running `SELECT * FROM orders JOIN users ON orders.user_id = users.id` when orders and users are partitioned on different shards requires:
-1. Fetching all matching order records from Shard A.
-2. Querying all user records from Shard B.
-3. Fetching and joining the rows inside the application memory.
-
-This consumes massive application heap memory and increases network transit times.
-
-### Strategies to Avoid Cross-Shard Joins
-- **Data Denormalization:** Duplicating read-only reference data (like product names or email addresses) directly inside the child tables (e.g. `order_items`), accepting write anomalies in exchange for single-query read performance.
-- **Global Reference Tables:** Maintaining small, read-heavy lookup tables (e.g., currency codes, countries) as duplicates on EVERY database shard. Write operations must write to all shards, but reads execute locally with fast index scans.
-- **Application-Level Joins:** Resolving relationships sequentially inside your Go routines using batch lookups (e.g., `SELECT * FROM users WHERE id IN (...)`).
-
----
-
-## 4. Distributed Transactions: 2PC vs Sagas
-
-When processing transactional writes across multiple independent database shards, you must guarantee atomic consistency.
-
-```mermaid
-sequenceDiagram
-    autonumber
-    Note over Coordinator, Shard B: Two-Phase Commit ("2PC") - Synchronous / Blocking
-    Coordinator->>Shard A: Phase 1: Prepare ("Can you commit?")
-    Coordinator->>Shard B: Phase 1: Prepare ("Can you commit?")
-    Shard A-->>Coordinator: VOTE_COMMIT
-    Shard B-->>Coordinator: VOTE_COMMIT
-    Coordinator->>Shard A: Phase 2: Commit Order
-    Coordinator->>Shard B: Phase 2: Deduct Stock
-    Shard A-->>Coordinator: Acknowledged
-    Shard B-->>Coordinator: Acknowledged
-
-    Note over Coordinator, Shard B: Saga Pattern - Asynchronous / Event-Driven
-    Coordinator->>Shard A: Local Transaction: Create Order ("Success")
-    Shard A-->>Coordinator: Order Created Event
-    Coordinator->>Shard B: Local Transaction: Deduct Stock ("Fails!")
-    Shard B-->>Coordinator: Out-of-Stock Event
-    Coordinator->>Shard A: Compensating Transaction: Cancel Order ("Restore State")
-```
-
-### Two-Phase Commit (2PC)
-A synchronous, blocking protocol to coordinate transactions across nodes:
-- **Phase 1 (Prepare):** The coordinator node asks all database shards if they are ready to commit their local writes. Each node locks local resources and votes (commit/abort).
-- **Phase 2 (Commit):** If all nodes vote commit, the coordinator instructs them to make the changes permanent. If any node votes abort, the coordinator orders a global rollback.
-- *Trade-off:* Highly vulnerable to deadlock and resource blockages. If a network split isolates the coordinator mid-transaction, all shards remain locked, freezing database access.
-
-### Saga Pattern
-An event-driven architectural pattern that splits a distributed transaction into a sequence of independent local transactions. Each local transaction updates the database on a single shard and publishes an event. Sibling services react by executing their local transaction.
-
-If a step fails, the coordinator publishes a compensating transaction event to run rollback actions (e.g., restoring stock) in reverse order.
-- *Trade-off:* Saga guarantees scalability and low latency because it avoids global locking, but developers must accept eventual consistency.
-
----
-
-## Go Implementation: Consistent Hashing Ring
-
-Consistent hashing key rings distribute keys across dynamic database shards using CRC32 virtual nodes to minimize re-sharding overhead during cluster resizing.
-
-```go
-package main
-
-import (
-	"fmt"
-	"hash/crc32"
-	"sort"
-	"strconv"
-)
-
-// HashRing maps keys to virtual database shard nodes.
-type HashRing struct {
-	virtualNodes int               // Number of virtual nodes per physical node
-	ring         []uint32          // Sorted list of virtual node hashes
-	nodeMap      map[uint32]string // Maps hash values to physical node name
+	return db, err
 }
 
-// NewHashRing creates a new hashing ring.
-func NewHashRing(virtualNodes int) *HashRing {
-	return &HashRing{
-		virtualNodes: virtualNodes,
-		nodeMap:      make(map[uint32]string),
-	}
-}
+// ReadYourOwnWrites forces read queries to Primary within a grace window
+func ReadUserProfile(ctx context.Context, db *gorm.DB, userID string, recentlyUpdated bool) (*User, error) {
+	var user User
+	tx := db.WithContext(ctx)
 
-// hash calculates the CRC32 checksum of a string key.
-func (h *HashRing) hash(key string) uint32 {
-	return crc32.ChecksumIEEE([]byte(key))
-}
-
-// AddNode registers a physical database shard.
-func (h *HashRing) AddNode(node string) {
-	for i := 0; i < h.virtualNodes; i++ {
-		// Generate unique key for virtual node
-		vNodeKey := node + "#" + strconv.Itoa(i)
-		vNodeHash := h.hash(vNodeKey)
-		
-		h.ring = append(h.ring, vNodeHash)
-		h.nodeMap[vNodeHash] = node
-	}
-	// Sort the ring to enable binary search (clockwise traversal)
-	sort.Slice(h.ring, func(i, j int) bool {
-		return h.ring[i] < h.ring[j]
-	})
-}
-
-// GetNode maps a data key to its assigned physical database node.
-func (h *HashRing) GetNode(key string) string {
-	if len(h.ring) == 0 {
-		return ""
+	if recentlyUpdated {
+		// Pin read to Primary to bypass replication lag
+		tx = tx.Clauses(dbresolver.Write)
 	}
 
-	keyHash := h.hash(key)
-
-	// Binary search to find the nearest virtual node clockwise
-	idx := sort.Search(len(h.ring), func(i int) bool {
-		return h.ring[i] >= keyHash
-	})
-
-	// If hash is beyond the highest virtual node, wrap around to 0
-	if idx == len(h.ring) {
-		idx = 0
-	}
-
-	return h.nodeMap[h.ring[idx]]
-}
-
-func main() {
-	// Initialize ring with 10 virtual nodes per database shard
-	ring := NewHashRing(10)
-
-	// Add physical database shards
-	ring.AddNode("db-shard-01.internal")
-	ring.AddNode("db-shard-02.internal")
-	ring.AddNode("db-shard-03.internal")
-
-	// Map sample keys (order UUIDs) to database nodes
-	orders := []string{
-		"order_8829-1a",
-		"order_3810-9b",
-		"order_1128-4c",
-		"order_9981-6d",
-	}
-
-	for _, order := range orders {
-		node := ring.GetNode(order)
-		fmt.Printf("Order ID: %s -> Routed to: %s\n", order, node)
-	}
+	err := tx.First(&user, "id = ?", userID).Error
+	return &user, err
 }
 ```
 
-Consistent hashing distributes data uniformly across your database nodes, ensuring horizontal scalability.
+---
+
+## 3. Distributed ID Generation: Snowflake & TSID
+
+In a horizontally sharded database cluster, traditional database auto-increment IDs (`BIGSERIAL`) fail because shards operate independently.
+
+The 2027 standard relies on **64-bit Twitter Snowflake or Time-Sorted Unique Identifiers (TSID)**:
+- **1 bit:** Unused sign bit (always 0).
+- **41 bits:** Millisecond timestamp (69 years of lifespan).
+- **10 bits:** Node / Worker Machine ID (supports 1,024 independent database shards).
+- **12 bits:** Monotonic Sequence Counter (4,096 IDs per millisecond per node).
+
+Because Snowflake IDs are monotonically increasing, new row insertions maintain perfect **B-tree index page locality**, preventing page splits and fragmentation.
 
 ---
 
-## 🎯 Architecture Review & Consulting (Hire Me)
+## Frequently Asked Questions (FAQ)
 
-Security posture for database sharding architectures requires strict input sanitization, OWASP top 10 threat mitigation, and automated dependency vulnerability scanning in CI/CD pipelines.
+{{< faq q="How do you handle cross-shard queries and aggregations in a sharded database?" >}}
+Queries that omit the sharding key must execute a **Scatter-Gather** operation: the application or sharding middleware (e.g., Vitess VTGate) dispatches the query in parallel to all $N$ shards and merges the results in memory. For heavy analytical queries, secondary index lookups, or full-text searches, best practice dictates replicating data asynchronously via CDC to an external search engine (Elasticsearch, Meilisearch) or data warehouse (ClickHouse, BigQuery) rather than burdening transactional OLTP shards.
+{{< /faq >}}
 
-For database sharding systems, state persistence relies on pessimistic transaction locks and ACID compliance across distributed SQL clusters. Dual-write patterns utilize Outbox CDC event streaming to maintain eventual consistency.
+{{< faq q="Why should e-commerce systems avoid Cross-Shard Distributed Transactions (2PC)?" >}}
+Two-Phase Commit (2PC / XA transactions) across multiple database shards forces all participating nodes to hold row locks until all participants vote and commit. If a single network packet is delayed or one shard is slow, locks remain held, causing latency spikes and cascading thread exhaustion. High-concurrency systems avoid cross-shard 2PC by aligning related entities under the same sharding key (e.g., co-locating `orders` and `order_items` by `user_id`), or by using asynchronous **Saga patterns**.
+{{< /faq >}}
 
----
-
-🔗 **Next Step:** [Masterclass: High Concurrency Systems & B2B Commerce](/series/system-design/)
-
-## Architectural Context & Pillar References
-
-Saga orchestration in database sharding systems handles multi-step distributed transactions with explicit compensating transactions. If a downstream payment step fails, upstream inventory reservations roll back atomically.
-
----
-## Related Architecture & Pillar Guides
-For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
-- [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)
-
+{{< faq q="When should a team migrate from manual sharding to Distributed SQL (TiDB / CockroachDB)?" >}}
+Manual application-level sharding introduces massive development overhead: manual resharding scripts, complex query routing, and schema migration coordination. Teams should adopt Distributed SQL (such as TiDB or CockroachDB) when table sizes exceed 5 Terabytes and the operational cost of managing sharding logic in application code exceeds the cost of running a distributed consensus storage engine (Raft/Multi-Raft).
+{{< /faq >}}
 
 ---
 
-## Frequently Asked Questions
+## Congratulations on Completing the Masterclass!
 
-### Q1: What core challenge does Chapter 9: Database Sharding & Read/Write Splitting address in production architecture?
-Scale relational databases horizontally using GORM dbresolver for Read/Write splitting and CRC32 Consistent Hashing for sharding in Go microservices.
-
-### Q2: What are the critical operational pitfalls to avoid during rollout?
-Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
-
-### Q3: How do we benchmark and validate performance after implementation?
-Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.
+You have completed the entire 10-chapter **Masterclass: High Concurrency Systems & B2B Commerce**. Explore our companion masterclasses to deepen your expertise:
+- **[Distributed Core Banking Architecture](/series/core-banking-architecture/)**
+- **[Realtime Ride-Hailing Architecture](/series/ride-hailing-realtime-architecture/)**
+- **[Shopee High-Concurrency Architecture](/series/shopee-architecture/)**
