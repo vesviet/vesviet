@@ -93,7 +93,7 @@ export default {
     }
 
     // 5. Proxy API bauxeo with Edge Caching
-    if (url.pathname === '/bauxeo') {
+    if (url.pathname === '/bauxeo' || url.pathname === '/bauxeo/') {
       const day = url.searchParams.get('day') || '1';
       const apiUrl = `http://apikcnbauxeo.dulieuquantrac.com/?day=${day}`;
       

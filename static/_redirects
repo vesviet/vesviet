@@ -7,7 +7,6 @@
 # --- 1. Core & Legacy Navigation ---
 /about-me/ /about/ 301
 /api/v1/orders / 301
-/bauxeo / 301
 /cap-nhat-ip-dong-cho-ten-mien-qua-cloudflare-de-truy-cap-homelab-tai-nha/ / 301
 /category/development/ /posts/ 301
 /category/e-commerce/ /categories/e-commerce/ 301
