@@ -18,9 +18,8 @@ import os
 import re
 import glob
 from collections import defaultdict
-
-POSTS_DIR = r"D:\myproject\vesviet\content\posts"
-REPORT_FILE = r"D:\myproject\vesviet\reports\posts_content_manager_audit.md"
+POSTS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "content", "posts"))
+REPORT_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "reports", "posts_content_manager_audit.md"))
 
 # --- Patterns ---
 AI_BOILERPLATE = [

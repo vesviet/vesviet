@@ -1,8 +1,7 @@
 import os
 import glob
 import re
-
-POSTS_DIR = r"d:\myproject\vesviet\content\posts"
+POSTS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "content", "posts"))
 
 FORBIDDEN_TERMS = [
     "seamless",
