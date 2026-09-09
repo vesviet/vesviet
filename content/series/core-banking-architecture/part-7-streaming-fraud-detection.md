@@ -1,571 +1,172 @@
 ---
 title: "Streaming Fraud Detection: Flink CEP, RocksDB & ML"
+slug: "part-7-streaming-fraud-detection"
 date: "2026-06-18T12:00:00+07:00"
-lastmod: "2026-07-03T15:41:55+07:00"
+lastmod: "2026-09-09T21:25:00+07:00"
 draft: false
-description: "Flink CEP fraud detection guide: analyzing 3 failed logins, high-value transactions, RocksDB state backends, and async ML inference 50ms SLAs."
+description: "Real-time fraud detection architecture in core banking: Apache Flink Complex Event Processing (CEP), RocksDB state backends, sliding window velocity checks, and sub-10ms online ML feature stores."
 weight: 7
 series: ["core-banking-architecture"]
-keywords: ["flink fraud detection architecture", "flink rocksdb state size performance", "credit card fraud detection SLA", "streaming CEP patterns fintech"]
+categories: ["FinTech", "Data Engineering", "Machine Learning"]
+tags: ["Apache Flink", "Fraud Detection", "RocksDB", "CEP", "Machine Learning", "Kafka", "Redis"]
 author: "Lê Tuấn Anh"
-schema: ["Article", "TechArticle", "FAQPage"]
 cover:
   image: "/images/posts/banking-microservices-cover.jpg"
-  alt: "Modern Core Banking Architecture series: Go, event sourcing, Saga pattern, and distributed ledger"
+  alt: "Modern Core Banking Architecture: Real-time Streaming Fraud Detection with Apache Flink and Machine Learning"
   relative: false
 canonicalURL: "https://tanhdev.com/series/core-banking-architecture/part-7-streaming-fraud-detection/"
 ShowToc: true
 TocOpen: true
+mermaid: true
 ---
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Part 6 — Fapi 2 Api Security](/series/core-banking-architecture/part-6-fapi-2-api-security/). Review it first if the terminology in this part is unfamiliar.
-
-**Answer-first:** Real-time transaction fraud detection requires streaming processing engines (Flink/Spark) to run multi-variable rule scoring under 50ms. By maintaining stateful windows of customer activity, these systems identify anomalies and block fraudulent transfers before they settle. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for production-grade enterprise operations.
-
-> **Series (Part 7 of 8):** The final technical article before the QA handbook. We will build a real-time fraud detection pipeline with an SLA of <100ms per score — where your latency budget is shared between CEP pattern matching, state lookups, and ML model inference.
-
-## What is a Flink Fraud Detection Architecture?
-
-Streaming fraud detection uses Apache Flink Complex Event Processing (CEP) to evaluate payment streams against risk models in sub-50ms windows.
-
-Enterprise stream processing frameworks—primarily Apache Flink operating over high-throughput Apache Kafka event logs—form the spine of modern real-time banking security. High-frequency fraud detection pipelines must evaluate every incoming credit card or instant payment transaction against multi-variable behavioral patterns within strict sub-50ms or sub-10ms SLA budgets. Legacy static rule engines rely on batch database queries that introduce minutes of latency and exhibit false positive rates as high as **85-99%**.
-
-By orchestrating Flink Complex Event Processing (CEP) alongside off-heap RocksDB state backends and gRPC-based asynchronous machine learning inference, financial institutions reduce false positives by up to **80%**. Flink maintains stateful tumbling and sliding windows of user activity (such as velocity counts, spatial displacement between transfers, and device hardware hashes) directly on local NVMe SSDs. When a high-risk transaction is flagged, the pipeline immediately emits a fraud event to trigger the [Saga Pattern](/series/core-banking-architecture/part-4-saga-pattern/) for payment compensation and coordinates with [FAPI 2.0 API Security](/series/core-banking-architecture/part-6-fapi-2-api-security/) gateway filters to freeze compromised credentials.
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/core-banking-architecture/part-7-streaming-fraud-detection/)
 
 ---
 
-## Fraud Detection SLA Architecture
+> **Series Navigation:** This is Part 7 of the **Core Banking Systems Architecture Masterclass**. For API security profiles, read [Part 6: FAPI 2.0 Security](/series/core-banking-architecture/part-6-fapi-2-api-security/).
 
-Fraud SLAs require processing incoming transactions, querying feature state, running ML inference, and returning risk scores in <50ms.
+# Streaming Fraud Detection: Flink CEP, RocksDB & ML
 
-### Latency Budget Breakdown
-
-Total end-to-end authorization latency for a credit card transaction: **100-300ms**
-
-| Component | Allocated Budget | Typical Actual |
-|-----------|-----------------|----------------|
-| Network (client → gateway) | 10-20ms | 5-15ms |
-| API Gateway routing | 5-10ms | 2-5ms |
-| **Fraud scoring (Flink/ML)** | **50-100ms** | 30-80ms |
-| Core Banking authorization | 10-20ms | 5-10ms |
-| Network (gateway → client) | 10-20ms | 5-15ms |
-| **Total** | **85-170ms** | **47-125ms** |
-
-Source: [Redis Fraud Detection Brief](https://redis.io/solutions/fraud-detection/), Feedzai AI Report.
+**Answer-first:** Real-time financial fraud detection architectures replace post-settlement batch analytics with inline streaming Complex Event Processing (CEP) and low-latency machine learning inference. By combining Apache Flink's stateful stream processing with embedded RocksDB state backends, real-time sliding velocity windows, and an in-memory feature store (Redis/Dragonfly), modern core banking platforms intercept account takeover (ATO), card cloning, and mule account routing inline within a strict sub-10ms latency budget before funds depart the institution.
 
 ---
 
-## Apache Flink: Complex Event Processing (CEP)
+## 1. The Streaming Defense Architecture: Sub-10ms Inline Evaluation
 
-Flink CEP specifies temporal patterns (e.g. 3 failed logins followed by high-value transfer within 5 mins) to trigger instant alerts.
+Traditional fraud monitoring systems operated as asynchronous, post-facto batch pipelines running nightly against transaction databases. While useful for regulatory reporting, post-settlement detection cannot prevent instantaneous fund loss on modern 24/7 clearing rails (such as NAPAS 24/7 or FedNow), where payments settle irreversibly within seconds.
 
-[Apache Flink](https://nightlies.apache.org/flink/flink-docs-stable/) provides a CEP library to detect complex event sequences in real-time streams.
+The 2027 SOTA fraud architecture embeds streaming evaluation directly into the payment authorization path:
 
-### CEP Pattern: 3 Failed Logins + High-Value Transaction
+```mermaid
+flowchart TD
+    subgraph Transaction_Flow ["Inline Authorization Request Pipeline"]
+        Tx["Inbound Transfer Event<br/>(Kafka Stream / Payment Ingress)"]
+        Splitter{"Decision Branch:<br/>Inline Synchronous vs Out-of-Band"}
+        CoreAuth["Core Payment Service (Auth Decision)"]
+    end
 
-The Java implementation below defines a Flink Complex Event Processing (CEP) pattern that monitors user account events in real time. The rule flags accounts that exhibit three or more consecutive failed login attempts within five minutes followed immediately by a high-value transfer.
+    subgraph Flink_Stream_Cluster ["Apache Flink 2.0 Streaming Engine"]
+        StreamIn["Kafka Ingestion (Partitioned by AccountID)"]
+        CEP["Flink CEP Rule Engine<br/>(Stateful Pattern Matching)"]
+        RocksDB["Embedded RocksDB State<br/>(30-Day Velocity Histories)"]
+        FeatureStore["Redis 7 Feature Store<br/>(IP Geolocation, Device Fingerprint)"]
+        ML["ONNX Model Inference<br/>(LightGBM / XGBoost Model)"]
 
+        StreamIn --> CEP
+        CEP <--> RocksDB
+        CEP --> FeatureStore
+        FeatureStore --> ML
+    end
+
+    subgraph Action_Resolution ["Interception & Action Dispatch"]
+        Score{"Risk Score Assessment:<br/>Score > 85 Threshold?"}
+        Block["ACTION: BLOCK TRANSFER & FREEZE ACCOUNT"]
+        Approve["ACTION: APPROVE & EXECUTE SETTLEMENT"]
+        Review["ACTION: STEP-UP 2FA / BIOMETRIC CHALLENGE"]
+    end
+
+    Tx --> Splitter
+    Splitter -->|Synchronous gRPC| Flink_Stream_Cluster
+    ML --> Score
+    Score -->|Critical Risk| Block
+    Score -->|Moderate Risk| Review
+    Score -->|Low Risk| Approve
+    Approve --> CoreAuth
+```
+
+---
+
+## 2. Apache Flink CEP Pattern Definitions
+
+Complex Event Processing (CEP) detects suspicious behavioral sequences across time. A quintessential banking fraud pattern is the **Impossible Velocity / Geolocation Jump** (e.g., a card physically presented in Hanoi, followed by an ATM cash withdrawal in Ho Chi Minh City 5 minutes later):
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Customer as "Customer / Mobile Device"
+    participant Gateway as "Payment Gateway"
+    participant Interceptor as "Fraud Interceptor Service"
+    participant Flink as "Apache Flink CEP Pipeline"
+    participant Redis as "Feast / Redis Feature Store"
+
+    Customer->>Gateway: Submit Instant Payment ($5,000)
+    Gateway->>Interceptor: EvaluateRiskSync(tx_payload)
+    
+    par Parallel Feature Extraction
+        Interceptor->>Redis: Fetch Real-Time Aggregates (< 1.2ms)
+        Redis-->>Interceptor: [TxCount1h=14, MaxAmt1h=$12K, DeviceRisk=High]
+        Interceptor->>Flink: Evaluate CEP Temporal Patterns (< 2.8ms)
+        Flink-->>Interceptor: Pattern Detected: Rapid Escalation
+    end
+
+    Note over Interceptor: Execute ML Model Inference (ONNX: 1.4ms)
+    Interceptor->>Interceptor: Calculate Ensemble Score (Score: 91/100)
+
+    alt Score >= 85 (High Fraud Probability)
+        Interceptor-->>Gateway: Decision: REJECT_SUSPECTED_FRAUD (Total Latency: 5.4ms)
+        Gateway-->>Customer: Payment Declined: Suspicious Activity Detected
+    else Score < 85 (Legitimate Transaction)
+        Interceptor-->>Gateway: Decision: ALLOW (Total Latency: 5.4ms)
+        Gateway->>Gateway: Forward to Core Ledger
+    end
+```
+
+### Production Flink Java CEP Rule Definition
 ```java
-import org.apache.flink.cep.CEP;
-import org.apache.flink.cep.PatternStream;
-import org.apache.flink.cep.pattern.Pattern;
-import org.apache.flink.cep.pattern.conditions.SimpleCondition;
-import org.apache.flink.streaming.api.windowing.time.Time;
-
-// Event types
-record Event(String userId, String type, double amount, long timestamp) {}
-record AlertEvent(String userId, String reason, List<Event> matchedEvents) {}
-
-// === CEP Pattern Definition ===
-Pattern<Event, ?> fraudPattern = Pattern.<Event>begin("failed_login")
-    .where(new SimpleCondition<Event>() {
+// Definition of rapid high-volume velocity attack followed by account drain
+Pattern<TransactionEvent, ?> accountDrainPattern = Pattern.<TransactionEvent>begin("small_probing")
+    .where(new SimpleCondition<TransactionEvent>() {
         @Override
-        public boolean filter(Event value) {
-            return "login_failed".equals(value.type());
+        public boolean filter(TransactionEvent tx) {
+            return tx.getAmount() < 50_000; // Small probing transaction (< 50,000 VND)
         }
     })
-    .timesOrMore(3)        // ≥3 failed logins
-    .consecutive()         // Consecutive events (no other event type in between)
-    .followedByAny("high_value_transaction")  // Followed by ANY transaction
-    .where(new SimpleCondition<Event>() {
+    .followedBy("massive_withdrawal")
+    .where(new IteratingCondition<TransactionEvent>() {
         @Override
-        public boolean filter(Event value) {
-            return "transaction".equals(value.type())
-                && value.amount() > 1_000_000.0;  // >1M VND
+        public boolean filter(TransactionEvent tx, Context<TransactionEvent> ctx) throws Exception {
+            double currentAmount = tx.getAmount();
+            // Compare against 30-day moving average stored in state
+            double averageAmount = ctx.getEventsForPattern("small_probing").iterator().next().getHistoricalAverage();
+            return currentAmount > 20_000_000 && (currentAmount / averageAmount) > 10.0;
         }
     })
-    .within(Time.minutes(5));  // Entire sequence must occur within 5 minutes
-
-// === Apply Pattern to Stream ===
-DataStream<Event> eventStream = env.fromSource(kafkaSource, WatermarkStrategy.noWatermarks(), "KafkaFraudEventsSource");
-
-PatternStream<Event> patternStream = CEP.pattern(
-    eventStream.keyBy(Event::userId),  // Partition by user
-    fraudPattern
-);
-
-// === Process Matches ===
-DataStream<AlertEvent> alerts = patternStream.process(
-    new PatternProcessFunction<Event, AlertEvent>() {
-        @Override
-        public void processMatch(
-            Map<String, List<Event>> match,
-            Context ctx,
-            Collector<AlertEvent> out
-        ) throws Exception {
-            List<Event> failedLogins = match.get("failed_login");
-            List<Event> highValueTxs = match.get("high_value_transaction");
-            
-            out.collect(new AlertEvent(
-                failedLogins.get(0).userId(),
-                "3+ failed logins followed by high-value transaction",
-                Stream.concat(failedLogins.stream(), highValueTxs.stream())
-                      .collect(Collectors.toList())
-            ));
-        }
-    }
-);
-```
-
-### Sliding Window: Velocity Checks
-
-To calculate real-time transaction velocity and detect impossible travel anomalies, Flink streams elements through sliding event-time windows. The code snippet below illustrates sliding window aggregation and Haversine distance spatial calculations.
-
-```java
-// Velocity check: >10 transactions in 1 hour for the same user
-DataStream<Alert> velocityAlerts = eventStream
-    .filter(e -> "transaction".equals(e.type()))
-    .keyBy(Event::userId)
-    .window(SlidingEventTimeWindows.of(Time.hours(1), Time.minutes(5)))
-    .aggregate(new CountAggregator(), new VelocityAlertFunction())
-    .filter(count -> count > 10);
-
-// Geographic velocity: transactions from 2 locations >500km apart in <1 hour
-Pattern<Event, ?> geoVelocityPattern = Pattern.<Event>begin("tx1")
-    .where(e -> "transaction".equals(e.type()))
-    .followedBy("tx2")
-    .where(new IterativeCondition<Event>() {
-        @Override
-        public boolean filter(Event value, Context<Event> ctx) {
-            Iterator<Event> tx1Events = ctx.getEventsForPattern("tx1").iterator();
-            if (tx1Events.hasNext()) {
-                Event tx1 = tx1Events.next();
-                double distance = haversineDistance(tx1.location(), value.location());
-                return distance > 500_000; // 500km in meters
-            }
-            return false;
-        }
-    })
-    .within(Time.hours(1));
+    .within(Time.minutes(5)); // Occurring within a 5-minute sliding window
 ```
 
 ---
 
-## Async ML Inference: Maintaining the 50ms SLA
+## 3. RocksDB State Backend & Fault-Tolerant Checkpointing
 
-Async ML inference uses gRPC worker pools and non-blocking I/O to query machine learning models without stalling the main Flink event stream.
+Tracking 30-day transaction velocity across 20,000,000 active bank accounts requires gigabytes of state data. Keeping this state purely in JVM heap memory causes fatal Garbage Collection pauses.
 
-Invoking machine learning scoring endpoints synchronously within the main stream execution loop can easily block processing pipelines. The snippet below uses Flink AsyncDataStream and non-blocking HTTP clients to evaluate risk models without stalling stream throughput.
-
-```java
-// Async ML inference — does not block the main stream
-DataStream<ScoredTransaction> scoredStream = AsyncDataStream.unorderedWait(
-    txStream,
-    new AsyncMLInferenceFunction(),
-    100,              // Timeout: 100ms — SLA hard limit
-    TimeUnit.MILLISECONDS,
-    1000              // Max 1000 concurrent async requests
-);
-
-// ML Inference Function
-class AsyncMLInferenceFunction
-    extends RichAsyncFunction<Event, ScoredTransaction> {
-    
-    private OkHttpClient httpClient;  // Non-blocking HTTP client
-    
-    @Override
-    public void open(Configuration parameters) {
-        httpClient = new OkHttpClient.Builder()
-            .connectTimeout(20, TimeUnit.MILLISECONDS)
-            .readTimeout(80, TimeUnit.MILLISECONDS)
-            .build();
-    }
-    
-    @Override
-    public void asyncInvoke(Event input, ResultFuture<ScoredTransaction> resultFuture) {
-        // Fire async HTTP request to TensorFlow Serving
-        Request request = new Request.Builder()
-            .url("http://ml-serving:8501/v1/models/fraud_model:predict")
-            .post(buildFeatureVector(input))
-            .build();
-        
-        httpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                // Timeout or ML service down → default score (do not block transaction)
-                resultFuture.complete(Collections.singletonList(
-                    new ScoredTransaction(input, 0.5, "ml_timeout")
-                ));
-            }
-            
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                double score = parseFraudScore(response.body().string());
-                resultFuture.complete(Collections.singletonList(
-                    new ScoredTransaction(input, score, "ml_success")
-                ));
-            }
-        });
-    }
-}
-```
-
-**Scoring decision logic:**
-
-Once async ML scores return, the processing function combines deterministic CEP rule alerts with probabilistic ML scores. The code below illustrates the decision routing logic that categorizes transfers into auto-block, step-up authentication, or approval.
-
-```java
-// Combine CEP rule alerts + ML score → final decision
-DataStream<FraudDecision> finalDecision = scoredStream
-    .connect(alerts.broadcast(rulesDescriptor))
-    .process(new RuleAndMLCombiner());
-
-class RuleAndMLCombiner extends BroadcastProcessFunction<ScoredTransaction, Alert, FraudDecision> {
-    @Override
-    public void processElement(ScoredTransaction tx, ReadOnlyContext ctx, Collector<FraudDecision> out) {
-        FraudDecision decision;
-        
-        if (tx.mlScore() > 0.95) {
-            // High confidence fraud → auto-block
-            decision = FraudDecision.block(tx, "ml_high_confidence");
-        } else if (tx.mlScore() > 0.75) {
-            // Medium confidence → step-up authentication (OTP required)
-            decision = FraudDecision.stepUp(tx, "ml_medium_confidence");
-        } else {
-            // Low risk → approve
-            decision = FraudDecision.approve(tx);
-        }
-        
-        out.collect(decision);
-    }
-}
-```
+Apache Flink delegates state management to **embedded RocksDB**:
+- **Out-of-Core Storage**: Active state resides in fast NVMe SSD storage with an in-memory block cache, bypassing JVM garbage collection entirely.
+- **Incremental Checkpointing**: Flink uploads only newly flushed RocksDB SST files (SSTables) to S3/MinIO every 10 seconds. In the event of a TaskManager failure, the cluster recovers state in under 2 seconds without stream reprocessing gaps.
 
 ---
 
-## RocksDB State Backend: Production Configuration
+## 4. Online Feature Stores: Feast & Redis Integration
 
-RocksDB state backends persist millions of user profile state objects on local NVMe SSDs, maintaining high throughput under large state volumes.
+Machine learning models require real-time feature vectors calculated over historical time horizons. Querying an analytical SQL warehouse inline during a payment request is completely impossible due to multi-second latency.
 
-To support stateful windowing across millions of active user profiles without overflowing RAM, production Flink deployments configure RocksDB as the out-of-core state backend. The configuration file snippet below tunes local NVMe SSD storage paths and block cache memory limits.
-
-[Apache Flink Docs](https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/) — RocksDB allows state to exceed RAM (spill to SSD):
-
-```yaml
-# flink-conf.yaml — Production RocksDB configuration
-
-# === State Backend ===
-state.backend: rocksdb
-state.backend.rocksdb.localdir: /mnt/nvme-ssd/flink-state  # NVMe local SSD
-state.backend.incremental: true                              # Incremental checkpoints
-
-# === Memory Tuning ===
-# Block cache: 2GB — keep hot user profiles in memory
-state.backend.rocksdb.block.cache-size: 2147483648  # 2 GB
-
-# Block size: 64KB — optimize for sequential fraud profile reads
-state.backend.rocksdb.block.blocksize: 65536        # 64 KB
-```
+Modern banking uses an **Online Feature Store**:
+- **Real-Time Accumulators**: Flink continuously computes sliding metrics (`tx_count_5m`, `total_amount_1h`, `ratio_vs_30d_avg`) and pushes them directly to an in-memory Redis cluster.
+- **Sub-2ms Inference**: When an authorization request arrives, the payment gateway retrieves the complete pre-computed feature vector from Redis in under 1.5ms, feeding it directly into an ONNX-optimized LightGBM model for instantaneous risk classification.
 
 ---
 
-## Flink State: User Profile Schema
+## Frequently Asked Questions (FAQ)
 
-User profile state stores historical velocity metrics, average spend amounts, and geographic locations for real-time feature computation.
-
-Each user profile stored in RocksDB holds real-time counters, spatial coordinates, device hashes, and historical risk metrics. The Java class definition below details the serializable state structure maintained for every active bank account.
-
-```java
-// User fraud profile stored in Flink RocksDB state
-public class UserFraudProfile implements Serializable {
-    public String userId;
-    
-    // Velocity counters
-    public int txLast1h;          // Transactions in last hour
-    public int txLast24h;         // Transactions in last 24 hours
-    public double totalAmountLast1h;
-    
-    // Failed auth tracking
-    public int failedLoginLast5m; // Failed logins in last 5 minutes
-    public long lastFailedLoginTs;
-    
-    // Geographic data
-    public String lastLocation;   // "10.8231,106.6297" (lat,lng)
-    public long lastTxTimestamp;
-    
-    // Device fingerprint
-    public String lastDeviceHash;
-    public int newDeviceCountLast7d;
-    
-    // Risk scores history
-    public double avgRiskScore30d;
-    public boolean isHighRiskUser;
-}
-```
-
----
-
-## ML vs Rules Engine: False Positive Analysis
-
-Combining deterministic rules with ML scoring models reduces false positive transaction declines by 80% compared to rules alone.
-
-Source: [Feedzai AI Report](https://feedzai.com/resource/ai-and-ml-in-fraud-prevention/)
-
-Deploying real-time machine learning inference alongside or in place of static CEP rules dramatically reduces false positive ratios by learning complex behavioral patterns rather than relying on rigid threshold checks. The comparative matrix below outlines false positive rates, false negative rates, and latency tradeoffs across different detection approaches.
-
-| Approach | False Positive Rate | False Negative Rate | Latency |
-|----------|--------------------|--------------------|---------|
-| **Static Rules Engine** | **85-99%** | 15-30% | <5ms |
-| **Hybrid (Rules + ML)** | **20-45%** | 5-15% | 30-80ms |
-| **Pure ML** | **10-25%** | 3-8% | 50-100ms |
-
-**Business Impact of False Positives:**
-- Every false positive = blocked legitimate transaction = revenue loss + customer friction
-- For a bank with 1M transactions/day, a 1% false positive rate = **10,000 blocked good transactions/day**
-- ML reduces false positives by 80% → dropping from 10,000 to **2,000 blocked good transactions/day**
-
----
-
-## Feature Engineering for Fraud ML Model
-
-Real-time feature engineering computes sliding window aggregations (e.g. transaction count in last 1 hour) directly in Flink state.
-
-Machine learning risk models require normalized feature vectors extracted from both the current transaction event and the user's historical state. The Python snippet below demonstrates real-time feature extraction covering velocity, spatial distance, device changes, and authentication metrics.
-
-```python
-# Feature extraction for training data
-def extract_features(transaction: Transaction, user_history: UserHistory) -> dict:
-    return {
-        # Amount features
-        "amount_usd": transaction.amount / 23000,  # Normalize to USD
-        "amount_zscore": (transaction.amount - user_history.avg_amount) / user_history.std_amount,
-        
-        # Velocity features
-        "tx_count_1h": user_history.tx_count_1h,
-        "tx_count_24h": user_history.tx_count_24h,
-        "amount_sum_1h": user_history.amount_sum_1h,
-        
-        # Behavioral features
-        "hour_of_day": transaction.timestamp.hour,
-        "is_weekend": transaction.timestamp.weekday() >= 5,
-        "days_since_account_open": user_history.account_age_days,
-        
-        # Geographic features
-        "distance_from_last_tx_km": haversine_distance(
-            transaction.location, user_history.last_tx_location
-        ),
-        "is_new_country": transaction.country != user_history.home_country,
-        
-        # Device features
-        "is_new_device": transaction.device_hash not in user_history.known_devices,
-        "new_device_count_7d": user_history.new_device_count_7d,
-        
-        # Auth features
-        "failed_auth_count_5m": user_history.failed_auth_5m,
-    }
-```
-
----
-
-## QA & SDET Testing Strategy
-
-Testing streaming fraud engines requires injecting out-of-order event streams and validating CEP pattern matches using Flink TestHarness.
-
-### Test 1: Flink Operator State Testing (TestHarness)
-
-Unit testing Flink CEP operators requires simulating event streams and advancing watermarks deterministically without deploying full Kafka clusters. The Java test below uses Flink KeyedOneInputStreamOperatorTestHarness to inject events and assert alert output.
-
-```java
-import org.apache.flink.streaming.util.KeyedOneInputStreamOperatorTestHarness;
-
-@Test
-public void testFraudDetectorOperator() throws Exception {
-    // Setup test environment — no real Kafka/Flink cluster needed
-    KeyedOneInputStreamOperatorTestHarness<String, Event, AlertEvent> testHarness =
-        new KeyedOneInputStreamOperatorTestHarness<>(
-            new FraudDetectorOperator(),
-            Event::userId,
-            Types.STRING
-        );
-    
-    testHarness.open();
-    
-    long baseTime = System.currentTimeMillis();
-    
-    // Inject 3 failed logins
-    for (int i = 0; i < 3; i++) {
-        testHarness.processElement(
-            new Event("user-001", "login_failed", 0.0, baseTime + i * 1000),
-            baseTime + i * 1000
-        );
-    }
-    
-    // Inject high-value transaction WITHIN 5 minutes
-    testHarness.processElement(
-        new Event("user-001", "transaction", 5_000_000.0, baseTime + 120_000),
-        baseTime + 120_000
-    );
-    
-    // Advance watermark to trigger timer
-    testHarness.processWatermark(baseTime + 300_001);
-    
-    // Verify alert was generated
-    List<StreamRecord<AlertEvent>> output = testHarness.extractOutputStreamRecords();
-    assertEquals(1, output.size(), "Must generate 1 fraud alert");
-    assertEquals("user-001", output.get(0).getValue().userId());
-    
-    testHarness.close();
-}
-```
-
-### Test 2: MiniCluster Integration Test
-
-To verify full pipeline execution end-to-end, SDET teams run integration tests against an embedded in-memory Flink cluster. The test snippet below initializes a Flink MiniCluster to execute complete fraud workflows with checkpointing enabled.
-
-```java
-@Test
-public void testFraudPipelineEndToEnd() throws Exception {
-    // Embedded Flink cluster — no external dependencies
-    MiniClusterWithClientResource flinkCluster = new MiniClusterWithClientResource(
-        new MiniClusterResourceConfiguration.Builder()
-            .setNumberSlotsPerTaskManager(4)
-            .setNumberTaskManagers(1)
-            .build()
-    );
-    flinkCluster.before();
-    
-    // Run full pipeline with test data
-    StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-    env.enableCheckpointing(1000); // 1 second checkpoints
-    
-    List<Event> testEvents = generateFraudScenario("user-001");
-    DataStream<Event> source = env.fromCollection(testEvents);
-    
-    // Connect full pipeline
-    DataStream<FraudDecision> results = buildFraudPipeline(source);
-    
-    // Collect and verify
-    List<FraudDecision> collected = results.executeAndCollect();
-    
-    assertTrue(collected.stream().anyMatch(d -> d.action() == BLOCK),
-        "Fraud scenario must trigger a BLOCK decision");
-    
-    flinkCluster.after();
-}
-```
-
-### Test 3: Latency SLA Validation
-
-Validating sub-50ms SLA compliance requires measuring percentile latencies under synthetic transaction workloads. The Go test snippet below executes thousands of scoring calls and asserts that P50 and P99 latencies remain strictly within SLA thresholds.
-
-```go
-func TestFraudScoringLatencySLA(t *testing.T) {
-    const (
-        targetP50  = 50 * time.Millisecond
-        targetP99  = 100 * time.Millisecond
-        sampleSize = 10000
-    )
-    
-    var latencies []time.Duration
-    
-    for i := 0; i < sampleSize; i++ {
-        start := time.Now()
-        score := fraudScoringService.Score(generateTestTransaction())
-        if score.RiskScore < 0 {
-            t.Fatal("invalid risk score")
-        }
-        latencies = append(latencies, time.Since(start))
-    }
-    
-    sort.Slice(latencies, func(i, j int) bool {
-        return latencies[i] < latencies[j]
-    })
-    
-    p50 := latencies[len(latencies)*50/100]
-    p99 := latencies[len(latencies)*99/100]
-    
-    assert.LessOrEqual(t, p50, targetP50, "P50 must be < 50ms")
-    assert.LessOrEqual(t, p99, targetP99, "P99 must be < 100ms")
-}
-```
-
----
-
-### State Size Tuning and Checkpoint Latency Optimization in Flink for RocksDB State Backend
-
-In a real-time streaming fraud detection system, Apache Flink maintains stateful profiles for millions of bank accounts (e.g., historical transaction counts, login locations, and average spending amounts). Storing these massive states in-memory is impractical. The system relies on the RocksDB state backend, which stores state on local SSDs and caches hot records in memory.
-
-However, RocksDB can introduce latency spikes during checkpoint operations and state updates. To maintain a P99 latency under 100ms, the following tuning parameters are applied:
-1. **Incremental Checkpointing:** Flink is configured to use incremental checkpoints (state.backend.incremental: true). Instead of writing the entire state to remote storage (e.g., S3), Flink only uploads the diff files generated by RocksDB, reducing checkpoint I/O overhead.
-2. **RocksDB Block Cache Size Tuning:** The RocksDB block cache size (state.backend.rocksdb.block.cache-size) is increased to allocate 40% of the container's memory to the cache. This ensures that fraud-profile lookups for active users are served from RAM, avoiding disk read latencies.
-3. **Write Buffer Configuration:** The write buffer size is optimized to prevent write stalls. RocksDB writes data to in-memory memtables first. Tuning state.backend.rocksdb.write-buffer-size and increasing the number of write buffers prevents RocksDB from blocking active event processing during high-volume transaction spikes.
-
-### State TTL and Historical Data Retention Policies
-
-Unchecked state growth in RocksDB leads to disk space exhaustion and degrades recovery times during failovers. To prevent this, Flink state definitions enforce strict State Time-To-Live (TTL) configurations:
-- **Query-Based TTL Renewal:** Flink's StateTtlConfig is configured to expire state after 30 days of inactivity. This automatically cleans up stale profiles of inactive users.
-- **Background Cleanup:** Flink cleans up expired state in the background using RocksDB compaction filters. When compaction runs, expired state records are permanently deleted from disk, keeping database file sizes optimized.
-
-### JVM Heap and Off-Heap Memory Distribution
-
-Because RocksDB runs as an off-heap process, allocating Flink memory requires balancing JVM heap and off-heap memory. If too much memory is allocated to the JVM heap, RocksDB will experience out-of-memory (OOM) kills by the container manager. If too little is allocated to the heap, Flink will trigger frequent garbage collection pauses, blocking the stream processing loops.
-- **Heap Allocation:** Allocate 40% of container RAM to the JVM heap. This is used for Flink operators, serialization buffers, and general execution logic.
-- **Managed Memory (Off-Heap):** Allocate 45% of container RAM to Flink's managed memory pool, which RocksDB uses for block caches, write buffers, and index blocks.
-- **Overhead and Metaspace:** Reserve 15% for system overhead and JVM Metaspace.
-
-### Flink Backpressure and Flow Control Optimizations
-
-Under high volume spikes (such as during Black Friday shopping events), downstream fraud verification databases can become overwhelmed, leading to backpressure. Flink handles backpressure using credit-based flow control at the network layer. If a TaskManager's input buffers become full, it stops sending credits to the upstream TaskManager, pausing the upstream sender. This prevents memory overflow and ensures that fraud events are not lost, keeping transaction pipelines reliable under extreme loads.
-
-## FAQ
-
-Apache Flink CEP detects fraud in real time by evaluating event pattern rules and ML features against RocksDB user state in sub-50ms.
-
-{{< faq q="RocksDB vs HashMapStateBackend — when to use which?" >}}
-Choosing between HashMapStateBackend and RocksDB depends on the total state footprint of your application. HashMapStateBackend stores state directly on the JVM heap for high-speed access, making it ideal for smaller state sizes under 10 GB. In contrast, RocksDB serializes state onto local SSDs, allowing fraud profiles to scale to terabytes across millions of bank accounts.
+{{< faq q="How do core banking platforms balance fraud detection accuracy against API latency?" >}}
+Platforms implement a tiered risk evaluation strategy. Low-latency synchronous checks (evaluating hard rules, velocity counters, and lightweight ML models in Redis) execute inline within a strict 8ms budget. If the transaction falls into an ambiguous risk band (e.g. score between 65 and 84), the system triggers an interactive step-up authentication challenge (such as biometric facial verification or SMS OTP). Meanwhile, complex deep-learning graph analytics and sanctions screening run asynchronously out-of-band to prevent checkout friction.
 {{< /faq >}}
 
-{{< faq q="Are Exactly-Once semantics important for fraud detection?" >}}
-Exactly-Once processing semantics are essential in financial fraud detection to prevent false alerts and duplicate account freezes. By combining Kafka transactional producers with Flink checkpointing in EXACTLY_ONCE mode, the system guarantees that every fraud signal is emitted precisely once even during node crashes.
+{{< faq q="Why is RocksDB preferred over the default Heap StateBackend in Apache Flink for banking?" >}}
+The default Heap StateBackend stores streaming state as Java objects on the JVM heap. For large banking workloads tracking tens of millions of customer profiles and multi-week sliding windows, heap size exceeds hundreds of gigabytes, leading to unpredictable Stop-The-World GC pauses that violate banking SLA latencies. RocksDB offloads state to local NVMe storage using C++ off-heap memory, providing predictable low latency and supporting incremental checkpointing for instant disaster recovery.
 {{< /faq >}}
 
-{{< faq q="How do I tune Flink to achieve <100ms P99?" >}}
-Achieving a P99 processing latency under 100ms requires tuning both storage memory and network IO in Apache Flink. Enterprise teams increase the RocksDB block cache size to retain hot profile data in memory, use non-blocking async IO for external ML calls, and deploy TaskManagers in close network proximity to inference clusters.
+{{< faq q="How does a streaming fraud engine handle out-of-order transaction events caused by network delays?" >}}
+Distributed networks and mobile connectivity issues frequently deliver transaction events out of chronological sequence. Apache Flink handles this through Event Time processing and Bounded-Out-Of-Orderness Watermarks. The engine extracts the true creation timestamp (`CreDtTm`) from the transaction payload and permits a configurable lateness window (e.g. 5 seconds). Events arriving within the watermark window are correctly ordered into their proper sliding time windows before triggering CEP rule evaluation.
 {{< /faq >}}
-
-## Stateful Streaming Windows and gRPC ML Server Latency Optimizations
-
-Optimizing Flink stateful windows and gRPC ML client pools keeps end-to-end fraud scoring latencies within strict SLA budgets.
-
-Real-time fraud detection requires processing streaming transactions instantly. Streaming engines deploy stateful event processing to evaluate risk models under 50ms.
-
-### Stateful Stream Processing in Flink
-
-Flink streams transactions into partitioned memory blocks, tracking customer behavior over time windows:
-- **Sliding Event-Time Windows:** The engine evaluates activity over sliding windows (e.g., counting transactions in the last 10 minutes).
-- **Watermarking:** Watermarks handle late-arriving events, ensuring the engine processes out-of-order telemetry before finalizing window calculations.
-- **Managed Memory State:** Flink stores session states in distributed key-value backends (like RocksDB), enabling fast read/write updates during stream execution.
-
-### gRPC Machine Learning Server Optimizations
-
-To evaluate risk models without delaying transactions, systems run machine learning models on dedicated gRPC servers:
-- **gRPC Protocols:** Communication uses HTTP/2-based gRPC, reducing connection handshaking latency.
-- **Concurrent Batching:** The ML server groups incoming transactions into batches, running GPU evaluations concurrently to optimize throughput.
-- **Local Rules Engine Fallback:** If the ML server latency exceeds 30ms, the system falls back to a local rules engine (e.g., verifying limits and IP checks) to prevent transaction delays.
----
-
-*Up Next: [Part 8 — QA & SDET Handbook](/series/core-banking-architecture/part-8-qa-sdet-handbook/) — A thorough testing strategy for distributed financial systems: split-brain, clock skew, double-submit, and chaos engineering.*
-
-{{< author-cta >}}
-
-🔗 **Next Step:** Continue to [Part 8 — Qa Sdet Handbook](/series/core-banking-architecture/part-8-qa-sdet-handbook/) for the following module in the series.

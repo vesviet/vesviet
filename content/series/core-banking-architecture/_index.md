@@ -1,102 +1,140 @@
 ---
 title: "Core Banking Systems Architecture Masterclass Guide"
-description: "Deconstruct Core Banking architecture: double-entry ledgers, CASA savings, loans, ISO standards, payment switches, EOD batches, and security."
+description: "Masterclass curriculum on modern distributed core banking architecture: double-entry ledgers, distributed SQL latency, event sourcing, sagas, ISO 20022, FAPI 2.0 security, and streaming fraud detection."
 date: "2026-06-18T11:00:00+07:00"
-lastmod: "2026-06-18T11:00:00+07:00"
+lastmod: "2026-09-09T21:25:00+07:00"
 draft: false
-weight: 50
+weight: 100
 slug: "core-banking-architecture"
-categories: ["Core Banking", "Fintech Architecture"]
-tags: ["TigerBeetle", "TiDB", "CockroachDB", "ISO 20022", "FAPI 2.0", "Apache Flink", "Event Sourcing", "Distributed SQL"]
+categories: ["Core Banking", "Fintech Architecture", "Distributed Systems"]
+tags: ["Core Banking", "TigerBeetle", "TiDB", "CockroachDB", "ISO 20022", "FAPI 2.0", "Apache Flink", "Event Sourcing", "Saga Pattern"]
 cover:
   image: "/images/posts/banking-microservices-cover.jpg"
-  alt: "Modern Core Banking Architecture series: from double-entry ledger to fintech microservices in Go"
+  alt: "Modern Core Banking Architecture masterclass: from double-entry ledger to distributed fintech microservices"
   relative: false
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/core-banking-architecture/"
 ShowToc: true
 TocOpen: true
+mermaid: true
 ---
 
-**Answer-first:** This core banking architecture series provides an engineering blueprint for designing mission-critical financial ledgers. It covers high-throughput double-entry balance schemas, distributed SQL ACID transaction latencies, CQRS event sourcing, ISO 20022 messaging, FAPI 2.0 security, and real-time streaming fraud detection for scalable banking systems.
-
-## Modern Core Banking Architecture
-
-This series is designed for **Software Architects, Senior Backend Engineers, and SDETs** who want to examine the technical foundations of production-grade financial systems. Modern 2026 core banking architectures have evolved beyond monolithic legacy cores, adopting cloud-native distributed SQL engines, zero-trust authorization profiles (FAPI 2.0), and single-threaded deterministic ledger state machines. We won't stop at high-level theory — each article includes real-world database DDL schemas, specific latency benchmarks (in ms), executable Go/Zig code samples, and specialized testing strategies (QA/SDET) for every layer of the banking stack.
-
-Key reference architectures and standards include: [TigerBeetle Docs](https://docs.tigerbeetle.com/), [Mambu GL API](https://api.mambu.com/), [PingCAP Blog](https://www.pingcap.com/), [Monzo Engineering](https://monzo.com/blog/), [OpenID FAPI 2.0 Spec](https://openid.net/specs/fapi-2_0-profile.html), [Apache Flink Docs](https://nightlies.apache.org/flink/), [Martin Kleppmann's Blog](https://martin.kleppmann.com/), and [Google Spanner Docs](https://cloud.google.com/spanner/docs/).
+[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/core-banking-architecture/)
 
 ---
 
-## Series Content
+# Core Banking Systems Architecture Masterclass Guide
 
-The core banking architecture series provides an end-to-end blueprint dissecting double-entry ledgers, CASA accounts, loans, distributed databases, and ISO standards.
-
-The following eight-part roadmap guides engineers from foundational database schemas through distributed consensus, microservice sagas, payment switch integrations, zero-trust API security, and real-time fraud prevention:
-
-1. **[Part 1 — Double-Entry Ledger: Schema, Immutability & Locking](/series/core-banking-architecture/part-1-double-entry-ledger-schema/)**
-2. **[Part 2 — Distributed SQL & ACID Latency: TiDB vs CockroachDB vs Spanner](/series/core-banking-architecture/part-2-distributed-sql-acid-latency/)**
-3. **[Part 3 — Event Sourcing & CQRS: Immutable Ledger Design for Microservices](/series/core-banking-architecture/part-3-event-sourcing-cqrs/)**
-4. **[Part 4 — Saga Pattern: Distributed Transactions Without 2PC](/series/core-banking-architecture/part-4-saga-pattern/)**
-5. **[Part 5 — ISO 20022 & Payment Gateways: Parsing pacs.008, Idempotency, and Gateway Latency](/series/core-banking-architecture/part-5-iso-20022-payment-gateways/)**
-6. **[Part 6 — FAPI 2.0 & API Security: DPoP, mTLS, and Sender-Constrained Tokens](/series/core-banking-architecture/part-6-fapi-2-api-security/)**
-7. **[Part 7 — Streaming Fraud Detection: Apache Flink CEP, RocksDB & ML Inference](/series/core-banking-architecture/part-7-streaming-fraud-detection/)**
-8. **[Part 8 — QA & SDET Handbook: Testing Distributed Financial Systems](/series/core-banking-architecture/part-8-qa-sdet-handbook/)**
+**Answer-first:** Modern cloud-native core banking architecture replaces brittle mainframe monoliths with decoupled, distributed primitives: deterministic append-only double-entry ledgers, multi-region distributed SQL with bounded consensus latency, event-sourced CQRS projections, orchestrated compensation Sagas, zero-allocation ISO 20022 parsing, FAPI 2.0 sender-constrained security, and real-time streaming Complex Event Processing (CEP). This masterclass delivers actionable architecture specifications, production DDL schemas, low-latency benchmarks, and zero-downtime resilience blueprints.
 
 ---
 
-## Who Should Read This Series?
+## 1. The Architectural Paradigm Shift in Modern Banking
 
-This series is designed for backend architects, fintech developers, database administrators, and SDET leads building high-concurrency ledger systems.
+The global banking sector is transitioning from batch-driven, monolithic core systems (such as legacy IBM mainframes or monolithic Temenos T24/Finacle deployments) toward **autonomous, composable, event-driven distributed platforms**. Historically, end-of-day (EOD) batch processing halted digital banking operations to rebalance general ledgers. Modern digital banking demands continuous 24/7/365 active-active operation with sub-25ms P99 latency and strict Zero Data Loss ($\text{RPO} = 0, \text{RTO} < 10\text{s}$).
 
-To maximize your learning path, select your primary engineering domain from the audience index table below:
+```mermaid
+flowchart TD
+    subgraph Legacy_Monolith ["Legacy Core Monolith (Pre-2020)"]
+        Batch["EOD Nightly Batch Processing"]
+        SingleDB["Single-Instance RDBMS<br/>Pessimistic Table Locks"]
+        TightlyCoupled["Mainframe Core<br/>CASA + GL + Cards Combined"]
+        Batch --> SingleDB
+        TightlyCoupled --> SingleDB
+    end
 
-| Role | Where to Start |
-|---------|------------------|
-| **Backend Engineers** entering the Fintech space | Part 1 → Part 3 |
-| **Database Engineers / DBAs** interested in Distributed SQL | Part 2 |
-| **Architects** designing Event-Driven systems | Part 3 → Part 4 |
-| **Security Engineers** working on API Auth | Part 6 |
-| **Data Engineers** building Fraud Detection | Part 7 |
-| **QA / SDETs** needing testing strategies for Fintech | Part 8 |
+    subgraph Modern_Composable ["Composable 2027 SOTA Banking Backbone"]
+        Channels["Digital Channels / Open Banking API"]
+        Gateway["Envoy / FAPI 2.0 mTLS Gateway"]
+        Orchestrator["Temporal Saga Orchestrator"]
+        EventBus["Kafka Event Streaming Backbone"]
+        LedgerStore["TigerBeetle / PostgreSQL 17 Immutable Ledger"]
+        DistSQL["Distributed SQL (TiDB / CockroachDB)"]
+        FraudEngine["Apache Flink CEP Fraud Detection"]
 
-## Financial Systems Architecture Matrix
+        Channels --> Gateway
+        Gateway --> Orchestrator
+        Orchestrator --> LedgerStore
+        Orchestrator --> DistSQL
+        LedgerStore -.->|Outbox CDC| EventBus
+        EventBus --> FraudEngine
+    end
 
-The technical matrix below details the targeted architectural layers, implementation technologies, and core reliability metrics evaluated across each installment of this masterclass series:
+    Legacy_Monolith -.->|Strangler Fig Migration| Modern_Composable
+```
 
-| Part | Focus | Technical Scope | Reliability Metric |
-|---|---|---|---|
-| **Part 1** | Double-Entry Ledger | PostgreSQL, Bounded Balances | 100% mathematical auditability |
-| **Part 2** | Distributed SQL ACID | CockroachDB, Spanner Commit Wait | Serializable transaction isolation |
-| **Part 3** | Core Banking Monolith | Go Domain Architecture | High-concurrency account processing |
-| **Part 4** | Saga Pattern in Fintech | Temporal, Dapr Saga Orchestration | Guaranteed eventual consistency |
-| **Part 5** | ISO 20022 Gateways | Go XML Parser, PACS.008 | Sub-ms payment message parsing |
-| **Part 6** | FAPI 2.0 Security | DPoP, Mutual TLS, OAuth 2.1 | Bank-grade API authorization |
-| **Part 7** | Streaming Fraud Detection | Apache Flink, CEP Rules | Real-time transaction scoring |
-| **Part 8** | QA/SDET Handbook | Automated Financial Test Suite | Zero regression test gate |
+---
 
-## Target Audience & Banking Prerequisites
+## 2. Masterclass Curriculum & Modular Roadmap
 
-This masterclass is specifically structured for **Enterprise Financial Architects, Lead Banking Developers, and SDET Leads** responsible for mission-critical core banking infrastructure. Building production-ready financial platforms requires moving past generic web patterns toward strict mathematical correctness, zero-trust security profiles, and high-frequency consensus algorithms.
+This masterclass is structured as an eight-part engineering journey spanning every tier of the financial technology stack, moving systematically from storage engine mechanics to distributed consensus, event streaming, interbank protocols, security, and verification testing:
 
-**Core Prerequisites & Technical Baseline:**
-- **Financial Compliance & Accounting Logic:** Strong familiarity with General Ledger (GL) posting, Chart of Accounts classification, double-entry bookkeeping invariants, and regulatory reporting requirements.
-- **Database Internals & Locking:** Deep understanding of ANSI SQL isolation levels (Read Committed through Serializable), write-ahead logging (WAL), multi-version concurrency control (MVCC), and pessimistic vs optimistic row-locking mechanisms.
-- **Distributed Systems Design:** Practical knowledge of two-phase commit (2PC), consensus protocols (Raft, Paxos), eventual consistency models, and idempotency guarantees in asynchronous messaging pipelines.
-- **Security & Resilience Standards:** Understanding of OAuth 2.1 profiles, Mutual TLS (mTLS), FAPI 2.0 cryptographic token binding, and chaos engineering testing methodologies.
+```mermaid
+graph LR
+    Part1["Part 1: Double-Entry Ledger Schema"] --> Part2["Part 2: Distributed SQL & Latency"]
+    Part2 --> Part3["Part 3: Event Sourcing & CQRS"]
+    Part3 --> Part4["Part 4: Saga Distributed Transactions"]
+    Part4 --> Part5["Part 5: ISO 20022 Payment Gateways"]
+    Part5 --> Part6["Part 6: FAPI 2.0 Security & mTLS"]
+    Part6 --> Part7["Part 7: Streaming Fraud Detection"]
+    Part7 --> Part8["Part 8: QA & SDET Testing Handbook"]
+```
+
+### Complete Chapter Breakdown
+
+1. **[Part 1: Double-Entry Ledger: Schema, Immutability & Locking](/series/core-banking-architecture/part-1-double-entry-ledger-schema/)**  
+   *Deep dive into database schema design for financial ledgers. Explores 128-byte TigerBeetle structs, PostgreSQL 17 append-only journal tables, atomic debit-credit balance constraints, and optimistic vs pessimistic locking under high concurrency.*
+
+2. **[Part 2: Distributed SQL & ACID Latency: TiDB vs CockroachDB vs Spanner](/series/core-banking-architecture/part-2-distributed-sql-acid-latency/)**  
+   *Consensus latency budgets under multi-region replication. Evaluates Google Spanner TrueTime, CockroachDB Hybrid Logical Clocks (HLC), and TiDB Percolator TSO for financial transaction serializability.*
+
+3. **[Part 3: Event Sourcing & CQRS: Immutable Ledger Design for Microservices](/series/core-banking-architecture/part-3-event-sourcing-cqrs/)**  
+   *Separating write-side command models from high-speed read projections. Covers Kafka transactional outbox with Debezium CDC, Protobuf schema registries, and balance state hydration.*
+
+4. **[Part 4: Saga Pattern: Distributed Transactions Without 2PC](/series/core-banking-architecture/part-4-saga-pattern/)**  
+   *Eliminating blocking Two-Phase Commit across autonomous microservices. Implements durable workflow orchestration via Temporal and Go, deterministic state machines, and idempotent compensation routines.*
+
+5. **[Part 5: ISO 20022 & Payment Gateways: Parsing pacs.008, Idempotency, and Gateway Latency](/series/core-banking-architecture/part-5-iso-20022-payment-gateways/)**  
+   *High-throughput interbank clearing engines. Dissects ISO 20022 XML schemas (`pacs.008`, `pacs.002`, `camt.053`), zero-allocation streaming parsers in Go, and NAPAS 24/7 / VietQR gateway routing.*
+
+6. **[Part 6: FAPI 2.0 & API Security: DPoP, mTLS, and Sender-Constrained Tokens](/series/core-banking-architecture/part-6-fapi-2-api-security/)**  
+   *Financial-Grade API specifications for Open Banking. Details RFC 9449 Demonstrating Proof-of-Possession (DPoP), RFC 8705 mutual TLS, PKCS#11 Hardware Security Module (HSM) attestation, and SBV regulatory compliance.*
+
+7. **[Part 7: Streaming Fraud Detection: Apache Flink CEP, RocksDB & ML Inference](/series/core-banking-architecture/part-7-streaming-fraud-detection/)**  
+   *Real-time risk scoring and anomalous pattern detection. Implements Apache Flink Complex Event Processing with incremental RocksDB state backends, sliding velocity windows, and sub-10ms online feature stores.*
+
+8. **[Part 8: QA & SDET Handbook: Testing Distributed Financial Systems](/series/core-banking-architecture/part-8-qa-sdet-handbook/)**  
+   *Industrial-strength reliability engineering. Harnesses Jepsen linearizability tests, Chaos Mesh network partition injections, Go 1.24 virtual-time concurrency testing (`testing/synctest`), and shadow traffic replay.*
+
+---
+
+## 3. Financial Systems Engineering Matrix
+
+The technical matrix below outlines the core components, key software stacks, and primary non-functional requirements (NFR) evaluated throughout this series:
+
+| Architectural Tier | Primary Technologies | SOTA Engineering Pattern | Key Performance Metric |
+| :--- | :--- | :--- | :--- |
+| **Ledger Storage** | TigerBeetle, PostgreSQL 17 | Append-only immutable journals; minor integer units | $\sum \text{Debits} \equiv \sum \text{Credits}$; 0 round-off drift |
+| **Distributed SQL** | TiDB, CockroachDB, Spanner | Multi-Raft consensus, locality-aware range leases | P99 latency < 25ms local, < 60ms cross-region |
+| **Event Streaming** | Kafka, Debezium, EventStoreDB | CQRS outbox CDC; immutable event sourcing | Consumer projection lag < 50ms |
+| **Workflows & Sagas** | Temporal, Go SDK | Orchestrated state machine with semantic rollbacks | 100% idempotent compensation execution |
+| **Interbank Rails** | ISO 20022 XML, NAPAS VietQR | Zero-alloc streaming parsing, deduplication bloom filters | Message ingestion < 2ms per packet |
+| **Security & Auth** | FAPI 2.0, DPoP, CloudHSM | Sender-constrained token binding, PKCS#11 key attestation | Zero bearer-token replay vulnerability |
+| **Fraud & Risk** | Apache Flink CEP, RocksDB, Redis | Stateful sliding windows, real-time ML feature store | End-to-end evaluation latency < 10ms |
+| **Resilience & QA** | Chaos Mesh, Jepsen, Go synctest | Automated partition injection, invariant fuzzing | Continuous zero-loss verification ($\text{RPO} = 0$) |
+
+---
 
 ## Frequently Asked Questions (FAQ)
 
-Modern core banking platforms rely on distributed SQL consensus, double-entry accounting invariants, and zero-trust security frameworks to deliver fault-tolerant financial services.
-
-{{< faq "What core architecture patterns are required for zero-downtime core banking?" >}}
-Zero-downtime core banking systems require decoupling transactional write paths from analytical read models using CQRS and event sourcing. They rely on multi-region distributed SQL databases with Raft or Paxos consensus to maintain serializable ACID guarantees during regional failovers.
+{{< faq q="What distinguishes modern core banking architecture from legacy core platforms?" >}}
+Legacy core banking platforms relied on centralized monolithic mainframes with nightly end-of-day (EOD) batch processing windows that blocked real-time customer transfers. Modern cloud-native core banking decouples accounting ledgers, account management, and payment execution into autonomous microservices that operate 24/7/365 without downtime. They leverage distributed SQL, immutable event sourcing, and orchestrated Sagas to guarantee serializable ACID transactions across geographically separated regions.
 {{< /faq >}}
 
-{{< faq "Why is double-entry bookkeeping mandatory for modern financial ledgers?" >}}
-Double-entry bookkeeping guarantees that every financial mutation consists of balanced debit and credit entries summing precisely to zero. This mathematical invariant prevents silent money creation, ensures continuous auditability, and satisfies strict central bank compliance requirements.
+{{< faq q="Why is double-entry bookkeeping enforced at the storage schema level rather than in application code?" >}}
+Enforcing double-entry invariants in application code leaves the financial system vulnerable to concurrent race conditions, uncaught application crashes, and partial database writes. By encoding $\sum \text{Debits} = \sum \text{Credits}$ into database schema check constraints, deferred triggers, or specialized ledger engines like TigerBeetle, the database guarantees that mathematically unbalanced transactions are rejected at the atomic commit stage, eliminating balance drift and audit failures.
 {{< /faq >}}
 
-{{< faq "How do modern core banking platforms handle high-concurrency account balance updates?" >}}
-High-concurrency platforms avoid traditional database row locks by implementing single-threaded deterministic execution engines or balance sharding strategies. These patterns isolate balance mutations into partitioned structures, achieving ultra-low latency without lock contention on popular accounts.
+{{< faq q="How does modern core banking eliminate Two-Phase Commit (2PC) bottlenecks across microservices?" >}}
+Two-Phase Commit (2PC) creates tight availability coupling, holds database locks across network boundaries, and stalls during network partitions. Modern banking architectures replace 2PC with centralized Saga Orchestration (e.g., using Temporal). In an orchestrated Saga, each microservice executes a local ACID transaction, and the workflow coordinator tracks state transitions. If a downstream step fails, the orchestrator triggers idempotent compensating transactions to semantically reverse preceding operations without holding distributed locks.
 {{< /faq >}}
