@@ -3,7 +3,7 @@ title: "Post-Migration Operations: Managing Vietnam Go Team (2027 Day-2 SRE Play
 slug: "post-migration-operations-vietnam-go-team"
 author: "Lê Tuấn Anh"
 date: "2026-07-11T08:00:00+07:00"
-lastmod: "2027-03-30T09:00:00+07:00"
+lastmod: "2026-09-08T20:30:00+07:00"
 draft: false
 weight: 15
 series: ["magento-migration-vietnam"]

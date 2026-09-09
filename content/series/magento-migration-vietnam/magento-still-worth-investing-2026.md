@@ -3,7 +3,7 @@ title: "Is Magento Worth It in 2026? The 2.4.9 Reality"
 slug: "magento-still-worth-investing-2026"
 author: "Lê Tuấn Anh"
 date: "2026-05-17T11:50:00+07:00"
-lastmod: "2027-03-30T09:00:00+07:00"
+lastmod: "2026-09-08T20:30:00+07:00"
 draft: false
 weight: 1
 series: ["magento-migration-vietnam"]

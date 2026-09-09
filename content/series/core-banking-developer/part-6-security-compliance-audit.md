@@ -2,7 +2,7 @@
 title: "Part 6: Core Banking Security, PCI-DSS & Audit Trails"
 slug: "part-6-security-compliance-audit"
 date: "2026-05-06T18:00:00+07:00"
-lastmod: "2027-03-30T09:00:00+07:00"
+lastmod: "2026-09-08T21:06:00+07:00"
 draft: false
 description: "Core banking security architecture: Hardware Security Modules (HSM), ANSI X9.8 PIN blocks, field-level encryption, PCI-DSS v4.0, and tamper-evident audit trails."
 weight: 7

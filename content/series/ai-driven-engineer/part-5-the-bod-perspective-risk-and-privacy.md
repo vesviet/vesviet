@@ -2,7 +2,7 @@
 title: "The Boardroom View: AI Security, Risk & Privacy Guide"
 slug: "part-5-the-bod-perspective-risk-and-privacy"
 date: "2026-05-12T12:00:00+07:00"
-lastmod: "2026-07-23T10:40:00+07:00"
+lastmod: "2026-09-08T20:10:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 tags: ["AI Governance", "Security", "Privacy", "Compliance", "Python", "Executive"]

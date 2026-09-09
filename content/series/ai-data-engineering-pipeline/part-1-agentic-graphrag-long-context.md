@@ -2,7 +2,7 @@
 title: "Agentic GraphRAG vs Long-Context Window Trade-offs"
 slug: "part-1-agentic-graphrag-long-context"
 date: "2026-05-17T13:00:00+07:00"
-lastmod: "2026-07-23T10:40:00+07:00"
+lastmod: "2026-09-08T20:00:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 tags: ["GraphRAG", "Long Context", "LLM Cost", "Benchmark", "Architecture", "Python"]

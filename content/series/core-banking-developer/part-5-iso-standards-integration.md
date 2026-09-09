@@ -2,7 +2,7 @@
 title: "Part 5: ISO 8583 & ISO 20022 Core Banking Standards"
 slug: "part-5-iso-standards-integration"
 date: "2026-05-06T18:00:00+07:00"
-lastmod: "2027-03-30T09:00:00+07:00"
+lastmod: "2026-09-08T21:06:00+07:00"
 draft: false
 description: "Financial messaging standards in core banking: ISO 8583 binary bitmaps, ISO 20022 MX pacs.008 schemas, and Go parser implementations for real-time payment rails."
 weight: 6

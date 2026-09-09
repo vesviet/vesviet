@@ -3,7 +3,7 @@ title: "Magento Migration Cost: Vietnam vs US/EU Team (2027 Financial Model)"
 slug: "magento-migration-cost-vietnam-vs-us-eu"
 author: "Lê Tuấn Anh"
 date: "2026-07-09T08:00:00+07:00"
-lastmod: "2027-03-30T09:00:00+07:00"
+lastmod: "2026-09-08T20:30:00+07:00"
 draft: false
 weight: 13
 series: ["magento-migration-vietnam"]

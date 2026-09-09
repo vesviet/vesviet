@@ -2,7 +2,7 @@
 title: "MCP Security Engineering: Defense-in-Depth, AST Sanitization & Sandbox Isolation"
 slug: "part-5-security"
 date: "2026-06-07T12:00:00+07:00"
-lastmod: "2026-07-23T10:40:00+07:00"
+lastmod: "2026-09-09T14:30:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 tags: ["MCP Security", "Isolation", "OWASP", "Python", "Golang", "Sandboxing", "Security", "gVisor", "Prompt Injection"]

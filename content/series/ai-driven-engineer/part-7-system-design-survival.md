@@ -2,7 +2,7 @@
 title: "System Design Survival: The Architectural Shield Guide"
 slug: "part-7-system-design-survival"
 date: "2026-05-13T12:00:00+07:00"
-lastmod: "2026-07-23T10:40:00+07:00"
+lastmod: "2026-09-08T20:10:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 tags: ["Architecture", "Resilience", "Golang", "Circuit Breaker", "Rate Limiting"]

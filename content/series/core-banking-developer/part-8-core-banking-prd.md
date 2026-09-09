@@ -2,7 +2,7 @@
 title: "Writing a Core Banking PRD: Developer & PM Handbook"
 slug: "part-8-core-banking-prd"
 date: "2026-05-06T18:00:00+07:00"
-lastmod: "2027-03-30T09:00:00+07:00"
+lastmod: "2026-09-08T21:06:00+07:00"
 draft: false
 description: "How to write a production-grade Core Banking PRD: double-entry invariants, Maker-Checker authorization, End-of-Day batch processing, and Five Nines SRE requirements."
 weight: 9

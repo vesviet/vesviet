@@ -2,7 +2,7 @@
 title: "ACID Transactions & Isolation Levels in Core Banking"
 slug: "part-3-database-transactions-acid"
 date: "2026-05-06T18:00:00+07:00"
-lastmod: "2027-03-30T09:00:00+07:00"
+lastmod: "2026-09-08T21:06:00+07:00"
 draft: false
 description: "ACID transactions, isolation levels, row-level locking strategies, and deadlock prevention algorithms in high-concurrency core banking systems."
 weight: 4

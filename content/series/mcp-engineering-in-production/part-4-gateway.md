@@ -2,7 +2,7 @@
 title: "MCP Gateway Architecture: Intelligent Dynamic Routing, SSE Multiplexing & Resiliency"
 slug: "part-4-gateway"
 date: "2026-06-07T08:00:00+07:00"
-lastmod: "2026-07-23T10:40:00+07:00"
+lastmod: "2026-09-09T14:30:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 tags: ["MCP Gateway", "Golang", "Reverse Proxy", "Routing", "Architecture", "Load Balancing", "Redis", "Resilience"]

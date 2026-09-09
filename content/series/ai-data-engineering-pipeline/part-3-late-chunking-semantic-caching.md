@@ -2,7 +2,7 @@
 title: "Late Chunking & Contextual Retrieval: Solving Loss"
 slug: "part-3-late-chunking-semantic-caching"
 date: "2026-05-18T12:00:00+07:00"
-lastmod: "2026-07-23T10:40:00+07:00"
+lastmod: "2026-09-08T20:00:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 tags: ["Late Chunking", "Embeddings", "Semantic Cache", "Python", "Transformers", "RAG"]

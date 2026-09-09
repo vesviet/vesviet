@@ -2,7 +2,7 @@
 title: "MCP Engineering in Production: Go SDK to Enterprise"
 slug: "mcp-engineering-in-production"
 date: "2026-05-15T14:00:00+07:00"
-lastmod: "2026-08-16T14:00:00+07:00"
+lastmod: "2026-09-09T14:30:00+07:00"
 draft: false
 description: "Deploy MCP servers in production with Go: protocol fundamentals, OAuth 2.1 identity, gateway architecture, OWASP security, and enterprise observability."
 ShowToc: true

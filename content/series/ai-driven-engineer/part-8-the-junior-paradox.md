@@ -2,7 +2,7 @@
 title: "The Junior Engineer Paradox: Upskilling in the AI Era"
 slug: "part-8-the-junior-paradox"
 date: "2026-05-14T08:00:00+07:00"
-lastmod: "2026-07-23T10:40:00+07:00"
+lastmod: "2026-09-08T20:10:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 tags: ["Junior Engineers", "Career", "Mentorship", "Python", "Upskilling", "Software Engineering"]

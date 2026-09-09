@@ -2,7 +2,7 @@
 title: "Banking Microservices Architecture: Event Sourcing & Saga"
 slug: "part-4-modern-core-banking-architecture"
 date: "2026-05-06T18:00:00+07:00"
-lastmod: "2027-03-30T09:00:00+07:00"
+lastmod: "2026-09-08T21:06:00+07:00"
 draft: false
 description: "Architecting modern core banking with microservices: Event Sourcing, CQRS read/write separation, and distributed Saga orchestration in Go."
 weight: 5

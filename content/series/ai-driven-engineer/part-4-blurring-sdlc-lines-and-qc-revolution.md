@@ -2,7 +2,7 @@
 title: "Blurring SDLC Lines & The AI Quality Control Era Guide"
 slug: "part-4-blurring-sdlc-lines-and-qc-revolution"
 date: "2026-05-12T08:00:00+07:00"
-lastmod: "2026-07-23T10:40:00+07:00"
+lastmod: "2026-09-08T20:10:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 tags: ["SDLC", "Quality Assurance", "Testing", "Golang", "CI/CD", "DevOps"]

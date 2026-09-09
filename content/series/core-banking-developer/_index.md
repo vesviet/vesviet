@@ -1,7 +1,7 @@
 ---
 title: "Core Banking Developer Guide: Monolith to Microservices"
 date: "2026-05-06T18:00:00+07:00"
-lastmod: "2027-03-30T09:00:00+07:00"
+lastmod: "2026-09-08T21:06:00+07:00"
 draft: false
 description: "Masterclass curriculum for Core Banking Developers: double-entry ledgers, ACID concurrency, BIAN domain modeling, ISO 20022/8583, and high-performance Go engines."
 weight: 100

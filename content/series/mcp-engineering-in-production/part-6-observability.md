@@ -2,7 +2,7 @@
 title: "MCP Observability & Tracing: Auditing Control Planes & Cryptographic Ledgers"
 slug: "part-6-observability"
 date: "2026-06-08T08:00:00+07:00"
-lastmod: "2026-07-23T10:40:00+07:00"
+lastmod: "2026-09-09T14:30:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 tags: ["MCP", "Observability", "OpenTelemetry", "Golang", "Tracing", "Prometheus", "DevOps", "Audit Trail", "Security"]

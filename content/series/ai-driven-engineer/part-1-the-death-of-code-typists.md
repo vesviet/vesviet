@@ -2,7 +2,7 @@
 title: "The Death of Code Typists: Beyond Syntax Dominance"
 slug: "part-1-the-death-of-code-typists"
 date: "2026-05-10T15:00:00+07:00"
-lastmod: "2026-07-23T10:40:00+07:00"
+lastmod: "2026-09-08T20:10:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 tags: ["AI", "Architecture", "Career", "Golang", "Software Engineering"]

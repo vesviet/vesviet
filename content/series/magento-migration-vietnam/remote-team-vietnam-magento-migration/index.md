@@ -3,7 +3,7 @@ title: "Managing Vietnam Engineers Through a Magento Migration (2027 Remote Oper
 slug: "remote-team-vietnam-magento-migration"
 author: "Lê Tuấn Anh"
 date: "2026-07-10T08:00:00+07:00"
-lastmod: "2027-03-30T09:00:00+07:00"
+lastmod: "2026-09-08T20:30:00+07:00"
 draft: false
 weight: 14
 series: ["magento-migration-vietnam"]

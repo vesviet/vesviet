@@ -2,7 +2,7 @@
 title: "Part 7: Build a Mini Core Banking System in Golang Engine Guide"
 slug: "part-7-build-mini-core-banking"
 date: "2026-05-06T18:00:00+07:00"
-lastmod: "2027-03-30T09:00:00+07:00"
+lastmod: "2026-09-08T21:06:00+07:00"
 draft: false
 description: "Hands-on guide to building a production-grade mini core banking engine in Go 1.24+: double-entry ledgers, row locking, idempotent transfers, and invariant stress testing."
 weight: 8

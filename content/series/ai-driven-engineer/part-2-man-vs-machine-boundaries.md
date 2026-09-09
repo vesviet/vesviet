@@ -2,7 +2,7 @@
 title: "Part 2: Man vs Machine Task Boundaries in Engineering"
 slug: "part-2-man-vs-machine-boundaries"
 date: "2026-05-11T08:00:00+07:00"
-lastmod: "2026-07-23T10:40:00+07:00"
+lastmod: "2026-09-08T20:10:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 tags: ["AI", "Engineering Management", "Architecture", "Python", "Decision Matrix", "Strategy"]

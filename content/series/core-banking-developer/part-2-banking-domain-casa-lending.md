@@ -2,7 +2,7 @@
 title: "Core Banking Domain Modeling: CIF, CASA & Lending Guide"
 slug: "part-2-banking-domain-casa-lending"
 date: "2026-05-06T18:00:00+07:00"
-lastmod: "2027-03-30T09:00:00+07:00"
+lastmod: "2026-09-08T21:06:00+07:00"
 draft: false
 description: "Domain modeling in core banking: Customer Information File (CIF), Current and Savings Accounts (CASA), and Lending workflows with Go implementation."
 weight: 3

@@ -2,7 +2,7 @@
 title: "Double-Entry Bookkeeping: Core Banking Ledger Guide"
 slug: "part-1-double-entry-ledger"
 date: "2026-05-06T18:00:00+07:00"
-lastmod: "2027-03-30T09:00:00+07:00"
+lastmod: "2026-09-08T21:06:00+07:00"
 draft: false
 description: "Double-entry bookkeeping for engineers: debit/credit rules, T-accounts, balance constraints, and how core banking systems enforce ACID at the ledger layer."
 weight: 2

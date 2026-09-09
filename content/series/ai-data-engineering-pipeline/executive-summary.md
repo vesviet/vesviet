@@ -2,7 +2,7 @@
 title: "The Disruption of Naive RAG & Enterprise GraphRAG Era"
 slug: "executive-summary"
 date: "2026-05-17T12:05:00+07:00"
-lastmod: "2026-07-23T10:40:00+07:00"
+lastmod: "2026-09-08T20:00:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
 tags: ["Data Engineering", "GraphRAG", "LLM", "Architecture", "Vector Database", "RAG Pipeline"]
