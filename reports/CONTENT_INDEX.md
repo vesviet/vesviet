@@ -1,6 +1,6 @@
 # Vesviet Content Index (tanhdev.com)
 
-> Snapshot date: 2026-09-11 · Branch `main` @ `82b1ec4` · Total content files: **373** (~749,067 words)
+> Snapshot date: 2026-09-11 · Branch `main` @ `c65bb39` · Total content files: **369** (~755,365 words)
 > Site: Hugo + PaperMod, `en` default, canonical host `https://tanhdev.com/`
 > English flagship portfolio. Regenerate this index after every batch upgrade.
 
@@ -9,7 +9,7 @@
 | Section | Files | Notes |
 |---|---|---|
 | `content/posts/` | 66 | 61 with Answer-first; 5 legacy missing (~206,298 words) |
-| `content/series/` | 250 | 25 series; 225 chapters + 25 `_index.md` (~420,439 words); 100% Answer-first |
+| `content/series/` | 246 | 25 series; 221 chapters + 25 `_index.md` (~427,355 words); 100% Answer-first |
 | `content/radar/` | 34 | 27 radar editions 2026-04 → 2026-09 + 7 `_index.md` (~114,413 words) |
 | `content/categories/` | 16 | ai, architecture, backend, cloudflare, database, devops, e-commerce, engineering, fintech, golang, kubernetes, microservices, observability, payments, tech-radar + parent `_index` (~636 words) |
 | Root pages | 7 | `_index`, `about`, `hire`, `reading-map`, `legal-notice`, `terms-of-service`, `privacy-policy` (~7,281 words) |
@@ -49,7 +49,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 | `mcp-engineering-in-production` | 8 | MCP production engineering (2027 SOTA Masterclass, 8 parts + hub) |
 | `generative-ui-architecture` | 8 | Generative UI + MCP |
 | `core-banking-architecture` | 8 | Core banking DDD/BIAN |
-| `alipay-double-11` | 8 | High-TPS fintech case study |
+| `alipay-double-11` | 8 | High-TPS fintech case study — 2027 SOTA Masterclass (campaign complete 2026-09-11: 800-round deep research, 8 schema-compliant research reports, all chapters >20.5KB and >2,500w, 100% 8-gate compliant, zero learn links) |
 | `slm-playbook` | 7 | Small language models |
 | `ride-hailing-realtime-architecture` | 7 | Realtime ride-hailing |
 | `ai-code-review-vibe-coding` | 7 | AI code review |
@@ -75,8 +75,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 
 | Commit | Campaign |
 |---|---|
-| `uncommitted` | 2027 SOTA upgrade: `cornerstone-technologies` (5 parts + hub) masterclass, 600 research rounds, series content index, 100% 7-gate verified |
-| `uncommitted` | 2027 SOTA upgrade: `agentic-ecommerce-search` (7 parts + hub) masterclass, 700 research rounds, series content index, 100% 7-gate verified |
+| `c65bb39` | 2027 SOTA upgrade: `prompt-standard` (10 parts + hub, 1:1 twin parity, 1,000 rounds) + `cornerstone-technologies` (5 parts + hub, 600 rounds) + `agentic-ecommerce-search` (7 parts + hub, 700 rounds), edge 301 fixes, 100% 8-gate verified |
 | `82b1ec4` | Edge fix: resolve bauxeo proxy 301 redirect conflict in `_redirects` and trailing slash handling in `src/index.js` |
 | `8b0840c` | 2027 SOTA upgrade: `mcp-engineering-in-production` (8 parts + hub) masterclass, 800 research rounds, series content index, 100% 7-gate verified |
 | `d3134f4` | 2027 SOTA upgrade: `system-design` (12 parts + hub) masterclass, 1,200 research rounds, series content index, 100% 7-gate verified |

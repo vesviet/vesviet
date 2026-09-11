@@ -1,7 +1,7 @@
 ---
-title: "Alipay Double 11 Technology Internals Deep-Dive Guide"
+title: "Alipay Double 11 Phase 4B: Technology Internals Deep-Dive Guide"
 date: "2026-05-02T18:10:00+07:00"
-lastmod: "2026-05-02T18:10:00+07:00"
+lastmod: "2026-09-11T04:40:00+07:00"
 draft: false
 description: "Deep dive into SOFA RPC Bolt protocols, RocketMQ decoupling, OceanBase LSM-Tree compaction, Paxos quorum internals, and distributed state storage."
 ShowToc: true
@@ -18,20 +18,41 @@ mermaid: true
 series: ["alipay-double-11"]
 weight: 5
 ---
+[🏛️ Anchor Pillar Hub #8: Alipay Double 11 Architecture (544K TPS)](/posts/alipay-double-11-architecture-tps/) | [🗺️ Sitewide Engineering Reading Map](/reading-map/)
 
-
+---
 [← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/phase-4-technology/) • [Next →](/series/alipay-double-11/modern-tech-comparison/)
 
 > **Answer-first:** Alipay's Double 11 technology deep dive reveals high-performance internals: binary Bolt RPC protocol multiplexing over single TCP streams, RocketMQ 2PC transactional messaging for async decoupling, OceanBase LSM-tree compaction tuning, and multi-zone Paxos quorum consensus to achieve 544,000 TPS payment processing. Adopting this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory optimization, and fault-tolerant event-driven state synchronization across production systems.
 
-> **Prerequisite:** [Phase 4: Technology Overview](/series/alipay-double-11/phase-4-technology/)
+> **Prerequisite:** [Phase 4A: Technology Overview](/series/alipay-double-11/phase-4-technology/)
 
 This document is a deep-dive companion to Phase 4. It focuses on the **internal mechanics** that define the hard limits of peak performance systems: RPC protocol layouts, consensus log replication pipelines, storage engine compaction configurations, and distributed transactions.
 
 ---
 
 ## 4.D1 SOFA RPC and Bolt Protocol Internals
+
+
+```mermaid
+graph LR
+    subgraph TXPath ["Payment critical path"]
+        PAY["Payment app"] --> TXMSG["Transaction message<br/>(half-message)"]
+        TXMSG --> DB["DB commit"]
+        DB --> CONF["Confirm / Rollback"]
+    end
+    subgraph Async ["Async layer"]
+        EVT["Event streams"]
+    end
+    TXMSG --> PROD["RocketMQ brokers<br/>10M+ TPS peak (Ant-reported)"]
+    EVT --> PROD
+    PROD --> C1["Consumer groups"]
+    PROD --> TRACE["Message trace<br/>(financial audit)"]
+
+    style PROD fill:#e8f4f8,stroke:#2a7da0
+```
+
 
 > **Answer-first:** SOFA RPC uses the binary Bolt protocol over multiplexed TCP connections, minimizing serialization overhead and CPU context switching.
 
@@ -219,6 +240,11 @@ While local mutations in a partition use Paxos, transaction blocks touching mult
 
 ---
 
+### Why financial messaging is not just high throughput
+
+RocketMQ's 10M+ TPS peak (Ant-reported) is the visible number, but the financial-grade properties are the design core: transactional half-messages couple the message send with the database transaction (commit/rollback after DB confirmation, guaranteeing no dangling business events); message traces follow every message end-to-end for the audit trail regulators expect; delayed-message and retry policies match banking semantics; and exactly-once consumption aligns the queue with the ledger. Kafka optimizes for log throughput; a payment system needs those four guarantees native — which is why RocketMQ was built rather than adopted.
+
+
 ## Frequently Asked Questions (FAQ)
 
 OceanBase achieves extreme write throughput by combining LSM-Tree memory tables with asynchronous background SSTable compaction.
@@ -237,6 +263,32 @@ OceanBase buffers all transactional updates in memory (MemTables) and appends ap
 
 ---
 
+## Production Deep-Dive: RocketMQ Financial Transaction Rollback & OceanBase LSM Engine
+
+**Answer-first:** RocketMQ eliminates distributed locking bottlenecks across 10M+ TPS messaging loads by utilizing a 2-phase half-message commit pattern with asynchronous status check callbacks, while OceanBase's LSM-Tree engine buffers 100% of payment writes into memory MemTables to eliminate random disk I/O during peak transaction bursts.
+
+### 1. RocketMQ Two-Phase Transactional Message Rollback Lifecycle
+
+When executing financial balance adjustments, traditional distributed transactions (XA / 2-phase commit with two-phase locking) hold row-level locks across multiple databases, causing cascading latencies under 544,000 TPS. RocketMQ solves this through speculative transactional messaging:
+
+- **Half-Message Quarantine**: The initial message is written to an internal topic `RMQ_SYS_TRANS_HALF_TOPIC`. It lacks consumer queue indexing, meaning downstream subscribers cannot see or consume it.
+- **Asynchronous Status Check Listener**: If the payment microservice crashes after committing the database transaction but before sending `CommitMessage`, RocketMQ broker initiates a status inquiry after 15 seconds. The payment service checks the local transaction ID in OceanBase:
+  - If the database commit record exists: return `LocalTransactionState.COMMIT_MESSAGE`.
+  - If the database transaction aborted or was rolled back: return `LocalTransactionState.ROLLBACK_MESSAGE`.
+  - If status remains in-flight: return `LocalTransactionState.UNKNOW`, triggering exponential backoff polling (up to 15 retries before moving to Dead Letter Queue).
+- **Idempotency Defense (Sliding Window Dedup Ledger)**: Downstream consumers maintain an in-memory Bloom filter and a persistent RocksDB key ledger storing the last 24 hours of message IDs. Duplicate deliveries resulting from network retries are dropped before invoking ledger business methods.
+
+### 2. OceanBase LSM-Tree Storage Internals under 61M QPS
+
+OceanBase replaces B+ Tree random in-place updates with an append-only Log-Structured Merge-Tree (LSM-Tree) engine tailored for extreme financial throughput:
+- **In-Memory MemTable**: All `INSERT`, `UPDATE`, and `DELETE` operations write directly to concurrent lock-free skiplist structures in RAM. The only synchronous disk I/O is appending the transaction log (CLog) sequentially to NVMe storage via direct I/O (`O_DIRECT`).
+- **Zero Disk Seeks on Writes**: Because data is not written in-place to database pages, write throughput is bound strictly by memory bandwidth and sequential disk append speed, achieving sub-millisecond mutations during peak surges.
+- **Minor Compaction vs Major Compaction**:
+  - **Minor Compaction (Mini-SSTable)**: When MemTable utilization reaches 80%, active writes freeze into an immutable MemTable, and a new active MemTable is spawned instantly. Background threads flush the frozen table sequentially to L0 SSTables on NVMe SSDs without blocking live traffic.
+  - **Daily Major Compaction (Off-Peak Window)**: At 03:00 AM off-peak, OceanBase merges daily delta SSTables into baseline data SSTables, calculating block checksums and optimizing dictionary compression. During the Double 11 peak, major compaction is explicitly disabled, reserving 100% of CPU and disk I/O for payment ingestion.
+
+---
+
 ## Key Takeaways
 
 Deep technology internals reveal that custom binary RPC protocols and LSM-Tree storage engines are essential for sub-millisecond payment processing.
@@ -250,6 +302,41 @@ Deep technology internals reveal that custom binary RPC protocols and LSM-Tree s
 Need help implementing high-scale architectures? Consult our infrastructure team via [Hire Infrastructure Specialist](/hire/).
 
 🔗 **Next Step:** [Modern Tech Comparison](/series/alipay-double-11/modern-tech-comparison/)
+
+### The deep-dive caveat: numbers are era-locked
+
+Every throughput figure in this chapter is a Double 11 artifact of its generation — hardware, topology, and software version together. SOFARPC's 200k+ and RocketMQ's 10M+ were achieved on 2019-era clusters; today's hardware would move the ceilings, and your workload would move them differently. The transferable content is the design reasoning (why LSM-tree fits ledgers, why transactional half-messages fit payments), not the absolute numbers — measure against your own traffic before committing to a stack based on someone else's peak.
+
+### Reading the performance-numbers summary correctly
+
+The 4.7 performance summary consolidates the era's peaks, and the correct reading discipline is threefold: check the year before the number (a 2019 figure on 2019 hardware is a historical measurement, not a current product spec); check the provenance class before the comparison (TPC-audited figures can be compared with other TPC-audited figures, self-reported only with self-reported); and check the workload shape before any transfer (SOFARPC's TPS measures synchronous financial RPC with transactional semantics, not generic request-response throughput). Teams that internalize these three checks stop asking "what is the best number" and start asking "what did this number measure" — which is the entire skill this deep-dive exists to teach.
+### Figure ledger (years and sources)
+
+| Figure | Value | Year | Source class |
+|---|---|---|---|
+| Payment record | 256,000 TPS | 2017 | Press (Wikipedia-cited) |
+| Peak transactions | 544,000 TPS | 2019 | Ant-reported |
+| Peak transactions | 583,000 TPS | 2020 | Ant-reported |
+| OceanBase queries | 61M QPS | 2019–20 era | Ant-reported |
+| TPC-C benchmark | 707M tpmC | 2019/2020 | TPC-audited |
+| RocketMQ messages | 10M+ TPS | Double 11 era | Ant-reported |
+| SOFARPC | 200k+ TPS | Double 11 era | Ant-reported |
+| Reliability envelope | RPO=0 / RTO<2s / 99.99% | continuous | Ant-reported |
+
+This series cites no bare number: every figure carries its year and provenance class. Ant-reported figures are closed-system disclosures — the TPC-C record is the only independently audited number in this ledger.
+
+## 📚 Research Anchors
+
+| Claim | Source |
+|---|---|
+| 544K TPS (2019), 583K TPS (2020), 61M QPS, 10M+ RocketMQ, SOFARPC 200k+ TPS | Ant Group public reporting (series corpus — closed system, cited as "Ant-reported") |
+| TPC-C 707 million tpmC | TPC publicly audited results |
+| GMV series 2009–2021; 256K TPS 2017 | Wikipedia: Singles' Day (citing Reuters/Bloomberg/CNBC/MarketWatch) |
+| This chapter's architecture | Series corpus (corresponding Phase) |
+
+Full research dossiers: `reports/research-alipay-executive-summary-100-rounds.{md,json}` (Ch1 figure ledger) + `research-alipay-phases-consolidated-100-rounds.md` (Ch2–Ch9 consolidated plan), mirrored in both repositories. Grounding note: peak figures are Ant-reported (closed system); the TPC-C record is the only independently audited number.
+
+---
 
 ## Architectural Context & Pillar References
 

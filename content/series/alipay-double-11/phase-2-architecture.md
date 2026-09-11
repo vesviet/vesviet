@@ -1,7 +1,6 @@
----
-title: "Alipay Double 11 Architecture: LDC & Unitization Guide"
+---title: "Alipay Double 11 Architecture: LDC & Unitization Guide"
 date: "2026-05-02T18:10:00+07:00"
-lastmod: "2026-05-02T18:10:00+07:00"
+lastmod: "2026-09-11T04:40:00+07:00"
 draft: false
 description: "In-depth analysis of Alipay LDC cell unitization, multi-active cross-city routing, OceanBase distributed storage, and RocketMQ async messaging."
 ShowToc: true
@@ -21,6 +20,7 @@ aliases:
   - /posts/alipay-phase2-architecture
   - /series/alipay-double-11/alipay-phase2-architecture/
 ---
+[🏛️ Anchor Pillar Hub #8: Alipay Double 11 Architecture (544K TPS)](/posts/alipay-double-11-architecture-tps/) | [🗺️ Sitewide Engineering Reading Map](/reading-map/)
 
 [← Series hub](/series/alipay-double-11/)
 [← Prev](/series/alipay-double-11/phase-1-timeline/) • [Next →](/series/alipay-double-11/phase-3-operations/)
@@ -34,6 +34,26 @@ This phase focuses on the **architectural blueprint** that enables planetary sca
 ---
 
 ## 2.1 LDC and Unitization (Cell Architecture)
+
+
+```mermaid
+graph TB
+    subgraph LDC ["Logical Data Center — self-contained cells by user_id"]
+        RZ1["RZone 1<br/>(user shard A: app + DB)"]
+        RZ2["RZone 2<br/>(user shard B)"]
+        GZ["GZone<br/>(global services)"]
+        CZ["CZone<br/>(low-latency reads)"]
+    end
+    UA["User A"] --> RZ1
+    UB["User B"] --> RZ2
+    RZ1 -.-> CZ
+    RZ2 -.-> CZ
+    RZ1 --> GZ
+    RZ2 --> GZ
+
+    style GZ fill:#e8f4f8,stroke:#2a7da0
+```
+
 
 **Answer-first:** LDC unitization partitions database tables and microservices into self-contained geographic cells (R-Units), eliminating cross-datacenter DB locks.
 
@@ -321,6 +341,80 @@ BenchmarkLDCUserHashRouting-16    100000000    11.8 ns/op    0 B/op    0 allocs/
 ```
 
 For comparison with containerized microservice routing models, see [Microservices Foundation Architecture](/series/paypay-architecture/part-1-microservices-gitops/).
+
+### When unitization is not the answer yet
+
+Honest scope: below roughly two digits of request concurrency per service, unitization adds routing complexity without measurable benefit — a single well-indexed database and competent caching deliver the same p99 at a fraction of the operational surface. The signals that justify the LDC investment: cross-shard transactions appearing in traces, database lock waits trending with user growth, and failover drills that cannot isolate blast radius because everything shares everything. Each signal is measurable before the wall arrives — which is the entire point of designing to split before the crisis forces it.
+---
+
+## Production Architecture Deep-Dive: LDC RZone/GZone/CZone Paxos Quorum Mechanics
+
+**Answer-first:** The Logical Data Center (LDC) topology partitions Alipay's distributed state into autonomous RZone cells by user ID hash, confines centralized settlement to CZone with virtual sub-account ledgers, and guarantees zero cross-region write blocking through OceanBase Multi-Paxos quorum consensus across three data centers in two cities (3DC2C).
+
+### 1. The Tri-Zone Taxonomy: RZone, GZone, and CZone
+
+Traditional microservices collapse under 544,000 TPS because distributed database transactions (XA 2PC) span wide-area networks. LDC solves this by categorizing business state into three rigorous operational zones:
+
+1. **RZone (Region Zone — Autonomous Sharded Cell)**:
+   - Contains all business domains partitioned by user ID (`buyer_id`): user balances, payment credentials, personal cart state, and order creation workflows.
+   - Deterministic routing: `cell_id = murmur3(user_id) % total_cells`. Ingress gateways (GSLB and Envoy/SOFAMesh) inspect the JWT or cookie header and route traffic directly to the corresponding RZone.
+   - **Zero Cross-Cell Dependency**: An order payment initiated by User A completes 100% within RZone 1. The local application server talks to the local OceanBase partition leader. No cross-cell RPC or distributed database locks occur during the payment transaction.
+
+2. **GZone (Global Zone — Shared Read-Mostly Data)**:
+   - Contains global reference catalogs, merchant basic info, system configurations, and dynamic exchange rates.
+   - Unsharded data is deployed centrally and replicated to read-only caches in every datacenter. Updates in GZone are asynchronous and eventual; payment transactions never perform synchronous cross-region writes to GZone tables.
+
+3. **CZone (City Zone — Central Accounting & Merchant Settlement)**:
+   - Handles global financial ledgers, merchant clearing accounts, and bank gateway settlement channels that cannot be partitioned by buyer user ID.
+   - **The Hot-Account Serialization Problem**: During Double 11, top brand merchants receive hundreds of thousands of payments per minute. If all payments update a single `merchant_balance` row, database row-level locks serialize throughput, degrading latency to hundreds of milliseconds.
+   - **Virtual Sub-Account Sharding Solution**: CZone splits high-volume merchant accounts into $M$ sub-accounts (e.g., $M = 100$, named `merchant_1001_sub_00` to `merchant_1001_sub_99`). Each incoming payment atomically credits `merchant_1001_sub_(hash(order_id) % 100)`. This reduces row-lock contention by a factor of 100. During off-peak reconciliation, background batch jobs aggregate sub-account balances into the master ledger.
+
+### 2. Multi-Paxos Quorum Topology (3DC2C and 5DC3C)
+
+OceanBase eliminates shared storage SAN arrays by deploying a shared-nothing distributed SQL database governed by Multi-Paxos:
+- **Topology Configuration**:
+  - **Hangzhou IDC 1**: Full Replica (Paxos Member) + Application RZone 1
+  - **Hangzhou IDC 2**: Full Replica (Paxos Member) + Application RZone 2
+  - **Shanghai IDC 3**: Full Replica (Paxos Member) + Application RZone 3
+- **Local Quorum Commit**:
+  When an RZone in Hangzhou IDC 1 writes a transaction log, it broadcasts the log entry to all three replicas. Because Hangzhou IDC 1 and IDC 2 share low-latency metro dark fiber (<1.5ms round-trip), IDC 1 and IDC 2 form a majority quorum (2 of 3) almost instantaneously. The transaction commits and acknowledges the client without waiting for the log to arrive in Shanghai IDC 3 (which incurs ~25ms WAN latency).
+- **Zero Cross-Region Blocking**:
+  Synchronous write operations never block on cross-city network hops. Even if Hangzhou experiences a total municipal power blackout, Shanghai IDC 3 plus a cloud-witness node can elect a new Paxos leader in under 2 seconds (RTO < 2s) with mathematical guarantee of zero data loss (RPO = 0).
+
+---
+
+### Figure ledger (years and sources)
+
+| Figure | Value | Year | Source class |
+|---|---|---|---|
+| Payment record | 256,000 TPS | 2017 | Press (Wikipedia-cited) |
+| Peak transactions | 544,000 TPS | 2019 | Ant-reported |
+| Peak transactions | 583,000 TPS | 2020 | Ant-reported |
+| OceanBase queries | 61M QPS | 2019–20 era | Ant-reported |
+| TPC-C benchmark | 707M tpmC | 2019/2020 | TPC-audited |
+| RocketMQ messages | 10M+ TPS | Double 11 era | Ant-reported |
+| SOFARPC | 200k+ TPS | Double 11 era | Ant-reported |
+| Reliability envelope | RPO=0 / RTO<2s / 99.99% | continuous | Ant-reported |
+
+This series cites no bare number: every figure carries its year and provenance class. Ant-reported figures are closed-system disclosures — the TPC-C record is the only independently audited number in this ledger.
+
+## 📚 Research Anchors
+
+| Claim | Source |
+|---|---|
+| 544K TPS (2019), 583K TPS (2020), 61M QPS, 10M+ RocketMQ, SOFARPC 200k+ TPS | Ant Group public reporting (series corpus — closed system, cited as "Ant-reported") |
+| TPC-C 707 million tpmC | TPC publicly audited results |
+| GMV series 2009–2021; 256K TPS 2017 | Wikipedia: Singles' Day (citing Reuters/Bloomberg/CNBC/MarketWatch) |
+| This chapter's architecture | Series corpus (corresponding Phase) |
+
+Full research dossiers: `reports/research-alipay-executive-summary-100-rounds.{md,json}` (Ch1 figure ledger) + `research-alipay-phases-consolidated-100-rounds.md` (Ch2–Ch9 consolidated plan), mirrored in both repositories. Grounding note: peak figures are Ant-reported (closed system); the TPC-C record is the only independently audited number.
+
+---
+
+### Why RPO=0 is a protocol property, not an operational promise
+
+The Paxos majority-write commits only after a quorum of replicas confirms — so losing an entire data center cannot lose any committed transaction. This is the fundamental difference from traditional async replication, where "RPO=0" is a hope about replication latency holding during a failure. With Paxos, zero data loss is a mathematical consequence of the commit rule: 3-site-5-datacenter topologies secure quorum locally in 3–5ms while the third region provides the disaster-recovery witness. The same property is what makes the multi-region active-active claim ("zero cross-region database write blocking") a design property rather than an SLA aspiration — quorum geography decides, not network weather.
+
 
 ## Frequently Asked Questions (FAQ)
 
