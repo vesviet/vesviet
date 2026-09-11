@@ -40,6 +40,7 @@
 /posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos /posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/ 301
 /posts/http-rest-json-vs-grpc-protobuf-architectural-tradeoffs/ /series/architectural-tradeoffs-showdowns/01-http-rest-json-vs-grpc-protobuf/ 301
 /posts/interview-with-nguyen-van-adapter-founders/ /posts/ 301
+/posts/is-magento-worth-it-in-2026-the-2-4-9-reality/ /series/magento-migration-vietnam/magento-still-worth-investing-2026/ 301
 /posts/laravel-vs-golang-when-to-add-features /series/magento-migration-vietnam/laravel-vs-golang-when-to-add-features/ 301
 /posts/laravel-vs-golang-when-to-add-features/ /series/magento-migration-vietnam/laravel-vs-golang-when-to-add-features/ 301
 /posts/leaseinvietnam-building-an-ai-powered-expat-relocation-hub-with-a-b2b-lead-engine/ /posts/leaseinvietnam-ai-powered-expat-rental-intelligence-system/ 301
@@ -125,6 +126,7 @@
 /series/high-concurrency-systems/article_7_idempotency/ /series/high-concurrency-systems/idempotency-api-design-payments/ 301
 /series/high-concurrency-systems/article_8_distributed_locking/ /series/high-concurrency-systems/distributed-locking-redlock-zookeeper/ 301
 /series/high-concurrency-systems/article_9_sharding/ /series/high-concurrency-systems/database-sharding-read-write-splitting/ 301
+/series/high-concurrency-systems/part-0-executive-summary/ /series/high-concurrency-systems/executive-summary/ 301
 /series/page/2/ /series/ 301
 /series/paypay-architecture/executive-summary/ /series/paypay-architecture/ 301
 /series/phase3-series-audit-upgrade-summary/ /series/ 301
@@ -138,15 +140,24 @@
 
 # --- 6. Prompt Standard Series ---
 /series/prompt-standard /series/prompt-standard/ 301
-/series/prompt-standard/executive-summary/ /series/prompt-standard/ 301
-/series/prompt-standard/part-1-what-is-prompt-standard/ /series/prompt-standard/ 301
-/series/prompt-standard/part-2-core-blocks/ /series/prompt-standard/ 301
-/series/prompt-standard/part-3-layered-prompt-design/ /series/prompt-standard/ 301
-/series/prompt-standard/part-4-versioning-and-evals/ /series/prompt-standard/ 301
-/series/prompt-standard/part-5-team-template/ /series/prompt-standard/ 301
-/series/prompt-standard/part-6-context-engineering/ /series/prompt-standard/ 301
-/series/prompt-standard/part-7-declarative-prompting-dspy/ /series/prompt-standard/ 301
-/series/prompt-standard/part-8-production-promptops/ /series/prompt-standard/ 301
+/series/prompt-standard/part-1-context-engineering-evolution /series/prompt-standard/part-6-context-engineering/ 301
+/series/prompt-standard/part-1-context-engineering-evolution/ /series/prompt-standard/part-6-context-engineering/ 301
+/series/prompt-standard/part-2-the-8-core-blocks /series/prompt-standard/part-2-core-blocks/ 301
+/series/prompt-standard/part-2-the-8-core-blocks/ /series/prompt-standard/part-2-core-blocks/ 301
+/series/prompt-standard/part-3-layered-prompt-architecture /series/prompt-standard/part-3-layered-prompt-design/ 301
+/series/prompt-standard/part-3-layered-prompt-architecture/ /series/prompt-standard/part-3-layered-prompt-design/ 301
+/series/prompt-standard/part-4-mcp-and-hybrid-rag /series/prompt-standard/part-9-mcp-and-hybrid-rag/ 301
+/series/prompt-standard/part-4-mcp-and-hybrid-rag/ /series/prompt-standard/part-9-mcp-and-hybrid-rag/ 301
+/series/prompt-standard/part-5-declarative-prompting-dspy /series/prompt-standard/part-7-declarative-prompting-dspy/ 301
+/series/prompt-standard/part-5-declarative-prompting-dspy/ /series/prompt-standard/part-7-declarative-prompting-dspy/ 301
+/series/prompt-standard/part-5-team-starter-kit /series/prompt-standard/part-5-team-template/ 301
+/series/prompt-standard/part-5-team-starter-kit/ /series/prompt-standard/part-5-team-template/ 301
+/series/prompt-standard/part-6-promptops-evals-and-security /series/prompt-standard/part-4-versioning-and-evals/ 301
+/series/prompt-standard/part-6-promptops-evals-and-security/ /series/prompt-standard/part-4-versioning-and-evals/ 301
+/series/prompt-standard/part-7-what-is-prompt-standard /series/prompt-standard/part-1-what-is-prompt-standard/ 301
+/series/prompt-standard/part-7-what-is-prompt-standard/ /series/prompt-standard/part-1-what-is-prompt-standard/ 301
+/series/prompt-standard/part-8-team-starter-kit /series/prompt-standard/part-5-team-template/ 301
+/series/prompt-standard/part-8-team-starter-kit/ /series/prompt-standard/part-5-team-template/ 301
 
 # --- 7. Tech Radar Redirects (Flat Slugs & Monthly Digests) ---
 /radar/2026-04/radar-2026-04-15/ /radar/2026-04/ 301
@@ -207,6 +218,8 @@
 /radar/2026-07/tech-radar-july-06-2026-edge-ai-liquid-neural-networks-wasmedge-k3s/ /radar/2026-07/ 301
 /radar/2026-07/tech-radar-july-14-2026-zero-trust-ai-swarms-mcp-authorization/ /radar/2026-07/ 301
 /radar/2026-08/tech-radar-august-2026-digest/ /radar/2026-08/ 301
+/radar/2026-09/tech-radar-september-2026-digest/ /radar/2026-09/ 301
+/radar/2026-08/radar-2026-08-01/ /radar/2026-08/ 301
 /radar/2026-08/tech-radar-digest-august-2026/ /radar/2026-08/ 301
 /radar/agentic-frameworks-vs-vendor-sdks/ /radar/2026-08/agentic-frameworks-vs-vendor-sdks/ 301
 /radar/gateway-api-v1.5-ingress2gateway-the-future-of-k8s-networking/ /radar/2026-05/radar-2026-05-01-gateway-api-v1-5/ 301
@@ -296,3 +309,4 @@
 /tags/orchestrator/ /tags/ 301
 /tags/qa/ /tags/ 301
 /tags/vibe-coding-pm/ /series/ai-code-review-vibe-coding/ 301
+

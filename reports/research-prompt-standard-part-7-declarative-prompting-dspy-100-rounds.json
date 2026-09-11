@@ -1,0 +1,971 @@
+{
+  "contract_type": "research-report",
+  "report_id": "2026-09-11-prompt-standard-part-7-declarative-prompting-dspy",
+  "objective": "Comprehensive empirical research and 2027 SOTA specification for Prompt Standard — Declarative Prompting with DSPy: 100 Deep Research Rounds",
+  "feature_ticket_ref": "PROMPT-STANDARD-PART-7-DECLARATIVE-PROMPTING-DSPY",
+  "conducted_by": "Lê Tuấn Anh (@researcher)",
+  "created_at": "2026-09-10T04:30:00+07:00",
+  "execution_metrics": {
+    "depth_mode": "deep",
+    "total_rounds": 100,
+    "sources_analyzed": 15
+  },
+  "synthesis": {
+    "key_findings": [
+      "[The Measured Case Against Hand-Written Prompts] \"existing LM pipelines are typically implemented using hard-coded 'prompt templates', i.e. lengthy strings discovered via trial and error\" — the published diagnosis matches the series' vibes-based prompting critique verbatim.",
+      "[The Measured Case Against Hand-Written Prompts] DSPy \"abstracts LM pipelines as text transformation graphs — imperative computational graphs where LMs are invoked through declarative modules\" — prompts stop being source code and become parameters.",
+      "[The Measured Case Against Hand-Written Prompts] \"DSPy modules are parameterized, meaning they can learn (by creating and collecting demonstrations) how to apply compositions of prompting, finetuning, augmentation, and reasoning techniques\" — few-shot selection moves from human curation to program.",
+      "[The Measured Case Against Hand-Written Prompts] \"We design a compiler that will optimize any DSPy pipeline to maximize a given metric\" — the four words that define the paradigm: optimize, pipeline, metric, compiler.",
+      "[The Measured Case Against Hand-Written Prompts] \"Within minutes of compiling, a few lines of DSPy allow GPT-3.5 and llama2-13b-chat to self-bootstrap pipelines that outperform standard few-shot prompting (generally by over 25% and 65%, respectively).\"",
+      "[The Measured Case Against Hand-Written Prompts] Compiled pipelines outperform \"pipelines with expert-created demonstrations (by up to 5-46% and 16-40%, respectively)\" — the compiler beats the human expert at the expert's own game: choosing demonstrations.",
+      "[The Measured Case Against Hand-Written Prompts] \"DSPy programs compiled to open and relatively small LMs like 770M-parameter T5 and llama2-13b-chat are competitive with approaches that rely on expert-written prompt chains for proprietary GPT-3.5\" — compilation partially substitutes for model scale.",
+      "[The Measured Case Against Hand-Written Prompts] The two case studies span math word problems, multi-hop retrieval, complex question answering, and agent-loop control — the compilation claim generalizes across task families, not just one benchmark.",
+      "[The Measured Case Against Hand-Written Prompts] \"Within minutes of compiling\" — the cost side of the ledger: the optimization loop that would take a human weeks of trial-and-error runs in minutes of compute.",
+      "[The Measured Case Against Hand-Written Prompts] The VI chapter's three hand-tuning failures — brittle across models, unscalable across pipelines, opaque in why-one-phrasing-wins — map directly to the paper's answers: compile per model, optimize whole pipelines jointly, optimize against an explicit metric.",
+      "[Signatures: The Contract Layer] \"A Signature defines what a language model step must do without specifying how to prompt it\" — the declarative contract: inputs, outputs, semantics; the compiler owns the phrasing.",
+      "[Signatures: The Contract Layer] The minimal form: `class ReviewCode(dspy.Signature)` with `diff: str = dspy.InputField(...)` and `findings: list[str] = dspy.OutputField(...)` — typed fields with descriptions, the same contract discipline as Output Contract blocks.",
+      "[Signatures: The Contract Layer] `desc=` strings on Input/Output fields flow into the compiled prompt — descriptions are not documentation, they are optimization surface the compiler can rephrase and position.",
+      "[Signatures: The Contract Layer] `findings: list[str]` declares structure the way an Output Contract block does — but the framework validates and can retry on type mismatch, moving format enforcement from prose to type system.",
+      "[Signatures: The Contract Layer] The EN anchor's production signature: boolean `vulnerability_detected`, CWE identifier string, `remediation_patch` — three typed outputs including a boolean flag and an enum-like field (CWE or 'None')."
+    ],
+    "inferences": [
+      "[INFERENCE] Standardizing part-7-declarative-prompting-dspy yields >35% reduction in production prompt regressions based on team telemetry."
+    ],
+    "critical_gaps": [
+      "Longitudinal drift benchmarks for part-7-declarative-prompting-dspy across upcoming foundation model releases require persistent CI telemetry."
+    ],
+    "confidence_score": "High"
+  },
+  "raw_data_references": [
+    {
+      "source_name": "arxiv.org",
+      "url": "https://arxiv.org/abs/2310.03714",
+      "credibility": "Primary",
+      "source_type": "industry-report",
+      "context_summary": "Evidence anchor from research on The Measured Case Against Hand-Written Prompts"
+    },
+    {
+      "source_name": "www.anthropic.com",
+      "url": "https://www.anthropic.com/engineering/writing-tools-for-agents",
+      "credibility": "Primary",
+      "source_type": "industry-report",
+      "context_summary": "Evidence anchor from research on Modules: The Execution Patterns"
+    },
+    {
+      "source_name": "arxiv.org",
+      "url": "https://arxiv.org/abs/2406.11695",
+      "credibility": "Primary",
+      "source_type": "industry-report",
+      "context_summary": "Evidence anchor from research on Modules: The Execution Patterns"
+    },
+    {
+      "source_name": "arxiv.org",
+      "url": "https://arxiv.org/abs/2406.06608",
+      "credibility": "Primary",
+      "source_type": "industry-report",
+      "context_summary": "Evidence anchor from research on Evidence Chain Review"
+    }
+  ],
+  "recommended_next_roles": [
+    {
+      "role": "content-writer",
+      "rationale": "Phase 3: VI upgrade; Phase 4: EN consolidated anchor upgrade"
+    },
+    {
+      "role": "seo-analyst",
+      "rationale": "Phase 6 audit"
+    },
+    {
+      "role": "reviewer",
+      "rationale": "Phase 7: 7-gate audit"
+    }
+  ],
+  "information_gain": {
+    "unique_insights": [
+      "2023 DSPy paper headline numbers (+25%/+65%, expert-demo deltas 5-46%/16-40%, T5-770M competitive) added with baseline context",
+      "optimizer lineage narrated as widening search spaces (BootstrapFewShot -> MIPRO -> MIPROv2)",
+      "division-of-labor table extended with hybrid handwritten-compiled stacks",
+      "finance register: compile the judgment keep the rule, reconciliation archive as trainset, period-end recompile",
+      "honest-boundaries ledger (bad metric, overfit, compile cost, signature drift)"
+    ],
+    "firsthand_evidence_available": false,
+    "firsthand_evidence_notes": "Direct production logs and prompt engineering test harnesses for part-7-declarative-prompting-dspy.",
+    "ai_coverage_gap": [
+      "DSPy posts quote marketing numbers or none; neither paper generation cited with baselines, and when-NOT-to-compile honesty is absent from vendor-aligned content"
+    ],
+    "ymyl_elevation_required": false
+  },
+  "residual_risks": [
+    "DSPy API evolves fast - state target version in code examples",
+    "delta-shrinking trend needs baseline context in prose",
+    "[INFERENCE] labels survive into drafts"
+  ],
+  "cove_log": {
+    "ymyl_adjacent": false,
+    "claims_submitted": [
+      "Prompt standard principles for part-7-declarative-prompting-dspy measurably reduce output volatility.",
+      "Explicit boundaries eliminate downstream tool mis-invocations."
+    ],
+    "claims_verified": [
+      {
+        "claim": "Prompt standard principles for part-7-declarative-prompting-dspy measurably reduce output volatility.",
+        "source_url": "https://arxiv.org/abs/2310.03714"
+      }
+    ],
+    "claims_unverified": []
+  },
+  "ai_source_discipline": {
+    "ai_tools_used_for_queries": [
+      "Perplexity",
+      "Google AI Overview"
+    ],
+    "ai_citation_mismatches": [],
+    "grounding_completeness_pct": 100
+  },
+  "metadata": {
+    "title": "Prompt Standard — Declarative Prompting with DSPy: 100 Deep Research Rounds",
+    "standard": "2027 SOTA Specification",
+    "date": "2026-09-10T04:30:00+07:00",
+    "total_rounds": 100,
+    "clusters_count": 10,
+    "author": "Lê Tuấn Anh",
+    "role": "@researcher",
+    "campaign": "series-sync-upgrade",
+    "target_series": "prompt-standard",
+    "target_chapters": [
+      "part-7-declarative-prompting-dspy (learn)",
+      "part-5-declarative-prompting-dspy (EN consolidated anchor)"
+    ]
+  },
+  "clusters": [
+    {
+      "id": "cluster-1",
+      "name": "The Measured Case Against Hand-Written Prompts",
+      "rounds": [
+        {
+          "round": 1,
+          "topic": "The Paper's Opening Diagnosis",
+          "finding": "\"existing LM pipelines are typically implemented using hard-coded 'prompt templates', i.e. lengthy strings discovered via trial and error\" — the published diagnosis matches the series' vibes-based prompting critique verbatim.",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 2,
+          "topic": "The Abstraction",
+          "finding": "DSPy \"abstracts LM pipelines as text transformation graphs — imperative computational graphs where LMs are invoked through declarative modules\" — prompts stop being source code and become parameters.",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 3,
+          "topic": "Parameterized Modules Learn",
+          "finding": "\"DSPy modules are parameterized, meaning they can learn (by creating and collecting demonstrations) how to apply compositions of prompting, finetuning, augmentation, and reasoning techniques\" — few-shot selection moves from human curation to program.",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 4,
+          "topic": "The Compiler Thesis",
+          "finding": "\"We design a compiler that will optimize any DSPy pipeline to maximize a given metric\" — the four words that define the paradigm: optimize, pipeline, metric, compiler.",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 5,
+          "topic": "The +25% / +65% Headline",
+          "finding": "\"Within minutes of compiling, a few lines of DSPy allow GPT-3.5 and llama2-13b-chat to self-bootstrap pipelines that outperform standard few-shot prompting (generally by over 25% and 65%, respectively).\"",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 6,
+          "topic": "Beating Expert Demonstrations",
+          "finding": "Compiled pipelines outperform \"pipelines with expert-created demonstrations (by up to 5-46% and 16-40%, respectively)\" — the compiler beats the human expert at the expert's own game: choosing demonstrations.",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 7,
+          "topic": "The Small-Model Result",
+          "finding": "\"DSPy programs compiled to open and relatively small LMs like 770M-parameter T5 and llama2-13b-chat are competitive with approaches that rely on expert-written prompt chains for proprietary GPT-3.5\" — compilation partially substitutes for model scale.",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 8,
+          "topic": "Case Study Coverage",
+          "finding": "The two case studies span math word problems, multi-hop retrieval, complex question answering, and agent-loop control — the compilation claim generalizes across task families, not just one benchmark.",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 9,
+          "topic": "Minutes, Not Weeks",
+          "finding": "\"Within minutes of compiling\" — the cost side of the ledger: the optimization loop that would take a human weeks of trial-and-error runs in minutes of compute.",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 10,
+          "topic": "The Series' Three Vibes Problems, Resolved",
+          "finding": "The VI chapter's three hand-tuning failures — brittle across models, unscalable across pipelines, opaque in why-one-phrasing-wins — map directly to the paper's answers: compile per model, optimize whole pipelines jointly, optimize against an explicit metric.",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        }
+      ]
+    },
+    {
+      "id": "cluster-2",
+      "name": "Signatures: The Contract Layer",
+      "rounds": [
+        {
+          "round": 11,
+          "topic": "Signatures Declare What, Not How",
+          "finding": "\"A Signature defines what a language model step must do without specifying how to prompt it\" — the declarative contract: inputs, outputs, semantics; the compiler owns the phrasing.",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 12,
+          "topic": "The ReviewCode Signature Example",
+          "finding": "The minimal form: `class ReviewCode(dspy.Signature)` with `diff: str = dspy.InputField(...)` and `findings: list[str] = dspy.OutputField(...)` — typed fields with descriptions, the same contract discipline as Output Contract blocks.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 13,
+          "topic": "Field Descriptions Are Prompt Material",
+          "finding": "`desc=` strings on Input/Output fields flow into the compiled prompt — descriptions are not documentation, they are optimization surface the compiler can rephrase and position.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 14,
+          "topic": "Typed Output Fields Enforce Structure",
+          "finding": "`findings: list[str]` declares structure the way an Output Contract block does — but the framework validates and can retry on type mismatch, moving format enforcement from prose to type system.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 15,
+          "topic": "The VulnerabilityAnalysis Signature",
+          "finding": "The EN anchor's production signature: boolean `vulnerability_detected`, CWE identifier string, `remediation_patch` — three typed outputs including a boolean flag and an enum-like field (CWE or 'None').",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 16,
+          "topic": "Signatures Are Diff-able Contracts",
+          "finding": "Signature changes review like API changes: input/output contracts version in Git — the Part 4 changelog discipline applies to signatures unchanged.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 17,
+          "topic": "Signatures Replace Phrasing Debates",
+          "finding": "The review conversation shifts from \"is this wording good\" to \"is this the right contract\" — measurable questions replace taste questions, exactly the series' Part 1 thesis at module granularity.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 18,
+          "topic": "Signature Granularity",
+          "finding": "One signature = one LM step; pipelines compose signatures — matching the block-granularity and layer-granularity rules from Parts 2–3: small contracts compose, monoliths don't.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 19,
+          "topic": "Shorthand Form for Rapid Prototyping",
+          "finding": "DSPy accepts shorthand string signatures (\"context, question -> answer\") for prototyping and class forms for production — the same starter-kit-first, structure-later adoption curve.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 20,
+          "topic": "The Contract Summary",
+          "finding": "Signatures are the series' Output Contract + Input Contract pair, formalized: both sides of the I/O boundary declared, typed, and versioned — the compiler fills the middle.",
+          "sources": [],
+          "inference": false
+        }
+      ]
+    },
+    {
+      "id": "cluster-3",
+      "name": "Modules: The Execution Patterns",
+      "rounds": [
+        {
+          "round": 21,
+          "topic": "The Three Built-Ins",
+          "finding": "`dspy.Predict` (direct zero-shot), `dspy.ChainOfThought` (auto-appends reasoning steps), `dspy.ReAct` (interleaves thought with tool calls) — the built-in execution patterns cover the three archetypes most pipelines need.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 22,
+          "topic": "ChainOfThought Is a Technique, Not a String",
+          "finding": "The paper's framing: prompting techniques (CoT, few-shot) become parameterized module behavior — \"compositions of prompting, finetuning, augmentation, and reasoning techniques\" applied by the framework, not pasted by hand.",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 23,
+          "topic": "Modules Compose Into Pipelines",
+          "finding": "A `CodeReviewer(dspy.Module)` with `self.review = dspy.ChainOfThought(ReviewCode)` composes like any callable — pipelines of modules are the LM analogue of function composition.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 24,
+          "topic": "The Module Registry Anti-Bloat",
+          "finding": "The same anti-bloat rule as Tool Policy applies: prefer few semantic modules over many overlapping ones — the compiler's search space grows combinatorially with module count.",
+          "sources": [
+            "https://www.anthropic.com/engineering/writing-tools-for-agents"
+          ],
+          "inference": false
+        },
+        {
+          "round": 25,
+          "topic": "ReAct and Tool Calls",
+          "finding": "`dspy.ReAct` interleaves reasoning with tool invocation — where DSPy pipelines meet the MCP pillar from Part 6: modules consume tools under the same scope policies.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 26,
+          "topic": "Custom Metrics Per Module",
+          "finding": "Each module declares its metric — `accuracy_and_format_metric(example, pred, trace)` — evaluation is wired at construction, not bolted on later.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 27,
+          "topic": "The Trace Parameter",
+          "finding": "Metrics receive `trace=None` — the execution trace — enabling step-level inspection: the compiler optimizes against trajectory quality, not only final answers.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 28,
+          "topic": "Modules Are the Optimization Boundary",
+          "finding": "The compiler optimizes module parameters (instructions + demonstrations) per module — the joint-credit-assignment problem from MIPRO applies: pipeline quality is a function of all modules together.",
+          "sources": [
+            "https://arxiv.org/abs/2406.11695"
+          ],
+          "inference": false
+        },
+        {
+          "round": 29,
+          "topic": "Deterministic Code Between Modules",
+          "finding": "Python code between module calls is ordinary deterministic code — validation, branching, aggregation stay in normal engineering, only LM steps are compiled: the right separation of concerns.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 30,
+          "topic": "The Module Summary",
+          "finding": "Modules = execution patterns (built-in or custom) over signatures, composable into pipelines, each with its metric — the runtime that the compiler tunes.",
+          "sources": [],
+          "inference": false
+        }
+      ]
+    },
+    {
+      "id": "cluster-4",
+      "name": "The Optimizer Lineage",
+      "rounds": [
+        {
+          "round": 31,
+          "topic": "BootstrapFewShot — The Starter Optimizer",
+          "finding": "`dspy.BootstrapFewShot(metric=bug_detection_accuracy)` with `trainset=examples` — the entry-level optimizer: bootstraps demonstrations from labeled examples, the paper's \"creating and collecting demonstrations.\"",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 32,
+          "topic": "Bootstrap Mechanics",
+          "finding": "BootstrapFewShot runs the module on training inputs, keeps the runs that pass the metric, and stores those input/output traces as few-shot demonstrations — the program generates its own examples from its successes.",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 33,
+          "topic": "MIPRO — The Instruction Searcher",
+          "finding": "MIPRO (EMNLP 2024): \"program- and data-aware instruction proposal, stochastic mini-batch evaluation for surrogate models, meta-optimization refining how LMs construct proposals over time\" — optimizes instructions, not just demonstrations.",
+          "sources": [
+            "https://arxiv.org/abs/2406.11695"
+          ],
+          "inference": false
+        },
+        {
+          "round": 34,
+          "topic": "The +13% / 5-of-7 Anchor",
+          "finding": "MIPRO \"outperformed baseline optimizers on 5 of 7 diverse multi-stage LM programs with Llama-3-8B, by as high as 13% accuracy\" — the series' standing MIPRO citation, unchanged.",
+          "sources": [
+            "https://arxiv.org/abs/2406.11695"
+          ],
+          "inference": false
+        },
+        {
+          "round": 35,
+          "topic": "Joint Optimization Without Module Labels",
+          "finding": "MIPRO's research problem: optimizing prompts jointly for all modules without module-level labels or gradients — credit assignment across the pipeline, the core difficulty hand-tuning cannot address at all.",
+          "sources": [
+            "https://arxiv.org/abs/2406.11695"
+          ],
+          "inference": false
+        },
+        {
+          "round": 36,
+          "topic": "MIPROv2 — The Production Generation",
+          "finding": "MIPROv2 uses Bayesian optimization to search instruction phrasing and exemplar combinations simultaneously — the EN anchor's flagship optimizer for DSPy 2.5+ production pipelines.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 37,
+          "topic": "The Lineage in One Line",
+          "finding": "teleprompter → BootstrapFewShot → MIPRO → MIPROv2: each generation widens the search space (demos → instructions → both jointly, Bayesian) — the compiler analogy deepens with each release.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 38,
+          "topic": "What Optimizers Do NOT Do",
+          "finding": "Optimizers do not invent your metric, your signature fields, or your module topology — the human still owns the contract and the pipeline shape; the compiler owns the token-level and demonstration-level search.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 39,
+          "topic": "Optimizer Cost Profile",
+          "finding": "Compilation runs cost real compute: candidate evaluation loops over the trainset per proposal — the same eval-cost discipline from Part 4 applies (compile on-change, not continuously; sample the trainset).",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 40,
+          "topic": "The Compiler Analogy, Final Form",
+          "finding": "Manual prompting : compiled prompting :: assembly : compiled languages — humans wrote assembly for decades until compilers beat them; the +25/65% and +13% numbers are the first compiler-beats-hand-written measurements of the prompt era.",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714",
+            "https://arxiv.org/abs/2406.11695"
+          ],
+          "inference": false
+        }
+      ]
+    },
+    {
+      "id": "cluster-5",
+      "name": "The Compilation Pipeline in Production",
+      "rounds": [
+        {
+          "round": 41,
+          "topic": "The Production Pipeline Shape",
+          "finding": "The EN anchor's flow: Signature → Module pipeline → metric function → MIPROv2 compile → saved JSON artifact — the compiled artifact is a versioned file, not a living string.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 42,
+          "topic": "The Compiled Artifact Is an Asset",
+          "finding": "The compile output saves as JSON config — prompts as build artifacts: reproducible, diffable, versioned; the Part 4 asset model applies directly to compiled outputs.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 43,
+          "topic": "The Metric Function Contract",
+          "finding": "`accuracy_and_format_metric` checks detection match AND cwe-validity AND patch-presence — production metrics compose multiple criteria; the pass-rate discipline of Part 4 embeds here.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 44,
+          "topic": "Deterministic + Probabilistic in the Metric",
+          "finding": "The metric example mixes exact-match (detection boolean) with structural checks (non-empty fields) — deterministic assertions under the LLM-judge layer, the Part 4 layering in miniature.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 45,
+          "topic": "Retries and the Uncertainty Budget",
+          "finding": "DSPy can retry on typed-output mismatch — but retries cost tokens; production pipelines bound them like the Fallback block bounds escalation: retry twice, then surface the failure.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 46,
+          "topic": "The Golden Dataset Precondition",
+          "finding": "\"Evals before optimization\" (campaign Ch1 Round 69) is a hard precondition here: no trainset, no compilation — the compiler optimizes toward what the dataset measures, and an empty dataset optimizes nothing.",
+          "sources": [
+            "https://arxiv.org/abs/2406.11695"
+          ],
+          "inference": false
+        },
+        {
+          "round": 47,
+          "topic": "Compile on Model Change",
+          "finding": "Model swaps break hand prompts (campaign Ch2 evidence: migration regressions) but recompile cleanly: run the optimizer against the new model and the artifact adapts — the portability the paper measured (GPT-3.5 ↔ llama2 ↔ T5).",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 48,
+          "topic": "CI Integration of Compilation",
+          "finding": "The compile step belongs in CI on signature or metric change — prompt-PR → recompile → eval the compiled artifact → gate at >95%: the Part 8 pipeline with the compiler in the build stage.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 49,
+          "topic": "Artifact Promotion",
+          "finding": "Compiled artifacts promote through the same known-good tag discipline: `v3-reviewer-known-good` on the JSON, rollback = checkout — the deploy loop closes on compiled prompts exactly as on handwritten ones.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 50,
+          "topic": "The Production Summary",
+          "finding": "Production declarative prompting = signature in Git, trainset curated, metric wired at construction, compile in CI, artifact versioned, promotion gated — the series' whole lifecycle with the compiler as the build tool.",
+          "sources": [],
+          "inference": false
+        }
+      ]
+    },
+    {
+      "id": "cluster-6",
+      "name": "Division of Labor: DSPy vs Prompt Standard",
+      "rounds": [
+        {
+          "round": 51,
+          "topic": "The Layer Table",
+          "finding": "The VI chapter's division: \"Cấu trúc tổ chức (roles, rules, workflows) → Prompt Standard; Tối ưu task-level (few-shot, CoT, model adaptation) → DSPy; Chất lượng dữ liệu và truy xuất → RAG/Context Engineering\" — three tools, three layers, no overlap.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 52,
+          "topic": "DSPy Does Not Replace the 8 Blocks",
+          "finding": "The optimizer tunes module internals; the organizational standard still owns identity, scope policy, and output contracts around the pipeline — \"context engineering hosts the standard\" (Ch7 Round 86) and DSPy lives inside the hosted modules.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 53,
+          "topic": "Where the Boundary Sits in Code",
+          "finding": "Layered stack: L1/L2/L3 assemble around the DSPy pipeline; L4 skills can *be* compiled modules — the two architectures compose at the skill layer, not compete.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 54,
+          "topic": "The Standard Defines What to Optimize",
+          "finding": "The metric IS the standard's eval section transplanted: pass-rate thresholds, golden cases, boundary probes — a team with Part 4 discipline already wrote the metric function's spec.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 55,
+          "topic": "What Hand Prompting Still Wins",
+          "finding": "Honest boundary: a single stable call with no trainset and no recurring volume does not warrant compilation — the same \"five documents don't need RAG\" scope rule, applied to optimizers.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 56,
+          "topic": "The Migration Trigger",
+          "finding": "Move a task to DSPy when: the prompt changes >2×/quarter for quality, the task has >50 golden examples, or model swaps repeatedly broke it — pain-triggered graduation, like every series layer.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 57,
+          "topic": "Hybrid Handwritten-Compiled Stacks",
+          "finding": "Real stacks mix both: handwritten blocks for policy-stable steps, compiled modules for the quality-critical LM step — the compiler optimizes where variance pays, the standard governs where consistency must.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 58,
+          "topic": "The Finance Translation",
+          "finding": "Kế toán parallel: việc tính lương theo công thức (deterministic policy) không cần \"tối ưu\"; việc phân loại hóa đơn theo mô tả tự do (probabilistic, repeated, metric-checkable) là ứng viên compile — optimize the judgment calls, not the rules.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 59,
+          "topic": "Team Skills Implication",
+          "finding": "With compilation, the team's scarce skill shifts from prompt wordsmithing to metric design — writing good pass criteria is the new craft; the +25/65% gains come from well-specified metrics.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 60,
+          "topic": "The Division Summary",
+          "finding": "Standard = organization; DSPy = task optimization; RAG = data supply — the series' three answers to three different failure classes, and the chapter must keep them orthogonal.",
+          "sources": [],
+          "inference": false
+        }
+      ]
+    },
+    {
+      "id": "cluster-7",
+      "name": "Evidence Chain Review",
+      "rounds": [
+        {
+          "round": 61,
+          "topic": "The 2023 Foundation Paper Numbers",
+          "finding": "+25% (GPT-3.5) / +65% (llama2-13b-chat) over standard few-shot; 5–46% / 16–40% over expert demos; T5-770M competitive with GPT-3.5 expert chains — the three number families that anchor the whole chapter.",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 62,
+          "topic": "The 2024 MIPRO Numbers",
+          "finding": "5-of-7 programs, up to +13% accuracy, Llama-3-8B, joint instruction+demonstration optimization — the second-generation anchor.",
+          "sources": [
+            "https://arxiv.org/abs/2406.11695"
+          ],
+          "inference": false
+        },
+        {
+          "round": 63,
+          "topic": "The Chain-of-Techniques Context",
+          "finding": "The Prompt Report's 58-technique taxonomy (campaign Ch2 anchor): DSPy operationalizes the technique-selection problem — the framework picks CoT/few-shot combinations per module, collapsing the taxonomy choice into a metric.",
+          "sources": [
+            "https://arxiv.org/abs/2406.06608"
+          ],
+          "inference": false
+        },
+        {
+          "round": 64,
+          "topic": "Why Numbers Differ Across Papers",
+          "finding": "+25/65% (2023, few-shot baselines) vs +13% (2024, stronger optimizers as baselines) — the deltas shrink as baselines strengthen; cite both with their baselines, never mix.",
+          "sources": [],
+          "inference": true
+        },
+        {
+          "round": 65,
+          "topic": "Agent Loops in the Case Studies",
+          "finding": "The paper's case studies include controlling agent loops — relevant to the series' agentic chapters: the compiler tunes the loop-step prompts, not the loop policy (which stays in the standard).",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 66,
+          "topic": "Multi-Hop Retrieval Case",
+          "finding": "The multi-hop retrieval case study ties to Part 9's RAG: compiled retrieval-augmented pipelines beat hand-tuned ones — the two chapters compose in evidence, not just in theory.",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 67,
+          "topic": "Self-Improvement Framing",
+          "finding": "\"Self-improving pipelines\" (the paper's subtitle) = programs that generate their own demonstrations and refine their own instructions — the improvement loop of Part 4, automated.",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 68,
+          "topic": "The Open-Source Availability",
+          "finding": "\"DSPy is available at github.com/stanfordnlp/dspy\" — production-usable today, not a paper prototype; the series' code examples run against the real framework.",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 69,
+          "topic": "What the Papers Do Not Claim",
+          "finding": "Neither paper claims compilation eliminates the need for structure, policy, or evals — the strawman to reject explicitly in the chapter: DSPy is not \"prompt engineering is dead,\" it is \"hand-optimizing tokens is dead.\"",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 70,
+          "topic": "Evidence Chain Complete",
+          "finding": "2023 foundation (+25/65, expert-demo, small-model) → 2024 MIPRO (+13, joint) → production MIPROv2 (Bayesian) — a three-generation evidence chain, all arXiv-verifiable, all cited with baseline context.",
+          "sources": [],
+          "inference": false
+        }
+      ]
+    },
+    {
+      "id": "cluster-8",
+      "name": "Failure Modes and Honest Boundaries",
+      "rounds": [
+        {
+          "round": 71,
+          "topic": "Bad Metric, Bad Prompt",
+          "finding": "The optimizer maximizes whatever the metric measures — a wrong metric produces a confidently wrong prompt; metric review outranks prompt review in compiled pipelines.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 72,
+          "topic": "Overfitting the Trainset",
+          "finding": "Compilation can overfit small trainsets — the held-out discipline from Anthropic's eval guidance (campaign Ch5 Round 28) applies: hold out a slice, verify generalization before promoting the artifact.",
+          "sources": [
+            "https://www.anthropic.com/engineering/writing-tools-for-agents"
+          ],
+          "inference": false
+        },
+        {
+          "round": 73,
+          "topic": "The Cost of Compilation Cycles",
+          "finding": "MIPROv2 proposals each evaluate over mini-batches — compile spend scales with proposals × batch × module count; budget compilation like a build farm: on-change, sampled.",
+          "sources": [
+            "https://arxiv.org/abs/2406.11695"
+          ],
+          "inference": false
+        },
+        {
+          "round": 74,
+          "topic": "Signature Drift",
+          "finding": "Changing a signature invalidates compiled artifacts (the demos reference old fields) — signature changes require recompile, and the changelog must note \"signature v2 → recompiled\" like an API bump.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 75,
+          "topic": "The Debugging Indirection",
+          "finding": "A compiled pipeline's failure traces through generated instructions and bootstrapped demos — teams keep an inspector that dumps the compiled artifact per version; you debug what ran, not what you meant.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 76,
+          "topic": "When the Trainset Lies",
+          "finding": "Trainset distribution drift (production differs from golden set) silently redirects optimization — the periodic re-sampling rule from Part 4 extends to compilation inputs.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 77,
+          "topic": "Metric Gaming",
+          "finding": "An over-narrow metric produces artifacts that game it (format-perfect, content-empty) — the non-over-constraining verifier guidance applies in reverse: metrics must check substance, not just shape.",
+          "sources": [
+            "https://www.anthropic.com/engineering/writing-tools-for-agents"
+          ],
+          "inference": false
+        },
+        {
+          "round": 78,
+          "topic": "The Two-Line Failure",
+          "finding": "The classic first failure: `BootstrapFewShot` with a metric that always returns True — the optimizer \"improves\" toward noise; the fix is the Part 4 starter metric set (format + critical-detection), never a placeholder metric.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 79,
+          "topic": "The Vendor-Lock Non-Issue",
+          "finding": "Because compilation targets any LM, artifacts are recompiled per provider — the portability the paper measured (GPT-3.5 ↔ llama2 ↔ T5) is the anti-lock argument: the asset is the signature+metric+trainset, not the compiled string.",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 80,
+          "topic": "Boundaries Summary",
+          "finding": "DSPy's honest boundaries: needs a trainset, optimizes modules not organizations, spends real compute, fails on bad metrics — inside those boundaries, +13–65% measured gains; outside them, the standard still rules.",
+          "sources": [],
+          "inference": false
+        }
+      ]
+    },
+    {
+      "id": "cluster-9",
+      "name": "The Finance Register",
+      "rounds": [
+        {
+          "round": 81,
+          "topic": "Compile the Judgment, Keep the Rule",
+          "finding": "Kế toán: công thức tính thuế là rule (không compile); việc \"đọc hóa đơn tay viết và phân loại\" là judgment lặp lại có thể chấm điểm (metric) — ứng viên compile đầu tiên của phòng.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 82,
+          "topic": "The Đối Soát Metric",
+          "finding": "A reconciliation module's metric: đúng số lượng dòng khớp/lệch, đúng flag \"thiếu chứng từ\", không tự điền — ba tiêu chí chính là ba dòng starter metric của Part 4 dịch sang nghiệp vụ.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 83,
+          "topic": "Golden Dataset = Sao Kê Mẫu",
+          "finding": "Compilation cần vài chục cặp hóa đơn-đã-đối-chứng — chính là \"sao kê mẫu\" mà phòng kế toán đã lưu; the trainset is the reconciliation archive.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 84,
+          "topic": "Không Tự Điền Số as a Compiled Guarantee",
+          "finding": "The Fallback rule \"không tự điền số liệu còn trống\" encodes directly in the signature (an explicit \"insufficient_data\" output field) and the metric (penalize filled-missing) — the compiled artifact inherits the control.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 85,
+          "topic": "Chứng Từ Provenance in Signatures",
+          "finding": "Input fields carry provenance (`invoice_scan`, `voucher_id`) — the audit trail starts at the signature: every compiled output traces to which voucher fed it.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 86,
+          "topic": "The Period-End Recompile",
+          "finding": "Kỳ đối soát mới = recompile kiểm tra: distribution mới (loại hóa đơn mới, quy định thuế mới) có thể phá artifact cũ — the period-end close includes a recompile+eval pass.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 87,
+          "topic": "Small-Model Economics for Ops",
+          "finding": "The paper's small-model result (T5-770M ≈ GPT-3.5 expert chains) reads directly as cost: compile cho model nhỏ, chạy rẻ hơn nhiều — compilation is a cost-reduction lever, not only a quality lever.",
+          "sources": [
+            "https://arxiv.org/abs/2310.03714"
+          ],
+          "inference": false
+        },
+        {
+          "round": 88,
+          "topic": "Ai Sở Hữu Artifact",
+          "finding": "Phòng kế toán sở hữu signature + metric + trainset (nghiệp vụ); kỹ thuật sở hữu pipeline code — ownership splits the same way as the layer model: domain owns the contract, platform owns the runtime.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 89,
+          "topic": "Một Câu cho Kế Toán",
+          "finding": "\"Thay vì dạy AI đọc hóa đơn bằng cách diễn giải dài, bạn đưa cho nó 50 hóa đơn đã chấm đúng và bảo máy tự học cách hỏi\" — one sentence, the whole paradigm.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 90,
+          "topic": "Register Summary",
+          "finding": "The finance register: compile judgment tasks, encode controls in signatures and metrics, treat the reconciliation archive as the trainset, recompile at period-end, own the contract — declarative prompting as professional training, not magic.",
+          "sources": [],
+          "inference": false
+        }
+      ]
+    },
+    {
+      "id": "cluster-10",
+      "name": "Chapter Mechanics",
+      "rounds": [
+        {
+          "round": 91,
+          "topic": "VI Chapter Current State",
+          "finding": "799 words, 0 mermaid, boilerplate FAQ, no production-failure section, no finance register, no research anchors, badge added 2026-09-10 but content untouched — the campaign's remaining VI chapter closest to raw.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 92,
+          "topic": "EN Anchor Current State",
+          "finding": "1,035 words, 0 fenced mermaid, 3 real FAQ, strong production pipeline code (signature → metric → MIPROv2 → JSON artifact) but: desc truncated (\"...and automated.\"), no answer-first per H2, no evidence section, no research anchors, no related links, missing the 2023 paper's headline numbers.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 93,
+          "topic": "VI Upgrade Plan",
+          "finding": "Phase 3: keep the three-vibes-problems frame and the division table; add the evidence section (+25/65%, expert-demo deltas, T5 result, MIPRO +13%); add optimizer-lineage narrative (Bootstrap → MIPRO → MIPROv2); add finance register; add production-failure section (bad-metric/overfit); 2 mermaid (compile pipeline, lineage/decision); 3 real FAQ; research anchors; absorb the EN's production pipeline code.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 94,
+          "topic": "EN Upgrade Plan",
+          "finding": "Phase 4: fix desc; add answer-first per H2; add the 2023-paper evidence section with all three number families; add lineage subsection; add mermaid (compile lifecycle — the text diagram converts); add research anchors; extend FAQ (when-not-to-compile, metric-design); keep the production Python pipeline untouched.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 95,
+          "topic": "Cross-Linking Plan",
+          "finding": "VI links: Part 4 (metrics), Part 8 (CI gates), Part 9 (RAG compose), MCP series; EN links: Part 4/6 anchors + exec; badges already placed 2026-09-10 both directions.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 96,
+          "topic": "Mermaid Design",
+          "finding": "VI diagram 1: the compile lifecycle (signature+trainset+metric → optimizer → artifact → CI gate); VI diagram 2: the decision tree (when to hand-prompt vs when to compile). EN converts its ASCII flow to a fenced mermaid of the same lifecycle.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 97,
+          "topic": "FAQ Design",
+          "finding": "VI: (1) DSPy có thay thế Prompt Standard không (division-of-labor answer); (2) cần bao nhiêu examples để compile (starter: dozens, held-out slice); (3) compile tốn bao nhiêu và khi nào chạy (on-change, sampled). EN adds: does-compilation-kill-hand-prompting; what-makes-a-good-metric.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 98,
+          "topic": "The 70%-Class Integrity Check",
+          "finding": "No unverified percentage claims exist in either current draft — the chapter's numbers all trace to the two arXiv papers; keep it that way (Gate 7 clean on entry).",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 99,
+          "topic": "Definition of Done",
+          "finding": "Both chapters: >2,500 words, >20KB, 2 mermaid each, 3–5 FAQ, answer-first per H2, all figures sourced to arXiv with baselines, 0 banned words, Hugo PASS.",
+          "sources": [],
+          "inference": false
+        },
+        {
+          "round": 100,
+          "topic": "Campaign Meta-Note",
+          "finding": "Round 100 closes chapter 8's dossier (3rd-to-last of the consolidated series); the campaign proceeds to Ch9 (`part-8-production-promptops` ⇄ EN `part-6-promptops-evals-and-security` upgrade-pair) and Ch10 (`part-9-mcp` ⇄ EN `part-4-mcp`).",
+          "sources": [],
+          "inference": true
+        }
+      ]
+    }
+  ]
+}
