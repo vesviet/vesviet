@@ -1,266 +1,293 @@
 ---
-title: "Shopee Observability: ClickHouse & Distributed Tracing"
-date: "2026-05-05T08:50:00+07:00"
-lastmod: "2026-05-05T08:50:00+07:00"
+title: "Chapter 5: Full-Stack Observability — Vector, ClickHouse, and Distributed Tracing at Scale"
+slug: "05-observability"
+date: "2026-05-07T08:30:00+07:00"
+lastmod: "2026-09-11T21:40:00+07:00"
 draft: false
+weight: 5
+series: ["shopee-architecture"]
+series_order: 5
 mermaid: true
-description: "How Shopee engineering utilizes ClickHouse and Distributed Tracing to debug millions of concurrent requests across microservices clusters."
+description: "How Shopee manages petabytes of telemetry data: utilizing Vector SIMD agents, ClickHouse columnar storage, OpenTelemetry tail-based sampling, and continuous eBPF profiling."
 ShowToc: true
 TocOpen: true
 cover:
   image: "/images/posts/shopee-flash-sale-cover.jpg"
   alt: "Shopee Architecture series: scaling for flash sales — rate limiting, Redis, and distributed systems"
   relative: false
+categories: ["Observability", "Distributed Systems", "SRE"]
+tags: ["Shopee", "Vector", "ClickHouse", "OpenTelemetry", "Distributed Tracing", "eBPF", "Continuous Profiling"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/05-observability/"
 image: "/images/posts/shopee-flash-sale-cover.jpg"
-series: ["shopee-architecture"]
-weight: 5
 ---
 
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Bài 5: Hệ Thống Giám Sát Toàn Diện — Vector, ClickHouse và Truy Vết Phân Tán Ở Quy Mô Siêu Lớn (learn.tanhdev.com)](https://learn.tanhdev.com/series/shopee-architecture/05-observability/).
 
-> **Answer-first:** Shopee isolates latency bottlenecks across 30+ microservice call hops by combining OpenTelemetry distributed tracing, ClickHouse columnar log storage, and Apache Flink real-time stream processing. Injecting W3C trace contexts through gRPC headers enables SREs to reconstruct waterfall traces and diagnose microservice failures in sub-seconds. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for.
-
-## Chapter 5: Observability - Finding Bugs in the Microservices Jungle
-
-[← Series hub](/series/shopee-architecture/) | [← Prev](/series/shopee-architecture/04-database-scale/)
-
-> **Prerequisite:** Read the previous article: Chapter 4: Shopee DB: MySQL Sharding to TiDB NewSQL Migration.
-
-Debugging an incident in a monolithic application requires checking a single centralized server log. At Shopee, a single user checkout press traverses over 30 isolated microservice hops (`API Gateway -> Order Service -> Promo Service -> Inventory Service -> Payment Service -> Banking Gateway`). Diagnosing latency bottlenecks across tens of thousands of Kubernetes pods requires a unified observability stack: Metrics, Logs, and Distributed Tracing.
+[Previous Chapter: Chapter 4 — Database Scalability: From MySQL to TiDB](/series/shopee-architecture/04-database-scale/) | [Series Hub](/series/shopee-architecture/)
 
 ---
 
-## 1. Distributed Tracing and Context Propagation
-
-Injecting a globally unique Trace ID into the headers of every gRPC call enables Shopee to reconstruct the entire request execution path as a visual waterfall graph, isolating microservice latency spikes.
-
-Shopee uses OpenTelemetry standards to track cross-service executions:
-- **Trace ID:** Generated at the API Gateway upon request entry (e.g., `TraceID: a8f9x0`).
-- **Context Propagation:** Microservices pass the `TraceID` downstream through gRPC metadata and HTTP headers.
-- **Span ID:** Each internal function boundary creates a timed child **Span** linked to the parent trace.
-
-### W3C Trace Context Propagation
-
-Shopee enforces the W3C Trace Context specification across HTTP/gRPC boundaries using standardized header formats:
-- `traceparent`: `00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01`
-  - `00`: Version identifier.
-  - `4bf92f3577b34da6a3ce929d0e0e4736`: 16-byte Trace ID.
-  - `00f067aa0ba902b7`: 8-byte Parent Span ID.
-  - `01`: Trace sampling flag bit.
-
-### Tracing Latency Overhead Optimization
-
-Tracing 100% of 10M+ QPS traffic creates severe network bandwidth and storage overhead. Shopee combines two sampling strategies:
-1. **Head-Based Sampling:** The API Gateway samples a fixed percentage (e.g., 1%) of successful traffic at the network edge, setting trace flags so downstream microservices bypass non-sampled spans.
-2. **Tail-Based Sampling:** OpenTelemetry Collectors buffer 100% of spans in memory temporarily, exporting traces to persistent ClickHouse storage only if they contain error status codes or exceed 500ms execution latency.
-
-### Baggage API & Asynchronous Message Queue Propagation
-
-Shopee uses the W3C **Baggage API** to propagate business metadata (such as `user_tier=vip`) across microservice boundaries without performing repeated database queries. When publishing events to Apache Kafka, OpenTelemetry text-map propagators serialize trace context into Kafka record headers, linking synchronous REST/gRPC frontend calls directly to downstream asynchronous consumer execution traces.
+> **Answer-First:** Operating thousands of microservices generating billions of daily transactions makes naive logging (Elasticsearch/ELK) financially prohibitive and computationally unsustainable. Shopee adopted a next-generation observability stack: **Rust-based Vector edge daemons** parsing telemetry with SIMD acceleration, **Apache Kafka** buffering ingestion bursts, **ClickHouse columnar storage** compressing petabyte-scale logs by 12x with sparse indexing, **OpenTelemetry (OTel)** collectors executing tail-based adaptive sampling (retaining 100% of errors and p99 latency anomalies while discarding 99% of normal traces), and **eBPF continuous profiling** diagnosing production CPU/memory bottlenecks with sub-1% runtime overhead.
 
 ---
 
-## 2. Metrics Collection and Log Storage
+## 1. The Observability Trilemma at Hyper-Scale
 
-### Prometheus Scraping Targets & High Cardinality
+At Shopee's scale, observing distributed microservices during mega-campaigns introduces three conflicting pressures:
 
-Prometheus monitors cluster health via a pull model, scraping `/metrics` HTTP endpoints on microservice pods:
-- **Scrape Discovery:** Prometheus dynamically discovers pod endpoints via Kubernetes DNS at 10-second intervals.
-- **Cardinatily Protection:** Inserting dynamic variables (`user_id`, `order_id`) into Prometheus metric label keys is strictly forbidden. Dynamic labels create millions of time series, causing Prometheus server memory exhaustion.
-
-### Log Storage with ClickHouse
-
-Processing tens of terabytes of daily log output using traditional Elasticsearch clusters incurs heavy memory indexing overhead. Shopee utilizes **ClickHouse**—a columnar OLAP database—for log retention:
-- **Vectorized Compression:** Columnar storage enables ZSTD compression algorithms, reducing log disk footprints by over 70% compared to inverted text indexes.
-- **Parallel Query Performance:** ClickHouse executes vectorized multi-threaded scans, returning query results across billions of log rows within 1 to 2 seconds.
-
-The Go implementation below demonstrates OpenTelemetry context injection alongside Prometheus RPC latency histogram monitoring:
-
-```go
-package telemetry
-
-import (
-	"context"
-	"time"
-	"google.golang.org/grpc/metadata"
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promauto"
-	"go.opentelemetry.io/otel/propagation"
-)
-
-var (
-	rpcDuration = promauto.NewHistogramVec(
-		prometheus.HistogramOpts{
-			Name:    "shopee_rpc_duration_seconds",
-			Help:    "Execution latency of gRPC microservice calls.",
-			Buckets: []float64{0.002, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5},
-		},
-		[]string{"service_method", "response_code"},
-	)
-)
-
-// InjectTraceContext injects the current trace context into gRPC metadata for propagation.
-func InjectTraceContext(ctx context.Context) context.Context {
-	md, ok := metadata.FromOutgoingContext(ctx)
-	if !ok {
-		md = metadata.New(nil)
-	}
-
-	propagator := propagation.TraceContext{}
-	carrier := propagation.HeaderCarrier{}
-	
-	propagator.Inject(ctx, carrier)
-
-	for _, key := range carrier.Keys() {
-		md.Set(key, carrier.Get(key))
-	}
-
-	return metadata.NewOutgoingContext(ctx, md)
-}
-
-// ExtractTraceContext extracts the trace context from incoming gRPC metadata.
-func ExtractTraceContext(ctx context.Context) context.Context {
-	md, ok := metadata.FromIncomingContext(ctx)
-	if !ok {
-		return ctx
-	}
-
-	carrier := propagation.HeaderCarrier{}
-	for key, values := range md {
-		if len(values) > 0 {
-			carrier.Set(key, values[0])
-		}
-	}
-
-	propagator := propagation.TraceContext{}
-	return propagator.Extract(ctx, carrier)
-}
-
-// RecordRPCLatency logs latency measurements to Prometheus vector buckets.
-func RecordRPCLatency(method string, code string, startTime time.Time) {
-	elapsed := time.Since(startTime).Seconds()
-	rpcDuration.WithLabelValues(method, code).Observe(elapsed)
-}
+```
+                  Cost & Storage Budget
+                         ▲
+                        / \
+                       /   \
+                      /     \
+    Data Completeness ◄───────► Query & Ingestion Latency
+    (100% Traces/Logs)        (Sub-Second Incident Response)
 ```
 
-### ClickHouse Schema Design for Trillions of Logs
-
-The SQL schema below defines a high-performance ClickHouse log storage table configured with dictionary compression and primary index ordering:
-
-```sql
-CREATE TABLE telemetry.microservice_logs
-(
-    timestamp DateTime64(6, 'UTC'),
-    service_name LowCardinality(String),
-    log_level LowCardinality(String),
-    trace_id String,
-    span_id String,
-    message String,
-    attributes Map(String, String)
-)
-ENGINE = ReplacingMergeTree(timestamp)
-PARTITION BY toYYYYMMDD(timestamp)
-ORDER BY (service_name, log_level, timestamp, trace_id)
-SETTINGS index_granularity = 8192;
-```
-
-`LowCardinality` encodings optimize memory usage for repeated strings like `service_name`, while primary key ordering by `(service_name, log_level, timestamp)` allows ClickHouse sparse indexes to bypass non-relevant data blocks during log searches.
+- **Storage Explosion:** Over 500 TB of raw JSON logs generated daily quickly exhaust traditional inverted-index search clusters like Elasticsearch, driving astronomical SSD storage costs.
+- **Agent Resource Contention:** Heavy logging sidecars (like Python or JVM-based log collectors) consume up to 15% of pod CPU and trigger memory out-of-memory (OOM) evictions during peak traffic.
+- **Sampling Dilemma:** Head-based sampling (deciding whether to keep a trace at the initial HTTP ingress) blindfolds engineering teams from capturing elusive p99 tail latencies and distributed deadlocks that only surface deep within the call graph.
 
 ---
 
-## 3. Real-Time Analytics with Apache Flink
+## 2. End-to-End Telemetry Architecture
 
-Shopee uses **Apache Flink** stream processing engines to analyze continuous event streams, automating anomaly detection and security threat mitigation in real time.
-
-The architectural diagram below traces telemetry context propagation from API Gateways through microservice spans into ClickHouse storage and Flink real-time alerting engines:
+Shopee's unified observability platform decouples data collection, ingestion buffering, storage indexing, and visualization across dedicated high-throughput layers:
 
 ```mermaid
-graph TD
-    Gateway["API Gateway<br/>Generates TraceID"] -->|"Passes TraceID"| Order["Order Service<br/>Span A"]
-    Order -->|"Passes TraceID"| Inventory["Inventory Service<br/>Span B"]
-    Order -->|"Passes TraceID"| Promo["Promo Service<br/>Span C"]
-    
-    Gateway -.-> OTEL["Telemetry Collector"]
-    Order -.-> OTEL
-    Inventory -.-> OTEL
-    Promo -.-> OTEL
-    
-    OTEL --> ClickHouse[("ClickHouse<br/>Metrics & Log Storage")]
-    OTEL --> Flink["Apache Flink<br/>Real-time Alerts"]
+flowchart TD
+    subgraph ComputeNodes["Kubernetes Node Fleet"]
+        APP1["Go Microservice Pod"]
+        APP2["Payment Gateway Pod"]
+        VEC["Vector DaemonSet (Rust + SIMD Parser)"]
+        EBPF["eBPF Profiling Agent (Pyroscope / Beyla)"]
+
+        APP1 -->|stdout / JSON logs| VEC
+        APP2 -->|OTLP Traces / Metrics| VEC
+        APP1 -. kernel hooks .- EBPF
+        APP2 -. kernel hooks .- EBPF
+    end
+
+    subgraph StreamingBuffer["Message Ingestion Buffer"]
+        KAFKA_LOGS["Kafka: telemetry-logs-topic"]
+        KAFKA_TRACES["Kafka: telemetry-traces-topic"]
+    end
+
+    subgraph ProcessingLayer["Stream Workers & Tracing Collectors"]
+        OTEL_COL["OpenTelemetry Collector Fleet<br/>(Tail-Based Adaptive Sampler)"]
+        CLICK_SINK["ClickHouse Batch Ingestion Workers"]
+    end
+
+    subgraph StorageLayer["Analytical Long-Term Storage"]
+        CH["ClickHouse Columnar Warehouse<br/>(MergeTree + ZSTD Compression)"]
+        VM["VictoriaMetrics / M3DB<br/>(High-Cardinality Metrics TSDB)"]
+        PYRO["Pyroscope Storage<br/>(Continuous CPU & Memory Flamegraphs)"]
+    end
+
+    subgraph VisualizationLayer["Incident Triage & Dashboards"]
+        GRAFANA["Unified Grafana Dashboards"]
+        JAEGER["Jaeger Trace Exploration UI"]
+    end
+
+    VEC -->|Batch Push| KAFKA_LOGS
+    VEC -->|OTLP gRPC| KAFKA_TRACES
+    EBPF -->|Profiles| PYRO
+
+    KAFKA_LOGS --> CLICK_SINK --> CH
+    KAFKA_TRACES --> OTEL_COL --> JAEGER
+    OTEL_COL -->|Span Metrics| VM
+
+    CH --> GRAFANA
+    VM --> GRAFANA
+    PYRO --> GRAFANA
+    JAEGER --> GRAFANA
 ```
 
-### Flink Windowing & Out-Of-Order Event Handling
+### Key Architectural Decisions
 
-Flink monitors log and metric streams using event-time evaluation:
-- **Tumbling & Sliding Windows:** Tumbling windows (10-second non-overlapping blocks) measure absolute error counts, while sliding windows calculate metric rate velocities.
-- **Watermarking & State Recovery:** Bounded-out-of-orderness watermarks tolerate late-arriving events from network delays. Flink persists window state to SSDs using RocksDB backends, enabling rapid fault recovery during node outages.
+1. **Rust-Powered Vector Edge Agents:** Installed as a Kubernetes `DaemonSet`, Vector reads container logs directly from node `/var/log/pods/`. By leveraging Rust SIMD vectorization, Vector parses JSON lines at over **400 MB/sec per CPU core**, keeping CPU overhead below 0.5% per host.
+2. **Kafka Shock Absorber:** Decouples ingestion spikes from database sinks. If ClickHouse undergoes a rolling cluster restart or compaction spike, Kafka retains hours of telemetry without dropping a single record.
+3. **ClickHouse Columnar Warehouse:** Replaces Elasticsearch for log analytics. By storing structured fields (e.g., `service`, `level`, `trace_id`, `http_status`) in dense columnar format with ZSTD-12 compression, ClickHouse reduces storage footprints by over **90%** while executing multi-billion-row queries in hundreds of milliseconds.
 
 ---
 
-## Developer Takeaways
-Maintaining visibility across distributed microservice architectures requires combining **OpenTelemetry W3C trace context propagation**, **ClickHouse columnar log storage**, **Prometheus metric scraping**, and **Apache Flink real-time stream analytics**. Standardizing trace context propagation across gRPC metadata and Kafka headers provides SRE teams with sub-second root cause diagnosis during high-concurrency production incidents.
+## 3. High-Performance ClickHouse Log Storage Engine
 
-## ClickHouse Telemetry Log Search Benchmarks
+To achieve real-time log querying across billions of rows, the log storage schema uses a specialized `MergeTree` engine partitioned by day with primary keys ordered for fast filtering:
 
-The Go benchmark suite below measures the unmarshaling performance of ClickHouse log query result streams:
+```sql
+-- Production ClickHouse Schema for Distributed Service Logs
+CREATE TABLE service_logs (
+    timestamp DateTime64(3, 'UTC') CODEC(DoubleDelta, ZSTD(3)),
+    service LowCardinality(String),
+    environment LowCardinality(String),
+    level LowCardinality(String),
+    trace_id String CODEC(ZSTD(6)),
+    span_id String CODEC(ZSTD(6)),
+    http_method LowCardinality(String),
+    http_status UInt16,
+    duration_ms Float32 CODEC(Gorilla, ZSTD(3)),
+    message String CODEC(ZSTD(6)),
+    attributes Map(String, String) CODEC(ZSTD(6))
+)
+ENGINE = MergeTree()
+PARTITION BY toYYYYMMDD(timestamp)
+ORDER BY (service, level, http_status, timestamp)
+SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1;
+```
+
+### Schema Optimization Highlights:
+- **`LowCardinality(String)`**: Encodes repetitive strings (like `service`, `environment`, `level`) as integer dictionaries, transforming string lookups into blazing-fast integer comparisons.
+- **Compound Primary Index `(service, level, http_status, timestamp)`**: Matches the natural triage workflow of engineers investigating production errors (`WHERE service = 'order-service' AND level = 'ERROR'`).
+- **`DoubleDelta` & `Gorilla` Codecs**: Specifically compress timestamps and floating-point execution latencies down to fractions of a byte per row.
+
+---
+
+## 4. Adaptive Tail-Based Distributed Tracing
+
+In standard head-based sampling, a trace decision is made at the root gateway before the request finishes. If an internal database query takes 5 seconds or throws a 500 error deep inside the downstream inventory service, a head-sampled system configured at 1% sampling will drop 99% of those critical failure traces.
+
+Shopee deploys **OpenTelemetry Collector clusters with Tail-Based Sampling**:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant App as Microservice Fleet (Go)
+    participant Buffer as OTel Collector Memory Ring Buffer
+    participant Decision as Tail-Based Sampling Decision Engine
+    participant TraceSink as ClickHouse / Jaeger Storage
+
+    App->>Buffer: Push Span (trace_id=abc-1, duration=15ms, status=200)
+    App->>Buffer: Push Span (trace_id=abc-2, duration=820ms, status=504)
+    App->>Buffer: Push Span (trace_id=abc-3, duration=12ms, status=200)
+
+    Note over Buffer: Wait 5 seconds for all distributed spans to assemble
+
+    Buffer->>Decision: Submit Assembled Trace (abc-1)
+    Decision-->>Decision: Evaluate Rule: Status=200 & Latency < 100ms
+    Decision->>Buffer: Decision: Probabilistic 1% Filter -> DISCARD
+
+    Buffer->>Decision: Submit Assembled Trace (abc-2)
+    Decision-->>Decision: Evaluate Rule: Status >= 500 OR Latency > 500ms
+    Decision->>TraceSink: Decision: MATCH CRITICAL -> SAVE 100% (abc-2)
+    TraceSink-->>Decision: Persisted to Long-Term Storage
+```
+
+### Tail-Based Sampling Rule Definition:
+
+```yaml
+# OpenTelemetry Collector Tail-Based Sampling Processor
+processors:
+  tail_sampling:
+    decision_wait: 5s # Wait for late-arriving asynchronous spans
+    num_traces: 250000 # Memory capacity for in-flight trace tracking
+    expected_new_traces_per_sec: 10000
+    policies:
+      # Rule 1: Retain 100% of all HTTP 5xx and internal gRPC errors
+      - name: capture-errors
+        type: status_code
+        status_code: { status_codes: [ ERROR ] }
+
+      # Rule 2: Retain 100% of slow requests exceeding P99 threshold (> 500ms)
+      - name: capture-latency-anomalies
+        type: latency
+        latency: { threshold_ms: 500 }
+
+      # Rule 3: Retain 100% of high-value VIP / checkout funnel operations
+      - name: capture-checkout-funnel
+        type: string_attribute
+        string_attribute:
+          key: http.target
+          values: [ "/api/v1/checkout", "/api/v1/payment" ]
+
+      # Rule 4: Sample remaining normal baseline 200 OK traffic at 1%
+      - name: probabilistic-sample-normal
+        type: probabilistic
+        probabilistic: { sampling_percentage: 1.0 }
+```
+
+---
+
+## 5. Continuous Profiling with eBPF in Production Go Services
+
+Traditional Go pprof profiling introduces CPU spikes and cannot be run continuously across thousands of production nodes. Shopee uses **eBPF continuous profiling** (Grafana Pyroscope / Beyla) to sample kernel stack traces and Go runtime goroutine scheduler states with sub-1% overhead.
 
 ```go
-package main
+// Package profiling initializes continuous flamegraph profiling with zero code intrusion.
+package profiling
 
 import (
-	"testing"
+	"log"
+	"os"
+
+	"github.com/grafana/pyroscope-go"
 )
 
-type LogRecord struct {
-	TraceID string
-	SpanID  string
-	Level   string
-}
-
-func (l *LogRecord) Parse(data string) {
-	l.TraceID = data[:16]
-	l.SpanID = data[16:24]
-	l.Level = data[24:]
-}
-
-// BenchmarkClickHouseLogParse measures Go telemetry log Record parsing latency.
-func BenchmarkClickHouseLogParse(b *testing.B) {
-	sample := "4bf92f3577b34da600f067aaINFO_LEVEL"
-	record := &LogRecord{}
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		record.Parse(sample)
-		if record.TraceID == "" {
-			b.Fatal("invalid trace ID parsed")
-		}
+// InitContinuousProfiling attaches non-blocking continuous profiling to the Go runtime.
+func InitContinuousProfiling(serviceName string) (*pyroscope.Profiler, error) {
+	serverAddress := os.Getenv("PYROSCOPE_SERVER_ADDRESS")
+	if serverAddress == "" {
+		serverAddress = "http://pyroscope.telemetry.svc.cluster.local:4040"
 	}
+
+	profiler, err := pyroscope.Start(pyroscope.Config{
+		ApplicationName: serviceName,
+		ServerAddress:   serverAddress,
+		Logger:          pyroscope.StandardLogger,
+		Tags: map[string]string{
+			"env":     os.Getenv("APP_ENV"),
+			"region":  os.Getenv("K8S_REGION"),
+			"node_ip": os.Getenv("HOST_IP"),
+		},
+		ProfileTypes: []pyroscope.ProfileType{
+			pyroscope.ProfileCPU,              // CPU hotspot flamegraph
+			pyroscope.ProfileAllocObjects,     // Heap allocation counts (GC pressure)
+			pyroscope.ProfileAllocSpace,       // Total allocated memory bytes
+			pyroscope.ProfileInuseObjects,     // Active heap object count
+			pyroscope.ProfileGoroutines,       // Goroutine leak detection
+			pyroscope.ProfileBlockCount,       // Channel & mutex contention frequency
+			pyroscope.ProfileBlockDuration,    // Lock waiting time
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	log.Printf("Continuous profiling initialized for service: %s", serviceName)
+	return profiler, nil
 }
 ```
 
-The benchmark execution results below demonstrate nanosecond parsing latency with zero heap memory allocations:
+By correlating continuous flamegraphs directly with distributed trace spans, engineers can click on a slow 500ms trace span and immediately see the exact line of code where a Go mutex lock contention occurred.
 
-```
-BenchmarkClickHouseLogParse-16    100000000    8.9 ns/op    0 B/op    0 allocs/op
-```
+---
 
-## Frequently Asked Questions (FAQ)
+## Frequently Asked Questions
 
-{{< faq "How does W3C Trace Context propagation work across gRPC microservice calls?" >}}
-The API Gateway generates a 16-byte `traceparent` header containing a globally unique Trace ID and Parent Span ID. OpenTelemetry interceptors inject this header into outgoing gRPC metadata, allowing downstream services to extract the context and link local execution spans into a unified trace graph.
+{{< faq q="How does ClickHouse maintain sub-second query latency when querying petabytes of logs?" >}}
+ClickHouse achieves exceptional query performance through four architectural advantages:
+1. <strong>Columnar Data Layout:</strong> Only the columns referenced in the SQL `SELECT` and `WHERE` clauses are read from disk, reducing I/O volume by over 95% compared to row-oriented stores.
+2. <strong>Vectorized Execution:</strong> Leverages CPU SIMD (Single Instruction, Multiple Data) instructions to scan and filter tens of millions of rows per core every second.
+3. <strong>Sparse Indexing with Granularity 8192:</strong> Indexes one mark per 8,192 rows, allowing the query engine to skip entire physical data blocks rapidly with minimal index RAM footprint.
+4. <strong>Partition Pruning:</strong> Partitioning by date (`toYYYYMMDD`) ensures queries specifying a time range immediately discard data parts outside the window without disk reads.
 {{< /faq >}}
 
-{{< faq "Why is ClickHouse preferred over Elasticsearch for microservice log storage?" >}}
-ClickHouse utilizes vectorized columnar storage and ZSTD compression, reducing log storage footprints by over 70% compared to Elasticsearch inverted indexes. It executes multi-core parallel queries across raw log streams, returning filtered search results across billions of log entries in 1 to 2 seconds.
+{{< faq q="How does the OpenTelemetry Collector prevent memory exhaustion when running tail-based sampling during traffic surges?" >}}
+Tail-based sampling requires buffering spans in memory until a trace completes. During flash sale surges, the collector manages memory safety through:
+- <strong>Bounded Ring Buffer (`num_traces` limit):</strong> Enforces a strict ceiling on active in-memory traces (e.g., 250,000 traces).
+- <strong>Memory Ballast & Ballast Checkers:</strong> Detects heap allocation thresholds; if memory crosses 80% of pod limits, the sampler switches dynamically to early-drop or head-based shedding for low-priority endpoints.
+- <strong>Cluster Routing with Trace-ID Hashing:</strong> An upstream Envoy or OTel load balancer hashes spans by `trace_id` so that all spans belonging to the same trace land on the exact same collector instance, eliminating cross-node synchronization overhead.
 {{< /faq >}}
 
-{{< faq "How does Apache Flink perform real-time anomaly detection on telemetry streams?" >}}
-Apache Flink evaluates continuous log streams using event-time sliding windows and bounded-out-of-orderness watermarks. If HTTP 500 error counts or API latency bounds breach configured SRE thresholds within a time window, Flink triggers automated Slack/PagerDuty alerts before human intervention.
+{{< faq q="How does continuous eBPF profiling differ from traditional Go pprof endpoints?" >}}
+eBPF continuous profiling operates fundamentally differently from manual pprof:
+- <strong>Kernel-Level Non-Intrusive Sampling:</strong> eBPF hooks directly into Linux kernel timer interrupts (`perf_events`), reading call stacks from memory without pausing Go garbage collection (GC) or stopping the world.
+- <strong>System-Wide Correlation:</strong> Unlike pprof (which only observes the Go user-space runtime), eBPF profiles capture kernel syscalls, page faults, network TCP socket stalls, and CGo code execution.
+- <strong>Always-On Historical Differential Analysis:</strong> Profiling runs 24/7 in production with <1% overhead, allowing developers to generate differential flamegraphs ("What changed in CPU consumption between 11:59 PM and 12:01 AM during 11.11?").
 {{< /faq >}}
 
-*Troubled by missing traces or excessive observability overhead in your cluster? [Hire me](/hire/) to optimize your OpenTelemetry, ClickHouse, and Prometheus setup.*
+---
 
-🔗 **Next Step:** This concludes the Shopee Architecture series. You can return to the [Series Hub](/series/shopee-architecture/) for a complete overview, or explore our case study on migrating legacy platforms in the [Composable Commerce Migration Series](/series/composable-commerce-migration/).
-
-{{< author-cta >}}
+[Previous Chapter: Chapter 4 — Database Scalability: From MySQL to TiDB](/series/shopee-architecture/04-database-scale/) | [Series Hub](/series/shopee-architecture/)

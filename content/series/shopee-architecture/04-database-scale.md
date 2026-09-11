@@ -1,11 +1,14 @@
 ---
-title: "Shopee DB: MySQL Sharding to TiDB NewSQL Migration"
+title: "Chapter 4: Scaling Storage from MySQL Shards to TiDB Multi-Raft Architecture"
 slug: "04-database-scale"
-date: "2026-05-05T08:40:00+07:00"
-lastmod: "2026-06-11T20:00:00+07:00"
+date: "2026-05-06T08:30:00+07:00"
+lastmod: "2026-09-11T21:40:00+07:00"
 draft: false
+weight: 4
+series: ["shopee-architecture"]
+series_order: 4
 mermaid: true
-description: "How Shopee scaled from MySQL sharding to TiDB NewSQL: ProxySQL connection pooling, read replica architecture, and TiDB migration for 100M+ users."
+description: "How Shopee conquered petabyte-scale e-commerce transaction data: transitioning from traditional MySQL sharding to distributed NewSQL with TiDB and TiKV Multi-Raft consensus."
 ShowToc: true
 TocOpen: true
 cover:
@@ -13,282 +16,283 @@ cover:
   alt: "Shopee Architecture series: scaling for flash sales — rate limiting, Redis, and distributed systems"
   relative: false
 categories: ["Database", "Distributed Systems", "NewSQL"]
-tags: ["Shopee", "TiDB", "MySQL", "Sharding", "Distributed SQL", "HTAP"]
+tags: ["Shopee", "TiDB", "TiKV", "Multi-Raft", "MySQL", "Distributed Database", "HTAP"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/04-database-scale/"
 image: "/images/posts/shopee-flash-sale-cover.jpg"
-series: ["shopee-architecture"]
-weight: 4
 ---
 
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Bài 4: Mở Rộng Cơ Sở Dữ Liệu — Từ Phân Mảnh MySQL Đến Phân Tán TiDB Multi-Raft (learn.tanhdev.com)](https://learn.tanhdev.com/series/shopee-architecture/04-database-scale/).
 
-> **Answer-first:** Shopee scales its relational database layer past single-node MySQL limits by migrating to TiDB Distributed SQL. By separating stateless SQL compute (TiDB) from stateful key-value storage (TiKV) and columnar analytics (TiFlash), TiDB delivers transparent horizontal auto-sharding and ACID transactions without application-level sharding logic. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for.
-
-## Chapter 4: Database Scale - The Rise of TiDB and NewSQL
-
-[← Series hub](/series/shopee-architecture/) | [← Prev](/series/shopee-architecture/03-traffic-shield/) | [Next →](/series/shopee-architecture/05-observability/)
-
-> **Prerequisite:** Read the previous article: Chapter 3: Traffic Shield - Peak Shaving with Kafka and Graceful Degradation.
-
-Regardless of front-end caching tiers or message queue buffers, all transactional orders persist to relational database storage (the Source of Truth). With tens of millions of daily orders, standalone MySQL instances encounter physical disk IOPS ceilings, deep B+Tree index traversal degradation, and locking bottlenecks.
+[Previous Chapter: Chapter 3 — Traffic Shield & Peak Shaving](/series/shopee-architecture/03-traffic-shield/) | [Series Hub](/series/shopee-architecture/) | [Next Chapter: Chapter 5 — Full-Stack Observability](/series/shopee-architecture/05-observability/)
 
 ---
 
-## 1. How to Scale MySQL? The Nightmare of Sharding
-
-Manual database sharding enables write scaling but creates severe engineering complexity: scatter-gather query latency for non-shard keys (e.g., seller dashboard views) and distributed two-phase commit (2PC) overhead across physical database instances.
-
-Historically, scaling MySQL involved partitioning a single `Orders` table into hundreds of physical database instances using hashing algorithms (`user_id % 128`).
-
-### Sharding Proxies: ProxySQL vs. Vitess
-
-Managing connection pools and SQL query routing across shards relies on specialized proxy engines:
-1. **ProxySQL:** A high-performance SQL proxy optimized for **Read/Write splitting** (routing write traffic to primary masters and reads to secondary replicas) and connection pooling. However, ProxySQL requires application code or regex rules to handle shard key routing manually.
-2. **Vitess:** Originally developed by YouTube, Vitess uses `VTGate` proxies to analyze incoming SQL queries and automatically route requests to target MySQL shards (`VTTablet`). It abstracts physical sharding topology from application microservices.
+> **Answer-First:** Traditional MySQL sharding collapses under hyper-scale e-commerce growth due to manual resharding overhead, cross-shard joins, and high 2-Phase Commit (2PC) latency penalties. Shopee transitioned its massive order and inventory backbones to **TiDB and TiKV**, a cloud-native NewSQL distributed database. By decoupling stateless SQL compute (TiDB) from distributed transactional storage (TiKV) coordinated via Placement Driver (PD) and Multi-Raft consensus across 96MB continuous key Regions, TiDB delivers horizontal elastic scalability, zero-downtime auto-rebalancing, and real-time HTAP analytics without impacting write-heavy OLTP workloads.
 
 ---
 
-## 2. The NewSQL Solution: TiDB
+## 1. The Breakdown of Traditional MySQL Sharding
 
-TiDB acts as a drop-in, MySQL-compatible distributed NewSQL database. It decouples stateless SQL compute nodes from distributed TiKV key-value storage nodes, employing Multi-Raft consensus to auto-shard data regions without manual intervention.
+In its early growth phases, Shopee scaled relational storage using standard MySQL master-replica replication with proxy-based sharding (ShardingSphere, Vitess, or custom routing middlewares). Each shard housed tens of millions of records, partitioned by `user_id` or `merchant_id`.
 
-To eliminate application-level sharding complexity, Shopee migrated core order and payment domains to **TiDB**. TiDB provides the horizontal scalability of NoSQL alongside full relational ACID transaction guarantees.
-
-The architectural diagram below illustrates the separation of TiDB stateless SQL compute engines, Placement Driver (PD) metadata schedulers, TiKV row-based storage nodes, and TiFlash columnar analytical replicas:
-
-```mermaid
-graph TD
-    App["Shopee Backend"] -->|"Standard MySQL Protocol"| TiDB["TiDB Server<br/>(Stateless SQL Engine)"]
-    App -->|"MySQL Protocol"| TiDB2["TiDB Server 2"]
-    
-    subgraph TiDB_Cluster__NewSQL ["TiDB Cluster  (NewSQL)"]
-        TiDB --> PD["Placement Driver<br/>Routing & Metadata"]
-        TiDB2 --> PD
-        
-        PD -.-> TiKV1[("TiKV Node 1<br/>Raft Leader")]
-        PD -.-> TiKV2[("TiKV Node 2<br/>Raft Follower")]
-        PD -.-> TiKV3[("TiKV Node 3<br/>Raft Follower")]
-        
-        TiDB --> TiKV1
-        TiDB2 --> TiKV2
-        
-        TiFlash[("TiFlash<br/>Columnar Storage for OLAP")] -.->|"Raft Learner"| TiKV1
-    end
+```
+MySQL Cluster Limits:
+┌────────────────────────────┐    Cross-Shard Join / 2PC Latency (> 250ms)
+│  Order Table (Sharded)     │ ───► Expensive cross-node XA locks
+│  Merchant Shards (1..64)   │ ───► Manual resharding when single shard hits 500GB
+│  Replica Lag Spike         │ ───► GTID replication delay during 11.11 traffic spikes
+└────────────────────────────┘
 ```
 
-### Percolator Distributed Transactions (2PC)
+Three critical operational bottlenecks forced a architectural paradigm shift:
 
-TiDB implements distributed ACID transactions using a decentralized commit protocol based on Google's **Percolator** model, embedding transaction lock metadata directly inside Key-Value pairs:
-1. **Prewrite Phase:** The transaction client selects a primary key and writes prewrite locks and data buffers to target TiKV nodes. Secondary locks contain pointers pointing back to the primary key lock.
-2. **Commit Phase:** Upon successful prewrites, the client obtains a commit timestamp from the Placement Driver (PD) and commits the primary key lock. Clearing the primary lock marks the transaction committed.
-3. **Asynchronous Secondary Rollout:** Secondary keys release locks asynchronously. Concurrent readers encountering secondary locks follow pointers back to the primary key status to verify transaction commit state.
+1. **The Re-Sharding Tax:** When order volume expanded 5x year-over-year, splitting 64 shards into 128 shards required weeks of planning, manual data migration, routing table updates, and risky maintenance downtime windows.
+2. **Cross-Shard Query Degradation:** While single-key lookups (`WHERE user_id = ? AND order_id = ?`) routed cleanly to one MySQL instance, aggregate merchant dashboards and fraud detection queries required distributed scatter-gather queries with high cross-node latency and heavy memory footprints.
+3. **Replication Lag & Asymmetric Failover:** Under massive write surges during 11.11 flash sales, asynchronous or semi-synchronous binlog replication lagged by dozens of seconds. If a primary node failed under peak load, failover tools (such as Orchestrator) risked either silent data loss or extended read locks.
 
-The Go implementation below simulates the Percolator 2-Phase Commit protocol for distributed key-value storage:
+---
+
+## 2. The TiDB NewSQL Architecture
+
+To solve horizontal scalability while maintaining full ACID compliance and MySQL wire protocol compatibility, Shopee adopted a NewSQL distributed storage model powered by **TiDB, TiKV, and Placement Driver (PD)**.
+
+```mermaid
+flowchart TD
+    subgraph ClientLayer["Application Microservices"]
+        GOSVC["Order / Payment Microservices (Go / gRPC)"]
+    end
+
+    subgraph ComputeLayer["Stateless Compute Layer: TiDB Nodes"]
+        TIDB1["TiDB Node 1 (Cost-Based Optimizer)"]
+        TIDB2["TiDB Node 2 (Cost-Based Optimizer)"]
+        TIDB3["TiDB Node 3 (Cost-Based Optimizer)"]
+    end
+
+    subgraph CoordLayer["Metadata & Scheduling: Placement Driver (PD)"]
+        PD1["PD Leader (Timestamp Oracle - TSO)"]
+        PD2["PD Follower (Raft Consensus)"]
+        PD3["PD Follower (Raft Consensus)"]
+    end
+
+    subgraph StorageLayer["Distributed Storage Layer: TiKV (Multi-Raft)"]
+        TIKV1["TiKV Node A<br/>[Region 1 Leader, Region 2 Follower]"]
+        TIKV2["TiKV Node B<br/>[Region 1 Follower, Region 2 Leader]"]
+        TIKV3["TiKV Node C<br/>[Region 1 Follower, Region 2 Follower]"]
+    end
+
+    subgraph AnalyticalLayer["Columnar Engine: TiFlash (HTAP)"]
+        TIFLASH1["TiFlash Node (Raft Learner - Columnar Parquet/CH)"]
+    end
+
+    GOSVC --> TIDB1
+    GOSVC --> TIDB2
+    GOSVC --> TIDB3
+
+    TIDB1 <--> PD1
+    TIDB2 <--> PD1
+    TIDB3 <--> PD1
+
+    TIDB1 --> TIKV1
+    TIDB1 --> TIKV2
+    TIDB2 --> TIKV2
+    TIDB3 --> TIKV3
+
+    TIKV1 -. Raft Learner Replication .-> TIFLASH1
+    TIKV2 -. Raft Learner Replication .-> TIFLASH1
+
+    PD1 <--> PD2
+    PD1 <--> PD3
+```
+
+### Architectural Separation of Concerns
+
+1. **TiDB (Stateless Compute):**
+   - Implements the MySQL 5.7/8.0 wire protocol. Any standard Go database driver (`database/sql` with `go-sql-driver/mysql`) connects seamlessly without code changes.
+   - Houses the Cost-Based Optimizer (CBO), SQL parser, and distributed query executor.
+   - Fully stateless: TiDB nodes scale out horizontally behind a Layer-4 load balancer (HAProxy or Envoy).
+
+2. **Placement Driver (PD) (Cluster Brain & TSO):**
+   - Manages global cluster topology, Region locations, and load balancing.
+   - Provides strictly monotonic, monotonically increasing 64-bit timestamps via the **Timestamp Oracle (TSO)**, powering multi-version concurrency control (MVCC) and Percolator-based distributed snapshot isolation.
+   - Implements Raft consensus across 3 or 5 nodes for high availability.
+
+3. **TiKV (Distributed Transactional Storage):**
+   - Implements transactional key-value pairs (`Key -> MVCC Value`) backed by high-performance RocksDB storage engines.
+   - Organizes data into logical continuous chunks called **Regions** (~96MB each).
+   - Coordinates replication and consensus across nodes using **Multi-Raft**.
+
+4. **TiFlash (Columnar HTAP Engine):**
+   - Replicates TiKV data asynchronously as a **Raft Learner** (zero impact on write leader consensus).
+   - Stores data in a columnar format optimized for vector SIMD processing, empowering real-time management dashboards, BI analytics, and fraud scoring.
+
+---
+
+## 3. Multi-Raft Consensus & Dynamic Region Auto-Splitting
+
+Rather than running a single monolithic Raft group across the entire cluster, TiKV breaks the global key-value space into hundreds of thousands of independent **Regions**.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant App as Shopee Checkout Service
+    participant TiDB as TiDB Compute Node
+    participant PD as Placement Driver (TSO)
+    participant Leader as TiKV Region 101 Leader (Node A)
+    participant Follower as TiKV Region 101 Follower (Node B)
+    participant Follower2 as TiKV Region 101 Follower (Node C)
+
+    App->>TiDB: INSERT INTO orders (order_sn, user_id, amount, status)
+    TiDB->>PD: Request Commit TSO
+    PD-->>TiDB: Return Monotonic TSO (ts=448921092)
+    TiDB->>Leader: Prewrite Order Key (Percolator 2PC)
+    Leader->>Follower: Append Raft Log (Order Row)
+    Leader->>Follower2: Append Raft Log (Order Row)
+    Follower-->>Leader: Raft Ack (Quorum Reached: 2/3)
+    Leader-->>TiDB: Prewrite Successful
+    TiDB->>Leader: Commit Primary Key
+    Leader-->>App: HTTP 200 Order Created
+
+    Note over Leader: Region 101 reaches 144MB Threshold
+    Leader->>PD: Report Region Size & Request Split
+    PD-->>Leader: Allocate New Region ID (Region 102)
+    Leader->>Follower: Execute Raft Split Command (Atomic Boundary)
+    Note over Leader, Follower2: Split into Region 101 [0, M) & Region 102 [M, +inf)
+```
+
+### How Multi-Raft Operates in Production
+
+1. **Logical Key Ranges:** A Region represents a continuous key range: `[start_key, end_key)`.
+2. **Raft Quorum per Region:** Each Region has 3 replicas (Peers) distributed across separate fault domains (Availability Zones or Kubernetes racks). Only the **Region Leader** serves writes and linearizable reads.
+3. **Region Auto-Split Heuristic:**
+   - Default target size: **96MB**.
+   - When incoming writes push a Region past **144MB** or 1,440,000 keys, the Region Leader initiates an internal Raft log split.
+   - The split key is selected at the midpoint. An atomic metadata update divides the range into two distinct Regions: `[start_key, split_key)` and `[split_key, end_key)`.
+   - The Placement Driver updates its routing table and automatically schedules background peer movement if any storage node experiences disk or I/O imbalance.
+
+---
+
+## 4. Flash Sale Hotspot Mitigation: Eliminating Sequential Bottlenecks
+
+A frequent failure mode in naive distributed database implementations is **monotonic auto-increment keys**. If an e-commerce platform uses standard sequential primary keys (`order_id INT AUTO_INCREMENT`), all 250,000 orders created in a single second hit the exact same Region Leader, creating an extreme write hotspot while 99% of the TiKV cluster sits idle.
+
+Shopee solves this using **TiDB `AUTO_RANDOM` primary keys** and **Region Pre-splitting**:
+
+```sql
+-- Production DDL for High-Throughput Orders Table
+CREATE TABLE orders (
+    order_id BIGINT AUTO_RANDOM(5) PRIMARY KEY,
+    order_sn VARCHAR(64) NOT NULL UNIQUE,
+    user_id BIGINT NOT NULL,
+    merchant_id BIGINT NOT NULL,
+    total_amount DECIMAL(12, 2) NOT NULL,
+    currency VARCHAR(8) DEFAULT 'VND',
+    status TINYINT NOT NULL DEFAULT 1,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_user_orders (user_id, created_at),
+    INDEX idx_merchant_orders (merchant_id, status)
+)
+-- Distribute table data evenly across 16 initial Regions
+SHARD_ROW_ID_BITS = 4
+PRE_SPLIT_REGIONS = 4;
+```
+
+### Code Explanation:
+- `AUTO_RANDOM(5)`: TiDB prepends a 5-bit random shard ID (values 0–31) to the highest bits of the 64-bit integer, while preserving monotonic sequence in the remaining 59 bits. Consecutive inserts automatically scatter across 32 different TiKV Region Leaders.
+- `SHARD_ROW_ID_BITS = 4` & `PRE_SPLIT_REGIONS = 4`: Ensures that when the table is created before the 11.11 campaign, TiDB proactively allocates $2^4 = 16$ distinct Regions spread across all available storage nodes, preventing any single node from bearing initial load spikes.
+
+---
+
+## 5. Production Go Integration: Handling Distributed Transactions
+
+When executing mission-critical balance deductions and order updates, the Go application leverages TiDB's pessimistic transaction mode to avoid write conflicts under high contention.
 
 ```go
-package percolator
+// Package db provides production-hardened database transaction utilities for TiDB.
+package db
 
 import (
-	"errors"
-	"sync"
+	"context"
+	"database/sql"
+	"fmt"
+	"time"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
-var (
-	ErrLockConflict = errors.New("lock conflict detected")
-	ErrTxnAborted   = errors.New("transaction aborted due to write conflict")
-)
+// ExecuteOrderPayment executes payment state changes with pessimistic locking and TSO snapshot isolation.
+func ExecuteOrderPayment(ctx context.Context, db *sql.DB, orderSN string, userID int64, amount float64) error {
+	// Set execution timeout to prevent connection starvation
+	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
+	defer cancel()
 
-type Row struct {
-	Key      string
-	Val      string
-	StartTS  uint64
-	CommitTS uint64
-	Lock     *Lock
-}
-
-type Lock struct {
-	PrimaryRow *Row
-	StartTS    uint64
-}
-
-type Storage struct {
-	mu   sync.Mutex
-	data map[string]*Row
-}
-
-func NewStorage() *Storage {
-	return &Storage{data: make(map[string]*Row)}
-}
-
-type Txn struct {
-	storage  *Storage
-	startTS  uint64
-	writes   map[string]string
-	primary  string
-}
-
-func NewTxn(s *Storage, startTS uint64) *Txn {
-	return &Txn{
-		storage: s,
-		startTS: startTS,
-		writes:  make(map[string]string),
+	tx, err := db.BeginTx(ctx, &sql.TxOptions{
+		Isolation: sql.LevelReadCommitted, // Maps to TiDB Pessimistic Read Committed
+	})
+	if err != nil {
+		return fmt.Errorf("failed to begin transaction: %w", err)
 	}
-}
+	defer tx.Rollback()
 
-func (t *Txn) Write(key, val string) {
-	t.writes[key] = val
-	if t.primary == "" {
-		t.primary = key
-	}
-}
-
-// Commit attempts to commit the transaction using Percolator 2PC protocol.
-func (t *Txn) Commit(commitTS uint64) error {
-	t.storage.mu.Lock()
-	defer t.storage.mu.Unlock()
-
-	// 1. Prewrite Phase: Write locks and data buffers
-	primaryRow := &Row{Key: t.primary, Val: t.writes[t.primary], StartTS: t.startTS}
-	for key, val := range t.writes {
-		curr, exists := t.storage.data[key]
-		if exists && curr.Lock != nil {
-			return ErrLockConflict
-		}
-		if exists && curr.CommitTS > t.startTS {
-			return ErrTxnAborted
-		}
-
-		t.storage.data[key] = &Row{
-			Key:     key,
-			Val:     val,
-			StartTS: t.startTS,
-			Lock: &Lock{
-				PrimaryRow: primaryRow,
-				StartTS:    t.startTS,
-			},
-		}
+	// 1. Lock the order row using SELECT ... FOR UPDATE (PointGet on index)
+	var currentStatus int
+	queryLock := `SELECT status FROM orders WHERE order_sn = ? AND user_id = ? FOR UPDATE;`
+	if err := tx.QueryRowContext(ctx, queryLock, orderSN, userID).Scan(&currentStatus); err != nil {
+		return fmt.Errorf("failed to lock order row: %w", err)
 	}
 
-	// 2. Commit Phase: Commit the Primary lock key first
-	primaryState := t.storage.data[t.primary]
-	if primaryState == nil || primaryState.Lock == nil {
-		return ErrTxnAborted
+	if currentStatus != 1 { // 1 = Pending Payment
+		return fmt.Errorf("order %s cannot be paid: current status %d", orderSN, currentStatus)
 	}
-	primaryState.CommitTS = commitTS
-	primaryState.Lock = nil
 
-	// 3. Secondary Keys Commit: Done asynchronously
-	for key := range t.writes {
-		if key != t.primary {
-			row := t.storage.data[key]
-			if row != nil {
-				row.CommitTS = commitTS
-				row.Lock = nil
-			}
-		}
+	// 2. Update order status to 2 (Paid)
+	queryUpdate := `UPDATE orders SET status = 2, updated_at = NOW() WHERE order_sn = ?;`
+	if _, err := tx.ExecContext(ctx, queryUpdate, orderSN); err != nil {
+		return fmt.Errorf("failed to update order status: %w", err)
+	}
+
+	// 3. Insert transaction ledger entry
+	queryLedger := `
+		INSERT INTO payment_ledger (order_sn, user_id, amount, payment_type, recorded_at)
+		VALUES (?, ?, ?, 'WALLET', NOW());
+	`
+	if _, err := tx.ExecContext(ctx, queryLedger, orderSN, userID, amount); err != nil {
+		return fmt.Errorf("failed to append ledger record: %w", err)
+	}
+
+	// Commit transaction via Percolator 2-Phase Commit
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("distributed commit failed: %w", err)
 	}
 
 	return nil
 }
 ```
 
-### Placement Driver (PD) Region Balance Algorithms
+---
 
-The **Placement Driver (PD)** allocates global TSO timestamps, stores cluster region metadata, and balances workloads:
-- **Leader Balancing:** PD tracks Raft leader distribution. If a TiKV node handles excessive leader regions, PD issues `TransferLeader` commands to rebalance read/write traffic across idle nodes.
-- **Peer/Capacity Balancing:** When node disk capacity breaches thresholds, PD schedules region migrations by initializing Raft follower replicas on target instances before dropping source replicas.
+## Frequently Asked Questions
+
+{{< faq q="How does TiDB avoid write hotspots during viral flash sales with millions of simultaneous users?" >}}
+TiDB addresses write hotspots through three complementary mechanisms:
+1. <strong>AUTO_RANDOM Primary Keys:</strong> Injects high-bit pseudo-random numbers into primary keys, scattering sequential writes across dozens of distinct TiKV Region leaders instead of overloading a single disk.
+2. <strong>PRE_SPLIT_REGIONS:</strong> Pre-allocates and distributes physical key ranges before mega-sale events, ensuring cluster write capacity scales linearly from second zero.
+3. <strong>Placement Driver (PD) Hotspot Scheduler:</strong> Dynamically detects hot Regions based on CPU usage and write bandwidth, migrating hot Region leaders to cooler hardware nodes without dropping client connections.
+{{< /faq >}}
+
+{{< faq q="What consistency guarantees does TiDB provide compared to traditional MySQL semi-synchronous replication?" >}}
+TiDB provides strictly linearizable ACID consistency guaranteed by Multi-Raft quorum consensus and Google Percolator-based distributed snapshot isolation:
+- Unlike MySQL semi-synchronous replication (which can suffer from phantom reads or split-brain during forced master promotions), a TiKV write is committed only after a quorum (majority) of Raft replicas persist the Raft log.
+- Global monotonic ordering is enforced by the Placement Driver (PD) Timestamp Oracle (TSO), ensuring all transactions adhere to Snapshot Isolation or Strict Serializable Isolation without dirty reads or non-repeatable reads.
+{{< /faq >}}
+
+{{< faq q="What happens when a TiKV storage node crashes or suffers network partition during peak traffic?" >}}
+The cluster automatically executes a two-stage self-healing process:
+1. <strong>Sub-3-second Leader Election:</strong> If a TiKV node crashes, the remaining Raft replicas for all affected Regions detect a missed heartbeat (default election timeout ~3s) and elect new Region Leaders. Client requests experience a brief retryable spike before resuming transparently.
+2. <strong>Autonomous Re-Replication:</strong> If the disconnected node does not return within 30 minutes (configurable `max-store-down-time`), PD treats it as permanently offline and commands existing healthy nodes to replicate missing Region peers, restoring the 3-replica quorum across the cluster.
+{{< /faq >}}
 
 ---
 
-## 3. HTAP (Hybrid Transactional and Analytical Processing)
-
-TiFlash enables real-time analytics on live transactional data. It automatically replicates row-based TiKV data into columnar storage using Multi-Raft Learner consensus, allowing complex analytical queries to execute without degrading online checkout transactions.
-
-In traditional relational architectures, extracting analytical insights requires overnight ETL batch jobs to transfer MySQL data into data warehouses. TiFlash eliminates ETL latency by using **Raft Learner nodes** to stream transactional mutation logs into a vectorized columnar engine in real time.
-
-The system topology diagram below demonstrates how TiFlash acts as an asynchronous Raft Learner to receive continuous updates from TiKV row storage nodes without blocking online transactional commits:
-
-```
-[ Application Client ] ──► [ TiDB SQL Compute Engine ]
-                                │
-                                ▼
-                       [ TiKV Row Engine ] (Multi-Raft Consensus Group: Leader + Followers)
-                                │
-                                │ (Asynchronous Raft Learner Replication)
-                                ▼
-                       [ TiFlash Columnar Engine ] (Vectorized OLAP Analytics)
-```
-
-By adding columnar TiFlash replicas, Shopee business intelligence teams execute heavy `SELECT ... GROUP BY` analytics queries on live 11.11 order data without acquiring transactional locks on TiKV OLTP storage nodes.
-
----
-
-## Developer Takeaways
-Scaling backend data storage to millions of users requires abandoning manual application-level database sharding in favor of **Distributed NewSQL databases like TiDB**. Decoupling SQL compute from Raft-replicated TiKV storage and adding columnar TiFlash Raft learners enables transparent horizontal scaling, sub-millisecond range query routing, and real-time HTAP analytics under extreme 10M+ QPS workloads.
-
-## Distributed SQL Region Routing Benchmarks
-
-The benchmark suite below measures the execution overhead of Go SQL driver range query routing across distributed TiDB cluster regions:
-
-```go
-package main
-
-import (
-	"testing"
-)
-
-type TiDBShardRouter struct {
-	numShards uint32
-}
-
-func (r *TiDBShardRouter) Route(key uint32) uint32 {
-	return key % r.numShards
-}
-
-// BenchmarkTiDBRegionSplitRouting measures Go SQL driver query routing latency over TiDB regions.
-func BenchmarkTiDBRegionSplitRouting(b *testing.B) {
-	router := &TiDBShardRouter{numShards: 64}
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		key := uint32(i * 2654435761)
-		shard := router.Route(key)
-		if shard >= 64 {
-			b.Fatal("invalid shard routed")
-		}
-	}
-}
-```
-
-The benchmark execution results below confirm sub-35 nanosecond region lookup performance with zero memory allocations:
-
-```
-BenchmarkTiDBRegionSplitRouting-16    50000000    31.2 ns/op    0 B/op    0 allocs/op
-```
-
-## Frequently Asked Questions (FAQ)
-
-{{< faq "Why migrate from manual MySQL sharding to TiDB NewSQL?" >}}
-Manual MySQL sharding requires complex application query routing, manual resharding operations, and expensive distributed two-phase commit logic across physical databases. TiDB automates range sharding and Raft region balancing while providing drop-in MySQL protocol compatibility and full ACID transaction guarantees.
-{{< /faq >}}
-
-{{< faq "How does TiFlash enable real-time HTAP analytics without impacting OLTP checkout performance?" >}}
-TiFlash receives transactional mutations asynchronously as a non-voting Raft Learner replica from TiKV storage nodes. Because TiFlash stores data in a vectorized columnar layout and processes analytical queries on dedicated compute resources, heavy reporting queries execute without competing for TiKV row locks or CPU cycles.
-{{< /faq >}}
-
-{{< faq "What role does the Placement Driver (PD) perform in a TiDB cluster?" >}}
-The Placement Driver (PD) acts as the centralized manager of a TiDB cluster, allocating strictly monotonically increasing timestamps for distributed TSO transactions. It maintains global metadata mapping database key ranges to physical TiKV regions while continuously executing automated Raft leader and region rebalancing across cluster storage nodes.
-{{< /faq >}}
-
-*Struggling to scale your database layer or migrate to NewSQL? [Hire me](/hire/) to architect your distributed database and sharding strategy.*
-
-🔗 **Next Step:** Running a massive database and microservice architecture is impossible without eyes on the system. Learn how Shopee monitors its distributed platform in [Chapter 5: Observability - Finding Bugs in the Microservices Jungle](/series/shopee-architecture/05-observability/).
-
----
-
-## References & Further Reading
-
-- [PingCAP Case Study: How Shopee scales its Database with TiDB](https://www.pingcap.com/case-studies/shopee-scales-its-database-with-tidb/)
-- [TiDB HTAP Architecture and TiFlash](https://www.pingcap.com/blog/htap-database-what-is-it-and-why-you-need-it/)
-
-{{< author-cta >}}
+[Previous Chapter: Chapter 3 — Traffic Shield & Peak Shaving](/series/shopee-architecture/03-traffic-shield/) | [Series Hub](/series/shopee-architecture/) | [Next Chapter: Chapter 5 — Full-Stack Observability](/series/shopee-architecture/05-observability/)

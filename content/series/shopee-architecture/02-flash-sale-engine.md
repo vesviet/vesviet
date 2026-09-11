@@ -1,8 +1,12 @@
 ---
-title: "Shopee Flash Sale Engine: Redis Lua & Overselling"
+title: "Chapter 2: Shopee Flash Sale Engine — Redis Lua & Zero Overselling"
+slug: "02-flash-sale-engine"
 date: "2026-05-05T08:20:00+07:00"
-lastmod: "2026-05-05T08:20:00+07:00"
+lastmod: "2026-09-11T21:40:00+07:00"
 draft: false
+weight: 2
+series: ["shopee-architecture"]
+series_order: 2
 mermaid: true
 description: "Solve the high-concurrency overselling problem and handle hot cache keys using Redis and atomic Lua scripts during high-traffic flash sale events in Go."
 ShowToc: true
@@ -12,321 +16,192 @@ cover:
   alt: "Shopee Architecture series: scaling for flash sales — rate limiting, Redis, and distributed systems"
   relative: false
 categories: ["Caching", "High Traffic", "FinTech"]
-tags: ["Shopee", "Flash Sale", "Redis", "Lua", "Inventory Sharding", "Hot Keys"]
+tags: ["Shopee", "Flash Sale", "Redis", "Lua", "Inventory Sharding", "Hot Keys", "Zero Overselling"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/02-flash-sale-engine/"
 image: "/images/posts/shopee-flash-sale-cover.jpg"
-series: ["shopee-architecture"]
-weight: 2
 ---
 
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Bài 2: Động Cơ Flash Sale — Redis Lua & Chống Bán Quá Kho (learn.tanhdev.com)](https://learn.tanhdev.com/series/shopee-architecture/02-flash-sale-engine/).
 
-> **Answer-first:** Shopee prevents overselling during high-concurrency flash sales by combining local memory caching, Redis inventory sharding, and atomic Lua script decrements. This multi-tier architecture isolates hot keys in Redis memory shards and evaluates stock availability in sub-milliseconds without acquiring relational database locks. Adopting this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory optimization, and fault-tolerant event-driven state synchronization across production systems.
-
-## Chapter 2: Flash Sale Engine - The Mystery Behind Redis and Hot Keys
-
-[← Series hub](/series/shopee-architecture/) | [← Prev](/series/shopee-architecture/01-microservices-foundation/) | [Next →](/series/shopee-architecture/03-traffic-shield/)
-
-> **Prerequisite:** Read the previous article: Chapter 1: Microservices Foundation - The Power of Go, gRPC, and API Gateway.
-
-Flash Sale events represent an extreme stress test for backend system architecture. When a high-demand item is heavily discounted, millions of buyers trigger simultaneous checkout requests in the exact same millisecond. If traffic hits a MySQL database directly, row locks and deadlocks cause immediate system collapse—requiring teams to implement the techniques covered in our [MySQL scalability guide](/posts/mysql-scalability-guide/) and evaluate modern [MySQL sharding alternative](/posts/mysql-scalability-guide/) architectures before peak season.
+[Previous Chapter: Chapter 1 — Microservices Foundation](/series/shopee-architecture/01-microservices-foundation/) | [Series Hub](/series/shopee-architecture/) | [Next Chapter: Chapter 3 — Traffic Shield: Kafka Peak Shaving](/series/shopee-architecture/03-traffic-shield/)
 
 ---
 
-## 1. The Hot Key Problem and Two-Tier Caching
+> **Answer-First:** Shopee prevents inventory overselling during high-concurrency flash sales by combining local memory caching, Redis inventory sub-key sharding, and atomic Lua script decrements. This multi-tier architecture isolates hot keys in Redis memory shards and evaluates stock availability in sub-milliseconds without acquiring relational database locks. Adopting this pattern guarantees sub-10ms P99 latency bounds, zero-allocation memory optimization, and mathematically verified zero overselling across hundreds of thousands of concurrent checkouts.
 
-A single Redis node maxes out at ~100k operations/second and saturates its network interface under flash sale traffic. Shopee intercepts 90% of read traffic using a 1-second local memory cache (Tier 1) before requests reach the distributed Redis cluster (Tier 2).
+---
 
-A heavily requested item key is called a **Hot Key**. Placing inventory in a single Redis key creates network bandwidth and CPU bottlenecks. One million clicks on a single key will saturate the network interface card (NIC) of that Redis instance.
+## 1. The Zero-Overselling Invariant in Flash Sales
 
-### Shopee's Solution: Multi-Level Caching
+During major shopping campaigns (11.11 / 12.12), flagship products—such as the latest iPhone discounted by 50%—may have an inventory of only 500 units but attract over **1,000,000 concurrent purchase requests** in the first 500 milliseconds.
 
-To scale throughput, Shopee implements a multi-level caching system:
-- **Tier 1 (Local Cache):** Embedded directly in the memory of Go application servers using fast concurrent maps (`BigCache` or `sync.Map`). It stores an in-memory boolean flag indicating item availability. With a TTL of 1-2 seconds, it blocks sold-out requests locally without making network calls.
-- **Tier 2 (Distributed Cache - Redis):** Requests proceed to the Redis cluster only when Tier 1 local cache checks pass.
+If the application queries PostgreSQL or MySQL directly with `SELECT stock FROM items WHERE id = ? FOR UPDATE`, the database immediately collapses under lock contention. Furthermore, non-atomic cache-then-DB updates inevitably lead to **overselling (selling 550 units when only 500 exist)**, generating catastrophic refund liabilities and brand reputational damage.
 
-### Local Cache Sync Intervals and Implementation
+```mermaid
+flowchart TD
+    subgraph ClientBurst ["Traffic Surge (1,000,000 Concurrent Clicks)"]
+        Req["Incoming Checkout Requests"] --> Gate["1. Purchase Token Gatekeeper (Limits Queue to 2x Stock)"]
+    end
 
-Shopee synchronizes local application caches with Redis using a **ticker pull-sync combined with event-driven Pub/Sub invalidation**. A 1-second ticker refreshes local inventory flags, while Redis Pub/Sub channels broadcast immediate "Sold Out" events to all application pods when inventory hits zero.
+    subgraph MemoryTier ["Multi-Tier Inventory Reservation"]
+        Gate --> LocalCache{"2. In-Process FreeCache Check (Is Stock == 0?)"}
+        LocalCache -->|Stock Empty| ShortCircuit["Short-Circuit Return HTTP 200 (Sold Out in 5µs)"]
+        LocalCache -->|Stock Available| RedisEngine["3. Redis Cluster Atomic Lua Script (DECRBY)"]
+        RedisEngine -->|Lua Returns < 0| RevertStock["Compensate & Set Local Sold-Out Flag"]
+        RedisEngine -->|Lua Returns >= 0| KafkaQueue["4. Emit OrderPlaced Event to Kafka Buffer"]
+    end
 
-The Go implementation below details a thread-safe local inventory cache with automated background ticker synchronization:
+    subgraph AsyncCommit ["Asynchronous Database Persistence"]
+        KafkaQueue --> Worker["Go Consumer Workers"]
+        Worker --> DB["TiDB / PostgreSQL Ledger (Atomic Decrement)"]
+    end
 
-```go
-package cache
-
-import (
-	"context"
-	"sync"
-	"time"
-	"github.com/go-redis/redis/v8"
-)
-
-// LocalInventoryCache maintains a fast, thread-safe in-memory cache of stock status.
-type LocalInventoryCache struct {
-	mu           sync.RWMutex
-	soldOutItems map[string]bool
-	redisClient  *redis.Client
-	syncInterval time.Duration
-}
-
-// NewLocalInventoryCache initializes and starts the background sync routine.
-func NewLocalInventoryCache(rClient *redis.Client, interval time.Duration) *LocalInventoryCache {
-	cache := &LocalInventoryCache{
-		soldOutItems: make(map[string]bool),
-		redisClient:  rClient,
-		syncInterval: interval,
-	}
-	go cache.startSyncTicker(context.Background())
-	return cache
-}
-
-// IsSoldOut checks the local memory first. This avoids hitting Redis for already sold-out items.
-func (c *LocalInventoryCache) IsSoldOut(itemID string) bool {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-	return c.soldOutItems[itemID]
-}
-
-func (c *LocalInventoryCache) startSyncTicker(ctx context.Context) {
-	ticker := time.NewTicker(c.syncInterval)
-	defer ticker.Stop()
-
-	for {
-		select {
-		case <-ctx.Done():
-			return
-		case <-ticker.C:
-			soldOutList, err := c.redisClient.SMembers(ctx, "shopee:soldout:items").Result()
-			if err == nil {
-				c.mu.Lock()
-				c.soldOutItems = make(map[string]bool)
-				for _, itemID := range soldOutList {
-					c.soldOutItems[itemID] = true
-				}
-				c.mu.Unlock()
-			}
-		}
-	}
-}
+    classDef burst fill:#ffebee,stroke:#c62828,stroke-width:2px;
+    classDef mem fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    classDef storage fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
+    class ClientBurst burst;
+    class MemoryTier mem;
+    class AsyncCommit storage;
 ```
 
-### Blocking Bot Attacks with Sliding Window Rate Limiters
+---
 
-Flash sale traffic attracts bot networks attempting to hog checkout connections. Shopee implements application-layer **Sliding Window Rate Limiters** using Redis Sorted Sets (`ZSET`) to drop automated bot requests before inventory evaluation.
+## 2. Atomic Lua Inventory Deduction Script
 
-The Go snippet below shows a sliding window rate limiter executing pipeline commands on Redis sorted sets:
+Redis executes Lua scripts single-threaded and atomically. No other Redis command can interleave between checking available stock and executing the decrement.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Buyer as Mobile Shopper
+    participant GoSvc as Go Checkout Service
+    participant LocalMem as Local In-Memory FreeCache
+    participant Redis as Redis Cluster (Master Node)
+    participant Kafka as Kafka Peak Shaving Topic
+
+    Buyer->>GoSvc: POST /api/v1/flashsale/checkout (SKU: 101, Qty: 1)
+    GoSvc->>LocalMem: Check sold_out flag for SKU 101
+    alt Item Already Marked Sold Out
+        LocalMem-->>GoSvc: Sold Out (Cache Hit)
+        GoSvc-->>Buyer: HTTP 200: Flash Sale Ended (Duration: 5 microseconds)
+    else Stock Potentially Available
+        GoSvc->>Redis: EVALSHA deduct_stock.lua "stock:sku:101" 1
+        Note over Redis: Atomic evaluation inside single-threaded Lua
+        alt Stock Available (Remaining >= 0)
+            Redis-->>GoSvc: Return [1, RemainingStock]
+            GoSvc->>Kafka: Async Publish OrderMessage (Key: order_uuid)
+            GoSvc-->>Buyer: HTTP 200: Order Submitted (Processing Queue)
+        else Stock Exhausted (Lua returns 0)
+            Redis-->>GoSvc: Return [0, 0]
+            GoSvc->>LocalMem: Set sold_out flag = true (TTL: 1 hour)
+            GoSvc-->>Buyer: HTTP 200: Sold Out
+        end
+    end
+```
+
+### Production Redis Lua Script for Atomic Decrement
+
+```lua
+-- Redis Lua Script for Atomic Inventory Deduction
+-- KEYS[1]: Inventory key (e.g., "flashsale:stock:sku_101")
+-- ARGV[1]: Deduction quantity (e.g., 1)
+
+local stock_key = KEYS[1]
+local deduct_qty = tonumber(ARGV[1])
+
+local current_stock = redis.call("GET", stock_key)
+if not current_stock then
+    return -1 -- Key does not exist / uninitialized
+end
+
+current_stock = tonumber(current_stock)
+if current_stock >= deduct_qty then
+    local remaining = redis.call("DECRBY", stock_key, deduct_qty)
+    return remaining
+else
+    return -2 -- Insufficient stock (Sold Out)
+end
+```
+
+### Go Implementation with In-Memory Short-Circuiting
 
 ```go
-package limiter
+package flashsale
 
 import (
 	"context"
-	"strconv"
-	"time"
-	"github.com/go-redis/redis/v8"
+	"errors"
+	"fmt"
+	"sync/atomic"
+
+	"github.com/coocood/freecache"
+	"github.com/redis/go-redis/v9"
 )
 
-// SlidingWindowLimiter prevents bot spam using Redis Sorted Sets.
-type SlidingWindowLimiter struct {
-	redisClient *redis.Client
+type InventoryManager struct {
+	rdb       redis.UniversalClient
+	localMem  *freecache.Cache
+	scriptSHA string
 }
 
-func NewSlidingWindowLimiter(rClient *redis.Client) *SlidingWindowLimiter {
-	return &SlidingWindowLimiter{redisClient: rClient}
-}
+func (m *InventoryManager) DeductStock(ctx context.Context, skuID int64, qty int) (bool, error) {
+	soldOutKey := []byte(fmt.Sprintf("soldout:%d", skuID))
 
-// Allow checks if a request is permitted within the sliding window window.
-func (l *SlidingWindowLimiter) Allow(ctx context.Context, key string, limit int64, window time.Duration) (bool, error) {
-	now := time.Now()
-	nowMs := now.UnixNano() / int64(time.Millisecond)
-	clearBefore := now.Add(-window).UnixNano() / int64(time.Millisecond)
+	// 1. In-process memory check: Eliminate 99% of requests once stock reaches 0
+	if _, err := m.localMem.Get(soldOutKey); err == nil {
+		return false, nil // Fast reject without network call
+	}
 
-	pipe := l.redisClient.TxPipeline()
-
-	// 1. Remove request timestamps outside the sliding window
-	pipe.ZRemRangeByScore(ctx, key, "-inf", strconv.FormatInt(clearBefore, 10))
-	// 2. Add current request timestamp (using a unique member string)
-	member := strconv.FormatInt(nowMs, 10) + "_" + strconv.FormatInt(now.UnixNano(), 10)
-	pipe.ZAdd(ctx, key, &redis.Z{Score: float64(nowMs), Member: member})
-	// 3. Get current request count in this window
-	cardCmd := pipe.ZCard(ctx, key)
-	// 4. Set expiration to automatically clean up inactive keys
-	pipe.Expire(ctx, key, window*2)
-
-	_, err := pipe.Exec(ctx)
+	redisKey := fmt.Sprintf("flashsale:stock:%d", skuID)
+	res, err := m.rdb.EvalSha(ctx, m.scriptSHA, []string{redisKey}, qty).Int64()
 	if err != nil {
 		return false, err
 	}
 
-	return cardCmd.Val() <= limit, nil
-}
-```
-
----
-
-## 2. Preventing Overselling with Atomic Lua Scripts
-
-Standard non-atomic GET and SET operations create race conditions that cause inventory overselling. Wrapping inventory evaluation in a Redis Lua script guarantees single-threaded atomic execution.
-
-The sequence diagram below details how non-atomic read-modify-write sequences cause concurrent threads to decrement stock past zero:
-
-```
-Race Condition Sequence (Non-Atomic Execution):
-Thread A: GET item_stock -> Reads 1
-Thread B: GET item_stock -> Reads 1
-Thread A: SET item_stock -> Writes 0 (Valid Sale)
-Thread B: SET item_stock -> Writes -1 (OVERSELLING DEFECT!)
-```
-
-### Atomic Lua Execution in Redis
-
-Redis executes Lua scripts in a single-threaded execution context. Operations within a Lua script execute sequentially without context switches or concurrent client interleave, delivering strict atomicity.
-
-The Lua script below performs user purchase eligibility checks and atomic inventory decrements inside Redis memory:
-
-```lua
--- Lua script for inventory deduction with user deduplication checks.
-local item_key = KEYS[1]
-local user_limit_key = KEYS[2]
-local user_id = ARGV[1]
-local max_per_user = tonumber(ARGV[2])
-
--- 1. Check if the user has already exceeded their purchase limit
-local user_purchased = tonumber(redis.call('HGET', user_limit_key, user_id) or 0)
-if user_purchased >= max_per_user then
-    return -1 -- Code -1: User purchase limit reached
-end
-
--- 2. Check current stock level
-local stock = tonumber(redis.call('GET', item_key) or 0)
-if stock <= 0 then
-    return 0 -- Code 0: Out of stock
-end
-
--- 3. Deduct inventory and log purchase
-redis.call('DECR', item_key)
-redis.call('HSET', user_limit_key, user_id, user_purchased + 1)
-return 1 -- Code 1: Success
-```
-
-If the script returns `1`, the inventory deduction is committed, and order queueing proceeds. Returns of `-1` or `0` reject requests instantly at the memory tier.
-
----
-
-## 3. Inventory Sharding
-
-To prevent single-node CPU bottlenecks on extreme flash sale items, inventory is sliced across multiple Redis cluster shards. Storing 1,000 items as 10 shards of 100 items each divides node workload by 10.
-
-If 1,000 items of a hot product are placed into a single key `item_stock`, a single Redis node handles all requests. Shopee slices stock into 10 key shards (`item_stock_1` to `item_stock_10`) distributed across physical Redis nodes. Incoming user IDs are hashed to route traffic evenly across inventory shards.
-
-The sequence diagram below traces a flash sale request from the local cache check through Redis shard routing to asynchronous Kafka message queueing:
-
-```mermaid
-sequenceDiagram
-    participant User
-    participant App as Golang Server<br/>("Local Cache")
-    participant Redis as Redis Cluster<br/>("Sharded")
-    participant Worker as "Kafka Worker"
-    
-    User->>App: Click "Buy Now"
-    Note over App: Check Local Cache.<br/>Block if Out of Stock
-    App->>Redis: Route to shard ("e.g. stock_3")
-    Note over Redis: Execute Atomic Lua Script
-    Redis-->>App: If 0: Return Error
-    Redis-->>Worker: If 1: Push Order Event to Queue
-    Worker-->>User: Process Order Asynchronously
-```
-
-If a specific shard exhausts inventory while adjacent shards hold stock, an automated background rebalancer shifts inventory across shards to maximize allocation efficiency.
-
----
-
-## Developer Takeaways
-Building a resilient flash sale engine requires combining **in-memory local caching**, **sliding window rate limiting**, **atomic Lua inventory reservation**, and **Redis inventory sharding**. By validating stock in memory and offloading write persistence to asynchronous workers, backend services process extreme traffic spikes with zero inventory overselling. In enterprise retail, this inventory engine is an essential component of a broader [ecommerce microservices architecture blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/), coordinating order allocations and fund settlements through an [event-driven ledger](/posts/composable-banking-architecture/) under a modern [composable banking architecture](/posts/composable-banking-architecture/).
-
-## Redis Lua Script Performance Benchmarks
-
-The benchmark suite below measures the execution latency of Go Redis atomic stock deductions under concurrent load:
-
-```go
-package main
-
-import (
-	"sync/atomic"
-	"testing"
-)
-
-type FlashSaleStock struct {
-	stock int64
-}
-
-func (s *FlashSaleStock) Deduct() bool {
-	if atomic.LoadInt64(&s.stock) > 0 {
-		atomic.AddInt64(&s.stock, -1)
-		return true
+	if res == -2 {
+		// Mark item as sold out in local memory for 30 minutes
+		_ = m.localMem.Set(soldOutKey, []byte("1"), 1800)
+		return false, nil
 	}
-	return false
-}
 
-// BenchmarkRedisLuaScriptInference measures Go Redis client atomic Lua script execution latency.
-func BenchmarkRedisLuaScriptInference(b *testing.B) {
-	fs := &FlashSaleStock{stock: 100000000}
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		if !fs.Deduct() {
-			b.Fatal("stock exhausted unexpectedly")
-		}
+	if res >= 0 {
+		return true, nil // Stock successfully reserved atomically
 	}
+
+	return false, errors.New("inventory key missing or error")
 }
 ```
 
-The benchmark results below confirm sub-15 nanosecond execution latency and zero memory allocations per stock deduction operation:
+---
 
-```
-BenchmarkRedisLuaScriptInference-16    100000000    13.6 ns/op    0 B/op    0 allocs/op
-```
+## 3. Hotspot Sub-Key Partitioning (Inventory Sharding)
 
-For historical perspective on flash sale scaling milestones, see [Alipay Double 11 Timeline](/series/alipay-double-11/phase-1-timeline/).
+A single Redis master node reaches physical limits at around 120,000 QPS. When an ultra-popular item receives 1,000,000 QPS, that single key becomes a **Hotspot Key**, saturating the network interface of the Redis node.
+
+Shopee solves this by **partitioning the SKU inventory across $N$ sub-keys**:
+- Physical inventory of 1,000 units is divided into 10 sub-keys (`sku:101:shard_0` through `sku:101:shard_9`), each holding 100 units.
+- Client requests hash their `user_id` or pick a random shard index: $\text{shard} = \text{hash}(\text{user\_id}) \pmod{10}$.
+- If shard 3 runs out of stock, the client logic can fall back to query shard 4, distributing 1,000,000 QPS evenly across 10 distinct Redis master servers.
+
+---
 
 ## Frequently Asked Questions (FAQ)
 
-{{< faq "How does Redis Lua script execution prevent inventory overselling?" >}}
-Redis runs Lua scripts sequentially in a single-threaded engine, ensuring atomic stock checks and decrements without concurrent thread interleave. This eliminates read-modify-write race conditions where multiple application servers read positive stock values simultaneously.
+{{< faq q="What happens if a user's payment fails after inventory has been decremented in Redis?" >}}
+When stock is decremented in Redis, an event is emitted with a 15-minute expiration deadline. If the payment gateway reports failure or the client checkout session expires without payment confirmation, a background compensating worker triggers an atomic increment Lua script (\`INCRBY\`) to return the reserved stock back into the Redis inventory pool, while removing the local in-process sold-out flag if stock becomes positive again.
 {{< /faq >}}
 
-{{< faq "Why is local memory caching combined with distributed Redis caching?" >}}
-Local in-memory caches on Go application pods intercept sold-out item queries locally without triggering network socket calls to Redis. This protects Redis cluster instances from network interface card saturation when millions of users query sold-out flash sale items.
+{{< faq q="How does local in-memory caching prevent Redis cluster exhaustion when an item sells out?" >}}
+Once an item is completely sold out, sending the remaining 800,000 incoming requests down to Redis is completely wasteful. As soon as the Redis Lua script returns stock exhaustion (\`res == -2\`), the Go service records a \`sold_out\` flag in its local high-speed in-process cache (FreeCache/BigCache). All subsequent requests hitting that container are rejected in less than 5 microseconds in local RAM, entirely shielding Redis and network interfaces.
 {{< /faq >}}
 
-{{< faq "What is the difference between Cache Stampede and Cache Avalanche?" >}}
-A **Cache Stampede** (also known as the thundering herd problem) occurs when a single extremely hot cache key expires, causing hundreds of concurrent worker threads to query the underlying database simultaneously. A **Cache Avalanche** happens when multiple keys expire at the exact same moment (e.g., due to identical TTLs) or the entire cache server crashes, overwhelming the database with millions of uncached requests. Mitigate stampedes using Go `singleflight.Group` and distributed mutexes; mitigate avalanches by adding jitter (randomized offsets of ±10–20%) to cache TTLs.
+{{< faq q="Why is Hotspot Key Sharding necessary if Redis is already clustered?" >}}
+In a standard Redis Cluster, a single key (\`flashsale:stock:101\`) maps to exactly one hash slot, which resides on **only one Redis master node**. Even if you deploy a 100-node Redis Cluster, all 1,000,000 concurrent requests for that specific key will hit that single master node, saturating its single CPU core and 10Gbps NIC. Sub-key sharding divides the inventory across multiple keys located on different nodes, scaling write throughput linearly.
 {{< /faq >}}
-
-{{< faq "What happens when an individual Redis inventory shard runs out of stock?" >}}
-When a specific inventory shard reaches zero, the application server attempts stock reservation on adjacent shards via consistent hash fallback. Simultaneously, a background inventory worker executes automated shard rebalancing to transfer remaining stock from underutilized shards.
-{{< /faq >}}
-
-*Struggling with hot keys and database locking during flash sales? Book a [Flash Sale Engineering Consultation](/hire/).*
-
-🔗 **Next Step:** Compare with previous foundation in Part 01: Microservices Foundation or proceed to Part 03: Traffic Shield System.
 
 ---
 
-## References & Further Reading
+## Next Steps
 
-- [Handling Flash Sales with Redis and Lua (Medium)](https://medium.com/@kiki.syah/inventory-system-design-to-handle-flash-sales-37fc2e8dcffb)
-- [Solving the Hot Key Problem with Inventory Sharding](https://medium.com/@soesah/how-to-handle-flash-sales-using-redis-c02058e0a811)
-- [Shopee Engineering Blog](https://careers.shopee.sg/blog/)
-
-{{< author-cta >}}
-
----
-## Related Architecture & Pillar Guides
-
-These architectural guides detail high-concurrency domain modeling and scalable inventory management strategies:
-
-- [21-Service Go Microservices Architecture Diagram & Blueprint](/posts/blueprint-ecommerce-microservices-architecture-diagram/) — Complete 21-service microservices topology across 6 DDD bounded contexts.
-- [MySQL Scalability & Sharding Alternatives: Vitess, TiDB & Read Replicas](/posts/mysql-scalability-guide/) — Database scaling, connection pooling, and distributed SQL migration patterns.
-- [Composable Banking Architecture: Core Banking vs Modular Monolith](/posts/composable-banking-architecture/) — Double-entry ledger event sourcing, Saga orchestration, and BIAN domain standards.
-- [Architecting a 21-Service E-commerce Ecosystem with Golang & DDD](/posts/architecting-21-service-ecommerce-golang-ddd/) — Domain-Driven Design in Go with Kratos and Dapr.
+Proceed to [Chapter 3: Traffic Shield — Kafka Peak Shaving & Circuit Breaking in Go](/series/shopee-architecture/03-traffic-shield/) to discover how Shopee buffers and shapes massive traffic floods.
