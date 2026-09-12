@@ -1,185 +1,288 @@
 ---
-title: "PayPay Data Infrastructure: TiDB & MySQL Sharding in Go"
+title: "Part 3: Data Infrastructure — Migrating from Aurora to TiDB Multi-Raft NewSQL"
+slug: "part-3-data-layer-tidb"
 date: "2026-05-05T21:00:00+07:00"
-lastmod: "2026-05-05T21:00:00+07:00"
+lastmod: "2026-09-12T12:00:00+07:00"
 draft: false
-description: "Why PayPay migrated from AWS Aurora to self-hosted TiDB: analyzing Aurora bottlenecks, TiDB distributed SQL, and phased zero-downtime migration."
 weight: 3
+series: ["paypay-architecture"]
+series_order: 3
+mermaid: true
+description: "How PayPay scaled its financial data layer: conquering AWS Aurora write bottlenecks, executing zero-downtime migration to TiDB, and harnessing Multi-Raft consensus for ACID ledgers."
+ShowToc: true
+TocOpen: true
 cover:
   image: "/images/posts/paypay-scaling-cover.jpg"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
-categories: ["Database", "Distributed SQL", "Scalability"]
-tags: ["PayPay", "TiDB", "Aurora", "Distributed SQL", "NewSQL", "Database"]
+categories: ["Database", "Distributed Systems", "NewSQL"]
+tags: ["PayPay", "TiDB", "TiKV", "AWS Aurora", "Multi-Raft", "NewSQL", "HTAP"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-3-data-layer-tidb/"
-ShowToc: true
-TocOpen: true
-mermaid: true
 image: "/images/posts/paypay-scaling-cover.jpg"
-series: ["paypay-architecture"]
 ---
 
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Phần 3: Tầng Dữ Liệu — Chuyển Dịch Từ Aurora Sang TiDB Multi-Raft NewSQL (learn.tanhdev.com)](https://learn.tanhdev.com/series/paypay-architecture/part-3-data-layer-tidb/).
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Part 2 — Event Driven Kafka](/series/paypay-architecture/part-2-event-driven-kafka/). Review it first if the terminology in this part is unfamiliar.
+[Previous Chapter: Part 2 — Event-Driven Architecture & Kafka at Scale](/series/paypay-architecture/part-2-event-driven-kafka/) | [Series Hub](/series/paypay-architecture/) | [Next Chapter: Part 4 — SRE Practices & Chaos Engineering](/series/paypay-architecture/part-4-sre-chaos-engineering/)
 
-> **Answer-first:** PayPay migrated its database layer from AWS Aurora MySQL to TiDB Distributed SQL to overcome vertical scaling limitations. TiDB's Raft-based auto-sharding and horizontal compute/storage separation deliver linear scaling under billion-row transaction tables. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for production-grade enterprise operations.
+---
 
-> **Answer-first:** PayPay utilizes TiDB as its distributed SQL database to achieve horizontal scaling without manual database sharding. TiDB maintains standard MySQL protocol compatibility and strict ACID guarantees while dynamically splitting tables into regions that are distributed across a multi-node cluster.
+> **Answer-First:** Operating a national mobile payment network generating billions of financial records pushed traditional Amazon Aurora MySQL past its physical write thresholds due to single-master bottlenecks, cross-replica replication lag, and connection exhaustion during marketing surges. PayPay executed a landmark **zero-downtime migration to TiDB and TiKV**, a cloud-native NewSQL distributed database. By decoupling stateless SQL compute from Multi-Raft storage engines across 96MB continuous Regions, TiDB provides horizontal write scalability, strictly linearizable ACID consistency, and real-time HTAP analytics through TiFlash without impacting high-frequency payment ledgers.
 
-## The Relational Database Bottleneck
+---
+
+## 1. Why AWS Aurora MySQL Reached Its Physical Limits
+
+During its early years, PayPay relied heavily on AWS Aurora MySQL. Aurora's shared-storage architecture provided seamless vertical read scaling through read replicas. However, as PayPay surpassed **30 million users and launched nationwide promotional campaigns**, three critical bottlenecks materialized:
+
+```
+Aurora MySQL Operational Bottlenecks:
+┌──────────────────────────────────────────────┐
+│ Single-Writer Ceiling:                       │
+│ All ledger INSERTs & UPDATEs funneled into   │ ──► CPU at 95%, disk queue stalls
+│ 1 Master Node (Cannot scale writes out)      │
+├──────────────────────────────────────────────┤
+│ Replica Lag Spikes:                          │
+│ Under massive write surges, read replica     │ ──► User sees stale wallet balance
+│ lag climbed past 5 seconds                   │     (Triggers false double-clicks)
+├──────────────────────────────────────────────┤
+│ Sharding Operational Penalty:                │
+│ Sharding by user_id breaks merchant queries; │ ──► Distributed 2PC cross-shard
+│ re-sharding requires maintenance downtime    │     queries suffer >300ms latency
+└──────────────────────────────────────────────┘
+```
+
+When write traffic spiked during the *"10-Billion Yen Campaign"*, the primary database instance experienced severe lock contention on wallet balance rows. Vertical scaling to the largest AWS instances (`db.r5.24xlarge`) only deferred the inevitable: relational databases constrained to a single write master cannot scale indefinitely under planetary write concurrency.
+
+---
+
+## 2. The TiDB Distributed NewSQL Architecture
+
+PayPay migrated its core financial and ledger storage to **TiDB (PingCAP)**, an open-source NewSQL database designed for massive horizontal scaling with native MySQL protocol compatibility.
 
 ```mermaid
-graph TD
-    SQL["TiDB SQL Compute Layer"] --> KV1["TiKV Storage Node 1 (Raft Leader)"]
-    SQL --> KV2["TiKV Storage Node 2 (Raft Follower)"]
-    SQL --> KV3["TiKV Storage Node 3 (Raft Follower)"]
+flowchart TD
+    subgraph ClientLayer["Payment Microservices Fleet"]
+        SVC1["Payment Core Pod A (Go)"]
+        SVC2["Payment Core Pod B (Go)"]
+        SVC3["Merchant Settlement Pod C (Java)"]
+    end
+
+    subgraph ComputeLayer["Stateless Compute Tier: TiDB"]
+        TIDB1["TiDB Node 1 (SQL Parser & CBO)"]
+        TIDB2["TiDB Node 2 (SQL Parser & CBO)"]
+        TIDB3["TiDB Node 3 (SQL Parser & CBO)"]
+    end
+
+    subgraph CoordinatorTier["Cluster Brain & TSO: Placement Driver (PD)"]
+        PD_LEAD["PD Leader (Timestamp Oracle - TSO)"]
+        PD_FOL1["PD Follower 1 (Raft)"]
+        PD_FOL2["PD Follower 2 (Raft)"]
+    end
+
+    subgraph StorageTier["Transactional Key-Value Tier: TiKV (Multi-Raft)"]
+        TIKV_A["TiKV Node A<br/>[Region 1 Leader, Region 2 Follower]"]
+        TIKV_B["TiKV Node B<br/>[Region 1 Follower, Region 2 Leader]"]
+        TIKV_C["TiKV Node C<br/>[Region 1 Follower, Region 2 Follower]"]
+    end
+
+    subgraph AnalyticalTier["Columnar HTAP Engine: TiFlash"]
+        TIFLASH["TiFlash Columnar Engine<br/>(Raft Learner - Real-Time Analytics)"]
+    end
+
+    SVC1 --> TIDB1
+    SVC2 --> TIDB2
+    SVC3 --> TIDB3
+
+    TIDB1 <--> PD_LEAD
+    TIDB2 <--> PD_LEAD
+    TIDB3 <--> PD_LEAD
+
+    TIDB1 --> TIKV_A
+    TIDB2 --> TIKV_B
+    TIDB3 --> TIKV_C
+
+    TIKV_A -. Raft Learner Asynchronous Stream .-> TIFLASH
+    TIKV_B -. Raft Learner Asynchronous Stream .-> TIFLASH
+
+    PD_LEAD <--> PD_FOL1
+    PD_LEAD <--> PD_FOL2
 ```
 
-When PayPay launched, **AWS Aurora (MySQL compatible)** was the obvious choice for the payment ledger. Aurora is managed, reliable, and well-understood. It scales read capacity easily through Read Replicas. For a startup under urgency to ship, it was the right decision.
+### Architectural Separation of Responsibilities
 
-As PayPay grew to tens of millions of users and transaction volumes climbed through each successive campaign, two problems became unavoidable.
+1. **Stateless SQL Layer (TiDB):** Exposes standard MySQL 5.7/8.0 wire compatibility. Services connect using standard MySQL drivers (`go-sql-driver/mysql` in Go or HikariCP in Java). Compute nodes scale elastically behind HAProxy or Envoy without downtime.
+2. **Cluster Coordinator & TSO (Placement Driver):** Allocates monotonically increasing timestamps via the Timestamp Oracle (TSO) for Percolator-based distributed snapshot isolation, orchestrating autonomous Region balancing across physical Kubernetes nodes.
+3. **Distributed Transactional Storage (TiKV):** Data is organized into continuous, non-overlapping **96MB Regions**. Each Region is replicated across three or five nodes using the **Multi-Raft consensus protocol**, guaranteeing zero data loss ($RPO=0$) and automatic leader election in under 3 seconds ($RTO < 3s$).
+4. **Real-Time Columnar Engine (TiFlash):** Receives Raft log streams as an asynchronous **Raft Learner**. TiFlash stores data in columnar format, enabling complex merchant reconciliation and fraud analytical queries without locking OLTP payment rows.
 
-**Problem 1: The Write Bottleneck.** Aurora's replication model is fundamentally single-primary. All write operations — every payment, every balance update, every ledger entry — must go through a single primary node. You can add as many Read Replicas as you want; the write throughput ceiling is determined entirely by the largest available Aurora instance class. PayPay hit that ceiling. Specifically, **binlog processing became the binding constraint**: Aurora's binary log, which powers replication to Read Replicas, could not keep up with the write volume during major campaigns.
+---
 
-**Problem 2: Vertical Scaling Limits.** When you've already deployed the largest available database instance and transaction volume keeps growing, your only options are architectural — not operational.
+## 3. Zero-Downtime Live Migration Pipeline: Aurora to TiDB
 
-### Why Traditional Solutions Failed
+Migrating billions of live financial ledger records without a single millisecond of service downtime or transaction discrepancy requires a battle-tested four-phase pipeline:
 
-**Manual Sharding** was evaluated and rejected. Splitting the user table by User ID (e.g., Users 1–1M on Shard A, 1M–2M on Shard B) sounds straightforward until you consider P2P money transfers: User A (Shard A) sends money to User B (Shard B). Now you have a **cross-shard distributed transaction** — a notoriously complex problem that requires either two-phase commit (slow and fragile) or eventual consistency (unacceptable for financial ledgers). The application code complexity would have been enormous and ongoing.
+```mermaid
+sequenceDiagram
+    autonumber
+    participant App as Payment Microservices
+    participant Aurora as Source: AWS Aurora MySQL
+    participant DM as TiDB Data Migration (DM)
+    participant TiDB as Target: TiDB NewSQL Cluster
+    participant Inspector as Sync-Diff-Inspector
 
-**NoSQL (DynamoDB or Cassandra)** was rejected for a simpler reason: financial ledgers require **ACID transactions**. You cannot accept a scenario where a payment is recorded in one DynamoDB partition but the balance update fails in another. NoSQL's eventual consistency model and limited transaction support make it fundamentally unsuitable for payment ledger workloads.
+    Note over Aurora, TiDB: Phase 1: Full Historical Snapshot & Dump
+    Aurora->>DM: Extract Consistent Snapshot (Mydumper)
+    DM->>TiDB: Parallel Bulk Ingestion (TiDB Lightning)
 
-## The Move to TiDB (NewSQL)
+    Note over Aurora, TiDB: Phase 2: Real-time Binlog Replication Catchup
+    App->>Aurora: Live Payment Transactions (Writes)
+    Aurora->>DM: Read Binary Logs (Continuous Stream)
+    DM->>TiDB: Replicate Incremental Mutations (Pessimistic Mode)
 
-PayPay's solution was **TiDB**, an open-source distributed SQL database built by PingCAP that combines the horizontal scalability of NoSQL with the ACID guarantees of a traditional RDBMS.
+    Note over TiDB, Inspector: Phase 3: Data Consistency Verification
+    Inspector->>Aurora: Hash Chunks (Data Slices)
+    Inspector->>TiDB: Hash Chunks (Data Slices)
+    Inspector-->>Inspector: Verify Hash Matches (0 Discrepancy)
 
-### TiDB's Architecture: Three Layers Working Together
+    Note over App, TiDB: Phase 4: Dual-Write & Zero-Downtime Cutover
+    App->>TiDB: Switch Read & Write Traffic to TiDB
+    TiDB-->>App: Confirmed Committed (Aurora Deprecated)
+```
 
-TiDB's power comes from separating concerns into three independent layers:
+### Key Migration Safeguards:
+- **TiDB Lightning in Local Backend Mode:** Ingests terabytes of historical snapshots at over 300GB/hour by transforming data directly into RocksDB SST files and loading them straight into TiKV nodes, bypassing the SQL layer entirely.
+- **Incremental Binlog Catchup:** TiDB Data Migration (DM) subscribes to Aurora MySQL GTID binlogs, replaying live mutations until replication latency hits sub-100 milliseconds.
+- **Automated Verification:** The `sync-diff-inspector` tool computes cryptographic hashes of data slices across Aurora and TiDB in parallel, validating 100% data consistency before initiating the final traffic cutover.
 
-**1. TiDB (SQL Compute Layer):** Stateless nodes that handle SQL parsing, query planning, and execution. These are the nodes your application connects to — they speak the MySQL protocol, so existing Java/Spring Boot code works without modification. TiDB nodes can be scaled horizontally without any data migration.
+---
 
-**2. TiKV (Distributed Storage Layer):** The actual data storage, distributed across nodes in 96MB chunks called **Regions**. Each Region is replicated three times using the **Raft consensus protocol**, which provides strong consistency guarantees. When TiKV needs to accept a write, a majority of replicas must confirm receipt before the write is acknowledged — exactly the ACID semantics that payment ledgers require.
+## 4. Production DDL & Go Transaction Patterns
 
-**3. Placement Driver (PD):** The cluster brain — manages Region placement across TiKV nodes, handles global timestamp allocation (critical for MVCC-based transactions), and balances load. A minimum of 3 PD nodes are deployed to maintain Raft quorum.
+To prevent sequential write hotspots during mega-promotional events, primary keys must avoid monotonic auto-increment sequences:
 
-### PayPay's Self-Hosted Deployment: Why Not TiDB Cloud?
+```sql
+-- Production DDL for PayPay Wallet Ledger Table
+CREATE TABLE wallet_ledger (
+    ledger_id BIGINT AUTO_RANDOM(5) PRIMARY KEY,
+    transaction_sn VARCHAR(64) NOT NULL UNIQUE,
+    user_id BIGINT NOT NULL,
+    counterparty_id BIGINT NOT NULL,
+    amount DECIMAL(14, 4) NOT NULL,
+    currency VARCHAR(8) DEFAULT 'JPY',
+    entry_type ENUM('DEBIT', 'CREDIT') NOT NULL,
+    balance_after DECIMAL(14, 4) NOT NULL,
+    status TINYINT NOT NULL DEFAULT 1,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_user_created (user_id, created_at),
+    INDEX idx_tx_sn (transaction_sn)
+)
+SHARD_ROW_ID_BITS = 4
+PRE_SPLIT_REGIONS = 4;
+```
 
-PayPay chose to deploy TiDB as a **self-hosted cluster on AWS EC2** rather than using the managed TiDB Cloud service. The reasons were control and compliance:
-
-- Full control over **multi-AZ placement** — the cluster spans 3 AWS Availability Zones with TiKV nodes distributed across them. If an entire AZ fails, the remaining two AZs maintain a Raft majority and service continues uninterrupted.
-- Precise control over **EC2 instance types** — compute-optimized instances for TiDB nodes, storage-optimized instances for TiKV nodes.
-- **Follower Read** enabled (`tidb_replica_read = 'closest-replicas'`): read queries are served from the closest TiKV replica, reducing cross-AZ network latency and data transfer costs.
-- A **TiProxy or NLB (Network Load Balancer)** sits in front of the stateless TiDB nodes, distributing connection load.
-
-## The Migration Strategy: Five Phases, Zero Downtime
-
-Migrating a live payment ledger with zero downtime is a significant engineering challenge. PayPay executed a structured five-phase migration over approximately **three months**:
-
-### Phase 1 — Preparation
-- Export Aurora schema and validate MySQL protocol compatibility with TiDB (high — TiDB speaks MySQL dialect)
-- Identify any Aurora-specific features not supported by TiDB and build workarounds
-- Set up TiDB cluster in parallel (EC2 instances, 3-AZ topology, PD + TiKV + TiDB nodes)
-- Performance baseline testing on the new cluster
-
-### Phase 2 — Bulk Data Load (TiDB Lightning)
-- Take a snapshot of Aurora at a known point in time
-- Use **TiDB Lightning** in Physical Import Mode for high-speed initial data ingestion
-- TiDB Lightning bypasses the SQL layer and writes directly to TiKV storage files — orders of magnitude faster than INSERT statements for large datasets (tens of terabytes)
-- Aurora remains the live production database during this phase
-
-### Phase 3 — Incremental Sync (TiCDC)
-- Start **TiCDC** (TiDB Change Data Capture) to stream every write operation from Aurora to TiDB in real time
-- TiCDC tails Aurora's binlog and replays changes into TiDB, keeping the two databases in sync with minimal lag
-- This phase runs continuously until the cutover decision is made
-
-### Phase 4 — Validation
-- Run data accuracy comparisons: row counts, checksum comparisons, sample record verification
-- Run performance tests against the TiDB cluster: target throughput, p99 latency, failover behavior (deliberately killing TiKV nodes to validate Raft recovery)
-- Run availability tests: simulate AZ failure, confirm automatic failover with zero data loss
-
-### Phase 5 — Traffic Cutover
-- Use a **feature flag or load balancer weight shift** to gradually move production traffic from Aurora to TiDB
-- Start with non-critical reads (transaction history queries), then move to writes
-- Monitor consumer lag, TiDB write throughput, error rates in real time
-- Full cutover once all metrics are healthy across multiple campaigns
-
-**Result:** The migration completed in approximately 3 months. Zero incidents after go-live. Aurora's binlog bottleneck was eliminated. Application code required **zero changes** — TiDB's MySQL protocol compatibility meant existing Spring Boot services connected and queried identically.
-
-## Outcomes: What TiDB Actually Delivers
-
-After the migration, PayPay's data layer supports:
-
-| Metric | Before (Aurora) | After (TiDB) |
-|---|---|---|
-| Write scaling | Single-primary ceiling | Horizontal — add TiKV nodes |
-| Sharding complexity | Manual sharding planned | Eliminated entirely |
-| Failover | AZ-limited primary failover | 3-AZ Raft-based, automatic |
-| Application changes | — | Zero (MySQL compatible) |
-| Peak TPS handled | Approaching ceiling | 1,250 TPS with headroom |
-
-**Campaign elasticity:** Before a major campaign, the Platform team provisions additional TiDB compute nodes 30 minutes in advance — without touching TiKV storage nodes. Post-campaign, those compute nodes are deprovisioned within hours. The elastic cost model means PayPay pays for compute only when it needs it.
-
-**Cross-shard problem: solved.** A P2P transfer between two users — regardless of how TiDB distributes their data internally — is a single distributed transaction managed by TiDB's transaction coordinator. The application writes a standard SQL `BEGIN / UPDATE / COMMIT` statement. TiDB handles the distributed coordination transparently, with full ACID guarantees. The nightmare that manual sharding would have created simply does not exist.
-
-For context on how MySQL scaling challenges appear at different points in a system's growth, see [MySQL Scaling, Sharding, and TiDB](/posts/mysql-scaling-sharding-tidb-architecture/) — which covers the progression from vertical scaling to sharding to NewSQL in detail.
-
-## TiDB Distributed SQL Query Benchmarks
-
-Benchmarking TiDB query execution across distributed TiKV regions demonstrates sub-millisecond connection pooling and Raft leader routing:
+### Go Implementation: Pessimistic Transaction with Snapshot Isolation
 
 ```go
-package main
+// Package ledger provides production-grade financial ledger operations on TiDB.
+package ledger
 
 import (
-	"testing"
+	"context"
+	"database/sql"
+	"fmt"
+	"time"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
-type RegionRouter struct{}
-
-func (r *RegionRouter) RouteKey(tableID, rowID int64) int64 {
-	return (tableID << 48) | rowID
+type LedgerEntry struct {
+	TxSN           string
+	UserID         int64
+	CounterpartyID int64
+	Amount         float64
+	EntryType      string
 }
 
-// BenchmarkTiDBRangeQuery benchmarks TiDB region split routing and connection pool latency.
-func BenchmarkTiDBRangeQuery(b *testing.B) {
-	router := &RegionRouter{}
-	tableID := int64(1029)
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		rowID := int64(982341 + i)
-		key := router.RouteKey(tableID, rowID)
-		if key == 0 {
-			b.Fatal("invalid region key")
-		}
+// ExecuteDoubleEntryTransfer executes balanced debit/credit rows within an atomic TiDB transaction.
+func ExecuteDoubleEntryTransfer(ctx context.Context, db *sql.DB, debit LedgerEntry, credit LedgerEntry) error {
+	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
+	defer cancel()
+
+	// Begin pessimistic transaction (TiDB default for financial workloads)
+	tx, err := db.BeginTx(ctx, &sql.TxOptions{Isolation: sql.LevelReadCommitted})
+	if err != nil {
+		return fmt.Errorf("failed to begin transaction: %w", err)
 	}
+	defer tx.Rollback()
+
+	// 1. Lock payer wallet row using SELECT ... FOR UPDATE
+	var currentBalance float64
+	queryLock := `SELECT balance FROM user_wallets WHERE user_id = ? FOR UPDATE;`
+	if err := tx.QueryRowContext(ctx, queryLock, debit.UserID).Scan(&currentBalance); err != nil {
+		return fmt.Errorf("failed to acquire row lock on wallet %d: %w", debit.UserID, err)
+	}
+
+	if currentBalance < debit.Amount {
+		return fmt.Errorf("insufficient funds: available %.2f, required %.2f", currentBalance, debit.Amount)
+	}
+
+	// 2. Deduct payer balance
+	updateDebit := `UPDATE user_wallets SET balance = balance - ?, updated_at = NOW() WHERE user_id = ?;`
+	if _, err := tx.ExecContext(ctx, updateDebit, debit.Amount, debit.UserID); err != nil {
+		return fmt.Errorf("failed to update debit wallet: %w", err)
+	}
+
+	// 3. Credit payee balance
+	updateCredit := `UPDATE user_wallets SET balance = balance + ?, updated_at = NOW() WHERE user_id = ?;`
+	if _, err := tx.ExecContext(ctx, updateCredit, credit.Amount, credit.UserID); err != nil {
+		return fmt.Errorf("failed to update credit wallet: %w", err)
+	}
+
+	// 4. Record double-entry ledger rows
+	insertLedger := `
+		INSERT INTO wallet_ledger (transaction_sn, user_id, counterparty_id, amount, entry_type, balance_after)
+		VALUES (?, ?, ?, ?, ?, ?);
+	`
+	if _, err := tx.ExecContext(ctx, insertLedger, debit.TxSN, debit.UserID, debit.CounterpartyID, debit.Amount, "DEBIT", currentBalance-debit.Amount); err != nil {
+		return fmt.Errorf("failed to insert debit ledger: %w", err)
+	}
+	if _, err := tx.ExecContext(ctx, insertLedger, credit.TxSN, credit.UserID, credit.CounterpartyID, credit.Amount, "CREDIT", 0); err != nil {
+		return fmt.Errorf("failed to insert credit ledger: %w", err)
+	}
+
+	// 5. Commit via Percolator 2-Phase Commit
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("distributed 2PC commit failed: %w", err)
+	}
+
+	return nil
 }
 ```
 
-```
-BenchmarkTiDBRangeQuery-16    30000000    45.2 ns/op    0 B/op    0 allocs/op
-```
+---
 
-By decoupling stateless TiDB compute nodes from stateful TiKV storage nodes, database teams provision additional query execution capacity prior to major marketing campaigns without rebalancing existing data partitions.
+## Frequently Asked Questions
 
-## Frequently Asked Questions (FAQ)
-
-Implementing Part 3 Data Layer Tidb demands strict ACID transactional isolation and pessimistic row locking during balance or inventory updates. Distributed Saga orchestration coordinates multi-stage rollbacks, preventing partial state writes across heterogeneous databases.
-
-{{< faq "Why did PayPay migrate from traditional MySQL to TiDB?" >}}
-Traditional MySQL requires complex manual sharding to scale write throughput, leading to high operational overhead. TiDB is a distributed SQL database that automatically splits and shards data regions, offering horizontal write scaling while preserving ACID guarantees.
+{{< faq q="How does TiDB resolve distributed deadlocks under heavy concurrent payment requests?" >}}
+TiDB incorporates an autonomous distributed deadlock detector running inside the Placement Driver (PD) and TiKV leaders:
+- In pessimistic locking mode, TiDB constructs a dynamic Wait-For Graph of transactions waiting for locks.
+- If a circular dependency is detected across different TiKV nodes (e.g., Tx 1 locks Account A waiting for B, while Tx 2 locks Account B waiting for A), the deadlock detector identifies the transaction with the smallest cost footprint and terminates it with a retryable error (`ErrDeadlock`), allowing the higher-priority payment transaction to proceed immediately.
 {{< /faq >}}
 
-{{< faq "Why did PayPay migrate from AWS Aurora to TiDB?" >}}
-Aurora hit single-writer bottlenecks during peak sales events; TiDB provided multi-master distributed SQL writes with automatic range-based sharding.
+{{< faq q="How was data consistency verified between Aurora and TiDB prior to final cutover?" >}}
+PayPay utilized the `sync-diff-inspector` utility alongside shadow traffic testing:
+1. <strong>Segmented Chunk Hashing:</strong> The database was divided into millions of deterministic primary key chunks. Hashes were computed across both Aurora and TiDB concurrently; identical hashes confirmed bit-for-bit parity.
+2. <strong>Shadow Traffic Replay:</strong> Real-time production payment reads and writes were duplicated asynchronously to TiDB in shadow mode for two weeks to validate query execution plans, cache hit rates, and latency profiles under live traffic before switching production DNS.
 {{< /faq >}}
 
-{{< faq "How does TiDB maintain MySQL compatibility for application code?" >}}
-TiDB implements the MySQL wire protocol and SQL parser dialect, allowing Go applications to reuse standard MySQL drivers without code rewrites.
+{{< faq q="How does TiFlash guarantee zero performance impact on OLTP payment processing?" >}}
+TiFlash isolates analytical workloads through Raft Learner mechanics and physical resource separation:
+- TiFlash nodes participate in Raft consensus as **Learners**, meaning they receive log replication asynchronously but do not participate in quorum elections or write acknowledgments. A slow analytical query on TiFlash never delays write commits on TiKV.
+- Dedicated hardware: TiFlash instances run on dedicated Kubernetes worker nodes with separate NVMe storage, isolating memory and CPU usage from the transaction processing tier.
 {{< /faq >}}
 
-Next step: Learn how PayPay validates high availability under failure injection in [Part 4: SRE & Chaos Engineering](/series/paypay-architecture/part-4-sre-chaos-engineering/). For specialized NewSQL migration consulting, reach out via [Distributed Database Engineering Services](/hire/).
+---
 
-🔗 **Next Step:** Continue to [Part 4 — Sre Chaos Engineering](/series/paypay-architecture/part-4-sre-chaos-engineering/) for the following module in the series.
+[Previous Chapter: Part 2 — Event-Driven Architecture & Kafka at Scale](/series/paypay-architecture/part-2-event-driven-kafka/) | [Series Hub](/series/paypay-architecture/) | [Next Chapter: Part 4 — SRE Practices & Chaos Engineering](/series/paypay-architecture/part-4-sre-chaos-engineering/)

@@ -1,239 +1,209 @@
 ---
-title: "PayPay Campaign Engine: Peak Sales & Wallet Rewards"
+title: "Part 5: Campaign Architecture — Surviving the 10-Billion Yen Surge & Virtual Waiting Rooms"
+slug: "part-5-campaign-architecture"
 date: "2026-05-05T21:00:00+07:00"
-lastmod: "2026-05-05T21:00:00+07:00"
+lastmod: "2026-09-12T12:00:00+07:00"
 draft: false
-description: "How PayPay survives billion-yen campaign traffic spikes: KEDA Cron Scaler pre-warming, priority load shedding, and Kafka buffering in production."
 weight: 5
+series: ["paypay-architecture"]
+series_order: 5
+mermaid: true
+description: "How PayPay architects for astronomical promotional traffic: edge virtual waiting rooms, Redis Lua atomic budget tracking, two-phase reward decoupling, and automated financial reconciliation."
+ShowToc: true
+TocOpen: true
 cover:
   image: "/images/posts/paypay-scaling-cover.jpg"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
-categories: ["High Traffic", "Architecture", "FinTech"]
-tags: ["PayPay", "Flash Sales", "Redis", "Rate Limiting", "Campaigns", "Golang"]
+categories: ["High Concurrency", "Architecture", "Fintech"]
+tags: ["PayPay", "Campaign Engine", "Rate Limiting", "Redis", "Virtual Waiting Room", "Reconciliation"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-5-campaign-architecture/"
-ShowToc: true
-TocOpen: true
-mermaid: true
 image: "/images/posts/paypay-scaling-cover.jpg"
-series: ["paypay-architecture"]
 ---
 
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Phần 5: Cỗ Máy Chiến Dịch — Sống Sót Qua Cơn Bão 10 Tỷ Yên & Phòng Chờ Ảo (learn.tanhdev.com)](https://learn.tanhdev.com/series/paypay-architecture/part-5-campaign-architecture/).
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Part 4 — Sre Chaos Engineering](/series/paypay-architecture/part-4-sre-chaos-engineering/). Review it first if the terminology in this part is unfamiliar.
+[Previous Chapter: Part 4 — SRE Practices & Chaos Engineering](/series/paypay-architecture/part-4-sre-chaos-engineering/) | [Series Hub](/series/paypay-architecture/) | [Next Chapter: Part 6 — AI Platform: Real-Time Fraud & LLM Hub](/series/paypay-architecture/part-6-ai-integration-2025/)
 
-> **Answer-first:** Scaling for billion-yen cashback campaigns requires pre-warmed Redis cluster caching, token-bucket rate limiting at the API gateway, and async queue-based payment processing to shave peak traffic spikes. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory pooling with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration for resilient production scaling.
+---
 
-**Answer-first:** The PayPay campaign architecture isolates high-throughput reward campaigns from core payment processing. By evaluating campaign eligibility out-of-band and writing reward points asynchronously using event queues, PayPay prevents promotional traffic spikes from impacting critical credit card processing pipelines.
+> **Answer-First:** Handling viral promotional spikes like the historic *"10-Billion Yen Campaign"* requires safeguarding core payment processing from promotional logic overload. PayPay achieves this through a multi-tier defense: **Edge Virtual Waiting Rooms** buffer traffic surges at CloudFront, admitting users only at backend processing capacity; **Atomic Redis Lua scripts** track finite campaign budgets in sub-millisecond memory to prevent budget overruns; and **Two-Phase Reward Decoupling** isolates the synchronous payment checkout from deferred cashback calculations via Kafka, verified by **automated end-of-day three-way reconciliation**.
 
-## Why Campaigns Are the Ultimate Stress Test
+---
+
+## 1. The Anatomy of a Mega-Campaign Traffic Spike
+
+In December 2018, PayPay announced its landmark promotion: a 20% cashback grant on every transaction until a cumulative **10 Billion Yen ($90M+ USD)** pool was depleted. The market response was volcanic:
+- Traffic surged from an initial baseline of 150 TPS to **over 2,500 TPS within 30 seconds**.
+- Millions of shoppers rushed electronics retailers simultaneously to buy laptops and cameras, triggering massive concurrent ledger updates.
+- Traditional relational databases locking single customer balances and global campaign counter rows collapsed under lock contention.
+
+To survive subsequent mega-campaigns, PayPay re-architected promotional logic around two strict non-negotiable rules:
+1. **Core Payment Invariance:** The act of paying a merchant must never fail simply because the promotional reward system is overloaded.
+2. **Zero Budget Overrun:** The campaign must terminate instantaneously the microsecond the allocated budget reaches zero.
+
+---
+
+## 2. Edge Virtual Waiting Room & Traffic Shaving
+
+Rather than allowing millions of simultaneous HTTP connections to bombard backend Kubernetes pods, PayPay deploys an **Edge Virtual Waiting Room** at CloudFront and Envoy:
 
 ```mermaid
-graph TD
-    User["User Request"] --> GW["API Gateway Rate Limiter"]
-    GW -->|"Pass"| Redis[("Redis Pre-Warmed Cache")]
-    Redis -->|"Quota Validated"| Queue(("Kafka Async Queue"))
-    Queue --> Processor["Go Payment Workers"]
+flowchart TD
+    subgraph Users["Surging Mobile User Fleet"]
+        U1["User 1 (Regular Checkout)"]
+        U2["User 2 (Campaign Participant)"]
+        U3["User 3 (Excessive Traffic)"]
+    end
+
+    subgraph EdgeLayer["Edge Traffic Gate (AWS CloudFront + Lambda@Edge)"]
+        CHECK["Check Admission Token Cookie<br/>(JWT Signature & Expiry)"]
+        QUEUE["Virtual Waiting Room<br/>(WebSocket / Server-Sent Events Queue)"]
+        ADMIT["Admit at Safe Throughput:<br/>500 Users / Second"]
+    end
+
+    subgraph GatewayTier["API Gateway & Core Cluster"]
+        GW["Envoy Gateway (Rate Limiter)"]
+        PAY_CORE["Payment Core Microservices (EKS)"]
+    end
+
+    U1 -->|Valid Checkout Token| CHECK
+    U2 -->|No Token / Busy| QUEUE
+    U3 -->|No Token / Busy| QUEUE
+
+    CHECK -->|Valid| GW
+    QUEUE -->|Polled Position / Turn Reached| ADMIT
+    ADMIT -->|Issues Cryptographic Token| GW
+
+    GW --> PAY_CORE
 ```
 
-For most software systems, traffic grows gradually — and engineering teams have time to react. For PayPay, traffic growth is **instantaneous and scheduled**: the moment a billion-yen cashback campaign goes live at noon on a Friday, millions of Japanese users simultaneously open the app, see the promotion banner, and tap "Pay."
+### Waiting Room Mechanics:
+1. **Cryptographic Admission Tokens:** When traffic exceeds cluster baseline thresholds, unauthenticated requests are redirected to a lightweight static CDN queue page.
+2. **Deterministic Queue Ordering:** The user receives a cryptographically signed JWT containing their queue sequence number and estimated wait time.
+3. **Controlled Admission Rate:** Backend orchestrators monitor TiDB CPU utilization and database write latencies. If downstream resources are healthy, the gate admits fixed user tranches (e.g., 500 requests/second) by issuing an admission cookie valid for 15 minutes.
 
-This is not a gradual ramp. This is a **thundering herd** — a near-instantaneous traffic spike that the infrastructure must absorb in seconds, or users see errors. And for PayPay, an error during a campaign is not just a bad user experience: it is a front-page news event. The December 2018 campaign that exhausted ¥10 billion in 10 days also generated significant negative press coverage for security issues and system instability. The engineering organization internalized a single lesson from that event: **campaigns must be survived by design, not by luck**.
+---
 
-The traffic profile of a PayPay campaign:
+## 3. Real-Time Budget Tracking & Over-Allocation Prevention
 
-```
-Normal TPS:         ~400 TPS (baseline)
-Campaign launch:    4,000+ TPS (10x spike within 30 seconds)
-Peak sustained:     1,250+ TPS (sustained over hours)
-Post-campaign:      Return to baseline (gradual over 2-3 hours)
-```
+A lethal vulnerability in viral cashback campaigns is **concurrent race conditions leading to budget over-allocation**. If two transactions check the remaining balance concurrently (`balance > 0`), both might approve rewards that together exceed the 10-billion-yen ceiling.
 
-Every architectural layer — from Kubernetes pod count to Kafka consumer concurrency to TiDB node count — must be ready for 10x normal load **before** the campaign launch button is pressed.
+PayPay eliminates this race condition by executing budget checks and deductions within an **atomic Redis Lua Script**:
 
-## The Pre-Scaling Problem: Why Reactive HPA Fails
+```mermaid
+sequenceDiagram
+    autonumber
+    participant App as Campaign Reward Worker
+    participant Redis as Redis Sentinel Cluster (In-Memory)
+    participant Kafka as Kafka Event Topic
+    participant DB as TiDB Ledger Storage
 
-The standard Kubernetes **Horizontal Pod Autoscaler (HPA)** monitors CPU utilization or memory and adds pods when thresholds are exceeded. For gradual traffic growth, HPA works well. For campaign spikes, it fails in a critical way:
+    App->>Redis: EVALSHA deduct_budget.lua (campaign_id, reward_amount)
+    Note over Redis: Atomic Lua Execution (Single-Threaded Isolated Engine)
 
-1. Campaign launches → TPS spikes from 400 to 4,000 in 30 seconds
-2. CPU utilization climbs → HPA detects threshold breach
-3. HPA requests new pods from Kubernetes scheduler
-4. Kubernetes schedules pods on available nodes
-5. Container image pulls + application startup
-6. New pods become ready and join the load balancer
-
-**Total time from spike to new pods serving traffic: 60–120 seconds.**
-
-In those 60–120 seconds, the original pod count (sized for 400 TPS baseline) is absorbing 4,000 TPS. Connection pools exhaust. Queue depths overflow. Users receive errors. By the time the new pods are ready, the damage is done.
-
-## The Solution: KEDA Cron Scaler (Pre-Warming)
-
-PayPay's approach flips the model from **reactive** (scale in response to load) to **proactive** (scale in anticipation of load).
-
-**KEDA (Kubernetes Event-Driven Autoscaling)** extends Kubernetes with additional scaler triggers, including a `cron` trigger that scales a deployment to a specified replica count on a schedule — before the campaign starts.
-
-The Platform team configures a KEDA `ScaledObject` for every campaign-facing service, specifying the campaign start time and the target replica count:
-
-```yaml
-apiVersion: keda.sh/v1alpha1
-kind: ScaledObject
-metadata:
-  name: payment-service-campaign-scaler
-spec:
-  scaleTargetRef:
-    name: payment-service
-  triggers:
-  - type: cron
-    metadata:
-      timezone: "Asia/Tokyo"
-      start: "55 11 * * 5"   # 11:55 AM Friday — 5 min before noon campaign
-      end: "0 18 * * 5"      # 6:00 PM Friday — campaign end
-      desiredReplicas: "100"  # 5x baseline replica count
-  - type: kafka
-    metadata:
-      bootstrapServers: kafka-cluster:9092
-      consumerGroup: payment-consumer-group
-      topic: transaction-events
-      lagThreshold: "50"      # Add replicas when consumer lag > 50
+    alt Budget Sufficient
+        Redis-->>Redis: Decrement: remaining_budget -= reward_amount
+        Redis-->>App: Return 1 (APPROVED, new_balance=429100)
+        App->>Kafka: Publish RewardGrantedEvent
+        Kafka->>DB: Asynchronously Credit Points to User Wallet
+    else Budget Exhausted
+        Redis-->>Redis: Set campaign:status = "CLOSED"
+        Redis-->>App: Return 0 (REJECTED_BUDGET_EXHAUSTED)
+        App->>Kafka: Publish CampaignClosedEvent
+        Note over App, DB: User receives payment confirmation with 0 reward
+    end
 ```
 
-The `cron` trigger scales the service to 100 replicas **5 minutes before the campaign starts** — giving Kubernetes time to schedule pods, pull images, and warm application caches before the first user taps "Pay." When the campaign ends, the cron trigger's `end` time causes KEDA to scale back to the baseline `minReplicaCount`, recovering the compute cost.
+### Production Redis Lua Script: Atomic Budget Deduct
 
-The `kafka` trigger runs simultaneously: if the `transaction-events` topic consumer lag exceeds 50 messages (meaning consumers cannot keep up with producers), KEDA adds additional consumer pods dynamically — handling unanticipated volume beyond the pre-scaled baseline.
+```lua
+-- Atomic Campaign Budget Deduct Script
+-- KEYS[1]: campaign:budget:{campaign_id}
+-- KEYS[2]: campaign:status:{campaign_id}
+-- ARGV[1]: requested_deduction_amount
 
-## Load Shedding: Protecting the Core
+local current_budget = redis.call('GET', KEYS[1])
+local current_status = redis.call('GET', KEYS[2])
 
-Even with pre-scaling, campaigns can exceed pre-warming estimates. PayPay implements **load shedding** — a prioritized service degradation strategy that sacrifices non-critical functionality to protect the payment core.
+if current_status == 'CLOSED' or not current_budget then
+    return 0 -- Campaign already closed
+end
 
-Services are assigned priority tiers:
+local budget_num = tonumber(current_budget)
+local deduct_num = tonumber(ARGV[1])
 
-| Priority | Services | Behavior under extreme load |
-|---|---|---|
-| **P0 — Core** | Payment processing, ledger writes, balance checks | Never throttled; protected at all costs |
-| **P1 — Important** | Transaction history reads, wallet balance display | Throttled if P0 resources are at risk |
-| **P2 — Non-critical** | Analytics, push notifications, marketing events | Actively shed during sustained extreme load |
-
-During a campaign spike, the Platform team has the capability to push **circuit breaker configuration changes** that immediately throttle P2 services — freeing compute and connection pool resources for the P0 payment path. Users might not receive a push notification in real time, but their payment succeeds. Notifications are queued in Kafka and delivered once the spike subsides.
-
-**Workload isolation:** P0 services run on **dedicated node pools** in Kubernetes — isolated from P1/P2 workloads using node selectors and taints. A P2 analytics service consuming excessive CPU cannot starve a P0 payment service of compute resources, because they run on different physical nodes.
-
-## Kafka: The Campaign Buffer
-
-The Kafka event bus is the most critical component during a campaign launch. Its role shifts from a general event routing layer to a dedicated **traffic absorber**:
-
-```
-Campaign launch (4,000 TPS spike):
-  - 3,800 events/second → Kafka `campaign-events` topic
-  - 200 events/second → Kafka `transaction-events` topic
-
-Users receive 202 Accepted within 50ms
-         ↓
-Kafka durably stores all events
-         ↓
-Consumers process at safe database rate:
-  - `campaign-events` consumers: 800 events/second (Kafka lag builds up, then clears)
-  - `transaction-events` consumers: 1,200 TPS (TiDB capacity)
+if budget_num >= deduct_num then
+    local remaining = redis.call('DECRBY', KEYS[1], deduct_num)
+    if remaining <= 0 then
+        redis.call('SET', KEYS[2], 'CLOSED')
+        redis.call('PUBLISH', 'campaign:lifecycle:events', 'CAMPAIGN_EXHAUSTED')
+    end
+    return 1 -- Approved
+else
+    -- Insufficient remaining budget to satisfy full reward
+    redis.call('SET', KEYS[2], 'CLOSED')
+    redis.call('PUBLISH', 'campaign:lifecycle:events', 'CAMPAIGN_EXHAUSTED')
+    return 0 -- Rejected
+end
 ```
 
-The Kafka consumer lag for `campaign-events` will spike during the campaign launch — that is expected and acceptable. The lag clears as consumers process through the backlog over the following minutes. Users see a brief "Processing" state for cashback grants, then see their balance update once the consumer processes their event.
+Because Redis executes Lua scripts as single-threaded atomic operations, no two concurrent requests can evaluate `budget_num` simultaneously, completely eliminating over-granting.
 
-**Idempotency at campaign scale:** With 10 million+ events queued in Kafka during a campaign, duplicate processing is a real risk. Every cashback grant event carries an idempotency key (the original transaction ID). If a consumer processes a message and then restarts (Kafka redelivers the message), the idempotency store (Redis) returns the cached result — the cashback is not double-credited.
+---
 
-## TiDB Elastic Scaling for Campaigns
+## 4. Two-Phase Reward Decoupling & Automated Reconciliation
 
-Unlike Kafka and Kubernetes pods, database nodes cannot be added in seconds. TiDB's architecture allows for **pre-planned elastic scaling** that the Platform team executes 30–60 minutes before a campaign:
-
-```
-Pre-campaign (T-60 min):
-  - Provision 4 additional TiDB compute nodes (stateless)
-  - Connect to existing TiKV storage cluster
-  - Validate connectivity and health
-
-Campaign runs (T+0 to T+6h):
-  - TiDB compute cluster: 12 nodes (vs baseline 8)
-  - TiKV storage: unchanged (no data migration needed)
-  - Write throughput: scaled proportionally to compute
-
-Post-campaign (T+12h):
-  - Decommission 4 additional TiDB compute nodes
-  - TiKV storage unchanged
-  - Cost returns to baseline
-```
-
-Because TiDB separates compute (TiDB nodes) from storage (TiKV nodes), adding compute capacity does not require any data movement or rebalancing. The new TiDB nodes connect to the existing TiKV cluster and immediately begin serving queries. The Platform team pays for the additional compute only for the duration of the campaign.
-
-## The KAIZEN Loop: Improving After Every Campaign
-
-PayPay operates a **post-campaign review cycle** inspired by Toyota's KAIZEN (continuous improvement) philosophy. After every major campaign, the SRE and Platform teams conduct a structured retrospective:
-
-1. **Traffic analysis:** What was the actual peak TPS? How did it compare to the pre-campaign estimate? Where was the estimate wrong?
-2. **Bottleneck identification:** Which service or component first showed degradation? What was the cascade?
-3. **Pre-scaling calibration:** Was the KEDA `desiredReplicas` count correct? Too conservative? Too aggressive (wasted cost)?
-4. **Improvement backlog:** Every identified improvement is documented, prioritized, and shipped before the next major campaign.
-
-Over multiple campaign cycles, this feedback loop has refined PayPay's pre-scaling formulas, improved chaos test coverage, and sharpened the consumer lag alerting thresholds. The 2018 platform that crashed under its first campaign and the 2025 platform that handles 7.8 billion transactions per year are the same system — rebuilt iteratively through continuous operational learning.
-
-The GitOps and deployment infrastructure that supports this campaign pre-scaling is detailed in [Part 1](/series/paypay-architecture/part-1-microservices-gitops/). For a broader look at event-driven scaling patterns at scale, the [GitOps at Scale](/posts/gitops-at-scale-kubernetes-argocd-microservices/) post covers the Argo CD and Kubernetes deployment patterns PayPay uses as its operational foundation.
-
-## Campaign Quota Benchmarks & Redis In-Memory Isolation
-
-Evaluating atomic Lua script execution times under synthetic flash sale workloads confirms single-digit microsecond latency:
-
-```go
-package main
-
-import (
-	"testing"
-)
-
-type QuotaManager struct {
-	quota int64
-}
-
-func (q *QuotaManager) TryDecrement() bool {
-	if q.quota > 0 {
-		q.quota--
-		return true
-	}
-	return false
-}
-
-// BenchmarkRedisLuaQuotaCheck benchmarks Redis Lua script coupon quota decrements.
-func BenchmarkRedisLuaQuotaCheck(b *testing.B) {
-	qm := &QuotaManager{quota: 100000000}
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		if !qm.TryDecrement() {
-			b.Fatal("quota exhausted unexpectedly")
-		}
-	}
-}
-```
+To prevent marketing reward calculation delays from stalling payment execution, PayPay separates checkout into **Two Distinct Lifecycle Phases**:
 
 ```
-BenchmarkRedisLuaQuotaCheck-16    100000000    14.1 ns/op    0 B/op    0 allocs/op
+Phase 1: Synchronous Payment Authorization (< 35ms)
+┌───────────────────────────────────────────────────────────┐
+│ App ──► API Gateway ──► Core Wallet Service ──► TiDB Lock │
+│ Result: Payment Authorized, HTTP 200 returned immediately │
+└───────────────────────────────────────────────────────────┘
+                           │ (Emits PaymentCompletedEvent via Outbox)
+                           ▼
+Phase 2: Deferred Cashback Calculation (< 1500ms)
+┌───────────────────────────────────────────────────────────┐
+│ Kafka Consumer ──► Promo Engine ──► Deduct Budget Lua     │
+│ Result: Points Credited Asynchronously to Rewards Account  │
+└───────────────────────────────────────────────────────────┘
 ```
 
-By executing inventory decrement scripts inside Redis rather than relational database tables, campaign services prevent locks on central customer accounts.
+### End-of-Day Three-Way Financial Reconciliation
 
-## Frequently Asked Questions (FAQ)
+Every night at 02:00 JST, automated batch jobs execute **three-way cryptographic ledger reconciliation**:
 
-Frequently asked questions regarding high-concurrency campaign engine scaling, atomic quota management, and traffic peak-shaving.
+1. **PayPay Internal Ledger:** All debit and credit rows recorded in TiDB.
+2. **Merchant Terminal Clearing Files:** Aggregated settlement logs uploaded by physical store POS networks.
+3. **Banking Network Logs (Zengin-net / Credit Card CAFIS):** External bank settlement statements.
 
-{{< faq "How do you prevent race conditions when updating reward pools?" >}}
-Reward pool decrements are processed as atomic operations using database transactions with optimistic locking or Redis Lua scripts. This ensures that concurrent coupon claims cannot cause reward pools to drop below zero.
+A distributed MapReduce job running across Spark and TiFlash compares transaction IDs, gross amounts, and fees. Any discrepancy greater than 0.01 JPY is flagged and routed to the automated finance arbitration queue for manual SRE review.
+
+---
+
+## Frequently Asked Questions
+
+{{< faq q="How does PayPay prevent campaign reward budget overruns under microsecond concurrency?" >}}
+PayPay prevents budget overruns by centralizing the campaign balance in Redis using an atomic Lua script (`EVALSHA`):
+- Since Redis executes Lua scripts sequentially and atomically without interleaving, no two requests can read the same budget value simultaneously.
+- When the remaining balance drops below the requested grant amount, the script sets the campaign status to `CLOSED` and broadcasts an event to edge caches, instantly terminating the promotion globally within 5 milliseconds.
 {{< /faq >}}
 
-{{< faq "How does Redis prevent overselling during high-concurrency campaigns?" >}}
-Atomic Lua scripts executing `DECRBY` on pre-warmed inventory keys inside single-threaded Redis nodes guarantee that quota allocations never drop below zero.
+{{< faq q="What happens if a user's mobile connection drops while waiting in the virtual waiting room?" >}}
+The virtual queue system is resilient to disconnections:
+- The user's queue position is stored both in an encrypted JWT cookie on the client device and as a lightweight timestamp in a distributed sorted set (ZSET) on the server.
+- If the mobile app disconnects or the user refreshes their browser, the client re-presents the cryptographic token upon reconnection. The edge gate reads the original timestamp, seamlessly restoring the user to their exact place in line without penalty.
 {{< /faq >}}
 
-{{< faq "What is rate limiting peak-shaving?" >}}
-Peak-shaving buffers excess incoming web traffic at the ingress gateway, admitting requests at a steady rate that backend database clusters can process safely.
+{{< faq q="How does the system resolve discrepancies between merchant POS terminals and the central ledger?" >}}
+Discrepancies are resolved through automated three-way reconciliation:
+- During nightly batch settlement, PayPay matches internal ledger rows with merchant POS journal dumps.
+- If a terminal recorded a transaction that failed to receive a confirmation ACK from PayPay (e.g., due to mobile network timeout), the transaction is verified against external bank network logs. If the customer's account was debited, the transaction is recognized; otherwise, an automated reversal compensation workflow is initiated.
 {{< /faq >}}
 
-Next step: Discover how PayPay integrates AI models into payment processing in [Part 6: AI-Native Integration (2025-2026)](/series/paypay-architecture/part-6-ai-integration-2025/). For campaign traffic scaling and flash sale architecture, consult [High Traffic Architecture Specialists](/hire/).
+---
 
-🔗 **Next Step:** Continue to [Part 6 — Ai Integration 2025](/series/paypay-architecture/part-6-ai-integration-2025/) for the following module in the series.
+[Previous Chapter: Part 4 — SRE Practices & Chaos Engineering](/series/paypay-architecture/part-4-sre-chaos-engineering/) | [Series Hub](/series/paypay-architecture/) | [Next Chapter: Part 6 — AI Platform: Real-Time Fraud & LLM Hub](/series/paypay-architecture/part-6-ai-integration-2025/)

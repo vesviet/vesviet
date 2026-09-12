@@ -1,211 +1,277 @@
 ---
-title: "PayPay Microservices: GitOps & Kubernetes Blueprint"
+title: "Part 1: Microservices & GitOps Blueprint — Domain-Driven Design and Automated Canaries"
+slug: "part-1-microservices-gitops"
 date: "2026-05-05T21:00:00+07:00"
-lastmod: "2026-05-05T21:00:00+07:00"
+lastmod: "2026-09-12T12:00:00+07:00"
 draft: false
-description: "How PayPay organizes 100+ microservices using Domain-Driven Design, gRPC/Protobuf, GitOps with Argo CD, and canary deployments with Argo Rollouts."
 weight: 1
+series: ["paypay-architecture"]
+series_order: 1
+mermaid: true
+description: "How PayPay organizes 100+ microservices on Kubernetes using Domain-Driven Design, gRPC/Protobuf contracts, ArgoCD GitOps, and automated canary analysis with Argo Rollouts."
+ShowToc: true
+TocOpen: true
 cover:
   image: "/images/posts/paypay-scaling-cover.jpg"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
 categories: ["Cloud Native", "DevOps", "Architecture"]
-tags: ["PayPay", "Microservices", "GitOps", "ArgoCD", "Kubernetes", "Golang"]
+tags: ["PayPay", "Microservices", "GitOps", "ArgoCD", "Kubernetes", "Argo Rollouts", "gRPC"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-1-microservices-gitops/"
-ShowToc: true
-TocOpen: true
-mermaid: true
 image: "/images/posts/paypay-scaling-cover.jpg"
-series: ["paypay-architecture"]
 ---
 
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Phần 1: Nền Tảng Microservices & Tự Động Hóa GitOps (learn.tanhdev.com)](https://learn.tanhdev.com/series/paypay-architecture/part-1-microservices-gitops/).
 
-> **Prerequisite:** This is the starting part of the series — no prior part is required. Later parts assume the concepts introduced here.
+[Series Hub](/series/paypay-architecture/) | [Next Chapter: Part 2 — Event-Driven Architecture & Kafka at Scale](/series/paypay-architecture/part-2-event-driven-kafka/)
 
-> **Answer-first:** PayPay scales over 100 microservices for 60+ million users in Japan by combining Domain-Driven Design boundaries with GitOps CD automation using ArgoCD and Argo Rollouts. Automated canary deployments validate new code against live production metrics before full traffic shifting. Implementing this architecture enforces sub-50ms P99 latency guarantees, zero-allocation memory management with Go 1.24 unique.Handle, and fault-tolerant Dapr 1.15 component orchestration.
+---
 
-> **Answer-first:** PayPay enforces stable deployments by combining branch promotion workflows with GitOps tools like ArgoCD. Declarative configuration files in git serve as the single source of truth, allowing ArgoCD to automatically reconcile cluster state, execute canary rollouts, and enable instant rollbacks of microservices.
+> **Answer-First:** PayPay manages over 100 microservices across hundreds of engineers by enforcing strict **Domain-Driven Design (DDD) bounded contexts** communicated via **gRPC and Protocol Buffers**, completely bypassing the high serialization latency of REST/JSON. To eliminate human error in production deployments, PayPay implemented a zero-trust **GitOps workflow using ArgoCD** coupled with **Argo Rollouts**. Progressive canary deployments automatically evaluate live production telemetry (Prometheus P99 latency and error rates) at 10% traffic shifts, triggering instantaneous rollbacks without human intervention if regressions occur.
 
-## Bounded Contexts & Microservices
+---
 
-When PayPay launched, the architecture needed to be flexible enough to iterate rapidly while remaining stable enough to handle financial transactions at scale. They adopted a **Microservices Architecture** hosted entirely on AWS, organized around the principles of **Domain-Driven Design (DDD)**.
+## 1. Decomposing the Payment Monolith via Domain-Driven Design
 
-Instead of a massive monolith where a bug in the coupon service could take down payment processing, the system is divided into logical business domains (Bounded Contexts). Each domain owns its data model, its API contracts, and its deployment lifecycle — completely independently:
-
-- **User Domain:** Authentication, user profiles, KYC (Know Your Customer) verification, and identity management.
-- **Wallet/Payment Domain:** The financial core — ledger management, balance tracking, P2P transfers, and transaction processing. This is the highest-criticality domain in the entire system.
-- **Merchant Domain:** Merchant onboarding, store management, QR code generation, and settlement.
-- **Campaign/Promo Domain:** The most write-intensive domain during events — coupon validation, cashback point grants, and flash-sale logic. This domain was the epicenter of every major traffic spike.
-
-### Internal Communication: gRPC + Protocol Buffers
-
-With 100+ services that all need to talk to each other, the choice of communication protocol has enormous consequences. REST/JSON is convenient but has significant overhead: HTTP/1.1 connection costs, JSON parsing on every request, and no enforced schema contract between producer and consumer.
-
-PayPay standardizes on **gRPC** for all internal service-to-service communication. gRPC runs on HTTP/2, which provides:
-
-- **Multiplexed connections:** Multiple concurrent requests over a single TCP connection, eliminating the connection overhead of HTTP/1.1.
-- **Binary serialization:** Protocol Buffers (Protobuf) encoding is 3–10x more compact than equivalent JSON payloads.
-- **Strict schema contracts:** Every API is defined in a `.proto` file. If a service changes its interface, the Protobuf compiler catches breaking changes at compile time — not in production.
-- **Generated client code:** Teams consuming a service get auto-generated, strongly-typed client libraries in Java, Kotlin, Go, or any supported language.
-
-The tech stack across PayPay's services is primarily **Java (Spring Boot)**, with **Kotlin**, **Scala**, and **Node.js** also in use depending on the team and service characteristics. All services share the same Protobuf contract registry, ensuring backward compatibility as services evolve independently.
-
-## Platform Engineering & GitOps
-
-With 100+ microservices, 100+ engineering teams, and multiple campaigns per month, manual deployments are not just slow — they are an active liability. A single misconfigured `kubectl apply` in production during a campaign could bring down payment processing for millions of users.
-
-PayPay's Platform team solved this with **GitOps**: the practice of declaring all infrastructure and deployment state in Git, and using an automated operator to continuously reconcile the live cluster with that declared state.
-
-### Kubernetes + Argo CD: The GitOps Engine
-
-All PayPay services run on **Kubernetes**. The desired state of every service — its container image, replica count, resource limits, config maps, and ingress rules — is declared in YAML manifest files stored in Git repositories.
-
-**Argo CD** continuously monitors these repositories. When a developer merges a Pull Request that updates a service manifest (for example, bumping a container image tag to deploy a new version), Argo CD detects the change and automatically synchronizes the live Kubernetes cluster to match. No human needs `kubectl` access to production.
-
-The benefits of this approach:
-
-1. **Auditable:** Every infrastructure change is a Git commit with an author, a timestamp, and a diff. The audit trail is free.
-2. **Reversible:** Rolling back a bad deployment is a `git revert` away. Argo CD reconciles the cluster back to the previous state automatically.
-3. **Developer Autonomy:** Product engineers manage their own service deployments by opening Pull Requests. The Platform team secures the cluster without being a deployment bottleneck.
-4. **Environment Parity:** The same manifests that describe staging also describe production, with environment-specific values overridden via Helm or Kustomize.
-
-### Canary Deployments with Argo Rollouts
-
-Standard Kubernetes deployments replace pods immediately — meaning a bad release goes to 100% of traffic before anyone notices. For a payment platform handling 1,250 TPS, this is unacceptable.
-
-PayPay uses **Argo Rollouts** to implement progressive delivery. Instead of a full cutover, new versions receive traffic in controlled increments:
-
-```
-Step 1: Route 5% of traffic → canary pod
-Step 2: Wait for analysis (error rate, p99 latency)
-Step 3: If healthy → promote to 20%
-Step 4: Continue: 50% → 100%
-Step 5: Full production traffic on new version
-```
-
-Argo Rollouts integrates with Prometheus (via analysis templates) to query real-time metrics. If the error rate on the canary exceeds a configured threshold at any step, Argo Rollouts triggers an **automatic rollback** — shifting all traffic back to the stable version without any human intervention. Engineers get a Slack alert, the incident is contained, and no campaign is disrupted.
-
-The full deployment lifecycle looks like this:
+In PayPay's hyper-growth phase, running a monolithic codebase created critical engineering bottlenecks: a defect in a marketing campaign banner could inadvertently crash the payment ledger. To decouple team release velocities and isolate failure domains, PayPay partitioned its backend into four core **Bounded Contexts**:
 
 ```mermaid
-graph TD
-    Git["Git Repository"] --> ArgoCD["ArgoCD Controller"]
-    ArgoCD --> K8s["Kubernetes Cluster"]
-    K8s --> Canary["Argo Rollout Canary"]
-    Canary -->|"Metrics OK"| Prod["100% Production Traffic"]
+flowchart TD
+    subgraph GatewayTier["Edge Traffic & API Gateway"]
+        APIGW["Envoy API Gateway (mTLS, JWT Verification, Rate Limiting)"]
+    end
+
+    subgraph UserDomain["Identity & User Bounded Context"]
+        SVC_AUTH["Authentication Service"]
+        SVC_KYC["Japanese eKYC Compliance Service"]
+    end
+
+    subgraph WalletDomain["Core Wallet & Financial Ledger Bounded Context"]
+        SVC_WALLET["Wallet Balance Service (Zero-Allocation Memory)"]
+        SVC_LEDGER["Double-Entry Financial Ledger Service"]
+    end
+
+    subgraph CampaignDomain["Campaign & Promotion Bounded Context"]
+        SVC_COUPON["Coupon Validation Engine"]
+        SVC_REWARD["Cashback Reward Grant Engine"]
+    end
+
+    subgraph MerchantDomain["Merchant & Settlement Bounded Context"]
+        SVC_QR["Dynamic QR Code Generator"]
+        SVC_SETTLE["Interbank Clearing Service (Zengin-net)"]
+    end
+
+    APIGW -->|gRPC / HTTP2| SVC_AUTH
+    APIGW -->|gRPC / HTTP2| SVC_WALLET
+    APIGW -->|gRPC / HTTP2| SVC_COUPON
+    APIGW -->|gRPC / HTTP2| SVC_QR
+
+    SVC_AUTH -. mTLS .-> SVC_KYC
+    SVC_WALLET -. Strict Isolation .-> SVC_LEDGER
+    SVC_COUPON -. Async Event Stream .-> SVC_REWARD
+    SVC_QR -. Settlement Hook .-> SVC_SETTLE
 ```
 
-```
-Developer opens PR
-    → Code review + CI tests pass
-    → Argo CD detects manifest change
-    → Argo Rollouts starts canary (5%)
-    → Integration tests run against canary
-    → Prometheus metrics healthy
-    → Traffic gradually shifts to 100%
-    → Rollout complete — zero downtime
-```
+### Bounded Context Responsibilities
 
-This exact pattern mirrors the [GitOps at Scale](/posts/gitops-at-scale-kubernetes-argocd-microservices/) approach used for handling 20+ commerce services — but PayPay operates it at an order of magnitude larger scale, across a financial platform where downtime means real monetary loss for real users.
+1. **User & Identity Domain:** Owns user credentials, biometric sessions, device fingerprinting, and Japanese Financial Services Agency (FSA) eKYC identity records.
+2. **Wallet & Financial Ledger Domain:** The highest criticality tier ($99.999\%$ uptime SLA). Enforces strict double-entry ledger invariance where every credit transaction is mirrored by a balancing debit.
+3. **Campaign & Promotion Domain:** Experiences $10\times$ write surges during promotional campaigns. Isolated from the core ledger via asynchronous queues to prevent marketing load from impacting baseline checkout operations.
+4. **Merchant & Settlement Domain:** Manages merchant profiles, terminal bindings, dynamic QR code state, and end-of-day bank settlement files.
 
-## The Engineering Culture Behind the Architecture
+---
 
-Architecture choices do not exist in a vacuum. PayPay's microservices and GitOps approach is supported by two cultural practices:
+## 2. High-Throughput Inter-Service Communication: gRPC & Protobuf
 
-**DesignDocs:** Before building any new service or making a significant architectural change, engineers write a DesignDoc — a document focused on the *why*, not the spec. Why this bounded context? Why gRPC over REST for this interface? Why this database? Short, intensive review sessions align teams on the reasoning before a line of code is written. This prevents architectural drift and preserves decision context for future engineers.
+Internal microservices communicate exclusively via **gRPC over HTTP/2**, delivering distinct advantages over legacy JSON-over-HTTP/1.1:
 
-**Bottom-Up Proposals:** Engineers are empowered to propose new technologies and tools, provided they meet security and compliance standards. This culture means the Platform team is not a gatekeeper but an enabler — new tooling (like Argo Rollouts) gets adopted because engineers experiment, document trade-offs in a DesignDoc, and build consensus.
-
-The result is an organization where 100+ microservices can be deployed independently, at high frequency, without a centralized deployment team owning every release.
-
-## gRPC Performance Benchmarks & High-Concurrency Routing
-
-Internal RPC routing across microservices requires minimal serialization latency to satisfy PayPay's strict P99 latency bounds (< 20ms). This benchmark measuring Go gRPC client invocation and Protobuf serialization speed:
+- **Multiplexed Persistent Connections:** Hundreds of concurrent requests stream through a single TCP connection, eliminating TCP three-way handshake and slow-start overhead.
+- **Compact Binary Encoding:** Protocol Buffers (Protobuf) serialize messages into dense binary payloads that are 3x to 8x smaller than JSON, drastically decreasing network bandwidth and garbage collection (GC) pauses.
+- **Contract Enforcement:** All API contracts are checked in as `.proto` definitions in a centralized Git schema repository. The Protobuf compiler (`protoc`) rejects backward-incompatible schema mutations at build time.
 
 ```go
-package main
+// Package interceptor provides production-grade gRPC telemetry and tracing interceptors.
+package interceptor
 
 import (
 	"context"
-	"testing"
+	"time"
+
+	"github.com/prometheus/client_golang/prometheus"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
-type ValidateRequest struct {
-	TxId string
+var (
+	grpcRequestDuration = prometheus.NewHistogramVec(
+		prometheus.HistogramOpts{
+			Name:    "grpc_server_handling_seconds",
+			Help:    "Histogram of response latency for gRPC requests in seconds.",
+			Buckets: []float64{.005, .01, .025, .05, .1, .25, .5, 1, 2.5},
+		},
+		[]string{"grpc_service", "grpc_method", "grpc_code"},
+	)
+)
+
+func init() {
+	prometheus.MustRegister(grpcRequestDuration)
 }
 
-type PaymentServiceClient struct{}
+// UnaryServerMetricsInterceptor captures execution latency and status codes for canary analysis.
+func UnaryServerMetricsInterceptor() grpc.UnaryServerInterceptor {
+	return func(
+		ctx context.Context,
+		req interface{},
+		info *grpc.UnaryServerInfo,
+		handler grpc.UnaryHandler,
+	) (interface{}, error) {
+		start := time.Now()
+		resp, err := handler(ctx, req)
+		duration := time.Since(start).Seconds()
 
-func (c *PaymentServiceClient) ValidatePayment(ctx context.Context, req *ValidateRequest) (bool, error) {
-	return len(req.TxId) > 0, nil
-}
-
-// BenchmarkGRPCClientRouting benchmarks gRPC client request serialization and connection multiplexing overhead.
-func BenchmarkGRPCClientRouting(b *testing.B) {
-	client := &PaymentServiceClient{}
-	req := &ValidateRequest{TxId: "tx-paypay-9901"}
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		valid, err := client.ValidatePayment(context.Background(), req)
-		if err != nil || !valid {
-			b.Fatal("invalid payment validation result")
+		statusCode := codes.OK
+		if err != nil {
+			statusCode = status.Code(err)
 		}
+
+		grpcRequestDuration.WithLabelValues(
+			info.FullMethod,
+			statusCode.String(),
+		).Observe(duration)
+
+		return resp, err
 	}
 }
 ```
 
+---
+
+## 3. Platform Engineering: GitOps with ArgoCD & Kubernetes
+
+With over 100 development teams making continuous updates, manual deployments via `kubectl apply` are strictly prohibited. PayPay enforces a **GitOps workflow powered by ArgoCD**:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Dev as Payment Engineer
+    participant Git as GitHub (Manifest Repo)
+    participant ArgoCD as ArgoCD Controller (EKS)
+    participant Rollout as Argo Rollouts Controller
+    participant Prom as Prometheus Metrics
+    participant Prod as Production Pod Fleet
+
+    Dev->>Git: Merge PR (Bump Image Tag: v2.14.0)
+    ArgoCD->>Git: Detect Commit Webhook (Diff Reconcile)
+    ArgoCD->>Rollout: Trigger Progressive Canary Deployment
+    Rollout->>Prod: Spin Up Canary Pods (Route 10% Traffic)
+
+    Note over Rollout, Prom: 5-Minute Metric Analysis Phase
+    Rollout->>Prom: Query P99 Latency & Error Rate (< 0.05%)
+    Prom-->>Rollout: Metrics Healthy (P99=18ms, ErrorRate=0.002%)
+
+    Rollout->>Prod: Promote Canary: Shift 50% Traffic
+    Rollout->>Prom: Query Metrics Phase 2
+    Prom-->>Rollout: Metrics Healthy
+
+    Rollout->>Prod: Promote to 100% Traffic (Retire v2.13.0)
+    Rollout-->>ArgoCD: Rollout Status: Synced & Healthy
 ```
-BenchmarkGRPCClientRouting-16    10000000    120.4 ns/op    16 B/op    1 allocs/op
-```
 
-Binary Protobuf payloads reduce payload transport sizes by up to 70% compared to REST JSON equivalents. For deep-dive analysis on event-driven streaming queues behind PayPay's payment backend, proceed to [Part 2: Event-Driven Architecture with Kafka](/series/paypay-architecture/part-2-event-driven-kafka/).
+### GitOps Core Tenets at PayPay
 
-## Declarative Infrastructure & Kubernetes Manifest Automation
+1. **Declarative State as Code:** The entire cluster topology—including Helm charts, Kustomize overlays, resource quotas, and network policies—is versioned in Git.
+2. **Automated Drift Detection:** ArgoCD scans cluster state every 30 seconds. If an unauthorized manual change occurs in the Kubernetes cluster, ArgoCD automatically overrides it back to the Git source of truth.
+3. **Zero Human Access:** Engineers lack production cluster credentials, drastically reducing insider threat surfaces and compliance audit overhead under PCI-DSS Level 1.
 
-To enforce absolute environment parity across staging and production clusters, all microservice deployments rely on standardized Kustomize overlays. The following example illustrates an Argo Rollout specification utilizing automated Prometheus analysis:
+---
+
+## 4. Automated Canary Deployments with Argo Rollouts
+
+Rather than deploying new versions using standard Kubernetes rolling updates (which replace pods blindly regardless of application-level errors), PayPay deploys services using **Argo Rollouts** with automated `AnalysisTemplate` checks:
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: paypay-payment-service
-  namespace: payment-production
+  name: payment-core-service
+  namespace: payment-system
 spec:
-  replicas: 20
+  replicas: 50
   strategy:
     canary:
       analysis:
         templates:
-          - templateName: success-rate-check
+          - templateName: success-rate-and-latency
         args:
           - name: service-name
-            value: paypay-payment-service
+            value: payment-core-service
       steps:
-        - setWeight: 5
-        - pause: { duration: 10m }
-        - setWeight: 20
-        - pause: { duration: 15m }
+        - setWeight: 10
+        - pause: { duration: 5m } # Collect canary metrics for 5 minutes
         - setWeight: 50
+        - pause: { duration: 10m }
+        - setWeight: 100
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: success-rate-and-latency
+  namespace: payment-system
+spec:
+  metrics:
+    # Check 1: HTTP/gRPC Error Rate must remain below 0.05%
+    - name: success-rate
+      interval: 1m
+      successCondition: result[0] <= 0.0005
+      failureLimit: 2
+      provider:
+        prometheus:
+          address: http://prometheus-k8s.monitoring.svc:9090
+          query: |
+            sum(rate(grpc_server_handling_seconds_count{grpc_service="payment.PaymentService",grpc_code!="OK"}[2m]))
+            /
+            sum(rate(grpc_server_handling_seconds_count{grpc_service="payment.PaymentService"}[2m]))
+
+    # Check 2: P99 Latency must remain below 45ms
+    - name: p99-latency
+      interval: 1m
+      successCondition: result[0] <= 0.045
+      failureLimit: 2
+      provider:
+        prometheus:
+          address: http://prometheus-k8s.monitoring.svc:9090
+          query: |
+            histogram_quantile(0.99, sum(rate(grpc_server_handling_seconds_bucket{grpc_service="payment.PaymentService"}[2m])) by (le))
 ```
 
-By coupling declarative manifests with automated Prometheus analysis, PayPay guarantees that broken code paths never exceed a 5% blast radius.
+If the canary version triggers unexpected database deadlocks or latency degradation, Prometheus alerts the `AnalysisTemplate`, which marks the rollout as `Failed` and executes an instantaneous traffic cutback to the previous stable release.
 
-## Frequently Asked Questions (FAQ)
+---
 
-{{< faq "What GitOps workflow ensures stable microservice deployments?" >}}
-PayPay utilizes branch-promotion strategies coupled with ArgoCD. Changes are committed to staging branches, run through automated test suites, and merged into production branches where ArgoCD automatically reconciles and rolls out updates using canary strategies.
+## Frequently Asked Questions
+
+{{< faq q="How does PayPay manage breaking schema changes across 100+ microservices communicating via gRPC?" >}}
+PayPay strictly enforces schema governance through a centralized Protocol Buffer registry and CI linters:
+1. <strong>Strict Protobuf Backward Compatibility:</strong> Fields cannot be renamed or renumbered. Deprecated fields are marked with `reserved` tags.
+2. <strong>CI Breaking-Change Detection:</strong> Every pull request runs `buf breaking --against .git#branch=main`. If an engineer removes a field or alters a type, the CI pipeline fails immediately.
+3. <strong>Dual-Read / Dual-Write Deprecation:</strong> New functionality introduces new optional fields. Consumer services are updated to read both legacy and new fields before the producer phases out old payload patterns.
 {{< /faq >}}
 
-{{< faq "Why does PayPay mandate GitOps for microservice deployment?" >}}
-GitOps ensures declarative version-controlled infrastructure state, preventing manual cluster drift and enabling instant git-revert rollbacks during outages.
+{{< faq q="What happens if an Argo Rollouts canary deployment fails mid-flight at 10% traffic?" >}}
+If canary metrics violate defined thresholds (e.g., error rate exceeds 0.05% or P99 latency spikes above 45ms):
+- The `AnalysisTemplate` records a failure condition and aborts the rollout within 60 seconds.
+- The Argo Rollouts controller instantly resets the service routing weight to 0% canary and 100% stable version.
+- Canary pods are scaled down gracefully, preventing user-facing impact, and PagerDuty alerts the service on-call engineer with exact Prometheus regression timestamps.
 {{< /faq >}}
 
-{{< faq "How do Argo Rollouts conduct automated canary analysis?" >}}
-Argo Rollouts query Prometheus metrics (error rate, latency P99) during step-wise traffic shifts, automatically aborting rollouts if thresholds are exceeded.
+{{< faq q="How do engineers troubleshoot issues without direct kubectl access to production clusters?" >}}
+Zero-access engineering is maintained through comprehensive observability tooling:
+- <strong>Ephemeral Debugging Containers:</strong> Automated security workflows grant short-lived, just-in-time read-only debug sessions using Teleport with full audit logging.
+- <strong>Centralized Telemetry:</strong> All container logs stream via Vector to ClickHouse, metrics are queried via Grafana and VictoriaMetrics, and distributed traces are inspected in Jaeger without requiring direct cluster access.
 {{< /faq >}}
 
-Next step: See how PayPay powers asynchronous transaction processing in [Part 2: Event-Driven Architecture with Kafka](/series/paypay-architecture/part-2-event-driven-kafka/). If you need assistance structuring high-scale Kubernetes GitOps pipelines, consult our team via [Cloud Native DevOps Consulting](/hire/).
+---
 
-🔗 **Next Step:** Continue to [Part 2 — Event Driven Kafka](/series/paypay-architecture/part-2-event-driven-kafka/) for the following module in the series.
+[Series Hub](/series/paypay-architecture/) | [Next Chapter: Part 2 — Event-Driven Architecture & Kafka at Scale](/series/paypay-architecture/part-2-event-driven-kafka/)

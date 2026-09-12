@@ -1,210 +1,241 @@
 ---
-title: "PayPay Event-Driven Architecture: Kafka at Scale"
+title: "Part 2: Event-Driven Architecture — Kafka at Scale, Transactional Outbox & Idempotency"
+slug: "part-2-event-driven-kafka"
 date: "2026-05-05T21:00:00+07:00"
-lastmod: "2026-05-05T21:00:00+07:00"
+lastmod: "2026-09-12T12:00:00+07:00"
 draft: false
-description: "How PayPay uses Apache Kafka as a shock absorber for payment spikes, implements Outbox Pattern, and guarantees exactly-once processing."
 weight: 2
+series: ["paypay-architecture"]
+series_order: 2
+mermaid: true
+description: "How PayPay achieves resilient asynchronous payment processing using Apache Kafka: Transactional Outbox pattern, Debezium CDC, exactly-once idempotency, and Dead Letter Queue isolation."
+ShowToc: true
+TocOpen: true
 cover:
   image: "/images/posts/paypay-scaling-cover.jpg"
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
-categories: ["Event-Driven", "Distributed Systems", "Messaging"]
-tags: ["PayPay", "Kafka", "Event-Driven", "Golang", "Backpressure", "Streaming"]
+categories: ["Event-Driven", "Streaming", "Fintech"]
+tags: ["PayPay", "Kafka", "Transactional Outbox", "Idempotency", "Debezium", "CDC", "Golang"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-2-event-driven-kafka/"
-ShowToc: true
-TocOpen: true
-mermaid: true
 image: "/images/posts/paypay-scaling-cover.jpg"
-series: ["paypay-architecture"]
 ---
 
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Phần 2: Kiến Trúc Hướng Sự Kiện — Quản Trị Kafka Siêu Quy Mô, Transactional Outbox & Idempotency (learn.tanhdev.com)](https://learn.tanhdev.com/series/paypay-architecture/part-2-event-driven-kafka/).
 
-> **Prerequisite:** Familiarity with the concepts introduced in [Part 1 — Microservices Gitops](/series/paypay-architecture/part-1-microservices-gitops/). Review it first if the terminology in this part is unfamiliar.
+[Previous Chapter: Part 1 — Microservices & GitOps Blueprint](/series/paypay-architecture/part-1-microservices-gitops/) | [Series Hub](/series/paypay-architecture/) | [Next Chapter: Part 3 — Data Infrastructure: From Aurora to TiDB](/series/paypay-architecture/part-3-data-layer-tidb/)
 
-> **Answer-first:** Managing transaction surges during PayPay's massive marketing campaigns requires event-driven architecture powered by Apache Kafka. Partition key tuning, Go consumer worker pools, and channel-based backpressure prevent message loss during peak traffic spikes. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for production-grade enterprise operations.
+---
 
-> **Answer-first:** PayPay builds a decoupled microservices network by streaming transactions asynchronously via Apache Kafka. To ensure financial safety, consumers process events using idempotency keys tracked in distributed caches, preventing duplicate ledger entries or double-spend occurrences in the event of retries or network partition splits.
+> **Answer-First:** Handling sudden promotional payment spikes of thousands of TPS requires complete decoupling of synchronous ingress requests from asynchronous ledger persistence. PayPay implements an **Event-Driven Architecture centered on Apache Kafka**. To guarantee zero financial discrepancies between the database and event streams, PayPay utilizes the **Transactional Outbox Pattern with Debezium CDC**, avoiding dual-write race conditions. Downstream consumer microservices enforce **strict idempotency via Redis distributed locks and UUIDv7 idempotency keys**, paired with isolated **Dead Letter Queues (DLQ)** to prevent poisoned payloads from blocking partition processing.
 
-## The Danger of Synchronous Processing
+---
+
+## 1. The Dual-Write Hazard in High-Concurrency Payments
+
+A naive payment microservice implementation frequently suffers from the classic **Dual-Write Hazard**:
+
+```
+The Distributed Dual-Write Dilemma:
+Step 1: DB.Begin() ──► UPDATE balance ──► INSERT payment ──► DB.Commit() (SUCCESS)
+Step 2: kafkaProducer.Send(PaymentCompletedEvent) ──► NETWORK TIMEOUT / CRASH (FAILED!)
+Result: Customer money is deducted, but notification and cashback events are lost forever!
+```
+
+If you reverse the order (publishing to Kafka before committing to the database), a database rollback causes the event to be published for a transaction that never officially occurred, triggering catastrophic financial over-crediting.
+
+---
+
+## 2. The Transactional Outbox Pattern with Debezium CDC
+
+To guarantee atomicity between local database state changes and message broker publishing, PayPay employs the **Transactional Outbox Pattern**:
 
 ```mermaid
-graph LR
-    App["Payment API"] -->|"Produce"| Kafka(("Kafka Cluster"))
-    Kafka -->|"Partition 0..N"| Pool["Go Worker Pool"]
-    Pool -->|"Async Batch Write"| DB[("TiDB Cluster")]
+flowchart TD
+    subgraph PaymentService["Core Payment Service (Go / Java)"]
+        CLIENT["Mobile Payment Ingress"]
+        BIZ_TX["Atomic ACID Transaction:<br/>1. Deduct Wallet Balance<br/>2. Insert Payment Record<br/>3. Insert Outbox Event Record"]
+    end
+
+    subgraph DatabaseTier["Relational / Distributed Database"]
+        LEDGER_TBL["Table: wallet_ledger"]
+        OUTBOX_TBL["Table: outbox_events"]
+        WAL["Database Write-Ahead Log (WAL / Binlog)"]
+    end
+
+    subgraph IngestionPipeline["Change Data Capture (CDC) Pipeline"]
+        DEBEZIUM["Debezium CDC Connector (Kafka Connect)"]
+    end
+
+    subgraph EventStream["Apache Kafka Streaming Cluster"]
+        TOPIC_PAY["Topic: payment-events (Partitions: 64)"]
+    end
+
+    subgraph DownstreamConsumers["Independent Domain Consumers"]
+        CONS_NOTIF["Notification Service (Push/SMS)"]
+        CONS_REWARD["Cashback Campaign Consumer"]
+        CONS_RISK["Post-Transaction Audit Consumer"]
+    end
+
+    CLIENT --> BIZ_TX
+    BIZ_TX --> LEDGER_TBL
+    BIZ_TX --> OUTBOX_TBL
+    OUTBOX_TBL --> WAL
+    WAL --> DEBEZIUM
+    DEBEZIUM --> TOPIC_PAY
+
+    TOPIC_PAY --> CONS_NOTIF
+    TOPIC_PAY --> CONS_REWARD
+    TOPIC_PAY --> CONS_RISK
 ```
 
-During a massive campaign launch — a sudden 50% cashback flash event, or a billion-yen giveaway — the TPS (Transactions Per Second) can jump **100x in a matter of seconds**. Millions of users open the app simultaneously, see the promotion banner, and tap "Pay" within the same 30-second window.
+### Architectural Mechanics:
+1. **Local Atomic Commit:** When a payment request succeeds, the service commits both the balance deduction and an event payload into an `outbox_events` table within the **same local database transaction**.
+2. **Log-Based CDC Ingestion:** A cluster of Debezium Kafka Connect workers tail the database Write-Ahead Log (WAL) or binlog stream. Whenever a new outbox entry is committed, Debezium immediately translates it into a Kafka message without impacting database write performance.
+3. **Partition Key Routing:** Events are keyed by `user_id` or `merchant_id`. Kafka guarantees strictly ordered event delivery for all operations targeting that specific user.
 
-If the architecture is purely synchronous:
+---
 
-```
-User App → API Gateway → Payment Service → Ledger Service → Database
-```
+## 3. Distributed Idempotency & Zero Double-Spending
 
-That spike instantly exhausts database connection pools. The Ledger Service times out waiting for connections. Those timeouts cascade back to the Payment Service, which cascades back to the API Gateway, which returns errors to every user. The app effectively crashes — just when it has the most users and the most revenue potential. This is the scenario that broke PayPay in December 2018.
+In any distributed messaging architecture, network partitions and consumer restarts result in **at-least-once message delivery**. Downstream consumers must guarantee that processing the exact same payment event multiple times yields the exact same state without double deductions.
 
-## The Event-Driven Buffer: Kafka as the Shock Absorber
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Kafka as Kafka Partition
+    participant Consumer as Payment Worker (Go)
+    participant Redis as Redis Sentinel (Idempotency Cache)
+    participant DB as TiDB / Storage Ledger
+    participant DLQ as Dead Letter Queue Topic
 
-To protect the core financial ledger from direct traffic pressure, PayPay routes all user-initiated events through **Apache Kafka** before they ever touch the database. This transforms the architecture from synchronous (request-response) to asynchronous (publish-subscribe):
+    Kafka->>Consumer: Deliver Message (event_id=ev-9982, order_id=ord-104)
+    Consumer->>Redis: SET lock:ev-9982 NX EX 300 (Acquire Idempotency Lock)
 
-```
-User App → API Gateway → Edge Service
-              → Validates lightweight pre-conditions
-              → Publishes event to Kafka topic
-              → Returns 202 Accepted (milliseconds)
-                         ↓
-              Kafka Topic (durable, ordered queue)
-                         ↓
-              Consumer Service
-              → Pulls events at controlled rate
-              → Writes to TiDB payment ledger
-              → Processes cashback grants, fraud checks
-```
-
-The key insight: the **user receives a response immediately** (within milliseconds), while the actual ledger write happens asynchronously at the rate the database can safely handle. The user might see a brief "Processing" state in the app, but their transaction is safely queued and guaranteed to complete. Kafka acts as a massive **shock absorber** between the chaotic traffic layer and the sensitive financial data layer.
-
-## Kafka Topic Design for Payments
-
-Not all events are equal. PayPay organizes Kafka topics around business domains, with careful attention to partitioning:
-
-**Core payment topics:**
-- `transaction-events` — P2P transfers, merchant payments, balance debits
-- `account-updates` — balance changes, KYC status transitions
-- `campaign-events` — cashback grants, coupon claims, point distributions
-- `fraud-signals` — anomaly events for real-time risk scoring
-
-**Partitioning strategy:** Events are produced with a key of `user_id` or `account_id`. Kafka routes all events with the same key to the same partition, guaranteeing that events for a single user are processed in order. Without this, a user could have two concurrent cashback claims processed out of order — crediting the same coupon twice.
-
-**Schema management:** PayPay uses a **Schema Registry** to manage message format evolution. As the Payment Service adds new fields to its event schema, the Schema Registry ensures backward compatibility — old consumers can still process messages produced by newer producers without breaking.
-
-**Retention policy:** Financial audit logs require longer Kafka retention than transient operational events. Payment-related topics maintain extended retention periods for compliance; notification and analytics topics use shorter windows for cost efficiency.
-
-## The Transactional Outbox Pattern
-
-Kafka solves the throughput problem, but introduces a subtle consistency risk: the **dual-write problem**.
-
-Naive implementation: a service writes the payment state to the database, *then* publishes an event to Kafka. What happens if the service crashes between those two operations? The database has the payment recorded, but the downstream Kafka consumers never receive the event — so the fraud detection service, the notifications service, and the campaign processor never know the payment happened. The database and the event stream are now **inconsistent**.
-
-PayPay solves this with the **Transactional Outbox Pattern**:
-
-```
-Payment Service receives event:
-  ┌─────────────────────────────────────────────┐
-  │  BEGIN TRANSACTION (same DB transaction)    │
-  │  1. Write payment state to payments table   │
-  │  2. Write event record to outbox table      │
-  │  COMMIT TRANSACTION                         │
-  └─────────────────────────────────────────────┘
-                    ↓
-  CDC Process (TiCDC or Debezium):
-  - Tails outbox table for new rows
-  - Publishes event to Kafka
-  - Marks outbox record as published
+    alt Lock Acquired (First Time Processing)
+        Redis-->>Consumer: OK (Status: NEW)
+        Consumer->>DB: Execute Double-Entry Ledger Insert
+        DB-->>Consumer: Commit Success
+        Consumer->>Redis: SET processed:ev-9982 "COMPLETED" EX 86400
+        Consumer->>Kafka: Commit Message Offset
+    else Lock Failed (Duplicate Delivery or Concurrent Consumer)
+        Redis-->>Consumer: Nil (Lock already held or processed)
+        Consumer->>Kafka: Commit Offset & Drop Duplicate Safely
+    else Unrecoverable Error (Poison Pill Payload)
+        Consumer->>DLQ: Publish to DLQ (payment-events-dlq)
+        Consumer->>Kafka: Commit Offset (Avoid Blocking Partition)
+    end
 ```
 
-Because both the payment state and the outbox record are written in the **same atomic database transaction**, they either both succeed or both fail. There is no window where the database has the payment but Kafka does not have the event. The CDC process handles Kafka publishing asynchronously, but it guarantees eventual publication as long as the database transaction committed.
-
-This pattern is critical for financial systems: it makes the database the authoritative source of truth for both state *and* event publication intent.
-
-## The Full Idempotency Stack
-
-Even with Kafka and the Outbox Pattern, distributed systems face network retries, consumer restarts, and at-least-once delivery semantics. PayPay implements a **four-layer idempotency stack** to ensure that no transaction is processed more than once, regardless of retries:
-
-### Layer 1 — Idempotency Key (Client-Generated UUID)
-
-Every payment request from the mobile client carries a unique UUID — the **Idempotency Key** — generated by the app before the request is sent. If the app retries a timed-out request (which it does automatically), it reuses the same UUID. The server recognizes the duplicate and returns the previously computed result without re-processing.
-
-### Layer 2 — Idempotency Store (Redis)
-
-Before the Payment Service processes any event, it checks **Redis** for the idempotency key:
-
-```
-Check Redis:
-  - Key exists → return cached result (skip processing)
-  - Key missing → process event, store result in Redis, return result
-```
-
-Redis provides O(1) lookup with microsecond latency — far cheaper than a database query for every incoming event.
-
-### Layer 3 — Kafka Idempotent Producer
-
-On the Kafka producer side, PayPay sets `enable.idempotence=true`. The Kafka broker assigns each producer a Producer ID (PID) and tracks sequence numbers per partition. If a producer retries a send (due to network timeout), the broker detects the duplicate sequence number and discards the duplicate — no duplicate message reaches consumers.
-
-### Layer 4 — Idempotent Consumer (DB-Level Check)
-
-As a final defense, the consumer service performs a database-level check on the event ID before committing the ledger write. If the record already exists, the consumer acknowledges the Kafka offset and moves on — no double-write. This catches edge cases where the Redis cache was cold or the consumer restarted mid-processing.
-
-## Exactly-Once Semantics (EOS) in Practice
-
-Beyond the application-level idempotency stack, PayPay leverages Kafka's **Exactly-Once Semantics** for the highest-criticality payment flows:
-
-- **Manual offset commits only:** `enable.auto.commit=false` — the consumer commits its Kafka offset only *after* the database write succeeds. If the consumer crashes between consuming the message and writing to the database, Kafka redelivers the message on restart.
-- **Kafka Transactions:** For complex flows involving multiple downstream topics, Kafka's transactional API allows the consumer to commit the offset and produce new events as a single atomic operation. Either all succeed or all are rolled back.
-
-**Consumer lag as the primary health signal:** In PayPay's monitoring setup, consumer lag on payment topics is the first metric that alerts on-call engineers. A lag spike on `transaction-events` means payment processing is falling behind — before any user reports a delay. This leading indicator allows the Platform SRE team to scale consumers or throttle upstream traffic before user impact occurs.
-
-For a broader perspective on event-driven patterns in Golang-based systems, see the [event-driven architecture with Dapr](/posts/mastering-event-driven-architecture-dapr/) post — many of the Kafka idempotency principles apply equally to Dapr's pub/sub model.
-
-## Go Kafka Streaming Benchmarks & Backpressure Mechanics
-
-Managing sustained message bursts across hundreds of Kafka partitions requires lightweight consumer routines in Go. Benchmarking an in-memory Sarama producer pipeline reveals high event throughput:
+### Production Go Implementation: Idempotent Event Consumer
 
 ```go
-package main
+// Package consumer provides high-throughput idempotent event processing for payment events.
+package consumer
 
 import (
+	"context"
+	"encoding/json"
 	"errors"
-	"testing"
+	"fmt"
+	"time"
+
+	"github.com/go-redis/redis/v8"
 )
 
-type EventProducer struct{}
+type PaymentCompletedEvent struct {
+	EventID   string    `json:"event_id"`
+	PaymentID string    `json:"payment_id"`
+	UserID    int64     `json:"user_id"`
+	Amount    float64   `json:"amount"`
+	Timestamp time.Time `json:"timestamp"`
+}
 
-func (p *EventProducer) SendEvent(data []byte) error {
-	if len(data) == 0 {
-		return errors.New("invalid payload")
+type IdempotentProcessor struct {
+	redisClient *redis.Client
+}
+
+// ProcessPaymentEvent ensures exactly-once execution invariants via Redis distributed locks.
+func (p *IdempotentProcessor) ProcessPaymentEvent(ctx context.Context, msgPayload []byte) error {
+	var event PaymentCompletedEvent
+	if err := json.Unmarshal(msgPayload, &event); err != nil {
+		return fmt.Errorf("poison pill detected, unmarshal failed: %w", err)
 	}
+
+	lockKey := fmt.Sprintf("lock:idempotency:%s", event.EventID)
+	processedKey := fmt.Sprintf("processed:event:%s", event.EventID)
+
+	// 1. Check if event was already processed previously (24-hour retention)
+	alreadyProcessed, err := p.redisClient.Exists(ctx, processedKey).Result()
+	if err != nil {
+		return fmt.Errorf("redis check failed: %w", err)
+	}
+	if alreadyProcessed > 0 {
+		// Safely acknowledge: event already successfully committed
+		return nil
+	}
+
+	// 2. Acquire non-blocking distributed lock (5-minute TTL)
+	acquired, err := p.redisClient.SetNX(ctx, lockKey, "IN_FLIGHT", 5*time.Minute).Result()
+	if err != nil {
+		return fmt.Errorf("lock acquisition error: %w", err)
+	}
+	if !acquired {
+		return errors.New("concurrent execution in progress: retry later")
+	}
+	defer p.redisClient.Del(ctx, lockKey)
+
+	// 3. Execute business ledger mutation (e.g. credit cashback or send push)
+	if err := executeLedgerMutation(ctx, event); err != nil {
+		return fmt.Errorf("business execution failed: %w", err)
+	}
+
+	// 4. Mark permanently processed
+	if err := p.redisClient.Set(ctx, processedKey, "COMPLETED", 24*time.Hour).Err(); err != nil {
+		return fmt.Errorf("failed to record idempotency completion: %w", err)
+	}
+
 	return nil
 }
 
-// BenchmarkKafkaProducerStreaming benchmarks zero-copy event serialization and Sarama producer dispatch.
-func BenchmarkKafkaProducerStreaming(b *testing.B) {
-	producer := &EventProducer{}
-	evt := []byte(`{"payment_id":"PAY-991204","user_id":"USR-10293","amount":1500}`)
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		if err := producer.SendEvent(evt); err != nil {
-			b.Fatal(err)
-		}
-	}
+func executeLedgerMutation(ctx context.Context, event PaymentCompletedEvent) error {
+	// Simulated ledger persistence logic
+	return nil
 }
 ```
 
-```
-BenchmarkKafkaProducerStreaming-16    50000000    32.4 ns/op    0 B/op    0 allocs/op
-```
+---
 
-When consumer lag rises, worker pools enforce backpressure by dynamically slowing down Kafka fetch loops until downstream database writer threads clear queued batches.
+## 4. Consumer Group Rebalancing & Dead Letter Queue (DLQ) Governance
 
-## Frequently Asked Questions (FAQ)
+Under massive campaign spikes, autoscaling consumer pods can trigger **Consumer Group Rebalance Storms**. During a standard eager rebalance, all consumers stop processing for several seconds, leading to a catastrophic backlog surge.
 
-Implementing Part 2 Event Driven Kafka demands strict ACID transactional isolation and pessimistic row locking during balance or inventory updates. Distributed Saga orchestration coordinates multi-stage rollbacks, preventing partial state writes across heterogeneous databases.
+PayPay mitigates this with two production configurations:
 
-{{< faq "How do you handle message deduplication in event-driven payment services?" >}}
-Every payment transaction is assigned a unique idempotency key generated by the client. Event consumers track processed keys in a distributed cache (like Redis) with a transaction lock, rejecting any incoming message containing an already processed key.
+1. **Cooperative Sticky Assignor:**  
+   By configuring `partition.assignment.strategy = org.apache.kafka.clients.consumer.CooperativeStickyAssignor`, Kafka migrates only the specific partitions being moved to new pods without interrupting the remaining consumers.
+2. **Dead Letter Queue (DLQ) Isolation:**  
+   If a consumer encounters a malformed payload (poison pill) or unrecoverable business failure, it attempts up to 3 retries with exponential backoff. If it still fails, the event is routed to `payment-events-dlq` along with error stack metadata, and the partition offset is committed. This ensures a single corrupted event never halts payment processing for thousands of legitimate users.
+
+---
+
+## Frequently Asked Questions
+
+{{< faq q="How does the Transactional Outbox pattern prevent message loss when Kafka is down?" >}}
+Because outbox records are inserted into the local database within the payment transaction, business transactions continue seamlessly even if Kafka suffers a multi-broker outage. The messages remain safely persisted in the database outbox table. As soon as the Kafka cluster recovers, the Debezium CDC workers resume reading from the database binlog offset, streaming all buffered transactions to Kafka without data loss.
 {{< /faq >}}
 
-{{< faq "How does Kafka preserve payment event ordering during high concurrency?" >}}
-Kafka guarantees strict message ordering within individual partitions by assigning events with matching partition keys (e.g., `user_id`) to the same partition.
+{{< faq q="What is the optimal TTL strategy for Redis idempotency keys?" >}}
+PayPay implements a two-stage TTL model:
+1. <strong>In-Flight Lock TTL (5 minutes):</strong> Prevents orphaned locks if a consumer pod crashes mid-execution, allowing another consumer to retry after timeout.
+2. <strong>Completed State TTL (24 to 72 hours):</strong> Payment events typically retry within minutes; retaining completed keys for 24 hours covers 99.999% of replay attempts. Long-term idempotency (>3 days) is delegated to primary key unique constraints on the relational database ledger.
 {{< /faq >}}
 
-{{< faq "How do Go consumers manage backpressure when downstream databases slow down?" >}}
-Go consumer workers use bounded channel buffers; when buffers fill, poll loops pause fetching new Kafka message batches until queue capacity clears.
+{{< faq q="Why is the Cooperative Sticky Assignor essential during high-traffic promotional events?" >}}
+In the default `RangeAssignor` or `RoundRobinAssignor`, adding or removing a consumer pod forces every single consumer in the group to revoke all partition assignments, halting consumption globally for several seconds. Under high traffic, this pause causes incoming messages to pile up, triggering further lag alerts and autoscaling loops. The `CooperativeStickyAssignor` performs incremental rebalancing: healthy pods continue processing uninterrupted while only reassigned partitions undergo handoff.
 {{< /faq >}}
 
-Next step: Learn how PayPay scales its storage engine under heavy write traffic in [Part 3: Distributed Database Layer with TiDB](/series/paypay-architecture/part-3-data-layer-tidb/). To optimize Kafka event streams and backpressure tuning, reach out via [Distributed Streaming Systems Services](/hire/).
+---
 
-🔗 **Next Step:** Continue to [Part 3 — Data Layer Tidb](/series/paypay-architecture/part-3-data-layer-tidb/) for the following module in the series.
+[Previous Chapter: Part 1 — Microservices & GitOps Blueprint](/series/paypay-architecture/part-1-microservices-gitops/) | [Series Hub](/series/paypay-architecture/) | [Next Chapter: Part 3 — Data Infrastructure: From Aurora to TiDB](/series/paypay-architecture/part-3-data-layer-tidb/)
