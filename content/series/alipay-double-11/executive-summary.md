@@ -1,6 +1,8 @@
----title: "Alipay Double 11 Architecture: Executive Summary Guide"
+---
+title: "Alipay Double 11 Architecture: Executive Summary Guide"
+slug: "executive-summary"
 date: "2026-05-02T18:10:00+07:00"
-lastmod: "2026-09-11T03:30:00+07:00"
+lastmod: "2026-09-12T12:45:00+07:00"
 draft: false
 description: "Alipay Double 11 scaling: 544,000 peak TPS (2019), 583,000 (2020) via LDC unitization, OceanBase Paxos, and production stress testing — 99.99% availability, RPO=0."
 ShowToc: true
@@ -14,7 +16,12 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/executive-summary/"
 mermaid: true
 series: ["alipay-double-11"]
 weight: 1
+series_order: 1
+
 ---
+
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Alipay Double 11: Tóm Tắt Kiến Trúc Hệ Thống Thanh Toán Quy Mô Hành Tinh (learn.tanhdev.com)](https://learn.tanhdev.com/series/alipay-double-11/executive-summary/).
+
 [🏛️ Anchor Pillar Hub #8: Alipay Double 11 Architecture (544K TPS)](/posts/alipay-double-11-architecture-tps/) | [🗺️ Sitewide Engineering Reading Map](/reading-map/)
 
 [← Series hub](/series/alipay-double-11/)
@@ -88,22 +95,22 @@ graph TD
     
     subgraph RZone1 ["RZone 1 - Shanghai Cell"]
         App1["SOFA Application Services"]
-        Cache1[("Local Redis Cache")]
-        OB_Shard1[("OceanBase Partition 1")]
+        Cache1["Local Redis Cache"]
+        OB_Shard1["OceanBase Partition 1"]
         App1 --> Cache1
         App1 --> OB_Shard1
     end
 
     subgraph RZone2 ["RZone 2 - Shenzhen Cell"]
         App2["SOFA Application Services"]
-        Cache2[("Local Redis Cache")]
-        OB_Shard2[("OceanBase Partition 2")]
+        Cache2["Local Redis Cache"]
+        OB_Shard2["OceanBase Partition 2"]
         App2 --> Cache2
         App2 --> OB_Shard2
     end
 
     subgraph GZone["GZone - Global Config / CIF"]
-        GDB[("Global Read-Only Config DB")]
+        GDB["Global Read-Only Config DB"]
     end
 
     RZone1 -.->|"Read Configuration"| GZone
@@ -112,8 +119,8 @@ graph TD
     subgraph StressTesting ["Full-Link Stress Testing Engine"]
         Injector["Synthetic Traffic Injector"]
         Injector -->|"Inject Header: X-Stress-Test=true"| Gateway
-        OB_Shard1 -->|"Detects Stress Flag"| ShadowDB1[("Shadow Table / DB 1")]
-        OB_Shard2 -->|"Detects Stress Flag"| ShadowDB2[("Shadow Table / DB 2")]
+        OB_Shard1 -->|"Detects Stress Flag"| ShadowDB1["Shadow Table / DB 1"]
+        OB_Shard2 -->|"Detects Stress Flag"| ShadowDB2["Shadow Table / DB 2"]
     end
 
     classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px;

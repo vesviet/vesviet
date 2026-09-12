@@ -1,6 +1,8 @@
----title: "Alipay Double 11 Architecture: LDC & Unitization Guide"
+---
+title: "Alipay Double 11 Architecture: LDC & Unitization Guide"
+slug: "phase-2-architecture"
 date: "2026-05-02T18:10:00+07:00"
-lastmod: "2026-09-11T04:40:00+07:00"
+lastmod: "2026-09-12T12:45:00+07:00"
 draft: false
 description: "In-depth analysis of Alipay LDC cell unitization, multi-active cross-city routing, OceanBase distributed storage, and RocketMQ async messaging."
 ShowToc: true
@@ -16,10 +18,15 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-2-architecture/
 mermaid: true
 series: ["alipay-double-11"]
 weight: 3
+series_order: 3
 aliases:
   - /posts/alipay-phase2-architecture
   - /series/alipay-double-11/alipay-phase2-architecture/
+
 ---
+
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Phase 2: Kiến Trúc Kỹ Thuật LDC & OceanBase (learn.tanhdev.com)](https://learn.tanhdev.com/series/alipay-double-11/phase-2-architecture/).
+
 [🏛️ Anchor Pillar Hub #8: Alipay Double 11 Architecture (544K TPS)](/posts/alipay-double-11-architecture-tps/) | [🗺️ Sitewide Engineering Reading Map](/reading-map/)
 
 [← Series hub](/series/alipay-double-11/)
@@ -85,21 +92,21 @@ graph TD
         Router -->|"User ID Hash = 50..99"| RZoneA2["RZone Unit A2"]
         
         subgraph RZoneA1 ["RZone A1"]
-            AppA1["SOFA Services"] --> DBA1[("OceanBase Partition A1")]
+            AppA1["SOFA Services"] --> DBA1["OceanBase Partition A1"]
         end
         
         subgraph RZoneA2 ["RZone A2"]
-            AppA2["SOFA Services"] --> DBA2[("OceanBase Partition A2")]
+            AppA2["SOFA Services"] --> DBA2["OceanBase Partition A2"]
         end
         
-        CZoneA[("CZone Cache - City A")]
+        CZoneA["CZone Cache - City A"]
         AppA1 -.->|"Read Cached Profile"| CZoneA
         AppA2 -.->|"Read Cached Profile"| CZoneA
     end
 
     subgraph CityB ["City B - Shenzhen Data Center"]
         subgraph GZone ["GZone - Primary"]
-            GlobalDB[("Global Config DB")]
+            GlobalDB["Global Config DB"]
         end
     end
 
@@ -420,15 +427,15 @@ The Paxos majority-write commits only after a quorum of replicas confirms — so
 
 LDC unitization prevents database connection pool exhaustion by isolating 95% of transaction reads and writes within local cell boundaries.
 
-{{< faq "What is the difference between RZone, GZone, and CZone in Alipay LDC?" >}}
+{{< faq q="What is the difference between RZone, GZone, and CZone in Alipay LDC?" >}}
 RZone units execute localized payment flows for assigned user ID ranges without cross-cell database lock contention. GZone clusters store non-sharded global reference data (e.g., merchant registries) replicated asynchronously, while CZone nodes provide high-speed citywide read caching.
 {{< /faq >}}
 
-{{< faq "How does OceanBase achieve multi-active cross-datacenter consistency?" >}}
+{{< faq q="How does OceanBase achieve multi-active cross-datacenter consistency?" >}}
 OceanBase replicates transaction logs across multi-datacenter clusters using Multi-Paxos consensus protocol. A transaction is committed as soon as a local quorum responds, guaranteeing zero data loss (RPO=0) and automated leader re-election (RTO<30s) during regional site outages.
 {{< /faq >}}
 
-{{< faq "Why are non-critical operations offloaded from synchronous payment paths?" >}}
+{{< faq q="Why are non-critical operations offloaded from synchronous payment paths?" >}}
 Synchronous payment workflows only execute state mutations directly required for payment authorization and balance adjustment. Non-critical secondary tasks like reward point calculations and receipt generation are dispatched to RocketMQ transactional queues, ensuring sub-50ms p99 latency under peak traffic bursts.
 {{< /faq >}}
 

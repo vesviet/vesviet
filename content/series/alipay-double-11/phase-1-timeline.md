@@ -1,6 +1,8 @@
----title: "Alipay Double 11 Scale Evolution Timeline: 2009-2026"
+---
+title: "Alipay Double 11 Scale Evolution Timeline: 2009-2026"
+slug: "phase-1-timeline"
 date: "2026-05-02T18:10:00+07:00"
-lastmod: "2026-09-11T04:20:00+07:00"
+lastmod: "2026-09-12T12:45:00+07:00"
 draft: false
 description: "Detailed historical timeline of Alipay Double 11 scaling evolution from 2009 to 2026, analyzing traffic crises, resets, and operational maturity."
 ShowToc: true
@@ -16,7 +18,12 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-1-timeline/"
 mermaid: true
 series: ["alipay-double-11"]
 weight: 2
+series_order: 2
+
 ---
+
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Phase 1: Tiến Trình Lịch Sử Double 11 (2009–2026) (learn.tanhdev.com)](https://learn.tanhdev.com/series/alipay-double-11/phase-1-timeline/).
+
 [🏛️ Anchor Pillar Hub #8: Alipay Double 11 Architecture (544K TPS)](/posts/alipay-double-11-architecture-tps/) | [🗺️ Sitewide Engineering Reading Map](/reading-map/)
 
 [← Series hub](/series/alipay-double-11/)
@@ -262,15 +269,15 @@ The post-incident post-mortem concluded that vertical hardware expansion had rea
 
 Alipay survived Double 11 traffic spikes by continuously redesigning core architectural bottlenecks before annual shopping events.
 
-{{< faq "What caused Alipay's database bottlenecks during early Double 11 events?" >}}
+{{< faq q="What caused Alipay's database bottlenecks during early Double 11 events?" >}}
 Early Double 11 events relied on centralized relational databases that hit severe hardware I/O and row-locking limits during simultaneous midnight payment spikes. The resulting lock contention on transaction ledgers caused connection pool starvation across application servers and forced the shift toward distributed architectures.
 {{< /faq >}}
 
-{{< faq "How did architectural resets enable 1000x scaling over 10 years?" >}}
+{{< faq q="How did architectural resets enable 1000x scaling over 10 years?" >}}
 Over ten years, Alipay transitioned from monolithic Oracle databases to cell-based LDC unitization and OceanBase distributed SQL across multi-region datacenters. By sharding traffic into autonomous RZone units and using Multi-Paxos consensus, the platform scaled throughput while maintaining zero data loss (RPO=0).
 {{< /faq >}}
 
-{{< faq "How did elastic cloud bursting reduce hardware costs?" >}}
+{{< faq q="How did elastic cloud bursting reduce hardware costs?" >}}
 During peak Double 11 demand, non-critical background workloads were dynamically migrated to public cloud infrastructure via hybrid cloud orchestration. This elastic bursting mechanism freed up physical bare-metal hardware clusters specifically for core payment processing without requiring permanent year-round hardware investments.
 {{< /faq >}}
 

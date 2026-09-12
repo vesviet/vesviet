@@ -1,7 +1,8 @@
 ---
 title: "Alipay Double 11 vs Modern Cloud-Native Tech Stack"
+slug: "modern-tech-comparison"
 date: "2026-05-02T18:10:00+07:00"
-lastmod: "2026-09-11T04:40:00+07:00"
+lastmod: "2026-09-12T12:45:00+07:00"
 draft: false
 description: "Architectural comparison mapping Alipay legacy Double 11 infrastructure to modern Go microservices, Kubernetes, NATS JetStream, and TiDB engines."
 ShowToc: true
@@ -15,7 +16,12 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/modern-tech-compariso
 mermaid: true
 series: ["alipay-double-11"]
 weight: 8
+series_order: 8
+
 ---
+
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [So Sánh Công Nghệ Hiện Đại: Alipay Tech Stack vs Modern Cloud-Native (learn.tanhdev.com)](https://learn.tanhdev.com/series/alipay-double-11/modern-tech-comparison/).
+
 [🏛️ Anchor Pillar Hub #8: Alipay Double 11 Architecture (544K TPS)](/posts/alipay-double-11-architecture-tps/) | [🗺️ Sitewide Engineering Reading Map](/reading-map/)
 
 ---

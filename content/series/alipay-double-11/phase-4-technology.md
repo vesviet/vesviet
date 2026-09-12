@@ -1,7 +1,8 @@
 ---
 title: "Alipay Double 11 Phase 4A: Technology & SOFAStack Architecture"
+slug: "phase-4-technology"
 date: "2026-05-02T18:10:00+07:00"
-lastmod: "2026-09-11T04:40:00+07:00"
+lastmod: "2026-09-12T12:45:00+07:00"
 draft: false
 description: "In-depth overview of Alipay middle platform architecture, real-time risk engines, payment orchestrators, and the SOFAStack ecosystem engines."
 ShowToc: true
@@ -16,8 +17,13 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-4-technology/"
 mermaid: true
 series: ["alipay-double-11"]
-weight: 6
+weight: 5
+series_order: 5
+
 ---
+
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Phase 4A: Công Nghệ Chi Tiết — Middle Platform & CTU Risk Control (learn.tanhdev.com)](https://learn.tanhdev.com/series/alipay-double-11/phase-4-technology/).
+
 [🏛️ Anchor Pillar Hub #8: Alipay Double 11 Architecture (544K TPS)](/posts/alipay-double-11-architecture-tps/) | [🗺️ Sitewide Engineering Reading Map](/reading-map/)
 
 ---
@@ -350,15 +356,15 @@ CTU risk decisions sit on the payment critical path — every millisecond of ris
 
 SOFAStack middleware enables high availability in banking applications by automating service discovery, traffic routing, and failure recovery.
 
-{{< faq "What is SOFAStack and what problems does it solve?" >}}
+{{< faq q="What is SOFAStack and what problems does it solve?" >}}
 SOFAStack is an open-source, financial-grade middleware suite engineered by Alipay to scale microservices under extreme payment loads. It provides contract-first RPC frameworks, distributed transaction management (Seata/TCC), and modular container isolation to guarantee enterprise reliability.
 {{< /faq >}}
 
-{{< faq "Why did Alipay transition from heavy JVM runtimes to Service Mesh sidecars?" >}}
+{{< faq q="Why did Alipay transition from heavy JVM runtimes to Service Mesh sidecars?" >}}
 Service Mesh sidecar proxies offload networking, mutual TLS encryption, service discovery, and traffic routing from application runtimes. This separation decouples core payment microservice logic from infrastructure network topologies, simplifying multi-language polyglot deployments.
 {{< /faq >}}
 
-{{< faq "How does SOFA Tracer maintain distributed trace context propagation?" >}}
+{{< faq q="How does SOFA Tracer maintain distributed trace context propagation?" >}}
 SOFA Tracer automatically injects W3C-compliant traceparent identifiers and span metadata into outgoing RPC headers. This mechanism maintains uninterrupted distributed tracing across asynchronous message queues and multi-region cell boundaries without requiring manual code instrumentation.
 {{< /faq >}}
 

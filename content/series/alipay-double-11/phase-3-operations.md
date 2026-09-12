@@ -1,6 +1,8 @@
----title: "Alipay Double 11 Operations: Full-Link Stress Test"
+---
+title: "Alipay Double 11 Operations: Full-Link Stress Test"
+slug: "phase-3-operations"
 date: "2026-05-02T18:10:00+07:00"
-lastmod: "2026-09-11T04:40:00+07:00"
+lastmod: "2026-09-12T12:45:00+07:00"
 draft: false
 description: "Operational playbook detailing Alipay capacity planning, full-link stress testing (FLST), incident command hierarchy, and downgrade strategies."
 ShowToc: true
@@ -16,9 +18,14 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-3-operations/"
 mermaid: true
 series: ["alipay-double-11"]
 weight: 4
+series_order: 4
 aliases:
   - /posts/alipay-phase3-operations
+
 ---
+
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Phase 3: Quy Trình Vận Hành & Full-Link Stress Testing (learn.tanhdev.com)](https://learn.tanhdev.com/series/alipay-double-11/phase-3-operations/).
+
 [🏛️ Anchor Pillar Hub #8: Alipay Double 11 Architecture (544K TPS)](/posts/alipay-double-11-architecture-tps/) | [🗺️ Sitewide Engineering Reading Map](/reading-map/)
 
 [← Series hub](/series/alipay-double-11/)
@@ -53,8 +60,8 @@ graph LR
 graph TD
     Gen["Shadow Traffic Generator"] --> Router["Traffic Router Gateway"]
     Router -->|"Header: Shadow=True"| App["Application Cluster"]
-    App --> ShadowDB[("Shadow Production DB")]
-    Router -->|"Header: Shadow=False"| RealDB[("Real Production DB")]
+    App --> ShadowDB["Shadow Production DB"]
+    Router -->|"Header: Shadow=False"| RealDB["Real Production DB"]
 ```
 
 Capacity planning for peak events is fundamentally an optimization problem under high concurrency and uncertainty. The goal is to maximize throughput while minimizing the cost of idle hardware.
@@ -359,15 +366,15 @@ Staging environments mislead in three systematic ways: configuration differs (sm
 
 Full-link stress testing guarantees Double 11 reliability by validating production capacity, database sharding, and fallback rules before the event.
 
-{{< faq "What is Full-Link Production Stress Testing?" >}}
+{{< faq q="What is Full-Link Production Stress Testing?" >}}
 Full-link stress testing injects synthetic payment traffic directly into live production environments during off-peak hours prior to Double 11. By validating the entire microservice mesh, network switches, and database sharding under simulated 544,000 TPS, engineering teams detect hidden bottlenecks before real user events occur.
 {{< /faq >}}
 
-{{< faq "How do shadow databases prevent test data from corrupting real financial ledgers?" >}}
+{{< faq q="How do shadow databases prevent test data from corrupting real financial ledgers?" >}}
 Special HTTP metadata headers (`X-Stress-Test: true`) are injected at the API gateway and propagated across thread pools and RPC calls. Specialized database middleware intercepts marked queries and automatically redirects all reads and writes to isolated shadow tables, preventing synthetic test data from polluting production account ledgers.
 {{< /faq >}}
 
-{{< faq "How does automated load shedding protect backend service databases?" >}}
+{{< faq q="How does automated load shedding protect backend service databases?" >}}
 Adaptive load limiters track real-time CPU utilization, system load, and thread saturation across every application node. When CPU load exceeds 90%, the ingress gateway dynamically sheds lower-priority traffic (such as recommendations and analytics) to preserve dedicated compute resources for core payment transactions.
 {{< /faq >}}
 

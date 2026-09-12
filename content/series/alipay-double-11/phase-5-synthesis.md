@@ -1,7 +1,8 @@
 ---
 title: "Alipay Double 11 Architectural Lessons & Synthesis"
+slug: "phase-5-synthesis"
 date: "2026-05-02T18:10:00+07:00"
-lastmod: "2026-09-11T04:40:00+07:00"
+lastmod: "2026-09-12T12:45:00+07:00"
 draft: false
 description: "Strategic synthesis of Double 11 scaling decisions, active-active fallback flows, cross-city network latency math, and anti-pattern design guides."
 ShowToc: true
@@ -15,7 +16,12 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-5-synthesis/"
 mermaid: true
 series: ["alipay-double-11"]
 weight: 7
+series_order: 7
+
 ---
+
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Phase 5: Tổng Hợp, Bài Học & Architectural Framework (learn.tanhdev.com)](https://learn.tanhdev.com/series/alipay-double-11/phase-5-synthesis/).
+
 [🏛️ Anchor Pillar Hub #8: Alipay Double 11 Architecture (544K TPS)](/posts/alipay-double-11-architecture-tps/) | [🗺️ Sitewide Engineering Reading Map](/reading-map/)
 
 ---
@@ -72,7 +78,7 @@ graph TD
     GLB -->|"Route to primary cell"| CellA["RZone Cell A - Shanghai"]
     
     subgraph CellA_Scope ["Cell A - Primary"]
-        CellA -->|"2. Write transaction"| DBA[("OceanBase Leader")]
+        CellA -->|"2. Write transaction"| DBA["OceanBase Leader"]
         DBA -.->|"3. Fail: Connection Timeout"| Fallback["Trigger Client Retry"]
     end
 
@@ -83,7 +89,7 @@ graph TD
     DNS -->|"5. Re-route Request"| CellB["RZone Cell B - Shenzhen"]
     
     subgraph CellB_Scope ["Cell B - Fallback"]
-        CellB -->|"6. Reconcile Paxos Log"| DBB[("OceanBase Follower promoted to Leader")]
+        CellB -->|"6. Reconcile Paxos Log"| DBB["OceanBase Follower promoted to Leader"]
         DBB -->|"7. Write transaction successfully"| Commit["Return Success to Client"]
     end
 

@@ -1,7 +1,8 @@
 ---
 title: "Alipay Double 11 Phase 4B: Technology Internals Deep-Dive Guide"
+slug: "phase-4-deep-dive"
 date: "2026-05-02T18:10:00+07:00"
-lastmod: "2026-09-11T04:40:00+07:00"
+lastmod: "2026-09-12T12:45:00+07:00"
 draft: false
 description: "Deep dive into SOFA RPC Bolt protocols, RocketMQ decoupling, OceanBase LSM-Tree compaction, Paxos quorum internals, and distributed state storage."
 ShowToc: true
@@ -16,8 +17,13 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-4-deep-dive/"
 mermaid: true
 series: ["alipay-double-11"]
-weight: 5
+weight: 6
+series_order: 6
+
 ---
+
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Phase 4B: Kỹ Thuật Chuyên Sâu — SOFAStack, RocketMQ & Storage (learn.tanhdev.com)](https://learn.tanhdev.com/series/alipay-double-11/phase-4-deep-dive/).
+
 [🏛️ Anchor Pillar Hub #8: Alipay Double 11 Architecture (544K TPS)](/posts/alipay-double-11-architecture-tps/) | [🗺️ Sitewide Engineering Reading Map](/reading-map/)
 
 ---
@@ -249,15 +255,15 @@ RocketMQ's 10M+ TPS peak (Ant-reported) is the visible number, but the financial
 
 OceanBase achieves extreme write throughput by combining LSM-Tree memory tables with asynchronous background SSTable compaction.
 
-{{< faq "How does the Bolt RPC protocol achieve connection multiplexing over single TCP streams?" >}}
+{{< faq q="How does the Bolt RPC protocol achieve connection multiplexing over single TCP streams?" >}}
 Bolt assigns a unique 32-bit packet ID to every outbound request frame, allowing thousands of concurrent requests to share a single TCP connection. Response packets are read asynchronously as they arrive and matched to pending caller promises without head-of-line blocking.
 {{< /faq >}}
 
-{{< faq "Why does RocketMQ use a two-phase transactional message protocol?" >}}
+{{< faq q="Why does RocketMQ use a two-phase transactional message protocol?" >}}
 The two-phase protocol posts an uncommitted half-message to the broker before executing local database mutations. Consumers only see the message once the producer sends a final commit signal following local ACID transaction completion, guaranteeing absolute state consistency between databases and message streams.
 {{< /faq >}}
 
-{{< faq "How does OceanBase LSM-Tree compaction prevent write amplification under peak load?" >}}
+{{< faq q="How does OceanBase LSM-Tree compaction prevent write amplification under peak load?" >}}
 OceanBase buffers all transactional updates in memory (MemTables) and appends append-only commit logs (CLogs) directly to SSD storage. Minor SSTable freezes flush memory tables to disk during active load, while major compactions merge SSTable files during off-peak windows to eliminate random write I/O bottlenecks.
 {{< /faq >}}
 
