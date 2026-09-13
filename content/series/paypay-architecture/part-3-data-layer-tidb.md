@@ -22,7 +22,7 @@ canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-3-data-layer-
 image: "/images/posts/paypay-scaling-cover.jpg"
 ---
 
-> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Phần 3: Tầng Dữ Liệu — Chuyển Dịch Từ Aurora Sang TiDB Multi-Raft NewSQL (learn.tanhdev.com)](https://learn.tanhdev.com/series/paypay-architecture/part-3-data-layer-tidb/).
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/paypay-architecture/part-3-data-layer-tidb/).
 
 [Previous Chapter: Part 2 — Event-Driven Architecture & Kafka at Scale](/series/paypay-architecture/part-2-event-driven-kafka/) | [Series Hub](/series/paypay-architecture/) | [Next Chapter: Part 4 — SRE Practices & Chaos Engineering](/series/paypay-architecture/part-4-sre-chaos-engineering/)
 

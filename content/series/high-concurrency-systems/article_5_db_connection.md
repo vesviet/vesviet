@@ -23,7 +23,7 @@ canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/golang-databa
 image: "/images/posts/golang-database-connection-pool-optimization.jpg"
 ---
 
-> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Chương 5: Tối Ưu Connection Pools Của Database Trong Golang (learn.tanhdev.com)](https://learn.tanhdev.com/series/high-concurrency-systems/golang-database-connection-pool-optimization/).
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/high-concurrency-systems/golang-database-connection-pool-optimization/).
 
 [Previous: Chapter 4 — Dual-Write Prevention via Transactional Outbox](/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/) | [Series Hub](/series/high-concurrency-systems/) | [Next: Chapter 6 — API Gateway vs Service Mesh in Microservices](/series/high-concurrency-systems/api-gateway-vs-service-mesh/)
 

@@ -18,6 +18,7 @@ cover:
   alt: "Part 3B: AI Code Review & Automated Quality Gates in CI/CD"
   relative: false
 keywords: ["ai code review ci cd", "llm as a judge code review", "sarif github code scanning", "automated quality gates", "semgrep ast ai", "pr review acceleration"]
+mermaid: true
 ---
 
 > **Answer-first:** Relying solely on foundation models for code review produces noisy, non-deterministic commentary that frustrates developers. A production **AI Code Review Pipeline** integrates **deterministic AST linters (Semgrep)** for syntax invariants with a **Multi-Agent LLM-as-a-Judge consensus tier** emitting standardized **SARIF (Static Analysis Results Interchange Format)** reports, slashing Pull Request review lead times from 28.4 hours to 2.1 hours.

@@ -19,7 +19,7 @@ tags:
   - "Database Scaling"
   - "Distributed Systems"
   - "High Concurrency"
-description: "Master horizontal MySQL write scaling in Go: Vitess VTGate query routing, VReplication zero-downtime resharding, GORM SQL AST parsing, Snowflake primary keys, and TiDB distributed SQL alternatives."
+description: "Scale MySQL writes in Go: Vitess VTGate routing, VReplication zero-downtime resharding, GORM AST parsing, Snowflake 64-bit keys, and TiDB NewSQL."
 ShowToc: true
 TocOpen: true
 cover:
@@ -29,7 +29,7 @@ cover:
 series: ["Database Scaling & Architecture"]
 ---
 
-# Vitess vs GORM Sharding: MySQL Write Scaling in Go
+> **Answer-first:** Scaling MySQL writes beyond the 12,000 TPS single-primary InnoDB fsync ceiling mandates choosing between middleware clustering (Vitess) or application-layer routing (GORM Sharding). Vitess provides transparent SQL scatter-gather and zero-downtime VReplication resharding at the cost of operational proxy overhead, whereas GORM Sharding achieves zero-proxy microsecond execution bounds at the expense of rigid schema partitioning.
 
 When an engineering organization scales beyond millions of active transactions, a monolithic relational database instance inevitably becomes the single biggest systemic bottleneck in the entire software architecture. While read traffic can be scaled horizontally almost indefinitely by attaching read replicas behind a load-balancing proxy like ProxySQL, **write traffic hits an unyielding physical ceiling on a single MySQL Primary instance**.
 
@@ -519,4 +519,25 @@ Scaling MySQL write capacity requires recognizing when single-node physical limi
 1. **Under 10k TPS (Read-Dominant)**: Stick with a single MySQL Primary paired with ProxySQL and read replicas. Avoid sharding prematurely.
 2. **10k–50k TPS (Go Microservices)**: Deploy application-level **GORM Sharding** using 64-bit Snowflake primary keys, strict key enforcement, and asynchronous Saga orchestrations.
 3. **50k+ TPS (Enterprise Polyglot Ecosystems)**: Invest in **Vitess** to achieve transparent horizontal scale with zero-downtime VReplication resharding.
-4. **Greenfield Distributed Systems**: Evaluate **TiDB** or **CockroachDB** to eliminate the operational tax of sharding entirely through distributed SQL.
+4. **Greenfield Distributed Systems**: Evaluate **TiDB** or **CockroachDB** to eliminate the operational tax of sharding entirely through distributed SQL.
+
+---
+
+## FAQ: Enterprise Engineering Decisions
+
+### At what write throughput threshold should a Go team adopt horizontal sharding?
+
+When sustained write transactions exceed 10,000-12,000 TPS on a tuned MySQL instance and vertical hardware upgrades fail to alleviate InnoDB buffer pool mutex contention and disk fsync bottlenecks.
+
+### What are the trade-offs between Vitess and GORM Sharding?
+
+Vitess supports complex cross-shard SQL, live resharding (VReplication), and multi-language services, but requires significant operational Kubernetes infrastructure. GORM Sharding runs directly in the Go application with zero proxy overhead, but requires manual resharding and strict queries pinned to the sharding key.
+
+### Why is Twitter Snowflake preferred over UUIDv4 for sharded relational databases?
+
+Snowflake IDs are 64-bit, chronological integers that insert sequentially into InnoDB B+Tree clustered indexes, avoiding random page splits and cutting index fragmentation by up to 60%.
+
+
+---
+
+> 🔬 **Full 100-Round Research Dossier:** Complete empirical specifications, benchmark tables, and mathematical formulas are archived in [`reports/research-mysql-horizontal-scaling-100-rounds.md`](https://github.com/vesviet/vesviet/tree/main/reports/research-mysql-horizontal-scaling-100-rounds.md).

@@ -29,7 +29,7 @@ keywords: ["direct preference optimization dpo", "grpo alignment without critic"
 
 > **Answer-first:** Direct Preference Optimization (DPO) and Group Relative Policy Optimization (GRPO) supersede unstable 4-model PPO pipelines for SLM alignment. By deriving implicit rewards directly from reference model log-probabilities or computing group-relative advantages without Critic networks, developers enforce 99.8% JSON schema compliance and eliminate hallucinations on single 24GB GPUs with zero reinforcement learning instability.
 
-> 🇻🇳 **Read the Vietnamese version of this article on [learn.tanhdev.com](https://learn.tanhdev.com/series/slm-playbook/part-5-preference-alignment/)**
+> 🇻🇳 **Read the Vietnamese version of this article on [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/slm-playbook/part-5-preference-alignment/)**
 
 ---
 

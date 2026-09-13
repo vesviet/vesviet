@@ -24,7 +24,7 @@ canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/distributed-r
 image: "/images/posts/distributed-rate-limiting-redis-gcra.jpg"
 ---
 
-> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Chương 3: Distributed Rate Limiting Với Redis & Thuật Toán GCRA (learn.tanhdev.com)](https://learn.tanhdev.com/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/).
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/).
 
 [Previous: Chapter 2 — Caching Vulnerabilities & Go Singleflight](/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/) | [Series Hub](/series/high-concurrency-systems/) | [Next: Chapter 4 — Dual-Write Prevention via Transactional Outbox](/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/)
 

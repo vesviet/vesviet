@@ -22,7 +22,7 @@ canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-4-sre-chaos-e
 image: "/images/posts/paypay-scaling-cover.jpg"
 ---
 
-> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Phần 4: Thực Tiễn SRE — Kỹ Thuật Hỗn Loạn Chaos Mesh & Khả Năng Chống Chịu Sự Cố Đa Vùng (learn.tanhdev.com)](https://learn.tanhdev.com/series/paypay-architecture/part-4-sre-chaos-engineering/).
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/paypay-architecture/part-4-sre-chaos-engineering/).
 
 [Previous Chapter: Part 3 — Data Infrastructure: From Aurora to TiDB](/series/paypay-architecture/part-3-data-layer-tidb/) | [Series Hub](/series/paypay-architecture/) | [Next Chapter: Part 5 — Campaign Architecture: Surviving the 10-Billion Yen Surge](/series/paypay-architecture/part-5-campaign-architecture/)
 

@@ -19,9 +19,10 @@ canonicalURL: "https://tanhdev.com/series/shopee-architecture/01-microservices-f
 image: "/images/posts/shopee-flash-sale-cover.jpg"
 categories: ["Architecture", "Golang", "Microservices"]
 tags: ["Shopee", "Microservices", "Golang", "gRPC", "Kitex", "Consul", "Protobuf"]
+mermaid: true
 ---
 
-> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Bài 1: Nền Tảng Microservices — Go, gRPC và API Gateway (learn.tanhdev.com)](https://learn.tanhdev.com/series/shopee-architecture/01-microservices-foundation/).
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/shopee-architecture/01-microservices-foundation/).
 
 [Series Hub: Shopee Architecture Masterclass](/series/shopee-architecture/) | [Next Chapter: Chapter 2 — Flash Sale Engine & Zero Overselling](/series/shopee-architecture/02-flash-sale-engine/)
 

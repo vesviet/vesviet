@@ -18,6 +18,7 @@ cover:
   alt: "Part 7: AI Security Engineering, OWASP MCP Top 10 & Zero-Trust Governance"
   relative: false
 keywords: ["ai security engineering 2026", "owasp llm top 10", "dual llm prompt injection defense", "zero data retention zdr", "opa rego ai agent guardrails", "mcp tool poisoning defense"]
+mermaid: true
 ---
 
 > **Answer-first:** As AI agents gain autonomous tool execution privileges (reading databases, modifying infrastructure, pushing code), the security perimeter shifts from network boundaries to **Instruction Integrity**. Modern **AI Security Engineering** establishes **Seven Layers of Defense**, enforcing the **Dual-LLM Pattern** for indirect prompt injection immunity, **Policy-as-Code (OPA/Rego)** for runtime authorization, and **Zero Data Retention (ZDR)** compliance.

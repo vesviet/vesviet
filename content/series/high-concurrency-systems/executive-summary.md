@@ -22,7 +22,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/executive-summary/"
 ---
 
-> **Multi-Language Edition:** This executive brief is also available in Vietnamese at [Thực Tế Của C10M: Sống Sót Qua Lưu Lượng Khổng Lồ (learn.tanhdev.com)](https://learn.tanhdev.com/series/high-concurrency-systems/executive-summary/).
+> **Multi-Language Edition:** This executive brief is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/high-concurrency-systems/executive-summary/).
 
 [Series Overview: Masterclass Hub](/series/high-concurrency-systems/) | [Next Chapter: Chapter 1 — High Concurrency System Design in Go](/series/high-concurrency-systems/how-systems-handle-c10m/)
 

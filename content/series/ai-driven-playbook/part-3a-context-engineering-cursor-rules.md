@@ -18,6 +18,7 @@ cover:
   alt: "Part 3A: Advanced Context Engineering — Modular Cursor Rules & AGENTS.md"
   relative: false
 keywords: ["cursor rules mdc standard", "advanced context engineering", "agents md specification", "prompt caching optimization", "modular cursor rules", "ai coding constraints"]
+mermaid: true
 ---
 
 > **Answer-first:** Advanced Context Engineering moves beyond monolithic system prompts by organizing constraints into **modular, glob-scoped `.cursor/rules/*.mdc` files** and standardized **AGENTS.md contracts**. By binding rules dynamically to active file patterns and capitalizing on **prefix prompt caching** (achieving a 90% latency and cost reduction), teams provide coding agents with razor-sharp focus while preventing context window pollution.

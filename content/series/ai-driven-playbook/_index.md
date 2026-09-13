@@ -18,6 +18,7 @@ cover:
   alt: "The AI-Driven Engineer Playbook Series Hub"
   relative: false
 keywords: ["ai driven engineer playbook", "agentic sdlc enterprise 2026", "context engineering ddd", "model context protocol mcp 2.0", "private ai gateway litellm", "autonomous testing playwright", "opentelemetry genai observability", "agents.md standard"]
+mermaid: true
 ---
 
 > **Answer-first:** The **AI-Driven Engineer Playbook** provides a battle-tested technical blueprint for software organizations transitioning to an AI-Native SDLC: establishing private AI Gateway control planes (LiteLLM), structuring machine-actionable Context Engineering via Domain-Driven Design and AGENTS.md, adopting the Model Context Protocol (MCP 2.0), automating multi-agent code reviews with SARIF, and executing vision-guided autonomous QA testing.

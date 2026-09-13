@@ -24,7 +24,7 @@ canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/idempotency-a
 image: "/images/posts/idempotency-api-design-payments.jpg"
 ---
 
-> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Chương 7: Thiết Kế Idempotency APIs Dành Cho Hệ Thống Thanh Toán (learn.tanhdev.com)](https://learn.tanhdev.com/series/high-concurrency-systems/idempotency-api-design-payments/).
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/high-concurrency-systems/idempotency-api-design-payments/).
 
 [Previous: Chapter 6 — API Gateway vs Service Mesh](/series/high-concurrency-systems/api-gateway-vs-service-mesh/) | [Series Hub](/series/high-concurrency-systems/) | [Next: Chapter 8 — Distributed Locking: Redlock vs ZooKeeper](/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/)
 

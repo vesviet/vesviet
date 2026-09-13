@@ -18,6 +18,7 @@ cover:
   alt: "Part 6: AI Observability, OpenTelemetry GenAI & Continuous Evaluation"
   relative: false
 keywords: ["opentelemetry genai observability", "ai observability langfuse", "llm tracing openllmetry", "automated evals ragas", "ai cost anomaly circuit breaker"]
+mermaid: true
 ---
 
 > **Answer-first:** Traditional Application Performance Monitoring (APM) tools fail to capture generative AI failure modes because an HTTP 200 response can still contain complete factual hallucinations, toxic responses, or $50.00 runaway token loops. Modern **AI Observability** implements **OpenTelemetry GenAI Semantic Conventions v1.30+**, correlating distributed multi-agent traces with token spend, Time-to-First-Token (TTFT), and automated **LLM-as-a-Judge evaluation pipelines (Ragas / Phoenix)**.

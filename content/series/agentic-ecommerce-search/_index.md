@@ -15,6 +15,7 @@ cover:
   alt: "Agentic E-commerce Search Engine Architecture series — vector databases, ranking, and Go"
   relative: false
 canonicalURL: "https://tanhdev.com/series/agentic-ecommerce-search/"
+mermaid: true
 ---
 
 > **Answer-first:** Agentic e-commerce search replaces passive lexical matching with autonomous multi-agent reasoning, hybrid vector retrieval, and real-time inventory verification in Golang. By orchestrating CloudWeGo Eino graphs, Qdrant dense-sparse index fusion, and deterministic critique reflection loops, enterprise storefronts eliminate zero-result dead-ends, slash cart abandonment, and achieve sub-50ms P99 latency while elevating search-to-cart conversion rates by over 30%.

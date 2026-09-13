@@ -22,7 +22,7 @@ canonicalURL: "https://tanhdev.com/series/shopee-architecture/03-traffic-shield/
 image: "/images/posts/shopee-flash-sale-cover.jpg"
 ---
 
-> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Bài 3: Tấm Khiên Bảo Vệ — Message Queue và San Phẳng Đỉnh Tải (learn.tanhdev.com)](https://learn.tanhdev.com/series/shopee-architecture/03-traffic-shield/).
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/shopee-architecture/03-traffic-shield/).
 
 [Previous Chapter: Chapter 2 — Flash Sale Engine & Zero Overselling](/series/shopee-architecture/02-flash-sale-engine/) | [Series Hub](/series/shopee-architecture/) | [Next Chapter: Chapter 4 — Database Scalability: From MySQL to TiDB](/series/shopee-architecture/04-database-scale/)
 

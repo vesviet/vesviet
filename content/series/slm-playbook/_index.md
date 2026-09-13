@@ -22,7 +22,7 @@ keywords: ["slm fine tuning playbook", "qlora axolotl production", "knowledge di
 
 > **Answer-first:** For 80% of domain enterprise tasks, fine-tuned Small Language Models (1B–14B) match frontier performance at 1/50th inference cost and sub-40ms latency. This playbook provides the production engineering blueprint: synthetic data curation, QLoRA fine-tuning with Axolotl on 24GB GPUs, DeepSeek-R1 reasoning distillation, DPO/GRPO alignment, and vLLM continuous batching deployment.
 
-> 🇻🇳 **Read the Vietnamese version of this series on [learn.tanhdev.com](https://learn.tanhdev.com/series/slm-playbook/)**
+> 🇻🇳 **Read the Vietnamese version of this series on [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/slm-playbook/)**
 
 ---
 

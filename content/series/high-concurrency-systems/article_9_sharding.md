@@ -24,7 +24,7 @@ canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/database-shar
 image: "/images/posts/database-sharding-read-write-splitting.jpg"
 ---
 
-> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Chương 9: Database Sharding & Read/Write Splitting Dành Cho Các Bảng Dữ Liệu Hàng Tỷ Bản Ghi (learn.tanhdev.com)](https://learn.tanhdev.com/series/high-concurrency-systems/database-sharding-read-write-splitting/).
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/high-concurrency-systems/database-sharding-read-write-splitting/).
 
 [Previous: Chapter 8 — Distributed Locking: Redlock vs ZooKeeper](/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/) | [Series Hub](/series/high-concurrency-systems/)
 

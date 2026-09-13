@@ -24,7 +24,7 @@ canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/distributed-l
 image: "/images/posts/distributed-locking-redlock-zookeeper.jpg"
 ---
 
-> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Chương 8: Distributed Locking Xử Lý Tranh Chấp Race Conditions: Redlock Đấu Với ZooKeeper (learn.tanhdev.com)](https://learn.tanhdev.com/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/).
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/).
 
 [Previous: Chapter 7 — Designing Idempotency APIs for Payment Systems](/series/high-concurrency-systems/idempotency-api-design-payments/) | [Series Hub](/series/high-concurrency-systems/) | [Next: Chapter 9 — Database Sharding & Read/Write Splitting](/series/high-concurrency-systems/database-sharding-read-write-splitting/)
 

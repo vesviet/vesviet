@@ -22,7 +22,7 @@ canonicalURL: "https://tanhdev.com/series/shopee-architecture/05-observability/"
 image: "/images/posts/shopee-flash-sale-cover.jpg"
 ---
 
-> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Bài 5: Hệ Thống Giám Sát Toàn Diện — Vector, ClickHouse và Truy Vết Phân Tán Ở Quy Mô Siêu Lớn (learn.tanhdev.com)](https://learn.tanhdev.com/series/shopee-architecture/05-observability/).
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/shopee-architecture/05-observability/).
 
 [Previous Chapter: Chapter 4 — Database Scalability: From MySQL to TiDB](/series/shopee-architecture/04-database-scale/) | [Series Hub](/series/shopee-architecture/)
 

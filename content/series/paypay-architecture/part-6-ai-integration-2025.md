@@ -22,7 +22,7 @@ canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-6-ai-integrat
 image: "/images/posts/paypay-scaling-cover.jpg"
 ---
 
-> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Phần 6: Nền Tảng AI-Native — Phát Hiện Gian Lận Dưới 10ms & LLM Hub Doanh Nghiệp (learn.tanhdev.com)](https://learn.tanhdev.com/series/paypay-architecture/part-6-ai-integration-2025/).
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/paypay-architecture/part-6-ai-integration-2025/).
 
 [Previous Chapter: Part 5 — Campaign Architecture: Surviving the 10-Billion Yen Surge](/series/paypay-architecture/part-5-campaign-architecture/) | [Series Hub](/series/paypay-architecture/)
 

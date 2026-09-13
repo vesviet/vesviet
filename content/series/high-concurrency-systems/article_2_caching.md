@@ -24,7 +24,7 @@ canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/caching-vulne
 image: "/images/posts/caching-vulnerabilities-penetration-breakdown-avalanche.jpg"
 ---
 
-> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Chương 2: 3 Điểm Yếu Của Caching & Kỹ Thuật Go Singleflight (learn.tanhdev.com)](https://learn.tanhdev.com/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/).
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/).
 
 [Previous: Chapter 1 — High Concurrency System Design in Go](/series/high-concurrency-systems/how-systems-handle-c10m/) | [Series Hub](/series/high-concurrency-systems/) | [Next: Chapter 3 — Distributed Rate Limiting with Redis & GCRA](/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/)
 

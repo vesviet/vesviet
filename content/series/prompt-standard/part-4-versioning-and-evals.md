@@ -340,4 +340,4 @@ No — cite it as a calibrated ceiling, not a default. Chroma's >99% figure desc
 
 Full 100-round research dossier: `reports/research-prompt-standard-part-4-versioning-and-evals-100-rounds.{md,json}` (mirrored in both repositories). Grounding note: 24/100 rounds carry external source URLs; 72/100 trace series-internal methodology (this chapter codifies the series' own PromptOps practice); 4 rounds carry [INFERENCE] labels.
 
-🔗 **Next Step:** Continue to [Part 7 — What Is a Prompt Standard](/series/prompt-standard/part-7-what-is-prompt-standard/), then [Part 8 — The Minimum Team Starter Kit](/series/prompt-standard/part-8-team-starter-kit/), or revisit the series index at [/series/prompt-standard/](/series/prompt-standard/).
+🔗 **Next Step:** Continue to [Part 5 — The Minimum Team Starter Kit & Team Templates](/series/prompt-standard/part-5-team-template/), or revisit the series index at [/series/prompt-standard/](/series/prompt-standard/).

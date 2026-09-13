@@ -1,12 +1,12 @@
 ---
-title: "Go pprof CPU & Memory Profiling: The Production Engineering Guide"
+title: "Go pprof CPU & Memory Profiling: The Production Guide"
 slug: "golang-pprof-profiling-memory-cpu-tutorial"
 author: "Tuan Anh"
 date: "2026-06-02T08:00:00+07:00"
 lastmod: "2026-09-06T15:55:00+07:00"
 draft: false
 mermaid: true
-description: "Master Go pprof profiling in production: CPU flame graphs, heap memory escape analysis, mutex contention, continuous profiling with Pyroscope, and Go runtime internals."
+description: "Master Go pprof in production: CPU flame graphs, heap memory escape analysis, mutex contention, continuous Pyroscope profiling, and runtime internals."
 ShowToc: true
 TocOpen: true
 categories:
@@ -29,7 +29,7 @@ canonicalURL: "https://tanhdev.com/posts/golang-pprof-profiling-memory-cpu-tutor
 series: ["Go Production Performance & Architecture"]
 ---
 
-# Go pprof CPU & Memory Profiling: The Production Engineering Guide
+> **Answer-first:** Diagnosing production Go CPU spikes and OOM container kills requires serving `net/http/pprof` endpoints over a dedicated, internal diagnostic port isolated from public traffic. By capturing 30-second CPU sampling profiles and comparing `inuse_space` against `alloc_space` heap snapshots, architects identify unreleased pointer retention, eliminate GC allocation churn, and maintain <1% profiling overhead under high load.
 
 When a mission-critical Go microservice in Kubernetes suddenly spikes to 95% CPU utilization, latency degrades from 15ms to 800ms, or pods are repeatedly terminated by the Linux kernel OOM (Out-Of-Memory) killer, guessing root causes by inspecting source code is an exercise in futility. In high-concurrency systems, intuition fails. You need empirical, low-overhead runtime telemetry.
 
@@ -489,4 +489,25 @@ Exposing `pprof` handlers on `http.DefaultServeMux` makes sensitive debugging en
 
 High performance in Go is not a matter of luck or blind guesswork; it is the direct outcome of disciplined profiling and empirical measurement.
 
-By establishing an **isolated internal diagnostic listener**, mastering the distinction between **retained memory (`inuse_space`)** and **allocation churn (`alloc_space`)**, analyzing **flame graphs and mutex contention**, and adopting **continuous profiling with Pyroscope**, engineering teams can confidently diagnose and resolve any production performance degradation at scale.
+By establishing an **isolated internal diagnostic listener**, mastering the distinction between **retained memory (`inuse_space`)** and **allocation churn (`alloc_space`)**, analyzing **flame graphs and mutex contention**, and adopting **continuous profiling with Pyroscope**, engineering teams can confidently diagnose and resolve any production performance degradation at scale.
+
+---
+
+## FAQ: Enterprise Engineering Decisions
+
+### How can I safely enable pprof in a production Kubernetes deployment without security risks?
+
+Never import `_ net/http/pprof` with the default HTTP mux. Instead, start a dedicated, internal HTTP server on an unexposed port (e.g., localhost:6060 or internal VPC mesh) and protect it with mutual TLS or Kubernetes NetworkPolicies.
+
+### What is the crucial difference between inuse_space and alloc_space in Go memory profiles?
+
+`inuse_space` measures memory currently held by live objects on the heap (used to detect memory leaks that cause OOM kills). `alloc_space` measures cumulative memory allocated since startup, including objects collected by GC (used to identify allocation churn that causes GC CPU overhead).
+
+### What causes goroutine leaks and how are they captured in pprof?
+
+Goroutine leaks occur when goroutines block indefinitely on unbuffered channels, uncancelled contexts, or unreleased mutex locks. They appear in `http://localhost:6060/debug/pprof/goroutine?debug=1` as an monotonically growing goroutine count with shared stack traces.
+
+
+---
+
+> 🔬 **Full 100-Round Research Dossier:** Complete empirical specifications, benchmark tables, and mathematical formulas are archived in [`reports/research-golang-pprof-profiling-memory-cpu-tutorial-100-rounds.md`](https://github.com/vesviet/vesviet/tree/main/reports/research-golang-pprof-profiling-memory-cpu-tutorial-100-rounds.md).

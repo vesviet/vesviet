@@ -18,6 +18,7 @@ cover:
   alt: "Part 4: AI-Assisted Legacy Code Refactoring & Modernization"
   relative: false
 keywords: ["ai legacy code refactoring", "golden master testing ai", "modernizing legacy systems ai", "ast refactoring deepseek r1", "automated code modernization"]
+mermaid: true
 ---
 
 > **Answer-first:** Using generative AI to refactor legacy code without safety nets is reckless, as LLMs frequently discard undocumented edge cases and subtle bug-for-bug dependencies. A bulletproof **AI Modernization Framework** combines **Golden Master (Characterization) Testing**, **Tree-sitter AST dependency extraction**, and **two-phase reasoning validation (DeepSeek-R1 / Claude 3.7)** to refactor multi-thousand-line monolithic modules with zero behavioral regressions.

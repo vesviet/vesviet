@@ -22,7 +22,7 @@ series: ["prompt-standard"]
 
 ---
 
-[← Previous: Part 6 — Production PromptOps, Evals & Security](/series/prompt-standard/part-6-promptops-evals-and-security/) | [Series Table of Contents](/series/prompt-standard/) | Next: [Part 8 — The Minimum Team Starter Kit](/series/prompt-standard/part-8-team-starter-kit/) →
+[Series Hub: Prompt Engineering Standard](/series/prompt-standard/) | [Next Chapter: Part 2: Core Prompt Blocks & Schema Definition →](/series/prompt-standard/part-2-core-blocks/)
 
 > **Answer-first:** A Prompt Standard is an explicit I/O contract and standard operating procedure ensuring AI agents perform deterministically and reliably across team environments. It eliminates knowledge fragmentation, context rot, unversioned regressions, and onboarding friction by treating prompts as codified software engineering assets rather than personal ad-hoc notes stored across scattered private chat windows.
 
@@ -321,7 +321,7 @@ Full 100-round research dossier: `reports/research-prompt-standard-part-7-what-i
 
 ---
 
-[← Previous: Part 6 — Production PromptOps, Evals & Security](/series/prompt-standard/part-6-promptops-evals-and-security/) | [Series Table of Contents](/series/prompt-standard/) | Next: [Part 8 — The Minimum Team Starter Kit](/series/prompt-standard/part-8-team-starter-kit/) →
+[Series Hub: Prompt Engineering Standard](/series/prompt-standard/) | [Next Chapter: Part 2: Core Prompt Blocks & Schema Definition →](/series/prompt-standard/part-2-core-blocks/)
 
 
 ## The Enterprise RACI Responsibility Matrix for Prompt Engineering

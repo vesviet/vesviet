@@ -22,7 +22,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/how-systems-handle-c10m/"
 ---
 
-> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Chương 1: Các Hệ Thống Xử Lý Hàng Triệu Requests/s Ra Sao? (learn.tanhdev.com)](https://learn.tanhdev.com/series/high-concurrency-systems/how-systems-handle-c10m/).
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/high-concurrency-systems/how-systems-handle-c10m/).
 
 [Previous: Executive Summary](/series/high-concurrency-systems/executive-summary/) | [Series Hub](/series/high-concurrency-systems/) | [Next: Chapter 2 — Caching Vulnerabilities & Go Singleflight](/series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/)
 

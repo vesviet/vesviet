@@ -18,6 +18,7 @@ cover:
   alt: "Part 3A: Enterprise RAG Architecture & Codebase Vector Indexing"
   relative: false
 keywords: ["enterprise rag codebase", "hybrid search vector bm25", "qdrant code intelligence", "cross encoder reranking", "layout aware ast parsing", "knowledge freshness cdc"]
+mermaid: true
 ---
 
 > **Answer-first:** Off-the-shelf "plug-and-play" vector search solutions fail on enterprise codebases because they treat source code like narrative prose. A production **Enterprise Codebase RAG** combines **layout-aware AST symbol parsing**, **Hybrid Search (Dense Embeddings + Sparse BM25 via Reciprocal Rank Fusion)**, and **Cross-Encoder Reranking**, achieving sub-400ms retrieval latencies and raising code search precision from 54% to 92.4%.

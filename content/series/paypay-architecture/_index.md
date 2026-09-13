@@ -23,7 +23,7 @@ canonicalURL: "https://tanhdev.com/series/paypay-architecture/"
 image: "/images/posts/paypay-scaling-cover.jpg"
 ---
 
-> **Multi-Language Edition:** This series is also available in Vietnamese at [Tổng Quan Kiến Trúc PayPay: Mở Rộng Cho Các Chiến Dịch Siêu Quy Mô (learn.tanhdev.com)](https://learn.tanhdev.com/series/paypay-architecture/).
+> **Multi-Language Edition:** This series is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/paypay-architecture/).
 
 ---
 

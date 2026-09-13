@@ -22,7 +22,7 @@ series_order: 2
 
 ---
 
-> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Phase 1: Tiến Trình Lịch Sử Double 11 (2009–2026) (learn.tanhdev.com)](https://learn.tanhdev.com/series/alipay-double-11/phase-1-timeline/).
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/alipay-double-11/phase-1-timeline/).
 
 [🏛️ Anchor Pillar Hub #8: Alipay Double 11 Architecture (544K TPS)](/posts/alipay-double-11-architecture-tps/) | [🗺️ Sitewide Engineering Reading Map](/reading-map/)
 

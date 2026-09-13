@@ -22,7 +22,7 @@ series_order: 5
 
 ---
 
-> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Phase 4A: Công Nghệ Chi Tiết — Middle Platform & CTU Risk Control (learn.tanhdev.com)](https://learn.tanhdev.com/series/alipay-double-11/phase-4-technology/).
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/alipay-double-11/phase-4-technology/).
 
 [🏛️ Anchor Pillar Hub #8: Alipay Double 11 Architecture (544K TPS)](/posts/alipay-double-11-architecture-tps/) | [🗺️ Sitewide Engineering Reading Map](/reading-map/)
 

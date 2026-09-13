@@ -18,6 +18,7 @@ cover:
   alt: "Part 1: Context Engineering — Domain-Driven Design for AI Agents"
   relative: false
 keywords: ["context engineering ddd", "domain driven design ai agents", "bounded context prompt engineering", "tree sitter code chunking", "ast subgraph extraction", "ai coding hallucination"]
+mermaid: true
 ---
 
 > **Answer-first:** Context Engineering with Domain-Driven Design (DDD) treats prompt context not as an unstructured text buffer, but as a bounded, strongly typed domain model. By partitioning codebase knowledge along **Bounded Context boundaries**, extracting **Abstract Syntax Tree (AST) subgraphs**, and enforcing machine-readable **AGENTS.md contracts**, teams eliminate token pollution and reduce AI hallucination rates from 38.5% to under 0.6%.

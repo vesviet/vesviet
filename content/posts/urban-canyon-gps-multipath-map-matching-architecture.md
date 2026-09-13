@@ -1,5 +1,5 @@
 ---
-title: "GPS Map Matching for Urban Canyon Multipath Noise: Hidden Markov Models & Kafka Streaming"
+title: "GPS Map Matching for Urban Canyon Noise: HMM & Kafka"
 slug: "urban-canyon-gps-multipath-map-matching-architecture"
 author: "Tuan Anh"
 date: "2026-08-12T20:30:00+07:00"
@@ -19,14 +19,14 @@ tags:
   - "HMM"
   - "Algorithms"
   - "GIS"
-description: "Eliminate urban canyon GPS multipath drift: Hidden Markov Models (HMM), Viterbi dynamic programming, Kafka sliding-window buffers, and OSRM vs GraphHopper routing engines in Go."
+description: "Fix urban canyon GPS multipath drift: Hidden Markov Models (HMM), Viterbi algorithm, Kafka streaming buffers, and OSRM distance matrix routing in Go."
 ShowToc: true
 TocOpen: true
 mermaid: true
 series: ["Logistics Operations Systems"]
 ---
 
-# GPS Map Matching for Urban Canyon Multipath Noise: Hidden Markov Models & Kafka Streaming
+> **Answer-first:** Eliminating urban canyon GPS multipath drift and false dispatch alerts requires streaming noisy IoT coordinates into Kafka temporal sliding windows and executing topological Hidden Markov Model (HMM) map matching via the Viterbi algorithm. Coupled with custom OSRM road graph snapping, this architecture restricts candidate projections to valid topology and achieves sub-15ms matching latencies.
 
 At 11:15 PM, an urgent incident ticket was escalated by the operations control center of our third-party logistics (3PL) partner:
 
@@ -555,3 +555,24 @@ Resolving GPS drift in urban canyons requires understanding that **sensors measu
 4. **Execution Engine**: Power live streaming with C++ OSRM Contraction Hierarchies, reserving JVM GraphHopper for custom vehicle audit reconciliation.
 
 This guarantees that your logistics platform never mistakes a riverside highway delivery for a barge floating in the middle of the river.
+
+---
+
+## FAQ: Enterprise Engineering Decisions
+
+### Why does simple nearest-neighbor road snapping fail in urban environments?
+
+Nearest-neighbor algorithms snap solely to the geometrically closest road segment, mistakenly projecting vehicles onto parallel elevated highways, opposing one-way lanes, or pedestrian alleys during multipath signal reflections.
+
+### How does the Hidden Markov Model (HMM) overcome noisy GPS multipath drift?
+
+HMM evaluates both emission probabilities (how close a candidate is to the GPS ping) and transition probabilities (whether moving between candidates is topologically plausible given speed limits and road routing distance), using the Viterbi algorithm to determine the globally optimal trajectory.
+
+### What latency and throughput can be achieved in production Go map matching?
+
+A high-performance Go worker pool utilizing Kafka sliding windows and in-process OSRM C++ bindings matches up to 50,000 GPS pings per second with a sub-15ms P99 latency.
+
+
+---
+
+> 🔬 **Full 100-Round Research Dossier:** Complete empirical specifications, benchmark tables, and mathematical formulas are archived in [`reports/research-urban-canyon-gps-multipath-map-matching-architecture-100-rounds.md`](https://github.com/vesviet/vesviet/tree/main/reports/research-urban-canyon-gps-multipath-map-matching-architecture-100-rounds.md).

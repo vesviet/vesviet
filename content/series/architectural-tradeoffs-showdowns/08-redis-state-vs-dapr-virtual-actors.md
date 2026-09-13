@@ -598,11 +598,14 @@ To provide empirical evidence, we executed a rigorous benchmark suite measuring 
 | **Dapr Virtual Actors (PostgreSQL Store)**| 22,400 ops/sec | 3.40 ms | 8.90 ms | 16.80 ms | 34.50 ms | **0.00%** (Mailbox Queued)| 48% (Multi-Core) | **920 MB** (Hydrated) | ~0.42 ms (Sidecar) |
 
 ```mermaid
-xychart-beta
-    title "P99 Latency (ms) at 25,000 Updates/Sec (Lower is Better)"
-    x-axis ["Redis Lua", "Dapr (Redis DB)", "Dapr (PG DB)", "Redis Redlock", "Redis WATCH"]
-    y-axis "P99 Latency (Milliseconds)" 0 --> 100
-    bar [3.12, 8.45, 16.80, 46.50, 98.40]
+flowchart TD
+    subgraph Benchmarks["P99 Latency at 25,000 Updates/Sec (Lower is Better)"]
+        L1["1. Redis Lua (Atomic Script): 3.12 ms (Sub-5ms)"]
+        L2["2. Dapr Virtual Actors (Redis State): 8.45 ms (Mailbox Queued)"]
+        L3["3. Dapr Virtual Actors (PostgreSQL State): 16.80 ms"]
+        L4["4. Redis Redlock (Multi-Node Quorum): 46.50 ms"]
+        L5["5. Redis WATCH/MULTI (Optimistic Lock): 98.40 ms (38.4% Retry Storm)"]
+    end
 ```
 
 ### Benchmark Analysis & Findings:

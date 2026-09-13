@@ -29,7 +29,7 @@ keywords: ["hybrid ai routing", "self hosting vllm slm", "model cascade architec
 
 > **Answer-first:** The Hybrid AI Routing architecture evaluates incoming request complexity and token uncertainty in under 3.5ms. 80% of structured queries are served locally by fine-tuned 7B models on vLLM within 35ms TTFT, while low-confidence requests automatically cascade to Claude 3.5 Sonnet through a localized PII sanitization proxy, cutting monthly API bills by 85%.
 
-> 🇻🇳 **Read the Vietnamese version of this article on [learn.tanhdev.com](https://learn.tanhdev.com/series/slm-playbook/part-1-slm-hybrid-architecture/)**
+> 🇻🇳 **Read the Vietnamese version of this article on [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/slm-playbook/part-1-slm-hybrid-architecture/)**
 
 ---
 

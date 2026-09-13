@@ -18,6 +18,7 @@ cover:
   alt: "Part 2: Modern AI Engineering Stack — Tools, Runtimes & Private Gateways"
   relative: false
 keywords: ["modern ai engineering stack 2026", "litellm enterprise gateway", "redis semantic caching", "model context protocol mcp 2.0", "local llm apple silicon", "ai platform engineering"]
+mermaid: true
 ---
 
 > **Answer-first:** The **Modern AI Engineering Stack 2026** decouples developer tooling from direct cloud API endpoints. By establishing a private **AI Gateway Control Plane (LiteLLM)** backed by **Redis Semantic Caching** (<0.05 cosine threshold) and standardizing tool integration on **Model Context Protocol (MCP 2.0)**, enterprises eliminate vendor lock-in, slash API bills by 84%, and ensure zero egress of proprietary code to public LLM training datasets.

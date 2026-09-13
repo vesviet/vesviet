@@ -18,6 +18,7 @@ cover:
   alt: "Part 5: Autonomous Testing & Agentic QA Automation at Scale"
   relative: false
 keywords: ["autonomous testing ai 2026", "playwright agentic qa", "browser use ai testing", "self healing test selectors", "ai guided mutation testing", "automated e2e testing"]
+mermaid: true
 ---
 
 > **Answer-first:** Traditional scripted End-to-End (E2E) testing suites suffer from notorious fragility: minor UI refactors break hardcoded XPath/CSS selectors, consuming hundreds of engineering hours on maintenance. **Agentic Autonomous Testing** leverages **vision-guided browser agents (Playwright MCP + Browser Use)** and **self-healing accessibility selectors**, converting plain-text user stories into resilient, self-healing test suites while using **AI-Guided Mutation Testing** to verify true test suite rigor.

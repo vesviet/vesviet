@@ -18,6 +18,7 @@ cover:
   alt: "Part 1: The Paradigm Shift — From Code-Centric to Context-Centric SDLC"
   relative: false
 keywords: ["paradigm shift ai sdlc", "context centric software development", "code centric vs context centric", "agents md standard", "cursor rules mdc", "ai native developer transition"]
+mermaid: true
 ---
 
 > **Answer-first:** The transition from a **Code-Centric** to a **Context-Centric SDLC** redefines the primary unit of software engineering. Developers no longer spend 75% of their working hours typing imperative syntax. Instead, they curate machine-actionable architectural context, define strict invariant boundary contracts via **AGENTS.md** and **`.cursor/rules/*.mdc`**, and construct automated verification gates that allow autonomous AI agent swarms to generate production-ready code with mathematical reliability.

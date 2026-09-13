@@ -29,7 +29,7 @@ keywords: ["slm vs llm enterprise", "ai economics small language models", "hybri
 
 > **Answer-first:** Self-hosting specialized Small Language Models (1B–14B) on private vLLM infrastructure breaks even with cloud APIs at 8.5 million tokens daily. Beyond this threshold, self-hosted inference slashes operational expenditure by 95% to 98% and cuts P99 Time-to-First-Token latency from 1,850ms to sub-40ms while enforcing full data privacy under GDPR and HIPAA regulations.
 
-> 🇻🇳 **Read the Vietnamese version of this article on [learn.tanhdev.com](https://learn.tanhdev.com/series/slm-playbook/executive-summary/)**
+> 🇻🇳 **Read the Vietnamese version of this article on [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/slm-playbook/executive-summary/)**
 
 ---
 

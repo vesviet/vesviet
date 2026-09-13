@@ -1,5 +1,5 @@
 ---
-title: "Quick Commerce Architecture: 15-Second AI Intelligence & Real-Time Intent Routing"
+title: "Quick Commerce: 15-Second AI & Real-Time Intent Routing"
 slug: "beyond-quick-commerce-15-second-customer-intelligence-architecture"
 author: "Tuan Anh"
 date: "2026-08-13T21:30:00+07:00"
@@ -19,16 +19,16 @@ tags:
   - "Redis"
   - "Go"
   - "Vector Search"
-description: "Architecting 15-second Quick Commerce customer intelligence: sub-500ms real-time event streaming, Go ring buffers, Redis HNSW vector retrieval, self-hosted SLM intent routing, and Generative UI with MCP."
+description: "Architect 15-second Quick Commerce intelligence: sub-500ms event streaming, Go ring buffers, Redis HNSW vectors, self-hosted SLM, and Generative UI."
 ShowToc: true
 TocOpen: true
 mermaid: true
 series: ["Agentic E-commerce Architecture"]
 ---
 
-# Quick Commerce Architecture: 15-Second AI Intelligence & Real-Time Intent Routing
+> **Answer-first:** Quick commerce intent routing replaces static navigation with a sub-500ms event-driven pipeline that streams client behavioral telemetry over WebSockets into Go lock-free ring buffers, queries Redis HNSW vector indexes, and triggers quantized SLM classification. This architecture dynamically rewrites the client interface via Model Context Protocol (MCP) before the critical 22-second bounce threshold.
 
-The **Quick Commerce (Q-Commerce)** race to deliver groceries and household essentials within 15 to 30 minutes has encountered an insurmountable physical barrier. As growth expert Lê Thanh Hải (Henry) observed in his industry analysis on the post-15-minute delivery war, logistics optimization has entered an era of rapidly diminishing marginal returns. Dark stores cannot be compressed beyond 200-meter radius perimeters without multiplying real estate overhead exponentially, nor can delivery couriers run red lights without catastrophic safety liabilities and unit economic collapse.
+At 8:45 PM on a rainy Friday evening in District 1, Ho Chi Minh City, a user opens a quick-commerce application. They do not type in the search bar. They do not tap through the hierarchical category taxonomy of *Fresh Produce $\rightarrow$ Dairy $\rightarrow$ Milk*. They scroll rapidly past the hero banner carousel, pause for 1.8 seconds over a seasonal promotion for hot pot broth, flick downward toward imported meats, and hesitate. The **Quick Commerce (Q-Commerce)** race to deliver groceries and household essentials within 15 to 30 minutes has encountered an insurmountable physical barrier. As growth expert Lê Thanh Hải (Henry) observed in his industry analysis on the post-15-minute delivery war, logistics optimization has entered an era of rapidly diminishing marginal returns. Dark stores cannot be compressed beyond 200-meter radius perimeters without multiplying real estate overhead exponentially, nor can delivery couriers run red lights without catastrophic safety liabilities and unit economic collapse.
 
 The primary competitive moat has migrated from the **Physical Logistics Layer** to the **Digital Reflex Layer**: **How does your platform decode, categorize, and act upon a customer's latent commercial intent within the first 15 seconds of opening the application?**
 
@@ -611,3 +611,23 @@ The next era of e-commerce dominance will not be won by shaving thirty seconds o
 
 By converging **Go 1.24 lock-free event streaming, Redis HNSW hyperlocal vector retrieval, self-hosted quantized SLMs, and Model Context Protocol dynamic interfaces**, engineering teams can transition their platforms from passive digital catalogs into living, real-time commercial intelligence engines.
 
+---
+
+## FAQ: Enterprise Engineering Decisions
+
+### How does the sub-500ms Quick Commerce latency budget break down across layers?
+
+The budget allocates: <=15ms for WebSocket edge ingestion, <=20ms for Go lock-free ring buffer queuing, <=45ms for Redis HNSW vector retrieval with store stock filters, <=120ms for quantized SLM intent classification, and <=40ms for Generative UI JSON patch streaming.
+
+### Why use quantized SLMs instead of larger frontier models like GPT-4o?
+
+Local 4-bit quantized SLMs (such as Qwen 2.5 3B on vLLM) execute in sub-120ms without unpredictable public internet WAN transit, eliminating third-party API rate limits and reducing inference cost by over 95%.
+
+### How is out-of-stock overselling prevented during real-time UI mutations?
+
+Redis HNSW candidate retrieval applies pre-filtered bitmap masks tied to real-time inventory counts. Final item clicks execute atomic Redis Lua CAS scripts to lock stock before rendering.
+
+
+---
+
+> 🔬 **Full 100-Round Research Dossier:** Complete empirical specifications, benchmark tables, and mathematical formulas are archived in [`reports/research-beyond-quick-commerce-15-second-customer-intelligence-architecture-100-rounds.md`](https://github.com/vesviet/vesviet/tree/main/reports/research-beyond-quick-commerce-15-second-customer-intelligence-architecture-100-rounds.md).

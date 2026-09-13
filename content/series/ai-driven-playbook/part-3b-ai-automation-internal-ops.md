@@ -18,6 +18,7 @@ cover:
   alt: "Part 3B: AI Automation for Internal Operations & Proving ROI"
   relative: false
 keywords: ["ai automation internal operations", "ai engineering roi", "autonomous incident triage", "automated dependency migration", "finops ai token tracking", "dora metrics ai"]
+mermaid: true
 ---
 
 > **Answer-first:** While measuring developer coding speed often triggers subjective debates, applying AI agents to **Internal Operations Automation**—such as automated incident log triage, dependency version upgrades, and migration script generation—yields verifiable, audited financial ROI. By cutting Mean Time to Recovery (MTTR) by 78% and automating 65% of repetitive maintenance tickets, organizations prove a 3x–5x financial return on their AI investments within 90 days.

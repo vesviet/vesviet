@@ -111,7 +111,7 @@ graph LR
 4. **[Why Migrate Magento to Microservices: Zero-Downtime Guide](/series/magento-migration-vietnam/moving-from-magento-to-microservices/)** — 3-phase Strangler Fig, Envoy shadow traffic, and hot standby cutover.
 5. **[Exporting Magento 2 Data: Flatten EAV with SQL & Node.js](/series/magento-migration-vietnam/exporting-magento-2-data-flat-sql-nodejs/)** — Unpivoting EAV attributes, streaming ETL, and UUID re-keying.
 6. **[Magento Migration: Shared DB, CDC, or Event Bus?](/series/magento-migration-vietnam/strangler-fig-shared-database-quick-win/)** — Anti-corruption layers, Debezium CDC, and outbox patterns.
-7. **[Laravel vs Golang: When to Add Features in Each?](/series/magento-migration-vietnam/laravel-vs-golang-when-to-add-features.md)** — Decision matrices, gRPC hybrid gateways, and developer velocity.
+7. **[Laravel vs Golang: When to Add Features in Each?](/series/magento-migration-vietnam/laravel-vs-golang-when-to-add-features/)** — Decision matrices, gRPC hybrid gateways, and developer velocity.
 8. **[Magento AI Integration: Modernize Without Rebuilding](/series/magento-migration-vietnam/magento-ai-integration-strategy-architecture/)** — Vector search, LanceDB hybrid retrieval, and AI shopping assistants.
 
 ### Module 3: Team Building, Cost Models & Day-2 Operations

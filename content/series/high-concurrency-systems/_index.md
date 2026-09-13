@@ -17,9 +17,10 @@ canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/"
 ShowToc: true
 TocOpen: true
 image: "/images/posts/high-concurrency-systems.jpg"
+mermaid: true
 ---
 
-> **Multi-Language Edition:** This Masterclass is also published in Vietnamese at [Học Viện Kỹ Thuật High-Concurrency (learn.tanhdev.com)](https://learn.tanhdev.com/series/high-concurrency-systems/).
+> **Multi-Language Edition:** This Masterclass is also published in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/high-concurrency-systems/).
 
 ## Masterclass: High Concurrency Systems & B2B Commerce
 

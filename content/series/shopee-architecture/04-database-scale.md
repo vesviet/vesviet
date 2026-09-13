@@ -22,7 +22,7 @@ canonicalURL: "https://tanhdev.com/series/shopee-architecture/04-database-scale/
 image: "/images/posts/shopee-flash-sale-cover.jpg"
 ---
 
-> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Bài 4: Mở Rộng Cơ Sở Dữ Liệu — Từ Phân Mảnh MySQL Đến Phân Tán TiDB Multi-Raft (learn.tanhdev.com)](https://learn.tanhdev.com/series/shopee-architecture/04-database-scale/).
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/shopee-architecture/04-database-scale/).
 
 [Previous Chapter: Chapter 3 — Traffic Shield & Peak Shaving](/series/shopee-architecture/03-traffic-shield/) | [Series Hub](/series/shopee-architecture/) | [Next Chapter: Chapter 5 — Full-Stack Observability](/series/shopee-architecture/05-observability/)
 

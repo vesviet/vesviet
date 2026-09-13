@@ -29,7 +29,7 @@ keywords: ["sft data curation", "neftune embedding noise", "semdedup deduplicati
 
 > **Answer-first:** Supervised Fine-Tuning data engineering dictates 90% of SLM performance. Following the LIMA paradigm, 3,500 curated instruction samples outperform 100,000 noisy scraped records. Injecting uniform embedding noise via NEFTune provides an 18.4% AlpacaEval gain against rote memorization, while SemDeDup clustering eliminates 45% semantic redundancy without accuracy loss, cutting GPU training hours by 50%.
 
-> 🇻🇳 **Read the Vietnamese version of this article on [learn.tanhdev.com](https://learn.tanhdev.com/series/slm-playbook/part-2-sft-data-engineering/)**
+> 🇻🇳 **Read the Vietnamese version of this article on [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/slm-playbook/part-2-sft-data-engineering/)**
 
 ---
 

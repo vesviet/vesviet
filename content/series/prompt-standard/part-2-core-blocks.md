@@ -329,8 +329,8 @@ Prefilled assistant messages return a 400 error on Claude 4.6 and later — the 
 - [Engineering Reading Map & System Design Guides](/reading-map/)
 
 - [Executive Summary: The 2026–2027 Engineering Case](/series/prompt-standard/executive-summary/)
-- [Part 7 — What Is a Prompt Standard](/series/prompt-standard/part-7-what-is-prompt-standard/)
-- [Part 3 — Layered Prompt Architecture](/series/prompt-standard/part-3-layered-prompt-architecture/)
+- [Part 1 — What Is a Prompt Standard](/series/prompt-standard/part-1-what-is-prompt-standard/)
+- [Part 3 — Layered Prompt Architecture](/series/prompt-standard/part-3-layered-prompt-design/)
 - [MCP Engineering In Production](/series/mcp-engineering-in-production/) — where Tool Policy meets real MCP infrastructure
 
-🔗 **Next Step:** Continue to [Part 3 — Layered Prompt Architecture](/series/prompt-standard/part-3-layered-prompt-architecture/) for the following module in the series.
+🔗 **Next Step:** Continue to [Part 3 — Layered Prompt Architecture](/series/prompt-standard/part-3-layered-prompt-design/) for the following module in the series.

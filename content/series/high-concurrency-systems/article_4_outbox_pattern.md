@@ -24,7 +24,7 @@ canonicalURL: "https://tanhdev.com/series/high-concurrency-systems/transactional
 image: "/images/posts/transactional-outbox-pattern-dual-write.jpg"
 ---
 
-> **Multi-Language Edition:** This chapter is also available in Vietnamese at [Chương 4: Gỡ Rối Bài Toán Dual-Write Với Transactional Outbox Pattern (learn.tanhdev.com)](https://learn.tanhdev.com/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/).
+> **Multi-Language Edition:** This chapter is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/).
 
 [Previous: Chapter 3 — Distributed Rate Limiting with Redis & GCRA](/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/) | [Series Hub](/series/high-concurrency-systems/) | [Next: Chapter 5 — Optimizing Golang Database Connection Pools](/series/high-concurrency-systems/golang-database-connection-pool-optimization/)
 
