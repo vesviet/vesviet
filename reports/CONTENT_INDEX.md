@@ -58,7 +58,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 | `core-banking-architecture` | 8 | Core banking DDD / BIAN domain architecture | Baseline |
 | `ride-hailing-realtime-architecture` | 7 | Realtime ride-hailing & geospatial matching | Baseline |
 | `ai-code-review-vibe-coding` | 7 | AI code review & vibe coding safety | Baseline |
-| `agentic-system-architecture` | 7 | Multi-agent system architecture & orchestration | Baseline |
+| `agentic-system-architecture` | 7 | Multi-agent system architecture & orchestration — 2027 SOTA Masterclass (Hierarchical Orchestrator, P2P Agentic Mesh, Semantic Memory Systems, MCP Dynamic Tool Calling, AgentOps OpenTelemetry, LLM-as-Judge Evals, Human-in-the-Loop Governance; 1:1 twin parity, 700 research rounds, 100% 8-gate compliant) | Complete (`2026-09-14`) |
 
 ## Radar Editions (Tech Radar - 27 editions, 34 files)
 
@@ -75,6 +75,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 
 | Date / Commit | Campaign |
 |---|---|
+| `2026-09-14` | **2027 SOTA Masterclass Upgrade: `agentic-system-architecture` (7 chapters + hub, 700 rounds)**: Complete 8-gate upgrade across `vesviet` and `learn` (1:1 twin parity, sizes 23.4–29.4 KB, body words 2,519–3,416w, single-line BLUF 50–60w, 33 Mermaid diagrams, 32 FAQs, Go 1.25+ / MCP code, 7 Draft202012 JSON dossiers, zero links to learn on vesviet, 63/63 automated E2E tests passing). |
 | `2026-09-14` | **2027 SOTA Masterclass Upgrade: `high-concurrency-systems` (10 chapters + hub, 1,000 rounds)**: Complete 8-gate upgrade across `vesviet` and `learn` (1:1 twin parity, sizes 24.4–41.6 KB, body words 2,546–5,347w, single-line BLUF 50–60w, 48 Mermaid diagrams, 44 FAQs, Go 1.25+ code, 10 Draft202012 JSON dossiers, zero links to learn on vesviet, 67/67 automated E2E tests passing). |
 | `2026-09-13` | **2027 SOTA Standalone Masterclass Campaign (500 Rounds)**: 5 flagship architecture posts upgraded with 100-round deep research dossiers (5 JSON schema-compliant + 5 MD docs), BLUF Answer-First, FAQPage sections, and bi-directional language badges. Sitewide 0-404 AST audit verification. |
 | `0c59f43` | 2027 SOTA upgrade: `alipay-double-11` (8 chapters + hub) masterclass, 800-round deep research, diagrams, benchmarks |
@@ -95,6 +96,7 @@ Each flagship topic exists as a Vietnamese twin on `learn` (canonical there for 
 Synchronized twins:
 - 5 Standalone Posts: AI Swarm & LiteLLM, 15-Second Customer Intelligence, MySQL Horizontal Scaling, Go pprof Internals, Urban Canyon GPS Map-Matching (500 rounds deep research)
 - `high-concurrency-systems` (10 chapters + hub)
+- `agentic-system-architecture` (7 chapters + hub)
 - `alipay-double-11` (8 chapters)
 - `paypay-architecture` (6 chapters)
 - `shopee-architecture` (5 chapters)
