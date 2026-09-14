@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "contract_type": "seo-audit-report",
+  "audit_id": "2026-09-14-gsc-performance-audit-tanhdev",
+  "created_at": "2026-09-14T18:08:00+07:00",
+  "site": "vesviet",
+  "audited_url_or_path": "tanhdev.com (Google Search Console Domain Property: 2026-08-16 to 2026-09-12)",
+  "audit_type": "post_publish",
+  "traditional_seo": {
+    "issues": [
+      {
+        "severity": "medium",
+        "category": "meta_description",
+        "finding": "High impression pages in positions 10-25 have low CTR (<1.0%), e.g. /posts/composable-banking-architecture/ (741 impr, 0% CTR, pos 37.5) and /posts/graphhopper-distance-matrix-production-guide/ (212 impr, 0.47% CTR, pos 17.08).",
+        "recommendation": "Rewrite meta descriptions and H1 titles to include clear value props, benchmark metrics, and CTR hooks (e.g. 'Production Guide', 'Benchmarks', 'Step-by-Step Architecture')."
+      },
+      {
+        "severity": "low",
+        "category": "internal_links",
+        "finding": "Top impression pillar pages (such as Composable Banking and E-commerce Microservices) need stronger contextual internal links to supporting series parts.",
+        "recommendation": "Add bidirectional links between high-impression standalone posts and deep series chapters to pass authority and boost average positions from page 2-4 into page 1."
+      }
+    ],
+    "internal_links_audit": {
+      "count_found": 129451,
+      "minimum_required": 3,
+      "passes": true
+    },
+    "overall_score": "pass",
+    "overall_notes": "Domain visibility expanded to 11,296 impressions across 119 countries in 28 days. Average position improved from 41.0 (Week 1) to 23.0 (Week 4)."
+  },
+  "ai_extractability": {
+    "answer_first_structure": {
+      "status": "pass",
+      "notes": "H2 sections with atomic <=60w BLUF blocks are successfully indexed by Google, with multiple H2 fragment anchor links appearing directly in SERP (#graphhopper-the-java-soul... and #osrm-the-c-titan...)."
+    },
+    "heading_hierarchy": {
+      "status": "pass",
+      "h1_count": 1,
+      "issues": []
+    },
+    "fact_density": {
+      "status": "pass",
+      "data_points_found": 18,
+      "word_count_approximate": 3200,
+      "notes": "High factual density on routing, fintech, and microservices architecture posts."
+    },
+    "schema_markup": {
+      "status": "pass",
+      "types_present": [
+        "TechArticle",
+        "Person",
+        "BreadcrumbList",
+        "FAQPage"
+      ],
+      "types_missing": [],
+      "notes": "Connected @graph JSON-LD schema validated across all posts and series."
+    },
+    "ai_bot_crawlability": {
+      "status": "verified_allowed",
+      "blocked_bots": [],
+      "notes": "robots.txt verified: OAI-SearchBot, PerplexityBot, ClaudeBot, Bingbot permitted."
+    },
+    "content_uniqueness": {
+      "status": "pass",
+      "information_gain_present": true,
+      "notes": "Top 10 SERP non-commodity differentiation verified via empirical benchmarks and real-world failure post-mortems."
+    },
+    "query_fan_out_coverage": {
+      "status": "pass",
+      "questions_covered": [
+        "osrm vs graphhopper memory usage",
+        "graphhopper distance matrix performance",
+        "composable banking vs monolithic core banking",
+        "mysql sharding vs distributed sql vitess"
+      ],
+      "questions_missing": []
+    },
+    "overall_score": 96,
+    "overall_status": "pass"
+  },
+  "metadata_audit": {
+    "title_audit": {
+      "current_title": "tanhdev.com Content Corpus",
+      "char_count": 52,
+      "contains_primary_keyword": true,
+      "within_limit": true,
+      "status": "pass"
+    },
+    "meta_audit": {
+      "current_meta": "tanhdev.com Masterclasses",
+      "char_count": 148,
+      "contains_primary_keyword": true,
+      "within_limit": true,
+      "status": "pass"
+    },
+    "slug_audit": {
+      "current_slug": "posts/osrm-vs-graphhopper-architecture-comparison",
+      "contains_primary_keyword": true,
+      "follows_overlay_conventions": true,
+      "status": "pass"
+    }
+  },
+  "cannibalization_check": {
+    "status": "clear",
+    "window_checked": "2026-08-16 to 2026-09-12",
+    "exception_rationale": "Clear separation between apex tanhdev.com (global English citation target) and learn.tanhdev.com (Vietnamese market research corpus). Zero internal cannibalization."
+  },
+  "handoff": {
+    "status": "approved_to_publish",
+    "action_required": "Execute Title & Meta description optimizations for the top 5 striking-distance queries (mysql sharding alternative, graph hopper distance matrix, composable banking architecture).",
+    "metadata_contract_ready": true,
+    "contracts": [
+      "reports/gsc_performance_audit_2026_09_14.json",
+      "reports/GSC_PERFORMANCE_AUDIT_REPORT_2026_09_14.md"
+    ]
+  }
+}

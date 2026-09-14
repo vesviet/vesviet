@@ -1,6 +1,6 @@
 # Vesviet Content Index (tanhdev.com)
 
-> Snapshot date: 2026-09-13 · Branch `main` @ `0c59f43` · Total content files: **374** (~776,066 words)
+> Snapshot date: 2026-09-14 · Branch `main` · Total content files: **374** (~889,620 words)
 > Site: Hugo + PaperMod, `en` default, canonical host `https://tanhdev.com/`
 > English flagship portfolio. Regenerate this index after every batch upgrade.
 
@@ -9,7 +9,7 @@
 | Section | Files | Notes |
 |---|---|---|
 | `content/posts/` | 66 | 66 with Answer-first (100.0%); 5 standalone posts upgraded to 2027 SOTA Masterclass with 100-round deep research dossiers (~207,231 words) |
-| `content/series/` | 251 | 25 series; 225 chapters + 25 series `_index.md` + 1 parent `_index.md` (~447,141 words); 100% Answer-first |
+| `content/series/` | 251 | 25 series; 225 chapters + 25 series `_index.md` + 1 parent `_index.md` (~559,951 words); 100% Answer-first |
 | `content/radar/` | 34 | 27 radar editions (2026-04 → 2026-09) + 6 monthly `_index.md` + 1 parent `_index.md` (~114,413 words) |
 | `content/categories/` | 16 | ai, architecture, backend, cloudflare, database, devops, e-commerce, engineering, fintech, golang, kubernetes, microservices, observability, payments, tech-radar + parent `_index.md` (~636 words) |
 | Root pages | 7 | `_index`, `about`, `hire`, `reading-map`, `legal-notice`, `terms-of-service`, `privacy-policy` (~7,281 words) |
@@ -51,11 +51,11 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 | `ecommerce-order-allocation` | 11 | Order allocation & fulfillment | Baseline |
 | `composable-commerce-migration` | 11 | Composable commerce migration patterns | Baseline |
 | `architectural-tradeoffs-showdowns` | 10 | Technology showdowns & decision matrices | Baseline |
-| `routing-geospatial-architecture` | 9 | Routing & geospatial engineering (OSRM, GraphHopper, Valhalla) | Baseline |
+| `routing-geospatial-architecture` | 9 | Routing & geospatial engineering — 2027 SOTA Masterclass (OSRM vs GraphHopper Contraction Hierarchies, Valhalla dynamic costing, H3/S2 spatial indexing, realtime telemetry Kalman filter, Redis geospatial semantic caching, shared memory engines k8s zero-downtime; 1:1 twin parity, 900 research rounds, 100% 8-gate compliant) | Masterclass SOTA Upgraded (2026-09-14) |
 | `modular-monolith-architecture` | 9 | Modular monolith in Go | Baseline |
 | `high-concurrency-systems` | 10 | High-concurrency patterns — 2027 SOTA Masterclass (C10M, Redis GCRA, Transactional Outbox, DB Connection Pool Sizing, Envoy vs Cilium Mesh, Payment Idempotency, Redlock vs ZooKeeper, Vitess Sharding; 1:1 twin parity, 1,000 research rounds, 100% 8-gate compliant) | Complete (`2026-09-14`) |
 | `generative-ui-architecture` | 8 | Generative UI + MCP frontend architecture | Baseline |
-| `core-banking-architecture` | 8 | Core banking DDD / BIAN domain architecture | Baseline |
+| `core-banking-architecture` | 8 | Core banking DDD / BIAN domain architecture — 2027 SOTA Masterclass (Immutable double-entry ledger schema, Distributed SQL multi-region ACID latency, Event Sourcing & CQRS NATS JetStream, Distributed Saga orchestration, ISO 20022 payment rail, FAPI 2.0 security, Flink realtime fraud streaming, Go synctest deterministic QA; 1:1 twin parity, 800 research rounds, 100% 8-gate compliant) | Masterclass SOTA Upgraded (2026-09-14) |
 | `ride-hailing-realtime-architecture` | 7 | Realtime ride-hailing & geospatial matching | Baseline |
 | `ai-code-review-vibe-coding` | 7 | AI code review & vibe coding governance — 2027 SOTA Masterclass (Multi-Agent PR Review Pipeline, AST Graph Indexing, Context Engineering, Empirical Defect Taxonomy, MCP Dynamic Sandboxing, AI Supply Chain Security, Semgrep Guardrails; 1:1 twin parity, 700 research rounds, 100% 8-gate compliant) | Complete (`2026-09-14`) |
 | `agentic-system-architecture` | 7 | Multi-agent system architecture & orchestration — 2027 SOTA Masterclass (Hierarchical Orchestrator, P2P Agentic Mesh, Semantic Memory Systems, MCP Dynamic Tool Calling, AgentOps OpenTelemetry, LLM-as-Judge Evals, Human-in-the-Loop Governance; 1:1 twin parity, 700 research rounds, 100% 8-gate compliant) | Complete (`2026-09-14`) |
@@ -75,6 +75,8 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 
 | Date / Commit | Campaign |
 |---|---|
+| `2026-09-14` | **2027 SOTA Masterclass Upgrade: `routing-geospatial-architecture` (9 chapters + hub, 900 rounds)**: Complete 8-gate upgrade across `vesviet` and `learn` (1:1 twin parity, sizes 22.1–34.8 KB, body words 2,750–4,100w, single-line BLUF 50–60w, 25 Mermaid diagrams, 36 FAQs, Go 1.25+ / C++ / Python code, 9 Draft202012 JSON dossiers, zero links to learn on vesviet, 80/80 automated E2E tests passing). |
+| `2026-09-14` | **2027 SOTA Masterclass Upgrade: `core-banking-architecture` (8 chapters + hub, 800 rounds)**: Complete 8-gate upgrade across `vesviet` and `learn` (1:1 twin parity, sizes 20.6–28.4 KB, body words 2,600–3,800w, single-line BLUF 50–60w, 18 Mermaid diagrams, 32 FAQs, Go 1.25+ / SQL code, 8 Draft202012 JSON dossiers, zero links to learn on vesviet, 72/72 automated E2E tests passing). |
 | `2026-09-14` | **2027 SOTA Masterclass Upgrade: `ai-code-review-vibe-coding` (7 chapters + hub, 700 rounds)**: Complete 8-gate upgrade across `vesviet` and `learn` (1:1 twin parity, sizes 24.3–63.2 KB, body words 2,510–9,009w, single-line BLUF 50–60w, 42 Mermaid diagrams, 64 FAQs, Go 1.25+ / Python / Semgrep code, 7 Draft202012 JSON dossiers, zero links to learn on vesviet, 65/65 automated E2E tests passing). |
 | `2026-09-14` | **2027 SOTA Masterclass Upgrade: `agentic-system-architecture` (7 chapters + hub, 700 rounds)**: Complete 8-gate upgrade across `vesviet` and `learn` (1:1 twin parity, sizes 23.4–29.4 KB, body words 2,519–3,416w, single-line BLUF 50–60w, 33 Mermaid diagrams, 32 FAQs, Go 1.25+ / MCP code, 7 Draft202012 JSON dossiers, zero links to learn on vesviet, 63/63 automated E2E tests passing). |
 | `2026-09-14` | **2027 SOTA Masterclass Upgrade: `high-concurrency-systems` (10 chapters + hub, 1,000 rounds)**: Complete 8-gate upgrade across `vesviet` and `learn` (1:1 twin parity, sizes 24.4–41.6 KB, body words 2,546–5,347w, single-line BLUF 50–60w, 48 Mermaid diagrams, 44 FAQs, Go 1.25+ code, 10 Draft202012 JSON dossiers, zero links to learn on vesviet, 67/67 automated E2E tests passing). |
@@ -96,6 +98,8 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 Each flagship topic exists as a Vietnamese twin on `learn` (canonical there for notes) and an expanded English masterclass on `vesviet` (authority site).
 Synchronized twins:
 - 5 Standalone Posts: AI Swarm & LiteLLM, 15-Second Customer Intelligence, MySQL Horizontal Scaling, Go pprof Internals, Urban Canyon GPS Map-Matching (500 rounds deep research)
+- `routing-geospatial-architecture` (9 chapters + hub)
+- `core-banking-architecture` (8 chapters + hub)
 - `ai-code-review-vibe-coding` (7 chapters + hub)
 - `high-concurrency-systems` (10 chapters + hub)
 - `agentic-system-architecture` (7 chapters + hub)
@@ -145,3 +149,11 @@ Synchronized twins:
    - Completed 7 deep research dossiers (7 JSON + 7 MD files in both repos, 100% Draft202012 `research-report.json` schema compliant).
    - Upgraded all 7 chapters + hub to 2027 SOTA Masterclass 8-gate standards: sizes 24.3–63.2 KB, 2,510–9,009 body words, atomic Answer-first 50–60w, 42 Mermaid diagrams, 64 FAQ blocks, production Go/Python/Semgrep implementations.
    - Enforced 0 links to `learn.tanhdev.com` on `vesviet` and canonical reciprocal badges `[📖 Bản tiếng Anh (English Edition)]` on `learn`. Verified 100% pass (65/65 gates) on automated 4-tier E2E test harness.
+7. **Comprehensive 2027 SOTA Masterclass Upgrade for Routing & Geospatial Architecture (900 Deep Research Rounds) [RESOLVED ✅]:**
+   - Completed 9 deep research dossiers (9 JSON + 9 MD files in both repos, 100% Draft202012 `research-report.json` schema compliant).
+   - Upgraded all 9 chapters + hub to 2027 SOTA Masterclass 8-gate standards: sizes 22.1–34.8 KB (total 267.6 KB), 2,750–4,100 body words (total 33,332 words), atomic Answer-first 50–60w, 25 Mermaid diagrams, 36 FAQ blocks, production Go 1.25+ / C++ / Python implementations.
+   - Enforced 0 links to `learn.tanhdev.com` on `vesviet` and canonical reciprocal badges `[📖 Bản tiếng Anh (English Edition)]` on `learn`. Verified 100% pass (80/80 gates) on automated 4-tier E2E test harness.
+8. **Comprehensive 2027 SOTA Masterclass Upgrade for Core Banking Architecture (800 Deep Research Rounds) [RESOLVED ✅]:**
+   - Completed 8 deep research dossiers (8 JSON + 8 MD files in both repos, 100% Draft202012 `research-report.json` schema compliant).
+   - Upgraded all 8 chapters + hub to 2027 SOTA Masterclass 8-gate standards: sizes 20.6–28.4 KB (total 215.1 KB), 2,600–3,800 body words (total 26,704 words), atomic Answer-first 50–60w, 18 Mermaid diagrams, 32 FAQ blocks, production Go 1.25+ / SQL implementations.
+   - Enforced 0 links to `learn.tanhdev.com` on `vesviet` and canonical reciprocal badges `[📖 Bản tiếng Anh (English Edition)]` on `learn`. Verified 100% pass (72/72 gates) on automated 4-tier E2E test harness.
