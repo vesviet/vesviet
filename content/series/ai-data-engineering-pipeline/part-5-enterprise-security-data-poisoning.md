@@ -20,7 +20,6 @@ series: ["ai-data-engineering-pipeline"]
 weight: 6
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-data-engineering-pipeline/part-5-enterprise-security-data-poisoning/)
 
 ---
 

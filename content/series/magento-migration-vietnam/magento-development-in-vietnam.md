@@ -22,7 +22,6 @@ aliases:
 mermaid: true
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/magento-migration-vietnam/magento-development-in-vietnam/)
 
 ---
 

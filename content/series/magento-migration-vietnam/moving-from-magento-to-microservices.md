@@ -20,7 +20,6 @@ weight: 4
 mermaid: true
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/magento-migration-vietnam/moving-from-magento-to-microservices/)
 
 ---
 

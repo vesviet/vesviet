@@ -22,7 +22,6 @@ canonicalURL: "https://tanhdev.com/series/shopee-architecture/02-flash-sale-engi
 image: "/images/posts/shopee-flash-sale-cover.jpg"
 ---
 
-> **Multi-Language Edition:** This chapter is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/shopee-architecture/02-flash-sale-engine/).
 
 [Previous Chapter: Chapter 1 — Microservices Foundation](/series/shopee-architecture/01-microservices-foundation/) | [Series Hub](/series/shopee-architecture/) | [Next Chapter: Chapter 3 — Traffic Shield: Kafka Peak Shaving](/series/shopee-architecture/03-traffic-shield/)
 

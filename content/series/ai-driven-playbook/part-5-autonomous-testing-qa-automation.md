@@ -25,7 +25,6 @@ mermaid: true
 
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-playbook/part-5-autonomous-testing-qa-automation/) | [← Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 5: Engineering Operating Models & Team Topologies →](/series/ai-driven-playbook/part-5-operating-model/)
 
 ---
 

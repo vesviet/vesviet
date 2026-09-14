@@ -25,7 +25,6 @@ mermaid: true
 
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-playbook/part-5-operating-model/) | [← Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 6: AI Observability & Governance →](/series/ai-driven-playbook/part-6-ai-observability-governance/)
 
 ---
 

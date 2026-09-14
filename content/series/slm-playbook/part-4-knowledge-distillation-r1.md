@@ -29,7 +29,6 @@ keywords: ["deepseek r1 knowledge distillation", "cot distillation think tags", 
 
 > **Answer-first:** Distilling long Chain-of-Thought (CoT) reasoning traces from DeepSeek-R1 (671B MoE) into compact 1.5B–8B student models transfers complex deductive capability without hosting frontier hardware. Combining forward-backward token KL divergence with rejection sampling on verifiable tasks enables a 7B student model to recover 88% of teacher mathematical reasoning performance at 1/50th the operational cost.
 
-> 🇻🇳 **Read the Vietnamese version of this article on [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/slm-playbook/part-4-knowledge-distillation-r1/)**
 
 ---
 

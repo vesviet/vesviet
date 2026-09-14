@@ -25,7 +25,6 @@ mermaid: true
 
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-playbook/part-3b-ai-automation-internal-ops/) | [← Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 3B: AI Code Review & Automated Quality Gates →](/series/ai-driven-playbook/part-3b-ai-code-review-quality-gates/)
 
 ---
 
@@ -143,7 +142,8 @@ To defend generative AI budgets before the Chief Financial Officer (CFO), engine
 
 ### The 90-Day Engineering ROI Equation:
 
-$$	ext{Net ROI (%)} = rac{	ext{Direct Operational Savings} - 	ext{Total AI Infrastructure Cost}}{	ext{Total AI Infrastructure Cost}} 	imes 100$$
+$$	ext{Net ROI (%)} = 
+rac{	ext{Direct Operational Savings} - 	ext{Total AI Infrastructure Cost}}{	ext{Total AI Infrastructure Cost}} 	imes 100$$
 
 | Category / Cost Vector | Traditional Spend (Quarterly) | AI-Automated Spend (Quarterly) | Net Quarterly Savings |
 | :--- | :---: | :---: | :---: |

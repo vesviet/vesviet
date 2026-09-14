@@ -25,7 +25,6 @@ mermaid: true
 
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-playbook/part-6-ai-observability-governance/) | [← Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 7: AI Security Engineering & DevSecOps →](/series/ai-driven-playbook/part-7-ai-security-engineering/)
 
 ---
 

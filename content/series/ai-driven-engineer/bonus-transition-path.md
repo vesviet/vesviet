@@ -20,7 +20,6 @@ series: ["ai-driven-engineer"]
 weight: 11
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/bonus-transition-path/)
 
 ---
 

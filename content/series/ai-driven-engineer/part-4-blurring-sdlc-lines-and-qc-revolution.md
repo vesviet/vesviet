@@ -20,7 +20,6 @@ series: ["ai-driven-engineer"]
 weight: 5
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/part-4-blurring-sdlc-lines-and-qc-revolution/)
 
 ---
 

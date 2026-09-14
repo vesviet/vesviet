@@ -23,7 +23,6 @@ canonicalURL: "https://tanhdev.com/series/paypay-architecture/"
 image: "/images/posts/paypay-scaling-cover.jpg"
 ---
 
-> **Multi-Language Edition:** This series is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/paypay-architecture/).
 
 ---
 

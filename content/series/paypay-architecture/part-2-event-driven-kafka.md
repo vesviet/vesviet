@@ -22,7 +22,6 @@ canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-2-event-drive
 image: "/images/posts/paypay-scaling-cover.jpg"
 ---
 
-> **Multi-Language Edition:** This chapter is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/paypay-architecture/part-2-event-driven-kafka/).
 
 [Previous Chapter: Part 1 — Microservices & GitOps Blueprint](/series/paypay-architecture/part-1-microservices-gitops/) | [Series Hub](/series/paypay-architecture/) | [Next Chapter: Part 3 — Data Infrastructure: From Aurora to TiDB](/series/paypay-architecture/part-3-data-layer-tidb/)
 

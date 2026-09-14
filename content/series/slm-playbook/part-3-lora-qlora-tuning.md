@@ -29,7 +29,6 @@ keywords: ["qlora fine tuning axolotl", "train slm 24gb gpu", "lora rank alpha t
 
 > **Answer-first:** QLoRA compresses base model weights into 4-bit NormalFloat (NF4) representations while computing gradients exclusively through 16-bit adapter matrices. Combining Double Quantization with CUDA Paged Optimizers enables fine-tuning 14B models on a single 24GB commodity GPU (RTX 4090 or L4) at $1.20/hour, preserving 99.3% full-precision benchmark performance while preventing out-of-memory crashes.
 
-> 🇻🇳 **Read the Vietnamese version of this article on [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/slm-playbook/part-3-lora-qlora-tuning/)**
 
 ---
 

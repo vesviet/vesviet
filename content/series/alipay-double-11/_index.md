@@ -21,7 +21,6 @@ canonicalURL: "https://tanhdev.com/series/alipay-double-11/"
 image: "/images/posts/alipay-double-11.jpg"
 ---
 
-> **Multi-Language Edition:** This series is also available in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/alipay-double-11/).
 
 ---
 

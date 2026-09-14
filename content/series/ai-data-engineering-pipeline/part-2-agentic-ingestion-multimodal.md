@@ -20,7 +20,6 @@ series: ["ai-data-engineering-pipeline"]
 weight: 3
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-data-engineering-pipeline/part-2-agentic-ingestion-multimodal/)
 
 ---
 

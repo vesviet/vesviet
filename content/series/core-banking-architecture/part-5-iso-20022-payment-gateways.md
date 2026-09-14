@@ -20,7 +20,6 @@ TocOpen: true
 mermaid: true
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/core-banking-architecture/part-5-iso-20022-payment-gateways/)
 
 ---
 

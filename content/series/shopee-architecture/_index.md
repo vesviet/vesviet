@@ -20,7 +20,6 @@ tags: ["Shopee", "Flash Sale", "High Concurrency", "Golang", "Redis", "TiDB", "K
 mermaid: true
 ---
 
-> **Multi-Language Edition:** This Masterclass is also published in Vietnamese at [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/shopee-architecture/).
 
 > **Answer-First:** The Shopee Architecture series details how Go microservices, Redis Lua inventory reservation, Apache Kafka peak shaving, TiDB distributed SQL, and OpenTelemetry/ClickHouse observability handle 10M+ QPS and millions of concurrent buyers during 11.11 flash sales without overselling or database connection starvation.
 

@@ -20,7 +20,6 @@ series: ["ai-driven-engineer"]
 weight: 8
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/part-7-system-design-survival/)
 
 ---
 

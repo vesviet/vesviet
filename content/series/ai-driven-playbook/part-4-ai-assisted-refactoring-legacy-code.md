@@ -25,7 +25,6 @@ mermaid: true
 
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-playbook/part-4-ai-assisted-refactoring-legacy-code/) | [← Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 5: Autonomous Testing & QA Automation →](/series/ai-driven-playbook/part-5-autonomous-testing-qa-automation/)
 
 ---
 

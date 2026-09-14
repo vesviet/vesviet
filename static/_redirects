@@ -115,14 +115,13 @@
 /series/ecommerce-order-allocation/part-2-inventory-realtime/ /posts/order-fulfillment-algorithm-warehouse-last-mile/ 301
 /series/ecommerce-order-allocation/part-3-allocation-algorithms/ /posts/order-fulfillment-algorithm-warehouse-last-mile/ 301
 /series/ecommerce-order-allocation/part-4-amazon-condor-anticipatory/ /posts/order-fulfillment-algorithm-warehouse-last-mile/ 301
-/series/high-concurrency-systems/api-gateway-vs-service-mesh/ /posts/shopee-flash-sale-architecture/ 301
-/series/high-concurrency-systems/article_1_system_design/ /posts/shopee-flash-sale-architecture/ 301
+/series/high-concurrency-systems/article_1_system_design/ /series/high-concurrency-systems/how-systems-handle-c10m/ 301
 /series/high-concurrency-systems/article_2_caching/ /series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/ 301
 /series/high-concurrency-systems/article_3_rate_limiting/ /series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/ 301
 /series/high-concurrency-systems/article_4_outbox_pattern/ /series/high-concurrency-systems/transactional-outbox-pattern-dual-write/ 301
 /series/high-concurrency-systems/article_5_db_connection/ /series/high-concurrency-systems/golang-database-connection-pool-optimization/ 301
-/series/high-concurrency-systems/article_6_api_gateway/ /posts/shopee-flash-sale-architecture/ 301
-/series/high-concurrency-systems/article_6_rate_limiting/ /posts/shopee-flash-sale-architecture/ 301
+/series/high-concurrency-systems/article_6_api_gateway/ /series/high-concurrency-systems/api-gateway-vs-service-mesh/ 301
+/series/high-concurrency-systems/article_6_rate_limiting/ /series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/ 301
 /series/high-concurrency-systems/article_7_idempotency/ /series/high-concurrency-systems/idempotency-api-design-payments/ 301
 /series/high-concurrency-systems/article_8_distributed_locking/ /series/high-concurrency-systems/distributed-locking-redlock-zookeeper/ 301
 /series/high-concurrency-systems/article_9_sharding/ /series/high-concurrency-systems/database-sharding-read-write-splitting/ 301

@@ -16,7 +16,6 @@ canonicalURL: "https://tanhdev.com/series/core-banking-developer/"
 mermaid: true
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/core-banking-developer/)
 
 ---
 

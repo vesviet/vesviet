@@ -20,7 +20,6 @@ series: ["ai-driven-engineer"]
 weight: 4
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/part-3-the-10x-productivity-reality/)
 
 ---
 

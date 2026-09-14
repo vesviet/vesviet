@@ -20,7 +20,6 @@ series: ["ai-driven-engineer"]
 weight: 6
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/part-5-the-bod-perspective-risk-and-privacy/)
 
 ---
 

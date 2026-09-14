@@ -20,7 +20,6 @@ canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/ecommerce-ar
 weight: 3
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/)
 
 ---
 

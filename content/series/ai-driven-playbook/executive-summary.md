@@ -25,7 +25,6 @@ mermaid: true
 
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-playbook/executive-summary/) | [← Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 1: Context Engineering & DDD →](/series/ai-driven-playbook/part-1-context-engineering-ddd/)
 
 ---
 

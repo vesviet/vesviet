@@ -20,7 +20,6 @@ series: ["ai-data-engineering-pipeline"]
 weight: 5
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-data-engineering-pipeline/part-4-streaming-cdc-federated-rag/)
 
 ---
 

@@ -20,7 +20,6 @@ canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/why-migrate-
 weight: 2
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/magento-migration-vietnam/why-migrate-magento-to-microservices/)
 
 ---
 

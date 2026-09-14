@@ -20,7 +20,6 @@ series: ["ai-driven-engineer"]
 weight: 1
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/executive-summary/)
 
 ---
 

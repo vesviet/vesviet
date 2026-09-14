@@ -20,7 +20,6 @@ series: ["ai-driven-engineer"]
 weight: 7
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/part-6-from-coder-to-orchestrator/)
 
 ---
 

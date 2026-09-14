@@ -20,7 +20,6 @@ weight: 11
 mermaid: true
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/magento-migration-vietnam/deconstructing-ecommerce-service-details-domain/)
 
 ---
 

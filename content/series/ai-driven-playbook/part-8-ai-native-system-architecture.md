@@ -25,7 +25,6 @@ mermaid: true
 
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-playbook/part-8-ai-native-system-architecture/) | [← Series Hub](/series/ai-driven-playbook/)
 
 ---
 

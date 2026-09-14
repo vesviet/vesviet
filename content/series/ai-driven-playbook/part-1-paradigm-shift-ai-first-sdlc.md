@@ -25,7 +25,6 @@ mermaid: true
 
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-playbook/part-1-paradigm-shift-ai-first-sdlc/) | [← Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 2: Modern AI Engineering Stack →](/series/ai-driven-playbook/part-2-modern-ai-engineering-stack/)
 
 ---
 

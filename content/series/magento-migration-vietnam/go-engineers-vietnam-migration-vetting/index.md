@@ -22,7 +22,6 @@ aliases:
   - /posts/magento-developers-in-vietnam-a-technical-hiring-and-vetting-guide/
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/magento-migration-vietnam/go-engineers-vietnam-migration-vetting/)
 
 ---
 

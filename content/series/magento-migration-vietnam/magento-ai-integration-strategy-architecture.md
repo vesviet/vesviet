@@ -20,7 +20,6 @@ mermaid: true
 weight: 8
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/magento-migration-vietnam/magento-ai-integration-strategy-architecture/)
 
 ---
 

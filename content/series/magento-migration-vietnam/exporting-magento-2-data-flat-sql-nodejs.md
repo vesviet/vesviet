@@ -20,7 +20,6 @@ weight: 5
 mermaid: true
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/magento-migration-vietnam/exporting-magento-2-data-flat-sql-nodejs/)
 
 ---
 

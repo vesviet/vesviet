@@ -20,7 +20,6 @@ series: ["ai-data-engineering-pipeline"]
 weight: 9
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/)
 
 ---
 

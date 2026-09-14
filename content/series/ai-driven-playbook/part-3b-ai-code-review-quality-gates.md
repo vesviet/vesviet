@@ -25,7 +25,6 @@ mermaid: true
 
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-playbook/part-3b-ai-code-review-quality-gates/) | [← Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 4: AI-Assisted Legacy Code Refactoring →](/series/ai-driven-playbook/part-4-ai-assisted-refactoring-legacy-code/)
 
 ---
 

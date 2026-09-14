@@ -53,7 +53,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 | `architectural-tradeoffs-showdowns` | 10 | Technology showdowns & decision matrices | Baseline |
 | `routing-geospatial-architecture` | 9 | Routing & geospatial engineering (OSRM, GraphHopper, Valhalla) | Baseline |
 | `modular-monolith-architecture` | 9 | Modular monolith in Go | Baseline |
-| `high-concurrency-systems` | 10 | High-concurrency patterns (C10M, Redis GCRA, Outbox, Redlock) | Normalized |
+| `high-concurrency-systems` | 10 | High-concurrency patterns — 2027 SOTA Masterclass (C10M, Redis GCRA, Transactional Outbox, DB Connection Pool Sizing, Envoy vs Cilium Mesh, Payment Idempotency, Redlock vs ZooKeeper, Vitess Sharding; 1:1 twin parity, 1,000 research rounds, 100% 8-gate compliant) | Complete (`2026-09-14`) |
 | `generative-ui-architecture` | 8 | Generative UI + MCP frontend architecture | Baseline |
 | `core-banking-architecture` | 8 | Core banking DDD / BIAN domain architecture | Baseline |
 | `ride-hailing-realtime-architecture` | 7 | Realtime ride-hailing & geospatial matching | Baseline |
@@ -75,6 +75,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 
 | Date / Commit | Campaign |
 |---|---|
+| `2026-09-14` | **2027 SOTA Masterclass Upgrade: `high-concurrency-systems` (10 chapters + hub, 1,000 rounds)**: Complete 8-gate upgrade across `vesviet` and `learn` (1:1 twin parity, sizes 24.4–41.6 KB, body words 2,546–5,347w, single-line BLUF 50–60w, 48 Mermaid diagrams, 44 FAQs, Go 1.25+ code, 10 Draft202012 JSON dossiers, zero links to learn on vesviet, 67/67 automated E2E tests passing). |
 | `2026-09-13` | **2027 SOTA Standalone Masterclass Campaign (500 Rounds)**: 5 flagship architecture posts upgraded with 100-round deep research dossiers (5 JSON schema-compliant + 5 MD docs), BLUF Answer-First, FAQPage sections, and bi-directional language badges. Sitewide 0-404 AST audit verification. |
 | `0c59f43` | 2027 SOTA upgrade: `alipay-double-11` (8 chapters + hub) masterclass, 800-round deep research, diagrams, benchmarks |
 | `a7363ff` | 2027 SOTA upgrade: `paypay-architecture` (6 chapters + hub) masterclass, 100-round deep research, diagrams, benchmarks |
@@ -93,6 +94,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 Each flagship topic exists as a Vietnamese twin on `learn` (canonical there for notes) and an expanded English masterclass on `vesviet` (authority site).
 Synchronized twins:
 - 5 Standalone Posts: AI Swarm & LiteLLM, 15-Second Customer Intelligence, MySQL Horizontal Scaling, Go pprof Internals, Urban Canyon GPS Map-Matching (500 rounds deep research)
+- `high-concurrency-systems` (10 chapters + hub)
 - `alipay-double-11` (8 chapters)
 - `paypay-architecture` (6 chapters)
 - `shopee-architecture` (5 chapters)

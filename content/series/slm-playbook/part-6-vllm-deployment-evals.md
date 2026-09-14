@@ -29,7 +29,6 @@ keywords: ["vllm production deployment", "pagedattention v2 memory management", 
 
 > **Answer-first:** High-throughput enterprise SLM serving overcomes the GPU Memory Wall via vLLM PagedAttention v2, Multi-Head Latent Attention KV cache compression, and AWQ 4-bit quantization. Coupled with dynamic Multi-LoRA serving via Punica CUDA kernels and automated CI/CD eval gates, a single 24GB commodity GPU sustains hundreds of concurrent streams at P99 latencies under 35ms.
 
-> 🇻🇳 **Read the Vietnamese version of this article on [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/slm-playbook/part-6-vllm-deployment-evals/)**
 
 ---
 

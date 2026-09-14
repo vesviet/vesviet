@@ -39,7 +39,6 @@ justification: "Ratified by Linux Foundation DAS-WG; eliminates sticky sessions,
 
 ---
 
-> 🇻🇳 Đọc bản tổng hợp tiếng Việt chuyên sâu trên [📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/radar/2026-09/mcp-20-agentic-mesh-distributed-systems/)
 
 ---
 

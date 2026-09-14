@@ -22,7 +22,6 @@ aliases:
   - /posts/laravel-vs-golang-when-to-add-features/
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/magento-migration-vietnam/laravel-vs-golang-when-to-add-features/)
 
 ---
 

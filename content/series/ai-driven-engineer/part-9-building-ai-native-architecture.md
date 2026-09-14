@@ -20,7 +20,6 @@ series: ["ai-driven-engineer"]
 weight: 10
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/part-9-building-ai-native-architecture/)
 
 ---
 

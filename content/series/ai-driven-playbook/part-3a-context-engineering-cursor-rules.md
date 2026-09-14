@@ -25,7 +25,6 @@ mermaid: true
 
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-playbook/part-3a-context-engineering-cursor-rules/) | [← Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 3A: Enterprise RAG Architecture →](/series/ai-driven-playbook/part-3a-enterprise-rag-architecture/)
 
 ---
 

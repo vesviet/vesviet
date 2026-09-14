@@ -20,7 +20,6 @@ mermaid: true
 series: ["core-banking-developer"]
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/core-banking-developer/part-3-database-transactions-acid/)
 
 ---
 

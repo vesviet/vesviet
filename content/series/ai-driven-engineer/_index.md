@@ -19,7 +19,6 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/ai-driven-engineer/"
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-engineer/)
 
 ---
 

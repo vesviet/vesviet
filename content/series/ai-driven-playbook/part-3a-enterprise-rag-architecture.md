@@ -25,7 +25,6 @@ mermaid: true
 
 ---
 
-[📖 Bản tiếng Việt (Vietnamese Edition)](https://learn.tanhdev.com/series/ai-driven-playbook/part-3a-enterprise-rag-architecture/) | [← Series Hub](/series/ai-driven-playbook/) | [Next Chapter: Part 3B: AI Automation for Internal Operations →](/series/ai-driven-playbook/part-3b-ai-automation-internal-ops/)
 
 ---
 
@@ -79,7 +78,8 @@ Dense vectors excel at conceptual queries (*"Where is the user password reset fl
 
 **Reciprocal Rank Fusion (RRF)** mathematically combines both ranked lists into a unified score without requiring complex cross-model calibration:
 
-$$RRF_Score(d in D) = sum_{m in M} rac{1}{k + r_m(d)}$$
+$$RRF_Score(d in D) = sum_{m in M} 
+rac{1}{k + r_m(d)}$$
 
 Where $k$ is a smoothing constant (typically $60$), and $r_m(d)$ represents the rank of document $d$ in retrieval modality $m$.
 
