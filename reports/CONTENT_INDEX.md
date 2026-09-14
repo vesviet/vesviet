@@ -57,7 +57,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 | `generative-ui-architecture` | 8 | Generative UI + MCP frontend architecture | Baseline |
 | `core-banking-architecture` | 8 | Core banking DDD / BIAN domain architecture | Baseline |
 | `ride-hailing-realtime-architecture` | 7 | Realtime ride-hailing & geospatial matching | Baseline |
-| `ai-code-review-vibe-coding` | 7 | AI code review & vibe coding safety | Baseline |
+| `ai-code-review-vibe-coding` | 7 | AI code review & vibe coding governance — 2027 SOTA Masterclass (Multi-Agent PR Review Pipeline, AST Graph Indexing, Context Engineering, Empirical Defect Taxonomy, MCP Dynamic Sandboxing, AI Supply Chain Security, Semgrep Guardrails; 1:1 twin parity, 700 research rounds, 100% 8-gate compliant) | Complete (`2026-09-14`) |
 | `agentic-system-architecture` | 7 | Multi-agent system architecture & orchestration — 2027 SOTA Masterclass (Hierarchical Orchestrator, P2P Agentic Mesh, Semantic Memory Systems, MCP Dynamic Tool Calling, AgentOps OpenTelemetry, LLM-as-Judge Evals, Human-in-the-Loop Governance; 1:1 twin parity, 700 research rounds, 100% 8-gate compliant) | Complete (`2026-09-14`) |
 
 ## Radar Editions (Tech Radar - 27 editions, 34 files)
@@ -75,6 +75,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 
 | Date / Commit | Campaign |
 |---|---|
+| `2026-09-14` | **2027 SOTA Masterclass Upgrade: `ai-code-review-vibe-coding` (7 chapters + hub, 700 rounds)**: Complete 8-gate upgrade across `vesviet` and `learn` (1:1 twin parity, sizes 24.3–63.2 KB, body words 2,510–9,009w, single-line BLUF 50–60w, 42 Mermaid diagrams, 64 FAQs, Go 1.25+ / Python / Semgrep code, 7 Draft202012 JSON dossiers, zero links to learn on vesviet, 65/65 automated E2E tests passing). |
 | `2026-09-14` | **2027 SOTA Masterclass Upgrade: `agentic-system-architecture` (7 chapters + hub, 700 rounds)**: Complete 8-gate upgrade across `vesviet` and `learn` (1:1 twin parity, sizes 23.4–29.4 KB, body words 2,519–3,416w, single-line BLUF 50–60w, 33 Mermaid diagrams, 32 FAQs, Go 1.25+ / MCP code, 7 Draft202012 JSON dossiers, zero links to learn on vesviet, 63/63 automated E2E tests passing). |
 | `2026-09-14` | **2027 SOTA Masterclass Upgrade: `high-concurrency-systems` (10 chapters + hub, 1,000 rounds)**: Complete 8-gate upgrade across `vesviet` and `learn` (1:1 twin parity, sizes 24.4–41.6 KB, body words 2,546–5,347w, single-line BLUF 50–60w, 48 Mermaid diagrams, 44 FAQs, Go 1.25+ code, 10 Draft202012 JSON dossiers, zero links to learn on vesviet, 67/67 automated E2E tests passing). |
 | `2026-09-13` | **2027 SOTA Standalone Masterclass Campaign (500 Rounds)**: 5 flagship architecture posts upgraded with 100-round deep research dossiers (5 JSON schema-compliant + 5 MD docs), BLUF Answer-First, FAQPage sections, and bi-directional language badges. Sitewide 0-404 AST audit verification. |
@@ -95,6 +96,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 Each flagship topic exists as a Vietnamese twin on `learn` (canonical there for notes) and an expanded English masterclass on `vesviet` (authority site).
 Synchronized twins:
 - 5 Standalone Posts: AI Swarm & LiteLLM, 15-Second Customer Intelligence, MySQL Horizontal Scaling, Go pprof Internals, Urban Canyon GPS Map-Matching (500 rounds deep research)
+- `ai-code-review-vibe-coding` (7 chapters + hub)
 - `high-concurrency-systems` (10 chapters + hub)
 - `agentic-system-architecture` (7 chapters + hub)
 - `alipay-double-11` (8 chapters)
@@ -139,3 +141,7 @@ Synchronized twins:
    - Added `mermaid: true` to frontmatter of all 20 files on `vesviet`.
 5. **Standardized Answer-First Blockquotes [RESOLVED ✅]:**
    - All posts and series chapters now feature canonical `> **Answer-first:**` blocks.
+6. **Comprehensive 2027 SOTA Masterclass Upgrade for AI Code Review & Vibe Coding (700 Deep Research Rounds) [RESOLVED ✅]:**
+   - Completed 7 deep research dossiers (7 JSON + 7 MD files in both repos, 100% Draft202012 `research-report.json` schema compliant).
+   - Upgraded all 7 chapters + hub to 2027 SOTA Masterclass 8-gate standards: sizes 24.3–63.2 KB, 2,510–9,009 body words, atomic Answer-first 50–60w, 42 Mermaid diagrams, 64 FAQ blocks, production Go/Python/Semgrep implementations.
+   - Enforced 0 links to `learn.tanhdev.com` on `vesviet` and canonical reciprocal badges `[📖 Bản tiếng Anh (English Edition)]` on `learn`. Verified 100% pass (65/65 gates) on automated 4-tier E2E test harness.
