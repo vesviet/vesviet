@@ -1,47 +1,101 @@
 <header class="header">
-    <nav class="nav">
-        <div class="logo">
-            {{- $label_text := (site.Params.label.text | default site.Title) }}
-            {{- if site.Title }}
-            <a href="{{ "" | absLangURL }}" accesskey="h" title="{{ $label_text }} (Alt + H)">
-                {{- if site.Params.label.icon }}
-                {{- $img := resources.Get site.Params.label.icon }}
-                {{- if $img }}
-                    {{- $processableFormats := (slice "jpg" "jpeg" "png" "tif" "bmp" "gif") -}}
-                    {{- if hugo.IsExtended -}}
-                        {{- $processableFormats = $processableFormats | append "webp" -}}
-                    {{- end -}}
-                    {{- $prod := (hugo.IsProduction | or (eq site.Params.env "production")) }}
-                    {{- if and (in $processableFormats $img.MediaType.SubType) (eq $prod true)}}
-                        {{- if site.Params.label.iconHeight }}
-                            {{- $img = $img.Resize (printf "x%d" site.Params.label.iconHeight) }}
-                        {{ else }}
-                            {{- $img = $img.Resize "x30" }}
-                        {{- end }}
-                    {{- end }}
-                    <img src="{{ $img.Permalink }}" alt="" aria-label="logo"
-                        height="{{- site.Params.label.iconHeight | default "30" -}}">
-                {{- else }}
-                <img src="{{- site.Params.label.icon | absURL -}}" alt="" aria-label="logo"
-                    height="{{- site.Params.label.iconHeight | default "30" -}}">
-                {{- end -}}
-                {{- else if hasPrefix site.Params.label.iconSVG "<svg" }}
-                    {{ site.Params.label.iconSVG | safeHTML }}
-                {{- end -}}
-                {{- $label_text -}}
+    <nav class="header-nav">
+        <!-- Brand Logo & Live Badge (Left) -->
+        <div class="header-brand">
+            <a href="{{ "" | absLangURL }}" accesskey="h" class="brand-logo" title="{{ site.Params.label.text | default site.Title }} (Alt + H)">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="brand-icon">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                    <polyline points="2 17 12 22 22 17"></polyline>
+                    <polyline points="2 12 12 17 22 12"></polyline>
+                </svg>
+                <span class="brand-title">{{ site.Params.label.text | default "Lê Tuấn Anh" }}</span>
+                <span class="brand-badge">
+                    <span class="live-dot" aria-hidden="true"></span>
+                    <span>ARCH RADAR</span>
+                </span>
             </a>
-            {{- end }}
-            <div class="logo-switches">
+        </div>
+
+        <!-- Navigation Menu & Actions (Right - Grouped on single line) -->
+        <div class="header-right">
+            {{- $currentPage := . }}
+            {{- $page_url := $currentPage.Permalink | absLangURL }}
+            <ul id="menu" class="nav-menu-list">
+                {{- range site.Menus.main }}
+                {{- if .HasChildren }}
+                <li class="nav-menu-item dropdown">
+                    <a href="{{ .URL | default "/reading-map/" | absLangURL }}" class="dropbtn" title="{{ .Title | default .Name }}" role="button" aria-haspopup="menu" aria-expanded="false">
+                        <span>
+                            {{- .Pre }}
+                            {{- .Name -}}
+                            {{ .Post -}}
+                            <svg class="dropdown-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" height="13" width="13" style="margin-left: 3px; vertical-align: middle;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </span>
+                    </a>
+                    <ul class="dropdown-content" role="menu">
+                        {{- range .Children }}
+                        {{- $child_url := (cond (strings.HasSuffix .URL "/") .URL (printf "%s/" .URL) ) | absLangURL }}
+                        <li role="none">
+                            <a href="{{ .URL | absLangURL }}" title="{{ .Title | default .Name }}" role="menuitem"
+                            {{- if (findRE "://" .URL) }} target="_blank" rel="noopener noreferrer" {{- end }}>
+                                <span {{- if eq $child_url $page_url }} class="active" {{- end }}>
+                                    {{- .Pre }}
+                                    {{- .Name -}}
+                                    {{ .Post -}}
+                                </span>
+                                {{- if (findRE "://" .URL) }}
+                                <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="11" width="11">
+                                    <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                                    <path d="M15 3h6v6"></path>
+                                    <path d="M10 14L21 3"></path>
+                                </svg>
+                                {{- end }}
+                            </a>
+                        </li>
+                        {{- end }}
+                    </ul>
+                </li>
+                {{- else }}
+                {{- $menu_item_url := (cond (strings.HasSuffix .URL "/") .URL (printf "%s/" .URL) ) | absLangURL }}
+                <li class="nav-menu-item {{- if eq .Identifier "hire" }} hire-cta{{- end }}">
+                    <a href="{{ .URL | absLangURL }}" title="{{ .Title | default .Name }}" class="{{ if eq $menu_item_url $page_url }}active{{ end }}"
+                    {{- if (findRE "://" .URL) }} target="_blank" rel="noopener noreferrer" {{- end }}>
+                        <span>
+                            {{- .Pre }}
+                            {{- .Name -}}
+                            {{ .Post -}}
+                        </span>
+                        {{- if (findRE "://" .URL) }}
+                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewBox="0 0 24 24" height="11" width="11">
+                            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                            <path d="M15 3h6v6"></path>
+                            <path d="M10 14L21 3"></path>
+                        </svg>
+                        {{- end }}
+                    </a>
+                </li>
+                {{- end }}
+                {{- end }}
+            </ul>
+
+            <!-- Actions: Direct ⌘K Search + Theme Toggle -->
+            <div class="header-actions">
+                <button id="search-nav-btn" class="search-nav-btn" aria-label="Search site (Ctrl+K)" title="Search (Ctrl+K)">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <span>Search</span>
+                    <kbd class="search-kbd-shortcut">⌘K</kbd>
+                </button>
+
                 {{- if (not site.Params.disableThemeToggle) }}
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
+                <button id="theme-toggle" class="theme-toggle-btn" accesskey="t" title="Toggle theme (Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
                         <line x1="12" y1="1" x2="12" y2="3"></line>
                         <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -54,95 +108,8 @@
                     </svg>
                 </button>
                 {{- end }}
-                
-                {{- if (not site.Params.disableLangToggle) }}
-                    {{- $lang := .Lang}}
-                    {{- $separator := or $label_text (not site.Params.disableThemeToggle)}}
-                    {{- with site.Home.Translations }}
-                    <ul class="lang-switch">
-                        {{- if $separator }}<li>|</li>{{ end }}
-                        {{- range . -}}
-                        {{- if ne $lang .Lang }}
-                        <li>
-                            <a href="{{- .Permalink -}}" title="{{ .Language.Params.languageAltTitle | default (.Language.LanguageName | emojify) | default (.Lang | title) }}"
-                                aria-label="{{ .Language.LanguageName | default (.Lang | title) }}">
-                                {{- if (and site.Params.displayFullLangName (.Language.LanguageName)) }}
-                                {{- .Language.LanguageName | emojify -}}
-                                {{- else }}
-                                {{- .Lang | title -}}
-                                {{- end -}}
-                            </a>
-                        </li>
-                        {{- end -}}
-                        {{- end}}
-                    </ul>
-                    {{- end }}
-                {{- end }}
             </div>
         </div>
-        {{- $currentPage := . }}
-        {{- $page_url := $currentPage.Permalink | absLangURL }}
-        <ul id="menu">
-            {{- range site.Menus.main }}
-            {{- if .HasChildren }}
-            <li class="dropdown">
-                <a href="{{ .URL | default "/reading-map/" | absLangURL }}" class="dropbtn" title="{{ .Title | default .Name }}" role="button" aria-haspopup="menu" aria-expanded="false">
-                    <span>
-                        {{- .Pre }}
-                        {{- .Name -}}
-                        {{ .Post -}}
-                        <svg class="dropdown-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" height="14" width="14" style="margin-left: 4px; vertical-align: middle; padding-bottom: 2px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </span>
-                </a>
-                <ul class="dropdown-content" role="menu">
-                    {{- range .Children }}
-                    {{- $child_url := (cond (strings.HasSuffix .URL "/") .URL (printf "%s/" .URL) ) | absLangURL }}
-                    <li role="none">
-                        <a href="{{ .URL | absLangURL }}" title="{{ .Title | default .Name }}" role="menuitem"
-                        {{- if (findRE "://" .URL) }} target="_blank" rel="noopener noreferrer" {{- end }}>
-                            <span {{- if eq $child_url $page_url }} class="active" {{- end }}>
-                                {{- .Pre }}
-                                {{- .Name -}}
-                                {{ .Post -}}
-                            </span>
-                            {{- if (findRE "://" .URL) }}
-                            <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
-                                stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
-                                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
-                                <path d="M15 3h6v6"></path>
-                                <path d="M10 14L21 3"></path>
-                            </svg>
-                            {{- end }}
-                        </a>
-                    </li>
-                    {{- end }}
-                </ul>
-            </li>
-            {{- else }}
-            {{- $menu_item_url := (cond (strings.HasSuffix .URL "/") .URL (printf "%s/" .URL) ) | absLangURL }}
-            {{- $is_search := eq (site.GetPage .KeyName).Layout `search` }}
-            <li>
-                <a href="{{ .URL | absLangURL }}" title="{{ .Title | default .Name }} {{- cond $is_search (" (Alt + /)" | safeHTMLAttr) ("" | safeHTMLAttr ) }}"
-                {{- cond $is_search (" accesskey=/" | safeHTMLAttr) ("" | safeHTMLAttr ) }}
-                {{- if (findRE "://" .URL) }} target="_blank" rel="noopener noreferrer" {{- end }}>
-                    <span {{- if eq $menu_item_url $page_url }} class="active" {{- end }}>
-                        {{- .Pre }}
-                        {{- .Name -}}
-                        {{ .Post -}}
-                    </span>
-                    {{- if (findRE "://" .URL) }}&nbsp;
-                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
-                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
-                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
-                        <path d="M15 3h6v6"></path>
-                        <path d="M10 14L21 3"></path>
-                    </svg>
-                    {{- end }}
-                </a>
-            </li>
-            {{- end }}
-            {{- end }}
-        </ul>
     </nav>
 </header>
 
@@ -155,12 +122,10 @@
       const content = dropdown.querySelector('.dropdown-content');
       if (!btn || !content) return;
 
-      // Toggle dropdown on click
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        // Close other dropdowns
         dropdowns.forEach(other => {
           if (other !== dropdown) {
             other.classList.remove('open');
@@ -171,13 +136,11 @@
           }
         });
 
-        // Reset inline display style before toggling
         content.style.display = '';
         const isOpen = dropdown.classList.toggle('open');
         btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       });
 
-      // Update ARIA expanded state on mouse hover
       dropdown.addEventListener('mouseenter', () => {
         content.style.display = '';
         btn.setAttribute('aria-expanded', 'true');
@@ -190,7 +153,6 @@
         content.style.display = '';
       });
 
-      // Update ARIA expanded state on keyboard focus
       dropdown.addEventListener('focusin', (e) => {
         if (!e.relatedTarget || !dropdown.contains(e.relatedTarget)) {
           content.style.display = '';
@@ -199,7 +161,6 @@
       });
 
       dropdown.addEventListener('focusout', (e) => {
-        // Safe check for relatedTarget to handle outside focus navigation
         if (!e.relatedTarget || !dropdown.contains(e.relatedTarget)) {
           btn.setAttribute('aria-expanded', 'false');
           dropdown.classList.remove('open');
@@ -208,28 +169,23 @@
       });
     });
 
-    // Global keyboard listener for Escape key to close open dropdown
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' || e.key === 'Esc') {
         dropdowns.forEach(dropdown => {
           if (dropdown.contains(document.activeElement)) {
             const btn = dropdown.querySelector('.dropbtn');
             const content = dropdown.querySelector('.dropdown-content');
-            
             dropdown.classList.remove('open');
-            if (content) {
-              content.style.display = 'none'; // Instantly hide and skip tabbing
-            }
+            if (content) content.style.display = 'none';
             if (btn) {
               btn.setAttribute('aria-expanded', 'false');
-              btn.focus(); // Restore focus to parent trigger
+              btn.focus();
             }
           }
         });
       }
     });
 
-    // Global click listener to close dropdowns when clicking outside
     document.addEventListener('click', (e) => {
       if (!e.target.closest('#menu .dropdown')) {
         dropdowns.forEach(dropdown => {

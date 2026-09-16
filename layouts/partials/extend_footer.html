@@ -284,28 +284,12 @@
       results.innerHTML = '<p class="search-empty-hint">Start typing to search 100+ posts and series…</p>';
     }
 
-    // ── Inject search trigger button into PaperMod header nav ──
-    function injectSearchButton() {
-      const nav = document.querySelector('#top-link') || document.querySelector('.nav');
-      const headerEl = document.querySelector('header');
-      if (!headerEl) return;
-
-      const btn = document.createElement('button');
-      btn.id = 'search-trigger';
-      btn.className = 'search-trigger-btn';
-      btn.setAttribute('aria-label', 'Search site (Ctrl+K)');
-      btn.setAttribute('title', 'Search (Ctrl+K)');
-      btn.innerHTML = `
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-        </svg>
-        <span class="search-trigger-kbd" aria-hidden="true">⌘K</span>
-      `;
-      btn.addEventListener('click', openModal);
-
-      // Inject into PaperMod header's nav links area
-      const headerInner = headerEl.querySelector('.nav') || headerEl;
-      headerInner.appendChild(btn);
+    // ── Wire up native search trigger button in header ──
+    function bindSearchTrigger() {
+      const nativeBtn = document.getElementById('search-nav-btn') || document.querySelector('.search-trigger-btn') || document.getElementById('search-trigger');
+      if (nativeBtn) {
+        nativeBtn.addEventListener('click', openModal);
+      }
     }
 
     // ── Render search results ──
@@ -392,7 +376,7 @@
     });
 
     // ── Init on DOM ready ──
-    document.addEventListener('DOMContentLoaded', injectSearchButton);
+    document.addEventListener('DOMContentLoaded', bindSearchTrigger);
 
     // ── WebMCP: expose searchSite to AI agents ──
     if ('modelContext' in navigator) {

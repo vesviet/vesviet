@@ -1,75 +1,158 @@
 {{- define "main" }}
 
+<div id="reading-progress" aria-hidden="true"></div>
+
 <article class="post-single">
-  <header class="post-header">
-    {{ partial "breadcrumbs.html" . }}
-    <h1 class="post-title entry-hint-parent">
-      {{ .Title }}
-      {{- if .Draft }}
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
-      {{- end }}
-    </h1>
-    {{- if .Description }}
-    <div class="post-description">
-      {{ .Description }}
-    </div>
-    {{- end }}
-    {{- $legalSlugs := slice "privacy-policy" "terms-of-service" "legal-notice" "privacy" "terms" "impressum" "privacy-policy-markpdf" -}}
-    {{- $isLegal := or (in $legalSlugs .Slug) (in .RelPermalink "/privacy-policy/") (in .RelPermalink "/terms-of-service/") (in .RelPermalink "/legal-notice/") (.Param "hideMeta") (.Param "isLegal") -}}
-    {{- if and (not (.Param "hideMeta")) (not $isLegal) }}
-    <div class="post-meta">
-      {{- partial "post_meta.html" . -}}
-      {{- partial "translation_list.html" . -}}
-      {{- partial "edit_post.html" . -}}
-      {{- partial "post_canonical.html" . -}}
-    </div>
-    {{- end }}
-  </header>
-  {{- $isHidden := (.Param "cover.hiddenInSingle") | default (.Param "cover.hidden") | default false }}
-  {{- partial "cover.html" (dict "cxt" . "IsSingle" true "isHidden" $isHidden) }}
-  {{- if (.Param "ShowToc") }}
-  {{- partial "toc.html" . }}
-  {{- end }}
-
-  {{- partial "cross_lingual_notice.html" . -}}
-
-  {{- if .Content }}
-  <div class="post-content md-content">
-    {{- if not (.Param "disableAnchoredHeadings") }}
-    {{- partial "anchored_headings.html" .Content -}}
-    {{- else }}{{ .Content }}{{ end }}
-  </div>
-  {{- end }}
-
-  <footer class="post-footer">
-    {{- $legalSlugs := slice "privacy-policy" "terms-of-service" "legal-notice" "privacy" "terms" "impressum" "privacy-policy-markpdf" -}}
-    {{- $isLegal := or (in $legalSlugs .Slug) (in .RelPermalink "/privacy-policy/") (in .RelPermalink "/terms-of-service/") (in .RelPermalink "/legal-notice/") (.Param "hideTags") (.Param "isLegal") -}}
-    {{- if not $isLegal }}
-      {{- $tags := .Language.Params.Taxonomies.tag | default "tags" }}
-      {{- with ($.GetTerms $tags) }}
-      <ul class="post-tags">
-        {{- range . }}
-        <li><a href="{{ .Permalink }}">{{ .LinkTitle }}</a></li>
+  <div class="article-layout-grid">
+    <!-- Main Body Column -->
+    <div class="article-main-body">
+      <header class="post-header">
+        {{ partial "breadcrumbs.html" . }}
+        <h1 class="post-title entry-hint-parent">
+          {{ .Title }}
+          {{- if .Draft }}
+          <span class="entry-hint" title="Draft">
+            <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
+              <path d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+            </svg>
+          </span>
+          {{- end }}
+        </h1>
+        {{- if .Description }}
+        <div class="post-description">
+          {{ .Description }}
+        </div>
         {{- end }}
-      </ul>
-      {{- end }}
-    {{- end }}
-    {{- if (.Param "ShowPostNavLinks") }}
-    {{- partial "post_nav_links.html" . }}
-    {{- end }}
-    {{- if (and site.Params.ShowShareButtons (ne .Params.disableShare true)) }}
-    {{- partial "share_icons.html" . -}}
-    {{- end }}
-  </footer>
+        {{- $legalSlugs := slice "privacy-policy" "terms-of-service" "legal-notice" "privacy" "terms" "impressum" "privacy-policy-markpdf" -}}
+        {{- $isLegal := or (in $legalSlugs .Slug) (in .RelPermalink "/privacy-policy/") (in .RelPermalink "/terms-of-service/") (in .RelPermalink "/legal-notice/") (.Param "hideMeta") (.Param "isLegal") -}}
+        {{- if and (not (.Param "hideMeta")) (not $isLegal) }}
+        <div class="post-meta">
+          {{- partial "post_meta.html" . -}}
+          {{- partial "translation_list.html" . -}}
+          {{- partial "edit_post.html" . -}}
+          {{- partial "post_canonical.html" . -}}
+        </div>
+        {{- end }}
+      </header>
+      {{- $isHidden := (.Param "cover.hiddenInSingle") | default (.Param "cover.hidden") | default false }}
+      {{- partial "cover.html" (dict "cxt" . "IsSingle" true "isHidden" $isHidden) }}
 
-  {{- if (.Param "comments") }}
-  {{- partial "comments.html" . }}
-  {{- end }}
+      <!-- Mobile Collapsible TOC -->
+      {{- if (.Param "ShowToc") }}
+      <div class="mobile-toc-container">
+        {{- partial "toc.html" . }}
+      </div>
+      {{- end }}
+
+      {{- partial "cross_lingual_notice.html" . -}}
+
+      {{- if .Content }}
+      <div class="post-content md-content">
+        {{- if not (.Param "disableAnchoredHeadings") }}
+        {{- partial "anchored_headings.html" .Content -}}
+        {{- else }}{{ .Content }}{{ end }}
+      </div>
+      {{- end }}
+
+      <!-- Author Consulting Connect Card -->
+      {{- if not $isLegal }}
+      <aside class="author-connect-card" aria-label="Author and Consulting Advisory">
+        <img src="/vesviet.png" alt="Lê Tuấn Anh" class="author-avatar-img" width="72" height="72" loading="lazy" />
+        <div class="author-bio-content">
+          <div class="author-bio-name">Lê Tuấn Anh</div>
+          <div class="author-bio-title">Principal Go Backend Architect &bull; Distributed Systems Consultant</div>
+          <p class="author-bio-desc">
+            17+ years architecting high-scale Go platforms, zero-downtime microservices migrations, and distributed event-driven systems. Available for architecture reviews, advisory retainers, and hands-on consulting.
+          </p>
+          <a href="/hire/" class="author-bio-cta">
+            <span>🤝 Inquire about consulting &amp; architecture review</span> &rarr;
+          </a>
+        </div>
+      </aside>
+      {{- end }}
+
+      <footer class="post-footer">
+        {{- if not $isLegal }}
+          {{- $tags := .Language.Params.Taxonomies.tag | default "tags" }}
+          {{- with ($.GetTerms $tags) }}
+          <ul class="post-tags">
+            {{- range . }}
+            <li><a href="{{ .Permalink }}">{{ .LinkTitle }}</a></li>
+            {{- end }}
+          </ul>
+          {{- end }}
+        {{- end }}
+        {{- if (.Param "ShowPostNavLinks") }}
+        {{- partial "post_nav_links.html" . }}
+        {{- end }}
+        {{- if (and site.Params.ShowShareButtons (ne .Params.disableShare true)) }}
+        {{- partial "share_icons.html" . -}}
+        {{- end }}
+      </footer>
+
+      {{- if (.Param "comments") }}
+      {{- partial "comments.html" . }}
+      {{- end }}
+    </div>
+
+    <!-- Right Column: Sticky Sidebar Table of Contents -->
+    {{- if (.Param "ShowToc") }}
+    <aside class="sidebar-toc-wrapper" aria-label="Table of contents">
+      <div class="toc-sidebar-header">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="color: var(--accent-primary);">
+          <line x1="8" y1="6" x2="21" y2="6"></line>
+          <line x1="8" y1="12" x2="21" y2="12"></line>
+          <line x1="8" y1="18" x2="21" y2="18"></line>
+          <line x1="3" y1="6" x2="3.01" y2="6"></line>
+          <line x1="3" y1="12" x2="3.01" y2="12"></line>
+          <line x1="3" y1="18" x2="3.01" y2="18"></line>
+        </svg>
+        <span>Contents</span>
+      </div>
+      {{ .TableOfContents }}
+    </aside>
+    {{- end }}
+  </div>
 </article>
+
+<script>
+  // Reading Progress Bar & TOC Scroll Spy
+  document.addEventListener('DOMContentLoaded', () => {
+    const progressBar = document.getElementById('reading-progress');
+    const tocLinks = document.querySelectorAll('.sidebar-toc-wrapper a');
+    const headings = Array.from(document.querySelectorAll('.post-content h2, .post-content h3'));
+
+    window.addEventListener('scroll', () => {
+      // Update reading progress
+      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      if (height > 0 && progressBar) {
+        const scrolled = (winScroll / height) * 100;
+        progressBar.style.width = scrolled + '%';
+      }
+
+      // Scroll spy for TOC
+      if (headings.length && tocLinks.length) {
+        let currentHeadingId = '';
+        const scrollPos = winScroll + 120;
+
+        for (let i = headings.length - 1; i >= 0; i--) {
+          if (headings[i].offsetTop <= scrollPos) {
+            currentHeadingId = headings[i].id;
+            break;
+          }
+        }
+
+        tocLinks.forEach(link => {
+          if (currentHeadingId && link.getAttribute('href') === '#' + currentHeadingId) {
+            link.classList.add('active-toc-heading');
+          } else {
+            link.classList.remove('active-toc-heading');
+          }
+        });
+      }
+    }, { passive: true });
+  });
+</script>
 
 {{- end }}{{/* end main */}}
