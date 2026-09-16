@@ -1,7 +1,7 @@
 ---
 title: "Tech Radar September 2026: WASI 0.3, MCP 2.0 & Next-Gen Systems"
 date: "2026-09-08T09:00:00+07:00"
-lastmod: "2026-09-08T09:00:00+07:00"
+lastmod: "2026-09-16T10:00:00+07:00"
 author: "Lê Tuấn Anh"
 draft: false
 mermaid: true
@@ -61,7 +61,7 @@ quadrantChart
 | **ADOPT** | **Wasmtime 46+ Micro-Runtimes** | Edge Compute & Sandboxes | Cranelift AOT compilation, 1.2MB–4.5MB RAM per instance, 500x faster startup than containers |
 | **ADOPT** | **DeepSeek-V3 Multi-Head Latent Attention** | LLM Inference & GPU | 75% KV cache memory compression via low-rank projection, decoupled RoPE preservation |
 | **TRIAL** | **SGLang EAGLE-2 Speculative Decoding** | AI Serving Infrastructure | 3.5x inference acceleration over baseline autoregressive token generation |
-| **TRIAL** | **Cilium Tetragon 1.4 In-Kernel Tracing** | Cloud Native Security | In-kernel eBPF `sys_execve` termination in 12$\mu$s, zero-trust sandbox enforcement |
+| **TRIAL** | **Cilium Tetragon 1.4 In-Kernel Tracing** | Cloud Native Security | In-kernel eBPF `sys_execve` termination in 12 µs, zero-trust sandbox enforcement |
 | **ASSESS** | **Uber H3 + OSRM Shared-Memory Cache** | Geospatial & High Concurrency | Spatial hex binning with sub-millisecond distance matrix queries for multi-agent routing |
 | **HOLD** | **Traditional Heavyweight Pod Sidecars** | Service Mesh Architecture | Incurs 15ms–35ms IPC latency overhead and 150MB+ footprint per pod; replace with in-kernel eBPF |
 | **HOLD** | **Bespoke Agent HTTP Polling Wrappers** | AI Tool Orchestration | Introduces head-of-line blocking, connection leaks, and prompt token bloat; migrate to MCP 2.0 |

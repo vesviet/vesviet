@@ -1,6 +1,6 @@
 # Vesviet Content Index (tanhdev.com)
 
-> Snapshot date: 2026-09-14 · Branch `main` · Total content files: **374** (~889,620 words)
+> Snapshot date: 2026-09-16 · Branch `main` · Total content files: **374** (~889,620 words)
 > Site: Hugo + PaperMod, `en` default, canonical host `https://tanhdev.com/`
 > English flagship portfolio. Regenerate this index after every batch upgrade.
 
@@ -69,7 +69,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 | 2026-06 | 3 | Emerging WASI 0.3 runtime patterns |
 | 2026-07 | 3 | LLM evaluation frameworks & Agent governance |
 | 2026-08 | 7 | Stateless MCP K8s gateway, OWASP/NIST AI agent gateway, Go synctest, vLLM context routing MLA, eBPF Tetragon agent security |
-| 2026-09 | 3 | WASI 0.3 component model/wasmtime, **MCP 2.0 agentic mesh (2026-09-08)**, DeepSeek v3 MLA |
+| 2026-09 | 3 | WASI 0.3 component model/wasmtime, **MCP 2.0 agentic mesh (2026-09-08)**, **DeepSeek-V3 MLA (2026-09-16, Published)** |
 
 ## Recent Upgrade Campaigns
 
