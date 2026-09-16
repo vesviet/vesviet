@@ -351,10 +351,10 @@ Platform engineering teams should utilize the following decision matrix when pro
 
 | Evaluation Tier | Execution Velocity | Cost per Sample | Primary Evaluation Target | Production Gate Trigger |
 | :--- | :--- | :--- | :--- | :--- |
-| **Tier 1 (Deterministic)** | $< 10\text{ ms}$ | $\$0.00$ | Schema validation, type bounds | PR Block on 100% of schema failures |
-| **Tier 2 (Tool Recall)** | $< 100\text{ ms}$ | $\$0.00$ | Tool precision, parameter match | PR Block if Tool Recall $< 98\%$ |
-| **Tier 3 (LLM Judge)** | $1\text{s} - 3\text{s}$ | $\approx \$0.01$ | Reasoning trajectory, G-Eval rubric | PR Block if Fidelity drops $> 2\%$ |
-| **Tier 4 (Sandboxed SWE)** | $10\text{s} - 120\text{s}$ | $\approx \$0.05$ | Real unit test exit codes in sandbox| Nightly / Release Gate ($100\%$ Pass) |
+| **Tier 1 (Deterministic)** | < 10 ms | \$0.00 | Schema validation, type bounds | PR Block on 100% of schema failures |
+| **Tier 2 (Tool Recall)** | < 100 ms | \$0.00 | Tool precision, parameter match | PR Block if Tool Recall < 98% |
+| **Tier 3 (LLM Judge)** | 1s – 3s | ~\$0.01 | Reasoning trajectory, G-Eval rubric | PR Block if Fidelity drops > 2% |
+| **Tier 4 (Sandboxed SWE)** | 10s – 120s | ~\$0.05 | Real unit test exit codes in sandbox | Nightly / Release Gate (100% Pass) |
 
 ### The Five Invariant Laws of Agent Evaluation:
 1. **The Invariant of Model Pinning**: Production agents must reference immutable model checkpoint digests; floating `latest` aliases are strictly prohibited in production.

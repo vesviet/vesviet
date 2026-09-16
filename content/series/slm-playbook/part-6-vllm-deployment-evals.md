@@ -332,7 +332,7 @@ If the average number of queued waiting requests exceeds 5 per pod across a 60-s
 ### Deep Failure Analysis: Multi-LoRA Cache Thrashing Under Peak Concurrency
 When serving more than 30 dynamic LoRA adapters simultaneously using the Punica CUDA kernel, enterprise clusters can experience severe throughput collapse known as **Adapter Thrashing**:
 1. **Root Cause:** When request batches alternate rapidly across divergent adapter weights, the GPU spends more execution cycles swapping LoRA parameters into active tensor registers than computing GEMM matrix multiplications.
-2. **Mitigation Strategy:** Implement **Adapter-Aware Request Batching** in the gateway tier. The reverse proxy groups incoming requests by adapter ID within a $15\text{ms}$ time bucket, dispatching homogeneous batches to specific vLLM replicas. This raises GPU arithmetic intensity by $3.8\times$ and stabilizes P99 inference latency under 40ms.
+2. **Mitigation Strategy:** Implement **Adapter-Aware Request Batching** in the gateway tier. The reverse proxy groups incoming requests by adapter ID within a 15 ms time bucket, dispatching homogeneous batches to specific vLLM replicas. This raises GPU arithmetic intensity by 3.8× and stabilizes P99 inference latency under 40ms.
 
 ---
 

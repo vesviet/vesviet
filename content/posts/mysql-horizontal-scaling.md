@@ -159,7 +159,7 @@ flowchart TD
 The crowning architectural achievement of Vitess is **VReplication (Vitess Replication)**. When Shard `-80` becomes hot, operators trigger a dynamic resharding workflow:
 1. Vitess provisions two new child shards: `-40` and `40-80`.
 2. VReplication streams raw row data and tailing binlogs from the parent shard to the child shards in real time.
-3. Once replication lag reaches sub-millisecond status, VTGate executes a **Routing Cutover (`SwitchTraffic`)**: writes are paused for $< 500\text{ms}$ while routing tables update, and writes instantly resume pointing to the new child shards without dropping connections or requiring application restarts.
+3. Once replication lag reaches sub-millisecond status, VTGate executes a **Routing Cutover (`SwitchTraffic`)**: writes are paused for < 500 ms while routing tables update, and writes instantly resume pointing to the new child shards without dropping connections or requiring application restarts.
 
 ---
 

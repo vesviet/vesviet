@@ -276,7 +276,7 @@ Under KRaft mode (KIP-500), Kafka manages cluster metadata through a specialized
 - **Controller Quorum:** A cluster runs a quorum of dedicated Controller nodes (typically 3 or 5). One controller is elected Quorum Leader, while the others serve as active followers replicating the `@metadata` partition.
 - **Leader Epoch Fencing:** KRaft maintains a monotonic Leader Epoch counter. Every metadata record is tagged with the current epoch. If a partitioned controller attempts to write stale state upon reconnecting, follower nodes reject the mutation based on epoch fencing.
 - **Metadata Deltas:** Data brokers fetch incremental metadata deltas from the Active Controller. Each broker maintains a local, fully materialized in-memory representation of cluster metadata.
-- **Fast Failover:** If the active controller crashes, follower controllers already possess an up-to-date metadata log. A new leader is elected in **$< 200\text{ms}$** without the multi-minute metadata reload delays that historically plagued ZooKeeper-backed clusters.
+- **Fast Failover:** If the active controller crashes, follower controllers already possess an up-to-date metadata log. A new leader is elected in **< 200 ms** without the multi-minute metadata reload delays that historically plagued ZooKeeper-backed clusters.
 
 ### 4.2. NATS JetStream: Multi-Raft Architecture per Stream
 

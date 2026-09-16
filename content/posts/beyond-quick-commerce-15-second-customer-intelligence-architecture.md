@@ -40,13 +40,13 @@ Solving this is not a business intelligence or post-hoc analytics task. It repre
 > * **The Core Problem**: 68% of mobile quick commerce sessions terminate within 22 seconds if the user does not spot their desired category or product immediately. Traditional overnight batch data warehouse transformations (dbt/Snowflake) are 12 to 24 hours too late to influence the live session.
 > * **The Solution**: An event-driven, sub-500ms inference pipeline that ingests client micro-signals (scroll velocity, deceleration trajectories, dwell-time entropy, pinch-zooms) over persistent WebSockets into Go 1.24 lock-free ring buffers, routes through Kafka/Redpanda partitions, queries local Redis HNSW vector indexes, and triggers speculative Small Language Model (SLM) intent classification to rewrite the mobile UI in real time via the Model Context Protocol (MCP).
 > * **Production Latency Budget**:
->   * *WebSocket Ingestion & Edge Filter*: $\le 15\text{ms}$
->   * *Lock-Free Ring Buffer & Kafka Ingestion*: $\le 20\text{ms}$
->   * *Dark Store Stock-Filtered Redis HNSW Search*: $\le 45\text{ms}$
->   * *Speculative vLLM SLM Inference (Llama-3.2-3B AWQ)*: $\le 180\text{ms}$
->   * *MCP Schema Validation & Dynamic UI Wire Payload*: $\le 40\text{ms}$
->   * *Network Round Trip Time (5G / 4G LTE Mobile Edge)*: $\le 120\text{ms}$
->   * **Total End-to-End Reflex Window**: $\mathbf{\approx 420\text{ms}}$ (Comfortably under the human cognitive perceptual threshold of 500ms).
+>   * *WebSocket Ingestion & Edge Filter*: ≤ 15 ms
+>   * *Lock-Free Ring Buffer & Kafka Ingestion*: ≤ 20 ms
+>   * *Dark Store Stock-Filtered Redis HNSW Search*: ≤ 45 ms
+>   * *Speculative vLLM SLM Inference (Llama-3.2-3B AWQ)*: ≤ 180 ms
+>   * *MCP Schema Validation & Dynamic UI Wire Payload*: ≤ 40 ms
+>   * *Network Round Trip Time (5G / 4G LTE Mobile Edge)*: ≤ 120 ms
+>   * **Total End-to-End Reflex Window**: **~420 ms** (Comfortably under the human cognitive perceptual threshold of 500ms).
 
 ---
 
@@ -88,7 +88,7 @@ We quantify user intent through four continuous time-series metrics computed dir
 
 1. **Kinetic Scroll Velocity ($v_s$)**:
    $$v_s(t) = \frac{\Delta y}{\Delta t} = \frac{y_k - y_{k-1}}{t_k - t_{k-1}}$$
-   A high velocity ($v_s > 1500\text{ px/s}$) with zero decelerations indicates unambiguous directed search behavior (e.g., reordering morning coffee or emergency baby formula). A low velocity ($v_s < 300\text{ px/s}$) indicates exploratory or casual browsing.
+   A high velocity ($v_s > 1500$ px/s) with zero decelerations indicates unambiguous directed search behavior (e.g., reordering morning coffee or emergency baby formula). A low velocity ($v_s < 300$ px/s) indicates exploratory or casual browsing.
 
 2. **Dwell Time Entropy ($H_d$) over Viewport Items**:
    $$H_d = -\sum_{i=1}^{N} P_i \log_2 P_i \quad \text{where } P_i = \frac{t_{\text{dwell}}(i)}{\sum_{j=1}^N t_{\text{dwell}}(j)}$$
@@ -304,7 +304,7 @@ func (sa *StreamAggregator) Out() <-chan []MicroBehaviorEvent {
 
 Generic e-commerce semantic search fails in Quick Commerce if the recommended SKUs are out of stock in the customer's specific hyperlocal Dark Store (Hub). Recommending an ice cream brand with 0 inventory at the assigned fulfillment center causes checkout drop-offs and destroys customer trust.
 
-We utilize **Redis Stack HNSW Vector Similarity Search (VSS)** with boolean attribute pre-filtering to enforce stock constraints within $\le 5\text{ms}$.
+We utilize **Redis Stack HNSW Vector Similarity Search (VSS)** with boolean attribute pre-filtering to enforce stock constraints within ≤ 5 ms.
 
 ```mermaid
 flowchart TD
@@ -434,7 +434,7 @@ Routing every session interaction through cloud-hosted frontier LLMs (e.g., GPT-
 
 ### The Self-Hosted SLM Alternative
 
-We deploy **Llama-3.2-3B-Instruct** or **Qwen-2.5-3B** quantized to 4-bit AWQ on local GPU clusters (NVIDIA L4 or A10G) managed by **vLLM** with speculative decoding. By enforcing Outlines or vLLM Guided Decoding (JSON Schema grammar constraints), inference completes in **$\le 110\text{ms}$** at a fractional compute cost of \$0.00008 per inference.
+We deploy **Llama-3.2-3B-Instruct** or **Qwen-2.5-3B** quantized to 4-bit AWQ on local GPU clusters (NVIDIA L4 or A10G) managed by **vLLM** with speculative decoding. By enforcing Outlines or vLLM Guided Decoding (JSON Schema grammar constraints), inference completes in **≤ 110 ms** at a fractional compute cost of \$0.00008 per inference.
 
 ```mermaid
 sequenceDiagram
@@ -569,7 +569,7 @@ graph TD
 
 ### 1. The vLLM Latency Spike Cascade
 * **Condition**: GPU memory fragmentation or queue depth increases vLLM P99 latency above 200ms.
-* **Mitigation**: Circuit-breaker pattern implemented in the Go Gateway via Netflix Hystrix/Gobreaker. If SLM calls exceed 200ms for more than 5% of requests across a 10-second window, the system falls back instantaneously to an in-memory rule engine (evaluating temporal context + categorical top-sellers) in $< 1\text{ms}$.
+* **Mitigation**: Circuit-breaker pattern implemented in the Go Gateway via Netflix Hystrix/Gobreaker. If SLM calls exceed 200ms for more than 5% of requests across a 10-second window, the system falls back instantaneously to an in-memory rule engine (evaluating temporal context + categorical top-sellers) in < 1 ms.
 
 ### 2. Client-Side Layout Thrashing & Motion Sickness
 * **Condition**: Rapidly shifting micro-signals cause the UI to mutate repeatedly while the user is actively attempting to tap a product card.

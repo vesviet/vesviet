@@ -3,7 +3,7 @@ title: "Golang Modular Monolith: The Anti-Microservices Guide"
 slug: "microservices-delusion-why-golang-modular-monolith-is-the-destination"
 author: "Tuan Anh"
 date: "2026-08-13T22:10:00+07:00"
-lastmod: "2026-09-06T15:45:00+07:00"
+lastmod: "2026-09-16T20:35:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -118,11 +118,11 @@ In a modular monolith, passing an order object from the `order` domain to the `p
 
 | Operation / Boundary | Latency | Overhead Relative to RAM | Failure Mode |
 | :--- | :--- | :--- | :--- |
-| **Go Pointer Dereference** | `0.5 ns` | $1\times$ (Baseline) | None |
-| **Go In-Memory Channel Transfer** | `35 ns` | $70\times$ | Channel full (backpressure) |
-| **Linux Local Loopback Unix Socket** | `12 μs` | $24,000\times$ | Buffer overflow |
-| **Intra-VPC gRPC Call (Same AZ)** | `1.2 ms` | $2,400,000\times$ | Network drop, timeout |
-| **Cross-AZ / Cross-Region REST Call** | `25 - 80 ms` | $50,000,000\times$ | Partition, DNS failure, TLS handshake |
+| **Go Pointer Dereference** | `0.5 ns` | 1× (Baseline) | None |
+| **Go In-Memory Channel Transfer** | `35 ns` | 70× | Channel full (backpressure) |
+| **Linux Local Loopback Unix Socket** | `12 μs` | 24,000× | Buffer overflow |
+| **Intra-VPC gRPC Call (Same AZ)** | `1.2 ms` | 2,400,000× | Network drop, timeout |
+| **Cross-AZ / Cross-Region REST Call** | `25 - 80 ms` | 50,000,000× | Partition, DNS failure, TLS handshake |
 
 #### 2. The Fallacy of Distributed Transactions (Sagas & 2PC)
 In a single database, updating an order status and reserving inventory is wrapped in a standard ACID block:
@@ -427,7 +427,11 @@ Conway's Law states: *"Organizations which design systems are constrained to pro
 
 Microservices solve an **organizational problem**, not a technical one. Slicing your code into 50 services does not make it faster—it makes it distributed and slower. You should extract a module into an independent service if and only if it satisfies the **Extraction Formula**:
 
-$$\text{Extraction Score} = \frac{\Delta \text{Organizational Autonomy} + \Delta \text{Hardware Specialization}}{\text{Network Latency Cost} + \text{Operational Overhead} + \text{Saga Complexity}}$$
+```text
+                    Δ Organizational Autonomy + Δ Hardware Specialization
+Extraction Score = ─────────────────────────────────────────────────────────
+                    Network Latency Cost + Operational Overhead + Saga Complexity
+```
 
 ### When Service Extraction Is Justified
 
@@ -476,12 +480,12 @@ The following benchmark demonstrates a real-world e-commerce checkout flow proce
 
 | Architecture Metric | Go Modular Monolith (3 Instances, c6i.2xlarge) | Microservices Fleet (8 Services, 24 Pods on EKS) | Impact of Modular Monolith |
 | :--- | :--- | :--- | :--- |
-| **P50 Latency** | `1.8 ms` | `14.2 ms` | **$7.8\times$ Faster** |
-| **P99 Latency** | `6.4 ms` | `48.5 ms` | **$7.5\times$ Faster** |
+| **P50 Latency** | `1.8 ms` | `14.2 ms` | **7.8× Faster** |
+| **P99 Latency** | `6.4 ms` | `48.5 ms` | **7.5× Faster** |
 | **Total Memory Footprint** | `1.2 GB` RAM | `18.4 GB` RAM (Sidecars + JVM/Go runtimes) | **93% Memory Reduction** |
-| **AWS Monthly Bill** | **$412 / month** | **$2,860 / month** | **85.6% Cost Savings** |
-| **Deployment Complexity** | 1 Docker Image, 1 K8s Deployment | 8 Pipelines, Envoy Service Mesh, Spinnaker | **$5\times$ Lower Cognitive Load** |
-| **Failure Recovery (MTTR)** | `< 30 seconds` (Rollback 1 binary) | `18 minutes` (Pinpoint cross-service bug) | **$36\times$ Faster Recovery** |
+| **AWS Monthly Bill** | **\$412 / month** | **\$2,860 / month** | **85.6% Cost Savings** |
+| **Deployment Complexity** | 1 Docker Image, 1 K8s Deployment | 8 Pipelines, Envoy Service Mesh, Spinnaker | **5× Lower Cognitive Load** |
+| **Failure Recovery (MTTR)** | `< 30 seconds` (Rollback 1 binary) | `18 minutes` (Pinpoint cross-service bug) | **36× Faster Recovery** |
 
 ---
 

@@ -155,7 +155,7 @@ Autonomous agents running in reasoning loops frequently pose identical diagnosti
 
 By enforcing Redis semantic caching with a cosine similarity threshold of $0.88$:
 * Incoming agent prompt embeddings are compared against pre-computed vector keys in Redis.
-* If a cache hit occurs within the similarity threshold, LiteLLM serves the cached completion with **$< 15\text{ms}$ latency**, entirely bypassing upstream cloud inference costs and saving up to **34.2% in monthly token expenditure**.
+* If a cache hit occurs within the similarity threshold, LiteLLM serves the cached completion with **< 15 ms latency**, entirely bypassing upstream cloud inference costs and saving up to **34.2% in monthly token expenditure**.
 
 ---
 
@@ -536,7 +536,7 @@ OpenClaw manages task execution state using Redis streams with active distribute
 {{< /faq >}}
 
 {{< faq q="How does Redis semantic caching reduce AI swarm token costs?" >}}
-Redis semantic caching computes vector embeddings for incoming agent prompt contexts and compares them against stored queries using cosine similarity. When an agent submits a prompt that is semantically equivalent to a previously evaluated interaction (similarity $\ge 0.88$), LiteLLM returns the cached response in $<15\text{ms}$ without invoking upstream cloud LLM inference, reducing token consumption by up to 34%.
+Redis semantic caching computes vector embeddings for incoming agent prompt contexts and compares them against stored queries using cosine similarity. When an agent submits a prompt that is semantically equivalent to a previously evaluated interaction (similarity ≥ 0.88), LiteLLM returns the cached response in < 15 ms without invoking upstream cloud LLM inference, reducing token consumption by up to 34%.
 {{< /faq >}}
 
 ---

@@ -831,9 +831,9 @@ When managing distributed vLLM clusters with the Go API Gateway, monitor the fol
 
 | Metric Name | Type | Description / Alert Condition |
 | :--- | :--- | :--- |
-| `vllm:num_requests_waiting` | Gauge | Queue depth of requests waiting for VRAM block allocation. Alert if $> 10$ for $> 30\text{s}$. |
-| `vllm:gpu_cache_usage_perc` | Gauge | Percentage of physical KV-cache blocks allocated. Alert if $> 92\%$. |
-| `gateway_prefix_hit_ratio` | Gauge | Ratio of requests routed via affinity table cache hit. Target $> 60\%$. |
+| `vllm:num_requests_waiting` | Gauge | Queue depth of requests waiting for VRAM block allocation. Alert if > 10 for > 30s. |
+| `vllm:gpu_cache_usage_perc` | Gauge | Percentage of physical KV-cache blocks allocated. Alert if > 92%. |
+| `gateway_prefix_hit_ratio` | Gauge | Ratio of requests routed via affinity table cache hit. Target > 60%. |
 | `gateway_request_duration_seconds` | Histogram | Latency histogram (P50, P95, P99) of Time-to-First-Token (TTFT). |
 | `vllm:avg_prompt_throughput_tok_per_s` | Gauge | Aggregate prefill throughput across cluster nodes. |
 | `vllm:avg_generation_throughput_tok_per_s` | Gauge | Aggregate decode generation throughput across cluster nodes. |

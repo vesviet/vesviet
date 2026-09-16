@@ -106,7 +106,7 @@ sequenceDiagram
 ### Deep Dive into the Three Major Clock Architectures
 
 1. **Google Spanner TrueTime**:  
-   Utilizes synchronized atomic clocks and GPS receivers installed in every datacenter. TrueTime represents time not as a point, but as an interval $[t.earliest, t.latest]$ with bounded uncertainty $\epsilon \approx 1\text{ms}$ to $4\text{ms}$. To guarantee strict linearizability, Spanner employs **Commit Wait**: the coordinator intentionally delays returning the response to the client for $2\epsilon$ to ensure that no subsequent transaction can receive a timestamp earlier than the committed transaction.
+   Utilizes synchronized atomic clocks and GPS receivers installed in every datacenter. TrueTime represents time not as a point, but as an interval $[t.earliest, t.latest]$ with bounded uncertainty $\epsilon \approx 1$ ms to 4 ms. To guarantee strict linearizability, Spanner employs **Commit Wait**: the coordinator intentionally delays returning the response to the client for $2\epsilon$ to ensure that no subsequent transaction can receive a timestamp earlier than the committed transaction.
 
 2. **CockroachDB Hybrid Logical Clocks (HLC)**:  
    Combines physical NTP time with logical Lamport counters. When physical clock drift between nodes stays within a configured threshold (typically 500ms max offset), HLC preserves causality. When a transaction encounters a record with a timestamp in its uncertainty window, it performs an **Uncertainty Restart**, pushing its read timestamp forward to avoid reading stale data.

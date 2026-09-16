@@ -113,7 +113,7 @@ func Pull[V any](seq Seq[V]) (next func() (V, bool), stop func())
 
 Prior to Go 1.23, returning a slice of items required allocating a dynamic backing array on the heap whenever the slice escaped the method frame:
 
-$$\text{Legacy Memory Footprint} = O(N) \text{ Heap Allocation per Iteration Call}$$
+> **Legacy Memory Footprint:** `O(N)` heap allocation per iteration call.
 
 With `iter.Seq2`, zero allocation is achieved through two compiler optimizations:
 
@@ -429,7 +429,7 @@ go build -gcflags="-m -l" ./...
 | **Interface Boxing** | `fmt.Println(val)` or `var i any = val` | Concrete type is converted to 2-word `any`/`interface{}` header. | Avoid `any` in hot paths; use concrete generic signatures `[T any]` or explicit formatters. |
 | **Closure Capture** | `go func() { use(x) }()` | Referenced variable `x` escapes to heap to outlive stack frame. | Pass variables explicitly as parameters to closure functions. |
 | **Dynamic Slice Capacity** | `make([]byte, n)` (where `n` is dynamic) | Compiler cannot determine fixed stack size at compile time. | Use constant array capacity `[1024]byte`, fixed capacity slice bounds, or `sync.Pool`. |
-| **Pointer Receivers on Small Structs** | `func (s *Small) Read()` | Pointer escaping can pull entire struct instance onto heap. | Use value receivers `func (s Small) Read()` for structs $\le 64$ bytes. |
+| **Pointer Receivers on Small Structs** | `func (s *Small) Read()` | Pointer escaping can pull entire struct instance onto heap. | Use value receivers `func (s Small) Read()` for structs ≤ 64 bytes. |
 
 ---
 
@@ -477,11 +477,15 @@ Prior to Go 1.19, `GOGC` defaulted strictly to `100` (triggering GC whenever hea
 #### 2. The `GOMEMLIMIT` 85% Golden Formula
 Go 1.19+ introduced `GOMEMLIMIT`, establishing a soft memory cap that instructs the Go runtime GC to run aggressively as total memory approaches the limit.
 
-$$\text{GOMEMLIMIT} = \text{Container Memory Limit} \times 0.85$$
+```text
+GOMEMLIMIT = Container Memory Limit × 0.85
+```
 
 For a Kubernetes Pod with a **2GiB** memory limit:
 
-$$\text{GOMEMLIMIT} = 2048 \text{ MiB} \times 0.85 = 1740.8 \text{ MiB} \approx 1740\text{MiB}$$
+```text
+GOMEMLIMIT = 2048 MiB × 0.85 = 1740.8 MiB ≈ 1740 MiB
+```
 
 ```yaml
 apiVersion: apps/v1
@@ -557,7 +561,7 @@ Yes. `iter.Seq` (push iterator) is completely inlined by the compiler with **0 B
 - [ ] **String Interning**: Convert high-cardinality struct fields (`TenantID`, `Region`, `Method`) to Go 1.24 `unique.Handle[string]`.
 - [ ] **Equality Comparisons**: Use `h1 == h2` pointer checks instead of byte-by-byte string comparisons in hot loops.
 - [ ] **Escape Analysis Audit**: Execute `go build -gcflags="-m -l"` and confirm zero heap escapes on hot path functions.
-- [ ] **Value Receivers**: Use value receivers (`func (s Struct)`) for small structs ($\le 64$ bytes) to prevent receiver escape.
+- [ ] **Value Receivers**: Use value receivers (`func (s Struct)`) for small structs (≤ 64 bytes) to prevent receiver escape.
 - [ ] **Multi-Tiered Memory Pools**: Implement tiered `sync.Pool` structures and discard buffers exceeding maximum thresholds (`cap > 64KB`).
 - [ ] **Kubernetes `GOMEMLIMIT`**: Configure `GOMEMLIMIT` to 85% of container RAM limit in deployment manifests.
 - [ ] **Remove Legacy Ballast**: Delete static memory ballast variables (`make([]byte, 1<<30)`) from codebase initialization.

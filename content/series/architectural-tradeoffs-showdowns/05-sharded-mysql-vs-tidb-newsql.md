@@ -112,7 +112,7 @@ App ──> TiDB Node ──(1) Get StartTS (Network RTT)──> PD Cluster
 When queries include a designated Shard Key (`tenant_id = 'tenant_99'`):
 - **VTGate** evaluates the VSchema hash function and routes the TCP stream directly to the authoritative MySQL shard.
 - The shard executes a **Local InnoDB ACID transaction**, appending to the local redo log buffer in a single physical round-trip.
-- **Latency Floor:** P99 write latency operates within **$0.8\text{ms} - 2.0\text{ms}$**, matching raw bare-metal MySQL performance.
+- **Latency Floor:** P99 write latency operates within **0.8 ms – 2.0 ms**, matching raw bare-metal MySQL performance.
 
 ---
 
@@ -122,7 +122,7 @@ TiDB coordinates transactions via the **Google Percolator two-phase commit proto
 2. **Prewrite Phase:** TiDB designates a *Primary Lock* and sends prewrite requests across participating **TiKV Raft leaders**. Each leader writes the lock record to its local Raft log and replicates it across a majority quorum of followers.
 3. **Commit Timestamp:** TiDB executes a second network call to PD to obtain the `CommitTS`.
 4. **Commit Phase:** TiDB issues the final commit command to the Primary Lock Raft leader.
-- **The Physical Latency Floor:** Because even single-row updates require 4 to 6 distributed network hops across distinct node tiers, TiDB enforces an irreducible write latency floor of **$6\text{ms} - 15\text{ms}$**.
+- **The Physical Latency Floor:** Because even single-row updates require 4 to 6 distributed network hops across distinct node tiers, TiDB enforces an irreducible write latency floor of **6 ms – 15 ms**.
 
 ---
 
