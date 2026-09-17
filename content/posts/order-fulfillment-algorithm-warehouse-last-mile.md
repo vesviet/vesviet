@@ -24,6 +24,8 @@ aliases:
   - /series/ecommerce-order-allocation/part-2-inventory-realtime/
   - /series/ecommerce-order-allocation/part-3-allocation-algorithms/
   - /series/ecommerce-order-allocation/part-4-amazon-condor-anticipatory/
+  - /series/ecommerce-order-allocation/order-splitting-graph-coloring-opa/
+  - /series/ecommerce-order-allocation/warehouse-picker-routing-optimization/
 description: "How e-commerce giants decide which warehouse fulfills your order. Covers Available-to-Promise Redis Lua, Go multi-warehouse allocation solvers, Amazon CONDOR, and Google OR-Tools CVRP."
 ShowToc: true
 TocOpen: true
@@ -516,4 +518,4 @@ Anticipatory shipping uses predictive machine learning to transport high-probabi
 - [Real-Time Inventory: Kafka, CDC & Redis for E-Commerce](/posts/real-time-inventory-ecommerce-architecture/) — handling distributed ATP state mutations.
 - [Surge Pricing & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture/) — spatial indexing for last-mile delivery dispatch.
 
-{{< author-cta >}}
+{{< author-cta >}}

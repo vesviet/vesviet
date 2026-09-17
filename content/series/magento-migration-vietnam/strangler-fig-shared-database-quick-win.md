@@ -18,6 +18,8 @@ cover:
 canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/strangler-fig-shared-database-quick-win/"
 weight: 6
 mermaid: true
+aliases:
+  - /posts/strangler-fig-shared-database-quick-win/
 ---
 
 

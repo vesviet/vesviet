@@ -18,6 +18,10 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/"
 weight: 3
+aliases:
+  - /series/composable-commerce-migration/part-0-executive-summary/
+  - /series/composable-commerce-migration/part-1-ddd-bounded-contexts/
+  - /series/composable-commerce-migration/part-4-grpc-rest-gateway/
 ---
 
 

@@ -45,6 +45,8 @@ cover:
   alt: "High-Throughput Local LLM Gateway: Go & vLLM Blueprint"
   relative: false
 canonicalURL: "https://tanhdev.com/posts/high-throughput-local-llm-infrastructure-vllm-golang-gateway/"
+aliases:
+  - /research/high-throughput-local-llm-infrastructure-vllm-golang-gateway/
 ---
 
 # High-Throughput Local LLM Gateway: Go & vLLM Blueprint

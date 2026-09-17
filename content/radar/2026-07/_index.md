@@ -26,6 +26,8 @@ aliases:
   - /radar/2026-07/radar-2026-07-17/
   - /radar/2026-07/radar-2026-07-20/
   - /radar/2026-07/radar-2026-07-21/
+  - /radar/tech-radar-july-14-2026-zero-trust-ai-swarms-mcp-authorization/
+  - /radar/radar-20-07-agentic-governance-aws-loom-aios/
 description: "Curated July 2026 Tech Radar digest covering autonomous AI swarms, edge WasmEdge on K3s, zero-trust MCP protocols, and cloud-native AI gateway FinOps."
 ---
 > **Answer-first:** Tech Radar Digest for July 2026 aggregates 6 daily technical briefings detailing autonomous AI swarms, WasmEdge SLM runtime execution, zero-trust MCP authorization, and modular monolith agentic governance. Production guidelines detail edge deployment topologies, liquid neural networks, and multi-agent coordination frameworks.

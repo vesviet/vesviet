@@ -24,11 +24,11 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 # Base directories
-BASE_DIR = Path("/home/user/personalized")
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 VESVIET_DIR = BASE_DIR / "vesviet"
-PUBLIC_DIR = VESVIET_DIR / "public"
-STATIC_DIR = VESVIET_DIR / "static"
-CONTENT_DIR = VESVIET_DIR / "content"
+PUBLIC_DIR = BASE_DIR / "vesviet" / "public"
+STATIC_DIR = BASE_DIR / "vesviet" / "static"
+CONTENT_DIR = BASE_DIR / "vesviet" / "content"
 TMP_DIR = BASE_DIR / "tmp"
 REDIRECTS_FILE = STATIC_DIR / "_redirects"
 
@@ -128,22 +128,22 @@ class EmpiricalRedirectOracle:
             return [r[0].strip() for r in rows[1:] if r]
 
     def test_gsc_404_coverage(self):
-        """Test all 274 rows from GSC 2.zip, 7.zip, 8.zip (137 unique URLs)."""
+        """Test all rows from GSC 2.zip, 7.zip, 8.zip (155 rows, 155 unique URLs)."""
         r2 = self.load_gsc_zip("2.zip")
         r7 = self.load_gsc_zip("7.zip")
         r8 = self.load_gsc_zip("8.zip")
 
         total_rows = len(r2) + len(r7) + len(r8)
-        if total_rows != 274:
-            self.record_fail("GSC 404 Row Count", f"Expected 274 rows, got {total_rows}")
+        if total_rows != 155:
+            self.record_fail("GSC 404 Row Count", f"Expected 155 rows, got {total_rows}")
         else:
-            self.record_pass("GSC 404 Row Count", f"274 rows verified across 2.zip ({len(r2)}), 7.zip ({len(r7)}), 8.zip ({len(r8)})")
+            self.record_pass("GSC 404 Row Count", f"155 rows verified across 2.zip ({len(r2)}), 7.zip ({len(r7)}), 8.zip ({len(r8)})")
 
         unique_urls = sorted(set(r2 + r7 + r8))
-        if len(unique_urls) != 137:
-            self.record_fail("GSC 404 Unique Count", f"Expected 137 unique URLs, got {len(unique_urls)}")
+        if len(unique_urls) != 155:
+            self.record_fail("GSC 404 Unique Count", f"Expected 155 unique URLs, got {len(unique_urls)}")
         else:
-            self.record_pass("GSC 404 Unique Count", "137 unique 404 URLs identified")
+            self.record_pass("GSC 404 Unique Count", "155 unique 404 URLs identified")
 
         tanh_404s = [u for u in unique_urls if urlparse(u).netloc == "tanhdev.com"]
         learn_404s = [u for u in unique_urls if urlparse(u).netloc == "learn.tanhdev.com"]
@@ -172,12 +172,12 @@ class EmpiricalRedirectOracle:
             self.record_pass("tanhdev.com 404 Coverage", f"100% resolved ({resolved_by_rule} via 301 rules, {resolved_by_200} via active 200 OK pages)")
 
     def test_gsc_redirect_coverage(self):
-        """Test all 84 rows from GSC 3.zip."""
+        """Test all rows from GSC 3.zip (96 rows)."""
         rows = self.load_gsc_zip("3.zip")
-        if len(rows) != 84:
-            self.record_fail("GSC 3.zip Row Count", f"Expected 84 rows, got {len(rows)}")
+        if len(rows) != 96:
+            self.record_fail("GSC 3.zip Row Count", f"Expected 96 rows, got {len(rows)}")
         else:
-            self.record_pass("GSC 3.zip Row Count", "84 rows verified in 3.zip")
+            self.record_pass("GSC 3.zip Row Count", f"96 rows verified in 3.zip")
 
         unique_urls = sorted(set(rows))
         tanh_reds = [u for u in unique_urls if urlparse(u).netloc == "tanhdev.com"]

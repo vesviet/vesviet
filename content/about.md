@@ -5,6 +5,7 @@ date: "2021-10-14T18:48:02+07:00"
 lastmod: "2026-07-23T13:34:42+07:00"
 aliases:
   - /about-me/
+  - /contact/
 description: "Lê Tuấn Anh — Senior Go Backend Architect with 17+ years building high-traffic microservices, event-driven platforms, GitOps, and cloud ecosystems."
 author: "Lê Tuấn Anh"
 cover:

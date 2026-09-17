@@ -33,6 +33,19 @@ aliases:
   - /radar/2026-05/radar-2026-05-30-illinois-ai-bill-dell-servers-gstar-hcmc/
   - /radar/radar-2026-05-30-illinois-ai-bill-dell-servers-gstar-hcmc/
   - /radar/tech-radar-may-30-illinois-ai-bill-dell-server-surge/
+  - /radar/radar-2026-05-02-techtask-commerce-platform/
+  - /radar/radar-2026-05-03/
+  - /radar/radar-2026-05-14/
+  - /radar/radar-2026-05-15/
+  - /radar/radar-2026-05-19/
+  - /radar/radar-2026-05-28-openai-deployco-apple-gemini/
+  - /radar/tech-radar-may-5-2026-sovereign-control-planes-github-actions-supply-chain-and-patch-driven-operations/
+  - /radar/tech-radar-may-10-2026-go-1.26-green-tea-gc-kubernetes-as-ai-os-and-agentic-engineering/
+  - /radar/tech-radar-may-12-2026-the-token-economy-google-i/o-countdown-claude-mythos-and-the-agent-identity-crisis/
+  - /radar/tech-radar-may-13-2026-agentops-meets-kubernetes-vm/k8s-convergence-and-routine-patching/
+  - /radar/tech-radar-may-14-2026-claude-dethrones-gpt-openais-cyber-counterstrike-k8s-says-goodbye-to-ingress-nginx-and-5-days-to-google-i/o/
+  - /radar/tech-radar-may-15-2026-anthropics-200m-moral-play-the-agentic-cost-crisis-codex-goes-mobile-and-t-4-to-google-i/o/
+  - /radar/tech-radar-may-28-2026-apple-gemini-openai-deployco/
 description: "Curated May 2026 Tech Radar digest covering DigitalOcean AI cloud, Dapr AI, Argo CD 3.4, Go 1.26 Green Tea GC, and enterprise agentic security protocols."
 ---
 > **Answer-first:** Tech Radar Digest for May 2026 aggregates 18 daily engineering briefings analyzing AI-native cloud infrastructure, e-commerce platform microservices, OpenAI deployments, and enterprise backend architectures. Key takeaways highlight distributed state management, low-latency API gateways, and production-grade resilience strategies across multi-cloud environments.

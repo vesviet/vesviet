@@ -19,6 +19,8 @@ cover:
   relative: false
 keywords: ["vibe coding enterprise", "ai code review pipeline", "context engineering cursor", "multi-agent code review github actions", "prevent ai code hallucinations", "owasp llm code security"]
 mermaid: true
+aliases:
+  - /tags/vibe-coding-pm/
 ---
 
 > **Answer-first:** Enterprise vibe coding accelerates software delivery by an order of magnitude, but deploying AI-generated code to production demands rigorous context engineering and multi-agent review pipelines. Without deterministic AST indexing, automated challenger agents, and zero-trust CI guardrails, probabilistic code introduces catastrophic architectural drift, critical security vulnerabilities, phantom dependencies, and unsustainable maintenance overhead in enterprise systems.

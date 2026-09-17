@@ -19,6 +19,8 @@ cover:
   relative: false
 keywords: ["ai native pod operating model", "engineering team topologies ai", "ai dora metrics", "junior developer paradox ai", "engineering leadership 2026"]
 mermaid: true
+aliases:
+  - /series/ai-driven-playbook/part-5-autonomous-testing-qa-automation/
 ---
 
 > **Answer-first:** Traditional 8–12 person Scrum squads break down in the AI era due to massive coordination overhead and communication bottlenecks. Modern engineering organizations restructure into **3–4 person AI-Native Pods**—comprising an **Architectural Lead**, a **Full-Stack Context Engineer**, and an **Autonomous Verification Specialist**—capable of out-delivering traditional squads by 4x while achieving Elite DORA performance.

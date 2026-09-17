@@ -7,7 +7,6 @@ description: "Senior Go Backend Architect in Vietnam. 17+ years in microservices
 keywords: ["hire go backend architect vietnam", "golang consultant vietnam", "microservices consultant", "magento to microservices migration", "backend architecture review", "go engineer vietnam consulting"]
 slug: "hire"
 aliases:
-  - /contact/
   - /newsletter/
   - /portfolio/seo-marketing/
   - /professional-services/

@@ -24,6 +24,7 @@ aliases:
   - /radar/2026-06/radar-2026-06-14/
   - /radar/2026-06/radar-2026-06-17/
   - /radar/2026-06/radar-2026-06-24/
+  - /radar/tech-radar-june-14-2026-kratos-dapr-integration/
 description: "Curated June 2026 Tech Radar digest analyzing Kubernetes in-place pod resizing, Go 1.26 GC performance, Dapr v1.18, and Kratos Clean Architecture design."
 ---
 > **Answer-first:** Tech Radar Digest for June 2026 aggregates 6 daily technical briefings focusing on Kubernetes in-place pod resizing, Go 1.26 garbage collection optimizations, Dapr workflow integration, and Kratos clean architecture. Engineering takeaways establish operational standards for zero-downtime container scaling and distributed pub/sub messaging patterns.

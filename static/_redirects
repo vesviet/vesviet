@@ -15,9 +15,9 @@
 /impressum/ /legal-notice/ 301
 /newsletter/ /hire/ 301
 /our-services/ / 301
-/portfolio/seo-marketing/ / 301
+/portfolio/seo-marketing/ /hire/ 301
 /privacy/ /privacy-policy/ 301
-/professional-services/ / 301
+/professional-services/ /hire/ 301
 /tab-accordion/ / 301
 /terms/ /terms-of-service/ 301
 /wp-content/uploads/2022/12/LE-TUAN-ANH-151639.pdf /Le-Tuan-Anh-Resume.pdf 301
@@ -283,8 +283,8 @@
 /radar/tech-radar-may-5-2026-sovereign-control-planes-github-actions-supply-chain-and-patch-driven-operations/ /radar/2026-05/ 301
 
 # --- 8. Tech Radar Migrations (Cross-Domain to Learn) ---
-/radar/tech-radar-april-28-2026-openai-and-microsoft-end-exclusivity-the-cloud-war-enters-its-multi-cloud-phase/ https://learn.tanhdev.com/radar/2026-04/radar-2026-04-28/ 301
-/radar/tech-radar-april-29-2026-aws-and-openai-expand-bedrock-models-codex-and-managed-agents-turn-multi-cloud-into-a-product/ https://learn.tanhdev.com/radar/2026-04/radar-2026-04-29/ 301
+/radar/tech-radar-april-28-2026-openai-and-microsoft-end-exclusivity-the-cloud-war-enters-its-multi-cloud-phase/ /radar/2026-04/radar-2026-04-28/ 301
+/radar/tech-radar-april-29-2026-aws-and-openai-expand-bedrock-models-codex-and-managed-agents-turn-multi-cloud-into-a-product/ /radar/2026-04/radar-2026-04-29/ 301
 
 # --- 9. Taxonomy & Tag Endpoints ---
 /tags/agentic-memory/ /tags/ 301
@@ -304,3 +304,56 @@
 /tags/qa/ /tags/ 301
 /tags/vibe-coding-pm/ /series/ai-code-review-vibe-coding/ 301
 
+# --- 10. Frontmatter Aliases Parity & Agentic Series Migration ---
+/series/agentic-system-architecture/executive-summary/ /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
+/series/agentic-system-architecture/executive-summary /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
+/series/agentic-system-architecture/part-1-topology/ /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
+/series/agentic-system-architecture/part-1-topology /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
+/series/agentic-system-architecture/part-2-memory/ /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
+/series/agentic-system-architecture/part-2-memory /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
+/series/agentic-system-architecture/part-3-tool-calling/ /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
+/series/agentic-system-architecture/part-3-tool-calling /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
+/series/agentic-system-architecture/part-4-agentops/ /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
+/series/agentic-system-architecture/part-4-agentops /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
+/series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical/ /series/ai-code-review-vibe-coding/part-1-vibe-coding-paradigm/ 301
+/series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical /series/ai-code-review-vibe-coding/part-1-vibe-coding-paradigm/ 301
+/series/ai-code-review-vibe-coding/part-2-context-engineering-codebase/ /series/ai-code-review-vibe-coding/part-2-context-engineering/ 301
+/series/ai-code-review-vibe-coding/part-2-context-engineering-codebase /series/ai-code-review-vibe-coding/part-2-context-engineering/ 301
+/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent/ /series/ai-code-review-vibe-coding/part-4-multi-agent-review-pipeline/ 301
+/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent /series/ai-code-review-vibe-coding/part-4-multi-agent-review-pipeline/ 301
+/series/ai-code-review-vibe-coding/part-5-ai-code-security/ /series/ai-code-review-vibe-coding/part-5-ai-code-security-supply-chain/ 301
+/series/ai-code-review-vibe-coding/part-5-ai-code-security /series/ai-code-review-vibe-coding/part-5-ai-code-security-supply-chain/ 301
+/series/ai-code-review-vibe-coding/part-6-governance-observability-career/ /series/ai-code-review-vibe-coding/part-6-governance-career/ 301
+/series/ai-code-review-vibe-coding/part-6-governance-observability-career /series/ai-code-review-vibe-coding/part-6-governance-career/ 301
+
+# --- 11. GSC 404 Complete Technical Remediation ---
+/posts/strangler-fig-shared-database-quick-win /series/magento-migration-vietnam/strangler-fig-shared-database-quick-win/ 301
+/posts/strangler-fig-shared-database-quick-win/ /series/magento-migration-vietnam/strangler-fig-shared-database-quick-win/ 301
+/radar/radar-2026-04-27-claude-sonnet /radar/2026-04/radar-2026-04-27-claude-sonnet/ 301
+/radar/radar-2026-04-27-claude-sonnet/ /radar/2026-04/radar-2026-04-27-claude-sonnet/ 301
+/radar/radar-2026-04-29-creative-mcp /radar/2026-04/radar-2026-04-29-creative-mcp/ 301
+/radar/radar-2026-04-29-creative-mcp/ /radar/2026-04/radar-2026-04-29-creative-mcp/ 301
+/radar/tech-radar-april-24-2026-google-cloud-next-26-bets-the-enterprise-on-agentic-ai-and-custom-silicon /radar/2026-04/ 301
+/radar/tech-radar-april-24-2026-google-cloud-next-26-bets-the-enterprise-on-agentic-ai-and-custom-silicon/ /radar/2026-04/ 301
+/radar/tech-radar-april-30-2026-the-first-24-hours-of-post-exclusivity-ai-multi-cloud-access-agent-runtime-control-and-mcp-expansion /radar/2026-04/radar-2026-04-30/ 301
+/radar/tech-radar-april-30-2026-the-first-24-hours-of-post-exclusivity-ai-multi-cloud-access-agent-runtime-control-and-mcp-expansion/ /radar/2026-04/radar-2026-04-30/ 301
+/radar/tech-radar-aws-openai-bedrock-multi-cloud-expansion /radar/2026-04/radar-2026-04-29/ 301
+/radar/tech-radar-aws-openai-bedrock-multi-cloud-expansion/ /radar/2026-04/radar-2026-04-29/ 301
+/radar/tech-radar-june-22-2026-dapr-workflow-kratos-clean-architecture /radar/2026-06/tech-radar-june-22-2026-dapr-workflow-kratos-clean-architecture/ 301
+/radar/tech-radar-june-22-2026-dapr-workflow-kratos-clean-architecture/ /radar/2026-06/tech-radar-june-22-2026-dapr-workflow-kratos-clean-architecture/ 301
+/research/high-throughput-local-llm-infrastructure-vllm-golang-gateway /posts/high-throughput-local-llm-infrastructure-vllm-golang-gateway/ 301
+/research/high-throughput-local-llm-infrastructure-vllm-golang-gateway/ /posts/high-throughput-local-llm-infrastructure-vllm-golang-gateway/ 301
+/series/ecommerce-order-allocation/order-splitting-graph-coloring-opa /posts/order-fulfillment-algorithm-warehouse-last-mile/ 301
+/series/ecommerce-order-allocation/order-splitting-graph-coloring-opa/ /posts/order-fulfillment-algorithm-warehouse-last-mile/ 301
+/series/ecommerce-order-allocation/warehouse-picker-routing-optimization /posts/order-fulfillment-algorithm-warehouse-last-mile/ 301
+/series/ecommerce-order-allocation/warehouse-picker-routing-optimization/ /posts/order-fulfillment-algorithm-warehouse-last-mile/ 301
+/tags/awq /tags/ 301
+/tags/awq/ /tags/ 301
+/tags/cutover /tags/ 301
+/tags/cutover/ /tags/ 301
+/tags/or-tools /tags/ 301
+/tags/or-tools/ /tags/ 301
+/tags/supply-chain /tags/ 301
+/tags/supply-chain/ /tags/ 301
+/tags/system-design /categories/architecture/ 301
+/tags/system-design/ /categories/architecture/ 301

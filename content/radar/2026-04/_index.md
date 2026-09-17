@@ -22,6 +22,15 @@ aliases:
   - /radar/2026-04/radar-2026-04-24/
   - /radar/2026-04/radar-2026-04-25/
   - /radar/2026-04/radar-2026-04-26-anthropic-compute/
+  - /radar/tech-radar-april-24-2026-google-cloud-next-26-bets-the-enterprise-on-agentic-ai-and-custom-silicon/
+  - /radar/tech-radar-april-16-2026-gitlab-tightens-upgrade-governance-connects-test-execution-to-systems-of-record-and-pushes-ai-into-planning/
+  - /radar/tech-radar-april-17-2026-gitlab-pushes-agentic-devsecops-toward-operability-cost-control-and-stronger-reasoning/
+  - /radar/tech-radar-april-18-2026-argo-cd-turns-gitops-into-a-full-lifecycle-discipline/
+  - /radar/tech-radar-april-25-2026-openai-ships-the-codex-app-and-gpt-5.2-codex-agentic-coding-becomes-a-command-center/
+  - /radar/radar-2026-04-15/
+  - /radar/radar-2026-04-16/
+  - /radar/radar-2026-04-17/
+  - /radar/radar-2026-04-18/
 description: "Curated April 2026 Tech Radar digest analyzing Go 1.26 PGO, Dapr sidecar streaming recovery, Kratos framework hardening, and enterprise AI orchestration."
 canonicalURL: "https://tanhdev.com/radar/2026-04/"
 ---
