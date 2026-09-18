@@ -1,9 +1,9 @@
 ---
-title: "Executive Summary: The Rise of Specialized Small Language Models"
+title: "Executive Summary: The Rise of Specialized Small Models"
 date: 2026-08-16T10:00:00+07:00
 lastmod: 2026-09-09T14:00:00+07:00
 author: "Lê Tuấn Anh"
-description: "Why enterprise AI architecture is shifting from monolithic frontier models to specialized 1B–14B Small Language Models (SLMs) in 2026: economics, TCO break-even formulas, and hybrid routing."
+description: "Why enterprise AI architectures shift to 1B–14B Small Language Models in 2026: financial TCO formulas, break-even proofs, and hybrid gateway routing."
 categories: ["Series", "AI Infrastructure", "Machine Learning"]
 tags: ["SLM", "AI Economics", "FinOps", "LLMOps", "vLLM", "DeepSeek-R1", "Hybrid AI"]
 series: ["slm-playbook"]
@@ -94,7 +94,7 @@ The Hybrid AI Gateway operates through four disciplined engineering stages:
 1. **Sub-5ms Semantic Classification:** Incoming user requests are intercepted by a lightweight 22M parameter encoder (ModernBERT or BGE-small) running on CPU to classify query intent.
 2. **Local High-Throughput Serving:** Standard domain tasks are dispatched to an on-premise or VPC-hosted vLLM engine running AWQ 4-bit quantized SLMs.
 3. **Runtime Confidence & Uncertainty Verification:** As tokens generate, the engine tracks average token log-probabilities and sequence entropy. If the model exhibits ambiguity or encounters an out-of-distribution prompt, the output is withheld from the client.
-4. **Sanitized Cloud Escalation:** The request seamlessly escalates to a frontier cloud model. Before outbound transmission over HTTPS, a local Data Loss Prevention (DLP) scanner redacts all proprietary entity tokens, ensuring zero PII egress.
+4. **Sanitized Cloud Escalation:** The request escalates without host intervention to a frontier cloud model. Before outbound transmission over HTTPS, a local Data Loss Prevention (DLP) scanner redacts all proprietary entity tokens, ensuring zero PII egress.
 
 ---
 

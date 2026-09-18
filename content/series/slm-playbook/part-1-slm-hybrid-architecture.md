@@ -84,7 +84,7 @@ For an 8B parameter model utilizing Grouped-Query Attention (e.g., Llama 3 with 
 
 ## 3. Two-Tier Hybrid Gateway Architecture
 
-> **BLUF (Bottom Line Up Front):** The hybrid routing tier evaluates query complexity via lightweight embedding classifiers in <3.5ms; 80% of routine traffic resolves locally in <40ms, while low-confidence generations trigger seamless sanitized escalation to cloud frontier models.
+> **BLUF (Bottom Line Up Front):** The hybrid routing tier evaluates query complexity via lightweight embedding classifiers in <3.5ms; 80% of routine traffic resolves locally in <40ms, while low-confidence generations trigger sub-millisecond deterministic routing via sanitized escalation to cloud frontier models.
 
 ```mermaid
 sequenceDiagram
@@ -294,8 +294,6 @@ if __name__ == "__main__":
 
 ---
 
----
-
 ## 8. High-Concurrency Reverse-Proxy Gateway in Go (Golang 1.24)
 
 > **BLUF (Bottom Line Up Front):** For tier-1 enterprise gateways handling >25,000 concurrent streaming connections, an asynchronous reverse proxy written in Go 1.24 using worker connection pools delivers sub-1ms routing overhead and zero-allocation JSON streaming.
@@ -315,6 +313,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"sync/atomic"
 	"time"
 )
@@ -326,17 +325,45 @@ type RouteRequest struct {
 }
 
 type RouteResponse struct {
-	Content      string  `json:"content"`
-	ServedBy     string  `json:"served_by"`
-	LatencyMs    float64 `json:"latency_ms"`
-	IsEscalated  bool    `json:"is_escalated"`
+	Content     string  `json:"content"`
+	ServedBy    string  `json:"served_by"`
+	LatencyMs   float64 `json:"latency_ms"`
+	IsEscalated bool    `json:"is_escalated"`
 }
 
+// GatewayConfig parameterizes all networking, concurrency, and routing thresholds.
 type GatewayConfig struct {
-	LocalVLLMEndpoint string
-	FrontierAPIKey    string
-	LocalTimeout      time.Duration
-	ConfidenceFloor   float64
+	LocalVLLMEndpoint   string
+	FrontierAPIKey      string
+	FrontierEndpoint    string
+	LocalModelName      string
+	FrontierModelName   string
+	LocalTimeout        time.Duration
+	ClientTimeout       time.Duration
+	ConfidenceFloor     float64
+	MaxQueueDepth       int64
+	MaxIdleConns        int
+	MaxIdleConnsPerHost int
+	IdleConnTimeout     time.Duration
+	ListenAddr          string
+}
+
+// DefaultGatewayConfig provides production-tuned baseline defaults.
+func DefaultGatewayConfig() GatewayConfig {
+	return GatewayConfig{
+		LocalVLLMEndpoint:   "http://localhost:8000/v1",
+		FrontierEndpoint:    "https://api.anthropic.com/v1/messages",
+		LocalModelName:      "qwen-2.5-coder-7b-instruct-awq",
+		FrontierModelName:   "claude-3-5-sonnet-20241022",
+		LocalTimeout:        600 * time.Millisecond,
+		ClientTimeout:       15 * time.Second,
+		ConfidenceFloor:     0.84,
+		MaxQueueDepth:       64,
+		MaxIdleConns:        1000,
+		MaxIdleConnsPerHost: 250,
+		IdleConnTimeout:     90 * time.Second,
+		ListenAddr:          ":8080",
+	}
 }
 
 type ResilientAIGateway struct {
@@ -346,10 +373,29 @@ type ResilientAIGateway struct {
 }
 
 func NewGateway(cfg GatewayConfig) *ResilientAIGateway {
+	if cfg.MaxIdleConns <= 0 {
+		cfg.MaxIdleConns = 1000
+	}
+	if cfg.MaxIdleConnsPerHost <= 0 {
+		cfg.MaxIdleConnsPerHost = 250
+	}
+	if cfg.IdleConnTimeout <= 0 {
+		cfg.IdleConnTimeout = 90 * time.Second
+	}
+	if cfg.ClientTimeout <= 0 {
+		cfg.ClientTimeout = 15 * time.Second
+	}
+	if cfg.MaxQueueDepth <= 0 {
+		cfg.MaxQueueDepth = 64
+	}
+	if cfg.ListenAddr == "" {
+		cfg.ListenAddr = ":8080"
+	}
+
 	t := &http.Transport{
-		MaxIdleConns:        1000,
-		MaxIdleConnsPerHost: 250,
-		IdleConnTimeout:     90 * time.Second,
+		MaxIdleConns:        cfg.MaxIdleConns,
+		MaxIdleConnsPerHost: cfg.MaxIdleConnsPerHost,
+		IdleConnTimeout:     cfg.IdleConnTimeout,
 		DisableCompression:  false,
 		ForceAttemptHTTP2:   true,
 	}
@@ -357,7 +403,7 @@ func NewGateway(cfg GatewayConfig) *ResilientAIGateway {
 		cfg: cfg,
 		httpClient: &http.Client{
 			Transport: t,
-			Timeout:   15 * time.Second,
+			Timeout:   cfg.ClientTimeout,
 		},
 	}
 }
@@ -378,16 +424,14 @@ func (g *ResilientAIGateway) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	atomic.AddInt64(&g.queueDepth, 1)
 	defer atomic.AddInt64(&g.queueDepth, -1)
 
-	// Attempt local execution first if queue depth is manageable
 	var resp RouteResponse
 	var err error
-	if atomic.LoadInt64(&g.queueDepth) < 64 {
+	if atomic.LoadInt64(&g.queueDepth) < g.cfg.MaxQueueDepth {
 		resp, err = g.executeLocalSLM(r.Context(), req)
 	} else {
 		err = errors.New("local queue saturated, triggering fast spillover")
 	}
 
-	// Escalate to frontier if local failed or uncertainty detected
 	if err != nil {
 		resp, err = g.executeCloudFrontier(r.Context(), req)
 		if err != nil {
@@ -399,7 +443,7 @@ func (g *ResilientAIGateway) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	resp.LatencyMs = float64(time.Since(start).Microseconds()) / 1000.0
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("X-AI-Served-By", resp.ServedBy)
-	json.NewEncoder(w).Encode(resp)
+	_ = json.NewEncoder(w).Encode(resp)
 }
 
 func (g *ResilientAIGateway) executeLocalSLM(ctx context.Context, req RouteRequest) (RouteResponse, error) {
@@ -407,7 +451,7 @@ func (g *ResilientAIGateway) executeLocalSLM(ctx context.Context, req RouteReque
 	defer cancel()
 
 	payload, _ := json.Marshal(map[string]interface{}{
-		"model":       "qwen-2.5-coder-7b-instruct-awq",
+		"model":       g.cfg.LocalModelName,
 		"prompt":      req.Prompt,
 		"max_tokens":  req.MaxTokens,
 		"temperature": req.Temp,
@@ -440,19 +484,19 @@ func (g *ResilientAIGateway) executeLocalSLM(ctx context.Context, req RouteReque
 
 	return RouteResponse{
 		Content:     vllmOut.Choices[0].Text,
-		ServedBy:    "local-vllm-qwen7b",
+		ServedBy:    g.cfg.LocalModelName,
 		IsEscalated: false,
 	}, nil
 }
 
 func (g *ResilientAIGateway) executeCloudFrontier(ctx context.Context, req RouteRequest) (RouteResponse, error) {
 	payload, _ := json.Marshal(map[string]interface{}{
-		"model":      "claude-3-5-sonnet-20241022",
+		"model":      g.cfg.FrontierModelName,
 		"max_tokens": req.MaxTokens,
 		"messages":   []map[string]string{{"role": "user", "content": req.Prompt}},
 	})
 
-	httpReq, err := http.NewRequestWithContext(ctx, "POST", "https://api.anthropic.com/v1/messages", bytes.NewReader(payload))
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", g.cfg.FrontierEndpoint, bytes.NewReader(payload))
 	if err != nil {
 		return RouteResponse{}, err
 	}
@@ -478,21 +522,31 @@ func (g *ResilientAIGateway) executeCloudFrontier(ctx context.Context, req Route
 
 	return RouteResponse{
 		Content:     cloudOut.Content[0].Text,
-		ServedBy:    "cloud-claude-3-5-sonnet",
+		ServedBy:    g.cfg.FrontierModelName,
 		IsEscalated: true,
 	}, nil
 }
 
 func main() {
-	cfg := GatewayConfig{
-		LocalVLLMEndpoint: os.Getenv("VLLM_URL"),
-		FrontierAPIKey:    os.Getenv("ANTHROPIC_API_KEY"),
-		LocalTimeout:      600 * time.Millisecond,
-		ConfidenceFloor:   0.84,
+	cfg := DefaultGatewayConfig()
+	if v := os.Getenv("VLLM_URL"); v != "" {
+		cfg.LocalVLLMEndpoint = v
 	}
+	if v := os.Getenv("ANTHROPIC_API_KEY"); v != "" {
+		cfg.FrontierAPIKey = v
+	}
+	if v := os.Getenv("MAX_QUEUE_DEPTH"); v != "" {
+		if val, err := strconv.ParseInt(v, 10, 64); err == nil {
+			cfg.MaxQueueDepth = val
+		}
+	}
+	if v := os.Getenv("GATEWAY_PORT"); v != "" {
+		cfg.ListenAddr = ":" + v
+	}
+
 	gw := NewGateway(cfg)
-	log.Println("Hybrid AI Gateway operational on :8080")
-	if err := http.ListenAndServe(":8080", gw); err != nil {
+	log.Printf("Hybrid AI Gateway operational on %s", cfg.ListenAddr)
+	if err := http.ListenAndServe(cfg.ListenAddr, gw); err != nil {
 		log.Fatalf("Fatal gateway failure: %v", err)
 	}
 }

@@ -1,9 +1,9 @@
 ---
-title: "The SLM Playbook: Fine-Tuning & Model Distillation for Production"
+title: "The SLM Playbook: Fine-Tuning & Distillation in Production"
 date: 2026-08-16T10:00:00+07:00
 lastmod: 2026-09-09T14:00:00+07:00
 author: "Lê Tuấn Anh"
-description: "A practitioner's guide to fine-tuning, distilling, aligning, and serving Small Language Models (SLMs: 1B–14B) on commodity GPUs with QLoRA, Axolotl, DeepSeek-R1 distillation, DPO, and vLLM."
+description: "A production guide to fine-tuning, distilling, aligning, and serving 1B–14B Small Language Models on commodity GPUs with QLoRA, DeepSeek-R1, and vLLM."
 categories: ["Series", "AI Infrastructure", "LLMOps", "Machine Learning"]
 tags: ["SLM", "Fine-Tuning", "QLoRA", "Axolotl", "Knowledge Distillation", "DPO", "vLLM", "DeepSeek", "PyTorch"]
 weight: 1

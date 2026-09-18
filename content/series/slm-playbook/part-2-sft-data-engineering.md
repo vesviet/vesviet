@@ -1,9 +1,9 @@
 ---
-title: "Part 2: SFT Data Engineering — NEFTune & Synthetic Data Curation"
+title: "Part 2: SFT Data Engineering — NEFTune & Synthetic Curation"
 date: 2026-08-18T10:00:00+07:00
 lastmod: 2026-09-09T14:00:00+07:00
 author: "Lê Tuấn Anh"
-description: "Constructing high-signal Supervised Fine-Tuning (SFT) datasets for SLMs: NEFTune embedding noise injection mathematics, SemDeDup semantic deduplication, and 13-gram benchmark decontamination."
+description: "Engineering high-signal SFT datasets for SLMs: NEFTune embedding noise injection, SemDeDup semantic clustering, and 13-gram benchmark decontamination."
 categories: ["Series", "Machine Learning", "Data Engineering"]
 tags: ["SFT", "Data Engineering", "NEFTune", "Synthetic Data", "Axolotl", "LIMA", "Decontamination"]
 series: ["slm-playbook"]

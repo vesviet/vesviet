@@ -1,9 +1,9 @@
 ---
-title: "Part 5: Preference Alignment with DPO (Direct Preference Optimization) & GRPO"
+title: "Part 5: Preference Alignment with DPO & GRPO for SLMs"
 date: 2026-08-19T12:00:00+07:00
 lastmod: 2026-09-09T14:00:00+07:00
 author: "Lê Tuấn Anh"
-description: "Masterclass on aligning Small Language Models: Direct Preference Optimization (DPO), Group Relative Policy Optimization (GRPO) without Critic networks, Kahneman-Tversky Optimization (KTO), SimPO length-bias mitigations, and JSON schema enforcement."
+description: "Production alignment for Small Language Models: Direct Preference Optimization, Critic-free GRPO, KTO signals, SimPO length bias, and JSON enforcement."
 categories: ["Series", "Machine Learning", "AI Architecture"]
 tags: ["DPO", "GRPO", "KTO", "RLHF", "Alignment", "TRL", "PyTorch", "PEFT"]
 series: ["slm-playbook"]
@@ -300,7 +300,9 @@ Before promoting any preference-aligned checkpoint to production, teams must exe
 
 1. **Safety & Compliance Benchmarking:** Run 500 adversarial red-teaming prompts through automated LLM-as-a-judge classifiers (using GPT-4o or Claude 3.5 Sonnet) to compute the Refusal Compliance Rate (target: > 99.5%).
 2. **Core Capability Preservation:** Evaluate the model on multi-turn general benchmarks (MT-Bench, GSM8K, HumanEval). If core task scores drop by more than 2.0% compared to the SFT baseline, the run is rejected for alignment tax degradation.
-3. **Implicit Margin Tracking:** Persist validation log-likelihood margins across training checkpoints to detect overfitting before weights are merged into release candidate artifacts.\n\n---\n\n
+3. **Implicit Margin Tracking:** Persist validation log-likelihood margins across training checkpoints to detect overfitting before weights are merged into release candidate artifacts.
+
+---
 
 ### Hyperparameter Tuning Protocols for Production DPO
 To guarantee monotonic convergence during Direct Preference Optimization and avoid degeneration into repetitive loops:

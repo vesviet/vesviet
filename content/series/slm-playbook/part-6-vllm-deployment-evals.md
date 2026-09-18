@@ -1,9 +1,9 @@
 ---
-title: "Part 6: Enterprise vLLM Deployment, Quantization & Automated Evals"
+title: "Part 6: Enterprise vLLM Deployment, Quantization & Evals"
 date: 2026-08-19T13:00:00+07:00
 lastmod: 2026-09-09T14:00:00+07:00
 author: "Lê Tuấn Anh"
-description: "Production engineering masterclass on enterprise SLM serving: PagedAttention v2, Multi-Head Latent Attention (MLA) KV compression, AWQ vs FP8 quantization, dynamic Multi-LoRA Punica kernels, and automated CI/CD LLM-as-a-judge evaluation gates."
+description: "Enterprise SLM serving masterclass: PagedAttention v2, Multi-Head Latent Attention KV compression, AWQ/FP8, dynamic Multi-LoRA, and CI/CD eval gates."
 categories: ["Series", "Machine Learning", "AI Infrastructure"]
 tags: ["vLLM", "Quantization", "AWQ", "FP8", "Multi-LoRA", "LLM Evals", "Model Serving", "Kubernetes"]
 series: ["slm-playbook"]
@@ -327,7 +327,9 @@ spec:
         averageValue: "5"
 ```
 
-If the average number of queued waiting requests exceeds 5 per pod across a 60-second sliding window, Kubernetes automatically spins up additional GPU worker nodes, preserving sub-50ms Time-to-First-Token latency across high-demand business hours.\n\n---\n\n
+If the average number of queued waiting requests exceeds 5 per pod across a 60-second sliding window, Kubernetes automatically spins up additional GPU worker nodes, preserving sub-50ms Time-to-First-Token latency across high-demand business hours.
+
+---
 
 ### Deep Failure Analysis: Multi-LoRA Cache Thrashing Under Peak Concurrency
 When serving more than 30 dynamic LoRA adapters simultaneously using the Punica CUDA kernel, enterprise clusters can experience severe throughput collapse known as **Adapter Thrashing**:

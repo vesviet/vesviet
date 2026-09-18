@@ -1,9 +1,9 @@
 ---
-title: "Part 4: Knowledge Distillation from DeepSeek-R1 & Frontier Teachers"
+title: "Part 4: Distillation from DeepSeek-R1 & Frontier Teachers"
 date: 2026-08-19T11:00:00+07:00
 lastmod: 2026-09-09T14:00:00+07:00
 author: "Lê Tuấn Anh"
-description: "Masterclass on transferring Chain-of-Thought (CoT) reasoning capabilities from DeepSeek-R1 671B MoE into compact 1.5B–8B SLMs using structured <think> tokens, Rejection Sampling, and hybrid loss formulations."
+description: "Transferring Chain-of-Thought reasoning from DeepSeek-R1 671B MoE into 1.5B–8B SLMs using structured think tokens, rejection sampling, and KL loss."
 categories: ["Series", "Machine Learning", "AI Architecture"]
 tags: ["Knowledge Distillation", "DeepSeek-R1", "Chain of Thought", "Reasoning", "Qwen", "PyTorch", "Model Compression"]
 series: ["slm-playbook"]

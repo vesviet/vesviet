@@ -3,7 +3,7 @@ title: "Part 3: QLoRA & Axolotl Fine-Tuning on Commodity GPUs"
 date: 2026-08-19T10:00:00+07:00
 lastmod: 2026-09-09T14:00:00+07:00
 author: "Lê Tuấn Anh"
-description: "Engineering masterclass for fine-tuning 3B–14B models on single 24GB GPUs using 4-bit NormalFloat (NF4) QLoRA, Double Quantization, Paged Optimizers, and Axolotl."
+description: "Masterclass on fine-tuning 3B–14B models on single 24GB GPUs using 4-bit NormalFloat QLoRA, Double Quantization, Paged Optimizers, and Axolotl pipelines."
 categories: ["Series", "Machine Learning", "AI Infrastructure"]
 tags: ["QLoRA", "Axolotl", "Fine-Tuning", "PyTorch", "Unsloth", "Quantization", "PEFT"]
 series: ["slm-playbook"]
@@ -372,7 +372,11 @@ When scaling past 14B parameters (such as fine-tuning Qwen 2.5 32B or Llama 3.3 
 
 1. **FSDP with CPU Offloading:** Shard adapter states, gradients, and optimizer states across multiple commodity GPUs.
 2. **BitsAndBytes 4-bit FSDP Integration:** Utilize Hugging Face Accelerate with `fsdp_transformer_layer_cls_to_wrap` targeting `Qwen2DecoderLayer` to shard base parameters across nodes without dequantization latency.
-3. **Communication Overhead Mitigation:** Keep `gradient_accumulation_steps >= 16` to ensure compute time dominates PCIe bus synchronization barriers.\n\n---\n\n## ❓ Frequently Asked Questions (FAQ)
+3. **Communication Overhead Mitigation:** Keep `gradient_accumulation_steps >= 16` to ensure compute time dominates PCIe bus synchronization barriers.
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
 
 {{< faq q="How should I configure LoRA rank and alpha for domain-specific tasks?" >}}
 For the vast majority of enterprise domain adaptation tasks (Text-to-SQL, JSON extraction, entity classification), rank $r=16$ with alpha $\alpha=32$ represents the optimal configuration. Setting $r > 32$ increases adapter memory footprint and training duration without providing measurable downstream accuracy gains. Always maintain the ratio $\alpha = 2 \times r$ to preserve gradient scaling stability.
