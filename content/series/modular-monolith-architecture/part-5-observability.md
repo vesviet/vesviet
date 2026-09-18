@@ -132,7 +132,28 @@ Distributed microservices emit every HTTP span across the wire, generating netwo
 2. **Decision Engine at Endpoint Completion:** When the top-level HTTP handler returns, an in-process sampler evaluates the request outcome. If the handler returned an HTTP `5xx` error or latency exceeded a P99 threshold (e.g., 200ms), the full trace buffer flushes to the OpenTelemetry collector.
 3. **99% Low-Latency Drop:** Successful, low-latency requests drop 99% of internal module spans while keeping aggregate counters in local memory, reducing telemetry ingestion fees significantly.
 
-For rate limiting and gateway observability, see our [Distributed Rate Limiting with Redis & GCRA](/series/high-concurrency-systems/article_3_rate_limiting/) guide.
+The flowchart below visualizes this in-process tail-based sampling architecture, contrasting the full trace flush on anomalous/slow requests with the zero-cost drop of routine successful spans.
+
+```mermaid
+flowchart TD
+    Req["Incoming HTTP Request"] --> Ingress["Ingress HTTP Handler"]
+    Ingress --> SpanBuf["Local Ring-Buffer: Accumulate Internal Spans in RAM"]
+    
+    subgraph In_Memory_Execution ["In-Process Modular Monolith Execution"]
+        SpanBuf --> Mod1["Module: orders.CreateOrder (Span 1)"]
+        Mod1 --> WorkerPool["Bounded Worker Pool Event Bus (Trace Context Injected)"]
+        WorkerPool --> Mod2["Module: billing.ChargeCustomer (Span 2)"]
+        Mod2 --> Mod3["Module: inventory.ReserveStock (Span 3)"]
+    end
+    
+    Mod3 --> Finish["Handler Completes: Evaluate Response Status & Latency"]
+    Finish --> Decision{"HTTP 5xx Error OR Latency > 200ms?"}
+    Decision -->|"Yes (Tail Anomaly)"| Flush["Flush 100% of Spans to OTLP Collector"]
+    Decision -->|"No (Normal Path 99%)"| Drop["Drop Detailed Spans from RAM Buffer"]
+    Drop --> Metrics["Increment Aggregate Prometheus Counter (module=orders, status=200)"]
+```
+
+For rate limiting and gateway observability, see our [Distributed Rate Limiting with Redis & GCRA](/series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/) guide.
 
 ---
 
@@ -215,57 +236,161 @@ func (h *TraceHandler) Handle(ctx context.Context, r slog.Record) error {
 }
 ```
 
-### C. In-Memory Span Tracker Implementation
+### C. In-Memory Span Tracker & Trace Context Propagation across Worker Pools
 
-A lightweight, zero-dependency in-memory span tracking pattern enables internal domain packages for internal domain packages before forwarding to OTLP collectors.
+When asynchronous domain events cross in-process channel boundaries, the publisher's OpenTelemetry trace context must be injected into the event metadata and extracted by the worker thread. The Go 1.25 implementation below establishes a bounded worker pool event bus that preserves W3C traceparent headers across channel queues without allocating network serialization buffers:
 
 ```go
 package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
-	"sync"
+	"runtime"
 	"time"
+
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/propagation"
+	"go.opentelemetry.io/otel/trace"
+	"golang.org/x/sync/errgroup"
 )
 
-type contextKey string
+// TraceMetadataCarrier implements propagation.TextMapCarrier for in-memory channels
+type TraceMetadataCarrier map[string]string
 
-const traceKey contextKey = "trace_id"
-
-func StartModuleSpan(ctx context.Context, moduleName string) (context.Context, func()) {
-	traceID, ok := ctx.Value(traceKey).(string)
-	if !ok {
-		traceID = fmt.Sprintf("tr-%d", time.Now().UnixNano())
-		ctx = context.WithValue(ctx, traceKey, traceID)
+func (c TraceMetadataCarrier) Get(key string) string        { return c[key] }
+func (c TraceMetadataCarrier) Set(key string, value string) { c[key] = value }
+func (c TraceMetadataCarrier) Keys() []string {
+	keys := make([]string, 0, len(c))
+	for k := range c {
+		keys = append(keys, k)
 	}
-	start := time.Now()
-	fmt.Printf("[TRACE STARTED] ID: %s | Module: %s\n", traceID, moduleName)
+	return keys
+}
 
-	return ctx, func() {
-		fmt.Printf("[TRACE FINISHED] ID: %s | Module: %s | Duration: %v\n", traceID, moduleName, time.Since(start))
+type DomainEvent struct {
+	Name      string
+	Timestamp time.Time
+	Payload   any
+	Carrier   TraceMetadataCarrier
+}
+
+type eventJob struct {
+	ctx     context.Context
+	event   DomainEvent
+	handler func(ctx context.Context, ev DomainEvent) error
+}
+
+// BoundedTracedEventBus routes events through bounded workers with OpenTelemetry trace propagation
+type BoundedTracedEventBus struct {
+	jobQueue chan eventJob
+	workers  int
+	tracer   trace.Tracer
+	eg       *errgroup.Group
+	ctx      context.Context
+	cancel   context.CancelFunc
+}
+
+func NewBoundedTracedEventBus(parentCtx context.Context, queueCapacity int, tracer trace.Tracer) *BoundedTracedEventBus {
+	ctx, cancel := context.WithCancel(parentCtx)
+	eg, groupCtx := errgroup.WithContext(ctx)
+
+	workers := runtime.GOMAXPROCS(0) * 2
+	if workers < 4 {
+		workers = 4
+	}
+
+	bus := &BoundedTracedEventBus{
+		jobQueue: make(chan eventJob, queueCapacity),
+		workers:  workers,
+		tracer:   tracer,
+		eg:       eg,
+		ctx:      groupCtx,
+		cancel:   cancel,
+	}
+
+	for i := 0; i < bus.workers; i++ {
+		workerID := i
+		bus.eg.Go(func() error {
+			bus.workerLoop(groupCtx, workerID)
+			return nil
+		})
+	}
+
+	return bus
+}
+
+func (b *BoundedTracedEventBus) workerLoop(ctx context.Context, workerID int) {
+	propagator := otel.GetTextMapPropagator()
+
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case job, ok := <-b.jobQueue:
+			if !ok {
+				return
+			}
+			// Extract trace context from event carrier into worker context
+			workerCtx := propagator.Extract(ctx, job.event.Carrier)
+			childCtx, span := b.tracer.Start(workerCtx, fmt.Sprintf("EventHandler:%s", job.event.Name))
+
+			span.AddEvent("Worker started executing handler")
+			err := job.handler(childCtx, job.event)
+			if err != nil {
+				span.RecordError(err)
+			}
+			span.End()
+		}
 	}
 }
 
-func main() {
-	var wg sync.WaitGroup
-	ctx := context.Background()
+// Publish enqueues event with current OTel trace context injected
+func (b *BoundedTracedEventBus) Publish(ctx context.Context, eventName string, payload any, handler func(ctx context.Context, ev DomainEvent) error) error {
+	carrier := make(TraceMetadataCarrier)
+	otel.GetTextMapPropagator().Inject(ctx, carrier)
 
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		mCtx, end1 := StartModuleSpan(ctx, "Billing")
+	event := DomainEvent{
+		Name:      eventName,
+		Timestamp: time.Now().UTC(),
+		Payload:   payload,
+		Carrier:   carrier,
+	}
 
-		_, end2 := StartModuleSpan(mCtx, "Notification")
-		end2()
+	job := eventJob{
+		ctx:     ctx,
+		event:   event,
+		handler: handler,
+	}
 
-		end1()
-	}()
+	select {
+	case b.jobQueue <- job:
+		return nil
+	case <-ctx.Done():
+		return ctx.Err()
+	default:
+		return errors.New("event bus queue full: applying backpressure")
+	}
+}
 
-	wg.Wait()
-	fmt.Println("In-memory trace span completed deterministically!")
+func (b *BoundedTracedEventBus) Shutdown(ctx context.Context) error {
+	close(b.jobQueue)
+	b.cancel()
+	return b.eg.Wait()
 }
 ```
+
+### D. Dynamic Differential CPU & Memory Profiling (Go pprof)
+
+In a distributed microservice cluster, identifying which component is consuming excess CPU or leaking memory requires aggregating dozens of disparate container profiles. In a Modular Monolith, the entire system runs within a single Go runtime, enabling instant **Differential Profiling** using standard `net/http/pprof`:
+
+1. **Continuous Baseline Snapshots:** A background daemon captures 30-second CPU and heap profiles (`profile.pb.gz`) during normal operation and stores them in local object storage.
+2. **On-Demand Differential Analysis:** When an alert triggers during high load, an engineer takes a live snapshot and runs a differential comparison:
+   ```bash
+   go tool pprof -http=:8080 -diff_base=baseline_heap.pb.gz incident_heap.pb.gz
+   ```
+3. **Pinpointing Culprit Modules in Seconds:** Because Go package paths reflect domain boundaries (`internal/orders`, `internal/billing`), the pprof flame graph immediately highlights which specific module aggregate or worker pool is responsible for heap growth or CPU throttling—bypassing hours of distributed service mesh investigations.
 
 ---
 

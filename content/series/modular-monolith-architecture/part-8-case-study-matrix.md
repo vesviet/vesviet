@@ -1,8 +1,8 @@
 ---
-title: "Modular Monolith Case Studies: Shopify, GitHub & StackOverflow"
+title: "Modular Monolith Case Studies: Shopify & GitHub Architecture"
 date: "2026-07-03T10:00:00+07:00"
 lastmod: "2026-07-03T14:59:00+07:00"
-description: "Production case study matrix evaluating real-world modular monolith migrations across FinTech, E-Commerce, and high-scale SaaS platforms."
+description: "Production case study matrix evaluating real-world modular monolith migrations across FinTech, E-Commerce, Shopify, GitHub, and high-scale SaaS platforms."
 slug: "case-study-matrix-modular-monolith-success-stories"
 tags: ["Case Study", "Modular Monolith", "Shopify", "Stack Overflow", "Notion", "GitHub", "Etsy"]
 categories: ["Modular Monolith", "Architecture"]
@@ -24,7 +24,7 @@ aliases:
 ---
 
 
-> **Answer-first:** The Modular Monolith case study matrix evaluates how industry leaders—including Shopify, GitHub, Segment, Etsy, and Stack Overflow—scale core systems using monolithic architecture. These real-world production benchmarks prove that co-locating domains reduces infrastructure expenses, deployment friction, and network latency while maintaining high development velocity. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and automated observability pipelines required for.
+> **Answer-first:** The Modular Monolith case study matrix evaluates how industry leaders—including Shopify, GitHub, Segment, Etsy, and Stack Overflow—scale core systems using monolithic architecture. These real-world production benchmarks prove that co-locating domains reduces infrastructure expenses, deployment friction, and network latency while maintaining rapid feature velocity across enterprise engineering organizations.
 
 > **Prerequisite:** Before reading this part, please review [Part 7: Extraction Pattern](/series/modular-monolith-architecture/part-7-extraction-pattern/).
 
@@ -71,6 +71,42 @@ When discussing the Monolith, one cannot ignore **Shopify**.
 - **The Numbers:** Handled over **173 billion requests** during Black Friday/Cyber Monday, peaking at **284 million requests/minute**.
 - **Architecture:** The entire core of Shopify remains a massive Ruby on Rails Modular Monolith application (over 3 million lines of code).
 - **How they Scale:** Protected code boundaries using **Packwerk** to enforce strict modular encapsulation. Invested heavily in **YJIT** (Ruby JIT compiler) to accelerate CPU performance by 15%. The MySQL database tier is horizontally sharded by merchant store ID to distribute write contention.
+
+The diagram below illustrates Shopify's Pod Architecture, demonstrating how self-contained monolithic application clusters pair with sharded MySQL datastores to deliver total fault isolation and linear horizontal scalability.
+
+```mermaid
+flowchart TD
+    Ingress["Edge Traffic Ingress (Cloudflare / Envoy)"] --> Router["Sorting Hat (Tenant Routing Proxy)"]
+    
+    subgraph Pod_A ["Shopify Pod 1 (Isolated Monolith Cluster)"]
+        Mono1["Monolith Rails App (Packwerk Enforced)"]
+        Mono1 --> DB1[("Primary MySQL Shard: Merchants 1 - 50K")]
+        Mono1 --> Cache1[("Dedicated Redis Cache Tier")]
+    end
+    
+    subgraph Pod_B ["Shopify Pod 2 (Isolated Monolith Cluster)"]
+        Mono2["Monolith Rails App (Packwerk Enforced)"]
+        Mono2 --> DB2[("Primary MySQL Shard: Merchants 50K - 100K")]
+        Mono2 --> Cache2[("Dedicated Redis Cache Tier")]
+    end
+
+    subgraph Global_Tier ["Global Asynchronous Event Streaming"]
+        Kafka["Kafka Event Streaming Bus"]
+        DataLake["Analytical Lakehouse (Trino / Snowflake)"]
+    end
+    
+    Router -->|"Route Tenant ID #1240"| Pod_A
+    Router -->|"Route Tenant ID #89211"| Pod_B
+    Mono1 -->|"Publish Domain Outbox Events"| Kafka
+    Mono2 -->|"Publish Domain Outbox Events"| Kafka
+    Kafka --> DataLake
+```
+
+#### Shopify Pod Mechanics: Cellular Monolithic Architecture
+Shopify's revolutionary scaling breakthrough was the invention of **Pods**—autonomous, cellular deployment units containing the full monolithic application stack alongside dedicated MySQL and Redis clusters. By assigning merchants deterministically to pods based on their store ID, Shopify achieves:
+1. **Bounded Blast Radius:** If a database node experiences hardware degradation or an unindexed query causes CPU saturation, the outage is strictly quarantined to that specific pod (affecting fewer than 1% of total merchants), leaving the rest of the global platform completely unaffected.
+2. **Zero Cross-Shard Transactions:** Because all domain entities for a given merchant (Orders, Products, Inventory, Customers) reside within the same pod database, business workflows execute with full ACID transactional integrity without requiring two-phase commits or saga compensation networks.
+3. **Linear Horizontal Scaling:** Adding capacity for Black Friday requires simply provisioning new pods and rebalancing merchant allocations using automated shard migration tools.
 
 ### GitHub: 100M+ Repositories on a Monolithic Ruby/Go Platform
 GitHub demonstrates how a major developer platform handles massive scale through a central monolith backed by RPC storage satellites.

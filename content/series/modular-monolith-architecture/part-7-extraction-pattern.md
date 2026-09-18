@@ -254,6 +254,75 @@ The comparison table below details the trade-offs between 2-Phase Commit (2PC) d
 | **Implementation Complexity** | Infrastructure-level database protocol | Application-level state machine (e.g. Temporal / Go workflow) |
 | **2026 Production Standard** | **Deprecated** for cloud microservices | **Recommended** for distributed workflows |
 
+### Network Boundary Resilience: Circuit Breakers & Backoff Retries
+
+When a module transitions from an in-process RAM call to a remote gRPC satellite service, network failure becomes a first-class operational concern. An unhandled remote service outage or latency spike can quickly exhaust HTTP connection pools in the monolith, triggering cascading failures across unrelated domain modules.
+
+To prevent cascading collapse, the Anti-Corruption Layer must encapsulate the gRPC client within a production-grade circuit breaker (such as `sony/gobreaker`) and exponential backoff retry logic:
+
+```go
+// ResilientPaymentAdapter wraps gRPC calls with circuit breaking and context timeouts
+type ResilientPaymentAdapter struct {
+	client paymentv1.PaymentClientServiceClient
+	cb     *gobreaker.CircuitBreaker
+}
+
+func NewResilientPaymentAdapter(client paymentv1.PaymentClientServiceClient) *ResilientPaymentAdapter {
+	st := gobreaker.Settings{
+		Name:        "PaymentSatelliteService",
+		MaxRequests: 3,
+		Interval:    10 * time.Second,
+		Timeout:     5 * time.Second,
+		ReadyToTrip: func(counts gobreaker.Counts) bool {
+			failureRatio := float64(counts.TotalFailures) / float64(counts.Requests)
+			return counts.Requests >= 10 && failureRatio >= 0.4
+		},
+	}
+	return &ResilientPaymentAdapter{
+		client: client,
+		cb:     gobreaker.NewCircuitBreaker(st),
+	}
+}
+
+func (a *ResilientPaymentAdapter) ProcessPayment(ctx context.Context, orderID string, amountCents int64) (*PaymentResult, error) {
+	// Execute gRPC call inside circuit breaker perimeter
+	res, err := a.cb.Execute(func() (any, error) {
+		reqCtx, cancel := context.WithTimeout(ctx, 800*time.Millisecond)
+		defer cancel()
+
+		return a.client.ProcessPayment(reqCtx, &paymentv1.ProcessPaymentRequest{
+			OrderId:     orderID,
+			AmountCents: amountCents,
+			Currency:    "USD",
+		})
+	})
+	if err != nil {
+		if errors.Is(err, gobreaker.ErrOpenState) {
+			return nil, fmt.Errorf("payment service degraded: circuit breaker OPEN")
+		}
+		return nil, fmt.Errorf("payment execution failed: %w", err)
+	}
+
+	resp := res.(*paymentv1.ProcessPaymentResponse)
+	return &PaymentResult{
+		TransactionID: resp.TransactionId,
+		Success:       resp.IsSuccessful,
+	}, nil
+}
+```
+
+### Contract Verification & Backward-Compatibility Gates with Buf
+
+To prevent breaking API changes between the modular monolith and extracted satellite services, continuous integration pipelines enforce strict Protocol Buffer schema governance using the `buf` CLI:
+
+1. **Breaking Change Detection:** In CI pull request checks, the `buf breaking` command compares the PR's `.proto` files against the `main` branch:
+   ```bash
+   buf breaking --against '.git#branch=main'
+   ```
+   If a field tag is deleted, renamed, or altered in type, CI halts immediately, preventing breaking binary wire changes.
+2. **Deterministic Code Generation:** Monolith and satellite services generate Go DTOs using managed remote plugins in `buf.gen.yaml`, guaranteeing identical Protobuf runtime versions across codebases.
+3. **Automated Backward Compatibility:** Field additions are restricted to optional fields with reserved indexes (`reserved 4 to 9;`), ensuring older monolith deployments can communicate safely with newly released satellite microservice pods during rolling updates.
+
 Review our complete industry benchmark summary in [Part 8: Case Study Matrix](/series/modular-monolith-architecture/part-8-case-study-matrix/).
 
 ---

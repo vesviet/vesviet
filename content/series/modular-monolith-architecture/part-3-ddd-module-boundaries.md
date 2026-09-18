@@ -113,7 +113,7 @@ CREATE SCHEMA billing;
 CREATE SCHEMA inventory;
 
 -- Restrict cross-schema access at PostgreSQL role level
-CREATE ROLE inventory_user WITH LOGIN PASSWORD 'secret';
+CREATE ROLE inventory_user WITH LOGIN PASSWORD '${DB_INVENTORY_PASSWORD}';
 GRANT USAGE ON SCHEMA inventory TO inventory_user;
 REVOKE ALL ON SCHEMA billing FROM inventory_user;
 ```
@@ -280,15 +280,28 @@ To demonstrate how to execute cross-domain boundaries without leaking coupling, 
 package main
 
 import (
+	"context"
+	"errors"
 	"fmt"
+	"runtime"
 	"sync"
+	"sync/atomic"
 	"time"
+
+	"golang.org/x/sync/errgroup"
 )
 
+var (
+	ErrEventBusQueueFull = errors.New("event bus queue full: backpressure applied")
+	ErrEventBusClosed    = errors.New("event bus is closed")
+)
+
+// DomainEvent carries the business payload and W3C traceparent metadata across bounded contexts
 type DomainEvent struct {
-	Name      string
-	Timestamp time.Time
-	Data      interface{}
+	Name         string
+	Timestamp    time.Time
+	Data         any
+	TraceContext map[string]string // W3C traceparent / trace_id propagation
 }
 
 type OrderCreatedData struct {
@@ -297,78 +310,208 @@ type OrderCreatedData struct {
 	Amount     float64
 }
 
-type EventListener func(event DomainEvent)
+// EventHandler accepts a context for cancellation/timeout enforcement
+type EventHandler func(ctx context.Context, event DomainEvent) error
 
-type InMemoryEventBus struct {
-	mu        sync.RWMutex
-	listeners map[string][]EventListener
+type eventJob struct {
+	ctx     context.Context
+	event   DomainEvent
+	handler EventHandler
 }
 
-func NewEventBus() *InMemoryEventBus {
-	return &InMemoryEventBus{
-		listeners: make(map[string][]EventListener),
+// BoundedEventBus provides in-memory domain event dispatching backed by a fixed worker pool
+type BoundedEventBus struct {
+	mu        sync.RWMutex
+	listeners map[string][]EventHandler
+	jobQueue  chan eventJob
+	workers   int
+	eg        *errgroup.Group
+	ctx       context.Context
+	cancel    context.CancelFunc
+	closed    atomic.Bool
+}
+
+// NewBoundedEventBus initializes workers derived dynamically from runtime.GOMAXPROCS(0)
+func NewBoundedEventBus(parentCtx context.Context, queueCapacity int) *BoundedEventBus {
+	ctx, cancel := context.WithCancel(parentCtx)
+	eg, groupCtx := errgroup.WithContext(ctx)
+
+	// Derive worker count from available CPU cores (Go 1.25 best practice for CPU-bound or mixed I/O)
+	workers := runtime.GOMAXPROCS(0) * 2
+	if workers < 4 {
+		workers = 4
+	}
+
+	eb := &BoundedEventBus{
+		listeners: make(map[string][]EventHandler),
+		jobQueue:  make(chan eventJob, queueCapacity),
+		workers:   workers,
+		eg:        eg,
+		ctx:       groupCtx,
+		cancel:    cancel,
+	}
+
+	// Launch bounded worker pool
+	for i := 0; i < eb.workers; i++ {
+		workerID := i
+		eb.eg.Go(func() error {
+			eb.workerLoop(groupCtx, workerID)
+			return nil
+		})
+	}
+
+	return eb
+}
+
+func (eb *BoundedEventBus) workerLoop(ctx context.Context, workerID int) {
+	for {
+		select {
+		case <-ctx.Done():
+			for {
+				select {
+				case job, ok := <-eb.jobQueue:
+					if !ok {
+						return
+					}
+					_ = job.handler(job.ctx, job.event)
+				default:
+					return
+				}
+			}
+		case job, ok := <-eb.jobQueue:
+			if !ok {
+				return // Queue closed
+			}
+			// Execute handler within the bounded worker
+			if err := job.handler(job.ctx, job.event); err != nil {
+				fmt.Printf("[Worker %d ERROR] Event %s failed: %v\n", workerID, job.event.Name, err)
+			}
+		}
 	}
 }
 
-func (eb *InMemoryEventBus) Subscribe(eventName string, listener EventListener) {
+func (eb *BoundedEventBus) Subscribe(eventName string, handler EventHandler) {
 	eb.mu.Lock()
 	defer eb.mu.Unlock()
-	eb.listeners[eventName] = append(eb.listeners[eventName], listener)
+	eb.listeners[eventName] = append(eb.listeners[eventName], handler)
 }
 
-func (eb *InMemoryEventBus) Publish(eventName string, data interface{}, wg *sync.WaitGroup) {
+// Publish enqueues jobs with backpressure rejection and OpenTelemetry trace propagation
+func (eb *BoundedEventBus) Publish(ctx context.Context, eventName string, data any) error {
+	if eb.closed.Load() {
+		return ErrEventBusClosed
+	}
+
 	eb.mu.RLock()
-	defer eb.mu.RUnlock()
+	handlers, exists := eb.listeners[eventName]
+	eb.mu.RUnlock()
+
+	if !exists || len(handlers) == 0 {
+		return nil
+	}
+
+	// Capture or inject W3C traceparent metadata into event
+	traceMeta := map[string]string{
+		"traceparent": fmt.Sprintf("00-4bf92f3577b34da6a3ce929d0e0e4736-%016x-01", time.Now().UnixNano()),
+		"source":      "in-memory-bus",
+	}
 
 	event := DomainEvent{
-		Name:      eventName,
-		Timestamp: time.Now(),
-		Data:      data,
+		Name:         eventName,
+		Timestamp:    time.Now().UTC(),
+		Data:         data,
+		TraceContext: traceMeta,
 	}
 
-	for _, listener := range eb.listeners[eventName] {
-		wg.Add(1)
-		go func(l EventListener) {
-			defer wg.Done()
-			l(event)
-		}(listener)
+	for _, handler := range handlers {
+		job := eventJob{
+			ctx:     ctx,
+			event:   event,
+			handler: handler,
+		}
+
+		// Non-blocking select with backpressure detection
+		select {
+		case eb.jobQueue <- job:
+			// Successfully queued
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
+			// Queue is saturated: return backpressure error to prevent OOM
+			return fmt.Errorf("%w: capacity=%d", ErrEventBusQueueFull, cap(eb.jobQueue))
+		}
+	}
+
+	return nil
+}
+
+// Shutdown gracefully drains queued jobs and waits for workers to terminate
+func (eb *BoundedEventBus) Shutdown(ctx context.Context) error {
+	eb.closed.Store(true)
+	close(eb.jobQueue)
+	eb.cancel()
+
+	done := make(chan error, 1)
+	go func() {
+		done <- eb.eg.Wait()
+	}()
+
+	select {
+	case err := <-done:
+		return err
+	case <-ctx.Done():
+		return ctx.Err()
 	}
 }
 
-type BillingModule struct {
-	bus *InMemoryEventBus
-}
+type BillingModule struct{}
 
-func NewBillingModule(bus *InMemoryEventBus) *BillingModule {
-	m := &BillingModule{bus: bus}
-	m.bus.Subscribe("OrderCreated", m.HandleOrderCreated)
+func NewBillingModule(bus *BoundedEventBus) *BillingModule {
+	m := &BillingModule{}
+	bus.Subscribe("OrderCreated", m.HandleOrderCreated)
 	return m
 }
 
-func (bm *BillingModule) HandleOrderCreated(ev DomainEvent) {
+func (bm *BillingModule) HandleOrderCreated(ctx context.Context, ev DomainEvent) error {
 	data, ok := ev.Data.(OrderCreatedData)
 	if !ok {
-		fmt.Println("Error: Invalid event payload received")
-		return
+		return errors.New("invalid payload type for OrderCreated")
 	}
-	fmt.Printf("[Billing Domain] Processing payment of $%.2f for Order: %s\n", data.Amount, data.OrderID)
+
+	traceID := ev.TraceContext["traceparent"]
+	fmt.Printf("[Billing Domain | Trace: %s] Processing payment of $%.2f for Order: %s\n",
+		traceID, data.Amount, data.OrderID)
+	return nil
 }
 
 func main() {
-	bus := NewEventBus()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	// Initialize bounded bus with 4096-job buffer and CPU-derived worker pool
+	bus := NewBoundedEventBus(ctx, 4096)
 	_ = NewBillingModule(bus)
 
-	var wg sync.WaitGroup
-	fmt.Println("Simulating system startup and event dispatch...")
+	fmt.Println("Bounded Worker Pool Event Bus running. Dispatching events...")
 
-	bus.Publish("OrderCreated", OrderCreatedData{
+	err := bus.Publish(ctx, "OrderCreated", OrderCreatedData{
 		OrderID:    "ord_9812",
 		CustomerID: "cust_5521",
 		Amount:     149.99,
-	}, &wg)
+	})
+	if err != nil {
+		fmt.Printf("Publish failed: %v\n", err)
+	}
 
-	wg.Wait()
-	fmt.Println("Event processed successfully via WaitGroup!")
+	// Graceful shutdown with 2-second drain timeout
+	drainCtx, drainCancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer drainCancel()
+
+	if err := bus.Shutdown(drainCtx); err != nil {
+		fmt.Printf("Bus shutdown error: %v\n", err)
+	} else {
+		fmt.Println("Bounded Worker Pool Event Bus shut down cleanly!")
+	}
 }
 ```
 

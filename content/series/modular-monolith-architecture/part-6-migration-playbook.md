@@ -84,6 +84,62 @@ Understanding the direction of migration ensures appropriate architectural trade
 2. **Build an Anti-Corruption Layer (ACL):** Build a translation layer so the new module communicates cleanly with existing domain modules without leaking legacy microservice schemas.
 3. **Gateway Canary Routing & Feature Flags:** Use Envoy, NGINX, or OpenFeature toggles to route incoming traffic incrementally (5% → 25% → 100%) to the monolith module based on tenant ID or request headers.
 
+The sequence diagram below visualizes the execution lifecycle of the Reverse Strangler Fig pattern, illustrating how incoming traffic is dual-written, verified for bitwise parity by background shadow reconcilers, and cut over cleanly with zero user downtime.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Client as End User Client
+    participant Gateway as API Gateway / Envoy (Canary Router)
+    participant Monolith as Modular Monolith (Target Module)
+    participant Microservice as Legacy Microservice
+    participant MonoDB as Monolith PostgreSQL Schema
+    participant LegacyDB as Legacy Microservice DB
+    participant Parity as Shadow Parity Reconciler
+
+    rect rgb(240, 248, 255)
+    Note over Client, LegacyDB: Phase 1: Dual-Write & Shadow Parity Verification
+    Client->>Gateway: POST /v1/payments (Live Customer Traffic)
+    Gateway->>Monolith: Route 100% Primary Write Traffic
+    Monolith->>MonoDB: BEGIN TX -> INSERT payments -> COMMIT
+    Monolith-->>Gateway: 201 Created (Fast User Response)
+    Monolith->>Microservice: Async Background Shadow Write (or via CDC Kafka)
+    Microservice->>LegacyDB: Mirror Write to Legacy Table
+    Parity->>MonoDB: Periodic Checksum & Row Scan
+    Parity->>LegacyDB: Compare Target Row Hashes
+    Parity-->>Parity: Verify 100.00% Zero-Discrepancy Drift
+    end
+
+    rect rgb(240, 255, 240)
+    Note over Client, Monolith: Phase 2: Zero-Downtime Read Cutover
+    Client->>Gateway: GET /v1/payments/{id}
+    Gateway->>Monolith: Switch Read Traffic via Feature Flag (100% Monolith)
+    Monolith->>MonoDB: Query Internal Schema (<1ms RAM Locality)
+    MonoDB-->>Monolith: Row Data
+    Monolith-->>Client: 200 OK (Sub-10ms P99 SLA)
+    end
+
+    rect rgb(255, 240, 240)
+    Note over Gateway, Microservice: Phase 3: Emergency Circuit Breaker (Rollback Path)
+    Note over Gateway: If Monolith Error Rate > 0.5% in 60s
+    Gateway->>Gateway: Trip Feature Flag: Fallback to Legacy Microservice
+    Gateway->>Microservice: Revert Read/Write Ingress Instantly
+    end
+```
+
+### C. Dual-Write Concurrency & Conflict Resolution Mechanics
+
+During the dual-writing phase of a reverse migration, distributed race conditions pose a severe risk to data integrity. Consider an update operation: if Request 1 updates an order status to `PAID` and Request 2 updates it to `REFUNDED`, network latency or thread scheduling variance between the Monolith and the legacy microservice can result in Request 2 reaching the legacy database before Request 1, producing inconsistent state between the two datastores.
+
+To eliminate dual-write race conditions, engineering teams implement three defensive architectural patterns:
+1. **Monotonic Version Clocks (`version BIGINT`):** Every domain entity includes a strictly incrementing `version` column. When the dual-writer replicates a row to the secondary datastore, it executes an optimistic locking query:
+   ```sql
+   UPDATE legacy_orders SET status = $1, version = $2 WHERE id = $3 AND version < $2;
+   ```
+   If a stale write arrives out of order, the database rejects the row update without corrupting recent state.
+2. **PostgreSQL Transactional Advisory Locks:** For high-contention aggregates (such as inventory balances or user wallets), the primary write acquires an application-level advisory lock (`SELECT pg_advisory_xact_lock(hashtext(aggregate_id))`), serializing updates to that specific domain entity across all application goroutines before publishing downstream replication events.
+3. **Idempotent Upsert Semantics:** All replication workers write records using `ON CONFLICT (id) DO UPDATE` clauses, ensuring that retried messages from Kafka or Debezium CDC streams do not create duplicate rows or trigger unique key constraint violations.
+
 For database routing details, refer to our [Modular Monolith Architecture Guide](/series/modular-monolith-architecture/).
 
 ---
@@ -134,24 +190,28 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"sync"
 	"time"
 )
 
 type OutboxEvent struct {
-	ID      int64
-	Topic   string
-	Payload string
-	Status  string
+	ID          int64
+	AggregateID string
+	Topic       string
+	Payload     string
+	Status      string
 }
 
 type OutboxWorker struct {
+	db         *sql.DB
 	eventsChan chan OutboxEvent
 }
 
-func NewOutboxWorker() *OutboxWorker {
+func NewOutboxWorker(db *sql.DB) *OutboxWorker {
 	return &OutboxWorker{
+		db:         db,
 		eventsChan: make(chan OutboxEvent, 10),
 	}
 }
@@ -166,16 +226,39 @@ func (w *OutboxWorker) Run(ctx context.Context, wg *sync.WaitGroup) {
 		case <-ctx.Done():
 			fmt.Println("Outbox worker shutting down gracefully...")
 			return
-		case event := <-w.eventsChan:
+		case event, ok := <-w.eventsChan:
+			if !ok {
+				return
+			}
 			fmt.Printf("[Outbox Dispatcher] Transmitted Event #%d (%s): %s\n", event.ID, event.Topic, event.Payload)
 		case <-ticker.C:
-			// Poll pending events cleanly without time.Sleep
+			// Poll pending events using SELECT FOR UPDATE SKIP LOCKED to prevent duplicate processing
+			const pollQuery = `SELECT id, aggregate_id, payload FROM outbox_events WHERE status = 'PENDING' ORDER BY created_at ASC LIMIT 100 FOR UPDATE SKIP LOCKED;`
+			if w.db != nil {
+				rows, err := w.db.QueryContext(ctx, pollQuery)
+				if err != nil {
+					fmt.Printf("[Outbox Poller Error] Query failed: %v\n", err)
+					continue
+				}
+				for rows.Next() {
+					var ev OutboxEvent
+					if err := rows.Scan(&ev.ID, &ev.AggregateID, &ev.Payload); err == nil {
+						ev.Topic = "DomainEvent"
+						ev.Status = "PROCESSING"
+						select {
+						case w.eventsChan <- ev:
+						default:
+						}
+					}
+				}
+				rows.Close()
+			}
 		}
 	}
 }
 
 func main() {
-	worker := NewOutboxWorker()
+	worker := NewOutboxWorker(nil)
 	var wg sync.WaitGroup
 
 	ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
@@ -185,16 +268,66 @@ func main() {
 	go worker.Run(ctx, &wg)
 
 	worker.eventsChan <- OutboxEvent{
-		ID:      101,
-		Topic:   "OrderMigrated",
-		Payload: `{"order_id": "ord_990", "status": "CONSOLIDATED"}`,
-		Status:  "PENDING",
+		ID:          101,
+		AggregateID: "ord_990",
+		Topic:       "OrderMigrated",
+		Payload:     `{"order_id": "ord_990", "status": "CONSOLIDATED"}`,
+		Status:      "PENDING",
 	}
 
 	wg.Wait()
 	fmt.Println("Outbox worker migration check complete!")
 }
 ```
+
+### B. Automated Reconciliation & 14-Day Parity Audit Engine
+
+Before shifting read traffic away from the legacy microservice, engineering teams must maintain dual-writing for a minimum of 14 continuous days while running automated reconciliation jobs. This continuous audit guarantees that edge cases (e.g., failed async worker retries, timezone conversions, decimal rounding nuances) are detected and resolved before customer traffic is impacted.
+
+The reconciliation engine executes on an hourly cron schedule, scanning entities in deterministic batches using monotonic keyset pagination:
+
+```go
+// ParityChecker compares domain entity hashes between legacy microservice DB and monolith schema
+func VerifyEntityParity(ctx context.Context, legacyDB, monoDB *sql.DB, batchSize int) (int, error) {
+	rows, err := monoDB.QueryContext(ctx, 
+		"SELECT id, order_id, amount, status, MD5(CONCAT(order_id, amount::text, status)) FROM billing.payments ORDER BY id LIMIT $1", batchSize)
+	if err != nil {
+		return 0, err
+	}
+	defer rows.Close()
+
+	divergences := 0
+	for rows.Next() {
+		var id, orderID, status, monoHash string
+		var amount float64
+		if err := rows.Scan(&id, &orderID, &amount, &status, &monoHash); err != nil {
+			return divergences, err
+		}
+
+		// Query legacy database for identical record hash
+		var legacyHash string
+		err := legacyDB.QueryRowContext(ctx, 
+			"SELECT MD5(CONCAT(order_id, amount::text, status)) FROM orders WHERE id = $1", id).Scan(&legacyHash)
+		if errors.Is(err, sql.ErrNoRows) || monoHash != legacyHash {
+			divergences++
+			log.Printf("[RECONCILIATION ANOMALY] Entity ID %s hash mismatch: mono=%s legacy=%s", id, monoHash, legacyHash)
+		}
+	}
+	return divergences, nil
+}
+```
+
+### C. Reverse Strangler Fig Runbook: Phase-by-Phase Operational Checklist
+
+To eliminate ambiguity during production migrations, operations and platform teams adhere to a strict multi-week runbook:
+
+| Timeline | Phase Stage | Operational Gates & Exit Criteria | Rollback Strategy |
+|---|---|---|---|
+| **T-14 Days** | **Shadow Dual-Writing** | Monolith deploys dual-writing worker. Both datastores receive 100% of mutations. Write errors on secondary target do not fail client requests. | Disable dual-writer flag; inspect error logs. |
+| **T-7 Days** | **Continuous Parity Audit** | Automated reconciler runs hourly. Zero state divergences allowed over 7 consecutive days. Replication lag P99 must remain < 50ms. | Backfill missing delta rows using outbox event replays. |
+| **T-2 Days** | **Synthetic Load & Chaos Test** | Simulate 3x peak traffic on staging. Inject network delays into legacy database to confirm circuit breakers isolate customer traffic. | Abort cutover if connection pool exhaustion occurs. |
+| **T-0 (Cutover)** | **Dynamic Gateway Shift** | Shift API Gateway read traffic incrementally: 5% → 25% → 50% → 100%. Monitor Prometheus P99 latency and HTTP 5xx error budgets. | Instant 0-second revert of API Gateway route to legacy service. |
+| **T+7 Days** | **Decommissioning** | Read traffic 100% stable on Modular Monolith. Freeze legacy microservice database (read-only mode). Decommission microservice containers. | Restore snapshot backup to separate replica if needed. |
 
 ---
 

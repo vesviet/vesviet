@@ -109,6 +109,43 @@ Bazel stores compiled package outputs in content-addressable remote caches. If `
 3. **Parallel Test Matrix:** Divide independent module package suites across parallel worker jobs using `sync.WaitGroup` runners.
 4. **Dependency Pre-Fetching:** Warm CI base runner images with pre-downloaded Go module dependencies.
 
+The flowchart below visualizes the end-to-end selective CI pipeline, showing how Git diff triggers, AST transitive dependency analysis, and distributed cache hits bypass unnecessary test runs and deliver sub-3-minute feedback cycles.
+
+```mermaid
+flowchart TD
+    PR["Developer Submits Pull Request"] --> Diff["Git Diff Analyzer: Detect Modified Files"]
+    Diff --> Check["Identify Impacted Target Packages"]
+    Check --> AST["AST Dependency Graph Resolver (go list -deps)"]
+    AST --> Matrix["Build Dynamic Test Matrix"]
+    
+    subgraph Parallel_CI_Execution ["Parallel Bounded CI Worker Matrix"]
+        Matrix --> W1["Worker 1: Unit Tests (billing)"]
+        Matrix --> W2["Worker 2: Integration Tests (orders)"]
+        Matrix --> W3["Worker 3: Contract Linters (arch-go)"]
+    end
+    
+    subgraph Build_Cache_Layer ["Distributed Build Cache ($GOCACHE / S3)"]
+        W1 <--> CacheHit["Remote Object Cache: Skip Unchanged ASTs"]
+        W2 <--> CacheHit
+        W3 <--> CacheHit
+    end
+
+    W1 --> Collect["Collect Verification Results"]
+    W2 --> Collect
+    W3 --> Collect
+    Collect --> Gate{"All Tests & Quality Gates Green?"}
+    Gate -->|"Yes"| Merge["Enqueue into Automated Merge Queue"]
+    Gate -->|"No"| Block["Block PR & Annotate Failure Diff"]
+```
+
+### Distributed Remote Action Caching Mechanics
+
+When scaling monorepos beyond 100 engineers, local machine caching is insufficient because clean CI runners spawn without pre-populated disk state. By integrating a distributed remote action cache (e.g., Buildbarn, EngFlow, or an S3-backed gRPC CAS server), every compilation artifact and test execution result is keyed by the cryptographic hash of its inputs:
+
+$$\text{CacheKey} = \text{SHA256}(\text{SourceFiles} \cup \text{CompilerVersion} \cup \text{EnvironmentFlags} \cup \text{TransitiveHeaders})$$
+
+If any engineer or CI worker has previously compiled or tested an identical package state, remote workers download the cached test log and exit code in under 200ms. In enterprise Go monorepos at Uber and Shopify, remote caching achieves a **78% to 85% cache-hit ratio**, ensuring that CI execution times stay flat regardless of total codebase volume.
+
 ---
 
 ## 3. Internal Module Interface Contract Testing & Shopify Lessons
@@ -151,8 +188,11 @@ import (
 	"fmt"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"sync"
 	"time"
+
+	"golang.org/x/sync/errgroup"
 )
 
 type TestTask struct {
@@ -166,32 +206,46 @@ type TestResult struct {
 	Err         error
 }
 
-// RunSelectiveTests parallelizes Go module testing based on git diff targets
+// RunSelectiveTests parallelizes Go module testing based on git diff targets using a CPU-bounded worker pool
 func RunSelectiveTests(ctx context.Context, modules []string) ([]TestResult, time.Duration) {
 	start := time.Now()
 	tasks := make(chan TestTask, len(modules))
-	results := make(chan TestResult, len(modules))
+	
+	// Derive worker count dynamically from runtime.GOMAXPROCS(0)
+	workers := runtime.GOMAXPROCS(0)
+	if workers < 2 {
+		workers = 2
+	}
 
-	var wg sync.WaitGroup
-	workers := 4 // Concurrency level
+	var mu sync.Mutex
+	var resList []TestResult
+
+	eg, groupCtx := errgroup.WithContext(ctx)
 
 	for w := 0; w < workers; w++ {
-		wg.Add(1)
-		go func(workerID int) {
-			defer wg.Done()
-			for task := range tasks {
-				t0 := time.Now()
-				cmd := exec.CommandContext(ctx, "go", "test", "-v", task.PackagePath)
-				out, err := cmd.CombinedOutput()
-				_ = out // Suppress unused output variable
+		eg.Go(func() error {
+			for {
+				select {
+				case <-groupCtx.Done():
+					return groupCtx.Err()
+				case task, ok := <-tasks:
+					if !ok {
+						return nil
+					}
+					t0 := time.Now()
+					cmd := exec.CommandContext(groupCtx, "go", "test", "-v", "-race", task.PackagePath)
+					_, err := cmd.CombinedOutput()
 
-				results <- TestResult{
-					PackagePath: task.PackagePath,
-					Duration:    time.Since(t0),
-					Err:         err,
+					mu.Lock()
+					resList = append(resList, TestResult{
+						PackagePath: task.PackagePath,
+						Duration:    time.Since(t0),
+						Err:         err,
+					})
+					mu.Unlock()
 				}
 			}
-		}(w)
+		})
 	}
 
 	for _, mod := range modules {
@@ -200,14 +254,7 @@ func RunSelectiveTests(ctx context.Context, modules []string) ([]TestResult, tim
 	}
 	close(tasks)
 
-	wg.Wait()
-	close(results)
-
-	var resList []TestResult
-	for res := range results {
-		resList = append(resList, res)
-	}
-
+	_ = eg.Wait()
 	return resList, time.Since(start)
 }
 
@@ -307,6 +354,37 @@ hooks:
   pre-deploy: |
     docker run --rm --net=host registry.example.com/my-modular-monolith:latest ./migrate -path ./db/migrations up
 ```
+
+### Enterprise Merge Queues & Trunk-Based Development at Scale
+
+At scale, monorepo CI/CD pipelines face the classic "semantic merge conflict" problem: PR #101 modifies `internal/billing` and passes CI against `main`. PR #102 modifies `internal/orders` calling `internal/billing` and also passes CI against `main`. When both PRs merge independently, the combined code breaks on `main`.
+
+To guarantee trunk stability across hundreds of daily pull requests, enterprise engineering organizations (such as Shopify, GitHub, and Uber) deploy **Automated Merge Queues**:
+1. **Speculative Execution Trains:** When multiple PRs enter the queue, the merge queue controller creates speculative branches: Branch A (`main` + PR 1), Branch B (`main` + PR 1 + PR 2).
+2. **Parallel Testing of Combined State:** Both speculative branches execute the selective test matrix concurrently. If PR 1 passes, it commits to `main` instantly, and PR 2 is already validated.
+3. **Automatic Ejection of Failed PRs:** If PR 1 fails CI, the controller automatically evicts PR 1 from the train, rebases PR 2 onto `main`, and re-runs the selective test runner without human intervention.
+
+### Zero-Downtime Database Schema Migration Pipelines
+
+In a Modular Monolith, multiple domain schemas share a common database cluster. Releasing database structure alterations requires strict adherence to the **Expand-Contract Pattern** (also called Parallel Run migrations):
+
+```sql
+-- Phase 1 (Expand): Add new column alongside legacy column without breaking existing code
+ALTER TABLE orders.orders ADD COLUMN payment_status_v2 VARCHAR(32) DEFAULT 'PENDING';
+
+-- Phase 2: Deploy application binary that writes to both columns but reads from legacy column
+-- (Dual-write mode verifies data parity in production traffic)
+
+-- Phase 3 (Backfill): Background worker backfills legacy records in throttled batches
+UPDATE orders.orders SET payment_status_v2 = payment_status WHERE payment_status_v2 = 'PENDING';
+
+-- Phase 4: Deploy application binary that reads exclusively from payment_status_v2
+
+-- Phase 5 (Contract): In a subsequent release cycle, drop the deprecated legacy column
+ALTER TABLE orders.orders DROP COLUMN payment_status;
+```
+
+By decoupling schema expansion from column deprecation, the modular monolith guarantees backward compatibility during Kubernetes rolling updates, ensuring that both old and new pod replicas function concurrently without SQL syntax errors or table locks.
 
 For observability in single-process monoliths, check out [Part 5: Observability in Memory](/series/modular-monolith-architecture/part-5-observability/).
 
