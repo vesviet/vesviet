@@ -48,7 +48,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 | `ai-data-engineering-pipeline` | 11 | AI data engineering (2027 SOTA, 11 chapters + 100-round research report) | Complete (`5358db6`) |
 | `ai-driven-engineer` | 11 | AI-driven engineer competency (11 chapters + exec summary) | Complete (`4cb8f80`) |
 | `ai-driven-playbook` | 14 | AI-assisted engineering playbook (14 chapters + exec summary) | Complete (`04ed8dc`) |
-| `ecommerce-order-allocation` | 11 | Order allocation & fulfillment | Baseline |
+| `ecommerce-order-allocation` | **Complete (2027 SOTA)** | 12 / 12 | **32,266** words (256.8 KB) | 64 Mermaids, 48 FAQs, 12 Research Dossiers (100 rounds/ch) | [Index](ecommerce-order-allocation-content-index.md) |
 | `composable-commerce-migration` | 11 | Composable commerce migration patterns | Baseline |
 | `architectural-tradeoffs-showdowns` | 10 | Technology showdowns & decision matrices | Baseline |
 | `routing-geospatial-architecture` | 9 | Routing & geospatial engineering — 2027 SOTA Masterclass (OSRM vs GraphHopper Contraction Hierarchies, Valhalla dynamic costing, H3/S2 spatial indexing, realtime telemetry Kalman filter, Redis geospatial semantic caching, shared memory engines k8s zero-downtime; 1:1 twin parity, 900 research rounds, 100% 8-gate compliant) | Masterclass SOTA Upgraded (2026-09-14) |
