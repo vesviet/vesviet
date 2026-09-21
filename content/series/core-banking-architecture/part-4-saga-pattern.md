@@ -20,11 +20,13 @@ TocOpen: true
 mermaid: true
 ---
 
-> **Series Navigation:** This is Part 4 of the **Core Banking Systems Architecture Masterclass**. For foundational event-driven ledger concepts, review [Part 3: Event Sourcing & CQRS](/series/core-banking-architecture/part-3-event-sourcing-cqrs/).
+> **Series Navigation:** This is Part 4 of the **Core Banking Systems Architecture Masterclass**. [← Previous: Part 3 — Event Sourcing & CQRS](/series/core-banking-architecture/part-3-event-sourcing-cqrs/) | [Master Curriculum Hub](/series/core-banking-architecture/) | [Next: Part 5 — ISO 20022 Payment Gateways →](/series/core-banking-architecture/part-5-iso-20022-payment-gateways/) | [Pillar Hub: Go Microservices Guide](/posts/go-microservices/)
 
 # Saga Pattern: Distributed Transactions Without 2PC
 
 > **Answer-first:** The Saga pattern replaces fragile Two-Phase Commit protocols in distributed banking microservices by orchestrating a sequence of local ACID transactions paired with idempotent compensating routines. Utilizing a deterministic workflow orchestrator like Temporal, core banking platforms guarantee eventual consistency, eliminate distributed lock deadlocks under cross-region network partitions, and enforce semantic isolation via reservation holds under 20,000+ TPS workloads.
+
+> **Prerequisite:** Practical familiarity with distributed transactions, Two-Phase Commit limitations, and workflow orchestration engines. Review [Part 3: Event Sourcing & CQRS](/series/core-banking-architecture/part-3-event-sourcing-cqrs/) and our [Go Microservices Guide](/posts/go-microservices/).
 
 ---
 

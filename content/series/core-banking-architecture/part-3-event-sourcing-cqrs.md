@@ -20,11 +20,13 @@ TocOpen: true
 mermaid: true
 ---
 
-> **Series Navigation:** This is Part 3 of the **Core Banking Systems Architecture Masterclass**. For foundational distributed consensus analysis, review [Part 2: Distributed SQL ACID Latency](/series/core-banking-architecture/part-2-distributed-sql-acid-latency/).
+> **Series Navigation:** This is Part 3 of the **Core Banking Systems Architecture Masterclass**. [← Previous: Part 2 — Distributed SQL ACID Latency](/series/core-banking-architecture/part-2-distributed-sql-acid-latency/) | [Master Curriculum Hub](/series/core-banking-architecture/) | [Next: Part 4 — Saga Pattern →](/series/core-banking-architecture/part-4-saga-pattern/) | [Pillar Hub: Banking Microservices Architecture](/posts/banking-microservices-architecture/)
 
 # Event Sourcing & CQRS: Immutable Ledger for Microservices
 
 > **Answer-first:** Event Sourcing and CQRS resolve the fundamental architectural tension in core banking between immutable auditability on the write path and ultra-low latency on the read path. By treating append-only domain event streams as the single source of truth and publishing via NATS JetStream transactional outbox pipelines, core platforms eliminate dual-write hazards and achieve sub-millisecond balance projection latencies.
+
+> **Prerequisite:** Practical familiarity with event-driven architectures, pub/sub brokers (Kafka, NATS), and CQRS segregation. Review [Part 2: Distributed SQL Latency](/series/core-banking-architecture/part-2-distributed-sql-acid-latency/) and our [Banking Microservices Architecture](/posts/banking-microservices-architecture/).
 
 ---
 

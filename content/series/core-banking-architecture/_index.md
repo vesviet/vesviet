@@ -21,7 +21,9 @@ mermaid: true
 
 # Core Banking Systems Architecture Masterclass Guide
 
-> **Answer-first:** Modern cloud-native core banking transitions from batch-driven monolithic mainframes to composable distributed architectures: immutable double-entry ledger engines enforcing mathematical zero-drift balance invariants, multi-region Distributed SQL guaranteeing serializable ACID transactions under bounded consensus latency, event-sourced CQRS projections, orchestrated compensation Sagas, zero-allocation ISO 20022 streaming, and FAPI 2.0 sender-constrained security. This architecture eliminates end-of-day batch freezes, delivering sub-25ms P99 latency across active-active deployments.
+> **Answer-first:** Modern cloud-native core banking transitions from batch-driven mainframes to composable distributed platforms: immutable double-entry ledgers enforcing mathematical zero-drift balance invariants, multi-region Distributed SQL guaranteeing serializable ACID transactions, event-sourced CQRS projections, orchestrated compensation Sagas, zero-allocation ISO 20022 streaming, and FAPI 2.0 security. This architecture eliminates end-of-day batch freezes, delivering sub-25ms P99 latency across active-active deployments.
+
+> **Prerequisite:** Practical familiarity with distributed systems fundamentals, relational transaction isolation levels (ACID), event-driven microservice patterns, and enterprise networking (mTLS, TCP/IP, gRPC). For foundational context, explore our [Banking Microservices Architecture](/posts/banking-microservices-architecture/) and [Go Microservices Guide](/posts/go-microservices/).
 
 ---
 

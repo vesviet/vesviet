@@ -20,11 +20,13 @@ TocOpen: true
 mermaid: true
 ---
 
-> **Series Navigation:** This is Part 6 of the **Core Banking Systems Architecture Masterclass**. For interbank rail integration protocols, review [Part 5: ISO 20022 Payment Gateways](/series/core-banking-architecture/part-5-iso-20022-payment-gateways/).
+> **Series Navigation:** This is Part 6 of the **Core Banking Systems Architecture Masterclass**. [← Previous: Part 5 — ISO 20022 Payment Gateways](/series/core-banking-architecture/part-5-iso-20022-payment-gateways/) | [Master Curriculum Hub](/series/core-banking-architecture/) | [Next: Part 7 — Streaming Fraud Detection →](/series/core-banking-architecture/part-7-streaming-fraud-detection/) | [Advisory: Architecture Consulting](/hire/)
 
 # FAPI 2.0 Security: DPoP, mTLS & Sender-Constrained Tokens
 
 > **Answer-first:** The Financial-Grade API (FAPI 2.0) profile establishes mandatory Zero Trust security baselines for Open Banking ecosystems by permanently eliminating bearer token replay vulnerabilities. By enforcing cryptographically sender-constrained tokens via DPoP (RFC 9449) and mutual TLS (RFC 8705), backed by FIPS 140-3 Level 3 Hardware Security Modules (HSMs), core banking systems guarantee non-repudiation and render exfiltrated credentials completely inert.
+
+> **Prerequisite:** Practical familiarity with OAuth 2.0 / OIDC specifications, TLS 1.3 handshakes, mutual TLS (mTLS), and PKCS#11 cryptographic standards. Review [Part 5: ISO 20022 Payment Gateways](/series/core-banking-architecture/part-5-iso-20022-payment-gateways/) and explore our [Architecture Consulting Pathway](/hire/).
 
 ---
 

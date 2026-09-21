@@ -20,11 +20,13 @@ TocOpen: true
 mermaid: true
 ---
 
-> **Series Navigation:** This is Part 8 (Final Chapter) of the **Core Banking Systems Architecture Masterclass**. For the complete architectural curriculum, revisit the [Master Curriculum Hub](/series/core-banking-architecture/). To review real-time streaming risk controls, read [Part 7: Streaming Fraud Detection](/series/core-banking-architecture/part-7-streaming-fraud-detection/).
+> **Series Navigation:** This is Part 8 (Final Chapter) of the **Core Banking Systems Architecture Masterclass**. [← Previous: Part 7 — Streaming Fraud Detection](/series/core-banking-architecture/part-7-streaming-fraud-detection/) | [Master Curriculum Hub](/series/core-banking-architecture/) | [Curated Reading Map](/reading-map/) | [Architecture Consulting Services](/hire/)
 
 # Part 8: QA & SDET Handbook: Testing Distributed Core Banking
 
-> **Answer-first:** Testing distributed core banking engines requires moving far beyond conventional mock-driven unit tests. By combining deterministic virtual-time concurrency testing with Go 1.25 `testing/synctest`, automated ledger invariant property fuzzing, Jepsen distributed split-brain chaos injection, and production Envoy shadow traffic replay, financial software development engineers in test (SDETs) mathematically guarantee strict linearizability, eliminate silent balance drift, and ensure continuous availability during catastrophic infrastructure partitions.
+> **Answer-first:** Testing distributed core banking engines requires moving far beyond conventional mock-driven unit tests. By combining deterministic virtual-time concurrency testing with Go `testing/synctest`, automated ledger invariant property fuzzing, Jepsen split-brain chaos injection, and Envoy shadow traffic replay, financial SDETs mathematically guarantee strict linearizability, eliminate silent balance drift, and ensure continuous availability during catastrophic infrastructure network partitions.
+
+> **Prerequisite:** Practical familiarity with software testing methodologies, property-based testing, chaos engineering, and Go concurrency primitives. Review [Part 7: Streaming Fraud Detection](/series/core-banking-architecture/part-7-streaming-fraud-detection/), our [Curated Reading Map](/reading-map/), and [Architecture Consulting Services](/hire/).
 
 ---
 

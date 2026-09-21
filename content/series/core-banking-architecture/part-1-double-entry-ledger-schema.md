@@ -20,11 +20,13 @@ TocOpen: true
 mermaid: true
 ---
 
-> **Series Navigation:** This is Part 1 of the **Core Banking Systems Architecture Masterclass**. For the complete architectural curriculum, start at the [Master Overview Guide](/series/core-banking-architecture/).
+> **Series Navigation:** This is Part 1 of the **Core Banking Systems Architecture Masterclass**. [Master Curriculum Hub](/series/core-banking-architecture/) | [Next: Part 2 — Distributed SQL ACID Latency →](/series/core-banking-architecture/part-2-distributed-sql-acid-latency/) | [Pillar Hub: Banking Microservices Architecture](/posts/banking-microservices-architecture/)
 
 # Double-Entry Ledger: Immutable Schema & Concurrency
 
-> **Answer-first:** A production-grade financial ledger decouples historical transaction journaling from balance derivation by strictly enforcing an append-only immutable architecture. By enforcing the mathematical identity $\sum \text{Debits} \equiv \sum \text{Credits}$ at the database schema level, minor integer units, and non-blocking ring-buffer batching pipelines, core banking engines eliminate balance drift, floating-point rounding errors, and catastrophic row contention under 150,000+ TPS concurrent transaction throughput.
+> **Answer-first:** A production-grade financial ledger decouples historical transaction journaling from balance derivation by enforcing an append-only immutable architecture. By enforcing the mathematical identity $\sum \text{Debits} \equiv \sum \text{Credits}$ at the schema level, minor integer units, and ring-buffer batching, core banking engines eliminate balance drift, floating-point rounding errors, and catastrophic row contention under 150,000+ TPS transaction throughput.
+
+> **Prerequisite:** Practical familiarity with relational schema design, ACID transactions, and database row-level locking. For broader context, refer to the [Core Banking Architecture Overview](/series/core-banking-architecture/) and explore our [Banking Microservices Architecture](/posts/banking-microservices-architecture/).
 
 ---
 

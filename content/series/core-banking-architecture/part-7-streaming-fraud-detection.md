@@ -20,11 +20,13 @@ TocOpen: true
 mermaid: true
 ---
 
-> **Series Navigation:** This is Part 7 of the **Core Banking Systems Architecture Masterclass**. For API security profiles, read [Part 6: FAPI 2.0 Security: DPoP, mTLS & Sender-Constrained Tokens](/series/core-banking-architecture/part-6-fapi-2-api-security/). For deterministic concurrency and chaos testing, continue to [Part 8: QA & SDET Testing Handbook: Concurrency & Chaos Testing](/series/core-banking-architecture/part-8-qa-sdet-handbook/).
+> **Series Navigation:** This is Part 7 of the **Core Banking Systems Architecture Masterclass**. [← Previous: Part 6 — FAPI 2.0 Security](/series/core-banking-architecture/part-6-fapi-2-api-security/) | [Master Curriculum Hub](/series/core-banking-architecture/) | [Next: Part 8 — QA & SDET Testing Handbook →](/series/core-banking-architecture/part-8-qa-sdet-handbook/) | [Core Banking Hub](/posts/banking-microservices-architecture/) | [Alipay High-Concurrency Architecture](/posts/alipay-double-11-architecture-tps/)
 
 # Part 7: Streaming Fraud Detection: Go 1.25 Engine, Flink CEP & RocksDB
 
-> **Answer-first:** Modern core banking fraud architectures deploy a dual-layer defense topology: an inline Go 1.25 wire micro-engine evaluating lock-free sliding velocity windows under 2 milliseconds directly in the payment authorization path, paired with an asynchronous Apache Flink CEP cluster backed by out-of-core RocksDB state for multi-week behavioral pattern mining. This architecture eliminates JVM Garbage Collection pauses, intercepting account takeover (ATO) and money mule routing inline before funds settle irreversibly across instant clearing rails.
+> **Answer-first:** Modern core banking fraud systems deploy a dual-layer defense topology: an inline Go wire micro-engine evaluating lock-free sliding velocity windows under 2 milliseconds directly in payment authorization, paired with an asynchronous Apache Flink CEP cluster backed by RocksDB state for multi-week behavioral mining. This architecture intercepts account takeover and money mule routing inline before funds settle across instant clearing rails.
+
+> **Prerequisite:** Practical familiarity with real-time stream processing, sliding window semantics, and low-latency state backends (RocksDB). Review [Part 6: FAPI 2.0 Security Profile](/series/core-banking-architecture/part-6-fapi-2-api-security/) and our [Alipay High-Concurrency Architecture](/posts/alipay-double-11-architecture-tps/).
 
 ---
 

@@ -20,11 +20,13 @@ TocOpen: true
 mermaid: true
 ---
 
-> **Series Navigation:** This is Part 5 of the **Core Banking Systems Architecture Masterclass**. For the distributed transaction foundation, read [Part 4: Saga Pattern: Distributed Transactions Without 2PC](/series/core-banking-architecture/part-4-saga-pattern/).
+> **Series Navigation:** This is Part 5 of the **Core Banking Systems Architecture Masterclass**. [← Previous: Part 4 — Saga Pattern](/series/core-banking-architecture/part-4-saga-pattern/) | [Master Curriculum Hub](/series/core-banking-architecture/) | [Next: Part 6 — FAPI 2.0 Security →](/series/core-banking-architecture/part-6-fapi-2-api-security/) | [Pillar Hub: Banking Microservices Architecture](/posts/banking-microservices-architecture/)
 
 # ISO 20022 pacs.008: Parse, Idempotency & Gateway Latency
 
 > **Answer-first:** ISO 20022 (`pacs.008`, `pacs.002`, `camt.053`) replaces opaque legacy binary formats with rich structured XML and JSON schemas for interbank clearing. By replacing memory-intensive DOM parsers with a zero-allocation streaming tokenizer in Go, pre-compiled schema validators, and multi-tier Bloom-filter idempotency locks, core payment gateways process over 25,000 transactions per second with sub-2ms ingress latency.
+
+> **Prerequisite:** Practical familiarity with interbank financial messaging standards, XML/JSON streaming parsers, and payment clearing rails. Review [Part 4: Saga Pattern](/series/core-banking-architecture/part-4-saga-pattern/) and our [Banking Microservices Architecture](/posts/banking-microservices-architecture/).
 
 ---
 
