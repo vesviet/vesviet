@@ -7,10 +7,6 @@ lastmod: "2026-07-23T13:34:42+07:00"
 draft: false
 aliases:
   - /posts/prompt-engineering-vs-fine-tuning-benchmark/
-  - /series/slm-playbook/part-1-slm-hybrid-architecture/
-  - /series/slm-playbook/part-4-knowledge-distillation-r1/
-  - /series/slm-playbook/part-5-preference-alignment/
-  - /series/slm-playbook/part-6-vllm-deployment-evals/
 mermaid: true
 categories:
   - "AI"

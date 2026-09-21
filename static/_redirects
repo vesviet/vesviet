@@ -51,8 +51,9 @@
 /posts/temporal-saga-pattern-golang-distributed-transactions/ /posts/temporal-saga-pattern-golang-distributed-transactions-guide/ 301
 /posts/the-future-of-frontend-development-in-the-ai-era-10-predictions-for-2028/ /posts/ai-native-frontend-architecture-predictions-2028/ 301
 
-# --- 2b. Cross-Domain Posts (to Learn) ---
-/posts/deploying-on-cloudflare-astro-full-stack-edge-architecture-and-wordpress-behind-the-cdn/ https://learn.tanhdev.com/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/ 301
+# --- 2b. Modern Cloudflare Edge Infrastructure ---
+/posts/deploying-on-cloudflare-astro-full-stack-edge-architecture-and-wordpress-behind-the-cdn/ /posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/ 301
+/posts/deploying-on-cloudflare-astro-full-stack-edge-architecture-and-wordpress-behind-the-cdn /posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/ 301
 
 # --- 3. Magento Migration & Composable Commerce Series ---
 /moving-from-magento-to-microservices/ /series/magento-migration-vietnam/moving-from-magento-to-microservices/ 301
@@ -90,26 +91,16 @@
 /series/modular-monolith-architecture/part-8-case-study-matrix/ /series/modular-monolith-architecture/case-study-matrix-modular-monolith-success-stories/ 301
 
 # --- 5. AI-Driven Playbook Series ---
-/series/ai-driven-playbook/executive-summary/ https://learn.tanhdev.com/series/ai-driven-playbook/executive-summary/ 301
-/series/ai-driven-playbook/part-0-executive-summary/ /posts/ai-native-frontend-architecture-predictions-2028/ 301
-/series/ai-driven-playbook/part-1-paradigm-shift-ai-first-sdlc/ /posts/ai-native-frontend-architecture-predictions-2028/ 301
-/series/ai-driven-playbook/part-2-ai-platform-layer/ /posts/ai-native-frontend-architecture-predictions-2028/ 301
-/series/ai-driven-playbook/part-2-modern-ai-engineering-stack/ /posts/ai-native-frontend-architecture-predictions-2028/ 301
-/series/ai-driven-playbook/part-3a-context-engineering-cursor-rules/ https://learn.tanhdev.com/series/ai-driven-playbook/part-3a-context-engineering-cursor-rules/ 301
-/series/ai-driven-playbook/part-3b-ai-code-review-quality-gates/ /posts/ai-native-frontend-architecture-predictions-2028/ 301
-/series/ai-driven-playbook/part-4-ai-assisted-refactoring-legacy-code/ /posts/ai-native-frontend-architecture-predictions-2028/ 301
-/series/ai-driven-playbook/part-4-policy-as-code-agentic-cicd/ /posts/ai-native-frontend-architecture-predictions-2028/ 301
-/series/ai-driven-playbook/part-5-autonomous-testing-qa-automation/ /series/ai-driven-playbook/part-5-operating-model/ 301
-/series/ai-driven-playbook/part-8-ai-native-system-architecture/ /posts/ai-native-frontend-architecture-predictions-2028/ 301
+/series/ai-driven-playbook/part-0-executive-summary/ /series/ai-driven-playbook/executive-summary/ 301
+/series/ai-driven-playbook/part-0-executive-summary /series/ai-driven-playbook/executive-summary/ 301
+/series/ai-driven-playbook/part-2-ai-platform-layer/ /series/ai-driven-playbook/part-2-modern-ai-engineering-stack/ 301
+/series/ai-driven-playbook/part-2-ai-platform-layer /series/ai-driven-playbook/part-2-modern-ai-engineering-stack/ 301
+/series/ai-driven-playbook/part-4-policy-as-code-agentic-cicd/ /series/ai-driven-playbook/part-4-ai-assisted-refactoring-legacy-code/ 301
+/series/ai-driven-playbook/part-4-policy-as-code-agentic-cicd /series/ai-driven-playbook/part-4-ai-assisted-refactoring-legacy-code/ 301
 
 # --- 5b. Other Merged Series to Flagship Guides ---
 /series/alipay-double-11/alipay-phase2-architecture/ /series/alipay-double-11/phase-2-architecture/ 301
 /series/alipay-double-11/research-index/ /posts/alipay-double-11-architecture-tps/ 301
-/series/ecommerce-order-allocation/executive-summary/ /posts/order-fulfillment-algorithm-warehouse-last-mile/ 301
-/series/ecommerce-order-allocation/part-1-order-fulfillment-fundamentals/ /posts/order-fulfillment-algorithm-warehouse-last-mile/ 301
-/series/ecommerce-order-allocation/part-2-inventory-realtime/ /posts/order-fulfillment-algorithm-warehouse-last-mile/ 301
-/series/ecommerce-order-allocation/part-3-allocation-algorithms/ /posts/order-fulfillment-algorithm-warehouse-last-mile/ 301
-/series/ecommerce-order-allocation/part-4-amazon-condor-anticipatory/ /posts/order-fulfillment-algorithm-warehouse-last-mile/ 301
 /series/high-concurrency-systems/article_1_system_design/ /series/high-concurrency-systems/how-systems-handle-c10m/ 301
 /series/high-concurrency-systems/article_2_caching/ /series/high-concurrency-systems/caching-vulnerabilities-penetration-breakdown-avalanche/ 301
 /series/high-concurrency-systems/article_3_rate_limiting/ /series/high-concurrency-systems/distributed-rate-limiting-redis-gcra/ 301
@@ -126,10 +117,6 @@
 /series/phase3-series-audit-upgrade-summary/ /series/ 301
 /series/phase4-series-audit-upgrade-summary/ /series/ 301
 /series/series-audit-upgrade-summary/ /series/ 301
-/series/slm-playbook/part-1-slm-hybrid-architecture/ /posts/slm-fine-tune-vs-prompt-engineering/ 301
-/series/slm-playbook/part-4-knowledge-distillation-r1/ /posts/slm-fine-tune-vs-prompt-engineering/ 301
-/series/slm-playbook/part-5-preference-alignment/ /posts/slm-fine-tune-vs-prompt-engineering/ 301
-/series/slm-playbook/part-6-vllm-deployment-evals/ /posts/slm-fine-tune-vs-prompt-engineering/ 301
 /series/task/ /series/ 301
 
 # --- 6. Prompt Standard Series ---
@@ -305,16 +292,6 @@
 /tags/vibe-coding-pm/ /series/ai-code-review-vibe-coding/ 301
 
 # --- 10. Frontmatter Aliases Parity & Agentic Series Migration ---
-/series/agentic-system-architecture/executive-summary/ /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
-/series/agentic-system-architecture/executive-summary /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
-/series/agentic-system-architecture/part-1-topology/ /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
-/series/agentic-system-architecture/part-1-topology /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
-/series/agentic-system-architecture/part-2-memory/ /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
-/series/agentic-system-architecture/part-2-memory /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
-/series/agentic-system-architecture/part-3-tool-calling/ /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
-/series/agentic-system-architecture/part-3-tool-calling /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
-/series/agentic-system-architecture/part-4-agentops/ /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
-/series/agentic-system-architecture/part-4-agentops /posts/architecting-an-autonomous-hybrid-ai-content-pipeline/ 301
 /series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical/ /series/ai-code-review-vibe-coding/part-1-vibe-coding-paradigm/ 301
 /series/ai-code-review-vibe-coding/part-1-vibe-coding-non-technical /series/ai-code-review-vibe-coding/part-1-vibe-coding-paradigm/ 301
 /series/ai-code-review-vibe-coding/part-2-context-engineering-codebase/ /series/ai-code-review-vibe-coding/part-2-context-engineering/ 301
@@ -343,10 +320,10 @@
 /radar/tech-radar-june-22-2026-dapr-workflow-kratos-clean-architecture/ /radar/2026-06/tech-radar-june-22-2026-dapr-workflow-kratos-clean-architecture/ 301
 /research/high-throughput-local-llm-infrastructure-vllm-golang-gateway /posts/high-throughput-local-llm-infrastructure-vllm-golang-gateway/ 301
 /research/high-throughput-local-llm-infrastructure-vllm-golang-gateway/ /posts/high-throughput-local-llm-infrastructure-vllm-golang-gateway/ 301
-/series/ecommerce-order-allocation/order-splitting-graph-coloring-opa /posts/order-fulfillment-algorithm-warehouse-last-mile/ 301
-/series/ecommerce-order-allocation/order-splitting-graph-coloring-opa/ /posts/order-fulfillment-algorithm-warehouse-last-mile/ 301
-/series/ecommerce-order-allocation/warehouse-picker-routing-optimization /posts/order-fulfillment-algorithm-warehouse-last-mile/ 301
-/series/ecommerce-order-allocation/warehouse-picker-routing-optimization/ /posts/order-fulfillment-algorithm-warehouse-last-mile/ 301
+/series/ecommerce-order-allocation/order-splitting-graph-coloring-opa /series/ecommerce-order-allocation/part-9-order-splitting-graph-coloring-opa/ 301
+/series/ecommerce-order-allocation/order-splitting-graph-coloring-opa/ /series/ecommerce-order-allocation/part-9-order-splitting-graph-coloring-opa/ 301
+/series/ecommerce-order-allocation/warehouse-picker-routing-optimization /series/ecommerce-order-allocation/part-10-warehouse-picker-routing-optimization/ 301
+/series/ecommerce-order-allocation/warehouse-picker-routing-optimization/ /series/ecommerce-order-allocation/part-10-warehouse-picker-routing-optimization/ 301
 /tags/awq /tags/ 301
 /tags/awq/ /tags/ 301
 /tags/cutover /tags/ 301
@@ -357,3 +334,122 @@
 /tags/supply-chain/ /tags/ 301
 /tags/system-design /categories/architecture/ 301
 /tags/system-design/ /categories/architecture/ 301
+
+# --- 12. GSC September 21 Indexing Coverage Remediation (404 / Pruned Tag & Radar Fixes) ---
+/radar/radar-2026-04-24 /radar/2026-04/ 301
+/radar/radar-2026-04-24/ /radar/2026-04/ 301
+/radar/radar-2026-04-28 /radar/2026-04/radar-2026-04-28/ 301
+/radar/radar-2026-04-28/ /radar/2026-04/radar-2026-04-28/ 301
+/radar/radar-2026-05-18 /radar/2026-05/ 301
+/radar/radar-2026-05-18/ /radar/2026-05/ 301
+/radar/radar-2026-05-21 /radar/2026-05/ 301
+/radar/radar-2026-05-21/ /radar/2026-05/ 301
+/radar/radar-2026-05-26 /radar/2026-05/ 301
+/radar/radar-2026-05-26/ /radar/2026-05/ 301
+/radar/tech-radar-may-9-2026-agentic-ai-orchestration-kubernetes-observability-and-critical-infrastructure-security /radar/2026-05/ 301
+/radar/tech-radar-may-9-2026-agentic-ai-orchestration-kubernetes-observability-and-critical-infrastructure-security/ /radar/2026-05/ 301
+/bauxeo / 301
+/our-portfolio / 301
+/our-portfolio/ / 301
+/portfolio/app-development / 301
+/portfolio/app-development/ / 301
+/portfolio/game-development / 301
+/portfolio/game-development/ / 301
+/portfolio/photoshop-design / 301
+/portfolio/photoshop-design/ / 301
+/portfolio/reporting-development / 301
+/portfolio/reporting-development/ / 301
+/categories/ai/ml /categories/ai-engineering/ 301
+/categories/ai/ml/ /categories/ai-engineering/ 301
+/tags/agentic-coding /tags/ 301
+/tags/agentic-coding/ /tags/ 301
+/tags/agile-planning /tags/ 301
+/tags/agile-planning/ /tags/ 301
+/tags/ai-code-vulnerabilities /tags/ 301
+/tags/ai-code-vulnerabilities/ /tags/ 301
+/tags/ai/page/2 /tags/ 301
+/tags/ai/page/2/ /tags/ 301
+/tags/aluminium-os /tags/ 301
+/tags/aluminium-os/ /tags/ 301
+/tags/android-xr /tags/ 301
+/tags/android-xr/ /tags/ 301
+/tags/apache-kafka /tags/ 301
+/tags/apache-kafka/ /tags/ 301
+/tags/apple /tags/ 301
+/tags/apple/ /tags/ 301
+/tags/architect /tags/ 301
+/tags/architect/ /tags/ 301
+/tags/architecture-decision-records /tags/ 301
+/tags/architecture-decision-records/ /tags/ 301
+/tags/bolt /tags/ 301
+/tags/bolt/ /tags/ 301
+/tags/contextops /tags/ 301
+/tags/contextops/ /tags/ 301
+/tags/cybersecurity /tags/ 301
+/tags/cybersecurity/ /tags/ 301
+/tags/dell /tags/ 301
+/tags/dell/ /tags/ 301
+/tags/deployco /tags/ 301
+/tags/deployco/ /tags/ 301
+/tags/developer-tools /tags/ 301
+/tags/developer-tools/ /tags/ 301
+/tags/dra /tags/ 301
+/tags/dra/ /tags/ 301
+/tags/enterprise-software /tags/ 301
+/tags/enterprise-software/ /tags/ 301
+/tags/eu-ai-act /tags/ 301
+/tags/eu-ai-act/ /tags/ 301
+/tags/evaluation /tags/ 301
+/tags/evaluation/ /tags/ 301
+/tags/excessive-agency /tags/ 301
+/tags/excessive-agency/ /tags/ 301
+/tags/fluxcd /tags/ 301
+/tags/fluxcd/ /tags/ 301
+/tags/gemini /tags/ 301
+/tags/gemini/ /tags/ 301
+/tags/google-io /tags/ 301
+/tags/google-io/ /tags/ 301
+/tags/gstar-summit /tags/ 301
+/tags/gstar-summit/ /tags/ 301
+/tags/hardware /tags/ 301
+/tags/hardware/ /tags/ 301
+/tags/lovable /tags/ 301
+/tags/lovable/ /tags/ 301
+/tags/openshift /tags/ 301
+/tags/openshift/ /tags/ 301
+/tags/owasp-llm-top-10 /tags/ 301
+/tags/owasp-llm-top-10/ /tags/ 301
+/tags/productivity-paradox /tags/ 301
+/tags/productivity-paradox/ /tags/ 301
+/tags/search /tags/ 301
+/tags/search/ /tags/ 301
+/tags/secrets-management /tags/ 301
+/tags/secrets-management/ /tags/ 301
+/tags/security-review /tags/ 301
+/tags/security-review/ /tags/ 301
+/tags/spec-first-development /tags/ 301
+/tags/spec-first-development/ /tags/ 301
+/tags/supply-chain-attack /tags/ 301
+/tags/supply-chain-attack/ /tags/ 301
+/tags/svelte /tags/ 301
+/tags/svelte/ /tags/ 301
+/tags/tautological-tests /tags/ 301
+/tags/tautological-tests/ /tags/ 301
+/tags/test-management /tags/ 301
+/tags/test-management/ /tags/ 301
+/tags/tpu /tags/ 301
+/tags/tpu/ /tags/ 301
+/tags/trainium /tags/ 301
+/tags/trainium/ /tags/ 301
+/tags/vibe-coding-ceo /tags/ 301
+/tags/vibe-coding-ceo/ /tags/ 301
+/tags/vibe-coding-definition /tags/ 301
+/tags/vibe-coding-definition/ /tags/ 301
+/tags/vibe-coding-for-non-technical /tags/ 301
+/tags/vibe-coding-for-non-technical/ /tags/ 301
+/tags/vibe-coding-security /tags/ 301
+/tags/vibe-coding-security/ /tags/ 301
+/tags/vibe-engineer /tags/ 301
+/tags/vibe-engineer/ /tags/ 301
+/tags/what-is-vibe-coding /tags/ 301
+/tags/what-is-vibe-coding/ /tags/ 301

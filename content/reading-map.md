@@ -58,6 +58,7 @@ For Senior Backend Engineers optimizing Go services under heavy peak traffic:
 3. **Observability & Debugging:** Configure remote profiling via [Go pprof in Kubernetes](/posts/go-pprof-kubernetes-remote-profiling/) and eliminate leaks using [Goroutine Leak Detection](/posts/goroutine-leak-detection-production-golang/).
 4. **Traffic Protection:** Implement peak shaving using [Shopee Flash Sale Architecture](/posts/shopee-flash-sale-architecture/) and [Surge Pricing Algorithm](/posts/surge-pricing-optimization-architecture/).
 5. **Garbage Collection Tuning:** Optimize Go runtime behavior using GOGC adjustments and memory limit flags to prevent OOM kills during high-throughput flash sale events.
+6. **Fleet & Geospatial Optimization:** Solve NP-hard vehicle routing constraints with [CVRP & VRPTW Fleet Optimization in Go](/posts/cvrp-vrptw-alns-fleet-optimization-golang-architecture/) using Adaptive Large Neighborhood Search (ALNS) and memory-mapped spatial graphs.
 
 ### Track C: AI-Native Systems & Autonomous Swarm Architecture
 For AI Systems Engineers building production RAG pipelines, agentic workflows, and MCP servers:
@@ -130,6 +131,7 @@ The articles listed below represent the recommended sequential reading path for 
 - [Shopee Flash Sale Architecture: Rate Limiting & Redis](/posts/shopee-flash-sale-architecture/)
 - [Surge Pricing Algorithm & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture/)
 - [Order Fulfillment Algorithm: Warehouse to Last-Mile](/posts/order-fulfillment-algorithm-warehouse-last-mile/)
+- [CVRP & VRPTW Fleet Optimization: High-Throughput Routing in Go](/posts/cvrp-vrptw-alns-fleet-optimization-golang-architecture/)
 
 ---
 

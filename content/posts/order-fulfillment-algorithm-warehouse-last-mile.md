@@ -17,15 +17,6 @@ tags:
   - "VRP"
   - "Amazon"
   - "Logistics"
-  - "Algorithms"
-aliases:
-  - /series/ecommerce-order-allocation/executive-summary/
-  - /series/ecommerce-order-allocation/part-1-order-fulfillment-fundamentals/
-  - /series/ecommerce-order-allocation/part-2-inventory-realtime/
-  - /series/ecommerce-order-allocation/part-3-allocation-algorithms/
-  - /series/ecommerce-order-allocation/part-4-amazon-condor-anticipatory/
-  - /series/ecommerce-order-allocation/order-splitting-graph-coloring-opa/
-  - /series/ecommerce-order-allocation/warehouse-picker-routing-optimization/
 description: "How e-commerce giants decide which warehouse fulfills your order. Covers Available-to-Promise Redis Lua, Go multi-warehouse allocation solvers, Amazon CONDOR, and Google OR-Tools CVRP."
 ShowToc: true
 TocOpen: true

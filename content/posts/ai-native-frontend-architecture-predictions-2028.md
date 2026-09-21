@@ -10,13 +10,6 @@ description: "10 predictions and architectural blueprint for AI-Native Frontend 
 categories: ["Engineering", "Strategy"]
 aliases:
   - /posts/the-future-of-frontend-development-in-the-ai-era-10-predictions-for-2028/
-  - /series/ai-driven-playbook/part-2-ai-platform-layer/
-  - /series/ai-driven-playbook/part-4-policy-as-code-agentic-cicd/
-  - /series/ai-driven-playbook/part-8-ai-native-system-architecture/
-  - /series/ai-driven-playbook/part-1-paradigm-shift-ai-first-sdlc/
-  - /series/ai-driven-playbook/part-2-modern-ai-engineering-stack/
-  - /series/ai-driven-playbook/part-3b-ai-code-review-quality-gates/
-  - /series/ai-driven-playbook/part-4-ai-assisted-refactoring-legacy-code/
 ShowToc: true
 TocOpen: true
 mermaid: true

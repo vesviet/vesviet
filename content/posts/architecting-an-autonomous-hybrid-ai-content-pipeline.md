@@ -17,13 +17,6 @@ tags:
   - "Local LLMs"
   - "State Machine"
   - "GitOps"
-  - "Agentic AI"
-aliases:
-  - /series/agentic-system-architecture/executive-summary/
-  - /series/agentic-system-architecture/part-1-topology/
-  - /series/agentic-system-architecture/part-2-memory/
-  - /series/agentic-system-architecture/part-3-tool-calling/
-  - /series/agentic-system-architecture/part-4-agentops/
 description: "Replace costly crons with an autonomous $0.05/day AI pipeline: Hybrid AI, Agentic System Topology, Memory Architecture, and automated quality gates."
 ShowToc: true
 TocOpen: true
