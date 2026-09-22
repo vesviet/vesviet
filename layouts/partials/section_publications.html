@@ -1,0 +1,37 @@
+<!-- ── 6. Recent Technical Publications Stream ─────────────────────────── -->
+{{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+<section class="recent-publications-section portfolio-section" id="publications" aria-label="Recent Technical Publications Stream">
+    <div class="section-header-bar">
+        <h2 class="section-heading">
+            <span class="section-accent-icon" style="color: var(--accent-secondary);">✦</span>
+            <span>Latest Technical Publications</span>
+        </h2>
+        <a href="/posts/" class="section-more-link">
+            <span>Browse all articles</span> <span>↗</span>
+        </a>
+    </div>
+
+    <div class="recent-articles-list">
+        {{- range first 6 $pages }}
+        <article class="recent-article-item">
+            <h3 class="recent-article-title">
+                <a href="{{ .Permalink }}">{{ .Title }}</a>
+            </h3>
+            {{- if .Description }}
+            <p class="recent-article-desc">{{ .Description }}</p>
+            {{- else }}
+            <p class="recent-article-desc">{{ .Summary | plainify | htmlUnescape | truncate 160 }}</p>
+            {{- end }}
+            <div class="recent-article-meta">
+                <span>{{ .Date.Format "02/01/2006" }}</span>
+                <span>&bull;</span>
+                <span>⏱️ {{ .ReadingTime }} min read</span>
+                {{- if .Params.tags }}
+                <span>&bull;</span>
+                <span class="article-tag-chip">#{{ index .Params.tags 0 }}</span>
+                {{- end }}
+            </div>
+        </article>
+        {{- end }}
+    </div>
+</section>

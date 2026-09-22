@@ -1,0 +1,199 @@
+<!-- ── 2. Interactive Resume & Career Timeline Component (RyanCV Style) ── -->
+<section class="resume-timeline-section portfolio-section" id="resume" aria-label="Career Timeline and Professional Experience">
+    <div class="section-header-bar">
+        <h2 class="section-heading">
+            <span class="section-accent-icon">✦</span>
+            <span>Career Milestones &amp; Track Record</span>
+        </h2>
+        <a href="/Le-Tuan-Anh-Resume.pdf" class="section-more-link" download="Le-Tuan-Anh-Resume.pdf" target="_blank" rel="noopener noreferrer">
+            <span>Download PDF CV (3 pages)</span> <span>↗</span>
+        </a>
+    </div>
+
+    <!-- Timeline Wrapper with Vertical Spine -->
+    <div class="career-timeline-container">
+        <!-- Milestone 1: 2021 - Present -->
+        <div class="timeline-milestone-item">
+            <div class="milestone-marker">
+                <span class="marker-dot active-dot"></span>
+                <span class="marker-line"></span>
+            </div>
+
+            <div class="milestone-card">
+                <div class="milestone-header">
+                    <div class="milestone-badge-row">
+                        <span class="milestone-period-badge current">2021 &ndash; Present</span>
+                        <span class="milestone-type-badge">Principal / Consultant</span>
+                    </div>
+                    <h3 class="milestone-role">Senior Go Backend Architect &amp; Systems Consultant</h3>
+                    <div class="milestone-company">Independent Advisory &bull; Core Commerce &amp; Microservices Platforms</div>
+                </div>
+
+                <div class="milestone-summary">
+                    <p>
+                        Led architecture and execution of legacy monolith decomposition into <strong>21 Go microservices</strong> using the Strangler Fig pattern with zero customer downtime. Designed distributed event-driven data pipelines serving <strong>25M+ monthly requests</strong> with <strong>p95 latency compressed from 1.2s to 120ms</strong>.
+                    </p>
+                </div>
+
+                <details class="milestone-expandable">
+                    <summary class="expandable-trigger">
+                        <span>View Key Architectural Achievements</span>
+                        <svg class="expandable-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </summary>
+                    <div class="expandable-body">
+                        <ul class="milestone-achievements-list">
+                            <li><strong>Monolith Decomposition:</strong> Deconstructed a high-volume PHP/Magento monolith into 21 bounded Go microservices with bi-directional database synchronization and zero data loss.</li>
+                            <li><strong>High-Throughput Edge:</strong> Architected gRPC and REST edge gateways handling peak bursts of 8,000 requests/sec with automated circuit breaking and dynamic rate limiting.</li>
+                            <li><strong>Distributed Sagas:</strong> Implemented Transactional Outbox pattern with Dapr Pub/Sub and Temporal saga workflows for distributed multi-service checkout and payment settlement.</li>
+                            <li><strong>GitOps &amp; Infrastructure:</strong> Authored declarative Kubernetes (K3s/EKS) Helm charts and ArgoCD automated deployment pipelines with zero-downtime rolling upgrades.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <div class="milestone-stack-tags">
+                    <span class="stack-tag">Go 1.25+</span>
+                    <span class="stack-tag">Kratos / gRPC</span>
+                    <span class="stack-tag">Kubernetes (K3s/EKS)</span>
+                    <span class="stack-tag">Dapr Pub/Sub</span>
+                    <span class="stack-tag">Temporal Saga</span>
+                    <span class="stack-tag">ArgoCD</span>
+                    <span class="stack-tag">MySQL Vitess</span>
+                    <span class="stack-tag">Redis Cluster</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Milestone 2: 2019 - 2021 -->
+        <div class="timeline-milestone-item">
+            <div class="milestone-marker">
+                <span class="marker-dot"></span>
+                <span class="marker-line"></span>
+            </div>
+
+            <div class="milestone-card">
+                <div class="milestone-header">
+                    <div class="milestone-badge-row">
+                        <span class="milestone-period-badge">2019 &ndash; 2021</span>
+                        <span class="milestone-type-badge">Principal Backend</span>
+                    </div>
+                    <h3 class="milestone-role">Principal Backend Engineer</h3>
+                    <div class="milestone-company">SnapMart &amp; ICM Platform &bull; Retail &amp; Grocery Commerce</div>
+                </div>
+
+                <div class="milestone-summary">
+                    <p>
+                        Engineered core checkout calculation engines, multi-provider payment gateway routing, and localized warehouse fulfillment APIs powering rapid delivery grocery commerce across Southeast Asia.
+                    </p>
+                </div>
+
+                <details class="milestone-expandable">
+                    <summary class="expandable-trigger">
+                        <span>View Key Architectural Achievements</span>
+                        <svg class="expandable-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </summary>
+                    <div class="expandable-body">
+                        <ul class="milestone-achievements-list">
+                            <li><strong>Low-Latency Checkout:</strong> Re-engineered checkout pricing and promotional calculation engines, boosting checkout completion throughput by 40%.</li>
+                            <li><strong>Warehouse Fleet APIs:</strong> Built high-concurrency real-time barcode inventory APIs handling thousands of simultaneous warehouse scanner devices.</li>
+                            <li><strong>Payment Resilience:</strong> Implemented fault-tolerant idempotent webhook handling for major VN/global payment gateways (VNPay, Momo, Stripe).</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <div class="milestone-stack-tags">
+                    <span class="stack-tag">Go</span>
+                    <span class="stack-tag">Magento 2</span>
+                    <span class="stack-tag">PHP 8</span>
+                    <span class="stack-tag">Redis</span>
+                    <span class="stack-tag">MySQL Sharding</span>
+                    <span class="stack-tag">Docker</span>
+                    <span class="stack-tag">REST APIs</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Milestone 3: 2008 - 2019 -->
+        <div class="timeline-milestone-item">
+            <div class="milestone-marker">
+                <span class="marker-dot"></span>
+            </div>
+
+            <div class="milestone-card">
+                <div class="milestone-header">
+                    <div class="milestone-badge-row">
+                        <span class="milestone-period-badge">2008 &ndash; 2019</span>
+                        <span class="milestone-type-badge">Lead Systems Engineer</span>
+                    </div>
+                    <h3 class="milestone-role">Lead Systems Engineer &amp; Infrastructure Architect</h3>
+                    <div class="milestone-company">JV-IT, Skyfronts, ToanCau, VEC Solution &bull; Enterprise Systems</div>
+                </div>
+
+                <div class="milestone-summary">
+                    <p>
+                        Over 11 years of foundational systems engineering: built high-load enterprise architectures, Linux kernel network socket optimizations, distributed relational databases, and geospatial mapping platforms.
+                    </p>
+                </div>
+
+                <details class="milestone-expandable">
+                    <summary class="expandable-trigger">
+                        <span>View Key Architectural Achievements</span>
+                        <svg class="expandable-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </summary>
+                    <div class="expandable-body">
+                        <ul class="milestone-achievements-list">
+                            <li><strong>Network Socket Optimization:</strong> Tuned Linux TCP/IP network stack parameters and socket buffers to withstand high connection concurrency under intensive load.</li>
+                            <li><strong>Geospatial Routing:</strong> Engineered custom distance calculation engines and interactive map tiles for fleet tracking and logistics dispatch.</li>
+                            <li><strong>Enterprise Storage:</strong> Designed fault-tolerant master-slave database replication topologies and disaster recovery failover automation.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <div class="milestone-stack-tags">
+                    <span class="stack-tag">Linux Systems</span>
+                    <span class="stack-tag">C/C++</span>
+                    <span class="stack-tag">High-Concurrency PHP</span>
+                    <span class="stack-tag">MySQL Replication</span>
+                    <span class="stack-tag">Nginx</span>
+                    <span class="stack-tag">Distributed Storage</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Education & Certifications Row -->
+    <div class="resume-credentials-grid">
+        <div class="credential-item-card">
+            <div class="credential-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                    <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                </svg>
+            </div>
+            <div class="credential-info">
+                <span class="credential-label">Academic Background</span>
+                <h4 class="credential-title">B.S. in Software Engineering</h4>
+                <p class="credential-meta">Computer Science &amp; Distributed Systems Foundations</p>
+            </div>
+        </div>
+
+        <div class="credential-item-card">
+            <div class="credential-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <circle cx="12" cy="8" r="7"></circle>
+                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                </svg>
+            </div>
+            <div class="credential-info">
+                <span class="credential-label">Professional Authority</span>
+                <h4 class="credential-title">Cloud Native &amp; Go Specialist</h4>
+                <p class="credential-meta">Kubernetes CKA &bull; Go Profiling &bull; Distributed Sagas</p>
+            </div>
+        </div>
+    </div>
+</section>

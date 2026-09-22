@@ -1,0 +1,159 @@
+<!-- ── 3. Bento Architecture Case Studies Showcase (Monogram Style) ───── -->
+<section class="works-bento-section portfolio-section" id="works" aria-label="Bento Architecture Case Studies and Case Studies">
+    <div class="section-header-bar">
+        <h2 class="section-heading">
+            <span class="section-accent-icon" style="color: var(--accent-primary);">✦</span>
+            <span>Featured Case Studies &amp; Architectures</span>
+        </h2>
+        <div class="bento-filter-bar" role="tablist" aria-label="Filter case studies by technology">
+            <button type="button" class="bento-filter-btn active" data-filter="all" role="tab" aria-selected="true">All</button>
+            <button type="button" class="bento-filter-btn" data-filter="microservices" role="tab" aria-selected="false">Microservices</button>
+            <button type="button" class="bento-filter-btn" data-filter="concurrency" role="tab" aria-selected="false">Concurrency</button>
+            <button type="button" class="bento-filter-btn" data-filter="gitops" role="tab" aria-selected="false">GitOps</button>
+        </div>
+    </div>
+
+    <div class="bento-grid-container">
+        <!-- Hero Bento Card (Span 2 Columns / Full Width Showcase) -->
+        <article class="bento-card bento-flagship-card" data-category="microservices" aria-label="Composable E-Commerce Microservices Platform">
+            <div class="bento-card-top">
+                <div class="bento-category-tag">
+                    <span class="category-icon">✦</span>
+                    <span>FLAGSHIP ARCHITECTURE &bull; MICROSERVICES</span>
+                </div>
+                <div class="bento-metrics-cluster">
+                    <span class="metric-chip accent-terracotta">21 Go Services</span>
+                    <span class="metric-chip accent-gold">p95 120ms</span>
+                    <span class="metric-chip accent-slate">8,000 RPS</span>
+                    <span class="metric-chip accent-emerald">0 Downtime</span>
+                </div>
+            </div>
+
+            <div class="bento-card-content">
+                <h3 class="bento-card-title">
+                    <a href="/posts/architecting-21-service-ecommerce-golang-ddd/">Composable E-Commerce Microservices Platform (21 Services)</a>
+                </h3>
+                <p class="bento-card-desc">
+                    Deconstructed an 11-year monolithic commerce application into 21 bounded Go microservices utilizing DDD, Dapr Pub/Sub, Transactional Outbox pattern, and declarative ArgoCD GitOps pipelines with zero production downtime and 40% checkout throughput gain.
+                </p>
+            </div>
+
+            <div class="bento-card-bottom">
+                <div class="bento-tech-pills">
+                    <span class="tech-pill">Go 1.25+</span>
+                    <span class="tech-pill">Dapr Pub/Sub</span>
+                    <span class="tech-pill">ArgoCD</span>
+                    <span class="tech-pill">Temporal Saga</span>
+                    <span class="tech-pill">MySQL Vitess</span>
+                </div>
+                <div class="bento-actions">
+                    <a href="https://github.com/vesviet/Composable-Commerce-Service-Architecture" target="_blank" rel="noopener noreferrer" class="bento-action-secondary" title="View Architecture Blueprint on GitHub">
+                        <span>GitHub Blueprint</span> <span>↗</span>
+                    </a>
+                    <a href="/posts/architecting-21-service-ecommerce-golang-ddd/" class="bento-action-primary">
+                        <span>Read Case Study</span> <span>↗</span>
+                    </a>
+                </div>
+            </div>
+        </article>
+
+        <!-- Sub-Card 1: Concurrency & Runtime Profiling -->
+        <article class="bento-card bento-standard-card" data-category="concurrency" aria-label="High-Throughput Go GC & Goroutine Leak Elimination">
+            <div class="bento-card-top">
+                <div class="bento-category-tag">
+                    <span>CONCURRENCY &bull; RUNTIME</span>
+                </div>
+                <div class="bento-metrics-cluster">
+                    <span class="metric-chip accent-gold">p95 -90%</span>
+                    <span class="metric-chip accent-emerald">0 Leaks</span>
+                </div>
+            </div>
+
+            <div class="bento-card-content">
+                <h4 class="bento-card-title">
+                    <a href="/posts/goroutine-leak-detection-production-golang/">High-Throughput Go GC &amp; Goroutine Leak Elimination</a>
+                </h4>
+                <p class="bento-card-desc">
+                    Comprehensive production diagnostic playbook resolving silent memory bloat and goroutine leaks in high-throughput Go microservices using pprof and custom eBPF tracing.
+                </p>
+            </div>
+
+            <div class="bento-card-bottom">
+                <div class="bento-tech-pills">
+                    <span class="tech-pill">Go pprof</span>
+                    <span class="tech-pill">Memory GC</span>
+                    <span class="tech-pill">Worker Pools</span>
+                </div>
+                <a href="/posts/goroutine-leak-detection-production-golang/" class="bento-action-link">
+                    <span>Read Guide ↗</span>
+                </a>
+            </div>
+        </article>
+
+        <!-- Sub-Card 2: Distributed Sagas & Banking -->
+        <article class="bento-card bento-standard-card" data-category="microservices" aria-label="Temporal Saga Orchestration in Distributed Commerce">
+            <div class="bento-card-top">
+                <div class="bento-category-tag">
+                    <span>DISTRIBUTED SYSTEMS &bull; SAGAS</span>
+                </div>
+                <div class="bento-metrics-cluster">
+                    <span class="metric-chip accent-terracotta">Saga Outbox</span>
+                    <span class="metric-chip accent-slate">Strict ACID</span>
+                </div>
+            </div>
+
+            <div class="bento-card-content">
+                <h4 class="bento-card-title">
+                    <a href="/posts/temporal-saga-pattern-golang-distributed-transactions-guide/">Temporal Saga Orchestration in Distributed Banking &amp; Commerce</a>
+                </h4>
+                <p class="bento-card-desc">
+                    Solving distributed dual-write inconsistencies and multi-service compensating workflows with Temporal, Transactional Outbox pattern, and idempotent message deduplication.
+                </p>
+            </div>
+
+            <div class="bento-card-bottom">
+                <div class="bento-tech-pills">
+                    <span class="tech-pill">Temporal.io</span>
+                    <span class="tech-pill">Saga Coordinator</span>
+                    <span class="tech-pill">Kafka</span>
+                </div>
+                <a href="/posts/temporal-saga-pattern-golang-distributed-transactions-guide/" class="bento-action-link">
+                    <span>Read Guide ↗</span>
+                </a>
+            </div>
+        </article>
+
+        <!-- Sub-Card 3: Kubernetes Operators & eBPF -->
+        <article class="bento-card bento-standard-card" data-category="gitops" aria-label="Custom Kubernetes Operators with eBPF & Cilium">
+            <div class="bento-card-top">
+                <div class="bento-category-tag">
+                    <span>GITOPS &bull; KERNEL EBPF</span>
+                </div>
+                <div class="bento-metrics-cluster">
+                    <span class="metric-chip accent-emerald">Kernel eBPF</span>
+                    <span class="metric-chip accent-gold">ArgoCD Sync</span>
+                </div>
+            </div>
+
+            <div class="bento-card-content">
+                <h4 class="bento-card-title">
+                    <a href="/posts/building-custom-kubernetes-operators-ebpf-golang-cilium/">Custom Kubernetes Operators with eBPF &amp; Cilium</a>
+                </h4>
+                <p class="bento-card-desc">
+                    Building Kubernetes controllers with Kubebuilder in Go, binding directly to Linux kernel socket programs via Cilium and Tetragon for zero-trust microsegmentation.
+                </p>
+            </div>
+
+            <div class="bento-card-bottom">
+                <div class="bento-tech-pills">
+                    <span class="tech-pill">Kubebuilder</span>
+                    <span class="tech-pill">Cilium eBPF</span>
+                    <span class="tech-pill">ArgoCD</span>
+                </div>
+                <a href="/posts/building-custom-kubernetes-operators-ebpf-golang-cilium/" class="bento-action-link">
+                    <span>Read Guide ↗</span>
+                </a>
+            </div>
+        </article>
+    </div>
+</section>
