@@ -491,7 +491,7 @@ Migrating an active production service from a single monolithic database to a mu
 | :--- | :---: | :---: | :---: | :---: | :--- |
 | **Valkey 8.0+ Cluster** | Multi-node sharded | ~135k QPS / node | Atomic Lua XFetch | RedisBloom module | Distributed session store, high-availability key-value |
 | **DragonflyDB 2026+** | Single large instance | 4M+ QPS / instance | Native lockless fibers | In-memory Cuckoo filter | Ultra-high throughput without cluster sharding complexity |
-| **Ristretto (Go L1)** | In-process application RAM | 25M+ ops / sec | Local `sync.Singleflight` | Integrated TinyLFU admission filter | Microsecond local hot-key caching, sub-5ms P99 SLA |
+| **Ristretto (Go L1)** | In-process application RAM | 30M+ ops / sec | Local `sync.Singleflight` | Integrated TinyLFU admission filter | Microsecond local hot-key caching, sub-5ms P99 SLA |
 | **Memcached** | Multi-node partitioned | ~100k QPS / node | None (Manual client locking) | External Bloom filter proxy | Simple key-value caching with raw memory efficiency |
 | **AWS ElastiCache / MemoryDB** | Managed multi-AZ | Variable (Instance tier) | Engine-dependent | VPC endpoint security | Enterprise AWS-managed serverless infrastructure |
 

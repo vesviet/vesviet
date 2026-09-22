@@ -20,7 +20,7 @@ canonicalURL: "https://tanhdev.com/posts/aws-eks-vs-ecs-comparison/"
 
 # AWS EKS vs ECS: Architecture, Real Costs & 2026 Guide
 
-**Answer-first:** When deciding between AWS ECS and EKS, choose ECS Fargate for speed and zero control plane costs if you lack Kubernetes expertise. Choose EKS if you require the CNCF ecosystem (ArgoCD, Dapr, KEDA) and have dedicated DevOps engineers to manage the $73/month control plane fee. Based on production telemetry managing 21 Go microservices at 8,000 RPS peak and 25M+ monthly requests, this guide breaks down real-world TCO, Karpenter vs Fargate autoscaling latency, and operational trade-offs.
+**Answer-first:** When deciding between AWS ECS and EKS, choose ECS Fargate for speed and zero control plane costs if you lack Kubernetes expertise. Choose EKS if you require the CNCF ecosystem (ArgoCD, Dapr, KEDA) and have dedicated DevOps engineers to manage the $73/month control plane fee. Based on production telemetry managing Go microservices handling millions of monthly requests, this guide breaks down real-world TCO, Karpenter vs Fargate autoscaling latency, and operational trade-offs.
 
 | Feature | AWS ECS (Elastic Container Service) | AWS EKS (Elastic Kubernetes Service) |
 | :--- | :--- | :--- |
@@ -28,7 +28,7 @@ canonicalURL: "https://tanhdev.com/posts/aws-eks-vs-ecs-comparison/"
 | **Scalability** | Good (ASG-based) | Excellent (Karpenter ~45s provisioning) |
 | **Complexity** | Low (AWS-native) | High (Requires Kubernetes expertise) |
 
-I've run both in production. At Vigo Retail, I architected a 21-service Go microservices platform on EKS handling **8,000 RPS peak and 25M+ requests/month**. I've also managed ECS clusters for smaller AWS-native projects. This guide is what I wish existed before I made those decisions.
+I've run both in production. At Vigo Retail, I led the migration to Go microservices on EKS handling **millions of requests/month**. I've also managed ECS clusters for smaller AWS-native projects. This guide is what I wish existed before I made those decisions.
 
 ---
 
@@ -160,23 +160,23 @@ Both ECS and EKS run on identical compute. EC2 pricing and Fargate pricing are t
 - **Graviton ARM:** ~20% lower base cost, up to 40% better price-performance. ECS: set `cpuArchitecture: ARM64` in Task Definition. EKS: Karpenter auto-selects Graviton. Go compiles to ARM with zero code changes — `GOARCH=arm64 GOOS=linux go build`.
 - **Fargate Spot + Graviton:** Up to **76% savings** vs x86 on-demand pricing
 
-### 3.2.1 Firsthand Production Benchmark: 8,000 RPS & 25M Req/Month Cost & Sizing Matrix
+### 3.2.1 Firsthand Production Benchmark: High-Throughput E-Commerce Cost & Sizing Matrix
 
-At Vigo Retail, our 21-service Go microservices platform operated at a baseline of ~800 RPS (25M+ requests/month), scaling dynamically to **8,000 RPS peak** during nationwide flash-sale campaigns. The table below compares the empirical sizing, autoscaling behavior, and real AWS infrastructure spend when running this workload on ECS Fargate versus EKS with Karpenter on Graviton EC2 instances:
+At Vigo Retail, our Go microservices platform operated across high-traffic baseline loads (millions of requests/month), scaling dynamically during nationwide flash-sale campaigns. The table below compares the empirical sizing, autoscaling behavior, and real AWS infrastructure spend when running this workload on ECS Fargate versus EKS with Karpenter on Graviton EC2 instances:
 
 | Architectural Metric | AWS ECS Fargate (Serverless) | AWS EKS + Karpenter (c6g / c7g Graviton) |
 | :--- | :--- | :--- |
 | **Baseline Compute Sizing** | 42 Tasks (1 vCPU, 2GB RAM per task) | 4x `c6g.2xlarge` (8 vCPU, 16GB RAM) |
-| **Peak Burst Sizing (8k RPS)**| 210 Tasks (1 vCPU, 2GB RAM per task) | 18x `c6g.2xlarge` (Bin-packed via Karpenter) |
+| **Peak Burst Sizing**| 210 Tasks (1 vCPU, 2GB RAM per task) | 18x `c6g.2xlarge` (Bin-packed via Karpenter) |
 | **Scale-Out Latency** | 45–90s (Task provisioning & ENI attach) | **35–50s** (Direct EC2 Fleet launch + image cache) |
 | **Control Plane Cost** | **$0.00 / month** | $73.00 / month |
 | **Baseline Monthly Compute** | $1,348.60 / month | $486.20 / month (Savings Plans) |
 | **Peak Burst Compute Cost** | $6,743.00 / month (pro-rated) | **$2,188.00 / month** (70% Spot + 30% On-Demand) |
 | **P99 API Latency (Peak)** | 42ms (GC pauses on small 2GB task) | **16ms** (Consolidated memory pool on host) |
 | **Observability Surcharge** | ~$65/mo (CloudWatch Container Insights) | ~$180/mo (High-cardinality OTel DaemonSet) |
-| **Net Cost Trade-off** | Simple, but **3.1x more expensive** at scale | Complex ops, but **saves >$4,500/month** at 8,000 RPS |
+| **Net Cost Trade-off** | Simple, but **3.1x more expensive** at scale | Complex ops, but **saves >$4,500/month** at peak scale |
 
-**Key Production Insight:** While ECS Fargate eliminates node management toil, its rigid task sizing tiers (e.g., stepping directly from 1 vCPU to 2 vCPU) force severe over-provisioning for memory-light Go microservices. Under prolonged 8,000 RPS loads, EKS with Karpenter dynamic bin-packing on Graviton Spot instances reduced our monthly AWS compute bill by **67.5%** while delivering a 2.6x improvement in P99 latency.
+**Key Production Insight:** While ECS Fargate eliminates node management toil, its rigid task sizing tiers (e.g., stepping directly from 1 vCPU to 2 vCPU) force severe over-provisioning for memory-light Go microservices. Under prolonged peak loads, EKS with Karpenter dynamic bin-packing on Graviton Spot instances reduced our monthly AWS compute bill by **67.5%** while delivering a 2.6x improvement in P99 latency.
 
 ### 3.3 Hidden Costs: NAT Gateway, ALB, Engineering Headcount
 
@@ -218,7 +218,7 @@ This is where EKS (with Karpenter) beats ECS significantly for bursty workloads:
 | ECS Fargate | ~30–90 seconds | Task-level cold start |
 | Cluster Autoscaler (EKS) | ~3–5 minutes | ASG-based — legacy |
 
-**Why this matters at 8,000 RPS:** At Vigo Retail, traffic spikes during promotions hit 8,000 RPS within minutes. A 3-minute node provisioning delay translates directly to queued requests, degraded p99 latency, and potential 5xx errors. Karpenter's 45-second provisioning kept us within SLA during every burst event.
+**Why this matters under flash-sale bursts:** At Vigo Retail, traffic spikes during promotions hit peak volume within minutes. A 3-minute node provisioning delay translates directly to queued requests, degraded p99 latency, and potential 5xx errors. Karpenter's 45-second provisioning kept us within SLA during every burst event.
 
 **Pod-level autoscaling:**
 
@@ -278,7 +278,7 @@ According to the [CNCF 2024 Annual Survey](https://www.cncf.io/reports/cncf-annu
 
 ### 5.3 Go Microservices on EKS — Firsthand Production Experience
 
-At Vigo Retail, I led the architecture for a **21-service Go microservices platform** on EKS in `ap-southeast-1`. The system handled an e-commerce backend for a Korean conglomerate's Vietnam operations, peaking at **8,000 RPS and 25M+ requests/month**.
+At Vigo Retail, I led the architecture for Go microservices on EKS in `ap-southeast-1`. The system handled an e-commerce backend for a Korean conglomerate's Vietnam operations, scaling smoothly across **millions of requests/month**.
 
 **Stack:**
 - 21 Go services (order management, inventory, loyalty, payment, notifications, and more)
@@ -570,7 +570,7 @@ At Vigo Retail, EKS was the right call. The CNCF ecosystem — ArgoCD + Dapr + K
 
 ---
 
-*[Lê Tuấn Anh](/about/) is a Go Backend Architect with 17+ years of experience. He led the EKS architecture for a 21-service Go microservices platform at Vigo Retail handling 8,000 RPS peak. He also writes about [GitOps at Scale with ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/), [Kubernetes In-Place Pod Resizing](/posts/kubernetes-in-place-pod-resizing-guide/), and [Dapr Workflow Saga Orchestration](/posts/dapr-workflow-saga-orchestration-guide/).*
+*[Lê Tuấn Anh](/about/) is a Senior Software Engineer with 17+ years of experience. He led the EKS architecture for Go microservices at Vigo Retail handling millions of requests per month. He also writes about [GitOps at Scale with ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/), [Kubernetes In-Place Pod Resizing](/posts/kubernetes-in-place-pod-resizing-guide/), and [Dapr Workflow Saga Orchestration](/posts/dapr-workflow-saga-orchestration-guide/).*
 
 ---
 

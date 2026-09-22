@@ -137,7 +137,7 @@ They provide flat-rate billing without high bandwidth egress fees, integrated GP
 
 The strongest TechTask signal in the last 24 hours is not a single framework release. It is the way several platform updates are converging on the same message: commerce modernization is no longer mainly about decomposing a monolith. It is about operating the decomposed system safely.
 
-That matters directly for the engineering profile behind this site: Strangler Fig migration from Magento/PHP into a 21-service Golang ecosystem, Dapr Pub/Sub for distributed workflows, Saga compensation for checkout and payment failure, Transactional Outbox for reliable events, GitOps through Kubernetes and ArgoCD, and performance work that pushed p95 latency from **1.2s to 120ms** under high-traffic commerce load.
+That matters directly for the engineering profile behind this site: Strangler Fig migration from Magento/PHP into a 21-service Golang ecosystem, Dapr Pub/Sub for distributed workflows, Saga compensation for checkout and payment failure, Transactional Outbox for reliable events, GitOps through Kubernetes and ArgoCD, and performance work that achieved a **35% API latency reduction** under high-traffic commerce load.
 
 Five fresh signals define today's radar: Kubernetes backup and migration is moving toward stronger community governance, GitOps packaging is still shipping operational updates, MySQL 8.0 has crossed its end-of-life window, Kubernetes v1.36 is making live resource adjustment more practical, and Dapr's current support model reinforces that event-driven platforms need active version discipline.
 

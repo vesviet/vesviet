@@ -15,7 +15,7 @@ mermaid: false
 
 The Tech Radar is a daily engineering signal log — each entry is a focused deep-dive on one significant development in Go, Kubernetes, cloud-native infrastructure, AI/ML, or platform engineering. Not a news summary, but an analysis of what the signal means for backend architects and platform teams building production systems.
 
-Published multiple times per week, written from the perspective of an Independent Consultant who has run 21 Go microservices at 8,000 RPS in production — with a bias toward operational impact over announcement headlines.
+Published multiple times per week, written from the perspective of a Senior Software Engineer with a track record of building scalable platforms handling millions of requests/month — with a bias toward operational impact over announcement headlines.
 
 ## Technical Focus & Tech Radar Methodology
 

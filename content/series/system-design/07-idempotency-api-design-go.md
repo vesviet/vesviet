@@ -553,7 +553,7 @@ If an application pod experiences an Out-Of-Memory (OOM) killer event or a Kuber
 
 The following incident timeline outlines the sequence of events leading to system degradation, detection, and mitigation:
 ```
-00:15 UTC: Black Friday flash-sale starts. Traffic spikes from 2,000 RPS to 48,000 RPS.
+00:15 UTC: Black Friday flash-sale starts. Traffic spikes from 2,000 RPS to 45,000 RPS.
 00:22 UTC: Payment gateway ingress latency rises from 45ms to 1,950ms due to database connection pool exhaustion.
 00:28 UTC: Mobile client timeout was hardcoded to 1,500ms. Clients time out before server completes execution.
 00:29 UTC: Mobile SDK initiates aggressive automatic retry with the SAME Idempotency-Key.

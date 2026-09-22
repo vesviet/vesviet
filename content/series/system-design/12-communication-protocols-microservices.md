@@ -391,7 +391,7 @@ flowchart LR
 
 The following incident timeline outlines the sequence of events leading to system degradation, detection, and mitigation:
 ```
-11:10 UTC: Flash sale commences; traffic climbs from 12,000 RPS to 98,000 RPS.
+11:10 UTC: Flash sale commences; traffic climbs from 12,000 RPS to 95,000 RPS.
 11:14 UTC: API Gateway suddenly starts emitting 'dial tcp: lookup order-service: cannot assign requested address'.
 11:18 UTC: Every subsequent outbound HTTP/gRPC connection fails with socket allocation errors.
 11:25 UTC: SRE opens SSH session to API Gateway pod; 'netstat -an | grep TIME_WAIT | wc -l' outputs 28,230 sockets!

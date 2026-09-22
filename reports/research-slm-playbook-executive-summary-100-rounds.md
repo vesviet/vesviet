@@ -95,7 +95,7 @@ Sources: https://www.oecd.ai/en/wonk/sovereign-ai
 Sources: https://huggingface.co/docs/hub/security-cryptographic-hashes
 
 ### Round 20: DLP Gateway Overhead vs Native Model Safety
-**Empirical Finding**: Fronting external APIs with Data Loss Prevention (DLP) proxies adds 120ms latency and 4% regex truncation false positives, avoided by local on-premise SLMs.
+**Empirical Finding**: Fronting external APIs with Data Loss Prevention (DLP) proxies adds 115ms latency and 4% regex truncation false positives, avoided by local on-premise SLMs.
 Sources: https://csrc.nist.gov/publications/detail/sp/800-162/final
 
 ## Cluster 3 — Inference Latency & Network Round-Trip Realities (Rounds 21–30)

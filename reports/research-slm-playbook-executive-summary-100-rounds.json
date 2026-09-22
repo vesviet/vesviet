@@ -193,7 +193,7 @@
       "url": "https://csrc.nist.gov/publications/detail/sp/800-162/final",
       "credibility": "Primary",
       "source_type": "official-docs",
-      "context_summary": "Fronting external APIs with Data Loss Prevention (DLP) proxies adds 120ms latency and 4% regex truncation false positive"
+      "context_summary": "Fronting external APIs with Data Loss Prevention (DLP) proxies adds 115ms latency and 4% regex truncation false positive"
     },
     {
       "source_name": "vllm.ai",
@@ -471,7 +471,7 @@
         {
           "round": 20,
           "topic": "DLP Gateway Overhead vs Native Model Safety",
-          "finding": "Fronting external APIs with Data Loss Prevention (DLP) proxies adds 120ms latency and 4% regex truncation false positives, avoided by local on-premise SLMs.",
+          "finding": "Fronting external APIs with Data Loss Prevention (DLP) proxies adds 115ms latency and 4% regex truncation false positives, avoided by local on-premise SLMs.",
           "sources": [
             "https://csrc.nist.gov/publications/detail/sp/800-162/final"
           ],

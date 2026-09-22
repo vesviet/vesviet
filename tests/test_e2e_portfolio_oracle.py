@@ -182,7 +182,7 @@ class PortfolioE2EOracle:
         # 3. Four verified production metrics
         metric_cards = sidebar.select(".sidebar-metric-card")
         metric_pairs = [(m.select_one(".metric-num").text.strip(), m.select_one(".metric-desc").text.strip()) for m in metric_cards if m.select_one(".metric-num") and m.select_one(".metric-desc")]
-        expected_metrics = ["17+", "21", "25M+", "120ms"]
+        expected_metrics = ["17+", "21+", "Millions", "-35%"]
         nums_found = [num for num, _ in metric_pairs]
         if len(metric_cards) == 4 and all(exp in nums_found for exp in expected_metrics):
             self.record_pass("F2.3 Production Metrics Strip", f"4 verified metrics: {nums_found}")
@@ -287,21 +287,23 @@ class PortfolioE2EOracle:
             self.record_fail("F4 Resume Scope", "Section #resume not found")
             return
 
-        # 1. Three career milestones
+        # 1. Five career milestones
         milestones = resume_sec.select(".timeline-milestone-item")
         periods = [m.select_one(".milestone-period-badge").text.strip() for m in milestones if m.select_one(".milestone-period-badge")]
-        has_p1 = any("2021" in p and "Present" in p for p in periods)
-        has_p2 = any("2019" in p and "2021" in p for p in periods)
-        has_p3 = any("2008" in p and "2019" in p for p in periods)
-        if len(milestones) == 3 and has_p1 and has_p2 and has_p3:
-            self.record_pass("F4.1 Three Career Milestones", f"3 periods: {periods}")
+        has_lotte = any("2025" in p and "Present" in p for p in periods)
+        has_vigo = any("2021" in p and "2025" in p for p in periods)
+        has_snap = any("2020" in p and "2021" in p for p in periods)
+        has_icm = any("2019" in p and "Present" in p for p in periods)
+        has_early = any("2008" in p and "2019" in p for p in periods)
+        if len(milestones) >= 5 and has_lotte and has_vigo and has_snap and has_icm and has_early:
+            self.record_pass("F4.1 Five Career Milestones", f"{len(milestones)} milestones verified across CV history: {periods}")
         else:
-            self.record_fail("F4.1 Three Career Milestones", f"Expected 3 milestones (2021-Pres, 2019-2021, 2008-2019), got {periods}")
+            self.record_fail("F4.1 Five Career Milestones", f"Milestone mismatch: found {periods}")
 
         # 2. Milestone roles and titles
         roles = [m.select_one(".milestone-role").text.strip() for m in milestones if m.select_one(".milestone-role")]
-        if any("Senior Go Backend Architect" in r for r in roles) and any("Principal Backend Engineer" in r for r in roles) and any("Lead Systems Engineer" in r for r in roles):
-            self.record_pass("F4.2 Milestone Roles", f"Verified roles: {roles}")
+        if any("Senior Engineer" in r for r in roles) and any("Magento 2" in r for r in roles) and any("PHP & Magento" in r for r in roles):
+            self.record_pass("F4.2 Milestone Roles", f"Verified factual roles: {roles}")
         else:
             self.record_fail("F4.2 Milestone Roles", f"Unexpected roles: {roles}")
 
@@ -309,25 +311,25 @@ class PortfolioE2EOracle:
         details_elements = resume_sec.select("details.milestone-expandable")
         summaries = resume_sec.select(".milestone-summary")
         all_text = " ".join(m.text for m in milestones)
-        has_21svcs = "21 Go microservices" in all_text or "21 Go Microservices" in all_text
-        has_120ms = "120ms" in all_text
-        has_p95 = "p95" in all_text
-        if len(details_elements) == 3 and len(summaries) == 3 and has_21svcs and has_120ms and has_p95:
-            self.record_pass("F4.3 Quantitative Achievements", "3 expandable details with 21 microservices, p95 120ms proof")
+        has_millions = "millions" in all_text.lower()
+        has_latency = "35%" in all_text or "-35%" in all_text
+        has_no_fake_metrics = "25M+" not in all_text and "8,000 RPS" not in all_text and "120ms" not in all_text
+        if len(details_elements) >= 3 and len(summaries) >= 5 and has_millions and has_latency and has_no_fake_metrics:
+            self.record_pass("F4.3 Quantitative Achievements", "Verified factual CV metrics (Millions req/mo, -35% latency) with zero fake claims")
         else:
-            self.record_fail("F4.3 Quantitative Achievements", f"Missing achievements: details={len(details_elements)}, 21svcs={has_21svcs}, 120ms={has_120ms}")
+            self.record_fail("F4.3 Quantitative Achievements", f"Achievement check failed: details={len(details_elements)}, summaries={len(summaries)}, millions={has_millions}, latency={has_latency}, clean={has_no_fake_metrics}")
 
         # 4. Tech stack chips on milestones
-        m1_tags = [t.text.strip() for t in milestones[0].select(".stack-tag")]
-        expected_m1_tags = {"Go 1.25+", "Kratos / gRPC", "Kubernetes (K3s/EKS)", "Dapr Pub/Sub", "Temporal Saga"}
-        if expected_m1_tags.issubset(set(m1_tags)):
-            self.record_pass("F4.4 Stack Tags", f"Milestone 1 tags verified: {m1_tags}")
+        all_tags = {t.text.strip() for t in resume_sec.select(".stack-tag")}
+        expected_cv_tags = {"Magento 2", "Go", "Kubernetes (EKS)", "Redis", "MySQL"}
+        if expected_cv_tags.issubset(all_tags):
+            self.record_pass("F4.4 Stack Tags", f"CV stack tags verified: {all_tags}")
         else:
-            self.record_fail("F4.4 Stack Tags", f"Missing required tags from {m1_tags}")
+            self.record_fail("F4.4 Stack Tags", f"Missing required tags from {all_tags}")
 
         # 5. Academic degree & authority credentials
         credentials = [c.select_one(".credential-title").text.strip() for c in resume_sec.select(".credential-item-card") if c.select_one(".credential-title")]
-        if any("B.S. in Software Engineering" in c for c in credentials) and any("Cloud Native & Go Specialist" in c for c in credentials):
+        if any("Diploma in Information Technology" in c for c in credentials) and any("Backend & Platform Specialist" in c for c in credentials):
             self.record_pass("F4.5 Degree & Certifications", f"Credentials verified: {credentials}")
         else:
             self.record_fail("F4.5 Degree & Certifications", f"Missing credentials: {credentials}")
@@ -363,8 +365,9 @@ class PortfolioE2EOracle:
 
         # 3. Quantitative metrics badges on flagship card
         badges = [b.text.strip() for b in flagship.select(".metric-chip")] if flagship else []
-        expected_badges = {"21 Go Services", "p95 120ms", "8,000 RPS", "0 Downtime"}
-        if expected_badges.issubset(set(badges)):
+        expected_badges = {"21+ Microservices", "Kratos & Dapr", "ArgoCD GitOps", "Clean Architecture"}
+        has_no_fake_bento = "120ms" not in badges and "8,000 RPS" not in badges
+        if expected_badges.issubset(set(badges)) and has_no_fake_bento:
             self.record_pass("F5.3 Flagship Metrics Badges", f"All 4 badges present: {badges}")
         else:
             self.record_fail("F5.3 Flagship Metrics Badges", f"Expected {expected_badges}, got {badges}")

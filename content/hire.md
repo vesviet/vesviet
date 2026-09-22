@@ -1,10 +1,10 @@
 ---
 
-title: "Hire Lê Tuấn Anh — Go Backend Architect & Consulting"
+title: "Work with Lê Tuấn Anh — Senior Software Engineer · Backend & Platform Specialist"
 date: "2026-06-06T10:00:00+07:00"
 lastmod: "2026-07-23T13:34:42+07:00"
-description: "Senior Go Backend Architect in Vietnam. 17+ years in microservices & high-traffic e-commerce. Magento-to-Go migrations. Consulting & architecture reviews."
-keywords: ["hire go backend architect vietnam", "golang consultant vietnam", "microservices consultant", "magento to microservices migration", "backend architecture review", "go engineer vietnam consulting"]
+description: "Senior Software Engineer · Backend & Platform Specialist in Vietnam. 17+ years in distributed systems, Golang microservices, and e-commerce platforms."
+keywords: ["hire backend engineer vietnam", "golang developer vietnam", "magento microservices migration", "backend architecture", "go engineer vietnam"]
 slug: "hire"
 aliases:
   - /newsletter/
@@ -14,20 +14,20 @@ showToc: true
 TocOpen: true
 cover:
   image: "/images/posts/hire-cover.jpg"
-  alt: "Hire Lê Tuấn Anh — Go Backend Architect & Consulting"
+  alt: "Work with Lê Tuấn Anh — Senior Software Engineer · Backend & Platform Specialist"
   relative: false
 author: "Lê Tuấn Anh"
 ---
 
 > *"Let's solve hard backend problems together — the kind that keep your engineers up at night."*
 
-**Senior Go Backend Architect with 17+ years production experience, based in Vietnam (UTC+7). Led the zero-downtime migration of a decade-old Magento monolith to 21 Go microservices handling 25M+ requests/month at 8,000 RPS peak. Available for architecture reviews (1–2 weeks), advisory retainers (monthly), and hands-on consulting (project-based). Contact: vesviet@gmail.com.**
+**Senior Software Engineer · Backend & Platform Specialist with 17+ years of hands-on experience, based in Vietnam (UTC+7). Proven track record migrating PHP monoliths to Golang microservices (-35% latency, zero downtime on EKS), handling millions of monthly requests, and architecting a 21+ service personal composable commerce platform. Available for technical advisory, architecture reviews, and consulting. Contact: vesviet@gmail.com.**
 
 ## 👋 Who I Am
 
-**Answer-first:** Lê Tuấn Anh (vesviet) is a Senior Go Backend Architect with 17+ years of experience leading zero-downtime microservices migrations, high-traffic system design, and platform reliability engineering.
+**Answer-first:** Lê Tuấn Anh (vesviet) is a Senior Software Engineer · Backend & Platform Specialist with 17+ years of experience building scalable web platforms, distributed systems, and Golang microservices.
 
-I am **Lê Tuấn Anh** ([vesviet](https://github.com/vesviet)), a Senior Go Backend Architect and Distributed Systems Engineer with **17+ years** of production experience. I have led the migration of a decade-old Magento monolith into a **21-service Go microservices ecosystem** at zero downtime, designed APIs handling **25M+ requests/month** at peak 8,000 RPS, and reduced p95 latency from 1.2s to 120ms through architecture and caching strategy.
+I am **Lê Tuấn Anh** ([vesviet](https://github.com/vesviet)), a Senior Software Engineer · Backend & Platform Specialist with **17+ years** of hands-on experience. At Vigo Retail, I led the migration of monolithic PHP applications to Golang microservices reducing average API latency by 35% with zero downtime on EKS, while handling millions of requests per month. Currently, I am also architecting a 21+ service personal e-commerce platform using Go, Kubernetes, and event-driven architecture.
 
 I work with teams that need:
 - Deep backend architecture expertise they cannot hire full-time
@@ -47,7 +47,7 @@ I work with teams that need:
 - Zero-downtime bidirectional data synchronization strategies
 
 ### High-Traffic Platform Reliability
-- Backend architecture for flash sales, peak-event traffic (8,000+ RPS)
+- Backend architecture for flash sales and high-throughput peak-event traffic
 - Database optimization: PostgreSQL sharding, Redis caching strategies, Elasticsearch indexing
 - Kubernetes cluster design (EKS/K3s), horizontal scaling, and OOM/CPU profiling in production
 - Goroutine leak detection, Go pprof memory and CPU profiling
@@ -66,13 +66,15 @@ I work with teams that need:
 
 ## 💼 Recent Work (Selected)
 
-**Answer-first:** Selected production achievements including zero-downtime migration of a Magento monolith to 21 Go microservices, high-throughput gRPC edge APIs at 8,000 RPS, and composable architecture design.
+**Answer-first:** Selected production achievements including zero-downtime migration of a PHP monolith to Go microservices (-35% latency on EKS), high-throughput B2B/B2C APIs handling millions of requests/month, and composable architecture design.
 
-| Project | Scope | Outcome |
-|---------|-------|---------|
-| Independent Consultant (2021–Present) | Monolith → 21 Go services, B2B/B2C Commerce | Zero-downtime migration, 40% checkout throughput improvement |
-| SnapMart & ICM (2019–2021) | Magento 2 backend, Flutter mobile APIs | Payment gateway, fulfillment routing, warehouse scanner integrations |
-| Composable Commerce Architecture | Open-source 21-service Go ecosystem | Dapr Pub/Sub + Outbox + Saga in production-grade Go |
+| Project / Employer | Scope | Outcome |
+|--------------------|-------|---------|
+| Lotte Innovate (2025–Present) | Magento 2 Data Pipelines & Caching | Lower latency, query & caching performance tuning |
+| Vigo Retail (2021–2025) | PHP Monolith → Go Microservices, B2B/B2C APIs | -35% API latency, zero-downtime EKS, millions req/month |
+| SnapMart Inc. (2020–2021) | Magento 2 Backend, landers.ph grocery | Custom extensions, checkout debugging, unit testing |
+| ICM Factory Direct (2019–Present) | Regna.com Magento 2 & Flutter mobile APIs | Multi-channel mobile REST APIs, full-stack platform maintenance |
+| Composable Commerce Platform | Personal Architecture Project (2025–Present) | 21+ services, Dapr Pub/Sub, Outbox, Saga in Go |
 
 [View my full profile →](/about/) | [GitHub Portfolio →](https://github.com/vesviet/Composable-Commerce-Service-Architecture)
 
@@ -133,7 +135,7 @@ A typical engagement starts with a **1-week discovery phase** (paid): I review y
 {{< /faq >}}
 
 {{< faq q="Can you help migrate a Magento monolith to Go microservices?" >}}
-Yes — this is one of my primary specializations. I led the zero-downtime migration of a decade-old Magento 2 platform into a **21-service Go microservices ecosystem** (2021–present) as an Independent Consultant, using a 3-Phase Strangler Fig pattern with Debezium CDC, bidirectional Dapr Pub/Sub sync, and a hot standby period before final cutover. The approach produces zero data loss and maintains rollback capability throughout. Before engaging, I recommend reading [The Zero-Downtime Blueprint: Moving from Magento to Microservices](/series/magento-migration-vietnam/moving-from-magento-to-microservices/) to understand the specific methodology and whether your platform's complexity profile matches the approach.
+Yes — this is one of my primary specializations. At Vigo Retail, I led the migration of monolithic PHP applications into Golang microservices reducing average API latency by 35% with zero downtime on EKS. Additionally, I architected a 21+ service personal composable commerce platform using the Strangler Fig pattern, Debezium CDC, Dapr Pub/Sub, and Saga orchestration. The approach produces zero data loss and maintains rollback capability throughout. Before engaging, I recommend reading [The Zero-Downtime Blueprint: Moving from Magento to Microservices](/series/magento-migration-vietnam/moving-from-magento-to-microservices/) to understand the specific methodology and whether your platform's complexity profile matches the approach.
 {{< /faq >}}
 
 {{< faq q="Do you work remotely with international clients?" >}}

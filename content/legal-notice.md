@@ -26,7 +26,7 @@ cover:
 **Answer-first:** `tanhdev.com` is an independent engineering publication and technical blog owned, authored, and published by Lê Tuấn Anh.
 
 - **Publisher Name:** Lê Tuấn Anh (online handle: `vesviet`)
-- **Professional Title:** Senior Go Backend Architect & Independent Distributed Systems Consultant
+- **Professional Title:** Senior Software Engineer · Backend & Platform Specialist
 - **Years of Experience:** 17+ years in production software engineering and system architecture
 - **Location:** Vietnam (UTC+7)
 - **Primary Email Contact:** [vesviet@gmail.com](mailto:vesviet@gmail.com)
@@ -43,7 +43,7 @@ cover:
 
 ### Firsthand Experience & Expertise
 - **Real-World Provenance:** Every technical article published on `tanhdev.com` is written directly by Lê Tuấn Anh based on 17+ years of hands-on engineering experience.
-- **Production Track Record:** Content draws from documented production achievements, including migrating a 10-year-old Magento monolith to a 21-service Go microservices ecosystem, operating APIs handling ~25M+ requests/month at 8,000 RPS peak, and optimizing p95 database latency from 1.2s to 120ms.
+- **Production Track Record:** Content draws from documented production achievements, including migrating monolithic PHP applications to Golang microservices reducing latency by 35%, handling millions of monthly requests, and architecting a 21+ service composable microservices platform.
 
 ### Editorial Independence & Transparency
 - **Unbiased Analysis:** Our technical comparisons (e.g., AWS EKS vs ECS, Gin vs Fiber vs Kratos, Kafka vs NATS JetStream) are published without financial compensation from cloud providers or software vendors.
@@ -60,7 +60,7 @@ cover:
 
 ### Benchmark Standards & Methodology
 1. **Reproducible Test Conditions:** Code micro-benchmarks specify Go compiler version, operating hardware (e.g., CPU core counts, RAM allocations), and profiling toolflags (`go test -bench`, `pprof`, `benchstat`).
-2. **Production Metrics:** High-traffic performance figures (such as 25M+ req/month and 8,000 RPS peak) reflect real production telemetry monitored via Datadog, Prometheus, or Grafana dashboards during major sale events.
+2. **Production Metrics:** High-traffic performance figures (such as millions of requests/month and -35% latency reduction) reflect real production telemetry monitored via Datadog, Prometheus, or Grafana dashboards during major sale events.
 3. **No Hardcoded or Fabricated Claims:** Metrics presented in case studies represent actual observed behavior rather than theoretical marketing claims.
 
 ---

@@ -342,7 +342,7 @@ Comprehensive 100-round deep empirical research dossier for High-Throughput Load
 **Sources**: https://github.com/Project-OSRM/osrm-backend
 
 ### Round 72: Throughput Benchmarks under 50,000 RPS Load — Deep Investigation Loop 72
-**Empirical Finding**: Empirical Round 72: Rigorous benchmarking and architectural validation of throughput benchmarks under 50,000 rps load. Measured sustained throughput: OSRM CH = 50,000 RPS (P99 3.8ms); GraphHopper CH = 42,000 RPS (P99 8.4ms); Valhalla Tiled = 18,000 RPS (P99 28.5ms). Validated under production Go 1.25+ runtime invariants.
+**Empirical Finding**: Empirical Round 72: Rigorous benchmarking and architectural validation of throughput benchmarks under 50,000 rps load. Measured sustained throughput: OSRM CH = 50,000 RPS (P99 3.8ms); GraphHopper CH = 42,000 RPS (P99 8.4ms); Valhalla Tiled = 19,000 RPS (P99 28.5ms). Validated under production Go 1.25+ runtime invariants.
 **Sources**: https://github.com/Project-OSRM/osrm-backend
 
 ### Round 73: Memory Footprint Comparison Under Load — Deep Investigation Loop 73

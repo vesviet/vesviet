@@ -1,7 +1,7 @@
 baseURL = "https://tanhdev.com/"
 locale = "en-us"
 defaultContentLanguage = "en"
-title = "Lê Tuấn Anh: Go Backend Architect & Microservices Engineer"
+title = "Lê Tuấn Anh: Senior Software Engineer · Backend & Platform Specialist"
 theme = "PaperMod"
 enableRobotsTXT = false  # static/robots.txt in /static takes precedence; explicit AI bot rules defined there
 buildFuture = true
@@ -27,7 +27,7 @@ apple_touch_icon = "/apple-touch-icon.png"
 [params]
   env = "production"
   images = ["/vesviet.png"]
-  description = "Senior Go Backend Architect & Distributed Systems Engineer in Vietnam. 17+ years, 21-service microservices migration, 25M req/month. Technical blog + consulting."
+  description = "Senior Software Engineer · Backend & Platform Specialist with 17+ years experience building scalable platforms, Golang microservices, and e-commerce systems."
   author = "Lê Tuấn Anh"
   defaultTheme = "dark"
   ShowReadingTime = true
@@ -48,8 +48,8 @@ apple_touch_icon = "/apple-touch-icon.png"
   
 [params.profileMode]
   enabled = true
-  title = "Lê Tuấn Anh: Go Backend Architect & Distributed Systems Engineer"
-  subtitle = """<span style="font-size: 1.1em;">**Backend Architecture & Platform Specialist**</span><br><br>17+ years building resilient, high-traffic platforms in Vietnam and beyond.<div class="exp-list"><div class="exp-item">🚀 **Monolith → 21 Go Microservices** (Zero Downtime Migration, Independent Consultant)</div><div class="exp-item">⚡ **25M+ requests/month** at peak 8,000 RPS — p95 latency reduced from 1.2s → 120ms</div><div class="exp-item">⚙️ **GitOps at Scale** (Kubernetes EKS/K3s, ArgoCD, Dapr Pub/Sub, Saga Patterns)</div></div>"""
+  title = "Lê Tuấn Anh: Senior Software Engineer · Backend & Platform Specialist"
+  subtitle = """<span style="font-size: 1.1em;">**Backend Architecture & Platform Specialist**</span><br><br>17+ years building resilient, scalable platforms in Vietnam and beyond.<div class="exp-list"><div class="exp-item">🚀 **17+ Years Experience** (Building scalable web & distributed systems since 2008)</div><div class="exp-item">⚡ **PHP Monolith → Go Microservices** (-35% API latency, zero-downtime EKS at Vigo Retail)</div><div class="exp-item">📦 **21+ Services Architecture** (Personal Composable Commerce Platform with Go, K3s, Dapr)</div></div>"""
   imageUrl = "vesviet.png"
   imageTitle = "Le Tuan Anh - Senior Software Engineer and Backend Architecture Specialist"
   imageWidth = 120

@@ -22,19 +22,19 @@
                     <span>FLAGSHIP ARCHITECTURE &bull; MICROSERVICES</span>
                 </div>
                 <div class="bento-metrics-cluster">
-                    <span class="metric-chip accent-terracotta">21 Go Services</span>
-                    <span class="metric-chip accent-gold">p95 120ms</span>
-                    <span class="metric-chip accent-slate">8,000 RPS</span>
-                    <span class="metric-chip accent-emerald">0 Downtime</span>
+                    <span class="metric-chip accent-terracotta">21+ Microservices</span>
+                    <span class="metric-chip accent-gold">Kratos &amp; Dapr</span>
+                    <span class="metric-chip accent-slate">ArgoCD GitOps</span>
+                    <span class="metric-chip accent-emerald">Clean Architecture</span>
                 </div>
             </div>
 
             <div class="bento-card-content">
                 <h3 class="bento-card-title">
-                    <a href="/posts/architecting-21-service-ecommerce-golang-ddd/">Composable E-Commerce Microservices Platform (21 Services)</a>
+                    <a href="/posts/architecting-21-service-ecommerce-golang-ddd/">Composable E-Commerce Microservices Platform (21+ Services)</a>
                 </h3>
                 <p class="bento-card-desc">
-                    Deconstructed an 11-year monolithic commerce application into 21 bounded Go microservices utilizing DDD, Dapr Pub/Sub, Transactional Outbox pattern, and declarative ArgoCD GitOps pipelines with zero production downtime and 40% checkout throughput gain.
+                    A production-grade, composable e-commerce platform with 21+ independently deployable Go microservices utilizing DDD, Dapr Pub/Sub, Transactional Outbox pattern, Saga orchestration, and declarative ArgoCD GitOps pipelines on Kubernetes.
                 </p>
             </div>
 
@@ -44,7 +44,7 @@
                     <span class="tech-pill">Dapr Pub/Sub</span>
                     <span class="tech-pill">ArgoCD</span>
                     <span class="tech-pill">Temporal Saga</span>
-                    <span class="tech-pill">MySQL Vitess</span>
+                    <span class="tech-pill">Kratos gRPC</span>
                 </div>
                 <div class="bento-actions">
                     <a href="https://github.com/vesviet/Composable-Commerce-Service-Architecture" target="_blank" rel="noopener noreferrer" class="bento-action-secondary" title="View Architecture Blueprint on GitHub">
@@ -57,67 +57,69 @@
             </div>
         </article>
 
-        <!-- Sub-Card 1: Concurrency & Runtime Profiling -->
-        <article class="bento-card bento-standard-card" data-category="concurrency" aria-label="High-Throughput Go GC & Goroutine Leak Elimination">
+        <!-- Sub-Card 1: Vigo Retail Monolith-to-Go Migration -->
+        <article class="bento-card bento-standard-card" data-category="microservices" aria-label="Vigo Retail Monolith-to-Go Microservices Migration">
             <div class="bento-card-top">
                 <div class="bento-category-tag">
-                    <span>CONCURRENCY &bull; RUNTIME</span>
+                    <span>MIGRATION &bull; HIGH-THROUGHPUT</span>
                 </div>
                 <div class="bento-metrics-cluster">
-                    <span class="metric-chip accent-gold">p95 -90%</span>
-                    <span class="metric-chip accent-emerald">0 Leaks</span>
+                    <span class="metric-chip accent-terracotta">-35% Latency</span>
+                    <span class="metric-chip accent-emerald">0 Downtime</span>
                 </div>
             </div>
 
             <div class="bento-card-content">
                 <h4 class="bento-card-title">
-                    <a href="/posts/goroutine-leak-detection-production-golang/">High-Throughput Go GC &amp; Goroutine Leak Elimination</a>
+                    <a href="/posts/golang-grpc-microservices-production-guide/">Vigo Retail Monolith-to-Go Migration</a>
                 </h4>
                 <p class="bento-card-desc">
-                    Comprehensive production diagnostic playbook resolving silent memory bloat and goroutine leaks in high-throughput Go microservices using pprof and custom eBPF tracing.
+                    Led zero-downtime decomposition of PHP monolith to Go microservices on AWS EKS, reducing average API latency by 35% across millions of monthly requests.
                 </p>
             </div>
 
             <div class="bento-card-bottom">
                 <div class="bento-tech-pills">
-                    <span class="tech-pill">Go pprof</span>
-                    <span class="tech-pill">Memory GC</span>
-                    <span class="tech-pill">Worker Pools</span>
+                    <span class="tech-pill">Go</span>
+                    <span class="tech-pill">AWS EKS</span>
+                    <span class="tech-pill">PostgreSQL</span>
+                    <span class="tech-pill">Redis</span>
                 </div>
-                <a href="/posts/goroutine-leak-detection-production-golang/" class="bento-action-link">
+                <a href="/posts/golang-grpc-microservices-production-guide/" class="bento-action-link">
                     <span>Read Guide ↗</span>
                 </a>
             </div>
         </article>
 
-        <!-- Sub-Card 2: Distributed Sagas & Banking -->
-        <article class="bento-card bento-standard-card" data-category="microservices" aria-label="Temporal Saga Orchestration in Distributed Commerce">
+        <!-- Sub-Card 2: Lotte Innovate High-Traffic Optimization -->
+        <article class="bento-card bento-standard-card" data-category="concurrency" aria-label="Lotte Innovate High-Traffic Optimization">
             <div class="bento-card-top">
                 <div class="bento-category-tag">
-                    <span>DISTRIBUTED SYSTEMS &bull; SAGAS</span>
+                    <span>E-COMMERCE &bull; CACHING &amp; QUERY TUNING</span>
                 </div>
                 <div class="bento-metrics-cluster">
-                    <span class="metric-chip accent-terracotta">Saga Outbox</span>
-                    <span class="metric-chip accent-slate">Strict ACID</span>
+                    <span class="metric-chip accent-gold">+40% Throughput</span>
+                    <span class="metric-chip accent-slate">Redis Caching</span>
                 </div>
             </div>
 
             <div class="bento-card-content">
                 <h4 class="bento-card-title">
-                    <a href="/posts/temporal-saga-pattern-golang-distributed-transactions-guide/">Temporal Saga Orchestration in Distributed Banking &amp; Commerce</a>
+                    <a href="/posts/aws-mysql-8-eol-magento-2-4-8-upgrade-architecture/">Lotte Innovate High-Traffic Optimization</a>
                 </h4>
                 <p class="bento-card-desc">
-                    Solving distributed dual-write inconsistencies and multi-service compensating workflows with Temporal, Transactional Outbox pattern, and idempotent message deduplication.
+                    Optimized Magento 2 data processing pipelines, database query performance, and Redis caching layers for high-traffic corporate e-commerce operations.
                 </p>
             </div>
 
             <div class="bento-card-bottom">
                 <div class="bento-tech-pills">
-                    <span class="tech-pill">Temporal.io</span>
-                    <span class="tech-pill">Saga Coordinator</span>
-                    <span class="tech-pill">Kafka</span>
+                    <span class="tech-pill">Magento 2</span>
+                    <span class="tech-pill">PHP / Laravel</span>
+                    <span class="tech-pill">MySQL</span>
+                    <span class="tech-pill">Redis</span>
                 </div>
-                <a href="/posts/temporal-saga-pattern-golang-distributed-transactions-guide/" class="bento-action-link">
+                <a href="/posts/aws-mysql-8-eol-magento-2-4-8-upgrade-architecture/" class="bento-action-link">
                     <span>Read Guide ↗</span>
                 </a>
             </div>

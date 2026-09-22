@@ -25,7 +25,7 @@ cover:
 **Answer-first:** Lê Tuấn Anh is the sole Data Controller for `tanhdev.com`. All data privacy inquiries and rights requests are handled directly by the site owner via email at `vesviet@gmail.com`.
 
 - **Website URL:** [https://tanhdev.com/](https://tanhdev.com/)
-- **Data Controller:** Lê Tuấn Anh (Senior Go Backend Architect & Independent Consultant)
+- **Data Controller:** Lê Tuấn Anh (Senior Software Engineer · Backend & Platform Specialist)
 - **Primary Contact Email:** [vesviet@gmail.com](mailto:vesviet@gmail.com)
 - **Geographic Scope:** Based in Vietnam (UTC+7), serving a global audience across Vietnam, Southeast Asia, North America, and Europe.
 

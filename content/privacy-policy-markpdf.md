@@ -23,7 +23,7 @@ noTranslation: true
 
 MarkPDF ("the Extension", "we", "our") is architected from the ground up as a **privacy-first, client-side utility**. Your documents, research papers, notes, and intellectual property remain entirely on your computer.
 
-- **Publisher / Data Controller:** Lê Tuấn Anh (Independent Consultant & Senior Go Backend Architect at `tanhdev.com`)
+- **Publisher / Data Controller:** Lê Tuấn Anh (Senior Software Engineer · Backend & Platform Specialist at `tanhdev.com`)
 - **Contact Email:** [vesviet@gmail.com](mailto:vesviet@gmail.com)
 - **Extension Name:** MarkPDF - PDF to Markdown Converter
 - **Target Stores:** Microsoft Edge Add-ons Store & Chrome Web Store (Manifest V3)

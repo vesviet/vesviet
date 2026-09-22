@@ -25,7 +25,7 @@ cover:
 
 **Answer-first:** Accessing or interacting with `tanhdev.com`, its subdomains, or public code repositories constitutes full acceptance of these Terms of Service.
 
-- **Publisher:** Lê Tuấn Anh (Senior Go Backend Architect & Independent Consultant)
+- **Publisher:** Lê Tuấn Anh (Senior Software Engineer · Backend & Platform Specialist)
 - **Website Domain:** [https://tanhdev.com/](https://tanhdev.com/)
 - **Contact Email:** [vesviet@gmail.com](mailto:vesviet@gmail.com)
 

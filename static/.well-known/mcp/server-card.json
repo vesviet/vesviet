@@ -5,7 +5,7 @@
     "name": "tanhdev-com",
     "version": "1.0.0",
     "title": "tanhdev.com — Go Architecture & Distributed Systems",
-    "description": "Technical blog by Lê Tuấn Anh (Independent Consultant) — Go backend architecture, microservices, distributed systems, AI engineering, Magento platform migration, and Kubernetes/GitOps. 17+ years production experience. Real case studies from high-traffic e-commerce platforms (25M+ req/month, 8K RPS)."
+    "description": "Technical blog by Lê Tuấn Anh (Senior Software Engineer) — Go backend architecture, microservices, distributed systems, AI engineering, Magento platform migration, and Kubernetes/GitOps. 17+ years production experience. Real case studies from high-traffic e-commerce platforms (millions of req/month)."
   },
   "capabilities": {
     "tools": {},
@@ -81,7 +81,7 @@
   ],
   "author": {
     "name": "Lê Tuấn Anh",
-    "role": "Independent Consultant — Go Backend Architecture & Distributed Systems",
+    "role": "Senior Software Engineer · Backend & Platform Specialist",
     "alternate_name": ["vesviet", "Le Tuan Anh"],
     "url": "https://tanhdev.com",
     "contact": "vesviet@gmail.com",

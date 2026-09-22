@@ -1,22 +1,22 @@
 ---
 
-title: "Lê Tuấn Anh — Senior Go Backend Architect & Consultant"
+title: "Lê Tuấn Anh — Senior Software Engineer · Backend & Platform Specialist"
 date: "2021-10-14T18:48:02+07:00"
 lastmod: "2026-07-23T13:34:42+07:00"
 aliases:
   - /about-me/
   - /contact/
-description: "Lê Tuấn Anh — Senior Go Backend Architect with 17+ years building high-traffic microservices, event-driven platforms, GitOps, and cloud ecosystems."
+description: "Lê Tuấn Anh — Senior Software Engineer with 17+ years building scalable web platforms, distributed systems, and Golang microservices."
 author: "Lê Tuấn Anh"
 cover:
   image: "/images/posts/hire-cover.jpg"
-  alt: "Lê Tuấn Anh — Senior Go Backend Architect & Consultant"
+  alt: "Lê Tuấn Anh — Senior Software Engineer · Backend & Platform Specialist"
   relative: false
 ---
 
 > *"Architecting scalable systems and leading teams to build resilient, high-performance platforms."*
 
-**Lê Tuấn Anh** (vesviet) is a Senior Go Backend Architect and Distributed Systems Engineer based in Vietnam with over **17 years** of production experience. He specializes in migrating high-traffic e-commerce monoliths (Magento/PHP) into **Golang microservices ecosystems**, designing event-driven platforms at scale, and operating GitOps deployments on Kubernetes. Currently working as an **Independent Consultant** on Go architecture and distributed systems.
+**Lê Tuấn Anh** (vesviet) is a **Senior Software Engineer · Backend & Platform Specialist** based in Vietnam with over **17 years** of hands-on experience building scalable web platforms and distributed systems. Specialized in backend architecture, e-commerce platforms (Magento 2), and Golang microservices. Proven track record of migrating monolithic systems to microservices, optimizing high-traffic applications, and leading technical initiatives across cross-functional teams. Currently Senior Engineer at Lotte Innovate, formerly Senior Engineer at Vigo Retail.
 
 > 💼 Available for consulting and advisory work. [See engagement options →](/hire/)
 
@@ -41,20 +41,33 @@ cover:
 
 ### 💼 Career Highlights
 
-#### Senior Go Backend Architect & System Architect *(2021 – Present)*
-* **Scope:** Independent Consultant | Go Microservices Architecture, Platform Migration, Distributed Systems
-* **Responsibilities:** Owning backend architecture for core commerce domains, leading production migrations at scale.
+#### Senior Engineer — Lotte Innovate *(Dec 2025 – Present)*
+* **Scope:** E-Commerce Platform Operations | Ho Chi Minh City
+* **Responsibilities:** Optimizing Magento 2 data processing pipelines, database query performance, and caching.
 * **Impact:**
-  - Led the migration of monolithic e-commerce cores to a **21-service Golang ecosystem**, orchestrating bidirectional data sync and achieving zero-downtime over a 3-month transition.
-  - Designed high-throughput RESTful and gRPC edge APIs handling **~25M+ requests/month** (Peak ~8,000 RPS) during major sale events.
-  - Optimized database querying workflows and implemented aggressive Redis caching, reducing **p95 latency from 1.2s down to 120ms** and boosting checkout network throughput by 40%.
+  - Optimized data processing pipelines for high-traffic e-commerce operations, reducing page load times and improving system throughput.
+  - Improved database query performance and implemented caching strategies, contributing to lower latency and higher system stability across production environments.
 
-#### E-commerce Platform Specialist @ SnapMart & ICM *(2019 – 2021)*
-* **Scope:** Senior Backend Engineer | Team of 5 Engineers | Grocery & Retail e-commerce
-* **Responsibilities:** Full lifecycle ownership of Magento 2 backend ecosystems and native mobile integrations.
+#### Senior Engineer — Vigo Retail *(Sep 2021 – Oct 2025)*
+* **Scope:** B2B & B2C E-Commerce APIs | Go Microservices Migration
+* **Responsibilities:** Designing scalable APIs, leading monolithic PHP to Go microservices migration, CI/CD pipelines.
 * **Impact:**
-  - Engineered critical core modules handling automated Payment Gateways, complex Promotional Catalogs, and localized Fulfillment routing.
-  - Delivered scalable backend APIs directly powering resilient Flutter-based native mobile apps for consumers and internal warehouse mobile scanners.
+  - Designed and developed scalable RESTful APIs handling **millions of requests per month** for B2B and B2C platforms.
+  - Led migration of monolithic PHP applications to Golang-based microservices, reducing average API latency by **35%**.
+  - Architected CI/CD pipelines (GitLab CI + GitHub Actions) achieving **zero-downtime deployments** across EKS clusters.
+  - Optimized SQL queries and Redis caching layers, improving overall system performance by **40%**.
+  - Mentored a team of 3 junior developers, conducting code reviews and establishing coding standards.
+
+#### Magento 2 Backend Developer — SnapMart Inc. *(Apr 2020 – Sep 2021)*
+* **Scope:** Philippine Grocery Commerce (landers.ph)
+* **Impact:** Developed custom Magento 2 extensions, implemented unit testing to reduce bug rates, and debugged payment/catalog/checkout modules.
+
+#### Magento 2 Developer (Contract) — ICM Factory Direct *(Apr 2019 – Present)*
+* **Scope:** Part-time / Maintenance for Regna.com and mobile APIs.
+* **Impact:** Maintained full-stack Magento 2 platform for Regna.com and built RESTful APIs powering Flutter mobile applications.
+
+#### Earlier Career *(2008 – 2019)*
+* **Companies:** JV-IT Company (2017–2019, Weather forecast map system in Yii2/Node/Postgres/AWS), Skyfronts (2015–2017, Multi-site Magento), ToanCau Company (2011–2015, Corporate & mobile payments), VEC E-commerce (2008–2010, Web development).
 
 *For a complete chronological work history dating back to 2008, [visit my LinkedIn](https://www.linkedin.com/in/vesviet).*
 
@@ -87,6 +100,6 @@ Whether it's discussing the nuances of Clean Architecture, plotting out high-loa
 ---
 # Related Architecture & Pillar Guides
 
-**Answer-first:** Lê Tuấn Anh (vesviet) is a Senior Go Backend Architect with 17+ years of experience leading zero-downtime microservices migrations, high-traffic system design, and platform reliability engineering.
+**Answer-first:** Lê Tuấn Anh (vesviet) is a Senior Software Engineer · Backend & Platform Specialist with 17+ years of experience building scalable web platforms, distributed systems, and Golang microservices.
 For related systemic design patterns, pillar blueprints, and curated reading paths, explore:
 - [AWS EKS vs ECS: Architecture, Cost & Use Cases](/posts/aws-eks-vs-ecs-comparison/)

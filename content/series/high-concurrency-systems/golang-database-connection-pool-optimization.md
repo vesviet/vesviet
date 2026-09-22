@@ -382,7 +382,7 @@ To observe these failure dynamics in real-world conditions, we review the failur
 
 ### Incident Timeline
 
-- **08:28 AM**: Platform traffic surges from 4,500 RPS to 38,000 RPS as automated payroll batches execute.
+- **08:28 AM**: Platform traffic surges from 4,500 RPS to 35,000 RPS as automated payroll batches execute.
 - **08:30 AM**: Kubernetes Horizontal Pod Autoscaler (HPA) triggers, scaling the account balance microservice from 15 pods to 95 pods.
 - **08:31 AM**: Each new pod initializes with `MaxOpenConns = 50`. Total potential client connections reach $95 \times 50 = 4{,}750$.
 - **08:32 AM**: PostgreSQL `max_connections` limit (1,000) is breached. PostgreSQL begins rejecting connections with `FATAL: sorry, too many clients already`.

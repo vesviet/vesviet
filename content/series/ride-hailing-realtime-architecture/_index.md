@@ -21,7 +21,7 @@ image: "/images/posts/real-time-ride-hailing-cover.jpg"
 
 This series provides an in-depth architectural breakdown of the most critical feature of ride-hailing applications: **Real-time capabilities**.
 
-Seeing a car move smoothly on a map might seem simple, but behind it lies a massive distributed network: from battery-optimized HTTP/3 gRPC telemetry transport protocols, map gridding algorithms using hexagonal spatial partitioning (Uber H3 v4), the Kafka 3.8+ / Redpanda event streaming backbone processing 1.25M+ events per second, the DISCO system for optimal bipartite ride matching, to RAMEN — Uber's real-time push notification network.
+Seeing a car move smoothly on a map might seem simple, but behind it lies a massive distributed network: from battery-optimized HTTP/3 gRPC telemetry transport protocols, map gridding algorithms using hexagonal spatial partitioning (Uber H3 v4), the Kafka 3.8+ / Redpanda event streaming backbone processing 1.5M+ events per second, the DISCO system for optimal bipartite ride matching, to RAMEN — Uber's real-time push notification network.
 
 All content is synthesized from the official engineering blogs of Uber, Grab, and Lyft, updated with 2026 high-throughput production patterns.
 
