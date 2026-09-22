@@ -57,16 +57,34 @@
       <!-- Author Consulting Connect Card -->
       {{- if not $isLegal }}
       <aside class="author-connect-card" aria-label="Author and Consulting Advisory">
-        <img src="/vesviet.png" alt="Lê Tuấn Anh" class="author-avatar-img" width="72" height="72" loading="lazy" />
+        <div class="author-avatar-wrapper">
+          {{- $avatar := resources.Get "vesviet.png" }}
+          {{- if $avatar }}
+          <img src="{{ $avatar.RelPermalink }}" alt="Lê Tuấn Anh" class="author-avatar-img" width="76" height="76" loading="lazy" decoding="async" />
+          {{- else }}
+          <img src="/vesviet.png" alt="Lê Tuấn Anh" class="author-avatar-img" width="76" height="76" loading="lazy" decoding="async" />
+          {{- end }}
+          <span class="author-status-dot" title="Available for Advisory" aria-label="Available for Advisory"></span>
+        </div>
         <div class="author-bio-content">
-          <div class="author-bio-name">Lê Tuấn Anh</div>
+          <div class="author-bio-header">
+            <span class="author-bio-name">Lê Tuấn Anh</span>
+            <span class="author-consulting-badge"><span class="badge-dot"></span> Available for Advisory</span>
+          </div>
           <div class="author-bio-title">Principal Go Backend Architect &bull; Distributed Systems Consultant</div>
           <p class="author-bio-desc">
             17+ years architecting high-scale Go platforms, zero-downtime microservices migrations, and distributed event-driven systems. Available for architecture reviews, advisory retainers, and hands-on consulting.
           </p>
-          <a href="/hire/" class="author-bio-cta">
-            <span>🤝 Inquire about consulting &amp; architecture review</span> &rarr;
-          </a>
+          <div class="author-actions">
+            <a href="/hire/" class="btn-author-primary">
+              <span>Book Architecture Review</span>
+              <svg class="author-cta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+            <a href="mailto:vesviet@gmail.com" class="btn-author-secondary">
+              <span>Contact Directly</span>
+              <svg class="author-cta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
         </div>
       </aside>
       {{- end }}

@@ -1199,67 +1199,244 @@ button:active, a.button:active, .btn-tactile:active {
   border-radius: 0 !important;
 }
 
-/* Author Consulting Connect Card */
+/* Author Consulting Connect Card - Monogram & Kerge SOTA Synthesis */
 .author-connect-card {
   display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  padding: 1.75rem;
-  margin: 3rem 0 2rem 0;
+  align-items: flex-start;
+  gap: 1.75rem;
+  padding: 2rem;
+  margin: 3.5rem 0 2.5rem 0;
   background: var(--entry);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
   position: relative;
   overflow: hidden;
-  border-left: 4px solid var(--accent-secondary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-@media (max-width: 600px) {
-  .author-connect-card {
-    flex-direction: column;
-    text-align: center;
+
+.author-connect-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+}
+
+.author-avatar-wrapper {
+  position: relative;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+.author-avatar-img {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  display: block;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.author-connect-card:hover .author-avatar-img {
+  transform: scale(1.02);
+  border-color: var(--accent-secondary);
+}
+
+.author-status-dot {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #00FF85;
+  border: 2.5px solid var(--entry);
+  box-shadow: 0 0 8px rgba(0, 255, 133, 0.7);
+  animation: pulse-status 3s infinite ease-in-out;
+}
+
+@keyframes pulse-status {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.82;
+    transform: scale(1.08);
   }
 }
-.author-avatar-img {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  border: 2px solid var(--accent-secondary);
-  flex-shrink: 0;
+
+@media (prefers-reduced-motion: reduce) {
+  .author-status-dot {
+    animation: none;
+  }
 }
+
 .author-bio-content {
   flex: 1;
+  min-width: 0;
 }
+
+.author-bio-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
 .author-bio-name {
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   font-weight: 800;
   color: #FFFFFF;
-  margin: 0 0 4px 0;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
 }
-.author-bio-title {
-  font-size: 0.85rem;
-  color: var(--accent-secondary);
-  font-weight: 600;
-  margin-bottom: 6px;
-}
-.author-bio-desc {
-  font-size: 0.92rem;
-  color: var(--text-body);
-  line-height: 1.6;
-  margin: 0 0 1rem 0;
-}
-.author-bio-cta {
+
+.author-consulting-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  font-size: 0.75rem;
   font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-gold-badge-bg);
+  border: 1px solid var(--accent-gold-badge-border);
+  color: var(--accent-secondary);
+  line-height: 1;
+}
+
+.author-consulting-badge .badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-secondary);
+  display: inline-block;
+}
+
+.author-bio-title {
   font-size: 0.88rem;
   color: var(--accent-secondary);
-  text-decoration: none;
+  font-weight: 600;
+  margin-bottom: 0.65rem;
+  letter-spacing: -0.01em;
 }
-.author-bio-cta:hover {
-  text-decoration: underline;
+
+.author-bio-desc {
+  font-size: 0.92rem;
+  color: var(--text-body);
+  line-height: 1.65;
+  margin: 0 0 1.25rem 0;
+}
+
+.author-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.btn-author-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.55rem 1.15rem;
+  background: var(--accent-primary);
+  color: #FFFFFF !important;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.88rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none !important;
+  box-shadow: 0 2px 8px rgba(230, 92, 64, 0.35);
+  transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-author-primary:hover {
+  background: var(--accent-primary-hover);
+  box-shadow: 0 4px 14px rgba(230, 92, 64, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-author-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-author-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.55rem 1.15rem;
+  background: var(--surface-elevated);
+  color: var(--text-body) !important;
+  border: 1px solid var(--border);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.88rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none !important;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+  white-space: nowrap;
+}
+
+.btn-author-secondary:hover {
+  background: var(--surface-hover);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF !important;
+  transform: translateY(-1px);
+}
+
+.btn-author-secondary:active {
+  transform: scale(0.98);
+}
+
+.author-cta-icon {
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.btn-author-primary:hover .author-cta-icon,
+.btn-author-secondary:hover .author-cta-icon {
+  transform: translate(1px, -1px);
+}
+
+@media (max-width: 640px) {
+  .author-connect-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem 1.25rem;
+    gap: 1.25rem;
+  }
+  .author-bio-header {
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .author-bio-title {
+    justify-content: center;
+  }
+  .author-actions {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+  .btn-author-primary,
+  .btn-author-secondary {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* ── 10. High-Contrast Footer ───────────────────────────────────────────── */
