@@ -1,7 +1,7 @@
 /* ==========================================================================
-   Modern Architect & Consulting Theme - Obsidian & Go Emerald Design System
+   Modern Architect & Consulting Theme - Monogram & Kerge SOTA Design System
    Standard: Taste-Skill Anti-Slop Framework & WCAG 2.2 AA Conformance
-   Crafted for: https://tanhdev.com (Lê Tuấn Anh — Principal Go Backend Architect)
+   Crafted for: https://tanhdev.com (Lê Tuấn Anh: Principal Go Backend Architect)
    ========================================================================== */
 
 /* ── 1. W3C DTCG 3-Tier Design Tokens ───────────────────────────────────── */
@@ -24,45 +24,50 @@
   --radius-lg: 14px;
   --radius-pill: 9999px;
 
-  /* Obsidian Midnight Canvas & Elevated Surfaces (Default Dark) */
-  --theme: #0A0E17;
-  --entry: #111C2E;
-  --surface-elevated: #162238;
-  --surface-hover: #1C2B46;
+  /* Monogram Warm Off-Black Canvas & Elevated Surfaces (Default Dark) */
+  --theme: #181615;
+  --entry: #232120;
+  --surface-elevated: #2B2826;
+  --surface-hover: #34302E;
 
   /* High-Contrast WCAG 2.2 AA Typography */
   --primary: #FFFFFF;
   --text-intro: #F8FAFC;
-  --text-body: #CBD5E1;
-  --secondary: #94A3B8;
-  --tertiary: #1E293B;
+  --text-body: #E2E8F0;
+  --secondary: #9B9795;
+  --tertiary: #3A3634;
   --content: #E2E8F0;
 
   /* Code & Syntax */
-  --code-block-bg: #080C14;
-  --code-bg: #1A2436;
+  --code-block-bg: #12100F;
+  --code-bg: #232120;
 
-  /* Crisp Structural Borders */
-  --border: rgba(255, 255, 255, 0.1);
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-focus: #00F0FF;
+  /* Crisp Structural Borders (Monogram Warm Slate) */
+  --border: #3A3634;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-focus: #E65C40;
 
-  /* Accents: Electric Cyan & Go Emerald */
-  --accent-primary: #00F0FF;
-  --accent-primary-hover: #33F3FF;
-  --accent-secondary: #10B981;
-  --accent-secondary-hover: #34D399;
-  --accent-glow: rgba(0, 240, 255, 0.2);
-  --accent-glow-green: rgba(16, 185, 129, 0.2);
-  --accent-badge-bg: rgba(0, 240, 255, 0.08);
-  --accent-badge-border: rgba(0, 240, 255, 0.25);
-  --accent-badge-text: #00F0FF;
+  /* Accents: Monogram Terracotta & Kerge Authority Brass Gold */
+  --accent-primary: #E65C40;
+  --accent-primary-hover: #F06A4F;
+  --accent-secondary: #CFA969;
+  --accent-secondary-hover: #DFC085;
+  --accent-authority: #CFA969;
+  --accent-authority-hover: #DFC085;
+  --accent-glow: rgba(230, 92, 64, 0.22);
+  --accent-glow-gold: rgba(207, 169, 105, 0.22);
+  --accent-badge-bg: rgba(230, 92, 64, 0.1);
+  --accent-badge-border: rgba(230, 92, 64, 0.28);
+  --accent-badge-text: #E65C40;
+  --accent-gold-badge-bg: rgba(207, 169, 105, 0.1);
+  --accent-gold-badge-border: rgba(207, 169, 105, 0.28);
+  --accent-gold-badge-text: #CFA969;
 
   /* Deep Space Shadows */
   --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
   --shadow-md: 0 4px 14px -2px rgba(0, 0, 0, 0.5);
   --shadow-card: 0 8px 30px -4px rgba(0, 0, 0, 0.5);
-  --shadow-card-hover: 0 14px 36px -4px rgba(0, 240, 255, 0.18);
+  --shadow-card-hover: 0 14px 36px -4px rgba(230, 92, 64, 0.2);
 
   color-scheme: dark;
 }
@@ -71,26 +76,29 @@
 :root[data-theme="dark"],
 [data-theme="dark"],
 body.dark {
-  --theme: #0A0E17;
-  --entry: #111C2E;
-  --surface-elevated: #162238;
-  --surface-hover: #1C2B46;
+  --theme: #181615;
+  --entry: #232120;
+  --surface-elevated: #2B2826;
+  --surface-hover: #34302E;
   --primary: #FFFFFF;
   --text-intro: #F8FAFC;
-  --text-body: #CBD5E1;
-  --secondary: #94A3B8;
-  --tertiary: #1E293B;
+  --text-body: #E2E8F0;
+  --secondary: #9B9795;
+  --tertiary: #3A3634;
   --content: #E2E8F0;
-  --code-block-bg: #080C14;
-  --code-bg: #1A2436;
-  --border: rgba(255, 255, 255, 0.1);
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-focus: #00F0FF;
-  --accent-primary: #00F0FF;
-  --accent-primary-hover: #33F3FF;
-  --accent-secondary: #10B981;
-  --accent-secondary-hover: #34D399;
-  --accent-glow: rgba(0, 240, 255, 0.2);
+  --code-block-bg: #12100F;
+  --code-bg: #232120;
+  --border: #3A3634;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-focus: #E65C40;
+  --accent-primary: #E65C40;
+  --accent-primary-hover: #F06A4F;
+  --accent-secondary: #CFA969;
+  --accent-secondary-hover: #DFC085;
+  --accent-authority: #CFA969;
+  --accent-authority-hover: #DFC085;
+  --accent-glow: rgba(230, 92, 64, 0.22);
+  --accent-glow-gold: rgba(207, 169, 105, 0.22);
   color-scheme: dark;
 }
 
@@ -168,7 +176,7 @@ button:active, a.button:active, .btn-tactile:active {
   z-index: 1000;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  background: rgba(10, 14, 23, 0.85);
+  background: rgba(24, 22, 21, 0.88);
   border-bottom: 1px solid var(--border);
   height: var(--header-height);
   display: flex;
@@ -290,16 +298,16 @@ button:active, a.button:active, .btn-tactile:active {
 }
 
 .nav-menu-item.hire-cta a {
-  background: var(--accent-secondary) !important;
-  color: #0A0E17 !important;
+  background: var(--accent-authority) !important;
+  color: #181615 !important;
   font-weight: 700 !important;
   border-radius: var(--radius-pill) !important;
   padding: 5px 14px !important;
-  box-shadow: 0 2px 10px var(--accent-glow-green) !important;
+  box-shadow: 0 2px 10px var(--accent-glow-gold) !important;
 }
 .nav-menu-item.hire-cta a:hover {
-  background: var(--accent-secondary-hover) !important;
-  color: #0A0E17 !important;
+  background: var(--accent-authority-hover) !important;
+  color: #181615 !important;
   transform: translateY(-1px);
 }
 
@@ -317,8 +325,8 @@ button:active, a.button:active, .btn-tactile:active {
   gap: 7px !important;
   padding: 6px 12px !important;
   border-radius: var(--radius-sm) !important;
-  background: #111C2E !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: var(--entry) !important;
+  border: 1px solid var(--border) !important;
   color: #CBD5E1 !important;
   font-size: 0.84rem !important;
   font-weight: 500 !important;
@@ -330,7 +338,7 @@ button:active, a.button:active, .btn-tactile:active {
 .search-nav-btn:hover {
   border-color: var(--accent-primary) !important;
   color: #FFFFFF !important;
-  background: #162238 !important;
+  background: var(--surface-elevated) !important;
   box-shadow: 0 0 12px var(--accent-glow) !important;
 }
 .search-kbd-shortcut {
@@ -338,8 +346,8 @@ button:active, a.button:active, .btn-tactile:active {
   font-size: 0.7rem !important;
   padding: 1px 5px !important;
   border-radius: 4px !important;
-  background: #0A0E17 !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  background: var(--theme) !important;
+  border: 1px solid var(--border) !important;
   color: #94A3B8 !important;
   font-weight: 700 !important;
 }
@@ -352,8 +360,8 @@ button:active, a.button:active, .btn-tactile:active {
   width: 36px !important;
   height: 36px !important;
   border-radius: var(--radius-sm) !important;
-  background: #111C2E !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: var(--entry) !important;
+  border: 1px solid var(--border) !important;
   color: #CBD5E1 !important;
   cursor: pointer !important;
   transition: all 0.15s ease !important;
@@ -361,7 +369,7 @@ button:active, a.button:active, .btn-tactile:active {
 .theme-toggle-btn:hover {
   color: #FFFFFF !important;
   border-color: var(--accent-primary) !important;
-  background: #162238 !important;
+  background: var(--surface-elevated) !important;
 }
 
 @media (max-width: 900px) {
@@ -406,9 +414,9 @@ button:active, a.button:active, .btn-tactile:active {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--accent-secondary);
-  background: rgba(16, 185, 129, 0.08);
-  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: var(--accent-primary);
+  background: var(--accent-badge-bg);
+  border: 1px solid var(--accent-badge-border);
   padding: 4px 12px;
   border-radius: var(--radius-pill);
   width: fit-content;
@@ -452,20 +460,20 @@ button:active, a.button:active, .btn-tactile:active {
   gap: 8px;
   padding: 11px 22px;
   border-radius: var(--radius-sm);
-  background: var(--accent-secondary);
-  color: #0A0E17 !important;
+  background: var(--accent-primary);
+  color: #FFFFFF !important;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 0.92rem;
   text-decoration: none;
   white-space: nowrap;
-  box-shadow: 0 4px 18px var(--accent-glow-green);
+  box-shadow: 0 4px 18px var(--accent-glow);
   border: 1px solid transparent;
 }
 .btn-primary-consulting:hover {
-  background: var(--accent-secondary-hover);
-  color: #0A0E17 !important;
-  box-shadow: 0 6px 24px var(--accent-glow-green);
+  background: var(--accent-primary-hover);
+  color: #FFFFFF !important;
+  box-shadow: 0 6px 24px var(--accent-glow);
 }
 
 .btn-secondary-tech {
@@ -688,8 +696,8 @@ button:active, a.button:active, .btn-tactile:active {
   width: 40px;
   height: 40px;
   border-radius: var(--radius-sm);
-  background: rgba(16, 185, 129, 0.1);
-  color: var(--accent-secondary);
+  background: var(--accent-gold-badge-bg);
+  color: var(--accent-authority);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -718,7 +726,7 @@ button:active, a.button:active, .btn-tactile:active {
   color: var(--secondary);
 }
 .service-link {
-  color: var(--accent-secondary);
+  color: var(--accent-authority);
   font-weight: 600;
   text-decoration: none;
 }
@@ -884,8 +892,8 @@ button:active, a.button:active, .btn-tactile:active {
   gap: 0.85rem;
 }
 .recent-article-item {
-  background: #111C2E !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: var(--entry) !important;
+  border: 1px solid var(--border) !important;
   border-radius: var(--radius-md);
   padding: 1.25rem 1.5rem;
   display: flex;
@@ -895,7 +903,7 @@ button:active, a.button:active, .btn-tactile:active {
 }
 .recent-article-item:hover {
   border-color: var(--accent-primary) !important;
-  background: #162238 !important;
+  background: var(--surface-elevated) !important;
   transform: translateX(4px);
 }
 .recent-article-title {
@@ -931,10 +939,10 @@ button:active, a.button:active, .btn-tactile:active {
   font-weight: 600;
 }
 
-/* ── 8. Cross-Platform Playbook Bridge Banner ────────────────────────────── */
+/* ── 8. Architectural Knowledge Hub Banner ───────────────────────────── */
 .playbook-bridge-banner {
-  background: linear-gradient(135deg, rgba(0, 240, 255, 0.06) 0%, rgba(16, 185, 129, 0.08) 100%);
-  border: 1px solid rgba(0, 240, 255, 0.2);
+  background: linear-gradient(135deg, rgba(230, 92, 64, 0.08) 0%, rgba(207, 169, 105, 0.08) 100%);
+  border: 1px solid rgba(230, 92, 64, 0.25);
   border-radius: var(--radius-lg);
   padding: 1.75rem 2rem;
   margin: 3.5rem 0;
@@ -981,7 +989,7 @@ button:active, a.button:active, .btn-tactile:active {
   padding: 10px 20px;
   border-radius: var(--radius-sm);
   background: var(--accent-primary);
-  color: #0A0E17 !important;
+  color: #FFFFFF !important;
   font-weight: 700;
   font-size: 0.9rem;
   text-decoration: none;
@@ -991,7 +999,7 @@ button:active, a.button:active, .btn-tactile:active {
 }
 .bridge-cta-btn:hover {
   background: var(--accent-primary-hover);
-  color: #0A0E17 !important;
+  color: #FFFFFF !important;
 }
 
 /* ── 9. Single Post Two-Column Layout & Sticky Sidebar TOC ───────────────── */
@@ -1271,8 +1279,8 @@ button:active, a.button:active, .btn-tactile:active {
   transition: color 0.15s ease !important;
 }
 .footer a:hover {
-  color: #00F0FF !important;
-  border-bottom-color: #00F0FF !important;
+  color: var(--accent-primary) !important;
+  border-bottom-color: var(--accent-primary) !important;
 }
 .footer-legal-links {
   display: inline-block;
@@ -1283,7 +1291,7 @@ button:active, a.button:active, .btn-tactile:active {
   border-bottom: none !important;
 }
 .footer-legal-links a:hover {
-  color: #00F0FF !important;
+  color: var(--accent-primary) !important;
 }
 .footer-legal-separator {
   color: #64748B !important;
