@@ -1,6 +1,6 @@
 # Vesviet Content Index (tanhdev.com)
 
-> Snapshot date: 2026-09-23 · Branch `main` · Total content files: **375** (~889,620 words)
+> Snapshot date: 2026-09-24 · Branch `main` · Total content files: **375** (~935,387 words)
 > Site: Hugo + PaperMod, `en` default, canonical host `https://tanhdev.com/`
 > English flagship portfolio. Regenerate this index after every batch upgrade.
 
@@ -13,7 +13,7 @@
 | `content/radar/` | 35 | 28 radar editions (2026-04 → 2026-09) + 6 monthly `_index.md` + 1 parent `_index.md` (~114,413 words) |
 | `content/categories/` | 16 | ai, architecture, backend, cloudflare, database, devops, e-commerce, engineering, fintech, golang, kubernetes, microservices, observability, payments, tech-radar + parent `_index.md` (~636 words) |
 | Root pages | 7 | `_index`, `about`, `hire`, `reading-map`, `legal-notice`, `terms-of-service`, `privacy-policy` (~7,281 words) |
-| `reports/` | 178 | 77 research JSON dossiers, 90 research MD docs + audits, 11 series content indexes |
+| `reports/` | 351 | Research JSON dossiers, research MD docs + audits, series content indexes |
 
 ## Anchor Pillar Hubs (link topology backbone)
 
