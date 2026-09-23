@@ -1,7 +1,7 @@
 ---
 title: "Tech Radar September 2026: WASI 0.3, MCP 2.0 & Next-Gen Systems"
 date: "2026-09-08T09:00:00+07:00"
-lastmod: "2026-09-16T10:00:00+07:00"
+lastmod: "2026-09-23T09:00:00+07:00"
 author: "Lê Tuấn Anh"
 draft: false
 mermaid: true
@@ -60,7 +60,7 @@ quadrantChart
 | **ADOPT** | **WASI 0.3 WebAssembly Component Model** | Cloud Native & Runtimes | Native async streams (`stream<T>`, `future<T>`), sub-1ms cold starts (<0.8ms), nanosecond IPC |
 | **ADOPT** | **Wasmtime 46+ Micro-Runtimes** | Edge Compute & Sandboxes | Cranelift AOT compilation, 1.2MB–4.5MB RAM per instance, 500x faster startup than containers |
 | **ADOPT** | **DeepSeek-V3 Multi-Head Latent Attention** | LLM Inference & GPU | 75% KV cache memory compression via low-rank projection, decoupled RoPE preservation |
-| **TRIAL** | **SGLang EAGLE-2 Speculative Decoding** | AI Serving Infrastructure | 3.5x inference acceleration over baseline autoregressive token generation |
+| **ADOPT** | **SGLang EAGLE-2 Speculative Decoding** | AI Serving Infrastructure | 3.5x inference acceleration via multi-layer feature drafter & dynamic tree attention |
 | **TRIAL** | **Cilium Tetragon 1.4 In-Kernel Tracing** | Cloud Native Security | In-kernel eBPF `sys_execve` termination in 12 µs, zero-trust sandbox enforcement |
 | **ASSESS** | **Uber H3 + OSRM Shared-Memory Cache** | Geospatial & High Concurrency | Spatial hex binning with sub-millisecond distance matrix queries for multi-agent routing |
 | **HOLD** | **Traditional Heavyweight Pod Sidecars** | Service Mesh Architecture | Incurs 15ms–35ms IPC latency overhead and 150MB+ footprint per pod; replace with in-kernel eBPF |
@@ -69,6 +69,9 @@ quadrantChart
 ---
 
 ## 🗺️ Featured September 2026 Editions
+
+- **[SGLang EAGLE-2: Speculative Decoding & Tree-Attention Latency Acceleration](/radar/2026-09/sglang-eagle-2-speculative-decoding/)**  
+  *In-depth architectural analysis of SGLang EAGLE-2: Multi-layer feature extrapolation, dynamic tree-attention verification, 3.5x token generation speedup on NVIDIA H100, and zero-degradation serving.*
 
 - **[Model Context Protocol 2.0 (MCP 2.0): Distributed Multi-Agent Mesh & Zero-Trust Tool Sandboxing](/radar/2026-09/mcp-20-agentic-mesh-distributed-systems/)**  
   *Architectural analysis of MCP 2.0 ratification: Bidirectional SSE streaming, dynamic capability discovery reducing prompt tokens by 72%, SPIFFE/OAuth 2.1 mTLS, WASI 0.3 sandboxes, and Go 1.26 production benchmarks.*
