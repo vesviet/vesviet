@@ -35,7 +35,7 @@ Published multiple times per week, written from the perspective of a Senior Soft
 - **[June 2026 Tech Radar Summary](/radar/2026-06/)**: Kubernetes v1.35 In-Place Pod Resizing GA, Go 1.26 Green Tea GC, Dapr v1.18.
 - **[July 2026 Tech Radar Summary](/radar/2026-07/)**: Autonomous AI Swarms, Zero-Trust Swarm Governance, Event-Driven Agent Sagas.
 - **[August 2026 Tech Radar Summary](/radar/2026-08/)**: Official Go MCP SDK, Go 1.26 Green Tea GC, Wasm SpinKube, Agent Frameworks vs. Vendor SDKs.
-- **[September 2026 Tech Radar Summary](/radar/2026-09/)**: WASI 0.3 WebAssembly, MCP 2.0 Agentic Mesh, DeepSeek-V3 MLA KV Cache & Next-Gen Systems.
+- **[September 2026 Tech Radar Summary](/radar/2026-09/)**: Disaggregated Prefill-Decode (PD), SGLang EAGLE-2, MCP 2.0 Agentic Mesh, WASI 0.3 & DeepSeek-V3 MLA.
 
 → For deep-dive tutorials and production guides, visit the **[Reading Map](/reading-map/)**.
 

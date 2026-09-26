@@ -1,6 +1,6 @@
 # Vesviet Content Index (tanhdev.com)
 
-> Snapshot date: 2026-09-24 · Branch `main` · Total content files: **375** (~935,387 words)
+> Snapshot date: 2026-09-26 · Branch `main` · Total content files: **376** (~937,450 words)
 > Site: Hugo + PaperMod, `en` default, canonical host `https://tanhdev.com/`
 > English flagship portfolio. Regenerate this index after every batch upgrade.
 
@@ -10,10 +10,10 @@
 |---|---|---|
 | `content/posts/` | 66 | 66 with Answer-first (100.0%); 5 standalone posts upgraded to 2027 SOTA Masterclass with 100-round deep research dossiers (~207,231 words) |
 | `content/series/` | 251 | 25 series; 225 chapters + 25 series `_index.md` + 1 parent `_index.md` (~559,951 words); 100% Answer-first |
-| `content/radar/` | 35 | 28 radar editions (2026-04 → 2026-09) + 6 monthly `_index.md` + 1 parent `_index.md` (~114,413 words) |
+| `content/radar/` | 36 | 29 radar editions (2026-04 → 2026-09) + 6 monthly `_index.md` + 1 parent `_index.md` (~116,480 words) |
 | `content/categories/` | 16 | ai, architecture, backend, cloudflare, database, devops, e-commerce, engineering, fintech, golang, kubernetes, microservices, observability, payments, tech-radar + parent `_index.md` (~636 words) |
 | Root pages | 7 | `_index`, `about`, `hire`, `reading-map`, `legal-notice`, `terms-of-service`, `privacy-policy` (~7,281 words) |
-| `reports/` | 353 | Research JSON dossiers, research MD docs + audits, series content indexes |
+| `reports/` | 356 | Research JSON dossiers, research MD docs + audits, series content indexes |
 
 ## Anchor Pillar Hubs (link topology backbone)
 

@@ -1,12 +1,12 @@
 # Master Reports Catalog — Vesviet Technical Corpus (tanhdev.com)
 
-> **Publication Date**: 2026-09-24  
+> **Publication Date**: 2026-09-26  
 > **Corpus Authority**: Vesviet Engineering & Content Operations  
 > **Scope**: `vesviet/reports/` (Flagship Technical Portfolio)  
 > **Language**: English (`en-us`)  
-> **Total Cataloged Assets**: **353 files** (311 Deep Research Dossiers, 17 Series Indexes, 9 GSC Audits/SOPs, 14 Editorial/Governance Audits, 2 Maintenance Scripts)  
+> **Total Cataloged Assets**: **356 files** (313 Deep Research Dossiers, 17 Series Indexes, 9 GSC Audits/SOPs, 15 Editorial/Governance Audits, 2 Maintenance Scripts)  
 > **Total Disk Footprint**: **17.57 MB** | **Total Markdown Word Count**: **795,990 words**  
-> **Coverage Epoch**: 2026-07-25 → 2026-09-24  
+> **Coverage Epoch**: 2026-07-25 → 2026-09-26  
 
 ---
 
@@ -15,17 +15,17 @@
 The `vesviet/reports/` directory serves as the centralized, immutable research repository and engineering audit backbone for the `tanhdev.com` technical publishing ecosystem. All reporting assets are maintained in a **strictly flat directory hierarchy (0 subdirectories)**. This architectural invariant guarantees 100% link integrity across all published markdown posts in `content/posts/`, series chapters in `content/series/`, technology radar briefs in `content/radar/`, and cross-repository GitHub tree permalinks.
 
 ### Corpus Macro Metrics
-- **Total Cataloged Files**: 353 files (Post-R2 Hygiene: ephemeral logs purged; Master Catalog integrated).
-- **Research Dossier Corpus**: 311 files (156 `.md` narratives + 155 `.json` structured payloads; 729,846 words; 17.01 MB).
+- **Total Cataloged Files**: 356 files (Post-R2 Hygiene: ephemeral logs purged; Master Catalog integrated).
+- **Research Dossier Corpus**: 313 files (157 `.md` narratives + 156 `.json` structured payloads; 729,846 words; 17.01 MB).
 - **Series Quality Indexes**: 17 `.md` files (16,846 words; 118.0 KB) covering all 17 flagship technical series with 8-gate quality compliance.
 - **Search Console & SEO Audits**: 9 files (6 `.md` + 3 `.json`; 20,124 words; 219.9 KB) covering Google Search Console indexing, crawl health, redirect graphs, and re-validation runbooks.
-- **Editorial & Governance Audits**: 14 files (including `CONTENT_INDEX.md` and `REPORTS_MASTER_CATALOG.md`; 29,174 words; 214.4 KB).
+- **Editorial & Governance Audits**: 15 files (including `CONTENT_INDEX.md`, `radar-corpus-review-2026-09-26.md`, and `REPORTS_MASTER_CATALOG.md`; 29,174 words; 214.4 KB).
 - **Automation & Verification Scripts**: 2 Python scripts (23.8 KB) enforcing style guide linting and post-generation quality gates.
 - **Link Integrity Guarantee**: 0 broken links sitewide across all 375 content markdown documents.
 
 ### Thematic Cluster Architecture
 Every asset within `vesviet/reports/` is categorized into one of five rigorous engineering clusters:
-1. **Cluster 1: 100-Round Deep Research Dossiers**: Methodological investigations consisting of paired JSON execution records and publication-grade Markdown briefs, spanning 21 multi-part series, 5 standalone 2027 SOTA Masterclass posts, and 2 Tech Radar editions.
+1. **Cluster 1: 100-Round Deep Research Dossiers**: Methodological investigations consisting of paired JSON execution records and publication-grade Markdown briefs, spanning 21 multi-part series, 5 standalone 2027 SOTA Masterclass posts, and 3 Tech Radar editions.
 2. **Cluster 2: Series Content Indexes (`*-content-index.md`)**: Comprehensive 8-gate quality audit matrices validating Answer-first architecture, Mermaid diagrams, code snippet correctness, internal link equity, and SEO frontmatter.
 3. **Cluster 3: Google Search Console (GSC) Audits, Datasets & SOPs**: Authoritative indexing diagnostic logs, redirect graph verifications (422 rules, 0 chains, 0 loops), and GSC Webmaster re-validation SOPs.
 4. **Cluster 4: Editorial & Quality Audits**: Structural audits of post length, buzzword compliance, category taxonomic mapping, and content strategy reviews.
@@ -173,6 +173,7 @@ Cluster 1 constitutes the intellectual foundation of the platform. Each dossier 
 | 132 | `research-routing-geospatial-part-9-core-algorithms-100-rounds.md` | `research-routing-geospatial-part-9-core-algorithms-100-rounds.json` | 100 | `series/routing-geospatial-architecture/part-9-urban-canyon-gps-multipath-map-matching.md` | 56.7 KB | 143.0 KB | Mirrored in `learn/` |
 | 133 | `research-routing-geospatial-part-9-urban-canyon-gps-multipath-map-matching-100-rounds.md` | `research-routing-geospatial-part-9-urban-canyon-gps-multipath-map-matching-100-rounds.json` | 100 | `series/routing-geospatial-architecture/part-9-urban-canyon-gps-multipath-map-matching.md` | 56.7 KB | 143.0 KB | Mirrored in `learn/` |
 | 134 | `research-sglang-eagle-2-speculative-decoding-100-rounds.md` | `research-sglang-eagle-2-speculative-decoding-100-rounds.json` | 100 | `radar/2026-09/radar-2026-09-23-sglang-eagle-2-speculative-decoding.md` | 3.2 KB | 66.0 KB | Mirrored in `learn/` |
+| 134b | `research-disaggregated-prefill-decode-100-rounds.md` | `research-disaggregated-prefill-decode-100-rounds.json` | 100 | `radar/2026-09/radar-2026-09-26-disaggregated-prefill-decode.md` | 4.3 KB | 48.0 KB | Mirrored in `learn/` |
 | 135 | `research-shopee-architecture-100-rounds.md` | `research-shopee-architecture-100-rounds.json` | 100 | `series/shopee-architecture/` | 33.0 KB | 36.7 KB | Mirrored in `learn/` |
 | 136 | `research-slm-playbook-executive-summary-100-rounds.md` | `research-slm-playbook-executive-summary-100-rounds.json` | 100 | `series/slm-playbook/executive-summary.md` | 33.9 KB | 57.3 KB | Mirrored in `learn/` |
 | 137 | `research-slm-playbook-part-1-slm-hybrid-architecture-100-rounds.md` | `research-slm-playbook-part-1-slm-hybrid-architecture-100-rounds.json` | 100 | `series/slm-playbook/part-1-slm-hybrid-architecture.md` | 31.4 KB | 54.6 KB | Mirrored in `learn/` |
@@ -261,6 +262,7 @@ Cluster 4 encompasses editorial management reports, content taxonomy inventories
 | 11 | `posts_audit_2026-07-27.md` | 2026-07-27 | 11.4 KB | 1,512 words | Initial quality screening of baseline posts following migration. | **Exclusive to `vesviet/`** |
 | 12 | `posts_content_manager_audit.md` | 2026-07-28 | 10.5 KB | 1,151 words | Content Manager sign-off report reviewing author personas and editorial integrity. | **Exclusive to `vesviet/`** |
 | 13 | `radar-corpus-review-2026-09-23.md` | 2026-09-23 | 10.2 KB | 1,876 words | Comprehensive review of all 28 Tech Radar editions through September 2026. | Mirrored in `learn/` |
+| 13b | `radar-corpus-review-2026-09-26.md` | 2026-09-26 | 10.8 KB | 1,940 words | Comprehensive review of all 29 Tech Radar editions through September 2026 (including Disaggregated Prefill-Decode). | Mirrored in `learn/` |
 | 14 | `radar_audit_2026-07-28.md` | 2026-07-28 | 11.1 KB | 1,570 words | Mid-year audit of radar pipeline and monthly roll-up summaries. | **Exclusive to `vesviet/`** |
 
 ---

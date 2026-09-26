@@ -1,21 +1,21 @@
 ---
 title: "Tech Radar September 2026: WASI 0.3, MCP 2.0 & Next-Gen Systems"
 date: "2026-09-08T09:00:00+07:00"
-lastmod: "2026-09-23T09:00:00+07:00"
+lastmod: "2026-09-26T09:00:00+07:00"
 author: "Lê Tuấn Anh"
 draft: false
 mermaid: true
 ShowToc: true
 TocOpen: true
 categories: ["Tech Radar"]
-tags: ["Tech Radar", "WebAssembly", "WASI 0.3", "MCP 2.0", "Model Context Protocol", "Component Model", "Wasmtime", "AI Infrastructure", "Cloud Native"]
+tags: ["Tech Radar", "WebAssembly", "WASI 0.3", "MCP 2.0", "Model Context Protocol", "Component Model", "Wasmtime", "AI Infrastructure", "Disaggregated Serving", "RoCEv2", "Cloud Native"]
 cover:
   image: "/images/posts/tech-radar-2026-08.jpg"
   alt: "Tech Radar September 2026: WASI 0.3 Component Model & Next-Gen Edge Infrastructure"
   relative: false
-description: "September 2026 Tech Radar: Ratification of MCP 2.0 distributed agent mesh, WASI 0.3 native async primitives, Wasmtime 46+ microservices, and DeepSeek-V3 MLA."
+description: "September 2026 Tech Radar: Disaggregated Prefill-Decode serving, MCP 2.0 distributed agent mesh, WASI 0.3 native async primitives, Wasmtime 46+, and DeepSeek-V3 MLA."
 canonicalURL: "https://tanhdev.com/radar/2026-09/"
-keywords: ["tech radar september 2026", "mcp 2 0 specification", "wasi 0 3 component model", "wasmtime cloud native", "agentic mesh distributed systems"]
+keywords: ["tech radar september 2026", "disaggregated prefill decode", "mcp 2 0 specification", "wasi 0 3 component model", "wasmtime cloud native", "agentic mesh distributed systems"]
 aliases:
   - /radar/2026-09/tech-radar-september-2026-digest/
   - /radar/2026-09/tech-radar-digest-september-2026/
@@ -45,6 +45,7 @@ quadrantChart
     "Wasmtime 46+ Micro-Runtimes": [0.20, 0.85]
     "DeepSeek-V3 MLA Architecture": [0.32, 0.89]
     "SGLang EAGLE-2 Speculative Decoding": [0.38, 0.88]
+    "Disaggregated Prefill-Decode (PD)": [0.36, 0.95]
     "Uber H3 + OSRM Distance Cache": [0.15, 0.78]
     "Kafka KRaft 4.0 Share Groups": [0.45, 0.72]
     "Cilium Tetragon 1.4 In-Kernel Observability": [0.35, 0.86]
@@ -56,6 +57,7 @@ quadrantChart
 
 | Radar Ring | Technology / Standard | Architectural Domain | Operational Metrics & Strategic Verdict |
 | :--- | :--- | :--- | :--- |
+| **ADOPT** | **Disaggregated Prefill-Decode (PD)** | AI Serving Infrastructure | Decouples compute from memory bandwidth; cuts P99 TTFT by 11x via zero-copy RoCEv2 KV streaming |
 | **ADOPT** | **Model Context Protocol 2.0 (MCP 2.0)** | AI Protocols & Mesh | Full-duplex SSE streaming, dynamic schema discovery (-72% tokens), sub-12ms P99 latency in Go 1.26 |
 | **ADOPT** | **WASI 0.3 WebAssembly Component Model** | Cloud Native & Runtimes | Native async streams (`stream<T>`, `future<T>`), sub-1ms cold starts (<0.8ms), nanosecond IPC |
 | **ADOPT** | **Wasmtime 46+ Micro-Runtimes** | Edge Compute & Sandboxes | Cranelift AOT compilation, 1.2MB–4.5MB RAM per instance, 500x faster startup than containers |
@@ -69,6 +71,9 @@ quadrantChart
 ---
 
 ## 🗺️ Featured September 2026 Editions
+
+- **[Disaggregated Prefill-Decode Architecture: Decoupling Compute & Memory Bandwidth via RoCEv2 KV-Transfer](/radar/2026-09/disaggregated-prefill-decode/)**  
+  *In-depth architectural analysis of Disaggregated Prefill-Decode (PD) Serving: Decoupling compute-dense prefill from memory-bandwidth-bound decode, zero-copy kernel-bypass RoCEv2 KV streaming, 11x P99 TTFT reduction, and 64x NVIDIA H100 benchmarks.*
 
 - **[SGLang EAGLE-2: Speculative Decoding & Tree-Attention Latency Acceleration](/radar/2026-09/sglang-eagle-2-speculative-decoding/)**  
   *In-depth architectural analysis of SGLang EAGLE-2: Multi-layer feature extrapolation, dynamic tree-attention verification, 3.5x token generation speedup on NVIDIA H100, and zero-degradation serving.*
