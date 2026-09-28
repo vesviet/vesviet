@@ -48,9 +48,9 @@ const REDIRECTS = new Map([
   ["/series/composable-commerce-migration/executive-summary-amazon-prime-video-monolith", "/series/composable-commerce-migration/part-0-executive-summary/"],
   ["/series/composable-commerce-migration/executive-summary-amazon-prime-video-monolith/", "/series/composable-commerce-migration/part-0-executive-summary/"],
 
-  // Cross-subdomain redirects
-  ["/posts/deploying-on-cloudflare-astro-full-stack-edge-architecture-and-wordpress-behind-the-cdn", "https://learn.tanhdev.com/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/"],
-  ["/posts/deploying-on-cloudflare-astro-full-stack-edge-architecture-and-wordpress-behind-the-cdn/", "https://learn.tanhdev.com/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/"],
+  // Cloudflare Astro Edge redirects (matching static/_redirects:55-56)
+  ["/posts/deploying-on-cloudflare-astro-full-stack-edge-architecture-and-wordpress-behind-the-cdn", "/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/"],
+  ["/posts/deploying-on-cloudflare-astro-full-stack-edge-architecture-and-wordpress-behind-the-cdn/", "/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/"],
 ]);
 
 export default {

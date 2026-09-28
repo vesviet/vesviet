@@ -45,6 +45,10 @@ mermaid: true
 
 > **Answer-first:** Redis in-memory state with Lua scripts excels at high-throughput (100k+ QPS), low-latency caching and raw data manipulation. However, for complex distributed state machines, turn-based concurrency, and long-lived stateful AI agent context, Dapr Virtual Actors eliminate race conditions, distributed locking overhead, and manual lifecycle plumbing via single-threaded mailboxes and automatic hydration.
 
+> **Prerequisite:** Core concepts of in-memory key-value caching, distributed lock lease management (Redlock), the Virtual Actor pattern, and state serialization.
+
+For foundational guidance on distributed microservices and actor lifecycle patterns, explore our [Go Microservices Architecture Guide](/posts/go-microservices/) and [Systems Architecture Reading Map](/reading-map/).
+
 ---
 
 ## 1. Executive Summary & Problem Space
@@ -695,32 +699,32 @@ flowchart TD
 
 ## 11. Frequently Asked Questions (FAQ)
 
-### Q1: Why is Martin Kleppmann's critique of Redlock critical for financial systems?
+{{< faq q="Why is Martin Kleppmann's critique of Redlock critical for financial systems?" >}}
 Martin Kleppmann demonstrated that Redlock relies on physical system clocks, making it vulnerable to NTP clock drift, hypervisor stalls, and stop-the-world garbage collection pauses. If a client holding a lock experiences a GC pause longer than the lock's TTL, the lock expires in Redis while the client assumes it remains valid, leading to concurrent mutations and corrupted state. Safe distributed locking requires monotonically increasing fencing tokens validated transactionally at the storage tier—a pattern not natively enforced by standard Redis deployments.
+{{< /faq >}}
 
-### Q2: How do Dapr Virtual Actors prevent race conditions without explicit distributed locks?
+{{< faq q="How do Dapr Virtual Actors prevent race conditions without explicit distributed locks?" >}}
 Dapr Virtual Actors implement the Orleans actor model, where each unique actor ID processes incoming invocations strictly sequentially through an internal turn-based mailbox queue. Because only one thread or turn executes inside an actor instance at any given time, concurrent requests are buffered and processed in order, eliminating race conditions, dirty reads, and lock contention entirely without requiring application-level distributed locks.
+{{< /faq >}}
 
-### Q3: When should engineering teams choose raw Redis over Dapr Virtual Actors?
+{{< faq q="When should engineering teams choose raw Redis over Dapr Virtual Actors?" >}}
 Engineering teams should choose raw Redis when building stateless, read-heavy workloads exceeding 100,000 QPS where sub-millisecond latency (< 1ms) is mandatory, such as global response caching, session token validation, leaderboard rankings, or high-throughput API rate limiting. In these scenarios, the overhead of Dapr sidecar IPC hops (~0.35ms) and mailbox queue coordination is unnecessary.
+{{< /faq >}}
 
-### Q4: How do Dapr Actor Reminders survive pod restarts and cluster rebalancing?
+{{< faq q="How do Dapr Actor Reminders survive pod restarts and cluster rebalancing?" >}}
 Dapr Actor Reminders are not stored in volatile memory; they are committed to the underlying persistent state store (e.g., PostgreSQL or Redis) with a scheduled execution timestamp. The Dapr Placement Service and sidecar runtimes monitor active reminders. If a pod crashes or the cluster scales down, the placement service re-assigns the actor to a healthy pod and re-triggers its `ReceiveReminder()` lifecycle method on schedule.
+{{< /faq >}}
+
+---
+
+## 🔗 Related Masterclasses & Architecture Pillars
+
+* 🚀 **Deep-Dive Engineering:**
+  * Explore edge networking & service meshes: [Part 10: Envoy Gateway vs. Cilium eBPF Service Mesh](/series/architectural-tradeoffs-showdowns/10-envoy-gateway-vs-cilium-ebpf-service-mesh/)
+  * Client-side state & caching: [Part 9: Cookie vs. SessionStorage vs. LocalStorage](/series/architectural-tradeoffs-showdowns/09-cookie-vs-sessionstorage-vs-localstorage/)
+* 💼 **Advisory & Consulting:**
+  * Distributed systems & stateful AI actor consulting: [Lê Tuấn Anh — Architecture Consulting & Engineering](/hire/)
 
 ---
 
 > 📖 **Series Navigation**: [← Previous Chapter: Modular Monolith vs Microservices vs SpinKube Wasm](/series/architectural-tradeoffs-showdowns/07-modular-monolith-vs-microservices-vs-spinkube-wasm/) | [Series Hub](/series/architectural-tradeoffs-showdowns/)
-
-
----
-
-## Frequently Asked Questions
-
-### Q1: What core challenge does Redis Distributed State vs. Dapr Virtual Actors Showdown address in production architecture?
-Showdown of Redis Distributed State vs Dapr Virtual Actors: concurrency locking, Redlock vs turn-based actors, state hydration, AI agent context, and FinOps.
-
-### Q2: What are the critical operational pitfalls to avoid during rollout?
-Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
-
-### Q3: How do we benchmark and validate performance after implementation?
-Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

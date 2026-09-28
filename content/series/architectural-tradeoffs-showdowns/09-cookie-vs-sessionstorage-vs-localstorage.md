@@ -43,9 +43,11 @@ mermaid: true
 
 # Part 9: Cookie vs. SessionStorage vs. LocalStorage Showdown: Network Headers Tax, Tab Isolation & Token Storage Architecture
 
----
+> **Answer-first:** Choose **HTTP Cookies (`HttpOnly; Secure; SameSite=Strict`)** for server-authenticated sessions and SSR edge gatekeeping to eliminate XSS token theft. Use **`sessionStorage`** for tab-isolated multi-step checkouts to prevent state collision. Reserve **`localStorage`** exclusively for non-sensitive UI preferences (<50KB) to prevent synchronous main-thread I/O blocking that degrades INP. Use **IndexedDB** for large offline state.
 
-> **Answer-first:** Choose **HTTP Cookies (`HttpOnly; Secure; SameSite=Strict; Path=/; __Host-`)** for server-authenticated sessions, SSR edge gatekeeping, and security tokens to neutralize XSS exfiltration. Use **`sessionStorage`** for tab-isolated, transient transactional workflows (e.g. multi-step checkout wizards) to prevent cross-tab state collision. Reserve **`localStorage`** exclusively for lightweight (<50KB), non-sensitive user preferences (e.g. dark mode, locale) to avoid synchronous main-thread I/O blocking that degrades Interaction to Next Paint (INP). For structured offline caching (>5MB), graduate immediately to **IndexedDB/OPFS**.
+> **Prerequisite:** Solid understanding of browser security sandboxes, XSS and CSRF attack vectors, the browser event loop, and web performance metrics (INP, FCP).
+
+For foundational guidance on web performance and distributed frontend-backend architectures, explore our [Go Microservices Architecture Guide](/posts/go-microservices/) and [Systems Architecture Reading Map](/reading-map/).
 
 ---
 
@@ -471,23 +473,21 @@ flowchart TD
 
 ## Frequently Asked Questions (FAQ)
 
-<details class="faq-item">
-<summary><strong>Q1: Why should JWT Access Tokens never be stored in LocalStorage?</strong></summary>
-
+{{< faq q="Why should JWT Access Tokens never be stored in LocalStorage?" >}}
 Because `localStorage` provides zero isolation against client-side JavaScript execution. If the application suffers any Cross-Site Scripting (XSS) vulnerability (via compromised third-party analytics tags, chat widgets, or poisoned npm dependencies), an attacker can exfiltrate all tenant tokens with a single `localStorage.getItem()` call. The enterprise-grade mitigation is the **Backend-For-Frontend (BFF)** pattern: storing Refresh Tokens in `__Host-` prefixed `HttpOnly; Secure; SameSite=Strict` cookies while retaining Access Tokens strictly in ephemeral JavaScript memory.
-</details>
+{{< /faq >}}
 
-<details class="faq-item">
-<summary><strong>Q2: Does SessionStorage share state when duplicating a tab or clicking "Open in New Tab"?</strong></summary>
-
+{{< faq q="Does SessionStorage share state when duplicating a tab or clicking \"Open in New Tab\"?" >}}
 Under the HTML Living Standard, opening a new tab via a link (`target="_blank"`) creates a shallow clone of the parent tab's `sessionStorage` at initialization time, but **the two tabs immediately become completely independent**. Subsequent state mutations or deletions in Tab A do not propagate to Tab B. If a user opens a new tab by typing the URL directly, `sessionStorage` initializes completely empty.
-</details>
+{{< /faq >}}
 
-<details class="faq-item">
-<summary><strong>Q3: When must an engineering team migrate from LocalStorage to IndexedDB?</strong></summary>
-
+{{< faq q="When must an engineering team migrate from LocalStorage to IndexedDB?" >}}
 Teams must migrate to IndexedDB when: (1) Data volume exceeds **50 KB** (preventing synchronous main-thread Event Loop blocking that destroys Interaction to Next Paint - INP); (2) Rich multi-field indexing or key-range queries are required; (3) Storing binary objects (Blobs, ArrayBuffers, offline images); or (4) Data must be accessible from **Dedicated Web Workers or Service Workers** in offline-first Progressive Web Apps.
-</details>
+{{< /faq >}}
+
+{{< faq q="How does synchronous LocalStorage I/O directly degrade Interaction to Next Paint (INP)?" >}}
+Because `localStorage.getItem()` and `setItem()` execute synchronously on the browser's main JavaScript thread, any storage operation halts the Event Loop until disk serialization completes. When reading or writing large JSON structures (>100KB) during user interactions (such as button clicks, typing in search bars, or navigating route transitions), the main thread cannot process incoming input events or dispatch paint updates. This artificial input delay directly bloats the browser's **Interaction to Next Paint (INP)** latency metric beyond Google's 200ms "Good" threshold into the "Poor" (>500ms) territory, harming Core Web Vitals and organic search rankings.
+{{< /faq >}}
 
 ---
 

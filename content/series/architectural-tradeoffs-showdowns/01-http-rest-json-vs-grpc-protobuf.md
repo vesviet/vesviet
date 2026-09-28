@@ -39,6 +39,8 @@ mermaid: true
 
 > **Answer-first:** For internal East-West microservices operating at scale, **gRPC over HTTP/2 with Protobuf is non-negotiable**, delivering 31x faster serialization, 68.8% lower egress bandwidth, and zero-allocation memory pooling. For external North-South traffic, deploy **Go Kratos v2.9.1 dual-protocol servers** to expose REST/JSON to web browsers while preserving high-throughput gRPC internally without intermediate proxy network hops.
 
+> **Prerequisite:** General understanding of TCP/IP networking, OSI Layer 7 transport, HTTP/2 multiplexing streams, and binary Protocol Buffers serialization.
+
 For a foundational breakdown of production Go microservices and Kubernetes cluster architecture, refer to our comprehensive [Go Microservices Architecture Guide](/posts/go-microservices/).
 
 ---
@@ -1098,13 +1100,20 @@ To independently reproduce and verify all benchmark data, bitwise traces, and ar
 
 ---
 
-## Frequently Asked Questions
+## Frequently Asked Questions (FAQ)
 
-### Q1: What core challenge does HTTP/REST vs. gRPC Protobuf: Architectural Trade-offs in High-Concurrency Distributed Systems address in production architecture?
-Comprehensive architectural analysis of HTTP/REST (JSON) vs. gRPC (Protobuf v3): wire serialization internals, HTTP/2 vs HTTP/3 QUIC multiplexing, 50k RPS failure modes, and Go Kratos dual-protocol gateway blueprints.
+{{< faq q="Why does HTTP/2 multiplexing suffer from Head-of-Line (HoL) blocking on lossy networks?" >}}
+While HTTP/2 multiplexes multiple logical streams over a single TCP connection, TCP itself is a byte-stream protocol unaware of stream boundaries. If an IP packet carrying bytes for Stream A is dropped, the Linux kernel TCP stack holds all subsequent bytes in the receive socket buffer until the dropped packet is retransmitted. Consequently, Stream B and Stream C are blocked from reaching application space, creating TCP-layer Head-of-Line blocking. HTTP/3 solves this by migrating to QUIC over UDP, providing independent stream packet acknowledgment.
+{{< /faq >}}
 
-### Q2: What are the critical operational pitfalls to avoid during rollout?
-Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+{{< faq q="When is JSON/REST still preferable over gRPC in modern distributed systems?" >}}
+JSON/REST remains preferable in 4 primary scenarios: (1) Public North-South APIs consumed directly by third-party developer integrations requiring universal curl, browser, and Postman debugging without Protobuf descriptor files; (2) Frontend web SPAs where native browser fetch/XHR is required without deploying gRPC-Web proxy shims; (3) Edge webhooks delivering JSON payloads to arbitrary partner endpoints; and (4) Heterogeneous architectures where dynamic, schema-less payload schemas change faster than compiled Protobuf schemas can be released.
+{{< /faq >}}
 
-### Q3: How do we benchmark and validate performance after implementation?
-Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.
+{{< faq q="How does Protocol Buffers achieve zero-allocation deserialization with vtprotobuf?" >}}
+Standard `protoc-gen-go` allocates Go structs on the heap and heavily relies on runtime reflection to decode wire fields. The `vtprotobuf` compiler plugin generates optimized, direct-access unmarshaling functions tailored specifically to the message schema. It avoids heap escapes by decoding varints and byte slices into pre-allocated memory pools (`sync.Pool`) and direct buffer pointers, eliminating garbage collection pressure and reducing deserialization CPU cycles by up to 60%.
+{{< /faq >}}
+
+{{< faq q="Why do Layer 4 load balancers (AWS NLB / Linux IPVS) cause backend server starvation with gRPC?" >}}
+Layer 4 load balancers distribute traffic at the TCP connection level. Because gRPC clients establish long-lived HTTP/2 TCP connections and multiplex thousands of RPC streams over that single connection, an L4 load balancer routes all traffic from one client pod to a single backend pod. As client traffic increases, that backend pod starves for CPU while other backend pods sit completely idle. Mitigating this requires Layer 7 load balancing (Envoy, Istio, or client-side lookaside load balancing via gRPC xDS).
+{{< /faq >}}

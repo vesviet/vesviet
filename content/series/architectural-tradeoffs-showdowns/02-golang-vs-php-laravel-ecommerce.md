@@ -26,6 +26,8 @@ cover:
 
 > **Answer-first:** For transactional hotspots (>=5,000 RPS flash-sale checkout, inventory locks), **Golang is mandatory**, delivering **86.3% lower AWS compute costs ($189,411.48/yr savings at 50,000 RPS)** with sub-5ms P99 latency. For backoffice CRM, catalog, and ERP workflows, **Laravel 11 with Filament** remains vastly superior, making the **Strangler-Fig Hybrid Architecture** the optimal enterprise design.
 
+> **Prerequisite:** Working knowledge of PHP-FPM process models, Go goroutine M:N schedulers, memory heap allocation, and e-commerce flash-sale architectures.
+
 ---
 
 ## 1. Executive Verdict & Core Architectural Decision Matrix
@@ -900,13 +902,30 @@ static_resources:
 
 ---
 
-## Frequently Asked Questions
+## Frequently Asked Questions (FAQ)
 
-### Q1: What core challenge does Golang vs. PHP/Laravel in High-Concurrency E-Commerce: Architectural Trade-Offs, 50k RPS Benchmarks, and Zero-Downtime Strangler-Fig Blueprint address in production architecture?
-An exhaustive architectural showdown between Golang (Kratos) and PHP/Laravel (FPM & Octane) under 50,000 RPS flash-sale loads. Covers Zend Engine vs M:N runtime physics, Go 1.26 Green Tea GC 8 KiB page locality, AWS Graviton3 FinOps ($189k/yr savings), production failure modes, and a complete Strangler-Fig hybrid migration blueprint.
+{{< faq q="When should an engineering team choose Golang over Laravel in an E-Commerce architecture?" >}}
+You should choose Golang for transactional hotspots handling high traffic (>5,000 RPS), requiring P99 latencies under 15ms, real-time event streaming (WebSocket/SSE), high-concurrency inventory locking (flash sales), or CPU-intensive background batch processing. For standard business logic, admin dashboards, content management, and rapid prototyping (accounting for ~90% of typical e-commerce operations), Laravel remains the optimal choice for developer velocity.
+{{< /faq >}}
 
-### Q2: What are the critical operational pitfalls to avoid during rollout?
-Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
+{{< faq q="Why does Golang consume dramatically less RAM than PHP-FPM under 50,000 RPS peak loads?" >}}
+PHP-FPM implements a process-per-request model where each isolated worker process allocates 35–60 MB of RAM. Concurrently servicing 50,000 connections requires hundreds of gigabytes of RAM and triggers devastating OS context-switching storms. In contrast, Golang uses lightweight Goroutines (starting at only 2–4 KB of stack memory) multiplexed over an M:N runtime scheduler, consuming merely 150–300 MB of total resident RAM across the entire service.
+{{< /faq >}}
 
-### Q3: How do we benchmark and validate performance after implementation?
-Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.
+{{< faq q="How does the Strangler Fig pattern function in a hybrid Laravel and Golang architecture?" >}}
+The Strangler Fig pattern preserves Laravel as the central monolithic backoffice system (admin panels, merchant portals, CRM, catalog management) while incrementally carving out high-throughput transactional paths (such as `/checkout` and `/inventory/lock`) into dedicated Golang microservices built with frameworks like Kratos. The two layers communicate asynchronously via Kafka/NATS or synchronously via gRPC, ensuring a safe, zero-downtime migration without high-risk total rewrites.
+{{< /faq >}}
+
+{{< faq q="How does Go's non-blocking netpoller prevent thread exhaustion during inventory database connection stalls?" >}}
+When a goroutine initiates network I/O to a database (such as waiting on a row lock in PostgreSQL or Redis), the Go runtime parks the goroutine and registers its file descriptor with the OS kernel multiplexer (Linux `epoll` via the netpoller). The underlying OS worker thread (M) is immediately released to execute other ready goroutines. When the database responds, the netpoller wakes the parked goroutine, completely eliminating OS thread starvation.
+{{< /faq >}}
+
+---
+
+## 🔗 Related Masterclasses & Architecture Pillars
+
+* 🚀 **Deep-Dive Engineering:**
+  * Curated learning roadmap: [Systems Architecture Reading Map](/reading-map/)
+  * Explore high-throughput messaging: [Part 6: Apache Kafka vs. NATS JetStream Showdown](/series/architectural-tradeoffs-showdowns/06-apache-kafka-vs-nats-jetstream/)
+* 💼 **Advisory & Consulting:**
+  * High-concurrency systems & cloud architecture advisory: [Lê Tuấn Anh — Architecture Consulting & Engineering](/hire/)

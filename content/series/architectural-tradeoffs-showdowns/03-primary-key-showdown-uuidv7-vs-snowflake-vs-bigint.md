@@ -24,6 +24,8 @@ cover:
 
 > **Answer-first:** For distributed write-heavy architectures (≥10,000 writes/s) on MySQL/InnoDB, **Snowflake ID (64-bit)** is optimal, eliminating the 50% secondary index multiplier tax while preserving B-tree locality. For PostgreSQL, client-generated keys, or coordinate-free distributed topologies, **UUIDv7 (RFC 9562)** delivers 98% sequential page packing without dedicated coordinator nodes, overcoming random UUIDv4 page thrashing and IOPS cliff failures.
 
+> **Prerequisite:** Deep familiarity with B+ Tree clustered index storage (InnoDB), page fragmentation splits, distributed ID generators, and 64-bit integer bitwise layout.
+
 ---
 
 ## 1. The Distributed Primary Key Conundrum at 100,000 Writes/sec
@@ -694,16 +696,12 @@ Snowflake IDs are 64-bit unsigned/signed integers that can reach values up to 2^
 
 {{< author-cta >}}
 
-
 ---
 
-## Frequently Asked Questions
+## 🔗 Related Masterclasses & Architecture Pillars
 
-### Q1: What core challenge does Primary Key Showdown: UUIDv7 vs. Snowflake ID vs. BIGINT in High-Throughput Distributed Systems address in production architecture?
-Byte-level disassembly of primary key strategies under 100k writes/sec: InnoDB B-tree page splits, Yao's Theorem fill factor, PostgreSQL heap ctid packing, 64-byte CPU cache lines, clock-drift-safe Go 1.25+ Snowflake generators, and a 7-phase zero-downtime dual-write migration playbook.
-
-### Q2: What are the critical operational pitfalls to avoid during rollout?
-Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
-
-### Q3: How do we benchmark and validate performance after implementation?
-Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.
+* 🚀 **Deep-Dive Engineering:**
+  * Curated learning roadmap: [Systems Architecture Reading Map](/reading-map/)
+  * Database scalability deep-dive: [MySQL Scalability & Sharding Architecture Guide](/posts/mysql-scalability-guide/)
+* 💼 **Advisory & Consulting:**
+  * High-concurrency systems & database architecture advisory: [Lê Tuấn Anh — Architecture Consulting & Engineering](/hire/)

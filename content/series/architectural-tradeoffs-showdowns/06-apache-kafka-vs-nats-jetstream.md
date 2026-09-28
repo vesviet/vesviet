@@ -41,6 +41,10 @@ mermaid: true
 
 > **Answer-first:** Apache Kafka (KRaft) excels in enterprise-scale event streaming, petabyte log retention, and strict partition-ordered analytics via OS page cache zero-copy I/O. Conversely, NATS JetStream is the optimal architecture for microservice meshes, edge deployments, and AI agent buses, offering sub-millisecond P99 latency, pure Go embedded Raft consensus, and 75% lower FinOps compute overhead.
 
+> **Prerequisite:** Familiarity with distributed append-only commit logs, consumer group offset tracking, distributed consensus (KRaft vs. Raft), and pub/sub semantics.
+
+For foundational distributed communication architecture and Go microservice performance engineering, see our [Go Microservices Architecture Guide](/posts/go-microservices/) and [Systems Architecture Reading Map](/reading-map/).
+
 ---
 
 ## 1. Executive Summary & Problem Space
@@ -625,32 +629,32 @@ func (c *JetStreamClient) Close() {
 
 ## 8. Frequently Asked Questions (FAQ)
 
-### Q1: When should an enterprise choose Apache Kafka over NATS JetStream?
+{{< faq q="When should an enterprise choose Apache Kafka over NATS JetStream?" >}}
 Choose Apache Kafka when your architecture requires **petabyte-scale long-term event retention**, complex multi-table stream processing (via Apache Flink, Kafka Streams, or Spark Streaming), or deep integration with enterprise Change Data Capture ecosystems (Debezium, Snowflake Connector, Confluent Schema Registry). Kafka's page cache storage engine and static partition key hashing are built specifically for sustained, multi-gigabyte-per-second sequential batch pipelines.
+{{< /faq >}}
 
-### Q2: How does NATS JetStream handle message ordering without dedicated topic partitions?
+{{< faq q="How does NATS JetStream handle message ordering without dedicated topic partitions?" >}}
 NATS JetStream maintains a **global monotonic sequence number** for every message committed to a stream. Consumers track both a `StreamSequence` and a `ConsumerSequence`. When strict ordering across a specific entity key is required, JetStream provides Key-Value buckets with atomic revision checks (`CompareAndPublish`) and single-consumer filter subjects, guaranteeing serial execution without requiring static physical partition management.
+{{< /faq >}}
 
-### Q3: Why does NATS JetStream consume significantly less RAM than Apache Kafka?
+{{< faq q="Why does NATS JetStream consume significantly less RAM than Apache Kafka?" >}}
 Apache Kafka relies on the JVM runtime, which requires large heap allocations (4GB–8GB) for metadata and buffering, and depends on vast amounts of unallocated host RAM (32GB–64GB) to serve as the Linux OS page cache for zero-copy operations. NATS JetStream is compiled directly to native Go machine code, utilizes fine-grained memory pooling (`sync.Pool`), and manages block files directly in user space, operating comfortably under 100MB of resident RAM per node.
+{{< /faq >}}
 
-### Q4: Can NATS JetStream and Apache Kafka co-exist in a modern enterprise architecture?
+{{< faq q="Can NATS JetStream and Apache Kafka co-exist in a modern enterprise architecture?" >}}
 Yes. A proven hybrid architecture deploys **NATS JetStream at the edge and internal microservice mesh** to facilitate sub-millisecond inter-service RPC, agent messaging, and dynamic event routing with minimal operational footprint. An asynchronous NATS-to-Kafka bridge then forwards filtered, aggregated domain events to a centralized **Apache Kafka enterprise event lake** for long-term analytics, data warehouse hydration, and compliance auditing.
+{{< /faq >}}
+
+---
+
+## 🔗 Related Masterclasses & Architecture Pillars
+
+* 🚀 **Deep-Dive Engineering:**
+  * Explore distributed architectures: [Part 7: Modular Monolith vs. Microservices vs. SpinKube Wasm](/series/architectural-tradeoffs-showdowns/07-modular-monolith-vs-microservices-vs-spinkube-wasm/)
+  * High-concurrency state management: [Part 8: Redis Distributed State vs. Dapr Virtual Actors](/series/architectural-tradeoffs-showdowns/08-redis-state-vs-dapr-virtual-actors/)
+* 💼 **Advisory & Consulting:**
+  * Distributed event mesh and systems architecture advisory: [Lê Tuấn Anh — Architecture Consulting & Engineering](/hire/)
 
 ---
 
 [← Previous Chapter: Part 5 — Sharded MySQL vs. TiDB](/series/architectural-tradeoffs-showdowns/05-sharded-mysql-vs-tidb-newsql/) | [Series Hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 7 — Modular Monolith vs. Microservices vs. SpinKube Wasm →](/series/architectural-tradeoffs-showdowns/07-modular-monolith-vs-microservices-vs-spinkube-wasm/)
-
-
----
-
-## Frequently Asked Questions
-
-### Q1: What core challenge does Apache Kafka vs. NATS JetStream: Event Streaming Showdown address in production architecture?
-Showdown of Apache Kafka (KRaft) vs. NATS JetStream: partition ordering, storage engine I/O, consumer group concurrency, consensus models, and FinOps.
-
-### Q2: What are the critical operational pitfalls to avoid during rollout?
-Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
-
-### Q3: How do we benchmark and validate performance after implementation?
-Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

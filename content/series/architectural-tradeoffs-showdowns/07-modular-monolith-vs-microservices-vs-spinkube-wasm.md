@@ -43,6 +43,10 @@ mermaid: true
 
 > **Answer-first:** Modular Monoliths deliver unmatched developer velocity, zero-latency in-memory calls (~0.5ns), and local ACID transactions for small-to-medium teams. Containerized Microservices provide independent deployments and polyglot boundaries at the cost of high network serialization and memory overhead. SpinKube WebAssembly represents the next paradigm, achieving sub-millisecond cold starts, 100x container density, and 75% FinOps savings.
 
+> **Prerequisite:** Understanding of bounded contexts in Domain-Driven Design (DDD), inter-process communication (IPC) vs. network RPC latency, and WebAssembly runtimes.
+
+For foundational architectural guidance on clean modular service boundaries and high-performance microservices, see our [Go Microservices Architecture Guide](/posts/go-microservices/) and [Systems Architecture Reading Map](/reading-map/).
+
 ---
 
 ## 1. Executive Summary & Problem Space
@@ -802,32 +806,32 @@ Phase 4: Sustainable Steady-State Hybrid Architecture
 
 ## 12. Frequently Asked Questions (FAQ)
 
-### Q1: When is a Modular Monolith clearly superior to Microservices?
+{{< faq q="When is a Modular Monolith clearly superior to Microservices?" >}}
 A Modular Monolith is superior when an engineering team has fewer than 50 engineers and prioritizes rapid feature delivery, high transactional data integrity, and low infrastructure overhead. By executing inter-module calls as in-memory function pointers (~0.5ns) and leveraging local ACID transactions in a single database, teams eliminate the network latency, serialization CPU taxes, and distributed Saga failure modes inherent in microservice architectures.
+{{< /faq >}}
 
-### Q2: What prevents WebAssembly from immediately replacing all Linux container workloads?
+{{< faq q="What prevents WebAssembly from immediately replacing all Linux container workloads?" >}}
 While WebAssembly excels at stateless compute, micro-functions, and sandboxed AI tool execution, its ecosystem is still maturing around long-running stateful daemons, complex multi-threaded legacy frameworks (e.g., legacy JVM applications), and specialized Linux kernel syscalls. Additionally, production tooling for distributed tracing, profiling, and debugging in Wasm is still standardizing compared to the decade-old Linux container ecosystem.
+{{< /faq >}}
 
-### Q3: How does SpinKube achieve sub-millisecond cold starts on Kubernetes worker nodes?
+{{< faq q="How does SpinKube achieve sub-millisecond cold starts on Kubernetes worker nodes?" >}}
 SpinKube utilizes the `containerd-shim-spin-v2` runtime shim, allowing Kubernetes to execute WebAssembly binaries directly via the Wasmtime engine without initializing Linux kernel namespaces, cgroups, or virtual Ethernet (veth) network pairs. Pre-compiled Ahead-of-Time (AOT) machine code is mapped into memory via Copy-on-Write (`mmap`), allowing new instances to instantiate their linear memory sandbox in under 500 microseconds.
+{{< /faq >}}
 
-### Q4: How should engineering teams manage database connections when running thousands of Wasm instances?
+{{< faq q="How should engineering teams manage database connections when running thousands of Wasm instances?" >}}
 Because SpinKube Wasm instances instantiate and terminate rapidly under burst traffic, allowing individual instances to open direct TCP connections to a relational database can quickly exhaust connection limits. Engineering teams should deploy dedicated database proxies (such as PgBouncer for PostgreSQL or ProxySQL for MySQL) or utilize WASI-native key-value capabilities backed by Redis or NATS JetStream to manage connection pooling at the platform layer.
+{{< /faq >}}
+
+---
+
+## 🔗 Related Masterclasses & Architecture Pillars
+
+* 🚀 **Deep-Dive Engineering:**
+  * Explore state management & actors: [Part 8: Redis Distributed State vs. Dapr Virtual Actors](/series/architectural-tradeoffs-showdowns/08-redis-state-vs-dapr-virtual-actors/)
+  * High-concurrency edge mesh: [Part 10: Envoy Gateway vs. Cilium eBPF Service Mesh](/series/architectural-tradeoffs-showdowns/10-envoy-gateway-vs-cilium-ebpf-service-mesh/)
+* 💼 **Advisory & Consulting:**
+  * Microservices & Cloud-Native Architecture Consulting: [Lê Tuấn Anh — Architecture Consulting & Engineering](/hire/)
 
 ---
 
 [← Previous Chapter: Part 6 — Apache Kafka vs. NATS JetStream](/series/architectural-tradeoffs-showdowns/06-apache-kafka-vs-nats-jetstream/) | [Series Hub](/series/architectural-tradeoffs-showdowns/) | [Next Chapter: Part 8 — Redis Distributed State vs. Dapr Virtual Actors →](/series/architectural-tradeoffs-showdowns/08-redis-state-vs-dapr-virtual-actors/)
-
-
----
-
-## Frequently Asked Questions
-
-### Q1: What core challenge does Modular Monolith vs. Microservices vs. SpinKube Wasm Showdown address in production architecture?
-Showdown of Modular Monolith vs Microservices vs SpinKube Wasm: invocation overhead, pod memory density, sub-ms cold-start, distributed ACID, and FinOps.
-
-### Q2: What are the critical operational pitfalls to avoid during rollout?
-Ensure strict component isolation, implement automated fallback mechanisms, and monitor distributed tracing spans with OpenTelemetry to preempt performance bottlenecks.
-
-### Q3: How do we benchmark and validate performance after implementation?
-Execute stress load testing, track P95/P99 latency percentiles before and after deployment, and perform end-to-end regression validation under production-like traffic.

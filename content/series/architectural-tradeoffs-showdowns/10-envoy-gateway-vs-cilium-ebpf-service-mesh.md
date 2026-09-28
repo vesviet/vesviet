@@ -45,6 +45,10 @@ mermaid: true
 
 > **Answer-first:** Envoy Gateway excels as a North-South Edge API Gateway with dedicated Envoy pods for advanced L7 policies (WAF, JWT, rate limiting, AI token quotas). Cilium eBPF dominates East-West cluster networking by bypassing the TCP/IP stack via `sockops` and cutting 92% RAM with node-level Envoy daemons. The 2026 standard combines both.
 
+> **Prerequisite:** Deep knowledge of Kubernetes networking (CNI, Ingress, Gateway API), Linux kernel network stack, eBPF socket layer redirection, and mTLS service mesh.
+
+For foundational guidance on cloud-native networking, eBPF telemetry, and high-concurrency microservices, explore our [Go Microservices Architecture Guide](/posts/go-microservices/) and [Systems Architecture Reading Map](/reading-map/).
+
 ---
 
 ## 🎯 The Context: The Sidecar Proxy Crisis & Modern Cloud-Native Networking (2026)
@@ -537,17 +541,21 @@ flowchart TD
 
 ## Frequently Asked Questions (FAQ)
 
-### Q1: Can eBPF completely replace Envoy Proxy in the future?
-**Answer:** From a computer systems perspective, the answer is fundamentally **NO**. The Linux kernel is engineered for stability, memory isolation, and predictable execution. The kernel verifier (`bpf_verifier`) enforces strict execution bounds: a 1,000,000 instruction limit and a 512-byte stack limit. Parsing dynamic, memory-intensive L7 protocols—such as HTTP/2 HPACK decompression tables, TLS session ticket validation, or dynamic JSON decoding—requires arbitrary memory allocations and state machines that do not belong in the kernel space. Envoy Proxy in userspace remains the optimal engine for complex L7 application logic.
+{{< faq q="Can eBPF completely replace Envoy Proxy in the future?" >}}
+From a computer systems perspective, the answer is fundamentally **NO**. The Linux kernel is engineered for stability, memory isolation, and predictable execution. The kernel verifier (`bpf_verifier`) enforces strict execution bounds: a 1,000,000 instruction limit and a 512-byte stack limit. Parsing dynamic, memory-intensive L7 protocols—such as HTTP/2 HPACK decompression tables, TLS session ticket validation, or dynamic JSON decoding—requires arbitrary memory allocations and state machines that do not belong in the kernel space. Envoy Proxy in userspace remains the optimal engine for complex L7 application logic.
+{{< /faq >}}
 
-### Q2: Why did Cilium Service Mesh adopt a per-node proxy model instead of sidecars?
-**Answer:** Cilium adopted the per-node DaemonSet model to resolve the **Sidecar Resource Tax** and **Operational Churn**. In a 1,000-pod cluster, rolling out an Envoy security patch in a sidecar architecture requires restarting all 1,000 application pods. With Cilium's per-node model, operators upgrade only the 30 node-level Envoy instances without restarting application containers or severing active TCP streams.
+{{< faq q="Why did Cilium Service Mesh adopt a per-node proxy model instead of sidecars?" >}}
+Cilium adopted the per-node DaemonSet model to resolve the **Sidecar Resource Tax** and **Operational Churn**. In a 1,000-pod cluster, rolling out an Envoy security patch in a sidecar architecture requires restarting all 1,000 application pods. With Cilium's per-node model, operators upgrade only the 30 node-level Envoy instances without restarting application containers or severing active TCP streams.
+{{< /faq >}}
 
-### Q3: When should an enterprise avoid Cilium Service Mesh?
-**Answer:** Organizations should avoid Cilium Service Mesh when: (1) Running on legacy Linux kernels (< 5.10 LTS); (2) Operating on locked-down managed Kubernetes platforms that disallow custom eBPF programs; (3) Operating in multi-tenant clusters where untrusted workloads could trigger out-of-memory crashes on the shared node proxy; (4) The operations team lacks Linux kernel observability skills (`bpftool`, `cilium monitor`, `bpftrace`).
+{{< faq q="When should an enterprise avoid Cilium Service Mesh?" >}}
+Organizations should avoid Cilium Service Mesh when: (1) Running on legacy Linux kernels (< 5.10 LTS); (2) Operating on locked-down managed Kubernetes platforms that disallow custom eBPF programs; (3) Operating in multi-tenant clusters where untrusted workloads could trigger out-of-memory crashes on the shared node proxy; (4) The operations team lacks Linux kernel observability skills (`bpftool`, `cilium monitor`, `bpftrace`).
+{{< /faq >}}
 
-### Q4: What is the primary difference between legacy Ingress and the Kubernetes Gateway API?
-**Answer:** Legacy `Ingress` is a monolithic resource that forced infrastructure operators, cluster administrators, and application developers to share a single configuration file, leading to widespread annotation sprawl. The **Gateway API** introduces an object-oriented, role-oriented hierarchy: `GatewayClass` (Infrastructure Provider), `Gateway` (Cluster Operator), and `HTTPRoute/GRPCRoute` (Application Developer). Envoy Gateway natively implements this role-oriented standard.
+{{< faq q="What is the primary difference between legacy Ingress and the Kubernetes Gateway API?" >}}
+Legacy `Ingress` is a monolithic resource that forced infrastructure operators, cluster administrators, and application developers to share a single configuration file, leading to widespread annotation sprawl. The **Gateway API** introduces an object-oriented, role-oriented hierarchy: `GatewayClass` (Infrastructure Provider), `Gateway` (Cluster Operator), and `HTTPRoute/GRPCRoute` (Application Developer). Envoy Gateway natively implements this role-oriented standard.
+{{< /faq >}}
 
 ---
 
