@@ -26,7 +26,7 @@ image: "/images/posts/paypay-scaling-cover.jpg"
 
 ---
 
-> **Answer-First:** PayPay is Japan's dominant mobile payment service, supporting over 70 million registered users, 7.8 billion annual transactions, and peak promotional surges exceeding 1,250 TPS. To deliver 99.999% availability with zero double-spending guarantees, PayPay evolved from monolithic roots to a cloud-native architecture powered by five pillars: **Domain-Driven Microservices with ArgoCD GitOps**, **Event-Driven decoupling via Apache Kafka**, **Distributed SQL horizontal scale with TiDB Multi-Raft**, **Proactive resilience via Chaos Mesh**, and **Sub-10ms real-time ML fraud detection**.
+> **Answer-first:** PayPay is Japan's dominant mobile payment service, supporting over 70 million registered users, 7.8 billion annual transactions, and peak promotional surges exceeding 1,250 TPS. To deliver 99.999% availability with zero double-spending guarantees, PayPay evolved from monolithic roots to a cloud-native architecture powered by five pillars: **Domain-Driven Microservices with ArgoCD GitOps**, **Event-Driven decoupling via Apache Kafka**, **Distributed SQL horizontal scale with TiDB Multi-Raft**, **Proactive resilience via Chaos Mesh**, and **Sub-10ms real-time ML fraud detection**.
 
 ---
 
@@ -202,5 +202,7 @@ Availability is maintained through proactive isolation and graceful degradation:
 {{< /faq >}}
 
 ---
+
+For foundational implementations of production microservices and high-throughput architecture, explore our comprehensive [Go Microservices Architecture Guide](/posts/go-microservices/) and [Alipay Double 11 High-Throughput Architecture](/posts/alipay-double-11-architecture-tps/).
 
 [Next Chapter: Part 1 — Microservices & GitOps Blueprint](/series/paypay-architecture/part-1-microservices-gitops/)

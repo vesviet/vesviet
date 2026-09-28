@@ -1,6 +1,6 @@
 # Vesviet Content Index (tanhdev.com)
 
-> Snapshot date: 2026-09-28 · Branch `main` · Total content files: **376** (~942,266 words)
+> Snapshot date: 2026-09-28 · Branch `main` · Total content files: **376** (~1,011,366 words)
 > Site: Hugo + PaperMod, `en` default, canonical host `https://tanhdev.com/`
 > English flagship portfolio. Regenerate this index after every batch upgrade.
 
@@ -9,11 +9,11 @@
 | Section | Files | Notes |
 |---|---|---|
 | `content/posts/` | 66 | 66 with Answer-first (100.0%); 5 standalone posts upgraded to 2027 SOTA Masterclass with 100-round deep research dossiers (~207,231 words) |
-| `content/series/` | 251 | 25 series; 225 chapters + 25 series `_index.md` + 1 parent `_index.md` (~564,767 words); 100% Answer-first |
+| `content/series/` | 251 | 25 series; 225 chapters + 25 series `_index.md` + 1 parent `_index.md` (~664,201 words); 100% Answer-first |
 | `content/radar/` | 36 | 29 radar editions (2026-04 → 2026-09) + 6 monthly `_index.md` + 1 parent `_index.md` (~116,480 words) |
 | `content/categories/` | 16 | ai, architecture, backend, cloudflare, database, devops, e-commerce, engineering, fintech, golang, kubernetes, microservices, observability, payments, tech-radar + parent `_index.md` (~636 words) |
 | Root pages | 7 | `_index`, `about`, `hire`, `reading-map`, `legal-notice`, `terms-of-service`, `privacy-policy` (~7,281 words) |
-| `reports/` | 391 | 176 research JSON dossiers, 213 research MD docs + audits, series content indexes |
+| `reports/` | 413 | 187 research JSON dossiers, 226 research MD docs + audits, series content indexes |
 
 ## Anchor Pillar Hubs (link topology backbone)
 
@@ -35,8 +35,8 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 | Series | Chapters | Domain | Status |
 |---|---|---|---|
 | `alipay-double-11` | 8 | High-TPS fintech case study — 2027 SOTA Masterclass (800-round deep research, 8 schema-compliant research reports, all chapters >20.5KB and >2,500w, 100% 8-gate compliant) | Complete (`0c59f43`) |
-| `paypay-architecture` | 6 | PayPay scaling case study (Aurora to TiDB Multi-Raft NewSQL, Kafka 150K TPS, Chaos Mesh, 10B Yen campaign architecture) | Complete (`a7363ff`) |
-| `shopee-architecture` | 5 | Shopee mega-scale e-commerce case study (Go/gRPC Kitex, Redis Lua flash-sale, message queue peak-shaving, TiDB distributed scale, ClickHouse observability) | Complete (`bdddc1d`) |
+| `paypay-architecture` | 6 | PayPay scaling case study — 2027 SOTA Masterclass (Aurora to TiDB Multi-Raft NewSQL, Kafka 150K TPS, Chaos Mesh, 10B Yen campaign architecture; 1:1 twin parity, 600 research rounds, 100% 7-gate compliant) | Complete (`2026-09-28`) |
+| `shopee-architecture` | 5 | Shopee mega-scale e-commerce case study — 2027 SOTA Masterclass (Go/gRPC Kitex, Redis Lua flash-sale, message queue peak-shaving, TiDB distributed scale, ClickHouse observability; 1:1 twin parity, 500 research rounds, 100% 7-gate compliant) | Complete (`2026-09-28`) |
 | `prompt-standard` | 10 | Prompt engineering standards — 1:1 Twin Parity (Exec + Part 1–9, all at 2027 SOTA bar, 10 chapters + hub, 100% 8-gate compliant, 1,000 research rounds) | Complete (`c65bb39`) |
 | `cornerstone-technologies` | 5 | Foundation technologies (NATS JetStream, Temporal, Zero-Trust SPIFFE, Qdrant, Cloudflare Edge; 100% 7-gate compliant, 600 research rounds) | Complete (`c65bb39`) |
 | `agentic-ecommerce-search` | 7 | Autonomous agentic search + Qdrant hybrid retrieval (2027 SOTA Masterclass, 7 chapters + hub, 100% 7-gate compliant, 700 research rounds) | Complete (`c65bb39`) |
@@ -75,6 +75,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 
 | Date / Commit | Campaign |
 |---|---|
+| `2026-09-28` | **2027 SOTA Masterclass Upgrade: Sprint 2 (`paypay-architecture` [6 chapters] & `shopee-architecture` [5 chapters], 1,100 rounds)**: Complete 7-gate upgrade across `vesviet` and `learn` (1:1 twin parity, all 22 files > 20.5 KB and >= 2,500w, atomic Answer-first 50–60w, prerequisite callouts, 35 Mermaid diagrams, 44 FAQs, production Go 1.25+ / TiDB / Kitex / Redis Lua / ClickHouse code, 11 Draft202012 JSON dossiers with bitwise twin parity, zero links to learn on vesviet, 100% automated test harness passing). |
 | `2026-09-28` | **2027 SOTA Masterclass Upgrade: Sprint 1 (`architectural-tradeoffs-showdowns` [10 chapters] & `ride-hailing-realtime-architecture` [7 chapters], 1,700 rounds)**: Complete 7-gate upgrade across `vesviet` and `learn` (1:1 twin parity, all 34 files > 20.5 KB and >= 2,500w, atomic Answer-first 50–60w, prerequisite callouts, 137 Mermaid diagrams, 140 FAQs, production Go 1.25+ / Python / eBPF implementations, 17 Draft202012 JSON dossiers, zero links to learn on vesviet, 100% automated test harness passing). |
 | `2026-09-14` | **2027 SOTA Masterclass Upgrade: `routing-geospatial-architecture` (9 chapters + hub, 900 rounds)**: Complete 8-gate upgrade across `vesviet` and `learn` (1:1 twin parity, sizes 22.1–34.8 KB, body words 2,750–4,100w, single-line BLUF 50–60w, 25 Mermaid diagrams, 36 FAQs, Go 1.25+ / C++ / Python code, 9 Draft202012 JSON dossiers, zero links to learn on vesviet, 80/80 automated E2E tests passing). |
 | `2026-09-21` | **2027 SOTA Masterclass Upgrade: `generative-ui-architecture` (8 chapters + hub, 900 rounds)**: Complete 8-gate upgrade across `vesviet` and `learn` (1:1 twin parity, sizes 20.7–29.0 KB, body words 2,526–4,037w, single-line BLUF 50–60w, 40+ Mermaid diagrams, 72 FAQs, TypeScript / React 19 / Python / Rust Wasm code, 9 Draft202012 JSON dossiers, zero links to learn on vesviet, 100% automated tests passing).
