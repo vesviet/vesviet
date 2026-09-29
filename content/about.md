@@ -62,9 +62,9 @@ cover:
 * **Scope:** Philippine Grocery Commerce (landers.ph)
 * **Impact:** Developed custom Magento 2 extensions, implemented unit testing to reduce bug rates, and debugged payment/catalog/checkout modules.
 
-#### Magento 2 Developer (Contract) — ICM Factory Direct *(Apr 2019 – Present)*
+#### Solution Architect — ICM Factory Direct *(Apr 2019 – Present)*
 * **Scope:** Part-time / Maintenance for Regna.com and mobile APIs.
-* **Impact:** Maintained full-stack Magento 2 platform for Regna.com and built RESTful APIs powering Flutter mobile applications.
+* **Impact:** Solution architecture and full-stack platform engineering for Regna.com; architected RESTful APIs powering Flutter mobile applications.
 
 #### Earlier Career *(2008 – 2019)*
 * **Companies:** JV-IT Company (2017–2019, Weather forecast map system in Yii2/Node/Postgres/AWS), Skyfronts (2015–2017, Multi-site Magento), ToanCau Company (2011–2015, Corporate & mobile payments), VEC E-commerce (2008–2010, Web development).

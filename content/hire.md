@@ -73,7 +73,7 @@ I work with teams that need:
 | Lotte Innovate (2025–Present) | Magento 2 Data Pipelines & Caching | Lower latency, query & caching performance tuning |
 | Vigo Retail (2021–2025) | PHP Monolith → Go Microservices, B2B/B2C APIs | -35% API latency, zero-downtime EKS, millions req/month |
 | SnapMart Inc. (2020–2021) | Magento 2 Backend, landers.ph grocery | Custom extensions, checkout debugging, unit testing |
-| ICM Factory Direct (2019–Present) | Regna.com Magento 2 & Flutter mobile APIs | Multi-channel mobile REST APIs, full-stack platform maintenance |
+| ICM Factory Direct (2019–Present) | Solution Architect, Regna.com & Mobile APIs | Multi-channel mobile REST APIs, full-stack platform architecture |
 | Composable Commerce Platform | Personal Architecture Project (2025–Present) | 21+ services, Dapr Pub/Sub, Outbox, Saga in Go |
 
 [View my full profile →](/about/) | [GitHub Portfolio →](https://github.com/vesviet/Composable-Commerce-Service-Architecture)

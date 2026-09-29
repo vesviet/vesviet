@@ -65,9 +65,9 @@ cover:
 * **Scope:** Philippine Grocery Commerce (landers.ph)
 * **Impact:** Developed custom Magento 2 extensions, implemented unit testing to reduce bug rates, and debugged payment/catalog/checkout modules.
 
-#### Magento 2 Developer (Contract) — ICM Factory Direct *(Apr 2019 – Present)*
+#### Solution Architect — ICM Factory Direct *(Apr 2019 – Present)*
 * **Scope:** Part-time / Maintenance for Regna.com and mobile APIs.
-* **Impact:** Maintained full-stack Magento 2 platform for Regna.com and built RESTful APIs powering Flutter mobile applications.
+* **Impact:** Solution architecture and full-stack platform engineering for Regna.com; architected RESTful APIs powering Flutter mobile applications.
 
 #### Earlier Career *(2008 – 2019)*
 * **Companies:** JV-IT Company (2017–2019, Weather forecast map system in Yii2/Node/Postgres/AWS), Skyfronts (2015–2017, Multi-site Magento), ToanCau Company (2011–2015, Corporate & mobile payments), VEC E-commerce (2008–2010, Web development).
@@ -348,7 +348,7 @@ I work with teams that need:
 | Lotte Innovate (2025–Present) | Magento 2 Data Pipelines & Caching | Lower latency, query & caching performance tuning |
 | Vigo Retail (2021–2025) | PHP Monolith → Go Microservices, B2B/B2C APIs | -35% API latency, zero-downtime EKS, millions req/month |
 | SnapMart Inc. (2020–2021) | Magento 2 Backend, landers.ph grocery | Custom extensions, checkout debugging, unit testing |
-| ICM Factory Direct (2019–Present) | Regna.com Magento 2 & Flutter mobile APIs | Multi-channel mobile REST APIs, full-stack platform maintenance |
+| ICM Factory Direct (2019–Present) | Solution Architect, Regna.com & Mobile APIs | Multi-channel mobile REST APIs, full-stack platform architecture |
 | Composable Commerce Platform | Personal Architecture Project (2025–Present) | 21+ services, Dapr Pub/Sub, Outbox, Saga in Go |
 
 [View my full profile →](/about/) | [GitHub Portfolio →](https://github.com/vesviet/Composable-Commerce-Service-Architecture)

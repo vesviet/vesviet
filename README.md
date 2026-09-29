@@ -59,7 +59,7 @@ Senior Software Engineer with **17+ years** of hands-on experience building scal
 
 ---
 
-### Magento 2 Developer (Contract) — ICM Factory Direct
+### Solution Architect — ICM Factory Direct
 `Apr 2019 – Present` · Part-time / Maintenance
 
 - Designed and maintained the full-stack Magento 2 platform for [Regna.com](https://regna.com).
