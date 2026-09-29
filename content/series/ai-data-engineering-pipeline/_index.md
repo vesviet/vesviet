@@ -115,3 +115,17 @@ Traditional architectures duplicate raw data into specialized vector database si
 {{< faq q="What makes ColPali visual document retrieval superior to traditional OCR?" >}}
 Traditional OCR pipelines attempt to convert visually rich PDFs into linearized plain text, completely destroying table borders, multi-column reading orders, and diagrammatic relationships. ColPali indexes document page images directly using vision-language patch embeddings, preserving full 2D spatial layout and tabular comprehension.
 {{< /faq >}}
+
+{{< faq q="How do automated CI/CD quality gates prevent silent prompt regressions in production?" >}}
+Automated quality gates powered by Ragas and LLM-as-a-Judge evaluate the RAG Triad—Faithfulness, Context Precision, and Answer Relevance—against a curated golden benchmark dataset. By returning non-zero exit codes upon SLA regressions, CI pipelines automatically block regressive pull requests before hallucinations or retrieval degradations reach end users.
+{{< /faq >}}
+
+---
+
+## 🧭 Architectural Anchor Pillars & Navigation
+
+- Deep dive into our core microservices engineering handbook: [Go Microservices Architecture Guide](/posts/go-microservices/).
+- Connect agent backends to intelligent client interfaces: [Generative UI with MCP & AI-Native Frontend](/posts/generative-ui-with-mcp-ai-native-frontend/).
+- Chart your distributed systems mastery journey: [Architecture Reading Map](/reading-map/).
+- Partner with our principal systems engineering team: [Engineering Advisory & Consulting](/hire/).
+

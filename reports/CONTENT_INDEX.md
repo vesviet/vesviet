@@ -1,6 +1,6 @@
 # Vesviet Content Index (tanhdev.com)
 
-> Snapshot date: 2026-09-28 · Branch `main` · Total content files: **376** (~1,011,366 words)
+> Snapshot date: 2026-09-29 · Branch `main` · Total content files: **376** (~1,039,331 words)
 > Site: Hugo + PaperMod, `en` default, canonical host `https://tanhdev.com/`
 > English flagship portfolio. Regenerate this index after every batch upgrade.
 
@@ -9,11 +9,11 @@
 | Section | Files | Notes |
 |---|---|---|
 | `content/posts/` | 66 | 66 with Answer-first (100.0%); 5 standalone posts upgraded to 2027 SOTA Masterclass with 100-round deep research dossiers (~207,231 words) |
-| `content/series/` | 251 | 25 series; 225 chapters + 25 series `_index.md` + 1 parent `_index.md` (~664,201 words); 100% Answer-first |
+| `content/series/` | 251 | 25 series; 225 chapters + 25 series `_index.md` + 1 parent `_index.md` (~692,166 words); 100% Answer-first |
 | `content/radar/` | 36 | 29 radar editions (2026-04 → 2026-09) + 6 monthly `_index.md` + 1 parent `_index.md` (~116,480 words) |
 | `content/categories/` | 16 | ai, architecture, backend, cloudflare, database, devops, e-commerce, engineering, fintech, golang, kubernetes, microservices, observability, payments, tech-radar + parent `_index.md` (~636 words) |
 | Root pages | 7 | `_index`, `about`, `hire`, `reading-map`, `legal-notice`, `terms-of-service`, `privacy-policy` (~7,281 words) |
-| `reports/` | 413 | 187 research JSON dossiers, 226 research MD docs + audits, series content indexes |
+| `reports/` | 457 | 209 research JSON dossiers, 246 research MD docs + audits, series content indexes |
 
 ## Anchor Pillar Hubs (link topology backbone)
 
@@ -45,8 +45,8 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 | `slm-playbook` | 7 | Small language models (2027 SOTA, 7 chapters + hub, 700 research rounds) | Complete (`726bd2b`) |
 | `core-banking-developer` | 9 | Core banking engineering (2027 SOTA, 9 chapters, 100-round research reports) | Complete (`b82e67a`) |
 | `magento-migration-vietnam` | 15 | Magento → Microservices migration (11 flat chapters + 4 page-bundle chapters w/ index.md) | Complete (`b82e67a`) |
-| `ai-data-engineering-pipeline` | 11 | AI data engineering (2027 SOTA, 11 chapters + 100-round research report) | Complete (`5358db6`) |
-| `ai-driven-engineer` | 11 | AI-driven engineer competency (11 chapters + exec summary) | Complete (`4cb8f80`) |
+| `ai-data-engineering-pipeline` | 11 | AI data engineering & agentic pipeline — 2027 SOTA Masterclass (GraphRAG hybrid retrieval, multimodal ingestion, late chunking, streaming CDC Debezium, Iceberg, vLLM PagedAttention, OTel; 1:1 twin parity, 1,100 research rounds, 100% 7-gate compliant) | Complete (`2026-09-29`) |
+| `ai-driven-engineer` | 11 | AI-driven engineer competency & SDLC revolution — 2027 SOTA Masterclass (Tree-sitter AST parser, Semgrep yaml security, PromptOps CI/CD, custom MCP server, RACI Man vs Machine, LLM-as-Judge evals; 1:1 twin parity, 1,100 research rounds, 100% 7-gate compliant) | Complete (`2026-09-29`) |
 | `ai-driven-playbook` | 14 | AI-assisted engineering playbook (14 chapters + exec summary) | Complete (`04ed8dc`) |
 | `ecommerce-order-allocation` | **Complete (2027 SOTA)** | 12 / 12 | **32,266** words (256.8 KB) | 64 Mermaids, 48 FAQs, 12 Research Dossiers (100 rounds/ch) | [Index](ecommerce-order-allocation-content-index.md) |
 | `composable-commerce-migration` | 11 | Composable commerce migration patterns | Baseline |
@@ -75,6 +75,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 
 | Date / Commit | Campaign |
 |---|---|
+| `2026-09-29` | **2027 SOTA Masterclass Upgrade: Sprint 3 (`ai-data-engineering-pipeline` [11 chapters] & `ai-driven-engineer` [11 chapters], 2,200 rounds)**: Complete 7-gate upgrade across `vesviet` and `learn` (1:1 twin parity, all 44 files > 20.5 KB and >= 2,500w, atomic Answer-first 50–60w, prerequisite callouts, 88 Mermaid diagrams, 176 FAQs, production Python 3.12+/Go 1.25+/PySpark/Flink/vLLM/OTel/Tree-sitter/Semgrep/MCP implementations, 22 Draft202012 JSON dossiers with bitwise twin parity, zero links to learn on vesviet, 100% automated test harness passing). Snapshot date: 2026-09-28 archived for Sprint 2 baseline. |
 | `2026-09-28` | **2027 SOTA Masterclass Upgrade: Sprint 2 (`paypay-architecture` [6 chapters] & `shopee-architecture` [5 chapters], 1,100 rounds)**: Complete 7-gate upgrade across `vesviet` and `learn` (1:1 twin parity, all 22 files > 20.5 KB and >= 2,500w, atomic Answer-first 50–60w, prerequisite callouts, 35 Mermaid diagrams, 44 FAQs, production Go 1.25+ / TiDB / Kitex / Redis Lua / ClickHouse code, 11 Draft202012 JSON dossiers with bitwise twin parity, zero links to learn on vesviet, 100% automated test harness passing). |
 | `2026-09-28` | **2027 SOTA Masterclass Upgrade: Sprint 1 (`architectural-tradeoffs-showdowns` [10 chapters] & `ride-hailing-realtime-architecture` [7 chapters], 1,700 rounds)**: Complete 7-gate upgrade across `vesviet` and `learn` (1:1 twin parity, all 34 files > 20.5 KB and >= 2,500w, atomic Answer-first 50–60w, prerequisite callouts, 137 Mermaid diagrams, 140 FAQs, production Go 1.25+ / Python / eBPF implementations, 17 Draft202012 JSON dossiers, zero links to learn on vesviet, 100% automated test harness passing). |
 | `2026-09-14` | **2027 SOTA Masterclass Upgrade: `routing-geospatial-architecture` (9 chapters + hub, 900 rounds)**: Complete 8-gate upgrade across `vesviet` and `learn` (1:1 twin parity, sizes 22.1–34.8 KB, body words 2,750–4,100w, single-line BLUF 50–60w, 25 Mermaid diagrams, 36 FAQs, Go 1.25+ / C++ / Python code, 9 Draft202012 JSON dossiers, zero links to learn on vesviet, 80/80 automated E2E tests passing). |
@@ -119,8 +120,8 @@ Synchronized twins:
 - `slm-playbook` (7 chapters)
 - `core-banking-developer` (9 chapters)
 - `magento-migration-vietnam` (15 chapters)
-- `ai-data-engineering-pipeline` (11 chapters)
-- `ai-driven-engineer` (11 chapters)
+- `ai-data-engineering-pipeline` (11 chapters, 2027 SOTA Masterclass)
+- `ai-driven-engineer` (11 chapters, 2027 SOTA Masterclass)
 - `ai-driven-playbook` (14 chapters)
 
 ## Compliance Snapshot
@@ -166,3 +167,8 @@ Synchronized twins:
    - Completed 17 deep research dossiers (17 JSON + 17 MD files in both repos, 100% Draft202012 `research-report.json` schema compliant with bitwise SHA-256 twin parity).
    - Upgraded all 17 chapters across both repos (34 markdown files) to 2027 SOTA Masterclass 7-gate standards: all sizes > 20.5 KB, body words >= 2,500w, single-line Answer-first 50–60w, prerequisite callouts, >= 2 Mermaid diagrams/ch, 3–4 `{{< faq >}}` shortcodes/ch, production Go 1.25+ / Python / eBPF.
    - Enforced 0 links to `learn.tanhdev.com` on `vesviet` and canonical reciprocal badges `[📖 Bản tiếng Anh (English Edition)]` on `learn`. Master test suite `tests/verify_sprint1_master.py` passed 100%.
+10. **Comprehensive 2027 SOTA Masterclass Upgrade for Sprint 3 (AI Data Engineering Pipeline & AI Driven Engineer, 2,200 Deep Research Rounds) [RESOLVED ✅]:**
+    - Completed 22 deep research dossiers (22 JSON + 22 MD files in both repos, 100% Draft202012 `research-report.json` schema compliant with bitwise SHA-256 twin parity).
+    - Upgraded all 22 chapters across both repos (44 markdown files) to 2027 SOTA Masterclass 7-gate standards: all sizes > 20.5 KB, body words >= 2,500w, single-line Answer-first 50–60w, prerequisite callouts, >= 2 Mermaid diagrams/ch, 4 `{{< faq >}}` shortcodes/ch, production Python 3.12+/Go 1.25+/PySpark/Flink/vLLM/OTel/Tree-sitter/Semgrep/PromptOps/MCP.
+    - Enforced 0 links to `learn.tanhdev.com` on `vesviet`, 10 Anchor Pillar links on `vesviet`, and canonical reciprocal badges `[📖 Bản tiếng Anh (English Edition)]` on `learn`. Master test suite `tests/verify_sprint3_master.py` passed 100%.
+
