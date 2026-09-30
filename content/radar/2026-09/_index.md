@@ -1,21 +1,21 @@
 ---
 title: "Tech Radar September 2026: WASI 0.3, MCP 2.0 & Next-Gen Systems"
 date: "2026-09-08T09:00:00+07:00"
-lastmod: "2026-09-26T09:00:00+07:00"
+lastmod: "2026-09-30T09:00:00+07:00"
 author: "Lê Tuấn Anh"
 draft: false
 mermaid: true
 ShowToc: true
 TocOpen: true
 categories: ["Tech Radar"]
-tags: ["Tech Radar", "WebAssembly", "WASI 0.3", "MCP 2.0", "Model Context Protocol", "Component Model", "Wasmtime", "AI Infrastructure", "Disaggregated Serving", "RoCEv2", "Cloud Native"]
+tags: ["Tech Radar", "WebAssembly", "WASI 0.3", "MCP 2.0", "Model Context Protocol", "Component Model", "Wasmtime", "AI Infrastructure", "Disaggregated Serving", "RoCEv2", "Cloud Native", "vLLM v1", "PagedAttention v3", "KV Cache Optimization", "Dynamic Chunked Prefill"]
 cover:
   image: "/images/posts/tech-radar-2026-08.jpg"
   alt: "Tech Radar September 2026: WASI 0.3 Component Model & Next-Gen Edge Infrastructure"
   relative: false
-description: "September 2026 Tech Radar: Disaggregated Prefill-Decode serving, MCP 2.0 distributed agent mesh, WASI 0.3 native async primitives, Wasmtime 46+, and DeepSeek-V3 MLA."
+description: "September 2026 Tech Radar: vLLM v1 production engine architecture, distributed KV cache optimization, Disaggregated Prefill-Decode serving, MCP 2.0 distributed agent mesh, WASI 0.3 native async primitives, Wasmtime 46+, and DeepSeek-V3 MLA."
 canonicalURL: "https://tanhdev.com/radar/2026-09/"
-keywords: ["tech radar september 2026", "disaggregated prefill decode", "mcp 2 0 specification", "wasi 0 3 component model", "wasmtime cloud native", "agentic mesh distributed systems"]
+keywords: ["tech radar september 2026", "vllm v1 production engine", "pagedattention v3", "distributed kv cache optimization", "disaggregated prefill decode", "mcp 2 0 specification", "wasi 0 3 component model", "wasmtime cloud native", "agentic mesh distributed systems"]
 aliases:
   - /radar/2026-09/tech-radar-september-2026-digest/
   - /radar/2026-09/tech-radar-digest-september-2026/
@@ -23,7 +23,7 @@ aliases:
 
 # Tech Radar Digest September 2026: WASI 0.3, MCP 2.0 & Next-Gen Systems
 
-> **Answer-First:** The September 2026 Tech Radar highlights major architectural milestones across systems engineering and AI infrastructure: the official ratification of **Model Context Protocol 2.0 (MCP 2.0)** introducing distributed event-driven agent meshes, **WASI 0.3** native asynchronous primitives (`stream<T>`, `future<T>`), sub-millisecond instantiation with **Wasmtime 46+**, and 75% KV cache compression via **DeepSeek-V3 Multi-Head Latent Attention (MLA)**.
+> **Answer-First:** The September 2026 Tech Radar highlights major architectural milestones across systems engineering and AI infrastructure: the **vLLM v1 production engine** (standalone C++ core, PagedAttention v3, zero-copy RoCEv2 KV offloading), ratification of **Model Context Protocol 2.0 (MCP 2.0)** for distributed agent meshes, **WASI 0.3** async streams, sub-millisecond **Wasmtime 46+**, and 75% KV cache compression via **DeepSeek-V3 MLA**.
 
 ---
 
@@ -46,6 +46,7 @@ quadrantChart
     "DeepSeek-V3 MLA Architecture": [0.32, 0.89]
     "SGLang EAGLE-2 Speculative Decoding": [0.38, 0.88]
     "Disaggregated Prefill-Decode (PD)": [0.36, 0.95]
+    "vLLM v1 & PagedAttention v3": [0.33, 0.96]
     "Uber H3 + OSRM Distance Cache": [0.15, 0.78]
     "Kafka KRaft 4.0 Share Groups": [0.45, 0.72]
     "Cilium Tetragon 1.4 In-Kernel Observability": [0.35, 0.86]
@@ -57,6 +58,7 @@ quadrantChart
 
 | Radar Ring | Technology / Standard | Architectural Domain | Operational Metrics & Strategic Verdict |
 | :--- | :--- | :--- | :--- |
+| **ADOPT** | **vLLM v1 & PagedAttention v3** | AI Inference & Distributed Memory | Standalone C++ core eliminates Ray/Python GIL overhead; PagedAttention v3 cuts VRAM fragmentation <3% under 1M context; multi-tier RoCEv2 KV offload |
 | **ADOPT** | **Disaggregated Prefill-Decode (PD)** | AI Serving Infrastructure | Decouples compute from memory bandwidth; cuts P99 TTFT by 11x via zero-copy RoCEv2 KV streaming |
 | **ADOPT** | **Model Context Protocol 2.0 (MCP 2.0)** | AI Protocols & Mesh | Full-duplex SSE streaming, dynamic schema discovery (-72% tokens), sub-12ms P99 latency in Go 1.26 |
 | **ADOPT** | **WASI 0.3 WebAssembly Component Model** | Cloud Native & Runtimes | Native async streams (`stream<T>`, `future<T>`), sub-1ms cold starts (<0.8ms), nanosecond IPC |
@@ -71,6 +73,9 @@ quadrantChart
 ---
 
 ## 🗺️ Featured September 2026 Editions
+
+- **[vLLM v1 Production Engine Architecture & Distributed KV Cache Optimization](/radar/2026-09/vllm-v1-production-kv-cache/)**  
+  *Architectural deep-dive into the vLLM v1 engine overhaul: Standalone C++ core, zero-overhead asynchronous execution loop, lock-free ring buffers, PagedAttention v3 physical memory management under 1M+ token contexts, dynamic chunked prefill, and multi-tier KV cache offloading across HBM3e, NUMA DDR5, NVMe, and 400Gbps RoCEv2 disaggregated fabrics.*
 
 - **[Disaggregated Prefill-Decode Architecture: Decoupling Compute & Memory Bandwidth via RoCEv2 KV-Transfer](/radar/2026-09/disaggregated-prefill-decode/)**  
   *In-depth architectural analysis of Disaggregated Prefill-Decode (PD) Serving: Decoupling compute-dense prefill from memory-bandwidth-bound decode, zero-copy kernel-bypass RoCEv2 KV streaming, 11x P99 TTFT reduction, and 64x NVIDIA H100 benchmarks.*
