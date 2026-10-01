@@ -1,7 +1,7 @@
 ---
 title: "Tech Radar: DeepSeek-V3 Multi-Head Latent Attention (MLA) Architecture & KV Cache Compression"
 date: "2026-09-16T09:00:00+07:00"
-lastmod: "2026-09-16T09:00:00+07:00"
+lastmod: "2026-10-01T18:32:38+07:00"
 author: "Lê Tuấn Anh"
 slug: "deepseek-v3-multi-head-latent-attention"
 description: "In-depth architectural analysis of DeepSeek-V3 Multi-Head Latent Attention (MLA): low-rank KV projection, 75% memory footprint reduction, decoupled RoPE, and high-throughput inference serving."
@@ -19,10 +19,9 @@ draft: false
 canonicalURL: "https://tanhdev.com/radar/2026-09/deepseek-v3-multi-head-latent-attention/"
 keywords: ["deepseek v3 multi head latent attention", "mla kv cache compression", "low rank key value projection", "decoupled rope attention", "llm inference vram optimization"]
 ---
-
 # Tech Radar: DeepSeek-V3 Multi-Head Latent Attention (MLA) Architecture & KV Cache Compression
 
-> **Answer-First:** DeepSeek-V3's Multi-Head Latent Attention (MLA) fundamentally addresses the memory bandwidth and capacity bottlenecks in large language model inference. By projecting Keys and Values into a low-rank latent compressed space (latent space d_c = 512) during KV cache generation, MLA achieves a **75% reduction in runtime VRAM consumption** compared to traditional Multi-Head Attention (MHA) and Grouped-Query Attention (GQA), while simultaneously retaining the high expressive representational capacity of full attention matrices through Decoupled Rotary Position Embedding (RoPE).
+> **Answer-First:** DeepSeek-V3's Multi-Head Latent Attention (MLA) overcomes inference memory bandwidth bottlenecks by projecting Keys and Values into a low-rank latent compressed space (d_c = 512). MLA achieves a **75% VRAM reduction** versus MHA/GQA while preserving full attention expressive capacity via Decoupled Rotary Position Embedding (RoPE), enabling 4x larger batch sizes on standard GPU clusters.
 
 ---
 

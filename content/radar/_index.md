@@ -1,6 +1,6 @@
 ---
 title: "Tech Radar — Daily Go, K8s & AI Systems Engineering"
-lastmod: "2026-09-16T10:00:00+07:00"
+lastmod: "2026-10-01T18:32:38+07:00"
 description: "Daily curated tech intelligence covering Go, Kubernetes, AI/ML, cloud-native infrastructure, and microservices analysis from Lê Tuấn Anh."
 ShowToc: false
 author: "Lê Tuấn Anh"
@@ -11,7 +11,7 @@ cover:
 canonicalURL: "https://tanhdev.com/radar/"
 mermaid: false
 ---
-> **Answer-first:** The Tech Radar is a practitioner-led signal log delivering real-time analysis on Golang runtime internals, Kubernetes cloud-native infrastructure, Dapr agentic frameworks, and AI systems architecture. Designed for backend architects, every entry evaluates operational impact, fault domain isolation, and production deployment trade-offs.
+> **Answer-First:** The Tech Radar is a practitioner-led signal log delivering real-time analysis on Golang runtime internals, Kubernetes cloud-native infrastructure, Dapr agentic frameworks, and AI systems architecture. Designed for backend architects, every entry evaluates operational impact, fault domain isolation, and production deployment trade-offs.
 
 The Tech Radar is a daily engineering signal log — each entry is a focused deep-dive on one significant development in Go, Kubernetes, cloud-native infrastructure, AI/ML, or platform engineering. Not a news summary, but an analysis of what the signal means for backend architects and platform teams building production systems.
 

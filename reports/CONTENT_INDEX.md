@@ -1,6 +1,7 @@
 # Vesviet Content Index (tanhdev.com)
 
-> Snapshot date: 2026-09-30 · Branch `main` · Total content files: **377** (~1,041,731 words)
+> Snapshot date: 2026-10-01 · Branch `main` · Total content files: **377** (~1,041,731 words)
+
 > Site: Hugo + PaperMod, `en` default, canonical host `https://tanhdev.com/`
 > English flagship portfolio. Regenerate this index after every batch upgrade.
 

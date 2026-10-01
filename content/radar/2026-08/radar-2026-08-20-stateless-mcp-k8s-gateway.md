@@ -15,8 +15,8 @@ cover:
 mermaid: true
 aliases:
   - /radar/stateless-mcp-k8s-gateway/
+canonicalURL: "https://tanhdev.com/radar/2026-08/stateless-mcp-k8s-gateway/"
 ---
-
 # Tech Radar: Stateless MCP 2.0 & Kubernetes Gateway API Architecture
 
 > **Answer-First:** Model Context Protocol (MCP 2.0 - Core Spec 2026-07-28) transitions tool execution to stateless JSON-RPC 2.0 over HTTP/SSE, eliminating sticky-session bottlenecks. Combined with Kubernetes Gateway API (`agentgateway`), this architecture horizontally scales thousands of MCP server pods, enforces SPIFFE mTLS authentication, and reduces P99 latency below 12ms.

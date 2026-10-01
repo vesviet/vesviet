@@ -263,6 +263,7 @@ Cluster 4 encompasses editorial management reports, content taxonomy inventories
 | 12 | `posts_content_manager_audit.md` | 2026-07-28 | 10.5 KB | 1,151 words | Content Manager sign-off report reviewing author personas and editorial integrity. | **Exclusive to `vesviet/`** |
 | 13 | `radar-corpus-review-2026-09-23.md` | 2026-09-23 | 10.2 KB | 1,876 words | Comprehensive review of all 28 Tech Radar editions through September 2026. | Mirrored in `learn/` |
 | 13b | `radar-corpus-review-2026-09-26.md` | 2026-09-26 | 10.8 KB | 1,940 words | Comprehensive review of all 29 Tech Radar editions through September 2026 (including Disaggregated Prefill-Decode). | Mirrored in `learn/` |
+| 13c | `radar-corpus-review-2026-10-01.md` | 2026-10-01 | 23.4 KB | 2,383 words | Definitive audit and master catalog of 65 unique radar topics, 29 bilingual twins, and 100% canonical parity. | Mirrored in `learn/` |
 | 14 | `radar_audit_2026-07-28.md` | 2026-07-28 | 11.1 KB | 1,570 words | Mid-year audit of radar pipeline and monthly roll-up summaries. | **Exclusive to `vesviet/`** |
 
 ---

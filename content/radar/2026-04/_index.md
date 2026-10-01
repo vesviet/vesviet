@@ -1,7 +1,7 @@
 ---
 title: "Tech Radar Digest April 2026: Go, K8s & AI Platform Log"
 date: "2026-04-30T23:59:59+07:00"
-lastmod: "2026-07-23T10:00:00+07:00"
+lastmod: "2026-10-01T18:32:38+07:00"
 author: "Lê Tuấn Anh"
 draft: false
 mermaid: true

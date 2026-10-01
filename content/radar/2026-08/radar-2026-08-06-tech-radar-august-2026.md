@@ -1,7 +1,7 @@
 ---
 title: "Tech Radar August 2026: Go MCP SDK & Green Tea GC Tuning"
 date: 2026-08-06T00:00:00+07:00
-lastmod: 2026-08-06T00:00:00+07:00
+lastmod: "2026-10-01T18:32:38+07:00"
 author: "Lê Tuấn Anh"
 slug: "tech-radar-august-2026"
 description: "Official Go MCP SDK, Go 1.26 Green Tea GC throughput optimization, and WebAssembly micro-VM deployments with SpinKube on Kubernetes clusters."
@@ -19,9 +19,9 @@ cover:
 mermaid: true
 aliases:
   - /radar/tech-radar-august-2026/
+canonicalURL: "https://tanhdev.com/radar/2026-08/tech-radar-august-2026/"
 ---
-
-> **Answer-first:** The August 2026 Tech Radar highlights enterprise infrastructure shifts toward AI-Native architectures and performance-optimized Cloud Native systems. Key recommendations include **Go 1.26 Green Tea GC**, **Argo CD 3.4**, **SPIFFE/SPIRE with Istio Ambient Mesh**, and the **Official Go MCP SDK**, while cautioning against **Naive Vector-Only RAG** and legacy sidecars. Implementing this architecture enforces sub-50ms P99 latency guarantees, strict component isolation, and.
+> **Answer-First:** The August 2026 Tech Radar highlights enterprise shifts toward AI-native infrastructure and optimized cloud-native runtimes. Key recommendations include **Go 1.26 Green Tea GC**, **Argo CD 3.4**, **SPIFFE/SPIRE with Istio Ambient Mesh**, and the **Official Go MCP SDK**, while cautioning against naive vector-only RAG and legacy sidecars to guarantee sub-50ms P99 latency and strict isolation.
 
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "WASI 0.3 & Component Model: Polyglot Cloud-Native Wasm in 2026"
 date: "2026-09-03T09:00:00+07:00"
-lastmod: "2026-09-03T09:00:00+07:00"
+lastmod: "2026-10-01T18:32:38+07:00"
 author: "Lê Tuấn Anh"
 slug: "wasi-03-component-model-wasmtime"
 description: "Deep dive into WASI 0.3 ratification: Native async stream/future primitives, Wasmtime 46+ sub-millisecond cold starts, WIT interfaces, and nanosecond IPC."
@@ -19,10 +19,9 @@ draft: false
 canonicalURL: "https://tanhdev.com/radar/2026-09/wasi-03-component-model-wasmtime/"
 keywords: ["wasi 0 3 component model", "wasmtime cloud native microservices", "native async stream future wasi", "webassembly interface types wit", "nanosecond ipc wasm", "wasmtime 46 benchmarks"]
 ---
-
 # Tech Radar: WASI 0.3 & Component Model: Polyglot Cloud-Native Wasm in 2026
 
-> **Answer-First:** The ratification of **WASI 0.3** represents a watershed architectural milestone for cloud-native systems, introducing first-class asynchronous streaming (`stream<T>`, `future<T>`) directly into the WebAssembly Component Model. Powered by **Wasmtime 46+** and Cranelift ahead-of-time (AOT) compilation, server-side Wasm delivers **sub-millisecond cold starts (<1ms)**, **1–10MB memory footprints** (60% lower than V8, 95% lower than Linux containers), and **nanosecond-level inter-component IPC**, establishing WebAssembly as the default execution sandbox for microservices, plugin extensions, and edge compute.
+> **Answer-First:** Ratification of **WASI 0.3** introduces first-class asynchronous streaming (`stream<T>`, `future<T>`) into the WebAssembly Component Model. Powered by **Wasmtime 46+** and Cranelift AOT, server-side Wasm delivers **sub-millisecond cold starts (<1ms)**, **1–10MB memory footprints** (95% smaller than containers), and **nanosecond inter-component IPC**, making Wasm the premier high-density execution sandbox for cloud-native microservices and edge computing.
 
 ---
 

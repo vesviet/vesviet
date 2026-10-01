@@ -1,7 +1,7 @@
 ---
 title: "Tech Radar Digest June 2026: K8s, Go 1.26 & Dapr Log"
 date: "2026-06-24T23:59:59+07:00"
-lastmod: "2026-07-23T10:00:00+07:00"
+lastmod: "2026-10-01T18:32:38+07:00"
 author: "Lê Tuấn Anh"
 draft: false
 mermaid: true
@@ -26,6 +26,7 @@ aliases:
   - /radar/2026-06/radar-2026-06-24/
   - /radar/tech-radar-june-14-2026-kratos-dapr-integration/
 description: "Curated June 2026 Tech Radar digest analyzing Kubernetes in-place pod resizing, Go 1.26 GC performance, Dapr v1.18, and Kratos Clean Architecture design."
+canonicalURL: "https://tanhdev.com/radar/2026-06/"
 ---
 > **Answer-first:** Tech Radar Digest for June 2026 aggregates 6 daily technical briefings focusing on Kubernetes in-place pod resizing, Go 1.26 garbage collection optimizations, Dapr workflow integration, and Kratos clean architecture. Engineering takeaways establish operational standards for zero-downtime container scaling and distributed pub/sub messaging patterns.
 

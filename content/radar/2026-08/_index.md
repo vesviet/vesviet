@@ -1,7 +1,7 @@
 ---
 title: "Tech Radar August 2026: MCP 2.0, Go synctest & vLLM MLA"
 date: "2026-08-06T00:00:00+07:00"
-lastmod: "2026-08-23T08:30:00+07:00"
+lastmod: "2026-10-01T18:32:38+07:00"
 author: "Lê Tuấn Anh"
 draft: false
 mermaid: true
@@ -17,8 +17,8 @@ aliases:
   - /radar/2026-08/tech-radar-august-2026-digest/
   - /radar/2026-08/tech-radar-digest-august-2026/
 description: "August 2026 Tech Radar: Stateless MCP 2.0, Go 1.26 synctest, vLLM MLA KV cache, and Linux kernel zero-trust security with Cilium Tetragon 1.4."
+canonicalURL: "https://tanhdev.com/radar/2026-08/"
 ---
-
 # Tech Radar Digest August 2026: Stateless MCP 2.0, Go synctest, vLLM MLA & eBPF Zero Trust
 
 > **Answer-First:** The August 2026 Tech Radar highlights major cloud-native infrastructure milestones: standardizing **Stateless MCP 2.0** over Kubernetes Gateway API, eliminating concurrency test flakes with **Go 1.26 `testing/synctest`**, compressing GPU memory footprints via **vLLM Multi-Head Latent Attention (MLA)**, and enforcing kernel-level Zero-Trust boundaries for autonomous AI swarms using **Cilium Tetragon 1.4**.

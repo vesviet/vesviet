@@ -1,7 +1,7 @@
 ---
 title: "NIST AI 600-1 & OWASP ASI01–ASI10: AI Gateways in Kubernetes"
 date: "2026-08-21T08:30:00+07:00"
-lastmod: "2026-08-21T08:30:00+07:00"
+lastmod: "2026-10-01T18:32:38+07:00"
 author: "Lê Tuấn Anh"
 slug: "owasp-nist-ai-agent-gateway"
 ring: "TRIAL"
@@ -15,11 +15,11 @@ cover:
 mermaid: true
 aliases:
   - /radar/owasp-nist-ai-agent-gateway/
+canonicalURL: "https://tanhdev.com/radar/2026-08/owasp-nist-ai-agent-gateway/"
 ---
-
 # Tech Radar: NIST AI 600-1 & OWASP ASI01–ASI10 — Hardening Enterprise Agent Gateways in Kubernetes
 
-> **Answer-first:** Deploying autonomous AI agent swarms into enterprise Kubernetes clusters demands a paradigm shift from *Least Privilege* to **Least Agency**. By unifying **NIST AI 600-1** (the 12 GenAI Risk Categories across GOVERN/MAP/MEASURE/MANAGE) with the **OWASP ASI Top 10 (2026 Agentic Security Standards)**, production architectures enforce a 4-tier defense: **L7 Kubernetes Gateway API with CEL expressions** for tool parameter sanitization, **SPIFFE/SPIRE** for ephemeral Non-Human Identity (NHI) mTLS attestation, and **Cilium Tetragon eBPF** for real-time Linux kernel syscall termination (`SIGKILL < 15µs`).
+> **Answer-First:** Deploying autonomous AI agent swarms into enterprise Kubernetes clusters demands transitioning from *Least Privilege* to **Least Agency**. Unifying **NIST AI 600-1** with **OWASP ASI Top 10** enforces 4-tier defense: L7 Gateway API with CEL for tool sanitization, SPIFFE/SPIRE for ephemeral NHI mTLS attestation, and Cilium Tetragon eBPF for real-time kernel syscall termination (`SIGKILL < 15µs`).
 
 ---
 

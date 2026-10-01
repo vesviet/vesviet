@@ -1,7 +1,8 @@
 ---
 title: "Tech Radar September 2026: WASI 0.3, MCP 2.0 & Next-Gen Systems"
 date: "2026-09-08T09:00:00+07:00"
-lastmod: "2026-09-30T09:00:00+07:00"
+lastmod: "2026-10-01T18:32:38+07:00"
+
 author: "Lê Tuấn Anh"
 draft: false
 mermaid: true
@@ -20,7 +21,6 @@ aliases:
   - /radar/2026-09/tech-radar-september-2026-digest/
   - /radar/2026-09/tech-radar-digest-september-2026/
 ---
-
 # Tech Radar Digest September 2026: WASI 0.3, MCP 2.0 & Next-Gen Systems
 
 > **Answer-First:** The September 2026 Tech Radar highlights major architectural milestones across systems engineering and AI infrastructure: the **vLLM v1 production engine** (standalone C++ core, PagedAttention v3, zero-copy RoCEv2 KV offloading), ratification of **Model Context Protocol 2.0 (MCP 2.0)** for distributed agent meshes, **WASI 0.3** async streams, sub-millisecond **Wasmtime 46+**, and 75% KV cache compression via **DeepSeek-V3 MLA**.

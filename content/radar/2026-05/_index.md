@@ -1,7 +1,7 @@
 ---
 title: "Tech Radar Digest May 2026: Go, K8s & AI Systems Log"
 date: "2026-05-30T23:59:59+07:00"
-lastmod: "2026-07-23T10:00:00+07:00"
+lastmod: "2026-10-01T18:32:38+07:00"
 author: "Lê Tuấn Anh"
 draft: false
 mermaid: true
@@ -47,6 +47,7 @@ aliases:
   - /radar/tech-radar-may-15-2026-anthropics-200m-moral-play-the-agentic-cost-crisis-codex-goes-mobile-and-t-4-to-google-i/o/
   - /radar/tech-radar-may-28-2026-apple-gemini-openai-deployco/
 description: "Curated May 2026 Tech Radar digest covering DigitalOcean AI cloud, Dapr AI, Argo CD 3.4, Go 1.26 Green Tea GC, and enterprise agentic security protocols."
+canonicalURL: "https://tanhdev.com/radar/2026-05/"
 ---
 > **Answer-first:** Tech Radar Digest for May 2026 aggregates 18 daily engineering briefings analyzing AI-native cloud infrastructure, e-commerce platform microservices, OpenAI deployments, and enterprise backend architectures. Key takeaways highlight distributed state management, low-latency API gateways, and production-grade resilience strategies across multi-cloud environments.
 
