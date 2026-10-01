@@ -28,7 +28,12 @@ import sys
 from pathlib import Path
 from jsonschema import Draft202012Validator
 
-WORKSPACE = Path("/home/user/personalized")
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
+
+WORKSPACE = Path(os.environ.get("WORKSPACE", Path(__file__).resolve().parents[2]))
+if not (WORKSPACE / "learn").exists():
+    WORKSPACE = Path("/home/user/personalized")
 SCHEMA_PATH = WORKSPACE / "agent-skills/core/contracts/schemas/research-report.json"
 VESVIET_DIR = WORKSPACE / "vesviet"
 LEARN_DIR = WORKSPACE / "learn"
@@ -259,8 +264,10 @@ def test_research_dossiers_and_twin_parity():
     validator = Draft202012Validator(schema)
     print("✓ Schema is valid JSON Schema Draft202012")
 
-    v_rep = VESVIET_DIR / "reports"
-    l_rep = LEARN_DIR / "reports"
+    v_archive = VESVIET_DIR / "reports/archive/research-dossiers"
+    l_archive = LEARN_DIR / "reports/archive/research-dossiers"
+    v_rep = v_archive if v_archive.exists() else (VESVIET_DIR / "reports")
+    l_rep = l_archive if l_archive.exists() else (LEARN_DIR / "reports")
 
     total_dossiers = len(DOSSIER_STEMS)
     print(f"\nVerifying {total_dossiers} Research Dossiers across vesviet and learn...")
