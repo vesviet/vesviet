@@ -19,7 +19,7 @@ if hasattr(sys.stdout, 'reconfigure'):
 if hasattr(sys.stderr, 'reconfigure'):
     sys.stderr.reconfigure(encoding='utf-8')
 
-WORKSPACE = Path("D:/myproject")
+WORKSPACE = Path(__file__).resolve().parents[2] if (Path(__file__).resolve().parents[2] / "vesviet").exists() else Path("D:/myproject")
 VESVIET_REP = WORKSPACE / "vesviet" / "reports"
 LEARN_REP = WORKSPACE / "learn" / "reports"
 

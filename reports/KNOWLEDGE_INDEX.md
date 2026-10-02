@@ -1,9 +1,9 @@
 # Master Agent Knowledge Index — 2027 SOTA Architecture & Engineering Standards
 
-> **Epoch:** 2026-10-01T19:45:00+07:00  
+> **Epoch:** 2026-10-02T22:20:00+07:00  
 > **Authoring Swarm:** `@vesviet-team` (`@architect`, `@content-manager`, `@technical-writer`, `@qa-engineer`)  
 > **Purpose:** Ultra-compact, high-density architectural cheat-sheets and decision matrices designed for instant LLM/Agent retrieval without context window bloat.  
-> **Total Knowledge Cards:** 26 High-Signal Cards across 6 Core Domains.  
+> **Total Knowledge Cards:** 28 High-Signal Cards across 6 Core Domains.  
 
 ---
 
@@ -13,7 +13,7 @@
 - [3. AI, SLM & Agentic Systems](#3-ai-slm--agentic-systems) (5 Cards)
 - [4. Distributed Systems & Architectural Showdowns](#4-distributed-systems--architectural-showdowns) (6 Cards)
 - [5. Ride-Hailing & Geospatial Architecture](#5-ride-hailing--geospatial-architecture) (4 Cards)
-- [6. Cloud Infrastructure & Resilience](#6-cloud-infrastructure--resilience) (3 Cards)
+- [6. Cloud Infrastructure & Resilience](#6-cloud-infrastructure--resilience) (5 Cards)
 
 ---
 
@@ -73,6 +73,7 @@
 | [`aws-eks-vs-ecs-architectural-decision`](knowledge/cloud-infrastructure/aws-eks-vs-ecs-architectural-decision.md) | **Container Orchestration Showdown: AWS EKS (Kubernetes) vs. AWS ECS (Fargate)** | `#aws-eks`, `#aws-ecs`, `#kubernetes` | [`knowledge/cloud-infrastructure/aws-eks-vs-ecs-architectural-decision.md`](knowledge/cloud-infrastructure/aws-eks-vs-ecs-architectural-decision.md) |
 | [`envoy-gateway-vs-cilium-ebpf-service-mesh`](knowledge/cloud-infrastructure/envoy-gateway-vs-cilium-ebpf-service-mesh.md) | **Service Mesh Showdown: Envoy Proxy Sidecar vs. Cilium eBPF Kernel Routing** | `#envoy`, `#cilium`, `#ebpf` | [`knowledge/cloud-infrastructure/envoy-gateway-vs-cilium-ebpf-service-mesh.md`](knowledge/cloud-infrastructure/envoy-gateway-vs-cilium-ebpf-service-mesh.md) |
 | [`zero-trust-spiffe-spire-istio-golang`](knowledge/cloud-infrastructure/zero-trust-spiffe-spire-istio-golang.md) | **Zero-Trust Service Mesh Security: SPIFFE/SPIRE Cryptographic Workload Identities in Go** | `#zero-trust`, `#spiffe`, `#spire` | [`knowledge/cloud-infrastructure/zero-trust-spiffe-spire-istio-golang.md`](knowledge/cloud-infrastructure/zero-trust-spiffe-spire-istio-golang.md) |
+| [`cilium-tetragon-ebpf-ai-agent-security`](knowledge/cloud-infrastructure/cilium-tetragon-ebpf-ai-agent-security.md) | **Cilium 1.17 & Tetragon 1.4: In-Kernel eBPF Observability, Sidecarless Service Mesh & Zero-Trust Sandboxing for Autonomous AI Agents** | `#cilium`, `#tetragon`, `#ebpf`, `#ai-agent-security` | [`knowledge/cloud-infrastructure/cilium-tetragon-ebpf-ai-agent-security.md`](knowledge/cloud-infrastructure/cilium-tetragon-ebpf-ai-agent-security.md) |
 
 ---
 
