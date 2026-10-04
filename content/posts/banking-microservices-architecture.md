@@ -30,7 +30,9 @@ canonicalURL: "https://tanhdev.com/posts/banking-microservices-architecture/"
 
 # Banking Microservices in Go: Saga & Event Sourcing
 
-**Answer-first:** Banking microservices architecture enforces strict domain isolation, dual-entry accounting ledgers, immutable audit logging, and SPIFFE/SPIRE zero-trust mTLS to maintain high transaction throughput and financial compliance. 
+> **Answer-First:** Banking microservices architecture in Go enforces strict bounded context isolation, double-entry immutable ledgers, and distributed Saga orchestration to guarantee zero financial data loss. By combining optimistic concurrency control, transactional outbox event streams, and SPIFFE/SPIRE zero-trust mutual TLS, financial platforms process over 10,000 TPS while maintaining sub-10ms latency and strict PCI-DSS v4.0 regulatory compliance.
+
+> **Prerequisite:** Readers should possess solid foundations in relational database transactions (ACID, isolation levels, row locks), distributed systems primitives (Saga patterns, outbox pattern, idempotency keys), and Go concurrency patterns (goroutines, contexts, connection pooling). 
 
 ## 1. Introduction: Deconstructing the Legacy Core
 
@@ -500,3 +502,24 @@ By implementing a Key-Check-Execute pattern. Clients provide an Idempotency-Key.
 Temporal requires a dedicated server cluster and provides immense throughput for long-running workflows, but has high operational overhead and history limits. Dapr Workflows embed a Durable Task Framework directly into the application sidecar, reducing gRPC overhead and cluster management, making it faster for simple, short-lived Sagas.
 
 {{< author-cta >}}
+---
+
+## Frequently Asked Questions
+
+{{< faq "Why is double-entry bookkeeping non-negotiable in banking microservices?" >}}
+Double-entry bookkeeping is the fundamental mathematical invariant of financial accounting: every financial transaction must consist of at least two balanced entries (a debit leg and a credit leg) that sum to zero. Single-entry ledger designs that simply increment or decrement an account balance column lack auditability and cannot guarantee consistency during distributed failure modes. With double-entry ledgers, if an unexpected system crash occurs, auditors can independently recompute account balances by summing immutable posting legs, ensuring zero undetected fund creation or balance loss.
+{{< /faq >}}
+
+{{< faq "How do orchestrated Sagas differ from choreographed Sagas in core banking?" >}}
+In a choreographed Saga, microservices emit and consume domain events without a central coordinator, which works well for simple workflows but becomes unmaintainable and opaque when transactions involve multi-step financial compensations. Orchestrated Sagas employ a dedicated state machine coordinator (using Dapr Workflow or Temporal) that explicitly commands each step, tracks state checkpoints, manages global timeout budgets, and triggers sequential compensations upon step failure, providing the deterministic auditability required by financial regulators.
+{{< /faq >}}
+
+{{< faq "How does the Transactional Outbox pattern guarantee zero message loss during crashes?" >}}
+In a standard microservice, updating a database and publishing an event to a message broker (like Apache Kafka) cannot be executed in a single atomic transaction. If the database commit succeeds but the pod crashes before publishing to Kafka, the event is permanently lost. The Transactional Outbox pattern writes the outgoing event record directly into an `outbox` database table within the same ACID transaction as the business entity update. A background change data capture (CDC) process or poller reads the outbox table and guarantees that events are published to Kafka at least once.
+{{< /faq >}}
+
+{{< faq "How do banking systems prevent race conditions on high-frequency merchant accounts?" >}}
+For high-frequency accounts (e.g., popular merchants receiving thousands of payments per second), row-level database locking causes severe transaction serialization and lock timeouts. Banking platforms mitigate this by decoupling transaction authorization from ledger settlement. Incoming transfers are recorded into temporary pending hold ledgers or partitioned into sub-balance buckets, which are periodically reconciled and posted to the primary balance ledger in bulk batch transactions, eliminating continuous row lock contention.
+{{< /faq >}}
+
+For deeper architectural patterns on structuring clean Go microservices, refer to our comprehensive blueprint on [modular Go microservices architecture](/posts/go-microservices/).

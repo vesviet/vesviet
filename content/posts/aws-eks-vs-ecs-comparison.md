@@ -20,7 +20,9 @@ canonicalURL: "https://tanhdev.com/posts/aws-eks-vs-ecs-comparison/"
 
 # AWS EKS vs ECS: Architecture, Real Costs & 2026 Guide
 
-**Answer-first:** When deciding between AWS ECS and EKS, choose ECS Fargate for speed and zero control plane costs if you lack Kubernetes expertise. Choose EKS if you require the CNCF ecosystem (ArgoCD, Dapr, KEDA) and have dedicated DevOps engineers to manage the $73/month control plane fee. Based on production telemetry managing Go microservices handling millions of monthly requests, this guide breaks down real-world TCO, Karpenter vs Fargate autoscaling latency, and operational trade-offs.
+> **Answer-First:** Choosing between AWS ECS and EKS depends on operational scale and ecosystem requirements. ECS eliminates control plane fees ($0/month) and management toil, making it ideal for standard web microservices. EKS justifies its $72/month control plane fee and operational complexity when workloads require Karpenter sub-45s node autoscaling, CNCF GitOps operators (ArgoCD), and multi-cloud portability.
+
+> **Prerequisite:** Readers should possess working knowledge of Docker containerization, AWS cloud networking (VPC subnets, route tables, security groups), and basic container orchestration concepts (task definitions, pod specs, autoscaling).
 
 | Feature | AWS ECS (Elastic Container Service) | AWS EKS (Elastic Kubernetes Service) |
 | :--- | :--- | :--- |

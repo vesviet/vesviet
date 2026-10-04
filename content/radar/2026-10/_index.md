@@ -56,6 +56,8 @@ quadrantChart
 
 | Radar Ring | Technology / Standard | Architectural Domain | Operational Metrics & Strategic Verdict |
 | :--- | :--- | :--- | :--- |
+| **ADOPT** | **Kratos v2.9 Clean Architecture & Wire DI** | Languages & Frameworks | Strict layer separation with zero DB leakage; compile-time constructor injection eliminates runtime reflection overhead; sustained 165K gRPC RPS with 2.4ms P99. |
+| **ADOPT** | **Dapr 1.15 Virtual Actors & Workflows** | Platforms & Distributed Systems | Turn-based single-threaded concurrency over Unix domain sockets; event-sourced Saga compensation without external orchestration clusters. |
 | **ADOPT** | **Cilium 1.17 Sidecarless Mesh** | Platforms & Infrastructure | In-kernel `sockops` socket splicing eliminates 15ms–35ms Envoy IPC tax; cuts P99 latency by 92.3% to 1.12ms under 100K RPS; reduces pod RAM footprint by 150MB+. |
 | **ADOPT** | **Tetragon 1.4 In-Kernel Sandboxing** | Platforms & Infrastructure | Intercepts `sys_enter_execve` directly within Linux 6.8 kernel; delivers synchronous `SIGKILL` termination in under 12 microseconds; eliminates prompt-injection RCE escapes. |
 | **ADOPT** | **SPIFFE/SPIRE Workload Identity** | Platforms & Infrastructure | Cryptographic X.509 SVID attestation for autonomous agents; provides zero-trust mTLS without long-lived API tokens or user intervention. |
@@ -69,6 +71,9 @@ quadrantChart
 ---
 
 ## 🗺️ Featured October 2026 Editions
+
+- **[Kratos v2.9 & Dapr 1.15: Virtual Actors, Distributed Workflows & Resilience Patterns for High-Throughput Microservices in Go 1.25](/radar/2026-10/radar-2026-10-05-kratos-dapr-microservices-go/)**  
+  *Architectural deep dive into high-throughput Go 1.25 microservices: Kratos v2.9 Clean Architecture with zero database leakage into biz domain logic, Google Wire compile-time dependency injection, Dapr 1.15 sidecar virtual actors with turn-based concurrency over Unix Domain Sockets (142K RPS, 2.95ms P99 latency), durable event-sourced workflow saga compensation, and 3 production outage post-mortems.*
 
 - **[Cilium 1.17 & Tetragon 1.4: In-Kernel eBPF Observability, Sidecarless Service Mesh & Zero-Trust Sandboxing for Autonomous AI Agents](/radar/2026-10/cilium-tetragon-ebpf-ai-agent-security/)**  
   *Architectural deep dive into securing autonomous AI agent swarms using Linux 6.8 eBPF primitives: In-kernel sockops socket splicing replacing userspace Envoy sidecars (1.12ms P99 latency at 100K RPS), Tetragon 1.4 TracingPolicy executing sub-12µs synchronous SIGKILL process termination on malicious tool calls, SPIFFE/SPIRE zero-trust egress gating, and 3 production failure post-mortems.*

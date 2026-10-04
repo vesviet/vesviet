@@ -3,7 +3,7 @@
 > **Epoch:** 2026-10-02T22:20:00+07:00  
 > **Authoring Swarm:** `@vesviet-team` (`@architect`, `@content-manager`, `@technical-writer`, `@qa-engineer`)  
 > **Purpose:** Ultra-compact, high-density architectural cheat-sheets and decision matrices designed for instant LLM/Agent retrieval without context window bloat.  
-> **Total Knowledge Cards:** 28 High-Signal Cards across 6 Core Domains.  
+> **Total Knowledge Cards:** 29 High-Signal Cards across 6 Core Domains.  
 
 ---
 
@@ -11,7 +11,7 @@
 - [1. E-Commerce Architecture](#1-e-commerce-architecture) (5 Cards)
 - [2. Banking & FinTech Architecture](#2-banking--fintech-architecture) (3 Cards)
 - [3. AI, SLM & Agentic Systems](#3-ai-slm--agentic-systems) (5 Cards)
-- [4. Distributed Systems & Architectural Showdowns](#4-distributed-systems--architectural-showdowns) (6 Cards)
+- [4. Distributed Systems & Architectural Showdowns](#4-distributed-systems--architectural-showdowns) (7 Cards)
 - [5. Ride-Hailing & Geospatial Architecture](#5-ride-hailing--geospatial-architecture) (4 Cards)
 - [6. Cloud Infrastructure & Resilience](#6-cloud-infrastructure--resilience) (5 Cards)
 
@@ -55,6 +55,7 @@
 | [`redis-state-vs-dapr-virtual-actors`](knowledge/distributed-systems/redis-state-vs-dapr-virtual-actors.md) | **State Management Showdown: Redis Distributed State vs. Dapr Virtual Actors** | `#redis`, `#dapr`, `#virtual-actors` | [`knowledge/distributed-systems/redis-state-vs-dapr-virtual-actors.md`](knowledge/distributed-systems/redis-state-vs-dapr-virtual-actors.md) |
 | [`modular-monolith-vs-microservices`](knowledge/distributed-systems/modular-monolith-vs-microservices.md) | **Architecture Paradigm Showdown: Go Modular Monolith vs. Microservices vs. SpinKube Wasm** | `#modular-monolith`, `#microservices`, `#spinkube` | [`knowledge/distributed-systems/modular-monolith-vs-microservices.md`](knowledge/distributed-systems/modular-monolith-vs-microservices.md) |
 | [`primary-key-uuidv7-snowflake-bigint`](knowledge/distributed-systems/primary-key-uuidv7-snowflake-bigint.md) | **Primary Key Showdown: UUIDv7 vs. Twitter Snowflake vs. BigInt Auto-Increment** | `#primary-key`, `#uuidv7`, `#snowflake` | [`knowledge/distributed-systems/primary-key-uuidv7-snowflake-bigint.md`](knowledge/distributed-systems/primary-key-uuidv7-snowflake-bigint.md) |
+| [`kratos-dapr-microservices-resilience`](knowledge/distributed-systems/kratos-dapr-microservices-resilience.md) | **Kratos v2.9 & Dapr 1.15: Virtual Actors, Distributed Workflows & Resilience Patterns in Go 1.25** | `#kratos`, `#dapr`, `#virtual-actors`, `#microservices` | [`knowledge/distributed-systems/kratos-dapr-microservices-resilience.md`](knowledge/distributed-systems/kratos-dapr-microservices-resilience.md) |
 
 ## 5. Ride-Hailing & Geospatial Architecture
 

@@ -9,6 +9,7 @@ description: "Production architecture guide to Go microservices: Clean Architect
 tags: ["Golang", "Microservices", "Architecture", "Dapr", "Kubernetes"]
 categories: ["Architecture", "Engineering"]
 author: "Lê Tuấn Anh"
+mermaid: true
 ShowToc: true
 TocOpen: true
 cover:
@@ -23,7 +24,9 @@ aliases:
 
 # Go Microservices Architecture: Production Guide
 
-**Answer-first:** Building production Go microservices requires Clean Architecture context separation, gRPC transport channels, central structured logging, metrics instrumentation, and resilient circuit breaking. 
+> **Answer-First:** Building production Go microservices requires Clean Architecture layer separation (api, biz, data, service), compile-time dependency injection with Wire, and dual gRPC/HTTP protocol multiplexing. By pairing Kratos v2.9 domain boundaries with OpenTelemetry distributed tracing and resilient connection pooling, engineering teams sustain over 160K RPS while completely eliminating database driver leakage and runtime reflection overhead.
+
+> **Prerequisite:** Readers should possess working knowledge of Go concurrency (goroutines, channels, sync primitives), Protobuf v3 schemas, gRPC transport concepts, and microservices architectural patterns (Clean Architecture, Dependency Injection). 
 
 - Tuning goroutine schedulers for latency-sensitive microservices.
 - Why standard HTTP/1.1 pools are a bottleneck compared to HTTP/2 and gRPC transport.
@@ -35,6 +38,40 @@ Go's goroutine model and simple deployment artifact can make it a strong fit for
 **What you will get from this guide:** Concrete architecture decisions with operational rationale, not generic tutorial content. Each performance-sensitive decision includes a measurement concern that should be tested against the service's payloads, dependencies, and SLOs.
 
 ---
+
+
+```mermaid
+flowchart TD
+    subgraph Ingress ["API & Transcoding Ingress"]
+        RESTClient["HTTP/1.1 REST Client"] -->|JSON / Port 8000| Transcoder["HTTP Transcoder (google.api.http)"]
+        GRPCClient["gRPC Client / Service Mesh"] -->|Protobuf / Port 9000| GRPCServer["Kratos gRPC Server"]
+    end
+
+    subgraph ServiceLayer ["internal/service (Adapter Layer)"]
+        Transcoder --> SvcAdapter["OrderService Adapter (DTO <-> Domain)"]
+        GRPCServer --> SvcAdapter
+    end
+
+    subgraph BizLayer ["internal/biz (Domain Business Rules)"]
+        SvcAdapter --> Usecase["OrderUsecase (Coordinates Rules & Invariants)"]
+        Usecase --> Entity["Order Entity (Invariants & Validation)"]
+        Usecase --> RepoPort["<<interface>> OrderRepo (Port)"]
+    end
+
+    subgraph DataLayer ["internal/data (Persistence & External Adapters)"]
+        RepoPort -.->|Implements| RepoAdapter["OrderRepo Adapter (GORM PostgreSQL)"]
+        RepoAdapter --> PostgreSQL[("PostgreSQL DB (InTx Transactions)")]
+        RepoAdapter --> RedisCache[("Redis Distributed Cache")]
+    end
+
+    classDef pure fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
+    classDef adapter fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
+    classDef storage fill:#e8f5e9,stroke:#388e3c,stroke-width:2px;
+    class Usecase,Entity pure;
+    class SvcAdapter,RepoAdapter adapter;
+    class PostgreSQL,RedisCache storage;
+```
+
 
 ## Why Go for Microservices?
 
@@ -108,6 +145,23 @@ What never happens: cross-database JOINs, shared schema, or shared ORM models.
 Read more: [Architecting 21-Service E-commerce with DDD](/posts/architecting-21-service-ecommerce-golang-ddd/)
 
 ---
+
+```mermaid
+flowchart LR
+    subgraph RequestCycle ["Kratos Deterministic Middleware Interceptor Chain"]
+        Req["Incoming Request (gRPC / HTTP)"] --> MW1["1. Recovery Middleware (Panic Guard)"]
+        MW1 --> MW2["2. Tracing Middleware (OpenTelemetry W3C)"]
+        MW2 --> MW3["3. Logging Middleware (Trace Correlation)"]
+        MW3 --> MW4["4. Metrics Middleware (Prometheus Latency)"]
+        MW4 --> MW5["5. Validate Middleware (PGV Constraints)"]
+        MW5 --> MW6["6. Auth Middleware (JWT Claims)"]
+        MW6 --> Handler["7. Core Domain Handler"]
+    end
+
+    classDef mw fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    class MW1,MW2,MW3,MW4,MW5,MW6 mw;
+```
+
 
 ## Inter-Service Communication — REST, gRPC, or Events?
 
@@ -576,29 +630,37 @@ The Strangler Fig pattern is the right migration path from a working monolith: i
 
 ## Frequently Asked Questions
 
-### Why use Go instead of Java or Node.js for microservices?
+{{< faq "Why use Go instead of Java or Node.js for microservices?" >}}
 Go provides the best combination of execution speed and operational simplicity for network-heavy microservices. Goroutines use ~2KB of memory compared to a Java thread's 1MB, enabling massive concurrency on modest hardware. Go compiles to a single static binary (~15MB) that starts in ~10ms with no JVM warmup. For teams that need predictable P99 latency and minimal container overhead, Go is consistently the right choice.
+{{< /faq >}}
 
-### How many microservices should an e-commerce platform have?
+{{< faq "How many microservices should an e-commerce platform have?" >}}
 There is no fixed number — services should map to DDD Bounded Contexts. A mature e-commerce platform typically settles at 15–30 services: Order, Catalog, Inventory, Payment, Notification, Pricing, Auth, Shipping, Fulfillment, and supporting services. Do not create micro-microservices that require coordinated deployments. If deploying Service A always requires deploying Service B, your boundary is wrong.
+{{< /faq >}}
 
-### What is the best way to handle distributed transactions in Go microservices?
+{{< faq "What is the best way to handle distributed transactions in Go microservices?" >}}
 Use the Saga pattern. For simple linear flows (2–4 steps), implement Choreography via Dapr Pub/Sub — services react to events and publish compensating events on failure. For complex branching flows (5+ steps, approval gates, multi-condition rollback), use Orchestration via Dapr Workflow, which provides durable, replay-safe orchestration with persisted state. Always pair with the Transactional Outbox pattern to prevent event loss.
+{{< /faq >}}
 
-### Should I use gRPC or REST for Go microservice communication?
+{{< faq "Should I use gRPC or REST for Go microservice communication?" >}}
 Use gRPC for internal synchronous service-to-service calls — it is 5–10x faster than JSON REST due to protobuf binary encoding, enforces strong API contracts via schema registry, and supports bidirectional streaming. Use REST for external-facing public APIs, webhooks, and integrations with third-party services that expect JSON. Use Dapr Pub/Sub for asynchronous event-driven communication between services.
+{{< /faq >}}
 
-### How do I prevent goroutine leaks in production Go services?
+{{< faq "How do I prevent goroutine leaks in production Go services?" >}}
 Implement three layers of defense against leaks. First, always pass `context.Context` with a deadline or timeout to every blocking call — uncontrolled blocking is the primary leak cause. Second, use `go.uber.org/goleak` in `TestMain` to catch leaks in CI before merging. Third, monitor `go_goroutines` in Prometheus and alert on sustained growth above 20% of baseline over one hour — this signals a leak in progress.
+{{< /faq >}}
 
-### What is the difference between Dapr and direct Kafka for Go microservices?
+{{< faq "What is the difference between Dapr and direct Kafka for Go microservices?" >}}
 Direct Kafka (`confluent-kafka-go`) gives maximum performance and control but requires writing retry logic, dead letter queue handling, backoff, and circuit breaking in every service. Dapr abstracts the broker and provides these resilience features out-of-the-box via a sidecar — you can switch from Redis to Kafka to AWS SQS by changing a YAML file. The Dapr sidecar adds ~1ms overhead per call, which is acceptable for most workloads. Use direct Kafka only when you need sub-millisecond throughput or specific Kafka features Dapr does not expose.
+{{< /faq >}}
 
-### How do I do distributed tracing in Go microservices?
+{{< faq "How do I do distributed tracing in Go microservices?" >}}
 Use the OpenTelemetry Go SDK (`go.opentelemetry.io/otel`). Add `otelgrpc` interceptors to all gRPC servers and clients, and `otelhttp` middleware to all HTTP handlers. Crucially, propagate W3C trace context across Kafka message boundaries by serializing the current span into message headers on publish and extracting it on consume. Export spans to an OpenTelemetry Collector and backend such as Grafana Tempo or Jaeger.
+{{< /faq >}}
 
-### When should I NOT use microservices?
+{{< faq "When should I NOT use microservices?" >}}
 Avoid microservices when your team is under 8 engineers, when you lack automated per-service CI/CD, when you have no distributed tracing in place, or when your operational team cannot manage Kubernetes. In these conditions, the operational overhead of microservices will consume more time than the architectural benefits return. Build a well-structured modular monolith first — extract services only when specific, evidence-based scaling or deployment requirements make decomposition necessary.
+{{< /faq >}}
 
 ---
 
@@ -617,3 +679,5 @@ Each of these goes deeper on a subsystem referenced above — from gRPC contract
 - **[GitOps at Scale: Kubernetes, ArgoCD & Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/)** — End-to-end GitOps pipeline for a 21-service Kubernetes deployment.
 - **[Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr/)** — Dapr pub/sub, saga orchestration, and transactional outbox patterns.
 - **[Goroutine Leak Detection in Production](/posts/goroutine-leak-detection-production-golang/)** — Detecting and fixing goroutine leaks in production Go services with pprof.
+---
+

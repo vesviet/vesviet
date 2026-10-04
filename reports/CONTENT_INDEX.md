@@ -1,6 +1,6 @@
 # Vesviet Content Index (tanhdev.com)
 
-> Snapshot date: 2026-10-04 · Branch `main` · Total content files: **379** (~1,053,611 words)
+> Snapshot date: 2026-10-05 · Branch `main` · Total content files: **380** (~1,075,000 words)
 
 > Site: Hugo + PaperMod, `en` default, canonical host `https://tanhdev.com/`
 > English flagship portfolio. Regenerate this index after every batch upgrade.
@@ -9,12 +9,12 @@
 
 | Section | Files | Notes |
 |---|---|---|
-| `content/posts/` | 66 | 66 with Answer-first (100.0%); 7 standalone posts upgraded to 2027 SOTA Masterclass with 100-round deep research dossiers (Batch of 5 upgraded 2026-10-04, ~212,386 words) |
+| `content/posts/` | 66 | 66 with Answer-first (100.0%); 12 standalone posts upgraded to 2027 SOTA Masterclass with 100-round deep research dossiers (Batch 6 upgraded 2026-10-05, ~235,000 words) |
 | `content/series/` | 251 | 25 series; 225 chapters + 25 series `_index.md` + 1 parent `_index.md` (~692,166 words); 100% Answer-first |
-| `content/radar/` | 39 | 31 radar editions (2026-04 → 2026-10) + 7 monthly `_index.md` + 1 parent `_index.md` (~123,900 words) |
+| `content/radar/` | 40 | 32 radar editions (2026-04 → 2026-10) + 7 monthly `_index.md` + 1 parent `_index.md` (~128,000 words) |
 | `content/categories/` | 16 | ai, architecture, backend, cloudflare, database, devops, e-commerce, engineering, fintech, golang, kubernetes, microservices, observability, payments, tech-radar + parent `_index.md` (~636 words) |
 | Root pages | 7 | `_index`, `about`, `hire`, `reading-map`, `legal-notice`, `terms-of-service`, `privacy-policy` (~7,281 words) |
-| `reports/` | 556 | 242 research JSON dossiers, 314 research MD docs + audits, series content indexes |
+| `reports/` | 569 | 245 research JSON dossiers, 246 research MD docs + audits, series content indexes, 29 knowledge cards |
 
 ## Anchor Pillar Hubs (link topology backbone)
 
@@ -188,4 +188,18 @@ Synchronized twins:
     - All posts satisfy size > 20.5 KB, body words >= 2,500, atomic Answer-first 48–62 words, prerequisite callout, >= 2 valid Mermaid diagrams, >= 3 `{{< faq >}}` shortcodes, production code realism, zero leaks to learn (vesviet), reciprocal English badge (learn).
     - Increases sitewide 2027 SOTA 7/7 gate certified standalone posts to 7 / 66 (10.6%) on vesviet and 7 / 86 (8.1%) on learn.
     - Verified 100% pass across all test suites (`learn/tests/verify_target_posts_sota.py`).
+12. **Comprehensive 2027 SOTA Masterclass Upgrade for Tech Radar Edition #2 & Batch 6 Standalone Posts (600 Deep Research Rounds) [RESOLVED ✅]:**
+    - Completed 6 deep research dossiers (6 JSON + 6 MD files in both repos, 100% Draft202012 `research-report.json` schema compliant with bitwise SHA-256 twin parity).
+    - Published Tech Radar October 2026 Edition #2: `radar-2026-10-05-kratos-dapr-microservices-go.md` on both `vesviet` (30.28 KB, 3,803w) and `learn` (33.79 KB, 4,879w), satisfying 100% 7 SOTA gates, and updated monthly digest hub `content/radar/2026-10/_index.md`.
+    - Upgraded all 5 standalone posts (Ranks 6–10) across both repos (10 markdown files) to 2027 SOTA Masterclass 7-gate standards:
+      1. `go-pprof-kubernetes-remote-profiling.md` (29.49 KB, 4,126w on EN; 34.60 KB, 5,119w on VI)
+      2. `banking-microservices-architecture.md` (24.95 KB, 3,071w on EN; 31.65 KB, 4,379w on VI)
+      3. `aws-eks-vs-ecs-comparison.md` (33.45 KB, 4,646w on EN; 20.98 KB, 2,905w on VI)
+      4. `osrm-shared-memory-kubernetes-live-traffic.md` (22.24 KB, 3,221w on EN; 25.79 KB, 3,587w on VI)
+      5. `go-microservices.md` (37.97 KB, 5,018w on EN; 53.53 KB, 7,718w on VI)
+    - All posts satisfy size > 20.5 KB, body words >= 2,500, atomic Answer-first 48–62 words, prerequisite callout, >= 2–3 valid Mermaid diagrams, >= 3–4 `{{< faq >}}` shortcodes, production Go 1.25+ / K8s / Kratos / Dapr code realism, zero outbound links to learn (vesviet), reciprocal English badge (learn).
+    - Distilled SOTA knowledge card `reports/knowledge/distributed-systems/kratos-dapr-microservices-resilience.md` (< 15 KB, 100% SHA-256 bitwise twin parity) and updated `KNOWLEDGE_INDEX.md` (29 cards total).
+    - Increases sitewide 2027 SOTA 7/7 gate certified standalone posts to 12 / 66 (18.2%) on vesviet and 12 / 86 (14.0%) on learn.
+    - Verified 100% pass across all test suites (`learn/tests/verify_target_posts_sota.py --scope all`, `verify_knowledge_base_sota.py`).
+
 
