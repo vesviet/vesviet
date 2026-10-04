@@ -30,7 +30,9 @@ canonicalURL: "https://tanhdev.com/posts/deploying-astro-on-cloudflare-full-stac
 
 # Deploy Astro on Cloudflare Pages: Full-Stack Edge Architecture
 
-**Answer-first:** Deploying Astro v5 on Cloudflare Pages and Workers achieves fast edge rendering, serverless API route execution, and global asset caching with zero origin server overhead. 
+> **Answer-first:** Deploying Astro v5 on Cloudflare Pages and Workers unifies static content delivery with serverless edge compute, eliminating origin servers and cold-start latency. By combining V8 isolate runtimes, serverless D1 SQLite databases, zero-egress R2 object storage, and Pagefind client-side search, this full-stack edge architecture achieves sub-30ms global TTFB, infinite horizontal scalability, and near-zero infrastructure hosting costs.
+
+> **Prerequisite:** Familiarity with modern frontend frameworks (Astro/React), DNS routing fundamentals, and serverless edge computing paradigms (Cloudflare Workers/Pages).
 
 Running a content site on a traditional VPS or a managed Node.js host is fine until it isn't. You pay for compute that sits idle 95% of the time, you manage SSL renewals, you worry about cold starts, and you watch your Lighthouse score suffer because your origin is in Singapore while your readers are in Frankfurt.
 
@@ -565,6 +567,8 @@ For a content site where performance, cost, and operational simplicity matter mo
 ---
 
 **Continue Reading:**
+- [Complete Architecture Reading Map](/reading-map/) — comprehensive sitewide roadmap connecting all 10 Anchor Pillar Hubs.
+- [Cloudflare D1 & Durable Objects: Realtime Cart Architecture](/posts/cloudflare-d1-durable-objects-realtime-cart/) — building stateful edge e-commerce with transactional consistency.
 - [Serverless E-Commerce: Cloudflare Workers & D1 Architecture](/posts/serverless-ecommerce-cloudflare-d1/) — a deeper look at building a complete e-commerce backend on the Cloudflare edge stack.
 - [LeaseInVietnam: AI-Powered Expat Rental Intelligence System](/posts/leaseinvietnam-ai-powered-expat-rental-intelligence-system/) — the real production site built on this exact Cloudflare + Astro architecture.
 - [GitOps at Scale: Kubernetes & ArgoCD for Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/) — when your stack grows beyond Cloudflare Workers, this is the deployment pipeline to graduate to.
@@ -573,11 +577,22 @@ For a content site where performance, cost, and operational simplicity matter mo
 
 ## Frequently Asked Questions
 
-### What is the cold start advantage of deploying Astro on Cloudflare Pages and Workers?
+{{< faq q="What is the cold start advantage of deploying Astro on Cloudflare Pages and Workers?" >}}
 Cloudflare Pages and Workers run on V8 isolates rather than traditional Node.js containers. This design eliminates container initialization overhead, resulting in sub-millisecond cold starts globally. It allows your edge-rendered Astro routes to execute as fast as static files directly from the nearest edge point.
+{{< /faq >}}
 
-### How do you handle database connections from Astro running on Cloudflare Workers?
+{{< faq q="How do you handle database connections from Astro running on Cloudflare Workers?" >}}
 Workers cannot establish direct, persistent TCP connections to traditional relational databases due to their short execution lifecycle. Instead, we use Cloudflare D1 (sqlite-based edge DB) directly via edge bindings, or connect to PostgreSQL/MySQL databases using HTTP-based connection pools like Neon Serverless Driver or Prisma Accelerate.
+{{< /faq >}}
 
-### Can you host full-text search directly on Cloudflare Pages without an external search engine?
+{{< faq q="Can you host full-text search directly on Cloudflare Pages without an external search engine?" >}}
 Yes, you can use Pagefind, an open-source static search library. Pagefind indexes server-rendered HTML output during the Astro build process and generates lightweight static search indexes that are deployed directly to Cloudflare Pages, requiring zero server backend or paid search API.
+{{< /faq >}}
+
+{{< faq q="Why choose Astro with Cloudflare Pages over Next.js on Vercel for content platforms?" >}}
+Astro uses Islands Architecture to ship zero client JavaScript by default, rendering 95% of markup as static HTML and achieving consistent 98–100 Google Lighthouse scores. Paired with Cloudflare Pages, bandwidth egress fees are completely free, whereas platforms like Vercel or Netlify incur steep bandwidth costs when traffic spikes.
+{{< /faq >}}
+
+{{< faq q="What are the cost and performance benefits of Cloudflare R2 image storage compared to AWS S3?" >}}
+Cloudflare R2 provides full S3 API compatibility while eliminating all egress bandwidth charges. For content-heavy publications serving high-resolution media across global edge networks, migrating from AWS S3 to Cloudflare R2 reduces monthly cloud storage bills by 60% to 85% with zero egress pricing penalties.
+{{< /faq >}}

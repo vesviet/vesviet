@@ -9,27 +9,27 @@
 
 | Section | Files | Notes |
 |---|---|---|
-| `content/posts/` | 66 | 66 with Answer-first (100.0%); 12 standalone posts upgraded to 2027 SOTA Masterclass with 100-round deep research dossiers (Batch 6 upgraded 2026-10-05, ~235,000 words) |
+| `content/posts/` | 66 | 66 with Answer-first (100.0%); 17 standalone posts upgraded to 2027 SOTA Masterclass with 100-round deep research dossiers (Batch 7 upgraded 2026-10-05, ~245,000 words); 10/10 Anchor Pillar Hubs SOTA certified |
 | `content/series/` | 251 | 25 series; 225 chapters + 25 series `_index.md` + 1 parent `_index.md` (~692,166 words); 100% Answer-first |
 | `content/radar/` | 40 | 32 radar editions (2026-04 → 2026-10) + 7 monthly `_index.md` + 1 parent `_index.md` (~128,000 words) |
 | `content/categories/` | 16 | ai, architecture, backend, cloudflare, database, devops, e-commerce, engineering, fintech, golang, kubernetes, microservices, observability, payments, tech-radar + parent `_index.md` (~636 words) |
 | Root pages | 7 | `_index`, `about`, `hire`, `reading-map`, `legal-notice`, `terms-of-service`, `privacy-policy` (~7,281 words) |
-| `reports/` | 569 | 245 research JSON dossiers, 246 research MD docs + audits, series content indexes, 29 knowledge cards |
+| `reports/` | 579 | 250 research JSON dossiers, 251 research MD docs + audits, series content indexes, 29 knowledge cards |
 
 ## Anchor Pillar Hubs (link topology backbone)
 
-The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` map to live files:
+The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` map to live files. With the completion of Batch 7, all 10 Anchor Pillar Hubs (10/10, 100.0%) are formally certified 2027 SOTA Masterclass:
 
-1. `posts/go-microservices.md` — Go & Microservices Architecture Hub
-2. `posts/architecting-21-service-ecommerce-golang-ddd.md` — System Design & E-Commerce Hub
-3. `posts/aws-eks-vs-ecs-comparison.md` — Cloud Native & Container Infrastructure Hub
-4. `posts/banking-microservices-architecture.md` — FinTech & Core Banking Hub
-5. `posts/cloudflare-d1-durable-objects-realtime-cart.md` — Edge Serverless & Cloudflare Hub
-6. `posts/deploying-astro-on-cloudflare-full-stack-edge-architecture.md` — AI Frontend & Edge Hub
-7. `posts/generative-ui-with-mcp-ai-native-frontend.md` — Generative UI & MCP Hub
-8. `posts/alipay-double-11-architecture-tps.md` — Distributed Systems & High Concurrency Hub
-9. `reading-map.md` — Sitewide Curated Learning Directory (6 pillars)
-10. `hire.md` — Commercial Consulting Conversion Hub
+1. `posts/go-microservices.md` — Go & Microservices Architecture Hub (SOTA Certified ✅)
+2. `posts/architecting-21-service-ecommerce-golang-ddd.md` — System Design & E-Commerce Hub (SOTA Certified ✅)
+3. `posts/aws-eks-vs-ecs-comparison.md` — Cloud Native & Container Infrastructure Hub (SOTA Certified ✅)
+4. `posts/banking-microservices-architecture.md` — FinTech & Core Banking Hub (SOTA Certified ✅)
+5. `posts/cloudflare-d1-durable-objects-realtime-cart.md` — Edge Serverless & Cloudflare Hub (SOTA Certified ✅)
+6. `posts/deploying-astro-on-cloudflare-full-stack-edge-architecture.md` — AI Frontend & Edge Hub (SOTA Certified ✅ - Batch 7)
+7. `posts/generative-ui-with-mcp-ai-native-frontend.md` — Generative UI & MCP Hub (SOTA Certified ✅ - Batch 7)
+8. `posts/alipay-double-11-architecture-tps.md` — Distributed Systems & High Concurrency Hub (SOTA Certified ✅)
+9. `reading-map.md` — Sitewide Curated Learning Directory (6 pillars) (SOTA Certified ✅)
+10. `hire.md` — Commercial Consulting Conversion Hub (SOTA Certified ✅)
 
 ## Series Index (25 series, 251 files, 225 chapters)
 
@@ -77,6 +77,8 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 
 | Date / Commit | Campaign |
 |---|---|
+| `2026-10-05` | **2027 SOTA Masterclass Batch 7 Standalone Posts Upgrade & Sitewide Anchor Pillar Hub Certification (500 rounds deep research)**: 5 high-priority standalone posts upgraded to 2027 SOTA Masterclass 7-gate standards (`mysql-scaling-sharding-tidb-architecture.md`, `graphhopper-distance-matrix-production-guide.md`, `temporal-saga-pattern-golang-distributed-transactions-guide.md`, `generative-ui-with-mcp-ai-native-frontend.md`, `deploying-astro-on-cloudflare-full-stack-edge-architecture.md`). Formally elevated Hub #6 (`deploying-astro-on-cloudflare-full-stack-edge-architecture`) and Hub #7 (`generative-ui-with-mcp-ai-native-frontend`) to certified SOTA, achieving 10/10 (100.0%) sitewide Anchor Pillar Hub certification. All posts exceed 20.5 KB and 2,500 body words, feature atomic Answer-first 48–62w, prerequisite callouts, >=2 valid Mermaid diagrams, >=3 {{< faq >}} shortcodes, production code realism, zero leaks to learn, and bidirectional anchor links. 5 100-round Draft 2020-12 research dossiers archived in `reports/archive/research-dossiers/` with 100% SHA-256 twin parity. |
+| `2026-10-05` | **2027 SOTA Masterclass Tech Radar Upgrade: Kratos v2.9 & Dapr 1.15 Microservices & Batch 6 Standalone Posts Upgrade (600 rounds deep research)**: Edition #2 twin publication and 5 standalone posts (Ranks 6–10) upgraded to 7/7 SOTA gates. |
 | `2026-10-04` | **2027 SOTA Masterclass Batch 5 Standalone Posts Upgrade (500 rounds deep research)**: 5 top-ranked posts upgraded to 2027 SOTA Masterclass 7-gate standards (`osrm-vs-graphhopper-architecture-comparison.md`, `zero-trust-service-mesh-security-spiffe-spire-istio-golang.md`, `alipay-double-11-architecture-tps.md`, `cloudflare-d1-durable-objects-realtime-cart.md`, `building-custom-golang-vector-database-engine-hnsw.md`). All posts >20.5 KB, >=2,500w, single-line Answer-first 48–62w, prerequisite callouts, >=2 valid Mermaid diagrams, >=3 {{< faq >}} shortcodes, production code realism, zero leaks to learn, anchor pillar links. 5 100-round Draft 2020-12 research dossiers archived in `reports/archive/research-dossiers/`. |
 | `2026-10-02` | **2027 SOTA Masterclass Tech Radar Upgrade: Cilium 1.17 & Tetragon 1.4 eBPF Observability & AI Agent Security (100 rounds deep research)**: Twin publication across `vesviet` and `learn` (1:1 twin parity, English flagship >1,800w, Vietnamese twin >2,200w, atomic Answer-first 50–60w, production Go 1.25+ cilium/ebpf loader / Tetragon TracingPolicy CRDs, 100-round Draft202012 JSON dossier with bitwise twin parity, zero links to learn on vesviet, reciprocal English badge on learn, October 2026 archive hubs and root indexes synchronized, 100% automated test harness passing). |
 | `2026-09-30` | **2027 SOTA Masterclass Tech Radar Upgrade: vLLM v1 Production Engine & Distributed KV Cache Optimization (100 rounds deep research)**: Twin publication across `vesviet` and `learn` (1:1 twin parity, English flagship >1,800w, Vietnamese twin >2,200w, atomic Answer-first 50–60w, production Go 1.25+ client / K8s manifests / Python v1 engine architecture, 100-round Draft202012 JSON dossier with bitwise twin parity, zero links to learn on vesviet, reciprocal English badge on learn, 100% automated test harness passing). |
@@ -137,7 +139,7 @@ Synchronized twins:
 | **Answer-first Block** | 66/66 posts (100.0%), 225/225 series chapters have Answer-first | 100% compliant with standard blockquote (48–62w) |
 | **Mermaid Diagrams** | 983 diagram blocks across 335 files (54 posts, 243 series chapters, 38 radar) | 100% valid syntax; 100% with `mermaid: true` frontmatter |
 | **Quantitative Depth** | 59/66 posts (89.4%), 140/225 series chapters (62%) contain benchmark tables | SOTA chapters maintain ≥3 verifiable data points per 500w |
-| **Masterclass Scale** | 48/66 posts (72.7%) >2,500w & >20KB; 7/66 posts (10.6%) 7/7 SOTA Certified; 199/221 series chapters (90.0%) | 100% of upgraded posts and series exceed masterclass bar |
+| **Masterclass Scale** | 53/66 posts (80.3%) >2,500w & >20KB; 17/66 posts (25.8%) 7/7 SOTA Certified; 10/10 (100.0%) Anchor Pillar Hubs SOTA Certified; 199/221 series chapters (90.0%) | 100% of upgraded posts and series exceed masterclass bar |
 | **Broken Internal Links** | 0 broken links (AST crawler verified over 129,456 internal links) | 100% route integrity |
 | **Reverse Authority Links** | 42 contextual links normalized to standardized badges | 0 contextual anchor leakage |
 
@@ -201,5 +203,18 @@ Synchronized twins:
     - Distilled SOTA knowledge card `reports/knowledge/distributed-systems/kratos-dapr-microservices-resilience.md` (< 15 KB, 100% SHA-256 bitwise twin parity) and updated `KNOWLEDGE_INDEX.md` (29 cards total).
     - Increases sitewide 2027 SOTA 7/7 gate certified standalone posts to 12 / 66 (18.2%) on vesviet and 12 / 86 (14.0%) on learn.
     - Verified 100% pass across all test suites (`learn/tests/verify_target_posts_sota.py --scope all`, `verify_knowledge_base_sota.py`).
+13. **Comprehensive 2027 SOTA Masterclass Upgrade for Batch 7 Standalone Posts & 10/10 Anchor Pillar Hub Elevation (500 Deep Research Rounds) [RESOLVED ✅]:**
+    - Completed 5 deep research dossiers (5 JSON + 5 MD files in both repos, 100% Draft 2020-12 `research-report.json` schema compliant with bitwise SHA-256 twin parity).
+    - Upgraded all 5 standalone posts (Ranks 11–15) across both repos (10 markdown files) to 2027 SOTA Masterclass 7-gate standards:
+      1. `mysql-scaling-sharding-tidb-architecture.md` (24.91 KB, 3,392w on EN; 27.34 KB, 3,998w on VI)
+      2. `graphhopper-distance-matrix-production-guide.md` (31.60 KB, 4,003w on EN; 37.75 KB, 5,254w on VI)
+      3. `temporal-saga-pattern-golang-distributed-transactions-guide.md` (45.55 KB, 5,118w on EN; 50.81 KB, 6,453w on VI)
+      4. `generative-ui-with-mcp-ai-native-frontend.md` [Hub #7] (22.54 KB, 2,602w on EN; 34.08 KB, 4,389w on VI)
+      5. `deploying-astro-on-cloudflare-full-stack-edge-architecture.md` [Hub #6] (27.68 KB, 3,799w on EN; 35.75 KB, 5,267w on VI)
+    - Formally elevated Hub #6 and Hub #7 to certified SOTA, achieving 10/10 (100.0%) sitewide Anchor Pillar Hub certification.
+    - Synchronized `learn/content/reading-map.md` with direct cluster links for all 5 standalone posts, eliminating link equity leakage.
+    - All posts satisfy size > 20.5 KB, body words >= 2,500, atomic Answer-first 48–62 words, prerequisite callout, >= 2 valid Mermaid diagrams, >= 3 `{{< faq >}}` shortcodes, production code realism, zero leaks to learn (vesviet), reciprocal English badge (learn).
+    - Increases sitewide 2027 SOTA 7/7 gate certified standalone posts to 17 / 66 (25.8%) on vesviet and 17 / 86 (19.8%) on learn.
+    - Expanded test harness `learn/tests/verify_target_posts_sota.py` with `BATCH7_POSTS` and evaluated all 17 post pairs (34 files) with 100% PASS under `--scope all`.
 
 

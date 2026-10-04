@@ -29,6 +29,8 @@ canonicalURL: "https://tanhdev.com/posts/mysql-scaling-sharding-tidb-architectur
 
 > **Answer-first:** TiDB is the leading open-source MySQL sharding alternative, replacing fragile application-level sharding logic (Vitess, GORM Sharding) with an auto-partitioned Distributed SQL architecture. By distributing 96MB Raft Regions across TiKV storage nodes and utilizing the Percolator distributed transaction protocol, TiDB delivers horizontal write scaling, cross-node ACID transactions, and zero-downtime online DDL while maintaining 100% MySQL wire compatibility.
 
+> **Prerequisite:** Basic knowledge of MySQL replication, sharding concepts, and Go database connectivity.
+
 Scaling a relational database is one of the most demanding challenges in system design. As applications grow from thousands to millions of active users, the database ceases to be a simple storage engine and becomes the primary bottleneck of the entire system architecture. In this technical guide, we explore the architectural progression of scaling MySQL—beginning with replication topologies, stepping through the complexities and operational hazards of manual database sharding (including proxy middleware like Vitess), and evaluating NewSQL alternatives, specifically the distributed architecture of TiDB.
 
 ---

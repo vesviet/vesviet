@@ -30,7 +30,9 @@ canonicalURL: "https://tanhdev.com/posts/generative-ui-with-mcp-ai-native-fronte
 
 # Generative UI with MCP: Architecting AI-Native Frontends
 
-**Answer-first:** Generative UI powered by Model Context Protocol (MCP) transitions AI web applications from plain-text chat streams to dynamic, schema-driven interactive interfaces. By combining MCP's standardized JSON-RPC `tools/call` primitives with client-side dynamic component registries, runtime Zod schema validation, and Server-Sent Events (SSE), backend AI agents orchestrate native React components with sub-50ms render latency while preserving strict frontend security boundaries.
+> **Answer-first:** Generative UI powered by Model Context Protocol (MCP) transitions AI web applications from plain-text chat streams to dynamic, schema-driven interactive interfaces. By combining MCP's standardized JSON-RPC tools/call primitives with client-side dynamic component registries, runtime Zod schema validation, and Server-Sent Events (SSE), backend AI agents orchestrate native React components with sub-50ms render latency while preserving strict frontend security boundaries.
+
+> **Prerequisite:** Experience with modern React/Next.js architectures, JSON-RPC 2.0 protocols, and foundational understanding of LLM function calling and streaming APIs.
 
 ```mermaid
 sequenceDiagram
@@ -564,6 +566,8 @@ Because MCP tools stream compact JSON descriptors (typically 1–2 KB) rather th
 
 ## Related Reading
 
+- [Go Microservices Production Architecture](/posts/go-microservices/) — foundational microservices design patterns connecting backend services with AI agents.
+- [Complete Architecture Reading Map](/reading-map/) — explore the 10 Sitewide Anchor Pillar Hubs and technical roadmaps.
 - [AI-Native Frontend in 2028: 10 Architecture Predictions](/posts/ai-native-frontend-architecture-predictions-2028/) — exploring autonomous design systems and real-time edge composition.
 - [Build Production Go MCP Servers](/posts/go-mcp-server-development-production-guide/) — deep dive into implementing MCP protocols with concurrency in Go.
 - [Production AI APIs: OAuth 2.1 & Rate Limiting](/posts/production-ai-apis-oauth-versioning-meta-predictions/) — protecting AI agent gateways against traffic abuse.

@@ -23,7 +23,9 @@ cover:
 
 # Distributed Transactions in Go with Temporal Saga Pattern
 
-**Answer-first:** Implementing distributed transactions in Go with Temporal Saga orchestrates multi-service workflows, manages deterministic state replays, and executes compensating actions upon failure. 
+> **Answer-first:** Implementing distributed transactions in Go with the Temporal Saga pattern orchestrates multi-service workflows via code, eliminating blocking Two-Phase Commit locks. By pairing deterministic event-sourced execution with dynamic backward compensations, PostgreSQL transaction outbox deduplication, and exponential activity retries, Temporal guarantees eventual consistency and financial invariants across autonomous microservices during unexpected network partitions.
+
+> **Prerequisite:** Production experience with Go concurrency primitives, distributed microservices architecture, and foundational understanding of ACID transaction isolation levels.
 
 Distributed transactions in Go microservices are commonly implemented using the Temporal Saga pattern: replacing blocking Two-Phase Commit (2PC) locks with imperative workflow orchestration, dynamic reverse compensations (`saga.AddCompensation`), and PostgreSQL idempotency tables to keep financial event consistency during network partitions. This guide covers:
 
@@ -865,21 +867,21 @@ func GoodWorkflow(ctx workflow.Context) error {
 
 ## Frequently Asked Questions
 
-### How do Saga pattern compensation workflows guarantee financial consistency during partial transaction failures in Go?
-
+{{< faq q="How do Saga pattern compensation workflows guarantee financial consistency during partial transaction failures in Go?" >}}
 Saga pattern compensation workflows track mutating local transactions sequentially and register inverse compensating operations (such as `saga.AddCompensation`) immediately after each successful mutating step. If a downstream step fails (such as an account credit rejection or ledger lock failure), the Temporal workflow engine unwinds the transaction by executing registered compensations in strict reverse order. This ensures that all previously debited or reserved funds are refunded, restoring multi-database balances to a consistent financial state without leaving stranded unallocated money.
+{{< /faq >}}
 
-### How does the Temporal Go SDK handle activity retry policies, heartbeats, and transient network errors?
-
+{{< faq q="How does the Temporal Go SDK handle activity retry policies, heartbeats, and transient network errors?" >}}
 The Temporal Go SDK configures activity retry behavior using `temporal.RetryPolicy` parameters, including initial backoff intervals, exponential backoff coefficients, maximum retry attempts, and explicit non-retryable application error lists. For long-running or distributed activities, worker nodes issue periodic heartbeats using `activity.RecordHeartbeat(ctx, details)`. If a network partition or worker crash interrupts heartbeating beyond `HeartbeatTimeout`, the Temporal cluster marks the activity execution stale and reschedules it onto an operational worker node automatically.
+{{< /faq >}}
 
-### How is idempotency enforced in distributed transactions to prevent double-debiting during activity retries?
-
+{{< faq q="How is idempotency enforced in distributed transactions to prevent double-debiting during activity retries?" >}}
 Idempotency is enforced by pairing unique transaction request tokens with database-level atomic lock records using an `idempotency_keys` table with `SELECT FOR UPDATE`. Before executing balance mutations inside an activity, the Go worker queries the idempotency table for the unique key. If the record already exists with status `COMPLETED`, the activity skips the database update and returns the cached result payload directly; if novel, it inserts a `PROCESSING` status, executes the SQL transaction, updates the status to `COMPLETED`, and commits atomically.
+{{< /faq >}}
 
-### How does event-driven transaction recovery operate when a Temporal worker pod crashes mid-execution?
-
+{{< faq q="How does event-driven transaction recovery operate when a Temporal worker pod crashes mid-execution?" >}}
 Event-driven transaction recovery relies on Temporal's append-only Event History log, which records every workflow state transition and activity completion in the Temporal cluster storage layer. When a worker pod crashes mid-execution, the Temporal cluster detects the lost connection and assigns the pending workflow task queue item to another worker node in the cluster. The new worker replays the event history, feeding historical activity outputs from the history log instead of re-executing completed activities, resuming execution transparently from the exact point of failure.
+{{< /faq >}}
 
 ---
 

@@ -5,6 +5,7 @@ author: "Lê Tuấn Anh"
 date: "2026-06-11T20:00:00+07:00"
 lastmod: "2026-08-23T08:30:00+07:00"
 draft: false
+mermaid: true
 description: "Self-host GraphHopper distance matrix with OSM data: /matrix API guide, 1000x1000 routing benchmarks, H3 Redis caching, and 99% cost savings."
 categories:
   - "Architecture"
@@ -32,6 +33,8 @@ canonicalURL: "https://tanhdev.com/posts/graphhopper-distance-matrix-production-
 
 > **Answer-first:** GraphHopper distance matrix is a high-performance open-source routing engine endpoint that calculates travel times and road distances for N×M origin-destination coordinate pairs using OpenStreetMap data. By utilizing Contraction Hierarchies and memory-mapped graphs, self-hosted GraphHopper evaluates a 100×100 matrix in under 52ms, providing 99.7% cost savings over commercial APIs with runtime vehicle customization.
 
+> **Prerequisite:** Familiarity with Docker containerization, REST API design, and OpenStreetMap (OSM) routing primitives.
+
 ## How to Call the GraphHopper Matrix API (/matrix Endpoint)
 
 Running GraphHopper distance matrix in production requires configuring Docker deployment, the `/matrix` API endpoint, Custom Models for vehicle-specific routing (truck/motorcycle), H3-based Redis caching, and evaluating performance tradeoffs against OSRM, Valhalla, and Google Maps (for an in-depth analysis of routing engine selection, see our [OSRM vs GraphHopper Architecture Comparison](/posts/osrm-vs-graphhopper-architecture-comparison/)).
@@ -39,6 +42,19 @@ Running GraphHopper distance matrix in production requires configuring Docker de
 The `/matrix` endpoint evaluates element-by-element matrix calculations between sets of origin and destination coordinates. When issuing requests, callers specify input point arrays along with requested output arrays such as `times` (travel duration in seconds) and `distances` (road distance in meters). Depending on graph preparation, GraphHopper can evaluate matrix queries using speed-optimized Contraction Hierarchies (CH) or flexible Landmark-based (LM) routing models.
 
 In high-volume logistics applications, structuring matrix queries efficiently minimizes CPU overhead on the GraphHopper cluster. For example, batching coordinate lookups into unified N×M matrix requests prevents network round-trip overhead compared to firing individual point-to-point routing calls.
+
+```mermaid
+flowchart TD
+    Client["Client Request (N origins × M destinations)"] --> Gateway["API Gateway / Dispatch Service"]
+    Gateway --> CacheCheck{"H3 Redis Cache Hit?"}
+    CacheCheck -- "All Pairs Cached" --> CacheReturn["Return Cached Matrix (<5ms)"]
+    CacheCheck -- "Cache Miss / Partial" --> GHCluster["GraphHopper Matrix Cluster"]
+    GHCluster --> CHWorker["CH / LM Routing Engine"]
+    CHWorker --> OSMGraph["OSM Memory-Mapped Graph"]
+    CHWorker --> ResultBuilder["Cost Matrix (Times & Distances)"]
+    ResultBuilder --> RedisStore["Write Missing Pairs to Redis"]
+    ResultBuilder --> ClientResponse["Return 200 OK Response"]
+```
 
 ---
 
@@ -393,7 +409,30 @@ public class EmbeddedGraphHopperMatrix {
 
 ## H3-Based Redis Caching for Production Scale
 
-Road networks change rarely. Caching distance matrix results by H3 cell pair reduces GraphHopper calls substantially in steady-state production. The class below implements an H3 spatial key generator and Redis lookup pipeline for Python.
+Road networks change rarely. Caching distance matrix results by H3 cell pair reduces GraphHopper calls substantially in steady-state production. The sequence below illustrates cache lookup and backend calculation before looking at the implementation:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant App as Logistics Dispatch Service
+    participant Cache as Redis Spatial Cache (H3)
+    participant GH as GraphHopper Instance (/matrix)
+    participant OSM as OSM Road Network Graph
+
+    App->>Cache: MGET h3_pair(origin_h3, dest_h3)
+    alt Full Cache Hit
+        Cache-->>App: Return precomputed times & distances
+    else Partial / Cache Miss
+        Cache-->>App: Return missing OD coordinate pairs
+        App->>GH: POST /matrix {from_points, to_points, out_arrays}
+        GH->>OSM: Evaluate 1-to-N Dijkstra / Contraction Hierarchies
+        OSM-->>GH: Raw edge weights & matrix cells
+        GH-->>App: 200 OK JSON (times, distances, weights)
+        App->>Cache: MSET h3_pair results with TTL (86400s)
+    end
+```
+
+The class below implements an H3 spatial key generator and Redis lookup pipeline for Python.
 
 ```python
 import h3
