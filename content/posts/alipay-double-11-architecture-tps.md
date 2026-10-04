@@ -32,7 +32,9 @@ canonicalURL: "https://tanhdev.com/posts/alipay-double-11-architecture-tps/"
 
 # Alipay Double 11: 544,000 TPS Architecture Explained
 
-**Answer-first:** Alipay sustains 544,000 payment transactions per second (TPS) and 61 million database queries per second (QPS) using a cell-based **Local Deployment Center (LDC)** unitization topology, OceanBase's **LSM-tree Paxos consensus engine**, **sub-account sharding for hot-merchant ledgers**, and **RocketMQ 2-phase transactional messaging**.
+> **Answer-first:** Alipay sustains 544,000 payment TPS and 61 million database QPS using cell-based Local Deployment Center (LDC) unitization, OceanBase LSM-tree Paxos consensus engine, memory-first hot-merchant account sharding, and RocketMQ two-phase transactional messaging. This architecture achieves zero transaction loss with RPO=0 and automated sub-minute failover RTO<30s across distributed multi-datacenter regions during peak Double 11 shopping spikes.
+
+> **Prerequisite:** In-depth knowledge of distributed consensus protocols (Multi-Paxos, Raft), database storage engines (LSM-trees vs B-Trees), two-phase commit (2PC) messaging mechanics, and cell-based unitization routing topologies.
 
 ```mermaid
 graph TD
@@ -221,7 +223,8 @@ graph TD
 The Go implementation below demonstrates the high-concurrency sub-account allocator with atomic credit routing and periodic reconciliation:
 
 ```go
-// File: internal/ledger/hotaccount/sharding.go
+//go:build go1.25
+// Package hotaccount implements high-concurrency sub-account sharding to eliminate row-lock contention.
 package hotaccount
 
 import (

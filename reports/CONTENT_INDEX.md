@@ -1,6 +1,6 @@
 # Vesviet Content Index (tanhdev.com)
 
-> Snapshot date: 2026-10-02 · Branch `main` · Total content files: **379** (~1,046,730 words)
+> Snapshot date: 2026-10-04 · Branch `main` · Total content files: **379** (~1,053,611 words)
 
 > Site: Hugo + PaperMod, `en` default, canonical host `https://tanhdev.com/`
 > English flagship portfolio. Regenerate this index after every batch upgrade.
@@ -9,12 +9,12 @@
 
 | Section | Files | Notes |
 |---|---|---|
-| `content/posts/` | 66 | 66 with Answer-first (100.0%); 5 standalone posts upgraded to 2027 SOTA Masterclass with 100-round deep research dossiers (~207,231 words) |
+| `content/posts/` | 66 | 66 with Answer-first (100.0%); 7 standalone posts upgraded to 2027 SOTA Masterclass with 100-round deep research dossiers (Batch of 5 upgraded 2026-10-04, ~212,386 words) |
 | `content/series/` | 251 | 25 series; 225 chapters + 25 series `_index.md` + 1 parent `_index.md` (~692,166 words); 100% Answer-first |
 | `content/radar/` | 39 | 31 radar editions (2026-04 → 2026-10) + 7 monthly `_index.md` + 1 parent `_index.md` (~123,900 words) |
 | `content/categories/` | 16 | ai, architecture, backend, cloudflare, database, devops, e-commerce, engineering, fintech, golang, kubernetes, microservices, observability, payments, tech-radar + parent `_index.md` (~636 words) |
 | Root pages | 7 | `_index`, `about`, `hire`, `reading-map`, `legal-notice`, `terms-of-service`, `privacy-policy` (~7,281 words) |
-| `reports/` | 461 | 211 research JSON dossiers, 248 research MD docs + audits, series content indexes |
+| `reports/` | 556 | 242 research JSON dossiers, 314 research MD docs + audits, series content indexes |
 
 ## Anchor Pillar Hubs (link topology backbone)
 
@@ -77,6 +77,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 
 | Date / Commit | Campaign |
 |---|---|
+| `2026-10-04` | **2027 SOTA Masterclass Batch 5 Standalone Posts Upgrade (500 rounds deep research)**: 5 top-ranked posts upgraded to 2027 SOTA Masterclass 7-gate standards (`osrm-vs-graphhopper-architecture-comparison.md`, `zero-trust-service-mesh-security-spiffe-spire-istio-golang.md`, `alipay-double-11-architecture-tps.md`, `cloudflare-d1-durable-objects-realtime-cart.md`, `building-custom-golang-vector-database-engine-hnsw.md`). All posts >20.5 KB, >=2,500w, single-line Answer-first 48–62w, prerequisite callouts, >=2 valid Mermaid diagrams, >=3 {{< faq >}} shortcodes, production code realism, zero leaks to learn, anchor pillar links. 5 100-round Draft 2020-12 research dossiers archived in `reports/archive/research-dossiers/`. |
 | `2026-10-02` | **2027 SOTA Masterclass Tech Radar Upgrade: Cilium 1.17 & Tetragon 1.4 eBPF Observability & AI Agent Security (100 rounds deep research)**: Twin publication across `vesviet` and `learn` (1:1 twin parity, English flagship >1,800w, Vietnamese twin >2,200w, atomic Answer-first 50–60w, production Go 1.25+ cilium/ebpf loader / Tetragon TracingPolicy CRDs, 100-round Draft202012 JSON dossier with bitwise twin parity, zero links to learn on vesviet, reciprocal English badge on learn, October 2026 archive hubs and root indexes synchronized, 100% automated test harness passing). |
 | `2026-09-30` | **2027 SOTA Masterclass Tech Radar Upgrade: vLLM v1 Production Engine & Distributed KV Cache Optimization (100 rounds deep research)**: Twin publication across `vesviet` and `learn` (1:1 twin parity, English flagship >1,800w, Vietnamese twin >2,200w, atomic Answer-first 50–60w, production Go 1.25+ client / K8s manifests / Python v1 engine architecture, 100-round Draft202012 JSON dossier with bitwise twin parity, zero links to learn on vesviet, reciprocal English badge on learn, 100% automated test harness passing). |
 | `2026-09-29` | **2027 SOTA Masterclass Upgrade: Sprint 4 (`ai-driven-playbook` [14 chapters] & `core-banking-developer` [9 chapters], 2,300 rounds)**: Complete 7-gate upgrade across `vesviet` and `learn` (1:1 twin parity, all 46 files > 20.5 KB and >= 2,500w, atomic Answer-first 50–60w on EN / 48–62w on VI, prerequisite callouts, 92+ Mermaid diagrams, 184+ FAQs, production Go 1.25+/Python 3.12+/TypeScript implementations, 23 Draft202012 JSON dossiers with bitwise twin parity, zero links to learn on vesviet, 100% automated test harness passing). Snapshot date: 2026-09-29 archived for Sprint 3 baseline. |
@@ -106,7 +107,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 
 Each flagship topic exists as a Vietnamese twin on `learn` (canonical there for notes) and an expanded English masterclass on `vesviet` (authority site).
 Synchronized twins:
-- 5 Standalone Posts: AI Swarm & LiteLLM, 15-Second Customer Intelligence, MySQL Horizontal Scaling, Go pprof Internals, Urban Canyon GPS Map-Matching (500 rounds deep research)
+- 7 Standalone Posts: AI Swarm & LiteLLM, 15-Second Customer Intelligence, MySQL Horizontal Scaling, Go pprof Internals, Urban Canyon GPS Map-Matching; plus Batch 2026-10-04: OSRM vs GraphHopper, Zero-Trust SPIFFE/SPIRE, Alipay Double 11, Cloudflare D1 Realtime Cart, Custom Golang Vector DB HNSW (1,000+ rounds deep research across standalone posts)
 - `architectural-tradeoffs-showdowns` (10 chapters)
 - `ride-hailing-realtime-architecture` (7 chapters)
 - `routing-geospatial-architecture` (9 chapters + hub)
@@ -133,10 +134,10 @@ Synchronized twins:
 
 | Gate | Metric | Status |
 |---|---|---|
-| **Answer-first Block** | 66/66 posts (100.0%), 225/225 series chapters have Answer-first | 100% compliant with standard blockquote (<=65w) |
-| **Mermaid Diagrams** | 744 diagram blocks across 303 files (52 posts, 195 series chapters, 27 radar) | 100% valid syntax; 100% with `mermaid: true` frontmatter |
-| **Quantitative Depth** | 57/66 posts (86.4%), 140/225 series chapters (62%) contain benchmark tables | SOTA chapters maintain ≥3 verifiable data points per 500w |
-| **Masterclass Scale** | 49/66 posts (74.2%), 143/225 series chapters (63.6%) exceed >2,500w and >20KB | 100% of upgraded posts and series exceed masterclass bar |
+| **Answer-first Block** | 66/66 posts (100.0%), 225/225 series chapters have Answer-first | 100% compliant with standard blockquote (48–62w) |
+| **Mermaid Diagrams** | 983 diagram blocks across 335 files (54 posts, 243 series chapters, 38 radar) | 100% valid syntax; 100% with `mermaid: true` frontmatter |
+| **Quantitative Depth** | 59/66 posts (89.4%), 140/225 series chapters (62%) contain benchmark tables | SOTA chapters maintain ≥3 verifiable data points per 500w |
+| **Masterclass Scale** | 48/66 posts (72.7%) >2,500w & >20KB; 7/66 posts (10.6%) 7/7 SOTA Certified; 199/221 series chapters (90.0%) | 100% of upgraded posts and series exceed masterclass bar |
 | **Broken Internal Links** | 0 broken links (AST crawler verified over 129,456 internal links) | 100% route integrity |
 | **Reverse Authority Links** | 42 contextual links normalized to standardized badges | 0 contextual anchor leakage |
 
@@ -176,4 +177,15 @@ Synchronized twins:
     - Completed 22 deep research dossiers (22 JSON + 22 MD files in both repos, 100% Draft202012 `research-report.json` schema compliant with bitwise SHA-256 twin parity).
     - Upgraded all 22 chapters across both repos (44 markdown files) to 2027 SOTA Masterclass 7-gate standards: all sizes > 20.5 KB, body words >= 2,500w, single-line Answer-first 50–60w, prerequisite callouts, >= 2 Mermaid diagrams/ch, 4 `{{< faq >}}` shortcodes/ch, production Python 3.12+/Go 1.25+/PySpark/Flink/vLLM/OTel/Tree-sitter/Semgrep/PromptOps/MCP.
     - Enforced 0 links to `learn.tanhdev.com` on `vesviet`, 10 Anchor Pillar links on `vesviet`, and canonical reciprocal badges `[📖 Bản tiếng Anh (English Edition)]` on `learn`. Master test suite `tests/verify_sprint3_master.py` passed 100%.
+11. **Comprehensive 2027 SOTA Masterclass Upgrade for Batch 5 Standalone Posts (500 Deep Research Rounds) [RESOLVED ✅]:**
+    - Completed 5 deep research dossiers (5 JSON + 5 MD files in both repos, 100% Draft202012 `research-report.json` schema compliant with bitwise SHA-256 twin parity).
+    - Upgraded all 5 standalone posts across both repos (10 markdown files) to 2027 SOTA Masterclass 7-gate standards:
+      1. `osrm-vs-graphhopper-architecture-comparison.md` (28.73 KB, 3,677w on EN; 33.80 KB, 4,791w on VI)
+      2. `zero-trust-service-mesh-security-spiffe-spire-istio-golang.md` (35.28 KB, 4,524w on EN; 39.53 KB, 5,454w on VI)
+      3. `alipay-double-11-architecture-tps.md` (20.65 KB, 2,644w on EN; 37.56 KB, 5,800w on VI)
+      4. `cloudflare-d1-durable-objects-realtime-cart.md` (33.04 KB, 3,982w on EN; 35.63 KB, 4,763w on VI)
+      5. `building-custom-golang-vector-database-engine-hnsw.md` (51.93 KB, 6,900w on EN; 48.54 KB, 6,750w on VI)
+    - All posts satisfy size > 20.5 KB, body words >= 2,500, atomic Answer-first 48–62 words, prerequisite callout, >= 2 valid Mermaid diagrams, >= 3 `{{< faq >}}` shortcodes, production code realism, zero leaks to learn (vesviet), reciprocal English badge (learn).
+    - Increases sitewide 2027 SOTA 7/7 gate certified standalone posts to 7 / 66 (10.6%) on vesviet and 7 / 86 (8.1%) on learn.
+    - Verified 100% pass across all test suites (`learn/tests/verify_target_posts_sota.py`).
 
