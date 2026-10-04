@@ -14,7 +14,7 @@
 | `content/radar/` | 40 | 32 radar editions (2026-04 → 2026-10) + 7 monthly `_index.md` + 1 parent `_index.md` (~128,000 words) |
 | `content/categories/` | 16 | ai, architecture, backend, cloudflare, database, devops, e-commerce, engineering, fintech, golang, kubernetes, microservices, observability, payments, tech-radar + parent `_index.md` (~636 words) |
 | Root pages | 7 | `_index`, `about`, `hire`, `reading-map`, `legal-notice`, `terms-of-service`, `privacy-policy` (~7,281 words) |
-| `reports/` | 579 | 250 research JSON dossiers, 251 research MD docs + audits, series content indexes, 29 knowledge cards |
+| `reports/` | 583 | 250 research JSON dossiers, 251 research MD docs + audits, series content indexes, 33 knowledge cards |
 
 ## Anchor Pillar Hubs (link topology backbone)
 

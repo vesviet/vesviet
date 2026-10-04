@@ -3,7 +3,7 @@
 > **Domain:** `vesviet` — English Flagship (`https://tanhdev.com/`)  
 > **Snapshot Date:** 2026-10-04  
 > **Audited Files:** 66 Standalone Posts  
-> **Overall SOTA 2027 Compliance (7/7 Gates):** **7/66 (10.6%)**  
+> **Overall SOTA 2027 Compliance (7/7 Gates):** **17/66 (25.8%)**  
 > **Archive Reference:** Supersedes `reports/archive/historical-audits/posts-corpus-audit-2026-10-01.md`  
 
 ---
@@ -14,24 +14,24 @@ Comprehensive automated evaluation of all 66 standalone technical posts in `vesv
 
 | Gate | Standard & Description | Passing Files | Pass Rate | Status / Recommended Action |
 | :--- | :--- | :---: | :---: | :--- |
-| **Gate 1** | Depth & Volume: Size > 20.5 KB (20,992 B) & Body Words $\ge 2,500$ | 48 / 66 | 72.7% | Needs depth expansion for thin legacy posts |
-| **Gate 2** | Answer-First: Single-line `> **Answer-first:**` (48–62 words) | 22 / 66 | 33.3% | Requires word tuning / injection to meet 48-62w boundary |
-| **Gate 3** | Prerequisite Callout: `> **Prerequisite:**` | 7 / 66 | 10.6% | Deficit: 7 SOTA posts have prerequisite blocks; remaining 59 require injection |
-| **Gate 4** | Visual Architecture: `mermaid: true` & $\ge 2$ valid Mermaid diagrams | 34 / 66 | 51.5% | Inject valid architectural flowcharts / sequence diagrams |
-| **Gate 5** | Structured FAQ: $\ge 3$ `{{< faq >}}` schema shortcodes | 31 / 66 | 47.0% | Inject Schema.org FAQ shortcodes for rich search snippets |
+| **Gate 1** | Depth & Volume: Size > 20.5 KB (20,992 B) & Body Words $\ge 2,500$ | 49 / 66 | 74.2% | Needs depth expansion for thin legacy posts |
+| **Gate 2** | Answer-First: Single-line `> **Answer-first:**` (48–62 words) | 29 / 66 | 43.9% | Requires word tuning / injection to meet 48-62w boundary |
+| **Gate 3** | Prerequisite Callout: `> **Prerequisite:**` | 17 / 66 | 25.8% | Deficit: 17 SOTA posts have prerequisite blocks; remaining 49 require injection |
+| **Gate 4** | Visual Architecture: `mermaid: true` & $\ge 2$ valid Mermaid diagrams | 38 / 66 | 57.6% | Inject valid architectural flowcharts / sequence diagrams |
+| **Gate 5** | Structured FAQ: $\ge 3$ `{{< faq >}}` schema shortcodes | 36 / 66 | 54.5% | Inject Schema.org FAQ shortcodes for rich search snippets |
 | **Gate 6** | Production Code Realism: $\ge 1$ code block, 0 pseudocode/mock markers | 63 / 66 | 95.5% | Review and replace pseudo-code with version-pinned code |
-| **Gate 7** | Authority & Link Topology: 0 leaks to learn & $\ge 1$ Anchor Pillar link | 39 / 66 | 59.1% | Inject Anchor Pillar backlinks / reciprocal upstream badges |
+| **Gate 7** | Authority & Link Topology: 0 leaks to learn & $\ge 1$ Anchor Pillar link | 46 / 66 | 69.7% | Inject Anchor Pillar backlinks / reciprocal upstream badges |
 
 ### SOTA 2027 Score Distribution
 
 | Score (Passing Gates) | Count | Percentage | Classification |
 | :---: | :---: | :---: | :--- |
-| **7/7** | 7 | 10.6% | **2027 SOTA Certified** (Fully Compliant) |
-| **6/7** | 2 | 3.0% | Near SOTA (Deficient in 1 gate, typically Prerequisite) |
-| **5/7** | 14 | 21.2% | Substantial Draft (Missing Prerequisite + AF or Mermaids) |
-| **4/7** | 7 | 10.6% | Intermediate (Missing FAQs, Prerequisite, and Visuals) |
-| **3/7** | 18 | 27.3% | Basic Article (Missing multiple technical gates) |
-| **2/7** | 13 | 19.7% | Legacy Stub / Thin Post |
+| **7/7** | 17 | 25.8% | **2027 SOTA Certified** (Fully Compliant) |
+| **6/7** | 1 | 1.5% | Near SOTA (Deficient in 1 gate, typically Prerequisite) |
+| **5/7** | 12 | 18.2% | Substantial Draft (Missing Prerequisite + AF or Mermaids) |
+| **4/7** | 5 | 7.6% | Intermediate (Missing FAQs, Prerequisite, and Visuals) |
+| **3/7** | 16 | 24.2% | Basic Article (Missing multiple technical gates) |
+| **2/7** | 10 | 15.2% | Legacy Stub / Thin Post |
 | **1/7** | 5 | 7.6% | Minimal Legacy Stub / Unformatted Draft |
 | **0/7** | 0 | 0.0% | Incomplete Raw Markdown |
 
@@ -47,9 +47,9 @@ Comprehensive automated evaluation of all 66 standalone technical posts in `vesv
 | 4 | `architecting-21-service-ecommerce-golang-ddd.md` | Twin Present | 2026-04-12 / 2026-10-01 | 33.9 | 4239 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | Anchor Pillar (3) | Fresh (2026) | 2027 SOTA |
 | 5 | `architecting-an-autonomous-hybrid-ai-content-pipeline.md` | Twin Present | 2026-05-18 / 2026-07-26 | 13.17 | 1731 | FAIL | FAIL | FAIL | PASS | FAIL | PASS | FAIL | Missing Anchor | Fresh (2026) | 2/7 Gates |
 | 6 | `argo-cd-updates-2026.md` | Twin Present | 2026-05-18 / 2026-07-23 | 15.97 | 2191 | FAIL | FAIL | FAIL | FAIL | FAIL | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 2/7 Gates |
-| 7 | `aws-eks-vs-ecs-comparison.md` | Twin Present | 2026-06-26 / 2026-08-23 | 33.29 | 4635 | PASS | FAIL | FAIL | PASS | PASS | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 5/7 Gates |
+| 7 | `aws-eks-vs-ecs-comparison.md` | Twin Present | 2026-06-26 / 2026-10-05 | 33.45 | 4646 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 2027 SOTA |
 | 8 | `aws-mysql-8-eol-magento-2-4-8-upgrade-architecture.md` | Twin Present | 2026-08-12 / 2026-10-01 | 26.69 | 3421 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | Anchor Pillar (2) | Fresh (2026) | 2027 SOTA |
-| 9 | `banking-microservices-architecture.md` | Twin Present | 2026-06-01 / 2026-07-18 | 21.59 | 2608 | PASS | FAIL | FAIL | PASS | FAIL | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 4/7 Gates |
+| 9 | `banking-microservices-architecture.md` | Twin Present | 2026-06-01 / 2026-10-05 | 24.95 | 3071 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 2027 SOTA |
 | 10 | `beyond-quick-commerce-15-second-customer-intelligence-architecture.md` | Twin Present | 2026-08-13 / 2026-09-06 | 27.58 | 3597 | PASS | PASS | FAIL | PASS | PASS | PASS | FAIL | Missing Anchor | Fresh (2026) | 5/7 Gates |
 | 11 | `blueprint-ecommerce-microservices-architecture-diagram.md` | Twin Present | 2026-04-12 / 2026-08-23 | 21.7 | 2751 | PASS | PASS | FAIL | PASS | PASS | FAIL | PASS | Anchor Pillar (1) | Fresh (2026) | 5/7 Gates |
 | 12 | `building-custom-golang-vector-database-engine-hnsw.md` | Twin Present | 2026-07-23 / 2026-07-23 | 51.93 | 6900 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | Anchor Pillar (2) | Fresh (2026) | 2027 SOTA |
@@ -63,20 +63,20 @@ Comprehensive automated evaluation of all 66 standalone technical posts in `vesv
 | 20 | `dapr-workflow-saga-orchestration-guide.md` | Twin Present | 2026-06-01 / 2026-07-03 | 25.68 | 2998 | PASS | FAIL | FAIL | PASS | FAIL | PASS | PASS | Anchor Pillar (2) | Fresh (2026) | 4/7 Gates |
 | 21 | `database-impact-on-programming-languages.md` | Twin Present | 2026-05-25 / 2026-07-23 | 13.7 | 1888 | FAIL | FAIL | FAIL | FAIL | FAIL | PASS | FAIL | Missing Anchor | Fresh (2026) | 1/7 Gates |
 | 22 | `deconstructing-microfinance-core-banking-architecture.md` | Twin Present | 2026-05-28 / 2026-07-23 | 18.16 | 2389 | FAIL | FAIL | FAIL | FAIL | FAIL | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 2/7 Gates |
-| 23 | `deploying-astro-on-cloudflare-full-stack-edge-architecture.md` | Twin Present | 2026-04-24 / 2026-08-23 | 26.01 | 3567 | PASS | FAIL | FAIL | PASS | FAIL | PASS | FAIL | Missing Anchor | Fresh (2026) | 3/7 Gates |
+| 23 | `deploying-astro-on-cloudflare-full-stack-edge-architecture.md` | Twin Present | 2026-04-24 / 2026-10-05 | 27.68 | 3799 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 2027 SOTA |
 | 24 | `deploying-autonomous-ai-swarm-openclaw-litellm.md` | Twin Present | 2026-05-30 / 2026-09-06 | 27.09 | 3390 | PASS | PASS | FAIL | PASS | PASS | PASS | FAIL | Missing Anchor | Fresh (2026) | 5/7 Gates |
-| 25 | `generative-ui-with-mcp-ai-native-frontend.md` | Twin Present | 2026-06-01 / 2026-09-06 | 22.09 | 2546 | PASS | FAIL | FAIL | PASS | PASS | PASS | FAIL | Missing Anchor | Fresh (2026) | 4/7 Gates |
+| 25 | `generative-ui-with-mcp-ai-native-frontend.md` | Twin Present | 2026-06-01 / 2026-10-05 | 22.54 | 2602 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 2027 SOTA |
 | 26 | `gitops-at-scale-kubernetes-argocd-microservices.md` | Twin Present | 2026-04-12 / 2026-07-03 | 16.42 | 2068 | FAIL | FAIL | FAIL | FAIL | FAIL | PASS | PASS | Anchor Pillar (2) | Fresh (2026) | 2/7 Gates |
 | 27 | `go-126-green-tea-gc-cgo-performance-guide.md` | Twin Present | 2026-06-12 / 2026-07-03 | 17.41 | 2522 | FAIL | FAIL | FAIL | FAIL | FAIL | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 2/7 Gates |
 | 28 | `go-mcp-server-development-production-guide.md` | Twin Present | 2026-07-15 / 2026-07-15 | 29.79 | 4039 | PASS | FAIL | FAIL | FAIL | FAIL | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 3/7 Gates |
 | 29 | `go-microservices-distributed-tracing-architecture.md` | Twin Present | 2026-06-08 / 2026-07-03 | 20.69 | 2630 | PASS | FAIL | FAIL | FAIL | FAIL | PASS | PASS | Anchor Pillar (1) | Go <1.24 | 3/7 Gates |
-| 30 | `go-microservices.md` | Twin Present | 2026-06-12 / 2026-08-23 | 35.26 | 4719 | PASS | FAIL | FAIL | FAIL | FAIL | PASS | PASS | Anchor Pillar (3) | Fresh (2026) | 3/7 Gates |
-| 31 | `go-pprof-kubernetes-remote-profiling.md` | Twin Present | 2026-06-01 / 2026-07-21 | 23.9 | 3387 | PASS | FAIL | FAIL | FAIL | FAIL | PASS | FAIL | Missing Anchor | Fresh (2026) | 2/7 Gates |
+| 30 | `go-microservices.md` | Twin Present | 2026-06-12 / 2026-10-05 | 37.97 | 5018 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | Anchor Pillar (3) | Fresh (2026) | 2027 SOTA |
+| 31 | `go-pprof-kubernetes-remote-profiling.md` | Twin Present | 2026-06-01 / 2026-10-05 | 29.49 | 4126 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 2027 SOTA |
 | 32 | `golang-goroutine-pool-errgroup-worker.md` | Twin Present | 2026-06-01 / 2026-07-21 | 22.18 | 2889 | PASS | FAIL | FAIL | FAIL | FAIL | PASS | PASS | Anchor Pillar (1) | Go <1.24 | 3/7 Gates |
 | 33 | `golang-grpc-microservices-production-guide.md` | Twin Present | 2026-06-11 / 2026-07-18 | 32.05 | 3744 | PASS | FAIL | FAIL | FAIL | FAIL | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 3/7 Gates |
 | 34 | `golang-pprof-profiling-memory-cpu-tutorial.md` | Twin Present | 2026-06-02 / 2026-09-06 | 27.29 | 3557 | PASS | PASS | FAIL | PASS | PASS | PASS | FAIL | Missing Anchor | Fresh (2026) | 5/7 Gates |
 | 35 | `goroutine-leak-detection-production-golang.md` | Twin Present | 2026-05-26 / 2026-07-03 | 24.7 | 3319 | PASS | FAIL | FAIL | FAIL | FAIL | PASS | PASS | Anchor Pillar (2) | Go <1.24 | 3/7 Gates |
-| 36 | `graphhopper-distance-matrix-production-guide.md` | Twin Present | 2026-06-11 / 2026-08-23 | 29.96 | 3811 | PASS | PASS | FAIL | FAIL | PASS | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 5/7 Gates |
+| 36 | `graphhopper-distance-matrix-production-guide.md` | Twin Present | 2026-06-11 / 2026-10-05 | 31.6 | 4003 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 2027 SOTA |
 | 37 | `graphhopper-kubernetes-self-hosting-osm.md` | Twin Present | 2026-06-01 / 2026-06-01 | 19.09 | 2432 | FAIL | PASS | FAIL | PASS | PASS | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 5/7 Gates |
 | 38 | `graphrag-vs-naive-rag-enterprise-guide.md` | Twin Present | 2026-06-01 / 2026-06-01 | 21.51 | 2752 | PASS | FAIL | FAIL | PASS | FAIL | PASS | FAIL | Missing Anchor | Fresh (2026) | 3/7 Gates |
 | 39 | `high-throughput-go-framework-benchmarks-gin-fiber-kratos.md` | Twin Present | 2026-07-17 / 2026-07-17 | 25.25 | 3623 | PASS | PASS | FAIL | FAIL | PASS | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 5/7 Gates |
@@ -89,9 +89,9 @@ Comprehensive automated evaluation of all 66 standalone technical posts in `vesv
 | 46 | `multi-region-geo-distributed-api-routing.md` | Twin Present | 2026-07-17 / 2026-07-17 | 20.96 | 2978 | PASS | FAIL | FAIL | FAIL | FAIL | PASS | PASS | Anchor Pillar (2) | Fresh (2026) | 3/7 Gates |
 | 47 | `mysql-horizontal-scaling.md` | Twin Present | 2026-06-01 / 2026-09-06 | 29.1 | 3782 | PASS | PASS | FAIL | PASS | PASS | PASS | FAIL | Missing Anchor | Fresh (2026) | 5/7 Gates |
 | 48 | `mysql-scalability-guide.md` | Twin Present | 2026-06-10 / 2026-08-23 | 28.33 | 3802 | PASS | PASS | FAIL | FAIL | PASS | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 5/7 Gates |
-| 49 | `mysql-scaling-sharding-tidb-architecture.md` | Twin Present | 2026-05-26 / 2026-08-23 | 24.81 | 3380 | PASS | PASS | FAIL | PASS | PASS | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 6/7 Gates |
+| 49 | `mysql-scaling-sharding-tidb-architecture.md` | Twin Present | 2026-05-26 / 2026-10-05 | 24.91 | 3392 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 2027 SOTA |
 | 50 | `order-fulfillment-algorithm-warehouse-last-mile.md` | Twin Present | 2026-06-01 / 2026-09-06 | 21.54 | 2635 | PASS | FAIL | FAIL | PASS | PASS | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 5/7 Gates |
-| 51 | `osrm-shared-memory-kubernetes-live-traffic.md` | Twin Present | 2026-05-15 / 2026-07-23 | 18.06 | 2651 | FAIL | PASS | FAIL | FAIL | PASS | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 4/7 Gates |
+| 51 | `osrm-shared-memory-kubernetes-live-traffic.md` | Twin Present | 2026-05-15 / 2026-10-05 | 22.24 | 3221 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 2027 SOTA |
 | 52 | `osrm-vs-graphhopper-architecture-comparison.md` | Twin Present | 2026-07-17 / 2026-10-04 | 28.73 | 3677 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | Anchor Pillar (5) | Fresh (2026) | 2027 SOTA |
 | 53 | `paypay-architecture-scaling.md` | Twin Present | 2026-06-01 / 2026-06-01 | 18.48 | 2537 | FAIL | FAIL | FAIL | PASS | FAIL | FAIL | FAIL | Missing Anchor | Fresh (2026) | 1/7 Gates |
 | 54 | `production-ai-apis-oauth-versioning-meta-predictions.md` | Twin Present | 2026-05-18 / 2026-05-18 | 20.89 | 2999 | PASS | FAIL | FAIL | FAIL | FAIL | PASS | FAIL | Missing Anchor | Fresh (2026) | 2/7 Gates |
@@ -102,7 +102,7 @@ Comprehensive automated evaluation of all 66 standalone technical posts in `vesv
 | 59 | `shopee-flash-sale-architecture.md` | Twin Present | 2026-06-01 / 2026-09-06 | 21.3 | 2868 | PASS | FAIL | FAIL | PASS | PASS | PASS | FAIL | Missing Anchor | Fresh (2026) | 4/7 Gates |
 | 60 | `slm-fine-tune-vs-prompt-engineering.md` | Twin Present | 2026-06-01 / 2026-07-23 | 15.69 | 1929 | FAIL | FAIL | FAIL | FAIL | FAIL | PASS | FAIL | Missing Anchor | Fresh (2026) | 1/7 Gates |
 | 61 | `surge-pricing-optimization-architecture.md` | Twin Present | 2026-05-12 / 2026-07-23 | 15.26 | 2138 | FAIL | PASS | FAIL | FAIL | PASS | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 4/7 Gates |
-| 62 | `temporal-saga-pattern-golang-distributed-transactions-guide.md` | Twin Present | 2026-07-23 / 2026-07-23 | 45.0 | 5056 | PASS | FAIL | FAIL | PASS | FAIL | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 4/7 Gates |
+| 62 | `temporal-saga-pattern-golang-distributed-transactions-guide.md` | Twin Present | 2026-07-23 / 2026-10-05 | 45.55 | 5118 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | Anchor Pillar (1) | Fresh (2026) | 2027 SOTA |
 | 63 | `the-future-of-laravel-development-in-ai-era.md` | Twin Present | 2026-05-16 / 2026-05-16 | 11.48 | 1549 | FAIL | FAIL | FAIL | PASS | FAIL | PASS | FAIL | Missing Anchor | Fresh (2026) | 2/7 Gates |
 | 64 | `urban-canyon-gps-multipath-map-matching-architecture.md` | Twin Present | 2026-08-12 / 2026-09-06 | 29.25 | 3981 | PASS | PASS | FAIL | PASS | PASS | PASS | FAIL | Missing Anchor | Fresh (2026) | 5/7 Gates |
 | 65 | `vibe-coding-and-ai-code-review-future.md` | Twin Present | 2026-05-31 / 2026-08-26 | 19.81 | 2726 | FAIL | FAIL | FAIL | PASS | FAIL | PASS | FAIL | Missing Anchor | Fresh (2026) | 2/7 Gates |

@@ -3,17 +3,17 @@
 > **Epoch:** 2026-10-02T22:20:00+07:00  
 > **Authoring Swarm:** `@vesviet-team` (`@architect`, `@content-manager`, `@technical-writer`, `@qa-engineer`)  
 > **Purpose:** Ultra-compact, high-density architectural cheat-sheets and decision matrices designed for instant LLM/Agent retrieval without context window bloat.  
-> **Total Knowledge Cards:** 29 High-Signal Cards across 6 Core Domains.  
+> **Total Knowledge Cards:** 33 High-Signal Cards across 6 Core Domains.  
 
 ---
 
 ## Quick Domain Jump Matrix
 - [1. E-Commerce Architecture](#1-e-commerce-architecture) (5 Cards)
 - [2. Banking & FinTech Architecture](#2-banking--fintech-architecture) (3 Cards)
-- [3. AI, SLM & Agentic Systems](#3-ai-slm--agentic-systems) (5 Cards)
-- [4. Distributed Systems & Architectural Showdowns](#4-distributed-systems--architectural-showdowns) (7 Cards)
-- [5. Ride-Hailing & Geospatial Architecture](#5-ride-hailing--geospatial-architecture) (4 Cards)
-- [6. Cloud Infrastructure & Resilience](#6-cloud-infrastructure--resilience) (5 Cards)
+- [3. AI, SLM & Agentic Systems](#3-ai-slm--agentic-systems) (6 Cards)
+- [4. Distributed Systems & Architectural Showdowns](#4-distributed-systems--architectural-showdowns) (8 Cards)
+- [5. Ride-Hailing & Geospatial Architecture](#5-ride-hailing--geospatial-architecture) (5 Cards)
+- [6. Cloud Infrastructure & Resilience](#6-cloud-infrastructure--resilience) (6 Cards)
 
 ---
 
@@ -44,6 +44,7 @@
 | [`generative-ui-edge-architecture`](knowledge/ai-slm-agentic/generative-ui-edge-architecture.md) | **Generative UI Architecture: Streaming Dynamic React Server Components from the Edge** | `#generative-ui`, `#cloudflare-workers`, `#rsc` | [`knowledge/ai-slm-agentic/generative-ui-edge-architecture.md`](knowledge/ai-slm-agentic/generative-ui-edge-architecture.md) |
 | [`autonomous-agent-swarms-litellm`](knowledge/ai-slm-agentic/autonomous-agent-swarms-litellm.md) | **Autonomous AI Agent Swarms: A2A Protocols & LiteLLM Gateway Orchestration** | `#agent-swarms`, `#litellm`, `#a2a-protocol` | [`knowledge/ai-slm-agentic/autonomous-agent-swarms-litellm.md`](knowledge/ai-slm-agentic/autonomous-agent-swarms-litellm.md) |
 | [`vector-database-hnsw-search`](knowledge/ai-slm-agentic/vector-database-hnsw-search.md) | **Custom Golang Vector Database Engine: HNSW Graphs & Hybrid Lexical-Semantic Search** | `#vector-search`, `#hnsw`, `#golang` | [`knowledge/ai-slm-agentic/vector-database-hnsw-search.md`](knowledge/ai-slm-agentic/vector-database-hnsw-search.md) |
+| [`mcp-stream-transport-generative-ui`](knowledge/ai-slm-agentic/mcp-stream-transport-generative-ui.md) | **Model Context Protocol (MCP) & Generative UI: Streaming JSON-RPC 2.0 Tool Execution & Edge Component Sandboxing** | `#mcp`, `#generative-ui`, `#json-rpc`, `#rsc` | [`knowledge/ai-slm-agentic/mcp-stream-transport-generative-ui.md`](knowledge/ai-slm-agentic/mcp-stream-transport-generative-ui.md) |
 
 ## 4. Distributed Systems & Architectural Showdowns
 
@@ -56,6 +57,7 @@
 | [`modular-monolith-vs-microservices`](knowledge/distributed-systems/modular-monolith-vs-microservices.md) | **Architecture Paradigm Showdown: Go Modular Monolith vs. Microservices vs. SpinKube Wasm** | `#modular-monolith`, `#microservices`, `#spinkube` | [`knowledge/distributed-systems/modular-monolith-vs-microservices.md`](knowledge/distributed-systems/modular-monolith-vs-microservices.md) |
 | [`primary-key-uuidv7-snowflake-bigint`](knowledge/distributed-systems/primary-key-uuidv7-snowflake-bigint.md) | **Primary Key Showdown: UUIDv7 vs. Twitter Snowflake vs. BigInt Auto-Increment** | `#primary-key`, `#uuidv7`, `#snowflake` | [`knowledge/distributed-systems/primary-key-uuidv7-snowflake-bigint.md`](knowledge/distributed-systems/primary-key-uuidv7-snowflake-bigint.md) |
 | [`kratos-dapr-microservices-resilience`](knowledge/distributed-systems/kratos-dapr-microservices-resilience.md) | **Kratos v2.9 & Dapr 1.15: Virtual Actors, Distributed Workflows & Resilience Patterns in Go 1.25** | `#kratos`, `#dapr`, `#virtual-actors`, `#microservices` | [`knowledge/distributed-systems/kratos-dapr-microservices-resilience.md`](knowledge/distributed-systems/kratos-dapr-microservices-resilience.md) |
+| [`temporal-durable-saga-orchestration`](knowledge/distributed-systems/temporal-durable-saga-orchestration.md) | **Temporal Durable Saga Orchestration: Compensation Invariants, Event Sourcing & Go 1.25 Worker Resilience** | `#temporal`, `#saga`, `#durable-execution`, `#golang` | [`knowledge/distributed-systems/temporal-durable-saga-orchestration.md`](knowledge/distributed-systems/temporal-durable-saga-orchestration.md) |
 
 ## 5. Ride-Hailing & Geospatial Architecture
 
@@ -65,6 +67,7 @@
 | [`dispatch-matching-surge-pricing`](knowledge/ride-hailing-geospatial/dispatch-matching-surge-pricing.md) | **Real-Time Dispatch Matching & Dynamic Surge Pricing Architecture** | `#dispatch`, `#surge-pricing`, `#bipartite-matching` | [`knowledge/ride-hailing-geospatial/dispatch-matching-surge-pricing.md`](knowledge/ride-hailing-geospatial/dispatch-matching-surge-pricing.md) |
 | [`urban-canyon-gps-kalman-filtering`](knowledge/ride-hailing-geospatial/urban-canyon-gps-kalman-filtering.md) | **Urban Canyon GPS Multipath Mitigation: Extended Kalman Filtering & Map Matching** | `#gps`, `#urban-canyon`, `#kalman-filter` | [`knowledge/ride-hailing-geospatial/urban-canyon-gps-kalman-filtering.md`](knowledge/ride-hailing-geospatial/urban-canyon-gps-kalman-filtering.md) |
 | [`realtime-push-ramen-architecture`](knowledge/ride-hailing-geospatial/realtime-push-ramen-architecture.md) | **Real-Time Driver Location Streaming: Uber Ramen WebSocket Gateway Architecture** | `#websocket`, `#realtime-push`, `#ramen` | [`knowledge/ride-hailing-geospatial/realtime-push-ramen-architecture.md`](knowledge/ride-hailing-geospatial/realtime-push-ramen-architecture.md) |
+| [`graphhopper-mld-distance-matrix`](knowledge/ride-hailing-geospatial/graphhopper-mld-distance-matrix.md) | **GraphHopper Multi-Level Dijkstra (MLD): High-Throughput Distance Matrices & Memory-Efficient Turn Cost Routing** | `#graphhopper`, `#mld`, `#distance-matrix`, `#geospatial` | [`knowledge/ride-hailing-geospatial/graphhopper-mld-distance-matrix.md`](knowledge/ride-hailing-geospatial/graphhopper-mld-distance-matrix.md) |
 
 ## 6. Cloud Infrastructure & Resilience
 
@@ -75,6 +78,7 @@
 | [`envoy-gateway-vs-cilium-ebpf-service-mesh`](knowledge/cloud-infrastructure/envoy-gateway-vs-cilium-ebpf-service-mesh.md) | **Service Mesh Showdown: Envoy Proxy Sidecar vs. Cilium eBPF Kernel Routing** | `#envoy`, `#cilium`, `#ebpf` | [`knowledge/cloud-infrastructure/envoy-gateway-vs-cilium-ebpf-service-mesh.md`](knowledge/cloud-infrastructure/envoy-gateway-vs-cilium-ebpf-service-mesh.md) |
 | [`zero-trust-spiffe-spire-istio-golang`](knowledge/cloud-infrastructure/zero-trust-spiffe-spire-istio-golang.md) | **Zero-Trust Service Mesh Security: SPIFFE/SPIRE Cryptographic Workload Identities in Go** | `#zero-trust`, `#spiffe`, `#spire` | [`knowledge/cloud-infrastructure/zero-trust-spiffe-spire-istio-golang.md`](knowledge/cloud-infrastructure/zero-trust-spiffe-spire-istio-golang.md) |
 | [`cilium-tetragon-ebpf-ai-agent-security`](knowledge/cloud-infrastructure/cilium-tetragon-ebpf-ai-agent-security.md) | **Cilium 1.17 & Tetragon 1.4: In-Kernel eBPF Observability, Sidecarless Service Mesh & Zero-Trust Sandboxing for Autonomous AI Agents** | `#cilium`, `#tetragon`, `#ebpf`, `#ai-agent-security` | [`knowledge/cloud-infrastructure/cilium-tetragon-ebpf-ai-agent-security.md`](knowledge/cloud-infrastructure/cilium-tetragon-ebpf-ai-agent-security.md) |
+| [`cloudflare-astro-edge-fullstack`](knowledge/cloud-infrastructure/cloudflare-astro-edge-fullstack.md) | **Cloudflare Edge Full-Stack Architecture: Astro v5 Content Layer, Workers SSR & Distributed D1/KV Storage** | `#cloudflare`, `#astro`, `#workers`, `#d1` | [`knowledge/cloud-infrastructure/cloudflare-astro-edge-fullstack.md`](knowledge/cloud-infrastructure/cloudflare-astro-edge-fullstack.md) |
 
 ---
 
