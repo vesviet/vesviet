@@ -146,6 +146,186 @@ Read more: [Architecting 21-Service E-commerce with DDD](/posts/architecting-21-
 
 ---
 
+## Clean Architecture with Kratos v2.9 & Google Wire
+
+While Domain-Driven Design establishes boundaries between distinct microservices, **Clean Architecture** enforces inviolable boundaries *within* each Go service. In high-concurrency systems, cross-layer leakage—such as SQL driver types creeping into HTTP handlers or domain business entities importing GORM tags—leads to brittle unit tests, tight database coupling, and cascading refactoring nightmares.
+
+In our production baseline, we standardize on **Kratos v2.9** (`github.com/go-kratos/kratos/v2`) organized into four strictly decoupled tiers, wired together at compile time via **Google Wire** (`github.com/google/wire`):
+
+1. **`api/` (Contract Tier):** Protocol Buffer v3 definitions (`.proto`) and generated gRPC/HTTP stubs. This defines the external schema contract and payload validation rules (`buf.validate` / `protoc-gen-validate`).
+2. **`internal/service/` (Transport Adapter Tier):** Implements the gRPC/HTTP server interfaces generated from `api/`. It handles transport serialization, request decoding, header propagation, and delegates directly to the usecase layer. No business invariants reside here.
+3. **`internal/biz/` (Domain Business Logic Tier):** The pure heart of the service. Contains domain entities, aggregate roots, value objects, and business state machines. It defines **Repository Interfaces** (`ports`) as Go interfaces, but has zero knowledge of database drivers, SQL, or network protocols.
+4. **`internal/data/` (Persistence & Infrastructure Tier):** Implements the repository ports defined in `biz/`. It manages PostgreSQL connections (`pgxpool`), Redis clients, Elasticsearch/OpenSearch indices, and Kafka producers.
+
+### Compile-Time Dependency Injection with Wire
+
+Traditional reflection-based dependency injection (such as Spring or runtime reflection containers) introduces non-deterministic startup panics and adds 50–200ms to container cold starts. Kratos eliminates reflection entirely by utilizing **Google Wire**, which generates standard, readable Go initialization code during `go generate`.
+
+```go
+// internal/biz/order.go: Pure domain entity and repository interface
+package biz
+
+import (
+	"context"
+	"errors"
+	"time"
+
+	"github.com/go-kratos/kratos/v2/log"
+)
+
+var (
+	ErrInvalidOrderAmount = errors.New("order total must exceed zero")
+	ErrOrderNotFound      = errors.New("requested order does not exist")
+)
+
+type Order struct {
+	ID          string
+	CustomerID  string
+	TotalAmount int64
+	Status      string
+	CreatedAt   time.Time
+}
+
+type OrderRepo interface {
+	Save(ctx context.Context, order *Order) (*Order, error)
+	FindByID(ctx context.Context, id string) (*Order, error)
+	UpdateStatus(ctx context.Context, id string, status string) error
+}
+
+type OrderUsecase struct {
+	repo OrderRepo
+	log  *log.Helper
+}
+
+func NewOrderUsecase(repo OrderRepo, logger log.Logger) *OrderUsecase {
+	return &OrderUsecase{
+		repo: repo,
+		log:  log.NewHelper(logger),
+	}
+}
+
+func (uc *OrderUsecase) CreateOrder(ctx context.Context, order *Order) (*Order, error) {
+	if order.TotalAmount <= 0 {
+		return nil, ErrInvalidOrderAmount
+	}
+	order.Status = "PENDING_PAYMENT"
+	order.CreatedAt = time.Now().UTC()
+	return uc.repo.Save(ctx, order)
+}
+```
+
+In the persistence tier (`internal/data`), the repository interface is implemented using PostgreSQL connection pools and Redis cache-aside caching:
+
+```go
+// internal/data/order.go: Infrastructure implementation of biz.OrderRepo
+package data
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"github.com/go-kratos/kratos/v2/log"
+	"github.com/redis/go-redis/v9"
+	"gorm.io/gorm"
+
+	"tanhdev.com/platform/internal/biz"
+)
+
+type orderRepo struct {
+	data *Data
+	log  *log.Helper
+}
+
+func NewOrderRepo(data *Data, logger log.Logger) biz.OrderRepo {
+	return &orderRepo{
+		data: data,
+		log:  log.NewHelper(logger),
+	}
+}
+
+func (r *orderRepo) Save(ctx context.Context, o *biz.Order) (*biz.Order, error) {
+	po := OrderPO{
+		ID:          o.ID,
+		CustomerID:  o.CustomerID,
+		TotalAmount: o.TotalAmount,
+		Status:      o.Status,
+		CreatedAt:   o.CreatedAt,
+	}
+	
+	if err := r.data.db.WithContext(ctx).Create(&po).Error; err != nil {
+		r.log.WithContext(ctx).Errorf("failed to persist order to postgres: %v", err)
+		return nil, fmt.Errorf("database insert failed: %w", err)
+	}
+
+	// Cache-aside write with short TTL
+	cacheKey := fmt.Sprintf("order:%s", o.ID)
+	r.data.rdb.Set(ctx, cacheKey, o.Status, 15*time.Minute)
+
+	return o, nil
+}
+
+func (r *orderRepo) FindByID(ctx context.Context, id string) (*biz.Order, error) {
+	var po OrderPO
+	if err := r.data.db.WithContext(ctx).First(&po, "id = ?", id).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, biz.ErrOrderNotFound
+		}
+		return nil, err
+	}
+	return &biz.Order{
+		ID:          po.ID,
+		CustomerID:  po.CustomerID,
+		TotalAmount: po.TotalAmount,
+		Status:      po.Status,
+		CreatedAt:   po.CreatedAt,
+	}, nil
+}
+
+func (r *orderRepo) UpdateStatus(ctx context.Context, id string, status string) error {
+	result := r.data.db.WithContext(ctx).Model(&OrderPO{}).Where("id = ?", id).Update("status", status)
+	if result.Error != nil {
+		return result.Error
+	}
+	r.data.rdb.Del(ctx, fmt.Sprintf("order:%s", id))
+	return nil
+}
+```
+
+The assembly of providers is declared via `wire.Build` in `cmd/server/wire.go`:
+
+```go
+// +build wireinject
+
+package main
+
+import (
+	"github.com/go-kratos/kratos/v2"
+	"github.com/go-kratos/kratos/v2/log"
+	"github.com/google/wire"
+
+	"tanhdev.com/platform/internal/biz"
+	"tanhdev.com/platform/internal/conf"
+	"tanhdev.com/platform/internal/data"
+	"tanhdev.com/platform/internal/server"
+	"tanhdev.com/platform/internal/service"
+)
+
+func wireApp(*conf.Server, *conf.Data, log.Logger) (*kratos.App, func(), error) {
+	panic(wire.Build(
+		server.ProviderSet,
+		data.ProviderSet,
+		biz.ProviderSet,
+		service.ProviderSet,
+		newApp,
+	))
+}
+```
+
+Executing `wire ./cmd/server` generates `wire_gen.go` containing deterministic top-down instantiations. If a developer forgets to register a dependency or mismatches an interface signature, the build fails instantly during continuous integration with a precise compilation diagnostic—never at 3:00 AM on a production Kubernetes cluster.
+
+---
+
 ```mermaid
 flowchart LR
     subgraph RequestCycle ["Kratos Deterministic Middleware Interceptor Chain"]
@@ -223,10 +403,48 @@ The key implementation requirement: **every event consumer must be idempotent.**
 
 For the B2B order flow — which involves credit limit checks, manager approval gates, multi-warehouse allocation, and ERP sync — choreography becomes unmaintainable. The branching logic and compensation requirements exceed what event chains can express clearly.
 
-Dapr Workflow acts as a durable orchestrator:
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Client as API Ingress (Kratos HTTP/gRPC)
+    participant OrderSvc as Order Service Usecase
+    participant DaprWf as Dapr Workflow Engine (Sidecar)
+    participant PaymentSvc as Payment Service
+    participant InventorySvc as Inventory Service
+    participant NotifySvc as Notification Service
+
+    Client->>OrderSvc: SubmitOrder(OrderPayload)
+    OrderSvc->>DaprWf: StartWorkflow(OrderSagaWorkflow, input)
+    Note over DaprWf: Checkpoint 1: Persist WorkflowState in PostgreSQL
+
+    DaprWf->>PaymentSvc: Activity: AuthorizePayment(OrderID, Total)
+    PaymentSvc-->>DaprWf: 200 OK (PaymentAuthorized)
+    Note over DaprWf: Checkpoint 2: Payment Authorized
+
+    DaprWf->>InventorySvc: Activity: ReserveStock(WarehouseID, Items)
+    alt Stock Out of Inventory (Insufficient Capacity)
+        InventorySvc-->>DaprWf: 409 Conflict (ErrOutOfStock)
+        Note over DaprWf: Rollback Compensation Triggered
+        DaprWf->>PaymentSvc: CompensateActivity: RefundPayment(OrderID)
+        PaymentSvc-->>DaprWf: 200 OK (RefundCommitted)
+        DaprWf->>NotifySvc: Activity: NotifyCustomerFailed(OrderID, Reason)
+        NotifySvc-->>DaprWf: 200 OK (CustomerNotified)
+        DaprWf-->>OrderSvc: WorkflowTerminated (Compensated)
+        OrderSvc-->>Client: 409 Conflict (Order Cancelled & Refunded)
+    else Stock Allocation Successful
+        InventorySvc-->>DaprWf: 200 OK (StockAllocated)
+        Note over DaprWf: Checkpoint 3: Inventory Confirmed
+        DaprWf->>NotifySvc: Activity: NotifyOrderConfirmed(OrderID)
+        NotifySvc-->>DaprWf: 200 OK (ConfirmationDispatched)
+        DaprWf-->>OrderSvc: WorkflowCompleted (Success)
+        OrderSvc-->>Client: 201 Created (OrderConfirmed)
+    end
+```
+
+Dapr Workflow acts as a durable orchestrator with deterministic replay and state persistence:
 
 ```go
-// B2B Order Workflow — simplified
+// B2B Order Workflow: Production Dapr 1.15 durable saga implementation
 func B2BOrderWorkflow(ctx workflow.Context, input *B2BOrderInput) (string, error) {
     // Step 1: Credit check (synchronous activity)
     creditResult, err := workflow.ExecuteActivity(ctx, CheckCreditLimit, input.CompanyID, input.OrderTotal)
@@ -234,18 +452,37 @@ func B2BOrderWorkflow(ctx workflow.Context, input *B2BOrderInput) (string, error
         return "", fmt.Errorf("credit limit exceeded: %w", err)
     }
 
-    // Step 2: Manager approval gate (waits for external event)
+    // Step 2: Manager approval gate (waits for external event with timeout)
     var approval ApprovalEvent
     workflow.GetExternalEvent(ctx, "manager.approval", &approval)
     if !approval.Approved {
-        // Compensate: notify customer, release reservations
-        workflow.ExecuteActivity(ctx, NotifyRejection, input.OrderID)
+        // Compensate: notify customer and release reservations
+        _ = workflow.ExecuteActivity(ctx, NotifyRejection, input.OrderID)
         return "rejected", nil
     }
 
-    // Step 3: Multi-warehouse allocation
+    // Step 3: Multi-warehouse inventory allocation
     allocationResult, err := workflow.ExecuteActivity(ctx, AllocateInventory, input.Items)
-    // ... continues
+    if err != nil {
+        _ = workflow.ExecuteActivity(ctx, CompensateInventoryAllocation, input.OrderID)
+        _ = workflow.ExecuteActivity(ctx, NotifyRejection, input.OrderID)
+        return "allocation_failed", fmt.Errorf("allocation failed: %w", err)
+    }
+
+    // Step 4: Dispatch shipping manifest
+    _, err = workflow.ExecuteActivity(ctx, DispatchShippingManifest, allocationResult.WarehouseID, input.OrderID)
+    if err != nil {
+        _ = workflow.ExecuteActivity(ctx, CompensateInventoryAllocation, input.OrderID)
+        return "shipping_failed", fmt.Errorf("shipping dispatch failed: %w", err)
+    }
+
+    // Step 5: Synchronize ERP financial ledger
+    err = workflow.ExecuteActivity(ctx, SyncERPLedger, input.OrderID, input.OrderTotal)
+    if err != nil {
+        _ = workflow.ExecuteActivity(ctx, ScheduleManualReconciliation, input.OrderID)
+    }
+
+    return "completed", nil
 }
 ```
 
@@ -344,21 +581,31 @@ The most common goroutine leak pattern we encounter: a goroutine that starts a b
 The fix is always the same: every blocking call must use a context with a timeout or deadline.
 
 ```go
-// Wrong — goroutine leaks if Redis is unresponsive
-go func() {
-    val, _ := redisClient.Get(key).Result()
-    // ...
-}()
+// Anti-pattern: Unbounded goroutine leak under downstream connection exhaustion
+func leakyCacheFetch(redisClient *redis.Client, key string, resultChan chan<- string) {
+    go func() {
+        // Without context deadline, this blocks indefinitely if Redis network hangs
+        val, err := redisClient.Get(context.Background(), key).Result()
+        if err == nil {
+            resultChan <- val
+        }
+    }()
+}
 
-// Correct — goroutine respects cancellation and deadline
-go func() {
-    ctx, cancel := context.WithTimeout(parentCtx, 2*time.Second)
+// Production SOTA: Context deadline propagation and bounded errgroup execution
+func resilientCacheFetch(ctx context.Context, redisClient *redis.Client, key string) (string, error) {
+    fetchCtx, cancel := context.WithTimeout(ctx, 250*time.Millisecond)
     defer cancel()
-    val, err := redisClient.Get(ctx, key).Result()
+
+    val, err := redisClient.Get(fetchCtx, key).Result()
     if err != nil {
-        // handle timeout, log, continue
+        if errors.Is(err, redis.Nil) {
+            return "", ErrKeyNotFound
+        }
+        return "", fmt.Errorf("redis read timeout or failure: %w", err)
     }
-}()
+    return val, nil
+}
 ```
 
 Read more: [Go Microservices Distributed Tracing Architecture](/posts/go-microservices-distributed-tracing-architecture/)  
@@ -538,6 +785,39 @@ Read more: [GitOps at Scale: Kubernetes & ArgoCD](/posts/gitops-at-scale-kuberne
 
 ## Resilience Patterns — Circuit Breaking and Retry
 
+In distributed systems, downstream service degradation is far more catastrophic than clean, immediate failure. If a downstream database or third-party service slows from 5ms to 8,000ms, upstream callers hold database connections and spawn thousands of concurrent goroutines waiting on I/O. Without rigorous resilience boundaries, a single degraded dependency exhausts system resources and cascades into total platform collapse.
+
+```mermaid
+stateDiagram-v2
+    [*] --> Closed: Initial Service Boot
+
+    state Closed {
+        [*] --> HealthyRequests
+        HealthyRequests --> FailureCount: Downstream 5xx / Timeout
+        FailureCount --> HealthyRequests: Success / Reset Window
+        FailureCount --> TripThreshold: Error Rate >= 50% (Window >= 10 reqs)
+    }
+
+    Closed --> Open: Error Threshold Tripped (Fail-Fast Active)
+
+    state Open {
+        [*] --> FastFailImmediate: Bypass Downstream RPC
+        FastFailImmediate --> ServeDegradedCache: Stale Cache / Fallback DTO
+        ServeDegradedCache --> SleepWindow: Sleep 60s (Zero Traffic to Downstream)
+    }
+
+    Open --> HalfOpen: Sleep Window Elapsed (Probing Phase)
+
+    state HalfOpen {
+        [*] --> ProbeRequests: Allow Concurrency Limit = 5
+        ProbeRequests --> ProbeSuccess: All 5 Probes Return 200 OK
+        ProbeRequests --> ProbeFailure: Any Single Probe Times Out / 5xx
+    }
+
+    HalfOpen --> Closed: ProbeSuccess (System Recovered)
+    HalfOpen --> Open: ProbeFailure (Extend Sleep Window * Backoff)
+```
+
 ### Circuit breaker with gobreaker
 
 `sony/gobreaker` is the standard Go implementation of the Circuit Breaker pattern:
@@ -600,6 +880,69 @@ func withRetry(ctx context.Context, op func() error) error {
 ```
 
 Jitter is critical to prevent thundering-herd: if 100 services all retry simultaneously after a brief outage, the burst can re-trigger the outage. Adding random jitter (±20% of the backoff interval) spreads the retry load.
+
+### Go 1.25 Runtime Scheduler & CFS Quota Alignment
+
+In Kubernetes environments, microservices running on multi-core worker nodes often suffer from severe, unexplained tail-latency spikes (P99 > 800ms) despite low CPU utilization. The culprit is the mismatch between Go's runtime scheduler and the Linux Completely Fair Scheduler (CFS) quota mechanism.
+
+By default, the Go runtime sets `GOMAXPROCS` equal to the number of physical CPU cores on the host node (e.g., 64 or 128 cores on modern AMD EPYC servers), even if the pod's Kubernetes manifest declares `cpu: "2"`. When 64 goroutines run concurrently across 64 OS threads, the pod exhausts its 200ms CFS quota within the first 3.1ms of the 100ms CFS quota window. The Linux kernel immediately throttles the entire container cgroup for the remaining 96.9ms, freezing all active network I/O and causing devastating gRPC timeout cascades.
+
+To prevent CFS throttling, every Go microservice imports `go.uber.org/automaxprocs` in `main.go`:
+
+```go
+package main
+
+import (
+	"log"
+
+	_ "go.uber.org/automaxprocs"
+)
+
+func init() {
+	// automaxprocs automatically queries the container's cgroup mount point
+	// (/sys/fs/cgroup/cpu.max or /sys/fs/cgroup/cpu/cpu.cfs_quota_us)
+	// and sets runtime.GOMAXPROCS to match the allocated integer quota.
+}
+```
+
+### Connection Pool Starvation & Mathematical Sizing
+
+Connection pool exhaustion is the primary failure mode under heavy traffic spikes. Setting `MaxOpenConns` too low causes request goroutines to block waiting for an available database handle, leading to goroutine explosion. Conversely, setting `MaxOpenConns` too high across 20 pods will instantly overwhelm PostgreSQL's `max_connections` limit, causing PostgreSQL to reject connections and enter crash recovery.
+
+In our production architecture, connection pool capacity is calculated using Little's Law:
+
+$$\text{MaxOpenConns} = \left\lceil \frac{\text{Target RPS} \times \text{P99 Latency (seconds)}}{\text{Container Pod Instances}} \right\rceil \times \text{Safety Factor (1.3)}$$
+
+For a service handling 10,000 RPS with a P99 query latency of 12ms ($0.012\text{s}$) distributed across 8 pod replicas:
+
+$$\text{MaxOpenConns} = \left\lceil \frac{10000 \times 0.012}{8} \right\rceil \times 1.3 = \lceil 15 \rceil \times 1.3 \approx 20\text{ connections per pod}$$
+
+```go
+// Production pgxpool configuration with deterministic starvation guards
+func NewPostgresPool(ctx context.Context, dsn string) (*pgxpool.Pool, error) {
+	cfg, err := pgxpool.ParseConfig(dsn)
+	if err != nil {
+		return nil, fmt.Errorf("invalid postgres dsn: %w", err)
+	}
+
+	cfg.MaxConns = 25
+	cfg.MinConns = 5
+	cfg.MaxConnLifetime = 30 * time.Minute
+	cfg.MaxConnIdleTime = 5 * time.Minute
+	cfg.HealthCheckPeriod = 1 * time.Minute
+
+	// Non-blocking connection acquisition timeout prevents indefinite goroutine hangs
+	acquireCtx, cancel := context.WithTimeout(ctx, 3*time.Second)
+	defer cancel()
+
+	pool, err := pgxpool.NewWithConfig(acquireCtx, cfg)
+	if err != nil {
+		return nil, fmt.Errorf("failed to initialize pgx connection pool: %w", err)
+	}
+
+	return pool, nil
+}
+```
 
 ---
 

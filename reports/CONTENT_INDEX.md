@@ -61,7 +61,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 | `ai-code-review-vibe-coding` | 7 | AI code review & vibe coding governance — 2027 SOTA Masterclass (Multi-Agent PR Review Pipeline, AST Graph Indexing, Context Engineering, Empirical Defect Taxonomy, MCP Dynamic Sandboxing, AI Supply Chain Security, Semgrep Guardrails; 1:1 twin parity, 700 research rounds, 100% 8-gate compliant) | Complete (`2026-09-14`) |
 | `agentic-system-architecture` | 7 | Multi-agent system architecture & orchestration — 2027 SOTA Masterclass (Hierarchical Orchestrator, P2P Agentic Mesh, Semantic Memory Systems, MCP Dynamic Tool Calling, AgentOps OpenTelemetry, LLM-as-Judge Evals, Human-in-the-Loop Governance; 1:1 twin parity, 700 research rounds, 100% 8-gate compliant) | Complete (`2026-09-14`) |
 
-## Radar Editions (Tech Radar - 31 editions, 39 files)
+## Radar Editions (Tech Radar - 32 editions, 40 files)
 
 | Month | Editions | Highlights |
 |---|---|---|
@@ -71,7 +71,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 | 2026-07 | 3 | LLM evaluation frameworks & Agent governance |
 | 2026-08 | 7 | Stateless MCP K8s gateway, OWASP/NIST AI agent gateway, Go synctest, vLLM context routing MLA, eBPF Tetragon agent security |
 | 2026-09 | 6 | WASI 0.3 component model/wasmtime, **MCP 2.0 agentic mesh (2026-09-08)**, **DeepSeek-V3 MLA (2026-09-16, Published)**, SGLang EAGLE-2 (2026-09-23), Disaggregated Prefill-Decode (2026-09-26), **vLLM v1 Production KV Cache (2026-09-30)** |
-| 2026-10 | 1 | **Cilium 1.17 & Tetragon 1.4: In-Kernel eBPF Observability, Sidecarless Service Mesh & Zero-Trust Sandboxing for Autonomous AI Agents (2026-10-02)** |
+| 2026-10 | 2 | **Cilium 1.17 & Tetragon 1.4: In-Kernel eBPF Observability, Sidecarless Service Mesh & Zero-Trust Sandboxing for Autonomous AI Agents (2026-10-02)**, **Kratos v2.9 & Dapr 1.15: Production Microservices Resilience in Go 1.25 (2026-10-05)** |
 
 ## Recent Upgrade Campaigns
 
@@ -198,7 +198,7 @@ Synchronized twins:
       2. `banking-microservices-architecture.md` (24.95 KB, 3,071w on EN; 31.65 KB, 4,379w on VI)
       3. `aws-eks-vs-ecs-comparison.md` (33.45 KB, 4,646w on EN; 20.98 KB, 2,905w on VI)
       4. `osrm-shared-memory-kubernetes-live-traffic.md` (22.24 KB, 3,221w on EN; 25.79 KB, 3,587w on VI)
-      5. `go-microservices.md` (37.97 KB, 5,018w on EN; 53.53 KB, 7,718w on VI)
+      5. `go-microservices.md` [Hub #1] (51.69 KB, 6,782w on EN; 68.13 KB, 9,694w on VI)
     - All posts satisfy size > 20.5 KB, body words >= 2,500, atomic Answer-first 48–62 words, prerequisite callout, >= 2–3 valid Mermaid diagrams, >= 3–4 `{{< faq >}}` shortcodes, production Go 1.25+ / K8s / Kratos / Dapr code realism, zero outbound links to learn (vesviet), reciprocal English badge (learn).
     - Distilled SOTA knowledge card `reports/knowledge/distributed-systems/kratos-dapr-microservices-resilience.md` (< 15 KB, 100% SHA-256 bitwise twin parity) and updated `KNOWLEDGE_INDEX.md` (29 cards total).
     - Increases sitewide 2027 SOTA 7/7 gate certified standalone posts to 12 / 66 (18.2%) on vesviet and 12 / 86 (14.0%) on learn.
