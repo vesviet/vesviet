@@ -194,9 +194,56 @@ For fast-moving signals, framework releases, runtime benchmarks, and daily techn
 
 ---
 
-**Distribution Note**: Every pillar post should have a repurposing plan before publishing (LinkedIn thread, newsletter deep-dive, YouTube script, or Twitter/X technical thread).
+## Masterclass Series & Technical Curricula
 
-**Next Review**: 2026-10-01
+For deep, multi-part engineering masterclasses, explore our 25 comprehensive series spanning enterprise commerce, fintech scale, cloud infrastructure, and AI engineering:
+
+### High-Throughput & Financial Systems
+- [PayPay Architecture: Scaling Payments to 70M Users](/series/paypay-architecture/) — Scaling distributed payments, TiDB Multi-Raft NewSQL, and 99.999% availability under campaign spikes.
+- [Shopee Architecture: Scaling E-Commerce to 100M Users](/series/shopee-architecture/) — Go/gRPC Kitex, Redis Lua flash-sale, message queue peak-shaving, and distributed scale.
+- [Alipay Double 11 Masterclass](/series/alipay-double-11/) — Managing 583,000 peak TPS, unitized data cells, and distributed transaction consensus.
+- [Core Banking Architecture](/series/core-banking-architecture/) — Immutable double-entry bookkeeping, ledger audit compliance, and ISO 20022 messaging.
+- [Core Banking Developer Handbook](/series/core-banking-developer/) — Practical implementation patterns for account balance tracking and transaction state machines.
+- [High Concurrency Systems](/series/high-concurrency-systems/) — Rate limiting, circuit breaking, distributed cache stamps, and backpressure.
+
+### System Architecture & Distributed Engineering
+- [System Design Masterclass](/series/system-design/) — Go system design masterclass: sharding, caching, and horizontal scaling.
+- [Architectural Tradeoffs Showdowns](/series/architectural-tradeoffs-showdowns/) — In-depth architectural comparisons and production trade-offs.
+- [Cornerstone Technologies](/series/cornerstone-technologies/) — Foundation technologies: NATS JetStream, Temporal, Zero-Trust SPIFFE, Qdrant, and Cloudflare Edge.
+- [Routing & Geospatial Architecture](/series/routing-geospatial-architecture/) — GraphHopper, OSRM, spatial indexing, and map-matching algorithms.
+- [Ride-Hailing Realtime Architecture](/series/ride-hailing-realtime-architecture/) — Real-time driver matching, spatial partitioning, and high-frequency geolocation streams.
+- [Modular Monolith Architecture](/series/modular-monolith-architecture/) — Bounded context enforcement, domain events, and scalable monoliths in Go.
+
+### E-Commerce & Platform Modernization
+- [Magento Migration Vietnam](/series/magento-migration-vietnam/) — Complete Strangler Fig migration playbook from legacy monoliths to microservices.
+- [Composable Commerce Migration](/series/composable-commerce-migration/) — Transitioning to headless commerce, monorepos, and micro-frontends.
+- [E-Commerce Order Allocation Engine](/series/ecommerce-order-allocation/) — Real-time multi-warehouse inventory allocation and routing logic.
+
+### AI Engineering, Agents & SLM
+- [MCP Engineering in Production](/series/mcp-engineering-in-production/) — Production Model Context Protocol server design, security, and transport protocols.
+- [Agentic System Architecture](/series/agentic-system-architecture/) — Autonomous agent state machines, tool execution, and multi-agent coordination.
+- [Agentic E-Commerce Search](/series/agentic-ecommerce-search/) — Vector embeddings, hybrid lexical-semantic retrieval, and reranking pipelines.
+- [Generative UI Architecture](/series/generative-ui-architecture/) — Streaming UI components, client-side sandboxing, and dynamic component registries.
+- [SLM Playbook: Small Language Models](/series/slm-playbook/) — On-device SLM inference, quantization, distillation, and hybrid routing.
+- [AI Data Engineering Pipeline](/series/ai-data-engineering-pipeline/) — GraphRAG, multimodal ingestion, late chunking, streaming CDC Debezium, and Iceberg.
+- [AI-Driven Engineer](/series/ai-driven-engineer/) — AI-assisted SDLC, AST parsing, custom MCP servers, and LLM-as-Judge evaluations.
+- [AI-Driven Playbook](/series/ai-driven-playbook/) — Enterprise AI operational governance, cost management, and prompt injection defense.
+- [AI Code Review & Vibe Coding](/series/ai-code-review-vibe-coding/) — Context engineering, AST codebase indexing, and automated AI quality gates.
+- [Prompt Standard](/series/prompt-standard/) — Production prompt engineering standards, structured outputs, and evaluation metrics.
+
+### Advanced Technical Architecture Studies
+- [High-Throughput Event-Driven Microservices with NATS JetStream & CQRS](/posts/building-high-throughput-event-driven-microservices-go-nats-jetstream-cqrs/)
+- [Beyond Quick-Commerce: 15-Second Customer Intelligence Architecture](/posts/beyond-quick-commerce-15-second-customer-intelligence-architecture/)
+- [AWS MySQL 8.0 EOL & Magento 2.4.8 Upgrade Architecture](/posts/aws-mysql-8-eol-magento-2-4-8-upgrade-architecture/)
+- [The Microservices Delusion: Why Go Modular Monoliths Win](/posts/microservices-delusion-why-golang-modular-monolith-is-the-destination/)
+- [Building Custom Kubernetes Operators with eBPF & Cilium](/posts/building-custom-kubernetes-operators-ebpf-golang-cilium/)
+- [The Impact of Databases on Programming Language Evolution](/posts/database-impact-on-programming-languages/)
+- [Building a Custom Golang Vector Database Engine with HNSW](/posts/building-custom-golang-vector-database-engine-hnsw/)
+- [OSRM Shared Memory on Kubernetes for Live High-Throughput Routing](/posts/osrm-shared-memory-kubernetes-live-traffic/)
+- [High-Throughput Local LLM Infrastructure: vLLM & Go Gateway](/posts/high-throughput-local-llm-infrastructure-vllm-golang-gateway/)
+- [Urban Canyon GPS Multipath Map-Matching Architecture](/posts/urban-canyon-gps-multipath-map-matching-architecture/)
+- [Go Microservices Distributed Tracing Architecture with OpenTelemetry](/posts/go-microservices-distributed-tracing-architecture/)
+- [Dapr Workflow Go Tutorial: Saga Orchestration & Resilience](/posts/dapr-workflow-saga-orchestration-guide/)
 
 ---
 

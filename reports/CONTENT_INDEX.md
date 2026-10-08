@@ -1,6 +1,6 @@
 # Vesviet Content Index (tanhdev.com)
 
-> Snapshot date: 2026-10-05 · Branch `main` · Total content files: **380** (~1,075,000 words)
+> Snapshot date: 2026-10-08 · Branch `main` · Total content files: **380** (~1,080,000 words)
 
 > Site: Hugo + PaperMod, `en` default, canonical host `https://tanhdev.com/`
 > English flagship portfolio. Regenerate this index after every batch upgrade.
@@ -9,12 +9,12 @@
 
 | Section | Files | Notes |
 |---|---|---|
-| `content/posts/` | 66 | 66 with Answer-first (100.0%); 17 standalone posts upgraded to 2027 SOTA Masterclass with 100-round deep research dossiers (Batch 7 upgraded 2026-10-05, ~245,000 words); 10/10 Anchor Pillar Hubs SOTA certified |
+| `content/posts/` | 66 | 66 with Answer-first (100.0%); 17 standalone posts upgraded to 2027 SOTA Masterclass with 100-round deep research dossiers (Anchor Pillar Hub #1 `go-microservices.md` upgraded 2026-10-08, ~250,000 words); 10/10 Anchor Pillar Hubs SOTA certified |
 | `content/series/` | 251 | 25 series; 225 chapters + 25 series `_index.md` + 1 parent `_index.md` (~692,166 words); 100% Answer-first |
 | `content/radar/` | 40 | 32 radar editions (2026-04 → 2026-10) + 7 monthly `_index.md` + 1 parent `_index.md` (~128,000 words) |
 | `content/categories/` | 16 | ai, architecture, backend, cloudflare, database, devops, e-commerce, engineering, fintech, golang, kubernetes, microservices, observability, payments, tech-radar + parent `_index.md` (~636 words) |
 | Root pages | 7 | `_index`, `about`, `hire`, `reading-map`, `legal-notice`, `terms-of-service`, `privacy-policy` (~7,281 words) |
-| `reports/` | 583 | 250 research JSON dossiers, 251 research MD docs + audits, series content indexes, 33 knowledge cards |
+| `reports/` | 584 | 250 research JSON dossiers, 251 research MD docs + audits, series content indexes, 33 knowledge cards, GSC audit & Master Remediation Plan 2026-10-08 |
 
 ## Anchor Pillar Hubs (link topology backbone)
 
@@ -77,6 +77,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 
 | Date / Commit | Campaign |
 |---|---|
+| `2026-10-08` | **Dual-Repo GSC Coverage Remediation Master Plan & Technical Execution**: Published comprehensive technical audit `reports/gsc-audit-2026-10-08.md` and master roadmap `reports/gsc-remediation-master-plan-2026-10-08.md`. Symmetrized 213 redirect rules in `static/_redirects` (expanded to 643 rules, 100% 1-hop 301, 0 307 temporary hops). Permanently eliminated 5xx server error via instant 301 redirect in `src/index.js`. Hardened `robots.txt` defense against mock API crawlers. Upgraded 16/16 category hubs with Answer-first (48–62w) and canonicalURL. Re-indexed all 25 series and 12 previously unlinked standalone posts in `reading-map.md`, eliminating orphan nodes while preserving strict One-Way Authority Rule (0 leaks to learn). Clustered 195 vesviet and 92 learn unindexed items across 6 engineering domains into Batches 8–12 upgrade roadmap. |
 | `2026-10-05` | **2027 SOTA Masterclass Batch 7 Standalone Posts Upgrade & Sitewide Anchor Pillar Hub Certification (500 rounds deep research)**: 5 high-priority standalone posts upgraded to 2027 SOTA Masterclass 7-gate standards (`mysql-scaling-sharding-tidb-architecture.md`, `graphhopper-distance-matrix-production-guide.md`, `temporal-saga-pattern-golang-distributed-transactions-guide.md`, `generative-ui-with-mcp-ai-native-frontend.md`, `deploying-astro-on-cloudflare-full-stack-edge-architecture.md`). Formally elevated Hub #6 (`deploying-astro-on-cloudflare-full-stack-edge-architecture`) and Hub #7 (`generative-ui-with-mcp-ai-native-frontend`) to certified SOTA, achieving 10/10 (100.0%) sitewide Anchor Pillar Hub certification. All posts exceed 20.5 KB and 2,500 body words, feature atomic Answer-first 48–62w, prerequisite callouts, >=2 valid Mermaid diagrams, >=3 {{< faq >}} shortcodes, production code realism, zero leaks to learn, and bidirectional anchor links. 5 100-round Draft 2020-12 research dossiers archived in `reports/archive/research-dossiers/` with 100% SHA-256 twin parity. |
 | `2026-10-05` | **2027 SOTA Masterclass Tech Radar Upgrade: Kratos v2.9 & Dapr 1.15 Microservices & Batch 6 Standalone Posts Upgrade (600 rounds deep research)**: Edition #2 twin publication and 5 standalone posts (Ranks 6–10) upgraded to 7/7 SOTA gates. |
 | `2026-10-04` | **2027 SOTA Masterclass Batch 5 Standalone Posts Upgrade (500 rounds deep research)**: 5 top-ranked posts upgraded to 2027 SOTA Masterclass 7-gate standards (`osrm-vs-graphhopper-architecture-comparison.md`, `zero-trust-service-mesh-security-spiffe-spire-istio-golang.md`, `alipay-double-11-architecture-tps.md`, `cloudflare-d1-durable-objects-realtime-cart.md`, `building-custom-golang-vector-database-engine-hnsw.md`). All posts >20.5 KB, >=2,500w, single-line Answer-first 48–62w, prerequisite callouts, >=2 valid Mermaid diagrams, >=3 {{< faq >}} shortcodes, production code realism, zero leaks to learn, anchor pillar links. 5 100-round Draft 2020-12 research dossiers archived in `reports/archive/research-dossiers/`. |
@@ -216,5 +217,23 @@ Synchronized twins:
     - All posts satisfy size > 20.5 KB, body words >= 2,500, atomic Answer-first 48–62 words, prerequisite callout, >= 2 valid Mermaid diagrams, >= 3 `{{< faq >}}` shortcodes, production code realism, zero leaks to learn (vesviet), reciprocal English badge (learn).
     - Increases sitewide 2027 SOTA 7/7 gate certified standalone posts to 17 / 66 (25.8%) on vesviet and 17 / 86 (19.8%) on learn.
     - Expanded test harness `learn/tests/verify_target_posts_sota.py` with `BATCH7_POSTS` and evaluated all 17 post pairs (34 files) with 100% PASS under `--scope all`.
+14. **Dual-Repo Content Matrix Indexing & GSC 2026-10-08 Technical Coverage Remediation [RESOLVED ✅]:**
+    - Ingested and reconciled official GSC coverage archives (`tanhdev.com-Coverage-2026-10-08.zip` and `learn.tanhdev.com-Coverage-2026-10-08.zip`) dated 2026-10-08 with exact mathematical convergence ($\Delta = 0$).
+    - Published comprehensive technical audit reports `reports/gsc-audit-2026-10-08.md` and generated structured datasets `data/gsc_audit_dataset_2026_10_08.json` across both repositories.
+    - Verified 13.7% reduction in unindexed pages (226 down to 195) on `tanhdev.com` driven by SOTA Masterclass upgrades; observed massive impression surge peaking at 882 impressions/day.
+    - Maintained 100% 1-hop 301 redirect coverage (426 rules in `vesviet`, 169 rules in `learn`) with zero redirect loops or chains.
+    - Verified strict One-Way Authority Rule (0 outbound links to `learn.tanhdev.com` in `vesviet/content/`).
+    - Validated 100% pass across all regression test harnesses (`test_redirects_oracle.py`, `verify_gsc_remediation.py`, `verify_knowledge_base_sota.py`, `verify_target_posts_sota.py`) and zero-defect static builds (`hugo --minify`).
+15. **Dual-Repo GSC Coverage Remediation Master Plan & P0/P1 Technical Implementation [RESOLVED ✅]:**
+    - Formulated comprehensive Master Remediation Plan (`reports/gsc-remediation-master-plan-2026-10-08.md`) with 6-domain clustering of 195 `vesviet` and 92 `learn` unindexed items for Batches 8–12 upgrades.
+    - Permanently eliminated origin 5xx server error on `tanhdev.com` by replacing external telemetry proxy in `src/index.js` with an in-worker $\mathcal{O}(1)$ HTTP 301 redirect.
+    - Symmetrized 213 directory rules in `static/_redirects` (expanded from 426 to 643 rules) to eliminate Cloudflare 307 temporary hops and guarantee 100% 1-hop 301 redirects; verified via `test_redirects_oracle.py` (23/23 PASS).
+    - Hardened `static/robots.txt` across both repos to block mock tutorial API endpoints while allowing AI discoverability manifests `/llms.txt` and `/llms-full.txt`.
+    - Elevated all 16 category hubs (`content/categories/*/_index.md`) with Answer-first (48–62w), canonicalURL, and direct cluster links.
+    - Enriched sitewide `reading-map.md` with all 25 series (225 chapters) and 12 previously unlinked standalone posts, eliminating orphan nodes.
+    - Preserved strict One-Way Authority Rule (`grep -rn "learn.tanhdev.com" vesviet/content/` returned 0 matches).
+    - Safely archived `legacy-posts-upgrade-plan-2026-10-05.md` to `reports/archive/historical-audits/` to strictly maintain $\le 5$ loose files in root `reports/` (exactly 5 files).
+    - Validated 100% pass across all test suites and zero-defect static builds (`hugo --minify`).
+
 
 

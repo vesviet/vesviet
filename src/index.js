@@ -20,8 +20,10 @@ const REDIRECTS = new Map([
   ["/professional-services/", "/hire/"],
   ["/category/development", "/categories/engineering/"],
   ["/category/development/", "/categories/engineering/"],
-  ["/category/e-commerce", "/tags/e-commerce/"],
-  ["/category/e-commerce/", "/tags/e-commerce/"],
+  ["/category/e-commerce", "/categories/e-commerce/"],
+  ["/category/e-commerce/", "/categories/e-commerce/"],
+  ["/bauxeo", "/"],
+  ["/bauxeo/", "/"],
   ["/wp-content/uploads/2022/12/LE-TUAN-ANH-151639.pdf", "/Le-Tuan-Anh-Resume.pdf"],
 
   // Post Permalinks & Consolidations
@@ -45,12 +47,16 @@ const REDIRECTS = new Map([
   ["/posts/exporting-magento-2-data-flat-sql-nodejs/", "/series/magento-migration-vietnam/exporting-magento-2-data-flat-sql-nodejs/"],
 
   // Composable Commerce Legacy Slugs
-  ["/series/composable-commerce-migration/executive-summary-amazon-prime-video-monolith", "/series/composable-commerce-migration/part-0-executive-summary/"],
-  ["/series/composable-commerce-migration/executive-summary-amazon-prime-video-monolith/", "/series/composable-commerce-migration/part-0-executive-summary/"],
+  ["/series/composable-commerce-migration/executive-summary-amazon-prime-video-monolith", "/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/"],
+  ["/series/composable-commerce-migration/executive-summary-amazon-prime-video-monolith/", "/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/"],
 
   // Cloudflare Astro Edge redirects (matching static/_redirects:55-56)
   ["/posts/deploying-on-cloudflare-astro-full-stack-edge-architecture-and-wordpress-behind-the-cdn", "/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/"],
   ["/posts/deploying-on-cloudflare-astro-full-stack-edge-architecture-and-wordpress-behind-the-cdn/", "/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/"],
+
+  // Tech Radar Permalink Redirects (matching static/_redirects:722-723)
+  ["/radar/radar-2026-10-05-kratos-dapr-microservices-go", "/radar/2026-10/radar-2026-10-05-kratos-dapr-microservices-go/"],
+  ["/radar/radar-2026-10-05-kratos-dapr-microservices-go/", "/radar/2026-10/radar-2026-10-05-kratos-dapr-microservices-go/"],
 ]);
 
 export default {
@@ -92,50 +98,10 @@ export default {
       });
     }
 
-    // 5. Proxy API bauxeo with Edge Caching
+    // 5. Deprecated /bauxeo endpoint — immediate 301 redirect to apex home
+    // (External proxy to apikcnbauxeo.dulieuquantrac.com removed to permanently eliminate 5xx GSC errors)
     if (url.pathname === '/bauxeo' || url.pathname === '/bauxeo/') {
-      const day = url.searchParams.get('day') || '1';
-      const apiUrl = `http://apikcnbauxeo.dulieuquantrac.com/?day=${day}`;
-      
-      try {
-        const apiResponse = await fetch(apiUrl, {
-          cf: {
-            cacheTtl: 300, 
-            cacheEverything: true,
-          }
-        });
-
-        if (!apiResponse.ok) {
-           return new Response(JSON.stringify({ error: "Failed to fetch API" }), {
-               status: apiResponse.status,
-               headers: { "Content-Type": "application/json" }
-           });
-        }
-
-        const body = await apiResponse.text();
-
-        return new Response(body, {
-          status: 200,
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Methods": "GET, PUT, POST, DELETE, OPTIONS",
-            "Access-Control-Max-Age": "300",
-            "Cache-Control": "public, max-age=300",
-            "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token, Authorization",
-          }
-        });
-
-      } catch (error) {
-        return new Response(JSON.stringify({ error: error.message }), {
-          status: 500,
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
-          }
-        });
-      }
+      return Response.redirect(`${url.origin}/`, 301);
     }
 
     // 6. Branded 404 Fallback
