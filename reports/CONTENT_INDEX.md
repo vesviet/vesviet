@@ -234,6 +234,12 @@ Synchronized twins:
     - Preserved strict One-Way Authority Rule (`grep -rn "learn.tanhdev.com" vesviet/content/` returned 0 matches).
     - Safely archived `legacy-posts-upgrade-plan-2026-10-05.md` to `reports/archive/historical-audits/` to strictly maintain $\le 5$ loose files in root `reports/` (exactly 5 files).
     - Validated 100% pass across all test suites and zero-defect static builds (`hugo --minify`).
-
-
+16. **Googlebot Crawl Progress, Live Production Edge Probing & Indexability Audit [RESOLVED ✅]:**
+    - Executed comprehensive QA & Technical SEO crawl progress audit (`reports/googlebot-crawl-progress-audit-2026-10-09.md`) modeling 87-day longitudinal timeseries (`2026-07-10` to `2026-10-04`).
+    - Verified massive post-SOTA impression acceleration peaking at 882 impressions/day (+594%) and a sustained 13.7% reduction in unindexed pages (226 down to 195).
+    - Executed empirical live HTTP edge probing simulating Googlebot/2.1: verified 1-hop 301 redirects for `/bauxeo` (171ms, 0 5xx) and `/bauxeo/` (363ms), 200 OK for 16 category hubs and `reading-map`, and strict RFC 9309 mock API blocking.
+    - Verified crawl budget allocation: 444 tag pages strictly protected via `noindex, follow` taxonomy containment shield, keeping XML sitemap at 100% purity (370 URLs, 0 redirects, 0 404s).
+    - Established Batch 8 Priority Re-crawl Matrix clustering 195 crawled-not-indexed URLs across 6 technical domains.
+    - Safely archived `gsc-audit-2026-10-08.md` into `reports/archive/historical-audits/` to maintain the strict invariant of $\le 5$ loose files in root `reports/` (exactly 5 files).
+    - Validated 100% pass across all regression test harnesses and zero-defect static builds (`hugo --minify`).
 
