@@ -9,5 +9,8 @@
     "build:index": "npx pagefind --site public",
     "build:llms": "./scripts/generate-llms-txt.sh",
     "dev": "hugo server --disableFastRender"
+  },
+  "devDependencies": {
+    "wrangler": "^3.114.17"
   }
 }
