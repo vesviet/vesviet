@@ -20,7 +20,7 @@ tags:
   - "TiDB"
   - "C10M"
   - "API Gateway"
-description: "Flash sale architecture patterns for C10M-scale events: multi-tier traffic shedding, Redis Cluster Lua inventory reservations, hotkey splitting, and partitioned Kafka queue batching."
+description: "Flash sale architecture for C10M events: multi-tier traffic shedding, Redis Lua inventory reservations, hotkey splitting, and partitioned Kafka queue batching."
 ShowToc: true
 TocOpen: true
 cover:
@@ -32,7 +32,9 @@ canonicalURL: "https://tanhdev.com/posts/shopee-flash-sale-architecture/"
 
 # Flash Sale Architecture: Rate Limiting & Redis
 
-**Answer-first:** High-concurrency flash sale systems absorb millions of synchronized user requests using a **5-Tier Traffic Shedding Architecture**: Cloudflare CDN edge static asset caching, Envoy API Gateway atomic Token Bucket rate limiting, Redis Cluster Lua inventory reservations with hotkey slot splitting, partitioned Kafka queue buffering, and asynchronous Go worker pools executing batch upserts into TiDB/MySQL.
+> **Answer-first:** High-concurrency flash sale systems absorb millions of synchronized user requests using a **5-Tier Traffic Shedding Architecture**: Cloudflare CDN edge static asset caching, Envoy API Gateway atomic Token Bucket rate limiting, Redis Cluster Lua inventory reservations with hotkey slot splitting, partitioned Kafka queue buffering, and asynchronous Go worker pools executing batch upserts into TiDB/MySQL.
+
+> **Prerequisite:** Familiarity with Go concurrency primitives, distributed database transactions in TiDB/MySQL, and Redis Cluster caching topology at scale.
 
 > [!NOTE]
 > **On sourcing:** This article describes flash-sale architecture *patterns* for C10M-scale events; it is not a disclosure of Shopee's internal systems, and the figures here are engineering targets rather than published Shopee metrics. Shopee has not publicly documented its flash-sale internals in detail. What *is* public is its database platform choice — Shopee's adoption of TiDB is documented in PingCAP's case studies ([How Shopee Chose the Right Database](https://www.pingcap.com/case-study/choosing-right-database-for-your-applications/), [Shopping on Shopee, the TiDB Way](https://pingcap.medium.com/shopping-on-shopee-the-tidb-way-2bc3b8ab3b15)). Treat everything else as a reference pattern to validate against your own workload.
@@ -462,6 +464,7 @@ Fail-Open permits requests to proceed when an upstream check degrades, relying o
 
 ## Related Reading
 
+- [Architecting 21 Microservices in Go with DDD](/posts/architecting-21-service-ecommerce-golang-ddd/) — comprehensive enterprise e-commerce platform blueprint and high-concurrency event bus.
 - [Real-Time Inventory: Kafka, CDC & Redis for E-Commerce](/posts/real-time-inventory-ecommerce-architecture/) — deep dive into CDC event sourcing and stock synchronization.
 - [Surge Pricing & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture/) — dynamic demand pricing algorithms.
 - [Replace MySQL Sharding with TiDB: Architecture Guide](/posts/mysql-scaling-sharding-tidb-architecture/) — scaling distributed write-append logs.

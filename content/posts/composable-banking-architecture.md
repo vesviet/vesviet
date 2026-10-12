@@ -33,6 +33,8 @@ canonicalURL: "https://tanhdev.com/posts/composable-banking-architecture/"
 
 > **Answer-first:** Composable banking architecture replaces monolithic core banking software with modular, independent Packaged Business Capabilities (PBCs) aligned to BIAN standards. Connected via Go microservices, event streams (Kafka), and Temporal Saga orchestrators, composable banking enables financial institutions to deploy new financial products in days, achieve sub-10ms ledger settlement, and eliminate high-risk "Big Bang" migration outages.
 
+> **Prerequisite:** Familiarity with microservices architecture, double-entry ledger design, event sourcing, and distributed Saga patterns in Go.
+
 ## Migration Path from Monolith to Composable
 
 Transitioning to a composable core requires a phased approach to mitigate operational risk:

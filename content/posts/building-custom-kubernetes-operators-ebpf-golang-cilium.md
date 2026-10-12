@@ -5,6 +5,7 @@ author: "Tuấn Anh"
 date: "2026-08-06T08:00:00+07:00"
 lastmod: "2026-08-23T08:30:00+07:00"
 draft: false
+mermaid: true
 description: "Build custom Kubernetes v4 operators in Go with kubebuilder, controller-runtime reconciliation loops, and deep eBPF kernel observability via cilium/ebpf."
 summary: "Production-grade Kubernetes Operator and eBPF kernel observability guide using Kubebuilder v4 and cilium/ebpf. Features C eBPF kernel probes (sys_execve, tcp_connect), zero-copy BPF ringbuffers (BPF_MAP_TYPE_RINGBUF), CRD controllers with status subresources, and deployment without privileged mode."
 keywords:
@@ -55,7 +56,9 @@ canonicalURL: "https://tanhdev.com/posts/building-custom-kubernetes-operators-eb
 
 # Custom Kubernetes Operators in Go: Kubebuilder & eBPF
 
-**Answer-first:** Building custom Kubernetes operators in Go with eBPF and Cilium enables kernel-level network packet filtering, zero-overhead observability tracing, and dynamic security policy enforcement without sidecar proxy latency. Running these eBPF-powered controllers streams telemetry directly through lockless kernel ring buffers, enforces wire-speed Cilium XDP packet filters, and drives declarative security state synchronization through idempotent Kubebuilder reconciliation loops.
+> **Answer-first:** Building custom Kubernetes operators in Go with eBPF and Cilium enables kernel-level network packet filtering, zero-overhead observability tracing, and dynamic security policy enforcement without sidecar proxy latency. Running these eBPF-powered controllers streams telemetry directly through lockless kernel ring buffers, enforces wire-speed Cilium XDP packet filters, and drives declarative security state synchronization through idempotent Kubebuilder reconciliation loops.
+
+> **Prerequisite:** Proficiency in Go 1.25+, Linux kernel fundamentals (kprobes/tracepoints), Kubernetes CRDs, and Kubebuilder v4 controller architecture.
 
 > **Key Takeaways**
 > - **Sidecarless Ambient Architecture**: eBPF eliminates sidecar proxy overhead (saving 50MB–150MB RSS per pod and eliminating +1.5ms network hop latency) by tracing system calls directly inside the Linux kernel.
@@ -91,6 +94,29 @@ To eliminate sidecar overhead while expanding observability beyond network packe
 By coupling **Kubebuilder v4** (the standard Go framework for building Kubernetes Custom Controllers) with **`cilium/ebpf`** (the pure Go eBPF library with `bpf2go` compilation), platform teams can construct declarative Kubernetes Operators that orchestrate eBPF kernel telemetry daemons automatically across node pools. 
 
 This guide provides an authoritative, production-grade technical blueprint for designing, implementing, benchmarking, and operating custom Kubernetes Operators integrated with deep eBPF kernel tracing.
+
+```mermaid
+flowchart TD
+    subgraph UserSpace["User Space (Kubernetes Worker Node)"]
+        Ctrl["Kubebuilder Operator Controller (Go)"]
+        RingBuf["Cilium eBPF RingBuffer Consumer"]
+        CRD[("SecurityPolicy CRD")]
+        Cilium["Cilium Network Agent"]
+    end
+
+    subgraph KernelSpace["Linux Kernel Space"]
+        KprobeExec["sys_enter_execve Probe"]
+        KprobeTCP["tcp_v4_connect Probe"]
+        BPFMap[("BPF_MAP_TYPE_RINGBUF (Zero-Copy)")]
+    end
+
+    Ctrl -->|Watch & Reconcile Loop| CRD
+    KprobeExec -->|Push Raw Event| BPFMap
+    KprobeTCP -->|Push Raw Event| BPFMap
+    BPFMap -->|Zero-Copy Stream| RingBuf
+    RingBuf -->|Structured Telemetry| Ctrl
+    Ctrl -->|Apply Wire-Speed Filters| Cilium
+```
 
 ---
 
@@ -691,6 +717,26 @@ func (r *EbpfTracerReconciler) SetupWithManager(mgr ctrl.Manager) error {
 5. **Zero-Copy Memory Stream Consumption**: The Go userspace daemon reads raw sample records directly from the mapped ringbuffer memory without runtime allocations and streams telemetry metrics to Prometheus.
 6. **Status Subresource Synchronization**: The operator observes DaemonSet node readiness (`NumberReady` vs `DesiredNumberScheduled`), updates `EbpfTracer.status`, and reflects active node telemetry back into the CRD.
 
+```mermaid
+sequenceDiagram
+    autonumber
+    participant App as Target Pod Process
+    participant Kernel as Linux Kernel (eBPF Hook)
+    participant Ring as BPF RingBuffer (Zero-Copy)
+    participant Reconciler as Operator Controller (Go)
+    participant K8s as Kubernetes API Server
+
+    App->>Kernel: Trigger syscall (sys_execve / connect)
+    Kernel->>Ring: Reserve slot & write telemetry record
+    Kernel->>Ring: Commit record (lockless memory barrier)
+    Ring-->>Reconciler: Epoll wake-up notification
+    Reconciler->>Reconciler: Parse event & evaluate SecurityPolicy
+    alt Policy Violation Detected
+        Reconciler->>K8s: Update CRD status / emit K8s Event
+        Reconciler->>Kernel: Push XDP drop rule to BPF map
+    end
+```
+
 ---
 
 ## Section 5: Empirical Benchmarks & Operational Guidelines
@@ -1077,3 +1123,10 @@ Since Linux Kernel 5.8+, eBPF programs can run without `--privileged` mode by gr
 ## Conclusion
 
 Combining **Kubebuilder v4** with **`cilium/ebpf`** unlocks a new generation of cloud-native platform engineering. By replacing resource-heavy sidecar proxies with node-level eBPF kernel probes, organizations achieve sub-percent CPU overhead (<0.5%), zero network latency penalties, and deep observability across all container process executions, file system operations, and network connections. The declarative operator pattern ensures these kernel probes are declaratively managed, reconciled, and updated across modern Kubernetes clusters.
+
+---
+
+## Related Architecture & Pillar Guides
+For production deployment strategies, service mesh benchmarks, and cloud-native blueprints, explore:
+- [Go Microservices Distributed Tracing Architecture](/posts/go-microservices/)
+- [AWS EKS vs ECS: Architecture, Cost & Use Cases](/posts/aws-eks-vs-ecs-comparison/)

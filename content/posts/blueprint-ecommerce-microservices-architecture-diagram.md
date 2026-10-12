@@ -24,6 +24,8 @@ canonicalURL: "https://tanhdev.com/posts/blueprint-ecommerce-microservices-archi
 
 > **Answer-first:** An ecommerce microservices architecture diagram structures enterprise retail platforms into 6 bounded domains—Commerce Flow, Product & Content, Logistics, Post-Purchase, Identity & Access, and Platform Operations—powering 21 Go microservices. Orchestrated via gRPC contracts and Dapr Pub/Sub event meshes, this design delivers sub-50ms P99 latency, isolates database-per-service failures, and automates rollbacks via distributed Saga workflows.
 
+> **Prerequisite:** Familiarity with Domain-Driven Design (DDD), gRPC service contracts, Dapr event mesh Pub/Sub, and distributed Saga patterns in Go.
+
 ### Monolithic vs Microservices E-Commerce Comparison
 
 | Dimension | Monolithic E-Commerce | Microservices E-Commerce |
@@ -246,6 +248,265 @@ flowchart LR
 When the Catalog team updates a product, they write to their own Postgres database and publish `catalog.product.updated`. The Search Worker receives the event and rebuilds the Elasticsearch document for that SKU — merging current price from the Pricing service and current stock from the Warehouse service into a single flat document.
 
 No cron jobs. No full reindex. No stale data windows. Catalog, Pricing, and Warehouse each own their domain data; Search owns the read projection.
+
+## Production Implementation: Go API Gateway Reverse Proxy with Circuit Breaker
+
+The following Go 1.25+ implementation demonstrates the edge **API Gateway Reverse Proxy** routing across the 21 microservices. It combines per-IP **Token Bucket Rate Limiting** with an active **Circuit Breaker** to protect downstream services from cascading failure during traffic surges:
+
+```go
+// Package main implements a high-performance API Gateway Reverse Proxy for 21 Microservices.
+// Uses standard library net/http/httputil paired with Token Bucket and Circuit Breaker patterns.
+package main
+
+import (
+	"context"
+	"errors"
+	"log"
+	"net"
+	"net/http"
+	"net/http/httputil"
+	"net/url"
+	"os"
+	"os/signal"
+	"sync"
+	"syscall"
+	"time"
+
+	"golang.org/x/time/rate"
+)
+
+// BreakerState defines the current circuit breaker operating condition
+type BreakerState int
+
+const (
+	StateClosed BreakerState = iota
+	StateHalfOpen
+	StateOpen
+)
+
+// CircuitBreaker manages fault tolerance and prevents cascade failures
+type CircuitBreaker struct {
+	mu          sync.Mutex
+	state       BreakerState
+	failures    int
+	maxFailures int
+	cooldown    time.Duration
+	lastFailure time.Time
+}
+
+// NewCircuitBreaker initializes a circuit breaker with failure thresholds
+func NewCircuitBreaker(maxFailures int, cooldown time.Duration) *CircuitBreaker {
+	return &CircuitBreaker{
+		state:       StateClosed,
+		maxFailures: maxFailures,
+		cooldown:    cooldown,
+	}
+}
+
+// Allow determines if an inbound request may proceed to downstream targets
+func (cb *CircuitBreaker) Allow() bool {
+	cb.mu.Lock()
+	defer cb.mu.Unlock()
+
+	now := time.Now()
+	switch cb.state {
+	case StateOpen:
+		if now.Sub(cb.lastFailure) > cb.cooldown {
+			cb.state = StateHalfOpen
+			log.Printf("[CIRCUIT BREAKER] Transitioning to Half-Open probe state")
+			return true
+		}
+		return false
+	case StateHalfOpen, StateClosed:
+		return true
+	default:
+		return true
+	}
+}
+
+// RecordResult updates circuit breaker status based on downstream HTTP outcomes
+func (cb *CircuitBreaker) RecordResult(success bool) {
+	cb.mu.Lock()
+	defer cb.mu.Unlock()
+
+	if success {
+		if cb.state == StateHalfOpen {
+			log.Printf("[CIRCUIT BREAKER] Downstream recovered. Closing circuit (StateClosed)")
+		}
+		cb.state = StateClosed
+		cb.failures = 0
+		return
+	}
+
+	cb.failures++
+	cb.lastFailure = time.Now()
+	if cb.failures >= cb.maxFailures {
+		cb.state = StateOpen
+		log.Printf("[CIRCUIT BREAKER] Exceeded %d consecutive failures! Opening circuit (StateOpen) for %v", cb.failures, cb.cooldown)
+	}
+}
+
+// IPRateLimiter provides per-client IP token bucket rate limiting
+type IPRateLimiter struct {
+	mu       sync.Mutex
+	limiters map[string]*rate.Limiter
+	r        rate.Limit
+	b        int
+}
+
+// NewIPRateLimiter creates an IP rate limiter
+func NewIPRateLimiter(r rate.Limit, b int) *IPRateLimiter {
+	return &IPRateLimiter{
+		limiters: make(map[string]*rate.Limiter),
+		r:        r,
+		b:        b,
+	}
+}
+
+// GetLimiter retrieves or creates a token bucket for a specific IP
+func (i *IPRateLimiter) GetLimiter(ip string) *rate.Limiter {
+	i.mu.Lock()
+	defer i.mu.Unlock()
+
+	limiter, exists := i.limiters[ip]
+	if !exists {
+		limiter = rate.NewLimiter(i.r, i.b)
+		i.limiters[ip] = limiter
+	}
+	return limiter
+}
+
+// GatewayProxy routes inbound traffic to the 21 domain-bounded microservices
+type GatewayProxy struct {
+	checkoutProxy *httputil.ReverseProxy
+	catalogProxy  *httputil.ReverseProxy
+	limiter       *IPRateLimiter
+	checkoutCB    *CircuitBreaker
+}
+
+// NewGatewayProxy initializes reverse proxy transports with pooled connections
+func NewGatewayProxy(checkoutURL, catalogURL *url.URL) *GatewayProxy {
+	transport := &http.Transport{
+		Proxy: http.ProxyFromEnvironment,
+		DialContext: (&net.Dialer{
+			Timeout:   2 * time.Second,
+			KeepAlive: 30 * time.Second,
+		}).DialContext,
+		MaxIdleConns:        1000,
+		MaxIdleConnsPerHost: 200,
+		IdleConnTimeout:     90 * time.Second,
+		TLSHandshakeTimeout: 3 * time.Second,
+	}
+
+	pCheckout := httputil.NewSingleHostReverseProxy(checkoutURL)
+	pCheckout.Transport = transport
+
+	pCatalog := httputil.NewSingleHostReverseProxy(catalogURL)
+	pCatalog.Transport = transport
+
+	return &GatewayProxy{
+		checkoutProxy: pCheckout,
+		catalogProxy:  pCatalog,
+		limiter:       NewIPRateLimiter(rate.Limit(100), 200), // 100 req/s, burst 200
+		checkoutCB:    NewCircuitBreaker(5, 10*time.Second),
+	}
+}
+
+func extractIP(r *http.Request) string {
+	ip := r.Header.Get("X-Forwarded-For")
+	if ip != "" {
+		return ip
+	}
+	host, _, err := net.SplitHostPort(r.RemoteAddr)
+	if err != nil {
+		return r.RemoteAddr
+	}
+	return host
+}
+
+func (gw *GatewayProxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	clientIP := extractIP(r)
+
+	// 1. Edge Token Bucket Rate Limiting
+	if !gw.limiter.GetLimiter(clientIP).Allow() {
+		http.Error(w, `{"error":"RATE_LIMIT_EXCEEDED","message":"Too many requests. Please retry later."}`, http.StatusTooManyRequests)
+		return
+	}
+
+	// 2. Path-based Routing
+	path := r.URL.Path
+	switch {
+	case len(path) >= 9 && path[:9] == "/checkout":
+		// Protect critical Checkout Service via Circuit Breaker
+		if !gw.checkoutCB.Allow() {
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusServiceUnavailable)
+			_, _ = w.Write([]byte(`{"error":"CIRCUIT_OPEN","message":"Checkout service temporarily degraded. Retry in 10s."}`))
+			return
+		}
+
+		recorder := &statusRecorder{ResponseWriter: w, statusCode: http.StatusOK}
+		gw.checkoutProxy.ServeHTTP(recorder, r)
+
+		if recorder.statusCode >= 500 {
+			gw.checkoutCB.RecordResult(false)
+		} else {
+			gw.checkoutCB.RecordResult(true)
+		}
+
+	case len(path) >= 8 && path[:8] == "/catalog":
+		gw.catalogProxy.ServeHTTP(w, r)
+
+	default:
+		http.Error(w, `{"error":"NOT_FOUND","message":"API route boundary does not exist."}`, http.StatusNotFound)
+	}
+}
+
+type statusRecorder struct {
+	http.ResponseWriter
+	statusCode int
+}
+
+func (r *statusRecorder) WriteHeader(code int) {
+	r.statusCode = code
+	r.ResponseWriter.WriteHeader(code)
+}
+
+func main() {
+	checkoutURL, _ := url.Parse("http://checkout-service.production.svc.cluster.local:8080")
+	catalogURL, _ := url.Parse("http://catalog-service.production.svc.cluster.local:8081")
+
+	gateway := NewGatewayProxy(checkoutURL, catalogURL)
+
+	server := &http.Server{
+		Addr:         ":8000",
+		Handler:      gateway,
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		IdleTimeout:  120 * time.Second,
+	}
+
+	go func() {
+		log.Printf("21-Service Go API Gateway listening on :8000...")
+		if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			log.Fatalf("Gateway server failure: %v", err)
+		}
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	log.Println("Initiating graceful shutdown for API Gateway...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	if err := server.Shutdown(ctx); err != nil {
+		log.Fatalf("Forced shutdown error: %v", err)
+	}
+	log.Println("API Gateway gracefully terminated.")
+}
+```
 
 ## The Deployment Layer
 

@@ -33,6 +33,8 @@ weight: 1
 
 > **Answer-first:** Combinatorial fleet routing at scale requires decoupling road-network distance calculation from vehicle assignment. By pairing an in-memory OSRM table engine with an Adaptive Large Neighborhood Search (ALNS) solver written in Go 1.24, engineering teams can solve Capacitated Vehicle Routing with Time Windows (VRPTW) for 500+ stops in under 800ms while eliminating 99% of third-party map API costs.
 
+> **Prerequisite:** Familiarity with graph search algorithms (Dijkstra, Contraction Hierarchies), combinatorial heuristics (ALNS, Simulated Annealing), and Go memory layout optimization.
+
 ---
 
 ## Key Architectural Takeaways
@@ -511,10 +513,14 @@ sequenceDiagram
 Deploying a self-hosted Go ALNS + OSRM routing architecture yields immediate bottom-line cost savings across both infrastructure and real-world fleet logistics.
 
 ```mermaid
-pie title Monthly Routing Cost Breakdown
-    "Google Maps Matrix API" : 85
-    "Cloud Server Compute (AWS EKS)" : 12
-    "Maintenance and Monitoring" : 3
+flowchart LR
+    subgraph CostBreakdown["Monthly Routing Cost Breakdown (%)"]
+        direction LR
+        G["Google Maps Matrix API: 85%"]
+        C["Cloud Server Compute (AWS EKS): 12%"]
+        M["Maintenance and Monitoring: 3%"]
+    end
+    G -.-> C -.-> M
 ```
 
 ### 7.1. Infrastructure Cost Analysis
