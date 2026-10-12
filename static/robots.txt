@@ -2,13 +2,32 @@
 # Default: allow all crawlers (including Googlebot, Bingbot, etc.)
 # ──────────────────────────────────────────────
 User-agent: *
+# Disallow taxonomy RSS feeds
+Disallow: /tags/*/index.xml$
+Disallow: /categories/*/index.xml$
+Disallow: /series/*/index.xml$
 Disallow: /*/index.xml$
+
+# Disallow mock and API endpoints
+Disallow: /api/
+Disallow: /orders
+Disallow: /payments
+Disallow: /checkout
+Disallow: /catalog
+Disallow: /cart
+Disallow: /debug/
+Disallow: /internal/
+Disallow: /route/
+Disallow: /v1/
+Disallow: /v2/
+Disallow: /bauxeo
+Disallow: /bauxeo/
 Disallow: /portfolio/
 Disallow: /wp-content/
-Disallow: /api/
 Disallow: /config/
 Disallow: /data/
 Disallow: /data$
+Disallow: /data
 Disallow: /sse
 Disallow: /sse$
 Disallow: /ws
@@ -37,9 +56,6 @@ User-agent: ClaudeBot
 Allow: /
 
 User-agent: PerplexityBot
-Allow: /
-
-User-agent: Bingbot
 Allow: /
 
 User-agent: Google-Extended
