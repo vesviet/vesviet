@@ -42,25 +42,25 @@ flowchart TD
     Cloudflare --> GoGateway[Golang Search API Gateway Cluster]
     
     subgraph CachingAndRouting ["Tier 1: Caching & Triage"]
-        GoGateway --> SemCache[(Redis / Dragonfly Vector Semantic Cache)]
-        GoGateway --> SLMRouter[Local SLM Intent Router: Qwen 2.5 3B on vLLM]
+        GoGateway --> SemCache[("Redis / Dragonfly Vector Semantic Cache")]
+        GoGateway --> SLMRouter["Local SLM Intent Router: Qwen 2.5 3B on vLLM"]
     end
     
-    SemCache -- "Hit (Cosine >= 0.96)" --> InstantResp[Return Cached Search JSON (<3ms)]
+    SemCache -- "Hit (Cosine >= 0.96)" --> InstantResp["Return Cached Search JSON (<3ms)"]
     InstantResp --> GoGateway
     
     subgraph ExecutionPlane ["Tier 2: Retrieval & Live Tools"]
-        SLMRouter -- "Routine Query (70%)" --> EinoLocal[Eino DAG: Local Qdrant Hybrid Search]
-        SLMRouter -- "Complex Reasoning (30%)" --> FrontierCloud[Cloud Frontier Escalation API via PII DLP]
+        SLMRouter -- "Routine Query (70%)" --> EinoLocal["Eino DAG: Local Qdrant Hybrid Search"]
+        SLMRouter -- "Complex Reasoning (30%)" --> FrontierCloud["Cloud Frontier Escalation API via PII DLP"]
         EinoLocal --> QdrantCluster[("Qdrant Cluster (3 Nodes, HNSW, SQ8)")]
         EinoLocal --> RedisBitmaps[("Redis Stock Bitmaps (Sub-3ms)")]
     end
     
     subgraph ObservabilityStack ["Tier 3: Distributed Telemetry"]
-        GoGateway & EinoLocal & QdrantCluster --> OTelCollector[OpenTelemetry Collector Agent]
-        OTelCollector --> Prometheus[(Prometheus Metrics: Latency, Hit-Rate, QPS)]
-        OTelCollector --> Jaeger[(Jaeger Distributed Tracing Spans)]
-        OTelCollector --> ClickHouse[(ClickHouse Search Analytics Warehouse)]
+        GoGateway & EinoLocal & QdrantCluster --> OTelCollector["OpenTelemetry Collector Agent"]
+        OTelCollector --> Prometheus[("Prometheus Metrics: Latency, Hit-Rate, QPS")]
+        OTelCollector --> Jaeger[("Jaeger Distributed Tracing Spans")]
+        OTelCollector --> ClickHouse[("ClickHouse Search Analytics Warehouse")]
     end
 ```
 
@@ -421,7 +421,7 @@ sequenceDiagram
     Envoy->>Node1: Reroutes active query traffic to Node 1 & Node 2
     Note over Node1: Node 1 elected New Raft Leader (Time: 1.1s)!
     Node1-->>Envoy: Successful Search Point Responses
-    Envoy-->>Load: HTTP 200 (Zero 500 errors; P99 temporarily 68ms)
+    Envoy-->>Load: HTTP 200 (Zero 500 errors -  P99 temporarily 68ms)
 ```
 
 ### Game-Day Execution Observations

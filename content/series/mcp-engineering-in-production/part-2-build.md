@@ -71,8 +71,8 @@ In Model Context Protocol, tool discoverability depends entirely upon JSON Schem
 
 ```mermaid
 graph LR
-    GoStruct["Go Struct with Tags<br/>`json:"query" jsonschema:"required"`"] --> Reflector["Reflection Schema Engine<br/>(invopop/jsonschema)"]
-    Reflector --> JSONSchema["Normalized JSON Schema v7<br/>`{"type": "object", "properties": ...}`"]
+    GoStruct["Go Struct with Tags<br/>'json:query jsonschema:required'"] --> Reflector["Reflection Schema Engine<br/>(invopop/jsonschema)"]
+    Reflector --> JSONSchema["Normalized JSON Schema v7<br/>{type: object, properties: ...}"]
     JSONSchema --> Cache["In-Memory Descriptor Cache"]
     Cache -->|"tools/list Response"| AIHost["AI Agent / Model Host"]
 ```

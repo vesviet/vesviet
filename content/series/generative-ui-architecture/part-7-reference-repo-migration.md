@@ -250,7 +250,7 @@ sequenceDiagram
     Buffer->>Ingest: POST /v1/traces (Massive batch: 50MB payload)
     Ingest-->>Buffer: 429 Too Many Requests (Rate limit breached)
     Buffer->>Buffer: Client buffer attempts retry without exponential backoff
-    Note over Client: Browser memory saturated; UI thread severely throttled
+    Note over Client: Browser memory saturated -  UI thread severely throttled
 ```
 
 ### Root Cause Analysis (RCA)

@@ -136,8 +136,8 @@ flowchart TD
         N_B["Node B (Angle 25°)"]
         N_C["Node C (Angle 350°)"]
     end
-    Note over N_A,N_B: Node B only owns 15° of ring!
-    Note over N_C,N_A: Node A owns 335° of ring (HOTSPOT! 93% of all traffic!)
+%% Note over N_A,N_B: Node B only owns 15° of ring!
+%% Note over N_C,N_A: Node A owns 335° of ring (HOTSPOT! 93% of all traffic!)
 ```
 
 In the diagram above, Node A receives 93% of all client requests, exhausting its CPU and memory while Node B sits idle.

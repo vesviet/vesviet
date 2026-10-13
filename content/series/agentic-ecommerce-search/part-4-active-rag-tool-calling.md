@@ -306,9 +306,15 @@ stateDiagram-v2
     HalfOpen --> Closed: 3 Consecutive Successful Probe Requests
     HalfOpen --> Open: Any Single Failure During Probe
     
-    note right of Closed: Normal Operation: Requests routed directly to live microservices
-    note right of Open: Tripped State: Requests immediately fail over to cached defaults (<0.1ms)
-    note right of HalfOpen: Trial State: Canary requests test downstream recovery
+    note right of Closed
+        Normal Operation - Requests routed directly to live microservices
+    end note
+    note right of Open
+        Tripped State - Requests immediately fail over to cached defaults
+    end note
+    note right of HalfOpen
+        Trial State - Canary requests test downstream recovery
+    end note
 ```
 
 ### Implementing Circuit-Protected Tool Calling in Go

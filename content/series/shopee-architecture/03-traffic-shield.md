@@ -47,7 +47,7 @@ flowchart TD
     subgraph EdgePerimeter ["Edge & Network Perimeter (Tier 1 & 2)"]
         direction TB
         L1["Layer 1: Anycast Edge CDN (15,000,000 Clicks/sec)"] -->|Static Assets Cached at Edge| L2["Layer 2: Cloudflare / Envoy WAF (3,000,000 Req/sec)"]
-        L2 -->|Bot Traps & PoW Token Filtering| L3["Layer 3: Virtual Waiting Room (1,200,000 Req/sec)"]
+        L2 -->|"Bot Traps & PoW Token Filtering"| L3["Layer 3: Virtual Waiting Room (1,200,000 Req/sec)"]
     end
 
     subgraph GatewayPerimeter ["API Gateway & Circuit Breaking (Tier 3 & 4)"]
@@ -59,7 +59,7 @@ flowchart TD
     subgraph PersistencePerimeter ["Asynchronous Buffer & Storage (Tier 5 & 6)"]
         direction TB
         L5 -->|Atomic DECRBY Success| L6["Layer 6: Apache Kafka Shock Reservoir (50,000 Msg/sec)"]
-        L6 -->|Batch Coalescing (200 Orders/Batch)| L7["Layer 7: Distributed TiDB Persistence (15,000 Writes/sec)"]
+        L6 -->|"Batch Coalescing (200 Orders/Batch)"| L7["Layer 7: Distributed TiDB Persistence (15,000 Writes/sec)"]
     end
 
     classDef edge fill:#ffebee,stroke:#c62828,stroke-width:2px;

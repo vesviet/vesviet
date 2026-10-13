@@ -52,13 +52,13 @@ flowchart TD
         D2 -->|Simultaneous Cache Miss Wave| DB
 
         V3["Vector 3: Cache Breakdown"] -->|Hot Key Expiration| D3["1 Hot Key Expires at Peak 50k RPS"]
-        D3 -->|50,000 Redundant Queries (Stampede)| DB
+        D3 -->|"50,000 Redundant Queries (Stampede)"| DB
     end
 
     subgraph Mitigations ["2027 SOTA Defense Architecture"]
-        M1["Scalable Bloom / Cuckoo Filters"] -->|Rejects 99.9% Non-Existent Keys| R1["HTTP 404 Fast Return"]
+        M1["Scalable Bloom / Cuckoo Filters"] -->|"Rejects 99.9% Non-Existent Keys"| R1["HTTP 404 Fast Return"]
         M2["Gaussian TTL Jitter + Async Warming"] -->|Disperses Expirations Over Window| R2["Flat, Predictable Cache Evictions"]
-        M3["Go singleflight.DoChan + XFetch PER"] -->|Coalesces 50,000 Calls into 1 Query| R3["Zero Stampede & Zero Cache Miss Spikes"]
+        M3["Go singleflight.DoChan + XFetch PER"] -->|"Coalesces 50,000 Calls into 1 Query"| R3["Zero Stampede & Zero Cache Miss Spikes"]
     end
 
     classDef danger fill:#ffebee,stroke:#c62828,stroke-width:2px;

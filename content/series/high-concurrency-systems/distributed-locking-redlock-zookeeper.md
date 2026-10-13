@@ -52,12 +52,12 @@ flowchart TD
         Storage["Shared Database / Object Storage / Ledger"]
     end
 
-    PodA -->|1. Acquire Lock (Lease)| DLM
-    PodB -->|2. Try Acquire -> Denied!| DLM
-    DLM -->>|3. Grant Exclusive Lease| PodA
+    PodA -->|"1. Acquire Lock (Lease)"| DLM
+    PodB -->|"2. Try Acquire -> Denied!"| DLM
+    DLM -->|3. Grant Exclusive Lease| PodA
     PodA -->|4. Mutate Exclusive Resource| Storage
     PodA -->|5. Release Lease| DLM
-    DLM -->>|6. Grant Lease to Next in Queue| PodB
+    DLM -->|6. Grant Lease to Next in Queue| PodB
 
     classDef pod fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
     classDef dlm fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;

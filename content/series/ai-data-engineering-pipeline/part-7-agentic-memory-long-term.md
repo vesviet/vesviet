@@ -150,7 +150,7 @@ stateDiagram-v2
 
     state "Working Context Compaction" as CompactionPipeline {
         IngestWorking --> TokenCheck: Check Active Token Count (> Threshold)
-        TokenCheck --> SummarizeTail: Compress Turns [1 : N-k] via Fast LLM
+        TokenCheck --> SummarizeTail: Compress Turns 1 to N-k via Fast LLM
         SummarizeTail --> RebuildBuffer: Retain System Prompt + Summary + Last k Turns
     }
 

@@ -69,9 +69,9 @@ Consider what occurs when failures intervene:
 ```mermaid
 flowchart TD
     subgraph DualWriteProblem ["The Fatal Dual-Write Failure Vector"]
-        A1["Go Microservice"] -->|1. SQL BEGIN & COMMIT| DB1["PostgreSQL Primary Database"]
+        A1["Go Microservice"] -->|"1. SQL BEGIN & COMMIT"| DB1["PostgreSQL Primary Database"]
         DB1 -->|Order Saved in DB| A1
-        A1 -->|2. Async Network RPC: Publish Event| K1["Apache Kafka Cluster"]
+        A1 -->|"2. Async Network RPC: Publish Event"| K1["Apache Kafka Cluster"]
         K1 -.->|Network Partition / Broker Timeout / Crash!| FAIL["Event Dropped / Diverged!"]
         FAIL -->|Consequence| CRIT["Split-Brain State: DB has Order, Kafka Never Notified!"]
     end
@@ -80,7 +80,7 @@ flowchart TD
         A2["Go Microservice"] -->|1. Atomic Single Transaction| TX["BEGIN TX"]
         TX -->|Insert Entity| TBL1["orders Table"]
         TX -->|Insert Event Payload| TBL2["outbox_events Table"]
-        TX -->|COMMIT TX (Atomic)| DB2["PostgreSQL Primary (WAL Engine)"]
+        TX -->|"COMMIT TX (Atomic)"| DB2["PostgreSQL Primary (WAL Engine)"]
         DB2 -->|pgoutput Logical Decoding| CDC["Debezium CDC Connector"]
         CDC -->|Zero-Query Streaming Pipeline| K2["Kafka Cluster (Partition Key: order_id)"]
         K2 -->|At-Least-Once Delivery| CONS["Downstream Consumer (Inbox Pattern)"]

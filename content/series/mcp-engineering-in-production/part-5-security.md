@@ -44,7 +44,7 @@ graph TD
 
         Attacker -->|1. Stores Poisoned Payload| Agent
         Agent -->|2. Ingests Payload into Context| LLM
-        LLM -->|3. Issues Hijacked Tool Call:<br/>db.exec('DROP TABLE users;--')| PrivTool
+        LLM -->|"3. Issues Hijacked Tool Call:<br/>db.exec('DROP TABLE users;--')"| PrivTool
         PrivTool -->|4. Destructive Execution| CrownJewels
     end
 ```

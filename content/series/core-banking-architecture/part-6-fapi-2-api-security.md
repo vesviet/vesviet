@@ -297,7 +297,7 @@ flowchart TD
         ClientApp["Mobile Banking App / Licensed Third-Party Fintech"]
         WAF["Envoy Gateway + WAF<br/>(DDoS Protection & Rate Limiting)"]
         DPoPFilter["FAPI 2.0 DPoP Cryptographic Validator"]
-        ClientApp -->|HTTPS + DPoP (RFC 9449)| WAF
+        ClientApp -->|"HTTPS + DPoP (RFC 9449)"| WAF
         WAF --> DPoPFilter
     end
 

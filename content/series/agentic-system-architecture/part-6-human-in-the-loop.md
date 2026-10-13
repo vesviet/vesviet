@@ -141,7 +141,7 @@ sequenceDiagram
     
     Engine-->>Agent: Wakeup Workflow from Event History Checkpoint!
     deactivate Engine
-    Agent->>Agent: Verify Signature Invariant; Execute Physical Mutation
+    Agent->>Agent: Verify Signature Invariant -  Execute Physical Mutation
     Agent->>Engine: Append Immutable Action Log & Complete Saga
 ```
 

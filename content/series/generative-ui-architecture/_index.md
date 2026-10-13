@@ -319,7 +319,7 @@ sequenceDiagram
     User->>User: Client retry loop catches error without backoff
     Edge-->>User: Packet 2: 154000.50}]}}
     Note over User: Race condition: Regex stream parser hangs on nested braces
-    User->>User: Event loop starved; UI thread completely locked (100% CPU)
+    User->>User: Event loop starved -  UI thread completely locked (100% CPU)
 ```
 
 ### Root Cause Analysis (RCA)

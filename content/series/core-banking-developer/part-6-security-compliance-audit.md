@@ -74,7 +74,7 @@ sequenceDiagram
     ATM->>Switch: Transmit Encrypted PIN Block (Encrypted with ATM ZPK)
     
     Switch->>HSM: Command 0xCA: Translate PIN Block (from ATM ZPK to Core ZPK)
-    Note over HSM: Decrypts PIN block using ATM ZPK inside secure silicon;<br/>Re-encrypts under Core ZPK; Raw PIN NEVER leaves HSM RAM!
+    Note over HSM: Decrypts PIN block using ATM ZPK inside secure silicon - <br/>Re-encrypts under Core ZPK -  Raw PIN NEVER leaves HSM RAM!
     HSM-->>Switch: Return Re-encrypted PIN Block
     
     Switch->>Core: Dispatch Authorization Request (with Core Encrypted PIN Block)

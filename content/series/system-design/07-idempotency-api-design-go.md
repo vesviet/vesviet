@@ -43,13 +43,13 @@ In distributed computing and web architecture, network packets traverse multiple
 
 ```mermaid
 flowchart TD
-    Client["Client Mobile / Web App"] -->|1. POST /v1/payments ($500)| Ingress["API Gateway / Ingress"]
+    Client["Client Mobile / Web App"] -->|"1. POST /v1/payments ($500)"| Ingress["API Gateway / Ingress"]
     Ingress -->|2. Forward Request| Billing["Billing Microservice (Go 1.24+)"]
-    Billing -->|3. Debit Account & Commit| DB[(PostgreSQL Master DB)]
-    Billing -.->|4. HTTP 200 OK (Packet Dropped on Route!)| Ingress
+    Billing -->|"3. Debit Account & Commit"| DB[(PostgreSQL Master DB)]
+    Billing -.->|"4. HTTP 200 OK (Packet Dropped on Route!)"| Ingress
     Ingress -.->|5. Timeout 504 Gateway Timeout| Client
-    Client -->|6. Automatic Retry: POST /v1/payments ($500)| Ingress
-    Note over Client,DB: Without Idempotency, Account is Debited Twice ($1,000)!
+    Client -->|"6. Automatic Retry: POST /v1/payments ($500)"| Ingress
+%% Note over Client,DB: Without Idempotency, Account is Debited Twice ($1,000)!
 ```
 
 When a mobile banking application initiates an international wire transfer, a brief loss of cell coverage can sever the TCP connection after the database transaction has committed. The mobile operating system or SDK immediately initiates an automated retry. Without a formal idempotency contract, the banking server processes the second request as a brand-new mutation, debiting the customer a second time and causing severe financial and regulatory liability.

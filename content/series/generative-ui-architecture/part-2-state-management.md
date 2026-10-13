@@ -196,7 +196,7 @@ sequenceDiagram
     alt User clicks Undo within 5s
         User->>UI: Clicks "Undo"
         UI->>Buffer: Pop Snapshot & Rollback State
-        UI-->>User: Pod status restored to "Running"; Network call aborted
+        UI-->>User: Pod status restored to "Running" -  Network call aborted
     else 5s expires without Undo
         Buffer->>Backend: Dispatches POST /api/pods/terminate (Idempotency Key)
         Backend-->>UI: 200 OK (Confirmed)
@@ -285,14 +285,14 @@ sequenceDiagram
     participant Backend as Portfolio Optimizer Agent
 
     Backend->>Edge: Stream Token 40: Allocate 30% to VOO
-    Note over Edge: Transatlantic fiber flap; Connection severed
-    Investor->>Investor: Client detects network drop; triggers auto-reconnect
+    Note over Edge: Transatlantic fiber flap -  Connection severed
+    Investor->>Investor: Client detects network drop -  triggers auto-reconnect
     Investor->>Investor: Investor manually drags slider: Allocate 50% to QQQ
     Backend->>Backend: Backend continues execution unaware of disconnect
     Investor->>Edge: Reconnect: GET /stream?last_event_id=39
     Edge-->>Investor: Replays Token 40 & Token 41 (Old allocation model)
     Note over Investor: Client state engine merged Token 41 without vector clocks
-    Investor-->>Investor: UI display shows 80% total allocation; portfolio oversubscribed!
+    Investor-->>Investor: UI display shows 80% total allocation -  portfolio oversubscribed!
 ```
 
 ### Root Cause Analysis (RCA)

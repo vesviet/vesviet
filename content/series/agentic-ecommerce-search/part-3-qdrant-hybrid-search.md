@@ -328,7 +328,7 @@ sequenceDiagram
 
     Shoppers->>Gateway: Search: "Autumn down jackets" (8,000 QPS)
     Gateway->>Qdrant: gRPC SearchHybrid(ef=512)
-    Note over Qdrant,Qdrant2: ef=512 forces 512-hop graph scans per query!<br/>CPU L3 caches blown out by millions of vector scans!<br/>Thread pool locked; response time hits 480ms!
+    Note over Qdrant,Qdrant2: ef=512 forces 512-hop graph scans per query!<br/>CPU L3 caches blown out by millions of vector scans!<br/>Thread pool locked -  response time hits 480ms!
     Gateway-->>Shoppers: HTTP 504 Gateway Timeout (Deadline Exceeded)
 ```
 

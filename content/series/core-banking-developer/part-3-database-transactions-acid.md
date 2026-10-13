@@ -80,12 +80,12 @@ sequenceDiagram
     
     Tx1->>DB: SELECT FOR UPDATE WHERE id = 'Bob'
     DB-->>Tx1: Lock Acquired on Bob
-    Tx1->>DB: Execute Debit Alice & Credit Bob; COMMIT
-    DB-->>Tx1: Transaction 1 Committed; Locks Released!
+    Tx1->>DB: Execute Debit Alice & Credit Bob -  COMMIT
+    DB-->>Tx1: Transaction 1 Committed -  Locks Released!
     
     DB-->>Tx2: Lock Acquired on Alice for Tx 2
-    Tx2->>DB: SELECT FOR UPDATE WHERE id = 'Bob'; Lock Acquired
-    Tx2->>DB: Execute Debit Bob & Credit Alice; COMMIT
+    Tx2->>DB: SELECT FOR UPDATE WHERE id = 'Bob' -  Lock Acquired
+    Tx2->>DB: Execute Debit Bob & Credit Alice -  COMMIT
     DB-->>Tx2: Transaction 2 Committed (Zero Deadlocks!)
 ```
 

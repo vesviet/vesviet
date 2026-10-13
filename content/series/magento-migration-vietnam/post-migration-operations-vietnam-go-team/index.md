@@ -89,11 +89,11 @@ sequenceDiagram
     Pager->>SRE: Page Primary On-Call Engineer (ACK within 5 mins)
     SRE->>Pager: Acknowledge Incident Alert
     SRE->>Stakeholder: Open #incident-checkout-p1 channel & declare incident commander
-    SRE->>Runbook: Execute Diagnostic CLI script (`sre-cli diagnose checkout`)
+    SRE->>Runbook: Execute Diagnostic CLI script ('sre-cli diagnose checkout')
     Runbook-->>SRE: Root Cause: PgBouncer connection pool saturation (Max 200/200 reached)
     SRE->>Runbook: Scale PgBouncer pool & trigger graceful pod restart
     Runbook-->>SRE: DB Pool Utilization normal (35%), Error rate normalized to 0.001%
-    SRE->>Stakeholder: Mitigation confirmed; Initiate 48-hour Post-Mortem review
+    SRE->>Stakeholder: Mitigation confirmed -  Initiate 48-hour Post-Mortem review
 ```
 
 ---

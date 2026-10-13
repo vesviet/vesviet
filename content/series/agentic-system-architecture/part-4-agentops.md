@@ -133,16 +133,13 @@ sequenceDiagram
     Agent->>Tracer: Start Reasoning Step (Input: State Transcript)
     activate Tracer
     Tracer->>LoopGuard: Register Step State Hash (SHA-256)
-    activate LoopGuard
     LoopGuard->>LoopGuard: Update Directed State Transition Graph
     LoopGuard->>LoopGuard: Run Cycle Detection (Tarjan / Hashing)
     alt No Cycle Detected (Normal Execution)
         LoopGuard-->>Tracer: State Clean (Cycle Count = 0)
-        deactivate LoopGuard
         Tracer-->>Agent: Proceed with LLM Inference & Tool Invocation
     else Cycle Detected (State Repeated >= 3 Times)
         LoopGuard-->>Tracer: WARNING: Cyclic Reasoning Loop Detected!
-        deactivate LoopGuard
         Tracer->>Breaker: Trip Circuit Breaker (Halt Workflow)
         activate Breaker
         Breaker-->>Agent: Terminate Execution (Error: REASONING_DEADLOCK)

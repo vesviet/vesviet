@@ -171,7 +171,7 @@ Real-time event streaming architectures must carefully evaluate transport protoc
 flowchart LR
     subgraph SSEFlow ["Server-Sent Events (SSE)"]
         direction TB
-        C1["Client"] -->|HTTP GET (Accept: text/event-stream)| S1["Server"]
+        C1["Client"] -->|"HTTP GET (Accept: text/event-stream)"| S1["Server"]
         S1 -.->|Unidirectional Text Stream| C1
     end
     subgraph WSFlow ["WebSockets (RFC 6455)"]

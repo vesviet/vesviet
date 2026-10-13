@@ -63,8 +63,8 @@ flowchart TD
         LocalCache -->|Stock Empty| ShortCircuit["Short-Circuit Return HTTP 200 (Sold Out in 5µs)"]
         LocalCache -->|Stock Active| SubKeyRoute["3. Random Sub-Key Shard Route (CRC32 Shard 0..N-1)"]
         SubKeyRoute --> RedisEngine["4. Redis Cluster Atomic Lua Script (EVALSHA)"]
-        RedisEngine -->|Lua Returns -1 (Empty)| MarkSoldOut["Set In-Process Local Sold-Out Flag"]
-        RedisEngine -->|Lua Returns >= 0| KafkaQueue["5. Emit OrderPlaced Event to Kafka Topic"]
+        RedisEngine -->|"Lua Returns -1 (Empty)"| MarkSoldOut["Set In-Process Local Sold-Out Flag"]
+        RedisEngine -->|"Lua Returns >= 0"| KafkaQueue["5. Emit OrderPlaced Event to Kafka Topic"]
     end
 
     subgraph AsyncCommit ["Asynchronous Database Ledger Engine"]

@@ -292,7 +292,7 @@ sequenceDiagram
     Note over MobileUser: Browser V8 engine begins parsing & compiling 18MB JS
     Note over MobileUser: 80 complex components eagerly evaluated in memory
     MobileUser->>MobileUser: Heap memory exceeds 512MB device limit
-    Note over MobileUser: V8 Garbage Collector triggers fatal OOM abort; Tab killed!
+    Note over MobileUser: V8 Garbage Collector triggers fatal OOM abort -  Tab killed!
 ```
 
 ### Root Cause Analysis (RCA)

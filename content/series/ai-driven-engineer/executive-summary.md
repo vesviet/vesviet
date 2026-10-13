@@ -364,12 +364,12 @@ To understand which engineering skills provide lasting career leverage, consider
 ```mermaid
 quadrantChart
     title Developer Competency Value vs. Machine Automation Velocity
-    x-axis Low Automation Velocity --> High Automation Velocity
-    y-axis Low Strategic Business Value --> High Strategic Business Value
-    quadrant-1 High-Velocity Leverage (Rapid Prototyping)
-    quadrant-2 Irreplaceable Human Moat (Strategic Architecture)
-    quadrant-3 Disposable Waste (Manual Boilerplate)
-    quadrant-4 Ephemeral Engineering (Prompt Hacking)
+    x-axis "Low Automation Velocity" --> "High Automation Velocity"
+    y-axis "Low Strategic Business Value" --> "High Strategic Business Value"
+    quadrant-1 "High-Velocity Leverage (Rapid Prototyping)"
+    quadrant-2 "Irreplaceable Human Moat (Strategic Architecture)"
+    quadrant-3 "Disposable Waste (Manual Boilerplate)"
+    quadrant-4 "Ephemeral Engineering (Prompt Hacking)"
     "CRUD Boilerplate Synthesis": [0.92, 0.15]
     "Unit Test Mock Generation": [0.88, 0.28]
     "Prompt Formatting Tweaks": [0.78, 0.22]

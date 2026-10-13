@@ -51,8 +51,8 @@ flowchart TD
         T["Traces (OpenTelemetry)<br/>Isolation: 'Where is it broken?'"]
         P["Profiles (Pprof / Pyroscope)<br/>Diagnosis: 'Why is it broken (CPU/Heap)?'"]
     end
-    M -->|Exemplars (Trace ID)| T
-    T -->|Profile Link (Thread/Goroutine ID)| P
+    M -->|"Exemplars (Trace ID)"| T
+    T -->|"Profile Link (Thread/Goroutine ID)"| P
 ```
 
 Modern high-performance Go architectures bind these three signals together into a single cohesive telemetry fabric:
@@ -185,7 +185,7 @@ Continuous profiling runs a background profiling agent that constantly samples C
 
 ```mermaid
 flowchart LR
-    GoApp["Go Microservice Pod"] -->|Low-Overhead Sampling (<1% CPU)| Agent["Pyroscope Profiling Agent"]
+    GoApp["Go Microservice Pod"] -->|"Low-Overhead Sampling (<1% CPU)"| Agent["Pyroscope Profiling Agent"]
     Agent -->|Continuous Protobuf Stream| Storage["Pyroscope / Parca Storage Cluster"]
     Storage --> Flame["Interactive Flame Graph Dashboard"]
 ```
@@ -268,7 +268,7 @@ In production deployments, microservices do not transmit telemetry data directly
 ```mermaid
 flowchart LR
     subgraph PodA ["Kubernetes Pod A"]
-        AppA["Go Microservice"] -->|gRPC OTLP (Localhost)| SidecarA["OTel Collector (Sidecar / Agent)"]
+        AppA["Go Microservice"] -->|"gRPC OTLP (Localhost)"| SidecarA["OTel Collector (Sidecar / Agent)"]
     end
     subgraph CentralCluster ["Centralized OTel Collector Gateway Cluster"]
         Gateway1["OTel Gateway Node 1"]

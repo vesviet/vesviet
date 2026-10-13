@@ -89,13 +89,13 @@ flowchart TD
     end
 
     REQ --> REDIS_FEAT
-    REDIS_FEAT -->|Hydrated Feature Vector (Float32)| GPU_FLEET
+    REDIS_FEAT -->|"Hydrated Feature Vector (Float32)"| GPU_FLEET
     MODEL1 --> GATE
     MODEL2 --> GATE
 
-    GATE -->|Risk Score < 35| ACT_ALLOW
+    GATE -->|"Risk Score < 35"| ACT_ALLOW
     GATE -->|Risk Score 35 - 75| ACT_CHALLENGE
-    GATE -->|Risk Score > 75| ACT_BLOCK
+    GATE -->|"Risk Score > 75"| ACT_BLOCK
 ```
 
 ### Core Architecture Components

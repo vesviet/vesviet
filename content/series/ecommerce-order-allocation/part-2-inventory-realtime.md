@@ -165,10 +165,10 @@ graph TD
     MasterStock --> B2
     MasterStock --> B3
 
-    Client1["Client Order A"] -->|Hash(OrderID) % 4 = 0| B0
-    Client2["Client Order B"] -->|Hash(OrderID) % 4 = 1| B1
-    Client3["Client Order C"] -->|Hash(OrderID) % 4 = 2| B2
-    Client4["Client Order D"] -->|Hash(OrderID) % 4 = 3| B3
+    Client1["Client Order A"] -->|"Hash(OrderID) % 4 = 0"| B0
+    Client2["Client Order B"] -->|"Hash(OrderID) % 4 = 1"| B1
+    Client3["Client Order C"] -->|"Hash(OrderID) % 4 = 2"| B2
+    Client4["Client Order D"] -->|"Hash(OrderID) % 4 = 3"| B3
 ```
 
 By hashing incoming order IDs across $K$ independent virtual keys, write concurrency scales linearly across all Redis cluster nodes. If an individual bucket is depleted, the service automatically spills over to query adjacent buckets.

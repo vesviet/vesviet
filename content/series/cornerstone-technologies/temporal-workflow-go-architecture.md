@@ -77,31 +77,31 @@ Because Temporal re-executes the workflow function from the beginning to rebuild
 
 ```mermaid
 graph TD
-    subgraph Determinism Boundaries
-        WorkflowCode[Workflow Function Layer]
-        ActivityCode[Activity Function Layer]
+    subgraph Boundaries ["Determinism Boundaries"]
+        WorkflowCode["Workflow Function Layer"]
+        ActivityCode["Activity Function Layer"]
     end
 
-    subgraph Forbidden in Workflow
-        TNow[time.Now: Dynamic Clock]
-        TSleep[time.Sleep: Blocks OS Thread]
-        NativeGo[go func: Unordered Scheduler]
-        Rand[math/rand: Unseeded Entropy]
-        NetIO[http.Get / DB: Network Side Effects]
-        Globals[Mutable Global Variables]
+    subgraph Forbidden_Zone ["Forbidden in Workflow"]
+        TNow["time.Now: Dynamic Clock"]
+        TSleep["time.Sleep: Blocks OS Thread"]
+        NativeGo["go func: Unordered Scheduler"]
+        Rand["math/rand: Unseeded Entropy"]
+        NetIO["http.Get / DB: Network Side Effects"]
+        Globals["Mutable Global Variables"]
     end
 
-    subgraph Mandatory Replacements
-        WNow[workflow.Now: Clock from Event Log]
-        WSleep[workflow.Sleep: Durable Timer Event]
-        WGo[workflow.Go: Deterministic Goroutine]
-        WVersion[workflow.GetVersion: Safe Evolution]
-        ActExec[workflow.ExecuteActivity: Safe I/O Call]
+    subgraph Mandatory_Zone ["Mandatory Replacements"]
+        WNow["workflow.Now: Clock from Event Log"]
+        WSleep["workflow.Sleep: Durable Timer Event"]
+        WGo["workflow.Go: Deterministic Goroutine"]
+        WVersion["workflow.GetVersion: Safe Evolution"]
+        ActExec["workflow.ExecuteActivity: Safe I/O Call"]
     end
 
-    WorkflowCode -.->|FORBIDDEN| Forbidden
-    WorkflowCode -->|MANDATORY| Mandatory Replacements
-    ActivityCode -->|PERMITTED| NetIO
+    WorkflowCode -.->|"FORBIDDEN"| Forbidden_Zone
+    WorkflowCode -->|"MANDATORY"| Mandatory_Zone
+    ActivityCode -->|"PERMITTED"| NetIO
 ```
 
 ### The 6 Golden Determinism Rules for Go Engineers

@@ -64,9 +64,9 @@ flowchart TD
 
     Tx --> WireEngine
     WireEngine --> DecisionGate
-    DecisionGate -->|Critical Risk (>=85)| Block
-    DecisionGate -->|Moderate Risk (60-84)| StepUp
-    DecisionGate -->|Low Risk (<60)| CoreAuth
+    DecisionGate -->|"Critical Risk (>=85)"| Block
+    DecisionGate -->|"Moderate Risk (60-84)"| StepUp
+    DecisionGate -->|"Low Risk (<60)"| CoreAuth
     Tx -.->|Async Replicated Event| KafkaIngest
     MLInference -.->|Stream Baseline Profiles| WireEngine
 ```

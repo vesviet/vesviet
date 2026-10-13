@@ -118,14 +118,14 @@ When a standard pathfinding algorithm arrives at node $u$, it possesses no memor
 ```mermaid
 flowchart LR
     subgraph NodeBased ["1. Node-Based Graph (Blind to Turn Transitions)"]
-        N1((Node A)) -->|Edge 1: Street X| N2((Node B: Intersection))
-        N2 -->|Edge 2: Prohibited Left Turn| N3((Node C))
-        N2 -->|Edge 3: Permitted Straight| N4((Node D))
+        N1((Node A)) -->|"Edge 1: Street X"| N2((Node B: Intersection))
+        N2 -->|"Edge 2: Prohibited Left Turn"| N3((Node C))
+        N2 -->|"Edge 3: Permitted Straight"| N4((Node D))
     end
 
     subgraph EdgeBased ["2. Edge-Based Graph (Explicit Turn Modeling)"]
-        E1["New Node: Road Segment 1"] -->|New Edge: Transition Prohibited (Cost = Infinity)| E2["New Node: Road Segment 2"]
-        E1 -->|New Edge: Transition Straight (Cost = 0s)| E3["New Node: Road Segment 3"]
+        E1["New Node: Road Segment 1"] -->|"New Edge: Transition Prohibited (Cost = Infinity)"| E2["New Node: Road Segment 2"]
+        E1 -->|"New Edge: Transition Straight (Cost = 0s)"| E3["New Node: Road Segment 3"]
     end
 ```
 

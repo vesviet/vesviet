@@ -52,9 +52,9 @@ flowchart TD
     subgraph SharedResource ["Shared Remote Resource (Single Shared Database / S3 File)"]
         DB["PostgreSQL Database: Customer Balance ($500)"]
     end
-    Node1 -->|Concurrent Debit $400| DB
-    Node2 -->|Concurrent Debit $400| DB
-    Note over Node1,Node2: Local mutexes cannot coordinate! Result: Overdraft / Double-Spend!
+    Node1 -->|"Concurrent Debit $400"| DB
+    Node2 -->|"Concurrent Debit $400"| DB
+%% Note over Node1,Node2: Local mutexes cannot coordinate! Result: Overdraft / Double-Spend!
 ```
 
 Distributed mutual exclusion must solve three fundamental distributed computing hazards:
@@ -172,9 +172,9 @@ flowchart TD
         Leader <-->|Raft Consensus| F1
         Leader <-->|Raft Consensus| F2
     end
-    Client["Go Microservice Pod"] -->|1. Grant Lease (TTL: 5s)| Leader
-    Client -->|2. KeepAlive Heartbeat (Every 1.5s)| Leader
-    Client -->|3. Transaction (Put key with Lease ID)| Leader
+    Client["Go Microservice Pod"] -->|"1. Grant Lease (TTL: 5s)"| Leader
+    Client -->|"2. KeepAlive Heartbeat (Every 1.5s)"| Leader
+    Client -->|"3. Transaction (Put key with Lease ID)"| Leader
 ```
 
 ### Etcd Lease Mechanics:
@@ -224,8 +224,8 @@ flowchart TD
     subgraph PostgresSharedMemory ["PostgreSQL Shared Memory (In-Memory Hash Table)"]
         AdvLock["Advisory Lock Hash Table (Zero Disk I/O!)"]
     end
-    App1["Worker 1: SELECT pg_try_advisory_xact_lock(1001)"] -->|Acquires Lock Instantly (<50µs)| AdvLock
-    App2["Worker 2: SELECT pg_try_advisory_xact_lock(1001)"] -->|Returns false (Non-blocking!)| AdvLock
+    App1["Worker 1: SELECT pg_try_advisory_xact_lock(1001)"] -->|"Acquires Lock Instantly (<50µs)"| AdvLock
+    App2["Worker 2: SELECT pg_try_advisory_xact_lock(1001)"] -->|"Returns false (Non-blocking!)"| AdvLock
 ```
 
 #### Advisory Lock Variants:
@@ -247,7 +247,7 @@ flowchart LR
     end
     Core1["CPU Core 1"] -->|Atomic Write| VarA
     Core2["CPU Core 2"] -->|Atomic Write| VarB
-    Note over CPUCacheLine: Core 1 write invalidates Core 2 L1 cache! Causes bus contention!
+%% Note over CPUCacheLine: Core 1 write invalidates Core 2 L1 cache! Causes bus contention!
 ```
 
 Modern x86 and ARM64 processors synchronize memory between cores in discrete **64-byte cache lines**. If two independent atomic variables (such as two counters tracking lock acquisition counts on different CPU cores) reside within the same 64-byte segment of memory, whenever Core 1 updates Variable A, the CPU hardware cache-coherence protocol (MESI) forcibly invalidates the entire cache line in Core 2's L1 cache.

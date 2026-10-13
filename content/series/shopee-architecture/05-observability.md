@@ -82,16 +82,16 @@ flowchart TD
     subgraph StreamingBuffer ["Shock-Absorbing Kafka Telemetry Cluster"]
         VectorAgent -->|Batch Push Snappy Compressed| KafkaLogs["Topic: 'telemetry.logs.raw' (128 Partitions)"]
         eBPFAgent -->|Async Metrics Stream| KafkaMetrics["Topic: 'telemetry.metrics.raw'"]
-        OTelApp["OTel Go SDK (W3C Trace Context)"] -->|gRPC OTLP (Sample Window: 30s)| OTelCol["OTel Collector Fleet (Tail-Based Sampler)"]
-        OTelCol -->|Retain 100% Errors & P99| KafkaTraces["Topic: 'telemetry.traces.sampled'"]
+        OTelApp["OTel Go SDK (W3C Trace Context)"] -->|"gRPC OTLP (Sample Window: 30s)"| OTelCol["OTel Collector Fleet (Tail-Based Sampler)"]
+        OTelCol -->|"Retain 100% Errors & P99"| KafkaTraces["Topic: 'telemetry.traces.sampled'"]
     end
 
     subgraph ColumnarStorage ["Distributed Columnar Storage (ClickHouse Cluster)"]
         KafkaLogs --> GoIngest["Go Batch Ingestion Engine (clickhouse-go/v2)"]
         KafkaTraces --> GoIngest
-        GoIngest -->|Bulk Blocks: 100k Rows / 2s| CH1["ClickHouse Shard 1 (MergeTree / ZSTD)"]
-        GoIngest -->|Bulk Blocks: 100k Rows / 2s| CH2["ClickHouse Shard 2 (MergeTree / ZSTD)"]
-        GoIngest -->|Bulk Blocks: 100k Rows / 2s| CHN["ClickHouse Shard N (ReplicatedMergeTree)"]
+        GoIngest -->|"Bulk Blocks: 100k Rows / 2s"| CH1["ClickHouse Shard 1 (MergeTree / ZSTD)"]
+        GoIngest -->|"Bulk Blocks: 100k Rows / 2s"| CH2["ClickHouse Shard 2 (MergeTree / ZSTD)"]
+        GoIngest -->|"Bulk Blocks: 100k Rows / 2s"| CHN["ClickHouse Shard N (ReplicatedMergeTree)"]
     end
 
     subgraph Visualization ["Observability UI & Alerting"]

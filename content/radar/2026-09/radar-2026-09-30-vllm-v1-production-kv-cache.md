@@ -73,7 +73,7 @@ flowchart TD
         BlockMgr <-->|NVLink 4 900GB/s| HBM["Tier 1: GPU HBM3e (4.8 TB/s)"]
         BlockMgr <-->|PCIe Gen5 x16 64GB/s| HostDDR["Tier 2: Host NUMA DDR5 RAM (1.5TB)"]
         BlockMgr <-->|io_uring 14GB/s| NVMe["Tier 3: Local NVMe SSD"]
-        BlockMgr <-->|GPUDirect RDMA 400Gbps (3.4ms)| RemoteRoCE["Tier 4: Remote Disaggregated Node"]
+        BlockMgr <-->|"GPUDirect RDMA 400Gbps (3.4ms)"| RemoteRoCE["Tier 4: Remote Disaggregated Node"]
     end
 
     style LegacyEngine fill:#221b19,stroke:#d9534f,stroke-width:2px;

@@ -254,7 +254,7 @@ sequenceDiagram
     Gateway->>Peer: Push Notification / Webhook sent to Bob's dashboard
     Peer->>Gateway: Bob reviews visual diff and clicks "Authorize" (WebAuthn)
     Gateway-->>UI: SSE Event: peer_approved {signer: "bob@corp.com"}
-    UI->>UI: Advances FSM to Finalized; Triggers physical infrastructure mutation
+    UI->>UI: Advances FSM to Finalized -  Triggers physical infrastructure mutation
 ```
 
 ---
@@ -278,12 +278,12 @@ sequenceDiagram
     participant Backend as Billing Microservice
 
     User->>UI: Clicks "Confirm Contract ($14,000/yr)"
-    Note over UI: UI lacks button debounce; spinner delayed by main-thread lag
+    Note over UI: UI lacks button debounce -  spinner delayed by main-thread lag
     User->>UI: Clicks "Confirm Contract" a second time (300ms later)
     UI->>Backend: Request 1: POST /orders {contractId: "c-99"} (No Idempotency Key)
     UI->>Backend: Request 2: POST /orders {contractId: "c-99"} (No Idempotency Key)
     Backend->>Backend: Executes 2 parallel database inserts
-    Backend-->>UI: Two contracts created; Company billed $28,000 instead of $14,000!
+    Backend-->>UI: Two contracts created -  Company billed $28,000 instead of $14,000!
 ```
 
 ### Root Cause Analysis (RCA)

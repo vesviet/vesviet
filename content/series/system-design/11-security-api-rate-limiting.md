@@ -60,11 +60,11 @@ Under **NIST Special Publication 800-207**, modern cloud-native systems operate 
 flowchart TD
     subgraph ZeroTrustPerimeter ["Zero Trust Architecture (NIST SP 800-207)"]
         Client["Client / User"] -->|PASETO v4 Token + TLS 1.3| Ingress["Ingress API Gateway"]
-        Ingress -->|SPIFFE/SPIRE mTLS (x509-SVID)| OrderSvc["Order Service"]
-        OrderSvc -->|SPIFFE/SPIRE mTLS (x509-SVID)| PaySvc["Payment Service"]
+        Ingress -->|"SPIFFE/SPIRE mTLS (x509-SVID)"| OrderSvc["Order Service"]
+        OrderSvc -->|"SPIFFE/SPIRE mTLS (x509-SVID)"| PaySvc["Payment Service"]
         PaySvc -->|Encrypted TLS + IAM RBAC| Vault[("Hardware Security Module / KMS")]
     end
-    Note over Ingress,PaySvc: Mutual TLS on 100% of East-West Traffic! Zero Plaintext Inside Cluster!
+%% Note over Ingress,PaySvc: Mutual TLS on 100% of East-West Traffic! Zero Plaintext Inside Cluster!
 ```
 
 ---
@@ -368,7 +368,7 @@ flowchart LR
     subgraph eBPFHook ["Cilium eBPF Filter (Zero Context Switches)"]
         Program["JIT-Compiled BPF Bytecode<br/>Direct Map Hash Lookup O(1)"]
     end
-    Program -->|Authorized (Identity Match)| UserSpacePod["Go Microservice Pod"]
+    Program -->|"Authorized (Identity Match)"| UserSpacePod["Go Microservice Pod"]
     Program -->|Unauthorized| Drop["Drop at XDP Layer (<1 microsecond!)"]
 ```
 

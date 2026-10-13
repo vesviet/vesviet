@@ -95,7 +95,7 @@ sequenceDiagram
     C1->>DB: SELECT * FROM products WHERE id=101
     C2->>DB: SELECT * FROM products WHERE id=101
     C3->>DB: SELECT * FROM products WHERE id=101
-    Note over DB: Database connection pool saturates; CPU hits 100%!
+    Note over DB: Database connection pool saturates -  CPU hits 100%!
     DB-->>C1: SQL Result (450ms delayed)
     DB-->>C2: SQL Result (450ms delayed)
     DB-->>C3: SQL Result (450ms delayed)

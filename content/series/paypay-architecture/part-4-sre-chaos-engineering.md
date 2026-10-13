@@ -86,7 +86,7 @@ flowchart TD
     end
 
     CRON --> MESH_CRD
-    GUARD -. Emergency Abort (Error Rate > 0.01%) .-> MESH_CRD
+    GUARD -.->|"Emergency Abort (Error Rate > 0.01%)"| MESH_CRD
     MESH_CRD --> POD_KILL
     MESH_CRD --> NET_DELAY
     MESH_CRD --> PARTITION

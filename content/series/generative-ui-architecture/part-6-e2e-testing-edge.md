@@ -266,7 +266,7 @@ sequenceDiagram
     Playwright->>DOM: Mounts Chart Component via mock stream
     Note over DOM: WebFont 'Inter' still downloading in background
     Playwright->>Playwright: Captures screenshot before font renders (Fallback Arial used)
-    Note over Playwright: Next test run: 'Inter' cached; text width shifts by 4 pixels!
+    Note over Playwright: Next test run: 'Inter' cached -  text width shifts by 4 pixels!
     Playwright-->>CI: Test Fails: maxDiffPixelRatio exceeded (0.04 > 0.01 threshold)
 ```
 

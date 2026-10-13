@@ -324,7 +324,7 @@ Retaining hundreds of millions of historical idempotency records in Redis RAM is
 flowchart TD
     Client["Client Retrying Request"] --> API["Payment Service Go Middleware"]
     API --> CheckL1{"Check L1 Cache (Redis)"}
-    CheckL1 -->|Cache Hit (Within 24h)| ReplayL1["Replay Cached Response (< 2ms)"]
+    CheckL1 -->|"Cache Hit (Within 24h)"| ReplayL1["Replay Cached Response (< 2ms)"]
     CheckL1 -->|Cache Miss| CheckL2{"Check L2 Durable Store (SQL)"}
     CheckL2 -->|Found in DB| ReplayL2["Replay Historical Record (< 15ms)"]
     CheckL2 -->|Not Found Anywhere| Fresh["Execute Fresh Payment Transaction"]

@@ -135,7 +135,8 @@ flowchart LR
         Node1["TiKV Node 1"]
         R1_L["Region 1 (Leader)"]
         R2_F1["Region 2 (Follower)"]
-        Node1 --- R1_L & R2_F1
+        Node1 --- R1_L
+        Node1 --- R2_F1
     end
 
     subgraph AZ2 ["Availability Zone 2 (Data Center B)"]
@@ -143,7 +144,8 @@ flowchart LR
         Node2["TiKV Node 2"]
         R1_F1["Region 1 (Follower)"]
         R2_L["Region 2 (Leader)"]
-        Node2 --- R1_F1 & R2_L
+        Node2 --- R1_F1
+        Node2 --- R2_L
     end
 
     subgraph AZ3 ["Availability Zone 3 (Data Center C)"]
@@ -151,11 +153,12 @@ flowchart LR
         Node3["TiKV Node 3"]
         R1_F2["Region 1 (Follower)"]
         R2_F2["Region 2 (Follower)"]
-        Node3 --- R1_F2 & R2_F2
+        Node3 --- R1_F2
+        Node3 --- R2_F2
     end
 
-    R1_L ===|Raft Log Replication (Quorum 2/3)| R1_F1 & R1_F2
-    R2_L ===|Raft Log Replication (Quorum 2/3)| R2_F1 & R2_F2
+    R1_L ==>|"Raft Log Replication (Quorum 2/3)"| R1_F1 & R1_F2
+    R2_L ==>|"Raft Log Replication (Quorum 2/3)"| R2_F1 & R2_F2
 
     classDef az fill:#f5f5f5,stroke:#9e9e9e,stroke-width:1px;
     classDef leader fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;

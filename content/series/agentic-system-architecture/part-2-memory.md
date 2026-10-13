@@ -153,7 +153,7 @@ sequenceDiagram
     Compactor->>Compactor: Run LLM Summarizer on Oldest 60% Transcript
     Compactor->>L2: Ingest Compressed Episode Vector (with Decay Metadata)
     Compactor->>L3: Extract & Upsert Temporal Entity Triples
-    Compactor->>L1: Prune Old Turns; Write Back Condensed Summary
+    Compactor->>L1: Prune Old Turns -  Write Back Condensed Summary
     deactivate Compactor
     L1-->>Agent: Pruned Context Window (1,800 Tokens, 78% Reduction)
     Agent->>Agent: Execute Next Reasoning Step with Clean Context

@@ -58,7 +58,7 @@ flowchart TD
 
     subgraph Disaggregated["Disaggregated Prefill-Decode Architecture (2026 SOTA)"]
         InP["User 1: 32K Prompt"] --> PrefillPool["Dedicated Prefill Pool: 2x HGX H100 (TP=8)<br/>Optimized for TTFT (100% Tensor Core Saturation)"]
-        PrefillPool -->|One-Sided RoCEv2 RDMA Write (3.6ms)| DecodePool["Dedicated Decode Pool: 6x HGX H100 (TP=2, DP=4)<br/>Optimized for TPOT & High Batch Concurrency"]
+        PrefillPool -->|"One-Sided RoCEv2 RDMA Write (3.6ms)"| DecodePool["Dedicated Decode Pool: 6x HGX H100 (TP=2, DP=4)<br/>Optimized for TPOT & High Batch Concurrency"]
         InD["User 2: Active Stream"] --> DecodePool
         DecodePool --> StreamOut["User 2: Steady 12.4ms TPOT | User 1: 38ms TTFT"]
     end
