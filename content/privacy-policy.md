@@ -1,7 +1,7 @@
 ---
 title: "Privacy Policy"
 date: "2026-07-25T10:00:00+07:00"
-lastmod: "2026-07-25T10:00:00+07:00"
+lastmod: "2026-10-13T13:45:00+07:00"
 description: "Comprehensive Privacy Policy for tanhdev.com covering Google AdSense, GA4 Consent Mode v2, GDPR & CCPA rights, data retention, and privacy contact info."
 slug: "privacy-policy"
 aliases:
@@ -63,28 +63,50 @@ When consent is withheld, GA4 operates in a cookieless mode, transmitting un-ite
 
 ---
 
-## 4. Google AdSense & Third-Party Cookies
+## 4. Google AdSense & Third-Party Advertising
 
-**Answer-first:** Third-party advertising vendors, including Google AdSense, use cookies to serve ads based on prior visits to `tanhdev.com` or other websites across the web.
+**Answer-first:** Third-party advertising vendors, including Google, use cookies, web beacons, and IP address signals to serve ads based on prior visits to `tanhdev.com` or other websites across the web.
 
-### Advertising Cookies & DART Framework
-- Google's use of advertising cookies enables it and its partners to serve ads to users based on their visit to `tanhdev.com` and/or other sites on the Internet.
-- Users may opt out of personalized advertising by visiting [Google Ads Settings](https://adssettings.google.com/).
-- Alternatively, visitors can opt out of third-party vendor use of cookies for personalized advertising by visiting [www.aboutads.info](https://www.aboutads.info/) or [Network Advertising Initiative](https://optout.networkadvertising.org/).
+### Google Advertising & Partner Sites Policy Disclosure
+`tanhdev.com` partners with Google LLC to display advertisements. Because we use Google services, we disclose Google's data practices in accordance with Google's publisher policies:
+- **How Google Uses Information:** To understand how Google collects, shares, and uses information when you visit partner sites or use partner apps, please read: [How Google uses information from sites or apps that use our services](https://policies.google.com/technologies/partner-sites).
+- **Google Advertising Cookies:** Google's use of advertising cookies enables it and its partners to serve ads to users based on their visits to `tanhdev.com` and/or other websites on the Internet.
+- **Third-Party Vendors:** Third-party vendors and ad networks may also serve advertisements on this site and place or recognize cookies on visitors' browsers.
 
-### Managing Browser Cookies
-Visitors can choose to disable cookies through individual browser options. Detailed information about cookie management with specific web browsers can be found at the browsers' respective websites (e.g., Chrome, Firefox, Safari, Edge).
+### Web Beacons, JavaScript & IP Address Ad Serving Practices
+- Third-party ad servers or ad networks utilize technologies such as cookies, JavaScript, and Web Beacons (pixel tags) within advertisements and sponsored links that appear on `tanhdev.com`.
+- These technologies are transmitted directly to visitors' web browsers, automatically conveying the visitor's Internet Protocol (IP) address to the ad server.
+- These technologies are primarily deployed by advertisers to evaluate the effectiveness of their marketing campaigns and/or personalize the advertising content presented during your browsing sessions.
+- **Publisher Control Limitation:** `tanhdev.com` has no direct access to, ownership of, or administrative control over the cookies, web beacons, or tracking technologies employed by third-party advertisers and advertising networks.
+
+### User Choices & Advertising Opt-Out Mechanisms
+Visitors retain full agency to opt out of interest-based and personalized advertising through multiple dedicated self-regulatory portals:
+- **Google Ads Settings:** You can opt out of personalized ads served by Google by visiting [Google Ads Settings](https://www.google.com/settings/ads) (or [Google Ad Center](https://myadcenter.google.com/) / [Google Ads Settings](https://adssettings.google.com/)).
+- **Digital Advertising Alliance (DAA):** You can opt out of third-party vendor cookies for interest-based advertising via the [DAA WebChoices Tool](https://optout.aboutads.info/) or [AboutAds.info](https://www.aboutads.info/).
+- **Network Advertising Initiative (NAI):** You can opt out across participating advertising networks via the [NAI Consumer Opt-Out Page](https://optout.networkadvertising.org/).
+- **European Interactive Digital Advertising Alliance (EDAA):** Visitors located in the European Union / UK can opt out via [Your Online Choices](https://www.youronlinechoices.com/).
+
+### Managing Browser Cookies & Storage
+Visitors can configure, block, or delete cookies at any time through individual web browser settings. Please refer to your browser's official support documentation for step-by-step instructions:
+- [Google Chrome Cookie Management](https://support.google.com/chrome/answer/95647)
+- [Mozilla Firefox Cookie Management](https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop)
+- [Apple Safari Cookie Management](https://support.apple.com/guide/safari/manage-cookies-sfri11471/mac)
+- [Microsoft Edge Cookie Management](https://support.microsoft.com/en-us/microsoft-edge/delete-cookies-in-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09)
+
+*Note: Disabling cookies entirely may alter site presentation or disable certain interactive features, though core reading access to all technical publications remains fully functional.*
 
 ---
 
 ## 5. Data Retention Policy
 
-**Answer-first:** We enforce clear retention limits: server logs are purged after 90 days, GA4 analytics records are retained for 14 months, and direct emails are kept only while resolving inquiries.
+**Answer-first:** We enforce clear retention limits: server logs are purged after 90 days, GA4 analytics records are retained for 14 months, CMP consent choices persist for 12 months, and direct emails are kept only while resolving inquiries.
 
 | Data Type | Purpose | Retention Period | Purge Action |
 |-----------|---------|------------------|--------------|
 | Server Log Files | Security & DDoS Defense | Up to 90 days | Automated deletion |
 | GA4 Analytics Data | Traffic Analysis | 14 months (Google default) | Automated expiration |
+| Consent Cookie (CMP) | Store visitor cookie consent preferences | 12 months (365 days) | Automatic browser expiration |
+| Third-Party Ad Cookies (Google AdSense) | Campaign measurement & ad personalization | Per Google policy (typically 30 days to 13 months) | Automated expiration or manual browser clearance |
 | Email Communications | Technical Inquiries & Consulting | Duration of active inquiry/engagement | Manual or requested deletion |
 
 ---

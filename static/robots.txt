@@ -44,6 +44,12 @@ Allow: /llms.txt
 Allow: /llms-full.txt
 
 # ──────────────────────────────────────────────
+# Google AdSense Crawler
+# ──────────────────────────────────────────────
+User-agent: Mediapartners-Google
+Disallow:
+
+# ──────────────────────────────────────────────
 # Allowed AI Bots
 # ──────────────────────────────────────────────
 User-agent: GPTBot

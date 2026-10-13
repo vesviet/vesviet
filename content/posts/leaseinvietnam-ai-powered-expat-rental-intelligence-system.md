@@ -19,7 +19,7 @@ tags:
   - "Go"
   - "PostgreSQL"
   - "Anti-Hallucination"
-description: "Build an autonomous AI pipeline that scrapes and publishes expat rental intelligence for Vietnam, turning articles into a B2B lead funnel."
+description: "Build an autonomous AI pipeline that ingests and publishes expat rental intelligence for Vietnam, turning articles into a B2B lead funnel."
 ShowToc: true
 TocOpen: true
 cover:
@@ -91,7 +91,7 @@ No Vietnamese real estate portal does this. No expat blog does this at scale. Th
 
 ## 3. The Architecture: Eight Stages, Two Nodes, One Rule
 
-Designing an autonomous intelligence engine requires decoupling data ingestion and extraction pipelines from editorial synthesis and publishing workflows across dedicated server nodes. In 2026 AI system architectures, separating scraping infrastructure on Node 112 from PostgreSQL storage and LLM generation on Node 114 ensures high availability, strict security boundaries, and predictable execution latency.
+Designing an autonomous intelligence engine requires decoupling data ingestion and extraction pipelines from editorial synthesis and publishing workflows across dedicated server nodes. In 2026 AI system architectures, separating market intelligence collection infrastructure on Node 112 from PostgreSQL storage and LLM generation on Node 114 ensures high availability, strict security boundaries, and predictable execution latency.
 
 The system architecture diagram below illustrates how control signals, API boundaries, background workers, and data pipelines interact across Node 112 and Node 114:
 
@@ -258,24 +258,24 @@ Every piece of content is designed to convert toward one of the B2B lead categor
 
 The Area Guides bucket is the MVP focus — evergreen content, strong SEO, no time sensitivity, ideal for testing the full 8-stage pipeline before expanding to time-sensitive market updates.
 
-## 9. The 10-Agent Scraper Swarm
+## 9. Distributed Market Intelligence & Ingestion Swarm
 
-Scaling geographic data ingestion across diverse domain topics requires deploying a distributed swarm of specialized web scraping agents. Each dedicated agent isolates specific attributes such as rental prices, community sentiment, infrastructure updates, or legal regulations, enforcing strict geographical bounding boxes to ensure collected intelligence remains focused on designated target rental markets.
+Scaling geographic data ingestion across diverse domain topics requires deploying a distributed swarm of specialized market intelligence ingestion agents. Each dedicated collector isolates specific attributes such as rental prices, community sentiment, infrastructure updates, or legal regulations, enforcing strict geographical bounding boxes to ensure collected intelligence remains focused on designated target rental markets.
 
-Data collection runs 10 specialized agents, each geo-fenced to Southern Vietnam (Nha Trang → Phú Quốc):
+Data collection runs 10 specialized ingestion workers, each geo-fenced to Southern Vietnam (Nha Trang → Phú Quốc):
 
-| Agent | Data Collected | Tag |
+| Agent / Ingestion Worker | Data Collected | Tag |
 |---|---|---|
-| `lease_scraper_price_rent` | Current rental rates from listing sites | `[PRICE]` |
-| `lease_scraper_price_sale` | Sale prices, ROI estimates | `[INVESTMENT]` |
-| `lease_scraper_fb_expat` | Community vibe, local recommendations | `[VIBE]` |
-| `lease_scraper_reddit_drama` | Scams, deposit disputes, landlord complaints | `[DRAMA]` |
-| `lease_scraper_infra_macro` | Metro updates, road construction, flooding | `[INFRASTRUCTURE]` |
-| `lease_scraper_fnb_food` | Expat-rated restaurants, cafes, bars | `[LIFESTYLE_FOOD]` |
-| `lease_scraper_wellness` | International hospitals, gyms, yoga studios | `[LIFESTYLE_WELLNESS]` |
-| `lease_scraper_climate_aqi` | AQI levels, flood-prone streets | `[ENVIRONMENT]` |
-| `lease_scraper_legal` | Visa rules, TRC requirements, police registration | `[LEGAL]` |
-| `lease_scraper_competitors` | 1-star reviews of competing agencies | `[SERVICE_GAP]` |
+| `lease_collector_price_rent` | Current rental rates from verified listing feeds | `[PRICE]` |
+| `lease_collector_price_sale` | Sale prices, ROI estimates | `[INVESTMENT]` |
+| `lease_collector_fb_expat` | Community vibe, local recommendations | `[VIBE]` |
+| `lease_collector_reddit_drama` | Scams, deposit disputes, landlord complaints | `[DRAMA]` |
+| `lease_collector_infra_macro` | Metro updates, road construction, flooding | `[INFRASTRUCTURE]` |
+| `lease_collector_fnb_food` | Expat-rated restaurants, cafes, bars | `[LIFESTYLE_FOOD]` |
+| `lease_collector_wellness` | International hospitals, gyms, yoga studios | `[LIFESTYLE_WELLNESS]` |
+| `lease_collector_climate_aqi` | AQI levels, flood-prone streets | `[ENVIRONMENT]` |
+| `lease_collector_legal` | Visa rules, TRC requirements, police registration | `[LEGAL]` |
+| `lease_collector_competitors` | 1-star reviews of competing agencies | `[SERVICE_GAP]` |
 
 The geo-fence is enforced at both the system prompt level and the verifier level. A record with `location = hanoi` is rejected before it enters the queue.
 
@@ -318,7 +318,7 @@ Key architectural patterns from operating this platform: decouple ingestion from
 
 ## Frequently Asked Questions
 
-Addressing common architectural and technical inquiries clarifies how the LeaseInVietnam system combines automated web scraping, local language model verification, and lead generation webhooks. The following answers detail anti-hallucination pipelines, B2B lead monetization mechanisms, and dual-mode production workflows powering the autonomous expat rental intelligence platform.
+Addressing common architectural and technical inquiries clarifies how the LeaseInVietnam system combines automated market data ingestion, local language model verification, and lead generation webhooks. The following answers detail anti-hallucination pipelines, B2B lead monetization mechanisms, and dual-mode production workflows powering the autonomous expat rental intelligence platform.
 
 ### How does the LeaseInVietnam system prevent AI hallucinations in published content?
 The system enforces a four-layer anti-hallucination pipeline combining deterministic extraction, hard-reject verifier rules, isolated local SLM inference, and structured MDX output contracts. If no DOM selector or JSON-LD evidence chain exists for a rental price or location, the field is quarantined rather than guessed by the generative model.

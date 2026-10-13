@@ -55,31 +55,16 @@
 </script>
 
 {{- $showAds := false -}}
+{{- $isExcludedPage := false -}}
 {{- if and .IsPage .File -}}
-  {{- $isAllowedSection := in (slice "posts" "radar" "series") .Section -}}
-  {{- $isExcludedPage := in (slice "privacy-policy" "reading-map" "about" "hire") .File.ContentBaseName -}}
-  {{- if and $isAllowedSection (not $isExcludedPage) -}}
-    {{- $showAds = true -}}
-  {{- end -}}
+  {{- $isExcludedPage = in (slice "privacy-policy" "reading-map" "about" "hire" "terms-of-service" "legal-notice") .File.ContentBaseName -}}
+{{- end -}}
+{{- if or .IsHome (and .IsPage (in (slice "posts" "radar" "series") .Section) (not $isExcludedPage)) -}}
+  {{- $showAds = true -}}
 {{- end -}}
 {{- if $showAds -}}
-<!-- Google AdSense Validation -->
-<script>
-  function loadAdSense() {
-    if (window.adSenseLoaded) return;
-    window.adSenseLoaded = true;
-    var script = document.createElement('script');
-    script.async = true;
-    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4144107863554199";
-    script.crossOrigin = "anonymous";
-    document.head.appendChild(script);
-  }
-  ['scroll', 'mousemove', 'touchstart'].forEach(function(e) {
-    window.addEventListener(e, loadAdSense, { once: true, passive: true });
-  });
-  // Fallback for no interaction
-  setTimeout(loadAdSense, 5000);
-</script>
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4144107863554199" crossorigin="anonymous"></script>
 {{- end -}}
 {{ end }}
 
