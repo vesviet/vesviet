@@ -1,10 +1,10 @@
 ---
-title: "Uber RAMEN Architecture: Real-Time Push Messaging"
+title: "Uber RAMEN: Real-Time Push Messaging & WebSockets at Scale"
 slug: "part-6-realtime-push-ramen"
 date: "2026-05-06T20:00:00+07:00"
 lastmod: "2026-09-28T12:00:00+07:00"
 draft: false
-description: "How Uber pushes ride offers to millions of drivers in <100ms via RAMEN: gRPC over QUIC, Apache Helix sharding, and Cassandra+Redis at-least-once delivery."
+description: "Uber RAMEN architecture: Push ride offers to 10M+ devices in <100ms via gRPC over HTTP/3 QUIC, WebSocket multiplexing, and in-memory RingBuffer replay in Go."
 weight: 7
 categories: ["Ride Hailing", "Realtime"]
 tags: ["ride-hailing", "push", "ramen", "websocket", "grpc", "uber"]

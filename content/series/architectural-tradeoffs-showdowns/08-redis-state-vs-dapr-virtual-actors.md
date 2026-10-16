@@ -1,5 +1,5 @@
 ---
-title: "Part 8: Redis Distributed State vs. Dapr Virtual Actors Showdown"
+title: "Part 8: Redis State Store vs Dapr Virtual Actors Showdown"
 slug: "08-redis-state-vs-dapr-virtual-actors"
 author: "Lê Tuấn Anh"
 date: "2026-08-24T14:15:04+07:00"
@@ -7,7 +7,7 @@ lastmod: "2026-08-24T14:15:04+07:00"
 draft: false
 series: ["architectural-tradeoffs-showdowns"]
 weight: 8
-description: "Showdown of Redis Distributed State vs Dapr Virtual Actors: concurrency locking, Redlock vs turn-based actors, state hydration, AI agent context, and FinOps."
+description: "Redis state store vs Dapr virtual actors showdown: 100k+ TPS caching vs zero-lock turn-based state machines. Benchmark locking, hydration, and Go microservices."
 categories:
   - "Architecture"
   - "Engineering"
@@ -39,7 +39,7 @@ mermaid: true
 
 > 📖 **Series Navigation**: [← Previous Chapter: Modular Monolith vs Microservices vs SpinKube Wasm](/series/architectural-tradeoffs-showdowns/07-modular-monolith-vs-microservices-vs-spinkube-wasm/) | [Series Hub](/series/architectural-tradeoffs-showdowns/)
 
-# Part 8: Redis Distributed State vs. Dapr Virtual Actors Showdown
+# Part 8: Redis State Store vs Dapr Virtual Actors Showdown
 
 ---
 

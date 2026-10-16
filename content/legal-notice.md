@@ -13,6 +13,7 @@ cover:
   image: "/images/posts/legal-notice-cover.jpg"
   alt: "Legal Notice & Impressum"
   relative: false
+canonicalURL: "https://tanhdev.com/legal-notice/"
 ---
 
 > *"High-density technical content demands absolute transparency, verifiable experience, and zero fabrication."*

@@ -16,6 +16,7 @@ cover:
   image: "/images/posts/post-migration-operations-vietnam-cover.jpg"
   alt: "Day-2 production operations with a dedicated Vietnam Go SRE team"
 mermaid: true
+canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/post-migration-operations-vietnam-go-team/"
 ---
 
 

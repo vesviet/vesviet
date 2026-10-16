@@ -13,7 +13,7 @@
 | `content/series/` | 251 | 25 series; 225 chapters + 25 series `_index.md` + 1 parent `_index.md` (~692,166 words); 100% Answer-first |
 | `content/radar/` | 40 | 32 radar editions (2026-04 → 2026-10) + 7 monthly `_index.md` + 1 parent `_index.md` (~128,000 words) |
 | `content/categories/` | 16 | ai, architecture, backend, cloudflare, database, devops, e-commerce, engineering, fintech, golang, kubernetes, microservices, observability, payments, tech-radar + parent `_index.md` (~636 words) |
-| Root pages | 7 | `_index`, `about`, `hire`, `reading-map`, `legal-notice`, `terms-of-service`, `privacy-policy` (~7,281 words) |
+| Root pages | 7 | `about`, `hire`, `legal-notice`, `privacy-policy`, `privacy-policy-markpdf`, `reading-map`, `terms-of-service` (~7,281 words) |
 | `reports/` | 584 | 250 research JSON dossiers, 251 research MD docs + audits, series content indexes, 33 knowledge cards, GSC audit & Master Remediation Plan 2026-10-08 |
 
 ## Anchor Pillar Hubs (link topology backbone)

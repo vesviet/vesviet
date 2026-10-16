@@ -16,6 +16,7 @@ cover:
   image: "/images/posts/magento-migration-cost-cover.jpg"
   alt: "Financial model: Magento to Go microservices migration cost breakdown"
 mermaid: true
+canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/magento-migration-cost-vietnam-vs-us-eu/"
 ---
 
 

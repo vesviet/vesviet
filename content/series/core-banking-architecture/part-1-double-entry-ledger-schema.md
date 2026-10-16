@@ -1,10 +1,10 @@
 ---
-title: "Double-Entry Ledger: Immutable Schema & Concurrency"
+title: "Double-Entry Ledger Schema: Zero-Drift Balance Architecture"
 slug: "part-1-double-entry-ledger-schema"
 date: "2026-06-18T11:00:00+07:00"
 lastmod: "2026-09-14T18:00:00+07:00"
 draft: false
-description: "Production-grade double-entry ledger schema design: TigerBeetle 128-byte memory structs, PostgreSQL append-only journal tables, invariant enforcement triggers, and high-concurrency locking strategies."
+description: "Double-entry ledger schema design: prevent balance inconsistencies under concurrent transactions with PostgreSQL append-only journals and TigerBeetle 150k TPS."
 weight: 1
 series: ["core-banking-architecture"]
 categories: ["FinTech", "Architecture", "Database"]
@@ -22,7 +22,7 @@ mermaid: true
 
 > **Series Navigation:** This is Part 1 of the **Core Banking Systems Architecture Masterclass**. [Master Curriculum Hub](/series/core-banking-architecture/) | [Next: Part 2 — Distributed SQL ACID Latency →](/series/core-banking-architecture/part-2-distributed-sql-acid-latency/) | [Pillar Hub: Banking Microservices Architecture](/posts/banking-microservices-architecture/)
 
-# Double-Entry Ledger: Immutable Schema & Concurrency
+# Double-Entry Ledger Schema: Zero-Drift Balance Architecture
 
 > **Answer-first:** A production-grade financial ledger decouples historical transaction journaling from balance derivation by enforcing an append-only immutable architecture. By enforcing the mathematical identity $\sum \text{Debits} \equiv \sum \text{Credits}$ at the schema level, minor integer units, and ring-buffer batching, core banking engines eliminate balance drift, floating-point rounding errors, and catastrophic row contention under 150,000+ TPS transaction throughput.
 
@@ -467,4 +467,8 @@ In an immutable ledger, SQL `UPDATE` and `DELETE` commands are permanently disab
 
 {{< faq q="Why does TigerBeetle use Viewstamped Replication Revisited (VSR) instead of Raft or Paxos?" >}}
 TigerBeetle selected Viewstamped Replication Revisited (VSR) because it integrates deterministically with its specialized storage model. Unlike Raft, which typically requires distinct log compaction, complex state snapshots, and generic key-value assumptions, VSR is explicitly tailored for fixed-size 128-byte financial event streams, enabling batched Direct I/O writes and deterministic crash recovery without tail-latency spikes.
+{{< /faq >}}
+
+{{< faq q="How do I design a double-entry ledger schema that prevents balance inconsistencies under concurrent transactions?" >}}
+Preventing balance inconsistencies requires three schema invariants: First, enforce immutable append-only journal entries where every transaction contains balanced debit and credit legs satisfying SUM(amount) = 0. Second, store currency in 64-bit integer minor units (e.g., cents) with CHECK (balance >= 0) constraints. Third, avoid row-level contention on hot accounts by batching journal writes and updating projected account balances asynchronously via event streams or PostgreSQL SELECT ... FOR UPDATE pessimistic row locks within strict serializable transactions.
 {{< /faq >}}

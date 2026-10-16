@@ -117,3 +117,28 @@ For production engineering organizations deploying large language models with se
 1. **Hardware Density:** Increases serving throughput per GPU server by 3× to 4× without compromising output quality or reasoning precision.
 2. **Prefix Caching Synergy:** Because the latent vector `c_t^KV` is compact, prefix routing engines can cache millions of prompt tokens in system RAM (Host-to-Device via PCIe 5.0) with minimal latency penalties.
 3. **Framework Ecosystem:** Native support is ratified across TensorRT-LLM, vLLM, and SGLang, eliminating custom CUDA kernel maintenance burdens.
+
+---
+
+## 5. Production Serving Topology: vLLM & SGLang Serving Flags
+
+Serving DeepSeek-V3 MLA architecture with high throughput requires configuring runtime inference engines to maintain latent KV buffers in FP8 precision while streaming prefill operations:
+
+```bash
+vllm serve deepseek-ai/DeepSeek-V3 \
+  --tensor-parallel-size 8 \
+  --pipeline-parallel-size 1 \
+  --gpu-memory-utilization 0.92 \
+  --max-model-len 65536 \
+  --enable-chunked-prefill \
+  --kv-cache-dtype fp8 \
+  --max-num-batched-tokens 8192 \
+  --disable-log-requests
+```
+
+### Key Production Serving Invariants:
+1. `--enable-chunked-prefill`: Interleaves prompt processing and token generation across multi-turn queries, preventing compute stalls when new agent contexts enter the batch.
+2. `--kv-cache-dtype fp8`: Compresses the latent vector `c_t^KV` into 8-bit floating point representations, unlocking an additional 50% memory saving on Ada Lovelace and Hopper architectures.
+3. `--gpu-memory-utilization 0.92`: Leaves an 8% safety cushion for temporary CUDA workspace buffers during dynamic flash-attention kernel launches.
+4. **Prefix Caching Hit Ratio**: Reusing the latent representation across system prompts yields up to 4x throughput improvements in agentic reasoning workloads.
+

@@ -1,5 +1,5 @@
 ---
-title: "OSRM vs GraphHopper: Routing Engine Benchmarks & RAM"
+title: "OSRM vs GraphHopper: Routing Engine Architecture Compared"
 slug: "osrm-vs-graphhopper-architecture-comparison"
 author: "Lê Tuấn Anh"
 date: "2026-07-17T14:00:00+07:00"
@@ -16,7 +16,7 @@ tags:
   - "GraphHopper"
   - "Routing Engine"
   - "Logistics"
-description: "Deep architectural comparison of OSRM vs GraphHopper: Contraction Hierarchies, MLD, RAM footprint benchmarks, Custom Models, and Go matrix clients."
+description: "OSRM vs GraphHopper benchmark: <2ms C++ Contraction Hierarchies via POSIX mmap vs flexible Java Custom Models. Detailed RAM profiles and distance matrix APIs."
 ShowToc: true
 TocOpen: true
 canonicalURL: "https://tanhdev.com/posts/osrm-vs-graphhopper-architecture-comparison/"
@@ -26,9 +26,9 @@ cover:
   relative: false
 ---
 
-# OSRM vs GraphHopper: Routing Engine Benchmarks & RAM
+# OSRM vs GraphHopper: Routing Engine Architecture Compared
 
-> **Answer-first:** Comparing OSRM and GraphHopper shows OSRM excelling in raw speed (<2ms single queries, <20ms 100x100 matrix) via C++ Contraction Hierarchies and Linux POSIX shared memory (`mmap`), while GraphHopper provides flexible Java-based runtime Custom Models, turn restrictions, and multi-profile vehicle fleets. For static ride-hailing matrices, choose OSRM; for heterogeneous delivery fleets with weight/height limits, choose GraphHopper.
+> **Answer-first:** Comparing OSRM and GraphHopper shows OSRM excelling in raw speed (<2ms single queries, <20ms 100x100 matrix) via C++ Contraction Hierarchies and Linux POSIX shared memory (mmap), while GraphHopper provides flexible Java-based runtime Custom Models, turn restrictions, and multi-profile vehicle fleets. For static ride-hailing matrices, choose OSRM; for heterogeneous delivery fleets with weight/height limits, choose GraphHopper.
 
 > **Prerequisite:** Solid understanding of graph algorithms (Dijkstra, A*), Linux virtual memory management (`mmap`, POSIX shared memory), OpenStreetMap (OSM) protocol buffers (.pbf), and Go 1.25 concurrent network programming.
 
@@ -487,6 +487,10 @@ By loading the contracted binary graph into shared memory using POSIX `shm_open`
 
 {{< faq q="How do you handle live traffic congestion updates in OSRM without triggering multi-hour CH recalculations?" >}}
 Instead of Contraction Hierarchies (CH), deploy OSRM using Multi-Level Dijkstra (MLD). MLD partitions the graph into hierarchical cells and updates edge weights via `osrm-customize` in seconds rather than hours. This enables continuous live traffic ingestion pipelines without restarting routing worker pods.
+{{< /faq >}}
+
+{{< faq q="How do GraphHopper Distance Matrix API and OSRM Table compare for delivery logistics?" >}}
+For large static distance matrices (e.g. 1,000x1,000 driver-order pairs), OSRM Table service computes full matrices in under 25ms using pre-computed C++ Contraction Hierarchies and minimal CPU cycles. In contrast, GraphHopper Distance Matrix API requires more compute (~120ms for 1,000x1,000) but supports dynamic per-request vehicle restrictions, weight limits, and flexible speed profiles without recompiling graph datasets.
 {{< /faq >}}
 
 ---

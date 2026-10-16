@@ -96,7 +96,7 @@ This technical guide presents a complete, zero-overhead production harness writt
 
 ---
 
-## Section 2: OpenTelemetry GenAI Semantic Conventions (2026 Edition)
+## LLM Tracing with OpenTelemetry: Architecture & Semantic Conventions
 
 In 2026, OpenTelemetry formally standardized Generative AI telemetry under `open-telemetry/semantic-conventions-genai` (v1.42.0+). This specification unifies span names, attributes, events, and metrics across cloud model providers (OpenAI, Anthropic, Bedrock), local inference gateways (vLLM, Ollama, TGI), and multi-agent execution frameworks.
 

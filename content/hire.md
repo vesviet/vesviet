@@ -17,6 +17,7 @@ cover:
   alt: "Work with Lê Tuấn Anh — Senior Software Engineer · Backend & Platform Specialist"
   relative: false
 author: "Lê Tuấn Anh"
+canonicalURL: "https://tanhdev.com/hire/"
 ---
 
 > *"Let's solve hard backend problems together — the kind that keep your engineers up at night."*

@@ -76,16 +76,8 @@
       {{- $include := false -}}
       {{- if and (not $isNoIndex) (not $isRedirected) (not $isAlternateCanonical) -}}
         {{- if in (slice "taxonomy" "term") .Kind -}}
-          {{- /* Taxonomy terms: strictly exclude tags, include only curated categories */ -}}
-          {{- $isTag := or (eq .Section "tags") (eq .Data.Singular "tag") (eq .Data.Plural "tags") -}}
-          {{- $isCategory := or (eq .Section "categories") (eq .Data.Singular "category") (eq .Data.Plural "categories") -}}
-          {{- if and (not $isTag) $isCategory -}}
-            {{- if eq .Kind "taxonomy" -}}
-              {{- $include = true -}}
-            {{- else if and (ne .File nil) .Params.description (gt (len .Pages) 0) -}}
-              {{- $include = true -}}
-            {{- end -}}
-          {{- end -}}
+          {{- /* Strictly exclude all tags and category archives from sitemap to prevent crawl budget waste */ -}}
+          {{- $include = false -}}
         {{- else if eq .Kind "page" -}}
           {{- /* Regular content pages: require valid non-empty title */ -}}
           {{- if ne (trim .Title " \t\r\n") "" -}}

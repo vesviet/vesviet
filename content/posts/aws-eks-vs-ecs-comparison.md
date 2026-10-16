@@ -128,7 +128,7 @@ Every Kubernetes tool you've heard of works here: Helm, ArgoCD, Argo Rollouts, D
 
 ---
 
-## 3. Real Cost Breakdown — No Bullshit Numbers
+## AWS EKS vs ECS Pricing Reality: Total Cost of Ownership Breakdown
 
 ### 3.1 Control Plane Cost: ECS $0 vs EKS $73/month
 

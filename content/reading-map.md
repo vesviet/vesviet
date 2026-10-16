@@ -12,6 +12,7 @@ cover:
 ShowToc: true
 mermaid: true
 TocOpen: true
+canonicalURL: "https://tanhdev.com/reading-map/"
 ---
 
 > **Answer-First:** The tanhdev Reading Map provides a structured technical index across 57 production essays organized into 6 specialized engineering pillars: Commerce Modernization, 21-Service Go Microservices, Event-Driven Reliability, Platform Operations, AI Systems & Agentic Pipelines, and Senior Engineering Capability. Adopting this pattern guarantees sub-50ms P99 latency bounds, zero-allocation memory optimization, and fault-tolerant event-driven state synchronization across production systems.

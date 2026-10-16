@@ -11,6 +11,7 @@ cover:
   image: "/images/posts/privacy-policy.jpg"
   alt: "Privacy Policy for MarkPDF"
 noTranslation: true
+canonicalURL: "https://tanhdev.com/privacy-policy/markpdf/"
 ---
 
 > *"Transparency, data minimization, and user sovereignty are fundamental principles of our engineering software."*

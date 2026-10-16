@@ -51,49 +51,46 @@ def analyze_file(filepath):
         issues["integrity"].append(f"Odd number of code block delimiters ({code_block_count})")
 
     # 2. Answer-First block check
-    h1_idx = -1
-    for i, line in enumerate(lines):
-        if line.startswith("# "):
-            h1_idx = i
-            break
+    # Locate body start (immediately after frontmatter closing delimiter)
+    body_start_idx = close_idx + 1 if close_idx != -1 else 0
     
-    if h1_idx == -1:
-        issues["answer_first"] = "FAIL: No H1 (# Title) found"
+    # Search for Answer-First block within the first 25 lines of body
+    af_line_idx = -1
+    for i in range(body_start_idx, min(body_start_idx + 25, len(lines))):
+        line_str = lines[i].strip()
+        if re.search(r"\*\*Answer-First:?\*\*", line_str, re.IGNORECASE):
+            af_line_idx = i
+            break
+            
+    if af_line_idx == -1:
+        issues["answer_first"] = "FAIL: Answer-First block not found in lead section"
     else:
-        af_found = False
-        af_text = ""
-        for i in range(h1_idx + 1, min(h1_idx + 10, len(lines))):
-            line_str = lines[i].strip()
-            if line_str.startswith(">") and "Answer-First" in line_str:
-                af_found = True
-                af_lines = []
-                for j in range(i, len(lines)):
-                    if lines[j].strip().startswith(">"):
-                        af_lines.append(lines[j].strip("> ").strip())
-                    else:
-                        break
-                af_text = " ".join(af_lines)
+        is_blockquote = lines[af_line_idx].strip().startswith(">")
+        af_lines = []
+        for j in range(af_line_idx, len(lines)):
+            l = lines[j].strip()
+            if not l:
                 break
-            elif line_str and not line_str.startswith(">"):
+            if is_blockquote and not l.startswith(">"):
                 break
-        
-        if not af_found:
-            issues["answer_first"] = "FAIL: Answer-First blockquote not found immediately after H1"
-        else:
-            match = re.search(r"\*\*Answer-First:?\*\*\s*(.*)", af_text, re.IGNORECASE)
-            if match:
-                af_main = match.group(1).split("Key Takeaways")[0].strip()
-                words = af_main.split()
-                if len(words) > 60:
-                    issues["answer_first"] = f"FAIL: Word count {len(words)} > 60 words ({af_main[:30]}...)"
-                else:
-                    issues["answer_first"] = f"PASS ({len(words)} words)"
+            cleaned = l.lstrip("> ").strip()
+            af_lines.append(cleaned)
+            
+        af_text = " ".join(af_lines)
+        match = re.search(r"\*\*Answer-First:?\*\*\s*(.*)", af_text, re.IGNORECASE)
+        if match:
+            af_main = match.group(1).split("Key Takeaways")[0].strip()
+            words = af_main.split()
+            if len(words) > 60:
+                issues["answer_first"] = f"FAIL: Word count {len(words)} > 60 words ({af_main[:30]}...)"
             else:
-                words = af_text.split()
-                if len(words) > 60:
-                     issues["answer_first"] = f"FAIL: Blockquote text {len(words)} > 60 words"
-                else:
-                     issues["answer_first"] = f"PASS ({len(words)} words)"
+                issues["answer_first"] = f"PASS ({len(words)} words)"
+        else:
+            words = af_text.split()
+            if len(words) > 60:
+                issues["answer_first"] = f"FAIL: Block text {len(words)} > 60 words"
+            else:
+                issues["answer_first"] = f"PASS ({len(words)} words)"
 
     # 3. Content expansion (H2 word count >= 40)
     h2_positions = []

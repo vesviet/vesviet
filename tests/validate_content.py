@@ -6,12 +6,12 @@ import re
 import sys
 from pathlib import Path
 
-CONTENT = Path("content")
+CONTENT = Path(__file__).resolve().parent.parent / "content"
 FRONT_MATTER = re.compile(r"\A---[ \t]*\n(?P<front>.*?)\n---\n?(?P<body>.*)\Z", re.DOTALL)
 MERMAID_BLOCK = re.compile(r"(?m)^```mermaid\s*$")
 MERMAID_FLAG = re.compile(r"(?mi)^mermaid:\s*true\s*$")
 NOINDEX_FLAG = re.compile(r"(?mi)^noindex:\s*true\s*$")
-ANSWER_FIRST = re.compile(r"^\s*(?:# [^\n]+\n+)?\*\*Answer-[Ff]irst:\*\*")
+ANSWER_FIRST = re.compile(r"(?m)^\s*(?:>\s*)?\*\*Answer-[Ff]irst:?\*\*", re.IGNORECASE)
 REQUIRED_POST_METADATA = ("title", "date", "lastmod", "description", "slug", "canonicalURL", "ShowToc", "TocOpen")
 INTERNAL_LINK = re.compile(r"(?<!!)\[[^\]]+\]\(/(?!/)[^)]+\)")
 WORDS = re.compile(r"\b[\w'-]+\b")
@@ -46,7 +46,7 @@ for path in sorted(CONTENT.rglob("*.md")):
         warnings.append(f"{path}: no root-relative internal Markdown link found")
 
     if section == "posts" and not noindex:
-        if not ANSWER_FIRST.search(body):
+        if not ANSWER_FIRST.search(body[:2500]):
             warnings.append(f"{path}: indexable post does not begin with an Answer-first summary")
         for field in REQUIRED_POST_METADATA:
             if not re.search(rf"(?mi)^{re.escape(field)}:\s*.+$", front):

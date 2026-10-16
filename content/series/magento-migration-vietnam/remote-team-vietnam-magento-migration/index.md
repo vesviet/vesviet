@@ -16,6 +16,7 @@ cover:
   image: "/images/posts/remote-team-vietnam-migration-cover.jpg"
   alt: "Remote team engineering playbook: Managing Vietnam Go engineers for Magento migration"
 mermaid: true
+canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/remote-team-vietnam-magento-migration/"
 ---
 
 

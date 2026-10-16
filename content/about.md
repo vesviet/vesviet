@@ -12,6 +12,7 @@ cover:
   image: "/images/posts/hire-cover.jpg"
   alt: "Lê Tuấn Anh — Senior Software Engineer · Backend & Platform Specialist"
   relative: false
+canonicalURL: "https://tanhdev.com/about/"
 ---
 
 > *"Architecting scalable systems and leading teams to build resilient, high-performance platforms."*

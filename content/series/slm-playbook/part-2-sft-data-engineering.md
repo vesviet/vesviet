@@ -1,9 +1,9 @@
 ---
-title: "Part 2: SFT Data Engineering — NEFTune & Synthetic Curation"
+title: "Part 2: SFT Data Engineering: NEFTune & Synthetic Curation"
 date: 2026-08-18T10:00:00+07:00
 lastmod: 2026-09-09T14:00:00+07:00
 author: "Lê Tuấn Anh"
-description: "Engineering high-signal SFT datasets for SLMs: NEFTune embedding noise injection, SemDeDup semantic clustering, and 13-gram benchmark decontamination."
+description: "SFT data engineering for SLMs: NEFTune noise (+18.4% AlpacaEval), SemDeDup 45% redundancy pruning, and 13-gram decontamination to eliminate benchmark leakage."
 categories: ["Series", "Machine Learning", "Data Engineering"]
 tags: ["SFT", "Data Engineering", "NEFTune", "Synthetic Data", "Axolotl", "LIMA", "Decontamination"]
 series: ["slm-playbook"]
@@ -25,9 +25,11 @@ keywords: ["sft data curation", "neftune embedding noise", "semdedup deduplicati
 
 ---
 
-> **Prerequisite:** Read [Part 1: Hybrid AI Architecture & Self-Hosting vLLM](/series/slm-playbook/part-1-slm-hybrid-architecture/) for inference routing and self-hosted gateway topology.
+# Part 2: SFT Data Engineering: NEFTune & Synthetic Curation
 
 > **Answer-first:** Supervised Fine-Tuning data engineering dictates 90% of SLM performance. Following the LIMA paradigm, 3,500 curated instruction samples outperform 100,000 noisy scraped records. Injecting uniform embedding noise via NEFTune provides an 18.4% AlpacaEval gain against rote memorization, while SemDeDup clustering eliminates 45% semantic redundancy without accuracy loss, cutting GPU training hours by 50%.
+
+> **Prerequisite:** Read [Part 1: Hybrid AI Architecture & Self-Hosting vLLM](/series/slm-playbook/part-1-slm-hybrid-architecture/) for inference routing and self-hosted gateway topology.
 
 
 ---
@@ -364,6 +366,10 @@ For 7B–14B models with large hidden dimensions ($d \ge 4096$), $\alpha=5$ prov
 
 {{< faq q="What is Loss Masking and why is it mandatory in multi-turn SFT datasets?" >}}
 Loss Masking assigns `label = -100` to all prompt and user input tokens. PyTorch's `CrossEntropyLoss` automatically ignores tokens with value `-100` during gradient computation. Without loss masking, the model expends up to 70% of its backpropagation updates learning to predict the user's input phrasing rather than mastering the assistant's structured response.
+{{< /faq >}}
+
+{{< faq q="How do I decide between prompt engineering vs fine-tuning (SFT) for domain tasks?" >}}
+Choose prompt engineering and in-context RAG when integrating dynamic, rapidly updating enterprise knowledge or when query volume does not justify model training and hosting costs. Choose Supervised Fine-Tuning (SFT) when you must enforce rigid output schemas (JSON/SQL), reduce prompt token overhead by 70%, achieve sub-50ms inference latency, or teach the model novel reasoning styles and proprietary API protocols.
 {{< /faq >}}
 
 ---

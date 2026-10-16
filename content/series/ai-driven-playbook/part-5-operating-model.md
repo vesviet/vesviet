@@ -19,8 +19,6 @@ cover:
   relative: false
 keywords: ["ai native pod operating model", "engineering team topologies ai", "ai dora metrics", "junior developer paradox ai", "engineering leadership 2026"]
 mermaid: true
-aliases:
-  - /series/ai-driven-playbook/part-5-autonomous-testing-qa-automation/
 ---
 
 > **Answer-first:** Structuring high-velocity AI-native engineering organizations requires transitioning from traditional functional silos to autonomous three-to-four-person pods comprised of an architect, two fullstack orchestrators, and a verification specialist, accelerating DORA release metrics fourfold while establishing rigorous FinOps token expenditure governance models that deliver audited returns on generative artificial intelligence investments across software teams.

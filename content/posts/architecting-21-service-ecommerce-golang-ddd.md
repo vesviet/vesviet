@@ -43,7 +43,7 @@ This technical guide exposes the complete architectural blueprint powering this 
 
 ---
 
-## 1. Domain Decomposition: Mapping 21 Services Across 5 Bounded Contexts
+## E-Commerce Microservices Architecture Diagram & Domain Decomposition
 
 Microservices deployed without rigorously defined domain boundaries inevitably mutate into a "Distributed Monolith" — combining the operational overhead of network distributed systems with the fragile coupling of a monolith. In Domain-Driven Design, a **Bounded Context** establishes the boundary within which a specific domain model applies. Within this boundary, every entity, value object, and domain event possesses an unambiguous meaning governed by the Ubiquitous Language.
 

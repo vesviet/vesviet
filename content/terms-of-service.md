@@ -13,6 +13,7 @@ cover:
   image: "/images/posts/terms-of-service-cover.jpg"
   alt: "Terms of Service"
   relative: false
+canonicalURL: "https://tanhdev.com/terms-of-service/"
 ---
 
 > *"Clear legal terms ensure open collaboration, protect intellectual property, and define responsible usage of technical guidance."*

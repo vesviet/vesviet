@@ -718,6 +718,47 @@
 /api/v1/orders/webhook/ / 301
 /orders / 301
 /orders/ / 301
-
 /radar/radar-2026-10-05-kratos-dapr-microservices-go /radar/2026-10/radar-2026-10-05-kratos-dapr-microservices-go/ 301
 /radar/radar-2026-10-05-kratos-dapr-microservices-go/ /radar/2026-10/radar-2026-10-05-kratos-dapr-microservices-go/ 301
+
+# --- 13. Tech Radar Upward Links Parity (M2 Remediation) ---
+/radar/radar-2026-05-01-gateway-api-v1-5 /radar/2026-05/radar-2026-05-01-gateway-api-v1-5/ 301
+/radar/radar-2026-05-01-gateway-api-v1-5/ /radar/2026-05/radar-2026-05-01-gateway-api-v1-5/ 301
+/radar/grok-build-openai-aws-multi-cloud-anthropic-wall-street-google-io-may-2026 /radar/2026-05/grok-build-openai-aws-multi-cloud-anthropic-wall-street-google-io-may-2026/ 301
+/radar/grok-build-openai-aws-multi-cloud-anthropic-wall-street-google-io-may-2026/ /radar/2026-05/grok-build-openai-aws-multi-cloud-anthropic-wall-street-google-io-may-2026/ 301
+/radar/nvidia-rtx-spark-intel-18a-vera-rubin-computex-2026-claude-growth /radar/2026-06/nvidia-rtx-spark-intel-18a-vera-rubin-computex-2026-claude-growth/ 301
+/radar/nvidia-rtx-spark-intel-18a-vera-rubin-computex-2026-claude-growth/ /radar/2026-06/nvidia-rtx-spark-intel-18a-vera-rubin-computex-2026-claude-growth/ 301
+/radar/tech-radar-june-6-2026-vibe-verify-k8s-ai-jdk-27-wwdc26 /radar/2026-06/tech-radar-june-6-2026-vibe-verify-k8s-ai-jdk-27-wwdc26/ 301
+/radar/tech-radar-june-6-2026-vibe-verify-k8s-ai-jdk-27-wwdc26/ /radar/2026-06/tech-radar-june-6-2026-vibe-verify-k8s-ai-jdk-27-wwdc26/ 301
+/radar/cloud-native-ai-envoy-gateway-kubernetes-dapr-agents-2026 /radar/2026-07/cloud-native-ai-envoy-gateway-kubernetes-dapr-agents-2026/ 301
+/radar/cloud-native-ai-envoy-gateway-kubernetes-dapr-agents-2026/ /radar/2026-07/cloud-native-ai-envoy-gateway-kubernetes-dapr-agents-2026/ 301
+/radar/radar-22-07-event-driven-agentic-sagas-dapr-workflows-go /radar/2026-07/radar-22-07-event-driven-agentic-sagas-dapr-workflows-go/ 301
+/radar/radar-22-07-event-driven-agentic-sagas-dapr-workflows-go/ /radar/2026-07/radar-22-07-event-driven-agentic-sagas-dapr-workflows-go/ 301
+/radar/radar-27-07-scaling-mcp-servers-kubernetes /radar/2026-07/radar-27-07-scaling-mcp-servers-kubernetes/ 301
+/radar/radar-27-07-scaling-mcp-servers-kubernetes/ /radar/2026-07/radar-27-07-scaling-mcp-servers-kubernetes/ 301
+
+# --- 14. Prompt Fallback Aliases (Valid Monthly Hubs / True Slugs) ---
+/radar-2026-07-27 /radar/2026-07/radar-27-07-scaling-mcp-servers-kubernetes/ 301
+/radar-2026-07-27/ /radar/2026-07/radar-27-07-scaling-mcp-servers-kubernetes/ 301
+/radar/radar-2026-07-27 /radar/2026-07/radar-27-07-scaling-mcp-servers-kubernetes/ 301
+/radar/radar-2026-07-27/ /radar/2026-07/radar-27-07-scaling-mcp-servers-kubernetes/ 301
+/radar-2026-08-03-anthropic-artifacts-system-prompts /radar/2026-08/ 301
+/radar-2026-08-03-anthropic-artifacts-system-prompts/ /radar/2026-08/ 301
+/radar/radar-2026-08-03-anthropic-artifacts-system-prompts /radar/2026-08/ 301
+/radar/radar-2026-08-03-anthropic-artifacts-system-prompts/ /radar/2026-08/ 301
+/radar-2026-08-17-cursor-composer-multi-file-editing /radar/2026-08/ 301
+/radar-2026-08-17-cursor-composer-multi-file-editing/ /radar/2026-08/ 301
+/radar/radar-2026-08-17-cursor-composer-multi-file-editing /radar/2026-08/ 301
+/radar/radar-2026-08-17-cursor-composer-multi-file-editing/ /radar/2026-08/ 301
+/radar-2026-09-08-openai-o1-strawberry-chain-of-thought /radar/2026-09/mcp-20-agentic-mesh-distributed-systems/ 301
+/radar-2026-09-08-openai-o1-strawberry-chain-of-thought/ /radar/2026-09/mcp-20-agentic-mesh-distributed-systems/ 301
+/radar/radar-2026-09-08-openai-o1-strawberry-chain-of-thought /radar/2026-09/mcp-20-agentic-mesh-distributed-systems/ 301
+/radar/radar-2026-09-08-openai-o1-strawberry-chain-of-thought/ /radar/2026-09/mcp-20-agentic-mesh-distributed-systems/ 301
+/radar-2026-09-20-deepseek-v3-multi-head-latent-attention /radar/2026-09/deepseek-v3-multi-head-latent-attention/ 301
+/radar-2026-09-20-deepseek-v3-multi-head-latent-attention/ /radar/2026-09/deepseek-v3-multi-head-latent-attention/ 301
+/radar/radar-2026-09-20-deepseek-v3-multi-head-latent-attention /radar/2026-09/deepseek-v3-multi-head-latent-attention/ 301
+/radar/radar-2026-09-20-deepseek-v3-multi-head-latent-attention/ /radar/2026-09/deepseek-v3-multi-head-latent-attention/ 301
+/radar-2026-10-06-meta-llama-3-2-vision-edge /radar/2026-10/ 301
+/radar-2026-10-06-meta-llama-3-2-vision-edge/ /radar/2026-10/ 301
+/radar/radar-2026-10-06-meta-llama-3-2-vision-edge /radar/2026-10/ 301
+/radar/radar-2026-10-06-meta-llama-3-2-vision-edge/ /radar/2026-10/ 301
