@@ -762,3 +762,13 @@
 /radar-2026-10-06-meta-llama-3-2-vision-edge/ /radar/2026-10/ 301
 /radar/radar-2026-10-06-meta-llama-3-2-vision-edge /radar/2026-10/ 301
 /radar/radar-2026-10-06-meta-llama-3-2-vision-edge/ /radar/2026-10/ 301
+
+# --- 15. GSC Performance Ranking 404 Mitigations (M3 Refinement) ---
+/research/building-custom-kubernetes-operators-ebpf-golang-cilium /posts/building-custom-kubernetes-operators-ebpf-golang-cilium/ 301
+/research/building-custom-kubernetes-operators-ebpf-golang-cilium/ /posts/building-custom-kubernetes-operators-ebpf-golang-cilium/ 301
+/research/production-ai-observability-opentelemetry-golang-llm-tracing /posts/production-ai-observability-opentelemetry-golang-llm-tracing/ 301
+/research/production-ai-observability-opentelemetry-golang-llm-tracing/ /posts/production-ai-observability-opentelemetry-golang-llm-tracing/ 301
+/radar/go-synctest-concurrency /radar/2026-08/go-synctest-concurrency/ 301
+/radar/go-synctest-concurrency/ /radar/2026-08/go-synctest-concurrency/ 301
+/radar/2026-08/radar-2026-08-23-go-synctest-concurrency /radar/2026-08/go-synctest-concurrency/ 301
+/radar/2026-08/radar-2026-08-23-go-synctest-concurrency/ /radar/2026-08/go-synctest-concurrency/ 301
