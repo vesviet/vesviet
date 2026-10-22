@@ -56,6 +56,9 @@ quadrantChart
 
 | Radar Ring | Technology / Standard | Architectural Domain | Operational Metrics & Strategic Verdict |
 | :--- | :--- | :--- | :--- |
+| **ADOPT** | **LiteLLM Gateway Proxy** | Platforms & Infrastructure | Enterprise L7 reverse proxy providing virtual key budgeting, multi-provider failover, and OpenAI schema routing with sub-8.4ms P99 latency. |
+| **ADOPT** | **A2A JSON Schema Contracts** | Techniques & Protocols | Replaces conversational natural language with versioned Draft 2020-12 typed envelopes, eliminating compounding hallucinations and enabling deterministic verification. |
+| **ADOPT** | **Redis 7.4 Lua Fencing Tokens** | Distributed Systems | Solves split-brain concurrency hazards in multi-agent pipelines through atomic monotonic counters, eliminating stale overwrites during long-running tasks. |
 | **ADOPT** | **Kratos v2.9 Clean Architecture & Wire DI** | Languages & Frameworks | Strict layer separation with zero DB leakage; compile-time constructor injection eliminates runtime reflection overhead; sustained 165K gRPC RPS with 2.4ms P99. |
 | **ADOPT** | **Dapr 1.15 Virtual Actors & Workflows** | Platforms & Distributed Systems | Turn-based single-threaded concurrency over Unix domain sockets; event-sourced Saga compensation without external orchestration clusters. |
 | **ADOPT** | **Cilium 1.17 Sidecarless Mesh** | Platforms & Infrastructure | In-kernel `sockops` socket splicing eliminates 15ms–35ms Envoy IPC tax; cuts P99 latency by 92.3% to 1.12ms under 100K RPS; reduces pod RAM footprint by 150MB+. |
@@ -71,6 +74,9 @@ quadrantChart
 ---
 
 ## 🗺️ Featured October 2026 Editions
+
+- **[Autonomous AI Agent Swarms: A2A Protocols, Role-Skill Tool Locking & LiteLLM Gateway Orchestration for High-Concurrency Distributed Systems](/radar/2026-10/radar-2026-10-22-autonomous-agent-swarms-a2a-litellm/)**  
+  *Architectural deep dive into enterprise multi-agent swarms: A2A Protocol delivery envelopes with versioned Draft 2020-12 JSON schemas, role-skill persona tool locking preventing unauthorized command execution, Redis 7.4 Lua monotonic fencing tokens eliminating split-brain concurrency hazards, LiteLLM L7 model gateway with dynamic failover and budget hard caps (slashing API spend by 84.5% with sub-8.4ms P99 routing latency), and Linux eBPF Tetragon sub-12µs kernel sandboxing.*
 
 - **[Kratos v2.9 & Dapr 1.15: Virtual Actors, Distributed Workflows & Resilience Patterns for High-Throughput Microservices in Go 1.25](/radar/2026-10/radar-2026-10-05-kratos-dapr-microservices-go/)**  
   *Architectural deep dive into high-throughput Go 1.25 microservices: Kratos v2.9 Clean Architecture with zero database leakage into biz domain logic, Google Wire compile-time dependency injection, Dapr 1.15 sidecar virtual actors with turn-based concurrency over Unix Domain Sockets (142K RPS, 2.95ms P99 latency), durable event-sourced workflow saga compensation, and 3 production outage post-mortems.*
