@@ -50,6 +50,8 @@ quadrantChart
     "eBPF sockops Socket Splicing": [0.82, 0.44]
     "Traditional Envoy Pod Sidecars": [0.85, 0.18]
     "Userspace LD_PRELOAD Hooking": [0.88, 0.12]
+    "Patched PHP 8.4.27+ (Worker Recycling)": [0.26, 0.82]
+    "Unpatched PHP (< 8.4.27 / < 8.3.36)": [0.86, 0.22]
 ```
 
 ### Technology Radar Ring Matrix (October 2026)
@@ -64,16 +66,21 @@ quadrantChart
 | **ADOPT** | **Cilium 1.17 Sidecarless Mesh** | Platforms & Infrastructure | In-kernel `sockops` socket splicing eliminates 15ms–35ms Envoy IPC tax; cuts P99 latency by 92.3% to 1.12ms under 100K RPS; reduces pod RAM footprint by 150MB+. |
 | **ADOPT** | **Tetragon 1.4 In-Kernel Sandboxing** | Platforms & Infrastructure | Intercepts `sys_enter_execve` directly within Linux 6.8 kernel; delivers synchronous `SIGKILL` termination in under 12 microseconds; eliminates prompt-injection RCE escapes. |
 | **ADOPT** | **SPIFFE/SPIRE Workload Identity** | Platforms & Infrastructure | Cryptographic X.509 SVID attestation for autonomous agents; provides zero-trust mTLS without long-lived API tokens or user intervention. |
+| **ADOPT** | **Patched PHP 8.4.27+ & Worker Recycling** | Languages & Runtimes | Eliminates cross-request heap corruption from `zend_bailout()` multipart OOM via mandatory Zend Engine patch and `pm.max_requests = 500-1000` recycling. |
 | **TRIAL** | **Linux 6.8 BPF Ring Buffer Telemetry** | Tools & Utilities | Multi-producer, single-consumer memory mapped ring buffer; guarantees zero-drop event telemetry under 50K events/s agentic tool-spawning storms. |
 | **TRIAL** | **Dynamic TracingPolicy Enforcement** | Techniques | Automated generation of Tetragon CRDs from MCP tool declarations; combines compile-time schema validation with run-time verifier safety. |
 | **ASSESS** | **Go 1.25 cilium/ebpf Direct Loading** | Languages & Frameworks | Pure Go userspace loader without Cgo dependency; supports BTF-enabled cross-kernel CO-RE portability and atomic BPF map pinning. |
 | **ASSESS** | **gVisor Container Sandboxing** | Platforms & Infrastructure | Userspace kernel virtualization; provides strong isolation boundaries but incurs a 15–20% syscall throughput tax compared to native eBPF. |
 | **HOLD** | **Traditional Heavyweight Envoy Sidecars** | Platforms & Infrastructure | Dual TCP stack traversal, iptables redirection latency (15ms–35ms), and 150MB+ memory overhead per pod; replace with in-kernel eBPF socket routing. |
 | **HOLD** | **Userspace LD_PRELOAD Hooking** | Techniques | Easily bypassed via statically linked Go/Rust binaries or direct syscall assembly; offers zero security guarantees against adversarial agentic tool calls. |
+| **HOLD** | **Unpatched PHP Runtimes (< 8.4.27 / < 8.3.36)** | Languages & Runtimes | Critical vulnerability to CVE-2026-109618 Zend Engine UAF RCE via multipart OOM bailout; persistent worker memory corruption. |
 
 ---
 
 ## 🗺️ Featured October 2026 Editions
+
+- **[PHP2Shell (CVE-2026-109618 & CVE-2026-109619): Zend Engine Multipart Parser OOM Bailout, Cross-Request Heap Corruption & SRE Remediation](/radar/2026-10/radar-2026-10-23-php2shell-cve-2026-109618-zend-engine-sre-remediation/)**  
+  *Forensic SRE investigation into critical Zend Engine vulnerabilities: `zend_bailout()` via `longjmp()` skipping C stack unwinding during multipart body parsing OOM, cross-request Use-After-Free heap corruption in persistent worker pools (PHP-FPM, Apache mod_php, FrankenPHP, LiteSpeed), zero-trust Tetragon in-kernel SIGKILL enforcement, and mandatory upgrade to PHP 8.4.27 / 8.3.36 with aggressive worker recycling.*
 
 - **[Autonomous AI Agent Swarms: A2A Protocols, Role-Skill Tool Locking & LiteLLM Gateway Orchestration for High-Concurrency Distributed Systems](/radar/2026-10/radar-2026-10-22-autonomous-agent-swarms-a2a-litellm/)**  
   *Architectural deep dive into enterprise multi-agent swarms: A2A Protocol delivery envelopes with versioned Draft 2020-12 JSON schemas, role-skill persona tool locking preventing unauthorized command execution, Redis 7.4 Lua monotonic fencing tokens eliminating split-brain concurrency hazards, LiteLLM L7 model gateway with dynamic failover and budget hard caps (slashing API spend by 84.5% with sub-8.4ms P99 routing latency), and Linux eBPF Tetragon sub-12µs kernel sandboxing.*

@@ -1,6 +1,6 @@
 # Vesviet Content Index (tanhdev.com)
 
-> Snapshot date: 2026-10-22 · Branch `main` · Total content files: **381** (~1,080,000 words)
+> Snapshot date: 2026-10-23 · Branch `main` · Total content files: **382** (~1,083,500 words)
 
 > Site: Hugo + PaperMod, `en` default, canonical host `https://tanhdev.com/`
 > English flagship portfolio. Regenerate this index after every batch upgrade.
@@ -11,7 +11,7 @@
 |---|---|---|
 | `content/posts/` | 66 | 66 with Answer-first (100.0%); 17 standalone posts upgraded to 2027 SOTA Masterclass with 100-round deep research dossiers (Anchor Pillar Hub #1 `go-microservices.md` upgraded 2026-10-08, ~250,000 words); 10/10 Anchor Pillar Hubs SOTA certified |
 | `content/series/` | 251 | 25 series; 225 chapters + 25 series `_index.md` + 1 parent `_index.md` (~692,166 words); 100% Answer-first |
-| `content/radar/` | 41 | 32 radar editions (2026-04 → 2026-10) + 7 monthly `_index.md` + 1 parent `_index.md` (~128,000 words) |
+| `content/radar/` | 42 | 34 radar editions (2026-04 → 2026-10) + 7 monthly `_index.md` + 1 parent `_index.md` (~131,500 words) |
 | `content/categories/` | 16 | ai, architecture, backend, cloudflare, database, devops, e-commerce, engineering, fintech, golang, kubernetes, microservices, observability, payments, tech-radar + parent `_index.md` (~636 words) |
 | Root pages | 7 | `about`, `hire`, `legal-notice`, `privacy-policy`, `privacy-policy-markpdf`, `reading-map`, `terms-of-service` (~7,281 words) |
 | `reports/` | 584 | 250 research JSON dossiers, 251 research MD docs + audits, series content indexes, 33 knowledge cards, GSC audit & Master Remediation Plan 2026-10-08 |
@@ -61,7 +61,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 | `ai-code-review-vibe-coding` | 7 | AI code review & vibe coding governance — 2027 SOTA Masterclass (Multi-Agent PR Review Pipeline, AST Graph Indexing, Context Engineering, Empirical Defect Taxonomy, MCP Dynamic Sandboxing, AI Supply Chain Security, Semgrep Guardrails; 1:1 twin parity, 700 research rounds, 100% 8-gate compliant) | Complete (`2026-09-14`) |
 | `agentic-system-architecture` | 7 | Multi-agent system architecture & orchestration — 2027 SOTA Masterclass (Hierarchical Orchestrator, P2P Agentic Mesh, Semantic Memory Systems, MCP Dynamic Tool Calling, AgentOps OpenTelemetry, LLM-as-Judge Evals, Human-in-the-Loop Governance; 1:1 twin parity, 700 research rounds, 100% 8-gate compliant) | Complete (`2026-09-14`) |
 
-## Radar Editions (Tech Radar - 32 editions, 40 files)
+## Radar Editions (Tech Radar - 34 editions, 42 files)
 
 | Month | Editions | Highlights |
 |---|---|---|
@@ -71,12 +71,13 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 | 2026-07 | 3 | LLM evaluation frameworks & Agent governance |
 | 2026-08 | 7 | Stateless MCP K8s gateway, OWASP/NIST AI agent gateway, Go synctest, vLLM context routing MLA, eBPF Tetragon agent security |
 | 2026-09 | 6 | WASI 0.3 component model/wasmtime, **MCP 2.0 agentic mesh (2026-09-08)**, **DeepSeek-V3 MLA (2026-09-16, Published)**, SGLang EAGLE-2 (2026-09-23), Disaggregated Prefill-Decode (2026-09-26), **vLLM v1 Production KV Cache (2026-09-30)** |
-| 2026-10 | 2 | **Cilium 1.17 & Tetragon 1.4: In-Kernel eBPF Observability, Sidecarless Service Mesh & Zero-Trust Sandboxing for Autonomous AI Agents (2026-10-02)**, **Kratos v2.9 & Dapr 1.15: Production Microservices Resilience in Go 1.25 (2026-10-05)** |
+| 2026-10 | 4 | **Cilium 1.17 & Tetragon 1.4 (2026-10-02)**, **Kratos v2.9 & Dapr 1.15 (2026-10-05)**, **Autonomous Agent Swarms (2026-10-22)**, **PHP2Shell Zend Engine SRE Remediation (2026-10-23)** |
 
 ## Recent Upgrade Campaigns
 
 | Date / Commit | Campaign |
 |---|---|
+| `2026-10-23` | **2027 SOTA Masterclass Tech Radar Upgrade: PHP2Shell (CVE-2026-109618 & CVE-2026-109619) Zend Engine SRE Remediation (100 rounds deep research)**: Twin publication across `vesviet` and `learn` (1:1 twin parity, English flagship >2,500w and >20.5 KB, Vietnamese twin >2,500w, atomic Answer-first 48–62w, production C / Zend Engine memory model / FastCGI / Tetragon SRE configs, 100-round Draft202012 JSON dossier with bitwise twin parity, zero links to learn on vesviet, reciprocal English badge on learn, October 2026 radar matrix and root indexes synchronized, 100% automated test harness passing). |
 | `2026-10-08` | **Dual-Repo GSC Coverage Remediation Master Plan & Technical Execution**: Published comprehensive technical audit `reports/gsc-audit-2026-10-08.md` and master roadmap `reports/gsc-remediation-master-plan-2026-10-08.md`. Symmetrized 213 redirect rules in `static/_redirects` (expanded to 643 rules, 100% 1-hop 301, 0 307 temporary hops). Permanently eliminated 5xx server error via instant 301 redirect in `src/index.js`. Hardened `robots.txt` defense against mock API crawlers. Upgraded 16/16 category hubs with Answer-first (48–62w) and canonicalURL. Re-indexed all 25 series and 12 previously unlinked standalone posts in `reading-map.md`, eliminating orphan nodes while preserving strict One-Way Authority Rule (0 leaks to learn). Clustered 195 vesviet and 92 learn unindexed items across 6 engineering domains into Batches 8–12 upgrade roadmap. |
 | `2026-10-05` | **2027 SOTA Masterclass Batch 7 Standalone Posts Upgrade & Sitewide Anchor Pillar Hub Certification (500 rounds deep research)**: 5 high-priority standalone posts upgraded to 2027 SOTA Masterclass 7-gate standards (`mysql-scaling-sharding-tidb-architecture.md`, `graphhopper-distance-matrix-production-guide.md`, `temporal-saga-pattern-golang-distributed-transactions-guide.md`, `generative-ui-with-mcp-ai-native-frontend.md`, `deploying-astro-on-cloudflare-full-stack-edge-architecture.md`). Formally elevated Hub #6 (`deploying-astro-on-cloudflare-full-stack-edge-architecture`) and Hub #7 (`generative-ui-with-mcp-ai-native-frontend`) to certified SOTA, achieving 10/10 (100.0%) sitewide Anchor Pillar Hub certification. All posts exceed 20.5 KB and 2,500 body words, feature atomic Answer-first 48–62w, prerequisite callouts, >=2 valid Mermaid diagrams, >=3 {{< faq >}} shortcodes, production code realism, zero leaks to learn, and bidirectional anchor links. 5 100-round Draft 2020-12 research dossiers archived in `reports/archive/research-dossiers/` with 100% SHA-256 twin parity. |
 | `2026-10-05` | **2027 SOTA Masterclass Tech Radar Upgrade: Kratos v2.9 & Dapr 1.15 Microservices & Batch 6 Standalone Posts Upgrade (600 rounds deep research)**: Edition #2 twin publication and 5 standalone posts (Ranks 6–10) upgraded to 7/7 SOTA gates. |
