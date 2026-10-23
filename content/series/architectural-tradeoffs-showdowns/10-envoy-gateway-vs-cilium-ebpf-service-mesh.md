@@ -39,7 +39,7 @@ keywords: ["envoy gateway vs cilium service mesh", "ebpf sockops socket redirect
 mermaid: true
 ---
 
-> 📖 **Series Navigation**: [← Previous Chapter: Part 9 — Cookie vs. SessionStorage vs. LocalStorage](/series/architectural-tradeoffs-showdowns/09-cookie-vs-sessionstorage-vs-localstorage/) | [Series Hub](/series/architectural-tradeoffs-showdowns/)
+> 📖 **Series Navigation**: [← Previous Chapter: Part 9 — Cookie vs. SessionStorage vs. LocalStorage](/series/architectural-tradeoffs-showdowns/09-cookie-vs-sessionstorage-vs-localstorage/) | [Next Chapter: Part 11 — Client-Side Rendering (CSR) vs. Server-Side Rendering (SSR) in the Modern AI Era →](/series/architectural-tradeoffs-showdowns/11-client-side-rendering-csr-vs-server-side-rendering-ssr-ai-era/) | [Series Hub](/series/architectural-tradeoffs-showdowns/)
 
 # Part 10: Envoy Gateway vs. Cilium eBPF Service Mesh: Kernel Performance & Layer 7 Governance Showdown
 
@@ -562,6 +562,7 @@ Legacy `Ingress` is a monolithic resource that forced infrastructure operators, 
 ## 🔗 Related Masterclasses & Architecture Pillars
 
 * 📖 **Continue Exploring the Tech Showdowns Series:**
+  * Modern web rendering, RSC, Generative UI and agent DOM showdown: [Part 11: Client-Side Rendering (CSR) vs. Server-Side Rendering (SSR) in the Modern AI Era](/series/architectural-tradeoffs-showdowns/11-client-side-rendering-csr-vs-server-side-rendering-ssr-ai-era/)
   * Byte serialization and HTTP/2 multiplexing deep dive: [Part 1: HTTP/REST (JSON) vs. gRPC (Protobuf)](/series/architectural-tradeoffs-showdowns/01-http-rest-json-vs-grpc-protobuf/)
   * Network taxes and execution runtime trade-offs: [Part 7: Modular Monolith vs. Microservices vs. SpinKube Wasm](/series/architectural-tradeoffs-showdowns/07-modular-monolith-vs-microservices-vs-spinkube-wasm/)
   * Production workload identity and attestation guide: [Zero-Trust Service Mesh Security with SPIFFE/SPIRE & Istio](/posts/zero-trust-service-mesh-security-spiffe-spire-istio-golang/)

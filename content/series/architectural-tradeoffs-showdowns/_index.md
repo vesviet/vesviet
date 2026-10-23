@@ -3,7 +3,7 @@ title: "Architectural Trade-offs & Tech Showdowns"
 description: "Living masterclass on system design trade-offs: HTTP vs gRPC, Go vs PHP in high-concurrency e-commerce, UUIDv7 vs Snowflake vs BIGINT, Kafka vs NATS, and NewSQL vs Sharded RDBMS."
 slug: "architectural-tradeoffs-showdowns"
 date: "2026-08-16T10:30:00+07:00"
-lastmod: "2026-08-24T14:15:04+07:00"
+lastmod: "2026-10-23T11:14:17+07:00"
 draft: false
 cover:
   image: "/images/posts/default-post-14.jpg"
@@ -55,8 +55,11 @@ flowchart TD
     subgraph Wave4 ["Wave 4: Cloud-Native Networking & Service Mesh"]
         P10["<b>Part 10: Envoy Gateway vs. Cilium eBPF Mesh</b><br/>In-Kernel Socket Redirection, L7 Trapdoor & FinOps"]
     end
+    subgraph Wave5 ["Wave 5: Modern Web Rendering & AI-Driven Frontend Architecture"]
+        P11["<b>Part 11: CSR vs. SSR in the Modern AI Era</b><br/>React Server Components, Streaming PPR, Generative UI & WebMCP Agent DOM"]
+    end
 
-    P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7 --> P8 --> P9 --> P10
+    P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7 --> P8 --> P9 --> P10 --> P11
 ```
 
 ### 🚀 Wave 1, Wave 2 & Wave 3 (Active Releases)
@@ -93,6 +96,11 @@ flowchart TD
 - **[Part 10: Envoy Gateway vs. Cilium eBPF Service Mesh: Kernel Performance & Layer 7 Governance Showdown](/series/architectural-tradeoffs-showdowns/10-envoy-gateway-vs-cilium-ebpf-service-mesh/)**  
   *Deep architectural showdown of Envoy Gateway (dedicated Ingress proxy, Gateway API v1.x, WAF, JWT, AI Token Quota) vs. Cilium Service Mesh (eBPF in-kernel socket redirection sockops + per-node Envoy DaemonSet, decoupled mTLS WireGuard, and 92% RAM FinOps reduction at 50,000 RPS).*
 
+### 🚀 Wave 5 (Active Release: Modern Web Rendering & AI-Driven Frontend Architecture)
+
+- **[Part 11: Client-Side Rendering (CSR) vs. Server-Side Rendering (SSR) in the Modern AI Era: React 19 Server Components, Streaming Partial Prerendering, Generative UI & Autonomous Agent WebMCP DOM](/series/architectural-tradeoffs-showdowns/11-client-side-rendering-csr-vs-server-side-rendering-ssr-ai-era/)**  
+  *Deep architectural showdown of Client-Side Rendering (CSR SPAs, client-side hydration tax, INP penalties, token-heavy agent DOM scrapes) vs. Server-Side Rendering (Next.js 15 Streaming PPR, React 19 RSC wire protocol, Vercel AI SDK Generative UI streaming, Astro Islands, and WebMCP structured agent tool execution with 75% edge compute FinOps savings).*
+
 ---
 
 ## 💡 Architectural Decision Matrix (Quick Reference)
@@ -108,6 +116,7 @@ flowchart TD
 | **Execution Architecture** | **Modular Monolith** | **Microservices vs. SpinKube Wasm** | Use Modular Monolith for teams under 50 engineers needing local ACID and rapid velocity; use Container Microservices for 500+ orgs needing decoupled CI/CD; use SpinKube Wasm for bursty event micro-functions and AI agent tool sandboxes. |
 | **State & Concurrency** | **Redis In-Memory** | **Dapr Virtual Actors** | Use Redis for high-throughput (>100k QPS) ephemeral caching, GCRA rate limiting, and vector RAG; use Dapr Virtual Actors for complex state machines, turn-based single-threaded concurrency, and long-lived autonomous AI agent context with durable reminders. |
 | **Network & Service Mesh** | **Envoy Gateway (Ingress)** | **Cilium eBPF Service Mesh** | Use Envoy Gateway for edge ingress and API gateway governance with WAF, JWT, and AI token quotas; Use Cilium eBPF for intra-cluster CNI and East-West service mesh delivering sub-millisecond socket-level redirection and 92% RAM savings. |
+| **Frontend & Rendering Architecture** | **Client-Side Rendering (CSR / SPA)** | **Server-Side Rendering (SSR / RSC / PPR)** | Use CSR for heavy offline-first canvas/desktop dashboards with static authenticated UI; use SSR with React 19 RSC, Streaming PPR, and WebMCP for public e-commerce, SEO, Generative UI streaming, and Autonomous AI Agent consumption. |
 
 ---
 

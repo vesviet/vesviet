@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
 Master Automated Verification Test Suite — Sprint 1 (2027 SOTA Masterclass)
-Evaluates 34 markdown content files and 17 deep research dossiers across:
+Evaluates 36 markdown content files and 17 deep research dossiers across:
 - vesviet (https://tanhdev.com)
 - learn (https://learn.tanhdev.com)
 
 Covers Requirements R4 & R5:
-1. 7 SOTA 2027 Quality Gates across all 34 files (10 Showdowns + 7 Ride-Hailing x 2 repos)
+1. 7 SOTA 2027 Quality Gates across all 36 files (11 Showdowns + 7 Ride-Hailing x 2 repos)
    - Gate 1: File size > 20.5 KB and body words >= 2,500 words
    - Gate 2: Single-line > **Answer-first:** (50-60 words)
    - Gate 3: Prerequisite callout blocks (> **Prerequisite:** EN / > **Điều kiện tiên quyết:** VI)
@@ -49,6 +49,7 @@ SERIES1_FILES = [
     "08-redis-state-vs-dapr-virtual-actors.md",
     "09-cookie-vs-sessionstorage-vs-localstorage.md",
     "10-envoy-gateway-vs-cilium-ebpf-service-mesh.md",
+    "11-client-side-rendering-csr-vs-server-side-rendering-ssr-ai-era.md",
 ]
 
 SERIES2_FILES = [
@@ -217,7 +218,7 @@ def verify_chapter(site: str, series_slug: str, filename: str) -> dict:
 
 def test_markdown_gates():
     print("=" * 115)
-    print("TIER 1: 7 QUALITY GATES AUDIT (34 MARKDOWN CHAPTERS)")
+    print("TIER 1: 7 QUALITY GATES AUDIT (36 MARKDOWN CHAPTERS)")
     print("=" * 115)
     print(f"{'Site':<7} | {'Series':<32} | {'Chapter':<32} | {'Size':<6} | {'Words':<5} | {'AF':<4} | {'Merm':<4} | {'FAQ':<3} | G1 G2 G3 G4 G5 G6 G7 | Stat")
     print("-" * 115)
@@ -249,8 +250,9 @@ def test_markdown_gates():
 
     print("-" * 115)
     print(f"Tier 1 Result: {passed_chapters}/{total_chapters} chapters passed 100% of 7 quality gates.")
+    assert total_chapters == 36, f"Expected 36 chapters, got {total_chapters}"
     assert passed_chapters == total_chapters, f"Failed chapters: {failures}"
-    print("[PASS] Tier 1: All 34 chapters verified compliant with 7 SOTA 2027 Gates!\n")
+    print("[PASS] Tier 1: All 36 chapters verified compliant with 7 SOTA 2027 Gates!\n")
 
 
 def test_research_dossiers_and_twin_parity():

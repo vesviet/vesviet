@@ -1,6 +1,6 @@
 # Vesviet Content Index (tanhdev.com)
 
-> Snapshot date: 2026-10-23 · Branch `main` · Total content files: **382** (~1,083,500 words)
+> Snapshot date: 2026-10-23 · Branch `main` · Total content files: **383** (~1,083,500 words)
 
 > Site: Hugo + PaperMod, `en` default, canonical host `https://tanhdev.com/`
 > English flagship portfolio. Regenerate this index after every batch upgrade.
@@ -10,7 +10,7 @@
 | Section | Files | Notes |
 |---|---|---|
 | `content/posts/` | 66 | 66 with Answer-first (100.0%); 17 standalone posts upgraded to 2027 SOTA Masterclass with 100-round deep research dossiers (Anchor Pillar Hub #1 `go-microservices.md` upgraded 2026-10-08, ~250,000 words); 10/10 Anchor Pillar Hubs SOTA certified |
-| `content/series/` | 251 | 25 series; 225 chapters + 25 series `_index.md` + 1 parent `_index.md` (~692,166 words); 100% Answer-first |
+| `content/series/` | 252 | 25 series; 226 chapters + 25 series `_index.md` + 1 parent `_index.md` (~692,166 words); 100% Answer-first |
 | `content/radar/` | 42 | 34 radar editions (2026-04 → 2026-10) + 7 monthly `_index.md` + 1 parent `_index.md` (~131,500 words) |
 | `content/categories/` | 16 | ai, architecture, backend, cloudflare, database, devops, e-commerce, engineering, fintech, golang, kubernetes, microservices, observability, payments, tech-radar + parent `_index.md` (~636 words) |
 | Root pages | 7 | `about`, `hire`, `legal-notice`, `privacy-policy`, `privacy-policy-markpdf`, `reading-map`, `terms-of-service` (~7,281 words) |
@@ -31,7 +31,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 9. `reading-map.md` — Sitewide Curated Learning Directory (6 pillars) (SOTA Certified ✅)
 10. `hire.md` — Commercial Consulting Conversion Hub (SOTA Certified ✅)
 
-## Series Index (25 series, 251 files, 225 chapters)
+## Series Index (25 series, 252 files, 226 chapters)
 
 | Series | Chapters | Domain | Status |
 |---|---|---|---|
@@ -51,7 +51,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 | `ai-driven-playbook` | 14 | AI-assisted engineering playbook & agentic SDLC orchestration — 2027 SOTA Masterclass (multi-agent workflows, code generation harnesses, dynamic context engineering, eval-driven development; 1:1 twin parity, 1,400 research rounds, 100% 7-gate compliant) | Complete (`2026-09-29`) |
 | `ecommerce-order-allocation` | **Complete (2027 SOTA)** | 12 / 12 | **32,266** words (256.8 KB) | 64 Mermaids, 48 FAQs, 12 Research Dossiers (100 rounds/ch) | [Index](ecommerce-order-allocation-content-index.md) |
 | `composable-commerce-migration` | 11 | Composable commerce migration patterns | Baseline |
-| `architectural-tradeoffs-showdowns` | 10 | Technology showdowns & decision matrices — 2027 SOTA Masterclass (gRPC vs REST, UUIDv7 vs Snowflake vs BigInt, MariaDB vs MySQL ThreadPool, Sharded MySQL vs TiDB NewSQL, Kafka vs NATS JetStream, Modular Monolith vs SpinKube WASM, Redis State vs Dapr Actors, Storage API, Envoy vs Cilium eBPF; 1:1 twin parity, 1,000 research rounds, 100% 7-gate compliant) | Complete (`2026-09-28`) |
+| `architectural-tradeoffs-showdowns` | 11 | Technology showdowns & decision matrices — 2027 SOTA Masterclass (gRPC vs REST, UUIDv7 vs Snowflake vs BigInt, MariaDB vs MySQL ThreadPool, Sharded MySQL vs TiDB NewSQL, Kafka vs NATS JetStream, Modular Monolith vs SpinKube WASM, Redis State vs Dapr Actors, Storage API, Envoy vs Cilium eBPF, CSR vs SSR in Modern AI Era; 1:1 twin parity, 1,100 research rounds, 100% 7-gate compliant) | Complete (`2026-10-23`) |
 | `routing-geospatial-architecture` | 9 | Routing & geospatial engineering — 2027 SOTA Masterclass (OSRM vs GraphHopper Contraction Hierarchies, Valhalla dynamic costing, H3/S2 spatial indexing, realtime telemetry Kalman filter, Redis geospatial semantic caching, shared memory engines k8s zero-downtime; 1:1 twin parity, 900 research rounds, 100% 8-gate compliant) | Masterclass SOTA Upgraded (2026-09-14) |
 | `modular-monolith-architecture` | 9 | Modular monolith in Go | Baseline |
 | `high-concurrency-systems` | 10 | High-concurrency patterns — 2027 SOTA Masterclass (C10M, Redis GCRA, Transactional Outbox, DB Connection Pool Sizing, Envoy vs Cilium Mesh, Payment Idempotency, Redlock vs ZooKeeper, Vitess Sharding; 1:1 twin parity, 1,000 research rounds, 100% 8-gate compliant) | Complete (`2026-09-14`) |
@@ -77,6 +77,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 
 | Date / Commit | Campaign |
 |---|---|
+| `2026-10-23` | **2027 SOTA Masterclass Series Upgrade: Architectural Trade-offs & Tech Showdowns Part 11 (CSR vs. SSR in Modern AI Era, 100 rounds deep research)**: Twin publication across `vesviet` and `learn` (1:1 twin parity, English flagship >2,500w and >20.5 KB, Vietnamese twin >2,500w, atomic Answer-first 48–62w, React 19 RSC / Next.js 15 Streaming PPR / Vercel AI SDK / WebMCP implementations, 100-round Draft202012 JSON dossier with bitwise twin parity, zero links to learn on vesviet, reciprocal English badge on learn, series hub Wave 5 updated, 100% automated test harness passing). |
 | `2026-10-23` | **2027 SOTA Masterclass Tech Radar Upgrade: PHP2Shell (CVE-2026-109618 & CVE-2026-109619) Zend Engine SRE Remediation (100 rounds deep research)**: Twin publication across `vesviet` and `learn` (1:1 twin parity, English flagship >2,500w and >20.5 KB, Vietnamese twin >2,500w, atomic Answer-first 48–62w, production C / Zend Engine memory model / FastCGI / Tetragon SRE configs, 100-round Draft202012 JSON dossier with bitwise twin parity, zero links to learn on vesviet, reciprocal English badge on learn, October 2026 radar matrix and root indexes synchronized, 100% automated test harness passing). |
 | `2026-10-08` | **Dual-Repo GSC Coverage Remediation Master Plan & Technical Execution**: Published comprehensive technical audit `reports/gsc-audit-2026-10-08.md` and master roadmap `reports/gsc-remediation-master-plan-2026-10-08.md`. Symmetrized 213 redirect rules in `static/_redirects` (expanded to 643 rules, 100% 1-hop 301, 0 307 temporary hops). Permanently eliminated 5xx server error via instant 301 redirect in `src/index.js`. Hardened `robots.txt` defense against mock API crawlers. Upgraded 16/16 category hubs with Answer-first (48–62w) and canonicalURL. Re-indexed all 25 series and 12 previously unlinked standalone posts in `reading-map.md`, eliminating orphan nodes while preserving strict One-Way Authority Rule (0 leaks to learn). Clustered 195 vesviet and 92 learn unindexed items across 6 engineering domains into Batches 8–12 upgrade roadmap. |
 | `2026-10-05` | **2027 SOTA Masterclass Batch 7 Standalone Posts Upgrade & Sitewide Anchor Pillar Hub Certification (500 rounds deep research)**: 5 high-priority standalone posts upgraded to 2027 SOTA Masterclass 7-gate standards (`mysql-scaling-sharding-tidb-architecture.md`, `graphhopper-distance-matrix-production-guide.md`, `temporal-saga-pattern-golang-distributed-transactions-guide.md`, `generative-ui-with-mcp-ai-native-frontend.md`, `deploying-astro-on-cloudflare-full-stack-edge-architecture.md`). Formally elevated Hub #6 (`deploying-astro-on-cloudflare-full-stack-edge-architecture`) and Hub #7 (`generative-ui-with-mcp-ai-native-frontend`) to certified SOTA, achieving 10/10 (100.0%) sitewide Anchor Pillar Hub certification. All posts exceed 20.5 KB and 2,500 body words, feature atomic Answer-first 48–62w, prerequisite callouts, >=2 valid Mermaid diagrams, >=3 {{< faq >}} shortcodes, production code realism, zero leaks to learn, and bidirectional anchor links. 5 100-round Draft 2020-12 research dossiers archived in `reports/archive/research-dossiers/` with 100% SHA-256 twin parity. |
@@ -112,7 +113,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 Each flagship topic exists as a Vietnamese twin on `learn` (canonical there for notes) and an expanded English masterclass on `vesviet` (authority site).
 Synchronized twins:
 - 7 Standalone Posts: AI Swarm & LiteLLM, 15-Second Customer Intelligence, MySQL Horizontal Scaling, Go pprof Internals, Urban Canyon GPS Map-Matching; plus Batch 2026-10-04: OSRM vs GraphHopper, Zero-Trust SPIFFE/SPIRE, Alipay Double 11, Cloudflare D1 Realtime Cart, Custom Golang Vector DB HNSW (1,000+ rounds deep research across standalone posts)
-- `architectural-tradeoffs-showdowns` (10 chapters)
+- `architectural-tradeoffs-showdowns` (11 chapters)
 - `ride-hailing-realtime-architecture` (7 chapters)
 - `routing-geospatial-architecture` (9 chapters + hub)
 - `core-banking-architecture` (8 chapters + hub)
@@ -138,7 +139,7 @@ Synchronized twins:
 
 | Gate | Metric | Status |
 |---|---|---|
-| **Answer-first Block** | 66/66 posts (100.0%), 225/225 series chapters have Answer-first | 100% compliant with standard blockquote (48–62w) |
+| **Answer-first Block** | 66/66 posts (100.0%), 226/226 series chapters have Answer-first | 100% compliant with standard blockquote (48–62w) |
 | **Mermaid Diagrams** | 983 diagram blocks across 335 files (54 posts, 243 series chapters, 38 radar) | 100% valid syntax; 100% with `mermaid: true` frontmatter |
 | **Quantitative Depth** | 59/66 posts (89.4%), 140/225 series chapters (62%) contain benchmark tables | SOTA chapters maintain ≥3 verifiable data points per 500w |
 | **Masterclass Scale** | 53/66 posts (80.3%) >2,500w & >20KB; 17/66 posts (25.8%) 7/7 SOTA Certified; 10/10 (100.0%) Anchor Pillar Hubs SOTA Certified; 199/221 series chapters (90.0%) | 100% of upgraded posts and series exceed masterclass bar |
