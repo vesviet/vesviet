@@ -5,7 +5,7 @@ lastmod: 2026-08-16T12:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Architectural blueprint of Go microservices on Kratos v2: Clean Architecture layers, Wire dependency injection, and middleware interceptors."
 categories: ["Series", "Software Engineering", "Backend Architecture"]
-tags: ["Golang", "Kratos", "Clean Architecture", "Dependency Injection", "Wire", "Microservices"]
+tags: ["Golang", "Kratos", "Clean Architecture", "Microservices"]
 series: ["composable-commerce-migration"]
 weight: 4
 slug: "part-3-golang-kratos"
@@ -19,7 +19,6 @@ cover:
   relative: false
 keywords: ["golang kratos v2", "clean architecture golang", "google wire dependency injection", "kratos microservices"]
 mermaid: true
-noindex: true
 ---
 
 [← Previous Chapter: Part 2: Rush Monorepo](/series/composable-commerce-migration/part-2-rush-monorepo/) | [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 4: gRPC Internal + REST Gateway →](/series/composable-commerce-migration/part-4-grpc-rest-gateway/)

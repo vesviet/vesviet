@@ -1,13 +1,13 @@
 ---
-title: "AWS EKS vs ECS: Architecture, Real Costs & 2026 Guide"
+title: "AWS EKS vs ECS 2026: Architecture, Real Costs & Decision Matrix"
 slug: "aws-eks-vs-ecs-comparison"
 author: "Lê Tuấn Anh"
 date: "2026-06-26T21:00:00+07:00"
 lastmod: "2026-08-23T08:30:00+07:00"
 draft: false
 mermaid: true
-tags: ["AWS", "EKS", "ECS", "Kubernetes", "Container Orchestration", "DevOps", "Go", "Microservices", "Fargate"]
-description: "EKS vs ECS comparison for container workloads: control plane pricing, Fargate cost formulas, Karpenter autoscaling, GitOps support, and decision matrix."
+tags: ["AWS", "Kubernetes", "DevOps", "Go", "Microservices"]
+description: "EKS vs ECS comparison: control plane pricing, Fargate cost formulas, Karpenter autoscaling, GitOps support, decision matrix. Complete 2026 guide with benchmarks."
 categories: ["DevOps", "Engineering", "AWS"]
 ShowToc: true
 TocOpen: true

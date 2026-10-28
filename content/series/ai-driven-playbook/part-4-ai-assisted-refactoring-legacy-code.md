@@ -1,11 +1,11 @@
 ---
-title: "Part 4: AI-Assisted Legacy Code Refactoring & Modernization"
+title: "AI-Assisted Legacy Code Refactoring: 4-Step Framework with DeepSeek-R1 (2026)"
 date: 2026-05-12T08:00:00+07:00
 lastmod: 2026-09-08T18:00:00+07:00
 author: "Lê Tuấn Anh"
-description: "A disciplined 4-step framework for safely refactoring legacy enterprise codebases using AI: Golden Master testing, AST dependency isolation, DeepSeek-R1 reasoning verification, and atomic Git commit pipelines."
+description: "Disciplined 4-step framework for refactoring legacy enterprise codebases using AI: Golden Master testing, AST dependency isolation, DeepSeek-R1 reasoning verification, atomic Git pipelines. Complete guide."
 categories: ["Series", "Playbook", "AI Engineering", "Refactoring", "Legacy Modernization"]
-tags: ["Refactoring", "Legacy Code", "Golden Master", "AST", "DeepSeek-R1", "Technical Debt", "Testing"]
+tags: ["AST", "DeepSeek-R1", "Technical Debt", "Testing"]
 series: ["The AI-Driven Engineer Playbook"]
 weight: 9
 slug: "part-4-ai-assisted-refactoring-legacy-code"
@@ -15,7 +15,7 @@ TocOpen: true
 draft: false
 cover:
   image: "/images/posts/default-post.png"
-  alt: "Part 4: AI-Assisted Legacy Code Refactoring & Modernization"
+  alt: "AI-Assisted Legacy Code Refactoring: 4-Step Framework"
   relative: false
 keywords: ["ai legacy code refactoring", "golden master testing ai", "modernizing legacy systems ai", "ast refactoring deepseek r1", "automated code modernization"]
 mermaid: true

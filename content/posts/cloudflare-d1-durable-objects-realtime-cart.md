@@ -1,5 +1,5 @@
 ---
-title: "Real-Time Cart with Cloudflare D1 & Durable Objects"
+title: "Real-Time Cart with Cloudflare D1 & Durable Objects: Edge-Native (2026)"
 slug: "cloudflare-d1-durable-objects-realtime-cart"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
@@ -12,13 +12,10 @@ categories:
   - "E-Commerce"
 tags:
   - "Cloudflare"
-  - "D1"
   - "Durable Objects"
-  - "Workers"
   - "TypeScript"
   - "Edge Computing"
-  - "Shopping Cart"
-description: "Build a real-time cart with Cloudflare D1 & Durable Objects: sub-15ms WebSocket sync across 300+ PoPs, zero-Redis locking, and transactional TypeScript actors."
+description: "Build a real-time cart with Cloudflare D1 & Durable Objects: sub-15ms WebSocket sync across 300+ PoPs, zero-Redis locking, transactional TypeScript actors. Complete guide."
 ShowToc: true
 TocOpen: true
 cover:

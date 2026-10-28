@@ -5,7 +5,7 @@ lastmod: 2026-08-16T12:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Architecting a polyglot Rush monorepo managing 21 Go microservices, 2 Next.js frontends, Buf Protobuf code generation, and PNPM workspace isolation."
 categories: ["Series", "Software Engineering", "Backend Architecture"]
-tags: ["Monorepo", "Rush Stack", "pnpm", "Golang", "Next.js", "Buf", "Protobuf"]
+tags: ["Golang", "Next.js", "Protobuf"]
 series: ["composable-commerce-migration"]
 weight: 3
 slug: "part-2-rush-monorepo"
@@ -19,7 +19,6 @@ cover:
   relative: false
 keywords: ["rush monorepo golang", "polyglot monorepo pnpm", "buf protobuf monorepo", "composable commerce rush"]
 mermaid: true
-noindex: true
 ---
 
 [← Previous Chapter: Part 1: DDD & Bounded Contexts](/series/composable-commerce-migration/part-1-ddd-bounded-contexts/) | [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 3: Go + Kratos v2 Framework Deep Dive →](/series/composable-commerce-migration/part-3-golang-kratos/)

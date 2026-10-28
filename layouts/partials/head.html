@@ -2,7 +2,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 {{- $isProduction := or hugo.IsProduction (eq site.Params.env "production") }}
-{{- $isNoIndexParam := or .Params.noindex .Params.robotsNoIndex .Draft }}
+{{- $isNoIndexParam := or .Params.noindex .Params.robotsNoIndex }}
 {{- if .Params.robots }}
   {{- if or (eq .Params.robots "noindex") (strings.Contains (printf "%v" .Params.robots) "noindex") }}
     {{- $isNoIndexParam = true }}
@@ -29,14 +29,18 @@
 {{- end }}
 
 {{- $shouldIndex := false }}
-{{- if and $isProduction (not $isNoIndexParam) (not $isTags) (not $is404) (not $isPaginated) }}
+{{- if and $isProduction (not $isNoIndexParam) (not $is404) (not $isPaginated) }}
   {{- if $isCategory }}
     {{- if $isCuratedCategory }}
       {{- $shouldIndex = true }}
     {{- end }}
   {{- else if in (slice "taxonomy" "term") .Kind }}
-    {{- /* Exclude any non-category uncurated taxonomy terms */ -}}
-    {{- $shouldIndex = false }}
+    {{- /* Allow tag pages with content to be indexed */ -}}
+    {{- if and $isTags (gt (len .Pages) 0) }}
+      {{- $shouldIndex = true }}
+    {{- else }}
+      {{- $shouldIndex = false }}
+    {{- end }}
   {{- else }}
     {{- $shouldIndex = true }}
   {{- end }}

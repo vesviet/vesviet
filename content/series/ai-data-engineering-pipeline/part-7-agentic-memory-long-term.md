@@ -1,11 +1,11 @@
 ---
-title: "Agentic Memory Systems: Episodic & Working Storage"
+title: "Agentic Memory Systems: Tri-Tier Architecture (Episodic + Working + Semantic) 2026"
 slug: "part-7-agentic-memory-long-term"
 date: "2026-05-20T12:00:00+07:00"
 lastmod: "2026-09-08T20:00:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["Agent Memory", "Redis", "Vector DB", "Python", "Architecture", "AI Agents", "Mem0", "Zep"]
+tags: ["Agent Memory", "Redis", "Vector DB", "Python", "Architecture", "AI Agents"]
 categories: ["Engineering", "AI"]
 cover:
   image: "/images/posts/part-7-agentic-memory-long-term.jpg"
@@ -13,7 +13,7 @@ cover:
   relative: false
 mermaid: true
 canonicalURL: "https://tanhdev.com/series/ai-data-engineering-pipeline/part-7-agentic-memory-long-term/"
-description: "Engineering guide to tri-tier agentic memory systems combining working memory, episodic vector logs, and long-term semantic knowledge graphs."
+description: "Engineering guide to tri-tier agentic memory: working scratchpad, episodic vector logs, semantic knowledge graphs. Auto-compaction, GDPR compliance, recency decay scoring."
 ShowToc: true
 TocOpen: true
 series: ["ai-data-engineering-pipeline"]

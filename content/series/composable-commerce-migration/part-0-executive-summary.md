@@ -5,7 +5,7 @@ lastmod: 2026-08-16T12:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Deconstructing Magento Enterprise $200k/yr licensing costs and how a Composable Commerce platform on 21 Go microservices replaces it entirely."
 categories: ["Series", "Software Engineering", "Backend Architecture"]
-tags: ["Magento", "Microservices", "Golang", "DDD", "Strangler Fig", "Rush Monorepo", "Dapr", "Kratos", "Agentic Commerce"]
+tags: ["Magento", "Microservices", "Golang", "DDD", "Strangler Fig", "Rush Monorepo", "Dapr", "Kratos"]
 series: ["composable-commerce-migration"]
 weight: 1
 slug: "part-0-executive-summary"
@@ -19,7 +19,6 @@ cover:
   relative: false
 keywords: ["magento migration", "composable commerce", "magento enterprise cost", "ecommerce architecture 2026"]
 mermaid: true
-noindex: true
 ---
 
 [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 1: DDD & Bounded Contexts Decomposing Magento into 21 Services →](/series/composable-commerce-migration/part-1-ddd-bounded-contexts/)

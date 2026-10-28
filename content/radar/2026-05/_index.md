@@ -1,5 +1,5 @@
 ---
-title: "Tech Radar Digest May 2026: Go, K8s & AI Systems Log"
+title: "Tech Radar Digest May 2026: Go 1.26, K8s Gateway API, AI Agents (Complete Log)"
 date: "2026-05-30T23:59:59+07:00"
 lastmod: "2026-10-01T18:32:38+07:00"
 author: "Lê Tuấn Anh"
@@ -11,7 +11,7 @@ categories: ["Tech Radar"]
 tags: ["Tech Radar", "Cloud Native", "DevOps", "Architecture", "Engineering", "Golang", "Kubernetes"]
 cover:
   image: "/images/posts/default-post-9.jpg"
-  alt: "Tech Radar Digest May 2026: Go, K8s & AI Systems Log"
+  alt: "Tech Radar Digest May 2026: Go 1.26, K8s Gateway API, AI Agents"
   relative: false
 aliases:
   - /radar/2026-05/radar-2026-05-02-techtask-commerce-platform/
@@ -46,7 +46,7 @@ aliases:
   - /radar/tech-radar-may-14-2026-claude-dethrones-gpt-openais-cyber-counterstrike-k8s-says-goodbye-to-ingress-nginx-and-5-days-to-google-i/o/
   - /radar/tech-radar-may-15-2026-anthropics-200m-moral-play-the-agentic-cost-crisis-codex-goes-mobile-and-t-4-to-google-i/o/
   - /radar/tech-radar-may-28-2026-apple-gemini-openai-deployco/
-description: "Curated May 2026 Tech Radar digest covering DigitalOcean AI cloud, Dapr AI, Argo CD 3.4, Go 1.26 Green Tea GC, and enterprise agentic security protocols."
+description: "May 2026 Tech Radar: 18 briefings on Go 1.26 Green Tea GC, Kubernetes Gateway API v1.5, DigitalOcean AI cloud, Dapr AI, Argo CD 3.4, agentic security. Benchmarks + diagrams."
 canonicalURL: "https://tanhdev.com/radar/2026-05/"
 ---
 > **Answer-first:** Tech Radar Digest for May 2026 aggregates 18 production engineering briefings analyzing AI-native cloud infrastructure, Go 1.26 Green Tea GC runtime benchmarks, Kubernetes Gateway API v1.5, and enterprise agentic security protocols. Adopting these architectural patterns delivers sub-2ms network routing, 35% memory footprint reduction, and zero-trust identity verification across multi-cloud production clusters.

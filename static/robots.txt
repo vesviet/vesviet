@@ -2,7 +2,8 @@
 # Default: allow all crawlers (including Googlebot, Bingbot, etc.)
 # ──────────────────────────────────────────────
 User-agent: *
-# Disallow taxonomy RSS feeds
+# Disallow taxonomy pages and their RSS feeds (thin content, noindex already)
+Disallow: /tags/
 Disallow: /tags/*/index.xml$
 Disallow: /categories/*/index.xml$
 Disallow: /series/*/index.xml$

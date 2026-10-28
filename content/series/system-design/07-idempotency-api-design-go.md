@@ -1,9 +1,9 @@
 ---
-title: "Part 7: Idempotency Key Architecture & Financial API Design in Go"
+title: "Idempotency Key Architecture for Financial APIs in Go: Stripe-Standard (2026)"
 date: 2026-06-25T09:00:00+07:00
 lastmod: 2026-09-09T14:30:00+07:00
 author: "Lê Tuấn Anh"
-description: "Design fault-tolerant financial and payment APIs in Go using Stripe-standard idempotency keys, SHA-256 payload fingerprinting, PostgreSQL advisory locks, and Redis deduplication stores."
+description: "Design fault-tolerant payment APIs in Go: Stripe-standard idempotency keys, SHA-256 payload fingerprinting, PostgreSQL advisory locks, Redis deduplication. Sub-50ms exactly-once semantics."
 categories: ["Architecture", "API Design", "Distributed Systems"]
 tags: ["Idempotency", "API Design", "Payments", "Golang", "PostgreSQL", "Redis", "Distributed Systems"]
 series: ["system-design"]

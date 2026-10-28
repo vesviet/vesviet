@@ -5,7 +5,7 @@ lastmod: 2026-08-16T12:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Comprehensive review of 24 Architecture Decision Records (ADRs) powering the Composable Commerce migration: storage, messaging, telemetry, and auth."
 categories: ["Series", "Software Engineering", "Architecture"]
-tags: ["ADR", "Architecture Decision Record", "Microservices", "Golang", "System Design"]
+tags: ["Microservices", "Golang", "System Design"]
 series: ["composable-commerce-migration"]
 weight: 11
 slug: "part-10-adr-walkthrough"
@@ -18,7 +18,6 @@ cover:
   alt: "Part 10: ADR Walkthrough — 24 Architecture Decisions Decoded"
   relative: false
 keywords: ["architecture decision records ecommerce", "adr walkthrough golang", "system design composable commerce", "microservices adr"]
-noindex: true
 ---
 
 [← Previous Chapter: Part 9: Transactional Outbox & Sagas](/series/composable-commerce-migration/part-9-outbox-saga/) | [Series Hub](/series/composable-commerce-migration/)

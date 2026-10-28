@@ -1,5 +1,5 @@
 ---
-title: "Prompt Engineering vs Fine Tuning: 2026 AI Decision Guide"
+title: "Prompt Engineering vs Fine-Tuning vs RAG: 2026 Decision Guide (Benchmarks)"
 slug: "slm-fine-tune-vs-prompt-engineering"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
@@ -14,15 +14,12 @@ categories:
 tags:
   - "LLM"
   - "Fine-Tuning"
-  - "LoRA"
   - "QLoRA"
   - "Prompt Engineering"
   - "RAG"
   - "SLM"
   - "vLLM"
-  - "Distillation"
-  - "Preference Alignment"
-description: "Prompt engineering vs fine tuning vs RAG: Complete 2026 decision guide comparing cost, latency, token limits, QLoRA fine-tuning, and DeepSeek-R1 distillation."
+description: "Prompt engineering vs fine-tuning vs RAG: Complete 2026 decision guide comparing cost, latency, token limits, QLoRA fine-tuning, DeepSeek-R1 distillation. Benchmarks included."
 ShowToc: true
 TocOpen: true
 cover:

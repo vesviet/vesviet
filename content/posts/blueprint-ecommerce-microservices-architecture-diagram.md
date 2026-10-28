@@ -1,13 +1,13 @@
 ---
-title: "21-Service Go Ecommerce Microservices Diagram"
+title: "21-Service Go Ecommerce Microservices Architecture: Complete Blueprint (2026)"
 slug: "blueprint-ecommerce-microservices-architecture-diagram"
 author: "Lê Tuấn Anh"
 date: "2026-04-12T08:30:00+07:00"
 lastmod: "2026-08-23T08:30:00+07:00"
 draft: false
 mermaid: true
-tags: ["Architecture", "Microservices", "Mermaid", "Golang", "API Gateway", "DDD", "Dapr", "Kubernetes", "ecommerce architecture"]
-description: "Architect a 21-service Go ecommerce platform: 6 DDD domains, gRPC API gateway, Dapr Pub/Sub event mesh, distributed Saga checkout, and Kubernetes."
+tags: ["Architecture", "Microservices", "Golang", "API Gateway", "DDD", "Dapr", "Kubernetes"]
+description: "Architect a 21-service Go ecommerce platform: 6 DDD domains, gRPC API gateway, Dapr Pub/Sub event mesh, distributed Saga checkout, Kubernetes. Diagrams + code included."
 categories: ["Architecture"]
 ShowToc: true
 TocOpen: true

@@ -5,7 +5,7 @@ lastmod: 2026-08-16T12:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Implementing Change Data Capture (CDC) with Debezium and Apache Kafka to synchronize mutations between legacy Magento MySQL and new PostgreSQL microservices."
 categories: ["Series", "Software Engineering", "Data Architecture"]
-tags: ["Debezium", "CDC", "Kafka", "Dual Write", "Data Synchronization", "MySQL", "PostgreSQL"]
+tags: ["Debezium", "CDC", "Kafka", "MySQL", "PostgreSQL"]
 series: ["composable-commerce-migration"]
 weight: 8
 slug: "part-7-phase2-dual-write"
@@ -19,7 +19,6 @@ cover:
   relative: false
 keywords: ["change data capture debezium", "kafka dual write ecommerce", "data reconciliation microservices", "zero data loss migration"]
 mermaid: true
-noindex: true
 ---
 
 [← Previous Chapter: Part 6: Phase 1 — Strangler Fig](/series/composable-commerce-migration/part-6-phase1-strangler-fig/) | [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 8: Phase 3 — Full Cutover →](/series/composable-commerce-migration/part-8-phase3-full-cutover/)

@@ -5,7 +5,7 @@ lastmod: 2026-08-16T12:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "High-performance gRPC internal communication, Protobuf conventions, Money type decimal safety, cursor pagination, and REST Gateway configuration."
 categories: ["Series", "Software Engineering", "Backend Architecture"]
-tags: ["gRPC", "Protobuf", "gRPC Gateway", "API Contract", "Golang", "REST"]
+tags: ["gRPC", "Protobuf", "Golang"]
 series: ["composable-commerce-migration"]
 weight: 5
 slug: "part-4-grpc-rest-gateway"
@@ -19,7 +19,6 @@ cover:
   relative: false
 keywords: ["grpc gateway", "protobuf contract lifecycle", "money pattern protobuf", "cursor pagination grpc"]
 mermaid: true
-noindex: true
 ---
 
 [← Previous Chapter: Part 3: Go + Kratos v2 Framework Deep Dive](/series/composable-commerce-migration/part-3-golang-kratos/) | [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 5: Migrating Magento EAV Schema to PostgreSQL →](/series/composable-commerce-migration/part-5-eav-schema-migration/)

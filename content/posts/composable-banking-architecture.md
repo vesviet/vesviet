@@ -1,5 +1,5 @@
 ---
-title: "Composable Banking Architecture: Go & BIAN Blueprint"
+title: "Composable Banking Architecture: Complete Go & BIAN Blueprint (2026)"
 slug: "composable-banking-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-06-10T14:55:00+07:00"
@@ -11,7 +11,6 @@ categories:
   - "Backend"
   - "Fintech"
 tags:
-  - "Composable Banking"
   - "Microservices"
   - "Go"
   - "Kafka"
@@ -19,7 +18,7 @@ tags:
   - "Saga Pattern"
   - "Core Banking"
   - "MACH"
-description: "Complete composable banking blueprint in Go: BIAN domain models, double-entry ledger event sourcing, Dapr Saga workflows, and ISO 20022 messaging."
+description: "Complete composable banking blueprint in Go: BIAN domain models, double-entry ledger event sourcing, Dapr/Temporal Saga workflows, ISO 20022 messaging. Code examples included."
 ShowToc: true
 TocOpen: true
 cover:

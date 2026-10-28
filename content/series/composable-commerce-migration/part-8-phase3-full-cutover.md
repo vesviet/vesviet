@@ -5,7 +5,7 @@ lastmod: 2026-08-16T12:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Executing the final checkout cutover, DNS switchover, fallback rollback runbooks, and decommissioning the legacy Magento monolith."
 categories: ["Series", "Software Engineering", "DevOps"]
-tags: ["Cutover", "DevOps", "DNS Migration", "Zero Downtime", "Decommissioning", "Microservices"]
+tags: ["DevOps", "Microservices"]
 series: ["composable-commerce-migration"]
 weight: 9
 slug: "part-8-phase3-full-cutover"
@@ -18,7 +18,6 @@ cover:
   alt: "Part 8: Phase 3 — Full Cutover & Decommissioning the Monolith"
   relative: false
 keywords: ["monolith decommissioning", "cutover runbook ecommerce", "zero downtime cutover", "magento sunset"]
-noindex: true
 ---
 
 [← Previous Chapter: Part 7: Phase 2 — Dual-Write](/series/composable-commerce-migration/part-7-phase2-dual-write/) | [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 9: Transactional Outbox & Sagas →](/series/composable-commerce-migration/part-9-outbox-saga/)

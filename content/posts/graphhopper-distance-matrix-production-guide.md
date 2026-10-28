@@ -1,12 +1,12 @@
 ---
-title: "GraphHopper Distance Matrix: API & OSM Hosting Guide"
+title: "GraphHopper Distance Matrix API: Self-Host OSM, 1000x1000 Benchmarks (2026)"
 slug: "graphhopper-distance-matrix-production-guide"
 author: "Lê Tuấn Anh"
 date: "2026-06-11T20:00:00+07:00"
 lastmod: "2026-08-23T08:30:00+07:00"
 draft: false
 mermaid: true
-description: "Self-host GraphHopper distance matrix with OSM data: /matrix API guide, 1000x1000 routing benchmarks, H3 Redis caching, and 99% cost savings."
+description: "Self-host GraphHopper distance matrix with OSM: /matrix API guide, 1000x1000 routing benchmarks, H3 Redis caching, 99% cost savings. Complete production guide."
 categories:
   - "Architecture"
   - "Engineering"

@@ -5,7 +5,7 @@ lastmod: 2026-08-16T12:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "De-normalizing Magento 2 Entity-Attribute-Value (EAV) nightmare into high-performance PostgreSQL JSONB, GIN indexing, and structured relational tables."
 categories: ["Series", "Software Engineering", "Database Architecture"]
-tags: ["PostgreSQL", "EAV Migration", "Magento", "Database", "JSONB", "GIN Index", "Golang"]
+tags: ["PostgreSQL", "EAV Migration", "Magento", "Database", "Golang"]
 series: ["composable-commerce-migration"]
 weight: 6
 slug: "part-5-eav-schema-migration"
@@ -19,7 +19,6 @@ cover:
   relative: false
 keywords: ["magento eav migration", "eav to jsonb postgresql", "gin indexing postgresql", "database decomposition ecommerce"]
 mermaid: true
-noindex: true
 ---
 
 [← Previous Chapter: Part 4: gRPC Internal + REST Gateway](/series/composable-commerce-migration/part-4-grpc-rest-gateway/) | [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 6: Phase 1 — Strangler Fig →](/series/composable-commerce-migration/part-6-phase1-strangler-fig/)
