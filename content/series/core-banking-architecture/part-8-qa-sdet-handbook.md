@@ -8,7 +8,7 @@ description: "Industrial SDET handbook for mission-critical core banking systems
 weight: 8
 series: ["core-banking-architecture"]
 categories: ["FinTech", "Quality Engineering", "Chaos Engineering"]
-tags: ["SDET", "Jepsen", "Chaos Mesh", "Golang", "Go 1.25", "Testing", "Linearizability", "Core Banking"]
+tags: ["Chaos Mesh", "Golang", "Go 1.25", "Testing", "Core Banking"]
 author: "Lê Tuấn Anh"
 cover:
   image: "/images/posts/banking-microservices-cover.jpg"

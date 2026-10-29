@@ -8,7 +8,7 @@ description: "Financial-grade API security engineering under FAPI 2.0: RFC 9449 
 weight: 6
 series: ["core-banking-architecture"]
 categories: ["FinTech", "Security", "Open Banking"]
-tags: ["FAPI 2.0", "DPoP", "mTLS", "OAuth 2.1", "HSM", "API Security", "Zero Trust"]
+tags: ["FAPI 2.0", "mTLS", "OAuth 2.1", "HSM", "Zero Trust"]
 author: "Lê Tuấn Anh"
 cover:
   image: "/images/posts/banking-microservices-cover.jpg"

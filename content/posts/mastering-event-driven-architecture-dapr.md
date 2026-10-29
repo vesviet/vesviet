@@ -6,7 +6,7 @@ date: "2026-04-12T09:05:00+07:00"
 lastmod: "2026-07-18T07:43:55+07:00"
 draft: false
 mermaid: true
-tags: ["Event-Driven", "Dapr", "Golang", "Go", "Message Queue", "Architecture", "Microservices", "Kafka", "Saga"]
+tags: ["Event-Driven", "Dapr", "Golang", "Go", "Architecture", "Microservices", "Kafka", "Saga"]
 description: "Decouple a 21+ microservice ecosystem using Event-Driven Architecture. Ensure data consistency via Sagas, Dead Letter Queues, and Idempotent handlers."
 categories: ["Architecture", "Engineering"]
 ShowToc: true

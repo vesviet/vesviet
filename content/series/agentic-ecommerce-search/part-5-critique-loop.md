@@ -5,7 +5,7 @@ date: "2026-06-15T08:00:00+07:00"
 lastmod: "2026-09-11T08:45:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["Critique Loop", "Self-Reflection", "Anti-Hallucination", "Guardrails", "Golang", "CloudWeGo Eino", "E-commerce"]
+tags: ["Anti-Hallucination", "Golang", "CloudWeGo Eino", "E-commerce"]
 categories: ["Engineering", "AI", "Quality Engineering"]
 cover:
   image: "/images/posts/part-5-critique-loop.jpg"

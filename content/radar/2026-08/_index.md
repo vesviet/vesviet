@@ -8,7 +8,7 @@ mermaid: true
 ShowToc: true
 TocOpen: true
 categories: ["Tech Radar"]
-tags: ["Tech Radar", "Cloud Native", "AI", "Golang", "Kubernetes", "MCP 2.0", "vLLM", "eBPF", "Tetragon", "synctest", "Green Tea GC"]
+tags: ["Tech Radar", "Cloud Native", "AI", "Golang", "Kubernetes", "MCP 2.0", "vLLM", "eBPF", "Green Tea GC"]
 cover:
   image: "/images/posts/tech-radar-2026-08.jpg"
   alt: "Tech Radar Digest August 2026: Stateless MCP 2.0, Go synctest, vLLM MLA & eBPF Zero Trust"

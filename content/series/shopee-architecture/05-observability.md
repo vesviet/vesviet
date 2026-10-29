@@ -16,7 +16,7 @@ cover:
   alt: "Shopee Architecture series: scaling for flash sales — rate limiting, Redis, and distributed systems"
   relative: false
 categories: ["Observability", "Distributed Systems", "SRE"]
-tags: ["Shopee", "Vector", "ClickHouse", "OpenTelemetry", "Distributed Tracing", "eBPF", "Continuous Profiling"]
+tags: ["Shopee", "ClickHouse", "OpenTelemetry", "Distributed Tracing", "eBPF"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/05-observability/"
 image: "/images/posts/shopee-flash-sale-cover.jpg"

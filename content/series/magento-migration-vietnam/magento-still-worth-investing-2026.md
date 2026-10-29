@@ -7,7 +7,7 @@ lastmod: "2026-09-08T20:30:00+07:00"
 draft: false
 weight: 1
 series: ["magento-migration-vietnam"]
-tags: ["Magento", "E-commerce", "Architecture", "Strategy", "Security", "Upgrades", "Golang"]
+tags: ["Magento", "E-commerce", "Architecture", "Strategy", "Security", "Golang"]
 description: "Is Magento worth investing in for 2026? Understand the real cost of the 2.4.9 release: infra upgrades, extension compatibility, and long-term ownership."
 categories: ["Engineering", "Strategy"]
 ShowToc: true

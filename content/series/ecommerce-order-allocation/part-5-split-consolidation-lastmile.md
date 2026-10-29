@@ -6,7 +6,7 @@ lastmod: 2026-09-21T14:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Economic and algorithmic breakdown of split shipments: Cross-dock consolidation hubs, zone skipping line-hauls, and dynamic multi-carrier rate shopping."
 categories: ["Series", "Logistics & Supply Chain", "Optimization", "E-Commerce"]
-tags: ["Split Shipments", "Last-Mile", "Consolidation", "Rate Shopping", "Logistics", "Zone Skipping", "Go"]
+tags: ["Logistics", "Go"]
 series: ["ecommerce-order-allocation"]
 weight: 6
 canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/part-5-split-consolidation-lastmile/"

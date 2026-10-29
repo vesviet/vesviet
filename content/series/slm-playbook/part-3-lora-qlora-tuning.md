@@ -5,7 +5,7 @@ lastmod: 2026-09-09T14:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Masterclass on fine-tuning 3B–14B models on single 24GB GPUs using 4-bit NormalFloat QLoRA, Double Quantization, Paged Optimizers, and Axolotl pipelines."
 categories: ["Series", "Machine Learning", "AI Infrastructure"]
-tags: ["QLoRA", "Axolotl", "Fine-Tuning", "PyTorch", "Unsloth", "Quantization", "PEFT"]
+tags: ["QLoRA", "Axolotl", "Fine-Tuning", "PyTorch", "Quantization", "PEFT"]
 series: ["slm-playbook"]
 weight: 5
 slug: "part-3-lora-qlora-tuning"

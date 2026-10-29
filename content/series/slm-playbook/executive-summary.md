@@ -5,7 +5,7 @@ lastmod: 2026-09-09T14:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Why enterprise AI architectures shift to 1B–14B Small Language Models in 2026: financial TCO formulas, break-even proofs, and hybrid gateway routing."
 categories: ["Series", "AI Infrastructure", "Machine Learning"]
-tags: ["SLM", "AI Economics", "FinOps", "LLMOps", "vLLM", "DeepSeek-R1", "Hybrid AI"]
+tags: ["SLM", "FinOps", "LLMOps", "vLLM", "DeepSeek-R1", "Hybrid AI"]
 series: ["slm-playbook"]
 weight: 2
 slug: "executive-summary"

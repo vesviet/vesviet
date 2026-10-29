@@ -7,7 +7,7 @@ draft: false
 description: "How Uber and Grab process millions of GPS events/s with Kafka: topic design, partition strategy, Flink for surge pricing, and exactly-once semantics in Go."
 weight: 4
 categories: ["Ride Hailing", "Streaming"]
-tags: ["ride-hailing", "kafka", "flink", "streaming", "uber"]
+tags: ["ride-hailing", "kafka", "flink", "uber"]
 mermaid: true
 cover:
   image: "/images/posts/real-time-ride-hailing-cover.jpg"

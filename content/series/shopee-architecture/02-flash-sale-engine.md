@@ -16,7 +16,7 @@ cover:
   alt: "Shopee Architecture series: scaling for flash sales — rate limiting, Redis, and distributed systems"
   relative: false
 categories: ["Caching", "High Traffic", "FinTech"]
-tags: ["Shopee", "Flash Sale", "Redis", "Lua", "Inventory Sharding", "Hot Keys", "Zero Overselling"]
+tags: ["Shopee", "Flash Sale", "Redis"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/02-flash-sale-engine/"
 image: "/images/posts/shopee-flash-sale-cover.jpg"

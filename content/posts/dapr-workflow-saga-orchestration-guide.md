@@ -15,7 +15,6 @@ tags:
   - "Saga"
   - "Go"
   - "Distributed Transactions"
-  - "Workflow"
   - "Microservices"
   - "Banking"
 description: "Step-by-step Go code for Orchestrated Saga using Dapr Workflow: durable state, compensating transactions, and banking-grade consistency."

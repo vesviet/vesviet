@@ -7,7 +7,7 @@ draft: false
 description: "Domain modeling in core banking: Customer Information File (CIF), Current and Savings Accounts (CASA), and Lending workflows with Go implementation."
 weight: 3
 categories: ["FinTech", "Core Banking", "Domain Design"]
-tags: ["CASA", "CIF", "Lending", "Core Banking", "Golang", "Banking Domain", "Microservices"]
+tags: ["Core Banking", "Golang", "Microservices"]
 cover:
   image: "/images/posts/part-2-banking-domain-casa-lending.jpg"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"

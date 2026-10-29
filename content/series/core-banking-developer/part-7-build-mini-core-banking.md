@@ -7,7 +7,7 @@ draft: false
 description: "Hands-on guide to building a production-grade mini core banking engine in Go 1.24+: double-entry ledgers, row locking, idempotent transfers, and invariant stress testing."
 weight: 8
 categories: ["FinTech", "Hands-On Guide", "Golang"]
-tags: ["Golang", "Core Banking", "Ledger Engine", "PostgreSQL", "gRPC", "Project"]
+tags: ["Golang", "Core Banking", "PostgreSQL", "gRPC"]
 cover:
   image: "/images/posts/part-7-build-mini-core-banking.jpg"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"

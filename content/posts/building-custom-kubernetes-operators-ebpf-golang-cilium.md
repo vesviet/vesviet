@@ -39,11 +39,8 @@ tags:
   - "Kubernetes"
   - "eBPF"
   - "Golang"
-  - "Kubebuilder"
   - "Cilium"
   - "Observability"
-  - "Kernel"
-  - "CRD"
   - "Cloud Native"
 ShowToc: true
 TocOpen: true
@@ -1129,4 +1126,4 @@ Combining **Kubebuilder v4** with **`cilium/ebpf`** unlocks a new generation of 
 ## Related Architecture & Pillar Guides
 For production deployment strategies, service mesh benchmarks, and cloud-native blueprints, explore:
 - [Go Microservices Distributed Tracing Architecture](/posts/go-microservices/)
-- [AWS EKS vs ECS: Architecture, Cost & Use Cases](/posts/aws-eks-vs-ecs-comparison/)
+- [AWS EKS vs ECS: Architecture, Cost & Use Cases](/posts/aws-eks-vs-ecs-comparison/)

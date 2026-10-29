@@ -7,7 +7,7 @@ draft: false
 weight: 9
 description: "Production PromptOps 5-stage pipeline: immutable registry, golden dataset gating, calibrated LLM-as-a-Judge, canary promotion, and continuous drift monitoring."
 categories: ["Engineering", "AI", "Prompt Standard"]
-tags: ["PromptOps", "CI/CD", "LLM-as-a-Judge", "Production", "Monitoring", "Drift Detection"]
+tags: ["PromptOps", "CI/CD", "LLM-as-a-Judge", "Production", "Monitoring"]
 ShowToc: true
 TocOpen: true
 mermaid: true

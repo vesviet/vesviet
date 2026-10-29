@@ -14,10 +14,7 @@ tags:
   - "Go"
   - "pprof"
   - "Kubernetes"
-  - "Flame Graph"
-  - "Pyroscope"
   - "Performance"
-  - "kubectl"
 description: "Safely profile Go microservices in Kubernetes using Go pprof and kubectl port-forward. Generate CPU memory flame graphs in production without overhead."
 mermaid: true
 ShowToc: true

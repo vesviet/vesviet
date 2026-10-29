@@ -5,7 +5,7 @@ date: "2026-05-12T12:00:00+07:00"
 lastmod: "2026-09-29T08:00:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["AI Governance", "Security", "Privacy", "Compliance", "Semgrep", "Go", "Executive", "FinOps", "OWASP"]
+tags: ["AI Governance", "Security", "Semgrep", "Go", "FinOps", "OWASP"]
 categories: ["Engineering", "Strategy"]
 cover:
   image: "/images/posts/part-5-the-bod-perspective-risk-and-privacy.jpg"

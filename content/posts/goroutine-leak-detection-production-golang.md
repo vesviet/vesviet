@@ -14,8 +14,6 @@ tags:
   - "Goroutine"
   - "pprof"
   - "Production"
-  - "Debugging"
-  - "Memory Leak"
   - "Observability"
 description: "Learn how to detect, diagnose, and fix goroutine leaks in production Go microservices using pprof, goleak, and the new Go 1.26 goroutineleak profile."
 ShowToc: true

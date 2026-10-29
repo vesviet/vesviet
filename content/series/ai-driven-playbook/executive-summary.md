@@ -5,7 +5,7 @@ lastmod: 2026-09-08T18:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "A strategic engineering playbook for CTOs, VPs of Engineering, and Principal Architects on transitioning to an AI-Native SDLC in 2026: Private AI Gateways (LiteLLM), Model Context Protocol (MCP 2.0), Redis Semantic Caching, FinOps spend governance, and automated CI/CD quality gates."
 categories: ["Series", "Playbook", "AI Engineering", "Engineering Management"]
-tags: ["AI-Native", "CTO", "Enterprise Architecture", "SDLC", "MCP", "LiteLLM", "OpenTelemetry", "FinOps"]
+tags: ["AI", "CTO", "Enterprise Architecture", "SDLC", "MCP", "LiteLLM", "OpenTelemetry", "FinOps"]
 series: ["The AI-Driven Engineer Playbook"]
 weight: 1
 slug: "executive-summary"

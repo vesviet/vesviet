@@ -6,7 +6,7 @@ draft: false
 weight: 4
 description: "Layered prompt stacks: L1-L4 separation, the Go PromptStack compiler, and cache economics — 0.1x reads, invalidation cascade tools to system to messages."
 categories: ["Engineering", "AI", "Prompt Standard"]
-tags: ["prompt", "standard", "prompt-blocks", "layered-prompts", "prompt-caching", "context-engineering", "agent"]
+tags: ["prompt", "standard", "context-engineering", "agent"]
 ShowToc: true
 TocOpen: true
 cover:

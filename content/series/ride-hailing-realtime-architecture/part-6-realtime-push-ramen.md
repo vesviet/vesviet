@@ -7,7 +7,7 @@ draft: false
 description: "Uber RAMEN architecture: Push ride offers to 10M+ devices in <100ms via gRPC over HTTP/3 QUIC, WebSocket multiplexing, and in-memory RingBuffer replay in Go."
 weight: 7
 categories: ["Ride Hailing", "Realtime"]
-tags: ["ride-hailing", "push", "ramen", "websocket", "grpc", "uber"]
+tags: ["ride-hailing", "grpc", "uber"]
 mermaid: true
 cover:
   image: "/images/posts/real-time-ride-hailing-cover.jpg"

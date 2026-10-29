@@ -5,7 +5,7 @@ lastmod: 2026-09-14T12:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Production architectural guide to agent evaluations: 4-tier testing hierarchy, trajectory fidelity scoring, calibrated LLM judges, and SWE-bench regression gates."
 categories: ["Series", "AI Infrastructure", "Testing"]
-tags: ["Agent Evals", "Benchmarking", "LLM as a Judge", "SWE-bench", "CI/CD", "Distributed Systems"]
+tags: ["CI/CD", "Distributed Systems"]
 series: ["agentic-system-architecture"]
 weight: 6
 slug: "part-5-agent-evals"

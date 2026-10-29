@@ -7,7 +7,7 @@ draft: false
 description: "Learn how to architect a high-throughput dispatch matching engine using Golang and Redis geospatial indexing for real-time ride-hailing apps."
 weight: 5
 categories: ["Ride Hailing", "Algorithms"]
-tags: ["ride-hailing", "algorithms", "matching", "dispatch", "uber"]
+tags: ["ride-hailing", "algorithms", "uber"]
 mermaid: true
 cover:
   image: "/images/posts/real-time-ride-hailing-cover.jpg"

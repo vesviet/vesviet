@@ -8,7 +8,7 @@ lastmod: "2026-09-09T14:30:00+07:00"
 draft: false
 weight: 200
 categories: ["Architecture", "Distributed Systems", "Backend"]
-tags: ["Architecture", "Distributed Systems", "Scalability", "Golang", "Microservices"]
+tags: ["Architecture", "Distributed Systems", "Golang", "Microservices"]
 ShowToc: true
 TocOpen: true
 mermaid: true

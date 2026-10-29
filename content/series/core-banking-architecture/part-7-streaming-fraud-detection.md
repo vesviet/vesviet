@@ -8,7 +8,7 @@ description: "Real-time fraud detection architecture in core banking: Go 1.25 ze
 weight: 7
 series: ["core-banking-architecture"]
 categories: ["FinTech", "Data Engineering", "Machine Learning"]
-tags: ["Apache Flink", "Fraud Detection", "RocksDB", "CEP", "Machine Learning", "Kafka", "Go 1.25", "Redis"]
+tags: ["Apache Flink", "Fraud Detection", "Machine Learning", "Kafka", "Go 1.25", "Redis"]
 author: "Lê Tuấn Anh"
 cover:
   image: "/images/posts/banking-microservices-cover.jpg"

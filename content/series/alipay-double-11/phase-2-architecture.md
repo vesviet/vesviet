@@ -12,7 +12,7 @@ cover:
   alt: "Alipay Double 11 Architecture series: 544,000 TPS payment processing at extreme scale"
   relative: false
 categories: ["Distributed Systems", "Architecture", "FinTech"]
-tags: ["Alipay", "LDC", "Unitization", "Multi-Active", "OceanBase", "High Availability"]
+tags: ["Alipay", "LDC", "OceanBase", "High Availability"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-2-architecture/"
 mermaid: true

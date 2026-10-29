@@ -5,7 +5,7 @@ date: "2026-05-30T12:00:00+07:00"
 lastmod: "2026-09-21T10:00:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["Generative UI", "State Management", "React 19", "Astro", "Nanostores", "Signals", "Architecture"]
+tags: ["Generative UI", "React 19", "Astro", "Architecture"]
 categories: ["Engineering", "Frontend", "Architecture"]
 cover:
   image: "/images/posts/part-2-state-management.jpg"

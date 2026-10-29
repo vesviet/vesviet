@@ -9,7 +9,7 @@ draft: false
 ShowToc: true
 TocOpen: true
 categories: ["DevOps", "Engineering"]
-tags: ["Argo CD", "GitOps", "Kubernetes", "Kargo", "DevOps"]
+tags: ["Argo CD", "GitOps", "Kubernetes", "DevOps"]
 mermaid: true
 cover:
   image: "/images/posts/argocd-2026-cover.jpg"

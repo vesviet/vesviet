@@ -7,7 +7,7 @@ slug: "radar-2026-10-05-kratos-dapr-microservices-go"
 description: "High-throughput microservices architecture with Go 1.25, Kratos v2.9 Clean Architecture, Wire DI, and Dapr 1.15 sidecar primitives for virtual actors and durable workflow sagas."
 categories: ["Tech Radar", "Cloud Native", "Microservices", "Distributed Systems", "Go"]
 ring: "ADOPT"
-tags: ["Kratos v2.9", "Dapr 1.15", "Go 1.25", "Virtual Actors", "Workflows", "Clean Architecture", "Wire DI", "gRPC", "Kubernetes", "Saga Pattern"]
+tags: ["Go 1.25", "Virtual Actors", "Workflows", "Clean Architecture", "gRPC", "Kubernetes", "Saga Pattern"]
 cover:
   image: "/images/posts/default-post-1.jpg"
   alt: "Tech Radar: Kratos v2.9 & Dapr 1.15 Microservices Architecture"

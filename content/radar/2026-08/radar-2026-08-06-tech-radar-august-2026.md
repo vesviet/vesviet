@@ -7,7 +7,7 @@ slug: "tech-radar-august-2026"
 description: "Official Go MCP SDK, Go 1.26 Green Tea GC throughput optimization, and WebAssembly micro-VM deployments with SpinKube on Kubernetes clusters."
 categories: ["Tech Radar", "Cloud Native", "AI", "Golang"]
 ring: "ADOPT"
-tags: ["Tech Radar 2026", "Go MCP SDK", "Go 1.26", "Green Tea GC", "Kubernetes", "SpinKube", "Argo CD", "SPIFFE/SPIRE"]
+tags: ["Go 1.26", "Green Tea GC", "Kubernetes", "SpinKube", "Argo CD", "SPIFFE/SPIRE"]
 draft: false
 ShowToc: true
 TocOpen: true

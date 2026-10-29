@@ -6,7 +6,7 @@ draft: false
 series: ["high-concurrency-systems"]
 series_order: 6
 weight: 6
-tags: ["golang", "database", "connection pool", "performance", "pgbouncer", "postgresql", "pgcat"]
+tags: ["golang", "database", "performance", "postgresql"]
 mermaid: true
 slug: "golang-database-connection-pool-optimization"
 description: "Tune Go database/sql connection pool parameters using Little Law, eliminate TCP handshake churn with symmetric pool sizing, and deploy PgBouncer/Pgcat transaction pooling."

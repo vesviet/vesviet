@@ -5,7 +5,7 @@ lastmod: 2026-09-08T18:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "The autonomous testing revolution in 2026: vision-guided browser agents with Playwright & Browser Use, self-healing test selectors, and AI-guided mutation testing to eliminate flaky tests and test maintenance overhead."
 categories: ["Series", "Playbook", "AI Engineering", "Testing", "QA Automation"]
-tags: ["Autonomous Testing", "Playwright", "Browser Use", "Agentic QA", "Mutation Testing", "Self-Healing Tests"]
+tags: ["Playwright", "Mutation Testing"]
 series: ["The AI-Driven Engineer Playbook"]
 weight: 10
 slug: "part-5-autonomous-testing-qa-automation"

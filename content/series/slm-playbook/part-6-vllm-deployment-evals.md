@@ -5,7 +5,7 @@ lastmod: 2026-09-09T14:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Enterprise SLM serving masterclass: PagedAttention v2, Multi-Head Latent Attention KV compression, AWQ/FP8, dynamic Multi-LoRA, and CI/CD eval gates."
 categories: ["Series", "Machine Learning", "AI Infrastructure"]
-tags: ["vLLM", "Quantization", "AWQ", "FP8", "Multi-LoRA", "LLM Evals", "Model Serving", "Kubernetes"]
+tags: ["vLLM", "Quantization", "Kubernetes"]
 series: ["slm-playbook"]
 weight: 8
 slug: "part-6-vllm-deployment-evals"

@@ -6,7 +6,7 @@ lastmod: 2026-09-21T14:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Resolving complex physical and regulatory SKU incompatibilities: Graph vertex coloring via DSATUR, declarative Open Policy Agent (OPA) rules, and carton minimization."
 categories: ["Series", "Algorithms", "Optimization", "System Design"]
-tags: ["Graph Coloring", "DSATUR", "Open Policy Agent", "OPA", "Rego", "HazMat", "Go", "Algorithms"]
+tags: ["Graph Coloring", "OPA", "Rego", "Go", "Algorithms"]
 series: ["ecommerce-order-allocation"]
 weight: 10
 canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/part-9-order-splitting-graph-coloring-opa/"

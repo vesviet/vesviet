@@ -4,7 +4,7 @@ date: "2026-07-03T10:00:00+07:00"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "How to keep a Monolith from becoming a 'Big Ball of Mud'? A guide to establishing Module boundaries using Bounded Contexts, Spring Modulith, and Packwerk."
 slug: "ddd-module-boundaries-modular-monolith"
-tags: ["Domain-Driven Design", "DDD", "Modular Monolith", "Spring Modulith", "Packwerk", "Architecture"]
+tags: ["Domain-Driven Design", "DDD", "Modular Monolith", "Architecture"]
 categories: ["Modular Monolith", "Architecture"]
 cover:
   image: "/images/posts/golang-microservices-cover.jpg"

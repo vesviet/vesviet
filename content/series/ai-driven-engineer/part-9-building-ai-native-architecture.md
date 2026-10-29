@@ -5,7 +5,7 @@ date: "2026-05-14T12:00:00+07:00"
 lastmod: "2026-09-29T08:30:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["AI Native", "Architecture", "Golang", "Semantic Cache", "Vector DB", "Redis", "AI Gateway", "Microservices"]
+tags: ["AI Native", "Architecture", "Golang", "Semantic Cache", "Vector DB", "Redis", "Microservices"]
 categories: ["Engineering", "Architecture"]
 cover:
   image: "/images/posts/part-9-building-ai-native-architecture.jpg"

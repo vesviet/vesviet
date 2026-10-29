@@ -5,7 +5,7 @@ date: "2026-06-16T08:00:00+07:00"
 lastmod: "2026-09-11T08:45:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["Production Operations", "Semantic Caching", "Redis", "OpenTelemetry", "LLM Routing", "Prometheus", "FinOps", "Golang"]
+tags: ["Semantic Caching", "Redis", "OpenTelemetry", "Prometheus", "FinOps", "Golang"]
 categories: ["Engineering", "AI", "DevOps"]
 cover:
   image: "/images/posts/part-6-production-operations.jpg"

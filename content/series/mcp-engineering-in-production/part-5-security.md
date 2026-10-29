@@ -5,7 +5,7 @@ date: "2026-06-07T12:00:00+07:00"
 lastmod: "2026-09-09T14:30:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["MCP Security", "Isolation", "OWASP", "Python", "Golang", "Sandboxing", "Security", "gVisor", "Prompt Injection"]
+tags: ["MCP Security", "OWASP", "Python", "Golang", "Security", "Prompt Injection"]
 categories: ["Engineering", "Security"]
 cover:
   image: "/images/posts/part-5-security.jpg"
@@ -273,7 +273,8 @@ graph LR
 ```
 
 ### Deterministic Tokenization Implementation
-- Every sensitive entity is replaced with a scoped, cryptographically random surrogate token: `john.doe@company.com` $ightarrow$ `<REDACTED_EMAIL_8F2A>`.
+- Every sensitive entity is replaced with a scoped, cryptographically random surrogate token: `john.doe@company.com` $
+ightarrow$ `<REDACTED_EMAIL_8F2A>`.
 - The mapping is stored in an ephemeral, TTL-bound in-memory cache. If the agent needs to send an email back to the customer, an egress Gateway filter de-tokenizes the placeholder back to the real address upon final human-approved transmission.
 
 ---

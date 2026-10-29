@@ -8,7 +8,7 @@ description: "Masterclass guide to the Saga pattern in core banking: Orchestrati
 weight: 4
 series: ["core-banking-architecture"]
 categories: ["FinTech", "Distributed Transactions", "Microservices"]
-tags: ["Saga Pattern", "Temporal", "Orchestration", "Distributed Systems", "Golang", "Microservices"]
+tags: ["Saga Pattern", "Temporal", "Distributed Systems", "Golang", "Microservices"]
 author: "Lê Tuấn Anh"
 cover:
   image: "/images/posts/banking-microservices-cover.jpg"

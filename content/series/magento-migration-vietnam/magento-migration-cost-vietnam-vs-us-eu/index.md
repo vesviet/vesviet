@@ -7,7 +7,7 @@ lastmod: "2026-09-08T20:30:00+07:00"
 draft: false
 weight: 13
 series: ["magento-migration-vietnam"]
-tags: ["Magento", "Golang", "Vietnam", "Offshoring", "Cost Optimization", "FinOps", "TCO"]
+tags: ["Magento", "Golang", "Vietnam", "Cost Optimization", "FinOps"]
 categories: ["Engineering Management", "Cost Analysis"]
 description: "Comprehensive financial model for migrating Magento to Go microservices: Onshore US/EU vs Vietnam dedicated squad costs, dual-run infrastructure, and break-even ROI."
 ShowToc: true

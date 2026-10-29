@@ -6,7 +6,7 @@ date: "2026-07-23T07:55:07+07:00"
 lastmod: "2026-07-23T07:55:07+07:00"
 draft: false
 description: "Technical guide to building high-throughput event-driven microservices in Go using NATS JetStream and CQRS, with production-ready benchmarks."
-tags: ["Go", "NATS JetStream", "CQRS", "Microservices", "Event-Driven"]
+tags: ["Go", "CQRS", "Microservices", "Event-Driven"]
 categories: ["Go Architecture", "Microservices"]
 mermaid: true
 ShowToc: true

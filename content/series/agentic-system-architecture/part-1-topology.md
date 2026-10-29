@@ -5,7 +5,7 @@ lastmod: 2026-09-14T12:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Architectural comparison of multi-agent communication patterns: Hierarchical Routers, Peer-to-Peer Swarms, Shared Blackboards, and Actor Mailboxes in production."
 categories: ["Series", "AI Infrastructure", "Distributed Systems"]
-tags: ["Agent Topology", "Actor Model", "Multi-Agent", "LangGraph", "Temporal", "Distributed Systems"]
+tags: ["agent", "LangGraph", "Temporal", "Distributed Systems"]
 series: ["agentic-system-architecture"]
 weight: 2
 slug: "part-1-topology"

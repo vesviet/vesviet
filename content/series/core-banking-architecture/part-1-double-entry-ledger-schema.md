@@ -8,7 +8,7 @@ description: "Double-entry ledger schema design: prevent balance inconsistencies
 weight: 1
 series: ["core-banking-architecture"]
 categories: ["FinTech", "Architecture", "Database"]
-tags: ["TigerBeetle", "PostgreSQL", "Ledger Schema", "Double-Entry", "FinTech", "Concurrency", "ACID"]
+tags: ["TigerBeetle", "PostgreSQL", "FinTech", "Concurrency", "ACID"]
 author: "Lê Tuấn Anh"
 cover:
   image: "/images/posts/banking-microservices-cover.jpg"

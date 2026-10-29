@@ -5,7 +5,7 @@ lastmod: 2026-09-14T12:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Production architectural guide to agentic memory: working scratchpads, episodic vector stores with exponential recency decay, and temporal knowledge graphs."
 categories: ["Series", "AI Infrastructure", "Database"]
-tags: ["Agent Memory", "Vector Search", "Knowledge Graphs", "Qdrant", "Neo4j", "Distributed Systems"]
+tags: ["Agent Memory", "Vector Search", "Qdrant", "Neo4j", "Distributed Systems"]
 series: ["agentic-system-architecture"]
 weight: 3
 slug: "part-2-memory"

@@ -6,7 +6,7 @@ lastmod: 2026-09-21T14:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Rigorous mathematical showdown for order allocation: Greedy Nearest-Neighbor heuristics vs. Mixed-Integer Linear Programming (MILP) solvers in high-throughput omnichannel retail."
 categories: ["Series", "Algorithms", "Optimization", "E-Commerce"]
-tags: ["Algorithms", "MILP", "Linear Programming", "Heuristics", "Optimization", "Google OR-Tools", "HiGHS", "Go"]
+tags: ["Algorithms", "MILP", "Optimization", "Go"]
 series: ["ecommerce-order-allocation"]
 weight: 4
 canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/part-3-allocation-algorithms/"

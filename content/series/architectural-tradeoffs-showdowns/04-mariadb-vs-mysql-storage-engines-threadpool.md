@@ -16,10 +16,6 @@ categories:
 tags:
   - "MySQL"
   - "MariaDB"
-  - "InnoDB"
-  - "MyRocks"
-  - "ThreadPool"
-  - "Galera Cluster"
   - "Database Internals"
   - "Cloud Native"
   - "FinOps"

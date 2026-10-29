@@ -7,7 +7,7 @@ draft: false
 description: "How surge pricing works: H3 geofencing, Kafka + Flink supply-demand aggregation, Redis TTL, and ML-based multiplier calculation — with production Go code."
 weight: 6
 categories: ["Ride Hailing", "Pricing"]
-tags: ["ride-hailing", "pricing", "surge", "algorithms", "uber"]
+tags: ["ride-hailing", "algorithms", "uber"]
 mermaid: true
 cover:
   image: "/images/posts/real-time-ride-hailing-cover.jpg"

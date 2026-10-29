@@ -5,7 +5,7 @@ date: "2026-05-13T08:00:00+07:00"
 lastmod: "2026-09-29T08:30:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["AI Swarms", "Agent Orchestration", "MCP", "Golang", "Python", "Architecture", "Workflows", "JSON-RPC"]
+tags: ["MCP", "Golang", "Python", "Architecture", "Workflows", "JSON-RPC"]
 categories: ["Engineering", "Architecture"]
 cover:
   image: "/images/posts/part-6-from-coder-to-orchestrator.jpg"

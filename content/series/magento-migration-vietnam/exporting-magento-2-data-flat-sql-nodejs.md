@@ -6,7 +6,7 @@ date: "2024-03-09T10:38:22+07:00"
 lastmod: "2026-09-08T20:30:00+07:00"
 draft: false
 series: ["magento-migration-vietnam"]
-tags: ["Magento", "SQL", "Node.js", "Data Migration", "EAV", "ETL", "Golang", "PostgreSQL"]
+tags: ["Magento", "Node.js", "Golang", "PostgreSQL"]
 description: "Production guide to extracting data from Magento 2's EAV schema: direct SQL unpivoting queries, Node.js streaming backpressure, and the magento_id_map UUID bridge."
 categories: ["Engineering"]
 ShowToc: true

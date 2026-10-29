@@ -5,7 +5,7 @@ date: "2026-05-14T08:00:00+07:00"
 lastmod: "2026-09-29T08:30:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["Junior Engineers", "Career", "Mentorship", "Python", "AST", "Upskilling", "Software Engineering"]
+tags: ["Career", "Python", "AST", "Software Engineering"]
 categories: ["Engineering", "Strategy"]
 cover:
   image: "/images/posts/part-8-the-junior-paradox.jpg"

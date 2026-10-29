@@ -24,7 +24,6 @@ tags:
   - "Gateway API"
   - "mTLS"
   - "SPIFFE"
-  - "WireGuard"
   - "FinOps"
   - "Golang"
   - "Linux Kernel"

@@ -5,7 +5,7 @@ lastmod: 2026-09-14T12:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Mastering context engineering for enterprise codebases: abstract syntax tree graph extraction, modular Cursor rules, semantic symbol indexing, and Model Context Protocol servers."
 categories: ["Series", "Software Engineering", "AI", "Context Engineering", "Architecture"]
-tags: ["Context Engineering", "Cursor Rules", "Abstract Syntax Tree", "Model Context Protocol", "Semantic Search", "AST Graph", "AI Coding"]
+tags: ["Context Engineering", "Cursor Rules", "Model Context Protocol", "AI Coding"]
 series: ["ai-code-review-vibe-coding"]
 weight: 3
 slug: "part-2-context-engineering"

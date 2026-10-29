@@ -5,7 +5,7 @@ lastmod: 2026-09-14T12:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Why Vibe Coding is not a temporary industry fad but a fundamental transformation of software engineering from manual syntax creation to architectural curation and adversarial verification."
 categories: ["Series", "Software Engineering", "AI", "Architecture", "Engineering Management"]
-tags: ["Vibe Coding", "Software Architecture", "AI Engineering", "Code Review", "Production Wall", "Executive Summary"]
+tags: ["Vibe Coding", "Software Architecture", "Code Review"]
 series: ["ai-code-review-vibe-coding"]
 weight: 1
 slug: "executive-summary"

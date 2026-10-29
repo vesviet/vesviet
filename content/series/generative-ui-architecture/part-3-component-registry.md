@@ -5,7 +5,7 @@ date: "2026-05-30T12:00:00+07:00"
 lastmod: "2026-09-21T10:00:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["Generative UI", "Component Registry", "WebMCP", "Zod", "Module Federation", "Architecture"]
+tags: ["Generative UI", "WebMCP", "Zod", "Architecture"]
 categories: ["Engineering", "Frontend", "Architecture"]
 cover:
   image: "/images/posts/part-3-component-registry.jpg"

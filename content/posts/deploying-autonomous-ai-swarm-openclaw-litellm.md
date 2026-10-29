@@ -9,7 +9,7 @@ draft: false
 ShowToc: true
 TocOpen: true
 categories: ["AI", "Architecture", "Engineering"]
-tags: ["AI Agents", "OpenClaw", "LiteLLM", "Python", "Go", "Docker", "LLMOps", "Security"]
+tags: ["AI Agents", "LiteLLM", "Python", "Go", "Docker", "LLMOps", "Security"]
 cover:
   image: "/images/posts/openclaw-litellm-cover.jpg"
   alt: "Production Agentic AI Swarm: OpenClaw & LiteLLM"

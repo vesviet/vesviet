@@ -6,7 +6,7 @@ author: "Lê Tuấn Anh"
 date: "2026-05-16T21:35:00+07:00"
 lastmod: "2026-05-16T21:35:00+07:00"
 draft: false
-tags: ["Laravel", "PHP", "AI Coding", "Architecture", "Livewire", "DDD", "Prediction"]
+tags: ["Laravel", "PHP", "AI Coding", "Architecture", "DDD", "Prediction"]
 description: "Field report on how AI coding agents are reshaping Laravel development. From zero-time CRUD to the rise of Modular Monoliths and Queue Orchestration."
 categories: ["Engineering", "Strategy"]
 ShowToc: true

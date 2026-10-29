@@ -7,7 +7,7 @@ draft: false
 description: "ACID transactions, isolation levels, row-level locking strategies, and deadlock prevention algorithms in high-concurrency core banking systems."
 weight: 4
 categories: ["FinTech", "Database", "Backend"]
-tags: ["ACID", "PostgreSQL", "Concurrency", "Row Locking", "Core Banking", "Golang", "Database"]
+tags: ["ACID", "PostgreSQL", "Concurrency", "Core Banking", "Golang", "Database"]
 cover:
   image: "/images/posts/part-3-database-transactions-acid.jpg"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"

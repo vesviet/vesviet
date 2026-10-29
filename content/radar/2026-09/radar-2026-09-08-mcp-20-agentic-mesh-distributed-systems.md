@@ -7,7 +7,7 @@ slug: "mcp-20-agentic-mesh-distributed-systems"
 description: "In-depth architectural analysis of MCP 2.0 ratification: Bidirectional SSE tool streaming, dynamic capability negotiation, SPIFFE/OAuth 2.1 mTLS, WASI 0.3 sandboxes, and Go 1.26 benchmarks."
 categories: ["Tech Radar", "AI Infrastructure", "Cloud Native", "Distributed Systems", "Golang"]
 ring: "ADOPT"
-tags: ["MCP 2.0", "Model Context Protocol", "Agentic Mesh", "AI Agents", "Golang", "WASI 0.3", "eBPF", "Zero Trust"]
+tags: ["MCP 2.0", "Model Context Protocol", "AI Agents", "Golang", "WASI 0.3", "eBPF", "Zero Trust"]
 cover:
   image: "/images/posts/tech-radar-2026-08.jpg"
   alt: "Tech Radar September 2026: Model Context Protocol 2.0 and Distributed Agent Mesh"

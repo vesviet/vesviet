@@ -5,7 +5,7 @@ lastmod: 2026-09-14T12:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Architecting an enterprise multi-agent code review pipeline in GitHub Actions: Generator-Critic pattern, AST structural auditors, adversarial challengers, and consensus gates."
 categories: ["Series", "Software Engineering", "AI", "CI/CD", "Code Review", "DevOps"]
-tags: ["Multi-Agent Review", "GitHub Actions", "Generator-Critic", "Model Context Protocol", "Static Analysis", "Consensus Gate", "Code Review"]
+tags: ["GitHub Actions", "Model Context Protocol", "Static Analysis", "Code Review"]
 series: ["ai-code-review-vibe-coding"]
 weight: 5
 slug: "part-4-multi-agent-review-pipeline"
@@ -212,7 +212,8 @@ $$P(	ext{Risk} \mid \mathbf{F}) = rac{P(	ext{Risk}) \prod_{i=1}^m P(f_i \mid 	e
 eg	ext{Risk}) \prod_{i=1}^m P(f_i \mid 
 eg	ext{Risk})}$$
 
-Each finding $f_i$ is weighted by the historical precision $\pi_a$ and recall $ho_a$ of the emitting agent $a \in \{	ext{AST}, 	ext{Security}, 	ext{Performance}, 	ext{Challenger}\}$. For example, because the AST Invariant Auditor operates with deterministic compiler parsers, its findings carry a precision rating of $\pi_{	ext{AST}} = 0.99$, whereas exploratory boundary challengers carry $\pi_{	ext{Chall}} = 0.78$.
+Each finding $f_i$ is weighted by the historical precision $\pi_a$ and recall $
+ho_a$ of the emitting agent $a \in \{	ext{AST}, 	ext{Security}, 	ext{Performance}, 	ext{Challenger}\}$. For example, because the AST Invariant Auditor operates with deterministic compiler parsers, its findings carry a precision rating of $\pi_{	ext{AST}} = 0.99$, whereas exploratory boundary challengers carry $\pi_{	ext{Chall}} = 0.78$.
 
 If the computed posterior risk exceeds the enterprise ceiling of $0.20$, or if any finding is categorized as a `CRITICAL` vulnerability (such as an unauthenticated administrative route or a slopsquatted package), the pull request merge button is locked and an actionable prompt payload is generated for the developer.
 

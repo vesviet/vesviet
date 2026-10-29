@@ -13,9 +13,7 @@ categories:
   - "DevOps"
 tags:
   - "Kubernetes"
-  - "Zero-Downtime"
   - "Argo Rollouts"
-  - "GeoDNS"
   - "Golang"
 series:
   - "routing-geospatial-architecture"

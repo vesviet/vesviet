@@ -5,7 +5,7 @@ date: "2026-05-15T08:00:00+07:00"
 lastmod: "2026-09-29T08:30:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["Career", "Transition", "Python", "Blueprint", "Software Engineering", "Strategy", "Deliberate Practice", "CLI"]
+tags: ["Career", "Python", "Software Engineering", "Strategy"]
 categories: ["Engineering", "Strategy"]
 cover:
   image: "/images/posts/bonus-transition-path.jpg"

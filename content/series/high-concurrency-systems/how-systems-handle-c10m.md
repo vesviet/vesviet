@@ -6,7 +6,7 @@ draft: false
 series: ["high-concurrency-systems"]
 series_order: 2
 weight: 2
-tags: ["system design", "golang", "c10m", "io_uring", "epoll", "ebpf", "networking", "linux"]
+tags: ["system design", "golang", "c10m", "io_uring", "ebpf", "networking"]
 mermaid: true
 slug: "how-systems-handle-c10m"
 description: "Master C10M architecture in Go: Linux epoll vs io_uring, eBPF/XDP kernel bypass, netpoller M:N scheduling, and zero-GC memory pipelines."

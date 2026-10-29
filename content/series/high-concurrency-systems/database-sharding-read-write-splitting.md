@@ -6,7 +6,7 @@ draft: false
 series: ["high-concurrency-systems"]
 series_order: 10
 weight: 10
-tags: ["database sharding", "read write splitting", "vitess", "citus", "consistent hashing", "snowflake", "postgresql", "mysql"]
+tags: ["vitess", "consistent hashing", "postgresql", "mysql"]
 mermaid: true
 slug: "database-sharding-read-write-splitting"
 description: "Mastering horizontal database scaling: read/write splitting with session pinning, consistent hashing with virtual nodes, 64-bit Snowflake ID generation, and zero-downtime live resharding cutover."

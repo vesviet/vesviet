@@ -5,7 +5,7 @@ lastmod: 2026-09-14T12:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Mastering enterprise AI governance, production observability with OpenTelemetry, redesigned DORA metrics, and the career transition from syntax typist to system orchestrator."
 categories: ["Series", "Software Engineering", "AI", "Engineering Management", "Governance", "Career"]
-tags: ["Engineering Leadership", "AI Governance", "OpenTelemetry", "DORA Metrics", "Career Evolution", "System Architect", "DevOps"]
+tags: ["Engineering Leadership", "AI Governance", "OpenTelemetry", "DORA Metrics", "DevOps"]
 series: ["ai-code-review-vibe-coding"]
 weight: 7
 slug: "part-6-governance-career"

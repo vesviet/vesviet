@@ -6,7 +6,7 @@ lastmod: 2026-09-21T14:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Engineering real-time multi-warehouse order allocation, split-shipment minimization, Mixed-Integer Linear Programming, Amazon CONDOR anticipatory shipping, and warehouse picker routing."
 categories: ["Series", "Software Engineering", "Logistics Architecture", "Algorithms"]
-tags: ["Order Allocation", "Fulfillment", "Algorithms", "Graph Coloring", "Logistics", "Golang", "Supply Chain", "Amazon CONDOR"]
+tags: ["Order Allocation", "Algorithms", "Graph Coloring", "Logistics", "Golang", "Supply Chain", "Amazon CONDOR"]
 series: ["ecommerce-order-allocation"]
 weight: 70
 canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/"
@@ -89,7 +89,10 @@ where $y_w = 1$ if at least one item from order $\mathcal{O}$ is dispatched from
 ### Mathematical Objective Function
 The objective function minimizes total fulfillment cost across freight, picking labor, split penalties, and missed delivery SLA risk:
 
-$$\min \mathcal{Z} = \sum_{w \in \mathcal{W}} \left( C_{	ext{base}} \cdot y_w + \sum_{i \in \mathcal{I}} x_{i, w} \cdot \left[ C_{	ext{pick}}(i, w) + C_{	ext{dist}}(w, 	ext{dest}) \cdot 	ext{weight}(i) + \lambda_{	ext{SLA}} \cdot \max(0, T_{	ext{transit}}(w, 	ext{dest}) - T_{	ext{promise}}) ight] ight) + \gamma \cdot \left( \sum_{w \in \mathcal{W}} y_w - 1 ight)$$
+$$\min \mathcal{Z} = \sum_{w \in \mathcal{W}} \left( C_{	ext{base}} \cdot y_w + \sum_{i \in \mathcal{I}} x_{i, w} \cdot \left[ C_{	ext{pick}}(i, w) + C_{	ext{dist}}(w, 	ext{dest}) \cdot 	ext{weight}(i) + \lambda_{	ext{SLA}} \cdot \max(0, T_{	ext{transit}}(w, 	ext{dest}) - T_{	ext{promise}}) 
+ight] 
+ight) + \gamma \cdot \left( \sum_{w \in \mathcal{W}} y_w - 1 
+ight)$$
 
 Subject to the following operational constraints:
 1. **Demand Satisfaction:** Every item in the order must be fully allocated:

@@ -15,17 +15,8 @@ categories:
   - "State Management"
   - "Frontend Architecture"
 tags:
-  - "Cookies"
-  - "SessionStorage"
-  - "LocalStorage"
-  - "IndexedDB"
-  - "Web Security"
-  - "JWT Authentication"
   - "XSS"
-  - "CSRF"
-  - "BFF Pattern"
   - "Core Web Vitals"
-  - "INP"
   - "TypeScript"
   - "Cloudflare Workers"
 ShowToc: true

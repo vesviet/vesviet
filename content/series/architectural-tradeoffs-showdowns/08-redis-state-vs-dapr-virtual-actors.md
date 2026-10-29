@@ -20,8 +20,6 @@ tags:
   - "Virtual Actors"
   - "Distributed Locks"
   - "Redlock"
-  - "Lua Scripts"
-  - "AI Agent Context"
   - "Consistent Hashing"
   - "Golang"
   - "Python"

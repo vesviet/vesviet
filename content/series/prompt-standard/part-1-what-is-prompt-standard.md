@@ -7,7 +7,7 @@ draft: false
 weight: 2
 description: "Prompt Standard defined: the team-level I/O contract and SOP for AI agents — grounded in the 58-technique survey taxonomy, measured failure mechanisms, and the four-property asset model."
 categories: ["Engineering", "AI", "Prompt Standard"]
-tags: ["Prompt Standard", "Prompt Engineering", "Context Rot", "OWASP", "AI Governance", "Best Practices"]
+tags: ["Prompt Standard", "Prompt Engineering", "Context Rot", "OWASP", "AI Governance"]
 ShowToc: true
 TocOpen: true
 mermaid: true

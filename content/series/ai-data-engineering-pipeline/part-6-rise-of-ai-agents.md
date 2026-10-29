@@ -5,7 +5,7 @@ date: "2026-05-20T08:00:00+07:00"
 lastmod: "2026-09-08T20:00:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["AI Agents", "ReAct", "Golang", "LangGraph", "Architecture", "Autonomous Systems", "Tool Use"]
+tags: ["AI Agents", "ReAct", "Golang", "LangGraph", "Architecture"]
 categories: ["Engineering", "AI"]
 cover:
   image: "/images/posts/part-6-rise-of-ai-agents.jpg"

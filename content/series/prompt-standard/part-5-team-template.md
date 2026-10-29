@@ -7,7 +7,7 @@ draft: false
 weight: 6
 description: "Prompt Standard starter kit: five directories (roles/rules/workflows/skills/evals), one conventions page, two templates — deployable in an afternoon."
 categories: ["Engineering", "AI", "Prompt Standard"]
-tags: ["prompt", "standard", "starter-kit", "templates", "sop", "team-collaboration"]
+tags: ["prompt", "standard"]
 ShowToc: true
 TocOpen: true
 mermaid: true

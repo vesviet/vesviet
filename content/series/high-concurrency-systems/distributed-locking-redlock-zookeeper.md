@@ -6,7 +6,7 @@ draft: false
 series: ["high-concurrency-systems"]
 series_order: 9
 weight: 9
-tags: ["distributed locking", "redlock", "redis", "zookeeper", "etcd", "consensus", "fencing tokens", "concurrency"]
+tags: ["redlock", "redis", "etcd", "consensus", "fencing tokens", "concurrency"]
 mermaid: true
 slug: "distributed-locking-redlock-zookeeper"
 description: "Mastering distributed mutual exclusion: single-instance Redis locks, the multi-master Redlock algorithm, the Kleppmann-Antirez debate, ZooKeeper sequential node watchers, and monotonic fencing tokens."

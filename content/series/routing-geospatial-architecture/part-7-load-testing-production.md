@@ -12,9 +12,6 @@ categories:
   - "Distributed Systems"
   - "DevOps"
 tags:
-  - "Load Testing"
-  - "K6"
-  - "Performance Tuning"
   - "Linux Kernel"
   - "Golang"
 series:

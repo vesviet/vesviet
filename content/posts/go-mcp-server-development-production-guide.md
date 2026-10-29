@@ -11,7 +11,6 @@ categories:
   - "AI"
   - "Architecture"
 tags:
-  - "Go MCP server"
   - "Model Context Protocol"
   - "Go SDK"
   - "Microservices"

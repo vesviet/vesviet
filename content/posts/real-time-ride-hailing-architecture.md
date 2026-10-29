@@ -12,13 +12,10 @@ categories:
   - "Real-Time Systems"
 tags:
   - "Uber"
-  - "Grab"
   - "Geospatial"
   - "H3"
   - "Kafka"
-  - "DISCO"
   - "Architecture"
-  - "Real-Time"
 description: "How Uber and Grab handle millions of GPS pings/sec: H3 geospatial indexing, Kafka, DISCO matching engine, surge pricing, and RAMEN push notifications."
 ShowToc: true
 TocOpen: true

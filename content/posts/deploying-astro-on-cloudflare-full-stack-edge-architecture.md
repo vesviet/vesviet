@@ -14,10 +14,9 @@ tags:
   - "Astro"
   - "Cloudflare"
   - "Edge Computing"
-  - "WordPress"
-  - Architecture
-  - DevOps
-  - Performance
+  - "Architecture"
+  - "DevOps"
+  - "Performance"
 description: "Step-by-step guide to deploying Astro on Cloudflare Pages: SSR Workers adapter, D1 SQLite database, KV caching, R2 asset storage, and zero cold starts."
 ShowToc: true
 TocOpen: true

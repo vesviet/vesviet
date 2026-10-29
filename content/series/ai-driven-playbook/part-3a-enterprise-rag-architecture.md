@@ -5,7 +5,7 @@ lastmod: 2026-09-08T18:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Building an enterprise codebase RAG and knowledge control plane in 2026: layout-aware AST scanning, hybrid vector search (Qdrant + BM25), cross-encoder reranking, and real-time Git CDC knowledge freshness."
 categories: ["Series", "Playbook", "AI Engineering", "Enterprise RAG"]
-tags: ["Enterprise RAG", "Vector Search", "Qdrant", "BM25", "Hybrid Search", "Reranking", "AST"]
+tags: ["Vector Search", "Qdrant", "Hybrid Search", "AST"]
 series: ["The AI-Driven Engineer Playbook"]
 weight: 6
 slug: "part-3a-enterprise-rag-architecture"

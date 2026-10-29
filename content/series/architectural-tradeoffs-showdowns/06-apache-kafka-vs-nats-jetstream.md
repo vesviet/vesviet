@@ -15,10 +15,7 @@ categories:
   - "Event Streaming"
 tags:
   - "Kafka"
-  - "NATS"
-  - "JetStream"
   - "KRaft"
-  - "Event Streaming"
   - "Distributed Systems"
   - "Golang"
   - "FinOps"

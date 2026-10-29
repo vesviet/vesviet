@@ -9,7 +9,7 @@ draft: false
 ShowToc: true
 TocOpen: true
 categories: ["DevOps", "Architecture"]
-tags: ["OSRM", "Kubernetes", "Geospatial", "Routing", "Shared Memory", "C++", "Golang"]
+tags: ["OSRM", "Kubernetes", "Geospatial", "Routing", "Golang"]
 mermaid: true
 cover:
   image: "/images/posts/osrm-k8s-cover.jpg"

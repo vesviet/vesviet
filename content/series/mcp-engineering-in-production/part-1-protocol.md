@@ -5,7 +5,7 @@ date: "2026-06-05T15:00:00+07:00"
 lastmod: "2026-09-09T14:30:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["MCP", "Protocol", "Golang", "JSON-RPC", "stdio", "SSE", "Streamable HTTP", "Architecture"]
+tags: ["MCP", "Golang", "JSON-RPC", "Architecture"]
 categories: ["Engineering", "Architecture"]
 cover:
   image: "/images/posts/part-1-protocol.jpg"

@@ -7,7 +7,7 @@ slug: "high-throughput-go-framework-benchmarks-gin-fiber-kratos"
 canonicalURL: "https://tanhdev.com/posts/high-throughput-go-framework-benchmarks-gin-fiber-kratos/"
 ShowToc: true
 TocOpen: true
-tags: ["Golang", "Benchmarks", "Gin", "Fiber", "Kratos", "Microservices"]
+tags: ["Golang", "Benchmarks", "Kratos", "Microservices"]
 categories: ["Engineering", "Backend"]
 author: "Lê Tuấn Anh"
 draft: false

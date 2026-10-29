@@ -7,7 +7,7 @@ slug: "stateless-mcp-k8s-gateway"
 description: "Stateless Model Context Protocol (MCP 2.0), L7 routing with Kubernetes Gateway API, and SPIFFE/mTLS authentication for autonomous AI agent swarms."
 categories: ["Tech Radar", "AI Infrastructure", "Cloud Native"]
 ring: "TRIAL"
-tags: ["Model Context Protocol", "MCP 2.0", "Kubernetes", "Gateway API", "SPIFFE/SPIRE", "Golang", "Agentic Systems"]
+tags: ["Model Context Protocol", "MCP 2.0", "Kubernetes", "Gateway API", "SPIFFE/SPIRE", "Golang"]
 cover:
   image: "/images/posts/default-post-1.jpg"
   alt: "Tech Radar: Stateless MCP 2.0 & Kubernetes Gateway API Architecture"

@@ -5,7 +5,7 @@ lastmod: 2026-09-09T14:30:00+07:00
 author: "Lê Tuấn Anh"
 description: "Production caching patterns in Go: Cache-Aside, Write-Through, XFetch probabilistic early expiration, Singleflight deduplication, Bloom filters, and Dragonfly/Valkey multi-tier architectures."
 categories: ["Architecture", "Database", "Performance"]
-tags: ["Caching", "Redis", "Valkey", "DragonflyDB", "Singleflight", "Bloom Filter", "Golang"]
+tags: ["Caching", "Redis", "Singleflight", "Bloom Filter", "Golang"]
 series: ["system-design"]
 weight: 3
 slug: "03-caching-strategies-redis-golang"

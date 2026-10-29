@@ -6,7 +6,7 @@ lastmod: 2026-09-21T14:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Transitioning from batch wave picking to continuous waveless Intelligent Order Release: Real-time sorter pacing, carrier cutoff deadlines, and reinforcement learning."
 categories: ["Series", "Logistics & Supply Chain", "System Design", "Optimization"]
-tags: ["Order Release", "Waveless Picking", "Wave Picking", "WMS", "Reinforcement Learning", "Go", "Logistics"]
+tags: ["WMS", "Go", "Logistics"]
 series: ["ecommerce-order-allocation"]
 weight: 9
 canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/part-8-intelligent-order-release/"

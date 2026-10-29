@@ -33,14 +33,7 @@ categories:
   - "Backend"
 tags:
   - "Golang"
-  - "Go 1.23"
-  - "Go 1.24"
   - "Performance"
-  - "Iterators"
-  - "Zero-Allocation"
-  - "GC Tuning"
-  - "Memory Pools"
-  - "Benchstat"
 ShowToc: true
 TocOpen: true
 cover:

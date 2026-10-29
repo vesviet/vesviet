@@ -5,7 +5,7 @@ lastmod: 2026-09-08T18:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Deconstructing the profound software engineering mental transition in 2026: moving from manual syntax production to architectural context curation, deterministic verification boundaries, and machine-actionable AGENTS.md specifications."
 categories: ["Series", "Playbook", "AI Engineering", "SDLC"]
-tags: ["Paradigm Shift", "AI-First SDLC", "Context Engineering", "AGENTS.md", "Cursor", "Software Architecture"]
+tags: ["AI", "Context Engineering", "AGENTS.md", "Cursor", "Software Architecture"]
 series: ["The AI-Driven Engineer Playbook"]
 weight: 3
 slug: "part-1-paradigm-shift-ai-first-sdlc"

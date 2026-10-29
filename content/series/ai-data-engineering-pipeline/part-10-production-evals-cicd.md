@@ -5,7 +5,7 @@ date: "2026-05-22T08:00:00+07:00"
 lastmod: "2026-09-08T20:00:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["Evals", "CI/CD", "LLM-as-a-Judge", "Python", "Ragas", "DevOps", "DeepEval", "Quality Gates"]
+tags: ["Evals", "CI/CD", "LLM-as-a-Judge", "Python", "DevOps", "Quality Gates"]
 categories: ["Engineering", "DevOps"]
 cover:
   image: "/images/posts/part-10-production-evals-cicd.jpg"

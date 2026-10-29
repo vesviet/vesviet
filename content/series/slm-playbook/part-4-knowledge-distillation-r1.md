@@ -5,7 +5,7 @@ lastmod: 2026-09-09T14:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Transferring Chain-of-Thought reasoning from DeepSeek-R1 671B MoE into 1.5B–8B SLMs using structured think tokens, rejection sampling, and KL loss."
 categories: ["Series", "Machine Learning", "AI Architecture"]
-tags: ["Knowledge Distillation", "DeepSeek-R1", "Chain of Thought", "Reasoning", "Qwen", "PyTorch", "Model Compression"]
+tags: ["Knowledge Distillation", "DeepSeek-R1", "PyTorch"]
 series: ["slm-playbook"]
 weight: 6
 slug: "part-4-knowledge-distillation-r1"

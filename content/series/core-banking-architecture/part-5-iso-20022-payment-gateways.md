@@ -8,7 +8,7 @@ description: "Engineering guide to ISO 20022 pacs.008 payment gateways: zero-all
 weight: 5
 series: ["core-banking-architecture"]
 categories: ["FinTech", "Payments", "Protocols"]
-tags: ["ISO 20022", "pacs.008", "Payment Gateway", "Latency", "Idempotency", "Golang", "NAPAS"]
+tags: ["ISO 20022", "pacs.008", "Payment Gateway", "Idempotency", "Golang", "NAPAS"]
 author: "Lê Tuấn Anh"
 cover:
   image: "/images/posts/banking-microservices-cover.jpg"

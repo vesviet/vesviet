@@ -7,7 +7,7 @@ lastmod: "2026-09-08T20:30:00+07:00"
 draft: false
 weight: 14
 series: ["magento-migration-vietnam"]
-tags: ["Remote Team", "Vietnam", "Migration", "Engineering Management", "Magento", "Golang", "Timezone", "DevOps"]
+tags: ["Remote Team", "Vietnam", "Migration", "Engineering Management", "Magento", "Golang", "DevOps"]
 categories: ["Engineering Management", "Remote Work"]
 description: "Mastering asynchronous engineering governance, 12-hour timezone inversion, Architecture Decision Records (ADRs), and production cutover gates with a Vietnam Go team."
 ShowToc: true

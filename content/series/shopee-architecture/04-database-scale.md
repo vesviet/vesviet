@@ -16,7 +16,7 @@ cover:
   alt: "Shopee Architecture series: scaling for flash sales — rate limiting, Redis, and distributed systems"
   relative: false
 categories: ["Database", "Distributed Systems", "NewSQL"]
-tags: ["Shopee", "TiDB", "TiKV", "Multi-Raft", "MySQL", "Distributed Database", "HTAP"]
+tags: ["Shopee", "TiDB", "TiKV", "Multi-Raft", "MySQL", "HTAP"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/04-database-scale/"
 image: "/images/posts/shopee-flash-sale-cover.jpg"

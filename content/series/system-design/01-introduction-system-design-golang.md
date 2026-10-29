@@ -5,7 +5,7 @@ lastmod: 2026-09-09T14:30:00+07:00
 author: "Lê Tuấn Anh"
 description: "Mastering distributed system design trade-offs in Go: CAP theorem proof, PACELC latency bounds, composite availability mathematics, and Clean Architecture with Go 1.24+ runtime optimizations."
 categories: ["Architecture", "Backend", "Distributed Systems"]
-tags: ["System Design", "Golang", "Clean Architecture", "CAP Theorem", "PACELC", "High Concurrency"]
+tags: ["System Design", "Golang", "Clean Architecture", "CAP Theorem", "High Concurrency"]
 series: ["system-design"]
 weight: 1
 slug: "01-introduction-system-design-golang"

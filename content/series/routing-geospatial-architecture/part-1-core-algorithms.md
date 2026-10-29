@@ -13,10 +13,6 @@ categories:
   - "Logistics"
   - "Architecture"
 tags:
-  - "Dijkstra"
-  - "A-Star"
-  - "Contraction Hierarchies"
-  - "Graph Algorithms"
   - "Routing"
   - "Golang"
 series:

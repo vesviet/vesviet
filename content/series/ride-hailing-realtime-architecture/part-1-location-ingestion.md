@@ -6,7 +6,7 @@ lastmod: "2026-09-28T12:00:00+07:00"
 draft: false
 description: "How Uber and Grab ingest 1.25M GPS/s from 5M drivers: gRPC streaming vs MQTT, Kalman Filter noise reduction, GPS batching, and Kafka pipeline."
 weight: 2
-tags: ["ride-hailing", "geospatial", "grpc", "mqtt", "kafka"]
+tags: ["ride-hailing", "geospatial", "grpc", "kafka"]
 categories: ["Ride Hailing", "Geospatial"]
 cover:
   image: "/images/posts/real-time-ride-hailing-cover.jpg"

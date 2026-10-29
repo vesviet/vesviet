@@ -5,7 +5,7 @@ lastmod: 2026-09-08T18:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Demonstrating concrete financial ROI within 90 days by automating internal engineering operations: autonomous incident log triage, automated dependency migration agents, and FinOps token expenditure tracking."
 categories: ["Series", "Playbook", "AI Engineering", "FinOps", "DevOps"]
-tags: ["Internal Ops", "Autonomous Agents", "Incident Triage", "FinOps", "ROI", "DevOps", "DORA"]
+tags: ["FinOps", "DevOps", "DORA"]
 series: ["The AI-Driven Engineer Playbook"]
 weight: 7
 slug: "part-3b-ai-automation-internal-ops"

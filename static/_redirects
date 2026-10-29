@@ -480,8 +480,8 @@
 # --- 9. Taxonomy & Tag Endpoints ---
 /tags/agentic-memory /tags/ 301
 /tags/agentic-memory/ /tags/ 301
+/tags/autodesk/index.xml /tags/ 301
 /tags/ai-infrastructure/index.xml /tags/ai-infrastructure/ 301
-/tags/autodesk/index.xml /tags/autodesk/ 301
 /tags/claude.md /tags/ 301
 /tags/claude.md/ /tags/ 301
 /tags/dynamic-pricing /tags/ 301

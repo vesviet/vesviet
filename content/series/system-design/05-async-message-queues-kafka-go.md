@@ -5,7 +5,7 @@ lastmod: 2026-09-09T14:30:00+07:00
 author: "Lê Tuấn Anh"
 description: "Architecting high-throughput event-driven microservices in Go: Apache Kafka 3.9+ KRaft quorum, cooperative sticky rebalances, bounded Go channel backpressure, and non-blocking DLQ pipelines."
 categories: ["Architecture", "Messaging", "Distributed Systems"]
-tags: ["Kafka", "KRaft", "Event-Driven", "RabbitMQ", "Backpressure", "Golang", "Microservices"]
+tags: ["Kafka", "KRaft", "Event-Driven", "Backpressure", "Golang", "Microservices"]
 series: ["system-design"]
 weight: 5
 slug: "05-async-message-queues-kafka-go"

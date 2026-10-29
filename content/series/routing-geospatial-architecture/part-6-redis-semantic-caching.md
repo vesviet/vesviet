@@ -15,7 +15,6 @@ tags:
   - "Redis"
   - "Semantic Caching"
   - "Uber H3"
-  - "Cache Hit Rate"
   - "Performance"
   - "Golang"
 series:

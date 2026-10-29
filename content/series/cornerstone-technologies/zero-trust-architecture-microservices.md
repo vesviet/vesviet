@@ -7,7 +7,7 @@ author: "Le Tuan Anh (Senior Go Engineer)"
 date: "2026-05-10"
 lastmod: "2026-09-11T09:30:00+07:00"
 series: ["cornerstone-technologies"]
-tags: ["Zero-Trust", "Microservices", "mTLS", "Golang", "SPIFFE", "OAuth2.1"]
+tags: ["Zero-Trust", "Microservices", "mTLS", "Golang", "SPIFFE"]
 cover:
   image: "/images/posts/zero-trust-architecture-microservices.jpg"
   alt: "Zero-Trust Architecture for Microservices: mTLS & Production Go Guide"

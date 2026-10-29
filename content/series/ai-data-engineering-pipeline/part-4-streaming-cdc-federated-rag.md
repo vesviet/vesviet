@@ -5,7 +5,7 @@ date: "2026-05-19T08:00:00+07:00"
 lastmod: "2026-09-29T08:00:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["CDC", "Kafka", "Golang", "Flink", "Federated RAG", "Event Driven", "Apache Iceberg", "LanceDB"]
+tags: ["CDC", "Kafka", "Golang", "Flink", "Apache Iceberg", "LanceDB"]
 categories: ["Engineering", "Architecture"]
 cover:
   image: "/images/posts/part-4-streaming-cdc-federated-rag.jpg"

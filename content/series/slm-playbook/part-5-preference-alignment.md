@@ -5,7 +5,7 @@ lastmod: 2026-09-09T14:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Production alignment for Small Language Models: Direct Preference Optimization, Critic-free GRPO, KTO signals, SimPO length bias, and JSON enforcement."
 categories: ["Series", "Machine Learning", "AI Architecture"]
-tags: ["DPO", "GRPO", "KTO", "RLHF", "Alignment", "TRL", "PyTorch", "PEFT"]
+tags: ["DPO", "PyTorch", "PEFT"]
 series: ["slm-playbook"]
 weight: 7
 slug: "part-5-preference-alignment"

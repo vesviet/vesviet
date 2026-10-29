@@ -9,7 +9,7 @@ draft: false
 ShowToc: true
 TocOpen: true
 categories: ["FinTech", "Architecture"]
-tags: ["FinTech", "Core Banking", "Microfinance", "Golang", "PostgreSQL", "Ledger"]
+tags: ["FinTech", "Core Banking", "Golang", "PostgreSQL", "Ledger"]
 mermaid: true
 cover:
   image: "/images/posts/microfinance-core-banking-cover.jpg"

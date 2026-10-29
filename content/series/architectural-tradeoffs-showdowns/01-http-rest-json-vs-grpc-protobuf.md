@@ -16,7 +16,6 @@ categories:
 tags:
   - "gRPC"
   - "Protobuf"
-  - "HTTP2"
   - "HTTP3"
   - "Golang"
   - "Microservices"

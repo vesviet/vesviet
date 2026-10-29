@@ -5,7 +5,7 @@ lastmod: 2026-09-09T14:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "SFT data engineering for SLMs: NEFTune noise (+18.4% AlpacaEval), SemDeDup 45% redundancy pruning, and 13-gram decontamination to eliminate benchmark leakage."
 categories: ["Series", "Machine Learning", "Data Engineering"]
-tags: ["SFT", "Data Engineering", "NEFTune", "Synthetic Data", "Axolotl", "LIMA", "Decontamination"]
+tags: ["Data Engineering", "Axolotl"]
 series: ["slm-playbook"]
 weight: 4
 slug: "part-2-sft-data-engineering"

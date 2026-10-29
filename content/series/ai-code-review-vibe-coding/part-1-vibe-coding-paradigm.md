@@ -5,7 +5,7 @@ lastmod: 2026-09-14T12:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "How engineering leaders, product managers, and founders harness AI coding agents without accumulating toxic architectural debt through Specification-Driven Development."
 categories: ["Series", "Software Engineering", "AI", "Product Leadership", "Architecture"]
-tags: ["Vibe Coding", "Specification-Driven Development", "Technical Debt", "Product Management", "AI Agents", "Cursor"]
+tags: ["Vibe Coding", "Technical Debt", "Product Management", "AI Agents", "Cursor"]
 series: ["ai-code-review-vibe-coding"]
 weight: 2
 slug: "part-1-vibe-coding-paradigm"

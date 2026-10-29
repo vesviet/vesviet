@@ -11,7 +11,6 @@ categories:
   - "AI"
   - "E-commerce"
 tags:
-  - "Agentic Engineering"
   - "Event-driven"
   - "Generative UI"
   - "MCP"

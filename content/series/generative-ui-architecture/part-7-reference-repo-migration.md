@@ -5,7 +5,7 @@ date: "2026-05-30T12:00:00+07:00"
 lastmod: "2026-09-21T10:00:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["Generative UI", "Migration Playbook", "Strangler Fig", "OpenTelemetry", "Architecture", "Microfrontends"]
+tags: ["Generative UI", "Strangler Fig", "OpenTelemetry", "Architecture", "Microfrontends"]
 categories: ["Engineering", "Architecture", "Frontend"]
 cover:
   image: "/images/posts/part-7-reference-repo-migration.jpg"

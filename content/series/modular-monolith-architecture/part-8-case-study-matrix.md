@@ -4,7 +4,7 @@ date: "2026-07-03T10:00:00+07:00"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "Production case study matrix evaluating real-world modular monolith migrations across FinTech, E-Commerce, Shopify, GitHub, and high-scale SaaS platforms."
 slug: "case-study-matrix-modular-monolith-success-stories"
-tags: ["Case Study", "Modular Monolith", "Shopify", "Stack Overflow", "Notion", "GitHub", "Etsy"]
+tags: ["Modular Monolith", "Shopify", "Stack Overflow"]
 categories: ["Modular Monolith", "Architecture"]
 cover:
   image: "/images/posts/golang-microservices-cover.jpg"

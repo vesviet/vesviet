@@ -11,7 +11,7 @@ aliases:
   - "/posts/golang-vs-php-laravel-ecommerce-high-concurrency/"
 ShowToc: true
 TocOpen: true
-tags: ["Golang", "PHP", "Laravel", "High Concurrency", "E-Commerce", "Microservices", "Architecture", "FinOps", "Benchmarks", "Kratos", "Swoole"]
+tags: ["Golang", "PHP", "Laravel", "High Concurrency", "E-Commerce", "Microservices", "Architecture", "FinOps", "Benchmarks", "Kratos"]
 categories: ["Engineering", "Architecture", "Backend"]
 author: "Lê Tuấn Anh"
 draft: false

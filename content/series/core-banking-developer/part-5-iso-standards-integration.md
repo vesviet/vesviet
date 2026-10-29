@@ -7,7 +7,7 @@ draft: false
 description: "Financial messaging standards in core banking: ISO 8583 binary bitmaps, ISO 20022 MX pacs.008 schemas, and Go parser implementations for real-time payment rails."
 weight: 6
 categories: ["FinTech", "Payments", "Integration"]
-tags: ["ISO 8583", "ISO 20022", "pacs.008", "Payment Gateway", "Golang", "FinTech", "NAPAS"]
+tags: ["ISO 20022", "pacs.008", "Payment Gateway", "Golang", "FinTech", "NAPAS"]
 cover:
   image: "/images/posts/part-5-iso-standards-integration.jpg"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"

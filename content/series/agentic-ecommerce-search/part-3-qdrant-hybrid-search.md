@@ -5,7 +5,7 @@ date: "2026-06-13T08:00:00+07:00"
 lastmod: "2026-09-11T08:45:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["Qdrant", "Hybrid Search", "Vector Database", "HNSW", "RRF", "Scalar Quantization", "Golang"]
+tags: ["Qdrant", "Hybrid Search", "Vector Database", "HNSW", "Golang"]
 categories: ["Engineering", "AI", "Database"]
 cover:
   image: "/images/posts/part-3-qdrant-hybrid-search.jpg"
@@ -291,7 +291,8 @@ When factoring in HNSW graph link structures ($16 	ext{ links} 	imes 8 	ext{ byt
 ### Scalar Quantization (INT8) Mechanics
 Scalar Quantization maps continuous 32-bit floating-point numbers into discrete 8-bit signed integers ($[-128, 127]$):
 
-$$q_i = 	ext{round}\left( rac{v_i - v_{\min}}{v_{\max} - v_{\min}} 	imes 255 ight) - 128$$
+$$q_i = 	ext{round}\left( rac{v_i - v_{\min}}{v_{\max} - v_{\min}} 	imes 255 
+ight) - 128$$
 
 ```mermaid
 flowchart LR

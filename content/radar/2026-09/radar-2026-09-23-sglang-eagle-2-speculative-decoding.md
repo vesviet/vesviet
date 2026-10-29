@@ -7,7 +7,7 @@ slug: "sglang-eagle-2-speculative-decoding"
 description: "In-depth architectural analysis of SGLang EAGLE-2 Speculative Decoding: Multi-layer feature extrapolation, dynamic tree-attention verification, 3.5x token generation speedup on NVIDIA H100, and production serving benchmarks."
 categories: ["Tech Radar", "AI Infrastructure", "LLMOps", "Distributed Systems"]
 ring: "ADOPT"
-tags: ["SGLang", "EAGLE-2", "Speculative Decoding", "Tree-Attention", "LLM Inference", "NVIDIA H100", "DeepSeek", "vLLM"]
+tags: ["Speculative Decoding", "NVIDIA H100", "DeepSeek", "vLLM"]
 cover:
   image: "/images/posts/default-post-2.jpg"
   alt: "Tech Radar: SGLang EAGLE-2 Speculative Decoding Architecture"

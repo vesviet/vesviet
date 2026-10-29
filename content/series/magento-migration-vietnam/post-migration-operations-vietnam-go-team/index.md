@@ -7,7 +7,7 @@ lastmod: "2026-09-08T20:30:00+07:00"
 draft: false
 weight: 15
 series: ["magento-migration-vietnam"]
-tags: ["Magento", "Golang", "SRE", "Operations", "Vietnam Team", "Kubernetes", "Observability"]
+tags: ["Magento", "Golang", "SRE", "Operations", "Kubernetes", "Observability"]
 categories: ["Engineering Management", "Operations"]
 description: "Production Day-2 engineering playbook: SLO hierarchy, OpenTelemetry observability, automated on-call runbooks, and continuous profiling with a Vietnam Go SRE squad."
 ShowToc: true

@@ -5,7 +5,7 @@ lastmod: 2026-09-08T18:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Eliminating operational blind spots in enterprise AI systems: OpenTelemetry GenAI Semantic Conventions v1.30+, distributed agent tracing with Langfuse, automated Ragas evaluations, and cost anomaly circuit breakers."
 categories: ["Series", "Playbook", "AI Engineering", "Observability", "DevOps"]
-tags: ["Observability", "OpenTelemetry", "GenAI", "Langfuse", "Evals", "Tracing", "Monitoring"]
+tags: ["Observability", "OpenTelemetry", "Langfuse", "Evals", "Tracing", "Monitoring"]
 series: ["The AI-Driven Engineer Playbook"]
 weight: 12
 slug: "part-6-ai-observability-governance"

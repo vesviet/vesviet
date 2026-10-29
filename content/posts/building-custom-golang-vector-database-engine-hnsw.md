@@ -10,7 +10,7 @@ ShowToc: true
 TocOpen: true
 mermaid: true
 categories: ["Engineering", "AI"]
-tags: ["Golang", "Vector Search", "HNSW", "SIMD", "Product Quantization", "mmap", "Systems Engineering"]
+tags: ["Golang", "Vector Search", "HNSW"]
 canonicalURL: "https://tanhdev.com/posts/building-custom-golang-vector-database-engine-hnsw/"
 cover:
   image: "/images/posts/building-custom-golang-vector-database-engine-hnsw.jpg"

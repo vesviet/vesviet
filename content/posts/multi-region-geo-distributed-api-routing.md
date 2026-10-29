@@ -11,10 +11,6 @@ author: "Lê Tuấn Anh"
 draft: false
 mermaid: true
 tags:
-  - "API Routing"
-  - "Multi-Region Architecture"
-  - "Geo-Distribution"
-  - "Latency Optimization"
   - "Architecture"
 categories:
   - "Architecture"

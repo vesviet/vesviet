@@ -5,7 +5,7 @@ lastmod: 2026-09-08T18:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Designing automated multi-agent code review pipelines in CI/CD: combining deterministic AST linters, SARIF standard integration, and multi-agent LLM-as-a-Judge evaluations to accelerate PR lead times by 13.5x."
 categories: ["Series", "Playbook", "AI Engineering", "CI/CD", "Quality Engineering"]
-tags: ["Code Review", "LLM-as-a-Judge", "SARIF", "GitHub Actions", "Semgrep", "Quality Gates", "CI/CD"]
+tags: ["Code Review", "LLM-as-a-Judge", "GitHub Actions", "Semgrep", "Quality Gates", "CI/CD"]
 series: ["The AI-Driven Engineer Playbook"]
 weight: 8
 slug: "part-3b-ai-code-review-quality-gates"

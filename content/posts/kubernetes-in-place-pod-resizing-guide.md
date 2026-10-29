@@ -15,12 +15,8 @@ categories:
   - "DevOps"
 tags:
   - "Kubernetes"
-  - "Pod Resizing"
-  - "In-Place Resize"
   - "AI Inference"
   - "Cost Optimization"
-  - "VPA"
-  - "K8s v1.35"
 cover:
   image: "/images/posts/kubernetes-pod-resize-cover.jpg"
   alt: "Kubernetes in-place pod resizing: scale CPU and memory resources without restarting pods"

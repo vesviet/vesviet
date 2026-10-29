@@ -7,7 +7,7 @@ slug: "disaggregated-prefill-decode"
 description: "In-depth architectural analysis of Disaggregated Prefill-Decode (PD) Serving: Decoupling compute-dense prefill from memory-bandwidth-bound decode, zero-copy kernel-bypass RoCEv2 KV streaming, 11x P99 TTFT reduction, and 64x NVIDIA H100 benchmarks."
 categories: ["Tech Radar", "AI Infrastructure", "LLMOps", "Distributed Systems"]
 ring: "ADOPT"
-tags: ["Disaggregated Serving", "Prefill-Decode", "RoCEv2", "RDMA", "vLLM", "Mooncake", "DeepSeek", "NVIDIA H100"]
+tags: ["Disaggregated Serving", "RoCEv2", "RDMA", "vLLM", "DeepSeek", "NVIDIA H100"]
 cover:
   image: "/images/posts/default-post-2.jpg"
   alt: "Tech Radar: Disaggregated Prefill-Decode Architecture"

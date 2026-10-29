@@ -8,7 +8,7 @@ description: "Engineering analysis of distributed SQL ACID latency in core banki
 weight: 2
 series: ["core-banking-architecture"]
 categories: ["FinTech", "Distributed SQL", "Database"]
-tags: ["TiDB", "CockroachDB", "Spanner", "Distributed SQL", "ACID", "Consensus", "Raft"]
+tags: ["TiDB", "CockroachDB", "Distributed SQL", "ACID", "Consensus", "Raft"]
 author: "Lê Tuấn Anh"
 cover:
   image: "/images/posts/banking-microservices-cover.jpg"

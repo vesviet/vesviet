@@ -4,7 +4,7 @@ date: "2026-07-03T10:00:00+07:00"
 lastmod: "2026-07-03T15:41:55+07:00"
 description: "Discover why Amazon Prime Video cut infrastructure costs by 90% after moving from serverless microservices back to an in-process modular monolith architecture."
 slug: "executive-summary-amazon-prime-video-monolith"
-tags: ["Modular Monolith", "AWS", "Serverless", "FinOps", "Amazon Prime"]
+tags: ["Modular Monolith", "AWS", "Serverless", "FinOps"]
 categories: ["Modular Monolith", "Architecture"]
 cover:
   image: "/images/posts/executive-summary-amazon-prime-video-monolith.jpg"

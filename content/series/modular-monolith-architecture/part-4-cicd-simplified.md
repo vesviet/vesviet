@@ -4,7 +4,7 @@ date: "2026-07-03T10:00:00+07:00"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "How to set up fast, reliable CI/CD pipelines for Go modular monorepos with automated testing, parallelized builds, and zero-downtime production releases."
 slug: "cicd-simplified-atomic-deployments-monolith"
-tags: ["CI/CD", "Deployments", "Shopify", "Buildkite", "Modular Monolith", "Testing"]
+tags: ["CI/CD", "Shopify", "Modular Monolith", "Testing"]
 categories: ["Modular Monolith", "Architecture"]
 cover:
   image: "/images/posts/golang-microservices-cover.jpg"

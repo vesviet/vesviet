@@ -7,7 +7,7 @@ draft: false
 description: "How to write a production-grade Core Banking PRD: double-entry invariants, Maker-Checker authorization, End-of-Day batch processing, and Five Nines SRE requirements."
 weight: 9
 categories: ["FinTech", "Product Management", "Architecture"]
-tags: ["PRD", "Core Banking", "Fintech", "Product Management", "SRE", "EOD Batch"]
+tags: ["Core Banking", "Fintech", "Product Management", "SRE"]
 cover:
   image: "/images/posts/part-8-core-banking-prd.jpg"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"

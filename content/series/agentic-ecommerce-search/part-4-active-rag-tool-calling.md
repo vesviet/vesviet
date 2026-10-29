@@ -5,7 +5,7 @@ date: "2026-06-14T08:00:00+07:00"
 lastmod: "2026-09-11T08:45:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["Active RAG", "Tool Calling", "JSON Schema", "Inventory", "Circuit Breaker", "CloudWeGo Eino", "Golang"]
+tags: ["Tool Calling", "JSON Schema", "Circuit Breaker", "CloudWeGo Eino", "Golang"]
 categories: ["Engineering", "AI", "Microservices"]
 cover:
   image: "/images/posts/part-4-active-rag-tool-calling.jpg"

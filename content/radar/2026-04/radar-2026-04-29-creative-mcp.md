@@ -9,7 +9,7 @@ ShowToc: true
 TocOpen: true
 categories: ["Tech Radar"]
 ring: "TRIAL"
-tags: ["Anthropic", "MCP", "Creative Tools", "Adobe", "Blender", "Autodesk", "AI Workflows"]
+tags: ["Anthropic", "MCP"]
 cover:
   image: "/images/posts/default-post-6.jpg"
   alt: "Tech Radar, April 29, 2026: Anthropic Pushes MCP into the Creative Stack - AI Connectors Turn Creative Software into Agentic Workflows"

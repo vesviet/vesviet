@@ -6,7 +6,7 @@ lastmod: 2026-09-21T14:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "End-to-end production implementation of an order allocation microservice in Go: Protobuf gRPC APIs, worker pools, CGo solver bindings, and circuit breaker fallbacks."
 categories: ["Series", "Golang", "System Design", "E-Commerce"]
-tags: ["Golang", "OR-Tools", "gRPC", "Protobuf", "Microservices", "System Design", "Optimization"]
+tags: ["Golang", "gRPC", "Protobuf", "Microservices", "System Design", "Optimization"]
 series: ["ecommerce-order-allocation"]
 weight: 7
 canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/part-6-build-mini-allocation-engine/"

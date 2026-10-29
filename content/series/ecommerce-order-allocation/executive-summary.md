@@ -6,7 +6,7 @@ lastmod: 2026-09-21T14:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Mathematical modeling of the Order Allocation Problem: Multi-Choice Knapsack formulations, split-shipment economic cost curves, solver benchmarks, and sub-100ms latency budgets."
 categories: ["Series", "Software Engineering", "Logistics Architecture", "Algorithms"]
-tags: ["Order Allocation", "MILP", "Knapsack", "Operations Research", "Logistics", "Golang", "Supply Chain"]
+tags: ["Order Allocation", "MILP", "Logistics", "Golang", "Supply Chain"]
 series: ["ecommerce-order-allocation"]
 weight: 1
 canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/executive-summary/"

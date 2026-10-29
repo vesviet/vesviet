@@ -5,7 +5,7 @@ date: "2026-05-19T12:00:00+07:00"
 lastmod: "2026-09-29T08:00:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["Security", "RBAC", "Data Poisoning", "Python", "Prompt Injection", "Zero Trust", "Qdrant", "Neo4j"]
+tags: ["Security", "Python", "Prompt Injection", "Zero Trust", "Qdrant", "Neo4j"]
 categories: ["Engineering", "Security"]
 cover:
   image: "/images/posts/part-5-enterprise-security-data-poisoning.jpg"

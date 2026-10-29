@@ -6,7 +6,7 @@ draft: false
 weight: 10
 description: "MCP dynamic tool injection plus four-stage hybrid RAG — AST chunking, dense/sparse retrieval, cross-encoder re-ranking, and LLMLingua-2 compression at 2x-5x."
 categories: ["Engineering", "AI", "Prompt Standard"]
-tags: ["prompt", "standard", "mcp", "hybrid-rag", "cross-encoder", "context-assembly"]
+tags: ["prompt", "standard", "mcp", "RAG"]
 ShowToc: true
 TocOpen: true
 cover:

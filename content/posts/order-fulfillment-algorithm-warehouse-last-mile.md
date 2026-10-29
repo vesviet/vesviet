@@ -12,10 +12,7 @@ categories:
   - "E-Commerce"
 tags:
   - "Order Fulfillment"
-  - "Warehouse"
-  - "Last-Mile Delivery"
   - "VRP"
-  - "Amazon"
   - "Logistics"
 description: "How e-commerce giants decide which warehouse fulfills your order. Covers Available-to-Promise Redis Lua, Go multi-warehouse allocation solvers, Amazon CONDOR, and Google OR-Tools CVRP."
 ShowToc: true

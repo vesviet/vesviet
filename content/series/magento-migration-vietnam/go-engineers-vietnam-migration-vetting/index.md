@@ -6,7 +6,7 @@ date: "2026-07-08T19:30:00+07:00"
 lastmod: "2026-09-08T20:30:00+07:00"
 draft: false
 series: ["magento-migration-vietnam"]
-tags: ["Golang", "Vietnam", "Hiring", "Microservices", "Migration", "Interview", "Magento", "Distributed Systems"]
+tags: ["Golang", "Vietnam", "Hiring", "Microservices", "Migration", "Magento", "Distributed Systems"]
 categories: ["Engineering Management", "Hiring"]
 description: "Five production interview scenarios to vet Go engineers in Vietnam for Magento migration: Saga coordination, Debezium CDC, dual-write, and distributed locking."
 ShowToc: true

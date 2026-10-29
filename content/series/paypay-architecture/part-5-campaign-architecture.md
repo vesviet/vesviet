@@ -16,7 +16,7 @@ cover:
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
 categories: ["High Concurrency", "Architecture", "Fintech"]
-tags: ["PayPay", "Campaign Engine", "Rate Limiting", "Redis", "Virtual Waiting Room", "Reconciliation"]
+tags: ["PayPay", "Rate Limiting", "Redis"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-5-campaign-architecture/"
 image: "/images/posts/paypay-scaling-cover.jpg"

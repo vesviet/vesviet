@@ -7,7 +7,7 @@ slug: "radar-2026-10-22-autonomous-agent-swarms-a2a-litellm"
 description: "Production autonomous AI agent swarms architecture with Agent-to-Agent (A2A) protocol contracts, role-skill tool locking, Redis 7.4 Lua fencing, and LiteLLM gateway proxy routing."
 categories: ["Tech Radar", "AI & Agentic Systems", "Cloud Native", "Distributed Systems", "Go"]
 ring: "ADOPT"
-tags: ["AI Agents", "A2A Protocol", "LiteLLM", "Distributed Systems", "Go 1.25", "Redis 7.4", "Zero Trust", "eBPF Tetragon", "JSON Schema", "High Concurrency"]
+tags: ["AI Agents", "LiteLLM", "Distributed Systems", "Go 1.25", "Zero Trust", "JSON Schema", "High Concurrency"]
 cover:
   image: "/images/posts/default-post-1.jpg"
   alt: "Tech Radar: Autonomous AI Agent Swarms Architecture with LiteLLM & A2A"

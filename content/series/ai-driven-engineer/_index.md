@@ -6,7 +6,7 @@ lastmod: "2026-09-08T20:10:00+07:00"
 draft: false
 weight: 10
 description: "Masterclass series on evolving from a manual code typist to an AI-driven system architect, orchestrating multi-agent systems in production."
-tags: ["AI-Driven Engineering", "Career", "Architecture", "Context Engineering", "MCP", "Software Engineering"]
+tags: ["AI", "Career", "Architecture", "Context Engineering", "MCP", "Software Engineering"]
 categories: ["AI", "Engineering"]
 ShowToc: true
 mermaid: true

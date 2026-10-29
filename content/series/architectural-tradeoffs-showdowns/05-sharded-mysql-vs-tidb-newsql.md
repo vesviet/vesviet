@@ -19,7 +19,6 @@ tags:
   - "TiDB"
   - "NewSQL"
   - "Distributed Transactions"
-  - "2PC"
   - "Raft"
   - "Database Internals"
   - "FinOps"

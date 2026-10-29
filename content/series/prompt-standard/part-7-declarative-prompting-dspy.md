@@ -6,7 +6,7 @@ draft: false
 weight: 8
 description: "Declarative prompt compilation with DSPy 2.5+: signatures, MIPROv2 teleprompters, and the measured evidence — +25%/+65% over few-shot, +13% MIPRO gains."
 categories: ["Engineering", "AI", "Prompt Standard"]
-tags: ["prompt", "standard", "dspy", "declarative-prompting", "prompt-compilation", "miprov2"]
+tags: ["prompt", "standard", "dspy"]
 ShowToc: true
 TocOpen: true
 cover:

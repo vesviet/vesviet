@@ -15,7 +15,6 @@ categories:
 tags:
   - "Uber H3"
   - "PostGIS"
-  - "Redis GEO"
   - "Spatial Indexing"
   - "Geospatial"
   - "Golang"

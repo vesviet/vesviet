@@ -7,7 +7,7 @@ slug: "go-synctest-concurrency"
 description: "Deterministic concurrency testing in Go 1.25/1.26 testing/synctest: fake clock advancement, goroutine bubble isolation, and flake-free distributed systems."
 categories: ["Tech Radar", "Golang", "Software Engineering", "Distributed Systems"]
 ring: "ADOPT"
-tags: ["Golang", "Go 1.25", "testing/synctest", "Concurrency", "Microservices", "Dapr", "Distributed Systems", "Core Web Vitals"]
+tags: ["Golang", "Go 1.25", "Concurrency", "Microservices", "Dapr", "Distributed Systems", "Core Web Vitals"]
 cover:
   image: "/images/posts/default-post-1.jpg"
   alt: "Tech Radar: Deterministic Concurrency Testing with Go 1.25 testing/synctest"

@@ -5,7 +5,7 @@ date: "2026-05-21T08:00:00+07:00"
 lastmod: "2026-09-08T20:00:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["vLLM", "PagedAttention", "Inference", "Python", "GPU", "Performance", "Speculative Decoding", "RadixAttention"]
+tags: ["vLLM", "PagedAttention", "Inference", "Python", "Performance", "Speculative Decoding"]
 categories: ["Engineering", "AI"]
 cover:
   image: "/images/posts/part-8-inference-optimization-vllm.jpg"

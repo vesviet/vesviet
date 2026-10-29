@@ -13,7 +13,6 @@ tags:
   - "Microservices"
   - "Modular Monolith"
   - "System Design"
-  - "Tech Debt"
   - "Software Engineering"
 description: "Why engineering teams migrate back to Go modular monoliths: eliminate the network latency tax, cut AWS costs by 70%, and enforce strict domain boundaries in Go with internal packages, zero-allocation event buses, and transactional outboxes."
 ShowToc: true

@@ -11,14 +11,11 @@ categories:
   - "IoT"
   - "Logistics"
 tags:
-  - "GPS"
   - "OSRM"
   - "GraphHopper"
   - "Kafka"
   - "Golang"
-  - "HMM"
   - "Algorithms"
-  - "GIS"
 description: "Fix urban canyon GPS multipath drift: Hidden Markov Models (HMM), Viterbi algorithm, Kafka streaming buffers, and OSRM distance matrix routing in Go."
 ShowToc: true
 TocOpen: true

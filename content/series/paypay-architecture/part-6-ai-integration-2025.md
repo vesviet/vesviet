@@ -16,7 +16,7 @@ cover:
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
 categories: ["AI", "Machine Learning", "Fintech"]
-tags: ["PayPay", "AI", "Fraud Detection", "Feast", "LLM", "RAG", "Triton", "eBPF"]
+tags: ["PayPay", "AI", "Fraud Detection", "LLM", "RAG", "eBPF"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-6-ai-integration-2025/"
 image: "/images/posts/paypay-scaling-cover.jpg"

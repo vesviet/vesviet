@@ -12,7 +12,7 @@ cover:
   alt: "Alipay Double 11 Architecture series: 544,000 TPS payment processing at extreme scale"
   relative: false
 categories: ["E-Commerce", "High Traffic", "Case Study"]
-tags: ["Alipay", "Double 11", "Scaling", "Architecture Evolution", "High Concurrency"]
+tags: ["Alipay", "Double 11", "High Concurrency"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-1-timeline/"
 mermaid: true

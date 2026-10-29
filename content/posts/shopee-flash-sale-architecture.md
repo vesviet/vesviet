@@ -11,7 +11,6 @@ categories:
   - "Architecture"
   - "E-Commerce"
 tags:
-  - "Flash Sale Architecture"
   - "Flash Sale"
   - "Redis"
   - "Rate Limiting"
@@ -470,4 +469,4 @@ Fail-Open permits requests to proceed when an upstream check degrades, relying o
 - [Replace MySQL Sharding with TiDB: Architecture Guide](/posts/mysql-scaling-sharding-tidb-architecture/) — scaling distributed write-append logs.
 - [Alipay Double 11: 544,000 TPS Architecture](/posts/alipay-double-11-architecture-tps/) — extreme transaction processing at global payment scale.
 
-{{< author-cta >}}
+{{< author-cta >}}

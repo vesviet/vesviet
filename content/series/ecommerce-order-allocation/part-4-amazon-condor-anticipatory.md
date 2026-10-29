@@ -6,7 +6,7 @@ lastmod: 2026-09-21T14:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Deconstructing Amazon CONDOR: Predictive multi-echelon anticipatory shipping, clickstream telemetry forecasting, and dynamic inventory prepositioning."
 categories: ["Series", "Logistics & Supply Chain", "System Design", "E-Commerce"]
-tags: ["Amazon CONDOR", "Anticipatory Shipping", "Machine Learning", "Supply Chain", "Kafka", "Clickstream", "Logistics"]
+tags: ["Amazon CONDOR", "Machine Learning", "Supply Chain", "Kafka", "Logistics"]
 series: ["ecommerce-order-allocation"]
 weight: 5
 canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/part-4-amazon-condor-anticipatory/"

@@ -19,7 +19,6 @@ tags:
   - "SpinKube"
   - "WebAssembly"
   - "Wasm"
-  - "WASI"
   - "Kubernetes"
   - "Golang"
   - "Rust"

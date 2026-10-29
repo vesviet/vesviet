@@ -5,7 +5,7 @@ lastmod: 2026-09-09T14:30:00+07:00
 author: "Lê Tuấn Anh"
 description: "Master network transport architectures in Go: HTTP/1.1 vs HTTP/2 vs HTTP/3 QUIC, gRPC Protobuf v3 vs FlatBuffers serialization, WebTransport, and Wasm edge components."
 categories: ["Architecture", "Networking", "Performance"]
-tags: ["Networking", "Protocols", "gRPC", "HTTP3", "QUIC", "Golang", "Performance", "Microservices"]
+tags: ["Networking", "gRPC", "HTTP3", "Golang", "Performance", "Microservices"]
 series: ["system-design"]
 weight: 12
 slug: "12-communication-protocols-microservices"

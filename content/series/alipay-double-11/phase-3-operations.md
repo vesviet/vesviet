@@ -12,7 +12,7 @@ cover:
   alt: "Alipay Double 11 Architecture series: 544,000 TPS payment processing at extreme scale"
   relative: false
 categories: ["SRE", "Operations", "High Traffic"]
-tags: ["Alipay", "Operations", "Full-Link Stress Testing", "SRE", "Automation"]
+tags: ["Alipay", "Operations", "SRE", "Automation"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/alipay-double-11/phase-3-operations/"
 mermaid: true

@@ -6,7 +6,7 @@ date: "2026-04-30T09:10:00+07:00"
 lastmod: "2026-09-08T20:30:00+07:00"
 draft: false
 series: ["magento-migration-vietnam"]
-tags: ["Magento", "Vietnam", "E-commerce", "Project Management", "Architecture", "Scoping", "Cost Model"]
+tags: ["Magento", "Vietnam", "E-commerce", "Architecture", "Cost Model"]
 description: "How to scope a Magento enterprise project: effort estimation, proposal red flags, cost matrices, and managing hidden architectural complexity."
 categories: ["Engineering", "Business"]
 ShowToc: true

@@ -16,10 +16,7 @@ tags:
   - "Golang"
   - "Go 1.26"
   - "Green Tea GC"
-  - "Garbage Collector"
-  - "CGO"
   - "Performance"
-  - "Goroutine Leak"
   - "AI Inference"
 cover:
   image: "/images/posts/go-126-green-tea-gc-cgo-performance-guide.jpg"

@@ -5,7 +5,7 @@ lastmod: 2026-09-14T12:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Comprehensive architectural masterclass on production multi-agent systems: swarm topologies, hierarchical memory, resilient tool calling via MCP, AgentOps, evals, and HITL gateways."
 categories: ["Series", "AI Infrastructure", "Distributed Systems", "Software Engineering"]
-tags: ["AI Agents", "Multi-Agent Systems", "AgentOps", "Model Context Protocol", "Memory Management", "Human-in-the-Loop", "Temporal", "Distributed Systems"]
+tags: ["AI Agents", "Multi-Agent Systems", "AgentOps", "Model Context Protocol", "Human-in-the-Loop", "Temporal", "Distributed Systems"]
 series: ["agentic-system-architecture"]
 weight: 50
 slug: "agentic-system-architecture"

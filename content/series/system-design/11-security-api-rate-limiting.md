@@ -5,7 +5,7 @@ lastmod: 2026-09-09T14:30:00+07:00
 author: "Lê Tuấn Anh"
 description: "Engineer resilient microservice security in Go: Zero Trust architecture (NIST SP 800-207), SPIFFE/SPIRE mTLS, PASETO v4 cryptographic tokens, and Redis sliding-window rate limiters."
 categories: ["Architecture", "Security", "Distributed Systems"]
-tags: ["Security", "Zero Trust", "Rate Limiting", "Golang", "SPIFFE", "PASETO", "eBPF", "Redis"]
+tags: ["Security", "Zero Trust", "Rate Limiting", "Golang", "SPIFFE", "eBPF", "Redis"]
 series: ["system-design"]
 weight: 11
 slug: "11-security-api-rate-limiting"

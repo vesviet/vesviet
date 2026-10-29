@@ -5,7 +5,7 @@ lastmod: 2026-09-14T12:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Enterprise architectural guide to Human-in-the-Loop governance: dynamic risk scoring, asynchronous durable pause state machines, and cryptographic Ed25519 authorization."
 categories: ["Series", "AI Infrastructure", "Security"]
-tags: ["Human-in-the-Loop", "Security", "Temporal", "Ed25519", "OWASP", "Distributed Systems"]
+tags: ["Human-in-the-Loop", "Security", "Temporal", "OWASP", "Distributed Systems"]
 series: ["agentic-system-architecture"]
 weight: 7
 slug: "part-6-human-in-the-loop"

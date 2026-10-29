@@ -5,7 +5,7 @@ lastmod: 2026-09-09T14:30:00+07:00
 author: "Lê Tuấn Anh"
 description: "Architecting high-throughput edge traffic distribution in Go: Layer 4 vs Layer 7 load balancing, Direct Server Return (DSR), eBPF/XDP kernel bypass, Envoy xDS control plane, and atomic token bucket rate limiting."
 categories: ["Architecture", "Networking", "High Concurrency"]
-tags: ["Load Balancing", "API Gateway", "eBPF", "XDP", "DSR", "Golang", "Rate Limiting"]
+tags: ["Load Balancing", "API Gateway", "eBPF", "Golang", "Rate Limiting"]
 series: ["system-design"]
 weight: 2
 slug: "02-load-balancing-api-gateway-go"

@@ -6,7 +6,7 @@ draft: false
 weight: 5
 description: "PromptOps production gates: golden-dataset CI with calibrated LLM-as-a-Judge, changelog forensics, one-block-change isolation, OWASP ASI 2026 posture, Dual-LLM isolation."
 categories: ["Engineering", "AI", "Prompt Standard"]
-tags: ["prompt", "standard", "promptops", "llm-as-a-judge", "golden-dataset", "owasp-asi", "agent-security"]
+tags: ["prompt", "standard", "promptops", "llm-as-a-judge", "OWASP", "agent"]
 ShowToc: true
 TocOpen: true
 cover:

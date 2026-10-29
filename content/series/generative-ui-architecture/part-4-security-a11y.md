@@ -5,7 +5,7 @@ date: "2026-05-30T12:00:00+07:00"
 lastmod: "2026-09-21T10:00:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["Generative UI", "Security", "XSS", "Prompt Injection", "Accessibility", "WCAG", "Shadow DOM", "Architecture"]
+tags: ["Generative UI", "Security", "XSS", "Prompt Injection", "Architecture"]
 categories: ["Engineering", "Security", "Frontend"]
 cover:
   image: "/images/posts/part-4-security-a11y.jpg"

@@ -9,10 +9,8 @@ tags:
   - "golang"
   - "routing"
   - "vrp"
-  - "alns"
   - "logistics"
   - "algorithms"
-  - "system-design"
   - "microservices"
 categories:
   - "Architecture"

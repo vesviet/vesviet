@@ -6,7 +6,7 @@ lastmod: 2026-09-21T14:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Deconstructing the end-to-end omnichannel order fulfillment lifecycle: OMS, WMS, and TMS boundaries, event-driven state machines, and transactional outbox patterns."
 categories: ["Series", "Software Engineering", "Logistics Architecture", "Algorithms"]
-tags: ["Order Fulfillment", "OMS", "WMS", "TMS", "Event-Driven Architecture", "Golang", "State Machine"]
+tags: ["Order Fulfillment", "WMS", "Event-Driven", "Golang", "State Machine"]
 series: ["ecommerce-order-allocation"]
 weight: 2
 canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/part-1-order-fulfillment-fundamentals/"

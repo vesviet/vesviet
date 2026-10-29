@@ -17,13 +17,9 @@ categories:
   - "Architecture"
   - "Security"
 tags:
-  - "OAuth"
-  - "Versioning"
   - "MCP"
   - "Prediction"
-  - "Meta"
   - "Architecture"
-  - "Agentic AI"
   - "API Design"
 canonicalURL: "https://tanhdev.com/posts/production-ai-apis-oauth-versioning-meta-predictions/"
 ---

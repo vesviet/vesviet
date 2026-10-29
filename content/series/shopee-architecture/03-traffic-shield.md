@@ -16,7 +16,7 @@ cover:
   alt: "Shopee Architecture series: scaling for flash sales — rate limiting, Redis, and distributed systems"
   relative: false
 categories: ["Asynchronous Processing", "SRE", "Messaging"]
-tags: ["Shopee", "Kafka", "Peak Shaving", "Rate Limiting", "Graceful Degradation", "Sentinel"]
+tags: ["Shopee", "Kafka", "Rate Limiting"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/03-traffic-shield/"
 image: "/images/posts/shopee-flash-sale-cover.jpg"

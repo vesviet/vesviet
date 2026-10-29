@@ -12,7 +12,6 @@ categories:
   - "Cloudflare"
 tags:
   - "Cloudflare Workers"
-  - "D1 Database"
   - "Serverless"
   - "E-Commerce"
   - "Durable Objects"

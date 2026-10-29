@@ -12,10 +12,6 @@ categories:
   - "Frontend"
   - "Distributed Systems"
 tags:
-  - "Mapbox"
-  - "Deck.gl"
-  - "WebGL"
-  - "WebGPU"
   - "Frontend"
   - "Golang"
 series:

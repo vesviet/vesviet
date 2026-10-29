@@ -5,7 +5,7 @@ lastmod: 2026-09-08T18:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "The grand synthesis of the AI-Driven Playbook: designing an enterprise-scale, event-driven multi-agent system in 2026, combining MCP 2.0 meshes, distributed memory architectures, and dead-lock prevention."
 categories: ["Series", "Playbook", "AI Engineering", "System Architecture"]
-tags: ["Grand Finale", "Multi-Agent", "System Architecture", "Event-Driven", "MCP 2.0", "Distributed Systems"]
+tags: ["agent", "Event-Driven", "MCP 2.0", "Distributed Systems"]
 series: ["The AI-Driven Engineer Playbook"]
 weight: 14
 slug: "part-8-ai-native-system-architecture"

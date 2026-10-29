@@ -18,7 +18,7 @@ author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/shopee-architecture/01-microservices-foundation/"
 image: "/images/posts/shopee-flash-sale-cover.jpg"
 categories: ["Architecture", "Golang", "Microservices"]
-tags: ["Shopee", "Microservices", "Golang", "gRPC", "Kitex", "Consul", "Protobuf"]
+tags: ["Shopee", "Microservices", "Golang", "gRPC", "Protobuf"]
 mermaid: true
 ---
 

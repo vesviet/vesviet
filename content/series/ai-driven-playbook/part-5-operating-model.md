@@ -5,7 +5,7 @@ lastmod: 2026-09-08T18:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Restructuring engineering organizations in 2026: transitioning from 10-person Scrum squads to 3-4 person AI-Native Pods delivering 4x velocity, mastering AI-era DORA metrics, and resolving the Junior Developer Paradox."
 categories: ["Series", "Playbook", "AI Engineering", "Engineering Management"]
-tags: ["Operating Model", "Team Topologies", "AI Pods", "DORA Metrics", "Engineering Leadership", "DevEx"]
+tags: ["DORA Metrics", "Engineering Leadership", "DevEx"]
 series: ["The AI-Driven Engineer Playbook"]
 weight: 11
 slug: "part-5-operating-model"

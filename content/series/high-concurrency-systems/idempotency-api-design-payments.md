@@ -6,7 +6,7 @@ draft: false
 series: ["high-concurrency-systems"]
 series_order: 8
 weight: 8
-tags: ["idempotency", "payments", "api design", "redis", "postgresql", "distributed systems", "financial engineering"]
+tags: ["idempotency", "payments", "api design", "redis", "postgresql", "distributed systems"]
 mermaid: true
 slug: "idempotency-api-design-payments"
 description: "Designing battle-tested payment idempotency APIs: IETF Idempotency-Key headers, three-phase state machines, SHA-256 fingerprinting, Redis leases, and SQL unique constraints."

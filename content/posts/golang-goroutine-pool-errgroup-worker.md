@@ -13,9 +13,7 @@ categories:
 tags:
   - "Go"
   - "Goroutine"
-  - "errgroup"
   - "Concurrency"
-  - "Worker Pool"
   - "Backpressure"
   - "Production"
 description: "Master Golang goroutine pool patterns using errgroup, semaphores, and worker pools. Prevent memory spikes and OOM crashes under high concurrency."

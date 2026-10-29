@@ -7,7 +7,7 @@ slug: "owasp-nist-ai-agent-gateway"
 ring: "TRIAL"
 description: "Hardening AI agents in Kubernetes using NIST AI 600-1 and OWASP ASI01–ASI10 (2026) standards via Envoy Gateway CEL guardrails, SPIFFE, and Tetragon eBPF."
 categories: ["Tech Radar", "Cloud Native", "AI Security", "Kubernetes"]
-tags: ["NIST AI 600-1", "OWASP ASI Top 10", "Agent Gateway", "Kubernetes", "Envoy Gateway", "CEL", "SPIFFE/SPIRE", "Cilium Tetragon", "eBPF", "Zero Trust"]
+tags: ["Kubernetes", "Envoy Gateway", "SPIFFE/SPIRE", "Cilium Tetragon", "eBPF", "Zero Trust"]
 cover:
   image: "/images/posts/default-post-1.jpg"
   alt: "Tech Radar: NIST AI 600-1 & OWASP ASI01–ASI10 — Hardening Enterprise Agent Gateways in Kubernetes"

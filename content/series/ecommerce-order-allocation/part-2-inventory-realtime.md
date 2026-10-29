@@ -6,7 +6,7 @@ lastmod: 2026-09-21T14:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "High-concurrency distributed inventory architecture: atomic reservations, Redis Lua token buckets, PostgreSQL advisory locking, sharded virtual inventory counters, and Merkle reconciliation."
 categories: ["Series", "Software Engineering", "Logistics Architecture", "Algorithms"]
-tags: ["Inventory Management", "Redis", "PostgreSQL", "Concurrency", "Distributed Systems", "Golang", "Supply Chain"]
+tags: ["Redis", "PostgreSQL", "Concurrency", "Distributed Systems", "Golang", "Supply Chain"]
 series: ["ecommerce-order-allocation"]
 weight: 3
 canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/part-2-inventory-realtime/"

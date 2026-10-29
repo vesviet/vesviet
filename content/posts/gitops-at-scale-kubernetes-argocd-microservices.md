@@ -6,7 +6,7 @@ date: "2026-04-12T07:00:00+07:00"
 lastmod: "2026-07-03T00:00:00+07:00"
 draft: false
 mermaid: true
-tags: ["GitOps", "Kubernetes", "ArgoCD", "Kustomize", "DevOps", "Microservices"]
+tags: ["GitOps", "Kubernetes", "ArgoCD", "DevOps", "Microservices"]
 description: "Why kubectl apply is dangerous. Learn how to automate a 21-service Go platform using ArgoCD App-of-Apps, Kustomize, and git revert rollbacks."
 categories: ["DevOps", "Engineering"]
 ShowToc: true

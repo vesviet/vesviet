@@ -6,7 +6,7 @@ draft: false
 series: ["high-concurrency-systems"]
 series_order: 3
 weight: 3
-tags: ["golang", "caching", "redis", "singleflight", "bloom filter", "xfetch", "architecture"]
+tags: ["golang", "caching", "redis", "singleflight", "bloom filter", "architecture"]
 categories: ["High Concurrency", "Caching"]
 mermaid: true
 slug: "caching-vulnerabilities-penetration-breakdown-avalanche"

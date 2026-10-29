@@ -7,7 +7,7 @@ draft: false
 description: "Core banking security architecture: Hardware Security Modules (HSM), ANSI X9.8 PIN blocks, field-level encryption, PCI-DSS v4.0, and tamper-evident audit trails."
 weight: 7
 categories: ["FinTech", "Security", "Compliance"]
-tags: ["PCI-DSS", "Security", "Audit Trail", "Cryptography", "Golang", "Core Banking", "HSM"]
+tags: ["PCI-DSS", "Security", "Audit Trail", "Golang", "Core Banking", "HSM"]
 cover:
   image: "/images/posts/part-6-security-compliance-audit.jpg"
   alt: "Core Banking Developer Roadmap series: architecture patterns, fintech microservices, and Go"

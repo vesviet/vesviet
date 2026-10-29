@@ -6,7 +6,7 @@ lastmod: 2026-09-21T14:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Intralogistics picker route optimization: Rectilinear Travelling Salesperson Problem (TSP), S-Shape heuristics, 2-Opt local search, and the full series capstone architecture."
 categories: ["Series", "Algorithms", "Logistics & Supply Chain", "Optimization", "Golang"]
-tags: ["Picker Routing", "TSP", "S-Shape", "Warehouse Optimization", "Intralogistics", "Algorithms", "Go"]
+tags: ["Algorithms", "Go"]
 series: ["ecommerce-order-allocation"]
 weight: 11
 canonicalURL: "https://tanhdev.com/series/ecommerce-order-allocation/part-10-warehouse-picker-routing-optimization/"

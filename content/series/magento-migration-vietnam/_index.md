@@ -9,7 +9,7 @@ TocOpen: true
 weight: 200
 slug: "magento-migration-vietnam"
 categories: ["Software Engineering", "Engineering Management"]
-tags: ["Magento", "Microservices", "Golang", "Vietnam", "Migration", "Ecommerce", "Cost Model", "Remote Team"]
+tags: ["Magento", "Microservices", "Golang", "Vietnam", "Migration", "Cost Model", "Remote Team"]
 cover:
   image: "/images/posts/remote-team-vietnam-migration-cover.jpg"
   alt: "E-Commerce Re-Architecture in Vietnam: Magento to Go Microservices"

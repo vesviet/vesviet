@@ -15,8 +15,6 @@ tags:
   - "Golang"
   - "Protobuf"
   - "Microservices"
-  - "TLS"
-  - "gRPC Streaming"
 ShowToc: true
 TocOpen: true
 cover:

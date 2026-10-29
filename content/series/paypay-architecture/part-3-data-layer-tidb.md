@@ -16,7 +16,7 @@ cover:
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
 categories: ["Database", "Distributed Systems", "NewSQL"]
-tags: ["PayPay", "TiDB", "TiKV", "AWS Aurora", "Multi-Raft", "NewSQL", "HTAP"]
+tags: ["PayPay", "TiDB", "TiKV", "Multi-Raft", "NewSQL", "HTAP"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-3-data-layer-tidb/"
 image: "/images/posts/paypay-scaling-cover.jpg"

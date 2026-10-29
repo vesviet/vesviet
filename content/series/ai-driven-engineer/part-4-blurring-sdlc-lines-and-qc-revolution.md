@@ -5,7 +5,7 @@ date: "2026-05-12T08:00:00+07:00"
 lastmod: "2026-09-29T08:00:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["SDLC", "Quality Assurance", "Testing", "PromptOps", "CI/CD", "Mutation Testing", "DevOps", "Semgrep"]
+tags: ["SDLC", "Testing", "PromptOps", "CI/CD", "Mutation Testing", "DevOps", "Semgrep"]
 categories: ["Engineering"]
 cover:
   image: "/images/posts/part-4-blurring-sdlc-lines-and-qc-revolution.jpg"

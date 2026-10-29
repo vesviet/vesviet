@@ -5,7 +5,7 @@ lastmod: 2026-09-08T18:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Designing and deploying a production-grade enterprise AI engineering stack in 2026: multi-tenant LiteLLM Gateways, Redis Semantic Caching, Model Context Protocol (MCP 2.0), and local quantized LLMs on Apple Silicon & on-premise GPUs."
 categories: ["Series", "Playbook", "AI Engineering", "Infrastructure"]
-tags: ["AI Stack", "LiteLLM", "Redis", "Semantic Cache", "MCP 2.0", "Ollama", "OpenTelemetry", "FinOps"]
+tags: ["LiteLLM", "Redis", "Semantic Cache", "MCP 2.0", "OpenTelemetry", "FinOps"]
 series: ["The AI-Driven Engineer Playbook"]
 weight: 4
 slug: "part-2-modern-ai-engineering-stack"

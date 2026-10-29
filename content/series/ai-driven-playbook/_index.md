@@ -5,7 +5,7 @@ lastmod: 2026-09-08T18:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "The definitive enterprise engineering playbook for transitioning software organizations to an AI-Native SDLC in 2026: from Context Engineering (.cursor/rules mdc, AGENTS.md) and Private AI Gateways (LiteLLM) to MCP 2.0 Distributed Mesh, Autonomous QA, and OpenTelemetry GenAI Observability."
 categories: ["Series", "Playbook", "AI Engineering", "Architecture"]
-tags: ["AI", "Enterprise Architecture", "SDLC", "CTO", "Tech Lead", "MCP", "OpenTelemetry", "Context Engineering", "DevSecOps"]
+tags: ["AI", "Enterprise Architecture", "SDLC", "CTO", "MCP", "OpenTelemetry", "Context Engineering", "DevSecOps"]
 series: ["The AI-Driven Engineer Playbook"]
 weight: 20
 slug: "ai-driven-playbook"

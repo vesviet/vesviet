@@ -36,9 +36,6 @@ categories:
 tags:
   - "OpenTelemetry"
   - "Golang"
-  - "AI Observability"
-  - "LLM Tracing"
-  - "Token Attribution"
   - "Prometheus"
   - "Langfuse"
 ShowToc: true

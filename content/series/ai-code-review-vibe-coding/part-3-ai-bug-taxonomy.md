@@ -5,7 +5,7 @@ lastmod: 2026-09-14T12:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "An exhaustive empirical catalog of defects unique to LLM code generation: subtle concurrency races, boundary failures, slopsquatting, and tautological unit tests."
 categories: ["Series", "Software Engineering", "AI", "Code Quality", "Security"]
-tags: ["AI Bug Taxonomy", "Concurrency Races", "Slopsquatting", "Mutation Testing", "Semgrep", "Static Analysis", "Code Review"]
+tags: ["Slopsquatting", "Mutation Testing", "Semgrep", "Static Analysis", "Code Review"]
 series: ["ai-code-review-vibe-coding"]
 weight: 4
 slug: "part-3-ai-bug-taxonomy"

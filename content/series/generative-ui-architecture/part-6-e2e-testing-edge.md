@@ -5,7 +5,7 @@ date: "2026-05-30T12:00:00+07:00"
 lastmod: "2026-09-21T10:00:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["Generative UI", "Testing", "Playwright", "Edge Caching", "Cloudflare Workers", "Architecture"]
+tags: ["Generative UI", "Testing", "Playwright", "Cloudflare Workers", "Architecture"]
 categories: ["Engineering", "Frontend", "Architecture"]
 cover:
   image: "/images/posts/part-6-e2e-testing-edge.jpg"

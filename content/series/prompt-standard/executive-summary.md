@@ -7,7 +7,7 @@ draft: false
 weight: 1
 description: "Prompt Standard: the 2026-2027 engineering case for standardized prompt assets — context-rot evidence, OWASP LLM01 risk, the 8-block anatomy, and PromptOps CI/CD gates."
 categories: ["Engineering", "AI", "Prompt Standard"]
-tags: ["Prompt Standard", "Context Engineering", "Context Rot", "PromptOps", "MCP", "DSPy", "OWASP", "LLM Security"]
+tags: ["Prompt Standard", "Context Engineering", "Context Rot", "PromptOps", "MCP", "DSPy", "OWASP"]
 ShowToc: true
 TocOpen: true
 mermaid: true

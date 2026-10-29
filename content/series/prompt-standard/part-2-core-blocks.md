@@ -6,7 +6,7 @@ draft: false
 weight: 3
 description: "Prompt Standard 8-block spec: Identity, Mission, Scope, Context, Tool Policy, Workflow, Output Contract, Fallback — with measured anchors and XML production framing."
 categories: ["Engineering", "AI", "Prompt Standard"]
-tags: ["prompt", "standard", "prompt-blocks", "context-engineering", "agent", "xml-tags", "tool-policy"]
+tags: ["prompt", "standard", "context-engineering", "agent"]
 ShowToc: true
 TocOpen: true
 cover:

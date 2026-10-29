@@ -5,7 +5,7 @@ date: "2026-05-17T13:00:00+07:00"
 lastmod: "2026-09-29T08:00:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["GraphRAG", "Long Context", "LLM Cost", "Benchmark", "Architecture", "Python", "Go", "LanceDB", "Neo4j"]
+tags: ["GraphRAG", "Architecture", "Python", "Go", "LanceDB", "Neo4j"]
 categories: ["Engineering", "AI"]
 cover:
   image: "/images/posts/part-1-agentic-graphrag-long-context.jpg"

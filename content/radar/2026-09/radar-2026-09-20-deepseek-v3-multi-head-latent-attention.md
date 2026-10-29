@@ -7,7 +7,7 @@ slug: "deepseek-v3-multi-head-latent-attention"
 description: "In-depth architectural analysis of DeepSeek-V3 Multi-Head Latent Attention (MLA): low-rank KV projection, 75% memory footprint reduction, decoupled RoPE, and high-throughput inference serving."
 categories: ["Tech Radar", "AI Infrastructure", "LLMOps", "Distributed Systems"]
 ring: "ADOPT"
-tags: ["DeepSeek", "Multi-Head Latent Attention", "MLA", "KV Cache", "Inference Optimization", "vLLM", "GPU Architecture"]
+tags: ["DeepSeek", "Multi-Head Latent Attention", "KV Cache", "Inference Optimization", "vLLM"]
 cover:
   image: "/images/posts/default-post-1.jpg"
   alt: "Tech Radar: DeepSeek-V3 Multi-Head Latent Attention (MLA) Architecture"

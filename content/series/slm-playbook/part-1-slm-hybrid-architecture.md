@@ -5,7 +5,7 @@ lastmod: 2026-09-09T14:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Architecting a production two-tier hybrid model routing layer: fast local SLM inference on vLLM with automated fallback escalation to frontier cloud APIs."
 categories: ["Series", "AI Infrastructure", "LLMOps"]
-tags: ["vLLM", "Hybrid AI", "Model Routing", "SLM", "Cloud Native", "PagedAttention", "FinOps"]
+tags: ["vLLM", "Hybrid AI", "SLM", "Cloud Native", "PagedAttention", "FinOps"]
 series: ["slm-playbook"]
 weight: 3
 slug: "part-1-slm-hybrid-architecture"

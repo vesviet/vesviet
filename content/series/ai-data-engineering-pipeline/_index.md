@@ -5,7 +5,7 @@ date: "2026-05-17T12:00:00+07:00"
 lastmod: "2026-09-08T20:00:00+07:00"
 draft: false
 weight: 40
-tags: ["Data Engineering", "GraphRAG", "Vector Lakehouse", "LanceDB", "Apache Iceberg", "ColPali", "RAG Pipeline", "vLLM"]
+tags: ["Data Engineering", "GraphRAG", "LanceDB", "Apache Iceberg", "ColPali", "RAG Pipeline", "vLLM"]
 description: "Masterclass series on enterprise AI data engineering: GraphRAG, Zero-Copy Vector Lakehouses (LanceDB + Iceberg v3), ColPali multimodal ingestion, Late Chunking, streaming CDC, and automated continuous evals."
 categories: ["Data Engineering", "AI Architecture"]
 ShowToc: true

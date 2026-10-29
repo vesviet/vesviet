@@ -14,10 +14,7 @@ tags:
   - "GraphHopper"
   - "OpenStreetMap"
   - "Kubernetes"
-  - "OSM"
   - "Routing"
-  - "Self-Hosting"
-  - "JVM"
 description: "Step-by-step guide to deploying GraphHopper on Kubernetes with OpenStreetMap data: Docker image, PVC for OSM PBF files, RAM tuning, and health probes."
 ShowToc: true
 TocOpen: true

@@ -5,7 +5,7 @@ date: "2026-06-12T08:00:00+07:00"
 lastmod: "2026-09-11T08:45:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["Data Ingestion", "Chunking", "Debezium", "Kafka", "Qdrant", "CDC", "E-commerce", "Golang"]
+tags: ["Data Ingestion", "Debezium", "Kafka", "Qdrant", "CDC", "E-commerce", "Golang"]
 categories: ["Engineering", "AI", "Data Engineering"]
 cover:
   image: "/images/posts/part-2-ingestion-chunking.jpg"

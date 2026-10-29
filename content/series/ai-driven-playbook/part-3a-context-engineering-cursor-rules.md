@@ -5,7 +5,7 @@ lastmod: 2026-09-08T18:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Mastering advanced Context Engineering in 2026: structuring machine-actionable .cursor/rules/*.mdc files, AGENTS.md enterprise specifications, prompt caching economics, and real-time MCP 2.0 tool execution."
 categories: ["Series", "Playbook", "AI Engineering", "Context Engineering"]
-tags: ["Cursor", "Context Engineering", "AGENTS.md", "Cursor Rules", "MDC", "Prompt Caching", "DevEx"]
+tags: ["Cursor", "Context Engineering", "AGENTS.md", "Cursor Rules", "DevEx"]
 series: ["The AI-Driven Engineer Playbook"]
 weight: 5
 slug: "part-3a-context-engineering-cursor-rules"

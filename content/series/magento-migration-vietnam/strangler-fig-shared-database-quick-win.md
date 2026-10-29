@@ -7,7 +7,7 @@ lastmod: "2026-09-08T20:30:00+07:00"
 author: "Lê Tuấn Anh"
 draft: false
 series: ["magento-migration-vietnam"]
-tags: ["Magento", "Strangler Fig", "Shared Database", "CDC", "Debezium", "Event Bus", "Kafka", "Outbox Pattern", "Migration", "Architecture", "Golang"]
+tags: ["Magento", "Strangler Fig", "CDC", "Debezium", "Kafka", "Outbox Pattern", "Migration", "Architecture", "Golang"]
 categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true

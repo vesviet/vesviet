@@ -6,7 +6,7 @@ draft: false
 series: ["high-concurrency-systems"]
 series_order: 4
 weight: 4
-tags: ["golang", "rate limiting", "redis", "gcra", "traffic shaping", "algorithms", "microservices"]
+tags: ["golang", "rate limiting", "redis", "algorithms", "microservices"]
 categories: ["High Concurrency", "Rate Limiting"]
 mermaid: true
 slug: "distributed-rate-limiting-redis-gcra"

@@ -6,7 +6,7 @@ draft: false
 weight: 7
 description: "Why static prompt engineering failed: measured context-rot evidence, deterministic token budgeting, KV prefix cache alignment, and the RAG-MCP-assembly pillars."
 categories: ["Engineering", "AI", "Prompt Standard"]
-tags: ["prompt", "standard", "context-engineering", "prompt-caching", "agent"]
+tags: ["prompt", "standard", "context-engineering", "agent"]
 ShowToc: true
 TocOpen: true
 cover:

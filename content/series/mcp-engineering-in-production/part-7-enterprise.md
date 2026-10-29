@@ -5,7 +5,7 @@ date: "2026-06-08T12:00:00+07:00"
 lastmod: "2026-09-09T14:30:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["Enterprise MCP", "Multi-Tenancy", "Governance", "Kubernetes", "Architecture", "Registry", "ArgoCD", "OPA"]
+tags: ["Kubernetes", "Architecture", "ArgoCD", "OPA"]
 categories: ["Engineering", "Strategy"]
 cover:
   image: "/images/posts/part-7-enterprise.jpg"

@@ -11,12 +11,9 @@ categories:
   - "E-Commerce"
 tags:
   - "Magento"
-  - "AWS RDS"
   - "MySQL"
   - "MariaDB"
   - "Technical Debt"
-  - "OpenSearch"
-  - "PHP 8.4"
   - "ProxySQL"
 description: "A deep dive into the architectural risks, ProxySQL topologies, and the Leapfrog strategy to upgrade Magento 2.4.5 directly to 2.4.8 LTS before AWS MySQL 8.0 EOL."
 ShowToc: true

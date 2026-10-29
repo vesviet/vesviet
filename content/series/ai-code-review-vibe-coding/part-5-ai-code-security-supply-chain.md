@@ -5,7 +5,7 @@ lastmod: 2026-09-14T12:00:00+07:00
 author: "Lê Tuấn Anh"
 description: "Comprehensive guide to securing AI-generated code and developer pipelines: defending against indirect prompt injection, poison tokens, slopsquatting, and copyleft licensing risks."
 categories: ["Series", "Software Engineering", "AI", "Security", "Supply Chain", "DevSecOps"]
-tags: ["AI Security", "Supply Chain Security", "Prompt Injection", "Slopsquatting", "OWASP LLM", "Zero-Trust CI", "DevSecOps"]
+tags: ["AI Security", "Prompt Injection", "Slopsquatting", "OWASP LLM", "Zero-Trust", "DevSecOps"]
 series: ["ai-code-review-vibe-coding"]
 weight: 6
 slug: "part-5-ai-code-security-supply-chain"

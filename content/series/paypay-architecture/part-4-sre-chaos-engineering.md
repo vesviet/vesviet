@@ -16,7 +16,7 @@ cover:
   alt: "PayPay Architecture series: scaling for planet-scale mobile payment campaigns in Japan"
   relative: false
 categories: ["SRE", "Resilience", "DevOps"]
-tags: ["PayPay", "Chaos Engineering", "Chaos Mesh", "SRE", "Kubernetes", "Disaster Recovery", "Circuit Breaker"]
+tags: ["PayPay", "Chaos Engineering", "Chaos Mesh", "SRE", "Kubernetes", "Circuit Breaker"]
 author: "Lê Tuấn Anh"
 canonicalURL: "https://tanhdev.com/series/paypay-architecture/part-4-sre-chaos-engineering/"
 image: "/images/posts/paypay-scaling-cover.jpg"

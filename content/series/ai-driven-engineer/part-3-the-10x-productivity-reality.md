@@ -5,7 +5,7 @@ date: "2026-05-11T12:00:00+07:00"
 lastmod: "2026-09-29T08:00:00+07:00"
 draft: false
 author: "Lê Tuấn Anh"
-tags: ["Productivity", "AI", "Metrics", "Python", "Software Management", "Strategy", "DORA", "Code Review"]
+tags: ["AI", "Python", "Strategy", "DORA", "Code Review"]
 categories: ["Engineering"]
 cover:
   image: "/images/posts/part-3-the-10x-productivity-reality.jpg"

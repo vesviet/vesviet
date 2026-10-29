@@ -7,7 +7,7 @@ slug: "laravel-vs-golang-when-to-add-features"
 author: "Lê Tuấn Anh"
 draft: false
 series: ["magento-migration-vietnam"]
-tags: ["Laravel", "Golang", "PHP", "Microservices", "Architecture", "Migration", "Performance", "Vietnam", "Decision Framework"]
+tags: ["Laravel", "Golang", "PHP", "Microservices", "Architecture", "Migration", "Performance", "Vietnam"]
 categories: ["Architecture", "Engineering", "Strategy"]
 ShowToc: true
 TocOpen: true

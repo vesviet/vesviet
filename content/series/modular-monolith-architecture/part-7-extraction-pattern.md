@@ -4,7 +4,7 @@ date: "2026-07-03T10:00:00+07:00"
 lastmod: "2026-07-03T14:59:00+07:00"
 description: "Learn exactly when to extract a module from a Monolith into a Microservice through real-world engineering lessons from Sentry, GitLab, and Shopify."
 slug: "extraction-pattern-when-to-extract-microservices"
-tags: ["Microservices", "Extraction", "Sentry", "GitLab", "Modular Monolith", "Architecture"]
+tags: ["Microservices", "Modular Monolith", "Architecture"]
 categories: ["Modular Monolith", "Architecture"]
 cover:
   image: "/images/posts/golang-microservices-cover.jpg"

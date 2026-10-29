@@ -9,7 +9,7 @@ weight: 3
 canonicalURL: "https://tanhdev.com/series/architectural-tradeoffs-showdowns/03-primary-key-showdown-uuidv7-vs-snowflake-vs-bigint/"
 ShowToc: true
 TocOpen: true
-tags: ["Database", "PostgreSQL", "MySQL", "UUIDv7", "Snowflake ID", "Distributed Systems", "Architecture", "High Concurrency", "FinOps", "Golang", "B-Tree"]
+tags: ["Database", "PostgreSQL", "MySQL", "Distributed Systems", "Architecture", "High Concurrency", "FinOps", "Golang"]
 categories: ["Engineering", "Architecture", "Backend", "Database"]
 author: "Lê Tuấn Anh"
 draft: false

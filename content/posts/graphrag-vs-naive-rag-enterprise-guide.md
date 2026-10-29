@@ -13,11 +13,8 @@ categories:
 tags:
   - "GraphRAG"
   - "RAG"
-  - "LlamaIndex"
-  - "Knowledge Graph"
   - "Enterprise AI"
   - "Vector Database"
-  - "Streaming CDC"
 description: "Compare Naive RAG with GraphRAG for enterprise AI pipelines: knowledge graphs, LlamaIndex, chunking, streaming CDC, and security controls for dynamic data."
 ShowToc: true
 TocOpen: true
