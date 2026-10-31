@@ -5,7 +5,7 @@ author: "Lê Tuấn Anh"
 date: "2026-10-31T08:00:00+07:00"
 lastmod: "2026-10-31T08:00:00+07:00"
 draft: false
-description: "Deep dive into architecting enterprise agent skills packs: 4-layer prompt caching, A2A 1.0 protocols, 60 JSON contracts, fail-closed policy engines, and OWASP ASI01-10 governance."
+description: "Enterprise Agent Skills Pack v5.7.2 architecture: 4-layer KV prompt caching, A2A 1.0 JSON-RPC, 60 JSON Schema contracts, and fail-closed OWASP ASI01-10."
 ShowToc: true
 TocOpen: true
 mermaid: true
@@ -25,6 +25,8 @@ cover:
 ---
 
 ## 1. The Context Engineering Paradigm Shift — Moving Beyond Ad-Hoc Prompts
+
+> **BLUF:** Monolithic system prompts exceeding 32,000 tokens trigger severe Context Rot, degrading multi-needle reasoning accuracy by 34% and invalidating transformer KV caches on every conversational turn. Decomposing prompt estates into a layered, contract-governed architecture is mandatory for deterministic enterprise multi-agent operations.
 
 The software industry has crossed the chasm from experimental "vibe coding" with conversational AI chatbots to orchestrating autonomous, production-grade agent swarms. In early engineering iterations, teams routinely attempted to build complex systems by stuffing monolithic system prompts with dozens of disparate instructions, business rules, API schemas, and formatting constraints into a single window. The result was predictable: severe context degradation, erratic non-deterministic behavior, runaway token expenditure, and frequent production outages.
 
@@ -55,6 +57,8 @@ The `@vesviet/agent-skills` v5.7.2 architecture represents this production stand
 ---
 
 ## 2. 4-Layer Prompt Stack & KV Cache Economics
+
+> **BLUF:** Isolating Role Identity (L1) and Corporate Invariants (L2) into an immutable 18,000-token Static System Prefix unlocks radix-tree KV prefix caching in GPU VRAM—achieving >85% cache hit rates, slashing monthly inference expenditure by 76.5% (from \$86,400 to \$20,304), and cutting Time-To-First-Token (TTFT) latency by 80%.
 
 The foundational pillar of deterministic agent engineering is strict vertical segregation of concerns. In `@vesviet/agent-skills`, the prompt estate is decoupled into a 4-layer hierarchical stack designed around the exact physical boundaries of modern transformer KV cache architectures:
 
@@ -98,7 +102,7 @@ flowchart TD
 
 4. **Layer 4: Domain Skills (L4)**
    - *Scope:* Procedural step-by-step execution guides, domain-specific algorithms, CLI command sequences, and diagnostic heuristics.
-   - *Ownership:* Domain Specialists (e.g., Database Administrator, Performance Engineer, Security Auditor).
+   - *Ownership:* Domain Specialists (e.g., `@data-engineer`, `@system-engineer`, `@security-engineer`).
    - *Mutation Cadence:* Continuous. Loaded Just-In-Time (JIT) into the context window only when the active task explicitly demands that specific capability.
    - *Cache Property:* Ephemeral tail block. Unloaded immediately upon task completion to preserve working memory.
 
@@ -127,6 +131,8 @@ This represents an immediate **76.5% reduction in token expenditure**, slashing 
 
 ## 3. 39 Role-Skill Toolboxes — Eliminating Hallucinations with Boundary Locks
 
+> **BLUF:** Partitioning 184 skills across 39 principal engineering roles into disjoint Primary (direct execution) and Supporting (mandatory A2A delegation) sets—enforced at runtime by four declarative Boundary Locks—eliminates capability bleed and unauthorized infrastructure mutations.
+
 A frequent failure mode in autonomous multi-agent systems is "capability bleed" or role drift. When an agent configured as a frontend engineer encounters an infrastructure bottleneck, an unconstrained prompt will often prompt the model to hallucinate custom Terraform configurations or attempt to directly modify production Kubernetes manifests, despite lacking the specialized knowledge and safety context of a platform engineer.
 
 To prevent capability bleed, `@vesviet/agent-skills` establishes a strict mathematical taxonomy across **39 specialized principal engineering roles**:
@@ -138,13 +144,13 @@ To prevent capability bleed, `@vesviet/agent-skills` establishes a strict mathem
 |  [Core Engineering]       [Platform & Infra]      [Data & Architecture]       |
 |  - @backend-developer     - @devops-engineer      - @solution-architect       |
 |  - @frontend-developer    - @security-engineer    - @technical-architect      |
-|  - @qa-engineer           - @cloud-architect      - @database-administrator   |
-|  - @fullstack-developer   - @site-reliability     - @data-engineer            |
+|  - @qa-engineer           - @aws-engineer         - @system-engineer          |
+|  - @mobile-engineer       - @cloudflare-engineer  - @data-engineer            |
 |                                                                               |
 |  [Agentic & Discovery]    [Commerce & Domain]     [Audit & Governance]        |
-|  - @agent-coordinator     - @ecommerce-specialist - @compliance-auditor       |
-|  - @discovery-engineer    - @payment-integrator   - @legal-counsel            |
-|  - @context-manager       - @catalog-manager      - @security-auditor         |
+|  - @agent-coordinator     - @ecommerce-engineer   - @reviewer                 |
+|  - @ai-systems-engineer   - @mmo-engineer         - @vietnam-legal-counsel    |
+|  - @prompt-engineer       - @game-developer       - @sdet                     |
 +-------------------------------------------------------------------------------+
 ```
 
@@ -187,11 +193,13 @@ To enforce this capability matrix at runtime, the system implements a declarativ
 +-------------------------------------------------------------------------------+
 ```
 
-If `@frontend-developer` attempts to execute `optimize-postgres` or invoke raw SQL migration tooling, the `SKILL TOOLBOX LOCK` intercepts the request before tool execution. The agent is immediately provided with an error envelope containing the exact delegation path to `@backend-developer` or `@database-administrator`.
+If `@frontend-developer` attempts to execute `optimize-postgres` or invoke raw SQL migration tooling, the `SKILL TOOLBOX LOCK` intercepts the request before tool execution. The agent is immediately provided with an error envelope containing the exact delegation path to `@backend-developer` or `@data-engineer`.
 
 ---
 
 ## 4. A2A 1.0 Protocol & 60 JSON Schema Contracts
+
+> **BLUF:** Replacing unstructured natural-language handoffs with the A2A 1.0 protocol over JSON-RPC 2.0, Server-Sent Events (SSE), machine-readable Agent Cards (`/.well-known/agent-registry.json`), and 60 JSON Schema Draft 2020-12 contracts prevents semantic drift and cascading swarm failures.
 
 When building multi-agent systems, human-readable natural language handoffs ("I finished the endpoint, please test it") are the single largest source of semantic ambiguity and cascading failure. Different agents interpret free-form instructions with varying assumptions, dropping critical edge cases, schema versions, and execution parameters.
 
@@ -268,6 +276,8 @@ If an implementation output fails schema validation (e.g., missing verification 
 ---
 
 ## 5. Production Code Realism — Go 1.25+ & Python Implementation
+
+> **BLUF:** Production-grade reference implementations in Go 1.25+ (SSE streaming JSON-RPC 2.0 server with bounded `context.WithTimeout` lifecycle management) and Python 3.13 / Pydantic v2 (Fail-Closed Policy Engine emitting OCSF 99001 telemetry) enforce deterministic runtime invariants.
 
 To demonstrate the concrete engineering reality of the `@vesviet/agent-skills` pack, this section presents production implementations of the core A2A JSON-RPC 2.0 streaming handler and the Fail-Closed Policy Enforcement Engine. These snippets are extracted directly from production repositories and contain zero simulated abstractions, synthetic stubs, or placeholder logic.
 
@@ -647,6 +657,8 @@ additionalProperties: false
 
 ## 6. Zero-Trust Policy Engine & OWASP ASI01–10 Security
 
+> **BLUF:** Every agent tool invocation is governed by `action-boundaries.yaml` (39 roles × 46 action verbs), 5-tier PII sensitivity rules (`data-classification.yaml`), and a 4-tier container isolation hierarchy (WASI, gVisor, Firecracker MicroVM, Cloud Sandbox) to neutralize all ten OWASP ASI01–ASI10 threat vectors.
+
 When autonomous agents are granted shell access and file editing tools, perimeter defenses alone are insufficient. Enterprise security requires treating every LLM generation as fundamentally untrusted, subjecting every tool call and file mutation to **Continuous Runtime Policy Verification**.
 
 ```mermaid
@@ -715,6 +727,8 @@ The architecture directly mitigates all ten attack vectors identified in the **O
 
 ## 7. 8 IDE Adapters & 19 SARIF CI Validators
 
+> **BLUF:** A Single-Source-of-Truth transpiler maps `core/` assets across 8 IDE adapters (Antigravity, Claude Code, Cursor, Codex, Kiro, Kilo, Copilot, Windsurf) under 9 mandatory parity groups, gated on every commit by 19 parallel validators emitting SARIF 2.1.0 reports.
+
 A persistent friction point in enterprise AI adoption is the tooling fragmentation among software engineers. Different developers prefer different IDEs and AI coding assistants: some utilize Google Antigravity or Claude Code, while others work in Cursor, OpenAI Codex, Kiro, Kilo Code, VS Code Copilot, or Windsurf. If an enterprise attempts to maintain separate configuration prompts for each IDE, the prompt estate rapidly suffers from configuration drift and security divergence.
 
 `@vesviet/agent-skills` resolves this through a **Single-Source-of-Truth Transpiler Architecture**. All roles, rules, workflows, and skills are authored once in canonical markdown and YAML formats under `core/`. A suite of adapters maps these canonical assets into native IDE configuration files:
@@ -761,25 +775,25 @@ To protect the integrity of the pack, every commit to the repository is evaluate
 +-------------------------------------------------------------------------------+
 |                       19 SARIF CI VALIDATOR GATES                             |
 |                                                                               |
-|   1. validate-rules.py          - Validates rule syntax & parity groups       |
-|   2. validate-roles.py          - Verifies role boundaries & skill mappings   |
-|   3. validate-skills.py         - Inspects skill frontmatter & scripts        |
-|   4. validate-workflows.py      - Enforces checklist & state machine schemas  |
-|   5. validate-packs.py          - Validates modular pack configurations       |
-|   6. validate-schemas.py        - Asserts Draft 2020-12 JSON Schema compliance|
-|   7. validate-policies.py       - Evaluates action-boundaries.yaml integrity  |
-|   8. validate-adapters.py       - Verifies 8 IDE adapters for 9 parity groups |
-|   9. validate-a2a.py            - Checks A2A agent card registry syntax       |
-|  10. validate-anchors.py        - Asserts link integrity across documentation |
-|  11. validate-toc.py            - Verifies table of contents synchronization  |
-|  12. validate-tokens.py         - Audits context token budgets across files   |
-|  13. validate-security.py       - Scans for secrets, PII, and unsafe regex    |
-|  14. validate-licenses.py       - Validates open-source license attribution   |
-|  15. validate-citations.py      - Audits technical citations and references   |
-|  16. validate-diagrams.py       - Validates Mermaid syntax and diagram types  |
-|  17. validate-jsonld.py         - Checks Schema.org JSON-LD structured data   |
-|  18. validate-sandbox.py        - Asserts container isolation specs           |
-|  19. validate-parity.py         - Verifies bitwise twin parity across repos   |
+|   1. validate-rules.py              - Validates rule syntax & parity groups   |
+|   2. validate-skills.py             - Inspects skill frontmatter & scripts    |
+|   3. validate-roles.py              - Verifies role boundaries & skill maps   |
+|   4. validate-workflows.py          - Enforces checklist & workflow schemas   |
+|   5. validate-packs.py              - Validates modular pack configurations   |
+|   6. validate-overlays.py           - Verifies integrity across 8 overlays    |
+|   7. validate-2026-compliance.py    - Audits 8 IDE adapters & 9 parity groups |
+|   8. validate-contracts.py          - Asserts 60 Draft 2020-12 JSON Schemas   |
+|   9. validate-a2a-compliance.py     - Validates A2A 1.0 RPC & SSE envelopes   |
+|  10. validate-agent-cards.py        - Checks A2A agent card registry syntax   |
+|  11. validate-standardization.py    - Enforces directory & naming conventions |
+|  12. validate-version-sync.py       - Asserts v5.7.2 version sync across pack |
+|  13. validate-indexes.py            - Verifies INDEX.md & role-skill-index    |
+|  14. validate-policy-consistency.py - Evaluates action-boundaries.yaml rules  |
+|  15. validate-skill-ownership.py    - Audits Primary/Supporting ownership     |
+|  16. validate-skill-sections.py     - Enforces mandatory SKILL.md sections    |
+|  17. validate-contract-coverage.py  - Verifies schema coverage per workflow   |
+|  18. validate-golden-evals.py       - Audits golden evaluation benchmark sets |
+|  19. validate-thirdparty-skills.py  - Runs static AST security vetting        |
 +-------------------------------------------------------------------------------+
 ```
 
@@ -788,6 +802,8 @@ If any validator discovers a schema error, broken link, or policy regression, th
 ---
 
 ## 8. Enterprise Adoption Roadmap & FAQs
+
+> **BLUF:** A pragmatic 4-phase rollout over 9 weeks guides engineering organizations from canonical 5-directory decomposition and KV cache prefix alignment to boundary locking, contract-first A2A delegation, and automated SARIF CI gating.
 
 Transitioning an enterprise engineering organization from uncoordinated chatbot prompts to a governed multi-agent skills architecture requires a pragmatic, staged rollout strategy.
 
@@ -827,7 +843,7 @@ The policy engine evaluates every requested tool invocation and shell command ag
 {{< /faq >}}
 
 {{< faq q="How do 8 IDE adapters maintain strict rule parity without code drift?" >}}
-All engineering assets are maintained in a Single Source of Truth under the `core/` directory. Automated transpilation adapters map these canonical markdown and YAML definitions into native formats for Google Antigravity, Claude Code, Cursor, Copilot, and other environments. Continuous integration executes `validate-adapters.py` on every commit, verifying that all 8 adapters adhere to 9 mandatory parity groups and preventing configuration divergence.
+All engineering assets are maintained in a Single Source of Truth under the `core/` directory. Automated transpilation adapters map these canonical markdown and YAML definitions into native formats for Google Antigravity, Claude Code, Cursor, Copilot, and other environments. Continuous integration executes `validate-2026-compliance.py` and `validate-standardization.py` on every commit, verifying that all 8 adapters adhere to 9 mandatory parity groups and preventing configuration divergence.
 {{< /faq >}}
 
 ---
