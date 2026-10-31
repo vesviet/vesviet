@@ -54,7 +54,7 @@ The actual minimum is five directories:
 
 The five directories are not arbitrary: they are the four-layer model of [Part 3](/series/prompt-standard/part-3-layered-prompt-architecture/) plus the measurement discipline of [Part 4](/series/prompt-standard/part-6-promptops-evals-and-security/) — the whole series folded into a file tree.
 
-The structure has production precedent: the agent-skills pack operates **108 skills, 34 roles, 24 workflows** in precisely this shape — centralized rules propagate to every role without per-file edits, and the pack passes 16/16 validation gates at that scale. Your starter tree will not need restructuring when it grows.
+The structure has production precedent: the agent-skills pack operates **184 skills, 39 roles, 25 workflows, 60 schemas, 19 validators** in precisely this shape — centralized rules propagate to every role without per-file edits, and the pack passes 19/19 validation gates at that scale. Your starter tree will not need restructuring when it grows.
 
 ## The Directory Tree
 
@@ -116,7 +116,7 @@ Each skill states:
 - execution checklist
 - common pitfalls
 
-Trigger words front-load the file; the body loads only on trigger match — the 108 coexisting pack skills never cross-fire precisely because of this granularity discipline.
+Trigger words front-load the file; the body loads only on trigger match — the 184 coexisting pack skills never cross-fire precisely because of this granularity discipline.
 
 ### Evals
 Each eval case set carries:
@@ -289,7 +289,7 @@ The comparison, dimension by dimension:
 | Governance | None | CONVENTIONS.md: naming, owner, review routing, changelog |
 | Growth rules | "Add more as needed" | Pain-triggered promotion: 3x/week → workflow; incident → rule; failure pattern → eval |
 | Failure modes | Not discussed | Template fiction, eval theater, owner sprawl — each takeover-test diagnosable |
-| Scale evidence | None | The pack precedent: 108/34/24 at 16/16 gates |
+| Scale evidence | None | The pack precedent: 184/39/25 (60 schemas, 19 validators) at 19/19 gates |
 | Honesty | "Best practice" framing | The anti-doctrine: do not standardize everything day one; stall-vs-satisfied is a management read on the repeated-failure count |
 
 The last row is the one most posts cannot afford: the kit's honest failure mode is working-but-not-growing — team standardizes two use cases and stops. Acceptable if those two were the pain; a stall if the pain was bigger. The kit gives you the signal (repeated failures outside standardized use cases); the verdict stays human.
@@ -330,7 +330,7 @@ None of these unlock prematurely — the kit's five directories remain the base 
 ## ❓ Frequently Asked Questions
 
 {{< faq q="What does the minimum kit contain, and how long does setup take?" >}}
-Five directories (roles/, rules/, workflows/, skills/, evals/) plus a CONVENTIONS.md page, two templates, and two eval case sets — assembled in 30–60 minutes via the seven-step bootstrap. The structure has real-scale precedent: the agent-skills pack runs 108 skills / 34 roles / 24 workflows in exactly this shape without restructuring as it grew, and its centralized rules reach every role without per-file edits. The kit is complete when the takeover test passes — a new member runs a task from the tree alone, and two colleagues independently produce compatible prompts from the same template.
+Five directories (roles/, rules/, workflows/, skills/, evals/) plus a CONVENTIONS.md page, two templates, and two eval case sets — assembled in 30–60 minutes via the seven-step bootstrap. The structure has real-scale precedent: the agent-skills pack runs 184 skills / 39 roles / 25 workflows, 60 schemas, 19 validators in exactly this shape without restructuring as it grew, and its centralized rules reach every role without per-file edits. The kit is complete when the takeover test passes — a new member runs a task from the tree alone, and two colleagues independently produce compatible prompts from the same template.
 {{< /faq >}}
 
 {{< faq q="Why ship evals/ on day one instead of adding them once things stabilize?" >}}
@@ -353,10 +353,10 @@ One to two of the most-repeated use cases — selected by repetition count, not 
 |---|---|
 | Golden rule (colleague test); one-sentence roles; numbered steps; self-check; incremental progress; reversibility classes | Anthropic, Prompting best practices (platform.claude.com/docs) |
 | Eval tasks grounded in real uses; verifiers without over-constraining | Anthropic, "Writing effective tools for agents" (Sep 2025) |
-| Pack structure 108 skills / 34 roles / 24 workflows, 16/16 validation gates | agent-skills pack (internal repo structure, verifiable via validate-all) |
+| Pack structure 184 skills / 39 roles / 25 workflows, 60 schemas, 19 validators (19/19 validation gates) | agent-skills pack (internal repo structure, verifiable via validate-all) |
 | Five-probe eval pattern; pain-triggered promotion; takeover test | Series PromptOps standard (Track 1 Parts 1–5) |
 
-Full 100-round research dossier: `reports/research-prompt-standard-part-5-team-template-100-rounds.{md,json}` (mirrored in both repositories). Grounding note: 20/100 rounds carry external source URLs; 77/100 trace series/pack-internal evidence (this kit codifies the structure the series itself runs on — series-internal is the primary source class by design); 3 rounds carry [INFERENCE] labels. Scale figures (108 skills / 34 roles / 24 workflows / 16 gates) are verifiable by running `python3 core/scripts/validate-all.py` from the agent-skills repository.
+Full 100-round research dossier: `reports/research-prompt-standard-part-5-team-template-100-rounds.{md,json}` (mirrored in both repositories). Grounding note: 20/100 rounds carry external source URLs; 77/100 trace series/pack-internal evidence (this kit codifies the structure the series itself runs on — series-internal is the primary source class by design); 3 rounds carry [INFERENCE] labels. Scale figures (184 skills / 39 roles / 25 workflows / 60 schemas / 19 validators) are verifiable by running `python3 core/scripts/validate-all.py` from the agent-skills repository.
 
 ---
 

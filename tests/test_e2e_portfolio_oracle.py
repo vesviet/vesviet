@@ -349,19 +349,21 @@ class PortfolioE2EOracle:
             self.record_fail("F5 Bento Works Scope", "Section #works not found")
             return
 
-        # 1. Four bento cards present
+        # 1. Five bento cards present
         cards = works_sec.select(".bento-card")
-        if len(cards) == 4:
-            self.record_pass("F5.1 Bento Cards Count", "4 bento case study cards present")
+        if len(cards) == 5:
+            self.record_pass("F5.1 Bento Cards Count", "5 bento case study cards present")
         else:
-            self.record_fail("F5.1 Bento Cards Count", f"Expected 4 cards, found {len(cards)}")
+            self.record_fail("F5.1 Bento Cards Count", f"Expected 5 cards, found {len(cards)}")
 
         # 2. Flagship bento card
-        flagship = works_sec.select_one(".bento-flagship-card")
-        if flagship and "Composable E-Commerce Microservices Platform" in flagship.text:
-            self.record_pass("F5.2 Flagship Bento Card", "Flagship 21-service microservices platform present")
+        flagships = works_sec.select(".bento-flagship-card")
+        flagship = next((c for c in flagships if "Composable E-Commerce Microservices Platform" in c.text), None)
+        agent_flagship = next((c for c in flagships if "@vesviet/agent-skills" in c.text), None)
+        if flagship and agent_flagship:
+            self.record_pass("F5.2 Flagship Bento Card", "Flagship 21-service platform and agent-skills present")
         else:
-            self.record_fail("F5.2 Flagship Bento Card", f"Missing flagship card: {flagship}")
+            self.record_fail("F5.2 Flagship Bento Card", f"Missing flagship card: flagship={flagship}, agent_flagship={agent_flagship}")
 
         # 3. Quantitative metrics badges on flagship card
         badges = [b.text.strip() for b in flagship.select(".metric-chip")] if flagship else []
@@ -375,15 +377,15 @@ class PortfolioE2EOracle:
         # 4. Filter buttons
         filter_btns = works_sec.select(".bento-filter-btn")
         filters = [b.get("data-filter") for b in filter_btns]
-        expected_filters = ["all", "microservices", "concurrency", "gitops"]
+        expected_filters = ["all", "ai-agentic", "microservices", "concurrency", "gitops"]
         if filters == expected_filters:
-            self.record_pass("F5.4 Category Filter Pills", f"4 filters verified: {filters}")
+            self.record_pass("F5.4 Category Filter Pills", f"5 filters verified: {filters}")
         else:
             self.record_fail("F5.4 Category Filter Pills", f"Expected {expected_filters}, got {filters}")
 
         # 5. data-category attributes on all cards
         card_categories = [c.get("data-category") for c in cards]
-        if all(cat in ["microservices", "concurrency", "gitops"] for cat in card_categories):
+        if all(cat in ["ai-agentic", "microservices", "concurrency", "gitops"] for cat in card_categories):
             self.record_pass("F5.5 Card Category Attributes", f"Card categories verified: {card_categories}")
         else:
             self.record_fail("F5.5 Card Category Attributes", f"Invalid card categories: {card_categories}")

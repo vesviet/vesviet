@@ -3,14 +3,14 @@
 > **Epoch:** 2026-10-02T22:20:00+07:00  
 > **Authoring Swarm:** `@vesviet-team` (`@architect`, `@content-manager`, `@technical-writer`, `@qa-engineer`)  
 > **Purpose:** Ultra-compact, high-density architectural cheat-sheets and decision matrices designed for instant LLM/Agent retrieval without context window bloat.  
-> **Total Knowledge Cards:** 33 High-Signal Cards across 6 Core Domains.  
+> **Total Knowledge Cards:** 34 High-Signal Cards across 6 Core Domains.  
 
 ---
 
 ## Quick Domain Jump Matrix
 - [1. E-Commerce Architecture](#1-e-commerce-architecture) (5 Cards)
 - [2. Banking & FinTech Architecture](#2-banking--fintech-architecture) (3 Cards)
-- [3. AI, SLM & Agentic Systems](#3-ai-slm--agentic-systems) (6 Cards)
+- [3. AI, SLM & Agentic Systems](#3-ai-slm--agentic-systems) (7 Cards)
 - [4. Distributed Systems & Architectural Showdowns](#4-distributed-systems--architectural-showdowns) (8 Cards)
 - [5. Ride-Hailing & Geospatial Architecture](#5-ride-hailing--geospatial-architecture) (5 Cards)
 - [6. Cloud Infrastructure & Resilience](#6-cloud-infrastructure--resilience) (6 Cards)
@@ -45,6 +45,7 @@
 | [`autonomous-agent-swarms-litellm`](knowledge/ai-slm-agentic/autonomous-agent-swarms-litellm.md) | **Autonomous AI Agent Swarms: A2A Protocols & LiteLLM Gateway Orchestration** | `#agent-swarms`, `#litellm`, `#a2a-protocol` | [`knowledge/ai-slm-agentic/autonomous-agent-swarms-litellm.md`](knowledge/ai-slm-agentic/autonomous-agent-swarms-litellm.md) |
 | [`vector-database-hnsw-search`](knowledge/ai-slm-agentic/vector-database-hnsw-search.md) | **Custom Golang Vector Database Engine: HNSW Graphs & Hybrid Lexical-Semantic Search** | `#vector-search`, `#hnsw`, `#golang` | [`knowledge/ai-slm-agentic/vector-database-hnsw-search.md`](knowledge/ai-slm-agentic/vector-database-hnsw-search.md) |
 | [`mcp-stream-transport-generative-ui`](knowledge/ai-slm-agentic/mcp-stream-transport-generative-ui.md) | **Model Context Protocol (MCP) & Generative UI: Streaming JSON-RPC 2.0 Tool Execution & Edge Component Sandboxing** | `#mcp`, `#generative-ui`, `#json-rpc`, `#rsc` | [`knowledge/ai-slm-agentic/mcp-stream-transport-generative-ui.md`](knowledge/ai-slm-agentic/mcp-stream-transport-generative-ui.md) |
+| [`agent-skills-architecture`](knowledge/ai-slm-agentic/agent-skills-architecture.md) | **Enterprise Agent Skills Architecture: 4-Layer Prompt Stack, A2A 1.0 JSON Contracts & Fail-Closed Policy Governance** | `#agent-skills`, `#a2a-protocol`, `#context-engineering`, `#promptops` | [`knowledge/ai-slm-agentic/agent-skills-architecture.md`](knowledge/ai-slm-agentic/agent-skills-architecture.md) |
 
 ## 4. Distributed Systems & Architectural Showdowns
 

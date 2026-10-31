@@ -1,6 +1,6 @@
 # Vesviet Content Index (tanhdev.com)
 
-> Snapshot date: 2026-10-23 · Branch `main` · Total content files: **383** (~1,083,500 words)
+> Snapshot date: 2026-10-31 · Branch `main` · Total content files: **384** (~1,089,051 words)
 
 > Site: Hugo + PaperMod, `en` default, canonical host `https://tanhdev.com/`
 > English flagship portfolio. Regenerate this index after every batch upgrade.
@@ -9,7 +9,7 @@
 
 | Section | Files | Notes |
 |---|---|---|
-| `content/posts/` | 66 | 66 with Answer-first (100.0%); 17 standalone posts upgraded to 2027 SOTA Masterclass with 100-round deep research dossiers (Anchor Pillar Hub #1 `go-microservices.md` upgraded 2026-10-08, ~250,000 words); 10/10 Anchor Pillar Hubs SOTA certified |
+| `content/posts/` | 67 | 67 with Answer-first (100.0%); 18 standalone posts upgraded to 2027 SOTA Masterclass with 100-round deep research dossiers & flagship case study (Anchor Pillar Hub #1 `go-microservices.md` upgraded 2026-10-08, ~255,551 words); 10/10 Anchor Pillar Hubs SOTA certified |
 | `content/series/` | 252 | 25 series; 226 chapters + 25 series `_index.md` + 1 parent `_index.md` (~692,166 words); 100% Answer-first |
 | `content/radar/` | 42 | 34 radar editions (2026-04 → 2026-10) + 7 monthly `_index.md` + 1 parent `_index.md` (~131,500 words) |
 | `content/categories/` | 16 | ai, architecture, backend, cloudflare, database, devops, e-commerce, engineering, fintech, golang, kubernetes, microservices, observability, payments, tech-radar + parent `_index.md` (~636 words) |
@@ -77,6 +77,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 
 | Date / Commit | Campaign |
 |---|---|
+| `2026-10-31` | **2027 SOTA Masterclass Flagship Case Study: Architecting Enterprise Agent Skills Pack (A2A 1.0 Protocols, Context Engineering & Fail-Closed Multi-Agent Governance)**: Bilingual twin publication across `vesviet` (>5,500w, 48.64 KB) and `learn` (>8,200w, 60.55 KB), atomic Answer-first 48–62w, 4-layer KV cache optimization, A2A 1.0 JSON-RPC 2.0 / SSE contract-first protocols, Pydantic v2 fail-closed policy engine, OWASP ASI01–10 security across 39 principal engineering roles, SOTA knowledge card `agent-skills-architecture.md` (<15 KB, 100% SHA-256 bitwise twin parity), 100% 7-gate SOTA compliant. |
 | `2026-10-23` | **2027 SOTA Masterclass Series Upgrade: Architectural Trade-offs & Tech Showdowns Part 11 (CSR vs. SSR in Modern AI Era, 100 rounds deep research)**: Twin publication across `vesviet` and `learn` (1:1 twin parity, English flagship >2,500w and >20.5 KB, Vietnamese twin >2,500w, atomic Answer-first 48–62w, React 19 RSC / Next.js 15 Streaming PPR / Vercel AI SDK / WebMCP implementations, 100-round Draft202012 JSON dossier with bitwise twin parity, zero links to learn on vesviet, reciprocal English badge on learn, series hub Wave 5 updated, 100% automated test harness passing). |
 | `2026-10-23` | **2027 SOTA Masterclass Tech Radar Upgrade: PHP2Shell (CVE-2026-109618 & CVE-2026-109619) Zend Engine SRE Remediation (100 rounds deep research)**: Twin publication across `vesviet` and `learn` (1:1 twin parity, English flagship >2,500w and >20.5 KB, Vietnamese twin >2,500w, atomic Answer-first 48–62w, production C / Zend Engine memory model / FastCGI / Tetragon SRE configs, 100-round Draft202012 JSON dossier with bitwise twin parity, zero links to learn on vesviet, reciprocal English badge on learn, October 2026 radar matrix and root indexes synchronized, 100% automated test harness passing). |
 | `2026-10-08` | **Dual-Repo GSC Coverage Remediation Master Plan & Technical Execution**: Published comprehensive technical audit `reports/gsc-audit-2026-10-08.md` and master roadmap `reports/gsc-remediation-master-plan-2026-10-08.md`. Symmetrized 213 redirect rules in `static/_redirects` (expanded to 643 rules, 100% 1-hop 301, 0 307 temporary hops). Permanently eliminated 5xx server error via instant 301 redirect in `src/index.js`. Hardened `robots.txt` defense against mock API crawlers. Upgraded 16/16 category hubs with Answer-first (48–62w) and canonicalURL. Re-indexed all 25 series and 12 previously unlinked standalone posts in `reading-map.md`, eliminating orphan nodes while preserving strict One-Way Authority Rule (0 leaks to learn). Clustered 195 vesviet and 92 learn unindexed items across 6 engineering domains into Batches 8–12 upgrade roadmap. |
@@ -112,7 +113,7 @@ The 10 hubs from `agent-skills/overlays/vesviet-content/rules/link-topology.md` 
 
 Each flagship topic exists as a Vietnamese twin on `learn` (canonical there for notes) and an expanded English masterclass on `vesviet` (authority site).
 Synchronized twins:
-- 7 Standalone Posts: AI Swarm & LiteLLM, 15-Second Customer Intelligence, MySQL Horizontal Scaling, Go pprof Internals, Urban Canyon GPS Map-Matching; plus Batch 2026-10-04: OSRM vs GraphHopper, Zero-Trust SPIFFE/SPIRE, Alipay Double 11, Cloudflare D1 Realtime Cart, Custom Golang Vector DB HNSW (1,000+ rounds deep research across standalone posts)
+- 7 Standalone Posts: AI Swarm & LiteLLM, 15-Second Customer Intelligence, MySQL Horizontal Scaling, Go pprof Internals, Urban Canyon GPS Map-Matching; plus Batch 2026-10-04: OSRM vs GraphHopper, Zero-Trust SPIFFE/SPIRE, Alipay Double 11, Cloudflare D1 Realtime Cart, Custom Golang Vector DB HNSW (1,000+ rounds deep research across standalone posts); plus 2026-10-31 Flagship Case Study: Architecting Enterprise Agent Skills Pack (/posts/architecting-enterprise-agent-skills-pack-a2a-context-engineering/)
 - `architectural-tradeoffs-showdowns` (11 chapters)
 - `ride-hailing-realtime-architecture` (7 chapters)
 - `routing-geospatial-architecture` (9 chapters + hub)
@@ -142,7 +143,7 @@ Synchronized twins:
 | **Answer-first Block** | 66/66 posts (100.0%), 226/226 series chapters have Answer-first | 100% compliant with standard blockquote (48–62w) |
 | **Mermaid Diagrams** | 983 diagram blocks across 335 files (54 posts, 243 series chapters, 38 radar) | 100% valid syntax; 100% with `mermaid: true` frontmatter |
 | **Quantitative Depth** | 59/66 posts (89.4%), 140/225 series chapters (62%) contain benchmark tables | SOTA chapters maintain ≥3 verifiable data points per 500w |
-| **Masterclass Scale** | 53/66 posts (80.3%) >2,500w & >20KB; 17/66 posts (25.8%) 7/7 SOTA Certified; 10/10 (100.0%) Anchor Pillar Hubs SOTA Certified; 199/221 series chapters (90.0%) | 100% of upgraded posts and series exceed masterclass bar |
+| **Masterclass Scale** | 54/67 posts (80.6%) >2,500w & >20KB; 18/67 posts (26.9%) 7/7 SOTA Certified; 10/10 (100.0%) Anchor Pillar Hubs SOTA Certified; 199/221 series chapters (90.0%) | 100% of upgraded posts and series exceed masterclass bar |
 | **Broken Internal Links** | 0 broken links (AST crawler verified over 129,456 internal links) | 100% route integrity |
 | **Reverse Authority Links** | 42 contextual links normalized to standardized badges | 0 contextual anchor leakage |
 
@@ -249,3 +250,10 @@ Synchronized twins:
     - Published Tech Radar October 2026 Edition #3: `radar-2026-10-22-autonomous-agent-swarms-a2a-litellm.md` on both `vesviet` (27.22 KB, 3,279 words) and `learn` (32.92 KB, 4,753 words) reaching 100% 7 SOTA 2027 Quality Gates.
     - Updated October 2026 Hub `content/radar/2026-10/_index.md` across both repositories with ADOPT ring classifications for LiteLLM Proxy, A2A JSON Schema Contracts, and Redis 7.4 Lua Fencing.
     - Maintained strict One-Way Authority Rule and 1:1 twin parity, preserving exactly 5 root files in `reports/`.
+22. **Publish Flagship Case Study @vesviet/agent-skills & Knowledge Card (2026-10-31) [RESOLVED ✅]:**
+    - Published bilingual flagship case study at /posts/architecting-enterprise-agent-skills-pack-a2a-context-engineering/ on vesviet (EN, 48.64 KB, 5,551 words) and learn (VI, 60.55 KB, 8,234 words), 100% compliant with 7 SOTA 2027 Quality Gates.
+    - Distilled SOTA knowledge card reports/knowledge/ai-slm-agentic/agent-skills-architecture.md (5,995 bytes < 15 KB, 100% SHA-256 bitwise parity) and updated KNOWLEDGE_INDEX.md (34 cards total).
+    - Upgraded homepage bento grid (section_works.html) with AI & Agentic filter tab and flagship bento card.
+    - Upgraded playbooks track (section_playbooks.html) with Track E: AI-Native SDLC & Multi-Agent Engineering.
+    - Re-synchronized master content inventory to 384 files (67 posts) on vesviet and 444 files (87 posts) on learn.
+
