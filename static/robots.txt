@@ -1,4 +1,9 @@
 # ──────────────────────────────────────────────
+# Content Signals (IETF draft-romm-aipref-contentsignals)
+# ──────────────────────────────────────────────
+Content-Signal: search=yes, ai-train=no, ai-input=yes
+
+# ──────────────────────────────────────────────
 # Default: allow all crawlers (including Googlebot, Bingbot, etc.)
 # ──────────────────────────────────────────────
 User-agent: *
@@ -43,6 +48,8 @@ Allow: /
 Allow: /sitemap.xml
 Allow: /llms.txt
 Allow: /llms-full.txt
+Allow: /auth.md
+Allow: /.well-known/
 
 # ──────────────────────────────────────────────
 # Google AdSense Crawler
@@ -60,6 +67,9 @@ User-agent: OAI-SearchBot
 Allow: /
 
 User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
 Allow: /
 
 User-agent: PerplexityBot

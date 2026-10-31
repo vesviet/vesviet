@@ -1,0 +1,26 @@
+{
+  "$schema": "https://raw.githubusercontent.com/linuxfoundation/ai-catalog/main/schema.json",
+  "version": "1.1",
+  "agents": [
+    {
+      "type": "a2a",
+      "url": "https://tanhdev.com/.well-known/agent-card.json"
+    },
+    {
+      "type": "registry",
+      "url": "https://tanhdev.com/.well-known/agent-registry.json"
+    }
+  ],
+  "mcp": [
+    {
+      "type": "mcp-server-card",
+      "url": "https://tanhdev.com/.well-known/mcp/server-card.json"
+    }
+  ],
+  "openapi": [
+    {
+      "type": "api-catalog",
+      "url": "https://tanhdev.com/.well-known/api-catalog"
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "name": "tanhdev-platform-agent",
+  "description": "Senior Software Engineer portfolio and distributed systems engineering platform agent",
+  "url": "https://tanhdev.com",
+  "version": "1.0.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true,
+    "securityCardSigning": false,
+    "timeout_ms": 30000,
+    "retry_policy": {
+      "max_retries": 3,
+      "initial_interval_ms": 1000,
+      "backoff_factor": 2.0,
+      "max_interval_ms": 30000,
+      "jitter": "full"
+    }
+  },
+  "authentication": {
+    "schemes": [
+      "Bearer",
+      "none"
+    ]
+  },
+  "skills": [
+    {
+      "id": "go-microservices",
+      "name": "Go Microservices Architecture",
+      "description": "Production patterns: gRPC, Dapr, OpenTelemetry, goroutine leak detection, GitOps on Kubernetes",
+      "tags": [
+        "golang",
+        "microservices",
+        "kubernetes",
+        "dapr"
+      ],
+      "inputModes": [
+        "text",
+        "data"
+      ],
+      "outputModes": [
+        "text",
+        "data"
+      ]
+    },
+    {
+      "id": "distributed-systems",
+      "name": "Distributed Systems Case Studies",
+      "description": "Real case studies: Shopee flash sale engine, Alipay Double-11, PayPay architecture, Ride-Hailing real-time systems",
+      "tags": [
+        "distributed-systems",
+        "high-concurrency",
+        "kafka",
+        "redis"
+      ],
+      "inputModes": [
+        "text",
+        "data"
+      ],
+      "outputModes": [
+        "text",
+        "data"
+      ]
+    },
+    {
+      "id": "mcp-engineering",
+      "name": "MCP & Agentic Discovery Engineering",
+      "description": "Model Context Protocol 2026-07-28 tool execution, A2A 1.0 protocols, and RFC 8288 discovery metadata",
+      "tags": [
+        "mcp",
+        "a2a",
+        "agent-discovery",
+        "agent-readiness"
+      ],
+      "inputModes": [
+        "text",
+        "data"
+      ],
+      "outputModes": [
+        "text",
+        "data"
+      ]
+    },
+    {
+      "id": "advisory-consulting",
+      "name": "Architecture Advisory & Bottleneck Audit",
+      "description": "Platform architecture reviews, Magento to Go microservices migration, and high-traffic flash sale readiness",
+      "tags": [
+        "advisory",
+        "consulting",
+        "migration",
+        "audit"
+      ],
+      "inputModes": [
+        "text"
+      ],
+      "outputModes": [
+        "text"
+      ]
+    }
+  ]
+}

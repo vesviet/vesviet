@@ -1,19 +1,30 @@
 # Auth.md
 
-You are an agent. This service supports **agentic registration**: discover → register → (claim if needed) → exchange for an access_token → call API → handle revocation.
+Technical portfolio and distributed systems engineering platform by Lê Tuấn Anh (Senior Software Engineer).
+This service supports **agentic registration** for autonomous AI agents, orchestrators, and tool runners: discover → register → (claim if needed) → exchange for an access_token → call API → handle revocation.
 
-## Step 1 — Discover
-Fetch the Protected Resource Metadata at `/.well-known/oauth-protected-resource`.
-Fetch the Authorization Server metadata at `/.well-known/oauth-authorization-server`.
+## Registration & Identity
+- register_uri: https://tanhdev.com/oauth2/register
+- claim_uri: https://tanhdev.com/oauth2/claim
+- token_endpoint: https://tanhdev.com/oauth2/token
+- identity_types_supported:
+  - anonymous
+  - identity_assertion (JWT Bearer)
 
-## Step 2 — Pick a method
-Check the `agent_auth.identity_types_supported` in the AS metadata. We support `anonymous`.
+## Discovery Endpoints
+- Protected Resource: https://tanhdev.com/.well-known/oauth-protected-resource
+- Authorization Server: https://tanhdev.com/.well-known/oauth-authorization-server
+- API Catalog: https://tanhdev.com/.well-known/api-catalog
+- Agent Card: https://tanhdev.com/.well-known/agent-card.json
+- Agent Skills: https://tanhdev.com/.well-known/agent-skills/index.json
+- AI Catalog: https://tanhdev.com/.well-known/ai-catalog.json
 
-## Step 3 — Register
-Send your registration request to the endpoint listed in `agent_auth.register_uri`.
+## MCP Servers
+- name: tanhdev-mcp
+  transport: streamable-http
+  endpoint: https://tanhdev.com/mcp
+  card: https://tanhdev.com/.well-known/mcp/server-card.json
 
-## Step 4 — Claim
-If required, complete the claim ceremony at the `claim_uri`.
-
-## Step 5 — Exchange
-Exchange your identity assertion for an access_token at the `token_endpoint` using `urn:ietf:params:oauth:grant-type:jwt-bearer`.
+## Autonomy Governance
+- tier: Tier 1 Supervised
+- protocol_version: 1.0

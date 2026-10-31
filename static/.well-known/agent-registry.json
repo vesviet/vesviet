@@ -1,0 +1,14 @@
+{
+  "contract_type": "agent-registry",
+  "version": "1.0.0",
+  "protocol_version": "1.0",
+  "domain": "https://tanhdev.com",
+  "agents": [
+    {
+      "role": "platform-agent",
+      "agent_card": "https://tanhdev.com/.well-known/agent-card.json",
+      "url": "https://tanhdev.com",
+      "description": "Senior Software Engineer portfolio and distributed systems engineering platform agent"
+    }
+  ]
+}

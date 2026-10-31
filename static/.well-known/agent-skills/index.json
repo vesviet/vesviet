@@ -1,12 +1,37 @@
 {
   "$schema": "https://raw.githubusercontent.com/cloudflare/agent-skills-discovery-rfc/main/schema.json",
+  "schema_version": "1.0",
   "skills": [
     {
+      "id": "webmcp",
       "name": "WebMCP",
       "type": "webmcp",
-      "description": "Exposes browser tools via WebMCP",
+      "description": "Exposes browser tools and DOM context via WebMCP",
+      "endpoint": "https://tanhdev.com",
       "url": "https://tanhdev.com",
+      "method": "GET",
+      "auth": "none",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "search-posts",
+      "name": "Search Posts",
+      "type": "api",
+      "description": "Search technical blog posts across Go, microservices, and distributed systems",
+      "endpoint": "https://tanhdev.com/posts/",
+      "url": "https://tanhdev.com/posts/",
+      "method": "GET",
+      "auth": "none"
+    },
+    {
+      "id": "mcp-server",
+      "name": "MCP Server Discovery",
+      "type": "mcp",
+      "description": "Stateless MCP tool provider at https://tanhdev.com/mcp",
+      "endpoint": "https://tanhdev.com/.well-known/mcp/server-card.json",
+      "url": "https://tanhdev.com/.well-known/mcp/server-card.json",
+      "method": "GET",
+      "auth": "none"
     }
   ]
 }

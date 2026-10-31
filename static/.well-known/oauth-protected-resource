@@ -7,5 +7,7 @@
     "read",
     "write"
   ],
-  "bearer_methods_supported": ["header"]
+  "bearer_methods_supported": [
+    "header"
+  ]
 }

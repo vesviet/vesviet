@@ -1,24 +1,54 @@
 /
   Link: </sitemap.xml>; rel="describedby"
+  Link: </auth.md>; rel="authorizing-agent"
   Link: </.well-known/api-catalog>; rel="api-catalog"
+  Link: </.well-known/agent-card.json>; rel="agent-card"
+  Link: </.well-known/mcp/server-card.json>; rel="mcp-server-card"
+  Link: </.well-known/agent-skills/index.json>; rel="agent-skills"
+  Link: </.well-known/oauth-authorization-server>; rel="oauth-authorization-server"
+  Link: </.well-known/oauth-protected-resource>; rel="oauth-protected-resource"
+  Link: </.well-known/ai-catalog.json>; rel="service-desc"
+  Link: </llms.txt>; rel="help"
 
 /.well-known/api-catalog
   Content-Type: application/linkset+json
+  Access-Control-Allow-Origin: *
 
 /.well-known/oauth-authorization-server
   Content-Type: application/json
+  Access-Control-Allow-Origin: *
 
 /.well-known/oauth-protected-resource
   Content-Type: application/json
+  Access-Control-Allow-Origin: *
 
 /auth.md
-  Content-Type: text/markdown
+  Content-Type: text/markdown; charset=utf-8
+  Access-Control-Allow-Origin: *
+
+/.well-known/agent-card.json
+  Content-Type: application/json
+  Access-Control-Allow-Origin: *
+
+/.well-known/agent-registry.json
+  Content-Type: application/json
+  Access-Control-Allow-Origin: *
+
+/.well-known/ai-catalog.json
+  Content-Type: application/json
+  Access-Control-Allow-Origin: *
 
 /.well-known/agent-skills/index.json
   Content-Type: application/json
+  Access-Control-Allow-Origin: *
 
 /.well-known/mcp/server-card.json
   Content-Type: application/json
+  Access-Control-Allow-Origin: *
+
+/.well-known/security.txt
+  Content-Type: text/plain
+  Access-Control-Allow-Origin: *
 
 # Cache-Control rules
 /assets/css/*.css
@@ -45,4 +75,3 @@
 
 /index.xml
   X-Robots-Tag: noindex
-
