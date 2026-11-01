@@ -10,8 +10,8 @@ description: "Black October 2026 post-mortem: Citrix NetScaler, FortiMail, PHP2S
 ShowToc: true
 TocOpen: true
 cover:
-  image: "/images/posts/default-post-1.jpg"
-  alt: "Black October 2026: vulnerability wave anatomy and AI-accelerated exploitation"
+  image: "/images/posts/black-october-2026-ai-accelerated-vulnerabilities.jpg"
+  alt: "Dark security operations workspace with terminal code on monitors under red alert lighting — Black October 2026 vulnerability wave"
   relative: false
 categories: ["Security", "AI & Agentic Systems", "DevOps"]
 tags: ["Vulnerability Management", "Zero-Day", "CVE", "Offensive AI", "Supply Chain Security", "OWASP", "Incident Response"]
