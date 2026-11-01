@@ -219,3 +219,8 @@ PreDelete hooks execute dedicated hook pods or jobs before target Kubernetes res
 Argo CD 3.4 enforces strict Semantic Versioning (`vMajor.Minor.Patch`) when parsing Kubernetes version labels in ApplicationSet generators. If cluster manifests contain custom or unformatted version strings, manifest rendering will fail immediately upon upgrading the controller.
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [DevOps](/categories/devops/) — every in-depth article I have published on this topic.
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.

@@ -380,3 +380,8 @@ Kratos is designed for enterprise microservices requiring strict Clean Architect
 - [Golang gRPC Microservices: Protobuf, TLS & Middleware](/posts/golang-grpc-microservices-production-guide/) — the gRPC layer Kratos wraps.
 - [How Databases Shaped Go, PHP, Node.js, and Rust](/posts/database-impact-on-programming-languages/) — why Go's connection-pool model behaves the way these benchmarks show.
 - [Go pprof Tutorial: CPU & Memory Profiling](/posts/golang-pprof-profiling-memory-cpu-tutorial/) — reproducing these allocation measurements on your own workload.
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Backend](/categories/backend/) — every in-depth article I have published on this topic.

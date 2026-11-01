@@ -20,7 +20,7 @@ tags:
   - "Distributed Systems"
 aliases:
   - /series/alipay-double-11/research-index/
-description: "How Alipay's engineering team scaled Double 11 to 544,000 payment TPS and 61M database QPS using LDC unitization, OceanBase LSM-Paxos, RocketMQ 2PC, and hot-account splitting."
+description: "How Alipay scaled Double 11 to 544,000 payment TPS and 61M QPS: LDC unitization, OceanBase LSM-Paxos, RocketMQ 2PC, hot-account splitting."
 ShowToc: true
 TocOpen: true
 cover:
@@ -419,4 +419,10 @@ RocketMQ uses a two-phase transactional message protocol. It writes a half-messa
 - [Replace MySQL Sharding with TiDB: Architecture Guide](/posts/mysql-scaling-sharding-tidb-architecture/) — migrating distributed database clusters.
 - [Flash Sale Architecture: Rate Limiting & Redis](/posts/shopee-flash-sale-architecture/) — absorbing massive edge traffic surges.
 
-{{< author-cta >}}
+{{< author-cta >}}
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Kiến Trúc Thanh Toán & Giao Dịch Phân Tán (Payments)](/categories/payments/) — every in-depth article I have published on this topic.

@@ -271,3 +271,8 @@ Exploring complementary architectural guides on banking microservices, composabl
 - [Dapr Workflow Saga Orchestration Guide](/posts/dapr-workflow-saga-orchestration-guide/) — durable orchestration for multi-step disbursement flows.
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [FinTech](/categories/fintech/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.

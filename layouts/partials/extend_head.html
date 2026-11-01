@@ -135,9 +135,7 @@
     "https://github.com/vesviet"
     "https://dev.to/vesviet"
     "https://tanhdev.com/about/"
-    "https://learn.tanhdev.com/about/"
     "https://tanhdev.com"
-    "https://learn.tanhdev.com"
   )
 -}}
 {{- $siteGraph := dict
@@ -215,9 +213,7 @@
       "https://github.com/vesviet"
       "https://dev.to/vesviet"
       "https://tanhdev.com/about/"
-      "https://learn.tanhdev.com/about/"
       "https://tanhdev.com"
-      "https://learn.tanhdev.com"
     )
   )
   "isPartOf" (dict
@@ -325,9 +321,7 @@
       "https://github.com/vesviet"
       "https://dev.to/vesviet"
       "https://tanhdev.com/about/"
-      "https://learn.tanhdev.com/about/"
       "https://tanhdev.com"
-      "https://learn.tanhdev.com"
     )
   )
   "publisher" (dict
@@ -358,35 +352,7 @@
   {{- end -}}
 {{- end -}}
 
-{{- /* Schema.org translation pairing: workTranslation pointing to Vietnamese counterpart */ -}}
-{{- $hasViPair := and (not .Params.noTranslation) (not .Params.noindex) (not .Params.robotsNoIndex) -}}
-{{- if .Params.robots -}}
-  {{- if strings.Contains (printf "%v" .Params.robots) "noindex" -}}
-    {{- $hasViPair = false -}}
-  {{- end -}}
-{{- end -}}
-{{- if $hasViPair -}}
-  {{- $viRelPath := .RelPermalink -}}
-  {{- with .Params.translationURL -}}
-    {{- $viRelPath = . -}}
-  {{- end -}}
-  {{- $viUrl := "" -}}
-  {{- if (urls.Parse $viRelPath).IsAbs -}}
-    {{- $viUrl = $viRelPath -}}
-  {{- else -}}
-    {{- if not (strings.HasSuffix $viRelPath "/") -}}
-      {{- $viRelPath = printf "%s/" $viRelPath -}}
-    {{- end -}}
-    {{- $viUrl = printf "https://learn.tanhdev.com%s" $viRelPath -}}
-  {{- end -}}
-  {{- $workTranslation := dict
-    "@type" $articleType
-    "@id" (printf "%s#article" $viUrl)
-    "url" $viUrl
-    "inLanguage" "vi-VN"
-  -}}
-  {{- $articleDict = merge $articleDict (dict "workTranslation" $workTranslation) -}}
-{{- end -}}
+{{- /* workTranslation removed per one-way link policy: vesviet never references learn.tanhdev.com */ -}}
 
 <script type="application/ld+json">
 {{ $articleDict | jsonify (dict "indent" "  ") | safeJS }}

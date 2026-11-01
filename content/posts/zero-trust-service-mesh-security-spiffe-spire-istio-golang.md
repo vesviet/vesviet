@@ -615,3 +615,8 @@ Use this 10-point checklist before submitting your microservices architecture fo
 - [Golang gRPC Microservices: Protobuf, TLS & Middleware](/posts/golang-grpc-microservices-production-guide/) — the gRPC interceptors that enforce SPIFFE ID authorization.
 - [GitOps at Scale: Kubernetes & ArgoCD](/posts/gitops-at-scale-kubernetes-argocd-microservices/) — deploying `PeerAuthentication` and `AuthorizationPolicy` manifests safely.
 - [Multi-region Geo-distributed API Routing](/posts/multi-region-geo-distributed-api-routing/) — the cross-region context for SPIFFE trust-domain federation.
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [DevOps](/categories/devops/) — every in-depth article I have published on this topic.

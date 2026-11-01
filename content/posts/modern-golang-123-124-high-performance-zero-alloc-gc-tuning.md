@@ -564,3 +564,9 @@ Yes. `iter.Seq` (push iterator) is completely inlined by the compiler with **0 B
 ### 7.2 Conclusion
 
 Go 1.23 and Go 1.24 redefine the frontiers of high-performance backend systems engineering. By combining standard **Range-Over-Func iterators**, **`unique` handle value interning**, **multi-tiered memory buffer pools**, and **Kubernetes `GOMEMLIMIT` GC tuning**, Go engineers can eliminate heap allocation overhead, slash CPU execution latencies by over **76%**, and guarantee microsecond-level P99 latency stability across containerized cloud infrastructure.
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Backend](/categories/backend/) — every in-depth article I have published on this topic.

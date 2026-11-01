@@ -215,3 +215,8 @@ Redis Sorted Sets (`ZSET`) storing timestamps as scores allow atomic removal of 
 {{< /faq >}}
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.

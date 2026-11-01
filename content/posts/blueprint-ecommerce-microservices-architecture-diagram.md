@@ -1,5 +1,5 @@
 ---
-title: "21-Service Go Ecommerce Microservices Architecture: Complete Blueprint (2026)"
+title: "21-Service Go E-commerce Architecture Blueprint"
 slug: "blueprint-ecommerce-microservices-architecture-diagram"
 author: "Lê Tuấn Anh"
 date: "2026-04-12T08:30:00+07:00"
@@ -7,7 +7,7 @@ lastmod: "2026-08-23T08:30:00+07:00"
 draft: false
 mermaid: true
 tags: ["Architecture", "Microservices", "Golang", "API Gateway", "DDD", "Dapr", "Kubernetes"]
-description: "Architect a 21-service Go ecommerce platform: 6 DDD domains, gRPC API gateway, Dapr Pub/Sub event mesh, distributed Saga checkout, Kubernetes. Diagrams + code included."
+description: "Architect a 21-service Go e-commerce platform: 6 DDD domains, gRPC gateway, Dapr event mesh, distributed Saga checkout. Diagrams + code."
 categories: ["Architecture"]
 ShowToc: true
 TocOpen: true
@@ -576,3 +576,7 @@ Instead of executing expensive SQL table joins across product, price, and invent
 {{< faq q="When is the right time to decompose a monolith into 21 microservices?" >}}
 Decomposition is justified when: (1) team size exceeds 20 engineers creating deployment release collisions, (2) specific domains (like Flash Sale or Product Search) require 10x independent scaling without scaling the core database, or (3) single-point-of-failure risks in non-critical modules threaten checkout uptime.
 {{< /faq >}}
+
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.

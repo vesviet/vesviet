@@ -916,3 +916,8 @@ By adhering to these architectural invariants, software engineers can build high
 - [Dapr State Store Consistency Trade-offs](/posts/dapr-state-store-consistency-tradeoffs/) — ETag concurrency and consistency modes behind saga state.
 - [Banking Microservices in Go: Saga & Event Sourcing](/posts/banking-microservices-architecture/) — double-entry ledgers and the transactional outbox in a financial context.
 - [Composable Banking Architecture: Monolith to Modular](/posts/composable-banking-architecture/) — where saga boundaries sit in a modular banking platform.
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.

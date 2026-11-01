@@ -565,3 +565,9 @@ To explore how low-level road network algorithms interface with high-level logis
 - **Order Allocation:** [Ecommerce Order Allocation: Distributed Sourcing & Warehouse Optimization](/series/ecommerce-order-allocation/executive-summary/).
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Backend](/categories/backend/) — every in-depth article I have published on this topic.

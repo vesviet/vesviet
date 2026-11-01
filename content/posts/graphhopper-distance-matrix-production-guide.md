@@ -1,5 +1,5 @@
 ---
-title: "GraphHopper Distance Matrix API: Self-Host OSM, 1000x1000 Benchmarks (2026)"
+title: "GraphHopper Distance Matrix: Self-Host & Benchmarks"
 slug: "graphhopper-distance-matrix-production-guide"
 author: "Lê Tuấn Anh"
 date: "2026-06-11T20:00:00+07:00"
@@ -694,3 +694,9 @@ Related routing, self-hosting, and last-mile allocation deep dives:
 - **High-concurrency systems:** For serving matrix results under high request volume, see [Rate Limiting and Singleflight Patterns](/series/high-concurrency-systems/).
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Backend](/categories/backend/) — every in-depth article I have published on this topic.

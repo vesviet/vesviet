@@ -17,7 +17,7 @@ tags:
   - "React"
   - "Next.js"
   - "AI Native"
-description: "Architect dynamic generative UI applications with Model Context Protocol (MCP): streaming JSON-RPC contracts, dynamic React registries, bidirectional state loops, and iframe security sandboxing."
+description: "Architect generative UI with MCP: streaming JSON-RPC contracts, dynamic React registries, bidirectional state loops, iframe sandboxing."
 ShowToc: true
 TocOpen: true
 cover:
@@ -573,3 +573,8 @@ Because MCP tools stream compact JSON descriptors (typically 1–2 KB) rather th
 - [Deploy Astro on Cloudflare Pages: Full-Stack Edge Guide](/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/) — running low-latency streaming frontends at the edge.
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [AI](/categories/ai/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.

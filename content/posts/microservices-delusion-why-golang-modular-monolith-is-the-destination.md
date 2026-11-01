@@ -14,7 +14,7 @@ tags:
   - "Modular Monolith"
   - "System Design"
   - "Software Engineering"
-description: "Why engineering teams migrate back to Go modular monoliths: eliminate the network latency tax, cut AWS costs by 70%, and enforce strict domain boundaries in Go with internal packages, zero-allocation event buses, and transactional outboxes."
+description: "Why teams move back to Go modular monoliths: kill network latency tax, cut AWS costs 70%, enforce domain boundaries, transactional outboxes."
 ShowToc: true
 TocOpen: true
 series: ["Architectural Anti-Patterns"]
@@ -527,3 +527,7 @@ By leveraging Go's compiler-enforced `internal/` boundaries, in-memory event cha
 
 {{< author-cta >}}
 
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Golang](/categories/golang/) — every in-depth article I have published on this topic.

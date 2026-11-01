@@ -865,3 +865,9 @@ Configure Go's `httputil.ReverseProxy` with `FlushInterval: -1` (or a negative d
 ### Conclusion & Operational Recommendations
 
 Architecting high-throughput local LLM infrastructure requires coordinating hardware capabilities with intelligent software routing. By deploying vLLM's PagedAttention and continuous batching alongside an enterprise Go context-affinity API Gateway, organizations can break free from SaaS API vendor lock-in, eliminate HBM memory waste, and achieve deterministic, sub-50ms TTFT performance at scale.
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [AI](/categories/ai/) — every in-depth article I have published on this topic.

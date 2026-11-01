@@ -1,5 +1,5 @@
 ---
-title: "Composable Banking Architecture: Complete Go & BIAN Blueprint (2026)"
+title: "Composable Banking Architecture: Go & BIAN Guide"
 slug: "composable-banking-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-06-10T14:55:00+07:00"
@@ -18,7 +18,7 @@ tags:
   - "Saga Pattern"
   - "Core Banking"
   - "MACH"
-description: "Complete composable banking blueprint in Go: BIAN domain models, double-entry ledger event sourcing, Dapr/Temporal Saga workflows, ISO 20022 messaging. Code examples included."
+description: "Composable banking blueprint in Go: BIAN domain models, double-entry event-sourced ledger, Dapr/Temporal Sagas, ISO 20022 messaging."
 ShowToc: true
 TocOpen: true
 cover:
@@ -615,3 +615,9 @@ DORA (Digital Operational Resilience Act, enforceable January 2025) requires sig
 {{< /faq >}}
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Backend](/categories/backend/) — every in-depth article I have published on this topic.
+- [FinTech](/categories/fintech/) — every in-depth article I have published on this topic.

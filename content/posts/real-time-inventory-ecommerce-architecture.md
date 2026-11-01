@@ -300,3 +300,9 @@ Overselling prevention requires a dual-layer approach. First, atomic stock deduc
 While the Transactional Outbox pattern is easier to implement, it requires explicit application code writes to an outbox table within each database transaction. Debezium CDC operates at the infrastructure layer by reading PostgreSQL transaction logs directly without modifying application code, delivering higher throughput and reduced transaction latency.
 
 For the allocation layer built on top of real-time inventory sync — warehouse selection algorithms, split shipment logic, and Amazon CONDOR-style anticipatory inventory — see [Part 2: Real-Time Inventory Allocation Architecture](/posts/order-fulfillment-algorithm-warehouse-last-mile/). To see how this architecture powers our entire ecosystem, read the [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [E-Commerce](/categories/e-commerce/) — every in-depth article I have published on this topic.

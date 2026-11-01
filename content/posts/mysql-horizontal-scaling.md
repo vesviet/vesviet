@@ -541,3 +541,9 @@ Snowflake IDs are 64-bit, chronological integers that insert sequentially into I
 ---
 
 > 🔬 **Full 100-Round Research Dossier:** Complete empirical specifications, benchmark tables, and mathematical formulas are archived in [`reports/research-mysql-horizontal-scaling-100-rounds.md`](https://github.com/vesviet/vesviet/tree/main/reports/research-mysql-horizontal-scaling-100-rounds.md).
+
+## Explore by Category
+
+- [Database](/categories/database/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Golang](/categories/golang/) — every in-depth article I have published on this topic.

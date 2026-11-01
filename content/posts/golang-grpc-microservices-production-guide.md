@@ -854,3 +854,9 @@ Related Go microservices, tracing, and infrastructure guides:
 - **Service mesh for gRPC:** For mTLS at scale without per-service certificate management, see the [Gateway API v1.5 & Kubernetes Networking](/radar/2026-05/) guide.
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Golang](/categories/golang/) — every in-depth article I have published on this topic.
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.

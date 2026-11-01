@@ -456,3 +456,7 @@ The Stripe CLI prints a `STRIPE_WEBHOOK_SECRET` value; paste it into `apps/publi
 - [Serverless E-Commerce: Cloudflare Workers & D1 Architecture](/posts/serverless-ecommerce-cloudflare-d1/) — the storefront and payment layer on the same stack.
 - [Cloudflare D1 & Durable Objects: Build Real-Time Cart](/posts/cloudflare-d1-durable-objects-realtime-cart/) — stateful cart sessions with Durable Objects.
 - [Deploy Astro on Cloudflare Pages: Full-Stack Edge Guide](/posts/deploying-astro-on-cloudflare-full-stack-edge-architecture/) — shipping the frontend to the same edge network.
+
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.

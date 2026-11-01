@@ -173,3 +173,8 @@ Python and Node.js rely on single-threaded event loops where synchronous blockin
 - [Golang pprof Memory & CPU Profiling Tutorial](/posts/golang-pprof-profiling-memory-cpu-tutorial/) — diagnosing pool starvation and connection leaks in production.
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.

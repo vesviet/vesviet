@@ -273,3 +273,9 @@ PayPay runs a structured pre-campaign protocol: traffic forecast modeling, capac
 For a different scale of fintech engineering — how microfinance institutions apply similar double-entry ledger, JLG loan engine, and batch processing patterns at community banking level — see [Microfinance Core Banking System: Architecture & Engineering Guide](/posts/deconstructing-microfinance-core-banking-architecture/). For the full architectural framework behind modern Core Banking systems from ISO standards to Microservices deployment, see the [Core Banking Architecture series](/series/core-banking-architecture/) and the [Learning Path to Core Banking Developer](/series/core-banking-developer/).
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Kiến Trúc Thanh Toán & Giao Dịch Phân Tán (Payments)](/categories/payments/) — every in-depth article I have published on this topic.

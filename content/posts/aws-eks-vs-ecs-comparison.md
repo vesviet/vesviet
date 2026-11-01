@@ -1,5 +1,5 @@
 ---
-title: "AWS EKS vs ECS 2026: Architecture, Real Costs & Decision Matrix"
+title: "AWS EKS vs ECS: Real Costs & Decision Matrix"
 slug: "aws-eks-vs-ecs-comparison"
 author: "Lê Tuấn Anh"
 date: "2026-06-26T21:00:00+07:00"
@@ -7,7 +7,7 @@ lastmod: "2026-08-23T08:30:00+07:00"
 draft: false
 mermaid: true
 tags: ["AWS", "Kubernetes", "DevOps", "Go", "Microservices"]
-description: "EKS vs ECS comparison: control plane pricing, Fargate cost formulas, Karpenter autoscaling, GitOps support, decision matrix. Complete 2026 guide with benchmarks."
+description: "EKS vs ECS: control plane pricing, Fargate cost formulas, Karpenter autoscaling, GitOps support and a complete decision matrix."
 categories: ["DevOps", "Engineering", "AWS"]
 ShowToc: true
 TocOpen: true
@@ -577,3 +577,8 @@ At Vigo Retail, EKS was the right call. The CNCF ecosystem — ArgoCD + Dapr + K
 ---
 
 **From the Tech Radar:** The [May 13, 2026 Tech Radar](/radar/2026-05/) covered AgentOps meeting Kubernetes — Signadot's initiative to run AI agent testing inside live Kubernetes sandboxes. For teams choosing EKS specifically to run agentic workloads, this is the most relevant recent signal on where the K8s + AI convergence is heading operationally.
+
+## Explore by Category
+
+- [DevOps](/categories/devops/) — every in-depth article I have published on this topic.
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.

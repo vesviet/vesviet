@@ -477,3 +477,9 @@ The pod's `status.resize` field will be set to `Deferred`, meaning the kubelet a
 
 ### How does In-Place Pod Resizing help with AI inference costs?
 AI inference workloads often experience fluctuating CPU and memory demands during peak traffic windows. By resizing resource requests live without unloading model weights from memory, teams can avoid costly cold starts and maintain strict SLOs.
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [DevOps](/categories/devops/) — every in-depth article I have published on this topic.

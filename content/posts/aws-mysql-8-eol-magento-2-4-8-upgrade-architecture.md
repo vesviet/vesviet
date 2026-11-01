@@ -1,5 +1,5 @@
 ---
-title: "Upgrading Magento 2.4.5 to 2.4.8: Defusing the Tech Debt Time Bomb Before AWS MySQL 8.0 EOL"
+title: "Magento 2.4.8 Upgrade Before AWS MySQL 8.0 EOL"
 slug: "aws-mysql-8-eol-magento-2-4-8-upgrade-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-08-12T21:00:00+07:00"
@@ -15,7 +15,7 @@ tags:
   - "MariaDB"
   - "Technical Debt"
   - "ProxySQL"
-description: "A deep dive into the architectural risks, ProxySQL topologies, and the Leapfrog strategy to upgrade Magento 2.4.5 directly to 2.4.8 LTS before AWS MySQL 8.0 EOL."
+description: "Leapfrog Magento 2.4.5 to 2.4.8 LTS before AWS RDS MySQL 8.0 EOL: OpenSearch 2.19, ProxySQL multiplexing, Blue/Green, under 1 min downtime."
 ShowToc: true
 TocOpen: true
 canonicalURL: "https://tanhdev.com/posts/aws-mysql-8-eol-magento-2-4-8-upgrade-architecture/"
@@ -515,3 +515,8 @@ MySQL 8.4 LTS completely disables the legacy `mysql_native_password` authenticat
 {{< faq q="When should an enterprise transition from standard RDS MySQL 8.4 LTS to Aurora MySQL Serverless v3 or TiDB NewSQL?" >}}
 Enterprises should transition from standard single-instance RDS MySQL to Aurora MySQL Serverless v3 when traffic is characterized by unpredictable flash sales that require sub-second auto-scaling without provisioning for peak idle capacity. If catalog size exceeds 100 million SKUs or write QPS exceeds 20,000 requests per second across sharded order tables, organizations should bypass Aurora and adopt distributed NewSQL systems like TiDB, which provide automatic range sharding and distributed multi-Raft consensus.
 {{< /faq >}}
+
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [E-Commerce](/categories/e-commerce/) — every in-depth article I have published on this topic.

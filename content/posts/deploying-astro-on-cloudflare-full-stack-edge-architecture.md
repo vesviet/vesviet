@@ -1,5 +1,5 @@
 ---
-title: "Deploy Astro on Cloudflare Pages: Full-Stack Edge Architecture Guide (2026)"
+title: "Deploy Astro on Cloudflare Pages: Edge Architecture"
 slug: "deploying-astro-on-cloudflare-full-stack-edge-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-04-24T14:00:00+07:00"
@@ -595,3 +595,9 @@ Astro uses Islands Architecture to ship zero client JavaScript by default, rende
 {{< faq q="What are the cost and performance benefits of Cloudflare R2 image storage compared to AWS S3?" >}}
 Cloudflare R2 provides full S3 API compatibility while eliminating all egress bandwidth charges. For content-heavy publications serving high-resolution media across global edge networks, migrating from AWS S3 to Cloudflare R2 reduces monthly cloud storage bills by 60% to 85% with zero egress pricing penalties.
 {{< /faq >}}
+
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Cloudflare](/categories/cloudflare/) — every in-depth article I have published on this topic.

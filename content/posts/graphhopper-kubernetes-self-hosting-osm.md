@@ -469,3 +469,9 @@ Use the blue-green graph update pattern: maintain two StatefulSets (active and s
 - **Performance Profiling:** Trace Go and JVM bottlenecks in [Go pprof in Kubernetes: Remote Profiling & Flame Graphs](/posts/go-pprof-kubernetes-remote-profiling/).
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Kubernetes](/categories/kubernetes/) — every in-depth article I have published on this topic.
+- [E-Commerce](/categories/e-commerce/) — every in-depth article I have published on this topic.

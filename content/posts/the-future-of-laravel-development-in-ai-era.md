@@ -242,3 +242,7 @@ The TALL Stack consists of Tailwind CSS, Alpine.js, Laravel, and Livewire. It si
 ### What is a Modular Monolith in Laravel and when should you use it?
 
 A Modular Monolith structures a Laravel application into isolated domain modules like Invoicing and Inventory. This organization provides clear context boundaries that fit within AI LLM context windows, allowing AI agents to generate code without breaking architectural boundaries.
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.

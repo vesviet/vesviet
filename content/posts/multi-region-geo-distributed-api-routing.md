@@ -239,3 +239,8 @@ Combine domestic edge connection termination (Anycast IP via Cloudflare or AWS C
 - [Zero-Trust Service Mesh Security: SPIFFE/SPIRE & Istio](/posts/zero-trust-service-mesh-security-spiffe-spire-istio-golang/) — securing cross-region traffic with trust-domain federation.
 - [Replace MySQL Sharding with TiDB](/posts/mysql-scaling-sharding-tidb-architecture/) — the multi-region data layer behind read-local/write-global.
 - [Serverless E-Commerce: Cloudflare Workers & D1](/posts/serverless-ecommerce-cloudflare-d1/) — an edge-native alternative to regional origin routing.
+
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.

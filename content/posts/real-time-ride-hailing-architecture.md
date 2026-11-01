@@ -255,3 +255,8 @@ DISCO batches ride requests in 500ms windows and solves the batch as a global as
 H3 is Uber's open-source geospatial indexing library. It divides Earth's surface into a hierarchical hexagonal grid. Every GPS coordinate maps to a hex ID at any of 16 resolution levels. Uber uses H3 because hexagons have uniform adjacency (6 equidistant neighbors vs. squares' 4+4 non-equidistant) and support hierarchical aggregation (high-res for precise location, low-res for surge pricing zones) — all using the same mathematical system.
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.

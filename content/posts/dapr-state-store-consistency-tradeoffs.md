@@ -207,3 +207,8 @@ Applications should implement an idempotent retry loop with exponential backoff 
 - [Mastering Event-Driven Architecture with Dapr](/posts/mastering-event-driven-architecture-dapr/) — pub/sub and the transactional outbox alongside state management.
 - [Banking Microservices Architecture in Go](/posts/banking-microservices-architecture/) — where strong consistency is non-negotiable.
 - [Composable Banking Architecture Guide](/posts/composable-banking-architecture/) — consistency boundaries across modular services.
+
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.

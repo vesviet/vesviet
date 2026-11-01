@@ -1127,3 +1127,9 @@ Combining **Kubebuilder v4** with **`cilium/ebpf`** unlocks a new generation of 
 For production deployment strategies, service mesh benchmarks, and cloud-native blueprints, explore:
 - [Go Microservices Distributed Tracing Architecture](/posts/go-microservices/)
 - [AWS EKS vs ECS: Architecture, Cost & Use Cases](/posts/aws-eks-vs-ecs-comparison/)
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [DevOps](/categories/devops/) — every in-depth article I have published on this topic.

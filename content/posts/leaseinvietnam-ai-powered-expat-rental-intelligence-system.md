@@ -328,3 +328,8 @@ Reader interactions automatically trigger webhooks that route verified expat lea
 
 ### What is the difference between Auto mode and Manual mode in the content pipeline?
 Auto mode executes daily background jobs crawling core expat search topics and publishing verified rental market updates via GitOps. Manual mode allows administrators to trigger immediate multi-stage processing for breaking news or scam alerts by sending a single keyword command to the Telegram management bot.
+
+## Explore by Category
+
+- [AI](/categories/ai/) — every in-depth article I have published on this topic.
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.

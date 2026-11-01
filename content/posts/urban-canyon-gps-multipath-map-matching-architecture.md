@@ -573,3 +573,8 @@ A high-performance Go worker pool utilizing Kafka sliding windows and in-process
 ---
 
 > 🔬 **Full 100-Round Research Dossier:** Complete empirical specifications, benchmark tables, and mathematical formulas are archived in [`reports/research-urban-canyon-gps-multipath-map-matching-architecture-100-rounds.md`](https://github.com/vesviet/vesviet/tree/main/reports/research-urban-canyon-gps-multipath-map-matching-architecture-100-rounds.md).
+
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [E-Commerce](/categories/e-commerce/) — every in-depth article I have published on this topic.

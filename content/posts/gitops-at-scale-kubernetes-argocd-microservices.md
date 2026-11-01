@@ -370,3 +370,8 @@ Emergency rollbacks in GitOps are executed by running `git revert` on the offend
 ---
 
 **From the Tech Radar:** The [May 13, 2026 Tech Radar](/radar/2026-05/) covered a directly relevant signal — Signadot's AgentOps meets Kubernetes initiative, which bridges AI agent testing with Kubernetes sandbox environments. Relevant for any team running GitOps pipelines with agentic CI/CD workflows.
+
+## Explore by Category
+
+- [DevOps](/categories/devops/) — every in-depth article I have published on this topic.
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.

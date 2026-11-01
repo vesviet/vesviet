@@ -1,5 +1,5 @@
 ---
-title: "Prompt Engineering vs Fine-Tuning vs RAG: 2026 Decision Guide (Benchmarks)"
+title: "Prompt Engineering vs Fine-Tuning vs RAG: 2026 Guide"
 slug: "slm-fine-tune-vs-prompt-engineering"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
@@ -19,7 +19,7 @@ tags:
   - "RAG"
   - "SLM"
   - "vLLM"
-description: "Prompt engineering vs fine-tuning vs RAG: Complete 2026 decision guide comparing cost, latency, token limits, QLoRA fine-tuning, DeepSeek-R1 distillation. Benchmarks included."
+description: "Prompt engineering vs fine-tuning vs RAG: cost, latency and token limits compared, QLoRA fine-tuning and DeepSeek-R1 distillation."
 ShowToc: true
 TocOpen: true
 cover:
@@ -304,3 +304,8 @@ Direct Preference Optimization (DPO) eliminates the need to train a separate rew
 - [Production AI APIs: OAuth 2.1, Rate Limiting & Prompt Versioning](/posts/production-ai-apis-oauth-versioning-meta-predictions/) — versioning prompts and gating token spend.
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [AI](/categories/ai/) — every in-depth article I have published on this topic.
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.

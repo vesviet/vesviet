@@ -279,3 +279,7 @@ Provide explicit JSON Schema output formats detailing file path, line numbers, s
 
 ### How does vibe coding change the responsibilities of senior staff engineers?
 Senior engineers shift from reviewing syntax and boilerplate code to defining system architecture constraints, domain boundary interfaces, and automated AI review gate policies. By mentoring teams on security auditing and system-level trade-offs, senior staff maintain high software reliability across AI-generated codebases.
+
+## Explore by Category
+
+- [AI](/categories/ai/) — every in-depth article I have published on this topic.

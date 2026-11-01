@@ -1024,3 +1024,7 @@ Each of these goes deeper on a subsystem referenced above — from gRPC contract
 - **[Goroutine Leak Detection in Production](/posts/goroutine-leak-detection-production-golang/)** — Detecting and fixing goroutine leaks in production Go services with pprof.
 ---
 
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.

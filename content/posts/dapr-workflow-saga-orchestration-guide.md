@@ -532,3 +532,9 @@ Dapr Workflow (based on the Durable Task Framework) reached stable status in Dap
 For the observability layer on top of these workflows — how to propagate W3C trace context through Kafka headers, configure tail-based sampling, and redact PII at the OTel Collector — see [Go Microservices Distributed Tracing Architecture](/posts/go-microservices-distributed-tracing-architecture/). For a thorough overview of the entire production stack, see the [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Golang](/categories/golang/) — every in-depth article I have published on this topic.
+- [Microservices](/categories/microservices/) — every in-depth article I have published on this topic.

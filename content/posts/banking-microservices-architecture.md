@@ -523,3 +523,9 @@ For high-frequency accounts (e.g., popular merchants receiving thousands of paym
 {{< /faq >}}
 
 For deeper architectural patterns on structuring clean Go microservices, refer to our comprehensive blueprint on [modular Go microservices architecture](/posts/go-microservices/).
+
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [FinTech](/categories/fintech/) — every in-depth article I have published on this topic.
+- [Microservices](/categories/microservices/) — every in-depth article I have published on this topic.

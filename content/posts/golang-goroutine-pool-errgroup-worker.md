@@ -531,3 +531,8 @@ Allocating short-lived buffers (`bytes.Buffer` or `[]byte`) inside millions of t
 {{< /faq >}}
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Golang](/categories/golang/) — every in-depth article I have published on this topic.

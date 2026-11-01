@@ -536,3 +536,9 @@ MySQL 8.4 LTS makes WRITESET parallel replication the default setting, significa
 - **Microservices Guide:** Connect distributed database topologies across services in [Go Microservices Architecture: Production Guide](/posts/go-microservices/).
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [Database](/categories/database/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.

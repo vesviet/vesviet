@@ -14,7 +14,7 @@ tags:
   - "Order Fulfillment"
   - "VRP"
   - "Logistics"
-description: "How e-commerce giants decide which warehouse fulfills your order. Covers Available-to-Promise Redis Lua, Go multi-warehouse allocation solvers, Amazon CONDOR, and Google OR-Tools CVRP."
+description: "How giants pick the warehouse: Available-to-Promise Redis Lua, Go allocation solvers, Amazon CONDOR and Google OR-Tools CVRP."
 ShowToc: true
 TocOpen: true
 cover:
@@ -507,3 +507,9 @@ Anticipatory shipping uses predictive machine learning to transport high-probabi
 - [Surge Pricing & Spatial Indexing Architecture](/posts/surge-pricing-optimization-architecture/) — spatial indexing for last-mile delivery dispatch.
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [E-Commerce](/categories/e-commerce/) — every in-depth article I have published on this topic.

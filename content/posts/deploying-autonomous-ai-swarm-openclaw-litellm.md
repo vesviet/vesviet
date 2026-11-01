@@ -572,3 +572,9 @@ A centralized gateway implements leaky-bucket token rate limiters, token expendi
 ---
 
 > 🔬 **Full 100-Round Research Dossier:** Complete empirical specifications, benchmark tables, and mathematical formulas are archived in [`reports/research-deploying-autonomous-ai-swarm-openclaw-litellm-100-rounds.md`](https://github.com/vesviet/vesviet/tree/main/reports/research-deploying-autonomous-ai-swarm-openclaw-litellm-100-rounds.md).
+
+## Explore by Category
+
+- [AI](/categories/ai/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.

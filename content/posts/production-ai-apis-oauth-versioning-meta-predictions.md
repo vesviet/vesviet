@@ -252,3 +252,9 @@ Production prompt versioning requires hard-pinning prompt semver tags in configu
 ### Why do teams migrate away from AI frameworks like LangChain in production?
 
 Frameworks like LangChain simplify rapid prototyping by abstracting core model integration steps. However, in production workloads, these abstractions obscure critical control points such as custom error recovery, precise state management, and fine-grained cost attribution. Teams build lightweight custom orchestration wrappers to gain direct control over resilience mechanisms.
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [DevOps](/categories/devops/) — every in-depth article I have published on this topic.

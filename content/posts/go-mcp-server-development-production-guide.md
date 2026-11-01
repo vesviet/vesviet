@@ -599,3 +599,9 @@ To support long-running tasks that exceed typical client timeouts, adopt the asy
 
 ### Why should I choose Go for Model Context Protocol development?
 Go provides low memory footprint (~15MB RAM) and near-instantaneous startup times, making it ideal for desktop sidecars and containerized micro-agents. Furthermore, its native goroutine concurrency model scales effortlessly to thousands of parallel tool calls and persistent Server-Sent Events (SSE) connections while maintaining strict latency SLAs.
+
+## Explore by Category
+
+- [Golang](/categories/golang/) — every in-depth article I have published on this topic.
+- [AI](/categories/ai/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.

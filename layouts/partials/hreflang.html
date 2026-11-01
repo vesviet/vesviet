@@ -1,5 +1,6 @@
 {{- /* layouts/partials/hreflang.html */ -}}
-{{- /* Authoritative partial for bidirectional hreflang synchronization */ -}}
+{{- /* One-way hreflang policy: vesviet (tanhdev.com) emits only its self alternate + x-default=self. */ -}}
+{{- /* learn.tanhdev.com emits its self alternate plus the en counterpart pointing up to tanhdev.com. */ -}}
 
 {{- $isVesviet := hasPrefix site.BaseURL "https://tanhdev.com" -}}
 {{- $selfLang := cond $isVesviet "en" "vi" -}}
@@ -52,9 +53,9 @@
     {{- $selfURL = printf "%s/" $selfURL -}}
   {{- end -}}
 
-  {{- /* Resolve counterpart target URL */ -}}
+  {{- /* Resolve counterpart target URL — never on vesviet (one-way rule: no references to learn) */ -}}
   {{- $targetURL := "" -}}
-  {{- if and (not $suppress) $isBilingualScope -}}
+  {{- if and (not $suppress) $isBilingualScope (not $isVesviet) -}}
     {{- if .Params.translationURL -}}
       {{- $targetURL = .Params.translationURL -}}
     {{- else -}}
@@ -69,9 +70,13 @@
   {{- /* Emit Self Alternate Tag */ -}}
   <link rel="alternate" hreflang="{{ $selfLang }}" href="{{ $selfURL }}">
 
-  {{- /* Emit Counterpart and x-default Alternate Tags */ -}}
-  {{- if and (not $suppress) (ne $targetURL "") -}}
+  {{- /* Emit Counterpart Alternate Tag (learn only — vesviet never points to learn) */ -}}
+  {{- if and (not $isVesviet) (not $suppress) (ne $targetURL "") -}}
   <link rel="alternate" hreflang="{{ $targetLang }}" href="{{ $targetURL }}">
+  {{- end -}}
+
+  {{- /* Emit x-default: on vesviet it points to self; on learn it points up to tanhdev.com */ -}}
+  {{- if and (not $suppress) (or $isVesviet (ne $targetURL "")) $isBilingualScope -}}
   {{- $xDefaultURL := cond $isVesviet $selfURL $targetURL -}}
   <link rel="alternate" hreflang="x-default" href="{{ $xDefaultURL }}">
   {{- end -}}

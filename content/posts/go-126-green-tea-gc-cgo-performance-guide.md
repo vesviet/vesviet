@@ -318,3 +318,8 @@ Yes, build with `GOEXPERIMENT=nogreenteagc`. However, this opt-out will be remov
 ---
 
 **From the Tech Radar:** When Go 1.26 shipped, the [May 10, 2026 Tech Radar](/radar/2026-05/) covered the operational impact of the Green Tea GC in the context of Kubernetes-as-AI-OS and the shift toward Agentic Engineering — including how reduced GC pause times are directly relevant for Go-based AI inference sidecars.
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Golang](/categories/golang/) — every in-depth article I have published on this topic.

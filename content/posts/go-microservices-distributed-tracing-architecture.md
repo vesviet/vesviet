@@ -379,3 +379,9 @@ Tail sampling is highly stateful. If `num_traces` is configured too high without
 
 ### How do I trace SQL queries securely without leaking PII?
 Use the `oteldb` wrapper driver and ensure tracing is configured to omit raw SQL query parameters. This ensures the telemetry records the parameterized statement (`SELECT * FROM users WHERE email = ?`) rather than the raw user data.
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Golang](/categories/golang/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.

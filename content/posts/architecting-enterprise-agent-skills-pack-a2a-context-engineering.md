@@ -1,5 +1,5 @@
 ---
-title: "Architecting Enterprise Agent Skills: A2A 1.0 Protocols, Context Engineering & Fail-Closed Multi-Agent Governance"
+title: "Enterprise Agent Skills: A2A 1.0 & Fail-Closed Design"
 slug: "architecting-enterprise-agent-skills-pack-a2a-context-engineering"
 author: "Lê Tuấn Anh"
 date: "2026-10-31T08:00:00+07:00"
@@ -855,3 +855,8 @@ For engineering teams scaling AI-native architectures and zero-trust systems, ex
 - [Zero-Trust Service Mesh Security: SPIFFE/SPIRE & Istio in Golang](/posts/zero-trust-service-mesh-security-spiffe-spire-istio-golang/) — Implementing cryptographic workload attestation and mutual TLS microsegmentation.
 - [Enterprise Architecture Reading Map](/reading-map/) — A curated roadmap navigating high-throughput distributed systems, event-driven sagas, and AI agent engineering.
 - [Principal Consulting & Architecture Advisory](/hire/) — Engage our principal engineering advisory to design and deploy enterprise-grade agent skills packs and multi-agent infrastructure.
+
+## Explore by Category
+
+- [AI](/categories/ai/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.

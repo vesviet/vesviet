@@ -516,3 +516,8 @@ Saga Choreography is ideal for simple 2-to-4 step workflows where microservices 
 
 ### What are the main tradeoffs between using Dapr Pub/Sub and direct Kafka SDKs?
 Dapr Pub/Sub simplifies multi-language microservice fleets by providing uniform APIs, sidecar resilience, and YAML-configurable brokers. Direct Kafka SDK usage is preferred when applications require custom partition assignment, complex Kafka Streams processing, or sub-millisecond latency budgets without sidecar loopback overhead.
+
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.

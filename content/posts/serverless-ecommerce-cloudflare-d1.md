@@ -256,3 +256,9 @@ Durable Objects guarantee serial consistency using a single-threaded execution m
 {{< faq q="When should engineering teams avoid Cloudflare Workers for e-commerce platforms?" >}}
 Cloudflare Workers may not suit projects requiring extensive third-party plugin ecosystems or turnkey admin panels. Storefronts with complex localized tax calculation rules or legacy ERP integrations often benefit from traditional platform tooling. Developers should evaluate edge migration based on custom API complexity versus ecosystem requirements.
 {{< /faq >}}
+
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Cloudflare](/categories/cloudflare/) — every in-depth article I have published on this topic.

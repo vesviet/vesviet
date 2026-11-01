@@ -1,5 +1,5 @@
 ---
-title: "Real-Time Cart with Cloudflare D1 & Durable Objects: Edge-Native (2026)"
+title: "Real-Time Cart with Cloudflare D1 & Durable Objects"
 slug: "cloudflare-d1-durable-objects-realtime-cart"
 author: "Lê Tuấn Anh"
 date: "2026-06-01T10:00:00+07:00"
@@ -15,7 +15,7 @@ tags:
   - "Durable Objects"
   - "TypeScript"
   - "Edge Computing"
-description: "Build a real-time cart with Cloudflare D1 & Durable Objects: sub-15ms WebSocket sync across 300+ PoPs, zero-Redis locking, transactional TypeScript actors. Complete guide."
+description: "Build a real-time edge cart with D1 & Durable Objects: sub-15ms WebSocket sync, zero-Redis locking, transactional TypeScript actors."
 ShowToc: true
 TocOpen: true
 cover:
@@ -693,3 +693,8 @@ The Cloudflare Worker acts as a secure API gateway mediating checkout transition
 {{< /faq >}}
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [E-Commerce](/categories/e-commerce/) — every in-depth article I have published on this topic.

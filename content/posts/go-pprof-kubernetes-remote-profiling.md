@@ -593,3 +593,9 @@ On-demand pprof via `kubectl port-forward` provides a detailed point-in-time sna
 {{< /faq >}}
 
 For complete architectural patterns on structuring resilient Go backend systems, see our foundational blueprint on [modular Go microservices architecture](/posts/go-microservices/) and [high-throughput banking microservices](/posts/banking-microservices-architecture/).
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Golang](/categories/golang/) — every in-depth article I have published on this topic.
+- [Kubernetes](/categories/kubernetes/) — every in-depth article I have published on this topic.

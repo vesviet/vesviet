@@ -258,3 +258,8 @@ Operating high-throughput OSRM clusters under real-world traffic reveals non-obv
 - **Architectural Mitigation:** Added a specialized `initContainer` script that runs `shm_unlink` and `ipcrm` cleanup commands prior to launching `osrm-datastore`. Configured Kubernetes Pod QoS to `Guaranteed` (requests equal to limits) to prevent the kernel OOM killer from targeting routing pods.
 
 For complete architectural patterns on resilient backend infrastructure, see our guides on [modular Go microservices architecture](/posts/go-microservices/) and [OSRM vs GraphHopper comparison](/posts/osrm-vs-graphhopper-architecture-comparison/).
+
+## Explore by Category
+
+- [DevOps](/categories/devops/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.

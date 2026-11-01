@@ -509,3 +509,8 @@ For large static distance matrices (e.g. 1,000x1,000 driver-order pairs), OSRM T
 - **Live Traffic with OSRM:** Scale live traffic updates with zero downtime in [OSRM Shared Memory on Kubernetes for Live Traffic](/posts/osrm-shared-memory-kubernetes-live-traffic/).
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Backend](/categories/backend/) — every in-depth article I have published on this topic.

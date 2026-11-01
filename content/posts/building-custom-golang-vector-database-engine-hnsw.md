@@ -1166,3 +1166,8 @@ The engine implements fine-grained striped mutex locking combined with lock-free
 - [Go pprof Tutorial: CPU & Memory Profiling](/posts/golang-pprof-profiling-memory-cpu-tutorial/) — measuring the allocation and pause behaviour of a vector engine.
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [AI](/categories/ai/) — every in-depth article I have published on this topic.

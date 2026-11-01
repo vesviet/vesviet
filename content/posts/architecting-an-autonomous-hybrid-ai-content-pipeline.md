@@ -194,3 +194,8 @@ GitOps quality gates execute automated static analysis and site compilation chec
 - [GraphRAG vs Naive RAG: Enterprise Guide](/posts/graphrag-vs-naive-rag-enterprise-guide/) — retrieval strategy for the embedding stage.
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [AI](/categories/ai/) — every in-depth article I have published on this topic.
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.

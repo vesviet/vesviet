@@ -582,3 +582,9 @@ A data race occurs when multiple goroutines read/write to the same memory locati
 A leaked goroutine consumes a baseline of 2KB for its stack, but it can grow larger (doubling dynamically up to 1GB on 64-bit systems). Additionally, any heap objects referenced by the leaked goroutine's stack variables will remain pinned in memory, often resulting in megabytes of leaked memory per goroutine.
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Golang](/categories/golang/) — every in-depth article I have published on this topic.
+- [Observability](/categories/observability/) — every in-depth article I have published on this topic.

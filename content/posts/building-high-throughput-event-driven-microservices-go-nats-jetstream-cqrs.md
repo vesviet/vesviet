@@ -561,3 +561,7 @@ Combining **Go, NATS JetStream, and CQRS** establishes a highly performant bluep
 4. **Step 4: Continuous Observability:** Export NATS JetStream stream metrics (consumer lag, unacknowledged message counts, and bytes discarded) directly into Prometheus and Grafana dashboards to trigger automated pod scaling.
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [Microservices](/categories/microservices/) — every in-depth article I have published on this topic.

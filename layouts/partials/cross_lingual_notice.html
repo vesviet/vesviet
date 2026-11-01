@@ -1,7 +1,10 @@
 {{- /* layouts/partials/cross_lingual_notice.html */ -}}
-{{- /* Automated reciprocal cross-lingual callout notice for paired posts, series, radar */ -}}
+{{- /* One-way cross-lingual callout notice: renders ONLY on learn.tanhdev.com pointing up to tanhdev.com. */ -}}
+{{- /* On vesviet (tanhdev.com) this partial is a no-op — vesviet never emits outbound links to learn. */ -}}
 
-{{- if .IsPage -}}
+{{- $isVesviet := hasPrefix site.BaseURL "https://tanhdev.com" -}}
+
+{{- if and .IsPage (not $isVesviet) -}}
   {{- $isBilingualSection := in (slice "posts" "series" "radar") .Section -}}
   {{- if $isBilingualSection -}}
 

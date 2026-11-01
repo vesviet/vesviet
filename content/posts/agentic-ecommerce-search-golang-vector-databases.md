@@ -187,3 +187,8 @@ They can be if every request triggers a full reasoning loop using frontier model
 - [GraphRAG vs Naive RAG Guide](/posts/graphrag-vs-naive-rag-enterprise-guide/) — when graph traversal beats flat vector similarity.
 - [Go MCP Server Production Guide](/posts/go-mcp-server-development-production-guide/) — exposing the search engine as an agent-callable tool.
 - [Autonomous Hybrid AI Pipeline](/posts/architecting-an-autonomous-hybrid-ai-content-pipeline/) — routing between local SLMs and cloud LLMs to control cost.
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [AI](/categories/ai/) — every in-depth article I have published on this topic.

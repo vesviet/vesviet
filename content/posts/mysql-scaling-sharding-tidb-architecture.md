@@ -306,3 +306,9 @@ TiDB delivers horizontal write scaling without forcing developers to rewrite que
 - **High-Concurrency Case Study:** Review Shopee's database architecture scaling to 10M+ concurrent users in [Shopee Architecture: Database Scaling at Scale](/series/shopee-architecture/04-database-scale/).
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Database](/categories/database/) — every in-depth article I have published on this topic.
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.

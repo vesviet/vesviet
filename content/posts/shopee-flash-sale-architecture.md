@@ -470,3 +470,9 @@ Fail-Open permits requests to proceed when an upstream check degrades, relying o
 - [Alipay Double 11: 544,000 TPS Architecture](/posts/alipay-double-11-architecture-tps/) — extreme transaction processing at global payment scale.
 
 {{< author-cta >}}
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [E-Commerce](/categories/e-commerce/) — every in-depth article I have published on this topic.

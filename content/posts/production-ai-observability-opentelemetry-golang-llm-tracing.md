@@ -919,3 +919,9 @@ OpenTelemetry Transformation Language (OTTL) executes transform processor rules 
 2. OpenTelemetry Go SDK Documentation: `https://pkg.go.dev/go.opentelemetry.io/otel`
 3. OTTL (OpenTelemetry Transformation Language) Specification: `https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/transformprocessor`
 4. Langfuse OTel Integration Guide & Arize Phoenix OpenTelemetry Specs (2026).
+
+## Explore by Category
+
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [AI](/categories/ai/) — every in-depth article I have published on this topic.

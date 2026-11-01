@@ -630,3 +630,9 @@ Redis HNSW candidate retrieval applies pre-filtered bitmap masks tied to real-ti
 ---
 
 > 🔬 **Full 100-Round Research Dossier:** Complete empirical specifications, benchmark tables, and mathematical formulas are archived in [`reports/research-beyond-quick-commerce-15-second-customer-intelligence-architecture-100-rounds.md`](https://github.com/vesviet/vesviet/tree/main/reports/research-beyond-quick-commerce-15-second-customer-intelligence-architecture-100-rounds.md).
+
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [AI](/categories/ai/) — every in-depth article I have published on this topic.
+- [E-Commerce](/categories/e-commerce/) — every in-depth article I have published on this topic.

@@ -9,7 +9,7 @@ lastmod: "2026-10-01T19:27:00+07:00"
 draft: false
 mermaid: true
 tags: ["Golang", "Microservices", "Architecture", "Domain-Driven Design", "Kratos", "Dapr", "Saga Pattern"]
-description: "Migrating an enterprise e-commerce monolith to 21 distributed microservices using Golang 1.25 and DDD. Explore Kratos architecture, Saga patterns, and race conditions."
+description: "Migrate an e-commerce monolith to 21 Golang microservices: Kratos clean architecture, Saga orchestration, idempotency, 25k QPS race conditions."
 categories: ["Architecture", "Engineering"]
 ShowToc: true
 TocOpen: true
@@ -733,3 +733,8 @@ In high-throughput microservices, internal REST/JSON communication incurs severe
 {{< faq q="When should an engineering organization choose TiDB Multi-Raft NewSQL over traditional MySQL sharding?" >}}
 Traditional application-level MySQL sharding requires complex routing layers, breaks cross-shard foreign keys, and makes dynamic re-sharding an operational nightmare. Distributed NewSQL engines like TiDB or CockroachDB provide transparent horizontal scalability, automatic Multi-Raft range rebalancing, and distributed ACID transactions while presenting a standard MySQL/PostgreSQL interface. Teams should transition to TiDB when single-table row counts exceed 100 million or write QPS consistently surpasses 20,000 requests per second.
 {{< /faq >}}
+
+## Explore by Category
+
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
+- [Engineering](/categories/engineering/) — every in-depth article I have published on this topic.
