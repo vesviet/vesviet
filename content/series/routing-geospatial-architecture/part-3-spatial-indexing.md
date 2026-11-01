@@ -3,7 +3,7 @@ title: "Part 3: Spatial Indexing — Uber H3, PostGIS & Redis GEO"
 slug: "part-3-spatial-indexing"
 description: "Why piping 10,000 raw coordinates directly into routing engines causes catastrophic failure, and how to construct high-speed spatial pre-filters using Uber H3, Redis GEO, and Go 1.25."
 date: "2026-06-14T22:50:00+07:00"
-lastmod: "2026-09-14T18:00:00+07:00"
+lastmod: "2026-11-01T21:00:00+07:00"
 author: "Lê Tuấn Anh"
 draft: false
 weight: 4
@@ -486,3 +486,8 @@ If a passenger stands on the boundary of an H3 cell, the closest available drive
 You have mastered spatial pre-filtering using Uber H3 and Redis GEO. Now let's integrate these primitives into a high-concurrency microservice gateway!
 
 🔗 **Next Step:** Continue to **[Part 4: Golang Routing Microservices with Kratos & Dapr Framework](/series/routing-geospatial-architecture/part-4-golang-microservices/)** to construct high-throughput gRPC routing gateways and manage distributed circuit breaking.
+
+## Explore by Category
+
+- [Backend](/categories/backend/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.

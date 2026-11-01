@@ -3,7 +3,7 @@ title: "Part 2: Environment Setup with Docker, OSM & Golang"
 slug: "part-2-environment-setup"
 description: "Production-grade deployment blueprint for local and cloud routing engines using OpenStreetMap PBF extracts, GraphHopper Java 21, OSRM shared memory, and a resilient Go 1.25 client."
 date: "2026-06-14T22:45:00+07:00"
-lastmod: "2026-09-14T18:00:00+07:00"
+lastmod: "2026-11-01T21:00:00+07:00"
 author: "Lê Tuấn Anh"
 draft: false
 weight: 3
@@ -644,3 +644,8 @@ Execute `osmium fileinfo hcmc.osm.pbf`. This command validates file headers, bou
 With your containerized routing cluster fully operational and integrated with a resilient Go 1.25 client, you are ready to master discrete spatial partitioning algorithms!
 
 🔗 **Next Step:** Continue to **[Part 3: Spatial Indexing — Uber H3, PostGIS & Redis GEO](/series/routing-geospatial-architecture/part-3-spatial-indexing/)** to explore hexagonal hierarchical indexing and sub-millisecond proximity queries.
+
+## Explore by Category
+
+- [Backend](/categories/backend/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.

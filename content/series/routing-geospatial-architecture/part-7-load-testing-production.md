@@ -3,7 +3,7 @@ title: "Part 7: Load Testing & Production Hardening"
 slug: "part-7-load-testing-production"
 description: "Mastering 50,000 RPS load testing for geospatial routing: Eliminating Coordinated Omission in K6, tuning deep Linux kernel network parameters, and building high-throughput Go 1.25 load generators."
 date: 2026-06-15T07:20:00+07:00
-lastmod: "2026-09-14T18:00:00+07:00"
+lastmod: "2026-11-01T21:00:00+07:00"
 author: "Lê Tuấn Anh"
 draft: false
 weight: 8
@@ -498,3 +498,30 @@ sequenceDiagram
 Executing high-throughput load tests at 50,000 RPS requires moving beyond generic testing practices and addressing the fundamental mechanics of operating system kernels, network socket lifecycles, and CPU memory architectures. By eliminating Coordinated Omission and adopting tuned Linux sysctl parameters, engineering teams ensure their routing infrastructure remains rock-solid under enterprise traffic surges.
 
 In the final chapter, **[Part 8: Zero-Downtime Map Updates & Multi-Region Kubernetes](/series/routing-geospatial-architecture/part-8-zero-downtime-k8s/)**, we will explore how to update multi-gigabyte road networks on live Kubernetes clusters without dropping a single request using atomic `/dev/shm` generational symlink hot-swaps.
+
+---
+
+## FAQ
+
+{{< faq q="How do you load test a routing API at 50,000 RPS?" >}}
+Drive distributed k6 or vegeta workers from multiple zones so you test the edge and the engine, not one NIC. Shape traffic to production ratios (single-route vs matrix vs map-match), ramp in stages, and alert on P99 and error budgets — never on average latency, which hides tail collapse.
+{{< /faq >}}
+
+{{< faq q="What P99 latency should a production routing engine target?" >}}
+Single-route requests belong under 10–15 ms P99 and distance-matrix batches under 50 ms P99 at realistic batch sizes. If P50 looks fine but P99 blows past 5x P50, you are seeing GC pauses, epoll backlog saturation, or lock contention — profile before scaling hardware.
+{{< /faq >}}
+
+{{< faq q="What are the most common production bottlenecks in routing services?" >}}
+In order of frequency: engine heap pressure and GC pauses on large graphs, connection-pool exhaustion between API and engine, epoll/socket backlog defaults tuned for web apps rather than 50K RPS, and cold caches after map updates. Linux sysctl tuning (somaxconn, tcp_tw_reuse) usually pays off before any hardware upgrade.
+{{< /faq >}}
+
+{{< faq q="How do you benchmark a 1000×1000 distance matrix correctly?" >}}
+Isolate the matrix endpoint, pin the graph in memory (mmap warm-up), and run fixed batches with constant concurrency while capturing per-request timing distribution — not just totals. Compare RAM-resident versus disk-backed graphs separately; mixing them into one average hides the latency cliff you are trying to measure.
+{{< /faq >}}
+
+> 🎯 Practical counterpart: **[OSRM vs GraphHopper — Routing Engine Architecture Comparison](/posts/osrm-vs-graphhopper-architecture-comparison/)** — benchmarks, RAM vs CPU trade-offs, and production selection criteria.
+
+## Explore by Category
+
+- [Backend](/categories/backend/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.

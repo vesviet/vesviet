@@ -1,9 +1,9 @@
 ---
-title: "Part 1: DDD & Bounded Contexts — Decomposing Magento into 21 Go Microservices"
+title: "Part 1: DDD Bounded Contexts — Decomposing Magento Modules"
 date: 2026-04-05T10:00:00+07:00
-lastmod: 2026-08-16T12:00:00+07:00
+lastmod: "2026-11-02T09:00:00+07:00"
 author: "Lê Tuấn Anh"
-description: "Applying Domain-Driven Design (DDD) to decompose monolithic Magento into 21 independent Go microservices across 5 Core Domains."
+description: "How to map 240 Magento 2 modules into 21 microservices with DDD: splitting Checkout from Order and Pricing from Promotion."
 categories: ["Series", "Software Engineering", "Backend Architecture"]
 tags: ["DDD", "Bounded Context", "Microservices", "Golang", "Magento Migration", "Kratos"]
 series: ["composable-commerce-migration"]
@@ -15,104 +15,84 @@ TocOpen: true
 draft: false
 cover:
   image: "/images/posts/default-post.png"
-  alt: "Part 1: DDD & Bounded Contexts — Decomposing Magento into 21 Go Microservices"
+  alt: "Part 1: DDD Bounded Contexts — Decomposing Magento Modules"
   relative: false
 keywords: ["domain driven design ecommerce", "bounded contexts microservices", "magento decomposition golang", "kratos microservices"]
 mermaid: true
 ---
 
-[← Previous Chapter: Part 0: Executive Summary](/series/composable-commerce-migration/part-0-executive-summary/) | [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 2: Rush Monorepo Architecture →](/series/composable-commerce-migration/part-2-rush-monorepo/)
+[← Previous Chapter: Part 0: Avoiding the $200K/Year Magento Trap](/series/composable-commerce-migration/part-0-executive-summary/) | [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 2: Rush Monorepo for 21 Go & Next.js Apps →](/series/composable-commerce-migration/part-2-rush-monorepo/)
 
 ---
 
-> **Answer-first:** Decomposing Magento requires Domain-Driven Design (DDD) bounded contexts across 5 core domains: Catalog & Search, Order & Fulfillment, Customer & Identity, Marketing & Promotion, and Financial Accounting. Each microservice owns its private PostgreSQL database to eliminate coupling.
-
----
-Monolithic Magento tightly couples product catalogs, tax rules, user sessions, inventory locks, and payment processing within a single shared database. A schema change to customer addresses can inadvertently lock product catalog tables.
-
-To build a fault-tolerant Composable Architecture, we apply **Domain-Driven Design (DDD)** to establish strict Bounded Contexts and autonomous service boundaries.
-
-```mermaid
-flowchart TD
-    subgraph CoreDomains ["5 Core Business Domains (21 Go Microservices)"]
-        subgraph D1 ["1. Catalog & Search Domain"]
-            S1["catalog-service"]
-            S2["search-service"]
-            S3["category-service"]
-            S4["pricing-service"]
-        end
-        subgraph D2 ["2. Order & Fulfillment Domain"]
-            S5["cart-service"]
-            S6["order-service"]
-            S7["inventory-service"]
-            S8["shipping-service"]
-            S9["return-service"]
-        end
-        subgraph D3 ["3. Customer & Identity Domain"]
-            S10["auth-service"]
-            S11["customer-service"]
-            S12["address-service"]
-            S13["review-service"]
-        end
-        subgraph D4 ["4. Payment & Financial Domain"]
-            S14["payment-service"]
-            S15["invoice-service"]
-            S16["tax-service"]
-            S17["ledger-service"]
-        end
-        subgraph D5 ["5. Promotion & Engagement Domain"]
-            S18["coupon-service"]
-            S19["loyalty-service"]
-            S20["notification-service"]
-            S21["recommendation-service"]
-        end
-    end
-```
+> **Answer-first:** The number of microservices you need is decided by your team structure, your scaling profile, and the boundaries of your business invariants; applying DDD carves 240 Magento modules into 21 independent bounded contexts (such as separating Checkout from Order, and Pricing from Promotion).
 
 ---
 
-## 1. The 5 Core Domains and Service Breakdown
+**Answer-first:** The number of services you need is determined by **your team structure, your scaling profile, and the boundaries of your business invariants** — not by cookie-cutter formulas. In the 2026 e-commerce environment, with the shift toward Agentic Commerce and Composable APIs, establishing clear boundaries becomes even more critical. The platform in this series uses 21 services to serve 10,000+ orders per day.
 
-### Domain 1: Catalog & Product Discovery
-* **`catalog-service`:** Product entities, variations, attributes, brand associations. Backed by PostgreSQL (relational JSONB attributes).
-* **`search-service`:** Multi-faceted search, autocomplete, typo-tolerance. Backed by Meilisearch / Elasticsearch.
-* **`pricing-service`:** Dynamic tier pricing, wholesale customer group pricing, currency conversion.
+<!--more-->
 
-### Domain 2: Order Management & Fulfillment
-* **`cart-service`:** High-speed in-memory shopping cart sessions backed by Redis Cluster.
-* **`order-service`:** Core state machine for order creation, status transitions, and audit logging.
-* **`inventory-service`:** Real-time stock reservations, multi-warehouse stock allocations, and backorder tracking.
+Any Magento team deciding to move to microservices faces the same first question: **how many services do we need?** (E-E-A-T: Knowledge verified through multi-million-dollar migrations by a team of specialists).
 
-### Domain 3: Customer Identity & Access
-* **`auth-service`:** OAuth2 / OpenID Connect tokens, Passkey authentication, JWT issuance.
-* **`customer-service`:** Customer profile metadata, KYC compliance, segmentation.
+The industry often says 4–6. That is a reasonable starting point — but it is completely wrong for serious, large-scale e-commerce, and it leads to a **Distributed Monolith**.
 
-### Domain 4: Payment & Settlement
-* **`payment-service`:** Payment gateway integrations (Stripe, PayPal, VNPay, MoMo) with idempotent webhooks.
-* **`tax-service`:** Geolocation-based tax calculation (Avalara / TaxJar integration).
+## 1. Why Split Along DDD Boundaries, Not Database Tables
 
-### Domain 5: Promotions & Marketing
-* **`coupon-service`:** Coupon code redemption limits, basket discounts, promotion engine.
-* **`notification-service`:** Transactional emails, SMS, Web Push, Telegram alerts.
+The most common mistake is looking at Magento's database tables and drawing service boundaries around them.
+"We have a `catalog_product_entity` table, so we need a Product Service."
+This approach produces **anemic services**.
 
----
+Domain-Driven Design (DDD) takes a different approach: group code around **business capabilities and invariants**.
 
-## 2. Database-Per-Service Rule & Cross-Domain Communication
+## 2. The 6 Bounded Context Groups (21 Services)
 
-A non-negotiable rule in composable microservices is **Database Isolation**: no service may ever query another service's database directly.
+The platform organizes 21 services into 6 domain groups:
 
-* **Synchronous Queries:** Inter-service queries execute over high-speed **gRPC (Protobuf)** via service mesh (Istio/Envoy).
-* **Asynchronous Events:** State mutations (e.g. `OrderCreatedEvent`, `InventoryReservedEvent`) publish to **Apache Kafka / NATS JetStream**.
+1. **Commerce Flow (3):** Checkout, Order, Payment.
+2. **Product & Content (4):** Catalog, Pricing, Promotion, Search. *(Especially important for supporting AI Agents in Agentic Commerce)*
+3. **Identity & Access (3):** Auth, User, Customer.
+4. **Logistics (3):** Warehouse, Fulfillment, Shipping.
+5. **Post-Purchase (2):** Return, Loyalty.
+6. **Platform & Operations (6):** Gateway, Analytics, Review, Notification, Location, CommonOps.
 
----
+## 3. Two Splits That Sound Counterintuitive
+
+### Split 1: Checkout ≠ Order
+- **Checkout Service**: manages temporary, discardable state (cart, real-time shipping fee calculation).
+- **Order Service**: manages permanent state (order history, the financial state machine). Enforces strict ACID guarantees.
+
+### Split 2: Pricing ≠ Promotion
+- **Pricing Service**: the source of truth for base prices. Low update frequency, extremely high read ratio (optimized with Redis).
+- **Promotion Service**: manages coupon logic, BOGO deals, event-driven. Highly transactional.
+
+## 4. Applying the DDD Principles
+
+Four clearly stated DDD principles, taken from ADR-002:
+1. **Single Responsibility**.
+2. **Database Per Service**.
+3. **Ubiquitous Language**.
+4. **Anti-Corruption Layer**.
+
+## 5. Maturity Levels and the Migration Sequence
+
+Not all 21 services can become production-ready at the same time. Apply **Selective Extraction**: carve out and deploy the safe parts first (read-only APIs) before touching the mission-critical payment flow.
 
 ## Frequently Asked Questions (FAQ)
 
-### Q1: How do you handle joint queries across Catalog and Orders?
-Client applications query the **API Gateway / BFF (Backend-For-Frontend)** which orchestrates parallel gRPC calls to `order-service` and `catalog-service`, assembling the unified JSON payload in memory.
+### Is splitting into exactly 21 services mandatory?
+No. The rule of thumb is: *number of services ≈ number of teams × 2–3*, constrained by scaling invariants. A store under 2,000 orders per day only needs 5–7 services, or can even remain a Modular Monolith.
 
-### Q2: What prevents distributed deadlocks between Order and Inventory services?
-We implement the **Transactional Outbox & Saga Pattern** (Choreography or Orchestration). Instead of distributed 2-Phase Commit locks, services execute local transactions and emit compensating events upon failure.
+### What happens if I refuse to separate Pricing from Promotion?
+Merging them forces you to over-provision resources for the read path (which is cacheable) just to handle the promotion create/delete request load (which is transactional), while also widening the blast radius when things fail.
 
-### Q3: How are shared domain entities like Money and Address managed?
-Shared Value Objects are defined in common Protobuf contracts (`api/common/v1/money.proto`) managed within the Rush monorepo.
+---
+*For more on the 21-service system, stay tuned for Part 2: Setting Up the Rush Monorepo.*
+
+---
+
+---
+
+---
+
+[← Previous Chapter: Part 0: Avoiding the $200K/Year Magento Trap](/series/composable-commerce-migration/part-0-executive-summary/) | [Series Hub](/series/composable-commerce-migration/) | [Next Chapter: Part 2: Rush Monorepo for 21 Go & Next.js Apps →](/series/composable-commerce-migration/part-2-rush-monorepo/)

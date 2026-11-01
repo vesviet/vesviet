@@ -3,7 +3,7 @@ title: "Part 8: Zero-Downtime Map Updates & Multi-Region Kubernetes"
 slug: "part-8-zero-downtime-k8s"
 description: "Hot-swapping multi-gigabyte OpenStreetMap road networks with zero downtime on Kubernetes using POSIX shared memory atomic symlinks, Argo Rollouts, and multi-region GeoDNS failover."
 date: 2026-06-15T19:30:00+07:00
-lastmod: "2026-09-14T18:00:00+07:00"
+lastmod: "2026-11-01T21:00:00+07:00"
 author: "Lê Tuấn Anh"
 draft: false
 weight: 9
@@ -517,3 +517,28 @@ sequenceDiagram
 Across this 8-part masterclass—from Contraction Hierarchies mathematical foundations, OpenStreetMap ingestion pipelines, and Uber H3 spatial indexing, to Go 1.25 microservices, 60 FPS WebGL rendering, Redis semantic caching, 50,000 RPS load testing, and zero-downtime Kubernetes orchestration—we have established the definitive engineering blueprint for **Enterprise Geospatial & Routing Architecture** in 2026–2027.
 
 By optimizing hardware memory access patterns, eliminating runtime garbage-collection pauses, and building resilient distributed failure boundaries, engineering teams can operate world-class mobility platforms that deliver sub-millisecond response times at massive planetary scale.
+
+---
+
+## FAQ
+
+{{< faq q="How do zero-downtime map updates actually work?" >}}
+The engine holds two graph buffers: live and shadow. A new OSM extract is built into the shadow buffer, validated against canary routes, then swapped in with an atomic pointer swap — in-flight requests finish on the old graph, new requests immediately use the new one. No restart, no cache wipe.
+{{< /faq >}}
+
+{{< faq q="How do you run stateful routing pods blue-green in Kubernetes?" >}}
+Treat the graph dataset as a versioned artifact (S3/R2 object + checksum), mount it via initContainers or a sidecar downloader, and gate the Service switch on readiness probes that verify the new graph version. Traffic shifts pod-by-pod; the old ReplicaSet stays warm for instant rollback.
+{{< /faq >}}
+
+{{< faq q="How do you sync map data across multiple regions?" >}}
+Publish one immutable, versioned map artifact to object storage with per-region replication, and have every region's engine pin the same artifact digest. Coordinate cutovers with a staggered rollout (region by region) so a bad dataset never hits all regions at once, and keep the previous digest retrievable for rollback.
+{{< /faq >}}
+
+{{< faq q="What is the rollback strategy for a bad map dataset?" >}}
+Because artifacts are immutable and digest-pinned, rollback is redeploying the previous digest — minutes, not hours. Canary route validation before the swap (a fixed set of known-good routes with expected distances) is what catches bad datasets before they reach the live buffer at all.
+{{< /faq >}}
+
+## Explore by Category
+
+- [Backend](/categories/backend/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.

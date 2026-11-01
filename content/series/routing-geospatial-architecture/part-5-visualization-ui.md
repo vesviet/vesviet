@@ -3,7 +3,7 @@ title: "Part 5: Route Visualization UI with Mapbox & Deck.gl"
 slug: "part-5-visualization-ui"
 description: "Visualizing 100,000+ real-time vehicle trajectories and dynamic geospatial grids at 60 FPS using WebGL/WebGPU hardware acceleration with Deck.gl and Mapbox GL JS integrated with a high-throughput Go 1.25 binary telemetry streamer."
 date: 2026-06-14T23:05:00+07:00
-lastmod: "2026-09-14T18:00:00+07:00"
+lastmod: "2026-11-01T21:00:00+07:00"
 author: "Lê Tuấn Anh"
 draft: false
 weight: 6
@@ -662,3 +662,32 @@ sequenceDiagram
 Visualizing high-density geospatial telemetry at scale requires abandoning CPU-bound DOM structures and GeoJSON strings in favor of raw GPU WebGL/WebGPU pipelines and compact binary communication. By orchestrating Go 1.25 zero-allocation streaming pipelines with Deck.gl interleaved shaders on Mapbox GL JS, engineering teams achieve sustained 60 FPS performance while keeping client memory footprints under 80 MB.
 
 In the next chapter, **[Part 6: Spatial Indexing with Uber H3 & Semantic Caching](/series/routing-geospatial-architecture/part-6-redis-semantic-caching/)**, we will explore how to index geographic routes using Uber H3 discrete global grids, construct spatial bounding box queries, and implement sub-millisecond semantic route caching using Redis and Go.
+
+---
+
+## FAQ
+
+{{< faq q="Mapbox GL JS or Deck.gl — which layer handles what?" >}}
+Mapbox GL JS owns the base map: tiles, camera, and user interaction. Deck.gl renders your data layers on top of it via an interleaved WebGL context — route paths, H3 hexagons, vehicle telemetry. Keep them in one coordinate view and let Deck.gl own everything data-heavy.
+{{< /faq >}}
+
+{{< faq q="How do you render 1M+ route points at a sustained 60 FPS?" >}}
+Never feed raw GeoJSON strings to the GPU. Encode geometry into compact binary attributes (Float32 positions, quantized colors), stream them from a Go 1.25 zero-allocation pipeline over WebSocket binary frames, and let Deck.gl interleaved shaders draw instanced primitives. Client memory stays under 80 MB in our benchmarks.
+{{< /faq >}}
+
+{{< faq q="Why is classic GeoJSON a bottleneck for high-density telemetry?" >}}
+GeoJSON is text: verbose to parse, duplicated coordinates, and DOM-bound conversion steps before anything reaches the GPU. At 100K+ features the parse-and-GC cycle alone breaks frame budgets. Binary attribute arrays plus typed-array uploads remove both the parse cost and the GC pressure.
+{{< /faq >}}
+
+{{< faq q="How do you keep the client memory footprint under control?" >}}
+Three levers: (1) quantize attributes (Int16 for H3 cells, Uint8 for categories), (2) window the data — only load tiles and time slices in the current viewport, and (3) reuse pooled GPU buffers instead of reallocating per frame. Together these hold memory flat as telemetry volume grows.
+{{< /faq >}}
+
+{{< faq q="How do you secure Mapbox tokens in a public frontend?" >}}
+Never ship a long-lived secret token. Use URL-restricted, short-lived Mapbox access tokens issued by your Go backend, scope them to required APIs (styles, directions), and rotate them via the same edge-worker authentication layer that guards your routing APIs.
+{{< /faq >}}
+
+## Explore by Category
+
+- [Backend](/categories/backend/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.

@@ -3,7 +3,7 @@ title: "Executive Summary: Geospatial & Routing Architecture"
 slug: "executive-summary"
 description: "Comprehensive architectural overview of high-throughput in-memory routing engines and distance matrix APIs built with Go 1.25, GraphHopper, OSRM, Redis, and Uber H3 spatial indexing."
 date: "2026-06-14T22:35:00+07:00"
-lastmod: "2026-09-14T18:00:00+07:00"
+lastmod: "2026-11-01T21:00:00+07:00"
 author: "Lê Tuấn Anh"
 draft: false
 weight: 1
@@ -585,3 +585,8 @@ The architecture implements multi-tier graceful degradation: If the primary OSRM
 ---
 
 [Series Index](/series/routing-geospatial-architecture/) | [Next Chapter: Part 1: Core Algorithms (A*, Dijkstra) Visualized →](/series/routing-geospatial-architecture/part-1-core-algorithms/)
+
+## Explore by Category
+
+- [Backend](/categories/backend/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.

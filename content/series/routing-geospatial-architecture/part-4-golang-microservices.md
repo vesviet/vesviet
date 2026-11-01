@@ -3,7 +3,7 @@ title: "Part 4: Golang Routing Microservices with Kratos & Dapr Framework"
 slug: "part-4-golang-microservices"
 description: "Architecting high-throughput Go 1.25 API gateways for GraphHopper and OSRM: Circuit breakers, Singleflight coalescing, Flattened 1D Protobuf arrays, and Dapr durable workflows."
 date: "2026-06-14T23:00:00+07:00"
-lastmod: "2026-09-14T18:00:00+07:00"
+lastmod: "2026-11-01T21:00:00+07:00"
 author: "Lê Tuấn Anh"
 draft: false
 weight: 5
@@ -518,3 +518,8 @@ gRPC operates over HTTP/2 with stream multiplexing, running thousands of concurr
 You have constructed an enterprise-grade Go 1.25 API gateway fortified with circuit breakers and Singleflight coalescing. Now let's project this real-time routing telemetry onto responsive WebGL map visualizations!
 
 🔗 **Next Step:** Continue to **[Part 5: Route Visualization UI with Mapbox & Deck.gl](/series/routing-geospatial-architecture/part-5-visualization-ui/)** to render 50,000 moving vehicle vectors in the browser with hardware-accelerated TripsLayers.
+
+## Explore by Category
+
+- [Backend](/categories/backend/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.

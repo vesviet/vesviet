@@ -3,7 +3,7 @@ title: "Part 1: Core Routing Algorithms — A* & Dijkstra Visualized"
 slug: "part-1-core-algorithms"
 description: "In-depth visual breakdown of core logistics graph algorithms: Dijkstra, A*, Edge-Based Graphs, and Contraction Hierarchies (CH/CCH) with production Go 1.25 implementations."
 date: "2026-06-14T22:35:00+07:00"
-lastmod: "2026-09-14T18:00:00+07:00"
+lastmod: "2026-11-01T21:00:00+07:00"
 author: "Lê Tuấn Anh"
 draft: false
 weight: 2
@@ -541,3 +541,10 @@ In an edge-based graph, executing a U-turn requires transitioning from directed 
 You have explored the graph mathematics behind Dijkstra, A*, and Contraction Hierarchies. Now let's construct the actual containerized infrastructure to run these engines in production!
 
 🔗 **Next Step:** Continue to **[Part 2: Zero to Hero Environment Setup (Docker, OSM, Golang)](/series/routing-geospatial-architecture/part-2-environment-setup/)** to configure GraphHopper and OSRM Docker containers, download OpenStreetMap extracts, and launch your first local routing cluster.
+
+> 🎯 Practical counterpart: **[OSRM vs GraphHopper — Routing Engine Architecture Comparison](/posts/osrm-vs-graphhopper-architecture-comparison/)** — benchmarks, RAM vs CPU trade-offs, and production selection criteria.
+
+## Explore by Category
+
+- [Backend](/categories/backend/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.

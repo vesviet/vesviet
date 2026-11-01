@@ -3,7 +3,7 @@ title: "Part 6: Spatial Clustering with Uber H3 & Semantic Route Caching"
 slug: "part-6-redis-semantic-caching"
 description: "Achieving an 80%+ cache hit rate and cutting routing engine compute load by 80% using Uber H3 discrete global grids, probabilistic XFetch early expiration, and Go 1.25."
 date: 2026-06-15T07:15:00+07:00
-lastmod: "2026-09-14T18:00:00+07:00"
+lastmod: "2026-11-01T21:00:00+07:00"
 author: "Lê Tuấn Anh"
 draft: false
 weight: 7
@@ -467,3 +467,28 @@ sequenceDiagram
 Semantic route caching on Uber H3 and Redis Cluster transforms geospatial routing infrastructure from a fragile, compute-bound bottleneck into an ultra-scalable, sub-millisecond distributed system. By marrying discrete global grid quantization with heading vector validation and probabilistic XFetch eviction, engineering teams achieve sustained 80%+ cache hit ratios while eliminating catastrophic highway turn errors.
 
 In the next chapter, **[Part 7: Load Testing & Production Hardening](/series/routing-geospatial-architecture/part-7-load-testing-production/)**, we will benchmark our cluster under a 50,000 RPS barrage using distributed K6, tune Linux kernel socket parameters (`tcp_tw_reuse`, epoll limits), and optimize Go 1.25 runtime memory arena allocations.
+
+---
+
+## FAQ
+
+{{< faq q="Which Uber H3 resolution should I use for route caching?" >}}
+Resolutions 7–9 are the practical band: res 7 (~5 km cells) for long-haul corridor caching, res 8 (~1.2 km) for urban ride-hailing, res 9 (~0.17 km) for last-mile precision. Pick one resolution per product surface rather than mixing them in a single cache key scheme.
+{{< /faq >}}
+
+{{< faq q="How is semantic route caching different from plain key-value caching?" >}}
+Plain caching matches exact A→B strings. Semantic caching quantizes space (H3 cells), heading (8 bearing buckets), and departure-time windows first — so near-identical routes hit the same key. Combined with an XFetch-style probabilistic early refresh (thundering-herd damping), hit rates rise without serving stale routes under load.
+{{< /faq >}}
+
+{{< faq q="Redis GEO vs Uber H3 index — when do I use which?" >}}
+Redis GEO (geohash-backed GEOSEARCH) is ideal for radius queries like 'drivers within 3 km' with O(log N) lookups and zero extra infrastructure. H3 wins when you need hierarchical aggregation, hex-neighbor traversal, or cache-key quantization. Production systems use both: H3 keys for the cache, Redis GEO for live fleet queries.
+{{< /faq >}}
+
+{{< faq q="What TTL strategy keeps route caches fresh without wrecking hit rates?" >}}
+Tiered TTLs by volatility: 60–120 s for live traffic-weighted routes, 10–30 min for static geometry-influenced routes, hours for map-matched long-haul corridors. Layer XFetch early refresh on the hot tier so popular keys refresh probabilistically before expiry instead of stampeding the engine at once.
+{{< /faq >}}
+
+## Explore by Category
+
+- [Backend](/categories/backend/) — every in-depth article I have published on this topic.
+- [Architecture](/categories/architecture/) — every in-depth article I have published on this topic.
