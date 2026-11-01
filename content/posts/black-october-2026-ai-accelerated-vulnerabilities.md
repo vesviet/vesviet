@@ -48,9 +48,9 @@ timeline
     2026-09-27 : Citrix NetScaler CVE-2026-88771 / CVE-2026-88772<br/>CVSS 9.5 unauth RCE, webshells in the wild
     2026-10-03 : FortiMail CVE-2026-104286 actively exploited<br/>unauthenticated arbitrary file write
     2026-10-14 : Microsoft Patch Tuesday: 1,000+ CVEs,<br/>3 zero-days, 52 rated CVSS 9.0+
-    2026-10-20 : PHP team announces out-of-band release;<br/>PHP2Shell details leak pre-embargo
-    2026-10-21 : CVE-2026-109618 / CVE-2026-109619 patched;<br/>CISA emergency alert
-    2026-10-26 : Both PHP CVEs added to CISA KEV;<br/>Citrix/Fortinet/Ivanti close out 29 vulns
+    2026-10-20 : PHP team announces out-of-band release,<br/>PHP2Shell details leak pre-embargo
+    2026-10-21 : CVE-2026-109618 / CVE-2026-109619 patched,<br/>CISA emergency alert
+    2026-10-26 : Both PHP CVEs added to CISA KEV,<br/>Citrix/Fortinet/Ivanti close out 29 vulns
 ```
 
 | Window | Event | Why it mattered |

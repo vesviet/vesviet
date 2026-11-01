@@ -71,7 +71,7 @@ I work with teams that need:
 
 | Project / Employer | Scope | Outcome |
 |--------------------|-------|---------|
-| Lotte Innovate (2025–Present) | Magento 2 Data Pipelines & Caching | Lower latency, query & caching performance tuning |
+| Lotte Innovate (2025–Present) | Magento 2 Data Pipelines & Caching; AI-assisted engineering (coding agents, agent skills pack, AI code review) | Lower latency & higher throughput; engineering workflows automated with AI agents |
 | Vigo Retail (2021–2025) | PHP Monolith → Go Microservices, B2B/B2C APIs | -35% API latency, zero-downtime EKS, millions req/month |
 | SnapMart Inc. (2020–2021) | Magento 2 Backend, landers.ph grocery | Custom extensions, checkout debugging, unit testing |
 | ICM Factory Direct (2019–Present) | Solution Architect, Regna.com & Mobile APIs | Multi-channel mobile REST APIs, full-stack platform architecture |

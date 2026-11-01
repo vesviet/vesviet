@@ -596,6 +596,28 @@ button:active, a.button:active, .btn-tactile:active {
   }
 }
 
+.radar-group-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent-primary);
+  margin: 1rem 0 0.55rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.radar-group-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-subtle);
+}
+.radar-group-label:first-of-type {
+  margin-top: 0;
+}
+
 .radar-item {
   display: flex;
   flex-direction: column;

@@ -48,6 +48,11 @@ canonicalURL: "https://tanhdev.com/about/"
 * **Impact:**
   - Optimized data processing pipelines for high-traffic e-commerce operations, reducing page load times and improving system throughput.
   - Improved database query performance and implemented caching strategies, contributing to lower latency and higher system stability across production environments.
+* **Recent focus (2026):**
+  - Integrated AI coding agents (Claude Code + MCP toolchains) into daily platform workflows: feature scaffolding, unit-test generation, and AI-assisted code review gated by deterministic AST checks before merge.
+  - Applied LLM-assisted analysis for SQL query profiling, log triage, and Magento data-pipeline debugging, accelerating root-cause isolation on production incidents.
+  - Built and maintained `@vesviet/agent-skills` — a versioned agent skills pack with role-scoped tool locking and A2A-style JSON context contracts — to automate repetitive engineering and operations tasks.
+  - Operated an autonomous AI content pipeline (hybrid local SLM + cloud LLM orchestration) that researches, drafts, and QA-checks technical publications end-to-end, with human review as the final gate.
 
 #### Senior Engineer — Vigo Retail *(Sep 2021 – Oct 2025)*
 * **Scope:** B2B & B2C E-Commerce APIs | Go Microservices Migration
