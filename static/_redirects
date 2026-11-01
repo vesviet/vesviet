@@ -772,3 +772,9 @@
 /radar/go-synctest-concurrency/ /radar/2026-08/go-synctest-concurrency/ 301
 /radar/2026-08/radar-2026-08-23-go-synctest-concurrency /radar/2026-08/go-synctest-concurrency/ 301
 /radar/2026-08/radar-2026-08-23-go-synctest-concurrency/ /radar/2026-08/go-synctest-concurrency/ 301
+
+# Tech Radar November 2026 digest aliases
+/radar/2026-11/tech-radar-november-2026-digest /radar/2026-11/ 301
+/radar/2026-11/tech-radar-november-2026-digest/ /radar/2026-11/ 301
+/radar/2026-11/tech-radar-digest-november-2026 /radar/2026-11/ 301
+/radar/2026-11/tech-radar-digest-november-2026/ /radar/2026-11/ 301
