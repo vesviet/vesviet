@@ -1,8 +1,8 @@
 ---
-title: "Chapter 2: Shopee Flash Sale Engine — Redis Lua & Zero Overselling"
+title: "Shopee Flash Sale Engine: Redis Lua, Zero Overselling"
 slug: "02-flash-sale-engine"
 date: "2026-05-05T08:20:00+07:00"
-lastmod: "2026-09-28T06:35:00+07:00"
+lastmod: "2026-11-02T10:00:00+07:00"
 draft: false
 weight: 2
 series: ["shopee-architecture"]

@@ -435,3 +435,12 @@ When an API responds with HTTP 429 Too Many Requests, clients using fixed retry 
 ---
 
 Proceed to [Chapter 4: Dual-Write Prevention via Transactional Outbox in Go](/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/) to master transactional event streaming.
+
+---
+
+## Go Deeper in the High-Concurrency Systems Series
+
+- [Chapter 1: API Gateway vs Service Mesh](/series/high-concurrency-systems/api-gateway-vs-service-mesh/) — boundary responsibilities, mTLS, latency trade-offs
+- [Chapter 4: Transactional Outbox & Dual-Write Prevention](/series/high-concurrency-systems/transactional-outbox-pattern-dual-write/) — reliable event streaming under load
+- [Distributed Locking: Redlock vs ZooKeeper](/series/high-concurrency-systems/distributed-locking-redlock-zookeeper/) — when rate limiting needs a lock layer
+- [Idempotency & API Design for Payments](/series/high-concurrency-systems/idempotency-api-design-payments/) — retry-safe request handling at scale

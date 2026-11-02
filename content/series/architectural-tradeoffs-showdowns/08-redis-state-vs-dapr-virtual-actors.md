@@ -3,7 +3,7 @@ title: "Part 8: Redis State Store vs Dapr Virtual Actors Showdown"
 slug: "08-redis-state-vs-dapr-virtual-actors"
 author: "Lê Tuấn Anh"
 date: "2026-08-24T14:15:04+07:00"
-lastmod: "2026-08-24T14:15:04+07:00"
+lastmod: "2026-11-02T10:00:00+07:00"
 draft: false
 series: ["architectural-tradeoffs-showdowns"]
 weight: 8
@@ -41,7 +41,7 @@ mermaid: true
 
 ---
 
-> **Answer-first:** Redis in-memory state with Lua scripts excels at high-throughput (100k+ QPS), low-latency caching and raw data manipulation. However, for complex distributed state machines, turn-based concurrency, and long-lived stateful AI agent context, Dapr Virtual Actors eliminate race conditions, distributed locking overhead, and manual lifecycle plumbing via single-threaded mailboxes and automatic hydration.
+> **Answer-first:** Redis in-memory state with Lua scripts excels at high-throughput (100k+ QPS), low-latency caching and raw data manipulation. However, for complex distributed state machines, turn-based concurrency, and long-lived stateful AI agent context, Dapr Virtual Actors eliminate race conditions, distributed locking overhead, and manual lifecycle plumbing via single-threaded mailboxes and automatic hydration. In our Pareto 80/20 contention benchmark at 25,000 updates/s, atomic Redis Lua held P99 at 3.4ms while Dapr Virtual Actors posted a flat 6.8ms P99 (12.5ms P99.9) with 0.0% aborts and 87% lower RAM for 1M agents — full breakdown in Section 8.
 
 > **Prerequisite:** Core concepts of in-memory key-value caching, distributed lock lease management (Redlock), the Virtual Actor pattern, and state serialization.
 
@@ -707,6 +707,10 @@ Dapr Virtual Actors implement the Orleans actor model, where each unique actor I
 
 {{< faq q="When should engineering teams choose raw Redis over Dapr Virtual Actors?" >}}
 Engineering teams should choose raw Redis when building stateless, read-heavy workloads exceeding 100,000 QPS where sub-millisecond latency (< 1ms) is mandatory, such as global response caching, session token validation, leaderboard rankings, or high-throughput API rate limiting. In these scenarios, the overhead of Dapr sidecar IPC hops (~0.35ms) and mailbox queue coordination is unnecessary.
+{{< /faq >}}
+
+{{< faq q="Where does Dapr Virtual Actor state persist — and how much RAM does it save?" >}}
+Actor state lives in a pluggable state store with automatic passivation: idle actors dehydrate to disk, so 1,000,000 agents fit in 620MB of RAM versus 4.8GB for always-resident Redis keys — an 87% reduction — while built-in reminders (<2% CPU overhead) survive pod restarts and cluster rebalancing.
 {{< /faq >}}
 
 {{< faq q="How do Dapr Actor Reminders survive pod restarts and cluster rebalancing?" >}}

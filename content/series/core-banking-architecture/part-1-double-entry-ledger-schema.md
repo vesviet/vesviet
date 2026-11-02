@@ -2,7 +2,7 @@
 title: "Double-Entry Ledger Schema: Zero-Drift Balance Architecture"
 slug: "part-1-double-entry-ledger-schema"
 date: "2026-06-18T11:00:00+07:00"
-lastmod: "2026-09-14T18:00:00+07:00"
+lastmod: "2026-11-02T10:00:00+07:00"
 draft: false
 description: "Double-entry ledger schema design: prevent balance inconsistencies under concurrent transactions with PostgreSQL append-only journals and TigerBeetle 150k TPS."
 weight: 1
@@ -27,6 +27,23 @@ mermaid: true
 > **Answer-first:** A production-grade financial ledger decouples historical transaction journaling from balance derivation by enforcing an append-only immutable architecture. By enforcing the mathematical identity $\sum \text{Debits} \equiv \sum \text{Credits}$ at the schema level, minor integer units, and ring-buffer batching, core banking engines eliminate balance drift, floating-point rounding errors, and catastrophic row contention under 150,000+ TPS transaction throughput.
 
 > **Prerequisite:** Practical familiarity with relational schema design, ACID transactions, and database row-level locking. For broader context, refer to the [Core Banking Architecture Overview](/series/core-banking-architecture/) and explore our [Banking Microservices Architecture](/posts/banking-microservices-architecture/).
+
+### How do I design a double-entry ledger schema that prevents balance inconsistencies under concurrent transactions?
+
+**Short answer:** make the journal append-only and derive balances — never `UPDATE` a balance row in place. When a hot account does keep a stored balance, serialize writers with a pessimistic row lock inside the transfer transaction:
+
+```sql
+BEGIN;
+SELECT balance FROM accounts
+ WHERE account_id = $1
+   FOR UPDATE;                    -- pessimistic lock: serializes concurrent writers on this row
+UPDATE accounts SET balance = balance - $1 WHERE account_id = $1;
+INSERT INTO ledger_entries (debit_account, credit_account, amount_minor, idempotency_key)
+VALUES (...);                      -- append-only journal = source of truth
+COMMIT;
+```
+
+`FOR UPDATE` converts the race-prone read-modify-write into a serialized critical section, while the append-only journal guarantees the stored balance is always reconstructible — zero drift by construction. Section 4 builds the full two-phase transfer engine in Go on top of this invariant.
 
 ---
 
