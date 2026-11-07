@@ -1,6 +1,6 @@
 # Vesviet Content Index (tanhdev.com)
 
-> Snapshot date: 2026-10-31 · Branch `main` · Total content files: **384** (~1,089,051 words)
+> Snapshot date: 2026-11-07 · Branch `main` · Total content files: **389** (~1,098,000 words)
 
 > Site: Hugo + PaperMod, `en` default, canonical host `https://tanhdev.com/`
 > English flagship portfolio. Regenerate this index after every batch upgrade.
@@ -9,9 +9,9 @@
 
 | Section | Files | Notes |
 |---|---|---|
-| `content/posts/` | 67 | 67 with Answer-first (100.0%); 18 standalone posts upgraded to 2027 SOTA Masterclass with 100-round deep research dossiers & flagship case study (Anchor Pillar Hub #1 `go-microservices.md` upgraded 2026-10-08, ~255,551 words); 10/10 Anchor Pillar Hubs SOTA certified |
+| `content/posts/` | 68 | 68 with Answer-first (100.0%); 19 standalone posts upgraded to 2027 SOTA Masterclass with 100-round deep research dossiers & flagship case study (Anchor Pillar Hub #1 `go-microservices.md`, 10/10 Anchor Pillar Hubs SOTA certified, Flagship Post `black-october-2026` SOTA certified) |
 | `content/series/` | 252 | 25 series; 226 chapters + 25 series `_index.md` + 1 parent `_index.md` (~692,166 words); 100% Answer-first |
-| `content/radar/` | 42 | 34 radar editions (2026-04 → 2026-10) + 7 monthly `_index.md` + 1 parent `_index.md` (~131,500 words) |
+| `content/radar/` | 44 | 35 radar editions (2026-04 → 2026-11) + 8 monthly `_index.md` + 1 parent `_index.md` (~135,000 words) |
 | `content/categories/` | 16 | ai, architecture, backend, cloudflare, database, devops, e-commerce, engineering, fintech, golang, kubernetes, microservices, observability, payments, tech-radar + parent `_index.md` (~636 words) |
 | Root pages | 7 | `about`, `hire`, `legal-notice`, `privacy-policy`, `privacy-policy-markpdf`, `reading-map`, `terms-of-service` (~7,281 words) |
 | `reports/` | 584 | 250 research JSON dossiers, 251 research MD docs + audits, series content indexes, 33 knowledge cards, GSC audit & Master Remediation Plan 2026-10-08 |

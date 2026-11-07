@@ -41,7 +41,7 @@ mermaid: true
 
 ---
 
-> **Answer-first:** Redis in-memory state with Lua scripts excels at high-throughput (100k+ QPS), low-latency caching and raw data manipulation. However, for complex distributed state machines, turn-based concurrency, and long-lived stateful AI agent context, Dapr Virtual Actors eliminate race conditions, distributed locking overhead, and manual lifecycle plumbing via single-threaded mailboxes and automatic hydration. In our Pareto 80/20 contention benchmark at 25,000 updates/s, atomic Redis Lua held P99 at 3.4ms while Dapr Virtual Actors posted a flat 6.8ms P99 (12.5ms P99.9) with 0.0% aborts and 87% lower RAM for 1M agents — full breakdown in Section 8.
+> **Answer-first:** Redis in-memory state with atomic Lua scripts achieves 3.4ms P99 at 100k+ QPS for flat caching, whereas Redlock suffers from clock drift and spinlock contention. Conversely, Dapr Virtual Actors maintain a flat 6.8ms P99 with 0.0% aborts and 87% lower RAM across 1M stateful AI agents via turn-based mailboxes, automatic state hydration, and consistent hashing placement.
 
 > **Prerequisite:** Core concepts of in-memory key-value caching, distributed lock lease management (Redlock), the Virtual Actor pattern, and state serialization.
 

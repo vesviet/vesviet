@@ -23,6 +23,8 @@ canonicalURL: "https://tanhdev.com/radar/2026-08/tech-radar-august-2026/"
 ---
 > **Answer-First:** The August 2026 Tech Radar highlights enterprise shifts toward AI-native infrastructure and optimized cloud-native runtimes. Key recommendations include **Go 1.26 Green Tea GC**, **Argo CD 3.4**, **SPIFFE/SPIRE with Istio Ambient Mesh**, and the **Official Go MCP SDK**, while cautioning against naive vector-only RAG and legacy sidecars to guarantee sub-50ms P99 latency and strict isolation.
 
+> **Prerequisite:** Production familiarity with Go 1.25+ memory management (`runtime/metrics`), Kubernetes v1.34+ container runtime interfaces (`containerd` v2.0 / `cgroups v2`), SPIFFE/SPIRE X.509 workload identity attestation, and JSON-RPC 2.0 transport mechanics.
+
 ---
 
 ## 1. Executive Overview & Radar Matrix
@@ -171,6 +173,27 @@ flowchart TB
     C -- "Issue X.509 SVID Cert" --> D
     D -- "Encrypted L4 Traffic" --> E
     D -- "Sub-ms Wasm Invocation" --> F
+```
+
+The sequence diagram below traces the runtime lifecycle of an authenticated MCP tool invocation triggering an in-place Kubernetes v1.35 `cgroups v2` resource mutation alongside continuous SPIFFE SVID attestation:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Agent as AI Agent Orchestrator
+    participant MCP as Go 1.26 MCP Server (Green Tea GC)
+    participant Ztunnel as Istio Ambient L4 ztunnel
+    participant SPIRE as SPIRE Agent (Unix Socket)
+    participant Kubelet as K8s v1.35 Kubelet (cgroups v2)
+
+    SPIRE->>Ztunnel: Push rotated X.509 SVID (TTL 60m) via SDS API
+    Agent->>MCP: POST /mcp (tools/call: resize_k8s_pod_in_place)
+    MCP->>Ztunnel: Outbound K8s API PATCH (pods/resize subresource)
+    Ztunnel->>Kubelet: HBONE mTLS Tunnel (SPIFFE ID Verified)
+    Kubelet->>Kubelet: Mutate cgroups v2 cpu.max & memory.high (0 restarts)
+    Kubelet-->>Ztunnel: HTTP 200 OK (PodResizeStatus: Completed)
+    Ztunnel-->>MCP: Decrypted Response Stream
+    MCP-->>Agent: JSON-RPC 2.0 CallToolResult (Latency < 18ms)
 ```
 
 ### 6.2. Authentic Go MCP Server Handler Implementation

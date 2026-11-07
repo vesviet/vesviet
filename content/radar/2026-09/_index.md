@@ -32,26 +32,28 @@ aliases:
 The strategic adoption matrix for September 2026 distributed systems, cloud-native infrastructure, and AI engineering is mapped below:
 
 ```mermaid
-quadrantChart
-    title September 2026 Systems & Infrastructure Radar
-    x-axis "Low Operational Overhead" --> "High Operational Overhead"
-    y-axis "Incremental Evolutionary" --> "Revolutionary Paradigm Shift"
-    quadrant-1 "TRIAL (High Impact, Higher Cluster Complexity)"
-    quadrant-2 "ADOPT (Strategic Core: High Impact, Low Overhead)"
-    quadrant-3 "ASSESS (Evaluate & Domain-Specific)"
-    quadrant-4 "HOLD (Deprecate / Cost Penalty)"
-    "Model Context Protocol 2.0": [0.30, 0.94]
-    "WASI 0.3 Component Model": [0.25, 0.92]
-    "Wasmtime 46+ Micro-Runtimes": [0.20, 0.85]
-    "DeepSeek-V3 MLA Architecture": [0.32, 0.89]
-    "SGLang EAGLE-2 Speculative Decoding": [0.38, 0.88]
-    "Disaggregated Prefill-Decode (PD)": [0.36, 0.95]
-    "vLLM v1 & PagedAttention v3": [0.33, 0.96]
-    "Uber H3 + OSRM Distance Cache": [0.15, 0.78]
-    "Kafka KRaft 4.0 Share Groups": [0.45, 0.72]
-    "Cilium Tetragon 1.4 In-Kernel Observability": [0.35, 0.86]
-    "Traditional Heavyweight Pod Sidecars": [0.75, 0.22]
-    "Bespoke Agent HTTP Polling": [0.85, 0.15]
+flowchart TD
+    subgraph ADOPT["ADOPT (Strategic Core: Production Proven)"]
+        A1["vLLM v1 & PagedAttention v3<br/>Standalone C++ Core | Multi-Tier RoCEv2 KV Cache"]
+        A2["Disaggregated Prefill-Decode (PD)<br/>Zero-Copy RoCEv2 KV Streaming | 11x TTFT Reduction"]
+        A3["Model Context Protocol 2.0 (MCP 2.0)<br/>Bidirectional SSE | Dynamic Discovery (-72% Tokens)"]
+        A4["WASI 0.3 WebAssembly Component Model<br/>Native Async Streams | Sub-1ms Cold Starts (<0.8ms)"]
+        A5["Wasmtime 46+ Micro-Runtimes<br/>Cranelift AOT | 1.2MB-4.5MB RAM | Nanosecond IPC"]
+        A6["DeepSeek-V3 Multi-Head Latent Attention<br/>75% KV Cache Compression | Decoupled RoPE"]
+        A7["SGLang EAGLE-2 Speculative Decoding<br/>Multi-Layer Drafter | Dynamic Tree Attention (3.5x)"]
+    end
+    subgraph TRIAL["TRIAL (High Impact: Higher Cluster Complexity)"]
+        T1["Cilium Tetragon 1.4 In-Kernel Observability<br/>eBPF sys_execve Termination in 12 µs"]
+        T2["Kafka KRaft 4.0 Share Groups<br/>Queuing Semantics on Partitioned Event Streams"]
+    end
+    subgraph ASSESS["ASSESS (Evaluate & Domain-Specific)"]
+        AS1["Uber H3 + OSRM Distance Cache<br/>Spatial Hex Binning | Sub-Millisecond Matrix Routing"]
+    end
+    subgraph HOLD["HOLD (Deprecate / Cost Penalty & Latency Overhead)"]
+        H1["Traditional Heavyweight Pod Sidecars<br/>15ms-35ms IPC Latency Overhead | 150MB+ Memory"]
+        H2["Bespoke Agent HTTP Polling Wrappers<br/>Head-of-Line Blocking | Schema Token Bloat"]
+    end
+    ADOPT --> TRIAL --> ASSESS --> HOLD
 ```
 
 ### Technology Radar Ring Matrix (September 2026)

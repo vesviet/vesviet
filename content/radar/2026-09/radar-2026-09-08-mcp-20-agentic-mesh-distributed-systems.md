@@ -26,6 +26,8 @@ aliases:
 
 > **Answer-First:** The ratification of Model Context Protocol 2.0 transforms AI agent tool execution from rigid point-to-point client-server RPC into a distributed event-driven Agentic Mesh. Featuring bidirectional SSE streaming, dynamic capability discovery reducing prompt tokens by 72%, and WASI 0.3 kernel-isolated sandboxing, production Go 1.26 implementations achieve sub-12ms P99 latency at 10,000 QPS with cryptographic SPIFFE/SPIRE workload attestation.
 
+> **Prerequisite:** Readers should possess working knowledge of client-server RPC protocols (JSON-RPC 2.0, HTTP/2 Server-Sent Events), container and microservice isolation primitives (Linux namespaces, cgroups v2, eBPF syscall tracing), and familiarity with distributed identity standards (SPIFFE/SPIRE mTLS X.509 SVIDs) and concurrent systems programming in Go.
+
 ---
 
 ```yaml
@@ -444,18 +446,20 @@ The incident metric progression is summarized in the operational telemetry table
 Engineering organizations frequently struggle to determine whether to adopt standardized MCP 2.0 or adapt existing microservice communication backbones. To guide infrastructure decision-makers, we analyze the structural trade-offs across three primary architectural options:
 
 ```mermaid
-quadrantChart
-    title Enterprise Agent Communication Trade-Off Matrix
-    x-axis "Low Operational Complexity" --> "High Operational Complexity"
-    y-axis "Static Deterministic RPC" --> "Dynamic LLM-Native Flexibility"
-    quadrant-1 "TRIAL (High Value, High Operational Complexity)"
-    quadrant-2 "ADOPT (Strategic Standard: Low Overhead & High Flexibility)"
-    quadrant-3 "ASSESS (Legacy or Narrow Scope)"
-    quadrant-4 "HOLD (High Complexity & Low Value)"
-    "MCP 2.0 Distributed Mesh": [0.35, 0.90]
-    "gRPC Microservice Federation": [0.25, 0.25]
-    "Dapr Distributed Workflows": [0.65, 0.60]
-    "Bespoke Python REST Wrappers": [0.80, 0.15]
+flowchart TD
+    subgraph ADOPT["ADOPT: High Flexibility & Low Overhead"]
+        M1["MCP 2.0 Distributed Mesh<br/>Dynamic Discovery (-72% Tokens) | Sub-12ms P99"]
+    end
+    subgraph TRIAL["TRIAL: High Value & Distributed Workflows"]
+        T1["Dapr Distributed Workflows<br/>Virtual Actors | Resilient State Management"]
+    end
+    subgraph ASSESS["ASSESS: Static Deterministic RPC"]
+        AS1["gRPC Microservice Federation<br/>Strict Protobuf Contracts | Point-to-Point"]
+    end
+    subgraph HOLD["HOLD: High Complexity & Anti-Pattern"]
+        H1["Bespoke Python REST Wrappers<br/>Synchronous Polling | Schema Token Bloat"]
+    end
+    ADOPT --> TRIAL --> ASSESS --> HOLD
 ```
 
 ### Comprehensive Technology Decision Matrix

@@ -32,24 +32,26 @@ aliases:
 The strategic technology adoption matrix for November 2026 agentic memory platforms, consolidation techniques, and multi-agent memory topologies is mapped below:
 
 ```mermaid
-quadrantChart
-    title November 2026 Agentic Memory & Agent Infrastructure Radar
-    x-axis "Low Operational Complexity" --> "High Operational Complexity"
-    y-axis "Evolutionary Enhancement" --> "Revolutionary Paradigm Shift"
-    quadrant-1 "Tools & Utilities (TRIAL)"
-    quadrant-2 "Platforms & Infrastructure (ADOPT)"
-    quadrant-3 "Languages & Frameworks (ASSESS)"
-    quadrant-4 "Techniques & Deprecations (HOLD)"
-    "Hybrid Vector+Graph Memory (mem0-style)": [0.30, 0.92]
-    "Asynchronous Consolidation Pipeline": [0.34, 0.90]
-    "Token-Budget Governor (15-20% Cap)": [0.26, 0.85]
-    "Bi-Temporal Knowledge Graphs (Zep/Graphiti)": [0.58, 0.82]
-    "Letta (MemGPT) Paged-Context Runtime": [0.46, 0.55]
-    "Graph-Primary Backends (MemGraph/Neo4j)": [0.66, 0.48]
-    "DIY pgvector/Qdrant + Queue at 5M+ Facts": [0.84, 0.35]
-    "Raw Transcript Replay as Memory": [0.14, 0.10]
-    "Chronological Unranked Retrieval": [0.20, 0.14]
-    "Agent-Direct Long-Term Writes": [0.88, 0.08]
+flowchart TD
+    subgraph ADOPT["ADOPT (Production Proven)"]
+        A1["Hybrid Vector+Graph Memory (mem0-style)"]
+        A2["Asynchronous Consolidation Pipeline"]
+        A3["Token-Budget Governor (15-20% Cap)"]
+        A4["Bi-Temporal Knowledge Graphs (Zep/Graphiti)"]
+    end
+    subgraph TRIAL["TRIAL (Promising for Workloads)"]
+        T1["Letta (MemGPT) Paged-Context Runtime"]
+        T2["Graph-Primary Backends (MemGraph/Neo4j)"]
+    end
+    subgraph ASSESS["ASSESS (High Effort / Long Horizon)"]
+        AS1["DIY pgvector/Qdrant + Queue at 5M+ Facts"]
+    end
+    subgraph HOLD["HOLD (Anti-Patterns / Deprecated)"]
+        H1["Raw Transcript Replay as Memory"]
+        H2["Chronological Unranked Retrieval"]
+        H3["Agent-Direct Long-Term Writes"]
+    end
+    ADOPT --> TRIAL --> ASSESS --> HOLD
 ```
 
 ### November 2026 Agentic Memory Radar Matrix Table
@@ -73,3 +75,7 @@ quadrantChart
 
 - **[Agentic Memory Architecture: Episodic vs Semantic Stores, Consolidation Pipelines & Context Window Economics for Production Agent Swarms](/radar/2026-11/radar-2026-11-01-agentic-memory-architecture/)**  
   *Deep-dive on production agentic memory: the four-tier taxonomy (working/episodic/semantic/procedural), write-gated consolidation pipelines with deterministic dedup and exponential decay, mem0 vs Letta vs Zep vs DIY selection guidance, token-budget governors with KV-cache-aligned replay (71% effective memory-token savings), scoped multi-agent memory topologies, and the OWASP ASI mapping for memory poisoning and PII lifecycle defense — plus three production post-mortems.*
+- **[MCP Stateless HTTP Transport & A2A v1.0.1 Wire Protocol: Two-Tier JIT Skill Discovery & Lethal Trifecta AST Governance](/radar/2026-11/radar-2026-11-07-mcp-stateless-http-a2a-v1-wire-protocol/)**  
+  *Architectural blueprint for MCP Revision 2026-07-28 stateless HTTP transport (`params._meta` propagation, `Mcp-Tool-Route` L7 routing, SEP-2567 HMAC state handles), AAIF A2A v1.0.1 dual-stack SSE wire streaming with monotonic `TASK_STATE_*` finite-state machines, Two-Tier JIT skill discovery cutting catalog prompt bloat by 97.3%, and zero-execution static AST Lethal Trifecta ($\mathcal{T}_{\text{lethal}}$) gates emitting OCSF 99001 security findings.*
+- **[Composable Banking & High-Concurrency Double-Entry Ledger Architecture: BIAN Decomposition & 50K TPS Hot-Account Sharding](/radar/2026-11/radar-2026-11-10-composable-banking-double-entry-ledger-concurrency/)**  
+  *Production FinTech engineering guide to BIAN v12.0 composable service decomposition (Payment Initiation, Position Keeping, Fraud Evaluation over gRPC & NATS JetStream), optimistic sub-ledger hot-account sharding ($N=16$ virtual buckets) sustaining 50,000+ TPS, canonical lock sorting with `SELECT ... FOR UPDATE NOWAIT`, and RFC 9562 monotonic UUIDv7 idempotency guards enforcing $\sum \text{Debits} \equiv \sum \text{Credits}$.*

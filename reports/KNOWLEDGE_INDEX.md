@@ -1,19 +1,19 @@
 # Master Agent Knowledge Index — 2027 SOTA Architecture & Engineering Standards
 
-> **Epoch:** 2026-10-02T22:20:00+07:00  
+> **Epoch:** 2026-11-07T11:50:00+07:00  
 > **Authoring Swarm:** `@vesviet-team` (`@architect`, `@content-manager`, `@technical-writer`, `@qa-engineer`)  
 > **Purpose:** Ultra-compact, high-density architectural cheat-sheets and decision matrices designed for instant LLM/Agent retrieval without context window bloat.  
-> **Total Knowledge Cards:** 34 High-Signal Cards across 6 Core Domains.  
+> **Total Knowledge Cards:** 38 High-Signal Cards across 6 Core Domains.  
 
 ---
 
 ## Quick Domain Jump Matrix
 - [1. E-Commerce Architecture](#1-e-commerce-architecture) (5 Cards)
-- [2. Banking & FinTech Architecture](#2-banking--fintech-architecture) (3 Cards)
-- [3. AI, SLM & Agentic Systems](#3-ai-slm--agentic-systems) (7 Cards)
+- [2. Banking & FinTech Architecture](#2-banking--fintech-architecture) (4 Cards)
+- [3. AI, SLM & Agentic Systems](#3-ai-slm--agentic-systems) (9 Cards)
 - [4. Distributed Systems & Architectural Showdowns](#4-distributed-systems--architectural-showdowns) (8 Cards)
 - [5. Ride-Hailing & Geospatial Architecture](#5-ride-hailing--geospatial-architecture) (5 Cards)
-- [6. Cloud Infrastructure & Resilience](#6-cloud-infrastructure--resilience) (6 Cards)
+- [6. Cloud Infrastructure & Resilience](#6-cloud-infrastructure--resilience) (7 Cards)
 
 ---
 
@@ -34,6 +34,7 @@
 | [`core-banking-double-entry-ledger`](knowledge/banking-fintech/core-banking-double-entry-ledger.md) | **Core Banking Architecture: Double-Entry Immutable Ledgers & ACID Financial Invariants** | `#core-banking`, `#double-entry`, `#immutable-ledger` | [`knowledge/banking-fintech/core-banking-double-entry-ledger.md`](knowledge/banking-fintech/core-banking-double-entry-ledger.md) |
 | [`microfinance-event-sourcing`](knowledge/banking-fintech/microfinance-event-sourcing.md) | **Microfinance & Lending Platforms: Event Sourcing & CQRS Audit Traces** | `#microfinance`, `#event-sourcing`, `#cqrs` | [`knowledge/banking-fintech/microfinance-event-sourcing.md`](knowledge/banking-fintech/microfinance-event-sourcing.md) |
 | [`distributed-saga-reconciliation`](knowledge/banking-fintech/distributed-saga-reconciliation.md) | **Distributed Financial Sagas & Asynchronous Reconciliation Workflows** | `#saga`, `#reconciliation`, `#temporal` | [`knowledge/banking-fintech/distributed-saga-reconciliation.md`](knowledge/banking-fintech/distributed-saga-reconciliation.md) |
+| [`composable-banking-hot-account-ledger-sharding`](knowledge/banking-fintech/composable-banking-hot-account-ledger-sharding.md) | **Composable Banking & 50K TPS Double-Entry Ledgers: BIAN Service Domains, N-Way Hot-Account Sharding & UUIDv7 Idempotency** | `#composable-banking`, `#bian`, `#double-entry-ledger`, `#hot-account-sharding` | [`knowledge/banking-fintech/composable-banking-hot-account-ledger-sharding.md`](knowledge/banking-fintech/composable-banking-hot-account-ledger-sharding.md) |
 
 ## 3. AI, SLM & Agentic Systems
 
@@ -46,6 +47,8 @@
 | [`vector-database-hnsw-search`](knowledge/ai-slm-agentic/vector-database-hnsw-search.md) | **Custom Golang Vector Database Engine: HNSW Graphs & Hybrid Lexical-Semantic Search** | `#vector-search`, `#hnsw`, `#golang` | [`knowledge/ai-slm-agentic/vector-database-hnsw-search.md`](knowledge/ai-slm-agentic/vector-database-hnsw-search.md) |
 | [`mcp-stream-transport-generative-ui`](knowledge/ai-slm-agentic/mcp-stream-transport-generative-ui.md) | **Model Context Protocol (MCP) & Generative UI: Streaming JSON-RPC 2.0 Tool Execution & Edge Component Sandboxing** | `#mcp`, `#generative-ui`, `#json-rpc`, `#rsc` | [`knowledge/ai-slm-agentic/mcp-stream-transport-generative-ui.md`](knowledge/ai-slm-agentic/mcp-stream-transport-generative-ui.md) |
 | [`agent-skills-architecture`](knowledge/ai-slm-agentic/agent-skills-architecture.md) | **Enterprise Agent Skills Architecture: 4-Layer Prompt Stack, A2A 1.0 JSON Contracts & Fail-Closed Policy Governance** | `#agent-skills`, `#a2a-protocol`, `#context-engineering`, `#promptops` | [`knowledge/ai-slm-agentic/agent-skills-architecture.md`](knowledge/ai-slm-agentic/agent-skills-architecture.md) |
+| [`agentic-memory-consolidation-architecture`](knowledge/ai-slm-agentic/agentic-memory-consolidation-architecture.md) | **Agentic Memory Architecture: Episodic vs Semantic Stores, Consolidation Pipelines & Context Economics** | `#agentic-memory`, `#mem0`, `#zep`, `#context-engineering` | [`knowledge/ai-slm-agentic/agentic-memory-consolidation-architecture.md`](knowledge/ai-slm-agentic/agentic-memory-consolidation-architecture.md) |
+| [`mcp-stateless-http-a2a-v1-wire-protocol`](knowledge/ai-slm-agentic/mcp-stateless-http-a2a-v1-wire-protocol.md) | **MCP Revision 2026-07-28 Stateless HTTP & A2A v1.0.1 Wire Protocol: Two-Tier JIT Skill Discovery & Lethal Trifecta AST Gates** | `#mcp-stateless-http`, `#a2a-v1`, `#jit-skill-discovery`, `#owasp-ast10` | [`knowledge/ai-slm-agentic/mcp-stateless-http-a2a-v1-wire-protocol.md`](knowledge/ai-slm-agentic/mcp-stateless-http-a2a-v1-wire-protocol.md) |
 
 ## 4. Distributed Systems & Architectural Showdowns
 
@@ -80,6 +83,7 @@
 | [`zero-trust-spiffe-spire-istio-golang`](knowledge/cloud-infrastructure/zero-trust-spiffe-spire-istio-golang.md) | **Zero-Trust Service Mesh Security: SPIFFE/SPIRE Cryptographic Workload Identities in Go** | `#zero-trust`, `#spiffe`, `#spire` | [`knowledge/cloud-infrastructure/zero-trust-spiffe-spire-istio-golang.md`](knowledge/cloud-infrastructure/zero-trust-spiffe-spire-istio-golang.md) |
 | [`cilium-tetragon-ebpf-ai-agent-security`](knowledge/cloud-infrastructure/cilium-tetragon-ebpf-ai-agent-security.md) | **Cilium 1.17 & Tetragon 1.4: In-Kernel eBPF Observability, Sidecarless Service Mesh & Zero-Trust Sandboxing for Autonomous AI Agents** | `#cilium`, `#tetragon`, `#ebpf`, `#ai-agent-security` | [`knowledge/cloud-infrastructure/cilium-tetragon-ebpf-ai-agent-security.md`](knowledge/cloud-infrastructure/cilium-tetragon-ebpf-ai-agent-security.md) |
 | [`cloudflare-astro-edge-fullstack`](knowledge/cloud-infrastructure/cloudflare-astro-edge-fullstack.md) | **Cloudflare Edge Full-Stack Architecture: Astro v5 Content Layer, Workers SSR & Distributed D1/KV Storage** | `#cloudflare`, `#astro`, `#workers`, `#d1` | [`knowledge/cloud-infrastructure/cloudflare-astro-edge-fullstack.md`](knowledge/cloud-infrastructure/cloudflare-astro-edge-fullstack.md) |
+| [`ai-accelerated-vulnerability-sre-remediation`](knowledge/cloud-infrastructure/ai-accelerated-vulnerability-sre-remediation.md) | **Black October 2026 & AI-Accelerated Vulnerabilities: Negative Time-to-Exploit & Runtime SRE Defense** | `#vulnerability-management`, `#php2shell`, `#ebpf`, `#zero-day` | [`knowledge/cloud-infrastructure/ai-accelerated-vulnerability-sre-remediation.md`](knowledge/cloud-infrastructure/ai-accelerated-vulnerability-sre-remediation.md) |
 
 ---
 

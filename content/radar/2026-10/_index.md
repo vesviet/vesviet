@@ -32,26 +32,28 @@ aliases:
 The strategic technology adoption matrix for October 2026 cloud-native infrastructure, kernel-level observability, and autonomous AI agent security is mapped below:
 
 ```mermaid
-quadrantChart
-    title October 2026 Systems & Infrastructure Radar
-    x-axis "Low Operational Complexity" --> "High Operational Complexity"
-    y-axis "Evolutionary Enhancement" --> "Revolutionary Paradigm Shift"
-    quadrant-1 "Tools & Utilities (TRIAL)"
-    quadrant-2 "Platforms & Infrastructure (ADOPT)"
-    quadrant-3 "Languages & Frameworks (ASSESS)"
-    quadrant-4 "Techniques & Deprecations (HOLD)"
-    "Cilium 1.17 eBPF Service Mesh": [0.28, 0.95]
-    "Tetragon 1.4 In-Kernel Sandboxing": [0.32, 0.94]
-    "SPIFFE/SPIRE Workload Identity": [0.30, 0.88]
-    "Linux 6.8 BPF Ring Buffer": [0.72, 0.86]
-    "Dynamic TracingPolicy Enforcement": [0.78, 0.90]
-    "Go 1.25 cilium/ebpf Loader": [0.22, 0.38]
-    "gVisor MicroVM Sandboxing": [0.42, 0.42]
-    "eBPF sockops Socket Splicing": [0.82, 0.44]
-    "Traditional Envoy Pod Sidecars": [0.85, 0.18]
-    "Userspace LD_PRELOAD Hooking": [0.88, 0.12]
-    "Patched PHP 8.4.27+ (Worker Recycling)": [0.26, 0.82]
-    "Unpatched PHP (< 8.4.27 / < 8.3.36)": [0.86, 0.22]
+flowchart TD
+    subgraph ADOPT["ADOPT (Production Proven)"]
+        A1["Cilium 1.17 eBPF Service Mesh"]
+        A2["Tetragon 1.4 In-Kernel Sandboxing"]
+        A3["SPIFFE/SPIRE Workload Identity"]
+        A4["Patched PHP 8.4.27+ (Worker Recycling)"]
+    end
+    subgraph TRIAL["TRIAL (Promising Early Validation)"]
+        T1["Linux 6.8 BPF Ring Buffer"]
+        T2["Dynamic TracingPolicy Enforcement"]
+    end
+    subgraph ASSESS["ASSESS (Exploratory / High Complexity)"]
+        AS1["Go 1.25 cilium/ebpf Loader"]
+        AS2["gVisor MicroVM Sandboxing"]
+        AS3["eBPF sockops Socket Splicing"]
+    end
+    subgraph HOLD["HOLD (Deprecated / Security Risk)"]
+        H1["Traditional Envoy Pod Sidecars"]
+        H2["Userspace LD_PRELOAD Hooking"]
+        H3["Unpatched PHP (< 8.4.27 / < 8.3.36)"]
+    end
+    ADOPT --> TRIAL --> ASSESS --> HOLD
 ```
 
 ### Technology Radar Ring Matrix (October 2026)

@@ -1,6 +1,6 @@
 ---
 title: "Tech Radar — Daily Go, K8s & AI Systems Engineering"
-lastmod: "2026-10-02T09:00:00+07:00"
+lastmod: "2026-11-07"
 description: "Daily curated tech intelligence covering Go, Kubernetes, AI/ML, cloud-native infrastructure, and microservices analysis from Lê Tuấn Anh."
 ShowToc: false
 author: "Lê Tuấn Anh"
@@ -37,6 +37,7 @@ Published multiple times per week, written from the perspective of a Senior Soft
 - **[August 2026 Tech Radar Summary](/radar/2026-08/)**: Official Go MCP SDK, Go 1.26 Green Tea GC, Wasm SpinKube, Agent Frameworks vs. Vendor SDKs.
 - **[September 2026 Tech Radar Summary](/radar/2026-09/)**: Disaggregated Prefill-Decode (PD), SGLang EAGLE-2, MCP 2.0 Agentic Mesh, WASI 0.3 & DeepSeek-V3 MLA.
 - **[October 2026 Tech Radar Summary](/radar/2026-10/)**: Cilium 1.17 & Tetragon 1.4 In-Kernel eBPF Observability, Sidecarless Service Mesh & Zero-Trust Sandboxing for Autonomous AI Agents.
+- **[November 2026 Tech Radar Summary](/radar/2026-11/)**: Four-tier agentic memory taxonomy, hybrid vector+graph stores (mem0/Zep), asynchronous consolidation pipelines, and context window economics.
 
 → For deep-dive tutorials and production guides, visit the **[Reading Map](/reading-map/)**.
 
