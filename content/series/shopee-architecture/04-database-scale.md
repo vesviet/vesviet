@@ -1,5 +1,5 @@
 ---
-title: "Chapter 4: Scaling Storage from MySQL Shards to TiDB Multi-Raft Architecture"
+title: "From MySQL Shards to TiDB: Multi-Raft & Percolator Locks"
 slug: "04-database-scale"
 date: "2026-05-06T08:30:00+07:00"
 lastmod: "2026-09-28T06:35:00+07:00"
@@ -8,7 +8,7 @@ weight: 4
 series: ["shopee-architecture"]
 series_order: 4
 mermaid: true
-description: "How Shopee conquered petabyte-scale e-commerce transaction data: transitioning from traditional MySQL sharding to distributed NewSQL with TiDB and TiKV Multi-Raft consensus."
+description: "How Shopee scales petabyte transaction data: MySQL sharding to TiDB Multi-Raft, async-commit secondary locks that resolve concurrent transactions safely."
 ShowToc: true
 TocOpen: true
 cover:

@@ -1,7 +1,7 @@
 baseURL = "https://tanhdev.com/"
 locale = "en-us"
 defaultContentLanguage = "en"
-title = "Lê Tuấn Anh: Senior Software Engineer · Backend & Platform Specialist"
+title = "Lê Tuấn Anh — Backend Architect: Go, EKS & E-commerce"
 theme = "PaperMod"
 enableRobotsTXT = false  # static/robots.txt in /static takes precedence; explicit AI bot rules defined there
 buildFuture = true
@@ -27,7 +27,7 @@ apple_touch_icon = "/apple-touch-icon.png"
 [params]
   env = "production"
   images = ["/vesviet.png"]
-  description = "Senior Software Engineer · Backend & Platform Specialist with 17+ years experience building scalable platforms, Golang microservices, and e-commerce systems."
+  description = "Senior Software Engineer with 17+ years building Go microservices, e-commerce platforms & Kubernetes infrastructure. Available for architecture consulting."
   author = "Lê Tuấn Anh"
   defaultTheme = "dark"
   ShowReadingTime = true

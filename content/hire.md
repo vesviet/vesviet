@@ -1,9 +1,9 @@
 ---
 
-title: "Work with Lê Tuấn Anh — Senior Software Engineer · Backend & Platform Specialist"
+title: "Hire a Senior Backend Architect: Go, EKS, 17+ Years"
 date: "2026-06-06T10:00:00+07:00"
 lastmod: "2026-07-23T13:34:42+07:00"
-description: "Senior Software Engineer · Backend & Platform Specialist in Vietnam. 17+ years in distributed systems, Golang microservices, and e-commerce platforms."
+description: "Hire a senior backend architect in Vietnam: 17+ years in Go microservices, e-commerce platforms and Kubernetes. Available for consulting & team audits."
 keywords: ["hire backend engineer vietnam", "golang developer vietnam", "magento microservices migration", "backend architecture", "go engineer vietnam"]
 slug: "hire"
 aliases:

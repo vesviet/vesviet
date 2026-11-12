@@ -1,6 +1,6 @@
 ---
-title: "Software Architecture & Distributed System Design Series"
-description: "Deep dive into real-world software architecture, microservices, system design, and AI engineering with technical case studies and production guides."
+title: "25 Architecture Series: Shopee, Core Banking & Go Systems"
+description: "25 deep-dive architecture series (218+ chapters) on Shopee-scale flash sales, core banking, Go microservices and AI engineering — real case studies."
 lastmod: "2026-06-01T10:00:00+07:00"
 cover:
   image: "/images/posts/ecommerce-microservices-blueprint-cover.jpg"

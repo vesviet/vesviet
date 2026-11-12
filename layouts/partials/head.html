@@ -29,18 +29,13 @@
 {{- end }}
 
 {{- $shouldIndex := false }}
-{{- if and $isProduction (not $isNoIndexParam) (not $is404) (not $isPaginated) }}
+{{- if and $isProduction (not $isNoIndexParam) (not $is404) (not $isPaginated) (not .Draft) }}
   {{- if $isCategory }}
     {{- if $isCuratedCategory }}
       {{- $shouldIndex = true }}
     {{- end }}
   {{- else if in (slice "taxonomy" "term") .Kind }}
-    {{- /* Allow tag pages with content to be indexed */ -}}
-    {{- if and $isTags (gt (len .Pages) 0) }}
-      {{- $shouldIndex = true }}
-    {{- else }}
-      {{- $shouldIndex = false }}
-    {{- end }}
+    {{- /* All taxonomy/term pages (tags included) stay noindex, follow */ -}}
   {{- else }}
     {{- $shouldIndex = true }}
   {{- end }}

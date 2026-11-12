@@ -7,8 +7,7 @@ Content-Signal: search=yes, ai-train=no, ai-input=yes
 # Default: allow all crawlers (including Googlebot, Bingbot, etc.)
 # ──────────────────────────────────────────────
 User-agent: *
-# Disallow taxonomy pages and their RSS feeds (thin content, noindex already)
-Disallow: /tags/
+# Tag pages are crawlable but noindexed (meta + X-Robots-Tag); only their RSS feeds stay disallowed
 Disallow: /tags/*/index.xml$
 Disallow: /categories/*/index.xml$
 Disallow: /series/*/index.xml$
