@@ -208,7 +208,7 @@ body:has(.portfolio-app-shell) .main {
 
 .btn-sidebar-resume:hover {
   background: var(--surface-hover, #34302E);
-  color: #FFFFFF;
+  color: var(--primary, #FFFFFF);
   border-color: var(--secondary, #9B9795);
   transform: translateY(-1px);
 }
@@ -1063,7 +1063,7 @@ body:has(.portfolio-app-shell) .main {
 
 .bento-action-secondary:hover {
   background: var(--surface-hover, #34302E);
-  color: #FFFFFF;
+  color: var(--primary, #FFFFFF);
 }
 
 .bento-action-link {
@@ -1346,7 +1346,7 @@ body:has(.portfolio-app-shell) .main {
 
 .btn-tier-cta:hover {
   background: var(--surface-hover, #34302E);
-  color: #FFFFFF;
+  color: var(--primary, #FFFFFF);
   border-color: var(--secondary, #9B9795);
   transform: translateY(-1px);
 }
