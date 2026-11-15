@@ -385,3 +385,5 @@ Temporal Nexus establishes durable, asynchronous RPC contracts between independe
 ---
 
 🔗 **Next Step:** Continue to [Zero-Trust Architecture for Microservices](/series/cornerstone-technologies/zero-trust-architecture-microservices/) for the third module in the series.
+
+🔗 **Related Guide:** Building financial workflows on top of this engine? Read [Distributed Transactions in Go with the Temporal Saga Pattern](/posts/temporal-saga-pattern-golang-distributed-transactions-guide/) — compensations, idempotency, and event sourcing implemented as Temporal sagas in Golang.

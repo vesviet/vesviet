@@ -912,6 +912,7 @@ By adhering to these architectural invariants, software engineers can build high
 
 ## Related Reading
 
+- [Temporal Workflow & Golang: Architecture & Production Guide](/series/cornerstone-technologies/temporal-workflow-go-architecture/) — determinism, event sourcing, and Temporal Nexus inside the engine that executes these sagas.
 - [Dapr Workflow Go Tutorial: Orchestrated Saga Pattern](/posts/dapr-workflow-saga-orchestration-guide/) — the same orchestration problem solved with Dapr instead of Temporal.
 - [Dapr State Store Consistency Trade-offs](/posts/dapr-state-store-consistency-tradeoffs/) — ETag concurrency and consistency modes behind saga state.
 - [Banking Microservices in Go: Saga & Event Sourcing](/posts/banking-microservices-architecture/) — double-entry ledgers and the transactional outbox in a financial context.
