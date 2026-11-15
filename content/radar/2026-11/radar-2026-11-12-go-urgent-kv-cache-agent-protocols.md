@@ -3,7 +3,7 @@ title: "Tech Radar: KV-Cache Isolation, Go 1.27.3 Urgent, A2A"
 date: "2026-11-12T09:00:00+07:00"
 lastmod: "2026-11-12T09:00:00+07:00"
 author: "Lê Tuấn Anh"
-slug: "radar-2026-11-12-kv-cache-isolation-go-urgent-agent-protocols"
+slug: "radar-2026-11-12-go-urgent-kv-cache-agent-protocols"
 description: "Cross-request KV-cache leaks hit Cloudflare and vLLM, Go ships its first URGENT release, agent protocols consolidate — radar takeaways for platform teams."
 categories: ["Tech Radar", "AI & Agentic Systems", "Cloud Native", "Distributed Systems"]
 ring: "ADOPT"
@@ -16,8 +16,10 @@ mermaid: true
 ShowToc: true
 TocOpen: true
 draft: false
-noTranslation: true
-canonicalURL: "https://tanhdev.com/radar/2026-11/radar-2026-11-12-kv-cache-isolation-go-urgent-agent-protocols/"
+aliases:
+  - /radar/2026-11/radar-2026-11-12-kv-cache-isolation-go-urgent-agent-protocols/
+  - /radar/2026-11/kv-cache-isolation-go-urgent-agent-protocols/
+canonicalURL: "https://tanhdev.com/radar/2026-11/radar-2026-11-12-go-urgent-kv-cache-agent-protocols/"
 keywords: ["kv cache isolation", "cross request kv cache leak", "sglang 0.5.21 kv cache", "vllm 0.32 inputbatch condense", "go 1.27.3 urgent release", "emudhra intermediate certificates", "a2a protocol linux foundation", "postgresql 19 rc2 repack", "kafka 4.4 kip-1191", "valkey ghsa-f4q9-j22m-xqq9"]
 ---
 
@@ -34,7 +36,7 @@ name: "Weekly Radar 2026-W46: KV-Cache Isolation Gates, Same-Day Go Rebuilds & L
 ring: "Adopt"
 quadrant: "AI Infrastructure & Platform Engineering"
 rationale: "Replaces 'trust the inference engine' multi-tenancy and quarterly-only patch cadences with explicit cross-request KV-cache isolation release gates (SGLang >= 0.5.22, vLLM >= 0.32.0), same-day CI rebuild policies triggered by trust-store incidents, and LF-governed A2A v1.0.0 + MCP 2026-07-28 as the dual-stack agent wire."
-adr_link: "/radar/2026-11/radar-2026-11-12-kv-cache-isolation-go-urgent-agent-protocols/"
+adr_link: "/radar/2026-11/radar-2026-11-12-go-urgent-kv-cache-agent-protocols/"
 justification: "Three independent cache-isolation defects shipped to production within four weeks (Cloudflare GLM-5.3, vLLM InputBatch.condense, vLLM Mooncake connector), and one trust-store incident made every pre-Oct-19 Go binary a potential forgery target; both failure classes are only addressable through versioned floors, rebuild automation, and per-tenant cache isolation — not through prompt-level mitigations."
 ```
 

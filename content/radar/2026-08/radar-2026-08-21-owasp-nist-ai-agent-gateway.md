@@ -725,6 +725,6 @@ This technical briefing is part of the **[August 2026 Tech Radar Digest](/radar/
 - 📡 **Parent Radar Digest**: [Tech Radar Digest August 2026: Stateless MCP 2.0, Go synctest, vLLM MLA & eBPF Zero Trust](/radar/2026-08/)
 - 🛡️ **Architecture Pillar**: [Zero-Trust Service Mesh Security in Go: SPIFFE/SPIRE & Istio](/posts/zero-trust-service-mesh-security-spiffe-spire-istio-golang/)
 - ⚓ **eBPF Kernel Security**: [Building Custom Kubernetes Operators with eBPF & Cilium in Go](/posts/building-custom-kubernetes-operators-ebpf-golang-cilium/)
-- 🌐 **Related Radar Signal**: [eBPF Kernel Zero-Trust Security for AI Agent Swarms with Tetragon](/radar/ebpf-tetragon-ai-agent-security/)
+- 🌐 **Related Radar Signal**: [eBPF Kernel Zero-Trust Security for AI Agent Swarms with Tetragon](/radar/2026-08/ebpf-tetragon-ai-agent-security/)
 - 🔌 **Stateless Gateway Routing**: [Stateless MCP 2.0 & Kubernetes Gateway API Architecture](/radar/stateless-mcp-k8s-gateway/)
 - 🏛️ **Microservices Architecture**: [Go Microservices Production Guide (Clean Architecture & Dapr)](/posts/go-microservices/)

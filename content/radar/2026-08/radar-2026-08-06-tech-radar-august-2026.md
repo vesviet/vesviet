@@ -358,7 +358,7 @@ This technical overview is part of the **[August 2026 Tech Radar Digest](/radar/
 - 🚀 **GitOps at Scale**: [GitOps at Scale with Kubernetes & Argo CD for Go Microservices](/posts/gitops-at-scale-kubernetes-argocd-microservices/)
 - 🌐 **Deep-Dive Radar Signals**:
   - [Stateless MCP 2.0 & Kubernetes Gateway API Architecture](/radar/stateless-mcp-k8s-gateway/)
-  - [Deterministic Concurrency Testing with Go 1.26 testing/synctest](/radar/go-synctest-concurrency/)
+  - [Deterministic Concurrency Testing with Go 1.26 testing/synctest](/radar/2026-08/go-synctest-concurrency/)
 
 {{< author-cta >}}
 

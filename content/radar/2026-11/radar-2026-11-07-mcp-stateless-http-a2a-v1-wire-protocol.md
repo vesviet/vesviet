@@ -768,7 +768,7 @@ sequenceDiagram
 
 ### 4.2 The Deterministic 6-Layer Prompt Prefix Caching Layout
 
-To maximize KV-cache reuse across vLLM v1 Radix Attention (see our [vLLM v1 Production KV-Cache Radar](/radar/2026-09/radar-2026-09-30-vllm-v1-production-kv-cache/)), Anthropic `cache_control` breakpoints, and OpenAI 128-token prefix blocks, JIT-loaded skills must never be injected at random offsets in the system prompt. We enforce a strict **6-Layer Static-to-Dynamic Prompt Architecture**:
+To maximize KV-cache reuse across vLLM v1 Radix Attention (see our [vLLM v1 Production KV-Cache Radar](/radar/2026-09/vllm-v1-production-kv-cache/)), Anthropic `cache_control` breakpoints, and OpenAI 128-token prefix blocks, JIT-loaded skills must never be injected at random offsets in the system prompt. We enforce a strict **6-Layer Static-to-Dynamic Prompt Architecture**:
 
 | Layer | Content & Scope | Mutability Cadence | Cache Breakpoint Strategy | Measured Cache Hit Rate |
 | :---: | :--- | :--- | :--- | :---: |

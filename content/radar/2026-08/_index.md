@@ -77,7 +77,7 @@ Go 1.25 and 1.26 resolve one of the longest-standing developer pain points in ba
 
 - **Isolated Concurrency Bubbles:** `synctest.Run` establishes a virtualized time environment. The runtime scheduler monitors all spawned goroutines and instantly advances (fast-forwards) the synthetic clock to the next timer expiration as soon as all threads become durably blocked.
 - **Accelerated CI/CD Pipelines:** Complex exponential backoff retry scenarios (simulating 5 seconds of sleep) execute in **2 milliseconds** of actual CPU time with 100% determinism.
-- **Deep Dive & Implementation:** Read the full technical briefing at [`Tech Radar: Deterministic Concurrency Testing with Go 1.26 testing/synctest`](/radar/go-synctest-concurrency/).
+- **Deep Dive & Implementation:** Read the full technical briefing at [`Tech Radar: Deterministic Concurrency Testing with Go 1.26 testing/synctest`](/radar/2026-08/go-synctest-concurrency/).
 
 ---
 
@@ -87,7 +87,7 @@ Multi-turn tool-calling loops in autonomous agent frameworks create immense toke
 
 - **Multi-Head Latent Attention (MLA):** By projecting Key and Value matrices into a compressed low-dimensional latent vector $c^{KV}$, MLA achieves a **75.8% reduction in VRAM consumption** compared to standard Grouped-Query Attention (GQA).
 - **Context-Aware Prefix Routing:** L7 ingress routers compute a deterministic hash of the static system prompt and tool definitions, steering subsequent agent turns to the GPU worker holding the active KV-cache. This delivers a **91.6% cache hit rate** and cuts Time-to-First-Token (TTFT) to **165ms**.
-- **Deep Dive & Implementation:** Read the full technical briefing at [`Tech Radar: vLLM Context-Aware Routing & Multi-Head Latent Attention (MLA)`](/radar/vllm-context-routing-mla/).
+- **Deep Dive & Implementation:** Read the full technical briefing at [`Tech Radar: vLLM Context-Aware Routing & Multi-Head Latent Attention (MLA)`](/radar/2026-08/vllm-context-routing-mla/).
 
 ---
 
@@ -97,7 +97,7 @@ Granting autonomous agents execution access to bash terminals, local filesystems
 
 - **Linux Kernel Syscall Enforcement:** Cilium Tetragon leverages eBPF probes (`sys_enter_execve`, `tcp_connect`) to intercept unauthorized binary executions (`curl`, `nc`, `wget`) and sensitive file accesses (`/etc/shadow`, `/var/run/secrets`) in **under 15 microseconds**.
 - **Deterministic Kernel Termination (`SIGKILL`):** Malicious child processes are terminated at the kernel layer before any network socket or exfiltration payload reaches attacker-controlled Command & Control (C2) infrastructure.
-- **Deep Dive & Implementation:** Read the full technical briefing at [`Tech Radar: eBPF Kernel Zero-Trust Security for AI Agent Swarms`](/radar/ebpf-tetragon-ai-agent-security/).
+- **Deep Dive & Implementation:** Read the full technical briefing at [`Tech Radar: eBPF Kernel Zero-Trust Security for AI Agent Swarms`](/radar/2026-08/ebpf-tetragon-ai-agent-security/).
 
 ---
 
@@ -131,9 +131,9 @@ Explore the complete, unabridged technical reports published in this cycle:
 
 - **[NIST AI 600-1 & OWASP ASI01–ASI10: Hardening Enterprise Agent Gateways](/radar/owasp-nist-ai-agent-gateway/)** (August 21, 2026)
 - **[Stateless MCP 2.0 & Kubernetes Gateway API Architecture](/radar/stateless-mcp-k8s-gateway/)** (August 20, 2026)
-- **[Deterministic Concurrency Testing with Go 1.26 testing/synctest](/radar/go-synctest-concurrency/)** (August 23, 2026)
-- **[vLLM Context-Aware Routing & Multi-Head Latent Attention (MLA)](/radar/vllm-context-routing-mla/)** (August 26, 2026)
-- **[eBPF Kernel Zero-Trust Security for AI Agent Swarms with Tetragon](/radar/ebpf-tetragon-ai-agent-security/)** (August 29, 2026)
+- **[Deterministic Concurrency Testing with Go 1.26 testing/synctest](/radar/2026-08/go-synctest-concurrency/)** (August 23, 2026)
+- **[vLLM Context-Aware Routing & Multi-Head Latent Attention (MLA)](/radar/2026-08/vllm-context-routing-mla/)** (August 26, 2026)
+- **[eBPF Kernel Zero-Trust Security for AI Agent Swarms with Tetragon](/radar/2026-08/ebpf-tetragon-ai-agent-security/)** (August 29, 2026)
 - **[Tech Radar August 2026: Go MCP SDK, Green Tea GC & Wasm SpinKube](/radar/tech-radar-august-2026/)** (August 06, 2026)
 - **[Agent Orchestration Frameworks vs. Vendor-Specific Agent SDKs](/radar/agentic-frameworks-vs-vendor-sdks/)** (August 05, 2026)
 
