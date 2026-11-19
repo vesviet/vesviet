@@ -28,14 +28,17 @@
       {{- end -}}
     {{- end -}}
   {{- end -}}
-  {{- /* Also append all frontmatter aliases from across the site */ -}}
+  {{- /* Also append all frontmatter aliases from across the site (skip self-referencing aliases) */ -}}
   {{- range .Site.Pages -}}
+    {{- $pageRelTrim := strings.TrimRight "/" .RelPermalink -}}
     {{- with .Params.aliases -}}
       {{- range . -}}
         {{- $a := trim . " \r\t" -}}
         {{- if $a -}}
           {{- $aTrim := strings.TrimRight "/" $a -}}
-          {{- $redirectPaths = $redirectPaths | append $a | append $aTrim | append (printf "%s/" $aTrim) -}}
+          {{- if ne $aTrim $pageRelTrim -}}
+            {{- $redirectPaths = $redirectPaths | append $a | append $aTrim | append (printf "%s/" $aTrim) -}}
+          {{- end -}}
         {{- end -}}
       {{- end -}}
     {{- end -}}

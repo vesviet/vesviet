@@ -1,7 +1,7 @@
 ---
 title: "tanhdev Reading Map — Production Go & AI Architecture"
 date: "2026-07-07T10:00:00+07:00"
-lastmod: "2026-07-07T10:00:00+07:00"
+lastmod: "2026-11-19T21:40:00+07:00"
 draft: false
 description: "Curated reading map of production-grade technical essays on Go microservices, AI systems, e-commerce modernization, platform operations, and architecture."
 author: "Lê Tuấn Anh"
@@ -97,6 +97,7 @@ The articles listed below represent the recommended sequential reading path for 
 - [Deconstructing the Ecosystem: Service Details by Domain](/series/magento-migration-vietnam/deconstructing-ecommerce-service-details-domain/)
 - [Composable Banking Architecture: From Monolith to Modular Core](/posts/composable-banking-architecture/)
 - [Laravel in the AI Era: 10 Predictions for 2028](/posts/the-future-of-laravel-development-in-ai-era/)
+- **Composable Commerce Migration Blueprint (Full EN Series)**: [Part 0: Executive Summary](/series/composable-commerce-migration/part-0-executive-summary/) | [Part 1: DDD Bounded Contexts](/series/composable-commerce-migration/part-1-ddd-bounded-contexts/) | [Part 2: Rush Monorepo](/series/composable-commerce-migration/part-2-rush-monorepo/) | [Part 3: Golang Kratos](/series/composable-commerce-migration/part-3-golang-kratos/) | [Part 4: gRPC & REST Gateway](/series/composable-commerce-migration/part-4-grpc-rest-gateway/) | [Part 5: EAV Schema Migration](/series/composable-commerce-migration/part-5-eav-schema-migration/) | [Part 6: Strangler Fig Read-Only](/series/composable-commerce-migration/part-6-phase1-strangler-fig/) | [Part 7: Dual-Write with Dapr PubSub](/series/composable-commerce-migration/part-7-phase2-dual-write/) | [Part 8: Full Cutover Zero-Downtime](/series/composable-commerce-migration/part-8-phase3-full-cutover/) | [Part 9: Transactional Outbox & Sagas](/series/composable-commerce-migration/part-9-outbox-saga/) | [Part 10: 24 ADR Walkthrough](/series/composable-commerce-migration/part-10-adr-walkthrough/)
 
 ---
 
@@ -172,7 +173,10 @@ The articles listed below represent the recommended sequential reading path for 
 - [Prompt Engineering vs Fine-Tuning: When to Use Each (GPT-5 Era Decision Guide)](/posts/slm-fine-tune-vs-prompt-engineering/)
 - [AI-Native Frontend in 2028: 10 Architecture Predictions](/posts/ai-native-frontend-architecture-predictions-2028/)
 - [What is Vibe Coding? Why AI Code Review is the Future](/posts/vibe-coding-and-ai-code-review-future/)
+- [Enterprise Agent Skills Pack: A2A 1.0 & Fail-Closed Multi-Agent Governance](/posts/architecting-enterprise-agent-skills-pack-a2a-context-engineering/)
+- [Black October 2026: Anatomy of AI-Accelerated Vulnerabilities & Negative Time-to-Exploit](/posts/black-october-2026-ai-accelerated-vulnerabilities/)
 - [LeaseInVietnam: AI-Powered Expat Rental & B2B Lead Engine](/posts/leaseinvietnam-ai-powered-expat-rental-intelligence-system/)
+- **Key Deep-Dive Series Chapters**: [Agentic Search Part 2: Data Ingestion & Chunking](/series/agentic-ecommerce-search/part-2-ingestion-chunking/) | [AgentOps Part 4: Production Agent Operations](/series/agentic-system-architecture/part-4-agentops/) | [AI Data Pipeline Part 3: Late Chunking & Semantic Caching](/series/ai-data-engineering-pipeline/part-3-late-chunking-semantic-caching/) | [Part 4: Streaming CDC & Federated GraphRAG](/series/ai-data-engineering-pipeline/part-4-streaming-cdc-federated-rag/) | [Part 8: vLLM & PagedAttention Optimization](/series/ai-data-engineering-pipeline/part-8-inference-optimization-vllm/) | [AI-Driven Engineer Part 4: Blurring SDLC & QC Revolution](/series/ai-driven-engineer/part-4-blurring-sdlc-lines-and-qc-revolution/) | [AI-Driven Playbook Part 3B: AI Code Review Gates](/series/ai-driven-playbook/part-3b-ai-code-review-quality-gates/) | [Part 5: Autonomous Testing & QA](/series/ai-driven-playbook/part-5-autonomous-testing-qa-automation/) | [Prompt Standard Part 1](/series/prompt-standard/part-1-what-is-prompt-standard/) · [Part 4: Versioning & Evals](/series/prompt-standard/part-4-versioning-and-evals/) · [Part 7: Declarative DSPy](/series/prompt-standard/part-7-declarative-prompting-dspy/) · [Part 8: Production PromptOps](/series/prompt-standard/part-8-production-promptops/)
 
 ---
 
@@ -201,16 +205,16 @@ For fast-moving signals, framework releases, runtime benchmarks, and daily techn
 For deep, multi-part engineering masterclasses, explore our 25 comprehensive series spanning enterprise commerce, fintech scale, cloud infrastructure, and AI engineering:
 
 ### High-Throughput & Financial Systems
-- [PayPay Architecture: Scaling Payments to 70M Users](/series/paypay-architecture/) — Scaling distributed payments, TiDB Multi-Raft NewSQL, and 99.999% availability under campaign spikes.
+- [PayPay Architecture: Scaling Payments to 70M Users](/series/paypay-architecture/) — Scaling distributed payments, TiDB Multi-Raft NewSQL, and 99.999% availability under campaign spikes ([Part 5: Campaign Architecture](/series/paypay-architecture/part-5-campaign-architecture/)).
 - [Shopee Architecture: Scaling E-Commerce to 100M Users](/series/shopee-architecture/) — Go/gRPC Kitex, Redis Lua flash-sale, message queue peak-shaving, and distributed scale.
 - [Alipay Double 11 Masterclass](/series/alipay-double-11/) — Managing 583,000 peak TPS, unitized data cells, and distributed transaction consensus.
 - [Core Banking Architecture](/series/core-banking-architecture/) — Immutable double-entry bookkeeping, ledger audit compliance, and ISO 20022 messaging.
 - [Core Banking Developer Handbook](/series/core-banking-developer/) — Practical implementation patterns for account balance tracking and transaction state machines.
-- [High Concurrency Systems](/series/high-concurrency-systems/) — Rate limiting, circuit breaking, distributed cache stamps, and backpressure.
+- [High Concurrency Systems](/series/high-concurrency-systems/) — Rate limiting, circuit breaking, distributed cache stamps, and backpressure ([Executive Summary](/series/high-concurrency-systems/executive-summary/)).
 
 ### System Architecture & Distributed Engineering
 - [System Design Masterclass](/series/system-design/) — Go system design masterclass: sharding, caching, and horizontal scaling.
-- [Architectural Tradeoffs Showdowns](/series/architectural-tradeoffs-showdowns/) — In-depth architectural comparisons and production trade-offs.
+- [Architectural Tradeoffs Showdowns](/series/architectural-tradeoffs-showdowns/) — In-depth architectural comparisons and production trade-offs ([Envoy Gateway vs. Cilium eBPF Mesh](/series/architectural-tradeoffs-showdowns/10-envoy-gateway-vs-cilium-ebpf-service-mesh/)).
 - [Cornerstone Technologies](/series/cornerstone-technologies/) — Foundation technologies: NATS JetStream, Temporal, Zero-Trust SPIFFE, Qdrant, and Cloudflare Edge.
 - [Routing & Geospatial Architecture](/series/routing-geospatial-architecture/) — GraphHopper, OSRM, spatial indexing, and map-matching algorithms.
 - [Ride-Hailing Realtime Architecture](/series/ride-hailing-realtime-architecture/) — Real-time driver matching, spatial partitioning, and high-frequency geolocation streams.
@@ -219,7 +223,7 @@ For deep, multi-part engineering masterclasses, explore our 25 comprehensive ser
 ### E-Commerce & Platform Modernization
 - [Magento Migration Vietnam](/series/magento-migration-vietnam/) — Complete Strangler Fig migration playbook from legacy monoliths to microservices.
 - [Composable Commerce Migration](/series/composable-commerce-migration/) — Transitioning to headless commerce, monorepos, and micro-frontends.
-- [E-Commerce Order Allocation Engine](/series/ecommerce-order-allocation/) — Real-time multi-warehouse inventory allocation and routing logic.
+- [E-Commerce Order Allocation Engine](/series/ecommerce-order-allocation/) — Real-time multi-warehouse inventory allocation and routing logic ([Part 9: Order Splitting & Graph Coloring OPA](/series/ecommerce-order-allocation/part-9-order-splitting-graph-coloring-opa/)).
 
 ### AI Engineering, Agents & SLM
 - [MCP Engineering in Production](/series/mcp-engineering-in-production/) — Production Model Context Protocol server design, security, and transport protocols.

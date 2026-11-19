@@ -113,16 +113,6 @@
 /posts/why-migrate-magento-to-microservices/ /series/magento-migration-vietnam/why-migrate-magento-to-microservices/ 301
 /series/composable-commerce-migration/executive-summary-amazon-prime-video-monolith /series/magento-migration-vietnam/ecommerce-architecture-composable-migration/ 301
 /series/composable-commerce-migration/executive-summary-amazon-prime-video-monolith/ /series/magento-migration-vietnam/ecommerce-architecture-composable-migration/ 301
-/series/composable-commerce-migration/part-0-executive-summary /series/magento-migration-vietnam/ecommerce-architecture-composable-migration/ 301
-/series/composable-commerce-migration/part-0-executive-summary/ /series/magento-migration-vietnam/ecommerce-architecture-composable-migration/ 301
-/series/composable-commerce-migration/part-1-ddd-bounded-contexts /series/magento-migration-vietnam/ecommerce-architecture-composable-migration/ 301
-/series/composable-commerce-migration/part-1-ddd-bounded-contexts/ /series/magento-migration-vietnam/ecommerce-architecture-composable-migration/ 301
-/series/composable-commerce-migration/part-2-rush-monorepo /series/magento-migration-vietnam/ecommerce-architecture-composable-migration/ 301
-/series/composable-commerce-migration/part-2-rush-monorepo/ /series/magento-migration-vietnam/ecommerce-architecture-composable-migration/ 301
-/series/composable-commerce-migration/part-3-golang-kratos /series/magento-migration-vietnam/ecommerce-architecture-composable-migration/ 301
-/series/composable-commerce-migration/part-3-golang-kratos/ /series/magento-migration-vietnam/ecommerce-architecture-composable-migration/ 301
-/series/composable-commerce-migration/part-4-grpc-rest-gateway /series/magento-migration-vietnam/ecommerce-architecture-composable-migration/ 301
-/series/composable-commerce-migration/part-4-grpc-rest-gateway/ /series/magento-migration-vietnam/ecommerce-architecture-composable-migration/ 301
 
 # --- 4. Modular Monolith Architecture Series ---
 /series/modular-monolith-architecture-hub /series/modular-monolith-architecture/ 301
@@ -768,6 +758,8 @@
 /research/building-custom-kubernetes-operators-ebpf-golang-cilium/ /posts/building-custom-kubernetes-operators-ebpf-golang-cilium/ 301
 /research/production-ai-observability-opentelemetry-golang-llm-tracing /posts/production-ai-observability-opentelemetry-golang-llm-tracing/ 301
 /research/production-ai-observability-opentelemetry-golang-llm-tracing/ /posts/production-ai-observability-opentelemetry-golang-llm-tracing/ 301
+/research/modern-golang-123-124-high-performance-zero-alloc-gc-tuning /posts/modern-golang-123-124-high-performance-zero-alloc-gc-tuning/ 301
+/research/modern-golang-123-124-high-performance-zero-alloc-gc-tuning/ /posts/modern-golang-123-124-high-performance-zero-alloc-gc-tuning/ 301
 /radar/go-synctest-concurrency /radar/2026-08/go-synctest-concurrency/ 301
 /radar/go-synctest-concurrency/ /radar/2026-08/go-synctest-concurrency/ 301
 /radar/2026-08/radar-2026-08-23-go-synctest-concurrency /radar/2026-08/go-synctest-concurrency/ 301
@@ -778,3 +770,9 @@
 /radar/2026-11/tech-radar-november-2026-digest/ /radar/2026-11/ 301
 /radar/2026-11/tech-radar-digest-november-2026 /radar/2026-11/ 301
 /radar/2026-11/tech-radar-digest-november-2026/ /radar/2026-11/ 301
+
+# Tech Radar November 12 2026 slug unification aliases
+/radar/2026-11/radar-2026-11-12-kv-cache-isolation-go-urgent-agent-protocols /radar/2026-11/radar-2026-11-12-go-urgent-kv-cache-agent-protocols/ 301
+/radar/2026-11/radar-2026-11-12-kv-cache-isolation-go-urgent-agent-protocols/ /radar/2026-11/radar-2026-11-12-go-urgent-kv-cache-agent-protocols/ 301
+/radar/2026-11/kv-cache-isolation-go-urgent-agent-protocols /radar/2026-11/radar-2026-11-12-go-urgent-kv-cache-agent-protocols/ 301
+/radar/2026-11/kv-cache-isolation-go-urgent-agent-protocols/ /radar/2026-11/radar-2026-11-12-go-urgent-kv-cache-agent-protocols/ 301

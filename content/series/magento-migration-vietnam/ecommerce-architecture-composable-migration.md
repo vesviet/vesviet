@@ -18,10 +18,6 @@ cover:
   relative: false
 canonicalURL: "https://tanhdev.com/series/magento-migration-vietnam/ecommerce-architecture-composable-migration/"
 weight: 3
-aliases:
-  - /series/composable-commerce-migration/part-0-executive-summary/
-  - /series/composable-commerce-migration/part-1-ddd-bounded-contexts/
-  - /series/composable-commerce-migration/part-4-grpc-rest-gateway/
 ---
 
 > **Answer-first:** Migrating Composable Commerce from a monolith to a MACH architecture (Microservices, API-first, Cloud-native, Headless) demands a tightly coordinated solution: apply the Strangler Fig pattern through an Envoy Gateway with Traffic Shadowing, synchronize data asynchronously via Debezium CDC reading the binlog combined with the Transactional Outbox pattern to eliminate Dual-Write risk, lock carts in a distributed fashion using Redis Lua Scripts at the BFF layer, and blanket the system with OpenTelemetry W3C Trace Context from day one to prevent system blind spots.
