@@ -117,7 +117,7 @@ Under the A2A standard, autonomous agents do not "chat"; they emit and ingest st
     "role": "project-orchestrator"
   },
   "message_type": "DELIVERY_ARTIFACT",
-  "contract_schema_uri": "https://tanhdev.com/contracts/schemas/audit-report.json",
+  "contract_schema_uri": "https://example.com/contracts/schemas/audit-report.json",
   "payload": {
     "status": "COMPLETED",
     "data_points_analyzed": 3300,
