@@ -1,9 +1,9 @@
 ---
-title: "Composable Banking Architecture: Go, BIAN & PBC Blueprint"
+title: "Composable Banking Architecture: Core Blueprint & Go PBC"
 slug: "composable-banking-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-06-10T14:55:00+07:00"
-lastmod: "2026-08-23T08:30:00+07:00"
+lastmod: "2026-11-26T20:00:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -18,7 +18,7 @@ tags:
   - "Saga Pattern"
   - "Core Banking"
   - "MACH"
-description: "Composable banking replaces the monolithic core: Go microservices, BIAN-aligned PBCs, Kafka events and Temporal Sagas that ship new products in days."
+description: "Design a composable banking architecture without a monolithic core: BIAN-aligned PBCs, double-entry Go ledgers, Kafka events, and Temporal Saga workflows."
 ShowToc: true
 TocOpen: true
 cover:

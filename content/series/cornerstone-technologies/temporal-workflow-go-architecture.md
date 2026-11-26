@@ -1,12 +1,12 @@
 ---
-title: "Temporal Workflow & Golang: Architecture & Production Guide"
+title: "Temporal Workflow in Go: Durable Execution & Saga Guide"
 mermaid: true
-description: "In-depth Temporal Workflow architecture guide for Go developers: Determinism, Event Sourcing, Temporal Nexus, and scaling Temporal Workers in production."
+description: "Production Temporal Workflow guide in Go: deterministic event-sourcing replay, LIFO Saga compensations, worker tuning, and ContinueAsNew history compaction."
 slug: "temporal-workflow-go-architecture"
 author: "Le Tuan Anh (Senior Go Engineer)"
 series: ["cornerstone-technologies"]
 date: "2026-07-25"
-lastmod: "2026-09-11T09:30:00+07:00"
+lastmod: "2026-11-26T20:00:00+07:00"
 cover:
   image: "/images/posts/temporal-workflow-go-architecture.jpg"
   alt: "Temporal Workflow & Golang: Architecture & Production Guide"

@@ -1,9 +1,9 @@
 ---
-title: "MySQL Sharding Alternatives: TiDB vs Vitess for Read Scaling"
+title: "Alternatives to Sharding MySQL: TiDB vs Vitess Benchmarks"
 slug: "mysql-scaling-sharding-tidb-architecture"
 author: "Lê Tuấn Anh"
 date: "2026-05-26T14:00:00+07:00"
-lastmod: "2026-08-23T08:30:00+07:00"
+lastmod: "2026-11-26T20:00:00+07:00"
 draft: false
 mermaid: true
 categories:
@@ -16,7 +16,7 @@ tags:
   - "TiDB"
   - "Sharding"
   - "NewSQL"
-description: "Stop sharding MySQL just to scale reads: how TiDB Distributed SQL replaces Vitess with Raft consensus, ACID guarantees and zero-downtime migration."
+description: "Compare MySQL read-scaling alternatives beyond manual sharding: TiDB vs Vitess benchmarks, Raft consensus, ACID guarantees, and zero-downtime migration."
 ShowToc: true
 TocOpen: true
 cover:

@@ -1,14 +1,14 @@
 ---
-title: "From MySQL Shards to TiDB: Multi-Raft & Percolator Locks"
+title: "Shopee Database Architecture: MySQL Sharding to TiDB Scale"
 slug: "04-database-scale"
 date: "2026-05-06T08:30:00+07:00"
-lastmod: "2026-09-28T06:35:00+07:00"
+lastmod: "2026-11-26T20:00:00+07:00"
 draft: false
 weight: 4
 series: ["shopee-architecture"]
 series_order: 4
 mermaid: true
-description: "How Shopee scales petabyte transaction data: MySQL sharding to TiDB Multi-Raft, async-commit secondary locks that resolve concurrent transactions safely."
+description: "How Shopee scales petabyte order data: migrating MySQL shards to TiDB Multi-Raft with Percolator async-commit locks and zero-downtime flash-sale reads."
 ShowToc: true
 TocOpen: true
 cover:

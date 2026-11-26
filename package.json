@@ -8,7 +8,8 @@
     "build:hugo": "hugo --gc --minify",
     "build:index": "npx pagefind --site public",
     "build:llms": "./scripts/generate-llms-txt.sh",
-    "dev": "hugo server --disableFastRender"
+    "dev": "hugo server --disableFastRender",
+    "indexnow": "node scripts/indexnow.mjs"
   },
   "devDependencies": {
     "wrangler": "^3.114.17"
